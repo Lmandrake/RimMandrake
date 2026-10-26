@@ -55,11 +55,11 @@ SEATS = ("BENCH", "FOUNDRY")
 JUDGE = "brief.py judge (separate process; its own rimflow replay)"
 
 # which collector each section stands on: when it is down the section says "unknown", never "nothing"
-SECTION_SOURCES = {"word": ("ledger",), "open": ("hands", "sheets"), "home": ("ledger",), "overnight": ("ledger",),
+SECTION_SOURCES = {"away": ("ledger",), "word": ("ledger",), "open": ("hands", "sheets"), "home": ("ledger",), "overnight": ("ledger",),
                    "decided": ("ledger",), "spend": ("tokens",), "testing": ("testing",), "next": ("sessions",)}
-TITLES = {"word": "Needs your word", "open": "Open these", "home": "When you're home", "overnight": "Overnight, in words",
+TITLES = {"away": "By your return", "word": "Needs your word", "open": "Open these", "home": "When you're home", "overnight": "Overnight, in words",
           "decided": "Decided for you", "spend": "Spend", "testing": "Testing rigs", "next": "Next", "coverage": "Coverage"}
-ORDER = ("word", "open", "home", "overnight", "decided", "spend", "testing", "next", "coverage")
+ORDER = ("away", "word", "open", "home", "overnight", "decided", "spend", "testing", "next", "coverage")
 
 # A look's review packet (owner card 2026-10-25, "Plus evidence and doubts"): the artifact ships with a
 # recommendation, the alternatives with their reasons, the evidence (what was measured) and the doubts (what
@@ -249,10 +249,14 @@ def _source_down(snap: dict, sec: str) -> list[str]:
     return [s for s in SECTION_SOURCES.get(sec, ()) if not (src.get(s) or {}).get("ok")]
 
 
-def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
+def compose(snap: dict, events: list[dict], since: float, now: float, plan: dict | None = None) -> dict:
     world, moves = transitions(events, since, now)
     secs: dict[str, list[dict]] = {k: [] for k in ORDER}
     notes: dict[str, str] = {}
+    if plan:   # BY YOUR RETURN: the trip plan and whether the ledger bears it out (RIMPULSE_PLAN_BUILD_ON_TRACK_WHILE_AWAY)
+        secs["away"] = plan_lines(plan, world, now)
+    else:
+        notes["away"] = "no trip plan"
     rows = [r for r in (snap.get("rows") or []) if not r.get("agent")]
 
     # NEEDS YOUR WORD: his asks and live cards, blocking first, then oldest promised
@@ -528,6 +532,15 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
             return "pass" if it and it.open else "fail: item not open"
         if t == "testing":
             return check_testing(c)
+        if t == "plan":   # its own replay's states, and its own verdict when the line gives one
+            got = {i: ("missing" if i not in world.items else "blocked" if world.items[i].open and world.items[i].blocked
+                       else world.items[i].state) for i in c.get("states") or {}}
+            if got != c.get("states"):
+                return "fail: the ledger says " + ", ".join(f"{i} {v}" for i, v in got.items() if v != c["states"].get(i))
+            if "on_track" in c and plan_verdict({"at": c.get("at"), "until": c.get("until")}, got,
+                                                brief.get("at") or time.time())[0] != c["on_track"]:
+                return "fail: the ledger does not bear out the on-track verdict"
+            return "pass"
         if t == "usage":
             return usage.check_claim(c, (snap.get("charts") or {}).get("usage"))
         if t in ("unknown", "coverage"):
@@ -612,7 +625,7 @@ main{max-width:min(560px,100vw);overflow-wrap:anywhere;margin:0 auto;padding:14p
 h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mustard);margin:22px 0 6px}
 h3{font-size:13px;color:var(--dim);margin:10px 0 2px;font-weight:600}
 ul{list-style:none;margin:0;padding:0}li{padding:6px 0;border-bottom:1px solid #2c251f}
-.m{color:var(--dim);font-size:12.5px}.st{color:var(--mustard);font-size:12.5px;white-space:nowrap}
+.m{color:var(--dim);font-size:12.5px}.st{color:var(--mustard);font-size:12.5px;white-space:nowrap}.new{color:var(--bg,#111);background:var(--mustard);border-radius:3px;padding:0 4px;font-size:11px;margin-left:4px}
 .none{color:var(--faint);font-size:13.5px}a{color:var(--lk)}
 .foot{margin-top:26px;color:var(--faint);font-size:12px}
 .pk{font-size:13px;color:var(--dim);margin-top:3px}.pk b{color:var(--ink);font-weight:600;text-transform:capitalize}
@@ -620,21 +633,42 @@ ul{list-style:none;margin:0;padding:0}li{padding:6px 0;border-bottom:1px solid #
 """
 
 
-def render(brief: dict | None, hb: dict, now: float, base: str = "") -> str:
+def line_time(ln: dict) -> float | None:
+    """When the thing a line reports happened: an ask's wait start, a move's ledger event."""
+    c = ln.get("claim") or {}
+    if c.get("tsn"):
+        return c["tsn"] / 1e9
+    tsns = [x.get("tsn") for x in c.get("items") or [] if x.get("tsn")]
+    return max(tsns) / 1e9 if tsns else (ln.get("meta") or {}).get("since")
+
+
+def render(brief: dict | None, hb: dict, now: float, base: str = "", visit: dict | None = None) -> str:
     e = html.escape
     out = [f"<!doctype html><html><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'>"
-           f"<meta http-equiv=refresh content=120><title>RimPulse brief</title><style>{CSS}</style></head><body><main>",
+           # reload only while it is on screen: a hidden tab reloading is not him reading it (brief_opens)
+           "<script>setInterval(function(){if(document.visibilityState==='visible')location.reload()},120000)</script>"
+           f"<title>RimPulse brief</title><style>{CSS}</style></head><body><main>",
            f"<div class='hb{' red' if hb['red'] else ''}'>{e(hb['text'])}</div>"]
     if not brief:
         out.append("<div class=age>No brief yet<small>run pulse.py brief</small></div></main></body></html>")
         return "".join(out)
+    bs = brief.get("since_basis") or {}
+    why = (f" - the paper you last opened ({bs.get('device')}, {time.strftime('%a %H:%M', time.localtime(bs['seen']))})"
+           if bs.get("kind") == "opened" and bs.get("seen") else "")
     out.append(f"<div class=age>{e(_ago(brief['at'], now))} old<small>brief of {time.strftime('%a %H:%M', time.localtime(brief['at']))}, "
-               f"covering since {time.strftime('%a %H:%M', time.localtime(brief['since']))}</small></div>")
+               f"new since {time.strftime('%a %H:%M', time.localtime(brief['since']))}{e(why)}</small></div>")
+    bar = (visit or {}).get("before")   # what THIS device had seen by the end of its last visit
+    if visit:
+        out.append(f"<div class=m>{e(visit['device'])}: " + (f"marked new = since the paper of "
+                   f"{time.strftime('%a %H:%M', time.localtime(bar))} you saw here last" if bar else "first open on this device")
+                   + "</div>")
     for sec in ORDER:
         lines = [ln for ln in brief["sections"].get(sec, []) if ln.get("check") == "pass"]
         note = brief.get("notes", {}).get(sec)
-        if sec == "coverage" and not lines:
-            continue
+        if sec == "coverage" and not lines or sec == "away" and not lines and note:
+            continue                          # no trip, no "By your return" heading
+        if sec == "away" and not lines:
+            note = "a trip plan exists but the ledger did not bear out its lines"
         count = f" ({len(lines)})" if sec in ("word", "open", "home") else ""
         if sec == "home" and lines:
             count = f" ({len(lines)} · {pc.chores_time([ln.get('meta') or {} for ln in lines])})"
@@ -668,7 +702,9 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "") -> str:
                 mm = ln.get("meta") or {}
                 meta = f"<div class=m>waiting {_ago(mm.get('since'), now)}" + (f" · blocks {mm['blocks']}" if mm.get("blocks") else "") + "</div>"
             st = f" <span class=st>{e(ln['state'])}</span>" if ln.get("state") else ""
-            out.append(f"<li>{txt}{st}{meta}</li>")
+            lt = line_time(ln)
+            nw = " <span class=new>new</span>" if bar and lt and lt > bar else ""
+            out.append(f"<li>{txt}{st}{nw}{meta}</li>")
         out.append("</ul>")
     w = brief.get("withheld") or 0
     out.append(f"<div class=foot>Every line checked by {e(brief.get('judged_by') or '?')} at {_hm(brief.get('judged_at'))}"
@@ -697,12 +733,231 @@ def render_item(iid: str, events: list[dict]) -> str | None:
 # ---------------------------------------------------------------- write + serve
 
 
+# ---------------------------------------------------------------- by your return (trip plan)
+# RIMPULSE_PLAN_BUILD_ON_TRACK_WHILE_AWAY: before a trip the seat writes a short plan - what will be done by
+# his return, the first thing that will need him, the fallback - with `brief.py plan set`; he may change it
+# (`plan edit --owner-said`); every paper then says on track or not against it, from the ledger.
+PLAN = pc.STATE_DIR / "away_plan.json"
+DONE_STATES = ("done", "validated")
+SLACK = 1 / 3        # on track while the share done is no more than a third behind the share of time gone
+
+
+def read_plan(path: Path | None = None) -> dict | None:
+    try:
+        d = json.loads((path or PLAN).read_text())
+        return d if isinstance(d, dict) and d.get("items") else None
+    except (OSError, ValueError):
+        return None
+
+
+def write_plan(plan: dict, path: Path | None = None) -> None:
+    path = path or PLAN
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(plan, indent=1))
+    tmp.replace(path)
+
+
+def plan_states(plan: dict, world) -> dict[str, str]:
+    out = {}
+    for iid in plan.get("items") or []:
+        it = world.items.get(iid)
+        out[iid] = "missing" if not it else ("blocked" if it.open and it.blocked else it.state)
+    return out
+
+
+def plan_verdict(plan: dict, states: dict[str, str], now: float) -> tuple[bool, str]:
+    """(on track?, the words). Pure: the composer and the judge both call it on their own replay."""
+    n = len(states)
+    done = [i for i, st in states.items() if st in DONE_STATES]
+    gone = [i for i, st in states.items() if st in ("dropped", "superseded", "missing")]
+    stuck = [i for i, st in states.items() if st == "blocked"]
+    at, until = plan.get("at") or now, plan.get("until") or now
+    frac = 1.0 if until <= at else min(1.0, max(0.0, (now - at) / (until - at)))
+    head = f"{len(done)} of {n} done"
+    if len(done) == n:
+        return True, f"done: all {n} items closed or checked"
+    if now >= until:
+        return False, f"missed: {head} by your return; open: {', '.join(i for i in states if i not in done)}"
+    if gone:
+        return False, f"not on track: {', '.join(gone)} {'was' if len(gone) == 1 else 'were'} dropped or replaced; {head}"
+    if stuck:
+        return False, f"not on track: {', '.join(stuck)} {'is' if len(stuck) == 1 else 'are'} blocked; {head}"
+    if len(done) / n + SLACK < frac:
+        return False, f"behind: {head} with {frac:.0%} of the time gone"
+    return True, f"on track: {head}, {frac:.0%} of the time gone"
+
+
+def plan_lines(plan: dict, world, now: float) -> list[dict]:
+    states = plan_states(plan, world)
+    ok, words = plan_verdict(plan, states, now)
+    by = time.strftime("%a %H:%M", time.localtime(plan["until"])) if plan.get("until") else "?"
+    out = [{"sec": "away", "head": True, "goal": f"Plan by {plan.get('by') or '?'} for your return {by}",
+            "text": words, "on_track": ok,
+            "claim": {"type": "plan", "states": states, "on_track": ok, "at": plan.get("at"), "until": plan.get("until")}}]
+    for iid, st in states.items():
+        it = world.items.get(iid)
+        out.append({"sec": "away", "text": _short(f"{(it.title if it else '') or iid}", 140), "id": iid,
+                    "state": STATE_WORD.get(st, st), "link": f"/item/{iid}" if it else None,
+                    "claim": {"type": "plan", "states": {iid: st}, "at": plan.get("at"), "until": plan.get("until")}})
+    fn = plan.get("first_need") or {}
+    if fn.get("text"):
+        out.append({"sec": "away", "text": "First thing that will need you: " + _short(fn["text"], 160), "id": fn.get("id"),
+                    "link": f"/item/{fn['id']}" if fn.get("id") else None, "claim": {"type": "unknown"}})
+    if plan.get("fallback"):
+        out.append({"sec": "away", "text": "If it goes wrong: " + _short(plan["fallback"], 160), "claim": {"type": "unknown"}})
+    for ed in (plan.get("edits") or [])[-3:]:
+        who = "you" if ed.get("owner_said") else ed.get("by") or "?"
+        out.append({"sec": "away", "text": f"Changed by {who} {time.strftime('%a %H:%M', time.localtime(ed['at']))}: "
+                                           + _short(ed.get("owner_said") or ed.get("why") or ed.get("change") or "", 160),
+                    "claim": {"type": "unknown"}})
+    return out
+
+
+def plan_cli(argv: list[str], path: Path | None = None, events: list[dict] | None = None) -> int:
+    """brief.py plan set|edit|show|clear - how an agent writes the trip plan (and records his changes)."""
+    import argparse
+    ap = argparse.ArgumentParser(prog="brief.py plan")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    st = sub.add_parser("set", help="write the plan before a trip (replaces any old one)")
+    st.add_argument("--by", required=True, help="the seat writing it")
+    st.add_argument("--until", required=True, help="his return, local time 'YYYY-MM-DD HH:MM'")
+    st.add_argument("--item", action="append", required=True, help="a rimflow id that will be done (repeat)")
+    st.add_argument("--first-need", required=True, help="the first thing that will need him, in words")
+    st.add_argument("--first-need-id", help="its rimflow id, if it has one")
+    st.add_argument("--fallback", required=True, help="what happens if the plan goes wrong")
+    ed = sub.add_parser("edit", help="change it; his words in --owner-said, an agent's own reason in --why")
+    ed.add_argument("--by", required=True)
+    g = ed.add_mutually_exclusive_group(required=True)
+    g.add_argument("--owner-said")
+    g.add_argument("--why")
+    ed.add_argument("--add", action="append", default=[])
+    ed.add_argument("--drop", action="append", default=[])
+    ed.add_argument("--until")
+    ed.add_argument("--first-need")
+    ed.add_argument("--first-need-id")
+    ed.add_argument("--fallback")
+    sub.add_parser("show")
+    sub.add_parser("clear", help="the trip is over")
+    a = ap.parse_args(argv)
+    path = path or PLAN
+    now = time.time()
+
+    def when(v: str) -> float:
+        return time.mktime(time.strptime(v, "%Y-%m-%d %H:%M"))
+
+    def known(ids: list[str]) -> None:
+        world = _model().replay(events if events is not None else pc.read_ledger())
+        bad = [i for i in ids if i not in world.items]
+        if bad:
+            raise SystemExit(f"plan: no such rimflow item: {', '.join(bad)}")
+    if a.cmd == "show":
+        plan = read_plan(path)
+        if not plan:
+            print("no trip plan")
+            return 0
+        world = _model().replay(events if events is not None else pc.read_ledger())
+        for ln in plan_lines(plan, world, now):
+            print(("== " + ln["goal"] + ": " if ln.get("head") else "  ") + ln["text"] + (f"  [{ln['state']}]" if ln.get("state") else ""))
+        return 0
+    if a.cmd == "clear":
+        if path.exists():
+            path.unlink()
+        print("trip plan cleared")
+        return 0
+    if a.cmd == "set":
+        known(a.item + ([a.first_need_id] if a.first_need_id else []))
+        u = when(a.until)
+        if u <= now:
+            raise SystemExit("plan: --until is not in the future")
+        write_plan({"v": 1, "by": a.by, "at": now, "until": u, "items": list(dict.fromkeys(a.item)),
+                    "first_need": {"text": a.first_need, "id": a.first_need_id}, "fallback": a.fallback, "edits": []}, path)
+        print(f"trip plan written: {len(a.item)} items by {a.until}")
+        return 0
+    plan = read_plan(path)
+    if not plan:
+        raise SystemExit("plan: no trip plan to edit (plan set first)")
+    known(a.add + ([a.first_need_id] if a.first_need_id else []))
+    change = []
+    for i in a.add:
+        if i not in plan["items"]:
+            plan["items"].append(i)
+            change.append(f"+{i}")
+    for i in a.drop:
+        if i in plan["items"]:
+            plan["items"].remove(i)
+            change.append(f"-{i}")
+    if a.until:
+        plan["until"] = when(a.until)
+        change.append(f"until {a.until}")
+    if a.first_need or a.first_need_id:
+        fn = plan.get("first_need") or {}
+        plan["first_need"] = {"text": a.first_need or fn.get("text"), "id": a.first_need_id or (None if a.first_need else fn.get("id"))}
+        change.append("first need")
+    if a.fallback:
+        plan["fallback"] = a.fallback
+        change.append("fallback")
+    if not plan["items"]:
+        raise SystemExit("plan: an edit may not empty the plan (plan clear ends the trip)")
+    plan.setdefault("edits", []).append({"at": now, "by": a.by, "owner_said": a.owner_said, "why": a.why,
+                                         "change": ", ".join(change)})
+    write_plan(plan, path)
+    print(f"trip plan edited: {', '.join(change) or 'words only'}")
+    return 0
+
+
+# "New" = everything since he last opened the paper (owner, 2026-10-25), per device. One visit is a run of
+# requests with gaps under VISIT_GAP (the page reloads itself while it is on screen).
+OPENS = pc.STATE_DIR / "brief_opens.json"
+VISIT_GAP = 30 * 60
+_OPENS_LOCK = threading.Lock()
+
+
+def read_opens() -> dict:
+    try:
+        d = json.loads(OPENS.read_text())
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def record_open(device: str, brief_at: float | None, now: float) -> dict:
+    """Note that `device` has the paper of `brief_at` on screen; return this device's record, whose
+    `before` is the newest paper it had seen by the end of its previous visit (what is new to it now)."""
+    with _OPENS_LOCK:
+        d = read_opens()
+        r = dict(d.get(device) or {})
+        if not r or now - (r.get("seen") or 0) > VISIT_GAP:   # a new visit: what it saw last time is the bar
+            r.update(visit=now, before=r.get("brief_at"), before_seen=r.get("seen"), visits=int(r.get("visits") or 0) + 1)
+        r["seen"] = now
+        if brief_at:
+            r["brief_at"] = max(brief_at, r.get("brief_at") or 0)
+        d[device] = r
+        OPENS.parent.mkdir(parents=True, exist_ok=True)
+        tmp = OPENS.with_name(f"{OPENS.name}.{os.getpid()}.{threading.get_ident()}.tmp")
+        tmp.write_text(json.dumps(d, indent=1))
+        tmp.replace(OPENS)
+        return {**r, "device": device}
+
+
+def since_basis(prev: dict | None, opens: dict, now: float) -> tuple[float, dict]:
+    """(since, basis): the newest paper he opened on any device, else the previous paper, else a day."""
+    seen = [(r["brief_at"], dev, r.get("seen")) for dev, r in opens.items() if (r or {}).get("brief_at")]
+    if seen:
+        at, dev, when = max(seen)
+        return max(at, now - WINDOW_CAP), {"kind": "opened", "device": dev, "seen": when, "brief_at": at}
+    if prev:
+        return max(prev.get("at") or 0, now - WINDOW_CAP), {"kind": "previous"}
+    return now - 24 * 3600, {"kind": "day"}
+
+
 def write_brief(folder: Path, snap: dict, now: float | None = None, run_judge: bool = True) -> Path:
     now = now or time.time()
     _, prev = latest_brief(folder)
-    since = max((prev or {}).get("at") or 0, now - WINDOW_CAP) if prev else now - 24 * 3600
+    since, basis = since_basis(prev, read_opens(), now)
     events = pc.read_ledger()
-    b = compose(snap, events, since, now)
+    b = compose(snap, events, since, now, plan=read_plan())
+    b["since_basis"] = basis
     folder.mkdir(parents=True, exist_ok=True)
     p = folder / time.strftime("brief_%Y-%m-%d_%H%M.json", time.localtime(now))
     tmp = p.with_name(f"{p.name}.{os.getpid()}.tmp")   # one tmp per writer process
@@ -730,18 +985,22 @@ def allowlist() -> list[str]:
 _WHO: dict = {}
 
 
-def whois(ip: str) -> str | None:
+def whois(ip: str) -> tuple[str | None, str | None]:
+    """(login, device name) of a tailnet peer; (None, None) when tailscaled cannot say."""
     hit = _WHO.get(ip)
-    if hit and time.time() - hit[1] < 300:
-        return hit[0]
+    if hit and time.time() - hit[2] < 300:
+        return hit[0], hit[1]
     try:
         r = subprocess.run(["tailscale", "whois", "--json", ip], capture_output=True, text=True, timeout=5)
-        login = (json.loads(r.stdout).get("UserProfile") or {}).get("LoginName") if r.returncode == 0 else None
+        d = json.loads(r.stdout) if r.returncode == 0 else {}
     except (OSError, ValueError, subprocess.TimeoutExpired):
-        login = None
+        d = {}
+    login = (d.get("UserProfile") or {}).get("LoginName")
+    node = d.get("Node") or {}
+    device = node.get("ComputedName") or str(node.get("Name") or "").split(".")[0] or None
     if login:   # only a hit is cached: one tailscaled hiccup must not lock the phone out for 5 min
-        _WHO[ip] = (login.lower(), time.time())
-    return login.lower() if login else None
+        _WHO[ip] = (login.lower(), device, time.time())
+    return (login.lower() if login else None), device
 
 
 def tailnet_ip() -> str | None:
@@ -753,13 +1012,15 @@ def tailnet_ip() -> str | None:
     return ip[0] if r.returncode == 0 and ip else None
 
 
-def page(path: str, snap_fn, folder: Path) -> tuple[int, str, bytes]:
-    """The read-only brief routes, shared by the loopback daemon and the tailnet listener."""
+def page(path: str, snap_fn, folder: Path, device: str | None = None) -> tuple[int, str, bytes]:
+    """The read-only brief routes, shared by the loopback daemon and the tailnet listener. `device` is set
+    only for his own tailnet devices: that request is an open of the paper (record_open)."""
     now = time.time()
     path = path.split("?")[0]
     if path in ("/brief", "/brief/"):
         _, b = latest_brief(folder)
-        return 200, "text/html; charset=utf-8", render(b, heartbeat(snap_fn(), b, now), now).encode()
+        visit = record_open(device, (b or {}).get("at"), now) if device else None
+        return 200, "text/html; charset=utf-8", render(b, heartbeat(snap_fn(), b, now), now, visit=visit).encode()
     if path == "/heartbeat":
         _, b = latest_brief(folder)
         return 200, "text/plain; charset=utf-8", (heartbeat(snap_fn(), b, now)["text"] + "\n").encode()
@@ -782,7 +1043,8 @@ def serve_tailnet(snap_fn, folder: Path, port: int = BRIEF_PORT) -> None:
 
         def do_GET(self):
             allow = allowlist()
-            who = whois(self.client_address[0])
+            ip = self.client_address[0]
+            who, device = whois(ip)
             if not allow or who not in allow:
                 self.send_response(403)
                 self.send_header("Content-Type", "text/plain")
@@ -790,7 +1052,8 @@ def serve_tailnet(snap_fn, folder: Path, port: int = BRIEF_PORT) -> None:
                 self.wfile.write(b"forbidden\n")
                 return
             p = "/brief" if self.path in ("/", "") else self.path
-            code, ctype, body = page(p, snap_fn, folder)
+            # his opens move "new": a request from this machine itself is an agent checking, never him
+            code, ctype, body = page(p, snap_fn, folder, device=None if ip == tailnet_ip() else (device or ip))
             self.send_response(code)
             self.send_header("Content-Type", ctype)
             self.send_header("Cache-Control", "no-store")
@@ -826,7 +1089,9 @@ def main(argv: list[str]) -> int:
         tmp.replace(p)
         print(f"judged {p.name}: {b['withheld']} withheld")
         return 0
-    print("usage: brief.py judge PATH   (compose with: pulse.py brief)", file=sys.stderr)
+    if argv and argv[0] == "plan":
+        return plan_cli(argv[1:])
+    print("usage: brief.py judge PATH | brief.py plan set|edit|show|clear   (compose with: pulse.py brief)", file=sys.stderr)
     return 2
 
 

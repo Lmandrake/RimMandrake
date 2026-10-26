@@ -179,6 +179,110 @@ def main():
     brief.judge(ub, EVENTS, {**usnap, "sources": {**usnap["sources"], "tokens": {"ok": True}}})
     check("judge withholds a usage line the panel does not hold", sp[0]["check"] != "pass", sp[0]["check"])
 
+    # MORNING_PAPER follow-up (owner 2026-10-25): "new" = since he last opened the paper, per device
+    check("no opens at all: new is since the previous paper", brief.since_basis({"at": NOW - 3600}, {}, NOW)
+          == (NOW - 3600, {"kind": "previous"}))
+    r1 = brief.record_open("phone", NOW - 50000, NOW - 40000)
+    check("a first open on a device has nothing to compare", r1["before"] is None and r1["visits"] == 1, r1)
+    r2 = brief.record_open("phone", NOW - 50000, NOW - 40000 + 120)       # its own 2-minute reload
+    check("a reload inside one visit is not a new visit", r2["visits"] == 1 and r2["before"] is None, r2)
+    brief.record_open("tablet", NOW - 90000, NOW - 80000)
+    sb, basis = brief.since_basis({"at": NOW - 3600}, brief.read_opens(), NOW)
+    check("new is since the newest paper he opened on any device", sb == NOW - 50000 and basis["device"] == "phone"
+          and basis["kind"] == "opened", (sb, basis))
+    check("an unopened later paper does not move it", brief.since_basis({"at": NOW - 100}, brief.read_opens(), NOW)[0]
+          == NOW - 50000)
+    r3 = brief.record_open("phone", NOW - 600, NOW)
+    check("a later visit marks what it saw last time", r3["before"] == NOW - 50000 and r3["visits"] == 2, r3)
+    vb = {"at": NOW - 600, "since": sb, "since_basis": basis, "judged": True, "withheld": 0, "notes": {},
+          "sections": {"word": [{"text": "old ask", "meta": {"since": NOW - 60000}, "check": "pass", "claim": {}},
+                                {"text": "fresh ask", "meta": {"since": NOW - 1000}, "check": "pass", "claim": {}}]}}
+    vh = brief.render(vb, {"red": False, "text": "x"}, NOW, visit=r3)
+    check("only what this device has not seen is marked new", "fresh ask <span class=new>new</span>" in vh
+          and "old ask <span class=new>" not in vh, vh[vh.find("old ask") - 40: vh.find("old ask") + 200])
+    check("the page says new since the paper he last opened", "the paper you last opened (phone," in vh)
+    folder = Path(tempfile.mkdtemp())
+    n0 = brief.read_opens()["phone"]["seen"]
+    brief.page("/brief", lambda: {}, folder)                          # loopback / agent fetch: no device
+    check("a fetch with no device of his is not an open", brief.read_opens()["phone"]["seen"] == n0)
+
+    # RIMPULSE_PLAN_BUILD_ON_TRACK_WHILE_AWAY: the trip plan, on track or not, from the ledger (fixture plan)
+    pev = EVENTS + [ev(10, "file", "PLAN_BLOCKED_ITEM", title="Stuck on a part", kind="task", target="v1", **{"for": "BENCH"}),
+                    ev(11, "block", "PLAN_BLOCKED_ITEM", reason="waits for a part"),
+                    ev(12, "file", "PLAN_DROPPED_ITEM", title="Not happening", kind="task", target="v1", **{"for": "BENCH"}),
+                    ev(13, "drop", "PLAN_DROPPED_ITEM", reason="no longer wanted")]
+    world = brief._model().replay(pev)
+    plan = {"by": "BENCH", "at": NOW - 3600, "until": NOW + 3 * 3600, "items": ["AGENT_WORK_ITEM", "ASK_OPEN_ITEM"],
+            "first_need": {"text": "pick the colour", "id": "ASK_OPEN_ITEM"}, "fallback": "ship grey", "edits": []}
+    st = brief.plan_states(plan, world)
+    check("plan states come from the ledger", st == {"AGENT_WORK_ITEM": "done", "ASK_OPEN_ITEM": "proposed"}
+          or (st["AGENT_WORK_ITEM"] == "done" and st["ASK_OPEN_ITEM"] not in brief.DONE_STATES), st)
+    ok, words = brief.plan_verdict(plan, st, NOW)
+    check("1 of 2 done a quarter in is on track", ok and words.startswith("on track: 1 of 2 done"), words)
+    ok, words = brief.plan_verdict({**plan, "at": NOW - 3 * 3600, "until": NOW + 60}, {"A": "doing", "B": "doing", "C": "done"}, NOW)
+    check("1 of 3 done near the end is behind", not ok and words.startswith("behind: 1 of 3 done"), words)
+    ok, words = brief.plan_verdict(plan, brief.plan_states({**plan, "items": ["AGENT_WORK_ITEM", "PLAN_BLOCKED_ITEM"]}, world), NOW)
+    check("a blocked plan item is not on track", not ok and "PLAN_BLOCKED_ITEM is blocked" in words, words)
+    ok, words = brief.plan_verdict(plan, brief.plan_states({**plan, "items": ["PLAN_DROPPED_ITEM", "NO_SUCH_ITEM"]}, world), NOW)
+    check("a dropped or vanished item is not on track", not ok and "were dropped or replaced" in words, words)
+    ok, words = brief.plan_verdict({**plan, "until": NOW - 60}, st, NOW)
+    check("past the return with work open is missed", not ok and words.startswith("missed: 1 of 2") and "ASK_OPEN_ITEM" in words, words)
+    ok, words = brief.plan_verdict(plan, {"AGENT_WORK_ITEM": "done", "X": "validated"}, NOW)
+    check("all done or checked is done", ok and words.startswith("done: all 2"), words)
+
+    pb = brief.compose(csnap, pev, NOW - 7200, NOW, plan={**plan, "edits": [
+        {"at": NOW - 600, "by": "BENCH", "owner_said": "skip the colour, do it after", "change": "-ASK_OPEN_ITEM"}]})
+    aw = pb["sections"]["away"]
+    tx = [ln["text"] for ln in aw]
+    check("the paper leads with the plan when there is one", brief.ORDER[0] == "away" and aw[0].get("head")
+          and aw[0]["text"].startswith("on track"), aw[:1])
+    check("the plan shows first need, fallback and his change", any(t.startswith("First thing that will need you: pick the colour") for t in tx)
+          and "If it goes wrong: ship grey" in tx and any(t.startswith("Changed by you") and "skip the colour" in t for t in tx), tx)
+    check("no plan, no section, a note", "away" not in [k for k, v in cb["sections"].items() if v] and cb["notes"].get("away") == "no trip plan",
+          cb.get("notes"))
+    brief.judge(pb, pev, csnap)
+    check("judge passes the true plan lines", all(ln["check"] == "pass" for ln in aw), [ln["check"] for ln in aw])
+    tb = brief.compose(csnap, pev, NOW - 7200, NOW, plan=plan)
+    tb["sections"]["away"][0]["claim"]["on_track"] = False                    # tamper: the verdict
+    tb["sections"]["away"][1]["claim"]["states"] = {"AGENT_WORK_ITEM": "doing"}  # tamper: a state
+    brief.judge(tb, pev, csnap)
+    check("judge withholds a forged verdict and a forged state",
+          [ln["check"] != "pass" for ln in tb["sections"]["away"][:2]] == [True, True], [ln["check"] for ln in tb["sections"]["away"][:2]])
+    ph = brief.render(pb, {"red": False, "text": "x"}, NOW)
+    check("render shows By your return", "By your return" in ph and "ship grey" in ph)
+    check("no plan, no heading on the page", "By your return" not in brief.render(cb, {"red": False, "text": "x"}, NOW))
+
+    # the CLI an agent uses: set, edit with his words, show, clear; ids checked against the ledger
+    import contextlib
+    import io
+    pf = Path(tempfile.mkdtemp()) / "away_plan.json"
+    import time as _t
+    ret = _t.strftime("%Y-%m-%d %H:%M", _t.localtime(_t.time() + 2 * 86400))
+    with contextlib.redirect_stdout(io.StringIO()):
+        rc = brief.plan_cli(["set", "--by", "BENCH", "--until", ret, "--item", "AGENT_WORK_ITEM", "--item", "ASK_OPEN_ITEM",
+                             "--first-need", "pick the colour", "--first-need-id", "ASK_OPEN_ITEM", "--fallback", "ship grey"], pf, pev)
+    got = brief.read_plan(pf)
+    check("plan set writes the file", rc == 0 and got["items"] == ["AGENT_WORK_ITEM", "ASK_OPEN_ITEM"] and got["fallback"] == "ship grey", got)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            brief.plan_cli(["set", "--by", "BENCH", "--until", ret, "--item", "INVENTED_ID", "--first-need", "x", "--fallback", "y"], pf, pev)
+        refused = False
+    except SystemExit as e:
+        refused = "INVENTED_ID" in str(e)
+    check("plan set refuses an id the ledger lacks", refused and brief.read_plan(pf)["items"] == got["items"])
+    with contextlib.redirect_stdout(io.StringIO()):
+        brief.plan_cli(["edit", "--by", "BENCH", "--owner-said", "drop the colour", "--drop", "ASK_OPEN_ITEM"], pf, pev)
+    got = brief.read_plan(pf)
+    check("plan edit records his words and the change", got["items"] == ["AGENT_WORK_ITEM"]
+          and got["edits"][-1]["owner_said"] == "drop the colour" and got["edits"][-1]["change"] == "-ASK_OPEN_ITEM", got)
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        brief.plan_cli(["show"], pf, pev)
+    check("plan show prints the verdict", "done: all 1" in out.getvalue(), out.getvalue())
+    with contextlib.redirect_stdout(io.StringIO()):
+        brief.plan_cli(["clear"], pf, pev)
+    check("plan clear ends the trip", brief.read_plan(pf) is None)
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 
