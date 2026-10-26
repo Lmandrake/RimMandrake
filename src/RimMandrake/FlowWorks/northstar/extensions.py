@@ -472,6 +472,22 @@ def _sweep_earlier_chains(t):
     _SPAWNED[:] = keep
 
 
+def _vanish_fixture(t, pid):
+    """Remove a pawn THIS chain spawned (no death, no corpse) once a later row no longer needs it."""
+    if pid:
+        t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+
+
+@contextmanager
+def _fight_expected(t, pawn_ids, hediff="Bruise"):
+    """Inside the block a safe_advance stop whose triggers are all `hediff` hurts of exactly these fixtures is resumed
+    (clockgate.expected_disturbance + testenv_guards.expected_hurt). Nothing else widens."""
+    import clockgate  # noqa: E402 - the same module instance suite.wait_ticks advances through
+    import testenv_guards as TG  # noqa: E402
+    with clockgate.expected_disturbance("fixture fight (%s)" % hediff, TG.expected_hurt(pawn_ids, hediff)):
+        yield
+
+
 def _spawn_pawn_at(t, kind, x, z, faction="player"):
     _sweep_earlier_chains(t)
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
@@ -1539,7 +1555,12 @@ def ladder_prison_door(t):
     # the two hostile rows are the KEYS mode (ladderNoKeys=False): shipped no-keys lets the hostile out by design
     with t.component("lowered_holds_hostile", toggle="ladderPrisonDoorEnabled"):
         with _ladder_keys(t):
+            # PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER (HARNESS, 2026-10-26, job J20261026T074314Z-b0e9f5): the row-1 colonist was still
+            # in the pit and the armed Pirate beat it (Bruise/Arm from Gun_BoltActionRifle), a declared-fixture fight that stops
+            # safe_advance and ended the chain. Vanish the colonist and disarm the hostile: nothing here is about a fight.
+            _vanish_fixture(t, pid)
             hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
+            t.bridge_call("jawa/pawn_gear", pawn=hid, action="clear")
             _wait(t, PULSE)
             if t._guard():
                 _expect(_pit_held(t, hid, pit) is True, "keys mode: hostile NOT held despite the prison-door ladder")
@@ -3087,7 +3108,11 @@ def pit_prison_room(t):
         t.bridge_call("jawa/set_draft", pawnId=col, drafted=True)
         t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid,
                       targetBX=lip[0], targetBZ=lip[1])
-        t.wait_ticks(900)
+        # PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER (HARNESS, 2026-10-26): capturing DOWN is a beating by design, so the two
+        # fixtures bruise each other (Bruise/Leg from Human stopped safe_advance twice). Declared for THIS wait only, for
+        # these two ids and Bruise only: any other hurt, a death or a downed colonist still stops the clock.
+        with _fight_expected(t, [hid, col]):
+            t.wait_ticks(900)
         v1 = _kv(_sc(t, NS_PROOF, "ProofCaptureDown", str(hid)))
         wx, wz = _pawn_xz(t, col)
         if t._guard():
