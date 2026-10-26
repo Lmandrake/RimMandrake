@@ -80,10 +80,22 @@ namespace RimMandrake.CreatureBehaviors
                 ThingDef dugDef = DefDatabase<ThingDef>.GetNamedSilentFail(comp.Props.thingToDigIfMapEmpty);
                 if (dugDef != null)
                 {
+                    // Placed Near, not GenSpawn.Spawn at the feet: a raw spawn stacked the chunk onto whatever
+                    // item already lay there (two items in one non-storage cell, or past a shelf's cap) and into
+                    // a doorway, where an item holds the door open (Building_Door.BlockedOpenMomentary) for the
+                    // several feeds a partly-bitten chunk lasts. The validator keeps it on a cell the eater may
+                    // use and reach, or the dig would repeat with nothing gained.
+                    Map map = pawn.Map;
                     Thing dug = null;
                     for (int i = 0; i < comp.Props.customAmountToDig; i++)
                     {
-                        dug = GenSpawn.Spawn(dugDef, pawn.Position, pawn.Map, WipeMode.Vanish);
+                        if (GenPlace.TryPlaceThing(ThingMaker.MakeThing(dugDef), pawn.Position, map, ThingPlaceMode.Near,
+                            out Thing placed, null,
+                            c => c.GetDoor(map) == null && !c.IsForbidden(pawn)
+                                && pawn.CanReach(c, PathEndMode.ClosestTouch, Danger.Deadly)))
+                        {
+                            dug = placed;
+                        }
                     }
                     if (dug != null)
                     {
