@@ -228,13 +228,10 @@ def t_fill_policy():
     ages = T.ages_of(h)
     check(ages["void"] == 0, "a VOID run does not make a chain fresh (site never held): %s" % ages["void"])
     now = T.S.parse_ts("2026-10-22T00:00:00Z")
-    pick, dry = T.fill_pick(h, 10, now)
-    check("dry" not in pick and "dry" in dry, "a chain whose last 2 runs were all UNMEASURED is skipped: %s / %s" % (pick, dry))
-    check("once" in pick, "one UNMEASURED run is not yet dry: %s" % pick)
-    check("old_dry" in pick, "a dry chain is re-tried once its last run is older than the retry window: %s" % pick)
-    check(pick[0] == "void", "VOID-only chains are stalest, so first: %s" % pick)
-    pick, dry = T.fill_pick({"dry": h["dry"]}, 4, now)
-    check(pick == [] and dry == ["dry"], "all chains dry: nothing to fill (no wasted job): %s %s" % (pick, dry))
+    check(T.is_dry(h["dry"], now), "a chain whose last 2 runs were all UNMEASURED is DRY")
+    check(not T.is_dry(h["once"], now), "one UNMEASURED run is not yet dry")
+    check(not T.is_dry(h["old_dry"], now), "a dry chain is re-tried once its last run is older than the retry window")
+    check(not T.is_dry(h["void"], now), "VOID runs (site hold only) never make a chain DRY")
     today = [rec("2026-10-22T01:00:00Z", [], start="2026-10-22T00:56:00Z"),
              rec("2026-10-22T02:00:00Z", [], start="2026-10-22T01:50:00Z")]
     check(T.fill_spent_s(today) == 840, "lane time spent = sum of today's filler walls: %s" % T.fill_spent_s(today))
@@ -250,23 +247,73 @@ def t_fill_drops_unknown_chains():
     check(T.unknown_chains("unknown chain(s) for FlowWorks: a_zz, b_zz; chains are: c, d") == {"a_zz", "b_zz"},
           "unknown_chains reads modcheck's refusal")
     check(T.unknown_chains("unknown row 'T12'") == set(), "a row refusal names no chain")
+    import gaps
     tmp = tempfile.mkdtemp(prefix="rf_testq_fill_")
-    saved = (T.QHOME, T.chain_history, T.cmd_submit)
+    saved = (T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items)
     sent = []
     try:
         T.QHOME = tmp
-        old = [(T.S.parse_ts("2026-01-01T00:00:00Z"), "measured")]
-        new = [(T.S.parse_ts("2026-10-01T00:00:00Z"), "measured")]
-        mid = [(T.S.parse_ts("2026-05-01T00:00:00Z"), "measured")]
-        T.chain_history = lambda mod, recs=None: {"renamed_away_zz": old, "core_offline": mid, "thirst": new}
-        T.cmd_submit = lambda sub: sent.append(sub.chains) or 0
+        T.ensure_dirs()
+        for i, (fin, chain) in enumerate((("2026-01-01T00:00:00Z", "renamed_away_zz"),
+                                          ("2026-05-01T00:00:00Z", "core_offline"),
+                                          ("2026-10-01T00:00:00Z", "thirst"))):
+            jid = "JFILL%d" % i
+            with open(os.path.join(tmp, "done", jid + ".json"), "w") as fh:
+                json.dump({"finished": fin, "job": {"id": jid, "mod": "FlowWorks", "submitted": fin,
+                                                    "requested_by": "someone"},
+                           "result": {"outcome": "DONE", "started": fin, "finished": fin,
+                                      "rows": [{"chain": chain, "row": "r", "verdict": "PASS"}]}}, fh)
+        # modcheck's catalogue as gaps sees it: thirst live, core_offline offline; renamed_away_zz is history only
+        gaps.probe = lambda mod, items, since: {"chains": ["thirst", "core_offline"], "offline": ["core_offline"],
+                                                "item_chains": {}, "changed": {}}
+        gaps.owed_items = lambda world=None: {}
+        T.cmd_submit = lambda sub: sent.append((sub.chains, sub.purpose)) or 0
         import argparse
         rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT, day_s=T.FILL_DAY_S))
-        check(rc == 0 and sent == ["thirst"],
-              "fill drops a chain modcheck no longer declares, then an offline-only one, and submits a live chain: "
-              "rc=%s sent=%s" % (rc, sent))
+        check(rc == 0 and sent == [("thirst", "guard")],
+              "fill ranks a history-only chain, drops it when modcheck refuses it, never picks an offline one, and "
+              "submits the live chain (no identity: never run at it): rc=%s sent=%s" % (rc, sent))
     finally:
-        T.QHOME, T.chain_history, T.cmd_submit = saved
+        T.QHOME, T.cmd_submit, gaps.probe, gaps.owed_items = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def t_fill_brake_released_by_proof():
+    """Two filler jobs in a row not DONE brake the filler, until ANY job on Steve's lane (a hand submission) comes back
+    DONE with its canary on after them: then the lane is proven and the brake is stale (2026-10-26: braked all
+    afternoon on two failures from before the fix, though a hand job came back DONE + green canary at 11:45 PDT)."""
+    import testq as T
+    import gaps
+    tmp = tempfile.mkdtemp(prefix="rf_testq_brake_")
+    saved = (T.QHOME, gaps.probe, gaps.owed_items)
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        gaps.probe = lambda mod, items, since: {"chains": ["thirst"], "offline": [], "item_chains": {}, "changed": {}}
+        gaps.owed_items = lambda world=None: {}
+
+        def put(jid, fin, by, outcome, canary=True, lane="stevedesktop"):
+            with open(os.path.join(tmp, "done", jid + ".json"), "w") as fh:
+                json.dump({"finished": fin, "job": {"id": jid, "mod": "FlowWorks", "submitted": fin, "requested_by": by,
+                                                    "purpose": "guard", "canary": canary, "lane": lane},
+                           "result": {"outcome": outcome, "started": fin, "finished": fin, "rows": []}}, fh)
+        put("J1", "2026-10-26T15:21:16Z", T.FILLER, "INVALID")
+        put("J2", "2026-10-26T15:33:14Z", T.FILLER, "FAILED")
+        now = T.S.parse_ts("2026-10-26T20:00:00Z")
+        args = ("FlowWorks", 1, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
+        check(T.fill_plan(*args)["verdict"] == "brake", "two filler jobs not DONE: brake")
+        put("J0", "2026-10-26T15:00:00Z", "BENCH", "DONE")
+        check(T.fill_plan(*args)["verdict"] == "brake", "a DONE job from BEFORE the braking jobs does not release it")
+        put("J3", "2026-10-26T18:54:19Z", "BENCH", "DONE", canary=False)
+        check(T.fill_plan(*args)["verdict"] == "brake", "a later DONE job run without its canary does not release it")
+        put("J4", "2026-10-26T18:55:00Z", "BENCH", "DONE", lane="archmagi")
+        check(T.fill_plan(*args)["verdict"] == "brake", "a later DONE job on another lane does not release it")
+        put("J5", "2026-10-26T18:56:00Z", "BENCH", "DONE")
+        p = T.fill_plan(*args)
+        check(p["verdict"] == "pick" and p["pick"] == ["thirst"],
+              "a hand-submitted job DONE with its canary after the braking jobs releases the brake: %s" % p["text"])
+    finally:
+        T.QHOME, gaps.probe, gaps.owed_items = saved
         shutil.rmtree(tmp, ignore_errors=True)
 
 
@@ -277,6 +324,7 @@ def main():
         t_sweep_split()
         t_fill_policy()
         t_fill_drops_unknown_chains()
+        t_fill_brake_released_by_proof()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
         check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))
     tmp = tempfile.mkdtemp(prefix="rf_testq_")
@@ -512,6 +560,16 @@ def main():
         rc, o = tq("fill", "Mock")
         check(rc == 0 and o.startswith("busy") and njobs() == n0, "fill queues nothing while a runnable job waits: %s" % o)
         tq("cancel", sj, "--reason", "selftest")
+        rc, o = tq("fill", "Mock", "--n", "1")
+        check(rc == 0 and o.startswith("Mock: exhausted") and "FAILED with no fix" in o,
+              "every Mock chain PASSED or FAILED (no fix) at the current identity: nothing is filler: %s" % o[-200:])
+        # a newer run with no deployed block: identity unknown, so every chain is "never run at it" again
+        fin = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        with open(os.path.join(queue, "done", "JZZ-noident.json"), "w") as fh:
+            json.dump({"finished": fin, "job": {"id": "JZZ-noident", "mod": "Mock", "submitted": fin,
+                                                "requested_by": "selftest", "purpose": "guard"},
+                       "result": {"outcome": "DONE", "started": fin, "finished": fin,
+                                  "rows": [{"chain": "c_noident", "row": "r", "verdict": "PASS"}]}}, fh)
         rc, o = tq("fill", "Mock", "--n", "1")
         fj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip().endswith("}") else None
         fjob = read_job(fj) if fj else {}

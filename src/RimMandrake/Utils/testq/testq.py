@@ -26,8 +26,10 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
                                      then ingest.py (results -> RUNNER ledger events, committed from that clone).
-                                     The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow} and
-                                     infrastructure/state.
+                                     The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow},
+                                     infrastructure/state, AND src/RimMandrake/Utils/modcheck plus each filled mod's
+                                     source (src/RimMandrake/FlowWorks): without them preview, bad_selection and the
+                                     filler's gap order (gaps.py) are blind and say so ("blind: ...").
 
 The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrake/testq):
   pending/<job>.json   the job record
@@ -1014,16 +1016,6 @@ def is_dry(runs, now, dry_runs=FILL_DRY_RUNS, retry_s=FILL_DRY_RETRY_S):
     return len(last) >= dry_runs and all(k == "dry" for _, k in last) and now - last[-1][0] < retry_s
 
 
-def fill_pick(hist, n, now):
-    """-> (the `n` stalest chains that are not DRY, the DRY chains skipped). A DRY chain (its last FILL_DRY_RUNS runs
-    measured nothing: unwired, or its driver never ran) would only spend a filler job on UNMEASURED again; it is
-    re-tried once its latest run is FILL_DRY_RETRY_S old, so newly wired chains come back on their own."""
-    ages = ages_of(hist)
-    dry = sorted(c for c in hist if is_dry(hist[c], now))
-    pick = sorted((c for c in hist if c not in dry), key=lambda c: (ages[c], c))[:n]
-    return pick, dry
-
-
 def fill_spent_s(recs):
     """Lane seconds the given finished filler jobs took (result started -> finished)."""
     total = 0
@@ -1036,12 +1028,36 @@ def fill_spent_s(recs):
     return total
 
 
+def lane_proven_after(tail):
+    """-> the done record of a job that proves Steve's lane works again after the braking filler jobs TAIL, or None:
+    any job (a hand submission counts) on the stevedesktop lane that came back DONE with its canary on (a red canary
+    ends INVALID/CANARY, never DONE), finishing after the later of TAIL. Without it a brake outlived its cause: the
+    lane was fixed and proven by hand at 11:45 PDT 2026-10-26, yet two stale filler failures kept the filler braked
+    all afternoon, because only FILLER jobs were ever read."""
+    last = max(S.parse_ts(t.get("finished") or (t.get("result") or {}).get("finished") or "1970-01-01T00:00:00Z")
+               for t in tail)
+    best = None
+    for rec in records("done"):
+        job, res = job_of(rec), rec.get("result") or {}
+        if (job.get("lane") or STEVE) != STEVE or res.get("outcome") != "DONE" or job.get("canary") is False:
+            continue
+        try:
+            fin = S.parse_ts(rec.get("finished") or res["finished"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if fin > last and (best is None or fin > best[0]):
+            best = (fin, rec)
+    return best[1] if best else None
+
+
 def fill_plan(mod, n, cap, day_s, now=None):
     """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
     steward (steward.py), so the lane's brakes are read from ONE place. verdict:
       stopped  fill.stop exists          paused  the lane is paused       busy    a ready pending or a running job
-      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE
-      nohist   no chain history yet      dry     every chain is DRY       pick    `pick` would be queued"""
+      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE,
+                                                                          and no DONE+canary job since (lane_proven_after)
+      nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
+      pick     `pick` would be queued (fill_rank: the evidence-gap order)"""
     ensure_dirs()
     now = time.time() if now is None else now
     stop = q("fill.stop")
@@ -1069,55 +1085,78 @@ def fill_plan(mod, n, cap, day_s, now=None):
         return dict(out, verdict="budget", text="cap: filler lane time today %d s >= day budget %d s (%d jobs)"
                     % (spent, day_s, n_today))
     tail = [read_json(q("done", j["id"] + ".json")) for j in mine[-2:]]
-    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail):
+    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail) \
+            and not lane_proven_after(tail):
         return dict(out, verdict="brake", tail=tail,
                     text="brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by "
                          "hand" % ", ".join(j["id"] for j in mine[-2:]))
-    hist = chain_history(mod)
-    if not hist:
-        return dict(out, verdict="nohist", text="no chain history for %s yet (one full sweep seeds it); no fill" % mod)
-    pick, dry = fill_pick(hist, n, now)
-    if not pick:
-        return dict(out, verdict="dry", dry=dry, text="dry: every chain of %s measured nothing in its last %d runs "
-                                                      "(%s); no fill" % (mod, FILL_DRY_RUNS, ",".join(dry)))
-    return dict(out, verdict="pick", pick=pick, dry=dry, hist=hist, text="would queue %s" % ",".join(pick))
+    return dict(out, **fill_rank(mod, n, now, today))
+
+
+def fill_rank(mod, n, now, today=None, exclude=()):
+    """The order half of fill_plan (TESTQ_FILL_RANK_BY_EVIDENCE_GAPS; gaps.py has the order and its reasons):
+    verdict pick (rank, purpose, pick, row_items), exhausted (nothing may be queued as filler: every chain PASSED or
+    FAILED-with-no-fix at the current identity, or is DRY) or nohist (no history and no modcheck catalogue)."""
+    import gaps
+    today = today or time.strftime("%Y-%m-%d", time.localtime(now))
+    recs = records("done")
+    hist = chain_history(mod, recs)
+    flake = [r for r in recs if job_of(r).get("requested_by") == FILLER and job_of(r).get("purpose") == "flake"
+             and time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(job_of(r)["submitted"]))) == today]
+    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), flake_spent_s=fill_spent_s(flake),
+                  exclude=exclude)
+    plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "ident", "counts", "flaky", "blind", "why")}
+    if g["rank"]:
+        return dict(plan, verdict="pick", pick=g["pick"], text="would queue %s" % g["text"])
+    if not hist and not g["counts"]["never_run"] and g["blind"]:
+        return dict(plan, verdict="nohist", pick=[], text="no chain history for %s yet and %s; no fill"
+                    % (mod, "; ".join(g["blind"])))
+    if g["all_dry"]:      # every chain measured nothing twice: unwired, a fault for the steward, not exhaustion
+        return dict(plan, verdict="dry", pick=[], text="dry: every chain of %s measured nothing in its last %d runs "
+                                                       "(%s); no fill" % (mod, FILL_DRY_RUNS, ",".join(g["dry"])))
+    return dict(plan, verdict="exhausted", pick=[], text="%s: %s; no fill" % (mod, g["text"]))
 
 
 def cmd_fill(a):
-    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue the
-    `--n` stalest chains of MOD (oldest last real run first). Brakes (`fill_plan`): the stop file, a daily cap, a
-    paused lane, and two filler jobs in a row that did not come back DONE."""
+    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue up to `--n`
+    chains of MOD from the first non-empty rank of the evidence-gap order (gaps.py: a FAIL whose fix has landed, an
+    item owing a live level, UNMEASURED/NOT_RUN at the current identity, never run at it). A chain that PASSED at the
+    current identity is never filler. Brakes (`fill_plan`): the stop file, a daily cap and lane-time budget, a paused
+    lane, and two filler jobs in a row that did not come back DONE."""
     now = time.time()
     plan = fill_plan(a.mod, a.n, a.cap, a.day_s, now)
     if plan["verdict"] != "pick":
         print(plan["text"])
         return 0
-    hist, pick, dry, n_today, spent = plan["hist"], plan["pick"], plan["dry"], plan["n_today"], plan["spent"]
-    # A chain the history still holds but modcheck no longer declares (renamed, removed) is forever the stalest, and
-    # cmd_submit refuses any job naming it: without this the filler re-submits it every tick and Steve idles for good.
+    n_today, spent = plan["n_today"], plan["spent"]
+    # A chain the history still holds but modcheck no longer declares (renamed, removed) would be re-submitted every
+    # tick and refused every time, and Steve would idle for good: drop it and rank again.
+    gone_all = set()
     for _ in range(3):
-        why = bad_selection(a.mod, {"chains": pick}) if pick else None
+        why = bad_selection(a.mod, {"chains": plan["pick"]}) if plan["pick"] else None
         gone = unknown_chains(why) if why else set()
-        if not gone & set(pick):
+        if not gone & set(plan["pick"]):
             break
-        log("filler: %s no longer declares %s; dropped from the fill history" % (a.mod, ",".join(sorted(gone))))
-        hist = {c: v for c, v in hist.items() if c not in gone}
-        pick, dry = fill_pick(hist, a.n, now)
-    if not pick:
-        print("dry: every chain of %s measured nothing in its last %d runs (%s); no fill" % (
-            a.mod, FILL_DRY_RUNS, ",".join(dry)))
+        gone_all |= gone
+        log("filler: %s no longer declares %s; not ranked" % (a.mod, ",".join(sorted(gone))))
+        plan = dict(plan, **fill_rank(a.mod, a.n, now, exclude=gone_all))
+    if plan["verdict"] != "pick":
+        print(plan["text"])
         return 0
+    pick = plan["pick"]
     r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
     if r.returncode != 0:
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
-    log("filler: %s stalest %s (%d today, cap %d, %d s of %d s; %d dry skipped)" % (
-        a.mod, ",".join(pick), n_today + 1, a.cap, spent, a.day_s, len(dry)))
-    sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False, purpose="guard",
-                             by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None, priority=20,
-                             not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
-                             timeout=7200, no_canary=False, no_validity=False, no_sha_check=True)
+    log("filler: %s %s %s (%d today, cap %d, %d s of %d s; %d dry skipped%s)" % (
+        a.mod, plan["rank"], ",".join(pick), n_today + 1, a.cap, spent, a.day_s, len(plan["dry"]),
+        "; blind: " + "; ".join(plan["blind"]) if plan["blind"] else ""))
+    sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False,
+                             purpose=plan["purpose"], by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None,
+                             priority=20, not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop",
+                             deploy=None, timeout=7200, no_canary=False, no_validity=False, no_sha_check=True,
+                             row_item=["%s=%s" % kv for kv in sorted((plan.get("row_items") or {}).items())])
     return cmd_submit(sub)
 
 
