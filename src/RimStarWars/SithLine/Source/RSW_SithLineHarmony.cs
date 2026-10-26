@@ -227,7 +227,8 @@ namespace RimMandrake.StarWars.SithLine
             }
             bool add = RSW_SithLineKernel.AddInquisitor(kind, parms.faction.def == FactionDefOf.Empire, parms.points, Rand.Value,
                 RSW_SithLineSettings.inquisitorRaids, RSW_SithLineSettings.inquisitorRaidChance, RSW_SithLineSettings.inquisitorRaidMinPoints,
-                RSW_SithLineSettings.inquisitorDefenders, RSW_SithLineSettings.inquisitorDefenderChance);
+                RSW_SithLineSettings.inquisitorDefenders, RSW_SithLineSettings.inquisitorDefenderChance,
+                parms.faction.HostileTo(Faction.OfPlayer));
             if (add && RSW_SithLineDefs.Inquisitor != null)
             {
                 __result = WithInquisitor(__result, parms);

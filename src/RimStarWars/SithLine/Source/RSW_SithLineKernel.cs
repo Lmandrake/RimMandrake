@@ -17,11 +17,13 @@ namespace RimMandrake.StarWars.SithLine
 
         /// <summary>
         /// Whether ONE inquisitor joins this Galactic Empire group. Owner card 2026-10-09: raids and base defenders
-        /// only, never a trader or visitor group. <paramref name="roll"/> is a uniform draw in [0, 1).
+        /// only, never a trader or visitor group. A Combat group of a faction not hostile to the player is friendly aid
+        /// (IncidentWorker_RaidFriendly sets parms.faction to an ally and generates a Combat group): no inquisitor (design §1 rule 3). <paramref name="roll"/> is a uniform draw in [0, 1).
         /// </summary>
         public static bool AddInquisitor(GroupKind kind, bool isEmpire, float points, float roll,
                                          bool raidsOn, float raidChance, float raidMinPoints,
-                                         bool defendersOn, float defenderChance)
+                                         bool defendersOn, float defenderChance,
+                                         bool hostileToPlayer = true)
         {
             if (!isEmpire || float.IsNaN(roll))
             {
@@ -30,7 +32,7 @@ namespace RimMandrake.StarWars.SithLine
             switch (kind)
             {
                 case GroupKind.Combat:
-                    return raidsOn && !float.IsNaN(points) && points >= raidMinPoints && roll < ClampChance(raidChance);
+                    return hostileToPlayer && raidsOn && !float.IsNaN(points) && points >= raidMinPoints && roll < ClampChance(raidChance);
                 case GroupKind.Settlement:
                     return defendersOn && roll < ClampChance(defenderChance);
                 default:

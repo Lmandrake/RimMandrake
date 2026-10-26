@@ -35,6 +35,8 @@ namespace RimMandrake.StarWars.SithLine.SelfTest
                 if (kind == K.GroupKind.Trader || kind == K.GroupKind.Other) Check(!got, $"an inquisitor joined a {kind} group");
                 if (!emp) Check(!got, "an inquisitor joined a non-Empire group");
             }
+            Check(!K.AddInquisitor(K.GroupKind.Combat, true, 5000f, 0f, true, 1f, 0f, true, 1f, false), "friendly aid (Combat, faction not hostile) still got an inquisitor");
+            Check(K.AddInquisitor(K.GroupKind.Combat, true, 5000f, 0f, true, 1f, 0f, true, 1f, true), "a hostile Empire raid lost its inquisitor");
             // chance clamp: [0,1], monotone, NaN fails closed
             float prev = -1f;
             for (float c = -2f; c <= 3f; c += 0.01f)
