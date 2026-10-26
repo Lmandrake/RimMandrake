@@ -1,0 +1,2 @@
+Screenshotting a page that holds a server-sent-events stream open (RimPulse at localhost:8765): Edge headless --screenshot never returns, because the page never finishes loading. Use Chrome headless with --timeout=6000 (it shoots once the timeout passes), plus its own --user-data-dir. Chrome headless will not go narrower than about 500 px: a 420 px window clips the right edge. Shoot phone pages at 600 px and check the CSS caps width instead.
+home: run
