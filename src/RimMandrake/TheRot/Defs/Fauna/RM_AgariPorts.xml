@@ -41,7 +41,9 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Agaripawn</defName>
     <label>rennok</label>
-    <description>A massive, shambling animal whose back and flanks are buried beneath living lilac caps that feed it. It burns readily, and nearby kin take a share of its injuries. It breeds by shedding spores and yields a little edible cap-flesh that keeps longer than most fungus.</description>
+    <description>A massive, shambling animal whose back and flanks are buried beneath living lilac caps that feed it. It burns readily, and nearby kin take a share of its injuries. It breeds by shedding spores and yields a little edible cap-flesh, raw fungus that keeps for weeks.</description>
+    <!-- RENNOK_FIX_DESC_CLAIMS_CAPFLESH_KEEPS: its cap-flesh is vanilla RawFungus (specificMeatDef and AnimalProduct
+         resourceDef), 30 days to rot like any raw fungus, so 'keeps longer than most fungus' was struck. -->
     <statBases>
       <MoveSpeed>4</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>
