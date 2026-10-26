@@ -137,5 +137,30 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Capture down is a short act, not a fight: the pit already did the work.
 		/// PROVISIONAL (no owner number): 3 seconds.</summary>
 		public const int CaptureDownTicks = 180;
+
+		/// <summary>What the capture-down warden does on reaching a lip cell.</summary>
+		public enum CaptureStep
+		{
+			/// <summary>Touching the held pawn from open ground: pin it and take the moment.</summary>
+			Hold,
+			/// <summary>The held pawn moved out of reach (it wanders in the pit), or the warden is on a pit cell: find a new lip.</summary>
+			Repath,
+			/// <summary>It kept moving: end the job rather than chase forever.</summary>
+			GiveUp,
+		}
+
+		/// <summary>How many times the warden walks to a fresh lip before giving up.</summary>
+		public const int CaptureRepathLimit = 6;
+
+		/// <summary>PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER: a held pawn is not frozen, so the lip the job was given can stop
+		/// touching it before the warden arrives. Repath (bounded) instead of failing the hold.</summary>
+		public static CaptureStep CaptureDownNext(bool wardenTouchesVictim, bool wardenOnPitFloor, int repaths)
+		{
+			if (wardenTouchesVictim && !wardenOnPitFloor)
+			{
+				return CaptureStep.Hold;
+			}
+			return repaths < CaptureRepathLimit ? CaptureStep.Repath : CaptureStep.GiveUp;
+		}
 	}
 }

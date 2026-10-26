@@ -658,6 +658,15 @@ namespace RimMandrake.FlowWorks
 	{
 		private Pawn Victim => (Pawn)job.targetA.Thing;
 
+		/// <summary>Walks to a fresh lip so far (the held pawn wanders in the pit; CaptureDownNext bounds it).</summary>
+		private int repaths;
+
+		public override void ExposeData()
+		{
+			base.ExposeData();
+			Scribe_Values.Look(ref repaths, "rmCaptureRepaths", 0);
+		}
+
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			return pawn.Reserve(job.targetA, job, 1, -1, null, errorOnFailed);
@@ -685,6 +694,28 @@ namespace RimMandrake.FlowWorks
 			};
 			walk.defaultCompleteMode = ToilCompleteMode.PatherArrival;
 			yield return walk;
+			Toil reach = ToilMaker.MakeToil("RM_CaptureDown_Reach");
+			reach.initAction = delegate
+			{
+				// the held pawn is not frozen: the lip can stop touching it while the warden walks (live: 95,167 -> 96,167)
+				bool onPit = RM_PitRooms.IsPitFloor(pawn.Map, RM_SuperdeepTrap.EngineOf(pawn.Map), pawn.Position);
+				switch (RM_PitRoomMath.CaptureDownNext(pawn.Position.AdjacentTo8WayOrInside(Victim.Position), onPit, repaths))
+				{
+					case RM_PitRoomMath.CaptureStep.Hold:
+						PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks + 30, pawn);
+						return;
+					case RM_PitRoomMath.CaptureStep.Repath:
+						repaths++;
+						job.targetB = IntVec3.Invalid;      // walk's initAction finds a lip touching where the pawn is now
+						JumpToToil(walk);
+						return;
+					default:
+						EndJobWith(JobCondition.Incompletable);
+						return;
+				}
+			};
+			reach.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return reach;
 			Toil hold = Toils_General.Wait(RM_PitRoomMath.CaptureDownTicks, TargetIndex.A)
 				.WithProgressBarToilDelay(TargetIndex.A);
 			hold.FailOn(() => !pawn.Position.AdjacentTo8WayOrInside(Victim.Position)

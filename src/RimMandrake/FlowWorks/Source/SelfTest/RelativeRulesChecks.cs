@@ -76,6 +76,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string set = RiverSwitchFlipChecks.Src("RimMandrakeFlowWorksMod.cs");
                 Assert(set.Contains("Scribe_Values.Look(ref pitRoomMinDepthMetres, \"pitRoomMinDepthMetres\", 3f);"), "saved with the 3 m default");
             });
+            Case("PitCapture_follows_a_held_pawn_that_moves", () =>
+            {
+                // PIT_CAPTURE_FIX_HOSTILE_NOT_PRISONER: the held hostile wandered one cell in the pit (95,167 -> 96,167),
+                // the warden reached the lip the job was given, no longer touched it, and the hold toil failed: no prisoner.
+                Assert(RM_PitRoomMath.CaptureDownNext(true, false, 0) == RM_PitRoomMath.CaptureStep.Hold, "touching from the lip: hold");
+                Assert(RM_PitRoomMath.CaptureDownNext(false, false, 0) == RM_PitRoomMath.CaptureStep.Repath,
+                    "can-fail: the victim moved off the lip's reach: walk to a new lip, do not give up");
+                Assert(RM_PitRoomMath.CaptureDownNext(true, true, 0) == RM_PitRoomMath.CaptureStep.Repath, "can-fail: never hold from a pit cell");
+                Assert(RM_PitRoomMath.CaptureDownNext(false, false, RM_PitRoomMath.CaptureRepathLimit) == RM_PitRoomMath.CaptureStep.GiveUp,
+                    "bounded: a victim that keeps moving ends the job, it does not loop");
+                string rooms = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                Assert(rooms.Contains("RM_PitRoomMath.CaptureDownNext(") && rooms.Contains("PawnUtility.ForceWait(Victim, RM_PitRoomMath.CaptureDownTicks"),
+                    "the job driver asks the step and pins the victim for the hold");
+            });
             Case("PitStuck_alert_only_for_a_held_colonist_cut_off_from_food_or_bed", () =>
             {
                 // PIT_ALERT_BUILD_RED_MEANS_HELP (owner card Q12, 2026-10-18)
