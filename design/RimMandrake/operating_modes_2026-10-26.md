@@ -187,6 +187,8 @@ Some of this is helpers already running when the order came. Not all. Nothing in
 1. **The P lines.** BURN at P above 1.5 with reset under 48 h; ALMOST_OUT under 0.5. Agree, or set your own.
 2. **The BURN ceiling.** I recommend N at most 8 and never above 10, from 3.1. You may want more on a reset night.
 3. **Is BENCH mode N=3?** Fewer helpers while you sit with the window, so the orchestrator answers you quickly.
+   *Superseded in proposal by `single_primary_design_2026-10-26.md` §3.4: his 2026-10-26 words "You may exceed current
+   limit of subagents for interactive work with me" give BENCH more while he is present, not fewer. Pending his D6.*
 4. **Should a cap be a hard hook?** A spawn above N would be refused, not warned.
 
 ## 6. What I did not measure
