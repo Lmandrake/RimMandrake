@@ -311,7 +311,7 @@ def cmd_tick(_a):
 
 def same_request(a, b):
     keys = ("mod", "selector", "purpose", "source_sha", "item", "profile", "lane", "deploy", "canary", "validity",
-            "owner_gate", "not_before")
+            "owner_gate", "not_before", "gate")
     return all(a.get(k) == b.get(k) for k in keys)
 
 
@@ -332,7 +332,7 @@ def cmd_submit(a):
         sel["full"] = True
     kw = {k: v for k, v in (("item", a.for_item), ("profile", a.profile), ("priority", a.priority),
                             ("not_before", a.not_before), ("supersedes", a.supersedes), ("owner_gate", a.owner_gate),
-                            ("lane", a.lane), ("timeout_s", a.timeout)) if v is not None}
+                            ("lane", a.lane), ("timeout_s", a.timeout), ("gate", getattr(a, "gate", None))) if v is not None}
     ri = {}
     for pair in getattr(a, "row_item", None) or []:
         k, sep, v = pair.partition("=")
@@ -703,6 +703,7 @@ def main(argv=None):
     s.add_argument("--supersedes")
     s.add_argument("--owner-gate")
     s.add_argument("--lane", choices=S.LANES)
+    s.add_argument("--gate", choices=S.GATES, help="modcheck run --gate (default: modcheck's own)")
     s.add_argument("--deploy", action="append")
     s.add_argument("--timeout", type=int)
     s.add_argument("--no-canary", action="store_true")

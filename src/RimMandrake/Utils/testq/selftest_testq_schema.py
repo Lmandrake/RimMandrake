@@ -28,6 +28,9 @@ def main():
     check(S.JOB_ID_RE.match(j["id"]) and j["lane"] == "stevedesktop" and j["canary"], "make_job fills defaults")
     check(S.modcheck_args(j) == ["FlowWorks", "--chains", "core_offline", "--canary", "--validity", "--reuse", "on"],
           "a fix job asks modcheck for its chains with the gate on: %s" % S.modcheck_args(j))
+    jg = S.make_job("FlowWorks", {"full": True}, "sweep", "BENCH", "5403169aab", gate="shadow")
+    check(S.modcheck_args(jg)[-2:] == ["--gate", "shadow"] and "--gate" not in S.modcheck_args(j), "gate passes through to modcheck")
+    check(refused(S.make_job, "FlowWorks", {"full": True}, "sweep", "BENCH", "5403169aab", gate="bogus") is not None, "bad gate refused")
     j2 = S.make_job("FlowWorks", {"rows": ["v2_O1", "v2_O2"]}, "commission", "BENCH", "5403169aab", canary=False)
     check(S.modcheck_args(j2)[-2:] == ["--reuse", "off"] and "--canary" not in S.modcheck_args(j2),
           "a commission job bypasses the known-good gate")

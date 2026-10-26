@@ -21,6 +21,7 @@ JOB (immutable once submitted; a change is a new job that names the old one in `
   source_sha    the commit whose code the run must include: the worker refuses (SOURCE_SHA_MISSING) when the
                 runner's pinned HEAD does not contain it. Never taken as the deployed identity.
   supersedes    job id this one replaces (the old one is cancelled if still pending), or null
+  gate          null (modcheck default) or on/off/shadow: passed to modcheck run --gate
   owner_gate    null, or the reason it waits for the owner; such a job never dispatches until cleared
   lane          "stevedesktop" (default) | "archmagi" | "any"
   deploy        extra mod folders to deploy with `mod` (list)
@@ -61,6 +62,7 @@ RESULT_SCHEMA = "testq.result/1"
 PURPOSES = ("fix", "guard", "sweep", "sensitivity", "flake", "commission")
 GATE_BYPASS = ("sweep", "sensitivity", "flake", "commission")
 PROFILES = ("targeted", "full-list")
+GATES = ("on", "off", "shadow")  # modcheck run --gate choices; None = modcheck default
 LANES = ("stevedesktop", "archmagi", "any")
 OUTCOMES = ("DONE", "INVALID", "INTERRUPTED", "REFUSED")
 CAUSES = (None, "GUARD_HELD", "SOURCE_SHA_MISSING", "SYNC", "DEPLOY", "LOAD", "CANARY", "HANG", "HARNESS",
@@ -71,7 +73,7 @@ NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 DEFAULTS = {"item": None, "profile": "targeted", "priority": 50, "not_before": None, "supersedes": None,
             "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True,
-            "timeout_s": 2700, "row_items": {}}
+            "timeout_s": 2700, "row_items": {}, "gate": None}
 
 
 class SchemaError(ValueError):
@@ -122,6 +124,7 @@ def validate_job(job):
     need(job.get("purpose") in PURPOSES, "purpose must be one of %s" % ", ".join(PURPOSES))
     need(not sel.get("full") or job["purpose"] == "sweep", "selector.full is for purpose=sweep only")
     need(job.get("profile") in PROFILES, "profile must be one of %s" % ", ".join(PROFILES))
+    need(job.get("gate") in (None,) + GATES, "gate must be one of %s" % ", ".join(GATES))
     need(job.get("lane") in LANES, "lane must be one of %s" % ", ".join(LANES))
     need(isinstance(job.get("priority"), int), "priority must be an int")
     need(isinstance(job.get("requested_by"), str) and NAME_RE.match(job["requested_by"]), "requested_by must be a seat")
@@ -160,6 +163,8 @@ def modcheck_args(job):
     if job.get("validity", True):
         a.append("--validity")
     a += ["--reuse", "off" if job["purpose"] in GATE_BYPASS else "on"]
+    if job.get("gate"):
+        a += ["--gate", job["gate"]]
     return a
 
 
@@ -223,7 +228,7 @@ def json_schema():
             "priority": {"type": "integer"}, "not_before": nullable_ts, "requested_by": name,
             "source_sha": {"type": "string", "pattern": SHA_RE.pattern},
             "supersedes": {"type": ["string", "null"], "pattern": JOB_ID_RE.pattern},
-            "owner_gate": {"type": ["string", "null"]}, "lane": {"enum": list(LANES)},
+            "gate": {"enum": [None] + list(GATES)}, "owner_gate": {"type": ["string", "null"]}, "lane": {"enum": list(LANES)},
             "deploy": names, "canary": {"type": "boolean"}, "validity": {"type": "boolean"},
             "timeout_s": {"type": "integer", "minimum": 60, "maximum": 21600},
             "row_items": {"type": "object", "additionalProperties": name},

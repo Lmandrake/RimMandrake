@@ -5,6 +5,7 @@
    "defaults": {
     "canary": true,
     "deploy": [],
+    "gate": null,
     "item": null,
     "lane": "stevedesktop",
     "not_before": null,
@@ -26,6 +27,14 @@
       "type": "string"
      },
      "type": "array"
+    },
+    "gate": {
+     "enum": [
+      null,
+      "on",
+      "off",
+      "shadow"
+     ]
     },
     "id": {
      "pattern": "^J\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
