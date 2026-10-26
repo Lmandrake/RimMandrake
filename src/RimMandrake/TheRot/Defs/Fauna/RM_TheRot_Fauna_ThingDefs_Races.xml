@@ -114,8 +114,8 @@
     <wildGroupSize>1~2</wildGroupSize>
     <lifeStages>
       <li>
-        <label>Brogg cria</label>
-        <labelPlural>Brogg crias</labelPlural>
+        <label>brogg cria</label>
+        <labelPlural>brogg crias</labelPlural>
         <bodyGraphicData>
           <texPath>RM_TheRot/Fauna/Redrawn/Brogg/Brogg</texPath>
           <shaderType>CutoutComplex</shaderType>
@@ -319,7 +319,7 @@
         <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
       </li>
       <li>
-        <label>right foot</label>
+        <label>right paw</label>
         <capacities>
           <li>Blunt</li>
         </capacities>
@@ -400,7 +400,7 @@
     <lifeStages>
       <li>
         <label>brullith fruiting body</label>
-        <labelPlural>brullith fruiting body</labelPlural>
+        <labelPlural>brullith fruiting bodies</labelPlural>
         <bodyGraphicData>
           <texPath>RM_TheRot/Fauna/Redrawn/Brullith/Brullith</texPath>
           <drawSize>2.5</drawSize>
