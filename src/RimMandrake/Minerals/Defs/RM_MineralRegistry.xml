@@ -52,6 +52,24 @@
 <zeroProducers><li>MineablePlasteel</li><li>SolidOrePlasteel</li><li>WeatheredOrePlasteel</li><li>HewnOrePlasteel</li></zeroProducers>
 </RimMandrake.Minerals.RM_MineralRegistryDef>
 <RimMandrake.Minerals.RM_MineralRegistryDef>
+<defName>RM_Mineral_Durasteel</defName>
+<label>durasteel</label>
+<materialId>durasteel</materialId>
+<status>RULED</status>
+<form>F10 salvage only</form>
+<unit>UPY</unit>
+<unitsPerCellOrFind>1</unitsPerCellOrFind>
+<deepWeight>0</deepWeight>
+<otherBiomes>0</otherBiomes>
+<salvagePerYear>150</salvagePerYear>
+<tradePerYear>100</tradePerYear>
+<quarryLocal>false</quarryLocal>
+<quarryPer100Jobs>0</quarryPer100Jobs>
+<items><li MayRequire="mandrake.rsw.armoury">RSW_Durasteel</li></items>
+<zeroProducers><li>LKDurasteel_Ore</li><li>KOTOR_MineableDurasteel</li></zeroProducers>
+<retiredItems><li>KotORChunk_durasteel</li></retiredItems>
+</RimMandrake.Minerals.RM_MineralRegistryDef>
+<RimMandrake.Minerals.RM_MineralRegistryDef>
 <defName>RM_Mineral_Duranium</defName>
 <label>duranium</label>
 <materialId>duranium</materialId>

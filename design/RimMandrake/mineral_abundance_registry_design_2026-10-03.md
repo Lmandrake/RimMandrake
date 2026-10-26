@@ -14,9 +14,10 @@ All 2026-10-03, recorded on the item (`rimflow show MINERALS_WHERE_THEY_BELONG_1
   abundance that can be reasoned about by the user to intelligently set it."* He also invited being
   talked out of absorbing other mineral/gem mods.
 - Plasteel stays **plasteel**, its own canon material (owner typed 2026-10-09; it reversed the 2026-10-03
-  card that renamed it durasteel). Durasteel's one def and the donors' fate: `canon_materials_design_2026-10-09.md` §3.0.
+  card that renamed it durasteel). Durasteel is one def, `RSW_Durasteel` (card 2026-10-09); the donors' fate (removed, renamed, aliased, producers zeroed): `canon_materials_design_2026-10-09.md` §3.2.
 - TYPED: **duranium and doonium are made**: rare, salvage- and trader-available, made offworld,
   REQUIRED to build large ship and machine types (like factories).
+  (Read as a preference, not a requirement, since the card of 2026-10-11: `canon_materials_design_2026-10-09.md` §4.)
 - Deep drill: **iron plus home-biome deposits only** (card).
 - TYPED (relayed by the coordinator, same day): *"Quarries work like deep drill/scanner. They do NOT
   just barf out any old material, but the local materials only."* So the registry also drives quarry
@@ -114,7 +115,7 @@ Mineral-relevant hits, plus every mod the def dump shows adding a mineral:
 | LK Mineable Resources Outer Rim (`leutiankane.mineablesor`) | yes | 4 veins of Outer Rim beskar/durasteel/hypertech | C1, 4 XML files, no C# | none | **retire the mod** (canon metals are salvage-only; it has no other content) |
 | [ZAV] Glowstone (`zav.glowstoneforked`) | yes | glowstone vein, lights | C1/C3, XML only | none | **control** (no licence ⇒ cannot legally absorb anyway) |
 | Biomes! Fossils (`biomesteam.biomesfossils`) | yes | amber, fossils | C1/C3, 3 DLLs | CC BY(-?) per LICENSE.md | control |
-| Outer Rim - Core | yes | beskar, pure beskar, durasteel, tibanna, hypertech | C3 deep, extractors | — | control; its durasteel's fate is `canon_materials_design_2026-10-09.md` §3.0 |
+| Outer Rim - Core | yes | beskar, pure beskar, durasteel, tibanna, hypertech | C3 deep, extractors | — | control; its durasteel (OuterRim_Durasteel) is renamed to RSW_Durasteel: `canon_materials_design_2026-10-09.md` §3.2 |
 | Jawa Armoury Rebalance (ours) | yes | 10 KotOR materials | C1, C3 | ours | already ours; zero C1, set salvage/trade rows |
 | RimMandrake: Pyrinth (ours) | yes | pyrinth | gated C1, C3 | ours | **already absorbed** — the orange gem the owner named |
 | Vanilla Mining Outpost Patch | yes | adds modded ores to VOE mining outposts | XML | none | C7 consumer: registry row `outpost` |

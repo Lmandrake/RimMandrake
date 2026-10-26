@@ -8,8 +8,7 @@
 <li><thing>ComponentSpacer</thing><homes></homes></li><!-- advanced components -->
 <li><thing>OuterRim_ComponentHypertech</thing><homes></homes></li><!-- advanced components -->
 <li><thing>Plasteel</thing><homes></homes></li><!-- plasteel -->
-<li><thing>KOTOR_AlloyDurasteel</thing><homes></homes></li><!-- durasteel -->
-<li><thing>OuterRim_Durasteel</thing><homes></homes></li><!-- durasteel -->
+<li><thing>RSW_Durasteel</thing><homes></homes></li><!-- durasteel -->
 <li><thing>KotORChunk_durasteel</thing><homes></homes></li><!-- durasteel -->
 <li><thing>RSW_Duranium</thing><homes></homes></li><!-- duranium -->
 <li><thing>RSW_Doonium</thing><homes></homes></li><!-- doonium -->
@@ -52,7 +51,6 @@
 <li><thing>RM_Vexxith</thing><homes></homes></li><!-- vexxith -->
 <li><thing>KOTOR_IngotCortosis</thing><homes></homes></li><!-- cortosis -->
 <li><thing>KOTOR_RawRhydonium</thing><homes></homes></li><!-- rhydonium -->
-<li><thing>KOTOR_AlloyBronzium</thing><homes></homes></li><!-- bronzium -->
 <li><thing>KOTOR_Spice</thing><homes></homes></li><!-- KotOR spice -->
 <li><thing>RSW_ResourceBlueCrystal</thing><homes></homes></li><!-- SW blue crystal -->
 <li><thing>Gravitonium</thing><homes></homes></li><!-- gravitonium -->
