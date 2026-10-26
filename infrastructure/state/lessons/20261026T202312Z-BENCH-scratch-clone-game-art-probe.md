@@ -1,0 +1,2 @@
+selftest_game_art.py's sanity probe counts REPO/Transient/biome_ffar/*_sheet_*.html and needs >=20; Transient is untracked, so in any scratch clone (11 sheets here vs 115 in bench) the selftest goes RED for a reason unrelated to the change. Read the failing line before treating RED as a regression; the probe could skip with UNMEASURED when Transient is a partial copy.
+home: src/RimMandrake/Utils/art/selftest_game_art.py

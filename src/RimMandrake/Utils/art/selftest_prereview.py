@@ -73,13 +73,13 @@ def main() -> int:
 
         # sheet_to_artifact (the phone): a non-art sheet with no record is refused and no page is written
         PR.record_path(sp).unlink()
-        out = td / "phone.html"
-        r = subprocess.run([sys.executable, str(HERE.parent / "sheet_to_artifact.py"), "--sheet", str(sp), "--title", "T",
+        out = td / "phone"
+        r = subprocess.run([sys.executable, str(HERE / "sheet_to_artifact.py"), "--sheet", str(sp), "--title", "T",
                             "--out", str(out)], capture_output=True, text=True, timeout=120)
         check(r.returncode == 4 and "unread" in r.stderr and not out.exists(),
               f"sheet_to_artifact refuses an unread sheet (rc {r.returncode}: {r.stderr.strip()[-120:]})")
         complete(sp)
-        r = subprocess.run([sys.executable, str(HERE.parent / "sheet_to_artifact.py"), "--sheet", str(sp), "--title", "T",
+        r = subprocess.run([sys.executable, str(HERE / "sheet_to_artifact.py"), "--sheet", str(sp), "--title", "T",
                             "--out", str(out)], capture_output=True, text=True, timeout=120)
         # past the gate the fixture is not a real template, so patch() may refuse it: only the gate's verdict is tested
         check(r.returncode != 4 and "unread" not in r.stderr, f"sheet_to_artifact lets a pre-reviewed sheet past the gate (rc {r.returncode})")

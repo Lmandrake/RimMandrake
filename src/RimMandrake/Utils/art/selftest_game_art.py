@@ -100,8 +100,8 @@ def main() -> int:
         check(G.delivery_check(chart)[0], "a non-art sheet may be delivered unstamped")
 
         # phone chokepoint: sheet_to_artifact exits 4 on unstamped game art
-        r = subprocess.run([sys.executable, str(HERE.parent / "sheet_to_artifact.py"), "--sheet", str(art), "--title", "T",
-                            "--out", str(td / "o.html")], capture_output=True, text=True, timeout=60)
+        r = subprocess.run([sys.executable, str(HERE / "sheet_to_artifact.py"), "--sheet", str(art), "--title", "T",
+                            "--out", str(td / "o")], capture_output=True, text=True, timeout=60)
         check(r.returncode == 4 and "REFUSED" in r.stderr, "sheet_to_artifact refuses unstamped game art (exit 4)")
 
         # commit chokepoint: the pre-commit hook in a scratch repo

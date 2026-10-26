@@ -71,12 +71,11 @@ def main():
     #
     # 🔴 The literal string this checked against used to be "sidecar", but
     # serve_sheet.py's own STAMP_BY constant is "review-sheet-sidecar" — so
-    # this guard never once fired for a real ServerBackend sitting (the
-    # "ruled default" backend, per sheet_to_artifact.py's own docstring),
-    # only for a FileBackend one. A blanket ruling could silently flatten a
+    # this guard never once fired for a real sidecar sitting (the ruled
+    # default route), only for a file-backed page one. A blanket ruling could silently flatten a
     # genuinely tapped-through sidecar review with zero protection. Also
-    # added "artifact-db-merge" (merge_artifact_db.py's own stamp): a phone
-    # sitting folded back by that tool is just as real a per-row sitting as
+    # added "artifact-db-merge" (the stamp of merge_artifact_db.py and of
+    # art/sheet_artifact_merge.py): a phone sitting folded back is just as real a per-row sitting as
     # the other two and deserves the same guard.
     prior = doc.get("savedBy")
     if prior in ("review-sheet-page", "review-sheet-sidecar", "artifact-db-merge") and not a.over_sitting:

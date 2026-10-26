@@ -55,8 +55,13 @@ setsid python3 ../../src/RimMandrake/Utils/art/serve_gated.py --no-open --sheet 
 - `refresh_sheets.py` restarts a dead server itself (same log), so an already-served sheet needs nothing.
 - Non-art sheets take the same launcher; it routes them through `nonart_sheet.py check`, which refuses one whose
   pictures are game art.
-- Phone: `python3 src/RimMandrake/Utils/sheet_to_artifact.py --sheet <html> --title "Name" --out <page.html>`, then
-  publish; fold the sitting back with the review-sheets skill's `merge_artifact_db.py --apply`. Refuses unstamped game art.
+- Phone (his device is off the tailnet): `python3 src/RimMandrake/Utils/art/sheet_to_artifact.py <html> --out <dir>`
+  writes `<dir>/index.html`, `<dir>/img/*` (every lane, every facing, the true-scale panels, each sprite at full
+  resolution, under 16 MB) and `<dir>/files.json` (the Artifact tool's `files`). Publish it privately with the
+  capabilities it prints (`db`, read admin / write owner). Read his `picks` collection back with ArtifactData into a
+  file, then `python3 src/RimMandrake/Utils/art/sheet_artifact_merge.py <picks.json> <x>.decisions.json` (dry run) and
+  `--apply`: written as his input via `claude-artifact-db`, savedBy `artifact-db-merge`. Both refuse unstamped or
+  unread sheets; the merge refuses picks made on an older row rev (remap first).
 
 ## Refresh
 
