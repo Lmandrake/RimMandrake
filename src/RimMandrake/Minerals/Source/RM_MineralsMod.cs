@@ -77,7 +77,7 @@ namespace RimMandrake.Minerals
 
             list.Label("Policy [applies now to deep finds and quarries; veins on maps generated afterwards]");
             list.CheckboxLabeled("Minerals follow the registry", ref enabled,
-                "On: every mineral the registry governs is placed only where its biome bears it (mod-placed veins, deep finds, and later "
+                "On: every mineral the registry governs is placed only where its biome bears it (mod-placed veins, deep finds and "
               + "quarries), and vanilla's planet-wide scatter and deep weights for it are zeroed. Off: every original weight is restored "
               + "untouched (vanilla and donor mods' behaviour), not 'no ore'.");
             list.CheckboxLabeled("Suppress minerals the registry has never heard of", ref suppressUnregistered,

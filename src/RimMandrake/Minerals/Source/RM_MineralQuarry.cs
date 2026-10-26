@@ -44,15 +44,17 @@ namespace RimMandrake.Minerals
 
         public static bool QuarryLoaded => QuarryType != null && TakeOne != null && GiveResources != null;
 
+        private static bool warnedUnreadable;
+
         /// <summary>The Quarry mod's dictionary as it draws from it: (mined item defName, weight). Builds it the way TakeOne would when
-        /// Quarry has not yet.</summary>
+        /// Quarry has not yet. Null (warned once) when its members cannot be reached: the plan then keeps Quarry's own draw.</summary>
         public static List<KeyValuePair<string, float>> QuarryDictionary()
         {
             var list = new List<KeyValuePair<string, float>>();
-            if (oreDictionary == null || entryCount == null || entryThing == null) return list;
+            if (oreDictionary == null || entryCount == null || entryThing == null) return Unreadable("QuarrySettings.oreDictionary / ThingCountExposable.count / thingDef not found");
             if (oreDictionary.GetValue(null) == null && build != null)
                 build.Invoke(null, build.GetParameters().Length == 1 ? new object[] { true } : null);
-            if (!(oreDictionary.GetValue(null) is System.Collections.IEnumerable entries)) return list;
+            if (!(oreDictionary.GetValue(null) is System.Collections.IEnumerable entries)) return Unreadable("QuarrySettings.oreDictionary is empty after OreDictionary.Build");
             foreach (object e in entries)
             {
                 if (e == null) continue;
@@ -61,6 +63,16 @@ namespace RimMandrake.Minerals
                 list.Add(new KeyValuePair<string, float>(t.defName, Convert.ToSingle(entryCount.GetValue(e), CultureInfo.InvariantCulture)));
             }
             return list;
+        }
+
+        private static List<KeyValuePair<string, float>> Unreadable(string why)
+        {
+            if (!warnedUnreadable)
+            {
+                warnedUnreadable = true;
+                Log.Warning("[RM Minerals] quarry: " + why + "; quarries keep the Quarry mod's own draw (unregistered ores' share is unknown).");
+            }
+            return null;
         }
 
         /// <summary>This biome's quarry plan from the live registry, settings and Quarry dictionary.</summary>
@@ -89,7 +101,10 @@ namespace RimMandrake.Minerals
         {
             lastDrawLocal = false;
             if (!RM_MineralsSettings.enabled || !RM_MineralsSettings.quarryFollowsLocal || quarry?.Map == null) return Original();
-            QuarryEntry e = QuarryDraw(quarry.Map);
+            if (quarry.Map.Biome == null) return Original();
+            QuarryPlan plan = PlanFor(quarry.Map.Biome.defName);
+            if (plan.KeepQuarryDraw) return Original();   // Quarry's dictionary unreadable: never zero the unregistered ores' share
+            QuarryEntry e = RM_QuarryKernel.Draw(plan, Rand.Value, Rand.Value);
             if (e != null)
             {
                 ThingDef t = DefDatabase<ThingDef>.GetNamedSilentFail(e.Item);
@@ -225,6 +240,7 @@ namespace RimMandrake.Minerals
             if (!RM_MineralQuarry.QuarryLoaded || biome.NullOrEmpty()) return sb.ToString();
             QuarryPlan p = RM_MineralQuarry.PlanFor(biome);
             sb.Append(";share=").Append(p.UnregisteredShare.ToString("0.####", CultureInfo.InvariantCulture));
+            if (p.KeepQuarryDraw) sb.Append(";keep=1");
             sb.Append(";local=").Append(string.Join(",", p.Local.Select(e => e.MaterialId + ":" + e.Item + ":" + e.Weight.ToString("0.##", CultureInfo.InvariantCulture))));
             sb.Append(";unreg=").Append(string.Join(",", p.Unregistered.Select(e => e.Item + ":" + e.Weight.ToString("0.##", CultureInfo.InvariantCulture))));
             var rng = new System.Random(12345);

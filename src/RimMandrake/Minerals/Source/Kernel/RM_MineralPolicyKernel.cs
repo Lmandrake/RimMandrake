@@ -303,6 +303,11 @@ namespace RimMandrake.Minerals
         public readonly List<QuarryEntry> Local = new List<QuarryEntry>();
         public readonly List<QuarryEntry> Unregistered = new List<QuarryEntry>();
         public float UnregisteredShare;   // 0..1: the unregistered entries' share of Quarry's own total weight
+        /// <summary>The Quarry dictionary could not be read (null, or no entry with weight &gt; 0 - a readable one always holds
+        /// ComponentIndustrial) while unregistered ores are kept: their share is unknown, so the adapter must keep the Quarry mod's
+        /// own draw rather than silently give them a share of 0 (owner card 2026-10-03). Never set when suppressing: then the
+        /// unregistered share is 0 whatever the dictionary holds.</summary>
+        public bool KeepQuarryDraw;
     }
 
     public static class RM_QuarryKernel
@@ -332,7 +337,7 @@ namespace RimMandrake.Minerals
         }
 
         /// <summary>Builds the plan for one biome. <paramref name="quarryDictionary"/> is the Quarry mod's (item, weight) list as it
-        /// draws from it today; entries with weight &lt;= 0 never come out there and do not here.</summary>
+        /// draws from it today, or null when it cannot be read; entries with weight &lt;= 0 never come out there and do not here.</summary>
         public static QuarryPlan Plan(IList<MineralRow> rows, string biome, IDictionary<string, float> overrides,
                                       IEnumerable<KeyValuePair<string, float>> quarryDictionary, bool suppressUnregistered)
         {
@@ -360,6 +365,7 @@ namespace RimMandrake.Minerals
                     p.Unregistered.Add(new QuarryEntry(e.Key, e.Value, null));
                 }
             p.UnregisteredShare = total > 0f ? unreg / total : 0f;
+            p.KeepQuarryDraw = !(total > 0f) && !suppressUnregistered;
             return p;
         }
 

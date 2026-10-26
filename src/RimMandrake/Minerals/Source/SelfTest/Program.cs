@@ -261,6 +261,16 @@ namespace RimMandrake.Minerals.SelfTest
             QuarryPlan qsup = RM_QuarryKernel.Plan(rows, "TemperateForest", null, qdict, true);
             Check(qsup.Unregistered.Count == 0 && qsup.UnregisteredShare == 0f && RM_QuarryKernel.Draw(qsup, 0.0, 0.0) == null,
                   "suppress unregistered: nothing but local rows and rock");
+            // an unreadable Quarry dictionary (reflection drift: null, or nothing with weight > 0) must not silently give unknown ores
+            // a share of 0 (owner card 2026-10-03); the adapter keeps Quarry's own draw. A readable one never sets the flag (probe).
+            Check(!vanilla.KeepQuarryDraw && !RM_QuarryKernel.Plan(rows, "RM_GreySea", null, qdict, false).KeepQuarryDraw,
+                  "a readable Quarry dictionary keeps the registry draw (probe)");
+            Check(RM_QuarryKernel.Plan(rows, "TemperateForest", null, null, false).KeepQuarryDraw
+                  && RM_QuarryKernel.Plan(rows, "RM_GreySea", null, new List<KeyValuePair<string, float>>(), false).KeepQuarryDraw
+                  && RM_QuarryKernel.Plan(rows, "RM_GreySea", null, new List<KeyValuePair<string, float>> { new KeyValuePair<string, float>("Jade", 0f) }, false).KeepQuarryDraw,
+                  "an unreadable or weightless Quarry dictionary keeps Quarry's own draw instead of zeroing unknown ores");
+            Check(!RM_QuarryKernel.Plan(rows, "RM_GreySea", null, null, true).KeepQuarryDraw,
+                  "suppressing unregistered ores needs no dictionary: the local pool still applies");
 
             QuarryPlan grey = RM_QuarryKernel.Plan(rows, "RM_GreySea", null, qdict, false);
             Check(grey.Local.Count == 5 && grey.Local.All(e => e.MaterialId.StartsWith("salt_") && Math.Abs(e.Weight - 300f) < 1e-3f),
