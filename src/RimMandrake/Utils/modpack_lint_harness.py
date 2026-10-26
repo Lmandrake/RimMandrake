@@ -19,34 +19,35 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)
+LINT_TIMEOUT_S = 300   # one lint run; a hang must fail the selftest, not stall the runner
 
 
 def run(mod, script, plants, keep=()):
     tmp = tempfile.mkdtemp(prefix="lintplant_")
     copy = os.path.join(tmp, mod)
-    shutil.copytree(os.path.join(SRC, mod), copy, ignore=shutil.ignore_patterns(*[x for x in ("Textures", "Assemblies", "__pycache__", "obj", "bin", "Languages", "About") if x not in keep]))
 
-    shared = os.path.join(SRC, "_Shared")   # csprojs list ../../_Shared/... files; the copy sits one level deeper
-    if os.path.isdir(shared):
-        shutil.copytree(shared, os.path.join(tmp, "_Shared"))
-
-    def lint():
-        p = subprocess.run([sys.executable, os.path.join(HERE, script), "--mod-dir", copy, "--quiet"], capture_output=True, text=True)
+    def lint(mod_dir=copy):
+        p = subprocess.run([sys.executable, os.path.join(HERE, script), "--mod-dir", mod_dir, "--quiet"],
+                           capture_output=True, text=True, timeout=LINT_TIMEOUT_S)
         return p.returncode, p.stdout + p.stderr
 
     bad = 0
-    # The copy drops Textures/Languages/About, which silences texpath-resolves; so the shipped mod
-    # itself must lint clean too, or texture paths of these mods were checked nowhere (audit §7).
-    p = subprocess.run([sys.executable, os.path.join(HERE, script), "--mod-dir", os.path.join(SRC, mod), "--quiet"],
-                       capture_output=True, text=True)
-    real_ok = p.returncode == 0
-    print(("ok   " if real_ok else "FAIL ") + "the real mod dir (with Textures) is clean"
-          + ("" if real_ok else " | " + " / ".join(l for l in (p.stdout + p.stderr).splitlines() if l.startswith("ERROR"))[:600]))
-    bad += not real_ok
-    try:
+    try:                                    # everything after mkdtemp: a failed copy or a hung lint strands no lintplant_ dir
+        shutil.copytree(os.path.join(SRC, mod), copy, ignore=shutil.ignore_patterns(*[x for x in ("Textures", "Assemblies", "__pycache__", "obj", "bin", "Languages", "About") if x not in keep]))
+        shared = os.path.join(SRC, "_Shared")   # csprojs list ../../_Shared/... files; the copy sits one level deeper
+        if os.path.isdir(shared):
+            shutil.copytree(shared, os.path.join(tmp, "_Shared"))
+
+        # The copy drops Textures/Languages/About, which silences texpath-resolves; so the shipped mod
+        # itself must lint clean too, or texture paths of these mods were checked nowhere (audit §7).
+        rc, out = lint(os.path.join(SRC, mod))
+        real_ok = rc == 0
+        print(("ok   " if real_ok else "FAIL ") + "the real mod dir (with Textures) is clean"
+              + ("" if real_ok else " | " + " / ".join(l for l in out.splitlines() if l.startswith("ERROR"))[:600]))
+        bad += not real_ok
         rc, out = lint()
         clean = rc == 0
-        print(("ok   " if clean else "FAIL ") + "untouched copy is clean" + ("" if clean else " | " + out.strip().splitlines()[0][:160]))
+        print(("ok   " if clean else "FAIL ") + "untouched copy is clean" + ("" if clean else " | " + (out.strip().splitlines() or [""])[0][:160]))
         bad += not clean
         for label, rel, old, new, want in plants:
             path = os.path.join(copy, rel.replace("/", os.sep))
