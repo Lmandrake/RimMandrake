@@ -282,13 +282,13 @@
   ],
   "Modern/Heavy/south": [
    {
-    "attach": 0.38281,
+    "attach": 0.72656,
     "end": 0.94922,
     "lateral": 0.20508,
     "thick": 0.04297
    },
    {
-    "attach": 0.38281,
+    "attach": 0.72656,
     "end": 0.94922,
     "lateral": -0.20898,
     "thick": 0.04297
@@ -324,13 +324,13 @@
   ],
   "Modern/Steel/south": [
    {
-    "attach": 0.375,
+    "attach": 0.44531,
     "end": 0.94922,
     "lateral": 0.21484,
     "thick": 0.03125
    },
    {
-    "attach": 0.375,
+    "attach": 0.44531,
     "end": 0.94922,
     "lateral": -0.21875,
     "thick": 0.03125
@@ -366,13 +366,13 @@
   ],
   "Modern/Timber/south": [
    {
-    "attach": 0.375,
+    "attach": 0.60547,
     "end": 0.94922,
     "lateral": 0.20117,
     "thick": 0.04297
    },
    {
-    "attach": 0.375,
+    "attach": 0.60547,
     "end": 0.94922,
     "lateral": -0.20508,
     "thick": 0.04297
