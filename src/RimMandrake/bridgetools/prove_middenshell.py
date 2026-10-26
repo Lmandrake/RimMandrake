@@ -88,18 +88,20 @@ def read():
     ins = call("jawa/inspect_string", defName="RM_Middenshell", limit=1)
     txt = json.dumps(ins)
     m = re.search(r"Footprint: (\d+)x(\d+)", txt)
-    return (th[0] if th else None), (tuple(map(int, m.groups())) if m else None), txt
+    return th, (tuple(map(int, m.groups())) if m else None), txt
 
-t1, fp1, txt1 = read()
+th1, fp1, txt1 = read(); t1 = th1[0] if th1 else None
 print("read 1:", short(t1, 300), "footprint:", fp1)
 call("rimworld/step_game_ticks", ticks=2500)
-t2, fp2, txt2 = read()
+th2, fp2, txt2 = read()
+t2 = next((x for x in th2 if t1 and x.get("id") == t1.get("id")), None)   # the SAME shell, not whichever is listed first
 print("read 2:", short(t2, 300), "footprint:", fp2)
 print("inspect:", txt2[:600])
 logs = call("jawa/drain_log", errorsOnly=True)
 print("errors:", short(logs, 1500))
 
-moved = bool(t1 and t2 and t1.get("position") != t2.get("position"))
+# list_things rows carry x/z, not `position`: comparing two absent positions made `moved` False on every run
+moved = bool(t1 and t2 and None not in (t1.get("x"), t2.get("x")) and (t1.get("x"), t1.get("z")) != (t2.get("x"), t2.get("z")))
 ok = biome == "RM_Wastes" and fp1 == (20, 20) and fp2 == (20, 20) and moved
 print("VERDICT biome=%s footprint=%s->%s moved=%s route=%s => %s"
       % (biome, fp1, fp2, moved, route, "PASS" if ok else "FAIL"))

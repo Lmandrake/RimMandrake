@@ -164,11 +164,15 @@ if "death" in which:
     if c:
         x, z = c[0]["x"], c[0]["z"]
         gone = call("jawa/destroy_batch", rects="%d,%d,1,1" % (x, z), categories="Item")
-    corpses2 = call("jawa/list_pawns", includeCorpses=True, faction="player").get("pawns") or []
+    r2 = call("jawa/list_pawns", includeCorpses=True, faction="player"); corpses2 = r2.get("pawns")
     ev = events()
     tomb = [t for t in ev.get("tombs", []) if ('"label"' in t)]
     death = [t for t in ev.get("triggers", []) if t["kind"] == "death"]
-    rec("death_retained_after_corpse_removal", bool(death) and bool(tomb) and not [p for p in corpses2 if p.get("id") == victim],
+    # "after corpse removal" needs a corpse that was SEEN and destroyed, and a second read that worked: a failed
+    # list_pawns read (no rows) used to count as "corpse gone" with nothing ever removed
+    removed = bool(c) and bool((gone or {}).get("success")) and isinstance(corpses2, list) \
+        and not [p for p in corpses2 if p.get("id") == victim]
+    rec("death_retained_after_corpse_removal", bool(death) and bool(tomb) and removed,
         killed=k.get("success"), corpse_destroyed=(gone or {}).get("success"), death=death[:1], tombs=len(tomb))
 
 if "specimen" in which:

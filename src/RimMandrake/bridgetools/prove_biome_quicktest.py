@@ -58,6 +58,10 @@ for b in biomes:
         sys.exit("%s: the map was not regenerated (mapId still %s) - a census now would read the OLD map" % (b, map_id))
     map_id = mi.get("mapId")
     r["mapBiome"] = mi.get("mapBiome"); r["temp"] = mi.get("outdoorTempNow"); r["biomeMatches"] = r["mapBiome"] == b
+    if not r["biomeMatches"]:   # a failed world_tile_set regenerates the OLD biome: its census filed under b is a lie
+        r["errors"] = new_errors(since); results[b + ("@" + temp if temp else "")] = r
+        json.dump(results, open(out_path, "w"), indent=1)
+        sys.exit("%s: the regenerated map is %r, not %s (tile_set %s) - refusing to census it as %s" % (b, r["mapBiome"], b, r["tile_set"], b))
     wg = call("jawa/weather_get"); r["weather"] = {k: wg.get(k) for k in ("weather", "conditions") if k in wg} or str(wg)[:300]
     pw = call("jawa/list_pawns", faction="nonplayer", limit=5000)
     pl = pw.get("pawns") if isinstance(pw.get("pawns"), list) else None

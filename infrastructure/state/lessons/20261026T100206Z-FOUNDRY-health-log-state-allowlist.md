@@ -1,0 +1,2 @@
+jawa/health log.state is emitting|suppressed|unknown|unavailable (or the block may be missing). A log check that aborts only on 'suppressed' passes blind on the other three. Require state == 'emitting'. Also, once Log.Messages reaches its cap (1000), a per-text count diff against the baseline can hide new errors: if any baseline count FELL, the buffer rolled over and the diff is untrustworthy.
+home: live-debugging-proof-harness

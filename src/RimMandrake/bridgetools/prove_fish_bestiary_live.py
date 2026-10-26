@@ -166,6 +166,13 @@ def try_tile(call, label, biome, tile, mode):
                      designatorId=FISHING_DESIGNATOR,
                      x=x, z=z, width=rw, height=rh, keepSelected=False)
             ok = bool(r.get("success"))
+            if ok:   # the designator's success is the call's, not the zone's: read the zone back before believing it
+                zs = call("jawa/map_zones", action="listZones")
+                ok = any("fish" in str(zz.get("type", "")).lower() and (zz.get("cells") or 0) > 0
+                         for zz in (zs.get("zones") or []) if isinstance(zz, dict))
+                if not ok:
+                    r = {"success": False, "message": "designator said success but no Fishing zone with cells exists: "
+                         + json.dumps(zs)[:200]}
             print(f"    Fishing-zone attempt on {name} @({x},{z},{rw}x{rh}): "
                   f"{'OK' if ok else 'REJECTED'} {'' if ok else (r.get('message') or r.get('error') or json.dumps(r)[-300:])}")
             if ok:

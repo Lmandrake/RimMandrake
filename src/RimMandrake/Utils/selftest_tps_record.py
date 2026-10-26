@@ -602,7 +602,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedScopeSpansFrames", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
             "TierHistBuckets", "TierRingWrap", "TierExclusiveAndCounters", "TierSpikeTrigger", "TierSignature", "TierExcWindow",
             "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
             "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
@@ -625,6 +625,8 @@ def unit_checks(lines):
     for name in CS_UNITS:
         if name not in units:
             FAILS.append("C# unit %s did not run" % name)
+    for name in sorted(set(units) - set(CS_UNITS)):   # a unit missing from the list could vanish unnoticed later
+        FAILS.append("C# unit %s ran but is not in CS_UNITS - list it so its disappearance fails" % name)
     js = [ln.split(" ", 2) for ln in lines if ln.startswith("J ")]
     JLINES.clear()
     for _, name, body in js:

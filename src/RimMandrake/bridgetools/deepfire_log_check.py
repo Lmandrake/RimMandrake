@@ -28,9 +28,11 @@ def _rows(call):
                          % str(r)[:300])
     h = call("jawa/health", action="status") or {}
     log = h.get("log") if isinstance(h, dict) else None
-    if isinstance(log, dict) and log.get("state") == "suppressed":
-        raise SystemExit("the game log is not writing (%s), so 'no new errors' would mean nothing"
-                         % (log.get("text") or "suppressed"))
+    # only "emitting" is a seeing log: "unknown"/"unavailable" mean suppression cannot be ruled out, and a
+    # missing log block (health failed, older companion) is no reading at all - both used to pass as clean
+    if not isinstance(log, dict) or log.get("state") != "emitting":
+        raise SystemExit("the game log is not proven to be writing (%s), so 'no new errors' would mean nothing"
+                         % ((log.get("text") or log.get("state")) if isinstance(log, dict) else str(h)[:300]))
     return [m for m in msgs if isinstance(m, dict)]
 
 
@@ -55,4 +57,10 @@ def baseline(call, extra=()):
 def new_mod_errors(call, base, extra=()):
     """Error-type lines naming this mod that appeared (or repeated again) since `base`."""
     now = _counts(_rows(call), extra)
+    # a count that FELL means the bounded buffer rolled its oldest entries out since the baseline, so a
+    # repeat of a baseline error can be hidden by that loss: the comparison is blind, not clean
+    lost = [t for t, n in base.items() if now.get(t, 0) < n]
+    if lost:
+        raise SystemExit("Log.Messages rolled over since the baseline (%d error text(s) lost entries, e.g. %r), "
+                         "so new repeats cannot be counted" % (len(lost), lost[0][:120]))
     return [t[:300] for t, n in now.items() if n > base.get(t, 0)]

@@ -15,6 +15,8 @@ def call(n, **a):
     if isinstance(r, dict): r.pop("operation", None)
     return r
 _mi = call("jawa/map_info")
+if _mi.get("mapBiome") != "RM_TheForge":   # any other map "completes a cycle" too, with an empty forgeLog: not a Forge proof
+    sys.exit("current map biome is %r, not RM_TheForge - refusing to sample (%s)" % (_mi.get("mapBiome"), str(_mi)[:200]))
 SX, SZ = int(_mi["sizeX"]), int(_mi["sizeZ"])   # not a hardcoded 250: on a bigger map that silently censused only the 250x250 corner
 BAND = max(1, 70000 // SX)   # get_terrain_batch refuses > 70,000 cells per call (MaxCells): z-bands, or a 275+ map never reads
 def terrain():

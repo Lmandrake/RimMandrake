@@ -118,6 +118,8 @@ try:
         print("pocket map", mid, m)
         call("jawa/set_current_map", mapId=mid)
         mi = call("jawa/map_info"); sx, sz = mi.get("sizeX"), mi.get("sizeZ")
+        if mi.get("mapId") != mid:   # list_things below reads the CURRENT map: on the home map it would census home plants
+            verdicts[sea] = "UNMEASURED (set_current_map to pocket %s left map %s current)" % (mid, mi.get("mapId")); continue
         terr, read = terrain_census(mid, sx, sz)
         # SEADIVEPROOF_FIX_EXIT0_AND_BLIND_CENSUS: perDef counts every plant whatever the row cap, and a census
         # that did not read every cell is not evidence of an absent band.

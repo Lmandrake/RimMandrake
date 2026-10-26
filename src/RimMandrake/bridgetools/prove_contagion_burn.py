@@ -15,6 +15,8 @@ def call(n, **a):
     if isinstance(r, dict): r.pop("operation", None)
     return r
 out = {"mapBiome": call("jawa/map_info").get("mapBiome")}
+if out["mapBiome"] != "RM_Contagion":   # the Burn on any other map samples nothing of ours
+    sys.exit("current map biome is %r, not RM_Contagion - refusing to run" % out["mapBiome"])
 since = os.path.getsize(LOG)
 out["spawn"] = "existing"
 time.sleep(2)
@@ -33,10 +35,12 @@ try:
     while time.time() - t0 < 420:
         time.sleep(20)
         w = call("jawa/weather_get")
-        pw = call("jawa/list_pawns", includeHealth=True, limit=5000).get("pawns") or []
+        pr = call("jawa/list_pawns", includeHealth=True, limit=5000); pw = pr.get("pawns")
+        if not isinstance(pw, list): raise SystemExit("jawa/list_pawns failed (%s) - a hediff census of 0 pawns would read as none" % str(pr)[:200])
         hd = collections.Counter()
         for x in pw:
-            for hh in (x.get("hediffs") or []):
+            # the hediff list is NESTED at row['health']['hediffs'] (list_pawns docs): row['hediffs'] was always empty
+            for hh in (((x.get("health") or {}).get("hediffs")) or []):
                 d = hh.get("def") if isinstance(hh, dict) else None
                 if d and d.startswith("RM_"): hd[(d, "player" if (x.get("faction") or "").lower().startswith(("player","new")) else "other")] += 1
         s = {"t": int(time.time()-t0), "ticks": w.get("ticksGame"), "weather": (w.get("weather") or {}).get("current"),

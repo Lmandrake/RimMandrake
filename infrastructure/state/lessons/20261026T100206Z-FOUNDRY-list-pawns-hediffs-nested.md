@@ -1,0 +1,2 @@
+jawa/list_pawns puts hediffs at row['health']['hediffs'] and only with includeHealth=True; there is no row['hediffs']. Three proof scripts (biome_timelapse, contagion_burn, plant_predator) read row.get('hediffs') and so saw an empty set every time: a census of 0 and a 'no hediff changed' check that could not fail. Read the reply shape in JawaBenchTerrainTools.cs ListPawns before keying into it.
+home: rimbridge

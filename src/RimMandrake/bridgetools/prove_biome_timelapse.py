@@ -27,6 +27,9 @@ def terrain():
             if ":" not in op: continue
             d, rect = op.split(":", 1); parts = rect.split(",")
             c[d] += int(parts[2]) * int(parts[3]) if len(parts) == 4 else 1
+    if sum(c.values()) != sx * sz:   # a band with SOME ops can still miss cells (null terrain, short rows)
+        raise SystemExit("terrain census read %d of %d cells (%s) - instrument blind, refusing to report deltas"
+                         % (sum(c.values()), sx * sz, str(g)[:200]))
     return dict(c.most_common(30)), g.get("ticksGame")
 BIOME = sys.argv[2]
 mi0 = call("jawa/map_info"); tile, id0 = mi0.get("tile"), mi0.get("mapId")
@@ -42,6 +45,8 @@ else:
     sys.exit("the map was not regenerated (mapId still %s) - a timelapse now would run the OLD map" % id0)
 since = os.path.getsize(LOG)
 out = {"biome": call("jawa/map_info").get("mapBiome"), "samples": []}
+if out["biome"] != BIOME:   # a failed world_tile_set regenerates the OLD biome, and its timelapse would be filed as BIOME
+    sys.exit("the regenerated map is %r, not %s - refusing to run the timelapse" % (out["biome"], BIOME))
 t0c, _ = terrain(); out["terrain0"] = t0c
 start_ticks = call("jawa/weather_get").get("ticksGame")
 call("rimworld/set_time_speed", speed="Ultrafast", ultraSpeedBoost=True)
@@ -53,17 +58,24 @@ try:
         time.sleep(20)
         w = call("jawa/weather_get"); tc, tk = terrain()
         cond = [(c.get("def"), c.get("label")) for c in w.get("conditions", [])]
-        pw = call("jawa/list_pawns", includeHealth=True, limit=5000).get("pawns") or []
-        hd = collections.Counter(h.get("def") for x in pw for h in (x.get("hediffs") or []) if isinstance(h, dict))
-        s0 = {"hediffs": {k: v for k, v in hd.items() if k and k.startswith("RM_")}, "pawns": len(pw)}
+        pr = call("jawa/list_pawns", includeHealth=True, limit=5000); pw = pr.get("pawns")
+        if not isinstance(pw, list): raise SystemExit("jawa/list_pawns failed (%s) - a hediff census of 0 pawns would read as none" % str(pr)[:200])
+        # the hediff list is NESTED at row['health']['hediffs'] (list_pawns docs): row['hediffs'] was always empty
+        hd = collections.Counter(h.get("def") for x in pw for h in (((x.get("health") or {}).get("hediffs")) or []) if isinstance(h, dict))
+        s0 = {"hediffs": {k: v for k, v in hd.items() if k and k.startswith("RM_")}, "pawns": len(pw), "pawnsTruncated": pr.get("truncated")}
         s = {"t": int(time.time() - t0), "ticks": tk, "weather": (w.get("weather") or {}).get("current"), "conditions": cond,
              "extra": s0, "terrainDelta": {k: v - t0c.get(k, 0) for k, v in tc.items() if v != t0c.get(k, 0)}}
         out["samples"].append(s); print(s["t"], s["ticks"], s["weather"], cond, list(s["terrainDelta"].items())[:5], flush=True)
         json.dump(out, open(sys.argv[1], "w"), indent=1)
-        if tk and start_ticks and tk - start_ticks > maxticks: break
+        if tk and start_ticks and tk - start_ticks > maxticks: out["reachedMaxTicks"] = True; break
 finally:
     call("rimworld/pause_game", pause=True)
     with open(LOG, "rb") as f: f.seek(since); txt = f.read().decode("utf-8", "replace")
     out["forgeLog"] = [l[:300] for l in txt.split("\n") if re.search(r"\[RM|RimMandrake", l)][-60:]
     out["errors"] = list(dict.fromkeys(l[:300] for l in txt.split("\n") if not l.startswith(("  at ", "  - ")) and re.search(r"Exception|rror", l)))[:40]
     json.dump(out, open(sys.argv[1], "w"), indent=1)
+# running out of wall-clock before maxTicks is a PARTIAL timelapse: say so, never exit 0 on it
+if not out.get("reachedMaxTicks"):
+    sys.exit("only %s of %d ticks elapsed in %.0f s - partial timelapse (raise maxSeconds)"
+             % ((out["samples"][-1]["ticks"] - start_ticks) if out["samples"] and out["samples"][-1]["ticks"] and start_ticks
+                else "?", maxticks, limit))

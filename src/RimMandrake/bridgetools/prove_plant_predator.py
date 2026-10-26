@@ -59,7 +59,10 @@ prey_id = prey_ids[0]
 
 
 def prey_row():
-    r = call("jawa/list_pawns", includeCorpses=True, limit=5000)
+    r = call("jawa/list_pawns", includeCorpses=True, includeHealth=True, limit=5000)
+    if not isinstance(r.get("pawns"), list):
+        print("UNMEASURED: jawa/list_pawns failed:", json.dumps(r)[:300])
+        sys.exit(2)
     return next((p for p in (r.get("pawns") or []) if p.get("id") == prey_id), None)
 
 
@@ -77,7 +80,16 @@ logs = call("jawa/drain_log", errorsOnly=True)
 print("== error logs ==")
 print(json.dumps(logs, indent=2)[:3000])
 
-ok = bool(before and not before.get("dead") and after and after.get("dead"))
+def hediffs(row):
+    return sorted(str(h.get("def")) for h in (((row or {}).get("health") or {}).get("hediffs") or []) if isinstance(h, dict))
+
+
+# the plant kills by Pawn.Kill(null), which adds NO hediff; a death by anything else on the quicktest map
+# (a hunter, cold, heat, toxic air) leaves one - so an unchanged hediff set is what ties the death to the plant
+attributed = hediffs(after) == hediffs(before)
+if after and after.get("dead") and not attributed:
+    print("prey died WITH new hediffs %s (before %s): not the plant's Kill(null)" % (hediffs(after), hediffs(before)))
+ok = bool(before and not before.get("dead") and after and after.get("dead") and attributed)
 print("VERDICT: prey %s alive before, %s after 7500 ticks beside the plant => %s"
       % (prey_id, "dead" if after and after.get("dead") else "NOT dead/unseen", "PASS" if ok else "FAIL"))
 sys.exit(0 if ok else 1)

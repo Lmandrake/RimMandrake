@@ -72,7 +72,9 @@ namespace JawaBench.BridgeTools
             {
                 if (Interlocked.Increment(ref calls) == 1)
                 {
-                    RealAppend(p, b, n / 2);                                  // half the bytes reach the disk...
+                    // half of the FIRST line reaches the disk... (not n / 2: the four rows are the same length,
+                    // so half the chunk ends exactly on a line boundary and no line was ever torn)
+                    RealAppend(p, b, Array.IndexOf(b, (byte)'\n') / 2);
                     throw new IOException("injected: torn write");           // ...then the write fails
                 }
                 RealAppend(p, b, n);
