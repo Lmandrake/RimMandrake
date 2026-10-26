@@ -419,6 +419,14 @@ def main():
             rc, o = w(argv + ["../../etc"])
             check(rc == 2 and "not a job or attempt id" in o.get("raw", ""),
                   "a path as an id is refused by %s: rc %s %s" % (" ".join(argv), rc, str(o)[-200:]))
+        # start takes its id from the job JSON on stdin, not argv: cmd_start writes p("jobs", id) and attempts/<id>.aN,
+        # so validate_job's id regex is the only thing between a path id and those writes (wave 75: with it stubbed
+        # out every row above still passed)
+        jbad = dict(job(), id="../../etc")
+        rc, o = w(["start"], jbad)
+        check(rc != 0 and "bad id" in o.get("raw", "") and not os.path.exists(os.path.join(tmp, "etc"))
+              and not os.path.exists(os.path.join(home, "etc")),
+              "a path as the job id on stdin is refused before anything is written: rc %s %s" % (rc, str(o)[-200:]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))
