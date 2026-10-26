@@ -41,7 +41,8 @@ namespace RimMandrake.Scarlands
             if (glowerDef == null) glowerDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Glower");
             if (glowerDef == null) { __result = 0f; return; }
 
-            bool entry = RM_TetchikGateKernel.IsEntryCell(loc.x, loc.z, ___map.Size.x, ___map.Size.z);
+            bool entry = RM_TetchikGateKernel.IsArrivalCell(loc.x, loc.z, ___map.Size.x, ___map.Size.z,
+                MapGenerator.mapBeingGenerated == ___map);
             int mapGlower = entry ? ___map.listerThings.ThingsOfDef(glowerDef).Count : 0;
             if (RM_TetchikGateKernel.Allow(entry, false, mapGlower)) return;   // cheap map-wide answer first
             if (RM_TetchikGateKernel.Allow(entry, GlowerNear(loc, ___map), mapGlower)) return;

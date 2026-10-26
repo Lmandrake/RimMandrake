@@ -541,6 +541,9 @@ namespace RimMandrake.Scarlands.SelfTest
                 T(!RM_TetchikGateKernel.IsEntryCell(sx / 2, sz / 2, sx, sz), $"centre cell on {sx}x{sz} read as an entry cell");
                 int ix = r.Next(2, sx - 2), iz = r.Next(2, sz - 2);
                 T(!RM_TetchikGateKernel.IsEntryCell(ix, iz, sx, sz), $"interior cell ({ix},{iz}) on {sx}x{sz} read as an entry cell");
+                // map gen can place a herd on an edge-band cell: that is not an arrival, so only glower near it admits
+                T(RM_TetchikGateKernel.IsArrivalCell(x, z, sx, sz, false), $"edge cell ({x},{z}) on {sx}x{sz} after map gen not an arrival cell");
+                T(!RM_TetchikGateKernel.IsArrivalCell(x, z, sx, sz, true), $"edge cell ({x},{z}) on {sx}x{sz} during map gen read as an arrival cell");
             }
             return fails;
         }

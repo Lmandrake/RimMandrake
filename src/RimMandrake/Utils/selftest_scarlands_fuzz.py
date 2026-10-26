@@ -2,9 +2,9 @@
 """Approach B fuzz of the Scarlands kernels (Scarlands/Source/Kernel/*.cs), no game.
 
 Seeded fuzz over the production kernels with explicit invariants: the aerosol-screen coverage union (aero), the
-projector-ring condition/salvage/repair state machine (ring), the Settling calm/wind hysteresis (settle) and the
-buried-ordnance reveal rule (reveal) and the tetchik glower gate (tetchik). The project is built through winbuild.stage_build (dotnet.exe is
-Windows-native), then run.
+projector-ring condition/salvage/repair state machine (ring), the Settling calm/wind hysteresis (settle), the
+buried-ordnance reveal rule (reveal) and the tetchik glower gate (tetchik). The project is built through
+winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
     python3 src/RimMandrake/Utils/selftest_scarlands_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only aero|ring|settle|reveal|tetchik]
 
@@ -23,17 +23,31 @@ SELFTEST = os.path.join(REPO, "src", "RimMandrake", "Scarlands", "Source", "Self
 CSPROJ = os.path.join(SELFTEST, "RimMandrakeScarlands.SelfTest.csproj")
 
 
+FLAGS = ("--fuzz-scale", "--fuzz-seed", "--fuzz-only")
+
+
+def forwarded(argv):
+    """`--flag value` pairs for the runner. Anything else is refused: a dropped `--fuzz-seed=N` or a trailing
+    `--fuzz-only` would otherwise run the default families and seeds and report OK for a replay that never ran."""
+    out, i = [], 0
+    while i < len(argv):
+        if argv[i] in FLAGS and i + 1 < len(argv):
+            out += [argv[i], argv[i + 1]]
+            i += 2
+            continue
+        raise SystemExit("unrecognised argument %r (use: %s, each followed by its value)" % (argv[i], " | ".join(FLAGS)))
+    return out
+
+
 def main(argv):
+    extra = forwarded(argv)
     rc, rec = winbuild.stage_build(CSPROJ, stage_name="ScarlandsFuzzSelfTest",
                                    extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "Scarlands", "Source", "Kernel")])
     if rc:
         print("selftest build FAILED")
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeScarlands.SelfTest.dll"
-    args = [winbuild.dotnet_exe(), dll]
-    for i, a in enumerate(argv):
-        if a.startswith("--fuzz") and i + 1 < len(argv):
-            args += [a, argv[i + 1]]
+    args = [winbuild.dotnet_exe(), dll] + extra
     return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
 
 

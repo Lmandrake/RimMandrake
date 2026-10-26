@@ -8,6 +8,8 @@
 //     almost never grows within 6 cells of that cell, so the old local-only gate meant tetchik practically never
 //     arrived after map generation. An entry cell asks instead whether the map has a glower stand worth coming to
 //     (MinMapGlower plants anywhere on it).
+// RCellFinder.RandomAnimalSpawnCell_MapGen can itself return a cell in the edge band, so "entry cell" also needs
+// "not generating": a map-gen herd on the edge with no glower near is refused like any other map-gen herd.
 namespace RimMandrake.Scarlands
 {
     public static class RM_TetchikGateKernel
@@ -21,6 +23,12 @@ namespace RimMandrake.Scarlands
         public static bool IsEntryCell(int x, int z, int sizeX, int sizeZ)
         {
             return x < EdgeBand || z < EdgeBand || x >= sizeX - EdgeBand || z >= sizeZ - EdgeBand;
+        }
+
+        // An ongoing-arrival entry cell: in the edge band and asked after map generation.
+        public static bool IsArrivalCell(int x, int z, int sizeX, int sizeZ, bool mapGenerating)
+        {
+            return !mapGenerating && IsEntryCell(x, z, sizeX, sizeZ);
         }
 
         // glowerNearLoc: a glower plant within GlowerRadius of loc; mapGlower: glower plants on the whole map.
