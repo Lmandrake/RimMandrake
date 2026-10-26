@@ -217,3 +217,50 @@ items filed and closed, per day, from `infrastructure/state/art/events/` and `in
 "At once" counts a helper as running from its first to its last transcript line, so a helper that stopped writing but
 was never reaped counts until its last line. The owner asked for a subagent to do this scan; the builder brief forbids
 subagents, so the scan was one script instead.
+
+## 9. Measured pacing: the allocator decides N per seat (built 2026-10-26)
+Your words, 13:05 PDT: "If you already built the capability, please use it to determine the number of Foundry and Bench
+agents yourself. My 5 was a guess." So no fixed cap. `src/RimMandrake/Utils/slot_allocator.py now` prints the mode, N
+per seat and why; every number lives in `slot_rules.json` beside it. RimPulse re-checks every 15 min, and the spawn
+hook `.claude/hooks/block_agent_over_slots.py` enforces the per-seat N.
+
+**The fit (R8).** total = mean helpers running over the last 3 h x sustainable %/h / measured %/h, under the token
+mode's ceiling. Sustainable = % left / hours to reset. The measured %/h is the slope of `account_usage`'s series once
+it has 4 readings over 1.5 h. Until then it is messages sent from this machine in 3 h / 1460 messages per %, the hand
+calibration below. The total rises at most 1 per check and falls at once. FOUNDRY gets floor(total x 0.25) and BENCH
+the rest [A]. While you write in a window, BENCH is at most 3 [A, question 3 in §5].
+
+### 9.1 First baseline: the hand calculation, 2026-10-26 ~13:00 PDT (BENCH coordinator)
+- The system account (Archmagi BENCH and FOUNDRY, plus SteveDesktop since about 12:50) was 60% used at 12:47. It
+  resets Wed 10-28 13:00, 48 h away.
+- Lodestar `usage_ledger.py --days 6`, messages per day: 10-21 6798, 10-22 16816, 10-23 17199, 10-24 13866,
+  10-25 12713, 10-26 23391 by 13:00.
+- 1% of the week is about 1460 messages. Today's rate is about 1800 messages/h, about 1.2%/h. At that rate the week
+  runs out in about 32 h, before the reset.
+- The sustainable rate is 40% / 48 h = 0.83%/h, 68% of today's rate.
+- Interim pick: 4 helpers in total on system, BENCH 3 and FOUNDRY 1.
+- steven had 31% left and lukas 7%.
+
+### 9.2 The allocator's first live run, 2026-10-26 ~14:05 PDT
+- system 40% left, 1.99 d to reset: P 1.40, which is CRUISE.
+- 4463 messages from Archmagi in 3 h is 1.02%/h, with 5.0 helpers on average.
+- Sustainable 0.84%/h is 82% of that rate, which fits 4.1. Total 4: BENCH 3, FOUNDRY 1. This agrees with the hand pick.
+- The meter had 2 readings over 0.2 h, too few for a slope.
+- The messages SteveDesktop sends on system are not counted, so this rate is low by its share [U]. The meter slope
+  removes that gap once the series has 4 readings.
+
+### 9.3 steven's account (your rule, ~13:10 PDT)
+"Steven uses his for other things. As we get near his reset you may consider drawing it down towards 10%, but never
+beyond that. We don't ever want to crowd him out. Before that, it is acceptable to use up to 50% of his account. This
+is done preferentially at the beginning of the week, so that we can monitor it more easily and then leave it alone.
+That has already happened this week, so we should simply leave Steve's account alone for now."
+
+`slot_rules.json` stores this as data under `lent_accounts.steven`:
+- At most 50% of his week used outside the end window. The meter cannot tell his use from ours, so all of it counts as
+  ours.
+- Inside the last 24 h before his reset [A], he may be drawn toward a 10% floor, never below it.
+- The start of his week (the first 48 h, [A]) is preferred.
+- He is off-limits until 2026-10-28 15:00 PDT, his next reset.
+
+The allocator names steven as a spare only when the rule allows it. `slot_allocator.py plan --account steven --draw N`
+refuses any draw the rule forbids. The allocator never switches an account.

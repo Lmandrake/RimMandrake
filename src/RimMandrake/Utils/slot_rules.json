@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "_doc": "Rules read by slot_allocator.py (SLOT_ALLOCATOR_BUILD_RULES_FILE). Design: design/RimMandrake/operating_modes_2026-10-26.md §1.1-1.5 and §9 (the measured pacing). Every number here is a line from those sections; [A] marks a proposal the owner has not ruled, [O] one he ruled (with his words). Change a number here, not in the code.",
+  "_owner": "[O] 2026-10-26 13:05 PDT, relayed by BENCH: 'If you already built the capability, please use it to determine the number of Foundry and Bench agents yourself. My 5 was a guess.' So no fixed cap: the allocator sets N per seat inside the budget.",
+  "seats": ["BENCH", "FOUNDRY"],
+  "enforce_seats": ["BENCH", "FOUNDRY"],
+  "split": {
+    "FOUNDRY_share": 0.25,
+    "_doc": "[A] FOUNDRY gets floor(total x share), BENCH the rest: total 4 -> BENCH 3 + FOUNDRY 1 (the 13:05 hand pick); total 1 -> BENCH only (ALMOST_OUT: FOUNDRY asleep, operating_modes §2.2)."
+  },
+  "total_max": 10,
+  "_total_max": "[A] operating_modes §3.1: more than about 10 at once never paid.",
+  "fallback_n": {"BENCH": 3, "FOUNDRY": 1, "_doc": "used by the hook only when no allocation can be computed or read: the 13:05 hand baseline."},
+  "burn_account": "auto",
+  "_burn_account": "auto = the account whose latest MEASURED reading came from THIS machine's own live login (account_usage.py `machine`); name an account here to pin it.",
+  "token": {
+    "DARK": {"n": 0, "enter_pct_used_ge": 98},
+    "ALMOST_OUT": {"n": 1, "enter_p_lt": 0.5, "leave_p_gt": 0.8, "leave_hold_h": 2},
+    "CRUISE": {
+      "n": 6,
+      "steps": [[0.8, 2], [1.0, 3], [1.2, 4]],
+      "_steps": "[A] used only when no burn rate is measured: P under 0.8 -> 2 total, under 1.0 -> 3, under 1.2 -> 4, else n."
+    },
+    "BURN": {"n": 10, "enter_p_gt": 1.5, "enter_reset_h_lt": 48, "leave_p_lt": 1.2, "leave_reset_h_lt": 6},
+    "SWEEP": {"n": 3, "hold_h": 12},
+    "cross_hold_h": 2,
+    "min_mode_min": 60,
+    "session_brake_pct_used_gt": 90,
+    "_session_brake": "§1.5 rule 2: the burn account's 5-hour window above 90% used -> no new helpers until it resets"
+  },
+  "fit": {
+    "window_h": 3,
+    "slope_min_points": 4,
+    "slope_min_span_h": 1.5,
+    "msgs_per_pct": 1460,
+    "_msgs_per_pct": "[A] the 13:05 hand calibration: 6 days of Lodestar usage_ledger.py message counts on the system account against its weekly %; used only while the account_usage series has too few points for a slope.",
+    "min_mean_helpers": 0.5,
+    "raise_step": 1,
+    "_doc": "R8: total fit = mean helpers running over the window x (sustainable %/h = % left / hours to reset) / measured %/h. Raised by at most raise_step per 15-min check; lowered at once."
+  },
+  "spare": {"min_pct_left": 10, "_doc": "an account the seats do not burn, with no entry under lent_accounts, is named as a recommendation when it has this much left. Never switched automatically."},
+  "lent_accounts": {
+    "steven": {
+      "_owner": "[O] 2026-10-26 ~13:10 PDT, relayed by BENCH: 'Steven uses his for other things. As we get near his reset you may consider drawing it down towards 10%, but never beyond that. We don't ever want to crowd him out. Before that, it is acceptable to use up to 50% of his account. This is done preferentially at the beginning of the week, so that we can monitor it more easily and then leave it alone. That has already happened this week, so we should simply leave Steve's account alone for now.'",
+      "max_used_by_us_pct": 50,
+      "_max_used_by_us_pct": "[O] outside the end-of-week window we may use at most 50% of his week. The meter cannot tell his use from ours, so the allocator counts ALL of the week used as ours (the side that never crowds him out).",
+      "prefer_start_of_week_h": 48,
+      "_prefer_start_of_week_h": "[O] 'preferentially at the beginning of the week'; the 48 h is [A]: the recommendation says 'start of his week' inside it, and plain 'allowed' after it.",
+      "end_window_h": 24,
+      "_end_window_h": "[A] what 'near his reset' means: the last 24 h before his weekly reset. Inside it we may draw toward the floor.",
+      "floor_pct_left": 10,
+      "_floor_pct_left": "[O] 'never beyond that': no plan may leave him under 10% of his week, ever.",
+      "off_limits_through": "2026-10-28T15:00:00-07:00",
+      "_off_limits_through": "[O] 'That has already happened this week, so we should simply leave Steve's account alone for now': off-limits until his weekly reset (account_usage week_resets_at 2026-10-28 15:00 PDT, read 2026-10-26 13:02). Set the next one only on his word."
+    }
+  },
+  "queue": {
+    "paydown_enter": {"A1_gt": 100, "D1_ge": 10},
+    "paydown_leave": {"A1_lt": 60, "D1_lt": 5}
+  },
+  "presence": {
+    "bench_min": 30,
+    "afk_min": 60,
+    "bench_n": 3,
+    "_bench_n": "[A] §1.3/§1.5 rule 4: while he writes in a window, BENCH goes down to 3 so the orchestrator can answer him. Open owner question 3 in operating_modes §5."
+  },
+  "helpers": {
+    "live_window_s": 900,
+    "quiet_s": 120,
+    "_doc": "A helper is running when its transcript was written in the last live_window_s (over the 600 s silence kill) and its last assistant record is not end_turn, or it ended under quiet_s ago (a resumed helper writes again). When in doubt, running."
+  }
+}
