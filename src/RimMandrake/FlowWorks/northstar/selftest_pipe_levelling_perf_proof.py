@@ -139,5 +139,8 @@ finally:
 res = json.load(open(out))
 check("watchdog abort mid-run still restores hose maxLength (sets %s)" % lb.sets,
       "budget" in res.get("watchdog", "") and lb.sets[:1] == ["80"] and lb.sets[-1:] == ["40"])
+check("phased lays: --lay A:B slices, clips and 0:0 lays none (LEVEL_PERF_PROOF_FIX_LAYS_OUTRUN_BUDGET)",
+      L.lay_slice(None, 400) == (0, 400) and L.lay_slice("0:100", 400) == (0, 100) and L.lay_slice("100:200", 400) == (100, 200)
+      and L.lay_slice("300:900", 400) == (300, 400) and L.lay_slice("0:0", 400) == (0, 0) and L.lay_slice("50:10", 400) == (50, 50))
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)
