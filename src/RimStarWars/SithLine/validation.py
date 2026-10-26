@@ -164,6 +164,18 @@ def _flat(x):
                 yield s
 
 
+def _test_value(ty, old):
+    """A value for the settings round trip that differs from `old` and that the bridge's strict C# parse accepts
+    (SITHLINE_ROUNDTRIP_FIX_INT_WRITTEN_AS_FLOAT: an int field written as "6.0" fails int.Parse, and half of 0 is 0)."""
+    if ty == "bool":
+        return "False" if str(old).lower() == "true" else "True"
+    if ty == "int":
+        n = int(float(old))
+        return str(n // 2 if n // 2 != n else n + 1)
+    v = float(old)
+    return str(v * 0.5 if v != 0 else 1.0)
+
+
 def _build_suite():
     suite = Suite("SithLine")
     suite.toggles = sorted(settings_fields())
@@ -217,7 +229,7 @@ def _build_suite():
                 old = _raw(t, "get", field).get("value")
                 if old is None:
                     raise ExpectationFailed("%s: get returned no value" % field)
-                new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else str(float(old) * 0.5)
+                new = _test_value(ty, old)
                 try:
                     if not _raw(t, "set", field, new).get("success"):
                         raise ExpectationFailed("%s: set failed" % field)
