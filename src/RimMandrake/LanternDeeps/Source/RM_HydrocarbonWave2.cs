@@ -138,7 +138,8 @@ namespace RimMandrake.LanternDeeps
                 {
                     continue;
                 }
-                if (!p.Awake() || !GenSight.LineOfSight(p.Position, at, map))
+                // "every other pawn within 8 that can see it": awake, in line of sight, and not blind
+                if (!p.Awake() || !p.health.capacities.CapableOf(PawnCapacityDefOf.Sight) || !GenSight.LineOfSight(p.Position, at, map))
                 {
                     continue;
                 }

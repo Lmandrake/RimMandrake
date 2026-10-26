@@ -82,12 +82,22 @@ namespace RimMandrake.LanternDeeps
             }
         }
 
-        // The killing wound is the newest injury. No injury at all (starvation, cold) = no ignition.
+        // The killing blow, when there was one, is the damage RM_CompKillingBlow saw in Notify_Killed: judged by the
+        // injury that damage makes. Without it (bled out, no comp) the killing wound is the newest injury. The newest
+        // injury alone is not enough: a wound that MERGES into an older one of its def on the same part (Burn, Crush:
+        // canMerge, Hediff_Injury.TryMergeWith) keeps the older tickAdded, so a burn kill on an already-burnt torso
+        // read as whatever cold cut came in between. No injury at all (starvation, cold) = no ignition.
         // A wound that destroys a part (a brain or heart shot) does not stay an injury: HediffSet.AddDirect turns it
         // into a Hediff_MissingPart whose PostAdd RestorePart()s the wound away, keeping only lastInjury. So a
         // missing part counts as a wound of its lastInjury def.
         public static bool KilledHot(Pawn pawn, List<HediffDef> coldInjuries)
         {
+            DamageDef blow = pawn?.TryGetComp<RM_CompKillingBlow>()?.killingDamage;
+            HediffDef blowInjury = blow == null ? null : (blow.hediff ?? blow.hediffSkin ?? blow.hediffSolid);
+            if (blowInjury != null)
+            {
+                return coldInjuries == null || !coldInjuries.Contains(blowInjury);
+            }
             List<Hediff> hediffs = pawn?.health?.hediffSet?.hediffs;
             if (hediffs == null)
             {
@@ -106,6 +116,45 @@ namespace RimMandrake.LanternDeeps
                 }
             }
             return lastDef != null && (coldInjuries == null || !coldInjuries.Contains(lastDef));
+        }
+    }
+
+    // Remembers the damage that killed the pawn. ThingWithComps.Kill calls Notify_Killed(prevMap, dinfo) on every comp
+    // from inside Pawn.Kill BEFORE the race's DeathActionWorker.PawnDied runs, and the death action is not handed the
+    // DamageInfo itself. Not saved: it is read in the same Pawn.Kill call (and by the proof right after it).
+    public class RM_CompProperties_KillingBlow : CompProperties
+    {
+        public RM_CompProperties_KillingBlow()
+        {
+            compClass = typeof(RM_CompKillingBlow);
+        }
+    }
+
+    public class RM_CompKillingBlow : ThingComp
+    {
+        public DamageDef killingDamage;
+
+        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
+        {
+            base.Notify_Killed(prevMap, dinfo);
+            killingDamage = dinfo?.Def;
+        }
+    }
+
+    // Every race whose death action is the hot-kill gets the killing-blow comp, so no def can forget it.
+    [StaticConstructorOnStartup]
+    public static class RM_HotKillCompInjector
+    {
+        static RM_HotKillCompInjector()
+        {
+            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                // ThingDef.comps is never null (field initialiser)
+                if (d.race?.deathAction is RM_DeathActionProperties_HotKill && !d.HasComp(typeof(RM_CompKillingBlow)))
+                {
+                    d.comps.Add(new RM_CompProperties_KillingBlow());
+                }
+            }
         }
     }
 

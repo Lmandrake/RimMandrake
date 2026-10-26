@@ -6,6 +6,7 @@ using UnityEngine;
 using Verse;
 using RimMandrake.Shared;
 using Verse.AI;
+using HarmonyLib;
 
 namespace RimMandrake.LanternDeeps
 {
@@ -32,7 +33,10 @@ namespace RimMandrake.LanternDeeps
     //  RM_CompPooler          seeks the warmest thing: a loose fire, else the hottest working heater, else a
     //                         warm-blooded pawn. Beside a fire: Fire.Destroy. Beside a fuelled heater: the fuel is
     //                         spent at once (it goes out flat); beside a powered heater: CompHeatPusher.enabled is held
-    //                         false while it stays (restored when it leaves or dies). Beside a warm pawn:
+    //                         false while it stays (restored when it leaves or dies). The vanilla electric heater
+    //                         (Building_Heater) has no CompHeatPusher: it heats in its own TickRare, so it is seen by
+    //                         its CompTempControl and held off by Patch_BuildingHeater_TickRare (idles at low power).
+    //                         Any electric heater counts only while powered and switched on. Beside a warm pawn:
     //                         Hypothermia climbs fast. A tame pooler only hunts fires (the fire brigade). Fire never
     //                         hurts it (Flame/Burn absorbed, attached fire put out). Hurt, it lets go for a while.
     // ════════════════════════════════════════════════════════════════════
@@ -447,6 +451,10 @@ namespace RimMandrake.LanternDeeps
             base.PostExposeData();
             Scribe_References.Look(ref smothered, "smothered");
             Scribe_Values.Look(ref letGoUntil, "letGoUntil", -1);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && smothered is Building_Heater)
+            {
+                SmotheredBy[smothered] = this;
+            }
         }
 
         public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
@@ -471,8 +479,52 @@ namespace RimMandrake.LanternDeeps
             {
                 CompHeatPusher h = smothered.TryGetComp<CompHeatPusher>();
                 if (h != null) h.enabled = true;
+                SmotheredBy.Remove(smothered);
                 smothered = null;
             }
+        }
+
+        // Vanilla heaters held off, read by Patch_BuildingHeater_TickRare. Each entry is re-checked against its pooler
+        // (IsSmothering), so an entry left over from an earlier game is inert; poolers re-register on load and each check.
+        internal static readonly Dictionary<Thing, RM_CompPooler> SmotheredBy = new Dictionary<Thing, RM_CompPooler>();
+
+        internal bool IsSmothering(Thing t)
+        {
+            return t != null && smothered == t && parent.Spawned && LanternDeepsSettings.poolerSmotherEnabled;
+        }
+
+        private void HoldOff(Building heater)
+        {
+            if (smothered != heater) { Release(); smothered = heater; }
+            CompHeatPusher h = heater.TryGetComp<CompHeatPusher>();
+            if (h != null) h.enabled = false;
+            if (heater is Building_Heater) SmotheredBy[heater] = this;
+        }
+
+        // Switched on and, if it takes power, powered. A held CompHeatPusher heater fails ShouldPushHeatNow (enabled is
+        // false), so this is what keeps it counting only while it would otherwise run.
+        private static bool PoweredAndOn(Thing t)
+        {
+            CompPowerTrader power = t.TryGetComp<CompPowerTrader>();
+            return FlickUtility.WantsToBeOn(t) && (power == null || power.PowerOn);
+        }
+
+        // How hot a colony building runs, or 0 if it is not a working heater now.
+        private float HeatOf(Building b)
+        {
+            CompHeatPusher h = b.TryGetComp<CompHeatPusher>();
+            if (h != null && h.Props.heatPerSecond > 0f)
+            {
+                bool working = b == smothered ? PoweredAndOn(b) : h.ShouldPushHeatNow;
+                return working ? h.Props.heatPerSecond : 0f;
+            }
+            // vanilla electric heater: heats only while compPowerTrader.PowerOn (power + flick), Building_Heater.TickRare
+            if (b is Building_Heater bh && bh.compTempControl != null && bh.compTempControl.Props.energyPerSecond > 0f
+                && bh.compPowerTrader != null && bh.compPowerTrader.PowerOn)
+            {
+                return bh.compTempControl.Props.energyPerSecond;
+            }
+            return 0f;
         }
 
         public override void CompTick()
@@ -524,12 +576,10 @@ namespace RimMandrake.LanternDeeps
             List<Building> bld = map.listerBuildings.allBuildingsColonist;
             for (int i = 0; i < bld.Count; i++)
             {
-                CompHeatPusher h = bld[i].TryGetComp<CompHeatPusher>();
-                if (h == null || h.Props.heatPerSecond <= 0f) continue;
-                bool held = bld[i] == smothered;
-                if (!held && !h.ShouldPushHeatNow) continue;
                 if (!bld[i].Position.InHorDistOf(p.Position, Props.seekRadius)) continue;
-                float score = h.Props.heatPerSecond - bld[i].Position.DistanceTo(p.Position) * 0.01f;
+                float heat = HeatOf(bld[i]);
+                if (heat <= 0f) continue;
+                float score = heat - bld[i].Position.DistanceTo(p.Position) * 0.01f;
                 if (score > hottest) { hottest = score; heater = bld[i]; }
             }
             if (heater != null)
@@ -542,9 +592,7 @@ namespace RimMandrake.LanternDeeps
                         fuel.ConsumeFuel(fuel.Fuel);
                         return "drowned " + heater.LabelShort;
                     }
-                    CompHeatPusher h = heater.TryGetComp<CompHeatPusher>();
-                    if (smothered != heater) { Release(); smothered = heater; }
-                    if (h != null) h.enabled = false;
+                    HoldOff(heater);
                     return "smothering " + heater.LabelShort;
                 }
                 Wave3Util.GoTo(p, Wave3Util.Approach(map, heater.Position, p.Position));
@@ -569,6 +617,32 @@ namespace RimMandrake.LanternDeeps
             }
             Wave3Util.GoTo(p, warm.Position);
             return "seeking " + warm.LabelShort;
+        }
+    }
+
+    // A pooler beside a vanilla electric heater holds it off: the heater skips its heating pass and idles at its
+    // low-power draw (what Building_Heater.TickRare itself sets when it has nothing to do).
+    [HarmonyPatch(typeof(Building_Heater), nameof(Building_Heater.TickRare))]
+    public static class Patch_BuildingHeater_TickRare
+    {
+        public static bool Prefix(Building_Heater __instance)
+        {
+            if (RM_CompPooler.SmotheredBy.Count == 0 || !RM_CompPooler.SmotheredBy.TryGetValue(__instance, out RM_CompPooler pooler))
+            {
+                return true;
+            }
+            if (!pooler.IsSmothering(__instance))
+            {
+                RM_CompPooler.SmotheredBy.Remove(__instance);
+                return true;
+            }
+            CompPowerTrader power = __instance.compPowerTrader;
+            if (power != null && power.PowerOn && __instance.compTempControl != null)
+            {
+                power.PowerOutput = -power.Props.PowerConsumption * __instance.compTempControl.Props.lowPowerConsumptionFactor;
+                __instance.compTempControl.operatingAtHighPower = false;
+            }
+            return false;
         }
     }
 
