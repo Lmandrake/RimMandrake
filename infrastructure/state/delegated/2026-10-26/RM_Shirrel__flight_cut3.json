@@ -1,0 +1,76 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 64.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.4468204
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 117.8
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Shirrel",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['OWNER_NOTE_IGNORED', 'DEPARTURE_MISSING', 'F_TOPDOWN']; polish []",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0d938b792a03776989e2172678468d5f9c98649c03d4422dadb6c30ca789ecf9",
+  "east.png": "7f9e8561bb43e25218dca8a4fe25ffee566e12fe84067d9a4b5233745db2e71e",
+  "north.png": "7b92b7acb89630ee36d2629a86b8675738078866b6f689db2314160ffaff9595",
+  "scale.png": "d94528596414e70cbb6e2b57eb7ae94a5a01275a47a6bf658e55987874ecf462",
+  "flight_1.png": "8b4b3f342cea38e8f6db0d6e99dcf3d1582fd17d34dfa11c2a7daf15cc130329",
+  "flight_2.png": "28a55b502aebe38d9958ccd81d9de0b558c4995b6a6bad1db925858ad67542d9",
+  "flight_3.png": "a1a9fbdec4fd478fb4f4291437cb4be6af9138e4f1e844d91bc2b655e728827a",
+  "flight_4.png": "28a55b502aebe38d9958ccd81d9de0b558c4995b6a6bad1db925858ad67542d9",
+  "flight_5.png": "db9a098e5446a1ed5672554273c59253da32aa4d8921607f5b0da6532803be60",
+  "flight_6.png": "0ff8602d3deff3fc3c5aa03c26e58777c6d152d99c2cd2cb06a76c5a66e67af7",
+  "flight_7.png": "91860ee151fd93b52126c92dcb6621c120e99cb988ffb9faddfbd13633d1abde",
+  "flight_8.png": "0ff8602d3deff3fc3c5aa03c26e58777c6d152d99c2cd2cb06a76c5a66e67af7",
+  "flight_9.png": "41ec6d1f6c94caf91b322467683e2ee3d699f628fb2b7472bf00e8e038b143df",
+  "flight_10.png": "786024b0fa337d6cb8e92654628a488a9aed0f1dac3a99612ec3b63bf367bf46",
+  "flight_11.png": "b00abfcfeafc7ecf2034ca5d97dfac5856d4438586ea2c6ef509c9ff2170a84a",
+  "flight_12.png": "786024b0fa337d6cb8e92654628a488a9aed0f1dac3a99612ec3b63bf367bf46",
+  "facings.png": "33c5ab8ffc14532c8ccb8cdbdadae44c6fd99ca409c50993d9fbb547e357cbee"
+ }
+}

@@ -1,0 +1,85 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 69.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.46635340000000003
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 39.5
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1106347
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Shirrel",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said really_bad); blocking ['F_INCONSISTENT', 'STYLE_CARTOON', 'DEPARTURE_MISSING', 'STYLE_EARTHLY']; polish []",
+  "gpt unsure: unsettled ['K1', 'K2', 'K3', 'K4'], own blocking []",
+  "same picture already REGEN in run fauna_leaningscrub_01 as round 1: round not advanced"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0d938b792a03776989e2172678468d5f9c98649c03d4422dadb6c30ca789ecf9",
+  "east.png": "7f9e8561bb43e25218dca8a4fe25ffee566e12fe84067d9a4b5233745db2e71e",
+  "north.png": "7b92b7acb89630ee36d2629a86b8675738078866b6f689db2314160ffaff9595",
+  "scale.png": "d94528596414e70cbb6e2b57eb7ae94a5a01275a47a6bf658e55987874ecf462",
+  "flight_1.png": "8b4b3f342cea38e8f6db0d6e99dcf3d1582fd17d34dfa11c2a7daf15cc130329",
+  "flight_2.png": "fedb73f41a366101ba8bd0c5ebda0c0ca9647a4d7e3ef40fe841a2dbebda830b",
+  "flight_3.png": "0429b7e43d55116ebe963120e5661380ef65510760f9a9245182d0801cc6f741",
+  "flight_4.png": "fedb73f41a366101ba8bd0c5ebda0c0ca9647a4d7e3ef40fe841a2dbebda830b",
+  "flight_5.png": "db9a098e5446a1ed5672554273c59253da32aa4d8921607f5b0da6532803be60",
+  "flight_6.png": "0511fb30de6f93f6a4db0d1ebb51d450f5f472f6d76dea62ea9aafb76e1ffc66",
+  "flight_7.png": "c7b6fc9a8d149d9071bb61b197c2886971b2d57bc816e9ec0303367655bb4195",
+  "flight_8.png": "0511fb30de6f93f6a4db0d1ebb51d450f5f472f6d76dea62ea9aafb76e1ffc66",
+  "flight_9.png": "8e9711c8ea10a421a64fe1b345b76a15c46944016935314a2085f51d0ae734cf",
+  "flight_10.png": "8dc22f57dec6a689f1321619f7ece6123d8e6d47f7ee7632a18cf0620f972492",
+  "flight_11.png": "d412a6ab5a3ad04fafe55331641ad3bdee7ce54fa6a5209b5452b1751f3747a7",
+  "flight_12.png": "8dc22f57dec6a689f1321619f7ece6123d8e6d47f7ee7632a18cf0620f972492",
+  "facings.png": "970580b17cf99fa2889d7956236fd098da4bafa97c7c7c6f38fb0d448289d433"
+ }
+}

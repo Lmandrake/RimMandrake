@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Shirrel__flight_cut2_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shirrel",
+  "prompt": "A single RimWorld creature sprite, the shirrel, in flight with its gliding membranes spread, on a transparent background. Painterly vanilla RimWorld style, realistic, matte textured fur, clean dark outline. The shirrel is a cat-sized, heavy-bodied glider of the Leaning Scrub, STORM-GREY: charcoal body, with a full body-length gliding membrane stretched from wrist to ankle on each flank, banded slate and fog-white like weather unrolled. The torso is heavy and deep-chested: in the east view a visible deep keel under the chest, in the north view (rear, seen from behind, back and haunches with eyes hidden) and the south view (front, eyes toward the viewer) a broad thick body between the two membranes. The head matches the grounded shirrel sprite exactly: tall swept tufted lynx-like ears, narrow fierce wary eyes under a heavy brow, a grey-ochre face with pale cheek bands. Strong, prominent climbing claws at the wrists and ankles, splayed at the membrane edges. Same palette, body plan and head in every frame, so the flying shirrel reads as the same alien storm-grey beast as the grounded sprite.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_CARTOON, DEPARTURE_MISSING, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "shirrel_flight_w76",
+  "drawsize": 1.2,
+  "module": "flyer"
+ }
+]

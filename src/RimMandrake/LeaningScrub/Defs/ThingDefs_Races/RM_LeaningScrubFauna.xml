@@ -908,7 +908,7 @@
   <!-- SHIRREL_DECIDE_GALE_GLIDE (owner by card 2026-10-26: "Real glide as a flyer"): in the Gale a wild idle shirrel beside a tree
        launches as a real 1.6 flyer for a short downwind hop (Source/RM_ShirrelGlide.cs, RM_Flight path) and is tethered home to the
        nearest sweetline tree (CreatureBehaviors RM_CompHomeTether). MaxFlightTime lets the tracker fly it; flightStartChanceOnJobStart 0
-       plus a CanFlyNow gate keep it grounded outside its own glide. No flying flip-book yet: it flies drawn with its body graphic.
+       plus a CanFlyNow gate keep it grounded outside its own glide. It flies drawn with its 4-frame flip-book (PawnKindDef below).
        Numbers PROVISIONAL. Mod Settings "Shirrel: glides on the Gale" (shirrelGlideEnabled). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shirrel</defName>
@@ -997,6 +997,16 @@
     <combatPower>35</combatPower>
     <wildGroupSize>1~3</wildGroupSize>
     <ecoSystemWeight>0.25</ecoSystemWeight>
+    <!-- SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES: the Gale glide's whole-body directional flip-book (flight.md). Files
+         Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_<1..4>_{north,east,south}.png (west mirrors east);
+         a glider, so the body holds still and only the membrane's trailing edge billows across the 4 frames.
+         Multiplier 1.0: the frames are drawn at the grounded sprite's scale, so each life stage keeps its own size. -->
+    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <bodyGraphicData>
