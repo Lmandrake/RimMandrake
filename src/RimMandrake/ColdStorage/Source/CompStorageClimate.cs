@@ -11,6 +11,7 @@ namespace RimMandrake.ColdStorage
     /// read it (Patch_Thing_AmbientTemperature), so vanilla rot does the rest. Stasis: items on its cells skip the rot
     /// tick and deterioration while the field holds, and keep room temperature, so they come out unfrozen.
     /// </summary>
+    [StaticConstructorOnStartup]
     public class CompStorageClimate : ThingComp
     {
         private static readonly Texture2D TexLower = ContentFinder<Texture2D>.Get("UI/Commands/TempLower", true);

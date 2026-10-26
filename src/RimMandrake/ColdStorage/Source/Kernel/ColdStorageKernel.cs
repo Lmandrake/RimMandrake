@@ -248,6 +248,24 @@ namespace RimMandrake.ColdStorage
             return (int)Math.Round(((double)tickA * countA + (double)tickB * countB) / total);
         }
 
+        /// <summary>
+        /// Add <paramref name="item"/> to a per-key registry, replacing any entry with the same key. RimWorld constructs a
+        /// map's components twice on load (Map.ConstructComponents, then the saved component list), and only the newest is
+        /// the one the map keeps, so the newest entry for a map must win.
+        /// </summary>
+        public static void ReplaceOrAdd<T>(System.Collections.Generic.List<T> list, T item, Func<T, T, bool> sameKey) where T : class
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (sameKey(list[i], item))
+                {
+                    list[i] = item;
+                    return;
+                }
+            }
+            list.Add(item);
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

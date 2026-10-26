@@ -11,12 +11,12 @@
         <li Class="PatchOperationAdd">
           <xpath>Defs/ThingDef[@Name="RM_ColdStorageDeepUnitBase"]</xpath>
           <value>
-            <modExtensions>
+            <comps>
               <li Class="LWM.DeepStorage.Properties">
                 <minNumberStacks>2</minNumberStacks>
                 <maxNumberStacks>4</maxNumberStacks>
               </li>
-            </modExtensions>
+            </comps>
             <inspectorTabs>
               <li>LWM.DeepStorage.ITab_DeepStorage_Inventory</li>
             </inspectorTabs>

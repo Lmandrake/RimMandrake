@@ -20,7 +20,45 @@ CSPROJ = os.path.join(HERE, "Source", "SelfTest", "RimMandrakeColdStorage.SelfTe
 DOTNET = ("/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe")
 
 
+def static_checks():
+    """Source-level pins the C# selftest cannot see. Returns a list of failure strings."""
+    import re
+    import xml.etree.ElementTree as ET
+    fails = []
+    # A class holding a static Texture2D/Material loaded at class init must be [StaticConstructorOnStartup], else
+    # its cctor may run off the main thread (map load/gen are async long events) and DevMode warns every startup.
+    src = os.path.join(HERE, "Source")
+    for dirpath, dirnames, files in os.walk(src):
+        dirnames[:] = [d for d in dirnames if d not in ("SelfTest", "obj", "bin")]
+        for f in files:
+            if not f.endswith(".cs"):
+                continue
+            path = os.path.join(dirpath, f)
+            with open(path, encoding="utf-8") as fh:
+                text = fh.read()
+            if re.search(r"static\s+readonly\s+(Texture2D|Material)\b", text) and "[StaticConstructorOnStartup]" not in text:
+                fails.append("%s: static Texture2D/Material field without [StaticConstructorOnStartup]" % os.path.relpath(path, HERE))
+    # LWM.DeepStorage.Properties is a CompProperties (LWM's own Deep_Storage.xml puts it under <comps>);
+    # under <modExtensions> it is a load error and the unit gets no deep storage.
+    lwm = os.path.join(HERE, "Patches", "ColdStorage_LWMDeepStorage.xml")
+    root = ET.parse(lwm).getroot()
+    found = 0
+    for parent in root.iter():
+        for li in parent.findall("li"):
+            if li.get("Class") == "LWM.DeepStorage.Properties":
+                found += 1
+                if parent.tag != "comps":
+                    fails.append("%s: LWM.DeepStorage.Properties under <%s>, must be <comps>" % (os.path.basename(lwm), parent.tag))
+    if found == 0:
+        fails.append("%s: no LWM.DeepStorage.Properties found (instrument blind?)" % os.path.basename(lwm))
+    return fails
+
+
 def main():
+    fails = static_checks()
+    for f in fails:
+        print("FAIL static: " + f)
+    print("coldstorage static checks: %d failed" % len(fails))
     dotnet = next((c for c in DOTNET if os.path.exists(c)), None)
     if dotnet is None:
         print("UNMEASURED: dotnet.exe not found; the C# selftest needs the Windows-side .NET SDK")
@@ -35,7 +73,7 @@ def main():
     sys.stdout.write(r.stdout.replace("\r\n", "\n"))
     if r.stderr.strip():
         sys.stderr.write(r.stderr)
-    return r.returncode
+    return r.returncode or (1 if fails else 0)
 
 
 if __name__ == "__main__":

@@ -49,6 +49,7 @@ namespace RimMandrake.ColdStorage.SelfTest
             AgingAndFailure();
             OneDayEndToEnd();
             FixedRotFactors();
+            RegistryKeepsNewestPerMap();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -222,6 +223,45 @@ namespace RimMandrake.ColdStorage.SelfTest
             Check("ticks: already never stays never", ColdStorageKernel.TicksUntilRotWithFactor(ColdStorageKernel.NeverRotTicks, 0.5f) == ColdStorageKernel.NeverRotTicks);
             Check("ticks: tiny factor caps at never", ColdStorageKernel.TicksUntilRotWithFactor(60000000, 0.01f) == ColdStorageKernel.NeverRotTicks);
             Check("ticks: already rotten (0) stays 0", ColdStorageKernel.TicksUntilRotWithFactor(0, 0.1f) == 0);
+        }
+
+        private sealed class FakeMapComp
+        {
+            public readonly int map;
+            public readonly string name;
+
+            public FakeMapComp(int map, string name)
+            {
+                this.map = map;
+                this.name = name;
+            }
+        }
+
+        private static FakeMapComp FirstFor(System.Collections.Generic.List<FakeMapComp> list, int map)
+        {
+            foreach (FakeMapComp c in list)
+            {
+                if (c.map == map)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        // 10. a loaded map constructs MapComponent_StorageClimate twice (Map.ConstructComponents, then the saved list);
+        // units register on the second, so the registry's lookup (StorageClimateRegistry.For, first match) must find it.
+        private static void RegistryKeepsNewestPerMap()
+        {
+            var list = new System.Collections.Generic.List<FakeMapComp>();
+            Func<FakeMapComp, FakeMapComp, bool> same = (a, b) => a.map == b.map;
+            ColdStorageKernel.ReplaceOrAdd(list, new FakeMapComp(1, "map1 constructed"), same);
+            ColdStorageKernel.ReplaceOrAdd(list, new FakeMapComp(2, "map2"), same);
+            ColdStorageKernel.ReplaceOrAdd(list, new FakeMapComp(1, "map1 loaded"), same);
+            Check("registry: load's second component replaces the first", FirstFor(list, 1)?.name == "map1 loaded",
+                "got " + (FirstFor(list, 1)?.name ?? "null"));
+            Check("registry: one entry per map", list.Count == 2, "got " + list.Count);
+            Check("registry: other maps untouched", FirstFor(list, 2)?.name == "map2");
         }
     }
 }

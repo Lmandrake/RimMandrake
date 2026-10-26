@@ -98,9 +98,13 @@ namespace RimMandrake.ColdStorage
         /// <summary>Spawned units across every map. Zero makes every patch a single compare.</summary>
         public static int UnitCount { get; private set; }
 
+        private static readonly System.Func<MapComponent_StorageClimate, MapComponent_StorageClimate, bool> SameMap = (a, b) => a.map == b.map;
+
+        /// <summary>A loaded map constructs this component twice (Map.ConstructComponents, then the saved list); the
+        /// newest is the one the map keeps and units register on, so it replaces the older entry for its map.</summary>
         internal static void Add(MapComponent_StorageClimate mc)
         {
-            maps.Add(mc);
+            ColdStorageKernel.ReplaceOrAdd(maps, mc, SameMap);
         }
 
         internal static void Remove(MapComponent_StorageClimate mc)
