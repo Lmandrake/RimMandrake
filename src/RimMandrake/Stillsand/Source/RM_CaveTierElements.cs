@@ -58,12 +58,16 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
-            GenSpawn.Spawn(corpse, cell, map);
+            // Long dead, not just dried: the corpse's own time of death goes back as far as its rot
+            // (vanilla GenStep_ScatterCaveDebris sets Age and rot together the same way, before spawning).
             CompRottable rot = corpse.GetComp<CompRottable>();
             if (rot != null)
             {
-                rot.RotProgress = rot.PropsRot.TicksToDessicated + 1f;
+                int ticks = rot.PropsRot.TicksToDessicated + 1;
+                corpse.Age = ticks;
+                rot.RotProgress = ticks;
             }
+            GenSpawn.Spawn(corpse, cell, map);
         }
     }
 }

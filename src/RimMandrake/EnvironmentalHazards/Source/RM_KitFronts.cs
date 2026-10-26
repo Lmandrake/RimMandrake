@@ -8,7 +8,7 @@ namespace RimMandrake.EnvironmentalHazards
     /// ROT_MOD_SETTINGS_WIRING_1: the seam that lets a biome mod's own Mod Settings screen gate the shared
     /// mechanics living here. A biome mod registers delegates at startup; with none registered every query
     /// answers "on, factor 1, no extra extension source", so this assembly behaves exactly as before.
-    /// Keys: acceleratedRot, livingProduceHeat, warmGround, sheenExposure, sporeCloud, livePrepStrict.
+    /// Keys: acceleratedRot, livingProduceHeat, warmGround, sheenExposure, sporeCloud, sporeAllergy, livePrepStrict.
     /// </summary>
     public static class RM_KitFronts
     {
