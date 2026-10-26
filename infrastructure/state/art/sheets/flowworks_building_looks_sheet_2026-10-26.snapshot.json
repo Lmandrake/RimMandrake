@@ -1,0 +1,367 @@
+{
+ "biome": "SUBJECTS_flowworks_building_looks",
+ "built": "2026-10-26T14:14:11-0700",
+ "census": "Transient/biome_ffar/flowworks_building_looks.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_DesalPlant_Kludged": {
+   "columns": {
+    "A": {
+     "single": "f17ea7d0c9bda579dc7d4fa737b022afb4d4b731967e17cc88d6298319f4a458"
+    },
+    "B": {
+     "single": "910eba2b8ed1fd9f92d06f03822a1c921504bd2e6aa3e5cac8ef5341f3602490"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Kludged",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Kludged"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DesalPlant_Kludged_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Kludged",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "desalplant_kludged"
+  },
+  "RM_DesalPlant_Repaired": {
+   "columns": {
+    "A": {
+     "single": "b812c87fc36b78dbb957e7e137471538dbd1262aacfa2eae9e17d214e59f0ff7"
+    },
+    "B": {
+     "single": "188c4f7cdde50fbec7735c23bc1b71b165c0ccecde59d151a9f0c652d22a24c5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Repaired",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Repaired"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DesalPlant_Repaired_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Repaired",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "desalplant_repaired"
+  },
+  "RM_DesalPlant_Wrecked": {
+   "columns": {
+    "A": {
+     "single": "301a1bd13847490c3cc21bbb2ab49c09dd3a91499826642e9039c83b2b96267e"
+    },
+    "B": {
+     "single": "b8b8b938f3958dd50aa073af5c108b034b4466a487a9d79e9d38a8dea955e1b1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Wrecked",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Wrecked"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DesalPlant_Wrecked_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DesalPlant_Wrecked",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "desalplant_wrecked"
+  },
+  "RM_DetoxWorks_Kludged": {
+   "columns": {
+    "A": {
+     "single": "0a95bb06543cdc56ccfb7cbcf703357babff7b1d8af25f8bda404b391e801800"
+    },
+    "B": {
+     "single": "0a1299dd5daf32eb7dca26e08fbd99b20a203cd00693d1e3b83e4b708b739180"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Kludged",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Kludged"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DetoxWorks_Kludged_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Kludged",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "detoxworks_kludged"
+  },
+  "RM_DetoxWorks_Repaired": {
+   "columns": {
+    "A": {
+     "single": "2f136f92a8010edc1686690cca14d86b38482eda72eb0bb6152988693ba4ed75"
+    },
+    "B": {
+     "single": "1e121a04d07ce7b4e1c0a1bc5da7811decb34755857b0ef8cedd7a10b6321928"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Repaired",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Repaired"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DetoxWorks_Repaired_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Repaired",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "detoxworks_repaired"
+  },
+  "RM_DetoxWorks_Wrecked": {
+   "columns": {
+    "A": {
+     "single": "c3362bbfe69aefbc27b6bd500a5efbecf86bdf40af878f6b9c3cf8b474f91bc2"
+    },
+    "B": {
+     "single": "6dbbd2a4f047b9d8b7c2cfa03eb0d5251f89ba3ec7a6f7f31f26ed7551aa04ee"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked",
+    "B": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_DetoxWorks_Wrecked_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Wrecked",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "detoxworks_wrecked"
+  },
+  "RM_FerryPost": {
+   "columns": {
+    "A": {
+     "single": "a5facb970a2c939bfbd8c54ffca9bd5b10198c5f6e6635914198202a4a3f8637"
+    },
+    "B": {
+     "single": "fa7cedde6e78a4e35ad9bbb3542b4db821847271b7698c3a39047d6ba7b41f5e"
+    },
+    "C": {
+     "single": "fcdc4048707eb3554cedb8580c79a5bed9b055704210d86ec2d78ba785d1a011"
+    },
+    "D": {
+     "single": "c03bee0fb43051df715174bb7dd3ec194a6b5187e4516247d424d502841b1990"
+    },
+    "E": {
+     "single": "848b788d2e356edcbb1c7db7d90b1bb012cb69530ee9088c8d8d8e6d9afe228e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Rivers/RM_FerryPost",
+    "B": "Things/Building/FlowWorks/Rivers/RM_FerryPost",
+    "C": "Things/Building/FlowWorks/Rivers/RM_FerryPost",
+    "D": "Things/Building/FlowWorks/Rivers/RM_FerryRope",
+    "E": "Things/Building/FlowWorks/Rivers/RM_FerryRope"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render ",
+    "C": "render RM_FerryPost_v1",
+    "D": "IN GAME \u2014 FlowWorks",
+    "E": "render RM_FerryRope_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Rivers/RM_FerryPost",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ferrypost"
+  },
+  "RM_PumpingStation_Kludged": {
+   "columns": {
+    "A": {
+     "single": "33699438b1fb355852a825416437c83391582570f17aa884750d14b88b4dbf1f"
+    },
+    "B": {
+     "single": "3a2950be2c5f7b7c28dd2c8fd6fb1d8a197f634d078481c84b469b1c90a22224"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+    "B": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_PumpingStation_Kludged_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pumpingstation_kludged"
+  },
+  "RM_PumpingStation_Repaired": {
+   "columns": {
+    "A": {
+     "single": "bea8985307ee6076b679ffb00585e9c347c7d8654daef961f8ff0b3e81e3842f"
+    },
+    "B": {
+     "single": "b5bb680f0cdd7bf8b7da4ecf727b7e71537e11153399cc62878f14d95166c93f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Repaired",
+    "B": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Repaired"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_PumpingStation_Repaired_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Repaired",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pumpingstation_repaired"
+  },
+  "RM_PumpingStation_Wrecked": {
+   "columns": {
+    "A": {
+     "single": "72906116be8de4cd3f193ba001c8ed40a81934d851212593dfdd80c08764fc70"
+    },
+    "B": {
+     "single": "6d7f9dfa65022a18e7c6076d3cc6336b5ea0f613b5b01e6a690562f290816f82"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Wrecked",
+    "B": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Wrecked"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_PumpingStation_Wrecked_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_PumpingStation_Wrecked",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "pumpingstation_wrecked"
+  },
+  "RM_TarRefinery_Kludged": {
+   "columns": {
+    "A": {
+     "single": "5c28c7e9065073b324bca5a60a0a0309d6d1b5ac1a867095033bd36627fdf9ef"
+    },
+    "B": {
+     "single": "2118a434678745440fea853d49f32e4bbc92bcad59eee3dd5d9da0da2de9d0c8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Kludged",
+    "B": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Kludged"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_TarRefinery_Kludged_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Kludged",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tarrefinery_kludged"
+  },
+  "RM_TarRefinery_Repaired": {
+   "columns": {
+    "A": {
+     "single": "593e131a828d9fc6365a58b1480eb99974081dedb60c8b248df7ca0b720465bb"
+    },
+    "B": {
+     "single": "6f3be476ddb8c3e8c0a689c4c2624842f2cf086d24151314319dbc4f19be446d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Repaired",
+    "B": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Repaired"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_TarRefinery_Repaired_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Repaired",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tarrefinery_repaired"
+  },
+  "RM_TarRefinery_Wrecked": {
+   "columns": {
+    "A": {
+     "single": "ec949cddfd9ed8c162c593ff46a6b3992f56b5363156ebf7cd78ee17bc3f2707"
+    },
+    "B": {
+     "single": "299fe4224dc276d80535ad83f7e54b3739c0ee79aba183f54b64163dbaf43919"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Wrecked",
+    "B": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Wrecked"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 FlowWorks",
+    "B": "render RM_TarRefinery_Wrecked_v1"
+   },
+   "pools": [],
+   "res": "Things/Building/FlowWorks/Machinery/RM_TarRefinery_Wrecked",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "tarrefinery_wrecked"
+  }
+ },
+ "sheetId": "flowworks_building_looks_sheet_2026-10-26",
+ "snapshotId": "5b80367b8d6ae395"
+}
