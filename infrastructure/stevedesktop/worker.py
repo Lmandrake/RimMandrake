@@ -120,13 +120,22 @@ def pin_marker():
 
 
 def unpin():
-    """Put the clone back on main after an attempt that pinned it to a detached source_sha (idempotent)."""
-    if os.path.exists(pin_marker()):
+    """Put the clone back on main after an attempt that pinned it to a detached source_sha (idempotent, never raises).
+
+    Called BEFORE an attempt publishes its result: the next start may follow the result at once, and a clone still
+    detached (or a git index.lock still held) then refused that job SYNC."""
+    if not os.path.exists(pin_marker()):
+        return 0, ""
+    try:
         rc, msg = git("checkout", "-q", "main")
-        if rc == 0:
+    except (OSError, subprocess.SubprocessError) as e:
+        return 1, "unpin: %s" % e
+    if rc == 0:
+        try:
             os.remove(pin_marker())
-        return rc, msg
-    return 0, ""
+        except FileNotFoundError:
+            pass
+    return rc, msg
 
 
 def git(*args):
@@ -166,8 +175,8 @@ def finalize_dead(aid, why):
     st = read_json(os.path.join(d, "state.json")) or {}
     res = base_result(job.get("id") or aid.rsplit(".a", 1)[0], aid, st.get("runner_sha"))
     res.update(outcome="INTERRUPTED", cause="CRASH", note=why, phase_s=st.get("phase_s") or {})
-    publish_result(d, res)
     unpin()
+    publish_result(d, res)
     if read_text(p("current")) == aid:
         os.remove(p("current"))
 
@@ -605,8 +614,10 @@ class Attempt:
             if self.res["outcome"] is None:
                 self.fail("INVALID", "HARNESS", "attempt ended in phase %s without a verdict" % self.phase)
             self.phase = "done"
+            rc, msg = unpin()           # before the result: a start that follows it at once finds the clone on main
+            if rc != 0:
+                self.say("could not put the clone back on main (the next start retries): %s" % msg[-300:])
             publish_result(self.d, self.res)
-            unpin()
             if read_text(p("current")) == self.aid:
                 os.remove(p("current"))
             self.say("result %s %s %s" % (self.res["outcome"], self.res["cause"], self.res["counts"]))

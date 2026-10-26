@@ -282,6 +282,11 @@ def main():
             g("add", n)
             g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", n)
         first, second = g("rev-parse", "HEAD~1"), g("rev-parse", "HEAD")
+        # a slow checkout (post-checkout hook) widens the window between the attempt's last git call and its result:
+        # the clone must be back on main BEFORE result.json appears, since the next start may follow at once
+        hook = os.path.join(scratch, ".git", "hooks", "post-checkout")
+        open(hook, "w").write("#!/bin/sh\nsleep 2\n")
+        os.chmod(hook, 0o755)
         jp = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", first[:12])
         rc, o = w(["start"], jp, TESTQ_CLONE=scratch)
         res = wait_result(o.get("attempt", "x"))
