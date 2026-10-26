@@ -14,6 +14,11 @@
 //     and the snapshot as they were (the reel's footprint is restored), Clone copies every cell;
 //  L7 source: DrawAll and the tick ask EnsureLay(r, true), the deferred path is skipped under FrameLegacy, and LayFrom's body
 //     is the queue's LayFromOn (one body, no drift).
+// Review 2026-10-26 (independent review of 7e2a38a751):
+//  L8 HoseMath.RouteCells budget is per thread (HOSE_ROUTE_FIX_THREAD_BUDGET: the shared static counter let concurrent
+//     searches cap each other into a false "no route");
+//  L9 a job landing after its reel's lay was reset (layEpoch) is dropped and released, never applied (HOSE_LAY_FIX_STALE_EPOCH);
+//  L10 the in-flight cap holds across queues; L11 source: every layKey reset bumps layEpoch.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,7 +53,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     q.BeginFrame(f);
                     // the component asks only on a mismatch (EnsureLay: r.layKey == key returns the cached lay)
                     if (applied == "k1") continue;
-                    HoseLayQueue.Job j = q.Ask(7, "k1", prep);
+                    HoseLayQueue.Job j = q.Ask(7, "k1", 0, prep);
                     if (j != null) applied = j.key;
                 }
                 Assert(runs == 1 && q.Started == 1 && q.Taken == 1, $"one lay for one key, got runs {runs} started {q.Started}");
@@ -80,7 +85,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     {
                         if (applied[id] == "s2") continue;   // EnsureLay's key check
                         left++;
-                        HoseLayQueue.Job j = q.Ask(id, "s2", prep);
+                        HoseLayQueue.Job j = q.Ask(id, "s2", 0, prep);
                         if (j != null) applied[id] = j.key;
                     }
                     worstMs = Math.Max(worstMs, frame.ElapsedMilliseconds);
@@ -110,7 +115,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     for (int id = 0; id < 10; id++)
                     {
                         if (applied.Contains(id)) continue;
-                        if (q.Ask(id, "k", () => Stand(() => { })) != null) { applied.Add(id); perFrame[f]++; }
+                        if (q.Ask(id, "k", 0, () => Stand(() => { })) != null) { applied.Add(id); perFrame[f]++; }
                     }
                 }
                 Assert(perFrame[0] == 4 && perFrame[1] == 4 && perFrame[2] == 2 && applied.Count == 10, $"4/4/2, got {string.Join("/", perFrame)}");
@@ -126,19 +131,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Run = () => { if (k == "a") gate.Wait(5000); lock (made) made.Add(k); return new HoseLay { Ok = true, Reason = k }; },
                 };
                 q.BeginFrame(0);
-                Assert(q.Ask(1, "a", prepFor("a")) == null && q.Running(1), "job a started");
+                Assert(q.Ask(1, "a", 0, prepFor("a")) == null && q.Running(1), "job a started");
                 q.BeginFrame(1);
-                Assert(q.Ask(1, "b", prepFor("b")) == null && q.Started == 1, "b waits for a (one job a reel)");
+                Assert(q.Ask(1, "b", 0, prepFor("b")) == null && q.Started == 1, "b waits for a (one job a reel)");
                 gate.Set();
                 Assert(q.Drain(5000), "a lands");
                 q.BeginFrame(2);
-                HoseLayQueue.Job j = q.Ask(1, "b", prepFor("b"));
+                HoseLayQueue.Job j = q.Ask(1, "b", 0, prepFor("b"));
                 Assert(j != null && j.key == "a" && j.result.Reason == "a" && q.Behind == 1, $"a's lay comes back under a, got {j?.key}");
-                HoseLayQueue.Job j2 = q.Ask(1, "b", prepFor("b"));
+                HoseLayQueue.Job j2 = q.Ask(1, "b", 0, prepFor("b"));
                 Assert(j2 == null && q.Started == 2, "the caller's second ask starts b");
                 Assert(q.Drain(5000), "b lands");
                 q.BeginFrame(3);
-                HoseLayQueue.Job jb = q.Ask(1, "b", prepFor("b"));
+                HoseLayQueue.Job jb = q.Ask(1, "b", 0, prepFor("b"));
                 Assert(jb != null && jb.key == "b" && jb.result.Reason == "b", "b's lay under b");
                 Assert(made.Count == 2 && q.Started == 2, $"two lays, got {made.Count}");
             });
@@ -148,19 +153,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var q = new HoseLayQueue { Async = false };
                 int runs = 0;
                 Func<HoseLayQueue.Work> boom = () => new HoseLayQueue.Work { Run = () => { runs++; throw new InvalidOperationException("boom"); } };
-                for (int f = 0; f < 20; f++) { q.BeginFrame(f); Assert(q.Ask(3, "x", boom) == null, "a fault is not handed back"); }
+                for (int f = 0; f < 20; f++) { q.BeginFrame(f); Assert(q.Ask(3, "x", 0, boom) == null, "a fault is not handed back"); }
                 Assert(runs == 1 && q.Faulted == 1 && q.LastFault != null && q.LastFault.Contains("boom"), $"one run, fault kept: runs {runs} {q.LastFault}");
                 q.BeginFrame(21);
-                Assert(q.Ask(3, "y", () => Stand(() => runs++)) != null && runs == 2, "a new key is laid");
+                Assert(q.Ask(3, "y", 0, () => Stand(() => runs++)) != null && runs == 2, "a new key is laid");
                 // async: a worker throw lands as a fault too
                 var qa = new HoseLayQueue { Async = true };
                 qa.BeginFrame(0);
-                qa.Ask(4, "x", boom);
+                qa.Ask(4, "x", 0, boom);
                 Assert(qa.Drain(5000), "drained");
                 qa.BeginFrame(1);
-                Assert(qa.Ask(4, "x", boom) == null && qa.Faulted == 1 && runs == 3, $"async fault harvested once: {qa.Json()}");
+                Assert(qa.Ask(4, "x", 0, boom) == null && qa.Faulted == 1 && runs == 3, $"async fault harvested once: {qa.Json()}");
                 qa.BeginFrame(2);
-                Assert(qa.Ask(4, "x", boom) == null && runs == 3, "async fault not retried");
+                Assert(qa.Ask(4, "x", 0, boom) == null && runs == 3, "async fault not retried");
             });
 
             Case("L6 HoseLayQueue.Compute on a CordWorld copy lays what the snapshot lays and leaves both untouched", () =>
@@ -205,6 +210,134 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(src.Contains("% 250 == 0) EnsureLay(r, true);"), "the 250-tick check asks deferred");
                 Assert(src.Contains("if (deferred && !LegacyFrame) return LayLater("), "deferred only off FrameLegacy");
                 Assert(src.Contains("return HoseLayQueue.LayFromOn(World(), r.Rect, Start(r), outward, end, inward, route, sp, r.Seed);"), "LayFrom's body is LayFromOn");
+            });
+
+            Case("L8 HoseMath.RouteCells on three threads at once: each search counts (and caps) only its own expansions", () =>
+            {
+                // review 2026-10-26 (HOSE_ROUTE_FIX_THREAD_BUDGET): the A* budget counter was a shared static
+                // (HoseMath.LastRouteExpanded), so a lay worker's search ate the main thread's CheckReplan budget (a spurious "no
+                // route" retracts a hose) and reset it under another search. 200x200 open world, goal walled in: every search
+                // expands the whole reachable map (~40000 < RouteMaxExpand 90000) and finds nothing, never capped -- but three at
+                // once count ~120000 on one shared counter.
+                var w = new CordWorld(200, 200);
+                var goal = new Cell(199, 199);
+                w.SetBlocked(new Cell(198, 199), BlockKind.Wall);
+                w.SetBlocked(new Cell(199, 198), BlockKind.Wall);
+                w.SetBlocked(new Cell(198, 198), BlockKind.Wall);
+                Assert(HoseMath.RouteCells(w, new Cell(0, 0), goal, 0) == null && !HoseMath.LastRouteCapped, "alone: no route, not capped");
+                int expect = HoseMath.LastRouteExpanded;
+                Assert(expect > 30000 && expect < HoseMath.RouteMaxExpand, $"can-fail: one search expands most of the map, got {expect}");
+                var bad = new List<string>();
+                var go = new ManualResetEventSlim(false);
+                var threads = new List<Thread>();
+                for (int t = 0; t < 3; t++)
+                {
+                    var th = new Thread(() =>
+                    {
+                        go.Wait();
+                        for (int k = 0; k < 4; k++)
+                        {
+                            List<Cell> p = HoseMath.RouteCells(w, new Cell(0, 0), goal, 0);
+                            bool capped = HoseMath.LastRouteCapped;
+                            int n = HoseMath.LastRouteExpanded;
+                            if (p != null || capped || n != expect) lock (bad) bad.Add($"route {(p == null ? "null" : "found")} capped {capped} expanded {n}");
+                        }
+                    });
+                    th.Start();
+                    threads.Add(th);
+                }
+                go.Set();
+                foreach (Thread th in threads) Assert(th.Join(120000), "a search thread finished");
+                Assert(bad.Count == 0, $"{bad.Count}/12 concurrent searches saw another's count, first: {(bad.Count > 0 ? bad[0] : "")} (expect {expect})");
+            });
+
+            Case("L9 HoseLayQueue: a job that lands after its reel's lay was reset (newer epoch) is dropped, released, and the current key started", () =>
+            {
+                var released = new List<KeyValuePair<HoseLayQueue.Work, bool>>();
+                var q = new HoseLayQueue { Async = true, MaxStartsPerFrame = 4, MaxInFlight = 2, Released = (w, re) => released.Add(new KeyValuePair<HoseLayQueue.Work, bool>(w, re)) };
+                var gate = new ManualResetEventSlim(false);
+                Func<string, Func<HoseLayQueue.Work>> prepFor = tag => () => new HoseLayQueue.Work
+                {
+                    Run = () => { if (tag == "old") gate.Wait(5000); return new HoseLay { Ok = true, Reason = tag }; },
+                };
+                q.BeginFrame(0);
+                Assert(q.Ask(1, "k", 0, prepFor("old")) == null && q.Running(1), "the epoch-0 job started");
+                gate.Set();
+                Assert(q.Drain(5000), "old lands");
+                q.BeginFrame(1);
+                // the reel was reset (picked up, reeled in, an obstacle, a synchronous lay) and asks the SAME key again
+                HoseLayQueue.Job j = q.Ask(1, "k", 1, prepFor("new"));
+                Assert(j == null, $"a lay from before the reset is never handed back to apply, got {j?.result?.Reason}");
+                Assert(q.Dropped == 1 && q.Taken == 0 && q.Behind == 0, $"dropped, not taken: {q.Json()}");
+                Assert(released.Count == 1 && released[0].Value, "its work is released as reusable (done)");
+                Assert(q.Started == 2, $"the current epoch's job starts in the same ask: {q.Json()}");
+                Assert(q.Drain(5000), "new lands");
+                q.BeginFrame(2);
+                HoseLayQueue.Job jn = q.Ask(1, "k", 1, prepFor("new"));
+                Assert(jn != null && jn.result.Reason == "new" && jn.epoch == 1, $"the current lay is applied, got {jn?.result?.Reason}");
+                // a reel forgotten mid-lay: its work released NOT reusable (the worker may still hold the world copy)
+                var gate2 = new ManualResetEventSlim(false);
+                q.BeginFrame(3);
+                q.Ask(2, "z", 0, () => new HoseLayQueue.Work { Run = () => { gate2.Wait(5000); return new HoseLay { Ok = true }; } });
+                q.Forget(2);
+                Assert(released.Count == 2 && !released[1].Value, "a forgotten running job's work is released, not reusable");
+                gate2.Set();
+                Assert(q.Drain(5000), "the forgotten job finishes unread");
+                // a fault under an older epoch is retried after a reset
+                var qs = new HoseLayQueue { Async = false };
+                int runs = 0;
+                Func<HoseLayQueue.Work> boom = () => new HoseLayQueue.Work { Run = () => { runs++; throw new InvalidOperationException("boom"); } };
+                qs.BeginFrame(0); qs.Ask(5, "x", 0, boom);
+                qs.BeginFrame(1); qs.Ask(5, "x", 0, boom);
+                Assert(runs == 1, "not retried under the same key and epoch");
+                qs.BeginFrame(2); qs.Ask(5, "x", 1, boom);
+                Assert(runs == 2, "retried after a reset");
+            });
+
+            Case("L10 HoseLayQueue: the in-flight cap holds across queues (maps, an abandoned game's queue)", () =>
+            {
+                int keep = HoseLayQueue.MaxInFlightAll;
+                var gate = new ManualResetEventSlim(false);
+                var a = new HoseLayQueue { Async = true, MaxStartsPerFrame = 4, MaxInFlight = 4 };
+                var b = new HoseLayQueue { Async = true, MaxStartsPerFrame = 4, MaxInFlight = 4 };
+                try
+                {
+                    Assert(HoseLayQueue.AllInFlight == 0, $"nothing else running, saw {HoseLayQueue.AllInFlight}");
+                    HoseLayQueue.MaxInFlightAll = 3;
+                    Func<HoseLayQueue.Work> prep = () => new HoseLayQueue.Work { Run = () => { gate.Wait(5000); return new HoseLay { Ok = true }; } };
+                    a.BeginFrame(0); b.BeginFrame(0);
+                    for (int id = 0; id < 4; id++) { a.Ask(id, "k", 0, prep); b.Ask(id, "k", 0, prep); }
+                    Assert(a.Started + b.Started == 3 && HoseLayQueue.AllInFlight == 3, $"3 lays at once in all, got a {a.Started} b {b.Started} all {HoseLayQueue.AllInFlight}");
+                    Assert(b.Deferred > 0, "the second queue was held by the first's lays");
+                }
+                finally
+                {
+                    gate.Set();
+                    a.Drain(5000); b.Drain(5000);
+                    HoseLayQueue.MaxInFlightAll = keep;
+                }
+                Assert(HoseLayQueue.AllInFlight == 0, $"every finished lay leaves the global count, saw {HoseLayQueue.AllInFlight}");
+            });
+
+            Case("L11 epoch (source): every lay reset bumps layEpoch and the deferred ask passes it", () =>
+            {
+                string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                string reel = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "CompHoseReel.cs"));
+                string probe = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "HoseProbe.cs"));
+                foreach (var kv in new[] { new KeyValuePair<string, string>("RM_MapComponent_Hoses", comp), new KeyValuePair<string, string>("CompHoseReel", reel), new KeyValuePair<string, string>("HoseProbe", probe) })
+                {
+                    string[] lines = kv.Value.Split('\n');
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (!lines[i].Contains("layKey = null;")) continue;
+                        bool bumped = false;
+                        for (int k = Math.Max(0, i - 2); k <= Math.Min(lines.Length - 1, i + 2); k++) if (lines[k].Contains("layEpoch++")) bumped = true;
+                        Assert(bumped, $"{kv.Key}:{i + 1} resets layKey without bumping layEpoch");
+                    }
+                }
+                Assert(comp.Contains("layQueue.Ask(id, key, r.layEpoch, prepare)"), "LayLater asks under the reel's epoch");
+                int again = comp.IndexOf("private HoseLay LayAgain(", StringComparison.Ordinal);
+                Assert(again > 0 && comp.IndexOf("r.layEpoch++", again, StringComparison.Ordinal) > again, "a synchronous lay bumps the epoch");
             });
         }
     }

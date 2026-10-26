@@ -131,7 +131,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>State read: hose port stubs drawn last frame, and stub meshes built since load.</summary>
         public int lastPortStubs, portStubBuilds;
 
-        public RM_MapComponent_Hoses(Map map) : base(map) { }
+        public RM_MapComponent_Hoses(Map map) : base(map) { layQueue = new HoseLayQueue { Released = ReleaseLayWork }; }
 
         /// <summary>FINAL §3.9 fallback: without the save-skip patch this component would be written into saves by class
         /// name, so MapComponentUpdate takes it off the map on its first frame (not here: see below); MapComponentTick is
@@ -602,7 +602,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         // ------------------------------------------------------------------ HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: lays off the frame
         /// <summary>The draw's and tick's lays (HoseLayQueue); a component's own, so one map's lays never wait on another's budget.</summary>
-        private readonly HoseLayQueue layQueue = new HoseLayQueue();
+        private readonly HoseLayQueue layQueue;
         private bool layFaultLogged;
         /// <summary>World copies the lay jobs run on (a lay marks its reel's footprint solid while it runs, restored after), reused
         /// while the snapshot they copy holds: at most MaxInFlight copies a snapshot, not one per lay.</summary>
@@ -618,13 +618,14 @@ namespace RimMandrake.FlowWorks.Hose
             layQueue.BeginFrame(Time.frameCount);
             int id = r.parent.thingIDNumber;
             Func<HoseLayQueue.Work> prepare = () => PrepareLay(r, end, inward, portAt, portAxis);
-            HoseLayQueue.Job job = layQueue.Ask(id, key, prepare);
+            HoseLayQueue.Job job = layQueue.Ask(id, key, r.layEpoch, prepare);
             if (job != null)
             {
                 ApplyLay(r, job.key, job.result, job.work.World, (IntVec3)job.work.Tag, (int)job.ms);
                 GiveBackLayWorld(job.work.World);
-                // the reel moved on while it was laid: its newest lay is drawn, and the current key starts its own job
-                if (job.key != key) job = layQueue.Ask(id, key, prepare);
+                // the reel moved on while it was laid (no reset since: same epoch): its newest lay is drawn, and the current
+                // key starts its own job
+                if (job.key != key) job = layQueue.Ask(id, key, r.layEpoch, prepare);
                 if (job != null)
                 {
                     ApplyLay(r, job.key, job.result, job.work.World, (IntVec3)job.work.Tag, (int)job.ms);
@@ -677,6 +678,14 @@ namespace RimMandrake.FlowWorks.Hose
             if (w != null && layWorldsOut.Remove(w)) layWorlds.Push(w);
         }
 
+        /// <summary>HoseLayQueue.Released: a dropped or forgotten job's copy. A done one goes back to the pool; one a worker may
+        /// still be laying on is only no longer counted as lent (it is never reused).</summary>
+        private void ReleaseLayWork(HoseLayQueue.Work work, bool reusable)
+        {
+            if (reusable) GiveBackLayWorld(work.World);
+            else if (work.World != null) layWorldsOut.Remove(work.World);
+        }
+
         /// <summary>The copies of layWorldsOf now lent to jobs.</summary>
         private readonly HashSet<CordWorld> layWorldsOut = new HashSet<CordWorld>();
 
@@ -701,6 +710,7 @@ namespace RimMandrake.FlowWorks.Hose
             // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
             // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
             ApplyLay(r, key, lay, w, r.EndCell, (int)sw.ElapsedMilliseconds);
+            r.layEpoch++;   // a background lay still running for this reel is older than this one: dropped when it lands
             return r.lay;
         }
 
@@ -824,6 +834,7 @@ namespace RimMandrake.FlowWorks.Hose
                     {
                         r.trail.Clear();
                         r.layKey = null;
+                        r.layEpoch++;
                         continue;
                     }
                     string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
@@ -836,6 +847,7 @@ namespace RimMandrake.FlowWorks.Hose
                         r.Retract(why); Retracts++; continue;
                     }
                     r.layKey = null;
+                    r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied
                 }
             }
         }

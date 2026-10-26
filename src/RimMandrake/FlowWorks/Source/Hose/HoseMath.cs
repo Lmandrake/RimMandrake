@@ -1896,9 +1896,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// apart): every cell of a 300x300 map, enough for any map a colony plays on.</summary>
         public const int RouteMaxExpand = 90000;
 
-        /// <summary>State read: cells the last RouteCells expanded, and whether it ran out of budget.</summary>
-        public static int LastRouteExpanded;
-        public static bool LastRouteCapped;
+        /// <summary>State read: cells the last RouteCells ON THIS THREAD expanded, and whether it ran out of budget. Per thread
+        /// and written only when the search returns (review 2026-10-26, HOSE_ROUTE_FIX_THREAD_BUDGET): the budget itself is a
+        /// local -- a shared counter let a lay worker's search (HoseLayQueue) spend the main thread's CheckReplan budget.</summary>
+        [ThreadStatic] public static int LastRouteExpanded;
+        [ThreadStatic] public static bool LastRouteCapped;
 
         /// <summary>The hose's own route search (round 5). Round 4 used the cord planner's A* with a flat 20000-expansion cap,
         /// which is no bound on length at all: on a big open map a hard route spent it and read as "no route". This is the
@@ -1910,6 +1912,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             LastRouteExpanded = 0;
             LastRouteCapped = false;
+            int expanded = 0;
             if (start == goal) return new List<Cell> { start };
             bool Ok(Cell c) => c == start || c == goal || w.IsWalkable(c);
             double H(Cell c)
@@ -1939,10 +1942,11 @@ namespace RimMandrake.FlowWorks.Hose
                     var path = new List<Cell> { c };
                     while (came.TryGetValue(c, out Cell p)) { c = p; path.Add(c); }
                     path.Reverse();
+                    LastRouteExpanded = expanded;
                     return path;
                 }
                 if (top.g > g[c] + 1e-12) continue;
-                if (++LastRouteExpanded > cap) { LastRouteCapped = true; return null; }
+                if (++expanded > cap) { LastRouteExpanded = expanded; LastRouteCapped = true; return null; }
                 foreach (Cell d in Cell.Dirs8)
                 {
                     Cell q = c + d;
@@ -1964,6 +1968,7 @@ namespace RimMandrake.FlowWorks.Hose
                     }
                 }
             }
+            LastRouteExpanded = expanded;
             return null;
         }
 

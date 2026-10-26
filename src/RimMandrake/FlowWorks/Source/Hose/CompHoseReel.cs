@@ -57,6 +57,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Runtime only: the laid geometry and its cache keys, and the state history for the flicker check.</summary>
         public HoseLay lay;
         public string layKey;
+        /// <summary>Runtime only: bumped whenever the lay is reset (layKey nulled by a change of deployment, an obstacle or a
+        /// synchronous lay), so a background lay started before it is dropped when it lands, never applied
+        /// (HoseLayQueue step 6, HOSE_LAY_FIX_STALE_EPOCH).</summary>
+        public int layEpoch;
         public ulong corridorHash;
         public string lastProvider = "none";
         public bool lastSignal;
@@ -371,6 +375,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             lay = null;
             layKey = null;
+            layEpoch++;
         }
 
         /// <summary>A cell on or edge-adjacent to this reel: a Move order there means "bring the end back to the reel".</summary>
@@ -696,6 +701,7 @@ namespace RimMandrake.FlowWorks.Hose
             lastLayReason = null;
             lay = null;
             layKey = null;
+            layEpoch++;
             sm.ResetFlat();
             history.Clear();
             RefreshLook();
@@ -744,6 +750,7 @@ namespace RimMandrake.FlowWorks.Hose
             pendingAt = IntVec3.Invalid;
             lay = null;
             layKey = null;
+            layEpoch++;
             lastLayReason = null;
             sm.ResetFlat();
             history.Clear();

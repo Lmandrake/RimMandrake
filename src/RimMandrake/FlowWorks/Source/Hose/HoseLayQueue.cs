@@ -18,7 +18,14 @@
 //     the inputs it was started from, and newer than what is drawn); if the reel's key moved meanwhile (Behind) the caller
 //     asks again and the new key starts its own job -- a hose carried across the map shows its newest landed lay instead of
 //     freezing while every result goes stale;
-//  5. a lay that THROWS keeps its text (LastFault, Faulted) and is not retried while the key holds.
+//  5. a lay that THROWS keeps its text (LastFault, Faulted) and is not retried while the key (and epoch) holds;
+//  6. (review 2026-10-26, HOSE_LAY_FIX_STALE_EPOCH) every job carries the reel's lay EPOCH at its start
+//     (CompHoseReel.layEpoch: bumped whenever the reel's lay is reset -- reeled in, picked up, set down at a new target, an
+//     obstacle across it, a synchronous lay). A job that lands under an older epoch is DROPPED, never applied: its lay
+//     belongs to a deployment, a world or a lay the reel has already left behind (step 4 applies a landed lay only while
+//     nothing reset the reel since it started);
+//  7. (HOSE_LAY_FIX_GLOBAL_CAP) the in-flight cap holds across every queue (MaxInFlightAll: all maps, and a reloaded game's abandoned queue whose
+//     workers are still finishing), as well as per queue.
 // With Async off (selftests) a started job runs on the caller, still at most MaxStartsPerFrame a frame.
 // Verse-free: compiled into the SelfTest project (HoseLayQueueChecks).
 using System;
@@ -98,20 +105,30 @@ namespace RimMandrake.FlowWorks.Hose
             public HoseLay result;
             public string error;
             public long ms;
+            /// <summary>The reel's lay epoch when the job started (step 6).</summary>
+            public int epoch;
         }
 
         internal bool Async = true;
         internal int MaxStartsPerFrame = 4;
         internal int MaxInFlight = Math.Max(1, Math.Min(4, Environment.ProcessorCount / 2));
+        /// <summary>Step 7: lays running at once in the whole process (every queue).</summary>
+        internal static int MaxInFlightAll = Math.Max(1, Math.Min(4, Environment.ProcessorCount / 2));
+        private static int allInFlight;
+        internal static int AllInFlight => Volatile.Read(ref allInFlight);
+        /// <summary>Main thread: a job whose lay will never be applied (dropped as stale, or its reel forgotten) gives its work
+        /// back -- <c>reusable</c> = the job is done, so its world copy is restored and nothing else holds it.</summary>
+        internal Action<Work, bool> Released;
 
         private readonly Dictionary<int, Job> jobs = new Dictionary<int, Job>();
-        private readonly Dictionary<int, string> faulted = new Dictionary<int, string>();
+        private readonly Dictionary<int, KeyValuePair<string, int>> faulted = new Dictionary<int, KeyValuePair<string, int>>();
         private int frame = int.MinValue, startedThisFrame;
         private int inFlight;
 
         /// <summary>Probe counters (main thread): jobs started, results handed back to apply, of those the ones whose reel had
-        /// moved on (Behind), asks deferred by the budget, lays that threw; the slowest lay so far (ms, worker time).</summary>
-        internal long Started, Taken, Behind, Deferred, Faulted, MaxMs;
+        /// moved on (Behind), asks deferred by the budget, lays that threw, landed lays dropped as older than a reset (Dropped);
+        /// the slowest lay so far (ms, worker time).</summary>
+        internal long Started, Taken, Behind, Deferred, Faulted, Dropped, MaxMs;
         internal string LastFault;
         internal int InFlight => Volatile.Read(ref inFlight);
         internal int Jobs => jobs.Count;
@@ -128,51 +145,58 @@ namespace RimMandrake.FlowWorks.Hose
         internal bool Running(int id) => jobs.TryGetValue(id, out Job j) && !j.done;
 
         /// <summary>A finished job to apply under ITS key (job.key: may differ from <paramref name="key"/> -- the reel moved on;
-        /// apply it, then ask again), or null: still running, deferred by the budget, just started, or faulted under this key.
+        /// apply it, then ask again), or null: still running, deferred by the budget, just started, or faulted under this key and
+        /// epoch. A landed job from an older <paramref name="epoch"/> is dropped (step 6) and the current key asked at once.
         /// <paramref name="prepare"/> runs on the caller only when a job starts.</summary>
-        internal Job Ask(int id, string key, Func<Work> prepare)
+        internal Job Ask(int id, string key, int epoch, Func<Work> prepare)
         {
             if (jobs.TryGetValue(id, out Job j))
             {
                 if (!j.done) return null;   // one job a reel: a newer key waits for it
                 jobs.Remove(id);
-                Job landed = Land(id, j);
-                if (landed != null)
+                Job landed = Land(id, j, j.epoch == epoch);
+                if (j.epoch != epoch)
+                {
+                    if (landed != null) Dropped++;
+                    Released?.Invoke(j.work, true);
+                }
+                else if (landed != null)
                 {
                     if (landed.key != key) Behind++;
                     return landed;
                 }
-                if (j.key != key) faulted.Remove(id);   // the fault was under an older key: the new one is tried
             }
-            if (faulted.TryGetValue(id, out string fk))
+            if (faulted.TryGetValue(id, out KeyValuePair<string, int> fk))
             {
-                if (fk == key) return null;
-                faulted.Remove(id);
+                if (fk.Key == key && fk.Value == epoch) return null;
+                faulted.Remove(id);   // the fault was under another key or before a reset: tried again
             }
-            if (startedThisFrame >= MaxStartsPerFrame || (Async && InFlight >= MaxInFlight)) { Deferred++; return null; }
+            if (startedThisFrame >= MaxStartsPerFrame || (Async && (InFlight >= MaxInFlight || AllInFlight >= MaxInFlightAll))) { Deferred++; return null; }
             startedThisFrame++;
             Started++;
-            var job = new Job { id = id, key = key, work = prepare() };
+            var job = new Job { id = id, key = key, epoch = epoch, work = prepare() };
             if (!Async)
             {
                 RunJob(job);
                 job.done = true;
-                return Land(id, job);
+                return Land(id, job, true);
             }
             jobs[id] = job;
             Interlocked.Increment(ref inFlight);
+            Interlocked.Increment(ref allInFlight);
             Queue(job, this);
             return null;
         }
 
-        /// <summary>A done job: the result to apply, or null when it threw (kept as LastFault; its key is not retried).</summary>
-        private Job Land(int id, Job j)
+        /// <summary>A done job: the result to apply, or null when it threw (kept as LastFault; its key and epoch are not retried
+        /// when <paramref name="current"/>). A dropped job's throw is still counted and kept.</summary>
+        private Job Land(int id, Job j, bool current)
         {
             if (j.ms > MaxMs) MaxMs = j.ms;
-            if (j.error == null) { Taken++; return j; }
+            if (j.error == null) { if (current) Taken++; return j; }
             Faulted++;
             LastFault = $"reel {id}: {j.error}";
-            faulted[id] = j.key;
+            if (current) faulted[id] = new KeyValuePair<string, int>(j.key, j.epoch);
             return null;
         }
 
@@ -194,14 +218,20 @@ namespace RimMandrake.FlowWorks.Hose
                 {
                     job.done = true;
                     Interlocked.Decrement(ref q.inFlight);
+                    Interlocked.Decrement(ref allInFlight);
                 }
             });
         }
 
-        /// <summary>A reel gone: its job (running or not) and fault are forgotten; a running one finishes unread.</summary>
+        /// <summary>A reel gone: its job (running or not) and fault are forgotten; a running one finishes unread (its work is
+        /// released as not reusable: the worker may still be laying on its world copy).</summary>
         internal void Forget(int id)
         {
-            jobs.Remove(id);
+            if (jobs.TryGetValue(id, out Job j))
+            {
+                jobs.Remove(id);
+                Released?.Invoke(j.work, j.done);
+            }
             faulted.Remove(id);
         }
 
@@ -218,7 +248,7 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         internal string Json() =>
-            "{\"started\":" + Started + ",\"taken\":" + Taken + ",\"behind\":" + Behind + ",\"deferred\":" + Deferred + ",\"faulted\":" + Faulted
+            "{\"started\":" + Started + ",\"taken\":" + Taken + ",\"behind\":" + Behind + ",\"deferred\":" + Deferred + ",\"faulted\":" + Faulted + ",\"dropped\":" + Dropped
             + ",\"inFlight\":" + InFlight + ",\"jobs\":" + jobs.Count + ",\"maxMs\":" + MaxMs + ",\"async\":" + (Async ? "true" : "false") + "}";
     }
 }

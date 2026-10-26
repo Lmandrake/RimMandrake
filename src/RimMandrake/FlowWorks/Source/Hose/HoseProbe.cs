@@ -149,6 +149,7 @@ namespace RimMandrake.FlowWorks.Hose
                     r.laid = true;
                     RM_MapComponent_Hoses.RelayVersion++;
                     r.layKey = null;
+                    r.layEpoch++;
                     r.lay = null;
                     r.parent.DirtyMapMesh(map);
                     comp.EnsureLay(r);
