@@ -302,6 +302,27 @@ def t_stamp_guard_refusal_rebuilds_and_retries(a, b):
     assert "UNCOMMITTED" in open(os.path.join(a, MOD + "/Source/C.cs")).read()
 
 
+def t_stamp_guard_rebuild_never_overwrites_dirty_dll(a, b):
+    """review wave 87: the rebuild writes the DLL pair into the worktree; an uncommitted edit there is refused, kept."""
+    seed_mod(a, b)
+    hooks = os.path.join(os.path.dirname(a), "hooks")
+    write(hooks, "pre-push", HOOK)
+    os.chmod(os.path.join(hooks, "pre-push"), 0o755)
+    sh(a, "config", "core.hooksPath", hooks)
+    write(a, MOD + "/Source/B.cs", "class B { int changed; }\n")
+    write(a, DLL, "SOMEONE'S UNCOMMITTED LOCAL BUILD")
+    calls = []
+    real, P.winbuild = getattr(P, "winbuild", None), mock_winbuild(calls)
+    P.MAX_TRIES, old_tries = 2, P.MAX_TRIES
+    try:
+        why = refused(P.publish, a, [MOD + "/Source/B.cs"], "source only")
+    finally:
+        P.winbuild, P.MAX_TRIES = real, old_tries
+    assert why and "uncommitted edits" in why and DLL in why, why
+    assert open(os.path.join(a, DLL)).read() == "SOMEONE'S UNCOMMITTED LOCAL BUILD"
+    assert not calls, calls
+
+
 TESTS = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 

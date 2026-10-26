@@ -896,7 +896,7 @@ def _run(args, targets, holds, mods_dir, active):
     if guard_block:
         print("DEF GUARD: --apply of this plan would be REFUSED (%d conflict(s); "
               "see the top of this plan)." % len(guard_block))
-    if args.apply and deployed:
+    if args.apply and deployed and _is_real_game(mods_dir):
         _emit_deploy(deployed, any_leftover)
     if args.apply and wrote:
         print("Deployed %d file(s). RESTART RIMWORLD — defs are only parsed at "
@@ -1003,6 +1003,15 @@ def _def_guard(args, targets, holds, mods_dir):
             print("    . ... %d more" % (len(old) - 20))
     print()
     return block
+
+
+def _is_real_game(mods_dir):
+    """A deploy into the real RimWorld Mods folder, not a selftest's throwaway one (review wave 87: 143 of 521
+    telemetry `deploy` events were selftest fixtures named ModA, annotated on Grafana as real deploys)."""
+    try:
+        return os.path.realpath(mods_dir) == os.path.realpath(LOCAL_MODS)
+    except (OSError, TypeError, ValueError):
+        return False
 
 
 def _emit_deploy(deployed, leftover):

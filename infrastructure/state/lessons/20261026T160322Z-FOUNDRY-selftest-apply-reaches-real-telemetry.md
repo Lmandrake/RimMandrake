@@ -1,0 +1,2 @@
+A selftest that runs a tool's real main() with --apply against a temp fixture still reaches every side channel the tool has that the fixture did not patch: deploy_custom_mods' telemetry emit wrote 159 fake 'deploy ModA/ModNew' events (30% of all deploy events) into the real /mnt/e/telemetry inbox. Gate side channels on the REAL target (realpath == the game's Mods folder), not on fixtures remembering to patch them.
+home: infrastructure/state/facts/instrument_traps.md

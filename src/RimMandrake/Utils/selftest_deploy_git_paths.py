@@ -71,7 +71,12 @@ def dir_case(game_root):
 
 def main():
     rd, wd, uni = quoted_and_readded()
-    rc4, dirs4, body4, plan4 = dir_case(tempfile.gettempdir())
+    emitted, real_emit = [], D._emit_deploy           # review wave 87: a fixture --apply must not reach telemetry
+    D._emit_deploy = lambda *a: emitted.append(a)
+    try:
+        rc4, dirs4, body4, plan4 = dir_case(tempfile.gettempdir())
+    finally:
+        D._emit_deploy = real_emit
     ci = case_insensitive_root()
     if ci:
         rc5, dirs5, body5, plan5 = dir_case(ci)
@@ -84,6 +89,10 @@ def main():
         ("dir case rename, case-sensitive fs: old dir gone, new deployed",
          rc4 == 0 and dirs4 == ["foo"] and body4 == "new"),
         ("... plan afterwards is in sync", "in sync" in plan4),
+        ("an --apply into a throwaway Mods folder emits no telemetry deploy event (got %d)" % len(emitted),
+         not emitted),
+        ("... while the real game Mods folder still counts as real", D._is_real_game(D.LOCAL_MODS)
+         if hasattr(D, "_is_real_game") else False),
     ]
     if ci:
         cases += [("dir case rename, case-INSENSITIVE fs (%s): directory respelled, exit 0" % ci,

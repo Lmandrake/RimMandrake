@@ -30,7 +30,9 @@ def land(cwd, *a, env=None):
 def main() -> int:
     with tempfile.TemporaryDirectory() as td:
         os.environ.update({"HOME": td, "TMPDIR": td, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t",
-                           "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": "/dev/null"})
+                           "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": "/dev/null",
+                           # the "outside a clone" case must never find a real clone above td and land into it
+                           "GIT_CEILING_DIRECTORIES": os.path.dirname(td)})
         o, seat, peer = f"{td}/o.git", f"{td}/seat", f"{td}/peer"
         git(td, "init", "-q", "--bare", "-b", "main", o)
         git(td, "clone", "-q", o, seat)
@@ -85,6 +87,21 @@ def main() -> int:
 
         r = land(seat, "-m", "a3", "a.txt", env={"LAND_SYNC": "0"})
         check(r.returncode == 2 and "nothing to land" in r.stderr, "re-landing identical content is refused")
+
+        # review wave 87: the guards that keep a landing to the listed paths, each refused with origin untouched
+        tip = git(o, "rev-parse", "main")
+        Path(seat, "e.txt").write_text("e\n")
+        Path(seat, "f.txt").write_text("not listed\n")
+        git(seat, "add", "--", "e.txt", "f.txt"); git(seat, "commit", "-q", "-m", "e+f", "--", "e.txt", "f.txt")
+        r = land(seat, git(seat, "rev-parse", "HEAD"), "e.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "outside the listed paths" in r.stderr and git(o, "rev-parse", "main") == tip,
+              "sha mode: a commit touching an unlisted path is refused, origin unchanged")
+        r = land(seat, new, "b.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "already" in r.stderr and git(o, "rev-parse", "main") == tip,
+              "sha mode: a commit already on origin is refused")
+        r = land(seat, "-m", "typo", "no_such_file.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "not in worktree or origin" in r.stderr and git(o, "rev-parse", "main") == tip,
+              "-m mode: a path in neither the worktree nor origin is refused")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 
