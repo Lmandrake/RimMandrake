@@ -23,15 +23,17 @@ namespace RimMandrake.DivingInteraction
         /// works bills. A fuelled plant with neither is not burning anything (RM_DecayCell digests rot, RUT_VaultHeart
         /// eats a persona core; CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED; Outer Rim's tibanna fusion reactors carry no
         /// heat pusher either) and keeps working. Heat is a proxy, not proof: VQE's four uranium Genetrons push heat and
-        /// burn nothing, so they opt out per def (Patches/RM_ChillFireBan_FissionGenetrons.xml). Census of all 29 fuelled
+        /// burn nothing, so they opt out per def with RM_NonCombustionExtension (`burnsNothing`,
+        /// Patches/RM_ChillFireBan_FissionGenetrons.xml). That flag answers only "is this building a flame"; it never
+        /// lets the building start a fire (see IgnitionAllowed). Census of all 29 fuelled
         /// plants on the owner's list, def dump 2026-10-26: CHILLFIREBAN_FIX_MODDED_OVERRIDES_BYPASS.
         /// A powered CONSUMER with fuel is a machine, not a fire (CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL: KoltoTank,
         /// Autobong, Spaceports_FuelProcessor — their glow is an electric status light), so it is never a flame building.
         /// </summary>
         public static bool UsesFlame(bool hasRefuelable, bool glow, bool heat, bool flameOverlay, bool workTable,
-            bool powerPlant, bool poweredConsumer)
+            bool powerPlant, bool poweredConsumer, bool burnsNothing)
         {
-            if (!hasRefuelable)
+            if (!hasRefuelable || burnsNothing)
             {
                 return false;
             }
@@ -44,11 +46,32 @@ namespace RimMandrake.DivingInteraction
 
         /// <summary>
         /// Gate one vanilla output (lit, pushing heat, usable for bills, producing power) of a building. The ban can only
-        /// turn an output OFF, never on: a fuel-out campfire stays out wherever it is.
+        /// turn an output OFF, never on: a fuel-out campfire stays out wherever it is. `usesFlame` is UsesFlame's verdict
+        /// for the building (CHILLFIREBAN_FIX_OUTPUT_PARAM_MISNAMED: it was misnamed hasRefuelable).
         /// </summary>
-        public static bool Output(bool vanillaOn, bool hasRefuelable, bool ignitionAllowed)
+        public static bool Output(bool vanillaOn, bool usesFlame, bool ignitionAllowed)
         {
-            return vanillaOn && (!hasRefuelable || ignitionAllowed);
+            return vanillaOn && (!usesFlame || ignitionAllowed);
+        }
+
+        /// <summary>
+        /// May a fire start or attach here? Every `Fire` Thing on the seabed spawns through FireUtility.TryStartFireIn or
+        /// FireUtility.TryAttachFire; RM_ChillFireGate.IsIgnitionAllowed reads the map, settings, the instigator's def
+        /// extensions and the cell's air and plays what this returns. Off the seabed, or with the mechanic switched off,
+        /// fire is vanilla. On it, fire needs an oxidizer: pumped air in the cell, or an instigator that carries its own
+        /// (RM_SelfOxidizingExtension: Fuselight). `instigatorBurnsNothing` (RM_NonCombustionExtension) is taken on
+        /// purpose and never grants fire: a fission reactor makes power without burning, but the flame explosions of its
+        /// meltdown have no oxidizer either, and their fire would carry the reactor as instigator to every cell it spreads
+        /// to (CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN).
+        /// </summary>
+        public static bool IgnitionAllowed(bool chillSeabed, bool banEnabled, bool instigatorSelfOxidizing,
+            bool instigatorBurnsNothing, bool cellOxygenated)
+        {
+            if (!chillSeabed || !banEnabled)
+            {
+                return true;
+            }
+            return instigatorSelfOxidizing || cellOxygenated;
         }
 
         /// <summary>True when the passive fuel burn of this tick is skipped: a flame building that cannot burn.</summary>

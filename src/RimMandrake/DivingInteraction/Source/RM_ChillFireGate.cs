@@ -82,29 +82,46 @@ namespace RimMandrake.DivingInteraction
             return t?.def != null && t.def.HasModExtension<RM_SelfOxidizingExtension>();
         }
 
+        /// <summary>RM_NonCombustionExtension: a fuelled building that burns nothing (a fission reactor).</summary>
+        public static bool BurnsNothing(Thing t)
+        {
+            return t?.def != null && t.def.HasModExtension<RM_NonCombustionExtension>();
+        }
+
         /// <summary>
         /// The one call every ignition patch in Patch_ChillFireBan.cs
         /// routes through. True = fire may happen here; false = the ban
         /// applies. Every non-Chill-seabed map always returns true — this
         /// mechanism is invisible everywhere else, by construction.
+        /// The decision itself is RM_ChillFireBanKernel.IgnitionAllowed (fuzzed offline); this reads its inputs.
         /// </summary>
         public static bool IsIgnitionAllowed(Map map, IntVec3 cell, Thing relevantThing = null)
         {
             if (!IsChillSeabedMap(map))
             {
-                return true;
+                return true; // cheap reject: every other map
             }
-            if (!RM_DivingSettings.masterEnabled || !RM_DivingSettings.chillFireBanEnabled)
+            bool banEnabled = RM_DivingSettings.masterEnabled && RM_DivingSettings.chillFireBanEnabled;
+            if (!banEnabled)
             {
                 return true; // mod fully inert / this mechanic switched off — degrade to vanilla fire
             }
-            if (IsSelfOxidizing(relevantThing))
-            {
-                return true; // carries its own oxidizer — Fuselight's future exemption
-            }
             RM_MapComponent_ChillOxygenation oxygenation = map.GetComponent<RM_MapComponent_ChillOxygenation>();
-            return oxygenation != null && oxygenation.IsCellOxygenated(cell);
+            return RM_ChillFireBanKernel.IgnitionAllowed(true, banEnabled,
+                IsSelfOxidizing(relevantThing), BurnsNothing(relevantThing),
+                oxygenation != null && oxygenation.IsCellOxygenated(cell));
         }
+    }
+
+    /// <summary>
+    /// Marker DefModExtension: "this fuelled building burns nothing" — CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN.
+    /// Read ONLY by the flame-building classification (RM_ChillFireBanKernel.UsesFlame): the building keeps making
+    /// power, heat and light on the seabed. It is NOT an oxidizer: fire it instigates (a meltdown's flame explosions)
+    /// is banned like any other. VQE's four uranium Genetrons carry it (Patches/RM_ChillFireBan_FissionGenetrons.xml).
+    /// Use RM_SelfOxidizingExtension only for a thing whose own fire really burns without air (Fuselight).
+    /// </summary>
+    public class RM_NonCombustionExtension : DefModExtension
+    {
     }
 
     /// <summary>

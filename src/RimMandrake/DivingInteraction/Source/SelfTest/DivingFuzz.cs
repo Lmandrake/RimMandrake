@@ -2,7 +2,7 @@
 //   RM_GardenDefenseKernel (Chill garden offense scoring, tiers, cooldowns),
 //   RM_ElderEconomyKernel   (Brine Elder novelty ledger, unique-treasure claims, silver payout),
 //   RM_OxygenLedgerKernel   (pump-served rooms), RM_WalkerTrampleKernel (Scald walker trample/warn) and
-//   RM_ChillFireBanKernel   (the seabed fire ban: flame classification and output gates).
+//   RM_ChillFireBanKernel   (the seabed fire ban: flame classification, output gates, ignition of cells and pawns).
 // The model (event log, reference sets) is this file's own; every number comes from the production kernel. A failing
 // sequence is shrunk by delta debugging and printed as `family seed N: message | actions`, so it replays exactly.
 using System;
@@ -517,17 +517,19 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 var r = Traced(seed, 17);
                 bool refuel = r.Next(4) != 0, glow = r.Next(2) == 0, heat = r.Next(2) == 0, overlay = r.Next(3) == 0;
                 bool table = r.Next(3) == 0, plant = r.Next(4) == 0, powered = plant || r.Next(3) == 0;
-                bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered);
-                string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered}";
+                bool inert = r.Next(6) == 0;   // RM_NonCombustionExtension on the def
+                bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered, inert);
+                string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered} burnsNothing {inert}";
                 // The classification is checked clause by clause, each one a ruling, not the kernel's expression copied
                 // back. Over seven flags any complete oracle is the same truth table, so the check that can disagree with
                 // the kernel is the named-building table below (real comp sets from the def dump, verdict from what the
                 // building's description says it burns); the random part here tests the gating plumbing.
                 string clause = null;
                 if (!refuel && flame) clause = "no fuel, yet a flame (electric things are never touched)";
+                else if (inert && flame) clause = "a def marked burns-nothing (RM_NonCombustionExtension) counted as a flame";
                 else if (refuel && powered && !plant && flame) clause = "a fuelled powered machine counted as a flame (CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL)";
-                else if (refuel && !powered && flame != (glow || heat || overlay || table)) clause = "an unpowered fuelled building is a flame exactly when it lights, heats, shows a flame or works bills";
-                else if (refuel && plant && (heat || overlay) && !flame) clause = "a fuelled plant that pushes heat or shows a flame is combustion and must be banned";
+                else if (refuel && !powered && !inert && flame != (glow || heat || overlay || table)) clause = "an unpowered fuelled building is a flame exactly when it lights, heats, shows a flame or works bills";
+                else if (refuel && plant && !inert && (heat || overlay) && !flame) clause = "a fuelled plant that pushes heat or shows a flame is combustion and must be banned";
                 else if (refuel && plant && !heat && !overlay && flame) clause = "a fuelled plant with no heat and no flame is not burning (CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED)";
                 if (clause != null) { fails.Add($"fireban seed {seed}: UsesFlame {flame}: {clause} ({who})"); continue; }
                 float fuel = refuel ? r.Next(1, 50) : 0f;
@@ -565,7 +567,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
             }
             // the named vanilla and modded buildings the ruling and the review name
             Cases++; Steps++;
-            bool Banned(bool rf, bool g, bool h, bool o, bool t, bool p, bool pw) { return RM_ChillFireBanKernel.UsesFlame(rf, g, h, o, t, p, pw); }
+            bool Banned(bool rf, bool g, bool h, bool o, bool t, bool p, bool pw, bool inertDef = false) { return RM_ChillFireBanKernel.UsesFlame(rf, g, h, o, t, p, pw, inertDef); }
             if (!Banned(true, true, true, true, true, false, false)) fails.Add("fireban units: Campfire (fuel, glow, heat, flame, bills) is not a flame building — it would still cook on the seabed");
             if (!Banned(true, false, true, false, true, false, false)) fails.Add("fireban units: FueledStove is not a flame building");
             if (!Banned(true, false, false, false, true, false, false)) fails.Add("fireban units: FueledSmithy is not a flame building");
@@ -579,14 +581,114 @@ namespace RimMandrake.DivingInteraction.SelfTest
             if (!Banned(true, false, true, false, false, true, true)) fails.Add("fireban units: KOTOR_ReactorRhydonium_small (\"igniting motes of Rhydonium\": heat, no glow) is not a flame building");
             if (Banned(true, false, false, false, false, true, true)) fails.Add("fireban units: RM_DecayCell (digests rot: no glow, heat or flame) was banned");
             if (Banned(true, true, false, false, false, true, true)) fails.Add("fireban units: RUT_VaultHeart / OuterRim_FusionReactorLight (glow only, nothing burns) was banned");
+            // VQE The Generator, Buildings_Nuclear_Genetrons.xml (1.6): refuel (RefuelableWithOverdrive), glow, heat, power plant.
+            if (Banned(true, true, true, false, false, true, true, true)) fails.Add("fireban units: VQE_Genetron_UraniumPowered (fission, RM_NonCombustionExtension) was banned — it burns nothing");
+            if (!Banned(true, true, true, false, false, true, true, false)) fails.Add("fireban units: a chemfuel/wood Genetron (same comps, no burns-nothing tag) is not a flame building");
             if (RM_ChillFireBanKernel.Output(false, true, false) || RM_ChillFireBanKernel.Output(false, true, true)) fails.Add("fireban units: Output turned an off output on");
+            return fails;
+        }
+
+        // CHILLFIREBAN_FIX_ATTACHED_FIRE_UNGATED + CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN. A fire source (named below)
+        // goes off on a small map; its fire tries cells (TryStartFireIn) and pawns standing in burning cells
+        // (TryAttachFire), and spreads cell to cell carrying its instigator (Fire.cs:403), all asked through
+        // RM_ChillFireBanKernel.IgnitionAllowed exactly as RM_ChillFireGate does. The oracle is the ruling written out,
+        // not the kernel's expression: on the Chill seabed with the ban on, "fire exists below only where someone pumps
+        // air down", and the one exception is a thing that carries its own oxidizer (Fuselight). A reactor that "burns
+        // nothing" keeps running (FireBan above) but its meltdown flame is not an oxidizer. Anywhere else, fire is vanilla.
+        private static readonly (string name, bool selfOx, bool burnsNothing)[] FireSources =
+        {
+            ("molotov (pawn instigator)", false, false),
+            ("incendiary launcher / IncendiaryShell", false, false),
+            ("flamethrower hit (FlameThrower.cs:19 attach)", false, false),
+            ("beam weapon (Verb_ShootBeam.cs:457 attach)", false, false),
+            ("lightning / short circuit (no instigator)", false, false),
+            ("lava terrain (HediffGiver_Terrain attach, no instigator)", false, false),
+            ("RM_Fuselight explosion (RM_SelfOxidizingExtension)", true, false),
+            ("VQE_Genetron_UraniumPowered meltdown (RM_NonCombustionExtension)", false, true),
+            ("VQE_Genetron_Atomic meltdown (RM_NonCombustionExtension)", false, true),
+            ("chemfuel Genetron meltdown (no extension)", false, false),
+        };
+
+        public static List<string> Ignition(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            const int W = 10;
+            for (int c = 0; c < n && fails.Count < 5; c++)
+            {
+                Cases++;
+                int seed = baseSeed + c;
+                var r = Traced(seed, 23);
+                var src = FireSources[r.Next(FireSources.Length)];
+                bool seabed = r.Next(4) != 0, banOn = r.Next(6) != 0;
+                var air = new bool[W * W];
+                if (r.Next(3) != 0)
+                {
+                    int x0 = r.Next(W), y0 = r.Next(W), x1 = Math.Min(W, x0 + 1 + r.Next(4)), y1 = Math.Min(W, y0 + 1 + r.Next(4));
+                    for (int x = x0; x < x1; x++) for (int y = y0; y < y1; y++) air[x * W + y] = true;   // a sealed pumped room
+                }
+                var pawn = new bool[W * W];
+                for (int i = 0; i < W * W; i++) pawn[i] = r.Next(8) == 0;
+                bool Ask(int cell) { return RM_ChillFireBanKernel.IgnitionAllowed(seabed, banOn, src.selfOx, src.burnsNothing, air[cell]); }
+                // independent truth: does the ruling allow fire from THIS source in THIS cell?
+                bool vanilla = !seabed || !banOn;
+                bool Ruled(int cell) { return vanilla || air[cell] || src.selfOx; }
+                string who = $"{src.name} seabed {seabed} ban {banOn}";
+                var burning = new bool[W * W];
+                var onFire = new bool[W * W];
+                try
+                {
+                    // the blast: a few cells around a centre (DamageWorker_Flame.ExplosionAffectCell -> TryStartFireIn, victim -> TryAttachFire)
+                    int cx = r.Next(W), cy = r.Next(W), rad = 1 + r.Next(3);
+                    for (int x = Math.Max(0, cx - rad); x < Math.Min(W, cx + rad + 1); x++)
+                        for (int y = Math.Max(0, cy - rad); y < Math.Min(W, cy + rad + 1); y++)
+                        {
+                            int i = x * W + y;
+                            if (Ask(i)) burning[i] = true;
+                            if (pawn[i] && Ask(i)) onFire[i] = true;
+                        }
+                    for (int step = 0; step < 30; step++)
+                    {
+                        Steps++;
+                        for (int i = 0; i < W * W; i++)
+                        {
+                            if (!burning[i] || r.Next(3) != 0) continue;
+                            int x = i / W, y = i % W, d = r.Next(4);
+                            int nx = x + (d == 0 ? 1 : d == 1 ? -1 : 0), ny = y + (d == 2 ? 1 : d == 3 ? -1 : 0);
+                            if (nx < 0 || ny < 0 || nx >= W || ny >= W) continue;
+                            int j = nx * W + ny;
+                            if (Ask(j)) burning[j] = true;               // Fire.TrySpread, instigator carried
+                            if (pawn[j] && burning[j] && Ask(j)) onFire[j] = true;   // Fire.cs:272 attach to a pawn in the cell
+                        }
+                    }
+                    for (int i = 0; i < W * W; i++)
+                    {
+                        if (burning[i] && !Ruled(i)) Check(false, $"a cell with no air burned on the seabed (cell {i})");
+                        if (onFire[i] && !Ruled(i)) Check(false, $"a pawn with no air around it caught fire on the seabed (cell {i})");
+                        if (onFire[i] && !burning[i] && !Ruled(i)) Check(false, "a pawn caught fire where no cell may burn");
+                    }
+                    if (vanilla) for (int i = 0; i < W * W; i++) Check(Ask(i), "fire was refused off the seabed or with the ban switched off");
+                    if (src.selfOx) for (int i = 0; i < W * W; i++) Check(Ask(i), "Fuselight's own fire was refused (it carries its oxidizer)");
+                    if (seabed && banOn && !src.selfOx) for (int i = 0; i < W * W; i++) Check(Ask(i) == air[i], "on the banned seabed a non-oxidizer source's fire did not follow the pumped air exactly");
+                }
+                catch (Exception e) { fails.Add($"ignition seed {seed}: {e.Message} ({who})"); }
+            }
+            // named rows: the reported incidents, asked directly
+            Cases++; Steps++;
+            foreach (var src in FireSources)
+            {
+                bool noAir = RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, false);
+                bool expect = src.name.StartsWith("RM_Fuselight");
+                if (noAir != expect) fails.Add($"ignition units: {src.name} on the banned seabed with no air: fire {noAir}, ruling says {expect}");
+                if (!RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, true)) fails.Add($"ignition units: {src.name} refused in a pumped-air cell");
+                if (!RM_ChillFireBanKernel.IgnitionAllowed(false, true, src.selfOx, src.burnsNothing, false)) fails.Add($"ignition units: {src.name} refused on a surface map");
+            }
             return fails;
         }
 
         // A printed seed must replay the very case that failed: case k of a batch from base B equals the single case at seed B+k.
         private static bool ReplayReproduces()
         {
-            var fns = new (string name, Func<int, int, List<string>> run)[] { ("oxygen", Oxygen), ("trample", Trample), ("fireban", FireBan) };
+            var fns = new (string name, Func<int, int, List<string>> run)[] { ("oxygen", Oxygen), ("trample", Trample), ("fireban", FireBan), ("ignition", Ignition) };
             bool good = true;
             foreach (var f in fns)
             {
@@ -615,6 +717,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("oxygen", () => Oxygen(N(3000), S(1))),
                 ("trample", () => Trample(N(3000), S(1))),
                 ("fireban", () => FireBan(N(3000), S(1))),
+                ("ignition", () => Ignition(N(2000), S(1))),
             };
             if (only == null && !ReplayReproduces()) ok = false;
             foreach (var f in fam)

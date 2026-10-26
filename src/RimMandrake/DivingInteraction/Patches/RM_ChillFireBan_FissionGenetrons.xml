@@ -4,7 +4,10 @@
   fuelled power plant is banned when it pushes heat (RM_ChillFireBanKernel.UsesFlame). VQE The Generator's four uranium
   Genetrons push heat but burn nothing: their own description is "a reaction that occurs when uranium breaks down inside
   the core". Like RM_DecayCell and RUT_VaultHeart (CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED) they keep working down
-  there. RM_SelfOxidizingExtension is the ban's one per-def opt-out ("needs no air"), read by RM_ChillFireGate.
+  there. RM_NonCombustionExtension ("burns nothing") is read ONLY by UsesFlame, so it keeps the reactor running and
+  grants no fire: a meltdown's flame explosions (Building_Genetron Signal_NuclearCriticalBreakdown_Detonate, DamageDefOf.Flame
+  with instigator = the Genetron, decomp VQEGen all.cs:1889-1932) find no oxygen on the seabed and do not catch or spread
+  (CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN; RM_SelfOxidizingExtension, which IS an oxidizer, would have let them).
   The chemfuel and wood Genetrons are combustion and stay banned. FindMod is load safety only.
 -->
 <Patch>
@@ -15,7 +18,7 @@
     <match Class="PatchOperationAddModExtension">
       <xpath>Defs/ThingDef[defName="VQE_Genetron_UraniumPowered" or defName="VQE_Genetron_Nuclear" or defName="VQE_Genetron_Isotopic" or defName="VQE_Genetron_Atomic"]</xpath>
       <value>
-        <li Class="RimMandrake.DivingInteraction.RM_SelfOxidizingExtension" />
+        <li Class="RimMandrake.DivingInteraction.RM_NonCombustionExtension" />
       </value>
     </match>
   </Operation>

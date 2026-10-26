@@ -8,21 +8,29 @@ using Verse;
 namespace RimMandrake.DivingInteraction
 {
     // ════════════════════════════════════════════════════════════════════
-    // CHILL_FIRE_BAN_1 — the four real engine hook points, read off the
+    // CHILL_FIRE_BAN_1 — the real engine hook points, read off the
     // decompiled 1.6 source (RimSage), not assumed:
     //
-    // 1) FireUtility.TryStartFireIn(IntVec3, Map, float, Thing, SimpleCurve)
-    //    is the SINGLE chokepoint every actual `Fire` Thing spawns through
-    //    — confirmed by grepping every call site in the decompiled source:
-    //    DamageWorker_Flame (incendiary/molotov explosions),
-    //    DamageWorker_Vaporize, Explosion.cs's own spread, PowerBeam,
-    //    Verb_ShootBeam, Bullet (incendiary ammo), Bombardment,
-    //    Verb_Ignite (the hand-ignite verb/psycast), FlameThrower,
-    //    SteadyEnvironmentEffects (lightning), Spark, ShortCircuitUtility,
-    //    Fire.cs's own TrySpread/TryBurnFloor, FireArrow. One prefix here
-    //    covers "molotovs/incendiaries splash inert" AND fire's own spread
-    //    AND every other ignition source in one place — nothing on this
-    //    list needs its own patch.
+    // 1) Every `Fire` Thing spawns through one of TWO methods (grep of
+    //    `ThingMaker.MakeThing(ThingDefOf.Fire)` in decompiled 1.6 finds
+    //    exactly FireUtility.cs:85 and :115):
+    //    a) FireUtility.TryStartFireIn(IntVec3, Map, float, Thing, SimpleCurve)
+    //       — a fire in a cell: DamageWorker_Flame / DamageWorker_Vaporize
+    //       explosion cells, Explosion.cs's own spread, PowerBeam,
+    //       Verb_ShootBeam, Bullet (incendiary ammo), Bombardment,
+    //       Verb_Ignite, FlameThrower, SteadyEnvironmentEffects (lightning),
+    //       Spark, ShortCircuitUtility, Fire.cs's TrySpread/TryBurnFloor.
+    //    b) FireUtility.TryAttachFire(this Thing, float, Thing) — a fire on
+    //       a pawn (CanEverAttachFire: pawns only): DamageWorker_Flame's
+    //       victim, Thing.TakeDamage's igniteChanceByTargetFlammability,
+    //       FlameThrower and Verb_ShootBeam hits, HediffGiver_Terrain,
+    //       Fire.cs's attach to pawns in its cell
+    //       (CHILLFIREBAN_FIX_ATTACHED_FIRE_UNGATED: without this second
+    //       prefix an incendiary still set pawns alight on the seabed).
+    //    Both prefixes ask with the INSTIGATOR, so Fuselight's own
+    //    explosion still burns (RM_SelfOxidizingExtension) and a fission
+    //    Genetron's meltdown flame does not (RM_NonCombustionExtension is
+    //    not an oxidizer: CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN).
     //
     // 2) CompRefuelable.ShouldBeLitNow() is NOT wired through
     //    TryStartFireIn at all — a campfire/torch/brazier never spawns a
@@ -61,7 +69,7 @@ namespace RimMandrake.DivingInteraction
     //    fizzle has no flame to look at either, so this prefix skips the
     //    draw call outright on a banned cell.
     //
-    // All four route through RM_ChillFireGate.IsIgnitionAllowed, so the
+    // All of them route through RM_ChillFireGate.IsIgnitionAllowed, so the
     // map-identity check (RM_TheChill AND IsPocketMap), the settings
     // toggles, the oxygenated-zone override and the self-oxidizing
     // (Fuselight) exemption all live in exactly one place.
@@ -78,6 +86,20 @@ namespace RimMandrake.DivingInteraction
             }
             __result = false; // no oxygen down here — the fire simply never catches
             return false;
+        }
+    }
+
+    // Hook (1b). A pawn's attached fire is asked at the pawn's cell; nothing to return, so skipping the body is the ban.
+    [HarmonyPatch(typeof(FireUtility), nameof(FireUtility.TryAttachFire))]
+    public static class Patch_FireUtility_TryAttachFire
+    {
+        public static bool Prefix(Thing t, Thing instigator)
+        {
+            if (t == null || !t.Spawned)
+            {
+                return true; // vanilla decides (CanEverAttachFire refuses it anyway)
+            }
+            return RM_ChillFireGate.IsIgnitionAllowed(t.Map, t.Position, instigator);
         }
     }
 
@@ -259,7 +281,8 @@ namespace RimMandrake.DivingInteraction
                     thing.GetComp<CompFireOverlay>() != null,
                     def.IsWorkTable,
                     trader is CompPowerPlant,
-                    trader != null);
+                    trader != null,
+                    def.HasModExtension<RM_NonCombustionExtension>());
                 usesFlame[def] = result;
             }
             return result;
