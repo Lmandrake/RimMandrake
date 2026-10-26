@@ -24,7 +24,7 @@ Calls agents took for you today (ledger why "delegated:", plus art judge decisio
 ## Needs you (not delegable)
 
 - 7 escalated facing sets above (whole-set redraw or your call).
-- DIG_SPOIL_DECIDE_FOUR_DEFAULTS_HELD: 4 dig-spoil defaults BENCH took, awaiting your check.
+- DIG_SPOIL_DECIDE_FOUR_DEFAULTS_HELD: 4 dig-spoil defaults BENCH took — item already closed at 82fa767908 (no action owed).
 - Judge not yet run on the AaroxisDendoria and RoyalRhino pupa picks was later covered (6 of 6 upheld); the unsure quadruped exemptions are listed in the lint STRICT_EXEMPT list.
 
 Not surfaced in RimPulse: its "since you left" digest (src/RimMandrake/Utils/pulse/pulse.py) is a different digest and does not read this file.
