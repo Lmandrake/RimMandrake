@@ -41,7 +41,13 @@ namespace RimMandrake.Abyss
             if (pawn.AmbientTemperature > Props.maxFeedTemperature) return;
 
             Map map = pawn.Map;
+            var dim = map.GetComponent<RM_MapComponent_KrizzakDimming>();
+            float settleSq = Props.settleDistance * Props.settleDistance;
+            // Only an idle krizzak sets off after a light: never out of a mental state (a manhunting one keeps
+            // hunting), a flee, a meal or a sleep. Same rule decides whether far glowers are worth a reach check.
+            bool mayTravel = !pawn.InMentalState && IsIdleJob(pawn.CurJob);
             CompGlower target = null;
+            IntVec3 dest = IntVec3.Invalid;
             float best = float.MaxValue;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, Props.searchRadius, true))
             {
@@ -53,25 +59,61 @@ namespace RimMandrake.Abyss
                     if (t is Pawn) continue;
                     CompGlower g = t.TryGetComp<CompGlower>();
                     if (g == null || !g.Glows) continue;
-                    var dim = map.GetComponent<RM_MapComponent_KrizzakDimming>();
                     if (dim != null && dim.AtFloor(g, Props.minRadiusFraction)) continue;
                     float d = pawn.Position.DistanceToSquared(t.Position);
-                    if (d < best) { best = d; target = g; }
+                    if (d >= best) continue;
+                    // A far glower counts only if a cell within settle distance of it can be reached: the nearest
+                    // light standing in an impassable building (Noctolith, crematorium) or a sealed room would
+                    // otherwise be chosen every check and the Goto would fail forever.
+                    IntVec3 to = IntVec3.Invalid;
+                    if (d > settleSq && (!mayTravel || !TryApproachCell(pawn, t, settleSq, out to))) continue;
+                    best = d; target = g; dest = to;
                 }
             }
             if (target == null) return;
 
-            if (best <= Props.settleDistance * Props.settleDistance)
+            if (best <= settleSq)
             {
-                map.GetComponent<RM_MapComponent_KrizzakDimming>()?.Feed(target, Props.dimFraction, Props.minRadiusFraction);
+                dim?.Feed(target, Props.dimFraction, Props.minRadiusFraction);
                 Need_Food food = pawn.needs?.food;
                 if (food != null) food.CurLevel += 0.02f;
             }
-            else if (pawn.CurJob == null || pawn.CurJob.def != JobDefOf.Goto)
+            else if (mayTravel && dest.IsValid)
             {
-                Job job = JobMaker.MakeJob(JobDefOf.Goto, target.parent.Position);
-                pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);
+                // Not an ordered job: a player-forced job is never interrupted by damage (Pawn_JobTracker), so a
+                // shot krizzak would neither flee nor fight back on its way to the lamp.
+                Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                pawn.jobs.StartJob(job, JobCondition.InterruptForced, null, false, true, null, JobTag.Misc);
             }
+        }
+
+        private static bool IsIdleJob(Job job)
+        {
+            return job == null || job.def == JobDefOf.Wait_Wander || job.def == JobDefOf.GotoWander || job.def == JobDefOf.Wait;
+        }
+
+        // A standable, reachable cell within settle distance of the glower: its own cell (a glow plant) when it can be
+        // stood on, else the nearest such cell around it.
+        private static bool TryApproachCell(Pawn pawn, Thing t, float settleSq, out IntVec3 cell)
+        {
+            Map map = pawn.Map;
+            cell = IntVec3.Invalid;
+            if (t.Position.Standable(map) && pawn.CanReach(t.Position, PathEndMode.OnCell, Danger.Deadly))
+            {
+                cell = t.Position;
+                return true;
+            }
+            float bestSq = float.MaxValue;
+            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(t))
+            {
+                if (!c.InBounds(map) || !c.Standable(map) || c.DistanceToSquared(t.Position) > settleSq) continue;
+                float d = c.DistanceToSquared(pawn.Position);
+                if (d < bestSq && pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    bestSq = d; cell = c;
+                }
+            }
+            return cell.IsValid;
         }
     }
 
