@@ -56,25 +56,24 @@ namespace RimMandrake.GimmeSomeSlack
                 // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26: a dig anywhere forced a full rebuild, 15 ms at E=206): when
                 // every dirty event since the last build was benign (a terrain/roof change outside the cords' reach, or our own
                 // section dirtying below), the build would reproduce the published pieces exactly (SelfTest reach soundness)
-                if (!relevantSinceBuild && benignSinceBuild)
-                {
-                    builtFrame = Time.frameCount;
-                    benignSinceBuild = false;
-                    FarSkips++;
-                }
+                if (!gate.RegenerateNeedsBuild()) builtFrame = Time.frameCount;
                 else Rebuild();
             }
             var key = new IntVec2(botLeft.x / Section.Size, botLeft.z / Section.Size);
             return bySection.TryGetValue(key, out List<LaidPiece> l) ? l : null;
         }
 
-        public void Notify_SettingsChanged() { builtFrame = -1; relevantSinceBuild = true; Snap.Invalidate("settings"); }
+        public void Notify_SettingsChanged() { builtFrame = -1; gate.Invalidate(); Snap.Invalidate("settings"); }
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: since the last successful build, did a dirty event land that may change
         /// the cords (relevant), or only events that cannot (benign)? Regenerate with neither (a full map regenerate) rebuilds.</summary>
-        private bool relevantSinceBuild = true, benignSinceBuild;
-        /// <summary>Regenerates answered with the published pieces because every event since the build was benign.</summary>
-        public int FarSkips;
+        /// <summary>Round 3: the rebuild-or-skip state and its counters live in Core (RebuildGate) so the SelfTest drives them.</summary>
+        private readonly RebuildGate gate = new RebuildGate();
+        /// <summary>Benign dirty events (far dig, far wall, fog) counted when classified, off screen too (live round 4).</summary>
+        public int FarSkips => gate.FarSkips;
+        /// <summary>Layer regenerates answered with the published pieces because every event since the build was benign.</summary>
+        public int RegenSkips => gate.RegenSkips;
+        public string LastFarSkip => gate.LastFarSkip(flagNames);
         /// <summary>True while DirtySection raises our own dirty event: those reprint pieces this build already made.</summary>
         internal static bool OwnDirty;
         /// <summary>The last build's reach (null before the first build: everything is relevant).</summary>
@@ -87,26 +86,15 @@ namespace RimMandrake.GimmeSomeSlack
         /// reach soundness); what can is a conduit or machine appearing there, and every such thing carries CompPower or a tap
         /// (an unfogged conduit is checked when its cell's fog event lands; a despawned one is gone before its event, but its
         /// CompPower.PostDeSpawn raises PowerGrid, which stays relevant everywhere, as does our own layer flag).</summary>
-        internal bool NoteDirty(IntVec3 loc, ulong layerFlags, ulong benignFlags)
-        {
-            bool benign = OwnDirty ||
-                          ((layerFlags & ~benignFlags) == 0UL && builder.Reach != null && !builder.Reach.All &&
-                           !builder.Reach.Reaches(CordWorldAdapter.C(loc)) && !HoldsPower(loc));
-            if (benign) benignSinceBuild = true;
-            else
-            {
-                relevantSinceBuild = true;
-                RelevantEvents++;
-                if (!OwnDirty) LastRelevant = FlagNames(layerFlags) + "@" + loc.x + "," + loc.z +
-                    (builder.Reach == null ? " noReach" : builder.Reach.Reaches(CordWorldAdapter.C(loc)) ? " inReach" : " outReach") +
-                    (HoldsPower(loc) ? " powered" : "");
-            }
-            return benign;
-        }
+        internal bool NoteDirty(IntVec3 loc, ulong layerFlags, ulong benignFlags) =>
+            gate.Note(OwnDirty, layerFlags, benignFlags, builder.Reach, CordWorldAdapter.C(loc), holdsPowerAt ??= c => HoldsPower(CordWorldAdapter.I(c)), flagNames);
+        // cached delegates: MapMeshDirty fires many times a tick, and a lambda per event would allocate per event
+        private Func<Cell, bool> holdsPowerAt;
+        private static readonly Func<ulong, string> flagNames = FlagNames;
 
         /// <summary>Relevant (rebuild-forcing) dirty events since load, and the last one: its flags, cell, and why.</summary>
-        public int RelevantEvents;
-        public string LastRelevant = "";
+        public int RelevantEvents => gate.RelevantEvents;
+        public string LastRelevant => gate.LastRelevant;
         public string LastReduceWhy => builder.LastReduceWhy;
         /// <summary>The builder, read by the probe for its phase timers.</summary>
         internal CordBuilder BuilderForProbe => builder;
@@ -272,10 +260,22 @@ namespace RimMandrake.GimmeSomeSlack
             return res;
         }
 
-        public void Rebuild()
+        /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD (live round 4: a planned build of 248 edges held one frame ~1 s): a
+        /// build stops laying edges once the rebuild has run <see cref="FrameBudgetMs"/> (snapshot and style scan included)
+        /// and finishes over the next frames, the unlaid edges keeping their previous pieces meanwhile;
+        /// <paramref name="complete"/> lays every edge now (the probe's rebuild commands).</summary>
+        public const double FrameBudgetMs = 8.0;
+        /// <summary>Edges the last build left to a later frame; budgeted rebuilds that left some; the slowest budgeted rebuild
+        /// that laid at least one edge (ms: the live re-measure's per-frame cost of a planned build).</summary>
+        public int LastPending, SlicedBuilds;
+        public double MaxSliceMs;
+
+        public void Rebuild() => Rebuild(false);
+
+        public void Rebuild(bool complete)
         {
             builtFrame = Time.frameCount;
-            relevantSinceBuild = true;          // until this build publishes (disabled or failed builds leave it set)
+            gate.Building();                    // until this build publishes (disabled or failed builds leave it set)
             if (!GimmeSomeSlackSettings.enabled)
             {
                 Snap.Invalidate("disabled");     // the dirty prefix records nothing while disabled
@@ -306,6 +306,8 @@ namespace RimMandrake.GimmeSomeSlack
                 Dictionary<Cell, Aerial.CellStyle> st = styled;
                 // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
                 opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+                // at least 1 ms of lay time: the builder always lays one edge, so a slow snapshot cannot stall the cords
+                opt.LayBudgetMs = complete ? 0 : Math.Max(1.0, FrameBudgetMs - sw.Elapsed.TotalMilliseconds);
                 next = b.Build(world, opt, c => LiveNow(c));
                 LastBuildMs = (System.Diagnostics.Stopwatch.GetTimestamp() - tBuild) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             }
@@ -314,11 +316,19 @@ namespace RimMandrake.GimmeSomeSlack
                 if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[GimmeSomeSlack] cord build failed, keeping the previous cords: " + ex); }
                 return;
             }
-            relevantSinceBuild = benignSinceBuild = false;
             Builds++;
             LastRebuildMs = sw.Elapsed.TotalMilliseconds;
             LastPlanned = b.LastPlanned;
             LastReused = b.LastReused;
+            LastPending = b.LastPending;
+            gate.Published(LastPending);
+            if (LastPending > 0)
+            {
+                // the next frame's MapComponentUpdate lays the next slice (and a layer regenerate meanwhile rebuilds too)
+                StaleOffscreen = true;
+                SlicedBuilds++;
+            }
+            if (!complete && LastPlanned > 0 && LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
             var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
             foreach (LaidPiece p in next)
             {

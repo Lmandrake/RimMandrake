@@ -42,7 +42,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             int uc = Array.IndexOf(args, "--unroutable-census");
             if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
-            if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--fuzz-only")) { GssFuzz.Run(args); Console.WriteLine($"{checks - fails}/{checks} checks passed (fuzz only)"); return fails == 0 ? 0 : 1; }
             bool probe = args.Contains("--probe");
             int di = Array.IndexOf(args, "--dump");
@@ -93,6 +93,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordSlideUnderChecks.Run();    // CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT (owner walk 2026-10-23): CordSlideUnderChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs
             RebuildPerDigChecks.Run();     // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26): RebuildPerDigChecks.cs
+            SliceGateChecks.Run();         // GSS_PLAN_FIX_SECOND_PER_FULL_BUILD + far-dig gate (live round 4): SliceGateChecks.cs
             UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             GptPreReleaseChecks.Run();     // GSS pre-release GPT consult 2026-10-15: GptPreReleaseChecks.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)

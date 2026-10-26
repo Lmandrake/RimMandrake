@@ -86,7 +86,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "census") return Census(map, comp);
             if (cmd == "colonists") return Colonists(map);                                   // site reveal (validation_core.reveal)
             if (cmd.StartsWith("pawn:")) return PawnVerb(map, cmd);
-            if (cmd == "rebuild") { comp.Rebuild(); return "{\"success\":true,\"cmd\":\"rebuild\",\"planned\":" + comp.LastPlanned + ",\"reused\":" + comp.LastReused + "}"; }
+            if (cmd == "rebuild") { comp.Rebuild(true); return "{\"success\":true,\"cmd\":\"rebuild\",\"planned\":" + comp.LastPlanned + ",\"reused\":" + comp.LastReused + "}"; }
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);
             if (cmd == "artfit") return ArtFit(map, comp);
@@ -377,7 +377,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (sameFrameWall != null && sameFrameWall.Spawned && sameFrameWall.Map == map) sameFrameWall.Destroy(DestroyMode.Vanish);   // review: never leave an earlier wall behind
             sameFrameWall = null;
             int frame = UnityEngine.Time.frameCount;
-            comp.Rebuild();
+            comp.Rebuild(true);
             string pre = SceneHash(comp.Pieces);
             string freshPre = SceneHash(FreshPieces(map));   // review: "the wall changed the route" compares fresh with fresh
             IntVec3 cell = IntVec3.Invalid;
@@ -432,7 +432,7 @@ namespace RimMandrake.GimmeSomeSlack
             }
             int extra = cur.Keys.Count(k => !freshKeys.Contains(k));
             return "{\"success\":true,\"cmd\":\"fresh\",\"edges\":" + fresh.Count(p => p.EndA != null) + ",\"same\":" + same +
-                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"extra\":" + extra + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + "}";
+                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"extra\":" + extra + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + ",\"pending\":" + comp.LastPending + "}";
         }
 
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same
@@ -593,6 +593,13 @@ namespace RimMandrake.GimmeSomeSlack
             F("lastRebuildMs", J.D(comp.LastRebuildMs));
             F("builds", comp.Builds.ToString());       // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG live re-measure
             F("farSkips", comp.FarSkips.ToString());
+            // round 3: far skips are counted when a dirty event is classified (off screen too); regenSkips are the layer
+            // regenerates answered without a build; pending/slicedBuilds/maxSliceMs show a planned build laid over frames
+            F("lastFarSkip", J.S(comp.LastFarSkip));
+            F("regenSkips", comp.RegenSkips.ToString());
+            F("pending", comp.LastPending.ToString());
+            F("slicedBuilds", comp.SlicedBuilds.ToString());
+            F("maxSliceMs", J.D(comp.MaxSliceMs));
             F("graphReuses", comp.GraphReuses.ToString());
             F("reachHotBlocks", comp.Reach == null ? "-1" : comp.Reach.All ? "\"all\"" : comp.Reach.HotBlocks.ToString());
             // round 2: where a rebuild's time goes, how the snapshot base was kept, and what forced the last rebuild / re-reduce

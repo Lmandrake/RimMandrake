@@ -137,6 +137,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Machines whose art draws a real power connector where the cord meets it (the tap clamp's jaws): they keep the
         /// straight, square plug under SlideUnder.</summary>
         public HashSet<string> StraightPlugIds = new HashSet<string>();
+        /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD (live round 4: a planned build of 248 edges took ~1 s in one frame, 97%
+        /// of it the per-strand settle): the ms one Build may run before it stops laying edges (counted from the Build's start,
+        /// so the graph reduce and keys spend it too); 0 = unlimited (every selftest). Over budget
+        /// (after at least one lay, so a run of Builds always converges) an edge shows its previous piece, or nothing, and
+        /// counts in <see cref="CordBuilder.LastPending"/>; the next Build lays it. Each edge is laid alone and
+        /// deterministically, so a run of budgeted Builds ends bit-identical to one unbudgeted Build.</summary>
+        public double LayBudgetMs;
     }
 
     /// <summary>
@@ -148,6 +155,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
     {
         private Dictionary<string, LaidPiece> cache = new Dictionary<string, LaidPiece>();
         public int LastPlanned, LastReused;
+        /// <summary>Edges the last Build left to a later Build because <see cref="BuildOptions.LayBudgetMs"/> ran out.</summary>
+        public int LastPending;
+        /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>
+        private Dictionary<string, LaidPiece> shown = new Dictionary<string, LaidPiece>(), shownNext = new Dictionary<string, LaidPiece>();
         public CordGraph Graph { get; private set; }
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26: CordBuilder.Build 15.3 ms at E=206 with every edge
@@ -192,7 +203,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
-            LastPlanned = LastReused = 0;
+            LastPlanned = LastReused = LastPending = 0;
+            shownNext.Clear();
+            long layUntil = opt.LayBudgetMs > 0 ? t0 + (long)(opt.LayBudgetMs * System.Diagnostics.Stopwatch.Frequency / 1000.0) : long.MaxValue;
             // GPT deep review 2026-10-22 #11: a diving piece's corridor is the whole map; hash it ONCE per Build, not once per
             // cached diving edge (D x map cells). The world is only read during a Build, so the memo is exact.
             ulong? wholeMapSig = null;
@@ -228,7 +241,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     next[fk] = old;
                     outp.Add(old);
+                    shownNext[ekey] = old;
                     LastReused++;
+                    continue;
+                }
+                if (LastPlanned > 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= layUntil)
+                {
+                    // over the lay budget: keep showing this edge's previous piece (not cached under the new key) until a later Build
+                    if (shown.TryGetValue(ekey, out LaidPiece prev)) { outp.Add(prev); shownNext[ekey] = prev; }
+                    LastPending++;
                     continue;
                 }
                 LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
@@ -237,8 +258,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 lp.CorridorHash = Corridor(lp);
                 next[fk] = lp;
                 outp.Add(lp);
+                shownNext[ekey] = lp;
                 LastPlanned++;
             }
+            (shown, shownNext) = (shownNext, shown);
             long t3 = System.Diagnostics.Stopwatch.GetTimestamp();
             if (!ReferenceEquals(junctionsFor, g) || junctionSeed != opt.Seed)
             {

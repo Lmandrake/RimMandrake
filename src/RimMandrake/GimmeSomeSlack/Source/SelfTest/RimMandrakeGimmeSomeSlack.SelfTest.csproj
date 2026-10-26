@@ -75,6 +75,8 @@
     <Compile Include="GptPreReleaseChecks.cs" />
     <Compile Include="UnroutableCensus.cs" />
     <Compile Include="RebuildPerDigChecks.cs" />
+    <Compile Include="SliceGateChecks.cs" />
+    <Compile Include="..\Core\RebuildGate.cs" />
   </ItemGroup>
 
   <ItemGroup>
