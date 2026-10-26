@@ -1,0 +1,2 @@
+Burn days with more than ~10 concurrent helpers closed the fewest items per token: 10-22 spent 99.5M cache-read tokens per closed item (30 closes) vs 5.2M on the framework-guided post-reset day (4-7 concurrent) and 11.2M in ALMOST_OUT. Spend surplus tokens on durable no-review work (harnesses, instruments, wiring), not on more parallel helpers or review waves. Evidence D:\ClaudeWork\rimmandrake\modes\burn_daily.txt
+home: design/RimMandrake/operating_modes_2026-10-26.md

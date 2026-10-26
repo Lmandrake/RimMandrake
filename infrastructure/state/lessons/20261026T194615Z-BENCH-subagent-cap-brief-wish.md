@@ -1,0 +1,2 @@
+An owner subagent cap stated only in a brief or chat is not enforced: measured 10-07..10-25, a 1-cap reached 3 concurrent, a FOUNDRY 3-cap reached 17, ALMOST_OUT ran above 1 for 120 of 980 min. Count running helpers (first..last transcript line under ~/.claude/projects/<proj>/*/subagents/) before every spawn; hook item SLOT_CAP_ENFORCE_HOOK_REFUSES_OVER_N. Evidence D:\ClaudeWork\rimmandrake\modes\windows.txt
+home: night-shift-orchestration
