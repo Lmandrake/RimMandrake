@@ -39,6 +39,11 @@ Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   current             the live attempt id (absent when idle)
   outbox/<attempt>.json, outbox/acked/
 
+The testq Archmagi backfill runs this same worker locally on Archmagi (TESTQ_WORKER_HOST=archmagi, its own TESTQ_HOME
+and runner clone) with src/RimMandrake/Utils/testq/archmagi_phases.py as the phase commands: a phase that prints a
+`REFUSED: why` line and fails (drift it may not deploy, no game it may not launch, a game it may not stop) ends the
+attempt REFUSED/DEPLOY or REFUSED/LOAD, or a hang INVALID/HANG with no restart, instead of INVALID.
+
 Tests override the phase commands with TESTQ_CMD_DEPLOY / TESTQ_CMD_LOAD / TESTQ_CMD_DOWN / TESTQ_CMD_RUN (shell
 command strings; RUN gets the modcheck arguments appended) and the bridge client with TESTQ_CMD_BRIDGE, skip the
 pull with TESTQ_SKIP_PULL=1, and may set TESTQ_SHEET_DIR, TESTQ_MODS_DIR, TESTQ_RUN_TIMEOUT_S and TESTQ_NO_SYSTEMD=1.
@@ -74,6 +79,8 @@ DEAD_AFTER_S = 120          # a state.json older than this, with no result, is a
 EX_BUSY = 75
 ATTEMPT_RE = re.compile(S.JOB_ID_RE.pattern[:-1] + r"\.a\d+$")
 SEAT = "RUNNER"
+# the machine this worker runs on, named in every result: the testq Archmagi backfill runs this same worker locally
+HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
 SHEET_DIR = os.environ.get("TESTQ_SHEET_DIR") or os.path.join(RUNNER, "Transient", "modcheck")
 
@@ -212,7 +219,7 @@ def finalize_dead(aid, why):
 
 
 def base_result(job_id, aid, runner_sha):
-    return {"schema": S.RESULT_SCHEMA, "job": job_id, "attempt": aid, "host": "stevedesktop",
+    return {"schema": S.RESULT_SCHEMA, "job": job_id, "attempt": aid, "host": HOST,
             "runner_sha": runner_sha, "outcome": None, "cause": None, "deployed": {}, "rows": [], "counts": {},
             "phase_s": {}, "retries": 0, "modcheck_exit": None, "artifacts": [], "started": S.utcnow(),
             "finished": None, "note": ""}
@@ -436,6 +443,8 @@ class Attempt:
         mods = [self.job["mod"]] + list(self.job.get("deploy") or [])
         if override:
             rc, tail = self.sh(override + " " + " ".join(shlex.quote(m) for m in mods), timeout=1200)
+            if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault
+                return self.fail("REFUSED", "DEPLOY", refused_line(tail))
             return rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)
         args = " ".join("--mod " + shlex.quote(m) for m in mods)
         plan = "python3 src/RimMandrake/Utils/deploy_custom_mods.py " + args
@@ -459,6 +468,8 @@ class Attempt:
         cmd = os.environ.get("TESTQ_CMD_LOAD") or "%s init && %s up --wait" % (GAME, GAME)
         since = S.utcnow()
         rc, tail = self.sh(cmd, timeout=900)
+        if rc != 0 and refused_line(tail):         # e.g. archmagi: no game running, and the lane never launches one
+            return self.fail("REFUSED", "LOAD", refused_line(tail))
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
         m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
@@ -578,7 +589,10 @@ class Attempt:
             self.res["retries"] += 1
             self.phase = "restart"
             self.beat()
-            self.sh(self.cmd_down(), timeout=300)
+            rc_down, tail = self.sh(self.cmd_down(), timeout=300)
+            if rc_down != 0 and refused_line(tail):    # the game may not be restarted here: no second run
+                return self.fail("INVALID", "HANG", "modcheck hung past %ss; no restart (%s)"
+                                 % (timeout, refused_line(tail)))
             if not self.load():
                 return False
             self.phase = "run"
@@ -659,6 +673,14 @@ class Attempt:
                 os.remove(p("current"))
             self.say("result %s %s %s" % (self.res["outcome"], self.res["cause"], self.res["counts"]))
         return 0
+
+
+def refused_line(text):
+    """The `REFUSED: why` a phase command printed (archmagi_phases.py: a lane rule, not a failure), else None."""
+    for line in reversed((text or "").splitlines()):
+        if line.startswith("REFUSED:"):
+            return line[len("REFUSED:"):].strip()[:300]
+    return None
 
 
 def expected_rows(log_text):

@@ -46,8 +46,22 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      or any;
      highest priority first, then the current train (same profile as the last job sent), then oldest.
      The worker's exit 75 (busy) leaves it pending.
-Archmagi lane: jobs with lane=archmagi stay pending; the dispatcher never drives Archmagi's game (the BENCH seat
-holds that bridge). TESTQ_ARCHMAGI=1 is reserved for that backfill and today only reports it is not built.
+  5. The Archmagi backfill (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL; plan section 3 "Archmagi backfill", section 6 "SSH
+     down"), independent of ssh. OFF unless TESTQ_ARCHMAGI=1 is in the tick's environment; QHOME/archmagi.stop also
+     stops it. It runs the SAME worker.py, locally, from its own runner clone (TESTQ_ARCHMAGI_RUNNER, default
+     ~/rm/archrunner: never an agent's or the dispatch clone), TESTQ_HOME=QHOME/archmagi_worker, with
+     archmagi_phases.py as the phases: it never deploys (drift -> REFUSED/DEPLOY), never launches or stops the
+     owner's game (none running -> REFUSED/LOAD), and its attempt holds Archmagi's host guard (the driver lock that
+     `rimflow bridge take` takes), so a seat's take is refused while it runs, never raced.
+     One job is admitted only when every gate holds (archmagi_gate): this machine is Archmagi; no window holds the
+     bridge (shared bridge file AND the BRIDGE mirror); the driver lock is FREE or STALE; the bridge was silent for
+     TESTQ_ARCHMAGI_SILENT_S (600 s: the bridge call log and the last bridge take/release); no back-off or pause.
+     Candidates: lane=archmagi, and lane=any only while SteveDesktop is down or busy; profile in
+     TESTQ_ARCHMAGI_PROFILES (default full-list: a targeted job wants modcheck's minimal-list load). A REFUSED
+     DEPLOY/LOAD/GUARD_HELD attempt hands the job back to pending (DEPLOY: never again on Archmagi; LOAD: the lane
+     backs off TESTQ_ARCHMAGI_BACKOFF_S, 1800 s). A window holder appearing mid-run (a forced take) stops the
+     attempt and hands the job back. A red canary / refused pull pauses only this lane (archmagi_paused.json;
+     `resume --lane archmagi`).
 """
 import argparse
 import fcntl
@@ -77,6 +91,8 @@ AUTO_RETRY = {("INTERRUPTED", "CRASH"), ("INVALID", "GAME_DIED")}
 PAUSE_ON = {("INVALID", "CANARY"): "the vanilla canary was red after a load",
             ("REFUSED", "SYNC"): "the runner pull/pin failed (someone wrote in the runner clone?)"}
 EX_BUSY = 75
+ARCHMAGI = "archmagi"
+STEVE = "stevedesktop"
 
 
 class SshDown(Exception):
@@ -176,9 +192,19 @@ def ssh_reachable():
 
 # ---------------------------------------------------------------- the tick
 
+def host_of(rec):
+    return rec.get("host") or STEVE
+
+
+def worker_for(host):
+    return archmagi_worker if host == ARCHMAGI else remote
+
+
 def reconcile(rec):
     job = rec["job"]
     jid = job["id"]
+    host = host_of(rec)
+    remote = worker_for(host)       # noqa: F811 - the same verbs, on this record's machine
     rc, st = remote(["status", "--job", jid])
     latest, state = st.get("attempt"), st.get("state")
     if latest and latest != rec.get("attempt"):          # the worker knows a newer attempt: follow it
@@ -186,6 +212,14 @@ def reconcile(rec):
         rec["attempt"] = latest
         move(jid, "running", "running", rec)
     if state == "running":
+        if host == ARCHMAGI and not rec.get("yield"):
+            holder = bridge_holder()
+            if holder:     # a window took the bridge anyway (forced): the seat wins, the job goes back
+                rec.update(**{"yield": holder})
+                move(jid, "running", "running", rec)
+                remote(["stop", "--attempt", latest])
+                log("%s on archmagi: %s took the bridge mid-run; attempt %s stopped, the job goes back" % (
+                    jid, holder, latest))
         return
     if state == "dead":
         rc, o = remote(["start"], stdin=json.dumps(job))
@@ -199,6 +233,8 @@ def reconcile(rec):
     rc, res = remote(["result", "--attempt", latest])
     if res.get("schema") != S.RESULT_SCHEMA:
         log("%s: result for %s unreadable: %s" % (jid, latest, res.get("error")))
+        return
+    if host == ARCHMAGI and not rec.get("cancel") and archmagi_bounce(rec, res):
         return
     if (res["outcome"], res["cause"]) in AUTO_RETRY and rec.get("auto_retries", 0) < 1 and not rec.get("cancel"):
         rc, o = remote(["start", "--retry"], stdin=json.dumps(job))
@@ -215,24 +251,35 @@ def reconcile(rec):
 
 def finish(rec, res):
     jid = rec["job"]["id"]
-    move(jid, "running", "done", {"job": rec["job"], "result": res, "attempts": rec.get("attempts") or [res["attempt"]],
-                                  "cancelled": bool(rec.get("cancel")), "finished": S.utcnow()})
-    remote(["ack", "--attempt", res["attempt"]])
-    log("%s DONE-> %s %s %s (%s)" % (jid, res["outcome"], res["cause"] or "", res.get("counts"), res["attempt"]))
+    host = host_of(rec)
+    done = {"job": rec["job"], "result": res, "attempts": rec.get("attempts") or [res["attempt"]],
+            "cancelled": bool(rec.get("cancel")), "finished": S.utcnow()}
+    if host != STEVE:
+        done["host"] = host
+    move(jid, "running", "done", done)
+    worker_for(host)(["ack", "--attempt", res["attempt"]])
+    log("%s DONE-> %s %s %s (%s%s)" % (jid, res["outcome"], res["cause"] or "", res.get("counts"), res["attempt"],
+                                       "" if host == STEVE else " on " + host))
     why = PAUSE_ON.get((res["outcome"], res["cause"]))
-    if why and not rec.get("cancel") and not paused():
+    if why and not rec.get("cancel") and not paused(host):
         S.dump({"since": S.utcnow(), "job": jid, "attempt": res["attempt"], "outcome": res["outcome"],
-                "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:]}, q("paused.json"))
-        log("LANE PAUSED by %s %s/%s: %s; `testq.py resume --reason R` lifts it" % (jid, res["outcome"],
-                                                                                 res["cause"], why))
+                "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:]}, pause_path(host))
+        log("LANE%s PAUSED by %s %s/%s: %s; `testq.py resume%s --reason R` lifts it" % (
+            "" if host == STEVE else " " + host, jid, res["outcome"], res["cause"], why,
+            "" if host == STEVE else " --lane " + host))
 
 
-def paused():
-    return read_json(q("paused.json"))
+def pause_path(host=STEVE):
+    return q("paused.json") if host == STEVE else q("%s_paused.json" % host)
 
 
-def drain_outbox(outbox):
-    running = {r["job"]["id"] for r in records("running")}
+def paused(host=STEVE):
+    return read_json(pause_path(host))
+
+
+def drain_outbox(outbox, host=STEVE):
+    remote = worker_for(host)       # noqa: F811
+    running = {r["job"]["id"] for r in records("running") if host_of(r) == host}
     for aid in outbox:
         jid = aid.rsplit(".a", 1)[0]
         if jid in running:
@@ -256,8 +303,12 @@ def ready(job, now):
     return job.get("lane") in ("stevedesktop", "any")
 
 
+def steve_running():
+    return [r for r in records("running") if host_of(r) == STEVE]
+
+
 def admit(status):
-    if records("running") or paused():
+    if steve_running() or paused():
         return
     if status.get("busy"):
         log("worker busy with %s (not ours); nothing admitted" % status.get("current"))
@@ -266,8 +317,6 @@ def admit(status):
     train = (read_json(q("train.json")) or {}).get("profile")
     cands = [j for j in records("pending") if ready(j, now)]
     if not cands:
-        if os.environ.get("TESTQ_ARCHMAGI") == "1" and any(j.get("lane") == "archmagi" for j in records("pending")):
-            log("archmagi lane requested but not built: archmagi jobs stay pending")
         return
     cands.sort(key=lambda j: (-j["priority"], j["profile"] != train, j["submitted"], j["id"]))
     job = cands[0]
@@ -294,17 +343,273 @@ def cmd_tick(_a):
             print("tick already running")
             return 0
         status = ssh_reachable()
-        if status is None:
-            return 0
-        try:
-            for rec in records("running"):
-                reconcile(rec)
-            drain_outbox(remote(["outbox"])[1].get("outbox") or [])
-            admit(remote(["status"])[1])
-        except SshDown as e:
-            S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)}, q("ssh_state.json"))
-            log("ssh dropped mid-tick: %s" % e)
+        steve_up = status is not None
+        if steve_up:
+            try:
+                for rec in steve_running():
+                    reconcile(rec)
+                drain_outbox(remote(["outbox"])[1].get("outbox") or [])
+                admit(remote(["status"])[1])
+            except SshDown as e:
+                S.dump({"down_since": S.utcnow(), "last_probe": time.time(), "last_error": str(e)},
+                       q("ssh_state.json"))
+                log("ssh dropped mid-tick: %s" % e)
+                steve_up = False
+        archmagi_tick(steve_up=steve_up, steve_busy=bool(steve_running()) or bool((status or {}).get("busy")))
     return 0
+
+
+# ---------------------------------------------------------------- the Archmagi backfill (TESTQ_ARCHMAGI_LANE_BUILD_BACKFILL)
+
+ARCH_SILENT_S = 600          # plan section 3: "only when the bridge is free and has been silent for 10 min"
+ARCH_BACKOFF_S = 1800        # after REFUSED/LOAD (no game running): look again in 30 min, not every minute
+ARCH_MODS_DIR = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
+ARCH_BOUNCE = {"DEPLOY", "LOAD", "GUARD_HELD"}    # REFUSED causes that hand the job back instead of finishing it
+PHASES = ("DEPLOY", "LOAD", "DOWN", "STATUS")
+
+
+def _env_int(name, default):
+    try:
+        return int(os.environ.get(name) or default)
+    except ValueError:
+        return default
+
+
+def arch_home():
+    return os.environ.get("TESTQ_ARCHMAGI_HOME") or q("archmagi_worker")
+
+
+def arch_runner():
+    return os.path.abspath(os.path.expanduser(os.environ.get("TESTQ_ARCHMAGI_RUNNER") or "~/rm/archrunner"))
+
+
+def arch_state():
+    return read_json(q("archmagi_state.json")) or {}
+
+
+def arch_state_update(**kw):
+    st = arch_state()
+    st.update(kw)
+    S.dump(st, q("archmagi_state.json"))
+
+
+def _rimflow():
+    """-> (model, host_guard) from the rimflow package next door (imported late: the Steve lane does not need them)."""
+    d = os.path.join(HERE, "..", "..", "rimflow")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import model
+    import host_guard
+    return model, host_guard
+
+
+def bridge_holder():
+    """-> who holds Archmagi's bridge per the shared bridge file or the BRIDGE mirror, else None. Unreadable files
+    read as free here; the driver lock (taken by the worker) is what actually refuses a second driver."""
+    try:
+        model, _hg = _rimflow()
+    except Exception as e:      # noqa: BLE001
+        return "unknown (rimflow not importable: %s)" % e
+    sh = model.read_shared_bridge()
+    if sh and sh.get("holder"):
+        return "%s (shared bridge file, for: %s)" % (sh["holder"], sh.get("purpose"))
+    try:
+        with open(model.bridge_mirror_path(), encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("HELD"):
+                    return "%s (BRIDGE mirror)" % " ".join(line.split()[1:2])
+                if line.startswith("FREE"):
+                    break
+    except OSError:
+        pass
+    return None
+
+
+def bridge_log_path():
+    p = os.environ.get("TESTQ_BRIDGE_LOG")
+    if p is not None:
+        return p
+    sys.path.insert(0, os.path.join(HERE, ".."))
+    from rmpaths import rm_str
+    return rm_str("scratch", "bridge_calls.jsonl")
+
+
+def bridge_silence_s(now=None):
+    """-> (seconds since the bridge was last used, or None when that cannot be shown). Used = the bridge call log
+    (every rimbridge_client call appends to it) and the shared bridge file's last take/release/touch."""
+    now = now or time.time()
+    p = bridge_log_path()
+    try:
+        last = os.path.getmtime(p)
+    except OSError:
+        return None
+    try:
+        model, _hg = _rimflow()
+        sh_path = model.shared_bridge_path()
+        if sh_path and os.path.exists(sh_path):
+            last = max(last, os.path.getmtime(sh_path))
+    except Exception:       # noqa: BLE001 - the call log alone still bounds it
+        pass
+    return max(0, int(now - last))
+
+
+def runner_problem(path):
+    """-> why PATH may not be the Archmagi runner clone, else None. It is detached and pulled per attempt, so it must
+    never be an agent's clone or the dispatch clone (which pulls before every tick)."""
+    if not os.path.isfile(os.path.join(path, "infrastructure", "stevedesktop", "worker.py")) or \
+            not os.path.exists(os.path.join(path, ".git")):
+        return "no runner clone at %s (git clone the repo there; TESTQ_ARCHMAGI_RUNNER names another)" % path
+    if os.environ.get("TESTQ_SKIP_PULL") != "1":        # tests run the worker in place with nothing pulled or pinned
+        shared = {os.path.realpath(os.path.expanduser(c)) for c in ("~/rm/bench", "~/rm/foundry", DISPATCH)}
+        shared.add(os.path.realpath(REPO))
+        if os.path.realpath(path) in shared:
+            return "%s is an agent's or the dispatch clone; the archmagi runner needs its own" % path
+    return None
+
+
+def archmagi_gate(now=None):
+    """-> (True, why) when the backfill may admit ONE job now, else (False, the first closed gate)."""
+    if os.environ.get("TESTQ_ARCHMAGI") != "1":
+        return False, "off (TESTQ_ARCHMAGI=1 not set)"
+    if os.path.exists(q("archmagi.stop")):
+        return False, "stopped (%s exists)" % q("archmagi.stop")
+    pz = paused(ARCHMAGI)
+    if pz:
+        return False, "paused since %s by %s %s/%s" % (pz.get("since"), pz.get("job"), pz.get("outcome"),
+                                                       pz.get("cause"))
+    now = now or time.time()
+    until = arch_state().get("backoff_until") or 0
+    if until > now:
+        return False, "backing off %d s more (%s)" % (until - now, arch_state().get("backoff_why"))
+    try:
+        model, hg = _rimflow()
+    except Exception as e:      # noqa: BLE001 - cannot read the locks: closed
+        return False, "rimflow not importable: %s" % e
+    if hg.local_host() != ARCHMAGI:
+        return False, "this machine is %s, not archmagi" % hg.local_host()
+    prob = runner_problem(arch_runner())
+    if prob:
+        return False, prob
+    holder = bridge_holder()
+    if holder:
+        return False, "bridge held by " + holder
+    st = hg.status()
+    if st.get("state") not in ("FREE", "STALE"):     # STALE: its holder is dead; the worker's guard takes it over
+        return False, "driver lock %s%s" % (st.get("state"), " by %s for %s" % (st.get("seat"), st.get("purpose"))
+                                            if st.get("seat") else "")
+    quiet = bridge_silence_s(now)
+    need = _env_int("TESTQ_ARCHMAGI_SILENT_S", ARCH_SILENT_S)
+    if quiet is None:
+        return False, "cannot show the bridge is silent (no bridge call log at %s)" % bridge_log_path()
+    if quiet < need:
+        return False, "bridge used %d s ago (needs %d s of silence)" % (quiet, need)
+    return True, "free, silent %d s" % quiet
+
+
+def archmagi_candidates(steve_up, steve_busy, now=None):
+    """Jobs the backfill may take: lane archmagi; lane any only while SteveDesktop is down or busy (plan section 6:
+    ssh down re-routes profile-compatible jobs); never lane stevedesktop; only TESTQ_ARCHMAGI_PROFILES; never a job
+    Archmagi already refused to deploy."""
+    now = now or time.time()
+    profiles = (os.environ.get("TESTQ_ARCHMAGI_PROFILES") or "full-list").split(",")
+    skip = arch_state().get("skip") or {}
+    out = []
+    for j in records("pending"):
+        if j.get("owner_gate") or (j.get("not_before") and S.parse_ts(j["not_before"]) > now):
+            continue
+        if j["id"] in skip or j.get("profile") not in profiles:
+            continue
+        if j.get("lane") == ARCHMAGI or (j.get("lane") == "any" and (not steve_up or steve_busy)):
+            out.append(j)
+    out.sort(key=lambda j: (-j["priority"], j["submitted"], j["id"]))
+    return out
+
+
+def archmagi_worker(args, stdin=None, timeout=180):
+    """Run `worker.py ARGS` locally in the Archmagi runner clone -> (exit code, last JSON line), like remote()."""
+    run = arch_runner()
+    home = arch_home()
+    phases = os.path.join(home, "phases", "archmagi_phases.py")
+    os.makedirs(os.path.dirname(phases), exist_ok=True)
+    # a COPY outside the clone: a job pinned to an older sha has no archmagi_phases.py of its own
+    import shutil
+    shutil.copy2(os.path.join(HERE, "archmagi_phases.py"), phases)
+    env = {k: v for k, v in os.environ.items()
+           if not k.startswith("TESTQ_CMD_") and k not in ("TESTQ_HOME", "TESTQ_REPO", "TESTQ_CLONE",
+                                                          "TESTQ_MODS_DIR", "RM_HOST_GUARD_GEN", "TESTQ_UNIT")}
+    for ph in PHASES:
+        env["TESTQ_CMD_" + ph] = os.environ.get("TESTQ_ARCHMAGI_CMD_" + ph) or "python3 %s %s" % (
+            shlex.quote(phases), ph.lower())
+    if os.environ.get("TESTQ_ARCHMAGI_CMD_RUN"):
+        env["TESTQ_CMD_RUN"] = os.environ["TESTQ_ARCHMAGI_CMD_RUN"]
+    env.update(TESTQ_HOME=home, TESTQ_WORKER_HOST=ARCHMAGI,
+               TESTQ_MODS_DIR=os.environ.get("TESTQ_ARCHMAGI_MODS_DIR") or ARCH_MODS_DIR)
+    try:
+        r = subprocess.run([sys.executable, os.path.join(run, "infrastructure", "stevedesktop", "worker.py")] + args,
+                           cwd=run, env=env, input=stdin, capture_output=True, text=True, timeout=timeout)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return 1, {"error": "archmagi worker %s: %s" % (" ".join(args), e)}
+    lines = r.stdout.strip().splitlines()
+    try:
+        return r.returncode, json.loads(lines[-1])
+    except (ValueError, IndexError):
+        return r.returncode, {"error": "no JSON from the archmagi worker (exit %d): %s" % (
+            r.returncode, (r.stdout + r.stderr)[-300:])}
+
+
+def archmagi_bounce(rec, res):
+    """A REFUSED attempt that measured nothing about the mod (Archmagi may not deploy / has no game / its guard was
+    taken) or one stopped to yield to a window: the job goes back to pending instead of finishing. -> True if so."""
+    job = rec["job"]
+    jid = job["id"]
+    yielded = rec.get("yield") and res["outcome"] == "INTERRUPTED"
+    if not yielded and not (res["outcome"] == "REFUSED" and res["cause"] in ARCH_BOUNCE):
+        return False
+    why = "yielded to %s" % rec["yield"] if yielded else "%s/%s: %s" % (res["outcome"], res["cause"],
+                                                                        (res.get("note") or "")[:200])
+    if res["cause"] == "DEPLOY" and not yielded:
+        st = arch_state()
+        skip = st.get("skip") or {}
+        skip[jid] = {"at": S.utcnow(), "why": why}
+        arch_state_update(skip=skip)
+    if res["cause"] == "LOAD" and not yielded:
+        arch_state_update(backoff_until=time.time() + _env_int("TESTQ_ARCHMAGI_BACKOFF_S", ARCH_BACKOFF_S),
+                          backoff_why=why)
+    move(jid, "running", "pending", job)
+    archmagi_worker(["ack", "--attempt", res["attempt"]])
+    log("%s back to pending from archmagi (%s)" % (jid, why))
+    return True
+
+
+def archmagi_tick(steve_up, steve_busy):
+    """Step 5 of the tick: reconcile, drain and (gates permitting) admit on Archmagi. Admits nothing unless enabled;
+    an attempt started before it was switched off is still reconciled to the end."""
+    mine = [r for r in records("running") if host_of(r) == ARCHMAGI]
+    if os.environ.get("TESTQ_ARCHMAGI") != "1" and not mine:     # switched off: still finish what it started
+        return
+    for rec in mine:
+        reconcile(rec)
+    drain_outbox(archmagi_worker(["outbox"])[1].get("outbox") or [], ARCHMAGI)
+    if os.environ.get("TESTQ_ARCHMAGI") != "1" or any(host_of(r) == ARCHMAGI for r in records("running")):
+        return
+    ok, why = archmagi_gate()
+    cands = archmagi_candidates(steve_up, steve_busy) if ok else []
+    said = why if not ok else ("no candidate job" if not cands else None)
+    if said and arch_state().get("last_gate") != said.split(" (")[0].split(" used ")[0]:
+        log("archmagi lane: %s" % said)
+    if said:
+        arch_state_update(last_gate=said.split(" (")[0].split(" used ")[0])
+        return
+    job = cands[0]
+    rc, o = archmagi_worker(["start"], stdin=json.dumps(job))
+    if not o.get("attempt"):
+        log("%s: archmagi start failed (exit %d): %s; stays pending" % (job["id"], rc, o.get("error") or o))
+        return
+    move(job["id"], "pending", "running", {"job": job, "attempt": o["attempt"], "sent": S.utcnow(), "host": ARCHMAGI,
+                                           "attempts": [o["attempt"]], "auto_retries": 0, "cancel": False})
+    arch_state_update(last_gate=None)
+    log("%s admitted on archmagi -> %s (%s, prio %d, %s, lane %s; gate: %s)" % (
+        job["id"], o["attempt"], job["purpose"], job["priority"], job["profile"], job["lane"], why))
 
 
 # ---------------------------------------------------------------- queue verbs
@@ -401,7 +706,7 @@ def cmd_cancel(a):
         rec.update(cancel=True, cancel_reason=a.reason)
         move(a.job, "running", "running", rec)
         try:
-            remote(["stop", "--attempt", rec["attempt"]])
+            worker_for(host_of(rec))(["stop", "--attempt", rec["attempt"]])
         except SshDown as e:
             print("stop not delivered (%s); the next tick sees the INTERRUPTED result or the finished run" % e)
     else:
@@ -413,13 +718,15 @@ def cmd_cancel(a):
 
 def cmd_resume(a):
     ensure_dirs()
-    pz = paused()
+    lane = getattr(a, "lane", None) or STEVE
+    pz = paused(lane)
     if not pz:
         print("not paused")
         return 0
-    os.remove(q("paused.json"))
-    log("lane resumed (paused since %s by %s %s/%s): %s" % (pz.get("since"), pz.get("job"), pz.get("outcome"),
-                                                         pz.get("cause"), a.reason))
+    os.remove(pause_path(lane))
+    log("lane%s resumed (paused since %s by %s %s/%s): %s" % ("" if lane == STEVE else " " + lane, pz.get("since"),
+                                                           pz.get("job"), pz.get("outcome"), pz.get("cause"),
+                                                           a.reason))
     return 0
 
 
@@ -545,7 +852,7 @@ def cmd_fill(a):
         print("lane paused; no fill")
         return 0
     now = time.time()   # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
-    busy = [j for j in records("pending") if ready(j, now)] + records("running")
+    busy = [j for j in records("pending") if ready(j, now)] + steve_running()   # an archmagi job is not Steve
     if busy:
         print("busy: %d pending/running" % len(busy))
         return 0
@@ -601,7 +908,7 @@ def cmd_list(a):
     for st in ([a.state] if a.state else STATES):
         for rec in records(st):
             job, res = job_of(rec), rec.get("result") or {}
-            extra = rec.get("attempt") or ("%s %s %s" % (res.get("outcome"), res.get("cause") or "",
+            extra = (rec.get("attempt") and rec["attempt"] + ("" if host_of(rec) == STEVE else " @" + host_of(rec))) or ("%s %s %s" % (res.get("outcome"), res.get("cause") or "",
                                                           res.get("counts")) if res else rec.get("reason", ""))
             print("%-9s %s %-12s %-10s p%-3d %s  %s" % (st, job.get("id"), job.get("mod"), job.get("purpose"),
                                                       job.get("priority", 0), sel_text(job)[:50], extra))
@@ -744,6 +1051,7 @@ def main(argv=None):
     s.add_argument("--reason", required=True)
     s = sub.add_parser("resume")
     s.add_argument("--reason", required=True)
+    s.add_argument("--lane", choices=(STEVE, ARCHMAGI), default=STEVE)
     s = sub.add_parser("sweep")
     s.add_argument("mod")
     s.add_argument("--by", default="BENCH", help="the requesting seat (BENCH owns FlowWorks)")

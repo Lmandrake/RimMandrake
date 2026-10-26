@@ -5,7 +5,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md item #5. 
 every tick, from the dispatch clone (~/rm/dispatch), so the only writer of the RUNNER shard is that clone.
 
 For each done/<job>.json not yet ingested, whose job names a rimflow item:
-  outcome DONE      -> `rimflow verify ITEM --result pass|fail|partial --config steve-<profile>` as seat RUNNER
+  outcome DONE      -> `rimflow verify ITEM --result pass|fail|partial --config steve-<profile>` (archmagi-<profile> from the backfill) as seat RUNNER
                        (fail: any FAIL row; pass: every row PASS; partial: otherwise), --sha the runner's commit,
                        --evidence the sheet on SteveDesktop plus the attempt id; then ONE finding per FAIL row,
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
@@ -203,11 +203,12 @@ def ingest_done(job, res, item):
 
 
 def ingest_group(job, res, item, gres, att):
-    config = "steve-%s" % job.get("profile", "targeted")
+    host = res.get("host") or "stevedesktop"         # the archmagi backfill runs the same worker (host "archmagi")
+    config = "%s-%s" % ("steve" if host == "stevedesktop" else host, job.get("profile", "targeted"))
     run = recorded_run(item, att)
     if not run:
         rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,
-                          "--evidence", "stevedesktop:%s (testq %s)" % (sheet_of(res), att),
+                          "--evidence", "%s:%s (testq %s)" % (host, sheet_of(res), att),
                           "--sha", res.get("runner_sha") or job["source_sha"])
         m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
         if rc != 0 or not m:
@@ -227,8 +228,9 @@ def ingest_group(job, res, item, gres, att):
             found.append(name)
             continue
         rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "medium",
-                          "--why", "%s/%s FAIL on SteveDesktop: %s" % (row.get("chain"), row["row"],
-                                                                       (row.get("detail") or "")[:160]))
+                          "--why", "%s/%s FAIL on %s: %s" % (row.get("chain"), row["row"],
+                                                           "SteveDesktop" if host == "stevedesktop" else host,
+                                                           (row.get("detail") or "")[:160]))
         found.append(name if rc == 0 else "%s: %s" % (name, out[-120:]))
     return {"run": run, "result": verdict(gres), "findings": found}
 
