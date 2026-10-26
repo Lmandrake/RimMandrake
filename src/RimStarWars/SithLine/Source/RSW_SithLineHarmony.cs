@@ -109,15 +109,19 @@ namespace RimMandrake.StarWars.SithLine
         }
     }
 
-    // §2 layer 3: enslaving moves a prisoner into the player faction without consulting Recruitable.
-    [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.EnslavePrisoner))]
-    public static class Patch_GenGuest_EnslavePrisoner
+    // §2 layer 3: enslaving makes a prisoner the colony's slave without consulting Recruitable or calling SetFaction.
+    // SITHLINE_FIX_ENSLAVE_GUARD_WRONG_METHOD: the warden's enslave attempt calls TryEnslavePrisoner directly
+    // (InteractionWorker_EnslaveAttempt.cs:55); EnslavePrisoner is a wrapper only the debug tool uses, and it calls
+    // TryEnslavePrisoner too (GenGuest.cs:122-127), so this one patch covers both. False = "not enslaved": no letter.
+    [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.TryEnslavePrisoner))]
+    public static class Patch_GenGuest_TryEnslavePrisoner
     {
-        public static bool Prefix(Pawn prisoner)
+        public static bool Prefix(Pawn prisoner, ref bool __result)
         {
             if (RSW_SithLineKernel.RefuseJoin(RSW_SithLineSettings.neverRecruitable, RSW_SithLineDefs.IsSith(prisoner), true))
             {
                 Messages.Message("RSW_SithRefusesToJoin".Translate(prisoner.LabelShort), prisoner, MessageTypeDefOf.RejectInput, false);
+                __result = false;
                 return false;
             }
             return true;

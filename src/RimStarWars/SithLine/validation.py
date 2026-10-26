@@ -273,7 +273,7 @@ def _build_suite():
     def live(t):
         for name, toggle, why in (
             ("recruit_guard", "neverRecruitable", "needs a JawaBench tool that spawns a Sith prisoner and reads guest.Recruitable before and after a dev toggle"),
-            ("join_routes_refused", "neverRecruitable", "needs a JawaBench [Tool] that calls EnslavePrisoner, Recruit and SetFaction(player) on a Sith prisoner and reports the faction after"),
+            ("join_routes_refused", "neverRecruitable", "needs a JawaBench [Tool] that calls TryEnslavePrisoner, Recruit and SetFaction(player) on a Sith prisoner and reports the faction after"),
             ("absorb_blocked", "blockXenogermAbsorb", "needs a tool that reads GeneUtility.CanAbsorbXenogerm for a downed Sith"),
             ("empire_inquisitor", "inquisitorRaids", "needs a tool that generates an Empire Combat group at 2000 points with the chance forced to 1 and lists its kinds"),
             ("no_trader_inquisitor", "inquisitorRaids", "needs the same group read on an Empire Trader group"),
