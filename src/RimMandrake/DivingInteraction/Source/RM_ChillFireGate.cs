@@ -120,6 +120,13 @@ namespace RimMandrake.DivingInteraction
         /// CHILLFIREBAN_FIX_CORPSE_FIRE_KEEPS_OXIDIZER). Main thread only, like the tick itself.
         /// </summary>
         internal static int insideBurningFire;
+
+        /// <summary>
+        /// Above 0 while FireUtility.TryStartFireIn or TryAttachFire runs a body this gate admitted: the Fire spawned then
+        /// was asked for. A Fire spawned on the seabed with it at 0 came through no gate (a mod's own MakeThing + GenSpawn)
+        /// and Patch_Fire_SpawnSetup judges it (CHILLFIREBAN_FIX_MODDED_DIRECT_FIRE_SPAWN). Main thread only.
+        /// </summary>
+        internal static int admittingFire;
     }
 
     /// <summary>

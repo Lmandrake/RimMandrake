@@ -709,6 +709,55 @@ namespace RimMandrake.DivingInteraction.SelfTest
                             if (fire != ruled) fails.Add($"detonation units: {ex.name} set off by {by.name} (seabed {seabed}, ban {banOn}): fire {fire}, ruling says {ruled}");
                             if ((!seabed || !banOn) && stored != (by.name != "nobody")) fails.Add($"detonation units: {ex.name} lost its instigator off the banned seabed (kill credit must stay vanilla)");
                         }
+            // CHILLFIREBAN_FIX_MODDED_DIRECT_FIRE_SPAWN: the creation-path table. Every way a Fire comes to exist, from the
+            // wave-62 enumeration of decompiled 1.6 (only FireUtility.cs:85 and :115 make a Fire; every caller below reaches
+            // one of them) and the IL scan of the owner's 320 active mods (the Bypass rows make and spawn a Fire themselves).
+            // `inFire`: asked inside a burning Fire's scope (its tick, its Spark, its burning pawn's death), as the patches
+            // mark it. Played through the doors the patches build: a gated row spawns iff the gate admits it and is then
+            // never put out; a bypass row always spawns and lives iff PutOutUngatedFire spares it. The ruling's oracle: on
+            // the banned airless seabed only a Fuselight flash burns; with pumped air, off the seabed or with the ban off,
+            // every path burns as vanilla.
+            var paths = new (string path, char door, bool selfOx, bool burnsNothing, bool inFire, bool flash)[]
+            {
+                ("DamageWorker_Flame.ExplosionAffectCell (explosion instigator)", 'S', false, false, false, false),
+                ("DamageWorker_Flame cell, RM_Fuselight flash (Detonate names the Fuselight)", 'S', true, false, false, true),
+                ("DamageWorker_Flame victim attach, RM_Fuselight flash", 'A', true, false, false, true),
+                ("DamageWorker_Vaporize cell (explosion instigator)", 'S', false, false, false, false),
+                ("Explosion.cs:335 cell fire (explosion instigator)", 'S', false, false, false, false),
+                ("Genetron meltdown flame cell (RM_NonCombustionExtension)", 'S', false, true, false, false),
+                ("Bullet incendiary (launcher)", 'S', false, false, false, false),
+                ("FlameThrower cell + attach (caster)", 'S', false, false, false, false),
+                ("FireArrow / Verb_Ignite / PowerBeam / Bombardment (caster or null)", 'S', false, false, false, false),
+                ("Verb_ShootBeam attach (caster)", 'A', false, false, false, false),
+                ("Thing.TakeDamage:1554 attach, pawn's Flame hit (dinfo.Instigator)", 'A', false, false, false, false),
+                ("Thing.TakeDamage:1554 attach, Fuselight fire's own damage (instigator ?? this, in tick)", 'A', true, false, true, false),
+                ("Fire.TrySpread:403 (Fuselight instigator carried, in tick)", 'S', true, false, true, false),
+                ("Fire.cs:272 attach to pawn in cell (in tick)", 'A', true, false, true, false),
+                ("Spark.Impact, launcher a Fuselight's Fire (Patch_Spark_Impact)", 'S', true, false, true, false),
+                ("Pawn.Kill:2208 corpse fire (Patch_Pawn_Kill_CorpseFire)", 'S', true, false, true, false),
+                ("SteadyEnvironmentEffects lightning / ShortCircuitUtility (null)", 'S', false, false, false, false),
+                ("HediffGiver_Terrain lava attach (null)", 'A', false, false, false, false),
+                ("VEF FlamethrowProjectile.DoDamage (no instigator set)", 'B', false, false, false, false),
+                ("VEF TeslaProjectile.Impact addFire (no instigator set)", 'B', false, false, false, false),
+                ("modded spawn, Fuselight instigator, from inside a Fire's tick", 'B', true, false, true, false),
+                ("modded spawn, Fuselight instigator, its own flash", 'B', true, false, false, true),
+            };
+            foreach (var p in paths)
+                foreach (bool seabed in new[] { true, false })
+                    foreach (bool banOn in new[] { true, false })
+                        foreach (bool air in new[] { false, true })
+                        {
+                            Cases++;
+                            bool allowed = RM_ChillFireBanKernel.IgnitionAllowed(seabed, banOn, p.selfOx, p.burnsNothing, p.inFire, air);
+                            bool spawned = p.door == 'B' || allowed;
+                            bool admitted = p.door != 'B' && allowed;
+                            bool burns = spawned && !RM_ChillFireBanKernel.PutOutUngatedFire(seabed, banOn, admitted, false, p.selfOx, p.inFire, air);
+                            bool ruled = !seabed || !banOn || air || p.flash;
+                            if (burns != ruled) fails.Add($"fire paths: {p.path} [{p.door}] seabed {seabed} ban {banOn} air {air}: burns {burns}, ruling says {ruled}");
+                            // a Fire already admitted or loaded from a save is never put out, whatever the cell
+                            if (RM_ChillFireBanKernel.PutOutUngatedFire(seabed, banOn, true, false, p.selfOx, p.inFire, air)) fails.Add($"fire paths: {p.path}: an admitted Fire was put out");
+                            if (RM_ChillFireBanKernel.PutOutUngatedFire(seabed, banOn, false, true, p.selfOx, p.inFire, air)) fails.Add($"fire paths: {p.path}: a Fire loaded from a save was put out");
+                        }
             return fails;
         }
 

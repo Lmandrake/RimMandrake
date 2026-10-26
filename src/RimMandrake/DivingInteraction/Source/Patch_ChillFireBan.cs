@@ -27,6 +27,9 @@ namespace RimMandrake.DivingInteraction
     //       Fire.cs's attach to pawns in its cell
     //       (CHILLFIREBAN_FIX_ATTACHED_FIRE_UNGATED: without this second
     //       prefix an incendiary still set pawns alight on the seabed).
+    //    Those are vanilla's only doors, not every mod's: a Fire a mod makes
+    //    and spawns itself is caught at Fire.SpawnSetup and put out on its
+    //    first tick (Patch_Fire_SpawnSetup, CHILLFIREBAN_FIX_MODDED_DIRECT_FIRE_SPAWN).
     //    Both prefixes ask with the INSTIGATOR, so Fuselight's own
     //    explosion still burns (RM_SelfOxidizingExtension) and a fission
     //    Genetron's meltdown flame does not (RM_NonCombustionExtension is
@@ -81,14 +84,24 @@ namespace RimMandrake.DivingInteraction
     [HarmonyPatch(typeof(FireUtility), nameof(FireUtility.TryStartFireIn))]
     public static class Patch_FireUtility_TryStartFireIn
     {
-        public static bool Prefix(IntVec3 c, Map map, Thing instigator, ref bool __result)
+        public static bool Prefix(IntVec3 c, Map map, Thing instigator, ref bool __result, out bool __state)
         {
-            if (RM_ChillFireGate.IsIgnitionAllowed(map, c, instigator))
+            __state = RM_ChillFireGate.IsIgnitionAllowed(map, c, instigator);
+            if (__state)
             {
+                RM_ChillFireGate.admittingFire++; // the Fire this spawns was asked for (Patch_Fire_SpawnSetup)
                 return true; // run the vanilla method normally
             }
             __result = false; // no oxygen down here — the fire simply never catches
             return false;
+        }
+
+        public static void Finalizer(bool __state)
+        {
+            if (__state)
+            {
+                RM_ChillFireGate.admittingFire--;
+            }
         }
     }
 
@@ -96,13 +109,60 @@ namespace RimMandrake.DivingInteraction
     [HarmonyPatch(typeof(FireUtility), nameof(FireUtility.TryAttachFire))]
     public static class Patch_FireUtility_TryAttachFire
     {
-        public static bool Prefix(Thing t, Thing instigator)
+        public static bool Prefix(Thing t, Thing instigator, out bool __state)
         {
-            if (t == null || !t.Spawned)
+            __state = t == null || !t.Spawned || RM_ChillFireGate.IsIgnitionAllowed(t.Map, t.Position, instigator);
+            if (__state)
             {
-                return true; // vanilla decides (CanEverAttachFire refuses it anyway)
+                RM_ChillFireGate.admittingFire++; // (t unspawned: vanilla decides; CanEverAttachFire refuses it anyway)
             }
-            return RM_ChillFireGate.IsIgnitionAllowed(t.Map, t.Position, instigator);
+            return __state;
+        }
+
+        public static void Finalizer(bool __state)
+        {
+            if (__state)
+            {
+                RM_ChillFireGate.admittingFire--;
+            }
+        }
+    }
+
+    // CHILLFIREBAN_FIX_MODDED_DIRECT_FIRE_SPAWN. The two prefixes above are the only doors vanilla uses, but a mod can
+    // make a Fire itself: an IL scan of the owner's 320 active mods (wave 62) found VEF's FlamethrowProjectile.DoDamage
+    // and TeslaProjectile.Impact doing MakeThing(Fire) + GenSpawn + AttachTo with no gate asked and no instigator set.
+    // Every Fire passes Fire.SpawnSetup, so a seabed Fire that no gate admitted is judged there by the same rule
+    // (RM_ChillFireBanKernel.PutOutUngatedFire) and, if refused, marked; its first TickInterval (below) destroys it
+    // before it spreads or damages anything. It is not destroyed inside SpawnSetup: the mod's own AttachTo follows the
+    // spawn. A Fire loaded from a save is left alone.
+    [HarmonyPatch(typeof(Fire), nameof(Fire.SpawnSetup))]
+    public static class Patch_Fire_SpawnSetup
+    {
+        internal static readonly HashSet<Fire> ungated = new HashSet<Fire>();
+
+        public static void Postfix(Fire __instance, Map map, bool respawningAfterLoad)
+        {
+            if (respawningAfterLoad || RM_ChillFireGate.admittingFire > 0 || !RM_ChillFireGate.IsChillSeabedMap(map))
+            {
+                return;
+            }
+            RM_MapComponent_ChillOxygenation oxygenation = map.GetComponent<RM_MapComponent_ChillOxygenation>();
+            if (RM_ChillFireBanKernel.PutOutUngatedFire(true,
+                RM_DivingSettings.masterEnabled && RM_DivingSettings.chillFireBanEnabled, false, false,
+                RM_ChillFireGate.IsSelfOxidizing(__instance.instigator), RM_ChillFireGate.insideBurningFire > 0,
+                oxygenation != null && oxygenation.IsCellOxygenated(__instance.Position)))
+            {
+                ungated.Add(__instance);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Fire), nameof(Fire.DeSpawn))]
+    public static class Patch_Fire_DeSpawn
+    {
+        public static void Postfix(Fire __instance)
+        {
+            Patch_Fire_SpawnSetup.ungated.Remove(__instance);
         }
     }
 
@@ -110,13 +170,23 @@ namespace RimMandrake.DivingInteraction
     // pawn in its cell (:272) and DoFireDamage (`instigator ?? this`, whose Flame damage attaches via DamageWorker_Flame and
     // Thing.TakeDamage) all run inside Fire.TickInterval. Marking that scope keeps a Fuselight flash's fire from carrying
     // the flash's oxidizer into the tar and wax plants around it. Prefix + finalizer, so a throw inside the tick cannot
-    // leave it raised.
+    // leave it raised. A Fire marked by Patch_Fire_SpawnSetup is put out here, before its first spread or damage; the
+    // counter is raised first so the finalizer stays balanced when the body is skipped.
     [HarmonyPatch(typeof(Fire), "TickInterval")]
     public static class Patch_Fire_TickInterval
     {
-        public static void Prefix()
+        public static bool Prefix(Fire __instance)
         {
             RM_ChillFireGate.insideBurningFire++;
+            if (Patch_Fire_SpawnSetup.ungated.Count > 0 && Patch_Fire_SpawnSetup.ungated.Remove(__instance))
+            {
+                if (!__instance.Destroyed)
+                {
+                    __instance.Destroy();
+                }
+                return false;
+            }
+            return true;
         }
 
         public static void Finalizer()

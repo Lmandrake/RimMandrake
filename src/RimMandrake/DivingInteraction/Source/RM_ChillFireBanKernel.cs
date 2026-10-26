@@ -92,6 +92,23 @@ namespace RimMandrake.DivingInteraction
             return chillSeabed && banEnabled && (explosiveSelfOxidizing || instigatorSelfOxidizing);
         }
 
+        /// <summary>
+        /// CHILLFIREBAN_FIX_MODDED_DIRECT_FIRE_SPAWN. Vanilla makes every Fire inside FireUtility.TryStartFireIn or
+        /// TryAttachFire, both gated, but mods on the owner's list make one themselves (VEF's FlamethrowProjectile and
+        /// TeslaProjectile: MakeThing(Fire), GenSpawn, AttachTo), so no gate is asked. True = a Fire just spawned on the
+        /// seabed that no gate admitted, and the same rule the gate plays (IgnitionAllowed, with the Fire's own instigator)
+        /// refuses it: it is put out before it burns anything. A Fire loaded from a save is never judged here.
+        /// </summary>
+        public static bool PutOutUngatedFire(bool chillSeabed, bool banEnabled, bool admittedByGate, bool loadedFromSave,
+            bool instigatorSelfOxidizing, bool byBurningFire, bool cellOxygenated)
+        {
+            if (admittedByGate || loadedFromSave)
+            {
+                return false;
+            }
+            return !IgnitionAllowed(chillSeabed, banEnabled, instigatorSelfOxidizing, false, byBurningFire, cellOxygenated);
+        }
+
         /// <summary>True when the passive fuel burn of this tick is skipped: a flame building that cannot burn.</summary>
         public static bool SkipFuelBurn(bool usesFlame, bool ignitionAllowed)
         {
