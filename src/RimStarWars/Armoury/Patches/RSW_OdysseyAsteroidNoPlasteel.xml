@@ -7,7 +7,8 @@
   or industrial components from rock. EXPLICIT ALLOWLIST: only the three asteroid GenStepDefs named below
   (Odyssey Data/Odyssey/Defs/MapGeneration/SpaceMapGenerator.xml) and the Asteroids GeneratedLocationDef
   (GeneratedLocationDefs/GeneratedLocations.xml) are touched, only for MineablePlasteel and
-  MineableComponentsIndustrial. Gold, silver, steel, uranium and jade stay. Each op is success=Always, so an
+  MineableComponentsIndustrial, plus the OpportunitySite_Asteroid quest's mineables pick list (plasteel only; it
+  lists no components). Gold, silver, steel, uranium and jade stay. Each op is success=Always, so an
   absent def (a game update renaming one) is a silent no-op: audit with Utils/canon_materials_audit.py.
   NOT a Mod Settings toggle: an XML patch cannot read a setting; the Armoury-wide switch is not this patch's job.
 -->
@@ -43,5 +44,13 @@
   <Operation Class="PatchOperationRemove">
     <success>Always</success>
     <xpath>/Defs/GeneratedLocationDef[defName="Asteroids"]/preciousResources/li[text()="MineableComponentsIndustrial"]</xpath>
+  </Operation>
+  <!-- The asteroid-mining opportunity quest (QuestScriptDefs/Script_SpaceSites.xml) picks one of its own mineables as
+       the site's preciousResource; its AsteroidMiningSite uses mapGenerator Asteroid, whose MineablePlasteel count is
+       removed above, so GenStep_Asteroid.SpawnOres would log "No count found for resource" and leave a "plasteel
+       asteroid" with no ore (ASTEROIDQUEST_FIX_PLASTEEL_PICK_NO_COUNT). -->
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/QuestScriptDef[defName="OpportunitySite_Asteroid"]/root//li[@Class="QuestNode_Root_Asteroid"]/mineables/li[text()="MineablePlasteel"]</xpath>
   </Operation>
 </Patch>
