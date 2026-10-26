@@ -129,10 +129,6 @@ STRICT_EXEMPT = {
     'RM_Ivvol': 'turtle body only: a flat pool floor-dweller with a dorsal eye-ridge, no shell named; hide undecided',
     'RM_Bulloo': 'jelly: a floating gas bag that weeps fuel gel; nothing to skin',
     'RM_Metallovore': 'slug: soft tentacled metal-eater, no shell or hide; its yield is a design call',
-    'RM_TunnelSnake': 'Snake body, not a fish: a 1.2 insectoid-fleshed corridor snake; fishskin is wrong, its hide a '
-                      'design call',
-    'RM_Fessk': 'Snake body, not a fish: a man-sized bone-white long-limbed picker; its hide is a design call',
-    'RM_Gharrek': 'Snake body, not a fish: a 0.6 gilled crawler under slate plates; plates vs chitin is a design call',
 }
 
 MIN_RACES = 300          # src/ held 667 race ThingDefs when measured 2026-10-26; far fewer means a blind walk

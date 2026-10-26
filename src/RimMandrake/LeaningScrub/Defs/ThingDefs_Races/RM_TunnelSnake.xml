@@ -4,7 +4,8 @@
      Wookieepedia has no tunnel snake). Stats, tools and race fields are the original's; the Star Wars-tier
      dependencies are swapped for vanilla: the Snake body (was RSW_Klorslug), the Mouth/HeadAttackTool groups
      (were the RSW_SW* appendage groups), vanilla AnimalBaby/Juvenile/Adult stages, the Megascarab voice (was the
-     RSW_Pawn_Klorslug set), Megaspider meat and no leather (was RSW_Insectile_Meat / RSW_Leather_Insectile).
+     RSW_Pawn_Klorslug set), Megaspider meat (was RSW_Insectile_Meat), and RM_GrayChitin for its
+     RSW_Leather_Insectile (SNAKEBODY_DECIDE_NONFISH_HIDES 2026-10-26).
      Size-ladder numbers from TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 are kept (MEDIUM band, bodySize 1.2).
      Art is a ledger copy of the in-game RSW_TunnelSnake art (owner pick A). RSW_TunnelSnake stays in SWBestiary only
      because the frozen RUT_AridShrubland and the RSW_ScrapNestBird/Excretor/VentStalker comments name it. -->
@@ -72,6 +73,8 @@
     </comps>
     <receivesSignals>true</receivesSignals>
     <race>
+      <!-- SNAKEBODY_DECIDE_NONFISH_HIDES 2026-10-26 (delegated design, judge infrastructure/state/delegated/2026-10-26/SNAKEBODY_DECIDE_NONFISH_HIDES.json): insectoid-fleshed, and the RSW original butchered to insectile hide, so one chitin ladder (canon_materials_design 3.10): gray shell, the near-size-1 rung, at the inherited LeatherAmount 40. -->
+      <leatherDef>RM_GrayChitin</leatherDef>
       <body>Snake</body>
       <baseHungerRate>0.45</baseHungerRate>
       <baseBodySize>1.2</baseBodySize>

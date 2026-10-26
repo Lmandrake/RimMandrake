@@ -24,6 +24,8 @@
       <Wildness>0.8</Wildness>
       <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
       <FilthRate>0</FilthRate>
+      <!-- SNAKEBODY_DECIDE_NONFISH_HIDES 2026-10-26 (delegated design, judge infrastructure/state/delegated/2026-10-26/SNAKEBODY_DECIDE_NONFISH_HIDES.json): its overlapping slate plates are a shell, so one chitin ladder (canon_materials_design 3.10): brittle chitin at the 0.25-0.9 rung's 25 (15 per adult after body size). The shearable RM_GillAsh stays its pen product. -->
+      <LeatherAmount>25</LeatherAmount>
     </statBases>
     <tools>
       <li>
@@ -37,6 +39,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>Snake</body>
       <baseBodySize>0.6</baseBodySize>
       <baseHealthScale>0.6</baseHealthScale>

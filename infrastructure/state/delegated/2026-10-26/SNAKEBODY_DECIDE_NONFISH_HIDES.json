@@ -1,0 +1,54 @@
+{
+ "judge_model": {
+  "gpt": [
+   {
+    "model_requested": "gpt-6.1-sol",
+    "tool": "src/RimMandrake/Utils/gpt_consult.py",
+    "job": "D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-20261026-071759-1826949",
+    "role": "independent design judge, no maker context (delegation_policy.md §4); GPT used because the builder seat was told to spawn no subagents"
+   }
+  ]
+ },
+ "brief": "delegation_policy.md §4.3 design call: item criteria + canon_materials_design_2026-10-09.md §3.10 + measured ladder + 66ca6f8a5c size precedent + owner card 2026-10-26 'Only big fish drop it'; brief text inlined in the consult job",
+ "item": "SNAKEBODY_DECIDE_NONFISH_HIDES",
+ "owner_list_check": "not on delegation_policy §2: applying the §3.10 chitin-ladder ruling to three races it does not name (§2.4 'Applying a ruling to a case it does not name is delegated')",
+ "ladder_measured": {
+  "RM_WeakChitin": "brittle chitin, value 1.0, sharp 0.4 blunt 0.4, ins 10",
+  "RM_GrayChitin": "gray shell, value 2.5, sharp 0.54 blunt 0.6, ins 12",
+  "RM_MediumChitin": "tough chitin, value 5.0, sharp 1.1 blunt 0.8, ins 15"
+ },
+ "calls": [
+  {
+   "race": "RM_TunnelSnake",
+   "pick": "RM_GrayChitin; inherited LeatherAmount 40",
+   "verdict": "KEEP",
+   "reasons": [
+    "Insectoid flesh and the legacy tough insectile hide support a chitin yield.",
+    "Size 1.2 makes gray chitin a reasonable fit near the size-1 precedent; legacy sharp protection is not a required target.",
+    "Uses the shared RM ladder without an RSW dependency."
+   ]
+  },
+  {
+   "race": "RM_Fessk",
+   "pick": "RM_WeakChitin; LeatherAmount 25",
+   "verdict": "KEEP",
+   "reasons": [
+    "Size 0.9 and the low-bulk shrimp description fit the explicit low-rung precedent.",
+    "The behavior restrictions do not prohibit butchering.",
+    "Uses the shared RM ladder and avoids fishskin."
+   ]
+  },
+  {
+   "race": "RM_Gharrek",
+   "pick": "RM_WeakChitin; LeatherAmount 25",
+   "verdict": "KEEP",
+   "reasons": [
+    "Overlapping slate plates support a shell yield rather than treating it as hideless solely because of Snake BodyDef.",
+    "Size 0.6 fits the weak-chitin precedent; body-size scaling reduces the adult yield to 15.",
+    "No supplied constraint prohibits both a shearable product and butchered chitin."
+   ]
+  }
+ ],
+ "lint_sanity": "leather_amount_lint exit 0 races=667 strict_failures=0 stale_exempt=[]; scan leather_of TunnelSnake=RM_GrayChitin Fessk=RM_WeakChitin Gharrek=RM_WeakChitin",
+ "owed": "nothing"
+}

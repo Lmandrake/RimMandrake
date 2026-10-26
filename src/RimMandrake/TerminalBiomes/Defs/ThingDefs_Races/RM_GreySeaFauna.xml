@@ -38,6 +38,8 @@
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>55</ComfyTemperatureMax>
       <Wildness>0.9</Wildness>
+      <!-- SNAKEBODY_DECIDE_NONFISH_HIDES 2026-10-26 (delegated design, judge infrastructure/state/delegated/2026-10-26/SNAKEBODY_DECIDE_NONFISH_HIDES.json): a shrimp, not a fish, so no fishskin. One chitin ladder (canon_materials_design 3.10): brittle chitin at the 0.25-0.9 rung's 25, as the soft-backed 0.9 bugs of 66ca6f8a5c; long forelimbs and no bulk. -->
+      <LeatherAmount>25</LeatherAmount>
     </statBases>
     <tools>
       <li>
@@ -51,6 +53,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>Snake</body>
       <baseBodySize>0.9</baseBodySize>
       <baseHealthScale>0.9</baseHealthScale>
