@@ -29,7 +29,29 @@ def pending(root=ROOT):
     for rec in r.stdout.split("\0"):
         if len(rec) > 3 and rec[3:].startswith("conversations/") and rec[3:].endswith(".md") and rec[:2] != " D":
             out.append(rec[3:])
-    return sorted(out)
+    return sorted(_not_upstream(root, out))
+
+
+def _not_upstream(root, paths):
+    """Drop records whose working-tree bytes already sit on origin/main. land.sh publishes by plumbing, so
+    this clone's HEAD lags until ./sync succeeds; judged against HEAD alone a landed record stays "pending",
+    land.sh then dies "nothing to land", and the handoff gate can never pass."""
+    files = [p for p in paths if os.path.isfile(os.path.join(root, p))]
+    if not files:
+        return paths
+    up = subprocess.run(["git", "-C", root, "ls-tree", "-r", "-z", "origin/main", "--", "conversations"],
+                        capture_output=True, text=True)
+    hs = subprocess.run(["git", "-C", root, "hash-object", "--stdin-paths"], input="\n".join(files) + "\n",
+                        capture_output=True, text=True)
+    if up.returncode or hs.returncode:
+        return paths                       # cannot tell: offer them all, as before
+    blobs = {}
+    for rec in up.stdout.split("\0"):
+        if "\t" in rec:
+            meta, p = rec.split("\t", 1)
+            blobs[p] = meta.split()[2]
+    same = {p for p, h in zip(files, hs.stdout.split()) if blobs.get(p) == h}
+    return [p for p in paths if p not in same]
 
 
 def land(paths, root=ROOT):
