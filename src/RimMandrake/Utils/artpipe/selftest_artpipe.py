@@ -1471,8 +1471,21 @@ def test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini():
            "codex channel disabled" in proc.stdout, proc.stdout)
         ok("sandbox-preflight mismatch: the log names BOTH builds",
            "0.153.1" in proc.stdout and "0.153.4" in proc.stdout, proc.stdout)
-        ok("sandbox-preflight mismatch: the log names the recapture command",
-           "cp -r" in proc.stdout, proc.stdout)
+        # CODEXSEED_FIX_FALSE_UAC_HINT: base users are current with the machine -> only the seed is stale.
+        ok("sandbox-preflight mismatch (base current): prescribes --sync-sandbox, not a hand cp",
+           "--sync-sandbox" in proc.stdout and "cp -r" not in proc.stdout, proc.stdout)
+        ok("sandbox-preflight mismatch (base current): says no elevated setup is needed",
+           "NO elevated (UAC) setup is needed" in proc.stdout, proc.stdout)
+
+    # Base provisioning stale vs the machine: the elevated recapture advice stays.
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        q.set_sandbox_fingerprint(base_version="0.153.4", template_version="0.153.1")
+        (q.codex_sandbox_base / ".sandbox" / "setup_marker.json").write_text(SANDBOX_MARKER_STALE)
+        make_job(q.pending, "codexstuck2", q.reference, priority=1, channel="codex")
+        proc = q.run({"codexstuck2": "ok"}, "--once", "--workers", "1")
+        ok("sandbox-preflight mismatch (base stale): still names the elevated recapture command",
+           "cp -r" in proc.stdout and "NO elevated (UAC) setup is needed" not in proc.stdout, proc.stdout)
 
 
 def test_sandbox_stale_vs_machine_blocks_codex():

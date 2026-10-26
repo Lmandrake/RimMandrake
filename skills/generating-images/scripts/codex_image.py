@@ -439,6 +439,17 @@ def check_sandbox_fingerprint(base: Path | None = None, template: Path | None = 
                     f"shared sandbox state is not current: {why}. Fix without launching codex: "
                     f"python3 src/RimMandrake/Utils/artpipe/artpiped.py --sync-sandbox")
         return "match", template_fp, installed_fp, ""
+    # CODEXSEED_FIX_FALSE_UAC_HINT: a stale SEED (runner build differs) is not a missing sandbox-user
+    # setup. When the base's provisioning is proven current against the machine, --sync-sandbox
+    # recaptures the seed with no elevation; only otherwise is the elevated setup the honest advice.
+    base_current = sandbox_state_current(base)[0] is True if installed_fp is not None else False
+    if base_current:
+        return ("mismatch", template_fp, installed_fp,
+                f"sandbox seed template at {template} was captured against codex build "
+                f"{template_fp or 'UNKNOWN (no .sandbox-bin/codex-command-runner-*.exe)'}, but {base} runs "
+                f"{installed_fp} and its sandbox users are current with Windows - the seed is merely stale, "
+                f"NO elevated (UAC) setup is needed. Fix without launching codex: "
+                f"python3 src/RimMandrake/Utils/artpipe/artpiped.py --sync-sandbox")
     return ("mismatch", template_fp, installed_fp,
             f"sandbox seed template at {template} was captured against codex "
             f"build {template_fp or 'UNKNOWN (no .sandbox-bin/codex-command-runner-*.exe)'}, "
