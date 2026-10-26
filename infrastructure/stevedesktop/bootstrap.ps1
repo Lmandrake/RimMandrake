@@ -671,7 +671,8 @@ function Invoke-Main {
     Invoke-Step 'pkg_python' { Install-WingetPackage 'Python.Python.3.13' '/quiet InstallAllUsers=1 PrependPath=1 Include_launcher=1' }
     # modcheck's live rows compose diptychs with Pillow in THIS python (sweep J20261026T004751Z-6e5292: 4 rows read FAIL without it)
     Invoke-Step 'pkg_python_pillow' {
-        $out = & (Join-Path $env:ProgramFiles 'Python313\python.exe') -m pip install --disable-pip-version-check -q pillow 2>&1 | Out-String
+        # Invoke-Native, not a bare call: under 'Stop' PS 5.1 makes any pip stderr warning a terminating error.
+        $out = Invoke-Native (Join-Path $env:ProgramFiles 'Python313\python.exe') @('-m', 'pip', 'install', '--disable-pip-version-check', '-q', 'pillow')
         if ($LASTEXITCODE -ne 0) { throw "pip install pillow rc=$LASTEXITCODE $out" }
         'pillow installed'
     }
