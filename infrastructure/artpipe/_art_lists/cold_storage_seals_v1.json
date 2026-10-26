@@ -1,0 +1,322 @@
+[
+ {
+  "id": "RM_SealingResin_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SealingResin",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a few rough lumps of hardened amber-gold tree resin, translucent at the edges, with a little bark grit stuck in one. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_ResinSealedFruit_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_ResinSealedFruit",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small squat clay jar of fruit whose mouth is sealed under a thick glossy cap of amber resin dribbling down the neck. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_AmberAgedFruit_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_AmberAgedFruit",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small heap of fruit aged under resin to a deep translucent amber-brown, glistening, a fleck of golden resin on top. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_ResinSealedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_ResinSealedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small squat clay jar of strips of meat whose mouth is sealed under a thick glossy cap of amber resin dribbling down the neck. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_AmberAgedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_AmberAgedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small heap of strips of meat aged under resin to a deep translucent amber-brown, glistening, a fleck of golden resin on top. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_ResinSealedSweet_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_ResinSealedSweet",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small squat clay jar of sweets whose mouth is sealed under a thick glossy cap of amber resin dribbling down the neck. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_AmberAgedSweet_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_AmberAgedSweet",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a small heap of sweets aged under resin to a deep translucent amber-brown, glistening, a fleck of golden resin on top. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SaltCrustedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SaltCrustedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a slab of meat packed in a thick white salt crust, cracked in one place to show the cured flesh inside. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SaltCrustedFish_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SaltCrustedFish",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a whole fish packed in a thick white salt crust, cracked in one place to show the cured flesh inside. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SandDriedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SandDriedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: dark leathery strips of sand-dried jerky, a few grains of fine sand still clinging. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SandDriedFruit_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SandDriedFruit",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: shrivelled sand-dried fruit slices, wrinkled and sugary, a few grains of fine sand still clinging. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SandDriedFungus_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SandDriedFungus",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: pale curled sand-dried fungus caps, a few grains of fine sand still clinging. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PickledMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_PickledMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a short glass jar of chunks of pickled meat in cloudy brine with a wooden stopper. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PickledFish_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_PickledFish",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a short glass jar of small pickled fish in cloudy brine with a wooden stopper. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PickledRoe_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_PickledRoe",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a short glass jar of pickled roe, glossy beads in cloudy brine with a wooden stopper. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PickledVeg_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_PickledVeg",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a short glass jar of pickled vegetables in cloudy brine with a wooden stopper. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PickledEgg_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_PickledEgg",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a short glass jar of pickled eggs in cloudy brine with a wooden stopper. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_TarSealedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_TarSealedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a squat clay jar of meat whose mouth is plugged with a hard black bitumen tar seal, drips of tar down the side. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PitchAgedMeat_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_PitchAgedMeat",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: meat aged under tar to a dark smoky mahogany colour, faint mineral sheen, a little black pitch on the edge. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_TarSealedFish_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_TarSealedFish",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a squat clay jar of fish whose mouth is plugged with a hard black bitumen tar seal, drips of tar down the side. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PitchAgedFish_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_PitchAgedFish",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: fish aged under tar to a dark smoky mahogany colour, faint mineral sheen, a little black pitch on the edge. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_TarSealedEgg_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_TarSealedEgg",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a squat clay jar of eggs whose mouth is plugged with a hard black bitumen tar seal, drips of tar down the side. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PitchAgedEgg_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_PitchAgedEgg",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: eggs aged under tar to a dark smoky mahogany colour, faint mineral sheen, a little black pitch on the edge. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_TarSealedProduce_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_TarSealedProduce",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: a squat clay jar of vegetables whose mouth is plugged with a hard black bitumen tar seal, drips of tar down the side. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_PitchAgedProduce_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_PitchAgedProduce",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld item sprite, seen from slightly above like vanilla RimWorld food items: vegetables aged under tar to a dark smoky mahogany colour, faint mineral sheen, a little black pitch on the edge. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a borrowed vanilla texture (Graphic_StackCount for items). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_ResinTap_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_ResinTap",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style: a carved wooden spout hammered into an unseen tree trunk at the top edge, with a clay cup beneath it catching slow golden resin, on a small wooden stand. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_ResinSealingJarShelf_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_ResinSealingJarShelf",
+  "canvas_w": 256,
+  "canvas_h": 128,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style: a 2x1 rustic wooden shelf lined with squat clay jars, several capped with glossy amber resin, a small pot of warm resin and a brush on the end. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_SandDryingBox_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_SandDryingBox",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style: a 2x2 low open wooden box full of pale hot sand, strips of meat and fruit half-buried in it, a wooden rake leaning on one edge. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_BrineCrock_v1",
+  "rimflow_item_id": "COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE",
+  "target_def": "RM_BrineCrock",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style: a heavy glazed stoneware crock with a weighted wooden lid, salt crust around the rim, a ladle hanging on the side. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ },
+ {
+  "id": "RM_TarSealingVat_v1",
+  "rimflow_item_id": "COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT",
+  "target_def": "RM_TarSealingVat",
+  "canvas_w": 256,
+  "canvas_h": 128,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style: a 2x1 iron vat of glossy black bitumen over a small brick firebox with glowing embers, tar-plugged jars cooling on a plank beside it, a long dipping ladle. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only",
+  "priority": 50
+ }
+]

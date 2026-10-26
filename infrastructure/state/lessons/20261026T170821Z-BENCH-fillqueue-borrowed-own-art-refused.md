@@ -1,0 +1,2 @@
+fill_queue's eligibility gate judges the texPath a def DRAWS NOW: an interim def borrowing one of OUR renders (tar-sealed jars on RM_Bitumen) is REFUSED_REGEN, and an install_to/target_texpath no def draws is REFUSED_UNCONFIRMED. Borrow a vanilla texture for interim art and omit install_to so the gate sees DONOR/VANILLA. Faceted jobs also refuse camera words ('top-down') in the prompt.
+home: generating-rimworld-sprites

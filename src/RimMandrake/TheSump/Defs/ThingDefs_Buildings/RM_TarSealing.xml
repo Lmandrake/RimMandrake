@@ -62,7 +62,7 @@
     <label>tar-sealed meat</label>
     <description>A jar of meat plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged meat. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
     </graphicData>
     <ingestible>
       <ingestEffect>EatMeat</ingestEffect>
@@ -128,7 +128,7 @@
     <label>tar-sealed fish</label>
     <description>A jar of fish plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged fish. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
     </graphicData>
     <ingestible>
       <ingestEffect>EatMeat</ingestEffect>
@@ -194,7 +194,7 @@
     <label>tar-sealed eggs</label>
     <description>A jar of eggs plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged eggs. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
     </graphicData>
     <ingestible>
       <ingestEffect>EatMeat</ingestEffect>
@@ -260,7 +260,7 @@
     <label>tar-sealed produce</label>
     <description>A jar of produce plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged produce. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
     </graphicData>
     <ingestible>
       <ingestEffect>EatVegetarian</ingestEffect>
