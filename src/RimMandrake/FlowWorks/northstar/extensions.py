@@ -1059,7 +1059,7 @@ def _pit_cells(x0, z0):
     return [(x0 + 6 + i, z0 + 5 + j) for i in range(3) for j in range(3)]
 
 
-@suite.chain("plot_G_pit")
+@suite.chain("plot_G_pit", inputs=["Defs/**/*.xml"])   # the trap-art walk reads the Defs (modcheck/gate.py)
 def plot_G_pit(t):
     """Plot G: a 3x3 D=4 superdeep area (the pit). Occupied/empty twin G' sits 8 cells east."""
     x0, z0 = _prep_plot(t, "G")

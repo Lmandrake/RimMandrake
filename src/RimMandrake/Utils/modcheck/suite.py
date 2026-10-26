@@ -908,7 +908,10 @@ class Suite(object):
         """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session
         cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait.
         `offline=True`: the chain touches no game (a Python mirror, the C# SelfTest); a targeted live run skips it
-        (it runs at T0, before launch) and only `--full` runs it in the live slot."""
+        (it runs at T0, before launch) and only `--full` runs it in the live slot.
+        `inputs`: what the chain reads beyond its code and the game (globs relative to the mod dir, plus the
+        modcheck/gate.py tokens `?glob`, `@mod_hash`, `@closure:<script>`). The known-good gate keys the chain on them;
+        a chain that reads files and declares nothing is never skipped."""
         def deco(fn):
             suite = self
 
@@ -930,7 +933,7 @@ class Suite(object):
                 self.chain_caps[name] = int(tick_cap)
             if offline:
                 self.offline_chains.add(name)
-            if inputs:
+            if inputs is not None:      # inputs=[] is a declaration too: "reads nothing beyond its code" (modcheck/gate.py)
                 self.chain_inputs[name] = list(inputs)
             return fn
         return deco

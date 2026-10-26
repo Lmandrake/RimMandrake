@@ -77,6 +77,15 @@ def main(argv=None):
                             "unset) tags a result whose runtime+test manifest and DLL still match as reusable@<file> "
                             "and leaves the row UNMEASURED; 'on' takes its status as reused@<file> (never fresh_green); "
                             "'off' does not look (sets MODCHECK_REUSE, modcheck/reuse.py)")
+    p_run.add_argument("--purpose", choices=("fix", "guard", "sweep", "sensitivity", "flake", "commission"),
+                       default=None,
+                       help="why this run happens (plan 2026-10-25 section 3): fix/guard let the known-good gate skip a "
+                            "chain whose recorded PASS still holds; sweep/sensitivity/flake/commission run everything "
+                            "and only report would_skip. Default: sweep with --full, guard otherwise "
+                            "(sets MODCHECK_PURPOSE, modcheck/gate.py)")
+    p_run.add_argument("--gate", choices=("on", "shadow", "off"), default=None,
+                       help="the known-good gate: 'on' (default) skips per --purpose, 'shadow' never skips but "
+                            "records would_skip, 'off' computes nothing (sets MODCHECK_GATE)")
     p_run.add_argument("--canary", action="store_true",
                        help="run the vanilla canary (Steel spawn/read-back/destroy, a live colonist, Playing) before "
                             "the first chain; red -> every chain records one UNMEASURED HARNESS row, no body runs")
@@ -320,6 +329,12 @@ def main(argv=None):
             return 0
         if args.reuse is not None:
             os.environ["MODCHECK_REUSE"] = {"off": "0", "report": "report", "on": "1"}[args.reuse]
+        if args.gate is not None:
+            os.environ["MODCHECK_GATE"] = args.gate
+        if args.purpose is not None:
+            os.environ["MODCHECK_PURPOSE"] = args.purpose
+        elif args.full and not os.environ.get("MODCHECK_PURPOSE"):
+            os.environ["MODCHECK_PURPOSE"] = "sweep"   # a sweep bypasses the gate (plan section 3)
         overrides = dict(kv.split("=", 1) for kv in args.item if "=" in kv)
         target_items = [kv for kv in args.item if "=" not in kv]
         chains = [c.strip() for c in args.chains.split(",") if c.strip()]

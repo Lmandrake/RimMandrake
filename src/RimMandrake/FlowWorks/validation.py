@@ -1576,8 +1576,32 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         "lineCrossingRulesEnabled",
                         # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (2026-10-21): pipe poles need GSS; live rows owed (L2)
                         "pipePolesEnabled"]
+# KNOWN_GOOD_BUILD_SKIP_UNCHANGED_PASS (modcheck/gate.py): what these chains read beyond their code and the game. A chain
+# that shells out or reads files and declares nothing is never skipped by the known-good gate; a declaration must name
+# EVERYTHING the chain reads (it replaces the gate's read scan). The C# SelfTest: the sources it compiles and the runner
+# script. A driver_rows_at reader: the mod hash those results are keyed on, the result files, and the drivers' code
+# (driver_rows_reusable compares driver manifests).
+GATE_SELFTEST_INPUTS = ["Source/**/*.cs", "Source/**/*.csproj", "@closure:../Utils/selftest_flowworks_stock.py"]
+GATE_READER_INPUTS = ["@mod_hash", "?northstar/*.py"] + ["?northstar/" + _g for _g in DRIVER_RESULTS]
+for _name in ("rivers_switch_flips", "flow_door_facing", "ladder_hung_on_wall", "flow_map_controls",
+              "flow_map_controls_six", "hose_switch_flips", "pipe_looks", "container_styles"):
+    suite.chain_inputs[_name] = list(GATE_SELFTEST_INPUTS)
+for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_jump_float", "ice_dig_crushed_ice",
+              "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
+              "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
+              "thirst", "sprinklers", "drawbridges", "lines"):
+    suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
+suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
+                                                   "@closure:../Utils/selftest_flowworks_trench_cover.py"]
+                                                  + GATE_READER_INPUTS)
+suite.chain_inputs["hose_offline"] = []      # validation_hose_offline: its code and data literals are in the slice
+
 for _src in (EXT.suite, RIV.suite):
     for _name, _fn in _src.chains:
         suite.chains.append((_name, _fn))
         if _name in _src.chain_caps:
             suite.chain_caps[_name] = _src.chain_caps[_name]
+        if _name in _src.chain_inputs:          # targeting.changed and the known-good gate read them from this suite
+            suite.chain_inputs[_name] = list(_src.chain_inputs[_name])
+        if _name in _src.offline_chains:
+            suite.offline_chains.add(_name)

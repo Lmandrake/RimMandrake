@@ -304,6 +304,9 @@ def changed(suite, files, mod_dir=None):
         for n, _ in suite.chains:
             why = None
             for g in inputs.get(n, ()):
+                if g.startswith("@"):        # a gate token (gate.inputs_hash: @mod_hash, @closure:), not a path glob
+                    continue
+                g = g[1:] if g.startswith("?") else g
                 if fnmatch.fnmatch(rel, g):
                     why = "%s matches declared input %s" % (rel, g)
                     break

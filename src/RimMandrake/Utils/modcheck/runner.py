@@ -494,7 +494,7 @@ def _env_reset(session):
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
               judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False,
-              hold_site=False, floor_suite=None, scope=None, canary=False, validity=False):
+              hold_site=False, floor_suite=None, scope=None, canary=False, validity=False, gate=None):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -527,6 +527,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     recorded NOT_RUN (execution "not_run"), which neither reddens nor greens the run.
 
     Every chain records `phase_s` {hold, body, teardown} (monotonic seconds) and `env_reset` (_env_reset's receipt).
+
+    `gate`: a modcheck.gate.Gate (run() builds one). Before each chain it decides run / skip / would_skip from the
+    chain's manifest; a skipped chain is filled from its record (freshness reused@<file>, never fresh_green) and every
+    chain carries `gate` {action, key, why, record}; summary["gate"] counts them.
     """
     from suite import TestContext, StopAfter, Component, NOT_RUN  # noqa: E402  (modcheck package, same dir)
     walk, ns = northstar_for(mod) if mod else (None, None)
@@ -623,6 +627,17 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                    "situational": None, "modal_check": None, "site_hold": None, "env_reset": None,
                                    "phase_s": {"hold": 0.0, "body": 0.0, "teardown": 0.0}})
                 continue
+            _gd = None
+            if gate is not None:
+                import gate as _G  # noqa: E402
+                _gd = gate.decide(name, fn, (scope or {}).get(name))
+                if _gd["action"] == _G.SKIP:
+                    reused = gate.reused_chain(name, _gd)
+                    if reused is not None:
+                        print("[modcheck] chain %s SKIPPED: %s" % (name, _gd["why"]), file=sys.stderr, flush=True)
+                        chains_out.append(reused)
+                        continue
+                    _gd = dict(_gd, action=_G.RUN, why="record unreadable, ran: " + _gd["why"])
             # One progress line per chain (MODCHECK_RUN_DIAGNOSE_TICK_ONE_STALL, LIVE 2026-10-24): the row lines in the
             # log come from inside a chain, so an offline chain sitting minutes in a subprocess (rivers_switch_flips ->
             # the C# SelfTest, ~9 min) read as a game stalled at tick 1. Name the running chain on stderr.
@@ -750,6 +765,9 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                "site_hold": _hold,
                                "env_reset": _env,
                                "phase_s": _phase})
+            if _gd is not None:
+                import gate as _G  # noqa: E402
+                chains_out[-1]["gate"] = _G.stamp(_gd)
     finally:
         try:
             if hold_tx is not None:
@@ -792,6 +810,9 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     summary["leads"] = [{"row": "%s/%s" % (ch["name"], c["name"]), "cause": c.get("suspected_cause"),
                          "confidence": c.get("cause_confidence"), "lead": c.get("lead")}
                         for ch in chains_out for c in ch["components"] if c.get("lead")]
+    if gate is not None:
+        import gate as _G  # noqa: E402
+        summary["gate"] = dict(_G.summarize(chains_out), mode=gate.mode, purpose=gate.purpose)
     if canary_res is not None:
         summary["canary"] = canary_res
     if situational:
@@ -977,12 +998,20 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                       len(suite.chains), ", ".join(sel["chains"])), file=sys.stderr)
             ensure_playing_map()
             ensure_test_profile()
+            gate = None
+            import gate as _G  # noqa: E402
+            if _G.mode() != _G.OFF:
+                import reuse as _RU  # noqa: E402
+                gate = _G.Gate(run_this, mod_folder, mod_dir, package_ids,
+                               {"situational": situational, "policy": policy, "hold": True, "canary": bool(canary),
+                                "validity": bool(validity), "reuse": _RU.mode()},
+                               full_suite=suite)
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(run_this, s, debug=debug, mod=mod_folder, floor_suite=suite,
                                     situational=situational, policy=policy, hold_site=True,
                                     canary=canary, validity=validity,
-                                    scope=(sel or {}).get("scope"))
+                                    scope=(sel or {}).get("scope"), gate=gate)
             if sel:
                 summary["targeted"] = dict(sel, of_chains=len(suite.chains))
             if situational:
@@ -1016,9 +1045,10 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 print("[modcheck] %s: targeted run, status entry untouched; sheet %s" % (mod_folder, sheet_path),
                       file=sys.stderr)
             else:
+                # a chain the known-good gate skipped was not measured: such a run never writes a GREEN entry
                 record_run(mod_folder, mod_dir,
                           "%s@%d" % (mod_folder, int(time.time())),
-                          summary["all_green"], walk=walk)
+                          summary["all_green"] and not (summary.get("gate") or {}).get("skipped"), walk=walk)
             if verify_err is not None:
                 raise verify_err
     finally:
@@ -1037,4 +1067,9 @@ def write_sheet(mod, summary):
     # The same run as machine-readable data (acceptance items say "results JSON"; the HTML sheet alone is not that).
     with open(path[:-5] + ".json", "wb") as f:
         f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary}, indent=1, default=str).encode("utf-8"))
+    try:        # the known-good gate's history: one line per freshly run chain with a manifest (modcheck/gate.py)
+        import gate as _G  # noqa: E402
+        _G.index_run(mod, summary, path[:-5] + ".json")
+    except Exception as ex:  # noqa: BLE001 - the sheet is the evidence; a lost index line only costs a future skip
+        print("[modcheck] gate index not written: %s: %s" % (type(ex).__name__, ex), file=sys.stderr)
     return path
