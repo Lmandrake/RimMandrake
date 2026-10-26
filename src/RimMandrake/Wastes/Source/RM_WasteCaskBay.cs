@@ -231,8 +231,8 @@ namespace RimMandrake.Wastes
                 return;
             }
             RM_WasteLeakRegistry.PolluteAround(c, map, 9);
-            Messages.Message((by != null ? by.LabelShort + " has" : "A waste cask has been")
-                           + " illegally reburied a waste cask. The ground around it is fouled, and the burial may yet be discovered.",
+            Messages.Message((by != null ? by.LabelShort + " has illegally reburied a waste cask." : "A waste cask has been illegally reburied.")
+                           + " The ground around it is fouled, and the burial may yet be discovered.",
                 new LookTargets(new TargetInfo(c, map)), MessageTypeDefOf.NegativeEvent);
             RM_TippingUtility.Notify_IllegalReburial(map, c);
             parent.Destroy(DestroyMode.Vanish);
@@ -262,9 +262,25 @@ namespace RimMandrake.Wastes
     {
         private static readonly HashSet<Thing> leaking = new HashSet<Thing>();
         private static readonly Dictionary<int, int> lastMessageTick = new Dictionary<int, int>();
+        private static Game owner;
+
+        // The registry is static, but its Things belong to one game: loading another save leaves the old game's
+        // Things reading Spawned (mapIndexOrState is never reset), so without this the Alert would report their
+        // leaks forever and LeakingOn could index Find.Maps out of range. Live casks and bays re-register on
+        // their next rare tick.
+        private static void EnsureCurrentGame()
+        {
+            if (owner != Current.Game)
+            {
+                leaking.Clear();
+                lastMessageTick.Clear();
+                owner = Current.Game;
+            }
+        }
 
         public static void Set(Thing t, bool isLeaking)
         {
+            EnsureCurrentGame();
             if (isLeaking)
             {
                 leaking.Add(t);
@@ -277,12 +293,14 @@ namespace RimMandrake.Wastes
 
         public static List<Thing> LeakingOn(Map map)
         {
+            EnsureCurrentGame();
             leaking.RemoveWhere(t => t == null || t.Destroyed || !t.Spawned);
             return leaking.Where(t => t.Map == map).ToList();
         }
 
         public static List<Thing> AllLeaking()
         {
+            EnsureCurrentGame();
             leaking.RemoveWhere(t => t == null || t.Destroyed || !t.Spawned);
             return leaking.ToList();
         }
@@ -323,6 +341,7 @@ namespace RimMandrake.Wastes
         /// <summary>A leak message. <paramref name="force"/> = always (first leak); otherwise at most one per map per 600 ticks.</summary>
         public static void Announce(Map map, Thing culprit, string text, bool force)
         {
+            EnsureCurrentGame();
             int now = Find.TickManager.TicksGame;
             if (!force && lastMessageTick.TryGetValue(map.uniqueID, out int last) && now - last < 600)
             {
