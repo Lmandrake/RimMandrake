@@ -81,6 +81,10 @@ def main(argv=None):
                             "unset) tags a result whose runtime+test manifest and DLL still match as reusable@<file> "
                             "and leaves the row UNMEASURED; 'on' takes its status as reused@<file> (never fresh_green); "
                             "'off' does not look (sets MODCHECK_REUSE, modcheck/reuse.py)")
+    p_run.add_argument("--drivers", choices=("on", "off"), default=None,
+                       help="'on': before the chains, run the suite's external live drivers (suite.live_drivers, e.g. "
+                            "FlowWorks northstar/thirst_live.py) whose chains are selected, so their rows are measured at "
+                            "this mod hash; the SteveDesktop worker passes it (sets MODCHECK_RUN_DRIVERS, modcheck/drivers.py)")
     p_run.add_argument("--purpose", choices=("fix", "guard", "sweep", "sensitivity", "flake", "commission"),
                        default=None,
                        help="why this run happens (plan 2026-10-25 section 3): fix/guard let the known-good gate skip a "
@@ -335,6 +339,9 @@ def main(argv=None):
             for line in targeting.changed_report(res):
                 print(line)
             return 0
+        if args.drivers is not None:
+            import drivers  # noqa: E402
+            os.environ[drivers.ENV] = "1" if args.drivers == "on" else "0"
         if args.reuse is not None:
             os.environ["MODCHECK_REUSE"] = {"off": "0", "report": "report", "on": "1"}[args.reuse]
         if args.gate is not None:

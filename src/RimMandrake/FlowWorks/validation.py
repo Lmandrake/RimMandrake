@@ -1642,3 +1642,57 @@ for _src in (EXT.suite, RIV.suite):
             suite.chain_inputs[_name] = list(_src.chain_inputs[_name])
         if _name in _src.offline_chains:
             suite.offline_chains.add(_name)
+
+# TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS / FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH: the external drivers whose result files the
+# reader chains above take their rows from (driver_rows_at, latest_core_result, the proof_hose reader). `modcheck run
+# --drivers on` (the SteveDesktop worker) runs each, before the chains, when one of its chains is selected
+# (Utils/modcheck/drivers.py), so a sweep measures those rows at the mod hash instead of reading UNMEASURED. Order is
+# deliberate: thirst then sprinklers on the run's own map (they shared a map in the desk runs of 2026-10-22), then the
+# --fresh-map drivers; live_session B2,B4 on the trench driver's map. No row that needs a saved test site: SteveDesktop
+# has none (thirst T15R is opt-in and is left out; v2 runs --fresh-map).
+suite.live_drivers = [
+    {"name": "thirst_live", "script": "northstar/thirst_live.py", "args": ["--site", "150,130", "--log", "@player_log"],
+     "chains": ["thirst"], "timeout_s": 2700},
+    {"name": "sprinkler_live", "script": "northstar/sprinkler_live.py", "args": ["--origin", "120,140"],
+     "chains": ["sprinklers", "thirst"], "timeout_s": 1800},          # it also measures thirst T21/T22 (DRIVER_OF)
+    {"name": "drawbridge_proof", "script": "northstar/drawbridge_proof.py", "args": ["--origin", "140,140", "--fresh-map"],
+     "chains": ["drawbridges"], "timeout_s": 1200},
+    {"name": "lines_proof", "script": "northstar/lines_proof.py", "args": ["--origin", "30,30", "--fresh-map"],
+     "chains": ["lines"], "timeout_s": 900},
+    {"name": "suspension_bridge_proof", "script": "northstar/suspension_bridge_proof.py",
+     "args": ["--origin", "140,140", "--fresh-map"], "chains": ["suspension_bridges_and_covers"], "timeout_s": 1200},
+    {"name": "trench_cover_proof", "script": "northstar/trench_cover_proof.py", "args": ["--origin", "120,120", "--fresh-map"],
+     "chains": ["trench_cover_and_raiders"], "timeout_s": 900},
+    {"name": "live_session_B2_B4", "script": "northstar/live_session.py", "args": ["--only", "B2,B4", "--no-owner-save"],
+     "chains": ["limitless_endless", "pit_access_gear_ladders", "pit_travel_fly_jump_float"], "timeout_s": 1500},
+    {"name": "validation_v2_live", "script": "northstar/validation_v2.py", "args": ["--live", "--fresh-map"],
+     "chains": ["core_live_rows"], "timeout_s": 1500},
+    {"name": "proof_hose_live", "script": "northstar/proof_hose.py", "args": ["--live"],
+     "chains": ["hose_live_rows"], "timeout_s": 1500},
+    # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
+    # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
+    # above puts after every other chain. toggle_river_steam (needs a Pyrelands tile) is not wired.
+    {"name": "river_site", "script": "northstar/river_site.py", "args": [], "stage": "chain",
+     "chains": ["works", "current", "swept", "placer", "taken_by_land"], "timeout_s": 900},
+]
+
+
+def _on_river_site(fn, entry):
+    import functools
+
+    @functools.wraps(fn)
+    def chain(t):
+        _mc = os.path.join(os.path.dirname(HERE), "Utils", "modcheck")
+        if _mc not in sys.path:
+            sys.path.insert(0, _mc)
+        import drivers as _DRV  # noqa: E402
+        rec = _DRV.once(HERE, entry)
+        if rec is not None and rec["status"] != "RC0":
+            print("[FlowWorks] river_site %s rc=%s: the river chains run on the current map: %s"
+                  % (rec["status"], rec["rc"], rec["tail"][-300:].replace("\n", " | ")), file=sys.stderr)
+        return fn(t)
+    return chain
+
+
+_RIVER = [_d for _d in suite.live_drivers if _d.get("stage") == "chain"][0]
+suite.chains = [(_n, _on_river_site(_f, _RIVER) if _n in _RIVER["chains"] else _f) for _n, _f in suite.chains]

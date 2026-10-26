@@ -248,6 +248,13 @@ def out(obj, rc=0):
 
 # ---------------------------------------------------------------- the attempt itself
 
+# The run phase. `--drivers on` (TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS): the suite's external live drivers (FlowWorks
+# thirst_live.py, drawbridge_proof.py, validation_v2.py --live ...) run before the chains they feed, so a sweep or a
+# targeted job measures those rows instead of reading UNMEASURED (modcheck/drivers.py).
+RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY; "
+            "python.exe src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
+
+
 class Stopped(Exception):
     pass
 
@@ -462,9 +469,7 @@ class Attempt:
 
     def run_modcheck(self):
         args = S.modcheck_args(self.job)
-        base = os.environ.get("TESTQ_CMD_RUN") or (
-            "export MODCHECK_SKIP_DEPLOY=1 WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY; "
-            "python.exe src/RimMandrake/Utils/modcheck/cli.py run")
+        base = os.environ.get("TESTQ_CMD_RUN") or RUN_BASE
         cmd = base + " " + " ".join(shlex.quote(a) for a in args)
         timeout = int(os.environ.get("TESTQ_RUN_TIMEOUT_S") or self.job.get("timeout_s", 2700))
         for attempt_no in (1, 2):

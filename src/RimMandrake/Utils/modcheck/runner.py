@@ -1003,6 +1003,14 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                       len(suite.chains), ", ".join(sel["chains"])), file=sys.stderr)
             ensure_playing_map()
             ensure_test_profile()
+            # TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS: with --drivers on (the SteveDesktop worker), the external live drivers
+            # whose result files the selected chains read run now, so those rows are measured at this mod hash instead
+            # of reading UNMEASURED. A driver may leave the menu or a fresh map: the map and profile are re-established.
+            import drivers as _DRV  # noqa: E402
+            drv = _DRV.run(run_this, mod_dir, [n for n, _ in run_this.chains], cwd=ROOT,
+                           after=lambda _rec: ensure_playing_map())
+            if drv:
+                ensure_test_profile()
             gate = None
             import gate as _G  # noqa: E402
             if _G.mode() != _G.OFF:
@@ -1017,6 +1025,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                                     situational=situational, policy=policy, hold_site=True,
                                     canary=canary, validity=validity,
                                     scope=(sel or {}).get("scope"), gate=gate)
+            if drv:
+                summary["drivers"] = drv
             if sel:
                 summary["targeted"] = dict(sel, of_chains=len(suite.chains))
             if situational:
