@@ -162,7 +162,9 @@ def main():
           jb["sections"]["t"][0]["check"])
     rh = brief.render({**hb_, "sections": {k: [{**ln, "check": "pass"} for ln in v] for k, v in hb_["sections"].items()},
                        "withheld": 0}, {"red": False, "text": "x"}, NOW)
-    check("render titles the home list with its total time", "When you&#x27;re home (1 · ~10 min)" in rh, rh[:0])
+    # detail was rh[:0] (always empty), so a failure here said nothing (wave 72 review)
+    check("render titles the home list with its total time", "When you&#x27;re home (1 · ~10 min)" in rh,
+          rh[rh.find("When you"):][:160] if "When you" in rh else "no 'When you' heading at all")
 
     # CLAUDE_PLAN_USAGE_MEASURE_A_SOURCE: spend lines come from the monitor's measured usage panel
     up = {"at": NOW, "evening_share": 0.4, "codex": None, "accounts": [
