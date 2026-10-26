@@ -67,6 +67,18 @@ namespace RimMandrake.Minerals
             return RM_MineralPolicyKernel.EffectiveValue(Row(materialId), biomeDefName, RM_MineralsSettings.overrides, globalMultiplier);
         }
 
+        /// <summary>The snapshot value of a def before the policy wrote it (a copy), or null when the policy never saw it.</summary>
+        public static MineralDefInfo Original(string defName)
+        {
+            return defName != null && originals.TryGetValue(defName, out MineralDefInfo o) ? RM_MineralPolicyKernel.Copy(o) : null;
+        }
+
+        /// <summary>Copies of every snapshot value, keyed by defName (the surface adapter caches its targets on Revision).</summary>
+        public static Dictionary<string, MineralDefInfo> OriginalsCopy()
+        {
+            return originals.ToDictionary(kv => kv.Key, kv => RM_MineralPolicyKernel.Copy(kv.Value));
+        }
+
         /// <summary>Called by a surface placer (wave R3) once it is ready to place governed veins per biome: from then on governed
         /// mineables with a surface source are zeroed for vanilla scatter, because the placer scatters them itself.</summary>
         public static void RegisterSurfacePlacer(string owner)

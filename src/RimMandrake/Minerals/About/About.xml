@@ -6,9 +6,9 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>MINERALS_WHERE_THEY_BELONG_1, wave R2 (MINERAL_POLICY_CODE_STARTUP_ZEROING). Each biome bears its own carefully selected minerals, driven by one registry (design/RimMandrake/mineral_abundance_registry_2026-10-03.csv, generated into Defs/RM_MineralRegistry.xml).
+  <description>MINERALS_WHERE_THEY_BELONG_1, waves R2-R4 (policy service, per-biome vein placer, quarry pool). Each biome bears its own carefully selected minerals, driven by one registry (design/RimMandrake/mineral_abundance_registry_2026-10-03.csv, generated into Defs/RM_MineralRegistry.xml).
 
-At startup a policy service zeroes vanilla's planet-wide scatter and deep weights for every mineral the registry disables (mineable components and plasteel, donor duplicates) and for every governed mineral with no source in any biome. Governed veins that do have a biome keep their vanilla scatter until the per-biome placer (wave R3) is active; deep finds stay limited to home biomes by RimMandrake: Deep Drill. A mineral the registry has never heard of behaves as its mod intended unless "Suppress unregistered minerals" is turned on. The policy re-asserts whenever a game starts.
+At startup a policy service zeroes vanilla's planet-wide scatter and deep weights for every mineral the registry disables (mineable components and plasteel, donor duplicates) and for every governed mineral with no source in any biome. Governed veins measured in deposits are placed per biome on every newly generated map (registry amount x vein multiplier x hilliness x map area), instead of vanilla's planet-wide scatter; ores the registry has never heard of keep their vanilla vein count. Deep finds stay limited to home biomes by RimMandrake: Deep Drill. A mineral the registry has never heard of behaves as its mod intended unless "Suppress unregistered minerals" is turned on. The policy re-asserts whenever a game starts.
 
 Mod Settings (RimMandrake: Minerals): master toggle "Minerals follow the registry" (off restores every original weight), unregistered suppression, global multipliers, and a per-biome table of abundances (ores in deposits per map), stored as your own values per edited cell. Registry numbers are PROVISIONAL until each biome's sitting rules them.</description>
   <modDependencies>

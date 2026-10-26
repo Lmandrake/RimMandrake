@@ -24,6 +24,7 @@ NS = "RimMandrake.Minerals."
 SETTINGS_TYPE = NS + "RM_MineralsSettings"
 PROOF_TYPE = NS + "RM_MineralPolicyProof"
 QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
+SURFACE_PROOF_TYPE = NS + "RM_MineralSurfaceProof"
 # Quarry (ogliss.thewhitecrayon.quarry, workshop 2007576583): the adapter finds these members by name; a rename upstream un-wires it
 QUARRY_DLL = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007576583/1.6/Assemblies/Quarry.dll"
 QUARRY_NAMES = ["TakeOne", "GiveResources", "resourceModifer", "oreDictionary", "ChunksUnder", "ThingCountExposable",
@@ -99,6 +100,14 @@ def static_checks():
             if n.encode("ascii") not in blob:
                 bad.append("installed Quarry.dll no longer has %s: the adapter will not wire" % n)
 
+    sf = _read("Source", "RM_MineralSurface.cs")
+    for needle in ("[HarmonyPatch(typeof(GenStep_RocksFromGrid), nameof(GenStep_RocksFromGrid.Generate))]",
+                   "[HarmonyPatch(typeof(GenStep_ScatterLumpsMineable), \"CalculateFinalCount\")]", "RM_MineralPolicy.RegisterSurfacePlacer(",
+                   "RM_MineralSurfaceKernel.KeptShare(", "RM_MineralSurfaceKernel.ExpectedLumps(", "RM_MineralSurfaceKernel.StochasticRound(",
+                   "public static string ProofState(string unused)", "__instance.forcedDefToScatter != null"):
+        if needle not in sf:
+            bad.append("RM_MineralSurface.cs lacks %s" % needle)
+
     proj = _read("Source", "RimMandrake_Minerals.csproj")
     classes = set()
     for dp, _, files in os.walk(os.path.join(HERE, "Source")):
@@ -110,7 +119,7 @@ def static_checks():
                     bad.append("%s is not in the csproj" % fn)
                 classes |= set(re.findall(r"\bclass (\w+)", _read(os.path.relpath(os.path.join(dp, fn), HERE))))
     for c in ("RM_MineralRegistryDef", "RM_MineralBiomeCell", "RM_MineralsSettings", "RM_MineralPolicyProof",
-              "RM_MineralQuarryProof", "RM_QuarryKernel"):
+              "RM_MineralQuarryProof", "RM_QuarryKernel", "RM_MineralSurfaceProof", "RM_GenStep_RegistryLumps"):
         if c not in classes:
             bad.append("sanity: the class scan cannot see %s" % c)
 
@@ -348,6 +357,33 @@ def _build_suite():
         with t.component("quarry_yields_salt_in_game", beyond_toggle=True):
             if _live(t) and not t.upstream_failed:
                 _unmeasured(t, "needs eyes: build a quarry on a RM_GreySea map, mine it, see salt stacks and no components")
+
+    def _surface(t):
+        r = t.bridge_call("jawa/static_call", type=SURFACE_PROOF_TYPE, method="ProofState", args="")
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("surface ProofState could not run: %r" % (r,))
+        return _parse_state(str(r.get("result", "")))
+
+    @suite.chain("surface")
+    def surface(t):
+        with t.component("surface_placer_registered", toggle="enabled"):
+            if _live(t):
+                s = _surface(t)
+                if s.get("registered") != "1" or s.get("placer") != "1":
+                    raise ExpectationFailed("surface placer not registered: registered=%r placer=%r (a patch failed to install)"
+                                            % (s.get("registered"), s.get("placer")))
+        with t.component("kept_share_on_generated_map", beyond_toggle=True):
+            if _live(t) and not t.upstream_failed:
+                s = _surface(t)
+                if s.get("map", "none") == "none":
+                    _unmeasured(t, "no map generated since load: generate one (new colony or quicktest) and re-run")
+                else:
+                    share = float(s.get("share", "nan"))
+                    before, _, after = (s.get("vanilla") or "-1->-1").partition("->")
+                    if not (0.0 <= share <= 1.0):
+                        raise ExpectationFailed("kept share out of range: %r" % s.get("share"))
+                    if share < 1.0 and int(before) > 0 and int(after) > int(before):
+                        raise ExpectationFailed("vanilla scatter count grew under a kept share < 1: %r" % s.get("vanilla"))
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

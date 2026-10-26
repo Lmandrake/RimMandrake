@@ -35,11 +35,13 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_MineralPolicyKernel.cs" />
+    <Compile Include="Kernel\RM_MineralSurfaceKernel.cs" />
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_MineralRegistryDef.cs" />
     <Compile Include="RM_MineralPolicy.cs" />
     <Compile Include="RM_MineralsMod.cs" />
     <Compile Include="RM_MineralQuarry.cs" />
+    <Compile Include="RM_MineralSurface.cs" />
   </ItemGroup>
 
   <ItemGroup>

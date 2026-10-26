@@ -151,13 +151,19 @@ namespace RimMandrake.Minerals.SelfTest
                 else Check(p.Scatter == on[p.DefName].Scatter && p.Deep == on[p.DefName].Deep, "suppression changed governed " + p.DefName);
             }
 
-            // --- surface placer active: every governed mineable with scatter is zeroed (the placer scatters it instead)
+            // --- surface placer active: every governed mineable with scatter is zeroed when the placer can place its row instead;
+            // a row it cannot place (not EPM, no yield per cell) keeps vanilla scatter, or its veins would vanish
             Dictionary<string, PolicyDecision> placed = ByName(RM_MineralPolicyKernel.Decide(rows, Clone(defs), new PolicyOptions { SurfacePlacerActive = true }));
+            var rowById = rows.ToDictionary(r => r.MaterialId);
             int keptBefore = 0;
             foreach (PolicyDecision p in placed.Values)
             {
                 if (p.Unregistered || !orig[p.DefName].IsBuilding) continue;
-                Check(p.Scatter == 0f, "placer active but governed " + p.DefName + " keeps scatter " + p.Scatter);
+                bool placeable = RM_MineralSurfaceKernel.Placeable(rowById[p.MaterialId]);
+                if (placeable || on[p.DefName].Scatter == 0f)
+                    Check(p.Scatter == 0f, "placer active but governed " + p.DefName + " keeps scatter " + p.Scatter);
+                else Check(p.Scatter == on[p.DefName].Scatter && !p.SurfacePlaced, "placer active zeroed unplaceable " + p.DefName);
+                Check(p.SurfacePlaced == (p.Scatter == 0f && on[p.DefName].Scatter > 0f && placeable), p.DefName + " SurfacePlaced flag disagrees");
                 if (on[p.DefName].Scatter > 0f) keptBefore++;
             }
             Console.WriteLine("governed veins kept until R3: " + keptBefore + "; unregistered: " + unregCount);
@@ -306,6 +312,70 @@ namespace RimMandrake.Minerals.SelfTest
                   && RM_QuarryKernel.PickWeighted(two, 1.0).Item == "b", "weighted pick boundaries");
             Check(RM_QuarryKernel.PickWeighted(new List<QuarryEntry>(), 0.5) == null
                   && RM_QuarryKernel.PickWeighted(new List<QuarryEntry> { new QuarryEntry("z", 0f, "z") }, 0.5) == null, "empty / zero-weight pool picks nothing");
+
+            // --- surface adapter (MINERAL_SURFACE_BUILD_PER_BIOME, design §4)
+            // kept share: vanilla's RocksFromGrid scatter picks each lump by RELATIVE weight. Zeroing governed veins without scaling
+            // the count hands their lumps to the rest (owner card 2026-10-03: an unregistered ore behaves as its mod intended).
+            var eligible = defs.Where(d => d.IsBuilding && d.Scatter > 0f).ToList();
+            float sumOrig = eligible.Sum(d => d.Scatter);
+            float sumCur = eligible.Sum(d => on[d.DefName].Scatter);
+            float share = RM_MineralSurfaceKernel.KeptShare(eligible.Select(d => new KeyValuePair<float, float>(on[d.DefName].Scatter, d.Scatter)));
+            const float vanillaCount = 69f;   // CountFromPer10kCells on a 250² large-hills map (design §4)
+            float steelVanilla = RM_MineralSurfaceKernel.ExpectedVanillaLumps(vanillaCount, orig["MineableSteel"].Scatter, sumOrig);
+            float steelOld = RM_MineralSurfaceKernel.ExpectedVanillaLumps(vanillaCount, on["MineableSteel"].Scatter, sumCur);
+            float steelNew = RM_MineralSurfaceKernel.ExpectedVanillaLumps(vanillaCount * share, on["MineableSteel"].Scatter, sumCur);
+            Check(sumCur < sumOrig && steelOld > steelVanilla * 1.01f,
+                  "probe: the default policy zeroes some vein weight, so unscaled vanilla scatter inflates steel (" + steelVanilla + " -> " + steelOld + ")");
+            Check(Math.Abs(steelNew - steelVanilla) < 1e-3f, "kept share must keep unregistered steel at its vanilla lumps: " + steelVanilla + " vs " + steelNew);
+            Console.WriteLine("kept share " + share.ToString("0.000") + ": steel lumps vanilla " + steelVanilla.ToString("0.00") + ", unscaled "
+                            + steelOld.ToString("0.00") + ", scaled " + steelNew.ToString("0.00"));
+            Check(RM_MineralSurfaceKernel.KeptShare(eligible.Select(d => new KeyValuePair<float, float>(d.Scatter, d.Scatter))) == 1f, "nothing zeroed: share 1");
+            Check(RM_MineralSurfaceKernel.KeptShare(new KeyValuePair<float, float>[0]) == 1f
+                  && RM_MineralSurfaceKernel.KeptShare(new[] { new KeyValuePair<float, float>(0f, 2f) }) == 0f, "share guards: empty 1, all zeroed 0");
+
+            // lump counts: 1200 EPM of a 40/cell ore is one lump on the reference map; hilliness and area scale it; nomadic too
+            Check(Math.Abs(RM_MineralSurfaceKernel.ExpectedLumps(1200f, 40f, 11f, 62500, 1f) - 1f) < 1e-5f, "reference map: 1200 EPM / 40 per cell = 1 lump");
+            Check(Math.Abs(RM_MineralSurfaceKernel.ExpectedLumps(1200f, 40f, 4f, 62500, 1f) - 4f / 11f) < 1e-5f, "flat map scales by 4/11");
+            Check(Math.Abs(RM_MineralSurfaceKernel.ExpectedLumps(1200f, 40f, 11f, 40000, 1f) - 0.64f) < 1e-5f, "200² map scales by area");
+            Check(Math.Abs(RM_MineralSurfaceKernel.ExpectedLumps(1200f, 40f, 11f, 62500, 0.5f) - 0.5f) < 1e-5f, "nomadic factor applies");
+            Check(RM_MineralSurfaceKernel.ExpectedLumps(0f, 40f, 11f, 62500, 1f) == 0f && RM_MineralSurfaceKernel.ExpectedLumps(1200f, 0f, 11f, 62500, 1f) == 0f,
+                  "lump guards");
+            int sum = 0;
+            for (int i = 0; i < 1000; i++) sum += RM_MineralSurfaceKernel.StochasticRound(0.5f, (i + 0.5) / 1000.0);
+            Check(sum == 500, "stochastic rounding keeps the expectation of half a lump: " + sum + "/1000");
+            Check(RM_MineralSurfaceKernel.StochasticRound(2.25f, 0.2) == 3 && RM_MineralSurfaceKernel.StochasticRound(2.25f, 0.3) == 2
+                  && RM_MineralSurfaceKernel.StochasticRound(-1f, 0.0) == 0, "stochastic rounding boundaries");
+
+            // targets over the shipped registry with the placer active. Every governed vein with vanilla scatter today belongs to a
+            // row it cannot place or with no surface source; the GUESS rows (steel, gold, silver) are not emitted yet. So: none.
+            List<SurfaceTarget> shippedTargets = RM_MineralSurfaceKernel.SurfaceTargets(rows, placed.Values, orig);
+            Console.WriteLine("surface targets on the shipped registry: " + shippedTargets.Count + " (" + string.Join(",", shippedTargets.Select(t => t.MaterialId)) + ")");
+            foreach (SurfaceTarget t in shippedTargets)
+                Check(t.Mineables.All(m => placed[m.Key].SurfacePlaced && placed[m.Key].Scatter == 0f), t.MaterialId + ": target mineable still scatters");
+            // synthetic: an EPM row with two vein defs; a non-EPM row; a 0-scatter vein (its own GenStep places it)
+            var ep = new MineralRow { MaterialId = "ep", UnitsPerCellOrFind = 40f }; ep.Items.Add("EP"); ep.Cells["RM_X"] = 2400f;
+            var ups = new MineralRow { MaterialId = "ups", Unit = "UPY", UnitsPerCellOrFind = 40f }; ups.Items.Add("UP"); ups.Cells["RM_X"] = 50f;
+            var synDefs = new List<MineralDefInfo> {
+                new MineralDefInfo("MineableEP1", 0.3f, 0f, "EP", true), new MineralDefInfo("MineableEP2", 0.1f, 0f, "EP", true),
+                new MineralDefInfo("MineableEP0", 0f, 0f, "EP", true), new MineralDefInfo("MineableUP", 0.2f, 0f, "UP", true),
+                new MineralDefInfo("MineableSteel", 1f, 0f, "Steel", true) };
+            List<PolicyDecision> synPlaced = RM_MineralPolicyKernel.Decide(new List<MineralRow> { ep, ups }, synDefs, new PolicyOptions { SurfacePlacerActive = true });
+            Dictionary<string, PolicyDecision> sp = ByName(synPlaced);
+            Check(sp["MineableEP1"].SurfacePlaced && sp["MineableEP1"].Scatter == 0f && sp["MineableEP2"].SurfacePlaced, "EPM veins are placed, vanilla scatter zeroed");
+            Check(!sp["MineableEP0"].SurfacePlaced, "a 0-scatter vein is left to its own GenStep (no double placement)");
+            // failing on old: R2 zeroed every governed vein once a placer registered, so a row the placer cannot place lost its veins
+            Check(!sp["MineableUP"].SurfacePlaced && sp["MineableUP"].Scatter == 0.2f, "a non-EPM row keeps vanilla scatter under the placer");
+            Check(sp["MineableSteel"].Unregistered && sp["MineableSteel"].Scatter == 1f, "unregistered steel untouched by the placer");
+            var synOrig = synDefs.ToDictionary(d => d.DefName);
+            List<SurfaceTarget> st = RM_MineralSurfaceKernel.SurfaceTargets(new List<MineralRow> { ep, ups }, synPlaced, synOrig);
+            Check(st.Count == 1 && st[0].MaterialId == "ep" && st[0].Mineables.Count == 2 && st[0].UnitsPerCell == 40f, "one target, two weighted mineables");
+            Check(RM_MineralSurfaceKernel.PickMineable(st[0].Mineables, 0.70) == "MineableEP1" && RM_MineralSurfaceKernel.PickMineable(st[0].Mineables, 0.80) == "MineableEP2"
+                  && RM_MineralSurfaceKernel.PickMineable(st[0].Mineables, 1.0) == "MineableEP2", "lump mineable keeps the original 3:1 split");
+            Check(RM_MineralSurfaceKernel.PickMineable(new List<KeyValuePair<string, float>>(), 0.5) == null, "empty pick");
+            float? epEpm = RM_MineralPolicyKernel.EffectiveValue(ep, "RM_X", null, 1f);
+            Check(epEpm == 2400f && Math.Abs(RM_MineralSurfaceKernel.ExpectedLumps(epEpm.Value, 40f, 11f, 62500, 1f) - 2f) < 1e-5f, "2400 EPM is two lumps on RM_X");
+            Check(RM_MineralPolicyKernel.EffectiveValue(ep, "TemperateForest", null, 1f) == 0f, "a biome the row does not bear gets no lumps");
+            Check(Math.Abs(RM_MineralSurfaceKernel.OrePer1000Rock(30, 6000) - 5f) < 1e-5f && RM_MineralSurfaceKernel.OrePer1000Rock(5, 0) == 0f, "diagnostic per 1000 rock");
 
             Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + (checks - fails) + "/" + checks + " checks; " + rows.Count + " registry rows, "
                             + defs.Count + " fixture defs, " + on.Count + " decided");
