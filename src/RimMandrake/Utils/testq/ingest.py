@@ -14,7 +14,8 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
 The done record gets "ingested" either way, except after an error (typically an item filed in a seat clone that
 has not reached origin yet): that record is retried every TESTQ_INGEST_RETRY_S (600) and marked ingested with the
 error only after TESTQ_INGEST_MAX_TRIES (6) tries. Idempotent: a verify already in the RUNNER shard for that attempt is
-reused, never written twice. Then the shard is committed and pushed (TESTQ_INGEST_PUSH=0 skips the git step).
+reused, never written twice. Then the shard is committed and pushed (TESTQ_INGEST_PUSH=0 skips the git step); a
+pull --rebase that fails is aborted and stops that publication with the commit kept local, never pushed half-rebased.
 """
 import fcntl
 import json
@@ -136,9 +137,12 @@ def publish(n):
             # A failed rebase leaves a detached, conflicted tree: pushing HEAD then pushes origin's own tip and
             # "succeeds" while the RUNNER commit sits unapplied (drill 2026-10-26). Abort, keep the commit local,
             # stop publication (design section 6: no reset, no stash, no game re-run).
-            git("rebase", "--abort")
-            return "publish stopped: pull --rebase failed, rebase aborted, the commit stays local: " + \
-                (r.stderr or r.stdout).strip()[-200:]
+            gd = git("rev-parse", "--git-dir").stdout.strip()
+            rebasing = any(os.path.isdir(os.path.join(REPO, gd, d)) for d in ("rebase-merge", "rebase-apply"))
+            if rebasing:
+                git("rebase", "--abort")
+            return "publish stopped: pull --rebase failed%s, the commit stays local (the next ingest retries): " % \
+                (", rebase aborted" if rebasing else "") + (r.stderr or r.stdout).strip()[-200:]
         p = git("push", "-q", "origin", "HEAD:main")
         if p.returncode == 0:
             return "pushed"
