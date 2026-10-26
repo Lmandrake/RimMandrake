@@ -51,9 +51,16 @@ namespace RimMandrake.Stillsand
             return t != null && !t.IsWater;
         }
 
-        public static void Postfix(IntVec3 c, Map map, ref bool __result)
+        // Drift is deep sand, so it is swim ground only for a swimmer that swims sand: one with an explicit
+        // swimTerrains list naming no sand (RM_Shivven swims Ice only) stays out of it. A sand-locked cell
+        // stays locked: the original returns false for it and drift must not reopen it.
+        public static void Postfix(IntVec3 c, Map map, RM_SandSwimExtension ext, ref bool __result)
         {
-            if (!__result && IsDriftSwimCell(c, map)) __result = true;
+            if (__result) return;
+            if (ext?.swimTerrains != null && ext.swimTerrains.Count > 0
+                && !ext.swimTerrains.Contains(TerrainDefOf.Sand) && !ext.swimTerrains.Contains(TerrainDefOf.SoftSand)) return;
+            if (RM_ConditionGround.SandLocked(c, map)) return;
+            if (IsDriftSwimCell(c, map)) __result = true;
         }
     }
 
