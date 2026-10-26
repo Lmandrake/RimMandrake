@@ -59,10 +59,13 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUNNER = os.path.abspath(os.path.join(HERE, "..", ".."))
+# TESTQ_REPO: an attempt runs from a COPY of the main-checkout worker (see spawn), so the repo it works in is named here
+RUNNER = os.path.abspath(os.environ.get("TESTQ_REPO") or os.path.join(HERE, "..", ".."))
 CLONE = os.environ.get("TESTQ_CLONE") or RUNNER     # the git clone a job is pinned in (tests point it at a scratch repo)
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "Utils", "testq"))
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "rimflow"))
+if os.environ.get("TESTQ_REPO") and os.path.exists(os.path.join(HERE, "schema.py")):
+    sys.path.insert(0, HERE)        # the outer copy's own schema, not the pinned tree's
 import schema as S  # noqa: E402
 
 HOME = os.environ.get("TESTQ_HOME", "/mnt/d/RimTest/testq")
@@ -119,15 +122,42 @@ def pin_marker():
     return p("pinned_clone")
 
 
-def unpin():
+def runner_clone_only():
+    """Self-heal of a dirty clone is only for the machine-owned runner clone (~/rm/runner), never a seat clone.
+    Tests opt in by pointing TESTQ_CLONE at a scratch repo."""
+    return bool(os.environ.get("TESTQ_CLONE")) or os.path.basename(CLONE.rstrip("/")) == "runner"
+
+
+def save_dirty(logdir):
+    """Record what is dirty in the clone (tracked files only): path list + diff, into logdir. Returns the paths."""
+    rc, status = git("status", "--porcelain", "--untracked-files=no")
+    paths = [ln for ln in status.splitlines() if ln.strip()]
+    if logdir and paths:
+        os.makedirs(logdir, exist_ok=True)
+        write_text(os.path.join(logdir, "dirty_clone.txt"), "\n".join(paths) + "\n")
+        r = subprocess.run(["git", "-C", CLONE, "diff", "HEAD"], capture_output=True, text=True, timeout=300)
+        write_text(os.path.join(logdir, "dirty_clone.diff"), r.stdout)
+    return paths
+
+
+def unpin(logdir=None):
     """Put the clone back on main after an attempt that pinned it to a detached source_sha (idempotent, never raises).
 
     Called BEFORE an attempt publishes its result: the next start may follow the result at once, and a clone still
-    detached (or a git index.lock still held) then refused that job SYNC."""
-    if not os.path.exists(pin_marker()):
+    detached (or a git index.lock still held) then refused that job SYNC. Also called by the OUTER (current-HEAD)
+    process at every start, so it does not depend on what the pinned attempt's own worker.py did.
+    A tracked file an attempt dirtied makes `checkout main` fail: in the runner clone (nobody edits it) the dirt is
+    recorded (dirty_clone.txt/.diff in logdir) and the tracked files are restored, so the rig does not sit idle."""
+    detached = git("symbolic-ref", "-q", "HEAD")[0] != 0 if runner_clone_only() else False
+    if not os.path.exists(pin_marker()) and not detached:
         return 0, ""
     try:
         rc, msg = git("checkout", "-q", "main")
+        if rc != 0 and runner_clone_only() and "index.lock" not in msg:
+            paths = save_dirty(logdir or (p("attempts", read_text(p("current"))) if read_text(p("current")) else None))
+            if paths:
+                rc, msg = git("checkout", "-q", "-f", "main")
+                msg = "restored %d dirty tracked file(s) (see dirty_clone.txt): %s" % (len(paths), msg)
     except (OSError, subprocess.SubprocessError) as e:
         return 1, "unpin: %s" % e
     if rc == 0:
@@ -227,7 +257,7 @@ def cmd_start(retry):
         S.dump(job, os.path.join(d, "job.json"))
         write_text(p("jobs", job["id"]), aid)
 
-        unpin()     # a crashed attempt can leave the clone on its detached pin: pull needs main
+        unpin(d)    # a crashed attempt can leave the clone on its detached pin: pull needs main
         if os.environ.get("TESTQ_SKIP_PULL") != "1":
             rc, msg = git("pull", "-q", "--ff-only", "origin", "main")
             if rc != 0:
@@ -263,7 +293,14 @@ def cmd_start(retry):
 
 def spawn(aid, d):
     """Detach `worker.py _run <attempt>`: a transient systemd user unit, else a new session."""
-    argv = [sys.executable, os.path.abspath(__file__), "_run", aid]
+    # run a COPY of this (main-checkout) worker, not __file__ inside the clone that is about to be pinned: a pin older
+    # than this code would otherwise run ITS worker.py and never unpin
+    outer = p("outer")
+    os.makedirs(outer, exist_ok=True)
+    for src in (os.path.abspath(__file__), S.__file__):
+        shutil.copy2(src, os.path.join(outer, os.path.basename(src)))
+    os.environ["TESTQ_REPO"] = RUNNER
+    argv = [sys.executable, os.path.join(outer, "worker.py"), "_run", aid]
     keep = [k for k in os.environ if k != "TESTQ_UNIT" and k.startswith(("RM_", "TESTQ_", "STEVE_", "RIMFLOW_"))
             or k in ("PATH", "HOME", "USER", "LANG", "WSLENV", "WSL_DISTRO_NAME")]
     unit = "testq-" + re.sub(r"[^A-Za-z0-9_-]", "_", aid)
@@ -614,7 +651,7 @@ class Attempt:
             if self.res["outcome"] is None:
                 self.fail("INVALID", "HARNESS", "attempt ended in phase %s without a verdict" % self.phase)
             self.phase = "done"
-            rc, msg = unpin()           # before the result: a start that follows it at once finds the clone on main
+            rc, msg = unpin(self.d)    # before the result: a start that follows it at once finds the clone on main
             if rc != 0:
                 self.say("could not put the clone back on main (the next start retries): %s" % msg[-300:])
             publish_result(self.d, self.res)

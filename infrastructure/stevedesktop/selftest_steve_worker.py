@@ -304,6 +304,40 @@ def main():
         check(res.get("runner_sha") == second and g("symbolic-ref", "--short", "HEAD") == "main",
               "a start heals a leftover pin before it runs: %s" % res.get("runner_sha"))
 
+        # 11. STEVEWORKER_UNSTICK_DIRTY_CLONE_REFUSES_SYNC: a tracked file dirtied while pinned must not wedge the rig
+        open(os.path.join(scratch, "one"), "w").write("three")     # main moves on: "one" now differs from the pin
+        g("add", "one")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "three")
+        third = g("rev-parse", "HEAD")
+        g("checkout", "-q", "--detach", second)
+        open(os.path.join(home, "pinned_clone"), "w").write(second)
+        open(os.path.join(scratch, "one"), "w").write("dirtied by an attempt")
+        jd = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", second)
+        rc, o = w(["start"], jd, TESTQ_CLONE=scratch)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and res.get("runner_sha") == second, "a dirty pinned clone is healed, job runs: %s %s"
+              % (o, res.get("note")))
+        dd = os.path.join(home, "attempts", o.get("attempt", "x"))
+        check("one" in (open(os.path.join(dd, "dirty_clone.txt")).read() if os.path.exists(os.path.join(dd, "dirty_clone.txt")) else "")
+              and os.path.exists(os.path.join(dd, "dirty_clone.diff")), "the dirt is recorded in the attempt dir")
+        check(open(os.path.join(scratch, "one")).read() == "three", "the tracked file was restored")
+        # a seat clone (not 'runner', no TESTQ_CLONE) is never self-healed
+        r = subprocess.run([sys.executable, "-I", "-c", "import sys;sys.path.insert(0,%r);import worker;print(worker.runner_clone_only())"
+                            % os.path.dirname(WORKER)], env={k: v for k, v in env.items() if k != "TESTQ_CLONE"},
+                           capture_output=True, text=True, timeout=60)
+        check(r.stdout.strip() == "False", "dirty self-heal is off outside the runner clone: %r %s" % (r.stdout, r.stderr[-200:]))
+        # 12. STEVEWORKER_HARDEN_OLD_PIN_RUNS_OLD_CODE: the attempt runs the main-checkout worker copy, and a
+        # detached clone with NO marker (an old pinned attempt never wrote/removed it) is healed by the outer start
+        check(os.path.exists(os.path.join(home, "outer", "worker.py")), "the attempt ran from a copy outside the clone")
+        g("checkout", "-q", "--detach", first)
+        if os.path.exists(os.path.join(home, "pinned_clone")):
+            os.remove(os.path.join(home, "pinned_clone"))
+        je = S.make_job("Mock", {"rows": ["r1"]}, "commission", "BENCH", second)
+        rc, o = w(["start"], je, TESTQ_CLONE=scratch)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("runner_sha") == second and g("symbolic-ref", "--short", "HEAD") == "main",
+              "a detached clone without a marker is healed at the next start: %s" % res.get("runner_sha"))
+
         rc, o = w(["result", "--attempt", "../../etc"])
         check(rc != 0, "a path as an attempt id is refused")
     finally:
