@@ -17,8 +17,11 @@ namespace RimMandrake.DivingInteraction
     public static class RM_ChillFireBanKernel
     {
         /// <summary>
-        /// A refuelable building whose fuel feeds a flame: a fuelled generator (combustion is the only way a refuelable
-        /// power PLANT turns fuel into current), or an unpowered building that glows, heats, draws a flame or works bills.
+        /// A refuelable building whose fuel feeds a flame: a COMBUSTION generator — a fuelled power plant that pushes
+        /// heat or draws a flame (WoodFiredGenerator, ChemfuelPoweredGenerator, BioferriteGenerator, the KotOR Rhydonium
+        /// and Tibanna reactors all carry a heat pusher) — or an unpowered building that glows, heats, draws a flame or
+        /// works bills. A fuelled plant with neither is not burning anything (RM_DecayCell digests rot, RUT_VaultHeart
+        /// eats a persona core; CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED) and keeps working.
         /// A powered CONSUMER with fuel is a machine, not a fire (CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL: KoltoTank,
         /// Autobong, Spaceports_FuelProcessor — their glow is an electric status light), so it is never a flame building.
         /// </summary>
@@ -31,7 +34,7 @@ namespace RimMandrake.DivingInteraction
             }
             if (powerPlant)
             {
-                return true;
+                return heat || flameOverlay;
             }
             return !poweredConsumer && (glow || heat || flameOverlay || workTable);
         }

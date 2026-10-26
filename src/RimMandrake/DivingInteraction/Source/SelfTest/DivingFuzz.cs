@@ -516,7 +516,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 bool refuel = r.Next(4) != 0, glow = r.Next(2) == 0, heat = r.Next(2) == 0, overlay = r.Next(3) == 0;
                 bool table = r.Next(3) == 0, plant = r.Next(4) == 0, powered = plant || r.Next(3) == 0;
                 bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered);
-                bool wantFlame = refuel && (plant || (!powered && (glow || heat || overlay || table)));
+                bool wantFlame = refuel && ((plant && (heat || overlay)) || (!powered && (glow || heat || overlay || table)));
                 string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered}";
                 if (flame != wantFlame) { fails.Add($"fireban seed {seed}: UsesFlame {flame}, want {wantFlame} ({who})"); continue; }
                 if (powered && !plant && flame) { fails.Add($"fireban seed {seed}: a powered machine counted as a flame ({who})"); continue; }
