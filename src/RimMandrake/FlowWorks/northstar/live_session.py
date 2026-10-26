@@ -811,7 +811,10 @@ def b2_settings_dialog(s):
         s.row("B2_guardrail_disk_roundtrip", "FALL_GUARDRAILS_BUILD_REAL_OBJECT", "A2", "UNMEASURED", "HARNESS",
               dict(before=None, why="pitGuardrailEnabled could not be read: not flipped, so no restore has to guess"), "B2")
         return
-    set_ok = (s.sset("pitGuardrailEnabled", False) or {}).get("success") is not False
+    # review 3.11: flip to the OTHER value (an original False was "flipped" to False, restored to False, then failed for
+    # still reading False on disk)
+    flip = not _truthy(before)
+    set_ok = (s.sset("pitGuardrailEnabled", flip) or {}).get("success") is not False
     opened2 = s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True).get("success") is True
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     # a dialog that never opened never closes, so nothing is written: that is UNMEASURED, not a MOD fail (live 2026-10-19)
@@ -823,9 +826,24 @@ def b2_settings_dialog(s):
     if disk is None or disk2 is None or not set_ok or before is None:     # an unread file / refused flip is no round trip
         st = "UNMEASURED"
     else:
-        st = "PASS" if ("pitGuardrailEnabled>False" in disk and (disk2 or "").find("pitGuardrailEnabled>False") < 0) else "FAIL"
+        st = guardrail_roundtrip_verdict(before, disk, disk2)
     s.row("B2_guardrail_disk_roundtrip", "FALL_GUARDRAILS_BUILD_REAL_OBJECT", "A2", st, "MOD" if st == "FAIL" else "HARNESS" if st != "PASS" else "MOD",
-          dict(before=before, fileHadFalse=None if disk is None else "pitGuardrailEnabled>False" in disk), "B2")
+          dict(before=before, flippedTo=flip, fileHadFalse=None if disk is None else "pitGuardrailEnabled>False" in disk), "B2")
+
+
+def _truthy(v):
+    return str(v).strip().lower() == "true"
+
+
+def guardrail_roundtrip_verdict(before, disk, disk2):
+    """B2_guardrail_disk_roundtrip (pure): the settings file written with the flipped value (not before) holds it, and
+    the file written after the restore holds `before` again. Scribe omits the default True, so 'holds False' is the
+    `pitGuardrailEnabled>False` element and 'holds True' its absence or a >True element."""
+    def says_false(txt):
+        return "pitGuardrailEnabled>False" in (txt or "")
+    was_false = not _truthy(before)
+    ok = says_false(disk) == (not was_false) and says_false(disk2) == was_false
+    return "PASS" if ok else "FAIL"
 
 
 def read_settings_file(s):
@@ -1138,7 +1156,23 @@ def g_pit_access(s):
         r_id = s.spawn(HUMAN, rp)
         und = s.call("jawa/set_draft", pawnId=r_id, drafted=False) if r_id else {}
         wood = s.call("rimworld/spawn_thing", defName="WoodLog", stackCount=75, x=rp[0] + 1, z=rp[1]) if r_id else {}
-        s.pawns["rescuer"] = dict(id=r_id, undrafted=s.mock or und.get("drafted") is False, wood=wood.get("success"))
+        # review 3.8: vanilla rescue carries a downed colonist only to a free patient bed; with none on the map the ladder
+        # can be built and nobody carries him out. A MEDICAL bed (never claimed for sleep, pit_rescue_live.py) beside the
+        # rescuer, read back; B7 judges only when it read back medical.
+        bed = medical_bed(s, (rp[0] + 4, rp[1])) if r_id else None
+        s.pawns["rescuer"] = dict(id=r_id, undrafted=s.mock or und.get("drafted") is False, wood=wood.get("success"),
+                                  bed=bed)
+
+
+def medical_bed(s, c):
+    """Build a wooden Bed at c and mark it medical; the bed's id when jawa/set_bed_owner_type read back medical, else None."""
+    if s.mock:
+        return "mockBed"
+    s.call("jawa/build_batch", ops="Bed:%d,%d" % c, faction="player", wipeExisting=False, stuff="WoodLog")
+    th = (s.call("jawa/list_things", defName="Bed", rect="%d,%d,1,1" % c, limit=1) or {}).get("things") or [{}]
+    bid = th[0].get("id")
+    r = (s.call("jawa/set_bed_owner_type", thing=bid, medical="true") or {}) if bid else {}
+    return bid if str(r.get("medicalAfter")).lower() == "true" else None
 
 
 def g_dig_depth(s):
@@ -1487,6 +1521,27 @@ ICE_MELT_AT_C = 2.0         # Verse.FreezeManager.IceMeltThreshold (decompiled 1
 THAW_BUDGET_MAX = 36000
 
 
+def terrain_ops(reply, mock=False):
+    """get_terrain_batch ops text, or None when the read was refused or came back empty (a rect always has terrain): the
+    callers must not read None as 'no Flood' / 'no ice' (review 3.2)."""
+    reply = reply or {}
+    if not mock and (reply.get("success") is False or not reply.get("ops")):
+        return None
+    return str(reply.get("ops") or "")
+
+
+def thaw_step(ice_series, at):
+    """`at` when the latest READ ice count fell below the first read one, else None (pure; unread reads never enter the
+    series)."""
+    known = [n for n in ice_series if n is not None]
+    return at if len(known) >= 2 and known[-1] < known[0] else None
+
+
+def flood_gone(ops):
+    """True only for a terrain read that came back and holds no floodwater; None (unread) is not a recession (review 3.2)."""
+    return ops is not None and "Flood" not in ops
+
+
 def ice_cells(ops):
     """ThinIce squares from get_terrain_batch ops text ('ThinIce:x,z,w,h;...')."""
     out = set()
@@ -1564,12 +1619,15 @@ def b5_cold_snap(s):
     blind = []
 
     def terr():
+        """The canals' ops text, or None when any canal row was unread (review 3.2: an unread row read as 'no ice' and
+        could establish a thaw)."""
         out_ = []
         for c in canals:
-            rr = s.call("jawa/get_terrain_batch", rects="%d,%d,14,1" % c[0])
-            if not s.mock and (rr.get("success") is False or not rr.get("ops")):
+            ops = terrain_ops(s.call("jawa/get_terrain_batch", rects="%d,%d,14,1" % c[0]), s.mock)
+            if ops is None:
                 blind.append(1)             # an unread canal row reads as "no ice": counted, never judged
-            out_.append(str(rr.get("ops") or ""))
+                return None
+            out_.append(ops)
         return "".join(out_)
 
     def temp():
@@ -1577,7 +1635,7 @@ def b5_cold_snap(s):
     temps, froze = [], None
     # pass 3 (2026-10-19, HARNESS): clear_zone leaves vanilla temp terrain (ThinIce) from an earlier B5 on the same map,
     # which read as 'froze after 500 ticks' at 25 C. Ice before the cold is no reading.
-    stale_ice = len(ice_cells(terr())) if not s.mock else 0
+    stale_ice = len(ice_cells(terr())) if not s.mock else 0     # an unread read here is counted in `blind`
     keep = (s.pawns.get("rescue"),)
     try:
         # pass 2 (2026-10-19, HARNESS): 24,000 ticks on a warm map reached only 4.49 expected freezes (bar 4.6) -> UNMEASURED.
@@ -1589,7 +1647,7 @@ def b5_cold_snap(s):
             temps.append(temp())
             if k % 2000 == 1500:        # -40 C at full: keep the colony alive through the cold (the row reads no pawn)
                 heal_colonists(s, keep=keep)
-            if "Ice" in terr():
+            if "Ice" in (terr() or ""):
                 froze = k + 500
                 break
     finally:                            # a crash mid-cold must not leave -40 C on the map for every later block
@@ -1597,24 +1655,35 @@ def b5_cold_snap(s):
             s.call("jawa/game_condition", action="end", condition=n)
     # 'thawed' = the ice count FELL (vanilla melts a radius-2.9 patch per successful roll; a full thaw of every patch is
     # many independent rolls). Polled until a melt, or until >= 4.6 melts were expected (P(none) < 1%), or the budget.
-    thaw, thaw_all, melt_exp, ice_series, thaw_temps = None, None, 0.0, [], []
+    thaw, thaw_all, melt_exp, ice_series, thaw_temps, thaw_blind = None, None, 0.0, [], [], 0
     if froze is not None:
-        ice0 = ice_cells(terr())
-        ice_series.append(len(ice0))
+        t0_ = terr()
+        ice0 = ice_cells(t0_) if t0_ is not None else None
+        if ice0 is not None:
+            ice_series.append(len(ice0))
         for k in range(0, THAW_BUDGET_MAX, 500):
             if melt_exp >= 4.6 and thaw is None:
                 break
-            ncand = melt_candidates(ice_cells(terr())) if k else melt_candidates(ice0)
+            if k:
+                tk = terr()
+                ncand = melt_candidates(ice_cells(tk)) if tk is not None else 0
+            else:
+                ncand = melt_candidates(ice0) if ice0 is not None else 0
             s.advance(500)
             tt = temp()
             thaw_temps.append(tt)
             melt_exp += melt_expectation_step(tt, ncand, 500)
             if k % 2000 == 1500:
                 heal_colonists(s, keep=keep)
-            n_ice = len(ice_cells(terr()))
+            tk = terr()
+            if tk is None:
+                thaw_blind += 1                 # unread: neither a melt nor 'all thawed' (review 3.2)
+                continue
+            n_ice = len(ice_cells(tk))
             ice_series.append(n_ice)
-            if thaw is None and n_ice < ice_series[0]:
-                thaw = k + 500
+            th = thaw_step(ice_series, k + 500)
+            if thaw is None and th:
+                thaw = th
             if n_ice == 0:
                 thaw_all = k + 500
                 break
@@ -1631,11 +1700,13 @@ def b5_cold_snap(s):
         st, cls, why = "UNMEASURED", "HARNESS", "%d ThinIce squares were on the canals before the cold (an earlier B5 on this map)" % stale_ice
     elif st == "FAIL" and blind and froze is None:
         st, cls, why = "UNMEASURED", "HARNESS", "%d terrain reads of the canals came back empty: 'no ice' is no reading" % len(blind)
+    elif st == "FAIL" and froze is not None and thaw is None and thaw_blind:
+        st, cls, why = "UNMEASURED", "HARNESS", "%d thaw reads of the canals came back empty: 'never thawed' is no reading" % thaw_blind
     s.row("B5_ice_freeze_thaw", "POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD", "A5", st, cls,
           dict(why=why, conditions=[str(g)[:80] for g in gcs], frozeAfter=froze, thawAfter=thaw,
                coldest=min([t for t in temps if t is not None] or [None]) if any(t is not None for t in temps) else None,
                temps=temps[-6:], staleIce=stale_ice, thawAll=thaw_all, iceSeries=ice_series[:4] + ice_series[-4:],
-               thawTemps=thaw_temps[-4:], expectedMelts=round(melt_exp, 2), expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
+               thawTemps=thaw_temps[-4:], thawBlind=thaw_blind, expectedMelts=round(melt_exp, 2), expectedFreezes=round(freeze_expectation(temps, sum(len(r) for r in canals), 500), 2),
                before=[(b or {}).get("dl") for b in before], after=[(a or {}).get("dl") for a in after]), "B5")
     restore_after_weather(s, "B5")
 
@@ -1694,13 +1765,13 @@ def b6_flood(s):
     started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
 
     def flood_ops():
-        return str(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)).get("ops") or "")
+        return terrain_ops(s.call("jawa/get_terrain_batch", rects="%d,%d,16,3" % (x + 1, z + 3)), s.mock)
     reached, reached_at = False, None
     try:
         if started:
             for k in range(0, 14000, 500):
                 s.advance(500)
-                if "Flood" in flood_ops():
+                if "Flood" in (flood_ops() or ""):
                     reached, reached_at = True, k + 500
                     break
             if reached:
@@ -1719,7 +1790,7 @@ def b6_flood(s):
         if reached:
             for k in range(0, 12000, 500):
                 s.advance(500)
-                if "Flood" not in flood_ops():
+                if flood_gone(flood_ops()):
                     receded, gone_at = True, k + 500
                     break
         after = s.w.cells(canal)[0] if not s.mock else {}
@@ -1832,13 +1903,16 @@ def b7_reload(s):
 
 def rescue_verdict(r, rescuer):
     """B7 A4 (pure): the downed colonist out of the pit (depth 0) is PASS; still in is FAIL only when an undrafted rescuer
-    stood by since B4 (else UNMEASURED/HARNESS: a map of drafted colonists has nobody to build the ladder or carry him)."""
+    stood by since B4 (else UNMEASURED/HARNESS: a map of drafted colonists has nobody to build the ladder or carry him)
+    AND a medical bed read back for the patient (else UNMEASURED/SITE: vanilla rescue has nowhere to carry him, review 3.8)."""
     if not r or r.get("depth") is None:
         return "UNMEASURED", "HARNESS"
     if r.get("depth") == 0:
         return "PASS", "MOD"
     if not (rescuer or {}).get("id") or not (rescuer or {}).get("undrafted"):
         return "UNMEASURED", "HARNESS"
+    if not (rescuer or {}).get("bed"):
+        return "UNMEASURED", "SITE"
     return "FAIL", "MOD"
 
 
@@ -1964,14 +2038,25 @@ def feed_colonists(s):
     UNMEASURED); a thirsty one drinks toxic channel water or walks into a pit (SESSION_HURT, above)."""
     if s.mock:
         return 0
-    n = 0
-    for c in (s.call("rimworld/list_colonists") or {}).get("colonists") or []:
+    plan = feed_plan((s.call("rimworld/list_colonists") or {}).get("colonists") or [], s.pawns.get("ride"))
+    for pid, need in plan:
+        s.call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
+    return len(set(pid for pid, _ in plan))
+
+
+def feed_plan(colonists, ride=None):
+    """(pawnId, need) top-ups for feed_colonists (pure). The dehydration subject (s.pawns["ride"]) is never given thirst:
+    RM_Thirst > 0.3 heals RM_Dehydration (Need_RM_Thirst.cs), so a top-up mid-ride puts hydrated ticks into the T6 rate
+    (GPT review 3.1)."""
+    out = []
+    for c in colonists:
         if c.get("dead") or not c.get("pawnId"):
             continue
         for need in FEED_NEEDS:
-            s.call("jawa/pawn_need", pawn=c["pawnId"], action="need", need=need, level=1.0)
-        n += 1
-    return n
+            if need == "RM_Thirst" and ride is not None and c["pawnId"] == ride:
+                continue
+            out.append((c["pawnId"], need))
+    return out
 
 
 def park_cells(zones, size, margin=6, edge=12):
@@ -2167,10 +2252,11 @@ def run_sub(s, step):
 # ============================================================================ verify lines + summary
 def verdicts(rows):
     """{(item, crit): (result, [row ids], [evidence])}: pass when every measured row passed and none is UNMEASURED;
-    fail when any FAILed; partial when some passed and some could not ask. OWED/SKIP rows give no verdict."""
+    fail when any FAILed; partial when some passed and some could not ask. OWED/SKIP rows give no verdict, nor do
+    descriptive MEASURED rows (raid_trench_proof's RAID_outcome): they assert nothing (review 3.9)."""
     by = {}
     for r in rows:
-        if r["item"] in ("-", None) or r["cls"] == "OWED" or r["status"] == "SKIP":
+        if r["item"] in ("-", None) or r["cls"] == "OWED" or r["status"] in ("SKIP", "MEASURED"):
             continue
         by.setdefault((r["item"], r["criterion"]), []).append(r)
     out = {}

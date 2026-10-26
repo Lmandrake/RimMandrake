@@ -3,8 +3,8 @@
 
   python.exe src/RimMandrake/FlowWorks/northstar/reach_map_proof.py [out.json] [--origin X,Z] [--fresh-map] [--only a,b]
 
-Run from the repo root with python.exe; the bridge must be held. Exit 0 = every MEASURED row PASS; 1 = a FAIL; 2 = a row
-could not be measured. Written offline 2026-10-21; first live 5/5 PASS 2026-10-22 (b5e399067a). REACH_THROTTLE_HOLDS
+Run from the repo root with python.exe; the bridge must be held. Exit 0 = every row PASS (OWED rows aside); 1 = a FAIL; 2 = a
+row could not be measured (MOD, SITE or HARNESS). Written offline 2026-10-21; first live 5/5 PASS 2026-10-22 (b5e399067a). REACH_THROTTLE_HOLDS
 (WALL_REACH_TUNE_REBUILDS_TENFOLD) is owed its first live run.
 
 Owner ruling this proves (2026-10-21 ~21:20 PDT, by card "3: the wall-aware reach map, kept per pawn class"): "Have to say
@@ -396,10 +396,14 @@ def main(argv=None):
             except Exception as ex:   # a restore that fails is recorded, never hides the rows
                 res["site_calm_restore"] = "RAISED %r" % ex
         save()
-    measured = [r for r in rows if r["class"] in ("MOD",)]
-    if any(r["status"] == "FAIL" for r in measured):
-        return 1
-    return 0 if measured and all(r["status"] == "PASS" for r in measured) else 2
+    return exit_code(rows)
+
+
+def exit_code(rows):
+    """1 on any FAIL, 2 on any UNMEASURED (SITE and HARNESS included: a requested check that could not be staged is not
+    green, review 3.12) or no rows, else 0. OWED rows (no live route yet) are listed, never part of the exit."""
+    import validation_core as V
+    return V.rows_exit([r for r in rows if r.get("class") != "OWED"])
 
 
 if __name__ == "__main__":

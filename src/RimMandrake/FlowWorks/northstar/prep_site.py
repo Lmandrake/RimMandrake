@@ -312,6 +312,9 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
         raise Refused("3", "pawns survived the late sweep: %s" % [q.get("id") for q in late][:6])
     # 5. settings
     snap, drift = PF.settings_snapshot(s)
+    absent = PF.absent_fields(snap)
+    if absent:
+        raise Refused("5", "required settings fields ABSENT from the loaded DLL (stale deploy?): %s" % absent)
     if drift:
         raise Refused("5", "Mod Settings not at shipped defaults: %s" % drift)
     # 6. bodies (the step that needs a new tool)

@@ -842,6 +842,11 @@ def goal_check(B, run):
             if roster is None and bool(across) and bool(best) and not hurt:
                 ev["why"] = "the start-of-mission colonist roster was not read: a dead colonist would be invisible"
                 return "UNMEASURED", ev
+            if gone is None and bool(across) and bool(best) and not hurt:
+                # review 3.3: a truncated or empty final census lists a healthy subset; an injured or dead starting
+                # colonist left off the page would read as "unhurt"
+                ev["why"] = "jawa/list_pawns final census was truncated or empty: the start roster cannot be checked"
+                return "UNMEASURED", ev
             ok = bool(across) and not hurt and bool(best)
             return ("PASS" if ok else "FAIL"), ev
     except Exception as ex:                    # noqa: BLE001
@@ -920,6 +925,26 @@ def summarize(run, rows):
     return t, friction
 
 
+def report_deadline(run, rows, tnow):
+    """The deadline the finished mission broke, or None (pure). A goal reached after the game-time deadline is not a
+    PASS (a run printed PASS at 66,918 ticks vs 60,000): deadline_hit only fires before the NEXT act, so the report
+    re-checks all three budgets itself (review 3.4): elapsed ticks, the wall clock at the last act/observe's end (an
+    act that started inside the wall budget can finish after it), and the act+observe count (observe never checked)."""
+    over = next((r["message"] for r in rows if r["kind"] == "deadline"), None)
+    if over is not None:
+        return over
+    dl = run["deadline"]
+    if tnow is not None and run.get("tick0") is not None and tnow - run["tick0"] > dl["ticks"]:
+        return "game-time deadline %d ticks (mission ran %d)" % (dl["ticks"], tnow - run["tick0"])
+    work = [r for r in rows if r["kind"] in ("act", "observe")]
+    ends = [r.get("wall_end") for r in work if r.get("wall_end") is not None]
+    if ends and dl.get("wall_s") is not None and max(ends) - run["mission_start_wall"] > dl["wall_s"]:
+        return "wall deadline %ds (mission ran %.0fs)" % (dl["wall_s"], max(ends) - run["mission_start_wall"])
+    if dl.get("actions") is not None and len(work) > dl["actions"]:
+        return "action budget %d (mission used %d)" % (dl["actions"], len(work))
+    return None
+
+
 def cmd_report(a, spec):
     run_spec_cache.update(spec)
     run_dir = current_run(a.run)
@@ -931,11 +956,7 @@ def cmd_report(a, spec):
         tnow = ticks_of(B)
     finally:
         B.close()
-    over = next((r["message"] for r in rows if r["kind"] == "deadline"), None)
-    # A goal reached after the game-time deadline is not a PASS (a run printed PASS at 66,918 ticks vs 60,000):
-    # the deadline gate only fires on the next action, so the report re-checks elapsed ticks itself.
-    if over is None and tnow is not None and run.get("tick0") is not None and tnow - run["tick0"] > run["deadline"]["ticks"]:
-        over = "game-time deadline %d ticks (mission ran %d)" % (run["deadline"]["ticks"], tnow - run["tick0"])
+    over = report_deadline(run, rows, tnow)
     if verdict in ("FAIL", "PASS") and over:
         verdict = "TIMEOUT"
     t, friction = summarize(run, rows)

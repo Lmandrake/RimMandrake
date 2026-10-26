@@ -665,7 +665,7 @@ check(L.rescue_verdict({"depth": 0}, None) == ("PASS", "MOD"), "B7: out of the p
 check(L.rescue_verdict({"depth": 10}, None) == ("UNMEASURED", "HARNESS")
       and L.rescue_verdict({"depth": 10}, {"id": "Thing_Human1", "undrafted": False}) == ("UNMEASURED", "HARNESS"),
       "can-fail B7: still in with no undrafted rescuer is HARNESS (live 20261023T044826: every colonist drafted), never MOD")
-check(L.rescue_verdict({"depth": 10}, {"id": "Thing_Human1", "undrafted": True}) == ("FAIL", "MOD")
+check(L.rescue_verdict({"depth": 10}, {"id": "Thing_Human1", "undrafted": True, "bed": "Thing_Bed1"}) == ("FAIL", "MOD")
       and L.rescue_verdict({}, {"id": "x", "undrafted": True}) == ("UNMEASURED", "HARNESS"),
       "B7: still in beside a free rescuer is a MOD FAIL; an unread depth is UNMEASURED")
 dl = L.census_delta({"a": {"hediffs": ["Scar"]}}, {"a": {"hediffs": ["Bruise", "Scar"], "cell": [3, 4]}, "b": {"hediffs": ["ToxicBuildup"]}})

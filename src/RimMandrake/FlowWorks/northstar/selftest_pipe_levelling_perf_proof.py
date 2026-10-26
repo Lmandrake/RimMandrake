@@ -24,7 +24,7 @@ def check(name, cond):
         fails.append(name)
 
 
-kv = L.parse("LEVELPERF calls=20 msAvg=3.2 msMax=4.8 msPerTick=0.0128 allocKBAvg=210.5 allocCalls=20 gcs=0 links=200")
+kv = L.parse("LEVELPERF calls=20 msAvg=3.2 msMax=4.8 msPerTick=0.0128 allocKBAvg=210.5 allocCalls=20 gcs=0 links=200 moves=37")
 check("tick: fast, 200 links, staged: PASS", L.tick_verdict(kv, 200, 200, True) == ("PASS", "MOD"))
 check("can-fail tick: 40 ms a cycle: FAIL", L.tick_verdict(dict(kv, msAvg="40", msPerTick="0.16"), 200, 200, True)[0] == "FAIL")
 check("tick: fewer links than rigs: UNMEASURED/SITE", L.tick_verdict(kv, 12, 200, True) == ("UNMEASURED", "SITE"))

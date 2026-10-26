@@ -106,12 +106,30 @@ def rig_ops(cx, z, lip_a=None, lip_b=None):
     return [V.reel_toward((cx, z), ta, roomy=True), V.reel_toward((cx, z + 2), tb, blocked=(1,))] + ["RM_UniversalPipe:%d,%d" % (cx + 2, z + j) for j in range(4)]
 
 
+def staged_basins_ok(staged):
+    """Every basin strip staged whole: every square dug AND filled, none refused (pure). Review 3.6: a basin that dug every
+    square but refused its fills is connected dry excavations -- the timed cycles then move nothing."""
+    return bool(staged) and all(
+        s.get("cells") and s["cells"] == s["dug"] == s["basin"][2] * s["basin"][3]
+        and not s.get("refusedFills") and s.get("filled", s["cells"]) == s["cells"] for s in staged)
+
+
+def _moved(kv):
+    """'HARNESS' when the probe's moves counter is unread, 'SITE' when it read 0 (no levelling work was timed), else None."""
+    mv = fnum(kv.get("moves"))
+    if mv is None:
+        return "HARNESS"
+    return "SITE" if mv <= 0 else None
+
+
 def tick_verdict(kv, links, want_links, staged_ok):
     avg, tick = fnum(kv.get("msAvg")), fnum(kv.get("msPerTick"))
     if avg is None or tick is None:
         return "UNMEASURED", "HARNESS"
     if not staged_ok or links is None or links < want_links:
         return "UNMEASURED", "SITE"
+    if _moved(kv):
+        return "UNMEASURED", _moved(kv)
     return ("PASS" if avg <= BAR_MS_CYCLE and tick <= BAR_MS_TICK else "FAIL"), "MOD"
 
 
@@ -121,6 +139,8 @@ def alloc_verdict(kv, links, want_links, staged_ok):
         return "UNMEASURED", "HARNESS"
     if not staged_ok or links is None or links < want_links:
         return "UNMEASURED", "SITE"
+    if _moved(kv):
+        return "UNMEASURED", _moved(kv)
     return ("PASS" if kb <= BAR_ALLOC_KB else "FAIL"), "MOD"
 
 
@@ -271,7 +291,7 @@ def main(argv=None):
         # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
         staged = []
         for (x, z, w, h, fill) in basins:
-            cells = dug = 0
+            cells = dug = filled = refused = 0
             step = max(1, 12500 // w)
             for zz in range(z, z + h, step):
                 kv, txt = static("ProofStageBasin", "%d;%d;%d;%d;%d;%d;%s" % (x, zz, w, min(step, z + h - zz), LEVELS, fill, WATER_FLUID))
@@ -280,10 +300,12 @@ def main(argv=None):
                     break
                 cells += int(kv.get("cells", 0))
                 dug += int(kv.get("dug", 0))
+                filled += int(kv.get("filled", 0))
+                refused += int(kv.get("refused", 0))
             else:
-                staged.append({"basin": (x, z, w, h), "cells": cells, "dug": dug})
+                staged.append({"basin": (x, z, w, h), "cells": cells, "dug": dug, "filled": filled, "refusedFills": refused})
         res["staged"] = staged
-        staged_ok = all(s.get("cells") and s["cells"] == s["dug"] == s["basin"][2] * s["basin"][3] for s in staged)
+        staged_ok = staged_basins_ok(staged)
 
         # ------------------------------------------------------------------ the rigs (hose length held at 80 for the run)
         HS = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"

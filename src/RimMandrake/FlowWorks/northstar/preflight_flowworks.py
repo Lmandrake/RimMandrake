@@ -489,11 +489,17 @@ def settings_snapshot(s):
     return snap, bad
 
 
+def absent_fields(snap):
+    """'Type.field' names settings_snapshot recorded ABSENT (the loaded DLL lacks a REQUIRED field). P-B4 and
+    prep_site step 5 both refuse on them (review 3.13: prep wrote a golden save P-B4 then rejected)."""
+    return sorted("%s.%s" % (t.rsplit(".", 1)[1], f) for t, fs in snap.items() for f, v in fs.items() if v == "ABSENT")
+
+
 def p_b4(s, P, sc):
     snap, bad = settings_snapshot(s)
     # P13 (hose port step 4): a REQUIRED field the loaded DLL lacks is not "at shipped default" -- the run would test a
     # build without it. ABSENT used to be recorded and then PASS; it now refuses, naming the fields (redeploy first).
-    absent = sorted("%s.%s" % (t.rsplit(".", 1)[1], f) for t, fs in snap.items() for f, v in fs.items() if v == "ABSENT")
+    absent = absent_fields(snap)
     if absent:
         return row("P-B4", FAIL, "required settings fields ABSENT from the loaded DLL (stale deploy?): %s" % absent)
     if bad:
@@ -701,6 +707,10 @@ def p_e6(s, P, sc):
     bad = []
     if r["assemblyFileSha256"].lower() != S.sha256_file(dep):
         bad.append("loaded assembly sha != deployed DLL (the process runs a different build)")
+    if r.get("mvidMatchesFile") is False:
+        # review 3.5: a DLL replaced under a running game hashes equal to the deployed file while the process still
+        # runs the old image (as live_session.assembly_identity_verdict already refuses)
+        bad.append("the DLL file matches but the loaded image does not (mvidMatchesFile false): relaunch after the deploy")
     l1 = p_l1(s, P, sc)
     if l1.status == UNMEASURED and not bad:
         return row("P-E6", UNMEASURED, "assembly matches; ordered list: %s" % l1.evidence)
