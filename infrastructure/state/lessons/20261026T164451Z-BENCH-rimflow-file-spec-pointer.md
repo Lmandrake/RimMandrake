@@ -1,0 +1,2 @@
+rimflow file --spec PATH records PATH in the ledger event verbatim; it does not copy the file to infrastructure/state/items/<ID>.md. Filing with a session-scratch spec path left two items (FLOWWORKS_PROOF_POKES_RESTORE_PRIOR, SEA_DIVE_PROOF_RESTORE_PRIOR) pointing at a file that dies with the session, and rimflow then warned the items had no spec. Write the prose to infrastructure/state/items/<ID>.md (or pass a repo path to --spec), never a scratch path.
+home: using-rimflow

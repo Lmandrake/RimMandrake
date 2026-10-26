@@ -1,0 +1,2 @@
+Since d725df315b every modcheck chain restores each Mod Settings field it set (set_setting, t.bridge_call or t.session.call of jawa/mod_settings_field) to the value it held BEFORE the chain, in the chain's finally. A chain that flips a setting for LATER chains to rely on no longer works: set it in each chain that needs it. Before a proof's Settings("reset") static call, call t.remember_settings(type, fields). Static check: src/RimMandrake/Utils/proof_restore_check.py (REQUIRED selftest).
+home: live-debugging-proof-harness
