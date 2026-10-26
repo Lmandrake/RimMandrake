@@ -54,9 +54,9 @@ namespace RimMandrake.EnvironmentalHazards
     // around dying-in-place as a salt-line gauge, a different mechanism from
     // the flowering bargain). The franchise-free mod's own replacements,
     // RM_Thessamor/RM_Quennath, carry this modExtension inline in
-    // Miasma/Defs/ThingDefs_Plants/RM_Miasma_Mangals.xml; only the donor
-    // pair for the frozen campaign twin's wildPlants is still patched, in
-    // RimUtinni's RUT_Miasma_PollinationGate.xml. This file names no donor
+    // Miasma/Defs/ThingDefs_Plants/RM_Miasma_Mangals.xml, the only carriers
+    // today: the donor-pair patch was deleted with Alpha Biomes' retirement
+    // (ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR). This file names no donor
     // def or package in code: the gate binds by modExtension, not by name.
     public class RM_PollinationGateExtension : DefModExtension
     {

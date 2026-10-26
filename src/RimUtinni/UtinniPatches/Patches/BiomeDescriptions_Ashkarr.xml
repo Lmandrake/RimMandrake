@@ -26,8 +26,9 @@
       1. WORST — AB_MechanoidIntrusion ("the Rust Cathedral", 236 tiles): donor text
          asserted a machine-industrial history of a gated biome ("turning its mass
          into computronium... nefarious purposes") — a near-miss on the mind's true
-         nature, which is plot-only, gate-kept (ban 6.1). Fixed below with
-         RUT_RustCathedral's own SSP-clean description (the_rust_cathedral.md).
+         nature, which is plot-only, gate-kept (ban 6.1). Its patch was removed
+         2026-10-26 with Alpha Biomes' retirement; RUT_RustCathedral and
+         RM_RustCathedral carry the SSP-clean description (the_rust_cathedral.md).
       2. Scarlands (90 tiles, vanilla Odyssey, never even relabeled): donor text
          invented a bombed city and mechanoids "waiting to awaken and kill again" —
          contradicts ban 6.6 (the Forgotten Sentinels defend only, never pursue) and
@@ -39,8 +40,13 @@
          whose description lives in its def.)
       4. AB_RockyCrags ("the Abyss", 1,135 tiles): donor text invented a
          rival ancient race ("Forsakens... a mysterious humanoid alien race"),
-         corrupting the campaign's one reveal ladder. Fixed below with
-         RUT_Abyss' description (abyss.md).
+         corrupting the campaign's one reveal ladder. Its patch was removed
+         2026-10-26 with Alpha Biomes' retirement; RUT_Abyss and RM_Abyss carry
+         the description (abyss.md).
+
+    ALPHA BIOMES (2026-10-26, ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR): the donor is
+    retired, so its nine biome ops here matched nothing and were deleted. Each text
+    still lives in its RUT_ twin (and RM_ def where one exists).
 
     THE REST OF THE LIST closes the same findings doc's §B "three mods arguing"
     class — donor descriptions under a campaign label, none individually a plot
@@ -71,23 +77,6 @@
   -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/description</xpath>
-      <value><description>A pale fungal continent on the night shoulder of the stormwall: bone-white and lilac towers under a black sky, a glow-moss floor warm to lie on while the air above it would kill you, milky ponds that are not water. Nothing here is a plant. Nothing here is quite an animal. Everything is connected, everything is warm from the inside, and everything -- including what you take away with you -- is still alive.</description></value>
-    </match>
-  </Operation>   <!-- "the Rot" - RUT_TheRot -->
-
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>
-      <value><description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description></value>
-    </match>
-  </Operation>   <!-- "the Abyss" [PLOT LEAK 4] - RUT_Abyss -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/description</xpath>
@@ -112,68 +101,12 @@
   </Operation>   <!-- "the Weeping Stones" - RUT_WeepingStones (drops the donor's "few small islands of life") -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/description</xpath>
-      <value><description>A flat plateau of deck plate and mathematical walls at the foot of the eternal noon -- a complex, circuit-board maze of walls and structures that screams of meaningful complexity and intention. Rust-dust banks in drifts against them, heat shimmer stands as the weather, and almost nothing living remains. And under everything, always, a hum.</description></value>
-    </match>
-  </Operation>   <!-- "the Rust Cathedral" [PLOT LEAK 1, WORST] - RUT_RustCathedral -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/description</xpath>
-      <value><description>A red valley on a scalded mountain, roofed by a thunderstorm that has never been known to stop. Under the cloud everything is wet, warm and unfinished: trees half-way to being something else, animals with one design completed and two abandoned. Then the cloud tears -- and the sun comes through like a sterilizing lamp, and everything alive dives for cover, because here the clear sky is the killer.</description></value>
-    </match>
-  </Operation>   <!-- "the Contagion" - RUT_Contagion -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/description</xpath>
-      <value><description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description></value>
-    </match>
-  </Operation>   <!-- "the Webwork" - RUT_Webwork -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/description</xpath>
-      <value><description>A country-sized body lying in the mildest weather on the planet, wearing a landscape as its skin: fields of its own grass, groves of its own trees, herds of its own cells. It was a weapon once. It ate everything it was sent against, and what it ate unmade it -- now it is a living registry and database, forever seeking to ingest, analyze, recombine, store and multiply, still faithfully serving a master ages decayed.</description></value>
-    </match>
-  </Operation>   <!-- "the Slime" - RUT_Slime (owns 0 tiles today; ported anyway for consistency) -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/description</xpath>
-      <value><description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath. Walking is hard, the air hangs thick, and the water crowds with life -- because everything ends up here: the water, the sins it carries, and the life running from the salt. Threaded through the stink, improbably, beauty: rainbow-hued plants, young animals everywhere, and the stubborn sense the place is on the verge of something.</description></value>
-    </match>
-  </Operation>   <!-- "the Miasma" - RUT_Miasma (drops the donor's Earth mangrove encyclopedia entry) -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/description</xpath>
-      <value><description>The planet's oil sump: the lowest basin on Ash'karr, filled by every slow black flow off the twilight slopes for geological time. Flat black pools and cooled glassy sheets under permanent dusk, ringed with low waxy plants that glow faintly where the Junker stations keep their lamp-gardens. Mice run the tar without a thought. Nothing else touches it -- because the tar takes slowly, keeps perfectly, and everything that ever blundered in is still in there.</description></value>
-    </match>
-  </Operation>   <!-- "the Sump" - RUT_Sump -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/description</xpath>
       <value><description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description></value>
     </match>
   </Operation>   <!-- "the Fever Wood" - RUT_FeverWood -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/description</xpath>
-      <value><description>One mountain, three zones, and the only vertical skyline in the Dune Sea: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners, visible for a hundred kilometres. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash.</description></value>
-    </match>
-  </Operation>   <!-- "the Forge" - RUT_TheForge -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Desert"]/description</xpath>

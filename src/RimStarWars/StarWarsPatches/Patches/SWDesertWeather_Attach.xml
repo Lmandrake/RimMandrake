@@ -70,7 +70,6 @@
     Core            : Desert, ExtremeDesert, AridShrubland
                       (Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml)
     More Vanilla B. : ZBiome_DesertOasis, ZBiome_Badlands   (WS 1931453053)
-    Alpha Biomes    : AB_PyroclasticConflagration           (WS 1841354677)
     Advanced Biomes : Volcano  (unprefixed defName; collision-watch)
   ============================================================================
 -->
@@ -137,17 +136,6 @@
   </Operation>
 
   <!-- ================= VOLCANIC / EXOTIC to RED FOG ================= -->
-
-  <!-- Alpha Biomes: Pyroclastic Conflagration -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/baseWeatherCommonalities</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/baseWeatherCommonalities</xpath>
-      <value>
-        <RSW_SW_RedFog>8</RSW_SW_RedFog>
-      </value>
-    </match>
-  </Operation>
 
   <!-- Advanced Biomes: Volcano (unprefixed defName; collision-watch) -->
   <Operation Class="PatchOperationConditional">

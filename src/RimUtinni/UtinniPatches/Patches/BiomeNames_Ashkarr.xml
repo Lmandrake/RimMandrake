@@ -41,24 +41,11 @@
        defName the tiles actually use, same conditional convention as every
        other row here. See BiomeDescriptions_Ashkarr.xml (same commit) for the
        matching description/settleWarning port — that file is the one that
-       actually closes the 4 plot leaks; this one only fixes the label case. -->
+       actually closes the 4 plot leaks; this one only fixes the label case.
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MycoticJungle"]/label</xpath>
-      <value><label>the Rot</label></value>
-    </match>
-  </Operation>   <!-- was "mycotic jungle" -->
-
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
-      <value><label>the Abyss</label></value>
-    </match>
-  </Operation>   <!-- was "Abyss" -->
+       2026-10-26 (ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR): Alpha Biomes is
+       retired, so its nine AB_ biome ops here matched nothing and were deleted;
+       the RUT_ twins carry those campaign labels. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>
@@ -85,14 +72,6 @@
   </Operation>   <!-- was "desert oasis" -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MechanoidIntrusion"]/label</xpath>
-      <value><label>the Rust Cathedral</label></value>
-    </match>
-  </Operation>   <!-- was "mechanoid intrusion" -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
@@ -101,60 +80,12 @@
   </Operation>   <!-- was "stormy savanna" -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/label</xpath>
-      <value><label>the Contagion</label></value>
-    </match>
-  </Operation>   <!-- was "ocular forest" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/label</xpath>
-      <value><label>the Webwork</label></value>
-    </match>
-  </Operation>   <!-- was "feralisk infested jungle" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/label</xpath>
-      <value><label>the Slime</label></value>
-    </match>
-  </Operation>   <!-- was "gelatinous superorganism" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/label</xpath>
-      <value><label>the Miasma</label></value>
-    </match>
-  </Operation>   <!-- was "miasmic mangrove" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/label</xpath>
-      <value><label>the Sump</label></value>
-    </match>
-  </Operation>   <!-- was "tar pits" -->
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/label</xpath>
       <value><label>the Fever Wood</label></value>
     </match>
   </Operation>   <!-- was "greater tropical swamp" -->
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="AB_PyroclasticConflagration"]/label</xpath>
-      <value><label>the Forge</label></value>
-    </match>
-  </Operation>   <!-- was "pyroclastic conflagration" -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="Desert"]/label</xpath>

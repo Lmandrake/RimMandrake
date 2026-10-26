@@ -7,7 +7,9 @@
   Donor-owned ground cover spawned by RUT_Contagion, RUT_CrackedLands, RUT_BlueDesert, RUT_Wastes, moved from LowPlant (11)
   to FloorEmplacement (7). Plant.Print lifts a plant's top edge 0.1 in altitude and layers sit
   0.366 apart (Altitudes.LayerSpacing), so any lower layer is enough to keep cover under LowPlant plants;
-  inside one layer the order is hash-random (the "moss sometimes in front" report). Draw order only:
+  inside one layer the order is hash-random (the "moss sometimes in front" report). The three Alpha
+  Biomes grasses (AB_AlienGrass, AB_HardyGrass, AB_ToxiGrass) were deleted with that donor's
+  retirement (ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR). Draw order only:
   size, food, fertility and growth are untouched. The change is global to the def (all biomes).
   Census and criteria: design/RimMandrake/plant_draw_layers_2026-10-14.md
   (src/RimMandrake/Utils/plant_draw_layers.py). Each donor inherits altitudeLayer from its parent,
@@ -15,51 +17,6 @@
   is tested first: a missing donor is a silent no-op.
 -->
 <Patch>
-  <!-- ocular grass (Alpha Biomes) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="AB_AlienGrass"]</xpath>
-        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-      </match>
-    </nomatch>
-  </Operation>
-  <!-- hardy grass (Alpha Biomes) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="AB_HardyGrass"]</xpath>
-        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-      </match>
-    </nomatch>
-  </Operation>
-  <!-- toxi grass (Alpha Biomes) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]/altitudeLayer</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]/altitudeLayer</xpath>
-      <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-    </match>
-    <nomatch Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="AB_ToxiGrass"]</xpath>
-        <value><altitudeLayer>FloorEmplacement</altitudeLayer></value>
-      </match>
-    </nomatch>
-  </Operation>
   <!-- toxigrass (ReGrowth Core) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Scumgrass"]/altitudeLayer</xpath>
