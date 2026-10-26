@@ -11,6 +11,10 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
                                      of MOD was already submitted today (local calendar date); the testq-sweep
                                      timer runs it nightly at 01:30 local for each of TESTQ_SWEEP_MODS (FlowWorks)
+  testq.py fill MOD [--n 4 --cap 8]  Steve never idles, no LLM: if nothing is pending/running, queue the N chains
+                                     whose last real run is oldest (requested_by BENCH.filler, prio 20). Brakes:
+                                     QHOME/fill.stop, cap per local day, a paused lane, two non-DONE fillers running;
+                                     every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
@@ -412,6 +416,74 @@ def cmd_sweep(a):
     return cmd_submit(sub)
 
 
+FILLER = "BENCH.filler"     # requested_by of a filler job: BENCH's dispatcher, not a window
+
+
+def chain_ages(mod):
+    """-> {chain: epoch of the latest finished job that actually ran a row of it} for every chain any done job's
+    result names (a full sweep names them all). NOT_RUN rows do not count as run."""
+    last = {}
+    for rec in records("done"):
+        job, res = job_of(rec), rec.get("result") or {}
+        if job.get("mod") != mod:
+            continue
+        t = S.parse_ts(rec.get("finished") or job["submitted"])
+        for r in res.get("rows") or []:
+            c = r.get("chain")
+            if c and r.get("verdict") != "NOT_RUN":
+                last[c] = max(last.get(c, 0), t)
+            elif c:
+                last.setdefault(c, 0)
+    return last
+
+
+def cmd_fill(a):
+    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue the
+    `--n` stalest chains of MOD (oldest last real run first). Brakes: the stop file, a daily cap, a paused lane, and
+    two filler jobs in a row that did not come back DONE."""
+    ensure_dirs()
+    stop = q("fill.stop")
+    if os.path.exists(stop):
+        print("stopped: %s exists" % stop)
+        return 0
+    if paused():
+        print("lane paused; no fill")
+        return 0
+    now = time.time()   # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
+    busy = [j for j in records("pending") if ready(j, now)] + records("running")
+    if busy:
+        print("busy: %d pending/running" % len(busy))
+        return 0
+    today = time.strftime("%Y-%m-%d")
+    mine = sorted((job_of(r) for st in ("done", "cancelled", "running", "pending") for r in records(st)
+                   if job_of(r).get("requested_by") == FILLER), key=lambda j: j["submitted"])
+    n_today = sum(1 for j in mine if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
+    if n_today >= a.cap:
+        print("cap: %d filler jobs today (cap %d)" % (n_today, a.cap))
+        return 0
+    tail = [read_json(q("done", j["id"] + ".json")) for j in mine[-2:]]
+    if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail):
+        print("brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by hand"
+              % ", ".join(j["id"] for j in mine[-2:]))
+        return 0
+    ages = chain_ages(a.mod)
+    if not ages:
+        print("no chain history for %s yet (one full sweep seeds it); no fill" % a.mod)
+        return 0
+    pick = sorted(ages, key=lambda c: (ages[c], c))[:a.n]
+    r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
+                       timeout=60)
+    if r.returncode != 0:
+        print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
+        return 2
+    log("filler: %s stalest %s (%d today, cap %d)" % (a.mod, ",".join(pick), n_today + 1, a.cap))
+    sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False, purpose="guard",
+                             by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None, priority=20,
+                             not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
+                             timeout=7200, no_canary=False, no_validity=False, no_sha_check=True)
+    return cmd_submit(sub)
+
+
 def cmd_list(a):
     ensure_dirs()
     pz = paused()
@@ -471,6 +543,7 @@ WorkingDirectory={clone}
 ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
+ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
 TimeoutStartSec=900
 """,
     "testq-sweep.service": """[Unit]
@@ -565,6 +638,10 @@ def main(argv=None):
     s.add_argument("--by", default="BENCH", help="the requesting seat (BENCH owns FlowWorks)")
     s.add_argument("--for-item")
     s.add_argument("--priority", type=int, default=40)
+    s = sub.add_parser("fill", help="queue the stalest chains when the lane is idle (the tick runs it)")
+    s.add_argument("mod")
+    s.add_argument("--n", type=int, default=int(os.environ.get("TESTQ_FILL_CHAINS", "4")), help="chains per job")
+    s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP", "8")), help="filler jobs per day")
     sub.add_parser("tick")
     s = sub.add_parser("install-timer")
     s.add_argument("--apply", action="store_true")
@@ -573,7 +650,7 @@ def main(argv=None):
         print("REFUSED: %r is not a job id" % a.job)
         return 2
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
-            "sweep": cmd_sweep,
+            "sweep": cmd_sweep, "fill": cmd_fill,
             "tick": cmd_tick,
             "install-timer": cmd_install_timer}[a.cmd](a)
 

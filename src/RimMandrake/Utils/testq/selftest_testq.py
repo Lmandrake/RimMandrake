@@ -250,6 +250,36 @@ def main():
         rc, o = tq("install-timer")
         check(rc != 0 or "testq-sweep.timer" in o, "install-timer also installs the daily sweep timer: %s" % o[-200:])
 
+        # the filler: Steve never idles, no LLM; the stalest chains, with a stop file, a daily cap and a brake
+        rc, o = tq("fill", "Mock")
+        check(rc == 0 and o.startswith("busy") and njobs() == n0, "fill queues nothing while a runnable job waits: %s" % o)
+        tq("cancel", sj, "--reason", "selftest")
+        rc, o = tq("fill", "Mock", "--n", "1")
+        fj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip().endswith("}") else None
+        fjob = read_job(fj) if fj else {}
+        check(fjob.get("requested_by") == "BENCH.filler" and len(fjob.get("selector", {}).get("chains", [])) == 1
+              and fjob.get("lane") == "stevedesktop", "an idle lane gets the stalest chain queued: %s %s" % (o[-200:], fjob))
+        rc, o = tq("fill", "Mock")
+        check(o.startswith("busy"), "the filler's own pending job keeps it from queuing a second: %s" % o)
+        tq("cancel", fj, "--reason", "selftest")
+        rc, o = tq("fill", "Mock", "--cap", "1")
+        check(o.startswith("cap"), "the daily cap stops the filler: %s" % o)
+        open(os.path.join(queue, "fill.stop"), "w").close()
+        rc, o = tq("fill", "Mock")
+        check(o.startswith("stopped"), "the stop file stops the filler: %s" % o)
+        os.remove(os.path.join(queue, "fill.stop"))
+        donef = sorted(glob.glob(os.path.join(queue, "done", "*.json")))[-1]
+        for i in (1, 2):
+            rec = json.load(open(donef))
+            rec["job"]["id"] = rec["job"]["id"][:-6] + "bad00%d" % i
+            rec["job"]["requested_by"], rec["result"]["outcome"] = "BENCH.filler", "INVALID"
+            rec["job"]["submitted"] = "2099-01-0%dT00:00:00Z" % i
+            json.dump(rec, open(os.path.join(queue, "done", rec["job"]["id"] + ".json"), "w"))
+        rc, o = tq("fill", "Mock")
+        check(o.startswith("brake"), "two non-DONE filler jobs in a row brake the filler: %s" % o)
+        unit = open(TESTQ).read()
+        check("testq.py fill" in unit and "TESTQ_FILL_MODS" in unit, "the tick unit runs the filler")
+
         rc, o = tq("show", "../../x")
         check(rc == 2, "a path as a job id is refused")
     finally:
