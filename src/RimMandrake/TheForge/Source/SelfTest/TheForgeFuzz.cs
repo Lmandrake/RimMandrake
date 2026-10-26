@@ -262,7 +262,6 @@ namespace RimMandrake.TheForge.SelfTest
                                     if (sim.Ours(sim.temp[c])) Check(sim.frozen.Contains(c), $"cell {c} wears our crust but is not in the frozen set");
                                 foreach (int c in sim.frozen) Check(sim.lava[c], $"non-lava cell {c} was frozen");
                                 foreach (int c in foreignCells) if (sim.temp[c] != Foreign) Check(false, $"someone else's temp terrain at {c} was removed (temp {sim.temp[c]})");
-                                if (sim.phase == ForgeCyclePhase.StillHeat && sim.hissSent) Check(sim.gasOn || true, "");
                                 // deadlines: with the cycle running, a batch phase's queue is spent by its share of the phase (+3 steps)
                                 if (wasOn && sim.cycleOn && sim.gateOn && sim.activeThroughPhase)
                                 {
@@ -436,7 +435,6 @@ namespace RimMandrake.TheForge.SelfTest
                             for (int cell = 0; cell < Math.Min(W * H, 4100); cell++) { book.Mark(cell, now - 5000); marks[cell] = now - 4955; }
                             break;
                     }
-                    if (book.Expiry.Count <= 4000 || fronts.Count == 0) { }
                     // pure scalar checks every step
                     Check(RM_PlumeKernel.Strength(strength) >= 0.25f && RM_PlumeKernel.Strength(strength) <= 2f, "strength outside [0.25, 2]");
                     Check(RM_PlumeKernel.GasPerCell(strength) >= 1 && RM_PlumeKernel.GasPerCell(strength) <= RM_PlumeKernel.GasPerCell(strength * 1.5f), "gas per cell below 1 or falling with strength");
@@ -504,6 +502,21 @@ namespace RimMandrake.TheForge.SelfTest
             // spec
             var sWear = new Dictionary<int, int>(); var sLast = new Dictionary<int, int>();
             int step = 0; string err = null;
+            // One step on cell c, by the book and by the spec, compared.
+            void Walk(int c)
+            {
+                bool polish = book.Walked(c, now, cooldown, passes, () => !polished[c] && canPolish[c]);
+                bool cool = sLast.TryGetValue(c, out int last) && now - last < cooldown;
+                bool sp = false;
+                if (cool) Cooldowns++;
+                else
+                {
+                    sLast[c] = now; sWear.TryGetValue(c, out int w); sWear[c] = ++w;
+                    sp = w >= Math.Max(1, passes) && !polished[c] && canPolish[c];
+                }
+                Check(polish == sp, $"Walked polish={polish} spec={sp} (cell {c}, wear {(sWear.TryGetValue(c, out int ww) ? ww : 0)}, passes {passes})");
+                if (polish) { polished[c] = true; Polishes++; }
+            }
             try
             {
                 foreach (var a in acts)
@@ -513,46 +526,36 @@ namespace RimMandrake.TheForge.SelfTest
                     switch (a.kind)
                     {
                         case 0: // Walked
-                            {
-                                now += a.b % 40000;
-                                bool polish = book.Walked(c, now, cooldown, passes, () => !polished[c] && canPolish[c]);
-                                // spec
-                                bool cool = sLast.TryGetValue(c, out int last) && now - last < cooldown;
-                                bool sp = false;
-                                if (cool) Cooldowns++;
-                                else
-                                {
-                                    sLast[c] = now; sWear.TryGetValue(c, out int w); sWear[c] = ++w;
-                                    sp = w >= Math.Max(1, passes) && !polished[c] && canPolish[c];
-                                }
-                                Check(polish == sp, $"Walked polish={polish} spec={sp} (cell {c}, wear {(sWear.TryGetValue(c, out int ww) ? ww : 0)}, passes {passes})");
-                                if (polish) { polished[c] = true; Polishes++; }
-                            }
+                            now += a.b % 40000;
+                            Walk(c);
                             break;
                         case 1: // Fade
                             {
                                 now += a.b * 5000;
-                                int unp;
-                                book.Fade(now, period, passes, i => polished[i], i => polished[i] = false, out unp);
-                                Unpolishes += unp; int sUn = 0;
+                                var before = (bool[])polished.Clone();
+                                int lost = book.Fade(now, period, passes, i => polished[i], i => polished[i] = false, out int unp);
+                                Unpolishes += unp; int sUn = 0, sLost = 0;
+                                var sAfter = (bool[])before.Clone();
                                 foreach (int i in sWear.Keys.ToList())
                                 {
                                     int l = sLast.TryGetValue(i, out int ll) ? ll : 0;
                                     if (now - l < period) continue;
-                                    sLast[i] = now; int w = sWear[i] - 1; WearLost++;
-                                    if (w < Math.Max(1, passes) && specIsPolished(i)) { sUn++; specPolished[i] = false; }
+                                    sLast[i] = now; int w = sWear[i] - 1; sLost++; WearLost++;
+                                    if (w < Math.Max(1, passes) && before[i]) { sUn++; sAfter[i] = false; }
                                     if (w <= 0) { sWear.Remove(i); sLast.Remove(i); } else sWear[i] = w;
                                 }
                                 Check(unp == sUn, $"Fade unpolished {unp}, spec {sUn}");
+                                Check(lost == sLost, $"Fade lost {lost} passes, spec {sLost}");
+                                Check(polished.SequenceEqual(sAfter), "Fade unpolished a different set of cells than the spec");
                             }
                             break;
                         case 2: passes = a.a % 6; break;
-                        case 3: // the seal depression: Walked on a neighbourhood does not break anything
+                        case 3: // the seal depression: one step on the cell and its neighbours, all at the same tick
                             now += 1;
+                            for (int d = -1; d <= 1; d++) if (c + d >= 0 && c + d < cells) Walk(c + d);
                             break;
                         case 4: polished[c] = true; break; // foreign polish (another mod's trail on the same layer)
                     }
-                    for (int i = 0; i < cells; i++) specPolished[i] = polished[i];
                     // book vs spec, exactly
                     Check(book.Wear.Count == sWear.Count && book.Wear.All(kv => sWear.TryGetValue(kv.Key, out int v) && v == kv.Value), "wear book differs from the spec");
                     Check(book.LastWorn.Count == sLast.Count && book.LastWorn.All(kv => sLast.TryGetValue(kv.Key, out int v) && v == kv.Value), "last-worn book differs from the spec");
@@ -563,10 +566,6 @@ namespace RimMandrake.TheForge.SelfTest
             catch (Exception e) { err = $"step {step}: {e.Message}"; }
             return err;
         }
-
-        [ThreadStatic] private static bool[] specPolished0;
-        private static bool[] specPolished { get { if (specPolished0 == null) specPolished0 = new bool[64]; return specPolished0; } }
-        private static bool specIsPolished(int i) { return specPolished[i]; }
 
         private static List<Act> GenDhokkur(Random r, int len)
         {
@@ -582,7 +581,7 @@ namespace RimMandrake.TheForge.SelfTest
 
         public static List<string> Dhokkur(int n, int baseSeed)
         {
-            var fails = RunFamily("dhokkur", n, baseSeed, seed => { var r = new Random(seed * 7919 + 17); return GenDhokkur(r, r.Next(4, 70)); }, (seed, acts) => { Array.Clear(specPolished, 0, 64); return RunDhokkur(seed, acts); });
+            var fails = RunFamily("dhokkur", n, baseSeed, seed => { var r = new Random(seed * 7919 + 17); return GenDhokkur(r, r.Next(4, 70)); }, RunDhokkur);
             try { DhokkurUnits(); } catch (Exception e) { fails.Add("dhokkur units: " + e.Message); }
             Cases++;
             return fails;
@@ -687,7 +686,8 @@ namespace RimMandrake.TheForge.SelfTest
                                 {
                                     Seals++; if (res.curlBack) Curls++;
                                     Check(awake && !want && canSeal, "sealed a pawn that wanted to be awake or cannot seal");
-                                    if (res.curlBack && wokeAt >= 0) Check(now - wokeAt >= minAwake * 2500f || true, "");
+                                    // the awake stamp is never earlier than the last wake, so a curl-back honours the minimum from it
+                                    if (res.curlBack && wokeAt >= 0) Check(now - wokeAt >= minAwake * 2500f, $"curled back {now - wokeAt} ticks after waking, under the {minAwake} h minimum");
                                     awake = false;
                                 }
                                 if (!res.slowingUpdate && res.action == DormancyAction.None) Check(!awake, "an awake pawn skipped the slowing reconcile");
