@@ -28,16 +28,22 @@ def new_errors(since):
             out.append(l[:300])
     return list(dict.fromkeys(out))[:40]
 
-def wait_playing(limit=300):
+def wait_new_map(old_id, limit=300):
+    # programState stays Playing through a regen, so only a NEW mapId proves the map was rebuilt
+    # (BIOMEPROOFS_FIX_OLD_MAP_AND_CAPS)
     t0 = time.time()
     while time.time() - t0 < limit:
-        if call("rimworld/get_ui_state").get("programState") == "Playing": return True
+        mi = call("jawa/map_info")
+        if mi.get("mapId") not in (None, old_id) and call("rimworld/get_ui_state").get("programState") == "Playing":
+            return mi
         time.sleep(3)
-    return False
+    return None
 
 out_path, biomes = sys.argv[1], sys.argv[2:]
 results = {}
-tile = call("jawa/map_info").get("tile")
+mi0 = call("jawa/map_info"); tile, map_id = mi0.get("tile"), mi0.get("mapId")
+if tile is None or tile == -1 or mi0.get("tileValid") is False or map_id is None:
+    sys.exit("no current planet-tile map in jawa/map_info (%s) - nothing censused" % str(mi0)[:200])
 for b in biomes:
     b, _, temp = b.partition("@")
     r = {"biome": b}; since = log_size()
@@ -45,16 +51,24 @@ for b in biomes:
     w = call("jawa/world_tile_set", tiles=str(tile), biome=b, **kw); r["tile_set"] = w.get("success"), (w.get("message") or "")[:200]
     call("jawa/world_commit")
     g = call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); r["regen"] = g.get("success"), (g.get("message") or "")[:200]
-    time.sleep(5); r["playing"] = wait_playing()
-    mi = call("jawa/map_info"); r["mapBiome"] = mi.get("mapBiome"); r["temp"] = mi.get("outdoorTempNow")
-    wg = call("jawa/weather_get"); r["weather"] = {k: wg.get(k) for k in ("current", "currentWeather", "weather", "conditions", "activeConditions") if k in wg} or str(wg)[:300]
-    pw = call("jawa/list_pawns", faction="nonplayer")
-    pl = pw.get("pawns") or pw.get("results") or []
-    r["wild"] = dict(collections.Counter(x.get("kindDef") or x.get("kind") or x.get("def") for x in pl).most_common(40))
-    th = call("jawa/list_things", group="Plant")
-    tl = th.get("things") or th.get("results") or []
-    r["plants"] = dict(collections.Counter(x.get("defName") or x.get("def") for x in tl).most_common(30))
+    mi = wait_new_map(map_id); r["regenerated"] = mi is not None
+    if mi is None:
+        r["errors"] = new_errors(since); results[b + ("@" + temp if temp else "")] = r
+        json.dump(results, open(out_path, "w"), indent=1)
+        sys.exit("%s: the map was not regenerated (mapId still %s) - a census now would read the OLD map" % (b, map_id))
+    map_id = mi.get("mapId")
+    r["mapBiome"] = mi.get("mapBiome"); r["temp"] = mi.get("outdoorTempNow"); r["biomeMatches"] = r["mapBiome"] == b
+    wg = call("jawa/weather_get"); r["weather"] = {k: wg.get(k) for k in ("weather", "conditions") if k in wg} or str(wg)[:300]
+    pw = call("jawa/list_pawns", faction="nonplayer", limit=5000)
+    pl = pw.get("pawns") if isinstance(pw.get("pawns"), list) else None
+    r["wild"] = dict(collections.Counter(x.get("kindDef") for x in pl).most_common(40)) if pl is not None else "list_pawns failed: " + str(pw)[:200]
+    r["wildTruncated"] = pw.get("truncated")
+    # perDef counts EVERY matched plant; the `things` rows stop at `limit` (default 200)
+    th = call("jawa/list_things", group="Plant", limit=1)
+    pd = th.get("perDef") if isinstance(th.get("perDef"), dict) else None
+    r["plants"] = dict(collections.Counter(pd).most_common(30)) if pd is not None else "list_things failed: " + str(th)[:200]
+    r["plantsTotal"] = th.get("countMatched")
     r["errors"] = new_errors(since)
     results[b + ("@" + temp if temp else "")] = r
-    print(b, r["mapBiome"], "wild", sum(r["wild"].values()), "plants", sum(r["plants"].values()), "errors", len(r["errors"]), flush=True)
+    print(b, r["mapBiome"], "wild", len(pl) if pl is not None else "?", "plants", r["plantsTotal"], "errors", len(r["errors"]), flush=True)
     json.dump(results, open(out_path, "w"), indent=1)

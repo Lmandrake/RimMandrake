@@ -18,8 +18,20 @@ LIMIT = 1000  # the whole Log.Messages buffer
 
 
 def _rows(call):
+    # A blind read must never read as "no errors": a failed drain_log (no `messages` list) or a
+    # silenced Verse.Log (cap reached / logger off, reported by jawa/health's log.state) aborts the
+    # proof instead (DEEPFIRELOG_FIX_BLIND_READ_PASSES).
     r = call("jawa/drain_log", errorsOnly=True, limit=LIMIT) or {}
-    return [m for m in (r.get("messages") or []) if isinstance(m, dict)]
+    msgs = r.get("messages") if isinstance(r, dict) else None
+    if not isinstance(msgs, list) or r.get("success") is False:
+        raise SystemExit("jawa/drain_log did not return a message list, so the log check is blind: %s"
+                         % str(r)[:300])
+    h = call("jawa/health", action="status") or {}
+    log = h.get("log") if isinstance(h, dict) else None
+    if isinstance(log, dict) and log.get("state") == "suppressed":
+        raise SystemExit("the game log is not writing (%s), so 'no new errors' would mean nothing"
+                         % (log.get("text") or "suppressed"))
+    return [m for m in msgs if isinstance(m, dict)]
 
 
 def _counts(rows, extra=()):

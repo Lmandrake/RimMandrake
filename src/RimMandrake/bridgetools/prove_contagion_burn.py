@@ -22,7 +22,10 @@ for _ in range(3):
     call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement")
     if not call("rimworld/get_ui_state").get("windowsForcePause"): break
 out["forcePause"] = call("rimworld/get_ui_state").get("windowsForcePause")
-out["start"] = str(call("jawa/game_condition", action="start", condition="RM_ContagionBurnCondition", durationTicks=20000))[:300]
+st = call("jawa/game_condition", action="start", condition="RM_ContagionBurnCondition", durationTicks=20000)
+out["start"] = str(st)[:300]
+if not (isinstance(st, dict) and st.get("success")):   # 7 minutes of samples without the Burn would read as "nothing happened"
+    json.dump(out, open(sys.argv[1], "w"), indent=1); sys.exit("the Burn did not start: " + out["start"])
 call("rimworld/set_time_speed", speed="Ultrafast", ultraSpeedBoost=True); call("rimworld/pause_game", pause=False)
 out["samples"] = []
 t0 = time.time()
@@ -30,11 +33,11 @@ try:
     while time.time() - t0 < 420:
         time.sleep(20)
         w = call("jawa/weather_get")
-        pw = call("jawa/list_pawns", includeHealth=True).get("pawns") or []
+        pw = call("jawa/list_pawns", includeHealth=True, limit=5000).get("pawns") or []
         hd = collections.Counter()
         for x in pw:
             for hh in (x.get("hediffs") or []):
-                d = hh.get("def") or hh.get("defName") if isinstance(hh, dict) else None
+                d = hh.get("def") if isinstance(hh, dict) else None
                 if d and d.startswith("RM_"): hd[(d, "player" if (x.get("faction") or "").lower().startswith(("player","new")) else "other")] += 1
         s = {"t": int(time.time()-t0), "ticks": w.get("ticksGame"), "weather": (w.get("weather") or {}).get("current"),
              "conditions": [c.get("def") for c in w.get("conditions", [])], "hediffs": {"%s|%s" % k: v for k, v in hd.items()}, "pawns": len(pw)}
