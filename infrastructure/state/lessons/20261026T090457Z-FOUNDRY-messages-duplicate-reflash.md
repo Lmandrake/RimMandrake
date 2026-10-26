@@ -1,0 +1,2 @@
+Verse.Messages.Message does NOT silently drop a duplicate: AcceptsMessage finds the live one with the same text+targets, resets its timer, Flash()es it and replays def.sound. A Message fired from a poll (every 250 t) while a condition holds is therefore a sound nag, not a single message; gate it per subject with a quiet window (fixed in Miasma RM_MothersPrice, MOTHERSPRICE_FIX_REFUSAL_NAGS_EVERY_POLL).
+home: rimworld-modding
