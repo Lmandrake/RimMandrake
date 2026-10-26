@@ -27,6 +27,8 @@ How a job runs (one attempt at a time on this machine):
     as the heartbeat. A run past the job's timeout_s is killed, the game restarted once, and the run retried
     once; a second hang is INVALID/HANG.
   * Requested rows absent from the sheet are added as NOT_RUN, so partial output never reads as a pass.
+  * When load starts a FRESH game process, the bridge client's UNKNOWN-outcome markers older than that start are
+    resolved as moot (their game is gone); otherwise one killed game refuses every later job's mutating calls.
 
 Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   attempts/<attempt>/{job.json, state.json, worker.log, modcheck.log, result.json}
@@ -35,7 +37,7 @@ Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   outbox/<attempt>.json, outbox/acked/
 
 Tests override the phase commands with TESTQ_CMD_DEPLOY / TESTQ_CMD_LOAD / TESTQ_CMD_DOWN / TESTQ_CMD_RUN (shell
-command strings; RUN gets the modcheck arguments appended), skip the pull with TESTQ_SKIP_PULL=1, and may set
+command strings; RUN gets the modcheck arguments appended) and the bridge client with TESTQ_CMD_BRIDGE, skip the pull with TESTQ_SKIP_PULL=1, and may set
 TESTQ_SHEET_DIR, TESTQ_MODS_DIR, TESTQ_RUN_TIMEOUT_S and TESTQ_NO_SYSTEMD=1.
 """
 import argparse
@@ -359,8 +361,46 @@ class Attempt:
 
     def load(self):
         cmd = os.environ.get("TESTQ_CMD_LOAD") or "%s init && %s up --wait" % (GAME, GAME)
+        since = S.utcnow()
         rc, tail = self.sh(cmd, timeout=900)
-        return rc == 0 or self.fail("INVALID", "LOAD", "game load failed: " + tail)
+        if rc != 0:
+            return self.fail("INVALID", "LOAD", "game load failed: " + tail)
+        m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
+        if m:
+            self.clear_moot_markers(since, m.group(1))
+        return True
+
+    def clear_moot_markers(self, since, pid):
+        """Resolve the bridge client's UNKNOWN-outcome markers that predate a game this attempt just started.
+
+        A mutating call whose reply was lost leaves a marker that refuses every later mutating call until reconciled
+        (rimbridge_client.py). When the game it was sent to has died, its effect died with that process (RimWorld
+        keeps nothing across a restart but saves), so the marker is moot for the fresh game; left in place it made
+        every later job INVALID/HARNESS (killed-game drill, 2026-10-26: one jawa/time_clock marker wedged the lane).
+        Only markers older than the start are touched, only after a fresh start, and only on this machine, whose game
+        the attempt's guard owns; a marker while the same game kept running is a real unknown and stays."""
+        base = os.environ.get("TESTQ_CMD_BRIDGE") or "python.exe src/RimMandrake/Utils/rimbridge_client.py"
+        r = subprocess.run(["bash", "-c", base + " --reconcile"], cwd=RUNNER, capture_output=True, text=True,
+                           timeout=120)
+        cleared = []
+        for line in r.stdout.splitlines():
+            f = line.split()
+            if len(f) < 2 or not re.fullmatch(r"[0-9a-f]{16}", f[0]) or not re.fullmatch(r"\d{4}-\S+Z", f[1]) \
+                    or f[1] >= since:
+                continue
+            note = ("moot: sent to a game process that is gone; testq %s started a fresh game (pid %s) at %s"
+                    % (self.aid, pid, since))
+            rr = subprocess.run(["bash", "-c", "%s --reconcile --resolve %s --as not-applied --note %s"
+                                 % (base, f[0], shlex.quote(note))], cwd=RUNNER, capture_output=True, text=True,
+                                timeout=120)
+            if rr.returncode == 0:
+                cleared.append(f[0])
+            else:
+                self.say("could not resolve marker %s: %s" % (f[0], (rr.stdout + rr.stderr).strip()[-200:]))
+        if cleared:
+            self.res["moot_markers"] = cleared
+            self.say("resolved %d bridge marker(s) older than the fresh game as moot: %s" % (len(cleared),
+                                                                                          " ".join(cleared)))
 
     def attest(self):
         mods_dir = os.environ.get("TESTQ_MODS_DIR") or os.path.join(os.environ.get("RM_STEAMAPPS", ""),

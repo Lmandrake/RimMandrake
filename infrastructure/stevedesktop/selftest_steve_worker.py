@@ -4,7 +4,8 @@
 No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a small mock, the driver lock is a temp
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
--> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt finalized, and
+-> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
+than it (a game that kept running keeps them), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt finalized, and
 SOURCE_SHA_MISSING.
 """
 import json
@@ -22,6 +23,21 @@ sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "Utils", "testq"))
 import schema as S  # noqa: E402
 
 FAILS = []
+BRIDGE = r'''
+import json, sys
+path, args = sys.argv[1], sys.argv[2:]
+m = json.load(open(path))
+if "--resolve" in args:
+    cid = args[args.index("--resolve") + 1]
+    assert args[args.index("--as") + 1] == "not-applied" and args[args.index("--note") + 1].startswith("moot:")
+    m.pop(cid)
+    json.dump(m, open(path, "w"))
+    print("reconciled %s as not-applied" % cid)
+else:
+    print("evidence log x; %d mutating call(s) with UNKNOWN outcome" % len(m))
+    for cid, t in m.items():
+        print("  %s  %s  jawa/time_clock  args 0  pid 1 cli.py  INDETERMINATE" % (cid, t))
+'''
 MOCK = r'''
 import json, os, sys, time
 mode = os.environ.get("MOCK_MODE", "pass")
@@ -130,6 +146,27 @@ def main():
         rc, o = w(["start"], j, MOCK_MODE="hang", TESTQ_RUN_TIMEOUT_S="2")
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HANG", "hang twice -> INVALID/HANG")
+
+        # 3b. a killed game: its lost-reply bridge marker is moot once load starts a fresh game, and only then
+        bridge = os.path.join(tmp, "mock_bridge.py")
+        open(bridge, "w").write(BRIDGE)
+        markers = os.path.join(tmp, "markers.json")
+        old_cid, new_cid = "a88fdb7a88ea4064", "b99fdb7a88ea4065"
+
+        def fresh_markers():
+            json.dump({old_cid: "2000-01-01T00:00:00Z", new_cid: "2999-01-01T00:00:00Z"}, open(markers, "w"))
+        fresh_markers()
+        bx = dict(TESTQ_CMD_BRIDGE="%s %s %s" % (sys.executable, bridge, markers))
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD="echo started pid 4242", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        left = json.load(open(markers))
+        check(res.get("outcome") == "DONE" and res.get("moot_markers") == [old_cid] and list(left) == [new_cid],
+              "a fresh game resolves only the markers older than it: %s left %s" % (res.get("moot_markers"), left))
+        fresh_markers()
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD="echo 'already running (pid 4242)'", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        check("moot_markers" not in res and len(json.load(open(markers))) == 2,
+              "a game that kept running keeps every marker: %s" % res.get("moot_markers"))
 
         # 4. no sheet
         rc, o = w(["start"], job(), MOCK_MODE="crash")
