@@ -792,7 +792,9 @@ namespace RimMandrake.Stillsand
         private static void Return(RM_GaleCarriedRecord r, float aliveChance)
         {
             Pawn p = r.pawn;
-            Map map = r.map ?? RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
+            // A map abandoned since the take is still a live reference until the next load (then it reads null):
+            // spawning onto it throws after the pawn has left the world pawns, and the pawn would be lost silently.
+            Map map = r.map != null && Find.Maps.Contains(r.map) ? r.map : RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
             if (p != null && Find.WorldPawns.Contains(p))
             {
                 Find.WorldPawns.RemovePawn(p);
