@@ -1,0 +1,2171 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="scaled-review-gate" content="v1 sha256:b960e41f847521bc700c77a06b64cb164cb053d27a5cd095aa43d0b068fa6cea">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Art-eval shadow check — audit_20261026_c4r1 — game art</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. script#CONFIG   the brief, posture, criterion, options
+    2. script#ITEMS   the rows
+    3. (optional) script#RENDER                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+/* true size: the picture AT its real display size beside a reference of known size, on its real background */
+.tsize{display:flex;align-items:flex-end;gap:14px;padding:6px 8px 2px;border-radius:5px;margin-top:5px;
+  width:max-content;max-width:100%;overflow-x:auto;border:1px solid var(--line)}
+.tsize figure{margin:0;display:flex;flex-direction:column;align-items:center;flex:none}
+.tsize figcaption{font-size:10.5px;color:#e8e2d4;text-shadow:0 0 3px #000;margin-top:2px}
+.tsbox{flex:none}
+.tsbox img{width:100%;height:100%;object-fit:fill;display:block}
+.tsbox.noimg{border:1px dashed #e8e2d4;box-sizing:border-box}
+.tssrc{font-size:10.5px;color:#8b95a3;margin-top:2px}
+.tssrc.none{color:var(--warn)}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+ "sheetId": "art_eval_shadow_audit_20261026_c4r1_sheet_2026-10-26",
+ "title": "Art-eval shadow check \u2014 audit_20261026_c4r1 \u2014 game art",
+ "subtitle": "3 rows \u00b7 2 canon \u00b7 0 linked \u00b7 0 prefilled from desert sitting 1 \u00b7 0 NO ART YET",
+ "briefHtml": "<p><b>Did the pipeline decide right?<\/b> \u2014 each row also asks this, beside the pictures. A dashed button is the AGENT'S GUESS from the description, never your answer; click a button to answer (click it again to clear). The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.<\/p><p><b>Shadow review<\/b> of art-eval run <code>audit_20261026_c4r1<\/code>: the pipeline has ALREADY decided every row (owner, 2026-10-23: <i>build human review sheets AFTER the process works for quick human feedback<\/i>). Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a row changes nothing.<\/p><p><b>Art-eval shadow check \u2014 audit_20261026_c4r1<\/b> \u2014 3 rows of game art (not a biome roster), one row per subject. Each row shows\n<b>every picture we hold<\/b> for it, with its <b>in-game size<\/b> beside it: the art at true scale next to a vanilla human, on its\nfootprint where it is a building. <b>IN GAME<\/b> (blue frame) is what the game draws now; <b>render<\/b> columns are artpipe outputs;\n<b>history<\/b> columns are earlier states of our files from git. Hover a set's header for where it came from.<\/p>\n<p><b>Every picture lives in a labelled SLOT<\/b> \u2014 what the game draws it as (ADULT \u00b7 MALE, ADULT \u00b7 FEMALE, YOUNG, FLYING,\nPLANT \u00b7 GROWN, CATCH ITEM \u2026). <b>Click a picture to use it for that slot<\/b> (click again to take it back), or <b>redraw this\nslot<\/b>. A slot you leave alone keeps what the game draws now once you return the sheet; there is no accept button.\n<b>\u2715 retire<\/b> takes a live picture out of the game: with another set in use in that slot it leaves in the same pass, otherwise\nthe slot is redrawn and it stays until the new picture is installed; the small \u2715 on one picture deletes it from the art store.\nRenders found by name sit under <b>RENDERS NOT YET ASSIGNED<\/b>: <b>use<\/b> one, or say <b>not needed<\/b>. <b>Everything else \u2014\nrename, description, more like C, random pool, size, move or cut \u2014 goes in the note box.<\/b><\/p>\n<p><b>Canon rows<\/b> show the canon-library reference images and the entry's <b>Must show<\/b> list beside the pictures. A canon creature and\nour own (franchise-free) stand-in for it are <b>separate rows<\/b>, each judged on its own, but grouped together under one coloured band\nwith a <b>related<\/b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome\nnever casts it. Rows you already ruled on in <b>desert sitting 1<\/b> are prefilled with that pick and say so\n(green line naming the set). The counter separates rows <b>you<\/b> decided from rows still holding the agent's\nprefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.<\/p>",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "invented": [
+  "Renders are joined to a row by its NAME (defName stem, label, artpipe job names) when nothing binds them to a texture path; such columns say 'found by NAME' and could belong to a namesake.",
+  "Related links come from the census's twin detection (same stem, shared texture, or a 'copied from' comment) \u2014 a name match, not a ruling that the two are the same creature.",
+  "Where you have no pick and no keep, the prefill trusts a commit message citing your approval (\u26a0), else what the game shows now; a row with only name-found renders is prefilled to the newest render (\u26a0).",
+  "The Did the pipeline decide right? prefill on every row is the agent's guess from the def's description (stored as qPrefill), not a ruling."
+ ],
+ "posture": {
+  "mode": "pick-one",
+  "explain": "Each SLOT of a row (adult, female, young, flying, grown, catch \u2026): click the picture to use, or redraw; a slot you leave alone keeps its in-game art when you return the sheet. Nothing installs until you see that plan. '\u2715 not for this slot' deletes nothing; the small \u2715 on one picture deletes it from the art store."
+ },
+ "options": [
+  {
+   "key": "A",
+   "label": "A",
+   "hotkey": "1",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "B",
+   "label": "B",
+   "hotkey": "2",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "C",
+   "label": "C",
+   "hotkey": "3",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "D",
+   "label": "D",
+   "hotkey": "4",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "E",
+   "label": "E",
+   "hotkey": "5",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "F",
+   "label": "F",
+   "hotkey": "6",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "G",
+   "label": "G",
+   "hotkey": "7",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "H",
+   "label": "H",
+   "hotkey": "8",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "I",
+   "label": "I",
+   "hotkey": "9",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "J",
+   "label": "J",
+   "hotkey": "",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "redo",
+   "label": "redo",
+   "hotkey": "r",
+   "color": "#e8b64c",
+   "counts": "out",
+   "bulk": false
+  },
+  {
+   "key": "hold",
+   "label": "hold",
+   "hotkey": "h",
+   "color": "#98a2b3",
+   "counts": "out"
+  }
+ ],
+ "groupLabel": "group",
+ "media": true,
+ "freshness": "<b>Built 2026-10-26 12:30 PDT.<\/b> No prior ruling of yours is on record for this sheet.",
+ "decisionsFile": "art_eval_shadow_audit_20261026_c4r1_sheet_2026-10-26.decisions.json",
+ "decisionsPath": "/home/mandrake/rm/bench/Transient/biome_ffar/art_eval_shadow_audit_20261026_c4r1_sheet_2026-10-26.decisions.json",
+ "sheetPath": "/home/mandrake/rm/bench/Transient/biome_ffar/art_eval_shadow_audit_20261026_c4r1_sheet_2026-10-26.html",
+ "schema": 2,
+ "biomes": [
+  {
+   "key": "SUBJECTS_art_eval_shadow_audit_20261026_c4r1",
+   "label": "Art-eval shadow check \u2014 audit_20261026_c4r1"
+  }
+ ],
+ "question": {
+  "key": "pipeline_check",
+  "label": "Did the pipeline decide right?",
+  "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+  "options": [
+   [
+    "keep",
+    "KEEP the pipeline's decision"
+   ],
+   [
+    "should_accept",
+    "OVERRIDE: the art is fine, accept it"
+   ],
+   [
+    "should_regen",
+    "OVERRIDE: the art is bad, regenerate"
+   ],
+   [
+    "other",
+    "OVERRIDE: something else (write a note)"
+   ],
+   [
+    "revert",
+    "REVERT: put my kept version back (rows that replaced your kept art)"
+   ]
+  ]
+ }
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[{"donorAbsent": "", "id": "RSW_FrogDog", "kind": "fauna", "label": "Frog dog", "effect": "fauna \u00b7  \u00b7 commonality None \u00b7 5 picture set(s) across 2 graphics", "tier": "canon", "tierText": "canon Star Wars creature (has a canon-library entry)", "canonTag": "", "flags": [], "fresh": null, "prefillShort": "your keep of 2026-10-22", "prefill": "A", "prefillWhy": "your keep of 2026-10-22", "prefillSource": "ruled", "contested": false, "inferred": false, "prefillPicks": {"swanimals/FrogDog/FrogDog_j": "C"}, "graphics": [{"key": "swanimals/FrogDog/FrogDog", "res": "swanimals/FrogDog/FrogDog", "role": "body", "primary": true, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_FrogDog/lifeStages[2].bodyGraphicData", "label": "ADULT", "kind": "adult", "also": [], "required": true, "desc": "what every grown animal looks like"}, "poolable": true, "prior": null, "cols": [{"kind": "live", "faces": {"east": "b1f12e29159bd81d7ac810cef282d945b1ecb8f3ff9491b88f5d22ff2fd28d3b", "north": "8163f03247a90a145c21e0a8124be1be541a1c66f9325a8d89a840f03620a17f", "south": "eed9ea9d485ea61b258e338e385bd924e20c4294642c5e21f5f0519d44d13d7b"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "also": ["render donorart_frogdog_v1 \u2014 grader flagged (advisory) \u2014 2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "c736e53d94cca026", "hint": "", "ppc": 341, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_FrogDog_b1f12e2915_f8997d.png", "full": "img/scale_RSW_FrogDog_b1f12e2915_f8997d_full.png", "face": "east", "ppc": 341, "zoomFullPpc": 256}}, {"kind": "artpipe", "faces": {"north": "ae43ce1983e82ad7c9424dc77512376850a6fc6152be687f48488c0aebfbfce2"}, "label": "render donorart_frogdog_v2 \u2014 grader flagged (advisory)", "detail": "2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ", "prompt": "", "canonAdvice": ["north: grader flag (advisory) 2/4: \u2717 BODY PLAN: a squat frog-like lizard with a bulbous body resting on the ground, two squat front legs with five-fingered hands, a long thin tapering tail \u2014 Squat bulbous body, short forelimbs and long tapering tail are present, but each hand shows only four distinct digits. \u00b7 \u2717 Huge wide head with two big bulging frog eyes on top \u2014 Two prominent frog-eye bulges are visible, but the head remains relatively narrow and small beside the broad torso."], "canonFlag": true, "letter": "B", "purgeable": true, "short": "render 2026-10-15 \u00b7 donorart_frogdog_v2 \u2014 grader flagged (advisory)", "setId": "669f81cc4fff9bd2", "hint": "", "ppc": 341, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_FrogDog_ae43ce1983_f8997d.png", "full": "img/scale_RSW_FrogDog_ae43ce1983_f8997d_full.png", "face": "north", "ppc": 341, "zoomFullPpc": 256}}]}, {"key": "swanimals/FrogDog/FrogDog_j", "res": "swanimals/FrogDog/FrogDog_j", "role": "body", "primary": false, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_FrogDog/lifeStages[0].bodyGraphicData", "label": "YOUNG \u00b7 HATCHLING", "kind": "young", "also": [], "required": false, "desc": "an earlier life stage, drawn until it grows up"}, "poolable": false, "prior": null, "cols": [{"kind": "live", "faces": {"east": "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2", "north": "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51", "south": "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "letter": "C", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "3f3d190b3c89cedf", "hint": ""}, {"kind": "artpipe", "faces": {"east": "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2", "north": "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51"}, "label": "render donorart_frogdog_j_v1 \u2014 grader flagged (advisory)", "detail": "2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ", "prompt": "", "canonAdvice": ["south: grader flag (advisory) 1/5: \u2717 BODY PLAN: a squat frog-like lizard with a bulbous body resting on the ground, two squat front legs with five-fingered hands, a long thin tapering tail \u2014 The render is a cylindrical metal tank on a wooden base, with no legs, five-fingered hands, or tail. \u00b7 \u2717 Huge wide head with two big bulging frog eyes on top \u2014 No head or bulging frog eyes are present; the tank has a top hatch and pipes. \u00b7 \u2717 A wide mouth with long thin pointed teeth jutting out \u2014 No mouth or teeth are present. \u00b7 (+1 more)", "east: grader PASS 5/5 (advisory)", "north: grader PASS 4/4 (advisory)"], "canonFlag": true, "near_of": "C", "letter": "D", "purgeable": true, "short": "render 2026-10-15 \u00b7 donorart_frogdog_j_v1 \u2014 grader flagged (advisory)", "setId": "74c174866b0f5349", "hint": ""}, {"kind": "artpipe", "faces": {"south": "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f"}, "label": "render donorart_frogdog_j_v2", "detail": "2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1", "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same edge treatment, same painted style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld creature sp", "canonAdvice": ["south: grader PASS 5/5 (advisory)"], "canonFlag": false, "near_of": "C", "letter": "E", "purgeable": true, "short": "render 2026-10-15 \u00b7 donorart_frogdog_j_v2", "setId": "6b6f5e3d0f85be4b", "hint": ""}]}], "thumbs": {"b1f12e29159bd81d7ac810cef282d945b1ecb8f3ff9491b88f5d22ff2fd28d3b": "img/b1f12e29159bd81d7ac8.webp", "8163f03247a90a145c21e0a8124be1be541a1c66f9325a8d89a840f03620a17f": "img/8163f03247a90a145c21.webp", "eed9ea9d485ea61b258e338e385bd924e20c4294642c5e21f5f0519d44d13d7b": "img/eed9ea9d485ea61b258e.webp", "ae43ce1983e82ad7c9424dc77512376850a6fc6152be687f48488c0aebfbfce2": "img/ae43ce1983e82ad7c942.webp", "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2": "img/d9171ed993459af898d4.webp", "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51": "img/365494b4a157d3d16c75.webp", "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f": "img/7776199f131e9d767a28.webp"}, "fulls": {"b1f12e29159bd81d7ac810cef282d945b1ecb8f3ff9491b88f5d22ff2fd28d3b": "img/b1f12e29159bd81d7ac8_full.png", "8163f03247a90a145c21e0a8124be1be541a1c66f9325a8d89a840f03620a17f": "img/8163f03247a90a145c21_full.png", "eed9ea9d485ea61b258e338e385bd924e20c4294642c5e21f5f0519d44d13d7b": "img/eed9ea9d485ea61b258e_full.png", "ae43ce1983e82ad7c9424dc77512376850a6fc6152be687f48488c0aebfbfce2": "img/ae43ce1983e82ad7c942_full.png", "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2": "img/d9171ed993459af898d4_full.png", "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51": "img/365494b4a157d3d16c75_full.png", "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f": "img/7776199f131e9d767a28_full.png"}, "canon": {"dir": "design/RimStarWars/canon_references/frogdog", "brief": "Viewed 2026-10-14: `wookieepedia_canon_1.webp` (Return of the Jedi Special Edition, Buboicullaar on a leash in Jabba's\npalace), `wookieepedia_legends_1.webp` (front view, blue-lit), `wookieepedia_legends_2.webp` (puppet, side view), and\n`donor_current_sprite.png` (donor juvenile sprite shown; adult `swanimals/FrogDog/FrogDog`).\n\n- **Overall shape:** a squat, frog-like lizard that rests its large bulbous mid-section on the ground, two squat front\n  limbs with five-fingered hands, body tapering to a long thin tail (Legends text, legends_2).\n- **Head:** a big, wide cranium with two large, protruding, bulging frog eyes on top and a wide mouth with long,\n  thin, pointed teeth sticking out (both texts and all images).\n- **Skin:** warty, wrinkled; grey-blue (canon frame and legends_1) to olive-green with darker spots (puppet).\n- **Contradiction to flag:** frog-dogs are SENTIENT and highly intelligent in both canon and Legends; the donor def\n  ports them as an animal. Reported only.\n- **Donor sprite:** a brown squat frog-faced lizard with pointed teeth and a tapering tail: agrees on shape.", "must": "- [ ] BODY PLAN: a squat frog-like lizard with a bulbous body resting on the ground, two squat front legs with five-fingered hands, a long thin tapering tail\n- [ ] Huge wide head with two big bulging frog eyes on top\n- [ ] A wide mouth with long thin pointed teeth jutting out\n- [ ] COLOUR LAYOUT: warty grey-blue to olive-green skin with darker spots\n- [ ] NEGATIVE: not a dog (no fur, no snout), not a smooth tree frog", "ruling": "", "base": "", "imgs": ["img/87cd676816098b3fb50f.webp", "img/8f093bc5db5d7729ffe2.webp", "img/d36240913242974f26f4.webp"]}, "letters": ["A", "B"], "dependsOn": null, "related": [], "elsewhere": [], "noArt": false, "purgedHidden": 0, "donorPurged": true, "noArtWhy": "live def dump: RSW_FrogDog found", "rulings": [{"at": "2026-10-22", "verdict": "keep", "trust": "ruled", "sheet": "picks_dessicated_sheet_2026-10-19", "note": ""}, {"at": "2026-10-22", "verdict": "keep", "trust": "ruled", "sheet": "picks_dessicated_sheet_2026-10-19", "note": ""}], "desc": {"def": "RSW_FrogDog", "label": "frog dog", "description": "Frog dogs (sometimes referred to as \"frog-dogs\" or \"frogdogs\") were a species of reptillians with both frog-like and dog-like features. The creatures hopped and waddled from place to place. Frog-dog vocalizations sounded like throaty barks and croaks. This variant was popular on planets such as At Attin due to their bright, inquisitive, loyal, and attentive nature. \"At Attin frogdogs\" were sought for the companionship they offered and kept as domestic pets.", "source": "live def dump 2026-10-26 \u00b7 ThingDef RSW_FrogDog"}, "siblings": [{"label": "FrogDog_Dessicated", "res": "swanimals/FrogDog/FrogDog_Dessicated", "protected": false, "imgs": {"east": "img/3a967b65e8b14e09bac4.webp"}}], "scale": {"status": "measured", "source": "live def dump 2026-10-26 10:54Z \u00b7 PawnKindDef RSW_FrogDog, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_FrogDog.xml (declared)", "kind": "animal", "cells": 1.5, "bodySize": 0.85, "mesh": 1, "drawSize": [1.5, 1.5], "visualMax": null, "quad": 1.5, "refs": [{"path": "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_FrogDog_n/north.png", "img": "img/scale_ref_RSW_FrogDog_4a38fa08af_4e584a.png", "full": "img/scale_ref_RSW_FrogDog_4a38fa08af_4e584a_full.png"}, {"path": "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_FrogDog__FrogDog_j_n/north.png", "img": "img/scale_ref_RSW_FrogDog_58abd33ae8_4e584a.png", "full": "img/scale_ref_RSW_FrogDog_58abd33ae8_4e584a_full.png"}], "img": "img/scale_RSW_FrogDog_b1f12e2915_f8997d.png", "full": "img/scale_RSW_FrogDog_b1f12e2915_f8997d_full.png", "set": "A", "by": "prefill", "face": "east", "srcPx": [512, 512], "ppc": 341, "verdict": "above 256/cell \u2014 beyond even enhanced max zoom", "zoomPpc": 140, "zoomFitted": true, "zoomCropped": false, "zoomFullPpc": 256, "sets": [{"l": "A", "ppc": 341, "px": 512}, {"l": "B", "ppc": 341, "px": 512}]}, "group": "Fauna", "rev": "1a0fdc7c2f02f78f", "question": {"prefill": "keep", "why": "[view n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1 || [FrogDog_j_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1", "context": "[view n] judged candidate r1 (image sha d2e39d4683); F_SIZE_JUMP: The north rear view is about 225 px wide and 243 px tall, against about 385 px wide and 384 px tall for south at one scale. The animal visib || [FrogDog_j_n] judged candidate r1 (image sha ebb7554b19); F_SIZE_JUMP: North's body is about 210 px wide and 234 px tall, against south's roughly 460 px wide and 322 px tall. In game, turning away makes the anim; F_INCONSISTENT: North's skin is a paler, warmer yellow-tan than the grey-olive of east and south."}}, {"donorAbsent": "", "id": "RSW_FungalWeevil", "kind": "fauna", "label": "Grellik", "effect": "fauna \u00b7  \u00b7 commonality None \u00b7 3 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "canon not yet checked", "flags": [], "fresh": null, "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "RotSpecies/FungalWeevil/FungalWeevil", "res": "RotSpecies/FungalWeevil/FungalWeevil", "role": "body", "primary": true, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_FungalWeevil/lifeStages[2].bodyGraphicData", "label": "ADULT", "kind": "adult", "also": [], "required": true, "desc": "what every grown animal looks like"}, "poolable": true, "prior": null, "cols": [{"kind": "live", "faces": {"east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0", "north": "e514a7489a34dd3a1ff2cc968c1dfe0b882a3463d586ef1662c524dd049cad80", "south": "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins) \u00b7 bytes from 06966e55d2 2026-09-20: Land the Rot artpipe backlog: 22 wave-1 + 58 wave-2 renders wired", "winner": true, "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "8516de2d1ace7415", "hint": "", "ppc": 128, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1.png", "full": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1_full.png", "face": "east", "ppc": 128, "zoomFullPpc": 128}}, {"kind": "artpipe", "faces": {"east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0", "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb", "south": "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9"}, "label": "render standtall_b1_fungalweevil", "detail": "2026-10-16 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL", "prompt": "Image 1 is the APPROVED side view (profile) of a creature sprite for the game RimWorld. Image 2 is the same creature's rear view.\nDraw the FRONT view of exactly this creature: seen from directly in front: face, eyes and chest toward the vie", "letter": "B", "purgeable": true, "short": "render 2026-10-16 \u00b7 standtall_b1_fungalweevil", "setId": "53e5cbab1aed7778", "hint": "", "ppc": 128, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1.png", "full": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1_full.png", "face": "east", "ppc": 128, "zoomFullPpc": 128}}, {"kind": "artpipe", "faces": {"east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0", "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb", "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"}, "label": "render rot_fungalweevil_v2", "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1", "prompt": "Owner's direction: 'disgusting fungus bug hybrid'. Top-down pawn sprite, three facings, adult drawn four cells wide: a bloated, glossy, dark-shelled weevil with a long snout, whose carapace has split open under a mass of fungal growth \u2014 pal", "also": ["history SWBestiary 2026-09-20 \u2014 06966e55d2 2026-09-20: Land the Rot artpipe backlog: 22 wave-1 + 58 wave-2 renders wired"], "letter": "C", "purgeable": true, "short": "render 2026-09-19 \u00b7 rot_fungalweevil_v2", "setId": "4befc14dc44bd3dd", "hint": "", "ppc": 128, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1.png", "full": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1_full.png", "face": "east", "ppc": 128, "zoomFullPpc": 128}}]}], "thumbs": {"8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0": "img/8bf1dfb1fa8222aa9931.webp", "e514a7489a34dd3a1ff2cc968c1dfe0b882a3463d586ef1662c524dd049cad80": "img/e514a7489a34dd3a1ff2.webp", "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9": "img/4c49c68628bb29c8dec7.webp", "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb": "img/6bb7dc5c632fe0e4e16c.webp", "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4": "img/2aed3bda219610286260.webp"}, "fulls": {"8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0": "img/8bf1dfb1fa8222aa9931_full.png", "e514a7489a34dd3a1ff2cc968c1dfe0b882a3463d586ef1662c524dd049cad80": "img/e514a7489a34dd3a1ff2_full.png", "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9": "img/4c49c68628bb29c8dec7_full.png", "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb": "img/6bb7dc5c632fe0e4e16c_full.png", "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4": "img/2aed3bda219610286260_full.png"}, "canon": null, "letters": ["A", "B", "C"], "dependsOn": null, "related": [], "elsewhere": [], "noArt": false, "purgedHidden": 0, "donorPurged": false, "noArtWhy": "live def dump: RSW_FungalWeevil found", "rulings": [{"at": "", "verdict": "ok", "trust": "legacy-unresolved", "sheet": "2026-09-19_rot_size_rejudge_2026-09-19", "note": "the current number (4 cells) IS your own ruling from df261b2bc, just restated at its true value."}, {"at": "2026-09-20", "verdict": "keep", "trust": "legacy-unresolved", "sheet": "2026-09-20_rot_art_landed_20260920__rot_art_landed_20260920", "note": "The rot art is approved."}], "desc": {"def": "RSW_FungalWeevil", "label": "grellik", "description": "A fat, slow weevil whose infestation became a partnership: the fungus lives in its shell and out of it, the beetle carries the spores wherever it crawls, and the growth hides it among the caps. It is harmless, revolting, and everywhere; its broods come back if you leave survivors.", "source": "live def dump 2026-10-26 \u00b7 ThingDef RSW_FungalWeevil"}, "siblings": [{"label": "Dessicated_FungalWeevil", "res": "RM_TheRot/Fauna/BMT_Caverns/Things/Animal/FungalWeevil/Dessicated_FungalWeevil", "protected": false, "imgs": {"single": "img/42f944f94cc75bc3f224.webp"}}, {"label": "Dessicated_FungalWeevil", "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalWeevil/Dessicated_FungalWeevil", "protected": false, "imgs": {"single": "img/42f944f94cc75bc3f224.webp"}}, {"label": "FungalWeevil", "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FungalWeevil/FungalWeevil", "protected": false, "imgs": {"east": "img/1cfea1eec8afefb58d0c.webp", "north": "img/94e1588b8ac4c61180b9.webp", "south": "img/cff9a39bf110de4b017f.webp"}}], "scale": {"status": "measured", "source": "live def dump 2026-10-26 10:54Z \u00b7 PawnKindDef RSW_FungalWeevil, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_BiomesTeamPort_Races.xml (declared)", "kind": "animal", "cells": 4, "bodySize": 0.5, "mesh": 1, "drawSize": [4, 4], "visualMax": null, "quad": 4, "refs": [], "img": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1.png", "full": "img/scale_RSW_FungalWeevil_8bf1dfb1fa_c6e4b1_full.png", "set": "A", "by": "prefill", "face": "east", "srcPx": [512, 512], "ppc": 128, "verdict": "in the 128\u2013256/cell range enhanced zoom resolves", "zoomPpc": 128, "zoomFitted": false, "zoomCropped": true, "zoomFullPpc": 128, "sets": [{"l": "A", "ppc": 128, "px": 512}, {"l": "B", "ppc": 128, "px": 512}, {"l": "C", "ppc": 128, "px": 512}]}, "group": "Fauna", "rev": "1a0fdc7c2f02f78f", "question": {"prefill": "keep", "why": "PIPELINE: ACCEPT \u00b7 Opus GOOD", "context": "judged candidate r1 (image sha 4c49c68628); "}}, {"donorAbsent": "", "id": "RSW_Gullipud", "kind": "fauna", "label": "Gullipud", "effect": "fauna \u00b7  \u00b7 commonality None \u00b7 10 picture set(s) across 4 graphics", "tier": "canon", "tierText": "canon Star Wars creature (has a canon-library entry)", "canonTag": "", "flags": [], "fresh": null, "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {"swanimals/Gullipud/Gullipud_Swimming": "E", "swanimals/Gullipud/Gullipud_j": "G", "swanimals/Gullipud/Gullipud_j_Swimming": "I"}, "graphics": [{"key": "swanimals/Gullipud/Gullipud", "res": "swanimals/Gullipud/Gullipud", "role": "body", "primary": true, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_Gullipud/lifeStages[2].bodyGraphicData", "label": "ADULT", "kind": "adult", "also": [], "required": true, "desc": "what every grown animal looks like"}, "poolable": true, "prior": null, "cols": [{"kind": "live", "faces": {"east": "222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8", "north": "ba35b816a6bfd977b5a33d48c190e20d449f0cdf7a19157507e8cd500dedfa7f", "south": "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "also": ["render standtall_b1_gullipud \u2014 2026-10-16 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROSTER_FACINGS_SHRINK_FRONT_VIEWS_STAND_TALL"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "919c62ab7a91a15e", "hint": "", "ppc": 512, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96.png", "full": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96_full.png", "face": "east", "ppc": 512, "zoomFullPpc": 256}}, {"kind": "artpipe", "faces": {"east": "5ac1c5bfd9f13f89b36c54d289f661680eb610b549b90701d77f21dc365a530d"}, "label": "render dregen_RSW_Gullipud_Gullipudi_v1", "detail": "2026-10-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 TEXREGEN_SWBESTIARY_DECIDE_NO_ROSTER_OWNS_IT", "prompt": "The attached image is a CANON REFERENCE of this species, not a sprite to edit: match its anatomy, proportions, limb count and colouring, but draw a NEW game sprite in the house style below \u2014 do not copy its pixels, background, lighting or c", "canonAdvice": ["east: grader PASS 5/5 (advisory)"], "canonFlag": false, "letter": "B", "purgeable": true, "short": "render 2026-10-19 \u00b7 dregen_RSW_Gullipud_Gullipudi_v1", "setId": "c313c6dbc263f0a1", "hint": "", "ppc": 256, "srcPx": [256, 256], "scale": {"img": "img/scale_RSW_Gullipud_5ac1c5bfd9_ca2c96.png", "full": "img/scale_RSW_Gullipud_5ac1c5bfd9_ca2c96_full.png", "face": "east", "ppc": 256, "zoomFullPpc": 256}}, {"kind": "artpipe", "faces": {"east": "222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8", "north": "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279", "south": "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a"}, "label": "render donorart_gullipud_v1", "detail": "2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1", "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same edge treatment, same painted style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld creature sp", "canonAdvice": ["south: grader PASS 5/5 (advisory)", "east: grader PASS 5/5 (advisory)", "north: grader PASS 4/4 (advisory)"], "canonFlag": false, "letter": "C", "purgeable": true, "short": "render 2026-10-15 \u00b7 donorart_gullipud_v1", "setId": "d2d3ee8de1c0bdaf", "hint": "", "ppc": 512, "srcPx": [512, 512], "scale": {"img": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96.png", "full": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96_full.png", "face": "east", "ppc": 512, "zoomFullPpc": 256}}, {"kind": "donor", "faces": {"east": "25a15a3418a60d61b2e183c7cde3cc80518b67b0ed4166752a97a2cd32b27d26", "north": "ff1bcacb7ec9de7178c7f09914a9323c8374c15a1397c6cdfbf6ff1dbdc46e6f", "south": "c6334a89501228b0f9e2d26d1375fc3419d2ae3c483b0d9c01fe072b58111629"}, "winner": false, "label": "donor original \u2014 ?", "detail": "load index -1 (not in the measured load order) \u00b7 ? \u00b7 loose PNG in the game's mod folders", "letter": "D", "purgeable": true, "short": "donor original \u00b7 ?", "setId": "7d14dd38f2d8e413", "hint": "", "ppc": 256, "srcPx": [256, 256], "scale": {"img": "img/scale_RSW_Gullipud_25a15a3418_ca2c96.png", "full": "img/scale_RSW_Gullipud_25a15a3418_ca2c96_full.png", "face": "east", "ppc": 256, "zoomFullPpc": 256}}]}, {"key": "swanimals/Gullipud/Gullipud_Swimming", "res": "swanimals/Gullipud/Gullipud_Swimming", "role": "swimming graphic", "primary": false, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_Gullipud/lifeStages[2].swimmingGraphicData", "label": "SWIMMING", "kind": "swimming", "also": [], "required": false, "desc": "drawn while it swims"}, "poolable": false, "prior": null, "cols": [{"kind": "live", "faces": {"east": "b6b6e702d705af1e186581beba10b6107a219fc961548f33f617e948978a6e2f", "north": "6bf2a3ef3f12bc8c856775f7a5fedc5d605bbb9afd2414c336ef440bf8ef5d01", "south": "a0ad04620a3612c17199610e26d3213f2833ae8add83ef30a1248134bd7613a9"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "also": ["render donorart_gullipud_swimming_v1 \u2014 2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1"], "letter": "E", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "d033781554f1d2ad", "hint": ""}, {"kind": "donor", "faces": {"east": "81810034f1618892e188a002755b7c7a20abfb5f565b6bb195b814d4540576c9", "north": "d00883677fd3d23518a919fe541285e7f749296b01f74c44bafcd489ec470e02", "south": "2ff5dec315fb7493fdddd43d5327a8619ca5b36031d878db54ee0537ef3d0304"}, "winner": false, "label": "donor original \u2014 ?", "detail": "load index -1 (not in the measured load order) \u00b7 ? \u00b7 loose PNG in the game's mod folders", "letter": "F", "purgeable": true, "short": "donor original \u00b7 ?", "setId": "9f93d244e3f14083", "hint": ""}]}, {"key": "swanimals/Gullipud/Gullipud_j", "res": "swanimals/Gullipud/Gullipud_j", "role": "body", "primary": false, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"id": "RSW_Gullipud/lifeStages[0].bodyGraphicData", "label": "YOUNG \u00b7 HATCHLING", "kind": "young", "also": [], "required": false, "desc": "an earlier life stage, drawn until it grows up"}, "poolable": false, "prior": null, "cols": [{"kind": "live", "faces": {"east": "0f2c83462c9492f1f7e91700bdb8ad15a605939d1c9776f4cbd201275938ced6", "north": "12756dc6c5655cb13ae9eb82da2c760d045f8e563663755013411dc9b0d1b047", "south": "9afbd9950f143d1794bedd214e519a988d3bdb88ffb09ddfeeeb76f63e17bb39"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "also": ["render donorart_gullipud_j_v1 \u2014 2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1"], "letter": "G", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "8ae74d446dc2d35a", "hint": ""}, {"kind": "donor", "faces": {"east": "42fe9b53d69d57d2b0af50b10bbed1dafc56b2d21a9d30aea0268345ea997bb6", "north": "a52bfdb10a904c268886b80ac15865b27b5cbf3e9e8d3646517c86e0346f1b4a", "south": "49fc563b0e082118e42253cde579d968c45cbd2a889f02dde258b269d4976a86"}, "winner": false, "label": "donor original \u2014 ?", "detail": "load index -1 (not in the measured load order) \u00b7 ? \u00b7 loose PNG in the game's mod folders", "letter": "H", "purgeable": true, "short": "donor original \u00b7 ?", "setId": "2496b6542997e822", "hint": ""}]}, {"key": "swanimals/Gullipud/Gullipud_j_Swimming", "res": "swanimals/Gullipud/Gullipud_j_Swimming", "role": "swimming graphic", "primary": false, "facings": ["south", "east", "north"], "pool": false, "lane": "slot", "slot": {"label": "SWIMMING", "kind": "swimming", "required": false, "also": [], "desc": "drawn while it swims"}, "poolable": false, "prior": null, "cols": [{"kind": "live", "faces": {"east": "abaff33736490422fec2ae299a9988db3c5479ff8c72a7ddaf691e88699bd679", "north": "c4de7cdd1aae7ddebc1a4c0186871ddd92d161537572ee4c2213c837a5a9668c", "south": "b6ead9d66ba6d003eb715e88423da49990213321d9484ca64af846da9c8dc70d"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 319 (last loaded, wins)", "winner": true, "also": ["render donorart_gullipud_j_swimming_v1 \u2014 2026-10-15 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 DONOR_DEFS_PORT_TO_OURS_1"], "letter": "I", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary", "setId": "784bc6ee5011d1d0", "hint": ""}, {"kind": "donor", "faces": {"east": "b934f1e003b35c23f5e0ab00800a69a96c60189ccbb0900340f5e1743eadf1b7", "north": "fcde4353b75809daceb99c7a4b7de238c9fc74bfabfd3c8e658c1b8eae2f7850", "south": "40a65faf16f9d2c048c7e5d2d0569ffc94eb52d04d0bfb03db4e99a0e64c551b"}, "winner": false, "label": "donor original \u2014 ?", "detail": "load index -1 (not in the measured load order) \u00b7 ? \u00b7 loose PNG in the game's mod folders", "letter": "J", "purgeable": true, "short": "donor original \u00b7 ?", "setId": "78a68bb232cb35f5", "hint": ""}]}], "thumbs": {"222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8": "img/222cdf31ac0fa9e230c3.webp", "ba35b816a6bfd977b5a33d48c190e20d449f0cdf7a19157507e8cd500dedfa7f": "img/ba35b816a6bfd977b5a3.webp", "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a": "img/688ea306481421b662fb.webp", "5ac1c5bfd9f13f89b36c54d289f661680eb610b549b90701d77f21dc365a530d": "img/5ac1c5bfd9f13f89b36c.webp", "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279": "img/c8ff8f87624260f57452.webp", "25a15a3418a60d61b2e183c7cde3cc80518b67b0ed4166752a97a2cd32b27d26": "img/25a15a3418a60d61b2e1.webp", "ff1bcacb7ec9de7178c7f09914a9323c8374c15a1397c6cdfbf6ff1dbdc46e6f": "img/ff1bcacb7ec9de7178c7.webp", "c6334a89501228b0f9e2d26d1375fc3419d2ae3c483b0d9c01fe072b58111629": "img/c6334a89501228b0f9e2.webp", "b6b6e702d705af1e186581beba10b6107a219fc961548f33f617e948978a6e2f": "img/b6b6e702d705af1e1865.webp", "6bf2a3ef3f12bc8c856775f7a5fedc5d605bbb9afd2414c336ef440bf8ef5d01": "img/6bf2a3ef3f12bc8c8567.webp", "a0ad04620a3612c17199610e26d3213f2833ae8add83ef30a1248134bd7613a9": "img/a0ad04620a3612c17199.webp", "81810034f1618892e188a002755b7c7a20abfb5f565b6bb195b814d4540576c9": "img/81810034f1618892e188.webp", "d00883677fd3d23518a919fe541285e7f749296b01f74c44bafcd489ec470e02": "img/d00883677fd3d23518a9.webp", "2ff5dec315fb7493fdddd43d5327a8619ca5b36031d878db54ee0537ef3d0304": "img/2ff5dec315fb7493fddd.webp", "0f2c83462c9492f1f7e91700bdb8ad15a605939d1c9776f4cbd201275938ced6": "img/0f2c83462c9492f1f7e9.webp", "12756dc6c5655cb13ae9eb82da2c760d045f8e563663755013411dc9b0d1b047": "img/12756dc6c5655cb13ae9.webp", "9afbd9950f143d1794bedd214e519a988d3bdb88ffb09ddfeeeb76f63e17bb39": "img/9afbd9950f143d1794be.webp", "42fe9b53d69d57d2b0af50b10bbed1dafc56b2d21a9d30aea0268345ea997bb6": "img/42fe9b53d69d57d2b0af.webp", "a52bfdb10a904c268886b80ac15865b27b5cbf3e9e8d3646517c86e0346f1b4a": "img/a52bfdb10a904c268886.webp", "49fc563b0e082118e42253cde579d968c45cbd2a889f02dde258b269d4976a86": "img/49fc563b0e082118e422.webp", "abaff33736490422fec2ae299a9988db3c5479ff8c72a7ddaf691e88699bd679": "img/abaff33736490422fec2.webp", "c4de7cdd1aae7ddebc1a4c0186871ddd92d161537572ee4c2213c837a5a9668c": "img/c4de7cdd1aae7ddebc1a.webp", "b6ead9d66ba6d003eb715e88423da49990213321d9484ca64af846da9c8dc70d": "img/b6ead9d66ba6d003eb71.webp", "b934f1e003b35c23f5e0ab00800a69a96c60189ccbb0900340f5e1743eadf1b7": "img/b934f1e003b35c23f5e0.webp", "fcde4353b75809daceb99c7a4b7de238c9fc74bfabfd3c8e658c1b8eae2f7850": "img/fcde4353b75809daceb9.webp", "40a65faf16f9d2c048c7e5d2d0569ffc94eb52d04d0bfb03db4e99a0e64c551b": "img/40a65faf16f9d2c048c7.webp"}, "fulls": {"222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8": "img/222cdf31ac0fa9e230c3_full.png", "ba35b816a6bfd977b5a33d48c190e20d449f0cdf7a19157507e8cd500dedfa7f": "img/ba35b816a6bfd977b5a3_full.png", "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a": "img/688ea306481421b662fb_full.png", "5ac1c5bfd9f13f89b36c54d289f661680eb610b549b90701d77f21dc365a530d": "img/5ac1c5bfd9f13f89b36c_full.png", "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279": "img/c8ff8f87624260f57452_full.png", "25a15a3418a60d61b2e183c7cde3cc80518b67b0ed4166752a97a2cd32b27d26": "img/25a15a3418a60d61b2e1_full.png", "ff1bcacb7ec9de7178c7f09914a9323c8374c15a1397c6cdfbf6ff1dbdc46e6f": "img/ff1bcacb7ec9de7178c7_full.png", "c6334a89501228b0f9e2d26d1375fc3419d2ae3c483b0d9c01fe072b58111629": "img/c6334a89501228b0f9e2_full.png", "b6b6e702d705af1e186581beba10b6107a219fc961548f33f617e948978a6e2f": "img/b6b6e702d705af1e1865_full.png", "6bf2a3ef3f12bc8c856775f7a5fedc5d605bbb9afd2414c336ef440bf8ef5d01": "img/6bf2a3ef3f12bc8c8567_full.png", "a0ad04620a3612c17199610e26d3213f2833ae8add83ef30a1248134bd7613a9": "img/a0ad04620a3612c17199_full.png", "81810034f1618892e188a002755b7c7a20abfb5f565b6bb195b814d4540576c9": "img/81810034f1618892e188_full.png", "d00883677fd3d23518a919fe541285e7f749296b01f74c44bafcd489ec470e02": "img/d00883677fd3d23518a9_full.png", "2ff5dec315fb7493fdddd43d5327a8619ca5b36031d878db54ee0537ef3d0304": "img/2ff5dec315fb7493fddd_full.png", "0f2c83462c9492f1f7e91700bdb8ad15a605939d1c9776f4cbd201275938ced6": "img/0f2c83462c9492f1f7e9_full.png", "12756dc6c5655cb13ae9eb82da2c760d045f8e563663755013411dc9b0d1b047": "img/12756dc6c5655cb13ae9_full.png", "9afbd9950f143d1794bedd214e519a988d3bdb88ffb09ddfeeeb76f63e17bb39": "img/9afbd9950f143d1794be_full.png", "42fe9b53d69d57d2b0af50b10bbed1dafc56b2d21a9d30aea0268345ea997bb6": "img/42fe9b53d69d57d2b0af_full.png", "a52bfdb10a904c268886b80ac15865b27b5cbf3e9e8d3646517c86e0346f1b4a": "img/a52bfdb10a904c268886_full.png", "49fc563b0e082118e42253cde579d968c45cbd2a889f02dde258b269d4976a86": "img/49fc563b0e082118e422_full.png", "abaff33736490422fec2ae299a9988db3c5479ff8c72a7ddaf691e88699bd679": "img/abaff33736490422fec2_full.png", "c4de7cdd1aae7ddebc1a4c0186871ddd92d161537572ee4c2213c837a5a9668c": "img/c4de7cdd1aae7ddebc1a_full.png", "b6ead9d66ba6d003eb715e88423da49990213321d9484ca64af846da9c8dc70d": "img/b6ead9d66ba6d003eb71_full.png", "b934f1e003b35c23f5e0ab00800a69a96c60189ccbb0900340f5e1743eadf1b7": "img/b934f1e003b35c23f5e0_full.png", "fcde4353b75809daceb99c7a4b7de238c9fc74bfabfd3c8e658c1b8eae2f7850": "img/fcde4353b75809daceb9_full.png", "40a65faf16f9d2c048c7e5d2d0569ffc94eb52d04d0bfb03db4e99a0e64c551b": "img/40a65faf16f9d2c048c7_full.png"}, "canon": {"dir": "design/RimStarWars/canon_references/gullipud", "brief": "Viewed 2026-10-14: `wookieepedia_canon_1.webp` and `wookieepedia_canon_2.webp` (field-guide paintings: deflated and\ninflated gullipuds), and `donor_current_sprite.png` (donor adult sprite, our stand-in; the def also draws an inflated\n`Gullipud_i` and swimming graphics).\n\n- **Overall shape:** a bulky, loose-skinned, self-inflating amphibian (canon text), flat and saggy when deflated,\n  a near-round ball when inflated (it bounces), with short stubby legs.\n- **Head:** small frog-like face with big eyes and a wide smiling mouth at the front of the body.\n- **Spines:** small red-brown hooked spines/claws over the body, which it extends to be hard to swallow (text);\n  a dark red stripe down the middle of the back.\n- **Colour:** orange to peach-orange skin, paler belly.\n- **Donor sprite:** an orange, peach-bellied blob with red markings, and an inflated ball version: agrees.", "must": "- [ ] BODY PLAN: a bulky, loose-skinned amphibian with stubby legs that can inflate into a round ball\n- [ ] Small frog-like face with big eyes and a wide mouth\n- [ ] Small hooked red-brown spines over the body and a dark red stripe down the back\n- [ ] COLOUR LAYOUT: orange to peach skin, paler belly\n- [ ] NEGATIVE: not a smooth green frog or a fish", "ruling": "", "base": "", "imgs": ["img/e56fdcb223bf16dc5fb9.webp", "img/10bc4d3a5b39717ea025.webp"]}, "letters": ["A", "B", "C", "D"], "dependsOn": null, "related": [], "elsewhere": [], "noArt": false, "purgedHidden": 0, "donorPurged": false, "noArtWhy": "live def dump: RSW_Gullipud found", "rulings": [], "desc": {"def": "RSW_Gullipud", "label": "gullipud", "description": "Gullipuds were bulky, loose-skinned, self-inflating amphibians native to the swamps of the planet Naboo. As they were small and easy prey for other animals, like pikobis, gullipuds would extend their spine to make themselves harder to catch and swallow. Due to their physical similarities to the more common gorg these creatures may have been unintentionally transported to various worlds as livestock, only to escape into the wild and establish themselves.", "source": "live def dump 2026-10-26 \u00b7 ThingDef RSW_Gullipud"}, "siblings": [{"label": "Gullipud_Dessicated", "res": "swanimals/Gullipud/Gullipud_Dessicated", "protected": false, "imgs": {"single": "img/31d957ca382fcca85f1d.webp"}}, {"label": "Gullipud_i", "res": "swanimals/Gullipud/Gullipud_i", "protected": false, "imgs": {"east": "img/5ac1c5bfd9f13f89b36c.webp"}}, {"label": "Gullipud_j_Dessicated", "res": "swanimals/Gullipud/Gullipud_j_Dessicated", "protected": false, "imgs": {"single": "img/25922e329bbc19b79891.webp"}}], "scale": {"status": "measured", "source": "live def dump 2026-10-26 10:54Z \u00b7 PawnKindDef RSW_Gullipud, last lifeStage bodyGraphicData \u00b7 drawSize: XML agrees, RSW_Gullipud.xml (declared)", "kind": "animal", "cells": 1, "bodySize": 0.4, "mesh": 1, "drawSize": [1, 1], "visualMax": null, "quad": 1, "refs": [{"path": "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Gullipud__Gullipud_Swimming_n/north.png", "img": "img/scale_ref_RSW_Gullipud_aefb00f93c_1e17e2.png", "full": "img/scale_ref_RSW_Gullipud_aefb00f93c_1e17e2_full.png"}], "img": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96.png", "full": "img/scale_RSW_Gullipud_222cdf31ac_ca2c96_full.png", "set": "A", "by": "prefill", "face": "east", "srcPx": [512, 512], "ppc": 512, "verdict": "above 256/cell \u2014 beyond even enhanced max zoom", "zoomPpc": 211, "zoomFitted": true, "zoomCropped": false, "zoomFullPpc": 256, "sets": [{"l": "A", "ppc": 512, "px": 512}, {"l": "B", "ppc": 256, "px": 256}, {"l": "C", "ppc": 512, "px": 512}, {"l": "D", "ppc": 256, "px": 256}]}, "group": "Fauna", "rev": "1a0fdc7c2f02f78f", "question": {"prefill": "keep", "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2", "context": "judged candidate r1 (image sha 72ef017b1c); F_SIZE_JUMP: North's body is about half the width of south's on the shared scale and sits low and small in its canvas (measured heights: south 354, north; F_INCONSISTENT: North puts a row of hooked spines along the red dorsal stripe. On east the stripe is bare and the spines sit beside it on the back and flank"}}]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<script id="RENDER">
+(function () {  // freshness banner (built at, how many prior rulings are reflected) — always visible under the title
+  const add = () => { let fr = ''; try { fr = JSON.parse(document.getElementById('CONFIG').textContent).freshness || ''; } catch (e) {}
+    if (!fr || document.getElementById('freshBanner')) return;
+    const h = document.querySelector('header .hrow'); if (!h) return;
+    const d = document.createElement('div'); d.id = 'freshBanner'; d.className = 'bs-fresh-banner'; d.innerHTML = fr;
+    h.insertAdjacentElement('afterend', d); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+})();
+
+/* Layout (owner complaint 2026-10-04, "poorly constructed"): one compact strip per graphic. Each picture
+   set is a card whose facings sit SIDE BY SIDE; cards wrap across the width, so a row is about one
+   thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
+   the right show only this row's letters. */
+const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
+const faceAbbr = f => f in FACE_ABBR ? FACE_ABBR[f] : f.replace(/^(\d+)_(\w).*$/, (m, n, d) => n + d.toUpperCase());
+if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelectorAll('.bs-play[data-anim]').forEach(el => {
+  const fr = el.dataset.anim.split('|'), i = ((+el.dataset.i || 0) + 1) % fr.length;
+  /* advance only once the current frame has loaded: a frame that 404s (the gate's image-less scratch copy) must not
+     re-request every 66 ms, which kept headless Edge's virtual clock from ever settling (req 13 hang, 2026-10-07) */
+  const im = el.querySelector('img'); if (!im || !im.complete || !im.naturalWidth) return;
+  el.dataset.i = i; im.src = fr[i];
+}), 66);
+/* ═══ SLOTS (DESIGN 2026-10-10 §3; owner rulings by question card 2026-10-10) ═══════════════════════════════════════
+   Every picture lives in a labelled SLOT — what the game draws it as. Click a picture to USE it for that slot (click it
+   again to take that back), or say `redraw this slot`; a slot left alone keeps its in-game art on return. ✕ is two
+   things and the sheet says which: `retire` (a live picture: it stays in game until its replacement is installed) and
+   the small per-picture ✕ that deletes from the art store. Since 2026-10-19 the page offers no random-pool verbs, no
+   `✕ not for this slot` and no Requests panel (the note box carries those); data they saved still reads and enacts.
+   A render found by name offers `use` (labels it for its slot and picks it) or `not needed`; a catch row's creature renders are
+   reference only. Records are schema 2 (decisions_v2.py). SLX is pure logic over (item, record): no DOM, node-tested. */
+window.artNoSelect = it => new Set((it.graphics || []).flatMap(g => g.cols.filter(c => c.noSelect).map(c => c.letter)));
+window.artEnsureVariants = (it, rec) => {
+  if (rec && Array.isArray(rec.variants) && !rec.variantsDefault) { const ns = window.artNoSelect(it); rec.variants = rec.variants.filter(l => !ns.has(l)); }
+};
+const SLX = window.SLX = {};
+const _ok = (msg) => ({ ok: true, msg: msg || '' }), _no = m => ({ ok: false, msg: m });
+SLX.lane = (it, gk) => (it.graphics || []).find(g => g.key === gk);
+SLX.v2 = rec => {
+  if (!rec) return rec;
+  if ((+rec.schema || 1) < 2) {
+    rec.schema = 2;
+    if (Array.isArray(rec.variants) && rec.variants.length) {
+      if (rec.variantsDefault) rec.legacyVariantsDefault = rec.variants; else rec.legacyVariants = rec.variants;
+    }
+    delete rec.variants; delete rec.variantsDefault;
+  }
+  rec.slots = rec.slots || {};
+  return rec;
+};
+SLX.assigned = rec => (rec && rec.assign) || {};
+/* lanes as shown: a render he labelled moves into that slot's lane (and becomes usable there) */
+SLX.view = (it, rec) => {
+  const asg = SLX.assigned(rec);
+  const lanes = (it.graphics || []).map(g => ({ g, cols: g.cols.filter(c => !(g.lane === 'unassigned' && asg[c.letter] && SLX.lane(it, asg[c.letter]))) }));
+  for (const l of lanes) {
+    if (l.g.lane !== 'slot') continue;
+    for (const g of it.graphics || []) if (g.lane === 'unassigned') for (const c of g.cols)
+      if (asg[c.letter] === l.g.key) l.cols.push(Object.assign({}, c, { assignedHere: true }));
+  }
+  return lanes;
+};
+SLX.colIn = (it, rec, gk, L) => { const l = SLX.view(it, rec).find(x => x.g.key === gk); return l ? l.cols.find(c => c.letter === L) : null; };
+/* owner provenance (owner 2026-10-12; decisions_v2.decision_is_his): the page seeds every row's `decision` with the agent's
+   prefill. That seed is a SUGGESTION, never an answer: it reads as decided only once his click stamped it (decidedAt), it
+   was carried from his earlier ruling, or it overrides the prefill. */
+SLX.decisionIsHis = rec => {
+  const d = ((rec || {}).decision || '').trim();
+  if (!d) return false;
+  if (rec.decidedAt || rec.carriedRuledAt) return true;
+  if (!('prefill' in rec)) return !!rec.at;          /* never seeded by a prefilling page: a saved letter is his */
+  return rec.prefill != null && rec.prefill !== '' && d !== rec.prefill;
+};
+SLX.prefillOnly = rec => (!SLX.decisionIsHis(rec) && ((rec || {}).decision || '').trim()) || '';
+SLX.state = (it, rec, g) => {
+  const s = ((rec || {}).slots || {})[g.key];
+  if (s && s.state && !s.migrated) return s;
+  if (g.primary && SLX.decisionIsHis(rec)) {
+    const d = rec.decision;
+    if (d === 'redo') return { state: 'redraw' };
+    if (d && d.length === 1) return { state: 'pick', pick: d };
+  }
+  const p = ((rec || {}).picks || {})[g.key];
+  if (p) return { state: 'pick', pick: p };
+  return s && s.state ? s : { state: '' };
+};
+SLX.inGame = g => g.cols.filter(c => c.winner && !c.purgedLive);
+SLX.list = (rec, key, gk) => new Set((((rec || {})[key] || {})[gk]) || []);
+SLX.putList = (rec, key, gk, set) => { rec[key] = rec[key] || {}; const a = [...set].sort(); if (a.length) rec[key][gk] = a; else delete rec[key][gk]; };
+SLX.setSlot = (it, rec, g, st) => {
+  SLX.v2(rec);
+  const now = new Date().toISOString();
+  if (!st || !st.state) delete rec.slots[g.key];
+  else rec.slots[g.key] = Object.assign({ slot_id: (g.slot || {}).id || null, at: now }, st);
+  if (g.primary) {
+    rec.decision = !st || !st.state ? '' : st.state === 'pick' ? st.pick : st.state === 'redraw' ? 'redo'
+      : st.state === 'accept' ? ((SLX.inGame(g)[0] || {}).letter || '') : '';
+    rec.decidedAt = now;
+  } else if (rec.picks && rec.picks[g.key] !== undefined) {
+    if (st && st.state === 'pick') rec.picks[g.key] = st.pick; else delete rec.picks[g.key];
+  }
+};
+SLX.pick = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g) return _no('no such slot');
+  if (g.lane === 'reference') return _no('These are pictures of the LIVING creature, shown for reference — they cannot be used as the catch.');
+  if (g.lane === 'unassigned') return _no('Say what render ' + L + ' is first (the "this is" box) — an unassigned render cannot be used.');
+  const c = SLX.colIn(it, rec, gk, L);
+  if (!c) return _no('Set ' + L + ' is not in this slot.');
+  if (c.noSelect) return _no('Set ' + L + ' is placeholder art — it cannot be picked.');
+  if (c.purgedLive) return _no('You purged set ' + L + '; it cannot be picked.');
+  const cur = SLX.state(it, rec, g);
+  if (cur.state === 'pick' && cur.pick === L) { SLX.setSlot(it, rec, g, null); return _ok('took back ' + L); }
+  SLX.v2(rec);
+  /* pick and ✕ of one set cannot both stand: using it clears its ✕ marks (DESIGN §3.3 guard 2) */
+  for (const k of ['reject', 'retire']) { const s = SLX.list(rec, k, gk); s.delete(L); SLX.putList(rec, k, gk, s); }
+  const shas = new Set(Object.values(c.faces || {}));
+  if (rec.purge) rec.purge = rec.purge.filter(x => !shas.has(x));
+  SLX.setSlot(it, rec, g, { state: 'pick', pick: L, set_id: c.setId });
+  return _ok();
+};
+SLX.slotButton = (it, rec, gk, state) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  const cur = SLX.state(it, rec, g);
+  SLX.setSlot(it, rec, g, cur.state === state ? null : { state });
+  return _ok();
+};
+/* the only picture(s) the game draws in this slot are all being sent away and nothing new is picked: the slot becomes a
+   REDRAW and the old picture stays in game until the new one is installed (owner ruling, question card 2026-10-10) */
+SLX._maybeRedraw = (it, rec, g) => {
+  const gone = new Set([...SLX.list(rec, 'reject', g.key), ...SLX.list(rec, 'retire', g.key), ...((SLX.poolRec(rec, g.key).remove) || [])]);
+  const live = SLX.inGame(g).filter(c => !gone.has(c.letter));
+  const st = SLX.state(it, rec, g);
+  if (SLX.inGame(g).length && !live.length && st.state !== 'pick' && !(SLX.poolRec(rec, g.key).add || []).length) {
+    SLX.setSlot(it, rec, g, { state: 'redraw' });
+    return 'Nothing would be left in "' + ((g.slot || {}).label || 'this slot') + '": it becomes a REDRAW, and ' + SLX.inGame(g).map(c => c.letter).join(', ') + ' stays in game until the new picture is installed.';
+  }
+  return '';
+};
+SLX.reject = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  SLX.v2(rec);
+  const s = SLX.list(rec, 'reject', gk);
+  if (s.has(L)) { s.delete(L); SLX.putList(rec, 'reject', gk, s); return _ok(); }
+  s.add(L); SLX.putList(rec, 'reject', gk, s);
+  const st = SLX.state(it, rec, g);
+  if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null);
+  const pr = SLX.poolRec(rec, gk); if ((pr.add || []).includes(L)) SLX.putPool(it, rec, g, Object.assign({}, pr, { add: pr.add.filter(x => x !== L) }));
+  return _ok(SLX._maybeRedraw(it, rec, g));
+};
+SLX.retire = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  SLX.v2(rec);
+  const s = SLX.list(rec, 'retire', gk);
+  if (s.has(L)) { s.delete(L); SLX.putList(rec, 'retire', gk, s); return _ok(); }
+  s.add(L); SLX.putList(rec, 'retire', gk, s);
+  { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null); }
+  /* retire + replace in ONE pass (owner 2026-10-12): with another set in use here, the retired picture leaves the game in
+     the same enact that installs the replacement; with none, the slot is a redraw and it stays until replaced */
+  const st2 = SLX.state(it, rec, g);
+  if (st2.state === 'pick' && st2.pick !== L) return _ok(L + ' leaves the game in this same pass, replaced by ' + st2.pick + '.');
+  return _ok(SLX._maybeRedraw(it, rec, g) || (L + ' stays in game until its replacement is installed — use another set here to replace it in this same pass.'));
+};
+SLX.poolRec = (rec, gk) => (((rec || {}).pool || {})[gk]) || { add: [], remove: [] };
+SLX.putPool = (it, rec, g, p) => {
+  rec.pool = rec.pool || {};
+  if (!p.baseline) p.baseline = SLX.inGame(g).map(c => c.setId).filter(Boolean).sort();
+  if (!(p.add || []).length && !(p.remove || []).length) delete rec.pool[g.key]; else rec.pool[g.key] = p;
+};
+SLX.poolToggle = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || !(g.pool || g.poolable)) return _no('Set ' + L + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.');
+  const c = SLX.colIn(it, rec, gk, L);
+  if (!c) return _no('no such set');
+  if (c.noSelect) return _no('Set ' + L + ' is placeholder art — it cannot be kept as a variant.');
+  SLX.v2(rec);
+  const p = JSON.parse(JSON.stringify(SLX.poolRec(rec, gk)));
+  p.add = p.add || []; p.remove = p.remove || [];
+  let msg = '';
+  if (c.winner) {          /* a member the game draws now: leave / rejoin the pool */
+    if (p.remove.includes(L)) p.remove = p.remove.filter(x => x !== L); else p.remove.push(L);
+  } else {
+    if (p.add.includes(L)) p.add = p.add.filter(x => x !== L);
+    else { p.add.push(L); const r = SLX.list(rec, 'reject', gk); r.delete(L); SLX.putList(rec, 'reject', gk, r); }
+  }
+  SLX.putPool(it, rec, g, p);
+  if (c.winner && p.remove.includes(L)) {
+    const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null);
+    msg = SLX._maybeRedraw(it, rec, g);
+  }
+  return _ok(msg);
+};
+SLX.addable = (rec, g, cols) => cols.filter(c => !c.winner && !c.noSelect && !c.purgedLive && !(c.kind === 'donor' && !c.ours && !c.oursRender)
+  && !SLX.list(rec, 'reject', g.key).has(c.letter));
+SLX.poolAddAll = (it, rec, gk) => {
+  const g = SLX.lane(it, gk);
+  if (!g || !(g.pool || g.poolable)) return _no('not a random pool');
+  SLX.v2(rec);
+  const l = SLX.view(it, rec).find(x => x.g.key === gk);
+  const p = JSON.parse(JSON.stringify(SLX.poolRec(rec, gk)));
+  p.add = [...new Set([...(p.add || []), ...SLX.addable(rec, g, l.cols).map(c => c.letter)])].sort();
+  p.remove = p.remove || [];
+  SLX.putPool(it, rec, g, p);
+  return _ok();
+};
+SLX.assign = (it, rec, L, target) => {
+  SLX.v2(rec);
+  rec.assign = rec.assign || {};
+  if (!target) delete rec.assign[L]; else rec.assign[L] = target;
+  /* un-assigning a render takes back any use of it */
+  for (const g of it.graphics || []) { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L && rec.assign[L] !== g.key && g.lane === 'slot' && !g.cols.some(c => c.letter === L)) SLX.setSlot(it, rec, g, null); }
+  return _ok();
+};
+/* the slot an unassigned render's `use` puts it in: the slot its job name hints at, else the row's primary slot */
+SLX.useTarget = (it, c) => {
+  const slots = (it.graphics || []).filter(g => g.lane === 'slot'), h = String((c || {}).hint || '').toLowerCase();
+  let t = null;
+  if (h.startsWith('flight')) t = slots.find(g => g.flip);
+  else if (h) {
+    const w = h.split(' ')[0], rx = new RegExp('(^|[^a-z])' + w + '([^a-z]|$)');
+    t = slots.find(g => String((g.slot || {}).kind || '').toLowerCase() === w || rx.test(String((g.slot || {}).label || '').toLowerCase()));
+  }
+  return t || slots.find(g => g.primary) || slots[0] || null;
+};
+SLX.useRender = (it, rec, L) => {
+  const c = (it.graphics || []).filter(g => g.lane === 'unassigned').flatMap(g => g.cols).find(x => x.letter === L);
+  if (!c) return _no('Set ' + L + ' is not an unassigned render on this row.');
+  const t = SLX.useTarget(it, c);
+  if (!t) return _no('This row has no slot to use ' + L + ' in — say where in the note.');
+  if (SLX.assigned(rec)[L] === t.key) { SLX.assign(it, rec, L, ''); return _ok('took back ' + L); }
+  SLX.assign(it, rec, L, t.key);
+  return SLX.pick(it, rec, t.key, L);
+};
+SLX.notNeeded = (it, rec, L) => SLX.assign(it, rec, L, SLX.assigned(rec)[L] === 'not_needed' ? '' : 'not_needed');
+SLX.purgeToggle = (it, rec, sha) => {
+  for (const g of it.graphics || []) {
+    const st = SLX.state(it, rec, g);
+    if (st.state !== 'pick') continue;
+    const c = SLX.colIn(it, rec, g.key, st.pick);
+    if (c && Object.values(c.faces || {}).includes(sha) && !(rec.purge || []).includes(sha))
+      return _no('That picture is part of ' + st.pick + ', your pick for "' + ((g.slot || {}).label || 'this slot') + '" — take the pick back first (pick and delete cannot both stand).');
+  }
+  const s = new Set(rec.purge || []);
+  if (s.has(sha)) s.delete(sha); else s.add(sha);
+  rec.purge = [...s]; rec.purgeTouched = true;
+  return _ok();
+};
+SLX.setAsk = (rec, path, value) => {
+  SLX.v2(rec);
+  rec.asks = rec.asks || {};
+  const [k, sub] = path.split('.');
+  if (sub) {
+    const o = Object.assign({}, rec.asks[k] || {});
+    if (value === '' || value == null || value === false) delete o[sub]; else o[sub] = value;
+    if (Object.keys(o).length) rec.asks[k] = o; else delete rec.asks[k];
+  } else if (value === '' || value == null || value === false || (Array.isArray(value) && !value.length)) delete rec.asks[k];
+  else rec.asks[k] = value;
+  if (!Object.keys(rec.asks).length) delete rec.asks;
+  return _ok();
+};
+/* an old schema-1 variant tick (legacyVariants) is answered IN its row (owner, 2026-10-10: "handle it within the biome
+   sheets themselves"): keep = it is his (ships on a random pool, else protects its pictures), drop = not his. Clicking the
+   lit answer again takes it back. Stored as legacyRuled{L: {v, at}}; read by decisions_v2.legacy_answers. */
+SLX.legacyState = (rec, L) => ((((rec || {}).legacyRuled || {})[L]) || {}).v || '';
+SLX.legacyRule = (rec, L, v) => {
+  if (v !== 'confirm' && v !== 'drop') return _no('keep or drop only');
+  if (!((rec || {}).legacyVariants || []).includes(L)) return _no(L + ' is not an old tick on this row');
+  rec.legacyRuled = Object.assign({}, rec.legacyRuled || {});
+  if (SLX.legacyState(rec, L) === v) delete rec.legacyRuled[L];
+  else rec.legacyRuled[L] = { v, at: new Date().toISOString() };
+  if (!Object.keys(rec.legacyRuled).length) delete rec.legacyRuled;
+  return _ok();
+};
+SLX.legacyOpen = rec => ((rec || {}).legacyVariants || []).filter(L => !SLX.legacyState(rec, L));
+SLX.legacyHtml = (it, rec, L, pool) => {
+  const st = SLX.legacyState(rec, L), id = esc(it.id);
+  const tip = pool === undefined ? 'an old variant tick from before 2026-10-10 that may have been the machine\'s default, not yours. keep = it is yours (on a random pool it ships as one of the pictures the game picks at random; elsewhere it only protects its pictures from deletion). drop = not yours: it ships nothing and protects nothing. Unanswered = ships nothing, pictures stay protected.'
+    : pool ? 'old variant tick from before 2026-10-10 (may have been the machine\'s default). keep = it ships as one of the pictures the game picks at random for this slot. drop = it ships nothing. Unanswered = ships nothing, pictures stay protected.'
+    : 'old variant tick from before 2026-10-10 (may have been the machine\'s default). This slot has no random pool, so keep = only protects its pictures from deletion; drop = no protection. Nothing else changes either way.';
+  const b = (v, lab, cls) => `<button class="sl-b sl-oldb ${st === v ? cls : ''}" data-act="legacy" data-id="${id}" data-l="${L}" data-v="${v}" title="${esc(tip)}">${lab}</button>`;
+  const head = st === 'confirm' ? '✓ old tick kept' : st === 'drop' ? 'old tick dropped' : 'was ticked before — keep?';
+  return `<span class="sl-oldq sl-old-${st || 'open'}" title="${esc(tip)}"><i class="sl-old">${pool === undefined ? esc(L) + ': ' : ''}${head}</i>${b('confirm', 'keep', 'on')}${b('drop', 'drop', 'bad')}</span>`;
+};
+SLX.needsYou = (it, rec) => {
+  const out = [];
+  /* no "accept unchanged" control (owner 2026-10-12): a slot he leaves alone keeps what the game draws when he returns the
+     sheet, so only a required slot with NOTHING in game needs his answer */
+  for (const g of it.graphics || []) if (g.lane === 'slot' && (g.slot || {}).required && !SLX.state(it, rec, g).state && !SLX.inGame(g).length) out.push((g.slot || {}).label || g.key);
+  const un = (it.graphics || []).filter(g => g.lane === 'unassigned').flatMap(g => g.cols).filter(c => !SLX.assigned(rec)[c.letter]);
+  if (un.length) out.push(un.length + ' render' + (un.length === 1 ? '' : 's') + ' unassigned');
+  return out;
+};
+SLX.conflicts = (it, rec) => {
+  const out = [], purge = new Set((rec || {}).purge || []);
+  for (const g of it.graphics || []) {
+    const st = SLX.state(it, rec, g);
+    if (st.state !== 'pick') continue;
+    const c = SLX.colIn(it, rec, g.key, st.pick);
+    if (c && Object.values(c.faces || {}).some(x => purge.has(x))) out.push(st.pick + ' is your pick AND marked ✕ delete — choose one');
+    if (!c && g.lane === 'slot' && g.primary && (it.graphics || []).some(x => x.lane === 'unassigned' && x.cols.some(y => y.letter === st.pick)))
+      out.push('your row pick ' + st.pick + ' is an unassigned render — say what it is (the "this is" box)');
+    else if (!c && g.lane === 'slot' && !(it.graphics || []).some(x => x.cols.some(y => y.letter === st.pick)))
+      out.push('your pick ' + st.pick + ' for ' + ((g.slot || {}).label || 'this slot') + ' is no longer on the sheet (its pictures were deleted) — pick again or redraw');
+  }
+  /* an old ✕ on the ONLY picture the game draws in a slot now means REDRAW (owner ruling by question card 2026-10-10) —
+     shown for him to confirm, never filed on his behalf */
+  for (const g of it.graphics || []) {
+    if (g.lane !== 'slot' || SLX.state(it, rec, g).state) continue;
+    const ig = SLX.inGame(g);
+    if (ig.length && ig.every(c => Object.values(c.faces || {}).every(x => purge.has(x))))
+      out.push(ig.map(c => c.letter).join(', ') + ' is the only picture of ' + ((g.slot || {}).label || 'this slot') + ' and is marked ✕ — that now means REDRAW (it stays in game until replaced): click "redraw this slot" to confirm');
+  }
+  return out;
+};
+const _itemBody = it => {
+  const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
+  const purge = new Set(d.purge || []);
+  const legacy = new Set(d.legacyVariants || []);
+  const A = (act, extra, label, cls, title) => `<button class="sl-b ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${extra} title="${esc(title || '')}">${label}</button>`;
+  const cell = (c, f, g) => {
+    const s = c.faces[f];
+    if (!s) {
+      /* rationalized view (owner 2026-10-21: no "tangle of random E, W, S, N facings missing gaps"): a set that lacks a
+         facing is shown as the game would draw it after a pick — west mirrors this set's east; any other gap keeps the
+         in-game picture (enact installs only the facings a set has). Dimmed and labelled, never pickable on its own. */
+      const ig = g && g.lane === 'slot' && !c.winner ? SLX.inGame(g)[0] : null;
+      /* enact installs only the facings a set has, so an in-game picture of this facing STAYS after a pick; the mirror of
+         east is what the game draws only when no west file ships at all */
+      const igHas = ig && ig.faces[f] && f !== 'single';
+      const fill = igHas ? { sha: ig.faces[f], why: 'not in this set: picking it keeps the in-game ' + f + ' picture (' + ig.letter + ')' }
+        : (f === 'west' && c.faces.east ? { sha: c.faces.east, mirror: true, why: 'west = this set\'s east, mirrored (RimWorld mirrors east when there is no west)' } : null);
+      const ft = fill && it.thumbs[fill.sha];
+      if (ft) return `<div class="bs-cell bs-fill" title="${esc(fill.why)}"><div class="thumb ac-thumb" data-zoom="${(it.fulls || {})[fill.sha] || ft}" data-cap="${esc(it.label)} · ${c.letter} · ${f} · ${esc(fill.why)}"><img src="${ft}" loading="lazy" alt=""${fill.mirror ? ' style="transform:scaleX(-1)"' : ''}></div><span class="bs-face">${faceAbbr(f)}</span><i class="bs-filltag">${fill.mirror ? 'mirror' : 'in game'}</i></div>`;
+      return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
+    }
+    const t = it.thumbs[s];
+    if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
+    const p = purge.has(s);
+    const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="DELETE this one picture from the art store so it never appears again (deletes bytes — not the same as 'not for this slot')" data-act="purge" data-id="${esc(it.id)}" data-sha="${s}">${p ? '✕ deleting' : '✕'}</button>` : '';
+    const ab = faceAbbr(f);
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${(it.fulls || {})[s] || t}" data-cap="${esc(it.label)} · ${c.letter} · ${f} · full resolution"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
+  };
+  /* flip-book (wing-beat) sets: one grid row per facing, a looping playback cell first, then frames 1..N */
+  const faces = (c, g) => {
+    if (!g.flip) return `<div class="bs-faces">${g.facings.map(f => cell(c, f, g)).join('')}</div>`;
+    const rows = g.flipFacings.map(face => {
+      const ks = g.facings.filter(k => k.endsWith('_' + face));
+      const fr = ks.map(k => c.faces[k] && it.thumbs[c.faces[k]]).filter(Boolean);
+      const play = fr.length ? `<div class="bs-cell bs-play" title="${face}: the frames looping at half game speed" data-anim="${fr.join('|')}"><img src="${fr[0]}" alt=""><span class="bs-face">▶${FACE_ABBR[face]}</span></div>` : '<div class="bs-cell bs-gap">—</div>';
+      return play + ks.map(k => cell(c, k)).join('');
+    }).join('');
+    return `<div class="bs-faces bs-frames" style="grid-template-columns:repeat(${g.nframes + 1},auto)">${rows}</div>`;
+  };
+  const slotLanes = (it.graphics || []).filter(g => g.lane === 'slot');
+  const col = (c, g) => {
+    const st = SLX.state(it, d, g);
+    const picked = st.state === 'pick' && st.pick === c.letter;
+    const rej = SLX.list(d, 'reject', g.key).has(c.letter), ret = SLX.list(d, 'retire', g.key).has(c.letter);
+    const pr = SLX.poolRec(d, g.key), inAdd = (pr.add || []).includes(c.letter), leaves = (pr.remove || []).includes(c.letter);
+    const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
+    const X = ` data-g="${esc(g.key)}" data-l="${c.letter}"`;
+    const badges = [c.winner ? `<i class="sl-ig">IN GAME</i>` : '',
+      c.assignedHere ? '<i class="sl-asg">labelled by you</i>' : '',
+      legacy.has(c.letter) ? SLX.legacyHtml(it, d, c.letter, !!g.pool) : '',
+      c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : '',
+      c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed.">you purged this — still live until replaced</i>` : ''].join('');
+    const head = `<div class="bs-head${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ' bs-pick' : ''}"${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ` data-act="pick" data-id="${esc(it.id)}"${X}` : ''} title="${esc(tip)}${g.lane === 'slot' ? '\n\nclick to use this set for ' + ((g.slot || {}).label || 'this slot') : ''}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>`;
+    let foot = '', note = '';
+    if (c.noSelect) foot = '<i class="bs-novar">placeholder — cannot be used or kept</i>';
+    else if (g.lane === 'reference') foot = '<i class="bs-novar">reference only</i>';
+    else if (g.lane === 'unassigned') {
+      /* use / not needed (owner 2026-10-19: the "this is" select was "basically a checkbox for 'use this'"; of 198
+         answers 185 named the one slot and 13 said not needed). `use` labels the render for its slot AND picks it there;
+         the data is the same `assign{L: lane | not_needed}` the select wrote, so old files read unchanged. */
+      const cur = SLX.assigned(d)[c.letter] || '', tgt = SLX.useTarget(it, c);
+      foot = (tgt ? A('use', X, 'use this' + (slotLanes.length > 1 ? ' as ' + esc(((tgt.slot || {}).label || tgt.key).toLowerCase()) : ''), '', 'use this render for ' + ((tgt.slot || {}).label || 'this slot') + ' (click again to take it back)') : '')
+        + A('notneeded', X, cur === 'not_needed' ? '✓ not needed' : 'not needed', cur === 'not_needed' ? 'bad' : '', 'none of the slots needs this render (deletes nothing)')
+        + (c.hint ? `<i class="sl-hint" title="what its job name suggests">looks like: ${esc(c.hint)}</i>` : '');
+    } else if (!c.purgedLive) {
+      const verbs = [A('pick', X, picked ? '✓ using this' : 'use this', picked ? 'on' : '', 'use this set for ' + ((g.slot || {}).label || 'this slot') + ' (click again to take it back)')];
+      /* one-click "add to random pool" is BACK (owner 2026-10-21, reversing 2026-10-19 for it alone: "If there are valid
+         variants, please allow me to simply click 'add to random pool' if it might make sense rather than typing lots of
+         text."). Offered on a lane the game draws at random (g.pool) or can be made to (g.poolable: a creature's adult
+         body, which enact turns into alternateGraphics). "✕ not for this slot" stays gone. */
+      if ((g.pool || g.poolable) && !c.winner && !c.noSelect && !(c.kind === 'donor' && !c.ours && !c.oursRender))
+        verbs.push(A('pool', X, inAdd ? '✓ in random pool' : '＋ random pool', inAdd ? 'on' : '', inAdd
+          ? 'in the random pool: the game draws it at random beside the in-game picture (click again to take it out)'
+          : 'add to the random pool: the game keeps what it draws now AND draws this set at random (' + (g.pool ? 'this slot is already a random pool' : 'becomes alternateGraphics on the creature') + ')'));
+      if (c.winner && !g.pool) verbs.push(A('retire', X, ret ? '✕ retiring' : '✕ retire', ret ? 'bad' : '', 'retire this live picture from the game — it stays until its replacement is installed'));
+      foot = verbs.join('');
+      if (ret && c.winner && st.state === 'pick' && st.pick !== c.letter) note = `<div class="sl-warn sl-replaced">${esc(c.letter)} leaves the game in this same pass, replaced by ${esc(st.pick)}</div>`;
+      else if ((ret || leaves || rej) && c.winner) note = `<div class="sl-warn">${esc(c.letter)} stays in game until the new picture is installed</div>`;
+    }
+    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${(rej || ret || leaves) ? ' sl-rej' : ''}${inAdd ? ' bs-isvar' : ''}${c.noSelect ? ' bs-phcol' : ''}">
+      ${head}${badges ? `<div class="sl-badges">${badges}</div>` : ''}
+      ${faces(c, g)}${note}
+      ${(c.canonAdvice || []).length ? `<div class="bs-grader${c.canonFlag ? ' flag' : ''}" title="the canon grader's reading — ADVICE ONLY, it decides nothing">${c.canonAdvice.map(esc).join('<br>')}</div>` : ''}
+      <div class="bs-foot">${foot}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
+    </div>`;
+  };
+  const chip = (g, cols) => {
+    if (g.lane === 'reference') return '<span class="sl-chip ref">reference only</span>';
+    if (g.lane === 'unassigned') { const n = cols.filter(c => !SLX.assigned(d)[c.letter]).length; return n ? `<span class="sl-chip need">${n} unassigned</span>` : '<span class="sl-chip done">all labelled</span>'; }
+    const st = SLX.state(it, d, g), ig = SLX.inGame(g).map(c => c.letter).join(', ');
+    const pr = SLX.poolRec(d, g.key), pool = ((pr.add || []).length ? ' · pool + ' + pr.add.join(', ') : '') + ((pr.remove || []).length ? ' · ' + pr.remove.join(', ') + ' leave the pool' : '');
+    if (st.state === 'pick' && !cols.some(c => c.letter === st.pick)) return `<span class="sl-chip bad" title="the pick recorded for this slot names a set that is not in this slot">your pick ${esc(st.pick)} is not in this slot</span>`;
+    if (st.state === 'pick') { const rt = [...SLX.list(d, 'retire', g.key)].filter(x => x !== st.pick); return `<span class="sl-chip done">using ${esc(st.pick)}${rt.length ? ' · ' + esc(rt.join(', ')) + ' retired in the same pass' : ''}${esc(pool)}</span>`; }
+    if (st.state === 'accept') return `<span class="sl-chip done">accepted unchanged${ig ? ' (' + esc(ig) + ')' : ''}${esc(pool)}</span>`;
+    if (st.state === 'redraw') return `<span class="sl-chip redraw">${it.dependsOn ? 'redraw waits for ' + esc(it.dependsOn) : 'redraw queued'}${ig ? ' · ' + esc(ig) + ' stays until replaced' : ''}</span>`;
+    if (st.state === 'not_drawn') return '<span class="sl-chip done">not drawn</span>';
+    if (g.primary && SLX.prefillOnly(d)) return `<span class="sl-chip pf" title="the agent's guess, seeded into the row — it is NOT your answer and never counts as decided. Click a picture to use it; leave the slot alone and returning the sheet keeps what the game draws now.">agent prefill ${esc(SLX.prefillOnly(d))} — not your answer${ig ? ' · returning keeps ' + esc(ig) : ''}</span>`;
+    if (pool) return `<span class="sl-chip done">${esc(pool.slice(3))}</span>`;
+    return (g.slot || {}).required && !SLX.inGame(g).length ? '<span class="sl-chip need">needs you — nothing in game</span>'
+      : '<span class="sl-chip" title="leave it alone and returning the sheet keeps what the game draws now">unchanged — kept when you return the sheet</span>';
+  };
+  const sec = l => {
+    const g = l.g, sl = g.slot || {};
+    const ordered = l.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
+    const st = SLX.state(it, d, g);
+    const stub = c => `<details class="bs-nearstub"${st.pick === c.letter ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
+    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}<span class="sub">click a picture to use it</span></div>`;
+    const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
+    return `<div class="sl-lane sl-${g.lane} sl-k-${esc(sl.kind || 'x')}" data-lane="${esc(g.key)}">
+      <div class="sl-head"><b>${esc(sl.label || g.role)}</b>${chip(g, l.cols)}</div>
+      <div class="sl-desc">${esc(sl.desc || '')}${g.res && g.lane === 'slot' ? ` <span class="sub" title="${esc(g.res)}">· ${esc(g.res.replace(/^_flip:/, '').split('/').pop())}</span>` : ''}${(sl.also || []).length ? ` <span class="sub">· also used by: ${esc(sl.also.join(', ').toLowerCase())}</span>` : ''}</div>
+      ${btns}${prior}
+      <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('') || '<span class="sub">no pictures</span>'}</div></div>`;
+  };
+  const lanes = SLX.view(it, d).filter(l => l.cols.length || l.g.lane === 'slot');
+  const need = SLX.needsYou(it, d), confl = SLX.conflicts(it, d);
+  const shownL = new Set(lanes.flatMap(l => l.cols.map(c => c.letter)));
+  const legacyUnshown = (d.legacyVariants || []).filter(L => !shownL.has(L));
+  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">nothing here needs you — unchanged slots keep what the game draws</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${SLX.legacyOpen(d).length ? `<span class="sl-chip old" title="old variant ticks from before 2026-10-10 that may have been the machine's default: each ships nothing until you say keep (its keep / drop is on the picture)">old tick ${esc(SLX.legacyOpen(d).join(', '))}: keep or drop?</span>` : ''}${legacyUnshown.map(L => SLX.legacyHtml(it, d, L)).join('')}</div>`;
+  const donorAbs = it.donorAbsent ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>donor column</b><span>${esc(it.donorAbsent)}</span></div></div>` : '';
+  const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
+      <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
+      <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
+  const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
+  const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
+  const purgedNote = it.purgedHidden ? `<div class="sub" title="pictures you rejected with the purge mark; they no longer appear on any sheet">${it.purgedHidden} purged picture${it.purgedHidden === 1 ? '' : 's'} hidden</div>` : '';
+  const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
+  const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
+  const rs = it.rulings.slice().reverse();
+  const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
+  const sibHtml = (it.siblings || []).length ? `<div class="bs-sibs"><div class="sub"><b>Already approved / live art for this species</b> — context only, NOT options on this row:</div>${it.siblings.map(sb => `<div class="bs-sib" title="${esc(sb.res)}"><span class="mark ${sb.protected ? 'absent' : 'inferred'}">${sb.protected ? 'already approved (your keep)' : 'live in game'}</span> ${esc(sb.label)} ${['south','east','north'].filter(f => sb.imgs[f]).map(f => `<img src="${sb.imgs[f]}" loading="lazy" alt="" style="height:64px;vertical-align:middle;image-rendering:pixelated">`).join('')}</div>`).join('')}</div>` : '';
+  const ds = it.desc || {};
+  const dtext = ds.description || '';
+  const desc = !ds.def ? `<div class="bs-desc sub">in-game description: UNMEASURED — no ThingDef of this row in the live def dump</div>`
+    : dtext.length > 260 ? `<details class="bs-desc" title="${esc(ds.source)}"><summary><b>${esc(ds.label)}</b> — <span class="bs-dclamp">${esc(dtext)}</span></summary></details>`
+    : `<div class="bs-desc" title="${esc(ds.source)}"><b>${esc(ds.label)}</b> — ${esc(dtext || '(the def has no description)')}</div>`;
+  const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
+  const re = it.ruledElsewhere;
+  const reHead = re ? `<summary class="bs-ruledsum" title="You already ruled on this subject on another sheet, so it needs no pick here. Expand to see the pictures and change your mind.">Already ruled on <b>${esc(re.sheet)}</b>: ${esc(re.pick)}${re.label ? ' — ' + esc(re.label) : ''}${re.note ? ' · “' + esc(re.note) + '”' : ''} <span class="sub">${esc(re.at)} · expand to change your mind</span></summary>` : '';
+  const inner = `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
+    <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
+    ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
+    <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
+    ${desc}${sibHtml}${window.artQuestionHtml(it, d)}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
+    <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
+  return re ? `<details class="bs-ruled"${it.ruledOpen || d.at || d.decidedAt ? ' open' : ''}>${reHead}${inner}</details>` : inner;
+};
+/* --question: one per-row choice besides the pictures. His answer is rec.q[key]; the agent's guess (it.question.prefill,
+   also stored as qPrefill) shows DASHED and is never written as his answer. */
+window.artQuestionHtml = (it, d) => {
+  const Q = (typeof CFG !== 'undefined' && CFG.question) || null, iq = it.question;
+  if (!Q || !iq) return '';
+  const mine = (d.q || {})[Q.key] || '', id = esc(it.id);
+  const btns = Q.options.map(([v, t]) => `<button class="sl-b${mine === v ? ' on' : ''}${!mine && iq.prefill === v ? ' bs-qguess' : ''}" data-act="qset" data-id="${id}" data-v="${esc(v)}" title="${!mine && iq.prefill === v ? 'agent guess — click to make it your answer' : ''}">${esc(t)}</button>`).join(' ');
+  const state = mine ? `<span class="mark absent">your answer</span>` : iq.prefill ? `<span class="mark inferred" title="${esc(iq.why)}">⚠ agent guess: ${esc((Q.options.find(o => o[0] === iq.prefill) || [0, iq.prefill])[1])}${iq.why ? ' — ' + esc(iq.why) : ''}</span>` : `<span class="mark absent">undecided</span>`;
+  return `<div class="bs-question"><b>${esc(Q.label)}</b> ${btns} ${state}${iq.context ? `<div class="sub">${esc(iq.context)}</div>` : ''}</div>`;
+};
+/* requests that used to be typed into the note get their own fields (owner rulings by question card 2026-10-10: rename,
+   description, make N more based on X, missing facings, size, move biome/tier, cut). The note stays for everything else.
+   Each ask is its own work item in `art.py enact`, so "followed" is per ask. */
+window.artAsksHtml = (it, d) => {
+  /* the Requests panel is gone (owner 2026-10-19: 0 of 698 rows used it in nine days; he types these into the note).
+     A file that carries `asks` still shows them, read-only, so enact's per-ask TODOs stay visible. */
+  const a = d.asks || {}, set = Object.keys(a).filter(k => a[k] && (!Array.isArray(a[k]) || a[k].length));
+  return set.length ? `<div class="sl-asks sub" title="saved by the old Requests panel; enact still carries them">earlier requests: ${esc(set.map(k => k + ' ' + JSON.stringify(a[k])).join(' · ').slice(0, 400))}</div>` : '';
+};
+const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
+/* Click-to-zoom shows the FULL-RESOLUTION file (owner, 2026-10-15), at its own pixel size up to the window, with its
+   dimensions and a link that opens it alone in a new tab. Overrides the template's openZoom by global name. */
+openZoom = function (src, cap) {
+  const z = document.getElementById('zoom'), im = document.getElementById('zimg'), zc = document.getElementById('zcap');
+  im.style.maxWidth = '94vw'; im.style.maxHeight = '86vh';
+  im.onload = () => { zc.innerHTML = ''; zc.append(cap + ` · ${im.naturalWidth}×${im.naturalHeight} px `);
+    const a = document.createElement('a'); a.href = src; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'open alone ↗';
+    a.onclick = e => e.stopPropagation(); zc.append(a); };
+  im.src = src; zc.textContent = cap; z.classList.add('on');
+};
+function scaleBlock(it) {
+  const s = it.scale; if (!s) return '';
+  if (s.status === 'none') return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>none — drawn only in the UI</span></div><div class="bs-scsrc" title="${esc(s.source)}">MEASURED · ${esc(s.source)}</div></div>`;
+  const size = s.kind === 'thing'
+    ? `<b>${(s.footprint||[1,1]).join('×')}-cell</b> ${esc((s.category||'thing').toLowerCase())} <span class="sub">drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])} on its footprint (outlined), south facing</span>`
+    : s.kind === 'plant'
+    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt((s.drawSize||[])[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
+    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])}</span> · bodySize ${fmt(s.bodySize)}`;
+  const sizeTip = s.kind === 'thing' ? 'graphicData.drawSize centred on the def\'s size footprint as placed (south rotation), moved by drawOffset — what the engine draws' : s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
+  const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
+  const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
+  const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Enhanced zoom (owner, 2026-10-04) resolves 128–256 px per cell of the draw size; below 128 reads soft at max zoom, below 64 loses detail. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc < 120 ? 'soft at max zoom' : s.ppc > 256 ? 'above 256 max zoom' : 'in the 128–256 zoom range'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
+  const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · max zoom ${s.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18 px/cell, each also ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
+  /* every candidate set at true scale beside the vanilla human (owner, 2026-10-15), not only the picked one */
+  const pg = (it.graphics || []).find(g => g.primary);
+  const each = (pg ? pg.cols : []).filter(c => c.scale && c.scale.img);
+  const all = each.length > 1 ? `<details class="bs-scall" open><summary class="sub">every set at its true scale beside the human (${each.length}) — click one to enlarge</summary>${each.map(c => `<div class="bs-scone${c.letter === s.set ? ' on' : ''}" data-zoom="${c.scale.full}" data-cap="${esc(it.label)} · set ${esc(c.letter)} · ${esc(c.scale.face)} · max zoom ${c.scale.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18"><b>${esc(c.letter)}</b> <span class="sub">${c.scale.ppc} px/cell</span><img src="${c.scale.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
+  const refs = (s.refs || []).length ? `<details class="bs-scall bs-refs" open><summary class="sub"><b>installed canon twin, reference only</b> — not pickable, never installed from here; same true scale beside the human</summary>${s.refs.map(r => r.missing ? `<div class="sub">missing: ${esc(r.path)}</div>` : `<div class="bs-scone" data-zoom="${r.full}" data-cap="REFERENCE ONLY (not pickable) · ${esc(r.path)}"><span class="sub">${esc(r.path.split('/').pop())}</span><img src="${r.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}${all}${refs}
+    <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
+    <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
+}
+
+const LETTER_ORDER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const NEAR_BITS = 10;
+/* every control on a row: one delegated handler. Each act edits the row's record through SLX, then saves + repaints. */
+window.__moreDraft = window.__moreDraft || {};
+window.artAct = (el, ev) => {
+  if (frozen) return;
+  const id = el.dataset.id, it = byId.get(id);
+  if (!it) return;
+  const act = el.dataset.act, g = el.dataset.g, L = el.dataset.l, v = el.dataset.v, k = el.dataset.k;
+  if (k && k.startsWith('_more.')) { (window.__moreDraft[id] = window.__moreDraft[id] || {})[k.slice(6)] = el.value; return; }
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  let r = { ok: true };
+  if (act === 'pick') r = SLX.pick(it, rec, g, L);
+  else if (act === 'slot') r = SLX.slotButton(it, rec, g, v);
+  else if (act === 'reject') r = SLX.reject(it, rec, g, L);
+  else if (act === 'retire') r = SLX.retire(it, rec, g, L);
+  else if (act === 'pool') r = SLX.poolToggle(it, rec, g, L);
+  else if (act === 'pooladdall') r = SLX.poolAddAll(it, rec, g);
+  else if (act === 'assign') r = SLX.assign(it, rec, L, el.value);
+  else if (act === 'use') r = SLX.useRender(it, rec, L);
+  else if (act === 'notneeded') r = SLX.notNeeded(it, rec, L);
+  else if (act === 'purge') r = SLX.purgeToggle(it, rec, el.dataset.sha);
+  else if (act === 'legacy') r = SLX.legacyRule(rec, L, v);
+  else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
+  else if (act === 'askcheck') r = SLX.setAsk(rec, k, el.checked);
+  else if (act === 'qset') { const qk = CFG.question.key, q = Object.assign({}, rec.q || {}); if (q[qk] === v) delete q[qk]; else q[qk] = v; rec.q = q; }
+  else if (act === 'askset') { const cur = k.includes('.') ? ((rec.asks || {})[k.split('.')[0]] || {})[k.split('.')[1]] : (rec.asks || {})[k]; r = SLX.setAsk(rec, k, k === 'cut' ? !cur : (cur === v ? '' : v)); }
+  else if (act === 'facing') { const fa = Object.assign({}, (rec.asks || {}).facings || {}); const s = new Set(fa.faces || []); el.checked ? s.add(v) : s.delete(v); fa.faces = [...s]; r = SLX.setAsk(rec, 'facings', fa.faces.length ? fa : ''); }
+  else if (act === 'moreadd') {
+    const dr = window.__moreDraft[id] || {}, lanes = (it.graphics || []).filter(x => x.lane === 'slot');
+    const m = { slot: dr.slot || (lanes[0] || {}).key, n: Math.max(1, Math.min(8, +(dr.n || 2))), base: dr.base || null, how: (dr.how || '').trim() };
+    r = SLX.setAsk(rec, 'more', [...(((rec.asks || {}).more) || []), m]);
+    delete window.__moreDraft[id];
+  } else if (act === 'moredel') { const ms = (((rec.asks || {}).more) || []).slice(); ms.splice(+v, 1); r = SLX.setAsk(rec, 'more', ms); }
+  else return;
+  if (!r.ok) { if (typeof showErr === 'function') showErr(r.msg); return; }
+  if (r.msg && typeof banner === 'function') { try { banner('info', esc(r.msg)); } catch (e) {} }
+  rec.at = new Date().toISOString();
+  queue(id); patchRow(id); paintCounts();
+};
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]');
+  if (a && a.tagName !== 'SELECT' && a.tagName !== 'INPUT') { e.preventDefault(); e.stopPropagation(); window.artAct(a, e); return; }
+  const j = e.target.closest('[data-jump]');
+  if (j) {
+    e.preventDefault(); e.stopPropagation();
+    const node = document.querySelector(`.row[data-id="${cssEsc(j.dataset.jump)}"]`);
+    if (node) { node.scrollIntoView({ block: 'center' }); node.classList.add('bs-flash'); setTimeout(() => node.classList.remove('bs-flash'), 1500); }
+    else alert('That row is hidden by the current filter.');
+  }
+}, true);
+document.addEventListener('change', e => { const a = e.target.closest('select[data-act],input[data-act]'); if (a) { e.stopPropagation(); window.artAct(a, e); } }, true);
+/* `#q=<text>` in the URL opens the sheet filtered to matching rows (for a link to one row, and for screenshots); it is
+   not saved as his filter */
+addEventListener('load', () => setTimeout(() => {
+  const m = (location.hash || '').match(/^#q=(.+)$/), q = document.getElementById('q');
+  if (m && q && typeof render === 'function') { q.value = decodeURIComponent(m[1]); render(); }
+}, 50));
+/* rebuilt-sheet notice: poll the served page every ~60 s; when its build stamp (the gate stamp, else a hash of the HTML) differs
+   from what this tab loaded, show a banner. NEVER auto-reloads: an unsaved note would be lost. */
+(() => {
+  const fp = t => { const m = t.match(/<meta name="scaled-review-gate" content="([^"]*)">/); if (m) return m[1];
+    let h = 2166136261; for (let i = 0; i < t.length; i += 7) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return 'h' + (h >>> 0) + ':' + t.length; };
+  const get = () => fetch(location.href, { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => t && fp(t)).catch(() => null);
+  let base = null, shown = false;
+  const banner = () => { if (shown) return; shown = true; const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#b8860b;color:#000;padding:10px 14px;font:600 15px sans-serif;display:flex;gap:14px;align-items:center;box-shadow:0 2px 8px #000';
+    d.innerHTML = '<span>This sheet was rebuilt with new content — reload (your picks are saved)</span><button style="font:600 14px sans-serif;padding:4px 12px;cursor:pointer">Reload now</button><button style="font:14px sans-serif;padding:4px 10px;cursor:pointer">dismiss</button>';
+    d.children[1].onclick = () => location.reload(); d.children[2].onclick = () => d.remove(); document.body.appendChild(d); };
+  get().then(f => { base = f; });
+  setInterval(() => get().then(f => { if (f && base && f !== base) banner(); }), 60000);
+})();
+window.itemBody = it => { try { return _itemBody(it); } catch (e) { return `<div class="bs-noart">row render error (this row only; the sheet is intact): ${esc(String(e && e.message || e))}</div>`; } };
+
+/* Notes he wrote that were already FOLLOWED (enact moves them out of the note box into notes_followed): history, not
+   an open request, so a reload cannot resubmit them. */
+window.artFollowedHtml = d => {
+  const f = (d && d.notes_followed) || [];
+  return f.length ? `<div class="ac-followed" style="font-size:12px;opacity:.75;margin:3px 0">${f.map(x => `followed: “${esc(x.note)}” <span class="sub">(${esc((x.followed_by || []).slice(0, 2).join(', '))}${(x.followed_by || []).length > 2 ? ' …' : ''} · ${esc(String(x.when || '').slice(0, 10))})</span>`).join('<br>')}</div>` : '';
+};
+/* A row collapsed as "already ruled elsewhere" wraps its .ac-body in <details class="bs-ruled">. Repaint replaces that
+   OUTER element and marks the row open: replacing only the inner .ac-body nested a fresh CLOSED <details> inside the
+   open one on every click (owner, 2026-10-15: "Clicking anything on the Murrelith kept closing their art"). */
+window.artRepaint = id => {
+  const it = byId.get(id);
+  const row = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  const node = row && (row.querySelector('details.bs-ruled') || row.querySelector('.ac-body'));
+  if (!node || !it) return;
+  if (it.ruledElsewhere) it.ruledOpen = true;     // he is working in this row: it never re-collapses this session
+  node.outerHTML = window.itemBody(it);
+};
+window.artTogglePurge = (id, sha) => {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  const s = new Set(rec.purge || []);
+  if (s.has(sha)) s.delete(sha); else s.add(sha);
+  rec.purge = [...s]; rec.purgeTouched = true;
+  queue(id); patchRow(id); paintCounts();
+};
+addEventListener('DOMContentLoaded', () => {
+  /* A decision click is recorded as decidedAt, so a row touched ONLY to purge or annotate
+     never turns its prefill into a ruling at ingest (art_sheet.py docstring). */
+  /* A save strips placeholder letters from HIS variant list; it never writes a default list (no pre-ticks). On a biome
+     sheet every saved record is schema 2 (decisions_v2.py), stamped with the inventory revision it was made against. */
+  const origQueue = window.queue;
+  if (typeof origQueue === 'function') window.queue = function (id) {
+    const it = byId.get(id);
+    if (it && DEC[id]) {
+      window.artEnsureVariants(it, DEC[id]);
+      if (window.SLX && it.graphics && it.graphics.some(g => g.lane)) { window.SLX.v2(DEC[id]); if (it.rev) DEC[id].rev = it.rev; }
+    }
+    return origQueue.apply(this, arguments);
+  };
+  const orig = window.setDecision;
+  if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
+    const it_ = byId.get(id);
+    if (it_ && window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
+    const g = window.SLX && it_ && (it_.graphics || []).find(x => x.primary && x.lane === 'slot');
+    /* a letter reaches here from the right-hand buttons (only this row's letters) AND from the template's number hotkeys
+       and shift-number group bulk, which send ANY letter of the sheet. A letter that is not a usable set of the primary
+       slot would be written as that slot's pick and enact would install ITS bytes at the primary texture path (a set of
+       another lane, e.g. the young plant or the corpse, drawn as the adult): refuse it. Taking a letter back is allowed. */
+    if (it_ && key && key.length === 1 && /[A-Za-z]/.test(key) && !(opts && opts.toggle && DEC[id] && DEC[id].decision === key)) {
+      const c = g ? window.SLX.colIn(it_, DEC[id] || { decision: '', note: '' }, g.key, key) : null;
+      const usable = g ? !!(c && !c.purgedLive && !c.noSelect) : !it_.letters || it_.letters.includes(key);
+      if (!usable) { if (typeof showErr === 'function') showErr('Set ' + key + ' is not a set of ' + (((g || {}).slot || {}).label || 'this row') + ' — nothing was recorded.'); return; }
+    }
+    orig(id, key, opts);
+    if (DEC[id]) {
+      DEC[id].decidedAt = new Date().toISOString();
+      /* the right-hand letter / redo buttons ARE the primary slot's choice: keep the slot record in step */
+      if (g) {
+        const k = DEC[id].decision, S = window.SLX; S.v2(DEC[id]);
+        if (k && k.length === 1) DEC[id].slots[g.key] = { state: 'pick', pick: k, slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
+        else if (k === 'redo') DEC[id].slots[g.key] = { state: 'redraw', slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
+        else delete DEC[id].slots[g.key];
+      }
+      queue(id);
+    }
+  };
+  /* The template's patchRow repaints only the buttons; the picked-column frame and the purge
+     marks live in the row body, so repaint that too (also covers undo/redo). */
+  const origPatch = window.patchRow;
+  if (typeof origPatch === 'function') window.patchRow = function (id) { origPatch(id); window.artRepaint(id); };
+});
+/* Column letters are per row: the pick buttons show only the letters this row has (template hook). */
+window.itemOptions = it => OPTS.filter(o => !(o.key.length === 1 && /[A-Za-z]/.test(o.key)) || (it.letters || []).includes(o.key));
+</script>
+<style>
+.ac-grid{display:flex;gap:8px;overflow-x:auto;padding:6px 0 4px;align-items:flex-start}
+.ac-col{flex:0 0 auto;width:132px;border:1px solid var(--line);border-radius:6px;padding:4px;background:#0f1216}
+.ac-col.ac-facings{width:44px;border:none;background:none}
+.ac-col.ac-win{border-color:var(--info)}
+.ac-col.ac-picked{border-color:var(--ok);box-shadow:0 0 0 2px #5ac37f55}
+.ac-col.ac-artpipe .ac-head{color:#d9b8ff}.ac-col.ac-git .ac-head{color:#9fb3c8}.ac-col.ac-donor .ac-head{color:#e8b64c}
+.ac-head{font-size:11px;line-height:1.25;height:2.6em;overflow:hidden;color:var(--ink)}
+.ac-head b{font-size:13px;color:var(--accent)}
+.ac-cell{position:relative;height:124px;display:flex;align-items:center;justify-content:center;margin:2px 0}
+.ac-flabel{font-size:11px;color:var(--dim);writing-mode:vertical-rl}
+.ac-gap{color:#3a4250;font-size:20px}
+.ac-thumb{width:120px;height:120px;flex:0 0 120px}
+.ac-purge{position:absolute;top:2px;right:2px;font-size:10px;padding:0 4px;border-radius:3px;border:1px solid #5a2a2a;background:#1a0f0f;color:#e06c6c;cursor:pointer;opacity:.55}
+.ac-purge:hover,.ac-purge.on{opacity:1}
+.ac-purge.on{background:#e06c6c;color:#000}
+.ac-purged .ac-thumb{outline:3px solid #e06c6c;opacity:.45}
+.ac-detail{font-size:10.5px;color:var(--dim);height:3.9em;overflow:hidden;line-height:1.3}
+.bs-grader{font-size:10.5px;line-height:1.3;color:var(--dim);margin-top:3px;max-width:340px;white-space:normal}
+.bs-grader.flag{color:#e8c070;border-left:2px solid #c9902c;padding-left:4px}
+.ac-also,.ac-near,.ac-masks,.ac-canon{font-size:11.5px;color:var(--dim);margin-top:4px}
+.ac-canon-imgs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}
+.ac-brief pre{white-space:pre-wrap;font:inherit;color:#c3cad6;margin:2px 0 6px;max-height:16em;overflow:auto}
+.ac-rulings{font-size:11.5px;margin:4px 0}
+.ac-r{color:#c3cad6}.ac-t-flawed-sheet{text-decoration:line-through;color:#8a7070}
+.ac-t-prefill{color:#5f6b7a}
+.ac-canoncol{width:300px;background:#14110c;border-color:#5a4a2a}
+.ac-canoncol .ac-head{color:#e8b64c}
+.ac-cthumb{width:136px;height:136px;flex:0 0 136px}
+.ac-vb{max-height:9em!important}
+.ac-nocanon{width:170px;font-size:11.5px}
+.ac-flawed{font-size:12px;margin:4px 0;padding:3px 6px;border-left:3px solid #b07a3a;background:#1a140c;color:#d8c7a8}
+.ac-ctx{font-size:11.5px;color:var(--dim);margin:2px 0}
+</style>
+<style>
+.bs-fresh-banner{font-size:12.5px;padding:6px 10px;margin:4px 0;border:1px solid #6b5a3a;border-radius:6px;background:#2a2116;color:#e9dcc0;max-height:30vh;overflow:auto}
+.bs-fresh{font-size:12px;padding:2px 6px;border-radius:4px;margin:2px 0;display:inline-block}
+.bs-fresh-reflected,.bs-fresh-redrawn{background:#1f3a24;color:#9fe0a8}
+.bs-fresh-awaiting,.bs-fresh-refiled{background:#3a3218;color:#f0d68a}
+.bs-fresh-conflict{background:#4a2f10;color:#ffc070}
+.bs-fresh-not_acted{background:#a01818;color:#fff;font-weight:700}
+</style>
+<style>
+.bs-body{display:flex;gap:14px;align-items:flex-start}
+.bs-meta{flex:0 0 300px;min-width:0}
+.bs-meta .effect{font-size:12px}
+.bs-r{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-content{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+@media (max-width:1450px){.bs-body{display:block}.bs-meta{margin-bottom:4px}
+  .bs-cell,.bs-cell .ac-thumb{width:72px;height:72px;flex-basis:72px}}
+.bs-graphics{flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
+.bs-g{max-width:100%;min-width:0}
+.bs-gh{font-size:12px;color:#d8c7a8;margin:2px 0}
+.bs-strip{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
+.bs-set{border:1px solid var(--line);border-radius:6px;padding:3px;background:#0f1216;max-width:100%}
+.bs-set.ac-win{border-color:var(--info)}
+.bs-set.ac-picked{border-color:var(--ok);box-shadow:0 0 0 2px #5ac37f66}
+.bs-head{display:flex;gap:5px;align-items:baseline;font-size:11px;line-height:1.3;height:1.35em;overflow:hidden;color:var(--ink);width:0;min-width:100%;box-sizing:border-box;padding:0 2px}
+.bs-head span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bs-head b{font-size:13px;color:var(--accent)}
+.bs-head i{font-style:normal;flex:none}
+.bs-set.ac-artpipe .bs-head span{color:#d9b8ff}.bs-set.ac-git .bs-head span{color:#9fb3c8}.bs-set.ac-donor .bs-head span{color:#e8b64c}
+.bs-set.ac-win .bs-head span{color:#8ac3e8;font-weight:600}
+.bs-pick{cursor:pointer}.bs-set:hover{border-color:#3d4653}.bs-set.ac-picked:hover{border-color:var(--ok)}
+.bs-faces{display:flex;gap:3px;cursor:default}
+.bs-frames{display:grid;gap:3px}
+.bs-play{outline:2px solid #e8b64c;outline-offset:-2px}
+.bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
+.bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
+/* the wing-beat playback frame is a bare <img> (no .ac-thumb): a wide flight sprite at natural size overflowed its cell
+   and sat on top of the set's footer, so the variant button under it could not be clicked (DESIGN 2026-10-10 §2) */
+.bs-cell{overflow:hidden}
+.bs-play img{max-width:100%;max-height:100%;object-fit:contain;pointer-events:none}
+.bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
+.bs-fill{opacity:.45;border:1px dashed #6b7686;border-radius:5px;position:relative}.bs-fill:hover{opacity:.9}
+.bs-filltag{position:absolute;right:2px;bottom:1px;font-size:9px;font-style:normal;color:#cfd6df;background:#0008;padding:0 3px;border-radius:3px}
+.bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
+.bs-nearstub{align-self:stretch}
+.bs-nearstub>summary{list-style:none;cursor:pointer;height:100%;min-height:60px;box-sizing:border-box;width:58px;border:1px dashed #3d4653;border-radius:6px;padding:3px;font-size:10.5px;color:var(--dim);display:flex;flex-direction:column;gap:2px;line-height:1.25}
+.bs-nearstub>summary::-webkit-details-marker{display:none}
+.bs-nearstub>summary b{font-size:13px;color:var(--accent)}
+.bs-nearstub[open]{display:flex;gap:4px}.bs-nearstub[open]>summary{width:auto;min-height:0;height:auto}
+.bs-nearstub[open]>summary .sub{display:none}
+.bs-nearof{color:#9fb3c8;font-size:10.5px}
+.bs-grader{font-size:10.5px;line-height:1.3;color:var(--dim);margin-top:3px;max-width:340px;white-space:normal}
+.bs-grader.flag{color:#e8c070;border-left:2px solid #c9902c;padding-left:4px}
+.bs-foot{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;justify-content:space-between;margin-top:3px;width:0;min-width:100%}
+.bs-var{font-size:10.5px;padding:1px 7px;border-radius:4px;border:1px solid #2f4a35;background:#0f1612;color:#7fae86;cursor:pointer;opacity:.75}
+.bs-var:hover{opacity:1}.bs-var.on{background:#2f7a45;color:#fff;border-color:#5ac37f;opacity:1}
+.bs-set.bs-isvar{border-style:dashed;border-color:#5ac37f}
+.bs-desc{font-size:12px;line-height:1.4;color:#d8cdb8;margin:4px 0;padding:3px 6px;border-left:3px solid #6a5a3a;background:#15120d}
+.bs-desc b{color:#e8d6a8}
+details.bs-desc>summary{cursor:pointer;list-style:none}
+details.bs-desc>summary::-webkit-details-marker{display:none}
+details.bs-desc:not([open]) .bs-dclamp{display:-webkit-inline-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;vertical-align:top}
+details.bs-desc:not([open])>summary::after{content:" ▸ more";color:#e8b64c;font-size:11px}
+details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size:11px}
+.bs-canonp{flex:0 0 300px;border:1px solid #5a4a2a;background:#14110c;border-radius:6px;padding:3px 5px}
+.bs-chead span{color:#e8b64c}.bs-chead b{color:#e8b64c}
+.bs-cimgs{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0}
+.bs-cthumb{width:68px;height:68px;flex:0 0 68px}
+.bs-must{font-size:11.5px;color:#c3cad6;max-height:112px;overflow:auto}
+.bs-must pre{white-space:pre-wrap;font:inherit;margin:1px 0 4px}
+.bs-must summary{cursor:pointer;color:var(--dim)}
+.bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
+.bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
+.bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
+.bs-question{margin:6px 0;padding:6px 8px;border:1px solid #5a4a2a;border-radius:6px}.bs-qguess{border-style:dashed!important;outline:1px dashed #e8b64c}
+.bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
+.bs-phcol{opacity:.45;filter:grayscale(1);cursor:not-allowed}.bs-phcol .bs-head{cursor:not-allowed}.bs-novar{font-size:.8em;color:#888}
+.bs-ph{background:#b3261e;color:#fff;font-style:normal;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;font-size:.8em}.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
+.mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
+.row.bs-flash{outline:3px solid #e8b64c}
+.bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
+.bs-schead b{color:#9fe0a8;flex:none}.bs-schead span{color:#8aa58a}
+.bs-scimg{overflow-x:auto;cursor:zoom-in;margin:3px 0 2px}
+.bs-scall{display:flex;flex-direction:column;gap:3px;margin:4px 0}
+.bs-scone{cursor:zoom-in;overflow-x:auto;border-left:3px solid transparent;padding-left:4px}
+.bs-scone.on{border-left-color:#d9a441}
+.bs-scone img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
+.bs-scimg img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
+.bs-scsize{color:#d8c7a8}
+.bs-scl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-scale>.bs-scl,.bs-scale>.bs-scsrc,.bs-scale>.bs-head{width:0;min-width:100%;box-sizing:border-box}
+.bs-scres b{color:#fff}.bs-scres.bs-low b{color:#e06c6c}.bs-scres.bs-mid b{color:#e8b64c}.bs-scres.bs-over b{color:#8ac3e8}.bs-scres.bs-ok b{color:#9fe0a8}
+.bs-scsrc{color:#7f8a7f;font-size:10.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bs-scsrc.bs-fallback{color:#e06c6c}
+.bs-set{position:relative}
+.bs-ppc{font-style:normal;white-space:nowrap;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
+/* a subject already ruled on another sheet: dimmed pick column until expanded */
+.row:has(.bs-ruled:not([open])) .ctrl{opacity:.35}
+.bs-ruledsum{cursor:pointer;color:#9fb6c9;padding:2px 0;font-size:12px}
+.bs-ruled[open]>.bs-ruledsum{margin-bottom:6px}
+/* right-hand pick column: only this row's letters, readable redo/hold */
+.row .ctrl{width:200px}
+.row .opts{flex-wrap:wrap}
+.row .opts button{flex:0 0 auto;min-width:30px;padding:3px 0}
+.row .opts button[data-set="redo"]{margin-left:auto}
+.row .opts button[data-set="redo"],.row .opts button[data-set="hold"]{flex:1 1 40%;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .opts button[data-set="redo"]{order:98}.row .opts button[data-set="hold"]{order:99}
+.row .opts::after{content:"";order:97;flex-basis:100%;height:0}
+@media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:56px;height:56px;flex-basis:56px}}
+/* ── slots (DESIGN 2026-10-10): one labelled lane per picture the game draws ── */
+.bs-graphics{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
+.sl-rowhead{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0}
+.sl-lane{border:1px solid #2c333d;border-left:4px solid #6a7484;border-radius:6px;padding:4px 7px 6px;background:#12151a}
+.sl-k-adult,.sl-k-grown,.sl-k-item,.sl-k-body{border-left-color:#e8b64c}.sl-k-adult_female{border-left-color:#e07ab0}
+.sl-k-young,.sl-k-young_female,.sl-k-plant_young{border-left-color:#7fc35a}.sl-k-flying,.sl-k-flying_female{border-left-color:#5ac3c3}
+.sl-k-swimming,.sl-k-swimming_female{border-left-color:#5a8ae8}.sl-k-alternate,.sl-k-leafless{border-left-color:#c38ae8}
+.sl-unassigned{border-left-color:#8a6a3a;border-style:dashed}.sl-reference{border-left-color:#555;opacity:.9;background:#101010}
+.sl-head{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.sl-head>b{font-size:13.5px;letter-spacing:.04em;color:#f0e2c0}
+.sl-desc{font-size:11.5px;color:#a9b2bf;margin:1px 0 3px}
+.sl-poolnote{color:#9fb6ff;font-size:11px}
+.sl-chip{font-size:11.5px;padding:1px 8px;border-radius:10px;border:1px solid #3d4653;color:#c3cad6;background:#181c22;white-space:nowrap}
+.sl-chip.need{border-color:#b8862b;color:#ffd27a;background:#2a2010}
+.sl-chip.pf{border-style:dashed;border-color:#6b7380;color:#aab3c0;background:transparent}
+.sl-warn.sl-replaced{color:#9fd7a8}.sl-chip.done{border-color:#2f7a45;color:#9fe0a8;background:#102016}
+.sl-chip.redraw{border-color:#b85a2b;color:#ffb08a;background:#2a1610}.sl-chip.bad{border-color:#b3261e;color:#fff;background:#5a1a16;white-space:normal}
+.sl-chip.ref{color:#9fb6c9}.sl-chip.old{border-color:#7a6aa8;color:#d6c8ff;background:#1c1830}
+.sl-oldq{display:inline-flex;gap:3px;align-items:center;margin-right:4px}.sl-oldq .sl-oldb{font-size:10.5px;padding:0 6px}
+.sl-old-confirm .sl-old{background:#173a22;color:#9fe0a8}.sl-old-drop .sl-old{background:#22262c;color:#8a95a5;text-decoration:line-through}
+.sl-btns{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:2px 0 4px}
+.sl-b{font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid #3d4653;background:#161a20;color:#c3cad6;cursor:pointer}
+.sl-b:hover{border-color:#8a95a5;color:#fff}.sl-b.on{background:#2f7a45;border-color:#5ac37f;color:#fff}
+.sl-b.bad{background:#7a2420;border-color:#e06c6c;color:#fff}.sl-b.pool{background:#2a4a8a;border-color:#6a9ae8;color:#fff}
+.sl-badges{display:flex;flex-wrap:wrap;gap:3px;margin:1px 0 2px;font-size:10px}
+.sl-badges i{font-style:normal;padding:0 5px;border-radius:3px}
+.sl-ig{background:#173a5a;color:#9fd0ff}.sl-asg{background:#203a20;color:#9fe0a8}.sl-old{background:#2c2440;color:#d6c8ff}
+.bs-set.sl-rej{border-color:#e06c6c}.bs-set.sl-rej .bs-faces{opacity:.55}
+.sl-warn{font-size:11px;color:#ffb08a;margin:2px 0;max-width:280px}
+.sl-this{font-size:11px;color:#d8c7a8}.sl-this select{font-size:11px;max-width:190px}
+.sl-hint{font-size:10.5px;color:#e8b64c;font-style:normal}
+.sl-asks{border:1px solid #2c333d;border-radius:6px;padding:3px 7px;background:#121417;font-size:12px}
+.sl-asks>summary{cursor:pointer;color:#e8d6a8}
+.sl-grid{display:grid;grid-template-columns:110px 1fr;gap:5px 10px;align-items:center;margin:5px 0}
+.sl-grid b{color:#e8b64c;font-size:12px}.sl-grid input,.sl-grid select{font-size:11.5px;background:#0d1014;color:#e6e6e6;border:1px solid #3d4653;border-radius:3px;padding:1px 4px}
+.sl-more{font-size:11.5px;margin:1px 0}
+.sl-lane .bs-set{min-width:200px}.bs-foot .sl-b{padding:1px 6px}
+</style>
+
+<!-- ══ FILL IN #3 (optional) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  rec.decidedAt = new Date().toISOString();      // a human act: prefilled vs yours is countable
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+/* TRUE SIZE (row field `trueSize`, CONFIG.trueSize "required"|"optional"). When a subject has a real display size — a
+   game sprite in cells, a printed part in mm, a map tile, a UI element in px — a thumbnail alone hides whether its
+   resolution and proportions hold up. Show it AT that size, beside a reference figure of known size, on its real
+   background:
+     "trueSize": {"w": 1.5, "h": 1.5, "unit": "cell", "source": "where the size was measured",
+                  "pxPerUnit": 64, "bg": "#5d4c3e", "img": "optional (default: thumb)",
+                  "ref": {"label": "person", "w": 1, "h": 1.8, "img": "optional"}}
+   or {"none": "why this row has no real size"}. Subject and reference shrink TOGETHER past 220 px tall (labelled),
+   so the comparison stays true. check_sheet.py validates every entry, and FAILs a missing one under "required". */
+function trueSizeBlock(it) {
+  const t = it.trueSize; if (!t) return '';
+  if (t.none) return `<div class="tssrc none">no real size: ${esc(t.none)}</div>`;
+  const ppu = +(t.pxPerUnit || CFG.trueSizePxPerUnit || 64), r = t.ref || null;
+  const tall = Math.max(t.h * ppu, r ? r.h * ppu : 0), k = tall > 220 ? 220 / tall : 1;
+  const fig = (src, w, h, lab) => `<figure><div class="tsbox${src ? '' : ' noimg'}" style="width:${Math.round(w * ppu * k)}px;height:${Math.round(h * ppu * k)}px">`
+    + (src ? `<img src="${esc(src)}" alt="" loading="lazy">` : '') + `</div><figcaption>${esc(lab)}</figcaption></figure>`;
+  const num = x => (+x).toFixed(2).replace(/\.?0+$/, '');
+  return `<div class="tsize" style="background:${esc(t.bg || '#3a3632')}">`
+    + (r ? fig(r.img, r.w, r.h, `${r.label || 'reference'} ${num(r.w)}×${num(r.h)}`) : '')
+    + fig(t.img || it.thumb, t.w, t.h, `this ${num(t.w)}×${num(t.h)} ${t.unit || ''}`) + `</div>`
+    + `<div class="tssrc">true size · ${num(ppu * k)} px per ${esc(t.unit || 'unit')}${k < 1 ? ` (shrunk to ${Math.round(k * 100)}% with its reference, to fit)` : ''} · ${esc(t.source || 'NO SOURCE')}</div>`;
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  /* window.itemOptions(it) -> option list for THIS row (default: all). A sheet whose options
+     differ per row (column letters) shows only the ones that row has. */
+  const rowOpts = (window.itemOptions && window.itemOptions(it)) || OPTS;
+  const opts = rowOpts.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}${trueSizeBlock(it)}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    /* an option with bulk:false gets no "all X" button (e.g. per-row column letters, where
+       the same key means a different picture on every row) */
+    const bulk = OPTS.filter(op => op.bulk !== false).map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0, yours = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1;
+      const d = decOf(it.id);
+      if (d.decidedAt || isOverride(it.id) || prefillOf(it) == null) yours++; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${yours}</b>/${total} decided by you`
+    + (decided - yours ? ` · <b>${decided - yours}</b> still the agent's prefill` : '')
+    + ` · <b>${total - decided}</b> empty`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+<script id="FRESHNESS" type="application/json">{"built": "2026-10-26T12:30:34-0700", "git_head": "78d9f9c7d2", "inputs": {}, "rows": {"RSW_FrogDog": {"defs": ["RSW_FrogDog"], "texpaths": {"swanimals/FrogDog/FrogDog": "def", "swanimals/FrogDog/FrogDog_j": "def (src XML at build)"}}, "RSW_FungalWeevil": {"defs": ["RSW_FungalWeevil"], "texpaths": {"RotSpecies/FungalWeevil/FungalWeevil": "def"}}, "RSW_Gullipud": {"defs": ["RSW_Gullipud"], "texpaths": {"swanimals/Gullipud/Gullipud": "def", "swanimals/Gullipud/Gullipud_Swimming": "def (src XML at build)", "swanimals/Gullipud/Gullipud_j": "def (src XML at build)", "swanimals/Gullipud/Gullipud_j_Swimming": "def (src XML at build)"}}}, "schema": 1, "thumbs": {"img/0f2c83462c9492f1f7e9.webp": "bce0fe2e3b0a105c73e851eefb07dac943b7aa558ee187fa83889426d572238e", "img/12756dc6c5655cb13ae9.webp": "863c3ed1747cba7a5cde11b2791e9acdeb018ad0c3a7cb9e1fb2c8c7dc783b10", "img/222cdf31ac0fa9e230c3.webp": "6124526667befaf16940b24e2a82c4ba2b79d5e5a9de675734a5a4a27736183a", "img/25a15a3418a60d61b2e1.webp": "a3265debb70dc57e9d630b3a3a1ca1e82915e69bbb966f179e24361fc90885a3", "img/2aed3bda219610286260.webp": "47486dac7420887a140dfea2b8690a73b3f8dea066a87d74b7bb05404e3a22b2", "img/2ff5dec315fb7493fddd.webp": "27a318b029296bed04c586c71f7806035f7c0b08fe8ade1f4dbadf8cdcb4fe45", "img/365494b4a157d3d16c75.webp": "7d9c0e9cacc06c128a076ffc4dbaa3b5c56e6e2f34f3d8fcbedae51bafcf17a7", "img/40a65faf16f9d2c048c7.webp": "f3e02cd96cd9b7537eaac2aac2439aec05316dc3c45618ce3ff1c7569413d262", "img/42fe9b53d69d57d2b0af.webp": "3f7f60d233854abdcc5fd75543d5e3f3349e68e050f173ce1eb98c55abf7112f", "img/49fc563b0e082118e422.webp": "99d1bbea887e3d1201469bac003e3cc352606a259533775dc8da686da8fee1db", "img/4c49c68628bb29c8dec7.webp": "785a072070fee7d5469712b5d83c02eaed4de9aa4b17ef8adf01142f68a123f0", "img/5ac1c5bfd9f13f89b36c.webp": "266c941c7884228a06ee62f14d03abb4186f76e1d2d216b175a45be3cca9bc98", "img/688ea306481421b662fb.webp": "3898518597cff48ebfc0f40ac6fe03a00477871cc8edbc5cd3d534c8dba170e3", "img/6bb7dc5c632fe0e4e16c.webp": "5350fa4d9a646ccdb38c9c415016d561f45d810759bc380d48c39c0f91e5760a", "img/6bf2a3ef3f12bc8c8567.webp": "99be766c2e3fccc3aa02ec34e729f5bd9b24177ca3d023b61384c4f8cc27cdce", "img/7776199f131e9d767a28.webp": "4c9aef24b1a7e83263e1e98c2c6427efa7a1f312c3a538468553ec9073f4cc2d", "img/8163f03247a90a145c21.webp": "aa5fa86fedd3f83ac68deb71897128fff851df7b3bdd1aea14eab9d617397f75", "img/81810034f1618892e188.webp": "fa654257d4853e8466533a6ef0d697798ce2fd1218cb1c6cccae2deb25723a89", "img/8bf1dfb1fa8222aa9931.webp": "30deabdd537846c6ab3f4e4eaed14550a02f075e622ab423bf9ebe6287ef69d5", "img/9afbd9950f143d1794be.webp": "1851f7b7955fc1de8781c741c5478244c5c42cc3f937c5602b53e1e890180400", "img/a0ad04620a3612c17199.webp": "27ae82e17db0b08fd223d2b8291e67c119136cef470a57307989d8adc8db11d3", "img/a52bfdb10a904c268886.webp": "d26ae49bb6d25c18e75c262ccf9431ae166ff65a8ee9593ee097f2b0712428f1", "img/abaff33736490422fec2.webp": "8ea5e02e4047a3e86c538161678b832d06886bec108afb942e7f33d880f7f4c6", "img/ae43ce1983e82ad7c942.webp": "fed8f75a20bdf71d71f7e61a32961218c32fcceef3f68c2415e7013a40bf0fe2", "img/b1f12e29159bd81d7ac8.webp": "0b5a74dbb1d27b9478a292ff99f3bce7e0896ccce60b7336540b654e39062576", "img/b6b6e702d705af1e1865.webp": "8dd5b8809e000048d31a615f11258c1524c6f9d42fd77779847b7844cc20b847", "img/b6ead9d66ba6d003eb71.webp": "2e7bdc63b537acbd764b20fc5fc24cdcbabf699a1499673918c097ec625e57d8", "img/b934f1e003b35c23f5e0.webp": "09f4d0126abd8317ccfc6040a7e47efcf7bf0ec04b4136fb93e462072aaa4855", "img/ba35b816a6bfd977b5a3.webp": "f8e71ed36f476c01cb5a796b67f11a1a84ca0b958c0b98d1c8258e90a263b653", "img/c4de7cdd1aae7ddebc1a.webp": "f72504c09d96c813eb148103c03429050d9ca37c474d9fb5c04f1dfce2001f64", "img/c6334a89501228b0f9e2.webp": "81ac86569ca7cc097b7f124f4817e4aabe73317f170fcdc1671dd5346146a61f", "img/c8ff8f87624260f57452.webp": "8e2badee7428fab1a5b11fbfc70006f46adb520a501bbef42ccc3cc8fd44b8eb", "img/d00883677fd3d23518a9.webp": "a85b2f1492a56bb160ee753377e8bd0bae08ba64a05c1f55558599c4acf9c9c1", "img/d9171ed993459af898d4.webp": "58510701134e892fbb136eafb59d1a2ce9d165a331a113e145facaa0b90aa228", "img/e514a7489a34dd3a1ff2.webp": "2a2c1c58b31faab0613dd36ea475789a4b24ae429b17df0af13b750737808353", "img/eed9ea9d485ea61b258e.webp": "bbce5d685fad59ee034c7a293df808c41a5f9a50c1b353a67810ccb6fec0353e", "img/fcde4353b75809daceb9.webp": "031fa4e6e4cb95cc6eedc54224063edcc36f4e04e66d2ef81560bf0a2c0b4264", "img/ff1bcacb7ec9de7178c7.webp": "8477e89c6518a39b2547c41d5c429d686df24665905486f81f5fb61f713fb75e"}}</script>
+</body>
+</html>
