@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Rakatan stasis chambers (design/RimStarWars/cold_storage_line_2026-10-26.md §4.2 layer 2,
+  COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS): the casket (1x2) and the vault (3x3), skins of Cold Storage's ancient
+  stasis locker. They sit in Cuisine until a layer-2 Rakatan mod exists, then move there. Every def carries
+  MayRequire="mandrake.rm.coldstorage": without the engine the whole line stays out.
+
+  One def per Wrecked Machines grade (line RSW_RakatanStasisCasket / RSW_RakatanStasisVault, replaceTags). Stasis
+  strength follows the grade (owner ruling 2026-10-26): Kludged 0.2, Refurbished 0.75, Original full; rot on held goods
+  is 1 - strength. Power is 400 W / strength (Kludged 2000 W, Refurbished 533 W, Original 400 W; scalePowerByStrength).
+  Capacity per cell follows the grade: Kludged 1, Refurbished 3, Original 4 (vault full = 36 stacks; the design's 30
+  cannot divide over 9 cells). A weak field flickers: an hour of normal spoiling and a spark mote each time.
+
+  How you get one ("what you unlock through the ship or loot from their ancient tech dungeons", owner 2026-10-26):
+  - Ship: RSW_RakatanStasis research is a ShipRelated project after Wrecked Machines' power cell restoration (the
+    ship-subsystem restoration line) and cryo storage. It lets you BUILD the Refurbished grade from ancient components.
+  - Loot: StructureInjectionsRUT's Frozen Rakata vault (RUT_VaultType3_FrozenRakata) places Wrecked and Kludged
+    chambers. Studying a wreck with Research Reinvented's Analyse (Defs below) is the fast road to the research.
+  - Restoration: with Wrecked Machines, Patches/RSW_RakatanStasisLadder.xml lets you build Kludged over Wrecked and
+    Original over a lower grade (Original hidden unless Wrecked Machines' "allow full restoration" is on).
+
+  INTERIM ART: the casket draws vanilla's ancient cryptosleep pod, the vault the ancient security crate at 3x3, until
+  their own art lands (art queue). No geometric placeholder ships.
+-->
+<Defs>
+
+  <ResearchProjectDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasis</defName>
+    <label>Rakatan stasis</label>
+    <description>The Rakata kept their war stores in fields that stop time for what they hold. Restore enough of a stasis chamber's emitters to build refurbished chambers from ancient components.\n\nStudying a wrecked Rakatan chamber (Research Reinvented's Analyse) is the fast route.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tags>
+      <li>ShipRelated</li>
+    </tags>
+    <prerequisites>
+      <li>RSW_CryoStorage</li>
+      <li MayRequire="mandrake.rm.wreckedmachines">RM_WM_PowerCellRestoration</li>
+    </prerequisites>
+    <researchViewX>17.00</researchViewX>
+    <researchViewY>6.30</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- ================= CASKET ((1,2)) ================= -->
+  <ThingDef Name="RSW_RakatanStasisCasketBase" ParentName="RM_ColdStorageUnitBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <graphicData>
+      <texPath>Things/Building/Ruins/AncientCryptosleepPod</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <stuffCategories Inherit="False" />
+    <costStuffCount>0</costStuffCount>
+    <designationCategory IsNull="True" />
+    <researchPrerequisites Inherit="False" />
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Mass>60</Mass>
+      <Flammability>0</Flammability>
+      <WorkToBuild>6000</WorkToBuild>
+    </statBases>
+    <replaceTags>
+      <li>RSW_RakatanStasisCasket</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisCasket_Wrecked</defName>
+    <label>wrecked Rakatan stasis casket</label>
+    <description>A Rakatan stasis casket from the frozen vaults of Belsavis: a coffin-sized chamber that wraps what it holds in a field older than the Republic. Its field went dark long ago, its seals are cracked and whatever it held is dust. The field emitters are not ruined past saving.\n\nStudy it to learn Rakatan stasis, or build a better grade over it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/AncientCryptosleepPod</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <color>(105,98,90)</color>
+    </graphicData>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <canOverlapZones>false</canOverlapZones>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>60</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>250</MarketValue>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <replaceTags>
+      <li>RSW_RakatanStasisCasket</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisCasketBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisCasket_Kludged</defName>
+    <label>kludged Rakatan stasis casket</label>
+    <description>A Rakatan stasis casket from the frozen vaults of Belsavis: a coffin-sized chamber that wraps what it holds in a field older than the Republic. Coaxed back to a fifth of its field with ordinary parts, it slows spoiling a little, now and then flickers out for an hour, and drinks five times the power a whole field would.</description>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <graphicData>
+      <color>(160,152,140)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>500</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.8</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+        <stasisFlickerMtbHours>24</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisCasketBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisCasket_Refurbished</defName>
+    <label>refurbished Rakatan stasis casket</label>
+    <description>A Rakatan stasis casket from the frozen vaults of Belsavis: a coffin-sized chamber that wraps what it holds in a field older than the Republic. Rebuilt around ancient components, its field stops three-quarters of spoiling and deterioration, rarely flickers, and draws a third more power than a whole field.</description>
+    <costList>
+      <Steel>100</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">1</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <designationCategory>Furniture</designationCategory>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_RakatanStasis</li>
+    </researchPrerequisites>
+    <statBases>
+      <MarketValue>1100</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>3</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.25</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+        <stasisFlickerMtbHours>240</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisCasketBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisCasket_Original</defName>
+    <label>Rakatan stasis casket</label>
+    <description>A Rakatan stasis casket from the frozen vaults of Belsavis: a coffin-sized chamber that wraps what it holds in a field older than the Republic. Restored to its full field: nothing inside it spoils or deteriorates, and it draws only its base power. The machine the Rakata built.</description>
+    <costList>
+      <Plasteel>80</Plasteel>
+      <ComponentSpacer>4</ComponentSpacer>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">2</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_RakatanStasis</li>
+    </researchPrerequisites>
+    <statBases>
+      <MarketValue>2500</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>4</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ================= VAULT ((3,3)) ================= -->
+  <ThingDef Name="RSW_RakatanStasisVaultBase" ParentName="RM_ColdStorageUnitBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <graphicData>
+      <texPath>Things/Building/Ruins/AncientSecurityCrate</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>true</rotatable>
+    <stuffCategories Inherit="False" />
+    <costStuffCount>0</costStuffCount>
+    <designationCategory IsNull="True" />
+    <researchPrerequisites Inherit="False" />
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints>
+      <Mass>250</Mass>
+      <Flammability>0</Flammability>
+      <WorkToBuild>16000</WorkToBuild>
+    </statBases>
+    <replaceTags>
+      <li>RSW_RakatanStasisVault</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisVault_Wrecked</defName>
+    <label>wrecked Rakatan stasis vault</label>
+    <description>A Rakatan stasis vault from the frozen vaults of Belsavis: a walk-up cargo chamber whose field once kept a war fleet's stores from the ages. Its field went dark long ago, its seals are cracked and whatever it held is dust. The field emitters are not ruined past saving.\n\nStudy it to learn Rakatan stasis, or build a better grade over it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/AncientSecurityCrate</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(105,98,90)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <canOverlapZones>false</canOverlapZones>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <Mass>250</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>750</MarketValue>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <replaceTags>
+      <li>RSW_RakatanStasisVault</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisVaultBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisVault_Kludged</defName>
+    <label>kludged Rakatan stasis vault</label>
+    <description>A Rakatan stasis vault from the frozen vaults of Belsavis: a walk-up cargo chamber whose field once kept a war fleet's stores from the ages. Coaxed back to a fifth of its field with ordinary parts, it slows spoiling a little, now and then flickers out for an hour, and drinks five times the power a whole field would.</description>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <graphicData>
+      <color>(160,152,140)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1500</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.8</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+        <stasisFlickerMtbHours>24</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisVaultBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisVault_Refurbished</defName>
+    <label>refurbished Rakatan stasis vault</label>
+    <description>A Rakatan stasis vault from the frozen vaults of Belsavis: a walk-up cargo chamber whose field once kept a war fleet's stores from the ages. Rebuilt around ancient components, its field stops three-quarters of spoiling and deterioration, rarely flickers, and draws a third more power than a whole field.</description>
+    <costList>
+      <Steel>250</Steel>
+      <Plasteel>120</Plasteel>
+      <ComponentSpacer>5</ComponentSpacer>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">3</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <designationCategory>Furniture</designationCategory>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_RakatanStasis</li>
+    </researchPrerequisites>
+    <statBases>
+      <MarketValue>3300</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>3</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.25</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+        <stasisFlickerMtbHours>240</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_RakatanStasisVaultBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_RakatanStasisVault_Original</defName>
+    <label>Rakatan stasis vault</label>
+    <description>A Rakatan stasis vault from the frozen vaults of Belsavis: a walk-up cargo chamber whose field once kept a war fleet's stores from the ages. Restored to its full field: nothing inside it spoils or deteriorates, and it draws only its base power. The machine the Rakata built.</description>
+    <costList>
+      <Plasteel>200</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">5</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_RakatanStasis</li>
+    </researchPrerequisites>
+    <statBases>
+      <MarketValue>7500</MarketValue>
+    </statBases>
+    <building>
+      <maxItemsInCell>4</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0</stasisRotFactor>
+        <scalePowerByStrength>true</scalePowerByStrength>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Loot route: a colonist studies a wrecked or kludged chamber where it stands (Research Reinvented's Analyse, the
+       same loop Wrecked Machines uses for its wrecks) and the study credits RSW_RakatanStasis. -->
+  <PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef
+      ParentName="SpecialResearchOpportunityBase" MayRequire="petetimessix.researchreinvented,mandrake.rm.coldstorage">
+    <defName>RSW_AnalyseRakatanStasisChamber</defName>
+    <opportunityType>Analyse</opportunityType>
+    <project>RSW_RakatanStasis</project>
+    <things>
+      <li>RSW_RakatanStasisCasket_Wrecked</li>
+      <li>RSW_RakatanStasisCasket_Kludged</li>
+      <li>RSW_RakatanStasisVault_Wrecked</li>
+      <li>RSW_RakatanStasisVault_Kludged</li>
+    </things>
+  </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
+
+</Defs>

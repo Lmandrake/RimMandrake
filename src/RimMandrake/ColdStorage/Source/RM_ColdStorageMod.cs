@@ -15,6 +15,7 @@ namespace RimMandrake.ColdStorage
         // Engine
         public static bool chillEnabled = true;
         public static bool stasisEnabled = true;
+        public static bool stasisFlickerEnabled = true;
         public static bool sealAgingEnabled = true;
 
         // Rates
@@ -75,6 +76,7 @@ namespace RimMandrake.ColdStorage
             base.ExposeData();
             Scribe_Values.Look(ref chillEnabled, "chillEnabled", true);
             Scribe_Values.Look(ref stasisEnabled, "stasisEnabled", true);
+            Scribe_Values.Look(ref stasisFlickerEnabled, "stasisFlickerEnabled", true);
             Scribe_Values.Look(ref sealAgingEnabled, "sealAgingEnabled", true);
             Scribe_Values.Look(ref powerDrawMultiplier, "powerDrawMultiplier", 1f);
             Scribe_Values.Look(ref insulationMultiplier, "insulationMultiplier", 1f);
@@ -105,6 +107,7 @@ namespace RimMandrake.ColdStorage
         {
             chillEnabled = true;
             stasisEnabled = true;
+            stasisFlickerEnabled = true;
             sealAgingEnabled = true;
             powerDrawMultiplier = 1f;
             insulationMultiplier = 1f;
@@ -163,6 +166,7 @@ namespace RimMandrake.ColdStorage
             list.Label("RM_ColdStorage_SettingsAppliesNow".Translate());
             list.CheckboxLabeled("RM_ColdStorage_SettingChill".Translate(), ref chillEnabled, "RM_ColdStorage_SettingChillDesc".Translate());
             list.CheckboxLabeled("RM_ColdStorage_SettingStasis".Translate(), ref stasisEnabled, "RM_ColdStorage_SettingStasisDesc".Translate());
+            list.CheckboxLabeled("RM_ColdStorage_SettingFlicker".Translate(), ref stasisFlickerEnabled, "RM_ColdStorage_SettingFlickerDesc".Translate());
             list.CheckboxLabeled("RM_ColdStorage_SettingAging".Translate(), ref sealAgingEnabled, "RM_ColdStorage_SettingAgingDesc".Translate());
             list.GapLine();
 
@@ -204,6 +208,11 @@ namespace RimMandrake.ColdStorage
             list.Label("RM_ColdStorage_SettingsUnitsNote".Translate());
             foreach (ThingDef d in ColdStorageStartup.ClimateDefs)
             {
+                if (d.designationCategory == null)
+                {
+                    // Loot-only or hidden (an Original-grade chamber): nothing to build, so no switch.
+                    continue;
+                }
                 bool on = UnitEnabled(d);
                 list.CheckboxLabeled("RM_ColdStorage_SettingUnitBuildable".Translate(d.LabelCap), ref on);
                 Toggle(disabledUnits, d.defName, !on);

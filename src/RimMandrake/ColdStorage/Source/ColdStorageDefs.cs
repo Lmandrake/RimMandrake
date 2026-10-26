@@ -179,6 +179,16 @@ namespace RimMandrake.ColdStorage
         /// deterioration); 0.1 = a weaker field that slows rot tenfold.</summary>
         public float stasisRotFactor = 0f;
 
+        /// <summary>Stasis mode, powered unit: draw base power / field strength (design §4.2, a Kludged field runs
+        /// hungry). Strength is the grade's (Wrecked Machines) or 1 - stasisRotFactor.</summary>
+        public bool scalePowerByStrength = false;
+
+        /// <summary>Stasis mode: mean in-game hours between field flickers; 0 = never. A flicker drops the field for
+        /// stasisFlickerTicks (default one hour), letting normal rot through, and throws a spark mote.</summary>
+        public float stasisFlickerMtbHours = 0f;
+
+        public int stasisFlickerTicks = 2500;
+
         /// <summary>Coarse setpoint detents (warmest first, e.g. cool / cold / deep). When set, the setpoint gizmo cycles
         /// these instead of offering 1-degree steps: a crude machine has three settings, not a thermostat.</summary>
         public List<float> detents;
@@ -223,6 +233,14 @@ namespace RimMandrake.ColdStorage
             if (stasisRotFactor < 0f || stasisRotFactor >= 1f)
             {
                 yield return "stasisRotFactor must be in [0, 1)";
+            }
+            if (stasisFlickerMtbHours < 0f || stasisFlickerTicks < 1)
+            {
+                yield return "stasisFlickerMtbHours must be 0 or more and stasisFlickerTicks at least 1";
+            }
+            if ((scalePowerByStrength || stasisFlickerMtbHours > 0f) && mode != StorageMode.Stasis)
+            {
+                yield return "scalePowerByStrength / stasisFlickerMtbHours only apply to a Stasis unit";
             }
             if (detents != null)
             {

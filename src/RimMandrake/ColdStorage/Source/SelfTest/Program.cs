@@ -53,6 +53,7 @@ namespace RimMandrake.ColdStorage.SelfTest
             SealedReadoutFollowsRotTickPatch();
             StasisStrengthFollowsGrade();
             DeteriorationReadoutUnderStasis();
+            RakatanChambersPowerAndFlicker();
             UnspawnedUnitOverridesNothing();
             EvaporativeCrock();
             Detents();
@@ -299,6 +300,36 @@ namespace RimMandrake.ColdStorage.SelfTest
             Near("unit: Kludged instance overrides def factor 0", ColdStorageKernel.UnitStasisRotFactor(0f, 0.2f), 0.8f);
             Near("one Kludged day at 30 C rots 0.8 of the floor",
                 ColdStorageKernel.RotPerTick(EffectiveMode.Stasis, true, false, 30f, 30f, Vanilla, ColdStorageKernel.UnitStasisRotFactor(0f, 0.2f)), 0.8f);
+        }
+
+        // COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS: grade -> strength -> rot, power and flicker (design §4.2)
+        private static void RakatanChambersPowerAndFlicker()
+        {
+            // The grade defs' fallback factors (used when Wrecked Machines is absent) are 1 - the owner's strengths.
+            Near("def fallback Kludged rot x0.8", ColdStorageKernel.UnitStasisRotFactor(0.8f, float.NaN), 0.8f);
+            Near("def fallback Refurbished rot x0.25", ColdStorageKernel.UnitStasisRotFactor(0.25f, float.NaN), 0.25f);
+            Near("def fallback Original rot x0", ColdStorageKernel.UnitStasisRotFactor(0f, float.NaN), 0f);
+            // Power: 400 W base / strength.
+            float baseW = ColdStorageKernel.PowerDraw(EffectiveMode.Stasis, 400f, 1f, true, 0.3f);
+            Near("Kludged 0.2 draws 2000 W", baseW * ColdStorageKernel.StasisPowerScale(0.2f), 2000f, 0.5f);
+            Near("Refurbished 0.75 draws 533 W", baseW * ColdStorageKernel.StasisPowerScale(0.75f), 533.33f, 0.5f);
+            Near("Original 1.0 draws 400 W", baseW * ColdStorageKernel.StasisPowerScale(1f), 400f);
+            Near("no grade signal draws base", ColdStorageKernel.StasisPowerScale(float.NaN), 1f);
+            Near("no field draws nothing", ColdStorageKernel.StasisPowerScale(0f), 0f);
+            // Flicker: Original never; Kludged (24 h MTB) over a rare tick about 0.4 %; a day about 63 %.
+            Near("Original never flickers", ColdStorageKernel.FlickerChance(0f, 250), 0f);
+            Near("Kludged rare-tick flicker chance", ColdStorageKernel.FlickerChance(24f, 250), 1f - (float)Math.Exp(-0.1 / 24.0), 1e-6f);
+            Near("Kludged one-day flicker chance", ColdStorageKernel.FlickerChance(24f, 60000), 1f - (float)Math.Exp(-1.0), 1e-4f);
+            Check("Refurbished flickers rarer than Kludged", ColdStorageKernel.FlickerChance(240f, 250) < ColdStorageKernel.FlickerChance(24f, 250));
+            Check("field down while flickering", !ColdStorageKernel.StasisHolds(EffectiveMode.Stasis, true, 1000, 2500));
+            Check("field back after the flicker", ColdStorageKernel.StasisHolds(EffectiveMode.Stasis, true, 2500, 2500));
+            Check("no flicker recorded: holds", ColdStorageKernel.StasisHolds(EffectiveMode.Stasis, true, 0, -1));
+            Near("a flicker hour rots at the room rate", ColdStorageKernel.RotPerTick(EffectiveMode.Stasis, false, false, 30f, 30f, Vanilla, 0f), Vanilla(30f));
+            // Settings off: the chambers chill at -10 C and draw their base power, unscaled (UpdatePower scales only in Stasis).
+            Check("stasis off: a chamber chills", ColdStorageKernel.Resolve(StorageMode.Stasis, true, false) == EffectiveMode.Chill);
+            Check("stasis and chill off: a chamber is a shelf", ColdStorageKernel.Resolve(StorageMode.Stasis, false, false) == EffectiveMode.None);
+            Near("stasis off: chamber fallback setpoint -10 C",
+                ColdStorageKernel.EffectiveSetpoint(StorageMode.Stasis, ColdStorageKernel.Resolve(StorageMode.Stasis, true, false), 4f), -10f);
         }
 
         // 13. COLDSTORAGE_DECAY_READOUT_FIX_UNDER_STASIS: a full field clears the deterioration reasons

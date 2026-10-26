@@ -295,6 +295,40 @@ namespace RimMandrake.ColdStorage
             return float.IsNaN(instanceStrength) ? Math.Max(0f, defRotFactor) : StasisRotFactorFromStrength(instanceStrength);
         }
 
+        /// <summary>COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS. The power a stasis field of <paramref name="strength"/>
+        /// draws, as a multiple of its base draw (design §4.2: 1 / strength, so a Kludged 0.2 field runs five times
+        /// hungry). NaN (no grade signal) or full strength: 1. No field at all (strength 0 or less): 0.</summary>
+        public static float StasisPowerScale(float strength)
+        {
+            if (float.IsNaN(strength) || strength >= 1f)
+            {
+                return 1f;
+            }
+            if (strength <= 0f)
+            {
+                return 0f;
+            }
+            return 1f / strength;
+        }
+
+        /// <summary>The chance a field with a mean time between flickers of <paramref name="mtbHours"/> flickers within
+        /// <paramref name="ticks"/>. 0 or less: never (an Original field).</summary>
+        public static float FlickerChance(float mtbHours, int ticks)
+        {
+            if (mtbHours <= 0f || ticks <= 0)
+            {
+                return 0f;
+            }
+            return 1f - (float)Math.Exp(-(ticks / TicksPerHour) / mtbHours);
+        }
+
+        /// <summary>Whether a stasis field holds this tick: the unit is in stasis, active, and not mid-flicker (a
+        /// flicker lets normal rot through for its length).</summary>
+        public static bool StasisHolds(EffectiveMode effective, bool active, int ticksGame, int flickerUntilTick)
+        {
+            return StasisHolds(effective, active) && ticksGame >= flickerUntilTick;
+        }
+
         /// <summary>COLDSTORAGE_DECAY_READOUT_FIX_UNDER_STASIS. Apply a holding stasis field's factor to an item's
         /// deterioration rate. A field that stops deterioration entirely also clears the reasons list, so the inspect pane
         /// does not name causes (outdoors, rain) for a rate of zero.</summary>

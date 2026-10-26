@@ -12,6 +12,7 @@
   <RM_ColdStorage_StasisOffChilling>Stasis is switched off in Mod Settings: this unit chills instead.</RM_ColdStorage_StasisOffChilling>
   <RM_ColdStorage_StasisHolding>{0}: field holding, nothing inside spoils</RM_ColdStorage_StasisHolding>
   <RM_ColdStorage_StasisDown>{0}: field down, contents spoil as normal</RM_ColdStorage_StasisDown>
+  <RM_ColdStorage_StasisFlicker>{0}: field flickering, contents spoil as normal until it steadies</RM_ColdStorage_StasisFlicker>
   <RM_ColdStorage_StasisPartial>Partial field ({0} strength): contents spoil at {1} of the normal rate</RM_ColdStorage_StasisPartial>
   <RM_ColdStorage_SwitchedOff>Cold storage is switched off in Mod Settings: a plain shelf.</RM_ColdStorage_SwitchedOff>
 
@@ -35,6 +36,8 @@
   <RM_ColdStorage_SettingChillDesc>Units hold their own temperature and the goods on them read it. Off: chill units are plain shelves.</RM_ColdStorage_SettingChillDesc>
   <RM_ColdStorage_SettingStasis>Stasis units</RM_ColdStorage_SettingStasis>
   <RM_ColdStorage_SettingStasisDesc>Stasis fields stop spoiling and deterioration. Off: stasis units chill at -10°C instead. Sealed goods keep until opened either way.</RM_ColdStorage_SettingStasisDesc>
+  <RM_ColdStorage_SettingFlicker>Weak stasis fields flicker</RM_ColdStorage_SettingFlicker>
+  <RM_ColdStorage_SettingFlickerDesc>A Kludged or Refurbished stasis field sometimes drops for an hour, letting normal spoiling through, and throws sparks while it is down. Off: weak fields hold steadily at their strength.</RM_ColdStorage_SettingFlickerDesc>
   <RM_ColdStorage_SettingAging>Sealed goods age</RM_ColdStorage_SettingAging>
   <RM_ColdStorage_SettingAgingDesc>Sealed goods that can age turn into their aged form after a while, with a small chance of ruin. Off: they stay as they are.</RM_ColdStorage_SettingAgingDesc>
   <RM_ColdStorage_SettingsRates>Rates</RM_ColdStorage_SettingsRates>

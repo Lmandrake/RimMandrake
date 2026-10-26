@@ -175,8 +175,8 @@ The stasis chamber spans three layers, as the ancient-machines design requires:
 - **Layer 1, RM.** `RM_AncientStasisLocker` lives in `mandrake.rm.coldstorage`. It is a generic ancient machine
   with no Rakatan words. It takes Wrecked / Kludged / Refurbished grades when Wrecked Machines is present, and it is
   plain loot when that mod is absent.
-- **Layer 2, RSW.** The Rakatan skin: `RSW_RakatanStasisCasket` (1x2) and `RSW_RakatanStasisVault` (3x3, 30
-  stacks). Labels, descriptions and art are Belsavis-styled. These sit in Cuisine until the layer-2 Rakatan mod
+- **Layer 2, RSW.** The Rakatan skin: `RSW_RakatanStasisCasket` (1x2) and `RSW_RakatanStasisVault` (3x3, 36
+  stacks at Original: 4 per cell; built 36, not the 30 first drafted, because capacity is per cell). Labels, descriptions and art are Belsavis-styled. These sit in Cuisine until the layer-2 Rakatan mod
   exists, then move there.
 - **Layer 3, RUT.** Ways to get the chamber:
   - **ship unlock**: restoring the relevant Kolyska subsystem grants `RSW_RakatanStasis` research, which lets you
@@ -195,8 +195,14 @@ items is `1 − strength`. The grade also sets capacity, power and flicker:
 | Refurbished | 0.75 | 0.25 | 0.75 × capacity | 1 / 0.75 × base draw | rare |
 | Original (1.0) | full | 0 | full | base | none; unreachable by default, as Wrecked Machines ruling 1 says |
 
-Base draw is 400 W. The engine reads strength per instance (`CompStorageClimate.StasisStrength`), so a grade
-signal from Wrecked Machines sets it without a def per grade.
+Base draw is 400 W. As built (COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS), each grade is its own def on one
+Wrecked Machines ladder line (`replaceTags`), which is how that mod restores every other machine: `<line>_Wrecked`,
+`_Kludged`, `_Refurbished`, `_Original`. With Wrecked Machines loaded, the strength comes from its grade sliders
+(`ColdStorageStartup.GradeStrength`); without it, the def's `stasisRotFactor` is the fallback (0.8 / 0.25 / 0).
+Capacity is per cell (`maxItemsInCell` 1 / 3 / 4). The Rakatan chambers draw 400 W × 1/strength
+(`scalePowerByStrength`). The RM locker draws nothing. A flicker can be switched off in Mod Settings.
+Vault loot, as built: `RUT_VaultType3_FrozenRakata` places one Wrecked vault and two caskets (one Wrecked, one
+Kludged). The war-lab rooms and `RUT_StasisHeldProvisions` are not built yet.
 
 ### 4.3 Carbon-freezing (Sealed mode, CarbonFreeze; canon)
 

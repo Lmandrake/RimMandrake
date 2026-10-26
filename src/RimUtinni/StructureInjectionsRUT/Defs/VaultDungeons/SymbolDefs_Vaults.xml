@@ -63,6 +63,21 @@
     <thing>RUT_VaultHeart</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>
   </KCSG.SymbolDef>
+  <KCSG.SymbolDef MayRequire="mandrake.rsw.cuisine,mandrake.rm.coldstorage">
+    <defName>RUT_Symbol_RakataStasisVault_Wrecked</defName>
+    <thing>RSW_RakatanStasisVault_Wrecked</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef MayRequire="mandrake.rsw.cuisine,mandrake.rm.coldstorage">
+    <defName>RUT_Symbol_RakataStasisCasket_Wrecked</defName>
+    <thing>RSW_RakatanStasisCasket_Wrecked</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef MayRequire="mandrake.rsw.cuisine,mandrake.rm.coldstorage">
+    <defName>RUT_Symbol_RakataStasisCasket_Kludged</defName>
+    <thing>RSW_RakatanStasisCasket_Kludged</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_RakataCasket</defName>
     <thing>AncientCryptosleepCasket</thing>

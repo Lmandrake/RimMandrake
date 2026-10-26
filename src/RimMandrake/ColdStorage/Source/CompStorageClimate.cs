@@ -25,6 +25,9 @@ namespace RimMandrake.ColdStorage
         /// or the def's stasisRotFactor decides. Set by code that places a chamber of a known grade (vault loot).</summary>
         public float stasisStrength = float.NaN;
 
+        /// <summary>Until this tick the stasis field is down in a flicker (a Kludged or Refurbished field); -1 = none.</summary>
+        public int flickerUntilTick = -1;
+
         /// <summary>The tick this unit's temperature was last stepped; -1 before the first step.</summary>
         private int lastStepTick = -1;
 
@@ -69,7 +72,13 @@ namespace RimMandrake.ColdStorage
         }
 
         /// <summary>True while a stasis field holds: the rot tick and deterioration of held items are skipped.</summary>
-        public bool StasisHolding => ColdStorageKernel.StasisHolds(Effective, Active);
+        public bool StasisHolding => ColdStorageKernel.StasisHolds(Effective, Active, Find.TickManager?.TicksGame ?? 0, flickerUntilTick);
+
+        /// <summary>True while the field is down in a flicker.</summary>
+        public bool Flickering => flickerUntilTick >= 0 && Find.TickManager != null && Find.TickManager.TicksGame < flickerUntilTick;
+
+        /// <summary>The field strength this unit runs at: its grade's, else 1 - the def's stasisRotFactor.</summary>
+        public float FieldStrength => 1f - StasisRotFactor;
 
         /// <summary>The stasis strength this instance has, or NaN to use the def's factor: its own
         /// <see cref="stasisStrength"/>, else its Wrecked Machines grade's ratio (owner ruling 2026-10-26: stasis strength
@@ -167,6 +176,7 @@ namespace RimMandrake.ColdStorage
             Scribe_Values.Look(ref setpoint, "setpoint", float.NaN);
             Scribe_Values.Look(ref stasisStrength, "stasisStrength", float.NaN);
             Scribe_Values.Look(ref lastStepTick, "lastStepTick", -1);
+            Scribe_Values.Look(ref flickerUntilTick, "flickerUntilTick", -1);
         }
 
         public override void CompTickRare()
@@ -217,8 +227,33 @@ namespace RimMandrake.ColdStorage
             {
                 // Stasis keeps room temperature; a switched-off unit is a plain shelf.
                 currentTemp = room;
+                if (eff == EffectiveMode.Stasis)
+                {
+                    StepFlicker(ticks);
+                }
             }
             UpdatePower(Mathf.Abs(currentTemp - EffectiveSetpoint) < 0.5f);
+        }
+
+        /// <summary>A weak field (Props.stasisFlickerMtbHours) sometimes drops for an hour, letting normal rot through,
+        /// and throws sparks while it is down (design §4.2).</summary>
+        private void StepFlicker(int ticks)
+        {
+            int now = Find.TickManager.TicksGame;
+            if (now < flickerUntilTick)
+            {
+                FleckMaker.ThrowMicroSparks(parent.TrueCenter(), parent.Map);
+                return;
+            }
+            if (!RM_ColdStorageSettings.stasisFlickerEnabled || !Active)
+            {
+                return;
+            }
+            if (Rand.Value < ColdStorageKernel.FlickerChance(Props.stasisFlickerMtbHours, ticks))
+            {
+                flickerUntilTick = now + Props.stasisFlickerTicks;
+                FleckMaker.ThrowMicroSparks(parent.TrueCenter(), parent.Map);
+            }
         }
 
         /// <summary>How far below the room a passive (unpowered) unit can go now: an evaporative crock loses its drop
@@ -257,8 +292,14 @@ namespace RimMandrake.ColdStorage
             {
                 return;
             }
-            power.PowerOutput = -ColdStorageKernel.PowerDraw(Effective, power.Props.PowerConsumption,
+            EffectiveMode eff = Effective;
+            float draw = ColdStorageKernel.PowerDraw(eff, power.Props.PowerConsumption,
                 RM_ColdStorageSettings.powerDrawMultiplier, atSetpoint, Props.idlePowerFactor);
+            if (eff == EffectiveMode.Stasis && Props.scalePowerByStrength)
+            {
+                draw *= ColdStorageKernel.StasisPowerScale(FieldStrength);
+            }
+            power.PowerOutput = -draw;
         }
 
         public void SetSetpoint(float value)
@@ -364,7 +405,8 @@ namespace RimMandrake.ColdStorage
                     }
                     return sb.ToString();
                 case EffectiveMode.Stasis:
-                    string line = (StasisHolding ? "RM_ColdStorage_StasisHolding" : "RM_ColdStorage_StasisDown").Translate(name);
+                    string line = (StasisHolding ? "RM_ColdStorage_StasisHolding"
+                        : Flickering && Active ? "RM_ColdStorage_StasisFlicker" : "RM_ColdStorage_StasisDown").Translate(name);
                     float factor = StasisRotFactor;
                     if (StasisHolding && factor > 0f)
                     {

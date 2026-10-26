@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS: with Wrecked Machines AND Cold Storage loaded, the Rakatan stasis
+       chambers (Defs/RSW_RakatanStasis.xml) join the Wrecked Machines restoration ladder. Every grade gets the
+       WreckedMachineGrade extension (Cold Storage then reads the ladder sliders for its stasis strength). Kludged
+       becomes buildable over a Wrecked chamber and Original over any lower grade (PlaceWorker_BuildOverLowerGrade);
+       Wrecked Machines hides the Original grade unless "allow full restoration" is on. Refurbished is buildable fresh
+       after RSW_RakatanStasis either way. `original` stays unset: Cold Storage scales chamber power itself. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Wrecked Machines</li>
+    </mods>
+    <match Class="PatchOperationFindMod">
+      <mods>
+        <li>RimMandrake: Cold Storage</li>
+      </mods>
+      <match Class="PatchOperationSequence">
+        <operations>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Wrecked"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Wrecked</grade>
+                    <line>RSW_RakatanStasisCasket</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Kludged"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Kludged</grade>
+                    <line>RSW_RakatanStasisCasket</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Kludged"]</xpath>
+                <value>
+                  <designationCategory>Furniture</designationCategory>
+                  <placeWorkers>
+                    <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+                  </placeWorkers>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Refurbished"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Refurbished</grade>
+                    <line>RSW_RakatanStasisCasket</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Original"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Original</grade>
+                    <line>RSW_RakatanStasisCasket</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisCasket_Original"]</xpath>
+                <value>
+                  <designationCategory>Furniture</designationCategory>
+                  <placeWorkers>
+                    <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+                  </placeWorkers>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Wrecked"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Wrecked</grade>
+                    <line>RSW_RakatanStasisVault</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Kludged"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Kludged</grade>
+                    <line>RSW_RakatanStasisVault</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Kludged"]</xpath>
+                <value>
+                  <designationCategory>Furniture</designationCategory>
+                  <placeWorkers>
+                    <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+                  </placeWorkers>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Refurbished"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Refurbished</grade>
+                    <line>RSW_RakatanStasisVault</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAddModExtension">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Original"]</xpath>
+                <value>
+                  <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                    <grade>Original</grade>
+                    <line>RSW_RakatanStasisVault</line>
+                  </li>
+                </value>
+              </li>
+              <li Class="PatchOperationAdd">
+                <xpath>Defs/ThingDef[defName="RSW_RakatanStasisVault_Original"]</xpath>
+                <value>
+                  <designationCategory>Furniture</designationCategory>
+                  <placeWorkers>
+                    <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+                  </placeWorkers>
+                </value>
+              </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+</Patch>

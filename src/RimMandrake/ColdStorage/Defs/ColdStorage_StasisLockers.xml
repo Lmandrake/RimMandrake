@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The ancient stasis locker (design/RimStarWars/cold_storage_line_2026-10-26.md §4.2, layer 1,
+       COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS). A generic ancient machine, no Star Wars words: the Rakatan casket and
+       vault (mandrake.rsw.cuisine) are its layer-2 skins.
+
+       One def per Wrecked Machines grade, sharing the line RM_AncientStasisLocker (replaceTags), so the Wrecked Machines
+       ladder can restore it. Stasis strength follows the grade (owner ruling 2026-10-26): Kludged 0.2, Refurbished
+       0.75, Original full; the rot factor on held goods is 1 - strength. With Wrecked Machines loaded its grade sliders
+       decide the strength (ColdStorageStartup.GradeStrength) and Patches/ColdStorage_WreckedMachinesLadder.xml makes the
+       upper grades buildable over a lower one; without it every grade is loot only and stasisRotFactor below is the
+       strength. The Original grade is hidden by Wrecked Machines unless its "allow full restoration" setting is on.
+
+       The locker needs no power: an ancient field that never went out (stasisNeedsNoPower). A weak field flickers
+       (stasisFlickerMtbHours), letting an hour of normal spoiling through each time.
+
+       Capacity follows the grade (maxItemsInCell): Kludged 1, Refurbished 3, Original 4.
+       INTERIM ART: the vanilla rusted fridge (Odyssey's ancient cold storage) until the locker's own art lands. -->
+
+  <ThingDef Name="RM_AncientStasisLockerBase" ParentName="RM_ColdStorageUnitBase" Abstract="True">
+    <graphicData>
+      <texPath>Things/Building/Ancient/House/RustedFridge</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <stuffCategories Inherit="False" />
+    <costStuffCount>0</costStuffCount>
+    <designationCategory IsNull="True" />
+    <researchPrerequisites Inherit="False" />
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Mass>40</Mass>
+      <Flammability>0</Flammability>
+      <WorkToBuild>3000</WorkToBuild>
+    </statBases>
+    <replaceTags>
+      <li>RM_AncientStasisLocker</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- Wrecked: a dead field. Not storage; study it, then build a better grade over it. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_AncientStasisLocker_Wrecked</defName>
+    <label>wrecked stasis locker</label>
+    <description>An ancient stasis locker whose field went dark long ago. The seals are cracked and the field coils are scorched, and whatever it held has long since turned to dust. The coils are not ruined past saving.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ancient/House/RustedFridge</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(105,98,90)</color>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <canOverlapZones>false</canOverlapZones>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>40</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>150</MarketValue>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <replaceTags>
+      <li>RM_AncientStasisLocker</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AncientStasisLockerBase">
+    <defName>RM_AncientStasisLocker_Kludged</defName>
+    <label>kludged stasis locker</label>
+    <description>An ancient stasis locker coaxed back to a fifth of its field. The coils are patched with ordinary wire and the field shudders: it slows spoiling a little, and now and then it flickers out for an hour. It still needs no power.</description>
+    <graphicData>
+      <color>(160,152,140)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>400</MarketValue>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <building>
+      <maxItemsInCell>1</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.8</stasisRotFactor>
+        <stasisFlickerMtbHours>24</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AncientStasisLockerBase">
+    <defName>RM_AncientStasisLocker_Refurbished</defName>
+    <label>refurbished stasis locker</label>
+    <description>An ancient stasis locker refurbished around an ancient component nobody could make today. Its field stops three-quarters of spoiling and deterioration and only rarely flickers. It still needs no power.</description>
+    <statBases>
+      <MarketValue>900</MarketValue>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">1</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <building>
+      <maxItemsInCell>3</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0.25</stasisRotFactor>
+        <stasisFlickerMtbHours>240</stasisFlickerMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AncientStasisLockerBase">
+    <defName>RM_AncientStasisLocker_Original</defName>
+    <label>stasis locker</label>
+    <description>An ancient stasis locker restored to its full field. Nothing inside it spoils or deteriorates, ever, and it needs no power: the machine its makers built.</description>
+    <statBases>
+      <MarketValue>2000</MarketValue>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentSpacer>2</ComponentSpacer>
+      <RM_WM_AncientComponent MayRequire="mandrake.rm.wreckedmachines">2</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <building>
+      <maxItemsInCell>4</maxItemsInCell>
+    </building>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Stasis</mode>
+        <method>RM_ColdMethod_Stasis</method>
+        <stasisRotFactor>0</stasisRotFactor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

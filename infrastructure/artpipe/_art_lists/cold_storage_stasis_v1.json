@@ -1,0 +1,53 @@
+[
+ {
+  "id": "RM_AncientStasisLocker_v1",
+  "rimflow_item_id": "COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS",
+  "target_def": "RM_AncientStasisLocker_Wrecked",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style, seen from slightly above: a waist-high ancient storage locker of pitted grey alloy, squarer and heavier than a fridge, with a thick sealed door and a thin band of faint pale-blue field light glowing along the door seam. Generic ancient machine, no lettering, no logos. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture (tinted per grade in the def). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only. One texture serves all four grades of the line (Wrecked/Kludged/Refurbished/Original); the def tints it per grade, so paint it intact and evenly lit.",
+  "priority": 50,
+  "target_texpath": "Things/Building/Ancient/House/RustedFridge",
+  "biome_neutral": true
+ },
+ {
+  "id": "RSW_RakatanStasisCasket_v1",
+  "rimflow_item_id": "COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS",
+  "target_def": "RSW_RakatanStasisCasket_Wrecked",
+  "canvas_w": 128,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style, seen from slightly above: a 1x2 ancient alien stasis casket, a long low coffer of dark weathered bronze-black alloy with organic, ribbed, faintly biomechanical Rakatan styling, its lid a pane of cloudy crystal with a cold violet-blue stasis glow inside, angular glyph-like grooves along the sides (no readable letters). Ancient, heavy, a few thousand years old. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture (tinted per grade in the def). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only. Rakatan Infinite Empire machine aesthetic (Belsavis / KOTOR Star Forge): dark alloy, organic ribbing, violet-blue force-tech glow.. One texture serves all four grades of the line (Wrecked/Kludged/Refurbished/Original); the def tints it per grade, so paint it intact and evenly lit.",
+  "priority": 50,
+  "target_texpath": "Things/Building/Ruins/AncientCryptosleepPod",
+  "biome_neutral": true
+ },
+ {
+  "id": "RSW_RakatanStasisVault_v1",
+  "rimflow_item_id": "COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS",
+  "target_def": "RSW_RakatanStasisVault_Wrecked",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "prompt": "RimWorld building sprite in the vanilla RimWorld building style, seen from slightly above: a 3x3 ancient alien stasis vault, a squat square strongroom block of dark weathered bronze-black alloy with organic, ribbed, faintly biomechanical Rakatan styling, a heavy sealed hatch on top ringed by a cold violet-blue stasis glow, angular glyph-like grooves cut into the walls (no readable letters). Ancient, massive, a few thousand years old. Painted in the same realistic natural-history painted style as the Rot plant renders: real material texture and believable lighting, matte, soft contact shadow only. NO outline, no black edge line, no dark rim; the object's edge is defined by its own colour and soft shading against the transparent background. Centered, isolated, transparent background.",
+  "style_notes": "Interim art is a vanilla texture (tinted per grade in the def). painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, no outlines, no black edge line, soft contact shadow only. Rakatan Infinite Empire machine aesthetic (Belsavis / KOTOR Star Forge): dark alloy, organic ribbing, violet-blue force-tech glow.. One texture serves all four grades of the line (Wrecked/Kludged/Refurbished/Original); the def tints it per grade, so paint it intact and evenly lit.",
+  "priority": 50,
+  "target_texpath": "Things/Building/Ruins/AncientSecurityCrate",
+  "biome_neutral": true
+ }
+]

@@ -52,6 +52,125 @@ def static_checks():
     if found == 0:
         fails.append("%s: no LWM.DeepStorage.Properties found (instrument blind?)" % os.path.basename(lwm))
     fails += seal_static_checks(ET, re)
+    fails += stasis_unlock_checks(ET)
+    return fails
+
+
+def stasis_unlock_checks(ET):
+    """COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS: the chambers' unlock path is wired into systems that already exist,
+    so its pins are cross-file: the Rakatan research sits in the Wrecked Machines ShipRelated restoration family, the
+    Research Reinvented Analyse opportunity studies the broken grades, every grade of every line joins the Wrecked
+    Machines ladder under the mod names the game matches, the Kludged/Refurbished/Original fallback rot factors follow
+    the owner's grade ruling (strength 0.2/0.75/1), and the RUT V6 vault places the chambers as loot."""
+    fails = []
+    src = os.path.join(ROOT, "src")
+    rsw = os.path.join(src, "RimStarWars", "Cuisine")
+    wm = os.path.join(src, "RimMandrake", "WreckedMachines")
+    rut = os.path.join(src, "RimUtinni", "StructureInjectionsRUT", "Defs", "VaultDungeons")
+
+    def defs_by_name(path):
+        out = {}
+        for el in ET.parse(path).getroot():
+            dn = el.findtext("defName")
+            if dn:
+                out[dn] = el
+        return out
+
+    def all_defnames(root_dir):
+        names = set()
+        for dirpath, _, files in os.walk(os.path.join(root_dir, "Defs")):
+            for f in files:
+                if f.endswith(".xml"):
+                    names |= set(defs_by_name(os.path.join(dirpath, f)))
+        return names
+
+    def mod_name(mod_dir):
+        return ET.parse(os.path.join(mod_dir, "About", "About.xml")).getroot().findtext("name")
+
+    rsw_defs = defs_by_name(os.path.join(rsw, "Defs", "RSW_RakatanStasis.xml"))
+    lockers = defs_by_name(os.path.join(HERE, "Defs", "ColdStorage_StasisLockers.xml"))
+    rsw_all, wm_all = all_defnames(rsw), all_defnames(wm)
+    grades = ("Wrecked", "Kludged", "Refurbished", "Original")
+    lines = {"RM_AncientStasisLocker": lockers, "RSW_RakatanStasisCasket": rsw_defs, "RSW_RakatanStasisVault": rsw_defs}
+    if len(rsw_defs) < 9 or len(lockers) < 4:
+        fails.append("stasis unlock: read %d Rakatan / %d locker defs (instrument blind?)" % (len(rsw_defs), len(lockers)))
+        return fails
+
+    # 1. research: ShipRelated, after the cryo store and Wrecked Machines' restoration research
+    proj = rsw_defs.get("RSW_RakatanStasis")
+    if proj is None:
+        fails.append("stasis unlock: no ResearchProjectDef RSW_RakatanStasis")
+    else:
+        if "ShipRelated" not in [li.text for li in proj.findall("tags/li")]:
+            fails.append("stasis unlock: RSW_RakatanStasis lacks the ShipRelated tag")
+        pre = {li.text: li.get("MayRequire") for li in proj.findall("prerequisites/li")}
+        if "RSW_CryoStorage" not in pre or "RSW_CryoStorage" not in rsw_all:
+            fails.append("stasis unlock: RSW_RakatanStasis must follow RSW_CryoStorage (a Cuisine def)")
+        if pre.get("RM_WM_PowerCellRestoration") != "mandrake.rm.wreckedmachines" or "RM_WM_PowerCellRestoration" not in wm_all:
+            fails.append("stasis unlock: RSW_RakatanStasis must follow RM_WM_PowerCellRestoration, MayRequire wreckedmachines")
+    # 2. Research Reinvented Analyse opportunity on the broken grades
+    opp = rsw_defs.get("RSW_AnalyseRakatanStasisChamber")
+    if opp is None:
+        fails.append("stasis unlock: no Analyse opportunity RSW_AnalyseRakatanStasisChamber")
+    else:
+        things = {li.text for li in opp.findall("things/li")}
+        want = {"RSW_RakatanStasis%s_%s" % (k, g) for k in ("Casket", "Vault") for g in ("Wrecked", "Kludged")}
+        if opp.findtext("project") != "RSW_RakatanStasis" or opp.findtext("opportunityType") != "Analyse" or things != want:
+            fails.append("stasis unlock: Analyse opportunity must study %s for RSW_RakatanStasis" % sorted(want))
+        if "petetimessix.researchreinvented" not in (opp.get("MayRequire") or ""):
+            fails.append("stasis unlock: Analyse opportunity must MayRequire Research Reinvented")
+    # 3. fallback strengths follow the grade ruling; every grade of every line exists
+    want_rot = {"Kludged": 0.8, "Refurbished": 0.25, "Original": 0.0}
+    for line, defs in lines.items():
+        for g in grades:
+            d = defs.get("%s_%s" % (line, g))
+            if d is None:
+                fails.append("stasis unlock: missing %s_%s" % (line, g))
+                continue
+            if g in want_rot:
+                rot = d.findtext("comps/li/stasisRotFactor")
+                if rot is None or abs(float(rot) - want_rot[g]) > 1e-6:
+                    fails.append("stasis unlock: %s_%s stasisRotFactor %s, ruling says %s" % (line, g, rot, want_rot[g]))
+    # 4. Wrecked Machines ladder: every grade gets its WreckedMachineGrade under the right line; FindMod names match
+    for patch, mods in ((os.path.join(HERE, "Patches", "ColdStorage_WreckedMachinesLadder.xml"), [wm]),
+                        (os.path.join(rsw, "Patches", "RSW_RakatanStasisLadder.xml"), [wm, HERE])):
+        root = ET.parse(patch).getroot()
+        named = {li.text for m in root.iter("mods") for li in m}
+        for mdir in mods:
+            if mod_name(mdir) not in named:
+                fails.append("stasis unlock: %s FindMod never names %r" % (os.path.basename(patch), mod_name(mdir)))
+        exts = {}
+        for op in root.iter("li"):
+            if op.get("Class") == "PatchOperationAddModExtension":
+                ext = op.find("value/li")
+                dn = (op.findtext("xpath") or "").split('defName="')[-1].split('"')[0]
+                exts[dn] = (ext.findtext("grade"), ext.findtext("line"))
+        rsw_patch = os.path.basename(patch).startswith("RSW_")
+        for line in lines:
+            if line.startswith("RSW_") != rsw_patch:
+                continue
+            for g in grades:
+                if exts.get("%s_%s" % (line, g)) != (g, line):
+                    fails.append("stasis unlock: %s gives %s_%s no WreckedMachineGrade(%s, %s)"
+                                 % (os.path.basename(patch), line, g, g, line))
+    # 5. RUT V6 vault places the chambers as loot, MayRequire'd on both of their mods
+    syms = defs_by_name(os.path.join(rut, "SymbolDefs_Vaults.xml"))
+    layout = open(os.path.join(rut, "StructureLayoutDefs_Vaults.xml"), encoding="utf-8").read()
+    v6 = layout[layout.find("RUT_VaultType3_FrozenRakata"):]
+    placed = 0
+    for name, el in syms.items():
+        thing = el.findtext("thing") or ""
+        if not thing.startswith("RSW_RakatanStasis"):
+            continue
+        placed += 1
+        if thing not in rsw_defs:
+            fails.append("stasis unlock: %s spawns %s, which is no Rakatan chamber def" % (name, thing))
+        if set((el.get("MayRequire") or "").split(",")) != {"mandrake.rsw.cuisine", "mandrake.rm.coldstorage"}:
+            fails.append("stasis unlock: %s must MayRequire cuisine and coldstorage" % name)
+        if v6.count(name) != 1:
+            fails.append("stasis unlock: %s placed %d times in the V6 vault, want 1" % (name, v6.count(name)))
+    if placed < 2:
+        fails.append("stasis unlock: only %d Rakatan chamber symbols in the RUT vault symbols" % placed)
     return fails
 
 

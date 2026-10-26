@@ -137,14 +137,53 @@ THING_SYMBOLS = [
      "AIPersonaCore - the same core the Assailant complex takes (ruled 2026-09-01). Feeding "
      "it is the thaw. Our own ThingDef -> needs this wrapper; spawned factionless so the "
      "crew can claim and then refuel it (RefuelWorkGiverUtility.CanRefuel needs same faction)."),
+    # COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS: the Rakatan stasis chambers (RimStarWars: Cuisine,
+    # Defs/RSW_RakatanStasis.xml) are found as loot in the V6 core, broken or barely working. The crew
+    # studies and restores them on the Wrecked Machines ladder. Their defs only exist with Cuisine and
+    # Cold Storage loaded, hence MAY_REQUIRE below (a SymbolDef naming a missing thing would error).
+    ("RUT_Symbol_RakataStasisVault_Wrecked", "RSW_RakatanStasisVault_Wrecked",
+     "V6 core loot: a dead 3x3 Rakatan stasis vault. Factionless so the crew can study it and build over it."),
+    ("RUT_Symbol_RakataStasisCasket_Wrecked", "RSW_RakatanStasisCasket_Wrecked",
+     "V6 core loot: a dead 1x2 Rakatan stasis casket."),
+    ("RUT_Symbol_RakataStasisCasket_Kludged", "RSW_RakatanStasisCasket_Kludged",
+     "V6 core loot: a 1x2 casket still holding a weak, flickering field (needs power)."),
 ]
 
-# Symbols that must spawn with NO faction even on a faction-owned site.
-FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart", "RUT_Symbol_VaultFleshSeal"}
+# Symbols whose thing comes from an optional mod: MayRequire (comma list = all of them) on the SymbolDef.
+_RSW_STASIS_MODS = "mandrake.rsw.cuisine,mandrake.rm.coldstorage"
+MAY_REQUIRE = {
+    "RUT_Symbol_RakataStasisVault_Wrecked": _RSW_STASIS_MODS,
+    "RUT_Symbol_RakataStasisCasket_Wrecked": _RSW_STASIS_MODS,
+    "RUT_Symbol_RakataStasisCasket_Kludged": _RSW_STASIS_MODS,
+}
 
-SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
+# Trailing comments the committed XML carries on a symbol's pawnKindDef/thing line (port history).
+INLINE_COMMENTS = {
+    "RUT_Symbol_GreenGoo": "was AA_GreenGoo; RM_Wuum is our port (Alpha Animals retired 2026-10-18)",
+    "RUT_Symbol_BlackJellyWall": "was AA_BlackJellyWall (Alpha Animals), then VFEI2_InsectJellyWall; both donors "
+                                 "retired 2026-10-18: our port in ThingDefs_Buildings/RUT_HiveVault_Buildings.xml",
+    "RUT_Symbol_InfestedShipPart": "port of VFEI2_InfestedShipPart, 2026-10-18",
+    "RUT_Symbol_InfestedShipChunk": "port of VFEI2_InfestedShipChunk, 2026-10-18",
+}
+
+
+def _attrs(name):
+    req = MAY_REQUIRE.get(name)
+    return ' MayRequire="%s"' % req if req else ""
+
+
+def _comment(name):
+    note = INLINE_COMMENTS.get(name)
+    return "  <!-- %s -->" % note if note else ""
+
+# Symbols that must spawn with NO faction even on a faction-owned site.
+FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart", "RUT_Symbol_VaultFleshSeal",
+                             "RUT_Symbol_RakataStasisVault_Wrecked", "RUT_Symbol_RakataStasisCasket_Wrecked",
+                             "RUT_Symbol_RakataStasisCasket_Kludged"}
+
+SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef{attrs}>
     <defName>{defName}</defName>
-    <pawnKindDef>{pawnKindDef}</pawnKindDef>
+    <pawnKindDef>{pawnKindDef}</pawnKindDef>{comment}
     <spawnPartOfFaction>false</spawnPartOfFaction>{faction_xml}
     <numberToSpawn>1</numberToSpawn>
     <spawnDead>false</spawnDead>
@@ -153,9 +192,9 @@ SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
   </KCSG.SymbolDef>
 """
 
-SYMBOLDEF_THING_TMPL = """  <KCSG.SymbolDef>
+SYMBOLDEF_THING_TMPL = """  <KCSG.SymbolDef{attrs}>
     <defName>{defName}</defName>
-    <thing>{thing}</thing>{extra}
+    <thing>{thing}</thing>{comment}{extra}
   </KCSG.SymbolDef>
 """
 
@@ -164,12 +203,14 @@ def gen_symboldefs():
     body = []
     for name, kind, note, faction in PAWN_SYMBOLS:
         faction_xml = "\n    <faction>%s</faction>" % faction if faction else ""
-        body.append(SYMBOLDEF_PAWN_TMPL.format(defName=name, pawnKindDef=kind, faction_xml=faction_xml))
+        body.append(SYMBOLDEF_PAWN_TMPL.format(defName=name, pawnKindDef=kind, faction_xml=faction_xml,
+                                                attrs=_attrs(name), comment=_comment(name)))
     for name, thing, note in THING_SYMBOLS:
         extra = ""
         if name in FACTIONLESS_THING_SYMBOLS:
             extra = "\n    <spawnPartOfFaction>false</spawnPartOfFaction>"
-        body.append(SYMBOLDEF_THING_TMPL.format(defName=name, thing=thing, extra=extra))
+        body.append(SYMBOLDEF_THING_TMPL.format(defName=name, thing=thing, extra=extra,
+                                                 attrs=_attrs(name), comment=_comment(name)))
     for name, thing, kinds, note in CONTAINER_SYMBOLS:
         kinds_xml = "\n".join("      <li>%s</li>" % k for k in kinds)
         body.append(SYMBOLDEF_CONTAINER_TMPL.format(defName=name, thing=thing, kinds=kinds_xml))
@@ -373,8 +414,14 @@ def main():
         core_wall="Wall_Plasteel", core_size=13, core_floor="Ice",
         # a casket is (1,2) with its interaction cell one to the east - a gap
         # between each keeps every casket openable
-        core_items=["RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket", ".",
-                    "RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket"],
+        # Rows of 9 from (r0+2, c0+2). Index 49 = (r0+7, c0+6): the 3x3 stasis vault, centred in the
+        # core. Indices 72 and 80 = (r0+10, c0+2) and (r0+10, c0+10): two stasis caskets (1x2, north
+        # half on r0+9), clear of the door column c0+6. COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS.
+        core_items=(["RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket", ".",
+                     "RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket"]
+                    + ["."] * (49 - 7) + ["RUT_Symbol_RakataStasisVault_Wrecked"]
+                    + ["."] * (72 - 50) + ["RUT_Symbol_RakataStasisCasket_Kludged"]
+                    + ["."] * (80 - 73) + ["RUT_Symbol_RakataStasisCasket_Wrecked"]),
         core_corner_item="RUT_Symbol_VaultHeart",
         core_wall_hugging=["Turret_MiniTurret", "Turret_MiniTurret",
                            "Turret_MiniTurret", "Turret_MiniTurret"],

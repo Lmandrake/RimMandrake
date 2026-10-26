@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS: with Wrecked Machines loaded, the ancient stasis locker joins its
+       restoration ladder (Defs/ColdStorage_StasisLockers.xml). Each grade gets the WreckedMachineGrade extension (so
+       ColdStorageStartup.GradeStrength reads the ladder sliders for its stasis strength), and the Kludged, Refurbished
+       and Original grades become buildable over a lower grade of the line (PlaceWorker_BuildOverLowerGrade). The
+       Original grade's category is then captured and hidden by Wrecked Machines' LadderPatcher unless its "allow full
+       restoration" setting is on. `original` stays unset: Cold Storage scales a chamber's power itself. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Wrecked Machines</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Wrecked"]</xpath>
+            <value>
+              <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                <grade>Wrecked</grade>
+                <line>RM_AncientStasisLocker</line>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Kludged"]</xpath>
+            <value>
+              <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                <grade>Kludged</grade>
+                <line>RM_AncientStasisLocker</line>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Kludged"]</xpath>
+            <value>
+              <designationCategory>Furniture</designationCategory>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Kludged"]</xpath>
+            <value>
+              <placeWorkers>
+                <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+              </placeWorkers>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Refurbished"]</xpath>
+            <value>
+              <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                <grade>Refurbished</grade>
+                <line>RM_AncientStasisLocker</line>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Refurbished"]</xpath>
+            <value>
+              <designationCategory>Furniture</designationCategory>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Refurbished"]</xpath>
+            <value>
+              <placeWorkers>
+                <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+              </placeWorkers>
+            </value>
+          </li>
+          <li Class="PatchOperationAddModExtension">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Original"]</xpath>
+            <value>
+              <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+                <grade>Original</grade>
+                <line>RM_AncientStasisLocker</line>
+              </li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Original"]</xpath>
+            <value>
+              <designationCategory>Furniture</designationCategory>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_AncientStasisLocker_Original"]</xpath>
+            <value>
+              <placeWorkers>
+                <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+              </placeWorkers>
+            </value>
+          </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
