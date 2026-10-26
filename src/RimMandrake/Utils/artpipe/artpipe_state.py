@@ -485,13 +485,28 @@ def _manifest(p: Path) -> dict | None:
         return None
 
 
-def twins_plan(root: Path) -> list[dict]:
+def _stored_pictures(ids) -> dict:
+    """job id -> shas of its `artpipe` variant events in the art ledger, only for jobs whose every ledgered picture
+    is in the art store (the store is content-addressed, so the bytes are the job's picture). Reads only."""
+    if not ids:
+        return {}
+    L = _artledger(state_dir.REPO_ROOT)
+    want, shas = set(ids), {}
+    for ev in L.read_events():
+        if ev.get("type") == "variant" and ev.get("kind") == "artpipe" and ev.get("job") in want and ev.get("sha"):
+            shas.setdefault(ev["job"], set()).add(ev["sha"])
+    return {j: sorted(s) for j, s in shas.items() if all(L.store_has(h) for h in s)}
+
+
+def twins_plan(root: Path, stored=None) -> list[dict]:
     """Every job filed in BOTH done/ and failed/, with the decision. Reads only.
 
     KEEP_DONE (its failed/ files are pruned) only when the done copy's artifacts exist: done/<id>.json, a done
     manifest with status ok, and _artsrc/<id>/<id>.png no newer than that manifest (a newer PNG was rewritten by a
-    later failed run, so the done record no longer describes the picture on disk). Anything else is AMBIGUOUS and
-    left alone; a job with any file in pending/ or active/ is REFUSED, never touched."""
+    later failed run, so the done record no longer describes the picture on disk). A missing _artsrc PNG is
+    excused only when the art ledger records the job's picture and the art store holds every one of its bytes
+    (`stored`: job id -> shas; default `_stored_pictures`); the plan names those shas as the evidence. Anything
+    else is AMBIGUOUS and left alone; a job with any file in pending/ or active/ is REFUSED, never touched."""
     done, failed = root / "done", root / "failed"
     by_id: dict = {}
     for f in sorted(failed.iterdir()) if failed.is_dir() else []:
@@ -499,6 +514,8 @@ def twins_plan(root: Path) -> list[dict]:
         if t:
             by_id.setdefault(t[0], []).append((f, t[1]))
     lv = _last_validated(root)
+    if stored is None:
+        stored = _stored_pictures([j for j in by_id if not (root / "_artsrc" / j / f"{j}.png").is_file()])
     plan = []
     for jid, files in sorted(by_id.items()):
         dj, dm = done / f"{jid}.json", done / f"{jid}.manifest.json"
@@ -510,7 +527,7 @@ def twins_plan(root: Path) -> list[dict]:
         png = root / "_artsrc" / jid / f"{jid}.png"
         m = _manifest(dm) if dm.is_file() else None
         fm = next((_manifest(f) for f, k in files if k == "manifest"), None)
-        why = []
+        why, evidence = [], None
         if busy:
             decision, why = "REFUSED", [f"live in {', '.join(busy)}"]
         else:
@@ -519,13 +536,16 @@ def twins_plan(root: Path) -> list[dict]:
             if not m or m.get("status") != "ok":
                 why.append(f"done manifest status {m.get('status') if m else 'unreadable/absent'!r}")
             if not png.is_file():
-                why.append("no _artsrc PNG")
+                if stored.get(jid):
+                    evidence = {"artstore": list(stored[jid])}
+                else:
+                    why.append("no _artsrc PNG (and the art store holds no ledgered picture of this job)")
             elif dm.is_file() and png.stat().st_mtime > dm.stat().st_mtime + PNG_AFTER_DONE_SLACK_S:
                 why.append("PNG newer than the done manifest (rewritten by a later run)")
             if fm and fm.get("status") == "ok":
                 why.append("failed/ manifest says ok")
             decision = "AMBIGUOUS" if why else "KEEP_DONE"
-        plan.append({"id": jid, "decision": decision, "why": why,
+        plan.append({"id": jid, "decision": decision, "why": why, "evidence": evidence,
                      "prune": [f"failed/{f.name}" for f, _ in files] if decision == "KEEP_DONE" else [],
                      "failed_files": [f"failed/{f.name}" for f, _ in files],
                      "failed_status": (fm or {}).get("worker_status"),
@@ -566,6 +586,7 @@ def twins_apply(root: Path, plan: list[dict], backup_root: Path, why: str, stamp
                 log.write(json.dumps({"id": p["id"], "file": rel, "to": str(d.relative_to(root)), "sha256": sha,
                                       "kept": [f"done/{p['id']}.json", f"done/{p['id']}.manifest.json"],
                                       "rule": "done wins over failed when the done copy's artifacts exist",
+                                      "evidence": p.get("evidence"),
                                       "failed_status": p["failed_status"], "last_validated": p["last_validated"],
                                       "backup": str(bdir / rel), "why": why, "tool": "artpipe_state.py twins",
                                       "host": socket.gethostname(),
@@ -593,7 +614,9 @@ def cmd_twins(args) -> int:
         lv = p["last_validated"]
         lvs = f"{time.strftime('%Y-%m-%d', time.gmtime(lv[0]))} {lv[1]}" if lv else "none"
         print(f"  {p['decision']:<9} {p['id']:<44} failed={p['failed_status'] or '-':<16} last_validated={lvs:<16} "
-              f"{', '.join(p['failed_files'])}" + (f"  [{'; '.join(p['why'])}]" if p["why"] else ""))
+              f"{', '.join(p['failed_files'])}" + (f"  [{'; '.join(p['why'])}]" if p["why"] else "")
+              + (f"  (no _artsrc PNG; art store holds {', '.join(h[:12] for h in p['evidence']['artstore'])})"
+                 if p.get("evidence") else ""))
     c = Counter(p["decision"] for p in plan)
     nfiles = sum(len(p["prune"]) for p in plan)
     print(f"twins: {len(plan)} ids ({dict(c)}); {nfiles} failed/ file(s) to prune")

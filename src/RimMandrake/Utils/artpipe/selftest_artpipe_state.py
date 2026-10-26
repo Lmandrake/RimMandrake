@@ -270,6 +270,21 @@ def test_twins(tmp: Path):
     (st / "failed" / "stray.json").unlink()
     (st / "failed" / "stray.manifest.manifest.json").write_text(json.dumps({"status": "failed"}))
     twin("nopng", png=False)
+    # a lost _artsrc PNG is excused only by the art ledger + store holding EVERY ledgered picture of the job
+    led, store = tmp / "twled", tmp / "twstore"
+    os.environ["ART_LEDGER_DIR"], os.environ["ARTSTORE"] = str(led), str(store)
+    (led / "events").mkdir(parents=True)
+    held, lost = "a" * 64, "b" * 64
+    (store / held[:2]).mkdir(parents=True)
+    (store / held[:2] / f"{held}.png").write_bytes(b"png")
+    (led / "events" / "BUILD.jsonl").write_text("".join(json.dumps(e) + "\n" for e in (
+        {"id": "v1", "type": "variant", "kind": "artpipe", "job": "stored", "sha": held},
+        {"id": "v2", "type": "variant", "kind": "artpipe", "job": "halfstored", "sha": held},
+        {"id": "v3", "type": "variant", "kind": "artpipe", "job": "halfstored", "sha": lost},
+        {"id": "v4", "type": "variant", "kind": "repo", "job": "repoonly", "sha": held})))
+    twin("stored", png=False)
+    twin("halfstored", png=False)
+    twin("repoonly", png=False)
     twin("late", png_late=True)
     twin("badman", done_status="failed")
     twin("busy")
@@ -282,7 +297,15 @@ def test_twins(tmp: Path):
     before = sorted(p.name for p in (st / "failed").iterdir())
     plan = {p["id"]: p for p in AS.twins_plan(st)}
     check("twins: only ids in both done/ and failed/", set(plan) == {"good", "stray", "nopng", "late", "badman",
-                                                                     "busy", "running"})
+                                                                     "busy", "running", "stored", "halfstored",
+                                                                     "repoonly"})
+    check("twins: no _artsrc PNG but the store holds the job's ledgered picture -> KEEP_DONE, sha as evidence",
+          plan["stored"]["decision"] == "KEEP_DONE" and plan["stored"]["evidence"] == {"artstore": [held]})
+    check("twins: a picture missing from the store, or a non-artpipe variant, excuses nothing",
+          all(plan[j]["decision"] == "AMBIGUOUS" and not plan[j]["prune"] for j in ("halfstored", "repoonly")))
+    check("twins: an explicit `stored` map is used as given",
+          AS.twins_plan(st, stored={})[[p["id"] for p in AS.twins_plan(st, stored={})].index("stored")]["decision"]
+          == "AMBIGUOUS")
     check("twins: done copy with its artifacts wins", plan["good"]["decision"] == "KEEP_DONE"
           and plan["good"]["prune"] == ["failed/good.json", "failed/good.manifest.json"]
           and plan["good"]["last_validated"] == (5, "pass"))
@@ -314,13 +337,15 @@ def test_twins(tmp: Path):
     pruned = list((st / AS.PRUNED_DIR).glob("*/failed/*"))
     log = [json.loads(x) for x in next((st / AS.PRUNED_DIR).glob("*/PRUNED.jsonl")).read_text().splitlines()]
     check("twins: apply moves exactly the KEEP_DONE failed/ files", rc == 2 and sorted(p.name for p in pruned) ==
-          ["good.json", "good.manifest.json", "stray.manifest.json", "stray.manifest.manifest.json"]
+          ["good.json", "good.manifest.json", "stored.json", "stored.manifest.json", "stray.manifest.json",
+           "stray.manifest.manifest.json"]
           and "good.json" not in left and "nopng.json" in left and "busy.json" in left and "onlyfailed.json" in left)
     check("twins: done/ copies and PNGs untouched", (st / "done" / "good.json").is_file()
           and (st / "_artsrc" / "good" / "good.png").is_file())
     check("twins: one provenance line per moved file, sha + why + backup",
-          len(log) == 4 and all(r["why"] == "selftest" and len(r["sha256"]) == 64 and Path(r["backup"]).is_file()
-                                for r in log))
+          len(log) == 6 and all(r["why"] == "selftest" and len(r["sha256"]) == 64 and Path(r["backup"]).is_file()
+                                for r in log)
+          and {r["id"]: r["evidence"] for r in log}["stored"] == {"artstore": [held]})
     check("twins: backup holds the failed files and the kept done copy",
           all((Path(log[0]["backup"]).parents[1] / rel).is_file()
               for rel in ("failed/good.json", "done/good.json", "done/good.manifest.json")))
