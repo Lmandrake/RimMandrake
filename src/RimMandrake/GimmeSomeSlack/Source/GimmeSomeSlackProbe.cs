@@ -611,6 +611,14 @@ namespace RimMandrake.GimmeSomeSlack
             F("winSlices", comp.WinSlices.ToString());
             F("winSliceGcHits", comp.WinSliceGcHits.ToString());
             F("gcGen0", GC.CollectionCount(0).ToString());
+            // GSS round 9: the window's max / max-uncollected / first slice as WHOLE records (rebuildPhasesMs below is only the
+            // last rebuild's), frames the coalescing gate held, and whether Unity runs the collector incrementally (then a
+            // collection's slices need not move gcGen0, so the noGc maxima can still hold a pause: read gapMs and heapDelta)
+            F("sliceWindow", comp.Window.Json());
+            F("coalesceHolds", comp.CoalesceHolds.ToString());
+            F("gcIncremental", UnityEngine.Scripting.GarbageCollector.isIncremental ? "true" : "false");
+            F("gcGen1", GC.CollectionCount(1).ToString());
+            F("gcGen2", GC.CollectionCount(2).ToString());
             // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: the lay worker (a frame's build lays no edge: laidOnCaller stays 0)
             F("lastLanded", comp.LastLanded.ToString());
             F("laidOnCaller", comp.LastLaidOnCaller.ToString());
@@ -621,7 +629,7 @@ namespace RimMandrake.GimmeSomeSlack
             // round 2: where a rebuild's time goes, how the snapshot base was kept, and what forced the last rebuild / re-reduce
             CordBuilder bld = comp.BuilderForProbe;
             F("rebuildPhasesMs", "{" + string.Join(",", new[] {
-                "\"snapBase\":" + J.D(comp.LastSnapBaseMs), "\"snapPower\":" + J.D(comp.LastSnapPowerMs),
+                "\"snapBase\":" + J.D(comp.LastSnapBaseMs), "\"snapClone\":" + J.D(comp.LastSnapCloneMs), "\"snapPower\":" + J.D(comp.LastSnapPowerMs),
                 "\"tapIds\":" + J.D(comp.LastTapIdsMs), "\"styles\":" + J.D(comp.LastStylesMs), "\"build\":" + J.D(comp.LastBuildMs),
                 "\"bInputs\":" + J.D(bld.PhInputsMs), "\"bReduce\":" + J.D(bld.PhReduceMs), "\"bEdges\":" + J.D(bld.PhEdgesMs),
                 "\"bKeys\":" + J.D(bld.PhKeyMs), "\"bCorridor\":" + J.D(bld.PhCorridorMs), "\"bNodes\":" + J.D(bld.PhNodesMs),

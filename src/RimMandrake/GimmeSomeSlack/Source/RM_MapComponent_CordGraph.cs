@@ -247,7 +247,19 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>The last Rebuild's publish tail in ms (net seeds, materials, section signatures + dirtying) and sections compared.</summary>
         public double LastTailMs, LastSeedsMs, LastMaterialsMs, LastSigMs;
         public int LastSigSections;
-        public void ResetSliceWindow() { WinMaxSliceMs = WinMaxSliceNoGcMs = 0; WinSlices = WinSliceGcHits = 0; }
+        public void ResetSliceWindow()
+        {
+            WinMaxSliceMs = WinMaxSliceNoGcMs = 0; WinSlices = WinSliceGcHits = 0;
+            Window.Reset(System.Diagnostics.Stopwatch.GetTimestamp());
+            CoalesceHolds = 0;
+        }
+        /// <summary>GSS round 9: the whole record (phases, unattributed gap, gen 0/1/2 and heap deltas, worker flags, ordinal)
+        /// of the window's slowest slice, slowest uncollected slice and first slice; the probe's "sliceWindow".</summary>
+        internal readonly SliceWindow Window = new SliceWindow();
+        /// <summary>Frames the lay worker had landed pieces but the coalescing gate (CordBuilder.LayReadyCoalesced) held the
+        /// rebuild, since slicereset.</summary>
+        public int CoalesceHolds;
+        public double LastSnapCloneMs;
         /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: edges the last build took from the lay worker, and laid itself (a
         /// frame's build: 0 unless a worker lay threw).</summary>
         public int LastLanded, LastLaidOnCaller;
@@ -266,8 +278,11 @@ namespace RimMandrake.GimmeSomeSlack
                 return;
             }
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            int gc0 = GC.CollectionCount(0);
+            long tStart = System.Diagnostics.Stopwatch.GetTimestamp();
+            int gc0 = GC.CollectionCount(0), gc1 = GC.CollectionCount(1), gc2 = GC.CollectionCount(2);
+            long heap0 = complete ? 0 : GC.GetTotalMemory(false);
             CordBuilder b = builder;
+            bool layBusy = b.LayWorkerBusy, graphBusy = b.GraphWorkerBusy;
             List<LaidPiece> next;
             Dictionary<Cell, Aerial.CellStyle> styled;
             // GPT review 2026-10-08 #10: the snapshot and style scan are guarded with the build, and a failure keeps the
@@ -277,6 +292,7 @@ namespace RimMandrake.GimmeSomeSlack
                 CordWorld world = CordWorldAdapter.Snapshot(map, Snap);
                 LastWorld = world;
                 LastSnapBaseMs = Snap.BaseMs;
+                LastSnapCloneMs = Snap.CloneMs;
                 LastSnapPowerMs = Snap.PowerMs;
                 BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
                 long tTap = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -311,7 +327,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (LastPending > 0)
             {
                 // a later frame's MapComponentUpdate takes what the worker laid once some has landed or the batch ended
-                // (LayReady; a layer regenerate meanwhile rebuilds too)
+                // (CordBuilder.LayReadyCoalesced; a layer regenerate meanwhile rebuilds too)
                 SlicedBuilds++;
             }
             LastLanded = b.LastLanded;
@@ -372,6 +388,28 @@ namespace RimMandrake.GimmeSomeSlack
             if (!complete)
             {
                 bool gcHit = GC.CollectionCount(0) != gc0;
+                var rec = new SliceRecord
+                {
+                    TotalMs = LastRebuildMs, Gc0 = GC.CollectionCount(0) - gc0, Gc1 = GC.CollectionCount(1) - gc1,
+                    Gc2 = GC.CollectionCount(2) - gc2, HeapDelta = GC.GetTotalMemory(false) - heap0,
+                    LayBusy = layBusy, GraphBusy = graphBusy, Landed = LastLanded, Pending = LastPending,
+                };
+                rec.Add("snapBase", LastSnapBaseMs - LastSnapCloneMs);
+                rec.Add("snapClone", LastSnapCloneMs);
+                rec.Add("snapPower", LastSnapPowerMs);
+                rec.Add("tapIds", LastTapIdsMs);
+                rec.Add("styles", LastStylesMs);
+                rec.Add("build", LastBuildMs);
+                rec.Add("tail", LastTailMs);
+                rec.Detail.Add(new KeyValuePair<string, double>("bInputs", b.PhInputsMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("bReduce", b.PhReduceMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("bEdges", b.PhEdgesMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("bNodes", b.PhNodesMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("bReach", b.PhReachMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("tSeeds", LastSeedsMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("tMaterials", LastMaterialsMs));
+                rec.Detail.Add(new KeyValuePair<string, double>("tSig", LastSigMs));
+                Window.Record(rec, tStart, System.Diagnostics.Stopwatch.Frequency);
                 if (LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
                 if (LastRebuildMs > WinMaxSliceMs) WinMaxSliceMs = LastRebuildMs;
                 WinSlices++;
@@ -976,7 +1014,12 @@ namespace RimMandrake.GimmeSomeSlack
                 swayModeKey = mk;
             }
             // a sliced build: rebuild once the lay worker has landed pieces, or has stopped with edges still missing
-            if (LastPending > 0 && builder.LayReady) StaleOffscreen = true;
+            // GSS round 9: coalesced, so a stream of landings rebuilds every ~100 ms or 64 pieces, not every frame
+            if (LastPending > 0)
+            {
+                if (builder.LayReadyCoalesced(System.Diagnostics.Stopwatch.GetTimestamp())) StaleOffscreen = true;
+                else if (builder.LayReady) CoalesceHolds++;
+            }
             if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)
             {
                 StaleOffscreen = false;

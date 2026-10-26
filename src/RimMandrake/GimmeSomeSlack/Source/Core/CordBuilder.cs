@@ -207,6 +207,31 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
             }
         }
+        /// <summary>GSS round 9 (live round 8: 40-50 frame rebuilds a second while the worker landed pieces, each one a
+        /// whole-map snapshot copy, a Build and the publish tail; the slowest slices were pauses no phase owned, so the
+        /// lever is fewer slices, not a faster one). <see cref="LayReady"/> held until the landed pieces are worth a
+        /// rebuild: a graph landed or faulted, the lay batch ended, at least <see cref="CoalescePieces"/> landed, or the
+        /// oldest landed piece is <see cref="CoalesceMs"/> old (so a slow batch still shows within that). nowTs: Stopwatch
+        /// ticks (a parameter so the SelfTest drives the clock).</summary>
+        public bool LayReadyCoalesced(long nowTs)
+        {
+            lock (layLock)
+            {
+                if (graphLanded != null || graphFault != null) return true;
+                if (graphRunning) return false;
+                if (!layRunning) return true;
+                if (landed.Count == 0) return false;
+                if (landed.Count >= CoalescePieces) return true;
+                return (nowTs - firstLandTs) * 1000.0 / System.Diagnostics.Stopwatch.Frequency >= CoalesceMs;
+            }
+        }
+        public int CoalescePieces = 64;
+        public double CoalesceMs = 100.0;
+        /// <summary>Stopwatch ticks when the first piece of the current landed set landed (under layLock).</summary>
+        private long firstLandTs;
+        /// <summary>The lay worker is running a batch / the graph worker a job (the round 9 slice record's worker flags).</summary>
+        public bool LayWorkerBusy { get { lock (layLock) return layRunning; } }
+        public bool GraphWorkerBusy { get { lock (layLock) return graphRunning; } }
         /// <summary>A worker batch (lays or a graph job) is still running (SelfTest waits on it).</summary>
         public bool LayRunning { get { lock (layLock) return layRunning || graphRunning; } }
 
@@ -317,7 +342,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         lp.Key = j.Fk;
                         lp.LaySig = j.Ep.Sig;
                         lp.CorridorHash = CorridorHash(w, lp);
-                        lock (layLock) landed[j.Fk] = lp;
+                        lock (layLock)
+                        {
+                            if (landed.Count == 0) firstLandTs = System.Diagnostics.Stopwatch.GetTimestamp();
+                            landed[j.Fk] = lp;
+                        }
                     }
                     catch (Exception ex)
                     {

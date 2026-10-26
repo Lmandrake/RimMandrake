@@ -28,13 +28,17 @@ namespace RimMandrake.GimmeSomeSlack
         internal static CordWorld Snapshot(Map map, SnapshotCache cache)
         {
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            CordWorld world = cache != null ? cache.Base(map).Clone() : FullBase(map);
+            // round 9: the cache's Base and the per-rebuild Clone (a whole-map array copy) are timed apart
+            CordWorld b = cache != null ? cache.Base(map) : null;
+            long tc = System.Diagnostics.Stopwatch.GetTimestamp();
+            CordWorld world = b != null ? b.Clone() : FullBase(map);
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
             FogGrid fog = map.fogGrid;
             AddPower(map, world, fog);
             if (cache != null)
             {
                 cache.BaseMs = (t1 - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                cache.CloneMs = (t1 - tc) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
                 cache.PowerMs = (System.Diagnostics.Stopwatch.GetTimestamp() - t1) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             }
             return world;
@@ -322,7 +326,8 @@ namespace RimMandrake.GimmeSomeSlack
         private int sinceCheck;
         public int FullScans, Uses, LastPatched, Mismatches;
         public string LastFullWhy = "", LastMismatch = "";
-        public double BaseMs, PowerMs;
+        /// <summary>The last snapshot's base in ms (cache Base + Clone), the Clone part of it, and the power part.</summary>
+        public double BaseMs, CloneMs, PowerMs;
 
         public void Invalidate(string why) { baseWorld = null; dirty.Clear(); overflow = false; LastFullWhy = why; }
 

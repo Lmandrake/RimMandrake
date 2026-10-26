@@ -80,6 +80,7 @@
     <Compile Include="CordScaleBench.cs" />
     <Compile Include="..\Core\RebuildGate.cs" />
     <Compile Include="..\Core\RebuildTail.cs" />
+    <Compile Include="..\Core\SliceWindow.cs" />
   </ItemGroup>
 
   <ItemGroup>

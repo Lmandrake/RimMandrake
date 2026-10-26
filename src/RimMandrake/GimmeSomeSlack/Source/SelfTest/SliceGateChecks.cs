@@ -24,7 +24,111 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Slices();
             AsyncSlices();
             GraphWorker();
+            Coalesce();
+            Window();
             Gate();
+        }
+
+        /// <summary>GSS round 9 (live round 8: 40-50 frame rebuilds a second while the worker landed pieces; the slowest slices
+        /// were pauses no phase owned, so the lever is fewer slices). LayReadyCoalesced, driven with a chosen clock: it holds
+        /// while a graph job runs or nothing landed, opens at CoalescePieces landed, at CoalesceMs of age, at a landed graph
+        /// and at the batch's end; a coalesced run of frames rebuilds far less often and still ends bit-identical.</summary>
+        private static void Coalesce()
+        {
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            long sec = Stopwatch.Frequency;
+            // (1) the gate's states, the worker held on semaphores so the landed count is the test's
+            {
+                var graphGo = new System.Threading.SemaphoreSlim(0);
+                var layGo = new System.Threading.SemaphoreSlim(0);
+                var b = new CordBuilder { GraphJobHook = () => graphGo.Wait(), WorkerLayHook = k => layGo.Wait(), CoalescePieces = 3, CoalesceMs = 100 };
+                var sw = Stopwatch.StartNew();
+                b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                bool heldGraph = !b.LayReadyCoalesced(long.MaxValue / 2);
+                graphGo.Release();
+                while (!b.LayReady && sw.Elapsed.TotalSeconds < 60) System.Threading.Thread.Sleep(1);
+                bool openGraph = b.LayReadyCoalesced(0);
+                b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                int pending = b.LastPending;
+                bool heldEmpty = !b.LayReadyCoalesced(long.MaxValue / 2);
+                layGo.Release(1);
+                while (!b.LayReady && sw.Elapsed.TotalSeconds < 60) System.Threading.Thread.Sleep(1);
+                // one landed: held at age <= 0 (clock 0 is before it landed), open once it is a second old
+                bool heldOne = !b.LayReadyCoalesced(0);
+                bool openAged = b.LayReadyCoalesced(Stopwatch.GetTimestamp() + sec);
+                layGo.Release(2);
+                bool openCount = false;
+                while (sw.Elapsed.TotalSeconds < 60) { if (b.LayReadyCoalesced(0)) { openCount = true; break; } System.Threading.Thread.Sleep(1); }
+                layGo.Release(100000);
+                while (b.LayRunning && sw.Elapsed.TotalSeconds < 60) System.Threading.Thread.Sleep(1);
+                bool openEnd = b.LayReadyCoalesced(0);
+                Program.Check(pending > 3, $"coalesce: blind, the adopting Build left {pending} edges pending (need more than CoalescePieces)");
+                Program.Check(heldGraph && openGraph, $"coalesce: graph job running held {heldGraph}, graph landed opened {openGraph}");
+                Program.Check(heldEmpty && heldOne && openAged, $"coalesce: nothing landed held {heldEmpty}, one fresh piece held {heldOne}, one aged piece opened {openAged}");
+                Program.Check(openCount && openEnd, $"coalesce: CoalescePieces landed opened {openCount}, batch end opened {openEnd}");
+            }
+            // (2) frames ~2 ms apart while a slowed worker (2 ms a lay) lands a cold build: rebuild when the per-frame gate
+            //     (LayReady) opens, then when the coalesced gate opens. Same final pieces, far fewer rebuilds.
+            {
+                ulong want = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live));
+                int Run(bool coalesced, out ulong dig, out int holds)
+                {
+                    var b = new CordBuilder { WorkerLayHook = k => System.Threading.Thread.Sleep(2) };
+                    int builds = 0;
+                    holds = 0;
+                    List<LaidPiece> last = null;
+                    var sw = Stopwatch.StartNew();
+                    while (sw.Elapsed.TotalSeconds < 120)
+                    {
+                        last = b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                        builds++;
+                        if (b.LastPending == 0 && !b.LayRunning) break;
+                        while (sw.Elapsed.TotalSeconds < 120)
+                        {
+                            System.Threading.Thread.Sleep(2);
+                            if (coalesced ? b.LayReadyCoalesced(Stopwatch.GetTimestamp()) : b.LayReady) break;
+                            if (b.LayReady) holds++;
+                        }
+                    }
+                    dig = last == null ? 0 : GssFuzz.Digest(last);
+                    return builds;
+                }
+                int perFrame = Run(false, out ulong d0, out _);
+                int coal = Run(true, out ulong d1, out int held);
+                Program.Check(d0 == want && d1 == want, $"coalesce: the per-frame run ended equal {d0 == want}, the coalesced run {d1 == want} (both must equal one unbudgeted Build)");
+                Program.Check(held > 0 && coal * 3 <= perFrame, $"coalesce: {coal} coalesced rebuilds against {perFrame} per-frame ({held} frames held): expected at least 3x fewer");
+                Console.WriteLine($"coalesce: cold build rebuilds per-frame {perFrame}, coalesced {coal} ({held} frames held)");
+            }
+        }
+
+        /// <summary>GSS round 9: the probe's rebuildPhasesMs was the last rebuild's split, not the window maximum's (live round 8
+        /// showed 86 ms beside a 6-9 ms split). SliceWindow keeps the max slice's own record and its unattributed gap.</summary>
+        private static void Window()
+        {
+            var w = new SliceWindow();
+            long f = 1000;
+            w.Reset(0);
+            SliceRecord Rec(double total, double build, int gc0)
+            {
+                var r = new SliceRecord { TotalMs = total, Gc0 = gc0 };
+                r.Add("snapBase", 1.0);
+                r.Add("build", build);
+                r.Add("tail", 0.5);
+                return r;
+            }
+            w.Record(Rec(5, 3, 0), 10, f);
+            w.Record(Rec(86, 4, 0), 20, f);      // a pause: the phases sum to 5.5 ms of 86
+            w.Record(Rec(165, 2, 1), 30, f);     // a gen-0 collection landed in it
+            w.Record(Rec(7, 5, 0), 40, f);       // the LAST slice: what rebuildPhasesMs would have shown
+            Program.Check(w.Slices == 4 && w.GcHits == 1, $"slice window: {w.Slices} slices, {w.GcHits} collector hits (want 4, 1)");
+            Program.Check(w.Max != null && w.Max.TotalMs == 165 && w.Max.Ordinal == 3, "slice window: the max record is not the 165 ms slice");
+            Program.Check(w.MaxNoGc != null && w.MaxNoGc.TotalMs == 86 && w.MaxNoGc.Ordinal == 2 && w.MaxNoGc.Phases[1].Value == 4,
+                          "slice window: the uncollected max does not carry its own phases (the 86 ms slice built in 4 ms)");
+            Program.Check(Math.Abs(w.MaxNoGc.GapMs - 80.5) < 1e-9 && Math.Abs(w.MaxNoGc.SinceResetMs - 20) < 1e-9,
+                          $"slice window: gap {w.MaxNoGc.GapMs} (want 80.5), since reset {w.MaxNoGc.SinceResetMs} ms (want 20)");
+            Program.Check(w.First != null && w.First.Ordinal == 1 && w.Json().Contains("\"gapMs\":80.5"), "slice window: first record or JSON gap missing");
+            w.Reset(50);
+            Program.Check(w.Slices == 0 && w.Max == null && w.MaxNoGc == null && w.First == null, "slice window: Reset kept a record");
         }
 
         /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: a run of AsyncLay Builds, waiting between them for the worker the way
