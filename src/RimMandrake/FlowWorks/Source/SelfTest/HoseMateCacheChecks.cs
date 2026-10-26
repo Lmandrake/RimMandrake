@@ -6,6 +6,10 @@
 //  M3 sync budget: 6 pairs changed in one frame -> at most MaxStartsPerFrame solves a frame, all solved within 6 frames;
 //  M4 async: a 400 ms solver never costs the asking frame more than 50 ms, and its result lands on a later BeginFrame;
 //  M5 the default solver through the cache returns what MatePair returns for the same inputs (90-degree case).
+//  M6 a worker solve that throws is harvested as a FAULT (error text kept, Faulted/LastFault on the main thread), not as
+//     "no gentle route", and is not retried while its inputs hold (code review of d6e7a877df);
+//  M7 inputs that move while their solve is in flight are never served the stale result: the harvested entry's key fails
+//     the next ask, which starts one fresh solve for the new shape.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -127,6 +131,46 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert((e.mate == null) == (m == null), "cache and direct solve disagree on whether a mate exists");
                 if (m != null) Assert(V2.Dist(e.mate.C, m.C) < 1e-9 && V2.Dist(e.mate.Axis, m.Axis) < 1e-9 && Math.Abs(e.mate.Cost - m.Cost) < 1e-9,
                     $"cache mate C {e.mate.C} axis {e.mate.Axis} != direct C {m.C} axis {m.Axis}");
+            });
+            Case("M6 HoseMateCache async: a solve that throws surfaces as a fault on the main thread and is not retried", () =>
+            {
+                int n = 0;
+                var c = new HoseMateCache { Async = true, MaxInFlight = 2 };
+                c.Solver = (A, B, k, v, la, lb) => { Interlocked.Increment(ref n); throw new InvalidOperationException("boom-M6"); };
+                List<V2> A0 = Line(new V2(0, 0), new V2(10, 0), 0.25), B0 = Line(new V2(10, 10), new V2(10, 0), 0.25);
+                c.BeginFrame(0);
+                Assert(c.Get(1, A0, B0, Kmax, Vis, 0.6, 0.6) == null, "async ask returned an entry in the asking frame");
+                Assert(c.Drain(5000), "faulting worker never finished");
+                Assert(c.Faulted == 0 && c.LastFault == null, "fault published before the main-thread harvest");
+                c.BeginFrame(1);
+                Assert(c.Faulted == 1, $"Faulted {c.Faulted} after harvest (want 1)");
+                Assert(c.LastFault != null && c.LastFault.Contains("boom-M6") && c.LastFault.Contains("InvalidOperationException"),
+                    "LastFault lost the exception: " + c.LastFault);
+                HoseMateCache.Entry e = c.Get(1, A0, B0, Kmax, Vis, 0.6, 0.6);
+                Assert(e != null && e.mate == null && e.error != null && e.error.Contains("boom-M6"), "faulted pair not served as a fault entry");
+                for (int f = 2; f < 10; f++) { c.BeginFrame(f); c.Get(1, A0, B0, Kmax, Vis, 0.6, 0.6); }
+                Assert(Volatile.Read(ref n) == 1 && c.Started == 1, $"faulted pair re-solved: {n} solver calls, {c.Started} starts (want 1)");
+            });
+            Case("M7 HoseMateCache async: an end that moves while its solve runs is never served the stale result", () =>
+            {
+                HoseMateCache c = Counting(out Func<int> calls, 150);
+                c.Async = true;
+                List<V2> A = Line(new V2(0, 0), new V2(10, 0), 0.25), B = Line(new V2(10, 10), new V2(10, 0), 0.25);
+                List<V2> B2 = Line(new V2(10, 10), new V2(10.4, 0), 0.25);
+                c.BeginFrame(0);
+                Assert(c.Get(1, A, B, Kmax, Vis, 0.6, 0.6) == null, "async ask returned an entry in the asking frame");
+                c.BeginFrame(1);
+                Assert(c.Get(1, A, B2, Kmax, Vis, 0.6, 0.6) == null, "moved pair served while its old solve was in flight");
+                Assert(c.Started == 1, $"{c.Started} starts while one job is in flight for the pair (want 1)");
+                Assert(c.Drain(5000), "worker solve did not finish in 5 s");
+                c.BeginFrame(2);
+                Assert(c.Get(1, A, B2, Kmax, Vis, 0.6, 0.6) == null, "stale (pre-move) result served for the moved shape");
+                Assert(c.Started == 2, $"{c.Started} starts after harvest of a stale solve (want 2: one fresh solve)");
+                Assert(c.Drain(5000), "fresh worker solve did not finish in 5 s");
+                c.BeginFrame(3);
+                HoseMateCache.Entry e = c.Get(1, A, B2, Kmax, Vis, 0.6, 0.6);
+                Assert(e != null && e.mate != null && e.key == HoseMateCache.Key(A, B2, Kmax, Vis, 0.6, 0.6), "fresh solve not served under the moved key");
+                Assert(calls() == 2, $"{calls()} solver calls (want 2)");
             });
         }
     }

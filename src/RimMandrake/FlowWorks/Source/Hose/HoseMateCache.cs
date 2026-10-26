@@ -11,6 +11,9 @@
 //     only diagnostic counters are shared) with at most MaxStartsPerFrame starts per frame and MaxInFlight running, and
 //     harvested on the main thread at the next BeginFrame. Until then Get returns null (the caller draws both ends as laid).
 //     With Async off (selftests, fallback) at most MaxStartsPerFrame solves run per frame on the caller.
+//  3. a solve that THROWS is not a "no gentle route": its exception text is kept on the entry (Entry.error), counted
+//     (Faulted) and published (LastFault) on the main thread at harvest, so the caller can log it; the pair draws as laid
+//     and is not retried until its inputs change (a deterministic fault would otherwise re-throw on a worker every frame).
 // Verse-free: compiled into the SelfTest project (HoseMateCacheChecks).
 using System;
 using System.Collections.Generic;
@@ -27,6 +30,8 @@ namespace RimMandrake.FlowWorks.Hose
             public ulong key;
             public HoseSpliceMath.Mate mate;
             public int seen;
+            /// <summary>The solve's exception (type, message, stack) when it threw; null when it ran to an answer.</summary>
+            public string error;
         }
 
         private sealed class Job
@@ -36,6 +41,7 @@ namespace RimMandrake.FlowWorks.Hose
             public double kmax, vis, leadA, leadB;
             public volatile bool done;
             public HoseSpliceMath.Mate result;
+            public string error;
         }
 
         /// <summary>The solve, replaceable by tests (a counting or slow stand-in). Called on a worker thread when Async.</summary>
@@ -47,8 +53,10 @@ namespace RimMandrake.FlowWorks.Hose
         private readonly Dictionary<long, Job> pending = new Dictionary<long, Job>();
         private int frame = int.MinValue, startedThisFrame;
 
-        /// <summary>Probe counters: solves started, cache hits, asks deferred by the budget, worker solves failed.</summary>
+        /// <summary>Probe counters (main thread only): solves started, cache hits, asks deferred by the budget, solves that threw.</summary>
         internal long Started, Reused, Deferred, Faulted;
+        /// <summary>The latest solve that threw: "pair &lt;id&gt;: &lt;exception&gt;" (main thread; null until one does).</summary>
+        internal string LastFault;
         internal int Pending => pending.Count;
         internal int Count => solved.Count;
 
@@ -81,8 +89,16 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 Job j = pending[pair];
                 pending.Remove(pair);
-                solved[pair] = new Entry { key = j.key, mate = j.result, seen = frame };
+                solved[pair] = new Entry { key = j.key, mate = j.result, seen = frame, error = j.error };
+                if (j.error != null) { Faulted++; LastFault = $"pair {pair:x16}: {j.error}"; }
             }
+        }
+
+        /// <summary>Runs the solve; an exception becomes <see cref="Job.error"/> (result null), never escapes a worker.</summary>
+        private static void RunJob(Func<List<V2>, List<V2>, double, double, double, double, HoseSpliceMath.Mate> solver, Job job)
+        {
+            try { job.result = solver(job.A, job.B, job.kmax, job.vis, job.leadA, job.leadB); }
+            catch (Exception ex) { job.result = null; job.error = ex.ToString(); }
         }
 
         /// <summary>The pair's solve for these inputs: the cached one when its key holds, a fresh one when the budget allows a
@@ -99,19 +115,22 @@ namespace RimMandrake.FlowWorks.Hose
             if (startedThisFrame >= MaxStartsPerFrame || (Async && pending.Count >= MaxInFlight)) { Deferred++; return null; }
             startedThisFrame++;
             Started++;
+            // inputs copied here, on the caller's thread: the worker never reads the live lay's lists
+            var job = new Job { key = key, A = new List<V2>(A), B = new List<V2>(B), kmax = kmax, vis = vis, leadA = leadA, leadB = leadB };
+            var solver = Solver;
             if (!Async)
             {
-                e = new Entry { key = key, mate = Solver(A, B, kmax, vis, leadA, leadB), seen = frame };
+                RunJob(solver, job);
+                e = new Entry { key = key, mate = job.result, seen = frame, error = job.error };
+                if (job.error != null) { Faulted++; LastFault = $"pair {pair:x16}: {job.error}"; }
                 solved[pair] = e;
                 return e;
             }
-            var job = new Job { key = key, A = new List<V2>(A), B = new List<V2>(B), kmax = kmax, vis = vis, leadA = leadA, leadB = leadB };
             pending[pair] = job;
-            var solver = Solver;
+            // result and error are written before the volatile done (release); BeginFrame reads done first (acquire)
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                try { job.result = solver(job.A, job.B, job.kmax, job.vis, job.leadA, job.leadB); }
-                catch { job.result = null; Interlocked.Increment(ref Faulted); }
+                try { RunJob(solver, job); }
                 finally { job.done = true; }
             });
             return null;

@@ -1373,6 +1373,7 @@ namespace RimMandrake.FlowWorks.Hose
         private readonly HoseMateCache mateCache = new HoseMateCache();
         /// <summary>Ends whose pair solve is still running: drawn as laid this frame and not offered to another partner.</summary>
         private readonly HashSet<CompHoseReel> mateWaiting = new HashSet<CompHoseReel>();
+        private bool mateFaultLogged;
         private readonly Dictionary<CompHoseReel, MateInfo> mateOf = new Dictionary<CompHoseReel, MateInfo>();
         /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: one solve per PAIR (A id, B id), kept while its key holds. The old
         /// cache was keyed by the solve key and cleared whenever it passed 64 entries; with more than 64 pairs in reach (four
@@ -1404,7 +1405,16 @@ namespace RimMandrake.FlowWorks.Hose
             mateFrame = Time.frameCount;
             mateOf.Clear();
             mateWaiting.Clear();
-            if (!LegacyFrame) mateCache.BeginFrame(mateFrame);
+            if (!LegacyFrame)
+            {
+                mateCache.BeginFrame(mateFrame);
+                // a pair solve that threw on the worker draws as laid; say so once (later ones: MateReport's faulted count)
+                if (!mateFaultLogged && mateCache.LastFault != null)
+                {
+                    mateFaultLogged = true;
+                    Log.Warning("[FlowWorks] hose pair mate solve failed (pair drawn as laid, not retried until it moves): " + mateCache.LastFault);
+                }
+            }
             var cands = new List<CompHoseReel>();
             foreach (CompHoseReel r in reels) if (MateCandidate(r)) cands.Add(r);
             if (cands.Count < 2) { mateKept.Clear(); return; }
