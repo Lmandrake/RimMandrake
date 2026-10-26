@@ -317,6 +317,12 @@ def t_audit_drift(m):
     rep3 = gate.audit_report([("sh1.json", sh), ("sh2.json", sh)], dirs=[m.hist])
     ok("would_skip 2 (skip rate 50%), misses 2 in 2 chain(s) (miss rate 100%)" in rep3[1],
        "audit_report: the same chain missed in two shadow runs is two misses of two would_skips, not 50%", rep3)
+    # a deliberate sweep with the gate on and an advisory purpose skips nothing: it measures the gate like shadow
+    cm = {"summary": {"gate": {"mode": "on", "purpose": "commission"}, "chains": sh["summary"]["chains"]}}
+    rep4 = gate.audit_report([("cm.json", cm)], dirs=[m.hist])
+    ok(rep4[0].startswith("runs 1: 1 in shadow") and not any(l.startswith("NO SHADOW") for l in rep4)
+       and "would_skip 1 (skip rate 50%)" in rep4[1],
+       "audit_report: a gate-on run with purpose commission is a measuring (shadow) run", rep4)
 
 
 def t_run_suite(m):

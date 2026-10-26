@@ -732,9 +732,16 @@ def run_mode(run):
     return ((run.get("summary") or run).get("gate") or {}).get("mode")
 
 
+def measures(run):
+    """True for a run that decided every chain and skipped none: gate mode shadow, or mode on with an ADVISORY
+    purpose (sweep/sensitivity/flake/commission -- the documented deliberate sweep that measures the gate)."""
+    g = (run.get("summary") or run).get("gate") or {}
+    return g.get("mode") == SHADOW or (g.get("mode") == ON and g.get("purpose") in ADVISORY_PURPOSES)
+
+
 def audit_report(runs, dirs=None):
-    """The audit's printed lines for [(name, run json)]. The skip and miss RATES are those of the SHADOW runs only:
-    a shadow run decides every chain and skips none, so its would_skip chains are the whole population the gate
+    """The audit's printed lines for [(name, run json)]. The skip and miss RATES are those of the SHADOW runs only
+    (measures(): shadow mode, or an advisory-purpose run): such a run decides every chain and skips none, so its would_skip chains are the whole population the gate
     would have reused. Runs in mode `on` skipped their known-good chains (nothing to compare) and a targeted run
     holds a handful of chains, so mixing them in made a 1% skip rate from 180 chains (the first Steve measurement).
     Without a shadow run the header says so: that is not the section 9 measurement."""
@@ -747,8 +754,8 @@ def audit_report(runs, dirs=None):
             for k in ("misses", "drift", "unreadable"):
                 tot[k] += ["%s: %s" % (name, x) for x in r[k]]
         return tot
-    shadow = [r for r in runs if run_mode(r[1]) == SHADOW]
-    other = [r for r in runs if run_mode(r[1]) != SHADOW]
+    shadow = [r for r in runs if measures(r[1])]
+    other = [r for r in runs if not measures(r[1])]
     out = ["runs %d: %d in shadow, %d not (gate on/off/unrecorded)" % (len(runs), len(shadow), len(other))]
     if not shadow:
         out.append("NO SHADOW RUN: the rates below are not the section 9 gate audit; do one deliberate --full "
