@@ -9,7 +9,10 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
-                                     dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone)
+                                     dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
+                                     then ingest.py (results -> RUNNER ledger events, committed from that clone).
+                                     The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow} and
+                                     infrastructure/state.
 
 The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrake/testq):
   pending/<job>.json   the job record
@@ -406,6 +409,7 @@ Type=oneshot
 WorkingDirectory={clone}
 ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
+ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 TimeoutStartSec=900
 """,
     "testq-tick.timer": """[Unit]
