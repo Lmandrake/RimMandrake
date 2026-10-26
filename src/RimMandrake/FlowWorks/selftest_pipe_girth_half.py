@@ -1,0 +1,132 @@
+"""PIPE_GIRTH_TUNE_HALF_AS_THICK (owner walk 2026-10-21: "that pipe is crazy thick. Make the pipes half as thick"):
+the ground pipe's girth is baked into each look's linked atlas (Graphic_Linked draws the PNG on a 1x1 cell quad; no C# mesh
+width exists for the ground pipe), so the ratio is asserted on the PNGs here. The C# SelfTest cannot: the winbuild stage
+copies no Textures folder; it asserts only the pole span width (PipePoleChecks, RM_PipePoleMath.SpanWidthCells).
+
+Measured per look, on the displayed inner C x C of each atlas tile (vanilla Basic link format, see
+art_source/pipe/build_pipe_atlas.py), alpha > 128:
+  - girth: every link arm of every tile (straights, elbows, tees, cross, caps) crosses the cell edge 0.12-0.15 cell wide
+    (was 0.30 before 8d5b94b0e1);
+  - joints: the junction box on the cell diagonal of the tee/cross tiles is <= 0.27 cell (was 0.47-0.53);
+  - end caps: the widest column of a one-arm tile is <= 0.30 cell (was 0.38-0.47);
+  - Scrapper's straight-variant sheet (UniversalPipe_Straights) carries the same 0.12-0.15 girth.
+
+Can-fail: --canfail measures the pre-8d5b94b0e1 atlases (read from git) and must FAIL every look.
+
+    python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py [--canfail]
+"""
+from __future__ import annotations
+
+import io
+import os
+import subprocess
+import sys
+
+import numpy as np
+from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+PIPE = os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Pipe")
+REL = "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pipe"
+LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
+BEFORE_SHA = "8d5b94b0e1^"  # the last commit with the 0.30-cell pipe
+GIRTH = (0.12, 0.15)
+JOINT_MAX = 0.27
+CAP_MAX = 0.30
+N, E, S, W = 1, 2, 4, 8
+
+
+def alpha(img_bytes_or_path):
+    im = Image.open(io.BytesIO(img_bytes_or_path) if isinstance(img_bytes_or_path, bytes) else img_bytes_or_path)
+    return np.asarray(im.convert("RGBA"))[..., 3] > 128
+
+
+def tile(a, i):
+    """Displayed inner C x C of sub-material i (rows counted from the image bottom)."""
+    t = a.shape[0] // 4
+    p = t // 8
+    y0 = a.shape[0] - (i // 4 + 1) * t
+    x0 = (i % 4) * t
+    return a[y0 + p:y0 + t - p, x0 + p:x0 + t - p]
+
+
+def measure(a):
+    """(fails, summary) for one atlas alpha mask."""
+    bad = []
+    c = a.shape[0] // 4 - 2 * (a.shape[0] // 4 // 8)
+    girths, joints, caps = [], [], []
+    for i in range(1, 16):
+        t = tile(a, i)
+        # each arm crosses its cell edge; sample 3 px inside the edge
+        for bit, line in ((N, t[3, :]), (S, t[-4, :]), (E, t[:, -4]), (W, t[:, 3])):
+            if i & bit:
+                g = line.sum() / c
+                girths.append(g)
+                if not GIRTH[0] <= g <= GIRTH[1]:
+                    bad.append("tile %d arm %d: girth %.3f cell not in %.2f-%.2f" % (i, bit, g, GIRTH[0], GIRTH[1]))
+        arms = bin(i).count("1")
+        if arms >= 3:
+            j = np.array([t[k, k] for k in range(c)]).sum() / c
+            joints.append(j)
+            if j > JOINT_MAX:
+                bad.append("tile %d: joint %.3f cell > %.2f" % (i, j, JOINT_MAX))
+        if arms == 1:
+            # widest cross-section perpendicular to the one arm (N/S arm: a row; E/W arm: a column)
+            cap = (t.sum(1).max() if i & (N | S) else t.sum(0).max()) / c
+            caps.append(cap)
+            if cap > CAP_MAX:
+                bad.append("tile %d: end cap %.3f cell > %.2f" % (i, cap, CAP_MAX))
+    summary = "girth %.3f-%.3f joint<=%.3f cap<=%.3f" % (min(girths), max(girths), max(joints), max(caps))
+    return bad, summary
+
+
+def straights_girth(a):
+    """Scrapper sheet (PipeStraightVariants.Uvs): Count columns x 2 rows of T x T tiles, row 0 (top) east-west, row 1
+    north-south, the shown cell the inner C x C; girth across the band 3 px inside both cell edges."""
+    t = a.shape[0] // 2
+    p = t // 8
+    c = t - 2 * p
+    out = []
+    for k in range(a.shape[1] // t):
+        ew = a[p:t - p, k * t + p:(k + 1) * t - p]
+        ns = a[t + p:2 * t - p, k * t + p:(k + 1) * t - p]
+        out += [ew[:, 3].sum() / c, ew[:, -4].sum() / c, ns[3, :].sum() / c, ns[-4, :].sum() / c]
+    return out
+
+
+def git_blob(rel):
+    return subprocess.run(["git", "show", "%s:%s" % (BEFORE_SHA, rel)], cwd=HERE, capture_output=True, check=True).stdout
+
+
+def main(argv):
+    canfail = "--canfail" in argv
+    failed = 0
+    for look in LOOKS:
+        if canfail:
+            a = alpha(git_blob("%s/%s/UniversalPipe_Atlas.png" % (REL, look)))
+        else:
+            a = alpha(os.path.join(PIPE, look, "UniversalPipe_Atlas.png"))
+        bad, summary = measure(a)
+        print("%s %s: %s" % ("FAIL" if bad else "PASS", look, summary))
+        for b in bad[:4]:
+            print("    " + b)
+        failed += bool(bad)
+    if not canfail:
+        sheet = os.path.join(PIPE, "Scrapper", "UniversalPipe_Straights.png")
+        gs = straights_girth(alpha(sheet))
+        ok = bool(gs) and all(GIRTH[0] <= g <= GIRTH[1] for g in gs)
+        span = "%.3f-%.3f" % (min(gs), max(gs)) if gs else "unmeasurable (no tiles)"
+        print("%s Scrapper straights sheet: %d edge crossings, girth %s" % ("PASS" if ok else "FAIL", len(gs), span))
+        failed += not ok
+    if canfail:
+        if failed == len(LOOKS):
+            print("PASS can-fail: every pre-halving atlas fails")
+            return 0
+        print("FAIL can-fail: only %d of %d pre-halving atlases fail" % (failed, len(LOOKS)))
+        return 1
+    print("%s %d/%d" % ("PASS" if not failed else "FAIL", len(LOOKS) + 1 - failed, len(LOOKS) + 1))
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
