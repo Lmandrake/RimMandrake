@@ -411,6 +411,25 @@ RIVER_FLIP_TOGGLES = ["riverWorksEnabled", "scaleWithRiverSize", "floodSurgeEnab
                       "crossingHazardsEnabled", "pathfinderAvoidsCurrents", "weirWhiteWater", "flotsamEnabled"]
 
 
+def _selftest_parse(stdout):
+    """{case: "ok"|"FAIL"} from the SelfTest's `ok    name` / `FAIL  name` lines."""
+    cases = {}
+    for ln in (stdout or "").splitlines():
+        if ln.startswith("ok    ") or ln.startswith("FAIL  "):
+            cases[ln[6:].strip()] = ln[:4].strip()
+    return cases
+
+
+def _selftest_why(text):
+    """The reason a SelfTest run gave: its first exception/error line, then its tail. The tail alone (the sweep's
+    rc=5 row) kept only the stack frames and lost the line that said what went wrong."""
+    text = text or ""
+    head = next((ln.strip() for ln in text.splitlines()
+                 if "xception" in ln or "error" in ln.lower()), "")
+    tail = text[-300:]
+    return tail if not head or head in tail else "%s ... %s" % (head[:300], tail)
+
+
 _SELFTEST_CASES = {}
 _SELFTEST_STATE = {"built": False, "full": False}
 
@@ -434,14 +453,20 @@ def _selftest_cases(names=None):
     print("[validation] running the FlowWorks C# SelfTest (offline, %s; the game idles meanwhile)"
           % ("all cases, minutes" if names is None else "%d case(s)" % len(names)), file=sys.stderr, flush=True)
     r = subprocess.run(_posix_python(args), capture_output=True, text=True, timeout=1200)
-    cases = {}
-    for ln in r.stdout.splitlines():
-        if ln.startswith("ok    ") or ln.startswith("FAIL  "):
-            cases[ln[6:].strip()] = ln[:4].strip()
+    cases = _selftest_parse(r.stdout)
+    if not cases and r.returncode not in (0, 1, 2, 3) and "--no-build" in args:
+        # Sweep J20261026T004751Z-6e5292: one `dotnet run --no-build` crashed inside the dotnet CLI itself (rc=5,
+        # RunCommand.Execute stack, no case output) between two calls that ran. That is the toolchain, not a verdict:
+        # rebuild once and ask again before calling the chain UNMEASURED.
+        print("[validation] the SelfTest run crashed (rc=%s) before any case ran; rebuilding once"
+              % r.returncode, file=sys.stderr, flush=True)
+        args = [a for a in args if a != "--no-build"]
+        r = subprocess.run(_posix_python(args), capture_output=True, text=True, timeout=1200)
+        cases = _selftest_parse(r.stdout)
     nothing_selected = names is not None and r.returncode == 3 and "--only" in r.stdout   # Program.cs: none matched
     if not cases and not nothing_selected:
         raise ExpectationFailed("UNMEASURED: the FlowWorks SelfTest did not run (rc=%s): %s"
-                                % (r.returncode, (r.stderr or r.stdout)[-300:]))
+                                % (r.returncode, _selftest_why(r.stderr or r.stdout)))
     _SELFTEST_STATE["built"] = True
     _SELFTEST_STATE["full"] = _SELFTEST_STATE["full"] or names is None
     _SELFTEST_CASES.update(cases)
@@ -868,7 +893,7 @@ def flow_map_controls(t):
     cases = {}
     with t.component("map_controls_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases(MAP_CONTROL_CASES)
+            cases = _selftest_cases(MAP_CONTROL_CASES + ["MapControl_wiring_and_master_switch"])   # it reads that case too: ask for it (sweep 2026-10-26)
     for name in MAP_CONTROL_CASES:
         with t.component(name):
             if t._guard():
@@ -906,7 +931,7 @@ def flow_map_controls_six(t):
     cases = {}
     with t.component("map_controls_six_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases(MAP_CONTROL_SIX_CASES)
+            cases = _selftest_cases(MAP_CONTROL_SIX_CASES + ["MapControl_six_wiring"])   # it reads that case too: ask for it (sweep 2026-10-26)
     for name in MAP_CONTROL_SIX_CASES:
         with t.component(name):
             if t._guard():
@@ -940,7 +965,8 @@ def hose_switch_flips(t):
     cases = {}
     with t.component("hose_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases(["HoseSwitchFlip_" + tg for tg in HOSE_FLIP_TOGGLES])
+            cases = _selftest_cases(["HoseSwitchFlip_" + tg for tg in HOSE_FLIP_TOGGLES]
+                                    + ["HoseTankFeed_refused_add_puts_back"])   # read below: ask for it (sweep 2026-10-26)
     for tg in HOSE_FLIP_TOGGLES:
         with t.component("flip_" + tg, toggle=tg):
             if t._guard():
