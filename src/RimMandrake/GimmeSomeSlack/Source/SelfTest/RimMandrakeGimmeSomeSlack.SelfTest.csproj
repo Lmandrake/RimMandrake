@@ -34,6 +34,7 @@
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
     <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
     <Compile Include="..\Core\CordBuilder.cs" />
+    <Compile Include="..\Core\CordReach.cs" />
     <Compile Include="..\Core\CordAudit.cs" />
     <Compile Include="..\Core\LegacyName.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="GptReadFixChecks.cs" />
     <Compile Include="GptPreReleaseChecks.cs" />
     <Compile Include="UnroutableCensus.cs" />
+    <Compile Include="RebuildPerDigChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>

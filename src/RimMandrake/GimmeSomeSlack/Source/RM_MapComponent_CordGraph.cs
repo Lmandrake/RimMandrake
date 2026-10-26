@@ -46,12 +46,45 @@ namespace RimMandrake.GimmeSomeSlack
 
         public List<LaidPiece> PiecesForSection(IntVec3 botLeft)
         {
-            if (Time.frameCount != builtFrame) Rebuild();
+            if (Time.frameCount != builtFrame)
+            {
+                // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26: a dig anywhere forced a full rebuild, 15 ms at E=206): when
+                // every dirty event since the last build was benign (a terrain/roof change outside the cords' reach, or our own
+                // section dirtying below), the build would reproduce the published pieces exactly (SelfTest reach soundness)
+                if (!relevantSinceBuild && benignSinceBuild)
+                {
+                    builtFrame = Time.frameCount;
+                    benignSinceBuild = false;
+                    FarSkips++;
+                }
+                else Rebuild();
+            }
             var key = new IntVec2(botLeft.x / Section.Size, botLeft.z / Section.Size);
             return bySection.TryGetValue(key, out List<LaidPiece> l) ? l : null;
         }
 
-        public void Notify_SettingsChanged() => builtFrame = -1;
+        public void Notify_SettingsChanged() { builtFrame = -1; relevantSinceBuild = true; }
+
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: since the last successful build, did a dirty event land that may change
+        /// the cords (relevant), or only events that cannot (benign)? Regenerate with neither (a full map regenerate) rebuilds.</summary>
+        private bool relevantSinceBuild = true, benignSinceBuild;
+        /// <summary>Regenerates answered with the published pieces because every event since the build was benign.</summary>
+        public int FarSkips;
+        /// <summary>True while DirtySection raises our own dirty event: those reprint pieces this build already made.</summary>
+        internal static bool OwnDirty;
+        /// <summary>The last build's reach (null before the first build: everything is relevant).</summary>
+        internal CordReach Reach => builder.Reach;
+        public int GraphReuses => builder.GraphReuses;
+
+        /// <summary>Classifies one dirty event for our layer (Patch_MapDrawer_MapMeshDirty_MarkStale). Terrain and roofs are
+        /// benign outside the reach; fog is never benign (unfogging reveals conduits the snapshot hid), nor is anything else.</summary>
+        internal bool NoteDirty(IntVec3 loc, ulong layerFlags, ulong terrainRoofs)
+        {
+            bool benign = OwnDirty ||
+                          ((layerFlags & ~terrainRoofs) == 0UL && builder.Reach != null && !builder.Reach.Reaches(CordWorldAdapter.C(loc)));
+            if (benign) benignSinceBuild = true; else relevantSinceBuild = true;
+            return benign;
+        }
 
         /// <summary>GSS A8 (live 2026-10-15, proof row A8 FAIL): this frame already rebuilt, so a dirty event landing now is
         /// not seen by PiecesForSection until something dirties again.</summary>
@@ -200,6 +233,7 @@ namespace RimMandrake.GimmeSomeSlack
         public void Rebuild()
         {
             builtFrame = Time.frameCount;
+            relevantSinceBuild = true;          // until this build publishes (disabled or failed builds leave it set)
             if (!GimmeSomeSlackSettings.enabled)
             {
                 pieces = new List<LaidPiece>();
@@ -229,6 +263,7 @@ namespace RimMandrake.GimmeSomeSlack
                 if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[GimmeSomeSlack] cord build failed, keeping the previous cords: " + ex); }
                 return;
             }
+            relevantSinceBuild = benignSinceBuild = false;
             Builds++;
             LastRebuildMs = sw.Elapsed.TotalMilliseconds;
             LastPlanned = b.LastPlanned;
@@ -314,7 +349,9 @@ namespace RimMandrake.GimmeSomeSlack
             try { sec = map.mapDrawer.SectionAt(loc); }
             catch (NullReferenceException) { return; }       // the drawer's section array itself not built yet
             if (sec == null) return;
-            map.mapDrawer.MapMeshDirty(loc, GimmeSomeSlackDefOf.RM_MessyCords);
+            OwnDirty = true;
+            try { map.mapDrawer.MapMeshDirty(loc, GimmeSomeSlackDefOf.RM_MessyCords); }
+            finally { OwnDirty = false; }
         }
 
         /// <summary>A section's owned-set signature: piece keys, geometry, and (lane C) the net seed, so a net that
@@ -912,7 +949,7 @@ namespace RimMandrake.GimmeSomeSlack
     [HarmonyLib.HarmonyPatch(typeof(MapDrawer), nameof(MapDrawer.MapMeshDirty), new[] { typeof(IntVec3), typeof(ulong), typeof(bool), typeof(bool) })]
     internal static class Patch_MapDrawer_MapMeshDirty_MarkStale
     {
-        private static ulong mask;
+        private static ulong mask, layerMask, terrainRoofs;
         private static readonly HarmonyLib.AccessTools.FieldRef<MapDrawer, Map> mapOf = HarmonyLib.AccessTools.FieldRefAccess<MapDrawer, Map>("map");
 
         private static void Prefix(MapDrawer __instance, IntVec3 loc, ulong dirtyFlags)
@@ -921,6 +958,18 @@ namespace RimMandrake.GimmeSomeSlack
             if (mask == 0UL)
                 mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
                        (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs;
+            if (layerMask == 0UL)
+            {
+                layerMask = mask | (ulong)GimmeSomeSlackDefOf.RM_MessyCords;
+                terrainRoofs = (ulong)MapMeshFlagDefOf.Terrain | (ulong)MapMeshFlagDefOf.Roofs;
+            }
+            // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: every event our layer regenerates on is classified; a benign one (far dig,
+            // our own reprint) neither marks the graph stale nor makes the layer's regenerate rebuild
+            if ((dirtyFlags & layerMask) != 0UL)
+            {
+                RM_MapComponent_CordGraph lc = mapOf(__instance)?.GetComponent<RM_MapComponent_CordGraph>();
+                if (lc != null && lc.NoteDirty(loc, dirtyFlags & layerMask, terrainRoofs)) return;
+            }
             if ((dirtyFlags & mask) == 0UL)
             {
                 // GSS pre-release A4: a tree is a route cost (CordWorldAdapter), but felling or planting one dirties only Things,
@@ -931,7 +980,8 @@ namespace RimMandrake.GimmeSomeSlack
                 if (tc?.LastWorld == null || !loc.InBounds(tm)) return;
                 bool had = Math.Abs(tc.LastWorld.ExtraCost(CordWorldAdapter.C(loc)) - 1.5f) < 0.01f;   // the adapter's tree cost
                 bool has = loc.GetPlant(tm)?.def.plant?.IsTree ?? false;
-                if (had != has) tc.StaleOffscreen = true;           // on screen too: the layer does not regenerate on Things
+                // a tree is a route cost only inside some cord's corridor: outside the reach it cannot change a Build
+                if (had != has && (tc.Reach == null || tc.Reach.Reaches(CordWorldAdapter.C(loc)))) tc.StaleOffscreen = true;           // on screen too: the layer does not regenerate on Things
                 return;
             }
             Map map = mapOf(__instance);   // cached field ref: MapMeshDirty can fire many times a tick (Traverse allocated per call)

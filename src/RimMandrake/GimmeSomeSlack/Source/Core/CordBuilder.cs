@@ -95,6 +95,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// only when this matches too (lane F 2026-10-02: a ring split by a connector kept its parallel route).</summary>
         public string LaySig;
         public string EndA, EndB;   // oracle-style "type:x,z"
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: the cell box everything this piece draws or was planned on covers
+        /// (corridor, owner, strand points, decals, end tips), filled once by CordReach.BoxOf; a reused piece keeps it.</summary>
+        internal int[] ReachBox;
 
         public ulong GeometryHash()
         {
@@ -147,10 +150,37 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public int LastPlanned, LastReused;
         public CordGraph Graph { get; private set; }
 
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG (live 2026-10-26: CordBuilder.Build 15.3 ms at E=206 with every edge
+        /// reused; offline the graph reduce was about 70% of that). The graph is a pure function of the conduit cells, their
+        /// buried kind, the machines and the reduce options (CordGraph reads nothing else of the world), so when those inputs
+        /// are equal to the last Build's -- compared exactly, not hashed -- the last graph is reused instead of re-reduced.</summary>
+        public bool LastGraphReused;
+        public int GraphReuses;
+        private List<long> graphIn = new List<long>(), graphInNext = new List<long>();
+        private string graphMach;
+
+        /// <summary>Where a terrain or roof change could alter the next Build (see CordReach); null before the first Build.</summary>
+        internal CordReach Reach { get; private set; }
+
         internal List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
         {
-            CordGraph g = CordGraph.Reduce(w, opt.Seed, opt.Tangles ? opt.TangleMin : int.MaxValue,
-                                           opt.NeedlessLoops ? CordGraph.SpurMax : 0, opt.SlideUnder, opt.StraightPlugIds);
+            int tangleMin = opt.Tangles ? opt.TangleMin : int.MaxValue, spurMax = opt.NeedlessLoops ? CordGraph.SpurMax : 0;
+            string mach = GraphInputs(w, opt, tangleMin, spurMax, graphInNext);
+            CordGraph g;
+            // a LinkAllowed callback (selftest bands only; the game adapter never sets one) is opaque: always re-reduce
+            if (Graph != null && w.LinkAllowed == null && mach == graphMach && SameInputs(graphIn, graphInNext))
+            {
+                g = Graph;
+                LastGraphReused = true;
+                GraphReuses++;
+            }
+            else
+            {
+                g = CordGraph.Reduce(w, opt.Seed, tangleMin, spurMax, opt.SlideUnder, opt.StraightPlugIds);
+                LastGraphReused = false;
+            }
+            (graphIn, graphInNext) = (graphInNext, graphIn);
+            graphMach = w.LinkAllowed == null ? mach : null;
             Graph = g;
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
@@ -248,7 +278,47 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 outp.Add(p);
             }
             cache = next;
+            Reach = CordReach.Of(w, g, outp);
             return outp;
+        }
+
+        /// <summary>Everything CordGraph.Reduce reads, in its reading order: the map size, the reduce options, every conduit cell
+        /// with its buried kind (IsBuried / BuriedKind are the only per-cell world reads), and every machine field.</summary>
+        private static string GraphInputs(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, List<long> into)
+        {
+            into.Clear();
+            into.Add(w.Width); into.Add(w.Height);
+            into.Add(unchecked((long)opt.Seed)); into.Add(tangleMin); into.Add(spurMax); into.Add(opt.SlideUnder ? 1 : 0);
+            foreach (Cell c in w.ConduitCells())
+                into.Add(((long)c.X << 32) | ((long)(uint)c.Z << 8) | (long)(byte)w.BuriedKind(c));
+            var sb = new StringBuilder();
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            if (opt.StraightPlugIds != null)
+            {
+                var ids = opt.StraightPlugIds.ToList();
+                ids.Sort(string.CompareOrdinal);
+                foreach (string id in ids) sb.Append(id).Append('\u0001');
+            }
+            sb.Append('\u0002');
+            foreach (MachineInfo m in w.Machines)
+            {
+                sb.Append(m.Id).Append('\u0001').Append((int)m.Kind).Append(';').Append(m.X0).Append(',').Append(m.Z0).Append(',')
+                  .Append(m.W).Append(',').Append(m.H).Append(';');
+                foreach (Cell h in m.Hookups) sb.Append(h.X).Append(',').Append(h.Z).Append(' ');
+                sb.Append(';');
+                foreach (string l in m.MachineLinks) sb.Append(l).Append('\u0001');
+                sb.Append(';').Append(m.InsetS.ToString("R", inv)).Append(',').Append(m.InsetN.ToString("R", inv)).Append(',')
+                  .Append(m.InsetE.ToString("R", inv)).Append(',').Append(m.InsetW.ToString("R", inv))
+                  .Append(m.HasHome ? ";H" + m.HomeX + "," + m.HomeZ : ";-").Append('\u0002');
+            }
+            return sb.ToString();
+        }
+
+        private static bool SameInputs(List<long> a, List<long> b)
+        {
+            if (a.Count != b.Count) return false;
+            for (int i = 0; i < a.Count; i++) if (a[i] != b[i]) return false;
+            return true;
         }
 
         /// <summary>Everything LayEdge takes from the graph that the cache key (endpoints, chain, live flags, lay

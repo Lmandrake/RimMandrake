@@ -591,6 +591,10 @@ namespace RimMandrake.GimmeSomeSlack
             F("litStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
             F("darkStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
             F("lastRebuildMs", J.D(comp.LastRebuildMs));
+            F("builds", comp.Builds.ToString());       // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG live re-measure
+            F("farSkips", comp.FarSkips.ToString());
+            F("graphReuses", comp.GraphReuses.ToString());
+            F("reachHotBlocks", comp.Reach == null ? "-1" : comp.Reach.All ? "\"all\"" : comp.Reach.HotBlocks.ToString());
             F("laidPoints", comp.Pieces.Sum(p => p.Strands.Sum(x => x.Pts.Count)).ToString());
             sb.Append("}");
             return sb.ToString();
