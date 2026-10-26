@@ -109,7 +109,8 @@ def main():
         n4 = tw4.sync("Textures/A")
         # exact: Stray is the only retirable PNG; One_south is owner-kept and this writer never touched it
         check(not (tex / "Stray.png").exists() and n4 == 1, "sync with a cwd-relative root retires what the run did not write")
-        check((tex / "One_south.png").read_bytes() == red and tw4.counts["kept"] == 1,
+        check((tex / "One_south.png").is_file() and (tex / "One_south.png").read_bytes() == red
+              and tw4.counts["kept"] == 1,
               "sync by a writer that never touched an owner-kept picture still leaves it (refused, counted kept)")
         check((tex / "Rel.png").is_file(), "sync keeps what the run wrote via a relative path")
     finally:

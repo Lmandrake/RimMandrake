@@ -3,7 +3,8 @@
 RM_OxygenLedgerKernel.cs, RM_WalkerTrampleKernel.cs, RM_ChillFireBanKernel.cs), no game.
 
 Seeded action sequences over the production kernels (Chill garden offense/cooldown scoring; Brine Elder novelty ledger,
-unique-treasure claims and silver payout; save/load round trips), with design invariants checked after every step. Same wrapper shape as selftest_gimmesomeslack.py: the project
+unique-treasure claims and silver payout; oxygen ledger; walker trample; Chill fire ban outputs and the fire
+creation-path table; save/load round trips), with design invariants checked after every step. Same wrapper shape as selftest_gimmesomeslack.py: the project
 is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
     python3 src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py [--fuzz-scale F] [--fuzz-seed N]

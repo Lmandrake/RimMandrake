@@ -117,7 +117,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: the venom-quill lash is plain melee tools here (damage type Scratch, no venom hediff). Venomvine denning / forbid-rather-than-flee is LEANINGSCRUB_MECHANICS_BUILD_1. -->
+  <!-- STUB: the venom-quill lash is plain melee tools here (damage type Scratch, no venom hediff). The venom lash, Venomvine denning and forbid-rather-than-flee are LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thornhold</defName>
     <label>thornhold</label>
@@ -204,7 +204,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: flat-hold ambush at surfacing crossings is LEANINGSCRUB_MECHANICS_BUILD_1; here it is a plain predator. -->
+  <!-- STUB: flat-hold ambush at surfacing crossings is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; here it is a plain predator. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shokka</defName>
     <label>shokka</label>
@@ -396,7 +396,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: run-wall ambush behaviour is LEANINGSCRUB_MECHANICS_BUILD_1; plain predator here. -->
+  <!-- STUB: run-wall ambush behaviour is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Fuzzviper</defName>
     <label>fuzzviper</label>
@@ -476,7 +476,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: crust-swimming / surfacing strike is LEANINGSCRUB_MECHANICS_BUILD_1; plain predator here. -->
+  <!-- STUB: crust-swimming / surfacing strike is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Surrik</defName>
     <label>surrik</label>
@@ -573,7 +573,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: canopy-top wind-riding is LEANINGSCRUB_MECHANICS_BUILD_1; plain predator here. -->
+  <!-- STUB: canopy-top wind-riding is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ribbonwhip</defName>
     <label>ribbonwhip</label>
@@ -847,7 +847,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: Gale gliding and sweetline-tree association are LEANINGSCRUB_MECHANICS_BUILD_1; no flight stat (a glider, not a flyer). -->
+  <!-- STUB: Gale gliding and sweetline-tree association are LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; no flight stat (a glider, not a flyer). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shirrel</defName>
     <label>shirrel</label>
@@ -1029,7 +1029,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: carrion-ball rolling is LEANINGSCRUB_MECHANICS_BUILD_1. -->
+  <!-- STUB: carrion-ball rolling is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Rollbug</defName>
     <label>rollbug</label>
