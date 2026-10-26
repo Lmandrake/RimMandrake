@@ -69,7 +69,9 @@ class TextureWriter:
             return False
 
     def put(self, data: bytes, dest) -> bool:
-        dest = Path(dest)
+        dest = Path(dest).absolute()                  # cwd-relative, as the open()/img.save() it replaces;
+        # artledger.locate reads a RELATIVE path against the clone root, so from a mod folder
+        # "Textures/A/x.png" never matched src/**/Textures/ and was written plainly, past the ledger
         try:
             ledgered = self._ledgered(dest)
         except L.Refused as e:
@@ -101,7 +103,7 @@ class TextureWriter:
 
     def save(self, img, dest, fmt: str | None = None, **kw) -> bool:
         """Drop-in for `img.save(dest, fmt, **kw)`."""
-        dest = Path(dest)
+        dest = Path(dest).absolute()
         if (fmt or "PNG").upper() != "PNG" or not str(dest).lower().endswith(".png"):
             if not self.dry_run:
                 dest.parent.mkdir(parents=True, exist_ok=True)
@@ -116,7 +118,7 @@ class TextureWriter:
     def sync(self, root) -> int:
         """Retire every PNG under `root` this writer did not produce (the ledger-safe form of
         rmtree-then-regenerate). Owner-kept pictures stay and are counted as kept."""
-        root = Path(root)
+        root = Path(root).absolute()                  # cwd-relative (see put): retire() reads paths against the clone root
         if not root.is_dir():
             return 0
         n = 0

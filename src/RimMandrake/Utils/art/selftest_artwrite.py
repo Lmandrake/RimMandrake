@@ -92,6 +92,25 @@ def main():
     check(tw3.report() == 1, "report returns the refusal count")
     check((tmp / "preview" / "sheet.png").is_file(), "sync stays inside the dir it was given")
 
+    # wave 11: a RELATIVE dest is cwd-relative (as the img.save it replaces). From a mod folder,
+    # "Textures/A/Rel.png" used to be read against the clone root by locate(), match no
+    # src/**/Textures/, and be written PLAINLY past the ledger; a relative sync() root retired nothing.
+    old_cwd = os.getcwd()
+    os.chdir(tmp / "src" / "Fix")
+    try:
+        tw4 = TextureWriter(__file__)
+        tw4.save(Image.new("RGBA", (4, 4), (9, 9, 9, 255)), "Textures/A/Rel.png")
+        check(("src/Fix", "A/Rel.png") in L.Index().live and tw4.counts["plain"] == 0
+              and tw4.counts["installed"] == 1, "a cwd-relative Textures PNG goes through the ledger, not plainly")
+        (tex / "Stray.png").write_bytes(blue)
+        L.append({"type": "live", "mod": "src/Fix", "rel": "A/Stray.png", "sha": L.store_put_bytes(blue),
+                  "prev": None, "reason": "fixture"})
+        n4 = tw4.sync("Textures/A")
+        check(not (tex / "Stray.png").exists() and n4 >= 1, "sync with a cwd-relative root retires what the run did not write")
+        check((tex / "Rel.png").is_file(), "sync keeps what the run wrote via a relative path")
+    finally:
+        os.chdir(old_cwd)
+
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 
