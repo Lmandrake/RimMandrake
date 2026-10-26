@@ -113,10 +113,11 @@ namespace RimMandrake.DivingInteraction
         }
 
         /// <summary>
-        /// Above 0 while a Fire's TickInterval runs (Patch_Fire_TickInterval) or a Fire's Spark lands (Patch_Spark_Impact):
-        /// every ignition asked then is that fire spreading, damaging or attaching, and its instigator's oxidizer no longer
-        /// counts (CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS, CHILLFIREBAN_FIX_SPARK_CARRIES_OXIDIZER). Main thread
-        /// only, like the tick itself.
+        /// Above 0 while a Fire's TickInterval runs (Patch_Fire_TickInterval), a Fire's Spark lands (Patch_Spark_Impact)
+        /// or a burning pawn dies (Patch_Pawn_Kill_CorpseFire): every ignition asked then is that fire spreading, damaging,
+        /// attaching or relighting on the corpse, and its instigator's oxidizer no longer counts
+        /// (CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS, CHILLFIREBAN_FIX_SPARK_CARRIES_OXIDIZER,
+        /// CHILLFIREBAN_FIX_CORPSE_FIRE_KEEPS_OXIDIZER). Main thread only, like the tick itself.
         /// </summary>
         internal static int insideBurningFire;
     }
