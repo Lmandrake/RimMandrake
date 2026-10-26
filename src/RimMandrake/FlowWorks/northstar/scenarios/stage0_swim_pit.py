@@ -81,6 +81,8 @@ def run(B, origin, rows=None):
     row("S0SWIM_dry_held", "PASS" if not outside(p0) else "FAIL",
         dict(order=str(o)[:200], pos=p0, swim=B.call("jawa/static_call", type=SWIM, method="ProofSwim",
                                                      args="%d,%d" % g(START)).get("result")))
+    if outside(p0):                              # a failed dry control: he is already out, so no flooded row can show a
+        return "FAIL", rows                      # swim escape (review 4.3: it read PASS at 2 m)
     verdict = None
     for rid, level in (("S0SWIM_2m_out", 4), ("S0SWIM_brim_out", 8)):
         for c in pit:

@@ -997,14 +997,40 @@ def load_map_r(path=MAP_R_PLACED):
     return doc, c1, plan
 
 
+def recorded_map_c(map_r, path=None):
+    """Map C's id from the existing map-R sidecar, kept across a non-fresh --river --build (review 4.2: the rebuild wrote
+    map_c=None and use_map(B, "C") then left map R current). None when nothing is recorded or it names map R itself."""
+    path = path or MAP_R_PLACED
+    if not os.path.exists(path):
+        return None
+    mc = json.load(open(path, encoding="utf-8")).get("map_c")
+    return mc if isinstance(mc, int) and mc != map_r else None
+
+
+def run_problems(verify=None, soak=None):
+    """The ids a build/soak run failed: plots not as staged, plots that moved in the soak. Any -> the CLI exits 1 and
+    --save refuses (review 4.4: a failed build or a moved standalone soak exited 0, and --build --save saved it)."""
+    bad = sorted(s for s, v in (verify or {}).items() if not v.get("ok"))
+    moved = sorted(s for s, v in (soak or {}).items() if not v.get("still"))
+    return bad, moved
+
+
 def use_map(B, which):
     """Make map C or map R current (ids from MAP_R_PLACED). Silent no-op when no map-R build is recorded (a one-map
     game); a refusal is printed, never hidden. -> True when the wanted map is current (read back)."""
     if not os.path.exists(MAP_R_PLACED):
         return which == "C"
-    mid = json.load(open(MAP_R_PLACED, encoding="utf-8")).get("map_" + which.lower())
+    doc = json.load(open(MAP_R_PLACED, encoding="utf-8"))
+    mid = doc.get("map_" + which.lower())
     if not isinstance(mid, int):
-        return which == "C"
+        if which != "C":
+            return False
+        # map R is recorded but map C's id is not (review 4.2): "C" is only current when the current map is NOT map R
+        cur = (B.call("jawa/map_info") or {}).get("mapId")
+        if not isinstance(cur, int) or cur == doc.get("map_r"):
+            print("map C id not recorded in %s and the current map (%s) is map R or unread: refused" % (MAP_R_PLACED, cur))
+            return False
+        return True
     r = B.call("jawa/set_current_map", mapId=mid) or {}
     if not r.get("success"):
         print("set_current_map %s (map %s) refused: %s" % (mid, which, str(r)[:200]))
@@ -1136,7 +1162,7 @@ def river_main(B, a):
             mi = B.call("jawa/map_info") or {}
             size = (int(mi.get("sizeX") or 0), int(mi.get("sizeZ") or 0))
             terrain = RV.read_terrain(B, size)
-            info = dict(map_c=None, map_r=mi.get("mapId"), tile=mi.get("tile"), problems=[])
+            info = dict(map_c=recorded_map_c(mi.get("mapId")), map_r=mi.get("mapId"), tile=mi.get("tile"), problems=[])
         res = run_river(B, terrain, size, a.log, soak=a.soak)
         doc = dict(map_c=info["map_c"], map_r=info["map_r"], tile=info["tile"], built=time.strftime("%Y-%m-%dT%H:%M:%S"),
                    **res.pop("placed"))
@@ -1435,25 +1461,36 @@ def main(argv=None):
         return river_main(B, a)
     if a.build and a.fresh_map and os.path.exists(MAP_R_PLACED):
         os.remove(MAP_R_PLACED)                       # a fresh game: the recorded map ids name nothing any more
-    if not a.build and not use_map(B, "C"):
+    if not use_map(B, "C"):                           # a build too: it clears and stages map-C rects (review 4.1)
         return 1
     if a.build:
         res = run_build(B, placed, a.log, fresh=a.fresh_map, soak=not a.no_soak, only=only)
         with open(os.path.join(REPO, "Transient", "fw_scenarios_verify.json"), "w", encoding="utf-8") as f:
             json.dump(res, f, indent=1, default=str)
-        bad = [s for s, v in res["verify"].items() if not v["ok"]]
-        moved = [s for s, v in (res["soak"] or {}).items() if not v["still"]]
+        bad, moved = run_problems(res["verify"], res["soak"])
         print("LIVE build: %d/%d scenarios as staged%s; soak: %s; %d notes; %ss" % (
             len(placed) - len(bad), len(placed), " (FAIL %s)" % bad if bad else "",
             "skipped" if res["soak"] is None else ("all still" if not moved else "MOVED %s" % moved), len(res["notes"]),
             res["wall_s"]))
         keysheet(placed, live=res)
+        if bad or moved:
+            if a.save:
+                print("build FAILED (%s): not saved as a walkthrough" % (bad + moved))
+            return 1
         if not a.save:
-            return 0 if not (bad or moved) else 1
+            return 0
     R = review_class()(B, None)
     R.hold = hold_rects(only)
+    soak_moved = []
     if a.soak and not a.build:
-        print(json.dumps(R.soak(placed), default=str)[:3000])
+        sk = R.soak(placed)
+        print(json.dumps(sk, default=str)[:3000])
+        soak_moved = run_problems(soak=sk)[1]
+        if soak_moved:
+            print("soak MOVED %s" % soak_moved)
+            if a.save or a.branch:
+                print("not saved: the soak moved plots")
+                return 1
     if a.branch:
         if a.branch == "raid":
             for p in placed:
@@ -1484,7 +1521,7 @@ def main(argv=None):
     if a.goto:
         R.sweep(R.keep_rects(placed))
         print("framed %s: %s" % (a.goto, R.goto_(placed, a.goto).get("success")))
-    return 0
+    return 1 if soak_moved else 0
 
 
 if __name__ == "__main__":

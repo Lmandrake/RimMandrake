@@ -65,7 +65,8 @@ SCENARIO = scenario(
           "light the containment canal (dev fire at 'light here'): burns like gasoline, keeps burning, reaches the "
           "tank end, leaves the canal spent; pop the firefoam: foamed cells stay out while foam lies",
           "light the astrofuel bund: it detonates, not burns",
-          "dig the marked cell in the earth wall between the water and chemfuel canals: they meet and do NOT mix"],
+          "dig the two marked cells (28,19 and 28,20: the earth wall is two rows) between the water and chemfuel "
+          "canals: they meet and do NOT mix"],
     look_for="chemfuel, propane and water each their own colour; pipes rise onto each tank's flange; the Fill tank is "
              "never emptied by colonists",
     broken="chemfuel, propane and water hoses all one colour; a tank drawn bridging two pipe runs; the Fill tank "
@@ -76,7 +77,7 @@ SCENARIO = scenario(
     setup=SETUP,
     parts=[(4, 33, "cargo chemfuel"), (8, 33, "cargo propane"), (13, 34, "XTall chemfuel"), (21, 30, "adapter"),
            (2, 16, "bay: Store"), (6, 16, "bay: Fill"), (10, 16, "bay: Empty"), (14, 23, "set Dump"),
-           (21, 20, "pump (Pour)"), (36, 22, "light here"), (28, 19, "dig here: no-mix"), (30, 10, "THEIR tank"),
+           (21, 20, "pump (Pour)"), (36, 22, "light here"), (28, 19, "dig here: no-mix"), (28, 20, "and here: no-mix"), (30, 10, "THEIR tank"),
            (35, 33, "astrofuel bund"), (30, 26, "firefoam"), (4, 3, "spill"), (10, 3, "tracked tar")],
     pieces=[staged("cargo tanks (Futuristic): chemfuel, propane, XTall chemfuel", "style", None, (2, 30), "look"),
             staged("Industrial pipe run", "style", "RM_UniversalPipe_Industrial", (2, 29), "look"),

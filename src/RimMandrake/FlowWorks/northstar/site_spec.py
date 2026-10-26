@@ -234,6 +234,22 @@ SETTINGS = {
         "waterBodyMendsEnabled": True, "fishRollOnGrowth": True, "fishReturnOnRefill": True, "fishingZoneReturnOnRefill": True,
         "waterBodySplitEnabled": True, "waterPlantGraceEnabled": True, "freezeCountMendEnabled": True, "waterPlantDeepToleranceMetres": 1.0, "waterPlantGraceHours": 24.0,
     },
+    # SHEET_OVERFLOW (Sheet/RM_SheetSettings.cs, scribed from the main ExposeData). Review 5.1: this section was missing,
+    # so the settings registry and all_off() never saw the overflow switches
+    "RimMandrake.FlowWorks.Sheet.RM_SheetSettings": {
+        "sheetOverflowEnabled": False, "spillFromPumps": True, "spillFromRain": True, "spillFromFloods": True,
+        "spillFromFillIn": True, "spillFromGravity": True, "cropsDrownEnabled": True, "irrigateEnabled": True,
+        "pawnEffectsEnabled": True, "putsOutFireEnabled": True, "otherLiquidsSpillEnabled": True, "fuelSpillsBurnEnabled": True,
+        "sheetCapCm": 50, "maxWetSquares": 4000, "retentionCm": 1.0, "sweepsPerPulse": 3, "doorLeakPercent": 5,
+        "cropDrownPulses": 1680, "soakCmPerDaySand": 4.0, "soakCmPerDaySoil": 2.0, "soakCmPerDayGravel": 1.0,
+        "dryCmPerDayAt20C": 0.5, "roofedDryPercent": 30.0, "sheetPathCost": 30,
+    },
+    # LADDER_PARITY (Superdeep/RM_LadderParity.cs, scribed from the main ExposeData). Review 5.1: missing likewise
+    "RimMandrake.FlowWorks.RM_LadderParitySettings": {
+        "ladderNoKeys": True, "ladderMaxClimberBodySize": 1.2, "raiderChopRadius": 30, "raidLadderChance": 0.35,
+        "raidLadderCarrierShare": 0.25, "raiderTakeLadders": True, "raiderTakeLadderRadius": 25, "breachRepairEnabled": True,
+        "ladderOverWalls": True, "wallLadderSlowFactor": 4.0,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -253,6 +269,8 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RM_WaterMendSettings": "RM_WaterBodyMendGame.cs",
     "RimMandrake.FlowWorks.Pits.RM_SuspensionSettings": os.path.join("Pits", "Suspension", "RM_SuspensionSettings.cs"),
     "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings": os.path.join("Pits", "Drawbridge", "RM_DrawbridgeSettings.cs"),
+    "RimMandrake.FlowWorks.Sheet.RM_SheetSettings": os.path.join("Sheet", "RM_SheetSettings.cs"),
+    "RimMandrake.FlowWorks.RM_LadderParitySettings": os.path.join("Superdeep", "RM_LadderParity.cs"),
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.

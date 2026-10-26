@@ -210,8 +210,21 @@ class Body:
     def wet_cells(self):
         return set(range(self.n)) - set(self.receded)
 
+    exact = True   # RimMandrakeFlowWorksSettings.levelExactEnabled ships true: the pump takes any decilitre (SourceTake)
+
     def can_supply(self):
-        return self.limitless or self.stock >= VPT
+        """Building_LiquidPump.SourceTake > 0: any remainder with exact levels on (POND_PUMP_FIX_LAST_DROP_COUNTS),
+        a whole notch with them off (review 4.8: the model kept the retired whole-notch rule)."""
+        return self.limitless or (self.stock > 1e-9 if self.exact else self.stock >= VPT)
+
+    def debit_rest(self):
+        """One pump take of what is left, up to a level (TryDebitDl of a fractional remainder)."""
+        if not self.can_supply():
+            return 0.0
+        take = VPT if self.limitless else min(self.stock, VPT)
+        if not self.limitless:
+            self.stock -= take
+        return take
 
     def debit_level(self):
         if self.limitless:
@@ -399,13 +412,23 @@ def main():
     notes.append("trip 7: a 25-cell deep pond holds %d levels; a 25-cell SUPERDEEP basin holds %d -- exact" %
                  (int(nA.capacity / VPT), 25 * SUPERDEEP))
 
-    # 8. quantisation: refill adds float stock; a sub-level remainder is held by a kept cell and cannot be drawn
+    # 8. quantisation: refill adds float stock; a sub-level remainder is held by a kept cell and, with exact levels
+    #    on (shipped), a pump draws it to the last drop (Building_LiquidPump.SourceTake; selftest_pond_pump.py)
     nA = Body(4)
     nA.stock = 0.0
     nA.stock += 0.13 * 4 * 0.5 * 0.9   # a dry-season day of ooze, a bit less
     nA.settle()
-    check(not nA.can_supply() and nA.wet_cells() == {0}, "trip 8: a %.3f-unit remainder should show one wet cell "
-          "that a pump cannot draw" % nA.stock)
+    rest = nA.stock
+    check(nA.can_supply() and nA.wet_cells() == {0}, "trip 8: a %.3f-unit remainder should show one wet cell "
+          "that a pump CAN draw (exact levels)" % nA.stock)
+    got = nA.debit_rest()
+    nA.settle()
+    check(abs(got - rest) < 1e-9 and nA.stock < 1e-9 and nA.wet_cells() == set(),
+          "trip 8: drawing the %.3f remainder should leave the pond dry (got %.3f, stock %.3f)" % (rest, got, nA.stock))
+    nB = Body(4)
+    nB.exact = False
+    nB.stock = rest
+    check(not nB.can_supply(), "can-fail trip 8: with exact levels off a sub-level remainder is not drawable")
 
     # 9. save/load mid-trip: the body stock is a float32; Scribe writes floats with G9 (GPT review #20, public decompile),
     #    which round-trips float32 exactly -- the 9-digit row is the shipped case, the real risk is float32 accrual

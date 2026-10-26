@@ -61,8 +61,9 @@ SCENARIO = scenario(
           "designate Fill in canal on canal A's far 4 cells: the filled cells' water goes back to the pond",
           "select the canyon trigger at canal D's head > Flood now: the flood runs IN canal D, not over the land",
           "select the edge setter: set the east edge sealed: B stops draining and fills",
-          "closed ledger (fenced, south-east): set the reel's Free end to Outflow: the two tanks' sum stays equal to "
-          "the litre while litres move",
+          "closed ledger (fenced, south-east): set the full tank's Job to Empty and the far tank's to Fill (the reel's "
+          "hose couples them; a coupled Free end role is inert, so the tank jobs move the water): litres move tank to "
+          "tank and the two tanks' sum stays 8,000 L to the litre",
           "RAIN BRANCH (RM_fw_composite_rain): trench E fills, roofed F stays dry; the drawn-down pond refills around "
           "the muffalo, never over it"],
     look_for="the pond's edge recedes, the spring's never; no water on open ground beside a full canal; the ledger "

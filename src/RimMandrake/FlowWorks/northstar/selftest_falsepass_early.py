@@ -194,8 +194,100 @@ def t_perf_and_reach():
         check("3.12 PASS + OWED only exits 0", R.exit_code([rows[0], rows[2]]) == 0)
 
 
+# ---------------------------------------------------------------------------------------------------- scenarios_map.py
+class _MapB(object):
+    def __init__(self, cur):
+        self.cur = cur
+        self.calls = []
+
+    def call(self, tool, **kw):
+        self.calls.append(tool)
+        if tool == "jawa/map_info":
+            return {"mapId": self.cur} if self.cur is not None else {"success": False}
+        return {"success": True}
+
+
+def t_scenarios_map():
+    import json
+    import tempfile
+    import scenarios_map as M
+    if _has(M, "run_problems", "4.4"):
+        bad, moved = M.run_problems({"C1": {"ok": True}, "C2": {"ok": False}}, {"C3": {"still": False}, "C4": {"still": True}})
+        check("4.4 a plot not as staged and a plot that moved are both named", (bad, moved) == (["C2"], ["C3"]), (bad, moved))
+        check("4.4 a clean build names nothing", M.run_problems({"C1": {"ok": True}}, {}) == ([], []))
+    d = tempfile.mkdtemp(prefix="fp_map_")
+    side = os.path.join(d, "map_r_placed.json")
+    with open(side, "w", encoding="utf-8") as f:
+        json.dump({"map_r": 7, "map_c": None}, f)
+    if _has(M, "recorded_map_c", "4.2"):
+        with open(os.path.join(d, "ok.json"), "w", encoding="utf-8") as f:
+            json.dump({"map_r": 7, "map_c": 3}, f)
+        check("4.2 a rebuild keeps the recorded map C id", M.recorded_map_c(7, os.path.join(d, "ok.json")) == 3)
+        check("4.2 no sidecar -> no map C id", M.recorded_map_c(7, os.path.join(d, "none.json")) is None)
+        check("4.2 a sidecar naming map R as map C is refused", M.recorded_map_c(3, os.path.join(d, "ok.json")) is None)
+    old = M.MAP_R_PLACED
+    M.MAP_R_PLACED = side
+    try:
+        on_r = M.use_map(_MapB(7), "C")
+        unread = M.use_map(_MapB(None), "C")
+        on_c = M.use_map(_MapB(3), "C")
+    finally:
+        M.MAP_R_PLACED = old
+    check("4.1/4.2 map C unrecorded while map R is current -> refused, not 'C is current'", on_r is False, on_r)
+    check("4.2 map C unrecorded and the current map unread -> refused", unread is False, unread)
+    check("4.2 control: map C unrecorded but the current map is not map R -> C", on_c is True, on_c)
+
+
+# ---------------------------------------------------------------------------------------------------- scenarios/
+class _SwimB(object):
+    """Stage 0's dry control with a colonist who is ALREADY outside the pit (on the lip) when the dry order lands."""
+
+    def __init__(self, origin):
+        self.ox, self.oz = origin
+
+    def call(self, tool, **kw):
+        if tool == "jawa/flowworks_excavation_rect":
+            return {"rows": [{"d": 8}] * 4}
+        if tool == "jawa/spawn_pawn":
+            return {"pawns": [{"id": 101}]}
+        if tool == "jawa/pawn_get":
+            return {"pawns": [{"position": {"x": self.ox + 2, "z": self.oz + 9}}]}
+        if tool == "jawa/static_call":
+            return {"result": ""}
+        return {"success": True}
+
+
+def t_scenarios():
+    from scenarios import stage0_swim_pit as S0
+    verdict, rows = S0.run(_SwimB((100, 100)), (100, 100))
+    check("4.3 a failed dry control (already out before any water) is FAIL, not a 2 m swim PASS", verdict == "FAIL",
+          (verdict, [(r["row"], r["status"]) for r in rows]))
+    check("4.3 no flooded row is scored after the failed control",
+          not any(r["row"] in ("S0SWIM_2m_out", "S0SWIM_brim_out") for r in rows), [r["row"] for r in rows])
+
+    from scenarios import c05_fuel_depot as C5, c10_rain_basin as C10
+    cells = {(x, z) for x, z, _ in C5.SCENARIO["parts"]}
+    check("4.7 both rows of the two-row earth wall are marked to dig", {(28, 19), (28, 20)} <= cells)
+    check("4.7 the try text names both cells", any("28,20" in t for t in C5.SCENARIO["try_"]))
+    led = [t for t in C10.SCENARIO["try_"] if "closed ledger" in t]
+    check("4.6 the closed-ledger step drives the coupled tanks' jobs, not the inert Free end role",
+          led and "Empty" in led[0] and "Fill" in led[0] and "Free end to Outflow" not in led[0], led)
+
+
+# ---------------------------------------------------------------------------------------------------- site_spec.py
+def t_settings_sections():
+    import site_spec as S
+    import settings_registry as R
+    for cls in ("RimMandrake.FlowWorks.Sheet.RM_SheetSettings", "RimMandrake.FlowWorks.RM_LadderParitySettings"):
+        check("5.1 %s is in the settings table" % cls.rsplit(".", 1)[1], cls in S.SETTINGS and cls in S.SETTINGS_SOURCES)
+    off = {f for _, f, _ in R.all_off()}
+    check("5.1 all_off() turns the sheet and ladder switches off",
+          {"sheetOverflowEnabled", "fuelSpillsBurnEnabled", "ladderNoKeys", "ladderOverWalls"} <= off)
+
+
 def main():
-    for t in (t_live_session, t_player_missions, t_live_session_late, t_preflight, t_perf_and_reach):
+    for t in (t_live_session, t_player_missions, t_live_session_late, t_preflight, t_perf_and_reach, t_scenarios_map,
+              t_scenarios, t_settings_sections):
         try:
             t()
         except Exception as e:          # noqa: BLE001 -- a crash is a red check, not a silent skip

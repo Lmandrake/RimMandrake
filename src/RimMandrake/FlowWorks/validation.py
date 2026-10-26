@@ -1691,7 +1691,13 @@ TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDea
                         # toggle chain
                         "lineCrossingRulesEnabled",
                         # PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4 (2026-10-21): pipe poles need GSS; live rows owed (L2)
-                        "pipePolesEnabled"]
+                        "pipePolesEnabled",
+                        # review 5.1 (2026-10-26): the sheet-overflow and ladder-parity sections joined the settings
+                        # table; their live proofs (sheet_overflow_proof.py, the ladder items) are not toggle chains yet
+                        "sheetOverflowEnabled", "spillFromPumps", "spillFromRain", "spillFromFloods", "spillFromFillIn",
+                        "spillFromGravity", "cropsDrownEnabled", "irrigateEnabled", "pawnEffectsEnabled",
+                        "putsOutFireEnabled", "otherLiquidsSpillEnabled", "fuelSpillsBurnEnabled",
+                        "ladderNoKeys", "raiderTakeLadders", "breachRepairEnabled", "ladderOverWalls"]
 # KNOWN_GOOD_BUILD_SKIP_UNCHANGED_PASS (modcheck/gate.py): what these chains read beyond their code and the game. A chain
 # that shells out or reads files and declares nothing is never skipped by the known-good gate; a declaration must name
 # EVERYTHING the chain reads (it replaces the gate's read scan). The C# SelfTest: the sources it compiles and the runner
