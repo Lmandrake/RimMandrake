@@ -29,7 +29,9 @@
          nature, which is plot-only, gate-kept (ban 6.1). Its patch was removed
          2026-10-26 with Alpha Biomes' retirement; RUT_RustCathedral and
          RM_RustCathedral carry the SSP-clean description (the_rust_cathedral.md).
-      2. Scarlands (90 tiles, vanilla Odyssey, never even relabeled): donor text
+      2. Scarlands (vanilla Odyssey's def; relabeled in BiomeNames_Ashkarr.xml. The
+         90 live tiles SCARLANDS_RENAME_OURS_1 measured are RUT_Scarlands', the
+         Warscar, not this def's): donor text
          invented a bombed city and mechanoids "waiting to awaken and kill again" —
          contradicts ban 6.6 (the Forgotten Sentinels defend only, never pursue) and
          the sheet's own "every ancient danger here has already been opened and
@@ -54,9 +56,9 @@
     Every RUT_ text below is placed verbatim (never edited here).
 
     NOT PORTED (deliberately, not an oversight):
-      - RUT_SleepingIce, RUT_BlueDesert (BiomeGRimond gets it below, but
-        RUT_BlueDesert already owns 1,029/1,030 of its own tiles directly),
-        RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra (the Auroral
+      - RUT_SleepingIce, RUT_BlueDesert (it owns its own tiles directly; the
+        BiomeGRimond port that once sat below was deleted with grimterra.biomesmod's
+        retirement, f880d0a6c0), RUT_TwilightSea, RUT_GreySea, RUT_TheScald, RUT_Umbra (the Auroral
         Umbra): these already run under their OWN RUT_
         defName on (almost) all their tiles — nothing to port onto, they ARE the
         source.
@@ -153,7 +155,7 @@
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AridShrubland"]/description</xpath>
-      <value><description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving -- because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description></value>
+      <value><description>Knee-high silver-green fuzz at eerily even spacing, running unbroken to every horizon, all of it leaning the same way, all of it moving - because the wind never stops. No rain falls here; the only water is fog carried in on the ground-wind, thinning with every sunward metre. Sightlines are gone under the fuzz-canopy and cover is everywhere, for everything, all the time: the moment the environment stops trying to kill you, the danger becomes each other.</description></value>
     </match>
   </Operation>   <!-- "the arid shrubland" - RUT_AridShrubland, first-ever relabel+description -->
 
