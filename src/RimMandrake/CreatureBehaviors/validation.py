@@ -307,6 +307,16 @@ def track_grid(t):
                 _unmeasured(t, "eraser proof could not run: %r" % (r,))
             if res != "printed=True erased=True":
                 raise ExpectationFailed("moving sand did not bury the print: %r" % res)
+        # DUNETRACK_ERASE_WIDEN_WEATHER_SAND: weather writes sand through SandGrid.AddDepth, also hooked; 0.03 a step
+        # sums past the 0.08 threshold on step 3.
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Stillsand.RM_DuneTrackEraser",
+                          method="ProofEraseByWeather", args="current|0.03")
+        res = str((r or {}).get("result", ""))
+        if _live(t):
+            if res.startswith("REFUSED") or not res:
+                _unmeasured(t, "weather eraser proof could not run: %r" % (r,))
+            if res != "printed=True erased=True steps=3":
+                raise ExpectationFailed("weather sand did not bury the print on step 3: %r" % res)
 
 # ---- CREATUREBEHAVIORS_COVERAGE_GAPS_1: one component per mechanic toggle -------------------------------------
 # Each component asserts, per mechanic: (1) the C# classes that DO the job are loaded in the running game

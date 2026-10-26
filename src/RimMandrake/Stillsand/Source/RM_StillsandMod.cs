@@ -246,7 +246,7 @@ namespace RimMandrake.Stillsand
             if (Group(list, "Footprints in moving sand", RimMandrake.Shared.SettingScope.Now, new[] { "duneErasesTracks" }))
             {
                 list.CheckboxLabeled("Moving sand buries tracks", ref duneErasesTracks,
-                    "On a Stillsand map, a cell whose sand depth shifts noticeably loses its footprints, so dunes on the move wipe the trail. "
+                    "On a Stillsand map, a cell whose sand depth shifts noticeably loses its footprints, so dunes on the move, sand blowing in and sand wearing away wipe the trail. "
                     + "Off: prints stay until the track limit pushes the oldest out. Safe mid-game.");
                 list.GapLine();
             }

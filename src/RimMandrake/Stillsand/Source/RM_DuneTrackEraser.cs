@@ -11,10 +11,12 @@ namespace RimMandrake.Stillsand
     // Stillsand's dunes engine (a cell whose sand depth changes past a threshold clears)". The Warscar's
     // eraser is the Settling's downwind sweep (Scarlands RM_Settling.cs); this is the other half.
     //
-    // Hook: Verse.SandGrid.SetDepth, which the MovingDunes engine writes every cell move through
-    // (MapComponent_DuneField.SetDepthHysteretic). A prefix keeps the old depth; the postfix clears the
-    // track-grid print on that cell when the depth moved by at least ChangeThreshold on an RM_Stillsand
-    // map. Vanilla writers of SetDepth are caught too, which is right: any sand that moved buries prints.
+    // Hook: every Verse.SandGrid depth writer (RM_DuneTrackKernel.SandWriters): SetDepth, which the
+    // MovingDunes engine writes every cell move through (MapComponent_DuneField.SetDepthHysteretic), and
+    // AddDepth, which weather writes through (sand piling under a sandy weather, wearing away otherwise;
+    // DUNETRACK_ERASE_WIDEN_WEATHER_SAND). A prefix keeps the old depth; the postfix clears the track-grid
+    // print on that cell once the sand moved over it adds up to ChangeThreshold on an RM_Stillsand map. Any
+    // sand that moved buries prints, whoever moved it.
     // ClearCell is safe during map load (the grid skips a section that is not built yet).
     // Setting: duneErasesTracks (off = prints stay until the grid's cap evicts them, the old behaviour).
     // ════════════════════════════════════════════════════════════════════
@@ -32,7 +34,7 @@ namespace RimMandrake.Stillsand
     [StaticConstructorOnStartup]
     public static class RM_DuneTrackEraser
     {
-        public const float ChangeThreshold = 0.08f;
+        public const float ChangeThreshold = RM_DuneTrackKernel.ChangeThreshold;
 
         // Resolved inside the guarded static constructor, so a renamed field logs our own
         // diagnostic instead of failing type initialisation.
@@ -47,19 +49,32 @@ namespace RimMandrake.Stillsand
             try
             {
                 MapRef = AccessTools.FieldRefAccess<SandGrid, Map>("map");
-                var target = AccessTools.Method(typeof(SandGrid), "SetDepth");
-                if (target == null)
-                {
-                    Log.Error(rule + "SandGrid.SetDepth NOT FOUND, moving sand will not bury tracks.");
-                    return;
-                }
-                new Harmony("mandrake.rm.stillsand.dunetrackeraser").Patch(target,
-                    prefix: new HarmonyMethod(typeof(RM_DuneTrackEraser), nameof(Prefix)),
-                    postfix: new HarmonyMethod(typeof(RM_DuneTrackEraser), nameof(Postfix)));
             }
             catch (Exception e)
             {
-                Log.Error(rule + "patch FAILED, moving sand will not bury tracks: " + e.Message);
+                Log.Error(rule + "SandGrid.map NOT FOUND, moving sand will not bury tracks: " + e.Message);
+                return;
+            }
+            var harmony = new Harmony("mandrake.rm.stillsand.dunetrackeraser");
+            // Each writer on its own: one renamed method costs its own sand source, not the other's.
+            foreach (string writer in RM_DuneTrackKernel.SandWriters)
+            {
+                try
+                {
+                    var target = AccessTools.Method(typeof(SandGrid), writer);
+                    if (target == null)
+                    {
+                        Log.Error(rule + "SandGrid." + writer + " NOT FOUND, sand it writes will not bury tracks.");
+                        continue;
+                    }
+                    harmony.Patch(target,
+                        prefix: new HarmonyMethod(typeof(RM_DuneTrackEraser), nameof(Prefix)),
+                        postfix: new HarmonyMethod(typeof(RM_DuneTrackEraser), nameof(Postfix)));
+                }
+                catch (Exception e)
+                {
+                    Log.Error(rule + "patch of SandGrid." + writer + " FAILED, sand it writes will not bury tracks: " + e.Message);
+                }
             }
         }
 
@@ -68,14 +83,13 @@ namespace RimMandrake.Stillsand
             __state = __instance.GetDepth(c);
         }
 
-        // DUNE_TRACK_ERASE_ACCUMULATE_1: sand moved over a printed cell since its print, per cell. A dune engine
-        // stepping in slabs smaller than ChangeThreshold used to never erase; now the steps add up. Starts counting
-        // at the first move that finds a print on the cell (and resets when the cell has none), so sand that moved
-        // BEFORE the print never counts against it.
+        // DUNE_TRACK_ERASE_ACCUMULATE_1: sand moved over a printed cell since its print, per cell (RM_SandMoveTally in
+        // Kernel/RM_DuneTrackKernel.cs). A dune engine stepping in slabs smaller than ChangeThreshold, or weather adding
+        // 0.023..0.046 a pass, adds up instead of never erasing.
         // PROVISIONAL (auto-decided 2026-10-09, DUNE_TRACK_ERASE_ACCUMULATE_1): session-only (not saved); a reload
         // restarts a part-buried print's count.
-        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, System.Collections.Generic.Dictionary<int, float>>
-            moved = new System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, System.Collections.Generic.Dictionary<int, float>>();
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, RM_SandMoveTally>
+            moved = new System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, RM_SandMoveTally>();
 
         public static void Postfix(SandGrid __instance, IntVec3 c, float __state)
         {
@@ -86,22 +100,9 @@ namespace RimMandrake.Stillsand
             if (map == null || map.Biome == null || map.Biome.defName != "RM_Stillsand") return;
             RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
             if (grid == null) return;
-            var acc = moved.GetOrCreateValue(__instance);
-            int idx = map.cellIndices.CellToIndex(c);
-            if (!grid.TryGetPrint(c, out _))
-            {
-                acc.Remove(idx);
-                return;
-            }
-            acc.TryGetValue(idx, out float sum);
-            sum += delta;
-            if (sum < ChangeThreshold)
-            {
-                acc[idx] = sum;
-                return;
-            }
-            acc.Remove(idx);
-            if (grid.ClearCell(c)) Erased++;
+            bool buried = moved.GetOrCreateValue(__instance)
+                .Note(map.cellIndices.CellToIndex(c), grid.TryGetPrint(c, out _), delta);
+            if (buried && grid.ClearCell(c)) Erased++;
         }
 
         /// <summary>
@@ -130,6 +131,42 @@ namespace RimMandrake.Stillsand
             map.sandGrid.SetDepth(cell, Mathf.Clamp01(d + (d + delta > 1f ? -delta : delta)));
             bool erased = !grid.TryGetPrint(cell, out _);
             return "printed=" + printed + " erased=" + erased;
+        }
+
+        /// <summary>
+        /// Bridge proof of the weather path (jawa/static_call, DUNETRACK_ERASE_WIDEN_WEATHER_SAND): lay a print as
+        /// ProofErase does, then write that cell's sand through SandGrid.AddDepth, the weather writer, in steps of
+        /// `step` (piling up, or wearing down when the cell is too full to pile) until the print is gone or 20 steps ran. Returns
+        /// "printed=<bool> erased=<bool> steps=<n>"; a step of 0.03 buries it on step 3 (0.09 >= ChangeThreshold).
+        /// </summary>
+        public static string ProofEraseByWeather(Map map, float step)
+        {
+            if (map == null) return "REFUSED: no map";
+            if (!(step > 0f) || step > 0.25f) return "REFUSED: step must be in (0, 0.25]";
+            RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
+            if (grid == null) return "REFUSED: no track grid";
+            if (map.sandGrid == null) return "REFUSED: no sand grid";
+            Pawn walker = map.mapPawns.FreeColonistsSpawned.FirstOrFallback();
+            if (walker == null) return "REFUSED: no colonist to print with";
+            RM_TrackSurfaceExtension surface = null;
+            IntVec3 cell = IntVec3.Invalid;
+            foreach (IntVec3 c in map.AllCells)
+            {
+                surface = c.GetTerrain(map).GetModExtension<RM_TrackSurfaceExtension>();
+                if (surface != null && c.Standable(map)) { cell = c; break; }
+            }
+            if (!cell.IsValid) return "REFUSED: no track surface cell";
+            bool printed = grid.RecordPrint(cell, walker, surface);
+            // Room to pile threshold + one step, else wear down: with step <= 0.25 either way has the room.
+            float sign = map.sandGrid.GetDepth(cell) + ChangeThreshold + step > 1f ? -1f : 1f;
+            int steps = 0;
+            while (steps < 20 && grid.TryGetPrint(cell, out _))
+            {
+                map.sandGrid.AddDepth(cell, sign * step);
+                steps++;
+            }
+            bool erased = !grid.TryGetPrint(cell, out _);
+            return "printed=" + printed + " erased=" + erased + " steps=" + steps;
         }
     }
 }

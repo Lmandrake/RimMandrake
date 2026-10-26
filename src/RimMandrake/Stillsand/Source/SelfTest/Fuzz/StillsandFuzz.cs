@@ -875,6 +875,24 @@ namespace RimMandrake.Stillsand.Fuzz
                 Check(bk2.TryOpen(0, 30000) && !bk2.TryOpen(29999 , 30000) && bk2.TryOpen(30000, 30000) && bk2.openingSerial == 2, "opening throttle boundary");
                 Check(!bk2.TryOpen(30001, 30000) && bk2.openingSerial == 2, "throttle measured from the last ACCEPTED opening");
                 Check(RM_SunKernel.StillStep(0.5f, true, 0f, 250, 1024, out bool ff) == 0.5f && !ff, "no rate holds the progress");
+                // DUNETRACK_ERASE_WIDEN_WEATHER_SAND: the eraser hooks both 1.6 SandGrid writers, and weather-sized steps bury a print
+                Check(Array.IndexOf(RM_DuneTrackKernel.SandWriters, "SetDepth") >= 0 && Array.IndexOf(RM_DuneTrackKernel.SandWriters, "AddDepth") >= 0, "eraser hooks SetDepth (dunes) AND AddDepth (weather)");
+                int StepsToBury(float step, int cap)
+                {
+                    var tally = new RM_SandMoveTally();
+                    for (int k = 1; k <= cap; k++) if (tally.Note(7, true, step)) { Check(tally.Count == 0, "a buried cell keeps its tally"); return k; }
+                    return -1;
+                }
+                Check(StepsToBury(0.3f, 5) == 1, "a dune slab of 0.3 buries at once");
+                Check(StepsToBury(0.046f, 10) == 2, "full sandy weather (0.046 a pass) buries on pass 2");
+                Check(StepsToBury(0.023f, 10) == 4, "the thinnest sandy weather (0.023 a pass, noise floor 0.5) buries on pass 4");
+                Check(StepsToBury(1f / 180f, 30) == 15, "wear (1/180 a pass) buries on pass 15, not 14");
+                var tl = new RM_SandMoveTally();
+                Check(!tl.Note(3, true, 0.05f) && tl.Count == 1, "a part-buried print is tallied");
+                Check(!tl.Note(3, false, 0.05f) && tl.Count == 0, "sand over a cell with no print drops its tally");
+                Check(!tl.Note(3, true, 0.05f) && tl.Count == 1, "a new print starts from zero, sand moved before it does not count");
+                Check(!tl.Note(4, true, 0f) && !tl.Note(4, true, float.NaN) && tl.Count == 1, "no change (or NaN) tallies nothing");
+                Check(!tl.Note(4, true, 0.05f) && tl.Note(3, true, 0.04f) && tl.Count == 1, "cells tally apart: 0.05 + 0.04 buries cell 3, cell 4 stays part-buried");
             }
             catch (Exception e) { fails.Add("units: " + e.Message); }
             return fails;

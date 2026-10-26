@@ -1,0 +1,2 @@
+winbuild.stage_build rsyncs the clone with -t --modify-window=2 (size+mtime quick check): an edit that keeps the file the same SIZE within 2 s of the previous staged copy is NOT re-staged, and the build silently runs the old source. Hit 2026-10-26: a probe-fail edit (15->14) then its revert seconds later; the reverted selftest kept failing on the probe value. Same-length edits made back-to-back (probe/revert, sed of one digit) need a touch before the next build, or the stage should use --checksum for sources.
+home: src/RimMandrake/Utils/winbuild.py stage_build docstring
