@@ -3,6 +3,8 @@
 
   python.exe src/RimMandrake/FlowWorks/northstar/pipe_levelling_perf_proof.py [out.json] [--rigs 200] [--calls 20] [--rehearsal]
   python3    src/RimMandrake/FlowWorks/northstar/pipe_levelling_perf_proof.py --mock [--mock-faults a,b] [--rehearsal]
+  phased (each call fits a <=540 s foreground budget): --no-time --lay 0:100, then --resume --no-time --lay 100:200, then
+             --resume --lay 0:0 --restore-length 40 (stage once, lay in slices, time last; maxLength stays 80 until the timing phase restores it)
              offline against FakeBridge (NOT the mod); every row is written SKIP with its would-be verdict under detail.mock
 
 Run from the repo root with python.exe on a 325x325 map (no bridge tool makes one: start the debug game on a 325 map by
@@ -130,10 +132,22 @@ def main(argv=None):
     ap.add_argument("--rehearsal", action="store_true", help="scaled layout on a smaller map; rows capped at UNMEASURED")
     ap.add_argument("--budget-s", type=float, default=480.0,
                     help="wall-clock budget; spent, or 3 dead probe replies in a row, writes the unwritten rows UNMEASURED/HARNESS")
+    # LEVEL_PERF_PROOF_FIX_LAYS_OUTRUN_BUDGET (2026-10-26): site + 80,000-cell staging + 400 serial lays outran one <=540 s
+    # foreground call. Phases: run 1 --no-time (site, basins, rigs, lays of --lay A:B), runs 2.. --resume --lay A:B --no-time,
+    # last --resume --lay 0:0 (time). The links counter (>= --rigs) is still the gate, so a missed slice reads SITE, never PASS.
+    ap.add_argument("--resume", action="store_true",
+                    help="rigs already built by an earlier phase: skip the site reset/prepare and the build (basins re-stage: idempotent)")
+    ap.add_argument("--lay", default=None, metavar="A:B", help="lay only rigs [A:B) (default all); 0:0 lays none")
+    ap.add_argument("--no-time", action="store_true",
+                    help="stop after the lays (rows UNMEASURED/HARNESS 'phase only'); hose maxLength is left at 80 for the next phase")
+    ap.add_argument("--restore-length", default=None, help="hose maxLength to put back at the end (default: the value read at start)")
     ap.add_argument("--mock", action="store_true")
     ap.add_argument("--mock-faults", default="", help="comma list: " + ",".join(FakeBridge.FAULTS))
     a = ap.parse_args(argv)
     faults = [f for f in a.mock_faults.split(",") if f]
+    if a.resume and not a.no_time and a.restore_length is None:
+        # an earlier --no-time phase left maxLength at 80, so "the value read at start" would put back 80
+        ap.error("--resume without --no-time is the timing phase: name --restore-length (shipped HoseMath.DefaultMaxLength)")
     if set(faults) - set(FakeBridge.FAULTS):
         ap.error("unknown --mock-faults %s" % ",".join(sorted(set(faults) - set(FakeBridge.FAULTS))))
     if a.mock:
@@ -232,21 +246,24 @@ def main(argv=None):
         # reel was built (layFailures 338). ProofResetRect drains and fills back every earlier dig in the rect, prepare_site clears
         # rock/plants and reads it back; a site that stays blocked is UNMEASURED/SITE, never a verdict.
         # Rehearsal: the whole layout box. Full run: only the rig gap (the basins are dug by ProofStageBasin on the fresh 325 map).
-        if a.rehearsal or not big:
+        if a.resume:
+            res["site"] = {"resume": True}
+        elif a.rehearsal or not big:
             x0, x1 = basins[0][0], basins[1][0] + basins[1][2]
             z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
         else:
             x0, x1 = lip_a, lip_b + 1
             z0, z1 = basins[0][1], basins[0][1] + basins[0][3]
-        site = (x0, z0, x1 - x0, z1 - z0)
-        rr, rtxt = static("ProofResetRect", "%d;%d;%d;%d" % site)
-        site_rows = []
-        left = int(rr["left"]) if rr.get("left", "").isdigit() else None
-        res["site"] = {"rect": site, "reset": rtxt[:160]}
-        if left != 0 or not (a.mock or V.prepare_site(B, site, site_rows, "LEVEL_site_ready")):   # mock: no reveal walk
-            all_rows("UNMEASURED", "site not ready: reset %s; %s" % (rtxt[:120], str([r.get("detail") for r in site_rows])[:200]),
-                     "SITE")
-            return finish(2)
+        if not a.resume:
+            site = (x0, z0, x1 - x0, z1 - z0)
+            rr, rtxt = static("ProofResetRect", "%d;%d;%d;%d" % site)
+            site_rows = []
+            left = int(rr["left"]) if rr.get("left", "").isdigit() else None
+            res["site"] = {"rect": site, "reset": rtxt[:160]}
+            if left != 0 or not (a.mock or V.prepare_site(B, site, site_rows, "LEVEL_site_ready")):   # mock: no reveal walk
+                all_rows("UNMEASURED", "site not ready: reset %s; %s" % (rtxt[:120], str([r.get("detail") for r in site_rows])[:200]),
+                         "SITE")
+                return finish(2)
 
         # ------------------------------------------------------------------ stage the basins (strips of <= 12,500 squares)
         staged = []
@@ -268,12 +285,14 @@ def main(argv=None):
         # ------------------------------------------------------------------ the rigs (hose length held at 80 for the run)
         HS = "RimMandrake.FlowWorks.Hose.RM_HoseSettings"
         len0 = (B.call("jawa/mod_settings_field", typeName=HS, action="get", field="maxLength", _answer=True) or {}).get("value")
+        if a.restore_length is not None:
+            len0 = a.restore_length
         lr80 = B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value="80", _answer=True) or {}
         res["hoseMaxLength"] = {"before": len0, "set80": lr80.get("success")}
         try:
             return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
         finally:
-            if len0 is not None:
+            if len0 is not None and not a.no_time:
                 B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
 
     def unwritten(st, why, cls):
@@ -298,15 +317,26 @@ def main(argv=None):
             res["calmRestore"] = str(V.site_calm_restore(B))[:160]
             save()
 
+def lay_slice(spec, n):
+    """--lay "A:B" -> (A, B) clipped to [0, n]; None -> (0, n)."""
+    if not spec:
+        return 0, n
+    lo, _, hi = spec.partition(":")
+    lo = max(0, min(n, int(lo or 0)))
+    return lo, max(lo, min(n, int(hi) if hi else n))
+
+
 def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows):
-    for i in range(0, len(spots), 40):
+    for i in range(0, 0 if a.resume else len(spots), 40):
         ops = []
         for cx, z in spots[i:i + 40]:
             ops += rig_ops(cx, z, lip_a, lip_b)
         B.call("jawa/build_batch", ops=";".join(ops), faction="player", wipeExisting=False)
     B.ticks(2)                                   # governed: an intruder is recovered (site_recover), a real stop raises
     lay_fail = 0
-    for cx, z in spots:
+    lo, hi = lay_slice(a.lay, len(spots))
+    res["laySlice"] = [lo, hi]
+    for cx, z in spots[lo:hi]:
         for r, to, role in (((cx, z), (lip_a, z), "Intake"), ((cx, z + 2), (lip_b, z + 2), "Outflow")):
             lr = B.hp("lay:%d,%d,%d,%d" % (r + to), answer=True) or {}
             if lr.get("success") is not True:
@@ -314,6 +344,11 @@ def _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size,
                 continue
             static("ProofHoseRole", "%d,%d;%s" % (r + (role,)), ty=LPROOF)
     res["layFailures"] = lay_fail
+    if a.no_time:
+        for rid in ROW_IDS:
+            row(rid, "UNMEASURED", {"why": "phase only (--no-time): rigs %d:%d laid, %d failures; time with --resume --lay 0:0"
+                                    % (lo, hi, lay_fail), "stagedOk": staged_ok}, cls="HARNESS")
+        return finish(2)
     B.ticks(260)
     kl, tl = static("ProofLevelLink", "%d,%d" % spots[0]) if spots else ({}, "no rigs")
     links = int(kl["links"]) if kl.get("links", "").isdigit() else None

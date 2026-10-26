@@ -1,0 +1,2 @@
+Writing a FlowWorks art setting with jawa/mod_settings_field does not redraw the map (the settings window's WholeMapChanged never runs). Before a before/after screenshot, call jawa/static_call RimMandrake.FlowWorks.SectionLayer_RMExcavationWalls.RedrawAll (or RM_PipePoles.RedrawSpans); otherwise the 'after' frame shows the old art. Shot framing: rimworld/frame_cell_rect then jawa/take_screenshot frames reliably; jump_camera_to_cell + set_camera_zoom framed the wrong cells (2026-10-26).
+home: skills/rimbridge/references/traps.md

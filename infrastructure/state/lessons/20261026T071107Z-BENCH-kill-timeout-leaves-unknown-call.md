@@ -1,0 +1,2 @@
+When WSL timeout kills a python.exe bridge script mid-call, the client records that mutating call as UNKNOWN and refuses every later call, read-only ones included, until rimbridge_client.py --reconcile --resolve CID --as applied|not-applied. On a game whose frame takes ~75 s (a choking map current), budget-s watchdogs do not fire because one call blocks; set the outer timeout and expect to reconcile (2026-10-26).
+home: skills/rimbridge/references/traps.md
