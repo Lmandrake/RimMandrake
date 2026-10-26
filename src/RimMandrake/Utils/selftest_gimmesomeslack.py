@@ -35,7 +35,7 @@ def main(argv):
         print("selftest build FAILED")
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else [])
+    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else [])
     for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]

@@ -595,6 +595,23 @@ namespace RimMandrake.GimmeSomeSlack
             F("farSkips", comp.FarSkips.ToString());
             F("graphReuses", comp.GraphReuses.ToString());
             F("reachHotBlocks", comp.Reach == null ? "-1" : comp.Reach.All ? "\"all\"" : comp.Reach.HotBlocks.ToString());
+            // round 2: where a rebuild's time goes, how the snapshot base was kept, and what forced the last rebuild / re-reduce
+            CordBuilder bld = comp.BuilderForProbe;
+            F("rebuildPhasesMs", "{" + string.Join(",", new[] {
+                "\"snapBase\":" + J.D(comp.LastSnapBaseMs), "\"snapPower\":" + J.D(comp.LastSnapPowerMs),
+                "\"tapIds\":" + J.D(comp.LastTapIdsMs), "\"styles\":" + J.D(comp.LastStylesMs), "\"build\":" + J.D(comp.LastBuildMs),
+                "\"bInputs\":" + J.D(bld.PhInputsMs), "\"bReduce\":" + J.D(bld.PhReduceMs), "\"bEdges\":" + J.D(bld.PhEdgesMs),
+                "\"bKeys\":" + J.D(bld.PhKeyMs), "\"bCorridor\":" + J.D(bld.PhCorridorMs), "\"bNodes\":" + J.D(bld.PhNodesMs),
+                "\"bReach\":" + J.D(bld.PhReachMs) }) + "}");
+            F("snapFullScans", comp.Snap.FullScans.ToString());
+            F("snapUses", comp.Snap.Uses.ToString());
+            F("snapLastPatched", comp.Snap.LastPatched.ToString());
+            F("snapMismatches", comp.Snap.Mismatches.ToString());
+            F("snapLastFullWhy", J.S(comp.Snap.LastFullWhy));
+            F("snapLastMismatch", J.S(comp.Snap.LastMismatch));
+            F("relevantEvents", comp.RelevantEvents.ToString());
+            F("lastRelevant", J.S(comp.LastRelevant));
+            F("lastReduceWhy", J.S(comp.LastReduceWhy));
             F("laidPoints", comp.Pieces.Sum(p => p.Strands.Sum(x => x.Pts.Count)).ToString());
             sb.Append("}");
             return sb.ToString();

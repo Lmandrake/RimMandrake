@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.GimmeSomeSlack.Core;
 using RimWorld;
 using Verse;
@@ -18,7 +20,28 @@ namespace RimMandrake.GimmeSomeSlack
         internal static Cell C(IntVec3 c) => new Cell(c.x, c.z);
         internal static IntVec3 I(Cell c) => new IntVec3(c.X, 0, c.Z);
 
-        internal static CordWorld Snapshot(Map map)
+        internal static CordWorld Snapshot(Map map) => Snapshot(map, null);
+
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: with a cache, the per-cell base (fog, walls, doors, water,
+        /// trees, busy cells) is the cache's copy patched at the cells dirtied since the last snapshot, instead of a whole-map
+        /// scan (5.5 ms live on a 325x325 map with no conduits at all); the power part is read fresh either way.</summary>
+        internal static CordWorld Snapshot(Map map, SnapshotCache cache)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            CordWorld world = cache != null ? cache.Base(map).Clone() : FullBase(map);
+            long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
+            FogGrid fog = map.fogGrid;
+            AddPower(map, world, fog);
+            if (cache != null)
+            {
+                cache.BaseMs = (t1 - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                cache.PowerMs = (System.Diagnostics.Stopwatch.GetTimestamp() - t1) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            }
+            return world;
+        }
+
+        /// <summary>The whole-map per-cell scan: everything of the snapshot that is not the power network.</summary>
+        internal static CordWorld FullBase(Map map)
         {
             int w = map.Size.x, h = map.Size.z;
             var world = new CordWorld(w, h);
@@ -42,7 +65,65 @@ namespace RimMandrake.GimmeSomeSlack
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);
             MarkBusy(map, world);
+            return world;
+        }
 
+        /// <summary>One cell of FullBase, recomputed into a base world: false when the cell lost a door or a busy mark (a
+        /// CordWorld can only set those), and the caller rescans the whole map instead.</summary>
+        internal static bool PatchCell(Map map, CordWorld world, int idx)
+        {
+            IntVec3 c = map.cellIndices.IndexToCell(idx);
+            var cell = new Cell(c.x, c.z);
+            BlockKind? k;
+            bool door = false;
+            if (map.fogGrid.IsFogged(idx)) k = BlockKind.Rock;
+            else
+            {
+                Building ed = map.edificeGrid[idx];
+                door = ed is Building_Door;
+                TerrainDef t = map.terrainGrid.TerrainAt(idx);
+                k = SnapshotBlock.Of(map.pathing.Normal.pathGrid.WalkableFast(idx), ed != null,
+                    ed?.def.building != null && ed.def.building.isNaturalRock, ed != null && ed.TryGetComp<CompPower>() != null,
+                    t != null && t.IsWater, t != null && t.passability == Traversability.Impassable);
+            }
+            bool tree = false, linear = false;
+            List<Thing> things = map.thingGrid.ThingsListAtFast(idx);
+            for (int i = 0; i < things.Count; i++)
+            {
+                ThingDef d = things[i].def;
+                if (d.category == ThingCategory.Plant && d.plant != null && d.plant.IsTree) tree = true;
+                if (d.IsBuildingArtificial && IsLinear(d) && things[i].Spawned) linear = true;
+            }
+            bool busy = linear && !k.HasValue;
+            if ((world.IsDoor(cell) && !door) || (world.IsBusy(cell) && !busy)) return false;
+            world.SetBlocked(cell, k ?? BlockKind.None);
+            if (door) world.SetDoor(cell);
+            world.SetExtraCost(cell, tree ? 1.5f : 0f);
+            if (busy) world.SetBusy(cell);
+            return true;
+        }
+
+        /// <summary>Cells where two base worlds differ (block, door, route cost, busy): the cache's self-check.</summary>
+        internal static int BaseDiff(CordWorld a, CordWorld b, out string first)
+        {
+            first = null;
+            if (a.Width != b.Width || a.Height != b.Height) { first = "size"; return int.MaxValue; }
+            int n = 0;
+            for (int z = 0; z < a.Height; z++)
+                for (int x = 0; x < a.Width; x++)
+                {
+                    var c = new Cell(x, z);
+                    if (a.BlockAt(c) != b.BlockAt(c) || a.IsDoor(c) != b.IsDoor(c) || a.ExtraCost(c) != b.ExtraCost(c) || a.IsBusy(c) != b.IsBusy(c))
+                    {
+                        n++;
+                        first ??= x + "," + z + ":" + a.BlockAt(c) + "/" + b.BlockAt(c);
+                    }
+                }
+            return n;
+        }
+
+        private static void AddPower(Map map, CordWorld world, FogGrid fog)
+        {
             var transmitterBuildings = new List<CompPower>();
             var transmitterMachines = new Dictionary<Thing, MachineInfo>();
             var connectors = new List<CompPower>();
@@ -117,7 +198,11 @@ namespace RimMandrake.GimmeSomeSlack
                 else if (transmitterMachines.TryGetValue(pt, out MachineInfo tm)) CordWorldLinks.LinkToMachine(world, m, tm);
             }
             AddTapNodes(map, world);
-            return world;
+            // round 2: machines in id order, not power-net list order, so a net rebuilt in another order (a hypothesis for the
+            // live far-dig re-reduce) leaves CordBuilder's graph inputs, and so the graph, unchanged. OrderBy is stable.
+            List<MachineInfo> byId = world.Machines.OrderBy(m => m.Id, StringComparer.Ordinal).ToList();
+            world.Machines.Clear();
+            world.Machines.AddRange(byId);
         }
 
         /// <summary>CORD_LOOP_UNTANGLE_LASSOED_A_PIPE: every walkable, unfogged cell holding a drawn linear building (any linked
@@ -221,6 +306,69 @@ namespace RimMandrake.GimmeSomeSlack
             if (!v.InBounds(map)) return false;
             PowerNet net = map.powerNetGrid.TransmittedPowerNetAt(v);
             return net != null && net.HasActivePowerSource;
+        }
+    }
+
+    /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: the snapshot base (FullBase) kept between rebuilds and patched at
+    /// the cells a map-mesh event dirtied (each with its 8 neighbours). Whole-map rescans happen on the first use, after
+    /// Invalidate, past Overflow dirty cells, when a patch would have to clear a door or busy mark, and every CheckEvery
+    /// uses, where the rescan is compared with the patched copy and any difference is counted in Mismatches.</summary>
+    internal sealed class SnapshotCache
+    {
+        public const int Overflow = 4096, CheckEvery = 64;
+        private CordWorld baseWorld;
+        private readonly HashSet<int> dirty = new HashSet<int>();
+        private bool overflow;
+        private int sinceCheck;
+        public int FullScans, Uses, LastPatched, Mismatches;
+        public string LastFullWhy = "", LastMismatch = "";
+        public double BaseMs, PowerMs;
+
+        public void Invalidate(string why) { baseWorld = null; dirty.Clear(); overflow = false; LastFullWhy = why; }
+
+        public void NoteCell(Map map, IntVec3 c)
+        {
+            if (baseWorld == null || overflow) return;
+            for (int dz = -1; dz <= 1; dz++)
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    var n = new IntVec3(c.x + dx, 0, c.z + dz);
+                    if (n.InBounds(map)) dirty.Add(map.cellIndices.CellToIndex(n));
+                }
+            if (dirty.Count > Overflow) { overflow = true; dirty.Clear(); }
+        }
+
+        public CordWorld Base(Map map)
+        {
+            Uses++;
+            LastPatched = 0;
+            if (baseWorld != null && (baseWorld.Width != map.Size.x || baseWorld.Height != map.Size.z)) Invalidate("size");
+            if (baseWorld != null && overflow) Invalidate("overflow");
+            if (baseWorld != null)
+            {
+                foreach (int idx in dirty)
+                {
+                    if (!CordWorldAdapter.PatchCell(map, baseWorld, idx)) { Invalidate("cleared door/busy"); break; }
+                    LastPatched++;
+                }
+            }
+            dirty.Clear();
+            if (baseWorld != null && ++sinceCheck >= CheckEvery)
+            {
+                sinceCheck = 0;
+                CordWorld fresh = CordWorldAdapter.FullBase(map);
+                FullScans++;
+                int n = CordWorldAdapter.BaseDiff(baseWorld, fresh, out string first);
+                if (n > 0) { Mismatches += n; LastMismatch = first; LastFullWhy = "check"; }
+                baseWorld = fresh;
+            }
+            if (baseWorld == null)
+            {
+                baseWorld = CordWorldAdapter.FullBase(map);
+                FullScans++;
+                sinceCheck = 0;
+            }
+            return baseWorld;
         }
     }
 }

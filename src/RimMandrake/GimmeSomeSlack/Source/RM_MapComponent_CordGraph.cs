@@ -35,6 +35,11 @@ namespace RimMandrake.GimmeSomeSlack
         private bool buildErrorLogged;
         public int Builds, LastPlanned, LastReused;
         public double LastRebuildMs;
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: the last Rebuild's phases (snapshot base and power part,
+        /// tap ids, cell styles, Build), so the live probe names where a rebuild's time goes.</summary>
+        public double LastSnapBaseMs, LastSnapPowerMs, LastTapIdsMs, LastStylesMs, LastBuildMs;
+        /// <summary>The snapshot base kept between rebuilds and patched at dirtied cells (CordWorldAdapter.SnapshotCache).</summary>
+        internal readonly SnapshotCache Snap = new SnapshotCache();
         internal CordWorld LastWorld;
 
         public RM_MapComponent_CordGraph(Map map) : base(map) { }
@@ -63,7 +68,7 @@ namespace RimMandrake.GimmeSomeSlack
             return bySection.TryGetValue(key, out List<LaidPiece> l) ? l : null;
         }
 
-        public void Notify_SettingsChanged() { builtFrame = -1; relevantSinceBuild = true; }
+        public void Notify_SettingsChanged() { builtFrame = -1; relevantSinceBuild = true; Snap.Invalidate("settings"); }
 
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: since the last successful build, did a dirty event land that may change
         /// the cords (relevant), or only events that cannot (benign)? Regenerate with neither (a full map regenerate) rebuilds.</summary>
@@ -76,14 +81,51 @@ namespace RimMandrake.GimmeSomeSlack
         internal CordReach Reach => builder.Reach;
         public int GraphReuses => builder.GraphReuses;
 
-        /// <summary>Classifies one dirty event for our layer (Patch_MapDrawer_MapMeshDirty_MarkStale). Terrain and roofs are
-        /// benign outside the reach; fog is never benign (unfogging reveals conduits the snapshot hid), nor is anything else.</summary>
-        internal bool NoteDirty(IntVec3 loc, ulong layerFlags, ulong terrainRoofs)
+        /// <summary>Classifies one dirty event for our layer (Patch_MapDrawer_MapMeshDirty_MarkStale). Round 2 (live: a far
+        /// dig still rebuilt twice): terrain, roof, building and fog events are benign at a cell outside the reach that holds
+        /// nothing powered. Outside the reach a cell's block, door, busy mark and route cost cannot change a Build (SelfTest
+        /// reach soundness); what can is a conduit or machine appearing there, and every such thing carries CompPower or a tap
+        /// (an unfogged conduit is checked when its cell's fog event lands; a despawned one is gone before its event, but its
+        /// CompPower.PostDeSpawn raises PowerGrid, which stays relevant everywhere, as does our own layer flag).</summary>
+        internal bool NoteDirty(IntVec3 loc, ulong layerFlags, ulong benignFlags)
         {
             bool benign = OwnDirty ||
-                          ((layerFlags & ~terrainRoofs) == 0UL && builder.Reach != null && !builder.Reach.Reaches(CordWorldAdapter.C(loc)));
-            if (benign) benignSinceBuild = true; else relevantSinceBuild = true;
+                          ((layerFlags & ~benignFlags) == 0UL && builder.Reach != null && !builder.Reach.All &&
+                           !builder.Reach.Reaches(CordWorldAdapter.C(loc)) && !HoldsPower(loc));
+            if (benign) benignSinceBuild = true;
+            else
+            {
+                relevantSinceBuild = true;
+                RelevantEvents++;
+                if (!OwnDirty) LastRelevant = FlagNames(layerFlags) + "@" + loc.x + "," + loc.z +
+                    (builder.Reach == null ? " noReach" : builder.Reach.Reaches(CordWorldAdapter.C(loc)) ? " inReach" : " outReach") +
+                    (HoldsPower(loc) ? " powered" : "");
+            }
             return benign;
+        }
+
+        /// <summary>Relevant (rebuild-forcing) dirty events since load, and the last one: its flags, cell, and why.</summary>
+        public int RelevantEvents;
+        public string LastRelevant = "";
+        public string LastReduceWhy => builder.LastReduceWhy;
+        /// <summary>The builder, read by the probe for its phase timers.</summary>
+        internal CordBuilder BuilderForProbe => builder;
+
+        private bool HoldsPower(IntVec3 loc)
+        {
+            if (!loc.InBounds(map)) return false;
+            List<Thing> things = map.thingGrid.ThingsListAtFast(loc);
+            for (int i = 0; i < things.Count; i++)
+                if (things[i] is ThingWithComps tw && (tw.GetComp<CompPower>() != null || tw.GetComp<Aerial.CompPowerTap>() != null)) return true;
+            return false;
+        }
+
+        private static string FlagNames(ulong flags)
+        {
+            var parts = new List<string>();
+            foreach (MapMeshFlagDef d in DefDatabase<MapMeshFlagDef>.AllDefsListForReading)
+                if ((flags & (ulong)d) != 0UL) parts.Add(d.defName);
+            return parts.Count == 0 ? "0x" + flags.ToString("X") : string.Join("|", parts);
         }
 
         /// <summary>GSS A8 (live 2026-10-15, proof row A8 FAIL): this frame already rebuilt, so a dirty event landing now is
@@ -236,6 +278,7 @@ namespace RimMandrake.GimmeSomeSlack
             relevantSinceBuild = true;          // until this build publishes (disabled or failed builds leave it set)
             if (!GimmeSomeSlackSettings.enabled)
             {
+                Snap.Invalidate("disabled");     // the dirty prefix records nothing while disabled
                 pieces = new List<LaidPiece>();
                 bySection = new Dictionary<IntVec2, List<LaidPiece>>();
                 return;
@@ -248,15 +291,23 @@ namespace RimMandrake.GimmeSomeSlack
             // previously published pieces (a later regenerate retries) instead of publishing an empty map of cords
             try
             {
-                CordWorld world = CordWorldAdapter.Snapshot(map);
+                CordWorld world = CordWorldAdapter.Snapshot(map, Snap);
                 LastWorld = world;
+                LastSnapBaseMs = Snap.BaseMs;
+                LastSnapPowerMs = Snap.PowerMs;
                 BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+                long tTap = System.Diagnostics.Stopwatch.GetTimestamp();
                 opt.StraightPlugIds = CordWorldAdapter.TapIds(map);
+                long tStyle = System.Diagnostics.Stopwatch.GetTimestamp();
                 styled = Aerial.ConduitStylePicker.CellStyles(map);
+                long tBuild = System.Diagnostics.Stopwatch.GetTimestamp();
+                LastTapIdsMs = (tStyle - tTap) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                LastStylesMs = (tBuild - tStyle) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
                 Dictionary<Cell, Aerial.CellStyle> st = styled;
                 // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
                 opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
                 next = b.Build(world, opt, c => LiveNow(c));
+                LastBuildMs = (System.Diagnostics.Stopwatch.GetTimestamp() - tBuild) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             }
             catch (Exception ex)
             {
@@ -949,7 +1000,7 @@ namespace RimMandrake.GimmeSomeSlack
     [HarmonyLib.HarmonyPatch(typeof(MapDrawer), nameof(MapDrawer.MapMeshDirty), new[] { typeof(IntVec3), typeof(ulong), typeof(bool), typeof(bool) })]
     internal static class Patch_MapDrawer_MapMeshDirty_MarkStale
     {
-        private static ulong mask, layerMask, terrainRoofs;
+        private static ulong mask, layerMask, benignFlags, snapFlags;
         private static readonly HarmonyLib.AccessTools.FieldRef<MapDrawer, Map> mapOf = HarmonyLib.AccessTools.FieldRefAccess<MapDrawer, Map>("map");
 
         private static void Prefix(MapDrawer __instance, IntVec3 loc, ulong dirtyFlags)
@@ -961,14 +1012,24 @@ namespace RimMandrake.GimmeSomeSlack
             if (layerMask == 0UL)
             {
                 layerMask = mask | (ulong)GimmeSomeSlackDefOf.RM_MessyCords;
-                terrainRoofs = (ulong)MapMeshFlagDefOf.Terrain | (ulong)MapMeshFlagDefOf.Roofs;
+                benignFlags = (ulong)MapMeshFlagDefOf.Terrain | (ulong)MapMeshFlagDefOf.Roofs | (ulong)MapMeshFlagDefOf.Buildings |
+                              (ulong)MapMeshFlagDefOf.FogOfWar;
+                // what the snapshot base reads at a cell (fog, edifice, door, walkability, terrain, trees, linear buildings)
+                snapFlags = (ulong)MapMeshFlagDefOf.Terrain | (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.FogOfWar |
+                            (ulong)MapMeshFlagDefOf.Things;
+            }
+            // round 2: the snapshot cache patches every cell the base may read differently now, whatever the classifier says
+            if ((dirtyFlags & snapFlags) != 0UL && !RM_MapComponent_CordGraph.OwnDirty)
+            {
+                Map sm = mapOf(__instance);
+                if (sm != null && loc.InBounds(sm)) sm.GetComponent<RM_MapComponent_CordGraph>()?.Snap.NoteCell(sm, loc);
             }
             // GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: every event our layer regenerates on is classified; a benign one (far dig,
             // our own reprint) neither marks the graph stale nor makes the layer's regenerate rebuild
             if ((dirtyFlags & layerMask) != 0UL)
             {
                 RM_MapComponent_CordGraph lc = mapOf(__instance)?.GetComponent<RM_MapComponent_CordGraph>();
-                if (lc != null && lc.NoteDirty(loc, dirtyFlags & layerMask, terrainRoofs)) return;
+                if (lc != null && lc.NoteDirty(loc, dirtyFlags & layerMask, benignFlags)) return;
             }
             if ((dirtyFlags & mask) == 0UL)
             {

@@ -37,6 +37,49 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>Round 2: the live re-measure scene (d2.py: a 325x325 map, conduit rows and columns every 6 cells over 37x37 at
+        /// 56,54, and a StandingLamp on the conduit 3 cells along every segment, 84 lamps, E=248 live).</summary>
+        internal static CordWorld LiveScene(Action<CordWorld> edit = null)
+        {
+            const int x0 = 56, z0 = 54, size = 37, step = 6, m = 3;
+            var w = new CordWorld(325, 325);
+            for (int z = z0; z < z0 + size; z++)
+                for (int x = x0; x < x0 + size; x++)
+                    if ((z - z0) % step == 0 || (x - x0) % step == 0) w.SetConduit(new Cell(x, z));
+            var lamps = new SortedSet<(int, int)>();
+            for (int k = 0; k < size; k += step)
+                for (int i = 0; i < size; i++)
+                    if (i % step == m) { lamps.Add((x0 + i, z0 + k)); lamps.Add((x0 + k, z0 + i)); }
+            foreach (var (x, z) in lamps)
+                w.Machines.Add(new MachineInfo { Id = "c" + (1000 + x * 400 + z), Kind = MachineKind.Lamp, X0 = x, Z0 = z, Hookups = new List<Cell> { new Cell(x, z) } });
+            edit?.Invoke(w);
+            return w;
+        }
+
+        /// <summary>The all-reused Build on the live scene, phase by phase (best of n), with the live callback shape (a lookup
+        /// per terminal, all dead: the live lamps had no generator).</summary>
+        private static void LivePerf()
+        {
+            var opt = new BuildOptions();
+            var b = new CordBuilder();
+            var dead = new Dictionary<Cell, bool>();
+            Func<Cell, bool> isLive = c => { dead[c] = false; return false; };
+            b.Build(LiveScene(), opt, isLive);
+            int edges = b.LastPlanned;
+            double best = double.MaxValue, inp = 0, red = 0, edg = 0, nod = 0, rch = 0, key = 0, cor = 0;
+            var sw = new Stopwatch();
+            for (int i = 0; i < 9; i++)
+            {
+                CordWorld w = LiveScene();
+                sw.Restart();
+                b.Build(w, opt, isLive);
+                double t = sw.Elapsed.TotalMilliseconds;
+                if (t < best) { best = t; inp = b.PhInputsMs; red = b.PhReduceMs; edg = b.PhEdgesMs; nod = b.PhNodesMs; rch = b.PhReachMs; key = b.PhKeyMs; cor = b.PhCorridorMs; }
+            }
+            Program.Check(edges >= 200 && b.LastPlanned == 0 && b.LastReused == edges, $"rebuild-per-dig: live scene E={edges}, all-reused planned {b.LastPlanned} reused {b.LastReused}");
+            Console.WriteLine($"rebuild-per-dig: live scene E={edges} all-reused Build {best:0.00} ms = inputs {inp:0.00} + reduce/reuse {red:0.00} + edges {edg:0.00} (keys {key:0.00}, cache+corridor check {cor:0.00}) + nodes {nod:0.00} + reach {rch:0.00}");
+        }
+
         private static object Reach(CordBuilder b) =>
             typeof(CordBuilder).GetProperty("Reach", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)?.GetValue(b);
 
@@ -125,10 +168,34 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 Program.Check(all.Reaches(FarDig) && !cr.All, "rebuild-per-dig: AddAll did not make the far cell reach, or the lattice reach is All");
             }
             Soundness();
+            ReduceWhyAndKeys(opt);
+            LivePerf();
         }
 
         /// <summary>The reach is a promise the map component acts on (it skips the rebuild): over the cord fuzz's worlds, any
         /// terrain/tree change confined to cells outside the reach must leave a fresh Build's cords bit-identical.</summary>
+        /// <summary>Round 2: the builder names why it re-reduced (the live probe's lastReduceWhy), and the per-graph edge plan
+        /// keeps every edge reused across a run of identical Builds (a key that drifted would re-plan an edge).</summary>
+        private static void ReduceWhyAndKeys(BuildOptions opt)
+        {
+            var b = new CordBuilder();
+            b.Build(Lattice(), opt, c => true);
+            Program.Check(b.LastReduceWhy == "first", $"rebuild-per-dig: first Build's reduce why '{b.LastReduceWhy}' (expected first)");
+            b.Build(Lattice(w => w.SetConduit(new Cell(150, 160))), opt, c => true);
+            Program.Check(b.LastReduceWhy.StartsWith("conduit cells"), $"rebuild-per-dig: a new conduit's reduce why '{b.LastReduceWhy}'");
+            b.Build(Lattice(w => { w.SetConduit(new Cell(150, 160)); w.Machines[0].X0 = 149; }), opt, c => true);
+            Program.Check(b.LastReduceWhy.StartsWith("machine numbers"), $"rebuild-per-dig: a moved machine's reduce why '{b.LastReduceWhy}'");
+            b.Build(Lattice(w => { w.SetConduit(new Cell(150, 160)); w.Machines[0].Id = "Battery2"; }), opt, c => true);
+            Program.Check(b.LastReduceWhy == "machine ids/links", $"rebuild-per-dig: a renamed machine's reduce why '{b.LastReduceWhy}'");
+            int edges = b.LastPlanned + b.LastReused, worst = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                b.Build(Lattice(w => w.Machines[0].Id = "Battery2"), opt, c => i % 2 == 0);
+                if (i >= 2) worst = Math.Max(worst, b.LastPlanned);
+            }
+            Program.Check(edges > 0 && worst == 0, $"rebuild-per-dig: repeated identical Builds re-planned {worst} of {edges} edges (unstable edge plan keys)");
+        }
+
         private static void Soundness()
         {
             int worlds = 0, probed = 0, bad = 0;
@@ -147,11 +214,17 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     var c = new Cell(rng.Int(0, w.Width - 1), rng.Int(0, w.Height - 1));
                     if (reach.Reaches(c)) continue;
                     n++;
-                    switch (t % 4)
+                    // round 2: the classifier also calls building and fog events benign outside the reach, so walls, rock (fog),
+                    // devices, doors and busy cells are probed too
+                    switch (t % 8)
                     {
                         case 0: w.SetBlocked(c, BlockKind.Wall); break;
                         case 1: w.SetBlocked(c, BlockKind.Water); break;
                         case 2: w.SetBlocked(c, BlockKind.None); break;
+                        case 3: w.SetBlocked(c, BlockKind.Rock); break;
+                        case 4: w.SetBlocked(c, BlockKind.Device); break;
+                        case 5: w.SetDoor(c); break;
+                        case 6: w.SetBusy(c); break;
                         default: w.SetExtraCost(c, 1.5f); break;
                     }
                 }

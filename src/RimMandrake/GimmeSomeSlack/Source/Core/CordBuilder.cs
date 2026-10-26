@@ -156,6 +156,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// are equal to the last Build's -- compared exactly, not hashed -- the last graph is reused instead of re-reduced.</summary>
         public bool LastGraphReused;
         public int GraphReuses;
+        /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG round 2: the last Build's phase split in ms (graph inputs, reduce or
+        /// reuse, edge keys + cache checks + lays, node pieces, reach), so the live probe names where a rebuild's time goes.</summary>
+        public double PhInputsMs, PhReduceMs, PhEdgesMs, PhNodesMs, PhReachMs, PhKeyMs, PhCorridorMs;
+        private static double Ms(long a, long b) => (b - a) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
         private List<long> graphIn = new List<long>(), graphInNext = new List<long>();
         private string graphMach;
 
@@ -165,7 +169,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
         {
             int tangleMin = opt.Tangles ? opt.TangleMin : int.MaxValue, spurMax = opt.NeedlessLoops ? CordGraph.SpurMax : 0;
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             string mach = GraphInputs(w, opt, tangleMin, spurMax, graphInNext);
+            long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
             CordGraph g;
             // a LinkAllowed callback (selftest bands only; the game adapter never sets one) is opaque: always re-reduce
             if (Graph != null && w.LinkAllowed == null && mach == graphMach && SameInputs(graphIn, graphInNext))
@@ -176,12 +182,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             else
             {
+                LastReduceWhy = ReduceWhy(w, mach);
                 g = CordGraph.Reduce(w, opt.Seed, tangleMin, spurMax, opt.SlideUnder, opt.StraightPlugIds);
                 LastGraphReused = false;
             }
             (graphIn, graphInNext) = (graphInNext, graphIn);
             graphMach = w.LinkAllowed == null ? mach : null;
             Graph = g;
+            long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
             LastPlanned = LastReused = 0;
@@ -191,7 +199,115 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ulong Corridor(LaidPiece p) =>
                 p.CX0 == 0 && p.CZ0 == 0 && p.CX1 == w.Width - 1 && p.CZ1 == w.Height - 1
                     ? (wholeMapSig ??= CorridorHash(w, p)) : CorridorHash(w, p);
-            var pairCount = new Dictionary<string, int>();
+            // round 2 (live 13.4 ms all-reused on Mono): everything in an edge's cache key that comes from the graph alone (endpoint
+            // key, chain, node look, homes, tangle cells, lay signature) is formatted once per graph, not once per Build: the
+            // per-edge double/enum formatting was most of an all-reused Build. The key string is unchanged, char for char.
+            if (!ReferenceEquals(planFor, g)) { plan = PlanEdges(g); planFor = g; }
+            string fingerprint = opt.Lay.Fingerprint();
+            string optTail = (opt.DiveThrough ? "V" : "") + (opt.SlideUnder ? "U" : "");
+            long tKey = 0, tCorr = 0;
+            var full = new StringBuilder();
+            foreach (EdgePlan ep in plan)
+            {
+                long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                CordEdge e = ep.Edge;
+                bool parallel = ep.Parallel;
+                string ekey = ep.EKey;
+                full.Clear().Append(ep.PartA);
+                for (int i = 0; i < ep.LiveCells.Length; i++)
+                    full.Append(isLive(ep.LiveCells[i]) ? 'L' : 'D').Append(ep.LiveSeam[i] ? "S" : "");
+                full.Append(ep.PartB).Append('#').Append(fingerprint).Append('#')
+                    .Append(PileName(opt.PileFor(ep.CellA))).Append(PileName(opt.PileFor(ep.CellB))).Append(optTail);
+                string fk = full.ToString();
+                string sig = ep.Sig;
+                long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
+                tKey += k1 - k0;
+                bool hit = cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && Corridor(old) == old.CorridorHash;
+                tCorr += System.Diagnostics.Stopwatch.GetTimestamp() - k1;
+                if (hit)
+                {
+                    next[fk] = old;
+                    outp.Add(old);
+                    LastReused++;
+                    continue;
+                }
+                LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
+                lp.Key = fk;
+                lp.LaySig = sig;
+                lp.CorridorHash = Corridor(lp);
+                next[fk] = lp;
+                outp.Add(lp);
+                LastPlanned++;
+            }
+            long t3 = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (!ReferenceEquals(junctionsFor, g) || junctionSeed != opt.Seed)
+            {
+                junctions = new Dictionary<VId, LaidPiece>();
+                junctionsFor = g;
+                junctionSeed = opt.Seed;
+                nodeOrder = g.Nodes.OrderBy(k => k.Key).ToList();
+            }
+            // node pieces: junction decals (kept with the graph), tangles (cheap, never cached)
+            foreach (var kv in nodeOrder)
+            {
+                CordNode nd = kv.Value;
+                if (nd.Type == NodeType.Junction)
+                {
+                    // a junction decal reads only the graph and the seed: kept with the graph (round 2)
+                    if (!junctions.TryGetValue(kv.Key, out LaidPiece p))
+                    {
+                        p = new LaidPiece { Key = "node:" + kv.Key, Owner = nd.Cell };
+                        JunctionPose jp = PoseJunction(g, kv.Key, opt.Seed);
+                        p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
+                        junctions[kv.Key] = p;
+                    }
+                    outp.Add(p);
+                }
+                else if (nd.Type == NodeType.Tangle)
+                    outp.Add(TanglePiece(w, nd, opt, isLive));
+            }
+            foreach (var sk in g.SpurKnots)
+            {
+                if (!g.Nodes.TryGetValue(sk.Key, out CordNode j) || j.Type != NodeType.Junction) continue;
+                var p = new LaidPiece { Key = "coil:" + sk.Key, Owner = j.Cell };
+                CordRng r = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z);
+                var coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
+                CordLayer.ProjectOut(w, coil);
+                if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
+                outp.Add(p);
+            }
+            cache = next;
+            long t4 = System.Diagnostics.Stopwatch.GetTimestamp();
+            Reach = CordReach.Of(w, g, outp);
+            long t5 = System.Diagnostics.Stopwatch.GetTimestamp();
+            PhInputsMs = Ms(t0, t1); PhReduceMs = Ms(t1, t2); PhEdgesMs = Ms(t2, t3); PhNodesMs = Ms(t3, t4); PhReachMs = Ms(t4, t5); PhKeyMs = Ms(0, tKey); PhCorridorMs = Ms(0, tCorr);
+            return outp;
+        }
+
+        /// <summary>One cord edge's graph-only key parts (round 2): PartA + live flags + PartB + options = the cache key.</summary>
+        private sealed class EdgePlan
+        {
+            public CordEdge Edge;
+            public string EKey, PartA, PartB, Sig;
+            public bool Parallel;
+            public Cell[] LiveCells;
+            public bool[] LiveSeam;
+            public Cell CellA, CellB;
+        }
+
+        private List<EdgePlan> plan = new List<EdgePlan>();
+        private CordGraph planFor, junctionsFor;
+        private ulong junctionSeed;
+        private Dictionary<VId, LaidPiece> junctions = new Dictionary<VId, LaidPiece>();
+        private List<KeyValuePair<VId, CordNode>> nodeOrder = new List<KeyValuePair<VId, CordNode>>();
+
+        private static string PileName(PileArt p) => p == PileArt.Strips ? "Strips" : p == PileArt.Junctions ? "Junctions" : p.ToString();
+
+        /// <summary>The per-edge key parts, formatted exactly as the pre-round-2 per-Build loop did.</summary>
+        private static List<EdgePlan> PlanEdges(CordGraph g)
+        {
+            var res = new List<EdgePlan>();
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
             List<CordEdge> cordEdges = g.CordEdges().ToList();
             var pairTotal = new Dictionary<string, int>();
             foreach (CordEdge x in cordEdges)
@@ -200,6 +316,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 pairTotal.TryGetValue(k, out int tot);
                 pairTotal[k] = tot + 1;
             }
+            var pairCount = new Dictionary<string, int>();
             foreach (CordEdge e in cordEdges)
             {
                 string pk = PairKey(e.A, e.B);
@@ -217,69 +334,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     CordNode nn = g.Nodes[v];
                     full.Append(nn.Type).Append(nn.WallTerminal ? "W" : "").Append(nn.Gap ? "G" : "")
                         .Append(nn.Cls).Append(nn.Out.X).Append('/').Append(nn.Out.Z)
-                        .Append(nn.Into.X.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('/').Append(nn.Into.Z.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
-                        .Append(nn.Face.X.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('/').Append(nn.Face.Z.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append(',');
+                        .Append(nn.Into.X.ToString("0.00", inv)).Append('/').Append(nn.Into.Z.ToString("0.00", inv))
+                        .Append(nn.Face.X.ToString("0.00", inv)).Append('/').Append(nn.Face.Z.ToString("0.00", inv)).Append(',');
                 }
+                var liveCells = new List<Cell>();
+                var liveSeam = new List<bool>();
                 foreach (VId v in new[] { e.A, e.B })
-                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D').Append(g.Nodes[v].Seam ? "S" : "");
+                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice)
+                    {
+                        liveCells.Add(g.Nodes[v].Cell);
+                        liveSeam.Add(g.Nodes[v].Seam);
+                    }
                 // GSS pre-release A7: IntoArt runs a wall device's lead on to its HOME (the wall it hangs on), so the home is
                 // part of the key: a re-hung device used to keep a lead ending under its old wall
+                var partB = new StringBuilder();
                 foreach (VId v in new[] { e.A, e.B })
                 {
                     MachineInfo hm = g.Nodes[v].IsMachine ? g.Nodes[v].Machine : null;
-                    if (hm != null && hm.HasHome) full.Append('H').Append(hm.HomeX).Append(',').Append(hm.HomeZ);
+                    if (hm != null && hm.HasHome) partB.Append('H').Append(hm.HomeX).Append(',').Append(hm.HomeZ);
                 }
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Tangle && g.Nodes[v].Cells != null)
                     {
-                        full.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
-                        foreach (Cell c in g.Nodes[v].Cells) full.Append(';').Append(c.X).Append(',').Append(c.Z);
+                        partB.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
+                        foreach (Cell c in g.Nodes[v].Cells) partB.Append(';').Append(c.X).Append(',').Append(c.Z);
                     }
-                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell)).Append(opt.DiveThrough ? "V" : "").Append(opt.SlideUnder ? "U" : "");
-                string fk = full.ToString();
-                string sig = LaySignature(e, parallel);
-                if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && Corridor(old) == old.CorridorHash)
+                res.Add(new EdgePlan
                 {
-                    next[fk] = old;
-                    outp.Add(old);
-                    LastReused++;
-                    continue;
-                }
-                LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
-                lp.Key = fk;
-                lp.LaySig = sig;
-                lp.CorridorHash = Corridor(lp);
-                next[fk] = lp;
-                outp.Add(lp);
-                LastPlanned++;
+                    Edge = e, EKey = ekey, PartA = full.ToString(), PartB = partB.ToString(), Sig = LaySignature(e, parallel),
+                    Parallel = parallel, LiveCells = liveCells.ToArray(), LiveSeam = liveSeam.ToArray(),
+                    CellA = g.Nodes[e.A].Cell, CellB = g.Nodes[e.B].Cell
+                });
             }
-            // node pieces: junction decals, tangles (cheap, never cached)
-            foreach (var kv in g.Nodes.OrderBy(k => k.Key))
-            {
-                CordNode nd = kv.Value;
-                if (nd.Type == NodeType.Junction)
-                {
-                    var p = new LaidPiece { Key = "node:" + kv.Key, Owner = nd.Cell };
-                    JunctionPose jp = PoseJunction(g, kv.Key, opt.Seed);
-                    p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
-                    outp.Add(p);
-                }
-                else if (nd.Type == NodeType.Tangle)
-                    outp.Add(TanglePiece(w, nd, opt, isLive));
-            }
-            foreach (var sk in g.SpurKnots)
-            {
-                if (!g.Nodes.TryGetValue(sk.Key, out CordNode j) || j.Type != NodeType.Junction) continue;
-                var p = new LaidPiece { Key = "coil:" + sk.Key, Owner = j.Cell };
-                CordRng r = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z);
-                var coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
-                CordLayer.ProjectOut(w, coil);
-                if (coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value() });
-                outp.Add(p);
-            }
-            cache = next;
-            Reach = CordReach.Of(w, g, outp);
-            return outp;
+            return res;
         }
 
         /// <summary>Everything CordGraph.Reduce reads, in its reading order: the map size, the reduce options, every conduit cell
@@ -292,7 +379,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (Cell c in w.ConduitCells())
                 into.Add(((long)c.X << 32) | ((long)(uint)c.Z << 8) | (long)(byte)w.BuriedKind(c));
             var sb = new StringBuilder();
-            var inv = System.Globalization.CultureInfo.InvariantCulture;
             if (opt.StraightPlugIds != null)
             {
                 var ids = opt.StraightPlugIds.ToList();
@@ -300,18 +386,37 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 foreach (string id in ids) sb.Append(id).Append('\u0001');
             }
             sb.Append('\u0002');
+            // round 2: the machines' numbers go into the exact long list (no per-Build double/int formatting); the string keeps
+            // only the ids and links. -1 separates the machines' variable-length hookup lists.
             foreach (MachineInfo m in w.Machines)
             {
-                sb.Append(m.Id).Append('\u0001').Append((int)m.Kind).Append(';').Append(m.X0).Append(',').Append(m.Z0).Append(',')
-                  .Append(m.W).Append(',').Append(m.H).Append(';');
-                foreach (Cell h in m.Hookups) sb.Append(h.X).Append(',').Append(h.Z).Append(' ');
-                sb.Append(';');
+                sb.Append(m.Id).Append('\u0001');
                 foreach (string l in m.MachineLinks) sb.Append(l).Append('\u0001');
-                sb.Append(';').Append(m.InsetS.ToString("R", inv)).Append(',').Append(m.InsetN.ToString("R", inv)).Append(',')
-                  .Append(m.InsetE.ToString("R", inv)).Append(',').Append(m.InsetW.ToString("R", inv))
-                  .Append(m.HasHome ? ";H" + m.HomeX + "," + m.HomeZ : ";-").Append('\u0002');
+                sb.Append('\u0002');
+                into.Add(-1L); into.Add((long)m.Kind); into.Add(m.X0); into.Add(m.Z0); into.Add(m.W); into.Add(m.H);
+                into.Add(m.Hookups.Count);
+                foreach (Cell h in m.Hookups) into.Add(((long)h.X << 32) | (uint)h.Z);
+                into.Add(BitConverter.DoubleToInt64Bits(m.InsetS)); into.Add(BitConverter.DoubleToInt64Bits(m.InsetN));
+                into.Add(BitConverter.DoubleToInt64Bits(m.InsetE)); into.Add(BitConverter.DoubleToInt64Bits(m.InsetW));
+                if (m.HasHome) { into.Add(1); into.Add(m.HomeX); into.Add(m.HomeZ); } else into.Add(0);
             }
             return sb.ToString();
+        }
+
+        /// <summary>Why the last re-reduce could not reuse the graph (round 2: the live probe names what a far dig changed).</summary>
+        public string LastReduceWhy = "";
+
+        private string ReduceWhy(CordWorld w, string mach)
+        {
+            if (Graph == null) return "first";
+            if (w.LinkAllowed != null) return "linkAllowed";
+            if (mach != graphMach) return "machine ids/links";
+            int n = Math.Min(graphIn.Count, graphInNext.Count), i = 0;
+            while (i < n && graphIn[i] == graphInNext[i]) i++;
+            if (i < 6) return "size/options";
+            int sep = graphInNext.IndexOf(-1L);
+            string part = sep < 0 || i < sep ? "conduit cells" : "machine numbers";
+            return part + " @" + i + " (" + graphIn.Count + "->" + graphInNext.Count + ")";
         }
 
         private static bool SameInputs(List<long> a, List<long> b)
