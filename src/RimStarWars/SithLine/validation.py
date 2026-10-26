@@ -103,6 +103,14 @@ def static_checks():
             bad.append("Anzati repoint lost %s -> %s" % (v, c))
         if ("GeneDef", c) not in SHIPPED:
             bad.append("Anzati copy %s is not defined" % c)
+    # ANZATI_XENOGERM_WIRE_BLOODFEEDER_PRECEPT: vanilla's two PropagateBloodfeederGene gates name GeneDefOf.Bloodfeeder
+    # by reference, so the Anzati copy needs its own postfix on each (the HasActiveGene alias does not reach them)
+    for target in ("[HarmonyPatch(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting))]",
+                   "[HarmonyPatch(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant))]"):
+        if target not in allsrc:
+            bad.append("no postfix %s: the Anzati bloodfeeder copy escapes the PropagateBloodfeederGene precept" % target)
+    if allsrc.count("HistoryEventDefOf.PropagateBloodfeederGene") < 2 or "BloodfeederCopyBlocks" not in kern:
+        bad.append("the Anzati bloodfeeder precept postfixes no longer consult PropagateBloodfeederGene via the kernel")
     for b in SITH_BUILDINGS:
         if '"%s"' % b not in allsrc:
             bad.append("C# SithBuildings list lost %s (casket minifiedDef is nulled there)" % b)

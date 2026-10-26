@@ -86,6 +86,15 @@ namespace RimMandrake.StarWars.SithLine.SelfTest
                 prevS = sv;
             }
             Check(K.LootSilver(float.NaN) == 200, "LootSilver(NaN) is not the floor");
+            // Anzati bloodfeeder copy vs the PropagateBloodfeederGene precept: the full truth table
+            foreach (bool van in new[] { false, true })
+                foreach (bool dlc in new[] { false, true })
+                    foreach (bool copy in new[] { false, true })
+                        foreach (bool willing in new[] { false, true })
+                            Check(K.BloodfeederCopyBlocks(van, dlc, copy, willing) == (van || (dlc && copy && !willing)), $"BloodfeederCopyBlocks({van},{dlc},{copy},{willing})");
+            Check(K.BloodfeederCopyBlocks(false, true, true, false), "an unwilling receiver accepted a germ carrying the Anzati bloodfeeder copy");
+            Check(!K.BloodfeederCopyBlocks(false, true, true, true), "a willing receiver was refused the Anzati bloodfeeder copy");
+            Check(K.BloodfeederCopyBlocks(true, false, false, true), "a vanilla block was lifted");
             foreach (string f in fails) Console.WriteLine("FAIL " + f);
             Console.WriteLine($"sithline kernel: {cases} checks, {fails.Count} failures -> {(fails.Count == 0 ? "OK" : "FAILED")}");
             return fails.Count == 0 && cases > 1000 ? 0 : 1;

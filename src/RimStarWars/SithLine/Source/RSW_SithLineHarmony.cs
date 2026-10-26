@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -205,6 +206,44 @@ namespace RimMandrake.StarWars.SithLine
             {
                 __result = __instance.GetGene(alias);
             }
+        }
+    }
+
+    // ANZATI_XENOGERM_WIRE_BLOODFEEDER_PRECEPT: the two xenogerm gates compare the germ's genes against
+    // GeneDefOf.Bloodfeeder by reference (Xenogerm.cs:162, CompAbilityEffect_ReimplantXenogerm.cs:176, rw16 decomp), not
+    // through HasActiveGene, so the alias above never reaches them. These postfixes add the Anzati copy to each check;
+    // the decision is RSW_SithLineKernel.BloodfeederCopyBlocks.
+    [HarmonyPatch(typeof(Xenogerm), nameof(Xenogerm.PawnIdeoDisallowsImplanting))]
+    public static class Patch_Xenogerm_PawnIdeoDisallowsImplanting
+    {
+        public static void Postfix(Xenogerm __instance, Pawn selPawn, ref bool __result)
+        {
+            if (__result)
+            {
+                return;
+            }
+            GeneDef copy = RSW_SithLineDefs.AliasFor(GeneDefOf.Bloodfeeder);
+            bool carries = copy != null && __instance.GeneSet != null && __instance.GeneSet.GenesListForReading.Contains(copy);
+            bool gate = ModsConfig.BiotechActive && ModsConfig.IdeologyActive;
+            __result = RSW_SithLineKernel.BloodfeederCopyBlocks(false, gate, carries,
+                !(gate && carries) || IdeoUtility.DoerWillingToDo(HistoryEventDefOf.PropagateBloodfeederGene, selPawn));
+        }
+    }
+
+    [HarmonyPatch(typeof(CompAbilityEffect_ReimplantXenogerm), nameof(CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant))]
+    public static class Patch_ReimplantXenogerm_PawnIdeoCanAcceptReimplant
+    {
+        public static void Postfix(Pawn implanter, Pawn implantee, ref bool __result)
+        {
+            if (!__result)
+            {
+                return;
+            }
+            GeneDef copy = RSW_SithLineDefs.AliasFor(GeneDefOf.Bloodfeeder);
+            bool carries = copy != null && implanter?.genes != null && implanter.genes.Xenogenes.Any(g => g.def == copy);
+            bool gate = ModsConfig.IdeologyActive;
+            __result = !RSW_SithLineKernel.BloodfeederCopyBlocks(false, gate, carries,
+                !(gate && carries) || IdeoUtility.DoerWillingToDo(HistoryEventDefOf.PropagateBloodfeederGene, implantee));
         }
     }
 

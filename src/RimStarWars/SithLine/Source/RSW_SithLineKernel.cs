@@ -89,6 +89,18 @@ namespace RimMandrake.StarWars.SithLine
             return (int)(v < 200f ? 200f : (v > 4000f ? 4000f : v));
         }
 
+        /// <summary>
+        /// ANZATI_XENOGERM_WIRE_BLOODFEEDER_PRECEPT: vanilla's two xenogerm gates (Xenogerm.PawnIdeoDisallowsImplanting,
+        /// CompAbilityEffect_ReimplantXenogerm.PawnIdeoCanAcceptReimplant) refuse a pawn whose ideoligion forbids
+        /// PropagateBloodfeederGene only when the germ holds GeneDefOf.Bloodfeeder BY REFERENCE, so the Anzati copy
+        /// slipped through. Blocked = vanilla already blocked, or (the DLC gate vanilla checks is open, the germ carries
+        /// the copy, and the receiver is not willing). A vanilla block is never lifted.
+        /// </summary>
+        public static bool BloodfeederCopyBlocks(bool vanillaBlocks, bool dlcGateOpen, bool carriesCopy, bool willingToPropagate)
+        {
+            return vanillaBlocks || (dlcGateOpen && carriesCopy && !willingToPropagate);
+        }
+
         /// <summary>The Recruitable getter's answer: a Sith adept is unwaveringly loyal while the guard is on.</summary>
         public static bool Recruitable(bool vanillaAnswer, bool guardOn, bool isSith)
         {

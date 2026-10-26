@@ -3,7 +3,9 @@
      trance genes and of the casket"). Field-for-field copies of the vanilla Biotech defs (read from RimSage
      2026-10-18), VANILLA labels and text, so neither the Sith relabels nor the unbuildable rule reach the Anzati.
      Patches/RSW_AnzatiRepoint.xml swaps RSW_RimMandrakeAnzati onto these. The engine's GeneDefOf.Hemogenic /
-     GeneDefOf.Bloodfeeder reads are answered for these copies by the alias postfix in RSW_SithLineHarmony.cs.
+     GeneDefOf.Bloodfeeder reads are answered for these copies by the alias postfix in RSW_SithLineHarmony.cs; the two
+     xenogerm gates that compare against GeneDefOf.Bloodfeeder by reference (implant and reimplant, the
+     PropagateBloodfeederGene precept) have their own postfixes there (ANZATI_XENOGERM_WIRE_BLOODFEEDER_PRECEPT).
      ⚠️ UNMEASURED gaps: vanilla names ThingDefOf.DeathrestCasket in RestUtility, Pawn_Ownership, the
      carry-to-casket float menu and the deathrest-chamber room role, so the copy casket misses those four niceties
      (it still binds and accelerates deathrest: CompDeathrestBindable is type-based). Lives here rather than in
