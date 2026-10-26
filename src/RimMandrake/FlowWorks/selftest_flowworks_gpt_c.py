@@ -236,11 +236,14 @@ CASES = [
          [r"int left = made\.Destroyed \? 0 : made\.stackCount ;",
           r"if \( left < count \) \{ budgetLeft -= cost \* \( count - left \) / count ; \}", r"made\.Destroy \( \) ;"],
          ("\t\t\t\t\tbudgetLeft -= cost * (count - left) / count;\n", "")),
+    # Deposit(ThingDef, int) was removed by 1e9f290a7e (the weir no longer makes catch from nothing; it lifts real floating
+    # things in CaptureFloating). The finding's intent still holds there: count only what landed at the bank, and never
+    # orphan the unplaced rest of a partly placed stack (WEIR_SELFTEST_FIX_STALE_DEPOSIT_ANCHOR).
     Case("PLACEMENT_FAILURE_MEND_LOST_IN_POSTING", "C6-F9", "Rivers/RM_Weir.cs",
-         r"private int Deposit\(ThingDef def, int count\)",
-         [r"int left = t\.Destroyed \? 0 : t\.stackCount ;", r"return n - left ;"],
-         ("\t\t\treturn n - left;", "\t\t\treturn 0;"),
-         absent=[r"\? n : 0"]),
+         r"public int CaptureFloating\(\)",
+         [r"int left = t\.Destroyed \? 0 : t\.stackCount ;", r"held \+= n - left ;",
+          r"if \( left > 0 && ! t\.Spawned \) \{ GenSpawn\.Spawn \( t , from , map \) ;"],
+         ("\t\t\t\t\theld += n - left;\n", "")),
 ]
 
 

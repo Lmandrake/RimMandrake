@@ -93,12 +93,14 @@ namespace RimMandrake.FlowWorks
 		private static int cacheTick = -1;
 		private static bool cacheForced;
 		private static bool cacheHas;
+		private static Game cacheGame;   // STATIC_STATE: a reload replays the same pawn ids at the same tick, so the memo is keyed by game too
 
 		private static bool HasMaterial(Pawn pawn, bool forced)
 		{
 			int tick = Find.TickManager.TicksGame;
-			if (cachePawn != pawn.thingIDNumber || cacheTick != tick || cacheForced != forced)
+			if (cacheGame != Current.Game || cachePawn != pawn.thingIDNumber || cacheTick != tick || cacheForced != forced)
 			{
+				cacheGame = Current.Game;
 				cachePawn = pawn.thingIDNumber;
 				cacheTick = tick;
 				cacheForced = forced;

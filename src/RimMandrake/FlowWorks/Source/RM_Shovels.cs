@@ -127,6 +127,7 @@ namespace RimMandrake.FlowWorks
 		private static bool cacheForced;
 		private static bool cacheRaider;
 		private static Thing cacheFound;
+		private static Game cacheGame;   // STATIC_STATE: a reload replays the same pawn ids at the same tick, so the memo is keyed by game too
 
 		/// <summary>The nearest shovel <paramref name="pawn"/> could take now, or null. A colonist honours forbidden; a raider
 		/// (<paramref name="raider"/>) takes any loose one, the colony's included. Memoised per pawn per tick.</summary>
@@ -137,11 +138,12 @@ namespace RimMandrake.FlowWorks
 				return null;
 			}
 			int tick = Find.TickManager.TicksGame;
-			if (cachePawn == pawn.thingIDNumber && cacheTick == tick && cacheForced == forced && cacheRaider == raider
+			if (cacheGame == Current.Game && cachePawn == pawn.thingIDNumber && cacheTick == tick && cacheForced == forced && cacheRaider == raider
 				&& (cacheFound == null || (cacheFound.Spawned && cacheFound.Map == pawn.Map)))
 			{
 				return cacheFound;
 			}
+			cacheGame = Current.Game;
 			cachePawn = pawn.thingIDNumber;
 			cacheTick = tick;
 			cacheForced = forced;

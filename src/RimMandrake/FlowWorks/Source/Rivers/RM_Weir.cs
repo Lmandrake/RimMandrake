@@ -388,9 +388,17 @@ namespace RimMandrake.FlowWorks.Rivers
 					held += n;
 					lifted++;
 				}
-				else if (!t.Destroyed && !t.Spawned)
+				else
 				{
-					GenSpawn.Spawn(t, from, map); // no dry room: back where it lay, nothing lost
+					// PLACEMENT_FAILURE_MEND_LOST_IN_POSTING C6-F9, re-anchored by WEIR_SELFTEST_FIX_STALE_DEPOSIT_ANCHOR: a Near
+					// placement can merge part of the stack at the bank and fail on the rest. What landed is caught and counts
+					// against the cap; the unplaced rest goes back where it lay, nothing lost.
+					int left = t.Destroyed ? 0 : t.stackCount;
+					held += n - left;
+					if (left > 0 && !t.Spawned)
+					{
+						GenSpawn.Spawn(t, from, map);
+					}
 				}
 			}
 			return lifted;
