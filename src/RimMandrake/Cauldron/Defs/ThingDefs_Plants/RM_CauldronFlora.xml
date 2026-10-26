@@ -176,7 +176,8 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_BloodBouquet</defName>
     <label>blood bouquet</label>
-    <description>Dark crimson flower heads crowd above a tangle of black-green leaves. Iron drawn from the forest's metallic seep colours the blooms, and the plant is poisonous.</description>
+    <!-- BLOODBOUQUET_FIX_DESC_CLAIMS_POISONOUS: nothing makes it poisonous (no ingest hediff, no comp; Nutrition 0.1 like any wild plant). -->
+    <description>Dark crimson flower heads crowd above a tangle of black-green leaves. Iron drawn from the forest's metallic seep colours the blooms.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Flammability>0.3</Flammability>
@@ -406,7 +407,8 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Xithess</defName>
     <label>xithess</label>
-    <description>A person-high plant with a pale trunk and a crown of fine fronds that flex in response to vent gases. The fronds filter compounds from the metal-rich fog. Harvesters take the crowns whole and sell them for the material they collect.</description>
+    <description>A person-high plant with a pale trunk and a crown of fine fronds that flex in response to vent gases. The fronds filter compounds from the metal-rich fog. Harvesting the crowns renders what they collect into chemfuel.</description>
+    <!-- XITHESS_FIX_DESC_HIDES_CHEMFUEL_YIELD: harvestedThingDef is Chemfuel x8, not a crown item. -->
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
       <Flammability>0.6</Flammability>
