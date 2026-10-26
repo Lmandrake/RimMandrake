@@ -8109,3 +8109,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"HEATPUSHER_FIX_PAWN_DOUBLE_PUSH","action":"take","token":"FOUNDRY.pid46429.21a9e572","expires":"2026-10-26T08:00:37Z","ts":"2026-10-26T07:15:37Z","tsn":1792998937932114837}
 {"seat":"FOUNDRY","event":"claim","id":"HEATPUSHER_FIX_PAWN_DOUBLE_PUSH","ts":"2026-10-26T07:15:38Z","tsn":1792998938397419035}
 {"seat":"FOUNDRY","event":"start","id":"HEATPUSHER_FIX_PAWN_DOUBLE_PUSH","ts":"2026-10-26T07:15:38Z","tsn":1792998938833869979}
+{"seat":"FOUNDRY","event":"close","id":"METAL_EATER_FIX_DIG_ON_FORBIDDEN_CELL","sha":"992c8a82cd","why":"fixed in 992c8a82cd; selftests track_grid/metal_eater/cb_fuzz/cb_defs GREEN","ts":"2026-10-26T07:16:03Z","tsn":1792998963524327358}
