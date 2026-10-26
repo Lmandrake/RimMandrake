@@ -11,8 +11,11 @@
 
   OWNER-APPROVED TEXT (d4db5c07dc, 2026-10-08) and deployed: drone = "a
   disturbance in the Force" pressing on minds; soothe = "the Force at peace";
-  the psychic ship = a ship carrying a Sith relic. A wording change is a new
-  owner card, not an edit here.
+  the psychic ship = a ship carrying a Sith relic. Since 2026-10-22 player
+  prose is a delegated design call (design/RimMandrake/delegation_policy.md
+  §1, judged per §4), not an owner card: the three descriptionFuture
+  (quest forecast) ops below were added that way on 2026-10-26
+  (PSYCHICDRONE_RESKIN_FORECAST_TEXT) in this file's approved vocabulary.
 
   LABELS AND FLAVOUR TEXT ONLY. Mechanics are untouched: same incident/
   condition defs fire, same durations, same mood/stat effects. The one
@@ -147,6 +150,16 @@ The disturbance level is {1}.</letterText></value>
     </match>
   </Operation>
 
+  <!-- descriptionFuture is the quest/forecast fragment (QuestNode_GameCondition -> [gameConditionDescriptionFuture],
+       read mid-sentence: lowercase, no closing full stop). PSYCHICDRONE_RESKIN_FORECAST_TEXT. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/descriptionFuture</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicDrone"]/descriptionFuture</xpath>
+      <value><descriptionFuture>a disturbance in the Force will press on minds around [map_definite] at [psychicDroneLevel] strength for [gameConditionDuration_duration], pushing all people of the [psychicDroneGender] gender towards insanity</descriptionFuture></value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/GameConditionDef[defName="PsychicSoothe"]/label</xpath>
     <match Class="PatchOperationReplace">
@@ -239,6 +252,14 @@ The Force is at peace over this site, tuned to only affect {0}s. For a few days,
     <match Class="PatchOperationReplace">
       <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/endMessage</xpath>
       <value><endMessage>The Force-suppression field has dissipated.</endMessage></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/descriptionFuture</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/GameConditionDef[defName="PsychicSuppression"]/descriptionFuture</xpath>
+      <value><descriptionFuture>a Force-suppression field will reduce the consciousness of all [psychicSuppressorGender]s around [map_definite] for [gameConditionDuration_duration]</descriptionFuture></value>
     </match>
   </Operation>
 
@@ -420,6 +441,10 @@ It will last for anywhere between a few days to over a quadrum.</letterText></va
         <li Class="PatchOperationReplace">
           <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/endMessage</xpath>
           <value><endMessage>The Force storm is ending.</endMessage></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/GameConditionDef[defName="VREA_PsychicStorm"]/descriptionFuture</xpath>
+          <value><descriptionFuture>a Force storm will cover the area around [map_definite] for [gameConditionDuration_duration], potentially damaging infrastructure and doubling the psychic sensitivity of every living being</descriptionFuture></value>
         </li>
 
       </operations>

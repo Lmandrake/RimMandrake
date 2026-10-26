@@ -1,0 +1,37 @@
+{
+ "judge_model": {
+  "gpt": [
+   {
+    "model_requested": "gpt-6.1-sol",
+    "tool": "src/RimMandrake/Utils/gpt_consult.py",
+    "job": "D:\\ClaudeWork\\rimmandrake\\scratch\\codex\\consult-20261026-102048-2614676",
+    "role": "independent design judge, no maker context (delegation_policy.md §4); GPT used because the builder seat was told to spawn no subagents"
+   }
+  ]
+ },
+ "item": "PSYCHICDRONE_RESKIN_FORECAST_TEXT",
+ "class": "design",
+ "owner_list_check": "not on delegation_policy §2: player prose is §1 design; applying the approved d4db5c07dc vocabulary to three descriptionFuture fields it did not cover (§2.4 'applying a ruling to a case it does not name is delegated')",
+ "artifact": "src/RimStarWars/StarWarsPatches/Patches/PsychicToForceDisturbance.xml (descriptionFuture ops: PsychicDrone, PsychicSuppression, VREA_PsychicStorm)",
+ "brief_text": "# Judge brief: PSYCHICDRONE_RESKIN_FORECAST_TEXT (delegated design call, delegation_policy.md §4)\n\nYou are an independent judge. You did not write this text. Judge three new `descriptionFuture` strings in the\nattached PsychicToForceDisturbance.xml (the three ops whose xpath ends in `/descriptionFuture`).\n\n## What descriptionFuture is\nRimWorld's quest/forecast fragment for a map condition. Quests embed it MID-SENTENCE, e.g. vanilla Royalty:\n- \"However, if she carries out her experiment, [gameConditionDescriptionFuture].\"\n- \"If [asker_pronoun] does, [gameConditionDescriptionFuture].\"\n- \"If you do, the persona will turn its anger on you. [gameConditionDescriptionFuture].\"\nSo it must start lowercase, carry no closing full stop, and read as a clause. [bracketed] tokens are engine\nplaceholders and must all survive unchanged. [psychicDroneLevel] renders as low / medium / high / extreme.\n[psychicDroneGender]/[psychicSuppressorGender] render as male / female.\n\n## Originals (vanilla / donor, being replaced)\n- PsychicDrone: \"a [psychicDroneLevel] psychic drone will buzz the area around [map_definite] for [gameConditionDuration_duration], pushing all people of the [psychicDroneGender] gender towards insanity\"\n- PsychicSuppression: \"a psychic suppression wave will reduce the consciousness of all [psychicSuppressorGender]s around [map_definite] for [gameConditionDuration_duration]\"\n- VREA_PsychicStorm: \"a storm of psychic energy will cover the area around [map_definite] for [gameConditionDuration_duration], potentially damaging infrastructure and doubling psychic sensitivity of every living being.\"\n\n## Written constraints (sources)\n1. The file's owner-approved vocabulary (header, d4db5c07dc): drone = \"a disturbance in the Force\" pressing on\n   minds; soothe = \"the Force at peace\"; the psychic ship = a ship carrying a Sith relic. The new strings must be\n   consistent with the labels/descriptions/letters ALREADY in the same file for the same def (PsychicDrone label\n   \"a disturbance in the Force\", letter \"The disturbance level is {1}.\"; PsychicSuppression label \"Force\n   suppression field\", description \"A Force-suppression field ...\"; VREA_PsychicStorm label \"Force storm\").\n2. Labels and flavour text only; the mechanics described must stay exactly what the original says (same\n   targets, gender restriction, duration, effects).\n3. \"psychic sensitivity\" is a real, unrenamed game STAT and is kept literally (file header; item\n   FORCE_DISTURBANCE_REFLAVOR_1 Watch-out). No other \"psychic\" wording may remain.\n4. Star Wars IP: this file is in the RimStarWars tier, where \"the Force\"/\"Sith\" are already the established\n   terms; do NOT introduce any NEW canon proper name (characters, planets, orders) — canon names route through\n   the separate Utinni campaign layer.\n5. Fragment grammar per \"What descriptionFuture is\" above; no a/an article error for any level value.\n\n## Return\nJSON only: {\"verdicts\":[{\"def\":\"PsychicDrone\",\"verdict\":\"KEEP|REDO|UNSURE\",\"reasons\":\"...\",\"violated\":\"constraint # and source, if REDO\",\"suggestion\":\"optional replacement string\"}, ...3 entries]}\n",
+ "verdicts": [
+  {
+   "def": "PsychicDrone",
+   "verdict": "KEEP",
+   "reasons": "Matches the approved disturbance-in-the-Force vocabulary and preserves all placeholders, duration, gender restriction, and insanity effect. Lowercase opening and no closing full stop suit quest embedding; 'at [psychicDroneLevel] strength' works for all four levels.",
+   "violated": ""
+  },
+  {
+   "def": "PsychicSuppression",
+   "verdict": "KEEP",
+   "reasons": "Matches the existing Force-suppression field wording and preserves all placeholders, affected gender, location, duration, and consciousness reduction. Meets fragment grammar requirements and introduces no new canon names.",
+   "violated": ""
+  },
+  {
+   "def": "VREA_PsychicStorm",
+   "verdict": "KEEP",
+   "reasons": "Matches the existing Force storm label and preserves all placeholders, location, duration, potential infrastructure damage, and doubled psychic sensitivity for every living being. Retains the required stat name literally and meets fragment grammar requirements.",
+   "violated": ""
+  }
+ ]
+}
