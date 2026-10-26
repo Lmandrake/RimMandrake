@@ -146,6 +146,68 @@ def validate_job(job):
     return job
 
 
+# ---- deploy names: what `--deploy` / job["mod"] may be, and how deploy_custom_mods.py is asked for each --------------
+_SRC_TIERS = ("RimMandrake", "RimStarWars", "RimUtinni", "SPLIT_Phase3")
+
+
+def deploy_catalog(src_root):
+    """-> (known {mod folder name}, folded {source folder -> composed target}, composed {target names}).
+
+    `deploy_custom_mods.py --mod X` takes a mod folder that carries About/About.xml and REFUSES a folder a compose
+    manifest folds in (Pyrelands is folded into RimMandrake.Biomes, which is not a folder at all: it is built by
+    `--compose biomes`). A job that names either spelling must reach the right flag (RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE:
+    `--deploy RimMandrake.Biomes` died as INVALID/DEPLOY on a booked Steve slot)."""
+    folded, composed = {}, set()
+    mp = os.path.join(src_root, "RimMandrake", "Biomes.compose.json")
+    if os.path.isfile(mp):
+        try:
+            with open(mp, encoding="utf-8") as fh:
+                m = json.load(fh)
+            wave = m.get("compose_wave", 0)
+            composed.add(m["target"])
+            for e in m["entries"]:
+                if e.get("wave", 99) <= wave:
+                    folded[e["source"]] = m["target"]
+        except (OSError, ValueError, KeyError):
+            pass
+    known = set()
+    for t in _SRC_TIERS:
+        d = os.path.join(src_root, t)
+        if os.path.isdir(d):
+            for n in os.listdir(d):
+                if os.path.isfile(os.path.join(d, n, "About", "About.xml")) and not (t == _SRC_TIERS[0] and n in folded):
+                    known.add(n)
+    return known, folded, composed
+
+
+def deploy_problem(names, src_root):
+    """-> a refusal sentence for the first name no deploy route can serve, else None. A source tree with no mod folders
+    at all (a synthetic tree) is not judged."""
+    known, folded, composed = deploy_catalog(src_root)
+    if not known and not composed:
+        return None
+    for n in names:
+        if n not in known and n not in folded and n not in composed:
+            near = sorted(k for k in known | set(folded) | composed if n.lower() in k.lower() or k.lower() in n.lower())
+            return "%r is not a deployable mod folder under src/ (%s)" % (
+                n, ("did you mean " + ", ".join(near[:5])) if near else "run deploy_custom_mods.py with no args to list them")
+    return None
+
+
+def deploy_flags(names, src_root):
+    """-> [(flag, value)] for deploy_custom_mods.py: a folded source or its composed target becomes ONE `--compose biomes`."""
+    _, folded, composed = deploy_catalog(src_root)
+    out, compose = [], False
+    for n in names:
+        if n in folded or n in composed:
+            compose = True
+        else:
+            out.append(("--mod", n))
+    if compose:
+        out.append(("--compose", "biomes"))
+    return out
+
+
 def modcheck_args(job):
     """The `modcheck run` argument list a job asks for (the mod first)."""
     sel = job["selector"]

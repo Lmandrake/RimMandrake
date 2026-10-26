@@ -68,6 +68,14 @@ def main():
           "a made job carries every required key and only declared ones: %s" % sorted(set(j) - set(jd["properties"])))
     check(set(rd["required"]) <= set(res) and jd["properties"]["purpose"]["enum"] == list(S.PURPOSES)
           and rd["properties"]["cause"]["enum"] == list(S.CAUSES), "result keys and enums match the constants")
+    # deploy names (RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE: --deploy RimMandrake.Biomes died INVALID/DEPLOY on a booked slot)
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")
+    check(S.deploy_problem(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) is None,
+          "a folded source, the composed target and a plain mod are all deployable names")
+    check("NoSuchMod" in (S.deploy_problem(["UtinniPatches", "NoSuchMod"], src) or ""), "an unknown deploy name is refused by name")
+    check(S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) == [("--mod", "UtinniPatches"), ("--compose", "biomes")],
+          "folded + composed names collapse to one --compose biomes, the rest stay --mod: %s"
+          % S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src))
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

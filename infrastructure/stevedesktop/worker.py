@@ -446,7 +446,8 @@ class Attempt:
             if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault
                 return self.fail("REFUSED", "DEPLOY", refused_line(tail))
             return rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)
-        args = " ".join("--mod " + shlex.quote(m) for m in mods)
+        # a folded source (Pyrelands) or the composed target (RimMandrake.Biomes) is `--compose biomes`, never `--mod`
+        args = " ".join(f + " " + shlex.quote(v) for f, v in S.deploy_flags(mods, os.path.join(RUNNER, "src")))
         plan = "python3 src/RimMandrake/Utils/deploy_custom_mods.py " + args
         rc, _ = self.sh(plan + " > %s 2>&1" % shlex.quote(os.path.join(self.d, "deploy_plan.txt")), timeout=600)
         if rc == 0:
@@ -547,7 +548,9 @@ class Attempt:
         mods_dir = os.environ.get("TESTQ_MODS_DIR") or os.path.join(os.environ.get("RM_STEAMAPPS", ""),
                                                                     "common", "RimWorld", "Mods")
         dep = {"mods": {}}
+        _, folded, _c = S.deploy_catalog(os.path.join(RUNNER, "src"))
         for m in [self.job["mod"]] + list(self.job.get("deploy") or []):
+            m = folded.get(m, m)                   # a folded source is deployed as its composed target
             root = os.path.join(mods_dir, m)
             dll, defs, n = hashlib.sha256(), hashlib.sha256(), 0
             for f in sorted(glob.glob(os.path.join(root, "**", "*"), recursive=True)):

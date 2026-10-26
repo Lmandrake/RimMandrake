@@ -697,6 +697,10 @@ def cmd_submit(a):
     except S.SchemaError as e:
         print("REFUSED: %s" % e)
         return 2
+    why = S.deploy_problem(list(a.deploy or []), os.path.join(REPO, "src"))
+    if why:
+        print("REFUSED: --deploy %s; the worker would die INVALID/DEPLOY on a booked slot" % why)
+        return 2
     bad, planned = preview_plan(a.mod, sel)
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)

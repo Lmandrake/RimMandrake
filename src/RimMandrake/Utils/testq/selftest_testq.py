@@ -236,6 +236,8 @@ def main():
         g = submit("--rows", "r2", "--owner-gate", "owner must pick the list")["job"]
         nb = submit("--rows", "r2", "--not-before", "2099-01-01T00:00:00Z")["job"]
         arch = submit("--rows", "r2", "--lane", "archmagi")["job"]
+        bd = submit("--rows", "r1", "--deploy", "NoSuchModAnywhere")
+        check("job" not in bd and "NoSuchModAnywhere" in str(bd.get("raw", "")), "submit refuses an undeployable --deploy name up front: %s" % bd)
         dup = submit("--rows", "r1,r2")
         check(dup.get("job") == a and dup.get("duplicate"), "an identical submit returns the pending job: %s" % dup)
         rc, o = tq("submit", "Mock", "--purpose", "fix", "--by", "BENCH", "--sha", "0123456789abcdef", "--rows", "r1")
