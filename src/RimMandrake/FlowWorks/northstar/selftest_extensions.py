@@ -1258,7 +1258,7 @@ def _new_probes(EXT, RIV, base):
     if len(orders) < 10 or any(o not in canal for o in orders) or jumps:
         out.append("slime_slip must wade one canal cell per order: %d orders, off-canal %s, jumps %s"
                    % (len(orders), [o for o in orders if o not in canal][:3], jumps[:3]))
-    # (e) fill-in waits on the pawn's MiningSpeed: the 0.1 floor needs 16,000 ticks of work, not the old flat 2,500
+    # (e) fill-in waits on the pawn's MiningSpeed: the 0.1 floor needs 37,650 ticks (6,400 / 0.17), not the old flat 2,500
     class _FT(object):
         ticks = 0
 

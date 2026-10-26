@@ -1240,11 +1240,11 @@ FILL_IN_TICKS_MAX = 50000   # FILLIN_PROOF_FIX_BUDGET_IGNORED_LABOUR_MULT: a Min
 
 
 def _fill_in_budget(t, pid):
-    """Ticks to wait for `pid` to finish a D=1 fill-in: FILL_IN_WORK / its MiningSpeed (JobDriver_AffectFloor takes one
-    SpeedStat of work a tick) x 1.25 + 600 for the walk, capped at FILL_IN_TICKS_MAX. RULED OUT (2026-10-24 modcheck,
-    fill_in_on and fill_in_displacement_on both D=1): a flat 10-pulse (2,500-tick) wait -- a fresh random colonist with
-    Mining 0 works at the stat's 0.1 floor (vanilla MiningSpeed 0.04 + 0.12/level), 16,000 ticks for one notch; the
-    earlier PASS had drawn a skilled one. An unread speed takes the cap."""
+    """Ticks to wait for `pid` to finish a D=1 fill-in: FILL_IN_WORK / (FILL_IN_WORK_PER_TICK x its MiningSpeed)
+    (JobDriver_AffectFloor does 1.7 x MiningSpeed of work a tick) x 1.25 + 600 for the walk, capped at FILL_IN_TICKS_MAX.
+    RULED OUT (2026-10-24 modcheck, fill_in_on and fill_in_displacement_on both D=1): a flat 10-pulse (2,500-tick) wait --
+    a fresh random colonist with Mining 0 works at the stat's 0.1 floor (vanilla MiningSpeed 0.04 + 0.12/level),
+    37,650 ticks (6,400 / 0.17) for one notch; the earlier PASS had drawn a skilled one. An unread speed takes the cap."""
     sp = None
     r = t.bridge_call("jawa/pawn_stats", pawn=pid, stats="MiningSpeed") or {}
     for st in r.get("stats") or []:
