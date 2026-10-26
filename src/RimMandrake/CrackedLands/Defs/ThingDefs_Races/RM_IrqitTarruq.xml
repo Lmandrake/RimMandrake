@@ -103,6 +103,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Light</leatherDef>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <predator>false</predator>
       <herdAnimal>true</herdAnimal>

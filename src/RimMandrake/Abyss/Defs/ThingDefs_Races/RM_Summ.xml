@@ -97,6 +97,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Heavy</leatherDef>
       <body>QuadrupedAnimalWithHooves</body>
       <baseBodySize>8</baseBodySize>
       <baseHealthScale>9</baseHealthScale>

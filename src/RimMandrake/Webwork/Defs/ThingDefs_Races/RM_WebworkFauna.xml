@@ -341,6 +341,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Plain</leatherDef>
       <body>QuadrupedAnimalWithHooves</body>
       <baseBodySize>0.35</baseBodySize>
       <baseHealthScale>0.4</baseHealthScale>

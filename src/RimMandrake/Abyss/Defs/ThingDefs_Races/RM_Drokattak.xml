@@ -62,6 +62,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Bear</leatherDef>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <baseBodySize>3</baseBodySize>
       <baseHealthScale>2.6</baseHealthScale>

@@ -695,6 +695,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <predator>true</predator>
       <maxPreyBodySize>20</maxPreyBodySize>
@@ -839,6 +840,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <predator>true</predator>
       <maxPreyBodySize>20</maxPreyBodySize>

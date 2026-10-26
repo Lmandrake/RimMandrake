@@ -43,6 +43,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Plain</leatherDef>
       <body>QuadrupedAnimalWithPaws</body>
       <baseBodySize>1.2</baseBodySize>
       <baseHealthScale>1.0</baseHealthScale>

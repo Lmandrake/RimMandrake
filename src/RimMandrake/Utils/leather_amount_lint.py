@@ -92,11 +92,20 @@ CLASS_BODIES = {
                   'QuadrupedAnimalWithHoovesAndHump', 'QuadrupedAnimalWithHoovesAndHorn',
                   'QuadrupedAnimalWithHoovesAndTusks', 'QuadrupedAnimalWithClawsTailAndJowl'},
 }
-FINISHED_CLASSES = ('bird', 'monkey', 'pinniped')   # classes audited to the end; their regressions fail
+FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped')   # classes audited to the end; their regressions fail
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
     'RUT_EmperorVulture': 'bird body only: "nothing about an ulvassk is a bird", a translucent gas sac on bone spars',
+    'RM_Hesuun': 'quadruped body only: a wax colony, no hide; what it butchers to is a design call',
+    'RUT_Vhessk': 'quadruped body only: a wet muscle slab with sacs; hide undecided',
+    'RM_Kethrel': 'quadruped body only: boneless, its shell is bound-on scrap; hide undecided',
+    'RM_TarBeast': 'quadruped body only: a tar hill with insectoid flesh; hide undecided',
+    'RM_Thrummel': 'butchers to its own RM_ThrummelChitin (one chitin ladder, canon_materials_design 3.10)',
+    'RM_ThrummelWarden': 'butchers to its own RM_ThrummelChitin (one chitin ladder, canon_materials_design 3.10)',
+    'RM_ThrummelBroodmother': 'butchers to its own RM_ThrummelChitin (one chitin ladder, canon_materials_design 3.10)',
+    'RM_ShadeMite': 'grain-scale mite: no hide to take; LeatherAmount 0 vs a mite product is a design call',
+    'RM_Siidda': 'grain-scale desiccated dust creature: no hide; product undecided',
 }
 
 MIN_RACES = 300          # src/ held 667 race ThingDefs when measured 2026-10-26; far fewer means a blind walk
