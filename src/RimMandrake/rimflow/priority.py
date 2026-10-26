@@ -162,7 +162,9 @@ def rank(world, seat, target="v1", ctx=None):
         if not satisfiable(it, world, ctx, seat):
             continue
         out.append(it)
-    out.sort(key=lambda i: (not i.this_deployment, _row_key(i),
+    # `raised` (2026-10-26, steward escalation T+30) outranks everything, then
+    # `this_deployment`, then the campaign row.
+    out.sort(key=lambda i: (i.raised is None, not i.this_deployment, _row_key(i),
                             i.created_at or "", i.id))
     return out
 

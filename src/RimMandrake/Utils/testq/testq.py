@@ -17,6 +17,11 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
                                      QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 20 h; a job
                                      backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
                                      every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
+  testq.py pause --reason R [--hours H]  pause the lane by hand; with --hours it is intentional until then (the
+                                     steward never escalates it before), without, the steward escalates it at 60 min
+  testq.py steward                   the lane steward (steward.py; STEVE_STEWARD_BUILD_NO_LLM_OWNER): state, unowned
+                                     clock, escalation to BENCH at 10/30 min and the owner at 120 min; the tick runs it
+  testq.py steward-watch             its heartbeat watcher (testq-steward-watch.timer, every 60 s)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
@@ -1031,47 +1036,63 @@ def fill_spent_s(recs):
     return total
 
 
-def cmd_fill(a):
-    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue the
-    `--n` stalest chains of MOD (oldest last real run first). Brakes: the stop file, a daily cap, a paused lane, and
-    two filler jobs in a row that did not come back DONE."""
+def fill_plan(mod, n, cap, day_s, now=None):
+    """-> {"verdict", "text", ...}: what `fill MOD` would do now, without doing it. Shared by `cmd_fill` and the
+    steward (steward.py), so the lane's brakes are read from ONE place. verdict:
+      stopped  fill.stop exists          paused  the lane is paused       busy    a ready pending or a running job
+      cap      the daily job backstop    budget  the day's lane time      brake   last two filler jobs not DONE
+      nohist   no chain history yet      dry     every chain is DRY       pick    `pick` would be queued"""
     ensure_dirs()
+    now = time.time() if now is None else now
     stop = q("fill.stop")
     if os.path.exists(stop):
-        print("stopped: %s exists" % stop)
-        return 0
+        return {"verdict": "stopped", "text": "stopped: %s exists" % stop}
     if paused():
-        print("lane paused; no fill")
-        return 0
-    now = time.time()   # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
+        return {"verdict": "paused", "text": "lane paused; no fill"}
+    # an owner-gated, not-yet-due or other-lane job cannot run, so it does not keep Steve busy
     busy = [j for j in records("pending") if ready(j, now)] + steve_running()   # an archmagi job is not Steve
     if busy:
-        print("busy: %d pending/running" % len(busy))
-        return 0
-    today = time.strftime("%Y-%m-%d")
+        return {"verdict": "busy", "text": "busy: %d pending/running" % len(busy)}
+    today = time.strftime("%Y-%m-%d", time.localtime(now))
     mine = sorted((job_of(r) for st in ("done", "cancelled", "running", "pending") for r in records(st)
                    if job_of(r).get("requested_by") == FILLER), key=lambda j: j["submitted"])
     n_today = sum(1 for j in mine if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
-    if n_today >= a.cap:
-        print("cap: %d filler jobs today (cap %d)" % (n_today, a.cap))
-        return 0
+    out = {"n_today": n_today, "mine": mine}
+    if n_today >= cap:
+        return dict(out, verdict="cap", text="cap: %d filler jobs today (cap %d)" % (n_today, cap))
     # TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY: the day's brake is lane TIME, not a job count. A count of 8 was spent in an
     # hour of ~4-min jobs and left SteveDesktop idle for the other 23 (2026-10-25).
     spent = fill_spent_s(read_json(q("done", j["id"] + ".json")) for j in mine
                          if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
-    if spent >= a.day_s:
-        print("cap: filler lane time today %d s >= day budget %d s (%d jobs)" % (spent, a.day_s, n_today))
-        return 0
+    out["spent"] = spent
+    if spent >= day_s:
+        return dict(out, verdict="budget", text="cap: filler lane time today %d s >= day budget %d s (%d jobs)"
+                    % (spent, day_s, n_today))
     tail = [read_json(q("done", j["id"] + ".json")) for j in mine[-2:]]
     if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail):
-        print("brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by hand"
-              % ", ".join(j["id"] for j in mine[-2:]))
-        return 0
-    hist = chain_history(a.mod)
+        return dict(out, verdict="brake", tail=tail,
+                    text="brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by "
+                         "hand" % ", ".join(j["id"] for j in mine[-2:]))
+    hist = chain_history(mod)
     if not hist:
-        print("no chain history for %s yet (one full sweep seeds it); no fill" % a.mod)
+        return dict(out, verdict="nohist", text="no chain history for %s yet (one full sweep seeds it); no fill" % mod)
+    pick, dry = fill_pick(hist, n, now)
+    if not pick:
+        return dict(out, verdict="dry", dry=dry, text="dry: every chain of %s measured nothing in its last %d runs "
+                                                      "(%s); no fill" % (mod, FILL_DRY_RUNS, ",".join(dry)))
+    return dict(out, verdict="pick", pick=pick, dry=dry, hist=hist, text="would queue %s" % ",".join(pick))
+
+
+def cmd_fill(a):
+    """Never let Steve's lane idle, with no LLM in the loop: when nothing is pending or running, queue the
+    `--n` stalest chains of MOD (oldest last real run first). Brakes (`fill_plan`): the stop file, a daily cap, a
+    paused lane, and two filler jobs in a row that did not come back DONE."""
+    now = time.time()
+    plan = fill_plan(a.mod, a.n, a.cap, a.day_s, now)
+    if plan["verdict"] != "pick":
+        print(plan["text"])
         return 0
-    pick, dry = fill_pick(hist, a.n, now)
+    hist, pick, dry, n_today, spent = plan["hist"], plan["pick"], plan["dry"], plan["n_today"], plan["spent"]
     # A chain the history still holds but modcheck no longer declares (renamed, removed) is forever the stalest, and
     # cmd_submit refuses any job naming it: without this the filler re-submits it every tick and Steve idles for good.
     for _ in range(3):
@@ -1163,8 +1184,9 @@ Type=oneshot
 WorkingDirectory={clone}
 {git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
-ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
+ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward
+ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 TimeoutStartSec=900
 """,
     "testq-sweep.service": """[Unit]
@@ -1187,6 +1209,28 @@ Persistent=true
 [Install]
 WantedBy=timers.target
 """,
+    # the steward cannot see its own tick stop (design 2026-10-26 section 6.1): this watcher has its own timer and
+    # never pulls, so a bad pull that kills the tick does not take the watcher with it
+    "testq-steward-watch.service": """[Unit]
+Description=testq steward heartbeat watcher (STEVE_STEWARD_BUILD_NO_LLM_OWNER)
+
+[Service]
+Type=oneshot
+WorkingDirectory={clone}
+ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward-watch
+TimeoutStartSec=300
+""",
+    "testq-steward-watch.timer": """[Unit]
+Description=testq steward heartbeat watcher every 60 s
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=60s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target
+""",
     "testq-tick.timer": """[Unit]
 Description=testq dispatch tick every 60 s
 
@@ -1199,6 +1243,32 @@ AccuracySec=5s
 WantedBy=timers.target
 """,
 }
+
+
+def cmd_pause(a):
+    ensure_dirs()
+    if paused():
+        print("already paused: %s" % json.dumps(paused()))
+        return 1
+    now = time.time()
+    rec = {"since": S.utcnow(), "job": None, "attempt": None, "outcome": None, "cause": None, "reason": a.reason,
+           "note": "paused by hand", "until": None}
+    if a.hours:
+        rec["until"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now + a.hours * 3600))
+    S.dump(rec, pause_path())
+    log("LANE PAUSED by hand%s: %s; `testq.py resume --reason R` lifts it" % (
+        " until " + rec["until"] if rec["until"] else " (no expiry: the steward escalates it at 60 min)", a.reason))
+    return 0
+
+
+def cmd_steward(a):
+    import steward
+    return steward.cmd_steward(a)
+
+
+def cmd_steward_watch(a):
+    import steward
+    return steward.cmd_watch(a)
 
 
 def cmd_install_timer(a):
@@ -1215,7 +1285,7 @@ def cmd_install_timer(a):
                 f.write(text.format(clone=DISPATCH, git_env=GIT_ENV))
     if a.apply:
         for argv in (["daemon-reload"], ["enable", "--now", "testq-tick.timer"],
-                     ["enable", "--now", "testq-sweep.timer"]):
+                     ["enable", "--now", "testq-sweep.timer"], ["enable", "--now", "testq-steward-watch.timer"]):
             r = subprocess.run(["systemctl", "--user"] + argv, capture_output=True, text=True, timeout=60)
             print("systemctl --user %s: exit %d %s" % (" ".join(argv), r.returncode, r.stderr.strip()[-200:]))
     return 0
@@ -1272,6 +1342,11 @@ def main(argv=None):
     s.add_argument("--day-s", type=int, default=FILL_DAY_S,
                    help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 20 h)")
     sub.add_parser("tick")
+    s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
+    s.add_argument("--reason", required=True)
+    s.add_argument("--hours", type=float)
+    sub.add_parser("steward", help="the lane steward pass (the tick runs it)")
+    sub.add_parser("steward-watch", help="the steward's heartbeat watcher (its own timer)")
     s = sub.add_parser("install-timer")
     s.add_argument("--apply", action="store_true")
     a = ap.parse_args(argv)
@@ -1280,7 +1355,7 @@ def main(argv=None):
         return 2
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
             "sweep": cmd_sweep, "fill": cmd_fill,
-            "tick": cmd_tick,
+            "tick": cmd_tick, "pause": cmd_pause, "steward": cmd_steward, "steward-watch": cmd_steward_watch,
             "install-timer": cmd_install_timer}[a.cmd](a)
 
 

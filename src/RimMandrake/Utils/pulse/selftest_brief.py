@@ -315,6 +315,31 @@ def main():
     psrc = (Path(__file__).resolve().parent / "pulse.py").read_text(encoding="utf-8")
     check("snapshot attaches packet_view to look rows via brief.packet_view", "brief.packet_view(r)" in psrc)
 
+    # RAISED (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design 6.4 T+30): one line per raised open item, judged vs the ledger
+    sp = {"seat": "RUNNER", "event": "spawn", "name": "STEVE_LANE_BRAKED_UNOWNED_ABC", "needs": "offline",
+          "title": "SteveDesktop lane BRAKED 31 min, nobody on it", "for": "BENCH", "from": "AGENT_WORK_ITEM"}
+    rev = EVENTS + [{**ev(10, "spawn", None), **sp}, {**ev(11, "raise", "STEVE_LANE_BRAKED_UNOWNED_ABC"), "seat": "RUNNER"}]
+    for e in rev[-2:]:
+        if e.get("id") is None:
+            e.pop("id")
+    rb = brief.compose(csnap, rev, NOW - 7200, NOW)
+    rl = [x for x in rb["sections"].get("raised") or [] if (x.get("claim") or {}).get("type") == "raised"]
+    check("a raised open item gets one brief line", len(rl) == 1 and "BRAKED" in rl[0]["text"]
+          and rl[0]["id"] == "STEVE_LANE_BRAKED_UNOWNED_ABC", rl)
+    brief.judge(rb, rev, csnap)
+    check("the raised line is borne out by the ledger", rl and rl[0]["check"] == "pass", rl and rl[0]["check"])
+    gone = rev + [{**ev(12, "drop", "STEVE_LANE_BRAKED_UNOWNED_ABC"), "reason": "lane recovered"}]
+    jb2 = {"sections": {"t": [line(rl[0]["claim"])]}} if rl else {"sections": {"t": [line({"type": "raised"})]}}
+    brief.judge(jb2, gone, csnap)
+    check("a raised line on a dropped item is withheld", jb2["sections"]["t"][0]["check"] != "pass",
+          jb2["sections"]["t"][0]["check"])
+    html_r = brief.render(rb, {"red": False, "text": "ok"}, NOW)
+    check("the phone page shows the raised line under its heading", "Escalated, nobody on it" in html_r
+          and "BRAKED" in html_r, html_r[:200])
+    nb = brief.compose(csnap, gone, NOW - 7200, NOW)
+    check("a dropped raised item has no line", not [x for x in nb["sections"].get("raised") or []
+                                                    if (x.get("claim") or {}).get("type") == "raised"])
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 

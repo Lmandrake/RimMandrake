@@ -191,7 +191,13 @@ def item_path(iid, for_write=False):
 # test queue's dispatcher writes it from its own clone (~/rm/dispatch) to record what a
 # SteveDesktop run measured. It may emit RUNNER_VERBS only - see `_who_refusal`.
 SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER")
-RUNNER_VERBS = ("verify", "finding", "note")
+RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise")
+# 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward
+# (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design/RimMandrake/work_allocation_framework_2026-10-26.md
+# §6.4): an idle lane nobody owns escalates as WORK, so the steward must be able to file
+# it. Narrowly: a RUNNER spawn is for BENCH (needs offline) or for OWNER (needs owner)
+# and nothing else; see RUNNER_SPAWN_TO and `_who_refusal`.
+RUNNER_SPAWN_TO = {"BENCH": "offline", "OWNER": "owner"}
 
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
@@ -446,6 +452,12 @@ VERBS = {
     "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
+    # 🔑 `raise` (2026-10-26, STEVE_STEWARD_BUILD_NO_LLM_OWNER, design §6.4 T+30): puts an
+    # OPEN item at the top of its seat's `next`, ahead of rows and `this_deployment`.
+    # Unlike `this_deployment` nothing clears it but the item ending, so an escalation
+    # cannot fall off the queue because the game went DOWN. Any seat, like `note`.
+    # ⚠️ A reader older than this entry refuses the unknown verb into `world.errors`.
+    "raise":     {"who": "any",   "req": (), "opt": ("reason",)},
     # 🔑 `reconcile` (rimflow redesign step 1, 2026-10-07): a seat's JUDGEMENT of commits
     # that name an item — `complete` (the item's scope is built), `partial` (some of it;
     # `remaining` says what is left) or `unrelated` (the commits only mention it).
@@ -1485,7 +1497,7 @@ class Item(object):
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "criteria", "outstanding",
-                 "passed", "level_reached", "lease")
+                 "passed", "level_reached", "lease", "raised")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1514,6 +1526,7 @@ class Item(object):
         # step 3 — the current lease, or None: {token, seat, taken, expires, renewed,
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
+        self.raised = None              # ts of the first `raise`, or None
 
     @property
     def open(self):
@@ -1645,6 +1658,12 @@ def _who_refusal(ev, item):
     # else: it never claims, closes, files or drives anything.
     # Every other RUNNER verb was refused in `_apply`, above `file`.
     if seat == "RUNNER":
+        if verb == "spawn":
+            want = RUNNER_SPAWN_TO.get(ev.get("for"))
+            if want is None or (ev.get("needs") or "offline") != want:
+                return ("RUNNER spawns only for BENCH with needs offline or for OWNER with "
+                        "needs owner (the steward's escalations); got --for %s --needs %s"
+                        % (ev.get("for"), ev.get("needs")))
         return None
     # 🔴 `played` IS THE ONE EXPENSIVE RUNG, ENTERED ONLY BY OWNER DECISION —
     # PROJECT_MATURITY_DASHBOARD_1's ruling, in deliberate batches
@@ -2174,6 +2193,11 @@ def _apply_item_verb(ev, index, item, seat, world):
                                 "remaining": ev.get("remaining")})
     elif verb == "lease":
         _apply_lease(ev, item, seat)
+    elif verb == "raise":
+        if not item.open:
+            raise SchemaError("raise %s: it is %s; only an open item can be raised"
+                              % (item.id, item.state))
+        item.raised = item.raised or ev["ts"]
 
     # Review §"Claims should be leases": "Reassignment explicitly revokes the old lease."
     # `reclaim` is the owning seat's own doing->ready, and revokes it for the same reason:

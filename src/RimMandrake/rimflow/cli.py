@@ -996,10 +996,13 @@ def _choose(w, seat, args, ctx, idx):
     and `_claimable` both skip them."""
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
-    if offers:
+    claimable = _claimable(w, seat, args.target, ctx.get("now"))
+    # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
+    # --seat BENCH`") beats an unraised ranked offer; otherwise ranked work comes first.
+    if offers and (offers[0].item.raised is not None
+                   or not (claimable and claimable[0].raised is not None)):
         out.update(kind="offer", offer=offers[0], item=offers[0].item)
         return out
-    claimable = _claimable(w, seat, args.target, ctx.get("now"))
     if claimable:
         a = reconcile.assess(claimable[0], idx)
         if a.kind == "reconcile":
@@ -1168,7 +1171,7 @@ def _claimable(w, seat, target="v1", now=None):
            if i.owner == seat and i.state == "proposed" and not i.blocked
            and (not target or i.target in (None, target))  # "" = no filter, as rank()
            and model.lease_status(i, now) != "live"]
-    out.sort(key=lambda i: (not i.this_deployment, i.created_at or "", i.id))
+    out.sort(key=lambda i: (i.raised is None, not i.this_deployment, i.created_at or "", i.id))
     return out
 
 
@@ -2122,6 +2125,8 @@ def cmd_spawn(args, seat):
     ev = {"seat": seat, "event": "spawn", "name": args.name,
           "kind": args.kind, "needs": args.needs, "spec": args.spec,
           "this_deployment": args.this_deployment}
+    if getattr(args, "title", None):
+        ev["title"] = args.title
     ev["for"] = args.for_
     ev["from"] = args.from_
     _emit(ev, w, quiet=True)
@@ -3070,6 +3075,7 @@ def build_parser():
     s.add_argument("--kind", default="task")
     s.add_argument("--needs", choices=model.NEEDS)
     s.add_argument("--spec")
+    s.add_argument("--title", help="one line for the board (default: the name)")
     s.add_argument("--this-deployment", dest="this_deployment", action="store_true",
                    help="jumps the queue; cleared automatically when the game leaves UP")
     # ⛔ NO `--id` HERE, and it is not an oversight to re-fix. `spawn` is in
@@ -3110,6 +3116,11 @@ def build_parser():
             _simple("supersede", (("by", "by"), ("reason", "reason"))))
     s.add_argument("id")
     s.add_argument("--by", required=True)
+    s.add_argument("--reason")
+
+    s = add("raise", "put an open item at the top of its seat's `next` (escalation)",
+            _simple("raise", (("reason", "reason"),)))
+    s.add_argument("id")
     s.add_argument("--reason")
 
     s = add("note", "a line of context. Prose belongs in items/<ID>.md",

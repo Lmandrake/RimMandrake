@@ -55,11 +55,11 @@ SEATS = ("BENCH", "FOUNDRY")
 JUDGE = "brief.py judge (separate process; its own rimflow replay)"
 
 # which collector each section stands on: when it is down the section says "unknown", never "nothing"
-SECTION_SOURCES = {"away": ("ledger",), "word": ("ledger",), "open": ("hands", "sheets"), "home": ("ledger",), "overnight": ("ledger",),
+SECTION_SOURCES = {"away": ("ledger",), "word": ("ledger",), "raised": ("ledger",), "open": ("hands", "sheets"), "home": ("ledger",), "overnight": ("ledger",),
                    "decided": ("ledger",), "spend": ("tokens",), "testing": ("testing",), "next": ("sessions",)}
-TITLES = {"away": "By your return", "word": "Needs your word", "open": "Open these", "home": "When you're home", "overnight": "Overnight, in words",
+TITLES = {"away": "By your return", "word": "Needs your word", "raised": "Escalated, nobody on it", "open": "Open these", "home": "When you're home", "overnight": "Overnight, in words",
           "decided": "Decided for you", "spend": "Spend", "testing": "Testing rigs", "next": "Next", "coverage": "Coverage"}
-ORDER = ("away", "word", "open", "home", "overnight", "decided", "spend", "testing", "next", "coverage")
+ORDER = ("away", "word", "raised", "open", "home", "overnight", "decided", "spend", "testing", "next", "coverage")
 
 # A look's review packet (owner card 2026-10-25, "Plus evidence and doubts"): the artifact ships with a
 # recommendation, the alternatives with their reasons, the evidence (what was measured) and the doubts (what
@@ -391,6 +391,14 @@ def compose(snap: dict, events: list[dict], since: float, now: float, plan: dict
         secs.setdefault("testing", []).append(ln)
     else:
         notes["testing"] = "no testing history yet"
+    # RAISED: an escalation a seat has not taken up (the SteveDesktop steward's T+30, design
+    # work_allocation_framework_2026-10-26.md section 6.4), one line each, re-derived by the judge
+    for it in sorted((i for i in world.items.values() if i.open and getattr(i, "raised", None)),
+                     key=lambda i: (i.raised, i.id)):
+        secs["raised"].append({
+            "sec": "raised", "id": it.id, "link": f"/item/{it.id}",
+            "text": _short(f"Raised for {(it.owner or '?').capitalize()}, {it.state}: {it.title or it.id}", 150),
+            "claim": {"type": "raised", "id": it.id, "state": it.state}})
 
     # NEXT: what each seat is on, from the live session chips, item named by the ledger
     for c in snap.get("chips") or []:
@@ -538,6 +546,13 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
             return "pass" if it and it.open else "fail: item not open"
         if t == "testing":
             return check_testing(c)
+        if t == "raised":
+            it = world.items.get(c.get("id"))
+            if not it:
+                return "fail: no such item in the ledger"
+            if not it.open or not getattr(it, "raised", None):
+                return f"fail: item is {it.state}{'' if getattr(it, 'raised', None) else ', not raised'}"
+            return "pass" if it.state == c.get("state") else f"fail: item is {it.state}, the line says {c.get('state')}"
         if t == "plan":   # its own replay's states, and its own verdict when the line gives one
             got = {i: ("missing" if i not in world.items else "blocked" if world.items[i].open and world.items[i].blocked
                        else world.items[i].state) for i in c.get("states") or {}}
@@ -671,7 +686,7 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "", visit: dict
     for sec in ORDER:
         lines = [ln for ln in brief["sections"].get(sec, []) if ln.get("check") == "pass"]
         note = brief.get("notes", {}).get(sec)
-        if sec == "coverage" and not lines or sec == "away" and not lines and note:
+        if sec in ("coverage", "raised") and not lines or sec == "away" and not lines and note:
             continue                          # no trip, no "By your return" heading
         if sec == "away" and not lines:
             note = "a trip plan exists but the ledger did not bear out its lines"
