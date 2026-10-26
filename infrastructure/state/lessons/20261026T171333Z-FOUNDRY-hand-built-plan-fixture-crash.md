@@ -1,0 +1,2 @@
+A selftest that hand-builds the dict a builder returns (enact's plan P) instead of calling the builder breaks the day the consumer reads a new key: ea640a7247 made job_rows read P['decisions'] and two enact selftests CRASHED (KeyError) for a week, so 7 checks after the crash site never ran. Nobody noticed because a crash is not a FAIL line. When you add a key a consumer reads, grep the selftests for hand-built copies of that dict (git grep -n '"sheet": ' selftest_*), and after any shape change run the whole directory's selftests, not just the one you touched.
+home: NONE

@@ -1,0 +1,2 @@
+When one gate is enforced at several chokepoints (serve, phone, deliver, git pre-commit), they must all read content the same way. The pre-commit read the staged blob as raw bytes, while the others used Path.read_text (universal newlines) and the stamp hash is computed on that text. As a result, a CRLF sheet that verified everywhere else was refused at commit (review w94, fixed 85a335ced7). When you add a chokepoint that reads git blobs or bytes, normalise them exactly as read_text does, and test with a CRLF fixture.
+home: rimworld-review-sheets

@@ -1,0 +1,2 @@
+A 'never regress a job' merge keyed on stage rank needs a rule for stages of EQUAL rank. artpipe_state migrate ranked done and failed both as 2, so it copied a failed record in beside a done one and filed one job in both stages: 4 of the 32 live twins (review w94, fixed ce65ee6ad9). Any rank table with ties needs an explicit tie case and a test for it.
+home: src/RimMandrake/Utils/artpipe/AGENTS.md
