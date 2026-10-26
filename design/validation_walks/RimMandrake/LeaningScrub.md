@@ -82,6 +82,12 @@ Venomvine islands and creep (VENOMVINE_BUILD_SCRUB_GROWS_TEETH, owner cards 2026
 - Islands on a real Scrub map at generation, with pathing and perf inside bounds at 15%. → UNCOVERED: needs a Scrub-tile site (LEANING_SCRUB_LEAN_SITE_1)
 - Venomvine stands 1.8 to 2.4 cells tall at play zoom. → UNCOVERED: visual; tall-canvas renders queued (tallvv_* artpipe jobs)
 
+Fauna behaviours (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; wiring offline in selftest_leaningscrub_fauna_behaviours.py, live rows NEXT for BENCH)
+- A thornhold's quill lash leaves venomvine venom (`RM_VenomvineVenom`) on what it hits; hunting for food does not. → UNCOVERED live: needs a thornhold fighting a pawn; offline the tool → maneuver → damage → hediff chain resolves
+- A wild surrik on sand, soil or rich soil goes under (`RM_SurrikInCrust`, unseen) and comes up to strike, when struck, or off the crust; a take leaves its exit hole. → UNCOVERED live: no proof hook drives the sand-swim kit on a Scrub map yet; the kit's own walk (CreatureBehaviors) owns the mechanism
+- A runway bloom erupting under a submerged surrik drives it up before it flees, and the ripple never hides a surrik while `sandSwimEnabled` is on. → UNCOVERED live: needs a surrik under a bloom; offline the hooks are pinned (ForceSurface, IsCrustSwimmer)
+- A ribbonwhip on fuzz in wind is hidden moving or not; in the Stall a moving one is seen. → UNCOVERED live: ripple.ripple_hides_small_creatures drives a generic small animal, not the ribbonwhip; its size and bloom Sway are pinned offline
+
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger).
 2. [B] `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod LeaningScrub --plan src/RimMandrake/LeaningScrub/northstar_plan.py` → results JSON in `Transient/northstar/`.

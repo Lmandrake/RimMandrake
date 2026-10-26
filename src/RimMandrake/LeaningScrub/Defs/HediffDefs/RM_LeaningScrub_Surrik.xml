@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS - the surrik's crust-swimming.
+  Cast bible (leaningscrub_bedazzle_cast_2026-09-29.md, RM_Surrik): "swims the root-bound crust itself, shouldering
+  through the mat like water, and takes what it takes from underneath"; "subterranean predator, surfaces to strike".
+  Movement is CreatureBehaviors' sand-swim kit (RM_SandSwimExtension on the race, worker comp injected at startup),
+  retuned by data as the shivven's ice is: this is its submerged hediff, worded for the crust. Same shape as
+  CreatureBehaviors' RM_SandSubmerged / SleepingIce's RM_ShivvenUnderIce: vanilla HediffComp_Invisibility, hidden from
+  the player too (the wake dust is the tell). The marker hediff is the kit's own RM_SandSwimmer.
+-->
+<Defs>
+  <HediffDef>
+    <defName>RM_SurrikInCrust</defName>
+    <label>in the crust</label>
+    <description>Shouldering through the root-bound crust under the fuzz, out of sight. It surfaces to strike, where the crust ends, or when struck.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>30</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+</Defs>

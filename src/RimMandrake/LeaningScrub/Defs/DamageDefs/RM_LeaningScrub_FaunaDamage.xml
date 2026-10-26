@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrub_FaunaDamage.xml          LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS
+
+  The thornhold's venom-quill lash. Cast bible (design/Jawa/worldbuilding/biomes/
+  leaningscrub_bedazzle_cast_2026-09-29.md, RM_Thornhold): "a lash of venomed quills",
+  quills "tipped dark dried-blood umber, echoing the venomvine it dens in".
+
+  So the quill carries the venomvine's own venom, not a second disease: the hediff is
+  EnvironmentalHazards' RM_VenomvineVenom (a hard dependency of this mod), the same one
+  a venomvine thorn deals. Shape copied from Core's ScratchToxic (Data/Core/Defs/
+  DamageDefs/Damages_MeleeWeapon.xml, read 2026-10-26): ParentName="Scratch" plus
+  additionalHediffs; ManeuverDef + ToolCapacityDef as Core's ScratchToxic pair
+  (Maneuvers/Maneuvers.xml, ToolCapacityDefs/ToolCapacity.xml). No C#.
+
+  PROVISIONAL dose (FOUNDRY calibrates): 0.015 venom per damage, Core's ScratchToxic
+  rate, against the thorn's 0.04. A full 6-power lash on a body-size-1 pawn is ~0.09:
+  serious (0.30) after about four lashes, lethal (1.0) after about eleven, so a fight
+  with one thornhold hurts and lingers but a pawn who walks away lives. Armour is the
+  counter (Sharp category, inherited from Scratch), as for the thorn. Hunting for food
+  does not envenom (vanilla applyAdditionalHediffsIfHuntingForFood false).
+-->
+<Defs>
+
+  <DamageDef ParentName="Scratch">
+    <defName>RM_ThornholdQuill</defName>
+    <label>venom quill</label>
+    <deathMessage>{0} has been killed by venomous quills.</deathMessage>
+    <additionalHediffs>
+      <li>
+        <hediff>RM_VenomvineVenom</hediff>
+        <severityPerDamageDealt>0.015</severityPerDamageDealt>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+      </li>
+    </additionalHediffs>
+    <applyAdditionalHediffsIfHuntingForFood>false</applyAdditionalHediffsIfHuntingForFood>
+    <impactSoundType>Toxic</impactSoundType>
+    <damageEffecter>Impact_Toxic</damageEffecter>
+  </DamageDef>
+
+  <ManeuverDef>
+    <defName>RM_ThornholdQuillLash</defName>
+    <requiredCapacity>RM_ThornholdQuillLash</requiredCapacity>
+    <verb>
+      <verbClass>Verb_MeleeAttackDamage</verbClass>
+      <meleeDamageDef>RM_ThornholdQuill</meleeDamageDef>
+    </verb>
+    <logEntryDef>MeleeAttack</logEntryDef>
+    <combatLogRulesHit>Maneuver_Scratch_MeleeHit</combatLogRulesHit>
+    <combatLogRulesDeflect>Maneuver_Scratch_MeleeDeflect</combatLogRulesDeflect>
+    <combatLogRulesMiss>Maneuver_Scratch_MeleeMiss</combatLogRulesMiss>
+    <combatLogRulesDodge>Maneuver_Scratch_MeleeDodge</combatLogRulesDodge>
+  </ManeuverDef>
+
+  <ToolCapacityDef>
+    <defName>RM_ThornholdQuillLash</defName>
+    <label>venom quill lash</label>
+  </ToolCapacityDef>
+
+</Defs>

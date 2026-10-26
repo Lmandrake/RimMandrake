@@ -37,6 +37,13 @@ namespace RimMandrake.LeaningScrub
         {
         }
 
+        public static bool IsCrustSwimmer(ThingDef def)
+        {
+            // Kit off: the surrik is an ordinary small scrub creature again and the ripple hides it as one.
+            return def != null && RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings.sandSwimEnabled
+                && def.HasModExtension<RimMandrake.CreatureBehaviors.RM_SandSwimExtension>();
+        }
+
         public static bool OnCover(Pawn p)
         {
             Plant plant = p.Position.GetPlant(p.Map);
@@ -51,7 +58,9 @@ namespace RimMandrake.LeaningScrub
         private bool ShouldHide(Pawn p, bool on, bool gale, bool stall)
         {
             // A creature in a mental state (manhunting, hunting the colony) never hides: it could not be shot back.
-            bool wild = p.Faction == null && p.RaceProps.Animal && !p.InMentalState;
+            // A crust-swimmer (CreatureBehaviors sand-swim kit, the surrik) hides by swimming, not under the fuzz: the
+            // ripple leaves it alone so its surfacing strike is never masked by a second invisibility (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS).
+            bool wild = p.Faction == null && p.RaceProps.Animal && !p.InMentalState && !IsCrustSwimmer(p.def);
             bool cover = wild && OnCover(p);
             bool still = stall || (on && cover && InWindbreakLee(p.Position));
             return RM_RippleKernel.Hidden(on, wild, p.Downed, cover, p.BodySize,

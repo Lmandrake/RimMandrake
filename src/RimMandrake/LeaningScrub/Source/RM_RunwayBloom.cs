@@ -182,9 +182,15 @@ namespace RimMandrake.LeaningScrub
                 StartSway(a, ext);
                 return;
             }
-            if (ext.response == RM_RunwayBloomResponse.Surface && ext.exitFilth != null)
+            if (ext.response == RM_RunwayBloomResponse.Surface)
             {
-                FilthMaker.TryMakeFilth(a.Position, map, ext.exitFilth, 1);
+                if (ext.exitFilth != null)
+                {
+                    FilthMaker.TryMakeFilth(a.Position, map, ext.exitFilth, 1);
+                }
+                // LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS: a crust-swimmer (CreatureBehaviors sand-swim kit) is
+                // driven up out of the crust before it flees, so the bloom shows it. No comp (kit off for the race): no-op.
+                a.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompSandSwim>()?.ForceSurface();
             }
             if (ext.response == RM_RunwayBloomResponse.Shed && ext.shedThing != null && Rand.Chance(ext.shedChance))
             {

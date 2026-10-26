@@ -117,7 +117,9 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: the venom-quill lash is plain melee tools here (damage type Scratch, no venom hediff). The venom lash, Venomvine denning and forbid-rather-than-flee are LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS. -->
+  <!-- BUILT (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS): the quill lash is capacity RM_ThornholdQuillLash, a Scratch that carries
+       the venomvine's own RM_VenomvineVenom (Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml).
+       STUB: venomvine denning and forbid-rather-than-flee are THORNHOLD_DECIDE_DEN_AND_STAND (needs owner). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thornhold</defName>
     <label>thornhold</label>
@@ -135,7 +137,7 @@
     <tools>
       <li>
         <label>quill lash</label>
-        <capacities><li>Scratch</li></capacities>
+        <capacities><li>RM_ThornholdQuillLash</li></capacities>
         <power>6</power>
         <cooldownTime>1.8</cooldownTime>
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
@@ -204,7 +206,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: flat-hold ambush at surfacing crossings is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; here it is a plain predator. -->
+  <!-- STUB: flat-hold ambush at surfacing crossings (fuzz-edge cells) is SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY; here it is a plain predator. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shokka</defName>
     <label>shokka</label>
@@ -396,7 +398,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: run-wall ambush behaviour is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
+  <!-- STUB: run-wall ambush behaviour is SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY; plain predator here. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Fuzzviper</defName>
     <label>fuzzviper</label>
@@ -476,7 +478,12 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: crust-swimming / surfacing strike is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
+  <!-- BUILT (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS): crust-swimming and the surfacing strike are CreatureBehaviors'
+       sand-swim kit (RM_SandSwimExtension below), retuned to the crust: it swims the Scrub's own natural ground (Sand, Soil,
+       SoilRich - the biome's terrainsByFertility), so rock, gravel, water and any built floor are a moat; submerged it is
+       RM_SurrikInCrust (Defs/HediffDefs/RM_LeaningScrub_Surrik.xml); a take leaves its exit hole. The runway bloom's Surface
+       response drives it up (RM_CompSandSwim.ForceSurface) and the ripple leaves it alone (it hides by swimming).
+       Toggle: CreatureBehaviors' sandSwimEnabled. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Surrik</defName>
     <label>surrik</label>
@@ -489,6 +496,19 @@
         <delayTicks>45</delayTicks>
         <fleeDistance>14</fleeDistance>
         <exitFilth>RM_Filth_SurrikExitHole</exitFilth>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <swimTerrains>
+          <li>Sand</li>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </swimTerrains>
+        <submergedHediff>RM_SurrikInCrust</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <takeFilth>RM_Filth_SurrikExitHole</takeFilth>
+        <mediumLabel>crust</mediumLabel>
+        <!-- LOAM-DARK anchor's pale crust-dust: the wake is the root-brown mat breaking. -->
+        <wakeColor>(0.58, 0.50, 0.38, 0.7)</wakeColor>
       </li>
     </modExtensions>
     <statBases>
@@ -573,7 +593,10 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: canopy-top wind-riding is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; plain predator here. -->
+  <!-- BUILT (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS): 'moving when the wind moves, so nothing reads it' is the ripple
+       (RM_Ripple.cs: a wild creature within rippleMaxBodySize on fuzz cover is hidden in wind, moving or not; in the Stall a
+       mover is seen) plus the runway bloom's Sway response below. Pinned by selftest_leaningscrub_fauna_behaviours.py.
+       STUB: canopy-top confinement (never touches bare ground) is SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY; plain predator otherwise. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ribbonwhip</defName>
     <label>ribbonwhip</label>
@@ -847,7 +870,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: Gale gliding and sweetline-tree association are LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; no flight stat (a glider, not a flyer). -->
+  <!-- STUB: Gale gliding and sweetline-tree association are SHIRREL_DECIDE_GALE_GLIDE (needs owner); no flight stat (a glider, not a flyer). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shirrel</defName>
     <label>shirrel</label>
@@ -1029,7 +1052,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: carrion-ball rolling is LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS. -->
+  <!-- STUB: carrion-ball rolling is ROLLBUG_DECIDE_CARRION_BALL (needs owner). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Rollbug</defName>
     <label>rollbug</label>

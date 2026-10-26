@@ -255,6 +255,26 @@ namespace RimMandrake.CreatureBehaviors
             }
         }
 
+        /// <summary>LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS: another mod's event drives the swimmer up (LeaningScrub's
+        /// runway bloom erupting under the surrik). Submerged: it breaks out (dust, sound, stagger) as when struck.
+        /// Already up: it just stays up for surfacedTicks, so it cannot dive straight back under the bloom.
+        /// No-op when sandSwimEnabled is off (CompTick has surfaced it already) or the pawn is not spawned.</summary>
+        public void ForceSurface()
+        {
+            if (!(parent is Pawn pawn) || !pawn.Spawned || pawn.Dead || Ext == null || !RM_CreatureBehaviorsSettings.sandSwimEnabled)
+            {
+                return;
+            }
+            if (Submerged)
+            {
+                Surface(pawn, breach: true);
+            }
+            else
+            {
+                surfacedUntilTick = RM_SandSwimKernel.BreachUntil(Find.TickManager.TicksGame, Ext.surfacedTicks);
+            }
+        }
+
         private void Breach(Pawn pawn)
         {
             surfacedUntilTick = RM_SandSwimKernel.BreachUntil(Find.TickManager.TicksGame, Ext.surfacedTicks);
