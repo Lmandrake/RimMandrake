@@ -165,6 +165,19 @@ namespace RimMandrake.CrackedLands
 
         public static int TargetCells(int mapArea) { return Math.Max(40, Math.Min(400, mapArea / 20)); }
 
+        // The wall's one startle hit (floodDamageEnabled), promised light and non-fatal. Vanilla part HP is
+        // def.hitPoints x Pawn.HealthScale (a human baby is 0.2, a squirrel 0.25, a baby squirrel ~0.06), so a flat
+        // 3..8 blunt destroyed a baby's neck (25 x 0.2 = 5 HP) or a small animal's torso. The hit scales with
+        // HealthScale (capped at 1, so a full-size adult takes the same 3..8 as before) and stays under a third of a
+        // fresh neck or head; 0 = no hit for a pawn already below WallHitHealthFloor summary health.
+        public const float WallHitHealthFloor = 0.6f;
+        public static float WallHitAmount(float roll01, float healthScale, float summaryHealth)
+        {
+            if (!(summaryHealth >= WallHitHealthFloor) || !(healthScale > 0f)) return 0f;
+            float r = Math.Max(0f, Math.Min(1f, roll01));
+            return (3f + 5f * r) * Math.Min(1f, healthScale);
+        }
+
         // ── the flood's reach: a thinned breadth-first spread over eligible cells from the seed ──
         public static List<long> FloodCells(int target, int seedX, int seedZ, bool seedValid, Func<int, int, bool> inBounds, Func<int, int, bool> eligible, Func<float> roll)
         {

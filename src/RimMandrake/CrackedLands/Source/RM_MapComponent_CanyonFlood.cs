@@ -655,8 +655,13 @@ namespace RimMandrake.CrackedLands
                 if (cellSet.Contains(p.Position))
                 {
                     // One light, non-fatal hit — the startle of the wall
-                    // arriving, never a steady damage-over-time hazard.
-                    p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, Rand.Range(3f, 8f)));
+                    // arriving, never a steady damage-over-time hazard. Scaled to
+                    // the pawn's size so a baby or a squirrel survives it too.
+                    float amount = RM_FloodKernel.WallHitAmount(Rand.Value, p.HealthScale, p.health.summaryHealth.SummaryHealthPercent);
+                    if (amount > 0f)
+                    {
+                        p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount));
+                    }
                 }
             }
         }

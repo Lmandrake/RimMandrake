@@ -214,6 +214,18 @@ namespace RimMandrake.CrackedLands.SelfTest
             Check(floods >= 3, $"only {floods} floods in 10M ticks of an active one-day cycle");
             Check(RM_FloodKernel.HoursToTicks(0f) == 250 && RM_FloodKernel.DaysToTicks(0f) == 2500 && RM_FloodKernel.HoursToTicks(2f) == 5000 && RM_FloodKernel.DaysToTicks(1f) == 60000, "tick conversions and floors");
             Check(RM_FloodKernel.TargetCells(0) == 40 && RM_FloodKernel.TargetCells(100000) == 400 && RM_FloodKernel.TargetCells(4000) == 200, "target cell clamp");
+            // the wall's startle hit stays under a third of a fresh neck/head (25 x HealthScale HP) for any size of pawn,
+            // keeps 3..8 on a full-size adult, and spares a pawn already below the health floor
+            for (int k = 0; k < 200; k++)
+            {
+                float hs = (float)(r.NextDouble() * 2.5), roll = (float)(r.NextDouble() * 1.4 - 0.2), sh = (float)r.NextDouble();
+                float a = RM_FloodKernel.WallHitAmount(roll, hs, sh);
+                if (sh < RM_FloodKernel.WallHitHealthFloor || hs <= 0f) { Check(a == 0f, $"wall hit {a} on hs={hs} summary={sh} (must be spared)"); continue; }
+                Check(a <= 25f * hs / 3f + 1e-4f, $"wall hit {a} can break a fresh neck at HealthScale {hs}");
+                Check(hs < 1f || (a >= 3f && a <= 8f), $"wall hit {a} on a full-size pawn leaves 3..8");
+            }
+            Check(RM_FloodKernel.WallHitAmount(0.5f, 0.2f, 1f) <= 5f / 3f && RM_FloodKernel.WallHitAmount(1f, 1f, 1f) == 8f && RM_FloodKernel.WallHitAmount(0f, 1.6f, 1f) == 3f, "wall hit on a baby / an adult / a big pawn");
+            Check(RM_FloodKernel.WallHitAmount(1f, 1f, float.NaN) == 0f && RM_FloodKernel.WallHitAmount(1f, float.NaN, 1f) == 0f, "wall hit spares a NaN pawn");
             return null;
         }
 
