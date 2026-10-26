@@ -1,0 +1,2 @@
+A skip counter placed in a code path that only runs on an on-screen event (a section-layer regenerate) is blind to off-screen events: GSS farSkips never moved for an off-screen dig while the skip itself worked. Count a decision where it is made, not where its effect is next consumed. Also: a per-build timing read inside a rebuild storm (the 13.6 ms wave3 figure was an all-reused rebuild) says nothing about a cold planned build (220 ms offline).
+home: NONE
