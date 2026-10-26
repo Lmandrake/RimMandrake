@@ -290,7 +290,8 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
         if ok and iid and iid in world.items and ev.get("tsn"):
             tsn_state[ev["tsn"]] = (iid, world.items[iid].state)
     world = model.replay(events, observe=obs)
-    keys = {r.get("key") for r in snap.get("rows") or [] if not r.get("agent")}
+    owner_rows = {r.get("key"): r for r in snap.get("rows") or [] if not r.get("agent")}
+    keys = set(owner_rows)
 
     def check(c: dict) -> str:
         t = c.get("type")
@@ -307,7 +308,7 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
             if c.get("key") not in keys:
                 return "fail: no longer on the monitor"
             if t == "look":
-                _, missing = read_packet(c.get("packet"))   # its own read of the packet, not the composer's
+                _, missing = read_packet(packet_path(owner_rows[c["key"]]))   # its own path + read, not the composer's
                 if sorted(missing) != sorted(c.get("missing") or []):
                     return f"fail: packet is missing {missing or 'nothing'}, the line says {c.get('missing') or 'nothing'}"
             return "pass"
