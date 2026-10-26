@@ -15,7 +15,7 @@ CHAINS
   harmony_wiring      each of the five patched engine methods carries a patch owned by mandrake.rsw.gizkastowaway.
   fecundity_state     a gizka given RSW_GizkaFecundity carries it, a control gizka does not.
   bait_poison         the poison hediff, given to a gizka, advances (state read); the bait item and recipe resolve.
-  donor_patch         the donor/port gizka def exists and its MarketValue reads 15 (UNMEASURED when no gizka is loaded).
+  donor_patch         the port RSW_Gizka (the only patched gizka) reads MarketValue 15 (UNMEASURED when it is not loaded).
   mechanics_unmeasured  the four discovery triggers, replication and its cap, chewing, cold stall, cull guilt, the
                       global rate slider: each says what it needs.
 
@@ -135,16 +135,17 @@ def static_checks():
         bad.append("poison lethalSeverity is unreachable")
     if POISON not in _read("Defs/ThingDefs_Items/RSW_GizkaBait.xml"):
         bad.append("bait does not give the poison hediff")
-    # donor patches: guarded by FindMod, never MayRequire on an Operation; scam stays pocket change
+    # port patches (the donor-name block was deleted in 3265277e01): def-presence guarded, never MayRequire on an
+    # Operation; scam stays pocket change on the port, the only gizka patched
     p = _read("Patches/RSW_GizkaDonorPatches.xml")
     ET.fromstring(p.encode("utf-8"))
     if re.search(r"<Operation[^>]*MayRequire", p):
         bad.append("donor patch uses MayRequire on an Operation (inert in 1.6)")
-    if p.count("<MarketValue>15</MarketValue>") != 2:
-        bad.append("MarketValue 15 is not patched on both Gizka and RSW_Gizka")
-    for dn in GIZKA_KINDS + ("EggGizkaFertilized", "RSW_EggGizkaFertilized"):
+    if p.count("<MarketValue>15</MarketValue>") != 1:
+        bad.append("MarketValue 15 is not patched exactly once (on RSW_Gizka)")
+    for dn in ("RSW_Gizka", "RSW_EggGizkaFertilized"):
         if 'defName="%s"' % dn not in p:
-            bad.append("donor patch does not target %s" % dn)
+            bad.append("port patch does not target %s" % dn)
     if 'GizkaDefNames' not in _read("Source/RSW_GizkaSettings.cs"):
         bad.append("global-rate tuning table is gone")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimStarWars", "GizkaStowaway.md")):
@@ -433,13 +434,14 @@ def _unmeasured(t, why):
 
 @contextlib.contextmanager
 def _comp(t, name, **kw):
-    before = t.upstream_failed
+    before, reason = t.upstream_failed, t.upstream_reason
     t._why = None
     with t.component(name, **kw):
         yield
     if getattr(t, "_why", None) and not before:
-        t.upstream_failed = False
-        t.upstream_reason = None
+        # restore, never None: a later plain FAIL latches without setting a reason, and every row after it shows
+        # upstream_reason (GIZKA_VALIDATION_FIX_LOST_REASON_DONOR_PICK)
+        t.upstream_failed, t.upstream_reason = False, reason
     t._why = None
 
 
@@ -504,9 +506,9 @@ def _hediff_row(snap, name):
     return "absent", None
 
 
-def _gizka_kind(t):
-    """The first gizka PawnKindDef that resolves live, or None (neither the donor nor SWBestiary is loaded)."""
-    for k in GIZKA_KINDS:
+def _gizka_kind(t, kinds=GIZKA_KINDS):
+    """The first gizka PawnKindDef of `kinds` that resolves live, or None (neither the donor nor SWBestiary is loaded)."""
+    for k in kinds:
         r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/" + k, fields="defName", limit=2)
         if _live(t) and isinstance(r, dict) and r.get("success") is not False and int(r.get("foundCount", 0)) == 1:
             return k
@@ -634,9 +636,11 @@ def _build_suite():
     @suite.chain("donor_patch")
     def donor_patch(t):
         with _comp(t, "gizka_market_value_flattened_to_15", beyond_toggle=True):
-            kind = _gizka_kind(t)
+            # only the port is patched (RSW_GizkaDonorPatches.xml: the donor-name block was deleted), so only it is read
+            kind = _gizka_kind(t, kinds=("RSW_Gizka",))
             if _live(t) and kind is None:
-                _unmeasured(t, "no gizka def resolves: the FindMod-guarded donor patch correctly no-ops without a donor")
+                _unmeasured(t, "RSW_Gizka does not resolve (SWBestiary not loaded): the def-presence-guarded patch "
+                               "correctly no-ops, and nothing patches the donor's Gizka")
             if _live(t):
                 r = t.bridge_call("jawa/get_defs", defs="ThingDef/" + kind, fields="statBases", deep=True, limit=2)
                 _ok(r, "get_defs gizka statBases")
