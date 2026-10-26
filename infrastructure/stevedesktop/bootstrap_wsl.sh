@@ -53,7 +53,7 @@ EOF
 
 apt_basics() {
     apt-get update -q &&
-    apt-get install -y -q ca-certificates curl wget git python3 python3-venv python3-pip jq tmux \
+    apt-get install -y -q ca-certificates curl wget git python3 python3-venv python3-pip python3-numpy python3-pil jq tmux \
         unzip zip build-essential rsync htop openssh-client gnupg lsb-release
 }
 

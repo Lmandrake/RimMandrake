@@ -35,6 +35,7 @@ Conventions (unchanged from the suite they came from):
 """
 import os
 import re
+import sys
 import time
 from contextlib import contextmanager
 
@@ -407,6 +408,10 @@ def _diptych(t, before, after, name):
         return None
     try:
         from PIL import Image, ImageDraw
+    except ImportError as e:  # the HOST lacks an instrument (sweep J20261026T004751Z-6e5292): not a mod verdict
+        raise ExpectationFailed("UNMEASURED: diptych needs Pillow in this host's python (%s; %s): %r / %r"
+                                % (e, sys.executable, before, after))
+    try:
         a, b = Image.open(before).convert("RGB"), Image.open(after).convert("RGB")
         h = max(a.height, b.height)
         out = Image.new("RGB", (a.width + b.width + 8, h + 20), (0, 0, 0))
@@ -417,7 +422,7 @@ def _diptych(t, before, after, name):
         d.text((a.width + 12, 4), "AFTER", fill=(255, 255, 255))
         path = os.path.join(os.path.dirname(before) or ".", "%s_diptych_%d.png" % (name, int(time.time())))
         out.save(path)
-    except Exception as e:  # PIL missing, unreadable frame (e.g. a .bmp fallback), ...
+    except Exception as e:  # unreadable frame (e.g. a .bmp fallback), ...
         raise ExpectationFailed("diptych could not be composed (%s): %r / %r" % (e, before, after))
     if t._current is not None:
         t._current.screenshots.append(path)
