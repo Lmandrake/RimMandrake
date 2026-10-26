@@ -24,8 +24,8 @@ def main():
     if dotnet is None:
         sys.exit("dotnet.exe not found; UNMEASURED, not a pass or a fail")
     from selftest_winstage import windows_project_path
-    cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ), "-c", "Release", "--", "--sheet"]
-    with dotnet_lock():
+    with dotnet_lock():     # the stage rsync inside the lock too (SELFTEST_FILTER_BUILD_SERIAL_DLL)
+        cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ), "-c", "Release", "--", "--sheet"]
         result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():

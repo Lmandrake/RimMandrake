@@ -138,24 +138,25 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>The default-run guard: a fixed 17-placement sample (the full near ring is --hose-layouts full, ~220 s).</summary>
         internal static void Run(Action<string, Action> Case)
         {
-            Result[] was = WasDrawnThrough.Select(k => LayOne(Parse(k))).ToArray();
+            // the placements are laid INSIDE each case, so a filtered run (--only) does not pay ~27 s for cases it skips
             Case("HoseLayout_old_drawn_through_placements_now_refused_or_clear", () =>
             {
+                Result[] was = WasDrawnThrough.Select(k => LayOne(Parse(k))).ToArray();
                 var bad = was.Where(r => r.Hit != null).ToList();
                 if (bad.Count > 0) throw new Exception(bad.Count + " drawn through a body: " + string.Join(" | ", bad.Select(r => r.P.Key + ": " + r.Hit)));
                 var mute = was.Where(r => !r.Lay.Ok && string.IsNullOrEmpty(r.Lay.Reason)).ToList();
                 if (mute.Count > 0) throw new Exception("refused without a reason: " + mute[0].P.Key);
             });
-            Result[] close = TooClose.Select(k => LayOne(Parse(k))).ToArray();
             Case("HoseLayout_too_close_to_bend_is_refused_with_the_player_reason", () =>
             {
+                Result[] close = TooClose.Select(k => LayOne(Parse(k))).ToArray();
                 foreach (Result r in close)
                     if (r.Lay.Ok || r.Lay.Reason != HoseMath.TooCloseToBend)
                         throw new Exception(r.P.Key + ": " + (r.Lay.Ok ? "laid (" + (r.Lay.G2 ? "g2" : "shaped: " + r.Lay.G2Why) + ")" : "refused '" + r.Lay.Reason + "'"));
             });
-            Result[] roomy = Roomy.Select(k => LayOne(Parse(k))).ToArray();
             Case("HoseLayout_roomy_placements_still_lay_g2_and_clear", () =>
             {
+                Result[] roomy = Roomy.Select(k => LayOne(Parse(k))).ToArray();
                 foreach (Result r in roomy)
                     if (!r.Lay.Ok || !r.Lay.G2 || r.Hit != null)
                         throw new Exception(r.P.Key + ": " + (!r.Lay.Ok ? "refused '" + r.Lay.Reason + "'" : r.Hit ?? "not g2: " + r.Lay.G2Why));

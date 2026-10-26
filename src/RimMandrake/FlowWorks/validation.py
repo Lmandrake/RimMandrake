@@ -412,29 +412,40 @@ RIVER_FLIP_TOGGLES = ["riverWorksEnabled", "scaleWithRiverSize", "floodSurgeEnab
 
 
 _SELFTEST_CASES = {}
+_SELFTEST_STATE = {"built": False, "full": False}
 
 
-def _selftest_cases():
-    """Run the FlowWorks C# SelfTest once per process; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run.
-    Memoised (review 2026-10-17): ten chains read it and one run took ~9 min live on
-    2026-10-24 (dotnet run of 325+ cases; the docstring used to say ~80 s); the source cannot change within one suite run.
-    A failed run is not memoised, so each chain still reports its own UNMEASURED."""
-    if _SELFTEST_CASES:
+def _selftest_cases(names=None):
+    """Run the FlowWorks C# SelfTest; {case name: "ok"|"FAIL"}, or raise UNMEASURED when it could not run.
+    `names` (SELFTEST_FILTER_BUILD_SERIAL_DLL): only those cases run (`--only`), so a targeted run of one chain no
+    longer pays for all ~1000; None runs everything. Memoised per process (review 2026-10-17: the source cannot
+    change within one suite run): a name already answered is not run again, and every call after the first that
+    built passes `--no-build` (no re-stage, no rebuild). A failed run is not memoised, so each chain still reports
+    its own UNMEASURED. A name the SelfTest does not have comes back missing, and its chain says so."""
+    if names is not None:
+        names = list(names)
+    if _SELFTEST_STATE["full"] or (names is not None and all(n in _SELFTEST_CASES for n in names)):
         return dict(_SELFTEST_CASES)
     import subprocess
     runner = os.path.join(os.path.dirname(os.path.dirname(HERE)), "RimMandrake", "Utils", "selftest_flowworks_stock.py")
-    print("[validation] running the FlowWorks C# SelfTest (offline, minutes; the game idles meanwhile)",
-          file=sys.stderr, flush=True)
-    r = subprocess.run(_posix_python([runner]), capture_output=True, text=True, timeout=1200)
+    args = [runner] + (["--no-build"] if _SELFTEST_STATE["built"] else [])
+    if names is not None:
+        args += ["--only", ",".join(n for n in names if n not in _SELFTEST_CASES)]
+    print("[validation] running the FlowWorks C# SelfTest (offline, %s; the game idles meanwhile)"
+          % ("all cases, minutes" if names is None else "%d case(s)" % len(names)), file=sys.stderr, flush=True)
+    r = subprocess.run(_posix_python(args), capture_output=True, text=True, timeout=1200)
     cases = {}
     for ln in r.stdout.splitlines():
         if ln.startswith("ok    ") or ln.startswith("FAIL  "):
             cases[ln[6:].strip()] = ln[:4].strip()
-    if not cases:
+    nothing_selected = names is not None and r.returncode == 3 and "--only" in r.stdout   # Program.cs: none matched
+    if not cases and not nothing_selected:
         raise ExpectationFailed("UNMEASURED: the FlowWorks SelfTest did not run (rc=%s): %s"
                                 % (r.returncode, (r.stderr or r.stdout)[-300:]))
+    _SELFTEST_STATE["built"] = True
+    _SELFTEST_STATE["full"] = _SELFTEST_STATE["full"] or names is None
     _SELFTEST_CASES.update(cases)
-    return dict(cases)
+    return dict(_SELFTEST_CASES)
 
 
 @suite.chain("rivers_switch_flips", offline=True)
@@ -443,7 +454,7 @@ def rivers_switch_flips(t):
     cases = {}
     with t.component("rivers_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(["RiverSwitchFlip_" + tg for tg in RIVER_FLIP_TOGGLES])
     for tg in RIVER_FLIP_TOGGLES:
         with t.component("flip_" + tg, toggle=tg):
             if t._guard():
@@ -468,7 +479,7 @@ def flow_door_facing(t):
     cases = {}
     with t.component("flow_door_facing_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(FLOW_DOOR_FACING_CASES)
     for name in FLOW_DOOR_FACING_CASES:
         with t.component(name):
             if t._guard():
@@ -510,7 +521,7 @@ def ladder_hung_on_wall(t):
     cases = {}
     with t.component("ladder_wall_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(LADDER_WALL_CASES)
     for name in LADDER_WALL_CASES:
         with t.component(name):
             if t._guard():
@@ -591,7 +602,7 @@ def _bar_chain(t, ran_id, cases, live_id, bar, owed):
     got = {}
     with t.component(ran_id):
         if t._guard():
-            got = _selftest_cases()
+            got = _selftest_cases(cases)
     for name in cases:
         with t.component(name):
             if t._guard():
@@ -857,7 +868,7 @@ def flow_map_controls(t):
     cases = {}
     with t.component("map_controls_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(MAP_CONTROL_CASES)
     for name in MAP_CONTROL_CASES:
         with t.component(name):
             if t._guard():
@@ -895,7 +906,7 @@ def flow_map_controls_six(t):
     cases = {}
     with t.component("map_controls_six_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(MAP_CONTROL_SIX_CASES)
     for name in MAP_CONTROL_SIX_CASES:
         with t.component(name):
             if t._guard():
@@ -929,7 +940,7 @@ def hose_switch_flips(t):
     cases = {}
     with t.component("hose_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(["HoseSwitchFlip_" + tg for tg in HOSE_FLIP_TOGGLES])
     for tg in HOSE_FLIP_TOGGLES:
         with t.component("flip_" + tg, toggle=tg):
             if t._guard():
@@ -960,7 +971,7 @@ def pipe_looks(t):
     cases = {}
     with t.component("selftest_cases"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(PIPE_LOOK_CASES)
             bad = {c: cases.get(c) for c in PIPE_LOOK_CASES if cases.get(c) != "ok"}
             if bad:
                 raise ExpectationFailed("pipe look cases not ok: %s" % bad)
@@ -1005,7 +1016,7 @@ def container_styles(t):
     cases = {}
     with t.component("container_style_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(CONTAINER_STYLE_CASES)
     for name in CONTAINER_STYLE_CASES:
         with t.component(name):
             if t._guard():
@@ -1218,7 +1229,7 @@ def thirst(t):
     cases = {}
     with t.component("thirst_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases([n for _, n in THIRST_OFFLINE])
     for rid, name in THIRST_OFFLINE:
         with t.component(rid):
             if t._guard():
@@ -1269,7 +1280,7 @@ def sprinklers(t):
     cases = {}
     with t.component("sprinkler_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases([n for _, n in SPRINKLER_OFFLINE])
     for rid, name in SPRINKLER_OFFLINE:
         with t.component(rid):
             if t._guard():
@@ -1344,7 +1355,7 @@ def drawbridges(t):
     cases = {}
     with t.component("drawbridge_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(DRAWBRIDGE_CASES)
     for name in DRAWBRIDGE_CASES:
         with t.component(name):
             if t._guard():
@@ -1435,7 +1446,7 @@ def lines(t):
     cases = {}
     with t.component("lines_selftest_ran"):
         if t._guard():
-            cases = _selftest_cases()
+            cases = _selftest_cases(LINES_CASES)
     for name in LINES_CASES:
         with t.component(name):
             if t._guard():

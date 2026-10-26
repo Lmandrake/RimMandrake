@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 720   (the full ~1000-case run took 302 s on 2026-10-25, staging and build included; 240 s timed out)
 """Wrapper for the C# selftest of the FlowWorks source stock model (§5).
 
 `selftest_*.py` is the established convention for fast, offline, pre-commit
@@ -27,6 +28,11 @@ FlowWorks check (325+ cases), not only the stock and pit-trap math.
 _to_windows_path stays: selftest_flowworks_kernel_oracle.py imports it.
 
     python3 selftest_flowworks_stock.py
+    python3 selftest_flowworks_stock.py --only RiverSwitchFlip_*,LadderWall_call_sites [--no-build]
+
+`--only` (SELFTEST_FILTER_BUILD_SERIAL_DLL) runs only the named cases (a trailing * is a prefix); modcheck's
+validation.py passes each chain's case names, and `--no-build` after the first call of a suite run. Staging, build
+and run all sit inside dotnet_lock, so two wrappers in one seat never rsync a stage under each other's build.
 """
 from __future__ import annotations
 
@@ -82,7 +88,12 @@ def dotnet_lock():
             fcntl.flock(f, fcntl.LOCK_UN)
 
 
-def main():
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description="FlowWorks C# SelfTest")
+    ap.add_argument("--only", default=None, help="comma list of case names; a trailing * is a prefix")
+    ap.add_argument("--no-build", action="store_true", help="run the exe the last build left (same source)")
+    a = ap.parse_args(argv)
     if not os.path.isfile(CSPROJ):
         sys.exit("RimMandrakeFlowWorks.SelfTest.csproj not found at %s — the "
                  "SelfTest project moved or was never built" % CSPROJ)
@@ -95,9 +106,11 @@ def main():
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
     from selftest_winstage import windows_project_path  # an ext4 clone stages through winbuild
-    win_csproj = windows_project_path(CSPROJ)
-    cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
-    with dotnet_lock():
+    with dotnet_lock():     # the stage rsync too: a peer wrapper's rsync must not land under this build or run
+        win_csproj = windows_project_path(CSPROJ, restage=not a.no_build)    # --no-build reuses the last stage
+        cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"] + (["--no-build"] if a.no_build else [])
+        if a.only:
+            cmd += ["--", "--only", a.only]
         result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():

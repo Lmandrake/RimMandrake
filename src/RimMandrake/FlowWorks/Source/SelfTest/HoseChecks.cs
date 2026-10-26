@@ -26,6 +26,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static void HoseSuite(string name, Action run)
         {
+            if (!Selected(name)) { FilteredOut++; return; }   // SELFTEST_FILTER_BUILD_SERIAL_DLL (Program.cs)
             int n0 = hoseN, f0 = hoseFails;
             hoseSuite = name;
             try { run(); }

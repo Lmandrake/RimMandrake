@@ -71,8 +71,24 @@ namespace RimMandrake.FlowWorks.SelfTest
         private const int TicksPerDay = 60000;
         private const int DaysPerSeason = 15;
 
+        // SELFTEST_FILTER_BUILD_SERIAL_DLL: `--only A,B*` runs only the Case()s (and hose suites) named A or starting with B, so a
+        // modcheck chain that reads six cases does not pay for 325+ (validation.py _selftest_cases passes its names). No
+        // filter: everything runs, as before. A filter that selects nothing exits 3 (a misspelt name is not a green run).
+        private static string[] Only;
+        private static int FilteredOut;
+
+        internal static bool Selected(string name)
+        {
+            if (Only == null) return true;
+            foreach (var p in Only)
+                if (p.EndsWith("*") ? name.StartsWith(p.Substring(0, p.Length - 1), StringComparison.Ordinal) : name == p)
+                    return true;
+            return false;
+        }
+
         private static void Case(string name, Action fn)
         {
+            if (!Selected(name)) { FilteredOut++; return; }
             try
             {
                 fn();
@@ -88,6 +104,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static void FuzzCase(string name, Func<List<string>> run)
         {
+            if (!Selected(name)) { FilteredOut++; return; }
             long c0 = SequenceFuzz.Cases, s0 = SequenceFuzz.Steps;
             var clock = System.Diagnostics.Stopwatch.StartNew();
             Case(name, () =>
@@ -100,6 +117,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static void KernelCase(string name, Func<List<string>> run)
         {
+            if (!Selected(name)) { FilteredOut++; return; }
             long c0 = FlowKernelFuzz.Cases, p0 = FlowKernelFuzz.Pulses;
             var clock = System.Diagnostics.Stopwatch.StartNew();
             Case(name, () =>
@@ -126,6 +144,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         private static int Main(string[] args)
         {
+            int oi = Array.IndexOf(args, "--only");
+            if (oi >= 0)
+            {
+                if (oi + 1 >= args.Length) { Console.Error.WriteLine("--only needs a comma list of case names (a trailing * is a prefix)"); return 2; }
+                Only = args[oi + 1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var rest = new List<string>(args);
+                rest.RemoveRange(oi, 2);
+                args = rest.ToArray();
+            }
             // Differential mode: selftest_flowworks_kernel_oracle.py passes a scene file (stdin if none) and compares the
             // kernel's fill vectors with the Python PulseOracle (northstar/validation_v2.py).
             // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: the floor preview's data (lake_floor_preview.py renders it).
@@ -2190,7 +2217,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             // hose port (step 2): the hose suites moved from Gimme Some Slack's SelfTest, counted per assertion (HoseChecks.cs)
+            int hoseRan0 = hoseCounts.Count;
             int hoseFails = RunHoseSuites(args);
+            if (Only != null)
+            {
+                int hoseRan = hoseCounts.Count - hoseRan0;
+                Console.WriteLine($"--only {string.Join(",", Only)}: {Pass.Count + Fail.Count} case(s) and {hoseRan} hose suite(s) ran, {FilteredOut} filtered out");
+                if (Pass.Count + Fail.Count + hoseRan == 0) return 3;
+            }
             return Fail.Count == 0 && hoseFails == 0 ? 0 : 1;
         }
     }
