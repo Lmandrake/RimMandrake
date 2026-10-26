@@ -4,26 +4,17 @@
 
        NONCANON_BEAST_RENAME_1 batch 3d — the Slime. Owner ruled batch 3
        applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
-       noncanon_beast_names_crags_nightside_contagion_slime.md). Eleven donor
-       ThingDef+PawnKindDef pairs (9 Alpha Animals AA_, 2 Vanilla Genetics
-       Expanded GR_) get a label/description patch, on the
-       PatchOperationConditional gate pattern of RotSpecies_NamesAndSizes.xml.
-       Slime-law monosyllables (owner ruling 2026-09-24, rule 8) on the
-       gel-bodied residents: wuum, oomb (+greater/lesser), bezzul... no,
-       bezzul is a snail not a slime — see the source doc's rule 8 note.
+       noncanon_beast_names_crags_nightside_contagion_slime.md). Two Vanilla
+       Genetics Expanded GR_ ThingDef+PawnKindDef pairs get a label/description
+       patch, on the PatchOperationConditional gate pattern of
+       RotSpecies_NamesAndSizes.xml. The batch's nine Alpha Animals AA_ pairs
+       were deleted with the retired donor (ea19b46b37).
 
        LABEL ONLY on the identity; no defName, stat, or art field is touched.
 
-       Not drafted here: AA_Helixien (bileworm, Contagion batch — a slug, not
-       a slime, rule 8 does not take it). RM_Titanoslime — the doc records
-       this only as an OFFER ("if he wants it... otherwise it stands"), not a
-       ruling; left untouched pending his word. -->
-
-
-
-
-
-
+       Not drafted here: RM_Titanoslime — the doc records this only as an
+       OFFER ("if he wants it... otherwise it stands"), not a ruling; left
+       untouched pending his word. -->
 
 
   <!-- ============== GR_Chickenrabbit -> wuppik ============== -->

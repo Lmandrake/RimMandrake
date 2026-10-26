@@ -73,7 +73,7 @@
     <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: reskin of RM_RawMurrowbulb; only label, description, art (and taste thought text) differ. -->
     <defName>RSW_RawBloddle</defName>
     <label>bloddle</label>
-    <description>Raw bloddle. An aromatic root vegetable used in many culinary dishes for it's strong flavour.</description>
+    <description>Raw bloddle. An aromatic root vegetable used in many culinary dishes for its strong flavour.</description>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/Bloddle</texPath>
     </graphicData>
@@ -85,7 +85,7 @@
     <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: reskin of RM_RawCrimmelroot; only label, description, art (and taste thought text) differ. -->
     <defName>RSW_RawChakroot</defName>
     <label>chak-root</label>
-    <description>Raw chak-root. An aromatic root vegetable used in many culinary dishes for it's unique flavour.</description>
+    <description>Raw chak-root. An aromatic root vegetable used in many culinary dishes for its unique flavour.</description>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/Chakroot</texPath>
     </graphicData>
@@ -106,7 +106,7 @@
     <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE: reskin of RM_RawSalvessa; only label, description, art (and taste thought text) differ. -->
     <defName>RSW_RawNysyllin</defName>
     <label>nysyllin</label>
-    <description>Raw nysyllin pods plant. Can be refined into large quantities of primitive medicine.</description>
+    <description>Raw nysyllin pods. Can be refined into large quantities of primitive medicine.</description>
     <graphicData>
       <texPath>swresource/PlantFoodRaw/Nysyllin</texPath>
       <graphicClass>Graphic_Single</graphicClass>

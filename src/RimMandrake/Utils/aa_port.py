@@ -328,7 +328,6 @@ def build(donor_name, registry):
                     notes.append(f"{tag} {old} -> {new} (ART OWED, {nm})")
                     art.append((nm, tag, new, old))
                     tp.text = new
-    # a graphicData texPath inside a projectile ThingDef
     return out, notes, art
 
 

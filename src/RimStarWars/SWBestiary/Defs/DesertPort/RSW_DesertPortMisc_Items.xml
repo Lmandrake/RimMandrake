@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch reference closure: leather, meat and
-egg ThingDefs pulled in by the ported fauna in RSW_DesertPortMisc_Races.xml, so
-none of those defs dangle. Ported verbatim from Alpha Animals (Leather_Cactus,
-AA_CactusMeat, Leather_BlackChitin) and VFE - Insectoids 2 (VFEI2_Chitin),
-renamed RSW_. AA_CactusMeat's donor parent (AA_PlantFoodRawBase, an Alpha
-Animals abstract) is swapped for vanilla PlantFoodRawBase directly (CONFIRMED
-present in Core's Items_Resource_RawPlant.xml, same base RawFungus/RawPotatoes
-use) - its own overrides
-(foodType VegetableOrFruit, CompProperties_Rottable) are carried inline so the
-result is behaviourally identical, without porting the abstract chain.
+DESERT_FAMILY_PORT_EXECUTION_1 - MISC batch reference closure: the item defs the
+ported fauna in RSW_DesertPortMisc_Races.xml need, so none of them dangle. Only
+RSW_InsectChitin is left here (VFE - Insectoids 2's chitin, renamed RSW_; the
+leatherDef of RSW_Zhakka in RSW_DesertPortMisc_Races.xml). The cactus hide and
+meat moved to LeaningScrub (see the notes below); Alpha Animals' black chitin is
+RM_BlackChitin in LongShade (RM_LongShade_FaunaSupport.xml).
 -->
 <Defs>
 
