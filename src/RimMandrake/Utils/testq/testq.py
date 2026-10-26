@@ -9,7 +9,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
   testq.py resume --reason R         lift a lane pause (paused.json) once its cause is dealt with
   testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
-                                     of MOD was submitted in the last TESTQ_SWEEP_GAP_H (20) hours; the testq-sweep
+                                     of MOD was already submitted today (local calendar date); the testq-sweep
                                      timer runs it nightly at 01:30 local for each of TESTQ_SWEEP_MODS (FlowWorks)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
@@ -392,13 +392,12 @@ def sel_text(job):
 def cmd_sweep(a):
     """The design's sweep rotation, one mod per call: at most one --full per mod per day, overnight (the timer)."""
     ensure_dirs()
-    gap = float(os.environ.get("TESTQ_SWEEP_GAP_H", "20")) * 3600
-    now = time.time()
+    today = time.strftime("%Y-%m-%d")
     for st in STATES:
         for rec in records(st):
             job = job_of(rec)
             if job.get("mod") == a.mod and job.get("purpose") == "sweep" and (job.get("selector") or {}).get("full") \
-                    and now - S.parse_ts(job["submitted"]) < gap:
+                    and time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(job["submitted"]))) == today:
                 print("already: %s (%s, submitted %s)" % (job["id"], st, job["submitted"]))
                 return 0
     r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
