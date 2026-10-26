@@ -115,7 +115,15 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
         print(f"REFUSING: {path} does not exist.")
         return 1
 
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    # Only "\n" ends a ledger line (rimflow writes ensure_ascii=False, so a valid
+    # event may hold a raw U+2028/U+0085/form-feed that str.splitlines() would cut
+    # in two). Bytes in, bytes out: no newline translation either.
+    text = path.read_bytes().decode("utf-8")
+    lines = [l + "\n" for l in text.split("\n")]
+    if lines[-1] == "\n":
+        lines.pop()                      # text ended with "\n"
+    else:
+        lines[-1] = lines[-1][:-1]       # last line had no trailing newline
     bad = find_bad_lines(lines)
 
     if not bad:
@@ -169,10 +177,10 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
     backup_dir.mkdir(exist_ok=True, parents=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     backup_path = backup_dir / f"{path.name}.pre-repair-{stamp}.bak"
-    backup_path.write_text("".join(lines), encoding="utf-8")
+    backup_path.write_bytes("".join(lines).encode("utf-8"))
     print(f"Backed up pre-repair file ({len(lines)} lines) to {backup_path}")
 
-    path.write_text("".join(kept), encoding="utf-8")
+    path.write_bytes("".join(kept).encode("utf-8"))
     print(f"Wrote {len(kept)} lines to {path}.")
     print(f"\nAuthorization recorded here only: {owner_said!r}")
     print("Now commit deliberately -- see this script's module docstring for the recipe.")

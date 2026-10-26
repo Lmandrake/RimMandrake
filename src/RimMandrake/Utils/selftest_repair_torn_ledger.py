@@ -109,6 +109,17 @@ def main():
               str(rtl.LEDGER).replace("\\", "/").endswith(
                   "infrastructure/state/ledger/events.jsonl"))
 
+        # 9. rimflow writes ensure_ascii=False, so a valid event may hold a raw
+        #    U+2028 / U+0085 / form-feed. str.splitlines() splits there and the
+        #    repair would delete two halves of a GOOD event. Only "\n" ends a line.
+        p4 = tmp / "unicode.jsonl"
+        ev = json.dumps({"seat": "FOUNDRY", "id": "U", "text": "a\u2028b\x85c\x0cd"},
+                        ensure_ascii=False) + "\n"
+        p4.write_bytes((ev + "<<<<<<< x\n" + ev).encode("utf-8"))
+        rc = rtl.repair(p4, apply=True, owner_said="unicode test", backup_dir=tmp / "backups9")
+        check("raw U+2028 inside a valid event: both events survive",
+              p4.read_bytes() == (ev + ev).encode("utf-8"), repr(p4.read_bytes()[:80]))
+
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
