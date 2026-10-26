@@ -804,12 +804,19 @@ def b2_settings_dialog(s):
               dict(label=label, why=why, shot=shot, textChars=len(texts)), "B2", eyes=not texts)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     before = s.sget("pitGuardrailEnabled")
+    if before is None:
+        # review fw4 (2026-10-26): an unread original was flipped and then "restored" to a guessed True, which could
+        # leave the player's setting changed. Unread -> nothing is flipped, nothing restored, and the row says so.
+        s.notes.append("B2: pitGuardrailEnabled unread; disk round trip skipped, setting left untouched")
+        s.row("B2_guardrail_disk_roundtrip", "FALL_GUARDRAILS_BUILD_REAL_OBJECT", "A2", "UNMEASURED", "HARNESS",
+              dict(before=None, why="pitGuardrailEnabled could not be read: not flipped, so no restore has to guess"), "B2")
+        return
     set_ok = (s.sset("pitGuardrailEnabled", False) or {}).get("success") is not False
     opened2 = s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True).get("success") is True
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     # a dialog that never opened never closes, so nothing is written: that is UNMEASURED, not a MOD fail (live 2026-10-19)
     disk = read_settings_file(s) if opened2 else None
-    s.sset("pitGuardrailEnabled", before if before is not None else True)
+    s.sset("pitGuardrailEnabled", before)
     s.call("rimworld/open_mod_settings", modId=settings_surface(s), replaceExisting=True)
     s.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     disk2 = read_settings_file(s)
@@ -1675,8 +1682,14 @@ def b6_flood(s):
     # open dug squares (rainFillsExcavationsEnabled, the mod's design, proven by its own rows), which this row is not
     # about. Rain fill off for the row (restored in finally); the changed squares keep their before/after values.
     rain_fill_was = s.sget("rainFillsExcavationsEnabled")
-    rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False and (
-        s.mock or str(s.sget("rainFillsExcavationsEnabled")).lower() == "false")    # read back, not the set's word
+    if rain_fill_was is None:
+        # review fw4 (2026-10-26): an unread original was later "restored" to a guessed True. Unread -> not switched
+        # off at all (rain_off False: a FAIL then reads UNMEASURED/SITE below), and nothing to restore.
+        s.notes.append("B6: rainFillsExcavationsEnabled unread; rain fill left as it was, not restored")
+        rain_off = False
+    else:
+        rain_off = (s.sset("rainFillsExcavationsEnabled", False) or {}).get("success") is not False and (
+            s.mock or str(s.sget("rainFillsExcavationsEnabled")).lower() == "false")    # read back, not the set's word
     ws = s.call("jawa/weather_set", weather=FLOOD_WEATHER, lockWeather=True)
     started = bool(ws.get("success")) and ws.get("after") == FLOOD_WEATHER
 
@@ -1717,7 +1730,8 @@ def b6_flood(s):
                 break
             s.advance(500)
             rain_end = rain_rate(s)
-        s.sset("rainFillsExcavationsEnabled", rain_fill_was if rain_fill_was is not None else True)
+        if rain_fill_was is not None:
+            s.sset("rainFillsExcavationsEnabled", rain_fill_was)
     st, cls, why = flood_verdict(started, reached, receded, before == after)
     if not s.mock and (not before or not after):       # {} == {} was "every canal square reads as before"
         st, cls, why = "UNMEASURED", "HARNESS", "the canal cells were unread (before %d, after %d)" % (len(before or {}), len(after or {}))

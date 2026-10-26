@@ -685,6 +685,33 @@ check(L.grenade_verdict([_tr(20.0, 20.0, False)] + [_tr(20.0, 20.0)] * (_n - 1),
       "grenade: one unread trial makes the row UNMEASURED")
 check("proof_hose.py" in L.PARK_EXEMPT, "proof_hose realflow keeps the map's colonists where they stand (it drives them)")
 
+# 8f. review fw4 (2026-10-26): a setting whose original could not be read is never flipped and never "restored" to a
+#     guessed True (B2 pitGuardrailEnabled, B6 rainFillsExcavationsEnabled); the skip is logged in notes.
+class UnreadSettingsSession(FakeEventSession):
+    _surface = "mod-settings:test"
+
+    def sget(self, f):
+        return None
+
+    def sset(self, f, v):
+        self.__dict__.setdefault("ssets", []).append((f, v))
+        return dict(success=True)
+
+
+g = FakeEventGame()
+s = UnreadSettingsSession(g)
+L.b6_flood(s)
+r = [x for x in g.rows if x["id"] == "B6_flood_canal_kept"][-1]
+check(not getattr(s, "ssets", []) and any("rainFillsExcavationsEnabled unread" in n for n in s.notes),
+      "can-fail B6: an unread rain-fill setting is neither switched off nor restored to a guess (ssets %s)" % getattr(s, "ssets", []))
+g = FakeEventGame()
+s = UnreadSettingsSession(g)
+L.b2_settings_dialog(s)
+r = [x for x in g.rows if x["id"] == "B2_guardrail_disk_roundtrip"][-1]
+check(not getattr(s, "ssets", []) and r["status"] == "UNMEASURED" and any("pitGuardrailEnabled unread" in n for n in s.notes),
+      "can-fail B2: an unread guardrail setting is not flipped, not restored to a guess, row UNMEASURED (ssets %s, %s)"
+      % (getattr(s, "ssets", []), r["status"]))
+
 # 9. --dry-run and --mock exit 0 offline
 for flag in ("--dry-run", "--mock"):
     d = tempfile.mkdtemp(prefix="ls_selftest_")
