@@ -25,8 +25,10 @@
 
   Reuses the Wyyyschokk's art rather than commissioning new art: our redraw,
   shipped in this mod at Textures/RimStarWars/Shokk/Wyyyschokk/ (folded in
-  from the retired standalone wyyyschokkartoverride, ART_OVERRIDE_FOLD_ALL_1);
-  Patches/ArtFold/Wyyyschokk_ArtFold.xml points the donor's own Wyyyschokk at it too.
+  from the retired standalone wyyyschokkartoverride, ART_OVERRIDE_FOLD_ALL_1).
+  This patch is the only thing that draws it: the donor patch that pointed
+  mlie.starwarsanimalcollection's own Wyyyschokk at it was deleted with that
+  donor's retirement (ARTFOLD_DELETE_PATCHES_RETIRED_SWAC_DONOR).
 
   UPDATE, SHOKK_SKIN_SHRINK_1 (2026-09-26): the mechanism move this file's
   own header once deferred is DONE — RM_Ollathrix now carries the mouth-loom

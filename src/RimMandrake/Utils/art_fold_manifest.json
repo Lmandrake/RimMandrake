@@ -1,5 +1,5 @@
 {
- "about": "ART_OVERRIDE_FOLD_ALL_1: one row per creature whose standalone *ArtOverride mod was folded into its owner mod. Read by art_fold_check.py. mode: (absent)=art moved/redirected, samepath=owner ships the same bytes at the donor path, dead=nothing binds the art; kept says where the bytes survive. A group's donor_literal false: our own def draws `new` directly (edited in place, or an RSW_ port of a retired donor -- Silooth and Tauntaun since mlie.starwarsanimalcollection retired, 3265277e01 / 9767b6a4cd), so no patch and no donor literal is expected.",
+ "about": "ART_OVERRIDE_FOLD_ALL_1: one row per creature whose standalone *ArtOverride mod was folded into its owner mod. Read by art_fold_check.py. mode: (absent)=art moved/redirected, samepath=owner ships the same bytes at the donor path, dead=nothing binds the art; kept says where the bytes survive. A group's donor_literal false: our own def draws `new` directly (edited in place, or an RSW_ port of a retired donor -- Silooth and Tauntaun since mlie.starwarsanimalcollection retired, 3265277e01 / 9767b6a4cd; 23 more SWAC rows when their value-matched *_ArtFold.xml patches were deleted, ARTFOLD_DELETE_PATCHES_RETIRED_SWAC_DONOR), so no patch and no donor literal is expected. Anooba and Mynock keep their SWAC patch: no def of ours draws Anooba_m or SWBestiary/Mynock/Mynock.",
  "rows": [
   {
    "creature": "Silooth",
@@ -174,15 +174,16 @@
    "groups": [
     {
      "old": "swanimals/Dewback/Dewback",
-     "new": "RimStarWars/SWBestiary/Dewback/Dewback"
+     "new": "RimStarWars/SWBestiary/Dewback/Dewback",
+     "donor_literal": false
     },
     {
      "old": "swanimals/Dewback/DewbackW",
-     "new": "RimStarWars/SWBestiary/Dewback/Dewback"
+     "new": "RimStarWars/SWBestiary/Dewback/Dewback",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Dewback_ArtFold.xml",
    "unlisted_files": 43
   },
   {
@@ -194,11 +195,11 @@
    "groups": [
     {
      "old": "swanimals/Dragonsnake/Dragonsnake",
-     "new": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A"
+     "new": "RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Dragonsnake_ArtFold.xml",
    "unlisted_files": 46
   },
   {
@@ -210,11 +211,11 @@
    "groups": [
     {
      "old": "swanimals/Fambaa/Fambaa",
-     "new": "RimStarWars/SWBestiary/Fambaa/Fambaa"
+     "new": "RimStarWars/SWBestiary/Fambaa/Fambaa",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Fambaa_ArtFold.xml",
    "unlisted_files": 46
   },
   {
@@ -226,15 +227,16 @@
    "groups": [
     {
      "old": "swanimals/Gizka/Gizka",
-     "new": "RimStarWars/SWBestiary/Gizka/Gizka"
+     "new": "RimStarWars/SWBestiary/Gizka/Gizka",
+     "donor_literal": false
     },
     {
      "old": "swanimals/Gizka/GizkaW",
-     "new": "RimStarWars/SWBestiary/Gizka/GizkaW"
+     "new": "RimStarWars/SWBestiary/Gizka/GizkaW",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Gizka_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -246,11 +248,11 @@
    "groups": [
     {
      "old": "swanimals/Grank/Grank",
-     "new": "RimStarWars/SWBestiary/Grank/Grank"
+     "new": "RimStarWars/SWBestiary/Grank/Grank",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Grank_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -262,11 +264,11 @@
    "groups": [
     {
      "old": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-     "new": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon"
+     "new": "RimStarWars/SWBestiary/GreaterKraytDragon/GreaterKraytDragon",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/GreaterKraytDragon_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -278,11 +280,11 @@
    "groups": [
     {
      "old": "swanimals/Gualaar/Gualaar",
-     "new": "RimStarWars/SWBestiary/Gualaar/Gualaar"
+     "new": "RimStarWars/SWBestiary/Gualaar/Gualaar",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Gualaar_ArtFold.xml",
    "unlisted_files": 0
   },
   {
@@ -294,15 +296,16 @@
    "groups": [
     {
      "old": "swanimals/Hawkbat/Hawkbat",
-     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat"
+     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat",
+     "donor_literal": false
     },
     {
      "old": "swanimals/Hawkbat/Hawkbat_j",
-     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat_j"
+     "new": "RimStarWars/SWBestiary/Hawkbat/Hawkbat_j",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Hawkbat_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -314,11 +317,11 @@
    "groups": [
     {
      "old": "swanimals/Horax/Horax",
-     "new": "RimStarWars/SWBestiary/Horax/Horax"
+     "new": "RimStarWars/SWBestiary/Horax/Horax",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Horax_ArtFold.xml",
    "unlisted_files": 46
   },
   {
@@ -330,11 +333,11 @@
    "groups": [
     {
      "old": "swanimals/Insectomorph/Insectomorph",
-     "new": "RimStarWars/SWBestiary/Insectomorph/Insectomorph"
+     "new": "RimStarWars/SWBestiary/Insectomorph/Insectomorph",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Insectomorph_ArtFold.xml",
    "unlisted_files": 45
   },
   {
@@ -346,11 +349,11 @@
    "groups": [
     {
      "old": "swanimals/Kinrath/Kinrath",
-     "new": "RimStarWars/SWBestiary/Kinrath/Kinrath"
+     "new": "RimStarWars/SWBestiary/Kinrath/Kinrath",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Kinrath_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -362,11 +365,11 @@
    "groups": [
     {
      "old": "swanimals/Kreetle/Kreetle",
-     "new": "RimStarWars/SWBestiary/Kreetle/Kreetle"
+     "new": "RimStarWars/SWBestiary/Kreetle/Kreetle",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Kreetle_ArtFold.xml",
    "unlisted_files": 46
   },
   {
@@ -394,15 +397,16 @@
    "groups": [
     {
      "old": "swanimals/Nuna/Nuna_f",
-     "new": "RimStarWars/SWBestiary/Nuna/Nuna_f"
+     "new": "RimStarWars/SWBestiary/Nuna/Nuna_f",
+     "donor_literal": false
     },
     {
      "old": "swanimals/Nuna/Nuna_m",
-     "new": "RimStarWars/SWBestiary/Nuna/Nuna_m"
+     "new": "RimStarWars/SWBestiary/Nuna/Nuna_m",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Nuna_ArtFold.xml",
    "unlisted_files": 35
   },
   {
@@ -414,11 +418,11 @@
    "groups": [
     {
      "old": "swanimals/Ollopom/Ollopom",
-     "new": "RimStarWars/SWBestiary/Ollopom/Ollopom"
+     "new": "RimStarWars/SWBestiary/Ollopom/Ollopom",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Ollopom_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -430,11 +434,11 @@
    "groups": [
     {
      "old": "swanimals/Orray/Orray",
-     "new": "RimStarWars/SWBestiary/Orray/Orray"
+     "new": "RimStarWars/SWBestiary/Orray/Orray",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Orray_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -446,15 +450,16 @@
    "groups": [
     {
      "old": "swanimals/PekoPeko/PekoPeko_f",
-     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_f"
+     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_f",
+     "donor_literal": false
     },
     {
      "old": "swanimals/PekoPeko/PekoPeko_m",
-     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m"
+     "new": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/PekoPeko_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -466,11 +471,11 @@
    "groups": [
     {
      "old": "swanimals/Ronto/Ronto",
-     "new": "RimStarWars/SWBestiary/Ronto/Ronto"
+     "new": "RimStarWars/SWBestiary/Ronto/Ronto",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Ronto_ArtFold.xml",
    "unlisted_files": 43
   },
   {
@@ -482,7 +487,8 @@
    "groups": [
     {
      "old": "swanimals/Shiro/Shiro",
-     "new": "RimStarWars/SWBestiary/Shiro/Shiro"
+     "new": "RimStarWars/SWBestiary/Shiro/Shiro",
+     "donor_literal": false
     },
     {
      "old": "swanimals/Shiro/ShiroB",
@@ -491,7 +497,6 @@
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Shiro_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -503,11 +508,11 @@
    "groups": [
     {
      "old": "swanimals/Vornskyr/Vornskyr",
-     "new": "RimStarWars/SWBestiary/Vornskyr/Vornskyr"
+     "new": "RimStarWars/SWBestiary/Vornskyr/Vornskyr",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Vornskyr_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -519,11 +524,11 @@
    "groups": [
     {
      "old": "swanimals/Whisperbird/Whisperbird",
-     "new": "RimStarWars/SWBestiary/Whisperbird/Whisperbird"
+     "new": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Whisperbird_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -535,11 +540,11 @@
    "groups": [
     {
      "old": "swanimals/Zakkeg/Zakkeg",
-     "new": "RimStarWars/SWBestiary/Zakkeg/Zakkeg"
+     "new": "RimStarWars/SWBestiary/Zakkeg/Zakkeg",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Zakkeg_ArtFold.xml",
    "unlisted_files": 46
   },
   {
@@ -551,11 +556,11 @@
    "groups": [
     {
      "old": "swanimals/Zeer/Zeer",
-     "new": "RimStarWars/SWBestiary/Zeer/Zeer"
+     "new": "RimStarWars/SWBestiary/Zeer/Zeer",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/ArtFold/Zeer_ArtFold.xml",
    "unlisted_files": 36
   },
   {
@@ -567,11 +572,11 @@
    "groups": [
     {
      "old": "swanimals/Wyyyschokk/Wyyyschokk",
-     "new": "RimStarWars/Shokk/Wyyyschokk/Wyyyschokk"
+     "new": "RimStarWars/Shokk/Wyyyschokk/Wyyyschokk",
+     "donor_literal": false
     }
    ],
    "owner": "src/RimStarWars/Shokk",
-   "patch": "Patches/ArtFold/Wyyyschokk_ArtFold.xml",
    "unlisted_files": 36
   },
   {
