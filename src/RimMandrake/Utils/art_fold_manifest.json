@@ -1,5 +1,5 @@
 {
- "about": "ART_OVERRIDE_FOLD_ALL_1: one row per creature whose standalone *ArtOverride mod was folded into its owner mod. Read by art_fold_check.py. mode: (absent)=art moved/redirected, samepath=owner ships the same bytes at the donor path, dead=nothing binds the art; kept says where the bytes survive.",
+ "about": "ART_OVERRIDE_FOLD_ALL_1: one row per creature whose standalone *ArtOverride mod was folded into its owner mod. Read by art_fold_check.py. mode: (absent)=art moved/redirected, samepath=owner ships the same bytes at the donor path, dead=nothing binds the art; kept says where the bytes survive. A group's donor_literal false: our own def draws `new` directly (edited in place, or an RSW_ port of a retired donor -- Silooth and Tauntaun since mlie.starwarsanimalcollection retired, 3265277e01 / 9767b6a4cd), so no patch and no donor literal is expected.",
  "rows": [
   {
    "creature": "Silooth",
@@ -7,11 +7,11 @@
    "packageId": "mandrake.rsw.siloothartoverride",
    "donor": "mlie.starwarsanimalcollection",
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/Silooth/Silooth_Warbeast.xml",
    "groups": [
     {
      "old": "swanimals/Silooth/Silooth",
-     "new": "RimStarWars/SWBestiary/Silooth/Silooth"
+     "new": "RimStarWars/SWBestiary/Silooth/Silooth",
+     "donor_literal": false
     }
    ]
   },
@@ -901,12 +901,12 @@
    "groups": [
     {
      "old": "swanimals/Tauntaun/Tauntaun",
-     "new": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
+     "new": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+     "donor_literal": false
     }
    ],
    "mode": "canon-patch",
    "owner": "src/RimStarWars/SWBestiary",
-   "patch": "Patches/Tauntaun_CanonArt.xml",
    "unlisted_files": 0
   }
  ]
