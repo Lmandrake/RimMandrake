@@ -187,7 +187,11 @@ def item_path(iid, for_write=False):
 
 # BENCH and FOUNDRY are the live windows (redesign #4, 2026-08-27). The four retired
 # seats stay listed so the ledger's history replays and legacy items keep their owners.
-SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP")
+# RUNNER (2026-10-25, owner by card: "a new RUNNER record of its own") is no window: the
+# test queue's dispatcher writes it from its own clone (~/rm/dispatch) to record what a
+# SteveDesktop run measured. It may emit RUNNER_VERBS only - see `_who_refusal`.
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER")
+RUNNER_VERBS = ("verify", "finding", "note")
 
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
@@ -1636,6 +1640,12 @@ def _who_refusal(ev, item):
     exempt him, and `reassign` did not — see `_may`.
     """
     verb, seat = ev["event"], ev["seat"]
+    # RUNNER records what a queued test run measured, on whichever seat's item the run was
+    # FOR (a run is an immutable fact, like a criterion run from any seat), and nothing
+    # else: it never claims, closes, files or drives anything.
+    # Every other RUNNER verb was refused in `_apply`, above `file`.
+    if seat == "RUNNER":
+        return None
     # 🔴 `played` IS THE ONE EXPENSIVE RUNG, ENTERED ONLY BY OWNER DECISION —
     # PROJECT_MATURITY_DASHBOARD_1's ruling, in deliberate batches
     # (MINIMAL_LIST_MOD_RETROSPECTIVE_1), never demanded at check-in. `validated`
@@ -2248,6 +2258,9 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     iid = ev.get("id")
     item = world.items.get(iid) if iid else None
 
+    if seat == "RUNNER" and verb not in RUNNER_VERBS:      # above `file`, which `_may` never sees
+        raise PermissionError_("RUNNER records test runs only (%s); `%s` is a window's verb."
+                               % (", ".join(RUNNER_VERBS), verb))
     if verb == "file":
         _apply_file(ev, index, world)
         return
