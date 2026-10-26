@@ -88,13 +88,9 @@
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
    "owner": "src/RimMandrake/TheRot",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
-     "new": "Things/Pawn/Animal/RM_Agaripod/RM_Agaripod"
-    }
-   ],
-   "patch": "Patches/ArtFold/Agaripod_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Agaripod/RM_Agaripod_south.png",
+   "groups": [],
    "unlisted_files": 44
   },
   {
@@ -104,13 +100,9 @@
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
    "owner": "src/RimMandrake/Miasma",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
-     "new": "Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake"
-    }
-   ],
-   "patch": "Patches/ArtFold/DecayDrake_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake_south.png",
+   "groups": [],
    "unlisted_files": 1
   },
   {
@@ -120,13 +112,9 @@
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
    "owner": "src/RimMandrake/Miasma",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
-     "new": "Things/Pawn/Animal/RM_Thermadon/RM_Thermadon"
-    }
-   ],
-   "patch": "Patches/ArtFold/Thermadon_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Thermadon/RM_Thermadon_south.png",
+   "groups": [],
    "unlisted_files": 44
   },
   {
@@ -152,13 +140,9 @@
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
    "owner": "src/RimMandrake/Scarlands",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
-     "new": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
-    }
-   ],
-   "patch": "Patches/ArtFold/Helixien_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimMandrake/Scarlands/Textures/Things/Pawn/Animal/RM_Bileworm/RM_Bileworm_south.png",
+   "groups": [],
    "unlisted_files": 1
   },
   {
@@ -596,22 +580,10 @@
    "packageId": "mandrake.rsw.lockjawartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw2",
-     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3",
-     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Lockjaw_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2_south.png",
+   "groups": [],
    "unlisted_files": 45
   },
   {
@@ -668,22 +640,10 @@
    "packageId": "mandrake.rut.bloodshrimpartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
-     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2",
-     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp3",
-     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/BloodShrimp_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -692,14 +652,10 @@
    "packageId": "mandrake.rut.bumbledroneartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone",
-     "new": "RimUtinni/UtinniPatches/Bumbledrone/AA_Bumbledrone"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Bumbledrone_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/Bumbledrone/AA_Bumbledrone_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -708,14 +664,10 @@
    "packageId": "mandrake.rut.bumbledronehierophantartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Bumbledrone/AA_BumbledroneHierophant",
-     "new": "RimUtinni/UtinniPatches/BumbledroneHierophant/AA_BumbledroneHierophant"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/BumbledroneHierophant_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/BumbledroneHierophant/AA_BumbledroneHierophant_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -780,14 +732,10 @@
    "packageId": "mandrake.rut.greengooartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo",
-     "new": "RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/GreenGoo_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -828,14 +776,10 @@
    "packageId": "mandrake.rut.ocularjellyartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
-     "new": "RimUtinni/UtinniPatches/OcularJelly/AA_OcularJelly"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/OcularJelly_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/OcularJelly/AA_OcularJelly_south.png",
+   "groups": [],
    "unlisted_files": 0
   },
   {
@@ -844,14 +788,10 @@
    "packageId": "mandrake.rut.plasmorphartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
-     "new": "RimUtinni/UtinniPatches/Plasmorph/AA_Plasmorph"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Plasmorph_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/Plasmorph/AA_Plasmorph_south.png",
+   "groups": [],
    "unlisted_files": 0
   },
   {
@@ -860,22 +800,10 @@
    "packageId": "mandrake.rut.raptorshrimpartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
-     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
-     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
-    },
-    {
-     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3",
-     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/RaptorShrimp_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -884,14 +812,10 @@
    "packageId": "mandrake.rut.shadowchargerartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
-     "new": "RimUtinni/UtinniPatches/ShadowCharger/AA_ShadowCharger"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/ShadowCharger_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/ShadowCharger/AA_ShadowCharger_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -928,14 +852,10 @@
    "packageId": "mandrake.rut.targuzzlerartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler",
-     "new": "RimUtinni/UtinniPatches/TarGuzzler/AA_TarGuzzler"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/TarGuzzler_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/TarGuzzler/AA_TarGuzzler_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -944,14 +864,10 @@
    "packageId": "mandrake.rut.terramorphartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Terramorph/AA_Terramorph",
-     "new": "RimUtinni/UtinniPatches/Terramorph/AA_Terramorph"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Terramorph_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/Terramorph/AA_Terramorph_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {
@@ -960,14 +876,10 @@
    "packageId": "mandrake.rut.thunderoxartoverride",
    "donor": "sarg.alphaanimals",
    "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856",
-   "groups": [
-    {
-     "old": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male",
-     "new": "RimUtinni/UtinniPatches/Thunderox/AA_Thunderox_male"
-    }
-   ],
    "owner": "src/RimUtinni/UtinniPatches",
-   "patch": "Patches/ArtFold/Thunderox_ArtFold.xml",
+   "mode": "dead",
+   "kept": "src/RimUtinni/UtinniPatches/Textures/RimUtinni/UtinniPatches/Thunderox/AA_Thunderox_male_south.png",
+   "groups": [],
    "unlisted_files": 36
   },
   {

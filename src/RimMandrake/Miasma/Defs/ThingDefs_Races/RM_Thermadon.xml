@@ -20,8 +20,7 @@
   donor's icon, fireball texture and cast sound swapped for vanilla ones (Biotech fire-spew
   icon, the incendiary launcher's shot texture and sound).
 
-  ART: ours, installed into this mod through the art ledger at Things/Pawn/Animal/RM_Thermadon/;
-  the donor AA_Thermadon is pointed at the same picture by Patches/ArtFold/Thermadon_ArtFold.xml.
+  ART: ours, installed into this mod through the art ledger at Things/Pawn/Animal/RM_Thermadon/.
   Dessicated body: vanilla megaspider (the donor's own was donor art).
 -->
 <Defs>
