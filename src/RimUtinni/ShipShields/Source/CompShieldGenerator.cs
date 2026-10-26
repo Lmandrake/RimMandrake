@@ -121,6 +121,15 @@ namespace RimMandrake.Utinni.ShipShields
             }
         }
 
+        // Vanilla's other shutdown cause (a destroyed lord) sets the same flag. If it lands while this comp
+        // holds an unpowered shutdown, the flag now belongs to the lord: forget ours so power returning
+        // does not undo it.
+        public override void Notify_LordDestroyed()
+        {
+            base.Notify_LordDestroyed();
+            unpoweredShutDown = false;
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
