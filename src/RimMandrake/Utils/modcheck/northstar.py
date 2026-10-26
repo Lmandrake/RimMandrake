@@ -145,7 +145,8 @@ def _canonical(lines):
     for line in lines:
         stripped = line.rstrip()
         low = stripped.strip().lower()
-        if low.startswith("state:") or low.startswith("validated-hash:"):
+        if (low.startswith("state:") or low.startswith("validated-hash:")
+                or low.startswith("validated-by:")):
             continue
         # A blank line is not a claim, so no arrangement of them can change
         # what he validated. Dropping them outright (rather than collapsing
@@ -253,13 +254,18 @@ def kinds_for(path):
     return dict(ns["kinds"]) if ns["state"] == VALIDATED else {}
 
 
-def record_validation(path):
+def record_validation(path, owner_said=None):
     """Write `state: VALIDATED` and the current hash into the walk file.
 
     OWNER-AUTHORISED ONLY -- the caller is responsible for having his word; this
     function does not check, exactly as `code_review_status.py mark-clean` does
     not re-review the file. Returns the hash written.
+
+    OWNER_SAID (his verbatim words, or `BY CARD: ...`) is persisted as a
+    `validated-by:` header line in the section, outside the hash like `state:`,
+    so the provenance outlives the terminal (MODCHECK_VALIDATE_FIX_OWNER_WORDS_DROPPED).
     """
+    by = " ".join(str(owner_said).split()) if owner_said else ""
     with open(path, "r", encoding="utf-8") as fh:
         text = fh.read()
     lines = _section_lines(text)
@@ -284,6 +290,13 @@ def record_validation(path):
             if low.startswith("validated-hash:") and not done_hash:
                 out.append("validated-hash: %s" % new_hash)
                 done_hash = True
+                if by:
+                    out.append("validated-by: %s" % by)
+                continue
+            if low.startswith("validated-by:"):
+                if by:
+                    continue            # replaced by the line written after validated-hash
+                out.append(line)        # no words given: leave the earlier provenance alone
                 continue
         out.append(line)
 

@@ -500,7 +500,7 @@ def _validate(mod, owner_said):
               "--owner-said \"<his verbatim words>\".")
         return 1
 
-    written = northstar.record_validation(walk)
+    written = northstar.record_validation(walk, owner_said)
     print("\nVALIDATED at %s\n  owner said: %s" % (written[:12], owner_said))
     print("  %d must-show + %d cannot-show lines now bind %s."
           % (len(ns["must_show"]), len(ns["cannot_show"]), mod))

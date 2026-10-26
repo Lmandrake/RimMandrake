@@ -130,6 +130,37 @@ def test_zero_bar_section_cannot_be_validated():
            "being refused instead of silently greening")
 
 
+
+def test_validate_persists_the_owner_words():
+    print("--- validate --owner-said is recorded in the walk, outside the hash ---")
+    import contextlib
+    import io
+
+    import cli
+
+    with tempfile.TemporaryDirectory() as tmp:
+        d = os.path.join(tmp, "design", "validation_walks", "RimMandrake")
+        os.makedirs(d)
+        p = os.path.join(d, "Said.md")
+        with open(p, "w", encoding="utf-8") as fh:
+            fh.write("# Said\n\n## north star\nstate: DRAFT\nvalidated-hash:\n\n"
+                     "### must show\n- [ ] `a_bar` -- something visible\n")
+        real = northstar.find_walk
+        northstar.find_walk = lambda root, mod: p
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = cli._validate("Said", "yes, these bars are right")
+        finally:
+            northstar.find_walk = real
+        text = open(p, encoding="utf-8").read()
+        ok(rc == 0 and northstar.parse(p)["state"] == northstar.VALIDATED, "validated")
+        ok("validated-by: yes, these bars are right" in text,
+           "his words are written into the walk file, not only printed")
+        ok(northstar.parse(p)["state"] == northstar.VALIDATED
+           and northstar.record_validation(p, "again") == northstar.parse(p)["current_hash"],
+           "the words sit outside the hash: re-recording does not change it")
+        ok(text.count("validated-by:") == 1, "one line")
+
 # ------------------------------------------------------ the validation gate
 def test_validation_and_tamper_reversion():
     print("--- validating records a hash; ANY later edit reverts to DRAFT ---")
@@ -536,6 +567,7 @@ def main():
     for t in (test_parse_and_ids,
               test_missing_section_is_todays_behaviour,
               test_zero_bar_section_cannot_be_validated,
+              test_validate_persists_the_owner_words,
               test_validation_and_tamper_reversion,
               test_declared_validated_without_hash_is_draft,
               test_whitespace_reflow_does_not_invalidate,
