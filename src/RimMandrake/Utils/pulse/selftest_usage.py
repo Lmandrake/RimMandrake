@@ -134,6 +134,11 @@ def main():
     check("the codex line says it is as of its last session", t6[-1].startswith("GPT (codex prolite): 3% of the week used")
           and "as of its last session" in t6[-1], t6[-1])
 
+    # a reading from before its window reset says nothing about now: unknown, never the old percent
+    t7 = [ln for ln in usage.lines(p6, NOW + 6 * DAY)]
+    check("a reading older than its reset reads unknown", t7[1]["text"].startswith("own_b: unknown (the week reset")
+          and t7[1]["claim"] == {"type": "unknown"} and t7[-1]["text"].startswith("GPT (codex prolite): unknown (the week reset"), [x["text"] for x in t7])
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 

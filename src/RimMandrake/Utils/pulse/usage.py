@@ -85,13 +85,20 @@ def _window(body: dict, key: str) -> dict | None:
     return {"pct": round(float(w["utilization"]), 1), "resets_at": _epoch(w.get("resets_at"))}
 
 
+def _mtime(p: str) -> float:
+    try:
+        return os.path.getmtime(p)
+    except OSError:      # a rollout codex removed between the glob and the stat
+        return 0.0
+
+
 def read_codex(dirs: list[str], now: float) -> dict | None:
     """The last `rate_limits` codex wrote, from its newest rollouts (a session that hit no model call has
     none, so look back a few files). Measured as of that record's own timestamp."""
     files = []
     for d in dirs:
         files += glob.glob(os.path.join(os.path.expanduser(d), "*", "*", "*", "rollout-*.jsonl"))
-    for f in sorted(files, key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0, reverse=True)[:6]:
+    for f in sorted(files, key=_mtime, reverse=True)[:6]:
         try:
             with open(f, "rb") as fh:
                 fh.seek(max(0, os.path.getsize(f) - (4 << 20)))
@@ -111,7 +118,7 @@ def read_codex(dirs: list[str], now: float) -> dict | None:
                 continue
             return {"name": "codex", "pct": round(float(p["used_percent"]), 1), "resets_at": p.get("resets_at"),
                     "window_min": p.get("window_minutes"), "plan": rl.get("plan_type"),
-                    "measured_at": _epoch(d.get("timestamp")) or os.path.getmtime(f)}
+                    "measured_at": _epoch(d.get("timestamp")) or _mtime(f)}
     return None
 
 
@@ -197,6 +204,14 @@ def _asof(r: dict, now: float) -> str:
         f" - as of {time.strftime('%a %H:%M', time.localtime(r['measured_at']))}, {r['why'] or 'not re-read'} since"
 
 
+def _reset_since(r: dict, now: float) -> str:
+    """A reading taken before its window reset says nothing about the window now: the line reads unknown."""
+    ra, ma = r.get("resets_at"), r.get("measured_at")
+    if ra and ma and ma < ra <= now:
+        return f"the week reset {time.strftime('%a %H:%M', time.localtime(ra))}, after the last reading"
+    return ""
+
+
 def lines(p: dict | None, now: float) -> list[dict]:
     """[{text, claim}] for the brief/digest. A share or a pace is arithmetic on a measured figure and says
     so; a missing figure is the word "unknown", never 0."""
@@ -206,8 +221,8 @@ def lines(p: dict | None, now: float) -> list[dict]:
     owned = [r for r in p["accounts"] if r["role"] == "owned"]
     ev = float(p.get("evening_share") or 0)
     for r in owned:
-        if r["pct"] is None:
-            out.append({"text": f"{r['name']}: unknown ({r['why'] or 'no reading'})", "claim": {"type": "unknown"}})
+        if r["pct"] is None or _reset_since(r, now):
+            out.append({"text": f"{r['name']}: unknown ({_reset_since(r, now) or r['why'] or 'no reading'})", "claim": {"type": "unknown"}})
             continue
         left = max(0.0, 100 - r["pct"])
         days = max(0.5, ((r["resets_at"] or now) - now) / 86400)
@@ -216,12 +231,12 @@ def lines(p: dict | None, now: float) -> list[dict]:
                             f"{left:.0f}% left ≈ {share:.0f}%/day, of it {share * ev:.0f}% kept for the evening"
                             + _asof(r, now),
                     "claim": {"type": "usage", "name": r["name"], "pct": r["pct"], "measured_at": r["measured_at"]}})
-    known = [r for r in owned if r["pct"] is not None]
+    known = [r for r in owned if r["pct"] is not None and not _reset_since(r, now)]
     spent = bool(owned) and len(known) == len(owned) and all(r["pct"] >= DEPLETED for r in known)
     for r in (x for x in p["accounts"] if x["role"] == "spare"):
         cap = 100 * float(r["cap"] or 0)
-        if r["pct"] is None:
-            out.append({"text": f"{r['name']} (spare): unknown ({r['why'] or 'no reading'})", "claim": {"type": "unknown"}})
+        if r["pct"] is None or _reset_since(r, now):
+            out.append({"text": f"{r['name']} (spare): unknown ({_reset_since(r, now) or r['why'] or 'no reading'})", "claim": {"type": "unknown"}})
             continue
         verdict = (f"past the ~{cap:.0f}% line we may use" if r["pct"] >= cap
                    else "not for us yet: the owned accounts are not spent" if not spent
@@ -230,7 +245,10 @@ def lines(p: dict | None, now: float) -> list[dict]:
                             f"{_when(r['resets_at'], now)}; {verdict}" + _asof(r, now),
                     "claim": {"type": "usage", "name": r["name"], "pct": r["pct"], "measured_at": r["measured_at"]}})
     cx = p.get("codex")
-    if cx:
+    if cx and _reset_since(cx, now):
+        out.append({"text": f"GPT (codex{' ' + cx['plan'] if cx.get('plan') else ''}): unknown ({_reset_since(cx, now)})",
+                    "claim": {"type": "unknown"}})
+    elif cx:
         out.append({"text": f"GPT (codex{' ' + cx['plan'] if cx.get('plan') else ''}): {cx['pct']:.0f}% of the week used, "
                             f"resets {_when(cx.get('resets_at'), now)} - as of its last session "
                             f"{time.strftime('%a %H:%M', time.localtime(cx['measured_at']))}",
