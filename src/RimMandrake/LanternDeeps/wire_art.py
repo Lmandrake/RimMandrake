@@ -6,7 +6,7 @@ decisions JSON (the review-sheets skill's format) and copies only PNGs marked
 "keep" from infrastructure/artpipe/_artsrc/<job_id>/<job_id>.png to the def
 texPath locations under this mod's Textures/ folder.
 
-Decisions file schema (matches build_art_sheet.py's output):
+Decisions file schema (the review-sheet decisions format):
 {
   "sheet": "deeps_art_review_2026-09-18",
   "posture": "whitelist",          # undecided rows are stripped, not kept

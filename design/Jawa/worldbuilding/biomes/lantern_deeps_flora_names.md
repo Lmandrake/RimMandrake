@@ -187,7 +187,7 @@ stays in the background veins only. Sizes match the dulcis set so `drawSize` and
 texPath folder shape are unchanged.
 
 `wire_art.py` gains four rows in place of the three `dulcis*` rows and `dulciscropitem_v1`;
-`build_art_sheet.py` the same; ART_JOBS.md rows 12 and 18/18b/18c are rewritten, not
+ART_JOBS.md rows 12 and 18/18b/18c are rewritten, not
 appended.
 
 ## Alternates
@@ -239,8 +239,7 @@ For every label+defName change (ten plants; mycelium untouched), in this order:
 5. **`wire_art.py`** — the job-id → texPath table (lines 80–119 cover the flora); the ids
    are the artpipe's and the **paths** are ours, so only the right-hand side changes for a
    rename, and the `dulcis*` / `dulciscropitem_v1` rows are replaced by the four puffer
-   ids. **`build_art_sheet.py`** lines 61–80+ mirror the same ids with a texPath fragment
-   and caption; same edit. **`tint_organics.py`** names YumBulbs once (docstring) —
+   ids. **`tint_organics.py`** names YumBulbs once (docstring) —
    the amber-exclusion is by hue, not by name, so nothing functional changes.
 6. **`validation.py`** — **0 hits** on any flora name; nothing to do there unless a
    must-show bar is added.
@@ -275,7 +274,7 @@ For every label+defName change (ten plants; mycelium untouched), in this order:
 
 | name | files | of which artpipe history (done/ json+manifest, registry, throughput, status) | live sites to edit |
 |---|---|---|---|
-| Crystalcap | 12 | 6 | DeepFlora.xml, biome def, GenStep_DeepFloraGate.cs, ART_JOBS.md, wire_art.py, build_art_sheet.py |
+| Crystalcap | 12 | 6 | DeepFlora.xml, biome def, GenStep_DeepFloraGate.cs, ART_JOBS.md, wire_art.py |
 | CrystaltipBrambles | 11 | 6 | same six |
 | Arpeau | 11 | 8 | same six + DeepFloraPlanter.cs (comment) |
 | Dulcis | 11 | 10 | same six + About.xml, RUT_LanternstoneItems.xml, EXPECTED_FAILURES |

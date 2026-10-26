@@ -20,8 +20,7 @@
   carry RM_CompProperties_EmergentSpawnOnDestroy (base 3%), which counts a
   Deconstruct as a harvest and never fires on a combat kill.
 
-  Art: placeholder flat-fills (art/Structures/gen_webwork_structures_placeholder.py);
-  real art is queued in artpipe. HP/fillPercent/pathCost/yields are invented
+  Art: placeholder flat-fills for Anchor/Gutter; real art is queued in artpipe. HP/fillPercent/pathCost/yields are invented
   first values for the live-balance pass.
   ============================================================================
 -->

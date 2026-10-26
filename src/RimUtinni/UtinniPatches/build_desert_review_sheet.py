@@ -16,8 +16,7 @@ until [those defs] exist". A verdict sheet reviews roster entries that
 already exist; this biome has none yet, so it needs AUTHORING, not a verdict
 pass (tracked as its own item, filed separately).
 
-Unlike RotSporeKit's build_review_sheet.py and LanternDeeps's
-build_species_sheet.py (both hand-literal Python tables), THIS generator is
+Unlike RotSporeKit's build_review_sheet.py (a hand-literal Python table), THIS generator is
 fully DATA-DRIVEN: every row is parsed straight from the three BiomeDef XML
 files with xml.etree.ElementTree (never string/regex matching — see the <li>
 and descriptionHyperlinks traps in CLAUDE.md), and every def's label,

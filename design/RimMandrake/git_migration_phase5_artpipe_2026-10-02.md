@@ -44,7 +44,7 @@ follow-up: a periodic snapshot of `registry.jsonl` somewhere durable (not filed 
 
 - artpipe package: `artpiped.py`, `fill_queue.py`, `artreg.py`, `console.py`,
   `build_flora_legibility_sheet.py` — all read `common.*`.
-- `src/RimMandrake/LanternDeeps/{wire_art,build_art_sheet,build_species_sheet}.py` — hardcoded
+- `src/RimMandrake/LanternDeeps/wire_art.py` — hardcoded
   `REPO_ROOT/infrastructure/artpipe/{_artsrc,done,failed}`.
 - `infrastructure/dashboards/hub/{regen_hub,hub_check,build_standalone}.py` — `art_status.json`.
 - Docs: `CLAUDE.md` ("Check for existing regenerated art", and the empty-dir trap line),

@@ -52,9 +52,7 @@
   fixes nothing) and does not chase the generator; it ships the same
   flat-colour placeholder convention this biome already uses for
   RM_Vaulm/RM_Ollareth/RM_Drommath/RM_Sekkulaath_Juvenile (128x128, fully
-  opaque RGBA, Graphic_Multi south/east/north — the placeholder script that
-  wrote them lives at Textures/Things/Pawn/Animal/RM_FeverWoodBirds/
-  make_placeholders.py in this same commit). Real bespoke art per the
+  opaque RGBA, Graphic_Multi south/east/north — those were flat fills; most have since been replaced by real art). Real bespoke art per the
   membranous/hairy/strange brief is owed to the standing art pipeline once
   the generator succeeds on these prompts.
 
