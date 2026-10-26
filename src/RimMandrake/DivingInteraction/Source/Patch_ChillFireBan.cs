@@ -76,7 +76,9 @@ namespace RimMandrake.DivingInteraction
     //    draw call outright on a banned cell.
     //
     // All of them route through RM_ChillFireGate.IsIgnitionAllowed, so the
-    // map-identity check (RM_TheChill AND IsPocketMap), the settings
+    // map-identity check (a Chill floor map: the hatch's RM_TheChill pocket
+    // map OR a seabed-layer map under a Chill surface tile — see
+    // RM_ChillFireGate.IsChillSeabedMap / RM_SeaFloorIdentity), the settings
     // toggles, the oxygenated-zone override and the self-oxidizing
     // (Fuselight) exemption all live in exactly one place.
     // ════════════════════════════════════════════════════════════════════

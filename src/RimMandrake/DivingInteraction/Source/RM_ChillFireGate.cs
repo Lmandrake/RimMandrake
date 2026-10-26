@@ -22,25 +22,24 @@ namespace RimMandrake.DivingInteraction
     //
     // Surface/shore maps (the Chill's own BiomeDef, RM_TheChill, is the
     // surface too) and every other biome are completely untouched — this
-    // gate only fires true-or-false for a specific MAP, and the surface
-    // Chill map never carries RM_SeaDiveGenerator_TheChill's identity.
-    // The pocket map IS the identity: RM_SeaDiveGenerator_TheChill's own
-    // pocketMapProperties.biome is RM_TheChill (RM_SeaDiveGenerators.xml),
-    // so the seabed pocket map's own Map.Biome.defName is ALSO
-    // "RM_TheChill" — same defName as the surface biome. That means a
-    // bare biome-defName check cannot tell surface from seabed by itself.
-    //
-    // What DOES distinguish them, read off the engine (PocketMapUtility /
-    // Game.cs, MEASURED against decompiled 1.6 source, same evidence base
-    // as RM_SeaDiveGenerators.xml's own destroyOnParentMapAbandoned
-    // comment, SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1): every pocket map's
-    // MapParent is a Building_MapPortal-owned PocketMapParent whose
-    // ParentedMap (the map that owns the portal back to the surface) is
-    // non-null, and `Map.IsPocketMap` is a real, distinct engine flag no
-    // ordinary overworld map carries. A surface Chill tile is a normal
-    // world-tile map (IsPocketMap == false); the seabed is always a
-    // pocket map (IsPocketMap == true). ⇒ the real identity check is
-    // "RM_TheChill biome AND IsPocketMap", not the biome alone.
+    // gate only fires true-or-false for a specific MAP, and only a Chill
+    // FLOOR map counts. There are two kinds of Chill floor map
+    // (SEABED_FLOOR_GENERATORS_1), and the gate covers both:
+    //   (1) the sea-dive hatch's pocket map: RM_SeaDiveGenerator_TheChill's
+    //       pocketMapProperties.biome is RM_TheChill (RM_SeaDiveGenerators.xml),
+    //       so that map's own Map.Biome.defName is "RM_TheChill" — the same
+    //       defName as the surface biome, which is why a bare biome check
+    //       cannot tell surface from floor. `Map.IsPocketMap` (a real engine
+    //       flag, MEASURED against decompiled 1.6 PocketMapUtility / Game.cs,
+    //       SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1) is what does: a surface
+    //       Chill tile is an ordinary world-tile map (IsPocketMap == false).
+    //   (2) a seabed-layer map: a world-tile map on the seabed planet layer
+    //       (not a pocket map) whose SURFACE tile above it is RM_TheChill.
+    // The identity is RM_SeaFloorIdentity.IsFloorOf(map, "RM_TheChill")
+    // (RM_SeabedSiteParent.cs): pocket map → its own biome; seabed-layer
+    // tile → the biome of the surface tile above; anything else → not a
+    // floor. Never "RM_TheChill biome AND IsPocketMap" alone — that misses
+    // every seabed-layer map.
     // ════════════════════════════════════════════════════════════════════
     public static class RM_ChillFireGate
     {
@@ -67,7 +66,10 @@ namespace RimMandrake.DivingInteraction
         /// pulls every unheated/underheated room toward it. No parallel
         /// MapComponent was built to duplicate this — it is already public,
         /// already live, and duplicating it would just be a second number
-        /// that can drift from the real one. CHILL_HEATED_SUIT_1 (or
+        /// that can drift from the real one. On a seabed-layer Chill floor map
+        /// (not a pocket map) there is no pocketMapProperties.temperature: the
+        /// method returns that map's own ordinary OutdoorTemp reading the same
+        /// way. CHILL_HEATED_SUIT_1 (or
         /// anything else that needs "how brutal is it right now") reads
         /// this, not a private field. NaN off the Chill seabed — check
         /// IsChillSeabedMap first, or just test for NaN.
