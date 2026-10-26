@@ -271,7 +271,24 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            FilthMaker.TryMakeFilth(c, map, FootprintFilthDef);
+            // CHILLPRINTS_FIX_SATURATED_DEPOSIT_PROPAGATES: TryMakeFilth defaults to shouldPropagate=true, and
+            // a cell already at Filth's hard cap (thickness 5, !CanBeThickened) then spills the deposit onto a
+            // random 8-way neighbour that it checks only for WalkableByAny — not our Roofed/Standable gate. A
+            // saturated machine ring crept outward and under roofs, and every 15-tick rescan paid up to 8
+            // neighbour searches per saturated cell. A saturated cell is done: skip it, never propagate.
+            List<Thing> here = c.GetThingList(map);
+            for (int i = 0; i < here.Count; i++)
+            {
+                if (here[i] is Filth existing && existing.def == FootprintFilthDef)
+                {
+                    if (!existing.CanBeThickened)
+                    {
+                        return;
+                    }
+                    break;
+                }
+            }
+            FilthMaker.TryMakeFilth(c, map, FootprintFilthDef, 1, FilthSourceFlags.None, shouldPropagate: false);
         }
 
         /// <summary>
