@@ -12,8 +12,8 @@ the archives; a tail-before-archive order changes the fold; an append between pl
 refused; a stray file under archive/ is refused, not skipped.
 
 A separate read-only check (`--events DIR`, default the repo's infrastructure/state/art/events)
-confirms the real tree's fold is internally consistent: archive line counts + live tail add up to
-the fold's input, and ts is monotonic across each archive->live boundary.
+confirms the real tree is laid out as one append-only history per seat: every archive is non-empty,
+and ts is monotonic across each archive->archive->live boundary.
 
     python3 selftest_rotate.py [--events DIR]
 """
@@ -186,8 +186,9 @@ def run(tmp: Path) -> int:
         L.rotate_apply(plan2)
         check(all((ev / "archive" / n).read_bytes() == b for n, b in arch1.items()),
               "earlier archives byte-unchanged by a second rotation (write-once)")
-        check(any(".0002." in a["name"] or int(a["name"].split(".")[1]) > len(arch1) for a in plan2["archives"]),
-              "second rotation takes the next seq")
+        old_max = max(int(n.split(".")[1]) for n in arch1)
+        check(all(int(a["name"].split(".")[1]) > old_max for a in plan2["archives"]),
+              "second rotation takes seqs after every existing archive")
     check(sum(1 for x in live.read_bytes().splitlines() if x.strip()) >= min(L.ROTATE_MIN_TAIL_LINES, len(lines)),
           f"live tail keeps >= {L.ROTATE_MIN_TAIL_LINES} lines (union-merge context)")
     check(L.read_events() == before_events and fold_digest(L) == before_fold, "fold identical after size rotation")
@@ -236,6 +237,19 @@ def run(tmp: Path) -> int:
     except SystemExit:
         refused = True
     check(refused, "PLANTED: an append between plan and apply is refused")
+    # an archive name already on disk (a racing rotator, a hand copy) is refused, never overwritten
+    p4 = L.rotate_plan(seat, keep_bytes=0)
+    squat = ev / "archive" / p4["archives"][0]["name"]
+    squat.write_bytes(b"theirs\n")
+    try:
+        L.rotate_apply(p4)
+        refused = False
+    except FileExistsError:
+        refused = True
+    check(refused and squat.read_bytes() == b"theirs\n" and live.read_bytes() == p4["live"].read_bytes()
+          and hashlib.sha256(live.read_bytes()).hexdigest() == p4["orig_sha"],
+          "PLANTED: an archive name already on disk is refused and left byte-unchanged; the live shard is untouched")
+    squat.unlink()
     stray = ev / "archive" / "notes.jsonl"
     stray.write_text("")
     try:

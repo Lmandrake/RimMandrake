@@ -636,15 +636,18 @@ def main(argv=None) -> int:
             rc |= 0 if r["ok"] else 1
         return rc
     if a.fold_old_ticks:
-        print(json.dumps(fold_old_sheet_answers(apply=a.apply), indent=1))
-        return 0
+        r = fold_old_sheet_answers(apply=a.apply)
+        print(json.dumps(r, indent=1))
+        return 1 if r.get("lost_race") else 0          # a file that lost every race was not written
+    rc = 0
     for f in a.files:
         r = migrate_file(Path(f), apply=a.apply)
+        rc |= 1 if r.get("error") else 0
         rep = r.get("reports") or {}
         print(f"{r['file']}: {'already schema 2' if r.get('already') else r.get('error') or str(r['migrated']) + ' record(s)'}"
               f" · legacy ticks on {sum(1 for x in rep.values() if x.get('legacy'))} row(s)"
               f" · quarantined letters on {sum(1 for x in rep.values() if x.get('quarantine'))} row(s)")
-    return 0
+    return rc
 
 
 if __name__ == "__main__":
