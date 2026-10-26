@@ -686,7 +686,9 @@ def read_dest_tanks(B, tank_def, dest):
         B.call("rimworld/click_cell", {"x": int(x), "z": int(z)})
         sem = json.dumps(B.call("rimworld/get_selection_semantics", {}), default=str)
         m = UNITS_RX.search(sem)
-        named = [s for s in THING_ID_RX.findall(sem) if tank_def in s]
+        # get_selection_semantics names a thing "Thing_<def><id>" (its id / details.thingId), list_things "<def><id>":
+        # strip the prefix, or every live read is discarded as "names another thing" (live 2026-10-26, A2)
+        named = [s[len("Thing_"):] if s.startswith("Thing_") else s for s in THING_ID_RX.findall(sem) if tank_def in s]
         if named and tid not in named:
             units, bound = None, "selection names %s, not %s" % (named[:3], tid)
         else:

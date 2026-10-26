@@ -278,7 +278,7 @@ class TankStub(object):
             if self.sel is None:
                 return {"selection": []}
             u = self.tanks[self.sel][2]
-            return {"selection": [{"thingId": self.sel if self.names else "RM_LiquidTank999999",
+            return {"selection": [{"thingId": "Thing_" + (self.sel if self.names else "RM_LiquidTank999999"),   # the live shape (2026-10-26)
                                    "inspect": "Holding: Water (%s / 16 kL)" % fmt_litres(u / 10.0)}]}
         raise RuntimeError(tool)
 
