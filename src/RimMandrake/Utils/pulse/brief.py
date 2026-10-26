@@ -24,6 +24,7 @@ RM_BRIEF_PORT, default 8791) for his phone, gated by `tailscale whois` against a
 from __future__ import annotations
 
 import calendar
+import glob
 import html
 import json
 import os
@@ -53,11 +54,11 @@ SEATS = ("BENCH", "FOUNDRY")
 JUDGE = "brief.py judge (separate process; its own rimflow replay)"
 
 # which collector each section stands on: when it is down the section says "unknown", never "nothing"
-SECTION_SOURCES = {"word": ("ledger",), "open": ("hands", "sheets"), "overnight": ("ledger",),
+SECTION_SOURCES = {"word": ("ledger",), "open": ("hands", "sheets"), "home": ("ledger",), "overnight": ("ledger",),
                    "decided": ("ledger",), "spend": ("tokens",), "testing": ("testing",), "next": ("sessions",)}
-TITLES = {"word": "Needs your word", "open": "Open these", "overnight": "Overnight, in words",
+TITLES = {"word": "Needs your word", "open": "Open these", "home": "When you're home", "overnight": "Overnight, in words",
           "decided": "Decided for you", "spend": "Spend", "testing": "Testing rigs", "next": "Next", "coverage": "Coverage"}
-ORDER = ("word", "open", "overnight", "decided", "spend", "testing", "next", "coverage")
+ORDER = ("word", "open", "home", "overnight", "decided", "spend", "testing", "next", "coverage")
 
 # A look's review packet (owner card 2026-10-25, "Plus evidence and doubts"): the artifact ships with a
 # recommendation, the alternatives with their reasons, the evidence (what was measured) and the doubts (what
@@ -87,11 +88,107 @@ def _short(s: str, n: int = 110) -> str:
     return s if len(s) <= n else s[: n - 1].rstrip() + "…"
 
 
-def goal_of(iid: str) -> str:
-    """The goal an item serves, in words: its id's SUBJECT (ids are SUBJECT_INTENT_TWIST)."""
-    head = iid.split("_")[0]
-    return {"FLOWWORKS": "FlowWorks", "RIMPULSE": "RimPulse", "STEVEDESKTOP": "SteveDesktop",
-            "TESTQ": "Test queue", "GSS": "GSS"}.get(head, head.capitalize())
+_PACKAGES: dict[str, str] | None = None
+TOOL_AREAS = {"pulse": "RimPulse", "rimpulse": "RimPulse", "rimflow": "rimflow", "artpipe": "artpipe",
+              "rimbench": "rimbench", "stevedesktop": "SteveDesktop", "modcheck": "modcheck", "testq": "testq"}
+_NOT_AREAS = {"state", "items", "ledger", "closed", "utils", "src", "design", "transient"}
+
+
+def packages() -> dict[str, str]:
+    """{lowercase name: mod folder} of every mod with an About.xml in a clone (src/<tier>/<Mod>/About)."""
+    global _PACKAGES
+    if _PACKAGES is None:
+        _PACKAGES = {}
+        for root in [HERE.parents[3]] + list(pc.CLONES):
+            for a in glob.glob(str(Path(root) / "src" / "*" / "*" / "About" / "About.xml")):
+                name = Path(a).parents[1].name
+                _PACKAGES.setdefault(name.lower(), name)
+            if _PACKAGES:
+                break
+    return _PACKAGES
+
+
+def goal_of(iid: str, item=None, words: str = "", pkgs: dict | None = None) -> str:
+    """The package or V1 row an item serves (owner 2026-10-25: the brief "invented goals from the first word of
+    titles"). Order: its V1 row; a mod folder its spec / close note / evidence names (src/<tier>/<Mod>/); a
+    mod whose name is a word of its id or title; a tool area its paths name; else 'No package recorded' -
+    never a word of the title promoted to a goal."""
+    pkgs = packages() if pkgs is None else pkgs
+    if item is not None and getattr(item, "row", None) not in (None, ""):
+        return f"V1 row {item.row}"
+    mods = Counter(x.lower() for x in re.findall(r"\bsrc[/\\]Rim\w+[/\\](\w+)[/\\]", words) if x.lower() in pkgs)
+    if mods:
+        return pkgs[mods.most_common(1)[0][0]]
+    for w in str(iid or "").split("_"):
+        if w.lower() in pkgs:
+            return pkgs[w.lower()]
+    for w in re.findall(r"\b[A-Z][A-Za-z]+\b", str(getattr(item, "title", "") or "")):
+        if w.lower() in pkgs and w[1:].lower() != w[1:]:      # CamelCase names only: 'Abyss' the word stays a word
+            return pkgs[w.lower()]
+    for w in str(iid or "").split("_"):
+        if w.lower() in TOOL_AREAS:
+            return TOOL_AREAS[w.lower()]
+    areas = Counter(x.lower() for x in re.findall(r"\b(?:Utils|infrastructure)[/\\](\w+)[/\\]", words)
+                    if x.lower() not in _NOT_AREAS and not x.endswith("py"))
+    if areas:
+        a = areas.most_common(1)[0][0]
+        return TOOL_AREAS.get(a, a)
+    return "No package recorded"
+
+
+def commit_paths(shas: list[str], root: Path | None = None) -> dict[str, str]:
+    """{sha given: the paths its commit changed, space-joined}, in ONE git call; a sha this clone lacks is
+    skipped (--ignore-missing), and git failing at all yields {} (grouping then falls back, never raises)."""
+    shas = sorted({str(x) for x in shas if re.fullmatch(r"[0-9a-f]{7,40}", str(x or ""))})
+    if not shas:
+        return {}
+    git = ["git", "-C", str(root or HERE.parents[3])]
+    try:   # an abbreviated sha this clone lacks is a fatal 'bad revision' to log (--ignore-missing misses it)
+        known = subprocess.run(git + ["cat-file", "--batch-check=%(objectname) %(objecttype)"],
+                               input="\n".join(shas) + "\n", capture_output=True, text=True, timeout=60).stdout.splitlines()
+        shas = [x for x, k in zip(shas, known) if k.endswith(" commit")]
+        if not shas:
+            return {}
+        out = subprocess.run(git + ["log", "--no-walk=unsorted", "--stdin", "--name-only", "--format=@@%H"],
+                             input="\n".join(shas) + "\n", capture_output=True, text=True, timeout=60).stdout
+    except (OSError, subprocess.SubprocessError):
+        return {}
+    full: dict[str, list[str]] = {}
+    cur = None
+    for ln in out.splitlines():
+        if ln.startswith("@@"):
+            cur = ln[2:].strip()
+            full[cur] = []
+        elif cur and ln.strip():
+            full[cur].append(ln.strip())
+    return {s_: " ".join(full[h]) for s_ in shas for h in full if h.startswith(s_)}
+
+
+def item_words(iid: str) -> str:
+    """An item's prose file (open or closed), for the paths it names; '' when no clone has one."""
+    for c in pc.CLONES:
+        for sub in ("", "closed/"):
+            f = Path(c) / "infrastructure" / "state" / "items" / f"{sub}{iid}.md"
+            try:
+                return f.read_text(encoding="utf-8", errors="replace")[:20000]
+            except OSError:
+                continue
+    return ""
+
+
+def outcome_of(iid: str, events: list[dict], since: float, now: float) -> str:
+    """What an item ended with, in its own record: the close / implemented note in the window, else the last
+    passing verify's 'verified <criterion> (<evidence>)'. '' when the ledger says nothing (the title stands in)."""
+    note, ver = "", ""
+    for e in events:
+        if e.get("id") != iid or not (since <= _tsec(e) <= now):
+            continue
+        if e.get("event") in ("close", "implemented") and (e.get("reason") or e.get("text")):
+            note = str(e.get("reason") or e.get("text"))
+        elif e.get("event") == "verify" and e.get("result") == "pass":
+            ev = str(e.get("evidence") or "")
+            ver = f"verified {e.get('criterion') or ''}".strip() + (f" ({Path(ev).name})" if ev and " " not in ev else "")
+    return note or ver
 
 
 def transitions(events: list[dict], since: float, now: float) -> tuple[dict, list[dict]]:
@@ -168,14 +265,29 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
         title = (it.title if it else None) or r.get("text") or ""
         if iid and title.startswith(iid):
             title = title[len(iid):].lstrip(" —-")
-        head = (r.get("title") or iid or "").capitalize()
-        asks.append({"sec": "word", "text": _short(f"{head}: {title}" if head else title, 150),
+        # the question in plain words, noun first (pulse_core.ask_label); the ticket name rides in `id`
+        text = r.get("label") or (pc.ask_label(iid, title) if iid else title)
+        asks.append({"sec": "word", "text": _short(text, 150), "id": iid,
                      "meta": {"since": r.get("since"), "blocks": blocks.get(iid, 0), "kind": r["kind"],
                               "who": r.get("who")},
                      "link": f"/item/{iid}" if iid else (r.get("link") or {}).get("value"),
                      "claim": {"type": "ask", "id": iid} if iid else {"type": "card", "key": r["key"]}})
     asks.sort(key=lambda a: (-a["meta"]["blocks"], a["meta"]["since"] or now))
     secs["word"] = asks
+
+    # WHEN YOU'RE HOME: hands-on machine jobs (owner card 2026-10-25, "Folded 'when you're home' list"),
+    # apart from the rulings, by machine, with the total time the runbooks give
+    home = sorted((r for r in rows if r["kind"] == "chore"),
+                  key=lambda r: (str(r.get("machine") or ""), r.get("minutes") or 999))
+    for r in home:
+        iid = r["key"][6:] if str(r.get("key", "")).startswith("needs:") else None
+        mins = r.get("minutes")
+        secs["home"].append({"sec": "home", "text": _short(f"{r.get('machine') or 'at home'}: {r.get('label') or r.get('text') or ''}", 150),
+                             "id": iid, "meta": {"since": r.get("since"), "minutes": mins},
+                             "link": f"/item/{iid}" if iid else None,
+                             "claim": {"type": "ask", "id": iid} if iid else {"type": "card", "key": r["key"]}})
+    if not home:
+        notes["home"] = "no machine jobs waiting"
 
     # OPEN THESE: pre-read looks
     for r in rows:
@@ -195,10 +307,23 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
     for m in moves:                      # where each item ended up inside the window
         last[m["id"]] = m
     by_goal: dict[str, list[dict]] = defaultdict(list)
+    own: dict[str, list[dict]] = defaultdict(list)     # each moved item's own events, one pass
+    for e in events:
+        if e.get("id") in last:
+            own[e["id"]].append(e)
+    pkgs = packages()
+    changed = commit_paths([e.get("sha") for es in own.values() for e in es
+                            if e.get("event") in ("close", "implemented", "verify")])
     for iid, m in last.items():
         if m["to"] in STATE_WORD:
-            by_goal[goal_of(iid)].append({"id": iid, "to": m["to"], "tsn": m["tsn"], "t": m["t"]})
-    goals = sorted(by_goal.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+            words = " ".join(str(e.get("spec") or "") + " " + str(e.get("reason") or "") + " " + str(e.get("evidence") or "")
+                             for e in own[iid] if e.get("event") in ("file", "close", "implemented", "verify"))
+            # what its commits changed outranks what its prose mentions: those paths come first and count double
+            cp = " ".join(changed.get(str(e.get("sha")), "") for e in own[iid] if e.get("sha"))
+            words = f"{cp} {cp} {words} {item_words(iid)}"
+            by_goal[goal_of(iid, world.items.get(iid), words, pkgs)].append(
+                {"id": iid, "to": m["to"], "tsn": m["tsn"], "t": m["t"]})
+    goals = sorted(by_goal.items(), key=lambda kv: (kv[0] == "No package recorded", -len(kv[1]), kv[0]))
     for g, ms in goals[:MAX_GOALS]:
         ms.sort(key=lambda x: (world.items[x["id"]].kind != "task", STATE_RANK.index(x["to"]), -x["t"]))
         c = Counter(x["to"] for x in ms)
@@ -210,7 +335,11 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
             word = STATE_WORD[x["to"]]
             if x["to"] == "validated" and it.outstanding:
                 word = "checked, " + "/".join(it.owed_levels()) + " owed"
-            secs["overnight"].append({"sec": "overnight", "goal": g, "text": _short(it.title or x["id"], 100),
+            out = outcome_of(x["id"], own[x["id"]], since, now)
+            if out.startswith("verified ") or not out:          # no close note: what it was, then its evidence
+                out = (it.title or x["id"]) + (f" — {out}" if out else "")
+            secs["overnight"].append({"sec": "overnight", "goal": g, "text": _short(out, 100),
+                                      "title": it.title or x["id"],
                                       "state": word, "link": f"/item/{x['id']}",
                                       "claim": {"type": "moved", "id": x["id"], "to": x["to"], "tsn": x["tsn"]}})
     if len(goals) > MAX_GOALS:
@@ -257,10 +386,15 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
             m = re.search(r"\b([A-Z][A-Z0-9]+(?:_[A-Z0-9]+){1,7})\b", c.get("title") or "")
             iid = m.group(1) if m else None
             it = world.items.get(iid) if iid else None
-            what = _short(it.title, 90) if it else ("idle" if c.get("state") != "run" else "working")
+            n = int(c.get("agents") or 0)   # helpers working under an idle seat window are work (owner 2026-10-25)
+            what = (_short(it.title, 90) if it else "working" if c.get("state") == "run"
+                    else f"{n} helper{'s' if n != 1 else ''} working" if n else "idle")
+            if n and (it or c.get("state") == "run"):
+                what += f" (+{n} helper{'s' if n != 1 else ''})"
             secs["next"].append({"sec": "next", "text": f"{c['seat'].capitalize()}: {what}",
                                  "link": f"/item/{iid}" if it else None,
-                                 "claim": {"type": "seat", "seat": c["seat"], "id": iid if it else None}})
+                                 "claim": {"type": "seat", "seat": c["seat"], "id": iid if it else None,
+                                           "state": c.get("state"), "agents": n}})
 
     down = sorted(s for s, v in (snap.get("sources") or {}).items() if not (v or {}).get("ok"))
     if down:
@@ -382,6 +516,10 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
             src = (snap.get("sources") or {}).get(c.get("src")) or {}
             return "pass" if src.get("ok") else "fail: its collector is down"
         if t == "seat":
+            if "state" in c:   # the line's seat state and helper count must match the monitor's own chip
+                ch = next((x for x in snap.get("chips") or [] if x.get("seat") == c.get("seat")), None)
+                if not ch or ch.get("state") != c["state"] or int(ch.get("agents") or 0) != int(c.get("agents") or 0):
+                    return "fail: the monitor's seat chip says otherwise"
             if c.get("id") is None:
                 return "pass"
             it = world.items.get(c["id"])
@@ -493,7 +631,10 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "") -> str:
         note = brief.get("notes", {}).get(sec)
         if sec == "coverage" and not lines:
             continue
-        out.append(f"<h2>{e(TITLES[sec])}{f' ({len(lines)})' if sec in ('word', 'open') else ''}</h2>")
+        count = f" ({len(lines)})" if sec in ("word", "open", "home") else ""
+        if sec == "home" and lines:
+            count = f" ({len(lines)} · {pc.chores_time([ln.get('meta') or {} for ln in lines])})"
+        out.append(f"<h2>{e(TITLES[sec])}{count}</h2>")
         if not lines:
             out.append(f"<div class=none>{e(note or ('nothing waiting' if sec in ('word', 'open') else 'nothing'))}</div>")
             continue
@@ -516,6 +657,9 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "") -> str:
                 else:
                     pk = ln.get("packet") or {}
                     meta = "".join(f"<div class=pk><b>{e(k)}</b> {e(pk.get(k, ''))}</div>" for k in PACKET_PARTS)
+            if sec == "home":
+                mm = ln.get("meta") or {}
+                meta = f"<div class=m>{mm['minutes']} min</div>" if mm.get("minutes") else "<div class=m>time not given</div>"
             if sec == "word":
                 mm = ln.get("meta") or {}
                 meta = f"<div class=m>waiting {_ago(mm.get('since'), now)}" + (f" · blocks {mm['blocks']}" if mm.get("blocks") else "") + "</div>"

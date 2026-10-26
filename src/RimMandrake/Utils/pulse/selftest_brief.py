@@ -128,6 +128,42 @@ def main():
     hb = brief.heartbeat(None, good_brief, NOW)
     check("heartbeat red with no snapshot at all", hb["red"], hb)
 
+    # RIMPULSE_PAGE_FIX_CHORES_POSE_AS_RULINGS: goals are packages/areas, never a title's first word
+    pk = {"rimbiomes": "RimBiomes"}
+    check("goal from a src mod path", brief.goal_of("WIDGET_FIX_X", None, "src/RimMandrake/RimBiomes/Defs/a.xml", pk) == "RimBiomes",
+          brief.goal_of("WIDGET_FIX_X", None, "src/RimMandrake/RimBiomes/Defs/a.xml", pk))
+    check("no first-word goal: a bare slug has no package", brief.goal_of("WIDGET_FIX_X", None, "", pk) == "No package recorded",
+          brief.goal_of("WIDGET_FIX_X", None, "", pk))
+    check("a tool slug word names its area", brief.goal_of("RIMPULSE_PAGE_FIX_X", None, "", pk) == "RimPulse",
+          brief.goal_of("RIMPULSE_PAGE_FIX_X", None, "", pk))
+    oe = [ev(10, "close", "AGENT_WORK_ITEM", sha="abc", reason="hose stays linked when raised")]
+    check("outcome comes from the close note", brief.outcome_of("AGENT_WORK_ITEM", oe, NOW - 7200, NOW + 3600)
+          == "hose stays linked when raised", brief.outcome_of("AGENT_WORK_ITEM", oe, NOW - 7200, NOW + 3600))
+    # labels and chores: the plain question on the word line, the machine job in "When you're home"
+    hsnap = {**csnap, "rows": [
+        {"kind": "review", "key": "needs:ASK_OPEN_ITEM", "label": "Colour: which colour?", "since": NOW},
+        {"kind": "chore", "key": "needs:CHORE_ITEM", "label": "Enable virtualisation in the BIOS", "machine": "SteveDesktop",
+         "minutes": 10, "since": NOW - 30 * 86400}],
+        "chips": [{"seat": "BENCH", "state": "idle", "agents": 2, "title": ""},
+                  {"seat": "FOUNDRY", "state": "idle", "agents": 0, "title": ""}]}
+    hb_ = brief.compose(hsnap, EVENTS, NOW - 7200, NOW)
+    wl = hb_["sections"]["word"]
+    check("a word line shows the plain question, the slug in id", len(wl) == 1 and wl[0]["text"] == "Colour: which colour?"
+          and wl[0]["id"] == "ASK_OPEN_ITEM", wl)
+    hl = hb_["sections"]["home"]
+    check("a chore goes to When you're home, not Needs your word", len(hl) == 1 and hl[0]["text"].startswith("SteveDesktop: Enable")
+          and hl[0]["meta"]["minutes"] == 10, hl)
+    nx = {ln["text"] for ln in hb_["sections"]["next"]}
+    check("an idle seat with helpers is not 'idle'", "Bench: 2 helpers working" in nx and "Foundry: idle" in nx, nx)
+    tamper = {"seat": "BENCH", "state": "idle", "agents": 0, "id": None, "type": "seat"}
+    jb = {"sections": {"t": [line(tamper)]}}
+    brief.judge(jb, EVENTS, hsnap)
+    check("judge withholds a seat line whose helper count the chip denies", jb["sections"]["t"][0]["check"] != "pass",
+          jb["sections"]["t"][0]["check"])
+    rh = brief.render({**hb_, "sections": {k: [{**ln, "check": "pass"} for ln in v] for k, v in hb_["sections"].items()},
+                       "withheld": 0}, {"red": False, "text": "x"}, NOW)
+    check("render titles the home list with its total time", "When you&#x27;re home (1 · ~10 min)" in rh, rh[:0])
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 

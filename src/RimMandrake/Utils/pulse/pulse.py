@@ -628,7 +628,11 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
         for r in rows:
             if r["kind"] == kind and take(r):
                 (asks if (r.get("since") or 0) >= since else ask_old).append(
-                    line(g, r, f"{r['text']}" + (" (a fact only you have)" if kind == "provide" else "")))
+                    line(g, r, (f"{r['label']}  ({r['iid']})" if r.get("label") and r.get("iid") else f"{r['text']}")
+                         + (" (a fact only you have)" if kind == "provide" else "")))
+    home = [line("⌂", r, f"{r.get('machine') or 'at home'}: {r.get('label') or r['text']}"
+                 + (f" ({r['minutes']} min)" if r.get("minutes") else "") + (f"  ({r['iid']})" if r.get("iid") else ""))
+            for r in rows if r["kind"] == "chore" and take(r)]
     looks, look_old = [], []
     for r in rows:
         if r["kind"] == "look" and not r.get("opened") and take(r):
@@ -643,6 +647,8 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
             "note": note},
            {"id": "look", "title": "To look at", "lines": looks, "backlog": look_old,
             "note": f"{held} held back: nobody recorded reading them first" if held else ""},
+           {"id": "home", "title": f"When you're home ({pc.chores_time([r for r in rows if r['kind'] == 'chore' and not r.get('agent')])})",
+            "lines": home, "backlog": []},
            {"id": "done", "title": "Done", "lines": done, "backlog": []}]
     return out
 
@@ -679,7 +685,7 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     def fmt(ln, md=False):
         if not ln["t"]:
             when = "     "
-        elif ln["kind"] in ("amber", "review", "provide", "look") or not ln["new"]:
+        elif ln["kind"] in ("amber", "review", "provide", "look", "chore") or not ln["new"]:
             a = now - ln["t"]
             when = (f"{int(a // 60)}m" if a < 3600 else f"{int(a // 3600)}h" if a < 86400 else f"{int(a // 86400)}d").rjust(5)
         else:
@@ -799,9 +805,10 @@ def make_handler(col: Collector):
                 self._hdr(404)
 
         def do_POST(self):
-            n = int(self.headers.get("Content-Length") or 0)
-            try:
+            try:   # a bad Content-Length or body is an empty request, never a handler crash
+                n = max(0, min(int(self.headers.get("Content-Length") or 0), 1 << 20))
                 body = json.loads(self.rfile.read(n) or b"{}")
+                body = body if isinstance(body, dict) else {}
             except ValueError:
                 body = {}
             if self.path == "/api/refresh":

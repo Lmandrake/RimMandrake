@@ -32,6 +32,7 @@ from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpa
 import glob
 import json
 import os
+import re
 import time
 from pathlib import Path
 
@@ -344,6 +345,61 @@ _PROVIDE_RE = (r"(\bname/address\b|\b(ip|e-?mail|network|home) address\b|\baddre
 _WALK_RE = r"(\bwalk-?through\b|\bwalk\b|\bin[- ]game\b|\bjoint\b|\bkeeper save|\bbridge run\b)"
 
 
+# A hands-on machine job (a RUNBOOK step, a BIOS setting, the router, a power cord) is work only his hands at home
+# can do: never a ruling. It goes to the folded "when you're home" list with its total time (owner card
+# 2026-10-25: "Folded 'when you're home' list"; RIMPULSE_PAGE_FIX_CHORES_POSE_AS_RULINGS).
+_HANDS_RE = (r"(\bRUNBOOK step\b|\bBIOS\b|\brouter\b|\bpower (cord|cable|button|strip)\b|\bPSU\b|\bunplug|"
+             r"\bplug (it )?in\b|\bethernet cable\b|\bDHCP\b.{0,40}\breservation\b|\bpower[- ]cycle\b)")
+_MINUTES_RE = r"\b(\d{1,3})\s*min\b"
+_RUNBOOK_HEAD_RE = r"^\s*RUNBOOK step \d+\s*(\([^)]*\))?\s*:\s*"
+
+
+def chore_minutes(text: str) -> int | None:
+    """Minutes a chore says it takes ('(owner, 10 min)'), or None when it does not say."""
+    import re
+    m = re.search(_MINUTES_RE, str(text or ""), re.I)
+    return int(m.group(1)) if m else None
+
+
+def chore_machine(iid: str, text: str) -> str:
+    """The machine a chore is on: a CamelCase name ending Desktop/Laptop/PC in its words, else a slug word
+    shaped like one (STEVEDESKTOP -> SteveDesktop), else 'at home'."""
+    import re
+    m = re.search(r"\b([A-Z][a-z]+(?:[A-Z][a-z]+)*(?:Desktop|Laptop|PC))\b", str(text or ""))
+    if m:
+        return m.group(1)
+    for w in str(iid or "").split("_"):
+        m = re.fullmatch(r"([a-z]+)(desktop|laptop|pc)", w.lower())
+        if m:
+            return m.group(1).capitalize() + ("PC" if m.group(2) == "pc" else m.group(2).capitalize())
+    return "at home"
+
+
+def ask_label(iid: str, title: str, reason: str = "") -> str:
+    """The question in plain words, noun first, for his list (owner 2026-10-25: labels showed cut-off ticket
+    names). A chore is its task with the RUNBOOK head dropped; a ruling is '<subject>: <the which/whether
+    question>' when its words hold one, else '<subject>: <its title>'. The slug itself goes in the hover."""
+    import re
+    text = " ".join(str(title or reason or "").split())
+    bare = re.sub(_RUNBOOK_HEAD_RE, "", text, flags=re.I)
+    if bare != text:
+        return (bare[:1].upper() + bare[1:]) if bare else text
+    try:
+        parsed = _model().parse_name(iid)
+    except Exception:  # noqa: BLE001 - a label must never break the snapshot
+        parsed = None
+    subj = " ".join(parsed[0]).lower() if parsed else nice_id(iid)
+    words = f"{text} {reason or ''}"
+    q = re.search(r"\b(which|whether|what|how (?:many|much|big|often)|should (?:we|it|the))\b[^.;:()?]*", words, re.I)
+    if q:
+        body = re.split(r"\s+(?:is|are|stays?|remains?)\s+(?:an?\s+|the\s+)?(?:owner|his|lukas)\b", q.group(0), flags=re.I)[0]
+        body = body.strip(" ,")
+        return f"{subj.capitalize()}: {body[:1].lower() + body[1:]}?"
+    if not text or text.lower() == nice_id(iid):
+        return subj.capitalize() if parsed else nice_id(iid).capitalize()
+    return f"{subj.capitalize()}: {text[:1].lower() + text[1:]}" if not text.lower().startswith(subj) else text
+
+
 def ask_class(it, ev: dict) -> tuple[str, str]:
     """ask_class_raw, but a look that is a live interactive walkthrough is class 'walk' (not listed anywhere)."""
     klass, why = ask_class_raw(it, ev)
@@ -364,7 +420,7 @@ def _is_artifact_link(lk) -> bool:
 
 
 def ask_class_raw(it, ev: dict) -> tuple[str, str]:
-    """('rule' | 'look' | 'provide', why) for an open item waiting on the owner. Pure over the item fold.
+    """('rule' | 'look' | 'provide' | 'hands', why) for an open item waiting on the owner. Pure over the item fold.
 
     Order: an explicit word on the needs event wins ('look:', 'provide:', 'rule:', or '(LOOK, not a ruling)');
     an item whose only owed criteria are L4 is a look; then the item's kind; then its words. Anything else is
@@ -373,11 +429,13 @@ def ask_class_raw(it, ev: dict) -> tuple[str, str]:
     reason = str(ev.get("reason") or ev.get("why") or "")
     text = f"{it.title or ''} {reason}"
     head = reason.strip().lower()
-    for k in ("look", "provide", "rule"):
+    for k in ("look", "provide", "rule", "hands"):
         if head.startswith(k + ":"):
             return k, f"needs event says '{k}:'"
     if re.search(r"\bLOOK, not a ruling\b", reason, re.I):
         return "look", "needs event says it is a look"
+    if re.search(_HANDS_RE, text, re.I):
+        return "hands", "a hands-on machine job at home"
     owed = it.owed_levels() if hasattr(it, "owed_levels") else []
     if owed and set(owed) == {"L4"}:
         return "look", "only an L4 (owner look) criterion is owed"
@@ -728,8 +786,11 @@ def read_sheets(dirs: list[Path] | None = None, probe=sheet_alive, review=sheet_
     for d in (dirs if dirs is not None else SHEETS_DIRS):
         for f in glob.glob(str(d / "*.serve.log")) + glob.glob(str(d / "*" / "*.serve.log")):
             f = Path(f)
-            if f.name not in logs or f.stat().st_mtime > logs[f.name].stat().st_mtime:
-                logs[f.name] = f
+            try:   # a log removed between the glob and the stat is simply not there this round
+                if f.name not in logs or f.stat().st_mtime > logs[f.name].stat().st_mtime:
+                    logs[f.name] = f
+            except OSError:
+                continue
 
     def one(f: Path):
         try:
@@ -819,7 +880,7 @@ def iso_to_epoch(ts: str) -> float:
 
 def win_path(rel: str) -> str:
     rel = rel.strip()
-    if rel.startswith("/mnt/") and len(rel) > 6:
+    if re.match(r"/mnt/[a-zA-Z](/|$)", rel):   # a drive mount; /mnt/wsl/... is not a drive
         return rel[5].upper() + ":\\" + rel[7:].replace("/", "\\")
     if rel.startswith("/"):
         return "\\\\wsl.localhost\\Ubuntu" + rel.replace("/", "\\")
@@ -1193,7 +1254,7 @@ def current_items(ledger: list[dict], now: float) -> dict:
     return {s: i for s, (i, t) in cur.items() if now - t < 12 * 3600}
 
 
-ASK_KINDS = {"rule": "review", "look": "look", "provide": "provide"}   # ask class -> row kind
+ASK_KINDS = {"rule": "review", "look": "look", "provide": "provide", "hands": "chore"}   # ask class -> row kind
 
 
 def classify_ledger(ledger: list[dict], since: float, now: float,
@@ -1237,7 +1298,10 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
                       # no addressee recorded is 'unknown', never his (owner_view keeps it out of his list)
                       "addressee": ru.get("addressee") or "unknown", "addressee_why": ru.get("addressee_why"),
                       "state": ru.get("state"),
+                      "label": ask_label(iid, titles.get(iid) or "", str(ru.get("reason") or "")),
                       "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
+            if kind == "chore":
+                r.update({"minutes": chore_minutes(full), "machine": chore_machine(iid, full)})
             if kind == "look":
                 if not _is_artifact_link(lk):
                     continue            # a look is a thing he OPENS (sheet, image, page); an item .md or a commit is not
@@ -1753,7 +1817,7 @@ def track_incidents(rows: list[dict], prev: dict, wins: list[dict], services: di
     return out, inc_out, events
 
 
-KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "provide": 5.2, "look": 5.5, "idle": 6, "recovered": 6.4,
+KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "provide": 5.2, "look": 5.5, "chore": 5.7, "idle": 6, "recovered": 6.4,
               "failed": 6.42, "answered": 6.45, "held": 6.46, "done": 7}
 
 
@@ -1869,7 +1933,7 @@ def order_rows(rows: list[dict]) -> list[dict]:
         base = KIND_ORDER.get(r["kind"], 9)
         if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
-        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "answered", "failed", "held") else (r.get("since") or 0))
+        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look", "provide", "chore", "answered", "failed", "held") else (r.get("since") or 0))
     return sorted(rows, key=k)
 
 
@@ -1905,7 +1969,20 @@ def build_strip(rows: list[dict]) -> list[dict]:
     look = sum(1 for r in rows if look_pending(r))
     if look:
         pills.append({"kind": "look", "text": f"▣ {look} to look at"})
+    home = [r for r in rows if r["kind"] == "chore"]
+    if home:
+        pills.append({"kind": "home", "text": f"⌂ {len(home)} at home · {chores_time(home)}",
+                      "title": "\n".join(r.get("label") or r["text"] for r in home)})
     return pills                       # no done tally: finished work is told in the digest, not counted here
+
+
+def chores_time(rows: list[dict]) -> str:
+    """'~17 min' over the chores' stated minutes; '~17+ min' when one does not say, 'time unknown' when none do."""
+    mins = [r.get("minutes") for r in rows]
+    known = sum(m for m in mins if m)
+    if not known:
+        return "time unknown"
+    return f"~{known}{'+' if any(m is None for m in mins) else ''} min"
 
 
 def source_freshness(status: dict, raw: dict, now: float) -> dict:
@@ -1975,7 +2052,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked") and not r.get("agent"))
-                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "provide", "look", "answered",
+                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "provide", "look", "chore", "answered",
                             "recovered", "failed", "held")},
     }
     return snap, new_state, events

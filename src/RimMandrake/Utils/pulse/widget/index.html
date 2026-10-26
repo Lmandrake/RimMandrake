@@ -131,7 +131,8 @@ body.collapsed .charts{display:none}
 .p-amber,.p-amber_soft{color:var(--a,var(--sand));box-shadow:inset 0 0 0 1px var(--a,var(--sand))}
 .p-warn{color:var(--red);box-shadow:inset 0 0 0 1px #ff554777}
 .p-down{background:#3a2a20;color:var(--red);box-shadow:inset 0 0 0 1px #d2462e88}
-.p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
+.p-rule{color:var(--cream);box-shadow:inset 0 0 0 1px var(--line)} .p-home{color:var(--sand);box-shadow:inset 0 0 0 1px var(--line)}
+.more.home{color:var(--sand)} .row.chore .t{color:var(--faint)} .p-look{color:var(--lk);box-shadow:inset 0 0 0 1px var(--line)}
 .p-recovered{color:var(--avocado);box-shadow:inset 0 0 0 1px #9aab5f66;cursor:pointer}
 .row.rec .x{color:var(--avocado)} .row.rec .bar{background:var(--avocado)}
 .row.rec.failed .x{color:var(--muted)} .row.rec.failed .bar{background:var(--mustard)}
@@ -189,7 +190,8 @@ for (const id of ['tb','strip']) $(id).addEventListener('mousedown', e => {
 });
 let snap = null, lastMsg = 0, seenKeys = new Set(), firstPaint = true, es = null;
 const openedHere = new Set();     // look items opened here, drawn opened at once until the next snapshot confirms
-const ex = {};                    // which folds are open: rule, look, ruleOld, lookOld, acked, answered, recovered, failed, held
+const ex = {home: true};        // the "when you're home" chores open by default on the desk (owner card 2026-10-25)
+// other folds:                    // which folds are open: rule, look, ruleOld, lookOld, acked, answered, recovered, failed, held
 function lsGet(k){ try { return localStorage.getItem(k) } catch(e){ return null } }
 function lsSet(k,v){ try { localStorage.setItem(k,v) } catch(e){} }
 const pref = JSON.parse(lsGet('pulse.pref') || '{}');
@@ -238,7 +240,7 @@ const THUMB_TY = {image:'▣', page:'▤', sheets:'☰', web:'☰', folder:'▦'
 
 function seatCls(r){ return r.seat ? ' s-' + esc(r.seat) : '' }
 function redHTML(r, isNew){
-  let right = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" title="${esc(r.link.value)}">${esc(r.link.label)} ↗</a>` : '';
+  let right = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" title="${esc(r.link.value)}">${esc(r.link.label)} ↗</a>` : '';
   if (r.incident && !r.acked)
     right += `<button class="ack" data-id="${esc(r.incident)}" title="Seen it — stop alarming">ack</button><button class="ack noise" data-id="${esc(r.incident)}" data-noise="1" title="Not worth an alarm (counts against alert precision)">noise</button>`;
   return `<div class="row red${isNew?' enter new':''}${r.acked?' dimr':''}" title="${esc(r.text + srcTip(r))}"><span class="bar"></span><span class="x">✖ ${esc(r.text)}</span><span class="rr">${right}</span><span class="t">${srcTag(r)}${hhmm(r.since)}</span></div>`;
@@ -250,22 +252,32 @@ function ruleHTML(r, isNew){
   const ask = r.kind === 'amber' || r.kind === 'amber_soft';
   let id, text;
   if (ask) { id = r.kind === 'amber' ? 'asks' : 'finished'; text = r.kind === 'amber' ? r.label.replace(/^(asks|waiting): /,'') : 'idle, waiting for you'; }
-  else { id = r.title; text = r.reason; }
-  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
+  else { id = ''; text = r.label || r.reason; }   // the question in plain words; the ticket name is in the hover
+  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
   const ack = ask && r.incident && !r.acked ? `<button class="ack" data-id="${esc(r.incident)}" title="Seen it — stop alarming">ack</button>` : '';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
-  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}"` : '';
+  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}"` : '';
   // a question card expands to its whole text (every question and its options); the row stays one line
   const qk = ask && r.kind === 'amber' ? 'q:' + r.key : null, open = qk && ex[qk];
   const qx = qk && !r.link ? ` qx" data-ex="${esc(qk)}` : '';
-  const tip = (r.full || r.text) + (r.ask_why ? `\nwhy '${r.ask === 'provide' ? 'to provide' : 'to rule'}': ${r.ask_why}` : '') + srcTip(r)
+  const tip = (r.iid ? r.iid + '\n' : '') + (r.full || r.text) + (r.ask_why ? `\nwhy '${r.ask === 'provide' ? 'to provide' : 'to rule'}': ${r.ask_why}` : '') + srcTip(r)
     + (qk ? '\nclick to ' + (open ? 'fold' : 'read the whole question') : '');
   const full = open ? `<div class="full">${esc(r.full || r.text)}<small>${r.asked_at ? 'asked ' + hhmm(r.asked_at) + ' · ' : ''}${esc(r.src_detail || '')} · gone the moment it is answered</small></div>` : '';
-  return `<div class="row${seatCls(r)}${ask?' ask':''}${isNew?' enter':''}${r.link?' clk':''}${qx}"${rl} title="${esc(tip)}"><span class="bar"></span><span class="x"><span class="id">${esc(id)}${qk ? (open ? ' ▾' : ' ▸') : ''}</span>${esc(text)}</span><span class="rr">${lk}${ack}</span><span class="t${old?' old':''}">${srcTag(r)}${ago(r.since)}</span></div>` + full;
+  return `<div class="row${seatCls(r)}${ask?' ask':''}${isNew?' enter':''}${r.link?' clk':''}${qx}"${rl} title="${esc(tip)}"><span class="bar"></span><span class="x">${id || qk ? `<span class="id">${esc(id)}${qk ? (open ? ' ▾' : ' ▸') : ''}</span>` : ''}${esc(text)}</span><span class="rr">${lk}${ack}</span><span class="t${old?' old':''}">${srcTag(r)}${ago(r.since)}</span></div>` + full;
+}
+// a hands-on machine job at home (RUNBOOK step, BIOS, router): what to do, on which machine, how long
+function choreHTML(r, isNew){
+  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
+  const tip = (r.iid ? r.iid + '\n' : '') + (r.full || r.text) + srcTip(r);
+  return `<div class="row chore${seatCls(r)}${isNew?' enter':''}" title="${esc(tip)}"><span class="bar"></span><span class="x"><span class="id">${esc(r.machine || 'at home')}</span>${esc(r.label || r.reason)}</span><span class="rr">${lk}</span><span class="t">${r.minutes ? r.minutes + ' min' : ''}</span></div>`;
+}
+function choresTime(cs){
+  const known = cs.reduce((a, r) => a + (r.minutes || 0), 0);
+  return known ? `~${known}${cs.some(r => !r.minutes) ? '+' : ''} min` : 'time unknown';
 }
 function ansHTML(r){
   const a = r.answered || {};
-  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
+  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
   const tip = `${r.full || r.text}\nanswered ${a.t ? hhmm(a.t) : ''} by ${a.by || '?'} (${a.event || ''} event, ${a.seat || ''}): ${a.text || ''}\nnobody has moved its needs off the owner yet` + srcTip(r);
   return `<div class="row ans${seatCls(r)}" title="${esc(tip)}"><span class="bar"></span><span class="x"><span class="id">${esc(r.title)}</span>✓ ${esc(a.by || 'answered')}: ${esc(a.text || '')}</span><span class="rr">${lk}</span><span class="t">${srcTag(r)}${ago(a.t || r.since)}</span></div>`;
 }
@@ -294,9 +306,9 @@ function lookHTML(r, isNew){
   const extra = r.unseen ? ` <b>· ${r.unseen} unseen</b>` : '';
   const tip = (r.src === 'ledger' ? (r.full || r.text) + (r.ask_why ? `\nwhy 'to look at': ${r.ask_why}` : '') + '\n' : '')
     + (r.names ? r.names : (r.link ? r.link.value : '')) + srcTip(r);
-  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}" title="Open — marks it seen">↗</a>` : '<span></span>';
+  const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" data-seen="${esc(r.seen_id||'')}" title="Open — marks it seen">↗</a>` : '<span></span>';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
-  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}"` : '';
+  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" data-seen="${esc(r.seen_id||'')}"` : '';
   return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}${r.opened?' opened':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${r.opened ? '✓ opened · ' : ''}${esc(r.ltype)}${r.src === 'ledger' && r.reason ? ' · ' + esc(r.reason) : ''}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${srcTag(r)}${ago(r.since)}</span></div>`;
 }
 
@@ -322,6 +334,7 @@ function render(){
   const rulings = rows.filter(r => r.kind === 'review');
   const gives = rows.filter(r => r.kind === 'provide');
   const answered = rows.filter(r => r.kind === 'answered');
+  const chores = rows.filter(r => r.kind === 'chore').sort((a,b) => (a.machine||'').localeCompare(b.machine||'') || (a.minutes||0) - (b.minutes||0));
   const looks = groupLooks(rows.filter(r => r.kind === 'look').map(r => ({...r, opened: r.opened || openedHere.has(r.seen_id)})));
   const acked = rows.filter(r => r.acked && ['red','amber','amber_soft','warn'].includes(r.kind));
   let h = (snap.health || []).map(t => `<div class="empty" title="run health">${esc(t)}</div>`).join('');
@@ -330,6 +343,8 @@ function render(){
   h += section('to rule', asks.map(r => ({...r, pin: r.kind === 'amber' ? 2 : 1})).concat(rulings), 'rule', ruleHTML, isNew, ['sessions','ledger']);
   if (gives.length) h += section('to provide', gives, 'give', ruleHTML, isNew, ['ledger']);
   h += section('to look at', looks, 'look', lookHTML, isNew, ['hands','sheets','ledger']);
+  // hands-on jobs for when he is home: folded with their total time, never 'to rule' (owner card 2026-10-25)
+  if (chores.length) h += `<div class="more home" data-ex="home" title="hands-on machine jobs: RUNBOOK steps, BIOS, router, cables">when you're home · ${chores.length} · ${choresTime(chores)} ${ex.home ? '▴' : '▾'}</div>` + (ex.home ? chores.map(r => choreHTML(r, isNew(r))).join('') : '');
   // his card or words landed after the ask, but no agent has moved needs off him: not his to do, still shown
   if (answered.length) h += `<div class="more" data-ex="answered" title="answered by card or in his words after the ask; the agent owes the follow-through">answered, agent to follow up (${answered.length}) ${ex.answered ? '▴' : '▾'}</div>` + (ex.answered ? answered.map(ansHTML).join('') : '');
   // telemetry alerts (E:\telemetry via telemetryd): amber 'warn' rows; reds already render above
@@ -463,7 +478,7 @@ function chipHTML(c){
 }
 // Collapsed, the strip is all he sees: every pill carries its own cause (owner 2026-10-22, N1), the
 // rule/look counts ride along, and a frozen snapshot over a healthy connection still reads stale (N5).
-const PILL_KINDS = ['red', 'amber', 'amber_soft', 'warn', 'recovered', 'rule', 'provide', 'look'];
+const PILL_KINDS = ['red', 'amber', 'amber_soft', 'warn', 'recovered', 'rule', 'provide', 'look', 'home'];
 function renderStrip(){
   const pills = (snap ? snap.strip : []).filter(p => PILL_KINDS.includes(p.kind)).map(p =>
     `<span class="pill p-${p.kind}${p.seat ? ' s-' + esc(p.seat) : ''}" title="${esc(p.title || p.text)}">${esc(p.text)}</span>`);
@@ -498,7 +513,7 @@ function foldOverflow(){
     more.textContent = `+${hidden.length} more`; }
   more.title = hidden.join('\n'); more.onclick = () => setCollapsed(false);
   function rank(el){ return el.classList.contains('dim') ? 0 : el.classList.contains('chip') ? 1
-    : el.classList.contains('p-look') || el.classList.contains('p-rule') || el.classList.contains('p-provide') || el.classList.contains('p-recovered') ? 2
+    : el.classList.contains('p-look') || el.classList.contains('p-rule') || el.classList.contains('p-provide') || el.classList.contains('p-home') || el.classList.contains('p-recovered') ? 2
     : el.classList.contains('p-warn') ? 3 : 4; }
 }
 
@@ -559,7 +574,7 @@ function connect(){
   es.onmessage = ev => { lastMsg = Date.now(); accept(JSON.parse(ev.data)); };
   es.addEventListener('error', () => {});
 }
-setInterval(async () => { try { const r = await fetch(API + '/api/now', {cache:'no-store'}); if (r.ok) { lastMsg = Date.now(); const s = await r.json(); if (!snap || s.collected_at > snap.collected_at) accept(s); } } catch(e){ if (es && es.readyState === 2) connect(); } }, 10000);
+setInterval(async () => { try { const r = await fetch(API + '/api/now', {cache:'no-store'}); if (r.ok) { lastMsg = Date.now(); const s = await r.json(); if (!snap || s.collected_at > snap.collected_at) accept(s); } } catch(e){} if (!es || es.readyState === 2) connect(); }, 10000);   // a closed stream reconnects even while the poll works
 setInterval(tickFresh, 1000);
 
 async function post(path, obj){ try { await fetch(API + path, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj)}); } catch(e){} }
@@ -571,6 +586,7 @@ document.addEventListener('click', e => {
     if (l.dataset.seen) { openedHere.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = dimmed, never removed
     return; }
   const rp = e.target.closest('.p-recovered'); if (rp) { ex.recovered = true; setCollapsed(false); render(); return; }
+  const hp = e.target.closest('.p-home'); if (hp) { ex.home = true; setCollapsed(false); render(); return; }
   const m = e.target.closest('.more, .grp, .qx'); if (m) { ex[m.dataset.ex] = !ex[m.dataset.ex]; render(); return; }
 });
 function openLink(v, type){ const p = api(); if (p) p.open(v); else if (type === 'url') window.open(v, '_blank'); else navigator.clipboard && navigator.clipboard.writeText(v); }

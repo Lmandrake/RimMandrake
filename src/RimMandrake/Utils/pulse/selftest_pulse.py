@@ -1216,5 +1216,39 @@ cs0 = pc.collect_snapshot({"sessions": []}, {}, NOW)[0]
 check("no token source and no ledger: both charts UNMEASURED",
       cs0["charts"]["burn"].get("unmeasured") and cs0["charts"]["tickets"].get("unmeasured"), cs0["charts"])
 
+# --- RIMPULSE_PAGE_FIX_CHORES_POSE_AS_RULINGS (owner card 2026-10-25: "Folded 'when you're home' list") ---------
+CH = [fi("STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE", 3000, seat="OWNER", needs="owner",
+         title="RUNBOOK step 5 (owner, 10 min): reboot into BIOS: Restore on AC loss = Power On, Wake on LAN on, ErP off"),
+      fi("STEVEDESKTOP_DHCP_FIX_IP_RESERVATION", 3000, seat="OWNER", needs="owner",
+         title="RUNBOOK step 2 (owner, 3 min): Google Home app: reserve the PC's lease"),
+      fi("ROUTER_PORT_FIX_FORWARD", 3000, seat="OWNER", needs="owner", title="reset the router and check the lights"),
+      fi("MINERAL_ROW_METEORITIC_DECIDE_FLAG", 3000, seat="OWNER", needs="owner",
+         title="R5 adapter has no input: the CSV has no flag, so which materials may fall in meteorites "
+               "(ThingSetMaker_Meteorite) is an owner call before R5 can be built")]
+for e in CH:
+    e["seat"] = "OWNER"
+chk = {r["iid"]: r for r in pc.classify_ledger(CH, NOW - 7200, NOW)[0] if r.get("iid")}
+check("a RUNBOOK / router job is a chore, never a ruling",
+      [chk[i]["kind"] for i in ("STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE", "STEVEDESKTOP_DHCP_FIX_IP_RESERVATION",
+                                "ROUTER_PORT_FIX_FORWARD")] == ["chore"] * 3
+      and chk["MINERAL_ROW_METEORITIC_DECIDE_FLAG"]["kind"] == "review", {k: v["kind"] for k, v in chk.items()})
+check("a chore carries its minutes and its machine",
+      (chk["STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE"]["minutes"], chk["STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE"]["machine"],
+       chk["ROUTER_PORT_FIX_FORWARD"]["minutes"], chk["ROUTER_PORT_FIX_FORWARD"]["machine"])
+      == (10, "SteveDesktop", None, "at home"), chk["STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE"])
+check("labels are the question in plain words, noun first, not the slug",
+      chk["MINERAL_ROW_METEORITIC_DECIDE_FLAG"]["label"] == "Mineral row meteoritic: which materials may fall in meteorites?"
+      and chk["STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE"]["label"].startswith("Reboot into BIOS: Restore on AC loss")
+      and "_" not in "".join(r["label"] for r in chk.values()), [r["label"] for r in chk.values()])
+ch_strip = {p["kind"]: p["text"] for p in pc.build_strip(pc.owner_view(list(chk.values()), NOW))}
+check("the strip counts chores apart with their total time, and they leave 'to rule'",
+      ch_strip.get("home") == "⌂ 3 at home · ~13+ min" and ch_strip.get("rule") == "◇ 1 to rule", ch_strip)
+check("an old chore is not dropped as a stale ruling",
+      not pc.owner_view([{**chk["ROUTER_PORT_FIX_FORWARD"], "since": NOW - 9 * 86400}], NOW)[0].get("agent"))
+
+# review 2026-10-25: /mnt/wsl/... is a Linux path, only /mnt/<letter>/ is a drive
+check("win_path maps a drive mount and leaves /mnt/wsl on the Linux side",
+      pc.win_path("/mnt/d/a/b") == "D:\\a\\b" and pc.win_path("/mnt/wsl/x").startswith("\\\\wsl.localhost"),
+      (pc.win_path("/mnt/d/a/b"), pc.win_path("/mnt/wsl/x")))
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
