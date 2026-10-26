@@ -31,7 +31,9 @@ namespace RimMandrake.DivingInteraction
     //    explosion still burns (RM_SelfOxidizingExtension) and a fission
     //    Genetron's meltdown flame does not (RM_NonCombustionExtension is
     //    not an oxidizer: CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN). The fire Fuselight's
-    //    flash lights does not inherit its oxidizer (Patch_Fire_TickInterval, Patch_Spark_Impact).
+    //    flash lights does not inherit its oxidizer (Patch_Fire_TickInterval, Patch_Spark_Impact,
+    //    Patch_Pawn_Kill_CorpseFire), and an explosion is named for the thing that explodes, not for
+    //    whoever set it off (Patch_CompExplosive_Detonate).
     //
     // 2) CompRefuelable.ShouldBeLitNow() is NOT wired through
     //    TryStartFireIn at all — a campfire/torch/brazier never spawns a
@@ -133,6 +135,60 @@ namespace RimMandrake.DivingInteraction
         public static void Prefix(Spark __instance, out bool __state)
         {
             __state = __instance.Launcher is Fire;
+            if (__state)
+            {
+                RM_ChillFireGate.insideBurningFire++;
+            }
+        }
+
+        public static void Finalizer(bool __state)
+        {
+            if (__state)
+            {
+                RM_ChillFireGate.insideBurningFire--;
+            }
+        }
+    }
+
+    // CHILLFIREBAN_FIX_DETONATION_INSTIGATOR_SWAP. CompExplosive.Detonate (CompExplosive.cs:252, decompiled 1.6) names its
+    // explosion's instigator `(instigator == null || instigator.HostileTo(parent.Faction) && ...) ? parent : instigator`,
+    // the stored instigator being whoever damaged it (StartWick(dinfo.Instigator), :175). A Fuselight has no faction, so a
+    // pawn cutting one made the PAWN the instigator and the flash's own fire was banned; a chemfuel stack or shell set off
+    // by the flash took the FUSELIGHT as instigator and its fire was exempt. Dropping the stored instigator first makes the
+    // explosion the exploding thing itself (RM_ChillFireBanKernel.DropDetonationInstigator decides when).
+    [HarmonyPatch(typeof(CompExplosive), "Detonate")]
+    public static class Patch_CompExplosive_Detonate
+    {
+        private static readonly AccessTools.FieldRef<CompExplosive, Thing> instigatorRef =
+            AccessTools.FieldRefAccess<CompExplosive, Thing>("instigator");
+
+        public static void Prefix(CompExplosive __instance, Map map)
+        {
+            Thing parent = __instance.parent;
+            Thing stored = instigatorRef(__instance);
+            if (stored == null || parent == null || !RM_ChillFireGate.IsChillSeabedMap(map))
+            {
+                return;
+            }
+            if (RM_ChillFireBanKernel.DropDetonationInstigator(true,
+                RM_DivingSettings.masterEnabled && RM_DivingSettings.chillFireBanEnabled,
+                RM_ChillFireGate.IsSelfOxidizing(parent), RM_ChillFireGate.IsSelfOxidizing(stored)))
+            {
+                instigatorRef(__instance) = null;
+            }
+        }
+    }
+
+    // CHILLFIREBAN_FIX_CORPSE_FIRE_KEEPS_OXIDIZER. Pawn.Kill (Pawn.cs:2208) relights a dying burning pawn's fire on its
+    // corpse with `fire.instigator`. Outside the Fire's own tick (a bullet, bleeding out) that handed TryStartFireIn the
+    // Fuselight whose flash set the pawn alight. That fire is the flash's fire burning on, not the flash: marked like
+    // the Fire's tick. Inside the tick the counter is already raised; nesting is harmless.
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
+    public static class Patch_Pawn_Kill_CorpseFire
+    {
+        public static void Prefix(Pawn __instance, out bool __state)
+        {
+            __state = __instance.Spawned && __instance.HasAttachment(ThingDefOf.Fire);
             if (__state)
             {
                 RM_ChillFireGate.insideBurningFire++;

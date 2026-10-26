@@ -690,6 +690,25 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 if (!RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, true, true)) fails.Add($"ignition units: {src.name} refused in a pumped-air cell");
                 if (!RM_ChillFireBanKernel.IgnitionAllowed(false, true, src.selfOx, src.burnsNothing, true, false)) fails.Add($"ignition units: {src.name} refused on a surface map");
             }
+            // CHILLFIREBAN_FIX_DETONATION_INSTIGATOR_SWAP: CompExplosive.Detonate (CompExplosive.cs:252) names the explosion
+            // `(stored == null || hostile) ? parent : stored`, stored = whoever damaged it. Played through the kernel's drop,
+            // the explosion's oxidizer must be the exploding thing's own on the banned seabed, whoever set it off.
+            var explosives = new (string name, bool selfOx)[] { ("RM_Fuselight", true), ("chemfuel stack / shell", false) };
+            var setters = new (string name, bool selfOx, bool hostile)[] { ("nobody", false, false), ("cutting pawn", false, false), ("hostile raider", false, true), ("a Fuselight flash", true, false) };
+            foreach (var ex in explosives)
+                foreach (var by in setters)
+                    foreach (bool seabed in new[] { true, false })
+                        foreach (bool banOn in new[] { true, false })
+                        {
+                            Cases++;
+                            bool stored = by.name != "nobody";
+                            if (stored && RM_ChillFireBanKernel.DropDetonationInstigator(seabed, banOn, ex.selfOx, by.selfOx)) stored = false;
+                            bool namedOx = (!stored || by.hostile) ? ex.selfOx : by.selfOx;   // the engine's choice
+                            bool fire = RM_ChillFireBanKernel.IgnitionAllowed(seabed, banOn, namedOx, false, false, false);
+                            bool ruled = !seabed || !banOn || ex.selfOx;
+                            if (fire != ruled) fails.Add($"detonation units: {ex.name} set off by {by.name} (seabed {seabed}, ban {banOn}): fire {fire}, ruling says {ruled}");
+                            if ((!seabed || !banOn) && stored != (by.name != "nobody")) fails.Add($"detonation units: {ex.name} lost its instigator off the banned seabed (kill credit must stay vanilla)");
+                        }
             return fails;
         }
 

@@ -78,6 +78,20 @@ namespace RimMandrake.DivingInteraction
             return (instigatorSelfOxidizing && !byBurningFire) || cellOxygenated;
         }
 
+        /// <summary>
+        /// CHILLFIREBAN_FIX_DETONATION_INSTIGATOR_SWAP. CompExplosive.Detonate names its explosion's instigator
+        /// `(instigator == null || hostile) ? parent : instigator`, and the stored instigator is whoever damaged it. So a
+        /// Fuselight cut by a pawn exploded as the PAWN (its own flash banned), and a chemfuel stack or shell set off by a
+        /// Fuselight flash exploded as the FUSELIGHT (its fire exempt). True = drop the stored instigator before Detonate
+        /// so the explosion is the exploding thing itself, whose own def decides the oxidizer. Only where the ban decides
+        /// anything, and only when one side carries an oxidizer: everywhere else kill credit stays vanilla.
+        /// </summary>
+        public static bool DropDetonationInstigator(bool chillSeabed, bool banEnabled, bool explosiveSelfOxidizing,
+            bool instigatorSelfOxidizing)
+        {
+            return chillSeabed && banEnabled && (explosiveSelfOxidizing || instigatorSelfOxidizing);
+        }
+
         /// <summary>True when the passive fuel burn of this tick is skipped: a flame building that cannot burn.</summary>
         public static bool SkipFuelBurn(bool usesFlame, bool ignitionAllowed)
         {

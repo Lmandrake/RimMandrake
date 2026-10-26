@@ -382,18 +382,16 @@
        commonality-0.3, harvestYield-0 hazard plant whose entire point is
        the explosion, not a farmable growth cycle.
 
-       CHILL_FIRE_BAN_1 interaction, TRACED not assumed: GenExplosion.DoExplosion
-       resolves its `instigator` to the exploding Thing itself
-       (CompExplosive.Detonate(): `instigator ?? parent`), and Explosion.cs's
-       own fire-spawn call (`FireUtility.TryStartFireIn(c, map, size,
-       instigator, ...)`) passes that same instigator through as the
-       `relevantThing` RM_ChillFireGate.IsIgnitionAllowed checks via
-       IsSelfOxidizing(relevantThing) — so a Fuselight explosion's own fire
-       reads Fuselight itself as instigator and correctly finds the
-       RM_SelfOxidizingExtension tag below, independent of which cell it
-       ignites in. Verified against decompiled 1.6 source
-       (Verse/GenExplosion.cs, RimWorld/CompExplosive.cs, Verse/Explosion.cs),
-       not assumed from the extension's own doc comment alone. -->
+       CHILL_FIRE_BAN_1 interaction: vanilla CompExplosive.Detonate names the
+       explosion's instigator `(instigator == null || hostile) ? parent :
+       instigator`, and the stored instigator is whoever damaged it — so a
+       Fuselight cut by a pawn would explode as the PAWN and its flash's fire
+       would be banned. Patch_CompExplosive_Detonate (DivingInteraction,
+       CHILLFIREBAN_FIX_DETONATION_INSTIGATOR_SWAP) drops the stored
+       instigator on the Chill seabed, so the explosion is the Fuselight
+       itself, and Explosion.cs's fire-spawn call passes it to
+       RM_ChillFireGate.IsIgnitionAllowed, which finds the
+       RM_SelfOxidizingExtension tag below. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Fuselight</defName>
     <label>fuselight</label>
