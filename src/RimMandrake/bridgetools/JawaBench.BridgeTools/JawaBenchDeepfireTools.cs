@@ -268,8 +268,10 @@ namespace JawaBench.BridgeTools
                 // map (or nowhere) hands the job driver a target it can never reach.
                 if (!p.Spawned || p.jobs == null) return Fail("Pawn is not spawned (or has no job tracker).");
                 if (!t.Spawned || t.Map != p.Map) return Fail("Thing is not spawned on the pawn's map.");
-                Type giverType = t.def.category == ThingCategory.Building ? conType : craType;
-                if (giverType == null) return Fail((giverType == conType ? "WorkGiver_ApplyDeepfireConstruction" : "WorkGiver_ApplyDeepfireCrafting") + " not found (LuminousPigment not loaded or shape changed).");
+                bool isBuilding = t.def.category == ThingCategory.Building;
+                Type giverType = isBuilding ? conType : craType;
+                // Name from isBuilding, not giverType == conType: with both types missing null == null named the wrong giver.
+                if (giverType == null) return Fail((isBuilding ? "WorkGiver_ApplyDeepfireConstruction" : "WorkGiver_ApplyDeepfireCrafting") + " not found (LuminousPigment not loaded or shape changed).");
                 object giver = Activator.CreateInstance(giverType);
                 MethodInfo jobOnThing = giverType.GetMethod("JobOnThing", BindingFlags.Public | BindingFlags.Instance);
                 if (jobOnThing == null) return Fail(giverType.Name + ".JobOnThing not found (shape changed).");

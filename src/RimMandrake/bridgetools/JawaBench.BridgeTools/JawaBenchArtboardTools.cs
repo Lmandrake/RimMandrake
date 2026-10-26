@@ -502,29 +502,50 @@ namespace JawaBench.BridgeTools
             frames = Math.Max(2, Math.Min(600, frames));
             timeoutMs = Math.Max(1000, Math.Min(120000, timeoutMs));
             var tcs = new TaskCompletionSource<object>();
-            object armErr = await ctx.MainThread.InvokeAsync<object>(() =>
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            // The ARM step is bounded by the same timeoutMs: it is queued to the main thread, and when frames are not
+            // advancing that queue is not pumped either, so an untokened await here hung exactly like the old disarm.
+            // CTS not disposed on purpose: if the bridge still runs the queued lambda after we gave up, it reads armTok.
+            var armCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            armCts.CancelAfter(timeoutMs);
+            CancellationToken armTok = armCts.Token;
+            object armErr;
+            try
             {
-                Map map = Find.CurrentMap;
-                if (map == null) return Fail("No current map.");
-                if (Current.ProgramState != ProgramState.Playing) return Fail("ProgramState is " + Current.ProgramState + ", need Playing.");
-                if (!WorldRendererUtility.DrawingMap) return Fail("The world view is open; the map is not being drawn.");
-                var rect = new CellRect(x, z, w, h);
-                if (!rect.InBounds(map)) return Fail("rect is not inside the map (" + map.Size.x + "x" + map.Size.z + ").");
-                if (artboardBusy) return Fail("another artboard_capture is in progress.");
-                JawaArtboardCapture.Install();
-                if (!JawaArtboardCapture.Installed) return Fail("view-rect patch not installed: " + JawaArtboardCapture.InstallError);
-                try { Directory.CreateDirectory(Path.GetDirectoryName(path)); }
-                catch (Exception e) { return Fail("Cannot create the output folder: " + e.Message); }
-                if (clearSelection) Find.Selector?.ClearSelection();
-                artboardBusy = true;
-                int token = ++JawaArtboardCapture.Token;
-                JawaArtboardCapture.Rect = rect;
-                JawaArtboardCapture.Armed = true;
-                Find.CameraDriver.StartCoroutine(ArtboardRenderCo(token, map, rect, W, H, ppc, path, frames, tcs));
-                return null;
-            }).ConfigureAwait(false);
+                armErr = await ctx.MainThread.InvokeAsync<object>(() =>
+                {
+                    if (armTok.IsCancellationRequested) return Fail("the caller gave up before the capture was armed.");
+                    Map map = Find.CurrentMap;
+                    if (map == null) return Fail("No current map.");
+                    if (Current.ProgramState != ProgramState.Playing) return Fail("ProgramState is " + Current.ProgramState + ", need Playing.");
+                    if (!WorldRendererUtility.DrawingMap) return Fail("The world view is open; the map is not being drawn.");
+                    var rect = new CellRect(x, z, w, h);
+                    if (!rect.InBounds(map)) return Fail("rect is not inside the map (" + map.Size.x + "x" + map.Size.z + ").");
+                    if (artboardBusy) return Fail("another artboard_capture is in progress.");
+                    JawaArtboardCapture.Install();
+                    if (!JawaArtboardCapture.Installed) return Fail("view-rect patch not installed: " + JawaArtboardCapture.InstallError);
+                    try { Directory.CreateDirectory(Path.GetDirectoryName(path)); }
+                    catch (Exception e) { return Fail("Cannot create the output folder: " + e.Message); }
+                    if (clearSelection) Find.Selector?.ClearSelection();
+                    artboardBusy = true;
+                    int token = ++JawaArtboardCapture.Token;
+                    JawaArtboardCapture.Rect = rect;
+                    JawaArtboardCapture.Armed = true;
+                    Find.CameraDriver.StartCoroutine(ArtboardRenderCo(token, map, rect, W, H, ppc, path, frames, tcs));
+                    return null;
+                }, armTok).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                // Not disarmed here: if our lambda never ran, the flags may belong to ANOTHER capture. If it ran in the
+                // same instant the cancel fired, its coroutine owns the current token and clears itself once frames resume.
+                return Fail("Timed out (or cancelled) after " + clock.ElapsedMilliseconds + " ms before the capture was " +
+                            "armed - the main thread is not pumping (minimised with Run in background off, or loading?). " +
+                            "If the arm raced the timeout, the capture finishes and writes 'path' on its own when frames resume.");
+            }
             if (armErr != null) return armErr;
-            Task done = await Task.WhenAny(tcs.Task, Task.Delay(timeoutMs, cancellationToken)).ConfigureAwait(false);
+            int left = (int)Math.Max(1, timeoutMs - clock.ElapsedMilliseconds);
+            Task done = await Task.WhenAny(tcs.Task, Task.Delay(left, cancellationToken)).ConfigureAwait(false);
             if (done != tcs.Task)
             {
                 // Disarm from THIS thread: a timeout usually means frames are not advancing, and then the main-thread
@@ -555,8 +576,14 @@ namespace JawaBench.BridgeTools
             catch (Exception e) { result = Fail("render threw " + Inner(e)); }
             finally
             {
-                JawaArtboardCapture.Armed = false;
-                artboardBusy = false;
+                // Only while this capture still owns the token: if the caller timed out mid-render, the off-thread
+                // disarm already cleared both flags and a NEW capture may have armed since - clearing here would
+                // un-arm it and open artboardBusy to a third concurrent capture.
+                if (token == JawaArtboardCapture.Token)
+                {
+                    JawaArtboardCapture.Armed = false;
+                    artboardBusy = false;
+                }
             }
             tcs.TrySetResult(result);
         }
