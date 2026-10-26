@@ -391,6 +391,13 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
         t0 = time.time()
         rec = evaluate(s, work / spec_key(s), rev, policy, settings, living, view)
         rec["seconds"] = round(time.time() - t0, 1)
+        if rec["decision"] == "REGEN" and not test and "owner_kept" not in s:
+            # fail closed (owner 2026-10-19: queue art only for NONE/PLACEHOLDER/DONOR): a spec that never looked the
+            # art ledger up (pilot_spec, a hand-written --spec) has not shown the art is not kept, so the redraw is
+            # neither counted nor filed — fauna_spec.py writes owner_kept (ARTEVAL_RUNNER_FIX_FILES_UNSPECED_KEPT)
+            rec["decision"] = "HOLD_INPUT"
+            rec["reasons"].append("owner_kept not established by the spec (no art-ledger lookup): judged REGEN, "
+                                  "NOT filed and no round counted — re-spec with fauna_spec.py")
         living[s["subject"]] = rec["decision"]
         if rec["decision"] == "REGEN" and not test:
             if prev is not None:   # the same picture judged again (two biome batches) spends no new round

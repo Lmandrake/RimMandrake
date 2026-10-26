@@ -184,7 +184,7 @@ def tuning_checks():
                 out[f] = str(p)
             return out
         base = {"template": "creature", "module": "walker", "invented": True, "description": "a beast",
-                "size": {"drawSize": [1.5, 1.5]}}
+                "size": {"drawSize": [1.5, 1.5]}, "owner_kept": False}   # as fauna_spec.py writes it
         big = dict(base, subject="RM_Big", candidate="r2", artpipe_job="arteval_RM_Big_r2", images=imgs(1024, "big"))
         ok = dict(base, subject="RM_Ok", candidate="r2", artpipe_job="arteval_RM_Ok_r2", images=imgs(256, "ok"))
         live = dict(base, subject="RM_Live", candidate="live", images=imgs(1024, "live"))
@@ -200,7 +200,10 @@ def tuning_checks():
             with contextlib.redirect_stderr(err):
                 unk = dict(base, subject="RM_Unk", images=imgs(256, "unk"), owner_kept=False,
                            owner_kept_unmeasured="art ledger unreadable: owner_kept NOT established")
-                r1 = runner.run([big, ok, live, stop, unk], "fauna_t_01", rev=Mock(), test=False, work_root=td / "w",
+                # a pilot / hand-written spec never looked the art ledger up: no `owner_kept` key at all
+                nokey = {k: v for k, v in dict(base, subject="RM_NoKey", images=imgs(256, "nokey")).items()
+                         if k != "owner_kept"}
+                r1 = runner.run([big, ok, live, stop, unk, nokey], "fauna_t_01", rev=Mock(), test=False, work_root=td / "w",
                                 state_root=td / "state" / "runs")
                 (td / "state" / "runs" / "fauna_t_01" / "run.json").write_text(json.dumps({"test": False, "subjects": []}))
                 r2 = runner.run([dict(ok)], "fauna_t_02", rev=Mock(), test=False, work_root=td / "w",
@@ -220,6 +223,12 @@ def tuning_checks():
                   and "unmeasured" in " ".join(d1["RM_Unk"]["reasons"]), (d1["RM_Unk"]["decision"], calls))
             jobs = {j["target_def"]: j for j in runner.regen_jobs(r1, "fauna_t_01")}
             check("runner: no regen job for an owner_kept-unmeasured subject", "RM_Unk" not in jobs, list(jobs))
+            # ARTEVAL_RUNNER_FIX_FILES_UNSPECED_KEPT: fail closed — kept status never established is not 'not kept'
+            check("runner: REGEN for a spec with no owner_kept key -> HOLD_INPUT, no regen job, no round",
+                  d1["RM_NoKey"]["decision"] == "HOLD_INPUT" and "RM_NoKey" not in jobs
+                  and "owner_kept not established" in " ".join(d1["RM_NoKey"]["reasons"])
+                  and "RM_NoKey" not in json.loads((td / "state" / "regen_rounds.json").read_text()),
+                  (d1["RM_NoKey"]["decision"], d1["RM_NoKey"]["reasons"][-1:], list(jobs)))
             check("regen job canvas from drawSize (256 for 1.5), drawsize carried",
                   jobs["RM_Ok"]["canvas_w"] == 256 and jobs["RM_Ok"]["canvas_h"] == 256 and jobs["RM_Ok"]["drawsize"] == 1.5, jobs.get("RM_Ok"))
             check("regen job without a drawSize says why it is 1024",
