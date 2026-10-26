@@ -1,0 +1,2 @@
+A building whose printed Graphic depends on fuel (or any state another actor changes) must compare against the state it last PRINTED, not a before/after inside its own tick: CompRefuelable.Refuel (decomp 1.6) calls no MapMeshDirty, so a refill between rare ticks is invisible to a before/after test and the map mesh keeps the stale graphic. Found in RM_ColdSink (COLDSINK_TINT_FIX_AFTER_REFUEL, 02f0e596d2).
+home: rimworld-modding
