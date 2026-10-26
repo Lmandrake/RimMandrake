@@ -82,7 +82,7 @@ namespace RimMandrake.Greentide.SelfTest
 
         // ════════════════════════ swallow ════════════════════════
         private static readonly string[] SwNames = { "Drop", "Move", "Scan", "Take", "Dig", "Block", "Limit" };
-        public static long Buried, Merged, DugChunks, PartialDigs, Scans;
+        public static long Buried, Merged, DugChunks, PartialDigs, PartialMerges, Scans;
 
         private sealed class TestCache : RM_SwallowKernel.Cache { }
         private sealed class Item { public int id, x, z, count, def, stuff; public int mire = -1; }   // mire: -1 safe, 0 short (2500), 1 long (7500)
@@ -163,6 +163,7 @@ namespace RimMandrake.Greentide.SelfTest
                                 // a failed Near placement may still have merged part of the chunk (GenPlace.TryPlaceThing)
                                 int got = ok ? n : (!block && calls % 2 == 0 ? n / 2 : 0);
                                 if (got > 0) { landed[(int)c.Def] += got; DugChunks++; }
+                                if (got > 0 && got < n) PartialMerges++;   // the 5f99db4395 branch: part landed, the rest must stay buried
                                 return got;
                             });
                             int actualLeft = caches.Count(c => c.X == x && c.Z == z);
@@ -523,11 +524,11 @@ namespace RimMandrake.Greentide.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: swallow scans {Scans}, buried {Buried}, merged {Merged}, dug chunks {DugChunks}, partial digs {PartialDigs}; mire adds {MireAdds}, removes {MireRemoves}, struggles {MireStruggles} (stuck {StuckStruggles}), saturated {MireMax}");
+            Console.WriteLine($"reached: swallow scans {Scans}, buried {Buried}, merged {Merged}, dug chunks {DugChunks}, partial digs {PartialDigs}, partial merges {PartialMerges}; mire adds {MireAdds}, removes {MireRemoves}, struggles {MireStruggles} (stuck {StuckStruggles}), saturated {MireMax}");
             Console.WriteLine($"reached: ladder shakes {Shakes}, heals {Heals}, catastrophes {Catastrophes}, rearms {Rearmed}; vurrak strikes {Strikes}, reveals {Reveals}, quiets {Quiets}, lies {Lies}; rules scores {Scores}, roil flips {RoilFlips}, marks {Marks}, branch drops {Drops}, parsed {Parsed}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (Buried == 0 || Merged == 0 || DugChunks == 0 || PartialDigs == 0 || MireAdds == 0 || MireRemoves == 0 || MireStruggles == 0 || StuckStruggles == 0 || MireMax == 0
+                if (Buried == 0 || Merged == 0 || DugChunks == 0 || PartialDigs == 0 || PartialMerges == 0 || MireAdds == 0 || MireRemoves == 0 || MireStruggles == 0 || StuckStruggles == 0 || MireMax == 0
                     || Shakes == 0 || Heals == 0 || Catastrophes == 0 || Rearmed == 0 || Strikes == 0 || Reveals == 0 || Quiets == 0 || Lies == 0 || Scores == 0 || Marks == 0 || Drops == 0 || Parsed == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
