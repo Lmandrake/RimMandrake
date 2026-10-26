@@ -42,6 +42,13 @@ namespace RimMandrake.FeverWood
 
         private RM_MapComponent_TentacleWatch Watch => parent.Map?.GetComponent<RM_MapComponent_TentacleWatch>();
 
+        // Transient: the map the limb stood on when a hit started. A blow that takes its last hit points kills it
+        // inside DamageWorker.Apply, so by PostPostApplyDamage parent.Map is already null; the sever and porter
+        // outcomes read this instead.
+        private Map preDamageMap;
+
+        private static RM_MapComponent_TentacleWatch WatchOn(Map map) => map?.GetComponent<RM_MapComponent_TentacleWatch>();
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
@@ -266,10 +273,18 @@ namespace RimMandrake.FeverWood
             return null;
         }
 
+        public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+        {
+            base.PostPreApplyDamage(ref dinfo, out absorbed);
+            preDamageMap = parent.Map;
+        }
+
         public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.PostPostApplyDamage(dinfo, totalDamageDealt);
 
+            Map map = parent.Map ?? preDamageMap;
+            preDamageMap = null;
             if (totalDamageDealt <= 0f)
             {
                 return;
@@ -279,7 +294,7 @@ namespace RimMandrake.FeverWood
             {
                 // §2a: attacking the porter angers the pool and permanently
                 // ends its trickle — it does NOT run the ordinary ladder.
-                Watch?.OnPorterAttacked();
+                WatchOn(map)?.OnPorterAttacked();
                 if (!parent.Destroyed)
                 {
                     parent.Destroy(DestroyMode.Vanish);
@@ -299,14 +314,13 @@ namespace RimMandrake.FeverWood
 
             if (severe || aboutToDie)
             {
-                Sever();
+                Sever(map);
             }
         }
 
-        private void Sever()
+        private void Sever(Map map)
         {
             IntVec3 pos = parent.Position;
-            Map map = parent.Map;
 
             if (Props.harvestThing != null && map != null)
             {
@@ -315,7 +329,7 @@ namespace RimMandrake.FeverWood
                 GenPlace.TryPlaceThing(body, pos, map, ThingPlaceMode.Near);
             }
 
-            Watch?.OnLimbSevered(Props.severRespiteTicks);
+            WatchOn(map)?.OnLimbSevered(Props.severRespiteTicks);
 
             if (!parent.Destroyed)
             {
