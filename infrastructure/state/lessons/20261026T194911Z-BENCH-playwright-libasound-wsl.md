@@ -1,0 +1,2 @@
+Playwright's headless Chromium on this WSL box fails to launch with 'libasound.so.2: cannot open shared object file' (no sudo to apt install). Workaround without root: apt-get download libasound2t64 && dpkg-deb -x *.deb, copy libasound.so.2* into ~/.local/lib/pwlibs (already done on this box), then run with LD_LIBRARY_PATH=~/.local/lib/pwlibs. Script: D:\ClaudeWork\rimmandrake\stream-metrics\shot.py (url out width, full page).
+home: visual-render-qa
