@@ -1,0 +1,2 @@
+A fuzz must-see coverage marker must fire on the event itself, not on a precondition. AbyssFuzz's lane.walled fired whenever any wall existed on the grid (1 cell in 12), so it could never report that no wall had cut a lane; fixed a5d887c325 by counting lane columns cut by an in-map wall in the reference. When reviewing a fuzz, ask of each Hit(): could this fire while the interesting branch never ran?
+home: NONE
