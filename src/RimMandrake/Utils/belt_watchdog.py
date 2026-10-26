@@ -40,7 +40,9 @@ SIGNALS (each prints one line: LEVEL name: detail  -> remedy)
               design/RimMandrake/tps_record.md
 
 Read-only toward the game: the bridge probe calls only ping, rimbridge/get_bridge_status, rimworld/get_ui_state and
-jawa/tps_report. Its one write is the tps-observer's findings, appended to JawaBench/tps/observer.jsonl as
+jawa/tps_report. Its writes are all on disk, none toward the game: its own trend state
+(.belt_state/watchdog_last.json, watchdog_modals.json); a copy of Player-prev.log before a relaunch rotates it
+(tps_record.preserve_prev_log); and the tps-observer's findings, appended to JawaBench/tps/observer.jsonl as
 they open, every 5 min while they last, and when they end (tps_record.observe), so the TPS record itself
 keeps silences, stale heartbeats and how a crashed session ended.
 """
