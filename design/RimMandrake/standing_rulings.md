@@ -402,6 +402,27 @@ nearby or ahead of it."* Run the rows that can change what we do next; never re-
 because it shares a chain with, or runs before, the row you need. Tiers and options:
 `design/RimMandrake/focused_testing_plan_2026-10-25.md`.
 
+## Spare capacity: finish, then strengthen, then explore — and a conditional pass is a pass (owner, 2026-10-25, by card)
+
+When the planned work runs out, agents spend the rest in that order. His words on the card: *"(4) but
+have some stopping criteria for both finish and strengthen. Zero bugs is NOT it... there will always be
+imperfections. We're trying for "a human won't immediate get frustrated and produce bug reports" instead
+of "no one will ever find anything wrong." Hours producing no issues, or only partial/weak issues that have
+had multiple rounds of attempting to fix them already, produce a conditional pass... and that's ok."*
+So finishing or strengthening a thing STOPS at a conditional pass: hours of testing that turn up no issues,
+or only weak/partial ones already through several fix rounds. Record it as a conditional pass and move on;
+never grind toward zero defects.
+
+## Account and capacity budget (owner, 2026-10-25, by card)
+
+*"Be aware of the account limits. the.mandrake.system and lukas.mandrake belong entirely to me and may be
+fully consumed each week. Partition how much you can use per day (roughly), but it's really the weekly
+reset. Always save some capacity for our interactive exploration together at night (predominantly).
+There's also GPT capacity to monitor and exploit. Steven.lewis can be used once the others are depleted...
+roughly half of it is available for our use."* So: budget the two owned Claude accounts against their
+WEEKLY reset with a rough per-day share; keep a reserve for evening sessions with him; use steven only
+after both are depleted and never past about half of it; track GPT capacity too and use it.
+
 ## The bridge is passed through one file
 
 One window drives the live game at a time — not for ownership, for attributability.
