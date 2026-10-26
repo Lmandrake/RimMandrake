@@ -174,7 +174,7 @@ def main():
         res["settingsAfter"] = {"buildable": sget("suspensionBridgesBuildable"), "weight": sget("suspensionWeightCollapse")}
         res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
-    return 0 if all(r["status"] == "PASS" for r in rows) else 1
+    return V.rows_exit(rows)     # review 2026-10-26: FAIL -> 1, UNMEASURED -> 2 (was 1), no rows -> 2 (was 0)
 
 
 if __name__ == "__main__":

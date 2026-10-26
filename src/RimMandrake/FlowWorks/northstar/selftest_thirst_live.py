@@ -104,7 +104,8 @@ check("clean mock: T1 and T18 are UNMEASURED", by.get("T1_provider_line") == "UN
 check("clean mock: result says mode mock, never live", res.get("mode") == "mock", res.get("mode"))
 check("clean mock: settings restored to the shipped values",
       all(str(B.settings[k]).lower() == str(thirst_fake.SETTINGS0[k]).lower() for k in thirst_fake.SETTINGS0), B.settings)
-check("clean mock: exit code 1 (T1/T18 are not PASS)", code == 1, code)
+# review 2026-10-26: main ends on validation_core.rows_exit, so an UNMEASURED-only run exits 2 (FAIL keeps 1)
+check("clean mock: exit code 2 (T1/T18 are UNMEASURED, nothing FAILs)", code == 2, code)
 
 # ---- (3)(4) faults: (label, only, faults, [(row id, status)])
 CASES = [

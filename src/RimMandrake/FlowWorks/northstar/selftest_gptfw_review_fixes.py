@@ -4,7 +4,9 @@ Each case is the finding's failure scenario fed to the pure verdict it named; it
   5.4 station_reach_live.rig_readable: tank=none / an unread water cell is no evidence the station skipped
   5.6 sitting_gaps_proof.s3_verdict: a hose with no readable poseCells is UNMEASURED, not "crosses nothing"
   6.5 walk_gaps_proof.thrown_verdict: a control that only gained RM_PitExposure did not fall
-  5.9 / 6.1 validation_core.rows_exit: FAIL rows exit 1, UNMEASURED rows exit 2 (the drivers returned 0)
+  5.9 / 6.1 validation_core.rows_exit: FAIL rows exit 1, UNMEASURED rows exit 2 (the drivers returned 0); every driver
+  here ends main() on it (review 2026-10-26: four exited 1 on UNMEASURED)
+  5.4b station_reach_live.moved: an unread fill after the wait is no channel fall (scene A had no readability gate)
 Run: python3 src/RimMandrake/FlowWorks/northstar/selftest_gptfw_review_fixes.py
 """
 import ast
@@ -68,14 +70,20 @@ def t_rows_exit():
         check("rows_exit UNMEASURED -> 2", V.rows_exit([{"status": "PASS"}, {"status": "UNMEASURED"}]) == 2)
         check("rows_exit all PASS -> 0", V.rows_exit([{"status": "PASS"}]) == 0)
         check("rows_exit no rows -> 2", V.rows_exit([]) == 2)
-    # the two drivers must not end main() on a literal `return 0`
-    for fn in ("sweep_identity_proof.py", "wet_costs_live.py"):
+    # the drivers must not end main() on a literal `return 0`
+    for fn in ("sweep_identity_proof.py", "wet_costs_live.py", "station_reach_live.py", "suspension_settings_live.py",
+               "thirst_live.py", "sprinkler_live.py"):
         with open(os.path.join(HERE, fn), encoding="utf-8") as f:
             tree = ast.parse(f.read())
         main = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "main")
         last = main.body[-1]
         lit0 = isinstance(last, ast.Return) and isinstance(last.value, ast.Constant) and last.value.value == 0
         check("5.9/6.1 %s main does not end in `return 0`" % fn, not lit0)
+        # review 2026-10-26: `0 if all PASS else 1` exits 1 on an UNMEASURED-only run (and 0 on no rows): main must
+        # end on rows_exit, which keeps FAIL 1 apart from UNMEASURED 2
+        ends = isinstance(last, ast.Return) and isinstance(last.value, ast.Call) and \
+            getattr(last.value.func, "attr", getattr(last.value.func, "id", None)) == "rows_exit"
+        check("5.9/6.1 %s main ends on rows_exit" % fn, ends)
 
 
 def _takes(fn, n):

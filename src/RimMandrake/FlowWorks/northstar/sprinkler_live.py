@@ -498,7 +498,8 @@ def main(argv=None, bridge=None):
                     pass
         res["ended"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
-    return 0 if rows and all(r["status"] == "PASS" for r in rows) else 1
+    import validation_core as _VC
+    return _VC.rows_exit(rows)     # review 2026-10-26: FAIL -> 1, UNMEASURED -> 2 (was 1)
 
 
 if __name__ == "__main__":

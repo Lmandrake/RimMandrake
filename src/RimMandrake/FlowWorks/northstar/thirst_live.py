@@ -1610,7 +1610,7 @@ def main(argv=None, bridge=None):
             row("settings_restored", "FAIL", "HARNESS", {"notRestored(before,after)": unrestored})
         res["ended"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
-    return 0 if all(r["status"] == "PASS" for r in rows) else 1
+    return V.rows_exit(rows)     # review 2026-10-26: UNMEASURED -> 2 (was 1), no rows -> 2 (was 0)
 
 
 if __name__ == "__main__":
