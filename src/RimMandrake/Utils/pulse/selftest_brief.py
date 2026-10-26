@@ -299,6 +299,8 @@ def main():
     check("widget packet_view: no packet source reads incomplete in full", len(pv["missing"]) == 4, pv)
     html = (Path(__file__).resolve().parent / "widget" / "index.html").read_text(encoding="utf-8")
     check("widget draws packet_view and the incomplete wording", "packetHTML(r)" in html and "packet incomplete: no" in html)
+    # packetHTML emits small.pk / small.inc: without rules for them the four parts ran inline into one long line
+    check("widget styles the packet lines it draws", "small.pk" in html and "small.inc" in html)
     psrc = (Path(__file__).resolve().parent / "pulse.py").read_text(encoding="utf-8")
     check("snapshot attaches packet_view to look rows via brief.packet_view", "brief.packet_view(r)" in psrc)
 
