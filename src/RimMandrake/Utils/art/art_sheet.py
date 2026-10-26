@@ -3475,6 +3475,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     ordered = [it for it in ordered if not it.get("ruledElsewhere")] + \
         [dict(it, group="Already ruled on another sheet", band=None) for it in ordered if it.get("ruledElsewhere")]
     n_collapsed = sum(1 for it in ordered if it.get("ruledElsewhere"))
+    ordered = tag_state_sets(ordered)
 
     snap = {"sheetId": sheet_id, "built": L.now(), "loadOrder": fp, "census": _rel(Path(census_path)),
             "census_git_head": census.get("git_head"), "biome": biome, "rows": snap_rows}
@@ -3819,6 +3820,33 @@ def subjects_with_textures(name: str, manifest: Path, defs, jobs=(), label=None,
     cen["biomes"][key]["textures_manifest"] = str(Path(manifest).resolve())
     Path(cpath).write_text(json.dumps(cen, indent=1))
     return cpath, key
+
+
+def tag_state_sets(ordered: list) -> list:
+    """Rows that are states of one thing (RM_DesalPlant_Wrecked/_Kludged/_Repaired) are ONE choice, never three that
+    can mix machines (owner, 2026-10-26: "The choice between wrecked and repaired is also coupled."). Tag each member
+    `stateSet` = its stem and keep the set together in state order; sheet_to_artifact.py shows a set as one question
+    and prereview.shape_problems refuses untagged ones."""
+    import prereview
+    groups = {}
+    for it in ordered:
+        st = prereview.state_of(it.get("id"))
+        if st:
+            groups.setdefault(st[0], []).append(it)
+    rank = {w: i for i, w in enumerate(prereview.STATE_WORDS)}
+    sets = {stem: sorted(m, key=lambda it: rank[prereview.state_of(it["id"])[1]]) for stem, m in groups.items() if len(m) > 1}
+    out, placed = [], set()
+    for it in ordered:
+        st = prereview.state_of(it.get("id"))
+        if st and st[0] in sets:
+            if st[0] not in placed:
+                placed.add(st[0])
+                for m in sets[st[0]]:
+                    m["stateSet"] = st[0]
+                    out.append(m)
+            continue
+        out.append(it)
+    return out
 
 
 def main(argv=None):

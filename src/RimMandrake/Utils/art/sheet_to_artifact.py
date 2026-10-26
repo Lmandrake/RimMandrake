@@ -36,6 +36,26 @@ DB LAYOUT (what the page writes; `sheet_artifact_merge.py` reads it):
     `pickedAt` moves only when a pick/redraw/hold changed, so a row touched only for a note never turns the agent's
     prefill into his decision (decisions_v2.decision_is_his).
 
+QUESTIONS (--questions <file.json>). A sheet's rows are what the game holds; what HE is asked is a question. With
+--questions the page shows only the questions, in his words, each ONE decision whose options are all the same object
+(owner, 2026-10-26: "It was making me choose between different objects for bottles and barrels." / "The choice between
+wrecked and repaired is also coupled."):
+    {"questions": [{"id": "desal", "title": "Desalination plant: which look?",
+                    "deciding": "one line: what this choice changes in the game",
+                    "earlier": "optional: what he picked before on a broken sheet (shown as a marker, not as a pick)",
+                    "rows": ["RM_DesalPlant_Wrecked", "RM_DesalPlant_Kludged", "RM_DesalPlant_Repaired"],
+                    "lane": "optional lane key (default: each row's primary slot)",
+                    "options": [{"label": "what it looks like", "look": "optional longer description",
+                                 "noChange": true, "members": {"<row id>": "<letter>" | "redo", ...}}, ...]}]}
+  - every option names a column for EVERY row of the question, so a set of states is picked whole, side by side;
+  - exactly one option per question is `noChange` and it names only the columns that are in the game now ("no change"
+    is an explicit answer, so a row he only wants to comment on still has one);
+  - labels describe the look: a render id, a defName or a bare letter is refused;
+  - every `stateSet` group of the sheet (art_sheet.py tags rows that are states of one thing) must be exactly one
+    question's rows; without --questions such a sheet is refused (exit 4).
+A pick writes each member row's document (same layout as below), so sheet_artifact_merge.py is unchanged. The page says
+how many questions there are and roughly how long they take; a question with a pick reads "answered" by itself.
+
 CAPABILITIES the parent declares when publishing (printed at the end of a run):
     {"db": {"rules": [{"path": "", "read": "admin", "write": "owner"}]}}
 `user` is not needed: the page never reads an id, and a refused write is handled as read-only.
@@ -199,6 +219,94 @@ def build_rows(items: list, cfg: dict, decisions: dict, imgs: Images) -> list[di
     return rows
 
 
+LOOKS_LIKE_AN_ID = re.compile(r"_v\d|\brender\b|\bRM_|liqcont|fwart|^[A-Z]$|^(set|option) [A-Z]$", re.I)
+
+
+class Refused(Exception):
+    pass
+
+
+def state_sets(items: list) -> dict:
+    out = {}
+    for it in items:
+        if isinstance(it, dict) and it.get("stateSet"):
+            out.setdefault(it["stateSet"], set()).add(it["id"])
+    return out
+
+
+def load_questions(spec: dict, items: list, rows: list) -> list[dict]:
+    """The page's questions, checked against the sheet: one object per question, sets whole, an explicit no-change."""
+    import prereview
+    by = {r["id"]: r for r in rows}
+    qs, seen = [], set()
+    for q in spec.get("questions") or []:
+        qid = str(q.get("id") or "")
+        if not qid or qid in seen:
+            raise Refused(f"question {qid!r}: missing or repeated id")
+        seen.add(qid)
+        for k in ("title", "deciding"):
+            if not str(q.get(k) or "").strip():
+                raise Refused(f"question {qid}: no {k!r} (one plain line in his words)")
+        rids = list(q.get("rows") or [])
+        if not rids or any(r not in by for r in rids):
+            raise Refused(f"question {qid}: rows {rids} are not all rows of this sheet")
+        lanes = {}
+        for rid in rids:
+            ln = next((ln for ln in by[rid]["lanes"] if ln["pickable"] and
+                       (ln["key"] == q.get("lane") if q.get("lane") else ln["primary"])), None)
+            if ln is None:
+                raise Refused(f"question {qid}: row {rid} has no pickable lane {q.get('lane') or '(primary)'}")
+            lanes[rid] = ln
+        opts, maps = [], set()
+        for o in q.get("options") or []:
+            lab = str(o.get("label") or "").strip()
+            if not lab or LOOKS_LIKE_AN_ID.search(lab):
+                raise Refused(f"question {qid}: option label {lab!r} must say what it looks like, not a render id or letter")
+            mem = o.get("members") or {}
+            if set(mem) != set(rids):
+                raise Refused(f"question {qid}: option {lab!r} must name a picture for every row {rids} (a set is "
+                              f"picked whole), it names {sorted(mem)}")
+            out = []
+            for rid in rids:
+                v, ln = str(mem[rid]), lanes[rid]
+                st = prereview.state_of(rid)
+                cap = st[1] if st else (ln["label"] or by[rid]["label"])
+                if v == "redo":
+                    out.append({"row": rid, "lane": ln["key"], "state": "redraw", "L": "", "caption": cap})
+                    continue
+                c = next((c for c in ln["cols"] if c["L"] == v), None)
+                if c is None or c["noSelect"] or c["purgedLive"]:
+                    raise Refused(f"question {qid}: option {lab!r}: {v!r} is not a usable picture of {rid} lane {ln['key']}")
+                if o.get("noChange") and not c["winner"]:
+                    raise Refused(f"question {qid}: the no-change option names {rid} {v}, which is not what the game shows")
+                face = next((f for f in c["faces"] if f["face"] == c["panelFace"]), c["faces"][0] if c["faces"] else {})
+                out.append({"row": rid, "lane": ln["key"], "state": "pick", "L": v, "caption": cap,
+                            "panel": c["panel"], "full": face.get("full"), "thumb": face.get("thumb"),
+                            "px": c["srcPx"], "ingame": c["winner"]})
+            if o.get("noChange") and any(m["state"] != "pick" for m in out):
+                raise Refused(f"question {qid}: the no-change option cannot ask for a redraw")
+            sig = tuple((m["row"], m["state"], m["L"]) for m in out)
+            if sig in maps:
+                raise Refused(f"question {qid}: two options pick the same pictures")
+            maps.add(sig)
+            opts.append({"key": str(len(opts)), "label": lab, "look": str(o.get("look") or ""),
+                         "noChange": bool(o.get("noChange")), "members": out})
+        if len(opts) < 2:
+            raise Refused(f"question {qid}: a question needs at least two options")
+        if sum(o["noChange"] for o in opts) != 1:
+            raise Refused(f"question {qid}: exactly one option must be the explicit 'no change' (what the game shows now)")
+        qs.append({"id": qid, "title": str(q["title"]), "deciding": str(q["deciding"]),
+                   "earlier": str(q.get("earlier") or ""), "rows": rids, "noteRow": rids[0], "options": opts})
+    if not qs:
+        raise Refused("the questions file has no questions")
+    asked = [set(q["rows"]) for q in qs]
+    for stem, members in sorted(state_sets(items).items()):
+        if members not in asked:
+            raise Refused(f"COUPLED: the states of {stem} ({', '.join(sorted(members))}) must be ONE question whose "
+                          f"options are whole sets")
+    return qs
+
+
 def render(title: str, data: dict) -> str:
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return (PAGE.replace("__TITLE__", H.escape(title)).replace("__DATA__", blob))
@@ -211,6 +319,8 @@ def main(argv=None) -> int:
     ap.add_argument("--decisions", help="its decisions.json (default: <sheet stem>.decisions.json beside it)")
     ap.add_argument("--out", required=True, help="output directory (created)")
     ap.add_argument("--title", help="page <title>, 2-4 words (default: from the sheet's title)")
+    ap.add_argument("--questions", help="JSON file of plain questions (see QUESTIONS above); required when the sheet "
+                    "has state sets")
     ap.add_argument("--budget-mb", type=float, default=15.5, help="total size cap in MiB (hard limit 16)")
     a = ap.parse_args(argv)
     sheet = Path(a.sheet or a.sheet_opt or ap.error("give the sheet .html")).resolve()
@@ -254,11 +364,32 @@ def main(argv=None) -> int:
     out.mkdir(parents=True, exist_ok=True)
     imgs = Images(sheet.parent, out)
     rows = build_rows(items, cfg, ddoc.get("decisions") or {}, imgs)
+    questions, qspec = None, {}
+    try:
+        if a.questions:
+            qspec = json.loads(Path(a.questions).read_text(encoding="utf-8"))
+            questions = load_questions(qspec, items, rows)
+        elif state_sets(items):
+            raise Refused("this sheet has states of one thing (" + ", ".join(sorted(state_sets(items))) + "): they must "
+                          "be asked as sets, so give --questions (see QUESTIONS in --help)")
+    except Refused as e:
+        shutil.rmtree(out / "img", ignore_errors=True)
+        print("REFUSED sheet_to_artifact: " + str(e), file=sys.stderr)
+        return 4
+    if questions:
+        keep = {r for q in questions for r in q["rows"]}
+        rows = [r for r in rows if r["id"] in keep]
+        used = {v for q in questions for o in q["options"] for m in o["members"] for v in (m.get("panel"), m.get("full"),
+                                                                                          m.get("thumb")) if v}
+        for k in [k for k, v in imgs.map.items() if v not in used]:   # ship only the pictures a question shows
+            (out / imgs.map[k]).unlink(missing_ok=True)
+            imgs.full.pop(imgs.map[k], None)
+            del imgs.map[k]
     data = {
         "sheetId": cfg.get("sheetId") or ddoc.get("sheetId") or sheet.stem, "title": cfg.get("title") or title,
         "brief": strip_tags(cfg.get("briefHtml") or "")[:1500], "posture": strip_tags((cfg.get("posture") or {}).get("explain", "")),
         "criterion": cfg.get("criterion") or "", "snapshotId": ddoc.get("snapshotId"), "route": ROUTE,
-        "frozen": bool(ddoc.get("frozen")), "rows": rows, "fullMode": {},
+        "frozen": bool(ddoc.get("frozen")), "rows": rows, "fullMode": {}, "questions": questions, "intro": str(qspec.get("intro") or ""),
         "options": [{"key": o["key"], "label": o.get("label") or o["key"], "counts": o.get("counts")}
                     for o in cfg.get("options") or [] if isinstance(o, dict) and o.get("key")],
     }
@@ -277,6 +408,9 @@ def main(argv=None) -> int:
     (out / "files.json").write_text(json.dumps(files, indent=1) + "\n", encoding="utf-8")
     nlanes = sum(len(r["lanes"]) for r in rows)
     print(f"{out / 'index.html'}  {len(page.encode()):,} bytes")
+    if questions:
+        print(f"questions {len(questions)} (rows asked: {sum(len(q['rows']) for q in questions)}; other sheet rows "
+              f"not shown: {', '.join(sorted({it['id'] for it in items} - {r['id'] for r in rows})) or 'none'})")
     print(f"rows {len(rows)} · lanes {nlanes} · pictures {len(imgs.published())} · total {total / MB:.2f} MiB "
           f"(cap {budget / MB:.1f}) · sprites near-exact (q95) {len(downgraded)} of {len(imgs.full)}")
     print(f"files: {out / 'files.json'}")
@@ -342,6 +476,23 @@ border-radius:7px;padding:8px;margin-top:10px}
 .state{font-size:12px;color:var(--mute)}
 .state.err{color:var(--bad)}
 .chip{font-size:12px;background:var(--chip);border-radius:10px;padding:1px 8px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 20px;min-width:0}
+.q.answered{border-color:var(--pick)}
+.q h2{font-size:19px;margin:0 0 4px}
+.qn{font-size:13px;color:var(--mute);font-weight:600}
+.deciding{font-size:16px;margin:2px 0 8px}
+.earlier{font-size:14px;background:var(--chip);border-radius:8px;padding:8px 10px;margin:8px 0}
+.ans{font-size:13px;font-weight:700;color:var(--pick)}
+.opt{border:2px solid var(--line);border-radius:10px;padding:10px;margin:12px 0 0;min-width:0}
+.opt.sel{border-color:var(--pick);background:var(--pick-bg)}
+.opt h3{font-size:16px;margin:0}
+.opt .look{font-size:14px;color:var(--mute);margin:2px 0 6px}
+.set{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:8px;margin:8px 0}
+.mem{min-width:0;text-align:center;font-size:13px}
+.mem img{display:block;width:100%;height:auto;border-radius:6px;background:var(--panel);image-rendering:auto}
+.mem .redo{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:2px dashed var(--line);border-radius:6px;color:var(--mute);padding:6px}
+.choose{width:100%;font-size:16px;min-height:48px}
+.intro{font-size:15px;margin:6px 0 12px}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:var(--card);border:1px solid var(--line);padding:8px;border-radius:6px}
 </style>
 </head>
@@ -354,9 +505,10 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:var(--
 <p class="mute">Tap any picture to open the sprite at full resolution. The large picture in each set is its true in-game
 size beside a vanilla human. Each change is saved here as you go; the decisions file in the repo is updated only when
 Claude merges this page's saved picks.</p></details>
-<div class="bar"><span id="count"></span><label><input type="checkbox" id="hidedone"> hide done</label>
+<div class="bar"><span id="count"></span><label><input type="checkbox" id="hidedone"> hide answered</label>
 <button id="copy" type="button">copy my picks</button><span class="state" id="gstate"></span></div>
 <pre id="copied" class="hide"></pre>
+<p class="intro hide" id="intro"></p>
 <div id="rows"></div>
 </div>
 <script id="DATA" type="application/json">__DATA__</script>
@@ -368,6 +520,8 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const docId = r => Array.from(r).map(c => { const n = c.codePointAt(0); return /^[A-Za-z0-9_]$/.test(c) ? c : n > 0xFFFF ? '~~' + n.toString(16).padStart(6, '0') : '~' + n.toString(16).padStart(4, '0'); }).join('');
 const byId = new Map(D.rows.map(r => [r.id, r]));
+const Q = D.questions && D.questions.length ? D.questions : null;
+const qById = new Map((Q || []).map(q => [q.id, q]));
 /* S[rowId] = what HE chose on this page: {pick, slots{lane: {state, pick?}}, note, done, ts, pickedAt} */
 const S = {};
 let db = null, readOnly = !!D.frozen, saving = 0;
@@ -423,7 +577,7 @@ function rowHTML(r) {
   const s = S[r.id] || {}, rec = r.rec || {}, hold = rowHold(r);
   const note = 'note' in s ? s.note : (rec.note || '');
   const size = r.cells != null ? `${r.footprint ? r.footprint.join('×') + ' cell footprint · ' : ''}${r.cells} cell(s) drawn` : '';
-  return `<div class="row${s.done ? ' done' : ''}" id="row-${esc(docId(r.id))}" data-id="${esc(r.id)}">
+  return `<div class="row${answered(r) ? ' done' : ''}" id="row-${esc(docId(r.id))}" data-id="${esc(r.id)}">
 <div class="rhead"><h2>${esc(r.label)}</h2><span class="rid">${esc(r.id)}</span><span class="chip">${esc(r.kind)}</span>${r.scaleStatus && r.scaleStatus !== 'measured' ? '<span class="chip">size: ' + esc(r.scaleStatus) + '</span>' : ''}</div>
 <div class="mute">${esc(r.description)}</div>
 <div class="mute" style="font-size:12px">${esc(size)}${r.scaleVerdict ? ' · ' + esc(r.scaleVerdict) : ''}${r.scaleSource ? ' · size from: ' + esc(r.scaleSource) : ''}</div>
@@ -431,14 +585,15 @@ ${r.prefillWhy ? '<div class="mute" style="font-size:12px">suggested: ' + esc(r.
 ${r.lanes.map(ln => laneHTML(r, ln)).join('')}
 <textarea data-act="note" data-row="${esc(r.id)}" placeholder="Note for this row (what to change, what is wrong)"${readOnly ? ' disabled' : ''}>${esc(note)}</textarea>
 <div class="foot"><div class="acts"><button type="button" data-act="hold" data-row="${esc(r.id)}" class="${hold ? 'on' : ''}"${readOnly ? ' disabled' : ''}>${hold ? 'on hold' : 'hold'}</button>
-<button type="button" data-act="done" data-row="${esc(r.id)}" class="${s.done ? 'on' : ''}"${readOnly ? ' disabled' : ''}>${s.done ? 'done ✓' : 'mark done'}</button></div>
+${answered(r) ? '<span class="ans">answered</span>' : ''}</div>
 <span class="state" id="st-${esc(docId(r.id))}">${esc(s._msg || (s.ts ? 'saved' : ''))}</span></div></div>`;
 }
 function paintRow(id) {
+  if (Q) { qOfRow(id).forEach(q => paintQ(q.id)); return; }
   const r = byId.get(id), el = $('row-' + docId(id));
   const ta = el && el.querySelector('textarea'), focused = ta && document.activeElement === ta;
   if (!el) return;
-  if (focused) { paintState(id); el.classList.toggle('done', !!(S[id] || {}).done); return; }   /* never yank the box he types in */
+  if (focused) { paintState(id); el.classList.toggle('done', answered(r)); return; }   /* never yank the box he types in */
   el.outerHTML = rowHTML(r);
   applyHide();
 }
@@ -447,15 +602,18 @@ function paintState(id, msg, err) {
   if (msg != null) { (S[id] || {})._msg = msg; }
   el.textContent = (S[id] || {})._msg || ''; el.classList.toggle('err', !!err);
 }
+/* answered = he picked something (a picture, a redraw or hold); there is no separate "done" to tick */
+function answered(r) { return rowHold(r) || r.lanes.some(ln => ln.pickable && laneState(r, ln).state); }
 function paintCount() {
-  const done = D.rows.filter(r => (S[r.id] || {}).done).length;
   const touched = Object.keys(S).filter(k => S[k].ts).length;
-  $('count').textContent = `${done} of ${D.rows.length} rows done · ${touched} saved`;
+  if (Q) { const n = Q.filter(qAnswered).length; $('count').textContent = `${n} of ${Q.length} answered · ${touched} saved`; }
+  else $('count').textContent = `${D.rows.filter(answered).length} of ${D.rows.length} answered · ${touched} saved`;
   $('gstate').textContent = saving ? 'saving…' : '';
 }
 function applyHide() {
   const on = $('hidedone').checked;
-  document.querySelectorAll('.row').forEach(el => el.classList.toggle('hide', on && !!(S[el.dataset.id] || {}).done));
+  document.querySelectorAll('.row').forEach(el => el.classList.toggle('hide', on && answered(byId.get(el.dataset.id))));
+  document.querySelectorAll('.q').forEach(el => el.classList.toggle('hide', on && qAnswered(qById.get(el.dataset.q))));
 }
 function body(id) {
   const r = byId.get(id), s = S[id], prim = r.lanes.find(l => l.primary && l.pickable);
@@ -465,7 +623,7 @@ function body(id) {
   let pick = '';
   if (rowHold(r)) pick = 'hold';   /* a hold from the file stands until he takes it back */
   else if (prim) { const ps = laneState(r, prim); pick = ps.state === 'pick' ? ps.pick : ps.state === 'redraw' ? 'redo' : ''; }
-  return {rowId: id, sheetId: D.sheetId, rev: r.rev || null, pick, slots, note: s.note || '', done: !!s.done,
+  return {rowId: id, sheetId: D.sheetId, rev: r.rev || null, pick, slots, note: s.note || '', done: false,
           ts: new Date().toISOString(), pickedAt: s.pickedAt || null, route: D.route};
 }
 async function save(id) {
@@ -500,7 +658,55 @@ async function save(id) {
 }
 function showDb(msg, kind) { const b = $('dbmsg'); b.textContent = msg; b.className = 'banner ' + (kind || 'warn'); b.classList.toggle('hide', !msg); }
 
+/* ---- questions: one decision each; an option is a whole set, written to every member row ---- */
+function optOn(q, o) {
+  return o.members.every(m => { const r = byId.get(m.row), st = laneState(r, r.lanes.find(l => l.key === m.lane)); return m.state === 'redraw' ? st.state === 'redraw' : st.state === 'pick' && st.pick === m.L; });
+}
+function qPick(q) { return q.options.find(o => optOn(q, o)) || null; }
+function qAnswered(q) { return !!(q && qPick(q)); }
+function memHTML(m) {
+  if (m.state === 'redraw') return `<div class="mem"><div class="redo">to be redrawn to match</div>${esc(m.caption)}</div>`;
+  const img = m.panel || m.thumb;
+  return `<div class="mem"><a href="${esc(m.full || img)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(img)}" alt="${esc(m.caption)}"></a>${esc(m.caption)}</div>`;
+}
+function qHTML(q, i) {
+  const cur = qPick(q), rn = byId.get(q.noteRow), s = S[q.noteRow] || {};
+  const note = 'note' in s ? s.note : ((rn.rec || {}).note || '');
+  const opts = q.options.map(o => {
+    const on = cur === o;
+    return `<div class="opt${on ? ' sel' : ''}"><h3>${esc(o.label)}${o.noChange ? ' <span class="chip">no change</span>' : ''}</h3>
+${o.look ? `<div class="look">${esc(o.look)}</div>` : ''}<div class="set" style="--n:${o.members.length}">${o.members.map(memHTML).join('')}</div>
+<button type="button" class="choose${on ? ' on' : ''}" data-act="qpick" data-q="${esc(q.id)}" data-o="${esc(o.key)}"${readOnly ? ' disabled' : ''}>${on ? 'your choice ✓' : 'choose this'}</button></div>`;
+  }).join('');
+  return `<div class="q${cur ? ' answered' : ''}" id="q-${esc(q.id)}" data-q="${esc(q.id)}"><div class="qn">Question ${i + 1} of ${Q.length}${cur ? ' · <span class="ans">answered</span>' : ''}</div>
+<h2>${esc(q.title)}</h2><div class="deciding">${esc(q.deciding)}</div>
+${q.earlier ? `<div class="earlier">${esc(q.earlier)}</div>` : ''}${opts}
+<textarea data-act="note" data-row="${esc(q.noteRow)}" placeholder="Anything to add? (optional)"${readOnly ? ' disabled' : ''}>${esc(note)}</textarea>
+<div class="foot"><span></span><span class="state" id="st-${esc(docId(q.noteRow))}">${esc(s._msg || '')}</span></div></div>`;
+}
+function paintQ(id) {
+  const q = qById.get(id), el = $('q-' + id); if (!q || !el) return;
+  const ta = el.querySelector('textarea');
+  if (ta && document.activeElement === ta) { el.classList.toggle('answered', qAnswered(q)); return; }
+  el.outerHTML = qHTML(q, Q.indexOf(q)); applyHide();
+}
+function qOfRow(id) { return (Q || []).filter(q => q.rows.includes(id)); }
+
 document.addEventListener('click', e => {
+  const qb = e.target.closest('button[data-act="qpick"]');
+  if (qb && !qb.disabled) {
+    const q = qById.get(qb.dataset.q), o = q && q.options.find(x => x.key === qb.dataset.o); if (!o) return;
+    const off = qPick(q) === o, at = new Date().toISOString();
+    for (const m of o.members) {
+      const r = byId.get(m.row), s = ensure(r);
+      if (off) { delete s.slots[m.lane]; s.slotsTouched[m.lane] = true; }
+      else { s.slots[m.lane] = m.state === 'redraw' ? {state: 'redraw'} : {state: 'pick', pick: m.L}; delete s.slotsTouched[m.lane]; }
+      s.pick = ''; s.pickedAt = at;
+    }
+    paintQ(q.id);
+    for (const m of o.members) save(m.row);
+    return;
+  }
   const b = e.target.closest('button[data-act]'); if (!b || b.disabled) return;
   const id = b.dataset.row, r = byId.get(id); if (!r) return;
   const s = ensure(r), act = b.dataset.act;
@@ -516,8 +722,7 @@ document.addEventListener('click', e => {
     const prim = r.lanes.find(l => l.primary && l.pickable);
     if (rowHold(r)) s.pick = ''; else { s.pick = 'hold'; if (prim) { delete s.slots[prim.key]; s.slotsTouched[prim.key] = true; } }
     s.pickedAt = new Date().toISOString();
-  } else if (act === 'done') s.done = !s.done;
-  else return;
+  } else return;
   paintRow(id); save(id);
 });
 document.addEventListener('input', e => {
@@ -548,9 +753,18 @@ function applyRemote(doc) {
 }
 
 $('ttl').textContent = D.title;
-$('sub').textContent = `${D.rows.length} rows · sheet ${D.sheetId}`;
 $('brief').textContent = D.brief; $('posture').textContent = D.posture; $('crit').textContent = D.criterion;
-$('rows').innerHTML = D.rows.map(rowHTML).join('');
+if (Q) {
+  const mins = Math.max(1, Math.round(Q.length * 0.75));
+  $('sub').textContent = `${Q.length} question${Q.length === 1 ? '' : 's'} · about ${mins} minute${mins === 1 ? '' : 's'}`;
+  $('intro').textContent = D.intro || 'Each question is one choice. Tap "choose this" under the option you want; that is your answer, nothing else to press. Tap a picture to see it full size.';
+  $('intro').classList.remove('hide');
+  document.querySelector('details.brief').classList.add('hide');
+  $('rows').innerHTML = Q.map(qHTML).join('');
+} else {
+  $('sub').textContent = `${D.rows.length} rows · sheet ${D.sheetId}`;
+  $('rows').innerHTML = D.rows.map(rowHTML).join('');
+}
 paintCount();
 if (D.frozen) showDb('This sheet is frozen: it is shown for reference and nothing can be changed.', 'warn');
 

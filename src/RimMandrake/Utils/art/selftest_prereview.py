@@ -40,6 +40,14 @@ def main() -> int:
     r = subprocess.run([sys.executable, str(HERE / "prereview.py"), "--selftest"], capture_output=True, text=True, timeout=60)
     check(r.returncode == 0 and "GREEN" in r.stdout, "prereview.py --selftest GREEN" + ("" if r.returncode == 0 else ": " + r.stdout[-300:]))
 
+    # art_sheet tags the states of one thing as one set, kept together in state order (owner 2026-10-26: coupled)
+    import art_sheet as AS
+    rows = [{"id": i} for i in ("RM_Pump_Repaired", "RM_Bank", "RM_Pump_Wrecked", "RM_Pump_Kludged", "RM_Lone_Wrecked")]
+    out = AS.tag_state_sets(rows)
+    check([r["id"] for r in out] == ["RM_Pump_Wrecked", "RM_Pump_Kludged", "RM_Pump_Repaired", "RM_Bank", "RM_Lone_Wrecked"]
+          and [r.get("stateSet") for r in out] == ["RM_Pump"] * 3 + [None, None] and PR.shape_problems(out) == [],
+          "art_sheet.tag_state_sets: one set, state order, a lone state untouched; prereview sees it well formed")
+
     import serve_gated as SV
     items = [{"id": "R1", "label": "hose reel", "graphics": [{"res": "x", "cols": [{"faces": {"south": "aa"}}]}]}]
     with tempfile.TemporaryDirectory() as td:
