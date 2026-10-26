@@ -43,6 +43,19 @@ namespace RimMandrake.Stillsand
         {
             compClass = typeof(RM_CompSolarStill);
         }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef))
+            {
+                yield return e;
+            }
+            // SOLARSTILL_TICKER_REPAIR_NEVER_DISTILS: the cycle runs on CompTickRare; any other ticker never distils.
+            if (parentDef.tickerType != TickerType.Rare)
+            {
+                yield return "RM_CompProperties_SolarStill needs tickerType Rare (the cycle runs on CompTickRare), has " + parentDef.tickerType;
+            }
+        }
     }
 
     public class RM_CompSolarStill : ThingComp

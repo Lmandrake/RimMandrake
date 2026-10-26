@@ -153,7 +153,11 @@ namespace RimMandrake.Stillsand
 
         public override void PostDrawExtraSelectionOverlays()
         {
-            if (parent.Spawned) GenDraw.DrawRadiusRing(parent.Position, RM_SandSwimRemSettings.thumperRadius);
+            // THUMPER_RING_SILENCE_RADIAL_MAX: the slider reaches 80 but DrawRadiusRing logs an error past
+            // GenRadial.MaxRadialPatternRadius (~79.8); the ring is drawn clamped, the call radius is not.
+            if (parent.Spawned)
+                GenDraw.DrawRadiusRing(parent.Position,
+                    Mathf.Min(RM_SandSwimRemSettings.thumperRadius, GenRadial.MaxRadialPatternRadius));
         }
 
         public override void PostExposeData()

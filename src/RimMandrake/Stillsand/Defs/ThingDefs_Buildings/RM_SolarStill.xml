@@ -12,6 +12,8 @@
 
   <ThingDef Name="RM_StillBase" ParentName="BuildingBase" Abstract="True">
     <thingClass>Building_Storage</thingClass>
+    <!-- SOLARSTILL_TICKER_REPAIR_NEVER_DISTILS: RM_CompSolarStill runs on CompTickRare; BuildingBase sets no tickerType (Never). -->
+    <tickerType>Rare</tickerType>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
     <fillPercent>0.4</fillPercent>
