@@ -112,7 +112,7 @@ r = d({"token_mode": "CRUISE", "since": NOW - 5 * H}, source="ESTIMATE", week_pc
 check("an ESTIMATE never enters BURN", r["token_mode"] == "CRUISE" and not r["state"].get("pending"), r["state"])
 # ---- presence and queues
 r = d(owner_window_min=4.0)
-check("owner wrote 4 min ago -> BENCH presence, BENCH at most 3", r["presence"] == "BENCH" and seats(r) == (3, 1), (r["presence"], r["seats"]))
+check("owner wrote 4 min ago -> BENCH presence, and NO lower N for it", r["presence"] == "BENCH" and seats(r) == (5, 1), (r["presence"], r["seats"]))
 r = d(owner_window_min=45.0)
 check("45 min since a window message -> PHONE, no BENCH cap", r["presence"] == "PHONE" and seats(r) == (5, 1), (r["presence"], r["seats"]))
 r = d(owner_card_min=10.0)
@@ -200,14 +200,47 @@ tx("working", [U, A("tool_use")], 30)
 tx("between_calls", [U, A("tool_use"), {"type": "api-request"}], 400)
 tx("done_old", [U, A("end_turn")], 400)
 tx("done_just_now", [U, A("end_turn")], 20)
+tx("ended_with_tool", [U, dict(A("end_turn"), message={"role": "assistant", "stop_reason": "end_turn", "content": [{"type": "tool_use"}]})], 20)
+tx("ended_then_noise", [U, A("end_turn"), {"type": "api-request"}, {"type": "api-request-blob", "message": {"role": "assistant", "content": [{"type": "tool_use"}]}}], 20)
 tx("resumed", [U, A("end_turn"), U], 60)
 tx("dead_silent", [U, A("tool_use")], 2000)
 tx("unparsable", [U], 50)
 (sub / "agent-working.meta.json").write_text("{}")
 run = SA.running_helpers([proj], real_now, R)
 ids = sorted(x["id"] for x in run)
-check("running helpers: working, between calls, just ended, resumed, unparsable",
-      ids == ["between_calls", "done_just_now", "resumed", "unparsable", "working"], ids)
+check("running helpers: a clean end_turn is finished AT ONCE; ambiguous endings still run",
+      ids == ["between_calls", "ended_with_tool", "resumed", "unparsable", "working"], ids)
+for extra in ("ended_with_tool", "ended_then_noise"):  # keep the mean-helpers fixture below as it was
+    (sub / f"agent-{extra}.jsonl").unlink()
+
+# ---- overage and payback
+OV = {"ownerSaid": "go to 8", "until": SA.iso_local(NOW + 5 * H), "seats": {"BENCH": 8}}
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "overage_t": NOW - H}, helpers_running={"BENCH": 8, "FOUNDRY": 1}, override=OV)
+check("overage: 8 BENCH running over a computed 5 for 1 h under his word -> 3 helper-h owed, no payback while it holds",
+      abs(r["overage"]["owed_h"] - 3.0) < 1e-6 and not r["overage"]["paying"] and seats(r)[0] == 8, (r["overage"], r["seats"]))
+r2 = d(r["state"], helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0)
+check("overage: no lower N applies just because he is present (window 4 min, no debt -> BENCH 5)",
+      seats(d(owner_window_min=4.0)) == (5, 1))
+st = dict(r["state"], overage_t=NOW - 0.25 * H)
+r2 = d(st, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0, hours_to_week_reset=26.0)
+check("payback: word lapsed, he is away -> N lowered by ceil(owed / (hours to reset - margin)) = ceil(3/20) = 1: BENCH 4",
+      r2["overage"]["paying"] and r2["overage"]["cut"] == 1 and seats(r2)[0] == 4 and "lowered by 1" in r2["why"], (r2["overage"], r2["seats"]))
+check("payback: the deadline is before the reset", r2["overage"]["deadline_h"] < 26.0, r2["overage"])
+r3 = d(st, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0, hours_to_week_reset=8.0)
+check("payback: near the reset N is cut harder (ceil(3/2) = 2: BENCH 3)", seats(r3)[0] == 3 and r3["overage"]["cut"] == 2, (r3["overage"], r3["seats"]))
+st9 = dict(r["state"], overage_h=40.0, overage_t=NOW)
+r4 = d(st9, helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=300.0, hours_to_week_reset=8.0)
+check("payback: never below N=1 for BENCH, and says the rest is forgiven at the reset",
+      seats(r4)[0] >= 1 and "forgiven at the reset" in r4["overage"]["plan"], (r4["overage"], r4["seats"]))
+r5 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 2, "FOUNDRY": 0}, owner_window_min=300.0)
+check("payback: unused helper-hours are credited and the debt falls (3 owed, 3 under for 1 h -> 0)",
+      r5["overage"]["owed_h"] == 0 and r5["overage"]["credited_h"] == 3.0, r5["overage"])
+r6 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=3.0)
+check("payback waits while he is in a window", not r6["overage"]["paying"] and seats(r6)[0] == 5 and r6["overage"]["owed_h"] == 3.0, (r6["overage"], r6["seats"]))
+r7 = d(dict(r["state"], reset_at="2026-10-26T01:00-07:00", overage_t=NOW), helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=300.0)
+check("a weekly reset forgives the remaining debt", r7["overage"]["owed_h"] == 0 and r7["overage"]["forgiven_h"] == 3.0, r7["overage"])
+check("interactive work above N is recorded without any override",
+      abs(d({"overage_t": NOW - 0.5 * H}, helpers_running={"BENCH": 7, "FOUNDRY": 1}, owner_window_min=2.0)["overage"]["owed_h"] - 1.0) < 1e-6)
 
 # presence from a main transcript
 mainp = proj / "sess1.jsonl"
@@ -271,8 +304,8 @@ check("CLI now --json runs", p.returncode == 0 and j, p.stderr[-400:])
 ji = j.get("inputs") or {}
 check("burn account auto = this machine's live login (system, not the 93% one)", ji.get("account") == "system", ji)
 check("gather reads A1/D1 from the streams record", ji.get("A1") == 80 and ji.get("D1") == 32, ji)
-check("gather counts the fixture's 5 running helpers on BENCH, 0 on FOUNDRY",
-      ji.get("helpers_running") == {"BENCH": 5, "FOUNDRY": 0}, ji.get("helpers_running"))
+check("gather counts the fixture's 4 running helpers on BENCH, 0 on FOUNDRY",
+      ji.get("helpers_running") == {"BENCH": 4, "FOUNDRY": 0}, ji.get("helpers_running"))
 check("one meter reading -> rate from this machine's message count", "4 messages" in (ji.get("rate_src") or ""), ji.get("rate_src"))
 check("presence: window 50 min, card 20 min -> PHONE", j.get("presence") == "PHONE", (j.get("presence"), ji))
 p = subprocess.run(cli + ["now"], env=env, capture_output=True, text=True, timeout=60)

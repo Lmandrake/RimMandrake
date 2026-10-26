@@ -179,6 +179,7 @@ check("panel: no pacing record draws the Pacing tile hollow with its reason", "<
       and "No pacing recorded" in page, page[page.find("Pacing"):][:300])
 pac = {"at": S.iso(NOW - 120), "mode": "CRUISE", "token_mode": "CRUISE", "queue_mode": "PAYDOWN", "presence": "BENCH",
        "seats": {"BENCH": 3, "FOUNDRY": 1}, "n_total": 4, "running": {"BENCH": 2, "FOUNDRY": 1},
+       "overage": {"owed_h": 3.2, "paying": True, "cut": 1, "plan": "owes 3.2 helper-h: N lowered by 1 (wanted 1) for about 3 h, due within 20 h"},
        "why": "system 40% left, 1.99 d to reset -> P 1.40; fits 4.1",
        "accounts": [{"name": "system", "pct_left": 40.0, "hours_to_reset": 48.0, "source": "MEASURED", "burn": True},
                     {"name": "steven", "pct_left": 31.0, "hours_to_reset": 50.0, "source": "ESTIMATE", "burn": False,
@@ -188,6 +189,9 @@ pg = S.render([dict(live, pacing=pac)], NOW)
 tile = pg[pg.index("<h2>Pacing</h2>"):pg.index("<h2>Builder slots</h2>")]
 check("pacing tile: mode and N per seat", "CRUISE" in tile and "BENCH <b>3</b>" in tile and "FOUNDRY <b>1</b>" in tile
       and "2 running" in tile, tile[:600])
+check("pacing tile: the overage owed and the payback plan", "overage owed" in tile and "3.2 helper-h" in tile
+      and "lowered by 1" in tile, tile[:900])
+check("pacing tile: no debt says so", "overage owed: <b>0 helper-h</b>" in S.pacing_tile(dict(pac, overage={"owed_h": 0}), NOW))
 check("pacing tile: why the allocator chose it", "fits 4.1" in tile, tile[:600])
 check("pacing tile: each account's % left against the share of the week left before its reset",
       "system" in tile and "40% left" in tile and "29% of the week" in tile and "31% left" in tile, tile[:900])

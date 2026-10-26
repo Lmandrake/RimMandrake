@@ -41,7 +41,7 @@ A = lambda stop: {"type": "assistant", "timestamp": SA.iso_z(now - 600),  # noqa
                   "message": {"role": "assistant", "stop_reason": stop, "content": [{"type": "text", "text": "x"}]}}
 U = {"type": "user", "timestamp": SA.iso_z(now - 700), "message": {"role": "user", "content": "go"}}
 for name, recs, age in (("run1", [U, A("tool_use")], 20), ("run2", [U, A("tool_use")], 300), ("run3", [U], 100),
-                        ("ended", [U, A("end_turn")], 400), ("dead", [U, A("tool_use")], 3000)):
+                        ("ended", [U, A("end_turn")], 400), ("justended", [U, A("end_turn")], 10), ("dead", [U, A("tool_use")], 3000)):
     p = sub / f"agent-{name}.jsonl"
     p.write_text("".join(json.dumps(x) + "\n" for x in recs))
     os.utime(p, (now - age, now - age))
@@ -112,6 +112,10 @@ check("his word newer than the allocation is honoured at once (N 9 -> allow)", d
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just two", "until": iso(now + H), "n": 2}))
 rc, dec, why = run()
 check("his word can lower it too (N 2 -> deny, quoting him)", dec == "deny" and "just two" in why, (dec, why[:300]))
+
+ids = sorted(x["id"] for x in SA.running_helpers([projects / "-home-mandrake-rm-bench"], now, SA.load_rules()))
+check("a helper whose last record is an end_turn report is finished at once, not counted for minutes",
+      "justended" not in ids and "ended" not in ids and ids == ["run1", "run2", "run3"], ids)
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

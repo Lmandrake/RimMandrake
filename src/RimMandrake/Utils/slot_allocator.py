@@ -21,8 +21,13 @@ HOW N IS SET, in order (each step can only lower what the previous one allowed, 
   2. Total fit (R8): mean helpers running over the last window_h x sustainable %/h / measured %/h. The measured %/h is
      the slope of account_usage's series when it has slope_min_points over slope_min_span_h; otherwise messages sent from
      THIS machine over the window / msgs_per_pct (the 13:05 hand calibration). Raised by at most raise_step per check.
-  3. Split: FOUNDRY floor(total x share), BENCH the rest. While he writes in a window (presence BENCH), BENCH <= bench_n.
-  4. His word (`set --owner-said`) replaces any of that. The 5-hour brake (session over 90% used) is 0 for everyone,
+  3. Split: FOUNDRY floor(total x share), BENCH the rest. No lower N applies because he is present (owner, 2026-10-26:
+     "No, just adjust later to make up for any additional spend I incur").
+  4. Overage: helper-hours run above that N (his `set` word, or interactive work) are recorded as owed in the state.
+     Once his word has lapsed and he is not in a window, the allocator lowers N by ceil(owed / hours left before the
+     burn account's reset, less finish_margin_h), BENCH never below bench_floor, and credits every helper-hour left unused
+     until the debt is 0. A weekly reset forgives what is left.
+  5. His word (`set --owner-said`) replaces any of that. The 5-hour brake (session over 90% used) is 0 for everyone,
      even over his word: the account would refuse the calls anyway.
 A rule never fires on an UNMEASURED input: a blind meter holds the previous mode, or 2 helpers if there is none.
 Spare accounts are named as a recommendation; this file never switches an account.
@@ -126,7 +131,8 @@ def _records_backward(path, stop_before=None, max_bytes=64 * CHUNK):
 
 def helper_state(path, now, rules):
     """(running?, reason) for one subagent transcript. The stale_agents.py test (Lodestar): FINISHED = the last
-    assistant record ends end_turn, nothing user-side after it, and the file is quiet. Anything unsure is running."""
+    assistant record ends end_turn with no tool_use pending and nothing user-side after it: finished at once, no quiet
+    wait. Anything ambiguous is running until the live window passes."""
     h = rules["helpers"]
     try:
         age = now - os.path.getmtime(path)
@@ -134,11 +140,13 @@ def helper_state(path, now, rules):
         return False, "gone"
     if age > h["live_window_s"]:
         return False, f"silent {age / 60:.0f} min (past the 600 s kill)"
-    stop, user_after = None, False
+    stop, user_after, pending_tool = None, False, False
     for rec in _records_backward(path, max_bytes=2 * CHUNK):
         msg = rec.get("message")
-        if isinstance(msg, dict) and msg.get("role") == "assistant":
+        if isinstance(msg, dict) and msg.get("role") == "assistant" and rec.get("type") == "assistant":
             stop = msg.get("stop_reason") or "none"
+            c = msg.get("content")
+            pending_tool = isinstance(c, list) and any(isinstance(x, dict) and x.get("type") == "tool_use" for x in c)
             break
         if rec.get("type") == "user":
             user_after = True
@@ -146,11 +154,9 @@ def helper_state(path, now, rules):
         return True, "no assistant record yet"
     if user_after:
         return True, "work resumed after its last answer"
-    if stop != "end_turn":
-        return True, f"last record {stop}"
-    if age < h["quiet_s"]:
-        return True, f"ended {age:.0f} s ago (quiet {h['quiet_s']} s)"
-    return False, "ended"
+    if stop == "end_turn" and not pending_tool:
+        return False, "ended"
+    return True, f"last record {stop}" + (" with a tool call pending" if pending_tool else "")
 
 
 def running_helpers(project_paths, now, rules):
@@ -488,6 +494,58 @@ def _override_live(ov, now):
     return ov
 
 
+def _overage(inp, state, rules, now, base, per, ov, presence, why):
+    """Record helper-hours run above the computed N (base) as owed; once his word has lapsed and he has left, lower `per`
+    in place so the debt is repaid before the burn account's reset. Returns the record shown on the Pacing tile."""
+    cfg = rules["overage"]
+    owed = float(state.get("overage_h") or 0.0)
+    last = state.get("overage_t")
+    dt = 0.0 if last is None else max(0.0, min(now - float(last), cfg["max_accrual_dt_h"] * HOUR)) / HOUR
+    forgiven = 0.0
+    prev_reset, new_reset = epoch(state.get("reset_at")), epoch(inp.get("week_resets_at"))
+    if owed > 0 and prev_reset is not None and prev_reset <= now and new_reset is not None and new_reset > prev_reset:
+        forgiven, owed = owed, 0.0
+        why.append(f"weekly reset: {forgiven:.1f} helper-h of overage forgiven")
+    run = inp.get("helpers_running")
+    run = run if isinstance(run, dict) else {}
+    over = sum(max(0, run[s] - base.get(s, 0)) for s in run)
+    under = sum(max(0, base.get(s, 0) - run.get(s, 0)) for s in base) if run else 0
+    paying = ov is None and presence != "BENCH"
+    owed += over * dt
+    credited = 0.0
+    if paying and owed > 0:
+        credited = min(owed, under * dt)
+        owed -= credited
+    owed = round(max(0.0, owed), 4)
+    rec = {"owed_h": owed, "paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over * dt, 4),
+           "credited_h": round(credited, 4), "forgiven_h": round(forgiven, 4), "deadline_h": None, "eta_h": None, "plan": ""}
+    if owed <= 0:
+        return rec
+    h = inp.get("hours_to_week_reset")
+    window = max((h - cfg["finish_margin_h"]) if h is not None else cfg["default_window_h"], cfg["min_window_h"])
+    rec["deadline_h"] = round(window, 2)
+    if not paying:
+        rec["plan"] = (f"owes {owed:.1f} helper-h; payback starts when " + ("his word lapses" if ov else "he leaves the window")
+                       + f", to finish within {window:.0f} h (before the reset)")
+        why.append(rec["plan"])
+        return rec
+    want = int(math.ceil(owed / window))
+    cut = 0
+    for seat, floor in (("BENCH", cfg["bench_floor"]), ("FOUNDRY", 0)):
+        if seat in per and cut < want:
+            take = min(want - cut, max(0, per[seat] - floor))
+            per[seat] -= take
+            cut += take
+    rec["cut"] = cut
+    rec["eta_h"] = round(owed / cut, 1) if cut else None
+    short = cut < want
+    rec["plan"] = (f"owes {owed:.1f} helper-h: N lowered by {cut} (wanted {want}) for about "
+                   + (f"{rec['eta_h']:.0f} h" if cut else "?") + f", due within {window:.0f} h"
+                   + ("; the floor stops it short, the rest is forgiven at the reset" if short else ""))
+    why.append(rec["plan"])
+    return rec
+
+
 def _lent_view(sp):
     used = sp.get("pct_used")
     if used is None and sp.get("pct_left") is not None:
@@ -608,13 +666,11 @@ def decide(inp, state, rules, now):
     if "FOUNDRY" in per:
         why.append(f"total {total} split BENCH {per['BENCH']} / FOUNDRY {per['FOUNDRY']} (FOUNDRY {share:.0%}, rounded down)")
     presence, pwhy = _presence(inp, rules)
-    if presence == "BENCH" and per["BENCH"] > rules["presence"]["bench_n"]:
-        per["BENCH"] = rules["presence"]["bench_n"]
-        why.append(f"{pwhy}: BENCH at most {rules['presence']['bench_n']}")
     queue_mode, qwhy = _queue(inp, state, rules)
     if queue_mode == "PAYDOWN":
         why.append(f"PAYDOWN ({qwhy}): no new art or owner-facing design, half the slots enact and close")
     label = mode
+    base = dict(per)
     ov = _override_live(inp.get("override"), now)
     if ov:
         if ov.get("mode") in tk:
@@ -629,6 +685,8 @@ def decide(inp, state, rules, now):
             per["BENCH"] = int(ov["n"])
         label = f"{label}+OWNER"
         why.insert(0, f"his word: \"{ov['ownerSaid']}\"" + (f" until {ov['until']}" if ov.get("until") else ""))
+    pre_cut_total = sum(per.values())
+    overage = _overage(inp, state, rules, now, base, per, ov, presence, why)
     sess = inp.get("session_pct_used")
     if sess is not None and sess > tk["session_brake_pct_used_gt"]:
         per = {s: 0 for s in per}
@@ -638,14 +696,15 @@ def decide(inp, state, rules, now):
         if rec:
             why.append(rec)
     new_state = {"token_mode": mode, "since": since, "pending": pending, "queue_mode": queue_mode,
-                 "reset_at": inp.get("week_resets_at") or state.get("reset_at"), "total": sum(per.values())
+                 "reset_at": inp.get("week_resets_at") or state.get("reset_at"), "overage_h": overage["owed_h"],
+                 "overage_t": now, "total": pre_cut_total
                  if not (sess is not None and sess > tk["session_brake_pct_used_gt"]) else total}
     inputs = {k: v for k, v in inp.items() if k != "override"}
     inputs["P"] = None if P is None else round(P, 3)
     return {"at": iso_local(now), "t": now, "mode": label, "token_mode": mode, "queue_mode": queue_mode,
             "presence": presence, "presence_why": pwhy, "n_total": sum(per.values()), "seats": per,
             "n": per.get(inp.get("seat") or "BENCH"), "why": "; ".join(why), "inputs": inputs,
-            "override": ov, "state": new_state}
+            "overage": overage, "override": ov, "state": new_state}
 
 
 def line(dec):

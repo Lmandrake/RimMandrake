@@ -61,12 +61,18 @@
   "presence": {
     "bench_min": 30,
     "afk_min": 60,
-    "bench_n": 3,
-    "_bench_n": "[A] §1.3/§1.5 rule 4: while he writes in a window, BENCH goes down to 3 so the orchestrator can answer him. Open owner question 3 in operating_modes §5."
+    "_doc": "[O] 'No, just adjust later to make up for any additional spend I incur.' Presence no longer lowers N; it only says whether he is in a window, which is when payback waits."
+  },
+  "overage": {
+    "finish_margin_h": 6,
+    "min_window_h": 1,
+    "default_window_h": 24,
+    "bench_floor": 1,
+    "max_accrual_dt_h": 1,
+    "_doc": "[O] 'adjust later to make up for any additional spend I incur'. Helper-hours above the computed N are owed; payback lowers N by ceil(owed / (hours to reset - finish_margin_h)), BENCH never under bench_floor. default_window_h applies when the reset is unknown. max_accrual_dt_h caps one interval so a gap in checks cannot invent hours."
   },
   "helpers": {
     "live_window_s": 900,
-    "quiet_s": 120,
-    "_doc": "A helper is running when its transcript was written in the last live_window_s (over the 600 s silence kill) and its last assistant record is not end_turn, or it ended under quiet_s ago (a resumed helper writes again). When in doubt, running."
+    "_doc": "A helper is running when its transcript was written in the last live_window_s (over the 600 s silence kill) and its last assistant record is not a clean end_turn (no tool_use pending); a clean end_turn is finished at once. When in doubt, running."
   }
 }

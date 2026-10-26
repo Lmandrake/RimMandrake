@@ -595,7 +595,7 @@ def pacing(now, write=True):
                          "rule": rule or None})
         return {"at": dec["at"], "mode": dec["mode"], "token_mode": dec["token_mode"], "queue_mode": dec["queue_mode"],
                 "presence": dec["presence"], "seats": dec["seats"], "n_total": dec["n_total"], "why": dec["why"],
-                "running": inp.get("helpers_running"), "accounts": accs}
+                "running": inp.get("helpers_running"), "overage": dec.get("overage"), "accounts": accs}
     except Exception as e:  # noqa: BLE001
         return {"m": "UNMEASURED", "why": f"slot_allocator crashed: {type(e).__name__}: {e}"}
 
@@ -1028,6 +1028,13 @@ def pacing_tile(pc_, now):
     out.append(f"<div class='m'><b>{e(pc_.get('mode') or '')}</b> {e(pc_.get('queue_mode') or '')} "
                f"{e(pc_.get('presence') or '')} · {seats} · total {pc_.get('n_total')} · as of {e(str(pc_.get('at')))}</div>")
     out.append(f"<div class='m'>why: {e(pc_.get('why') or '')}</div>")
+    ov = pc_.get("overage")
+    if isinstance(ov, dict):
+        owed = float(ov.get("owed_h") or 0)
+        if owed > 0:
+            out.append(f"<div class='m'>overage owed: <b>{owed:.1f} helper-h</b> · payback: {e(str(ov.get('plan') or ''))}</div>")
+        else:
+            out.append("<div class='m'>overage owed: <b>0 helper-h</b> · no payback due</div>")
     rows = []
     for a in pc_.get("accounts") or []:
         tag = " · seats burn this" if a.get("burn") else ""
