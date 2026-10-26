@@ -1,0 +1,2 @@
+A ChoiceLetter's custom DiaOption with resolveTree=true only closes the dialog; the letter stays on the stack and the option can be clicked again until timeout. Only vanilla Option_Close calls Find.LetterStack.RemoveLetter(this). Every one-shot choice must remove the letter itself (RM_ChoiceLetter_Condenser let Sell pay 1500 silver per click). Related: GenAdj.CellsAdjacent8Way(thing) is not bounds-checked; ThingDef.terrainAffordanceNeeded is null for items, and TryFindSkyfallerCell(...null...) rejects every cell.
+home: rimworld-modding
