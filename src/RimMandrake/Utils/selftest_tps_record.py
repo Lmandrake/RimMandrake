@@ -593,6 +593,13 @@ def reader_checks():
     check([r["_t"] for r in tl8["rows"]] == sorted(r["_t"] for r in tl8["rows"]),
           "MUST 8: the merged timeline is chronological")
 
+    # summarise() tie: two sessions whose newest window is the same instant -> the later-started one is primary
+    tie = [dict(sample(now8 - 10, 1, session="aaaa")), dict(sample(now8 - 10, 1, session="bbbb"))]
+    for r in tie:
+        T.place(r)
+    check(T.summarise(tie, now=now8).get("session") == "bbbb",
+          "summarise: a tie on newest age picks the latest session, as its docstring says")
+
     # verdicts: coverage separate from performance
     now = t15 + 1000
     fresh_low = [sample(now - 5 * (8 - i), i, ratio=0.3) for i in range(8)]

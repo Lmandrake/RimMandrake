@@ -966,7 +966,8 @@ def summarise(rows, now=None, window_s=300, writer=None):
         base = _summarise_one([], now, window_s, writer)
         base["sessions"] = []
         return base
-    primary = min(with_samples, key=lambda p: p["newestAgeS"])
+    # ties on newest age: the LATEST-started session (with_samples is in start order; min() keeps the first)
+    primary = min(reversed(with_samples), key=lambda p: p["newestAgeS"])
     out = dict(primary)
     out["sessions"] = [{k: p[k] for k in ("session", "coverage", "newestAgeS", "samples", "run", "sustained",
                                            "incidents")} for p in sorted(with_samples, key=lambda p: p["newestAgeS"])]
