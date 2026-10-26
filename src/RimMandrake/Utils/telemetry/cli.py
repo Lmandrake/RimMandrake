@@ -256,7 +256,7 @@ def cmd_around(a) -> int:
     for mult in (1, 3, 6, 12):
         before = analysis.windows_from_vm(a.metric, d["ts"] - dur(a.span), d["ts"] - 60, mult)
         after = analysis.windows_from_vm(a.metric, d["ts"] + 120, d["ts"] + dur(a.span), mult)
-        c = analysis.compare_windows(before, after)
+        c = analysis.compare_windows(before, after, metric=a.metric)
         if c["verdict"] == "UNMEASURED":
             print(f"  x{mult:<3} UNMEASURED ({c['n_before']} windows before, {c['n_after']} after; "
                   f"need 30 each)")
@@ -461,9 +461,12 @@ def cmd_label(a) -> int:
 def cmd_rebuild(a) -> int:
     con = store.connect()
     since = time.time() - dur(a.since)
-    n = con.execute("DELETE FROM cursors WHERE mtime>=? OR src IN ('proof')", (since,)).rowcount
+    # rewind, not forget: `done` keeps how much of each file is already in raw/, so the re-read is not re-copied
+    n = con.execute("DELETE FROM cursors WHERE src IN ('proof')").rowcount
+    n += con.execute("UPDATE cursors SET done=MAX(COALESCE(done,0),offset), offset=0 WHERE mtime>=? AND src!='proof'",
+                     (since,)).rowcount
     con.commit()
-    print(f"forgot {n} cursors newer than {a.since}; telemetryd re-reads those files on its next pass "
+    print(f"rewound {n} cursors newer than {a.since}; telemetryd re-reads those files on its next pass "
           "(inserts are idempotent on src_ref; VM points for the same timestamps overwrite in queries)")
     return 0
 

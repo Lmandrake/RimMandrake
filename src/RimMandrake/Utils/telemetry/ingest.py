@@ -139,7 +139,9 @@ def parse_tps(r: dict, E: Emit, ref: str) -> None:
             for lv in ("e", "w", "m", "rep", "over"):
                 if lv in exc:
                     E.point("rm_game_exc_by_level", {**lab, "level": lv}, exc[lv], ts)
-            for sig_n in exc.get("top") or []:
+            # counts add up per sample row, so a row is counted once: a rebuild re-reads it (exc_seen)
+            first = E.con.execute("INSERT OR IGNORE INTO exc_seen(src_ref,ts) VALUES(?,?)", (ref, ts)).rowcount > 0
+            for sig_n in (exc.get("top") or []) if first else []:
                 if isinstance(sig_n, list) and len(sig_n) >= 2:
                     E.con.execute(
                         "INSERT INTO exc_sigs(session,sig,first_ts,last_ts,n,sup,sample) VALUES(?,?,?,?,?,0,NULL) "
@@ -503,11 +505,13 @@ class Tailer:
             except OSError:
                 continue
             key = self._file_key(st, path)
-            cur = self.con.execute("SELECT offset,size FROM cursors WHERE src=? AND key=?", (src.name, key)).fetchone()
+            cur = self.con.execute("SELECT offset,size,done FROM cursors WHERE src=? AND key=?",
+                                   (src.name, key)).fetchone()
             off = cur["offset"] if cur else 0
-            if st.st_size < off:
+            done = (cur["done"] or 0) if cur else 0   # bytes already in the raw copy (rebuild re-reads, never re-copies)
+            if st.st_size < off or st.st_size < done:
                 stt["resets"] += 1
-                off = 0
+                off = done = 0
             if st.st_size == off:
                 continue
             try:
@@ -542,11 +546,13 @@ class Tailer:
                 t = parse_ts(r.get("utc") or r.get("t") or r.get("ts"))
                 if t:
                     stt["last_row_ts"] = max(stt["last_row_ts"] or 0, t)
-            if src.archive:
-                self.raw_buf.setdefault(src.name, []).append(chunk)
-                self.raw_bytes[src.name] = self.raw_bytes.get(src.name, 0) + len(chunk)
-            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime) VALUES(?,?,?,?,?,?)",
-                             (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime))
+            new = chunk[max(0, done - off):]
+            if src.archive and new:
+                self.raw_buf.setdefault(src.name, []).append(new)
+                self.raw_bytes[src.name] = self.raw_bytes.get(src.name, 0) + len(new)
+            self.con.execute("INSERT OR REPLACE INTO cursors(src,key,ino,offset,size,mtime,done) VALUES(?,?,?,?,?,?,?)",
+                             (src.name, key, path, off + len(chunk), st.st_size, st.st_mtime,
+                              max(done, off + len(chunk))))
         if src.name == "bridge":
             flush_bridge_buckets(E)
         stt["rows"] += n

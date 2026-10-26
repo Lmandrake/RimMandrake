@@ -160,6 +160,17 @@ def main(argv) -> int:
               T.stats["tps"]["bad"] == 0 and con.execute("SELECT COUNT(*) FROM events").fetchone()[0] == before)
         T.pass_source(S["tps"])
         check("idempotent re-pass reads nothing", T.stats["tps"]["rows"] == 8, T.stats["tps"])
+        # [rebuild] `telemetry rebuild` forgets cursors and re-reads: counts and raw copies must not double
+        T.flush_raw(force=True)
+        import cli
+        cli.main(["rebuild", "--since", "7d"])
+        T.pass_source(S["tps"])
+        T.flush_raw(force=True)
+        check("[rebuild] re-reading a file does not re-count exception signatures",
+              con.execute("SELECT n FROM exc_sigs").fetchone()[0] == 5, con.execute("SELECT n FROM exc_sigs").fetchone()[0])
+        with gzip.open(__import__("glob").glob(os.path.join(c["raw"], "tps", "*.gz"))[0], "rt") as f:
+            n_raw = sum(1 for _ in f)
+        check("[rebuild] re-reading a file does not re-append its raw copy", n_raw == 8, n_raw)
 
         # bridge: rotation by rename, buckets
         bc = c["bridge_calls"]
@@ -337,6 +348,13 @@ def main(argv) -> int:
         check("sanity probe: known non-regression reads NO_SHIFT", analysis.compare_windows(quiet, quiet2)["verdict"] == "NO_SHIFT")
         check("sanity probe: Rot-map-sized slowdown reads REGRESSION", analysis.compare_windows(quiet, rot)["verdict"] == "REGRESSION")
         check("too few windows reads UNMEASURED, never clean", analysis.compare_windows(quiet[:10], rot)["verdict"] == "UNMEASURED")
+        try:   # `telemetry around --metric rm_game_ratio`: a ratio that FELL is the slowdown
+            v_ratio = analysis.compare_windows(rot, quiet, metric="rm_game_ratio")["verdict"]
+            v_tick = analysis.compare_windows(quiet, rot, metric="rm_game_tick_ms")["verdict"]
+        except TypeError as e:
+            v_ratio = v_tick = f"TypeError: {e}"
+        check("[around] a falling speed ratio reads REGRESSION; a rising tick time still does",
+              v_ratio == "REGRESSION" and v_tick == "REGRESSION", (v_ratio, v_tick))
         # proof flips
         pdir = os.path.join(c["mirror"], "src", "RimMandrake", "FlowWorks", "northstar")
         os.makedirs(pdir)

@@ -38,9 +38,11 @@ CREATE TABLE IF NOT EXISTS flight(
 CREATE TABLE IF NOT EXISTS exc_sigs(
   session TEXT, sig TEXT, first_ts REAL, last_ts REAL, n INTEGER, sup INTEGER, sample TEXT,
   PRIMARY KEY(session, sig));
+CREATE TABLE IF NOT EXISTS exc_seen(src_ref TEXT PRIMARY KEY, ts REAL);
 CREATE TABLE IF NOT EXISTS mapcomp(
   ts REAL, session TEXT, type TEXT, mod TEXT, ms_per_tick REAL, calls INTEGER, max_ms REAL,
   ticks INTEGER, src_ref TEXT UNIQUE);
+-- cursors.done = bytes of this file already copied to raw/ (a rebuild re-reads from 0, never re-copies)
 CREATE TABLE IF NOT EXISTS cursors(
   src TEXT, key TEXT, ino TEXT, offset INTEGER, size INTEGER, mtime REAL, done INTEGER DEFAULT 0,
   PRIMARY KEY(src, key));

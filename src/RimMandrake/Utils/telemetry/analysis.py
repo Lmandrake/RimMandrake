@@ -188,8 +188,12 @@ def write_state(latest: dict, alerts: list, sources: dict, extra: dict, now: flo
 
 # ------------------------------------------------------------------ on-demand comparison (`telemetry around`)
 
-def compare_windows(before: list[float], after: list[float], min_n: int = 30) -> dict:
-    """Median shift test. Returns verdict REGRESSION / IMPROVED / NO_SHIFT / UNMEASURED with counts."""
+HIGHER_IS_BETTER = {"rm_game_tps", "rm_game_tps_wall", "rm_game_ratio", "rm_game_fps", "rm_game_tps_target"}
+
+
+def compare_windows(before: list[float], after: list[float], min_n: int = 30, metric: str | None = None) -> dict:
+    """Median shift test. Returns verdict REGRESSION / IMPROVED / NO_SHIFT / UNMEASURED with counts.
+    A rise is a regression for times and counts; for a speed (HIGHER_IS_BETTER) a fall is."""
     out = {"n_before": len(before), "n_after": len(after)}
     if len(before) < min_n or len(after) < min_n:
         out["verdict"] = "UNMEASURED"
@@ -199,9 +203,10 @@ def compare_windows(before: list[float], after: list[float], min_n: int = 30) ->
     mad = statistics.median(abs(x - mb) for x in before) or 1e-9
     shift = ma - mb
     rel = shift / mb if mb else float("inf")
-    thr = max(0.20 * mb, 3 * mad)
+    thr = max(0.20 * abs(mb), 3 * mad)
     out.update({"median_before": mb, "median_after": ma, "shift": shift, "rel": rel, "threshold": thr})
-    out["verdict"] = "REGRESSION" if shift > thr else "IMPROVED" if -shift > thr else "NO_SHIFT"
+    worse = -shift if metric in HIGHER_IS_BETTER else shift
+    out["verdict"] = "REGRESSION" if worse > thr else "IMPROVED" if -worse > thr else "NO_SHIFT"
     return out
 
 
@@ -270,6 +275,7 @@ def retention(con, now: float) -> dict:
             rep["deleted"] += 1
     cur = con.execute("DELETE FROM bridge_calls WHERE ts < ?", (now - c["bridge_rows_days"] * 86400,))
     rep["bridge_rows"] = cur.rowcount
+    con.execute("DELETE FROM exc_seen WHERE ts < ?", (now - c["raw_days_hot"] * 86400,))
     con.commit()
     logs = c["logs"]
     for p in glob.glob(os.path.join(logs, "*.log")):
