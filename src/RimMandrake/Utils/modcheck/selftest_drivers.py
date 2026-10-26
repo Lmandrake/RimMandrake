@@ -222,8 +222,21 @@ def t_river_wrapper():
         D._DONE.clear()
 
 
+def t_steam_chain_on_river_site():
+    """RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: toggle_river_steam's biome-gate half needs a river map, so it settles the river
+    site too, and runs AFTER every non-river chain (the site replaces the map for whatever follows)."""
+    v = _fw_suite()
+    riv = [d for d in v.suite.live_drivers if d.get("stage") == "chain"][0]
+    ok("toggle_river_steam" in riv["chains"], "toggle_river_steam is a river-site chain")
+    names = [n for n, _f in v.suite.chains]
+    ok("toggle_river_steam" in names, "toggle_river_steam is still registered")
+    if "toggle_river_steam" in names:
+        non_river = [i for i, n in enumerate(names) if n not in riv["chains"]]
+        ok(names.index("toggle_river_steam") > max(non_river), "toggle_river_steam runs after every non-river chain")
+
+
 def main():
-    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper):
+    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper, t_steam_chain_on_river_site):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

@@ -1671,9 +1671,11 @@ suite.live_drivers = [
      "chains": ["hose_live_rows"], "timeout_s": 1500},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
-    # above puts after every other chain. toggle_river_steam (needs a Pyrelands tile) is not wired.
+    # above puts after every other chain. toggle_river_steam's biome-gate half
+    # (river cells, no vent) runs on the river site too, moved last below; its ON/OFF half needs a Pyrelands map
+    # (a scratch-world site, Pyrelands/northstar_site.py) and stays UNMEASURED naming it.
     {"name": "river_site", "script": "northstar/river_site.py", "args": [], "stage": "chain",
-     "chains": ["works", "current", "swept", "placer", "taken_by_land"], "timeout_s": 900},
+     "chains": ["works", "current", "swept", "placer", "taken_by_land", "toggle_river_steam"], "timeout_s": 900},
 ]
 
 
@@ -1698,3 +1700,6 @@ def _on_river_site(fn, entry):
 
 _RIVER = [_d for _d in suite.live_drivers if _d.get("stage") == "chain"][0]
 suite.chains = [(_n, _on_river_site(_f, _RIVER) if _n in _RIVER["chains"] else _f) for _n, _f in suite.chains]
+# toggle_river_steam lives in the extension suite, ahead of the river chains; it settles the river site, so it goes last.
+suite.chains = ([_c for _c in suite.chains if _c[0] != "toggle_river_steam"]
+                + [_c for _c in suite.chains if _c[0] == "toggle_river_steam"])
