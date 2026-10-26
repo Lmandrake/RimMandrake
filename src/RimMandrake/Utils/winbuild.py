@@ -180,6 +180,26 @@ def win(path):
     return subprocess.run(["wslpath", "-w", path], capture_output=True, text=True).stdout.strip()
 
 
+def rsync_stage(rels, stage, cwd, excl=()):
+    """rsync repo-relative rels into stage, deciding "changed" by CONTENT (--checksum), not mtime+size.
+
+    The old --modify-window=2 skipped a same-size edit made within 2 s of the previous copy (mutate-test-restore), so the
+    stage kept stale source and MSBuild ran the stale binary. No -t: staged files carry their copy time, never the clone mtime. Every file rsync rewrites also gets mtime = now so
+    MSBuild sees it newer than obj even when the clone file carries an old mtime (e.g. cp -p restore).
+    Returns the CompletedProcess (stdout holds the itemize lines)."""
+    r = subprocess.run(["rsync", "-rR", "-c", "-i", "--delete", "--no-perms", "--no-owner", "--no-group",
+                        *excl, *rels, stage + "/"], cwd=cwd, stdout=subprocess.PIPE, universal_newlines=True)
+    now = time.time()
+    for line in r.stdout.splitlines():
+        if line.startswith(">f") and len(line) > 12:
+            p = os.path.join(stage, line[12:])
+            try:
+                os.utime(p, (now, now))
+            except OSError:
+                pass
+    return r
+
+
 def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dirs=(),
                 stage_name=None, dry_run=False):
     """Stage csproj (+ what it references, + extra_dirs) on D:, build, copy outputs back.
@@ -208,8 +228,7 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     # rsync exit 24 = "some source files vanished": another agent saved/renamed a file in the clone mid-copy (the stage
     # copies whole src/). Transient, not a build verdict - the copy is idempotent, so retry before failing (2026-10-22).
     for attempt in range(4):
-        r = subprocess.run(["rsync", "-rtR", "--delete", "--no-perms", "--no-owner", "--no-group",
-                            "--modify-window=2", *excl, *rels, stage + "/"], cwd=ROOT)
+        r = rsync_stage(rels, stage, ROOT, excl)
         if r.returncode != 24:
             break
         print("rsync 24 (source files vanished mid-copy); retry %d/3" % (attempt + 1), file=sys.stderr)
