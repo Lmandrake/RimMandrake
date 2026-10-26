@@ -108,7 +108,8 @@ eq(_rep(["PASS", "FAIL", "UNMEASURED"])[0], 1, "a FAIL makes the run red")
 # --only naming a file that does not exist is an error, never a green 0/0.
 import subprocess as _sp
 r = _sp.run([sys.executable, rs.__file__, "--only", "/nonexistent/selftest_nope.py"],
-            capture_output=True, text=True, env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1"})
+            capture_output=True, text=True, timeout=120,
+            env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1"})
 eq((r.returncode, "no such file" in r.stdout), (1, True), "--only on a missing path is rc 1")
 
 # The memory pen's report line: stripped from stderr, parsed, and only that line.
@@ -139,12 +140,14 @@ if harness:
     if not rs._in_harness(rs._cgroup_of("self")):
         import subprocess
         r = subprocess.run([sys.executable, rs.__file__, "--_harness-child", "--",
-                            sys.executable, "-c", "print('TEST RAN')"], capture_output=True, text=True)
+                            sys.executable, "-c", "print('TEST RAN')"], capture_output=True, text=True, timeout=120)
         eq((r.returncode, "TEST RAN" in r.stdout), (rs._PLACEMENT_RC, False),
            "wrapper outside rm-harness.slice refuses and never runs the test")
     pen_note = "memory pen: cap kill reads CRASH, small test PASSes in the pen"
 else:
-    print(f"memory pen probe failed ({why}) — those checks are UNMEASURED here")
+    # wave 72: the bare words "UNMEASURED here" are not UNMEASURED_PHRASE, so with no pen this file read PASS while
+    # its cap-kill checks never ran -- the very laundering the phrase_but_green fixture above forbids in others
+    print(f"memory pen probe failed ({why}) — the cap-kill checks did not run: {UNMEASURED_PHRASE}")
 
 # DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 11.
 # (a) --only on a named file OUTSIDE the repo is run (main() says so), so the runner must not die on
