@@ -400,9 +400,11 @@ namespace RimMandrake.LanternDeeps
                 }
             }
             FleckMaker.ThrowDustPuff(p.Position, map, 1f);
-            if (Find.TickManager.TicksGame - lastMessageTick > GenDate.TicksPerHour)
+            // static, so it outlives a game: a save loaded at an earlier tick must not mute the message
+            int now = Find.TickManager.TicksGame;
+            if (now - lastMessageTick > GenDate.TicksPerHour || now < lastMessageTick)
             {
-                lastMessageTick = Find.TickManager.TicksGame;
+                lastMessageTick = now;
                 Messages.Message("RM_CleaverSplits".Translate(), new TargetInfo(cell, map), MessageTypeDefOf.ThreatSmall);
             }
             return shard;

@@ -83,11 +83,29 @@ namespace RimMandrake.LanternDeeps
         }
 
         // The killing wound is the newest injury. No injury at all (starvation, cold) = no ignition.
+        // A wound that destroys a part (a brain or heart shot) does not stay an injury: HediffSet.AddDirect turns it
+        // into a Hediff_MissingPart whose PostAdd RestorePart()s the wound away, keeping only lastInjury. So a
+        // missing part counts as a wound of its lastInjury def.
         public static bool KilledHot(Pawn pawn, List<HediffDef> coldInjuries)
         {
-            Hediff_Injury last = pawn?.health?.hediffSet?.hediffs?.OfType<Hediff_Injury>()
-                .OrderByDescending(h => h.tickAdded).FirstOrDefault();
-            return last != null && (coldInjuries == null || !coldInjuries.Contains(last.def));
+            List<Hediff> hediffs = pawn?.health?.hediffSet?.hediffs;
+            if (hediffs == null)
+            {
+                return false;
+            }
+            HediffDef lastDef = null;
+            int lastTick = int.MinValue;
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                HediffDef d = hediffs[i] is Hediff_Injury ? hediffs[i].def
+                    : (hediffs[i] as Hediff_MissingPart)?.lastInjury;
+                if (d != null && hediffs[i].tickAdded > lastTick)
+                {
+                    lastTick = hediffs[i].tickAdded;
+                    lastDef = d;
+                }
+            }
+            return lastDef != null && (coldInjuries == null || !coldInjuries.Contains(lastDef));
         }
     }
 

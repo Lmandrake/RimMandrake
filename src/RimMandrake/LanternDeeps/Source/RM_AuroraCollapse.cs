@@ -174,7 +174,16 @@ namespace RimMandrake.LanternDeeps
             GameCondition overhead = SurfaceStorm();
             if (overhead != null)
             {
-                Start(overhead.TicksLeft > 0 ? overhead.TicksLeft : GenDate.TicksPerDay / 2);
+                // a permanent aurora (scenario perma-condition; vanilla Aurora is canBePermanent) is mirrored as permanent:
+                // GameCondition.TicksLeft on a permanent condition logs an error and returns 360000000
+                if (overhead.Permanent)
+                {
+                    Start(-1, permanent: true);
+                }
+                else
+                {
+                    Start(overhead.TicksLeft > 0 ? overhead.TicksLeft : GenDate.TicksPerDay / 2);
+                }
             }
             else if (Rand.MTBEventOccurs(LanternDeepsSettings.auroraMtbDays, GenDate.TicksPerDay, GenDate.TicksPerHour))
             {
@@ -197,7 +206,7 @@ namespace RimMandrake.LanternDeeps
                 && (c.def.defName.Contains("Reconnection") || c.def.defName.Contains("Aurora")));
         }
 
-        public string Start(int duration)
+        public string Start(int duration, bool permanent = false)
         {
             GameConditionDef def = Def;
             if (def == null)
@@ -208,10 +217,10 @@ namespace RimMandrake.LanternDeeps
             {
                 duration = (int)(GenDate.TicksPerDay * Rand.Range(0.4f, 0.8f));
             }
-            GameCondition cond = GameConditionMaker.MakeCondition(def, duration);
+            GameCondition cond = permanent ? GameConditionMaker.MakeConditionPermanent(def) : GameConditionMaker.MakeCondition(def, duration);
             map.gameConditionManager.RegisterCondition(cond);
             Find.LetterStack.ReceiveLetter(def.LabelCap, "RM_DeepAuroraText".Translate(), LetterDefOf.PositiveEvent, new TargetInfo(map.Center, map));
-            return "aurora for " + duration;
+            return permanent ? "aurora permanent" : "aurora for " + duration;
         }
     }
 

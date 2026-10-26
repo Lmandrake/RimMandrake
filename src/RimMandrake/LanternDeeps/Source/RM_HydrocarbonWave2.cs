@@ -46,6 +46,14 @@ namespace RimMandrake.LanternDeeps
             }
         }
 
+        // Off the map (caravan, transporter, another map) the old cell means nothing: without this the first
+        // step after arriving somewhere else would sweat fuel onto that cell of the NEW map.
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            last = IntVec3.Invalid;
+        }
+
         // One look at where it stands: if it moved, the cell it left gets the filth.
         public bool Step()
         {
