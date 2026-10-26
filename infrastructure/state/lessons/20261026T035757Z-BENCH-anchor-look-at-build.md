@@ -1,0 +1,2 @@
+Suspension/drawbridge anchors carry no 'Choose style' gizmo once built (objects_sheet.choose_look returns None); their look is fixed at build from the designator pick or RM_MachinerySettings.pipeDefaultLook. To stage a drawbridge in a look, set pipeDefaultLook via jawa/mod_settings_field before ProofMakeDrawbridge and restore it (BENCH batch3c 2026-10-25). list_things returns cell under key 'cell', not x/z.
+home: src/RimMandrake/FlowWorks/northstar/objects_sheet.py
