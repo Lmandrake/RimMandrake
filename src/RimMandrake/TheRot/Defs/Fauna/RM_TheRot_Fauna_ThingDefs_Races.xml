@@ -914,7 +914,7 @@
       <li>
         <bodyGraphicData>
           <texPath>RM_TheRot/Fauna/Redrawn/Grellik/Grellik</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>1.75</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
@@ -923,7 +923,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>RM_TheRot/Fauna/BMT_Caverns/Things/Animal/FungalWeevil/Dessicated_FungalWeevil</texPath>
-          <drawSize>4</drawSize>
+          <drawSize>1.75</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

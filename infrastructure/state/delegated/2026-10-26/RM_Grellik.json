@@ -1,0 +1,9 @@
+{"judge_model": "claude-opus-5-5", "brief": "design/RimMandrake/art_judge_brief.md@3a37fdd963", "subject": "RM_Grellik",
+ "item": "GRELLIK_SHRINK_ADULT_DRAWN_FOUR_CELLS", "class": "art (size ruling)",
+ "verdicts": [
+   {"picture": "src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Grellik/Grellik_{east,south,north}.png", "facing": "all",
+    "verdict": "KEEP art, RESIZE adult drawSize 4 -> 1.75 (body and dessicated); keep baseBodySize 0.5",
+    "violated": "D1", "quote": "Judge at true scale beside a vanilla human at 128-256 px/cell, and at 32 px/cell.",
+    "seen": "At drawSize 4 the east facing spans 3.8 cells: a cow-sized beetle three times a colonist's width and wider than the size-2 Skerrith (2.9 cells, described as 'larger than a person') and size-2.1 Brogg (3.0). The description says 'a fat, slow weevil ... harmless' and every stat is small-animal (hunger 0.10, leather 25, combatPower 40, health 0.8), so the body size is right and the draw is wrong. At 1.75 the east span is 1.66 cells, carapace about 1 cell: dog-sized beside the human, just above Illoth (body 0.77, 1.53 cells) as a fat beetle with long legs and caps should be, and the stage steps 1.0 -> 1.4 -> 1.75 match the Thozzik roster pattern; the adult shadow volume 0.8 already fits ~1.8. The art itself reads well and is not judged here.",
+    "evidence": "D:\\ClaudeWork\\rimmandrake\\grellik_judge\\Grellik_east_4.png, Grellik_east_1.8.png, Skerrith_east_3.png, Illoth_east_1.7.png (scale_panel.render_panel)"}],
+ "proposals": ["A static roster check: adult drawn extent (drawSize x opaque fill) should not exceed that of a same-mod race with larger baseBodySize."]}
