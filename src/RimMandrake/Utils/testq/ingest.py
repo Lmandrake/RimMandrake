@@ -312,7 +312,10 @@ def main():
             pend = rec.get("ingest_pending") or {}
             if pend and time.time() - pend.get("last", 0) < RETRY_S:
                 continue
-            out = ingest_one(rec)
+            try:
+                out = ingest_one(rec)
+            except Exception as ex:     # noqa: BLE001 - one bad record (a rimflow timeout) must not stop the rest
+                out = {"error": "crash: %s: %s" % (type(ex).__name__, ex)}
             tries = pend.get("tries", 0) + 1
             if "error" in out and tries < MAX_TRIES:
                 rec["ingest_pending"] = {"tries": tries, "last": time.time(), "error": out["error"]}

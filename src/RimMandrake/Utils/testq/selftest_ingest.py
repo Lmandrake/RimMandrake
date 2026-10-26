@@ -149,7 +149,47 @@ def publish_checks():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def crash_checks():
+    """A record whose ingest raises (a rimflow call timing out) is retried and counted like a returned error; it
+    neither stops the records after it nor crashes ingest.py - a crash there failed the unit every tick, so no record
+    ever reached its last try and the fill line after it never ran (the rig idled)."""
+    import ingest as I
+    tmp = tempfile.mkdtemp(prefix="rf_ingest_crash_")
+    saved = (I.T.QHOME, I.ingest_one, os.environ.get("TESTQ_INGEST_PUSH"))
+    try:
+        os.makedirs(os.path.join(tmp, "done"))
+        boom, fine = done_rec(ITEM), done_rec(None)
+        boom["job"]["id"], fine["job"]["id"] = "A_boom", "B_fine"
+        for rec in (boom, fine):
+            S.dump(rec, os.path.join(tmp, "done", rec["job"]["id"] + ".json"))
+
+        def fake(rec):
+            if rec["job"]["id"] == "A_boom":
+                raise subprocess.TimeoutExpired("rimflow", 120)
+            return {"skipped": "no item"}
+        I.T.QHOME, I.ingest_one = tmp, fake
+        os.environ["TESTQ_INGEST_PUSH"] = "0"
+        try:
+            rc = I.main()
+        except Exception as ex:     # noqa: BLE001 - the bug under test
+            rc = "raised %s" % type(ex).__name__
+        a = json.load(open(os.path.join(tmp, "done", "A_boom.json")))
+        b = json.load(open(os.path.join(tmp, "done", "B_fine.json")))
+        check(rc == 0, "an ingest_one that raises does not crash ingest.py: %s" % rc)
+        check("crash: TimeoutExpired" in (a.get("ingest_pending") or {}).get("error", ""),
+              "the raising record is pending a retry with its crash counted: %s" % a.get("ingest_pending"))
+        check("ingested" in b, "the record after it is still ingested")
+    finally:
+        I.T.QHOME, I.ingest_one = saved[0], saved[1]
+        if saved[2] is None:
+            os.environ.pop("TESTQ_INGEST_PUSH", None)
+        else:
+            os.environ["TESTQ_INGEST_PUSH"] = saved[2]
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
+    crash_checks()
     tmp = tempfile.mkdtemp(prefix="rf_ingest_")
     try:
         queue, items = os.path.join(tmp, "queue"), os.path.join(tmp, "items")

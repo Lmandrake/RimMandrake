@@ -100,10 +100,36 @@ def t_fill_policy():
           % (T.FILL_DAY_S, T.FILL_CAP_DEFAULT))
 
 
+def t_fill_drops_unknown_chains():
+    """A chain the history holds but modcheck no longer declares (renamed/removed) is forever the stalest; submit
+    refuses it, so the filler must drop it and fill with real chains, or Steve idles every tick for good."""
+    import testq as T
+    check(T.unknown_chains("unknown chain(s) for FlowWorks: a_zz, b_zz; chains are: c, d") == {"a_zz", "b_zz"},
+          "unknown_chains reads modcheck's refusal")
+    check(T.unknown_chains("unknown row 'T12'") == set(), "a row refusal names no chain")
+    tmp = tempfile.mkdtemp(prefix="rf_testq_fill_")
+    saved = (T.QHOME, T.chain_history, T.cmd_submit)
+    sent = []
+    try:
+        T.QHOME = tmp
+        old = [(T.S.parse_ts("2026-01-01T00:00:00Z"), "measured")]
+        new = [(T.S.parse_ts("2026-10-01T00:00:00Z"), "measured")]
+        T.chain_history = lambda mod, recs=None: {"renamed_away_zz": old, "core_offline": new, "hose_offline": new}
+        T.cmd_submit = lambda sub: sent.append(sub.chains) or 0
+        import argparse
+        rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT, day_s=T.FILL_DAY_S))
+        check(rc == 0 and len(sent) == 1 and "renamed_away_zz" not in sent[0] and sent[0],
+              "fill drops a chain modcheck no longer declares and submits a real one: rc=%s sent=%s" % (rc, sent))
+    finally:
+        T.QHOME, T.chain_history, T.cmd_submit = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     try:
         t_bad_selection()
         t_fill_policy()
+        t_fill_drops_unknown_chains()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
         check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))
     tmp = tempfile.mkdtemp(prefix="rf_testq_")
@@ -251,7 +277,17 @@ def main():
         with open(os.path.join(queue, "tick.lock"), "w") as lk:
             fcntl.flock(lk, fcntl.LOCK_EX)
             rc, o = tq("tick")
+            lj = submit("--rows", "r7")["job"]
+            crc, co = tq("cancel", lj, "--reason", "race", TESTQ_LOCK_WAIT_S="1")
+            src, so = tq("submit", "Mock", "--rows", "r8", "--supersedes", lj, "--purpose", "fix", "--by", "BENCH",
+                         "--sha", sha, TESTQ_LOCK_WAIT_S="1")
         check("already running" in o, "a tick while another runs exits at once")
+        check(crc == 2 and "REFUSED" in co and state(lj) == "pending",
+              "a cancel waits for a running tick's lock, then refuses with nothing moved: %s %s %s" % (crc, co, state(lj)))
+        check(src == 2 and state(lj) == "pending",
+              "a superseding submit refuses too while a tick holds the lock: %s %s" % (src, so))
+        tq("cancel", lj, "--reason", "selftest")
+        check(state(lj) == "cancelled", "the same cancel goes through once the tick lock is free")
         # a red canary pauses the lane (design section 6): nothing more is admitted until `resume`
         c = submit("--rows", "r1,r9", "--priority", "95")["job"]
         d = submit("--rows", "r2,r9")["job"]
@@ -331,6 +367,8 @@ def main():
         check(o.startswith("brake"), "two non-DONE filler jobs in a row brake the filler: %s" % o)
         unit = open(TESTQ).read()
         check("testq.py fill" in unit and "TESTQ_FILL_MODS" in unit, "the tick unit runs the filler")
+        check("ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py" in unit,
+              "a failing ingest does not skip the fill line after it (ExecStart=-)")
 
         rc, o = tq("show", "../../x")
         check(rc == 2, "a path as a job id is refused")

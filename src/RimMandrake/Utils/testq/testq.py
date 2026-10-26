@@ -69,6 +69,7 @@ import glob
 import json
 import os
 import shlex
+import re
 import subprocess
 import sys
 import time
@@ -647,6 +648,13 @@ def bad_selection(mod, sel):
     return None
 
 
+def unknown_chains(why):
+    """-> the chain names a bad_selection refusal calls unknown (modcheck's `unknown chain(s) for MOD: a, b; chains
+    are: ...`), or an empty set when WHY is not about chains."""
+    m = re.search(r"unknown chain\(s\) for [^:]*:\s*([^;]*)", why or "")
+    return {c.strip() for c in m.group(1).split(",") if c.strip()} if m else set()
+
+
 def cmd_submit(a):
     ensure_dirs()
     sel = {}
@@ -685,18 +693,43 @@ def cmd_submit(a):
             print(json.dumps({"job": other["id"], "duplicate": True, "state": where(other["id"])}))
             return 0
     if job["supersedes"]:
-        st = where(job["supersedes"])
-        if st == "pending":
-            old = read_json(q("pending", job["supersedes"] + ".json"))
-            move(old["id"], "pending", "cancelled", {"job": old, "reason": "superseded by " + job["id"],
-                                                     "at": S.utcnow()})
+        def supersede():
+            if where(job["supersedes"]) == "pending":
+                old = read_json(q("pending", job["supersedes"] + ".json"))
+                move(old["id"], "pending", "cancelled", {"job": old, "reason": "superseded by " + job["id"],
+                                                         "at": S.utcnow()})
+            return 0
+        if under_tick_lock(supersede):
+            return 2
     S.dump(job, q("pending", job["id"] + ".json"))
     print(json.dumps({"job": job["id"], "state": "pending"}))
     return 0
 
 
+def under_tick_lock(fn):
+    """-> fn() run holding tick.lock, so a state change made outside the tick (cancel, supersede) cannot interleave
+    with a tick moving the same job (a cancel rewriting running/ after the tick moved it to done/ left the job in two
+    states). Waits up to TESTQ_LOCK_WAIT_S (300 s) for a running tick, then refuses (2) with nothing changed."""
+    deadline = time.time() + float(os.environ.get("TESTQ_LOCK_WAIT_S", "300"))
+    with open(q("tick.lock"), "w") as lk:
+        while True:
+            try:
+                fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.time() >= deadline:
+                    print("REFUSED: a tick still holds %s; nothing changed, try again" % q("tick.lock"))
+                    return 2
+                time.sleep(0.5)
+        return fn()
+
+
 def cmd_cancel(a):
     ensure_dirs()
+    return under_tick_lock(lambda: cancel_locked(a))
+
+
+def cancel_locked(a):
     st = where(a.job)
     if st == "pending":
         job = read_json(q("pending", a.job + ".json"))
@@ -880,6 +913,16 @@ def cmd_fill(a):
         print("no chain history for %s yet (one full sweep seeds it); no fill" % a.mod)
         return 0
     pick, dry = fill_pick(hist, a.n, now)
+    # A chain the history still holds but modcheck no longer declares (renamed, removed) is forever the stalest, and
+    # cmd_submit refuses any job naming it: without this the filler re-submits it every tick and Steve idles for good.
+    for _ in range(3):
+        why = bad_selection(a.mod, {"chains": pick}) if pick else None
+        gone = unknown_chains(why) if why else set()
+        if not gone & set(pick):
+            break
+        log("filler: %s no longer declares %s; dropped from the fill history" % (a.mod, ",".join(sorted(gone))))
+        hist = {c: v for c, v in hist.items() if c not in gone}
+        pick, dry = fill_pick(hist, a.n, now)
     if not pick:
         print("dry: every chain of %s measured nothing in its last %d runs (%s); no fill" % (
             a.mod, FILL_DRY_RUNS, ",".join(dry)))
@@ -956,7 +999,7 @@ Type=oneshot
 WorkingDirectory={clone}
 ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
-ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
+ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
 TimeoutStartSec=900
 """,
