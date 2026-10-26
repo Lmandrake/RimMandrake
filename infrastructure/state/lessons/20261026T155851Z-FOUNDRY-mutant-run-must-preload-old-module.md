@@ -1,0 +1,2 @@
+A red-on-old-code check that copies the old module into a temp dir is fooled when the selftest re-inserts Utils on sys.path and imports the NEW module. Preload the old module into sys.modules under its name, then runpy the selftest (scratch harness pattern: mut_run.py <old_path> <module> <selftest>). Also: a default argument (def f(cap=CAP)) is bound at def time; patching the module constant does not reach it, patch f.__defaults__.
+home: NONE

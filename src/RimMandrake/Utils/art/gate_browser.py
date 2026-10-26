@@ -49,6 +49,7 @@ def stop_marked(marker: str) -> str:
 
 EDGE_TIMEOUT_S = int(os.environ.get("GATE_EDGE_TIMEOUT_S") or 90)   # hard cap on the Edge stage (was 600 s with a retry: 20 min)
 URL_WAIT_S = 20
+RETRY_SLEEP_S = 1.5                     # backoff step between Edge attempts (the selftest sets 0)
 
 
 def edge_cmd(url: str, profile: str) -> list[str]:
@@ -103,11 +104,19 @@ def browser_render(html_path, decisions_path=None, timeout: int | None = None):
         # second with "Page load failed: net::ERR_CONNECTION_REFUSED" and an empty DOM, read as "renders blank"
         # (MEASURED 2026-10-19: 3 builds of a 190-row sheet refused that way; the same page rendered 1936 <img> in
         # 12.6 s one attempt later). Such a refusal is retried here, never counted as a render.
+        # An Edge that dumped NO DOM at all (crashed, refused, exited early) measured nothing either: retried the same way,
+        # and if every attempt is like that the answer is UNMEASURED, never "0 <img>, renders blank" (review wave 87).
         for attempt in range(4):
             r = subprocess.run(edge_cmd(url, profile), capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
-            if "<img" in r.stdout or "ERR_CONNECTION_REFUSED" not in (r.stderr or ""):
+            refused = "<img" not in r.stdout and "ERR_CONNECTION_REFUSED" in (r.stderr or "")
+            if not refused and r.stdout.strip():
                 break
-            time.sleep(1.5 * (attempt + 1))
+            if attempt < 3:
+                time.sleep(RETRY_SLEEP_S * (attempt + 1))
+        else:
+            why = "the page load was refused" if refused else f"Edge dumped no DOM (exit {r.returncode})"
+            tail = " / ".join(l.strip()[:160] for l in (r.stderr or "").splitlines()[-3:])
+            return None, [], f"UNMEASURED: {why} on all 4 attempts" + (f" | Edge stderr tail: {tail}" if tail else "")
     except (OSError, subprocess.SubprocessError) as e:
         tail = ""
         if isinstance(e, subprocess.TimeoutExpired):

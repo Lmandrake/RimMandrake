@@ -13,9 +13,11 @@ strand the process suspended, and failures/partial dumps reported. None of that 
   * Headroom: refuses unless the target disk has >= 4 GB free AND at least the game's working set free (so even an
     unexpectedly large dump fits); unreadable headroom refuses (unavailable is never "enough").
   * One capture per incident key (an atomic claim file); a second request for the same incident is refused.
+    An attempt that never started a dump (refused headroom, OpenProcess/CreateFile failed) gives the claim back.
   * Output: <LocalLow>\\JawaBench\\health\\dumps\\rimworld_<pid>_<utc>.dmp plus a .json beside it holding the
     measured duration and size, or the error; a failed write leaves the file renamed .partial and says so.
-  * Retention: newest 5 dumps, 4 GB total.
+  * Retention: newest 5 dumps (partials included), 4 GB total, over this tool's own rimworld_<pid>_<utc>.dmp names
+    only; the dump just written is never pruned.
   * Hazard, UNMEASURED: MiniDumpWriteDump suspends the target's threads while it writes; if THIS process is
     killed mid-write the target may stay suspended. Do not kill it; if the game stays frozen after a dump,
     that is the first suspect.
@@ -93,6 +95,52 @@ def to_prune(files, keep=KEEP, cap_bytes=CAP_BYTES):
     return [n for _, n in sorted(prune)]
 
 
+OURS = re.compile(r"^rimworld_\d+_\d{8}T\d{6}Z\.dmp(\.partial)?$")
+
+
+def prune_dumps(directory, keep_path):
+    """Apply retention to THIS tool's dumps only (`--dir` may be any folder: a Unity crash dump or someone else's
+    .dmp there is never ours to delete). Partial dumps count against the cap too. `keep_path`, the dump just
+    written, is never pruned: a single dump over the cap is reported, not deleted out from under its record.
+    Each pruned dump takes its .json record with it. -> names pruned."""
+    files = []
+    for n in os.listdir(directory):
+        p = os.path.join(directory, n)
+        if not OURS.match(n) or os.path.abspath(p) == os.path.abspath(keep_path):
+            continue
+        try:
+            files.append((n, os.path.getsize(p), os.path.getmtime(p)))
+        except OSError:
+            continue
+    try:
+        keep_size = os.path.getsize(keep_path)
+    except OSError:
+        keep_size = 0
+    pruned = []
+    for n in to_prune(files, keep=KEEP - 1, cap_bytes=max(CAP_BYTES - keep_size, 0)):
+        p = os.path.join(directory, n)
+        try:
+            os.remove(p)
+        except OSError:
+            continue
+        pruned.append(n)
+        side = os.path.join(directory, n[:-len(".partial")] if n.endswith(".partial") else n) + ".json"
+        try:
+            os.remove(side)
+        except OSError:
+            pass
+    return pruned
+
+
+def incident_release(directory, key):
+    """Give the incident back when no dump was attempted (refused headroom, OpenProcess/CreateFile failed): the
+    one-per-incident rule bounds how often the game is suspended, and nothing was suspended."""
+    try:
+        os.remove(os.path.join(directory, "incident_%s.claim" % _safe(key)))
+    except FileNotFoundError:
+        pass
+
+
 # ---------------------------------------------------------------------------------------------- Windows half
 def _win():
     import ctypes
@@ -138,6 +186,15 @@ def capture(pid, incident, directory):
     why = incident_claim(directory, incident)
     if why:
         return {"status": "refused", "reason": why}
+    attempted = [False]
+    try:
+        return _capture(pid, incident, directory, attempted)
+    finally:
+        if not attempted[0]:
+            incident_release(directory, incident)
+
+
+def _capture(pid, incident, directory, attempted):
     ctypes, k32, psapi, dbg, PMC = _win()
     PROCESS_QUERY_INFORMATION, PROCESS_VM_READ = 0x0400, 0x0010
     h = k32.OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, False, pid)
@@ -164,6 +221,7 @@ def capture(pid, incident, directory):
             rec.update(status="failed", reason="CreateFileW failed: error %d" % ctypes.get_last_error())
             return rec
         t0 = time.perf_counter()
+        attempted[0] = True
         try:
             wrote = dbg.MiniDumpWriteDump(h, pid, fh, DUMP_FLAGS, None, None, None)
             err = ctypes.get_last_error()
@@ -177,14 +235,9 @@ def capture(pid, incident, directory):
             rec.update(status="ok", path=path, sizeBytes=os.path.getsize(path))
         with open(path + ".json", "w") as f:
             json.dump(rec, f, indent=1)
-        files = [(n, os.path.getsize(os.path.join(directory, n)), os.path.getmtime(os.path.join(directory, n)))
-                 for n in os.listdir(directory) if n.endswith(".dmp")]
-        for n in to_prune(files):
-            try:
-                os.remove(os.path.join(directory, n))
-                rec.setdefault("pruned", []).append(n)
-            except OSError:
-                pass
+        pruned = prune_dumps(directory, rec["path"])
+        if pruned:
+            rec["pruned"] = pruned
         return rec
     finally:
         k32.CloseHandle(h)

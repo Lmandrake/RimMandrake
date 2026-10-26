@@ -150,8 +150,11 @@ def canon_slug(dn: str) -> str | None:
 
 # ───────────────────────────────────────────────────────────── the queue view ──
 
-def queue_view():
-    """target_def -> set of states ('pending','active','done-installable') and every id ever filed."""
+def queue_view(unreadable: list | None = None):
+    """target_def -> set of states ('pending','active','done-installable') and every id ever filed.
+    A pending/active job that cannot be parsed targets an UNKNOWN def: it is appended to `unreadable` (when given) so
+    the caller can refuse, never read as "targets nothing" (that re-filed its def as a duplicate job). A file that
+    vanished between listing and reading moved on (daemon claim/finish) and is not an error."""
     by_def = defaultdict(set)
     ids = set()
     for st in ("pending", "active", "done", "failed"):
@@ -165,7 +168,11 @@ def queue_view():
             if st in ("pending", "active"):
                 try:
                     j = json.loads(f.read_text())
-                except (OSError, ValueError):
+                except FileNotFoundError:
+                    continue
+                except (OSError, ValueError) as e:
+                    if unreadable is not None:
+                        unreadable.append(f"{st}/{f.name}: {e}")
                     continue
                 if j.get("target_def"):
                     by_def[j["target_def"]].add(st)
@@ -225,10 +232,15 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path, sw_only
           exclude_jobs: Path | None = None):
     audit = json.loads(audit_p.read_text())
     census = json.loads(census_p.read_text())
+    unreadable = []
+    by_def, filed_ids = queue_view(unreadable)
+    if unreadable:                       # their defs are unknown: every one could be re-filed as a duplicate
+        print("REFUSED: cannot tell which defs these queued jobs target; fix or remove them, then re-run:\n  "
+              + "\n  ".join(unreadable[:20]), file=sys.stderr)
+        return 2
     repo = BA.Repo()
     cls = BA.Cls()
     defs, kinds = load_xml_defs()
-    by_def, filed_ids = queue_view()
     inst = installable_defs(plan_p)
 
     roster_biomes = defaultdict(set)              # def -> biomes casting it
@@ -443,6 +455,7 @@ def build(audit_p: Path, census_p: Path, plan_p: Path | None, out: Path, sw_only
     print(f"targets {len(targets)}; rows {len(rows)} ({nj} job files); by kind/prio {sorted(kc.items())}")
     print("skipped: " + ", ".join(f"{k}={len(v)}" for k, v in skipped.items()))
     print("gaps: " + ", ".join(f"{k}={len(v)}" for k, v in gaps.items()))
+    return 0
 
 
 def BA_REG(biomes):
@@ -524,6 +537,7 @@ def submit_one(jobs_p: Path, cap: int, dry: bool, gate=None):
         for v in refused[:20]:
             print(f"  REFUSED {v['id']}: {v['verdict']} — {v['reason'][:160]}")
         if not dry:
+            (ART / "_refs").mkdir(exist_ok=True)
             with (ART / "_refs" / (jobs_p.stem + ".refused.log")).open("a") as fh:
                 for v in refused:
                     fh.write(json.dumps({"ts": BA.A.now(), "id": v["id"], "verdict": v["verdict"],
@@ -566,9 +580,19 @@ REQUEUE_BATCH = 10
 BACKOFF_MIN = 30
 
 
+UNIT = "rm-artpiped"
+
+
 def recent_429s(minutes: int = BACKOFF_MIN) -> int:
-    """429 lines in the artpipe daemon journal. Raises OSError when the journal cannot be read (caller backs off)."""
-    r = subprocess.run(["journalctl", "--user", "-u", "rm-artpiped", "--since", f"{minutes} min ago", "--no-pager"],
+    """429 lines in the artpipe daemon journal. Raises OSError when the journal cannot be read (caller backs off).
+    journalctl exits 0 with no lines for a unit systemd does not know (renamed, never installed), so an empty journal
+    counts as "no 429s" only once systemd confirms the unit is loaded; otherwise the search was blind."""
+    s = subprocess.run(["systemctl", "--user", "show", "-p", "LoadState", "--value", UNIT],
+                       capture_output=True, text=True, timeout=60)
+    if s.returncode != 0 or s.stdout.strip() != "loaded":
+        raise OSError(f"systemd unit {UNIT} not loaded (rc={s.returncode}, LoadState={s.stdout.strip()!r}): "
+                      f"its journal would read empty, not 429-free")
+    r = subprocess.run(["journalctl", "--user", "-u", UNIT, "--since", f"{minutes} min ago", "--no-pager"],
                        capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
         raise OSError(f"journalctl rc={r.returncode}: {r.stderr.strip()[:120]}")
@@ -633,16 +657,17 @@ def requeue(art: Path = None, cap: int = 40, batch: int = REQUEUE_BATCH, dry: bo
     if room <= 0 or not pool:
         return 0
     take = pool[:room]
-    if not dry:                            # re-judge on the disk and ledger as they are NOW (#5)
-        try:
-            ok, gone = gate.recheck([j for j, _ in take])
-        except RE.GateError as e:
-            print(f"ELIGIBILITY GATE FAILED at publish time — requeuing nothing: {e}", file=sys.stderr)
-            return 2
-        for g in gone:
-            print(f"  REFUSED at publish time {g['id']}: {g['verdict']} — {g['reason'][:160]}")
-        okid = {j["id"] for j in ok}
-        take = [(j, v) for j, v in take if j["id"] in okid]
+    # Re-judge on the disk and ledger as they are NOW (#5). Read-only, so the dry run does it too and lists exactly
+    # what a real run would requeue.
+    try:
+        ok, gone = gate.recheck([j for j, _ in take])
+    except RE.GateError as e:
+        print(f"ELIGIBILITY GATE FAILED at publish time — requeuing nothing: {e}", file=sys.stderr)
+        return 2
+    for g in gone:
+        print(f"  REFUSED at publish time {g['id']}: {g['verdict']} — {g['reason'][:160]}")
+    okid = {j["id"] for j in ok}
+    take = [(j, v) for j, v in take if j["id"] in okid]
     park = art / "_requeued_manifests"
     n = 0
     for j, v in take:
@@ -682,7 +707,11 @@ def requeue_one(art: Path, jid: str, park: Path) -> str:
     parked = None
     if man.is_file():
         parked = park / f"{jid}.manifest.{time.time_ns()}.json"
-        os.rename(man, parked)
+        try:
+            os.rename(man, parked)
+        except OSError as e:               # the job is staged under a hidden name: never strand it there
+            _put_back(stage, src, None, man)
+            return f"could not archive its manifest ({e}); job restored to failed/"
     try:
         os.link(stage, dst)
     except FileExistsError:
@@ -731,7 +760,7 @@ def main():
     if a.cmd == "requeue":
         sys.exit(requeue(ART, a.cap, a.batch, a.dry_run))
     if a.cmd == "build":
-        build(a.audit, a.census, a.plan, a.out, a.sw_only, a.exclude_jobs)
+        sys.exit(build(a.audit, a.census, a.plan, a.out, a.sw_only, a.exclude_jobs))
     else:
         sys.exit(submit(a.jobs, a.cap, a.dry_run))
 

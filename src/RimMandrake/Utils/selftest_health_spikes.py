@@ -113,6 +113,73 @@ def minidump():
     check("retention_cap_bytes", D.to_prune(files, keep=10, cap_bytes=250) == ["a.dmp", "b.dmp"], D.to_prune(files, keep=10, cap_bytes=250))
     check("dump_type_is_small", D.DUMP_FLAGS & D.MiniDumpWithFullMemory == 0 and D.DUMP_FLAGS & D.MiniDumpWithThreadInfo)
     check("never_automatic", D.AUTOMATIC is False)
+    capture_guards(D)
+
+
+def capture_guards(D):
+    """capture() end to end on Linux with the Windows half faked (review wave 87): retention never deletes a .dmp
+    this tool did not write, never deletes the dump just written, and an attempt that never dumped gives the
+    incident back."""
+    import types
+    GB = 1024 ** 3
+    st = {"open_ok": True, "size": 100, "paths": {}}
+
+    class PMC:
+        def __init__(self):
+            self.cb, self.WorkingSetSize = 0, 1 * GB
+
+    def create(path, *a):
+        open(path, "xb").close()
+        st["paths"][7] = path
+        return 7
+
+    def dump(h, pid, fh, *a):
+        with open(st["paths"][fh], "wb") as f:
+            f.write(b"x" * st["size"])
+        return True
+    fake_ct = types.SimpleNamespace(sizeof=lambda c: 8, byref=lambda o: o, get_last_error=lambda: 5,
+                                    c_void_p=lambda v: types.SimpleNamespace(value=v))
+    k32 = types.SimpleNamespace(OpenProcess=lambda *a: 9 if st["open_ok"] else 0, CloseHandle=lambda h: True,
+                                CreateFileW=create)
+    psapi = types.SimpleNamespace(GetProcessMemoryInfo=lambda *a: True)
+    dbg = types.SimpleNamespace(MiniDumpWriteDump=dump)
+    old = (os.name, D._win, D.shutil, D.CAP_BYTES)
+    os.name = "nt"
+    D._win = lambda: (fake_ct, k32, psapi, dbg, PMC)
+    D.shutil = types.SimpleNamespace(disk_usage=lambda d: types.SimpleNamespace(free=100 * GB))
+    try:
+        d = tempfile.mkdtemp()
+        foreign = ["unity_crash_%d.dmp" % i for i in range(7)]
+        for i, n in enumerate(foreign):
+            p = os.path.join(d, n)
+            open(p, "wb").write(b"y" * 10)
+            os.utime(p, (1000 + i, 1000 + i))
+        rec = D.capture(4242, "inc-foreign", d)
+        left = [n for n in foreign if os.path.exists(os.path.join(d, n))]
+        check("prune_never_deletes_foreign_dmp", rec.get("status") == "ok" and left == foreign, repr((rec, left)))
+
+        d = tempfile.mkdtemp()
+        D.CAP_BYTES, st["size"] = 50, 100          # a lone dump over the cap (to_prune's default is bound at def)
+        dflt = D.to_prune.__defaults__
+        D.to_prune.__defaults__ = (dflt[0], 50)
+        rec = D.capture(4242, "inc-big", d)
+        check("prune_never_deletes_the_dump_just_written",
+              rec.get("status") == "ok" and os.path.exists(rec.get("path", "")), rec)
+        D.CAP_BYTES, D.to_prune.__defaults__ = old[3], dflt
+
+        d = tempfile.mkdtemp()
+        st["open_ok"] = False
+        rec = D.capture(4242, "inc-retry", d)
+        st["open_ok"] = True
+        rec2 = D.capture(4242, "inc-retry", d)
+        check("failed_attempt_gives_incident_back", rec.get("status") == "failed" and rec2.get("status") == "ok",
+              repr((rec, rec2)))
+        again = D.capture(4242, "inc-retry", d)
+        check("dumped_incident_stays_claimed", again.get("status") == "refused", again)
+    except Exception as e:                                       # noqa: BLE001
+        check("capture_guards_ran", False, repr(e))
+    finally:
+        os.name, D._win, D.shutil, D.CAP_BYTES = old
 
 
 def main():

@@ -79,6 +79,23 @@ def main() -> int:
         check(dt < LIMIT_S, f"{N_IMG} 404 image requests served in {dt:.1f} s (< {LIMIT_S:.0f} s; the pipe bug hung to the timeout)")
         check(not (td / ".gatecheck_pipe_sheet_2026-10-19").exists(), "scratch dir removed")
         check(json.loads(dec.read_text()) == {"sheetId": "pipe_sheet_2026-10-19", "decisions": {}}, "the real decisions file is untouched")
+        # review wave 87: an Edge that never dumps a DOM (refused every time, or crashed) measured nothing — UNMEASURED,
+        # never "0 <img>" (which the gate reads as "the sheet renders blank")
+        for label, code in (("refused", "sys.stderr.write('Page load failed: net::ERR_CONNECTION_REFUSED\\n')"),
+                            ("crashed", "sys.exit(3)")):
+            fake = td / f"edge_{label}.py"
+            fake.write_text(f"import sys\n{code}\n")
+            orig = (GB.EDGE, GB.edge_cmd, GB.RETRY_SLEEP_S if hasattr(GB, "RETRY_SLEEP_S") else None)
+            GB.EDGE, GB.RETRY_SLEEP_S = sys.executable, 0
+            GB.edge_cmd = lambda url, profile, f=fake: [sys.executable, str(f)]
+            try:
+                n, errs, prob = GB.browser_render(sheet, dec, timeout=int(LIMIT_S))
+            finally:
+                GB.EDGE, GB.edge_cmd = orig[:2]
+                if orig[2] is not None:
+                    GB.RETRY_SLEEP_S = orig[2]
+            check(n is None and prob.startswith("UNMEASURED"), f"an Edge that {label} on every attempt is UNMEASURED "
+                  f"(got n={n!r}, prob={prob!r})")
     check(GB.EDGE_TIMEOUT_S < 600 and GB.EDGE_TIMEOUT_S <= 120, f"Edge stage hard cap {GB.EDGE_TIMEOUT_S} s (was 600 s + a retry)")
     import scaled_review_gate as SG
     src = Path(SG.__file__).read_text()
