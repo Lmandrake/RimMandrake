@@ -62,6 +62,43 @@ def t_bad_selection():
     check(bad and "unknown chain" in bad, "a chain name the mod lacks is refused: %s" % bad)
     check(T.bad_selection("FlowWorks", {"rows": ["T12_no_routine_salt"]}) is None, "a real row id passes")
     check(T.bad_selection("Mock", {"rows": ["zz"]}) is None, "a mod modcheck cannot find is not judged here")
+    # TESTQ_JOB_PLAN_WIRE_PREVIEW: every selection modcheck would refuse on the worker is refused at submit, and the
+    # plan (the rows it will really run, prerequisites included) comes back from the same preview
+    bad = T.bad_selection("FlowWorks", {"chains": ["core_offline"]})
+    check(bad and "offline" in bad, "an offline-only chain selection is refused before queueing: %s" % bad)
+    check(T.unknown_chains(bad) == {"core_offline"}, "the filler reads the offline chain out of that refusal")
+    bad, rows = T.preview_plan("FlowWorks", {"rows": ["T12_no_routine_salt"]})
+    check(bad is None and rows and rows[-1] == "T12_no_routine_salt" and len(rows) > 1,
+          "the plan is modcheck's: the row plus the prerequisites it runs first: %s" % (rows and len(rows)))
+    check(T.preview_plan("Mock", {"rows": ["zz"]}) == (None, None), "no mod folder: no refusal and no plan")
+
+    def rec(mod, start, fin, n, outcome="DONE"):
+        return {"job": {"mod": mod}, "result": {"outcome": outcome, "started": start, "finished": fin,
+                                                 "rows": [{"verdict": "PASS"}] * n + [{"verdict": "NOT_RUN"}] * 5}}
+    recs = [rec("FlowWorks", "2026-10-01T00:00:00Z", "2026-10-01T00:10:00Z", 10),     # 60 s/row
+            rec("FlowWorks", "2026-10-02T00:00:00Z", "2026-10-02T00:20:00Z", 10),     # 120 s/row
+            rec("FlowWorks", "2026-10-03T00:00:00Z", "2026-10-03T00:15:00Z", 10),     # 90 s/row
+            rec("FlowWorks", "2026-10-04T00:00:00Z", "2026-10-04T09:00:00Z", 1, "INVALID"),
+            rec("Else", "2026-10-04T00:00:00Z", "2026-10-04T09:00:00Z", 1)]
+    check(T.row_seconds("FlowWorks", recs) == 90, "estimate: median s per executed row over DONE jobs of the mod "
+          "(NOT_RUN rows, other outcomes and mods ignored): %s" % T.row_seconds("FlowWorks", recs))
+    check(T.row_seconds("Nothing", recs) is None, "no history: no estimate")
+    tmp = tempfile.mkdtemp(prefix="rf_testq_plan_")
+    try:
+        os.makedirs(os.path.join(tmp, "done"))
+        json.dump(dict(recs[0], job={"mod": "FlowWorks", "id": "Jx"}), open(os.path.join(tmp, "done", "Jx.json"), "w"))
+        r = subprocess.run([sys.executable, TESTQ, "submit", "FlowWorks", "--rows", "T12_no_routine_salt", "--purpose",
+                            "fix", "--by", "BENCH", "--sha", "abc1234", "--no-sha-check"],
+                           env=dict(os.environ, TESTQ_QUEUE=tmp), capture_output=True, text=True, timeout=120)
+        try:
+            out = json.loads(r.stdout.strip().splitlines()[-1])
+        except (ValueError, IndexError):
+            out = {"raw": r.stdout + r.stderr}
+        n = len(rows or [])
+        check(out.get("state") == "pending" and out.get("planned_rows") == n and out.get("est_s") == 60 * n,
+              "submit reports modcheck's plan and an estimate (%d rows x 60 s): %s" % (n, out))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def t_fill_policy():
@@ -114,12 +151,14 @@ def t_fill_drops_unknown_chains():
         T.QHOME = tmp
         old = [(T.S.parse_ts("2026-01-01T00:00:00Z"), "measured")]
         new = [(T.S.parse_ts("2026-10-01T00:00:00Z"), "measured")]
-        T.chain_history = lambda mod, recs=None: {"renamed_away_zz": old, "core_offline": new, "hose_offline": new}
+        mid = [(T.S.parse_ts("2026-05-01T00:00:00Z"), "measured")]
+        T.chain_history = lambda mod, recs=None: {"renamed_away_zz": old, "core_offline": mid, "thirst": new}
         T.cmd_submit = lambda sub: sent.append(sub.chains) or 0
         import argparse
         rc = T.cmd_fill(argparse.Namespace(mod="FlowWorks", n=1, cap=T.FILL_CAP_DEFAULT, day_s=T.FILL_DAY_S))
-        check(rc == 0 and len(sent) == 1 and "renamed_away_zz" not in sent[0] and sent[0],
-              "fill drops a chain modcheck no longer declares and submits a real one: rc=%s sent=%s" % (rc, sent))
+        check(rc == 0 and sent == ["thirst"],
+              "fill drops a chain modcheck no longer declares, then an offline-only one, and submits a live chain: "
+              "rc=%s sent=%s" % (rc, sent))
     finally:
         T.QHOME, T.chain_history, T.cmd_submit = saved
         shutil.rmtree(tmp, ignore_errors=True)

@@ -626,32 +626,48 @@ def published(sha):
     return r.returncode == 0
 
 
-def bad_selection(mod, sel):
-    """-> the modcheck refusal text when SEL names a chain or row that MOD does not declare, else None. Asks
-    `modcheck run MOD --preview` (0.2 s, offline); a mod it cannot find, or any other trouble, is not a refusal."""
+# modcheck targeting's own refusals (targeting.TargetError): the run on the worker would refuse the same selection
+# as BLOCKED_SELECTION after spending a runner slot. A mod modcheck cannot find (RuntimeError) is not one of them.
+SELECTION_REFUSALS = ("unknown row", "unknown chain", "is offline", "catalogue is incomplete", "empty selection")
+
+
+def preview_plan(mod, sel):
+    """-> (refusal text or None, the row ids the run will execute or None) from `modcheck run MOD --preview` (0.2 s,
+    offline; TESTQ_JOB_PLAN_WIRE_PREVIEW). A mod it cannot find, or any other trouble, is neither refused nor planned."""
     args = []
     for k in ("chains", "rows"):
         if sel.get(k):
             args += ["--" + k, ",".join(sel[k])]
     if not args:
-        return None
+        return None, None
     cli = os.path.join(HERE, "..", "modcheck", "cli.py")
     try:
         r = subprocess.run([sys.executable, cli, "run", mod] + args + ["--preview"], capture_output=True, text=True,
                            timeout=60, cwd=REPO)
     except (OSError, subprocess.SubprocessError):
-        return None
-    out = (r.stdout or "") + (r.stderr or "")
-    for line in out.splitlines():
-        if line.startswith("REFUSED:") and ("unknown row" in line or "unknown chain" in line):
-            return line[len("REFUSED:"):].strip()
-    return None
+        return None, None
+    rows = None
+    for line in ((r.stdout or "") + (r.stderr or "")).splitlines():
+        if line.startswith("REFUSED:") and any(k in line for k in SELECTION_REFUSALS):
+            return line[len("REFUSED:"):].strip(), None
+        if line.startswith("EXPECTED_ROWS "):
+            try:
+                rows = json.loads(line[len("EXPECTED_ROWS "):])
+            except ValueError:
+                rows = None
+    return None, rows
+
+
+def bad_selection(mod, sel):
+    """-> the modcheck refusal text when SEL is a selection modcheck would refuse for MOD, else None."""
+    return preview_plan(mod, sel)[0]
 
 
 def unknown_chains(why):
-    """-> the chain names a bad_selection refusal calls unknown (modcheck's `unknown chain(s) for MOD: a, b; chains
-    are: ...`), or an empty set when WHY is not about chains."""
-    m = re.search(r"unknown chain\(s\) for [^:]*:\s*([^;]*)", why or "")
+    """-> the chain names a bad_selection refusal rules out of a live job: unknown (modcheck's `unknown chain(s) for
+    MOD: a, b; chains are: ...`) or offline-only (`every selected chain of MOD is offline (a, b)`), else an empty set."""
+    m = (re.search(r"unknown chain\(s\) for [^:]*:\s*([^;]*)", why or "")
+         or re.search(r"every selected chain of \S+ is offline \(([^)]*)\)", why or ""))
     return {c.strip() for c in m.group(1).split(",") if c.strip()} if m else set()
 
 
@@ -681,7 +697,7 @@ def cmd_submit(a):
     except S.SchemaError as e:
         print("REFUSED: %s" % e)
         return 2
-    bad = bad_selection(a.mod, sel)
+    bad, planned = preview_plan(a.mod, sel)
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
@@ -702,8 +718,35 @@ def cmd_submit(a):
         if under_tick_lock(supersede):
             return 2
     S.dump(job, q("pending", job["id"] + ".json"))
-    print(json.dumps({"job": job["id"], "state": "pending"}))
+    out = {"job": job["id"], "state": "pending"}
+    if planned is not None:     # the plan modcheck will run, so the submitter sees prerequisites and the time it costs
+        out["planned_rows"] = len(planned)
+        per = row_seconds(a.mod)
+        if per:
+            out["est_s"] = int(per * len(planned))
+    print(json.dumps(out))
     return 0
+
+
+def row_seconds(mod, recs=None, last=20):
+    """-> the median lane seconds per executed row over MOD's last `last` DONE jobs (start -> finish / rows that
+    were not NOT_RUN), or None with no history. The submit estimate: rows planned x this."""
+    if recs is None:
+        recs = [read_json(p) for p in glob.glob(q("done", "*.json"))]
+    per = []
+    for rec in recs:
+        res, job = (rec or {}).get("result") or {}, (rec or {}).get("job") or {}
+        ran = [r for r in res.get("rows") or [] if r.get("verdict") != "NOT_RUN"]
+        if job.get("mod") != mod or res.get("outcome") != "DONE" or not ran:
+            continue
+        try:
+            wall = S.parse_ts(res["finished"]) - S.parse_ts(res["started"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if wall > 0:
+            per.append((res["finished"], wall / len(ran)))
+    per = sorted(v for _, v in sorted(per)[-last:])
+    return per[len(per) // 2] if per else None
 
 
 def under_tick_lock(fn):
