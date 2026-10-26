@@ -32,6 +32,10 @@ namespace RimMandrake.Utinni.WasteRun
         private int ticksPresent;
         private int ticksSinceFault;
         private float lastCarrierHealthLoss = -1f;
+        // THROATCASK_FIX_BURST_ON_CARRIER_SWAP: the baseline belongs to one carrier. Without this, a cask
+        // handed from pawn A to pawn B inside one rare interval compared B's injuries to A's baseline
+        // and burst whenever B was the more hurt pawn, with no harm taken.
+        private int lastCarrierId = -1;
 
         private RUT_CompProperties_ThroatCask Props => (RUT_CompProperties_ThroatCask)props;
 
@@ -82,12 +86,14 @@ namespace RimMandrake.Utinni.WasteRun
                 {
                     if (h is Hediff_Injury inj) loss += inj.Severity;
                 }
-                harmed = lastCarrierHealthLoss >= 0f && loss > lastCarrierHealthLoss + 0.01f;
+                harmed = lastCarrierId == carrier.thingIDNumber && lastCarrierHealthLoss >= 0f && loss > lastCarrierHealthLoss + 0.01f;
                 lastCarrierHealthLoss = loss;
+                lastCarrierId = carrier.thingIDNumber;
             }
             else
             {
                 lastCarrierHealthLoss = -1f;
+                lastCarrierId = -1;
             }
             bool burning = parent.IsBurning() || (parent.Spawned && parent.Position.GetFirstThing<Fire>(map) != null);
             if (!WasteRunKernel.ShouldBurst(harmed, burning)) return false;
@@ -101,7 +107,6 @@ namespace RimMandrake.Utinni.WasteRun
             Messages.Message("The Throat cask has burst.", new TargetInfo(pos, map), MessageTypeDefOf.NegativeEvent);
             GameCondition fallout = GameConditionMaker.MakeCondition(GameConditionDefOf.ToxicFallout, 3 * 60000);
             map.gameConditionManager.RegisterCondition(fallout);
-            Thing source = parent;
             parent.Destroy(DestroyMode.Vanish);
             GenExplosion.DoExplosion(pos, map, Props.burstRadius, DamageDefOf.Bomb, null, 120);
         }
@@ -194,6 +199,7 @@ namespace RimMandrake.Utinni.WasteRun
             Scribe_Values.Look(ref ticksPresent, "ticksPresent", 0);
             Scribe_Values.Look(ref ticksSinceFault, "ticksSinceFault", 0);
             Scribe_Values.Look(ref lastCarrierHealthLoss, "lastCarrierHealthLoss", -1f);
+            Scribe_Values.Look(ref lastCarrierId, "lastCarrierId", -1);
         }
     }
 }

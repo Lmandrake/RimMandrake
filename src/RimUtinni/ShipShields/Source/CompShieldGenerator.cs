@@ -45,9 +45,29 @@ namespace RimMandrake.Utinni.ShipShields
             }
         }
 
+        // SHIELDGEN_FIX_RECHARGE_UNPOWERED: the base class adds HitPointsPerInterval (1) every
+        // rechargeHitPointsIntervalTicks with no power check, so once the def ticks (2965619d82)
+        // an unpowered or flicked-off generator recharged for free. Mirrors vanilla
+        // CompGravshipShieldGenerator's ShouldCharge gate (no unpowered drain: a drain to 0
+        // would fire the collapse explosion, which is for a forced collapse, not a power cut).
+        private CompPowerTrader powerTrader;
+        private CompPowerTrader PowerTrader => powerTrader ?? (powerTrader = parent.GetComp<CompPowerTrader>());
+
+        protected override int HitPointsPerInterval
+        {
+            get
+            {
+                CompPowerTrader power = PowerTrader;
+                return power == null || power.PowerOn ? base.HitPointsPerInterval : 0;
+            }
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
+            // SHIELDGEN_FIX_COLLAPSE_REARM_ON_LOAD: unsaved, a load inside the hp==0 window (until the
+            // next recharge interval) re-armed it to true and the generator exploded a second time.
+            Scribe_Values.Look(ref collapseExplosionArmed, "collapseExplosionArmed", true);
             Scribe_Values.Look(ref predictiveLastSampleTick, "predictiveLastSampleTick", -1);
             Scribe_Values.Look(ref predictiveLastSampleHitPoints, "predictiveLastSampleHitPoints", -1);
             Scribe_Values.Look(ref predictiveWarningActive, "predictiveWarningActive", false);
