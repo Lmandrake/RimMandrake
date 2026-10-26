@@ -616,6 +616,20 @@ FILLIN_OK = {"jawa/flowworks_job_probe": {"success": True, "pawn": {"id": "P1", 
              "jawa/ordered_job": {"accepted": True}}
 
 
+def _gravel_mock(tl, p, orders=None):
+    """FILLIN_PROOF_FIX_ORDER_NEVER_FILLS: the fill-in order must carry staged gravel as targetB (an unpaid pit with a bare order
+    ends at once in the live game). -> a reply, or None when `tl` is not about the gravel/order."""
+    if tl == "rimworld/spawn_thing" and p.get("defName") == "RM_Gravel":
+        return {"success": True}
+    if tl == "jawa/list_things" and p.get("defName") == "RM_Gravel":
+        return {"success": True, "things": [{"id": "G1"}]}
+    if tl == "jawa/ordered_job":
+        if orders is not None:
+            orders.append(dict(p))
+        return {"accepted": p.get("targetBId") == "G1"}      # a bare order is the live defect: not a fill
+    return None
+
+
 def _repair_probes(EXT, base):
     """2026-10-11 live repairs (PIT_CHAINS_REPAIR_STALE_SINCE_RULING, EXT_FLUID_SET_REPAIR_ASKED_TOO_LATE,
     GOLDEN_SITE_REBUILD_RIVER_RUNS_DRY): each case is red on the code the live run used."""
@@ -650,6 +664,17 @@ def _repair_probes(EXT, base):
                 out.append("%s orders a pawn into an open pit (%d order_pawn): the path veto refuses it" % (chain, seen["order"]))
             if not seen["fly"]:
                 out.append("%s never forces a pawn in (no ProofForcedFlyer)" % chain)
+    # TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT: the rescue-ladder queue must be OFF while the held pawn is read
+    live, rescue = {}, []
+    _, hp = pit(True, True)
+
+    def h_rescue(tl, p):
+        if tl == "jawa/flowworks_pit_report":
+            rescue.append(live.get("pitRescueLadderEnabled"))
+        return hp(tl, p)
+    _ext_run(EXT, "toggle_ladder_required", h_rescue, settings=live)
+    if not rescue or any(v is not False for v in rescue):
+        out.append("toggle_ladder_required reads the pit with pitRescueLadderEnabled %s, want False (rescue ladder lets the colonist out)" % rescue)
     seen, h = pit(True, True)       # ON: the first forced pirate is held; OFF: the second is not
     h1 = lambda tl, p: ({"success": True, "pawns": [{"id": "P1", "held": seen["fly"] < 2}]}  # noqa: E731
                         if tl == "jawa/flowworks_pit_report" else h(tl, p))
@@ -695,8 +720,9 @@ def _repair_probes(EXT, base):
         def h(tl, p):
             if tl == "jawa/flowworks_job_probe":
                 return probe
-            if tl == "jawa/ordered_job":
-                return {"accepted": True}
+            g = _gravel_mock(tl, p)
+            if g is not None:
+                return g
             if tl == "jawa/flowworks_excavation_report":
                 return {"success": True, "depth": depth_after, "fill": 0}
             return base(tl, p)
@@ -714,8 +740,9 @@ def _repair_probes(EXT, base):
                 st_off["probes"] = st_off.get("probes", 0) + 1
                 return dict(ok, workGiver={"hasJobOnCell": has_job or st_off["probes"] == 1,
                                            "jobDef": "RM_FillInCanalJob", "shouldSkip": False})
-            if tl == "jawa/ordered_job":
-                return {"accepted": True}
+            g = _gravel_mock(tl, p)
+            if g is not None:
+                return g
             if tl == "jawa/flowworks_excavation_drive" and "a" not in st_off:
                 st_off["a"] = p.get("x")                     # the chain digs the ON cell first
             if tl == "jawa/flowworks_excavation_report":    # the ON cell is filled in (every read); OFF's stays D=1
@@ -1025,7 +1052,10 @@ def _new_probes(EXT, RIV, base):
         def h(tl, p):
             if tl == "jawa/designate_batch":
                 st["designated"] = True
-            if tl in ("jawa/flowworks_job_probe", "jawa/ordered_job"):
+            g = _gravel_mock(tl, p)
+            if g is not None:
+                return g
+            if tl == "jawa/flowworks_job_probe":
                 return FILLIN_OK[tl]
             if tl == "jawa/flowworks_excavation_report":
                 r = {"success": True, "depth": depth_after if st["designated"] else 1, "isSourceCell": False,

@@ -88,6 +88,7 @@ suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES + MACH_TOGGLES
 # (settings_registry.py, built from site_spec.SETTINGS + the C# Scribe keys), not from a hand table here
 import settings_registry as REG  # noqa: E402
 import shovel_stage  # noqa: E402
+import gravel_stage  # noqa: E402
 DEFAULTS = REG.defaults(suite.toggles)
 SETTINGS_OF = REG.settings_of(suite.toggles)
 
@@ -1189,6 +1190,15 @@ def _order_fill_in(t, pid, cell):
     if not t._guard():
         return
     _stage_shovel(t, pid)
+    # FILLIN_PROOF_FIX_ORDER_NEVER_FILLS: the pit is unpaid (the chain only digs it), so the WorkGiver's JobOnCell
+    # (WorkGiver_FillInCanal.cs ~133-147) would attach a free gravel as targetB; a bare targetA order ends at once in
+    # the RM_FillPaidCheck toil (JobDriver_FillInCanal.cs:67-77) and the cell stays dug. Stage gravel on the ground
+    # (RM_DigSpoil.FindFillMaterial searches the map), let a tick pass (the WorkGiver caches "has material" per tick),
+    # then order the job with that gravel as targetB, as the WorkGiver would.
+    ok_, why_ = gravel_stage.spawn_fill_material(t.bridge_call, [(cell[0] - 1, cell[1])])
+    if not ok_:
+        raise ExpectationFailed("UNMEASURED: fill material not staged: %s" % why_)
+    _wait(t, 2)
     # forced=True: the order below is a player order, and HasJobOnCell passes `forced` to its reservation check
     pr = t.bridge_call("jawa/flowworks_job_probe", x=cell[0], z=cell[1], kind="fillin", pawnId=pid, forced=True) or {}
     wg, pw = pr.get("workGiver") or {}, pr.get("pawn") or {}
@@ -1198,7 +1208,11 @@ def _order_fill_in(t, pid, cell):
         raise ExpectationFailed("UNMEASURED: the spawned colonist cannot do the fill-in (%r)" % pw)
     if not wg.get("hasJobOnCell") or not wg.get("jobDef"):
         raise ExpectationFailed("WorkGiver_FillInCanal hands no job on designated cell %s with fillInEnabled ON: %r" % (cell, wg))
-    o = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef=wg["jobDef"], targetAX=cell[0], targetAZ=cell[1], waitTicks=60) or {}
+    gv = (t.bridge_call("jawa/list_things", defName=gravel_stage.GRAVEL, rect=_rect(cell[0] - 1, cell[1], 1, 1)) or {}).get("things") or []
+    if not gv or gv[0].get("id") is None:
+        raise ExpectationFailed("UNMEASURED: the staged gravel is not on the ground at (%d,%d)" % (cell[0] - 1, cell[1]))
+    o = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef=wg["jobDef"], targetAX=cell[0], targetAZ=cell[1],
+                      targetBId=gv[0]["id"], count=1, waitTicks=60) or {}
     if not o.get("accepted"):
         raise ExpectationFailed("UNMEASURED: the fill-in order was not taken (reservation?): %r" % o)
 
@@ -1522,7 +1536,11 @@ def toggle_ladder_required(t):
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
     with t.component("ladder_required_on", toggle="ladderRequiredToExitEnabled"):
-        with _setting(t, "superdeepCapturesOwnFaction", True):
+        # TOGGLE_LADDER_FIX_REQUIRED_PAWN_ESCAPES_PIT (HARNESS): pitRescueLadderEnabled (RM_PitAccess.cs, RM_MapComponent_PitRescueLadder,
+        # every 250 ticks) queues a ladder for a colonist stuck in a pit; the stuck fixture colonist (or a spawned neighbour) builds it
+        # and climbs out inside the 10-pulse wait (flaky: the job-J20261026T081140Z-d4950f evidence has hasLadder=True on a pit cell
+        # and no pawn on any). That is the designed rescue, not a hole in ladderRequiredToExitEnabled, so this row holds it off.
+        with _setting(t, "superdeepCapturesOwnFaction", True), _setting(t, "pitRescueLadderEnabled", False):
             pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
             _force_into(t, pid, pit[4][0], pit[4][1])     # a colonist never paths in (ruling 10-06); forced = a jumper
             _wait(t, 10 * PULSE)
