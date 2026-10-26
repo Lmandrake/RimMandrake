@@ -52,6 +52,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             Row5Clip();
             Row6Legacy();
             Row7CarriedStrandDropped();
+            Row8RetractingStrandDropped();
+            Row9CrossKeyFollowsRebuilds();
         }
 
         private static void Row1Table()
@@ -258,6 +260,60 @@ namespace RimMandrake.FlowWorks.SelfTest
             int at = comp.IndexOf(dropLine, comp.IndexOf("r.carry == HoseCarryState.Carrying && r.trail.Count > 0", StringComparison.Ordinal), StringComparison.Ordinal);
             string pre = at < 0 ? comp : comp.Remove(at, dropLine.Length);
             Check(pre != comp && !CarryBranchDropsStrand(pre), "row7 can-fail: the branch without the drop is rejected");
+        }
+
+        /// <summary>DrawAll (read as text): a Retracting reel's cached laid strand is dropped (non-legacy) after EnsureLay and
+        /// BEFORE the mesh cache is consulted.</summary>
+        internal static bool RetractDropsStrand(string src)
+        {
+            int a = src.IndexOf("private void DrawAll()", StringComparison.Ordinal);
+            if (a < 0) return false;
+            int lay = src.IndexOf("HoseLay lay = EnsureLay(r);", a, StringComparison.Ordinal);
+            int look = lay < 0 ? -1 : src.IndexOf("meshes.TryGetValue(r, out Cached c);", lay, StringComparison.Ordinal);
+            int drop = lay < 0 ? -1 : src.IndexOf("if (!LegacyFrame && r.carry == HoseCarryState.Retracting && meshes.ContainsKey(r)) DropMeshes(r);", lay, StringComparison.Ordinal);
+            return look > 0 && drop > lay && drop < look;
+        }
+
+        /// <summary>HOSE_SHADOW_FIX_RETRACTING_STRAND_STALE (review 2026-10-26): a hose being wound in draws a per-frame clip
+        /// (key null) and never replaced its cached FULL laid strand, so hoses above cast crossing shadows over wound-away
+        /// ground for the whole wind job. NOT proven here: the shadow following the wind in a running game (live row, owed).</summary>
+        private static void Row8RetractingStrandDropped()
+        {
+            string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            Check(RetractDropsStrand(comp), "row8 DrawAll drops a Retracting reel's cached laid strand (non-legacy) before the cache lookup");
+            const string dropLine = "if (!LegacyFrame && r.carry == HoseCarryState.Retracting && meshes.ContainsKey(r)) DropMeshes(r);";
+            int at = comp.IndexOf(dropLine, StringComparison.Ordinal);
+            string pre = at < 0 ? comp : comp.Remove(at, dropLine.Length);
+            Check(pre != comp && !RetractDropsStrand(pre), "row8 can-fail: DrawAll without the drop is rejected");
+        }
+
+        /// <summary>DrawCrossShadow / RebuildCrossShadow / the Cached build (read as text): the crossing-shadow key is mixed from
+        /// per-build serials, never from the entries' key strings, and every built entry gets a fresh serial.</summary>
+        internal static bool CrossKeyUsesSerials(string src)
+        {
+            int a = src.IndexOf("private void DrawCrossShadow(", StringComparison.Ordinal);
+            int b = a < 0 ? -1 : src.IndexOf("private void RebuildCrossShadow(", a, StringComparison.Ordinal);
+            if (b < 0) return false;
+            int end = src.IndexOf("c.crossKey = ck;", b, StringComparison.Ordinal);
+            if (end < 0) return false;
+            string body = src.Substring(a, end - a);
+            return body.Contains("CrossMix(1469598103934665603UL, c.serial)") && body.Contains("h = CrossMix(h, oc.serial);")
+                && !body.Contains(".key.GetHashCode()") && body.Contains("if (!c.crossKeyed || c.crossKey != ck)")
+                && src.Contains("meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp, serial = ++cachedSerial };");
+        }
+
+        /// <summary>HOSE_SHADOW_FIX_STALE_AFTER_RELAY (review 2026-10-26): the 250-tick corridor check re-lays a hose to a NEW
+        /// route under the SAME layKey, so its rebuilt Cached had the same key string; the upper hose's crossing-shadow key
+        /// (a hash of key strings) did not change and its shadow stayed at the old crossing. Keyed on build serials now.
+        /// NOT proven here: the moved shadow in a running game (live row, owed).</summary>
+        private static void Row9CrossKeyFollowsRebuilds()
+        {
+            string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            Check(CrossKeyUsesSerials(comp), "row9 the crossing-shadow key mixes build serials (a same-key re-lay rebuilds the shadow)");
+            string pre = comp.Replace("h = CrossMix(h, oc.serial);", "h = CrossMix(h, oc.key.GetHashCode());");
+            Check(pre != comp && !CrossKeyUsesSerials(pre), "row9 can-fail: a key mixed from the lower strands' key strings is rejected");
+            string pre2 = comp.Replace(", serial = ++cachedSerial };", " };");
+            Check(pre2 != comp && !CrossKeyUsesSerials(pre2), "row9 can-fail: a Cached built without a fresh serial is rejected");
         }
 
         private static void Row6Legacy()

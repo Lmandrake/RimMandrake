@@ -43,7 +43,14 @@ namespace RimMandrake.FlowWorks.Hose
             public List<double[]> overSpans;
             public List<Mesh> overMeshes = new List<Mesh>();
             /// <summary>HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE: the stretches over hoses drawn beneath, and their crossing shadow.</summary>
-            public string crossKey;
+            /// <summary>HOSE_SHADOW_FIX_STALE_AFTER_RELAY (review 2026-10-26): the crossing shadow's key is a 64-bit FNV over
+            /// this entry's <see cref="serial"/> and every lower crossing entry's serial, not over their key strings: a 250-tick
+            /// re-lay to a NEW route keeps the same layKey, so the old string key matched and the shadow stayed at the old
+            /// crossing. crossKeyed is false until the first build.</summary>
+            public ulong crossKey;
+            public bool crossKeyed;
+            /// <summary>Unique per built entry (component counter): a rebuilt strand is a new serial even under the same key.</summary>
+            public int serial;
             public List<double[]> crossSpans;
             public Mesh crossShadow;
             /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: the poseVersion and rank the crossing shadow was last checked at (it
@@ -56,6 +63,12 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: bumped whenever a cached strand is built or dropped, or the crossing
         /// order is rebuilt -- the crossing shadows are re-checked only then, not every frame (all-pairs per frame was O(n^2)).</summary>
         private int poseVersion;
+
+        /// <summary>HOSE_SHADOW_FIX_STALE_AFTER_RELAY: the last <see cref="Cached.serial"/> handed out.</summary>
+        private int cachedSerial;
+
+        /// <summary>One FNV-1a step of the crossing-shadow key (64-bit: the old <c>h * 31 + int</c> collided on small sets).</summary>
+        private static ulong CrossMix(ulong h, long v) => (h ^ unchecked((ulong)v)) * 1099511628211UL;
 
         /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP perf A/B switch: true = the pre-fix per-frame paths (all-pairs crossing
         /// scan every frame, layering key string every frame, pair-solve cache cleared at 64 entries). Off by default; set through
@@ -846,6 +859,11 @@ namespace RimMandrake.FlowWorks.Hose
                 // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: an open end lying on another hose's open end couples to it face to face
                 MateInfo mi = onPort ? null : MateFor(r);
                 if (mi != null) key += "|m" + mi.key;
+                // HOSE_SHADOW_FIX_RETRACTING_STRAND_STALE (review 2026-10-26): a hose being wound in draws a per-frame clip and
+                // never re-caches (key null below), so its full laid strand stayed in meshes and hoses above cast crossing
+                // shadows over wound-away ground for the whole wind job. Dropped here; while winding, hoses above cast no
+                // crossing shadow onto what remains of it.
+                if (!LegacyFrame && r.carry == HoseCarryState.Retracting && meshes.ContainsKey(r)) DropMeshes(r);
                 // review 2026-10-22: the key is built first, so a cache hit reuses the pose its meshes were built from
                 meshes.TryGetValue(r, out Cached c);
                 List<V2> pts;
@@ -891,7 +909,7 @@ namespace RimMandrake.FlowWorks.Hose
                     if (key != null)
                     {
                         if (c != null) { DestroyMeshes(c); }
-                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp };
+                        meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp, serial = ++cachedSerial };
                         poseVersion++;
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
@@ -1015,7 +1033,7 @@ namespace RimMandrake.FlowWorks.Hose
                 c.crossVer = poseVersion;
                 c.crossRank = rank;
                 if (!LegacyFrame) Box(c);
-                int h = c.key.GetHashCode();
+                ulong h = CrossMix(1469598103934665603UL, c.serial);
                 List<IList<V2>> lowers = null;
                 for (int i = 0; i < reels.Count; i++)
                 {
@@ -1027,10 +1045,10 @@ namespace RimMandrake.FlowWorks.Hose
                         if (oc.bx0 > c.bx1 || oc.bx1 < c.bx0 || oc.bz0 > c.bz1 || oc.bz1 < c.bz0) continue;
                     }
                     if (RankOf(o) >= rank) continue;
-                    h = h * 31 + oc.key.GetHashCode();
+                    h = CrossMix(h, oc.serial);
                     (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
                 }
-                RebuildCrossShadow(c, lowers, h.ToString(), vis, e, y);
+                RebuildCrossShadow(c, lowers, CrossMix(h, lowers == null ? 0 : lowers.Count), vis, e, y);
             }
             if (c.crossShadow == null) return;
             Graphics.DrawMesh(c.crossShadow, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(1)), 0);
@@ -1038,10 +1056,11 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>The crossing shadow's mesh and spans, rebuilt when the key (this pose and every lower crossing pose) changed.</summary>
-        private void RebuildCrossShadow(Cached c, List<IList<V2>> lowers, string ck, float vis, float e, float y)
+        private void RebuildCrossShadow(Cached c, List<IList<V2>> lowers, ulong ck, float vis, float e, float y)
         {
-            if (c.crossKey != ck)
+            if (!c.crossKeyed || c.crossKey != ck)
             {
+                c.crossKeyed = true;
                 c.crossKey = ck;
                 if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
                 c.crossShadow = null;
