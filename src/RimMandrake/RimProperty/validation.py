@@ -353,7 +353,8 @@ def claim_erase_api(t):
 
     `RM_ClaimEraseProof.Run` records Stolen(X) + BattleLootOrigin(Y) + Purchased(colony) on one item, calls
     ClearForeignClaims (must return 2 and leave exactly the colony's record), then runs ClearForeignClaimsWhere over a
-    mixed pair (must wipe 2, keep the colony's Inherited) and checks a FactionRecord suspicion entry reads unchanged.
+    mixed pair (must wipe 2, keep the colony's Inherited). It no longer claims a suspicion row: that one compared 0 with 0
+    (RegisterWitness drops a Commons suspect; a fresh entry reads 0 at its own tick), so it could never fail.
     Needs the GM-gated `jawa/static_call` tool (JawaBench companion built 52c7de5ba; deploys at the next game DOWN).
     NOT proven here: save then reload keeping the wipe (UNMEASURED, needs a save round trip).
     """

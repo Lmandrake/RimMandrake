@@ -43,10 +43,11 @@ namespace RimMandrake.Property
                     ledger.RecordClaim(a, new ClaimRecord(x, 1f, ClaimBasis.Stolen, now));
                     ledger.RecordClaim(a, new ClaimRecord(y, 1f, ClaimBasis.BattleLootOrigin, now));
                     ledger.RecordClaim(a, new ClaimRecord(colony, 1f, ClaimBasis.Purchased, now));
-                    // Suspicion entry that must survive untouched.
-                    FactionRecord fr = ledger.GetOrCreateFactionRecord(others[0]);
-                    fr.RegisterWitness(x, 0.6f, now);
-                    float suspBefore = fr.GetSuspicion(x, now);
+                    // No suspicion row: the old one planted a witness entry against the Commons claimant `x`, which
+                    // FactionRecord.RegisterWitness drops (only Pawn suspects are kept), and a fresh entry reads 0 at its own
+                    // tick anyway (Propagated(0 days) = 0), so "unchanged" compared 0 with 0 and could never fail. A real
+                    // entry would need a colonist suspect left in the live save; ClearForeignClaims* never touch
+                    // factionRecords (GameComponent_PropertyLedger), so that row is not run here at all.
 
                     int removed = ledger.ClearForeignClaims(a, colony);
                     if (removed != 2)
@@ -80,12 +81,7 @@ namespace RimMandrake.Property
                         return "FAIL bulk: the filter excluded a, yet a changed";
                     }
 
-                    float suspAfter = ledger.GetOrCreateFactionRecord(others[0]).GetSuspicion(x, now);
-                    if (suspAfter != suspBefore)
-                    {
-                        return "FAIL FactionRecord suspicion moved: " + suspBefore + " -> " + suspAfter;
-                    }
-                    return "PASS single=2 bulk=2 suspicion=" + suspAfter.ToString("0.000") + " (unchanged)";
+                    return "PASS single=2 bulk=2";
                 }
                 finally
                 {
