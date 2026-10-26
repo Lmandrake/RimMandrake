@@ -4,7 +4,7 @@
 Proves: a clean kernel compiled into both projects yields no errors; every using-directive form that
 pulls an engine namespace in is an ERROR (DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 11: `using static`,
 `global using` and the alias form `using BG = RimWorld...;` used to pass); a comment naming Verse is not;
-a file missing from either project and an absent kernel are ERRORs.
+a file missing from either project (or only in an XML comment there) and an absent kernel or mod project are ERRORs.
 """
 import os
 import shutil
@@ -23,14 +23,14 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
-def fixture(root, kernel_text, in_mod=True, in_fuzz=True):
+def fixture(root, kernel_text, in_mod=True, in_fuzz=True, mod_include='<Compile Include="Kernel\\K.cs" />'):
     src = os.path.join(root, "Source")
     os.makedirs(os.path.join(src, "Kernel"), exist_ok=True)
     os.makedirs(os.path.join(src, "SelfTest", "Fuzz"), exist_ok=True)
     with open(os.path.join(src, "Kernel", "K.cs"), "w", encoding="utf-8") as f:
         f.write(kernel_text)
     with open(os.path.join(src, "M.csproj"), "w", encoding="utf-8") as f:
-        f.write('<Compile Include="Kernel\\K.cs" />' if in_mod else "")
+        f.write(mod_include if in_mod else "")
     with open(os.path.join(src, "SelfTest", "Fuzz", "F.csproj"), "w", encoding="utf-8") as f:
         f.write('<Compile Include="..\\..\\Kernel\\K.cs" />' if in_fuzz else "")
     return kernel_guards(root, "M.csproj", "SelfTest/Fuzz/F.csproj", "t")
@@ -57,6 +57,15 @@ try:
     check("not compiled into the mod is an ERROR", any("not compiled into the mod" in x for x in e), e)
     e = run(clean, in_fuzz=False)
     check("not compiled into the fuzz project is an ERROR", any("fuzz project" in x for x in e), e)
+    # wave 12: a commented-out <Compile> compiles nothing but used to satisfy the substring check
+    e = run(clean, mod_include='<!-- <Compile Include="Kernel\\K.cs" /> -->')
+    check("a commented-out Compile include is not compiled into the mod", any("not compiled into the mod" in x for x in e), e)
+    e = run(clean, mod_include='<Compile Include="Kernel/K.cs" />')
+    check("a forward-slash Compile include counts (MSBuild accepts it)", e == [], e)
+    os.makedirs(os.path.join(tmp, "noproj", "Source", "Kernel"))
+    open(os.path.join(tmp, "noproj", "Source", "Kernel", "K.cs"), "w").write(clean)
+    e = kernel_guards(os.path.join(tmp, "noproj"), "M.csproj", "SelfTest/Fuzz/F.csproj", "t")
+    check("a missing mod project is an ERROR line, not a traceback", len(e) == 1 and "mod project" in e[0], e)
     os.makedirs(os.path.join(tmp, "empty", "Source"))
     e = kernel_guards(os.path.join(tmp, "empty"), "M.csproj", "SelfTest/Fuzz/F.csproj", "t")
     check("no kernel at all is an ERROR (sanity probe)", len(e) == 1 and "no .cs files" in e[0], e)
