@@ -468,10 +468,36 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        /// <summary>Copy a file into the log archive off the main thread (best effort, retention-bounded).</summary>
+        /// <summary>
+        /// Copy a file into the log archive off the main thread (best effort, retention-bounded), on a dedicated
+        /// background thread. ⛔ Do not call this while the game is still starting up: the 2026-10-26 SteveDesktop
+        /// native crash (JAWABENCH_TPS_ARCHIVE_DIAGNOSE_STARTUP_CRASH) was a threadpool archive JIT-compiling
+        /// SHA256Managed.HashFinal's callees at the same moment the main thread was Harmony-patching at
+        /// bridge-registration; mono raised inside the JIT trampoline, which no managed catch can stop. The sampler
+        /// warms the hash on the main thread (<see cref="WarmHash"/>) and defers the call until startup is idle.
+        /// </summary>
         internal static void ArchiveLog(string source, string name, string fromSession = null)
         {
-            ThreadPool.QueueUserWorkItem(_ => ArchiveLogNow(source, name, fromSession));
+            var t = new Thread(() => { try { ArchiveLogNow(source, name, fromSession); } catch { } })
+            { IsBackground = true, Name = "JawaBench.TpsLogArchive", Priority = ThreadPriority.BelowNormal };
+            t.Start();
+        }
+
+        /// <summary>JIT the SHA-256 path ArchiveLogNow uses (TransformBlock, TransformFinalBlock, HashFinal and their
+        /// callees) on the CALLING thread, so a later background archive runs already-compiled code. Never throws.</summary>
+        internal static void WarmHash()
+        {
+            try
+            {
+                using (var sha = System.Security.Cryptography.SHA256.Create())
+                {
+                    var b = new byte[64];
+                    sha.TransformBlock(b, 0, b.Length, null, 0);
+                    sha.TransformFinalBlock(b, 0, 0);
+                    var unused = BitConverter.ToString(sha.Hash);
+                }
+            }
+            catch { }
         }
 
         /// <summary>

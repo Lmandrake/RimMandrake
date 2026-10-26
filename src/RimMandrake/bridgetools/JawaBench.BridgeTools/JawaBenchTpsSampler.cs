@@ -319,9 +319,33 @@ namespace JawaBench.BridgeTools
                 if (!File.Exists(prev)) return;
                 DateTime mt = File.GetLastWriteTimeUtc(prev);
                 string stamp = mt.ToString("yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture);
-                W.ArchiveLog(prev, "Player-prev_" + stamp + ".log", PreviousSession(mt));
+                string name = "Player-prev_" + stamp + ".log", from = PreviousSession(mt);
+                // JAWABENCH_TPS_ARCHIVE_DIAGNOSE_STARTUP_CRASH: this runs at bridge-registration, while the main thread is
+                // still installing Harmony patches (awareness, safety, arg guard right after this, other mods' startup).
+                // A background hash started now JIT-compiled SHA256Managed.HashFinal concurrently and crashed mono
+                // natively. Compile the hash path HERE on the main thread, and start the copy only once startup is idle.
+                W.WarmHash();
+                Interlocked.Exchange(ref _pendingArchive, () => W.ArchiveLog(prev, name, from));
             }
             catch { }
+        }
+
+        /// <summary>Seconds of continuous no-long-event frames before a deferred archive may start.</summary>
+        internal const double ArchiveIdleSeconds = 10;
+        private static Action _pendingArchive;   // set by Install (any thread), taken by the main-thread pump; Interlocked both ways
+        private static double _idleSince = -1;            // main thread only
+
+        /// <summary>Main thread, once per frame (RootFinalizer): start the deferred Player-prev archive after
+        /// <see cref="ArchiveIdleSeconds"/> of frames with no long event (startup's static constructors and patching run
+        /// inside long events). If the game quits first the archive is skipped - best effort, as before.</summary>
+        private static void PumpArchive(double now, bool busy)
+        {
+            if (Volatile.Read(ref _pendingArchive) == null) return;
+            if (busy) { _idleSince = -1; return; }
+            if (_idleSince < 0) { _idleSince = now; return; }
+            if (now - _idleSince < ArchiveIdleSeconds) return;
+            var a = Interlocked.Exchange(ref _pendingArchive, null);
+            if (a != null) a();
         }
 
         /// <summary>The session whose heartbeat last changed closest before the previous log's last write (within
@@ -438,6 +462,7 @@ namespace JawaBench.BridgeTools
                 bool waiting = LongEventHandler.ShouldWaitForEvent;
                 WD.LastLongEvent = waiting || LongEventHandler.AnyEventNowOrWaiting;
                 Explained.RootPost(waiting);
+                PumpArchive(WD.Now, WD.LastLongEvent);
                 WD.Set(WD.PGuiRender);
                 try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
                 double now = WD.Now;
