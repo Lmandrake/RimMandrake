@@ -161,7 +161,9 @@ def elbow(med, lo, corner):
 
 def rot(im, k):
     """Rotate counter-clockwise by k quarter turns."""
-    return im.rotate(90 * k, expand=False) if k % 4 else im
+    # expand=True: a non-square piece (EndCap, Coupling) turned a quarter must keep its whole extent; expand=False cropped it
+    # to its own width and floated the north/south caps clear of the pipe (PIPE_CAP_FIX_NORTH_END_FLOATS_FREE)
+    return im.rotate(90 * k, expand=True) if k % 4 else im
 
 
 def tile_links(tx, ty):

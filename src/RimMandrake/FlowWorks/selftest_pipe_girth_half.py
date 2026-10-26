@@ -11,9 +11,15 @@ art_source/pipe/build_pipe_atlas.py), alpha > 128:
   - end caps: the widest column of a one-arm tile is <= 0.30 cell (was 0.38-0.47);
   - Scrapper's straight-variant sheet (UniversalPipe_Straights) carries the same 0.12-0.15 girth.
 
-Can-fail: --canfail measures the pre-8d5b94b0e1 atlases (read from git) and must FAIL every look.
+  - end caps attach (PIPE_CAP_FIX_NORTH_END_FLOATS_FREE, live round 4 2026-10-26): every one-arm tile is one unbroken run
+    from its linked edge through the cap (no empty cross-section), and the north/south caps are as wide as the east/west
+    ones (the 2026-10-22 composer cropped the quarter-turned cap to the pipe's width and floated it 7-10 px clear). The
+    looks in CAPS_OPEN print OPEN instead of FAIL while the fixed atlases wait on the owner's ruling (they are owner-KEPT).
 
-    python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py [--canfail]
+Can-fail: --canfail measures the pre-8d5b94b0e1 atlases (read from git) and must FAIL every look; --canfail-caps measures
+the atlases at CAPS_BEFORE_SHA and must FAIL the cap check on Industrial, Modern and Futuristic.
+
+    python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py [--canfail | --canfail-caps]
 """
 from __future__ import annotations
 
@@ -30,6 +36,12 @@ PIPE = os.path.join(HERE, "Textures", "RimMandrake", "FlowWorks", "Pipe")
 REL = "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Pipe"
 LOOKS = ("Scrapper", "Industrial", "Modern", "Futuristic")
 BEFORE_SHA = "8d5b94b0e1^"  # the last commit with the 0.30-cell pipe
+CAPS_BEFORE_SHA = "d95104ac0c"  # the last atlases with the floating north/south caps
+CAPS_BAD_LOOKS = ("Industrial", "Modern", "Futuristic")
+# The shipped atlases are owner-KEPT, so the fix (art_source/pipe/fix_ns_end_caps.py) waits on his ruling. Until then these
+# looks report OPEN, provided the fix script's output passes the cap check; a look here whose shipped caps attach FAILs as
+# stale, so the entry cannot outlive the fix.
+CAPS_OPEN = ("Industrial", "Modern", "Futuristic")
 GIRTH = (0.12, 0.15)
 JOINT_MAX = 0.27
 CAP_MAX = 0.30
@@ -80,6 +92,34 @@ def measure(a):
     return bad, summary
 
 
+def cap_faults(a):
+    """Cap attachment faults of one atlas alpha mask: a gap along a one-arm tile, or N/S caps narrower than E/W ones."""
+    bad = []
+    width = {}
+    for i in (N, E, S, W):
+        t = tile(a, i)
+        along = t.sum(1) if i & (N | S) else t.sum(0)   # cross-section count per step along the arm
+        occ = np.nonzero(along)[0]
+        if not len(occ):
+            bad.append("tile %d: empty, no arm or cap drawn" % i)
+            continue
+        gap = int((along[occ.min():occ.max() + 1] == 0).sum())
+        if gap:
+            bad.append("tile %d: cap floats free, %d empty cross-sections between arm and cap" % (i, gap))
+        width[i] = int(along.max())
+    if len(width) == 4 and min(width[N], width[S]) < max(width[E], width[W]) - 1:
+        bad.append("north/south cap %d px narrower than east/west cap %d px" % (min(width[N], width[S]), max(width[E], width[W])))
+    return bad
+
+
+def fixed_alpha(look):
+    """Alpha mask of fix_ns_end_caps.fixed() applied to the shipped atlas of `look`."""
+    sys.path.insert(0, os.path.join(HERE, "art_source", "pipe"))
+    import fix_ns_end_caps as F
+    px = np.asarray(Image.open(os.path.join(PIPE, look, "UniversalPipe_Atlas.png")).convert("RGBA"))
+    return F.fixed(px)[..., 3] > 128
+
+
 def straights_girth(a):
     """Scrapper sheet (PipeStraightVariants.Uvs): Count columns x 2 rows of T x T tiles, row 0 (top) east-west, row 1
     north-south, the shown cell the inner C x C; girth across the band 3 px inside both cell edges."""
@@ -94,11 +134,23 @@ def straights_girth(a):
     return out
 
 
-def git_blob(rel):
-    return subprocess.run(["git", "show", "%s:%s" % (BEFORE_SHA, rel)], cwd=HERE, capture_output=True, check=True).stdout
+def git_blob(rel, sha=BEFORE_SHA):
+    return subprocess.run(["git", "show", "%s:%s" % (sha, rel)], cwd=HERE, capture_output=True, check=True).stdout
+
+
+def canfail_caps():
+    missed = [look for look in CAPS_BAD_LOOKS
+              if not cap_faults(alpha(git_blob("%s/%s/UniversalPipe_Atlas.png" % (REL, look), CAPS_BEFORE_SHA)))]
+    if missed:
+        print("FAIL can-fail caps: the floating caps at %s read clean on %s" % (CAPS_BEFORE_SHA, ", ".join(missed)))
+        return 1
+    print("PASS can-fail caps: the %s atlases fail the cap check on %s" % (CAPS_BEFORE_SHA, ", ".join(CAPS_BAD_LOOKS)))
+    return 0
 
 
 def main(argv):
+    if "--canfail-caps" in argv:
+        return canfail_caps()
     canfail = "--canfail" in argv
     failed = 0
     for look in LOOKS:
@@ -107,6 +159,18 @@ def main(argv):
         else:
             a = alpha(os.path.join(PIPE, look, "UniversalPipe_Atlas.png"))
         bad, summary = measure(a)
+        if not canfail:
+            cf = cap_faults(a)
+            if look not in CAPS_OPEN:
+                bad += cf
+            elif not cf:
+                bad.append("stale CAPS_OPEN: the shipped caps attach now; drop %s from CAPS_OPEN" % look)
+            else:
+                fix_bad = cap_faults(fixed_alpha(look))
+                bad += ["fix_ns_end_caps output: " + b for b in fix_bad]
+                if not fix_bad:
+                    print("OPEN %s: %d cap fault(s) shipped; fix_ns_end_caps output passes, awaiting the owner's ruling "
+                          "(PIPE_CAP_FIX_NORTH_END_FLOATS_FREE)" % (look, len(cf)))
         print("%s %s: %s" % ("FAIL" if bad else "PASS", look, summary))
         for b in bad[:4]:
             print("    " + b)
