@@ -167,7 +167,10 @@ namespace RimMandrake.TheForge
         public override void CompTick()
         {
             base.CompTick();
-            if (!Swollen || !parent.Spawned || !parent.IsHashIntervalTick(Props.checkIntervalTicks))
+            // Not gated on Spawned: a pawn in a caravan is ticked as a world pawn (WorldPawns.WorldPawnsTick ->
+            // Pawn.Tick -> CompTick, decompiled 1.6), and a swollen tamed dhoggur led off the map stayed x3 in body
+            // size and health until it next spawned, its cooldown stamped from that later moment.
+            if (!Swollen || !parent.IsHashIntervalTick(Props.checkIntervalTicks))
                 return;
             Pawn p = Pawn;
             if (p.Dead || RM_SwellKernel.ShouldEnd(state, On, Now))
@@ -175,6 +178,8 @@ namespace RimMandrake.TheForge
                 EndSwell();
                 return;
             }
+            if (!p.Spawned)
+                return;
             Enrage(p, null);
             if (Rand.Chance(0.5f))
             {
@@ -229,6 +234,9 @@ namespace RimMandrake.TheForge
             base.PostExposeData();
             Scribe_Values.Look(ref state.swellEndTick, "rmSwellEndTick", -1);
             Scribe_Values.Look(ref state.cooldownUntilTick, "rmSwellCooldownUntil", 0);
+            // PostSpawnSetup restores the registry for a spawned pawn only; one loaded inside a caravan needs it here.
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && Swollen && Pawn != null && !Pawn.Dead)
+                RM_DhoggurSwellRegistry.Set(Pawn, true);
         }
     }
 
