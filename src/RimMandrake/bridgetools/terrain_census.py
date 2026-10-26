@@ -17,3 +17,5 @@ for op in (g.get("ops") or "").split(";"):
     d, rect = op.split(":", 1); q = rect.split(",")
     c[d] += int(q[2]) * int(q[3]) if len(q) == 4 else 1
 print(mi.get("mapBiome"), sx, sz); print(json.dumps(dict(c.most_common(25))))
+n = sum(c.values())   # an errored or out-of-bounds read returns no ops: an empty census is a blind instrument, not an empty map
+if n != sx * sz: print("census covers %d of %d cells - NOT a full read: %s" % (n, sx * sz, str(g)[:200])); sys.exit(1)

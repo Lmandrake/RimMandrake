@@ -18,9 +18,11 @@ import closure_scan as cs  # noqa: E402
 
 DLL = os.path.join(HERE, "artifacts", "BridgeTools", "JawaBench", "JawaBench.BridgeTools.dll")
 fails = []
+ran = [0]
 
 
 def check(name, ok, detail=""):
+    ran[0] += 1
     print(("PASS " if ok else "FAIL ") + name + ("" if ok else "  " + str(detail)))
     if not ok:
         fails.append(name)
@@ -46,5 +48,5 @@ else:
     check("calibration: GssLambdaHome <>c DOES show GSS-typed fields",
           any(a == "RimMandrakeGimmeSomeSlack" for _, _, a, _ in home), (hchecked, home[:3]))
 
-print("%d/%d checks failed" % (len(fails), len(fails)) if fails else "all checks passed")
+print("%d/%d checks failed" % (len(fails), ran[0]) if fails else "all %d checks passed" % ran[0])
 sys.exit(1 if fails else 0)

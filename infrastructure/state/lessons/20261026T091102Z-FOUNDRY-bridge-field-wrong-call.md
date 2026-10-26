@@ -1,0 +1,2 @@
+Bridge state fields live on specific calls: hasCurrentGame is on get_ui_state, NOT get_game_info (which has status and mapCount). Reading it from the wrong reply gives None, and a check written 'is not False' passes with no game. Likewise get_terrain_batch silently skips out-of-bounds cells (cellsOutOfBounds counts them, nothing fails), so a census over a hardcoded rect reads a partial or empty map as 'no change'. Assert the field is True, and assert cellsRead covers sx*sz.
+home: rimbridge

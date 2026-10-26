@@ -19,4 +19,6 @@ for _ in range(5):
     call("rimworld/close_window", windowType="Dialog_NamePlayerFactionAndSettlement")
     if not call("rimworld/get_ui_state").get("windowsForcePause"): break
     time.sleep(1)
-print("forcePause:", call("rimworld/get_ui_state").get("windowsForcePause"))
+fp = call("rimworld/get_ui_state").get("windowsForcePause")
+print("forcePause:", fp)
+sys.exit(0 if r.get("spawnedCount") == n and not fp else 1)

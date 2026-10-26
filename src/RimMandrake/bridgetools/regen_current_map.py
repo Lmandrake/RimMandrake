@@ -10,10 +10,15 @@ def call(n, **a):
         try: r = json.loads(r["content"][0]["text"])
         except Exception: pass
     return r
+tile = call("jawa/map_info").get("tile")
+if tile is None or tile == -1: sys.exit("no current map tile in jawa/map_info - nothing regenerated")
 if len(sys.argv) > 1:
-    call("jawa/world_tile_set", tiles=str(call("jawa/map_info").get("tile")), biome=sys.argv[1]); call("jawa/world_commit")
+    call("jawa/world_tile_set", tiles=str(tile), biome=sys.argv[1]); call("jawa/world_commit")
 call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); time.sleep(5)
 for _ in range(100):
     if call("rimworld/get_ui_state").get("programState") == "Playing": break
     time.sleep(3)
-print("regenerated:", call("jawa/map_info").get("mapBiome"))
+got = call("jawa/map_info").get("mapBiome")
+print("regenerated:", got)
+# the tile write is not checked above; the biome the new map actually has is the verdict
+sys.exit(0 if len(sys.argv) < 2 or got == sys.argv[1] else 1)

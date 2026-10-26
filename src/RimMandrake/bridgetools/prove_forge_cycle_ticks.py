@@ -14,13 +14,18 @@ def call(n, **a):
         except Exception: pass
     if isinstance(r, dict): r.pop("operation", None)
     return r
+_mi = call("jawa/map_info")
+SX, SZ = int(_mi["sizeX"]), int(_mi["sizeZ"])   # not a hardcoded 250: on a bigger map that silently censused only the 250x250 corner
 def terrain():
-    g = call("jawa/get_terrain_batch", rects="0,0,250,250")
+    g = call("jawa/get_terrain_batch", rects="0,0,%d,%d" % (SX, SZ))
     c = collections.Counter()
     for op in (g.get("ops") or "").split(";"):
         if ":" not in op: continue
         d, rect = op.split(":", 1); parts = rect.split(",")
         c[d] += int(parts[2]) * int(parts[3]) if len(parts) == 4 else 1
+    if sum(c.values()) != SX * SZ:
+        raise SystemExit("terrain census read %d of %d cells (%s) - instrument blind, refusing to report deltas"
+                         % (sum(c.values()), SX * SZ, str(g)[:200]))
     return dict(c.most_common(30)), g.get("ticksGame")
 since = os.path.getsize(LOG)
 out = {"samples": []}

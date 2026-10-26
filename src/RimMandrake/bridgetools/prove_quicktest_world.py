@@ -24,5 +24,8 @@ for _ in range(90):
 print("programState:", st.get("programState"), "after %.0fs" % (time.time() - t0))
 gi = call("rimworld/get_game_info")
 print("get_game_info:", json.dumps(gi)[:400])
-ok = st.get("programState") == "Playing" and gi.get("hasCurrentGame") is not False
+# hasCurrentGame lives on get_ui_state (reload_check.py, w9_run.py read it there), not get_game_info: the old
+# gi.get("hasCurrentGame") is not False was None-is-not-False, always true, so "with a world" was never checked.
+ok = st.get("programState") == "Playing" and st.get("hasCurrentGame") is True and (gi.get("mapCount") or 0) >= 1
+print("hasCurrentGame:", st.get("hasCurrentGame"), "mapCount:", gi.get("mapCount"), "->", "OK" if ok else "NOT READY")
 sys.exit(0 if ok else 1)
