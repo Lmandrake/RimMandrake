@@ -1,0 +1,2 @@
+map.gameConditionManager.ActiveConditions holds MAP conditions only; a world-scope condition lives on Find.World.gameConditionManager, which is the map manager's Parent. Vanilla's Aggregate* reads (AggregatePlantDensityFactor, ConditionIsActive...) walk mgr.Parent, so code that loops only the map list silently ignores world conditions vanilla applies (RM_AshPulse grew density but not growth). Loop: for (var mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent). Verified in decompiled 1.6 GameConditionManager.
+home: rimworld-modding

@@ -73,14 +73,19 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return 1f;
 			}
-			List<GameCondition> conds = map.gameConditionManager.ActiveConditions;
 			scratch.Clear();
-			for (int i = 0; i < conds.Count; i++)
+			// The map manager AND its Parent (the world manager), as vanilla's Aggregate* reads do:
+			// a world-scope haze condition is active on this map too.
+			for (GameConditionManager mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent)
 			{
-				RM_ShadeHazeExtension ext = conds[i].def.GetModExtension<RM_ShadeHazeExtension>();
-				if (ext != null)
+				List<GameCondition> conds = mgr.ActiveConditions;
+				for (int i = 0; i < conds.Count; i++)
 				{
-					scratch.Add(length ? ext.shadowLengthFactor : ext.soundVolumeFactor);
+					RM_ShadeHazeExtension ext = conds[i].def.GetModExtension<RM_ShadeHazeExtension>();
+					if (ext != null)
+					{
+						scratch.Add(length ? ext.shadowLengthFactor : ext.soundVolumeFactor);
+					}
 				}
 			}
 			return Combine(scratch);

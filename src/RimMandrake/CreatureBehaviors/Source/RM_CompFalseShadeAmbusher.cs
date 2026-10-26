@@ -74,6 +74,9 @@ namespace RimMandrake.CreatureBehaviors
     {
         private Pawn lastVictim;
         private IntVec3 seizeCell = IntVec3.Invalid;
+        // loadID of the follow-up AttackMelee the seize started; the leash binds only that job,
+        // never a later AttackMelee (defending its master, retaliating) far from a stale seizeCell.
+        private int seizeJobId = -1;
 
         public CompProperties_FalseShadeAmbusher Props => (CompProperties_FalseShadeAmbusher)props;
 
@@ -82,6 +85,7 @@ namespace RimMandrake.CreatureBehaviors
             base.PostExposeData();
             Scribe_References.Look(ref lastVictim, "rmFalseShadeLastVictim");
             Scribe_Values.Look(ref seizeCell, "rmFalseShadeSeizeCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref seizeJobId, "rmFalseShadeSeizeJobId", -1);
         }
 
         public override void CompTick()
@@ -192,7 +196,7 @@ namespace RimMandrake.CreatureBehaviors
             if (victim.Faction == Faction.OfPlayer && victim.Spawned)
             {
                 Messages.Message("The shadow " + victim.LabelShort + " stepped into was a "
-                    + pawn.KindLabel + " — it has seized " + victim.Possessive() + ".",
+                    + pawn.KindLabel + " — it has seized " + victim.ProObj() + ".",
                     new LookTargets(pawn), MessageTypeDefOf.ThreatSmall);
             }
 
@@ -203,6 +207,12 @@ namespace RimMandrake.CreatureBehaviors
                 attack.expiryInterval = 600;
                 attack.checkOverrideOnExpire = true;
                 pawn.jobs.StartJob(attack, JobCondition.InterruptForced, resumeCurJobAfterwards: false, cancelBusyStances: true);
+                seizeJobId = attack.loadID;
+            }
+            else
+            {
+                seizeCell = IntVec3.Invalid;
+                seizeJobId = -1;
             }
         }
 
@@ -210,9 +220,16 @@ namespace RimMandrake.CreatureBehaviors
         // AttackMelee is leashed to max(8, 3 x strikeRangeCells) cells from where it seized; past that it lets go.
         private bool LeashBroken(Pawn pawn)
         {
-            Job job = pawn.jobs?.curJob;
-            if (!seizeCell.IsValid || job == null || job.def != JobDefOf.AttackMelee)
+            if (!seizeCell.IsValid)
             {
+                return false;
+            }
+            Job job = pawn.jobs?.curJob;
+            if (job == null || job.def != JobDefOf.AttackMelee || job.loadID != seizeJobId)
+            {
+                // The seize's follow-up is over; forget the seize spot.
+                seizeCell = IntVec3.Invalid;
+                seizeJobId = -1;
                 return false;
             }
             float leash = System.Math.Max(8f, Props.strikeRangeCells * 3f);
@@ -221,6 +238,7 @@ namespace RimMandrake.CreatureBehaviors
                 return false;
             }
             seizeCell = IntVec3.Invalid;
+            seizeJobId = -1;
             pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
             return true;
         }

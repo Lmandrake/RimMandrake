@@ -71,7 +71,9 @@ namespace RimMandrake.CreatureBehaviors
 
 	public static class RM_ConditionGround
 	{
-		/// <summary>Product of growthRateFactor over active growth-pulse conditions (1 when none / off).</summary>
+		/// <summary>Product of growthRateFactor over active growth-pulse conditions (1 when none / off).
+		/// Walks the map manager AND its Parent (the world manager), as vanilla's
+		/// AggregatePlantDensityFactor does, so a world-scope condition grows plants as well as thickening them.</summary>
 		public static float GrowthFactor(Map map)
 		{
 			if (map == null || !RM_CreatureBehaviorsSettings.conditionGrowthEffectsEnabled)
@@ -79,13 +81,16 @@ namespace RimMandrake.CreatureBehaviors
 				return 1f;
 			}
 			float f = 1f;
-			List<GameCondition> conds = map.gameConditionManager.ActiveConditions;
-			for (int i = 0; i < conds.Count; i++)
+			for (GameConditionManager mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent)
 			{
-				RM_GrowthPulseExtension ext = conds[i].def.GetModExtension<RM_GrowthPulseExtension>();
-				if (ext != null)
+				List<GameCondition> conds = mgr.ActiveConditions;
+				for (int i = 0; i < conds.Count; i++)
 				{
-					f *= ext.growthRateFactor;
+					RM_GrowthPulseExtension ext = conds[i].def.GetModExtension<RM_GrowthPulseExtension>();
+					if (ext != null)
+					{
+						f *= ext.growthRateFactor;
+					}
 				}
 			}
 			return f;
@@ -94,12 +99,16 @@ namespace RimMandrake.CreatureBehaviors
 		/// <summary>The active growth-pulse label for the inspect line, or null.</summary>
 		public static string GrowthLabel(Map map)
 		{
-			List<GameCondition> conds = map.gameConditionManager.ActiveConditions;
-			for (int i = 0; i < conds.Count; i++)
+			for (GameConditionManager mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent)
 			{
-				if (conds[i].def.GetModExtension<RM_GrowthPulseExtension>() != null)
+				List<GameCondition> conds = mgr.ActiveConditions;
+				for (int i = 0; i < conds.Count; i++)
 				{
-					return conds[i].def.label;
+					RM_GrowthPulseExtension ext = conds[i].def.GetModExtension<RM_GrowthPulseExtension>();
+					if (ext != null)
+					{
+						return ext.growthLabel.NullOrEmpty() ? conds[i].def.label : ext.growthLabel;
+					}
 				}
 			}
 			return null;
@@ -115,36 +124,39 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return false;
 			}
-			List<GameCondition> conds = map.gameConditionManager.ActiveConditions;
 			TerrainDef t = null;
-			for (int i = 0; i < conds.Count; i++)
+			for (GameConditionManager mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent)
 			{
-				RM_SandLockExtension ext = conds[i].def.GetModExtension<RM_SandLockExtension>();
-				if (ext == null)
+				List<GameCondition> conds = mgr.ActiveConditions;
+				for (int i = 0; i < conds.Count; i++)
 				{
-					continue;
-				}
-				if (t == null)
-				{
-					t = c.GetTerrain(map);
+					RM_SandLockExtension ext = conds[i].def.GetModExtension<RM_SandLockExtension>();
+					if (ext == null)
+					{
+						continue;
+					}
 					if (t == null)
 					{
-						return false;
+						t = c.GetTerrain(map);
+						if (t == null)
+						{
+							return false;
+						}
 					}
-				}
-				if (ext.lockedTerrains != null && ext.lockedTerrains.Count > 0)
-				{
-					if (ext.lockedTerrains.Contains(t))
+					if (ext.lockedTerrains != null && ext.lockedTerrains.Count > 0)
 					{
-						return true;
+						if (ext.lockedTerrains.Contains(t))
+						{
+							return true;
+						}
 					}
-				}
-				else
-				{
-					EnsureDefaults();
-					if (DefaultSand.Contains(t))
+					else
 					{
-						return true;
+						EnsureDefaults();
+						if (DefaultSand.Contains(t))
+						{
+							return true;
+						}
 					}
 				}
 			}

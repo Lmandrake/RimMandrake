@@ -17,9 +17,11 @@ Offline, no game, no build. Reads every Defs XML and C# under src/:
     base classes.
 Findings (ERROR): NEVER_TICKS (comp overrides tick methods but none of them is the def's), NEVER_TICKER (the def
 is tickerType Never yet carries a ticking comp), PAWN_DOUBLE_PUSH (HEATPUSHER_FIX_PAWN_DOUBLE_PUSH: a pawn def carries a
-CompProperties_HeatPusher whose comp class is vanilla CompHeatPusher/CompHeatPusherPowered, or a src/ subclass with no
-CompTickRare override: vanilla pushes from CompTick AND CompTickRare, a pawn runs both, so it heats at twice
-heatPerSecond). Comps a Patches/ PatchOperationAdd puts on a src/ ThingDef by defName count as that def's comps.
+CompProperties_HeatPusher whose comp class is vanilla CompHeatPusher/CompHeatPusherPowered, or a src/ subclass whose
+CompTickRare does not skip a Pawn: vanilla pushes from CompTick AND CompTickRare, a pawn runs both, so it heats at twice
+heatPerSecond). A CompTickRare override is pawn-safe when it never calls base.CompTickRare, or when its body names Pawn
+(the `if (parent is Pawn) return;` guard); one that calls base.CompTickRare without naming Pawn passes the push through
+to the next override up the chain. Comps a Patches/ PatchOperationAdd puts on a src/ ThingDef by defName count as that def's comps.
 Counts are printed so a lint that looked at nothing cannot pass.
 
     python3 src/RimMandrake/Utils/lint_ticker_compat.py [--quiet]      exit 1 on any ERROR
@@ -52,6 +54,9 @@ PATCH_DEFNAME = re.compile(r"""defName\s*=\s*["']([^"']+)["']""")
 OVERRIDE = re.compile(r"override\s+void\s+(CompTick|CompTickRare|CompTickLong)\s*\(")
 CLASS = re.compile(r"\bclass\s+(\w+)\s*(?:<[^>{]*>)?\s*(?::\s*([\w.<>, ]+?))?\s*(?:where\b[^{]*)?\{")
 TYPEOF = re.compile(r"compClass\s*=\s*typeof\s*\(\s*([\w.]+)\s*\)")
+RARE_OVERRIDE = re.compile(r"override\s+void\s+CompTickRare\s*\(\s*\)")
+CALLS_BASE_RARE = re.compile(r"\bbase\s*\.\s*CompTickRare\s*\(")
+NAMES_PAWN = re.compile(r"\bPawn\b")
 
 
 def _walk(root, exts):
@@ -71,9 +76,38 @@ def _simple(n):
     return n.split(".")[-1].split("<")[0].strip()
 
 
+def _body_at(t, pos):
+    """the brace-balanced block starting at the first '{' at or after pos ('' if none)."""
+    i = t.find("{", pos)
+    if i < 0:
+        return ""
+    depth = 0
+    for j in range(i, len(t)):
+        if t[j] == "{":
+            depth += 1
+        elif t[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return t[i:j + 1]
+    return t[i:]
+
+
+def _rare_kind(body):
+    """how a class's own CompTickRare override treats a pawn: None (no override), 'skip' (never calls base),
+    'pawn' (calls base but names Pawn: the guard), 'base' (calls base, names no Pawn: passes the push through)."""
+    m = RARE_OVERRIDE.search(body)
+    if not m:
+        return None
+    mb = _body_at(body, m.end())
+    if not CALLS_BASE_RARE.search(mb):
+        return "skip"
+    return "pawn" if NAMES_PAWN.search(mb) else "base"
+
+
 def parse_cs(texts):
-    """-> (bases: class -> [base simple names], ticks: class -> set(methods it overrides), comp_of: props class -> comp class)"""
-    bases, ticks, comp_of = {}, {}, {}
+    """-> (bases: class -> [base simple names], ticks: class -> set(methods it overrides), comp_of: props class -> comp class,
+    rare: class -> _rare_kind of its own CompTickRare override)"""
+    bases, ticks, comp_of, rare = {}, {}, {}, {}
     for path, text in texts:
         t = _strip_comments(text)
         spans = [(m.start(), m.group(1), m.group(2)) for m in CLASS.finditer(t)]
@@ -84,10 +118,27 @@ def parse_cs(texts):
             if base:
                 bases[name] += [_simple(b) for b in base.split(",")]
             ticks.setdefault(name, set()).update(OVERRIDE.findall(body))
+            k = _rare_kind(body)
+            if k:
+                rare[name] = k
             m = TYPEOF.search(body)
             if m:
                 comp_of[name] = _simple(m.group(1))
-    return bases, ticks, comp_of
+    return bases, ticks, comp_of, rare
+
+
+def rare_pawn_safe(cls, bases, rare, seen=None):
+    """True if the CompTickRare a pawn runs on cls stops before vanilla's push: the nearest override up the src/ chain
+    skips base or guards on Pawn. An override that only calls base defers to its own base; reaching a class with no
+    src/ override (vanilla CompHeatPusher) is unsafe."""
+    seen = seen or set()
+    if cls in seen:
+        return False
+    seen.add(cls)
+    k = rare.get(cls)
+    if k in ("skip", "pawn"):
+        return True
+    return any(rare_pawn_safe(b, bases, rare, seen) for b in bases.get(cls, ()))
 
 
 def effective_ticks(cls, bases, ticks, seen=None):
@@ -211,7 +262,7 @@ def reaches(cls, targets, bases, seen=None):
 
 
 def lint(cs_texts, xml_texts, patch_texts=()):
-    bases, ticks, comp_of = parse_cs(cs_texts)
+    bases, ticks, comp_of, rare = parse_cs(cs_texts)
     defs = parse_defs(xml_texts)
     patched, patched_ticker = parse_patch_comps(patch_texts)
     for d in defs:
@@ -231,8 +282,8 @@ def lint(cs_texts, xml_texts, patch_texts=()):
                 comp = _simple(comp_class_xml) if comp_class_xml else "CompHeatPusher"
                 if comp in VANILLA_HEAT_PUSHERS:
                     why = "vanilla %s" % comp
-                elif comp in bases and reaches(comp, VANILLA_HEAT_PUSHERS, bases) and "CompTickRare" not in effective_ticks(comp, bases, ticks):
-                    why = "%s (a CompHeatPusher subclass with no CompTickRare override)" % comp
+                elif comp in bases and reaches(comp, VANILLA_HEAT_PUSHERS, bases) and not rare_pawn_safe(comp, bases, rare):
+                    why = "%s (a CompHeatPusher subclass whose CompTickRare does not skip a Pawn)" % comp
                 else:
                     continue
                 findings.append(("PAWN_DOUBLE_PUSH", d["path"], "%s is a pawn carrying %s: it pushes from CompTick AND CompTickRare, "
@@ -318,12 +369,19 @@ public class CompPN : CompProperties { public CompPN() { compClass = typeof(Comp
                   '<ThingDef><defName>Y</defName><tickerType>Normal</tickerType><comps><li Class="PR"/></comps></ThingDef>'))
     if [x[0] for x in f] != ["NEVER_TICKS"] or "Y" not in f[0][2]:
         fails.append("pawn Normal+CompTickRare must pass, building Normal+CompTickRare must fail: %r" % (f,))
-    hcs = [("h.cs", "class CompSafe : CompHeatPusher { public override void CompTickRare() {} } class CompGatedOnly : CompHeatPusher { }")]
+    hcs = [("h.cs", "class CompSafe : CompHeatPusher { public override void CompTickRare() {} } class CompGatedOnly : CompHeatPusher { }"
+                    " class CompPassThru : CompHeatPusher { public override void CompTickRare() { base.CompTickRare(); } }"
+                    " class CompGuard : CompHeatPusher { public override void CompTickRare() { if (parent is Pawn) { return; } base.CompTickRare(); } }"
+                    " class CompGuardKid : CompGuard { } class CompGuardKidPass : CompGuard { public override void CompTickRare() { base.CompTickRare(); } }"
+                    " class CompCommentOnly : CompHeatPusher { public override void CompTickRare() { /* Pawn */ base.CompTickRare(); } }")]
     hp = lambda cc: '<li Class="CompProperties_HeatPusher">%s<heatPerSecond>9</heatPerSecond></li>' % (
         "<compClass>%s</compClass>" % cc if cc else "")
     pawn = lambda li: D('<ThingDef ParentName="AnimalThingBase"><defName>H</defName><comps>%s</comps></ThingDef>' % li)
     for label, li, want in (("default class", hp(None), ["PAWN_DOUBLE_PUSH"]), ("vanilla Powered", hp("CompHeatPusherPowered"), ["PAWN_DOUBLE_PUSH"]),
-                            ("subclass without CompTickRare", hp("N.CompGatedOnly"), ["PAWN_DOUBLE_PUSH"]), ("pawn-safe subclass", hp("N.CompSafe"), [])):
+                            ("subclass without CompTickRare", hp("N.CompGatedOnly"), ["PAWN_DOUBLE_PUSH"]), ("pawn-safe subclass", hp("N.CompSafe"), []),
+                            ("override that only calls base", hp("N.CompPassThru"), ["PAWN_DOUBLE_PUSH"]), ("Pawn guard", hp("N.CompGuard"), []),
+                            ("child of a guard", hp("N.CompGuardKid"), []), ("pass-through child of a guard", hp("N.CompGuardKidPass"), []),
+                            ("Pawn only in a comment", hp("N.CompCommentOnly"), ["PAWN_DOUBLE_PUSH"])):
         f, c = lint(hcs, pawn(li))
         if [x[0] for x in f] != want or c["pawn_heat_pushers"] != 1:
             fails.append("pawn heat pusher, %s: want %r got %r %r" % (label, want, f, c))
