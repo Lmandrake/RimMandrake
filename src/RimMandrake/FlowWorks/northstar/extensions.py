@@ -387,13 +387,25 @@ def _setting(t, field, value):
 
 
 @contextmanager
-def _setting_in(t, typ, field, value):
-    """_setting for ANY registry switch (not only suite.toggles): flip it for the block, restore its shipped default."""
+def _setting_in(t, typ, field, value, default=None):
+    """_setting for ANY registry switch (not only suite.toggles): flip it for the block, restore its shipped default.
+    `default` names it for a switch the registry does not carry (RM_LadderParitySettings)."""
     t.set_setting(typ, {field: value})
     try:
         yield
     finally:
-        _restore(t, typ, field, REG.BY_KEY[field]["default"])
+        _restore(t, typ, field, REG.BY_KEY[field]["default"] if default is None else default)
+
+
+LADDER_PARITY_SETTINGS = "RimMandrake.FlowWorks.RM_LadderParitySettings"
+
+
+@contextmanager
+def _ladder_keys(t):
+    """LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner 2026-10-23: ladders have no keys, ladderNoKeys=True shipped): a lowered
+    ladder lets EVERYONE out, so a row about the prison door being a door that holds hostiles reads the KEYS mode."""
+    with _setting_in(t, LADDER_PARITY_SETTINGS, "ladderNoKeys", False, default=True):
+        yield
 
 
 def _frame(t, x0, z0, w, h, name=None):
@@ -1510,7 +1522,8 @@ def toggle_ladder_required(t):
 def ladder_prison_door(t):
     """LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a lowered ladder is a prison door. Ladders on every
     pit cell, pawns spawned straight onto the pit floor: your own (captured) colonist is NOT held, a
-    hostile IS held; with the prison-door setting off, a ladder lets the hostile out too.
+    hostile IS held in KEYS mode (ladderNoKeys=False; shipped no-keys lets it out by ruling 2026-10-23); with the
+    prison-door setting off, a ladder lets the hostile out too.
     Not proven here: the RAISED state (no bridge verb writes RM_CompLadder.raised yet; first poke is the
     gizmo by hand, then flowworks_pit_report) and the prisoner-during-a-prison-break case."""
     x0, z0 = _prep_plot(t, "G")
@@ -1523,16 +1536,18 @@ def ladder_prison_door(t):
             _wait(t, PULSE)
             if t._guard():
                 _expect(_pit_held(t, pid, pit) is False, "own colonist held in a pit with a lowered ladder")
+    # the two hostile rows are the KEYS mode (ladderNoKeys=False): shipped no-keys lets the hostile out by design
     with t.component("lowered_holds_hostile", toggle="ladderPrisonDoorEnabled"):
-        hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
-        _wait(t, PULSE)
-        if t._guard():
-            _expect(_pit_held(t, hid, pit) is True, "hostile NOT held despite the prison-door ladder")
-    with t.component("prison_door_off_lets_hostile_out", toggle="ladderPrisonDoorEnabled"):
-        with _setting(t, "ladderPrisonDoorEnabled", False):
+        with _ladder_keys(t):
+            hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
             _wait(t, PULSE)
             if t._guard():
-                _expect(_pit_held(t, hid, pit) is False, "prison-door OFF but a ladder still holds the hostile")
+                _expect(_pit_held(t, hid, pit) is True, "keys mode: hostile NOT held despite the prison-door ladder")
+    with t.component("prison_door_off_lets_hostile_out", toggle="ladderPrisonDoorEnabled"):
+        with _ladder_keys(t), _setting(t, "ladderPrisonDoorEnabled", False):
+            _wait(t, PULSE)
+            if t._guard():
+                _expect(_pit_held(t, hid, pit) is False, "keys mode, prison-door OFF, but a ladder still holds the hostile")
 
 
 @suite.chain("pit_cover_fall")
@@ -1829,6 +1844,16 @@ def _fill_fx(t):
     return str((r or {}).get("result", ""))
 
 
+def _down_in_pit(t, pid):
+    """POOL_PIT_FIX_DROWNING_CENSUS_EMPTY: a brim-full D=4 (2 m) pit is SWUM and its surface is level ground to a swimmer
+    (SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER), so a conscious occupant swims out before the census and its row is gone.
+    Anesthetic downs it where it lies; a downed non-aquatic pawn does not keep its head up (RM_Swim.KeepsHeadUp), so the
+    fluid's own effect is what the census reads. Not staged = UNMEASURED, never a mod FAIL."""
+    r = t.bridge_call("jawa/pawn_health", pawn=pid, action="add", hediff="Anesthetic")
+    if t._guard() and isinstance(r, dict) and r.get("success") is False:
+        raise ExpectationFailed("UNMEASURED: could not down %s in its pit (Anesthetic): %r" % (pid, r))
+
+
 def _fx_row(report, pid):
     for row in report.split(" | "):
         if row.startswith(str(pid) + "@"):
@@ -1856,6 +1881,8 @@ def pit_fill_effects(t):
     for p in (pa, pb, pc):
         t.bridge_call("jawa/pawn_gear", pawn=p, action="clear")
     with t.component("pit_fluid_effects_per_cell", toggle="pitDrowningEnabled"):
+        for p in (pa, pb, pc):
+            _down_in_pit(t, p)          # conscious, they swam out of the brim-full 2 m pits (census empty, sweep 10-26)
         _wait(t, 4 * 250)
         rep = _fill_fx(t)
         ra, rb = _fx_row(rep, pa), _fx_row(rep, pb)
@@ -1889,6 +1916,7 @@ def toggle_pit_fill_effects(t):
     with t.component("pit_drowning_off", toggle="pitDrowningEnabled"):
         with _setting(t, "pitDrowningEnabled", False):
             pid = _spawn_pawn_at(t, "Pirate", pit[3][0], pit[3][1], faction="hostile")
+            _down_in_pit(t, pid)
             _wait(t, 4 * 250)
             row = _fx_row(_fill_fx(t), pid)
             if t._guard():
@@ -1898,6 +1926,7 @@ def toggle_pit_fill_effects(t):
     with t.component("poison_fill_off", toggle="poisonFillEnabled"):
         with _setting(t, "poisonFillEnabled", False):
             pid = _spawn_pawn_at(t, "Pirate", pit[5][0], pit[5][1], faction="hostile")
+            _down_in_pit(t, pid)
             _wait(t, 4 * 250)
             row = _fx_row(_fill_fx(t), pid)
             if t._guard():
@@ -1985,6 +2014,13 @@ def slime_slip(t):
             _wade(t, pid, cells, 20 * 60)
             rep = _slime_report(t)
             row = _fx_row(rep, pid)
+            if not row and t._guard():
+                # sweep J20261026T004751Z: a 60-tick step leaves the wader mid-route on the BANK (slime is slow), so the
+                # census had no row. Walk it back into the canal (moving in slime: a roll the gate must refuse) and re-read;
+                # the slip count kept since "reset" covers the whole wade.
+                t.bridge_call("jawa/order_pawn", pawnId=pid, x=cells[0][0], z=cells[0][1], waitTicks=600, draft=True)
+                rep = _slime_report(t)
+                row = _fx_row(rep, pid)
             if t._guard():
                 _expect("enabled=False" in rep, "setting not off in the census: %r" % rep[:120])
                 if not row:      # a pawn absent from the census reads slips 0 too: the OFF side needs its row
@@ -1997,7 +2033,8 @@ def slime_slip(t):
         pn = _spawn_pawn_at(t, "Colonist", strip[0][0], strip[0][1])
         t.bridge_call("jawa/pawn_gear", pawn=pn, action="clear")
         _slime_report(t, "reset")
-        _march(t, pn, strip[-1][0], strip[-1][1], 20 * 60)
+        # one undrafted _march to the far end routed round the slow strip (the _wade finding): wade it cell by cell
+        _wade(t, pn, strip, 20 * 60, until_slip=True)
         row = _fx_row(_slime_report(t), pn)
         if t._guard():
             _expect(row.get("ground") == "RM_SlimeGreenShallow" or int(row.get("slips", 0)) > 0,

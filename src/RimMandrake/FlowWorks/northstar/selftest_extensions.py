@@ -329,13 +329,17 @@ def _tiny_png():
     return _PNG[0]
 
 
-def _ext_run(EXT, chain, handler, keep=None):
+def _ext_run(EXT, chain, handler, keep=None, settings=None):
     """Run one extension chain against a scripted fake game: `handler(tool, params)` answers every bridge call.
-    Returns {component name: verdict}."""
+    `settings` (a dict, optional) records every Mod Settings flip and restore as {field: value} so the handler can answer
+    by the live setting. Returns {component name: verdict}."""
     from modcheck import TestContext      # the class modcheck.ExpectationFailed pairs with (top-level `suite`)
 
     class _Sess(object):
         def call(self, tool, **params):
+            if settings is not None and tool == "jawa/mod_settings_field" and params.get("action") == "set":
+                v = params.get("value")
+                settings[params.get("field")] = {"True": True, "False": False}.get(v, v)
             return {"success": True}
 
     class _T(TestContext):
@@ -348,6 +352,8 @@ def _ext_run(EXT, chain, handler, keep=None):
             return None
 
         def set_setting(self, type_name, values, persist=False):
+            if settings is not None and self._guard():
+                settings.update(values)
             return None
 
         def screenshot(self, *a, **k):      # never the OS-desktop fallback (it wrote 4K .bmp files into Transient/)
@@ -481,11 +487,115 @@ def _vacuous_check_probs(EXT):
             out.append("rivers %s does not render in the modcheck sheet: %r" % (c.name, e))
     out += _new_probes(EXT, RIV, base)
     out += _repair_probes(EXT, base)
+    out += _fw_fails_1026_probes(EXT, base)
     # canal pathCost read as a number: the old substring probe `"pathCost":30` also matched 300
     for reply, want in (({"defs": [{"fields": {"pathCost": 300}}]}, 300), ({"defs": [{"fields": {"pathCost": 30}}]}, 30),
                         ({"success": False}, None)):
         if EXT._def_field(reply, "pathCost") != want:
             out.append("_def_field(%r, pathCost) != %r" % (reply, want))
+    return out
+
+
+def _fw_fails_1026_probes(EXT, base):
+    """FlowWorks FAIL sweep 2026-10-26: one case per harness fix, each red on the old chain."""
+    out = []
+
+    # LADDER_PRISON_FIX_COLONIST_STAYS_HELD: since LADDER_PARITY_BUILD_NO_KEYS_REQUIRED (owner 2026-10-23, ladderNoKeys
+    # default True) a lowered ladder lets EVERYONE out, so "a hostile is held" is the KEYS mode only. The fake game models
+    # RM_LadderParityMath.MayClimbLowered: prison door off or no keys = nobody held; keys = only the hostile held.
+    st = {"ladderNoKeys": True, "ladderPrisonDoorEnabled": True}
+    kinds = {}
+
+    def ladder_h(tl, p):
+        if tl == "jawa/spawn_pawn":
+            pid = "P%d" % (len(kinds) + 1)
+            kinds[pid] = p.get("faction")
+            return {"pawns": [{"id": pid}]}
+        if tl == "jawa/flowworks_pit_report":
+            keys = st.get("ladderPrisonDoorEnabled") and not st.get("ladderNoKeys")
+            return {"pawns": [{"id": k, "held": bool(keys and f == "hostile")} for k, f in kinds.items()]}
+        return base(tl, p)
+    got = _ext_run(EXT, "ladder_prison_door", ladder_h, settings=st)
+    want = {"lowered_lets_colonist_out": "PASS", "lowered_holds_hostile": "PASS", "prison_door_off_lets_hostile_out": "PASS"}
+    if got != want or st.get("ladderNoKeys") is not True:
+        out.append("ladder_prison_door must read the hostile rows in keys mode and restore ladderNoKeys=True: %s %s"
+                   % (got, st))
+
+    # POOL_PIT_FIX_DROWNING_CENSUS_EMPTY: a conscious occupant SWIMS out of a brim-full 2 m pit, so the census only ever
+    # holds a pawn that was downed in it. The fake game: rows for downed pawns only, by the fluid it was spawned into.
+    def fill_game(chain, drown_on=True):
+        spawned, downed, fluid_at = {}, set(), {}
+
+        def h(tl, p):
+            if tl == "jawa/static_call" and p.get("method") == "ProofFillWithFluid":
+                a = str(p.get("args", "")).split(",")          # "x,z,F,fluid" (_fill_fluid)
+                fluid_at["%s,%s" % (a[0], a[1])] = a[3] if len(a) > 3 else "?"
+                return {"result": "FILLED"}
+            if tl == "jawa/spawn_pawn":
+                pid = "P%d" % (len(spawned) + 1)
+                spawned[pid] = "%s,%s" % (p.get("x"), p.get("z"))
+                return {"pawns": [{"id": pid}]}
+            if tl == "jawa/pawn_health" and p.get("hediff") == "Anesthetic" and p.get("action") == "add":
+                downed.add(p.get("pawn"))
+            if tl == "jawa/static_call" and p.get("method") == "ProofReport" and "PitFillEffects" in str(p.get("type")):
+                rows = []
+                for pid in sorted(downed):
+                    fl = fluid_at.get(spawned[pid], "?")
+                    rows.append("%s@%s D=4 F=4 fluid=%s swimmer=False drown=%s tox=%s burning=False" % (
+                        pid, spawned[pid], fl, "0.4" if (drown_on and "Water" in fl) else "0",
+                        "0.3" if (drown_on and "Poison" in fl) else "0"))
+                return {"result": "FILLFX %d | %s" % (len(rows), " | ".join(rows))}
+            return base(tl, p)
+        return _ext_run(EXT, chain, h)
+    got = fill_game("pit_fill_effects")
+    if got.get("pit_fluid_effects_per_cell") != "PASS":
+        out.append("pit_fill_effects must down its occupants before the census (they swim out): %s" % got)
+    got = fill_game("toggle_pit_fill_effects", drown_on=False)
+    if got != {"pit_drowning_off": "PASS", "poison_fill_off": "PASS"}:
+        out.append("toggle_pit_fill_effects must down its occupants before the census (they swim out): %s" % got)
+
+    # NATURAL_SLIME_FIX_WALKER_NEVER_SLIPS: the fake game is the sweep's (J20261026T004751Z): a one-cell wading step
+    # (waitTicks 60) leaves the colonist mid-route on the canal BANK (slime is slow), so after the OFF wade it is in no
+    # census row; only a long order puts it back in the slime. A slip is counted (and kept, like RM_SlimeSlip's dict) for a
+    # pawn ordered while in slime with the setting on. Natural slime: only drafted one-cell steps along the strip slip; one
+    # undrafted _march to the far end routes round it (the _wade finding, 2026-10-24).
+    sst = {"slimeSlipEnabled": True}
+    where, slips, natural = {}, {}, {}
+    strip_z = []
+
+    def slime_game(tl, p):
+        if tl == "jawa/set_terrain_batch" and "RM_SlimeGreenShallow" in str(p.get("ops")):
+            strip_z.append(int(str(p["ops"]).split(":")[1].split(",")[1]))
+        if tl == "jawa/spawn_pawn":
+            pid = "P%d" % (len(where) + 1)
+            where[pid] = "canal" if not strip_z else "strip"
+            return {"pawns": [{"id": pid}]}
+        if tl == "jawa/order_pawn":
+            pid, z = p.get("pawnId"), int(p.get("z"))
+            if strip_z and z == strip_z[0]:
+                if p.get("draft") and int(p.get("waitTicks") or 0) <= 600 and sst.get("slimeSlipEnabled"):
+                    natural[pid] = natural.get(pid, 0) + 1
+            else:
+                if where.get(pid) == "canal" and sst.get("slimeSlipEnabled"):
+                    slips[pid] = 1
+                where[pid] = "canal" if int(p.get("waitTicks") or 0) >= 600 else "bank"
+            return {"success": True, "ticksElapsed": p.get("waitTicks")}
+        if tl == "jawa/static_call" and p.get("method") == "ProofReport" and "SlimeSlip" in str(p.get("type")):
+            if str(p.get("args")).strip() == "reset":
+                slips.clear()
+                natural.clear()
+            rows = []
+            for pid, w in where.items():
+                if w == "canal" or slips.get(pid):
+                    rows.append("%s@%d,%d D=2 F=2 fluid=%s slips=%d" % (pid, 93, 167, EXT.SLIME if w == "canal" else "none",
+                                                                     slips.get(pid, 0)))
+                elif w == "strip" and natural.get(pid, 0) >= 3:
+                    rows.append("%s@93,%d ground=RM_SlimeGreenShallow slips=1 climbSlips=0" % (pid, strip_z[0]))
+            return {"result": "SLIME %d enabled=%s | %s" % (len(rows), sst.get("slimeSlipEnabled"), " | ".join(rows))}
+        return base(tl, p)
+    got = _ext_run(EXT, "slime_slip", slime_game, settings=sst)
+    if got != {"slime_slips_the_wader": "PASS", "slime_slip_off": "PASS", "natural_slime_slips": "PASS"}:
+        out.append("slime_slip must put the OFF wader back in the slime and wade the natural strip cell by cell: %s" % got)
     return out
 
 
