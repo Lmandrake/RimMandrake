@@ -1,0 +1,2 @@
+A selftest that does random.sample(glob(live_dir), N) with a fixed seed is NOT deterministic: glob order is unsorted and every new file reshuffles the pick, so the check flips red/green on what landed in the directory, not on the code. selftest_placeholder_detect sampled 150 of 4,264 artpipe _artsrc PNGs; _artsrc also keeps renders of jobs that FAILED validation (6 red squares, 10-16..10-19) and white monochrome icons, so it went red only when the sample hit one. Freeze the sample (shas in the art store) instead (ART_SELFTESTS_FIX_LIVE_DATA_DRIFT).
+home: NONE

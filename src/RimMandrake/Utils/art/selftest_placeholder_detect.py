@@ -19,7 +19,7 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import glob
-import random
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -91,15 +91,29 @@ def run() -> int:
     real = sorted(glob.glob(str(base / "RM_Orruhmu/*.png")))
     check(len(real) >= 3, "probe can see the installed Orruhmu render", len(real))
     check(not any(P.is_flat(P.pixel_metrics(f)) for f in real), "installed Orruhmu render classifies REAL")
-    arts = glob.glob(rm_str("artpipe", "_artsrc", "*", "*.png"))
-    if arts:
-        random.seed(7)
-        pick = random.sample(arts, min(150, len(arts)))
-        met = [(f, P.pixel_metrics(f)) for f in pick]
-        bad = [f for f, m_ in met if P.is_flat(m_)]
-        check(not bad, f"{len(pick)} real artpipe renders all classify REAL", bad[:3])
-    else:
-        check(False, "artpipe _artsrc unreachable: UNMEASURED, not a pass")
+    # Frozen fixture, not a live sample: a random.sample over the unsorted live _artsrc glob drew a
+    # different 150 every time a render landed, and _artsrc also keeps renders of jobs that FAILED
+    # validation (red squares) and white monochrome icons, which are flat-colour by any measure.
+    # So the check went red or green on what the queue had produced, not on the detector.
+    fx = json.loads((HERE / "fixtures" / "placeholder_detect_frozen.json").read_text(encoding="utf-8"))
+    fd = Path(tempfile.mkdtemp(prefix="ph_frozen_"))
+
+    def frozen(kind):
+        out = []
+        for n, sha in fx[kind].items():
+            if L.store_has(sha):
+                (fd / f"{kind}_{n}.png").write_bytes(L.store_get(sha))
+                out.append(fd / f"{kind}_{n}.png")
+        return out
+    real_r, flat_r = frozen("real"), frozen("flat")
+    check(len(real_r) == len(fx["real"]) == 150, "probe can see all 150 frozen real artpipe renders (art store)",
+          len(real_r))
+    bad = [f.name for f in real_r if P.is_flat(P.pixel_metrics(f))]
+    check(real_r and not bad, f"{len(real_r)} frozen real artpipe renders all classify REAL", bad[:3])
+    check(len(flat_r) == len(fx["flat"]) == 9, "probe can see the 9 frozen flat artpipe renders (art store)",
+          len(flat_r))
+    bad = [f.name for f in flat_r if not P.is_flat(P.pixel_metrics(f))]
+    check(flat_r and not bad, "frozen red-square / monochrome-icon renders classify FLAT", bad[:3])
     # part 3 (owner rule 2026-10-07 22:33 PDT): the GEOMETRIC detector, calibrated on the 21 shipped circles
     # (bytes from the art store, so the probe survives their replacement) and on low-colour REAL painted sprites.
     circles = {
@@ -139,9 +153,14 @@ def run() -> int:
     check(len(neg) >= 6, "probe can see the low-colour real sprites (ScorchedStars x2 / Orruhmu)", len(neg))
     fp = [f for f in neg if P.is_placeholder(f)]
     check(not fp, f"0/{len(neg)} low-colour real sprites read as placeholder", fp[:3])
-    if arts:
-        fpa = [f for f in pick if P.is_placeholder(f)]
-        check(not fpa, f"0/{len(pick)} real artpipe renders read as placeholder", fpa[:3])
+    fpa = [f.name for f in real_r if P.is_placeholder(f)]
+    check(real_r and not fpa, f"0/{len(real_r)} frozen real artpipe renders read as placeholder", fpa[:3])
+    # of the 9 FLAT renders, exactly the 6 red squares are geometric; the 2 monochrome icons and the glow band are not
+    squares = {"dessic_mastmot_j_dessicated_v1", "dessic_paintedspat_dessicated_v1", "dessic_raxshir_dessicated_v1",
+               "dessic_snoruuk_j_dessicated_v1", "kit_eyeburst_v1_south", "tallvv_crown_v2"}
+    geo = {f.name[len("flat_"):-len(".png")] for f in flat_r if P.is_placeholder(f)}
+    check(len(flat_r) == 9 and geo == squares, "geometric detector: the 6 red-square renders, not the icons / glow band",
+          sorted(geo ^ squares))
     for name, draw in (("rect", lambda d_: d_.rectangle((10, 10, 110, 90), fill=(90, 120, 80, 255))),
                        ("outlined circle", lambda d_: d_.ellipse((14, 14, 114, 114), fill=(120, 80, 40, 255),
                                                                 outline=(10, 10, 10, 255), width=3))):
@@ -152,8 +171,8 @@ def run() -> int:
     check(not P.is_placeholder(d / "painted.png"), "noisy painted round blob is not a geometric placeholder")
     tri = P.is_placeholder(d / "wedge.png")
     check(not tri, "a flat triangle is not claimed as circle/rect (FLAT rule covers it)")
-    print(f"calibration precision: {len(tp)} TP / {len(tp) + len(fp) + (len(fpa) if arts else 0)} flagged; "
-          f"recall {len(tp)}/{len(pos)}; negatives {len(neg) + (len(pick) if arts else 0)}")
+    print(f"calibration precision: {len(tp)} TP / {len(tp) + len(fp) + len(fpa)} flagged; "
+          f"recall {len(tp)}/{len(pos)}; negatives {len(neg) + len(real_r)}")
     print(f"{len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

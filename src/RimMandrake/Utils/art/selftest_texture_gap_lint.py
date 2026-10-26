@@ -70,6 +70,32 @@ def main() -> int:
     late = {"frozen": "2026-10-10", "entries": [dict(ok["entries"][0], added="2026-10-11"), ok["entries"][1]]}
     check(any("GREW" in x for x in T.lint(got, late)), "an entry added after the freeze fails")
 
+    # templated texPaths (GSS fills "{look}" from AerialStyles.Looks): judged per expansion, values read from the C#
+    cs = d / "Styles.cs"
+    cs.write_text('public static readonly string[] Looks = { "Alpha", "Beta" };\n')
+    saved = dict(T.TEMPLATE_SOURCES)
+    T.TEMPLATE_SOURCES["look"] = (cs, r"\bLooks\s*=\s*\{([^}]*)\}")
+    for rel in ("Pole/Alpha/Span.png", "Pole/Beta/Span.png", "Half/Alpha/Span.png"):
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGBA", (4, 4), (1, 2, 3, 255)).save(root / rel)
+    tg = T.census({"Pole/{look}/Span": ["t.xml"], "Half/{look}/Span": ["t.xml"], "Odd/{shade}/Span": ["t.xml"]},
+                  [root], ix)
+    check(T.expand("Pole/{look}/Span") == ["Pole/Alpha/Span", "Pole/Beta/Span"], "a template expands to the C# values",
+          T.expand("Pole/{look}/Span"))
+    check(tg["Pole/{look}/Span"]["class"] == "OK_SRC" and not T.lint(
+        {"Pole/{look}/Span": tg["Pole/{look}/Span"]}, {"frozen": "2026-10-10", "entries": []}),
+        "a template whose every expansion resolves is OK, not a gap", tg["Pole/{look}/Span"])
+    hf = T.lint(tg, {"frozen": "2026-10-10", "entries": []})
+    check(tg["Half/{look}/Span"]["class"] == "TEMPLATE_GAP" and tg.get("Half/Beta/Span", {}).get("class") == "MISSING"
+          and any("TEXTURE GAP: Half/Beta/Span" in x for x in hf) and not any("Half/{look}" in x for x in hf),
+          "PLANTED: one missing expansion is a gap under its literal path", hf)
+    check(tg["Odd/{shade}/Span"]["class"] == "MISSING", "PLANTED: a placeholder with no known source stays a gap",
+          tg["Odd/{shade}/Span"])
+    T.TEMPLATE_SOURCES.clear()
+    T.TEMPLATE_SOURCES.update(saved)
+    check(T.template_values("look") and "Scrapper" in T.template_values("look"),
+          "probe: the real {look} values are read from GSS AerialStyles.cs", T.template_values("look"))
+
     T._DISK = None
     if T.load_index() is None:
         print("UNMEASURED part 2: no gametex cache on this machine")

@@ -14,6 +14,9 @@ src/<tier>/<mod>/{Defs,Patches} (UI/ is never judged):
               -> NOT a gap, never claimed missing
   UNMEASURED  no gametex cache on this machine: only OK_SRC can be judged; the rest are reported, not failed
 
+A templated texPath (`.../{look}/PipeSpan`, filled in by C#) is judged as each of its expansions, the values read
+from the C# that fills it (TEMPLATE_SOURCES); a failing expansion is a gap under its own literal path.
+
 GAPS must be listed in texture_gap_allowlist.json (shrink-only): an unlisted gap fails, a stale entry fails, an entry
 added after `frozen` fails. Each entry says what is owed. SANITY PROBE: a known-present texPath must classify OK.
 
@@ -115,13 +118,61 @@ def classify(tp: str, roots, ix) -> str:
     return "UNRESOLVED" if any(mod == d or mod.startswith(d + "/") or d.startswith(mod + "/") for d in ix.active_dirs) else "INACTIVE"
 
 
+# A texPath field may be an art CONTRACT the C# fills in, not a literal path: GSS's AerialMaterials.PipeMats does
+# spanTexPath.Replace("{look}", look) over AerialStyles.Looks (RM_PipePoles.xml, 2026-10-21). Read as a literal it
+# never resolves, so it is judged as its expansions instead. The values are read from the C# that does the
+# replacing, never typed here; a placeholder with no known source stays literal and so stays a gap (loud).
+TEMPLATE_SOURCES = {
+    "look": (REPO / "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialStyles.cs",
+             r"\bLooks\s*=\s*\{([^}]*)\}"),
+}
+_TEMPLATE_RE = re.compile(r"\{([A-Za-z_]+)\}")
+
+
+def template_values(name: str) -> list[str] | None:
+    src = TEMPLATE_SOURCES.get(name)
+    if not src or not src[0].is_file():
+        return None
+    m = re.search(src[1], src[0].read_text(encoding="utf-8"))
+    vals = re.findall(r'"([^"]+)"', m.group(1)) if m else []
+    return vals or None
+
+
+def expand(tp: str) -> list[str] | None:
+    """-> the literal paths a templated texPath stands for, or None if tp is literal or a placeholder is unknown."""
+    names = _TEMPLATE_RE.findall(tp)
+    if not names:
+        return None
+    out = [tp]
+    for n in dict.fromkeys(names):
+        vals = template_values(n)
+        if not vals:
+            return None
+        out = [p.replace("{" + n + "}", v) for p in out for v in vals]
+    return out
+
+
+_RANK = ("OK_SRC", "OK_ACTIVE", "UNRESOLVED", "UNMEASURED", "INACTIVE", "MISSING")
+
+
 def census(paths: dict | None = None, roots=None, ix="load") -> dict:
     paths = PL.texpaths() if paths is None else paths
     roots = PL.texture_roots() if roots is None else roots
     ix = (lambda r: Index(r) if r else None)(load_index()) if ix == "load" else ix
     out: dict = {}
     for tp, files in paths.items():
-        out[tp] = {"class": classify(tp, roots, ix), "defs": files}
+        lits = expand(tp)
+        if lits is None:
+            out[tp] = {"class": classify(tp, roots, ix), "defs": files}
+            continue
+        # a template is as good as its worst expansion; the gap is reported (and must be listed) per expansion
+        cls = {p: classify(p, roots, ix) for p in lits}
+        for p, c in cls.items():
+            if c in ("INACTIVE", "MISSING"):
+                out[p] = {"class": c, "defs": files, "template": tp}
+        out[tp] = {"class": max(cls.values(), key=_RANK.index), "defs": files, "expansions": cls}
+        if out[tp]["class"] in ("INACTIVE", "MISSING"):
+            out[tp]["class"] = "TEMPLATE_GAP"      # its failing expansions carry the gap; the template is not listed
     return out
 
 

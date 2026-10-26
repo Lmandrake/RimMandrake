@@ -1,0 +1,2 @@
+A texPath-like XML field can be an art contract that C# fills in (RM_PipePoles spanTexPath RimMandrake/FlowWorks/PipePole/{look}/PipeSpan, GSS AerialMaterials.PipeMats Replace("{look}") over AerialStyles.Looks). A lint that reads it as a literal path reports a permanent MISSING gap. texture_gap_lint now judges each expansion, values read from the C# source (ART_SELFTESTS_FIX_LIVE_DATA_DRIFT).
+home: NONE
