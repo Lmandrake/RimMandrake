@@ -843,13 +843,23 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					TerrainDef t = owner.OriginalTerrainAt(c) ?? map.terrainGrid.BaseTerrainAt(c);
-					if (t != null && IsMovingWater(t))
+					if (t != null && (IsMovingWater(t) || IsOtherLiquidTerrain(t)))
 					{
 						body.depthExempt = 1;
 					}
 				}
 			}
 			return body.depthExempt == 0;
+		}
+
+		/// <summary>THIRST_FIX_SALT_DRUNK_ROUTINELY / THIRST_FIX_DESPERATE_SKIPS_BOTTLE: a terrain registered to a liquid that is
+		/// not fresh water. A liquid with no canalFluid (salt water, brine, acid, the coloured waters) gets no FluidDef of its own,
+		/// so FormBody stamps its body RM_Fluid_Water; without this the drawdown restaged a salt or brine pond onto the FRESHWATER
+		/// ladder (RM_WaterThin ...), which thirst reads as potable, and colonists drank "fresh" water out of the sea.</summary>
+		internal static bool IsOtherLiquidTerrain(TerrainDef t)
+		{
+			LiquidTypes.LiquidDef liquid = LiquidTypes.RM_LiquidBottleUtility.LiquidAt(t);
+			return liquid != null && liquid.canalFluid != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
 		}
 
 		private static TerrainAffordanceDef movingFluid;

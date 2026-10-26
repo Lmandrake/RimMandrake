@@ -176,6 +176,22 @@ expect("exception naming RM_Thirst", res, "T7", "FAIL")
 code, res, B, _ = run("T7", log=os.path.join(TMP, "missing.log"))
 expect("no log given", res, "T7", "UNMEASURED")
 
+# ---- THIRST_FIX_SALT_DRUNK_ROUTINELY / THIRST_FIX_DESPERATE_SKIPS_BOTTLE: the freshwater depth ladder is potable and dried
+import re  # noqa: E402
+_src = os.path.join(os.path.dirname(HERE), "Source")
+with open(os.path.join(_src, "RM_WaterLadder.cs"), encoding="utf-8") as f:
+    _ladder = re.search(r"FreshwaterDefNames\s*=\s*\{(.*?)\}", f.read(), re.S)
+_rungs = re.findall(r'"([A-Za-z_]+)"', _ladder.group(1)) if _ladder else []
+check("ladder table parsed (sanity: 5 wet rungs)", len(_rungs) == 5, _rungs)
+check("every freshwater ladder terrain is in POTABLE_TERRAIN (dry_all paints it)",
+      all(r in thirst_live.POTABLE_TERRAIN for r in _rungs), [r for r in _rungs if r not in thirst_live.POTABLE_TERRAIN])
+with open(os.path.join(_src, "RM_LiquidStock.cs"), encoding="utf-8") as f:
+    _stock = f.read()
+_dma = _stock[_stock.find("public bool DepthModelApplies"):]
+_dma = _dma[:_dma.find("return body.depthExempt == 0;")]
+check("DepthModelApplies exempts a non-fresh liquid's body (salt/brine never restaged onto the fresh ladder)",
+      "IsOtherLiquidTerrain(t)" in _dma and "canalFluid != RimMandrakeFlowWorks_DefOf.RM_Fluid_Water" in _stock)
+
 print()
 if FAILS:
     print("selftest_thirst_live: %d FAILED: %s" % (len(FAILS), FAILS))

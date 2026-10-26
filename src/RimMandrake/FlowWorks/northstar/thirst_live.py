@@ -151,7 +151,11 @@ THIRST_KEYS = ("thirstEnabled", "thirstRateMultiplier", "thirstHeatScaling", "an
                "filledBottlesPerColonist")
 POTABLE_TERRAIN = ("WaterShallow", "WaterDeep", "WaterMovingShallow", "WaterMovingChestDeep", "RM_WaterFrigidShallow",
                    "RM_WaterFrigidDeep", "RM_Water_Rust", "RM_Water_Verdigris", "RM_Water_Amber", "RM_Water_Violet",
-                   "RM_Water_Chalk", "Marsh")
+                   "RM_Water_Chalk", "Marsh",
+                   # the P14 freshwater depth ladder (RM_WaterLadder): a drawn-down pond is restaged onto these, and thirst
+                   # reads them as fresh water by fallback. Missing here, dry_all left them wet and a "dried" map still
+                   # offered fresh water (THIRST_FIX_SALT_DRUNK_ROUTINELY / THIRST_FIX_DESPERATE_SKIPS_BOTTLE).
+                   "RM_WaterVeryShallow", "RM_WaterThin", "RM_WaterChestDeepStill")
 
 
 def main(argv=None, bridge=None):
