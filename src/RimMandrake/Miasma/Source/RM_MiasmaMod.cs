@@ -443,6 +443,36 @@ namespace RimMandrake.Miasma
         }
     }
 
+    // ATTAR_FIX_QUEUED_BILL_IGNORES_SWITCH: ApplyAttar only stops NEW bills (it edits recipeUsers); 1.6 WorkGiver_DoBill
+    // never re-checks a queued bill's recipe against its bench, so a bill queued while attar was on kept making it.
+    // Bill_Production does not override PawnAllowedToStartAnew, so the base postfix reaches the still's bills.
+    [StaticConstructorOnStartup]
+    public static class RM_AttarBillGatePatch
+    {
+        static RM_AttarBillGatePatch()
+        {
+            try
+            {
+                new HarmonyLib.Harmony("mandrake.rm.miasma.attar").Patch(
+                    HarmonyLib.AccessTools.Method(typeof(Bill), nameof(Bill.PawnAllowedToStartAnew)),
+                    postfix: new HarmonyLib.HarmonyMethod(typeof(RM_AttarBillGatePatch), nameof(Postfix)));
+            }
+            catch (System.Exception e)
+            {
+                Log.Error("[RM Miasma] attar bill gate patch failed: " + e);
+            }
+        }
+
+        public static void Postfix(Bill __instance, ref bool __result)
+        {
+            if (__result && RM_MiasmaKernel.AttarBillBlocked(RM_MiasmaSettings.attarEnabled, __instance?.recipe?.defName == "RM_MakeAttar"))
+            {
+                Verse.AI.JobFailReason.Is("Attar is turned off in the Miasma's mod settings.");
+                __result = false;
+            }
+        }
+    }
+
     public class RM_MiasmaMod : Mod
     {
         public static RM_MiasmaSettings settings;

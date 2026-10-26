@@ -136,6 +136,9 @@ namespace RimMandrake.Miasma
 
         public static bool ReturnRefused(bool motherBetrayed) { return motherBetrayed; }
 
+        /// <summary>ATTAR_FIX_QUEUED_BILL_IGNORES_SWITCH: an attar bill already queued may not start while attar is off.</summary>
+        public static bool AttarBillBlocked(bool attarEnabled, bool isAttarRecipe) { return !attarEnabled && isAttarRecipe; }
+
         /// <summary>MOTHERSPRICE_FIX_REFUSAL_NAGS_EVERY_POLL: quiet window after a refusal, per young.</summary>
         public const int RefusalQuietTicks = 60000;
 

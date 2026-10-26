@@ -504,6 +504,8 @@ namespace RimMandrake.Miasma.Fuzz
                 if (!RM_MiasmaKernel.ReturnInReach(true, 16f, 16f) || RM_MiasmaKernel.ReturnInReach(true, 16.01f, 16f) || RM_MiasmaKernel.ReturnInReach(false, 1f, 16f)) bad("return reach boundary");
                 if (RM_MiasmaKernel.SaleCounts(false, true) || RM_MiasmaKernel.SaleCounts(true, false) || !RM_MiasmaKernel.SaleCounts(true, true)) bad("sale gate");
                 if (!RM_MiasmaKernel.ReturnRefused(true) || RM_MiasmaKernel.ReturnRefused(false)) bad("betrayed mother must refuse");
+                if (!RM_MiasmaKernel.AttarBillBlocked(false, true) || RM_MiasmaKernel.AttarBillBlocked(true, true)
+                    || RM_MiasmaKernel.AttarBillBlocked(false, false) || RM_MiasmaKernel.AttarBillBlocked(true, false)) bad("attar bill gate");
                 int q = RM_MiasmaKernel.RefusalQuietTicks;
                 if (q < 2500) bad("refusal quiet window shorter than an hour");
                 if (!RM_MiasmaKernel.RefusalMaySpeak(false, 0, 0) || RM_MiasmaKernel.RefusalMaySpeak(true, 1000, 1000)
