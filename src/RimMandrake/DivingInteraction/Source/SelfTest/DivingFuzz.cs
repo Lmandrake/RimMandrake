@@ -385,13 +385,19 @@ namespace RimMandrake.DivingInteraction.SelfTest
         }
 
         // ════════════════ oxygen (DESIGN_PASS DI-2): the pumped-air ledger never lets one pump cancel another ════════════════
-        private static List<string> Oxygen(int n, int seed)
+        // One RNG per printed seed: the seed in a FAIL line is the seed --fuzz-seed replays (oxygen, trample, fireban).
+        private static Random CaseRng(int seed, int salt) { return new Random(seed * 7919 + salt); }
+        public static List<int> RngTrace;   // when set, each case appends its RNG's first draw (replay check)
+        private static Random Traced(int seed, int salt) { if (RngTrace != null) RngTrace.Add(CaseRng(seed, salt).Next()); return CaseRng(seed, salt); }
+
+        private static List<string> Oxygen(int n, int baseSeed)
         {
             var fails = new List<string>();
             for (int k = 0; k < n && fails.Count < 5; k++)
             {
                 Cases++;
-                var r = new Random(seed * 7919 + k);
+                int seed = baseSeed + k;
+                var r = Traced(seed, 11);
                 var led = new RM_OxygenLedgerKernel();
                 var model = new Dictionary<int, HashSet<int>>();
                 int steps = r.Next(1, 60);
@@ -418,7 +424,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                         Check(led.ProviderCount == model.Count, $"providers {led.ProviderCount} != spec {model.Count}");
                     }
                 }
-                catch (Exception e) { fails.Add($"oxygen seed {k}: {e.Message}"); }
+                catch (Exception e) { fails.Add($"oxygen seed {seed}: {e.Message}"); }
             }
             Cases++; Steps++;
             if (!RM_OxygenLedgerKernel.RoomServed(true, 60, 1, 60) || RM_OxygenLedgerKernel.RoomServed(true, 61, 1, 60) || !RM_OxygenLedgerKernel.RoomServed(true, 120, 2, 60)
@@ -446,7 +452,8 @@ namespace RimMandrake.DivingInteraction.SelfTest
             for (int c = 0; c < n && fails.Count < 5; c++)
             {
                 Cases++;
-                var r = new Random(baseSeed * 7919 + c);
+                int seed = baseSeed + c;
+                var r = Traced(seed, 13);
                 int now = r.Next(0, 100000), lt = -1, lw = -1, lastTrampleSeen = -1000000;
                 bool en = r.Next(4) != 0, warn = r.Next(4) != 0;
                 for (int step = 0; step < 60; step++)
@@ -465,14 +472,14 @@ namespace RimMandrake.DivingInteraction.SelfTest
                     bool wantT = valid && en && !downed && d <= tr2 && (lt < 0 || now - lt >= RM_WalkerTrampleKernel.TrampleCooldownTicks);
                     bool wantW = !wantT && valid && en && warn && !downed && d <= wr2 && (lw < 0 || now - lw >= RM_WalkerTrampleKernel.WarnCooldownTicks);
                     var want = wantT ? RM_WalkerTrampleKernel.Outcome.Trample : (wantW ? RM_WalkerTrampleKernel.Outcome.Warn : RM_WalkerTrampleKernel.Outcome.None);
-                    if (o != want) { fails.Add($"trample seed {c}: got {o}, want {want} (d2 {d}, downed {downed}, now {now}, lt {lt}, lw {lw}, en {en}, warn {warn})"); break; }
+                    if (o != want) { fails.Add($"trample seed {seed}: got {o}, want {want} (d2 {d}, downed {downed}, now {now}, lt {lt}, lw {lw}, en {en}, warn {warn})"); break; }
                     if (o == RM_WalkerTrampleKernel.Outcome.Trample)
                     {
-                        if (now - lastTrampleSeen < RM_WalkerTrampleKernel.TrampleCooldownTicks) { fails.Add($"trample seed {c}: two tramples {now - lastTrampleSeen} ticks apart"); break; }
+                        if (now - lastTrampleSeen < RM_WalkerTrampleKernel.TrampleCooldownTicks) { fails.Add($"trample seed {seed}: two tramples {now - lastTrampleSeen} ticks apart"); break; }
                         lastTrampleSeen = now; lt = now; lw = now;
                     }
                     else if (o == RM_WalkerTrampleKernel.Outcome.Warn) lw = now;
-                    if (!en && o != RM_WalkerTrampleKernel.Outcome.None) { fails.Add($"trample seed {c}: {o} with trampling switched off"); break; }
+                    if (!en && o != RM_WalkerTrampleKernel.Outcome.None) { fails.Add($"trample seed {seed}: {o} with trampling switched off"); break; }
                 }
             }
             // damage: clamped, NaN/inf -> default, monotone, default inside the range
@@ -504,14 +511,15 @@ namespace RimMandrake.DivingInteraction.SelfTest
             for (int c = 0; c < n && fails.Count < 5; c++)
             {
                 Cases++;
-                var r = new Random(baseSeed * 104729 + c);
+                int seed = baseSeed + c;
+                var r = Traced(seed, 17);
                 bool refuel = r.Next(4) != 0, glow = r.Next(2) == 0, heat = r.Next(2) == 0, overlay = r.Next(3) == 0;
                 bool table = r.Next(3) == 0, plant = r.Next(4) == 0, powered = plant || r.Next(3) == 0;
                 bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered);
                 bool wantFlame = refuel && (plant || (!powered && (glow || heat || overlay || table)));
                 string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered}";
-                if (flame != wantFlame) { fails.Add($"fireban seed {c}: UsesFlame {flame}, want {wantFlame} ({who})"); continue; }
-                if (powered && !plant && flame) { fails.Add($"fireban seed {c}: a powered machine counted as a flame ({who})"); continue; }
+                if (flame != wantFlame) { fails.Add($"fireban seed {seed}: UsesFlame {flame}, want {wantFlame} ({who})"); continue; }
+                if (powered && !plant && flame) { fails.Add($"fireban seed {seed}: a powered machine counted as a flame ({who})"); continue; }
                 float fuel = refuel ? r.Next(1, 50) : 0f;
                 bool air = r.Next(2) == 0;
                 try
@@ -543,7 +551,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                         if (flame && !air) Check(fuel == before, "fuel fell while the ban held");
                     }
                 }
-                catch (Exception e) { fails.Add($"fireban seed {c}: {e.Message} ({who})"); }
+                catch (Exception e) { fails.Add($"fireban seed {seed}: {e.Message} ({who})"); }
             }
             // the named vanilla and modded buildings the ruling and the review name
             Cases++; Steps++;
@@ -558,6 +566,24 @@ namespace RimMandrake.DivingInteraction.SelfTest
             if (Banned(true, false, false, false, false, false, false)) fails.Add("fireban units: a turret barrel / shuttle tank (fuel, no flame use) was banned");
             if (RM_ChillFireBanKernel.Output(false, true, false) || RM_ChillFireBanKernel.Output(false, true, true)) fails.Add("fireban units: Output turned an off output on");
             return fails;
+        }
+
+        // A printed seed must replay the very case that failed: case k of a batch from base B equals the single case at seed B+k.
+        private static bool ReplayReproduces()
+        {
+            var fns = new (string name, Func<int, int, List<string>> run)[] { ("oxygen", Oxygen), ("trample", Trample), ("fireban", FireBan) };
+            bool good = true;
+            foreach (var f in fns)
+            {
+                RngTrace = new List<int>(); f.run(6, 100); var batch = RngTrace;
+                for (int k = 0; k < batch.Count; k++)
+                {
+                    RngTrace = new List<int>(); f.run(1, 100 + k);
+                    if (RngTrace.Count != 1 || RngTrace[0] != batch[k]) { Console.WriteLine($"FAIL replay: {f.name} --fuzz-seed {100 + k} does not reproduce batch case {k}"); good = false; }
+                }
+            }
+            RngTrace = null;
+            return good;
         }
 
         public static bool Run(double scale, int? oneSeed, string only)
@@ -575,6 +601,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("trample", () => Trample(N(3000), S(1))),
                 ("fireban", () => FireBan(N(3000), S(1))),
             };
+            if (only == null && !ReplayReproduces()) ok = false;
             foreach (var f in fam)
             {
                 if (only != null && f.name != only) continue;

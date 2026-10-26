@@ -11,9 +11,9 @@ namespace RimMandrake.DivingInteraction
     // edges"). Everything is inert: no comps, no map component, no power, no jobs. Studs carry the
     // lore in their descriptions only.
     //
-    // Scope: listed on RM_SeaDiveGenerator_TheChill only (the hatch pocket map). The live
-    // RM_SeabedLayer has no per-sea floor generator yet; when it gets one, list RM_ChillReturnComb
-    // there. Skips quietly when no free site exists. Shapes and counts are first guesses.
+    // Scope: listed on RM_SeaDiveGenerator_TheChill (the hatch pocket map) and on
+    // RM_SeabedGenerator_TheChill (RM_SeabedGenerators.xml, the seabed layer's Chill floor).
+    // Skips quietly when no free site exists. Shapes and counts are first guesses.
     public class GenStep_ChillReturnComb : GenStep
     {
         private const int InnerR = 6;
