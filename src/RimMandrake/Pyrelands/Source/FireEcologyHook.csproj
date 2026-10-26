@@ -80,6 +80,7 @@
     <Compile Include="FurnaceWarmthMath.cs" />
     <Compile Include="CompFurnaceBedIgnition.cs" />
     <Compile Include="CompFurnaceThermalCharge.cs" />
+    <Compile Include="CompPawnHeatPusher.cs" />
     <Compile Include="JobGiver_RUT_FurnaceThermalCycle.cs" />
     <Compile Include="Patch_FurnaceBeastHeatImmunity.cs" />
     <!-- PYRELANDS_DEDICATED_GRAZER_1 — burrow-on-fire, generic and opt-in. -->

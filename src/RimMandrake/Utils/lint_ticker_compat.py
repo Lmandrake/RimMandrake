@@ -16,7 +16,11 @@ Offline, no game, no build. Reads every Defs XML and C# under src/:
     in the CompProperties constructor), then to the tick methods that class overrides, through its src/
     base classes.
 Findings (ERROR): NEVER_TICKS (comp overrides tick methods but none of them is the def's), NEVER_TICKER (the def
-is tickerType Never yet carries a ticking comp). Counts are printed so a lint that looked at nothing cannot pass.
+is tickerType Never yet carries a ticking comp), PAWN_DOUBLE_PUSH (HEATPUSHER_FIX_PAWN_DOUBLE_PUSH: a pawn def carries a
+CompProperties_HeatPusher whose comp class is vanilla CompHeatPusher/CompHeatPusherPowered, or a src/ subclass with no
+CompTickRare override: vanilla pushes from CompTick AND CompTickRare, a pawn runs both, so it heats at twice
+heatPerSecond). Comps a Patches/ PatchOperationAdd puts on a src/ ThingDef by defName count as that def's comps.
+Counts are printed so a lint that looked at nothing cannot pass.
 
     python3 src/RimMandrake/Utils/lint_ticker_compat.py [--quiet]      exit 1 on any ERROR
     python3 src/RimMandrake/Utils/lint_ticker_compat.py --selftest     synthetic fixtures, must flag each mutant
@@ -38,6 +42,12 @@ PAWN_ROOTS = {"BasePawn", "BaseHumanlike", "AnimalThingBase", "BaseAnimal"}
 # runs BOTH CompTick and CompTickRare. Every other thing runs only the one method its tickerType names.
 # Known-exempt (def, comp) pairs: a thing whose ticker is Never but whose comp is driven by something else.
 ALLOW = set()
+
+# Vanilla heat pushers that push from both CompTick and CompTickRare (decompiled 1.6 Verse/CompHeatPusher.cs; Powered
+# inherits both), and CompProperties_HeatPusher's default compClass.
+VANILLA_HEAT_PUSHERS = {"CompHeatPusher", "CompHeatPusherPowered"}
+HEAT_PROPS = "CompProperties_HeatPusher"
+PATCH_DEFNAME = re.compile(r"""defName\s*=\s*["']([^"']+)["']""")
 
 OVERRIDE = re.compile(r"override\s+void\s+(CompTick|CompTickRare|CompTickLong)\s*\(")
 CLASS = re.compile(r"\bclass\s+(\w+)\s*(?:<[^>{]*>)?\s*(?::\s*([\w.<>, ]+?))?\s*(?:where\b[^{]*)?\{")
@@ -113,6 +123,41 @@ def parse_defs(xml_texts):
     return defs
 
 
+def parse_patch_comps(xml_texts):
+    """-> ({defName: [(cls, compClass|None, path)]}, {defName: tickerType}) from PatchOperationAdd whose xpath names ThingDef
+    defName(s) and whose value is a <comps> block (xpath ends at the def) or comp <li>s (xpath ends in /comps), and from any
+    PatchOperationAdd/Replace on those defs whose value carries a <tickerType> (a patch that turns the ticker on). Other
+    shapes are not read."""
+    out, tick = {}, {}
+    for path, text in xml_texts:
+        try:
+            root = ET.fromstring(text.encode("utf-8") if isinstance(text, str) else text)
+        except ET.ParseError:
+            continue
+        for op in root.iter():
+            kind = (op.get("Class") or "").split(".")[-1]
+            if kind not in ("PatchOperationAdd", "PatchOperationReplace"):
+                continue
+            xp, val = (op.findtext("xpath") or "").strip(), op.find("value")
+            if val is None or "ThingDef" not in xp:
+                continue
+            tt = val.findtext("tickerType")
+            if tt:
+                for name in PATCH_DEFNAME.findall(xp):
+                    tick[name] = tt.strip()
+            if kind != "PatchOperationAdd":
+                continue
+            if xp.endswith("/comps"):
+                lis = val.findall("li")
+            elif xp.endswith("]"):
+                lis = [li for cn in val.findall("comps") for li in cn.findall("li")]
+            else:
+                continue
+            for name in PATCH_DEFNAME.findall(xp):
+                out.setdefault(name, []).extend((li.get("Class"), li.findtext("compClass"), path) for li in lis)
+    return out, tick
+
+
 def resolve(defs):
     by_x = {d["xname"]: d for d in defs if d["xname"]}
     by_n = {d["name"]: d for d in defs if d["name"]}
@@ -154,11 +199,44 @@ def resolve(defs):
     return res
 
 
-def lint(cs_texts, xml_texts):
+def reaches(cls, targets, bases, seen=None):
+    """True if cls is one of targets or derives from one through src/ base classes."""
+    seen = seen or set()
+    if cls in targets:
+        return True
+    if cls in seen:
+        return False
+    seen.add(cls)
+    return any(reaches(b, targets, bases, seen) for b in bases.get(cls, ()))
+
+
+def lint(cs_texts, xml_texts, patch_texts=()):
     bases, ticks, comp_of = parse_cs(cs_texts)
-    res = resolve(parse_defs(xml_texts))
-    findings, c = [], dict(defs=len(res), comps=0, ticking_comps=0, unresolved_ticker=0, unresolved_comp=0)
+    defs = parse_defs(xml_texts)
+    patched, patched_ticker = parse_patch_comps(patch_texts)
+    for d in defs:
+        if d["name"] in patched:
+            d["comps"] = d["comps"] + [(cls, cc) for cls, cc, _ in patched[d["name"]]]
+        if d["name"] in patched_ticker:
+            d["ticker"] = patched_ticker[d["name"]]
+    res = resolve(defs)
+    findings, c = [], dict(defs=len(res), comps=0, ticking_comps=0, unresolved_ticker=0, unresolved_comp=0,
+                           patched_comps=sum(len(v) for v in patched.values()), pawn_heat_pushers=0)
     for d in res:
+        if d["pawn"]:
+            for cls, comp_class_xml in d["comps"]:
+                if _simple(cls or "") != HEAT_PROPS:
+                    continue
+                c["pawn_heat_pushers"] += 1
+                comp = _simple(comp_class_xml) if comp_class_xml else "CompHeatPusher"
+                if comp in VANILLA_HEAT_PUSHERS:
+                    why = "vanilla %s" % comp
+                elif comp in bases and reaches(comp, VANILLA_HEAT_PUSHERS, bases) and "CompTickRare" not in effective_ticks(comp, bases, ticks):
+                    why = "%s (a CompHeatPusher subclass with no CompTickRare override)" % comp
+                else:
+                    continue
+                findings.append(("PAWN_DOUBLE_PUSH", d["path"], "%s is a pawn carrying %s: it pushes from CompTick AND CompTickRare, "
+                                 "so it heats at twice heatPerSecond; use a compClass that skips CompTickRare on a Pawn" % (d["name"], why)))
         t = d["ticker"]
         if t is None and d["root_is_src"]:
             t = "Never"          # a src/-rooted chain with no tickerType anywhere uses the engine default
@@ -192,11 +270,13 @@ def lint(cs_texts, xml_texts):
 def load_repo():
     src = os.path.join(REPO, "src")
     cs = [(p, open(p, encoding="utf-8-sig", errors="replace").read()) for p in _walk(src, (".cs",))]
-    xml = []
+    xml, patches = [], []
     for p in _walk(src, (".xml",)):
         if os.sep + "Defs" + os.sep in p or p.endswith(os.sep + "Defs"):
             xml.append((p, open(p, encoding="utf-8-sig", errors="replace").read()))
-    return cs, xml
+        elif os.sep + "Patches" + os.sep in p:
+            patches.append((p, open(p, encoding="utf-8-sig", errors="replace").read()))
+    return cs, xml, patches
 
 
 def selftest():
@@ -238,18 +318,42 @@ public class CompPN : CompProperties { public CompPN() { compClass = typeof(Comp
                   '<ThingDef><defName>Y</defName><tickerType>Normal</tickerType><comps><li Class="PR"/></comps></ThingDef>'))
     if [x[0] for x in f] != ["NEVER_TICKS"] or "Y" not in f[0][2]:
         fails.append("pawn Normal+CompTickRare must pass, building Normal+CompTickRare must fail: %r" % (f,))
+    hcs = [("h.cs", "class CompSafe : CompHeatPusher { public override void CompTickRare() {} } class CompGatedOnly : CompHeatPusher { }")]
+    hp = lambda cc: '<li Class="CompProperties_HeatPusher">%s<heatPerSecond>9</heatPerSecond></li>' % (
+        "<compClass>%s</compClass>" % cc if cc else "")
+    pawn = lambda li: D('<ThingDef ParentName="AnimalThingBase"><defName>H</defName><comps>%s</comps></ThingDef>' % li)
+    for label, li, want in (("default class", hp(None), ["PAWN_DOUBLE_PUSH"]), ("vanilla Powered", hp("CompHeatPusherPowered"), ["PAWN_DOUBLE_PUSH"]),
+                            ("subclass without CompTickRare", hp("N.CompGatedOnly"), ["PAWN_DOUBLE_PUSH"]), ("pawn-safe subclass", hp("N.CompSafe"), [])):
+        f, c = lint(hcs, pawn(li))
+        if [x[0] for x in f] != want or c["pawn_heat_pushers"] != 1:
+            fails.append("pawn heat pusher, %s: want %r got %r %r" % (label, want, f, c))
+    f, c = lint(hcs, D('<ThingDef ParentName="BuildingBase"><defName>Fire</defName><comps>%s</comps></ThingDef>' % hp(None)))
+    if f or c["pawn_heat_pushers"]:
+        fails.append("building with vanilla heat pusher flagged: %r" % (f,))
+    patch = [("p.xml", '<Patch><Operation Class="PatchOperationSequence"><operations><li Class="PatchOperationAdd">'
+                       '<xpath>Defs/ThingDef[defName="H"]</xpath><value><comps>%s</comps></value></li></operations></Operation></Patch>' % hp(None))]
+    f, c = lint(hcs, D('<ThingDef ParentName="AnimalThingBase"><defName>H</defName></ThingDef>'), patch)
+    if [x[0] for x in f] != ["PAWN_DOUBLE_PUSH"] or c["patched_comps"] != 1:
+        fails.append("vanilla heat pusher patched onto a pawn not flagged: %r %r" % (f, c))
+    tpatch = [("t.xml", '<Patch><Operation Class="PatchOperationSequence"><operations>'
+                        '<li Class="PatchOperationReplace"><xpath>Defs/ThingDef[defName="B"]/tickerType</xpath><value><tickerType>Long</tickerType></value></li>'
+                        '<li Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="B"]/comps</xpath><value><li Class="CompP"/></value></li>'
+                        '</operations></Operation></Patch>')]
+    f, c = lint(cs, D('<ThingDef><defName>B</defName><tickerType>Never</tickerType><comps/></ThingDef>'), tpatch)
+    if f or c["ticking_comps"] != 1:
+        fails.append("patch that sets tickerType Long and adds a Long comp flagged or unseen: %r %r" % (f, c))
     if fails:
         print("lint_ticker_compat selftest FAILED:\n  " + "\n  ".join(fails))
         return 1
-    print("lint_ticker_compat selftest: 7/7 cases OK")
+    print("lint_ticker_compat selftest: 14/14 cases OK")
     return 0
 
 
 def main(argv):
     if "--selftest" in argv:
         return selftest()
-    cs, xml = load_repo()
-    findings, c = lint(cs, xml)
+    cs, xml, patches = load_repo()
+    findings, c = lint(cs, xml, patches)
     if not c["defs"] or not c["ticking_comps"]:
         print("lint_ticker_compat: UNMEASURED - looked at %(defs)d defs and %(ticking_comps)d ticking comps" % c)
         return 2
@@ -257,7 +361,8 @@ def main(argv):
         for k, p, m in findings:
             print("ERROR %s %s: %s" % (k, os.path.relpath(p, REPO), m))
     print("lint_ticker_compat: %(defs)d concrete ThingDefs, %(comps)d comp entries, %(ticking_comps)d ticking src comps judged, "
-          "%(unresolved_ticker)d defs with unresolved ticker (vanilla parent), %(unresolved_comp)d engine/non-src comps skipped" % c
+          "%(unresolved_ticker)d defs with unresolved ticker (vanilla parent), %(unresolved_comp)d engine/non-src comps skipped, "
+          "%(patched_comps)d comps added by patches, %(pawn_heat_pushers)d pawn heat pushers checked" % c
           + ", %d ERROR" % len(findings))
     return 1 if findings else 0
 
