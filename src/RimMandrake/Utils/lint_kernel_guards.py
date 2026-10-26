@@ -8,6 +8,11 @@ finds no kernel at all, so a moved folder cannot read as a clean bill of health.
 import os
 import re
 
+# every using-directive form that pulls an engine namespace in: plain, `using static Verse.Rand;`,
+# `global using Verse;` and the alias `using BG = RimWorld.BaseGen.BaseGen;` (the last three used to pass)
+_ENGINE_USING = re.compile(r"^\s*(?:global\s+)?using\s+(?:static\s+)?(?:\w+\s*=\s*)?(?:global::)?"
+                           r"(Verse|RimWorld|UnityEngine|HarmonyLib)\b", re.M)
+
 
 def kernel_guards(mod_dir, mod_csproj, fuzz_csproj_rel, tag, extra_fuzz_includes=()):
     errs = []
@@ -23,7 +28,7 @@ def kernel_guards(mod_dir, mod_csproj, fuzz_csproj_rel, tag, extra_fuzz_includes
     depth = "..\\" * (fuzz_csproj_rel.count("/"))
     for f in files:
         text = open(os.path.join(kd, f), encoding="utf-8-sig").read()
-        if re.search(r"^\s*using\s+(Verse|RimWorld|UnityEngine|HarmonyLib)\b", text, re.M):
+        if _ENGINE_USING.search(text):
             errs.append("ERROR %s: %s references the engine (the fuzz build cannot compile it)" % (tag, f))
         if ('Compile Include="Kernel\\%s"' % f) not in mod_proj:
             errs.append("ERROR %s: %s is not compiled into the mod" % (tag, f))
