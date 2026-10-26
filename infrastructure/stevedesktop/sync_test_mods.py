@@ -17,7 +17,8 @@ start; it cannot be replaced while the game runs, so stop the game first).
 
 Runs on Archmagi WSL. Target: `$STEVE_WSL` (default mandrake@stevedesktop-wsl) and
 `$STEVE_GAME_WSL` (default /mnt/d/SteamLibrary/steamapps/common/RimWorld). A folder already
-present with the same file count and byte total is skipped.
+present with the same file count and byte total is skipped. A target that cannot be read (ssh down)
+is UNMEASURED and a source folder absent here is MISSING; both exit 1, never 'same' or 'copy'.
 """
 import argparse
 import os
@@ -30,6 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import game_paths as gp  # noqa: E402
+from rimworld_loadset import parse_mods_config  # noqa: E402
 
 MINIMAL = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
@@ -46,12 +48,11 @@ def own_package_id(about):
     return m.group(1).lower() if m else None
 
 
-def wanted():
-    with open(MINIMAL, encoding="utf-8") as f:
-        ids = re.findall(r"<li>\s*([^<\s]+)\s*</li>", f.read())
+def wanted(path=None):
+    """Third-party ids of <activeMods> only (parsed, not grepped: a commented-out <li> or another list must not count)."""
+    ids, _ = parse_mods_config(path or MINIMAL)
     out = []
     for i in ids:
-        i = i.lower()
         if i.startswith(("ludeon.", "mandrake.")) or i in out:
             continue
         out.append(i)
@@ -79,10 +80,17 @@ def tally(path):
 
 
 def remote_tally(path):
+    """(files, bytes) on the target; (0, 0) for an absent folder; None when the target could not be read
+    (ssh failed or printed no tally) - unread is not empty."""
     cmd = "cd %s 2>/dev/null && find . -type f -printf '%%s\\n' | awk '{n++; b+=$1} END {print n+0, b+0}' || echo 0 0" % shlex.quote(path)
-    r = subprocess.run(SSH + [cmd], capture_output=True, text=True, timeout=300)
-    n, b = (r.stdout.split() + ["0", "0"])[:2]
-    return int(n), int(b)
+    try:
+        r = subprocess.run(SSH + [cmd], capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        return None
+    f = r.stdout.split()
+    if r.returncode or len(f) != 2 or not all(x.isdigit() for x in f):
+        return None
+    return int(f[0]), int(f[1])
 
 
 def push(src, dest_parent, name):
@@ -114,8 +122,16 @@ def main():
     jobs.append((jawa, GAME + "/BridgeTools", "JawaBench", "JawaBench companion"))
     bad = 0
     for src, parent, name, label in jobs:
+        if not os.path.isdir(src):          # an absent source tallies (0, 0) and would read 'same' as an absent target
+            print("MISSING %s: source folder %s does not exist here" % (label, src))
+            bad += 1
+            continue
         local = tally(src)
         remote = remote_tally(parent + "/" + name)
+        if remote is None:
+            print("UNMEASURED %s: could not read %s/%s on %s (ssh failed)" % (label, parent, name, TARGET))
+            bad += 1
+            continue
         state = "same" if local == remote else "copy"
         print("%-4s %-42s %5d files %8.1f MB -> %s/%s" % (state, label, local[0], local[1] / 1e6, parent, name))
         if state == "copy" and a.apply:
@@ -123,7 +139,8 @@ def main():
             after = remote_tally(parent + "/" + name)
             ok = after == local
             bad += not ok
-            print("     %s (target now %d files, %d bytes)" % ("ok" if ok else "MISMATCH", after[0], after[1]))
+            print("     %s (target now %s)" % ("ok" if ok else "MISMATCH",
+                                             "unreadable" if after is None else "%d files, %d bytes" % after))
     for i in missing:
         print("MISSING %s: not in Archmagi's Workshop folder %s" % (i, gp.WORKSHOP))
     if not a.apply:
