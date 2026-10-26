@@ -502,13 +502,20 @@ namespace RimMandrake.FlowWorks.Hose
             double best = double.MaxValue;
             for (int i = 1; i < q.Count; i++)
             {
-                V2 a = q[i - 1], ab = q[i] - a;
-                double l2 = ab.X * ab.X + ab.Z * ab.Z;
-                double u = l2 < 1e-12 ? 0 : Geo.Clamp(((p.X - a.X) * ab.X + (p.Z - a.Z) * ab.Z) / l2, 0, 1);
-                double dd = V2.Dist(a + ab * u, p);
+                double dd = SegDist(p, q[i - 1], q[i]);
                 if (dd < best) best = dd;
             }
             return best;
+        }
+
+        /// <summary>Distance from <paramref name="p"/> to the segment a-b (HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: one body for
+        /// DistToPolyline and the indexed crossing test, so both see bit-identical distances).</summary>
+        internal static double SegDist(V2 p, V2 a, V2 b)
+        {
+            V2 ab = b - a;
+            double l2 = ab.X * ab.X + ab.Z * ab.Z;
+            double u = l2 < 1e-12 ? 0 : Geo.Clamp(((p.X - a.X) * ab.X + (p.Z - a.Z) * ab.Z) / l2, 0, 1);
+            return V2.Dist(a + ab * u, p);
         }
 
         /// <summary>The point at arc <paramref name="t"/> along the pose (clamped to its ends).</summary>
@@ -522,7 +529,7 @@ namespace RimMandrake.FlowWorks.Hose
             return pts[k] + (pts[k + 1] - pts[k]) * (seg < 1e-12 ? 0 : Geo.Clamp((t - s[k]) / seg, 0, 1));
         }
 
-        private static void Bounds(IList<V2> q, out double x0, out double z0, out double x1, out double z1)
+        internal static void Bounds(IList<V2> q, out double x0, out double z0, out double x1, out double z1)
         {
             x0 = z0 = double.MaxValue; x1 = z1 = double.MinValue;
             foreach (V2 p in q) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }

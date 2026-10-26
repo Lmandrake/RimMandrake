@@ -56,16 +56,15 @@ namespace RimMandrake.FlowWorks.Hose
             public int serial;
             public List<double[]> crossSpans;
             public Mesh crossShadow;
-            /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: the poseVersion and rank the crossing shadow was last checked at (it
-            /// is not re-checked while neither moved), and rp's bounding box widened by CrossReach (the broad phase).</summary>
-            public int crossVer = -1, crossRank = -1;
-            public bool boxOk;
-            public double bx0, bz0, bx1, bz1;
         }
 
-        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: bumped whenever a cached strand is built or dropped, or the crossing
-        /// order is rebuilt -- the crossing shadows are re-checked only then, not every frame (all-pairs per frame was O(n^2)).</summary>
-        private int poseVersion;
+        /// <summary>HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC (live round 6): which crossing shadows need re-checking, and their spans.
+        /// A strand built or dropped, or whose rank moved, dirties only the strands whose boxes meet it (the old single
+        /// poseVersion made all 200 hoses re-scan all 200 on every landed lay), and spans come from per-strand segment grids
+        /// (HoseCrossShadows; CrossSpans tested every sample against every lower segment: up to 138 ms for one hose).
+        /// FrameLegacy keeps the all-pairs scan.</summary>
+        private readonly HoseCrossShadows crossIndex = new HoseCrossShadows();
+        private Func<int, int> rankOfId;
 
         /// <summary>HOSE_SHADOW_FIX_STALE_AFTER_RELAY: the last <see cref="Cached.serial"/> handed out.</summary>
         private int cachedSerial;
@@ -83,19 +82,6 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (on == "1" || on == "0") LegacyFrame = on == "1";
             return "legacyFrame=" + (LegacyFrame ? 1 : 0);
-        }
-
-        /// <summary>How far past its strand's bounding box another strand can be and still cross it (cells): both ribbons' half
-        /// widths with the widened crossing shadow are well under half a cell each.</summary>
-        private const double CrossReach = 1.0;
-
-        private static void Box(Cached c)
-        {
-            if (c.boxOk) return;
-            double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
-            foreach (V2 p in c.rp) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
-            c.bx0 = x0 - CrossReach; c.bz0 = z0 - CrossReach; c.bx1 = x1 + CrossReach; c.bz1 = z1 + CrossReach;
-            c.boxOk = true;
         }
 
         /// <summary>JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: a coupling as the draw placed it (centre, axis, size, opaque band), by
@@ -152,7 +138,7 @@ namespace RimMandrake.FlowWorks.Hose
             UnhookMapEvents();
             foreach (Cached c in meshes.Values) DestroyMeshes(c);
             meshes.Clear();
-            poseVersion++;
+            crossIndex.Clear();
             foreach (StubCache sc in stubMeshes.Values) if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
             stubMeshes.Clear();
             foreach (CompHoseReel r in new List<CompHoseReel>(feeds.Keys)) DropFeed(r);
@@ -1056,7 +1042,7 @@ namespace RimMandrake.FlowWorks.Hose
                     {
                         if (c != null) { DestroyMeshes(c); }
                         meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp, serial = ++cachedSerial };
-                        poseVersion++;
+                        crossIndex.Set(r.parent.thingIDNumber, rp);   // dirties only the strands near its old and new box
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
@@ -1102,7 +1088,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         private void DropMeshes(CompHoseReel r)
         {
-            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); poseVersion++; }
+            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); crossIndex.Drop(r.parent.thingIDNumber); }
             if (stubMeshes.TryGetValue(r, out StubCache sc)) { if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh); stubMeshes.Remove(r); }
         }
 
@@ -1179,24 +1165,27 @@ namespace RimMandrake.FlowWorks.Hose
         private void DrawCrossShadow(CompHoseReel r, Cached c, float vis, float e, float y, int rank)
         {
             if (c.rp == null || c.rp.Count < 2) return;
-            // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: re-checked only when some strand was built or dropped, or the order changed
-            // (poseVersion), or this hose's rank moved; then only hoses whose boxes overlap this one's (broad phase)
-            if (LegacyFrame || c.crossVer != poseVersion || c.crossRank != rank)
+            if (!LegacyFrame)
             {
-                c.crossVer = poseVersion;
-                c.crossRank = rank;
-                if (!LegacyFrame) Box(c);
+                // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: re-checked only when a strand near it was built or dropped or moved rank,
+                // or its own rank moved (HoseCrossShadows); the mesh is rebuilt only when its lower set changed
+                int id = r.parent.thingIDNumber;
+                if (!crossIndex.TryGet(id, out HoseCrossShadows.Strand st) || !ReferenceEquals(st.Rp, c.rp)) crossIndex.Set(id, c.rp);
+                if (crossIndex.Check(id, rank, rankOfId ?? (rankOfId = RankOfId), vis, CrossShadowMargin, out List<double[]> spans))
+                {
+                    c.crossSpans = spans;
+                    BuildCrossMesh(c, vis, e, y);
+                }
+            }
+            else
+            {
+                // FrameLegacy: every frame, every other hose
                 ulong h = CrossMix(1469598103934665603UL, c.serial);
                 List<IList<V2>> lowers = null;
                 for (int i = 0; i < reels.Count; i++)
                 {
                     CompHoseReel o = reels[i];
                     if (o == r || !meshes.TryGetValue(o, out Cached oc) || oc.rp == null || oc.rp.Count < 2) continue;
-                    if (!LegacyFrame)
-                    {
-                        Box(oc);
-                        if (oc.bx0 > c.bx1 || oc.bx1 < c.bx0 || oc.bz0 > c.bz1 || oc.bz1 < c.bz0) continue;
-                    }
                     if (RankOf(o) >= rank) continue;
                     h = CrossMix(h, oc.serial);
                     (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
@@ -1215,9 +1204,18 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 c.crossKeyed = true;
                 c.crossKey = ck;
+                c.crossSpans = lowers == null ? new List<double[]>() : HoseOverDraw.CrossSpans(c.rp, lowers, vis, CrossShadowMargin);
+                BuildCrossMesh(c, vis, e, y);
+            }
+        }
+
+        /// <summary>The crossing shadow's mesh over <c>c.crossSpans</c> (none when there are no spans).</summary>
+        private void BuildCrossMesh(Cached c, float vis, float e, float y)
+        {
+            if (c.crossSpans == null) c.crossSpans = new List<double[]>();
+            {
                 if (c.crossShadow != null) UnityEngine.Object.Destroy(c.crossShadow);
                 c.crossShadow = null;
-                c.crossSpans = lowers == null ? new List<double[]>() : HoseOverDraw.CrossSpans(c.rp, lowers, vis, CrossShadowMargin);
                 if (c.crossSpans.Count > 0)
                 {
                     var off = new V2(CrossShadowOffset + 0.04 * e, -(CrossShadowOffset + 0.04 * e));
@@ -1301,11 +1299,23 @@ namespace RimMandrake.FlowWorks.Hose
             return k;
         }
 
+        /// <summary>RankOf by thing id (HoseCrossShadows' lower test): the same rank and the same reel-age fallback.</summary>
+        private int RankOfId(int id)
+        {
+            if (Layered().Rank.TryGetValue(id, out int rank)) return rank;
+            int k = 0;
+            foreach (CompHoseReel o in reels) if (o.parent.thingIDNumber < id) k++;
+            return k;
+        }
+
         private HoseMath.Layering layering;
         /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: Layered's per-lay geometry and per-pair facts between rebuilds.</summary>
         private readonly HoseMath.LayerCache layerCache = new HoseMath.LayerCache();
         /// <summary>Probe: the layering cache's counters.</summary>
         internal string LayerCacheJson() => "{\"rebuilds\":" + layerCache.Rebuilds + ",\"pairsTested\":" + layerCache.PairsTested + ",\"pairsReused\":" + layerCache.PairsReused + ",\"geoms\":" + layerCache.GeomCount + ",\"pairs\":" + layerCache.PairCount + "}";
+        /// <summary>Probe: the crossing-shadow index's counters (HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC; all-pairs would re-collect
+        /// every strand on every landed lay).</summary>
+        internal string CrossIndexJson() => "{\"strands\":" + crossIndex.Count + ",\"rescans\":" + crossIndex.Rescans + ",\"spanBuilds\":" + crossIndex.SpanBuilds + ",\"marked\":" + crossIndex.Marked + ",\"crossBuilds\":" + CrossBuilds + "}";
         private string layeringKey;
         private int layeringFrame = -1;
 
@@ -1335,14 +1345,26 @@ namespace RimMandrake.FlowWorks.Hose
             // re-lay wave; uncached it was all pairs of 200 hoses (~1 s a frame). The cache keeps each lay's geometry and each
             // pair's facts, so a rebuild tests only pairs with a new lay whose boxes meet (HoseMath.LayerCache). FrameLegacy: as before.
             double layVis = HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
+            HoseMath.Layering was = layering;
             layering = LegacyFrame ? HoseMath.LayerAllPairs(hs, layVis) : HoseMath.Layer(hs, layVis, layerCache);
             layeringKey = key;
             layeredIds.Clear();
             layeredLays.Clear();
             foreach (CompHoseReel r in reels) { layeredIds.Add(r.parent.thingIDNumber); layeredLays.Add(r.lay); }
             layeredPlump = RM_HoseSettings.plumpAmount;
-            poseVersion++;   // ranks may have moved: the crossing shadows are re-checked
+            // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: only the strands whose rank moved (and those near them) re-check their
+            // crossing shadows -- the old poseVersion++ here re-checked all of them on every rebuild
+            if (!LegacyFrame) RanksMoved(was, layering);
             return layering;
+        }
+
+        private void RanksMoved(HoseMath.Layering was, HoseMath.Layering now)
+        {
+            if (was == null) { foreach (int id in now.Rank.Keys) crossIndex.RankMoved(id); return; }
+            foreach (KeyValuePair<int, int> kv in now.Rank)
+                if (!was.Rank.TryGetValue(kv.Key, out int old) || old != kv.Value) crossIndex.RankMoved(kv.Key);
+            foreach (KeyValuePair<int, int> kv in was.Rank)
+                if (!now.Rank.ContainsKey(kv.Key)) crossIndex.RankMoved(kv.Key);
         }
 
         private readonly List<int> layeredIds = new List<int>();

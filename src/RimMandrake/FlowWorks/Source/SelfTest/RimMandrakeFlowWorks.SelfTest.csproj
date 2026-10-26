@@ -115,6 +115,7 @@
     <Compile Include="HoseLayQueueChecks.cs" />
     <Compile Include="HoseAllocChecks.cs" />
     <Compile Include="HoseLayerChecks.cs" />
+    <Compile Include="HoseCrossShadowChecks.cs" />
     <Compile Include="HoseFrameMemoChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="..\Hose\HoseClothoid.cs" />
     <Compile Include="..\Hose\HoseBandMath.cs" />
     <Compile Include="..\Hose\HoseRelay.cs" />
+    <Compile Include="..\Hose\HoseCrossShadows.cs" />
     <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
     <Compile Include="..\Hose\HoseStyles.cs" />
     <Compile Include="..\Machinery\PipeStyles.cs" />
