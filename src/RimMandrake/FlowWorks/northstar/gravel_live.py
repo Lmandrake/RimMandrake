@@ -36,8 +36,8 @@ PROVE  on a cleared 17x17 plot, with the five gravel toggles on, rock-ground dig
        GS_dig_labour_multiplier_scales_the_cut
                                   the same colonist cuts one soil square D0 -> D1 at digLabourMultiplier 1.0, then another at
                                   4.0 (the default): the second takes 3x..5x the ticks of the first (walk time included).
-       Owed, not staged here: the ice melter filling a tank (power + tank + bill), and a raider fetching fill before filling
-       (a raid at a trench, raid_ladder_live.py) -- both pinned offline in GroundClassChecks.
+       Owed, not staged here: a raider fetching fill before filling
+       (a raid at a trench, raid_ladder_live.py) -- pinned offline in GroundClassChecks.
        The rows above run at digLabourMultiplier 1.0 (legacy work) so their 6000-tick waits hold.
        PIT_DIG_FIX_SAND_SLIDES_BACK_IN:
        GS_mud_refused             a Mud square refused like sand ("slide back in"), the same soil control accepted.
@@ -49,9 +49,18 @@ PROVE  on a cleared 17x17 plot, with the five gravel toggles on, rock-ground dig
                                   1 RM_Gravel beside it: the colonist's real DoBill job eats the gravel and makes duracrete. Outer
                                   Rim absent -> UNMEASURED(SITE); duracrete made with the gravel untouched -> UNMEASURED (a chunk
                                   paid).
+       ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES (criterion A3):
+       GS_ice_melter_bill_fills_tank_10000
+                                  a force-powered RM_IceMelter with an RM_LiquidTank touching it, the tank emptied through
+                                  RM_NorthstarProofs.ProofTank (units 0), 1 RM_CrushedIce beside it and one RM_MeltCrushedIce
+                                  bill done by a fresh crafter: the tank holds exactly 10000 dL of RM_Liquid_FreshWater after,
+                                  RM_IceMelter.TankedUnits rose by exactly 10000 and ReleasedUnits by 0. No melter, no tank or
+                                  no bill job -> UNMEASURED(SITE).
        --only GS_a,GS_b runs just those rows (the mine row alone can outrun a 540 s call).
-EXPECT the eleven rows PASS.
-LIES   a job never taken or a cut never made measures nothing -> UNMEASURED(SITE); spoil already lying there is excluded by a
+EXPECT the twelve rows PASS.
+LIES   a tank that already held water, or ice that thawed on the floor, would fake the melter row: the tank is emptied and
+       read back first, and the row needs the tank delta, the TankedUnits delta and a zero ReleasedUnits delta all at once;
+       a job never taken or a cut never made measures nothing -> UNMEASURED(SITE); spoil already lying there is excluded by a
        before/after stack diff; four walls that all drop a chunk prove nothing about a miss -> UNMEASURED(MOD), never PASS;
        a deployed DLL without the gravel build has no RM_Gravel setting -> UNMEASURED(HARNESS).
 """
@@ -76,12 +85,13 @@ SLIDE_WORDS = "slide back in"
 ROWS = ("GS_sand_refused", "GS_fill_costs_one_gravel", "GS_rock_ground_cut_yields_gravel_or_chunk",
         "GS_mined_rock_miss_yields_gravel", "GS_ice_cut_yields_crushed_ice", "GS_crushed_ice_melts_to_water",
         "GS_crushed_ice_stack_thaws_one_at_a_time", "GS_dig_labour_multiplier_scales_the_cut", "GS_mud_refused", "GS_rubble_cut_yields_gravel",
-        "GS_gravel_recipe_takes_gravel")
+        "GS_gravel_recipe_takes_gravel", "GS_ice_melter_bill_fills_tank_10000")
 ITEM_PIT = "PIT_DIG_FIX_SAND_SLIDES_BACK_IN"
 ITEM_ICE, ITEM_LABOUR = "ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN", "DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK"
 ITEM_MELT = "ICE_MELT_TAME_STACK_FLOOD"
 ROW_ITEM = {"GS_ice_cut_yields_crushed_ice": ITEM_ICE, "GS_crushed_ice_melts_to_water": "ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES",
             "GS_crushed_ice_stack_thaws_one_at_a_time": ITEM_MELT,
+            "GS_ice_melter_bill_fills_tank_10000": "ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES",
             "GS_dig_labour_multiplier_scales_the_cut": ITEM_LABOUR, "GS_mud_refused": ITEM_PIT}
 MUD_TERRAIN, RUBBLE_TERRAIN = "Mud", "Gravel"
 # GS_gravel_recipe_takes_gravel: Outer Rim's duracrete (one of RM_Gravel's mod-extension recipes) at its powered fabricator
@@ -90,6 +100,8 @@ FAB, FAB_GIVER, FAB_RECIPE = "OuterRim_HypertechFabricator", "DoBills_OuterRim_H
 # (RSW_DurasteelConvert_OuterRim.xml), so on the full list the Outer Rim name spawns nothing and the bill never starts
 # (live 2026-10-25, HARNESS); the first of these the game knows is spawned
 FAB_OTHERS, FAB_PRODUCT = (("RSW_Durasteel", 10), ("OuterRim_Durasteel", 10)), "OuterRim_Duracrete"
+MELTER_DEF, MELT_RECIPE, MELT_GIVER, TANK_DEF = "RM_IceMelter", "RM_MeltCrushedIce", "RM_DoBillsIceMelter", "RM_LiquidTank"
+FRESH_WATER = "RM_Liquid_FreshWater"
 ICE, ICE_TERRAIN, MELT_DL = "RM_CrushedIce", "Ice", 10000   # one notch (ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES)
 LABOUR_RATIO = (3.0, 5.0)
 RUN_SETTINGS = {"sandMudSlidesBackEnabled": True, "digSpoilEnabled": True, "fillCostsSpoilEnabled": True,
@@ -316,6 +328,7 @@ def main():
     lab1, lab4 = (ox + 3, oz + 15), (ox + 7, oz + 15)
     mud, rubble = (ox + 6, oz + 12), (ox + 1, oz + 9)
     fab_at = (ox + 21, oz + 5)   # off the 17x17 plot: its durasteel and gravel never enter the plot's stack counts
+    melter_at = (ox + 21, oz + 17)   # off the plot and north of the bench's cleared rect; its tank sits on its north side
     walls = [(ox + 1 + 4 * i, oz + 1) for i in range(4)]
     if a.fresh_map:
         B.call("rimworld/go_to_main_menu")
@@ -354,6 +367,9 @@ def main():
         for des_ in ("RM_DigCanal", "RM_FillInCanal", "Mine"):
             B.call("jawa/designate_batch", action="remove", designation=des_, rect="%d,%d,%d,%d" % rect)
         site_rows = []
+        # SITE (2026-10-25 gravel3-5.json): a giant plant's RM_HugeTrunkBlockers are re-planned from outside any rect, so
+        # three sites on two maps read "rock/plants still standing". Every giant goes before the sites are prepared.
+        res["hugePlants"] = V.clear_huge_plants(B)
         V.prepare_site(B, rect, site_rows, "gravel_site")
         if [r for r in site_rows if r.get("status") not in (None, "PASS")]:
             unmeasured_rest("SITE", "site not prepared: %s" % str(site_rows[:2])[:200])
@@ -613,6 +629,21 @@ def main():
                 {"x1": det1, "x4": det4, "ticksX1": t1, "ticksX4": t4, "ratio": (t4 / float(t1)) if t1 and t4 else None,
                  "want": LABOUR_RATIO})
 
+        def fresh_crafter(at):
+            """-> (pawn id or None, rolls): a fresh colonist at `at` whose Crafting 3 reads back (re-rolled up to 4 times)."""
+            rolls = []
+            for _ in range(4):
+                r = B.call("jawa/spawn_pawn", kindDef="Colonist", x=at[0], z=at[1], faction="player", count=1) or {}
+                got = [p_.get("id") for p_ in r.get("pawns") or [] if p_.get("id")]
+                if not got:
+                    break
+                ok, why = work_bar.set_all(B.call, got[0], [("Crafting", 3)])
+                rolls.append({"id": got[0], "crafting": why})
+                if ok:
+                    return got[0], rolls
+                B.call("jawa/pawn_force_incapacitate", pawn=got[0], action="vanish", _answer=True)
+            return None, rolls
+
         # 8. DIG_SPOIL: gravel stands in for a stone chunk in a patched recipe -- a real bill, done by the colonist, eats the
         # gravel and makes the product. A product made while the gravel still lies there means a chunk paid: UNMEASURED.
         if want("GS_gravel_recipe_takes_gravel"):
@@ -620,11 +651,18 @@ def main():
             if not (B.call("jawa/get_def", defName=FAB_RECIPE, defType="RecipeDef") or {}).get("success"):
                 row("GS_gravel_recipe_takes_gravel", "UNMEASURED", "SITE", dict(det, why="Outer Rim not loaded: no recipe"))
             else:
+                # SITE (2026-10-25 gravel1.json): on a fresh map a stone chunk near the bench paid for the duracrete and the
+                # gravel was left lying ("made, but a chunk paid"). The bench's own rect is cleared and read back chunk-free,
+                # so the 3-square gravel is the nearest stone-chunk ingredient the bill can find.
+                fab_rows = []
+                V.prepare_site(B, (fab_at[0] - 4, fab_at[1] - 9, 13, 17), fab_rows, "fab_site")
+                det["fabSite"] = [r for r in fab_rows if r.get("status") not in (None, "PASS")][:2]
                 B.call("jawa/research_bulk", mode="finish_all")
                 bb = B.call("jawa/build_batch", ops="%s:%d,%d,0" % (FAB, fab_at[0], fab_at[1]), faction="player") or {}
                 fab = things(fab_at[0] - 2, fab_at[1] - 2, 5, 5, FAB)
-                if not fab:
-                    row("GS_gravel_recipe_takes_gravel", "UNMEASURED", "SITE", dict(det, why="no fabricator: %s" % str(bb)[:200]))
+                if not fab or det["fabSite"]:
+                    row("GS_gravel_recipe_takes_gravel", "UNMEASURED", "SITE",
+                        dict(det, why="bench site not clear, or no fabricator: %s" % str(bb)[:200]))
                 else:
                     fid = fab[0].get("id")
                     det["power"] = (B.call("jawa/power_net", thing=fid, forcePowerOn=True) or {}).get("powerOnAfter")
@@ -638,14 +676,24 @@ def main():
                                              repeatCount=1, storeMode="dropfloor"))[:200]
                     # HARNESS (2026-10-25): WorkGiver_DoBill first hands out HaulToCell when something lies on the bench's
                     # squares (billOnJob null); the bill job comes on a later ask, once that haul is done
+                    # HARNESS (GRAVEL_RECIPE_ROW_DIAGNOSE_BILL_NEVER_STARTS): the run's dig colonist was refused DoBill four
+                    # times while a fresh colonist beside the same bench, bill and ingredients got it on the first ask (live
+                    # probe 2026-10-25). This row judges the recipe, not the digger, so the bill goes to a fresh crafter at
+                    # the bench; the digger's own refusal (do_bill_now's precondition `details`) is kept as evidence.
+                    crafter, det["crafterRolls"] = fresh_crafter((fab_at[0] - 2, fab_at[1] - 4))
                     tries = []
-                    for _ in range(4):
-                        db = B.call("jawa/do_bill_now", pawnId=pid, billGiverId=fid, workGiverDef=FAB_GIVER, waitTicks=60) or {}
-                        tries.append(db.get("jobDefFromJobOnThing"))
+                    for who in ([pid] + ([crafter] if crafter else [])):
+                        for _ in range(2):
+                            db = B.call("jawa/do_bill_now", pawnId=who, billGiverId=fid, workGiverDef=FAB_GIVER,
+                                        waitTicks=60) or {}
+                            tries.append({"pawn": who, "job": db.get("jobDefFromJobOnThing"), "bill": db.get("billOnJob"),
+                                          "message": db.get("message"), "details": db.get("details")})
+                            if db.get("billOnJob"):
+                                break
+                            step(300)
                         if db.get("billOnJob"):
                             break
-                        step(600)
-                    det["doBill"] = {k: db.get(k) for k in ("success", "accepted", "billOnJob", "message")}
+                    det["doBill"] = {k: db.get(k) for k in ("success", "accepted", "billOnJob", "message", "details")}
                     det["doBillTries"] = tries
                     made, t = [], 0
                     while gv and db.get("billOnJob") and t < 12000 and not made:
@@ -663,6 +711,71 @@ def main():
                         row("GS_gravel_recipe_takes_gravel", "UNMEASURED", "SITE", dict(det, why="made, but a chunk paid"))
                     else:
                         row("GS_gravel_recipe_takes_gravel", "PASS", "MOD", det)
+
+        # 9. ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES A3: one melter bill puts exactly one notch (10000 dL) into an empty tank.
+        if want("GS_ice_melter_bill_fills_tank_10000"):
+            mx, mz = melter_at
+            det = {"melter": MELTER_DEF, "recipe": MELT_RECIPE}
+            m_rows = []
+            V.prepare_site(B, (mx - 4, mz - 3, 9, 7), m_rows, "melter_site")
+            det["site"] = [r for r in m_rows if r.get("status") not in (None, "PASS")][:2]
+            B.call("jawa/research_bulk", mode="finish_all")
+            det["build"] = str(B.call("jawa/build_batch", ops="%s:%d,%d,0;%s:%d,%d,0" % (MELTER_DEF, mx, mz, TANK_DEF, mx, mz + 1),
+                                      faction="player"))[:200]
+            mel = things(mx - 1, mz, 3, 1, MELTER_DEF)
+            tank = things(mx, mz + 1, 2, 2, TANK_DEF)
+            tank_cell = "%d,%d" % (mx, mz + 1)
+            tq = lambda arg: str((B.call("jawa/static_call", type=NSP, method="ProofTank", args=arg) or {}).get("result"))
+            det["tankEmptied"] = tq(tank_cell + ";Store;" + FRESH_WATER + ";0") if tank else None
+            if det["site"] or not mel or not tank or not str(det["tankEmptied"]).endswith(" units=0"):
+                row("GS_ice_melter_bill_fills_tank_10000", "UNMEASURED", "SITE",
+                    dict(det, why="melter site not clear, melter or tank not built, or the tank not emptied"))
+            else:
+                mid = mel[0].get("id")
+                det["power"] = (B.call("jawa/power_net", thing=mid, forcePowerOn=True) or {}).get("powerOnAfter")
+                B.call("rimworld/spawn_thing", defName=ICE, stackCount=1, x=mx - 2, z=mz - 2)
+                iv = things(mx - 2, mz - 2, 1, 1, ICE)
+                det["bill"] = str(B.call("jawa/bill_add", giverId=mid, recipe=MELT_RECIPE, repeatMode="repeatcount",
+                                         repeatCount=1, storeMode="dropfloor"))[:200]
+                lg0 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+                crafter, det["crafterRolls"] = fresh_crafter((mx + 2, mz - 2))
+                db, tries = {}, []
+                for _ in range(3):
+                    if not crafter:
+                        break
+                    db = B.call("jawa/do_bill_now", pawnId=crafter, billGiverId=mid, workGiverDef=MELT_GIVER,
+                                waitTicks=60) or {}
+                    tries.append({"job": db.get("jobDefFromJobOnThing"), "bill": db.get("billOnJob"),
+                                  "message": db.get("message"), "details": db.get("details")})
+                    if db.get("billOnJob"):
+                        break
+                    step(200)
+                det["doBillTries"] = tries
+                t, lg1 = 0, lg0
+                while iv and db.get("billOnJob") and t < 6000:
+                    step(250)
+                    t += 250
+                    lg1 = parse_ledger(B.call("jawa/static_call", type=MELTER, method="ProofMeltLedger", args=""))
+                    if lg0 and lg1 and (lg1[3] != lg0[3] or lg1[4] != lg0[4]):
+                        break
+                after = tq(tank_cell + ";Store")
+                units = None
+                if " units=" in after:
+                    try:
+                        units = int(after.rsplit(" units=", 1)[1])
+                    except ValueError:
+                        units = None
+                det.update(ticks=t, ledgerBefore=lg0, ledgerAfter=lg1, tankAfter=after, tankUnits=units,
+                           iceLeft=bool(things(mx - 3, mz - 3, 7, 5, ICE)))
+                if not iv or not db.get("billOnJob") or not lg0 or not lg1 or units is None:
+                    row("GS_ice_melter_bill_fills_tank_10000", "UNMEASURED", "SITE",
+                        dict(det, why="no ice, bill job refused, or the ledger/tank unreadable"))
+                elif lg1[3] == lg0[3] and lg1[4] == lg0[4]:
+                    row("GS_ice_melter_bill_fills_tank_10000", "UNMEASURED", "SITE", dict(det, why="no melt completed in 6000 ticks"))
+                else:
+                    ok_ = (units == MELT_DL and lg1[3] - lg0[3] == MELT_DL and lg1[4] == lg0[4]
+                           and ("liquid=" + FRESH_WATER) in after)
+                    row("GS_ice_melter_bill_fills_tank_10000", "PASS" if ok_ else "FAIL", "MOD", det)
 
         return 0 if all(r["status"] == "PASS" for r in rows) else 1
     except MeasureError as e:

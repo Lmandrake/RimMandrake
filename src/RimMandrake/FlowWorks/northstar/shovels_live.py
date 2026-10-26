@@ -508,6 +508,12 @@ def main():
             probe_f = B.call("jawa/spawn_pawn", kindDef="Mercenary_Gunner", x=cx + 30, z=cz, faction="?", count=1) or {}
             avail = (probe_f.get("details") or {}).get("available") or []
             fac = next((f["def"] for f in avail if f.get("hostile") and str(f.get("def")).startswith("Pirate")), None)
+            # HARNESS (SHOVELS_SAPPER_ROW_DIAGNOSE_RAID_NEVER_FIRES, probe4 2026-10-25): the first Pirate* faction can lack
+            # the pawn kinds a strategy needs (Blackstar Company has no canBeSapper kind: BLACKSTAR_SAPPERS_RESTORE_BREACH_KIND),
+            # and then TryExecute refuses. raid() falls back through the other hostile factions, Pirate* first.
+            raid_facs = [fac] + [f["def"] for f in avail if f.get("hostile") and f.get("def") != fac
+                                 and str(f.get("def")).startswith("Pirate")] + \
+                        [f["def"] for f in avail if f.get("hostile") and not str(f.get("def")).startswith("Pirate")]
             res["moat"]["faction"] = fac
             if bad or short > 4 or not fac:
                 for rid in raid_rows:
@@ -550,13 +556,23 @@ def main():
                     B.call("jawa/kill_hostiles")
                     clear_shovels()
                     par0 = scall(LP, "ProofLadderParity", "carriers")
-                    fr = B.call("jawa/fire_raid", dryRun=False, points=a.points, faction=fac, strategy=strategy,
-                                arrivalMode="EdgeWalkIn") or {}
+                    tries, fr, used = [], {}, None
+                    for f_ in [x for x in raid_facs if x][:5]:
+                        fr = B.call("jawa/fire_raid", dryRun=False, points=a.points, faction=f_, strategy=strategy,
+                                    arrivalMode="EdgeWalkIn") or {}
+                        # fire_raid puts its reason in `note`, not `message`; `actual` is the faction that really came
+                        tries.append({"faction": f_, **{k: fr.get(k) for k in (
+                            "success", "executed", "blockedByDialog", "note", "message", "pawnsArrivedTotal")}})
+                        if fr.get("executed") and not fr.get("blockedByDialog"):
+                            used = ((fr.get("actual") or {}).get("faction")) or f_
+                            break
+                        B.call("jawa/kill_hostiles")
                     cen = kv(scall(SH, "ProofShovelCensus", "hostiles"))
                     par = kv(scall(LP, "ProofLadderParity", "carriers"))
-                    B.call("jawa/kill_hostiles", factionDef=fac)
+                    B.call("jawa/kill_hostiles", factionDef=used or fac)
                     step(2)
-                    return {"fire": {k: fr.get(k) for k in ("success", "blockedByDialog", "message", "strategy", "points")},
+                    return {"fire": {k: fr.get(k) for k in ("success", "executed", "blockedByDialog", "note", "strategy", "points")},
+                            "faction": used, "fireTries": tries,
                             "arrived": len(fr.get("arrived") or []), "census": cen, "ladders": par, "laddersBefore": par0}
 
                 share = {k: sget(S_RT, k) for k in ("raiderShovelShare", "sapperShovelShare")}
