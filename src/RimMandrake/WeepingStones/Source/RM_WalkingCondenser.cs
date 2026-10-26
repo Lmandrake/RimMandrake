@@ -147,6 +147,10 @@ namespace RimMandrake.WeepingStones
                 if (!c.InBounds(map) || poolCells.ContainsKey(c)) continue;
                 TerrainDef cur = map.terrainGrid.TerrainAt(c);
                 if (cur == null || cur.IsWater || cur.passability == Traversability.Impassable) continue;
+                // Built floors and substructure stay dry: SetTerrain(water) wipes the under-floor soil (underGrid)
+                // and restoring a layerable floor then lays it over water, so removing it later reveals a puddle;
+                // a foundation cell is not ours to flood. Guide steers the crab onto the player's home area.
+                if (cur.layerable || cur.isFoundation || map.terrainGrid.FoundationAt(c) != null) continue;
                 if (c.GetEdifice(map) != null) continue;
                 poolCells[c] = cur.defName;
                 map.terrainGrid.SetTerrain(c, water);
