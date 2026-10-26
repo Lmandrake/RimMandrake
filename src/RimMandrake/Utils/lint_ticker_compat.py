@@ -42,7 +42,11 @@ VANILLA_TICKER = {"PlantBase": "Long", "TreeBase": "Long", "BasePawn": "Normal",
                   # TICKERLINT_BUILDINGBASE_WIDEN_VANILLA_NEVER: vanilla 1.6 Core Buildings_Base.xml BuildingBase and
                   # Buildings_Production.xml BenchBase (ParentName BuildingBase) set no tickerType, and ThingDef.tickerType
                   # defaults to TickerType.Never (decompiled Verse/ThingDef.cs, Verse/TickerType.cs).
-                  "BuildingBase": "Never", "BenchBase": "Never"}
+                  "BuildingBase": "Never", "BenchBase": "Never",
+                  # LACQUERCLOAK_TICKER_REPAIR_NEVER_HIDES: Core Apparel_Various.xml ApparelBase and ApparelMakeableBase set
+                  # no tickerType either; a worn thing ticks only on its own Normal (Thing.DoTick), so a CompTick on
+                  # apparel needs an explicit <tickerType>Normal</tickerType>, as vanilla belts and packs carry.
+                  "ApparelBase": "Never", "ApparelMakeableBase": "Never"}
 PAWN_ROOTS = {"BasePawn", "BaseHumanlike", "AnimalThingBase", "BaseAnimal"}
 # Pawn.Tick (decompiled 1.6, RimSage) also calls TickRare every 250 ticks, so a pawn def with tickerType Normal
 # runs BOTH CompTick and CompTickRare. Every other thing runs only the one method its tickerType names.

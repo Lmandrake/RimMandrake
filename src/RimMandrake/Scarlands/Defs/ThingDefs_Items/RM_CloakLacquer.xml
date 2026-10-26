@@ -31,6 +31,9 @@
     <label>lacquered cloak</label>
     <description>A long cloak worked with chotrix lacquer. While its wearer stands still and no hostile can see them, they cannot be seen. The lacquer is part of the weave and never wears off.</description>
     <possessionCount>1</possessionCount>
+    <!-- CompLacquerCloak works in CompTick; a worn thing ticks only when its own tickerType is Normal (Thing.DoTick),
+         and ApparelBase sets none (= Never), so without this the cloak never hid anyone. Vanilla belts/packs do the same. -->
+    <tickerType>Normal</tickerType>
     <graphicData>
       <texPath>Things/Pawn/Humanlike/Apparel/Cape/Cape</texPath>
       <graphicClass>Graphic_Single</graphicClass>
