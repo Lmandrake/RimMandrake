@@ -201,6 +201,15 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                // STRANDINGPOOL_FIX_EDGE_RESPAWN: a component touching the map edge (a second river, a coastal
+                // strip) is open water by IsReconnected's own rule. Registered, it rolled stranded spawns, was
+                // deregistered as "reconnected" on the next throttled tick, matched nothing at the next recede and
+                // spawned again: a fresh batch of juveniles every recede, forever. It is never a pool.
+                if (RM_PoolKernel.Reconnected(map.Size.x, map.Size.z, components[i], IsWaterIndex))
+                {
+                    continue;
+                }
+
                 RM_StrandingPool pool = new RM_StrandingPool
                 {
                     id = nextPoolId++,

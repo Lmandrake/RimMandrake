@@ -44,7 +44,7 @@ RULES = (
     ("GenStep_GravshipMarker", "Generate", "postfixes", "Generate_Postfix", "biomeArrivalLettersEnabled"),
     ("IncidentWorker", "ChanceFactorNow", "postfixes", "ChanceFactorNow_Postfix", "crecheDespoilMemoryEnabled"),
     ("CompTemperatureRuinable", "CompTick", "prefixes", "CompTick_Prefix", "livePrepStrictViability"),
-    ("JobGiver_OptimizeApparel", "ApparelScoreRaw", "postfixes", "ApparelScoreRaw_Postfix", "hazardApparelAIAwarenessEnabled"),
+    ("JobGiver_OptimizeApparel", "ApparelScoreRaw", "transpilers", "ApparelScoreRaw_Transpiler", "hazardApparelAIAwarenessEnabled"),
     ("TradeDeal", "TryExecute", "prefixes", "TryExecute_Prefix", "treasureConscienceEnabled"),
     ("TradeDeal", "TryExecute", "postfixes", "TryExecute_Postfix", "treasureConscienceEnabled"),
     # SUMP_FREE_TIER_MOVE_BUILD_1: save back-compat for renamed defs; always armed, no toggle by design

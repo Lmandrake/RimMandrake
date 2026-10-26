@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -36,17 +39,26 @@ namespace RimMandrake.EnvironmentalHazards
     // equippedStatOffsets, which only auto-applies to Pawn-category stats).
     // So the stats stay exactly where they are; only the scorer changes.
     //
-    // FIX: postfix ApparelScoreRaw and add each hazard-protection stat's
-    // value straight onto the score, plus ArmorRating_Heat, which IS the
+    // FIX: add each hazard-protection stat's value into ApparelScoreRaw's
+    // armor term, plus ArmorRating_Heat, which IS the
     // Scald steam clock's protection stat since SCALD_FOLD_INTO_HEAT_1 (one
     // kind of heat, decision taken by question card 2026-10-08), and
     // Insulation_Heat / InsulationHeatScoreDivisor, which is what answers the
     // Greentide's wet-bulb heat since WETBULB_FOLD_INTO_HEAT_1 (vanilla's
     // scorer reads Insulation_Cold only, and only when the pawn needs warmth).
-    // All in the same weight class as
-    // ArmorRating_Sharp/Blunt two lines above it in that method — a boil-suit
-    // now reads as better apparel unconditionally, the same way body armor
-    // does, rather than only when some detector decides the pawn "needs" it.
+    // A boil-suit now reads as better apparel unconditionally, the same way
+    // body armor does, rather than only when some detector decides the pawn
+    // "needs" it.
+    //
+    // A transpiler, not a postfix (HAZARDAPPAREL_FIX_SCORE_PENALTIES):
+    // the bonus joins `ArmorRating_Sharp + ArmorRating_Blunt` at the very
+    // point vanilla adds armor, so every factor applied to armor afterwards
+    // applies to it too: the hit-point curve (a tattered suit scores near
+    // nothing), the dead man's apparel and human-leather penalties, the
+    // wrong-gender x0.01, the role/title requirement multipliers; and the -10
+    // early returns (cannot wear, blocks vision, slave/mechanitor gear) stay
+    // -10. The old postfix added the bonus after all of that, so pawns swapped
+    // a clean shirt for a tainted, 5%-HP boil-suit.
     [StaticConstructorOnStartup]
     public static class RM_Patch_HazardApparelScoring
     {
@@ -60,6 +72,8 @@ namespace RimMandrake.EnvironmentalHazards
 
         private static readonly StatDef SheenProtectionStat =
             DefDatabase<StatDef>.GetNamedSilentFail("RM_SheenProtection");
+
+        private static int sitesPatched;
 
         static RM_Patch_HazardApparelScoring()
         {
@@ -75,8 +89,13 @@ namespace RimMandrake.EnvironmentalHazards
             try
             {
                 Harmony harmony = new Harmony("mandrake.rm.environmentalhazards");
-                harmony.Patch(target, postfix: new HarmonyMethod(
-                    typeof(RM_Patch_HazardApparelScoring), nameof(ApparelScoreRaw_Postfix)));
+                harmony.Patch(target, transpiler: new HarmonyMethod(
+                    typeof(RM_Patch_HazardApparelScoring), nameof(ApparelScoreRaw_Transpiler)));
+                if (sitesPatched != 1)
+                {
+                    Log.Error("[RM EnvironmentalHazards] hazard-apparel-scoring: expected 1 ArmorRating_Blunt "
+                        + "read in ApparelScoreRaw, found " + sitesPatched + " — hook NOT armed as designed.");
+                }
             }
             catch (Exception e)
             {
@@ -85,16 +104,38 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
-        public static void ApparelScoreRaw_Postfix(Pawn pawn, Apparel ap, ref float __result)
+        // After `ap.GetStatValue(StatDefOf.ArmorRating_Blunt)` (stack: sharp, blunt) push `ap` and call
+        // WithHazardScore(blunt, ap): the following vanilla `add` then sums sharp + blunt + hazard bonus.
+        public static IEnumerable<CodeInstruction> ApparelScoreRaw_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            if (!RM_EnvironmentalHazardsSettings.hazardApparelAIAwarenessEnabled)
+            FieldInfo blunt = AccessTools.Field(typeof(StatDefOf), nameof(StatDefOf.ArmorRating_Blunt));
+            MethodInfo getStat = AccessTools.Method(typeof(StatExtension), nameof(StatExtension.GetStatValue),
+                new[] { typeof(Thing), typeof(StatDef), typeof(bool), typeof(int) });
+            MethodInfo with = AccessTools.Method(typeof(RM_Patch_HazardApparelScoring), nameof(WithHazardScore));
+            sitesPatched = 0;
+            bool sawBlunt = false;
+            foreach (CodeInstruction ci in instructions)
             {
-                return;
+                yield return ci;
+                if (ci.LoadsField(blunt))
+                {
+                    sawBlunt = true;
+                }
+                else if (sawBlunt && ci.Calls(getStat))
+                {
+                    sawBlunt = false;
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
+                    yield return new CodeInstruction(OpCodes.Call, with);
+                    sitesPatched++;
+                }
             }
+        }
 
-            if (ap?.def == null)
+        public static float WithHazardScore(float bluntArmor, Apparel ap)
+        {
+            if (!RM_EnvironmentalHazardsSettings.hazardApparelAIAwarenessEnabled || ap?.def == null)
             {
-                return;
+                return bluntArmor;
             }
 
             try
@@ -107,11 +148,12 @@ namespace RimMandrake.EnvironmentalHazards
                     bonus += ap.GetStatValue(SheenProtectionStat);
                 }
 
-                __result += bonus;
+                return bluntArmor + bonus;
             }
             catch (Exception e)
             {
                 Log.WarningOnce("[RM EnvironmentalHazards] hazard-apparel-scoring: " + e.Message, 0x485341);
+                return bluntArmor;
             }
         }
     }

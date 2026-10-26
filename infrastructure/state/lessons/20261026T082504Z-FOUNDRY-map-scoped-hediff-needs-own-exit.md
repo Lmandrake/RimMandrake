@@ -1,0 +1,2 @@
+A hediff that a MapComponent adds and removes (map-scoped weather/air effects) must remove itself off that map: a pawn that leaves by caravan, gravship or pods is no longer reached by the component and keeps the hediff forever unless the def has decay. Use a HediffComp with CompShouldRemove checking pawn.MapHeld, ticked in CompPostTickInterval (world pawns tick with delta>1 and can skip IsHashIntervalTick) (MURK_FIX_KEPT_OFF_ABYSS).
+home: rimworld-modding

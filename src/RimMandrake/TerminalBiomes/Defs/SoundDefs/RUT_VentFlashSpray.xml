@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  VENTFLASH_REWIRE_SPRAY_ONESHOT. The off-camera spray RUT_WeatherEvent_VentFlash (EnvironmentalHazards)
+  plays when a big vent lets go somewhere beyond the frame. It used to play vanilla's GeyserSpray, which is a
+  map-positioned SUSTAINER with no on-camera subSound: PlayOneShotOnCamera logged two red errors per flash
+  ("no on-camera subSounds", "Tried to play sustainer SoundDef ... as a one-shot sound") and played nothing.
+  This is the same clip as a real one-shot on the camera. Volume INVENTED: a distant vent, under the weather.
+  -->
+  <SoundDef>
+    <defName>RUT_VentFlashSpray</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/Steam_Geyser/SteamGeyser_Venting</clipPath>
+          </li>
+        </grains>
+        <volumeRange>8~10</volumeRange>
+        <pitchRange>0.85~0.95</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

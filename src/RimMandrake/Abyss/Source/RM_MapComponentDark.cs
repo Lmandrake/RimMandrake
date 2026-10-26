@@ -219,12 +219,43 @@ namespace RimMandrake.Abyss
                 LetterDefOf.ThreatBig, summ);
         }
 
+        public const string AbyssBiome = "RM_Abyss";
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref stormCall.nextRumbleTick, "nextRumbleTick", -1);
             Scribe_Values.Look(ref stormCall.pendingFlashTick, "pendingFlashTick", -1);
             Scribe_Values.Look(ref stormCall.pendingSumm, "pendingSummCome", false);
+        }
+    }
+
+    // MURK_FIX_KEPT_OFF_ABYSS. MurkPass only reaches pawns spawned on an Abyss map, and RM_Murk has no decay of its
+    // own, so a pawn that left the Abyss (caravan, gravship, pods, shuttle) carried whatever murk it had -- up to
+    // "blinding", -35% sight -- forever. The Dark is air, not a wound: off an Abyss map the hediff goes. MapHeld, so a
+    // pawn carried or held on the Abyss map keeps it until MurkPass sees it again; a caravan or world pawn has none.
+    public class HediffCompProperties_MurkNeedsAbyss : HediffCompProperties
+    {
+        public HediffCompProperties_MurkNeedsAbyss()
+        {
+            compClass = typeof(HediffComp_MurkNeedsAbyss);
+        }
+    }
+
+    public class HediffComp_MurkNeedsAbyss : HediffComp
+    {
+        private bool offAbyss;
+
+        public override bool CompShouldRemove => offAbyss;
+
+        // The interval tick, not a hash-interval test in CompPostTick: a world pawn ticks with delta > 1 and could step
+        // over the hash tick. It is a field read and a string compare.
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+        {
+            Pawn p = Pawn;
+            if (p == null) return;
+            Map m = p.MapHeld;
+            offAbyss = m == null || m.Biome == null || m.Biome.defName != RM_MapComponent_Dark.AbyssBiome;
         }
     }
 }

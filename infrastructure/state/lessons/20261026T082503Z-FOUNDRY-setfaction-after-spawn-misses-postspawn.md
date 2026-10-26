@@ -1,0 +1,2 @@
+SetFaction after GenSpawn.Spawn is too late for anything that acts in PostSpawnSetup: CompSpawnerPawn spawns its initialPawnsCount (and makes their lord) inside Spawn using parent.Faction, so they come out wild. Call thing.SetFaction BEFORE GenSpawn.Spawn. Also: a GenStep placing a multi-cell building with WipeMode.Vanish must test every cell of GenAdj.OccupiedRect, not the root cell (GRAVEWARD_FIX_FACTION_BEFORE_SPAWN).
+home: rimworld-modding

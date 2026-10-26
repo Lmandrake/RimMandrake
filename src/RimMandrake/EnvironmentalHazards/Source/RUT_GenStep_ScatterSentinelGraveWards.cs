@@ -79,34 +79,44 @@ namespace RimMandrake.EnvironmentalHazards
                 }
 
                 Thing ward = ThingMaker.MakeThing(thingDef);
-                GenSpawn.Spawn(ward, cell, map, WipeMode.Vanish);
                 // Faction ownership is what lets CompSpawnerPawn's spawned
-                // Sentinels inherit a real, hostile-to-nobody-until-provoked
-                // faction (parent.Faction, decompile-confirmed) instead of
-                // spawning wild — same mechanism note as
-                // GenStep_ScatterSacredWalls.
+                // Sentinels inherit a real faction (parent.Faction,
+                // decompile-confirmed) instead of spawning wild — same
+                // mechanism note as GenStep_ScatterSacredWalls. It must be set
+                // BEFORE the spawn: CompSpawnerPawn.PostSpawnSetup spawns the
+                // initialPawnsCount Sentinels (and their lord) inside
+                // GenSpawn.Spawn, so a SetFaction afterwards left those wild
+                // in a faction-less lord (GRAVEWARD_FIX_FACTION_BEFORE_SPAWN).
                 if (sentinelOwner != null)
                 {
                     ward.SetFaction(sentinelOwner);
                 }
+                GenSpawn.Spawn(ward, cell, map, WipeMode.Vanish);
             }
         }
 
+        // Every cell of the footprint (the grave-ward is 2x2, and WipeMode.Vanish
+        // would silently delete rock or a ruin under the cells a single-cell test
+        // never looked at).
         private bool CanPlaceAt(IntVec3 c, Map map)
         {
-            if (!c.Standable(map))
+            foreach (IntVec3 cell in GenAdj.OccupiedRect(c, Rot4.North, thingDef.size))
             {
-                return false;
-            }
-            if (!c.GetAffordances(map).Contains(thingDef.terrainAffordanceNeeded))
-            {
-                return false;
-            }
-            foreach (Thing t in c.GetThingList(map))
-            {
-                if (t.def.category == ThingCategory.Building)
+                if (!cell.InBounds(map) || !cell.Standable(map))
                 {
                     return false;
+                }
+                if (thingDef.terrainAffordanceNeeded != null
+                    && !cell.GetAffordances(map).Contains(thingDef.terrainAffordanceNeeded))
+                {
+                    return false;
+                }
+                foreach (Thing t in cell.GetThingList(map))
+                {
+                    if (t.def.category == ThingCategory.Building)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;

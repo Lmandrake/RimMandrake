@@ -90,11 +90,13 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            // Vanilla's own geyser sound, resolved by name rather than
-            // through SoundDefOf (which does not carry it). SilentFail so a
-            // future rename is a missing noise, never a red error every
-            // four hours.
-            SoundDef spray = DefDatabase<SoundDef>.GetNamedSilentFail("GeyserSpray");
+            // Vanilla's geyser clip as an on-camera ONE-SHOT (TerminalBiomes
+            // RUT_VentFlashSpray.xml). Not vanilla's GeyserSpray: that is a
+            // map-positioned sustainer, and PlayOneShotOnCamera on it logs two
+            // red errors and plays nothing (VENTFLASH_REWIRE_SPRAY_ONESHOT).
+            // Resolved by name, SilentFail: this class lives in
+            // EnvironmentalHazards, the def in the mod that owns the weather.
+            SoundDef spray = DefDatabase<SoundDef>.GetNamedSilentFail("RUT_VentFlashSpray");
             if (spray != null)
             {
                 spray.PlayOneShotOnCamera(map);

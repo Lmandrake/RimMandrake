@@ -12,6 +12,10 @@
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>2</maxSeverity>
     <initialSeverity>0.05</initialSeverity>
+    <!-- MURK_FIX_KEPT_OFF_ABYSS: the hediff has no decay; off an Abyss map (caravan, gravship, pods) this removes it. -->
+    <comps>
+      <li Class="RimMandrake.Abyss.HediffCompProperties_MurkNeedsAbyss" />
+    </comps>
     <stages>
       <li>
         <label>thin</label>
