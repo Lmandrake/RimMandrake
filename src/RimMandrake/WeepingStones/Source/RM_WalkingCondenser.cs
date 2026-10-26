@@ -151,6 +151,10 @@ namespace RimMandrake.WeepingStones
                 // and restoring a layerable floor then lays it over water, so removing it later reveals a puddle;
                 // a foundation cell is not ours to flood. Guide steers the crab onto the player's home area.
                 if (cur.layerable || cur.isFoundation || map.terrainGrid.FoundationAt(c) != null) continue;
+                // TerrainAt reports temporary terrain (lava, floodwater, thin ice, a substructure frame) over the
+                // real top layer; recording it would restore the temp def (SetTerrain re-routes it to the temp
+                // layer) and leave our water as the permanent top terrain.
+                if (map.terrainGrid.TempTerrainAt(c) != null) continue;
                 if (c.GetEdifice(map) != null) continue;
                 poolCells[c] = cur.defName;
                 map.terrainGrid.SetTerrain(c, water);
@@ -198,7 +202,15 @@ namespace RimMandrake.WeepingStones
             if (poolCells.TryGetValue(c, out string orig))
             {
                 TerrainDef td = DefDatabase<TerrainDef>.GetNamedSilentFail(orig);
-                if (td != null && c.InBounds(map)) map.terrainGrid.SetTerrain(c, td);
+                if (td != null && c.InBounds(map))
+                {
+                    // The player may have laid a floor over the pool since (on a bridge): the water then sits in
+                    // the under layer, and SetTerrain(soil) would delete the floor. Restore whichever layer holds
+                    // our water; a cell re-terrained some other way is left alone.
+                    TerrainDef water = TerrainDefOf.WaterShallow;
+                    if (map.terrainGrid.TopTerrainAt(c) == water) map.terrainGrid.SetTerrain(c, td);
+                    else if (map.terrainGrid.UnderTerrainAt(c) == water) map.terrainGrid.SetUnderTerrain(c, td);
+                }
                 poolCells.Remove(c);
             }
         }
@@ -333,6 +345,14 @@ namespace RimMandrake.WeepingStones
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
             if (poolCells.Count > 0 && prevMap != null) DryAllNow(prevMap);
+        }
+
+        // Leaving the map alive (vanilla LeaveIfWrongSeason / starvation exit, a gravship lift, the arena quest)
+        // stops CompTick, so the pool would stay wet for good -- or, respawned elsewhere, StepDrying would
+        // "restore" those cell coordinates on the wrong map. Dry it on the map it was dug in.
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (poolCells.Count > 0 && map != null) DryAllNow(map);
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
