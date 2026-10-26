@@ -313,8 +313,6 @@ namespace RimMandrake.Stillsand.Fuzz
                 for (int k = 0; k < 200000 && s.visits.Count > 0 && s.err == null; k++)
                 {
                     s.Step(); s.Invariants();
-                    // a pending or healthy visit with no help ends
-                    if (k > 150000) break;
                 }
                 if (s.err != null) return s.err + " @tick " + s.now;
                 if (s.visits.Count > 0) return $"{s.visits.Count} visit(s) still alive after 200000 undisturbed ticks";
@@ -800,7 +798,7 @@ namespace RimMandrake.Stillsand.Fuzz
             int tpc = tpcs[r.Next(4)];
             float[] rates = { 0.25f, 0.5f, 1f, 2f, 4f };
             float rate = rates[r.Next(rates.Length)];
-            float progress = 0f; double sp = 0; int sinceFire = 0;
+            float progress = 0f; double sp = 0;
             try
             {
                 foreach (Act a in acts)
@@ -810,11 +808,11 @@ namespace RimMandrake.Stillsand.Fuzz
                     if (a.kind == 3) rate = rates[a.b % rates.Length];
                     float before = progress;
                     float np = RM_SunKernel.StillStep(progress, feed, rt, 250, tpc, out bool fired);
-                    if (!feed) { Check(np == 0f && !fired, "a still with no feed kept progress"); sp = 0; StillResets++; sinceFire = 0; }
+                    if (!feed) { Check(np == 0f && !fired, "a still with no feed kept progress"); sp = 0; StillResets++; }
                     else if (rt <= 0f) { Check(np == before && !fired, "a still with no sun lost or gained progress"); StillHolds++; }
                     else
                     {
-                        sp += 250.0 * rt / tpc; sinceFire++;
+                        sp += 250.0 * rt / tpc;
                         bool want = sp >= 1.0;
                         Check(fired == want, $"fired {fired}, spec {want} (progress {sp})");
                         if (fired) { sp = 0; StillFired++; Check(np == 0f, "progress not reset after a cycle"); }
