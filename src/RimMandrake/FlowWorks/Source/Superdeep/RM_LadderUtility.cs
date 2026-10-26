@@ -555,6 +555,12 @@ namespace RimMandrake.FlowWorks
 		public override string GetInspectString()
 		{
 			string s = base.GetInspectString();
+			// LADDERINSPECT_FIX_WALL_LEAN_SAYS_NOWHERE: a portable ladder leaning on a built wall stands on undug ground, where
+			// WallRotAt is -1; RM_CompLadder already says "Against a wall: climbs over", so no "leads nowhere" line beside it
+			if (RM_LadderParity.LeansOnWall(this))
+			{
+				return s;
+			}
 			string line = RM_LadderUtility.WallRotAt(Map, Position, Rotation) == Rotation.AsInt
 				? "RMFlow_LadderHangsOn".Translate(("RMFlow_LadderWall" + Rotation.AsInt).Translate())
 				: "RMFlow_LadderHangsOnNothing".Translate();

@@ -1994,16 +1994,24 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			detachedBedCells.Remove(i);
-			RM_LiquidBody body = stock.BodyById(id);
-			FluidDef f = body?.fluid ?? ActiveFluid;
-			TerrainDef bed = f?.recededTerrain;
-			if (body == null || bed == null || !originalTerrain.ContainsKey(i))
+			if (!originalTerrain.ContainsKey(i))
 			{
 				return false;
 			}
-			if (RimMandrakeFlowWorksSettings.pondBedHollowEnabled)
+			RM_LiquidBody body = stock.BodyById(id);
+			// POND_BED step 2: with hollows on it comes back as the hollow it was, whatever the fluid's recededTerrain
+			// (DETACHEDBED_HARDEN_REATTACH_NO_WATER: read before the null check, so a fluid without one no longer refuses)
+			TerrainDef bed = RimMandrakeFlowWorksSettings.pondBedHollowEnabled ? LakebedTerrainFor(c) : (body?.fluid ?? ActiveFluid)?.recededTerrain;
+			if (body == null || bed == null)
 			{
-				bed = LakebedTerrainFor(c);   // POND_BED step 2: it comes back as the hollow it was
+				// DETACHEDBED_HARDEN_REATTACH_NO_WATER: no pond to go back to (its body gone on a legacy/corrupt save) or no
+				// dry look for it. Returning false sent FillIn to RestoreOriginalTerrain, which wrote the recorded WATER that
+				// no pond stock pays for. The square is plain dry ground instead (the neighbours' natural terrain, else
+				// soil, not a lakebed: it is no pond's bed now), its water record dropped and its bed depth cleared.
+				map.terrainGrid.SetTerrain(c, FallbackTerrainFor(c));
+				originalTerrain.Remove(i);
+				SetBed(i, 0);
+				return true;
 			}
 			map.terrainGrid.SetTerrain(c, bed);
 			stock.ReattachBedCell(map, body, c, this);

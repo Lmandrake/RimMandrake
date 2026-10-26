@@ -92,8 +92,31 @@ namespace RimMandrake.FlowWorks.SelfTest
             return RM_RiverMath.UpstreamWalk(x0, z0, length, dirAt, (x, z) => spine?.Add(new[] { x, z }));
         }
 
+        /// <summary>WEIRCHECKS_FIX_REGEX_READS_NEXT_DEF: the def named <paramref name="defName"/> holds each of
+        /// <paramref name="parts"/> (literal text, in order) BEFORE its own closing tag. The tempered gap
+        /// (?:(?!&lt;/ThingDef&gt;)[\s\S])*? cannot run past the def's end, so a later def's text never satisfies it
+        /// (a bare [\s\S]*? read RM_FerryPost's drawerType for RM_BankWeir, and RM_BankWeir's look picker for RM_BankStake).</summary>
+        internal static bool DefHas(string xml, string defName, params string[] parts)
+        {
+            const string Gap = @"(?:(?!</ThingDef>)[\s\S])*?";
+            string pattern = "<defName>" + Regex.Escape(defName) + "</defName>";
+            foreach (string part in parts) pattern += Gap + Regex.Escape(part);
+            return Regex.IsMatch(xml, pattern + Gap + "</ThingDef>");
+        }
+
         public static void Run(Action<string, Action> Case)
         {
+            Case("WeirChecks_def_regex_stays_inside_its_def", () =>
+            {
+                // can-fail: only the SECOND def has the field; the first must read as lacking it
+                const string two = "<ThingDef><defName>RM_A</defName><thingClass>X</thingClass></ThingDef>"
+                    + "<ThingDef><defName>RM_B</defName><drawerType>MapMeshAndRealTime</drawerType></ThingDef>";
+                Assert(Regex.IsMatch(two, @"<defName>RM_A</defName>[\s\S]*?<drawerType>MapMeshAndRealTime</drawerType>[\s\S]*?</ThingDef>"),
+                    "the old unbounded pattern is blind: it reads RM_B's drawerType for RM_A");
+                Assert(!DefHas(two, "RM_A", "<drawerType>MapMeshAndRealTime</drawerType>"), "DefHas does not read the next def's text");
+                Assert(DefHas(two, "RM_B", "<drawerType>MapMeshAndRealTime</drawerType>"), "and still finds a def's own field");
+                Assert(DefHas(two, "RM_A", "<thingClass>X</thingClass>"), "a def's own earlier field is found");
+            });
             const int L = 8;   // RM_RiversSettings.weirPoolLength default
             const int M = L + 4;
 
@@ -487,9 +510,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(w, @"RM_RiverMath\.WeirFoamStep\(", "the foam is drawn only where the current crosses the wall");
                 RiverSwitchFlipChecks.Has(w, @"RM_RiverMath\.WeirFoamFrame\(Time\.realtimeSinceStartup", "the foam frame comes from real time");
                 string xml = File.ReadAllText(Path.Combine(Path.GetDirectoryName(RiverSwitchFlipChecks.SrcPath("RM_Volume.cs")), "..", "Defs", "Rivers", "RM_BankWorks.xml"));
-                Assert(Regex.IsMatch(xml, @"<defName>RM_BankWeir</defName>[\s\S]*?<drawerType>MapMeshAndRealTime</drawerType>[\s\S]*?</ThingDef>"),
+                Assert(DefHas(xml, "RM_BankWeir", "<drawerType>MapMeshAndRealTime</drawerType>"),
                     "RM_BankWeir is drawn MapMeshAndRealTime (the wall in the mesh, the foam per frame)");
-                Assert(!Regex.IsMatch(xml, @"<defName>RM_BankWeir</defName>[\s\S]*?catches fish[\s\S]*?</ThingDef>"), "the description no longer promises fish");
+                Assert(!DefHas(xml, "RM_BankWeir", "catches fish"), "the description no longer promises fish");
             });
 
             // RIVER_WEIR_ART_JUDGE_CODEX_SQUINTS fix 8 (owner card 2026-10-17: "Commission REVIEW.md items 3,4,6,7,8,9,10 in
@@ -548,8 +571,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                         Assert(styles.Contains("<texPath>RimMandrake/FlowWorks/Rivers/" + look + "/" + d + "</texPath>"), "style texPath " + d + "_" + look);
                     }
                 }
-                Assert(Regex.IsMatch(works, @"<defName>RM_BankStake</defName>[\s\S]*?RM_Building_BankStake[\s\S]*?CompProperties_Styleable[\s\S]*?</ThingDef>"), "stake: ridge-drawing class + look picker");
-                Assert(Regex.IsMatch(works, @"<defName>RM_SiltTrap</defName>[\s\S]*?CompProperties_Styleable[\s\S]*?</ThingDef>"), "silt trap: look picker");
+                Assert(DefHas(works, "RM_BankStake", "RM_Building_BankStake", "CompProperties_Styleable"), "stake: ridge-drawing class + look picker");
+                Assert(DefHas(works, "RM_SiltTrap", "CompProperties_Styleable"), "silt trap: look picker");
                 string look2 = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
                 Assert(look2.Contains("\"RM_BankStake\"") && look2.Contains("\"RM_SiltTrap\""), "PipeLook registers both with the shared picker");
             });

@@ -205,15 +205,19 @@ namespace RimMandrake.FlowWorks.Machinery
         /// <summary>Redraw the join meshes round a tank's or machine's footprint (its partners may sit in a neighbouring section).
         /// COUPLER_REDRAW_FIX_STALE_ACROSS_SECTIONS: a machine prints its tank couplers from the section holding its own
         /// Position, which can lie in another section than every ring cell, so each machine touching the ring has its
-        /// Position section dirtied too.</summary>
+        /// Position section dirtied too.
+        /// PIPE_ARM_FIX_STALE_BESIDE_NEW_TANK: Things as well as Buildings. A ring pipe's own Graphic_Linked tile (its arm into
+        /// the machine, Patch_Pipe_LinksIntoMachines; the riser swap, Patch_Pipe_RiserReplacesTile) prints in
+        /// SectionLayer_ThingsGeneral, which listens to Things only; vanilla dirties Things only round the spawner's Position.</summary>
         public static void DirtyAround(Map map, CellRect rect)
         {
             if (map == null) return;
+            ulong layers = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things;
             HashSet<Thing> machines = null;
             foreach (IntVec3 c in rect.ExpandedBy(1).EdgeCells)
             {
                 if (!c.InBounds(map)) continue;
-                map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Buildings, false, false);
+                map.mapDrawer.MapMeshDirty(c, layers, false, false);
                 List<Thing> l = c.GetThingList(map);
                 for (int i = 0; i < l.Count; i++)
                 {
@@ -223,7 +227,7 @@ namespace RimMandrake.FlowWorks.Machinery
             if (machines == null) return;
             foreach (Thing m in machines)
             {
-                if (m.Spawned && m.Map == map) map.mapDrawer.MapMeshDirty(m.Position, (ulong)MapMeshFlagDefOf.Buildings, false, false);
+                if (m.Spawned && m.Map == map) map.mapDrawer.MapMeshDirty(m.Position, layers, false, false);
             }
         }
 

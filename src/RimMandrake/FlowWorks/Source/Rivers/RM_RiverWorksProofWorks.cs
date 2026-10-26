@@ -355,31 +355,38 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			bool onEntry = t != null;
 			bool left = false;
-			if (t != null)
+			// RIVERPROBE_FIX_FOUR_UNGUARDED_SPAWNS: the forced stack goes in the finally, so a throw in StepOne leaves no flotsam
+			try
 			{
-				foreach (IntVec3 c in map.AllCells)
+				if (t != null)
 				{
-					int d = comp.FlowDirAt(c);
-					if (d < 0 || !c.Standable(map) || c.GetFirstItem(map) != null)
+					foreach (IntVec3 c in map.AllCells)
 					{
-						continue;
+						int d = comp.FlowDirAt(c);
+						if (d < 0 || !c.Standable(map) || c.GetFirstItem(map) != null)
+						{
+							continue;
+						}
+						IntVec3 n = new IntVec3(c.x + RM_RiverMath.StepX[d], 0, c.z + RM_RiverMath.StepZ[d]);
+						if (n.InBounds(map))
+						{
+							continue;
+						}
+						t.Position = c; // the downstream edge
+						comp.StepOne(t);
+						left = t.Destroyed;
+						break;
 					}
-					IntVec3 n = new IntVec3(c.x + RM_RiverMath.StepX[d], 0, c.z + RM_RiverMath.StepZ[d]);
-					if (n.InBounds(map))
-					{
-						continue;
-					}
-					t.Position = c; // the downstream edge
-					comp.StepOne(t);
-					left = t.Destroyed;
-					break;
 				}
-				if (!t.Destroyed && arg != "keep")
+				return "FLOTSAM " + r + " entries=" + comp.EntryCells().Count + " onEntry=" + onEntry + " leftEdge=" + left;
+			}
+			finally
+			{
+				if (arg != "keep")
 				{
-					t.Destroy();
+					DestroyIfSpawned(t);
 				}
 			}
-			return "FLOTSAM " + r + " entries=" + comp.EntryCells().Count + " onEntry=" + onEntry + " leftEdge=" + left;
 		}
 
 		/// <summary>breach.wash: spawns a weir with a stack of catch on its bank, runs it down, breaches it;
@@ -514,19 +521,41 @@ namespace RimMandrake.FlowWorks.Rivers
 				RM_Building_SiltTrap trap = GenSpawn.Spawn(t, c, map) as RM_Building_SiltTrap;
 				if (trap == null)
 				{
+					DestroyIfSpawned(t);
 					return "UNMEASURED trap did not spawn";
 				}
-				IntVec3 cell = trap.RichenOne();
-				if (!cell.IsValid)
+				// RIVERPROBE_FIX_FOUR_UNGUARDED_SPAWNS: the trap goes in the finally, and a throw before Clog finished
+				// clogs it there first, so no richened soil outlives the probe either (Clog only reverts cells still ours).
+				bool clogged = false;
+				try
 				{
-					trap.Destroy();
-					continue;
+					IntVec3 cell = trap.RichenOne();
+					if (!cell.IsValid)
+					{
+						clogged = true;   // nothing richened, nothing to revert
+						continue;
+					}
+					TerrainDef rich = cell.GetTerrain(map);
+					trap.Clog();
+					clogged = true;
+					TerrainDef back = cell.GetTerrain(map);
+					return "SILT richened=" + rich.defName + " reverted=" + back.defName + " changed=" + (rich != back);
 				}
-				TerrainDef rich = cell.GetTerrain(map);
-				trap.Clog();
-				TerrainDef back = cell.GetTerrain(map);
-				trap.Destroy();
-				return "SILT richened=" + rich.defName + " reverted=" + back.defName + " changed=" + (rich != back);
+				finally
+				{
+					if (!clogged && trap.Spawned)
+					{
+						try
+						{
+							trap.Clog();
+						}
+						catch (System.Exception e)
+						{
+							Log.Warning("[RM_RiverWorksProofWorks] ProofSilt could not revert the richened soil: " + e.Message);
+						}
+					}
+					DestroyIfSpawned(trap);
+				}
 			}
 			return "UNMEASURED no swappable soil on this map";
 		}
@@ -562,19 +591,30 @@ namespace RimMandrake.FlowWorks.Rivers
 			pa.SetFaction(Faction.OfPlayer);
 			pb = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_FerryPost);
 			pb.SetFaction(Faction.OfPlayer);
-			RM_Building_FerryPost fa = GenSpawn.Spawn(pa, a, map) as RM_Building_FerryPost;
-			GenSpawn.Spawn(pb, b, map);
-			comp.MarkWorksDirty();
-			bool paired = fa?.Partner != null;
-			int rope = comp.RopeCellCount;
-			bool ropeExempt = comp.OnRope(water);
-			string res = "FERRY paired=" + paired + " rope=" + rope + " ropeExempt=" + ropeExempt + " a=" + a + " b=" + b;
-			if (arg != "keep")
+			// RIVERPROBE_FIX_FOUR_UNGUARDED_SPAWNS: both posts go in the finally. "keep" hands them to the caller (which
+			// destroys them) only on a normal return; a throw here removes them, since the caller never sees them then.
+			bool handedOver = false;
+			try
 			{
-				pa.Destroy();
-				pb.Destroy();
+				RM_Building_FerryPost fa = GenSpawn.Spawn(pa, a, map) as RM_Building_FerryPost;
+				GenSpawn.Spawn(pb, b, map);
+				comp.MarkWorksDirty();
+				// paired with EACH OTHER: a nearer unpaired player post taking fa is not this probe's ferry
+				bool paired = fa != null && fa.Partner == pb;
+				int rope = comp.RopeCellCount;
+				bool ropeExempt = comp.OnRope(water);
+				string res = "FERRY paired=" + paired + " rope=" + rope + " ropeExempt=" + ropeExempt + " a=" + a + " b=" + b;
+				handedOver = arg == "keep";
+				return res;
 			}
-			return res;
+			finally
+			{
+				if (!handedOver)
+				{
+					DestroyIfSpawned(pa);
+					DestroyIfSpawned(pb);
+				}
+			}
 		}
 
 		/// <summary>The longest straight crossing of the current a rope can span (the main channel, not a side trickle): from a moving-water cell, walk across its flow
@@ -844,31 +884,38 @@ namespace RimMandrake.FlowWorks.Rivers
 				return ferry.StartsWith("UNMEASURED") ? ferry : "UNMEASURED ferry did not pair: " + ferry;
 			}
 			IntVec3 onRope = IntVec3.Invalid, offRope = IntVec3.Invalid;
-			foreach (int i in comp.RopeIndicesNoRebuild)
+			int costOn = -1, costOff = -1;
+			// RIVERPROBE_FIX_FOUR_UNGUARDED_SPAWNS: the posts go in the finally, so a throw in GatherData/UndraftedCostAt leaves none
+			try
 			{
-				IntVec3 c = map.cellIndices.IndexToCell(i);
-				if (RM_RiverWorks.IsWaterCell(map, c)) { onRope = c; break; }
-			}
-			if (onRope.IsValid)
-			{
-				TerrainDef ropeTerrain = onRope.GetTerrain(map);
-				foreach (IntVec3 c in GenRadial.RadialCellsAround(onRope, 12f, false))
+				foreach (int i in comp.RopeIndicesNoRebuild)
 				{
-					if (c.InBounds(map) && c.GetTerrain(map) == ropeTerrain && !comp.OnRope(c)) { offRope = c; break; }
+					IntVec3 c = map.cellIndices.IndexToCell(i);
+					if (RM_RiverWorks.IsWaterCell(map, c)) { onRope = c; break; }
+				}
+				if (onRope.IsValid)
+				{
+					TerrainDef ropeTerrain = onRope.GetTerrain(map);
+					foreach (IntVec3 c in GenRadial.RadialCellsAround(onRope, 12f, false))
+					{
+						if (c.InBounds(map) && c.GetTerrain(map) == ropeTerrain && !comp.OnRope(c)) { offRope = c; break; }
+					}
+				}
+				if (onRope.IsValid && offRope.IsValid)
+				{
+					PathFinderMapData data = map.pathFinder.MapData;
+					HarmonyLib.AccessTools.Method(typeof(PathFinderMapData), "Notify_MapDirtied")?.Invoke(data, null);
+					data.GatherData(new List<PathRequest>());
+					costOn = RM_RopePathing.UndraftedCostAt(map, onRope);
+					costOff = RM_RopePathing.UndraftedCostAt(map, offRope);
 				}
 			}
-			int costOn = -1, costOff = -1;
-			if (onRope.IsValid && offRope.IsValid)
+			finally
 			{
-				PathFinderMapData data = map.pathFinder.MapData;
-				HarmonyLib.AccessTools.Method(typeof(PathFinderMapData), "Notify_MapDirtied")?.Invoke(data, null);
-				data.GatherData(new List<PathRequest>());
-				costOn = RM_RopePathing.UndraftedCostAt(map, onRope);
-				costOff = RM_RopePathing.UndraftedCostAt(map, offRope);
+				// only the two posts this probe spawned; a ferry the player built stays
+				DestroyIfSpawned(postA);
+				DestroyIfSpawned(postB);
 			}
-			// only the two posts this probe spawned; a ferry the player built stays
-			DestroyIfSpawned(postA);
-			DestroyIfSpawned(postB);
 			if (!onRope.IsValid || !offRope.IsValid)
 			{
 				return "UNMEASURED no river cell on/off the rope to compare";
