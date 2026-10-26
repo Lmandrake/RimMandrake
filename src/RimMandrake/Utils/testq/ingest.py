@@ -9,7 +9,8 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        (fail: any FAIL row; pass: every row PASS; partial: otherwise), --sha the runner's commit,
                        --evidence the sheet on SteveDesktop plus the attempt id; then ONE finding per FAIL row,
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
-  any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod).
+  any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod), once per
+                       attempt; a refused note (item not on origin yet) is an error, retried like a verify.
   no item           -> nothing on the ledger, unless job.row_items (submit --row-item ROW_OR_CHAIN=ITEM) maps rows to
                        items or TESTQ_HOST_ITEM names a standing host: then each item is verified from ITS rows only.
 A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
@@ -122,6 +123,22 @@ def lane_finding(job, res):
     return name if rc == 0 else "%s: %s" % (name, out[-160:])
 
 
+def note_once(item, needle, text):
+    """Note ITEM unless the shard already holds a note on it whose text contains NEEDLE (an earlier try of this
+    record) -> True when the note is on the ledger. A refused note (the item not on origin yet) is retried like a
+    verify instead of being lost when the record is marked."""
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            for line in f:
+                if needle in line:
+                    e = json.loads(line)
+                    if e.get("event") == "note" and e.get("id") == item and needle in (e.get("text") or ""):
+                        return True
+    except (OSError, ValueError):
+        pass
+    return rimflow("note", item, "--text", text)[0] == 0
+
+
 def ingest_one(rec):
     job, res = rec["job"], rec["result"]
     item, att = job.get("item"), res["attempt"]
@@ -133,16 +150,23 @@ def ingest_one(rec):
     # the standing host stands in only for a job with no item of its own (as in groups_of)
     host = None if item else os.environ.get("TESTQ_HOST_ITEM")
     items = sorted({i for i in [item, host] + list((job.get("row_items") or {}).values()) if i})
+    failed = []
     if lane:
         for it in items:
-            rimflow("note", it, "--text", "testq %s paused the SteveDesktop lane; finding %s" % (att, lane))
+            needle = "testq %s paused the SteveDesktop lane" % att
+            if not note_once(it, needle, "%s; finding %s" % (needle, lane)):
+                failed.append(it)
     if res["outcome"] != "DONE":
-        ok, out = True, ""
         for it in items:
-            rc, out = rimflow("note", it, "--text", "testq %s on SteveDesktop: %s/%s, no verdict recorded (%s)"
-                              % (att, res["outcome"], res.get("cause"), (res.get("note") or "")[:160]))
-            ok = ok and rc == 0
-        return {"note": ok, "out": out[-200:]}
+            needle = "testq %s on SteveDesktop:" % att
+            if not note_once(it, needle, "%s %s/%s, no verdict recorded (%s)"
+                             % (needle, res["outcome"], res.get("cause"), (res.get("note") or "")[:160])):
+                failed.append(it)
+        if failed:
+            return {"error": "note refused on %s" % ",".join(sorted(set(failed)))}
+        return {"note": True}
+    if failed:
+        return {"error": "lane note refused on %s" % ",".join(sorted(set(failed)))}
     return ingest_done(job, res, item)
 
 

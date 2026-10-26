@@ -7,7 +7,8 @@ all PASS -> pass; PASS + UNMEASURED -> partial; INVALID -> a note; a lane-pausin
 finding item for BENCH even with no job item; no item -> nothing; an unknown item -> retried,
 not marked, no crash; a second ingest writes nothing; an ingest that died before marking the record reuses its
 run and findings instead of writing them twice; an item filed late is verified on the retry; an item never filed is
-marked with its error after the last try. publish() in a sandbox (bare origin + clone): a pull --rebase that
+marked with its error after the last try; a non-DONE note refused for an item not filed yet is retried and lands
+once. publish() in a sandbox (bare origin + clone): a pull --rebase that
 conflicts is aborted and stops publication with the commit kept local on its branch (the old code pushed origin's
 own tip and reported "pushed"); origin moving on another file is rebased over and pushed; shard lines a publish
 left uncommitted make the next ingest publish though it has nothing new (the old ahead-only check never retried).
@@ -30,6 +31,7 @@ ITEM = "SOME_ITEM_FIX_IT"
 LANE = "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
 LATE = "LATE_ITEM_FIX_AFTER"
 MANY_A, MANY_B = "MANY_ROWS_FIX_ALPHA", "MANY_ROWS_FIX_BETA"
+NOTE_LATE = "LATE_NOTE_FIX_AFTER"
 
 
 def check(ok, msg):
@@ -234,6 +236,24 @@ def main():
         hn = [e for e in events() if e["event"] == "note" and hr["result"]["attempt"] in e.get("text", "")]
         check([e["id"] for e in hn] == [ITEM], "a non-DONE job with an item notes that item only, not the host: %s"
               % [e["id"] for e in hn])
+        # a non-DONE job whose item is not on the ledger yet: the refused note is retried, not lost, and written once
+        nl = done_rec(NOTE_LATE, "INVALID", "HANG")
+        nlp = os.path.join(queue, "done", nl["job"]["id"] + ".json")
+        S.dump(nl, nlp)
+        ingest()
+        check("ingested" not in json.load(open(nlp)) and json.load(open(nlp))["ingest_pending"]["tries"] == 1,
+              "a non-DONE note refused for an unfiled item is pending a retry, not marked: %s"
+              % json.load(open(nlp)).get("ingested"))
+        subprocess.run([sys.executable, CLI, "file", NOTE_LATE, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
+                       env=env, capture_output=True, text=True, timeout=120)
+        for _ in range(2):
+            subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_INGEST_RETRY_S="0"),
+                           capture_output=True, text=True, timeout=300)
+            p2 = json.load(open(nlp))
+            p2.pop("ingested", None)
+            S.dump(p2, nlp)                     # unmark: a re-run must not note twice
+        nn = [e for e in events() if e["event"] == "note" and e.get("id") == NOTE_LATE]
+        check(len(nn) == 1, "the retried note lands once on the late item: %d notes" % len(nn))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     publish_checks()
