@@ -6,7 +6,9 @@ git step is off (TESTQ_INGEST_PUSH=0). Proves: DONE with FAIL rows -> verify fai
 all PASS -> pass; PASS + UNMEASURED -> partial; INVALID -> a note; no item -> nothing; an unknown item -> retried,
 not marked, no crash; a second ingest writes nothing; an ingest that died before marking the record reuses its
 run and findings instead of writing them twice; an item filed late is verified on the retry; an item never filed is
-marked with its error after the last try.
+marked with its error after the last try. publish() in a sandbox (bare origin + clone): a pull --rebase that
+conflicts is aborted and stops publication with the commit kept local on its branch (the old code pushed origin's
+own tip and reported "pushed"); origin moving on another file is rebased over and pushed.
 """
 import json
 import os
@@ -40,6 +42,70 @@ def done_rec(item, outcome="DONE", cause=None, rows=(("r1", "PASS"), ("r2", "FAI
            "runner_sha": "def5678", "artifacts": [{"path": "/x/Mock_1.json"}, {"path": "/x/Mock_1.html"}],
            "note": "why"}
     return {"job": job, "result": res, "attempts": [res["attempt"]], "finished": S.utcnow()}
+
+
+def publish_sandbox(conflict):
+    """Bare origin + a dispatch clone + a rival clone that pushes first. Returns (publish result, dispatch dir, sh)."""
+    import ingest as I
+    root = tempfile.mkdtemp(prefix="rf_pub_")
+    bare, disp, rival = (os.path.join(root, n) for n in ("origin.git", "dispatch", "rival"))
+
+    def sh(*a, cwd=None):
+        return subprocess.run(["git"] + list(a), cwd=cwd, capture_output=True, text=True, timeout=60)
+    ident = ["-c", "user.email=st@x", "-c", "user.name=st"]
+    sh("init", "-q", "--bare", "-b", "main", bare)
+    sh("clone", "-q", bare, rival)
+    shard = I.SHARD_REL
+    os.makedirs(os.path.join(rival, os.path.dirname(shard)))
+    with open(os.path.join(rival, shard), "w") as f:
+        f.write('{"a":1}\n')
+    sh("add", shard, cwd=rival)
+    sh(*ident, "commit", "-qm", "init", cwd=rival)
+    sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+    sh("clone", "-q", bare, disp)
+    for d in (disp, rival):
+        sh("config", "user.email", "st@x", cwd=d)
+        sh("config", "user.name", "st", cwd=d)
+    with open(os.path.join(disp, shard), "a") as f:
+        f.write('{"runner":"ingest"}\n')
+    target = shard if conflict else "other.txt"   # no .gitattributes here: a same-shard append conflicts
+    with open(os.path.join(rival, target), "a") as f:
+        f.write('{"rival":"line"}\n')
+    sh("add", target, cwd=rival)
+    sh("commit", "-qm", "rival", cwd=rival)
+    sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+    old = I.REPO
+    I.REPO = disp
+    try:
+        out = I.publish(1)
+    finally:
+        I.REPO = old
+    return out, root, disp, sh
+
+
+def publish_checks():
+    out, root, disp, sh = publish_sandbox(conflict=True)
+    try:
+        rebasing = any(os.path.isdir(os.path.join(disp, ".git", d)) for d in ("rebase-merge", "rebase-apply"))
+        branch = sh("symbolic-ref", "-q", "--short", "HEAD", cwd=disp).stdout.strip()
+        sh("fetch", "-q", "origin", cwd=disp)
+        ahead = sh("rev-list", "--count", "origin/main..HEAD", cwd=disp).stdout.strip()
+        tip = sh("log", "-1", "--format=%s", "origin/main", cwd=disp).stdout.strip()
+        check(out.startswith("publish stopped"), "a conflicting pull --rebase stops publication: %r" % out)
+        check(not rebasing and branch == "main", "the rebase is aborted, back on main (rebasing=%s branch=%r)"
+              % (rebasing, branch))
+        check(ahead == "1" and tip == "rival", "the RUNNER commit stays local, origin untouched (ahead=%s tip=%r)"
+              % (ahead, tip))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    out, root, disp, sh = publish_sandbox(conflict=False)
+    try:
+        sh("fetch", "-q", "origin", cwd=disp)
+        ahead = sh("rev-list", "--count", "origin/main..HEAD", cwd=disp).stdout.strip()
+        check(out == "pushed" and ahead == "0", "origin moved on another file: rebased and pushed (%r ahead=%s)"
+              % (out, ahead))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def main():
@@ -121,6 +187,7 @@ def main():
         check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    publish_checks()
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

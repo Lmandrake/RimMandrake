@@ -131,7 +131,14 @@ def publish(n):
             return "commit failed: " + c.stderr.strip()[-200:]
     p = None
     for _ in range(3):
-        git("pull", "-q", "--rebase", "origin", "main")
+        r = git("pull", "-q", "--rebase", "origin", "main")
+        if r.returncode != 0:
+            # A failed rebase leaves a detached, conflicted tree: pushing HEAD then pushes origin's own tip and
+            # "succeeds" while the RUNNER commit sits unapplied (drill 2026-10-26). Abort, keep the commit local,
+            # stop publication (design section 6: no reset, no stash, no game re-run).
+            git("rebase", "--abort")
+            return "publish stopped: pull --rebase failed, rebase aborted, the commit stays local: " + \
+                (r.stderr or r.stdout).strip()[-200:]
         p = git("push", "-q", "origin", "HEAD:main")
         if p.returncode == 0:
             return "pushed"
