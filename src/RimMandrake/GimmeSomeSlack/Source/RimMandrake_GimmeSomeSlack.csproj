@@ -43,6 +43,7 @@
     <Compile Include="Core\CordBuilder.cs" />
     <Compile Include="Core\CordReach.cs" />
     <Compile Include="Core\RebuildGate.cs" />
+    <Compile Include="Core\RebuildTail.cs" />
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\ConduitTargets.cs" />

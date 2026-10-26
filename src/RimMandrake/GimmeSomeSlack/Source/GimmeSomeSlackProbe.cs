@@ -98,6 +98,8 @@ namespace RimMandrake.GimmeSomeSlack
                 RM_MapComponent_CordGraph.DripEvents = 0;
                 return "{\"success\":true,\"cmd\":\"motionreset\"}";
             }
+            // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: open a fresh slice window before a spawn (winMaxSliceMs & co in motion)
+            if (cmd == "slicereset") { comp.ResetSliceWindow(); return "{\"success\":true,\"cmd\":\"slicereset\"}"; }
             if (cmd.StartsWith("select:"))
             {
                 // select the first powered thing at x,z (validation's selection-highlight row, B5)
@@ -600,6 +602,15 @@ namespace RimMandrake.GimmeSomeSlack
             F("pending", comp.LastPending.ToString());
             F("slicedBuilds", comp.SlicedBuilds.ToString());
             F("maxSliceMs", J.D(comp.MaxSliceMs));
+            // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: a slice is the WHOLE Rebuild (snapshot, Build and the publish tail); one a
+            // gen-0 collection landed in is counted apart (sliceGcHits) and kept out of the noGc maxima; win* since slicereset
+            F("maxSliceNoGcMs", J.D(comp.MaxSliceNoGcMs));
+            F("sliceGcHits", comp.SliceGcHits.ToString());
+            F("winMaxSliceMs", J.D(comp.WinMaxSliceMs));
+            F("winMaxSliceNoGcMs", J.D(comp.WinMaxSliceNoGcMs));
+            F("winSlices", comp.WinSlices.ToString());
+            F("winSliceGcHits", comp.WinSliceGcHits.ToString());
+            F("gcGen0", GC.CollectionCount(0).ToString());
             // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: the lay worker (a frame's build lays no edge: laidOnCaller stays 0)
             F("lastLanded", comp.LastLanded.ToString());
             F("laidOnCaller", comp.LastLaidOnCaller.ToString());
@@ -614,7 +625,9 @@ namespace RimMandrake.GimmeSomeSlack
                 "\"tapIds\":" + J.D(comp.LastTapIdsMs), "\"styles\":" + J.D(comp.LastStylesMs), "\"build\":" + J.D(comp.LastBuildMs),
                 "\"bInputs\":" + J.D(bld.PhInputsMs), "\"bReduce\":" + J.D(bld.PhReduceMs), "\"bEdges\":" + J.D(bld.PhEdgesMs),
                 "\"bKeys\":" + J.D(bld.PhKeyMs), "\"bCorridor\":" + J.D(bld.PhCorridorMs), "\"bNodes\":" + J.D(bld.PhNodesMs),
-                "\"bReach\":" + J.D(bld.PhReachMs) }) + "}");
+                "\"bReach\":" + J.D(bld.PhReachMs), "\"total\":" + J.D(comp.LastRebuildMs), "\"tail\":" + J.D(comp.LastTailMs),
+                "\"tSeeds\":" + J.D(comp.LastSeedsMs), "\"tMaterials\":" + J.D(comp.LastMaterialsMs), "\"tSig\":" + J.D(comp.LastSigMs),
+                "\"tSigSections\":" + comp.LastSigSections }) + "}");
             F("snapFullScans", comp.Snap.FullScans.ToString());
             F("snapUses", comp.Snap.Uses.ToString());
             F("snapLastPatched", comp.Snap.LastPatched.ToString());

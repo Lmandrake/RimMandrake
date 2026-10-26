@@ -98,6 +98,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>GSS_SNAPSHOT_MEASURE_REBUILD_PER_DIG: the cell box everything this piece draws or was planned on covers
         /// (corridor, owner, strand points, decals, end tips), filled once by CordReach.BoxOf; a reused piece keeps it.</summary>
         internal int[] ReachBox;
+        /// <summary>GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: memos the component's rebuild tail fills once per piece object on the
+        /// main thread after publish (RebuildTail): net tokens, and the key+geometry part of its section signature.</summary>
+        internal string NetTokA, NetTokB;
+        internal ulong SigMemo;
+        internal bool SigMemoSet;
 
         public ulong GeometryHash()
         {

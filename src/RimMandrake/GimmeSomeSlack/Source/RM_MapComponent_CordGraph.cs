@@ -221,44 +221,8 @@ namespace RimMandrake.GimmeSomeSlack
             mixPieces = mix;
         }
 
-        /// <summary>Union the pieces by the cells they touch (edge ends, node/coil/tangle owner cells); a component's
-        /// seed is a stable FNV hash of its smallest cell token -- pure geometry, no vanilla PowerNet (which is not
-        /// built yet while a loaded map's sections first regenerate).</summary>
-        private static Dictionary<LaidPiece, int> ComputeNetSeeds(List<LaidPiece> ps)
-        {
-            var parent = new Dictionary<string, string>();
-            string Find(string x)
-            {
-                if (!parent.TryGetValue(x, out string px)) { parent[x] = x; return x; }
-                while (px != x) { string g = parent[px]; parent[x] = g; x = px; px = g; }
-                return x;
-            }
-            void Union(string a, string b)
-            {
-                string ra = Find(a), rb = Find(b);
-                if (ra == rb) return;
-                if (string.CompareOrdinal(ra, rb) < 0) parent[rb] = ra; else parent[ra] = rb;
-            }
-            string Tok(string end) { int i = end.LastIndexOf(':'); return i >= 0 ? end.Substring(i + 1) : end; }
-            var first = new Dictionary<LaidPiece, string>();
-            foreach (LaidPiece p in ps)
-            {
-                string own = p.Owner.X + "," + p.Owner.Z;
-                string a = p.EndA != null ? Tok(p.EndA) : own;
-                Find(a);
-                if (p.EndB != null) Union(a, Tok(p.EndB));
-                first[p] = a;
-            }
-            var res = new Dictionary<LaidPiece, int>();
-            foreach (KeyValuePair<LaidPiece, string> kv in first)
-            {
-                string root = Find(kv.Value);          // roots are the ordinal-smallest token (Union keeps the smaller)
-                uint h = 2166136261u;
-                foreach (char c in root) h = unchecked((h ^ c) * 16777619u);
-                res[kv.Key] = unchecked((int)h);
-            }
-            return res;
-        }
+        /// <summary>Union the pieces by the cells they touch; one seed per connected net (Core/RebuildTail.NetSeeds).</summary>
+        private static Dictionary<LaidPiece, int> ComputeNetSeeds(List<LaidPiece> ps) => RebuildTail.NetSeeds(ps);
 
         /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD (live round 4: a planned build of 248 edges held one frame ~1 s): a
         /// build stops laying edges once the rebuild has run <see cref="FrameBudgetMs"/> (snapshot and style scan included)
@@ -268,10 +232,22 @@ namespace RimMandrake.GimmeSomeSlack
         /// caller (the probes, ConduitStyleProbe's cstyles read, JawaBench's gss staging) reads Pieces right after it (round 3
         /// review: a budgeted one handed them a half-laid set).</summary>
         public const double FrameBudgetMs = 8.0;
-        /// <summary>Edges the last build left to a later frame; budgeted rebuilds that left some; the slowest budgeted rebuild
-        /// that laid at least one edge (ms: the live re-measure's per-frame cost of a planned build).</summary>
+        /// <summary>Edges the last build left to a later frame; budgeted rebuilds that left some; the slowest frame
+        /// (budgeted) rebuild in ms, the whole Rebuild: snapshot, Build AND the publish tail (net seeds, materials, section
+        /// signatures). GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: it used to stop the clock before the tail and to count only
+        /// rebuilds that planned an edge, so an all-reused frame rebuild and every tail were invisible to it.</summary>
         public int LastPending, SlicedBuilds;
         public double MaxSliceMs;
+        /// <summary>GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: the slowest frame rebuild during which no gen-0 collection ran
+        /// (GC.CollectionCount(0) unchanged across it: Mono's collector stops the world, a slice it lands in is not the
+        /// rebuild's own cost), and how many frame rebuilds a collection landed in. Win*: the same since the probe's
+        /// "slicereset" (MaxSliceMs is a lifetime max, so a later live run could not window it).</summary>
+        public double MaxSliceNoGcMs, WinMaxSliceMs, WinMaxSliceNoGcMs;
+        public int SliceGcHits, WinSlices, WinSliceGcHits;
+        /// <summary>The last Rebuild's publish tail in ms (net seeds, materials, section signatures + dirtying) and sections compared.</summary>
+        public double LastTailMs, LastSeedsMs, LastMaterialsMs, LastSigMs;
+        public int LastSigSections;
+        public void ResetSliceWindow() { WinMaxSliceMs = WinMaxSliceNoGcMs = 0; WinSlices = WinSliceGcHits = 0; }
         /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: edges the last build took from the lay worker, and laid itself (a
         /// frame's build: 0 unless a worker lay threw).</summary>
         public int LastLanded, LastLaidOnCaller;
@@ -290,6 +266,7 @@ namespace RimMandrake.GimmeSomeSlack
                 return;
             }
             var sw = System.Diagnostics.Stopwatch.StartNew();
+            int gc0 = GC.CollectionCount(0);
             CordBuilder b = builder;
             List<LaidPiece> next;
             Dictionary<Cell, Aerial.CellStyle> styled;
@@ -326,7 +303,7 @@ namespace RimMandrake.GimmeSomeSlack
                 return;
             }
             Builds++;
-            LastRebuildMs = sw.Elapsed.TotalMilliseconds;
+            long tTail = System.Diagnostics.Stopwatch.GetTimestamp();
             LastPlanned = b.LastPlanned;
             LastReused = b.LastReused;
             LastPending = b.LastPending;
@@ -339,7 +316,6 @@ namespace RimMandrake.GimmeSomeSlack
             }
             LastLanded = b.LastLanded;
             LastLaidOnCaller = b.LastLaidOnCaller;
-            if (!complete && (LastPlanned > 0 || LastPending > 0) && LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
             var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
             foreach (LaidPiece p in next)
             {
@@ -352,9 +328,11 @@ namespace RimMandrake.GimmeSomeSlack
             pieces = next;
             bySection = nextBy;
             Dictionary<LaidPiece, int> prevSeeds = netSeeds;
+            long tSeeds = System.Diagnostics.Stopwatch.GetTimestamp();
             try { netSeeds = ComputeNetSeeds(next); }
             catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[GimmeSomeSlack] net seeds: " + ex, 0x4d43_5345); }
             Dictionary<LaidPiece, int> prevMat = matIdx;
+            long tMat = System.Diagnostics.Stopwatch.GetTimestamp();
             try { ComputeMaterials(next, styled); }
             catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[GimmeSomeSlack] run styles: " + ex, 0x4d43_5346); }
             // dirty every section whose owned set changed (not just the regenerating one)
@@ -362,42 +340,63 @@ namespace RimMandrake.GimmeSomeSlack
             // dirtied for print, and it carries each strand's static/dynamic eligibility (sway, shader sway + pin roof,
             // ripple) — so a roof landing in ANOTHER section, which leaves the piece set unchanged, still reprints the
             // owner section, and the per-frame and printed paths never both draw (or both skip) a strand.
+            long tSig = System.Diagnostics.Stopwatch.GetTimestamp();
+            LastSigSections = 0;
             if (Current.ProgramState == ProgramState.Playing)
             {
-                var keys = new HashSet<IntVec2>(nextBy.Keys);
-                keys.UnionWith(prevBy.Keys);
-                keys.UnionWith(printedSig.Keys);
-                foreach (IntVec2 s in keys)
+                // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: a 64-bit signature per section (RebuildTail.SectionSig), no strings:
+                // the former string join of every piece's cache key and geometry ran over the whole map on every frame
+                // rebuild, untimed, and its garbage fed the stop-the-world collector
+                Func<CordStrand, int> elig = SwayOn || GimmeSomeSlackSettings.floorRipple ? (eligBits ??= EligBits) : null;
+                sigKeys.Clear();
+                sigKeys.UnionWith(nextBy.Keys);
+                sigKeys.UnionWith(prevBy.Keys);
+                sigKeys.UnionWith(printedSig.Keys);
+                foreach (IntVec2 s in sigKeys)
                 {
-                    string cur = Sig(nextBy, s, netSeeds, matIdx) + Elig(nextBy, s);
-                    if (!printedSig.TryGetValue(s, out string was))
-                        was = Sig(prevBy, s, prevSeeds, prevMat) + Elig(prevBy, s);
+                    ulong cur = RebuildTail.SectionSig(nextBy.TryGetValue(s, out List<LaidPiece> nl) ? nl : null, netSeeds, matIdx, elig);
+                    if (!printedSig.TryGetValue(s, out ulong was))
+                        was = RebuildTail.SectionSig(prevBy.TryGetValue(s, out List<LaidPiece> pl) ? pl : null, prevSeeds, prevMat, elig);
                     if (was != cur) DirtySection(s);
-                    if (cur.Length == 0) printedSig.Remove(s); else printedSig[s] = cur;
+                    if (cur == 0UL) printedSig.Remove(s); else printedSig[s] = cur;
+                    LastSigSections++;
+                }
+            }
+            long tEnd = System.Diagnostics.Stopwatch.GetTimestamp();
+            double f = 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            LastSeedsMs = (tMat - tSeeds) * f;
+            LastMaterialsMs = (tSig - tMat) * f;
+            LastSigMs = (tEnd - tSig) * f;
+            LastTailMs = (tEnd - tTail) * f;
+            LastRebuildMs = sw.Elapsed.TotalMilliseconds;
+            if (!complete)
+            {
+                bool gcHit = GC.CollectionCount(0) != gc0;
+                if (LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
+                if (LastRebuildMs > WinMaxSliceMs) WinMaxSliceMs = LastRebuildMs;
+                WinSlices++;
+                if (gcHit) { SliceGcHits++; WinSliceGcHits++; }
+                else
+                {
+                    if (LastRebuildMs > MaxSliceNoGcMs) MaxSliceNoGcMs = LastRebuildMs;
+                    if (LastRebuildMs > WinMaxSliceNoGcMs) WinMaxSliceNoGcMs = LastRebuildMs;
                 }
             }
         }
 
-        private readonly Dictionary<IntVec2, string> printedSig = new Dictionary<IntVec2, string>();
+        private readonly Dictionary<IntVec2, ulong> printedSig = new Dictionary<IntVec2, ulong>();
+        private readonly HashSet<IntVec2> sigKeys = new HashSet<IntVec2>();
+        private Func<CordStrand, int> eligBits;
 
-        /// <summary>Per-strand static/dynamic eligibility bits of a section, in print order.</summary>
-        private string Elig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s)
+        /// <summary>A strand's static/dynamic eligibility bits (sway 1, shader sway 2, pin roofed 4, ripple 8), read in print
+        /// order into its section's signature.</summary>
+        private int EligBits(CordStrand st)
         {
-            if (!d.TryGetValue(s, out List<LaidPiece> l)) return "";
-            bool anySway = SwayOn, ripple = GimmeSomeSlackSettings.floorRipple;
-            if (!anySway && !ripple) return "";
-            var sb = new System.Text.StringBuilder(" e");
-            foreach (LaidPiece p in l)
-                foreach (CordStrand st in p.Strands)
-                {
-                    if (st.Pts == null || st.Pts.Count < 2) { sb.Append('-'); continue; }
-                    int bits = 0;
-                    if (st.Lifted && SwaysNow(map, st)) bits |= 1;
-                    if (ShaderSwayPrints(st)) { bits |= 2; if (PinRoofed(map, st)) bits |= 4; }
-                    if (RipplesNow(map, st)) bits |= 8;
-                    sb.Append((char)('a' + bits));
-                }
-            return sb.ToString();
+            int bits = 0;
+            if (st.Lifted && SwaysNow(map, st)) bits |= 1;
+            if (ShaderSwayPrints(st)) { bits |= 2; if (PinRoofed(map, st)) bits |= 4; }
+            if (RipplesNow(map, st)) bits |= 8;
+            return bits;
         }
 
         /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: the global inputs of that eligibility (vanilla's plant-sway option,
@@ -426,13 +425,7 @@ namespace RimMandrake.GimmeSomeSlack
             finally { OwnDirty = false; }
         }
 
-        /// <summary>A section's owned-set signature: piece keys, geometry, and (lane C) the net seed, so a net that
-        /// merges or splits reprints the sections whose cords change colour even when their geometry did not.</summary>
-        private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s, Dictionary<LaidPiece, int> seeds, Dictionary<LaidPiece, int> mats) =>
-            d.TryGetValue(s, out List<LaidPiece> l)
-                ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash() + "#" + (seeds.TryGetValue(p, out int v) ? v : 0) +
-                                                  "%" + (mats.TryGetValue(p, out int g) ? g : -1)))
-                : "";
+        // A section's owned-set signature (piece keys, geometry, lane C net seed, material, eligibility): RebuildTail.SectionSig.
 
         private bool LiveNow(Cell c)
         {
