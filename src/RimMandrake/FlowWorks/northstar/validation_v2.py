@@ -2236,7 +2236,7 @@ def phase_L(L, args):
             if not bridge_line else ("log_clean", not fw_err, "MOD", fw_err or "no FlowWorks error in %d warn+ entries "
                                      "(base seq %d)" % (len(logs), L.log_base))
         tp = B.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation")
-        want = _sha256(os.environ.get("FW_REPO_DLL") or os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))  # see live_session REPO_DLL
+        want = _repo_dll_sha()                            # the same value MockBridge reports (see _repo_dll_sha)
         asm_part = ("assembly_identity", tp.get("assemblyFileSha256") == want and tp.get("mvidMatchesFile") is True,
                     "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
                         tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
@@ -2288,6 +2288,29 @@ def phase_L(L, args):
               0 < e.get("nextPulseTick") - e.get("ticksGame") <= PULSE_SHIPPED, "MOD",
               "pulseIntervalTicks %s, nextPulseTick %s at tick %s" % (e.get("pulseIntervalTicks"), e.get("nextPulseTick"),
                                                                     e.get("ticksGame")))
+
+
+_REPO_DLL_SHA = {}
+
+
+def _repo_dll_sha():
+    """sha256 of the repo's FlowWorks DLL (FW_REPO_DLL, else MOD/Assemblies -- live_session REPO_DLL's choice), read
+    until two reads agree and kept per (path, size, mtime). Sweep J20261026T004751Z-6e5292 (SteveDesktop, Windows
+    python over the WSL clone) aborted four --mock fault runs "stale DLL" with the mock reporting 04377e2b137a /
+    f17767d260f4 against a repo 2099946a42ad, neither a committed build: the mock and the preflight each hashed the file
+    themselves (and the mock ignored FW_REPO_DLL), so one bad read made a clean mock read as a stale deploy."""
+    p = os.environ.get("FW_REPO_DLL") or os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll")
+    st = os.stat(p)
+    key = (p, st.st_size, getattr(st, "st_mtime_ns", st.st_mtime))
+    if key not in _REPO_DLL_SHA:
+        seen = [_sha256(p)]
+        for _ in range(3):
+            seen.append(_sha256(p))
+            if seen[-1] == seen[-2]:
+                break
+        _REPO_DLL_SHA.clear()
+        _REPO_DLL_SHA[key] = seen[-1]
+    return _REPO_DLL_SHA[key]
 
 
 def _sha256(p):
@@ -4258,7 +4281,7 @@ class MockBridge(object):
     def t_jawa_type_probe(self, typeName):
         if "preflight_crash" in self.faults:
             return None                                   # a reply the preflight cannot read (tp.get -> AttributeError)
-        sha = _sha256(os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))
+        sha = _repo_dll_sha()                             # the preflight's own value: a clean mock is never "stale"
         stale = "dll_stale" in self.faults or "dll_stale_old_fields" in self.faults
         return dict(success=True, assemblyFileSha256=("0" * 64) if stale else sha,
                     mvidMatchesFile=True, assemblyLocation="mock")
