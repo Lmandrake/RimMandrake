@@ -25,7 +25,9 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_FE_Plant_EmberGrass</defName>
     <label>ember grass</label>
-    <description>A coarse bunchgrass that regrows on burned ground in less than a day. Its tall stems dry to dull orange almost as quickly, laying fresh tinder over the ash before grazers can clear it.</description>
+    <!-- EMBERGRASS_FIX_DESC_CLAIMS_SUBDAY_REGROWTH: growDays 0.8 accrues only while the plant is not resting
+         (Plant.Resting: DayPercent 0.25-0.8), so full growth takes about a day and a half, not under one. -->
+    <description>A coarse bunchgrass that regrows on burned ground in a day or two. Its tall stems dry to dull orange almost as quickly, laying fresh tinder over the ash before grazers can clear it.</description>
     <statBases>
       <MaxHitPoints>70</MaxHitPoints>
       <!-- Above every Core plant (grass tops out at 1.3): this is the
@@ -47,8 +49,8 @@
       <fertilitySensitivity>0.15</fertilitySensitivity>
       <growDays>0.8</growDays>
       <lifespanDaysPerGrowDays>26</lifespanDaysPerGrowDays>
-      <!-- A FOLDER, not a file, and it takes four random variants exactly the
-           way texPath above does. PlantProperties.ResolveReferences builds it
+      <!-- A FOLDER, not a file, of random variants exactly the way texPath
+           above is (four leafless PNGs here, three standing ones there). PlantProperties.ResolveReferences builds it
            as GraphicDatabase.Get(parentDef.graphicData.graphicClass, ...)
            (RimSage, RimWorld/PlantProperties.cs:263), so the graphicClass of
            graphicData above carries over: Graphic_Random picks one PNG under
