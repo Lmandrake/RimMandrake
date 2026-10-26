@@ -7,7 +7,8 @@ namespace RimMandrake.StarWars.Armoury
 {
     // ASTEROID_DESERT_ORES_1 + the aboard re-melt duty of CANON_MATERIALS_BUILD_1 — applies four
     // RSW_ArmourySettings toggles at startup (they take effect after the next game load):
-    //   dooniumAsteroidEnabled  RSW_MineableDoonium stays in the Odyssey asteroid GenSteps' mineableCounts
+    //   dooniumAsteroidEnabled  RSW_MineableDoonium stays in the Odyssey asteroid GenSteps' mineableCounts and in
+    //                           GeneratedLocationDef Asteroids.preciousResources
     //   dooniumSmeltEnabled     RSW_SmeltDoonium stays on the ship smelters
     //   phrikSmeltEnabled       RSW_SmeltPhrik stays on the ship smelters
     //   slagRemeltAboardEnabled RSW_SmeltPlasteelFromSlag / RSW_SmeltDurasteelFromSlag stay on the ship smelters
@@ -64,6 +65,12 @@ namespace RimMandrake.StarWars.Armoury
             }
         }
 
+        // GenStep_Asteroid.mineableCounts is a List<MineableCountConfig> (1.6 decompile; the XML's element-name keys are read by
+        // MineableCountConfig.LoadDataFromXmlCustom), not a dictionary; GenStep_BasicAsteroid derives from it. The ore must also
+        // leave GeneratedLocationDef Asteroids.preciousResources: WorldComponent_LocationGenerator picks a site's precious
+        // resource from that list and GenStep_Asteroid.SpawnOres places the precious resource first, so leaving it there would
+        // keep spawning doonium (and, with its count gone, log "No count found for resource"). An asteroid site generated
+        // before the toggle went off keeps its saved precious resource; that one site logs the vanilla error and gets no ore.
         static void RemoveAsteroidDoonium()
         {
             var ore = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_MineableDoonium");
@@ -71,12 +78,10 @@ namespace RimMandrake.StarWars.Armoury
             foreach (string step in AsteroidSteps)
             {
                 var def = DefDatabase<GenStepDef>.GetNamedSilentFail(step);
-                if (def == null || def.genStep == null) continue;
-                var f = def.genStep.GetType().GetField("mineableCounts",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                var dict = f?.GetValue(def.genStep) as IDictionary;
-                if (dict != null && dict.Contains(ore)) dict.Remove(ore);
+                if (def?.genStep is GenStep_Asteroid asteroid && asteroid.mineableCounts != null)
+                    asteroid.mineableCounts.RemoveAll(c => c != null && c.mineable == ore);
             }
+            DefDatabase<GeneratedLocationDef>.GetNamedSilentFail("Asteroids")?.preciousResources?.Remove(ore);
         }
     }
 }
