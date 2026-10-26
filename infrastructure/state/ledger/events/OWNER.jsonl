@@ -2485,3 +2485,4 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launching after reboot for gravel/sapper/melter rows","ts":"2026-10-26T02:24:14Z","tsn":1792981454148205980}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH: at main menu after cold load","ts":"2026-10-26T02:36:10Z","tsn":1792982170827553026}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH done: gravel/melter/sapper rows PASS; game left running, healthy (only baseline/third-party errors)","ts":"2026-10-26T02:41:43Z","tsn":1792982503774098182}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH L1 sweep done; quicktest left up and healthy with staged scenes (hoses, faucets, tanks, 16 drawbridges)","ts":"2026-10-26T03:58:15Z","tsn":1792987095244985353}
