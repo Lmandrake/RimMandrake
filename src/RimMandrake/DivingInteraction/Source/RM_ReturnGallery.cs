@@ -39,7 +39,16 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref segment, "gallerySegment");
             Scribe_Values.Look(ref length, "galleryLength");
             Scribe_Values.Look(ref tempC, "galleryTempC");
-            Scribe_Values.Look(ref letter, "galleryLetter", 'A');
+            // GALLERY_FIX_LETTER_SCRIBE_CHAR: ParseHelper has no char parser, so Scribe_Values.Look<char> logged
+            // "Trying to parse to unknown data type Char" on load and reset every non-default letter to '\0'.
+            // Scribed through a string under the same key: the saver already wrote char.ToString() ("B"), so
+            // saves written before this fix load their letters.
+            string letterText = letter.ToString();
+            Scribe_Values.Look(ref letterText, "galleryLetter", "A");
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                letter = string.IsNullOrEmpty(letterText) ? 'A' : letterText[0];
+            }
             Scribe_Values.Look(ref probed, "galleryProbed", false);
         }
 

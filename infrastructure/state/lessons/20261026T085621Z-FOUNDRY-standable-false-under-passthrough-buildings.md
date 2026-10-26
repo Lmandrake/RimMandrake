@@ -1,0 +1,2 @@
+GenGrid.Standable(c) is false on every cell of a building whose passability is not Standable (PassThroughOnly heaters, lamps, chargers, masts as well as Impassable). A 'deposit filth / mark under this machine' loop gated on Standable silently does nothing for nearly every powered device; FilthMaker itself only needs WalkableByAny. Gate on the ring around the footprint (OccupiedRect().ExpandedBy(1)) or on WalkableByAny. Found: RM_MapComponent_ChillFootprints machine shadow (CHILLPRINTS_FIX_MACHINE_SHADOW_NO_DEPOSIT).
+home: rimworld-modding

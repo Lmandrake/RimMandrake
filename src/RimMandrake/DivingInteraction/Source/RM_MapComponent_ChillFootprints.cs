@@ -80,8 +80,8 @@ namespace RimMandrake.DivingInteraction
     //            a walking pawn leaves a thin, moving line of thickness-1
     //            marks — "melt-prints."
     //   MACHINE — a parked (stationary, by construction — it is a
-    //            building) powered device deposits under its own whole
-    //            footprint EVERY rescan, so it saturates to max thickness
+    //            building) powered device deposits on its footprint and
+    //            the one-cell ring around it EVERY rescan, so it saturates to max thickness
     //            fast — "a polished shadow," visibly denser than a pawn's
     //            passing trail, using vanilla's own Graphic_Cluster
     //            (BaseFilth's graphicClass) to draw MORE copies of the
@@ -247,10 +247,17 @@ namespace RimMandrake.DivingInteraction
                 }
 
                 // "A parked warm machine" — every scan, every cell of its
-                // own footprint, so a stationary device saturates to max
-                // thickness fast: the "polished shadow," visibly denser
-                // than a pawn's single-thickness passing trail.
-                CellRect rect = t.OccupiedRect();
+                // footprint plus the one-cell ring around it, so a stationary
+                // device saturates to max thickness fast: the "polished
+                // shadow," visibly denser than a pawn's single-thickness
+                // passing trail.
+                // CHILLPRINTS_FIX_MACHINE_SHADOW_NEVER_DEPOSITS: the footprint
+                // alone deposited nothing for almost every device. DepositAt
+                // needs Standable, and Standable is false under any building
+                // whose passability is not Standable (heater, lamp, our own
+                // electrojet mast and suit charger are PassThroughOnly). The
+                // ring is open floor, so the shadow now lands where it is seen.
+                CellRect rect = t.OccupiedRect().ExpandedBy(1);
                 foreach (IntVec3 c in rect)
                 {
                     DepositAt(c);

@@ -1,0 +1,2 @@
+Scribe_Values.Look<char> compiles and saves (char.ToString()) but never loads: Verse.ParseHelper registers no char parser, so ScribeExtractor.ValueFromNode logs 'Exception parsing node ... Trying to parse to unknown data type Char' and returns default(char) = NUL. Only values different from the default are written, so a fresh save with default letters looks fine. Scribe a char through a string under the same key (old saves stay loadable). Found in RM_ReturnGallery.cs (GALLERY_FIX_LETTER_SCRIBE_CHAR).
+home: rimworld-modding

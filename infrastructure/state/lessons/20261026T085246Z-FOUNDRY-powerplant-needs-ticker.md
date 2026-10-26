@@ -1,0 +1,2 @@
+A generator ThingDef (CompPowerPlant or subclass) MUST set <tickerType>Normal</tickerType>: BuildingBase sets none, TickerType's default is Never, and CompPowerPlant writes PowerOutput only from CompTick -> UpdateDesiredPowerOutput. Without it the building spawns, connects and reads as a generator but outputs 0 W forever, with no log line. Consumers (CompPowerTrader alone) do not need a ticker. Found on RM_ChillAuroraCollector (AURORAMAST_FIX_NEVER_TICKS_NO_POWER).
+home: rimworld-modding

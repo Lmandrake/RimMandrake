@@ -33,6 +33,9 @@
     <description>A conductive mast strung with skyharp-tuned filaments, planted to catch the same electrojet spike that lights the floor from above. Idle under a quiet sky — when the aurora surges, current runs down its spine and out onto the grid. It draws nothing while the sky is calm, and nothing at all if boxed in under a roof.</description>
     <thingClass>Building</thingClass>
     <category>Building</category>
+    <!-- AURORAMAST_FIX_NEVER_TICKS_NO_POWER: CompPowerPlant sets PowerOutput only from CompTick, and
+         BuildingBase leaves tickerType at Never, so without this the mast made 0 W in every surge. -->
+    <tickerType>Normal</tickerType>
     <size>(1,1)</size>
     <rotatable>false</rotatable>
     <useHitPoints>true</useHitPoints>
