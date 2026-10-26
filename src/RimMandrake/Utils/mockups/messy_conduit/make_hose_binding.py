@@ -4,7 +4,7 @@
 
 Owner: *"you're going to need to make a binding material at the beginnig and end that looks good for any hose type
 within, perhaps as though it were wrapped with dense cloth many times like a mummy and wider than the pipe so that it
-can explain the width difference gracefully."* Writes into Textures/.../Hose/:
+can explain the width difference gracefully."* Writes into FlowWorks Textures/.../Hose/ (the hose moved out of GSS):
   * Binding.png -- the cloth wrap ALONE, cropped from the accepted artpipe render messyconduit_hose_binding_v1
     (128x64: hose enters at -X, wrap columns 22-103, fitting at +X). The render's own black hose and fitting are cut
     away (the hose and fitting drawn beside it are the game's own), leaving the wrap, 82x40, wrap axis along +X.
@@ -23,7 +23,7 @@ import os
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-H = os.path.join(HERE, "..", "..", "..", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Hose")
+H = os.path.join(HERE, "..", "..", "..", "FlowWorks", "Textures", "RimMandrake", "FlowWorks", "Hose")
 SRC = rm_str("artpipe", "_artsrc", "messyconduit_hose_binding_v1", "messyconduit_hose_binding_v1.png")
 X0, X1, Y0, Y1 = 22, 104, 12, 52
 BARE_FROM = {"Coupling_Brass": 58, "EndCap": 44, "Nozzle": 42}   # first brass column, judged on a 3x enlargement
@@ -63,14 +63,28 @@ def bare():
         im.save(os.path.join(H, n.split("_")[0] + "_Bare.png"))
 
 
+def missing_inputs(h=None, src=None):
+    """Every file a run reads, absent ones listed. Checked before ANY write: the source render
+    (messyconduit_hose_binding_v1.png) was not kept after 2026-10-04, and a run that wrote the *_Bare
+    files and then died on it left a half-regenerated hose set (review 2026-10-26)."""
+    h, src = h or H, src or SRC
+    need = [src] + [os.path.join(h, n + ".png") for n in BARE_FROM]
+    return [p for p in need if not os.path.isfile(p)]
+
+
 def main():
+    gone = missing_inputs()
+    if gone:
+        print("REFUSED, nothing written; missing input(s):\n  " + "\n  ".join(gone))
+        return 1
     bare()
     b = binding()
     a = b.getchannel("A")
     band = max(sum(1 for y in range(b.size[1]) if a.getpixel((x, y)) > 128) for x in range(b.size[0]))
     mouth()
     print("wrote Binding.png %dx%d (widest band %d px) and Mouth.png 64x64" % (b.size[0], b.size[1], band))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    _rm_sys.exit(main())
