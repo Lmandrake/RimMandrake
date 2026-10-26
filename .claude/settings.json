@@ -167,6 +167,17 @@
             "statusMessage": "Checking the subagent runs on a bounded context"
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_agent_over_slots.py\" 2>/dev/null || true",
+            "timeout": 20,
+            "statusMessage": "Checking this seat's helper slots against the allocator"
+          }
+        ]
       }
     ],
     "SessionStart": [
