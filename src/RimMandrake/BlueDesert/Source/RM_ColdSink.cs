@@ -67,6 +67,7 @@ namespace RimMandrake.BlueDesert
     public class RM_CompColdSink : ThingComp
     {
         private bool workingNow;
+        private int drawnStage = -1;   // ClarityStage the map mesh was last printed with (unsaved: re-read at spawn)
 
         private CompRefuelable refuelable;
         private CompTempControl tempControl;
@@ -95,6 +96,7 @@ namespace RimMandrake.BlueDesert
             base.PostSpawnSetup(respawningAfterLoad);
             refuelable = parent.GetComp<CompRefuelable>();
             tempControl = parent.GetComp<CompTempControl>();
+            drawnStage = ClarityStage;   // the spawn print uses this stage
         }
 
         public override void PostExposeData()
@@ -105,14 +107,17 @@ namespace RimMandrake.BlueDesert
         public override void CompTickRare()
         {
             base.CompTickRare();
-            int stageBefore = ClarityStage;
             workingNow = false;
             if (On && refuelable != null && refuelable.HasFuel && parent.Spawned)
             {
                 Absorb();
             }
-            if (ClarityStage != stageBefore && parent.Spawned)
+            // Compared with the stage last printed, not the stage at the start of this tick: a refuel lands between rare ticks
+            // (CompRefuelable.Refuel dirties no mesh), so a before/after test here never saw it and a refilled rack stayed white.
+            int stage = ClarityStage;
+            if (stage != drawnStage && parent.Spawned)
             {
+                drawnStage = stage;
                 parent.Map.mapDrawer.MapMeshDirty(parent.Position, MapMeshFlagDefOf.Things);
             }
         }
