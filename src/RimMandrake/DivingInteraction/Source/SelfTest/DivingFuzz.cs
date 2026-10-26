@@ -516,10 +516,18 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 bool refuel = r.Next(4) != 0, glow = r.Next(2) == 0, heat = r.Next(2) == 0, overlay = r.Next(3) == 0;
                 bool table = r.Next(3) == 0, plant = r.Next(4) == 0, powered = plant || r.Next(3) == 0;
                 bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered);
-                bool wantFlame = refuel && ((plant && (heat || overlay)) || (!powered && (glow || heat || overlay || table)));
                 string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered}";
-                if (flame != wantFlame) { fails.Add($"fireban seed {seed}: UsesFlame {flame}, want {wantFlame} ({who})"); continue; }
-                if (powered && !plant && flame) { fails.Add($"fireban seed {seed}: a powered machine counted as a flame ({who})"); continue; }
+                // The classification is checked clause by clause, each one a ruling, not the kernel's expression copied
+                // back. Over seven flags any complete oracle is the same truth table, so the check that can disagree with
+                // the kernel is the named-building table below (real comp sets from the def dump, verdict from what the
+                // building's description says it burns); the random part here tests the gating plumbing.
+                string clause = null;
+                if (!refuel && flame) clause = "no fuel, yet a flame (electric things are never touched)";
+                else if (refuel && powered && !plant && flame) clause = "a fuelled powered machine counted as a flame (CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL)";
+                else if (refuel && !powered && flame != (glow || heat || overlay || table)) clause = "an unpowered fuelled building is a flame exactly when it lights, heats, shows a flame or works bills";
+                else if (refuel && plant && (heat || overlay) && !flame) clause = "a fuelled plant that pushes heat or shows a flame is combustion and must be banned";
+                else if (refuel && plant && !heat && !overlay && flame) clause = "a fuelled plant with no heat and no flame is not burning (CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED)";
+                if (clause != null) { fails.Add($"fireban seed {seed}: UsesFlame {flame}: {clause} ({who})"); continue; }
                 float fuel = refuel ? r.Next(1, 50) : 0f;
                 bool air = r.Next(2) == 0;
                 try
@@ -530,8 +538,8 @@ namespace RimMandrake.DivingInteraction.SelfTest
                         if (r.Next(5) == 0) air = !air;   // the pump starts, stops, the room unseals
                         bool hasFuel = !refuel || fuel > 0f;
                         bool vLit = refuel && hasFuel, vHeat = hasFuel && (heat || !refuel), vBills = table && hasFuel && r.Next(6) != 0, vPower = plant && hasFuel;
-                        bool lit = RM_ChillFireBanKernel.Output(vLit, true, air);                // ShouldBeLitNow: always a refuelable
-                        bool hot = RM_ChillFireBanKernel.Output(vHeat, refuel, air);             // heater: fuelled ones only
+                        bool lit = RM_ChillFireBanKernel.Output(vLit, flame, air);               // ShouldBeLitNow: Gate(), flame buildings only
+                        bool hot = RM_ChillFireBanKernel.Output(vHeat, flame, air);              // heaters: Gate(), flame buildings only
                         bool bills = RM_ChillFireBanKernel.Output(vBills, flame, air);           // Gate(): flame buildings only
                         bool power = RM_ChillFireBanKernel.Output(vPower, flame, air);
                         bool skip = RM_ChillFireBanKernel.SkipFuelBurn(flame, air);
@@ -545,7 +553,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                             Check(skip, "a banned flame building still burns fuel");
                             Check(note, "a banned flame building does not say why it is out");
                         }
-                        if (!flame) Check(bills == vBills && power == vPower && !skip && !note, "a non-flame building (machine, turret barrel, tank) was gated");
+                        if (!flame) Check(lit == vLit && hot == vHeat && bills == vBills && power == vPower && !skip && !note, "a non-flame building (machine, turret barrel, tank, non-combustion plant) was gated");
                         float before = fuel;
                         if (refuel && !skip && hasFuel) fuel = Math.Max(0f, fuel - 1f);
                         if (flame && !air) Check(fuel == before, "fuel fell while the ban held");
@@ -559,11 +567,16 @@ namespace RimMandrake.DivingInteraction.SelfTest
             if (!Banned(true, true, true, true, true, false, false)) fails.Add("fireban units: Campfire (fuel, glow, heat, flame, bills) is not a flame building — it would still cook on the seabed");
             if (!Banned(true, false, true, false, true, false, false)) fails.Add("fireban units: FueledStove is not a flame building");
             if (!Banned(true, false, false, false, true, false, false)) fails.Add("fireban units: FueledSmithy is not a flame building");
-            if (!Banned(true, false, false, true, false, true, true)) fails.Add("fireban units: WoodFiredGenerator / ChemfuelPoweredGenerator is not a flame building — it would still make power");
+            if (!Banned(true, true, true, false, false, true, true)) fails.Add("fireban units: WoodFiredGenerator / ChemfuelPoweredGenerator is not a flame building — it would still make power");
             if (!Banned(true, true, false, true, false, false, false)) fails.Add("fireban units: TorchLamp is not a flame building");
             if (Banned(false, true, true, false, true, false, true)) fails.Add("fireban units: ElectricStove (no fuel) was banned");
             if (Banned(true, true, false, false, false, false, true)) fails.Add("fireban units: KoltoTank (fuelled powered machine) was banned");
             if (Banned(true, false, false, false, false, false, false)) fails.Add("fireban units: a turret barrel / shuttle tank (fuel, no flame use) was banned");
+            // Fuelled power plants from the def-dump census (2026-10-26), comp sets as shipped (glow, heat, overlay):
+            if (!Banned(true, true, true, false, false, true, true)) fails.Add("fireban units: BioferriteGenerator (\"igniting bioferrite\": glow, heat) is not a flame building");
+            if (!Banned(true, false, true, false, false, true, true)) fails.Add("fireban units: KOTOR_ReactorRhydonium_small (\"igniting motes of Rhydonium\": heat, no glow) is not a flame building");
+            if (Banned(true, false, false, false, false, true, true)) fails.Add("fireban units: RM_DecayCell (digests rot: no glow, heat or flame) was banned");
+            if (Banned(true, true, false, false, false, true, true)) fails.Add("fireban units: RUT_VaultHeart / OuterRim_FusionReactorLight (glow only, nothing burns) was banned");
             if (RM_ChillFireBanKernel.Output(false, true, false) || RM_ChillFireBanKernel.Output(false, true, true)) fails.Add("fireban units: Output turned an off output on");
             return fails;
         }

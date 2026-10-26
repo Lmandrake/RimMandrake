@@ -21,7 +21,10 @@ namespace RimMandrake.DivingInteraction
         /// heat or draws a flame (WoodFiredGenerator, ChemfuelPoweredGenerator, BioferriteGenerator, the KotOR Rhydonium
         /// and Tibanna reactors all carry a heat pusher) — or an unpowered building that glows, heats, draws a flame or
         /// works bills. A fuelled plant with neither is not burning anything (RM_DecayCell digests rot, RUT_VaultHeart
-        /// eats a persona core; CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED) and keeps working.
+        /// eats a persona core; CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED; Outer Rim's tibanna fusion reactors carry no
+        /// heat pusher either) and keeps working. Heat is a proxy, not proof: VQE's four uranium Genetrons push heat and
+        /// burn nothing, so they opt out per def (Patches/RM_ChillFireBan_FissionGenetrons.xml). Census of all 29 fuelled
+        /// plants on the owner's list, def dump 2026-10-26: CHILLFIREBAN_FIX_MODDED_OVERRIDES_BYPASS.
         /// A powered CONSUMER with fuel is a machine, not a fire (CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL: KoltoTank,
         /// Autobong, Spaceports_FuelProcessor — their glow is an electric status light), so it is never a flame building.
         /// </summary>

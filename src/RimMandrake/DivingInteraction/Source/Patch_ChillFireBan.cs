@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -87,41 +90,75 @@ namespace RimMandrake.DivingInteraction
             {
                 return; // already unlit (out of fuel etc) — nothing to override
             }
-            Thing parent = __instance.parent;
-            if (parent?.Map == null)
-            {
-                return;
-            }
-            __result = RM_ChillFireBanKernel.Output(__result, true,
-                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent));
+            // Gate(): only a flame building goes dark. A fuelled powered machine's glow is an electric status light
+            // (KoltoTank; CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL) and a non-combustion plant keeps its glow while it
+            // keeps making power (RUT_VaultHeart; CHILLFIREBAN_FIX_NONCOMBUSTION_PLANT_BANNED).
+            __result = Patch_ChillFireBan_Fuelled.Gate(__instance.parent, __result);
         }
     }
 
-    [HarmonyPatch(typeof(CompHeatPusherPowered), nameof(CompHeatPusherPowered.ShouldPushHeatNow), MethodType.Getter)]
+    // Patch (3) covers CompHeatPusher.ShouldPushHeatNow AND every loaded override of it (ChillFireBanTargets), not
+    // CompHeatPusherPowered's alone: VQE The Generator's CompHeatPusherPowered_Overdrive derives from CompHeatPusher and
+    // never reaches CompHeatPusherPowered's getter (IL read of the owner's assemblies, CHILLFIREBAN_FIX_MODDED_OVERRIDES_BYPASS;
+    // VFE Tribals' CompHeatPusher_LargeFire does call base, so it was always covered). Only a FLAME building is gated (Gate): an electric
+    // heater has no CompRefuelable and keeps working — heat becomes electric-only, not nothing.
+    [HarmonyPatch]
     public static class Patch_CompHeatPusherPowered_ShouldPushHeatNow
     {
-        public static void Postfix(CompHeatPusherPowered __instance, ref bool __result)
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            return ChillFireBanTargets.WithOverrides(
+                AccessTools.PropertyGetter(typeof(CompHeatPusher), nameof(CompHeatPusher.ShouldPushHeatNow)));
+        }
+
+        public static void Postfix(CompHeatPusher __instance, ref bool __result)
         {
             if (!__result)
             {
                 return;
             }
-            Thing parent = __instance.parent;
-            if (parent?.Map == null)
+            __result = Patch_ChillFireBan_Fuelled.Gate(__instance.parent, __result);
+        }
+    }
+
+    /// <summary>
+    /// A vanilla method plus every override of it in the loaded assemblies. A Harmony patch on a virtual method patches
+    /// that one body: an override that does not call base never runs it. The owner's list has such overrides on all three
+    /// methods the ban gates (CHILLFIREBAN_FIX_MODDED_OVERRIDES_BYPASS): VQE The Generator's CompPowerPlantGenetron
+    /// replaces UpdateDesiredPowerOutput and CompRefuelableWithOverdrive replaces CompTick, so a wood-fired Genetron on the
+    /// seabed had its fuel frozen (CompRefuelable.CompTick, patched) while it kept making power (the override, unpatched).
+    /// Patching an override that does call base runs the postfix twice; every postfix here is idempotent. Runs at mod
+    /// construction, after every mod assembly is loaded.
+    /// </summary>
+    internal static class ChillFireBanTargets
+    {
+        internal static IEnumerable<MethodBase> WithOverrides(MethodInfo root)
+        {
+            yield return root;
+            Type rootType = root.DeclaringType;
+            Type baseDeclarer = root.GetBaseDefinition().DeclaringType;
+            Type[] parameters = Array.ConvertAll(root.GetParameters(), p => p.ParameterType);
+            foreach (Type t in AccessTools.AllTypes())
             {
-                return;
+                MethodInfo m;
+                try
+                {
+                    if (t == rootType || t.ContainsGenericParameters || !rootType.IsAssignableFrom(t))
+                    {
+                        continue;
+                    }
+                    m = AccessTools.DeclaredMethod(t, root.Name, parameters);
+                    if (m == null || m.IsAbstract || m.GetBaseDefinition().DeclaringType != baseDeclarer)
+                    {
+                        continue; // not declared here, or a `new` method that hides rather than overrides
+                    }
+                }
+                catch (Exception)
+                {
+                    continue; // a type whose dependencies did not load: it cannot be instantiated either
+                }
+                yield return m;
             }
-            // Only a FUEL-burning heater is in scope — an electric one has
-            // no CompRefuelable and must keep working (heat becomes
-            // electric-only is the point, not "heat becomes nothing").
-            // Thing.TryGetComp<T>() (ThingCompUtility) works on a plain
-            // Thing without an unsafe cast to ThingWithComps.
-            if (parent.TryGetComp<CompRefuelable>() == null)
-            {
-                return;
-            }
-            __result = RM_ChillFireBanKernel.Output(__result, true,
-                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent));
         }
     }
 
@@ -152,12 +189,19 @@ namespace RimMandrake.DivingInteraction
     }
 
     // Same item: a fuelled generator (wood-fired, chemfuel) makes no power while the ban holds.
-    // CompPowerPlant.UpdateDesiredPowerOutput reads refuelableComp.HasFuel directly and runs every CompTick; no vanilla
-    // subclass overrides it (checked against the decompiled 1.6 RimWorld namespace), so this postfix sees every plant.
-    // Solar, wind, geothermal, watermill, aurora collector: no CompRefuelable, untouched.
-    [HarmonyPatch(typeof(CompPowerPlant), nameof(CompPowerPlant.UpdateDesiredPowerOutput))]
+    // CompPowerPlant.UpdateDesiredPowerOutput reads refuelableComp.HasFuel directly and runs every CompTick. No vanilla
+    // subclass overrides it, but modded ones do (VQE's CompPowerPlantGenetron, without a base call), so the postfix goes
+    // on every override too (ChillFireBanTargets). Solar, wind, geothermal, watermill, aurora collector: no CompRefuelable,
+    // untouched.
+    [HarmonyPatch]
     public static class Patch_CompPowerPlant_UpdateDesiredPowerOutput
     {
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            return ChillFireBanTargets.WithOverrides(
+                AccessTools.Method(typeof(CompPowerPlant), nameof(CompPowerPlant.UpdateDesiredPowerOutput)));
+        }
+
         public static void Postfix(CompPowerPlant __instance)
         {
             if (__instance.PowerOutput <= 0f)
@@ -244,14 +288,24 @@ namespace RimMandrake.DivingInteraction
     // processor: CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL) is a machine, not a fire, and keeps burning.
     // The skip is done at ConsumeFuel, scoped to this comp during its own CompTick, so the fuel never
     // reaches 0 and Notify_RanOutOfFuel (destroyOnNoFuel) cannot fire from a burn that did not happen.
-    [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.CompTick))]
+    // Every override of CompTick is patched too (VQE's CompRefuelableWithOverdrive burns fuel in its own CompTick and never
+    // calls base). An override that DOES call base (VGE's CompRefuelable_IgnoreFlickableComp) nests one tick inside the
+    // other, so the finalizer restores the outer scope (__state) instead of clearing it: clearing would let the override's
+    // own ConsumeFuel calls after base.CompTick() burn fuel the ban froze.
+    [HarmonyPatch]
     public static class Patch_CompRefuelable_CompTick
     {
         internal static CompRefuelable suppressing;
 
-        public static void Prefix(CompRefuelable __instance)
+        public static IEnumerable<MethodBase> TargetMethods()
         {
-            suppressing = null;
+            return ChillFireBanTargets.WithOverrides(
+                AccessTools.Method(typeof(CompRefuelable), nameof(CompRefuelable.CompTick)));
+        }
+
+        public static void Prefix(CompRefuelable __instance, out CompRefuelable __state)
+        {
+            __state = suppressing;
             ThingWithComps parent = __instance.parent;
             if (parent == null || !parent.Spawned || !IsFireOnly(parent))
             {
@@ -264,9 +318,9 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
-        public static void Finalizer()
+        public static void Finalizer(CompRefuelable __state)
         {
-            suppressing = null;
+            suppressing = __state;
         }
 
         private static bool IsFireOnly(ThingWithComps parent)
