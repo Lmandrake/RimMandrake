@@ -351,6 +351,21 @@ namespace RimMandrake.FeverWood
         }
     }
 
+    // Projectile_Explosive.Impact overrides Projectile.Impact and never calls base (decompiled 1.6: it Explode()s or
+    // arms its fuse and returns), so a grenade, mortar shell or rocket landing in the haze never reached the prefix
+    // above. Same spark, on the explosive's own override.
+    [HarmonyPatch(typeof(Projectile_Explosive), "Impact")]
+    public static class RM_Patch_OilBoilExplosiveLanded
+    {
+        public static void Prefix(Projectile_Explosive __instance)
+        {
+            if (__instance.Spawned)
+            {
+                RM_OilBoil.TrySpark(__instance.Map, __instance.Position, "a shell landing in the haze");
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(WeatherEvent_LightningStrike), nameof(WeatherEvent_LightningStrike.DoStrike))]
     public static class RM_Patch_OilBoilLightning
     {
