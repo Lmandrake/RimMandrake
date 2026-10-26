@@ -57,8 +57,9 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash and why; an older Gimme Some Slack that still carries the hose reel defs is the one known case (loadAfter + one red log line) -> UNBUILT (no check yet)
 
 ## north star
-state: DRAFT
-validated-hash: 
+state: VALIDATED
+validated-hash: a038d71b2055240d6cfd2242234d71168c65ff6b808dba5993a116e1af8e6812
+validated-by: BY CARD: North star: add the two orphan bars → Add both lines as drafted (Recommended)
 
 The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
@@ -338,6 +339,9 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
       at one of those ports, one hose to a port, meeting it with a visible coupling; a rigid pipe joins a pump wherever it
       is adjacent to it, corners included, and is drawn running on underneath to the pump's centre.
 
+- [ ] `ice_cuts_to_crushed_ice_that_melts` (change) — cutting ice ground leaves a pile of crushed ice, which over time visibly melts away to water while its room grows colder.
+- [ ] `digging_takes_hours` (change) — digging or filling one square of ditch by shovel takes a pawn hours of game time, not moments; raiders filling a trench carry the fill in first.
+
 ### cannot show
 
 - [ ] `never_liquid_on_open_ground` — liquid standing on undug ground outside both the
@@ -450,6 +454,8 @@ enough. **A future pass must not re-add an irrigation line as an oversight.**
 | `pit_cover_unlike_bridge` | the bridges design: covers are the hidden trap tier of the same span base, with their own look (Q8); accepted at the 2026-10-20 sitting |
 | `pipe_meets_building_centre` | owner 2026-10-18, "draw pipes as though they are connected into the centers of all pipe-receiving items"; accepted at the 2026-10-20 sitting |
 | `pump_hose_joins_at_side_port` | owner 2026-10-18, "a more squarish device with a clear place for pumps to join … connectable from any angle"; he typed 2026-10-20 (correcting the card "One port per side, either kind"): *"No. a HOSE must connect at one of the four sides. A solid pipe must only be adjacent and is then drawn undernead to the center of the object as ruled previously."* Renamed from `pump_port_takes_pipe_or_hose` (earlier `pump_port_takes_pipe_and_hose`), which made a pipe take a port |
+| `ice_cuts_to_crushed_ice_that_melts` | owner rulings 2026-10-25, ICE_YIELD_DECIDE_ONE_CUT_FOUR_NOTCHES and ICE_MELT_TAME_STACK_FLOOD; card "North star: add the two orphan bars → Add both lines as drafted (Recommended)" 2026-10-26 |
+| `digging_takes_hours` | DIG_FILL owner card 2026-10-25: *"Everyone pays and it's backbreaking work. Like real life. Digging a ditch or filling a ditch takes hours."*; added by card 2026-10-26 |
 
 ## proposed bars (NOT hash-bound — proposals for his sitting)
 

@@ -99,7 +99,9 @@ EXTENSION_ONLY_BARS = ["canal_fire_reaches_reservoir", "reservoir_recharge_progr
                        "pipe_meets_building_centre",
                        "pit_cover_unlike_bridge", "portable_ladder_leans_on_its_wall", "pump_hose_joins_at_side_port",
                        "raiders_never_shelter_in_a_cage", "suspension_bridge_reads_hung",
-                       "wall_ladder_rides_on_rails"]
+                       "wall_ladder_rides_on_rails",
+                       # added to the section 2026-10-26 by card (NORTHSTAR_BARS_FIX_ICE_LABOUR_ORPHANED)
+                       "ice_cuts_to_crushed_ice_that_melts", "digging_takes_hours"]
 
 # core row -> the Mod Settings toggle it flips (both sides proven in the same row or its pair)
 ROW_TOGGLES = {

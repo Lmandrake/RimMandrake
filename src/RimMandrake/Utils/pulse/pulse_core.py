@@ -1462,7 +1462,7 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
 
 
 TESTING_IDLE_WARN_SECS = 3600      # Steve idle this long with nothing queued: agents should feed it (warn, agent)
-TESTING_PAUSE_RED_SECS = 1200     # a paused lane this long is red (agent-flagged): SteveDesktop must not sit idle
+# owner ruling 2026-10-26 (card "Pause colour"): a paused lane stays WARNING at any duration, never red (red = he must act)
 TESTING_DOWN_RED_SECS = 3600       # Steve unreachable this long WITH jobs waiting: his verb (wake it) -> red
 TESTING_MACHINES = (("steve", "SteveDesktop"), ("archmagi", "Archmagi"))
 _testing_cache: dict = {}
@@ -1513,12 +1513,12 @@ def classify_testing(live: dict | None, acks: dict, now: float) -> list[dict]:
     rows, pend = [], int(s.get("pending") or 0)
     down = s.get("ssh_down_since")
     if s.get("paused"):
-        # shown with an empty queue too (a pause idles the machine whatever is queued); RED once it has sat past
-        # TESTING_PAUSE_RED_SECS - an idle SteveDesktop is against the owner's rule, and an hour went unseen as a warn.
+        # shown with an empty queue too (a pause idles the machine whatever is queued); always the warning colour,
+        # never red at any duration (owner ruling 2026-10-26: red is reserved for things he must act on).
         p = s["paused"] if isinstance(s["paused"], dict) else {}
         since = iso_to_epoch(p["since"]) if p.get("since") else now
         age = max(0, int((now - since) // 60))
-        kind = "red" if now - since >= TESTING_PAUSE_RED_SECS else "warn"
+        kind = "warn"
         rows.append(_row("testing:paused", kind, "STEVE", f"SteveDesktop lane PAUSED {age} min ({p.get('cause') or '?'}"
                          f"{' by ' + p['job'] if p.get('job') else ''}) · {pend} job{'s' * (pend != 1)} waiting · "
                          f"idle until an agent runs: testq resume --reason R", since, src="testing", agent=True))
