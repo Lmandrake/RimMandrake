@@ -304,6 +304,24 @@ def test_cli():
             ok("cli: --requeue is gone", False)
         except SystemExit:
             ok("cli: --requeue is gone", True)
+        # review w94: a stored verdict in its old Python-repr string form is read, not crashed on
+        common.atomic_write_json(done / "t_owner.manifest.json", {"id": "t_owner", "status": "ok",
+                                                                  "canon_check": repr(m["canon_check"])})
+        try:
+            r_str = canon_check.check_one("t_owner", vision=MockVision(), **kw)
+        except Exception as exc:  # noqa: BLE001
+            r_str = {"status": f"raised {type(exc).__name__}"}
+        ok("cli: an old string-form verdict reads as already graded", r_str["status"] == "already", r_str["status"])
+        common.atomic_write_json(done / "t_owner.manifest.json", m)
+        # review w94: a job that could not be graded is UNMEASURED (exit 2); an advisory FAIL still exits 0
+        import contextlib
+        import io
+        argv = ["--done-dir", str(done), "--failed-dir", str(failed), "--artsrc-dir", str(artsrc)]
+        with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+            rc_missing = canon_check.main(["no_such_job"] + argv)
+            rc_done = canon_check.main(["t_owner"] + argv)
+        ok("cli: a job that could not be graded exits non-zero (UNMEASURED)", rc_missing == 2, rc_missing)
+        ok("cli: control: an already-graded job exits 0", rc_done == 0, rc_done)
         r3 = canon_check.check_one("t_owner", vision=MockVision(), **dict(kw, dry_run=True, force=True))
         ok("cli: --dry-run writes nothing", r3["status"] == "dry"
            and json.loads((done / "t_owner.manifest.json").read_text())["canon_check"]["score"] == "1/2")

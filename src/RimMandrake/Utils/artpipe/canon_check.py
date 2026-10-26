@@ -536,6 +536,9 @@ def advisory_text(check, limit: int = 3) -> str:
 
 # ────────────────────────────────────────────────────────────── CLI ──
 
+UNMEASURED_STATUSES = ("error", "missing", "no_render")
+
+
 def _find_job(job_id: str, done: Path, failed: Path):
     for d in (done, failed):
         jp = d / f"{job_id}.json"
@@ -555,7 +558,7 @@ def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: boo
     png = artsrc / job_id / f"{job_id}.png"
     if not png.is_file():
         return {"id": job_id, "status": "no_render", "note": f"{png} absent"}
-    prior = manifest.get("canon_check")
+    prior = normalize(manifest.get("canon_check"))   # an old record may be a Python-repr string (review w94)
     if prior and prior.get("status") == "graded" and not force and mode == "v1":
         return {"id": job_id, "status": "already", "check": prior, "job": job, "dir": d.name}
     spec = gather(job)
@@ -564,8 +567,6 @@ def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: boo
                 "note": f"{spec['kind']} {spec['slug'] or ''} {len(spec['lines'])} lines" if spec else "nothing to grade"}
     if spec is None:
         rec = {"status": "skipped", "reason": "no canon entry and no owner note"}
-    elif False:
-        return {"id": job_id, "status": "dry", "kind": spec["kind"], "slug": spec["slug"], "n": len(spec["lines"])}
     else:
         try:
             rec = grade(png, spec, vision=vision, mode=mode, **vkw)
@@ -642,6 +643,12 @@ def main(argv=None) -> int:
     print(f"[canon_check] graded {len(graded)}, PASS {len(graded) - len(fails) - ungraded}, FAIL {len(fails)}, "
           f"UNGRADED {ungraded}, other {len(results) - len(graded)} (advisory: nothing is requeued or blocked)",
           file=sys.stderr)
+    # a FAIL verdict is advice and exits 0; a job that could not be graded at all (grader error, no job file, no
+    # render) is UNMEASURED, never a clean 0 (review w94)
+    blind = [r["id"] for r in results if r.get("status") in UNMEASURED_STATUSES]
+    if blind:
+        print(f"[canon_check] UNMEASURED: {len(blind)} job(s) not graded: {', '.join(blind[:10])}", file=sys.stderr)
+        return 2
     return 0
 
 
