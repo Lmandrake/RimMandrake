@@ -1805,7 +1805,9 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
     doc = json.loads(decisions.read_text())
     P = build_plan(decisions, (), idx or L.Index(), jobs)
     def mine(lst, row):
-        return [x for x in lst if (x.get("row") if isinstance(x, dict) else str(x).split(":", 1)[0]) == row]
+        # a line is "<row>: ..." or, for a shared-file clash, "<rowA>, <rowB>: ..." naming every row it holds back
+        return [x for x in lst if (x.get("row") == row if isinstance(x, dict)
+                                   else row in str(x).split(":", 1)[0].split(", "))]
     rows = {}
     for row, v in (doc.get("decisions") or {}).items():
         if not isinstance(v, dict) or not v.get("at"):
@@ -2235,7 +2237,9 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 touched_mods.add(mod_of(f))
             for tp in pl["tex_retire"]:
                 for (mod, rel), ev in list(L.cached_index().live.items()):
-                    if L.parse_texfile(rel)["res"] != tp or not ev.get("sha"):
+                    # a Graphic_Random texPath is a folder: its files' res is their own stem, never the folder
+                    in_tp = L.parse_texfile(rel)["res"] == tp or rel.rsplit("/", 1)[0] == tp
+                    if not in_tp or not ev.get("sha"):
                         continue
                     try:
                         L.retire(L.src_root().parent / mod / "Textures" / rel, reason=WRITER_TAG)
