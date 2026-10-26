@@ -33,7 +33,8 @@ How a job runs (one attempt at a time on this machine):
   * When load starts a FRESH game process, the bridge client's UNKNOWN-outcome markers older than that start are
     resolved as moot (their game is gone); otherwise one killed game refuses every later job's mutating calls.
     When load KEEPS a running game that carries markers older than the load (a driver killed mid-call), the game is
-    restarted once first, so the fresh start resolves them, instead of the job ending INVALID/HARNESS.
+    restarted once first, so the fresh start resolves them, instead of the job ending INVALID/HARNESS. Only once per
+    marker (TESTQ_HOME/marker_bounces.json): a marker a restart did not clear fails later jobs fast, no restart loop.
   * A start that finds this machine's game guard HELD by a live driver (no testq attempt running) is deferred: busy,
     exit 75, the job stays pending; no attempt is made.
 
@@ -41,6 +42,7 @@ Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   attempts/<attempt>/{job.json, state.json, worker.log, modcheck.log, result.json}
   jobs/<job id>       the job's latest attempt id
   current             the live attempt id (absent when idle)
+  marker_bounces.json the bridge marker cids the last marker restart was for -> the attempt that restarted
   outbox/<attempt>.json, outbox/acked/
 
 The testq Archmagi backfill runs this same worker locally on Archmagi (TESTQ_WORKER_HOST=archmagi, its own TESTQ_HOME
@@ -507,6 +509,17 @@ class Attempt:
                 # Every mutating call this job makes would be refused (INVALID/HARNESS, three jobs in a row), and
                 # nothing can read what that call did to a game we are about to reuse. We hold the guard, so no one
                 # else is driving it: restart the game; the fresh start below resolves the markers as moot.
+                # STEVEWORKER_FIX_MARKER_BOUNCE_EVERY_JOB: ONE restart per marker. A marker that survived a restart
+                # (its resolve failed, or the client's delete silently gave up) would otherwise cost every later job
+                # a cold load and then fail anyway: fail fast instead and name it for a human to reconcile.
+                tried = read_json(p("marker_bounces.json")) or {}
+                again = [c for c in stale if c in tried]
+                if again:
+                    return self.fail("INVALID", "HARNESS",
+                                     "kept game carries bridge marker(s) %s that the restart by %s did not resolve; "
+                                     "not restarting again: reconcile by hand (rimbridge_client.py --reconcile)"
+                                     % (" ".join(again), tried[again[0]]))
+                S.dump({c: self.aid for c in stale}, p("marker_bounces.json"))
                 self.res["bounced_for_markers"] = stale
                 self.say("kept game carries %d unknown-outcome bridge marker(s) older than this load (%s): "
                          "restarting it" % (len(stale), " ".join(stale)))
@@ -525,6 +538,10 @@ class Attempt:
                                      "did not report a fresh process: %s" % (" ".join(stale), tail[-200:]))
         if m:
             self.clear_moot_markers(since, m.group(1))
+            if self.res.get("bounced_for_markers") is not None:   # remember only the ones the restart did not clear
+                cleared = set(self.res.get("moot_markers") or [])
+                S.dump({c: self.aid for c in self.res["bounced_for_markers"] if c not in cleared},
+                       p("marker_bounces.json"))
         alive = m or re.search(r"already running \(pid (\d+)\)", tail)
         self.game_pid = alive.group(1) if alive else None
         return True

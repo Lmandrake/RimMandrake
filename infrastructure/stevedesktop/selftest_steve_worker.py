@@ -5,7 +5,7 @@ No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a sm
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
 -> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
-than it (a kept game with an older marker is restarted first), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
+than it (a kept game with an older marker is restarted first, once per marker), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
 the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held by another driver -> deferred busy 75, busy -> 75, stop -> INTERRUPTED, a dead attempt
 finalized, SOURCE_SHA_MISSING, and the real deploy route: deploy_flags' flags pass deploy_custom_mods.py's checks.
 """
@@ -25,10 +25,12 @@ import schema as S  # noqa: E402
 
 FAILS = []
 BRIDGE = r'''
-import json, sys
+import json, os, sys
 path, args = sys.argv[1], sys.argv[2:]
 m = json.load(open(path))
 if "--resolve" in args:
+    if os.environ.get("TESTQ_MOCK_RESOLVE_FAIL"):
+        print("evidence row NOT written", file=sys.stderr); sys.exit(1)
     cid = args[args.index("--resolve") + 1]
     assert args[args.index("--as") + 1] == "not-applied" and args[args.index("--note") + 1].startswith("moot:")
     m.pop(cid)
@@ -203,6 +205,29 @@ def main():
         check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and len(json.load(open(markers))) == 2,
               "a restart that never yields a fresh game is INVALID/LOAD, markers kept: %s %s"
               % (res.get("cause"), res.get("note")))
+        # 3b''. STEVEWORKER_FIX_MARKER_BOUNCE_EVERY_JOB: a marker the restart could NOT resolve (resolve fails, or the
+        # client's marker delete silently gives up) must not cost every later job a game restart: one restart per
+        # marker, then the next job fails fast (INVALID/HARNESS, nothing restarted) naming the marker to reconcile
+        fresh_markers()
+        # (the INVALID/LOAD case above restarted for old_cid and never got a fresh game, so it stays remembered and
+        # would fail this job fast too: start from a reconciled slate)
+        for f in (flag, downs, os.path.join(home, "marker_bounces.json")):
+            if os.path.exists(f):
+                os.remove(f)
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky, TESTQ_CMD_DOWN="echo down >> %s" % downs,
+                  TESTQ_CMD_STATUS="echo 'running pid=4343 session=1'", TESTQ_MOCK_RESOLVE_FAIL="1", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("bounced_for_markers") == [old_cid] and "moot_markers" not in res
+              and len(open(downs).read().split()) == 1, "an unresolvable marker: the first job restarts once: %s %s"
+              % (res.get("bounced_for_markers"), res.get("note")))
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD="echo 'already running (pid 4343)'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % downs, TESTQ_CMD_STATUS="echo 'running pid=4343 session=1'",
+                  TESTQ_MOCK_RESOLVE_FAIL="1", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS" and old_cid in (res.get("note") or "")
+              and len(open(downs).read().split()) == 1,
+              "the next job with the same marker does not restart the game again: %s %s downs=%d"
+              % (res.get("cause"), res.get("note"), len(open(downs).read().split())))
 
         # 3c. the game dies mid-run (TESTQ_DEAD_GAME_RUN_FIX_READS_DONE): modcheck still writes a sheet of
         # UNMEASURED rows, but a game that is gone, or is another process, measured nothing -> INVALID/GAME_DIED
