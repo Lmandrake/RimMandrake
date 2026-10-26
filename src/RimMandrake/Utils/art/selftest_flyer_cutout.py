@@ -9,6 +9,9 @@ body's edge. Four poses (+30, 0, -30, 0 degrees).
   SQUASH    sy -0.5 swings a wing above the hinge row to below it
   FALLOFF   with a falloff the wing pixel touching the body stays put while the tip still moves
   NEG       a frame with the body shifted 2 px is caught by plate_identical < 1 (the check can fail)
+  MOTION    (SHIRREL_BILLOW_WIDEN_NORTH_FAINT) a facing whose wing barely moves (a faint billow: +-2 deg) FAILS
+            the moved-px row while the full swing PASSES; a still facing (identical frames) fails both rows; a facing
+            livelier than east never fails (reference = east)
 """
 from __future__ import annotations
 
@@ -69,6 +72,16 @@ def main() -> int:
     bad = [f.copy() for f in frames]
     bad[2] = np.roll(bad[2], 2, axis=1)
     check("NEG shifted body caught", C.plate_identical(bad, plate, covers) < 1.0)
+    live = C.facing_motion(frames)
+    faint_fc = dict(FC, wings=[dict(FC["wings"][0], poses=[[2, 1.0], [0, 1.0], [-2, 1.0], [0, 1.0]])])
+    faint = C.facing_motion(C.compose_facing(m, faint_fc, 4)[0])
+    still = C.facing_motion([m, m, m, m])
+    rows = C.motion_rows({"east": live, "north": faint, "south": still})
+    check("MOTION live facing passes", not rows["east"]["fails"], str(rows["east"]))
+    check("MOTION faint facing fails", bool(rows["north"]["fails"]), str(rows["north"]))
+    check("MOTION still facing fails", len(rows["south"]["fails"]) == 2, str(rows["south"]["fails"]))
+    check("MOTION livelier-than-east facing passes", not C.motion_rows({"east": faint, "north": live})["north"]["fails"])
+    check("MOTION all-still set fails (no zero reference pass)", all(r["fails"] for r in C.motion_rows({"a": still, "b": still}).values()))
     print("FAIL" if FAILS else "PASS", "selftest_flyer_cutout", FAILS or "")
     return 1 if FAILS else 0
 

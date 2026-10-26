@@ -7,7 +7,8 @@ Rows (each one is checked on the real tree, then broken in memory to prove the r
             a job by chance (flightStartChanceOnJobStart 0), cannot fly into or out of the map; its comps list the
             CreatureBehaviors home tether BEFORE the glide comp; every glide field the def sets exists on the props class;
             homeTrees name LeaningScrub tree defs; no STUB comment names this item; a flip-book prefix, if ever set, has
-            its frames on disk (none today: it flies drawn with its body graphic).
+            its frames on disk, and every facing of it visibly moves (flyer_cutout.py motion rows;
+            SHIRREL_BILLOW_WIDEN_NORTH_FAINT - the w83 north billow moved 444 px with 0% coverage change).
   gate      the CanFlyNow getter is postfixed and the postfix goes through RM_GlideKernel.CanFlyNow; the comp's launch
             raises `launching` only around RM_Flight.TryLaunch, after StartJob, and lowers it in a finally; TryGlide is
             gated on RM_WindCalendar.IsGale and on FeatureOn = RM_WindCalendar.On(shirrelGlideEnabled); off unbinds the
@@ -163,7 +164,25 @@ def check_def(t):
             base = os.path.basename(p.text or "")
             if not (os.path.isdir(d) and any(f.startswith(base) for f in os.listdir(d))):
                 errs.append("flip-book prefix %r has no frames on disk" % p.text)
+            else:
+                errs += flipbook_motion(d, base)
     return errs
+
+
+def flipbook_motion(d, base):
+    """SHIRREL_BILLOW_WIDEN_NORTH_FAINT: every facing of the glide flip-book visibly moves (flyer_cutout.py motion:
+    moved px >= 40% of east's, coverage change >= 1%). The w83 north moved 444 px with 0% change and fails this."""
+    sys.path.insert(0, os.path.join(SRC, "Utils", "art"))
+    import numpy as np
+    from PIL import Image
+    import flyer_cutout as C
+    per = {}
+    for f in ("east", "north", "south"):
+        paths = [os.path.join(d, "%s%d_%s.png" % (base, k, f)) for k in range(1, 5)]
+        if not all(os.path.isfile(x) for x in paths):
+            return ["flip-book %s%s frames 1-4 missing" % (base, f)]
+        per[f] = C.facing_motion([np.asarray(Image.open(x).convert("RGBA")) for x in paths])
+    return ["flip-book %s motion: %s" % (f, "; ".join(r["fails"])) for f, r in C.motion_rows(per).items() if r["fails"]]
 
 
 def check_gate(t):

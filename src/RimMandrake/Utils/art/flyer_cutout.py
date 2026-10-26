@@ -28,6 +28,8 @@ Verbs:
   build   CONFIG --out DIR [--facing F]    write <prefix><N>_<facing>.png for the configured facings, then check them
   preview CONFIG --out PNG --facing F      master with a 16 px grid, plate (green), wings (red/blue), hinges (yellow)
   check   DIR --prefix P --facing F [--plate PLATE]   body drift (flier_frame_registration) + flyer_lock locked share
+  motion  DIR --prefix P [--facings east,north,south]   every facing visibly moves: moved px >= 40% of the east
+          facing's (liveliest if no east), coverage change >= 1% (a faint billow in one facing fails)
 
 Exit 0 = pass, 1 = a gate failed, 2 = bad input. Never touches src/ Textures: install is `art.py install`.
 """
@@ -383,6 +385,58 @@ def cmd_check(a) -> int:
     return 0 if ok else 1
 
 
+MOTION_DELTA = 24        # a pixel "moved" when any RGBA channel changes by more than this between two frames
+MOTION_FLOOR = 0.40      # each facing's moved-pixel count must reach this share of the east facing's
+GROWTH_FLOOR = 0.01      # and its silhouette must change by at least this share of frame 1's coverage
+
+
+def facing_motion(frames: list[np.ndarray]) -> dict:
+    """How much a facing's flip-book visibly moves: `moved` = pixels that differ (> MOTION_DELTA on any channel)
+    between frame 1 and its most different frame; `growth` = largest coverage change from frame 1 (gain or loss: a flap
+    may shrink the silhouette), as a share of frame 1's."""
+    a = [f.astype(np.int16) for f in frames]
+    cov = [int((x[..., 3] > 0).sum()) for x in a]
+    moved = [int((np.abs(a[0] - x).max(-1) > MOTION_DELTA).sum()) for x in a[1:]]
+    return {"moved": max(moved) if moved else 0, "coverage": cov,
+            "growth": round(max(abs(c - cov[0]) for c in cov) / cov[0], 4) if cov and cov[0] else 0.0}
+
+
+def motion_rows(per: dict, floor: float = MOTION_FLOOR, growth_floor: float = GROWTH_FLOOR) -> dict:
+    """SHIRREL_BILLOW_WIDEN_NORTH_FAINT: one facing of a flip-book can be nearly still while the others move (the w83
+    Shirrel north moved 444 px and its coverage changed 0 px, against east 1011 px / +5.4% and south 2356 px / +2.3%;
+    the eval ACCEPTed it from the east row). Reference = the EAST facing (the side view; west mirrors it in game), or
+    the liveliest facing when a set has no east. The moved-px row alone would have PASSED that north (444 >= 40% of
+    1011), so the coverage-change row is what catches a billow that stays inside the silhouette. A facing livelier
+    than the reference is never a failure (the liveliest-facing reference failed east once north was fixed).
+    FAIL when moved < floor * ref or growth < growth_floor; a zero reference fails every facing."""
+    ref_f = "east" if "east" in per else max(per, key=lambda f: per[f]["moved"], default=None)
+    ref = per[ref_f]["moved"] if ref_f else 0
+    out = {}
+    for f, m in per.items():
+        fails = []
+        if ref == 0 or m["moved"] < floor * ref:
+            fails.append(f"moved {m['moved']} px < {floor:.0%} of the {ref_f} facing ({ref} px)")
+        if m["growth"] < growth_floor:
+            fails.append(f"coverage change {m['growth']:.2%} < {growth_floor:.0%}")
+        out[f] = dict(m, ref=ref, ref_facing=ref_f, share=round(m["moved"] / ref, 3) if ref else 0.0, fails=fails)
+    return out
+
+
+def cmd_motion(a) -> int:
+    per = {}
+    for f in a.facings.split(","):
+        paths = FL.frame_paths(Path(a.dir), a.prefix, f)
+        if len(paths) < 2:
+            print(f"ERROR {f}: {len(paths)} frames in {a.dir}", file=sys.stderr)
+            return 2
+        per[f] = facing_motion([np.asarray(Image.open(p).convert("RGBA")) for p in paths])
+    rows = motion_rows(per, a.floor, a.growth_floor)
+    for f, r in rows.items():
+        print(f"{'FAIL' if r['fails'] else 'PASS'} {a.prefix}{f} motion: moved {r['moved']} px ({r['share']:.0%} of {r['ref']}), "
+              f"growth {r['growth']:.2%}" + (f"  {r['fails']}" if r["fails"] else ""))
+    return 1 if any(r["fails"] for r in rows.values()) else 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="verb", required=True)
@@ -401,8 +455,14 @@ def main(argv=None) -> int:
     c.add_argument("--prefix", required=True)
     c.add_argument("--facing", required=True)
     c.add_argument("--plate")
+    mo = sub.add_parser("motion", help="every facing must visibly move: moved px vs the east facing, coverage change")
+    mo.add_argument("dir")
+    mo.add_argument("--prefix", required=True)
+    mo.add_argument("--facings", default="east,north,south")
+    mo.add_argument("--floor", type=float, default=MOTION_FLOOR)
+    mo.add_argument("--growth-floor", type=float, default=GROWTH_FLOOR)
     a = ap.parse_args(argv)
-    return {"build": cmd_build, "preview": cmd_preview, "check": cmd_check}[a.verb](a)
+    return {"build": cmd_build, "preview": cmd_preview, "check": cmd_check, "motion": cmd_motion}[a.verb](a)
 
 
 if __name__ == "__main__":

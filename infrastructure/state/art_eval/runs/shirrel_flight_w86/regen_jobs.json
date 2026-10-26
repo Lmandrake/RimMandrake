@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Shirrel__flight_cut4_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shirrel",
+  "prompt": "RimWorld animal sprite sheet, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Subject: the shirrel, a cat-sized, heavy-bodied glider of the Leaning Scrub with a deep-keeled chest, strong prominent climbing claws, and a full body-length gliding membrane stretched from wrist to ankle along each flank. Palette: STORM-GREY, with a charcoal body and a membrane banded slate and fog-white, like weather unrolled. Flight animation, 4 frames per facing (frames 1-4 front view, eyes toward the viewer; frames 5-8 rear view, seen from behind, showing back, tail and haunches with the eyes hidden). The body, head, tail and claws hold the same position in every frame of a facing, and only the membrane moves. Front view: the membrane billows like a kite on a gale through shallow, intermediate and deep cupping, then returns to intermediate; this staging and amplitude are already correct and stay as they are. Rear view: the same four-stage billow at the same amplitude as the front view. The leading and trailing edges of the membrane on both flanks cup inward and darken in shadow, so the silhouette edge visibly shifts from frame to frame. Frame 5 shows shallow cupping, frame 6 intermediate cupping, frame 7 deep cupping at the peak with the edges pulled well inward and the underside shaded darker, and frame 8 repeats frame 6. Each step is large enough to tell apart at normal zoom in a downscaled preview. Consistent canvas, framing and lighting across all eight frames.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: OWNER_NOTE_IGNORED, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "shirrel_flight_w86",
+  "drawsize": 1.2,
+  "module": "flyer"
+ }
+]

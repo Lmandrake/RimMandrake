@@ -999,7 +999,8 @@
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <!-- SHIRREL_GLIDE_FILL_FLIPBOOK_FRAMES: the Gale glide's whole-body directional flip-book (flight.md). Files
          Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_<1..4>_{north,east,south}.png (west mirrors east);
-         a glider, so the body holds still and only the membrane's trailing edge billows across the 4 frames.
+         a glider, so the body holds still and only the membrane billows across the 4 frames, visibly in every facing
+         (SHIRREL_BILLOW_WIDEN_NORTH_FAINT: north rebuilt w86; `flyer_cutout.py motion` gates moved px and coverage change).
          Multiplier 1.0: the frames are drawn at the grounded sprite's scale, so each life stage keeps its own size. -->
     <flyingAnimationFramePathPrefix>Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_</flyingAnimationFramePathPrefix>
     <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
