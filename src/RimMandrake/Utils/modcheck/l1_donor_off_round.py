@@ -58,7 +58,7 @@ OURS_RE = re.compile(r"\b(RM|RSW|RUT)_")
 
 # The Phase 0 commits named by the L1 brief (2026-10-15). Their touched Def files are a subject source.
 PHASE0_COMMITS = ("ab6ba54f4 419d5e70b 98f7b4506 59c2718b0 447cae1f2 ba71a81be 3021d7031 f690b6984 85ae91677 "
-                  "b4a5cf348 3fbec5530 aabcd7a 4da61378 15414fe38 1f59d0939 aaf59cd6e a8b30d24d 14405b1c4").split()
+                  "b4a5cf348 3fbec5530 aabcd7a 4da61378 15414fe38 1a44a77dab aaf59cd6e a8b30d24d 14405b1c4").split()
 TRACKER = os.path.join(REPO, "design", "RimMandrake", "donor_pack_port_tracker.md")
 P2_CLASSIFICATION = os.path.join(REPO, "Transient", "phase0_p2_classification.md")
 P6_CENSUS = os.path.join(REPO, "Transient", "phase0_p6_save_census.md")
