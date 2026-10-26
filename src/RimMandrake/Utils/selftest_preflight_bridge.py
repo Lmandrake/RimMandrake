@@ -304,6 +304,10 @@ def t_review_w11():
             o04 = [c for c in pf.OFFLINE if c.cid == 'O04'][0]
             check('--live leaves OFFLINE O04 required for the next offline run', rc == 0 and o04.required,
                   repr((rc, o04.required)))
+            # 3. review w94: --tier quicktest without --modset silently judged tier minimal; it is refused (exit 3)
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                rc = pf.main(['--tier', 'quicktest', '--only', 'O04', '--no-archive'])
+            check('--tier quicktest without --modset is refused, not run as minimal', rc == 3, repr(rc))
         finally:
             pf.informational_build, pf.intended, pf.gp.MODS_CONFIG, pf.LAST_REPORT = saved
 

@@ -760,9 +760,9 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.emit_trees:
         return emit_trees(a.emit_trees)
-    if a.tier == 'quicktest' and not a.modset:
-        a.modset = None
-        a.tier = 'minimal'
+    if a.tier == 'quicktest' and not a.modset:  # was a silent swap to tier minimal: the verdict judged a list not asked for
+        print('--tier quicktest needs --modset (a modset_builder tier name)', file=sys.stderr)
+        return 3
     ctx = {'tier': a.tier, 'modset': a.modset, 'purpose': a.purpose, 'live': a.live, 'deep': a.deep,
            'no_archive': a.no_archive, 'accept_deps': a.accept_deps, 'seat': a.seat}
     checks = [c for c in OFFLINE if not (a.live and c.cid in ('O08',))]
