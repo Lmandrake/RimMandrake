@@ -31,11 +31,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 DEFAULT_MIN, DEFAULT_OPT = 0.51, 1.0     # Verse.PlantProperties defaults (1.6)
-_DAY_SHROOM = ("TileFeatures 'light-resistant' VEE_Day* port, donor values kept: vanilla's mushroom is 0/0 plus "
-               "diesToLight; the donor drops both so it grows like a surface plant (0 at glow 0, full at 1) and only "
-               "dies after 7.5 days of unbroken dark. Whether it should be 0/0 instead is item "
-               "DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES")
-ALLOW: dict[str, str] = {"RM_DayBoomshroom": _DAY_SHROOM, "RM_DayWillowgill": _DAY_SHROOM}
+# Empty: the TileFeatures day-shrooms were the last entries; DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES set them 0/0.
+ALLOW: dict[str, str] = {}
 FAILS = []
 
 

@@ -240,7 +240,9 @@
       <neverBlightable>true</neverBlightable>
       <visualSizeRange>0.9~1.1</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
+      <!-- light-resistant mushroom: sunless (grows at any glow) but keeps the donor's dropped diesToLight; 0/0 per design/RimMandrake/glow_consumers_2026-10-20.md section A (DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES) -->
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
       <purpose>Misc</purpose>
@@ -287,6 +289,9 @@
       <topWindExposure>0.05</topWindExposure>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>25</wildClusterWeight>
+      <!-- light-resistant mushroom: sunless (grows at any glow) but keeps the donor's dropped diesToLight; 0/0 per design/RimMandrake/glow_consumers_2026-10-20.md section A (DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES) -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <purpose>Food</purpose>
       <pollution>Any</pollution>
     </plant>
@@ -321,7 +326,9 @@
       <fertilityMin>0.01</fertilityMin>
       <growDays>40</growDays>
       <neverBlightable>true</neverBlightable>
+      <!-- light-resistant mushroom: sunless (grows at any glow) but keeps the donor's dropped diesToLight; 0/0 per design/RimMandrake/glow_consumers_2026-10-20.md section A (DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES) -->
       <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
       <visualSizeRange>1~1.5</visualSizeRange>
       <wildClusterRadius>12</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
