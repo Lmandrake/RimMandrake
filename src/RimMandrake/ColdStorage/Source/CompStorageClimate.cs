@@ -405,15 +405,14 @@ namespace RimMandrake.ColdStorage
                     }
                     return sb.ToString();
                 case EffectiveMode.Stasis:
-                    string line = (StasisHolding ? "RM_ColdStorage_StasisHolding"
-                        : Flickering && Active ? "RM_ColdStorage_StasisFlicker" : "RM_ColdStorage_StasisDown").Translate(name);
                     float factor = StasisRotFactor;
+                    // A partial-strength field (a Kludged or Refurbished grade) must not claim nothing spoils: it says how much still does.
                     if (StasisHolding && factor > 0f)
                     {
-                        // A partial-strength field (a Kludged or Refurbished grade) says how much rot still gets through.
-                        line += "\n" + "RM_ColdStorage_StasisPartial".Translate((1f - factor).ToStringPercent(), factor.ToStringPercent());
+                        return "RM_ColdStorage_StasisHoldingPartial".Translate(name, (1f - factor).ToStringPercent(), factor.ToStringPercent());
                     }
-                    return line;
+                    return (StasisHolding ? "RM_ColdStorage_StasisHolding"
+                        : Flickering && Active ? "RM_ColdStorage_StasisFlicker" : "RM_ColdStorage_StasisDown").Translate(name);
                 default:
                     return "RM_ColdStorage_SwitchedOff".Translate();
             }

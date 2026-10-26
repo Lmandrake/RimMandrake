@@ -255,6 +255,25 @@
     </stages>
   </ThoughtDef>
 
+  <!-- CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS: a bench's bills are run only by a WorkGiver_DoBill that lists the bench in
+       fixedBillGiverDefs; none did, so live the press was "not a usable bill giver". Freeze, thaw and blast-chill bills all run here. -->
+  <WorkGiverDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_DoBillsCarbonFreezingPress</defName>
+    <label>operate carbon-freezing press</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Cooking</workType>
+    <priorityInType>45</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RSW_CarbonFreezingPress</li>
+    </fixedBillGiverDefs>
+    <verb>operate</verb>
+    <gerund>operating</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
   <!-- ================================ Recipes ================================ -->
 
   <RecipeDef ParentName="RM_SealRecipeBase" Name="RSW_CarbonFreezeRecipeBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">

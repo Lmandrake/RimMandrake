@@ -308,6 +308,20 @@ def encase_static_checks(ET, re):
     press = [d for d in root if d.findtext("defName") == "RSW_CarbonFreezingPress"]
     if len(press) != 1 or not any(li.get("Class") == "RimMandrake.ColdStorage.ColdStorageGateExtension" for li in press[0].iter("li")):
         fails.append("RSW_CarbonFreezingPress: missing, or without the carbonPressEnabled gate")
+    # CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS: a bench's bills run only through a WorkGiver_DoBill listing it.
+    wgs = [d for d in root if d.tag == "WorkGiverDef" and d.findtext("giverClass") == "WorkGiver_DoBill"
+           and "RSW_CarbonFreezingPress" in [li.text for li in d.findall("fixedBillGiverDefs/li")]]
+    if not wgs:
+        fails.append("RSW_CarbonFreezingPress: no WorkGiver_DoBill lists it in fixedBillGiverDefs (nobody can run its bills)")
+    elif not wgs[0].get("MayRequire") or wgs[0].findtext("workType") != "Cooking":
+        fails.append("the press work giver needs MayRequire on Cold Storage and a real workType")
+    # COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD: a partial field must not say "nothing inside spoils".
+    csrc = open(os.path.join(HERE, "Source", "CompStorageClimate.cs"), encoding="utf-8").read()
+    kd = open(os.path.join(HERE, "Languages", "English", "Keyed", "ColdStorage.xml"), encoding="utf-8").read()
+    if "RM_ColdStorage_StasisHoldingPartial" not in csrc or "<RM_ColdStorage_StasisHoldingPartial>" not in kd:
+        fails.append("inspect text: a partial stasis field has no line of its own (it says nothing inside spoils, then that it does)")
+    elif "nothing inside spoils" in re.search(r"<RM_ColdStorage_StasisHoldingPartial>(.*?)</", kd).group(1):
+        fails.append("inspect text: the partial-field line claims nothing spoils")
     if len(packs) != 4 or encase != 4 or release != 1 or gated < 7 or refs < 8:
         fails.append("carbon freeze check: packs=%d encase=%d release=%d gated=%d refs=%d, want 4/4/1/>=7/>=8 (instrument blind?)"
                      % (len(packs), encase, release, gated, refs))
