@@ -57,7 +57,7 @@ namespace RimMandrake.GimmeSomeSlack
                 // every dirty event since the last build was benign (a terrain/roof change outside the cords' reach, or our own
                 // section dirtying below), the build would reproduce the published pieces exactly (SelfTest reach soundness)
                 if (!gate.RegenerateNeedsBuild()) builtFrame = Time.frameCount;
-                else Rebuild();
+                else Rebuild(false);
             }
             var key = new IntVec2(botLeft.x / Section.Size, botLeft.z / Section.Size);
             return bySection.TryGetValue(key, out List<LaidPiece> l) ? l : null;
@@ -263,14 +263,17 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>GSS_PLAN_FIX_SECOND_PER_FULL_BUILD (live round 4: a planned build of 248 edges held one frame ~1 s): a
         /// build stops laying edges once the rebuild has run <see cref="FrameBudgetMs"/> (snapshot and style scan included)
         /// and finishes over the next frames, the unlaid edges keeping their previous pieces meanwhile;
-        /// <paramref name="complete"/> lays every edge now (the probe's rebuild commands).</summary>
+        /// <paramref name="complete"/> lays every edge now. Only this component's frame paths (a layer regenerate, the
+        /// MapComponentUpdate catch-up) ask for a slice; the public <see cref="Rebuild()"/> is complete, because every scripted
+        /// caller (the probes, ConduitStyleProbe's cstyles read, JawaBench's gss staging) reads Pieces right after it (round 3
+        /// review: a budgeted one handed them a half-laid set).</summary>
         public const double FrameBudgetMs = 8.0;
         /// <summary>Edges the last build left to a later frame; budgeted rebuilds that left some; the slowest budgeted rebuild
         /// that laid at least one edge (ms: the live re-measure's per-frame cost of a planned build).</summary>
         public int LastPending, SlicedBuilds;
         public double MaxSliceMs;
 
-        public void Rebuild() => Rebuild(false);
+        public void Rebuild() => Rebuild(true);
 
         public void Rebuild(bool complete)
         {
@@ -974,7 +977,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)
             {
                 StaleOffscreen = false;
-                Rebuild();
+                Rebuild(false);
                 OffscreenRebuilds++;
             }
             GimmeSomeSlackProbe.Service(map, this);

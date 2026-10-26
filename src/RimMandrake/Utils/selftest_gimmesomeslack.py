@@ -22,9 +22,39 @@ import winbuild  # noqa: E402
 
 SELFTEST = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Source", "SelfTest")
 CSPROJ = os.path.join(SELFTEST, "RimMandrakeGimmeSomeSlack.SelfTest.csproj")
+SOURCE = os.path.dirname(SELFTEST)
+
+
+def sliced_rebuild_callers():
+    """GSS round 3 review (2026-10-26): a budgeted Rebuild lays only ~8 ms of edges and leaves the rest to later frames, so a
+    scripted caller that reads Pieces right after it (cstyles probe, JawaBench gss staging) saw a half-laid set. The public
+    Rebuild() must be the complete build; only the component's own frame paths may ask for a slice (Rebuild(false))."""
+    comp = os.path.join(SOURCE, "RM_MapComponent_CordGraph.cs")
+    with open(comp, encoding="utf-8") as f:
+        text = f.read()
+    import re
+    bad = []
+    if not re.search(r"public void Rebuild\(\)\s*=>\s*Rebuild\(true\);", text):
+        bad.append("RM_MapComponent_CordGraph.Rebuild() is not the complete build (Rebuild(true))")
+    if text.count("Rebuild(false)") < 2:
+        bad.append("the frame paths (PiecesForSection, MapComponentUpdate) do not ask for a budgeted slice")
+    for root, dirs, files in os.walk(SOURCE):
+        dirs[:] = [d for d in dirs if d not in ("SelfTest", "bin", "obj")]
+        for n in files:
+            p = os.path.join(root, n)
+            if n.endswith(".cs") and p != comp:
+                with open(p, encoding="utf-8") as f:
+                    if "Rebuild(false)" in f.read():
+                        bad.append(os.path.relpath(p, SOURCE) + " asks for a budgeted slice outside the component")
+    for b in bad:
+        print("FAIL sliced rebuild: " + b)
+    print("sliced rebuild callers: " + ("FAIL" if bad else "ok"))
+    return 1 if bad else 0
 
 
 def main(argv):
+    if sliced_rebuild_callers():
+        return 1
     if "--no-export" not in argv:
         r = subprocess.run([sys.executable, os.path.join(HERE, "mockups", "messy_conduit", "export_oracle.py")])
         if r.returncode:
