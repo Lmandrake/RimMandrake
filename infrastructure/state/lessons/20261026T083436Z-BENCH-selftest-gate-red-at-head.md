@@ -1,0 +1,1 @@
+selftest_gate.py FAILS at HEAD 9efdcdd4f5 (3 cases: keys stable across reload; editing chain b changes b only; audit_report gate-on commission counts as measuring) after gate-audit commits 475fada4bc/f11bdecbd6; unrelated to testq --gate work. Needs an owner of modcheck/gate.py to fix.
