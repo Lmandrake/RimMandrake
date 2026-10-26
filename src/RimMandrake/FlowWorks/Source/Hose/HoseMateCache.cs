@@ -32,6 +32,23 @@ namespace RimMandrake.FlowWorks.Hose
             public int seen;
             /// <summary>The solve's exception (type, message, stack) when it threw; null when it ran to an answer.</summary>
             public string error;
+            // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: the last inputs this entry was confirmed for, by list INSTANCE. Asked again
+            // with the same lists and scalars, the key is not re-hashed (O(points) per pair per frame). A HoseLay's Flat is
+            // replaced on a re-lay, never edited in place, so the same instance holds the same points.
+            internal List<V2> seenA, seenB;
+            internal int seenCountA, seenCountB;
+            internal double seenKmax, seenVis, seenLeadA, seenLeadB;
+            internal bool seenG2;
+
+            internal bool SameAsk(List<V2> A, List<V2> B, double kmax, double vis, double leadA, double leadB) =>
+                ReferenceEquals(A, seenA) && ReferenceEquals(B, seenB) && A.Count == seenCountA && B.Count == seenCountB
+                && kmax.Equals(seenKmax) && vis.Equals(seenVis) && leadA.Equals(seenLeadA) && leadB.Equals(seenLeadB) && HoseMath.G2On == seenG2;
+
+            internal void Remember(List<V2> A, List<V2> B, double kmax, double vis, double leadA, double leadB)
+            {
+                seenA = A; seenB = B; seenCountA = A.Count; seenCountB = B.Count;
+                seenKmax = kmax; seenVis = vis; seenLeadA = leadA; seenLeadB = leadB; seenG2 = HoseMath.G2On;
+            }
         }
 
         private sealed class Job
@@ -69,8 +86,9 @@ namespace RimMandrake.FlowWorks.Hose
         {
             ulong h = 1469598103934665603UL;
             void Mix(double v) { h = (h ^ unchecked((ulong)(long)Math.Round(v * 1000))) * 1099511628211UL; }
-            Mix(A.Count); foreach (V2 p in A) { Mix(p.X); Mix(p.Z); }
-            Mix(B.Count); foreach (V2 p in B) { Mix(p.X); Mix(p.Z); }
+            // indexed, not foreach: a foreach over IList boxes its enumerator (two allocations per pair per frame)
+            Mix(A.Count); for (int i = 0; i < A.Count; i++) { V2 p = A[i]; Mix(p.X); Mix(p.Z); }
+            Mix(B.Count); for (int i = 0; i < B.Count; i++) { V2 p = B[i]; Mix(p.X); Mix(p.Z); }
             Mix(kmax); Mix(vis); Mix(leadA); Mix(leadB); Mix(HoseMath.G2On ? 1 : 0);
             return h;
         }
@@ -105,8 +123,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// synchronous solve, else null (pending on a worker, or deferred to a later frame).</summary>
         internal Entry Get(long pair, List<V2> A, List<V2> B, double kmax, double vis, double leadA, double leadB)
         {
+            bool have = solved.TryGetValue(pair, out Entry e);
+            if (have && e.SameAsk(A, B, kmax, vis, leadA, leadB)) { e.seen = frame; Reused++; return e; }
             ulong key = Key(A, B, kmax, vis, leadA, leadB);
-            if (solved.TryGetValue(pair, out Entry e) && e.key == key) { e.seen = frame; Reused++; return e; }
+            if (have && e.key == key) { e.seen = frame; Reused++; e.Remember(A, B, kmax, vis, leadA, leadB); return e; }
             if (pending.ContainsKey(pair))
             {
                 // a worker is still on this pair; if the inputs moved again the new shape waits for it to finish (one job a pair)
@@ -122,18 +142,26 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 RunJob(solver, job);
                 e = new Entry { key = key, mate = job.result, seen = frame, error = job.error };
+                e.Remember(A, B, kmax, vis, leadA, leadB);
                 if (job.error != null) { Faulted++; LastFault = $"pair {pair:x16}: {job.error}"; }
                 solved[pair] = e;
                 return e;
             }
             pending[pair] = job;
+            Queue(solver, job);
+            return null;
+        }
+
+        /// <summary>Starts the worker. Its own method: a lambda capturing Get's locals made C# allocate the closure at Get's
+        /// ENTRY, i.e. on every cache hit too (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE, measured 32 B per pair per frame).</summary>
+        private static void Queue(Func<List<V2>, List<V2>, double, double, double, double, HoseSpliceMath.Mate> solver, Job job)
+        {
             // result and error are written before the volatile done (release); BeginFrame reads done first (acquire)
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try { RunJob(solver, job); }
                 finally { job.done = true; }
             });
-            return null;
         }
 
         /// <summary>Pairs not met this frame (an end moved off, a reel gone) are forgotten once they outnumber the live ones.</summary>

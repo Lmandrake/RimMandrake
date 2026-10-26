@@ -304,10 +304,20 @@ namespace RimMandrake.FlowWorks.Hose
         public string TrailKey()
         {
             if (trail.Count == 0) return "";
-            ulong h = 1469598103934665603UL;
-            foreach (IntVec3 c in trail) h = (h ^ (ulong)(uint)(c.x * 73856093 ^ c.z * 19349663)) * 1099511628211UL;
-            return "T" + trail.Count + ":" + h.ToString("x16");
+            return "T" + trail.Count + ":" + TrailHash().ToString("x16");
         }
+
+        /// <summary>The hash inside <see cref="TrailKey"/>, without building the string (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE).</summary>
+        internal ulong TrailHash()
+        {
+            ulong h = 1469598103934665603UL;
+            for (int i = 0; i < trail.Count; i++) { IntVec3 c = trail[i]; h = (h ^ (ulong)(uint)(c.x * 73856093 ^ c.z * 19349663)) * 1099511628211UL; }
+            return h;
+        }
+
+        /// <summary>Per-frame key memos (RM_MapComponent_Hoses; never saved).</summary>
+        internal HoseLayKeyMemo layKeyMemo;
+        internal HoseDrawKeyMemo drawKeyMemo;
 
         private HoseTrail TrailOf(CordWorld w)
         {

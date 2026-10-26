@@ -23,6 +23,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             return j < 0 ? src.Substring(i) : src.Substring(i, j - i);
         }
 
+        private static int HitAt(string draw) => At(draw, "c.key == key) pts = c.pts;");
+
         private static int At(string src, string what)
         {
             int i = src.IndexOf(what, StringComparison.Ordinal);
@@ -100,10 +102,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!src.Contains("new[] { d, -d }"), "the per-frame joiner loop allocates no array per joint");
                 // a settled hose's cache hit reuses its pose: the key is built before Pose, and Pose runs only on a miss
                 string draw = Between(src, "private void DrawAll()", "DrawGhosts(y0);");
-                int keyAt = At(draw, "string key = (settled ?");
+                // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: the key is the memo's (legacy: the old concatenation), still before the hit
+                int keyAt = At(draw, "drawKeyMemo = new HoseDrawKeyMemo())).Get(settled");
+                Assert(At(draw, "string key = LegacyFrame ? (settled ?") < HitAt(draw), "the legacy key is built before the hit too");
                 int hit = At(draw, "c.key == key) pts = c.pts;");
                 Assert(keyAt < hit && hit < At(draw, "pts = HoseMath.DrawnPose(lay,"), "Pose runs only when the cached pose misses");
-                Assert(draw.Contains("pts = pts, rp = rp };"), "the cache stores the pose (and its drawn strand) with its meshes");
+                // 760592195a added the Cached serial after rp (this anchor was not moved then: the case went red)
+                Assert(draw.Contains("pts = pts, rp = rp, serial = ++cachedSerial };"), "the cache stores the pose (and its drawn strand) with its meshes");
             });
         }
     }

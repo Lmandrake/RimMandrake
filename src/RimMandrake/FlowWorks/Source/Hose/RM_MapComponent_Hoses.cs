@@ -40,6 +40,9 @@ namespace RimMandrake.FlowWorks.Hose
             /// <summary>HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK: the stretches over walk-over buildings (arc spans on rp), redrawn
             /// above the building layer; rebuilt when the pose or the map's buildings change (overKey).</summary>
             public string overKey;
+            /// <summary>Non-legacy stand-in for overKey: the over-building meshes were built, at this mapVersion.</summary>
+            public bool overBuilt;
+            public int overVer;
             public List<double[]> overSpans;
             public List<Mesh> overMeshes = new List<Mesh>();
             /// <summary>HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE: the stretches over hoses drawn beneath, and their crossing shadow.</summary>
@@ -561,9 +564,37 @@ namespace RimMandrake.FlowWorks.Hose
             // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
             // walked trail (empty = the planned route, the key as before)
             // the reel's OWN look too: the nozzle (Mouth, where the hose starts) is measured per look, and "Choose style" restyles in place
-            string key = r.parent.Position + "/" + HoseLook.LookOfThing(r.parent) + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "")
-                + (portAt.HasValue ? "|p" + portAt.Value.X.ToString("0.000") + "," + portAt.Value.Z.ToString("0.000") + "/" + portAxis.X + "," + portAxis.Z : "");
+            string key;
+            if (LegacyFrame)
+                key = r.parent.Position + "/" + HoseLook.LookOfThing(r.parent) + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + RM_HoseSettings.ShapeFingerprint() + (IsFed(r) ? "|fed" : "")
+                    + (portAt.HasValue ? "|p" + portAt.Value.X.ToString("0.000") + "," + portAt.Value.Z.ToString("0.000") + "/" + portAxis.X + "," + portAxis.Z : "");
+            else
+            {
+                // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: the same string, rebuilt only when one of its inputs changed (HoseLayKeyMemo)
+                IntVec3 pos = r.parent.Position, ec = r.EndCell;
+                string look = HoseLook.LookOfThing(r.parent), relayLook = relay != null ? HoseMaterials.LookOf(relay) : null, shape = RM_HoseSettings.ShapeFingerprintCached();
+                int relayId = relay != null ? relay.parent.thingIDNumber : 0, trailN = r.trail.Count;
+                bool relayLaid = relay != null && relay.laid, fed = IsFed(r);
+                ulong trailH = trailN > 0 ? r.TrailHash() : 0;
+                double px = portAt.HasValue ? portAt.Value.X : 0, pz = portAt.HasValue ? portAt.Value.Z : 0;
+                HoseLayKeyMemo lm = r.layKeyMemo ?? (r.layKeyMemo = new HoseLayKeyMemo());
+                if (lm.Same(pos.x, pos.y, pos.z, look, ec.x, ec.y, ec.z, relay != null, relayId, relayLook, relayLaid, trailN, trailH, shape, fed, portAt.HasValue, px, pz, portAxis.X, portAxis.Z))
+                    key = lm.Key;
+                else
+                {
+                    key = pos + "/" + look + ">" + ec + (relay != null ? "R" + relayId + relayLook + (relayLaid ? "L" : "S") : "") + r.TrailKey() + "|" + shape + (fed ? "|fed" : "")
+                        + (portAt.HasValue ? "|p" + px.ToString("0.000") + "," + pz.ToString("0.000") + "/" + portAxis.X + "," + portAxis.Z : "");
+                    lm.Store(pos.x, pos.y, pos.z, look, ec.x, ec.y, ec.z, relay != null, relayId, relayLook, relayLaid, trailN, trailH, shape, fed, portAt.HasValue, px, pz, portAxis.X, portAxis.Z, key);
+                }
+            }
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
+            return LayAgain(r, key, end, inward, portAt, portAxis);
+        }
+
+        /// <summary>EnsureLay's re-lay. Its own method (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE): its lambdas capture r, so while they
+        /// sat in EnsureLay C# allocated their closure at EnsureLay's entry -- per hose per frame, cache hit or not.</summary>
+        private HoseLay LayAgain(CompHoseReel r, string key, V2 end, V2? inward, V2? portAt, V2 portAxis)
+        {
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             IList<Cell> trail = r.TrailCells();
@@ -850,15 +881,17 @@ namespace RimMandrake.FlowWorks.Hose
                 int T = RM_HoseSettings.Tuning().TransitionTicks;
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
                 // a transitioning pose depends only on the game tick, so it is cached per tick (a paused game stops re-meshing every frame)
-                string key = (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r);
+                string key = LegacyFrame ? (settled ? (pi.Blend >= 1 ? "P" : "F") : "T" + Find.TickManager.TicksGame) + r.layKey + "@" + RankOf(r) : null;
                 // HOSE_ENDS_FIX_MISSES_THE_PORTS: an end coupled to a tank's drawn port bends onto it (TankPortGeometry), so the
                 // coupling DrawEnds puts half a cell past the end sits on the flange, not half a cell beside it
                 V2 portAt = default(V2), portAxis = default(V2);
                 bool onPort = r.laid && r.carry != HoseCarryState.Retracting && PortEnd(r, out portAt, out portAxis);
-                if (onPort) key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
+                if (onPort && LegacyFrame) key += "|p" + portAt.X.ToString("0.000") + "," + portAt.Z.ToString("0.000");
                 // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: an open end lying on another hose's open end couples to it face to face
                 MateInfo mi = onPort ? null : MateFor(r);
-                if (mi != null) key += "|m" + mi.key;
+                if (LegacyFrame) { if (mi != null) key += "|m" + mi.key; }
+                // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: the same key, the cached instance while its inputs hold (HoseDrawKeyMemo)
+                else key = (r.drawKeyMemo ?? (r.drawKeyMemo = new HoseDrawKeyMemo())).Get(settled, pi.Blend >= 1, Find.TickManager.TicksGame, r.layKey, RankOf(r), onPort, portAt.X, portAt.Z, mi?.key);
                 // HOSE_SHADOW_FIX_RETRACTING_STRAND_STALE (review 2026-10-26): a hose being wound in draws a per-frame clip and
                 // never re-caches (key null below), so its full laid strand stayed in meshes and hoses above cast crossing
                 // shadows over wound-away ground for the whole wind job. Dropped here; while winding, hoses above cast no
@@ -879,7 +912,17 @@ namespace RimMandrake.FlowWorks.Hose
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
                 // a mated end's re-shaped run carries no mid-hose joiner (its samples are new)
-                if (mi != null && mateKept.TryGetValue(r, out int keptN)) joints = joints.FindAll(j => j < keptN - 2);
+                if (mi != null && mateKept.TryGetValue(r, out int keptN))
+                {
+                    if (LegacyFrame) joints = JointsBefore(joints, keptN - 2);
+                    else
+                    {
+                        // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: filtered into a reused buffer (read by DrawEnds below, never kept)
+                        jointScratch.Clear();
+                        for (int k = 0; k < joints.Count; k++) if (joints[k] < keptN - 2) jointScratch.Add(joints[k]);
+                        joints = jointScratch;
+                    }
+                }
                 // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
                 if (r.carry == HoseCarryState.Retracting)
                 {
@@ -949,6 +992,10 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         private readonly List<Mesh> frameMeshes = new List<Mesh>(), oldFrame = new List<Mesh>();
+        private readonly List<int> jointScratch = new List<int>();
+
+        /// <summary>The legacy filter (a new list). Out of DrawAll so its lambda's closure is not allocated per hose per frame.</summary>
+        private static List<int> JointsBefore(List<int> joints, int cut) => joints.FindAll(j => j < cut);
 
         private void DropMeshes(CompHoseReel r)
         {
@@ -984,11 +1031,14 @@ namespace RimMandrake.FlowWorks.Hose
         private void DrawOverBuildings(Cached c, HoseLookMats hm, Color tint, float vis, float e, int rank)
         {
             if (c.rp == null || c.rp.Count < 2) return;
-            string ok = c.key + "#" + mapVersion;
-            if (c.overKey != ok)
+            // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: a Cached's key never changes, so (built, mapVersion) says what the string did
+            string ok = LegacyFrame ? c.key + "#" + mapVersion : null;
+            if (LegacyFrame ? c.overKey != ok : !c.overBuilt || c.overVer != mapVersion)
             {
                 DestroyOver(c);
                 c.overKey = ok;
+                c.overBuilt = true;
+                c.overVer = mapVersion;
                 c.overSpans = HoseOverDraw.Spans(c.rp, OverBuildingCell, HoseOverDraw.BuildingMargin);
                 float yo = (float)(RimMandrake.Shared.Slack.DrawOrder.Alt(HoseOverDraw.OverBuildingLayer) + RimMandrake.Shared.Slack.DrawOrder.HoseBaseLift) + HoseMath.CrossLift(rank);
                 float wf = (float)HoseMath.MeshWidthFlat(vis), wp = (float)HoseMath.MeshWidthPlump(vis), ws = vis * (float)HoseMath.ShadowWidth(e);
@@ -1232,9 +1282,9 @@ namespace RimMandrake.FlowWorks.Hose
             // axis is that run's chord, not the tangent at one sample
             double step = n > 1 ? Geo.Length(pts) / (n - 1) : 1;
             int m = Math.Max(1, (int)Math.Round(0.8 * HoseMath.JoinerHalf(vis) / Math.Max(1e-6, step)));
-            foreach (int j0 in joints)
+            for (int ji = 0; ji < joints.Count; ji++)   // indexed: a foreach over IList boxes its enumerator every frame
             {
-                int j = Math.Min(n - 2, Math.Max(1, j0));
+                int j = Math.Min(n - 2, Math.Max(1, joints[ji]));
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
                 // 2026-10-05: each half's wrap runs up to the interlocked claws (HoseMath.JoinerWrapIn), no gap
                 float js = (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax);
@@ -1402,6 +1452,7 @@ namespace RimMandrake.FlowWorks.Hose
         private readonly Dictionary<string, MateInfo> mateSolvedLegacy = new Dictionary<string, MateInfo>();
         /// <summary>Per mated hose: how many leading samples of its drawn pose are the laid hose's own (joiners past it are dropped).</summary>
         private readonly Dictionary<CompHoseReel, int> mateKept = new Dictionary<CompHoseReel, int>();
+        private readonly List<CompHoseReel> mateCands = new List<CompHoseReel>();
         private int mateFrame = -1;
         /// <summary>Probe counters: joiner halves drawn last frame, pair solves (layout changes) this session.</summary>
         public int lastMateJoins, mateSolves;
@@ -1434,8 +1485,10 @@ namespace RimMandrake.FlowWorks.Hose
                     Log.Warning("[FlowWorks] hose pair mate solve failed (pair drawn as laid, not retried until it moves): " + mateCache.LastFault);
                 }
             }
-            var cands = new List<CompHoseReel>();
-            foreach (CompHoseReel r in reels) if (MateCandidate(r)) cands.Add(r);
+            // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: one reused list (legacy: a new one each frame, as before)
+            List<CompHoseReel> cands = LegacyFrame ? new List<CompHoseReel>() : mateCands;
+            cands.Clear();
+            for (int i = 0; i < reels.Count; i++) if (MateCandidate(reels[i])) cands.Add(reels[i]);
             if (cands.Count < 2) { mateKept.Clear(); return; }
             cands.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
             float vis = (float)HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
@@ -1451,10 +1504,10 @@ namespace RimMandrake.FlowWorks.Hose
                     if (mateOf.ContainsKey(b) || mateWaiting.Contains(b)) continue;
                     IntVec3 ea = a.EndCell, eb = b.EndCell;
                     if (Math.Max(Math.Abs(ea.x - eb.x), Math.Abs(ea.z - eb.z)) > 1) continue;
-                    string key = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###");
                     MateInfo mi;
                     if (LegacyFrame)
                     {
+                        string key = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###");
                         if (!mateSolvedLegacy.TryGetValue(key, out mi))
                         {
                             if (mateSolvedLegacy.Count > 64) mateSolvedLegacy.Clear();
@@ -1474,7 +1527,7 @@ namespace RimMandrake.FlowWorks.Hose
                         if (e == null) { mateWaiting.Add(a); mateWaiting.Add(b); break; }
                         if (e.mate == null) continue;   // no gentle route: both drawn as laid
                         if (!mateSolved.TryGetValue(pair, out mi) || !ReferenceEquals(mi.entry, e) || mi.A != a || mi.B != b)
-                            mateSolved[pair] = mi = new MateInfo { key = e.key.ToString("x16"), full = key, A = a, B = b, mate = e.mate, layA = a.lay, layB = b.lay, entry = e };
+                            mateSolved[pair] = mi = new MateInfo { key = e.key.ToString("x16"), full = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###"), A = a, B = b, mate = e.mate, layA = a.lay, layB = b.lay, entry = e };
                         mi.seen = mateFrame;
                     }
                     if (mi.mate == null) continue;   // no gentle route: both drawn as laid

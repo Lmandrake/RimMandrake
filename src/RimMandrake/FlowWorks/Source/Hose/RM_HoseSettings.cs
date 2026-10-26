@@ -176,6 +176,23 @@ namespace RimMandrake.FlowWorks.Hose
                                                    plumpAmount.ToString("0.###") + "|" + couplingSpacing + "|T" + thickness.ToString("0.###") +
                                                    "|L" + maxLength.ToString("0.###");   // GPT source read B8: a new hose length re-lays (and re-checks) every hose
 
+        /// <summary><see cref="ShapeFingerprint"/>, rebuilt only when one of its six settings changed (bit for bit); the same
+        /// instance otherwise (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: EnsureLay reads it per hose per frame).</summary>
+        public static string ShapeFingerprintCached()
+        {
+            if (shapeFp == null || fpBend != minBendRadius || fpSlack != slack || fpPlump != plumpAmount || fpSpacing != couplingSpacing
+                || fpThick != thickness || fpLen != maxLength || float.IsNaN(minBendRadius + slack + plumpAmount + thickness + maxLength))
+            {
+                fpBend = minBendRadius; fpSlack = slack; fpPlump = plumpAmount; fpSpacing = couplingSpacing; fpThick = thickness; fpLen = maxLength;
+                shapeFp = ShapeFingerprint();
+            }
+            return shapeFp;
+        }
+
+        private static string shapeFp;
+        private static float fpBend, fpSlack, fpPlump, fpThick, fpLen;
+        private static int fpSpacing;
+
         /// <summary>The "Hoses (and the tank Job button)" part of FlowWorks' settings window: four collapsible groups (design v2 §8).</summary>
         public static void DoSettingsSection(Listing_Standard list)
         {
