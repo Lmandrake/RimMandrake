@@ -83,8 +83,10 @@ namespace RimMandrake.Wreckage
         public static bool TryFindCell(ThingDef skyfaller, ThingDef wreck, Map map, IntVec3 near, int nearMaxDist, out IntVec3 cell)
         {
             // Same finder as IncidentWorker_ShipChunkDrop (RimSage CellFinderLoose.cs:229), with
-            // the wreck's own affordance (Walkable for every family, design §3a).
-            return CellFinderLoose.TryFindSkyfallerCell(skyfaller, map, wreck.terrainAffordanceNeeded, out cell,
+            // the wreck's own affordance (Walkable for every family, design §3a). An item wreck has
+            // no affordance (null), and the finder's GetAffordances().Contains(null) rejects every
+            // cell, so fall back to the vanilla chunk drop's Walkable.
+            return CellFinderLoose.TryFindSkyfallerCell(skyfaller, map, wreck.terrainAffordanceNeeded ?? TerrainAffordanceDefOf.Walkable, out cell,
                 10, near, nearMaxDist, allowRoofedCells: false, alwaysAvoidColonists: true);
         }
 

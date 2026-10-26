@@ -262,30 +262,33 @@ namespace RimMandrake.WeepingStones
         }
 
         // --- the three choices (all resolve through the letter) ----------------------------------------------
-        public void Choice_Guide()
+        // Each returns whether it took effect; the letter removes itself only then, so a choice is made once
+        // (a letter left on the stack let Sell pay out again on every click until the timeout).
+        public bool Choice_Guide()
         {
-            Pawn crab = Crab; if (crab == null || !crab.Spawned) return;
+            Pawn crab = Crab; if (crab == null || !crab.Spawned) return false;
             IntVec3 c = PickSiteOnPlayerLand(crab);
             if (!c.IsValid)
             {
                 Messages.Message("RM_CondenserGuideNoSite".Translate(), crab, MessageTypeDefOf.RejectInput, false);
-                return;
+                return false;
             }
             target = c;
             Find.LetterStack.ReceiveLetter("RM_CondenserGuideLabel".Translate(),
                 "RM_CondenserGuideText".Translate(), LetterDefOf.PositiveEvent, new LookTargets(c, crab.Map));
+            return true;
         }
 
-        public void Choice_Sell()
+        public bool Choice_Sell()
         {
-            Pawn crab = Crab; if (crab == null) return;
+            Pawn crab = Crab; if (crab == null || !crab.Spawned || crab.Dead) return false;
             Faction buyer = Find.FactionManager.AllFactionsVisible
                 .Where(f => !f.IsPlayer && !f.defeated && !f.HostileTo(Faction.OfPlayer) && f.def.humanlikeFaction)
                 .OrderByDescending(f => f.PlayerGoodwill).FirstOrDefault();
             if (buyer == null)
             {
                 Messages.Message("RM_CondenserSellNoBuyer".Translate(), crab, MessageTypeDefOf.RejectInput, false);
-                return;
+                return false;
             }
             RM_CondenserWorld w = RM_CondenserWorld.Get();
             if (w != null) { w.buyer = buyer; w.buyerPoolUntilTick = Find.TickManager.TicksGame + SeasonTicks; }
@@ -299,11 +302,12 @@ namespace RimMandrake.WeepingStones
             buyer.TryAffectGoodwillWith(Faction.OfPlayer, 10, true, true, null);
             Find.LetterStack.ReceiveLetter("RM_CondenserSellLabel".Translate(),
                 "RM_CondenserSellText".Translate(buyer.Name, payout), LetterDefOf.PositiveEvent);
+            return true;
         }
 
-        public void Choice_Cut()
+        public bool Choice_Cut()
         {
-            Pawn crab = Crab; if (crab == null || !crab.Spawned) return;
+            Pawn crab = Crab; if (crab == null || !crab.Spawned) return false;
             Map map = crab.Map; IntVec3 pos = crab.Position;
             DryAllNow(map);
             ThingDef plantDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_AncientCondenserPlant");
@@ -317,9 +321,16 @@ namespace RimMandrake.WeepingStones
             crab.Kill(null);
             Find.LetterStack.ReceiveLetter("RM_CondenserCutLabel".Translate(),
                 "RM_CondenserCutText".Translate(), LetterDefOf.NegativeEvent, new LookTargets(pos, map));
+            return true;
         }
 
-        // The crab dying by any other hand ends the oasis too, with a sign.
+        // The crab dying by any other hand ends the oasis too, with a sign. Notify_Killed carries the pawn's
+        // prevMap; PostDestroy's MapHeld is null when the death left no spawned corpse, so both dry (idempotent).
+        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
+        {
+            if (poolCells.Count > 0 && prevMap != null) DryAllNow(prevMap);
+        }
+
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             if (poolCells.Count > 0 && previousMap != null) DryAllNow(previousMap);
@@ -362,12 +373,17 @@ namespace RimMandrake.WeepingStones
                 RM_CompWalkingCondenser comp = crab?.TryGetComp<RM_CompWalkingCondenser>();
                 if (comp != null && crab.Spawned && !crab.Dead)
                 {
-                    yield return new DiaOption("RM_CondenserOptGuide".Translate()) { action = comp.Choice_Guide, resolveTree = true };
-                    yield return new DiaOption("RM_CondenserOptSell".Translate()) { action = comp.Choice_Sell, resolveTree = true };
-                    yield return new DiaOption("RM_CondenserOptCut".Translate()) { action = comp.Choice_Cut, resolveTree = true };
+                    yield return new DiaOption("RM_CondenserOptGuide".Translate()) { action = () => Resolve(comp.Choice_Guide()), resolveTree = true };
+                    yield return new DiaOption("RM_CondenserOptSell".Translate()) { action = () => Resolve(comp.Choice_Sell()), resolveTree = true };
+                    yield return new DiaOption("RM_CondenserOptCut".Translate()) { action = () => Resolve(comp.Choice_Cut()), resolveTree = true };
                 }
                 yield return Option_Close;
             }
+        }
+
+        private void Resolve(bool done)
+        {
+            if (done) Find.LetterStack.RemoveLetter(this);
         }
 
         public override bool CanDismissWithRightClick => false;

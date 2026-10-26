@@ -28,8 +28,12 @@ namespace RimMandrake.WeepingStones
             CompProperties_AncientCondenser p = (CompProperties_AncientCondenser)props;
             Map map = parent.Map;
             int have = 0;
+            // CellsAdjacent8Way is not bounds-checked; at the map edge GetThingList logs a red ThingsListAt error.
             foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(parent))
+            {
+                if (!c.InBounds(map)) continue;
                 foreach (Thing t in c.GetThingList(map)) if (t.def == water) have += t.stackCount;
+            }
             if (!RM_CondenserKernel.WaterSpawns(have, p.cap)) return;
             Thing w = ThingMaker.MakeThing(water); w.stackCount = p.litres;
             GenPlace.TryPlaceThing(w, parent.Position, map, ThingPlaceMode.Near);
