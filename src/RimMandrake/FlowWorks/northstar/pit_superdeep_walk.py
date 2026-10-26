@@ -127,9 +127,12 @@ S_SWIM = "RimMandrake.FlowWorks.Swimming.RM_SwimSettings"
 SLUICE, GRATE, LADDER, WOVEN = "RM_Sluice", "RM_SecurityGrateDoor", "RM_Ladder", "RM_PitCover_WovenScrap"
 SETTLE = 70                    # > RM_PocketGrid.RebuildMinTicks: every depth/ladder change is ticked this before a read
 WAIT_OUT = 900
-SWIM_ENDURANCE_FAST = 0.2      # hours (500 ticks of swimming for a 1.0 endurance swimmer) for S9's warning row only
-WARN_STEP = 30                 # ticks per read while waiting for the warning (the crossing is read within 6% of the pool)
-WARN_BUDGET = 3000             # ticks of swimming allowed to reach the warning at the compressed endurance
+# PITWALK_FIX_SWIM_COMPRESSION_SKIPS_WARNING (HARNESS): RM_Swim checks every CheckTicks = 250. At 0.2 h (500 ticks) one check
+# adds 0.5 exhaustion, so a swimmer went 0.5 -> 1.0 and the 70% warning landed AT exhaustion, head already under (round 5
+# S9 FAIL). 1.0 h = 2500 ticks: 0.1 per check, the warning crossing reads with the head still up.
+SWIM_ENDURANCE_FAST = 1.0      # hours (2500 ticks of swimming for a 1.0 endurance swimmer) for S9's warning row only
+WARN_STEP = 50                 # ticks per read while waiting for the warning (the crossing is read within 2% of the pool)
+WARN_BUDGET = 4000             # ticks of swimming allowed to reach the warning at the compressed endurance
 WARN_TEXT = "is tiring in deep water"
 SITE_W, SITE_H = 62, 20
 FW_SETTINGS = {                # field -> value held for the walk (the old value is read first and restored in finally)
@@ -257,8 +260,13 @@ def v_cover_fall(cov0, cov1, trap0, trap1):
     if not trap0 or not trap1:
         return "UNMEASURED", {"why": "no ProofTrap read", "trap0": trap0, "trap1": trap1}
     d0, d1 = fnum(trap0.get("descents")), fnum(trap1.get("descents"))
-    ok = cov1.get("sprung") == "True" and trap1.get("held") == "True" and d0 is not None and d1 is not None and d1 > d0
-    return ("PASS" if ok else "FAIL"), {"sprung": cov1.get("sprung"), "held": trap1.get("held"), "descents": (d0, d1)}
+    # PITWALK_FIX_SPRUNG_DECK_READS_ABSENT (HARNESS): Building_SpanDeck.Collapse DESTROYS the covers before anyone descends,
+    # so after a real give-way ProofCover reads present=False sprung=False (round 5 S5 FAIL with held True, descents 0->1).
+    # A deck that was laid intact and is gone after the shove is sprung; a deck still present must read sprung True.
+    sprung = cov1.get("sprung") == "True" or cov1.get("present") == "False"
+    ok = sprung and trap1.get("held") == "True" and d0 is not None and d1 is not None and d1 > d0
+    return ("PASS" if ok else "FAIL"), {"sprung": cov1.get("sprung"), "present": cov1.get("present"),
+                                        "held": trap1.get("held"), "descents": (d0, d1)}
 
 
 def v_room(before, after, bed_id):
@@ -347,7 +355,7 @@ def v_warned(trail, warn_at, msgs_before, msgs_after, pit_rect):
     t = hit[0]
     new = sum(1 for m in msgs_after if WARN_TEXT in m) - sum(1 for m in msgs_before if WARN_TEXT in m)
     ok = (not t[3]) and in_rect(pit_rect, t[2]) and t[4] is True and new >= 1
-    return ("PASS" if ok else "FAIL"), {"at": t, "warnAt": warn_at, "newWarnings": new}
+    return ("PASS" if ok else "FAIL"), {"at": t, "warnAt": warn_at, "newWarnings": new, "trail": trail[-4:]}
 
 
 def v_near_brim(drown_kv, climb_kv):
@@ -975,6 +983,11 @@ def main(argv=None):
             elif p.get("isPlayer"):
                 B.call("jawa/order_pawn", pawnId=p.get("id"), x=p.get("x"), z=p.get("z"), waitTicks=1, draft=True)
                 res["mapColonists"].append(p.get("id"))
+        if not a.mock:
+            # PITWALK_FIX_HUGE_TRUNK_BLOCKERS_IN_SITE (SITE/HARNESS): a fresh full-list quicktest map grew a giant over the
+            # site (round 5: 8 RM_HugeTrunkBlocker, PSW_site UNMEASURED). Huge Things re-plans a blocker whose plant still
+            # stands, so prepare_site alone cannot clear it; the giant goes first (validation_core.clear_huge_plants).
+            res["hugePlantsCleared"] = w.V.clear_huge_plants(B)
         rr = sc(NSP, "ProofResetRect", "%d;%d;%d;%d" % site)
         left = CP.reset_left(rr or "")
         site_rows = []
@@ -1099,7 +1112,7 @@ def main(argv=None):
             for _ in range(5):
                 B.ticks(60)
                 c1 = kv(sc(PROMO, "ProofCover", "%d,%d" % P(35, 2)) or "")
-                if c1.get("sprung") == "True":
+                if c1.get("sprung") == "True" or c1.get("present") == "False":
                     break
             B.ticks(SETTLE)
             t1 = kv(sc(NSP, "ProofTrap", pir or "") or "")
@@ -1136,11 +1149,34 @@ def main(argv=None):
             B.ticks(60)
             v0 = sc(NSP, "ProofCaptureDown", hid or "") or ""
             B.call("jawa/set_draft", pawnId=col, drafted=True)
-            B.call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid, targetBX=lip[0], targetBZ=lip[1])
-            B.ticks(900)
+            oj = B.call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid, targetBX=lip[0],
+                        targetBZ=lip[1]) or {}
+            # PITWALK_FIX_CAPTURE_ROW_BLIND (HARNESS): round 5 read prisoner False with no record of why; the order's reply
+            # and a (tick, warden, held pawn, verdict) trail are kept so a FAIL names where the job stopped
+            ctrail = []
+            stop = None
+            for k in range(15):
+                try:
+                    B.ticks(60)
+                except Exception as ex:  # noqa: BLE001 - clockgate.GovernorStop: round 5 the warden was hurt at the lip
+                    if type(ex).__name__ != "GovernorStop":
+                        raise
+                    stop = str(ex)[:240]
+                wp = ((B.call("jawa/pawn_get", pawn=col) or {}).get("pawns") or [{}])[0].get("position") or {}
+                hp = ((B.call("jawa/pawn_get", pawn=hid) or {}).get("pawns") or [{}])[0].get("position") or {}
+                cv = sc(NSP, "ProofCaptureDown", hid or "") or ""
+                ctrail.append(((k + 1) * 60, (wp.get("x"), wp.get("z")), (hp.get("x"), hp.get("z")), cv[:60]))
+                if "prisoner=True" in cv or stop:
+                    break
+            res["s7"] = {"orderedJob": {k: oj.get(k) for k in ("success", "message", "error", "result") if k in oj},
+                         "trail": ctrail, "governorStop": stop}
             v1 = kv(sc(NSP, "ProofCaptureDown", hid or "") or "")
             pg = ((B.call("jawa/pawn_get", pawn=col) or {}).get("pawns") or [{}])[0].get("position") or {}
             st, det = v_capture(v0, v1, (pg.get("x"), pg.get("z")), prison_rect)
+            if stop:                                # a disturbance stopped the clock: the row could not finish asking
+                st, det = "UNMEASURED", dict(det, why="governor stop during the capture: " + stop)
+            if st != "PASS":
+                det = dict(det, orderedJob=res["s7"]["orderedJob"], trail=ctrail[:3] + ctrail[-2:])
             row("PSW_capture_down_from_lip", st, det)
             st, det = v_convert(kv(sc(NSP, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)) or ""))
             row("PSW_convert_down_from_lip", st, det)
