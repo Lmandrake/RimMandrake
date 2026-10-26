@@ -4271,6 +4271,12 @@ class MockBridge(object):
         self.__init__(self.faults)
         return dict(success=True)
 
+    def t_rimworld_spawn_thing(self, defName=None, stackCount=1, x=None, z=None, **kw):
+        """gravel_stage.spawn_fill_material before the J probe; the mock's workgiver does not model fill material, so
+        the stacks are only recorded. Missing, every --mock run ended in ABORT after G (selftest_extensions)."""
+        self.__dict__.setdefault("spawned", []).append((defName, stackCount, x, z))
+        return dict(success=True)
+
     def t_jawa_running_mods(self, assembly=None, details=True):
         return dict(success=True, count=3, packageIds=["ludeon.rimworld", "brrainz.harmony", "mandrake.rm.flowworks"],
                     assembly=dict(name=assembly, matchCount=1, matches=[dict(sha256="0" * 64)]))
