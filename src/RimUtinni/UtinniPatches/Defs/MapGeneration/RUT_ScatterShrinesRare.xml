@@ -29,7 +29,12 @@
   "present but tuned sparse" per the table's own legend, and a concrete
   number this item has to pick since the spec names no ratio. Documented here
   rather than guessed silently; noted on MECH_PRESENCE_ENFORCEMENT_1 for the
-  owner's awareness. True per-incident-worker tuning (matching AMBIENT's own
+  owner's awareness. SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO (2026-10-26): the quartered
+  0.03-0.0625 rounded to ZERO shrines on every 200 and 250 map (CountFromPer10kCells =
+  RoundToInt(size^2 / RoundToInt(10000/c)): 62500/160000 = 0.39 -> 0), i.e. "absent",
+  not "sparse". Now 0.06-0.12, about half the vanilla rate: on a 250 map one shrine
+  cluster for draws >= 0.08 (about 2 maps in 3) else none; 0 on 200, 1 on 300.
+  Still a placeholder, kept modest. True per-incident-worker tuning (matching AMBIENT's own
   RARE rows) would need C#/Harmony and is out of this item's XML-only scope.
 
   GenStepDef.cs / GenStep_ScatterShrines.cs read via rimsage confirm nothing
@@ -47,7 +52,7 @@
     <order>750</order>
     <genStep Class="GenStep_ScatterShrines">
       <allowInWaterBiome>false</allowInWaterBiome>
-      <countPer10kCellsRange><min>0.03</min><max>0.0625</max></countPer10kCellsRange>
+      <countPer10kCellsRange><min>0.06</min><max>0.12</max></countPer10kCellsRange>
     </genStep>
   </GenStepDef>
 

@@ -31,14 +31,19 @@
     <order>330</order>
     <genStep Class="GenStep_ScatterGroup">
       <minSpacing>15</minSpacing>
-      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density. -->
-      <countPer10kCellsRange>1~2</countPer10kCellsRange>
+      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density,
+           kept modest. The Deeps pocket map is 66x66 (4356 cells): CountFromPer10kCells rounds 1~2 to
+           0-1 clusters (0 below 1.15); 2~3 is exactly 1 cluster per pocket map. -->
+      <countPer10kCellsRange>2~3</countPer10kCellsRange>
       <groups>
         <li>
           <things>
             <DV_MineablePyrinth MayRequireAnyOf="mandrake.rm.pyrinth,det.epochspyrinth">1</DV_MineablePyrinth>
           </things>
-          <coveredCellsPer10Cells>0~0.6</coveredCellsPer10Cells>
+          <!-- SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO: a cluster covers (int)(validCells/10 * this) cells.
+               0~0.6 gave 0 at r2 (25 cells) for any draw under 0.4. 0.5~0.9 = 1-2 cells at r2,
+               2-4 at r3. Placeholder, kept modest; selftest_genstep_scatter_count guards it. -->
+          <coveredCellsPer10Cells>0.5~0.9</coveredCellsPer10Cells>
           <clusterRectRadius>2~3</clusterRectRadius>
         </li>
       </groups>

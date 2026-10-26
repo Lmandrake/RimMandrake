@@ -1,0 +1,2 @@
+countPer10kCellsRange is per 10k cells of the map it runs on: a pocket map (Lantern Deeps pocketMapSize 66 = 4356 cells) turns 1 per 10k into RoundToInt(4356/10000)=0 scatters, so a genstep tuned by eye for a 250 surface map can place nothing underground. RUT_ScatterShrinesRare's quartered 0.03~0.0625 was 0 on every 200/250 surface map too. selftest_genstep_scatter_count now evaluates each genstep at the smallest pocketMapSize of any generator listing it (SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO). Source: decomp rw16 Verse/GenStep_Scatterer.cs 266-274.
+home: rimworld-modding

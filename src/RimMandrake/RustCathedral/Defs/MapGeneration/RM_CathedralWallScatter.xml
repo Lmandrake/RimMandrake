@@ -34,7 +34,12 @@
           <things>
             <RM_MineableDeadSmartsteel>1</RM_MineableDeadSmartsteel>
           </things>
-          <coveredCellsPer10Cells>0.02~0.05</coveredCellsPer10Cells>
+          <!-- SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO: 0.02~0.05 covered (int)(25/10 * 0.05) = 0 cells even
+               at r2, so tier 2 never placed. Rarity now comes from the group weight (about 1 cluster in 4
+               is tier 2) and the seam is small: 1.2~2.0 covers 1 cell at r1, 3-5 at r2.
+               Placeholder, kept modest. -->
+          <weight>0.3</weight>
+          <coveredCellsPer10Cells>1.2~2.0</coveredCellsPer10Cells>
           <clusterRectRadius>1~2</clusterRectRadius>
         </li>
       </groups>

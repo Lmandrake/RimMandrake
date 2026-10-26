@@ -20,8 +20,9 @@
     <order>335</order>
     <genStep Class="GenStep_ScatterGroup">
       <minSpacing>20</minSpacing>
-      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density. -->
-      <countPer10kCellsRange>1~2</countPer10kCellsRange>
+      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density,
+           kept modest. On the 66x66 Deeps pocket map 1~2 rounds to 0-1 clusters; 2~3 is exactly 1. -->
+      <countPer10kCellsRange>2~3</countPer10kCellsRange>
       <groups>
         <li>
           <things>
@@ -29,8 +30,11 @@
             <Force_CrystalFormation_Medium MayRequire="lee.theforce.lightsaber">0.4</Force_CrystalFormation_Medium>
             <Force_CrystalFormation_Large MayRequire="lee.theforce.lightsaber">0.2</Force_CrystalFormation_Large>
           </things>
-          <coveredCellsPer10Cells>0~0.4</coveredCellsPer10Cells>
-          <clusterRectRadius>1~2</clusterRectRadius>
+          <!-- SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO: 0~0.4 at r1~2 covered (int)(9|25/10 * d) = 0 cells for
+               nearly every draw (max 1, and Medium is 1x2, Large 2x2). r2~3 at 0.6~1.0 covers 1-2 cells at
+               r2 and 2-4 at r3, so Large fits only in the bigger clusters. Placeholder, kept modest. -->
+          <coveredCellsPer10Cells>0.6~1.0</coveredCellsPer10Cells>
+          <clusterRectRadius>2~3</clusterRectRadius>
         </li>
       </groups>
       <validators>
