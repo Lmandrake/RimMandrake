@@ -211,6 +211,16 @@ namespace RimMandrake.SolarMirrors.SelfTest
                     px = c.x; pz = c.z;
                 }
                 if (dx + dz >= 1) Check(Math.Abs(x1 - px) + Math.Abs(z1 - pz) == 1, "the walk does not end next to the target");
+                // vanilla GenSight.PointsOnLineOfSight's sideOnEqual tie-break: A->B and B->A cross the same cells (wave 81: a
+                // tie-break that always stepped x first survived every other check here)
+                {
+                    var back = new Rec { stopAt = -1 };
+                    RM_MirrorKernel.LineClear(x1, z1, x0, z0, ref back);
+                    var fwd = new HashSet<long>(rec.cells.Select(c => (long)c.x * 100003 + c.z));
+                    bool same = (back.cells ?? new List<Pt>()).Count == fwd.Count
+                        && (back.cells ?? new List<Pt>()).All(c => fwd.Contains((long)c.x * 100003 + c.z));
+                    Check(same, $"walk ({x0},{z0})->({x1},{z1}) and its reverse cross different cells (vanilla's line is symmetric)");
+                }
                 if (rec.cells.Count > 0)
                 {
                     int stop = r.Next(rec.cells.Count);
