@@ -52,6 +52,7 @@ FILES = {
     "settings": "LeaningScrub/Source/RM_LeaningScrubMod.cs",
     "dens": "LeaningScrub/Source/RM_ScrubDens.cs",
     "densdefs": "LeaningScrub/Defs/JobDefs/RM_ScrubDens.xml",
+    "tether": "CreatureBehaviors/Source/RM_CompHomeTether.cs",
 }
 
 # Every ThingDef defName in these plant folders is a candidate den plant.
@@ -336,6 +337,22 @@ def check_thornholdden(t):
         errs.append("ReleaseDen does not give the tether back its pre-den home")
     if 'Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);' not in cs:
         errs.append("preDenHome is not saved (rmVineDenPrevHome)")
+    # A gravship carries a wild thornhold standing on it to another map without a load (decomp Gravship.AddThing):
+    # the den, the pre-den home and the tether's own home are all cells of the map it left.
+    spawn = method_body(cs, r"public\s+override\s+void\s+PostSpawnSetup\s*\(")
+    if spawn is None or not re.search(r"denMapId\s*!=\s*mapId\s*\)\s*\{\s*den\s*=\s*IntVec3\.Invalid;\s*preDenHome\s*=\s*IntVec3\.Invalid;", spawn):
+        errs.append("PostSpawnSetup does not forget den and preDenHome when the thornhold arrives on another map")
+    if 'Scribe_Values.Look(ref denMapId, "rmVineDenMap", -1);' not in cs:
+        errs.append("denMapId is not saved (rmVineDenMap)")
+    tc = strip_comments(t["tether"])
+    tspawn = method_body(tc, r"public\s+override\s+void\s+PostSpawnSetup\s*\(")
+    if tspawn is None or not re.search(r"homeMapId\s*!=\s*mapId\s*\)\s*\{\s*home\s*=\s*IntVec3\.Invalid;", tspawn):
+        errs.append("HomeTether.PostSpawnSetup keeps a home cell from another map")
+    sethome = method_body(tc, r"public\s+void\s+SetHome\s*\(")
+    if sethome is None or "homeMapId = parent.MapHeld?.uniqueID" not in sethome:
+        errs.append("HomeTether.SetHome does not record the home's map")
+    if 'Scribe_Values.Look(ref homeMapId, "rmTetherHomeMap", -1);' not in tc:
+        errs.append("homeMapId is not saved (rmTetherHomeMap)")
     errs += check_settings(t, ("thornholdDenEnabled", "thornholdStandEnabled"))
     return errs
 
@@ -440,6 +457,11 @@ BREAKS = [
     ("thornholdden", "dens", "                    ReleaseDen();\n", "\n"),
     ("thornholdden", "dens", "SetHome(preDenHome.IsValid ? preDenHome : parent.Position)", "SetHome(den)"),
     ("thornholdden", "dens", 'Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);', ""),
+    ("thornholdden", "dens", "                preDenHome = IntVec3.Invalid;\n", "\n"),
+    ("thornholdden", "dens", 'Scribe_Values.Look(ref denMapId, "rmVineDenMap", -1);', ""),
+    ("thornholdden", "tether", "                home = IntVec3.Invalid;   // carried", "                // carried"),
+    ("thornholdden", "tether", "homeMapId = parent.MapHeld?.uniqueID ?? -1;", ""),
+    ("thornholdden", "tether", 'Scribe_Values.Look(ref homeMapId, "rmTetherHomeMap", -1);', ""),
     ("rollbug", "dens", "ball.Strip(false);\n            }\n            Pawn inner", "}\n            Pawn inner"),
     ("rollbug", "dens", "ball.Strip(false);\n                    }\n                }\n            };", "}\n                }\n            };"),
     ("rollbug", "dens", "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);",

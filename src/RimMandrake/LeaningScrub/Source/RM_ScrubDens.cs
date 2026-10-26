@@ -81,6 +81,10 @@ namespace RimMandrake.LeaningScrub
         // mid-game hands the tether this cell back instead of leaving the thornhold bound to its old vine.
         private IntVec3 preDenHome = IntVec3.Invalid;
 
+        // Map.uniqueID of den and preDenHome (-1: not known). A gravship carries a wild thornhold standing on it to
+        // another map without a load (decomp Gravship.AddThing); both cells then belong to the map it left.
+        private int denMapId = -1;
+
         public RM_CompProperties_VineDen Props => (RM_CompProperties_VineDen)props;
 
         public IntVec3 Den => den;
@@ -92,6 +96,15 @@ namespace RimMandrake.LeaningScrub
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            int mapId = parent.Map.uniqueID;
+            if (!respawningAfterLoad && denMapId >= 0 && denMapId != mapId)
+            {
+                // Another map: forget both old cells. The HomeTether (listed first) has just reset its home to the
+                // arrival cell, so the next pick keeps that as the pre-den home.
+                den = IntVec3.Invalid;
+                preDenHome = IntVec3.Invalid;
+            }
+            denMapId = mapId;
             if (!respawningAfterLoad || !den.IsValid)
             {
                 TryPickDen();
@@ -275,6 +288,7 @@ namespace RimMandrake.LeaningScrub
             base.PostExposeData();
             Scribe_Values.Look(ref den, "rmVineDen", IntVec3.Invalid);
             Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);
+            Scribe_Values.Look(ref denMapId, "rmVineDenMap", -1);
         }
 
         /// <summary>Bridge proof: the thornhold at `cell` — its den, or why it has none.</summary>
@@ -294,7 +308,7 @@ namespace RimMandrake.LeaningScrub
         public static string ProofStand(Map map, IntVec3 cell, IntVec3 attackerCell)
         {
             RM_CompVineDen comp = FindAt<RM_CompVineDen>(map, cell, out Pawn p);
-            Pawn attacker = map == null ? null : attackerCell.GetFirstPawn(map);
+            Pawn attacker = map == null || !attackerCell.InBounds(map) ? null : attackerCell.GetFirstPawn(map);   // ThingsListAt logs red out of bounds
             if (comp == null || attacker == null)
             {
                 return "REFUSED: need a vine-den pawn at " + cell + " and a pawn at " + attackerCell;

@@ -37,6 +37,11 @@ namespace RimMandrake.CreatureBehaviors
     {
         private IntVec3 home = IntVec3.Invalid;
 
+        // Map.uniqueID the home cell belongs to (-1: not known, e.g. a save from before the field). A gravship carries
+        // ANY pawn standing on its substructure, wild ones included (decomp Gravship.AddThing), so a pawn can spawn on
+        // another map without a load; its old home cell means nothing there.
+        private int homeMapId = -1;
+
         public RM_CompProperties_HomeTether Props => (RM_CompProperties_HomeTether)props;
 
         public IntVec3 Home => home;
@@ -44,15 +49,22 @@ namespace RimMandrake.CreatureBehaviors
         public void SetHome(IntVec3 cell)
         {
             home = cell;
+            homeMapId = parent.MapHeld?.uniqueID ?? -1;
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            int mapId = parent.Map.uniqueID;
+            if (!respawningAfterLoad && homeMapId >= 0 && homeMapId != mapId)
+            {
+                home = IntVec3.Invalid;   // carried to another map: home becomes where it arrived
+            }
             if (!home.IsValid)
             {
                 home = parent.Position;
             }
+            homeMapId = mapId;
         }
 
         public override void CompTickInterval(int delta)
@@ -101,6 +113,7 @@ namespace RimMandrake.CreatureBehaviors
         {
             base.PostExposeData();
             Scribe_Values.Look(ref home, "rmTetherHome", IntVec3.Invalid);
+            Scribe_Values.Look(ref homeMapId, "rmTetherHomeMap", -1);
         }
     }
 }
