@@ -2509,3 +2509,7 @@
 {"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"BENCH","why":"deploying mods + companion","ts":"2026-10-26T08:31:40Z","tsn":1793003500243721914}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"live wave: full-list load for Blackstar/architect/hose proofs","ts":"2026-10-26T08:50:05Z","tsn":1793004605691540523}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"full list loaded, save BENCH_leaf_scenes_20261026 up","ts":"2026-10-26T09:06:08Z","tsn":1793005568772956837}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","why":"live wave 2: game-down window to deploy JawaBench/Minerals/GSS/FlowWorks DLLs","ts":"2026-10-26T10:41:38Z","tsn":1793011298213222163}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"killed PID 27984 for deploy window","ts":"2026-10-26T10:41:47Z","tsn":1793011307816499174}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"live wave 2 relaunch after deploy","ts":"2026-10-26T10:46:00Z","tsn":1793011560564317271}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"save BENCH_leaf_scenes_20261026 loaded on Archmagi after wave-2 deploy","ts":"2026-10-26T11:03:44Z","tsn":1793012624445625660}
