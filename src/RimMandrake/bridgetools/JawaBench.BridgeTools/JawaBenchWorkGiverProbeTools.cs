@@ -67,9 +67,16 @@ namespace JawaBench.BridgeTools
                     catch (Exception e) { errors.Add(name + ": " + e.GetType().Name + ": " + e.Message); return "threw"; }
                 };
 
-                bool? workActive = p.workSettings != null && wgd.workType != null ? p.workSettings.WorkIsActive(wgd.workType) : (bool?)null;
-                int prio = p.workSettings != null && wgd.workType != null ? p.workSettings.GetPriority(wgd.workType) : -1;
-                bool inList = p.workSettings != null && p.workSettings.WorkGiversInOrderNormal.Contains(wgd.Worker);
+                // BRIDGETOOLS_WORKGIVER_PROBE_ANIMAL_NRE: an animal has no workSettings, and a pawn whose settings were never
+                // initialised throws inside WorkIsActive / GetPriority / WorkGiversInOrderNormal; each read is guarded.
+                bool? workActive = null; int prio = -1; bool inList = false;
+                if (p.workSettings == null) errors.Add("workSettings: pawn has none (animal / non-worker); work gates not applicable");
+                else if (wgd.workType != null)
+                {
+                    safe("WorkIsActive", () => workActive = p.workSettings.WorkIsActive(wgd.workType));
+                    safe("GetPriority", () => prio = p.workSettings.GetPriority(wgd.workType));
+                    safe("WorkGiversInOrderNormal", () => inList = p.workSettings.WorkGiversInOrderNormal.Contains(wgd.Worker));
+                }
                 object shouldSkip = safe("ShouldSkip", () => sc.ShouldSkip(p, false));
                 object inPotential = safe("PotentialWorkThingsGlobal", () =>
                 {
@@ -99,7 +106,9 @@ namespace JawaBench.BridgeTools
                     c["canConstructFailReason"] = JobFailReason.Reason;
                     JobFailReason.Clear();
                     c["firstBlockingThing"] = safe("FirstBlockingThing", () => (InvokeFilled(typeof(GenConstruct), "FirstBlockingThing", t, p, wgd.workType) as Thing)?.ThingID ?? "none");
-                    c["resourceDeliverJobFor"] = safe("ResourceDeliverJobFor", () => DescribeJob(InvokeFilled(typeof(WorkGiver_ConstructDeliverResources), "ResourceDeliverJobFor", t, p, wgd.workType, sc) as Job));
+                    c["resourceDeliverJobFor"] = !(sc is WorkGiver_ConstructDeliverResources)
+                        ? "n/a (giver is not a DeliverResources giver)"
+                        : safe("ResourceDeliverJobFor", () => DescribeJob(InvokeFilled(typeof(WorkGiver_ConstructDeliverResources), "ResourceDeliverJobFor", t, p, wgd.workType, sc) as Job));
                     c["resourceDeliverFailReason"] = JobFailReason.Reason;
                     JobFailReason.Clear();
                     var needs = new List<object>();
