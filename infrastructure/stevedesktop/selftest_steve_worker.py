@@ -4,7 +4,7 @@
 No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a small mock, the driver lock is a temp
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
--> INVALID/HARNESS, guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt finalized, and
+-> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt finalized, and
 SOURCE_SHA_MISSING.
 """
 import json
@@ -30,6 +30,8 @@ mark = os.path.join(os.environ["TESTQ_HOME"], "mock_hung_once")
 if mode == "hang" or (mode == "hang-once" and not os.path.exists(mark)):
     open(mark, "w").close()
     time.sleep(60)
+if mode == "refuse":
+    print("REFUSED: every selected chain of Mock is offline (c0)"); sys.exit(2)
 if mode == "crash":
     print("Traceback: boom"); sys.exit(3)
 name = "Mock_%d" % int(time.time() * 1000)
@@ -133,6 +135,11 @@ def main():
         rc, o = w(["start"], job(), MOCK_MODE="crash")
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no sheet -> INVALID/HARNESS")
+
+        rc, o = w(["start"], job(), MOCK_MODE="refuse")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "BLOCKED_SELECTION",
+              "modcheck's REFUSED line -> INVALID/BLOCKED_SELECTION: %s" % res.get("note"))
 
         # 5. the guard is held by someone else
         sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "rimflow"))

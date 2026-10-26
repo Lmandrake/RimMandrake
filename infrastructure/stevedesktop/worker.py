@@ -414,6 +414,9 @@ class Attempt:
         names = re.findall(r"Transient[\\/]+modcheck[\\/]+([^\s\\/]+)\.html", text)
         sheet = os.path.join(SHEET_DIR, names[-1] + ".json") if names else None
         data = read_json(sheet) if sheet else None
+        refusal = re.search(r"^REFUSED: (.+)$", text, re.M)
+        if not data and refusal:
+            return self.fail("INVALID", "BLOCKED_SELECTION", "modcheck refused the selection: " + refusal.group(1))
         if not data:
             return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s"
                              % (self.res["modcheck_exit"], tail[-300:]))
