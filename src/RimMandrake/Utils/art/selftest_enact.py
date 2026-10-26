@@ -315,7 +315,12 @@ def main():
         check(R["queued_jobs"] == 1 and jobs and all(json.loads(j.read_text()).get("owner_note") == "make it scarier"
                                                      and json.loads(j.read_text()).get("priority") == 0 for j in jobs),
               f"redo queued at priority 0 with his note verbatim ({len(jobs)} job file(s))")
-        mid = tree_digest(F["root"] / "src") + tree_digest(F["led"]) + tree_digest(F["ap"])
+        check(jobs and all((json.loads(j.read_text()).get("eligibility") or {}).get("exemption") == "OWNER_RULING"
+                           and json.loads(j.read_text()).get("owner_ruling", {}).get("by") == "art.py enact"
+                           for j in jobs),
+              "the redo passed fill_queue's eligibility gate on its verified owner_ruling marker "
+              "(FILLQUEUE_ENFORCE_ELIGIBILITY_GATE)")
+        mid =tree_digest(F["root"] / "src") + tree_digest(F["led"]) + tree_digest(F["ap"])
 
         # a followed note comes OFF the open notes (owner, 2026-10-08): queued, cut -> notes_followed, his words kept
         D = json.loads(F["decisions"].read_text())["decisions"]

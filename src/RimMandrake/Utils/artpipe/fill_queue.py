@@ -96,6 +96,13 @@ the real path if this process is killed mid-write (that used to be able to
 permanently block the id: a corrupt file at `dest` is still a file `dest`
 has, so id_taken() would refuse every future refile of it).
 
+ELIGIBILITY GATE (FILLQUEUE_ENFORCE_ELIGIBILITY_GATE, owner 2026-10-19): every row is
+judged by art/regen_eligibility.Gate at enqueue; only NONE / PLACEHOLDER / DONOR art
+is filed, everything else is REFUSED with its verdict named (exit 1), and a gate that
+cannot be built refuses every row that needs it. The exemptions are verified markers
+(source_run = an art-eval redraw, owner_ruling = an art.py enact redraw), recorded on
+the job as `eligibility` — see gate_row().
+
     python3 fill_queue.py --input art_list.csv
     python3 fill_queue.py --input art_list.json --dry-run
 """
@@ -117,12 +124,16 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 
 REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h")
 
+# Eligibility-gate markers (FILLQUEUE_ENFORCE_ELIGIBILITY_GATE): carried onto every job of the row verbatim, so the
+# exemption a job was filed under can be audited from the job file itself.
+MARKER_FIELDS = ("source_run", "replaces_kept", "install_by_card", "style_notes_kept", "owner_ruling")
+
 # Every row field row_to_jobs/bind_subject reads. Anything else is WARNED about (never silently dropped).
 KNOWN_ROW_FIELDS = frozenset(REQUIRED_ROW_FIELDS) | {
     "background", "biome_neutral", "biome_register", "canon", "canon_reference", "channel", "derive_from",
     "drawsize", "facings", "install_to", "no_subject", "oversize_reason", "priority", "reference",
     "style_notes", "target_def", "target_original", "target_texpath",
-    "owner_note", "canon_na", "canon_na_reason", "slot", "ask", "module"}
+    "owner_note", "canon_na", "canon_na_reason", "slot", "ask", "module"} | set(MARKER_FIELDS)
 
 
 def _split_na(v):
@@ -431,6 +442,9 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
         for k in ("slot", "ask", "module"):  # module: the creature's body plan (walker/swimmer/flyer...), ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE
             if isinstance(row.get(k), str) and row[k]:
                 job[k] = row[k]
+        for k in MARKER_FIELDS:              # the eligibility gate's exemption markers, audited from the job
+            if row.get(k) not in (None, "", False):
+                job[k] = row[k]
         na = _split_na(row.get("canon_na"))
         if na:
             job["canon_na"] = na
@@ -448,6 +462,110 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             job["prompt"] = CANON_PROMPT_PREFIX + job["prompt"]
         jobs.append(job)
     return jobs
+
+
+# ─────────────────────────────────────────── eligibility gate (FILLQUEUE_ENFORCE_ELIGIBILITY_GATE) ──
+# Owner, 2026-10-19: "I ONLY want art queued that has either confirmed NONE, PLACEHOLDER, or DONOR art. If you can't
+# confirm one of those three, do not queue. If it was previously regenerated and renamed, do not queue."
+# Every row is judged here, at enqueue, by art/regen_eligibility.Gate (the one gate; never a fork of it). Each job of
+# the row is classified; ONE refused job refuses the whole row (an east master refused would orphan its N/S derives).
+# The only ways past a refusal are explicit, auditable markers that fill_queue VERIFIES against the record that
+# authorises them, and that ride on the job (`eligibility` + the marker fields):
+#   source_run     an art-eval pipeline redraw (owner card 2026-10-23: redraws of kept art are allowed, shown to him
+#                  after with a revert). infrastructure/state/art_eval/runs/<run>/run.json must be a production run
+#                  (test false) whose decisions.jsonl holds a REGEN record for this target_def. Passes REFUSED_REGEN;
+#                  passes REFUSED_KEPT only when the record AND the row both say replaces_kept with the same
+#                  install_by_card (the revert record). REFUSED_UNCONFIRMED is never exempt: fail closed.
+#   owner_ruling   a redraw the owner ruled on his review sheet (art.py enact): {"by": "art.py enact", "decisions":
+#                  <abs path of the ingested .decisions.json>, "sheet": <sheetId>, "row": <defName>} — the decisions
+#                  file must exist and rule on that row, and row == target_def. His ruling is the authority; no
+#                  eligibility class is needed.
+# A no_subject row (template, glyph, fixture) passes as NO_SUBJECT only when it installs nowhere (no install_to): it
+# draws over no def's art. If the gate cannot be built, every row that needs it is refused (GATE_UNAVAILABLE).
+REPO_ROOT = Path(__file__).resolve().parents[4]
+ART_EVAL_RUNS = REPO_ROOT / "infrastructure" / "state" / "art_eval" / "runs"
+
+
+def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tuple[dict | None, str]:
+    """-> (the newest REGEN record for TARGET in production art-eval run RUN, why-not)."""
+    if not isinstance(run, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+", run or "") or run.startswith("."):
+        return None, f"source_run {run!r} is not a run id"
+    d = (runs_root or ART_EVAL_RUNS) / run
+    meta, dec = d / "run.json", d / "decisions.jsonl"
+    if not meta.is_file() or not dec.is_file():
+        return None, f"source_run {run}: no run.json + decisions.jsonl under {d}"
+    try:
+        if json.loads(meta.read_text()).get("test", True) is not False:
+            return None, f"source_run {run} is a --test run (it may file nothing)"
+        recs = [json.loads(ln) for ln in dec.read_text().splitlines() if ln.strip()]
+    except (OSError, ValueError) as e:
+        return None, f"source_run {run}: unreadable ({e})"
+    hit = [r for r in recs if r.get("subject") == target and r.get("decision") == "REGEN"]
+    if not hit:
+        return None, f"source_run {run} holds no REGEN decision for {target}"
+    return hit[-1], ""
+
+
+def _owner_ruling_ok(m, target: str) -> str:
+    """'' when the owner_ruling marker verifies, else why not."""
+    if not isinstance(m, dict) or m.get("by") != "art.py enact":
+        return "owner_ruling must be {by: 'art.py enact', decisions, sheet, row}"
+    if m.get("row") != target:
+        return f"owner_ruling row {m.get('row')!r} is not target_def {target!r}"
+    p = Path(str(m.get("decisions") or ""))
+    if not p.is_absolute() or not p.is_file():
+        return f"owner_ruling decisions file missing: {p}"
+    try:
+        doc = json.loads(p.read_text())
+    except (OSError, ValueError) as e:
+        return f"owner_ruling decisions file unreadable ({e})"
+    if target not in (doc.get("decisions") or {}):
+        return f"{p.name} holds no ruling on {target}"
+    return ""
+
+
+def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = None) -> tuple[bool, dict]:
+    """-> (file the row?, eligibility record). GATE_GET() returns a regen_eligibility.Gate or raises GateError; it is
+    only called for a row that needs a verdict. Never raises for one row."""
+    target = next((j.get("target_def") for j in jobs if j.get("target_def")), None)
+    if not target:
+        if any(j.get("install_to") for j in jobs):
+            return False, {"verdict": "REFUSED_UNCONFIRMED",
+                           "reason": "a no_subject row may not install_to a texture slot: name its target_def"}
+        return True, {"verdict": "NO_SUBJECT", "reason": "names no def and installs nowhere"}
+    named = str(row.get("target_def") or "").strip()  # the markers name the def as the ROW did (before donor mapping)
+    if row.get("owner_ruling") not in (None, ""):
+        why = _owner_ruling_ok(row["owner_ruling"], named)
+        if why:
+            return False, {"verdict": "REFUSED_MARKER", "reason": why}
+        return True, {"verdict": "EXEMPT", "exemption": "OWNER_RULING",
+                      "reason": f"owner ruled a redraw of {named} on {row['owner_ruling'].get('sheet')}"}
+    try:
+        gate = gate_get()
+        vs = [gate.classify(j) for j in jobs]
+    except Exception as e:                                           # noqa: BLE001 — GateError or worse: fail closed
+        return False, {"verdict": "GATE_UNAVAILABLE", "reason": f"{type(e).__name__}: {e}"}
+    import regen_eligibility as RE
+    worst = min(vs, key=lambda v: RE.RANK.get(v.get("verdict"), -1))
+    verdict = worst.get("verdict")
+    rec = {"verdict": verdict, "reason": f"{worst.get('id')}: {worst.get('reason')}"}
+    if verdict in RE.ELIGIBLE and all(v.get("eligible") for v in vs):
+        return True, rec
+    run = row.get("source_run")
+    if run in (None, ""):
+        return False, rec
+    if verdict not in ("REFUSED_REGEN", "REFUSED_KEPT"):
+        return False, dict(rec, reason=rec["reason"] + f" (source_run {run} exempts only REGEN/KEPT art, never "
+                                                         f"{verdict}: fail closed)")
+    r, why = _art_eval_record(run, named, runs_root)
+    if r is None:
+        return False, dict(rec, reason=rec["reason"] + f" (art-eval marker does not verify: {why})")
+    if verdict == "REFUSED_KEPT":
+        card = r.get("install_by_card")
+        if not (r.get("replaces_kept") and row.get("replaces_kept") and card and row.get("install_by_card") == card):
+            return False, dict(rec, reason=rec["reason"] + f" (kept art: run {run}'s REGEN record and the row must "
+                                                             f"both say replaces_kept with one install_by_card)")
+    return True, dict(rec, exemption="ART_EVAL_REDRAW", source_run=run)
 
 
 class InvalidJob(ValueError):
@@ -522,7 +640,8 @@ def write_job(job: dict, pending_dir: Path, active_dir: Path, done_dir: Path,
                   file=sys.stderr)
 
 
-def main(argv=None) -> int:
+def main(argv=None, gate=None) -> int:
+    """GATE: a regen_eligibility.Gate-like object (selftests); None builds the real one, lazily, once."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--input", required=True, help="CSV or JSON art list")
     ap.add_argument("--pending-dir", type=Path, default=common.DEFAULT_PENDING)
@@ -563,7 +682,17 @@ def main(argv=None) -> int:
     if not rows:
         print(f"ERROR {path} holds no rows - nothing to file (UNMEASURED, not 'done')", file=sys.stderr)
         return 2
-    filed, duplicates, errors = 0, [], []
+    filed, duplicates, errors, refused = 0, [], [], []
+    built = {}
+
+    def gate_get():
+        if gate is not None:
+            return gate
+        if "g" not in built:
+            import regen_eligibility as RE
+            built["g"] = RE.Gate()                    # raises GateError: gate_row refuses every row that needs it
+        return built["g"]
+
     for row in rows:
         try:
             jobs = row_to_jobs(row, default_channel=args.channel,
@@ -572,6 +701,12 @@ def main(argv=None) -> int:
         except ValueError as exc:
             errors.append(str(exc))
             continue
+        ok_row, elig = gate_row(row, jobs, gate_get)
+        if not ok_row:
+            refused.append(f"{row.get('id')}: {elig['verdict']} — {elig['reason']}")
+            continue
+        for job in jobs:
+            job["eligibility"] = elig
         for job in jobs:
             try:
                 write_job(job, args.pending_dir, args.active_dir, args.done_dir,
@@ -586,10 +721,12 @@ def main(argv=None) -> int:
         print(f"ERROR skipped row: {msg}", file=sys.stderr)
     for msg in duplicates:
         print(f"REFUSED duplicate: {msg}", file=sys.stderr)
+    for msg in refused:
+        print(f"REFUSED ineligible: {msg}", file=sys.stderr)
 
     print(f"\n{filed} job(s) filed, {len(duplicates)} duplicate(s) refused, "
-          f"{len(errors)} row error(s)")
-    return 1 if (duplicates or errors) else 0
+          f"{len(refused)} row(s) refused by the eligibility gate, {len(errors)} row error(s)")
+    return 1 if (duplicates or errors or refused) else 0
 
 
 if __name__ == "__main__":

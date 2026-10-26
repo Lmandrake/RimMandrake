@@ -114,8 +114,7 @@ def cmd_rows(a):
             r["prompt"], r["_prompt_by"] = neutral_prompt(r["prompt"])
         r["canvas_w"] = r["canvas_h"] = canvas_for(d)
         r["drawsize"] = d
-        r["biome_neutral"] = True
-        r.pop("source_run", None)
+        r["biome_neutral"] = True     # source_run stays: it is fill_queue's art-eval redraw marker (gate_row)
         return r
 
     with ThreadPoolExecutor(4) as ex:

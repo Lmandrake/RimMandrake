@@ -1925,6 +1925,10 @@ def next_version(base: str) -> int:
 def job_rows(P: dict) -> list[dict]:
     rows = []
     idx = L.cached_index()
+    dec = str(Path(P["decisions"]).resolve())
+
+    def ruling(row):        # fill_queue's eligibility gate exempts a row only on this verified marker (gate_row)
+        return {"owner_ruling": {"by": "art.py enact", "decisions": dec, "sheet": P["sheet"], "row": row}}
     for q in P["queue"]:
         srow, v, row = q["srow"], q["v"], q["row"]
         refs = [str(L.store_path(s)) for s in redo_ref_shas(q, idx)]
@@ -1954,7 +1958,7 @@ def job_rows(P: dict) -> list[dict]:
                              "prompt": (f"Owner's request, verbatim, overrides everything below: \"{note}\" " if note else "")
                              + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; draw {what} — {guide}.",
                              "canvas_w": 256, "canvas_h": 256, "facings": facings, "priority": 0,
-                             "owner_note": note, "canon_reference": refs, "biome_neutral": True})
+                             "owner_note": note, "canon_reference": refs, "biome_neutral": True} | ruling(row))
             continue
         base = f"enact_{L.det_id(P['sheet'], row, note, v.get('at'), *(q.get('ref_shas') or []))[:8]}_{L.subject_key(row)}"
         rows.append({"id": f"{base}_v{next_version(base)}",
@@ -1962,7 +1966,7 @@ def job_rows(P: dict) -> list[dict]:
                      "prompt": (f"Owner's note, verbatim, overrides everything below: \"{note}\" " if note else "")
                      + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; redraw it — {guide}.",
                      "canvas_w": 256, "canvas_h": 256, "facings": facings, "priority": 0,
-                     "owner_note": note, "canon_reference": refs, "biome_neutral": True})
+                     "owner_note": note, "canon_reference": refs, "biome_neutral": True} | ruling(row))
     return rows
 
 

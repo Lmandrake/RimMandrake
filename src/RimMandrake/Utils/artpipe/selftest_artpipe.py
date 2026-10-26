@@ -4190,6 +4190,145 @@ def test_queue_order_is_priority_then_ruled_then_age():
            order == want, f"got {order}")
 
 
+class _FakeEligibilityGate:
+    """regen_eligibility.Gate stand-in: VERDICTS maps (target_def, facing) or target_def -> verdict."""
+
+    def __init__(self, verdicts: dict, broken: bool = False):
+        self.verdicts, self.broken, self.calls = verdicts, broken, 0
+
+    def classify(self, job: dict) -> dict:
+        self.calls += 1
+        if self.broken:
+            raise RuntimeError("selftest: gate could not be built")
+        dn = job.get("target_def")
+        v = self.verdicts.get((dn, job.get("facing")), self.verdicts.get(dn, "REFUSED_UNCONFIRMED"))
+        return {"id": job.get("id"), "target_def": dn, "verdict": v, "eligible": v in ("NONE", "PLACEHOLDER", "DONOR"),
+                "slots": [], "reason": f"selftest verdict {v}"}
+
+
+def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies_exemptions():
+    """FILLQUEUE_ENFORCE_ELIGIBILITY_GATE (owner 2026-10-19: queue art ONLY for NONE / PLACEHOLDER / DONOR; fail
+    closed). Every row is judged at enqueue; the art-eval redraw (card 2026-10-23) and the owner's enact ruling pass
+    only on a marker fill_queue verifies against its record. Before the gate every one of these rows was filed."""
+    import contextlib
+    import io
+    saved = (fill_queue._WORLD, fill_queue.ART_EVAL_RUNS)
+    fill_queue._WORLD = False                      # resolve nothing: the rows say everything
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            q = Queue(td / "q")
+            runs = td / "runs"
+            fill_queue.ART_EVAL_RUNS = runs
+
+            def run_dir(name, test, recs):
+                d = runs / name
+                d.mkdir(parents=True)
+                (d / "run.json").write_text(json.dumps({"run_id": name, "test": test}))
+                (d / "decisions.jsonl").write_text("".join(json.dumps(r) + "\n" for r in recs))
+            run_dir("prod_r1", False, [{"subject": "ST_Regen", "decision": "REGEN"},
+                                       {"subject": "ST_KeptOk", "decision": "REGEN", "replaces_kept": True,
+                                        "install_by_card": "card X"},
+                                       {"subject": "ST_KeptBare", "decision": "REGEN"},
+                                       {"subject": "ST_Unconf", "decision": "REGEN"},
+                                       {"subject": "ST_Accepted", "decision": "ACCEPT"}])
+            run_dir("test_r1", True, [{"subject": "ST_RegenT", "decision": "REGEN"}])
+            dec = td / "sheet.decisions.json"
+            dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {"ST_Ruled": {"decision": "redo"}}}))
+
+            def row(i, dn, **kw):
+                return dict({"id": i, "rimflow_item_id": "SELFTEST_ARTPIPE", "target_def": dn,
+                             "target_texpath": f"Things/{dn}", "prompt": "a creature", "canvas_w": 256,
+                             "canvas_h": 256, "biome_neutral": True}, **kw)
+            ruling = {"by": "art.py enact", "decisions": str(dec), "sheet": "st_sheet"}
+            rows = [row("none_ok", "ST_None"),
+                    row("kept_no", "ST_Kept"),
+                    row("regen_no", "ST_RegenPlain"),
+                    row("unconf_no", "ST_UnconfPlain"),
+                    row("multi_no", "ST_Multi", facings=["east", "south", "north"]),
+                    row("ae_regen_ok", "ST_Regen", source_run="prod_r1"),
+                    row("ae_test_no", "ST_RegenT", source_run="test_r1"),
+                    row("ae_norec_no", "ST_Accepted", source_run="prod_r1"),
+                    row("ae_kept_ok", "ST_KeptOk", source_run="prod_r1", replaces_kept=True, install_by_card="card X"),
+                    row("ae_kept_no", "ST_KeptBare", source_run="prod_r1"),
+                    row("ae_unconf_no", "ST_Unconf", source_run="prod_r1"),
+                    row("ae_bad_id_no", "ST_Regen_b", source_run="../prod_r1"),
+                    row("ruled_ok", "ST_Ruled", owner_ruling=dict(ruling, row="ST_Ruled")),
+                    row("ruled_no", "ST_NotRuled", owner_ruling=dict(ruling, row="ST_NotRuled")),
+                    row("ruled_wrongrow_no", "ST_Other", owner_ruling=dict(ruling, row="ST_Ruled")),
+                    {"id": "nosubj_install_no", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "a glyph",
+                     "canvas_w": 256, "canvas_h": 256, "no_subject": "glyph", "biome_neutral": True,
+                     "install_to": "src/X/Textures/UI/glyph.png"}]
+            verdicts = {"ST_None": "NONE", "ST_Kept": "REFUSED_KEPT", "ST_RegenPlain": "REFUSED_REGEN",
+                        "ST_UnconfPlain": "REFUSED_UNCONFIRMED", ("ST_Multi", "east"): "DONOR",
+                        ("ST_Multi", "south"): "DONOR", ("ST_Multi", "north"): "REFUSED_KEPT",
+                        "ST_Regen": "REFUSED_REGEN", "ST_RegenT": "REFUSED_REGEN", "ST_Accepted": "REFUSED_REGEN",
+                        "ST_KeptOk": "REFUSED_KEPT", "ST_KeptBare": "REFUSED_KEPT", "ST_Unconf": "REFUSED_UNCONFIRMED",
+                        "ST_Regen_b": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
+                        "ST_Other": "REFUSED_KEPT"}
+            art = td / "rows.json"
+            art.write_text(json.dumps(rows))
+            dirs = ["--pending-dir", str(q.pending), "--active-dir", str(q.active), "--done-dir", str(q.done),
+                    "--failed-dir", str(q.failed)]
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                rc = fill_queue.main(["--input", str(art)] + dirs, gate=_FakeEligibilityGate(verdicts))
+            filed = {p.stem for p in q.pending.glob("*.json")}
+            want = {"none_ok", "ae_regen_ok", "ae_kept_ok", "ruled_ok"}
+            ok("gate: exactly the eligible and verified-exempt rows are filed", filed == want,
+               f"filed={sorted(filed)} stderr={err.getvalue()[-1500:]}")
+            ok("gate: a refusal exits 1", rc == 1, rc)
+            e = err.getvalue()
+            for rid, verdict in (("kept_no", "REFUSED_KEPT"), ("regen_no", "REFUSED_REGEN"),
+                                 ("unconf_no", "REFUSED_UNCONFIRMED"), ("multi_no", "REFUSED_KEPT"),
+                                 ("ae_test_no", "--test run"), ("ae_norec_no", "no REGEN decision"),
+                                 ("ae_kept_no", "replaces_kept"), ("ae_unconf_no", "fail closed"),
+                                 ("ae_bad_id_no", "not a run id"), ("ruled_no", "no ruling on ST_NotRuled"),
+                                 ("ruled_wrongrow_no", "is not target_def"),
+                                 ("nosubj_install_no", "no_subject row may not install_to")):
+                line = next((ln for ln in e.splitlines() if f"REFUSED ineligible: {rid}:" in ln), "")
+                ok(f"gate: {rid} refused naming {verdict!r}", verdict in line, line or e[-800:])
+            ok("gate: one refused facing refuses the whole row (no orphaned derives)",
+               not any(f.startswith("multi_no") for f in filed), sorted(filed))
+            if "none_ok" in filed:
+                j = json.loads((q.pending / "none_ok.json").read_text())
+                ok("gate: the verdict rides on the job", (j.get("eligibility") or {}).get("verdict") == "NONE", j)
+            if "ae_kept_ok" in filed:
+                j = json.loads((q.pending / "ae_kept_ok.json").read_text())
+                el = j.get("eligibility") or {}
+                ok("gate: an art-eval kept redraw carries its exemption and markers",
+                   el.get("exemption") == "ART_EVAL_REDRAW" and el.get("source_run") == "prod_r1"
+                   and j.get("source_run") == "prod_r1" and j.get("replaces_kept") is True
+                   and j.get("install_by_card") == "card X", j)
+            if "ruled_ok" in filed:
+                j = json.loads((q.pending / "ruled_ok.json").read_text())
+                ok("gate: an owner-ruled redraw carries OWNER_RULING and its marker",
+                   (j.get("eligibility") or {}).get("exemption") == "OWNER_RULING"
+                   and (j.get("owner_ruling") or {}).get("sheet") == "st_sheet", j)
+
+            # a gate that cannot be built refuses every subject row; a no-subject row that installs nowhere still files
+            q2 = Queue(td / "q2")
+            art2 = td / "rows2.json"
+            art2.write_text(json.dumps([row("broken_none", "ST_None"),
+                                        {"id": "glyph_ok", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "a glyph",
+                                         "canvas_w": 256, "canvas_h": 256, "no_subject": "glyph",
+                                         "biome_neutral": True}]))
+            err2 = io.StringIO()
+            with contextlib.redirect_stderr(err2), contextlib.redirect_stdout(io.StringIO()):
+                rc2 = fill_queue.main(["--input", str(art2), "--pending-dir", str(q2.pending), "--active-dir",
+                                       str(q2.active), "--done-dir", str(q2.done), "--failed-dir", str(q2.failed)],
+                                      gate=_FakeEligibilityGate({}, broken=True))
+            filed2 = {p.stem for p in q2.pending.glob("*.json")}
+            ok("gate: an unbuildable gate refuses the row (GATE_UNAVAILABLE), fail closed",
+               "broken_none" not in filed2 and "GATE_UNAVAILABLE" in err2.getvalue() and rc2 == 1,
+               err2.getvalue()[-600:])
+            ok("gate: a no-subject row that installs nowhere is filed as NO_SUBJECT",
+               "glyph_ok" in filed2 and json.loads((q2.pending / "glyph_ok.json").read_text())
+               .get("eligibility", {}).get("verdict") == "NO_SUBJECT", sorted(filed2))
+    finally:
+        fill_queue._WORLD, fill_queue.ART_EVAL_RUNS = saved
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -4322,6 +4461,7 @@ def main() -> int:
         test_queue_order_is_priority_then_ruled_then_age,
         test_no_image_failure_is_classified_retryable,
         test_no_image_gets_two_firm_retries_end_to_end,
+        test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies_exemptions,
     ):
         print(f"--- {fn.__name__} ---")
         try:
