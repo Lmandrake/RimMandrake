@@ -676,6 +676,25 @@ def main():
                 check(f"module of {nm} is {want}", FS.build_spec(nm, tt, kk, tex, td / "o", kept_lookup=lambda f: [])["module"] == want)
             check("module_of: brief body_plan swimmer wins (a pool fish has no def marker)", FS.module_of(False, ET.fromstring("<ThingDef/>"), [], "swimmer") == "swimmer")
             check("module_of: a flyer stays a flyer", FS.module_of(True, ET.fromstring("<ThingDef/>"), [], "swimmer") == "flyer")
+            # FAUNASPEC_FIX_FLIGHT_FRAMES_IGNORE_PREFIX: frames are read where the kind's flyingAnimationFramePathPrefix
+            # says (RSW_Whisperbird: texPath RimStarWars/SWBestiary/Whisperbird/..., frames swanimals/Whisperbird/...)
+            tex3 = {"X/Bird_south": [png("X/Bird_south")], "Y/Bird_Flying_1_south": [png("Y/Bird_Flying_1_south")],
+                    "Y/Bird_Flying_2_south": [png("Y/Bird_Flying_2_south")], "Y/Bird_Flying_1_east": [png("Y/Bird_Flying_1_east")]}
+            tb = {"RM_Bird": (str(td / "src/Mod/M/Defs/a.xml"), ET.fromstring(
+                "<ThingDef><defName>RM_Bird</defName><label>l</label><description>d</description>"
+                "<statBases><MaxFlightTime>30</MaxFlightTime></statBases></ThingDef>"))}
+            kb = {"RM_Bird": [("f", ET.fromstring(
+                "<PawnKindDef><race>RM_Bird</race><flyingAnimationFramePathPrefix>Y/Bird_Flying_</flyingAnimationFramePathPrefix>"
+                "<lifeStages><li><bodyGraphicData><texPath>X/Bird</texPath><drawSize>1</drawSize></bodyGraphicData></li>"
+                "</lifeStages></PawnKindDef>"))]}
+            sp = FS.build_spec("RM_Bird", tb, kb, tex3, td / "o", kept_lookup=lambda f: [])
+            check("flight frames come from the kind's flyingAnimationFramePathPrefix",
+                  sp["module"] == "flyer" and sp.get("images_flight_note") == {"south": 2, "east": 1}
+                  and len(sp["images"].get("flight", [])) == 2, (sp.get("images_flight_note"), sp["images"].get("flight")))
+            kb["RM_Bird"][0][1].find("flyingAnimationFramePathPrefix").text = "Z/Nothing_Flying_"
+            sp = FS.build_spec("RM_Bird", tb, kb, tex3, td / "o", kept_lookup=lambda f: [])
+            check("a prefix with no frame art under src/ is said, not an empty strip list",
+                  "Z/Nothing_Flying_" in (sp.get("flight_frames_unmeasured") or ""), sp.get("flight_frames_unmeasured"))
             for what, args in (("no kind", ("RM_One", t1, {}, tex)), ("no def", ("RM_Nope", t1, k1, tex))):
                 try:
                     FS.build_spec(*args, td / "o", kept_lookup=lambda f: [])

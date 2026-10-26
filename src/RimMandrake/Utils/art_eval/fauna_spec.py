@@ -6,7 +6,9 @@
 Reads only the repo: ThingDef (description, label), PawnKindDef lifeStages bodyGraphicData (texPath, adult drawSize =
 max over life stages), the textures under src/**/Textures, and `flyingAnimationFramePathPrefix`/`MaxFlightTime` to
 decide the `flyer` module. The facings the card shows are the loose PNG files `<texPath>_south|east|north|west`.
-Flight frames are composed into one strip per direction from the stills (never a live capture).
+Flight frames are composed into one strip per direction from the stills (never a live capture), read at the adult
+kind's `flyingAnimationFramePathPrefix` (<prefix><n>_<facing>); with no prefix, at <texPath>_Flying_<n>_<facing>. A flyer
+whose frames are not under src/ gets `flight_frames_unmeasured`, never a silent empty strip list.
 """
 from __future__ import annotations
 
@@ -103,20 +105,27 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
     f, d = things[defname]
     label = d.findtext("label")
     desc = " ".join((d.findtext("description") or "").split())
-    paths, draws, classes = [], [], []
+    paths, draws, classes, owners = [], [], [], []
     for _, k in kinds.get(defname, []):
-        for bg in k.iter("bodyGraphicData"):
-            paths.append(bg.findtext("texPath"))
-            classes.append((bg.findtext("graphicClass") or "Graphic_Multi").strip())
-            ds = (bg.findtext("drawSize") or "1").replace("(", "").replace(")", "").split(",")
-            draws.append(float(ds[0]))
+        # parent-first walk: the same bodyGraphicData set as k.iter("bodyGraphicData"), plus the lifeStage that holds it
+        for parent in k.iter():
+            for bg in parent.findall("bodyGraphicData"):
+                owners.append((k, parent))
+                paths.append(bg.findtext("texPath"))
+                classes.append((bg.findtext("graphicClass") or "Graphic_Multi").strip())
+                ds = (bg.findtext("drawSize") or "1").replace("(", "").replace(")", "").split(",")
+                draws.append(float(ds[0]))
     if not draws:
         raise SystemExit(f"fauna_spec: {defname} has no PawnKindDef lifeStage bodyGraphicData (race={defname}); "
                          f"nothing to judge")
     adult = max(range(len(draws)), key=lambda i: draws[i])
     tp = paths[adult]
     text = ET.tostring(d, encoding="unicode")
-    flyer = "flyingAnimationFramePathPrefix" in text or "MaxFlightTime" in text
+    # the frame prefix lives on the PawnKindDef (top level or the lifeStage), never on the ThingDef
+    a_kind, a_stage = owners[adult]
+    prefix = ((a_stage.findtext("flyingAnimationFramePathPrefix") or a_kind.findtext(".//flyingAnimationFramePathPrefix")
+               or "").strip())
+    flyer = bool(prefix) or "flyingAnimationFramePathPrefix" in text or "MaxFlightTime" in text
     home = mod_of(f)
     imgs = {}
     gclass = classes[adult]
@@ -155,8 +164,12 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
         base = tp.rsplit("/", 1)[0]
         stem = tp.rsplit("/", 1)[1]
         frames = {}
+        # FAUNASPEC_FIX_FLIGHT_FRAMES_IGNORE_PREFIX: the game reads <prefix><n>_<facing>; frames often live in another
+        # folder than texPath (RSW_Whisperbird). Only a kind with no prefix falls back to <texPath>_Flying_<n>_<facing>.
+        pat = (rf"{re.escape(prefix)}(\d*)_?(south|east|north)$" if prefix else
+               rf"{re.escape(base)}/{re.escape(stem)}_(?:Flying|Fly)_(\d*)_?(south|east|north)$")
         for k, v in tex.items():
-            m = re.match(rf"{re.escape(base)}/{re.escape(stem)}_(?:Flying|Fly)_(\d*)_?(south|east|north)$", k)
+            m = re.match(pat, k)
             if m:
                 frames.setdefault(m.group(2), []).append((int(m.group(1) or 0), v[0]))
         flight = []
@@ -166,6 +179,10 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             C.strip([x[1] for x in lst], [f"{face} f{x[0]}" for x in lst], tile=256, title=f"{defname} flight frames, {face}").save(p)
             flight.append(str(p))
         spec["images_flight_note"] = {k: len(v) for k, v in frames.items()}
+        if not frames:
+            spec["flight_frames_unmeasured"] = (f"no flight frame PNG under src/ for prefix {prefix!r}" if prefix else
+                                                f"no {tp}_Flying_<n>_<facing> PNG under src/") + \
+                " (vanilla or donor art is not indexed): flight frames NOT judged"
         imgs["flight"] = flight
     spec["images"] = imgs
     spec["graphic_class"] = gclass
