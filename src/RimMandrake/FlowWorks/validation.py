@@ -1682,6 +1682,8 @@ def _on_river_site(fn, entry):
 
     @functools.wraps(fn)
     def chain(t):
+        if getattr(t, "session", None) is None:
+            return fn(t)    # the offline declaration probe (targeting.catalogue walks every chain): no game, no site
         _mc = os.path.join(os.path.dirname(HERE), "Utils", "modcheck")
         if _mc not in sys.path:
             sys.path.insert(0, _mc)

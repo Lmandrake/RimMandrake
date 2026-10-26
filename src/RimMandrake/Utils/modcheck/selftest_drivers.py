@@ -9,7 +9,8 @@ SteveDesktop worker's run command not passing `--drivers on`; FlowWorks naming a
 chain that is not in its suite, or leaving a driver-reading chain (thirst, sprinklers, drawbridges, lines,
 core_live_rows, hose_live_rows, the live_session bars, trench, suspension) with no driver; T15R (needs a saved site
 SteveDesktop does not have) in thirst_live's argv; the river chains (works, current, swept, placer) not settling the
-river site once, before the first of them, under the flag -- or settling it with the flag off.
+river site once, before the first of them, under the flag -- or settling it with the flag off, or when the offline
+declaration probe (targeting.catalogue) walks them.
 """
 import importlib.util
 import os
@@ -182,6 +183,13 @@ def t_river_wrapper():
                 pass
         ok(not calls, "flag off: river chains do not settle the river site")
         os.environ[D.ENV] = "1"
+        import suite as _SU  # noqa: E402
+        for c in ("works", "current"):     # targeting.catalogue() walks every chain with this probe, offline
+            try:
+                fns[c](_SU._DeclarationProbe())
+            except Exception:   # noqa: BLE001
+                pass
+        ok(not calls, "flag on: the offline declaration probe does not settle the river site (%d calls)" % len(calls))
         for c in ("works", "current", "swept", "placer"):
             try:
                 fns[c](_T())
