@@ -68,10 +68,29 @@ def row_id(r: dict) -> str:
     base = r["subject"].split("__", 1)[0]
     # the facing-audit driver judges a view-only redraw under `<def>_<n|s|ns>` (the facings drawn); its artpipe job
     # `arteval_<stem>_r<N>_<same suffix>` proves the tag is not part of the defName
-    m = re.search(r"_(ns|n|s)$", base)
-    if m and re.search(r"_r\d+_%s$" % m.group(1), r.get("artpipe_job") or ""):
+    m = _view_match(r, base)
+    if m:
         base = base[:m.start()]
     return base
+
+
+def _view_match(r: dict, base: str):
+    """The trailing `_n|_s|_ns` of `base` when the artpipe job proves it is a view tag. The job may carry a series
+    prefix before the round (`arteval_RM_Fuzzviper_s1r1_n`, SHADOW_ROWID_FIX_SERIES_TAG_SLIPS_THROUGH)."""
+    m = re.search(r"_(ns|n|s)$", base)
+    if m and re.search(r"_(?:s\d+)?r\d+_%s$" % m.group(1), r.get("artpipe_job") or ""):
+        return m
+    return None
+
+
+def view_label(r: dict) -> str:
+    """Per-record label on a merged row: the view tag when the row key dropped one, else the card tag after `__`
+    (SHADOW_VIEW_ROWS_FIX_MERGED_UNLABELLED)."""
+    sub = r["subject"]
+    if "__" in sub:
+        return sub.split("__", 1)[1]
+    m = _view_match(r, sub)
+    return ("view " + m.group(1)) if m else ""
 
 
 def by_row(recs: list) -> dict:
@@ -148,7 +167,7 @@ def build(run_id: str, name: str | None = None) -> Path:
          "options": OPTIONS, "rows": {}}
     for rid, rs in by_row(recs).items():
         lines = [row_line(r) for r in rs]
-        tag = lambda r: f"[{r['subject'].split('__', 1)[1]}] " if len(rs) > 1 and "__" in r["subject"] else ""
+        tag = lambda r: f"[{view_label(r)}] " if len(rs) > 1 and view_label(r) else ""
         q["rows"][rid] = {"prefill": "keep", "why": " || ".join(tag(r) + w for r, (w, _c) in zip(rs, lines)),
                           "context": " || ".join(tag(r) + c for r, (_w, c) in zip(rs, lines))}
     qdir = STATE / "runs" / run_id

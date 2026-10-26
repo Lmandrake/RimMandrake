@@ -751,6 +751,11 @@ def main():
         check("plant cards map to their def row", [SH.row_id(r) for r in pr] == ["RM_Ruskara", "RM_Ruskara", "RM_Hound"])
         check("one row per def, both cards under it", sorted(SH.by_row(pr)) == ["RM_Hound", "RM_Ruskara"] and len(SH.by_row(pr)["RM_Ruskara"]) == 2)
         check("references are keyed by the def row, all candidates kept", SH.reference_map(pr) == {"RM_Ruskara": ["/x/a.png", "/x/b.png"], "RM_Hound": ["/x/h.png"]}, SH.reference_map(pr))
+        # SHADOW_ROWID_FIX_SERIES_TAG_SLIPS_THROUGH / SHADOW_VIEW_ROWS_FIX_MERGED_UNLABELLED
+        vr = [{"subject": "RM_Fuzzviper_n", "artpipe_job": "arteval_RM_Fuzzviper_s1r1_n"},
+              {"subject": "RM_Fuzzviper_s", "artpipe_job": "arteval_RM_Fuzzviper_s1r1_s"}]
+        check("series-prefixed job strips the view tag", [SH.row_id(r) for r in vr] == ["RM_Fuzzviper"] * 2, [SH.row_id(r) for r in vr])
+        check("merged views carry a per-view label", [SH.view_label(r) for r in vr] == ["view n", "view s"], [SH.view_label(r) for r in vr])
     except ImportError as e:
         check("shadow importable", False, repr(e))
 
