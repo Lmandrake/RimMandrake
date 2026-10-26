@@ -53,7 +53,47 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+def t_fill_policy():
+    """The filler's pick and day budget (TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY), offline over hand-made done records."""
+    import testq as T
+
+    def rec(fin, rows, start=None, by="BENCH.filler", mod="Mock"):
+        return {"finished": fin, "job": {"mod": mod, "requested_by": by, "submitted": fin, "id": "J" + fin},
+                "result": {"started": start or fin, "finished": fin,
+                           "rows": [dict(chain=c, row=r, verdict=v) for c, r, v in rows]}}
+    hold = "<site hold, before any component>"
+    recs = [rec("2026-10-20T00:00:00Z", [("dry", "a", "UNMEASURED"), ("good", "g", "PASS"), ("void", hold, "UNMEASURED")]),
+            rec("2026-10-21T00:00:00Z", [("dry", "a", "UNMEASURED"), ("dry", "b", "NOT_RUN"), ("void", hold, "UNMEASURED"),
+                                         ("once", "o", "UNMEASURED")]),
+            rec("2026-10-10T00:00:00Z", [("old_dry", "x", "UNMEASURED")]),
+            rec("2026-10-09T00:00:00Z", [("old_dry", "x", "UNMEASURED")]),
+            rec("2026-10-22T00:00:00Z", [("other", "z", "PASS")], mod="Else")]
+    h = T.chain_history("Mock", recs)
+    check(set(h) == {"dry", "good", "void", "once", "old_dry"}, "chain_history: only MOD's chains: %s" % sorted(h))
+    check([k for _, k in h["void"]] == ["void", "void"], "a run whose only row is the site hold is VOID for that chain")
+    ages = T.ages_of(h)
+    check(ages["void"] == 0, "a VOID run does not make a chain fresh (site never held): %s" % ages["void"])
+    now = T.S.parse_ts("2026-10-22T00:00:00Z")
+    pick, dry = T.fill_pick(h, 10, now)
+    check("dry" not in pick and "dry" in dry, "a chain whose last 2 runs were all UNMEASURED is skipped: %s / %s" % (pick, dry))
+    check("once" in pick, "one UNMEASURED run is not yet dry: %s" % pick)
+    check("old_dry" in pick, "a dry chain is re-tried once its last run is older than the retry window: %s" % pick)
+    check(pick[0] == "void", "VOID-only chains are stalest, so first: %s" % pick)
+    pick, dry = T.fill_pick({"dry": h["dry"]}, 4, now)
+    check(pick == [] and dry == ["dry"], "all chains dry: nothing to fill (no wasted job): %s %s" % (pick, dry))
+    today = [rec("2026-10-22T01:00:00Z", [], start="2026-10-22T00:56:00Z"),
+             rec("2026-10-22T02:00:00Z", [], start="2026-10-22T01:50:00Z")]
+    check(T.fill_spent_s(today) == 840, "lane time spent = sum of today's filler walls: %s" % T.fill_spent_s(today))
+    check(T.FILL_DAY_S >= 12 * 3600 and T.FILL_CAP_DEFAULT >= 100,
+          "the default day budget is lane TIME (>= 12 h), the count ceiling only a backstop (>= 100): %s %s"
+          % (T.FILL_DAY_S, T.FILL_CAP_DEFAULT))
+
+
 def main():
+    try:
+        t_fill_policy()
+    except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
+        check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))
     tmp = tempfile.mkdtemp(prefix="rf_testq_")
     try:
         queue, home, sheets = (os.path.join(tmp, d) for d in ("queue", "home", "sheets"))

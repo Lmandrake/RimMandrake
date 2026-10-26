@@ -11,9 +11,11 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
                                      of MOD was already submitted today (local calendar date); the testq-sweep
                                      timer runs it nightly at 01:30 local for each of TESTQ_SWEEP_MODS (FlowWorks)
-  testq.py fill MOD [--n 4 --cap 8]  Steve never idles, no LLM: if nothing is pending/running, queue the N chains
-                                     whose last real run is oldest (requested_by BENCH.filler, prio 20). Brakes:
-                                     QHOME/fill.stop, cap per local day, a paused lane, two non-DONE fillers running;
+  testq.py fill MOD [--n 4]          Steve never idles, no LLM: if nothing is pending/running, queue the N chains
+                                     whose last real run is oldest, skipping DRY ones (last 2 runs all UNMEASURED,
+                                     re-tried after 3 days) (requested_by BENCH.filler, prio 20). Brakes:
+                                     QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 20 h; a job
+                                     backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
                                      every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
@@ -419,22 +421,82 @@ def cmd_sweep(a):
 FILLER = "BENCH.filler"     # requested_by of a filler job: BENCH's dispatcher, not a window
 
 
-def chain_ages(mod):
-    """-> {chain: epoch of the latest finished job that actually ran a row of it} for every chain any done job's
-    result names (a full sweep names them all). NOT_RUN rows do not count as run."""
-    last = {}
-    for rec in records("done"):
+SITE_HOLD_ROW = "<site hold"      # modcheck's row when the site could not be held: no verdict on the chain
+FILL_DAY_S = int(float(os.environ.get("TESTQ_FILL_HOURS") or 20) * 3600)   # filler lane time per local day
+FILL_CAP_DEFAULT = 200              # filler JOBS per day: a backstop only; the day budget is lane time
+FILL_DRY_RUNS = 2                   # a chain whose last this-many runs measured nothing is DRY ...
+FILL_DRY_RETRY_S = 3 * 86400        # ... and is skipped until its latest run is older than this (new wiring lands)
+
+
+def chain_history(mod, recs=None):
+    """-> {chain: [(epoch, kind), ...] oldest first} over finished jobs of MOD, kind per run of that chain:
+    "measured" (a row read PASS/FAIL/anything but UNMEASURED), "dry" (every row it ran was UNMEASURED: an unwired or
+    unmeasurable chain) or "void" (its only rows were the site hold: the site, not the chain). NOT_RUN rows are not
+    runs; a chain named only by NOT_RUN rows gets an empty history (it is known, never run)."""
+    hist = {}
+    for rec in records("done") if recs is None else recs:
         job, res = job_of(rec), rec.get("result") or {}
         if job.get("mod") != mod:
             continue
         t = S.parse_ts(rec.get("finished") or job["submitted"])
+        by = {}
         for r in res.get("rows") or []:
             c = r.get("chain")
-            if c and r.get("verdict") != "NOT_RUN":
-                last[c] = max(last.get(c, 0), t)
-            elif c:
-                last.setdefault(c, 0)
-    return last
+            if c:
+                by.setdefault(c, []).append(r)
+        for c, rows in by.items():
+            ran = [r for r in rows if r.get("verdict") != "NOT_RUN"]
+            hist.setdefault(c, [])
+            if not ran:
+                continue
+            if all(str(r.get("row") or "").startswith(SITE_HOLD_ROW) for r in ran):
+                kind = "void"
+            elif all(r.get("verdict") == "UNMEASURED" for r in ran):
+                kind = "dry"
+            else:
+                kind = "measured"
+            hist[c].append((t, kind))
+    for c in hist:
+        hist[c].sort()
+    return hist
+
+
+def ages_of(hist):
+    """{chain: epoch of its latest run that was not VOID} (0: never really run)."""
+    return {c: max([t for t, k in runs if k != "void"] or [0]) for c, runs in hist.items()}
+
+
+def chain_ages(mod):
+    """-> {chain: epoch of the latest finished job that actually ran a row of it} (see chain_history)."""
+    return ages_of(chain_history(mod))
+
+
+def is_dry(runs, now, dry_runs=FILL_DRY_RUNS, retry_s=FILL_DRY_RETRY_S):
+    real = [(t, k) for t, k in runs if k != "void"]
+    last = real[-dry_runs:]
+    return len(last) >= dry_runs and all(k == "dry" for _, k in last) and now - last[-1][0] < retry_s
+
+
+def fill_pick(hist, n, now):
+    """-> (the `n` stalest chains that are not DRY, the DRY chains skipped). A DRY chain (its last FILL_DRY_RUNS runs
+    measured nothing: unwired, or its driver never ran) would only spend a filler job on UNMEASURED again; it is
+    re-tried once its latest run is FILL_DRY_RETRY_S old, so newly wired chains come back on their own."""
+    ages = ages_of(hist)
+    dry = sorted(c for c in hist if is_dry(hist[c], now))
+    pick = sorted((c for c in hist if c not in dry), key=lambda c: (ages[c], c))[:n]
+    return pick, dry
+
+
+def fill_spent_s(recs):
+    """Lane seconds the given finished filler jobs took (result started -> finished)."""
+    total = 0
+    for rec in recs:
+        res = (rec or {}).get("result") or {}
+        try:
+            total += max(0, int(S.parse_ts(res["finished"]) - S.parse_ts(res["started"])))
+        except (KeyError, TypeError, ValueError):
+            total += sum((res.get("phase_s") or {}).values())
+    return total
 
 
 def cmd_fill(a):
@@ -461,22 +523,34 @@ def cmd_fill(a):
     if n_today >= a.cap:
         print("cap: %d filler jobs today (cap %d)" % (n_today, a.cap))
         return 0
+    # TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY: the day's brake is lane TIME, not a job count. A count of 8 was spent in an
+    # hour of ~4-min jobs and left SteveDesktop idle for the other 23 (2026-10-25).
+    spent = fill_spent_s(read_json(q("done", j["id"] + ".json")) for j in mine
+                         if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
+    if spent >= a.day_s:
+        print("cap: filler lane time today %d s >= day budget %d s (%d jobs)" % (spent, a.day_s, n_today))
+        return 0
     tail = [read_json(q("done", j["id"] + ".json")) for j in mine[-2:]]
     if len(tail) == 2 and all(t and (t.get("result") or {}).get("outcome") != "DONE" for t in tail):
         print("brake: the last two filler jobs did not come back DONE (%s); fix the lane, then submit by hand"
               % ", ".join(j["id"] for j in mine[-2:]))
         return 0
-    ages = chain_ages(a.mod)
-    if not ages:
+    hist = chain_history(a.mod)
+    if not hist:
         print("no chain history for %s yet (one full sweep seeds it); no fill" % a.mod)
         return 0
-    pick = sorted(ages, key=lambda c: (ages[c], c))[:a.n]
+    pick, dry = fill_pick(hist, a.n, now)
+    if not pick:
+        print("dry: every chain of %s measured nothing in its last %d runs (%s); no fill" % (
+            a.mod, FILL_DRY_RUNS, ",".join(dry)))
+        return 0
     r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
     if r.returncode != 0:
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
-    log("filler: %s stalest %s (%d today, cap %d)" % (a.mod, ",".join(pick), n_today + 1, a.cap))
+    log("filler: %s stalest %s (%d today, cap %d, %d s of %d s; %d dry skipped)" % (
+        a.mod, ",".join(pick), n_today + 1, a.cap, spent, a.day_s, len(dry)))
     sub = argparse.Namespace(mod=a.mod, chains=",".join(pick), rows=None, item=None, full=False, purpose="guard",
                              by=FILLER, sha=r.stdout.strip(), for_item=None, profile=None, priority=20,
                              not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
@@ -641,7 +715,10 @@ def main(argv=None):
     s = sub.add_parser("fill", help="queue the stalest chains when the lane is idle (the tick runs it)")
     s.add_argument("mod")
     s.add_argument("--n", type=int, default=int(os.environ.get("TESTQ_FILL_CHAINS", "4")), help="chains per job")
-    s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP", "8")), help="filler jobs per day")
+    s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP") or FILL_CAP_DEFAULT),
+                   help="filler jobs per day: a backstop; the day budget is --day-s of lane time")
+    s.add_argument("--day-s", type=int, default=FILL_DAY_S,
+                   help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 20 h)")
     sub.add_parser("tick")
     s = sub.add_parser("install-timer")
     s.add_argument("--apply", action="store_true")
