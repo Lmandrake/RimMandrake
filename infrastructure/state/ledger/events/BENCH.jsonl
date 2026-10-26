@@ -5904,3 +5904,4 @@
 {"seat":"BENCH","event":"claim","id":"HOSE_LAY_FIX_COUNTER_ORDER","ts":"2026-10-26T13:40:23Z","tsn":1793022023376239112}
 {"seat":"BENCH","event":"start","id":"HOSE_LAY_FIX_COUNTER_ORDER","ts":"2026-10-26T13:40:23Z","tsn":1793022023765113268}
 {"seat":"BENCH","event":"start","id":"HOSE_LAY_FIX_COUNTER_ORDER","ts":"2026-10-26T13:40:25Z","tsn":1793022025422977773}
+{"seat":"BENCH","event":"close","id":"HOSE_LAY_FIX_COUNTER_ORDER","sha":"ef18f77fc5","why":"fixed at ef18f77fc5: decrement order swapped, L12 source pin can-fail on 6022c1c18a, SelfTest --hose-splice 33/33; built, not deployed (no runtime-visible change)","ts":"2026-10-26T13:42:45Z","tsn":1793022165764005273}
