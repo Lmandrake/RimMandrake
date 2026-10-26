@@ -172,6 +172,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// (answered false: must stay 0, SelfTest).</summary>
         public int LastLanded, LastLaidOnCaller, LayBatches;
         public string LastLayFault;
+        /// <summary>Selftest seam only (never set by the game): called on the worker with the edge key before each lay, so a test can make a worker lay throw.</summary>
+        internal Action<string> WorkerLayHook;
         internal static int LiveMisses;
 
         private sealed class LayJob { public EdgePlan Ep; public string Fk; public bool LiveA, LiveB; }
@@ -214,6 +216,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     lock (layLock) if (!layWanted.Contains(j.Fk)) continue;
                     try
                     {
+                        WorkerLayHook?.Invoke(j.Fk);
                         Cell ca = j.Ep.CellA, cb = j.Ep.CellB;
                         bool la = j.LiveA, lb = j.LiveB;
                         Func<Cell, bool> live = c =>

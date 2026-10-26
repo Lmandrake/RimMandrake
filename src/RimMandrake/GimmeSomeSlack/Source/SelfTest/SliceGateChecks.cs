@@ -113,6 +113,49 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Program.Check(moved && r3.onCaller == 0, $"async: the moved-world run laid {r3.onCaller} on the caller (moved {moved})");
             Program.Check(b3.LastPending == 0 && GssFuzz.Digest(r3.last) == want3, $"async: after the world moved under a running batch the Builds did not end equal to the new world's unbudgeted Build (pending {b3.LastPending})");
 
+            // (3b) the world moves while the settings stay put: every cache key is unchanged, so only the corridor hash can tell
+            //      a landed piece (laid against the old world, not yet taken by a Build) from a good one. A wall dropped onto a
+            //      cord between the worker landing and the next Build must refuse that piece (the Build shows nothing for the
+            //      edge yet), not adopt it.
+            {
+                var b3b = new CordBuilder();
+                b3b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                var sw3 = Stopwatch.StartNew();
+                while (!b3b.LayReady || b3b.LayRunning) { System.Threading.Thread.Sleep(1); if (sw3.Elapsed.TotalSeconds > 120) break; }
+                var o3b = new BuildOptions { AsyncLay = true };
+                var after3b = b3b.Build(RebuildPerDigChecks.LiveScene(drop), o3b, live);
+                var stale = pieces0.Where(p => p.EndA != null && p.CX0 <= wall.X && wall.X <= p.CX1 && p.CZ0 <= wall.Z && wall.Z <= p.CZ1).Select(p => p.Key).ToList();
+                Program.Check(stale.Count > 0 && b3b.LastLanded > 0, $"async: stale-corridor case is blind (pieces over the wall {stale.Count}, landed {b3b.LastLanded})");
+                int adopted = after3b.Count(p => stale.Contains(p.Key));
+                Program.Check(adopted == 0, $"async: {adopted} landed piece(s) laid before the wall dropped were adopted despite a changed corridor");
+                while (b3b.LayRunning) System.Threading.Thread.Sleep(1);
+            }
+
+            // (5) a worker lay that throws: the fault is recorded, the key is not queued again, and the caller lays it itself,
+            //     so the Builds still end equal to one unbudgeted Build (a guard-less loop would wait on the key forever)
+            {
+                Func<BuildOptions> faulty = () => new BuildOptions();
+                var b5 = new CordBuilder { WorkerLayHook = k => throw new InvalidOperationException("selftest worker fault") };
+                int builds5 = 0, caller5 = 0;
+                List<LaidPiece> last5 = null;
+                var sw5 = Stopwatch.StartNew();
+                while (builds5 < 60 && sw5.Elapsed.TotalSeconds < 120)
+                {
+                    BuildOptions o5 = faulty();
+                    o5.AsyncLay = true;
+                    last5 = b5.Build(RebuildPerDigChecks.LiveScene(), o5, live);
+                    builds5++;
+                    caller5 += b5.LastLaidOnCaller;
+                    if (b5.LastPending == 0) break;
+                    while (!b5.LayReady) System.Threading.Thread.Sleep(1);
+                }
+                Program.Check(b5.LastLayFault != null && b5.LastLayFault.Contains("selftest worker fault"), "async: the worker fault was not recorded (LastLayFault " + (b5.LastLayFault ?? "null") + ")");
+                Program.Check(b5.LastPending == 0 && builds5 < 60, $"async: a faulted key stayed pending after {builds5} Builds (it must be laid on the caller)");
+                Program.Check(caller5 > 0, "async: no faulted edge was laid on the caller");
+                Program.Check(last5 != null && GssFuzz.Digest(last5) == want, "async: the Builds after a worker fault did not end equal to one unbudgeted Build");
+                while (b5.LayRunning) System.Threading.Thread.Sleep(1);
+            }
+
             // (4) an unbudgeted Build after an async run is still complete and lays on the caller only what it misses
             var u = new CordBuilder();
             u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
