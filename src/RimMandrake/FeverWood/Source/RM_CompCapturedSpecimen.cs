@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -204,13 +205,23 @@ namespace RimMandrake.FeverWood
             }
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
-            PawnKindDef kind = YoungKind(Props); // same resolver as release (follows occupantLikeTank)
 
             if (!parent.Destroyed)
             {
-                parent.Destroy(DestroyMode.Vanish);
+                parent.Destroy(DestroyMode.Vanish); // Vanish: PostDestroy routes nothing, this escape is the release
             }
+            SpawnEscapee(map, pos, cause, breachInjury: false);
+        }
 
+        /// <summary>The occupant out as a wild, manhunter, water-seeking
+        /// escapee carrying the captivity marker. breachInjury: the tank was
+        /// broken outright around it, so it comes out cut by the breach
+        /// (vanilla Building_Casket hurts the occupants of a casket destroyed
+        /// by KillFinalize), never on a vital part.</summary>
+        private void SpawnEscapee(Map map, IntVec3 pos, string cause, bool breachInjury)
+        {
+            occupied = false;
+            PawnKindDef kind = YoungKind(Props); // same resolver as release (follows occupantLikeTank)
             if (kind == null || map == null)
             {
                 return; // occupant kind not loaded (e.g. mid-swap misconfiguration) — tank still breaks, nothing to spawn
@@ -219,6 +230,11 @@ namespace RimMandrake.FeverWood
             IntVec3 spawnCell = CellFinder.RandomClosewalkCellNear(pos, map, 3);
             Pawn escapee = PawnGenerator.GeneratePawn(kind, null);
             GenSpawn.Spawn(escapee, spawnCell, map);
+
+            if (breachInjury)
+            {
+                InjureByBreach(escapee);
+            }
 
             HediffDef memory = DefDatabase<HediffDef>.GetNamedSilentFail("RM_CaptivityMemory");
             if (memory != null)
@@ -236,6 +252,43 @@ namespace RimMandrake.FeverWood
 
             Messages.Message($"The tank has failed ({cause}) — its occupant has escaped and is heading for water!",
                 new TargetInfo(spawnCell, map), MessageTypeDefOf.ThreatBig);
+        }
+
+        private static void InjureByBreach(Pawn pawn)
+        {
+            List<BodyPartRecord> parts = new List<BodyPartRecord>();
+            foreach (BodyPartRecord part in pawn.health.hediffSet.GetNotMissingParts(depth: BodyPartDepth.Outside))
+            {
+                if (part.parent == null || part.def.tags.Any(t => t.vital))
+                {
+                    continue;
+                }
+                parts.Add(part);
+            }
+            if (parts.Count == 0)
+            {
+                return;
+            }
+            DamageInfo cut = new DamageInfo(DamageDefOf.Cut, Rand.Range(3f, 8f), hitPart: parts.RandomElement());
+            cut.SetAllowDamagePropagation(false);
+            pawn.TakeDamage(cut);
+        }
+
+        /// <summary>Deconstructed (or broken with the tank mechanic switched
+        /// off): the occupant is let out quietly, as by "Return to the
+        /// deep" — non-hostile, flagged released, walking for water.</summary>
+        private void ReleaseOnDestroy(Map map, IntVec3 pos)
+        {
+            occupied = false;
+            PawnKindDef kind = YoungKind(Props);
+            if (kind != null)
+            {
+                Pawn young = PawnGenerator.GeneratePawn(kind, null);
+                GenSpawn.Spawn(young, CellFinder.RandomClosewalkCellNear(pos, map, 3), map);
+                young.GetComp<RM_CompEscapedCaptive>()?.Notify_ReleasedToDeep();
+                Messages.Message("The tank is taken apart. Its young slides out and makes for the water.",
+                    young, MessageTypeDefOf.NeutralEvent);
+            }
         }
 
         public override string CompInspectStringExtra()
@@ -422,12 +475,24 @@ namespace RimMandrake.FeverWood
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
-            // Broken outright (no escape roll got there first): a display tank's young still gets out.
-            if (RM_TankKernel.DestroyFreesDisplayYoung(mode == DestroyMode.KillFinalize, occupied, Props.displayTank, previousMap != null,
-                    parent.Faction != null, parent.Faction == Faction.OfPlayer,
+            // The tank destroyed with its occupant still inside never deletes it (vanilla Building_Casket ejects its
+            // contents on Deconstruct and KillFinalize): broken outright, a display tank's young is freed and any
+            // other tank's occupant breaches out; taken apart, it is let out quietly. See RM_TankKernel.RouteOnDestroy.
+            switch (RM_TankKernel.RouteOnDestroy(mode == DestroyMode.KillFinalize, mode == DestroyMode.Deconstruct, occupied,
+                    Props.displayTank, previousMap != null, parent.Faction != null, parent.Faction == Faction.OfPlayer,
                     RM_FeverWoodSettings.broodRansomEnabled, RM_FeverWoodSettings.sekkulaathTankEnabled))
             {
-                FreeDisplayYoung(previousMap, parent.Position, breached: true);
+                case RM_TankKernel.DestroyRoute.FreeDisplay:
+                    FreeDisplayYoung(previousMap, parent.Position, breached: true);
+                    break;
+                case RM_TankKernel.DestroyRoute.Escape:
+                    SpawnEscapee(previousMap, parent.Position, "destroyed", breachInjury: true);
+                    RM_WorldComponent_DeepYoung.Get?.Recompute();
+                    break;
+                case RM_TankKernel.DestroyRoute.Release:
+                    ReleaseOnDestroy(previousMap, parent.Position);
+                    RM_WorldComponent_DeepYoung.Get?.Recompute();
+                    break;
             }
         }
 

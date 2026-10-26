@@ -31,6 +31,8 @@ MUTATIONS = [
     ("RM_TankKernel.cs", "float c = chancePerHit / RiskMultiplier(riskSetting);", "float c = chancePerHit * RiskMultiplier(riskSetting);", "risk multiplier inverted on the damage roll"),
     ("RM_TankKernel.cs", "if (!occupied || !hasMap) return false;", "if (!hasMap) return false;", "an empty display tank frees its young again"),
     ("RM_TankKernel.cs", "if (!tankEnabled || !occupied || foreignDisplay) return false;", "if (!tankEnabled || !occupied) return false;", "a town's display tank ticks on the player"),
+    ("RM_TankKernel.cs", "if (killFinalize) return tankOn ? DestroyRoute.Escape : DestroyRoute.Release;", "if (killFinalize) return DestroyRoute.None;", "a player tank broken outright deletes its occupant (SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY)"),
+    ("RM_TankKernel.cs", "return deconstruct ? DestroyRoute.Release : DestroyRoute.None;", "return DestroyRoute.Release;", "a Vanish destroy (escape already spawned it) releases a second occupant"),
     ("RM_PoolKernel.cs", "return !(now < blockedUntil);", "return !(now <= blockedUntil);", "a respite lasts one tick too long"),
     ("RM_PoolKernel.cs", "public static int Extend(int blockedUntil, int until) { return until > blockedUntil ? until : blockedUntil; }", "public static int Extend(int blockedUntil, int until) { return until; }", "a short respite cuts a long one short"),
     ("RM_PoolKernel.cs", "long u = (long)now + ticks;", "long u = (long)(now + ticks);", "block clock wraps instead of saturating"),

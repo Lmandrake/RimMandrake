@@ -215,7 +215,7 @@ namespace RimMandrake.FeverWood.SelfTest
 
         // ════════════════════════ tank ════════════════════════
         private static readonly string[] TankNames = { "Hours", "Hit", "Enable", "Ransom", "Own", "FreeGizmo", "Release", "Break" };
-        public static long NeglectRolls, NeglectEscapes, DamageEscapes, DisplayBreaches, TankDestroyed;
+        public static long NeglectRolls, NeglectEscapes, DamageEscapes, DisplayBreaches, TankDestroyed, DestroyEscapes, DestroyReleases;
 
         private static string RunTank(int seed, List<Act> acts, out string digest)
         {
@@ -333,13 +333,29 @@ namespace RimMandrake.FeverWood.SelfTest
                                 if (!sDestroyed && sOccupied) { sOccupied = false; sReleased++; }
                             }
                             break;
-                        case 7: // broken outright (KillFinalize)
+                        case 7: // destroyed: broken outright (KillFinalize) or taken apart (Deconstruct); a.a % 3 == 2 deconstructs
                             if (!destroyed)
                             {
-                                bool frees = RM_TankKernel.DestroyFreesDisplayYoung(true, occupied, displayProps, true, hasOwner, ownerIsPlayer, ransom, enabled);
-                                bool sFrees = sOccupied && displayProps && hasOwner && !ownerIsPlayer && ransom && enabled;
+                                bool kill = a.a % 3 != 2;
+                                bool frees = RM_TankKernel.DestroyFreesDisplayYoung(kill, occupied, displayProps, true, hasOwner, ownerIsPlayer, ransom, enabled);
+                                bool sFrees = kill && sOccupied && displayProps && hasOwner && !ownerIsPlayer && ransom && enabled;
                                 Check(frees == sFrees, $"destroy frees {frees} != spec {sFrees}");
-                                if (frees) { if (RM_TankKernel.TryFreeDisplay(ref occupied, true)) freedYoung++; sOccupied = false; sFreed++; }
+                                // SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY: any other occupied tank lets its occupant out
+                                // (vanilla casket eject): kill + tank on = hostile breach, else a quiet release.
+                                var route = RM_TankKernel.RouteOnDestroy(kill, !kill, occupied, displayProps, true, hasOwner, ownerIsPlayer, ransom, enabled);
+                                var sRoute = sFrees ? RM_TankKernel.DestroyRoute.FreeDisplay
+                                    : !sOccupied || sForeign() ? RM_TankKernel.DestroyRoute.None
+                                    : kill && enabled ? RM_TankKernel.DestroyRoute.Escape : RM_TankKernel.DestroyRoute.Release;
+                                Check(route == sRoute, $"destroy route {route} != spec {sRoute} (kill {kill}, enabled {enabled}, foreign {sForeign()})");
+                                Check(RM_TankKernel.RouteOnDestroy(kill, !kill, occupied, displayProps, false, hasOwner, ownerIsPlayer, ransom, enabled) == RM_TankKernel.DestroyRoute.None, "a tank with no previous map released something");
+                                Check(RM_TankKernel.RouteOnDestroy(false, false, occupied, displayProps, true, hasOwner, ownerIsPlayer, ransom, enabled) == RM_TankKernel.DestroyRoute.None, "a Vanish destroy released a second occupant");
+                                if (route == RM_TankKernel.DestroyRoute.FreeDisplay) { if (RM_TankKernel.TryFreeDisplay(ref occupied, true)) freedYoung++; }
+                                else if (route == RM_TankKernel.DestroyRoute.Escape) { occupied = false; escapedPawns++; DestroyEscapes++; }
+                                else if (route == RM_TankKernel.DestroyRoute.Release) { occupied = false; released++; DestroyReleases++; }
+                                if (sRoute == RM_TankKernel.DestroyRoute.FreeDisplay) { sOccupied = false; sFreed++; }
+                                else if (sRoute == RM_TankKernel.DestroyRoute.Escape) { sOccupied = false; sEscaped++; }
+                                else if (sRoute == RM_TankKernel.DestroyRoute.Release) { sOccupied = false; sReleased++; }
+                                if (!sForeign()) Check(!occupied, "a destroyed player tank kept its occupant (lost without a trace)");
                                 destroy();
                             }
                             break;
@@ -737,6 +753,10 @@ namespace RimMandrake.FeverWood.SelfTest
                 Check(RM_TankKernel.DamageArmed(true, true, 50, 100, 0.5f) && !RM_TankKernel.DamageArmed(true, true, 51, 100, 0.5f) && !RM_TankKernel.DamageArmed(true, false, 0, 100, 0.5f) && !RM_TankKernel.DamageArmed(false, true, 0, 100, 0.5f), "DamageArmed boundary at exactly the threshold");
                 Check(RM_TankKernel.DestroyFreesDisplayYoung(true, true, true, true, true, false, true, true), "a broken foreign display tank frees its young");
                 Check(!RM_TankKernel.DestroyFreesDisplayYoung(true, true, true, true, true, true, true, true) && !RM_TankKernel.DestroyFreesDisplayYoung(false, true, true, true, true, false, true, true) && !RM_TankKernel.DestroyFreesDisplayYoung(true, false, true, true, true, false, true, true) && !RM_TankKernel.DestroyFreesDisplayYoung(true, true, false, true, true, false, true, true), "DestroyFreesDisplayYoung negatives");
+                Check(RM_TankKernel.RouteOnDestroy(true, false, true, false, true, true, true, true, true) == RM_TankKernel.DestroyRoute.Escape, "a player tank broken outright breaches its occupant out");
+                Check(RM_TankKernel.RouteOnDestroy(false, true, true, false, true, true, true, true, true) == RM_TankKernel.DestroyRoute.Release && RM_TankKernel.RouteOnDestroy(true, false, true, false, true, true, true, true, false) == RM_TankKernel.DestroyRoute.Release, "a deconstructed tank, or one broken with the mechanic off, lets its occupant out quietly");
+                Check(RM_TankKernel.RouteOnDestroy(true, false, false, false, true, true, true, true, true) == RM_TankKernel.DestroyRoute.None && RM_TankKernel.RouteOnDestroy(false, false, true, false, true, true, true, true, true) == RM_TankKernel.DestroyRoute.None && RM_TankKernel.RouteOnDestroy(true, false, true, false, false, true, true, true, true) == RM_TankKernel.DestroyRoute.None, "empty / Vanish / no-map destroys release nothing");
+                Check(RM_TankKernel.RouteOnDestroy(true, false, true, true, true, true, false, true, true) == RM_TankKernel.DestroyRoute.FreeDisplay && RM_TankKernel.RouteOnDestroy(true, false, true, true, true, true, false, false, true) == RM_TankKernel.DestroyRoute.None, "foreign display tank keeps its own rule");
                 Check(RM_TankKernel.IsForeignDisplay(true, true, false) && !RM_TankKernel.IsForeignDisplay(true, true, true) && !RM_TankKernel.IsForeignDisplay(true, false, false) && !RM_TankKernel.IsForeignDisplay(false, true, false), "IsForeignDisplay");
                 bool occ = false; Check(!RM_TankKernel.TryFreeDisplay(ref occ, true) && !occ && !RM_TankKernel.TryRelease(ref occ, true), "an empty tank frees and releases nothing");
                 occ = true; Check(!RM_TankKernel.TryRelease(ref occ, false) && occ && RM_TankKernel.TryRelease(ref occ, true) && !occ, "TryRelease needs a spawned tank");
@@ -785,7 +805,7 @@ namespace RimMandrake.FeverWood.SelfTest
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"tally: letters fired {LettersFired}, display tanks freed {TankFrees}, boldness at cap {BoldnessCapped}");
-            Console.WriteLine($"tank: neglect rolls due {NeglectRolls}, neglect escapes {NeglectEscapes}, damage escapes {DamageEscapes}, display breaches {DisplayBreaches}, tanks destroyed {TankDestroyed}");
+            Console.WriteLine($"tank: neglect rolls due {NeglectRolls}, neglect escapes {NeglectEscapes}, damage escapes {DamageEscapes}, display breaches {DisplayBreaches}, tanks destroyed {TankDestroyed} (occupant breached out {DestroyEscapes}, let out {DestroyReleases})");
             Console.WriteLine($"pool: ordinary {Ordinary}, great {Great}, forced {Forced}, suppressions {Suppressions}, gifts delivered {GiftsDelivered}, hushes {Hushes}, restores {Restores}; weighted picks {Picks}, gift retries {Retries}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
@@ -793,6 +813,7 @@ namespace RimMandrake.FeverWood.SelfTest
                 if (LettersFired == 0) blind.Add("tally never fired a letter");
                 if (TankFrees == 0) blind.Add("tally never freed a display tank");
                 if (NeglectRolls == 0 || NeglectEscapes == 0 || DamageEscapes == 0 || DisplayBreaches == 0) blind.Add("tank never reached a neglect/damage/display escape");
+                if (DestroyEscapes == 0 || DestroyReleases == 0) blind.Add("tank never destroyed an occupied tank both ways (breach-out and let-out)");
                 if (Great == 0 || Ordinary == 0 || Suppressions == 0 || GiftsDelivered == 0 || Hushes == 0 || Restores == 0) blind.Add("pool never reached great/ordinary/suppression/gift/hush/restore");
                 foreach (var b in blind) { Console.WriteLine("FAIL fuzz is blind: " + b); ok = false; }
             }

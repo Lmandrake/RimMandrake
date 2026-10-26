@@ -94,7 +94,8 @@ namespace RimMandrake.FeverWood
         // Escape: a foreign display tank under the brood ransom breaks open and frees its young (no hostile escapee).
         public static bool EscapeFreesDisplayYoung(bool foreignDisplay, bool ransomOn) { return foreignDisplay && ransomOn; }
 
-        // A tank broken outright (no escape roll got there first) still lets a display tank's young out.
+        // A tank broken outright (no escape roll got there first) still lets a display tank's young out. RouteOnDestroy
+        // below asks this first.
         public static bool DestroyFreesDisplayYoung(bool killFinalize, bool occupied, bool displayProps, bool hasPreviousMap,
             bool hasOwner, bool ownerIsPlayer, bool ransomOn, bool tankOn)
         {
@@ -102,5 +103,24 @@ namespace RimMandrake.FeverWood
         }
 
         public static bool IsForeignDisplay(bool displayProps, bool hasOwner, bool ownerIsPlayer) { return displayProps && hasOwner && !ownerIsPlayer; }
+
+        // What happens to the occupant when the tank itself is destroyed (SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY,
+        // BENCH 2026-10-26: match vanilla Building_Casket.Destroy, which drops its contents on Deconstruct and
+        // KillFinalize instead of deleting them). A foreign display tank keeps its own rule (DestroyFreesDisplayYoung).
+        // Any other occupied tank never loses its occupant without a trace: broken outright it breaches like a
+        // damage escape (wild, manhunter, hurt by the breach) unless the tank mechanic is switched off (then it is
+        // let out quietly, as by "Return to the deep"); deconstructed, it is let out quietly. Vanish (an escape or
+        // a free already spawned the occupant) and every other mode release nothing.
+        public enum DestroyRoute { None, FreeDisplay, Escape, Release }
+
+        public static DestroyRoute RouteOnDestroy(bool killFinalize, bool deconstruct, bool occupied, bool displayProps,
+            bool hasPreviousMap, bool hasOwner, bool ownerIsPlayer, bool ransomOn, bool tankOn)
+        {
+            if (DestroyFreesDisplayYoung(killFinalize, occupied, displayProps, hasPreviousMap, hasOwner, ownerIsPlayer, ransomOn, tankOn))
+                return DestroyRoute.FreeDisplay;
+            if (!occupied || !hasPreviousMap || IsForeignDisplay(displayProps, hasOwner, ownerIsPlayer)) return DestroyRoute.None;
+            if (killFinalize) return tankOn ? DestroyRoute.Escape : DestroyRoute.Release;
+            return deconstruct ? DestroyRoute.Release : DestroyRoute.None;
+        }
     }
 }
