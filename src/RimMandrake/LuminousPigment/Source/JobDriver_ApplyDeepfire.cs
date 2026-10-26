@@ -32,9 +32,11 @@ namespace RimMandrake.LuminousPigment
     // with no further change. Root cause NOT fully isolated between the two
     // conditions (time-boxed); this trades away graceful abandonment if the
     // target/Deepfire stack is forbidden or another pawn starts physically
-    // interacting with the stack mid-fetch -- FailOnDespawnedNullOrForbidden
-    // for a DESPAWNED/destroyed target is still owed via a plain null check
-    // if that edge case matters before this ships past step 5.
+    // interacting with the stack mid-fetch. A destroyed target fails the goto
+    // (Pawn_PathFollower.StartPath/PatherTick check ThingDestroyed), a
+    // despawned stack fails StartCarryThing, and the apply toil's own guard
+    // below ends the job for a despawned/minified/full/undesignated target
+    // before anything is consumed. Only forbid-mid-job is not handled.
     public class JobDriver_ApplyDeepfire : JobDriver
     {
         private const int WorkTicks = 600;
