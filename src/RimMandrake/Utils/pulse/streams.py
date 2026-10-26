@@ -574,6 +574,32 @@ def brief_line(ms, steve, arch):
 
 
 # ---------------------------------------------------------------------------------------------- collect
+def pacing(now, write=True):
+    """The 15-min re-check (ACCOUNT_USAGE_WIRE_PULSE_TILE_ALLOCATOR): run slot_allocator, write allocation.json (the spawn
+    hook reads it), and return the Pacing tile's record: mode, N per seat, why, and every account's % left against its
+    time to reset. A crash returns UNMEASURED with the reason; it never draws as 0 helpers."""
+    try:
+        import slot_allocator as SA
+        rules = SA.load_rules()
+        dec = SA.compute(now, rules)
+        if write:
+            SA.write(dec)
+        inp = dec.get("inputs") or {}
+        accs = []
+        for name, a in sorted(((SA.meter_now(now) or {}).get("accounts") or {}).items()):
+            sp = {"account": name, "pct_left": a.get("week_pct_left"), "pct_used": a.get("week_pct_used"),
+                  "hours_to_reset": a.get("hours_to_week_reset"), "resets_at": a.get("week_resets_at")}
+            _cap, rule = SA.lent_allowance(sp, rules, now)
+            accs.append({"name": name, "pct_left": a.get("week_pct_left"), "hours_to_reset": a.get("hours_to_week_reset"),
+                         "source": a.get("source") if not a.get("stale") else "STALE", "burn": name == inp.get("account"),
+                         "rule": rule or None})
+        return {"at": dec["at"], "mode": dec["mode"], "token_mode": dec["token_mode"], "queue_mode": dec["queue_mode"],
+                "presence": dec["presence"], "seats": dec["seats"], "n_total": dec["n_total"], "why": dec["why"],
+                "running": inp.get("helpers_running"), "accounts": accs}
+    except Exception as e:  # noqa: BLE001
+        return {"m": "UNMEASURED", "why": f"slot_allocator crashed: {type(e).__name__}: {e}"}
+
+
 def collect(now=None, events=None):
     t0 = time.time()
     now = now if now is not None else time.time()
@@ -613,7 +639,7 @@ def collect(now=None, events=None):
     rec = {"schema": SCHEMA, "at": iso(now), "t": now, "measures": ms, "badges": badges, "needed": needed,
            "steve": steve, "archmagi": arch, "modcheck": mx.get("fold"),
            "slots": alloc.get("slots") if isinstance(alloc, dict) else None,
-           "brief": brief_line(ms, steve, arch), "run_s": None}
+           "brief": brief_line(ms, steve, arch), "pacing": pacing(now), "run_s": None}
     rec["run_s"] = round(time.time() - t0, 1)
     return rec
 
@@ -962,10 +988,11 @@ def render(series, now, base=""):
                + f"<div class='m'>now: <b>{e(str((r.get('archmagi') or {}).get('state')))}</b> · "
                  f"{e(str((r.get('archmagi') or {}).get('why') or ''))} · hollow = not recorded (game up/down is not "
                  "rebuilt for hours before the collector ran)</div>")
+    out.append(pacing_tile(r.get("pacing"), now))
     out.append("<h2>Builder slots</h2>")
     if not any(x.get("slots") for x in slots if x):
-        out.append("<div class='hollowbox'>No slot allocation recorded: the allocator (SLOT_ALLOCATOR_BUILD_RULES_FILE) "
-                   "is not built, so <code>streams/allocation.json</code> does not exist. Drawn hollow, not as zero slots.</div>")
+        out.append("<div class='hollowbox'>No per-stream split recorded: the allocator sets helpers per seat (Pacing, "
+                   "above); splitting them across the six streams is not built. Drawn hollow, not as zero slots.</div>")
     else:
         out.append(slots_chart(slots))
     bm = ms.get("B") or {}
@@ -986,6 +1013,42 @@ def render(series, now, base=""):
                f"UNMEASURED never draws as 0. {sum(1 for x in series if x.get('backfill'))} hours before the collector started are "
                "rebuilt from the ledger and testq (marked backfill); A1, O1, O3 and the budget hold only the present, so "
                "they start when the collector does.</div></main></body></html>")
+    return "".join(out)
+
+
+def pacing_tile(pc_, now):
+    """Pacing: the allocator's mode and N per seat, why, and each account's % left against the share of its week left."""
+    e = html.escape
+    out = ["<h2>Pacing</h2>"]
+    if not isinstance(pc_, dict) or pc_.get("m") == "UNMEASURED" or not pc_.get("seats"):
+        why = (pc_ or {}).get("why") if isinstance(pc_, dict) else "this record predates the allocator wiring"
+        return out[0] + f"<div class='hollowbox'>No pacing recorded: {e(str(why))}. Drawn hollow, not as zero helpers.</div>"
+    run = pc_.get("running") or {}
+    seats = " · ".join(f"{e(k)} <b>{v}</b>" + (f" ({run[k]} running)" if k in run else "") for k, v in pc_["seats"].items())
+    out.append(f"<div class='m'><b>{e(pc_.get('mode') or '')}</b> {e(pc_.get('queue_mode') or '')} "
+               f"{e(pc_.get('presence') or '')} · {seats} · total {pc_.get('n_total')} · as of {e(str(pc_.get('at')))}</div>")
+    out.append(f"<div class='m'>why: {e(pc_.get('why') or '')}</div>")
+    rows = []
+    for a in pc_.get("accounts") or []:
+        tag = " · seats burn this" if a.get("burn") else ""
+        rule = f" · {e(a['rule'])}" if a.get("rule") else ""
+        if a.get("pct_left") is None or a.get("hours_to_reset") is None or a.get("source") not in ("MEASURED", "ESTIMATE"):
+            rows.append(f"<div class='m'>{e(a['name'])}: <b class='un'>?</b> {e(str(a.get('source') or 'UNMEASURED'))}{tag}{rule}</div>")
+            continue
+        wk = max(0.0, min(100.0, 100 * a["hours_to_reset"] / 168))
+        left = max(0.0, min(100.0, float(a["pct_left"])))
+        col = "#8fae6b" if left >= wk else ("#e0aa3e" if left >= 0.5 * wk else "#c9524a")
+        bar = (f"<svg class='sp' viewBox='0 0 200 14' preserveAspectRatio='none' style='height:14px'>"
+               f"<rect x='0' y='1' width='{2 * left:.1f}' height='8' fill='{col}'/>"
+               f"<rect x='{2 * wk:.1f}' y='0' width='1.5' height='14' fill='var(--faint)'/></svg>")
+        est = " (ESTIMATE)" if a.get("source") == "ESTIMATE" else ""
+        rows.append(f"<div class='m'>{e(a['name'])}: {left:.0f}% left · {a['hours_to_reset']:.0f} h to reset "
+                    f"({wk:.0f}% of the week){est}{tag}{rule}{bar}</div>")
+    out.append("".join(rows))
+    out.append("<div class='foot'>Bar = % of the week left; tick = share of the week's time left before that account resets "
+               "(bar left of the tick: burning faster than the week). Re-checked every 15 min by slot_allocator.py "
+               "(src/RimMandrake/Utils/slot_rules.json); the spawn hook refuses a helper over a seat's N. Only his word "
+               "overrides: <code>slot_allocator.py set --seat S --n N --owner-said \"...\"</code>.</div>")
     return "".join(out)
 
 

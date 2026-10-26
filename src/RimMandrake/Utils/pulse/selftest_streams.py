@@ -174,7 +174,28 @@ check("panel: an UNMEASURED lead never shows a number", "<span class='v'>0" not 
 check("panel: a MEASURED 0 does show 0", "<span class='v'>0<small>" in page)
 check("panel: every measured value carries AS OF", page.count("AS OF") >= 3)
 check("panel: fresh is not greyed", "class=stale" not in page)
-check("panel: allocation absent draws hollow, not zero slots", "SLOT_ALLOCATOR_BUILD_RULES_FILE" in page and "hollowbox" in page)
+check("panel: per-stream split absent draws hollow, not zero slots", "No per-stream split recorded" in page and "hollowbox" in page)
+check("panel: no pacing record draws the Pacing tile hollow with its reason", "<h2>Pacing</h2>" in page
+      and "No pacing recorded" in page, page[page.find("Pacing"):][:300])
+pac = {"at": S.iso(NOW - 120), "mode": "CRUISE", "token_mode": "CRUISE", "queue_mode": "PAYDOWN", "presence": "BENCH",
+       "seats": {"BENCH": 3, "FOUNDRY": 1}, "n_total": 4, "running": {"BENCH": 2, "FOUNDRY": 1},
+       "why": "system 40% left, 1.99 d to reset -> P 1.40; fits 4.1",
+       "accounts": [{"name": "system", "pct_left": 40.0, "hours_to_reset": 48.0, "source": "MEASURED", "burn": True},
+                    {"name": "steven", "pct_left": 31.0, "hours_to_reset": 50.0, "source": "ESTIMATE", "burn": False,
+                     "rule": "steven: off-limits until 2026-10-28T15:00:00-07:00"},
+                    {"name": "lukas", "pct_left": None, "hours_to_reset": None, "source": "UNMEASURED", "burn": False}]}
+pg = S.render([dict(live, pacing=pac)], NOW)
+tile = pg[pg.index("<h2>Pacing</h2>"):pg.index("<h2>Builder slots</h2>")]
+check("pacing tile: mode and N per seat", "CRUISE" in tile and "BENCH <b>3</b>" in tile and "FOUNDRY <b>1</b>" in tile
+      and "2 running" in tile, tile[:600])
+check("pacing tile: why the allocator chose it", "fits 4.1" in tile, tile[:600])
+check("pacing tile: each account's % left against the share of the week left before its reset",
+      "system" in tile and "40% left" in tile and "29% of the week" in tile and "31% left" in tile, tile[:900])
+check("pacing tile: the burn account is marked and a lent account shows its rule", "seats burn this" in tile
+      and "off-limits" in tile, tile[:900])
+check("pacing tile: an unmeasured account is hollow, never 0%", "lukas" in tile and "UNMEASURED" in tile
+      and "lukas 0%" not in tile, tile[:900])
+check("pacing tile: the override flag is named", "--owner-said" in tile, tile[-400:])
 check("panel: unrecorded hours in a state band are hollow", "class='hollow'" in page)
 old = S.render([dict(live, t=NOW - 50 * 60)], NOW)
 check("panel: a 50-min-old record greys the whole panel and says STALE", "class=stale" in old and "STALE" in old)
@@ -198,6 +219,30 @@ ts = [json.loads(ln)["t"] for ln in bfile.read_text().splitlines()]
 check("backfill rewrites the file in time order (the tail reader relies on it)", ts == sorted(ts))
 check("backfill never invents a present-only measure", all(r["measures"]["A1"]["m"] == "UNMEASURED" for r in bs if r.get("backfill")))
 check("backfill skips an hour a real record already covers", len({int(r["t"] // H) for r in bs}) == len(bs))
+
+# ---- the 15-min re-check: pacing() runs the allocator, writes allocation.json, returns the tile record
+import slot_allocator as SA  # noqa: E402
+fx = Path(tempfile.mkdtemp(prefix="ss_pace_"))
+(fx / "projects" / "-home-mandrake-rm-bench").mkdir(parents=True)
+(fx / "projects" / "-home-mandrake-rm-foundry").mkdir(parents=True)
+(fx / "au").mkdir()
+tn = time.time()
+(fx / "au" / "latest.json").write_text(json.dumps({"schema": 1, "updated": SA.iso_local(tn), "accounts": {
+    "system": {"account": "system", "machine": "testhost", "source": "MEASURED", "ts": SA.iso_local(tn),
+               "measured_at": SA.iso_local(tn - 60), "week_pct_used": 60.0, "week_resets_at": SA.iso_local(tn + 48 * H),
+               "session_pct_used": 18.0, "session_resets_at": SA.iso_local(tn + 3 * H)}}}))
+(fx / "au" / "series.jsonl").write_text("")
+os.environ.update(RM_SLOT_PROJECTS=str(fx / "projects"), RM_ACCOUNT_USAGE_DIR=str(fx / "au"), RM_SLOT_MACHINE="testhost",
+                  RM_SLOT_OWNER_LEDGER=str(fx / "none.jsonl"))
+pc_ = S.pacing(tn)
+al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
+    if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}
+check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
+      and pc_.get("seats") == {"BENCH": 5, "FOUNDRY": 1}, (pc_, al.get("seats")))
+check("pacing(): carries the accounts with % left and hours to reset", any(a["name"] == "system" and a["burn"]
+      and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
+check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
+      Path(S.__file__).read_text().split("def collect")[1].split("def series_path")[0])
 
 os.environ["RM_STREAMS_DIR"] = str(Path(tempfile.mkdtemp()))
 S.DIR = Path(os.environ["RM_STREAMS_DIR"])
