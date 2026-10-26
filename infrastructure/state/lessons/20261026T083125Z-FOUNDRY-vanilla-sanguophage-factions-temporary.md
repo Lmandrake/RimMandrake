@@ -1,0 +1,2 @@
+Reusing 'any faction of def X' is unsafe for Sanguophages (and any def quests spawn ad hoc): vanilla QuestNode_Root_SanguophageMeetingHost makes a temporary, player-NEUTRAL, quest-reserved Sanguophages faction, and QuestNode_Root_SanguophageShip a temporary one hostile to all. Filter on !temporary, !defeated and the relation you need (HostileTo(Faction.OfPlayer)) before putting your own pawns in it. Found in RSW_SithLair.cs (SITHLAIR_FIX_FACTION_REUSES_MEETING_GUESTS).
+home: rimworld-modding

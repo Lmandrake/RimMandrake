@@ -117,7 +117,8 @@ namespace RimMandrake.StarWars.SithLine
             {
                 foreach (Thing t in c.GetThingList(map).ToList())
                 {
-                    if (!(t is Pawn))
+                    // Thing.Destroy logs an error on an already-destroyed or undestroyable thing
+                    if (!(t is Pawn) && !t.Destroyed && t.def.destroyable)
                     {
                         t.Destroy();
                     }
@@ -208,7 +209,12 @@ namespace RimMandrake.StarWars.SithLine
         /// <summary>The lair's own hidden Sith faction, generated the way vanilla QuestNode_Root_SanguophageShip does.</summary>
         private static Faction SithFaction()
         {
-            Faction f = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(x => x.def == FactionDefOf.Sanguophages && !x.defeated);
+            // SITHLAIR_FIX_FACTION_REUSES_MEETING_GUESTS: vanilla QuestNode_Root_SanguophageMeetingHost makes a temporary
+            // Sanguophages faction NEUTRAL to the player and reserved by its quest; reusing "any Sanguophages faction" put the
+            // lair adept in it, unraidable without a goodwill hit and tangled in that quest. Reuse only our own kind: kept
+            // (not temporary) and hostile to the player.
+            Faction f = Find.FactionManager.AllFactionsListForReading.FirstOrDefault(x => x.def == FactionDefOf.Sanguophages
+                && !x.defeated && !x.temporary && Faction.OfPlayer != null && x.HostileTo(Faction.OfPlayer));
             if (f != null)
             {
                 return f;
