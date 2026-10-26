@@ -64,6 +64,10 @@ namespace RimMandrake.ExplosiveKnockback
             if (!chosen.InBounds(map) || !chosen.Standable(map))
             {
                 chosen = CellFinder.StandableCellNear(start, map, 3f);
+                if (!chosen.IsValid)
+                {
+                    chosen = start.ClampInsideMap(map); // nothing standable near: never hand RespawnPawn an Invalid cell
+                }
             }
             RM_KnockbackJournal.Add("redirect", 0, p, "from", dest, "to", chosen);
             DestCell(__instance) = chosen;
