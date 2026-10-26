@@ -106,6 +106,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string wg = RiverSwitchFlipChecks.Src("WorkGiver_DigCanal.cs");
                 RiverSwitchFlipChecks.Has(wg, @"List<IntVec3> cells = new List<IntVec3>\(\);", "PotentialWorkCellsGlobal materialises (HasJobOnCell deletes designations mid-scan)");
                 Assert(!Regex.IsMatch(wg, @"yield return item\.target\.Cell"), "no lazy walk over the live designation list");
+                // FILL_IN_DESIGNATION_FIX_SCAN_INVALIDATED (seen live 2026-10-25 run4: "Collection was modified" in
+                // RM_FillInCanalWorkGiver): the fill-in scanner deletes stale designations in HasJobOnCell the same way
+                string fi = RiverSwitchFlipChecks.Src("WorkGiver_FillInCanal.cs");
+                RiverSwitchFlipChecks.Has(fi, @"List<IntVec3> cells = new List<IntVec3>\(\);", "fill-in PotentialWorkCellsGlobal materialises (HasJobOnCell deletes stale designations mid-scan)");
+                RiverSwitchFlipChecks.Has(fi, @"des\.Delete\(\);", "the fill-in scanner still deletes stale designations (else this guard is moot)");
+                Assert(!Regex.IsMatch(fi, @"yield return"), "no lazy walk over the live fill-in designation list");
                 string pump = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "Building_LiquidPump.cs"));
                 RiverSwitchFlipChecks.Has(pump, @"circle \|= !fillHoses && RM_LiquidSpill\.WholeLevels", "A19 pump-circle warning only when the level reached the pond, not the hoses");
             });
