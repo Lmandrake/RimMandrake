@@ -260,14 +260,25 @@ def cmd_collect(args) -> int:
         if not args.job_id or not args.to:
             raise SystemExit("collect: give <job_id> --to <repo-relative path>, or --from-jobs")
         pairs.append((args.job_id, args.to))
-    written = [collect_one(root, repo, j, d, args.dry_run, args.allow_failed) for j, d in pairs]
+    written, refused = [], []
+    for j, d in pairs:
+        try:
+            written.append(collect_one(root, repo, j, d, args.dry_run, args.allow_failed))
+        except SystemExit as e:
+            if not args.from_jobs:
+                raise
+            # one refused job (owner-kept dest, bad install_to) is never recorded as collected, so
+            # aborting here blocked every later job on every run and hid the paths already installed
+            refused.append(str(e))
     verb = "would copy" if args.dry_run else "collected"
     print(f"{verb} {len(written)} file(s); commit with explicit paths (the art-ledger shard too):")
     for p in written:
         print(f"  {p.relative_to(repo)}")
     if written and not args.dry_run:
         print(f"  infrastructure/state/art/events/{_artledger(repo).seat()}.jsonl")
-    return 0
+    for r in refused:
+        print(f"NOT COLLECTED: {r}")
+    return 1 if refused else 0
 
 
 # ---------------------------------------------------------------- migrate

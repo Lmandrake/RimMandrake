@@ -68,7 +68,13 @@ def main(argv=None) -> int:
                 rel = rel.replace(o, n)
         dest = new / rel
         if f.suffix.lower() == ".png":
-            tw.copy(f, dest)
+            if not tw.copy(f, dest):
+                # the new path refused it (owner-kept there, or another repo): the picture did NOT
+                # land, so the old copy must stay — sync() skips what is in `written`
+                tw.written.add(f.resolve())
+                srcs.pop()
+                print(f"left (copy refused): {f.relative_to(old).as_posix()}")
+                continue
         elif not a.dry_run:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
@@ -78,7 +84,12 @@ def main(argv=None) -> int:
         for f in srcs:
             if f.suffix.lower() == ".png":
                 if not a.dry_run:
-                    L.retire(f, reason=tw.reason)
+                    try:
+                        L.retire(f, reason=tw.reason)
+                    except L.Refused as e:   # report and go on: a half-done move is worse than one kept file
+                        tw.counts["kept"] += 1
+                        tw.refusals.append(f"{f}: {e}")
+                        continue
                 retired += 1
             elif not a.dry_run:
                 f.unlink()

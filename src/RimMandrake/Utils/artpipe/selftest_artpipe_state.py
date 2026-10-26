@@ -44,7 +44,8 @@ def _job(d: Path, jid: str, **extra):
 def test_collect(tmp: Path):
     st = tmp / "state"
     repo = tmp / "repo"
-    (repo / "src").mkdir(parents=True)
+    # the ledger refuses a mod that is not a real folder (Textures/ or About/About.xml): make src/M one
+    (repo / "src" / "M" / "Textures").mkdir(parents=True)
     os.environ["ARTSTORE"] = str(tmp / "artstore")          # never the real store
     os.environ["ART_SRC_ROOT"] = str(repo / "src")
     os.environ["ART_LEDGER_DIR"] = str(repo / "infrastructure" / "state" / "art")
@@ -86,6 +87,22 @@ def test_collect(tmp: Path):
     rc = AS.main(["--state", str(st), "collect", "--from-jobs", "--repo", str(repo)])
     check("--from-jobs skips already-collected", rc == 0 and
           len((st / "collected.jsonl").read_text().splitlines()) == 1)
+    # a refused job (bad install_to) sorted BEFORE a good one: the good one still lands, rc says 1.
+    # Before 2026-10-26 the first refusal aborted the batch, every run, forever.
+    _job(st / "done", "b0", install_to="Transient/b0.png")
+    _job(st / "done", "b1", install_to="src/M/Textures/b1.png")
+    for j in ("b0", "b1"):
+        (st / "done" / f"{j}.manifest.json").write_text("{}")
+        (st / "_artsrc" / j).mkdir(parents=True)
+        (st / "_artsrc" / j / f"{j}.png").write_bytes(b"\x89PNG" + j.encode())
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = AS.main(["--state", str(st), "collect", "--from-jobs", "--repo", str(repo)])
+    check("--from-jobs: a refused job does not block the next one",
+          rc == 1 and (repo / "src/M/Textures/b1.png").is_file() and "NOT COLLECTED" in buf.getvalue()
+          and "b0" in buf.getvalue() and ("b1", "src/M/Textures/b1.png") in AS._collected(st))
 
 
 def test_find_legacy(tmp: Path):
