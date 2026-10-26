@@ -131,7 +131,10 @@ U=mandrake; RUNNER=/home/$U/rm/runner; LOG=/var/log/runner-selfupgrade.log; ST=/
 exec >>"$LOG" 2>&1
 echo "=== $(date -u +%FT%TZ) selfupgrade"
 git_rc=skip; apt_rc=skip; claude_rc=skip
-if [ -d "$RUNNER/.git" ]; then
+# A testq attempt pins the runner to the sha it reported; never move HEAD under it (worker.py pulls itself).
+if [ -s /mnt/d/RimTest/testq/current ]; then
+    git_rc="busy:$(head -c 80 /mnt/d/RimTest/testq/current | tr -d '\n"')"
+elif [ -d "$RUNNER/.git" ]; then
     sudo -u $U -H git -C "$RUNNER" pull --ff-only; git_rc=$?
 fi
 last_apt=$(cat $ST/last_apt_epoch 2>/dev/null || echo 0)
@@ -175,6 +178,13 @@ EOF
     else echo "systemd not running yet; timer enabled in pass2"; fi
 }
 
+user_linger() {
+    # The testq worker detaches each attempt as a transient `systemd-run --user` unit; without linger the
+    # user manager (and the attempt with it) dies when the last ssh session closes.
+    if systemd_up; then loginctl enable-linger $U && loginctl show-user $U -p Linger
+    else echo "systemd not running yet; linger enabled in pass2"; fi
+}
+
 journald_cap() {
     install -d /etc/systemd/journald.conf.d
     printf '[Journal]\nSystemMaxUse=200M\n' > /etc/systemd/journald.conf.d/stevedesktop.conf
@@ -196,6 +206,7 @@ else
     step clone clone_runner
     step tailscale install_tailscale
     step selfupgrade selfupgrade_units
+    step linger user_linger
     [ "$PASS" = pass2 ] && step tailscale_login tailscale_login
 fi
 echo "systemd_pid1=$(systemd_up && echo yes || echo no)"
