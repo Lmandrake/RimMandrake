@@ -314,6 +314,9 @@ def t_audit_drift(m):
     rep2 = gate.audit_report([("on.json", on)], dirs=[m.hist])
     ok(any(l.startswith("NO SHADOW RUN") for l in rep2) and "would_skip 0 (skip rate 0%)" in rep2[2],
        "audit_report: with no shadow run it says the rates are not the section 9 audit", rep2)
+    rep3 = gate.audit_report([("sh1.json", sh), ("sh2.json", sh)], dirs=[m.hist])
+    ok("would_skip 2 (skip rate 50%), misses 2 in 2 chain(s) (miss rate 100%)" in rep3[1],
+       "audit_report: the same chain missed in two shadow runs is two misses of two would_skips, not 50%", rep3)
 
 
 def t_run_suite(m):

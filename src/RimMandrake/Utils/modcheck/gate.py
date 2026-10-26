@@ -756,10 +756,12 @@ def audit_report(runs, dirs=None):
     ts = tally(shadow)
     tn = tally(other)
     ws = ts["would_skip"]
+    # a missed chain is counted once per RUN ("<run>: <chain>"), as would_skip is: keyed by chain name alone, the same
+    # chain missed in two shadow runs counted once against two would_skips and halved the miss rate
+    missed = {m.split("/")[0] for m in ts["misses"]}
     out.append("SHADOW: chains %d, would_skip %d (skip rate %.0f%%), misses %d in %d chain(s) (miss rate %s)" % (
-        ts["chains"], ws, 100.0 * ws / max(1, ts["chains"]), len(ts["misses"]),
-        len({m.split(": ", 1)[1].split("/")[0] for m in ts["misses"]}),
-        "%.0f%%" % (100.0 * len({m.split(": ", 1)[1].split("/")[0] for m in ts["misses"]}) / ws) if ws else "n/a"))
+        ts["chains"], ws, 100.0 * ws / max(1, ts["chains"]), len(ts["misses"]), len(missed),
+        "%.0f%%" % (100.0 * len(missed) / ws) if ws else "n/a"))
     out.append("OTHER (informational, not a rate): chains %d, would_skip %d, skipped %d, misses %d" % (
         tn["chains"], tn["would_skip"], tn["skipped"], len(tn["misses"])))
     for label, tot in (("shadow", ts), ("other", tn)):
