@@ -1,0 +1,2 @@
+A gate that decides 'ours' by namespace prefix (RimMandrake/RimStarWars/RimUtinni) is blind to our ports that keep their donor namespace (KoltoTank, RuthlessPursuingMechanoids, LongHunger, StructureInjectionsRUT and others): modcheck/launch_gate passed a stale DLL in those mods clean until f198b6f8b3. Any 'is this ours' allowlist needs a drift census against git ls-files src/*.cs namespaces, as selftest_launch_gate now has.
+home: live-debugging-proof-harness
