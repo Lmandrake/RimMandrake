@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_wholeset_20261026_s1r2",
+ "html": "Transient/biome_ffar/art_eval_shadow_wholeset_20261026_s1r2_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_wholeset_20261026_s1r2_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_wholeset_20261026_s1r2_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "729b690397811716",
+ "census_rows": 7,
+ "rows": 7,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 26,
+ "images": 9684
+}
+
+--- stderr ---
+art_sheet: RM_FireWasp: census texPaths ['Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp'] are STALE; our defs draw ['Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp', 'Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Dovvik: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Dovvik/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Dovvik/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Dovvik/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Thrummel: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Thrummel/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Thrummel/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_Thrummel/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_FireWasp: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_FireWasp__dessicated/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_FireWasp__dessicated/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r2/RM_FireWasp__dessicated/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_CanopySwinger: reference_textures ['infrastructure/state/art_eval/runs/wholeset_20261026_s1r2/kept/kept_RM_CanopySwinger_east_9abc69ba8e62.png', 'infrastructure/state/art_eval/runs/wholeset_20261026_s1r2/kept/kept_RM_CanopySwinger_north_0ccb320bd2dc.png', 'infrastructure/state/art_eval/runs/wholeset_20261026_s1r2/kept/kept_RM_CanopySwinger_south_5a9e0f10ec65.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RUT_BrineBattery: reference_textures ['infrastructure/state/art_eval/runs/wholeset_20261026_s1r2/kept/kept_RUT_BrineBattery_east_197136bb300d.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Starmaw: reference_textures ['infrastructure/state/art_eval/runs/wholeset_20261026_s1r2/kept/kept_Starmaw_east_a4f87c7665d8.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

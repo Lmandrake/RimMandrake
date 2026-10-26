@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RUT_BrineBattery": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_NORTH_FACE \u00b7 GPT strong_accept",
+   "context": "judged candidate s1r3 (image sha d814cfc912); F_NORTH_FACE: About four small red pits along the rear rim could be taken for eyes up close, although they are isolated pores with no mouth or face cluste"
+  },
+  "RM_Muttavaq": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_SIZE_JUMP, STYLE_CARTOON \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate s1r3 (image sha 13f3cdde3d); STYLE_CARTOON: Two small, evenly spaced dot eyes over a full-width, slightly upturned mouth slit give the front a faint smiling-face read.; F_SIZE_JUMP: North's body width is about 240 px against south's 300 px at the shared scale, so the rear looks a little narrower than the front."
+  },
+  "RM_CanopySwinger": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_NORTH_FACE \u00b7 GPT strong_accept",
+   "context": "judged candidate s1r3 (image sha 7020ed3a4b); F_NORTH_FACE: The head at the top shows a snout and small dark eye-like spots.; F_INCONSISTENT: East has 4 legs, south about 6 legs with 8 hook tips, and north 3 pairs of short limbs. The moss patches are clear on east and mostly missin"
+  },
+  "RSW_Starmaw": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate s1r3 (image sha 10fb061545); F_INCONSISTENT: North shows four trailing tentacles, while south and east show three. North's dome-shaped mantle also reads slightly more jellyfish-like tha"
+  }
+ }
+}

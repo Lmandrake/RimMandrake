@@ -1,0 +1,22 @@
+{
+ "RUT_BrineBattery": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/north.png"
+ ],
+ "RM_Muttavaq": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_Muttavaq/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_Muttavaq/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_Muttavaq/north.png"
+ ],
+ "RM_CanopySwinger": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/north.png"
+ ],
+ "RSW_Starmaw": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/north.png"
+ ]
+}

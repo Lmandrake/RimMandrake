@@ -1,0 +1,154 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_wholeset_20261026_s1r3",
+ "built": "2026-10-26T09:09:17-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_wholeset_20261026_s1r3.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 320 active",
+ "rows": {
+  "RM_CanopySwinger": {
+   "columns": {
+    "A": {
+     "east": "1ccedc54401d829052bbe574984d913d846022a5c6a42514cbc42080afb70b04",
+     "north": "88ced1e94c1ef0bc9c750847b1bb1cc7fbd3dd0b16e2ff908fcb2de529121f59",
+     "south": "bcdc7c2b75a2842ac67a28898ac53f17bcd08844f978cd74a6e38c9745cd7c25"
+    },
+    "B": {
+     "east": "9abc69ba8e6281a08cf7e478a7b5480cfab8577dcc5d4b073eeb712ba955ed62",
+     "north": "0ccb320bd2dc617a04afe3fcb5dfa5580c10b1a9e1064221214b2d25a1ac4a61",
+     "south": "5a9e0f10ec65c394c71872f33b301a5200037b843bd1b90b3a40d402fad7f98f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
+    "B": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide",
+    "B": "render standtall_b1_rm_canopyswinger"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+   ],
+   "res": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "canopyswinger"
+  },
+  "RM_Muttavaq": {
+   "columns": {
+    "A": {
+     "east": "2ce253dd2ccca19244d7f1f19d8c5d5c6143b61d82a6d798cef06b192a8846b7",
+     "north": "6ca5b0a1d048de33c1aa35cd7380eac35a4a900072ee7445a7beb22bc9126d2b",
+     "south": "6f8f8c6d887c6bcb9d697c09939e420d1dec33d56933a519f1eb8076c2137bcf"
+    },
+    "B": {
+     "south": "07c885ae00517ab3f8063debe64cae070e645ae90683565f55cedae2be352c31"
+    },
+    "C": {
+     "east": "8beab9075503d893a172c3bed26d535fd1a39f8aefa7e8b4c484acb2bba30e9f",
+     "north": "925c943b83df1c59b6f32fbd643308a5669926212dfcef0fa3820eacbd676e2e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+    "B": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+    "C": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render RM_Muttavaq_v2",
+    "C": "render RM_Muttavaq"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq"
+   ],
+   "res": "Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "muttavaq"
+  },
+  "RSW_Starmaw": {
+   "columns": {
+    "A": {
+     "east": "0e61b8189d5ac3ccde9a8fedb65818a0ad723d76e84713a444d838b9742d327b",
+     "north": "05e04a09305190fc3e2979f089363b179ce44c0d2b1428497d1702f5e490d822",
+     "south": "8423d403118fc8f5a658d3d19487029adedba82308fe9717713a2b91fe7629e3",
+     "west": "a5f1e063b99542e9c456886762b2a5f9e9615c0305e6e5af6a8cf98a6b45f79e"
+    },
+    "B": {
+     "east": "a4f87c7665d8a32cbabd4aacd6b0b953c024903b6934dc0d27ff840b28b2d461",
+     "north": "19ad9750539d76973ddd4492a8eb10ef762d2bc6ff9797c3ffbc0008fff5a07b",
+     "south": "cde090ca91382e9a4b6a02783b6cb34d440a06722944548353ef51496b8f453c",
+     "west": "621e1dab1e9050da794fb3508ef0a5f794be4dbc205e1bf01be6a9b42773167b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw",
+    "B": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 TerminalBiomes"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "starmaw"
+  },
+  "RUT_BrineBattery": {
+   "columns": {
+    "A": {
+     "east": "1791b798b28558cb16dd55ea569d15d0307fab600a2620cd9157a7633576f63d",
+     "north": "cf41cd482c553f495d3e41876d99564c8870e20faf96fd35a01ab2b9dc645e80",
+     "south": "3f0287bea642821b38c6e774f9bbd3e0b17348509e67b78aaf81107109fe7413"
+    },
+    "B": {
+     "east": "bc86008b345c5789b144061b7aaadf9a490637c3b9200f9ff78a51832cfcd00a",
+     "north": "5927f6bb4010a1d68cbd4670e74009100e5a615c8e1b4df27cd43ad76451c608",
+     "south": "25f7089f0700ee5741b4ee33216c5f5ad8853dcb1402b986af7cf609ef43af8b"
+    },
+    "C": {
+     "east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+     "north": "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284",
+     "south": "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "B": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+    "C": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_f26c7759_brinebattery_v1",
+    "C": "history UtinniPatches 2026-10-03"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   ],
+   "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "brinebattery"
+  }
+ },
+ "sheetId": "art_eval_shadow_wholeset_20261026_s1r3_sheet_2026-10-26",
+ "snapshotId": "d5ed3c38dd5c9848"
+}

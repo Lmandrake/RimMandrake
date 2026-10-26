@@ -1,0 +1,29 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_wholeset_20261026_s1r3",
+ "html": "Transient/biome_ffar/art_eval_shadow_wholeset_20261026_s1r3_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_wholeset_20261026_s1r3_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_wholeset_20261026_s1r3_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "d5ed3c38dd5c9848",
+ "census_rows": 4,
+ "rows": 4,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 10,
+ "images": 9684
+}
+
+--- stderr ---
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RUT_BrineBattery: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RUT_BrineBattery/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_CanopySwinger: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RM_CanopySwinger/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Starmaw: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/wholeset/norm/s1r3/RSW_Starmaw/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

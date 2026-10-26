@@ -1,0 +1,64 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Dovvik": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: STYLE_CARTOON, STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate s1r2 (image sha 7454239cfa); STYLE_EARTHLY: The overall body silhouette, a domed back of overlapping scales on four short legs with a tapering snout, recalls a pangolin.; STYLE_CARTOON: The proboscis ends in a perfectly regular, flat, smooth spiral that reads slightly ornamental next to the textured plates."
+  },
+  "RM_Thrummel": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate s1r2 (image sha 6d453bc517); F_INCONSISTENT: The rear view's feet show their claws curling down toward the viewer, much like the front paws on south, rather than the heels of the hind f"
+  },
+  "RM_FireWasp": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus GOOD",
+   "context": "judged candidate s1r2 (image sha bdfcebcc44); "
+  },
+  "RM_CanopySwinger": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus REALLY_BAD: F_NORTH_FACE, F_SOUTH_NOT_FRONT",
+   "context": "judged candidate s1r2 (image sha 2cac2193c7); F_SOUTH_NOT_FRONT: South shows the back and the curled tail at the top with no face. It is a dorsal or rear view, not the front.; F_NORTH_FACE: North shows the head and snout from above at the top of the figure instead of the haunches and tail facing the camera."
+  },
+  "RUT_BrineBattery": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, LUMP \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate s1r2 (image sha 59d7762637); LUMP: The mossy blue-grey mound with folds can read as a moss-covered rock or mud mound rather than an animal. North has no living cue at all.; DEPARTURE_MISSING: The top is a gentle dome rising to roughly a third of the width rather than a flat lid."
+  },
+  "RM_Muttavaq": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate s1r2 (image sha eed34e02d4); STYLE_CARTOON: The full-width mouth curves up at both corners, with two small eyes just above. This gives a faint grinning-face read, and the rows of grey "
+  },
+  "RSW_Starmaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DESC_MISS \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate s1r2 (image sha d6bd2e706a); DESC_MISS: The maw is lined with long fang-like pale teeth, like a predator or lamprey, rather than sieve or comb filter structures. The intake reads a"
+  }
+ }
+}
