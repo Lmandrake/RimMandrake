@@ -106,6 +106,7 @@ MODS = {
         "Sweetline trees": "Now",
         "Sweetline trees on new maps": "NewMapsOnly",
         "Vissler arms and fire-stamping giants": "Now",
+        "Thornhold dens and the rollbug's larder": "Now",
         "Venomvine forms": "Now",
         "Forms that act when the Gale starts": "NextPulse",
         "The ripple and the calling-pyre": "Now",
