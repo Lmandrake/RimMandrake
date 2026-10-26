@@ -189,7 +189,10 @@ namespace RimMandrake.Utinni.UtinniStatues
             ThingDef idol = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_StatueGrand_Shkaar");
             ThingDef sumpgas = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TarGas");
             CompProperties_Refuelable fuel = idol?.GetCompProperties<CompProperties_Refuelable>();
-            if (fuel == null || sumpgas == null || !UtinniStatuesSettings.sumpgasFuelsIdol)
+            // RM_TarGas ships in the free TheSump mod, so its presence alone is not the campaign (ruling R4: outside it,
+            // chemfuel only); the settings row is likewise shown only with the patches mod.
+            if (fuel == null || sumpgas == null || !UtinniStatuesSettings.sumpgasFuelsIdol
+                || !ModsConfig.IsActive("mandrake.rut.patches"))
             {
                 return;
             }

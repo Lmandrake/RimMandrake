@@ -1,6 +1,6 @@
 # project: RimUtinni/UtinniStatues/Source/RimMandrake.Utinni.UtinniStatues.csproj
-# dll: c0f2601aab77b4f595156d8e8624e88685383b688ae8b8ddfd556a837edb8a1a
+# dll: 98d7ed9f04f77bccbc3bc973a634ae53f4a050e43df5ec9a2bfd913334b4880d
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
-a8299a85a1274997c0e00cf7d75a873d90f381466ea60c1be7c30794d2cc0f26 UtinniStatuesMod.cs
+7ba9344be12ba7766a528bd2d0fa21960397f82c90fe43f30d2934c053293ab4 UtinniStatuesMod.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
 d8d20c34513faa3108a25b69eaa159845292df6c53bc5eb96072ee1de6905b8d RUT_StatuePicker.cs

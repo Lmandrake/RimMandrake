@@ -7,7 +7,7 @@
 
   1. Sh'kaar's burning idol swaps its single vanilla crown flame for the full palms+crown set (§2.5).
      Offsets PROVISIONAL until rut_idol_shkaar_grand_v1 lands and the vents are measured from the PNG.
-  2. In the campaign the three flame statues burn Sumpgas (RM_TarGas, the def UtinniStatuesStartup.ApplyIdolFuel
+  2. In the campaign (the patches mod loaded) the three flame statues burn Sumpgas (RM_TarGas, the def UtinniStatuesStartup.ApplyIdolFuel
      uses) instead of chemfuel. Guarded on the def existing: a fuel filter naming an absent def errors at load.
      Not gated by the "Sumpgas fuels the idol" setting (that is C# in this mod's DLL; XML cannot read it).
 -->
@@ -32,7 +32,13 @@
             </li>
           </value>
         </li>
-        <li Class="PatchOperationConditional">
+        <li Class="PatchOperationFindMod">
+          <!-- Ruling R4: Sumpgas only in the campaign. RM_TarGas ships in the free TheSump mod, so the def existing
+               is not enough; the campaign is the patches mod (matched by NAME, see the note above). -->
+          <mods>
+            <li>RimUtinni Patches (Jawa campaign)</li>
+          </mods>
+          <match Class="PatchOperationConditional">
           <xpath>Defs/ThingDef[defName="RM_TarGas"]</xpath>
           <match Class="PatchOperationSequence">
             <operations>
@@ -51,6 +57,7 @@
                 <value><fuelGizmoLabel>Sumpgas</fuelGizmoLabel></value>
               </li>
             </operations>
+          </match>
           </match>
         </li>
       </operations>
