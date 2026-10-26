@@ -3906,6 +3906,7 @@ copied verbatim from the donor mods' own Textures trees.
       <Wildness>0.5</Wildness>
     </statBases>
     <race>
+      <leatherDef>RSW_Fishskin</leatherDef>
       <baseBodySize>0.8</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
       <foodType>OmnivoreRoughAnimal</foodType>
