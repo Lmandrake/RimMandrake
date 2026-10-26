@@ -1,0 +1,2 @@
+validate_patch.py --live counts an xpath of /Defs once PER SOURCE FILE (it reported 7041 matches for PatchOperationAdd xpath=/Defs in RUT_BroodRansom_Campaign.xml). The game applies patches to ONE unified document (Verse/LoadedModManager.cs:307 creates a single Defs root and appends every file's nodes), so /Defs matches exactly once and the add inserts once. A huge match count on /Defs is a validator artifact, not a mass duplication; any other xpath's per-file count is fine as a total.
+home: skills/rimworld-modding/scripts/validate_patch.py
