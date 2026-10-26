@@ -1,0 +1,2 @@
+A tool that deletes 'whatever the search did not find' must check the search's exit code, not just its stdout. grep/git grep exit 0 = hits, 1 = none, anything else = the search did not run; git check-ignore is the same. Review wave 85 found two deleters that read a failed search as 'nothing here' (saves_prune.py deleted cited saves; seat_sync.py let reset --keep delete stop-tracked files). Pattern for the fix: collect the errors, print UNMEASURED, and refuse the destructive step while any search is blind.
+home: infrastructure/state/facts/instrument_traps.md
