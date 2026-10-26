@@ -785,9 +785,11 @@ namespace RimMandrake.TheForge
                     }
                     continue;
                 }
-                if (t.def.category == ThingCategory.Mote || t.def.category == ThingCategory.Ethereal
-                    || t.def.category == ThingCategory.Filth || t.def.category == ThingCategory.Attachment
-                    || t is Fire)
+                // Only what stands on the crust burns: items, buildings, plants. Every thing is in the thing grid
+                // (Thing.SpawnSetup registers unconditionally), so a bullet crossing the cell at this tick, a mote,
+                // filth, gas or an emitter is here too and must not be killed and listed as a melt loss.
+                if ((t.def.category != ThingCategory.Item && t.def.category != ThingCategory.Building
+                     && t.def.category != ThingCategory.Plant) || t is Fire)
                 {
                     continue;
                 }
