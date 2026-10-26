@@ -44,7 +44,7 @@
         <failureChance>0.03</failureChance>
       </li>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
   </ThingDef>
@@ -76,7 +76,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -176,7 +176,7 @@
         <failureChance>0.03</failureChance>
       </li>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
   </ThingDef>
@@ -207,7 +207,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -300,7 +300,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -326,7 +326,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -433,7 +433,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -460,7 +460,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+        <noIngredientsFoodKind>Any</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>

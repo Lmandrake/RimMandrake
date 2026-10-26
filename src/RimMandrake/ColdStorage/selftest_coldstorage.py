@@ -227,6 +227,33 @@ def seal_static_checks(ET, re):
         fails.append("HarmonyPatches.cs: no Bill_Production.ShouldDoNow postfix gating on ColdStorageGates.RecipeOpen "
                      "(a switched-off method's existing bills keep running)")
     fails += duplicate_comp_checks(ET, files)
+    fails += food_kind_checks(ET, files)
+    return fails
+
+
+# RimWorld.FoodKind (decomp rw16 FoodKind.cs) has exactly these members; any other text is a red parse error at load
+# and the field stays Any. FoodUtility.GetFoodKind(ThingDef) rates an animal product (egg) Any, never Meat.
+FOOD_KINDS = ("Meat", "NonMeat", "Any")
+
+
+def food_kind_checks(ET, files):
+    """Every CompProperties_Ingredients.noIngredientsFoodKind names a real FoodKind; an egg good is Any, as vanilla
+    rates eggs, so an ingredient-less one does not upset a vegetarian."""
+    fails, seen = [], 0
+    for path in files:
+        for d in ET.parse(path).getroot():
+            name = d.findtext("defName") or "?"
+            for el in d.iter("noIngredientsFoodKind"):
+                seen += 1
+                kind = (el.text or "").strip()
+                if kind not in FOOD_KINDS:
+                    fails.append("%s: %s noIngredientsFoodKind %r is not a FoodKind %s"
+                                 % (os.path.basename(path), name, kind, FOOD_KINDS))
+                elif "Egg" in name and kind != "Any":
+                    fails.append("%s: %s is an egg good but noIngredientsFoodKind %s (vanilla eggs are Any)"
+                                 % (os.path.basename(path), name, kind))
+    if seen < 20:
+        fails.append("food kind check: only %d noIngredientsFoodKind found (instrument blind?)" % seen)
     return fails
 
 

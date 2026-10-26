@@ -210,7 +210,7 @@
         <ruinedInto>RM_TarRuinedGoods</ruinedInto>
       </li>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+        <noIngredientsFoodKind>Any</noIngredientsFoodKind>
       </li>
     </comps>
   </ThingDef>
@@ -242,7 +242,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+        <noIngredientsFoodKind>Any</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
@@ -276,7 +276,7 @@
         <ruinedInto>RM_TarRuinedGoods</ruinedInto>
       </li>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
   </ThingDef>
@@ -308,7 +308,7 @@
     </ingestible>
     <comps>
       <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
     </comps>
     <modExtensions>
