@@ -2,7 +2,7 @@
 """Selftest for modcheck/drivers.py and its wiring (TESTQ_SWEEP_WIRE_FLOWWORKS_DRIVERS, RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE).
 Offline: no game, no bridge; every driver call goes to a fake.
 
-Reds on: a driver running with MODCHECK_RUN_DRIVERS unset; a driver for an unselected chain running, or table order
+Reds on: a driver running with MODCHECK_RUN_DRIVERS unset, or without UTF-8 stdio; a driver for an unselected chain running, or table order
 not kept; a timeout or a raising after-hook crashing instead of being a receipt; the shared budget not skipping; a
 "chain"-stage driver running up front or more than once; `modcheck run --drivers on` not setting the flag; the
 SteveDesktop worker's run command not passing `--drivers on`; FlowWorks naming a driver script that does not exist, a
@@ -106,6 +106,25 @@ def t_flag_and_plan():
     ok(D.once("/m2", _suite().live_drivers[2], _call_fn=_fake([]), log=_Null()) is None, "once() with the flag off: None")
 
 
+def t_call_utf8():
+    # a driver's stdout is a pipe: Windows python.exe then encodes print() as cp1252 and a non-ASCII char kills the
+    # phase (SteveDesktop J20261026T060806Z-63c715: v2 J_jobs_scheduler_crash UnicodeEncodeError 'charmap')
+    import subprocess
+    seen = {}
+    real = subprocess.run
+
+    def fake(argv, **kw):
+        seen.update(kw.get("env") or {})
+        return subprocess.CompletedProcess(argv, 0, "", "")
+    subprocess.run = fake
+    try:
+        D._call(["py", "x.py"], "/m", 5)
+    finally:
+        subprocess.run = real
+    ok(seen.get("PYTHONIOENCODING") == "utf-8" and seen.get("PYTHONUTF8") == "1",
+       "a driver runs with UTF-8 stdio (PYTHONIOENCODING, PYTHONUTF8)")
+
+
 def t_cli_flag():
     import cli  # noqa: E402
     src = open(cli.__file__, encoding="utf-8").read()
@@ -204,7 +223,7 @@ def t_river_wrapper():
 
 
 def main():
-    for t in (t_flag_and_plan, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper):
+    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others
