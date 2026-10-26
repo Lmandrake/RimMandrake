@@ -197,7 +197,9 @@ def plan(g: Git) -> dict:
         p["stage"] = dl
     # 4. untracked files where upstream adds a file
     added = set(g.lines("diff", "--name-only", "-z", "--no-renames", "--diff-filter=A", head, up))
-    untracked = set(g.lines("ls-files", "-z", "--others", "--", *sorted(added))) if added else set()
+    al, untracked = sorted(added), set()
+    for i in range(0, len(al), 500):    # chunked like blobs(): a big landing would overflow one argv (E2BIG)
+        untracked.update(g.lines("ls-files", "-z", "--others", "--", *al[i:i + 500]))
     if untracked:
         ul = sorted(untracked)
         ub, wt = g.blobs(up, ul), g.wt_hashes(ul)

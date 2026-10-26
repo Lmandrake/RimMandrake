@@ -171,6 +171,27 @@ def main() -> int:
         rc, out = run(seat)
         check(rc == 0 and Path(seat, "U/k.html").is_file() and Path(seat, "U/k.html").read_text() == "k\n", "with the check working it syncs and keeps the file")
 
+        # upstream adds more files than one argv can carry: every per-path git call must be chunked.
+        # Before 2026-10-26 the untracked-collision check passed ALL added paths to one `ls-files`,
+        # so a big landing (thousands of files) crashed ./sync with E2BIG. Simulated with a low limit.
+        many = {f"M/f{i:04d}.txt": f"{i}\n" for i in range(1200)}
+        peer_push(peer, many, "many")
+
+        def argv_cap(cmd, *a, **kw):
+            if isinstance(cmd, list) and len(cmd) > 1000:
+                raise OSError(7, "Argument list too long")
+            return real_run(cmd, *a, **kw)
+        S.subprocess.run = argv_cap
+        try:
+            try:
+                rc, out = run(seat)
+            except OSError as e:
+                rc, out = -1, f"crashed: {e}"
+        finally:
+            S.subprocess.run = real_run
+        check(rc == 0 and "SYNCED" in out and Path(seat, "M/f1199.txt").is_file(),
+              f"a landing of 1200 added files syncs with per-call argv capped ({out.strip()[-80:]})")
+
         # wrong branch / dry run
         git(seat, "checkout", "-q", "-b", "side")
         rc, out = run(seat)
