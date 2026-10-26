@@ -473,6 +473,17 @@ class Console:
         except Exception:
             pass
 
+    def job_requeued(self, job_id: str) -> None:
+        """A claimed job went back to pending/ without running (e.g. the
+        per-launch sandbox guard refused it): drop its in-flight entry so the
+        status file stops showing it as running, but record nothing — it is
+        neither an ok nor a failed result (ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT)."""
+        try:
+            with self._lock:
+                self._in_flight.pop(str(job_id), None)
+        except Exception:
+            pass
+
     def quota(self, state: QuotaState) -> None:
         try:
             with self._lock:

@@ -1531,6 +1531,38 @@ def test_sandbox_guard_refusal_returns_job_to_pending():
            proc.stdout)
 
 
+def test_requeued_job_leaves_status_in_flight():
+    """ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT (2026-10-26): a SANDBOX_NOT_READY result goes back to pending/
+    and skips finalize_job, so nothing popped its in-flight entry — the live status file showed
+    artfeed_RUT_NeebrayMeat_v1 'in flight' for 21530 s with no worker. Console.job_requeued must clear it
+    without counting an ok/failed result, and main()'s requeue branch must call it."""
+    import console as console_mod
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        status = console_mod.StatusFile(tdp / "status", pid=4242)
+        log = console_mod.RunLog.open(tdp / "logs")
+        con = console_mod.Console(lambda: 1, 1, log, status, time.time())
+        con.job_started("phantomjob", "generate", "codex", 300)
+        con.tick(force=True)
+        snap = json.loads(status.path.read_text())
+        ok("requeue: instrument sees the job in flight before the requeue",
+           [e.get("id") for e in snap.get("in_flight", [])] == ["phantomjob"], json.dumps(snap))
+        con.job_requeued("phantomjob")
+        con.tick(force=True)
+        snap = json.loads(status.path.read_text())
+        ok("requeue: status in_flight is empty after job_requeued", snap.get("in_flight") == [],
+           json.dumps(snap))
+        ok("requeue: counted as neither ok nor failed",
+           snap.get("session", {}).get("ok") == 0 and snap.get("session", {}).get("failed") == 0,
+           json.dumps(snap.get("session")))
+        con.close()
+    src = (HERE / "artpiped.py").read_text()
+    branch = src[src.index("== SANDBOX_NOT_READY:"):]
+    branch = branch[:branch.index("continue")]
+    ok("requeue: main()'s SANDBOX_NOT_READY branch calls console_obj.job_requeued before continue",
+       "console_obj.job_requeued(" in branch, branch[:400])
+
+
 def test_codex_sandbox_preflight_missing_bin_refuses_not_passes():
     """A template with `.sandbox/setup_marker.json` but no `.sandbox-bin` at
     all (an incomplete or pre-fingerprint-era capture) must REFUSE, never
@@ -4187,6 +4219,7 @@ def main() -> int:
         test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
         test_sandbox_stale_vs_machine_blocks_codex,
         test_sandbox_guard_refusal_returns_job_to_pending,
+        test_requeued_job_leaves_status_in_flight,
         test_reference_less_job_size_mismatch_is_caught,
         test_oversized_same_aspect_is_downscaled_and_kept,
         test_oversized_wrong_aspect_still_rejected,

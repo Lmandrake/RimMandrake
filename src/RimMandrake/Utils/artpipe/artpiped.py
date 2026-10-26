@@ -3491,6 +3491,9 @@ def main(argv=None) -> int:
                                     os.rename(job_path, dest)
                                 except FileNotFoundError:
                                     pass
+                            # finalize_job is skipped below, so clear the in-flight entry here or the
+                            # status file shows this job running forever (ARTPIPED_STATUS_FIX_PHANTOM_INFLIGHT).
+                            console_obj.job_requeued(job_path.stem)
                             if codex_sandbox_ok:
                                 codex_sandbox_ok = False
                                 console_obj.warn(f"codex channel disabled for this run — {result.get('note')}")
