@@ -309,13 +309,19 @@ def owner_rulings(ledger: list[dict]) -> dict:
             became.pop(iid, None)
             answered.pop(iid, None)
     world = _model().replay(list(ledger), observe=obs)
+    filed: dict[str, dict] = {}
+    for e in ledger:
+        if e.get("event") == "file" and e.get("id") in became:
+            filed.setdefault(e["id"], e)
     out = {}
     for iid, ev in became.items():
         it = world.items[iid]
         an = answered.get(iid)
         klass, why = ask_class(it, ev)
+        to, to_why = ask_addressee(it, ev, filed.get(iid))
         out[iid] = {"ev": ev, "t": iso_to_epoch(ev.get("ts", "")), "seat": (ev.get("seat") or "").upper(),
                     "reason": ev.get("reason") or it.title, "state": it.state, "class": klass, "class_why": why,
+                    "addressee": to, "addressee_why": to_why,
                     "answered": ({"t": iso_to_epoch(an.get("ts", "")), "event": an.get("event"),
                                   "seat": (an.get("seat") or "").upper(),
                                   "by": "card" if an.get("byCard") else "his words",
@@ -385,6 +391,59 @@ def ask_class_raw(it, ev: dict) -> tuple[str, str]:
     if re.search(_LOOK_RE, text, re.I):
         return "look", "asks him to look"
     return "rule", "default: waiting on his verdict"
+
+
+# WHO an ask is addressed to (owner 2026-10-25: "do NOT tell me about pending questions that aren't for the user").
+# rimflow's `needs=owner` is set freely by any seat, and `--for` names the seat that WORKS the item, never who must
+# answer; so needs=owner alone does not make a question his. Only an explicit sign does. An ask with no sign either
+# way is 'unknown': kept out of his list (fail closed for display) but counted in one dim line, never hidden silently.
+_AGENT_ADDR_RE = (r"\b(?:for|to|asks?|asking|awaits?|awaiting|waiting on|needs?|over to|delegated to)\s+(?:the\s+|an?\s+)?"
+                  r"(?:BENCH|FOUNDRY|agents?|seats?|(?:art[- ])?judges?|GPT|Codex|Opus|Nemotron)\b")
+# Words that ADDRESS him, not words that merely mention him ("owner 2026-10-23 redraw", "owner's AFK" are provenance).
+_OWNER_NOUN = (r"(?:cards?|picks?|calls?|verdict|grade|ruling|looks?|eyes?|words?|choice|decision|approval|sign-?off|ok|"
+               r"curation|answer|say|review)")
+_OWNER_VERB = r"(?:decides|picks|rules|chooses|sees|looks|grades|approves|watches|opens|judges|reviews|curates|answers)"
+_OWNER_ADDR_RE = (r"(?:\b(?:for|to|with|asks?|asking|needs?|awaits?|awaiting|waiting on|held for)\s+(?:the\s+)?(?:owner|lukas|him)\b|"
+                  r"\b(?:owner|lukas)(?:'s)?\s+(?:\w+\s+)?(?:" + _OWNER_NOUN + "|" + _OWNER_VERB + r")\b|"
+                  r"\bhis\s+(?:\w+\s+)?" + _OWNER_NOUN + r"\b|\bhe\s+" + _OWNER_VERB + r"\b|"
+                  r"(?:^|[.;(]\s*|\s)(?:owner|lukas):)")
+
+
+def ask_addressee(it, ev: dict, file_ev: dict | None = None) -> tuple[str, str]:
+    """('owner' | 'agent' | 'unknown', why) for an open needs=owner ask. Pure.
+
+    Order: a structural owner sign (the ask or the item's filing was written by the OWNER seat or carries his
+    words / card / ruling; the item is `--for OWNER`; the only criteria still owed are L4, the owner level) wins;
+    then an explicit head word on the ask ('agent:' / 'owner:'); then words that address an agent, seat or judge;
+    then words that address him. Anything else is 'unknown'."""
+    import re
+    fe = file_ev or {}
+    for e, what in ((ev, "the ask"), (fe, "the filing")):
+        if (e.get("seat") or "").upper() == "OWNER":
+            return "owner", f"{what} was written by the OWNER seat"
+        for k, w in (("ownerSaid", "his words"), ("byCard", "his card"), ("perRuling", "his ruling")):
+            if e.get(k):
+                return "owner", f"{what} carries {w}"
+    if str(getattr(it, "owner", None) or fe.get("for") or "").upper() == "OWNER":
+        return "owner", "the item is for OWNER"
+    owed = it.owed_levels() if hasattr(it, "owed_levels") else []
+    if owed and set(owed) == {"L4"}:
+        return "owner", "only an L4 (owner) criterion is owed"
+    reason = str(ev.get("reason") or ev.get("why") or "")
+    head = reason.strip().lower()
+    if head.startswith("agent:"):
+        return "agent", "the ask says 'agent:'"
+    if head.startswith("owner:"):
+        return "owner", "the ask says 'owner:'"
+    text = " ".join(str(x or "") for x in (getattr(it, "title", None), reason,
+                                           fe.get("why") if fe is not ev else None))
+    m = re.search(_AGENT_ADDR_RE, text, re.I)
+    if m:
+        return "agent", f"addressed to an agent: '{m.group(0)}'"
+    m = re.search(_OWNER_ADDR_RE, text, re.I)
+    if m:
+        return "owner", f"names him: '{m.group(0)}'"
+    return "unknown", "needs=owner with nothing that says it is his"
 
 
 def read_artpipe(d: Path = ARTPIPE_DIR, prev: dict | None = None, now: float = 0) -> dict:
@@ -864,7 +923,8 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
             label = "asks" if ex.get("question") else "waiting"
             r = _amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub)
             # the full card, for the widget's expand: the row text stays one line (owner 2026-10-23: truncated)
-            r.update(question=ex.get("question"), full=ex.get("question_full") or q,
+            r.update(question=ex.get("question"), full=ex.get("question_full") or q, addressee="owner",
+                     addressee_why="a question card is up in a seat window (AskUserQuestion asks the user)",
                      asked_at=ex.get("question_at"), src_detail="transcript card" if ex.get("question")
                      else f"session file: waitingFor={s.get('waitingFor')!r}")
             add(r, "wait")
@@ -1174,6 +1234,8 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
                      f"{iid} — {reason}", t, link=lk, src="ledger")
             r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason, "full": full,
                       "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
+                      # no addressee recorded is 'unknown', never his (owner_view keeps it out of his list)
+                      "addressee": ru.get("addressee") or "unknown", "addressee_why": ru.get("addressee_why"),
                       "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
             if kind == "look":
                 if not _is_artifact_link(lk):
@@ -1632,12 +1694,19 @@ def owner_view(rows: list[dict], now: float) -> list[dict]:
     (the widget itself says so), a SEAT window died and was not replaced, or a card blocks a seat (that is
     the amber pinned at the top). Every other red is an agent or machine event that heals itself: it drops to
     `warn` and is flagged `agent` (the digest still tells it; the widget, strip, tally and phone do not).
+    Every ledger ask (`needs:` row) whose addressee is not the owner is flagged `agent` too, and `unaddressed`
+    when nobody said who it is for (health_lines counts those in one dim line).
     Also flagged `agent`: the §3 remove-list rows (recovered / failed / held, a young `answered`, the idle
     planted-OOM proof) and every `amber_soft` (seat finished, idle), which becomes a line in `health`.
     Pure; returns new rows."""
     out = []
     for r in rows:
         k = r["kind"]
+        if str(r.get("key", "")).startswith("needs:") and r.get("addressee") != "owner":
+            # an ask not addressed to him (an agent's / judge's question, or nobody said who): never his list.
+            # 'unknown' is counted in one dim health line; an agent-addressed ask is quiet (digest-free too)
+            out.append({**r, "agent": True, "unaddressed": r.get("addressee") != "agent" and k != "answered"})
+            continue
         if k == "red":
             inc = r.get("incident") or ""
             seat_dead = ((inc.startswith("lost:") or inc.startswith("oom:seat:")) and (r.get("who") or "").upper() in SEATS)
@@ -1668,6 +1737,9 @@ def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
     for c in chips:
         if c.get("seat") in SEATS and c["state"] == "missing":
             lines.append(f"{c['seat']} has no window open")
+    n = sum(1 for r in rows if r.get("unaddressed"))
+    if n:   # asks nobody addressed to him: not his, but never hidden silently
+        lines.append(f"{n} unaddressed")
     return lines
 
 

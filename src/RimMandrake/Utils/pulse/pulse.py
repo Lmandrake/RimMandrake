@@ -564,6 +564,11 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     for r in rows:
         if r["kind"] == "amber" and r.get("seat") and take(r):   # a card up right now is always news
             asks.append({**line("◐", r, f"{r['who']} asks: {r.get('full') or r.get('question') or r['text']}"), "new": True})
+    # an ask not addressed to him (owner_view flags it `agent`) is never in his brief; unknown ones are counted
+    unaddressed = sum(1 for r in rows if r.get("unaddressed"))
+    for r in rows:
+        if str(r.get("key", "")).startswith("needs:") and r.get("agent"):
+            used.add(r["key"])
     for kind, g in (("review", "◇"), ("provide", "✎")):
         for r in rows:
             if r["kind"] == kind and take(r):
@@ -577,11 +582,12 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     held = sum(1 for r in rows if r["kind"] == "held")
     done = [line("✓", r, f"{r['who']:<8} {r['text']}") for r in sorted(rows, key=lambda r: r.get("since") or 0)
             if r["kind"] == "done" and (r.get("since") or 0) >= since and take(r)]
-    answered = [r for r in rows if r["kind"] == "answered"]
+    answered = [r for r in rows if r["kind"] == "answered" and r["key"] not in used]
+    note = "; ".join(x for x in ((f"{len(answered)} you already answered, an agent still owes the follow-through"
+                                  if answered else ""), (f"{unaddressed} unaddressed" if unaddressed else "")) if x)
     out = [{"id": "issues", "title": "What broke", "lines": issues, "backlog": []},
            {"id": "rule", "title": "Needs your verdict or a fact", "lines": asks, "backlog": ask_old,
-            "note": (f"{len(answered)} you already answered, an agent still owes the follow-through"
-                     if answered else "")},
+            "note": note},
            {"id": "look", "title": "To look at", "lines": looks, "backlog": look_old,
             "note": f"{held} held back: nobody recorded reading them first" if held else ""},
            {"id": "done", "title": "Done", "lines": done, "backlog": []}]

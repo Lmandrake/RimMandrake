@@ -1077,5 +1077,47 @@ check("an idle window that finished 35 h ago does not read 'just finished'; a fr
       "just finished" not in ir["OLDWIN"]["text"] and "35 h" in ir["OLDWIN"]["text"]
       and "just finished" in ir["NEWWIN"]["text"], [r["text"] for r in ir.values()])
 
+# --- only asks addressed to HIM reach his list (owner 2026-10-25: "do NOT tell me about pending questions that
+# aren't for the user"). needs=owner alone is not an address; unknown is counted in one dim line, never shown as his.
+AD = [fi("ADDR_OWNER_WORDS", 900, title="Pick the herd cap", ownerSaid="ask me which cap", needs="owner"),
+      fi("ADDR_OWNER_TEXT", 900), le("needs", "ADDR_OWNER_TEXT", 800, to="owner", reason="owner decides the cap"),
+      fi("ADDR_AGENT", 900, title="Pipe bore: which width?", **{"for": "BENCH"}),
+      le("needs", "ADDR_AGENT", 800, to="owner", reason="ask BENCH which bore the GSS spec wants", seat="BENCH"),
+      fi("ADDR_JUDGE", 900), le("needs", "ADDR_JUDGE", 800, to="owner", reason="agent: delegated art judge call, round 2"),
+      fi("ADDR_UNKNOWN", 900, title="Durrok widths uncarried"), le("needs", "ADDR_UNKNOWN", 800, to="owner",
+                                                                   reason="measured drawSize 2 vs ruled 6"),
+      fi("ADDR_MENTION", 900, title="Ladder text: art redrawn (owner 2026-10-23 redraw), def text still wood"),
+      le("needs", "ADDR_MENTION", 800, to="owner", reason="reconcile")]
+_has_addr = hasattr(pc, "ask_addressee")
+ad_r = pc.owner_rulings(AD)
+check("addressee: his words on the filing / 'owner decides' are his; 'ask BENCH' and 'agent:' are an agent's; "
+      "nothing said (or a bare provenance mention of the owner) is unknown",
+      {k: v.get("addressee") for k, v in ad_r.items()} == {"ADDR_OWNER_WORDS": "owner", "ADDR_OWNER_TEXT": "owner",
+                                                           "ADDR_AGENT": "agent", "ADDR_JUDGE": "agent",
+                                                           "ADDR_UNKNOWN": "unknown", "ADDR_MENTION": "unknown"},
+      {k: (v.get("addressee"), v.get("addressee_why")) for k, v in ad_r.items()})
+check("addressee: the OWNER seat, a --for OWNER item and an L4-only item are his by structure", _has_addr and
+      pc.ask_addressee(_W(), {"seat": "OWNER"})[0] == "owner"
+      and pc.ask_addressee(_W(), {"seat": "BENCH"}, {"for": "OWNER"})[0] == "owner"
+      and pc.ask_addressee(type("I", (), {"title": "x", "owed_levels": lambda self: ["L4"]})(), {"seat": "BENCH"})[0] == "owner"
+      and pc.ask_addressee(_W(), {"seat": "BENCH", "reason": "sheet up"})[0] == "unknown")
+ad_snap = pc.collect_snapshot({"ledger": AD, "sessions": [win("q1", "AGENT FOUNDRY", "waiting", 30, 900)],
+                               "extras": {"q1": {"question": "Which cap?", "question_full": "Which cap? A/B"}}}, {}, NOW)[0]
+ad_mine = {r["key"] for r in ad_snap["rows"] if not r.get("agent") and str(r["key"]).startswith("needs:")}
+check("his list holds only the asks addressed to him (agent / judge / unknown asks are flagged agent)",
+      ad_mine == {"needs:ADDR_OWNER_WORDS", "needs:ADDR_OWNER_TEXT"}, ad_mine)
+check("the strip counts only his asks: 2 to rule, not 6", {p["text"] for p in ad_snap["strip"]} >= {"◇ 2 to rule"}
+      and not any(p["text"].startswith("◇ 6") for p in ad_snap["strip"]), ad_snap["strip"])
+check("unknown-addressee asks are counted in one dim health line, agent-addressed ones are not",
+      "2 unaddressed" in ad_snap["health"], ad_snap["health"])
+check("a question card up in a seat window is his and stays a top amber",
+      any(r["kind"] == "amber" and not r.get("agent") and r.get("addressee") == "owner" for r in ad_snap["rows"]),
+      [(r["key"], r["kind"], r.get("agent")) for r in ad_snap["rows"] if r["kind"] == "amber"])
+ad_dig = {sc["id"]: sc for sc in pl.build_digest(ad_snap, NOW - 3600, NOW)}
+ad_txt = " ".join(ln["text"] for ln in ad_dig["rule"]["lines"] + ad_dig["rule"]["backlog"])
+check("his digest names only his asks and says how many were unaddressed",
+      "ADDR_OWNER_TEXT" in ad_txt and not any(k in ad_txt for k in ("ADDR_AGENT", "ADDR_JUDGE", "ADDR_UNKNOWN", "ADDR_MENTION"))
+      and "2 unaddressed" in (ad_dig["rule"].get("note") or ""), (ad_txt, ad_dig["rule"].get("note")))
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
