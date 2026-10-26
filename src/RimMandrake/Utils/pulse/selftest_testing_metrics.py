@@ -290,6 +290,10 @@ T.append_if_changed(hp2, today)
 os.environ["RM_TESTING_HISTORY"] = hp2
 snap = {"charts": {"testing": pc.testing_panel({"days": [today], "live": {}}, NOW)},
         "sources": {"testing": {"ok": True}}}
+live_snap = pc.collect_snapshot({"testing": {"days": [today], "live": {}}}, {}, NOW)[0]
+check("the real snapshot carries the panel under charts (where the widget and the brief read it)",
+      ((live_snap.get("charts") or {}).get("testing") or {}).get("day") == "2026-01-07",
+      sorted(k for k in live_snap if "test" in k))
 ln = brief.testing_line(snap)
 check("brief testing line names both machines", ln and "Steve" in ln["text"] and "Archmagi" in ln["text"], ln)
 check("brief line shows UNMEASURED words, not 0", ln and "unmeasured" in ln["text"].lower(), ln)
