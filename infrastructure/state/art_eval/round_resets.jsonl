@@ -11,3 +11,10 @@
 {"at": "2026-10-24T07:18:28-07:00", "def": "RM_Peeper", "stop": true, "series": 1, "why": "coordinator relay: owner kept Peeper A on the contagion sheet"}
 {"at": "2026-10-24T09:28:04-07:00", "def": "RM_Vexxiss", "stop": true, "series": 1, "by_card": "Vexxiss: which becomes the main, and what happens to the other? \u2192 D main, E as variant"}
 {"at": "2026-10-24T21:26:21-07:00", "def": "RM_Surrik", "series": 2, "source_run": "fauna_s1_r1_01", "owner_said": "Could we change the prompt to just show it hunkered down onto the surface and not bother with the terrain around it? That seems like an easy fix."}
+{"at": "2026-10-26T07:32:23-07:00", "def": "RM_Dovvik", "series": 1, "source_run": "facingfix_20261026_r2", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:23-07:00", "def": "RM_CanopySwinger", "series": 1, "source_run": "facingfix_20261026_r2", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:23-07:00", "def": "RM_Thrummel", "series": 1, "source_run": "facingfix_20261026_r2", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:23-07:00", "def": "RUT_BrineBattery", "series": 1, "source_run": "facingfix_20261026_r2", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:23-07:00", "def": "RSW_Starmaw", "series": 1, "source_run": "facingfix_20261026_r2", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:24-07:00", "def": "RM_FireWasp__dessicated", "series": 1, "source_run": "facingfix_20261026_r1", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}
+{"at": "2026-10-26T07:32:25-07:00", "def": "RM_Muttavaq", "series": 1, "source_run": "facingfix_20261026_live", "by_card": "7 art sets \u2192 Redraw all 7 whole sets (Recommended)"}

@@ -1,0 +1,78 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 38.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3436848
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 45.1,
+    "error": "t>\",\n  \"concerns\": [{\"id\": \"K1\", \"answer\": \"confirmed|refuted|unclear\", \"evidence\": \"<what in the picture>\"}],\n  \"findings\": [{\"code\": \"<code>\", \"where\": \"<image/facing>\", \"seen\": \"<what>\", \"quote\": \"<rule>\",\n                \"confidence\": 0.0, \"model_severity\": \"blocking|polish\", \"fix\": \"<one positive sentence>\"}],\n  \"verdict\": \"strong_accept|regen|unsure\"\n}\n\n\nERROR: Selected model is at capacity. Please try a different model.\nERROR: Selected model is at capacity. Please try a different model.\n\n"
+   },
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 285.7
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 15.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1152407
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_BrineBattery",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said weak); blocking ['CONSTRUCTED', 'DEPARTURE_MISSING']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1', 'K2'], own blocking ['CONSTRUCTED', 'DEPARTURE_MISSING']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "1dcb6c9ae3df576dc0c0d0b9b9aaa71fe90633f86df283037eb76a8481125ba8",
+  "east.png": "95a9886a150a41e14c0622543bf6d904ec0cf41c39dcd4e80811bb8a7da39e21",
+  "north.png": "fca97e85cad53899f3f56564d92ce8d70db5e3ee2dca2cd77c445ee3eb514814",
+  "scale.png": "7d8522b0f845eea237abeed8b0b2a10589a20eecc3717742b8ab8410ae23b108",
+  "facings.png": "5553638d07acb806805a630e2636487dce24913fbea9cfab2bc8630235baf4a7"
+ }
+}

@@ -6004,3 +6004,7 @@
 {"seat":"BENCH","event":"note","id":"COLDSTORAGE_REGISTRY_FIX_STALE_AFTER_LOAD","text":"close sha 2727a45c4a was rebased before push; the fix on main is 2e1493aa6f","ts":"2026-10-26T15:37:11Z","tsn":1793029031868155943}
 {"seat":"BENCH","event":"note","id":"COLDSTORAGE_CLIMATE_FIX_TEXTURE_CCTOR","text":"close sha 2727a45c4a was rebased before push; the fix on main is 2e1493aa6f","ts":"2026-10-26T15:37:14Z","tsn":1793029034145764424}
 {"seat":"BENCH","event":"note","id":"COLDSTORAGE_LWM_FIX_COMPS_NOT_EXTENSION","text":"close sha 2727a45c4a was rebased before push; the fix on main is 2e1493aa6f","ts":"2026-10-26T15:37:15Z","tsn":1793029035912940274}
+{"seat":"BENCH","event":"lease","id":"FACING_SETS_REDRAW_WHOLE_SET_ESCALATED","action":"renew","token":"BENCH.pid18680.315f5abe","ts":"2026-10-26T15:14:00Z","expires":"2026-10-26T15:59:00Z","tsn":1793027641290777742}
+{"seat":"BENCH","event":"lease","id":"FACING_SETS_REDRAW_WHOLE_SET_ESCALATED","action":"renew","token":"BENCH.pid18680.315f5abe","ts":"2026-10-26T15:25:12Z","expires":"2026-10-26T16:10:12Z","tsn":1793028313609326892}
+{"seat":"BENCH","event":"lease","id":"FACING_SETS_REDRAW_WHOLE_SET_ESCALATED","action":"renew","token":"BENCH.pid18680.315f5abe","ts":"2026-10-26T15:28:23Z","expires":"2026-10-26T16:13:23Z","tsn":1793028504317857413}
+{"seat":"BENCH","event":"lease","id":"FACING_SETS_REDRAW_WHOLE_SET_ESCALATED","action":"renew","token":"BENCH.pid18680.315f5abe","ts":"2026-10-26T15:32:23Z","expires":"2026-10-26T16:17:23Z","tsn":1793028743837820904}

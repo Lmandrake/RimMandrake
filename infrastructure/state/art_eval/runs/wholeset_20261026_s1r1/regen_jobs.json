@@ -1,0 +1,153 @@
+[
+ {
+  "id": "arteval_RM_Dovvik__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dovvik",
+  "prompt": "A creature sprite for RimWorld: the dovvik, a patient, alien ground-walking feeder from a blue desert of floss plants. It is the size of a big dog, bulky and wide, far larger than any insect. Its body is a tall, full, domed mound of rounded, overlapping translucent plates in pale ice-blue with warm gold accents along each plate's edge, the same structures on both flanks. The dome has the same height, bulk and volume in every view, front, rear and side, and the belly sits at the same height above the ground. It stands on short, sturdy jointed walking legs of equal length in every view, with broad feet planted on one ground line, and has a bare plated back with no wings. The head is a small rounded plated knob whose whole front is taken up by the root of one single long proboscis, with small dark eyes set low and tight beside the root. The proboscis is one long, soft, flexible tube, as long as the head and neck together, and it is the head's dominant structure: it leaves the front of the head, makes one full visible loop (a clear S-curl or open spiral) in the open air along its exposed length, and then descends so its tip enters the side of the plant's stem like a straw. The plant is a pale floss plant with a bare, slender, clearly visible stem and a fluffy cream plume above; the proboscis tip is inside the stem partway down, with a visible puncture point and a slight bulge of the stem around it, and the plume stays above the contact point. The creature stands still and patient, head lowered to the stem. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.2,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_CanopySwinger__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CanopySwinger",
+  "prompt": "A creature sprite for RimWorld: the ookala, an alien canopy climber from a jungle of giant trees, shown hanging from a branch by its tail. A thick, long bark-brown tree branch runs horizontally across the top of the image and continues unbroken past both sides of the frame. Its body is very long and narrow, about twice as long as it is tall, a drawn-out vine-like trunk in mossy green and bark brown with fine fibrous ridges, so its whole silhouette reads like a hanging vine. Each of its four limbs is long and thin and bends at THREE joints instead of two, folding out in segments like a carpenter's tape, hanging loosely below the body or reaching out; each limb ends in a single curved hook-shaped hand of two long hard hooks, built for hanging, with a bare hook and no thumb and no fingers. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body and the branch visible with nothing cut off except the branch ends at the frame edge. Fully transparent background: the branch and creature float alone, with an empty transparent surround, and the image holds only the creature and its branch.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Thrummel__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thrummel",
+  "prompt": "A creature sprite for RimWorld: the thrummel, a tiny alien burrower from a tar swamp, about a fist and a half across. Its body is a near-perfect ball, comically round, wrapped in dense, shaggy, deep soot-black fur with a faint oily sheen and a few small crumbs of black tar and pale waxy comb caught in it. There is no neck and no snout: the head merges into the round body outline, and the face is a flat patch on the front of the ball where the fur falls over small, dark, deep-set eyes nearly hidden in the coat, with only a faint restrained glint, above a rough, leathery, matte grey-brown nose pad fringed with fur and integrated into the face. It crouches slightly forward on its short broad digging hind paws, and its two foreclaws, tipped with pale chitin-like claws, visibly work a small waxy, chitinous honeycomb fragment held against its belly: pale hexagonal chitin cells with amber seepwax drips, being handled mid-task as it hurries. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body and the comb visible with nothing cut off. Fully transparent background: transparent space surrounds the creature and the comb, with no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, STYLE_CARTOON, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RUT_BrineBattery__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_BrineBattery",
+  "prompt": "A creature sprite for RimWorld: the isi isi (brine battery), a living alien pool animal that sits on the floor of a hypersaline pool like a fitted lid. Its whole body is one low, wide, flat disc, about four times as wide as it is tall, gently rounded on top like a lens, its rim pressed flush and level against the ground all the way round. The outline is continuous and faintly asymmetric, with a slightly lumpy, irregular rim like thick living tissue. The covering is matte, slightly translucent rubbery skin in dark slate blue-grey, faintly mottled in two close tones, with a soft damp sheen; shallow compression folds and fine skin-like creases gather around the rim, and the soft rounded edge yields and slumps a little where it presses against the floor, so the whole shell visibly bends like thick rubber. Pale-blue bioluminescent charge veins run irregularly through the skin, branching and fading unevenly, strongest near the rim. Where the rim meets the floor it carries an uneven, clumpy crust of white brine crystals all the way round, with a faint pale-blue shimmer in the seam beneath. Toward the front edge sits a thin, slightly crooked, soft-edged closed lip fold, with a few small sensory pores of different sizes set unevenly in the skin beside it. The body is one continuous organic lid: nothing breaks its outline, with no head, neck, legs, flippers or tail. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CONSTRUCTED, DEPARTURE_MISSING, CONSTRUCTED, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_FireWasp__dessicated__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp__dessicated",
+  "prompt": "A creature sprite for RimWorld: the dried, dead husk of a fire wasp, an alien scale-plated scavenging insect the size of a small dog, hanging suspended in the middle of a small cluster of flames and heat-haze. The husk keeps the living animal's standing pose: a long segmented body on six thin jointed legs, a small head with two short antennae, and two broad, wide gliding wings held spread flat. Its whole body is covered in heavy overlapping scales like a pangolin's or a fir cone's, dried, dull and ash-grey with scorched amber-brown edges, several scales cracked or missing, showing the dark hollow beneath; the scale surfaces stay intact and unburnt where the flames pass over them. The wings are papery, torn and translucent ash-brown with ragged holes. The colour of the creature comes only from the scales: dull greys and burnt ambers, with no yellow-and-black stripes anywhere. The eyes are dull, sunken and dark; the legs are stiff and slightly curled. Around and behind the husk, low orange-red flame tongues and pale shimmering heat-haze rise in a compact, localized cluster painted as part of the sprite, tightly bound to the insect, with clear transparent space around the whole effect. The same insect at the same physical size in every view: the head-to-abdomen body length fills about 60% of the canvas, and leg span, leg thickness and wing size are identical across the front view (eyes toward the viewer), the side view and the rear view (seen from behind, abdomen and haunches toward the viewer); only the directional foreshortening differs between views. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RSW_Starmaw__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Starmaw",
+  "prompt": "A creature sprite for RimWorld: the starmaw, a colossal alien sea beast the size of a ship's hull, a filter-feeder. Its body is a vast, elongated, smooth hull-shaped mass of one consistent size and proportion: the body depth from back to belly is about one fifth of the body length, tapering evenly to a broad horizontal tail fluke, with two long low side fins of moderate length. The front end is almost entirely one enormous open filter maw, a round gaping intake ringed by pale comb-like filter plates; the maw ring is about two thirds of the body depth, so the maw and the body behind it are in the same scale in every view. The front of the animal is the mouth itself, with a smooth rounded head and no blowhole, beak or dolphin forehead. Its hide is very dark blue-black, densely spotted all over the back and flanks with small sharp points of glowing pale-blue and white bioluminescent light, scattered like stars and clustered into constellation patterns, so the creature reads as a patch of night sky. Small dim eyes sit low at the corners of the maw. The same body is drawn in each facing, only turned: the side view shows the full length with the round maw intake at the front at body-depth height; the front view, eyes toward the viewer, shows the maw ring face-on at the same diameter, with the body behind it foreshortened and no wider than the side-view body depth, and the two fins spread left and right at normal length; the rear view, seen from behind, shows the broad star-spotted back, flanks and horizontal tail fluke at the same width as the side-view body depth, with eyes and maw hidden. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 11.4,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Muttavaq__s1r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A creature sprite for RimWorld: the muttavaq, a huge alien canyon-floor animal that sleeps for years as a patch of dried clay pan. Its body is a very broad, shallow, nearly flat-topped mound, far wider than it is tall, like a slab of cracked ground that has risen a little above the canyon floor. The plate rim of the slab hangs close to the ground all the way round. Four short, squat, column-like legs sit mostly hidden beneath the rim, so there is almost no open space under the belly. There is no neck and no raised head: the front of the slab simply ends in a wide, low mouth slot at ground level. Its whole back is a low mounded field of hard, regular polygon plates of dried cracked clay, separated by dark cracks that radiate outward from one central point on the top of the back, more regular than natural mud. Skin, legs and plates are all the pale ochre and dusty tan of dried canyon clay, so it reads as part of the terrain. The mouth is lined with rows of flat, overlapping jaw-plates for straining mud. Small deep-set eyes sit at the front corners of the slab. The animal keeps the same dimensions in every view: the same low shell height, the same short leg length and the same bulk, drawn with one consistent orthographic camera. In the front view, with eyes and mouth toward the viewer, and in the rear view, seen from behind, the body is as low as in the side view and only its breadth is foreshortened. Realistic painterly vanilla RimWorld sprite style with a clean, crisp dark outline in a deeper shade of the local clay colour; the antialiased edge pixels take the colour of the adjacent clay surface, giving a clean silhouette edge. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, ALPHA_HALO, F_SIZE_JUMP, DEPARTURE_MISSING, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r1",
+  "drawsize": 4.6,
+  "module": "walker"
+ }
+]
