@@ -306,6 +306,35 @@ w5 = RetileWorld({102: (FAST, ["north", "west", "east"], False)}, answer=None)
 rc5, _ = run_main_biome(w5, "RM_Pyrelands")
 check("main --biome can-fail: an unanswered world_tile_set skips the tile (exit 2), never crashes "
       "(RIVERSITE_FIX_RETILE_NONE_CRASH)", rc5 == 2 and not any(t == "jawa/colony_found" for t, _ in w5.calls), "rc %s" % (rc5,))
+
+
+class NoneWorld(FakeWorld):
+    """One tool's reply is None (an unanswered call: RimBridge.call returns whatever the reply held)."""
+    def __init__(self, tiles, none_tool):
+        FakeWorld.__init__(self, tiles)
+        self.none_tool = none_tool
+
+    def call(self, tool, **kw):
+        if tool == self.none_tool:
+            self.calls.append((tool, kw))
+            return None
+        return FakeWorld.call(self, tool, **kw)
+
+
+# RIVERSITE_FIX_UNANSWERED_CALL_CRASHES (review debt 2026-10-26): the retile guard's `or {}` was missing at four more calls
+for _tool in ("jawa/world_tile_export", "jawa/colony_found", "jawa/world_tile_map_generate"):
+    _wn = NoneWorld({102: (FAST, ["north", "west", "east"], False)}, _tool)
+    try:
+        _rcn = run_main(_wn)[0]
+    except Exception as _e:                     # the crash is the failure this guards
+        _rcn = "raised %s: %s" % (type(_e).__name__, _e)
+    check("main can-fail: an unanswered %s yields no site (exit 2), never crashes" % _tool, _rcn == 2, "rc %s" % (_rcn,))
+try:
+    _sb = R.scenery_blockers(lambda t, **kw: None, (250, 250), True)
+except Exception as _e:
+    _sb = "raised %s: %s" % (type(_e).__name__, _e)
+check("scenery_blockers can-fail: an unanswered list_things rejects the dry site, never crashes or reads clear",
+      isinstance(_sb, list) and _sb and all("unanswered" in x for x in _sb), str(_sb)[:200])
 # RIVER_SWEEP_FIX_COLONISTS_RETURN_AS_NPCS: the returns_home row's same-pawn predicate, on the live R3.c shape.
 _b = {"thingIdNumber": 54279, "thingId": "Human54279", "name": "Ann Lee", "kindDef": "Colonist", "faction": "PlayerColony",
       "apparel": [{"def": "Apparel_Pants"}, {"def": "Apparel_BasicShirt"}], "equipment": [{"def": "Gun_Revolver"}]}

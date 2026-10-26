@@ -157,8 +157,19 @@ def scenery_blockers(call, size, dry):
         rects = [S.clip(p["buffered"], size) for p in S.layout(size)]
     except ValueError as e:                  # a map too small for the plots cannot be a dry site: reject it, do not crash
         return ["layout: %s" % e]
-    return [d for d in BW.NATURAL_SCENERY
-            if any(call("jawa/list_things", defName=d, rect=S.rect_str(r), limit=1).get("things") for r in rects if r[2] and r[3])]
+    out = []
+    for d in BW.NATURAL_SCENERY:
+        for r in rects:
+            if not (r[2] and r[3]):
+                continue
+            rep = call("jawa/list_things", defName=d, rect=S.rect_str(r), limit=1)
+            if not isinstance(rep, dict):        # an unanswered read cannot clear the plot: reject, never read it as empty
+                out.append("%s: list_things unanswered" % d)
+                break
+            if rep.get("things"):
+                out.append(d)
+                break
+    return out
 
 
 def generated_map_id(g):
@@ -227,7 +238,7 @@ def main():
             bad.append("list_pawns refused before founding, old colonists unknown: %s" % str(lp0)[:160])
         old_cols = [p["id"] for p in (lp0.get("pawns") or []) if p.get("isPlayer") and not p.get("dead")]
         path = os.path.join(os.environ.get("TEMP") or tempfile.gettempdir(), "river_site_tiles.csv")
-        r = s.call("jawa/world_tile_export", path=path)
+        r = s.call("jawa/world_tile_export", path=path) or {}
         if not r.get("success") or not os.path.isfile(path):
             print("world_tile_export failed: %s" % r)
             return 2
@@ -264,12 +275,12 @@ def main():
                     print("tile", t, "re-tile to %s refused or read back wrong: %s" % (BIOME, str(rt)[:200]))
                     continue
                 print("tile", t, "re-tiled to", BIOME, "riverCount now", (back.get(t) or {}).get("riverCount"))
-            cf = s.call("jawa/colony_found", tile=t, faction="Player", name=("NorthstarDry" if DRY else "NorthstarRiver"))
+            cf = s.call("jawa/colony_found", tile=t, faction="Player", name=("NorthstarDry" if DRY else "NorthstarRiver")) or {}
             if not cf.get("success"):
                 continue
             tries += 1
             BW.close_naming_dialogs(s)
-            g = s.call("jawa/world_tile_map_generate", tile=t, suggestedMapParent="Settlement")
+            g = s.call("jawa/world_tile_map_generate", tile=t, suggestedMapParent="Settlement") or {}
             mid = generated_map_id(g)
             fresh = bool(g.get("success")) and not g.get("wasAlreadyGenerated")
             if fresh:
