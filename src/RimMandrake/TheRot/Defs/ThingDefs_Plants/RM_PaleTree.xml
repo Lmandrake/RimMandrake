@@ -109,9 +109,12 @@
       <dieFromToxicFallout>False</dieFromToxicFallout>
       <allowAutoCut>false</allowAutoCut>
       <warnIfMarkedForCut>true</warnIfMarkedForCut>
-      <immatureGraphicPath>Things/Plant/TreeAnima_Immature</immatureGraphicPath>
-      <snowOverlayGraphicPath>Things/Plant/TreeAnima_Snowy</snowOverlayGraphicPath>
-      <immatureSnowOverlayGraphicPath>Things/Plant/TreeAnima_ImmatureSnowy</immatureSnowOverlayGraphicPath>
+      <!-- No immatureGraphicPath / snow overlays: the anima clone carried vanilla
+           Things/Plant/TreeAnima_Immature + TreeAnima_Snowy/_ImmatureSnowy, so a young
+           quellan tree (growth < harvestMinGrowth, Plant.Graphic) drew an anima sapling
+           and snow drew anima-shaped caps over the fungus art. Without them the
+           PaleTree art draws at growth scale, like most trees. Own immature art can
+           come back with its own texPath. -->
     </plant>
     <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
     <rotatable>false</rotatable>

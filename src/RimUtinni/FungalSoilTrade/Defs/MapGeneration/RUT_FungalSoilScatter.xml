@@ -5,7 +5,7 @@
        RM_TheRot / RUT_TheRot (the Rot), so adding it to the shared base generator
        (see ../../Patches/RUT_FungalSoilScatter_MapGenPatch.xml) is safe: it
        no-ops on every other biome's maps, the same shape
-       RUT_LanternDeepEmergence_Scatter uses.
+       RM_LanternDeepEmergence_Scatter (GenStep_ScatterCavePortal) uses.
 
        Density is the anti-exponential lever together with the mineable def's
        own fixed per-knot yield. countPer10kCellsRange 0.5~1 gives 3-6 clusters

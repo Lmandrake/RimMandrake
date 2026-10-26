@@ -1,6 +1,8 @@
-// Approach B for DivingInteraction: seeded random ACTION SEQUENCES over the two Verse-free kernels the mod calls,
-//   RM_GardenDefenseKernel (Chill garden offense scoring, tiers, cooldowns) and
-//   RM_ElderEconomyKernel   (Brine Elder novelty ledger, unique-treasure claims, silver payout).
+// Approach B for DivingInteraction: seeded random ACTION SEQUENCES over the Verse-free kernels the mod calls,
+//   RM_GardenDefenseKernel (Chill garden offense scoring, tiers, cooldowns),
+//   RM_ElderEconomyKernel   (Brine Elder novelty ledger, unique-treasure claims, silver payout),
+//   RM_OxygenLedgerKernel   (pump-served rooms), RM_WalkerTrampleKernel (Scald walker trample/warn) and
+//   RM_ChillFireBanKernel   (the seabed fire ban: flame classification and output gates).
 // The model (event log, reference sets) is this file's own; every number comes from the production kernel. A failing
 // sequence is shrunk by delta debugging and printed as `family seed N: message | actions`, so it replays exactly.
 using System;
