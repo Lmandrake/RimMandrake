@@ -70,6 +70,8 @@ def main():
             {"id": "AGENT_WORK_ITEM", "to": "done", "tsn": CLOSE_TSN}, {"id": "X", "to": "done", "tsn": 1}]}, False),
         ("delegated with real events passes", {"type": "delegated", "tsns": [EVENTS[5]["tsn"]]}, True),
         ("delegated with a non-delegated event is withheld", {"type": "delegated", "tsns": [EVENTS[4]["tsn"]]}, False),
+        # wave 75 mutation: dropping the non-empty guard (`ok and all(...)` -> `all(...)`) passed every row
+        ("delegated naming no events is withheld", {"type": "delegated", "tsns": []}, False),
         ("measure from a live source passes", {"type": "measure", "src": "tokens"}, True),
         ("measure from a down source is withheld", {"type": "measure", "src": "dead"}, False),
         ("seat naming an open item passes", {"type": "seat", "id": "ASK_OPEN_ITEM"}, True),
@@ -127,6 +129,13 @@ def main():
     check("heartbeat red when an amber card blocks a seat", hb["red"] and hb["why"] == "card", hb)
     hb = brief.heartbeat(None, good_brief, NOW)
     check("heartbeat red with no snapshot at all", hb["red"], hb)
+    # wave 75 mutation: `if quiet >= RUN_STOPPED` -> `if False` passed every row; pin both sides of §4A's 30 min
+    idle = lambda ago: {**fresh, "chips": [{"seat": "BENCH", "state": "idle", "since": NOW - ago},
+                                           {"seat": "FOUNDRY", "state": "idle", "since": NOW - ago - 300}]}
+    hb = brief.heartbeat(idle(brief.RUN_STOPPED + 100), good_brief, NOW)
+    check("heartbeat red when no seat has worked for 30 min", hb["red"] and hb["why"] == "stopped", hb)
+    hb = brief.heartbeat(idle(brief.RUN_STOPPED - 300), good_brief, NOW)
+    check("but not when the last seat stopped under 30 min ago", not hb["red"], hb)
 
     # RIMPULSE_PAGE_FIX_CHORES_POSE_AS_RULINGS: goals are packages/areas, never a title's first word
     pk = {"rimbiomes": "RimBiomes"}
