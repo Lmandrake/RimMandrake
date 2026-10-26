@@ -1,0 +1,32 @@
+{
+ "judge_model": {"opus": [{"model_requested": "opus", "models_reported": ["claude-opus-5-5"], "role": "independent design judge, no maker context (delegation_policy.md §4)"}]},
+ "brief": "delegation_policy.md §4.3 design call: item criteria + governing design doc (canon_materials_design_2026-10-09.md §3.10) + chitin defs + donor source + sibling precedent",
+ "subject": "3123bbb1ff",
+ "item": "RACES_JUDGE_LEATHER_PICKS_DELEGATED",
+ "standing_ruling": "canon_materials_design_2026-10-09.md §3.10 (question card 2026-10-09): 'One chitin ladder: the three stat-identical copies (Lantern Deeps RM_*Chitin, the Rot RM_Rot*Chitin, Bestiary RSW_*Chitin) fold into one set, and every producer points at it.'",
+ "ladder_measured": {
+  "RM_WeakChitin": "brittle chitin, value 1.0, sharp 0.4 blunt 0.4, insulation 10, colour (61,48,70)",
+  "RM_GrayChitin": "gray shell, value 2.5, sharp 0.54 blunt 0.6, insulation 12, colour (56,56,56)",
+  "RM_MediumChitin": "tough chitin, value 5.0, sharp 1.1 blunt 0.8, insulation 15, colour (63,114,123)",
+  "RM_CrystalChitin": "crystal carapace, value 7.5 (special)",
+  "RSW_RoyalChitin": "royal chitin, value 10, sharp 1.3 blunt 1.0, insulation 20, purple (81,48,100); not a ladder twin, unique to RSW_RoyalRhino / RSW_BunkerBug"
+ },
+ "load_check": "RM_MediumChitin and RM_GrayChitin live in LanternDeeps; LanternDeeps and LeaningScrub both fold into the composed RimMandrake.Biomes (Biomes.compose.json), and SWBestiary hard-depends on mandrake.rm.biomes, so every new reference resolves in one load.",
+ "calls": [
+  {"race": "RM_Baseopsis", "leatherDef": "RM_MediumChitin", "verdict": "UPHOLD", "reasons": ["giant earwig, size 3.0, BeetleLikeWithClaw, LeatherAmount 30; Jurassic-donor arthropod with no canon_references entry (non-SW)", "tough chitin is the top generic ladder rung; the 12 MediumChitin producers span 0.79-3.0; heavier chitins are species-unique (Royal) or another biome's (Black, LongShade)", "the donor's DinoChitin item left with its DLL; Leather_Lizard (the vertebrate ports' choice) would be wrong for an arthropod"]},
+  {"race": "RM_Holcorobeus", "leatherDef": "RM_MediumChitin", "verdict": "UPHOLD", "reasons": ["purple rhinoceros beetle, size 1.5, inside the rung's band", "RSW_RoyalChitin (purple) considered and rejected: it is RSW_RoyalRhino's unique high-value material, not a ladder rung; the ruling sends producers to the one ladder", "teal leather from a purple beetle is cosmetic only; no written rule ties leather colour to the creature's"]},
+  {"race": "RM_Protosolpuga", "leatherDef": "RM_MediumChitin", "verdict": "UPHOLD", "reasons": ["camel spider, size 1.5, predator; same reasoning as Holcorobeus, minus the colour question"]},
+  {"race": "RM_Termitotron", "leatherDef": "RM_MediumChitin", "verdict": "UPHOLD", "reasons": ["proto-termite, size 3.0, predator; same reasoning as Baseopsis"]},
+  {"race": "RSW_AaroxisDendoriaPupa", "leatherDef": "RM_GrayChitin", "verdict": "UPHOLD", "reasons": ["donor BMT_AaroxisDendoriaPupa (Biomes! Caverns 2969748433, 1.6) set LeatherAmount 2 and NO leatherDef, so this is the donor's own bug, not something we invented; larva carries WeakChitin, adult GrayChitin", "pupa precedent in this file: RSW_FacetMothPupa (CrystalChitin) and RSW_SmogPupa (ToxiChitin) carry the adult's chitin; the pick matches", "the adult has LeatherAmount 0 (donor value, a silk producer), so the pupa yields 2 gray shell while the adult yields none: odd, but it is the donor's amount, value 5 silver in total, and out of scope for a leatherDef pick"]},
+  {"race": "RSW_RoyalRhinoPupa", "leatherDef": "RSW_RoyalChitin", "verdict": "UPHOLD", "reasons": ["donor BMT_RoyalRhinoPupa also had LeatherAmount 2 and no leatherDef; adult BMT_RoyalRhino -> BMT_RoyalChitin, ours -> RSW_RoyalChitin", "adult-chitin pupa precedent as above; 2 x value 10 = 20 silver per pupa, so it does not undercut the adult (size 3) as a royal-chitin source", "alternative RM_WeakChitin (the larva's) is defensible too, but breaks the FacetMoth/Smog pupa precedent"]}
+ ],
+ "lint_sanity": {
+  "file": "src/RimMandrake/Utils/leather_amount_lint.py",
+  "src_run": "exit 0: races=667 offenders=0 vanilla_inherited_amount=149 unresolved_parent=0 good_explicit=40; all six picks and probe RM_Shokka are in good_explicit",
+  "pre_fix_probe": "the parent-commit (3123bbb1ff^) copies of the 5 changed files, linted alone -> exactly these 6 FAIL, exit 1",
+  "selftest": "selftest_leather_amount_lint.py PASS (run_selftests --only)",
+  "blindness_guards": "MIN_RACES 300 floor + PROBE_GOOD RM_Shokka; exit 2 UNMEASURED when blind -- sound",
+  "observed_limit": "presence only: a misspelled leatherDef passes the lint. Not filed as a defect: the def loader reports an unresolved leatherDef cross-reference as a loud red error at load, so it does not fail silently."
+ },
+ "owed": "nothing; no def edits"
+}
