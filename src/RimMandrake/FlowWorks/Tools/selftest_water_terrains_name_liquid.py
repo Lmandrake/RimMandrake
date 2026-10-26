@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]  # src/RimMandrake
 FRESH_BY_DESIGN = re.compile(r"^RM_Fill_Water_(Trace|Half|Brim|Superdeep)$")
 FRESH_BY_DESIGN_NAMES = {"RM_WaterChestDeepStill", "RM_WaterThin", "RM_WaterVeryShallow"}  # pond stages
 VANILLA_WATER_PARENTS = re.compile(r"^(Water|River|Lake|Ocean)")
+PARENTS = {}  # Name -> TerrainDef element, abstract or not
 
 
 def load():
@@ -30,6 +31,8 @@ def load():
                 name = (d.findtext("defName") or "").strip()
                 if name:
                     terrains[name] = d
+                if d.get("Name"):  # abstract parents carry no defName; ParentName resolves against Name
+                    PARENTS[d.get("Name")] = d
             elif d.tag.endswith("LiquidDef"):
                 for k in ("shallow", "deep", "chestDeep"):
                     v = (d.findtext(f"terrainSuite/{k}") or "").strip()
@@ -51,16 +54,18 @@ def load():
 
 
 def is_water(d, terrains, depth=0):
+    # a child's <tags> list MERGES with its parent's (RimWorld list inheritance) unless Inherit="False", so a
+    # terrain with tags of its own under WaterShallowBase is still Water: keep climbing
     tags = d.find("tags")
     if tags is not None:
-        return any((li.text or "").strip() == "Water" for li in tags)
+        if any((li.text or "").strip() == "Water" for li in tags):
+            return True
+        if (tags.get("Inherit") or "").strip().lower() == "false":
+            return False
     parent = d.get("ParentName")
     if not parent or depth > 10:
         return False
-    for t in terrains.values():
-        if (t.get("Name") or "") == parent:
-            return is_water(t, terrains, depth + 1)
-    pd = terrains.get(parent)
+    pd = PARENTS.get(parent)
     if pd is not None:
         return is_water(pd, terrains, depth + 1)
     return bool(VANILLA_WATER_PARENTS.match(parent))
@@ -82,6 +87,8 @@ def main():
     # sanity probe: the instrument must see the known cases
     assert len(water) > 60, f"instrument blind: only {len(water)} Water terrains found"
     assert "RM_Fill_Tar_Brim" in water and "RM_AmmoniaShallow" in water, "probe terrains not seen"
+    # inherited-tag probe: RM_Water_Rust lists only WaterFresh* tags and gets Water from WaterShallowBase
+    assert "RM_Water_Rust" in water, "instrument blind to Water tags inherited through a child's own <tags>"
     if bad:
         print(f"FAIL {len(bad)} Water-tagged terrain(s) name no liquid (drunk as Potable FreshWater):")
         for n in bad:
