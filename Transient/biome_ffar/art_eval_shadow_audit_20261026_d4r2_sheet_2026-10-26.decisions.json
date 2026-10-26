@@ -23,14 +23,6 @@
     "pipeline_check": "keep"
    }
   },
-  "RM_Sytheclaw_n": {
-   "decision": "hold",
-   "note": "",
-   "prefill": "hold",
-   "qPrefill": {
-    "pipeline_check": "keep"
-   }
-  },
   "RSW_Blarth": {
    "decision": "A",
    "note": "",

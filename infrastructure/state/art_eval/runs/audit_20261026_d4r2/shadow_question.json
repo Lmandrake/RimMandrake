@@ -27,13 +27,8 @@
  "rows": {
   "RM_Sytheclaw": {
    "prefill": "keep",
-   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, FOOTPRINT, F_INCONSISTENT \u00b7 GPT regen, unsettled K2, K3",
-   "context": "judged candidate r2 (image sha 4fde3a75cb); F_INCONSISTENT: North's back plates are a pinkish copper-tan; east's are grey-gold with rust speckles.; FOOTPRINT: The north body sits in the lower part of the canvas, while south is centred, so it may sit lower in the cell than the other facings.; DEPARTURE_MISSING: The forelimbs end in hooked claws rather than long serrated blades."
-  },
-  "RM_Sytheclaw_n": {
-   "prefill": "keep",
-   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT strong_accept",
-   "context": "judged candidate r2 (image sha bee45bac41); F_SIZE_JUMP: North's plated dome is about 130 px wide against south's roughly 190 px leg spread. The rear view looks like a smaller, more compact animal,; DEPARTURE_MISSING: The north dome rises fairly high and round, more like a curled pangolin's back than the flat, very low body in the east profile."
+   "why": "[dessicated_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, FOOTPRINT, F_INCONSISTENT \u00b7 GPT regen, unsettled K2, K3 || [view n] PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT strong_accept",
+   "context": "[dessicated_n] judged candidate r2 (image sha 4fde3a75cb); F_INCONSISTENT: North's back plates are a pinkish copper-tan; east's are grey-gold with rust speckles.; FOOTPRINT: The north body sits in the lower part of the canvas, while south is centred, so it may sit lower in the cell than the other facings.; DEPARTURE_MISSING: The forelimbs end in hooked claws rather than long serrated blades. || [view n] judged candidate r2 (image sha bee45bac41); F_SIZE_JUMP: North's plated dome is about 130 px wide against south's roughly 190 px leg spread. The rear view looks like a smaller, more compact animal,; DEPARTURE_MISSING: The north dome rises fairly high and round, more like a curled pangolin's back than the flat, very low body in the east profile."
   },
   "RSW_Blarth": {
    "prefill": "keep",

@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c1r1",
- "built": "2026-10-26T12:20:08-0700",
+ "built": "2026-10-26T12:29:27-0700",
  "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c1r1.subjects.json",
  "census_git_head": null,
  "loadOrder": "live ModsConfig.xml: 321 active",
@@ -155,15 +155,37 @@
    "shownBase": [],
    "subject_key": "dakkra"
   },
-  "RM_Fuzzviper_n": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
+  "RM_Fuzzviper": {
+   "columns": {
+    "A": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "cdae58e535b701a0d75545a61d5fe668f6020063fdcc275633f49de832d8a50d",
+     "south": "5cf72a82011943a74d47dce57d47667a1c052e6c87a83a4e285097ed9e2068cf"
+    },
+    "B": {
+     "east": "d33428cad4ebc3c356ec13163ed6a23847b6d5cbff9f668e3b6be66b9c48c694",
+     "north": "62fce50c6499f7d5ae946404b76e8c4c63795ab44e1f51bdbe5da5157c7682f7",
+     "south": "70d8112e69f83742271df4cfab6956daa24c5c81f47d2d9bbc1d550f828ba9bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+    "B": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LeaningScrub",
+    "B": "render standtall_b1_rm_fuzzviper"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper"
+   ],
+   "res": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "shownBase": [],
-   "subject_key": "fuzzviper_n"
+   "subject_key": "fuzzviper"
   },
   "RM_Illisk": {
    "columns": {
@@ -558,16 +580,6 @@
    ],
    "shownBase": [],
    "subject_key": "sytheclaw"
-  },
-  "RM_Sytheclaw_n": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "sytheclaw_n"
   },
   "RM_Thornbug": {
    "columns": {

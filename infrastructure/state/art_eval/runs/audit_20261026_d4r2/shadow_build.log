@@ -6,8 +6,8 @@
  "gate": "PASS v1",
  "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_d4r2_sheet_2026-10-26.snapshot.json",
  "snapshotId": "bca07f520ccb0be5",
- "census_rows": 4,
- "rows": 4,
+ "census_rows": 3,
+ "rows": 3,
  "ruled_rows_gone_kept_in_snapshot": [],
  "collapsed_ruled_elsewhere": 0,
  "dropped_all_ruled": [],
@@ -16,11 +16,9 @@
  "canon_rows_with_must_show": 2,
  "linked_rows": 0,
  "prefilled_sit1": 0,
- "no_art": [
-  "RM_Sytheclaw_n"
- ],
+ "no_art": [],
  "sets": 17,
- "images": 7387
+ "images": 7416
 }
 
 --- stderr ---
@@ -28,6 +26,6 @@ art_sheet: RSW_Blarth: census texPaths ['swanimals/Blarth/Blarth'] are STALE; ou
 art_sheet: RSW_Bursa: census texPaths ['swanimals/Bursa/Bursa'] are STALE; our defs draw ['swanimals/Bursa/Bursa', 'swanimals/Bursa/Bursa_Swimming'] (src XML)
 /home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
   px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
-NOTE RM_Sytheclaw: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d4r2/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Sytheclaw: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Sytheclaw_n/north.png', 'infrastructure/state/art_eval/runs/audit_20261026_d4r2/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RSW_Blarth: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Blarth/Blarth_Swimming_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Blarth/Blarth_Swimming_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d4r2/kept/kept_Blarth_Swimming_north_3f788c7396c4.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RSW_Bursa: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Bursa/Bursa_Swimming_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Bursa/Bursa_Swimming_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d4r2/kept/kept_Bursa_Swimming_north_fcf6c54fec22.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

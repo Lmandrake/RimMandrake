@@ -40,7 +40,7 @@
    "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
    "context": "judged candidate r2 (image sha 682c5ce048); F_SIZE_JUMP: On the shared-scale panel the south body is about 181 px tall against 127 px for east and north, so it is visibly bigger. The new north matc"
   },
-  "RM_Fuzzviper_n": {
+  "RM_Fuzzviper": {
    "prefill": "keep",
    "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K3",
    "context": "judged candidate r2 (image sha e43d3af9af); F_SIZE_JUMP: North was downscaled to 0.384 to match east's height. It is now a small J-shaped segment about 60 px wide, while east spans about 230 px, so; F_SIZE_JUMP: South (installed) stands 224 px tall, a large upright frontal mass, against 89 px for east and north.; DEPARTURE_MISSING: There is a distinct head with an eye, a gaping mouth and long fangs. It is not hard to tell from a root tip."

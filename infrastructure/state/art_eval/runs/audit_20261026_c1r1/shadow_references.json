@@ -40,7 +40,7 @@
   "/home/mandrake/rm/bench/src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth_east.png",
   "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_BloodropMoth_n/north.png"
  ],
- "RM_Fuzzviper_n": [
+ "RM_Fuzzviper": [
   "/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_south.png",
   "/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_east.png",
   "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Fuzzviper_n/north.png",
@@ -74,12 +74,10 @@
   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png",
   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png",
   "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Sytheclaw__dessicated_n/north.png",
-  "infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png"
- ],
- "RM_Sytheclaw_n": [
   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png",
   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png",
   "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Sytheclaw_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png",
   "infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_Sytheclaw_north_a792e61f7c52.png"
  ],
  "RM_CathedralRoach": [

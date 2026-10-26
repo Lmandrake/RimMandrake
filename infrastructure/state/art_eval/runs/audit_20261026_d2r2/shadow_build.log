@@ -16,11 +16,9 @@
  "canon_rows_with_must_show": 0,
  "linked_rows": 0,
  "prefilled_sit1": 0,
- "no_art": [
-  "RM_Fuzzviper_n"
- ],
- "sets": 6,
- "images": 7284
+ "no_art": [],
+ "sets": 8,
+ "images": 7416
 }
 
 --- stderr ---
@@ -29,3 +27,4 @@
 NOTE RM_Illisk: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Illisk_s/south.png', '/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Illisk/RM_Illisk_east.png', '/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Illisk/RM_Illisk_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Krannock: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Krannock/RM_Krannock_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Krannock/RM_Krannock_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Krannock_n/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_Saluksis: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Saluksis/RM_Saluksis_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Saluksis/RM_Saluksis_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d2r2/kept/kept_RM_Saluksis_north_bda1ecd6c34b.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Fuzzviper: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_south.png', '/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d2r2/kept/kept_RM_Fuzzviper_north_cdae58e535b7.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

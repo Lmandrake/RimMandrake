@@ -27,8 +27,8 @@
  "rows": {
   "RSW_FrogDog": {
    "prefill": "keep",
-   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1 || [FrogDog_j_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
-   "context": "judged candidate r1 (image sha d2e39d4683); F_SIZE_JUMP: The north rear view is about 225 px wide and 243 px tall, against about 385 px wide and 384 px tall for south at one scale. The animal visib || [FrogDog_j_n] judged candidate r1 (image sha ebb7554b19); F_SIZE_JUMP: North's body is about 210 px wide and 234 px tall, against south's roughly 460 px wide and 322 px tall. In game, turning away makes the anim; F_INCONSISTENT: North's skin is a paler, warmer yellow-tan than the grey-olive of east and south."
+   "why": "[view n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1 || [FrogDog_j_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "[view n] judged candidate r1 (image sha d2e39d4683); F_SIZE_JUMP: The north rear view is about 225 px wide and 243 px tall, against about 385 px wide and 384 px tall for south at one scale. The animal visib || [FrogDog_j_n] judged candidate r1 (image sha ebb7554b19); F_SIZE_JUMP: North's body is about 210 px wide and 234 px tall, against south's roughly 460 px wide and 322 px tall. In game, turning away makes the anim; F_INCONSISTENT: North's skin is a paler, warmer yellow-tan than the grey-olive of east and south."
   },
   "RSW_FungalWeevil": {
    "prefill": "keep",

@@ -27,8 +27,8 @@
  "rows": {
   "RM_Irqit": {
    "prefill": "keep",
-   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept || [RM_Irqit_RM_Irqit_n] PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
-   "context": "judged candidate r1 (image sha dcbb14ef6f); F_INCONSISTENT: The trailing fin-tail at the rear of the east profile shows on north only as a tiny stub between the haunches. || [RM_Irqit_RM_Irqit_n] judged candidate r1 (image sha 3553b88b4b); F_SIZE_JUMP: North's body is about half the width of south and visibly much smaller in facings.png. The 0.636 downscale shrank it to east's height, but a; DEPARTURE_MISSING: The skin reads as dry, ribbed and bone-like, like a carved husk, with no glossy wet sheen and no soft body."
+   "why": "[view n] PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept || [RM_Irqit_RM_Irqit_n] PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "[view n] judged candidate r1 (image sha dcbb14ef6f); F_INCONSISTENT: The trailing fin-tail at the rear of the east profile shows on north only as a tiny stub between the haunches. || [RM_Irqit_RM_Irqit_n] judged candidate r1 (image sha 3553b88b4b); F_SIZE_JUMP: North's body is about half the width of south and visibly much smaller in facings.png. The 0.636 downscale shrank it to east's height, but a; DEPARTURE_MISSING: The skin reads as dry, ribbed and bone-like, like a carved husk, with no glossy wet sheen and no soft body."
   },
   "RM_Kasselith": {
    "prefill": "keep",
@@ -60,7 +60,7 @@
    "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: FOOTPRINT, F_INCONSISTENT \u00b7 GPT strong_accept",
    "context": "judged candidate r1 (image sha f37d6968ac); F_INCONSISTENT: North is a strongly oblique three-quarter rear view: the body runs diagonally from the lower-left sac to the upper-right head. South is squa; FOOTPRINT: The north body sits in the lower part of its 512 canvas, with its feet near the bottom edge. The other facings are centred."
   },
-  "RM_Fuzzviper_n": {
+  "RM_Fuzzviper": {
    "prefill": "keep",
    "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2, K3, K4",
    "context": "judged candidate r1 (image sha e43d3af9af); F_INCONSISTENT: North is warmer orange-brown, made of fine hair-like strands, and grainier than east's pale beige braided root cords with distinct red-brown; F_SIZE_JUMP: North's height matches east's 89 px, but it covers only a small narrow patch of a mostly empty canvas next to east's full-width body, so in ; DEPARTURE_MISSING: East and south show a distinct head with eye, jaw and long fangs, and the body lies on the ground rather than pressed along a wall."
@@ -87,13 +87,8 @@
   },
   "RM_Sytheclaw": {
    "prefill": "keep",
-   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1, K2, K3, K4",
-   "context": "judged candidate r1 (image sha 4fde3a75cb); F_INCONSISTENT: North shows an intact, fleshy animal: smooth pale-gold plates, red muscled legs, no exposed ribs or bone. South and east show a desiccated s; DEPARTURE_MISSING: The body stands tall and narrow on long, fairly straight legs, with hips high above the feet, unlike east's long, crouched, ground-hugging p; OWNER_NOTE_IGNORED: North does not match the accepted installed east in material (living plates and flesh versus skeleton), palette (clean gold versus rusty gre"
-  },
-  "RM_Sytheclaw_n": {
-   "prefill": "keep",
-   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2, K3",
-   "context": "judged candidate r1 (image sha bee45bac41); F_INCONSISTENT: North shows two long curved serrated scythe blades sweeping out from the sides. The accepted east and south forelimbs end in normal clawed f; F_SIZE_JUMP: At shared scale, north's silhouette is much narrower and less bulky than south's (about 60% of the width), and it sits low in an empty canva; DEPARTURE_MISSING: North stands fairly tall and hunched, with the plate mound peaked high. The east shows a very flat, low stance."
+   "why": "[dessicated_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1, K2, K3, K4 || [view n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "[dessicated_n] judged candidate r1 (image sha 4fde3a75cb); F_INCONSISTENT: North shows an intact, fleshy animal: smooth pale-gold plates, red muscled legs, no exposed ribs or bone. South and east show a desiccated s; DEPARTURE_MISSING: The body stands tall and narrow on long, fairly straight legs, with hips high above the feet, unlike east's long, crouched, ground-hugging p; OWNER_NOTE_IGNORED: North does not match the accepted installed east in material (living plates and flesh versus skeleton), palette (clean gold versus rusty gre || [view n] judged candidate r1 (image sha bee45bac41); F_INCONSISTENT: North shows two long curved serrated scythe blades sweeping out from the sides. The accepted east and south forelimbs end in normal clawed f; F_SIZE_JUMP: At shared scale, north's silhouette is much narrower and less bulky than south's (about 60% of the width), and it sits low in an empty canva; DEPARTURE_MISSING: North stands fairly tall and hunched, with the plate mound peaked high. The east shows a very flat, low stance."
   },
   "RM_CathedralRoach": {
    "prefill": "keep",

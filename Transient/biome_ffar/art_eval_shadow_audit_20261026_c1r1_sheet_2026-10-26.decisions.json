@@ -68,10 +68,10 @@
     "pipeline_check": "keep"
    }
   },
-  "RM_Fuzzviper_n": {
-   "decision": "hold",
+  "RM_Fuzzviper": {
+   "decision": "A",
    "note": "",
-   "prefill": "hold",
+   "prefill": "A",
    "qPrefill": {
     "pipeline_check": "keep"
    }
@@ -115,14 +115,6 @@
    "picks": {
     "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw": "F"
    },
-   "qPrefill": {
-    "pipeline_check": "keep"
-   }
-  },
-  "RM_Sytheclaw_n": {
-   "decision": "hold",
-   "note": "",
-   "prefill": "hold",
    "qPrefill": {
     "pipeline_check": "keep"
    }

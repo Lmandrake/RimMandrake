@@ -1,6 +1,6 @@
 {
  "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d4r2",
- "built": "2026-10-26T12:19:45-0700",
+ "built": "2026-10-26T12:33:09-0700",
  "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d4r2.subjects.json",
  "census_git_head": null,
  "loadOrder": "live ModsConfig.xml: 321 active",
@@ -76,16 +76,6 @@
    ],
    "shownBase": [],
    "subject_key": "sytheclaw"
-  },
-  "RM_Sytheclaw_n": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "pools": [],
-   "res": null,
-   "reserved": [],
-   "shownBase": [],
-   "subject_key": "sytheclaw_n"
   },
   "RSW_Blarth": {
    "columns": {

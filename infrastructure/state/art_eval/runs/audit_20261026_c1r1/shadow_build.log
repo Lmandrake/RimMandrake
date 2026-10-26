@@ -6,8 +6,8 @@
  "gate": "PASS v1",
  "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_c1r1_sheet_2026-10-26.snapshot.json",
  "snapshotId": "cebc8cda137a499e",
- "census_rows": 21,
- "rows": 21,
+ "census_rows": 20,
+ "rows": 20,
  "ruled_rows_gone_kept_in_snapshot": [],
  "collapsed_ruled_elsewhere": 0,
  "dropped_all_ruled": [],
@@ -16,17 +16,14 @@
  "canon_rows_with_must_show": 2,
  "linked_rows": 0,
  "prefilled_sit1": 0,
- "no_art": [
-  "RM_Fuzzviper_n",
-  "RM_Sytheclaw_n"
- ],
- "sets": 55,
+ "no_art": [],
+ "sets": 57,
  "images": 7416
 }
 
 --- stderr ---
-ures ['/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_RM_Siezer_north_a15423afea93.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
-NOTE RM_Sytheclaw: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+e/art_eval/runs/audit_20261026_c1r1/kept/kept_RM_Siezer_north_a15423afea93.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Sytheclaw: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c1r1/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_CathedralRoach: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_CathedralRoach/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_CathedralRoach/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_CathedralRoach/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_CrimsonOpee: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
 NOTE RM_RustNipper: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_RustNipper_ns/south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_RustNipper_ns/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
