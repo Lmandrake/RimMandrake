@@ -247,8 +247,8 @@ ITEM = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
 def check_stubs(t):
     errs = []
     stubs = STUB.findall(t["fauna"])
-    if len(stubs) < 5:
-        errs.append("probe: only %d STUB comments seen (expected the five still owed)" % len(stubs))
+    if len(stubs) < 4:   # five at birth; SHIRREL_DECIDE_GALE_GLIDE closed one (2026-10-26)
+        errs.append("probe: only %d STUB comments seen (expected the four still owed)" % len(stubs))
     for s in stubs:
         ids = ITEM.findall(s)
         if THIS_ITEM in ids:

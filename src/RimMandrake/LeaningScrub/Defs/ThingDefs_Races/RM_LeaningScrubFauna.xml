@@ -870,7 +870,11 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: Gale gliding and sweetline-tree association are SHIRREL_DECIDE_GALE_GLIDE (needs owner); no flight stat (a glider, not a flyer). -->
+  <!-- SHIRREL_DECIDE_GALE_GLIDE (owner by card 2026-10-26: "Real glide as a flyer"): in the Gale a wild idle shirrel beside a tree
+       launches as a real 1.6 flyer for a short downwind hop (Source/RM_ShirrelGlide.cs, RM_Flight path) and is tethered home to the
+       nearest sweetline tree (CreatureBehaviors RM_CompHomeTether). MaxFlightTime lets the tracker fly it; flightStartChanceOnJobStart 0
+       plus a CanFlyNow gate keep it grounded outside its own glide. No flying flip-book yet: it flies drawn with its body graphic.
+       Numbers PROVISIONAL. Mod Settings "Shirrel: glides on the Gale" (shirrelGlideEnabled). -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shirrel</defName>
     <label>shirrel</label>
@@ -884,6 +888,8 @@
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>
       <ComfyTemperatureMax>48</ComfyTemperatureMax>
       <Wildness>0.7</Wildness>
+      <MaxFlightTime>3</MaxFlightTime>
+      <FlightCooldown>30</FlightCooldown>
     </statBases>
     <tools>
       <li>
@@ -922,6 +928,8 @@
       <trainability>Intermediate</trainability>
       <lifeExpectancy>12</lifeExpectancy>
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0</flightStartChanceOnJobStart>
+      <flightSpeedFactor>1.5</flightSpeedFactor>
       <lifeStageAges>
         <li><def>AnimalBaby</def><minAge>0</minAge></li>
         <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
@@ -931,6 +939,20 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>10</tetherRadius>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_ShirrelGlide">
+        <homeTrees><li>RM_SweetlineTree</li></homeTrees>
+        <launchFromAnyTree>true</launchFromAnyTree>
+        <launchRadius>3</launchRadius>
+        <hopMin>10</hopMin>
+        <hopMax>16</hopMax>
+        <glideMtbHours>1.5</glideMtbHours>
+        <checkIntervalTicks>250</checkIntervalTicks>
+      </li>
+    </comps>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

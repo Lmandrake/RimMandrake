@@ -88,6 +88,10 @@ Fauna behaviours (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; wiring offline in 
 - A runway bloom erupting under a submerged surrik drives it up before it flees, and the ripple never hides a surrik while `sandSwimEnabled` is on. → UNCOVERED live: needs a surrik under a bloom; offline the hooks are pinned (ForceSurface, IsCrustSwimmer)
 - A ribbonwhip on fuzz in wind is hidden moving or not; in the Stall a moving one is seen. → UNCOVERED live: ripple.ripple_hides_small_creatures drives a generic small animal, not the ribbonwhip; its size and bloom Sway are pinned offline
 
+Shirrel Gale glide (SHIRREL_DECIDE_GALE_GLIDE, owner by card 2026-10-26 "Real glide as a flyer"; wiring offline in `selftest_leaningscrub_shirrel_glide.py`, kernel in SelfTest/LeaningScrubGlideCheck.cs)
+- [B] STATE READ ONLY, nothing launched: with `RM_Shirrel` spawned, `jawa/static_call` type `RimMandrake.LeaningScrub.RM_ShirrelGlideProof` method `ProofGlide` reads PASS: every shirrel `canEverFly`, the CanFlyNow gate refuses take-off to every grounded one (`gateHeld == grounded`), none is in the air outside the Gale; `bound` counts shirrels homed to a sweetline tree, `flipbook=False` until the glide frames exist. → UNCOVERED in the suite: no northstar component calls ProofGlide yet; BENCH runs it by hand
+- [JOINT SESSION ONLY: owner present, never unattended] Under `RM_Gale` a wild idle shirrel beside a tree launches, glides a 10-16 cell hop downwind (the map's Lean heading) and lands, then walks back to its sweetline tree; with "Shirrel: glides on the Gale" off it never leaves the ground. No flying flip-book yet: it flies drawn with its normal body graphic. → UNCOVERED: flight is never live-tested without the owner
+
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger).
 2. [B] `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod LeaningScrub --plan src/RimMandrake/LeaningScrub/northstar_plan.py` → results JSON in `Transient/northstar/`.

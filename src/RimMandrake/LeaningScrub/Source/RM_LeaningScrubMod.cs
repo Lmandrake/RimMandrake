@@ -74,6 +74,8 @@ namespace RimMandrake.LeaningScrub
         // SCRUB_WIND_BUILD_LEAN_ON_PURPOSE (RM_PlantLean.cs, RM_WeatherOverlay_GaleDust.cs).
         public static bool leanPlantsEnabled = true;
         public static bool galeDustOverlayEnabled = true;
+        // SHIRREL_DECIDE_GALE_GLIDE (RM_ShirrelGlide.cs): the shirrel's Gale glide and its sweetline-tree home.
+        public static bool shirrelGlideEnabled = true;
 
         // ── LEANINGSCRUB_GPT_ENRICHMENT_1 (RM_VenomvineRooms.cs,
         //    RM_RunwayBloom.cs, RM_SweetlineStation.cs) ──
@@ -197,6 +199,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref leanWakesEnabled, "leanWakesEnabled", true, true);
             Scribe_Values.Look(ref leanPlantsEnabled, "leanPlantsEnabled", true, true);
             Scribe_Values.Look(ref galeDustOverlayEnabled, "galeDustOverlayEnabled", true, true);
+            Scribe_Values.Look(ref shirrelGlideEnabled, "shirrelGlideEnabled", true, true);
             Scribe_Values.Look(ref rippleMaxBodySize, "rippleMaxBodySize", 0.6f, true);
             Scribe_Values.Look(ref stallHuntEnabled, "stallHuntEnabled", true, true);
             Scribe_Values.Look(ref callingPyreEnabled, "callingPyreEnabled", true, true);
@@ -240,7 +243,7 @@ namespace RimMandrake.LeaningScrub
         /// <summary>SETTINGS_KIT_BUILD_GREY_SWITCHES_AT_LAST: the master switch and each per-feature toggle with what it governs.
         /// "Mod enabled" gates every other setting (all read sites test modEnabled first), so turning it off greys the rest and keeps their values.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
+            .Declare("modEnabled", "venomvinePassabilityEnabled", "stallFreezeEnabled", "stallFreezeMaxBodySize", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays", "galeRaidWeightingEnabled", "galeRaidWeightFactor", "twitcherLashEnabled", "twitcherLashDamageFactor", "twitcherLashRecoveryFactor", "smotherCraftEnabled", "smotherDays", "smotherYieldFactor", "leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanWakesEnabled", "leanPlantsEnabled", "galeDustOverlayEnabled", "shirrelGlideEnabled", "drippingRegrowEnabled", "crownMobEnabled", "runwayBloomEnabled", "sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance", "sweetlineFeltComfortEnabled", "sweetlineFeltApparelEnabled", "visslerArmFoodEnabled", "fireStampEnabled", "rippleEnabled", "rippleMaxBodySize", "stallHuntEnabled", "callingPyreEnabled", "callingPyreRadius", "callingPyreHerdFactor", "scrubInjectionsEnabled", "scrubRuinsPerMap", "scrubCampsEnabled", "rearingEnabled", "rearingHours", "walkingEnabled", "walkingMaxCellsPerMap", "hoardEnabled", "hoardGrowInHours", "hoardKeepsDeadGear", "quenchEnabled", "quenchRecoveryDays", "swornSparesMarkedEnabled", "sheddingEnabled", "stranglerEnabled", "stranglerDamageFactor", "stranglerAutoTrim", "weeperEnabled", "weeperPollutes", "sleeperEnabled", "lureEnabled", "sheddingLength", "venomvineIslandsEnabled", "venomvineIslandShare", "venomvineIslandsMin", "venomvineIslandsMax", "venomvineIslandMaxCells", "venomvineIslandRoomsEnabled", "venomvineStartClearance", "venomvineCreepEnabled", "venomvineCreepDays", "venomvineCreepDownwindShare", "venomvineCreepCap")
             .Declare("sweetlineStationsEnabled", "sweetlineVisitorsEnabled", "sweetlineVisitIntervalDays", "sweetlineScratchingEnabled", "sweetlineCoatReady", "sweetlineFeltShare", "sweetlineTreeMapChance")
             .Declare("leanEnabled", "leanScentEnabled", "leanScentRange", "leanFireEnabled", "leanFireBias", "leanPlantsEnabled")
             .Declare("stallFreezeEnabled", "stallFreezeMaxBodySize")
@@ -355,9 +358,9 @@ namespace RimMandrake.LeaningScrub
                 list.GapLine();
             }
 
-            if (Group(list, "The Stall and the Gale", RimMandrake.Shared.SettingScope.Now, new[] { "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays" }))
+            if (Group(list, "The Stall and the Gale", RimMandrake.Shared.SettingScope.Now, new[] { "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "shirrelGlideEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays" }))
             {
-                using (Dependent(list, "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays"))
+                using (Dependent(list, "stallFreezeEnabled", "galeDeafenEnabled", "galeTurbineSurgeEnabled", "galeDustOverlayEnabled", "shirrelGlideEnabled", "stallFreezeMaxBodySize", "galeTurbineSurgeFactor", "galeTurbineBreakdownMtbDays"))
                 {
                     list.Label("The Stall and the Gale (the wind calendar). The two weathers always run; "
                         + "these switch off what they do beyond wind, sound and sky.");
@@ -379,6 +382,10 @@ namespace RimMandrake.LeaningScrub
                     list.CheckboxLabeled("Gale: driven dust and fuzz on screen", ref galeDustOverlayEnabled,
                         "While the Gale blows, a sheet of dust and torn fuzz streams across the map with the "
                         + "wind. Off: the Gale keeps its sound and effects but the air looks clear.");
+                    list.CheckboxLabeled("Shirrel: glides on the Gale", ref shirrelGlideEnabled,
+                        "While the Gale blows, a wild shirrel beside a tree now and then launches and glides a short "
+                        + "hop downwind, then walks back to its home sweetline tree. Off: shirrels never fly and "
+                        + "keep no home tree; they wander like any wild animal.");
                     list.GapLine();
                 }
             }
