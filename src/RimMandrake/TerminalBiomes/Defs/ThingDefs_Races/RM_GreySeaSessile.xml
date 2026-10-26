@@ -83,6 +83,8 @@
     <label>nissik</label>
     <description>A hand-sized, glass-bodied picker that works the litter at the foot of the formations, going over the same square of sediment again and again for whatever has settled out of the water since the last pass. Everything it eats fell from somewhere above. There is no shortage of them and there never has been; a diver's lamp turns up forty in a stride, all of them busy, none of them interested.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.08: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>3</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -187,6 +189,8 @@
     <label>thollim</label>
     <description>A pair of thick grey valves sitting half down in the sediment with a finger's width of gape, taking in whatever the water brings and putting out nothing anyone has noticed. It moves about the length of itself in a season, and only downward. Prise one up and the inside is a knot of dense pale meat that keeps for a fortnight in its own brine — which is why every shore camp on this sea has a heap of shells behind it.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.2: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.4</MoveSpeed>
       <MarketValue>7</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -285,6 +289,8 @@
     <label>grusk</label>
     <description>A wedge of blue-black shell cemented to the side of a pillar by a mineral foot it grows and cannot ungrow, filtering the water that runs past the column. Where there is one there are usually a dozen along the same face, all pointing the same way into the current, none of them within reach of another. Under the shell there is a thumb of dark meat that tastes strongly of the sea's own chemistry, and shore-folk argue about whether that is a recommendation.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.12: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.5</MoveSpeed>
       <MarketValue>6</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

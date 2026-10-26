@@ -37,6 +37,8 @@
     <label>murrin</label>
     <description>A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings whenever the pool is fed. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.12: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.4</MoveSpeed>
       <MarketValue>12</MarketValue>
       <ComfyTemperatureMin>5</ComfyTemperatureMin>
@@ -143,6 +145,8 @@
     <label>skarrin</label>
     <description>A forearm-long, knife-slender silver eel that spends as much time above the water as in it. Its round mouth is a cruel suction cup ringed with rasps, made for drawing in water, blood and soft flesh alike. A row of thin, sharp fins runs the length of its body, and it can flex them out stiff into cutting lines; a skarrin that twists in a handler's grip leaves a ladder of fine, painful cuts. When the pool is fed, a stocked pool boils with them, silver arcs snapping at the falling dew-smoke, and a handler leaning over the water risks a face-strike. Its flesh is extremely delicious, which is the only reason anyone keeps them.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.22: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>22</MarketValue>
       <ComfyTemperatureMin>5</ComfyTemperatureMin>
@@ -260,6 +264,8 @@
     <label>iaala</label>
     <description>Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not — an iaala swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.08: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>4</MarketValue>
       <ComfyTemperatureMin>5</ComfyTemperatureMin>
@@ -375,6 +381,8 @@
     <label>fan eel</label>
     <description>A wrist-thin eel with comb-gills fanned along its whole neck in a translucent ruff that opens and closes with every breath; the fan gives it its name. It is cold, quick, and never where you left it. When a pen is overfull, a fan eel pours itself over the rim and crosses open rock on its gill-fan, kept wet by the dew alone, into the next pool, the cistern, the water barrel or the kitchen stock-pot. Its bite is small, but its teeth carry pool-muck, and the wound goes septic more often than it should. People who keep pools learn to count them at dusk.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.15: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>16</MarketValue>
       <ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -518,6 +526,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.75: a big fish (owner card 2026-10-26 "Only big fish drop it"), so fishskin; the inherited 40 is scaled by body size in game (StatPart_BodySize). -->
+      <leatherDef>RM_Fishskin</leatherDef>
       <body>Snake</body>
       <baseBodySize>0.75</baseBodySize>
       <baseHungerRate>0.30</baseHungerRate>

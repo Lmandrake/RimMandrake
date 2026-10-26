@@ -153,6 +153,13 @@ def main():
     check('real src/ sees >= %d races' % lint.MIN_RACES, r['races'] >= lint.MIN_RACES, r['races'])
     check('probe %s seen as good' % lint.PROBE_GOOD, lint.PROBE_GOOD in r['good_explicit'])
     check('real src/ parses every Defs/Patches file', not r['parse_failures'], r['parse_failures'][:3])
+    # Fish class (owner card 2026-10-26 "Only big fish drop it"): the big fish name a fishskin of their own tier.
+    big = {'RM_Vhorrin': 'RM_Fishskin', 'RM_Vaunoom': 'RM_Fishskin', 'RUT_VWake': 'RM_Fishskin',
+           'RM_Vaulisk': 'RM_Fishskin', 'RM_Loohn': 'RM_Fishskin'}
+    got = {n: r['leather_of'].get(n) for n in big}
+    check('fish: the big fish name RM_Fishskin', got == big, got)
+    fish_rows = [n for n, l in r['leather_of'].items() if l in ('RM_Fishskin', 'RSW_Fishskin')]
+    check('fish: fishskin is seen on >= 8 races (5 big fish + 3 tumorfish)', len(fish_rows) >= 8, fish_rows)
     print(out.strip().splitlines()[-1] if out.strip() else '')
     print('%d/%d passed' % (sum(RESULTS), len(RESULTS)))
     return 0 if all(RESULTS) else 1

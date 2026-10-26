@@ -28,6 +28,8 @@
     <label>noolim</label>
     <description>A darting cloud of dull silver slivers, the dark shoal of the Twilight floor: it works the green murk between the light columns, where the waveglass lets nothing through, and leaves the lit columns to the niim. Seen as a shoal, never as an individual.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.08: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.0</MoveSpeed>
       <MarketValue>6</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -147,6 +149,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 2.5: a big fish (owner card 2026-10-26 "Only big fish drop it"), so fishskin; the inherited 40 is scaled by body size in game (StatPart_BodySize). -->
+      <leatherDef>RM_Fishskin</leatherDef>
       <body>Snake</body>
       <baseBodySize>2.5</baseBodySize>
       <baseHealthScale>1.3</baseHealthScale>
@@ -223,6 +227,8 @@
     <label>weloon</label>
     <description>A rounded, felt-textured shell the colour of old waveglass, working the edge of a shed pane where it came to rest on the floor — the veil-fall, panels let go by the lid far overhead and settled here for anything patient enough to eat glass. Soft-shelled, and in no more hurry than the fall it lives on.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.2: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>9</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -311,6 +317,8 @@
     <label>lunoowa</label>
     <description>A ragged, translucent sheet trailing filaments — to every eye a shed pane of waveglass settling down out of the dark, blue-green and gold-veined, until it moves. A drifting detritivore that gives itself away only by its silhouette shifting against the light.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.3: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>7</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

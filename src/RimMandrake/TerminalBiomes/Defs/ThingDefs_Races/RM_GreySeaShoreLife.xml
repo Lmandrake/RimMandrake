@@ -51,6 +51,8 @@
     <label>corrik</label>
     <description>A squat, translucent bladder of a thing that rides the shore current through the shadow lanes between rock cuts, never straying out over open water and never seen in company with another. It has no bite worth the name and nothing worth hunting it for; it is simply always somewhere along the shoreline, drifting.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.2: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>5</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

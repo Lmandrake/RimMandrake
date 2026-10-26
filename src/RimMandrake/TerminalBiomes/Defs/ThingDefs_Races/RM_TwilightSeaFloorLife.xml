@@ -40,6 +40,8 @@
     <label>niim</label>
     <description>The lit shoal of the light columns: blue-white, hand-long, a dot-line of cold light along each flank, schooling under the skylights in crowds that make a whole column flash when they turn. Where the noolim keeps the dark between the columns, the niim keeps the light. The Compact's under-lid economy is a net of them.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.06: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.5</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -93,6 +95,8 @@
     <label>pallu</label>
     <description>A saucer-sized floater that keeps to the light columns, a green symbiont film on its upper skin turned up to the skylight like a face to the sun. A bright column is stacked with them at every depth the light reaches; a column that closes goes dark and the pallu sink out of it in a slow rain.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.12: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.6</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -145,6 +149,8 @@
     <label>tikkarr</label>
     <description>A long-legged, kelp-coloured crab-thing that lives up in the kelp forest more than on the floor, clinging, cutting and carrying fronds down to its holes. The sea-farm's pest and its pollinator both. Armored, a good meal in the legs, and fond of nets.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.25: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.2</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -198,6 +204,8 @@
     <label>nuudal</label>
     <description>Long, soft and mottled, moving through the constant fall of detritus from the ceiling gardens like cattle through a snowfall and eating it as it lands. The richest mud in the sea is under a busy skylight, and nuudal are what turn it over.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.5. Not a fish: a sea cucumber (sea_catch_rosters 2026-09-24), soft, no hide; LeatherAmount 0. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -255,6 +263,8 @@
     <label>aluun</label>
     <description>A fan-shaped shell-thing grown onto a kelp stem in the light columns, two translucent valves held open to whatever falls from the lid and inside them a mantle that lights a steady pale gold. A kelp tower hung with aluun reads from the bank as a column of small windows. It barely moves; it is gathered, not hunted.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.1: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.1</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -307,6 +317,8 @@
     <label>kellu</label>
     <description>The kelp squid: arm-long and forest-dark, hiding in the fronds by day and hunting the shoals in the dark between the columns by night. Its ink is thick, lightfast and black as the Grey; the Compact's charts are drawn in it.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.35: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -370,6 +382,8 @@
     <label>murrol</label>
     <description>A thick, blunt, near-blind eel that rides the invisible current along the channel banks, mouth open, fat on the nutrient-fed silt, so slow that bank-harvesters pick them up by hand. Nothing about it is difficult.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.4: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.8</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -426,6 +440,8 @@
     <label>hollu</label>
     <description>A bell that forms on the underside of the waveglass up in the ceiling gardens and lets go, falling slowly the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.15: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.5</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -482,6 +498,8 @@
     <label>dancing skresh</label>
     <description>A gold-amber bell that never settles. Where the hollu falls and lies still, the skresh keeps itself aloft in the dim water a body-height above the floor, its long frilled skirts turning and flaring in slow spirals as if to music nobody else can hear. Packs of them gather under the brightest panes of the waveglass and turn together. The frills sting, mildly; most things learn to let them dance.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.18: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.8</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -534,6 +552,8 @@
     <label>oobo</label>
     <description>A soft, wide-armed thing of the ceiling gardens and the kelp crowns that hunts by letting go: a silent drop through the dark onto whatever is below, then a long slow climb back up a kelp stem. Divers hate it with the specific hatred of people who have had one land on them. Very good eating.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.45: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.5</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
@@ -594,6 +614,8 @@
     <label>liiru</label>
     <description>A ribbon-eel as long as an arm and no wider than a finger that swims upright through the light columns in slow vertical S-curves, carrying a single unbroken line of blue-white light along its whole length. A column with liiru in it looks from the bank as if someone had drawn on the water.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.1: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.2</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>

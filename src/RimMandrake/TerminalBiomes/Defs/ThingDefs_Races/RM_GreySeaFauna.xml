@@ -126,6 +126,8 @@
     <label>essarn</label>
     <description>A finless, bone-white ribbon of a swimmer, eyeless and dusted with salt-rime, cruising the density interface above the Grey Sea's brine pools. The one lineage in this sea that osmoregulates in the open murk rather than clinging to a pillar or a pool margin.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.1: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>8</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -218,6 +220,8 @@
     <label>otheska</label>
     <description>A flat oval shell, every shade of grey, flecked with the same crystal that jackets the Grey Sea's statuary — the encased dead this slow, ancient detritivore grazes for a living, leaving the shapes beneath untouched. Harmless, and few.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.35: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>15</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -320,6 +324,8 @@
     <label>orruhmu</label>
     <description>A squat, urn-shaped bellows-sac that stations itself on brine-pool shores and is, until it moves, one more salt dome: a low rounded mantle crusted in the same white jacket mineral as the statuary, cauliflower-textured and marred, hiding a soft grey bellows body on a ring of short shuffling pads. At its crown a puckered white spout is the only tell that this dome breathes. It shuffles a few cells a day between stations, drinks from the super-brine — the pool is both its larder and its ammunition — and waits. It does not hunt, does not flee, does not care about you. It does not tolerate a crowd.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.6. Not a fish: a soft bellows-sac under a mineral crust, no hide; LeatherAmount 0. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.7</MoveSpeed>
       <MarketValue>25</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

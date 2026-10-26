@@ -40,6 +40,8 @@
     <label>saal</label>
     <description>A translucent bell heeled over on a bubble-line, sail-membrane raised, riding the Scald's rising steam-columns like a little solar sail — the boiling sea's signature silhouette. Harmless, gel-bodied, and never in a hurry.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.3: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.5</MoveSpeed>
       <MarketValue>5</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
@@ -138,6 +140,8 @@
     <label>shulla</label>
     <description>A hot-white sliver with a heat-shimmer double edge, darting in shoals between the Scald's vent plumes, feeding the thermophile dung-fall the herds leave behind. Fast, restless, and always in company.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.06: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>5</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>

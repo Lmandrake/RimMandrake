@@ -278,6 +278,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 1.1: a big fish (owner card 2026-10-26 "Only big fish drop it"), so fishskin; the inherited 40 is scaled by body size in game (StatPart_BodySize). -->
+      <leatherDef>RM_Fishskin</leatherDef>
       <!-- serpentine ambush shape, no limbs: fits "you rarely see the
            thing itself, only the wake." Vanilla Core BodyDef, zero new
            authoring. -->

@@ -47,6 +47,8 @@
     <label>heemin</label>
     <description>A near-transparent sliver swimming the top layer of the Chill, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black mirror rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.05: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>6</MarketValue>
       <ComfyTemperatureMin>-150</ComfyTemperatureMin>
@@ -137,6 +139,8 @@
     <label>oovanam</label>
     <description>A soot-dark, flattened crawler working the solid-propane floor, sifting the aurora-ash fallout and whatever the Blue Desert's dead have carried down. It leaves a clean wake through the pale tholin dust behind it.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.25: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>8</MarketValue>
       <ComfyTemperatureMin>-150</ComfyTemperatureMin>
@@ -226,6 +230,8 @@
     <label>hoolen</label>
     <description>A long-legged, wide-footed skimmer that runs the frozen sheets between the Chill's pools, licking condensed fuel frost off the crust. A faint blue combustion shimmer plays at its joints — a lesser cousin's read of the burner-line's own fire.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.15: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>9</MarketValue>
       <ComfyTemperatureMin>-150</ComfyTemperatureMin>
@@ -345,6 +351,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 1.1: a big fish (owner card 2026-10-26 "Only big fish drop it"), so fishskin; the inherited 40 is scaled by body size in game (StatPart_BodySize). -->
+      <leatherDef>RM_Fishskin</leatherDef>
       <!-- serpentine ambush shape, no limbs: fits "you rarely see the
            thing itself, only the wake." Vanilla Core BodyDef, zero new
            authoring. -->

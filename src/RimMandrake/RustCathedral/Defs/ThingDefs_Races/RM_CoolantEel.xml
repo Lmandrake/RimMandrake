@@ -22,6 +22,8 @@
     <label>coolant eel</label>
     <description>A pale, eyeless eel as long as a forearm, circling slowly in the canal water. It does not seem to notice anything at all.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.2: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>40</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

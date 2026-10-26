@@ -25,6 +25,8 @@
     <label>suulk</label>
     <description>A drifting fold of dark tissue, soft-bodied and nearly weightless in the water, almost invisible until a beam catches it and it goes briefly, quietly lovely. It feeds on luminous symbionts wherever it finds them — hoolimbre bladders, waelune, and, since the Compact and now the ship arrived, whatever cultivated light a hand has planted. Wild, the sea shrugs off what it takes; the colonies it grazes are older than its appetite. It wants nothing to do with anything that walks. It wants the light.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 1.1. Not a fish: a drifting fold of soft tissue, jelly-like, no hide; LeatherAmount 0. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>40</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -165,6 +167,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 1.4: a big fish (owner card 2026-10-26 "Only big fish drop it"), so fishskin; the inherited 40 is scaled by body size in game (StatPart_BodySize). -->
+      <leatherDef>RM_Fishskin</leatherDef>
       <body>Snake</body>
       <baseBodySize>1.4</baseBodySize>
       <baseHealthScale>1.2</baseHealthScale>

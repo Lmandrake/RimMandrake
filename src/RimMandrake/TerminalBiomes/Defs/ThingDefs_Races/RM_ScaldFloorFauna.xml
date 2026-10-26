@@ -126,6 +126,8 @@
     <label>eesh</label>
     <description>A finger-long, finless sliver with no scales at all — the skin is a heat-mirror, and it lives in the boiling column itself, hanging in the rising water where nothing else will go. They move as one cloud and never alone; a shoal turning is a flash you can see from the rim. They are eating, constantly, whatever settles down out of the water above them.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.05: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>4</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
@@ -229,6 +231,8 @@
     <label>doss</label>
     <description>A finger-length, hunch-backed shrimp-thing, pink from birth as though it had already been cooked, picking over whatever settles onto the mats before the iridai reach it. Where the eesh work the dung-fall from above, the doss work it from beneath. They cover the warm margins in numbers nobody has ever tried to count, and a single one is barely a mouthful.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.05: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>4</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
@@ -335,6 +339,8 @@
     <label>iridai</label>
     <description>The iridesce's small cousin, and unmistakably of the same make: a hand-long armored thing with a heat-gloss on its plates, working along the crowncarpet mats at the margins where the boil gentles. It grazes the rainbow bands in order and takes the pigment into its own skin as it goes, so an iridai is banded down its back in whatever it has been eating — a little strip of the Scald's oldest truth, walking.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.15: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>10</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
@@ -438,6 +444,8 @@
     <label>shimmer eel</label>
     <description>An eel that never leaves the underside of the crowncarpet — it lives in the thin hot film between the mat and the rock, where the mat is thickest, and takes the pigment into its skin there, so a shimmer eel carries dull rainbows down its whole length in the mat's own colours. Its head is armored in overlapping plates, for shouldering its way under the mat. Lift a mat-edge at the baths and you may find one lying flat beneath it, perfectly still, looking like a strip of the Scald's oldest truth that has learned to move.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.2: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>12</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
@@ -541,6 +549,8 @@
     <label>karrash</label>
     <description>A crab-thing that looks like a piece of the vent walked off: plated all over in mineral crust it grows straight out of the brine, living on the chimneys themselves in the hottest water anything survives. It eats the mat where the mat is thickest and it is eaten by nothing at all, because nothing else will go where it goes. It has no reason to hurry and does not.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.3: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.3</MoveSpeed>
       <MarketValue>18</MarketValue>
       <ComfyTemperatureMin>20</ComfyTemperatureMin>
@@ -658,6 +668,8 @@
     <label>ekkel</label>
     <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff heat-mirror filaments — the eesh's skin grown into a tangle — living on the vent walls beside the karrash, and it travels by letting go: it drops, tumbles down the chimney in the boil-current flashing like a spilled handful of needles, catches somewhere lower, climbs, and lets go again. It is feeding the whole time, on the mat, somehow. Fishermen on the rim say every ekkel began as a knot of shed simmerlace that learned to roll.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.1: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>20</MarketValue>
       <ComfyTemperatureMin>20</ComfyTemperatureMin>
@@ -764,6 +776,8 @@
     <label>bladderboil</label>
     <description>A leathery golden sac the size of a head, riding the Scald's boil. When the water around it roars it gulps itself full and swells taut, floating high and hard where nothing else can live; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag, half-sunk, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.3: a small snake-bodied swimmer or floor-dweller; owner card 2026-10-26 "Only big fish drop it" (fishskin from about 0.5 up), so meat only, LeatherAmount 0 like the small birds. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>0.6</MoveSpeed>
       <MarketValue>8</MarketValue>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>

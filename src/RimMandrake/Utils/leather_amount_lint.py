@@ -32,9 +32,11 @@ turtle-bodied and soft-bodied (slug, jelly, moth) races were audited the same wa
 exempt by name.
 Each class below was audited race by race (leather picked, or LeatherAmount 0 where vanilla's own convention gives
 none, e.g. small birds <= 0.35 like Sparrow/Chicken/Duck; arthropods by size: <= 0.2 swarm bodies 0, 0.25-0.9
-RM_WeakChitin x25, hard shells near 1 RM_GrayChitin, 1.5-3 RM_MediumChitin), and once FINISHED a race of that body
-that again inherits the bare 40 with no leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately
-yields no hide. Snake-bodied fish are not a class (an owner question).
+RM_WeakChitin x25, hard shells near 1 RM_GrayChitin, 1.5-3 RM_MediumChitin; snake-bodied fish by the owner's card
+"Only big fish drop it" (2026-10-26): fish from body size about 0.5 up name RM_Fishskin / RSW_Fishskin, smaller ones
+and the hideless non-fish on the Snake body LeatherAmount 0), and once FINISHED a race of that body that again
+inherits the bare 40 with no leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately yields no
+hide.
 
     --strict-classes bird,monkey     # check only these; 'none' turns strict checking off; default FINISHED_CLASSES
 
@@ -100,9 +102,10 @@ CLASS_BODIES = {
     'crab': {'Crab'},
     'turtle': {'TurtleLike'},
     'softbody': {'RM_JellyfishBody', 'RM_TentacledSlug', 'RM_ClawedSlug', 'RM_Butterfly', 'RM_Slug'},
+    'fish': {'Snake'},   # fish, eels and the other slithering swimmers of ours all ride vanilla's Snake body
 }
 # classes audited to the end; their regressions fail
-FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody')
+FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish')
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
@@ -124,6 +127,10 @@ STRICT_EXEMPT = {
     'RM_Ivvol': 'turtle body only: a flat pool floor-dweller with a dorsal eye-ridge, no shell named; hide undecided',
     'RM_Bulloo': 'jelly: a floating gas bag that weeps fuel gel; nothing to skin',
     'RM_Metallovore': 'slug: soft tentacled metal-eater, no shell or hide; its yield is a design call',
+    'RM_TunnelSnake': 'Snake body, not a fish: a 1.2 insectoid-fleshed corridor snake; fishskin is wrong, its hide a '
+                      'design call',
+    'RM_Fessk': 'Snake body, not a fish: a man-sized bone-white long-limbed picker; its hide is a design call',
+    'RM_Gharrek': 'Snake body, not a fish: a 0.6 gilled crawler under slate plates; plates vs chitin is a design call',
 }
 
 MIN_RACES = 300          # src/ held 667 race ThingDefs when measured 2026-10-26; far fewer means a blind walk
@@ -232,6 +239,7 @@ def scan(root, strict=()):
         return None, False
 
     races, offenders, vanilla40, unresolved, good = [], [], [], [], []
+    leather_of = {}  # defName -> effective leatherDef / useLeatherFrom (None when it names none)
     body_counts = {}  # body -> concrete races of it; the strict classes' non-blind floor
     for el, rel in concrete:
         links, missing = chain(el)
@@ -251,6 +259,7 @@ def scan(root, strict=()):
                      if e is not None and (e.findtext('race/body') or '').strip()), None)
         body_counts[body] = body_counts.get(body, 0) + 1
         row = {'defName': dn, 'file': rel, 'leatherAmount': amt, 'leather': leather, 'body': body}
+        leather_of[dn] = leather
         if leather and amt and amt > 0 and amt_ours:
             good.append(dn)
         if leather or not amt or amt <= 0:
@@ -271,7 +280,8 @@ def scan(root, strict=()):
     return {'races': len(races), 'offenders': offenders, 'vanilla_inherited_amount': vanilla40,
             'strict_failures': strict_fail, 'strict_classes': list(strict), 'stale_exempt': stale_exempt,
             'unresolved_parent': unresolved, 'good_explicit': good, 'parse_failures': parse_fail,
-            'patch_ops_unmodelled': unmodelled, 'race_names': races, 'body_counts': body_counts}
+            'patch_ops_unmodelled': unmodelled, 'race_names': races, 'body_counts': body_counts,
+            'leather_of': leather_of}
 
 
 def main(argv=None):
@@ -296,7 +306,7 @@ def main(argv=None):
     r = scan(root, strict)
     if out_json:
         with open(out_json, 'w', encoding='utf-8') as fh:
-            json.dump({k: v for k, v in r.items() if k != 'race_names'}, fh, indent=1)
+            json.dump({k: v for k, v in r.items() if k not in ('race_names', 'leather_of')}, fh, indent=1)
     for o in r['offenders']:
         print('FAIL %s (%s): LeatherAmount %g, no race.leatherDef / useLeatherFrom'
               % (o['defName'], o['file'], o['leatherAmount']))

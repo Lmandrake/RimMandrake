@@ -35,6 +35,8 @@
     <label>grolth</label>
     <description>A slumped, glistening mound of dark olive flesh, heaped in heavy folds and rolls with no head anyone has found, moss and lichen taking hold on its back as if it were a fallen log. It moves on short, splayed, toe-padded stumps, so slowly it reads as part of the mud. From under its front edge pours a pale, yellow-green slime that eats into whatever it touches, and the grolth leaves a dissolving trail of it wherever it has been. Anything dead that the slime reaches is gone by morning. It does not chase; in the Fever Wood, something is always dying near the water.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.8. Not a fish: a headless slime-weeping flesh mound (the acid slug slot), no hide; LeatherAmount 0. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.4</MoveSpeed>  <!-- PROVISIONAL: slow on purpose, never a chaser -->
       <MarketValue>90</MarketValue>  <!-- PROVISIONAL -->
       <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
@@ -142,6 +144,8 @@
     <label>brathek</label>
     <description>A fat, ringed larva as long as a forearm, pale and wet, its soft body carried on rows of short gripper pegs that clamp into bark and hold it fast while it works. The front end is all mouth: a ring of hard rasping plates that grind into living wood a mouthful at a time, so the brathek does not bore so much as scrape its way in. It is usually seen half-buried in a gallery mouth, pegs braced against the rim, or as a slow-moving bulge under bark. It eats wood, and it keeps eating.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Body size 0.9. Not a fish: a soft wood-boring larva, no hide (as RM_DustveilLarva); LeatherAmount 0. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.0</MoveSpeed>  <!-- INVENTED / PROVISIONAL: slow and visible -->
       <MarketValue>120</MarketValue>  <!-- INVENTED / PROVISIONAL -->
       <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- INVENTED / PROVISIONAL -->
