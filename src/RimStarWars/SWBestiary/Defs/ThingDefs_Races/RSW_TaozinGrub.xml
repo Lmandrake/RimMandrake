@@ -23,6 +23,8 @@
     <label>taozin grub</label>
     <description>The grub of the giant taozin: a terracotta, forearm-long creature with eight pairs of short dark legs bunched behind its blunt head, a pale banded collar and a long whip of a tail. Kept in brine it lies sedated and slowly infuses the liquid with a delicacy said to steady the mind, and a grub kept so long enough fades to white. Grubs are found only in taozin nests, under the guard of an adult.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. A soft grub kept for its brine. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>450</MarketValue>
       <ComfyTemperatureMin>-5</ComfyTemperatureMin>

@@ -67,6 +67,8 @@
     <label>karravel</label>
     <description>A coin-flat armoured disc the size of a palm, dull olive with a fine salt bloom, its legs never showing beneath the shell. Alone it is nothing. In numbers — and karravel are never anything but numerous — they cover the mud film so completely the ground itself appears to be sliding. The Miasma's cheapest protein, and the bulk of everything that eats here.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>1.9</MoveSpeed>
       <Mass>0.4</Mass>
       <MarketValue>6</MarketValue>
@@ -191,6 +193,8 @@
     <label>karrimeth</label>
     <description>Individually unremarkable — a thumb-sized humped shell, pale grey, salt-frosted. Karrimeth are never seen individually for long: they occur as a moving carpet thousands strong, flowing around obstacles as a single audibly clicking body. A lone karrimeth is a straggler, and stragglers do not last. A mass crossing a colony strips forage and fills traps rather than threatening anyone directly — the aftermath of a surge, made visible.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.1</MoveSpeed>
       <Mass>0.15</Mass>
       <MarketValue>3</MarketValue>
@@ -316,6 +320,7 @@
     <label>karrolun</label>
     <description>A slow, long-legged scuttler the size of a spread hand — visibly the biggest of its kin, its shell a deep iridescent blue-green that fades to chalk when it dies. Faintly comic in its deliberateness, and the only one of the floor's four worth picking up by hand: the Miasma's ordinary meat, and the one thing that gives the arthropod harvest a real target instead of a chore spread across three other species.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>1.5</MoveSpeed>
       <Mass>3.5</Mass>
       <MarketValue>22</MarketValue>
@@ -347,6 +352,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <predator>false</predator>
       <baseBodySize>0.35</baseBodySize>

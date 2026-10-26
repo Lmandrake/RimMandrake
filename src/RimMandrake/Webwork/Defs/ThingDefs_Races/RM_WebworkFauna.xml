@@ -228,6 +228,8 @@
     <label>vennick</label>
     <description>A fist-sized silk-runner, pale grey with a bone-white back that catches the gloom, never alone: vennick read as a current, not as animals. They run the high lines in numbers, hunting one thing — a clutch of eggs, wherever it is hidden. Harmless to anything that walks on two legs.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>10</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

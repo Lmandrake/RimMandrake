@@ -244,6 +244,7 @@
     <label>silloch</label>
     <description>A flat, mottled wedge the colour and grain of wet bark, pressed so tightly against a trunk that the eye slides off it. Its legs are folded away beneath it; only two forward limbs are held cocked, hooked and ready. The silloch does not hunt. It picks a trunk on a path that small things use and goes still, sometimes for days, and when something small enough passes within reach it strikes once and holds on. Anything moving through the crown should assume the bark is watching.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>3.0</MoveSpeed>  <!-- PROVISIONAL: never needs to be fast -->
       <MarketValue>150</MarketValue>  <!-- PROVISIONAL -->
       <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
@@ -283,6 +284,8 @@
       </li>
     </comps>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>  <!-- ban 3: the comp ambushes, vanilla never hunts -->

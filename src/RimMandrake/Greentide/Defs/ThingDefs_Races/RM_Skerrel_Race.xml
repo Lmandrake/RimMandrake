@@ -27,6 +27,8 @@
     <label>skerrel</label>
     <description>A wasp barely the length of a fingernail, one of a colony that lives packed into a single gall on a sugar plant or a fruit tree. Alone it is nothing — a flick of the hand ends it. Disturb the gall and the colony does not send one.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.2</MoveSpeed>
       <ComfyTemperatureMin>15</ComfyTemperatureMin>
       <ComfyTemperatureMax>45</ComfyTemperatureMax>

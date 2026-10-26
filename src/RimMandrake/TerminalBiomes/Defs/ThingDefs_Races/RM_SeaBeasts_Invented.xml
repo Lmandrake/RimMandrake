@@ -1115,6 +1115,7 @@
     <label>rust nipper</label>
     <description>A red-shelled spiky crab with faintly glowing eyes, armored well enough to ignore a boot. Timid in ones; in a massed crawl over a wreck it turns on anything that steps in the middle of it.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>70</MarketValue>
       <ComfyTemperatureMin>0</ComfyTemperatureMin>
@@ -1158,6 +1159,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied arthropods of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). Its juvenile inherits it. -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>Crab</body>
       <herdAnimal>true</herdAnimal>
       <baseBodySize>0.25</baseBodySize>

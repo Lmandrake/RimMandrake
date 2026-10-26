@@ -26,10 +26,15 @@ useLeatherFrom covers X; one whose <value> carries LeatherAmount sets it. Custom
 anything other than defName are not modelled (counted as patch_ops_unmodelled when they mention leather at all).
 
 STRICT CLASSES (RACES_AUDIT_INHERITED_40_NO_LEATHERDEF). The vanilla-40 count is a census, not a pass: by body a
-quadruped, pinniped, monkey or bird of ours that drops no hide is usually a missed leatherDef. Each class below was
-audited race by race (leather picked, or LeatherAmount 0 where vanilla's own convention gives none, e.g. small birds
-<= 0.35 like Sparrow/Chicken/Duck), and once FINISHED a race of that body that again inherits the bare 40 with no
-leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately yields no hide.
+quadruped, pinniped, monkey or bird of ours that drops no hide is usually a missed leatherDef, and an insect or crab
+of ours that drops no chitin breaks the one chitin ladder every producer points at (canon_materials_design 3.10);
+turtle-bodied and soft-bodied (slug, jelly, moth) races were audited the same way, and those with no shell are
+exempt by name.
+Each class below was audited race by race (leather picked, or LeatherAmount 0 where vanilla's own convention gives
+none, e.g. small birds <= 0.35 like Sparrow/Chicken/Duck; arthropods by size: <= 0.2 swarm bodies 0, 0.25-0.9
+RM_WeakChitin x25, hard shells near 1 RM_GrayChitin, 1.5-3 RM_MediumChitin), and once FINISHED a race of that body
+that again inherits the bare 40 with no leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately
+yields no hide. Snake-bodied fish are not a class (an owner question).
 
     --strict-classes bird,monkey     # check only these; 'none' turns strict checking off; default FINISHED_CLASSES
 
@@ -91,8 +96,13 @@ CLASS_BODIES = {
     'quadruped': {'QuadrupedAnimalWithPaws', 'QuadrupedAnimalWithPawsAndTail', 'QuadrupedAnimalWithHooves',
                   'QuadrupedAnimalWithHoovesAndHump', 'QuadrupedAnimalWithHoovesAndHorn',
                   'QuadrupedAnimalWithHoovesAndTusks', 'QuadrupedAnimalWithClawsTailAndJowl'},
+    'insect': {'BeetleLike', 'BeetleLikeWithClaw'},
+    'crab': {'Crab'},
+    'turtle': {'TurtleLike'},
+    'softbody': {'RM_JellyfishBody', 'RM_TentacledSlug', 'RM_ClawedSlug', 'RM_Butterfly', 'RM_Slug'},
 }
-FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped')   # classes audited to the end; their regressions fail
+# classes audited to the end; their regressions fail
+FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody')
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
@@ -106,6 +116,14 @@ STRICT_EXEMPT = {
     'RM_ThrummelBroodmother': 'butchers to its own RM_ThrummelChitin (one chitin ladder, canon_materials_design 3.10)',
     'RM_ShadeMite': 'grain-scale mite: no hide to take; LeatherAmount 0 vs a mite product is a design call',
     'RM_Siidda': 'grain-scale desiccated dust creature: no hide; product undecided',
+    'RM_Quarrok': 'insect: butchers to its own RM_QuarrokChitin (butcherProducts), as RM_Thrummel does',
+    'RM_Gallowroot': 'insect body only: a knot of woody vine and thorn, no shell or hide; its yield is a design call',
+    'RM_Dredgel': 'crab: butchers to its own RM_DredgelChitin (butcherProducts), as RM_Thrummel does',
+    'RM_Gelatid': 'turtle body only: a lobe of the slime biome that leaks rather than bleeds; no shell, no hide',
+    'RM_Loomu': 'turtle body only: boneless, slick wet skin, no shell; no hide to take',
+    'RM_Ivvol': 'turtle body only: a flat pool floor-dweller with a dorsal eye-ridge, no shell named; hide undecided',
+    'RM_Bulloo': 'jelly: a floating gas bag that weeps fuel gel; nothing to skin',
+    'RM_Metallovore': 'slug: soft tentacled metal-eater, no shell or hide; its yield is a design call',
 }
 
 MIN_RACES = 300          # src/ held 667 race ThingDefs when measured 2026-10-26; far fewer means a blind walk

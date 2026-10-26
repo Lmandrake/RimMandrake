@@ -25,6 +25,7 @@
     <label>glomvar</label>
     <description>A pale, eyeless, many-legged thing the size of a calf, its soft back slick with a film that smells exactly like a kurreth hive. The ants walk past it, over it, feed their young beside it, and never notice that their numbers keep shrinking. It eats one a day. When the hive is busy fighting something else, it eats more.\n\nIt has no interest in anything that is not a kurreth.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>160</MarketValue>
       <ComfyTemperatureMin>10</ComfyTemperatureMin>
@@ -45,6 +46,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). Size 0.9 but soft-backed, so the low rung. -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>

@@ -142,6 +142,8 @@
       </li>
     </comps>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): gray shell, as RM_BloodropMoth (MothLike, 0.77) carries; the fungal felt is on its wings, the body is a moth's. -->
+      <leatherDef>RM_GrayChitin</leatherDef>
       <thinkTreeMain MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">VEF_AnimalWeirdEater</thinkTreeMain>
       <herdAnimal>true</herdAnimal>
       <flightStartChanceOnJobStart>0.25</flightStartChanceOnJobStart>
@@ -376,6 +378,8 @@
     <label>dustveil larva</label>
     <description>A dustveil grub: a soft, pale caterpillar threaded through with the same fungus that will one day become its wings. It is timid and harmless, content to nibble at sparse growth. In time the fungus thickens around it into a cocoon, and a dustveil comes out.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A soft caterpillar, size 0.1: A soft finger-scale body (size <= 0.3) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2</MoveSpeed>
       <MarketValue>15</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>

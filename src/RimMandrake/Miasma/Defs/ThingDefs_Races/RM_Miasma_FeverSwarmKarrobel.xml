@@ -10,6 +10,8 @@
     <label>fever swarm</label>
     <description>Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone — only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A swarm-scale body (size <= 0.2) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>2.2</MoveSpeed>
       <Mass>0.02</Mass>
       <MarketValue>8</MarketValue>
@@ -127,6 +129,7 @@
     <label>karrobel</label>
     <description>A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole — mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>1.6</MoveSpeed>
       <Mass>6</Mass>
       <MarketValue>45</MarketValue>
@@ -158,6 +161,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <predator>false</predator>
       <baseBodySize>0.5</baseBodySize>

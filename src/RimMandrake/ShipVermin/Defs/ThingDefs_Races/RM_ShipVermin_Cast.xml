@@ -567,6 +567,8 @@
       </li>
     </comps>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): gray shell, the rung for hard-shelled bugs near size 1 (RSW_MossBeetle, RM_BloodropMoth, RSW_AaroxisDendoria). -->
+      <leatherDef>RM_GrayChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>

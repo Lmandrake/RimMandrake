@@ -164,6 +164,8 @@
       <Hyperweave>15</Hyperweave>
     </butcherProducts>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): tough chitin, the rung 1.5-3 bodied bugs of ours take (RM_Baseopsis, RM_Megapleura, RM_Barbslinger). Its Hyperweave butcherProducts stay. -->
+      <leatherDef>RM_MediumChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <predator>true</predator>
       <maxPreyBodySize>2.0</maxPreyBodySize>

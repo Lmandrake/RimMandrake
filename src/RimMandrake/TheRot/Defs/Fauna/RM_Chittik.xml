@@ -21,6 +21,8 @@
     <label>chittik</label>
     <description>A finger-long vermin, half insect and half spore-case, that is never seen alone. One is nothing; a swarm is a single body with a hundred mouths that shares every wound it takes. They lay their larvae in whatever they bite, and the larvae hatch when it dies.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Swarm vermin, half spore-case, never alone: A soft finger-scale body (size <= 0.3) with nothing to skin: LeatherAmount 0, as vanilla gives small birds <= 0.35. -->
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>5</MoveSpeed>
       <MarketValue>35</MarketValue>
       <ComfyTemperatureMin>-53.9</ComfyTemperatureMin>

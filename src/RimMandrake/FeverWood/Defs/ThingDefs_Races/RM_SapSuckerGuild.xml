@@ -148,8 +148,13 @@
     <label>thornbug</label>
     <description>A great thorn-shaped insect clamped flush to the bark, secreting sweet, nourishing nectar in exchange for safety. The mechanic is the deal: it yields only while it feels safe, and a frightened herd dries up for days. Every raid on the crown costs nectar before it costs blood.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MarketValue>140</MarketValue>
     </statBases>
+    <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). -->
+      <leatherDef>RM_WeakChitin</leatherDef>
+    </race>
     <comps>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated">
         <gatherDef>RM_ThornbugNectar</gatherDef>
@@ -253,6 +258,8 @@
     <label>ollareth</label>
     <description>Flat, wide, and ringed with open spiracles — bothered, it screams, and the whole crown answers. It yields nothing of its own; its value is that the biome fights for it, turning a theft raid into a fight the crown joins on your side.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Its own text: "It yields nothing of its own". LeatherAmount 0 (set here, not on RM_SapSuckerBase: RM_Vaulm takes its lacquer through the inherited 40). -->
+      <LeatherAmount>0</LeatherAmount>
       <MarketValue>90</MarketValue>
     </statBases>
     <comps>
@@ -311,6 +318,8 @@
     <label>drommath</label>
     <description>A taut grey sac, visibly inflating. Handled, it swells rather than yield, until it cannot be pulled from its perch. Left calm, it can be milked for a small trickle of sap; burst instead, it pays out once, large — and never again.</description>
     <statBases>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). A taut sac whose one butcher payout is RM_DrommathBurstSap; no shell to take. LeatherAmount 0 (here, not on RM_SapSuckerBase: RM_Vaulm uses the inherited 40). -->
+      <LeatherAmount>0</LeatherAmount>
       <MarketValue>100</MarketValue>
     </statBases>
     <!-- The one-time "burst" payout — plain butcherProducts (a top-level

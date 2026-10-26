@@ -35,6 +35,7 @@
     <label>kurreth</label>
     <description>A glossy red-black segmented ant the size of a large dog, oversized mandibles held forward as if perpetually mid-haul. Alone it is dangerous but not much of a threat; a whole hive of them is why nothing sensible digs where they have already dug.</description>
     <statBases>
+      <LeatherAmount>25</LeatherAmount>
       <MoveSpeed>3.6</MoveSpeed>
       <MarketValue>90</MarketValue>
       <ComfyTemperatureMin>5</ComfyTemperatureMin>
@@ -56,6 +57,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): brittle chitin, the rung 0.25-0.9 bodied bugs of ours take (RM_Grellik, RSW_FungalWeevil: LeatherAmount 25). -->
+      <leatherDef>RM_WeakChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>
@@ -209,6 +212,8 @@
       </li>
     </tools>
     <race>
+      <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26: inherited vanilla LeatherAmount 40 with no leatherDef, so it butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). One chitin ladder (canon_materials_design 3.10): tough chitin, the rung 1.5-3 bodied bugs of ours take (RM_Baseopsis, RM_Megapleura, RM_Barbslinger). -->
+      <leatherDef>RM_MediumChitin</leatherDef>
       <body>BeetleLikeWithClaw</body>
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>
