@@ -679,6 +679,12 @@ def rebase_for_root_element(xp: str) -> str:
     when run against the same file by hand.
     """
     s = xp.strip()
+    # `/Defs//X` is a DESCENDANT search under <Defs>: strip only `/Defs` (keeping the
+    # second slash) and relativise, else it becomes the absolute `/X` and matches
+    # nothing (VALIDATE_PATCH_DESCENDANT_FIX_FALSE_ZERO).
+    for pre in ("/Defs//", "Defs//"):
+        if s.startswith(pre):
+            return ".//" + s[len(pre):]
     if s.startswith("/Defs/"):
         return s[len("/Defs/"):]
     if s.startswith("//"):
@@ -699,7 +705,9 @@ def to_elementtree_xpath(xp: str) -> str | None:
         return None
 
     s = xp.strip()
-    if s.startswith("/Defs/"):
+    if s.startswith("/Defs//") or s.startswith("Defs//"):
+        s = ".//" + s.split("//", 1)[1]   # descendant search; see rebase_for_root_element
+    elif s.startswith("/Defs/"):
         s = s[len("/Defs/"):]
     elif s.startswith("//"):
         s = ".//" + s[2:]

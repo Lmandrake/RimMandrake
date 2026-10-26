@@ -299,6 +299,18 @@ def t_an_unusable_live_dump_exits_2_unmeasured_not_0():
         assert got == 0, "a usable --defnames list on an empty patch stays 0; got %s: %s" % (got, out[-300:])
 
 
+def t_defs_descendant_xpath_is_not_a_false_zero():
+    """VALIDATE_PATCH_DESCENDANT_FIX_FALSE_ZERO: `/Defs//Tag` became the absolute `/Tag`
+    (matches nothing) in BOTH the ElementPath and lxml branches."""
+    for xp, want in (("/Defs//weaponTags", 1), ("Defs//li", 4),
+                     ('/Defs//defName[text()="Gun_Autopistol"]', 1)):
+        got = n(xp)
+        assert got == want, "%r matched %d, want %d (false zero)" % (xp, got, want)
+    p = V.to_elementtree_xpath("/Defs//weaponTags")
+    assert p == ".//weaponTags", p
+    assert V.rebase_for_root_element("/Defs//weaponTags") == ".//weaponTags"
+
+
 if __name__ == "__main__":
     for k, v in sorted(globals().items()):
         if k.startswith("t_"):
