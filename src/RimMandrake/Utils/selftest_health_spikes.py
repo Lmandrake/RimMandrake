@@ -176,6 +176,36 @@ def capture_guards(D):
               repr((rec, rec2)))
         again = D.capture(4242, "inc-retry", d)
         check("dumped_incident_stays_claimed", again.get("status") == "refused", again)
+
+        # retention still prunes OUR old dumps (review wave 90: every check above is "not deleted", so a prune that
+        # deleted nothing passed): newest KEEP kept counting the new one, partials counted, records go with them.
+        def ours(d, n_old, size=10):
+            names = []
+            for i in range(n_old):
+                n = "rimworld_1_2026100%dT000000Z.dmp" % i + (".partial" if i == 0 else "")
+                p = os.path.join(d, n)
+                open(p, "wb").write(b"z" * size)
+                open(os.path.join(d, n.replace(".partial", "") + ".json"), "w").write("{}")
+                os.utime(p, (1000 + i, 1000 + i))
+                names.append(n)
+            new = os.path.join(d, "rimworld_1_20261009T000000Z.dmp")
+            open(new, "wb").write(b"z" * size)
+            return names, new
+        d = tempfile.mkdtemp()
+        names, new = ours(d, 6)
+        pruned = D.prune_dumps(d, new)
+        left = sorted(n for n in os.listdir(d) if D.OURS.match(n))
+        check("prune_removes_oldest_own_dumps_and_partials",
+              sorted(pruned) == sorted(names[:2]) and len(left) == D.KEEP and os.path.exists(new), repr((pruned, left)))
+        check("prune_takes_each_record_with_its_dump",
+              not any(os.path.exists(os.path.join(d, n.replace(".partial", "") + ".json")) for n in names[:2])
+              and all(os.path.exists(os.path.join(d, n + ".json")) for n in names[2:]), sorted(os.listdir(d)))
+        d = tempfile.mkdtemp()
+        names, new = ours(d, 3)
+        D.CAP_BYTES = 35                            # new dump 10 + others 25 -> two others fit
+        pruned = D.prune_dumps(d, new)
+        D.CAP_BYTES = old[3]
+        check("prune_cap_counts_the_new_dump", pruned == names[:1], repr(pruned))
     except Exception as e:                                       # noqa: BLE001
         check("capture_guards_ran", False, repr(e))
     finally:

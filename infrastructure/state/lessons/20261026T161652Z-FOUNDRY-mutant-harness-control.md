@@ -1,0 +1,2 @@
+Mutation-testing a Utils fix by preloading a scratch copy of the module: run an UNMUTATED control through the same harness first. A copy loaded from the scratch path broke __file__-relative imports (rmpaths) and went RED for every mutant, which looks exactly like 'killed'. Fix: exec the mutant source compiled under the REAL file path (spec_from_file_location(name, real); exec(compile(src, real, 'exec'), m.__dict__)); only a GREEN control makes a RED mutant mean anything. Also check the failing check names the guarded behaviour, not a crash.
+home: NONE

@@ -156,6 +156,25 @@ def case_build_refuses():
     with swap(DJ, ART=art):
         DJ.queue_view(un)
     check(len(un) == 1 and "someone_elses_job" in un[0], "3b queue_view reports the unreadable job", un)
+    # a job the daemon claimed between listing and reading moved on: not unreadable (else build refuses for nothing)
+    art2 = new_art()
+    os.symlink(art2 / "active" / "claimed_meanwhile.json", art2 / "pending" / "claimed_meanwhile.json")
+    un = []
+    with swap(DJ, ART=art2):
+        DJ.queue_view(un)
+    check(un == [], "3c a job that vanished mid-scan is not reported unreadable", un)
+    # the refusal reaches the shell: a cron chain `build && submit` must stop
+    argv = sys.argv
+    sys.argv = ["donor_regen_jobs.py", "build", "--audit", str(audit), "--census", str(census), "--out", str(out)]
+    code = None
+    try:
+        with swap(DJ, build=lambda *a, **k: 2):
+            DJ.main()
+    except SystemExit as e:
+        code = e.code
+    finally:
+        sys.argv = argv
+    check(code == 2, "3d `build` exits with the refusal's code", code)
 
 
 def case_dry_parity():
