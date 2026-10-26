@@ -23,15 +23,20 @@ else
 fi
 UNITS=~/.config/systemd/user
 for u in rm-pulse.service rm-pulse-digest.service rm-pulse-digest.timer rm-pulse-brief.service rm-pulse-brief.timer rm-pulse-health.service rm-pulse-health.timer \
-         rm-pulse-update.service rm-pulse-update.timer rm-pulse-testing.service rm-pulse-testing.timer; do
+         rm-pulse-update.service rm-pulse-update.timer rm-pulse-streams.service rm-pulse-streams.timer; do
   cp "$HERE/$u" "$UNITS/$u"
 done
-for u in rm-pulse.service rm-pulse-digest.service rm-pulse-brief.service rm-pulse-health.service rm-pulse-update.service rm-pulse-testing.service; do
+for u in rm-pulse.service rm-pulse-digest.service rm-pulse-brief.service rm-pulse-health.service rm-pulse-update.service rm-pulse-streams.service; do
   mkdir -p "$UNITS/$u.d"
   printf '[Service]\nEnvironment=RM_PULSE_DEPLOY=%s\n' "$DEPLOY" > "$UNITS/$u.d/pulse-deploy.conf"
 done
+# rm-pulse-testing.timer is retired: rm-pulse-streams.service runs testing_metrics.py first, every 15 min
+for u in rm-pulse-testing.timer rm-pulse-testing.service; do
+  systemctl --user disable --now -q "$u" 2>/dev/null || true
+  rm -rf "$UNITS/$u" "$UNITS/$u.d"
+done
 systemctl --user daemon-reload
-systemctl --user enable -q rm-pulse.service rm-pulse-health.timer rm-pulse-digest.timer rm-pulse-brief.timer rm-pulse-update.timer rm-pulse-testing.timer
+systemctl --user enable -q rm-pulse.service rm-pulse-health.timer rm-pulse-digest.timer rm-pulse-brief.timer rm-pulse-update.timer rm-pulse-streams.timer
 systemctl --user restart rm-pulse.service
-systemctl --user start rm-pulse-update.timer rm-pulse-brief.timer rm-pulse-testing.timer
+systemctl --user start rm-pulse-update.timer rm-pulse-brief.timer rm-pulse-streams.timer
 echo "install.sh: rm-pulse runs $DEPLOY @ $(git -C "$DEPLOY" log -1 --format=%h)"

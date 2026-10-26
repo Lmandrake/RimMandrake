@@ -669,7 +669,7 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "", visit: dict
            # reload only while it is on screen: a hidden tab reloading is not him reading it (brief_opens)
            "<script>setInterval(function(){if(document.visibilityState==='visible')location.reload()},120000)</script>"
            f"<title>RimPulse brief</title><style>{CSS}</style></head><body><main>",
-           f"<div class='hb{' red' if hb['red'] else ''}'>{e(hb['text'])}</div>"]
+           f"<div class='hb{' red' if hb['red'] else ''}'>{e(hb['text'])}</div>", streams_line(now, base)]
     if not brief:
         out.append("<div class=age>No brief yet<small>run pulse.py brief</small></div></main></body></html>")
         return "".join(out)
@@ -1033,6 +1033,20 @@ def tailnet_ip() -> str | None:
     return ip[0] if r.returncode == 0 and ip else None
 
 
+def streams_line(now: float, base: str = "") -> str:
+    """The phone brief line from the Streams panel's latest record (RIMPULSE_STREAMS_BUILD_VS_TIME, §7)."""
+    try:
+        import streams
+        r = streams.latest_live(streams.read_series(since=now - 2 * 86400))
+    except Exception as ex:   # the paper must render without the panel
+        return f"<div class=m>streams unreadable: {html.escape(str(ex)[:120])}</div>"
+    if not r:
+        return f"<div class=m><a href='{base}/streams'>streams</a>: no record yet</div>"
+    old = " (STALE)" if now - r["t"] > streams.STALE_S else ""
+    return (f"<div class=m><a href='{base}/streams'>streams</a>, {time.strftime('%H:%M', time.localtime(r['t']))}{old}: "
+            f"{html.escape(r.get('brief') or '')}</div>")
+
+
 def page(path: str, snap_fn, folder: Path, device: str | None = None) -> tuple[int, str, bytes]:
     """The read-only brief routes, shared by the loopback daemon and the tailnet listener. `device` is set
     only for his own tailnet devices: that request is an open of the paper (record_open)."""
@@ -1048,6 +1062,9 @@ def page(path: str, snap_fn, folder: Path, device: str | None = None) -> tuple[i
     if path == "/brief.json":
         _, b = latest_brief(folder)
         return 200, "application/json", json.dumps({"brief": b, "heartbeat": heartbeat(snap_fn(), b, now)}).encode()
+    if path in ("/streams", "/streams/", "/streams.json"):   # the Streams panel (RIMPULSE_STREAMS_BUILD_VS_TIME)
+        import streams
+        return streams.page(path, now)
     m = re.fullmatch(r"/item/([A-Z0-9_]{3,64})", path)
     if m:
         body = render_item(m.group(1), pc.read_ledger())

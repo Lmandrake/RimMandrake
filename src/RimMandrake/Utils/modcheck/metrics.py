@@ -8,6 +8,11 @@ design/RimMandrake/test_orchestration_two_machines_2026-10-25.md section 5).
 writes D:\\ClaudeWork\\rimmandrake\\testq\\metrics\\<day>.json (TESTQ_ROOT overrides the testq root; --out the folder).
 The day is the owner's (America/Los_Angeles), so "a day" in an alarm is his day.
 
+RETIRED as a scheduled file (MODCHECK_METRICS_RETIRE_INTO_HOURLY): it was never scheduled, so the folder holds one
+manual day. Its numbers now land every 15 min in the stream series (pulse/streams.py `modcheck_today`, record=False:
+the `modcheck` key of each record and measure O4), written by rm-pulse-streams.timer. This CLI stays for a manual
+look at a past day; nothing schedules it, by design, so there is one scheduled home for these numbers, not two.
+
 SOURCES (read only, except the miss lines below):
   modcheck run JSONs (runner.write_sheet: {mod, stamp, summary}) in Transient/modcheck, MODCHECK_GATE_HISTORY and,
     recursively, the testq root (results fetched from SteveDesktop carry their sheet JSON);

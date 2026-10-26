@@ -1,0 +1,9 @@
+[Unit]
+Description=RimPulse stream collector, every 15 min (a record older than 45 min greys the panel)
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+
+[Install]
+WantedBy=timers.target

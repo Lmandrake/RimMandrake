@@ -192,7 +192,7 @@ The loop has four levels. The bottom three run without you; the top one is you r
 | level | who reads | how often | what it reads | what it may move |
 |---|---|---|---|---|
 | **Level 0 Dispatch** | `testq tick` and the steward (§6); deterministic, no LLM | every 60 s (the existing `testq-tick.timer`) | queue, lane state, brakes, bridge gate | starts jobs; Archmagi backfill on/off per §2; the steward fills or escalates |
-| **Level 1 Allocator** | `streams.py allocate` (new, §8 items 4 and 7); deterministic, no LLM | every 15 min (a timer, beside `rm-pulse-testing`) | every row of §3, from the instruments named there | writes `streams/series.jsonl` (one record per stream per run) and `streams/allocation.json` (slot targets, with the rule that fired) |
+| **Level 1 Allocator** | `streams.py allocate` (new, §8 items 4 and 7); deterministic, no LLM | every 15 min (`rm-pulse-streams.timer`, which also runs `testing_metrics.py` and replaced `rm-pulse-testing`) | every row of §3, from the instruments named there | writes `streams/series.jsonl` (one record per stream per run) and `streams/allocation.json` (slot targets, with the rule that fired) |
 | **Level 2 Orchestrator** | the BENCH orchestrator seat | at each slot refill, and at least hourly while a shift runs | `allocation.json` | what each free subagent slot is briefed to do; never more slots than the token pace allows |
 | **Level 3 You** | Lukas, on RimPulse and phone | when you choose | the Streams panel (§7) and your card queue | rulings, picks, walks, and the slot count N (§10) |
 

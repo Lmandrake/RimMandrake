@@ -27,10 +27,10 @@ records parsed, records unreadable) so a zero can be told from blindness.
 History: one record per (day, change) appended to /mnt/d/ClaudeWork/rimmandrake/testing_metrics/history.jsonl
 (env RM_TESTING_HISTORY). It lives in agent storage, not the repo: a program reads it (RimPulse, the phone brief),
 its inputs live in agent storage too, and an hourly timer must never commit into a clone two seats share. A day is
-recomputed every hour until it is over; read_history + best_per_day pick, per day, the record with the most
+recomputed on every timer run until it is over; read_history + best_per_day pick, per day, the record with the most
 coverage and then the latest.
 
-Usage: testing_metrics.py [--days N] [--print] [--no-write]     (hourly: rm-pulse-testing.timer)
+Usage: testing_metrics.py [--days N] [--print] [--no-write]     (every 15 min: rm-pulse-streams.timer, before streams.py)
 """
 import argparse
 import datetime
@@ -162,7 +162,10 @@ def _attempt(job, res):
             "purpose": job.get("purpose"), "submitted": epoch(job.get("submitted")), "started": epoch(res.get("started")),
             "finished": epoch(res.get("finished")), "outcome": res.get("outcome"), "cause": res.get("cause"),
             "phase_s": res.get("phase_s") or {}, "rows": [r for r in res.get("rows") or [] if isinstance(r, dict)],
-            "ident": ident}
+            "ident": ident,
+            # streams.py (G2 useful busy, G4 gaps): who asked (BENCH.filler = filler), which lane, which selection
+            "requested_by": job.get("requested_by"), "lane": job.get("lane") or res.get("host"),
+            "sel": (job.get("mod"), json.dumps(job.get("selector"), sort_keys=True))}
 
 
 def load_testq(root=None):

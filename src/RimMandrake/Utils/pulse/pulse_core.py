@@ -1489,7 +1489,7 @@ def testing_panel(data: dict | None, now: float) -> dict:
     """Steve vs Archmagi side by side: per metric today's value (null + why when UNMEASURED, never 0) and a
     7-day series (null for an UNMEASURED day)."""
     if not data or not data.get("days"):
-        return {"unmeasured": "no testing history yet (rm-pulse-testing.timer writes it hourly)"}
+        return {"unmeasured": "no testing history yet (rm-pulse-streams.timer writes it every 15 min)"}
     days = data["days"][-7:]
     machines = []
     for key, label in TESTING_MACHINES:

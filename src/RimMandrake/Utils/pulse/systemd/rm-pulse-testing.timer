@@ -1,9 +1,0 @@
-[Unit]
-Description=RimPulse testing-rig metrics collector, hourly
-
-[Timer]
-OnCalendar=hourly
-Persistent=true
-
-[Install]
-WantedBy=timers.target

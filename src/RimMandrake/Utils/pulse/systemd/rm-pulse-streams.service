@@ -1,0 +1,15 @@
+# The Level 1 stream collector (STREAM_METRICS_UNIFY_ONE_SERIES, design/RimMandrake/work_allocation_framework_2026-10-26.md
+# §4.1): one record of every §3 measure, MEASURED or UNMEASURED with its reason, appended to
+# /mnt/d/ClaudeWork/rimmandrake/streams/series.jsonl. It folds the modcheck WASTE split that the never-scheduled daily
+# file held (MODCHECK_METRICS_RETIRE_INTO_HOURLY) and runs the testing-rig collector first, which replaces
+# rm-pulse-testing.timer. RimPulse's /streams panel and the brief's streams line read the series. No LLM.
+[Unit]
+Description=RimPulse stream collector (Level 1 series)
+
+[Service]
+Type=oneshot
+# testing_metrics.py keeps its own day history for the Testing panel; its failure must not stop the series
+ExecStart=-/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/testing_metrics.py
+ExecStart=/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/streams.py collect
+TimeoutStartSec=420s
+Nice=10
