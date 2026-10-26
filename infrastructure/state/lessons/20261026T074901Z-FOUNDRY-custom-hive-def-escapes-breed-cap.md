@@ -1,0 +1,2 @@
+A new ThingDef with thingClass Hive (or CompProperties_SpawnerHives) escapes vanilla's 30-hive cap: HiveUtility.TotalSpawnedHivesCount counts listerThings.ThingsOfDef(ThingDefOf.Hive), an exact def match, so CompSpawnerHives.CanSpawnChildHive reads 0 and a re-skinned hive breeds forever. Re-derive the cap against your own def (subclass CompSpawnerHives via <compClass>, as RM_CompSpawnerMounds does) wherever you reuse vanilla hive machinery.
+home: rimworld-modding
