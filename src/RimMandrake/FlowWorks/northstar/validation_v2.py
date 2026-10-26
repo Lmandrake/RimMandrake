@@ -88,6 +88,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import level_water  # noqa: E402  (the exact-level reference, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)
+import gravel_stage  # noqa: E402  (V2_FILLIN_SCENE_STAGE_FILL_MATERIAL: fill costs spoil, so the fill-in scenes need gravel on the ground)
 import shovel_stage  # noqa: E402  (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED: the E7/E8 job pawns carry one)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -2789,6 +2790,11 @@ def phase_J(L, args):
         # its designated cell unprompted (forced=false), and -- the negative control -- that the dig
         # giver offers nothing on an excavated but UNdesignated cell. The pawn's walk to the job stays
         # untimed on purpose (AI noise); this is the selection decision itself.
+        # V2_FILLIN_SCENE_STAGE_FILL_MATERIAL: a fill of an unpaid pit is offered only when gravel (or crushed ice, a stone
+        # chunk) lies free on the map; stage gravel by each fill-in job pawn BEFORE the selection probe asks.
+        ok_, why_ = gravel_stage.spawn_fill_material(B.call, [PAWN_SPOTS["E7a_fillin"], PAWN_SPOTS["E7b_overflow"]])
+        if not ok_:
+            raise Abort("fill material not staged: %s" % why_)
         sel, bad = [], []
         neg_cell = SCENES["E4_engine"]["cells"][0]
         for k, c, kind, jd in (("E8_dig", e8, "dig", "RM_DigCanalJob"), ("E7a_fillin", e7a, "fillin", "RM_FillInCanalJob"),
