@@ -121,8 +121,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 // "the blue ice blocks that could be cut from the nightside should also be able to go into the melter."
                 string ice = File.ReadAllText(Path.Combine(ModRoot, "Defs", "Pits", "ThingDefs", "RM_CrushedIce.xml"));
-                Match r = Regex.Match(ice, @"<RecipeDef MayRequire=""mandrake\.rm\.bluedesert"">\s*<defName>RM_MeltBlueIceInMelter</defName>(.*?)</RecipeDef>", RegexOptions.Singleline);
-                Assert(r.Success, "a melter recipe for RM_BlueIce, loaded only with BlueDesert");
+                Match r = Regex.Match(ice, @"<RecipeDef MayRequire=""mandrake\.rm\.biomes"">\s*<defName>RM_MeltBlueIceInMelter</defName>(.*?)</RecipeDef>", RegexOptions.Singleline);
+                Assert(r.Success, "a melter recipe for RM_BlueIce, loaded only with the biomes mod that ships BlueDesert");
                 string b = r.Groups[1].Value;
                 Assert(b.Contains("<li>RM_IceMelter</li>") && b.Contains("<li>RM_BlueIce</li>") && b.Contains("RM_MeltRecipeExtension") && b.Contains("<liquid>RM_Liquid_FreshWater</liquid>"), "made at the melter from blue ice into fresh water");
                 int count = int.Parse(Regex.Match(b, @"<count>(\d+)</count>").Groups[1].Value);
