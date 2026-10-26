@@ -58,7 +58,8 @@ namespace RimMandrake.Stillsand
             int routed = 0;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned.ToList())
             {
-                if (p == user || p.Dead || p.Downed || p.Faction == Faction.OfPlayer || p.InMentalState
+                // A prisoner keeps its own (possibly hostile tribal) faction; a forced PanicFlee would walk it off the map.
+                if (p == user || p.Dead || p.Downed || p.Faction == Faction.OfPlayer || p.IsPrisoner || p.InMentalState
                     || p.mindState == null || (p.Position - user.Position).LengthHorizontal > ext.radius)
                 {
                     continue;
