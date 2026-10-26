@@ -16,7 +16,7 @@
       Util_GenerateSite, Util_GetDefaultRewardValueFromPoints),
       SpawnWorldObjects, GeneratePawn(kindDef/faction), Delay(isQuestTimeout),
       Letter, Set, End(goodwillChangeAmount/goodwillChangeFactionOf/
-      goodwillChangeReason/successHistoryEvent/failedOrExpiredHistoryEvent)
+      goodwillChangeReason), RecordHistoryEvent(inSignal/historyDef)
         src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml
         (site-generation shape) + Source/RimWorld/QuestGen/QuestNode_End.cs,
         QuestNode_GeneratePawn.cs (read in full this session)
@@ -280,14 +280,25 @@
           </parms>
           <useDifficultyFactor>false</useDifficultyFactor>
         </li>
+        <!-- §2d: every path-3 completion records EggAssassination for the colony's ideoligion.
+             QuestNode_RecordHistoryEvent, not QuestNode_End fields: successHistoryEvent /
+             failedOrExpiredHistoryEvent are QuestScriptDef fields and would fire on paths 1-2 too
+             (RECKONING_HISTORYEVENT_REWIRE_OFF_QUESTEND; selftest_reckoning_history_events.py). -->
+        <li Class="QuestNode_RecordHistoryEvent">
+          <inSignal>EggHatched</inSignal>
+          <historyDef>RUT_HistoryEvent_EggAssassination</historyDef>
+        </li>
         <!-- S5 ruling 6: total deniability — no goodwillChangeAmount at all. -->
         <li Class="QuestNode_End">
           <inSignal>EggHatched</inSignal>
           <outcome>Success</outcome>
           <sendStandardLetter>true</sendStandardLetter>
-          <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent>
         </li>
 
+        <li Class="QuestNode_RecordHistoryEvent">
+          <inSignal>EggFoundBeforeHatch</inSignal>
+          <historyDef>RUT_HistoryEvent_EggAssassination</historyDef>
+        </li>
         <!-- ❓ design's own already-stated -25, used as given. -->
         <li Class="QuestNode_End">
           <inSignal>EggFoundBeforeHatch</inSignal>
@@ -296,7 +307,6 @@
           <goodwillChangeAmount>-25</goodwillChangeAmount>
           <goodwillChangeFactionOf>$target</goodwillChangeFactionOf>
           <goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason>
-          <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent>
         </li>
 
         <li Class="QuestNode_End">
