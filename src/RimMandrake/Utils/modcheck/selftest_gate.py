@@ -394,6 +394,9 @@ def t_misses(m):
 
 
 def main():
+    # Hermetic: the real MINIMAL list names repo mods whose runtime hash is read from the live tree, so another seat
+    # editing one mid-run changed a manifest key between two calls. Pin the list to an id that is no repo mod.
+    gate.minimal_ids = lambda path=None: ["ludeon.rimworld"]
     m = Mod()
     try:
         for t in (t_slice_isolation, t_inputs, t_decide, t_classify, t_index_reuse_audit, t_audit_drift, t_misses, t_run_suite):
