@@ -285,9 +285,32 @@ def t_settings_sections():
           {"sheetOverflowEnabled", "fuelSpillsBurnEnabled", "ladderNoKeys", "ladderOverWalls"} <= off)
 
 
+# ---------------------------------------------------------------------------------------------------- water_scenes_walk.py
+def t_water_scenes_walk():
+    import water_scenes_walk as WS
+    if _has(WS, "_s6_read", "6.6"):
+        good = dict(m=[[2, 5, 100], [2, 5, 100]], pond=900, gate="Open")
+        hole = dict(good, m=[[2, 5, 100], [None, None, None]])
+        check("6.6 control: every square, the pond and the gate read -> comparable", WS._s6_read(good))
+        check("6.6 one unread square (the same placeholder in both snapshots) -> not comparable", not WS._s6_read(hole))
+        check("6.6 unread pond -> not comparable", not WS._s6_read(dict(good, pond=None)))
+        check("6.6 unread gate -> not comparable", not WS._s6_read(dict(good, gate="")))
+    if _has(WS, "s3_audit", "6.7") and _has(WS, "s3_audit_ok", "6.7"):
+        x = lambda st, c, h=0.0: (0, None, dict(stock=st, canal=c, held=h))  # noqa: E731
+        base_only = [x(1000, 0)] + [(k, None, dict(stock=None, canal=None, held=0.0)) for k in range(1, 6)]
+        r = WS.s3_audit(base_only, 10)
+        check("6.7 only the baseline readable -> UNMEASURED, not 'conserved at every pulse'", WS.s3_audit_ok(*r) is None, r)
+        r = WS.s3_audit([x(1000, 0)], 10)
+        check("6.7 the baseline alone is no pumping pulse audited", r[2] == 0 and WS.s3_audit_ok(*r) is None, r)
+        r = WS.s3_audit([x(1000, 0), x(900, 100), x(800, 150, 50)], 10)
+        check("6.7 control: two pumping pulses balanced -> PASS", WS.s3_audit_ok(*r) is True, r)
+        r = WS.s3_audit([x(1000, 0), x(900, 40)], 10)
+        check("6.7 a pulse that lost litres -> FAIL", WS.s3_audit_ok(*r) is False, r)
+
+
 def main():
     for t in (t_live_session, t_player_missions, t_live_session_late, t_preflight, t_perf_and_reach, t_scenarios_map,
-              t_scenarios, t_settings_sections):
+              t_scenarios, t_settings_sections, t_water_scenes_walk):
         try:
             t()
         except Exception as e:          # noqa: BLE001 -- a crash is a red check, not a silent skip

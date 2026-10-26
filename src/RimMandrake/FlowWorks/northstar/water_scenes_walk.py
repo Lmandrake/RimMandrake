@@ -879,6 +879,32 @@ def _s3_ledger(w, g):
     return out
 
 
+def s3_audit(hb, tolc):
+    """Step B's conservation ledger, pulse by pulse against the first (baseline) sample. -> (sB, bad, audited, unread):
+    `audited` counts PUMPING pulses only (the baseline balances itself), `unread` the pulses any read failed on."""
+    sB = hb[0][2]["stock"] if hb else None
+    bad, audited, unread = [], 0, []
+    for i, (k, _, x) in enumerate(hb):
+        if None in (x["stock"], sB, x["canal"]) or x["held"] != x["held"]:
+            unread.append(k)
+            continue
+        if i:
+            audited += 1
+        lost = sB - x["stock"]
+        gained = x["canal"] + x["held"]
+        if abs(lost - gained) > tolc:
+            bad.append("p%d lost %d gained %d dL" % (k, lost, gained))
+    return sB, bad, audited, unread
+
+
+def s3_audit_ok(sB, bad, audited, unread):
+    """S3.c claims conservation at EVERY pulse: a missing baseline, any unread pulse, or no pumping pulse audited is
+    UNMEASURED (None), never a pass on the baseline sample alone (review 6.7)."""
+    if sB is None or unread or not audited:
+        return None
+    return not bad
+
+
 def run_S3(w):
     g = s3_geom()
     canal, pond = g["canal"], g["pond"]
@@ -913,19 +939,11 @@ def run_S3(w):
                 by_pulse(hb, canal, full, 16),
                 level="a pump lifts: the canal fills to the brim, every square 10,000 dL within %d dL, and the squares match each other" % TOL_DL,
                 readout=w.readout_lines([canal[0], canal[-1]]))
-    sB = hb[0][2]["stock"]
-    bad, audited = [], 0
     tolc = TOL_DL * (len(canal) + 1)
-    for k, _, x in hb:
-        if None in (x["stock"], sB, x["canal"]) or x["held"] != x["held"]:
-            continue
-        audited += 1
-        lost = sB - x["stock"]
-        gained = x["canal"] + x["held"]
-        if abs(lost - gained) > tolc:
-            bad.append("p%d lost %d gained %d dL" % (k, lost, gained))
-    expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss (tolerance %d dL): %s" % (tolc, bad[:4] or "none"),
-                None if sB is None or not audited else not bad,
+    sB, bad, audited, unread = s3_audit(hb, tolc)
+    expect_line(w, "S3", "S3.c", "pulses where canal+hoses gain != pond loss (tolerance %d dL): %s; %d pumping pulses "
+                "audited, unread %s" % (tolc, bad[:4] or "none", audited, unread or "none"),
+                s3_audit_ok(sB, bad, audited, unread),
                 level="canal dL + hose dL = pond loss in dL at every pulse (no litre leaves the ledger as a spill)")
     # S3 mass audit: every counter that could hold the gap, first pulse of step B against the last (levels = 10,000 units)
     l0, l1 = hb[0][2]["ledger"], hb[-1][2]["ledger"]
@@ -1417,6 +1435,12 @@ def _s6_eq(a, b):
     return {k: v for k, v in a.items() if k != "grid"} == {k: v for k, v in b.items() if k != "grid"}
 
 
+def _s6_read(s):
+    """True when every compared field was read: each canal/gate square's (depth, fill, dL), the pond and the gate. An
+    unread square is (None, None, None) in BOTH snapshots, so equality alone would certify it (review 6.6)."""
+    return bool(s["m"]) and all(None not in v for v in s["m"]) and s["pond"] is not None and bool(s["gate"])
+
+
 def _s6_dl(s):
     """Decilitres in a snapshot: canal + gate squares (None when any was unread) + the pond."""
     if not s["m"] or s["pond"] is None or any(v[2] is None for v in s["m"]):
@@ -1478,7 +1502,7 @@ def run_S6(w):
     same = _s6_eq(pre, post)
     md = _s6_maxdiff(pre, post)
     expect_line(w, "S6", "S6.a", "after reload: cells (dL), pond stock (dL) and gate %s the save; widest square/pond difference %s dL" % (
-        "EQUAL" if same else "DIFFER FROM", md), same if pre["m"] and post["m"] and reloaded else None,
+        "EQUAL" if same else "DIFFER FROM", md), same if _s6_read(pre) and _s6_read(post) and reloaded else None,
         "" if same else "pre %s / post %s" % (json.dumps(pre)[:200], json.dumps(post)[:200]),
         level="every square's decilitres, the pond's decilitres and the gate state are equal across the save (a long, not a rounded, stock)")
     expect_line(w, "S6", "S6.b", "total liquid before save %s dL, after reload %s dL" % (_s6_dl(pre), _s6_dl(post)),
@@ -1495,7 +1519,7 @@ def run_S6(w):
     ro2 = w.readout_lines([g["canal"][0], g["canal"][-1], g["pond"][4]])
     expect_line(w, "S6", "S6.c", "pulse 30: cells (dL) %s; pond run 1 %s dL, run 2 %s dL; widest difference %s dL" % (
         "equal" if r2[-1]["m"] == r1[-1]["m"] else "differ", r1[-1]["pond"], r2[-1]["pond"], _s6_maxdiff(r1[-1], r2[-1])),
-                None if not r1[-1]["m"] or not r2[-1]["m"] or None in (r1[-1]["pond"], r2[-1]["pond"]) or not reloaded
+                None if not (_s6_read(r1[-1]) and _s6_read(r2[-1])) or not reloaded
                 else (r2[-1]["m"] == r1[-1]["m"] and r2[-1]["pond"] == r1[-1]["pond"]),
                 level="run 2 ends cell for cell and decilitre for decilitre as run 1 (run 1: %s; run 2: %s)" % (" || ".join(ro1[:1]), " || ".join(ro2[:1])),
                 readout=ro1 + ro2)
