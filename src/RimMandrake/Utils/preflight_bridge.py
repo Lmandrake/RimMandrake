@@ -582,7 +582,10 @@ def c_live_companion(ctx):
     if not m:
         return UNM('no "[JawaBench] ready:" line in the current log')
     want = (ctx.get('companion') or {}).get('repo_build') or informational_build(COMPANION_REPO)
-    if want and m.group(2)[:12] != want:
+    if not want:                        # nothing to compare against: the live build is unjudged, not matching
+        return UNM('live companion %s tools, build %s, but the repo artifact carries no build stamp to compare' % (
+            m.group(1), m.group(2)))
+    if m.group(2)[:12] != want:
         return FAIL('live companion build %s != repo artifact build %s' % (m.group(2), want))
     return PASS('live companion %s tools, build %s' % (m.group(1), m.group(2)))
 
@@ -765,9 +768,9 @@ def main(argv=None):
     checks = [c for c in OFFLINE if not (a.live and c.cid in ('O08',))]
     if a.live:
         checks = [c for c in checks if c.cid in ('O01', 'O02', 'O04', 'O09')] + LIVE
-        for c in checks:
-            if c.cid == 'O04':
-                c.required = False        # live: ModsConfig is the NEXT load's list; L04 judges the running one
+        # live: ModsConfig is the NEXT load's list; L04 judges the running one. A copy, not the registry's Check:
+        # mutating OFFLINE[O04] left it optional for every later offline run in the same process
+        checks = [Check(c.cid, c.name, c.cost_s, False, c.fn, c.prevents) if c.cid == 'O04' else c for c in checks]
     if a.only:
         keep = set(a.only.split(','))
         checks = [c for c in checks if c.cid in keep or c.name in keep]

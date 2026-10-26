@@ -281,10 +281,37 @@ def t_review_w10():
     check('--only matching nothing exits 3 (usage), not GREEN 0', rc == 3, rc)
 
 
+def t_review_w11():
+    """DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 11: L05 passed with nothing to compare; --live left O04 optional for good."""
+    saved = (pf.informational_build, pf.intended, pf.gp.MODS_CONFIG, pf.LAST_REPORT)
+    import io
+    import contextlib
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            # 1. a repo artifact with no build stamp: the live build is unjudged (UNMEASURED), not a PASS
+            pf.informational_build = lambda dll: None
+            r = pf.c_live_companion({'log': LOG_GOOD})
+            check('L05: no repo build stamp is UNMEASURED, not PASS', r.status == 'UNMEASURED', '%s %s' % (r.status,
+                                                                                                         r.reason))
+            pf.informational_build = saved[0]
+            # 2. a --live run must not demote the registry's O04 for a later offline run in the same process
+            want = ['a.one', 'a.two']
+            pf.intended = lambda ctx: (list(want), 'fixture')
+            pf.gp.MODS_CONFIG = modsconfig(td, want)
+            pf.LAST_REPORT = os.path.join(td, 'last.json')
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = pf.main(['--live', '--only', 'O04', '--no-archive'])
+            o04 = [c for c in pf.OFFLINE if c.cid == 'O04'][0]
+            check('--live leaves OFFLINE O04 required for the next offline run', rc == 0 and o04.required,
+                  repr((rc, o04.required)))
+        finally:
+            pf.informational_build, pf.intended, pf.gp.MODS_CONFIG, pf.LAST_REPORT = saved
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10, t_review_w11):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)
