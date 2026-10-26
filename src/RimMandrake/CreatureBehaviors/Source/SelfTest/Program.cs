@@ -181,6 +181,8 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     "an in-season animal standing in dangerous heat was not classed TooWarm");
                 Assert(RM_WildLeaveMath.ShouldNotify(100, -1, 2500) && !RM_WildLeaveMath.ShouldNotify(2000, 100, 2500)
                     && RM_WildLeaveMath.ShouldNotify(2600, 100, 2500), "the one-per-hour throttle is wrong");
+                Assert(RM_WildLeaveMath.ShouldNotify(50, 2000, 2500),
+                    "a throttle stamped in a later save silenced the notice after loading an earlier one");
             });
 
             Case("overhead: sun heats, cast shade and a roof both protect", () =>

@@ -58,7 +58,10 @@ namespace RimMandrake.CreatureBehaviors
                 }
             }
 
-            if (thing != null && pawn.Map.reservationManager.CanReserve(pawn, thing, 1))
+            // Same maxPawns/stackCount as the driver's Reserve(10, 1): CanReserve refuses outright when an existing
+            // reservation's maxPawns differs, so asking with 1 made a second eater give up on (and dig beside) a
+            // stack the first had reserved for sharing.
+            if (thing != null && pawn.Map.reservationManager.CanReserve(pawn, thing, 10, 1))
             {
                 Job job = JobMaker.MakeJob(RM_JobDefOf.RM_EatMetal, thing);
                 job.count = 1;

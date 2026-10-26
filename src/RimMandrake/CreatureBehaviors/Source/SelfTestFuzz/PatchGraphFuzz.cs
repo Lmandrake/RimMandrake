@@ -230,7 +230,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 var got = RM_WildLeaveMath.Classify(season, cmin, cmax, amb, smin, smax, starving);
                 var want = season >= cmax ? RM_WildLeaveReason.TooWarm : season <= cmin ? RM_WildLeaveReason.TooCold : amb > smax ? RM_WildLeaveReason.TooWarm : amb < smin ? RM_WildLeaveReason.TooCold : starving ? RM_WildLeaveReason.Starving : RM_WildLeaveReason.None;
                 Check(got == want, $"Classify(season {season} [{cmin},{cmax}], ambient {amb} [{smin},{smax}], starving {starving}) = {got}, want {want}");
-                Check(RM_WildLeaveMath.ShouldNotify(1000, -1, 600) && RM_WildLeaveMath.ShouldNotify(10, -1, 600) && !RM_WildLeaveMath.ShouldNotify(1000, 500, 600) && RM_WildLeaveMath.ShouldNotify(1100, 500, 600) && RM_WildLeaveMath.ShouldNotify(0, 0, 0), "ShouldNotify window");
+                Check(RM_WildLeaveMath.ShouldNotify(1000, -1, 600) && RM_WildLeaveMath.ShouldNotify(10, -1, 600) && !RM_WildLeaveMath.ShouldNotify(1000, 500, 600) && RM_WildLeaveMath.ShouldNotify(1100, 500, 600) && RM_WildLeaveMath.ShouldNotify(0, 0, 0) && RM_WildLeaveMath.ShouldNotify(50, 2000, 2500), "ShouldNotify window");
             });
         }
     }

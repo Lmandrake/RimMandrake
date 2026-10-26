@@ -30,10 +30,11 @@ namespace RimMandrake.CreatureBehaviors
         }
 
         /// <summary>One notice per species per map per window, so a group of eight
-        /// leaving together reads as one line, not eight.</summary>
+        /// leaving together reads as one line, not eight. A last tick in the future means the throttle
+        /// (a static that outlives the game) was stamped in a later save than the one now loaded: notify.</summary>
         public static bool ShouldNotify(int nowTick, int lastNotifiedTick, int windowTicks)
         {
-            return lastNotifiedTick < 0 || nowTick - lastNotifiedTick >= windowTicks;
+            return lastNotifiedTick < 0 || nowTick < lastNotifiedTick || nowTick - lastNotifiedTick >= windowTicks;
         }
     }
 }

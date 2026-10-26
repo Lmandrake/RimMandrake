@@ -103,17 +103,23 @@ namespace RimMandrake.CreatureBehaviors
 
                 RM_MetalEaterKernel.Bite bite = RM_MetalEaterKernel.Chew(comp.Props.fullyDestroyThing, thing.def.useHitPoints, comp.Props.ignoreUseHitPoints,
                     comp.Props.percentageOfDestruction, thing.MaxHitPoints, thing.HitPoints, thing.def.stackLimit, thing.stackCount);
-                if (bite.HitPoints != thing.HitPoints)
-                {
-                    thing.HitPoints = bite.HitPoints;
-                }
-                if (bite.StackCount != thing.stackCount)
-                {
-                    thing.stackCount = bite.StackCount;
-                }
                 if (bite.Destroy)
                 {
                     thing.Destroy();
+                }
+                else
+                {
+                    if (bite.HitPoints != thing.HitPoints)
+                    {
+                        thing.HitPoints = bite.HitPoints;
+                    }
+                    // SplitOff, not a bare stackCount write: it dirties the map mesh (a stack-count graphic shrinks)
+                    // and tells listerMergeables the stack changed.
+                    int eaten = thing.stackCount - bite.StackCount;
+                    if (eaten > 0)
+                    {
+                        thing.SplitOff(eaten).Destroy();
+                    }
                 }
 
                 if (!actor.Dead && actor.needs?.food != null)

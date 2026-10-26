@@ -108,8 +108,9 @@ LEAVE = [
     ("leave: ambient cold edge", "if (ambientTemp < safeMin) return RM_WildLeaveReason.TooCold;", "if (ambientTemp <= safeMin) return RM_WildLeaveReason.TooCold;"),
     ("leave: starving before temperature", "if (seasonalTemp >= comfyMax) return RM_WildLeaveReason.TooWarm;", "if (starving) return RM_WildLeaveReason.Starving;\n            if (seasonalTemp >= comfyMax) return RM_WildLeaveReason.TooWarm;"),
     ("leave: starving ignored", "if (starving) return RM_WildLeaveReason.Starving;", ""),
-    ("leave: notice window edge", "return lastNotifiedTick < 0 || nowTick - lastNotifiedTick >= windowTicks;", "return lastNotifiedTick < 0 || nowTick - lastNotifiedTick > windowTicks;"),
-    ("leave: first notice withheld", "return lastNotifiedTick < 0 || nowTick - lastNotifiedTick >= windowTicks;", "return nowTick - lastNotifiedTick >= windowTicks;"),
+    ("leave: notice window edge", "return lastNotifiedTick < 0 || nowTick < lastNotifiedTick || nowTick - lastNotifiedTick >= windowTicks;", "return lastNotifiedTick < 0 || nowTick < lastNotifiedTick || nowTick - lastNotifiedTick > windowTicks;"),
+    ("leave: first notice withheld", "return lastNotifiedTick < 0 || nowTick < lastNotifiedTick || nowTick - lastNotifiedTick >= windowTicks;", "return nowTick < lastNotifiedTick || nowTick - lastNotifiedTick >= windowTicks;"),
+    ("leave: later-save stamp silences", "return lastNotifiedTick < 0 || nowTick < lastNotifiedTick || nowTick - lastNotifiedTick >= windowTicks;", "return lastNotifiedTick < 0 || nowTick - lastNotifiedTick >= windowTicks;"),
 ]
 
 EAT = [
