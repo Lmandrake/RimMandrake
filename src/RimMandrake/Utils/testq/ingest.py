@@ -15,7 +15,8 @@ The done record gets "ingested" either way, except after an error (typically an 
 has not reached origin yet): that record is retried every TESTQ_INGEST_RETRY_S (600) and marked ingested with the
 error only after TESTQ_INGEST_MAX_TRIES (6) tries. Idempotent: a verify already in the RUNNER shard for that attempt is
 reused, never written twice. Then the shard is committed and pushed (TESTQ_INGEST_PUSH=0 skips the git step); a
-pull --rebase that fails is aborted and stops that publication with the commit kept local, never pushed half-rebased.
+pull --rebase that fails is aborted and stops that publication with the commit kept local, never pushed half-rebased;
+any later ingest publishes RUNNER lines left uncommitted or commits left unpushed, even with nothing new to ingest.
 """
 import fcntl
 import json
@@ -125,7 +126,9 @@ def ingest_one(rec):
 def publish(n):
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
-    git("add", "--", SHARD_REL)
+    a = git("add", "--", SHARD_REL)
+    if a.returncode != 0:
+        return "add failed (the lines stay in the working tree; the next ingest retries): " + a.stderr.strip()[-200:]
     if git("diff", "--cached", "--quiet", "--", SHARD_REL).returncode != 0:
         c = git("commit", "-q", "-m", "ledger: RUNNER ingest of %d testq job(s)" % n, "--", SHARD_REL)
         if c.returncode != 0:
@@ -147,6 +150,15 @@ def publish(n):
         if p.returncode == 0:
             return "pushed"
     return "push failed (the commit stays local; the next ingest retries): " + p.stderr.strip()[-200:]
+
+
+def unpublished():
+    """True when an earlier ingest left work behind: RUNNER lines not committed (a publish that died or failed
+    before its commit; the done records are already marked, so n is 0 from then on) or commits not pushed."""
+    def git(*a):
+        return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60).stdout.strip()
+    return bool(git("status", "--porcelain", "--", SHARD_REL)) or git("rev-list", "--count", "origin/main..HEAD") \
+        not in ("", "0")
 
 
 def main():
@@ -178,9 +190,7 @@ def main():
             T.S.dump(rec, T.q("done", path))
             T.log("ingest %s -> %s" % (rec["job"]["id"], json.dumps(out)[:300]))
             n += 1
-        ahead = subprocess.run(["git", "-C", REPO, "rev-list", "--count", "origin/main..HEAD"], capture_output=True,
-                               text=True).stdout.strip()
-        if os.environ.get("TESTQ_INGEST_PUSH", "1") != "0" and (n or ahead not in ("", "0")):
+        if os.environ.get("TESTQ_INGEST_PUSH", "1") != "0" and (n or unpublished()):
             T.log("ingest git: %s" % publish(n))
     return 0
 

@@ -8,7 +8,8 @@ not marked, no crash; a second ingest writes nothing; an ingest that died before
 run and findings instead of writing them twice; an item filed late is verified on the retry; an item never filed is
 marked with its error after the last try. publish() in a sandbox (bare origin + clone): a pull --rebase that
 conflicts is aborted and stops publication with the commit kept local on its branch (the old code pushed origin's
-own tip and reported "pushed"); origin moving on another file is rebased over and pushed.
+own tip and reported "pushed"); origin moving on another file is rebased over and pushed; shard lines a publish
+left uncommitted make the next ingest publish though it has nothing new (the old ahead-only check never retried).
 """
 import json
 import os
@@ -100,6 +101,18 @@ def publish_checks():
         shutil.rmtree(root, ignore_errors=True)
     out, root, disp, sh = publish_sandbox(conflict=False)
     try:
+        import ingest as I
+        with open(os.path.join(disp, I.SHARD_REL), "a") as f:   # a publish that died before its commit
+            f.write('{"runner":"stranded"}\n')
+        old, I.REPO = I.REPO, disp
+        try:
+            stranded = I.unpublished()
+            I.publish(0)
+            left = I.unpublished()
+        finally:
+            I.REPO = old
+        check(stranded and not left, "RUNNER lines left uncommitted count as unpublished and the next publish "
+              "ships them (before=%s after=%s)" % (stranded, left))
         sh("fetch", "-q", "origin", cwd=disp)
         ahead = sh("rev-list", "--count", "origin/main..HEAD", cwd=disp).stdout.strip()
         check(out == "pushed" and ahead == "0", "origin moved on another file: rebased and pushed (%r ahead=%s)"
