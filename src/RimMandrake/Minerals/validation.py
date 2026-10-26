@@ -31,6 +31,13 @@ QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
 SURFACE_PROOF_TYPE = NS + "RM_MineralSurfaceProof"
 METEOR_PROOF_TYPE = NS + "RM_MineralMeteoriteProof"
 METEOR_CLASS = NS + "RM_MineralMeteoriteDef"
+
+
+def _one_arg(args):
+    """jawa/static_call splits args on '|' and reads "" as ZERO parameters, so a one-string ProofState(string) is
+    unreachable with args="" ("No public static ProofState with 0 params", LIVE 2026-10-26). " " is one argument
+    that the tool trims back to "" before the call."""
+    return args if args else " "
 # names that must never fall: stone types (owner card 2026-10-25) and what the 2026-09-25 ruling bars from rock
 METEOR_NEVER = ["Granite", "Marble", "Sandstone", "Slate", "Limestone", "Jade", "MineablePlasteel", "MineableComponentsIndustrial"]
 # Quarry (ogliss.thewhitecrayon.quarry, workshop 2007576583): the adapter finds these members by name; a rename upstream un-wires it
@@ -237,7 +244,7 @@ def _build_suite():
             return False
 
     def _call(t, method, args):
-        r = t.bridge_call("jawa/static_call", type=PROOF_TYPE, method=method, args=args)
+        r = t.bridge_call("jawa/static_call", type=PROOF_TYPE, method=method, args=_one_arg(args))
         if not isinstance(r, dict) or r.get("success") is False:
             raise ExpectationFailed("static_call %s could not run: %r" % (method, r))
         return _parse_state(str(r.get("result", "")))
@@ -390,7 +397,7 @@ def _build_suite():
                 _unmeasured(t, "needs eyes: build a quarry on a RM_GreySea map, mine it, see salt stacks and no components")
 
     def _surface(t):
-        r = t.bridge_call("jawa/static_call", type=SURFACE_PROOF_TYPE, method="ProofState", args="")
+        r = t.bridge_call("jawa/static_call", type=SURFACE_PROOF_TYPE, method="ProofState", args=_one_arg(""))
         if not isinstance(r, dict) or r.get("success") is False:
             raise ExpectationFailed("surface ProofState could not run: %r" % (r,))
         return _parse_state(str(r.get("result", "")))
@@ -417,7 +424,7 @@ def _build_suite():
                         raise ExpectationFailed("vanilla scatter count grew under a kept share < 1: %r" % s.get("vanilla"))
 
     def _meteor(t, method, args):
-        r = t.bridge_call("jawa/static_call", type=METEOR_PROOF_TYPE, method=method, args=args)
+        r = t.bridge_call("jawa/static_call", type=METEOR_PROOF_TYPE, method=method, args=_one_arg(args))
         if not isinstance(r, dict) or r.get("success") is False:
             raise ExpectationFailed("meteorite %s could not run: %r" % (method, r))
         return _parse_state(str(r.get("result", "")))
