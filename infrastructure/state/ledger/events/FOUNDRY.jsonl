@@ -8183,3 +8183,4 @@
 {"seat":"FOUNDRY","event":"close","id":"THUMPER_RING_SILENCE_RADIAL_MAX","sha":"578c02318e","why":"fixed, wave 25b","ts":"2026-10-26T08:08:19Z","tsn":1793002099159264750}
 {"seat":"FOUNDRY","event":"close","id":"TILECACHERESET_RANGE_HARDEN_CLAMP","sha":"8da59c4ad8","why":"fixed, wave 25b","ts":"2026-10-26T08:08:20Z","tsn":1793002100745951908}
 {"seat":"FOUNDRY","event":"close","id":"MAPCOMPTIMING_SCOPE_CORRECT_OTHER_MAPS","sha":"bd6b5d0922","why":"fixed, wave 25b","ts":"2026-10-26T08:08:22Z","tsn":1793002102374031225}
+{"seat":"FOUNDRY","event":"close","id":"KRIZZAK_LIGHTCHASE_FIX_IDLE_REACHABLE","sha":"e781c8f405","why":"fixed in review wave 27 at e781c8f405 (published 65072c72ca): idle-only travel, no ordered job, reachable approach cell; Abyss builds, abyss selftests 4/4 GREEN; offline only, not live-proven","ts":"2026-10-26T08:09:10Z","tsn":1793002150773013639}
