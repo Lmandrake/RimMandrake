@@ -156,7 +156,10 @@ def main(argv=None):
         import proof_hose as PH          # noqa: E402  (bridge-side imports only on a live run)
         raw = PH.PB()
     # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: the watchdog turns a dead probe channel / a spent budget into a clean exit
-    B = V.Watchdog(V.guard(raw), a.budget_s)
+    G = V.guard(raw)
+    # restores (hose maxLength, site calm) go through G, never the watchdog: once the budget is spent every watched call
+    # raises WatchdogAbort, so a restore through B would be skipped and leave the live game at maxLength 80, storyteller off
+    B = V.Watchdog(G, a.budget_s)
     out = a.out or (os.path.join(tempfile.gettempdir(), "level_perf_mock_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
                     if a.mock else os.path.join(HERE, "level_perf_result_%s.json" % time.strftime("%Y%m%dT%H%M%S")))
     rows = []
@@ -219,7 +222,7 @@ def main(argv=None):
         if not a.mock:
             # LEVEL_REHEARSAL_UNSTICK_WAITS_FOR_GODOT: a fresh quicktest map rolled a mech raid mid-rehearsal (RM_HullBolt,
             # 2026-10-23). Static boring world first: storyteller off, threats and intruders gone, the queue cleared.
-            res["calm"] = V.site_calm(B)
+            res["calm"] = V.site_calm(G)          # its SettingsTransaction restores through G too
             res["killHostiles"] = str(B.call("jawa/kill_hostiles", _answer=True))[:160]
             B.call("jawa/incident_queue_clear", _answer=True)
         probe = static("ProofLevelPerf", "0")[1]
@@ -293,7 +296,7 @@ def main(argv=None):
             return _rigs_and_time(a, B, static, row, res, spots, lip_a, lip_b, staged_ok, size, finish, rows)
         finally:
             if len0 is not None and not a.no_time:
-                B.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
+                G.call("jawa/mod_settings_field", typeName=HS, action="set", field="maxLength", value=str(len0), _answer=True)
 
     def unwritten(st, why, cls):
         done = {r["id"] for r in rows}
@@ -314,7 +317,7 @@ def main(argv=None):
         return finish(2)
     finally:
         if not a.mock:
-            res["calmRestore"] = str(V.site_calm_restore(B))[:160]
+            res["calmRestore"] = str(V.site_calm_restore(G))[:160]
             save()
 
 def lay_slice(spec, n):

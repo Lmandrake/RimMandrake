@@ -107,5 +107,37 @@ with contextlib.redirect_stdout(io.StringIO()):
 res = json.load(open(out))
 check("watchdog: a spent budget writes both rows UNMEASURED/HARNESS",
       [(r["detail"].get("mock"), r["class"]) for r in res["rows"]] == [("UNMEASURED", "HARNESS")] * 2 and "budget" in res["watchdog"])
+# a budget spent AFTER maxLength was set to 80 must still put the shipped length back: the restore bypasses the watchdog
+# (before the fix it went through it, raised WatchdogAbort again and left the live game at 80)
+
+
+class _LenBridge(orig):
+    def __init__(self, *a, **k):
+        orig.__init__(self, *a, **k)
+        self.sets = []
+
+    def call(self, tool, **kw):
+        if tool == "jawa/mod_settings_field":
+            if kw.get("action") == "get":
+                return {"success": True, "value": 40}
+            self.sets.append(kw.get("value"))
+            return {"success": True}
+        return orig.call(self, tool, **kw)
+
+
+lb = _LenBridge([], 120)
+L.FakeBridge = type("_OneLen", (orig,), {"__new__": lambda cls, *a, **k: lb})
+real_wd = L.V.Watchdog
+# the clock runs out once the rigs are built (pipes exist), i.e. after the set-80 and before the first lay
+L.V.Watchdog = lambda B, budget: real_wd(B, budget, clock=lambda: 1e12 if lb.pipes else 0.0)
+try:
+    out = os.path.join(tmp, "lp_len.json")
+    with contextlib.redirect_stdout(io.StringIO()):
+        L.main(["--mock", out, "--rehearsal", "--budget-s", "100"])
+finally:
+    L.FakeBridge, L.V.Watchdog = orig, real_wd
+res = json.load(open(out))
+check("watchdog abort mid-run still restores hose maxLength (sets %s)" % lb.sets,
+      "budget" in res.get("watchdog", "") and lb.sets[:1] == ["80"] and lb.sets[-1:] == ["40"])
 print("%d FAIL" % len(fails))
 sys.exit(1 if fails else 0)
