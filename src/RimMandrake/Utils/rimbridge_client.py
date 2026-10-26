@@ -329,6 +329,24 @@ class RetiredToolError(RimBridgeError):
     """The tool exists on the bridge and the owner has retired it. See RETIRED_TOOLS."""
 
 
+# MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: a process that will be hard-killed at a known time (modcheck drivers.py
+# sets this to the epoch second of its subprocess timeout) gets no NEW mutating call that could still be in flight
+# then: a kill mid call strands an UNKNOWN-outcome marker that refuses every later mutation of the run.
+DEADLINE_ENV = "RIMBRIDGE_CALL_DEADLINE"
+
+
+class DeadlineError(RimBridgeError):
+    """A mutating call refused before it started: it might not finish before RIMBRIDGE_CALL_DEADLINE."""
+
+
+def _deadline_left():
+    """Seconds until RIMBRIDGE_CALL_DEADLINE (None when unset or unparseable)."""
+    try:
+        return float(os.environ[DEADLINE_ENV]) - time.time()
+    except (KeyError, ValueError):
+        return None
+
+
 class UnknownParameterError(RimBridgeError):
     """A tool was called with an argument key its schema does not declare.
 
@@ -679,6 +697,11 @@ class RimBridge:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
         mutating = not self.looks_read_only(tool)
         if mutating:
+            left = _deadline_left()
+            if left is not None and left < self.timeout + self.connect_timeout:
+                raise DeadlineError("refusing %s: %.0f s to %s, less than this call's %.0f s timeout + %.0f s "
+                                    "connect: a kill mid call would strand an UNKNOWN-outcome marker"
+                                    % (tool, max(left, 0), DEADLINE_ENV, self.timeout, self.connect_timeout))
             pending = outstanding_indeterminate()
             if pending:
                 raise IndeterminateError(

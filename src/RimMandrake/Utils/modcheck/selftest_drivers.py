@@ -145,12 +145,21 @@ def t_call_utf8():
         seen.update(kw.get("env") or {})
         return subprocess.CompletedProcess(argv, 0, "", "")
     subprocess.run = fake
+    import time
+    t0 = time.time()
     try:
-        D._call(["py", "x.py"], "/m", 5)
+        D._call(["py", "x.py"], "/m", 900)
     finally:
         subprocess.run = real
     ok(seen.get("PYTHONIOENCODING") == "utf-8" and seen.get("PYTHONUTF8") == "1",
        "a driver runs with UTF-8 stdio (PYTHONIOENCODING, PYTHONUTF8)")
+    # MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: the driver's bridge client is told when the timeout kills it
+    try:
+        dl = float(seen.get("RIMBRIDGE_CALL_DEADLINE"))
+    except (TypeError, ValueError):
+        dl = None
+    ok(dl is not None and t0 + 899 <= dl <= time.time() + 901,
+       "a driver gets RIMBRIDGE_CALL_DEADLINE = its kill time (%s)" % seen.get("RIMBRIDGE_CALL_DEADLINE"))
 
 
 def t_cli_flag():

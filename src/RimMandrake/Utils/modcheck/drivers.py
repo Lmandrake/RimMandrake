@@ -85,8 +85,11 @@ def _argv(mod_dir, d, python, _log=player_log):
 
 def _call(argv, cwd, timeout_s):
     """(rc or None on timeout, combined output tail). The driver's stdio is a pipe, which Windows python.exe would
-    encode as cp1252, so one non-ASCII print kills a whole phase: it runs with UTF-8 stdio."""
-    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1")
+    encode as cp1252, so one non-ASCII print kills a whole phase: it runs with UTF-8 stdio.
+    MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: the kill time goes to the driver as RIMBRIDGE_CALL_DEADLINE, so its
+    bridge client starts no mutating call that could still be in flight when the timeout kills it."""
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUTF8="1",
+               RIMBRIDGE_CALL_DEADLINE="%.3f" % (time.time() + timeout_s))
     try:
         r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True, timeout=timeout_s,
                            encoding="utf-8", errors="replace", env=env)

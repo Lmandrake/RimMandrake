@@ -97,6 +97,33 @@ def main():
                      any(x["cid"] == "dead1" for x in C.outstanding_indeterminate())))
     C.reconcile_resolve("dead1", "not-applied", "selftest")
 
+    # MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL: a process under a hard kill deadline (a modcheck driver) must not
+    # START a mutating call that could still be in flight at the kill: that strands an UNKNOWN-outcome marker.
+    import time as _t
+    n0 = len(rows())
+    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "%.3f" % (_t.time() + 20)     # 20 s left < the 30 s call timeout
+    try:
+        bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+        refused = False
+    except C.DeadlineError as e:
+        refused = "RIMBRIDGE_CALL_DEADLINE" in str(e)
+    except Exception:   # noqa: BLE001 - an old client has no DeadlineError: the mutation ran
+        refused = False
+    good.append(case("a mutation that could outlive the kill deadline is refused before it starts", refused))
+    good.append(case("the refused mutation leaves no marker and no start row",
+                     not C.outstanding_indeterminate() and len(rows()) == n0, rows()[n0:]))
+    good.append(case("a DeadlineError is a RimBridgeError (drivers' broad handlers still catch it)",
+                     issubclass(getattr(C, "DeadlineError", Exception), C.RimBridgeError)))
+    bridge({"success": True}).call("rimworld/get_game_info", check=False)
+    good.append(case("a read still runs inside the deadline window", rows()[-1]["status"] == "ok"))
+    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "%.3f" % (_t.time() + 600)
+    bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+    good.append(case("a mutation with time to finish before the deadline runs", rows()[-1]["status"] == "ok"))
+    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "not-a-number"
+    bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+    good.append(case("an unparseable deadline is ignored", rows()[-1]["status"] == "ok"))
+    del os.environ["RIMBRIDGE_CALL_DEADLINE"]
+
     # bounded: rotation
     C.EVIDENCE_MAX_BYTES = 2000
     for _ in range(30):
