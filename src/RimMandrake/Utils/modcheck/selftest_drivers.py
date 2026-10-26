@@ -173,8 +173,8 @@ def t_flowworks_table():
         ok(script in scripts, "DRIVER_OF driver %s is in the table" % script)
     th = [d for d in table if d["name"] == "thirst_live"]
     ok(th and "T15R" not in " ".join(str(a) for a in th[0].get("args") or []), "thirst_live leaves T15R out")
-    riv = [d for d in table if d.get("stage") == "chain"]
-    ok(len(riv) == 1 and os.path.basename(riv[0]["script"]) == "river_site.py", "the river site is the one chain-stage driver")
+    riv = [d for d in table if d.get("stage") == "chain" and d["name"] == "river_site"]
+    ok(len(riv) == 1 and os.path.basename(riv[0]["script"]) == "river_site.py", "the river site is the one river chain-stage driver")
     return v, riv[0] if riv else None
 
 
@@ -231,12 +231,32 @@ def t_steam_chain_on_river_site():
     names = [n for n, _f in v.suite.chains]
     ok("toggle_river_steam" in names, "toggle_river_steam is still registered")
     if "toggle_river_steam" in names:
-        non_river = [i for i, n in enumerate(names) if n not in riv["chains"]]
+        non_river = [i for i, n in enumerate(names) if n not in riv["chains"] and n != "toggle_river_steam_pyrelands"]
         ok(names.index("toggle_river_steam") > max(non_river), "toggle_river_steam runs after every non-river chain")
 
 
+def t_pyrelands_river_site():
+    """RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE: the ON/OFF half has its own chain-stage driver (river_site.py --biome
+    RM_Pyrelands, a re-tile of an existing tile, not worldgen), and its chain runs last."""
+    v = _fw_suite()
+    d = [x for x in v.suite.live_drivers if x["name"] == "river_site_pyrelands"]
+    ok(len(d) == 1 and d[0].get("stage") == "chain", "river_site_pyrelands is a chain-stage driver")
+    if d:
+        a = d[0]["args"]
+        ok(a[:1] == ["--biome"] and a[1] == "RM_Pyrelands" and os.path.basename(d[0]["script"]) == "river_site.py",
+           "it runs river_site.py --biome RM_Pyrelands")
+        ok(d[0]["chains"] == ["toggle_river_steam_pyrelands"], "it feeds only toggle_river_steam_pyrelands")
+    names = [n for n, _f in v.suite.chains]
+    ok(names and names[-1] == "toggle_river_steam_pyrelands", "toggle_river_steam_pyrelands runs last")
+    ok("toggle_river_steam" in names and names.index("toggle_river_steam") < len(names) - 1,
+       "toggle_river_steam still runs, before it")
+    comps = v.suite.components_declared() if hasattr(v.suite, "components_declared") else None
+    ids = [n for n, _f in v.suite.chains if n == "toggle_river_steam_pyrelands"]
+    ok(len(ids) == 1, "registered once")
+
+
 def main():
-    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper, t_steam_chain_on_river_site):
+    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper, t_steam_chain_on_river_site, t_pyrelands_river_site):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

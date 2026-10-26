@@ -1698,9 +1698,13 @@ suite.live_drivers = [
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half
     # (river cells, no vent) runs on the river site too, moved last below; its ON/OFF half needs a Pyrelands map
-    # (a scratch-world site, Pyrelands/northstar_site.py) and stays UNMEASURED naming it.
+    # (the chain toggle_river_steam_pyrelands below) runs on the same site re-tiled to the Pyrelands biome.
     {"name": "river_site", "script": "northstar/river_site.py", "args": [], "stage": "chain",
      "chains": ["works", "current", "swept", "placer", "taken_by_land", "toggle_river_steam"], "timeout_s": 900},
+    # RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE: river_site.py --biome re-tiles the chosen river tile to the Pyrelands (an
+    # edit of the existing world's tile, the way biome_site.retile does; no worldgen) before it founds and generates the map.
+    {"name": "river_site_pyrelands", "script": "northstar/river_site.py", "args": ["--biome", "RM_Pyrelands"],
+     "stage": "chain", "chains": ["toggle_river_steam_pyrelands"], "timeout_s": 900},
 ]
 
 
@@ -1728,3 +1732,41 @@ suite.chains = [(_n, _on_river_site(_f, _RIVER) if _n in _RIVER["chains"] else _
 # toggle_river_steam lives in the extension suite, ahead of the river chains; it settles the river site, so it goes last.
 suite.chains = ([_c for _c in suite.chains if _c[0] != "toggle_river_steam"]
                 + [_c for _c in suite.chains if _c[0] == "toggle_river_steam"])
+
+
+@suite.chain("toggle_river_steam_pyrelands")
+def toggle_river_steam_pyrelands(t):
+    """RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE: the ON/OFF half of RIVER_STEAM_ANIMATION_1 on a Pyrelands river map
+    (RiverSteamBiomeExtension present). Same staging and counters as toggle_river_steam (extensions.py), which on a
+    non-steam river site can only prove the biome gate. UNMEASURED naming the biome when the map is not Pyrelands."""
+    x0, z0 = EXT._prep_plot(t, "C")
+    EXT._stage(t, "jawa/set_terrain_batch", ops="WaterMovingShallow:%s" % EXT._rect(x0 + 4, z0 + 6, 8, 1))
+    s0 = EXT._steam(t, "rescan", strict=False)
+    if "ext" not in s0:
+        why = "ProofSteam unread on this map: %r" % s0
+    elif s0["ext"] != "True":
+        why = "biome %s carries no RiverSteamBiomeExtension; this chain needs a Pyrelands river map (RM_Pyrelands)" % s0.get("biome")
+    else:
+        why = None
+    with EXT._unmeasured_if(t, why, "river_steam_on", toggle="riverSteamEnabled"):
+        t.wait_ticks(300)
+        s1 = EXT._steam(t)
+        if t._guard():
+            EXT._expect((s1["vents"] or 0) > 0, "a steam biome with %s river cells has no vent: %s" % (s1["river"], s1))
+            if (s1["due"] or 0) > 0 and not s1["thrown"]:
+                raise ExpectationFailed("UNMEASURED: every vent is fogged (due %s, thrown 0)" % s1["due"])
+            EXT._expect((s1["thrown"] or 0) > 0, "no steam ribbon in 300 ticks with riverSteamEnabled ON: %s" % s1)
+    with EXT._unmeasured_if(t, why, "river_steam_off", toggle="riverSteamEnabled"):
+        with EXT._setting(t, "riverSteamEnabled", False):
+            EXT._steam(t, "rescan")
+            t.wait_ticks(300)
+            s2 = EXT._steam(t)
+            if t._guard():
+                EXT._expect(s2["due"] == 0 and s2["thrown"] == 0, "steam with riverSteamEnabled OFF: %s" % s2)
+
+
+_PYRE = [_d for _d in suite.live_drivers if _d.get("name") == "river_site_pyrelands"][0]
+suite.chains = [(_n, _on_river_site(_f, _PYRE) if _n in _PYRE["chains"] else _f) for _n, _f in suite.chains]
+# it replaces the map like the river site does, so it runs after the river-site chains
+suite.chains = ([_c for _c in suite.chains if _c[0] != "toggle_river_steam_pyrelands"]
+                + [_c for _c in suite.chains if _c[0] == "toggle_river_steam_pyrelands"])

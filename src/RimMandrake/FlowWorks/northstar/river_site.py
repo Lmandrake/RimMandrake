@@ -208,6 +208,8 @@ def leftover_maps(loaded, site_map_id, generated_tiles):
 
 ALLOW_NO_FAST = "--allow-no-fast" in sys.argv   # R3 (wash-off-map) needs edge current only; a quicktest world can hold no size-1.89
 # river (2026-10-18: 20 of 20 river tiles fast=0) -- opt in to accept current without a fast lane (R1/ProofShove "fast" then UNMEASURED)
+BIOME = (sys.argv[sys.argv.index("--biome") + 1] if "--biome" in sys.argv and sys.argv.index("--biome") + 1 < len(sys.argv)
+         else None)  # RIVER_STEAM_BUILD_PYRELANDS_SWEEP_SITE: re-tile the chosen river tile to this biome (RM_Pyrelands) before founding
 DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle chains. Their 40x30 Soil repaints cut a
 # river and a river cut their plots (MEASURED 2026-10-06: confinement read river cells (122,87..89) as D=4 F=4 "liquid on
 # un-dug ground"; the weir pooled over painted Soil). Rivers chains run on a river site, the rest on a dry one.
@@ -251,6 +253,15 @@ def main():
             if tries >= 40:                     # BENCH 2026-10-11: 10 was spent on steam geysers alone
                 break
             t = int(row["tile"])
+            if BIOME:
+                # an edit of this existing world's tile (the way biome_site.retile does), written BEFORE the map reads it; no worldgen
+                rt = s.call("jawa/world_tile_set", tiles=str(t), biome=BIOME,
+                             temperature=float(row["temperature"]), readBack=1)   # the tile keeps its MILD temperature (colonists live here) or {}
+                back = {x.get("tile"): x for x in rt.get("tiles") or []}
+                if rt.get("success") is False or (back.get(t) or {}).get("biome") != BIOME:
+                    print("tile", t, "re-tile to %s refused or read back wrong: %s" % (BIOME, str(rt)[:200]))
+                    continue
+                print("tile", t, "re-tiled to", BIOME, "riverCount now", (back.get(t) or {}).get("riverCount"))
             cf = s.call("jawa/colony_found", tile=t, faction="Player", name=("NorthstarDry" if DRY else "NorthstarRiver"))
             if not cf.get("success"):
                 continue
