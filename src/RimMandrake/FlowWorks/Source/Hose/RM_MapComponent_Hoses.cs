@@ -46,6 +46,40 @@ namespace RimMandrake.FlowWorks.Hose
             public string crossKey;
             public List<double[]> crossSpans;
             public Mesh crossShadow;
+            /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: the poseVersion and rank the crossing shadow was last checked at (it
+            /// is not re-checked while neither moved), and rp's bounding box widened by CrossReach (the broad phase).</summary>
+            public int crossVer = -1, crossRank = -1;
+            public bool boxOk;
+            public double bx0, bz0, bx1, bz1;
+        }
+
+        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: bumped whenever a cached strand is built or dropped, or the crossing
+        /// order is rebuilt -- the crossing shadows are re-checked only then, not every frame (all-pairs per frame was O(n^2)).</summary>
+        private int poseVersion;
+
+        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP perf A/B switch: true = the pre-fix per-frame paths (all-pairs crossing
+        /// scan every frame, layering key string every frame, pair-solve cache cleared at 64 entries). Off by default; set through
+        /// <see cref="FrameLegacy"/> (jawa/static_call) only to measure the fix against the old code on the same map.</summary>
+        public static bool LegacyFrame;
+
+        /// <summary>Static-call hook: "1" / "0" sets <see cref="LegacyFrame"/>, anything else reads it.</summary>
+        public static string FrameLegacy(string on)
+        {
+            if (on == "1" || on == "0") LegacyFrame = on == "1";
+            return "legacyFrame=" + (LegacyFrame ? 1 : 0);
+        }
+
+        /// <summary>How far past its strand's bounding box another strand can be and still cross it (cells): both ribbons' half
+        /// widths with the widened crossing shadow are well under half a cell each.</summary>
+        private const double CrossReach = 1.0;
+
+        private static void Box(Cached c)
+        {
+            if (c.boxOk) return;
+            double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
+            foreach (V2 p in c.rp) { x0 = Math.Min(x0, p.X); z0 = Math.Min(z0, p.Z); x1 = Math.Max(x1, p.X); z1 = Math.Max(z1, p.Z); }
+            c.bx0 = x0 - CrossReach; c.bz0 = z0 - CrossReach; c.bx1 = x1 + CrossReach; c.bz1 = z1 + CrossReach;
+            c.boxOk = true;
         }
 
         /// <summary>JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX: a coupling as the draw placed it (centre, axis, size, opaque band), by
@@ -102,6 +136,7 @@ namespace RimMandrake.FlowWorks.Hose
             UnhookMapEvents();
             foreach (Cached c in meshes.Values) DestroyMeshes(c);
             meshes.Clear();
+            poseVersion++;
             foreach (StubCache sc in stubMeshes.Values) if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh);
             stubMeshes.Clear();
             foreach (CompHoseReel r in new List<CompHoseReel>(feeds.Keys)) DropFeed(r);
@@ -782,7 +817,14 @@ namespace RimMandrake.FlowWorks.Hose
                 if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0) { DrawCarrying(r, y, lastFar); continue; }
                 if (carryCache.Count > 0) DropCarryCache(r);
                 HoseLay lay = EnsureLay(r);
-                if (lay == null) { lastDraw[r] = "none"; continue; }
+                if (lay == null)
+                {
+                    // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: a wound-in hose (EnsureLay returns null without re-laying) dropped no
+                    // strand, so hoses above kept crossing shadows over it and every scan still walked it
+                    if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);
+                    lastDraw[r] = "none";
+                    continue;
+                }
                 PoseInfo pi = Info(r);
                 double amt = RM_HoseSettings.plumpAmount;
                 int T = RM_HoseSettings.Tuning().TransitionTicks;
@@ -843,6 +885,7 @@ namespace RimMandrake.FlowWorks.Hose
                     {
                         if (c != null) { DestroyMeshes(c); }
                         meshes[r] = new Cached { key = key, flat = fm, plump = pm, shadow = sm, pts = pts, rp = rp };
+                        poseVersion++;
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
@@ -884,7 +927,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         private void DropMeshes(CompHoseReel r)
         {
-            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); }
+            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); poseVersion++; }
             if (stubMeshes.TryGetValue(r, out StubCache sc)) { if (sc.mesh != null) UnityEngine.Object.Destroy(sc.mesh); stubMeshes.Remove(r); }
         }
 
@@ -958,16 +1001,38 @@ namespace RimMandrake.FlowWorks.Hose
         private void DrawCrossShadow(CompHoseReel r, Cached c, float vis, float e, float y, int rank)
         {
             if (c.rp == null || c.rp.Count < 2) return;
-            int h = c.key.GetHashCode();
-            List<IList<V2>> lowers = null;
-            for (int i = 0; i < reels.Count; i++)
+            // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: re-checked only when some strand was built or dropped, or the order changed
+            // (poseVersion), or this hose's rank moved; then only hoses whose boxes overlap this one's (broad phase)
+            if (LegacyFrame || c.crossVer != poseVersion || c.crossRank != rank)
             {
-                CompHoseReel o = reels[i];
-                if (o == r || !meshes.TryGetValue(o, out Cached oc) || oc.rp == null || RankOf(o) >= rank) continue;
-                h = h * 31 + oc.key.GetHashCode();
-                (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
+                c.crossVer = poseVersion;
+                c.crossRank = rank;
+                if (!LegacyFrame) Box(c);
+                int h = c.key.GetHashCode();
+                List<IList<V2>> lowers = null;
+                for (int i = 0; i < reels.Count; i++)
+                {
+                    CompHoseReel o = reels[i];
+                    if (o == r || !meshes.TryGetValue(o, out Cached oc) || oc.rp == null || oc.rp.Count < 2) continue;
+                    if (!LegacyFrame)
+                    {
+                        Box(oc);
+                        if (oc.bx0 > c.bx1 || oc.bx1 < c.bx0 || oc.bz0 > c.bz1 || oc.bz1 < c.bz0) continue;
+                    }
+                    if (RankOf(o) >= rank) continue;
+                    h = h * 31 + oc.key.GetHashCode();
+                    (lowers ?? (lowers = new List<IList<V2>>())).Add(oc.rp);
+                }
+                RebuildCrossShadow(c, lowers, h.ToString(), vis, e, y);
             }
-            string ck = h.ToString();
+            if (c.crossShadow == null) return;
+            Graphics.DrawMesh(c.crossShadow, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(1)), 0);
+            lastCrossShadowDraws++;
+        }
+
+        /// <summary>The crossing shadow's mesh and spans, rebuilt when the key (this pose and every lower crossing pose) changed.</summary>
+        private void RebuildCrossShadow(Cached c, List<IList<V2>> lowers, string ck, float vis, float e, float y)
+        {
             if (c.crossKey != ck)
             {
                 c.crossKey = ck;
@@ -1005,9 +1070,6 @@ namespace RimMandrake.FlowWorks.Hose
                 }
                 CrossBuilds++;
             }
-            if (c.crossShadow == null) return;
-            Graphics.DrawMesh(c.crossShadow, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(1)), 0);
-            lastCrossShadowDraws++;
         }
 
         /// <summary>The crossing shadow: offset (cells, +x / -z, plus 0.04 when plump), widening over the ground shadow, and how
@@ -1071,16 +1133,44 @@ namespace RimMandrake.FlowWorks.Hose
             // the key is rebuilt at most once a frame (RankOf runs per reel per draw)
             if (layering != null && layeringFrame == Time.frameCount) return layering;
             layeringFrame = Time.frameCount;
-            var sb = new System.Text.StringBuilder();
-            foreach (CompHoseReel r in reels) sb.Append(r.parent.thingIDNumber).Append(':').Append(r.lay != null ? r.layKey : "-").Append('|');
-            sb.Append(RM_HoseSettings.plumpAmount);
-            string key = sb.ToString();
-            if (layering != null && key == layeringKey) return layering;
+            string key = null;
+            if (LegacyFrame)
+            {
+                var sb = new System.Text.StringBuilder();
+                foreach (CompHoseReel r in reels) sb.Append(r.parent.thingIDNumber).Append(':').Append(r.lay != null ? r.layKey : "-").Append('|');
+                sb.Append(RM_HoseSettings.plumpAmount);
+                key = sb.ToString();
+                if (layering != null && key == layeringKey) return layering;
+            }
+            // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: the same test without building a string of every lay key each frame -- the
+            // reels, their lay OBJECTS and the plump setting are compared in place. EnsureLay makes a new HoseLay on every re-lay,
+            // so this also sees a re-plan that kept the same key (an obstacle moved the route), which the key string missed
+            else if (layering != null && SameLayering()) return layering;
             var hs = new List<HoseMath.LayeredHose>(reels.Count);
             foreach (CompHoseReel r in reels) hs.Add(new HoseMath.LayeredHose { Id = r.parent.thingIDNumber, Lay = r.lay ?? new HoseLay() });
             layering = HoseMath.Layer(hs, HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount));
             layeringKey = key;
+            layeredIds.Clear();
+            layeredLays.Clear();
+            foreach (CompHoseReel r in reels) { layeredIds.Add(r.parent.thingIDNumber); layeredLays.Add(r.lay); }
+            layeredPlump = RM_HoseSettings.plumpAmount;
+            poseVersion++;   // ranks may have moved: the crossing shadows are re-checked
             return layering;
+        }
+
+        private readonly List<int> layeredIds = new List<int>();
+        private readonly List<HoseLay> layeredLays = new List<HoseLay>();
+        private float layeredPlump = float.NaN;
+
+        private bool SameLayering()
+        {
+            if (layeredIds.Count != reels.Count || layeredPlump != RM_HoseSettings.plumpAmount) return false;
+            for (int i = 0; i < reels.Count; i++)
+            {
+                CompHoseReel r = reels[i];
+                if (layeredIds[i] != r.parent.thingIDNumber || !ReferenceEquals(layeredLays[i], r.lay)) return false;
+            }
+            return true;
         }
 
         /// <summary>Rule 3 read live (probe): fittings drawing over another hose's body under the current layering.</summary>
@@ -1262,11 +1352,21 @@ namespace RimMandrake.FlowWorks.Hose
         private sealed class MateInfo
         {
             public string key;
+            /// <summary>The full solve key the pair was solved under, and the frame it was last met (pruning).</summary>
+            public string full;
+            public int seen;
+            /// <summary>The two lays solved against: a re-plan under the same key is a new HoseLay, so it is solved again.</summary>
+            public HoseLay layA, layB;
             public CompHoseReel A, B;
             public HoseSpliceMath.Mate mate;
         }
         private readonly Dictionary<CompHoseReel, MateInfo> mateOf = new Dictionary<CompHoseReel, MateInfo>();
-        private readonly Dictionary<string, MateInfo> mateSolved = new Dictionary<string, MateInfo>();
+        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: one solve per PAIR (A id, B id), kept while its key holds. The old
+        /// cache was keyed by the solve key and cleared whenever it passed 64 entries; with more than 64 pairs in reach (four
+        /// rig hoses to one lip cell, ~90 laid) it was cleared inside every frame, so every pair's MatePair solve ran again every
+        /// frame, paused or not.</summary>
+        private readonly Dictionary<long, MateInfo> mateSolved = new Dictionary<long, MateInfo>();
+        private readonly Dictionary<string, MateInfo> mateSolvedLegacy = new Dictionary<string, MateInfo>();
         /// <summary>Per mated hose: how many leading samples of its drawn pose are the laid hose's own (joiners past it are dropped).</summary>
         private readonly Dictionary<CompHoseReel, int> mateKept = new Dictionary<CompHoseReel, int>();
         private int mateFrame = -1;
@@ -1296,6 +1396,7 @@ namespace RimMandrake.FlowWorks.Hose
             cands.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
             float vis = (float)HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
             double kmax = 1 / Math.Max(0.45, RM_HoseSettings.Shape().MinBendRadius);
+            int met = 0;
             for (int i = 0; i < cands.Count; i++)
             {
                 CompHoseReel a = cands[i];
@@ -1307,19 +1408,34 @@ namespace RimMandrake.FlowWorks.Hose
                     IntVec3 ea = a.EndCell, eb = b.EndCell;
                     if (Math.Max(Math.Abs(ea.x - eb.x), Math.Abs(ea.z - eb.z)) > 1) continue;
                     string key = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###");
-                    if (!mateSolved.TryGetValue(key, out MateInfo mi))
+                    MateInfo mi;
+                    if (LegacyFrame)
                     {
-                        mateSolves++;
-                        List<V2> A = a.lay.Flat, B = b.lay.Flat;
-                        HoseSpliceMath.Mate m = A != null && B != null && A.Count > 2 && B.Count > 2
-                            ? HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _, a.lay.Lead0, b.lay.Lead0) : null;
-                        if (mateSolved.Count > 64) mateSolved.Clear();
-                        mateSolved[key] = mi = new MateInfo { key = key.GetHashCode().ToString("x8"), A = a, B = b, mate = m };
+                        if (!mateSolvedLegacy.TryGetValue(key, out mi))
+                        {
+                            if (mateSolvedLegacy.Count > 64) mateSolvedLegacy.Clear();
+                            mateSolvedLegacy[key] = mi = SolveMate(a, b, key, kmax, vis);
+                        }
+                    }
+                    else
+                    {
+                        long pair = ((long)a.parent.thingIDNumber << 32) | (uint)b.parent.thingIDNumber;
+                        if (!mateSolved.TryGetValue(pair, out mi) || mi.full != key || !ReferenceEquals(mi.layA, a.lay) || !ReferenceEquals(mi.layB, b.lay))
+                            mateSolved[pair] = mi = SolveMate(a, b, key, kmax, vis);
+                        mi.seen = mateFrame;
+                        met++;
                     }
                     if (mi.mate == null) continue;   // no gentle route: both drawn as laid
                     mateOf[a] = mateOf[b] = mi;
                     break;
                 }
+            }
+            // pairs no longer in reach (an end moved, a reel gone) are forgotten once they outnumber the live ones
+            if (mateSolved.Count > 64 && mateSolved.Count > 2 * met)
+            {
+                var stale = new List<long>();
+                foreach (var kv in mateSolved) if (kv.Value.seen != mateFrame) stale.Add(kv.Key);
+                foreach (long k in stale) mateSolved.Remove(k);
             }
             if (mateKept.Count > 0)
             {
@@ -1327,6 +1443,17 @@ namespace RimMandrake.FlowWorks.Hose
                 foreach (CompHoseReel r in mateKept.Keys) if (!mateOf.ContainsKey(r)) gone.Add(r);
                 foreach (CompHoseReel r in gone) mateKept.Remove(r);
             }
+        }
+
+        private MateInfo SolveMate(CompHoseReel a, CompHoseReel b, string key, double kmax, float vis)
+        {
+            mateSolves++;
+            List<V2> A = a.lay.Flat, B = b.lay.Flat;
+            HoseSpliceMath.Mate m = A != null && B != null && A.Count > 2 && B.Count > 2
+                ? HoseSpliceMath.MatePair(A, B, A[A.Count - 1], kmax, vis, out _, out _, a.lay.Lead0, b.lay.Lead0) : null;
+            // the draw key of both hoses carries this: a re-solve (a lay re-planned under the same key) re-meshes them
+            string drawKey = key.GetHashCode().ToString("x8") + (LegacyFrame ? "" : "." + mateSolves);
+            return new MateInfo { key = drawKey, full = key, A = a, B = b, mate = m, layA = a.lay, layB = b.lay };
         }
 
         private MateInfo MateFor(CompHoseReel r)
