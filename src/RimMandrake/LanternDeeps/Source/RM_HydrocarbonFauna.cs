@@ -21,7 +21,7 @@ namespace RimMandrake.LanternDeeps
     //     "Killed by a blade it collapses into a harmless sac; killed by fire, a spark, a hot
     //     bullet... it detonates."
     //  2. RM_CompMobileGlow: vanilla CompGlower registers at a fixed cell; a drifting glower must
-    //     re-register as it moves (CompTick, since a pawn never runs CompTickRare).
+    //     re-register as it moves (CompTick every interval ticks: CompTickRare, which a pawn does get every 250, is too coarse).
     //  3. RM_CompHeatPusherGated: the chiller's cold is vanilla CompHeatPusher (CompTick pushes
     //     every 60 ticks, which a pawn does run), behind its Mod Settings switch.
     //  Plus RM_GenStep_Galuush: one galuush per Deep at most, by chance, hung in the biggest

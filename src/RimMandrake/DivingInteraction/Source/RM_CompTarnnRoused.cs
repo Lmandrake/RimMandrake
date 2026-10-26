@@ -70,17 +70,9 @@ namespace RimMandrake.DivingInteraction
             roused = true;
         }
 
-        // A pawn is a Normal-ticker thing: ThingWithComps only calls CompTickRare from
-        // TickRare (RimSage, ThingWithComps.cs), which a pawn never receives. Drive the
-        // rare cadence from CompTick so this comp actually runs.
-        public override void CompTick()
-        {
-            base.CompTick();
-            if (parent.IsHashIntervalTick(250))
-            {
-                CompTickRare();
-            }
-        }
+        // A pawn DOES receive CompTickRare: Pawn.Tick calls TickRare() every IsHashIntervalTick(250)
+        // (decompiled 1.6 Verse/Pawn.cs), and ThingWithComps.TickRare runs every comp's CompTickRare.
+        // A CompTick that also called CompTickRare at the same hash ran this twice on the same tick.
 
         public override void CompTickRare()
         {
@@ -127,6 +119,12 @@ namespace RimMandrake.DivingInteraction
             {
                 Pawn p = pawns[i];
                 if (p == null || p.Dead || !p.Spawned || p == tarnn)
+                {
+                    continue;
+                }
+                // a downed offender is out of the fight (vanilla animals do not finish the incapacitated), and a
+                // roused Tarnn later tamed or otherwise given a faction only zaps those hostile to it
+                if (p.Downed || (tarnn.Faction != null && !p.HostileTo(tarnn)))
                 {
                     continue;
                 }
