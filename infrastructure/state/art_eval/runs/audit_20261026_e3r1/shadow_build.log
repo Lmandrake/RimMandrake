@@ -1,0 +1,30 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e3r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e3r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e3r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_e3r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "bed143893c40c6a0",
+ "census_rows": 3,
+ "rows": 3,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 11,
+ "images": 7394
+}
+
+--- stderr ---
+art_sheet: RM_Ollathrix: census texPaths ['RimStarWars/Shokk/Wyyyschokk/Wyyyschokk'] are STALE; our defs draw ['Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix'] (src XML) — dropped ['RimStarWars/Shokk/Wyyyschokk/Wyyyschokk']
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Ollathrix: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_e3r1/kept/kept_RM_Ollathrix_north_5cdb320de391.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Huldu: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Huldu/RM_Huldu_south.png', '/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Huldu/RM_Huldu_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Murrin: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Murrin/RM_Murrin_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

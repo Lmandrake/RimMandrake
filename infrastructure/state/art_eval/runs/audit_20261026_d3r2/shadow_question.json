@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Dakkra": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha bcc3adb73b); F_INCONSISTENT: On north the tail fan lies low and small near the bottom of the sprite. On south and east it is a large fan raised and spread at the curled ; F_SIZE_JUMP: North's silhouette is narrower and looks lighter than south's broad, tall-crested front view. The measured height spread is 20%, mostly from"
+  },
+  "RM_Karrimeth": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP, STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha 162d8571b8); STYLE_EARTHLY: Segmented overlapping plates with antennae and short legs read close to a giant isopod or woodlouse.; F_SIZE_JUMP: North measures 113 px tall against south's 126 px and looks a touch smaller and lower in the panel. This is within the 15% tolerance."
+  },
+  "RM_Ondrukka": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha b9de1add4b); F_INCONSISTENT: The north rear end is slightly narrower and more tapered than the broad, bulbous abdomen on east and the wide dome on south."
+  },
+  "RM_Siezer": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 9df2395ceb); F_INCONSISTENT: The head mass at the top of north, which should be visible behind the shoulders, is narrower and smaller than the wide, half-body-sized head"
+  }
+ }
+}

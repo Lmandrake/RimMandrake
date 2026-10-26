@@ -1,0 +1,64 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 34.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.33450440000000004
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 19.2
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['STYLE_OFF']; polish ['LEGIB_32']",
+  "gpt strong_accept: unsettled [], own blocking []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "79537df42d71a737a0006a053bdf0d513befd73d5d2890ab2bf2785bfe0d7f6d",
+  "east.png": "74b65ae58c315352849ec58fe570f97458c1111ebd74a83d4d8e82365c6c252c",
+  "north.png": "67f74d9134aadaf9b64ebce4e1357205231f69411f1e763539ca77e86016ebb7",
+  "scale.png": "29e7181da68c32269740edef2e209b25946d9c0915067c6775c501cadc0554f0",
+  "facings.png": "21f0b8ccf9118ad00aa780f3ce515449dd2616cbc5ba09f0dee8402e0fd74718"
+ }
+}

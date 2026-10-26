@@ -1,0 +1,59 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Shoal": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 299451906c); F_SIZE_JUMP: Height matches (1% spread), but the north cluster is clearly narrower and more compact than south: roughly 65% of south's width, with tighte; F_INCONSISTENT: On east the lozenges point along the travel direction. On south and north they are drawn full-length with tips pointing sideways or down, no"
+  },
+  "RM_Thermadon": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen",
+   "context": "judged candidate r1 (image sha c21e61529e); F_INCONSISTENT: South shows the abdomen as four glowing bulbs; east and north show two paired lobes."
+  },
+  "RSW_Woolamander": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 76fb9dbc80); STYLE_CARTOON: The fur is drawn as a fine-line illustrative hatch with a thin dark contour. It reads slightly as an illustration rather than a fully natura"
+  },
+  "RSW_FacetMothPupa": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha 65f83ebfa5); DEPARTURE_MISSING: The facets read as leathery or dried-leaf plates more than gem-like faces. Highlights on the flat planes are muted and do not really catch t"
+  },
+  "RSW_LavaFlea": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: CANON_MISS, F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha a007018b01); F_INCONSISTENT: East's carapace is darker purple-charcoal; south and north lean lighter coppery-brown.; CANON_MISS: The hide reads reddish copper-brown more than charcoal-black/maroon-purple.; F_INCONSISTENT: A small sculpted knob/ornament beside the front saddle post that appears only on east."
+  },
+  "RSW_Silooth": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha bc82a1ed26); F_INCONSISTENT: The east profile appears to show 7\u20138 leg tips, while south and north each show six legs."
+  }
+ }
+}

@@ -1,0 +1,361 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e1r1",
+ "built": "2026-10-26T12:19:52-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e1r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Drazzik": {
+   "columns": {
+    "A": {
+     "east": "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838",
+     "north": "52504edc50913c2f61dd1e4768feefec1f0fbde25cd19e9951dec70cb22b29d9",
+     "south": "0ce9743ba6b9c2f3dbdc02f22f85a6420d142a463f0ca4d339648a53be1d15f2"
+    },
+    "B": {
+     "east": "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838",
+     "north": "52504edc50913c2f61dd1e4768feefec1f0fbde25cd19e9951dec70cb22b29d9",
+     "south": "8853b193d2c23fccfc2f0607e93b8cfe112b99b2a9557f886da2a336cdd96a45"
+    },
+    "C": {
+     "east": "944b55f4b32ba088f6431a12ce7a9c0215b413c86284d8d30e4dfb45740ab1b2",
+     "north": "7e2eb9d6cc15e95714fbdf1b0f0ce3599d6547aede50baab324a508d8b3f6a2c",
+     "south": "02037441bbdb999cb1f08ba063384c4aad316c5309c886ce3188dcd82b430b9a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+    "B": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+    "C": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_Drazzik",
+    "C": "render stillsand_regen_RM_Drazzik_swimming_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "drazzik"
+  },
+  "RM_Heemin": {
+   "columns": {
+    "A": {
+     "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
+     "north": "819fd00aa2018e217114eca4f6254250160cef82cde05a53f6b8400a76be53bb",
+     "south": "35ebd4255845fb6221ff3db422ab677ce2e8b32730b1333a13e84fd0d7201f13"
+    },
+    "B": {
+     "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
+     "north": "632a6457144ae783656f31dac3e8c68adcb1487cb3accc18724de30f4e2be88d",
+     "south": "fba7be68faff8ecec0a5a2b56518c77a8b4f0b2ebf2c118cbefa3262fc3e6a47"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+    "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_heemin_v2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
+   ],
+   "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "heemin"
+  },
+  "RSW_Sketto": {
+   "columns": {
+    "A": {
+     "east": "a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227",
+     "north": "64d78cc494901ee58ebeaf14aa94df193a5e3ad69b7d4afe1b05719aa055bae7",
+     "south": "ff9c0c756f6acfac3799ae541593879eb6d2ebadcb4c3bdc7ef8d1e4d9006ef7"
+    },
+    "B": {
+     "east": "d938a8d9ef4732d0321468bf864657e7716a2398c11dd88f27347c27884b69b0"
+    },
+    "C": {
+     "south": "40ee6b01b79293c446967758dfed13e85446a422d393135b2344e74984eaf9ab"
+    },
+    "D": {
+     "east": "a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227"
+    },
+    "E": {
+     "north": "c6a967ca4fb41ecef6b589bf9b78bead930d617207a6cc47a828fcd44764355c",
+     "south": "ff9c0c756f6acfac3799ae541593879eb6d2ebadcb4c3bdc7ef8d1e4d9006ef7"
+    },
+    "F": {
+     "east": "99665372d8ec3edb7fc0a662c544eeb33a0315f15d37a0b2e6629e2e66d44176"
+    },
+    "G": {
+     "east": "f7c7117332beb4bf5c89efc4935bfc5832a282e7a86d0763c0d08ad99a713ae5",
+     "north": "d9f2c6155e0b92216c9224cde86eb38cf080cbe704ae6cf4125ce9cfe69f37e0",
+     "south": "e53fa7a7a92d264c363067e923b4b547d0f3e5b6fa098592f18a51268484ac7e"
+    },
+    "H": {
+     "1_east": "1f3b0f5a41cca00f4fc75a4a59b4eceed9d463413576f777c0b705268dc19730",
+     "1_north": "7363d8c149f928abe8b0608c72ea64658baab20c85bb789e52c1ef9910082a3f",
+     "1_south": "3ce3965a98d8953b57757b627e8b08eaefb44bb1212223ac5f49d9272b626721",
+     "2_east": "45fcd80af06029607f6614ae70230f94154f74704c0e742dfdf472d96b9c7b46",
+     "2_north": "bff7888a9dedea6416d130760a737037868514c107167bc3bff81d418a20cc62",
+     "2_south": "9596e3de63f8a4a80fe2b2d1237974440855955e1dcd901798bbdb17a0442850",
+     "3_east": "39f95dfd9360421485884c10e987a8eb3c6a649a397131b079516cb59100cde1",
+     "3_north": "8adb03364f458841a8968f30d92720d8b8423ac4bae582f2ce16e32e9d8a583d",
+     "3_south": "cb1010a8ccfcc3f310f295bdbb8b9d8766f77339cf7dc0d486876281235e699d",
+     "4_east": "45fcd80af06029607f6614ae70230f94154f74704c0e742dfdf472d96b9c7b46",
+     "4_north": "bff7888a9dedea6416d130760a737037868514c107167bc3bff81d418a20cc62",
+     "4_south": "9596e3de63f8a4a80fe2b2d1237974440855955e1dcd901798bbdb17a0442850"
+    },
+    "I": {
+     "east": "1f3b0f5a41cca00f4fc75a4a59b4eceed9d463413576f777c0b705268dc19730",
+     "north": "7363d8c149f928abe8b0608c72ea64658baab20c85bb789e52c1ef9910082a3f",
+     "south": "3ce3965a98d8953b57757b627e8b08eaefb44bb1212223ac5f49d9272b626721"
+    },
+    "J": {
+     "east": "cd6241d0da421a5aebf14e6708694a835a281eab5b6efc0fe09170ba558d4704",
+     "north": "e5d9d3dc784acfa79b20abe8b217736c3601dfb82776ac623a44946c3b3dfafb",
+     "south": "510340269ca30a2f52fc8bc73fa1f308d274f32c99a74fe7bd45f6be148f7d85"
+    },
+    "K": {
+     "east": "a2b4939ec48f25ad7e0091837d33c7ea4b5e22b33da398b527f5b6718db57ccc",
+     "north": "df07ebda51dc31b7da02d186577e763b5d5c6a8633885516b014d779dac26c78",
+     "south": "6e26baceeccda2bbfc68eee79e88e3b7c6f0e4249c633b2da9862f0c5fd3db93"
+    },
+    "L": {
+     "east": "a67a839fadc0c96775824cf225dcf3607ec724c79a49d14b5e8e77baccbf5d9e",
+     "north": "d2b0f6fff8e086933711e003dc7e44c338d71581f0361f7805c509065cada607",
+     "south": "78e39e0873b46d9b1e236a2b8f0832995af0be2389562b0164b8139360dfa8a1"
+    },
+    "M": {
+     "east": "15b5f5efbe89c34474dc8e5bc577a6033ae1aa0f87cee5592944965303c1a86a",
+     "north": "a07f352ebb572db935bb93b4c63363acabfcc2d88e8f2d27d8d9cbdeb232983f",
+     "south": "7d4df2cefe64223534f1fc71b56df7acf0858f741362a49da245cfdf3892b7a9"
+    },
+    "N": {
+     "east": "d82f6aef924ef0023bc900dafe51f9b459ce6b865afa5c560d5ae2ef20829b5f",
+     "north": "80b1e51310c4ff9246f6771c6e4baa88494d60d545ec38037acf5dda76833808",
+     "south": "54a01704a3704de149e97b64bf1d6c20ec919ae0f6928f91b16fbb55fe6841d7"
+    },
+    "O": {
+     "east": "45fcd80af06029607f6614ae70230f94154f74704c0e742dfdf472d96b9c7b46",
+     "north": "bff7888a9dedea6416d130760a737037868514c107167bc3bff81d418a20cc62",
+     "south": "9596e3de63f8a4a80fe2b2d1237974440855955e1dcd901798bbdb17a0442850"
+    },
+    "P": {
+     "east": "78d3e7d59545bf6043d6c5b889c931cdf13aeaea1605fa2655ccb354b6d70398",
+     "north": "1c5a120a4d82b1bbd6ae0f080087b260247a3978ade6ecfacc3b2430cc2c095f",
+     "south": "da87927ca3bd42fcd9dfd58b0e29bd4930e811d094adffa7cc1b3ff89bd3c94b"
+    },
+    "Q": {
+     "east": "82c997cb9aeb13fdb4506043bca3302c503f6273214c21822519dc6e4109551c",
+     "north": "aa1319da1f1a0742c9586afb1af1d8b2cb8272af97e7d89bac12f5c89652d7a7",
+     "south": "3af35baf4260cbc805f37b2a69f0b90bb481d22fd15fe875a29633649308665b"
+    },
+    "R": {
+     "east": "d934b8f6440f0a8c9ff4d6f0b9b08a075d0d9fc43f00a6657837013357d6e20d",
+     "north": "dd7990842e5fe022c37d4a562335849a012b543831c24e63fda772ec782498e1",
+     "south": "099022d943a4bfb02a84cf4c1cdad7916e244940a09ed650253b5d99647c9651"
+    },
+    "S": {
+     "east": "39f95dfd9360421485884c10e987a8eb3c6a649a397131b079516cb59100cde1",
+     "north": "8adb03364f458841a8968f30d92720d8b8423ac4bae582f2ce16e32e9d8a583d",
+     "south": "cb1010a8ccfcc3f310f295bdbb8b9d8766f77339cf7dc0d486876281235e699d"
+    },
+    "T": {
+     "east": "0a777cb867719ae03dae5ce1216e07d11dc1200c7502bfad26f0c656b516a33c",
+     "north": "d99de39585693d25eddd0f8a57e7812ebe0bf930fa97d4e4208955bf813f5b27",
+     "south": "fc4c5038b7fe78d44efb1bf14cf19fbcf3ce343e8d8c252706d5219cdaea72a2"
+    },
+    "U": {
+     "east": "13f6761083ec4dc93602c0afed15e64d27d0230eedfbc88afc18138728890c16",
+     "north": "8f7e79959b4d55b2003f3fce77170b2ebcb73e0b1cc6f1f163bda31bb1212065",
+     "south": "5fe1af125d815bba22ad5f8b16ae8cda0dc627689c4c38de558d6bd28ee1da0b"
+    },
+    "V": {
+     "east": "14e7a8f0ef21e7f351b03dac29ab8de917e054afaa747d7f07b2c9a8136cb705",
+     "north": "9cd1b61094cdf155b2bade177b8685c00098c1a254910443792967c91d36e18d",
+     "south": "46e9174ea4335eb834cbe2ec7054863ffe0d15f1890d46aa2aca1d4ad4eb80d9"
+    },
+    "W": {
+     "east": "fe8246947e142bb041fb40f8ff21172fefd40ad6334003d8ed1b019519530bef",
+     "north": "0cc2c5f4c9771a65928c4c0a24b7263eed6fea6b9d50042cb6c5279395d05b41",
+     "south": "f5ec5c5402cc67642d10975c6ff9ac05781206f83604c993ebbbb74c35766ed8"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Sketto/Sketto",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "swanimals/Sketto/Sketto",
+    "E": "swanimals/Sketto/Sketto",
+    "F": "_byname",
+    "G": "swanimals/Sketto/Sketto",
+    "H": "_flip:swanimals/Sketto/Sketto_Flying_",
+    "I": "swanimals/Sketto/Sketto_Flying_1",
+    "J": "swanimals/Sketto/Sketto_Flying_1",
+    "K": "swanimals/Sketto/Sketto_Flying_1",
+    "L": "swanimals/Sketto/Sketto_Flying_1",
+    "M": "swanimals/Sketto/Sketto_Flying_1",
+    "N": "swanimals/Sketto/Sketto_Flying_1",
+    "O": "swanimals/Sketto/Sketto_Flying_2",
+    "P": "swanimals/Sketto/Sketto_Flying_2",
+    "Q": "swanimals/Sketto/Sketto_Flying_2",
+    "R": "swanimals/Sketto/Sketto_Flying_2",
+    "S": "swanimals/Sketto/Sketto_Flying_3",
+    "T": "swanimals/Sketto/Sketto_Flying_3",
+    "U": "swanimals/Sketto/Sketto_Flying_3",
+    "V": "swanimals/Sketto/Sketto_Flying_3",
+    "W": "swanimals/Sketto/Sketto_Flying_4"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render sketto_fly_plate_v3 \u2014 grader flagged (advisory)",
+    "C": "render sketto_fly_wing2_v2 \u2014 grader flagged (advisory)",
+    "D": "render sketto_B_accepted_v1",
+    "E": "render regen_ls_canon_sketto_v1",
+    "F": "render sketto_fly_master_v2 \u2014 grader flagged (advisory)",
+    "G": "history SWBestiary 2026-09-18",
+    "H": "IN GAME \u2014 Sketto_Flying_",
+    "I": "IN GAME \u2014 SWBestiary",
+    "J": "render regen_ls_canon_sketto_flying_1_v1",
+    "K": "history SWBestiary 2026-09-18",
+    "L": "render sketto_fly_master_v3",
+    "M": "render sketto_fly_plate_v1 \u2014 grader flagged (advisory)",
+    "N": "render sketto_fly_plate_v2 \u2014 grader flagged (advisory)",
+    "O": "IN GAME \u2014 SWBestiary",
+    "P": "render regen_ls_canon_sketto_flying_2_v1",
+    "Q": "history SWBestiary 2026-09-18",
+    "R": "render sketto_fly_wing2_v1 \u2014 grader flagged (advisory)",
+    "S": "IN GAME \u2014 SWBestiary",
+    "T": "render regen_ls_canon_sketto_flying_3_v1",
+    "U": "history SWBestiary 2026-09-18",
+    "V": "render sketto_fly_wing3_v1 \u2014 grader flagged (advisory)",
+    "W": "render regen_ls_canon_sketto_flying_4_v1"
+   },
+   "pools": [
+    "swanimals/Sketto/Sketto"
+   ],
+   "res": "swanimals/Sketto/Sketto",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
+   ],
+   "shownBase": [],
+   "subject_key": "sketto"
+  },
+  "RSW_Varactyl": {
+   "columns": {
+    "A": {
+     "east": "daf8f0e9e2fed1702c8e5b7db28067bb14d24c114b9d83f85bb168c5c55cb5e2",
+     "north": "c7673f2977f5c25f284a26ba7a7ad49804ec2ae00538424a03acd3414a3859e1",
+     "south": "406451101d2517524e4f2f84dcef372b3368a5004c9c559bb4f2e46fcd8eefb7"
+    },
+    "B": {
+     "east": "61717e2587048b2a25e69d5cb136664db3f0fbfcb7107f82fa8a8cd3e696ab06",
+     "north": "017f31b398685805e5764414b0e7cdd6db8c438495e1c8bd13ad3adc3a45dad7",
+     "south": "da0f2efb5c874d6ffcdfa08636f4cc8a538d1a817df2469498069421dc10e234"
+    },
+    "C": {
+     "east": "e3606a4044e762eee9ac8530efecb7b0cf59091bb4aa9221f1ae2ae0b5ef85b9",
+     "north": "a01edc8f26bc04e67270b623e7eb48c08949b55937c34a9902b3c43ec9a5709b",
+     "south": "10969f8e9d09f36634116ee2102f76b425bcf2b7b5c8f22aec3193a338b79c47"
+    },
+    "D": {
+     "east": "b83b64205a96a2b9be2b4240541e8aecfd0d7ddebb696165b1ab65e2a8d3da3f",
+     "north": "38bd5860c1b47262e84c902b2553c34d3a7e7133ba3b040ecea723da43437456",
+     "south": "9f43259d890e02c178ee26e1718b1aa817a35a5d3029cec256d5dde67bce8f73"
+    },
+    "E": {
+     "east": "b83b64205a96a2b9be2b4240541e8aecfd0d7ddebb696165b1ab65e2a8d3da3f",
+     "north": "13b285323cf773c75734df112a3e7d6889cbed29ac6cdfaf6f5690c193ba45f8",
+     "south": "9f43259d890e02c178ee26e1718b1aa817a35a5d3029cec256d5dde67bce8f73"
+    },
+    "F": {
+     "east": "bcff5c7857f20eac20d863fb1a0702acd05c6ae447916b6b107527ea99e57999",
+     "north": "888190150af0d30b8024af006d80bd1d942863d75314603b3aee6a6e23853862",
+     "south": "1dbabbb42021300773ec256414a2778e8e0cfb554c1a5fbc835c99b8d02eb847"
+    },
+    "G": {
+     "north": "1df781cd77a86bb40230f15e3513af24fd0481fe793ae250703c8fc557fb46a0"
+    },
+    "H": {
+     "north": "e4d8f97e45019f7357a70fa0761af4fb5bc0bd4dc8c62bce0c5fa6290244e797"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Varactyl/Varactyl_f",
+    "B": "swanimals/Varactyl/Varactyl_f",
+    "C": "swanimals/Varactyl/VaractylV_E",
+    "D": "swanimals/Varactyl/VaractylV_F",
+    "E": "swanimals/Varactyl/VaractylV_F",
+    "F": "_byname",
+    "G": "_byname",
+    "H": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render standtall_b1_varactylv_f",
+    "F": "render facreg2_varactyl_m_v1",
+    "G": "render facreg2_varactyl_m_north_v2",
+    "H": "render standtall_b1_varactyl_m"
+   },
+   "pools": [
+    "swanimals/Varactyl/VaractylV_E",
+    "swanimals/Varactyl/VaractylV_F",
+    "swanimals/Varactyl/Varactyl_f"
+   ],
+   "res": "swanimals/Varactyl/Varactyl_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [],
+   "subject_key": "varactyl"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_e1r1_sheet_2026-10-26",
+ "snapshotId": "14153aa362b7032b"
+}

@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_CrimsonOpee": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_TOPDOWN \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 3e2b301e6a); F_TOPDOWN: The north layout is lures at top, stacked back segments down the middle, tail fan at the bottom and legs splayed sideways. This is the same "
+  },
+  "RSW_Blixus": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: ALPHA_HALO, CANON_MISS, F_INCONSISTENT \u00b7 GPT regen, unsettled K2, K3",
+   "context": "judged candidate r1 (image sha 9e51c185ad); CANON_MISS: There are more than six blade legs: about 8\u201310 tips on south and about 8 on north.; F_INCONSISTENT: Six tentacle pads seem to show in the east view, against five on south and north.; ALPHA_HALO: Faint red speckle fringing on the alpha edges around the tentacles, visible against a dark background."
+  },
+  "RSW_Dewback": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: CANON_MISS, F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 1da38be2bb); F_SIZE_JUMP: The north rear view occupies about a quarter of the canvas width, around 140 px of body, while south's body spans around 320 px and fills th; F_INCONSISTENT: The north hide is a slightly more saturated yellow-olive than the installed east, and its dorsal band is darker and more contrasty.; CANON_MISS: The hide leans yellow-olive rather than a dusty olive to grey-brown."
+  },
+  "RSW_Dragonsnake": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED",
+   "context": "judged candidate r1 (image sha cdf2817028); F_SIZE_JUMP: North is about 65\u00d7100 px against south at about 320\u00d7240 and east at about 500 px long. The animal shrinks to a fraction of its size whenever; F_INCONSISTENT: North's back has a tidy line of yellow-green dots and no moss, where east and south show bright green moss with spines. North's tail is shor; OWNER_NOTE_IGNORED: Compared with the accepted east, the new north differs in size, tail and dorsal pattern."
+  }
+ }
+}

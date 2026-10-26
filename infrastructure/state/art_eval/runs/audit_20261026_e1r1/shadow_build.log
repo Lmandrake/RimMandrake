@@ -1,0 +1,31 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e1r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e1r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e1r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_e1r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "14153aa362b7032b",
+ "census_rows": 4,
+ "rows": 4,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 2,
+ "canon_rows_with_images": 2,
+ "canon_rows_with_must_show": 2,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 36,
+ "images": 7399
+}
+
+--- stderr ---
+art_sheet: RSW_Sketto: census texPaths ['swanimals/Sketto/Sketto'] are STALE; our defs draw ['swanimals/Sketto/Sketto', 'swanimals/Sketto/Sketto_Flying_'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RSW_Sketto: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Sketto/Sketto_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Sketto/Sketto_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Sketto_n/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Varactyl: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Varactyl/Varactyl_f_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Varactyl/Varactyl_f_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_Varactyl_f_north_c7673f2977f5.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Drazzik: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Drazzik_north_52504edc5091.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Heemin: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Heemin/RM_Heemin_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Heemin_north_819fd00aa201.png', 'infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Heemin_south_35ebd4255845.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

@@ -1,0 +1,162 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c5r1",
+ "built": "2026-10-26T12:19:54-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c5r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RSW_Maxolotl": {
+   "columns": {
+    "A": {
+     "east": "d472856b9b35c65ada864f53790bbdec25fcc4d75c15dbb20ff3ad35c50c99b5",
+     "north": "9a22b4b31ef5e0848b271f78fb0673f37a645e41a5c3366957ad6166a4625121",
+     "south": "35e5be13dcf96fdda3d150712b5a1c35c4a0fda48aa0b4c72af9749172c6f9c9"
+    },
+    "B": {
+     "east": "d472856b9b35c65ada864f53790bbdec25fcc4d75c15dbb20ff3ad35c50c99b5",
+     "north": "794fa2e88b1a6592a7a85a8470edb21dceaa88c5c845d64ffc476c6f74267dae",
+     "south": "44bc7ee6e7e3c5d1029453ebd93a57876a655c4a2e487081d33b437017dc3cd1"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl",
+    "B": "swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl"
+   ],
+   "res": "swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "maxolotl"
+  },
+  "RSW_Mee": {
+   "columns": {
+    "A": {
+     "east": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+     "north": "a56546c217d508dcbfe3368726ec613f743dbc2d76810c4be80fcddd1d47dd48",
+     "south": "69ab481df398004512d64d321fa6697b8beaa088b511666d86ec09171bfb854a",
+     "west": "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
+    },
+    "B": {
+     "east": "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+     "north": "82aff98e9423139c9cc104f44882e3cf813fd8f90a5b04a53fdb549196b488ee",
+     "south": "b0e8510ca41fc131890dad2893eae68556781c78fe5236a4423f9da61ad864a7",
+     "west": "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
+    },
+    "C": {
+     "north": "6d1ece0c7f05758ff9202dd8ef1d4945cac360647b3419e74aaa89c842344b5c",
+     "south": "3aa20a60346aee33913f0292b7d0eb3eeb9cca847c3565e15dee17ad4ad833cd"
+    },
+    "D": {
+     "east": "15a21b8321e6aeda44886570397d1b2e2618c763cdbe04fbf1b373cadb40c122"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+    "B": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+    "C": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+    "D": "Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SeaBeasts 2026-09-02",
+    "C": "render twilightsea_mee_canon_redo_v2",
+    "D": "render twilightsea_mee_canon_redo_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+   ],
+   "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "mee"
+  },
+  "RSW_MossBeetle": {
+   "columns": {
+    "A": {
+     "east": "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+     "north": "43b4b6652b2d94efeb86012ef6ff8c8da0d082a59462ea935c4b26390d101eb7",
+     "south": "1f5e54fd95e74607a7319bb1d8d6fbbbf7e27a7114636c8a35ce3e90abe2431e"
+    },
+    "B": {
+     "east": "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+     "north": "f33c82cab843bcb89fa6dbb5cbb931f15dcd69404470e966e036d98da69f3ed4",
+     "south": "326e114b1f0bc05980e1c1b46138dc0f7eb73ee247f7a2ac5b11ea0b7ac285ca"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render desertportb_mossbeetle"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "mossbeetle"
+  },
+  "RSW_MutatingTumorfishFry": {
+   "columns": {
+    "A": {
+     "east": "0aa0d251bf6c66dc7103ef6be6da1fb2005f5eefc3d88b3fa6f4553e94a26e3c",
+     "north": "cf9a41b8f3f1539697d24199c33e7a3c84f8b35f0819e9cac42e8dbd666a596b",
+     "south": "91620f26cefcf92586f73c57be10a4c6318e2fe4819a584823e6f7ffd3cfb28f"
+    },
+    "B": {
+     "east": "290ff3364756b149abcc116d05cb30bcd27900c14feef59b5ad489f88d104c1f",
+     "north": "a0c72eb2bb974902c69264493510470d2885eca279038909472bc6db47d03cd8",
+     "south": "056bed095839e3c18609a4de96c41049360793c63b145462f29a490c6b92fe92"
+    },
+    "C": {
+     "east": "51675193ad8954e776de6c170a91cb83c6850e2f59988d00f807fc32eaf7e8bc",
+     "north": "00f97d76c7cedace4b0dd4725735bacb7cbe16d85f361209958022b9ae41105c",
+     "south": "cc540eeec04f4776a499a82236c6767070864345e61803b0554f182384ebeb16"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/Swimming_MutatingTumorfish_Stage2"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
+    "C": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "mutatingtumorfishfry"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_c5r1_sheet_2026-10-26",
+ "snapshotId": "eb42fe9e8ea48973"
+}

@@ -1,0 +1,147 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d1r3",
+ "built": "2026-10-26T12:12:40-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d1r3.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Irqit": {
+   "columns": {
+    "A": {
+     "east": "653e02474f0af209e47ee1056e16a1ff6e7b962422f0f3c7003030107b3984ef",
+     "north": "c9a58c80483eec8c6de738e55f9a29afc20f79d51f51b571cc5edc04daa120b7",
+     "south": "e82ecfe72c7479741ab74f406b382604224f1d690a9c8f9c46ebf9c89a7934c4"
+    },
+    "B": {
+     "east": "653e02474f0af209e47ee1056e16a1ff6e7b962422f0f3c7003030107b3984ef",
+     "north": "af281b4d1bc273a72e8b598ab7e4d61f2012b53236e444754207b5ff085d8e76",
+     "south": "e82ecfe72c7479741ab74f406b382604224f1d690a9c8f9c46ebf9c89a7934c4"
+    },
+    "C": {
+     "east": "a91a39b0344eabc1254f2392012a511085493c8c91d2dbe070ae212947b3ef3f",
+     "north": "4ddb9c068deafd24a382fc3acbbf02daa90971ecd39296c5df00fee081c3faeb",
+     "south": "46f8abf16bd25023c2ff2871384088358a955f5251c627c9d5e3b615aae1d005"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Irqit/RM_Irqit",
+    "B": "Things/Pawn/Animal/RM_Irqit/RM_Irqit",
+    "C": "Things/Pawn/Animal/RM_Irqit/RM_Irqit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 CrackedLands",
+    "B": "render dregen_RM_Irqit_Rat_v1",
+    "C": "render RM_Irqit"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Irqit/RM_Irqit"
+   ],
+   "res": "Things/Pawn/Animal/RM_Irqit/RM_Irqit",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "irqit"
+  },
+  "RM_Shoal": {
+   "columns": {
+    "A": {
+     "east": "9a8d5d1ad96e30a7f358926aa01fd1457e21452812cd6f7e546f52f5484282d0",
+     "north": "eb0114573f24571ad79c96d0ec75b3f0e28c4c1b5f0fc636a7c3cc43b8b19e92",
+     "south": "3ccf56f421e71708e7637ebb085b44be14844c31a0727874b72f8a1e02683634"
+    },
+    "B": {
+     "east": "39c1ba5992c1a44dd86fdae929db1f8ee2551258f1ff8f90f48ac70cc141d55b",
+     "north": "6383ec9d4e085253291cd6d59575ca7ba95b32954c3fcd10675235184ba70817",
+     "south": "b590aa32e95ecb41ede6af1e69558f79556c59f0bd28fe4cc7c8fdff18aa5001"
+    },
+    "C": {
+     "east": "39c1ba5992c1a44dd86fdae929db1f8ee2551258f1ff8f90f48ac70cc141d55b",
+     "north": "cd392214f9c489d87e35ba09f3378c7d9f772b9b578ca3e25c78c64c890b83c7",
+     "south": "b590aa32e95ecb41ede6af1e69558f79556c59f0bd28fe4cc7c8fdff18aa5001"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
+    "B": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
+    "C": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render standtall_b1_shoal",
+    "C": "render RM_Shoal"
+   },
+   "pools": [
+    "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal"
+   ],
+   "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "shoal"
+  },
+  "RM_Thermadon": {
+   "columns": {
+    "A": {
+     "east": "68c26ed9a8ba1e29216cbdad7444094bfac8d76ffb3be3870c7523e771ea8f9b",
+     "north": "2739a2a351c3fd2b67ef386266e7c7b7cb34124f0b4f4452089a7868fbed1bc1",
+     "south": "565d0c8e3a0217f88b93dd4f7c4476c29359b7ba63b4a3c3d6ddee66b48ef09f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Thermadon/RM_Thermadon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Thermadon/RM_Thermadon"
+   ],
+   "res": "Things/Pawn/Animal/RM_Thermadon/RM_Thermadon",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "thermadon"
+  },
+  "RSW_Woolamander": {
+   "columns": {
+    "A": {
+     "east": "48867cc5da87547a2d09615f615881ad17efffbfe8c4e8d3679b8bf596ec59b9",
+     "north": "8c4dae5133f72ab2bb19428c5e7e9e00ee6cd24273a6d808f75b2572d962ace9",
+     "south": "31f03909505c8865d2aea6a75dfdbda42e9d285fc6b3b01c2302e06e0325e844"
+    },
+    "B": {
+     "east": "4fbc5a837cbb5e75600f27dc7f379566ebb47f91fe61e07a1bea726901cdaefd",
+     "north": "65b3c7b11712b1d1c1944d9118a9489017baf7ea120738497aa9d02ed67f3042",
+     "south": "d56475fa9078e1308759e126d9b5aa58e2e00543989820a4442308183c9429f1"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Woolamander/Woolamander",
+    "B": "swanimals/Woolamander/Woolamander"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-18"
+   },
+   "pools": [
+    "swanimals/Woolamander/Woolamander"
+   ],
+   "res": "swanimals/Woolamander/Woolamander",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "woolamander"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_d1r3_sheet_2026-10-26",
+ "snapshotId": "68cabd17b81561c1"
+}

@@ -1,0 +1,23 @@
+{
+ "RSW_FrogDog": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/FrogDog/FrogDog_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/FrogDog/FrogDog_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_FrogDog_n/north.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/FrogDog/FrogDog_j_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/FrogDog/FrogDog_j_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_FrogDog__FrogDog_j_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c4r1/kept/kept_FrogDog_north_8163f03247a9.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c4r1/kept/kept_FrogDog_j_north_365494b4a157.png"
+ ],
+ "RSW_FungalWeevil": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RotSpecies/FungalWeevil/FungalWeevil_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RotSpecies/FungalWeevil/FungalWeevil_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_FungalWeevil_n/north.png"
+ ],
+ "RSW_Gullipud": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Swimming_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Gullipud/Gullipud_Swimming_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Gullipud__Gullipud_Swimming_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c4r1/kept/kept_Gullipud_Swimming_north_6bf2a3ef3f12.png"
+ ]
+}

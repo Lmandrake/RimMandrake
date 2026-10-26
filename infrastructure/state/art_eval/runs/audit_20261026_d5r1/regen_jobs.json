@@ -1,0 +1,90 @@
+[
+ {
+  "id": "arteval_RSW_Nexu__Nexu_j_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Nexu__Nexu_j_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same body bulk and same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the nexu. Nexu's are agile predators with four red eyes and sharp quills. They have infrared vision and are 4.51 meters long. Typically 0.94 meters tall, nexus possess sharp teeth and claws, as well as long tails. Its light build allows it to remain highly agile and difficult to hit. Visible features it must show: the canon nexu (see canon entry nexu); four red eyes (on the face, toward the viewer in front views; hidden in the rear view); sharp quills along the back; a long whip tail ending in two visibly separated terminal branches, each with its own tapering tip, identical to the forked tail end of the accepted side view. The body is lean and light, with shoulder height of about 0.94 m against 4.51 m length, exactly the bulk of the accepted side view and filling the same share of the canvas (about 334 px tall at the shared scale); the tail is carried low and extended, adding length but not height. The rear view shows the creature seen from behind: back, quills, haunches and the forked tail, eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.8,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_PekoPeko__PekoPeko_m_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PekoPeko__PekoPeko_m_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same blue-and-gold colours and markings, same size on the canvas, seen from the view this job asks for. Match the reference's rendering treatment exactly: flat colour shapes with simple cel-style shading in two or three tones per colour area, smooth reptile-skin surfaces with a few scale-pattern marks, and a bold, even, dark outline of the same weight as the reference around the whole silhouette, so this view and the side view read as one sprite set. A creature sprite for RimWorld: the Peko-peko, a large colourful reptavian with a raucous, carrying squawk, native to the swamps of Naboo and kept as a pet on many worlds. Visible features it must show: a large colourful reptavian with reptile skin and a beak, with scaly skin rather than feathers; vivid bright colours in the reference's blue and gold; a raucous open-beaked squawker. The front view shows the face and open beak with the eyes toward the viewer. The rear view shows the back, tail and haunches seen from behind, with the eyes hidden. Realistic painterly vanilla RimWorld sprite style with crisp flat colour areas and a clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RSW_SandLeaper_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandLeaper_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same bulky, hunched olive-khaki body, same overlapping plates of glossy chitin, same naked mauve prehensile tail, same palette, same heavy dark outline, same flat painterly shading, same size on the canvas, now seen from behind (rear view). A creature sprite for RimWorld: the qetta, something like a rodent assembled from the wrong parts. It has no forelimbs at all and stands on two long, many-jointed hind legs. In this rear view the wide, massive haunches fill the silhouette, as broad as the haunch depth in the side view, with the chitin plates overlapping down the hunched back. The long naked mauve tail rises from the rump and curls upward. The head is tucked low and mostly hidden behind the hunched back, with the eyes out of sight. Realistic painterly vanilla RimWorld sprite style, with a heavy clean dark outline and soft painted edges in a deeper shade of the local colour, identical in weight to the east view. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP, F_TOPDOWN, F_SOUTH_NOT_FRONT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_SandLion__AA_SandLion_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandLion__AA_SandLion_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the vekka. Something that does not belong to any family of surface animals: a long, low, armour-scaled hunter that swims through loose sand the way a fish moves through water, faster than anything above it can run. The only warning is a faint ripple racing across the dune. It surfaces claws-first beneath its prey, and the strike is usually over before anything has time to run. Guns are a poor answer to something that was never on the surface to begin with. Visible features it must show: a long, low, armour-scaled body built to swim through loose sand; heavy front claws for a claws-first strike; a flattened wedge head with no visible ears. Rear view, seen from behind: the tail and armoured haunches are nearest the viewer, the flattened wedge head is farthest away and mostly hidden behind the body with the eyes hidden, and the heavy front claws reach forward, away from the viewer. The hind feet show their heels and rear surfaces toward the viewer, with the claws and toes pointing away from the viewer toward the head, exactly as in the side view. The body is centred in the canvas, its vertical midpoint at the canvas centre, at the same scale and the same vertical position as the front view and the side view, so the animal does not shift when it turns. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker"
+ }
+]

@@ -1,0 +1,117 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d2r2",
+ "built": "2026-10-26T12:16:20-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d2r2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Fuzzviper_n": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "fuzzviper_n"
+  },
+  "RM_Illisk": {
+   "columns": {
+    "A": {
+     "east": "62660dc520c66cd4284646475a5c0793506dd4171a2eba6d531c3e2c9a33f401",
+     "north": "a79373e3d7275101ca6c0393569c938a4ff9388eb673ff88b952868b77cce85b",
+     "south": "a5ec7247199a1cedcf9bec73c3d821b890cd7a182417f283f9912c723bbe7963"
+    },
+    "B": {
+     "east": "62660dc520c66cd4284646475a5c0793506dd4171a2eba6d531c3e2c9a33f401",
+     "north": "a79373e3d7275101ca6c0393569c938a4ff9388eb673ff88b952868b77cce85b",
+     "south": "f7d42b40b8568b0515eed7fb0002a3abea19402da6d98d27ea03f6a327a671fb"
+    },
+    "C": {
+     "east": "62660dc520c66cd4284646475a5c0793506dd4171a2eba6d531c3e2c9a33f401",
+     "north": "f916f0ed6b320c04fc03c78893b43756fb2eff7220b07c3bbb76d27cdd7aa584",
+     "south": "f7d42b40b8568b0515eed7fb0002a3abea19402da6d98d27ea03f6a327a671fb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Illisk/RM_Illisk",
+    "B": "Things/Pawn/Animal/RM_Illisk/RM_Illisk",
+    "C": "Things/Pawn/Animal/RM_Illisk/RM_Illisk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide",
+    "B": "render standtall_b1_rm_illisk",
+    "C": "render RM_Illisk"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Illisk/RM_Illisk"
+   ],
+   "res": "Things/Pawn/Animal/RM_Illisk/RM_Illisk",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "illisk"
+  },
+  "RM_Krannock": {
+   "columns": {
+    "A": {
+     "east": "efdb736fd9f986cbcc98a0b708cf7b0e64de1668f50f0616ab2c2f3849972d60",
+     "north": "c151031ce35d70aa2082bfcbc82515e0f2ebc901d4809c5e53c98bda0c0cd16f",
+     "south": "7f214ec3705e8124528b327f626cb632f3e6eb067edb278431afcec023dd0e9a"
+    },
+    "B": {
+     "east": "efdb736fd9f986cbcc98a0b708cf7b0e64de1668f50f0616ab2c2f3849972d60",
+     "north": "f849d73f8aea0cae93d03a7c65499741d4d4dcebdeecc5c4f6728ebc1fc7cd52",
+     "south": "7902965bb10c18581c4e578a0430439684789e15d6555dd28bf31606aa99e61e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Krannock/RM_Krannock",
+    "B": "Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide",
+    "B": "render RM_Krannock_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+   ],
+   "res": "Things/Pawn/Animal/RM_Krannock/RM_Krannock",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "krannock"
+  },
+  "RM_Saluksis": {
+   "columns": {
+    "A": {
+     "east": "18b9a987ab8183d2b2cb432046736016e137b0f7414a5d1a73ec93ce473804b8",
+     "north": "bda1ecd6c34bc0db1c31355485600dccc22619fa8498a03827722575bf4c0f9c",
+     "south": "2e61bd2f76e84da257775976427b0a80fffe64762de5de680c8e696ca5993111"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Saluksis/RM_Saluksis"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Greentide"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Saluksis/RM_Saluksis"
+   ],
+   "res": "Things/Pawn/Animal/RM_Saluksis/RM_Saluksis",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "saluksis"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_d2r2_sheet_2026-10-26",
+ "snapshotId": "ea0229b4ec1aa706"
+}

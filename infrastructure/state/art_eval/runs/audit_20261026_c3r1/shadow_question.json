@@ -1,0 +1,39 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Dragonsnake": {
+   "prefill": "keep",
+   "why": "[Dragonsnake_B_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN, OWNER_NOTE_IGNORED || [Dragonsnake_C_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_NORTH_FACE, F_SIZE_JUMP, F_TOPDOWN, OWNER_NOTE_IGNORED || [Dragonsnake_D_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_SIZE_JUMP, OWNER_NOTE_IGNORED",
+   "context": "[Dragonsnake_B_n] judged candidate r1 (image sha 214e73a611); F_SIZE_JUMP: The north body is about 58x118 px in a 512 canvas, a small fraction of south's mass and much smaller than the east body. Its height was matc; F_TOPDOWN: The back is seen from almost straight above, with four limbs splayed symmetrically and the tail laid straight down the canvas: the dorsal pl; F_INCONSISTENT: North has no pink spine fan at the tail tip, and its dorsal spikes are a flat continuous salmon stripe. East and south both show a large tai || [Dragonsnake_C_n] judged candidate r1 (image sha d60c1ba09b); F_TOPDOWN: North is a dorsal plan view seen from directly overhead: head at the top of the canvas, limbs splayed flat, tail curling down toward the vie; F_SIZE_JUMP: The north animal is about 60 px wide and 107 px tall, roughly a quarter of east's body length. In facings.png it is a speck next to the othe; F_NORTH_FACE: The head and snout are visible at the top of the plan view. Eyes are not legible at this size, but the head is shown rather than hidden behi || [Dragonsnake_D_n] judged candidate r1 (image sha fbdef9577e); F_SIZE_JUMP: North is about 109\u00d760 px, low in the canvas. South, which has the same foreshortened front/rear framing, is about 395\u00d7380 px, so north is ro; OWNER_NOTE_IGNORED: Beside the accepted installed east and south, the new north is a tiny figure, so it does not match the accepted art's body scale."
+  },
+  "RSW_Fambaa": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: CANON_MISS, STYLE_CARTOON \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r1 (image sha 62674255ac); CANON_MISS: The body ends in a rounded rump. No tail is visible on the east profile or the north rear view.; CANON_MISS: The neck rises at about 45 degrees and the head is held well above the shoulders, which reads closer to an upright browser than a low-slung ; CANON_MISS: The lower jaw has no clear upward tusks. There is only a small knob on the upper snout and rows of teeth."
+  }
+ }
+}

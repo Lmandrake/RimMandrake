@@ -1,0 +1,115 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e4r1",
+ "built": "2026-10-26T12:19:38-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e4r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Skarrin": {
+   "columns": {
+    "A": {
+     "east": "685ef6d307c92237bc4f55cd962e60838dbb37779df6e4e387f300651e8297af",
+     "north": "2c8a3162b19e2fcde039952111adf883fd6240d9a0059cf8abd888711e115014",
+     "south": "1b93e3b0e0aaa6ce7034484882babfc72e0615992dd1cf9e46d42cdb95b4610d"
+    },
+    "B": {
+     "east": "4c3f0e748f7a9bf621e369eecd52e4ad4d382e96138d37fcf9933a388fb65e02",
+     "north": "be4503e69b56aaf1054e4555195bd21dfb5a868e30cb66a1bac5cd61c78b0d78",
+     "south": "907414a64f8816fb70d58d5d70f6be469a3da3aaea4e1c40b356aac2fbfda11b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skarrin/RM_Skarrin",
+    "B": "Things/Pawn/Animal/RM_Skarrin/RM_Skarrin"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render weepingstones_skarrin"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Skarrin/RM_Skarrin"
+   ],
+   "res": "Things/Pawn/Animal/RM_Skarrin/RM_Skarrin",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "skarrin"
+  },
+  "RM_Vhakk": {
+   "columns": {
+    "A": {
+     "east": "745376fa3b980563d55d8f3c1342d0778a8d9a4682fc7308cd80c134261f4fce",
+     "north": "5baec25ccfdbc0b91da247d6c5071042120a8dccbd41bcb8ecfc68ed9c2ec78f",
+     "south": "cfb8a7471e4d47d950f31009a80f6009c7bd27680f8609cd58d12301c007b07b"
+    },
+    "B": {
+     "east": "03fc9e892c4bc4d237d8430343ddff86144007c7ce06ab8db3b587bcb84a4a37",
+     "north": "2a7dd8cc79ee8e03c9e3450798233706cde6f0cf939017f0d3c6e1e7e52dd936",
+     "south": "31969a89439c49114be199a6e5c2e39dcf9df115861cbabd2ad2dddb24119f30"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vhakk/RM_Vhakk",
+    "B": "Things/Pawn/Animal/RM_Vhakk/RM_Vhakk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render weepingstones2_vhakk"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vhakk/RM_Vhakk"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vhakk/RM_Vhakk",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vhakk"
+  },
+  "RM_Vizhik": {
+   "columns": {
+    "A": {
+     "east": "7df9c63f1249005f059d2fea73e89f9e9e8c2c5b5f413f755f33841381c58a88",
+     "north": "1ee03ffa7acc652e36e6e349474988fa42e05bd5a30ffedac620f0b2e6418cc4",
+     "south": "94f121cd8a0ae6fdfdb5860de49ad60549befa8877f031919ac785cb7961a01d"
+    },
+    "B": {
+     "east": "0c48e9dfef0cb12e49c8d7a02f669668e87d496ac05193d76a8634bb32b454ad",
+     "north": "e502d3aa77a7832a1d1476f0581fd37731d8f5710fef438a701e403ba13822cd",
+     "south": "281393e8982afe2142ff6a3262efb42fe96a1e0bbab1dd3b9cfb4e54a1093707"
+    },
+    "C": {
+     "east": "1d804bb2a6471be2c5f3177293d1e7ef1f2ff4043730745fea4f454689e37693",
+     "north": "f4a0ee79efa0c16932e93ef788f846683d625dfb32fad2914c73ec60c300637d",
+     "south": "ee61c76fa688ca09d70f85b81aa2c0a7b940b59617112221165cfcfe46500eb8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vizhik/RM_Vizhik",
+    "B": "Things/Pawn/Animal/RM_Vizhik/RM_Vizhik",
+    "C": "Things/Pawn/Animal/RM_Vizhik/RM_Vizhik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_aff7b795_vizhik_v1",
+    "C": "render weepingstones_vizhik"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vizhik/RM_Vizhik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vizhik/RM_Vizhik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "vizhik"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_e4r1_sheet_2026-10-26",
+ "snapshotId": "c8f901b0d742f489"
+}

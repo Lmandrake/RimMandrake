@@ -1,0 +1,23 @@
+{
+ "RM_Dakkra": [
+  "/home/mandrake/rm/bench/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Dakkra__RM_Dakkra_rest_n/north.png"
+ ],
+ "RM_Karrimeth": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Karrimeth_n/north.png"
+ ],
+ "RM_Ondrukka": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Ondrukka_n/north.png"
+ ],
+ "RM_Siezer": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Siezer_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d3r2/kept/kept_RM_Siezer_north_a15423afea93.png"
+ ]
+}

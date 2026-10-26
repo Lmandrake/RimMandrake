@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Shoal": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r3 (image sha 269ac7c22c); F_INCONSISTENT: The node layout of the net differs between facings: south is a hex cluster of 12, while east and north are different oval arrangements of 13"
+  },
+  "RM_Thermadon": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT unsure, unsettled K1",
+   "context": "judged candidate r2 (image sha 65df7ff6c1); F_INCONSISTENT: Leg count differs between facings: about 8 legs on south, 6 on east, 4 on north."
+  },
+  "RSW_Woolamander": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: CANON_MISS, STYLE_OFF \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha f0b9b9f033); CANON_MISS: The bare tail cord runs from the rump to the ground, so it is about as long as the arms. It ends at the bulb, which rests at foot level.; STYLE_OFF: The feet have yellow-orange bird-like scaly toes with talons rather than primate feet."
+  },
+  "RM_Irqit": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r2 (image sha 3553b88b4b); F_SIZE_JUMP: On the one-scale facings panel north is much narrower and shorter than south (about 290 vs 490 px wide; 98 vs 125 px tall). The 0.58 downsca; DEPARTURE_MISSING: The skin reads matte, dry and carved-bone, not glossy and wet. North matches the accepted east in this, so it is consistent."
+  }
+ }
+}

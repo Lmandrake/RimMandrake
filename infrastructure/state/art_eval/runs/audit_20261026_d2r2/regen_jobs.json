@@ -1,0 +1,46 @@
+[
+ {
+  "id": "arteval_RM_Saluksis_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Saluksis_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, and the same body size on the canvas, seen in a front view with the feeding-pore ring toward the viewer. A creature sprite for RimWorld: the saluksis. Soft, pale, hand-sized creature: a swollen milky translucent sac carried on a fringe of many thin legs, with a faint pulse showing through the skin. In this front view the ring of feeding pores sits at the centre of the face-side of the sac, where a head would be, and the thin legs spread around the lower edge of the dome. The sac is the same height and width as in the side view, about 127 px of visible body height at the shared scale. The leg fringe reaches the same radius as in the side view, so the silhouette area matches the side view and the rear view and the animal reads as the same size in every facing. The creature fills the canvas the same way the side view does, with a generous empty margin of transparent space on every side. Soft translucent surface folds and a faint pulse show through the pale skin. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d2r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Fuzzviper_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Fuzzviper_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same trunk thickness, same shaggy body volume, same colours and markings, same level of painted detail, same size on the canvas, seen from behind. A creature sprite for RimWorld: the fuzzviper. The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it. Rear view, seen from behind: the body is built from broad, thick, pale beige braided root cords with a red-brown undertone and dark grooves between the cords, knobbly and unevenly thick, with the full shaggy bulk of the reference, tapering like a root along its receding length. The thick trunk and the broad curled base are as massive as in the reference, foreshortened only as a body seen from behind naturally is; the body fills about 90% of the canvas height with the same visual mass as the reference. Distinct red-brown tendrils stand up along the back and turn around the body, exactly as in the reference. The head end tapers like a root tip, a blunt fibre-covered point without a wedge-shaped viper head, with the small dark eyes and fangs half-buried among the root hairs; from behind it is turned away and mostly hidden, so the view shows the back, the haunches and the fibrous tapering end. The surface reads as fine root-hair fuzz carried by the bold cord shapes, with scale-free skin throughout. It lies pressed flat along a tunnel wall the way a root would. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d2r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.9,
+  "module": "walker"
+ }
+]

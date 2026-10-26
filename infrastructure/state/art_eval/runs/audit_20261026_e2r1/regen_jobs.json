@@ -1,0 +1,24 @@
+[
+ {
+  "id": "arteval_RM_Vaulisk_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vaulisk_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the rear. A creature sprite for RimWorld: the vaulisk. The Twilight's one liar: it hangs a false gold bladder, steady and never breathing, and waits in the dark between the shafts for something to mistake it for a lamp, then strikes fast out of the disguise. Visible features it must show: a false gold bladder-lamp hanging steady on its stalk; a dark body made for hiding; a fast-strike ambush mouth (on this view the mouth is out of sight on the far side of the body). Rear view, seen from behind: the viewer sees the back of the carapace, the haunches and the legs, with the eyes hidden. The carapace is as wide and the leg span as broad as in the accepted side and front views, so the body fills the canvas to the same extent as they do. The lure stalk rises from the middle of the back, stands as tall as in the accepted views, and arches forward away from the viewer. The gold orb hangs just beyond the carapace peak, near the centre line of the body, partly behind the stalk's arch, and it is a round globe of the same apparent diameter as the orb in the accepted side view. The outline is a firm, clean, dark line of the same weight as the accepted views, all round the silhouette. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e2r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "swimmer"
+ }
+]

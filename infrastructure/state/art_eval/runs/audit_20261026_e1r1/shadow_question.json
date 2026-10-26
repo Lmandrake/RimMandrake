@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Sketto": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha bb187da317); F_TOPDOWN: The hind legs are splayed flat out to the sides and the wings spread wider and flatter than south's V, which leaves a hint of the old dorsal; F_INCONSISTENT: North's torso and thighs look slightly thicker and stockier than east's stick-thin body."
+  },
+  "RSW_Varactyl": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 1393d5fead); F_INCONSISTENT: The hind legs stand fairly upright under the body with the feet close in, which is a narrower stance than the east's wide monitor-lizard spr"
+  },
+  "RM_Drazzik": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_TOPDOWN \u00b7 GPT regen, unsettled K2",
+   "context": "judged candidate r1 (image sha 0ce9743ba6); F_TOPDOWN: The spine ridge runs a long way up the image and the legs splay flat to the sides, so the view is a fairly steep look down at the back. Stil; DEPARTURE_MISSING: No facing shows the body half-buried in sand. It is a clean-alpha full body."
+  },
+  "RM_Heemin": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r1 (image sha 534710f83c); F_TOPDOWN: A full-length, slim fish silhouette with the head pointing straight up and the tail spike pointing down, almost without foreshortening. It l; F_INCONSISTENT: East has a deeply forked caudal fin and tall sail-like dorsal and ventral fins. North ends in one thin spike with only small swept fins. Sou; OWNER_NOTE_IGNORED: The new north does not match the installed east's anatomy (no forked tail, no dorsal sail)."
+  }
+ }
+}

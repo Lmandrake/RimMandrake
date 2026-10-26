@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 28.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3300664
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_FungalWeevil_n",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish []"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9",
+  "east.png": "c1724895f4234b2279adfb890793e07fb82891179d8b3e3ce1720d799696c8ab",
+  "north.png": "57c527d0d38cfca2e373da5a8e28cb742fd8731e9be5dcfa5ad3bfb8d36b7d0f",
+  "scale.png": "10e3ba5ab0d5bd2bdd1fb1ffcdde521aba66c170325e3fef59f8a4f09107f29d",
+  "facings.png": "0d036b77a69f16877fb451a0dc41fcbca47b6ccf684b6fc5e1bec8a204b248e7"
+ }
+}

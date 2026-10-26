@@ -1,0 +1,26 @@
+{
+ "RSW_Maxolotl": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Maxolotl_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Maxolotl_ns/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Maxolotl_north_9a22b4b31ef5.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Maxolotl_south_35e5be13dcf9.png"
+ ],
+ "RSW_Mee": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Mee_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Mee/Mee_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Mee_ns/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Mee_north_a56546c217d5.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Mee_south_69ab481df398.png"
+ ],
+ "RSW_MossBeetle": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MossBeetle_n/north.png"
+ ],
+ "RSW_MutatingTumorfishFry": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/north.png"
+ ]
+}

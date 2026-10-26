@@ -1,0 +1,59 @@
+[
+ {
+  "id": "arteval_RM_Skarrin_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Skarrin_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same body bulk and same size on the canvas, seen from the rear. A creature sprite for RimWorld: the skarrin. A forearm-long, knife-slender silver eel that spends as much time above the water as in it. Its round mouth is a cruel suction cup ringed with rasps, made for drawing in water, blood and soft flesh alike. A row of thin, sharp fins runs the length of its body, and it can flex them out stiff into cutting lines; a skarrin that twists in a handler's grip leaves a ladder of fine, painful cuts. Its flesh is extremely delicious, which is the only reason anyone keeps them. The view is the rear view, seen from behind: the tail end and the back of the body face the viewer, the round sucker mouth is hidden by the body. The eel is drawn at full size, its silver body and swept fins filling about 200 px of the 256 px canvas height, the same scale as the front and side views. The long, sharp fin blades flex out stiff on both sides of the tapering tail, as long and swept as in the side view, and the body keeps the same bulk and silver sheen as the accepted side view. Visible features it must show: a forearm-long knife-slender silver eel; a row of thin sharp fins along its body, long and swept; the tapering tail toward the viewer. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e4r1",
+  "drawsize": 0.85,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Vhakk_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vhakk_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, now seen in rear view, from behind and slightly above, as the game's angled camera shows the back of an animal. A creature sprite for RimWorld: the vhakk. A low, broad ambusher that lies flat in the shallows. Its body is wide and flattened like a bottom-fish and mottled to match the silt, thickly built through the shoulders, with a coarse-furred back and short, powerful badger-like digging limbs. The rear view shows the same large animal as the side view, at the same scale: the body spans nearly the full canvas width, a broad low silhouette with wide flat flanks flaring out to both sides as lateral margins around the short hind limbs. The silt mottling runs unbroken across the coarse-furred back. A short tail points toward the viewer at the centre of the rear. The heavy head is turned away, hidden behind the shoulders, and the tips of the two short swivelling eyestalks rise just beyond the back. Visible features it must show: a wide flattened silt-mottled body with flared flat flanks; a coarse-furred back; short powerful badger-like limbs under the body margins; eyes on two short swivelling stalks. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e4r1",
+  "drawsize": 1.85,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Vizhik_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vizhik_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, turned 90 degrees to the view this job asks for. A creature sprite for RimWorld: the fan eel. A wrist-thin eel with comb-gills fanned along its whole neck in a translucent ruff that opens and closes with every breath. Its dorsal comb-fan stands as a tall upright sail along the top of the body and a smaller fin runs along the belly, exactly as attached in the reference, and in this view these appear end-on: the tall upright fan rises above the body and the smaller fin sits beneath it, in the same attachments as the reference, with no lateral wings. The stiff comb-gill fringes at the neck are planted on the ground beneath the slim body, bearing its weight and propping the front of the body up off the open rock, in a visibly weight-bearing stance. The ruff of comb-gills is the creature's dominant silhouette feature, not the small paired gill slits an eel has. For the south view: front view, eyes toward the viewer, the slim body a narrow column with the upright fan above the head and the belly fin below. For the north view: rear view, seen from behind, tail and slim hindbody toward the viewer, eyes hidden, with the same upright fan above and belly fin below. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e4r1",
+  "drawsize": 0.65,
+  "module": "walker"
+ }
+]

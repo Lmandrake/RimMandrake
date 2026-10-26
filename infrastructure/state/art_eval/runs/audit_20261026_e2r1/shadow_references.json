@@ -1,0 +1,23 @@
+{
+ "RM_Vaulisk": [
+  "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Vaulisk_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e2r1/kept/kept_RM_Vaulisk_north_ac90749f9946.png"
+ ],
+ "RM_Chittik": [
+  "/home/mandrake/rm/bench/src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TheRot/Textures/Things/Pawn/Animal/RM_Chittik/RM_Chittik_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Chittik_n/north.png"
+ ],
+ "RM_Grellik": [
+  "/home/mandrake/rm/bench/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Grellik/Grellik_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TheRot/Textures/RM_TheRot/Fauna/Redrawn/Grellik/Grellik_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Grellik_n/north.png"
+ ],
+ "RM_SumpMouse": [
+  "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_SumpMouse_n/north.png"
+ ]
+}

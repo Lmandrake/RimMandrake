@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Sytheclaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, FOOTPRINT, F_INCONSISTENT \u00b7 GPT regen, unsettled K2, K3",
+   "context": "judged candidate r2 (image sha 4fde3a75cb); F_INCONSISTENT: North's back plates are a pinkish copper-tan; east's are grey-gold with rust speckles.; FOOTPRINT: The north body sits in the lower part of the canvas, while south is centred, so it may sit lower in the cell than the other facings.; DEPARTURE_MISSING: The forelimbs end in hooked claws rather than long serrated blades."
+  },
+  "RM_Sytheclaw_n": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha bee45bac41); F_SIZE_JUMP: North's plated dome is about 130 px wide against south's roughly 190 px leg spread. The rear view looks like a smaller, more compact animal,; DEPARTURE_MISSING: The north dome rises fairly high and round, more like a curled pangolin's back than the flat, very low body in the east profile."
+  },
+  "RSW_Blarth": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha c3fe7384b6); F_INCONSISTENT: The north body is narrower and less barrel-wide than the very rotund south. A row of pale spine nubs runs down the back but is not seen on s"
+  },
+  "RSW_Bursa": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K3, K4",
+   "context": "judged candidate r2 (image sha 0393dc7b22); F_INCONSISTENT: North's spine crest is a small tuft at the top, and its legs splay flat sideways like a rug. East and south show a large fan of spines over ; F_TOPDOWN: All four legs are spread flat at the corners of the body, as in a dorsal layout, rather than under or behind the body as the 35-degree game ; F_SIZE_JUMP: In the shared-scale panel north spans about 265 px across the legs and south about 450 px. North reads as a much smaller animal, although it"
+  }
+ }
+}

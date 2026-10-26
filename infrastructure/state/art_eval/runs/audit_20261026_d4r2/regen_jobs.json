@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RM_Sytheclaw__dessicated_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sytheclaw__dessicated_n",
+  "prompt": "A creature sprite for RimWorld: the dessicated sytheclaw, a low-slung pack predator that has dried out to a skeleton. Anatomy: the back is covered in overlapping, rusty-grey, weathered armour plates over exposed vertebrae and rib edges, with no fur or mane. Thin bone-white leg bones carry sparse dried rust-red tissue. The body is held very close to the ground, lower than any big cat's stance. Each forelimb is a bone limb that ends in a long, straight, serrated bone blade with saw-tooth notches along its edge, in place of a paw or hooked claw. The long tail is spiked and plated. View: rear view, seen from behind, from a low camera at ground height, slightly to one side. The wide hindquarters and the bent, splayed hind legs fill the foreground. The plated back is foreshortened and recedes away from the viewer along the spine. The spiked, plated tail lies low in the foreground, pointing toward the viewer. The head is turned away, with the eyes hidden. The two serrated forelimb blades show past the flanks of the body, pointing forward and outward. Composition: exactly ONE creature, centred on the canvas, the whole body visible with nothing cut off. The hind feet and tail tip rest on a single ground line, at the same vertical anchor as the front view. Style: realistic painterly vanilla RimWorld sprite, clean dark outline, soft painted edges in a deeper shade of the local colour. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: FOOTPRINT, DEPARTURE_MISSING, F_TOPDOWN, FOOTPRINT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d4r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Blarth__Blarth_Swimming_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blarth__Blarth_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the accepted east view): same stout rotund barrel body, same proportions, same hide colours, same scattered ring-shaped dimples and pores, same thick-rooted tail, same size on the canvas. A creature sprite for RimWorld: the blarth, a medium-sized amphibious predator of Naboo, kept by the Gungans as an amiable household pet and watch animal. Show it in rear view, seen from behind at the game camera's angle, the animal facing away from the viewer. In this view the rear surface faces the viewer: the body is the same broad, rotund barrel as in the east and front views, spanning the full width of the east body, with wide rounded haunches and a smoothly arched back. The back is a smooth, unbroken hide surface carrying only the scattered ring-shaped dimples and pores of the east view, in the same pattern and density, in the same hide colour. The stubby hind legs are planted under the body with the hind feet at the bottom. The thick tail root sits between the haunches, as thick as in the east view, and the tail tapers gradually as it curls down toward the camera. The head is turned away and hidden behind the bulk of the body, with the toothy reptilian snout pointing away from the viewer and the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d4r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Bursa__Bursa_Swimming_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Bursa__Bursa_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the accepted east side view of the swimming bursa): same anatomy, same proportions, same colours and markings, same body bulk, same size on the canvas, same water treatment, now seen from behind (rear view: the back of the head, the spine, the rump and the trailing limbs toward the viewer; the eyes and tusked snout face away from the viewer). A creature sprite for RimWorld: the bursa. Bursas were a species of ursidae creatures native to planet of Naboo. They had tusked snouts and feathery tufts of brown hair on their thick-skinned bodies. They were popular as circus animals due to their intelligence, but more often than not this resulted in them escaping and forming wild populations on various temperate worlds. Pose: the bursa swims away from the viewer, floating at the water surface exactly as in the east view. Its heavy body is held low and wide, the lower body and paddling limbs submerged, and a painted waterline with a few small ripple rings wraps around the body at the same height as in the east view, while the upper back, crest, shoulders and rump ride above the surface. The body is as broad across the canvas as in the south view, about 3 cells of bulk: the broad shoulders, wide rump and heavy haunches fill nearly the full width, and the hind and fore limbs paddle out to both sides in the same swimming posture as the east view. The tall feathery brown crest rises along the head and spine and shows clearly over the back. Visible features it shows: the canon Naboo bursa (see canon entry bursa); feathery tufts of brown hair on a thick-skinned body; the tusked snout belonging to the head, turned away from the viewer. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background around the animal and its painted waterline: no ground, no cast shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, OWNER_NOTE_IGNORED, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d4r2",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
+ }
+]

@@ -1,0 +1,30 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d3r2",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d3r2_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d3r2_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_d3r2_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "9aa014c853f148d2",
+ "census_rows": 4,
+ "rows": 4,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 10,
+ "images": 7387
+}
+
+--- stderr ---
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Dakkra: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_south.png', '/home/mandrake/rm/bench/src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Karrimeth: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Karrimeth_n/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Ondrukka: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Ondrukka_n/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Siezer: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Miasma/Textures/Things/Pawn/Animal/RM_Siezer/RM_Siezer_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_d3r2/kept/kept_RM_Siezer_north_a15423afea93.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

@@ -1,0 +1,79 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Shoal": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: STYLE_OFF \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 3c3ad9e3a6); STYLE_OFF: The bodies have smooth, glossy, almost rendered shading with very even gradients, like polished seeds or garlic cloves rather than living fl"
+  },
+  "RM_Fuzzrunner": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha 2c341f36eb); DEPARTURE_MISSING: Departure 5, broad rounded shoulders worn smooth from pushing along narrow stem runs, is only implied by the general roundness. There is no ; STYLE_EARTHLY: The east profile, with its tapered snout, small eye and whiskers, reads somewhat like a fat hamster or mole in profile."
+  },
+  "RM_Thermadon": {
+   "prefill": "keep",
+   "why": "PIPELINE: HOLD_CANVAS \u00b7 Opus -",
+   "context": "judged candidate r1 (image sha eda5416955); "
+  },
+  "RSW_FacetMothPupa": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha f767d3e552); F_INCONSISTENT: East puts the pointed taper on the right (the front, facing east), but south shows the blunt end toward the camera with the taper rising beh"
+  },
+  "RSW_LavaFlea": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha eba988a762); F_INCONSISTENT: South shows about 8 leg tips (4 long legs a side plus the tucked front pair), while east shows about 6 long legs plus the front pair. The le"
+  },
+  "RSW_Silooth": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: CANON_MISS, F_INCONSISTENT \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha 436fed4c7c); F_INCONSISTENT: East shows a prominent upward-curving horn or mandible over the head; south shows only a low peaked crest above the maw and no projecting ma; CANON_MISS: The jaw reads as one large upper horn-mandible plus a lower jaw rather than two big forward-reaching mandibles, and the legs are thick and a"
+  },
+  "RSW_Snoruuk": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_EARTHLY, STYLE_OFF \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha 4f19b91463); STYLE_OFF: A thin dark-brown outline traces the cap edge, the stalk and the root toes, giving a slightly illustrated, storybook-toadstool feel.; STYLE_EARTHLY: The cap and spot pattern is an almost exact Amanita muscaria (fly agaric); only the root-feet set it apart."
+  },
+  "RM_Essarn": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_EARTHLY \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha 76230e8e8d); STYLE_EARTHLY: The profile is a fairly conventional eel shape: blunt eel head, mouth slit, tapering whip tail. Its alien cues are the rime crust, the bone-"
+  },
+  "RM_Oomal": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha a2d898f841); DEPARTURE_MISSING: The grey salt line and the lesions are faint or barely visible on the end-on views. South reads somewhat like a stubby grub."
+  },
+  "RUT_Vhessk": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha f2743263d8); F_SIZE_JUMP: Heights match, but the north rear view is about 15\u201320% narrower than the south front view, so the creature looks slightly smaller from behin"
+  }
+ }
+}

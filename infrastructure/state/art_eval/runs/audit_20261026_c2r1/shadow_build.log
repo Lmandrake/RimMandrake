@@ -1,0 +1,32 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c2r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c2r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c2r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_c2r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "60ef7bbc705a8320",
+ "census_rows": 4,
+ "rows": 4,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 3,
+ "canon_rows_with_images": 3,
+ "canon_rows_with_must_show": 3,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 43,
+ "images": 7399
+}
+
+--- stderr ---
+art_sheet: RSW_Blixus: census texPaths ['swanimals/Blixus/Blixus'] are STALE; our defs draw ['swanimals/Blixus/Blixus', 'swanimals/Blixus/Blixus_Swimming'] (src XML)
+art_sheet: RSW_Dragonsnake: census texPaths ['RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A'] are STALE; our defs draw ['RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A', 'RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_Swim'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_CrimsonOpee: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Blixus: reference_textures ['infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_east_9fbd9b245d9d.png', 'infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_north_da64dcb9e99b.png', 'infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_south_9346976696f2.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Dewback: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Dewback_north_48c4fecca540.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Dragonsnake: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Dragonsnake_A_north_5aa470919f41.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

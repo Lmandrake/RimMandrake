@@ -1,0 +1,46 @@
+[
+ {
+  "id": "arteval_RSW_Maxolotl_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Maxolotl_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same pale pink body and markings, same size on the canvas. Match its rendering exactly: flat cel shading in a few tones, a heavy dark keyline around the whole body, three rigid pink gill stalks on each side of the head. The front, rear and side views must read as one sprite set drawn by the same hand. A creature sprite for RimWorld: the maxolotl, a large salamander of wet environments with a toothless, strong-jawed mouth and the wet skin of a pool-dwelling animal. Wet skin is shown as a few flat highlight shapes on matte skin. Draw the view this job asks for. FRONT VIEW (eyes toward the viewer): a broad, flat, heavy-jawed salamander head with small dull eyes set wide apart on the sides of the skull, and a straight, firm, closed mouth line. The three pink gill stalks on each side fan out from behind the jaw, and the forelegs stand beneath the chest. REAR VIEW (seen from behind and slightly above, at the game's angled camera): the haunches, both hind legs and the tail base face the viewer, the back rises away from the viewer, the head is hidden behind the body, and only the gill tips show past it. Realistic painterly vanilla RimWorld sprite style with a clean heavy dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, STYLE_CARTOON, OWNER_NOTE_IGNORED, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.2,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Mee_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Mee_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the front view, eyes toward the viewer. A creature sprite for RimWorld: the mee scalefish. A silver-blue schooling scalefish with a single line of bioluminescent dots along the flank, native to the Naboo shallows and the bulk protein of every sea that has them. A shoal scattering is the only warning some nights give. Visible features it must show: the canon mee scalefish (see canon entry meescalefish); silver-blue schooling fish; a single line of bioluminescent dots along the flank, seen foreshortened along the body. The head is a realistic fish head seen head-on: a narrow, laterally compressed face with the eyes set on the sides of the head, small, dark and matte with a dull natural sheen and a thin lid ring, and a small, level, closed mouth slit at the front of the snout with no lips and no curve to the corners. The face has the same restrained proportions and painterly treatment as the accepted side view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_CARTOON, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c5r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer"
+ }
+]

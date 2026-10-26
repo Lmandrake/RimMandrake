@@ -1,0 +1,27 @@
+{
+ "RSW_Nexu": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Nexu/Nexu_j_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Nexu__Nexu_j_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d5r1/kept/kept_Nexu_j_north_5f1c4ac8bbc8.png"
+ ],
+ "RSW_PekoPeko": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_PekoPeko__PekoPeko_m_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/PekoPeko/PekoPeko_m_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_PekoPeko__PekoPeko_m_ns/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d5r1/kept/kept_PekoPeko_m_north_c11ad1e42021.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d5r1/kept/kept_PekoPeko_m_south_1068afdf4787.png"
+ ],
+ "RSW_SandLeaper": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_SandLeaper_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d5r1/kept/kept_SandLeaper_north_68d5b3deed22.png"
+ ],
+ "RSW_SandLion": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/AA_SandLion/AA_SandLion_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/AA_SandLion/AA_SandLion_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_SandLion__AA_SandLion_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d5r1/kept/kept_AA_SandLion_north_8c19aab35f16.png"
+ ]
+}

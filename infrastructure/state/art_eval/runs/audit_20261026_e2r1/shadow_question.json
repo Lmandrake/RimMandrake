@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Vaulisk": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha f14ea2059f); F_SIZE_JUMP: The north body is noticeably narrower and shorter than south on the shared scale, about 360 px against 470 px wide. The lure stalk and orb a; F_INCONSISTENT: The lure orb sits to the viewer's right of the stalk on north, the same side as on south. A stalk that curls forward over the head would pla"
+  },
+  "RM_Chittik": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_TOPDOWN \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha ebfd195560); F_TOPDOWN: The legs splay out at all four corners around the oval capsule, which slightly suggests a view from above, although the head is hidden behin"
+  },
+  "RM_Grellik": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus GOOD",
+   "context": "judged candidate r1 (image sha 16ff2485b8); "
+  },
+  "RM_SumpMouse": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha dee1e9a005); F_INCONSISTENT: North has a softer, lighter outline and slightly softer rendering than the crisp dark-outlined south and east."
+  }
+ }
+}

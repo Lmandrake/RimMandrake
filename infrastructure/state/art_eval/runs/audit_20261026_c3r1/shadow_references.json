@@ -1,0 +1,24 @@
+{
+ "RSW_Dragonsnake": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Dragonsnake__Dragonsnake_B_n/north.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Dragonsnake__Dragonsnake_C_n/north.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Dragonsnake__Dragonsnake_D_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_B_north_7f30177e69f0.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_C_north_54b9f848dd98.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_D_north_ef6158657763.png"
+ ],
+ "RSW_Fambaa": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Fambaa__Fambaa_j/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Fambaa__Fambaa_j/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Fambaa__Fambaa_j/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_east_80cfce42e3d9.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_north_950033687570.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_south_9ea76776617f.png"
+ ]
+}

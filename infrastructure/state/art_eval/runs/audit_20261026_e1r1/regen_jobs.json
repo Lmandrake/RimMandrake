@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RSW_Varactyl__Varactyl_f_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Varactyl__Varactyl_f_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same low sprawling stance, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the varactyl. A giant reptavian herbivore from Utapau, with a beaked head, feathered mane and long, powerful tail. Fine gripping structures on its feet let it climb steep rock faces, even while carrying a rider. Visible features it must show: the canon Utapau varactyl (see canon entry varactyl); a beaked head and a feathered mane; a long powerful tail and gripping feet. The rear view shows the back, the haunches and the tail base, with the head turned away and the eyes hidden. The pose matches the east view's low sprawl: the pelvis is lowered close to the ground, the hind legs are deeply bent with the knees projecting visibly out to both sides, and the forelimb elbows bend out wide. The broadly spaced climbing feet are planted well outside the body line, so the stance reads wide and low. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Drazzik_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Drazzik_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted full-body view): same pale colour, same markings, same back pattern and ridge shapes, same proportions, same size on the canvas. This render is its buried still-state. A creature sprite for RimWorld: the drazzik, a pale, patient, flat-bodied ambusher that lies still half-buried, humming a false vibration through the ground. Show only its exposed back: a low, broad, pale, flat dome, the highest point of the body, rising from a perfectly straight horizontal burial line near the lower third of the canvas. The back is seen from above and slightly behind, with its ridge pattern and pale markings clearly readable. Below the burial line the canvas is fully transparent: the lower edge of the back ends cleanly in transparency, as if the body continues out of sight beneath the surface. The legs, tail, head and hidden strike jaw are beneath the line and out of view, so the silhouette is one calm, flat, pale mound. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the pale body colour, clean dark outline along the exposed back. Exactly ONE creature, centred, the whole exposed back visible with nothing cut off at the sides. Fully transparent background: no painted sand, no ground texture, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Heemin_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Heemin_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy fin for fin, same proportions, same near-transparent body, same faint aurora green and violet colours, same size on the canvas, now seen in the rear view, from behind. A creature sprite for RimWorld: the heemin. A near-transparent palm-length sliver swimming the top layer of the Chill, aurora green and violet refracting faintly through it, visible mostly as a distortion rather than a shape. The camera is RimWorld's elevated three-quarter game angle, looking slightly down from above and behind the fish: the deeply forked two-lobed caudal fin is large in the foreground, nearest the viewer; the tall sail-like dorsal fin rises above the body and the tall ventral fin drops below it, both seen end-on as thin vertical blades; the small pectoral fins show at the sides of the body; the sliver body is foreshortened, running away from the viewer behind the tail fin, and the head recedes at the far end, hidden behind the body with the eyes out of sight. Faint aurora green and violet refract through the translucent body and fins. Soft edges with no strong outline, in a deeper shade of the local colour. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_TOPDOWN, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.45,
+  "module": "swimmer"
+ }
+]

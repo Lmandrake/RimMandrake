@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 46.6,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3601252
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.8,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1180907
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_SandLeaper_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said weak); blocking ['F_INCONSISTENT', 'OWNER_NOTE_IGNORED', 'F_SIZE_JUMP', 'F_TOPDOWN', 'F_SOUTH_NOT_FRONT']; polish ['LEGIB_32']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "95202a8d6c9413cf060af724c6d93f0557c7730660eb8f1bf15fa95bf04505b9",
+  "east.png": "f62b986325e6b96142da4a898d954e020bd96fd5ff1e9300ce7feef6a43a2c10",
+  "north.png": "7a0eb88183cce55e9e99cb860ac24470800c5e24154e98f3ac2f85c160108eeb",
+  "scale.png": "74b832a4b60a35a2e7bef3586ef5a95cb63b1b2fff31d6e0a087dab56d4706d7",
+  "facings.png": "1d0dca0f2ee84957e41d7f2614f09d661f6608d6cfe7ecb869c3ad4bb3d5c198"
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "RM_Ollathrix": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Webwork/Textures/Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Ollathrix_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e3r1/kept/kept_RM_Ollathrix_north_5cdb320de391.png"
+ ],
+ "RM_Huldu": [
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Huldu/RM_Huldu_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Huldu/RM_Huldu_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Huldu_n/north.png"
+ ],
+ "RM_Murrin": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Murrin_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Murrin/RM_Murrin_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Murrin_ns/north.png"
+ ]
+}

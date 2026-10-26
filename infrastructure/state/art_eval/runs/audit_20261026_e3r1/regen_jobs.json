@@ -1,0 +1,62 @@
+[
+ {
+  "id": "arteval_RM_Ollathrix_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Ollathrix_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from behind. A creature sprite for RimWorld: the ollathrix. A spider the size of an elephant, weight for weight closer to a horse \u2014 mostly a mass of nimble, sharp legs under a low, wide, bone-white body. Rear view, seen from behind: the abdomen is a broad, low, rounded dome, the same full volume as in the accepted side view and as wide as the front view's abdomen (about 300 px wide on a 1024 px canvas), a full rounded sac whose width matches the body, centred in the sprite. The head and the raised ring of small colourless eyes lie beyond the abdomen, hidden from this view. The abdomen carries no mark of any kind, faintly translucent, the darker gut showing through the empty silk-cream chitin. Nimble, sharp legs radiate out around the broad body on both sides. Visible features it must show: elephant-sized, mostly a mass of nimble sharp legs; a low, wide, bone-white body with a broad, rounded, unmarked, faintly translucent abdomen. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e3r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 5.2,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Huldu_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu_n",
+  "prompt": "A creature sprite for RimWorld: the huldu, shown in rear view, seen from behind, so the back, the folded comb, the haunches and the horizontal fluke face the viewer and the eyes and face are hidden. A small, compact, sleek water-hunter, forearm-length, sized to press flat along a human arm. Its whole body is covered in smooth hairless velvet skin in a deep slate-teal tone, matte and slightly damp. A distinct dorsal comb runs along the spine from the nape to the base of the tail, made of wet-looking strands folded flat against the body in a paler glossy shade. This comb is the only fur-like texture on the animal. Two short arms sit high on the chest, each ending in a long-fingered, flexible gripping hand with sucker-like pads whose fingers curl all the way round, made to cling to and wrap around a human forearm. Behind the short, rounded body, a broad horizontal whale-like fluke is spread flat as the tail. It hunts underwater, drives prey against rock with sweeps of the fluke, and can drag itself onto land on its arms and hop off the fluke. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e3r1",
+  "drawsize": 0.8,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Murrin_ns__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the view this job asks for (front view with eyes toward the viewer, or rear view seen from behind). A creature sprite for RimWorld: the murrin. A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings whenever the pool is fed. Visible features it must show: a single tall comb-like dorsal fin running along the back, its edge divided into separate comb teeth rather than one smooth sail; a deep, laterally compressed body that tapers below into a thin, distinct blade-like keel along the belly (in the front view the deep body narrows downward to a thin blade-edged belly keel beneath the barbels; in the rear view the keel shows as a sharp ridge along the underside); ring-within-ring markings on the body that echo the surface ripples, identical to the reference. The dorsal comb-fin rises clearly above the waterline, and the same small set of 2-3 faint concentric ripple rings, identical in size, softness and opacity on every view, spreads around the point where the comb-fin tip cuts the surface; the body below stands on clear transparent alpha. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water fill, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_e3r1",
+  "drawsize": 0.7,
+  "module": "swimmer"
+ }
+]

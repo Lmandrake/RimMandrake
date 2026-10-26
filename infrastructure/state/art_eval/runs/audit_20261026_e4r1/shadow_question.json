@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Skarrin": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_SIZE_JUMP, OWNER_NOTE_IGNORED",
+   "context": "judged candidate r1 (image sha 4b886f432e); F_SIZE_JUMP: North is a sliver about 54 px tall, roughly a quarter of the south's 203 px at one shared scale. It was downscaled by 0.314 to match the eas; OWNER_NOTE_IGNORED: Against the accepted east, the north's body reads several times smaller and its fins are stubbier than the long swept blades on the east and"
+  },
+  "RM_Vhakk": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r1 (image sha e87b2b935c); F_SIZE_JUMP: North is about half the width of south at one shared scale, so the animal looks markedly smaller from behind.; F_INCONSISTENT: North shows a narrow, hunched, toad-like body without the wide flat flared margins that define the south and east silhouette.; OWNER_NOTE_IGNORED: North does not match the installed east's long, broad, flat body proportions; it looks like a smaller, rounder animal."
+  },
+  "RM_Vizhik": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r1 (image sha c9f27d31b3); F_INCONSISTENT: East has an upright dorsal sail and a belly fin running along the body. N/S instead show two horizontal wing-like fans spreading left and ri; OWNER_NOTE_IGNORED: The new N/S do not reproduce the installed east's fin geometry, and north keeps the dorsal-overhead read the audit flagged.; DEPARTURE_MISSING: No facing shows the gill fringes braced on the ground to carry the body."
+  }
+ }
+}

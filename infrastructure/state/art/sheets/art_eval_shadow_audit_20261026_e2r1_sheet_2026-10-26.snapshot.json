@@ -1,0 +1,147 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e2r1",
+ "built": "2026-10-26T12:17:43-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e2r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Chittik": {
+   "columns": {
+    "A": {
+     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+     "north": "e3f9e2150d93bd03c90752bc18776e6f8096ad11bac4215eedbb918f333b67f7",
+     "south": "ebfd195560e44c30ee2fc39c2afc38c980d2f38d2c77ed11ba313b717a214bff"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Chittik/RM_Chittik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Chittik/RM_Chittik"
+   ],
+   "res": "Things/Pawn/Animal/RM_Chittik/RM_Chittik",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "chittik"
+  },
+  "RM_Grellik": {
+   "columns": {
+    "A": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "321fd80c066fa3c8e18472aa1d8db616c896954fa1d49df07871ab60668414a3",
+     "south": "16ff2485b8a728afa46efd6a64176516513710c9196b67ffcead7428832b28a6"
+    },
+    "B": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "16ff2485b8a728afa46efd6a64176516513710c9196b67ffcead7428832b28a6"
+    },
+    "C": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+    "B": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+    "C": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render standtall_b1_grellik",
+    "C": "history TheRot 2026-10-03"
+   },
+   "pools": [
+    "RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+   ],
+   "res": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "grellik"
+  },
+  "RM_SumpMouse": {
+   "columns": {
+    "A": {
+     "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
+     "north": "a947db8408dac61997f96ee739c1a4fd5fe1359e311485e9d05797eb5bc85974",
+     "south": "dee1e9a0055391f183d779e09beb4e563b70f426058c6d016099832aeba44e39"
+    },
+    "B": {
+     "east": "174afd5fe477e83e0126fd89fdd9d508029ef5f2c7279be6ab69cb828f0256c3",
+     "north": "6f1db31be29e0ea7bdfb7c81b410038d4c6064ef2028add471a4e31445cf733d",
+     "south": "614fe2f71728659469fb7c329630313a7880f1b8786ef4fc614a0fb3e0fba7d0"
+    },
+    "C": {
+     "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
+     "north": "632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0",
+     "south": "9d407c7364f96a9b05eb514dee8159ab49d7ee9feb59511b30e64c028f5cd700"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+    "B": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+    "C": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_SumpMouse_v2",
+    "C": "render RM_SumpMouse"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+   ],
+   "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "sumpmouse"
+  },
+  "RM_Vaulisk": {
+   "columns": {
+    "A": {
+     "east": "65e34ff7be02fbcf4cc68b39a78ae8f32744f3cea06412f471aa59a14d2af308",
+     "north": "ac90749f9946b7ca985890172ca89c2551f5fd22f8a2ba15faeea4620e138053",
+     "south": "24155ac49697b5e457661dcec5530f558766a832c56e8a3d5e2caf7c51a8f175"
+    },
+    "B": {
+     "east": "65e34ff7be02fbcf4cc68b39a78ae8f32744f3cea06412f471aa59a14d2af308",
+     "north": "6df5fa85d2cd31c63e1c47a7dc85084b4cf38118903c727d69cf6ad4055acf9d",
+     "south": "24155ac49697b5e457661dcec5530f558766a832c56e8a3d5e2caf7c51a8f175"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk",
+    "B": "Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render RM_Vaulisk_v2"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk"
+   ],
+   "res": "Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "vaulisk"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_e2r1_sheet_2026-10-26",
+ "snapshotId": "606bc8d869da98f6"
+}

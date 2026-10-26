@@ -1,0 +1,149 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d3r2",
+ "built": "2026-10-26T12:19:44-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d3r2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Dakkra": {
+   "columns": {
+    "A": {
+     "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
+     "north": "36e2479a5b26a1d4405d6ab18fa4cea968e43a601f286291f3d72b7a327ec8a6",
+     "south": "c52d4243c9f3ecfc47b84862d320d5d12f213df60499c12f2d1d3c6bfaaacd77"
+    },
+    "B": {
+     "east": "44ce575ebfd1ee36cc61ca338c1aabdb4161ff8c3dc2e703b23c1293c66349c9"
+    },
+    "C": {
+     "east": "20df6497bbad7e2af4dc48ad61871cfc9a49180f9904cefa630ca73f51ea14c8"
+    },
+    "D": {
+     "east": "380bcf42a55a7c6011421a12a080412c4d3e088ed4f2e1365190bcf5c6906e0e",
+     "north": "155924019db846c4e25ca3fa73d94a85b5d97ff289d6ec9fab4196781ccd8b80",
+     "south": "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "B": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "C": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "D": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render regen_ls_x_dakkra_moving_v1 \u2014 grader flagged (advisory)",
+    "C": "render ls_regen_RM_Dakkra_down_v1",
+    "D": "render RM_Dakkra"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+   ],
+   "res": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "dakkra"
+  },
+  "RM_Karrimeth": {
+   "columns": {
+    "A": {
+     "east": "ab1a07240937fba4d30dd29a923d356cd4a9d0c47d3f76bffeee847c4e6091e0",
+     "north": "2b7e36309e9177e41388ff3b4a2adc4a01379f025afd371f4b3ec4f31a498b0e",
+     "south": "162d8571b8e57d07a360b00ce6a63e7b21f14287d026f7e7326c8684096304a7"
+    },
+    "B": {
+     "east": "ab1a07240937fba4d30dd29a923d356cd4a9d0c47d3f76bffeee847c4e6091e0",
+     "north": "816ddaabed3033a29c58efdfee1db219f5c1c3173d3c30b4e794ccbd8b249dc0",
+     "south": "fa77c8f64f02fa7f0355f2266ddd65f54dc9530d05bde380bba3489f878041da"
+    },
+    "C": {
+     "south": "6563a4658b45027c50543c0874f3616505aaaba6862abde472ef2c2281cef433"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
+    "B": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
+    "C": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_Karrimeth_v1",
+    "C": "history Miasma 2026-09-25"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth"
+   ],
+   "res": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "karrimeth"
+  },
+  "RM_Ondrukka": {
+   "columns": {
+    "A": {
+     "east": "c83f52635183737be3bb56a5d01e118d002337dcd4307372b13ed3119aa835e4",
+     "north": "809c201698c65fda21ffe781f83898427fea12c821d938e8814acbce6368b51e",
+     "south": "b9de1add4b1d7d09a345d21fd62af36e815757dba6a1fae7806ba6f6c464afd4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ondrukka/RM_Ondrukka",
+   "reserved": [
+    "A"
+   ],
+   "shownBase": [],
+   "subject_key": "ondrukka"
+  },
+  "RM_Siezer": {
+   "columns": {
+    "A": {
+     "east": "58c44d3e8b5051f3afe73f0349017598b3464e0cf2d8295ad227258d7f283cac",
+     "north": "a15423afea93ab9a2d18782e38a1ab56c0c3dec766fa2e39c4bb02c8195fbbe0",
+     "south": "9df2395cebbc0b87b0db4a6128c113d3a45623e832038fedee3d015d92241613"
+    },
+    "B": {
+     "east": "58c44d3e8b5051f3afe73f0349017598b3464e0cf2d8295ad227258d7f283cac",
+     "north": "de89c31957122795af6bfe1aaab72388996bd935c830df700dce7d4edc0bc757",
+     "south": "fc77e91a6d7342b548d4c980bc9e5b5d9181038a6389772afdd17731c6a61084"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Siezer/RM_Siezer",
+    "B": "Things/Pawn/Animal/RM_Siezer/RM_Siezer"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render miasma_siezer_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Siezer/RM_Siezer"
+   ],
+   "res": "Things/Pawn/Animal/RM_Siezer/RM_Siezer",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "siezer"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_d3r2_sheet_2026-10-26",
+ "snapshotId": "9aa014c853f148d2"
+}

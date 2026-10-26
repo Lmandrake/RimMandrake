@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_FrogDog": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1 || [FrogDog_j_n] REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha d2e39d4683); F_SIZE_JUMP: The north rear view is about 225 px wide and 243 px tall, against about 385 px wide and 384 px tall for south at one scale. The animal visib || [FrogDog_j_n] judged candidate r1 (image sha ebb7554b19); F_SIZE_JUMP: North's body is about 210 px wide and 234 px tall, against south's roughly 460 px wide and 322 px tall. In game, turning away makes the anim; F_INCONSISTENT: North's skin is a paler, warmer yellow-tan than the grey-olive of east and south."
+  },
+  "RSW_FungalWeevil": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus GOOD",
+   "context": "judged candidate r1 (image sha 4c49c68628); "
+  },
+  "RSW_Gullipud": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha 72ef017b1c); F_SIZE_JUMP: North's body is about half the width of south's on the shared scale and sits low and small in its canvas (measured heights: south 354, north; F_INCONSISTENT: North puts a row of hooked spines along the red dorsal stripe. On east the stripe is bare and the spines sit beside it on the back and flank"
+  }
+ }
+}

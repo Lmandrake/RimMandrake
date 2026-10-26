@@ -1,0 +1,17 @@
+{
+ "RM_Skarrin": [
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Skarrin/RM_Skarrin_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Skarrin/RM_Skarrin_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Skarrin_n/north.png"
+ ],
+ "RM_Vhakk": [
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhakk/RM_Vhakk_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhakk/RM_Vhakk_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Vhakk_n/north.png"
+ ],
+ "RM_Vizhik": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Vizhik_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vizhik/RM_Vizhik_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Vizhik_ns/north.png"
+ ]
+}

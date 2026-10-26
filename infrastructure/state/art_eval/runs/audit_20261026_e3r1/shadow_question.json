@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Ollathrix": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 60b8452bb9); F_INCONSISTENT: On north the abdomen is noticeably narrower and more pear-shaped (about 230 px wide) than the broad dome on south (about 300 px wide), so th"
+  },
+  "RM_Huldu": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP, STYLE_EARTHLY \u00b7 GPT unsure, unsettled K2",
+   "context": "judged candidate r1 (image sha e20512bc8b); STYLE_EARTHLY: A furred otter body and head with a whale fluke. A stranger would say 'otter' at first glance.; DEPARTURE_MISSING: No hairless velvet skin, no wrapping grasping limbs and no forearm-length body. Only a herringbone dorsal ridge on north hints at the comb.; F_SIZE_JUMP: South is 199 px tall against 152 and 159 for the others. Its upright sitting pose and larger body make it read noticeably bigger."
+  },
+  "RM_Murrin": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT unsure, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha 33ef2ac8dc); F_INCONSISTENT: Concentric ripple rings are drawn around north's body at the waterline. South and east have none.; DEPARTURE_MISSING: The body is moderately deep and the blade-like keel along the belly is not distinct. North only hints at it with the downward spike."
+  }
+ }
+}

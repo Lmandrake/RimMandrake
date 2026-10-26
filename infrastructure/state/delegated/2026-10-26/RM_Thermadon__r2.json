@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 33.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3414068
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 66.6
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.10912469999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thermadon",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT']; polish ['SCALE_WRONG']",
+  "gpt unsure: unsettled ['K1'], own blocking []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "65df7ff6c1c0af85d12293a22d7d24211af2fd98fd29c20c7a06f48be7f89322",
+  "east.png": "5f5141eaa166cb3cd8b4c8ea745fbce6af4c4d60a168f6bc699d5672f7afbade",
+  "north.png": "fb48ab78d9a028d9fe83a4d17ba4301dbaa3a47491e01ee12098615ce73886a4",
+  "scale.png": "addae88ef1b3d6504515a94c79dc9979ba9429d78a5dd16c0d69243098ce1d0d",
+  "facings.png": "24cfa8e86f9a65b6b74564ca4c3ad920afa0acebf62814ed78d254c52dd48b70"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c3r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c3r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c3r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_c3r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "d1688d35de56224b",
+ "census_rows": 2,
+ "rows": 2,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 2,
+ "canon_rows_with_images": 2,
+ "canon_rows_with_must_show": 2,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 37,
+ "images": 7282
+}
+
+--- stderr ---
+art_sheet: RSW_Dragonsnake: census texPaths ['RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A'] are STALE; our defs draw ['RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A', 'RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_Swim'] (src XML)
+art_sheet: RSW_Fambaa: census texPaths ['RimStarWars/SWBestiary/Fambaa/Fambaa'] are STALE; our defs draw ['RimStarWars/SWBestiary/Fambaa/Fambaa', 'swanimals/Fambaa/Fambaa_Swimming', 'swanimals/Fambaa/Fambaa_j', 'swanimals/Fambaa/Fambaa_j_Swimming'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RSW_Dragonsnake: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_B_east.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_C_east.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_D_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_B_north_7f30177e69f0.png', 'infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_C_north_54b9f848dd98.png', 'infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Dragonsnake_D_north_ef6158657763.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Fambaa: reference_textures ['infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_east_80cfce42e3d9.png', 'infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_north_950033687570.png', 'infrastructure/state/art_eval/runs/audit_20261026_c3r1/kept/kept_Fambaa_j_south_9ea76776617f.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

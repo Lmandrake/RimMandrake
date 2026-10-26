@@ -1,0 +1,31 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c5r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c5r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c5r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_c5r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "eb42fe9e8ea48973",
+ "census_rows": 4,
+ "rows": 4,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 1,
+ "canon_rows_with_images": 1,
+ "canon_rows_with_must_show": 1,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 11,
+ "images": 7399
+}
+
+--- stderr ---
+art_sheet: RSW_MutatingTumorfishFry: census texPaths ['swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2'] are STALE; our defs draw ['swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/MutatingTumorfish_Stage2', 'swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutatingTumorfish/Swimming_MutatingTumorfish_Stage2'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RSW_Maxolotl: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BiomesCore_Things/Animal/Maxolotl/Maxolotl_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Maxolotl_north_9a22b4b31ef5.png', 'infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Maxolotl_south_35e5be13dcf9.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Mee: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Mee/Mee_east.png', 'infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Mee_north_a56546c217d5.png', 'infrastructure/state/art_eval/runs/audit_20261026_c5r1/kept/kept_Mee_south_69ab481df398.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_MossBeetle: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MossBeetle_n/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_MutatingTumorfishFry: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_MutatingTumorfishFry__MutatingTumorfish_Stage2/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

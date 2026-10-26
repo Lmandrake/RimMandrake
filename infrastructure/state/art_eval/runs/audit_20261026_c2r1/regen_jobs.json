@@ -1,0 +1,87 @@
+[
+ {
+  "id": "arteval_RM_CrimsonOpee_ns__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CrimsonOpee_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same rust-red barnacled colours and markings, same size on the canvas, now seen from behind. A creature sprite for RimWorld: the crimson opee. A warm-shallows morph of the opee, barnacled and rust-red, that hunts with its tongue already out as a lure. It is a crustacean-fish hybrid with a segmented back and a broad lobed tail fan, the opee sea-killer form. Its lure set is exactly the accepted east view's: the same number of stalks, the same attachment points and the same lengths, including the two long filament-bearing side lures that arch out past the flanks of the body. The body is broad, with the flanks as wide as in the accepted east view. Rear view (north), seen from behind at the game camera angle, a low three-quarter-height viewpoint looking at the animal's back end: the tail base and the broad lobed tail fan are the largest, nearest forms, filling the lower half of the sprite and spread wide as its widest part. The rear armor plates are stacked directly above the tail base, and the segmented back plates are strongly foreshortened as they recede away from the viewer, each overlapping the one behind, forming a short stepped stack. The head end is hidden behind the body mass. The legs hang downward under the body, the rear pair planted close together beneath the haunches with the far pair partly hidden behind them, feet at the ground line at the bottom of the sprite. Only the lure tips and the two long side lures show, arching up and out past the flanks from behind the body. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_TOPDOWN, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c2r1",
+  "drawsize": 2.48,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Blixus__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were known to be deadly in the swamps and lagoons they inhabit. They were known to periodically shed their exoskeleton if broken or damaged which could be harvested for useful chitin. It is believed many were accidently transplanted to various worlds as exotic display animals or pets that grew too large to contain. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod, with a grey chitin shell covering only part of the body and soft flesh showing on the rest; exactly five long feeler tentacles, each continuous from its root at the body to its tip and each ending in one rounded sucker pad, so five tentacles and five sucker pads in total. The east profile shows the same five tentacles as the south and north views, the near-side tentacles overlapping the far-side ones so that five tips can be counted. Keep the palette, body plan and shell coverage of the previous render unchanged. Realistic painterly vanilla RimWorld sprite style, with a clean dark outline in a deeper shade of the local colour. Every tentacle silhouette has a clean, crisp alpha cut-out with a thin antialiased edge whose pixels match the adjacent flesh or grey chitin, so the creature separates cleanly from the background. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background, uniform around the creature and between the tentacles: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, ALPHA_HALO, F_INCONSISTENT, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c2r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Dewback_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dewback_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same hide texture, seen from the rear view, from behind. A creature sprite for RimWorld: the dewback, a large, cold-blooded omnivore native to Tatooine, a huge, heavy reptile built as a mount and pack animal, with thick dusty hide and a plodding gait. In this rear view, seen from behind, the back, tail and haunches face the viewer: broad, thick haunches, a wide barrel torso bulging out on both sides of the spine, a heavy tail base at the centre, and two large, wide hind feet planted apart at the bottom; the head is mostly hidden behind the body and the eyes are not visible. The animal is drawn large and fills the canvas: the haunch-to-haunch width spans roughly 80 to 90 percent of the canvas width, with its height reaching near the top and bottom margins, so it reads as the same huge, heavy animal as the front view at the same scale, with the same torso mass, haunch thickness and foot size as the accepted side view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c2r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Dragonsnake__Dragonsnake_A_n__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Dragonsnake__Dragonsnake_A_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same hide colour, same bright green moss and spines along the back, same bioluminescent spots, same leaf-shaped paddle at the end of the tail, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the dragonsnake, a large semi-aquatic predatory serpentine reptile of muddy swamp waters, with sharp fangs, bioluminescent spots along its back and a long muscular body on splayed legs. Rear view, seen from behind: the back, spined and covered in bright green moss with glowing spots, runs away from the viewer; the haunches and splayed legs are broad, about 300 px wide across the legs, and the long tail tapers toward the camera and ends in the same leaf-shaped paddle as the side view; the head faces away and the eyes are hidden. The animal is large and bulky and fills the canvas to the same degree as the front view, the whole body visible with nothing cut off. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_INCONSISTENT, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_c2r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 4.0,
+  "module": "swimmer"
+ }
+]

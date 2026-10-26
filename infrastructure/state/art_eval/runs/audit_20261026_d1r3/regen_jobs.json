@@ -1,0 +1,65 @@
+[
+ {
+  "id": "arteval_RM_Thermadon__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thermadon",
+  "prompt": "A creature sprite for RimWorld: the duskfire. A long-legged black chitin hunter the size of a crouching man, in a lean predator stance on exactly six long thin legs, three on each side of the body, the same six-legged body plan in every facing. In front view, with eyes toward the viewer, all six legs show, three splayed to each side. In side view the three near-side legs are fully visible and the three far-side legs sit partly hidden behind the body, showing only knees and feet. In rear view, seen from behind, three legs reach out to each side with the inner ones overlapped by the abdomen. Its body is covered in smooth-edged overlapping black chitin plates that follow the body contour, like polished armour; the back, neck and abdomen form one clean rounded silhouette with a spineless dorsal outline in every facing. The abdomen is swollen with paired chemical glands that show a dull ember-red glow through the chitin, as the light fails. The body is insectoid and alien, with smooth glossy black plating in black and deep charcoal, and ember-red only in the glands. It hunts at twilight along dry root-ridges and hurls burning fluid when threatened. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d1r3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Woolamander__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Woolamander",
+  "prompt": "A creature sprite for RimWorld: the woolamander. Woolamanders were curious social creatures that originated on the jungle moon of Yavin 4. They fed on fruit and other vegetation that would ferment in their pot-bellies. Colourful primate often made for exotic pets; these sociable animals were spread to multiple worlds, where escaped wild populations soon established themselves. Visible features it must show: the canon Yavin 4 woolamander (see canon entry woolamander): ONE animal, alone, with no branch, perch or hanging ornament; a colourful furred primate; a round pot-belly; an exceptionally long bare tail. Keep the colourful furred primate body, the round pot-belly, the bare face and bare hands, and the palette exactly as in the previous render. Fur: painted as soft, irregular masses of colour with gentle tonal variation and natural light from above; individual hairs blend into the mass rather than appearing as separate drawn lines. The bare face and hands are smooth, modelled skin with natural painted light and shadow. Edges: soft and painted, a subtle slightly deeper shade of the local colour, just enough for readability. Tail, in every facing: a bare, hairless, slender cord tail leaves the base of the spine and trails down and back along the ground behind the animal. The cord is clearly longer than the arms, more than twice the length from shoulder to fingertip, and it is the longest single line of the animal. It runs well past the feet and ends in a rainbow-striped fur bulb that rests on the ground far behind and below the feet line, clearly separated from the body. In the rear view and the side view the full length of the cord is visible as a long, sweeping line from rump to bulb. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body and the whole tail visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d1r3",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Irqit__RM_Irqit_RM_Irqit_n__r2_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Irqit__RM_Irqit_RM_Irqit_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same silhouette, same proportions, same clay-wet tan palette and markings, same size on the canvas, now seen in rear view, from behind, with the eyes hidden and the back, haunches and hind paddles toward the viewer. A creature sprite for RimWorld: the irqit. A palm-sized, soft-bodied flood-pan creature with a broad, flat, rounded body. Its skin is smooth, supple, glossy and wet clay-coloured flesh, with soft damp folds where the limbs meet the body and a moist sheen across the whole surface. Several soft specular wet highlights, bright and slightly bluish-white, run along the spine, across the shoulders and haunches, and over the top of each hind paddle. Short paddling limbs splay wide on both sides. The rear view fills the canvas as fully as the front and side views do: the splayed hind paddles span nearly the full canvas width, about 490 px across, the same spread as the front view, and the body stands as tall as in the side view. The torso is full and rounded, with thick, bulky haunches and hind paddles of the same volume as in the accepted side view, foreshortened only by the turn of the body. No visible ears, fur or scales. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_d1r3",
+  "drawsize": 0.5,
+  "module": "walker"
+ }
+]

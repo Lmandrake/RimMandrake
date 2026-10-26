@@ -1,0 +1,29 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e4r1",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e4r1_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e4r1_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_e4r1_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "c8f901b0d742f489",
+ "census_rows": 3,
+ "rows": 3,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 7,
+ "images": 7361
+}
+
+--- stderr ---
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Skarrin: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Skarrin/RM_Skarrin_south.png', '/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Skarrin/RM_Skarrin_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Vhakk: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhakk/RM_Vhakk_south.png', '/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhakk/RM_Vhakk_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Vizhik: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vizhik/RM_Vizhik_east.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

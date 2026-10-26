@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Maxolotl": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_INCONSISTENT, F_TOPDOWN, OWNER_NOTE_IGNORED, STYLE_CARTOON",
+   "context": "judged candidate r1 (image sha 874832619b); F_INCONSISTENT: N/S are soft 3D-rendered axolotls with no outline. The installed east is flat cel shading with a heavy black keyline. Turning the animal swi; STYLE_CARTOON: Glossy round eyes, an upturned smiling mouth and a smooth vinyl-toy finish give a cute toy face.; OWNER_NOTE_IGNORED: The new facings do not match the installed east they were meant to be drawn from: different line treatment and shading model."
+  },
+  "RSW_Mee": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, STYLE_CARTOON \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 11002a1237); STYLE_CARTOON: The head-on face has two large round glossy eyes and a pronounced down-turned 'frowning' mouth, which gives a slightly character-like expres; F_INCONSISTENT: The edge-on caudal fin is drawn as a blade hanging below the body centre, not one spanning the tail's full vertical extent as the forked tai"
+  },
+  "RSW_MossBeetle": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha 1f5e54fd95); F_INCONSISTENT: North's outline is thinner and softer, and its shading smoother, than the bold dark keyline on south and east. The elytra are split into sev"
+  },
+  "RSW_MutatingTumorfishFry": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus WEAK: STYLE_OFF \u00b7 GPT strong_accept",
+   "context": "judged candidate r1 (image sha 79537df42d); STYLE_OFF: The east profile's dark edge line is a little stronger than on the south and north views, though not a heavy keyline."
+  }
+ }
+}

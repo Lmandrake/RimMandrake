@@ -1,0 +1,26 @@
+{
+ "RSW_Sketto": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Sketto/Sketto_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Sketto/Sketto_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Sketto_n/north.png"
+ ],
+ "RSW_Varactyl": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Varactyl/Varactyl_f_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/swanimals/Varactyl/Varactyl_f_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Varactyl__Varactyl_f_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_Varactyl_f_north_c7673f2977f5.png"
+ ],
+ "RM_Drazzik": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Drazzik_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Drazzik_north_52504edc5091.png"
+ ],
+ "RM_Heemin": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Heemin_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Heemin/RM_Heemin_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RM_Heemin_ns/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Heemin_north_819fd00aa201.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_e1r1/kept/kept_RM_Heemin_south_35ebd4255845.png"
+ ]
+}

@@ -65,7 +65,13 @@ def row_id(r: dict) -> str:
     """The sheet row a record belongs to: the DEF. A plant/pool card is judged per picture under `<def>__<tag>`
     (RM_Ruskara__a, RM_AgariluxPrime__TheRot) but art_sheet --subjects takes defNames — handing it the card key
     finds no art ("no row has art", ART_EVAL_SHADOW_FIX_PLANT_KEPT_ROWS). Several cards of one def share one row."""
-    return r["subject"].split("__", 1)[0]
+    base = r["subject"].split("__", 1)[0]
+    # the facing-audit driver judges a view-only redraw under `<def>_<n|s|ns>` (the facings drawn); its artpipe job
+    # `arteval_<stem>_r<N>_<same suffix>` proves the tag is not part of the defName
+    m = re.search(r"_(ns|n|s)$", base)
+    if m and re.search(r"_r\d+_%s$" % m.group(1), r.get("artpipe_job") or ""):
+        base = base[:m.start()]
+    return base
 
 
 def by_row(recs: list) -> dict:

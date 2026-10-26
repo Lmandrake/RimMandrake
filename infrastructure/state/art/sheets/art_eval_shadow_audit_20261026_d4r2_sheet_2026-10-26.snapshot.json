@@ -1,0 +1,204 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_d4r2",
+ "built": "2026-10-26T12:19:45-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_d4r2.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Sytheclaw": {
+   "columns": {
+    "A": {
+     "east": "9d762e5c385723775b3c6770b3888ba78eb5fab396e390cbce6459e56499fbc9",
+     "north": "dbc5d40bdc1bc5712e4bdc606d0147ab48af78cd63f117a45bdd770d56654471",
+     "south": "bee45bac4116968dc7009ea59a7227cf167924c6d11115ff8c1f51cd287c78ab"
+    },
+    "B": {
+     "east": "248955bba7d9c577c44f1d0150b0d1be3610f9f2540013c02ac98a094d547ce9",
+     "north": "20afbf405834b515f04f27f27df4ff88f38b65714006cf99a1ae264bbebfa0c0",
+     "south": "d93399b89d9c2f7f747856e34b6a257d2d9b2071bcdac8f88d7d8f2205de6812"
+    },
+    "C": {
+     "east": "95f5b6efc4ac028c76f696f24a0f1f0666232af32386a568710d47904d6e2e9d",
+     "north": "a86a922b97aba5352d8b0c899a36613e09ce18569e7a29e32024a881c7263367",
+     "south": "4e6332e9bc392008d06ddf99af73c8261cb13e09695c1cfd3d5eb395a142b481"
+    },
+    "D": {
+     "east": "a567c1f9546fe2267fe1ba34c65564c6c0668dddb4e5a2e659924f225077821e",
+     "north": "f9aba3ea91ae64656d1a27474cf3f3576047a2034654033e9bf76cabcb3e2fb1",
+     "south": "0a3f88f97146e6c96d773286fce0891582ac57ad18d1e8f0272fdfac41508ded"
+    },
+    "E": {
+     "east": "9d762e5c385723775b3c6770b3888ba78eb5fab396e390cbce6459e56499fbc9",
+     "north": "9c1f9d808f4646d539bfd3f1f7d0e34b1f62529dd902e3956bee9d44293fe8d4",
+     "south": "602155362ff7b5e9fa204cfb0e63e2a6bebf4cd3281fcd9353ee5c1d76262721"
+    },
+    "F": {
+     "east": "0ec8f5c4ef972a6816830f90830fe904484c15f552a94d21ae0fd69073df63b9",
+     "north": "a6eeb834dc78c458dda6b753008f718f617986e0d63a2b7d470b7ed85964bf9c",
+     "south": "4fde3a75cb94add78dbbd2e09ef4283bf84f79003cf4273aa84c71e59a793e0f"
+    },
+    "G": {
+     "east": "0ec8f5c4ef972a6816830f90830fe904484c15f552a94d21ae0fd69073df63b9",
+     "north": "de897415907a5dfbd7f69692e8c103abcf315f9c7971b86601cc17d047381cce",
+     "south": "96e7c3f1abdd0d3a9c6271662a546edc3b142b859470fb6b6ff0888838a9d0ae"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+    "B": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+    "C": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+    "D": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+    "E": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+    "F": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw",
+    "G": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render arteval_RM_Sytheclaw_r1",
+    "C": "render arteval_RM_Sytheclaw_r2",
+    "D": "history UtinniPatches 2026-09-19",
+    "E": "history UtinniPatches 2026-09-20",
+    "F": "IN GAME \u2014 Pyrelands",
+    "G": "render pyr_dessicated_sytheclaw"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "sytheclaw"
+  },
+  "RM_Sytheclaw_n": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "pools": [],
+   "res": null,
+   "reserved": [],
+   "shownBase": [],
+   "subject_key": "sytheclaw_n"
+  },
+  "RSW_Blarth": {
+   "columns": {
+    "A": {
+     "east": "37904cf020e51f60fb038e2d0c532d6d7ea0e3c847d786d7b6a43a302f38dee8",
+     "north": "3f788c7396c4b86b4f5e969b999c7d0ce001fb39153a3da171d62536d1844ede",
+     "south": "5d3030bae48b34bf2c9d498208935ca8c4caaa368ee15778728f588832627020"
+    },
+    "B": {
+     "east": "567196f3446321c0069a25adf4a855cdda7ed20722bc288cc26df07ed1097ad4",
+     "north": "2d50da4b1890d1a025d31a7461a0c5ada6c8c39c8f977df7e8be3ac4a4eb6bcf",
+     "south": "15823783c95ce0df62cd71e4420aaaf7d90ce479ee85c8f3cb39c7391dd3fdd7"
+    },
+    "C": {
+     "south": "1f2c6d18e39de1f8a45f8ecdd2c5444080232a509a679a969dd44aea4d83f777"
+    },
+    "D": {
+     "east": "a6fcbae3a838d9cf3de2100f64a59ec0dccce4411e98a933780b4a8257d63efe",
+     "north": "53f3136f47c898f1d7146013a3f4e4f9b18ac66e8f2fb3dfb4cb842748f2fdc3",
+     "south": "e4c1c5872d406aeffe7e4fdde67ce70e49c9eaf0ee6fd8cd7af4b74ad9950486"
+    },
+    "E": {
+     "east": "4b940928fc4024233d93cc2a88f2075f1536f506350f069fa213880ecd90d4da",
+     "north": "8239b64981662ce86558614744b70f462d03f27be32ea149ac21211b5c39fcfa",
+     "south": "79f49fe998b096cf829b79af4e3a0758453d259eda75ced83c9d23d8139b4674"
+    },
+    "F": {
+     "east": "567196f3446321c0069a25adf4a855cdda7ed20722bc288cc26df07ed1097ad4",
+     "north": "2d50da4b1890d1a025d31a7461a0c5ada6c8c39c8f977df7e8be3ac4a4eb6bcf",
+     "south": "15823783c95ce0df62cd71e4420aaaf7d90ce479ee85c8f3cb39c7391dd3fdd7"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Blarth/Blarth",
+    "B": "swanimals/Blarth/Blarth",
+    "C": "swanimals/Blarth/Blarth",
+    "D": "swanimals/Blarth/Blarth_Swimming",
+    "E": "swanimals/Blarth/Blarth_Swimming",
+    "F": "swanimals/Blarth/BlarthV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render miasma_canon_blarth_v1",
+    "C": "history SWBestiary 2026-10-03",
+    "D": "history SWBestiary 2026-10-03",
+    "E": "render enact_12beb235_blarth_v1",
+    "F": "IN GAME \u2014 SWBestiary"
+   },
+   "pools": [
+    "swanimals/Blarth/Blarth",
+    "swanimals/Blarth/BlarthV_C"
+   ],
+   "res": "swanimals/Blarth/Blarth",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [],
+   "subject_key": "blarth"
+  },
+  "RSW_Bursa": {
+   "columns": {
+    "A": {
+     "east": "c42b50f48561851c02e3badd1512101bcac97e578a00d90ec4bdc0d9e76bd1d1",
+     "north": "06aa0e0bb52a2036646c89f2bd02f1b051d5a0306ea4a37ca8c0c76816cf57ab",
+     "south": "1776a2c45ef1e431c6b770fbe7e742516553d060740faf9e5779b41a4519b84e"
+    },
+    "B": {
+     "east": "633d34672cbb6fe85a95bcc893397362482d6966bf169cbfd04b3da5dc11444d",
+     "north": "c1993ca44e1a2674a83eafd54fba7d8f6f11cb6ab77625ebe9548beeec2f00b7",
+     "south": "28ef70d91eecd6666ec7a4d60e2c95c82f966e141852a1b4f9f246e3755c99cc"
+    },
+    "C": {
+     "east": "9cce356ec1faa436cf52a32c98e0833e1320fe6e89fa9203be35332ea9af92b1",
+     "north": "fcf6c54fec220f53fc53d1d5e888cb8e885d7acdb4b6df5485be36d5c8fcda2c",
+     "south": "21037ac074be4e38aa51a0712a4e6633e3e6cd6c61b60f5fc12cdba88bd00424"
+    },
+    "D": {
+     "east": "b1cf9cb79faa7a86bcdc23f674f40b2e3c34ba8f1e576ccb115d04c0dff02898",
+     "north": "0365aef56ed78f6d87d8f6a146f1a4566b67f75732a51d3fe032853dca914091",
+     "south": "1a4b0c978e5652e8283587c64c7b077b3466ed595dec9052e9e0c56c3cb2f3f0"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Bursa/Bursa",
+    "B": "swanimals/Bursa/Bursa",
+    "C": "swanimals/Bursa/Bursa_Swimming",
+    "D": "swanimals/Bursa/Bursa_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "donor original \u2014 ?",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "donor original \u2014 ?"
+   },
+   "pools": [
+    "swanimals/Bursa/Bursa"
+   ],
+   "res": "swanimals/Bursa/Bursa",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [],
+   "subject_key": "bursa"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_d4r2_sheet_2026-10-26",
+ "snapshotId": "bca07f520ccb0be5"
+}

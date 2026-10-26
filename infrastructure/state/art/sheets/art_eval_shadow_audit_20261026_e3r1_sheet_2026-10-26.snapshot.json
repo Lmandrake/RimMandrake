@@ -1,0 +1,145 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_e3r1",
+ "built": "2026-10-26T12:19:47-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_e3r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RM_Huldu": {
+   "columns": {
+    "A": {
+     "east": "308e8e9a7ddc6e5bd8b4a771ca6c07a60176e3e025e0f634df8b51ff5708cb8b",
+     "north": "960868de2da9cdcf86cab27bc86377ca70896d74111cc51d70d0791df31b8955",
+     "south": "626542cd94627f7069720e728efcf59bd379bc8fa7a3f212461bca6695de2701"
+    },
+    "B": {
+     "east": "1ae19ed711bb983d4e8658821d768551c67629ae93ad840f8b087a37ef490662",
+     "north": "3aee15d32350d707373584f900c78976c6bf3bde1564b421f2df2d3e9c89fa7f",
+     "south": "b6050e2bd0befe1d2775034e75cf9b6ebcdc6614400ec97000901dac3e7f00b3"
+    },
+    "C": {
+     "east": "26136762c89acb348ea480211859add4ae8f4139f13115cb7419d03e382989ed",
+     "north": "8da5b6923d668f32e08dc23d4a5e7cf47c22655c35e9706ab5eedf4e0b32c642",
+     "south": "903b315e9bab8446207d3c96c7db71c37f393667e36adc800fd51e6d9396db9b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+    "B": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+    "C": "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_9f4d6fc2_huldu_v1",
+    "C": "render weepingstones_huldu"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Huldu/RM_Huldu"
+   ],
+   "res": "Things/Pawn/Animal/RM_Huldu/RM_Huldu",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "huldu"
+  },
+  "RM_Murrin": {
+   "columns": {
+    "A": {
+     "east": "525cb84dc809f9085efbc2a35234d3632069a90671247ec1228f0f4e152bc0a7",
+     "north": "b5c937a64a38cd0d9b97e80dd5733d58b85c156f02b10768fb803bed64c4bcba",
+     "south": "2933600dfd802d9f76cc9b386765c854cb28a1dd4b39df115628cbcab98ebd8d"
+    },
+    "B": {
+     "east": "033853752df32752d5c36641bb851c83c50ebe1dc938dd40223c64a14d7dee7c",
+     "north": "c46861b70ddd843c42942d4cd4df2867551629d7ac19f80c71783cd8744a3541",
+     "south": "a1a6cbfae0d1626b065e91f3030f6bb69bce9fa353d9ec4522ecb45ecabb6436"
+    },
+    "C": {
+     "east": "bd224b827f1942abda6ef840603fa57204ac26fc7680707737e7a1a3b4aaca8c",
+     "north": "f90c8e25074735c179a4cb424a32c00c061e9f778cb4edae2b4a784e270f45a6",
+     "south": "22fdd11c154c2264da21ef263739a283d1b1cdef5115e0ceccbda2c9d699f6e9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Murrin/RM_Murrin",
+    "B": "Things/Pawn/Animal/RM_Murrin/RM_Murrin",
+    "C": "Things/Pawn/Animal/RM_Murrin/RM_Murrin"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WeepingStones",
+    "B": "render enact_e6d931f4_murrin_v1",
+    "C": "render weepingstones_murrin"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Murrin/RM_Murrin"
+   ],
+   "res": "Things/Pawn/Animal/RM_Murrin/RM_Murrin",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "murrin"
+  },
+  "RM_Ollathrix": {
+   "columns": {
+    "A": {
+     "east": "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11",
+     "north": "5cdb320de39113b75466b6ba97c21974e0b40e01af1f0c1e8aadb06964278543",
+     "south": "60b8452bb9e8ecebad0a62887e2893f3c2ba87f603979dad6e067f9c21616733"
+    },
+    "B": {
+     "east": "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11",
+     "north": "5cdb320de39113b75466b6ba97c21974e0b40e01af1f0c1e8aadb06964278543",
+     "south": "f073a9fd6fdea3b3ceff659fc81b5ed9b3e0583a287fbd67a2022e83a178e0d9"
+    },
+    "C": {
+     "east": "bd9731c301928ef132cd7b55b0edcba4b4cb77a099332c68a867dad84fdae704",
+     "north": "a5dbb13bd0c89eb97d4fe2f1a1de5960727d0186c87ebdaa86809f4daafaa6dc",
+     "south": "1882a438503a851c42b57b9d3ef675d8f362ea25e58c15cddd69bc0decd30f8b"
+    },
+    "D": {
+     "east": "c0730555cc85cf2563e44646bbf5a71a53d979fc952cf2a83c2cefe97a481d2d",
+     "north": "21265a61257364a05ec77f7d5cb9931c915446127582d47272c4a46b71b50d0c",
+     "south": "73f94455420ba822ca84d369182a855b697e40f005eca15b58cd1671a56a2d91"
+    },
+    "E": {
+     "south": "54f850bcc6826f7cabc4c77d9b025b4ccf824dc4557a0baca592a1941afff5b6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "B": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "C": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "D": "_byname",
+    "E": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render phreg_RM_Ollathrix_v1",
+    "C": "history Webwork 2026-09-26",
+    "D": "render canonregen_wyyyschokk_v1",
+    "E": "render facingrepair_wyyyschokk_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
+   ],
+   "res": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "ollathrix"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_e3r1_sheet_2026-10-26",
+ "snapshotId": "bed143893c40c6a0"
+}

@@ -1,0 +1,49 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RSW_Nexu": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 99ad2038a9); F_SIZE_JUMP: South is 489 px tall against 334 px for east and north, and its body is visibly wider and bulkier than the new north in the shared-scale pan"
+  },
+  "RSW_PekoPeko": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 52c8193498); F_INCONSISTENT: South and north are soft painterly with no outline. The accepted east is flat cel with a thick black keyline, so side by side they look like; F_INCONSISTENT: The tail rises up and curls to the upper left behind the body, while east shows it trailing straight back and level."
+  },
+  "RSW_SandLeaper": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: F_INCONSISTENT, F_SIZE_JUMP, F_SOUTH_NOT_FRONT, F_TOPDOWN, OWNER_NOTE_IGNORED",
+   "context": "judged candidate r1 (image sha 95202a8d6c); F_INCONSISTENT: North is a slim, outline-free, painterly body with two long thin legs and segmented tan plates. The accepted east is a bulky, hunched olive ; OWNER_NOTE_IGNORED: North was drawn in a different style and with different body proportions from the installed east it was meant to be judged against.; F_SIZE_JUMP: The heights match within 10%, but north's body is about half as wide and massive as east's hunched body, so it looks like a smaller animal."
+  },
+  "RSW_SandLion": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN \u00b7 GPT regen, unsettled K1, K3",
+   "context": "judged candidate r1 (image sha 0ac405049a); F_INCONSISTENT: The north figure sits low in its 512 canvas (about y330\u2013465) while the south is centred (about y185\u2013340), so the animal will jump about a qu; F_TOPDOWN: The camera angle is steep: much of the dorsal surface shows and the tail lies flat toward the viewer. It still reads as a rear view and matc; F_INCONSISTENT: The hind feet's claws point toward the camera, which would be the front, rather than back toward the body."
+  }
+ }
+}

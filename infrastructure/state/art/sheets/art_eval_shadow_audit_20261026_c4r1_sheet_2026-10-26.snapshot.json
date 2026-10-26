@@ -1,0 +1,196 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_c4r1",
+ "built": "2026-10-26T12:19:37-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_audit_20261026_c4r1.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "live ModsConfig.xml: 321 active",
+ "rows": {
+  "RSW_FrogDog": {
+   "columns": {
+    "A": {
+     "east": "b1f12e29159bd81d7ac810cef282d945b1ecb8f3ff9491b88f5d22ff2fd28d3b",
+     "north": "8163f03247a90a145c21e0a8124be1be541a1c66f9325a8d89a840f03620a17f",
+     "south": "eed9ea9d485ea61b258e338e385bd924e20c4294642c5e21f5f0519d44d13d7b"
+    },
+    "B": {
+     "north": "ae43ce1983e82ad7c9424dc77512376850a6fc6152be687f48488c0aebfbfce2"
+    },
+    "C": {
+     "east": "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2",
+     "north": "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51",
+     "south": "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f"
+    },
+    "D": {
+     "east": "d9171ed993459af898d4feaf3984e3872380519627eb4c1a54c34c2d5049a3a2",
+     "north": "365494b4a157d3d16c758999491683442c768f501cb09e40bad4785179930d51"
+    },
+    "E": {
+     "south": "7776199f131e9d767a28bc7d5f4f1dd7ed761e8466c793d54a0da9b70a6f8f6f"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/FrogDog/FrogDog",
+    "B": "swanimals/FrogDog/FrogDog",
+    "C": "swanimals/FrogDog/FrogDog_j",
+    "D": "swanimals/FrogDog/FrogDog_j",
+    "E": "swanimals/FrogDog/FrogDog_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render donorart_frogdog_v2 \u2014 grader flagged (advisory)",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render donorart_frogdog_j_v1 \u2014 grader flagged (advisory)",
+    "E": "render donorart_frogdog_j_v2"
+   },
+   "pools": [
+    "swanimals/FrogDog/FrogDog"
+   ],
+   "res": "swanimals/FrogDog/FrogDog",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "frogdog"
+  },
+  "RSW_FungalWeevil": {
+   "columns": {
+    "A": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "e514a7489a34dd3a1ff2cc968c1dfe0b882a3463d586ef1662c524dd049cad80",
+     "south": "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9"
+    },
+    "B": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "4c49c68628bb29c8dec75dbe457587e750cd06d4db073293702fde125698dfd9"
+    },
+    "C": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/FungalWeevil/FungalWeevil",
+    "B": "RotSpecies/FungalWeevil/FungalWeevil",
+    "C": "RotSpecies/FungalWeevil/FungalWeevil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render standtall_b1_fungalweevil",
+    "C": "render rot_fungalweevil_v2"
+   },
+   "pools": [
+    "RotSpecies/FungalWeevil/FungalWeevil"
+   ],
+   "res": "RotSpecies/FungalWeevil/FungalWeevil",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "fungalweevil"
+  },
+  "RSW_Gullipud": {
+   "columns": {
+    "A": {
+     "east": "222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8",
+     "north": "ba35b816a6bfd977b5a33d48c190e20d449f0cdf7a19157507e8cd500dedfa7f",
+     "south": "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a"
+    },
+    "B": {
+     "east": "5ac1c5bfd9f13f89b36c54d289f661680eb610b549b90701d77f21dc365a530d"
+    },
+    "C": {
+     "east": "222cdf31ac0fa9e230c30c0706f104a55adf80f42c6c9b2a49b0ede9743c23c8",
+     "north": "c8ff8f87624260f574523c2c41d0db1770602c7ac496c1ea1ef0c4abc4f5c279",
+     "south": "688ea306481421b662fb7b769e45ed30c6e1937ba60ad13190cfef5573e0773a"
+    },
+    "D": {
+     "east": "25a15a3418a60d61b2e183c7cde3cc80518b67b0ed4166752a97a2cd32b27d26",
+     "north": "ff1bcacb7ec9de7178c7f09914a9323c8374c15a1397c6cdfbf6ff1dbdc46e6f",
+     "south": "c6334a89501228b0f9e2d26d1375fc3419d2ae3c483b0d9c01fe072b58111629"
+    },
+    "E": {
+     "east": "b6b6e702d705af1e186581beba10b6107a219fc961548f33f617e948978a6e2f",
+     "north": "6bf2a3ef3f12bc8c856775f7a5fedc5d605bbb9afd2414c336ef440bf8ef5d01",
+     "south": "a0ad04620a3612c17199610e26d3213f2833ae8add83ef30a1248134bd7613a9"
+    },
+    "F": {
+     "east": "81810034f1618892e188a002755b7c7a20abfb5f565b6bb195b814d4540576c9",
+     "north": "d00883677fd3d23518a919fe541285e7f749296b01f74c44bafcd489ec470e02",
+     "south": "2ff5dec315fb7493fdddd43d5327a8619ca5b36031d878db54ee0537ef3d0304"
+    },
+    "G": {
+     "east": "0f2c83462c9492f1f7e91700bdb8ad15a605939d1c9776f4cbd201275938ced6",
+     "north": "12756dc6c5655cb13ae9eb82da2c760d045f8e563663755013411dc9b0d1b047",
+     "south": "9afbd9950f143d1794bedd214e519a988d3bdb88ffb09ddfeeeb76f63e17bb39"
+    },
+    "H": {
+     "east": "42fe9b53d69d57d2b0af50b10bbed1dafc56b2d21a9d30aea0268345ea997bb6",
+     "north": "a52bfdb10a904c268886b80ac15865b27b5cbf3e9e8d3646517c86e0346f1b4a",
+     "south": "49fc563b0e082118e42253cde579d968c45cbd2a889f02dde258b269d4976a86"
+    },
+    "I": {
+     "east": "abaff33736490422fec2ae299a9988db3c5479ff8c72a7ddaf691e88699bd679",
+     "north": "c4de7cdd1aae7ddebc1a4c0186871ddd92d161537572ee4c2213c837a5a9668c",
+     "south": "b6ead9d66ba6d003eb715e88423da49990213321d9484ca64af846da9c8dc70d"
+    },
+    "J": {
+     "east": "b934f1e003b35c23f5e0ab00800a69a96c60189ccbb0900340f5e1743eadf1b7",
+     "north": "fcde4353b75809daceb99c7a4b7de238c9fc74bfabfd3c8e658c1b8eae2f7850",
+     "south": "40a65faf16f9d2c048c7e5d2d0569ffc94eb52d04d0bfb03db4e99a0e64c551b"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Gullipud/Gullipud",
+    "B": "swanimals/Gullipud/Gullipud",
+    "C": "swanimals/Gullipud/Gullipud",
+    "D": "swanimals/Gullipud/Gullipud",
+    "E": "swanimals/Gullipud/Gullipud_Swimming",
+    "F": "swanimals/Gullipud/Gullipud_Swimming",
+    "G": "swanimals/Gullipud/Gullipud_j",
+    "H": "swanimals/Gullipud/Gullipud_j",
+    "I": "swanimals/Gullipud/Gullipud_j_Swimming",
+    "J": "swanimals/Gullipud/Gullipud_j_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render dregen_RSW_Gullipud_Gullipudi_v1",
+    "C": "render donorart_gullipud_v1",
+    "D": "donor original \u2014 ?",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "donor original \u2014 ?",
+    "G": "IN GAME \u2014 SWBestiary",
+    "H": "donor original \u2014 ?",
+    "I": "IN GAME \u2014 SWBestiary",
+    "J": "donor original \u2014 ?"
+   },
+   "pools": [
+    "swanimals/Gullipud/Gullipud"
+   ],
+   "res": "swanimals/Gullipud/Gullipud",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+   ],
+   "shownBase": [],
+   "subject_key": "gullipud"
+  }
+ },
+ "sheetId": "art_eval_shadow_audit_20261026_c4r1_sheet_2026-10-26",
+ "snapshotId": "1a0fdc7c2f02f78f"
+}

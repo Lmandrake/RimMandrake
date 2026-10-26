@@ -1,0 +1,33 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_audit_20261026_b1r2",
+ "html": "Transient/biome_ffar/art_eval_shadow_audit_20261026_b1r2_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_audit_20261026_b1r2_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_audit_20261026_b1r2_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "b775b191160c2ada",
+ "census_rows": 6,
+ "rows": 6,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 3,
+ "canon_rows_with_images": 3,
+ "canon_rows_with_must_show": 3,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 22,
+ "images": 7236
+}
+
+--- stderr ---
+art_sheet: RSW_LavaFlea: census texPaths ['swanimals/LavaFlea/LavaFlea'] are STALE; our defs draw ['swanimals/LavaFlea/LavaFlea', 'swanimals/LavaFlea/LavaFlea_j'] (src XML)
+art_sheet: RSW_Silooth: census texPaths ['RimStarWars/SWBestiary/Silooth/Silooth'] are STALE; our defs draw ['RimStarWars/SWBestiary/Silooth/Silooth', 'swanimals/Silooth/Silooth_j'] (src XML)
+/home/mandrake/rm/bench/src/RimMandrake/Utils/art/art_sheet.py:2474: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = [q for q in Image.open(f).convert("RGBA").getdata() if q[3] > 8]
+NOTE RM_Shoal: reference_textures ['infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Shoal_east_39c1ba5992c1.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Shoal_north_6383ec9d4e08.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Shoal_south_b590aa32e95e.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Thermadon: reference_textures ['infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_RM_Thermadon_east_68c26ed9a8ba.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_RM_Thermadon_north_2739a2a351c3.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_RM_Thermadon_south_565d0c8e3a02.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Woolamander: reference_textures ['infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Woolamander_east_48867cc5da87.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Woolamander_north_8c4dae5133f7.png', 'infrastructure/state/art_eval/runs/audit_20261026_b1r2/kept/kept_Woolamander_south_31f03909505c.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_LavaFlea: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_LavaFlea/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_LavaFlea/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_LavaFlea/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Silooth: reference_textures ['/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Silooth__Silooth_j/south.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Silooth__Silooth_j/east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Silooth__Silooth_j/north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

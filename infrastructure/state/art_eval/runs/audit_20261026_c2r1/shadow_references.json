@@ -1,0 +1,27 @@
+{
+ "RM_CrimsonOpee": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_CrimsonOpee_ns/south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_CrimsonOpee_ns/north.png"
+ ],
+ "RSW_Blixus": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Blixus/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Blixus/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Blixus/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_east_9fbd9b245d9d.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_north_da64dcb9e99b.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Blixus_south_9346976696f2.png"
+ ],
+ "RSW_Dewback": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Dewback/Dewback_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Dewback_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Dewback_north_48c4fecca540.png"
+ ],
+ "RSW_Dragonsnake": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/DragonsnakeCanon/Dragonsnake_A_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r1/RSW_Dragonsnake__Dragonsnake_A_n/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_c2r1/kept/kept_Dragonsnake_A_north_5aa470919f41.png"
+ ]
+}

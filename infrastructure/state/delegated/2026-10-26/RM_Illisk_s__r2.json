@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 31.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3272876
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Illisk_s",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['RES_LOW', 'SCALE_WRONG']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "16208cbe85fdf3b333afbb5933fafc81f9b79a761cd674da119fb0181df0235d",
+  "east.png": "34ca84ef1697e81bfc0fcceeeeb22fdd79c502cfd51ac1fd5337d08132ab7ea3",
+  "north.png": "a79373e3d7275101ca6c0393569c938a4ff9388eb673ff88b952868b77cce85b",
+  "scale.png": "da99574490fd0f0b7d8cef102a5689d6f62561a7bfdaae378339052cae4dc79d",
+  "facings.png": "4aa07d36c11625a1158b081547bfde6d32a31a99bb0390045d3a6268a79e6a07"
+ }
+}

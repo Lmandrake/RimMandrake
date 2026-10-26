@@ -1,0 +1,28 @@
+{
+ "RM_Shoal": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Shoal/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Shoal/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Shoal/north.png"
+ ],
+ "RM_Thermadon": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Thermadon/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Thermadon/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Thermadon/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_RM_Thermadon_east_68c26ed9a8ba.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_RM_Thermadon_north_2739a2a351c3.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_RM_Thermadon_south_565d0c8e3a02.png"
+ ],
+ "RSW_Woolamander": [
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Woolamander/south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Woolamander/east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RSW_Woolamander/north.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_Woolamander_east_48867cc5da87.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_Woolamander_north_8c4dae5133f7.png",
+  "infrastructure/state/art_eval/runs/audit_20261026_d1r3/kept/kept_Woolamander_south_31f03909505c.png"
+ ],
+ "RM_Irqit": [
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/Rat/RM_Irqit/RM_Irqit_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/Rat/RM_Irqit/RM_Irqit_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r2/RM_Irqit__RM_Irqit_RM_Irqit_n/north.png"
+ ]
+}
