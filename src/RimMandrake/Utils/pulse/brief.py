@@ -125,7 +125,8 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
         title = (it.title if it else None) or r.get("text") or ""
         if iid and title.startswith(iid):
             title = title[len(iid):].lstrip(" —-")
-        asks.append({"sec": "word", "text": _short(f"{(r.get('title') or iid or '').capitalize()}: {title}", 150),
+        head = (r.get("title") or iid or "").capitalize()
+        asks.append({"sec": "word", "text": _short(f"{head}: {title}" if head else title, 150),
                      "meta": {"since": r.get("since"), "blocks": blocks.get(iid, 0), "kind": r["kind"],
                               "who": r.get("who")},
                      "link": f"/item/{iid}" if iid else (r.get("link") or {}).get("value"),

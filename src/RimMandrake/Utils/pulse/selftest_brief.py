@@ -82,6 +82,13 @@ def main():
         check(name, (ln["check"] == "pass") == want, ln["check"])
     check("withheld count matches the failing lines", b["withheld"] == sum(1 for *_, w in cases if not w), b["withheld"])
 
+    # compose: a live card with no item id reads as its own text (no dangling "<title>: " prefix)
+    csnap = {"collected_at": NOW, "rows": [{"kind": "amber", "key": "card:9", "text": "BENCH asks: pick one", "since": NOW}],
+             "chips": [], "sources": {k: {"ok": True} for k in ("ledger", "hands", "sheets", "tokens", "sessions")}}
+    cb = brief.compose(csnap, EVENTS, NOW - 7200, NOW)
+    w = cb["sections"]["word"]
+    check("a card line has no dangling prefix", len(w) == 1 and w[0]["text"] == "BENCH asks: pick one", w)
+
     # heartbeat: a stale snapshot is red, a fresh one with a fresh brief is not
     fresh = {"collected_at": NOW, "rows": [], "chips": [{"seat": "BENCH", "state": "run", "since": NOW - 60}], "sources": {}}
     good_brief = {"at": NOW - 600, "judged": True, "sections": {}}
