@@ -34,5 +34,9 @@ src = open(os.path.join(HERE, "validation_v2.py"), encoding="utf-8").read()
 i = src.index("g = L.probe(c, kind=kind")
 j = src.index("spawn_fill_material", 0)  if "spawn_fill_material" in src else -1
 check("validation_v2 stages fill material before the selection probe", 0 < j < i, (j, i))
+pp = src[src.index("def phase_P("):]
+pp = pp[:pp.index("\ndef ", 10)]
+check("phase_P holds pitRescueLadderEnabled off (the rescue ladder un-holds P3f / changes P4b's inspect)",
+      'L.sset(S_FW, "pitRescueLadderEnabled", False)' in pp)
 print("SELFTEST %s -- %d failed" % ("FAILED" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)

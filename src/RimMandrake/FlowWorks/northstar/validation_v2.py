@@ -3072,6 +3072,10 @@ def phase_P(L, args):
         # out. And Anomaly fleshbeasts from the storyteller killed the control colonist while it wandered,
         # undrafted, through P3/P4's ~2,400 ticks. Both rows read FAIL on a working mod.
         L.sset(S_FW, "rainFillsExcavationsEnabled", False)
+        # V2_FILLIN_SCENE_STAGE_FILL_MATERIAL run J20261026T082841Z-410ac4 (HARNESS): pitRescueLadderEnabled (default on) drops a
+        # portable rescue ladder into a pit holding a pawn, so P3f read hasLadder True / held False and P4b a portable-ladder
+        # inspect. P measures the pit and the RM_Ladder with no rescue; restore_settings puts the default back.
+        L.sset(S_FW, "pitRescueLadderEnabled", False)
         L.o.rain_on = False
         B.call("jawa/weather_set", weather="Clear")
         B.call("jawa/incident_queue_clear")
