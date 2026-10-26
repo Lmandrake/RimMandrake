@@ -15,7 +15,9 @@
   infrastructure/state/items/ROT_HEALTH_SHARING_1.md): rennok + gromma are the RotAgarikin clique —
   wound-link AND kin-mending, a tag of their own (different tags never interact). The vorrugath has no
   kin tag (solitary) but answers a guardian-grove alarm (RM_AlarmResponderExtension, tag RotGrove).
-  Those patches still target the AA_ defs and stay: the frozen campaign twin RUT_TheRot casts the donor.
+  The donor-side blocks in RotSpecies_NamesAndSizes.xml were deleted (ROTNAMES_PRUNE_DONOR_OPS_LIVE_ABSENT,
+  2026-10-25): Alpha Animals is retired, no AA_ def is in the live game, and RUT_TheRot casts none.
+  This file is the only home of these three creatures' names, sizes and art.
 
   DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and renderTree
   AA_Alternates — an off-by-default alternate-picture switch; nothing in play.

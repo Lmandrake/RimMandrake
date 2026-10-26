@@ -106,6 +106,9 @@ and storm defs, which exist in `src/` and arrive with the Biomes composite. Re-r
 | AA_AnimaColossus | NO port exists | DROPPED from the Rot cast (owner card 2026-10-22); its two blocks and the `RUT_TheRot.xml` comment mention are removed |
 The `RM_*` flora blocks in the same file (AgaricusDomeCap ... Bryolux) target our own defs and are not part of the 113 errors. The other AA_ blocks
 stay (no ruling yet); not added to `dead_patches.md` before now.
+UPDATE 2026-10-25 (ROTNAMES_PRUNE_DONOR_OPS_LIVE_ABSENT): every remaining AA_ block is deleted; the file now holds only the 12 RM_ flora
+blocks. Measured: RM_Durrok/RM_Mullgoth do NOT carry the ruled widths (live adult drawSize 2 and 3.8 vs ruled 6 and 5) nor the
+RotSpecies/Wildpawn, RotSpecies/Wildpod art; that is item DURROK_DECIDE_ROT_WIDTHS_UNCARRIED (the deleted blocks are in git history).
 
 **UtinniPatches/BiomeFaunaStatAdjustments_Generated.xml (2 errors): op 1 (`Beldon` predator=false) DEAD.** `Beldon` is a
 retired-donor name; `RSW_Beldon` (SWBestiary) has no `predator` node, so the ruled value (predator false, owner card

@@ -2,9 +2,17 @@
 <Patch>
   <!-- ROT_FLORA_FAUNA_VERDICTS_1 — owner ruling 2026-09-19, applied provisionally
        (design/Jawa/worldbuilding/biomes/rot_flora_fauna_names.md /
-       design/Jawa/worldbuilding/biomes/rot_regen_briefs.json). Renames + resizes 19 donor AB_/AA_ defs
-       (Alpha Biomes' Plants_MycoticJungle.xml, Alpha Animals' Races_*.xml) to
-       the Rot's own campaign names and ruled mature widths.
+       design/Jawa/worldbuilding/biomes/rot_regen_briefs.json). Renames + resizes the 12 RM_ flora
+       defs (ported from Alpha Biomes' Plants_MycoticJungle.xml) to the Rot's own
+       campaign names and ruled mature widths.
+
+       The fauna half (7 Alpha Animals donors: AA_Agaripawn, AA_Agaripod,
+       AA_AngelMoth, AA_MycoidColossus, AA_Swarmling, AA_Wildpawn, AA_Wildpod)
+       was deleted by ROTNAMES_PRUNE_DONOR_OPS_LIVE_ABSENT, 2026-10-25: Alpha
+       Animals is retired and none of those defs is in the live game. Each one's
+       name, size and art now live on its owned RM_ port (RM_Agaripawn,
+       RM_Agaripod, RM_Dustveil, RM_MycoidColossus, RM_Chittik, RM_Durrok,
+       RM_Mullgoth) — edit there, never here.
 
        ⛔ NO MayRequire on an Operation — inert, and already the standing lesson
        in this file's own sibling PlantTolerances_Ashkarr.xml. Each def's block
@@ -15,15 +23,7 @@
        PatchOperationFindMod matches against, not packageId).
 
        Sizes: flora <plant><visualSizeRange> MAX set to the ruled width, MIN
-       scaled to keep the def's own existing min:max ratio. Fauna: the adult
-       PawnKindDef life stage (the 3rd <li> under <lifeStages>, matching
-       lifeStageAges' baby/juvenile/adult order) bodyGraphicData/drawSize set
-       to the ruled width; dessicatedBodyGraphicData left untouched (out of
-       ruling scope). bodySize/combat stats are NOT touched by this file.
-
-       AA_Agaripod and the skerrith are "keep + rename" (owner's own
-       decision) — name only, no size, no art job; the skerrith (RM_Skerrith) is owned
-       directly in Defs/Fauna (ROT_RM_CAST_MIGRATION_1), not here. -->
+       scaled to keep the def's own existing min:max ratio. -->
 
   <!-- ============== RM_AgaricusDomeCap -> skarrowdome (7 wide) ============== -->
   <Operation Class="PatchOperationConditional">
@@ -277,192 +277,8 @@
     </match>
   </Operation>
 
-  <!-- ============== AA_Agaripawn -> rennok (7 wide) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Agaripawn"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Agaripawn"]/label</xpath>
-          <value><label>rennok</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Agaripawn"]/description</xpath>
-          <value><description>A shambling, waist-high hybrid of animal and fungus, its back and flanks grown over with living caps that feed it and hide it. It is slow, flammable, and never quite alone: hurt one and the others in the grove feel it and come. It breeds by throwing spores, so its young owe it nothing. Hunted or kept, it gives a little edible cap-flesh that keeps longer than most fungus.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/label</xpath>
-          <value><label>rennok</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>7</drawSize></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- ============== AA_Agaripod -> gromma (keep + rename, no size) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Agaripod"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Agaripod"]/label</xpath>
-          <value><label>gromma</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Agaripod"]/description</xpath>
-          <value><description>A great slow mound of animal and fungus, grown over with a hide of living caps that feed it and hide it among the domes of the pale forest. The caps soak up bullets so thoroughly that shooting one mostly decorates it; fire is another matter, and it knows it. It breeds by casting spores rather than bearing young, and every gromma in the grove flinches when one of them is hurt. Hunted or herded, it gives a heavy yield of edible cap-flesh.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Agaripod"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="AA_Agaripod"]/label</xpath>
-      <value><label>gromma</label></value>
-    </match>
-  </Operation>
-
-  <!-- ============== AA_MycoidColossus -> vorrugath (15 wide) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_MycoidColossus"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_MycoidColossus"]/label</xpath>
-          <value><label>vorrugath</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_MycoidColossus"]/description</xpath>
-          <value><description>A walking piece of the pale forest: a cold-blooded six-legged colossus with two spines and six eyes, its back a grove of full-grown caps that trap insects and feed it in turn. It breeds by sporulation and cares for nothing it spawns. It is rarely seen and never mistaken for anything else; when the grove is wounded and something this size answers, the wise are already leaving. Tamed, it can be trimmed for cap-flesh.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/label</xpath>
-          <value><label>vorrugath</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>15</drawSize></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- ============== AA_Swarmling -> chittik (0.5 wide) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Swarmling"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Swarmling"]/label</xpath>
-          <value><label>chittik</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Swarmling"]/description</xpath>
-          <value><description>A finger-long vermin, half insect and half spore-case, that is never seen alone. One is nothing; a swarm is a single body with a hundred mouths that shares every wound it takes. They lay their larvae in whatever they bite, and the larvae hatch when it dies.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/label</xpath>
-          <value><label>chittik</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>0.5</drawSize></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- ============== AA_Wildpawn -> durrok (6 wide) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/label</xpath>
-          <value><label>durrok</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Wildpawn"]/description</xpath>
-          <value><description>A small shambling mound of what looks like rotting matter, half animal and half fungus, that grew smaller and quicker than its swamp-bound kin for want of water. It burns easily, bleeds slowly, and heals fastest of anything here — but only in company. It breeds by throwing spores and gives a little edible fungus when hunted.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/label</xpath>
-          <value><label>durrok</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>6</drawSize></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- ============== AA_Wildpod -> mullgoth (5 wide) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Wildpod"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Wildpod"]/label</xpath>
-          <value><label>mullgoth</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Wildpod"]/description</xpath>
-          <value><description>A lumbering mass of what looks like decomposing matter, animal and fungus grown into one slow body. Bullets sink into it and do little; fire does a great deal. It breeds by throwing spores, its kin heal faster near it, and hunted or kept it gives a good yield of edible fungus.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/label</xpath>
-          <value><label>mullgoth</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>5</drawSize></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- ============== Art landing, 2026-09-20 (ROT_ART_WAVE_1 + ROT_FLORA_FAUNA_VERDICTS_1 STEP 5) ==============
-       texPath overrides for the donor AB_/AA_ defs above whose art has now landed.
+       texPath overrides for the flora defs above whose art has now landed.
        Same PatchOperationConditional gate as the label/size blocks (absent def -> xpath
        doesn't match -> silent no-op). New art lives under this mod's own
        Textures/RotSpecies/<Name>/ , never inside the donor mod's own folder. -->
@@ -544,82 +360,6 @@
       <value><graphicClass>Graphic_Random</graphicClass></value>
     </match>
   </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Agaripawn/Agaripawn</texPath></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_MycoidColossus"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpawn/Wildpawn</texPath></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Wildpod"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Wildpod/Wildpod</texPath></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 
 
   <!-- ============== v3 regen landings, 2026-09-20 (rejected v2 replaced) ============== -->
@@ -638,34 +378,4 @@
     </match>
   </Operation>
 
-
-  <!-- ============== Rot sheet 2026-10-10 (owner notes on therot_sheet_2026-10-05): AA_AngelMoth new description (rename owed: he gave no name).
-       Label-only rename (save-safe); eggs/items keep their donor labels, as for the other renames in this file.
-       (AA_AnimaColossus / pluur'va was dropped from the Rot cast, owner card 2026-10-22: retired donor, no port.) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/label</xpath>
-          <value><label>dustveil</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/description</xpath>
-          <value><description>A broad-winged moth of the Rot, grown as much as hatched: its pale wings are a living felt of fungal threads, dusted with spores, and they hang from it like a veil. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <!-- AA_AngelMoth art: his pick C (therot_sheet_2026-10-05) at our path. C has east+north only; the south is the
-       Alpha Animals south until a south is drawn. Covers the body graphic and the matching alternateGraphics entry;
-       Owner, decision taken by question card 2026-10-10: C is the ONLY look, so the donor's AA_AngelMoth2/3 alternates are removed.
-       A south view based on C is queued in artpipe (rotrow_angelmoth_south_v1_south). -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]//texPath[text()="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]//texPath[text()="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"]</xpath>
-      <value><texPath>RotSpecies/AngelMoth/AngelMoth</texPath></value>
-    </match>
-  </Operation>
 </Patch>
