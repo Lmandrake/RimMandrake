@@ -98,9 +98,13 @@ def job_dict(job_id: str, reference: Path | str | None, priority: int = 100,
     }
 
 
-SANDBOX_PWSET_PINNED = "2026-10-16T17:20:36Z"
-SANDBOX_MARKER_CURRENT = '{"version": 5, "created_at": "2026-10-16T17:20:37.0+00:00"}'
-SANDBOX_MARKER_STALE = '{"version": 5, "created_at": "2026-10-16T14:47:43.0+00:00"}'
+# A provisioning time this machine can never really hold, so a daemon run that forgets the
+# $CODEX_SANDBOX_MACHINE_PWSET pin (and falls through to the real net.exe) fails here on EVERY
+# machine instead of passing only where the fixture happens to equal Windows' own reading
+# (SELFTEST_ARTPIPE_FIX_UNPINNED_NETEXE_ENVS).
+SANDBOX_PWSET_PINNED = "2001-02-03T04:05:06Z"
+SANDBOX_MARKER_CURRENT = '{"version": 5, "created_at": "2001-02-03T04:05:07.0+00:00"}'
+SANDBOX_MARKER_STALE = '{"version": 5, "created_at": "2001-02-03T01:32:13.0+00:00"}'
 
 
 def make_job(pending_dir: Path, job_id: str, reference: Path | None,
@@ -565,6 +569,7 @@ def test_two_concurrent_daemons_claim_atomically():
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
+        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         procs = [subprocess.Popen(q.daemon_args("--once", "--workers", "3"),
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -2861,6 +2866,7 @@ def test_gemini_budget_live_reread_sees_concurrent_external_spend_end_to_end():
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
+        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
@@ -2964,6 +2970,7 @@ def test_daemon_unwedges_codex_channel_without_restart_end_to_end():
         env["ARTPIPE_LEGIBILITY_THRESHOLDS"] = ""  # synthetic fixtures are not art
         env["ARTPIPE_MOCK_CONTROL"] = str(control_path)
         env["CODEX_SANDBOX_SEED"] = str(q.codex_sandbox_template)
+        env["CODEX_SANDBOX_MACHINE_PWSET"] = SANDBOX_PWSET_PINNED  # never the real net.exe
 
         proc = subprocess.Popen(
             q.daemon_args("--workers", "1", "--poll-interval", "0.1",
