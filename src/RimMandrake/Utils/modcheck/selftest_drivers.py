@@ -215,7 +215,7 @@ def t_flowworks_table():
     covered = {c for d in table for c in d.get("chains") or ()}
     for c in ("thirst", "sprinklers", "drawbridges", "lines", "core_live_rows", "hose_live_rows", "limitless_endless",
               "pit_access_gear_ladders", "pit_travel_fly_jump_float", "trench_cover_and_raiders",
-              "suspension_bridges_and_covers", "player_missions", "works", "current", "swept", "placer"):
+              "suspension_bridges_and_covers", "player_missions", "canal_overflow", "works", "current", "swept", "placer"):
         ok(c in covered, "chain %s has a driver" % c)
     scripts = {os.path.basename(d["script"]) for d in table}
     for _bar, (_rows, script, _w) in v.DRIVER_BAR_ROWS.items():

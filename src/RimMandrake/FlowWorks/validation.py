@@ -1075,7 +1075,7 @@ def container_styles(t):
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
                   "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
-                  "mission_fixture_result_*.json")
+                  "mission_fixture_result_*.json", "sheet_overflow_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1508,6 +1508,39 @@ def player_missions(t):
     _driver_live_report(t, MISSION_LIVE, "mission_fixture_probe.py", "MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS")
 
 
+# CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 4: its acceptance is northstar/sheet_overflow_proof.py (13 rows, each one
+# owner ruling D1-D10 of design/RimMandrake/canal_overflow_flooding_2026-10-21.md). The proof turns the master switch
+# (RM_SheetSettings.sheetOverflowEnabled, shipped OFF) ON in its preflight and restores it at the end; the default-ON flip
+# (D7) waits for these rows to PASS and is not made here. Its perf rows (res["perf"], PROVISIONAL 1 ms bar) are recorded by
+# the driver and never scored. Rows read its result at the current mod hash; modcheck --drivers on runs it first.
+import sheet_overflow_proof as _SOP  # noqa: E402  (pure python at import: ROW_IDS, no bridge)
+CANAL_OVERFLOW_LIVE = [
+    ("PUMP_FULL_CANAL_SPILLS_SHEET", None, "a pump pouring into a brim-full canal spills the excess as a sheet (inPump > 0), "
+     "conserved to the dL"),
+    ("RAIN_FULL_CANAL_SPILLS_SHEET", None, "rain on a brim-full, unroofed canal spills a sheet (inRain > 0)"),
+    ("FILLIN_HOMELESS_SPILLS", None, "filling in a wet dug square spills its homeless water (D1), destroying none"),
+    ("SHEET_RETURNS_TO_PIT", None, "a sheet beside an empty superdeep pit runs back into it (returned > 0)"),
+    ("SPILL_EXTENT_FINITE", None, "a 20,000 dL spill on open soil stops spreading at a finite extent"),
+    ("BACKPRESSURE_REFUSES_DESTROYS_NOTHING", None, "a walled yard offered 3x its room refuses the excess; nothing destroyed"),
+    ("DOOR_LEAKS_SLOWLY", None, "a closed door leaks slowly; a gap in the twin ring drains fast (D4)"),
+    ("SETTING_OFF_STOPS_NEW_KEEPS_DRAINING", None, "switch OFF: no new spill accepted, the existing sheet keeps draining (D7)"),
+    ("CROPS_IRRIGATE_THEN_DROWN", None, "standing water irrigates a crop, then drowns it only after the (compressed) crop "
+     "delay (D3)"),
+    ("SHEET_FREEZES_AND_THAWS", None, "a sheet below 0 C freezes into its ice tier keeping its volume and thaws back (D10)"),
+    ("LOWERED_CAP_KEEPS_DEEPER_WATER", None, "lowering sheetCapCm stops further filling; deeper water drains by its normal "
+     "exits"),
+    ("LEDGER_CONSERVES_TO_THE_DL", None, "over the whole run the sheet ledger closes and OverflowDestroyedTotal gains 0"),
+    ("SAVE_LOAD_CONTINUES_IDENTICAL", None, "save then 3 pulses == load then the same 3 pulses (sheet hash)"),
+]
+assert [r[0] for r in CANAL_OVERFLOW_LIVE] == list(_SOP.ROW_IDS), "CANAL_OVERFLOW_LIVE drifted from sheet_overflow_proof.ROW_IDS"
+
+
+@suite.chain("canal_overflow")
+def canal_overflow(t):
+    """Live rows only: read from the newest sheet_overflow_proof results at the current mod hash, else UNMEASURED."""
+    _driver_live_report(t, CANAL_OVERFLOW_LIVE, "sheet_overflow_proof.py", "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -1649,7 +1682,7 @@ for _name in ("rivers_switch_flips", "flow_door_facing", "ladder_hung_on_wall", 
 for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_jump_float", "ice_dig_crushed_ice",
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
-              "thirst", "sprinklers", "drawbridges", "lines", "player_missions"):
+              "thirst", "sprinklers", "drawbridges", "lines", "player_missions", "canal_overflow"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]
@@ -1699,6 +1732,10 @@ suite.live_drivers = [
      "chains": ["player_missions"], "timeout_s": 1200},
     {"name": "proof_hose_live", "script": "northstar/proof_hose.py", "args": ["--live"],
      "chains": ["hose_live_rows"], "timeout_s": 1500},
+    # CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: belt runs 2026-10-22 took ~11 and ~13 min started->noted (13 rows + perf,
+    # row K polls up to 2 x 24,000 ticks) -> 1800.
+    {"name": "sheet_overflow_proof", "script": "northstar/sheet_overflow_proof.py", "args": ["--origin", "30,30", "--fresh-map"],
+     "chains": ["canal_overflow"], "timeout_s": 1800},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
     # river site replaces the current map, so it is settled on demand by the FIRST river chain, which the composition
     # above puts after every other chain. toggle_river_steam's biome-gate half
