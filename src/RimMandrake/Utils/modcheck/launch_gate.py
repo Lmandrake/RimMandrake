@@ -14,7 +14,17 @@ import os
 import re
 import sys
 
-PAT = re.compile(r"Could not find (?:a )?type named (RimMandrake|RimStarWars|RimUtinni)[.\w]*")
+# The ROOT C# namespaces our shipped assemblies declare. Not just RimMandrake*: the Armoury, EmpirePursuit, LongHunger
+# and StructureInjectionsRUT ports keep their donors' namespaces (KoltoTank.*, RuthlessPursuingMechanoids.*, ...), and a
+# stale DLL there drops defs' classes exactly the same way. selftest_launch_gate.py re-derives the set from every
+# `namespace` line under src/ and fails on drift (UnityEngine/System there are test shims, not ours).
+OWN_NAMESPACES = ("RimMandrake", "RimStarWars", "RimUtinni", "JawaBench",
+                  "CompExtraSounds", "CrystalFormations", "InstantHealingDrug", "JumppackForMeleeAI", "KoltoTank",
+                  "LongHunger", "MentalBreakBlocker", "MinePocket", "RuthlessPursuingMechanoids",
+                  "SecondaryMineableYield", "SelfHediffVerb", "Spinning_Projectile", "StructureInjectionsRUT",
+                  "guy762_Ionization", "guy762_IonizationABF")
+PAT = re.compile(r"Could not find (?:a )?type named (?:%s)(?![\w])[.\w]*"
+                 % "|".join(re.escape(n) for n in sorted(OWN_NAMESPACES, key=len, reverse=True)))
 PROBE = "Bridge token:"
 _UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 if _UTILS not in sys.path:
@@ -33,7 +43,7 @@ def scan(text):
     if not probe:
         problems.append("UNMEASURED: log has no %r line (wrong, empty or old log)" % PROBE)
     if types:
-        problems.append("%d missing RimMandrake type(s): %s%s" % (len(types), ", ".join(types[:12]), " ..." if len(types) > 12 else ""))
+        problems.append("%d missing type(s) of our own: %s%s" % (len(types), ", ".join(types[:12]), " ..." if len(types) > 12 else ""))
     return {"ok": probe and not types, "problems": problems, "probe": probe, "missing_types": types}
 
 

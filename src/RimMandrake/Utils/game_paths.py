@@ -159,11 +159,11 @@ DEF_DUMP = newest_capture() or DUMP_ROOT
 # distinction has cost a session before: this is the file the game appends to.
 PLAYER_LOG = resolve(os.path.join(_LOG_WIN, "Player.log"),
                      os.path.join(_LOG_WSL, "Player.log"))
-# Where the game keeps saved ideoligions (.rid) and savegames (.rws).
 # Unity rotates Player.log -> Player-prev.log at launch, PRESERVING the old
 # file's mtime, which makes it the anchor for "which run is this".
 PREV_LOG = resolve(os.path.join(_LOG_WIN, "Player-prev.log"),
                    os.path.join(_LOG_WSL, "Player-prev.log"))
+# Where the game keeps saved ideoligions (.rid) and savegames (.rws).
 IDEOS = resolve(os.path.join(_LOW_WIN, "Ideos"),
                 os.path.join(_LOW_WSL, "Ideos"))
 SAVES = resolve(os.path.join(_LOW_WIN, "Saves"),

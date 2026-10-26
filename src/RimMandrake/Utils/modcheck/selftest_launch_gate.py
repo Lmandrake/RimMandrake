@@ -36,5 +36,33 @@ check("file path route fails on bad log", not G.check_player_log(p)["ok"])
 open(p, "w").write(CLEAN)
 check("file path route passes on clean log", G.check_player_log(p)["ok"])
 check("missing file is UNMEASURED not clean", not G.check_player_log(p + ".nope")["ok"])
+
+# Our ports that keep a donor namespace (Armoury's KoltoTank, EmpirePursuit's RuthlessPursuingMechanoids) are ours too:
+# the old regex only knew RimMandrake/RimStarWars/RimUtinni and passed this log clean.
+PORT = "Bridge token: abc\nCould not find type named KoltoTank.Building_KoltoTank from node <thingClass>\n"
+r = G.scan(PORT)
+check("missing type in a donor-namespaced port of ours FAILS", not r["ok"] and r["missing_types"] == ["KoltoTank.Building_KoltoTank"])
+check("a prefix lookalike namespace is not ours", G.scan("Bridge token: x\nCould not find type named KoltoTankX.Thing\n")["ok"])
+
+# drift: every root namespace declared under src/ (minus test shims) is in OWN_NAMESPACES
+import re
+import subprocess
+_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
+_files = subprocess.run(["git", "-C", _root, "ls-files", "-z", "--", "src/*.cs"], capture_output=True, text=True,
+                        timeout=60).stdout.split("\0")
+_decl = set()
+for f in _files:
+    if not f or "/obj/" in f:
+        continue
+    try:
+        txt = open(os.path.join(_root, f), encoding="utf-8", errors="replace").read()
+    except OSError:
+        continue
+    _decl |= {m.group(1) for m in re.finditer(r"(?m)^\s*namespace\s+([A-Za-z_]\w*)", txt)}
+_decl -= {"UnityEngine", "System"}          # GimmeSomeSlack SelfTest UnityShim, JawaBench's CompilerServices shim
+check("sanity: the namespace census sees RimMandrake and KoltoTank (%d roots)" % len(_decl),
+      {"RimMandrake", "KoltoTank"} <= _decl)
+check("every root namespace under src/ is in OWN_NAMESPACES (missing: %s)" % sorted(_decl - set(G.OWN_NAMESPACES)),
+      _decl <= set(G.OWN_NAMESPACES))
 print("%d/%d" % (sum(res), len(res)))
 sys.exit(0 if all(res) else 1)
