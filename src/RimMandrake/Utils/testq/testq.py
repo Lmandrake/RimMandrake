@@ -1149,6 +1149,11 @@ def cmd_show(a):
 
 
 DISPATCH = os.path.expanduser("~/rm/dispatch")
+# git's auto gc/maintenance DETACHES by default; a oneshot tick's pull/ingest then left a background repack in the unit's
+# cgroup, killed or orphaned at unit end (463 "Found left-over process (git)" lines on 2026-10-26, four tmp_pack_* files,
+# 8,972 loose objects that never shrank, so every tick started another). Foreground auto gc finishes inside the tick.
+GIT_ENV = ("Environment=GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.autoDetach GIT_CONFIG_VALUE_0=false "
+           "GIT_CONFIG_KEY_1=maintenance.autoDetach GIT_CONFIG_VALUE_1=false\n")
 UNITS = {
     "testq-tick.service": """[Unit]
 Description=testq dispatch tick (TESTQ_DISPATCHER_BUILD_SSH_NO_LLM)
@@ -1156,7 +1161,7 @@ Description=testq dispatch tick (TESTQ_DISPATCHER_BUILD_SSH_NO_LLM)
 [Service]
 Type=oneshot
 WorkingDirectory={clone}
-ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
+{git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
@@ -1168,7 +1173,7 @@ Description=testq daily full sweep request (design: at most one --full per mod p
 [Service]
 Type=oneshot
 WorkingDirectory={clone}
-ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
+{git_env}ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
 ExecStart=/bin/bash -c 'for m in ${{TESTQ_SWEEP_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py sweep "$m"; done'
 TimeoutStartSec=300
 """,
@@ -1207,7 +1212,7 @@ def cmd_install_timer(a):
         if a.apply:
             os.makedirs(unit_dir, exist_ok=True)
             with open(path, "w", encoding="utf-8") as f:
-                f.write(text.format(clone=DISPATCH))
+                f.write(text.format(clone=DISPATCH, git_env=GIT_ENV))
     if a.apply:
         for argv in (["daemon-reload"], ["enable", "--now", "testq-tick.timer"],
                      ["enable", "--now", "testq-sweep.timer"]):

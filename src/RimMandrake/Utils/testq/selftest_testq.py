@@ -494,6 +494,19 @@ def main():
               "a second sweep the same day queues nothing: %s" % o[-200:])
         rc, o = tq("install-timer")
         check(rc != 0 or "testq-sweep.timer" in o, "install-timer also installs the daily sweep timer: %s" % o[-200:])
+        # every git-pulling unit runs git's auto gc in the FOREGROUND (2026-10-26: detached repacks were left over in the
+        # tick's cgroup every minute, 463 times, and never finished). Can-fail: the env must really reach git's config.
+        import testq as _TQ  # noqa: E402
+        for un in ("testq-tick.service", "testq-sweep.service"):
+            body = _TQ.UNITS[un].format(clone="/c", git_env=_TQ.GIT_ENV).splitlines()
+            envl = [l for l in body if l.startswith("Environment=GIT_CONFIG_COUNT=")]
+            pre = [i for i, l in enumerate(body) if l.startswith("ExecStartPre=") and " pull " in l]
+            check(envl and pre and body.index(envl[0]) < pre[0], "%s sets the git env before its pull: %s" % (un, body[:8]))
+        genv = dict(os.environ)
+        genv.update(kv.split("=", 1) for kv in _TQ.GIT_ENV.strip()[len("Environment="):].split())
+        got = [subprocess.run(["git", "config", "--get", k], env=genv, capture_output=True, text=True).stdout.strip()
+               for k in ("gc.autoDetach", "maintenance.autoDetach")]
+        check(got == ["false", "false"], "GIT_ENV turns off git's detached auto gc and maintenance: %s" % got)
 
         # the filler: Steve never idles, no LLM; the stalest chains, with a stop file, a daily cap and a brake
         rc, o = tq("fill", "Mock")
