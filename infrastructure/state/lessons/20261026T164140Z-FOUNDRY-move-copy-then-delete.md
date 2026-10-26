@@ -1,0 +1,2 @@
+A 'move to the later stage' written as copy-then-delete must make the delete conditional on the copy landing. artpipe_state.migrate deleted dst's pending copy of a job even when its copy into done/ hit FileNotFoundError (the source vanished mid-walk), so the job was in neither stage. Fixed w90: _copy returns whether dst holds the file; selftest_artpipe_state forces the vanish via shutil.copy2.
+home: NONE

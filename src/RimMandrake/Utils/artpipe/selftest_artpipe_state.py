@@ -155,6 +155,25 @@ def test_migrate(tmp: Path):
     check("source untouched", (src / "pending" / "j2.json").exists() and (src / "done" / "j1.json").exists())
     again = AS.migrate(src, dst, dry=False)
     check("re-run is a no-op", not {k: v for k, v in again.items() if k != "kept_further_along"})
+    # the source job vanishes mid-copy (a live daemon moved it): dst's earlier-stage copy must survive
+    _job(src / "done", "j4")
+    _job(dst / "pending", "j4")
+    import shutil
+    real_copy2 = shutil.copy2
+
+    def vanishing_copy2(a, b, *k, **kw):
+        if Path(a).name == "j4.json":
+            Path(a).unlink()
+            raise FileNotFoundError(a)
+        return real_copy2(a, b, *k, **kw)
+    shutil.copy2 = vanishing_copy2
+    try:
+        st = AS.migrate(src, dst, dry=False)
+    finally:
+        shutil.copy2 = real_copy2
+    check("a job that vanished mid-copy keeps dst's earlier copy (never lost from both stages)",
+          st.get("vanished_mid_copy") == 1 and (dst / "pending" / "j4.json").exists()
+          and not (dst / "done" / "j4.json").exists())
 
 
 def test_requeue(tmp: Path):

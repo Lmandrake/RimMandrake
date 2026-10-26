@@ -288,20 +288,24 @@ def _same(a: Path, b: Path) -> bool:
     return sa.st_size == sb.st_size and int(sa.st_mtime) == int(sb.st_mtime)
 
 
-def _copy(src: Path, dst: Path, dry: bool, stats: dict, key: str) -> None:
+def _copy(src: Path, dst: Path, dry: bool, stats: dict, key: str) -> bool:
+    """True when dst holds (or, dry, would hold) src's bytes; False when src vanished before it was copied."""
     try:
         if dst.exists() and _same(src, dst):
-            return
+            return True
     except FileNotFoundError:
-        return
+        if not src.exists():
+            stats["vanished_mid_copy"] = stats.get("vanished_mid_copy", 0) + 1
+            return False
     if not dry:
         dst.parent.mkdir(parents=True, exist_ok=True)
         try:
             shutil.copy2(src, dst)
         except FileNotFoundError:  # a live daemon moved it mid-walk; the next run picks it up
             stats["vanished_mid_copy"] = stats.get("vanished_mid_copy", 0) + 1
-            return
+            return False
     stats[key] = stats.get(key, 0) + 1
+    return True
 
 
 def _where_is(root: Path, name: str) -> tuple[str, int] | None:
@@ -331,7 +335,8 @@ def migrate(src: Path, dst: Path, dry: bool) -> dict:
             if here is not None and here[1] > rank:
                 stats["kept_further_along"] = stats.get("kept_further_along", 0) + 1
                 continue
-            _copy(f, dst / d / f.name, dry, stats, f"{d}/jobs")
+            if not _copy(f, dst / d / f.name, dry, stats, f"{d}/jobs"):
+                continue                # never drop dst's earlier-stage copy for a job that did not arrive
             if here is not None and here[1] < rank:
                 stats["advanced"] = stats.get("advanced", 0) + 1
                 if not dry:
