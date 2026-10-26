@@ -14,6 +14,7 @@
     <label>krizzak</label>
     <description>A soft, dark moth-thing the size of a hand, wings the deep plum of a bruise and a pale glassy mouth like a lamp-glass that holds a faint stolen glow. It eats light. Swarms settle on glow plants and dim them, and cluster on lit lamps until the lit radius shrinks to a smear; a perimeter going dark one lamp at a time is the warning. It takes no power and does no harm to hull or hand, and it scatters from heat.</description>
     <statBases>
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>25</MarketValue>
       <ComfyTemperatureMin>-30</ComfyTemperatureMin>

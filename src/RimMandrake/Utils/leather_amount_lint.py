@@ -25,6 +25,14 @@ PATCHES. Only the plain case is modelled: an op whose xpath names defName="X" an
 useLeatherFrom covers X; one whose <value> carries LeatherAmount sets it. Custom-class ops and xpaths that select by
 anything other than defName are not modelled (counted as patch_ops_unmodelled when they mention leather at all).
 
+STRICT CLASSES (RACES_AUDIT_INHERITED_40_NO_LEATHERDEF). The vanilla-40 count is a census, not a pass: by body a
+quadruped, pinniped, monkey or bird of ours that drops no hide is usually a missed leatherDef. Each class below was
+audited race by race (leather picked, or LeatherAmount 0 where vanilla's own convention gives none, e.g. small birds
+<= 0.35 like Sparrow/Chicken/Duck), and once FINISHED a race of that body that again inherits the bare 40 with no
+leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately yields no hide.
+
+    --strict-classes bird,monkey     # check only these; 'none' turns strict checking off; default FINISHED_CLASSES
+
 SANITY. main() refuses to report a clean tree unless it saw at least MIN_RACES races and at least one known-good race
 with an explicit leather amount AND a leatherDef (PROBE_GOOD): a zero from a walker that saw nothing is not a pass.
 """
@@ -76,6 +84,21 @@ VANILLA_PARENTS = {
     'WaterBirdThingBase': ('BigBirdThingBase', None, None),
 }
 
+CLASS_BODIES = {
+    'bird': {'Bird'},
+    'monkey': {'Monkey'},
+    'pinniped': {'Pinniped', 'PinnipedWithTusks'},
+    'quadruped': {'QuadrupedAnimalWithPaws', 'QuadrupedAnimalWithPawsAndTail', 'QuadrupedAnimalWithHooves',
+                  'QuadrupedAnimalWithHoovesAndHump', 'QuadrupedAnimalWithHoovesAndHorn',
+                  'QuadrupedAnimalWithHoovesAndTusks', 'QuadrupedAnimalWithClawsTailAndJowl'},
+}
+FINISHED_CLASSES = ('bird',)   # classes audited to the end; their regressions fail
+# defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
+STRICT_EXEMPT = {
+    'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
+    'RUT_EmperorVulture': 'bird body only: "nothing about an ulvassk is a bird", a translucent gas sac on bone spars',
+}
+
 MIN_RACES = 300          # src/ held 667 race ThingDefs when measured 2026-10-26; far fewer means a blind walk
 PROBE_GOOD = 'RM_Shokka'   # LeatherAmount 45 in its own statBases, leatherDef set (18063c93f0)
 DEFNAME_RE = re.compile(r'defName\s*=\s*["\']([^"\']+)["\']')
@@ -100,8 +123,8 @@ def iter_files(root):
                 yield kind, os.path.join(dp, f)
 
 
-def scan(root):
-    """Return a result dict. Pure: reads files under root, writes nothing."""
+def scan(root, strict=()):
+    """Return a result dict. Pure: reads files under root, writes nothing. strict: class names of CLASS_BODIES."""
     named, concrete, parse_fail = {}, [], []
     patch_cover, patch_amount, unmodelled = set(), {}, 0
     for kind, path in iter_files(root):
@@ -196,7 +219,9 @@ def scan(root):
         leather, _ = effective(links, 'race', ('leatherDef', 'useLeatherFrom'), 1)
         if dn in patch_cover:
             leather = leather or '(patched)'
-        row = {'defName': dn, 'file': rel, 'leatherAmount': amt, 'leather': leather}
+        body = next((e.findtext('race/body').strip() for e, _ in links
+                     if e is not None and (e.findtext('race/body') or '').strip()), None)
+        row = {'defName': dn, 'file': rel, 'leatherAmount': amt, 'leather': leather, 'body': body}
         if leather and amt and amt > 0 and amt_ours:
             good.append(dn)
         if leather or not amt or amt <= 0:
@@ -208,7 +233,14 @@ def scan(root):
             offenders.append(row)
         else:
             vanilla40.append(row)
+    strict_bodies = set()
+    for c in strict:
+        strict_bodies |= CLASS_BODIES[c]
+    strict_fail = [o for o in vanilla40 if o['body'] in strict_bodies and o['defName'] not in STRICT_EXEMPT]
+    v40 = {o['defName'] for o in vanilla40}
+    stale_exempt = sorted(n for n in STRICT_EXEMPT if n not in v40)
     return {'races': len(races), 'offenders': offenders, 'vanilla_inherited_amount': vanilla40,
+            'strict_failures': strict_fail, 'strict_classes': list(strict), 'stale_exempt': stale_exempt,
             'unresolved_parent': unresolved, 'good_explicit': good, 'parse_failures': parse_fail,
             'patch_ops_unmodelled': unmodelled, 'race_names': races}
 
@@ -220,15 +252,31 @@ def main(argv=None):
         i = argv.index('--json')
         out_json = argv[i + 1]
         del argv[i:i + 2]
+    strict = list(FINISHED_CLASSES)
+    if '--strict-classes' in argv:
+        i = argv.index('--strict-classes')
+        txt = argv[i + 1]
+        del argv[i:i + 2]
+        strict = [] if txt == 'none' else [c.strip() for c in txt.split(',') if c.strip()]
+        unknown = [c for c in strict if c not in CLASS_BODIES]
+        if unknown:
+            print('unknown class(es) %s; known: %s' % (', '.join(unknown), ', '.join(sorted(CLASS_BODIES))))
+            return 2
     root = os.path.abspath(argv[0]) if argv else DEFAULT_ROOT
     probe = PROBE_GOOD if root == DEFAULT_ROOT else None
-    r = scan(root)
+    r = scan(root, strict)
     if out_json:
         with open(out_json, 'w', encoding='utf-8') as fh:
             json.dump({k: v for k, v in r.items() if k != 'race_names'}, fh, indent=1)
     for o in r['offenders']:
         print('FAIL %s (%s): LeatherAmount %g, no race.leatherDef / useLeatherFrom'
               % (o['defName'], o['file'], o['leatherAmount']))
+    for o in r['strict_failures']:
+        print('FAIL-STRICT %s (%s): body %s is in a finished class but inherits vanilla LeatherAmount 40 with no '
+              'leatherDef; name a leather, set LeatherAmount 0, or add it to STRICT_EXEMPT with the reason'
+              % (o['defName'], o['file'], o['body']))
+    for n in r['stale_exempt']:
+        print('NOTE STRICT_EXEMPT names %s, which no longer inherits the bare 40 (drop the entry)' % n)
     for p in r['parse_failures']:
         print('PARSE %s' % p)
     blind = []
@@ -236,14 +284,15 @@ def main(argv=None):
         blind.append('saw %d races, floor %d' % (r['races'], MIN_RACES))
     if probe and probe not in r['good_explicit']:
         blind.append('probe %s not seen as a good race' % probe)
-    print('MEASURED races=%d offenders=%d vanilla_inherited_amount=%d unresolved_parent=%d good_explicit=%d '
-          'parse_failures=%d patch_ops_unmodelled=%d root=%s'
-          % (r['races'], len(r['offenders']), len(r['vanilla_inherited_amount']), len(r['unresolved_parent']),
-             len(r['good_explicit']), len(r['parse_failures']), r['patch_ops_unmodelled'], root))
+    print('MEASURED races=%d offenders=%d vanilla_inherited_amount=%d strict_failures=%d strict_classes=%s '
+          'unresolved_parent=%d good_explicit=%d parse_failures=%d patch_ops_unmodelled=%d root=%s'
+          % (r['races'], len(r['offenders']), len(r['vanilla_inherited_amount']), len(r['strict_failures']),
+             ','.join(strict) or 'none', len(r['unresolved_parent']), len(r['good_explicit']),
+             len(r['parse_failures']), r['patch_ops_unmodelled'], root))
     if blind:
         print('BLIND: %s -- UNMEASURED, not a pass or a fail' % '; '.join(blind))
         return 2
-    return 1 if r['offenders'] else 0
+    return 1 if r['offenders'] or r['strict_failures'] else 0
 
 
 if __name__ == '__main__':

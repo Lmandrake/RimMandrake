@@ -107,6 +107,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Bird</leatherDef>
       <body>Bird</body>
       <predator>true</predator>
       <maxPreyBodySize>0.5</maxPreyBodySize>

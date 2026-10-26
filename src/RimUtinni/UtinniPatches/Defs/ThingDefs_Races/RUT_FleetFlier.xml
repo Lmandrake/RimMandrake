@@ -79,6 +79,7 @@
     <label>fleet flier</label>
     <description>A small, quick-winged creature that darts into the Forge's vapor columns to graze on fireweed before the heat catches up with it. It never lingers - a fleet flier on the open ground is a fleet flier running out of time.</description>
     <statBases>
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>4.2</MoveSpeed>
       <ComfyTemperatureMin>-20</ComfyTemperatureMin>
       <ComfyTemperatureMax>38</ComfyTemperatureMax>

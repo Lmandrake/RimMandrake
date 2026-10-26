@@ -48,6 +48,12 @@ DEFS = """<?xml version="1.0"?>
     <race Inherit="False"><body>BeetleLike</body></race></ThingDef>
   <ThingDef ParentName="BaseBear"><defName>T_VanillaLeatherGood</defName>
     <statBases><LeatherAmount>50</LeatherAmount></statBases></ThingDef>
+  <ThingDef Name="OurBirdBase" ParentName="AnimalThingBase" Abstract="True"><race><body>Bird</body></race></ThingDef>
+  <ThingDef ParentName="OurBirdBase"><defName>T_StrictBirdBad</defName></ThingDef>
+  <ThingDef ParentName="AnimalThingBase"><defName>T_StrictBirdExempt</defName><race><body>Bird</body></race></ThingDef>
+  <ThingDef ParentName="AnimalThingBase"><defName>T_StrictBirdZero</defName>
+    <statBases><LeatherAmount>0</LeatherAmount></statBases><race><body>Bird</body></race></ThingDef>
+  <ThingDef ParentName="AnimalThingBase"><defName>T_StrictMonkeyLoose</defName><race><body>Monkey</body></race></ThingDef>
   <ThingDef><defName>T_NotARace</defName><statBases><LeatherAmount>30</LeatherAmount></statBases></ThingDef>
 </Defs>"""
 
@@ -86,9 +92,30 @@ def main():
         for n in ('T_ExplicitGood', 'T_InheritedLeatherGood', 'T_UseLeatherFrom', 'T_PatchedGood',
                   'T_VanillaLeatherGood'):
             check('%s passes and is seen as good' % n, n in good, sorted(good))
+        v40 = sorted(o['defName'] for o in r['vanilla_inherited_amount'])
         check('vanilla AnimalThingBase 40 alone is counted, not failed',
-              [o['defName'] for o in r['vanilla_inherited_amount']] == ['T_VanillaFortyOnly'],
-              r['vanilla_inherited_amount'])
+              v40 == ['T_StrictBirdBad', 'T_StrictBirdExempt', 'T_StrictMonkeyLoose', 'T_VanillaFortyOnly'], v40)
+        check('no strict classes -> no strict failures', r['strict_failures'] == [], r['strict_failures'])
+        saved = dict(lint.STRICT_EXEMPT)
+        lint.STRICT_EXEMPT.clear()
+        lint.STRICT_EXEMPT.update({'T_StrictBirdExempt': 'fixture', 'T_GoneAway': 'fixture'})
+        try:
+            rs = lint.scan(tmp, ('bird',))
+            sf = sorted(o['defName'] for o in rs['strict_failures'])
+            check('strict bird: inherited body, bare 40, not exempt fails; exempt and LeatherAmount 0 pass; '
+                  'monkey (not strict) passes', sf == ['T_StrictBirdBad'], sf)
+            check('an exempt name that no longer inherits the bare 40 is reported stale',
+                  rs['stale_exempt'] == ['T_GoneAway'], rs['stale_exempt'])
+            rm = lint.scan(tmp, ('bird', 'monkey'))
+            check('strict monkey adds the monkey', sorted(o['defName'] for o in rm['strict_failures']) ==
+                  ['T_StrictBirdBad', 'T_StrictMonkeyLoose'], rm['strict_failures'])
+        finally:
+            lint.STRICT_EXEMPT.clear()
+            lint.STRICT_EXEMPT.update(saved)
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc_bad = lint.main([tmp, '--strict-classes', 'bogus'])
+        check('unknown strict class exits 2', rc_bad == 2, buf.getvalue())
         check('donor parent is unresolved, not passed or failed',
               [o['defName'] for o in r['unresolved_parent']] == ['T_DonorParent'], r['unresolved_parent'])
         check('FlowWorks is skipped', 'T_FlowWorksBad' not in r['race_names'])
@@ -109,8 +136,17 @@ def main():
     with redirect_stdout(buf):
         rc = lint.main([])
     out = buf.getvalue()
-    check('real src/ exits 0 (no offenders, not blind)', rc == 0, out.strip()[-600:])
-    r = lint.scan(lint.DEFAULT_ROOT)
+    check('real src/ exits 0 (no offenders, no strict failures in %s, not blind)'
+          % ','.join(lint.FINISHED_CLASSES), rc == 0, out.strip()[-600:])
+    r = lint.scan(lint.DEFAULT_ROOT, lint.FINISHED_CLASSES)
+    check('every STRICT_EXEMPT entry still inherits the bare 40', not r['stale_exempt'], r['stale_exempt'])
+    for c in lint.FINISHED_CLASSES:
+        # Non-blind: the body walk must still see this class's exempt races (they inherit the bare 40 on
+        # purpose), else a body-resolution regression would pass every strict class silently.
+        bodies = set(lint.CLASS_BODIES[c])
+        of_class = [o['defName'] for o in r['vanilla_inherited_amount'] if o['body'] in bodies]
+        check('finished class %s is non-blind (its exempt races are seen with their body)' % c,
+              bool(of_class) and all(n in lint.STRICT_EXEMPT for n in of_class), of_class)
     check('real src/ sees >= %d races' % lint.MIN_RACES, r['races'] >= lint.MIN_RACES, r['races'])
     check('probe %s seen as good' % lint.PROBE_GOOD, lint.PROBE_GOOD in r['good_explicit'])
     check('real src/ parses every Defs/Patches file', not r['parse_failures'], r['parse_failures'][:3])

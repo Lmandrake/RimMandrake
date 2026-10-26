@@ -513,6 +513,7 @@
     <label>sivvern</label>
     <description>A slender dusk-flier on taut grey membranes, silent as everything here, tracing the high lines and dipping to pick vennick off the silk. It never perches in the open. Sivvern circling low is a sign of heavy mite traffic beneath — and mite traffic is a sign of eggs, a second, longer-range read on the treasure map. Hunting one is possible; reading one is better.</description>
     <statBases>
+      <LeatherAmount>0</LeatherAmount>
       <MoveSpeed>3.6</MoveSpeed>
       <MarketValue>50</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
