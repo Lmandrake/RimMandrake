@@ -61,6 +61,7 @@
  "RM_Scaldhide": 3,
  "RM_Scorchpod": 1,
  "RM_Shirrel": 3,
+ "RM_Shoal": 1,
  "RM_Shokka": 3,
  "RM_Skinflap": 1,
  "RM_Sloshbelly": 1,
@@ -100,10 +101,13 @@
  "RM_Zellik": 2,
  "RM_Zisska": 3,
  "RSW_Clodhopper": 1,
+ "RSW_FacetMothPupa__dessicated": 1,
  "RSW_Gizka": 1,
  "RSW_KowakianMonkeyLizard": 2,
+ "RSW_LavaFlea": 1,
  "RSW_Mynock": 1,
  "RSW_Runyip": 1,
+ "RSW_Silooth__Silooth_j": 1,
  "RSW_Starmaw": 3,
  "RUT_BrineBattery": 3
 }

@@ -1,0 +1,46 @@
+{
+ "judge_model": {},
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thermadon",
+ "decision": "HOLD_CANVAS",
+ "reasons": [
+  "canvas not the shipping rule for drawSize [3.0, 3.0]: east 256x256 != 512x512; north 256x256 != 512x512; south 256x256 != 512x512"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "eda54169557442a136627d9cd9bfe282f1beab70a920e2614e970de131449ea7",
+  "east.png": "6bbafb7616c16e3b1bff0822fd6eeeefe28a5d6c10897214e4ea530675cd5991",
+  "north.png": "4fd29cc472d7d17a8d2aea6d8cfd0afbee3a8c16cce77fcbbeeb203391f6605c",
+  "scale.png": "f9a3b37e4e0029f08befadf10ec790eddd846695f4513442637778d0d37a1f44",
+  "facings.png": "f09eda9e58048680126166287e4a38985f669b9884e24bcba1d961c1df418668"
+ }
+}

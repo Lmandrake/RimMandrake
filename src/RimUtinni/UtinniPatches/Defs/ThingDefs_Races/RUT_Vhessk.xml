@@ -65,15 +65,13 @@
   artpipe/done/, _artsrc/, registry.jsonl for "vhessk"/"lampgut"/"boom" —
   clean; the only "boom" hits are the unrelated pyrelands_boomsnake_v* jobs,
   a different creature). Real art queued this pass, 3 facings at 512x512 per
-  brief S5 (art_lists/goo_boom_commission.csv -> pending/rut_vhessk_{south,
-  east,north}.json) — PENDING RENDER, not landed. Placeholder below reuses
-  Thrumbo's own shipped texture (same "recolored placeholder, no new art yet"
-  idiom RM_Dorrak/RM_Krissek use in RM_BlueDesertFauna.xml) tinted dark
-  maroon-flesh, so the def loads and renders something coherent (a large,
-  dark, faceless-enough silhouette) until the queued job lands. Swap
-  bodyGraphicData/dessicatedBodyGraphicData's texPath to
-  Things/Pawn/Animal/Vhessk/Vhessk (brief S5) and drop the <color> once the
-  three PNGs are validated and placed.
+  brief S5. Own art landed 2026-10-26 (facing-audit redraw batch, card
+  "2026-10-26 card -> Art audit across all creatures", pipeline ACCEPT in run
+  audit_20261026_b1r1): bodyGraphicData now reads
+  Things/Pawn/Animal/Vhessk/Vhessk and the placeholder <color> tint is gone.
+  dessicatedBodyGraphicData stays on vanilla Dessicated_Thrumbo: there is no
+  Vhessk skeleton art, and pointing it at the living body would show fresh
+  flesh on a desiccated corpse.
 -->
 <Defs>
 
@@ -166,10 +164,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/Vhessk/Vhessk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
-          <color>(90,50,50)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
@@ -178,10 +175,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/Vhessk/Vhessk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
-          <color>(90,50,50)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
@@ -190,10 +186,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/Vhessk/Vhessk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
-          <color>(90,50,50)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>

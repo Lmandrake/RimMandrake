@@ -1,0 +1,84 @@
+[
+ {
+  "id": "arteval_RM_Shoal__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Shoal",
+  "prompt": "A creature sprite for RimWorld: the shoal. Many bodies sharing one blood: eight to fifteen small pale lozenge bodies strung on a single glowing yellow thread, moving as one loose net. ONE sprite shows the whole shoal, not a single animal: the lozenges are spread as one loose net with small gaps between each, all connected by the one thread, with no single large body and no legs. The lozenges are painted as living, slightly translucent tissue: pale, matte, with subtle uneven surface variation, small mottled tonal shifts and soft irregular brushwork, like hand-painted creature flesh. Highlights on each lozenge are small, restrained and irregular; each lozenge has a thin dark contour in a deeper shade of its own pale colour. The bright yellow glow is concentrated in the single thread that connects them, fading to a soft pale-yellow tint where the thread passes through each body. Realistic painterly vanilla RimWorld sprite style, hand-painted look with soft painted edges in a deeper shade of the local colour. Exactly ONE shoal, centred, every lozenge fully visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_OFF, STYLE_OFF",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_FacetMothPupa__dessicated__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FacetMothPupa__dessicated",
+  "prompt": "A creature sprite for RimWorld: the facet pupa. The pupal form of the facet moth. While immobile, its hard shell protects it from most predators. It is one sealed casing lying on the ground: a hard shell cut in flat gem-like facets that catch the light, with no visible legs, wings or eyes. Its body plan is fixed: one end is a slight pointed taper, where the moth will emerge, and the other end is broad and rounded, a blunt end. The pointed end is the front and the broad blunt end is the rear. Keep the same palette, proportions and facet pattern as the reference image. In the side view the pointed end leads on the right and the broad blunt end sits on the left. In the view toward the camera, the pointed tapered tip points at the viewer, seen tip-on, with the broader faceted casing widening behind it. In the rear view, seen from behind, the broad blunt rounded end faces the viewer and the casing narrows away behind it toward the pointed tip, which stays hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r1",
+  "drawsize": 1.4,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_LavaFlea__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_LavaFlea",
+  "prompt": "A creature sprite for RimWorld: the lava flea. Lava fleas were large arthropods native to the planet Mustafar. As larval crystalline worms, lava fleas were able to feed on rocks. The lava flea would then continue digesting rocks and other nutrients, shedding its protective shell with time. Lava fleas were also very suitable mounts and exported as such to worlds with inhospital climates to other creatures. Visible features it must show: ONE riderless arthropod with an empty saddle area on its back, no person sitting on it; a mount-sized body with a hard shell. Limb plan, identical in every facing: exactly six legs in total, made of four long, splayed, stilt-like jointed walking legs (two on each side of the body, each with the same number of joints and the same length) and two smaller front legs tucked beneath the face. In the front view, two long legs are seen on each side of the body with the two small legs tucked under the face. In the side view, the two long legs on the near side are fully visible, the two on the far side are partly hidden behind them, and the two small front legs are tucked under the face. In the rear view, the two long legs on each side are seen from behind and the small front legs are hidden by the body. Keep the shell colour, shell texture and body proportions exactly as in the reference image. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r1",
+  "drawsize": 4.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Silooth__Silooth_j__r1_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Silooth__Silooth_j",
+  "prompt": "A creature sprite for RimWorld: the silooth. A huge, six-legged Sithspawn beetle bred as a warbeast. Its body is a broad armoured shell of spiked rust-brown plates, raised high on six long, slender, jointed legs in a tall, wide stance, with daylight visible between the belly and the ground. Each leg is segmented and mostly bare, with small armour guards at the joints, and ends in a curved scythe-like claw. The head carries a symmetric pair of big heavy mandibles that reach forward and up on either side of a toothed, acid-wet maw. Both mandibles are visible in the front view. In the side view the near mandible is shown in full with the far one partly visible behind it. Their height, attachment points and curvature are identical in every view. Acid sacs glisten at the back of the maw. It reads as a huge armoured beetle warbeast, not a grub and not a cartoon. Build the body from this description only, with no earlier render as a reference. Realistic painterly vanilla RimWorld sprite style, with soft painted edges in a deeper shade of the local colour and a clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, CANON_MISS, F_INCONSISTENT, CANON_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_20261026_b1r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "walker"
+ }
+]
