@@ -134,9 +134,10 @@ namespace RimMandrake.DivingInteraction
     // never asks ShouldBeLitNow. So a dark, cold torch, brazier or fuelled heater on the seabed
     // emptied itself and pawns hauled wood to it forever. While the ban holds, the passive burn of a
     // fire-only building is skipped. "Fire-only" = it has a glow, heat or flame overlay comp, is not
-    // a work table (a campfire still cooks, so it still burns) and is not a power plant (a fuelled
-    // generator still makes power, so it still burns) — freezing those would give free cooking and
-    // free power. Whether they should work at all down there is a separate design question.
+    // a work table (a campfire still cooks, so it still burns) and has no power comp (a fuelled
+    // generator still makes power, a powered kolto tank still heals, so they still burn) — freezing
+    // those would give free cooking, free power and free machine work. Whether they should work at
+    // all down there is a separate design question.
     // The skip is done at ConsumeFuel, scoped to this comp during its own CompTick, so the fuel never
     // reaches 0 and Notify_RanOutOfFuel (destroyOnNoFuel) cannot fire from a burn that did not happen.
     [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.CompTick))]
@@ -170,8 +171,13 @@ namespace RimMandrake.DivingInteraction
             ThingDef def = parent.def;
             if (!fireOnly.TryGetValue(def, out bool result))
             {
+                // CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL: any powered comp (CompPowerPlant is a
+                // CompPowerTrader) means the glow is an electric status light and the fuel feeds a
+                // machine that reads HasFuel, not ShouldBeLitNow: KoltoTank heals, Autobong's smoke
+                // cloud and hediff run, Spaceports_FuelProcessor processes (def dump 2026-10-26).
+                // Freezing their burn gave that work for free.
                 result = !def.IsWorkTable
-                    && parent.GetComp<CompPowerPlant>() == null
+                    && parent.GetComp<CompPowerTrader>() == null
                     && (parent.GetComp<CompGlower>() != null
                         || parent.GetComp<CompHeatPusher>() != null
                         || parent.GetComp<CompFireOverlay>() != null);
