@@ -45,8 +45,8 @@ def lis(b, tgt, kind):
 def main():
     b = base()
     check("shipped mod: no finding", findings(b) == [], findings(b))
-    check("sanity: 12 wired targets, 77 backstories, 13 traits, 13 JawaBSC categories drawn",
-          len(set(t for t, _k, _l in b["wiring"])) == 12 and len(b["stories"]) == 77 and len(b["traits"]) == 13
+    check("sanity: 12 wired targets, 81 backstories, 13 traits, 13 JawaBSC categories drawn",
+          len(set(t for t, _k, _l in b["wiring"])) == 12 and len(b["stories"]) == 81 and len(b["traits"]) == 13
           and len(set(c for v in b["stories"].values() for c in v["cats"] if c.startswith("JawaBSC_"))) == 13)
     check("sanity: the 3 deferred traits really are label-only today", all(
         not any(d.find(tag) is not None for d in b["traits"][n].findall("degreeDatas/li") for tag in V.EFFECT_TAGS) for n in V.DEFERRED_LABEL_ONLY))
@@ -92,9 +92,9 @@ def main():
         x["traits"]["RUT_Jawa_SandStoic"].find("degreeDatas/li/label").text = ""
     brk("a trait with an empty label", trait_without_label, "no label or description")
     brk("a backstory forces a missing trait", lambda x: x["stories"]["RUT_Jawa_AcademyCadet"]["traits"].append("RUT_Jawa_Ghost"), "names trait")
-    brk("About says fifty backstories", lambda x: x.__setitem__("about", x["about"].replace("Seventy-seven", "Fifty")), "About.xml")
+    brk("About says fifty backstories", lambda x: x.__setitem__("about", x["about"].replace("Eighty-one", "Fifty")), "About.xml")
     brk("About says seven inherit", lambda x: x.__setitem__("about", x["about"].replace("other eight", "other seven")), "About.xml")
-    brk("About childhood split wrong", lambda x: x.__setitem__("about", x["about"].replace("30 childhoods", "31 childhoods")), "About.xml")
+    brk("About childhood split wrong", lambda x: x.__setitem__("about", x["about"].replace("32 childhoods", "31 childhoods")), "About.xml")
 
     # the chain: clean + each class of finding reddens its own bar; the deferred stub and the live stub stay UNMEASURED
     def chain(extra=None):

@@ -257,7 +257,7 @@ def load_wiring(path=WIRING_FILE):
 
 def load_pack_defs(root=HERE):
     stories, traits = {}, {}
-    for f in sorted(glob.glob(os.path.join(root, "Defs", "*.xml"))):
+    for f in sorted(glob.glob(os.path.join(root, "Defs", "**", "*.xml"), recursive=True)):
         for e in ET.parse(f).getroot():
             if e.tag == "BackstoryDef":
                 stories[e.findtext("defName")] = dict(
@@ -295,7 +295,7 @@ def about_counts(root=HERE):
     return t
 
 
-WORDS = {"seven": 7, "eight": 8, "fifty": 50, "five": 5, "seventy-seven": 77, "thirteen": 13, "thirty": 30, "forty-seven": 47, "eleven": 11}
+WORDS = {"seven": 7, "eight": 8, "fifty": 50, "five": 5, "seventy-seven": 77, "eighty-one": 81, "thirty-two": 32, "forty-nine": 49, "thirteen": 13, "thirty": 30, "forty-seven": 47, "eleven": 11}
 
 
 # Traits that are deliberately label-only until their C# hook lands. Each is also required to carry a preceding XML comment
@@ -389,7 +389,7 @@ def wiring_findings(wiring, stories, traits, patch_factions, vanilla_factions=No
         n_child = sum(1 for v in stories.values() if v["slot"] == "Childhood")
         n_adult = sum(1 for v in stories.values() if v["slot"] == "Adulthood")
         low = about.lower()
-        for word, n in (("seventy-seven", len(stories)), ("thirteen backstory", None), ("thirteen traitdefs", len(traits))):
+        for word, n in (("eighty-one", len(stories)), ("thirteen backstory", None), ("thirteen traitdefs", len(traits))):
             if n is None:
                 continue
             if word not in low:
