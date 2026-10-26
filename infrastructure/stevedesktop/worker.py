@@ -260,6 +260,8 @@ class Attempt:
         st = read_json(os.path.join(self.d, "state.json")) or {}
         self.res = base_result(self.job["id"], aid, st.get("runner_sha") or git("rev-parse", "HEAD")[1])
         self.phase = "guard"
+        self.game_pid = None            # the RimWorld pid load() started or found; game_gone() compares against it
+        self.liveness_unknown = None
         self.child = None
         self.stop = threading.Event()
         self.log = open(os.path.join(self.d, "worker.log"), "a", encoding="utf-8")
@@ -368,7 +370,33 @@ class Attempt:
         m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
         if m:
             self.clear_moot_markers(since, m.group(1))
+        alive = m or re.search(r"already running \(pid (\d+)\)", tail)
+        self.game_pid = alive.group(1) if alive else None
         return True
+
+    def game_gone(self):
+        """-> why the game this attempt loaded is no longer the one running, or None (alive, or cannot tell).
+
+        A game killed mid-run still leaves modcheck a sheet (every row UNMEASURED: the bridge went away), which read
+        DONE and was ingested as a partial verify (TESTQ_DEAD_GAME_RUN_FIX_READS_DONE, drill 2026-10-26). Only checked
+        when load named the pid; a status that cannot tell keeps the verdict and says so in the note."""
+        if not self.game_pid:
+            return None
+        cmd = os.environ.get("TESTQ_CMD_STATUS") or GAME + " status"
+        try:
+            r = subprocess.run(["bash", "-c", cmd], cwd=RUNNER, capture_output=True, text=True, timeout=120)
+            text = r.stdout
+        except (OSError, subprocess.TimeoutExpired) as e:
+            text = "status failed: %s" % e
+        m = re.search(r"running pid=(\d+)", text)
+        if m:
+            return None if m.group(1) == self.game_pid else (
+                "the game loaded as pid %s is gone; pid %s runs now" % (self.game_pid, m.group(1)))
+        if re.search(r"^stopped\b", text, re.M):
+            return "the game loaded as pid %s is gone (rw_game.sh status: stopped)" % self.game_pid
+        self.liveness_unknown = "game liveness unknown after the run (%s)" % text.strip()[-120:]
+        self.say(self.liveness_unknown)
+        return None
 
     def clear_moot_markers(self, since, pid):
         """Resolve the bridge client's UNKNOWN-outcome markers that predate a game this attempt just started.
@@ -443,7 +471,14 @@ class Attempt:
             rc, tail = self.sh(cmd, log_name="modcheck.log", timeout=timeout)
             if rc is not None:
                 self.res["modcheck_exit"] = rc
-                return self.read_sheet(tail)
+                ok = self.read_sheet(tail)
+                gone = self.game_gone()
+                if gone:
+                    return self.fail("INVALID", "GAME_DIED", gone + "; modcheck exit %s, sheet %s"
+                                     % (rc, S.count_verdicts(self.res["rows"])))
+                if self.liveness_unknown:
+                    self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
+                return ok
             self.say("run %d hung past %ss: killed" % (attempt_no, timeout))
             if attempt_no == 2:
                 return self.fail("INVALID", "HANG", "modcheck hung past %ss twice (one clean restart between)"
@@ -469,6 +504,10 @@ class Attempt:
             return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s"
                              % (self.res["modcheck_exit"], tail[-300:]))
         rows = S.rows_from_summary(data.get("summary") or {})
+        # a red canary: every row the SHEET has is UNMEASURED for it (before NOT_RUN accounting, which used to hide a
+        # red canary on a --rows job behind the requested rows it appended)
+        canary_red = bool(rows) and all(r["verdict"] == "UNMEASURED" for r in rows) and "canary" in text.lower() \
+            and any("canary" in (r["detail"] or "").lower() for r in rows)
         wanted = self.job["selector"].get("rows") or []
         seen = {r["row"] for r in rows}
         for w in wanted:
@@ -480,8 +519,7 @@ class Attempt:
             if os.path.isfile(path):
                 self.res["artifacts"].append({"name": os.path.basename(path), "path": path,
                                               "sha256": sha256_file(path), "bytes": os.path.getsize(path)})
-        if rows and all(r["verdict"] == "UNMEASURED" for r in rows) and "canary" in text.lower() \
-                and any("canary" in (r["detail"] or "").lower() for r in rows):
+        if canary_red:
             return self.fail("INVALID", "CANARY", "the vanilla canary was red: no mod row ran")
         self.res["outcome"] = "DONE"
         self.res["note"] = "modcheck exit %s; %s" % (self.res["modcheck_exit"], S.count_verdicts(rows))

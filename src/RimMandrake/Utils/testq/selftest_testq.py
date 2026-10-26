@@ -5,7 +5,8 @@ The fake ssh runs the remote command locally (or exits 255 while a 'down' flag f
 temp TESTQ_HOME with mock phases, as in infrastructure/stevedesktop/selftest_steve_worker.py. Proves: submit and
 duplicate submit, priority order, owner_gate / not_before / archmagi held back, one job at a time across ticks,
 result fetched and acked, ssh down -> no sends and a timed probe, cancel, supersede, a dead attempt finalized then
-retried once (attempt id asked first), orphan results kept, show within 20 lines, a concurrent tick refused.
+retried once (attempt id asked first), a red canary pausing the lane until resume --reason, a game dead
+mid-run -> GAME_DIED retried once without a pause, orphan results kept, show within 20 lines, a concurrent tick refused.
 """
 import fcntl
 import json
@@ -36,6 +37,10 @@ import json, os, sys, time
 name = "Mock_%d" % int(time.time() * 1000000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
+if os.environ.get("MOCK_MODE") == "canary":
+    print("vanilla canary RED")
+    summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "UNMEASURED",
+                                                         "detail": "vanilla canary red"}]}]}
 json.dump({"mod": "Mock", "summary": summary}, open(os.path.join(os.environ["TESTQ_SHEET_DIR"], name + ".json"), "w"))
 print("sheet Transient/modcheck/%s.html" % name)
 '''
@@ -63,6 +68,7 @@ def main():
                    TESTQ_HOME=home, TESTQ_SHEET_DIR=sheets, TESTQ_MODS_DIR=os.path.join(tmp, "mods"),
                    TESTQ_SKIP_PULL="1", TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true",
                    TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN="%s %s" % (sys.executable, os.path.join(tmp, "mock.py")),
+                   TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"), RM_HOST="stevedesktop",
                    RM_GAME_USERDATA=tmp)
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
@@ -182,6 +188,43 @@ def main():
             fcntl.flock(lk, fcntl.LOCK_EX)
             rc, o = tq("tick")
         check("already running" in o, "a tick while another runs exits at once")
+        # a red canary pauses the lane (design section 6): nothing more is admitted until `resume`
+        c = submit("--rows", "r1,r9", "--priority", "95")["job"]
+        d = submit("--rows", "r2,r9")["job"]
+        tq("tick", MOCK_MODE="canary")
+        wait_worker(running_attempt(c))
+        tq("tick")
+        rc_ = json.load(open(os.path.join(queue, "done", c + ".json")))["result"]
+        paused = os.path.join(queue, "paused.json")
+        check(rc_["cause"] == "CANARY" and os.path.exists(paused) and state(d) == "pending",
+              "a red canary -> done INVALID/CANARY, lane paused, the next job held: %s %s" % (rc_["cause"], state(d)))
+        tq("tick")
+        check(state(d) == "pending", "a paused lane admits nothing on later ticks")
+        rc, o = tq("list")
+        check("PAUSED" in o.splitlines()[0], "list leads with the pause: %s" % o.splitlines()[:1])
+        rc, o = tq("resume")
+        check(rc == 2 and os.path.exists(paused), "resume needs --reason")
+        rc, o = tq("resume", "--reason", "canary fixed")
+        check(rc == 0 and not os.path.exists(paused), "resume --reason clears the pause")
+        tq("tick")
+        check(state(d) == "running", "after resume the held job is admitted")
+        wait_worker(running_attempt(d))
+        tq("tick")
+
+        # a game killed mid-run: INVALID/GAME_DIED, retried once automatically, no pause
+        k = submit("--rows", "r1,r2,r9")["job"]
+        dead = dict(TESTQ_CMD_LOAD="echo started pid 4242", TESTQ_CMD_STATUS="echo stopped; exit 3")
+        tq("tick", **dead)
+        wait_worker(running_attempt(k))
+        tq("tick", **dead)
+        k2 = running_attempt(k) if state(k) == "running" else None
+        check(k2 == k + ".a2", "a game that died mid-run gets one automatic retry: %s" % k2)
+        wait_worker(k2 or "x")
+        tq("tick")
+        rk = json.load(open(os.path.join(queue, "done", k + ".json")))
+        check(rk["result"]["cause"] == "GAME_DIED" and len(rk["attempts"]) == 2 and not os.path.exists(paused),
+              "the second GAME_DIED closes the job without pausing the lane: %s" % rk["result"]["cause"])
+
         rc, o = tq("show", "../../x")
         check(rc == 2, "a path as a job id is refused")
     finally:

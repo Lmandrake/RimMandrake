@@ -7,6 +7,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py list [--state pending|running|done|cancelled]
   testq.py show JOB                  at most 20 lines: state, selection, attempt, outcome, the failing rows
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
+  testq.py resume --reason R         lift a lane pause (paused.json) once its cause is dealt with
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
@@ -21,16 +22,18 @@ The queue is plain files under TESTQ_QUEUE (default /mnt/d/ClaudeWork/rimmandrak
   cancelled/<job>.json {"job", "reason", "at"}
   orphans/<attempt>.json  a worker result for a job this queue never sent (kept, acked)
   ssh_state.json, train.json, tick.log, tick.lock
+  paused.json          the lane is paused (design section 6): {since, job, attempt, outcome, cause, reason, note}
 
 One tick, under a non-blocking lock (a second tick while one runs exits at once):
   1. SSH: while SteveDesktop is unreachable nothing is sent; it is probed again every TESTQ_PROBE_S (300 s).
   2. Reconcile each running job by asking the worker for the job's LATEST attempt id first, so a retry is never
      sent twice: finished -> fetch the result, move to done/, ack it; dead -> `start` again without --retry
-     (the worker finalizes the dead attempt and answers with it); a finished INTERRUPTED/CRASH attempt gets ONE
-     automatic `start --retry`.
+     (the worker finalizes the dead attempt and answers with it); a finished INTERRUPTED/CRASH or INVALID/GAME_DIED
+     attempt gets ONE automatic `start --retry`. A job finishing INVALID/CANARY (a red canary) or REFUSED/SYNC (the
+     runner pull failed) PAUSES the lane: paused.json is written and ingest.py files a finding.
   3. Drain the worker's outbox: duplicates of results already in done/ are acked; results for jobs the queue
      does not know go to orphans/ and are acked.
-  4. Admit one ready job when the lane is idle: no owner_gate, not_before passed, lane stevedesktop or any;
+  4. Admit one ready job when the lane is idle and not paused: no owner_gate, not_before passed, lane stevedesktop or any;
      highest priority first, then the current train (same profile as the last job sent), then oldest.
      The worker's exit 75 (busy) leaves it pending.
 Archmagi lane: jobs with lane=archmagi stay pending; the dispatcher never drives Archmagi's game (the BENCH seat
@@ -58,7 +61,11 @@ SSH_TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
 SSH = shlex.split(os.environ.get("TESTQ_SSH", "ssh -o BatchMode=yes -o ConnectTimeout=15 -o LogLevel=ERROR"))
 REMOTE_RUNNER = os.environ.get("TESTQ_REMOTE_RUNNER", "~/rm/runner")
 PROBE_S = int(os.environ.get("TESTQ_PROBE_S", "300"))
-AUTO_RETRY = {("INTERRUPTED", "CRASH")}     # a dead attempt (machine reboot, OOM): one automatic retry
+# a dead attempt (machine reboot, OOM) or a game that died mid-run: one automatic retry
+AUTO_RETRY = {("INTERRUPTED", "CRASH"), ("INVALID", "GAME_DIED")}
+# design section 6: these pause the lane until `resume`, and ingest.py files a finding for each
+PAUSE_ON = {("INVALID", "CANARY"): "the vanilla canary was red after a load",
+            ("REFUSED", "SYNC"): "the runner pull/pin failed (someone wrote in the runner clone?)"}
 EX_BUSY = 75
 
 
@@ -202,6 +209,16 @@ def finish(rec, res):
                                   "cancelled": bool(rec.get("cancel")), "finished": S.utcnow()})
     remote(["ack", "--attempt", res["attempt"]])
     log("%s DONE-> %s %s %s (%s)" % (jid, res["outcome"], res["cause"] or "", res.get("counts"), res["attempt"]))
+    why = PAUSE_ON.get((res["outcome"], res["cause"]))
+    if why and not rec.get("cancel") and not paused():
+        S.dump({"since": S.utcnow(), "job": jid, "attempt": res["attempt"], "outcome": res["outcome"],
+                "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:]}, q("paused.json"))
+        log("LANE PAUSED by %s %s/%s: %s; `testq.py resume --reason R` lifts it" % (jid, res["outcome"],
+                                                                                 res["cause"], why))
+
+
+def paused():
+    return read_json(q("paused.json"))
 
 
 def drain_outbox(outbox):
@@ -230,7 +247,7 @@ def ready(job, now):
 
 
 def admit(status):
-    if records("running"):
+    if records("running") or paused():
         return
     if status.get("busy"):
         log("worker busy with %s (not ours); nothing admitted" % status.get("current"))
@@ -351,6 +368,18 @@ def cmd_cancel(a):
     return 0
 
 
+def cmd_resume(a):
+    ensure_dirs()
+    pz = paused()
+    if not pz:
+        print("not paused")
+        return 0
+    os.remove(q("paused.json"))
+    log("lane resumed (paused since %s by %s %s/%s): %s" % (pz.get("since"), pz.get("job"), pz.get("outcome"),
+                                                         pz.get("cause"), a.reason))
+    return 0
+
+
 def sel_text(job):
     sel = job.get("selector", {})
     return " ".join("%s=%s" % (k, ",".join(v) if isinstance(v, list) else v) for k, v in sel.items())
@@ -358,6 +387,11 @@ def sel_text(job):
 
 def cmd_list(a):
     ensure_dirs()
+    pz = paused()
+    if pz:
+        print("PAUSED since %s by %s %s/%s: %s  (testq.py resume --reason R)" % (pz.get("since"), pz.get("job"),
+                                                                              pz.get("outcome"), pz.get("cause"),
+                                                                              pz.get("reason")))
     for st in ([a.state] if a.state else STATES):
         for rec in records(st):
             job, res = job_of(rec), rec.get("result") or {}
@@ -476,6 +510,8 @@ def main(argv=None):
     s = sub.add_parser("cancel")
     s.add_argument("job")
     s.add_argument("--reason", required=True)
+    s = sub.add_parser("resume")
+    s.add_argument("--reason", required=True)
     sub.add_parser("tick")
     s = sub.add_parser("install-timer")
     s.add_argument("--apply", action="store_true")
@@ -483,7 +519,8 @@ def main(argv=None):
     if getattr(a, "job", None) and not S.JOB_ID_RE.match(a.job):
         print("REFUSED: %r is not a job id" % a.job)
         return 2
-    return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "tick": cmd_tick,
+    return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
+            "tick": cmd_tick,
             "install-timer": cmd_install_timer}[a.cmd](a)
 
 

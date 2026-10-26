@@ -5,7 +5,8 @@ No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a sm
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
 -> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
-than it (a game that kept running keeps them), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt
+than it (a game that kept running keeps them), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
+the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt
 finalized, and SOURCE_SHA_MISSING.
 """
 import json
@@ -53,6 +54,10 @@ if mode == "crash":
 name = "Mock_%d" % int(time.time() * 1000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
+if mode == "canary":
+    print("[modcheck] vanilla canary RED: no mod row runs")
+    summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "UNMEASURED",
+                                                         "detail": "vanilla canary red: not a verdict on the mod"}]}]}
 json.dump({"mod": "Mock", "summary": summary}, open(os.path.join(sheet_dir, name + ".json"), "w"))
 open(os.path.join(sheet_dir, name + ".html"), "w").write("<html/>")
 print("args:", " ".join(sys.argv[1:]))
@@ -82,6 +87,7 @@ def main():
         env.update(TESTQ_HOME=home, TESTQ_SHEET_DIR=sheets, TESTQ_MODS_DIR=mods, TESTQ_SKIP_PULL="1",
                    TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true",
                    TESTQ_CMD_RUN="%s %s run" % (sys.executable, mock), RIMFLOW_DRIVER_LOCK=lock,
+                   TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
         head = subprocess.run(["git", "-C", RUNNER, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
 
@@ -168,6 +174,35 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check("moot_markers" not in res and len(json.load(open(markers))) == 2,
               "a game that kept running keeps every marker: %s" % res.get("moot_markers"))
+
+        # 3c. the game dies mid-run (TESTQ_DEAD_GAME_RUN_FIX_READS_DONE): modcheck still writes a sheet of
+        # UNMEASURED rows, but a game that is gone, or is another process, measured nothing -> INVALID/GAME_DIED
+        load = dict(TESTQ_CMD_LOAD="echo started pid 4242")
+        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo stopped; exit 3", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "GAME_DIED" and len(res.get("rows", [])) == 3,
+              "a game gone after the run -> INVALID/GAME_DIED, rows kept as evidence: %s %s %s"
+              % (res.get("outcome"), res.get("cause"), res.get("note")))
+        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo 'running pid=5151 session=1 started=x'", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "GAME_DIED", "another game process after the run -> GAME_DIED: %s" % res.get("note"))
+        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo 'running pid=4242 session=1 started=x'",
+                  TESTQ_CMD_LOAD="echo 'already running (pid 4242)'")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE", "the same game still running -> DONE: %s" % res.get("note"))
+        rc, o = w(["start"], job(), TESTQ_CMD_STATUS="echo powershell broke; exit 1", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and "liveness unknown" in (res.get("note") or ""),
+              "a status that cannot tell keeps the verdict and says so: %s" % res.get("note"))
+
+        rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "CANARY", "a red canary, game alive -> CANARY: %s"
+              % res.get("cause"))
+        rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo stopped; exit 3", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "GAME_DIED", "a game killed in the canary is GAME_DIED, not a red canary: %s"
+              % res.get("cause"))
 
         # 4. no sheet
         rc, o = w(["start"], job(), MOCK_MODE="crash")

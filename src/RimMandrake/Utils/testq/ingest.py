@@ -11,6 +11,9 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
   any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod).
   no item           -> nothing on the ledger.
+A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
+the lane (verify STEVE_LANE_MONITOR_PAUSE_FINDINGS --config steve-lane) plus one finding from it,
+STEVE_LANE_<CANARY_RED|SYNC_REFUSED>_<JOBHEX6> (design section 6: pause the lane, file a finding).
 The done record gets "ingested" either way, except after an error (typically an item filed in a seat clone that
 has not reached origin yet): that record is retried every TESTQ_INGEST_RETRY_S (600) and marked ingested with the
 error only after TESTQ_INGEST_MAX_TRIES (6) tries. Idempotent: a verify already in the RUNNER shard for that attempt is
@@ -84,11 +87,50 @@ def finding_name(mod, row, job_id):
     return "%s_FAILS_%s" % (base, job_id[-6:].upper())
 
 
+LANE_ITEM = os.environ.get("TESTQ_LANE_ITEM", "STEVE_LANE_MONITOR_PAUSE_FINDINGS")
+LANE_TWIST = {("INVALID", "CANARY"): "CANARY_RED", ("REFUSED", "SYNC"): "SYNC_REFUSED"}
+
+
+def lane_finding(job, res):
+    """An outcome that paused the lane is a failed run of the lane itself: RUNNER may only verify/finding/note, so it
+    records `verify LANE_ITEM --result fail --config steve-lane` and one finding from that run. Idempotent: the run
+    is reused by attempt (recorded_run) and the finding by grepping the shard for its name."""
+    key = (res["outcome"], res.get("cause"))
+    if key not in T.PAUSE_ON:
+        return None
+    att = res["attempt"]
+    name = "STEVE_LANE_%s_%s" % (LANE_TWIST.get(key, "PAUSED"), job["id"][-6:].upper())
+    run = recorded_run(LANE_ITEM, att)
+    if not run:
+        rc, out = rimflow("verify", LANE_ITEM, "--result", "fail", "--config", "steve-lane",
+                          "--evidence", "stevedesktop: testq %s %s/%s" % (att, key[0], key[1]),
+                          "--sha", res.get("runner_sha") or job["source_sha"])
+        m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
+        if rc != 0 or not m:
+            return "lane run not recorded: " + out[-160:]
+        run = m.group(1)
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            if '"%s"' % name in f.read():
+                return name
+    except OSError:
+        pass
+    rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "high",
+                      "--why", "SteveDesktop lane paused: %s (testq %s: %s); it admits nothing until "
+                      "`testq.py resume --reason`" % (T.PAUSE_ON[key], att, (res.get("note") or "")[:160]))
+    return name if rc == 0 else "%s: %s" % (name, out[-160:])
+
+
 def ingest_one(rec):
     job, res = rec["job"], rec["result"]
     item, att = job.get("item"), res["attempt"]
+    lane = lane_finding(job, res)
+    if lane and lane.startswith("lane run not recorded"):  # e.g. the host item not yet on origin: retried like a verify
+        return {"error": lane}
     if not item:
-        return {"skipped": "the job names no item"}
+        return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
+    if lane:
+        rimflow("note", item, "--text", "testq %s paused the SteveDesktop lane; finding %s" % (att, lane))
     if res["outcome"] != "DONE":
         rc, out = rimflow("note", item, "--text", "testq %s on SteveDesktop: %s/%s, no verdict recorded (%s)"
                           % (att, res["outcome"], res.get("cause"), (res.get("note") or "")[:160]))

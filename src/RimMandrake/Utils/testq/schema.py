@@ -35,7 +35,7 @@ RESULT (written once per ATTEMPT by the worker into its outbox; the dispatcher k
   outcome       DONE (modcheck ran to completion; rows say what passed) | INVALID (no usable verdict:
                 `cause` says why) | INTERRUPTED (killed mid-run: watchdog or signal) | REFUSED (never started)
   cause         null | GUARD_HELD | SOURCE_SHA_MISSING | SYNC | DEPLOY | LOAD | CANARY | HANG | HARNESS |
-                BLOCKED_SELECTION | CRASH
+                BLOCKED_SELECTION | CRASH | GAME_DIED (the game the attempt loaded was gone or replaced after the run)
   deployed      {"mods": {name: {"dll_sha256", "defs_sha256", "files"}}, "modsconfig_sha256_prerun"}
                 what was ON DISK in the game's Mods folder when the run started - the attested identity
   rows          [{"chain", "row", "verdict", "validity", "freshness", "detail"}]; verdict is PASS | FAIL |
@@ -63,7 +63,7 @@ PROFILES = ("targeted", "full-list")
 LANES = ("stevedesktop", "archmagi", "any")
 OUTCOMES = ("DONE", "INVALID", "INTERRUPTED", "REFUSED")
 CAUSES = (None, "GUARD_HELD", "SOURCE_SHA_MISSING", "SYNC", "DEPLOY", "LOAD", "CANARY", "HANG", "HARNESS",
-          "BLOCKED_SELECTION", "CRASH")
+          "BLOCKED_SELECTION", "CRASH", "GAME_DIED")
 VERDICTS = ("PASS", "FAIL", "UNMEASURED", "NOT_RUN", "SKIP")
 JOB_ID_RE = re.compile(r"^J\d{8}T\d{6}Z-[0-9a-f]{6}$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
