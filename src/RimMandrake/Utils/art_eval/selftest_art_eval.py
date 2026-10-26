@@ -67,6 +67,25 @@ def cap_checks():
         sh = Image.open(shp).size if shp.is_file() else None
         check("cap: the sheet holds all 12 frames (4 columns x 3 rows of 320 px tiles)",
               sh is not None and sh[0] == 4 * 320 and sh[1] >= 3 * 320, sh)
+        # size alone passes a sheet that dropped or reordered a frame (11 frames still need 3 rows): read each tile's
+        # fill back. Frame n is filled with red = 100 + n; tile centre (160, 196) at 1.25x, row 0 carries a 34 px title.
+        reds = []
+        if sh is not None:
+            shim = Image.open(shp).convert("RGB")
+            for n in range(12):
+                y0 = 34 if n < 4 else 384 + 350 * (n // 4 - 1)
+                reds.append(shim.getpixel(((n % 4) * 320 + 160, y0 + 196))[0])
+        check("cap: the sheet holds every flight frame once, in frame order (left-to-right, then down)",
+              reds == [100 + n for n in range(12)], reds)
+        import race
+        note = race.attached_note(att)
+        listed = [ln.split(". ", 1)[1] for ln in note.splitlines() if ln[:1].isdigit() and ". " in ln]
+        check("cap: the race GPT first pass names its attachments, in order (the Images list no longer matches once tiled)",
+              listed == names, (listed, names))
+        want_singles = [f for f in runner.image_list(card) if not f.startswith("flight_")]
+        check("cap: every single panel is attached, in image_list order, before the sheet",
+              names[:len(want_singles)] == want_singles and names[len(want_singles):] == ["flight_sheet.png"],
+              (names, want_singles))
         small = runner.capped_images(dict(card, panels=dict(card["panels"], flight=card["panels"]["flight"][:3])), td / "card")
         check("cap: under the cap nothing is tiled", [a.name for a in small][-3:] == ["flight_1.png", "flight_2.png",
                                                                                      "flight_3.png"], [a.name for a in small])
@@ -77,6 +96,27 @@ def cap_checks():
             check("cap: 9 single panels for an 8-image judge -> refused (ImageCapError), never truncated", False)
         except runner.ImageCapError:
             check("cap: 9 single panels for an 8-image judge -> refused (ImageCapError), never truncated", True)
+        # the race GPT first pass: a refusal is an error meta (ask_validated -> HOLD_ERROR), never an exception that
+        # kills the shard; on success the prompt sent leads with the attachments, named in order
+        import types
+        sent = {}
+
+        def fake_gpt(p, imgs, work):
+            sent.update(p=p, imgs=[Path(i).name for i in imgs])
+            return "{}", {"model_reported": "stub"}
+        stub = types.SimpleNamespace(ImageCapError=runner.ImageCapError, call_gpt=fake_gpt,
+                                     capped_images=lambda c, d: runner.capped_images(many, d))
+        try:
+            _, meta = race.gpt_first_pass(stub, "TASK", td / "card")
+            check("cap: race GPT first pass turns an ImageCapError into an error meta (HOLD_ERROR), not a crash",
+                  bool(meta.get("error")) and not sent, meta)
+        except runner.ImageCapError as e:
+            check("cap: race GPT first pass turns an ImageCapError into an error meta (HOLD_ERROR), not a crash", False, e)
+        stub.capped_images = runner.capped_images
+        _, meta = race.gpt_first_pass(stub, "TASK", td / "card")
+        check("cap: race GPT first pass sends the tiled attachments with the note naming them, then the task",
+              sent.get("imgs") == names and sent.get("p", "").startswith(race.attached_note(att))
+              and sent["p"].endswith("TASK") and meta.get("models_reported") == ["stub"], (sent.get("imgs"), meta))
 
         seen = {}
 

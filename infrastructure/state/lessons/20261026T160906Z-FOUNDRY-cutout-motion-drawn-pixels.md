@@ -1,0 +1,2 @@
+A motion/coverage metric over animal sprites must count DRAWN pixels only (alpha > 128; the animal shader is a cutout). Counting alpha > 0 or raw RGB diffs lets a soft sub-cutoff halo, or RGB changing under alpha 0, read as wing motion while nothing moves on screen; and a near-blank frame set must fail on cover, not pass on a zero reference. Rigid wing rotation keeps net area, so measure silhouette change as XOR of drawn masks, not net-area growth. (flyer_cutout.facing_motion, w89)
+home: rimworld-sprite-facings

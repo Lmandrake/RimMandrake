@@ -11,7 +11,9 @@ body's edge. Four poses (+30, 0, -30, 0 degrees).
   NEG       a frame with the body shifted 2 px is caught by plate_identical < 1 (the check can fail)
   MOTION    (SHIRREL_BILLOW_WIDEN_NORTH_FAINT) a facing whose wing barely moves (a faint billow: +-2 deg) FAILS
             the moved-px row while the full swing PASSES; a still facing (identical frames) fails both rows; a facing
-            livelier than east never fails (reference = east)
+            livelier than east never fails (reference = east); only DRAWN pixels count (alpha > 128): a soft halo
+            below the cutoff or RGB changing under alpha 0 fails; a near-blank (one-speck) set fails; mixed frame
+            sizes are refused
 """
 from __future__ import annotations
 
@@ -82,6 +84,30 @@ def main() -> int:
     check("MOTION still facing fails", len(rows["south"]["fails"]) == 2, str(rows["south"]["fails"]))
     check("MOTION livelier-than-east facing passes", not C.motion_rows({"east": faint, "north": live})["north"]["fails"])
     check("MOTION all-still set fails (no zero reference pass)", all(r["fails"] for r in C.motion_rows({"a": still, "b": still}).values()))
+    check("MOTION still east fails a moving facing (zero reference)", bool(C.motion_rows({"east": still, "north": live})["north"]["fails"]))
+    syn = {"east": {"moved": 100, "growth": 0.05, "cover": 0.1}, "north": {"moved": 1000, "growth": 0.05, "cover": 0.1}}
+    check("MOTION reference is east, not the liveliest facing", not C.motion_rows(syn)["east"]["fails"], str(C.motion_rows(syn)["east"]))
+    # invisible change must not count: the animal shader is a cutout (alpha > 128 draws), so a soft halo that comes
+    # and goes below the cutoff, or RGB that changes under alpha 0, moves nothing on screen
+    halo = []
+    for k in range(4):
+        h = m.copy()
+        if k % 2:
+            h[10:54, 57:63] = (200, 200, 90, 60)
+        h[..., :3] = np.where(h[..., 3:4] == 0, (k * 70) % 256, h[..., :3])
+        halo.append(h)
+    hr = C.motion_rows({"east": live, "north": C.facing_motion(halo)})
+    check("MOTION sub-cutoff halo + RGB under alpha 0 fails both rows", len(hr["north"]["fails"]) >= 2, str(hr["north"]))
+    speck = [np.zeros((64, 64, 4), np.uint8) for _ in range(4)]
+    for k in (0, 2):
+        speck[k][5, 5] = (255, 255, 255, 255)
+    sp = C.facing_motion(speck)
+    check("MOTION near-blank speck set fails", all(r["fails"] for r in C.motion_rows({"east": sp, "north": sp}).values()), str(sp))
+    try:
+        C.facing_motion([m, m[:32]])
+        check("MOTION mixed frame sizes refused", False)
+    except ValueError:
+        check("MOTION mixed frame sizes refused", True)
     print("FAIL" if FAILS else "PASS", "selftest_flyer_cutout", FAILS or "")
     return 1 if FAILS else 0
 

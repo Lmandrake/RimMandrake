@@ -29,7 +29,8 @@ Verbs:
   preview CONFIG --out PNG --facing F      master with a 16 px grid, plate (green), wings (red/blue), hinges (yellow)
   check   DIR --prefix P --facing F [--plate PLATE]   body drift (flier_frame_registration) + flyer_lock locked share
   motion  DIR --prefix P [--facings east,north,south]   every facing visibly moves: moved px >= 40% of the east
-          facing's (liveliest if no east), coverage change >= 1% (a faint billow in one facing fails)
+          facing's (liveliest if no east), silhouette change >= 1% (a faint billow in one facing fails), all counted on
+          drawn pixels (alpha > 128) only; a near-blank facing (frame 1 draws < 1% of the canvas) fails
 
 Exit 0 = pass, 1 = a gate failed, 2 = bad input. Never touches src/ Textures: install is `art.py install`.
 """
@@ -388,17 +389,28 @@ def cmd_check(a) -> int:
 MOTION_DELTA = 24        # a pixel "moved" when any RGBA channel changes by more than this between two frames
 MOTION_FLOOR = 0.40      # each facing's moved-pixel count must reach this share of the east facing's
 GROWTH_FLOOR = 0.01      # and its silhouette must change by at least this share of frame 1's coverage
+MIN_COVER = 0.01         # a facing whose frame 1 draws less than this share of the canvas is near-blank: it fails
 
 
 def facing_motion(frames: list[np.ndarray]) -> dict:
-    """How much a facing's flip-book visibly moves: `moved` = pixels that differ (> MOTION_DELTA on any channel)
-    between frame 1 and its most different frame; `growth` = largest coverage change from frame 1 (gain or loss: a flap
-    may shrink the silhouette), as a share of frame 1's."""
+    """How much a facing's flip-book visibly moves, counted only on what the game DRAWS (the animal shader is a cutout:
+    alpha > FL.OPAQUE; RGB under a transparent pixel and a soft halo below the cutoff are invisible and never count).
+    `moved` = pixels whose drawn state changes, or that stay drawn and change colour (> MOTION_DELTA on any RGB
+    channel), between frame 1 and its most different frame; `growth` = largest silhouette change from frame 1 (drawn
+    pixels gained or lost), as a share of frame 1's drawn coverage; `cover` = frame 1's drawn share of the canvas."""
     a = [f.astype(np.int16) for f in frames]
-    cov = [int((x[..., 3] > 0).sum()) for x in a]
-    moved = [int((np.abs(a[0] - x).max(-1) > MOTION_DELTA).sum()) for x in a[1:]]
+    if len({x.shape for x in a}) > 1:
+        raise ValueError(f"mixed frame sizes {sorted({x.shape for x in a})}")
+    drawn = [x[..., 3] > FL.OPAQUE for x in a]
+    cov = [int(d.sum()) for d in drawn]
+    moved = [int(((d0 != d) | (d0 & d & (np.abs(a[0][..., :3] - x[..., :3]).max(-1) > MOTION_DELTA))).sum())
+             for d0, d, x in ((drawn[0], d, x) for d, x in zip(drawn[1:], a[1:]))]
+    # silhouette change = drawn pixels gained OR lost vs frame 1 (XOR), so a rigid wing swing that keeps the area counts
+    # too; it is always >= the net area change, and 0 for a billow that stays inside the silhouette (w83 north)
+    sil = [int((drawn[0] ^ d).sum()) for d in drawn[1:]]
     return {"moved": max(moved) if moved else 0, "coverage": cov,
-            "growth": round(max(abs(c - cov[0]) for c in cov) / cov[0], 4) if cov and cov[0] else 0.0}
+            "cover": round(cov[0] / drawn[0].size, 4) if cov else 0.0,
+            "growth": round(max(sil) / cov[0], 4) if sil and cov[0] else 0.0}
 
 
 def motion_rows(per: dict, floor: float = MOTION_FLOOR, growth_floor: float = GROWTH_FLOOR) -> dict:
@@ -406,7 +418,8 @@ def motion_rows(per: dict, floor: float = MOTION_FLOOR, growth_floor: float = GR
     Shirrel north moved 444 px and its coverage changed 0 px, against east 1011 px / +5.4% and south 2356 px / +2.3%;
     the eval ACCEPTed it from the east row). Reference = the EAST facing (the side view; west mirrors it in game), or
     the liveliest facing when a set has no east. The moved-px row alone would have PASSED that north (444 >= 40% of
-    1011), so the coverage-change row is what catches a billow that stays inside the silhouette. A facing livelier
+    1011), so the silhouette-change row (drawn pixels gained or lost, alpha > 128; the alpha > 0 area it first used
+    mostly measured resampling halo) is what catches a billow that stays inside the silhouette. A facing livelier
     than the reference is never a failure (the liveliest-facing reference failed east once north was fixed).
     FAIL when moved < floor * ref or growth < growth_floor; a zero reference fails every facing."""
     ref_f = "east" if "east" in per else max(per, key=lambda f: per[f]["moved"], default=None)
@@ -417,7 +430,9 @@ def motion_rows(per: dict, floor: float = MOTION_FLOOR, growth_floor: float = GR
         if ref == 0 or m["moved"] < floor * ref:
             fails.append(f"moved {m['moved']} px < {floor:.0%} of the {ref_f} facing ({ref} px)")
         if m["growth"] < growth_floor:
-            fails.append(f"coverage change {m['growth']:.2%} < {growth_floor:.0%}")
+            fails.append(f"silhouette change {m['growth']:.2%} < {growth_floor:.0%}")
+        if m.get("cover", 0.0) < MIN_COVER:   # a missing key is an old/foreign measurement: refuse, never pass
+            fails.append(f"frame 1 draws {m.get('cover', 0.0):.2%} of the canvas < {MIN_COVER:.0%} (near-blank)")
         out[f] = dict(m, ref=ref, ref_facing=ref_f, share=round(m["moved"] / ref, 3) if ref else 0.0, fails=fails)
     return out
 
@@ -429,7 +444,11 @@ def cmd_motion(a) -> int:
         if len(paths) < 2:
             print(f"ERROR {f}: {len(paths)} frames in {a.dir}", file=sys.stderr)
             return 2
-        per[f] = facing_motion([np.asarray(Image.open(p).convert("RGBA")) for p in paths])
+        try:
+            per[f] = facing_motion([np.asarray(Image.open(p).convert("RGBA")) for p in paths])
+        except ValueError as e:
+            print(f"ERROR {f}: {e}", file=sys.stderr)
+            return 2
     rows = motion_rows(per, a.floor, a.growth_floor)
     for f, r in rows.items():
         print(f"{'FAIL' if r['fails'] else 'PASS'} {a.prefix}{f} motion: moved {r['moved']} px ({r['share']:.0%} of {r['ref']}), "
@@ -455,7 +474,7 @@ def main(argv=None) -> int:
     c.add_argument("--prefix", required=True)
     c.add_argument("--facing", required=True)
     c.add_argument("--plate")
-    mo = sub.add_parser("motion", help="every facing must visibly move: moved px vs the east facing, coverage change")
+    mo = sub.add_parser("motion", help="every facing must visibly move: moved px vs the east facing, silhouette change")
     mo.add_argument("dir")
     mo.add_argument("--prefix", required=True)
     mo.add_argument("--facings", default="east,north,south")

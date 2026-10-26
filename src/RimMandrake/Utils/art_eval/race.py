@@ -93,6 +93,31 @@ def run_id(race: str, variant: str, family: str, k: int) -> str:
 
 
 # ------------------------------------------------------------------ shard worker (a subprocess)
+def attached_note(imgs: list) -> str:
+    """The GPT first pass gets the Opus prompt, whose "Images" list names every picture untiled; once capped_images
+    tiles a numbered set the attachments no longer match that list one-to-one, so name them, in order, or the judge
+    pins a finding on the wrong picture (attachment 6 = a sheet, not flight_2)."""
+    return ("NOTE: you have no file tools. The pictures named under \"Images\" are ATTACHED to this message; a numbered "
+            "set (flight/variants/assembled) may arrive tiled into ONE labelled sheet whose tiles read left-to-right, then "
+            "down, in frame order. The attachments, in order:\n"
+            + "\n".join(f"{n}. {Path(f).name}" for n, f in enumerate(imgs, 1))
+            + "\nWherever the task says Read them, look at the attachments.\n\n")
+
+
+def gpt_first_pass(R, prompt: str, card_dir: Path):
+    """The GPT family's stand-in for the Opus first pass. capped_images tiles sets and refuses, never truncates; a
+    refusal (ImageCapError) is returned as an error meta, so ask_validated makes it this row's HOLD_ERROR instead of
+    an exception that kills the whole shard."""
+    try:
+        imgs = R.capped_images(json.loads((card_dir / "card.json").read_text()), card_dir)
+    except R.ImageCapError as e:
+        return "", {"error": f"gpt first pass: {e}", "models_reported": []}
+    work = card_dir / "gpt_first"; work.mkdir(exist_ok=True)
+    text, meta = R.call_gpt(attached_note(imgs) + prompt, imgs, work)
+    meta["models_reported"] = [meta.get("model_reported")]
+    return text, meta
+
+
 def worker(race: str, variant: str, family: str, k: int, shards: int, rows_paths: list):
     import runner as R
     rows = load_rows(rows_paths)
@@ -109,13 +134,7 @@ def worker(race: str, variant: str, family: str, k: int, shards: int, rows_paths
 
         if family == "gpt":
             def opus(self, prompt, card_dir):
-                imgs = R.capped_images(json.loads((card_dir / "card.json").read_text()), card_dir)   # tiles sets; refuses, never truncates
-                p = ("NOTE: you have no file tools. The images listed under \"Images\" are ATTACHED to this message "
-                     "in that order (at most 8); wherever the task says Read them, look at the attachments.\n\n" + prompt)
-                work = card_dir / "gpt_first"; work.mkdir(exist_ok=True)
-                text, meta = R.call_gpt(p, imgs, work)
-                meta["models_reported"] = [meta.get("model_reported")]
-                return text, meta
+                return gpt_first_pass(R, prompt, card_dir)
 
     R.run(specs, run_id(race, variant, family, k), rev=RaceReviewers(), test=True)
 
@@ -209,7 +228,12 @@ def replay_worker(src_races: str, src_variant: str, out_race: str, name: str, k:
                 tpl = P.load_template(rec["template"])
                 items = P.checklist_for(tpl, card.get("module", ""), P.card_facts(card))
                 concerns = rec["gpt"]["concerns"]
-                attached = R.capped_images(card, card_dir)   # tiles sets; ImageCapError instead of a silent [:8]
+                try:   # tiles sets; ImageCapError instead of a silent [:8] — this row's HOLD_ERROR, not the shard's crash
+                    attached = R.capped_images(card, card_dir)
+                except R.ImageCapError as e:
+                    rec.update(decision="HOLD_ERROR", reasons=[f"replay: {e}"])
+                    attached = None
+            if card_dir is not None and attached is not None:
                 gp = R.gpt_prompt(card, tpl, items, policy, card_dir, concerns, attached)
                 work = card_dir / f"gpt_replay_{out_race}_{name}"; work.mkdir(exist_ok=True)
                 greply, graws, gmetas, gerr = R.ask_validated(

@@ -38,6 +38,8 @@ FIXTURES = {
     "src/selftest_flaky.py": ELIG + "import os, sys\nprint('flaky')\nsys.exit(1 if os.path.exists('src/FAIL_NOW') else 0)\n",
     # stat-only probe OUTSIDE the repo (a game folder, a deployed mod): no read, so only the probe record covers it
     "src/selftest_probes_outside.py": ELIG + "import os, sys\nsys.exit(1 if os.path.exists(os.environ['FIX_GAME']) else 0)\n",
+    # an input touched mid-run (another seat editing it): the PASS described other bytes, so it is not recordable
+    "src/selftest_touches_input.py": ELIG + "import os\nopen('src/touched.txt').read()\nos.utime('src/touched.txt', ns=(1, 1))\n",
     "src/selftest_plain.py": "print('not eligible: always runs')\n",
     "src/selftest_unmeasured_rc0.py": "print('no live dir — UNMEASURED, not a pass or a fail')\n",
     "src/selftest_deployed_thing.py": "# selftest-tier: deployed\nprint('live install check')\n",
@@ -51,6 +53,7 @@ def build(root: Path):
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(body)
     (root / "src/data.txt").write_text("v1\n")
+    (root / "src/touched.txt").write_text("t\n")
     (root / "src/listed").mkdir()
     (root / "src/listed/a").write_text("a")
     (root.parent / f"outside-{os.getpid()}.txt").write_text("outside the fixture repo")
@@ -87,9 +90,10 @@ def main():
         eq(st.get("src/selftest_unmeasured_rc0.py"), "UNMEASURED", "run 1: rc-0 test printing the phrase is UNMEASURED")
         eq(st.get("src/selftest_deployed_thing.py"), "SKIPPED", "run 1: a deployed-tier test is SKIPPED in the default tier")
         eq(st.get("src/selftest_reads_data.py"), "PASS", "run 1: eligible test runs the first time")
-        eq("PASS 7/9" in p.stdout and "SKIPPED 1/9" in p.stdout and "UNMEASURED 1/9" in p.stdout, True,
-           "run 1: explicit N/N per state over all 9 discovered")
-        eq("2 PASS not recordable" in p.stdout, True, "run 1: outside-read and untraced-child PASSes are not recordable")
+        eq("PASS 8/10" in p.stdout and "SKIPPED 1/10" in p.stdout and "UNMEASURED 1/10" in p.stdout, True,
+           "run 1: explicit N/N per state over all 10 discovered")
+        eq("3 PASS not recordable" in p.stdout, True,
+           "run 1: outside-read, untraced-child and input-touched-mid-run PASSes are not recordable")
 
         p, st = run(root)
         eq(st.get("src/selftest_reads_data.py"), "SKIPPED", "run 2: unchanged input -> SKIPPED")
@@ -98,6 +102,7 @@ def main():
         eq(st.get("src/selftest_reads_outside.py"), "PASS", "run 2: a test reading outside the repo is never skipped")
         eq(st.get("src/selftest_untraced_child.py"), "PASS", "run 2: a test whose python child dropped the tracer is never skipped")
         eq(st.get("src/selftest_plain.py"), "PASS", "run 2: a non-eligible test always runs")
+        eq(st.get("src/selftest_touches_input.py"), "PASS", "run 2: a test whose input changed while it ran is never skipped")
         eq("unchanged since its PASS" in p.stdout, True, "run 2: the skip prints its reason")
         eq(st.get("src/selftest_probes_outside.py"), "SKIPPED", "run 2: an unchanged outside-repo probe -> SKIPPED")
 
@@ -111,6 +116,18 @@ def main():
         eq(st.get("src/selftest_probes_outside.py"), "FAIL",
            "run 2b: a path OUTSIDE the repo appearing -> re-run (not SKIPPED), and it FAILs")
         (root.parent / f"game-{os.getpid()}").rmdir()
+        # the other two sides of the outside record, on a copy of the real record: a path that EXISTED vanishing,
+        # and a record written before outside probes were kept (it cannot vouch for them)
+        store = suite_evidence.Store(root, root / ".state")
+        rec = store.load("src/selftest_reads_data.py")
+        gone = str(root.parent / f"gone-{os.getpid()}")
+        store.save(dict(rec, test="src/x_vanish.py", outside={gone: True}))
+        ok, why = store.unchanged("src/x_vanish.py")
+        eq((ok, "vanished outside the repo" in why), (False, True), f"run 2c: an outside path that existed vanishing -> re-run ({why})")
+        old = {k: v for k, v in rec.items() if k != "outside"}
+        store.save(dict(old, test="src/x_predates.py"))
+        ok, why = store.unchanged("src/x_predates.py")
+        eq((ok, "predates" in why), (False, True), f"run 2c: a record without outside probes cannot vouch -> re-run ({why})")
 
         (root / "src/data.txt").write_text("v2\n")
         (root / "src/listed/b").write_text("b")

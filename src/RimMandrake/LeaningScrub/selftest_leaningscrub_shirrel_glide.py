@@ -8,7 +8,8 @@ Rows (each one is checked on the real tree, then broken in memory to prove the r
             CreatureBehaviors home tether BEFORE the glide comp; every glide field the def sets exists on the props class;
             homeTrees name LeaningScrub tree defs; no STUB comment names this item; a flip-book prefix, if ever set, has
             its frames on disk, and every facing of it visibly moves (flyer_cutout.py motion rows;
-            SHIRREL_BILLOW_WIDEN_NORTH_FAINT - the w83 north billow moved 444 px with 0% coverage change).
+            SHIRREL_BILLOW_WIDEN_NORTH_FAINT - the w83 north billow moved 409 drawn px with a 0.09% silhouette change);
+            planted break: the installed north frozen on its frame 1 must fail the motion rows.
   gate      the CanFlyNow getter is postfixed and the postfix goes through RM_GlideKernel.CanFlyNow; the comp's launch
             raises `launching` only around RM_Flight.TryLaunch, after StartJob, and lowers it in a finally; TryGlide is
             gated on RM_WindCalendar.IsGale and on FeatureOn = RM_WindCalendar.On(shirrelGlideEnabled); off unbinds the
@@ -169,9 +170,10 @@ def check_def(t):
     return errs
 
 
-def flipbook_motion(d, base):
+def flipbook_motion(d, base, freeze=None):
     """SHIRREL_BILLOW_WIDEN_NORTH_FAINT: every facing of the glide flip-book visibly moves (flyer_cutout.py motion:
-    moved px >= 40% of east's, coverage change >= 1%). The w83 north moved 444 px with 0% change and fails this."""
+    moved px >= 40% of east's, silhouette change >= 1%, drawn pixels only). The w83 north moved 409 px with 0.09% change and fails this.
+    freeze = a facing whose frames are all replaced by its frame 1 (the planted break: a still facing must fail)."""
     sys.path.insert(0, os.path.join(SRC, "Utils", "art"))
     import numpy as np
     from PIL import Image
@@ -181,8 +183,17 @@ def flipbook_motion(d, base):
         paths = [os.path.join(d, "%s%d_%s.png" % (base, k, f)) for k in range(1, 5)]
         if not all(os.path.isfile(x) for x in paths):
             return ["flip-book %s%s frames 1-4 missing" % (base, f)]
-        per[f] = C.facing_motion([np.asarray(Image.open(x).convert("RGBA")) for x in paths])
+        frames = [np.asarray(Image.open(x).convert("RGBA")) for x in paths]
+        per[f] = C.facing_motion([frames[0]] * len(frames) if f == freeze else frames)
     return ["flip-book %s motion: %s" % (f, "; ".join(r["fails"])) for f, r in C.motion_rows(per).items() if r["fails"]]
+
+
+def flipbook_dir(t):
+    kind = defs(t["fauna"], "PawnKindDef").get("RM_Shirrel")
+    p = kind.find(".//flyingAnimationFramePathPrefix") if kind is not None else None
+    if p is None or not p.text:
+        return None
+    return os.path.join(SRC, "LeaningScrub", "Textures", os.path.dirname(p.text)), os.path.basename(p.text)
 
 
 def check_gate(t):
@@ -316,10 +327,13 @@ def main():
         except ET.ParseError as e:
             errs = ["parse error %s" % e]
         expect("planted break caught: %s (%s -> %s)" % (row, old.strip()[:40], new.strip()[:30]), bool(errs))
+    fb = flipbook_dir(tree)
+    expect("planted break caught: def (flip-book north frozen on frame 1)",
+           fb is not None and bool(flipbook_motion(*fb, freeze="north")), "no flip-book prefix" if fb is None else "")
     if FAILED:
         print("FAILED %d: %s" % (len(FAILED), ", ".join(FAILED)))
         return 1
-    print("PASS selftest_leaningscrub_shirrel_glide (%d rows, %d planted breaks)" % (len(ROWS), len(BREAKS)))
+    print("PASS selftest_leaningscrub_shirrel_glide (%d rows, %d planted breaks)" % (len(ROWS), len(BREAKS) + 1))
     return 0
 
 
