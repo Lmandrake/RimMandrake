@@ -51,6 +51,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Row4Random();
             Row5Clip();
             Row6Legacy();
+            Row7CarriedStrandDropped();
         }
 
         private static void Row1Table()
@@ -230,6 +231,35 @@ namespace RimMandrake.FlowWorks.SelfTest
         /// <summary>Row 6 (stage S2): a reel saved before the carry stage {laid=true, no rmHoseCarry key} reads as Laid with an
         /// empty trail, and an empty trail lays the PLANNED route byte-identically to HoseMath.Lay (today's geometry). Plus
         /// LayAlong's own point: a walked detour is laid along the walk, not re-planned.</summary>
+        /// <summary>The DrawAll Carrying branch (read as text): it drops the reel's cached laid strand, gated off under FrameLegacy,
+        /// BEFORE drawing the carried tail and continuing past the strand path.</summary>
+        internal static bool CarryBranchDropsStrand(string src)
+        {
+            int a = src.IndexOf("private void DrawAll()", StringComparison.Ordinal);
+            if (a < 0) return false;
+            int b = src.IndexOf("r.carry == HoseCarryState.Carrying && r.trail.Count > 0", a, StringComparison.Ordinal);
+            if (b < 0) return false;
+            int draw = src.IndexOf("DrawCarrying(r, y, lastFar)", b, StringComparison.Ordinal);
+            int cont = draw < 0 ? -1 : src.IndexOf("continue;", draw, StringComparison.Ordinal);
+            int drop = src.IndexOf("if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);", b, StringComparison.Ordinal);
+            return draw > 0 && cont > 0 && drop > b && drop < draw;
+        }
+
+        /// <summary>HOSE_SHADOW_FIX_CARRIED_STRAND_STALE: a laid hose picked up is not laid, so the 250-tick EnsureLay (tick loop skips
+        /// an unlaid reel) never drops its old strand; DrawAll's Carrying branch must, or hoses above keep a crossing shadow over
+        /// empty ground. NOT proven here: the shadow vanishing in a running game (live row, owed).</summary>
+        private static void Row7CarriedStrandDropped()
+        {
+            Check(!HoseCarryLoad.IsLaid(C) && HoseCarryLoad.IsLaid(L) && HoseCarryLoad.IsLaid(D), "row7 premise: a carried hose is not laid (so the tick's re-lay never drops its strand)");
+            string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+            Check(CarryBranchDropsStrand(comp), "row7 DrawAll's Carrying branch drops the cached laid strand (non-legacy) before DrawCarrying");
+            // can-fail: the pre-fix branch (draw and continue, no drop) must be rejected
+            const string dropLine = "if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);";
+            int at = comp.IndexOf(dropLine, comp.IndexOf("r.carry == HoseCarryState.Carrying && r.trail.Count > 0", StringComparison.Ordinal), StringComparison.Ordinal);
+            string pre = at < 0 ? comp : comp.Remove(at, dropLine.Length);
+            Check(pre != comp && !CarryBranchDropsStrand(pre), "row7 can-fail: the branch without the drop is rejected");
+        }
+
         private static void Row6Legacy()
         {
             Check(HoseCarryLoad.Resolve(true, S, 0) == L && HoseCarryLoad.IsLaid(L), "row6 legacy {laid, no carry key} reads as Laid (laid flag kept)");

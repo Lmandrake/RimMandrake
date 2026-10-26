@@ -814,7 +814,14 @@ namespace RimMandrake.FlowWorks.Hose
                 if (drawnFittings.TryGetValue(r, out Dictionary<string, DrawnFitting> df)) df.Clear();   // this frame's record only
                 DrawFeed(r, y0);
                 // S4 (design section 6): a carried hose is drawn live along the walked trail to the carrier's hand
-                if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0) { DrawCarrying(r, y, lastFar); continue; }
+                if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0)
+                {
+                    // HOSE_SHADOW_FIX_CARRIED_STRAND_STALE: a laid hose picked up (PickUp only nulls its lay; the tick skips an unlaid
+                    // reel) kept its laid strand cached, so hoses above cast crossing shadows over empty ground until it was set down
+                    if (!LegacyFrame && meshes.ContainsKey(r)) DropMeshes(r);
+                    DrawCarrying(r, y, lastFar);
+                    continue;
+                }
                 if (carryCache.Count > 0) DropCarryCache(r);
                 HoseLay lay = EnsureLay(r);
                 if (lay == null)
