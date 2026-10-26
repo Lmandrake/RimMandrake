@@ -1,0 +1,2 @@
+selftest_flowworks_stock.py takes a machine-wide fcntl lock at $TMPDIR/flowworks_selftest_dotnet.lock, so one helper looping --only runs in another clone starves every other clone's full run; ours hung past the 540 s foreground cap and run_selftests.py --only selftest_flowworks_stock (720 s runner timeout) cannot finish inside it. The stage dir is per-clone (sha1 of the clone root), so TMPDIR=<private dir> is safe and ran 1028/1028 in minutes. Fix candidate: key the lock per clone like the stage.
+home: src/RimMandrake/Utils/selftest_flowworks_stock.py
