@@ -1,0 +1,2 @@
+A pre-aged corpse needs Corpse.Age set as well as CompRottable.RotProgress. PawnGenerationRequest(forceDead: true) kills the pawn at the current tick, so Corpse.timeOfDeath = now. Setting only the rot to desiccated gives a dried corpse whose inspect text says it died 0 days ago. Vanilla GenStep_ScatterCaveDebris sets Age, then adds it to RotProgress, before GenSpawn (decompiled 1.6). Found in Stillsand RM_CaveElement_Mummy and fixed at 8d6bd62c88.
+home: rimworld-modding
