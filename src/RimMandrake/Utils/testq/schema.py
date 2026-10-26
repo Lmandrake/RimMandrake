@@ -195,17 +195,21 @@ def deploy_problem(names, src_root):
 
 
 def deploy_flags(names, src_root):
-    """-> [(flag, value)] for deploy_custom_mods.py: a folded source or its composed target becomes ONE `--compose biomes`."""
+    """-> [(flag, value)] for deploy_custom_mods.py: a folded source or its composed target becomes ONE `--compose biomes`.
+
+    deploy_custom_mods.py refuses `--compose` beside `--mod` (argparse error, exit 2): with a compose, every ordinary
+    mod rides along as `--with MOD` instead (TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH: J20261026T095451Z-7220f2 and
+    J20261026T100912Z-098e84 died INVALID/DEPLOY on `--mod FlowWorks --compose biomes`)."""
     _, folded, composed = deploy_catalog(src_root)
-    out, compose = [], False
+    ordinary, compose = [], False
     for n in names:
         if n in folded or n in composed:
             compose = True
-        else:
-            out.append(("--mod", n))
+        elif n not in ordinary:
+            ordinary.append(n)
     if compose:
-        out.append(("--compose", "biomes"))
-    return out
+        return [("--compose", "biomes")] + [("--with", n) for n in ordinary]
+    return [("--mod", n) for n in ordinary]
 
 
 def modcheck_args(job):

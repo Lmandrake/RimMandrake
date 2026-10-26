@@ -7,7 +7,7 @@ and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE
 -> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
 than it (a game that kept running keeps them), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
 the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt
-finalized, and SOURCE_SHA_MISSING.
+finalized, SOURCE_SHA_MISSING, and the real deploy route: deploy_flags' flags pass deploy_custom_mods.py's checks.
 """
 import json
 import os
@@ -337,6 +337,26 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("runner_sha") == second and g("symbolic-ref", "--short", "HEAD") == "main",
               "a detached clone without a marker is healed at the next start: %s" % res.get("runner_sha"))
+
+        # 13. TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH: the real deploy route (TESTQ_CMD_DEPLOY mocks it everywhere above).
+        # The flags deploy_flags builds from the REAL src tree must get past deploy_custom_mods.py's own argument
+        # checks; `--mod FlowWorks --compose biomes` died there as argparse exit 2 on two booked Steve slots.
+        deploy_py = os.path.join(RUNNER, "src", "RimMandrake", "Utils", "deploy_custom_mods.py")
+        probe = ("import runpy,sys; sys.argv=[%r]+sys.argv[1:]; g=runpy.run_path(%r, run_name='dcm');"
+                 "g['first_existing'].__globals__['first_existing']=lambda *a: sys.exit('PARSE_OK');"
+                 "sys.exit(g['main']())") % (deploy_py, deploy_py)
+        src = os.path.join(RUNNER, "src")
+        for names, want in ((["FlowWorks", "RimMandrake.Biomes"], [("--compose", "biomes"), ("--with", "FlowWorks")]),
+                            (["FlowWorks", "Pyrelands", "UtinniPatches"],
+                             [("--compose", "biomes"), ("--with", "FlowWorks"), ("--with", "UtinniPatches")]),
+                            (["FlowWorks", "UtinniPatches"], [("--mod", "FlowWorks"), ("--mod", "UtinniPatches")])):
+            flags = S.deploy_flags(names, src)
+            check(flags == want, "deploy route for %s: %s" % (names, flags))
+            argv = [a for fv in flags for a in fv]
+            r = subprocess.run([sys.executable, "-c", probe] + argv, capture_output=True, text=True, timeout=120,
+                               cwd=RUNNER)
+            check("PARSE_OK" in r.stderr and r.returncode == 1,
+                  "deploy_custom_mods.py accepts %s: rc %s %s" % (" ".join(argv), r.returncode, r.stderr[-300:]))
 
         rc, o = w(["result", "--attempt", "../../etc"])
         check(rc != 0, "a path as an attempt id is refused")

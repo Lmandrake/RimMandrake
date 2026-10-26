@@ -73,8 +73,9 @@ def main():
     check(S.deploy_problem(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) is None,
           "a folded source, the composed target and a plain mod are all deployable names")
     check("NoSuchMod" in (S.deploy_problem(["UtinniPatches", "NoSuchMod"], src) or ""), "an unknown deploy name is refused by name")
-    check(S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) == [("--mod", "UtinniPatches"), ("--compose", "biomes")],
-          "folded + composed names collapse to one --compose biomes, the rest stay --mod: %s"
+    # deploy_custom_mods.py refuses --compose beside --mod: the rest ride along as --with (TESTQ_FIX_COMPOSE_ROUTE_MOD_WITH)
+    check(S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src) == [("--compose", "biomes"), ("--with", "UtinniPatches")],
+          "folded + composed names collapse to one --compose biomes, the rest become --with: %s"
           % S.deploy_flags(["Pyrelands", "RimMandrake.Biomes", "UtinniPatches"], src))
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
