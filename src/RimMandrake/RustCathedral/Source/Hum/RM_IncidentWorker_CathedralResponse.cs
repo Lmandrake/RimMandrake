@@ -231,7 +231,8 @@ namespace RimMandrake.RustCathedral.Hum
 	// Cathedral map so the category's uniform pick can only land on the RUT_
 	// response there. A postfix on the vanilla WORKER, not a workerClass swap on
 	// the vanilla DEF: a def swap would stomp any other mod that replaced that
-	// worker, and a postfix on the base type still covers a subclass.
+	// worker, and a postfix on the base type still covers a subclass that
+	// calls base.CanFireNowSub (one that overrides without calling base escapes it).
 	//
 	// Every other map in the game is untouched: the gate is one biome-defName
 	// comparison and falls straight through.
