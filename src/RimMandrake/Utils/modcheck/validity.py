@@ -73,7 +73,7 @@ def default_checks(fixtures=()):
     return [menu_drop, colonists_zero, hostile_arrival(fixtures)]
 
 
-def _empty_cell(session, anchor, radius=3):
+def _empty_cell(session, anchor, radius=12):
     """The first cell at or around `anchor` (Chebyshev rings out to `radius`) holding no thing at all, or None. The
     canary spawns and destroys only there, so its Item cleanup can remove nothing but its own stack."""
     x0, z0 = anchor
@@ -104,7 +104,7 @@ def canary(session, anchor):
             out["problems"].append("no live colonist")
         cell = _empty_cell(session, (x, z))
         if cell is None:
-            out["problems"].append("no empty cell within 3 of the anchor %d,%d: nothing spawned" % (x, z))
+            out["problems"].append("no empty cell within 12 of the anchor %d,%d: nothing spawned" % (x, z))
             return out
         x, z = cell
         r = session.call("jawa/spawn_batch", ops="%s:%d,%d" % (CANARY_DEF, x, z)) or {}

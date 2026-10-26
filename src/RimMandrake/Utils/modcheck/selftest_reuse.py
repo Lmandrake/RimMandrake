@@ -347,7 +347,7 @@ def t_validity_module():
        "canary: an occupied anchor is left alone; it spawns and destroys on an empty neighbour only", (g, s.destroyed))
     r = validity.canary(_Sess(spawn_ok=False), (10, 10))
     ok(not r["ok"] and any("did not report success" in p for p in r["problems"]), "canary: a spawn without success is red", r)
-    full = [(x, z) for x in range(4, 17) for z in range(4, 17)]
+    full = [(x, z) for x in range(-3, 24) for z in range(-3, 24)]
     s = _Sess(occupied=full)
     r = validity.canary(s, (10, 10))
     ok(not r["ok"] and "jawa/spawn_batch" not in s.calls and not s.destroyed,

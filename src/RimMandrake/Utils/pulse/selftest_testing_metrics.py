@@ -278,8 +278,12 @@ rows = pc.classify_testing({"steve": {"idle_since": NOW - 600, "pending": 0, "ss
 check("idle 10 min: no row", rows == [], rows)
 rows = pc.classify_testing({"steve": {"idle_since": NOW - 2 * H, "pending": 2, "ssh_down_since": None,
                                       "paused": {"since": iso(NOW - 2 * H), "cause": "CANARY"}}}, {}, NOW)
-check("paused lane with work waiting: warn for agents (testq resume is an agent verb)",
-      rows and rows[0]["kind"] == "warn" and "paused" in rows[0]["text"], rows)
+check("paused lane 2 h with work waiting: RED, says PAUSED, since and job (testq resume is an agent verb)",
+      rows and rows[0]["kind"] == "red" and "PAUSED 120 min" in rows[0]["text"] and rows[0].get("agent"), rows)
+rows = pc.classify_testing({"steve": {"idle_since": NOW - 300, "pending": 0, "ssh_down_since": None,
+                                      "paused": {"since": iso(NOW - 300), "cause": "CANARY"}}}, {}, NOW)
+check("paused 5 min, queue empty: still a visible row, warn not red yet",
+      rows and rows[0]["kind"] == "warn" and "PAUSED" in rows[0]["text"], rows)
 
 # ---------------------------------------------------------------- phone brief line + judge
 import brief  # noqa: E402

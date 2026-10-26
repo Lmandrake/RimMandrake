@@ -262,6 +262,18 @@ def finish(rec, res):
     log("%s DONE-> %s %s %s (%s%s)" % (jid, res["outcome"], res["cause"] or "", res.get("counts"), res["attempt"],
                                        "" if host == STEVE else " on " + host))
     why = PAUSE_ON.get((res["outcome"], res["cause"]))
+    # A red canary is a HARNESS-class pause (a crowded anchor, a stale marker): the next job restarts the game and runs
+    # the canary again, so the FIRST consecutive red does not stop the lane (an idle SteveDesktop costs more than one
+    # more attempt); a second consecutive red, or any non-canary pause, still does. ingest.py files the finding either way.
+    armed = autoresume_path(host)
+    if (res["outcome"], res["cause"]) == ("INVALID", "CANARY"):
+        if why and not rec.get("cancel") and not paused(host) and not read_json(armed):
+            S.dump({"since": S.utcnow(), "job": jid, "attempt": res["attempt"]}, armed)
+            log("LANE%s: canary red on %s; auto-resumed ONCE (a second consecutive red pauses)" % (
+                "" if host == STEVE else " " + host, jid))
+            why = None
+    elif os.path.exists(armed):
+        os.remove(armed)
     if why and not rec.get("cancel") and not paused(host):
         S.dump({"since": S.utcnow(), "job": jid, "attempt": res["attempt"], "outcome": res["outcome"],
                 "cause": res["cause"], "reason": why, "note": (res.get("note") or "")[-300:]}, pause_path(host))
@@ -272,6 +284,10 @@ def finish(rec, res):
 
 def pause_path(host=STEVE):
     return q("paused.json") if host == STEVE else q("%s_paused.json" % host)
+
+
+def autoresume_path(host=STEVE):
+    return q("canary_autoresume.json") if host == STEVE else q("%s_canary_autoresume.json" % host)
 
 
 def paused(host=STEVE):

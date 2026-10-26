@@ -404,13 +404,21 @@ def main():
         # a red canary pauses the lane (design section 6): nothing more is admitted until `resume`
         c = submit("--rows", "r1,r9", "--priority", "95")["job"]
         d = submit("--rows", "r2,r9")["job"]
+        c2 = submit("--rows", "r1,r2,r9", "--priority", "94")["job"]
+        paused = os.path.join(queue, "paused.json")
         tq("tick", MOCK_MODE="canary")
         wait_worker(running_attempt(c))
+        tq("tick", MOCK_MODE="canary")      # c finishes red; the FIRST consecutive red auto-resumes, so c2 is admitted
+        rc1 = json.load(open(os.path.join(queue, "done", c + ".json")))["result"]
+        check(rc1["cause"] == "CANARY" and not os.path.exists(paused)
+              and os.path.exists(os.path.join(queue, "canary_autoresume.json")) and state(c2) == "running",
+              "the first red canary auto-resumes the lane once (c2 admitted, no pause): %s %s" % (rc1["cause"], state(c2)))
+        wait_worker(running_attempt(c2))
         tq("tick")
+        c = c2
         rc_ = json.load(open(os.path.join(queue, "done", c + ".json")))["result"]
-        paused = os.path.join(queue, "paused.json")
         check(rc_["cause"] == "CANARY" and os.path.exists(paused) and state(d) == "pending",
-              "a red canary -> done INVALID/CANARY, lane paused, the next job held: %s %s" % (rc_["cause"], state(d)))
+              "a SECOND consecutive red canary -> done INVALID/CANARY, lane paused, the next job held: %s %s" % (rc_["cause"], state(d)))
         tq("tick")
         check(state(d) == "pending", "a paused lane admits nothing on later ticks")
         rc, o = tq("list")
