@@ -140,7 +140,7 @@ def active_ids(path):
 
 
 def intended(ctx):
-    """(ordered ids, source label) -- modmanifest first, then --modset, then the committed snapshot."""
+    """(ordered ids, source label) -- --modset first, then modmanifest, then the committed snapshot."""
     if ctx.get('modset'):
         import modset_builder as mb
         ids, missing, refusals = mb.resolve_tier(ctx['modset'], mb.scan())
@@ -260,7 +260,10 @@ def c_modsconfig(ctx):
     miss, extra = [p for p in want if p not in hs], [p for p in have if p not in ws]
     core = ' -- looks like a Core-only RESET' if len(have) <= 8 else ''
     if not miss and not extra:
-        first = next(i for i, (a, b) in enumerate(zip(want, have)) if a != b)
+        first = next((i for i, (a, b) in enumerate(zip(want, have)) if a != b), None)
+        if first is None:                                       # one list is the other plus repeated ids
+            return FAIL('same mods, but a repeated id: ModsConfig has %d entries, %s has %d' % (len(have), src,
+                                                                                               len(want)))
         return FAIL('same %d mods, DIFFERENT ORDER (first at #%d: want %s, have %s)' % (len(want), first, want[first],
                                                                                           have[first]))
     return FAIL('ModsConfig (%d) != %s (%d): %d missing %s, %d extra %s%s' % (
@@ -463,6 +466,10 @@ def c_def_lint(ctx):
         cmd = [sys.executable, os.path.join(HERE, 'effective_def_lint.py'), mc, '--json', out_json]
     if not ctx['deep']:
         cmd.append('--cache-only')
+    try:                                # a run that crashes before writing must not leave the LAST run's report to read
+        os.remove(out_json)
+    except FileNotFoundError:
+        pass
     try:
         p = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=1500)
     except subprocess.TimeoutExpired:
@@ -515,8 +522,8 @@ def c_live_identity(ctx):
             listen = [int(x) for x in o.stdout.split() if x.isdigit()]
         except (OSError, subprocess.SubprocessError):
             listen = None
-    if listen is None:
-        return UNM('token present for pid %s, but the listener on port %s could not be read' % (
+    if not listen:                      # empty: nobody listening, or powershell could not see the socket -- not proven
+        return UNM('token present for pid %s, but no listener on port %s could be read' % (
             pid, port.group(1) if port else '?'))
     if pid not in listen:
         return FAIL('port %s is held by pid %s, not RimWorld pid %s' % (port.group(1), listen, pid))
@@ -764,6 +771,9 @@ def main(argv=None):
     if a.only:
         keep = set(a.only.split(','))
         checks = [c for c in checks if c.cid in keep or c.name in keep]
+        if not checks:                  # zero rows would read as GREEN: nothing asked is not a pass
+            print('--only %s names no check of this mode' % a.only, file=sys.stderr)
+            return 3
     print('preflight %s tier=%s purpose=%s seat=%s %s' % ('LIVE' if a.live else 'OFFLINE', a.tier, a.purpose, a.seat,
                                                          time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())))
     rows = run_checks(checks, ctx, fail_fast=not a.all)

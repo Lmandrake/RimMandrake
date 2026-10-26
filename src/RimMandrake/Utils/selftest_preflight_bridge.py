@@ -231,10 +231,60 @@ def t_deploy_staged():
             tempfile.tempdir = old_tmp
 
 
+def t_review_w10():
+    """DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 10: four ways a check passed or crashed on something it never measured."""
+    import subprocess
+    with tempfile.TemporaryDirectory() as td:
+        saved = (pf.SCRATCH, pf.MODLISTS, pf.subprocess.run, pf.shutil.which, pf.intended, pf.gp.MODS_CONFIG,
+                 pf.read_log, pf.gp.PLAYER_LOG)
+        try:
+            # 1. O14 must not read the previous run's report when this run crashed before writing one
+            pf.SCRATCH, pf.MODLISTS = td, td
+            open(os.path.join(td, pf.TIER_FILES['full']), 'w').write('<ModsConfigData/>')
+            json.dump({'checks': {}, 'meta': {'modlist': 'old', 'cache': 'hit'}},
+                      open(os.path.join(td, 'effective_def_lint_last.json'), 'w'))
+            pf.shutil.which = lambda n: None
+            pf.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 1, 'Traceback ...', 'KeyError: x')
+            r = pf.c_def_lint({'want_src': 'snapshot x', 'tier': 'full', 'deep': True})
+            check('O14: a lint that crashed before writing is UNMEASURED, not the stale last report',
+                  r.status == 'UNMEASURED', '%s %s' % (r.status, r.reason))
+            pf.subprocess.run, pf.shutil.which = saved[2], saved[3]
+            # 2. ModsConfig with an extra repeated id (same set, zip runs out): a FAIL that says so, not StopIteration
+            pf.intended = lambda ctx: (['a.one', 'a.two'], 'fixture')
+            pf.gp.MODS_CONFIG = modsconfig(td, ['a.one', 'a.two', 'a.two'])
+            r = pf.c_modsconfig({})
+            check('O04: a repeated id is a FAIL naming it, not a crash', r.status == 'FAIL' and 'repeated' in r.reason,
+                  r.reason)
+            # 3. L01 with nobody seen listening: unproven, not "held by pid []"
+            log = os.path.join(td, 'Player.log')
+            open(log, 'w').write(LOG_GOOD)
+            pf.gp.PLAYER_LOG, pf.read_log = log, (lambda path=None: LOG_GOOD)
+            pf.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 1, '', '')
+            r = pf.c_live_identity({'procs': [(42, None)]})
+            check('L01: an empty listener read is UNMEASURED', r.status == 'UNMEASURED', '%s %s' % (r.status, r.reason))
+            pf.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 0, '42\n', '')
+            check('L01 control: the game pid listening PASSes', pf.c_live_identity({'procs': [(42, None)]}).status
+                  == 'PASS')
+        finally:
+            (pf.SCRATCH, pf.MODLISTS, pf.subprocess.run, pf.shutil.which, pf.intended, pf.gp.MODS_CONFIG,
+             pf.read_log, pf.gp.PLAYER_LOG) = saved
+    # 4. --only naming no check must not print VERDICT GREEN on zero rows
+    import io
+    import contextlib
+    saved_last = pf.LAST_REPORT
+    with tempfile.TemporaryDirectory() as td, contextlib.redirect_stderr(io.StringIO()):
+        pf.LAST_REPORT = os.path.join(td, 'last_preflight.json')     # the old code wrote its zero-row GREEN here
+        try:
+            rc = pf.main(['--only', 'O99_no_such_check', '--no-archive'])
+        finally:
+            pf.LAST_REPORT = saved_last
+    check('--only matching nothing exits 3 (usage), not GREEN 0', rc == 3, rc)
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged, t_review_w10):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)
