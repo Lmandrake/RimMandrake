@@ -244,6 +244,12 @@ def read_packet(path: str | None) -> tuple[dict, list[str]]:
     return parts, [k for k in PACKET_PARTS if not parts.get(k)]
 
 
+def packet_view(row: dict) -> dict:
+    """The widget's view of a look's packet, from the same reader the phone brief uses: {parts, missing}."""
+    parts, missing = read_packet(packet_path(row))
+    return {"parts": {k: _short(v, 220) for k, v in parts.items()}, "missing": missing}
+
+
 def _source_down(snap: dict, sec: str) -> list[str]:
     src = snap.get("sources") or {}
     return [s for s in SECTION_SOURCES.get(sec, ()) if not (src.get(s) or {}).get("ok")]

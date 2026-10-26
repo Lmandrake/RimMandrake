@@ -299,6 +299,11 @@ function groupHTML(g, isNew){
   const ms = g.members.slice().sort((a,b) => (a.opened - b.opened) || a.title.localeCompare(b.title));
   return head + `<div class="sub">${ms.map(m => lookHTML(m, false)).join('')}</div>`;
 }
+function packetHTML(r){   // the review packet, as the phone brief shows it: four parts or "packet incomplete"
+  const pv = r.packet_view; if (!pv) return '';
+  if (pv.missing && pv.missing.length) return `<small class="inc">packet incomplete: no ${esc(pv.missing.join(', no '))}</small>`;
+  return ['recommendation','alternatives','evidence','doubts'].map(k => `<small class="pk"><b>${k}</b> ${esc((pv.parts||{})[k]||'')}</small>`).join('');
+}
 function lookHTML(r, isNew){
   if (r.isGroup) return groupHTML(r, isNew);
   const th = r.thumb ? `<span class="th"><img src="${API}/api/thumb?id=${encodeURIComponent(r.key)}" alt="" onerror="this.replaceWith(document.createTextNode('▣'))"></span>`
@@ -309,7 +314,7 @@ function lookHTML(r, isNew){
   const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" data-seen="${esc(r.seen_id||'')}" title="Open — marks it seen">↗</a>` : '<span></span>';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
   const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${esc(r.link.type)}" data-seen="${esc(r.seen_id||'')}"` : '';
-  return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}${r.opened?' opened':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${r.opened ? '✓ opened · ' : ''}${esc(r.ltype)}${r.src === 'ledger' && r.reason ? ' · ' + esc(r.reason) : ''}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${srcTag(r)}${ago(r.since)}</span></div>`;
+  return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}${r.opened?' opened':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${r.opened ? '✓ opened · ' : ''}${esc(r.ltype)}${r.src === 'ledger' && r.reason ? ' · ' + esc(r.reason) : ''}</small>${packetHTML(r)}</span><span class="rr">${lk}</span><span class="t${old?' old':''}">${srcTag(r)}${ago(r.since)}</span></div>`;
 }
 
 function section(label, items, key, fmt, isNew, srcs){

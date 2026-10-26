@@ -283,6 +283,24 @@ def main():
         brief.plan_cli(["clear"], pf, pev)
     check("plan clear ends the trip", brief.read_plan(pf) is None)
 
+    # widget: a look row's packet_view comes from the same reader as the phone brief, and index.html draws it
+    full = Path(tempfile.mkdtemp(prefix="pv_")) / "full.md"
+    full.write_text("## Recommendation\nship it\n## Alternatives\nwait\n## Evidence\nshot.png\n## Doubts\nlight\n")
+    part = Path(full.parent) / "part.md"
+    part.write_text("## Recommendation\nship it\n")
+    pv = brief.packet_view({"packet": str(full), "key": "hand:x"})
+    check("widget packet_view: complete packet has four parts and nothing missing",
+          pv["missing"] == [] and pv["parts"].get("doubts") == "light", pv)
+    pv = brief.packet_view({"packet": str(part), "key": "hand:y"})
+    check("widget packet_view: short packet names what is missing",
+          pv["missing"] == ["alternatives", "evidence", "doubts"], pv)
+    pv = brief.packet_view({"key": "hand:z"})
+    check("widget packet_view: no packet source reads incomplete in full", len(pv["missing"]) == 4, pv)
+    html = (Path(__file__).resolve().parent / "widget" / "index.html").read_text(encoding="utf-8")
+    check("widget draws packet_view and the incomplete wording", "packetHTML(r)" in html and "packet incomplete: no" in html)
+    psrc = (Path(__file__).resolve().parent / "pulse.py").read_text(encoding="utf-8")
+    check("snapshot attaches packet_view to look rows via brief.packet_view", "brief.packet_view(r)" in psrc)
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 

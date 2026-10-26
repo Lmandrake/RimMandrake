@@ -289,6 +289,13 @@ class Collector:
                 self.state["done_since"] = ld.get("done_since")
             snap, new_state, events = pc.collect_snapshot(raw, self.state, now)
             self._notice_metrics(snap, new_state, now)
+            try:   # the widget's look rows carry the same review packet the phone brief shows
+                import brief
+                for r in snap.get("rows") or []:
+                    if r.get("kind") == "look" and not r.get("isGroup"):
+                        r["packet_view"] = brief.packet_view(r)
+            except Exception:   # the list still draws; a row without packet_view reads as unknown, not complete
+                pass
             snap["digest"] = new_state.get("last_digest")
             snap["widget_version"] = widget_version()
             snap["code"] = code_rev()
