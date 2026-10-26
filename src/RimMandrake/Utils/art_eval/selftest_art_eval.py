@@ -34,6 +34,79 @@ def opus_reply(items, fail=(), unreadable=(), findings=(), overall="good"):
             "findings": list(findings), "overall": overall}
 
 
+def cap_checks():
+    """ARTEVAL_FIX_GPT_IMAGE_CAP_DROPS_FLIGHT: a judge with an attachment cap must see EVERY frame (tiled) or refuse;
+    run shirrel_flight_w76 sent GPT 3 of 12 flight frames through a silent [:8]."""
+    import re
+    import runner
+    import cards as C
+    from PIL import Image
+    src = "".join((HERE / f).read_text() for f in ("runner.py", "race.py"))
+    check("cap: no silent slice of image_list() left in runner/race",
+          not re.search(r"image_list\([^\n]*\]\s*\[:\s*\d+\s*\]", src), re.findall(r"image_list[^\n]*\[:\d+\]", src))
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+
+        def png(name, shade):
+            p = td / f"{name}.png"
+            im = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+            im.paste((shade, 80, 40, 255), (64, 64, 192, 250))
+            im.save(p)
+            return str(p)
+        spec = {"subject": "RM_CapFlyer", "template": "creature", "module": "flyer", "invented": True,
+                "description": "a glider", "size": {"drawSize": [1.5, 1.5]}, "owner_kept": False,
+                "images": dict({f: png(f, 90 + i) for i, f in enumerate(("south", "east", "north", "scale"))},
+                               flight=[png(f"fl{n}", 100 + n) for n in range(12)])}
+        card = C.build_card(spec, td / "card")
+        att = runner.capped_images(card, td / "card")
+        names = [a.name for a in att]
+        check("cap: 4 facings/scale + 12 flight frames -> within 8 attachments, flight tiled into one sheet",
+              len(att) <= runner.GPT_MAX_IMAGES and "flight_sheet.png" in names
+              and not any(n.startswith("flight_") and n != "flight_sheet.png" for n in names), names)
+        shp = td / "card" / "flight_sheet.png"
+        sh = Image.open(shp).size if shp.is_file() else None
+        check("cap: the sheet holds all 12 frames (4 columns x 3 rows of 320 px tiles)",
+              sh is not None and sh[0] == 4 * 320 and sh[1] >= 3 * 320, sh)
+        small = runner.capped_images(dict(card, panels=dict(card["panels"], flight=card["panels"]["flight"][:3])), td / "card")
+        check("cap: under the cap nothing is tiled", [a.name for a in small][-3:] == ["flight_1.png", "flight_2.png",
+                                                                                     "flight_3.png"], [a.name for a in small])
+        many = {"panels": {k: f"{k}.png" for k in ("facings", "south", "east", "north", "west", "single", "scale",
+                                                     "wall_context", "living_reference")}}
+        try:
+            runner.capped_images(many, td / "card")
+            check("cap: 9 single panels for an 8-image judge -> refused (ImageCapError), never truncated", False)
+        except runner.ImageCapError:
+            check("cap: 9 single panels for an 8-image judge -> refused (ImageCapError), never truncated", True)
+
+        seen = {}
+
+        class CapMock(runner.Reviewers):
+            def opus(self, prompt, card_dir):
+                items = P.checklist_for(P.load_template("creature"), "flyer",
+                                        P.card_facts(json.loads((card_dir / "card.json").read_text())))
+                return json.dumps({"schema": "rm-art-eval/opus@v1", "subject": "RM_CapFlyer", "observed": {},
+                                   "checklist": {i["id"]: {"status": "ok", "seen": "-"} for i in items},
+                                   "findings": [{"code": "STYLE_CARTOON", "confidence": 0.6, "where": "flight_12",
+                                                 "seen": "late frame", "fix": "x"}],
+                                   "overall": "weak"}), {"models_reported": ["mock-opus"]}
+
+            def gpt(self, prompt, images, work):
+                seen["images"] = [Path(i).name for i in images]
+                seen["prompt"] = prompt
+                return "", {"error": "mock gpt: stop here"}
+
+            def regen(self, prompt, work):
+                return "", {"skipped": "x"}
+        pol = P.load_policy()
+        rec = runner.evaluate(spec, td / "card2", CapMock(), pol, {"max_regen_rounds": 3, "min_refute_evidence_chars": 15},
+                              {}, {})
+        got = seen.get("images") or []
+        check("cap: evaluate's GPT look gets <= 8 attachments that cover all 12 flight frames",
+              got and len(got) <= runner.GPT_MAX_IMAGES and "flight_sheet.png" in got
+              and "flight_sheet.png" in seen.get("prompt", "") and rec.get("gpt_attached") == got,
+              (rec.get("decision"), rec.get("reasons"), got))
+
+
 def tuning_checks():
     """Pipeline tuning 2026-10-24 (owner: "Remember to update the pipeline tuning, and fully enact."): his column
     picks as shadow data, the canvas gate, stopped series, one round per picture, and the measured-policy hooks
@@ -815,6 +888,7 @@ def main():
         check("review 2026-10-24 checks", False, repr(e))
 
     tuning_checks()
+    cap_checks()
     print(f"{'PASS' if not FAILS else 'FAIL'}: art_eval selftest, {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

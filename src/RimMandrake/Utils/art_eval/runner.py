@@ -34,6 +34,8 @@ import sys
 import time
 from pathlib import Path
 
+from PIL import Image
+
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cards as C  # noqa: E402
@@ -135,6 +137,49 @@ def image_list(card: dict) -> list:
     for many in ("flight", "variants", "assembled"):
         out += [card["panels"][k] for k in card["panels"].get(many, [])]
     return out
+
+
+GPT_MAX_IMAGES = 8   # attachments one GPT second look takes; honoured by tiling sets, never by dropping images
+
+
+class ImageCapError(RuntimeError):
+    """The card's pictures cannot reach a capped judge whole even after tiling: refuse, never truncate."""
+
+
+def capped_images(card: dict, card_dir: Path, cap: int = GPT_MAX_IMAGES) -> list:
+    """Every picture of the card as at most `cap` attachments. Over the cap, each numbered set (flight, variants,
+    assembled — largest first) is tiled into ONE labelled sheet `<set>_sheet.png` in card_dir, so a judge with an
+    attachment cap still sees every frame (ARTEVAL_FIX_GPT_IMAGE_CAP_DROPS_FLIGHT: [:8] silently dropped 9 of 12
+    flight frames). Still over the cap -> ImageCapError. Never a silent slice."""
+    card_dir = Path(card_dir)
+    pn = card["panels"]
+    sets = {m: [pn[k] for k in pn.get(m, [])] for m in ("flight", "variants", "assembled") if pn.get(m)}   # files
+    singles = [f for f in image_list(card) if not any(f in v for v in sets.values())]
+
+    def total():
+        return len(singles) + sum(len(v) for v in sets.values())
+    for m in sorted(sets, key=lambda k: -len(sets[k])):
+        if total() <= cap:
+            break
+        if len(sets[m]) < 2:
+            continue
+        files = [card_dir / f for f in sets[m]]
+        cols = min(4, len(files))
+        rows = [C.strip(files[i:i + cols], [Path(f).stem for f in files[i:i + cols]], tile=320,
+                        title=(f"{m.upper()} — all {len(files)} frames, tiled, left-to-right then down = frame order" if i == 0 else ""))
+                for i in range(0, len(files), cols)]
+        sheet = Image.new("RGB", (max(r.width for r in rows), sum(r.height for r in rows)), (60, 50, 40))
+        y = 0
+        for r in rows:
+            sheet.paste(r, (0, y)); y += r.height
+        name = f"{m}_sheet.png"
+        sheet.save(card_dir / name)
+        sets[m] = [name]
+    if total() > cap:
+        raise ImageCapError(f"{total()} images for a judge capped at {cap} even after tiling the numbered sets — refused, "
+                            f"not truncated")
+    out = singles + [f for m in ("flight", "variants", "assembled") for f in sets.get(m, [])]
+    return [card_dir / f for f in out]
 
 
 def opus_prompt(card: dict, tpl: dict, items: list, policy: dict, card_dir: Path) -> str:
@@ -275,7 +320,13 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
         return rec
     if step == "GPT":
         concerns = P.concerns_from(od)
-        attached = [card_dir / f for f in image_list(card)][:8]
+        try:
+            attached = capped_images(card, card_dir)
+        except ImageCapError as e:
+            rec.update(decision="HOLD_ERROR")
+            rec["reasons"].append(f"gpt: {e}")
+            return rec
+        rec["gpt_attached"] = [Path(f).name for f in attached]
         gp = gpt_prompt(card, tpl, items, policy, card_dir, concerns, attached)
         work = card_dir / "gpt"; work.mkdir(exist_ok=True)
         greply, graws, gmetas, gerr = ask_validated(

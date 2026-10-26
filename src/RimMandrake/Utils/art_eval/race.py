@@ -109,7 +109,7 @@ def worker(race: str, variant: str, family: str, k: int, shards: int, rows_paths
 
         if family == "gpt":
             def opus(self, prompt, card_dir):
-                imgs = [card_dir / f for f in R.image_list(json.loads((card_dir / "card.json").read_text()))][:8]
+                imgs = R.capped_images(json.loads((card_dir / "card.json").read_text()), card_dir)   # tiles sets; refuses, never truncates
                 p = ("NOTE: you have no file tools. The images listed under \"Images\" are ATTACHED to this message "
                      "in that order (at most 8); wherever the task says Read them, look at the attachments.\n\n" + prompt)
                 work = card_dir / "gpt_first"; work.mkdir(exist_ok=True)
@@ -209,7 +209,7 @@ def replay_worker(src_races: str, src_variant: str, out_race: str, name: str, k:
                 tpl = P.load_template(rec["template"])
                 items = P.checklist_for(tpl, card.get("module", ""), P.card_facts(card))
                 concerns = rec["gpt"]["concerns"]
-                attached = [card_dir / f for f in R.image_list(card)][:8]
+                attached = R.capped_images(card, card_dir)   # tiles sets; ImageCapError instead of a silent [:8]
                 gp = R.gpt_prompt(card, tpl, items, policy, card_dir, concerns, attached)
                 work = card_dir / f"gpt_replay_{out_race}_{name}"; work.mkdir(exist_ok=True)
                 greply, graws, gmetas, gerr = R.ask_validated(
