@@ -87,8 +87,60 @@ def seal_static_checks(ET, re):
             for d in root:
                 if d.get("MayRequire") != "mandrake.rm.coldstorage":
                     fails.append("RM_TarSealing.xml: %s %s lacks MayRequire mandrake.rm.coldstorage" % (d.tag, d.findtext("defName")))
+            # A crafting station heats only while worked: a CompHeatPusher on a consumeFuelOnlyWhenUsed firebox heats
+            # 24/7. Building_WorkTable_HeatPush pushes heatPerTickWhileWorking from UsedThisTick only.
+            vat = [d for d in root if d.findtext("defName") == "RM_TarSealingVat"]
+            if len(vat) != 1:
+                fails.append("RM_TarSealing.xml: RM_TarSealingVat not found (instrument blind?)")
+            else:
+                v = vat[0]
+                if any("HeatPusher" in (li.get("Class") or "") for li in v.iter("li")):
+                    fails.append("RM_TarSealingVat: has a CompHeatPusher (heats while idle)")
+                if v.findtext("thingClass") != "Building_WorkTable_HeatPush" or not v.findtext("building/heatPerTickWhileWorking"):
+                    fails.append("RM_TarSealingVat: must be Building_WorkTable_HeatPush with heatPerTickWhileWorking")
     if refs < 5:
         fails.append("seal settings refs: only %d found (instrument blind?)" % refs)
+    # RecipeDef.AvailableNow only filters the add-bill list; WorkGiver_DoBill runs any bill whose ShouldDoNow is true,
+    # so a method switch must also pause existing bills or a station built before the switch keeps working.
+    hp = open(os.path.join(HERE, "Source", "HarmonyPatches.cs"), encoding="utf-8").read()
+    m = re.search(r"\[HarmonyPatch\(typeof\(Bill_Production\),\s*nameof\(Bill_Production\.ShouldDoNow\)\)\][\s\S]*?\n    }\n", hp)
+    if not m or "ColdStorageGates.RecipeOpen" not in m.group(0):
+        fails.append("HarmonyPatches.cs: no Bill_Production.ShouldDoNow postfix gating on ColdStorageGates.RecipeOpen "
+                     "(a switched-off method's existing bills keep running)")
+    fails += duplicate_comp_checks(ET, files)
+    return fails
+
+
+def duplicate_comp_checks(ET, files):
+    """XML inheritance APPENDS <li> list items (Verse.XmlInheritance), so a child that re-declares a comp its parent
+    already has gets two of it: two CompIngredients write two <ingredients> save nodes, show the ingredients twice and
+    the parent's noIngredientsFoodKind wins. Resolve Name parents across the seal files; one comp class per def."""
+    fails = []
+    named, concrete = {}, []
+    for path in files:
+        for d in ET.parse(path).getroot():
+            if d.tag != "ThingDef":
+                continue
+            if d.get("Name"):
+                named[d.get("Name")] = d
+            if d.get("Abstract") != "True":
+                concrete.append((os.path.basename(path), d))
+    checked = 0
+    for fname, d in concrete:
+        classes, node = [], d
+        while node is not None:
+            comps = node.find("comps")
+            if comps is not None:
+                classes += [li.get("Class") for li in comps.findall("li") if li.get("Class")]
+                if comps.get("Inherit") == "False":
+                    break
+            node = named.get(node.get("ParentName"))
+        checked += 1
+        dup = sorted({c for c in classes if classes.count(c) > 1})
+        if dup:
+            fails.append("%s: %s has duplicate comps %s (parent and child both declare it)" % (fname, d.findtext("defName"), dup))
+    if checked < 20:
+        fails.append("duplicate comp check: only %d concrete seal ThingDefs found (instrument blind?)" % checked)
     return fails
 
 

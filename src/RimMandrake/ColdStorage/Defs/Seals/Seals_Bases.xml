@@ -23,7 +23,9 @@
   </ThingCategoryDef>
 
   <!-- A sealed stack: does not rot while sealed (CompSealed), eaten only in desperation until the seal is broken, then
-       rots from that moment. Ingredients are kept through aging (CompSealed.Replace). -->
+       rots from that moment. Ingredients are kept through aging (CompSealed.Replace). No CompProperties_Ingredients
+       here: every child declares its own (with its noIngredientsFoodKind), and XML inheritance appends <li>, so a
+       base copy would give each item two (selftest_coldstorage duplicate_comp_checks). -->
   <ThingDef Name="RM_SealedFoodBase" ParentName="OrganicProductBase" Abstract="True">
     <thingClass>ThingWithComps</thingClass>
     <thingCategories>
@@ -51,9 +53,6 @@
       <li Class="CompProperties_Rottable">
         <daysToRotStart>6</daysToRotStart>
         <rotDestroys>true</rotDestroys>
-      </li>
-      <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
       </li>
     </comps>
   </ThingDef>
@@ -88,9 +87,6 @@
         <daysToRotStart>6</daysToRotStart>
         <rotDestroys>true</rotDestroys>
       </li>
-      <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
-      </li>
       <li Class="CompProperties_FoodPoisonable" />
     </comps>
   </ThingDef>
@@ -123,9 +119,6 @@
       <li Class="CompProperties_Rottable">
         <daysToRotStart>15</daysToRotStart>
         <rotDestroys>true</rotDestroys>
-      </li>
-      <li Class="CompProperties_Ingredients">
-        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
       </li>
       <li Class="CompProperties_FoodPoisonable" />
     </comps>

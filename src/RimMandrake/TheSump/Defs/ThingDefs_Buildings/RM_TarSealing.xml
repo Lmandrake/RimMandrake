@@ -18,6 +18,12 @@
       <drawSize>(2,1)</drawSize>
     </graphicData>
     <size>(2,1)</size>
+    <!-- Heats only while a cook works it (vanilla fueled-stove pattern): a CompHeatPusher would heat 24/7 whenever the
+         firebox held fuel, and consumeFuelOnlyWhenUsed keeps it fuelled. -->
+    <thingClass>Building_WorkTable_HeatPush</thingClass>
+    <building>
+      <heatPerTickWhileWorking>0.10</heatPerTickWhileWorking>
+    </building>
     <costList>
       <WoodLog>30</WoodLog>
       <Steel>40</Steel>
@@ -43,10 +49,6 @@
         </fuelFilter>
         <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
-      </li>
-      <li Class="CompProperties_HeatPusher">
-        <compClass>CompHeatPusherPowered</compClass>
-        <heatPerSecond>3</heatPerSecond>
       </li>
     </comps>
     <modExtensions>

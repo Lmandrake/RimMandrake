@@ -337,4 +337,19 @@ namespace RimMandrake.ColdStorage
             }
         }
     }
+
+    /// <summary>AvailableNow only hides a recipe from the add-bill list; a bill made before the switch went off would
+    /// keep running (WorkGiver_DoBill asks ShouldDoNow, never AvailableNow). A switched-off method pauses its bills.</summary>
+    [HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.ShouldDoNow))]
+    [PatchFeature("Method switches (existing bills)")]
+    internal static class Patch_BillProduction_ShouldDoNow
+    {
+        private static void Postfix(Bill_Production __instance, ref bool __result)
+        {
+            if (__result && __instance.recipe != null && !ColdStorageGates.RecipeOpen(__instance.recipe))
+            {
+                __result = false;
+            }
+        }
+    }
 }
