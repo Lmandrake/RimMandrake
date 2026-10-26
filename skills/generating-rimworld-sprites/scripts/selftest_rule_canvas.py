@@ -54,6 +54,11 @@ def write(d: Path, name, w, h, px):
     return p
 
 
+# The canvas REJECT line. A bare "canvas" also matches the INFO line a WRONGLY accepted rule canvas prints, so a
+# refusal row keyed on it passed with the per-axis check removed from rule_scale (wave 69 mutation).
+REFUSED_256 = "canvas is 256x256"
+
+
 def validate(ref, cand, *extra):
     proc = subprocess.run([sys.executable, str(VALIDATOR), "--reference", str(ref), "--candidate", str(cand), *extra],
                           capture_output=True, text=True, timeout=300)
@@ -74,7 +79,7 @@ def main():
     check("rule canvas" in out.lower(), "…and says it judged against the rule canvas", out[-300:])
 
     rc, out = validate(ref, up2, "--drawsize", "7")
-    check(rc == 1 and "canvas" in out, "--drawsize 7 (rule 1024): a 256 canvas is NOT the rule canvas -> refused",
+    check(rc == 1 and REFUSED_256 in out, "--drawsize 7 (rule 1024): a 256 canvas is NOT the rule canvas -> refused",
           out[-200:])
 
     # wrong size art is not weakened
@@ -92,12 +97,12 @@ def main():
 
     ref96 = write(d, "ref96", 96, 96, blob(96, 96, 20, 30, 50, 30))
     rc, out = validate(ref96, up2, "--drawsize", "2")
-    check(rc == 1 and "canvas" in out, "rule canvas but NOT an exact multiple of the reference (96 -> 256): refused",
+    check(rc == 1 and REFUSED_256 in out, "rule canvas but NOT an exact multiple of the reference (96 -> 256): refused",
           out[-200:])
 
     rect_ref = write(d, "ref128x64", 128, 64, blob(128, 64, 30, 10, 60, 40))
     rc, out = validate(rect_ref, up2, "--drawsize", "2")
-    check(rc == 1 and "canvas" in out, "unequal scale per axis (128x64 -> 256x256): refused", out[-200:])
+    check(rc == 1 and REFUSED_256 in out, "unequal scale per axis (128x64 -> 256x256): refused", out[-200:])
 
     # downscale onto the rule canvas: reference 512 (2x the rule for drawSize 2), candidate 256
     ref512 = write(d, "ref512", 512, 512, blob(512, 512, 120, 200, 240, 160))
