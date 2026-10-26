@@ -332,7 +332,7 @@ def build(donor_name, registry):
     return out, notes, art
 
 
-def header(donor_name, notes, items):
+def header(donor_name, notes, items, out=()):
     ours, mod, _ = PORTS[donor_name]
     t = [f"  {ours}: owned RM_ port of the Alpha Animals {donor_name[3:]} (sarg.alphaanimals {donor_name}, "
          f"1.6/Defs/ThingDefs_Races). Phase 0 step P2 (biome_sprint_kickoff_2026-10-15.md 0.5.3), tool "
@@ -340,10 +340,13 @@ def header(donor_name, notes, items):
          "  Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today",
          "  (our rename/tolerance patches on the donor def are folded in). Departures:",
          "    - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.",
-         "    - VEF.* comps and VEF_ abilities kept, guarded MayRequire " + VEF + " (a framework we keep, not the donor).",
          "    - texPath is OUR final path; the PNGs are owed through artpipe (no donor art is reused). Until the art is",
          "      installed through the art ledger this def has no picture: ART OWED, never a pass of the art bar.",
          "    - dessicated donor art and alternate random graphics dropped (vanilla fallback)."]
+    # AAPORT_FIX_HEADER_CLAIMS_VEF_GUARDS: say "VEF kept" only when the port really carries a VEF guard; four ports
+    # (Sikka Sikka, Zrrik, Siezer, Zhissa) have none and their headers said they did.
+    if any(e.get("MayRequire") == VEF for d in out for e in d.iter()):
+        t.insert(4, "    - VEF.* comps and VEF_ abilities kept, guarded MayRequire " + VEF + " (a framework we keep, not the donor).")
     for n in notes:
         t.append("    - " + n)
     return "\n".join(t) + "\n"
@@ -363,7 +366,7 @@ def cmd_port(a):
             continue
         out, notes, items = build(dn, registry)
         root = ET.Element("Defs")
-        root.append(ET.Comment("\n" + header(dn, notes, items)))
+        root.append(ET.Comment("\n" + header(dn, notes, items, out)))
         for d in out:
             root.append(d)
         ET.indent(root, space="  ")

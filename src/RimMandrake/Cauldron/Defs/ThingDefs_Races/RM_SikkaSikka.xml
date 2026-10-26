@@ -5,7 +5,6 @@
   Stats, tools, race fields and pawnkind numbers are the donor's own, as the creature the game shows today
   (our rename/tolerance patches on the donor def are folded in). Departures:
     - wildBiomes dropped (the biome roster casts it); AnimalStatExtension (donor stat defs) dropped.
-    - VEF.* comps and VEF_ abilities kept, guarded MayRequire OskarPotocki.VanillaFactionsExpanded.Core (a framework we keep, not the donor).
     - texPath is OUR final path; our own art is installed (Textures/Things/Pawn/Animal/RM_SikkaSikka/).
     - dessicated donor art and alternate random graphics dropped (vanilla fallback).
     - folded 2 op(s) from src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml
