@@ -42,7 +42,6 @@ namespace RimMandrake.Utinni.UtinniPatches
             warnOnFail = false;
             int want = System.Math.Max(CalculateFinalCount(map), minLumps);
             int placed = 0;
-            ThingDef ore = forcedDefToScatter;
             var cands = new List<IntVec3>();
             for (int i = 0; i < want; i++)
             {
@@ -80,6 +79,9 @@ namespace RimMandrake.Utinni.UtinniPatches
 
         private void ScatterAtAndCount(IntVec3 c, Map map, GenStepParams parms, ref int placed)
         {
+            // Vanilla ScatterAt clears recentLumpCells only after its early returns (tutorial storyteller, no def),
+            // so clear it here: a lump that returned early must not count the previous lump's cells.
+            recentLumpCells.Clear();
             ScatterAt(c, map, parms);
             if (recentLumpCells.Count > 0) placed++;
         }

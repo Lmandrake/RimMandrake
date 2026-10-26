@@ -22,6 +22,18 @@ namespace RimMandrake.Utinni.UtinniPatches
 	// Same fields, same rolls (filthExpandBy / filthChance), no Harmony.
 	public class RUT_GenStep_ScatterThingsPlacedFilth : GenStep_ScatterThings
 	{
+		// The thing base.ScatterAt is about to place, captured from GenerateThing (called exactly once per
+		// ScatterAt, 1.6). Holding the reference itself, not a ListerThings delta, also covers a minified
+		// thing (listed under MinifiedThing, not thingDef). Map generation is single-threaded.
+		[Unsaved(false)]
+		private Thing generated;
+
+		protected override Thing GenerateThing()
+		{
+			generated = base.GenerateThing();
+			return generated;
+		}
+
 		protected override void ScatterAt(IntVec3 loc, Map map, GenStepParams parms, int stackCount = 1)
 		{
 			ThingDef filth = filthDef;
@@ -31,7 +43,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 				return;
 			}
 
-			int before = map.listerThings.ThingsOfDef(thingDef).Count;
+			generated = null;
 			filthDef = null;
 			try
 			{
@@ -42,14 +54,10 @@ namespace RimMandrake.Utinni.UtinniPatches
 				filthDef = filth;
 			}
 
-			// ListerThings appends on spawn, so the newest spawned thing of
-			// this def is the last entry. No growth = placement failed.
-			List<Thing> listed = map.listerThings.ThingsOfDef(thingDef);
-			if (listed.Count <= before)
-			{
-				return;
-			}
-			Thing placed = listed[listed.Count - 1];
+			// A failed placement leaves the thing unspawned (Map == null): no filth. An item that merged into an
+			// existing stack is destroyed, not spawned: no filth either (the vanilla filth block would NRE there).
+			Thing placed = generated;
+			generated = null;
 			if (placed == null || !placed.Spawned || placed.Map != map)
 			{
 				return;
