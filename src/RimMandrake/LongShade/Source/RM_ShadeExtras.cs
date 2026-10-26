@@ -465,6 +465,13 @@ namespace RimMandrake.LongShade
         {
             towed = true;
             int removed = 0;
+            // the hull's constructed roof leaves with it: lift it BEFORE the walls go, or Building.DeSpawn's
+            // roof-holder check marks the whole 25x9 roof to collapse onto whoever stands inside (the clan chills at hullCenter)
+            foreach (IntVec3 c in HullCells())
+            {
+                RoofDef roof = c.GetRoof(map);
+                if (roof != null && !roof.isNatural) map.roofGrid.SetRoof(c, null);
+            }
             foreach (IntVec3 c in HullCells())
             {
                 List<Thing> things = new List<Thing>(c.GetThingList(map));
