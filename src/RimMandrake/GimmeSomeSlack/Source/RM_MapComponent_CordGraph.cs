@@ -272,6 +272,9 @@ namespace RimMandrake.GimmeSomeSlack
         /// that laid at least one edge (ms: the live re-measure's per-frame cost of a planned build).</summary>
         public int LastPending, SlicedBuilds;
         public double MaxSliceMs;
+        /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: edges the last build took from the lay worker, and laid itself (a
+        /// frame's build: 0 unless a worker lay threw).</summary>
+        public int LastLanded, LastLaidOnCaller;
 
         public void Rebuild() => Rebuild(true);
 
@@ -311,6 +314,9 @@ namespace RimMandrake.GimmeSomeSlack
                 opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
                 // at least 1 ms of lay time: the builder always lays one edge, so a slow snapshot cannot stall the cords
                 opt.LayBudgetMs = complete ? 0 : Math.Max(1.0, FrameBudgetMs - sw.Elapsed.TotalMilliseconds);
+                // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: a frame's build lays no edge itself (one edge alone cost up to 28 ms
+                // live); the worker lays them and a later frame's build takes them (BuildOptions.AsyncLay)
+                opt.AsyncLay = !complete;
                 next = b.Build(world, opt, c => LiveNow(c));
                 LastBuildMs = (System.Diagnostics.Stopwatch.GetTimestamp() - tBuild) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             }
@@ -327,11 +333,13 @@ namespace RimMandrake.GimmeSomeSlack
             gate.Published(LastPending);
             if (LastPending > 0)
             {
-                // the next frame's MapComponentUpdate lays the next slice (and a layer regenerate meanwhile rebuilds too)
-                StaleOffscreen = true;
+                // a later frame's MapComponentUpdate takes what the worker laid once some has landed or the batch ended
+                // (LayReady; a layer regenerate meanwhile rebuilds too)
                 SlicedBuilds++;
             }
-            if (!complete && LastPlanned > 0 && LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
+            LastLanded = b.LastLanded;
+            LastLaidOnCaller = b.LastLaidOnCaller;
+            if (!complete && (LastPlanned > 0 || LastPending > 0) && LastRebuildMs > MaxSliceMs) MaxSliceMs = LastRebuildMs;
             var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
             foreach (LaidPiece p in next)
             {
@@ -974,6 +982,8 @@ namespace RimMandrake.GimmeSomeSlack
                 if (swayModeKey != null && mk != swayModeKey) StaleOffscreen = true;
                 swayModeKey = mk;
             }
+            // a sliced build: rebuild once the lay worker has landed pieces, or has stopped with edges still missing
+            if (LastPending > 0 && builder.LayReady) StaleOffscreen = true;
             if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)
             {
                 StaleOffscreen = false;

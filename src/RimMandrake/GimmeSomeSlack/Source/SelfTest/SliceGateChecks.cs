@@ -22,7 +22,104 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         internal static void Run()
         {
             Slices();
+            AsyncSlices();
             Gate();
+        }
+
+        /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: a run of AsyncLay Builds, waiting between them for the worker the way
+        /// frames do. Returns the Builds, the slowest one (caller ms), the edges any Build laid on the caller, the fewest edge
+        /// pieces any Build showed, and the last Build's pieces.</summary>
+        private static (int builds, double worst, int onCaller, int minEdgePieces, List<LaidPiece> last) ConvergeAsync(
+            CordBuilder b, Func<CordWorld> world, Func<BuildOptions> opt, Func<Cell, bool> live, Action<int> between = null)
+        {
+            int builds = 0, onCaller = 0, minPieces = int.MaxValue;
+            double worst = 0;
+            List<LaidPiece> outp;
+            var sw = new Stopwatch();
+            var wait = Stopwatch.StartNew();
+            while (true)
+            {
+                CordWorld w = world();
+                BuildOptions o = opt();
+                o.AsyncLay = true;
+                sw.Restart();
+                outp = b.Build(w, o, live);
+                worst = Math.Max(worst, sw.Elapsed.TotalMilliseconds);
+                builds++;
+                onCaller += b.LastLaidOnCaller;
+                minPieces = Math.Min(minPieces, outp.Count(p => p.EndA != null));
+                if (b.LastPending == 0 || wait.Elapsed.TotalSeconds > 120) break;
+                between?.Invoke(builds);
+                // a frame later: the worker has landed something, or stopped (then the next Build queues what is left)
+                System.Threading.Thread.Sleep(2);
+                while (!b.LayReady) System.Threading.Thread.Sleep(1);
+            }
+            return (builds, worst, onCaller, minPieces, outp);
+        }
+
+        private static void AsyncSlices()
+        {
+            // a mixed live function: the worker answers isLive from the two endpoint flags the caller copied
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            int miss0 = CordBuilder.LiveMisses;
+            List<LaidPiece> fullCold = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
+            ulong want = GssFuzz.Digest(fullCold);
+            int edges = fullCold.Count(p => p.EndA != null);
+            var reused = new CordBuilder();
+            reused.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
+            var swr = Stopwatch.StartNew();
+            reused.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
+            double reusedMs = swr.Elapsed.TotalMilliseconds;
+
+            // (1) cold: the frame's Build lays no edge itself, so its cost is an all-reused Build's whatever one edge costs
+            var b = new CordBuilder();
+            var r = ConvergeAsync(b, () => RebuildPerDigChecks.LiveScene(), () => new BuildOptions(), live);
+            Program.Check(r.onCaller == 0, $"async: the frame Builds laid {r.onCaller} edges on the caller (must be 0: one edge alone cost up to 28 ms live)");
+            Program.Check(r.builds > 1 && b.LayBatches >= 1, $"async: the cold build finished in {r.builds} Build, {b.LayBatches} batches (the worker never ran: instrument blind)");
+            Program.Check(b.LastPending == 0 && GssFuzz.Digest(r.last) == want, "async: the worker-laid Builds did not end bit-identical to one unbudgeted Build");
+            Program.Check(r.worst <= SliceBoundMs, $"async: one frame Build held {r.worst:0.0} ms (bound {SliceBoundMs} ms)");
+            Program.Check(CordBuilder.LiveMisses == miss0, $"async: a worker lay asked isLive {CordBuilder.LiveMisses - miss0} times outside its endpoints");
+            Program.Check(b.LastLayFault == null, "async: a worker lay threw: " + b.LastLayFault);
+            Console.WriteLine($"async: cold E={edges} over {r.builds} Builds / {b.LayBatches} batches, worst frame Build {r.worst:0.00} ms, all-reused Build {reusedMs:0.00} ms, laid on caller {r.onCaller}");
+
+            // (2) every key changes at once: each edge keeps showing its previous cord until its new one lands
+            Func<BuildOptions> slack8 = () => { var o = new BuildOptions(); o.Lay.SlackScale *= 0.8; return o; };
+            ulong want2 = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), slack8(), live));
+            var r2 = ConvergeAsync(b, () => RebuildPerDigChecks.LiveScene(), slack8, live);
+            Program.Check(r2.onCaller == 0 && r2.builds > 1, $"async: an all-keys-changed re-lay laid {r2.onCaller} on the caller over {r2.builds} Builds");
+            Program.Check(GssFuzz.Digest(r2.last) == want2, "async: the all-keys-changed re-lay did not end bit-identical to one unbudgeted Build");
+            Program.Check(r2.minEdgePieces == edges, $"async: a mid-re-lay Build showed {r2.minEdgePieces} of {edges} cords (a waiting edge must keep its previous piece)");
+
+            // (3) the world moves under a running batch: a wall dropped onto a cord after the first Builds. A landed piece
+            //     laid against the old world must fail the corridor check and be laid again, ending equal to the new world's
+            //     unbudgeted Build; the settings move back too, so the batch's remaining keys go stale (skipped, not applied)
+            var b3 = new CordBuilder();
+            List<LaidPiece> pieces0 = new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
+            Cell wall = default(Cell);
+            bool found = false;
+            CordWorld probe = RebuildPerDigChecks.LiveScene();
+            foreach (LaidPiece p in pieces0.Where(p => p.EndA != null && p.Strands.Count > 0))
+            {
+                var pts = p.Strands[0].Pts;
+                Cell c = pts[pts.Count / 2].Floor;
+                if (probe.IsWalkable(c) && !probe.IsConduit(c)) { wall = c; found = true; break; }
+            }
+            Program.Check(found, "async: no walkable non-conduit cord cell to wall over (scene changed?)");
+            Action<CordWorld> drop = w => w.SetBlocked(wall, BlockKind.Wall);
+            ulong want3 = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(drop), new BuildOptions(), live));
+            bool moved = false;
+            var r3 = ConvergeAsync(b3, () => moved ? RebuildPerDigChecks.LiveScene(drop) : RebuildPerDigChecks.LiveScene(),
+                                   () => moved ? new BuildOptions() : slack8(), live, n => { if (n == 2) moved = true; });
+            Program.Check(moved && r3.onCaller == 0, $"async: the moved-world run laid {r3.onCaller} on the caller (moved {moved})");
+            Program.Check(b3.LastPending == 0 && GssFuzz.Digest(r3.last) == want3, $"async: after the world moved under a running batch the Builds did not end equal to the new world's unbudgeted Build (pending {b3.LastPending})");
+
+            // (4) an unbudgeted Build after an async run is still complete and lays on the caller only what it misses
+            var u = new CordBuilder();
+            u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+            u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live);
+            Program.Check(u.LastPending == 0 && GssFuzz.Digest(u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live)) == want,
+                          "async: an unbudgeted Build after an async Build was not complete");
+            while (u.LayRunning) System.Threading.Thread.Sleep(1);
         }
 
         private static (int slices, double worst, List<LaidPiece> last, int minEdgePieces) Converge(CordBuilder b, CordWorld w, BuildOptions opt, Func<Cell, bool> live)

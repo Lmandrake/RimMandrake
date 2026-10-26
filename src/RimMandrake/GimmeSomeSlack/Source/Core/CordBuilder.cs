@@ -144,6 +144,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// counts in <see cref="CordBuilder.LastPending"/>; the next Build lays it. Each edge is laid alone and
         /// deterministically, so a run of budgeted Builds ends bit-identical to one unbudgeted Build.</summary>
         public double LayBudgetMs;
+        /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET (live r3 2026-10-26: one LayEdge costs 6.3 ms mean, 28 ms max on Mono,
+        /// so a budget checked between edges still held slices of 42 ms): the caller lays NO edge. A missed edge is laid on a
+        /// worker thread (one batch per builder, the hose's HoseLayQueue pattern) against this Build's world and graph, which
+        /// nothing writes after the Build; it shows its previous piece, or nothing, and counts in LastPending until a later
+        /// Build takes the landed piece (checked against that Build's world exactly as a cache hit is). LayEdge is a pure
+        /// function of its inputs, so a run of async Builds ends bit-identical to one unbudgeted Build. LayBudgetMs is not
+        /// used for an async Build (except for an edge whose worker lay threw: that one lays on the caller and throws there).</summary>
+        public bool AsyncLay;
     }
 
     /// <summary>
@@ -157,6 +165,81 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public int LastPlanned, LastReused;
         /// <summary>Edges the last Build left to a later Build because <see cref="BuildOptions.LayBudgetMs"/> ran out.</summary>
         public int LastPending;
+
+        /// <summary>GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET (see <see cref="BuildOptions.AsyncLay"/>): edges the last Build took
+        /// from the worker (counted in LastPlanned too); edges it laid on the caller (an async Build lays none); worker
+        /// batches started; the last worker lay's exception text; isLive asks a worker lay made outside the two endpoints
+        /// (answered false: must stay 0, SelfTest).</summary>
+        public int LastLanded, LastLaidOnCaller, LayBatches;
+        public string LastLayFault;
+        internal static int LiveMisses;
+
+        private sealed class LayJob { public EdgePlan Ep; public string Fk; public bool LiveA, LiveB; }
+
+        // under layLock: the worker's output and the keys still worth laying; the main thread owns inFlight and layFaulted
+        private readonly object layLock = new object();
+        private Dictionary<string, LaidPiece> landed = new Dictionary<string, LaidPiece>();
+        private readonly Dictionary<string, string> layFaults = new Dictionary<string, string>();
+        private HashSet<string> layWanted = new HashSet<string>();
+        private bool layRunning;
+        private readonly HashSet<string> inFlight = new HashSet<string>(), layFaulted = new HashSet<string>();
+
+        /// <summary>A Build has something new to take, or nothing laying: the caller's next budgeted Build is worth running.</summary>
+        public bool LayReady { get { lock (layLock) return landed.Count > 0 || !layRunning; } }
+        /// <summary>A worker batch is still laying (SelfTest waits on it).</summary>
+        public bool LayRunning { get { lock (layLock) return layRunning; } }
+
+        /// <summary>Publishes the keys this Build still misses (the worker skips any other) and, with no batch running, starts
+        /// one on the thread pool for the queued edges. The world and graph are this Build's: the adapter snapshots a fresh
+        /// world per rebuild and nothing writes it or a reduced graph afterwards, so the worker only reads them.</summary>
+        private void StartLays(CordWorld w, CordGraph g, BuildOptions opt, HashSet<string> wantNow, List<LayJob> queue)
+        {
+            lock (layLock)
+            {
+                layWanted = wantNow;
+                if (layRunning || queue.Count == 0) return;
+                layRunning = true;
+            }
+            foreach (LayJob j in queue) inFlight.Add(j.Fk);
+            LayBatches++;
+            System.Threading.ThreadPool.QueueUserWorkItem(_ => RunLays(w, g, opt, queue));
+        }
+
+        private void RunLays(CordWorld w, CordGraph g, BuildOptions opt, List<LayJob> jobs)
+        {
+            try
+            {
+                foreach (LayJob j in jobs)
+                {
+                    lock (layLock) if (!layWanted.Contains(j.Fk)) continue;
+                    try
+                    {
+                        Cell ca = j.Ep.CellA, cb = j.Ep.CellB;
+                        bool la = j.LiveA, lb = j.LiveB;
+                        Func<Cell, bool> live = c =>
+                        {
+                            if (c == ca) return la;
+                            if (c == cb) return lb;
+                            System.Threading.Interlocked.Increment(ref LiveMisses);
+                            return false;
+                        };
+                        LaidPiece lp = LayEdge(w, g, j.Ep.Edge, j.Ep.EKey, j.Ep.Parallel, opt, live);
+                        lp.Key = j.Fk;
+                        lp.LaySig = j.Ep.Sig;
+                        lp.CorridorHash = CorridorHash(w, lp);
+                        lock (layLock) landed[j.Fk] = lp;
+                    }
+                    catch (Exception ex)
+                    {
+                        lock (layLock) layFaults[j.Fk] = ex.ToString();
+                    }
+                }
+            }
+            finally
+            {
+                lock (layLock) layRunning = false;
+            }
+        }
         /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>
         private Dictionary<string, LaidPiece> shown = new Dictionary<string, LaidPiece>(), shownNext = new Dictionary<string, LaidPiece>();
         public CordGraph Graph { get; private set; }
@@ -203,8 +286,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
             long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
             var next = new Dictionary<string, LaidPiece>();
             var outp = new List<LaidPiece>();
-            LastPlanned = LastReused = LastPending = 0;
+            LastPlanned = LastReused = LastPending = LastLanded = LastLaidOnCaller = 0;
             shownNext.Clear();
+            // the worker's landed pieces (taken whatever this Build's mode: a landed piece is exactly what the caller would lay)
+            Dictionary<string, LaidPiece> took = null;
+            lock (layLock)
+            {
+                if (landed.Count > 0) { took = landed; landed = new Dictionary<string, LaidPiece>(); }
+                if (!layRunning) inFlight.Clear();
+                foreach (var kv in layFaults) { layFaulted.Add(kv.Key); LastLayFault = kv.Value; }
+                layFaults.Clear();
+            }
+            var wantNow = new HashSet<string>();
+            var queue = new List<LayJob>();
             long layUntil = opt.LayBudgetMs > 0 ? t0 + (long)(opt.LayBudgetMs * System.Diagnostics.Stopwatch.Frequency / 1000.0) : long.MaxValue;
             // GPT deep review 2026-10-22 #11: a diving piece's corridor is the whole map; hash it ONCE per Build, not once per
             // cached diving edge (D x map cells). The world is only read during a Build, so the memo is exact.
@@ -245,7 +339,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     LastReused++;
                     continue;
                 }
-                if (LastPlanned > 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= layUntil)
+                if (took != null && took.TryGetValue(fk, out LaidPiece got) && got.LaySig == sig && Corridor(got) == got.CorridorHash)
+                {
+                    // laid by the worker under this very key against a world whose corridor still matches: a cache hit
+                    next[fk] = got;
+                    outp.Add(got);
+                    shownNext[ekey] = got;
+                    LastPlanned++;
+                    LastLanded++;
+                    continue;
+                }
+                if (opt.AsyncLay && !layFaulted.Contains(fk))
+                {
+                    wantNow.Add(fk);
+                    if (!inFlight.Contains(fk))
+                        queue.Add(new LayJob { Ep = ep, Fk = fk, LiveA = isLive(ep.CellA), LiveB = isLive(ep.CellB) });
+                    if (shown.TryGetValue(ekey, out LaidPiece prev)) { outp.Add(prev); shownNext[ekey] = prev; }
+                    LastPending++;
+                    continue;
+                }
+                if (LastLaidOnCaller > 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= layUntil)
                 {
                     // over the lay budget: keep showing this edge's previous piece (not cached under the new key) until a later Build
                     if (shown.TryGetValue(ekey, out LaidPiece prev)) { outp.Add(prev); shownNext[ekey] = prev; }
@@ -253,6 +366,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     continue;
                 }
                 LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
+                LastLaidOnCaller++;
                 lp.Key = fk;
                 lp.LaySig = sig;
                 lp.CorridorHash = Corridor(lp);
@@ -262,6 +376,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 LastPlanned++;
             }
             (shown, shownNext) = (shownNext, shown);
+            if (opt.AsyncLay) StartLays(w, g, opt, wantNow, queue);
             long t3 = System.Diagnostics.Stopwatch.GetTimestamp();
             if (!ReferenceEquals(junctionsFor, g) || junctionSeed != opt.Seed)
             {

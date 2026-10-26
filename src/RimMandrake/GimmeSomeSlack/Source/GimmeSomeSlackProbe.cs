@@ -600,6 +600,11 @@ namespace RimMandrake.GimmeSomeSlack
             F("pending", comp.LastPending.ToString());
             F("slicedBuilds", comp.SlicedBuilds.ToString());
             F("maxSliceMs", J.D(comp.MaxSliceMs));
+            // GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET: the lay worker (a frame's build lays no edge: laidOnCaller stays 0)
+            F("lastLanded", comp.LastLanded.ToString());
+            F("laidOnCaller", comp.LastLaidOnCaller.ToString());
+            F("layBatches", comp.BuilderForProbe.LayBatches.ToString());
+            F("layFault", J.S(comp.BuilderForProbe.LastLayFault));
             F("graphReuses", comp.GraphReuses.ToString());
             F("reachHotBlocks", comp.Reach == null ? "-1" : comp.Reach.All ? "\"all\"" : comp.Reach.HotBlocks.ToString());
             // round 2: where a rebuild's time goes, how the snapshot base was kept, and what forced the last rebuild / re-reduce
