@@ -1,0 +1,2 @@
+A static HashSet/List<Thing> (e.g. a leak or alert registry) survives loading another save in the same session, and the old game's Things still read Spawned=true (mapIndexOrState is never reset on unload), so a 'RemoveWhere(Destroyed || !Spawned)' prune never drops them: the Alert shows phantom culprits forever and t.Map can index Find.Maps out of range. Key such statics to Current.Game (clear when it changes) or keep them in a Map/GameComponent. Found in Wastes RM_WasteCaskBay.cs, fixed 35199afb6d.
+home: rimworld-modding
