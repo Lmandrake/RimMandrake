@@ -174,6 +174,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public string LastLayFault;
         /// <summary>Selftest seam only (never set by the game): called on the worker with the edge key before each lay, so a test can make a worker lay throw.</summary>
         internal Action<string> WorkerLayHook;
+        /// <summary>Selftest seam only (never set by the game): called on the graph worker before each reduce.</summary>
+        internal Action GraphJobHook;
         internal static int LiveMisses;
 
         private sealed class LayJob { public EdgePlan Ep; public string Fk; public bool LiveA, LiveB; }
@@ -186,10 +188,90 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private bool layRunning;
         private readonly HashSet<string> inFlight = new HashSet<string>(), layFaulted = new HashSet<string>();
 
-        /// <summary>A Build has something new to take, or nothing laying: the caller's next budgeted Build is worth running.</summary>
-        public bool LayReady { get { lock (layLock) return landed.Count > 0 || !layRunning; } }
-        /// <summary>A worker batch is still laying (SelfTest waits on it).</summary>
-        public bool LayRunning { get { lock (layLock) return layRunning; } }
+        /// <summary>A Build has something new to take, or nothing laying: the caller's next budgeted Build is worth running.
+        /// While a graph job runs with nothing landed a Build could only show the last pieces again, so it is not.</summary>
+        public bool LayReady
+        {
+            get
+            {
+                lock (layLock)
+                {
+                    if (graphLanded != null || graphFault != null) return true;
+                    if (graphRunning) return false;
+                    return landed.Count > 0 || !layRunning;
+                }
+            }
+        }
+        /// <summary>A worker batch (lays or a graph job) is still running (SelfTest waits on it).</summary>
+        public bool LayRunning { get { lock (layLock) return layRunning || graphRunning; } }
+
+        /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS: the graph worker. One job at a time reduces a changed graph off the
+        /// caller (CordGraph.Reduce, PlanEdges, the node order and junction decals: every whole-map step of a graph change) for
+        /// the inputs of the Build that started it; a later Build adopts it only when its own inputs are equal, compared
+        /// exactly. LastGraphPending: the last Build waited on it (showed the previous pieces). GraphJobs started, graphs
+        /// adopted; the last job's exception text (after one, this builder reduces on the caller, where it throws).</summary>
+        public bool LastGraphPending;
+        public int GraphJobs, GraphLanded;
+        public string LastGraphFault;
+
+        private sealed class GraphJob
+        {
+            public List<long> Inputs;
+            public string Mach;
+            public CordGraph G;
+            public List<EdgePlan> Plan;
+            public List<KeyValuePair<VId, CordNode>> NodeOrder;
+            public Dictionary<VId, LaidPiece> Junctions;
+        }
+
+        // under layLock: the graph worker's output, fault and running flag; graphFaulted is the caller's
+        private GraphJob graphLanded;
+        private string graphFault;
+        private bool graphRunning, graphFaulted;
+        private List<LaidPiece> lastOut = new List<LaidPiece>();
+
+        private void StartGraph(CordWorld w, BuildOptions opt, int tangleMin, int spurMax, string mach, List<long> inputs)
+        {
+            lock (layLock)
+            {
+                if (graphRunning) return;
+                graphRunning = true;
+            }
+            GraphJobs++;
+            var job = new GraphJob { Inputs = new List<long>(inputs), Mach = mach };
+            ulong seed = opt.Seed;
+            bool slide = opt.SlideUnder;
+            HashSet<string> plugs = opt.StraightPlugIds;
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    GraphJobHook?.Invoke();
+                    CordGraph g = CordGraph.Reduce(w, seed, tangleMin, spurMax, slide, plugs);
+                    job.G = g;
+                    job.Plan = PlanEdges(g);
+                    job.NodeOrder = g.Nodes.OrderBy(k => k.Key).ToList();
+                    job.Junctions = new Dictionary<VId, LaidPiece>();
+                    foreach (var kv in job.NodeOrder)
+                        if (kv.Value.Type == NodeType.Junction) job.Junctions[kv.Key] = JunctionPiece(g, kv.Key, kv.Value, seed);
+                    lock (layLock) { graphLanded = job; graphRunning = false; }
+                }
+                catch (Exception ex)
+                {
+                    lock (layLock) { graphFault = ex.ToString(); graphRunning = false; }
+                }
+            });
+        }
+
+        /// <summary>A junction's decal piece: reads only the graph and the seed (round 2), so the caller and the graph worker
+        /// make the same one.</summary>
+        private static LaidPiece JunctionPiece(CordGraph g, VId v, CordNode nd, ulong seed)
+        {
+            var p = new LaidPiece { Key = "node:" + v, Owner = nd.Cell };
+            JunctionPose jp = PoseJunction(g, v, seed);
+            p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
+            return p;
+        }
 
         /// <summary>Publishes the keys this Build still misses (the worker skips any other) and, with no batch running, starts
         /// one on the thread pool for the queued edges. The world and graph are this Build's: the adapter snapshots a fresh
@@ -270,12 +352,49 @@ namespace RimMandrake.GimmeSomeSlack.Core
             string mach = GraphInputs(w, opt, tangleMin, spurMax, graphInNext);
             long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
             CordGraph g;
+            LastGraphPending = false;
             // a LinkAllowed callback (selftest bands only; the game adapter never sets one) is opaque: always re-reduce
-            if (Graph != null && w.LinkAllowed == null && mach == graphMach && SameInputs(graphIn, graphInNext))
+            bool reuse = Graph != null && w.LinkAllowed == null && mach == graphMach && SameInputs(graphIn, graphInNext);
+            GraphJob adopt = null, gotGraph;
+            // every Build takes the graph worker's output (a job that no Build adopts is dropped, so LayReady goes quiet)
+            lock (layLock)
+            {
+                gotGraph = graphLanded;
+                graphLanded = null;
+                if (graphFault != null) { LastGraphFault = graphFault; graphFault = null; graphFaulted = true; }
+            }
+            if (!reuse && opt.AsyncLay && w.LinkAllowed == null && !graphFaulted)
+            {
+                // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS: a changed graph is reduced, planned and its junctions posed on a worker
+                // (whole-map work: 142 of a 188 ms frame at 8 lattices offline). The frame takes a landed graph only when its
+                // inputs equal this Build's exactly (then it is the graph this Build would reduce); otherwise it starts a job
+                // for this Build's inputs and shows the last pieces, touching nothing else of the builder.
+                if (gotGraph != null && gotGraph.Mach == mach && SameInputs(gotGraph.Inputs, graphInNext)) adopt = gotGraph;
+                else if (!graphFaulted)
+                {
+                    StartGraph(w, opt, tangleMin, spurMax, mach, graphInNext);
+                    LastGraphPending = true;
+                    LastPlanned = LastReused = LastLanded = LastLaidOnCaller = 0;
+                    LastPending = Math.Max(1, LastPending);
+                    long tw = System.Diagnostics.Stopwatch.GetTimestamp();
+                    PhInputsMs = Ms(t0, t1); PhReduceMs = Ms(t1, tw); PhEdgesMs = PhNodesMs = PhReachMs = PhKeyMs = PhCorridorMs = 0;
+                    return new List<LaidPiece>(lastOut);
+                }
+            }
+            if (reuse)
             {
                 g = Graph;
                 LastGraphReused = true;
                 GraphReuses++;
+            }
+            else if (adopt != null)
+            {
+                LastReduceWhy = ReduceWhy(w, mach) + " (worker)";
+                g = adopt.G;
+                plan = adopt.Plan; planFor = g;
+                junctions = adopt.Junctions; nodeOrder = adopt.NodeOrder; junctionsFor = g; junctionSeed = opt.Seed;
+                LastGraphReused = false;
+                GraphLanded++;
             }
             else
             {
@@ -395,13 +514,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 if (nd.Type == NodeType.Junction)
                 {
                     // a junction decal reads only the graph and the seed: kept with the graph (round 2)
-                    if (!junctions.TryGetValue(kv.Key, out LaidPiece p))
-                    {
-                        p = new LaidPiece { Key = "node:" + kv.Key, Owner = nd.Cell };
-                        JunctionPose jp = PoseJunction(g, kv.Key, opt.Seed);
-                        p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
-                        junctions[kv.Key] = p;
-                    }
+                    if (!junctions.TryGetValue(kv.Key, out LaidPiece p)) junctions[kv.Key] = p = JunctionPiece(g, kv.Key, nd, opt.Seed);
                     outp.Add(p);
                 }
                 else if (nd.Type == NodeType.Tangle)
@@ -418,6 +531,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 outp.Add(p);
             }
             cache = next;
+            lastOut = outp;
             long t4 = System.Diagnostics.Stopwatch.GetTimestamp();
             Reach = CordReach.Of(w, g, outp);
             long t5 = System.Diagnostics.Stopwatch.GetTimestamp();

@@ -76,6 +76,7 @@
     <Compile Include="UnroutableCensus.cs" />
     <Compile Include="RebuildPerDigChecks.cs" />
     <Compile Include="SliceGateChecks.cs" />
+    <Compile Include="CordScaleBench.cs" />
     <Compile Include="..\Core\RebuildGate.cs" />
   </ItemGroup>
 

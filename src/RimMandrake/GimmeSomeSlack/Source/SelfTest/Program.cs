@@ -43,6 +43,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int uc = Array.IndexOf(args, "--unroutable-census");
             if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--scale-bench")) { CordScaleBench.Run(args); return 0; }
             if (args.Contains("--fuzz-only")) { GssFuzz.Run(args); Console.WriteLine($"{checks - fails}/{checks} checks passed (fuzz only)"); return fails == 0 ? 0 : 1; }
             bool probe = args.Contains("--probe");
             int di = Array.IndexOf(args, "--dump");

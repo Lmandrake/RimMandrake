@@ -23,6 +23,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             Slices();
             AsyncSlices();
+            GraphWorker();
             Gate();
         }
 
@@ -119,8 +120,13 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             //      edge yet), not adopt it.
             {
                 var b3b = new CordBuilder();
-                b3b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
                 var sw3 = Stopwatch.StartNew();
+                // GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS: a fresh builder's first async Build only starts the graph job; the Build
+                // after it lands adopts the graph and queues the lays
+                b3b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                while (b3b.LayRunning) { System.Threading.Thread.Sleep(1); if (sw3.Elapsed.TotalSeconds > 120) break; }
+                b3b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                Program.Check(b3b.GraphLanded == 1 && b3b.LastPending > 0, $"async: the second Build did not adopt the worker's graph (adopted {b3b.GraphLanded}, pending {b3b.LastPending})");
                 while (!b3b.LayReady || b3b.LayRunning) { System.Threading.Thread.Sleep(1); if (sw3.Elapsed.TotalSeconds > 120) break; }
                 var o3b = new BuildOptions { AsyncLay = true };
                 var after3b = b3b.Build(RebuildPerDigChecks.LiveScene(drop), o3b, live);
@@ -163,6 +169,69 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Program.Check(u.LastPending == 0 && GssFuzz.Digest(u.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live)) == want,
                           "async: an unbudgeted Build after an async Build was not complete");
             while (u.LayRunning) System.Threading.Thread.Sleep(1);
+        }
+
+        /// <summary>GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS (live round 6: maxSliceMs 18 -> 39 -> 47/75 -> 87/98 ms as lattices piled
+        /// up, every edge already laid on the worker): a frame's Build re-reduced the whole map's graph on the caller (offline
+        /// 142 of 188 ms at 8 lattices). A changed graph is now reduced on a worker and adopted only under equal inputs.</summary>
+        private static void GraphWorker()
+        {
+            Func<Cell, bool> live = c => ((c.X * 7 + c.Z * 3) & 1) == 0;
+            // (1) a lattice spawned over frames beside two finished ones, the world moving under running graph jobs
+            {
+                const int k = 2;
+                var (cells, lamps) = CordScaleBench.Lattice(k);
+                ulong want = GssFuzz.Digest(new CordBuilder().Build(CordScaleBench.World(k, cells.Count, lamps.Count), new BuildOptions(), live));
+                var b = new CordBuilder();
+                b.Build(CordScaleBench.World(k, 0, 0), new BuildOptions(), live);
+                int nc = 0, nl = 0, builds = 0, onCaller = 0, callerReduce = 0, waits = 0;
+                List<LaidPiece> last = null;
+                var sw = Stopwatch.StartNew();
+                while (sw.Elapsed.TotalSeconds < 120)
+                {
+                    if (nc < cells.Count) nc = Math.Min(cells.Count, nc + 40);
+                    else if (nl < lamps.Count) nl = Math.Min(lamps.Count, nl + 6);
+                    int adopted = b.GraphLanded;
+                    last = b.Build(CordScaleBench.World(k, nc, nl), new BuildOptions { AsyncLay = true }, live);
+                    builds++;
+                    onCaller += b.LastLaidOnCaller;
+                    if (b.LastGraphPending) waits++;
+                    else if (!b.LastGraphReused && b.GraphLanded == adopted) callerReduce++;
+                    if (nc == cells.Count && nl == lamps.Count && b.LastPending == 0 && !b.LayRunning) break;
+                    System.Threading.Thread.Sleep(2);
+                }
+                Program.Check(callerReduce == 0, $"graph worker: {callerReduce} frame Builds reduced the graph on the caller");
+                Program.Check(waits > 0 && b.GraphLanded > 0, $"graph worker: blind (waited {waits} Builds, adopted {b.GraphLanded} graphs)");
+                Program.Check(b.GraphJobs > b.GraphLanded, $"graph worker: no job went stale under a moving world ({b.GraphJobs} jobs, {b.GraphLanded} adopted): the drop path is unexercised");
+                Program.Check(onCaller == 0 && b.LastGraphFault == null, $"graph worker: laid {onCaller} on the caller, fault {b.LastGraphFault ?? "none"}");
+                Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, "graph worker: the spawn did not end bit-identical to one unbudgeted Build of the final map");
+                Console.WriteLine($"graph worker: spawn over {builds} Builds, {waits} waited, {b.GraphJobs} jobs, {b.GraphLanded} adopted");
+            }
+            // (2) a graph job that throws: recorded, and the builder reduces on the caller from then on (where it would throw)
+            {
+                ulong want = GssFuzz.Digest(new CordBuilder().Build(RebuildPerDigChecks.LiveScene(), new BuildOptions(), live));
+                var b = new CordBuilder { GraphJobHook = () => throw new InvalidOperationException("selftest graph fault") };
+                List<LaidPiece> last = null;
+                int builds = 0;
+                var sw = Stopwatch.StartNew();
+                while (builds < 60 && sw.Elapsed.TotalSeconds < 120)
+                {
+                    last = b.Build(RebuildPerDigChecks.LiveScene(), new BuildOptions { AsyncLay = true }, live);
+                    builds++;
+                    if (b.LastPending == 0 && !b.LayRunning) break;
+                    while (!b.LayReady) System.Threading.Thread.Sleep(1);
+                }
+                Program.Check(b.LastGraphFault != null && b.LastGraphFault.Contains("selftest graph fault"), "graph worker: the job fault was not recorded");
+                Program.Check(b.LastPending == 0 && last != null && GssFuzz.Digest(last) == want, $"graph worker: after a job fault the Builds did not end equal to one unbudgeted Build ({builds} Builds)");
+            }
+            // (3) the instrument: the slowest frame Build while a lattice spawns must not grow with the lattices already there
+            //     (before the fix: 17 ms beside none, 188 ms beside eight, offline .NET 8)
+            {
+                CordScaleBench.Row r0 = CordScaleBench.Measure(0), r8 = CordScaleBench.Measure(8);
+                Program.Check(r8.WorstNoGcMs <= SliceBoundMs && r8.P95Ms <= BudgetMs,
+                              $"graph worker: beside 8 lattices (E={r8.Edges}) the worst frame Build held {r8.WorstNoGcMs:0.0} ms GC-excluded (bound {SliceBoundMs}), p95 {r8.P95Ms:0.0} ms (bound {BudgetMs})");
+                Console.WriteLine($"graph worker: spawn frame Build worst (GC-excluded) / p95: beside 0 lattices {r0.WorstNoGcMs:0.00} / {r0.P95Ms:0.00} ms, beside 8 (E={r8.Edges}) {r8.WorstNoGcMs:0.00} / {r8.P95Ms:0.00} ms");
+            }
         }
 
         private static (int slices, double worst, List<LaidPiece> last, int minEdgePieces) Converge(CordBuilder b, CordWorld w, BuildOptions opt, Func<Cell, bool> live)
