@@ -453,7 +453,7 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref letGoUntil, "letGoUntil", -1);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && smothered is Building_Heater)
             {
-                SmotheredBy[smothered] = this;
+                SmotheredByNow[smothered] = this;
             }
         }
 
@@ -479,14 +479,29 @@ namespace RimMandrake.LanternDeeps
             {
                 CompHeatPusher h = smothered.TryGetComp<CompHeatPusher>();
                 if (h != null) h.enabled = true;
-                SmotheredBy.Remove(smothered);
+                SmotheredByNow.Remove(smothered);
                 smothered = null;
             }
         }
 
         // Vanilla heaters held off, read by Patch_BuildingHeater_TickRare. Each entry is re-checked against its pooler
-        // (IsSmothering), so an entry left over from an earlier game is inert; poolers re-register on load and each check.
-        internal static readonly Dictionary<Thing, RM_CompPooler> SmotheredBy = new Dictionary<Thing, RM_CompPooler>();
+        // (IsSmothering); poolers re-register on load and each check. Static, so it would outlive the game it was filled
+        // in and keep that whole Map reachable (nothing despawns on a load): SmotheredByNow empties it on a game change.
+        private static readonly Dictionary<Thing, RM_CompPooler> SmotheredBy = new Dictionary<Thing, RM_CompPooler>();
+        private static Game smotheredGame;
+
+        internal static Dictionary<Thing, RM_CompPooler> SmotheredByNow
+        {
+            get
+            {
+                if (smotheredGame != Current.Game)
+                {
+                    SmotheredBy.Clear();
+                    smotheredGame = Current.Game;
+                }
+                return SmotheredBy;
+            }
+        }
 
         internal bool IsSmothering(Thing t)
         {
@@ -498,7 +513,7 @@ namespace RimMandrake.LanternDeeps
             if (smothered != heater) { Release(); smothered = heater; }
             CompHeatPusher h = heater.TryGetComp<CompHeatPusher>();
             if (h != null) h.enabled = false;
-            if (heater is Building_Heater) SmotheredBy[heater] = this;
+            if (heater is Building_Heater) SmotheredByNow[heater] = this;
         }
 
         // Switched on and, if it takes power, powered. A held CompHeatPusher heater fails ShouldPushHeatNow (enabled is
@@ -627,13 +642,13 @@ namespace RimMandrake.LanternDeeps
     {
         public static bool Prefix(Building_Heater __instance)
         {
-            if (RM_CompPooler.SmotheredBy.Count == 0 || !RM_CompPooler.SmotheredBy.TryGetValue(__instance, out RM_CompPooler pooler))
+            if (RM_CompPooler.SmotheredByNow.Count == 0 || !RM_CompPooler.SmotheredByNow.TryGetValue(__instance, out RM_CompPooler pooler))
             {
                 return true;
             }
             if (!pooler.IsSmothering(__instance))
             {
-                RM_CompPooler.SmotheredBy.Remove(__instance);
+                RM_CompPooler.SmotheredByNow.Remove(__instance);
                 return true;
             }
             CompPowerTrader power = __instance.compPowerTrader;
