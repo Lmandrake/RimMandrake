@@ -355,6 +355,36 @@ def t_steve_and_any(r):
         open(r.p("down"), "w").close()
 
 
+def t_keep_modlist(r):
+    """TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP: the lane never lets modcheck swap/compose/restore ModsConfig."""
+    code = ("import sys, json, subprocess; sys.path.insert(0, %r); import testq\n"
+            "seen = {}\n"
+            "class R: returncode = 0; stdout = '{}'; stderr = ''\n"
+            "def fake(cmd, **kw): seen.update(kw['env']); return R()\n"
+            "testq.subprocess.run = fake\n"
+            "testq.archmagi_worker(['status'])\n"
+            "print(json.dumps([seen.get('MODCHECK_KEEP_MODLIST'), seen.get('WSLENV')]))" % HERE)
+    p = subprocess.run([sys.executable, "-c", code], env=r.envx({}), capture_output=True, text=True, timeout=60, cwd=HERE)
+    try:
+        keep, wsl = json.loads(p.stdout.strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        keep, wsl = None, p.stdout + p.stderr
+    check(keep == "1" and "MODCHECK_KEEP_MODLIST" in (wsl or ""), "archmagi worker env keeps the modlist and exports it via WSLENV: %s %s" % (keep, wsl))
+    code = ("import sys, os; sys.path.insert(0, %r); import runner\n"
+            "calls = []\n"
+            "runner.swap_to_test_list = lambda *a: calls.append('swap')\n"
+            "runner.restore_full = lambda: calls.append('restore')\n"
+            "runner.compose_test_list = lambda *a: calls.append('compose')\n"
+            "runner.run([])\n"
+            "os.environ['MODCHECK_KEEP_MODLIST'] = '1'\n"
+            "runner.run([])\n"
+            "print(calls)" % os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck"))
+    p = subprocess.run([sys.executable, "-c", code], env=r.envx({}), capture_output=True, text=True, timeout=60,
+                       cwd=os.path.join(REPO, "src", "RimMandrake", "Utils", "modcheck"))
+    check(p.stdout.strip().endswith("['swap', 'compose', 'restore']"),
+          "runner.run swaps+restores without the flag and does neither with it: %s" % (p.stdout + p.stderr)[-300:])
+
+
 def t_phases(r):
     def ph(*args, **env):
         e = dict(os.environ, **env)
@@ -394,7 +424,7 @@ def main():
     tmp = tempfile.mkdtemp(prefix="rf_testq_arch_")
     try:
         r = Rig(tmp)
-        for t in (t_gate, t_candidates, t_tick, t_steve_and_any, t_phases):
+        for t in (t_gate, t_candidates, t_tick, t_steve_and_any, t_keep_modlist, t_phases):
             try:
                 t(r)
             except Exception as ex:     # noqa: BLE001 - reported; the next test still runs

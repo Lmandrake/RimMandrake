@@ -543,6 +543,10 @@ def archmagi_worker(args, stdin=None, timeout=180):
             shlex.quote(phases), ph.lower())
     if os.environ.get("TESTQ_ARCHMAGI_CMD_RUN"):
         env["TESTQ_CMD_RUN"] = os.environ["TESTQ_ARCHMAGI_CMD_RUN"]
+    # the lane honours the job's profile (full-list = the owner's running list): modcheck must not swap ModsConfig
+    # to MINIMAL, compose, or restore it. WSLENV carries the flag into python.exe (TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP).
+    env["MODCHECK_KEEP_MODLIST"] = "1"
+    env["WSLENV"] = (env["WSLENV"] + ":" if env.get("WSLENV") else "") + "MODCHECK_KEEP_MODLIST"
     env.update(TESTQ_HOME=home, TESTQ_WORKER_HOST=ARCHMAGI,
                TESTQ_MODS_DIR=os.environ.get("TESTQ_ARCHMAGI_MODS_DIR") or ARCH_MODS_DIR)
     try:

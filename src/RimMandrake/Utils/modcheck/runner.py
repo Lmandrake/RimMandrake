@@ -192,6 +192,14 @@ def load_validation(mod_dir):
     return suite
 
 
+def keep_modlist():
+    """MODCHECK_KEEP_MODLIST=1 (set by the testq archmagi lane): the game is ALREADY running on the owner's list, and
+    ModsConfig only names the NEXT load, so run() neither swaps to MINIMAL nor composes nor restores it -- the
+    owner's ModsConfig is never written, so there is nothing for a stopped run to leave behind
+    (TESTQ_ARCHMAGI_FIX_OWNER_MODLIST_SWAP)."""
+    return os.environ.get("MODCHECK_KEEP_MODLIST") == "1"
+
+
 def restore_full():
     """Unconditional: called from `run()`'s `finally`. Best-effort -- a
     failure here is loud (non-zero exit propagates to the caller) but never
@@ -925,7 +933,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
     from status import record_run  # noqa: E402
 
     results = {}
-    if not dry_run:
+    keep = keep_modlist()
+    if not dry_run and not keep:
         swap_to_test_list()
     try:
         if not dry_run:
@@ -964,7 +973,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                     package_ids.append(own)
                 if folded:      # the composed mod's tier closure (patches, bestiary ...), not just its own id
                     package_ids.extend(t for t in tier_package_ids(mod_folder) if t not in package_ids)
-            compose_test_list(package_ids)
+            if not keep:
+                compose_test_list(package_ids)
         for mod_folder, item_id in mods:
             if dry_run:
                 # Deliberately does not resolve the mod folder or import its
@@ -1067,7 +1077,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             if verify_err is not None:
                 raise verify_err
     finally:
-        if not dry_run:
+        if not dry_run and not keep:
             restore_full()
     return results
 
