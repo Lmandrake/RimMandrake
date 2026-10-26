@@ -26,6 +26,7 @@ namespace RimMandrake.Minerals
 
         private static List<ThingDef> vanilla;        // the list as Reset built it, plus anything another mod added after our last write
         private static List<ThingDef> lastWritten;
+        private static HashSet<string> keptSet = new HashSet<string>();   // Last.Kept: Pick draws only these, even if a mod appends after Refresh
 
         public static MeteorFilter Last { get; private set; }
         public static string LastReason { get; private set; } = "never applied";
@@ -82,6 +83,7 @@ namespace RimMandrake.Minerals
             foreach (string n in f.Kept) live.Add(byName[n]);
             lastWritten = new List<ThingDef>(live);
             bool changed = Last == null || Last.Active != f.Active || !Last.Kept.SequenceEqual(f.Kept);
+            keptSet = new HashSet<string>(f.Kept);
             Last = f;
             LastReason = why;
             if (f.FellBack)
@@ -95,7 +97,8 @@ namespace RimMandrake.Minerals
                           + "), " + f.Dropped.Count + " mineables barred" : "master toggle OFF, vanilla list of " + f.Kept.Count + " restored"));
         }
 
-        /// <summary>The replacement draw; null = let vanilla draw (adapter inactive, or the list is empty).</summary>
+        /// <summary>The replacement draw; null = let vanilla draw (adapter inactive, or the list is empty). Draws only from what the last
+        /// Refresh kept: an entry another mod appended to the live list since (a stone type, say) is not drawn until a Refresh judges it.</summary>
         public static ThingDef Pick()
         {
             if (Last == null || !Last.Active) return null;
@@ -104,7 +107,7 @@ namespace RimMandrake.Minerals
             var byName = new Dictionary<string, ThingDef>();
             foreach (ThingDef t in live)
             {
-                if (t == null || byName.ContainsKey(t.defName)) continue;
+                if (t == null || !keptSet.Contains(t.defName) || byName.ContainsKey(t.defName)) continue;
                 byName[t.defName] = t;
                 cands.Add(Candidate(t));
             }
