@@ -96,13 +96,14 @@ namespace RimMandrake.RustCathedral.Hum
         public static string ProofWatched(string args)
         {
             Map map = Find.CurrentMap;
+            // Checked before Bind: a refusal after it would leave a non-Cathedral map bound to the attitude def.
+            ThingDef curio = DefDatabase<ThingDef>.GetNamedSilentFail(RM_WatchedBolts.CuriosityDefName);
+            PawnKindDef boltKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(RM_WatchedBolts.LivingBoltDefName);
+            if (curio == null || boltKind == null) return "REFUSED: curiosity or living bolt def missing";
             RM_MapComponent_BiomeAttitude comp = Bind(map, out string refusal);
             if (comp == null) return refusal;
             bool enabled = (args ?? "true").Trim().ToLowerInvariant() != "false";
             bool wasHum = RustCathedralHumSettings.humMechanicEnabled, wasWatch = RustCathedralHumSettings.boltWatchedPricingEnabled;
-            ThingDef curio = DefDatabase<ThingDef>.GetNamedSilentFail(RM_WatchedBolts.CuriosityDefName);
-            PawnKindDef boltKind = DefDatabase<PawnKindDef>.GetNamedSilentFail(RM_WatchedBolts.LivingBoltDefName);
-            if (curio == null || boltKind == null) return "REFUSED: curiosity or living bolt def missing";
             var made = new List<Thing>();
             try
             {
