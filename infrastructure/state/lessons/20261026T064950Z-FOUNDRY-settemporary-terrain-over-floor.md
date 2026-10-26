@@ -1,0 +1,2 @@
+Painting terrain temporarily (TerrainGrid.SetTerrain) and restoring a remembered defName later is lossy on a built floor: setting a non-layerable terrain (water) nulls underGrid, so the soil under the floor is gone, and setting the layerable floor back puts the current top (the water) into underGrid - removing the floor later reveals water. Skip layerable/isFoundation/FoundationAt cells, or remember and restore underGrid too (decomp 1.6 Verse/TerrainGrid.cs SetTerrain). Found on the walking condenser pool (c15f2ce5d3).
+home: rimworld-modding
