@@ -12,8 +12,11 @@ covered means RUN. The rules, in the order they bite:
              /mnt/c, the def dump => never recorded), no network, no os.system/fork/exec, no unknown child program,
              no python child that dropped the tracer, no input modified while the test ran.
   inputs     files read (minus files the test itself wrote), every imported module file, every directory listed (its
-             sorted entry names), every in-repo path whose existence was probed (present/absent), and the repo trees an
-             rsync child copied (winbuild stages fuzz kernels that way; rsync's own --exclude list applies).
+             sorted entry names), every path whose existence was probed (present/absent) — in-repo by relative path, and
+             OUTSIDE the repo by absolute path (a game folder or deployed mod that a test only stats: it reads nothing
+             there, so without this its appearing or vanishing would leave the record "unchanged"; probes under the
+             interpreter / system / temp roots are not recorded — per-run temp names, version-covered stdlib) — and
+             the repo trees an rsync child copied (winbuild stages fuzz kernels that way; rsync's --exclude applies).
   version    each record carries RUNNER_VERSION (hash of run_selftests.py + this file + the tracer) and the python
              version; any change to either invalidates every record.
 
@@ -149,7 +152,12 @@ class Store:
         for rp, existed in rec["probed"].items():
             if os.path.lexists(self.repo / rp) != existed:
                 return False, f"path {'vanished' if existed else 'appeared'}: {rp}"
-        n = len(rec["files"]) + len(rec["dirs"]) + len(rec["probed"])
+        if "outside" not in rec:   # a record from before outside probes were kept cannot vouch for them
+            return False, "record predates outside-repo probes"
+        for ap, existed in rec["outside"].items():
+            if os.path.lexists(ap) != existed:
+                return False, f"path {'vanished' if existed else 'appeared'} outside the repo: {ap}"
+        n = len(rec["files"]) + len(rec["dirs"]) + len(rec["probed"]) + len(rec["outside"])
         return True, (f"unchanged since its PASS at {time.strftime('%m-%d %H:%M', time.localtime(rec['at']))} "
                       f"({n} inputs byte-identical)")
 
@@ -168,7 +176,8 @@ class Store:
             self.forget(rel)
             return False, why
         self.save(rec)
-        return True, f"{len(rec['files'])} files, {len(rec['dirs'])} dirs, {len(rec['probed'])} probes"
+        return True, (f"{len(rec['files'])} files, {len(rec['dirs'])} dirs, {len(rec['probed'])} probes, "
+                      f"{len(rec['outside'])} outside probes")
 
     def build(self, rel: str, trace_dir: Path, secs: float):
         starts = {p.name.split(".")[0] for p in trace_dir.glob("*.start")}
@@ -230,8 +239,14 @@ class Store:
             rp = os.path.relpath(p, self.repo)
             if rp not in files and rp not in dirs and p not in wrote and "/__pycache__/" not in p:
                 probes[rp] = os.path.lexists(p)
+        # Stat-only probes OUTSIDE the repo (reads/listings there already refuse the record above). Kept by absolute
+        # path so the skip re-checks them; the allowed roots are left out (temp names differ per run, the
+        # interpreter is covered by the python version) and so is the repo root itself.
+        outside = {p: os.path.lexists(p) for p in sorted(probed)
+                   if not inside(p) and not p.startswith(allowed) and os.path.normpath(p) != str(self.repo)
+                   and p not in wrote and "/__pycache__/" not in p}
         return {"test": rel, "version": RUNNER_VERSION, "python": sys.version, "state": "PASS", "at": time.time(),
-                "secs": round(secs, 2), "files": files, "dirs": dirs, "probed": probes}, ""
+                "secs": round(secs, 2), "files": files, "dirs": dirs, "probed": probes, "outside": outside}, ""
 
     def _child(self, ch, listed, read):
         exe = os.path.basename(ch["exe"] or (ch["argv"][0] if ch["argv"] else ""))

@@ -36,6 +36,8 @@ FIXTURES = {
     "src/selftest_untraced_child.py": ELIG + ("import subprocess, sys\n"
                                               "subprocess.run([sys.executable, '-c', 'print(1)'], env={'PATH': '/usr/bin'}, check=True)\n"),
     "src/selftest_flaky.py": ELIG + "import os, sys\nprint('flaky')\nsys.exit(1 if os.path.exists('src/FAIL_NOW') else 0)\n",
+    # stat-only probe OUTSIDE the repo (a game folder, a deployed mod): no read, so only the probe record covers it
+    "src/selftest_probes_outside.py": ELIG + "import os, sys\nsys.exit(1 if os.path.exists(os.environ['FIX_GAME']) else 0)\n",
     "src/selftest_plain.py": "print('not eligible: always runs')\n",
     "src/selftest_unmeasured_rc0.py": "print('no live dir — UNMEASURED, not a pass or a fail')\n",
     "src/selftest_deployed_thing.py": "# selftest-tier: deployed\nprint('live install check')\n",
@@ -52,6 +54,7 @@ def build(root: Path):
     (root / "src/listed").mkdir()
     (root / "src/listed/a").write_text("a")
     (root.parent / f"outside-{os.getpid()}.txt").write_text("outside the fixture repo")
+    shutil.rmtree(root.parent / f"game-{os.getpid()}", ignore_errors=True)
 
 
 def run(root: Path, *args, env_extra=None, timeout=120):
@@ -60,7 +63,8 @@ def run(root: Path, *args, env_extra=None, timeout=120):
     env.update(RM_SELFTEST_REPO_ROOT=str(root), RM_SELFTEST_STATE_DIR=str(root / ".state"),
                RM_SELFTEST_LOCK=str(root / ".lock"), RM_SELFTEST_NO_HARNESS="1",
                SELFTEST_TIMINGS_FILE=str(root / ".state/timings.json"),
-               FIX_OUTSIDE=str(root.parent / f"outside-{os.getpid()}.txt"))
+               FIX_OUTSIDE=str(root.parent / f"outside-{os.getpid()}.txt"),
+               FIX_GAME=str(root.parent / f"game-{os.getpid()}"))
     env.update(env_extra or {})
     p = subprocess.run([sys.executable, str(RUNNER), *args], cwd=root, env=env, capture_output=True, text=True,
                        timeout=timeout)
@@ -83,8 +87,8 @@ def main():
         eq(st.get("src/selftest_unmeasured_rc0.py"), "UNMEASURED", "run 1: rc-0 test printing the phrase is UNMEASURED")
         eq(st.get("src/selftest_deployed_thing.py"), "SKIPPED", "run 1: a deployed-tier test is SKIPPED in the default tier")
         eq(st.get("src/selftest_reads_data.py"), "PASS", "run 1: eligible test runs the first time")
-        eq("PASS 6/8" in p.stdout and "SKIPPED 1/8" in p.stdout and "UNMEASURED 1/8" in p.stdout, True,
-           "run 1: explicit N/N per state over all 8 discovered")
+        eq("PASS 7/9" in p.stdout and "SKIPPED 1/9" in p.stdout and "UNMEASURED 1/9" in p.stdout, True,
+           "run 1: explicit N/N per state over all 9 discovered")
         eq("2 PASS not recordable" in p.stdout, True, "run 1: outside-read and untraced-child PASSes are not recordable")
 
         p, st = run(root)
@@ -95,6 +99,18 @@ def main():
         eq(st.get("src/selftest_untraced_child.py"), "PASS", "run 2: a test whose python child dropped the tracer is never skipped")
         eq(st.get("src/selftest_plain.py"), "PASS", "run 2: a non-eligible test always runs")
         eq("unchanged since its PASS" in p.stdout, True, "run 2: the skip prints its reason")
+        eq(st.get("src/selftest_probes_outside.py"), "SKIPPED", "run 2: an unchanged outside-repo probe -> SKIPPED")
+
+        (root.parent / f"game-{os.getpid()}").mkdir()   # the game folder appears
+        sys.path.insert(0, str(HERE))
+        import suite_evidence
+        ok, why = suite_evidence.Store(root, root / ".state").unchanged("src/selftest_probes_outside.py")
+        eq((ok, "appeared outside the repo" in why), (False, True),
+           f"run 2b: the record sees the outside path appear and names it ({why})")
+        p, st = run(root)
+        eq(st.get("src/selftest_probes_outside.py"), "FAIL",
+           "run 2b: a path OUTSIDE the repo appearing -> re-run (not SKIPPED), and it FAILs")
+        (root.parent / f"game-{os.getpid()}").rmdir()
 
         (root / "src/data.txt").write_text("v2\n")
         (root / "src/listed/b").write_text("b")
@@ -148,6 +164,7 @@ def main():
             (root.parent / f"outside-{os.getpid()}.txt").unlink()
         except OSError:
             pass
+        shutil.rmtree(root.parent / f"game-{os.getpid()}", ignore_errors=True)
     if FAILS:
         print(f"FAIL selftest_run_selftests_evidence.py: {len(FAILS)} check(s)")
         return 1
