@@ -8,6 +8,11 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
@@ -19,6 +24,7 @@
          (2026-09-28) - same repoint src/RimMandrake/ExplosiveGrowth/About/About.xml
          already carries. HazardTargeting (this mod's SumApparelStat/
          ProtectionDriveFactor dependency) ships inside mandrake.rm.biomes now. -->
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.biomes</li>
     <li>Ludeon.RimWorld.Biotech</li>
     <li>Ludeon.RimWorld.Odyssey</li>

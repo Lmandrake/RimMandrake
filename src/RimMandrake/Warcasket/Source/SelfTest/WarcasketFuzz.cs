@@ -4,7 +4,8 @@
 //   immersion   pawns walking in and out of deep water in different gear: the clock gains by drive factor, heals on clear ground, kills
 //               at the lethal severity; parallel pawns prove "more protection never hurts"
 //   core        a half-extracted core dosing pawns by distance on every fourth rare tick, silent in a shielded bay
-//   sarcophagus a dead wearer's corpse: seal at death, strip leaves the sealed suit, crack drops it and spawns the salvage once
+//   sarcophagus a dead wearer's corpse: seal at death, strip leaves the sealed suit, crack drops it and spawns the salvage once;
+//               resurrection lifts our seal (never a foreign lock) unless the wearer rises as a corpse-like mutant
 //   tables      exhaustive decision tables and the closed-form failure odds
 // The hediff model (severity added, removed at <= 0, lethal at >= 1 for both hediffs) restates HealthUtility.AdjustSeverity and
 // HediffDef.lethalSeverity as read from the defs; it is the ledger, not the kernel.
@@ -18,7 +19,7 @@ namespace RimMandrake.Warcasket.SelfTest
 {
     internal static class WarcasketFuzz
     {
-        public static long Cases, Steps, Checks, Failures, Deaths, Sealed, Cracked, UnsealedCracks, Doses, ShieldedSkips, Heals, ProtectedGains, StripsBlocked;
+        public static long Cases, Steps, Checks, Failures, Deaths, Sealed, Cracked, UnsealedCracks, Revived, Unsealed, Doses, ShieldedSkips, Heals, ProtectedGains, StripsBlocked;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
         internal static List<T> Shrink<T>(List<T> acts, Func<List<T>, bool> fails)
@@ -280,14 +281,17 @@ namespace RimMandrake.Warcasket.SelfTest
         // ════════════════════════ sarcophagus ════════════════════════
         private enum SA { Die, Strip, Crack, Master, Sarc, Salvage, Revive }
 
-        private sealed class Gear { public string name; public bool sarc, locked, worn = true; }
+        // locked = ours (sealed at death) or foreign (a quest's or another mod's lock, which resurrection must not lift)
+        private sealed class Gear { public string name; public bool sarc, ours, foreign, worn = true; public bool locked => ours || foreign; }
 
         private static string RunSarcophagus(IList<Act> acts, int seed, bool count)
         {
             var rr = new Random(seed ^ 0x1f83d9ab);
             var gear = new List<Gear> { new Gear { name = "junker", sarc = true }, new Gear { name = "plate" }, new Gear { name = "helmet" } };
             if (rr.Next(2) == 0) gear.Add(new Gear { name = "junker2", sarc = true });
-            bool master = true, sarcOn = true, dead = false; int stepNo = 0;
+            if (rr.Next(4) == 0) gear[rr.Next(gear.Count)].foreign = true;
+            // shambler: resurrected as a mutant vanilla still counts as a corpse (Apparel.Notify_PawnResurrected keeps wornByCorpse)
+            bool master = true, sarcOn = true, dead = false, shambler = false; int stepNo = 0;
             var ground = new List<string>(); var stackLimits = new[] { 1, 75, 100, 0, -3, 2 };
             // salvage rows: (count, stackLimit, def known)
             var rows = new List<(int count, int limit, bool known)> { (2, 75, true), (25, 75, true), (1, 1, true) };
@@ -302,15 +306,35 @@ namespace RimMandrake.Warcasket.SelfTest
                         case SA.Master: master = a.f; break;
                         case SA.Sarc: sarcOn = a.f; break;
                         case SA.Salvage: rows.Add((a.a % 130 - 3, stackLimits[a.b % stackLimits.Length], (a.b & 64) == 0)); if (rows.Count > 6) rows.RemoveAt(0); break;
-                        case SA.Revive: break;
+                        case SA.Revive:
+                            {
+                                // ResurrectionUtility.TryResurrect postfix: only a dead pawn resurrects (__result false otherwise)
+                                bool resurrected = dead;
+                                bool asShambler = resurrected && a.f && (a.a & 1) == 0;
+                                var foreignBefore = gear.Where(x => x.foreign).ToList();
+                                foreach (Gear g in gear.Where(x => x.worn))
+                                {
+                                    bool un = RM_WarcasketKernel.UnsealsOnResurrect(g.ours, resurrected, false, asShambler);
+                                    Check(un == (g.ours && resurrected && !asShambler), "UnsealsOnResurrect");
+                                    if (un) { g.ours = false; if (count) Unsealed++; }
+                                }
+                                // a resurrect call that failed (or a still-dead wearer) must never lift the seal
+                                Check(!RM_WarcasketKernel.UnsealsOnResurrect(true, resurrected, true, false), "unsealed a wearer who is still dead");
+                                Check(gear.Where(x => x.foreign).SequenceEqual(foreignBefore), "resurrection lifted a lock that was not ours");
+                                if (resurrected) { dead = false; shambler = asShambler; if (count) Revived++; }
+                                break;
+                            }
                         case SA.Die:
                             if (dead) break;
-                            dead = true; Deaths++;
+                            dead = true; shambler = false; Deaths++;
                             foreach (Gear g in gear.Where(x => x.worn))
                             {
                                 bool seal = RM_WarcasketKernel.SealsOnDeath(master, sarcOn, g.sarc);
                                 Check(seal == (master && sarcOn && g.sarc), "SealsOnDeath");
-                                if (seal) { g.locked = true; Sealed++; }
+                                bool wasLocked = g.locked, wasOurs = g.ours;
+                                g.ours = RM_WarcasketKernel.RecordsSeal(g.ours, seal, wasLocked);
+                                Check(g.ours == (wasOurs || (seal && !wasLocked)), "RecordsSeal");
+                                if (seal) { Check(g.locked, "a sealing death left the suit unlocked"); Sealed++; }
                             }
                             break;
                         case SA.Strip:
@@ -330,7 +354,7 @@ namespace RimMandrake.Warcasket.SelfTest
                                 if (!offers) { Check(!(dead && suit != null && master && sarcOn), "cracking refused though sealed and enabled"); break; }
                                 // the job: it only runs while a sarcophagus suit is worn; unlock, drop, spawn the salvage once
                                 if (!suit.locked) UnsealedCracks++;
-                                suit.locked = false; suit.worn = false; ground.Add(suit.name); Cracked++;
+                                suit.ours = false; suit.foreign = false; suit.worn = false; ground.Add(suit.name); Cracked++;
                                 Check(cracked.Add(suit), "cracked the same suit twice");
                                 foreach (var row in rows)
                                 {
@@ -352,8 +376,11 @@ namespace RimMandrake.Warcasket.SelfTest
                     // standing properties
                     foreach (Gear g in gear)
                     {
-                        if (g.locked) Check(g.worn && g.sarc && dead, "a locked item is off the corpse, not a sarcophagus suit, or on the living");
-                        if (!dead) Check(g.worn && !g.locked, "living wearer lost or locked gear");
+                        if (g.ours) Check(g.worn && g.sarc && (dead || shambler), "our seal is off the body, not on a sarcophagus suit, or on the living");
+                        // WARCASKET_FIX_SEAL_OUTLIVES_DEATH: a living (revived) wearer never carries our seal, whatever the switches say
+                        if (!dead && !shambler) Check(!g.ours, "a revived wearer is still sealed in");
+                        if (g.locked && !g.ours) Check(g.foreign, "a lock nobody placed");
+                        if (!g.worn) Check(!g.locked, "a dropped item is still locked");
                     }
                     Check(ground.Count == ground.Distinct().Count(), "an item was dropped twice");
                     // nothing stranded: with both switches on, every sealed suit still on the corpse can be cracked
@@ -384,6 +411,8 @@ namespace RimMandrake.Warcasket.SelfTest
                     Check(RM_WarcasketKernel.DoseActive(f[0], f[1]) == (f[0] && f[1]), "DoseActive");
                     Check(RM_WarcasketKernel.ShieldingActive(f[0], f[1]) == (f[0] && f[1]), "ShieldingActive");
                     Check(RM_WarcasketKernel.SealsOnDeath(f[0], f[1], f[2]) == (f[0] && f[1] && f[2]), "SealsOnDeath");
+                    Check(RM_WarcasketKernel.RecordsSeal(f[0], f[1], f[2]) == (f[0] || (f[1] && !f[2])), "RecordsSeal");
+                    Check(RM_WarcasketKernel.UnsealsOnResurrect(f[0], f[1], f[2], f[3]) == (f[0] && f[1] && !f[2] && !f[3]), "UnsealsOnResurrect " + k);
                     Check(RM_WarcasketKernel.ExtensionApplies(f[0], f[1]) == (f[0] && f[1]), "ExtensionApplies");
                     Check(RM_WarcasketKernel.ToxinHazard(f[0], f[1]) == (f[0] || f[1]), "ToxinHazard");
                     Check(RM_WarcasketKernel.HoldsClock(f[0], f[1], f[2]) == (f[0] && f[1] && f[2]), "HoldsClock");
@@ -491,7 +520,7 @@ namespace RimMandrake.Warcasket.SelfTest
                 ("integrity", () => RunFamily("integrity", N(5000), S(1), (r, len) => Gen(r, len, new[] { 14, 50, 8, 6, 4, 4, 6, 4 }), RunIntegrity, 30, 170)),
                 ("immersion", () => RunFamily("immersion", N(4000), S(1), (r, len) => Gen(r, len, new[] { 20, 8, 55, 5, 5 }), RunImmersion, 20, 120)),
                 ("core", () => RunFamily("core", N(4000), S(1), (r, len) => Gen(r, len, new[] { 14, 10, 8, 50, 8, 4 }), RunCore, 20, 120)),
-                ("sarcophagus", () => RunFamily("sarcophagus", N(4000), S(1), (r, len) => Gen(r, len, new[] { 12, 14, 24, 8, 8, 16, 2 }), RunSarcophagus, 8, 60)),
+                ("sarcophagus", () => RunFamily("sarcophagus", N(4000), S(1), (r, len) => Gen(r, len, new[] { 12, 14, 24, 8, 8, 16, 10 }), RunSarcophagus, 8, 60)),
                 ("tables", () => Tables(Math.Max(1, N(10)), S(1))),
             };
             foreach (var f in fam)
@@ -505,8 +534,8 @@ namespace RimMandrake.Warcasket.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: hazard checks {Checks}, suit failures {Failures}, deaths {Deaths}, protected gains {ProtectedGains}, heals {Heals}, core doses {Doses}, shielded skips {ShieldedSkips}, sealed {Sealed}, cracked {Cracked} ({UnsealedCracks} never sealed), strips blocked {StripsBlocked}");
-            if (only == null && !oneSeed.HasValue && scale >= 1 && (Failures == 0 || Deaths == 0 || ProtectedGains == 0 || Heals == 0 || Doses == 0 || ShieldedSkips == 0 || Sealed == 0 || Cracked == 0 || StripsBlocked == 0))
+            Console.WriteLine($"reached: hazard checks {Checks}, suit failures {Failures}, deaths {Deaths}, protected gains {ProtectedGains}, heals {Heals}, core doses {Doses}, shielded skips {ShieldedSkips}, sealed {Sealed}, cracked {Cracked} ({UnsealedCracks} never sealed), strips blocked {StripsBlocked}, revived {Revived} ({Unsealed} seals lifted)");
+            if (only == null && !oneSeed.HasValue && scale >= 1 && (Failures == 0 || Deaths == 0 || ProtectedGains == 0 || Heals == 0 || Doses == 0 || ShieldedSkips == 0 || Sealed == 0 || Cracked == 0 || StripsBlocked == 0 || Revived == 0 || Unsealed == 0))
             { Console.WriteLine("FAIL warcasket fuzz never reached a path (blind)"); ok = false; }
             Console.WriteLine($"warcasket fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

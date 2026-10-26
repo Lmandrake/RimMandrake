@@ -187,6 +187,8 @@ namespace RimMandrake.Warcasket
         public RM_WarcasketMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_WarcasketSettings>();
+            // WARCASKET_FIX_SEAL_OUTLIVES_DEATH: the one Harmony patch (RM_Sarcophagus.cs).
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.warcasket"), typeof(RM_WarcasketMod).Assembly, "RimMandrake.Warcasket");
         }
 
         public override string SettingsCategory()

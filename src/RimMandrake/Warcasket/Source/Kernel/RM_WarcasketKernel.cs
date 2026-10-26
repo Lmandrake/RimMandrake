@@ -155,6 +155,22 @@ namespace RimMandrake.Warcasket
             return master && sarcophagi && isSarcophagusSuit;
         }
 
+        /// <summary>Whether the suit now carries our seal after a death: it keeps a seal it already had, and gains one only when
+        /// SealsOnDeath fired and the suit was not already locked by something else (a quest or another mod's lock is not ours to
+        /// lift on resurrection).</summary>
+        public static bool RecordsSeal(bool alreadyOurs, bool sealsNow, bool wasLockedBefore)
+        {
+            return alreadyOurs || (sealsNow && !wasLockedBefore);
+        }
+
+        /// <summary>WARCASKET_FIX_SEAL_OUTLIVES_DEATH: a suit we sealed at death unlocks when its wearer is resurrected alive,
+        /// whatever the switches say now (nothing is ever stranded), unless the wearer came back as a mutant vanilla still counts
+        /// as a corpse (a shambler), mirroring Apparel.Notify_PawnResurrected's own wornByCorpse rule.</summary>
+        public static bool UnsealsOnResurrect(bool sealedByUs, bool resurrected, bool wearerDead, bool wearerCountsAsCorpse)
+        {
+            return sealedByUs && resurrected && !wearerDead && !wearerCountsAsCorpse;
+        }
+
         /// <summary>The crack-open option is offered on a corpse wearing a sarcophagus suit while both switches are on.</summary>
         public static bool OffersCrack(bool master, bool sarcophagi, bool isCorpse, bool hasSuit)
         {

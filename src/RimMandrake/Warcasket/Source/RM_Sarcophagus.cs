@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -35,16 +36,82 @@ namespace RimMandrake.Warcasket
 
     public class RM_CompSarcophagusSeal : ThingComp
     {
+        // True only while the lock on this suit is ours (placed at death). Saved,
+        // because a corpse can lie for days across a reload before a
+        // resurrector serum reaches it.
+        public bool sealedByUs;
+
         public override void Notify_WearerDied()
         {
             base.Notify_WearerDied();
             Apparel apparel = parent as Apparel;
-            if (!RM_WarcasketKernel.SealsOnDeath(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.sarcophagiEnabled,
-                apparel != null && SarcophagusUtility.IsSarcophagusSuit(apparel.def)))
+            bool seals = RM_WarcasketKernel.SealsOnDeath(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.sarcophagiEnabled,
+                apparel != null && SarcophagusUtility.IsSarcophagusSuit(apparel.def));
+            Pawn_ApparelTracker tracker = apparel?.Wearer?.apparel;
+            if (tracker == null)
             {
                 return;
             }
-            apparel.Wearer?.apparel?.Lock(apparel);
+            bool wasLocked = tracker.IsLocked(apparel);
+            sealedByUs = RM_WarcasketKernel.RecordsSeal(sealedByUs, seals, wasLocked);
+            if (seals)
+            {
+                tracker.Lock(apparel);
+            }
+        }
+
+        // WARCASKET_FIX_SEAL_OUTLIVES_DEATH: called from the
+        // ResurrectionUtility.TryResurrect postfix once the wearer lives again.
+        public void Notify_WearerResurrected(Pawn wearer, bool resurrected)
+        {
+            Apparel apparel = parent as Apparel;
+            bool countsAsCorpse = wearer?.mutant != null && wearer.mutant.Def != null && wearer.mutant.Def.isConsideredCorpse;
+            if (apparel == null || wearer?.apparel == null
+                || !RM_WarcasketKernel.UnsealsOnResurrect(sealedByUs, resurrected, wearer.Dead, countsAsCorpse))
+            {
+                return;
+            }
+            wearer.apparel.Unlock(apparel);
+            sealedByUs = false;
+        }
+
+        public override void Notify_Unequipped(Pawn pawn)
+        {
+            base.Notify_Unequipped(pawn);
+            sealedByUs = false;
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref sealedByUs, "RM_sealedByUs", false);
+        }
+    }
+
+    // The suit's lock lives on the pawn's apparel tracker, and vanilla only
+    // lifts locks below 50% HP, so without this a revived Junker could never
+    // take the suit off and the crack-open option (corpse-only) never applies.
+    // TryResurrect is the one caller of Pawn_HealthTracker.Notify_Resurrected
+    // in 1.6 (every serum, ritual, mech and shambler path goes through it);
+    // the postfix runs whether or not the pawn was respawned, unlike vanilla's
+    // own Apparel.Notify_PawnResurrected loop.
+    // No settings field: the unseal must run with every switch off, or a suit
+    // sealed while they were on would be stranded on a living wearer.
+    [RimMandrake.Shared.PatchFeature("Sarcophagus suits unseal on resurrection")]
+    [HarmonyPatch(typeof(ResurrectionUtility), nameof(ResurrectionUtility.TryResurrect))]
+    public static class Patch_ResurrectionUtility_TryResurrect_Unseal
+    {
+        public static void Postfix(Pawn pawn, bool __result)
+        {
+            List<Apparel> worn = pawn?.apparel?.WornApparel;
+            if (!__result || worn == null)
+            {
+                return;
+            }
+            for (int i = worn.Count - 1; i >= 0; i--)
+            {
+                worn[i].GetComp<RM_CompSarcophagusSeal>()?.Notify_WearerResurrected(pawn, __result);
+            }
         }
     }
 
@@ -160,6 +227,11 @@ namespace RimMandrake.Warcasket
                 Map map = corpse.MapHeld;
 
                 inner.apparel.Unlock(suit);
+                RM_CompSarcophagusSeal seal = suit.GetComp<RM_CompSarcophagusSeal>();
+                if (seal != null)
+                {
+                    seal.sealedByUs = false;
+                }
                 inner.apparel.TryDrop(suit, out Apparel _, pos, forbid: false);
 
                 if (ext?.salvage != null)

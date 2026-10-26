@@ -10,9 +10,11 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony patch needed — every class here rides a vanilla extension
-    point (ThingComp/MapComponent/Mod+ModSettings), same shape
-    RM_FloodedCanyon's own non-Harmony classes use.
+    One Harmony patch (WARCASKET_FIX_SEAL_OUTLIVES_DEATH): a postfix on
+    ResurrectionUtility.TryResurrect that lifts the sarcophagus seal from a
+    revived wearer, applied through _Shared/HarmonyResilience/PatchApplier.
+    Everything else rides a vanilla extension point (ThingComp/MapComponent/
+    Mod+ModSettings).
   -->
 
   <PropertyGroup>
@@ -32,6 +34,10 @@
     <DebugType>none</DebugType>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
@@ -59,6 +65,7 @@
     <Compile Include="RM_WarcasketSettings.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_JunkerSarcophagusExtension.cs" />
     <Compile Include="RM_CompWarcasketIntegrity.cs" />
     <Compile Include="RM_MapComponent_HazardousTerrainImmersion.cs" />
@@ -83,6 +90,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="RimMandrake.EnvironmentalHazards">
