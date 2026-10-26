@@ -278,8 +278,10 @@ namespace RimMandrake.Abyss.Fuzz
             return w;
         }
 
-        private static float[] LaneReference(LaneWorld w)
+        // wallCuts counts lane columns cut short by an in-map wall cell (not the map edge): the event "lane.walled" must prove happened.
+        private static float[] LaneReference(LaneWorld w, out int wallCuts)
         {
+            wallCuts = 0;
             var refGrid = new float[w.W * w.H];
             Func<int, int, bool> blocked = (x, z) => x < 0 || z < 0 || x >= w.W || z >= w.H || w.wall[x + z * w.W];
             foreach (int[] lamp in w.lamps)
@@ -295,7 +297,13 @@ namespace RimMandrake.Abyss.Fuzz
                         for (int d2 = 1; d2 <= d; d2++)
                         {
                             if (Math.Abs(l) > HalfWidthRef(d2)) continue;
-                            if (blocked(lamp[0] + f[0] * d2 + s[0] * l, lamp[1] + f[1] * d2 + s[1] * l)) { open = false; break; }
+                            int bx = lamp[0] + f[0] * d2 + s[0] * l, bz = lamp[1] + f[1] * d2 + s[1] * l;
+                            if (blocked(bx, bz))
+                            {
+                                open = false;
+                                if (bx >= 0 && bz >= 0 && bx < w.W && bz < w.H) wallCuts++;
+                                break;
+                            }
                         }
                         if (!open) break;
                         int x = lamp[0] + f[0] * d + s[0] * l, z = lamp[1] + f[1] * d + s[1] * l;
@@ -326,9 +334,9 @@ namespace RimMandrake.Abyss.Fuzz
                             (x, z) => x < 0 || z < 0 || x >= w.W || z >= w.H || w.wall[x + z * w.W],
                             (x, z, v) => { if (x >= 0 && z >= 0 && x < w.W && z < w.H) w.grid.Mark(x + z * w.W, v); });
                     }
-                    float[] want = LaneReference(w);
+                    float[] want = LaneReference(w, out int wallCuts);
                     foreach (float wv in want) if (wv > 0f) Hit("lane.cells");
-                    if (w.lamps.Count > 0 && Enumerable.Range(0, want.Length).Any(i => w.wall[i])) Hit("lane.walled");
+                    if (wallCuts > 0) Hit("lane.walled");   // a wall really cut a lane, not merely "some wall exists somewhere on the grid"
                     for (int i = 0; i < want.Length; i++)
                         Check(Math.Abs(w.grid.clear[i] - want[i]) < 1e-6f, "cell (" + i % w.W + "," + i / w.W + ") clearance " + w.grid.clear[i] + ", reference " + want[i]);
                     Check(w.grid.touched.Distinct().Count() == w.grid.touched.Count, "a cell was touched twice");
@@ -779,6 +787,14 @@ namespace RimMandrake.Abyss.Fuzz
                 case 1: w.gust += 1 + a.a % 2; break;
                 case 2: w.mult = new[] { 0f, 1f, 2f }[a.a % 3]; w.etch = Strengths[a.b % Strengths.Length]; break;
                 case 3: w.hasGust = !w.hasGust; break;
+                case 4: // save + load: RM_AbyssSoundscape.ExposeData Scribes lastGustCount only; the rest comes back as SoundState.Fresh()
+                {
+                    var c = w.s;
+                    w.s = SoundState.Fresh();
+                    w.s.lastGustCount = c.lastGustCount;
+                    if (c.pendingRustleTick >= 0 || c.nextGrainTick >= 0) Hit("sound.reload");
+                    break;
+                }
             }
         }
 
@@ -1009,7 +1025,7 @@ namespace RimMandrake.Abyss.Fuzz
                 ("cover", () => RunFamily("cover", N(3000), S(1), 15485863, new[] { "Tick", "ProbeEyes", "ProbeGone", "Lamps", "Setting", "LongIdle", "Reload" }, new[] { 8, 2, 1, 2, 2, 7, 1 }, 60, MakeCover, CoverStep, 400, 10, 10)),
                 ("gust", () => RunFamily("gust", N(2500), S(1), 32452843, new[] { "Samples", "Force", "GillTick", "Reload", "Feeders" }, new[] { 8, 2, 3, 1, 1 }, 120, MakeGust, GustStep, 1000, 10, 10)),
                 ("storm", () => RunFamily("storm", N(3000), S(1), 49979687, new[] { "Tick", "Storm", "Enabled", "Strength", "Reload" }, new[] { 20, 2, 1, 1, 1 }, 200, seed => new StormWorld { rng = new Random(seed * 11 + 1) }, StormStepFn, 100, 10, 10)),
-                ("sound", () => RunFamily("sound", N(3000), S(1), 67867967, new[] { "Tick", "NewGust", "Grain", "Controller" }, new[] { 20, 3, 2, 1 }, 200, seed => new SoundWorld { rng = new Random(seed * 13 + 1) }, SoundStepFn, 100, 10, 10)),
+                ("sound", () => RunFamily("sound", N(3000), S(1), 67867967, new[] { "Tick", "NewGust", "Grain", "Controller", "Reload" }, new[] { 20, 3, 2, 1, 1 }, 200, seed => new SoundWorld { rng = new Random(seed * 13 + 1) }, SoundStepFn, 100, 10, 10)),
                 ("units", () => Units(N(1000), S(1))),
             };
             foreach (var f in fam)
@@ -1029,7 +1045,7 @@ namespace RimMandrake.Abyss.Fuzz
                 // a fuzz whose interesting events never happened proved nothing: every one of these must have fired
                 string[] mustSee = { "murk.added", "murk.removed", "murk.set", "lamp.shrunk", "lamp.restored", "lamp.fed", "lamp.recovered", "lane.cells", "lane.walled", "cryptid.rings",
                     "cryptid.exchange", "cryptid.exchange.capped", "cover.covered", "cover.lapse", "cover.probe", "cover.report", "gust.natural", "gust.forced", "gust.fed",
-                    "storm.rumble", "storm.flash", "storm.summ", "sound.impact", "sound.rustle", "sound.grain" };
+                    "storm.rumble", "storm.flash", "storm.summ", "sound.impact", "sound.rustle", "sound.grain", "sound.reload" };
                 var missing = mustSee.Where(k => !Stats.ContainsKey(k)).ToList();
                 Console.WriteLine("coverage: " + string.Join(" ", mustSee.Select(k => k + "=" + (Stats.TryGetValue(k, out long v) ? v : 0))));
                 if (missing.Count > 0) { Console.WriteLine("FAIL the fuzz never reached: " + string.Join(", ", missing)); ok = false; }
