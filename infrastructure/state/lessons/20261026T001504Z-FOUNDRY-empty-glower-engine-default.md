@@ -1,0 +1,2 @@
+An empty <li Class="CompProperties_Glower"/> is not 'no glow' or 'faint glow': it loads silently with the engine defaults, glowRadius 14 and colour (369,369,369,0), 1.45x white and brighter than a standing lamp (live def dump 2026-10-25). RM_Illoth's 'faint amber lantern' shipped that way; RSW_SmogMoth still does (SMOGMOTH_FIX_EMPTY_GLOWER_WHITE). Always state glowRadius and glowColor; src/RimMandrake/TheRot/Tools/selftest_rot_glowers.py scans TheRot for it.
+home: rimworld-modding

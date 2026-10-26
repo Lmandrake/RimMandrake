@@ -1344,8 +1344,11 @@
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
         <eggCountRange>5~10</eggCountRange>
       </li>
+      <!-- The "faint amber" fungal lantern. Was an empty glower, which loads the engine default: radius 14, 1.45x white. -->
       <li Class="CompProperties_Glower">
-				</li>
+        <glowRadius>2.5</glowRadius>
+        <glowColor>(217,140,50,0)</glowColor>
+      </li>
     </comps>
     <tools>
       <li>
