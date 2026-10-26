@@ -184,17 +184,19 @@ The stasis chamber spans three layers, as the ancient-machines design requires:
   - **vault loot**: `RUT_VaultType3_FrozenRakata` and the war-lab rooms place chambers at Wrecked or Kludged grade,
     some still holding `RUT_StasisHeldProvisions` (§5).
 
-**Stasis is full stasis at every working grade.** That follows the owner's word. The grade sets everything around
-the stasis:
+**Stasis strength follows the quality grade** (owner ruling by card, 2026-10-26, `OWNER.jsonl:1793027548999599115`:
+"Stasis grade → Strength follows grade"). Strength is the share of rot the field stops, so the rot factor on held
+items is `1 − strength`. The grade also sets capacity, power and flicker:
 
-| Grade | Stasis | Capacity | Power | Field flicker |
-|---|---|---|---|---|
-| Wrecked | none (salvage or repair only) | n/a | n/a | n/a |
-| Kludged | full | 0.2 × capacity | 1 / 0.2 × base draw (Kludged runs hungry) | each flicker lets one in-game hour of normal rot through and is visible as a mote |
-| Refurbished | full | 0.75 × capacity | 1 / 0.75 × base draw | rare |
-| Original (1.0) | full | full | base | none; unreachable by default, as Wrecked Machines ruling 1 says |
+| Grade | Stasis strength | Rot factor on held items | Capacity | Power | Field flicker |
+|---|---|---|---|---|---|
+| Wrecked | none (salvage or repair only) | 1 (no field) | n/a | n/a | n/a |
+| Kludged | 0.2 | 0.8 | 0.2 × capacity | 1 / 0.2 × base draw (Kludged runs hungry) | each flicker lets one in-game hour of normal rot through and is visible as a mote |
+| Refurbished | 0.75 | 0.25 | 0.75 × capacity | 1 / 0.75 × base draw | rare |
+| Original (1.0) | full | 0 | full | base | none; unreachable by default, as Wrecked Machines ruling 1 says |
 
-Base draw is 400 W. Whether stasis *strength* should follow the grade instead is §10 Q2.
+Base draw is 400 W. The engine reads strength per instance (`CompStorageClimate.StasisStrength`), so a grade
+signal from Wrecked Machines sets it without a def per grade.
 
 ### 4.3 Carbon-freezing (Sealed mode, CarbonFreeze; canon)
 
@@ -359,7 +361,7 @@ The items are filed in rimflow and done in this order. Each step names the depen
    - the RSW casket and vault skin;
    - the RUT vault loot, stasis provisions and ship-subsystem grant.
 
-   **Wait:** step 1, and §10 Q2 for the grade semantics.
+   **Wait:** step 1. (§10 Q2 is ruled: strength follows grade.)
 7. `COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES`:
    - the canon dishes and the aged-product recipes that require methods;
    - the SaltCrust tag on the existing salt rations;
@@ -377,16 +379,18 @@ The items are filed in rimflow and done in this order. Each step names the depen
    **Wait:** steps 2–7.
 10. `RIMFRIDGE_DROP_FIX_INBOUND_REFS`: take RimFridge off the active list and fix every inbound reference in §1.
     That covers the validator self-loop entry, the proof_all noise list, the Cherry Picker line and the doc
-    mentions; wrong material is deleted, not superseded. **Wait:** step 9, and §10 Q1. This seat does not touch
+    mentions; wrong material is deleted, not superseded. **Wait:** step 9 (§10 Q1 is ruled: drop after our units ship). This seat does not touch
     ModsConfig.
 
-## 10. Questions for the owner (§2 only)
+## 10. Questions for the owner (§2 only), both RULED 2026-10-26
 
-Both questions are reserved under `delegation_policy.md` §2. Everything else above is delegated.
+Both questions were reserved under `delegation_policy.md` §2. Everything else above is delegated.
 
-- **Q1** (§2.2, an irreversible act on his save): When RimFridge leaves the mod list, every RimFridge fridge in
-  your campaign save vanishes with what is on it. Drop it only after our cooling units ship, so you can move the
-  food first? Or drop it now?
-- **Q2** (§2.4, reconciling two of his rulings): Looted Rakatan stasis chambers give *full* stasis at every working
-  grade, with the grade setting capacity, power and flicker. Or should stasis *strength* itself follow the Wrecked
-  Machines 0.2 / 0.75 ladder?
+- **Q1** (§2.2, an irreversible act on his save): drop RimFridge now, or only after our cooling units ship?
+  **Ruled by card (2026-10-26 08:11 PDT, `OWNER.jsonl:1793027547189804844`): option 1, drop RimFridge AFTER our
+  units ship.** His words: *"We don't have saves to keep right now, remember?"* Save loss is not a concern; the
+  order is kept so the colony always has cold storage. Step 10 follows step 2 shipping (and step 9's proof).
+- **Q2** (§2.4, reconciling two of his rulings): full stasis at every working grade, or stasis *strength* following
+  the Wrecked Machines 0.2 / 0.75 ladder? **Ruled by card (2026-10-26, `OWNER.jsonl:1793027548999599115`):
+  strength follows grade** (0.2 / 0.75 / full). §4.2 carries the table; the engine hook is
+  `COLDSTORAGE_STASIS_WIRE_GRADE_FACTOR`.
