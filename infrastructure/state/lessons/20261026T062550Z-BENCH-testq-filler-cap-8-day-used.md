@@ -1,0 +1,1 @@
+testq filler cap 8/day is used up in ~1 hour (filler jobs run ~4 min), then SteveDesktop sits idle ~23 h while the queue looks healthy; owner spotted it from the unchanging game screen. Temporary fix: systemd drop-in TESTQ_FILL_CAP=150 (testq-tick.service.d/fill-cap.conf); the cap must scale with job length, and the filler must skip all-UNMEASURED chains.
