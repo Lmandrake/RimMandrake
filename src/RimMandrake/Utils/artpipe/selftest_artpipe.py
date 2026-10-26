@@ -4231,7 +4231,9 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                         "install_by_card": "card X"},
                                        {"subject": "ST_KeptBare", "decision": "REGEN"},
                                        {"subject": "ST_Unconf", "decision": "REGEN"},
-                                       {"subject": "ST_Accepted", "decision": "ACCEPT"}])
+                                       {"subject": "ST_Accepted", "decision": "ACCEPT"},
+                                       {"subject": "ST_MixU", "decision": "REGEN"},
+                                       {"subject": "ST_MixK", "decision": "REGEN"}])
             run_dir("test_r1", True, [{"subject": "ST_RegenT", "decision": "REGEN"}])
             dec = td / "sheet.decisions.json"
             dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {"ST_Ruled": {"decision": "redo"}}}))
@@ -4253,6 +4255,10 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                     row("ae_kept_no", "ST_KeptBare", source_run="prod_r1"),
                     row("ae_unconf_no", "ST_Unconf", source_run="prod_r1"),
                     row("ae_bad_id_no", "ST_Regen_b", source_run="../prod_r1"),
+                    # FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT: the exemption read only the WORST facing, so a REGEN
+                    # facing hid an UNCONFIRMED or KEPT sibling and the art-eval marker filed the whole row
+                    row("ae_mix_unconf_no", "ST_MixU", source_run="prod_r1", facings=["east", "south"]),
+                    row("ae_mix_kept_no", "ST_MixK", source_run="prod_r1", facings=["east", "south"]),
                     row("ruled_ok", "ST_Ruled", owner_ruling=dict(ruling, row="ST_Ruled")),
                     row("ruled_no", "ST_NotRuled", owner_ruling=dict(ruling, row="ST_NotRuled")),
                     row("ruled_wrongrow_no", "ST_Other", owner_ruling=dict(ruling, row="ST_Ruled")),
@@ -4265,7 +4271,9 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                         "ST_Regen": "REFUSED_REGEN", "ST_RegenT": "REFUSED_REGEN", "ST_Accepted": "REFUSED_REGEN",
                         "ST_KeptOk": "REFUSED_KEPT", "ST_KeptBare": "REFUSED_KEPT", "ST_Unconf": "REFUSED_UNCONFIRMED",
                         "ST_Regen_b": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
-                        "ST_Other": "REFUSED_KEPT"}
+                        "ST_Other": "REFUSED_KEPT",
+                        ("ST_MixU", "east"): "REFUSED_REGEN", ("ST_MixU", "south"): "REFUSED_UNCONFIRMED",
+                        ("ST_MixK", "east"): "REFUSED_REGEN", ("ST_MixK", "south"): "REFUSED_KEPT"}
             art = td / "rows.json"
             art.write_text(json.dumps(rows))
             dirs = ["--pending-dir", str(q.pending), "--active-dir", str(q.active), "--done-dir", str(q.done),
@@ -4284,6 +4292,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                  ("ae_test_no", "--test run"), ("ae_norec_no", "no REGEN decision"),
                                  ("ae_kept_no", "replaces_kept"), ("ae_unconf_no", "fail closed"),
                                  ("ae_bad_id_no", "not a run id"), ("ruled_no", "no ruling on ST_NotRuled"),
+                                 ("ae_mix_unconf_no", "REFUSED_UNCONFIRMED"), ("ae_mix_kept_no", "replaces_kept"),
                                  ("ruled_wrongrow_no", "is not target_def"),
                                  ("nosubj_install_no", "no_subject row may not install_to")):
                 line = next((ln for ln in e.splitlines() if f"REFUSED ineligible: {rid}:" in ln), "")

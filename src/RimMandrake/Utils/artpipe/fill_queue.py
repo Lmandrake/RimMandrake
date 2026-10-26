@@ -498,9 +498,9 @@ def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tu
         if json.loads(meta.read_text()).get("test", True) is not False:
             return None, f"source_run {run} is a --test run (it may file nothing)"
         recs = [json.loads(ln) for ln in dec.read_text().splitlines() if ln.strip()]
-    except (OSError, ValueError) as e:
-        return None, f"source_run {run}: unreadable ({e})"
-    hit = [r for r in recs if r.get("subject") == target and r.get("decision") == "REGEN"]
+        hit = [r for r in recs if r.get("subject") == target and r.get("decision") == "REGEN"]
+    except Exception as e:                                           # noqa: BLE001 — not a dict/list: fail closed
+        return None, f"source_run {run}: unreadable ({type(e).__name__}: {e})"
     if not hit:
         return None, f"source_run {run} holds no REGEN decision for {target}"
     return hit[-1], ""
@@ -517,9 +517,10 @@ def _owner_ruling_ok(m, target: str) -> str:
         return f"owner_ruling decisions file missing: {p}"
     try:
         doc = json.loads(p.read_text())
-    except (OSError, ValueError) as e:
-        return f"owner_ruling decisions file unreadable ({e})"
-    if target not in (doc.get("decisions") or {}):
+        ruled = target in (doc.get("decisions") or {})
+    except Exception as e:                                           # noqa: BLE001 — not a decisions doc: fail closed
+        return f"owner_ruling decisions file unreadable ({type(e).__name__}: {e})"
+    if not ruled:
         return f"{p.name} holds no ruling on {target}"
     return ""
 
@@ -549,18 +550,23 @@ def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = Non
     worst = min(vs, key=lambda v: RE.RANK.get(v.get("verdict"), -1))
     verdict = worst.get("verdict")
     rec = {"verdict": verdict, "reason": f"{worst.get('id')}: {worst.get('reason')}"}
-    if verdict in RE.ELIGIBLE and all(v.get("eligible") for v in vs):
+    if all(v.get("verdict") in RE.ELIGIBLE and v.get("eligible") for v in vs):
         return True, rec
     run = row.get("source_run")
     if run in (None, ""):
         return False, rec
-    if verdict not in ("REFUSED_REGEN", "REFUSED_KEPT"):
-        return False, dict(rec, reason=rec["reason"] + f" (source_run {run} exempts only REGEN/KEPT art, never "
-                                                         f"{verdict}: fail closed)")
+    # EVERY refused job decides, not the worst one (FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT): a REGEN facing ranks
+    # below an UNCONFIRMED or KEPT sibling, so judging only the worst let the marker file both past their own checks.
+    refused = [v for v in vs if not (v.get("verdict") in RE.ELIGIBLE and v.get("eligible"))]
+    bad = next((v for v in refused if v.get("verdict") not in ("REFUSED_REGEN", "REFUSED_KEPT")), None)
+    if bad is not None:
+        return False, {"verdict": bad.get("verdict"),
+                       "reason": f"{bad.get('id')}: {bad.get('reason')} (source_run {run} exempts only REGEN/KEPT "
+                                 f"art, never {bad.get('verdict')}: fail closed)"}
     r, why = _art_eval_record(run, named, runs_root)
     if r is None:
         return False, dict(rec, reason=rec["reason"] + f" (art-eval marker does not verify: {why})")
-    if verdict == "REFUSED_KEPT":
+    if any(v.get("verdict") == "REFUSED_KEPT" for v in refused):
         card = r.get("install_by_card")
         if not (r.get("replaces_kept") and row.get("replaces_kept") and card and row.get("install_by_card") == card):
             return False, dict(rec, reason=rec["reason"] + f" (kept art: run {run}'s REGEN record and the row must "
