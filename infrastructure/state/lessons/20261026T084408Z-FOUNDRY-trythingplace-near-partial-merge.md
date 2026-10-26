@@ -1,0 +1,2 @@
+GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near) in 1.6 loops TryFindPlaceSpotNear + TryPlaceDirect and can merge PART of the stack into neighbouring stacks before returning false; the remainder is left on the unspawned Thing (thing.stackCount). Treating false as 'nothing landed' and re-storing the full count duplicates the merged part. Count what landed as n - thing.stackCount. (Greentide DigOut, b19659cd06)
+home: rimworld-modding

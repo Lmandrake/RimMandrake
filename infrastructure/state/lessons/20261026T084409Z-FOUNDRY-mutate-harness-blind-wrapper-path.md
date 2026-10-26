@@ -1,0 +1,2 @@
+mutate_kernel_fuzz.py given a repo-relative wrapper path joined it onto Utils/, ran a nonexistent file, and scored EVERY mutation NOT CAUGHT (python's own error has no FAIL line) - a blind instrument reading as a weak fuzz. Fixed in b19659cd06 (resolves HERE/REPO/abspath, refuses with exit 2). Sanity check: a known-caught mutation reading NOT CAUGHT means the harness, not the fuzz.
+home: infrastructure/state/facts/instrument_traps.md
