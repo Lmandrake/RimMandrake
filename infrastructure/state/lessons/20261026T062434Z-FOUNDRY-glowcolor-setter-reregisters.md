@@ -1,0 +1,2 @@
+CompGlower.GlowColor's setter (decompiled 1.6 SetGlowColorInternal) DeRegisters and re-Registers a lit glower on EVERY write, even when the value is the same, so the glow grid around it gets re-flooded. A periodic sweep that re-assigns the colour every N ticks therefore dirties the grid around every light it touches. Compare against glower.GlowColor before writing. Found in LuminousPigment MapComponent_DeepfireLights.Worn.cs SetMovingLight (fixed a2311a1c04).
+home: skill:rimworld-modding

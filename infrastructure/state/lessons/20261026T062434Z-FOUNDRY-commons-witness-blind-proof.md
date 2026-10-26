@@ -1,0 +1,2 @@
+A proof row that compares 'unchanged before/after' must first prove that its 'before' can be nonzero. RM_ClaimEraseProof planted a witness against a Commons claimant. FactionRecord.RegisterWitness keeps only Pawn suspects, and a fresh entry reads 0 at its own tick (Propagated(0 days)=0), so the row compared 0 with 0 and could never fail. The row was removed in 4351b3fafe.
+home: skill:live-debugging-proof-harness
