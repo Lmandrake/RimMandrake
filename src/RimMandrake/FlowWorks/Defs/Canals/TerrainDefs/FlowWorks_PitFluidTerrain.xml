@@ -750,6 +750,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_BoilingWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -776,6 +783,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_BoilingWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -802,6 +816,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_BoilingWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -826,6 +847,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_BoilingWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -847,6 +875,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_IcyWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -871,6 +906,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_IcyWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -895,6 +937,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_IcyWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -917,6 +966,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_IcyWater</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
 </Defs>

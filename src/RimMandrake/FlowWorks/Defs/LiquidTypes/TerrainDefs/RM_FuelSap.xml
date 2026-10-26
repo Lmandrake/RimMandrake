@@ -41,6 +41,9 @@
       <li>Water</li>
     </tags>
     <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
         <viscosityClass>Thick</viscosityClass>
         <pH>7</pH>
@@ -65,6 +68,9 @@
       <li>Water</li>
     </tags>
     <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_NotDrinkable</liquid>
+      </li>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
         <viscosityClass>Thick</viscosityClass>
         <pH>7</pH>

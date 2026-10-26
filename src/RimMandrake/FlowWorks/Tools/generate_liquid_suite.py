@@ -200,6 +200,7 @@ LIQUID_ROWS = {
     # Saltwater is the engine's whole salinity axis (§1) — pH/viscosity ride
     # the extension "up the ladder" per §6's own phrasing.
     "brackish": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_WaterBrackish",
         "file_name": "RM_WaterBrackish.xml",
         "label_shallow": "brackish water",
@@ -283,6 +284,7 @@ LIQUID_ROWS = {
     },
 
     "ooze": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_Ooze",
         "file_name": "RM_Ooze.xml",
         "label_shallow": "ooze",
@@ -296,6 +298,7 @@ LIQUID_ROWS = {
     },
 
     "mineralized": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_WaterMineral",
         "file_name": "RM_WaterMineral.xml",
         "label_shallow": "mineralized water",
@@ -316,6 +319,7 @@ LIQUID_ROWS = {
     # CARD-2 ruled: coolant is waterBodyType Other, its own bucket (not
     # invented — MECHANICS_CARDS_SITTING_1, cited in §9).
     "coolant": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_Coolant",
         "file_name": "RM_Coolant.xml",
         "label_shallow": "coolant canal",
@@ -356,6 +360,7 @@ LIQUID_ROWS = {
     },
 
     "fuelsap": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_FuelSap",
         "file_name": "RM_FuelSap.xml",
         "label_shallow": "fuel-sap liquor",
@@ -370,6 +375,7 @@ LIQUID_ROWS = {
     },
 
     "ichor": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_Ichor",
         "file_name": "RM_Ichor.xml",
         "label_shallow": "ichor",
@@ -386,6 +392,7 @@ LIQUID_ROWS = {
     },
 
     "ammonia": {
+        "drink_liquid": "RM_Liquid_NotDrinkable",  # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: no LiquidDef of its own; safe default, drink effect is an open design call
         "defnamePrefix": "RM_Ammonia",
         "file_name": "RM_Ammonia.xml",
         "label_shallow": "cryo-ammonia",
@@ -605,7 +612,8 @@ def union_tags_affordances(leaf_fields, extra_tags, dbh_water=True):
 
 
 def build_terrain_xml(defname, label, description, leaf_fields,
-                       native_overrides, extension, render_precedence, extra_tags, dbh_water=True):
+                       native_overrides, extension, render_precedence, extra_tags, dbh_water=True,
+                       drink_liquid=None):
     tags, affordances = union_tags_affordances(leaf_fields, extra_tags, dbh_water)
     is_deep = "Deep" in defname
     texture_path = "Terrain/Surfaces/WaterDeepRamp" if is_deep else "Terrain/Surfaces/WaterShallowRamp"
@@ -635,6 +643,12 @@ def build_terrain_xml(defname, label, description, leaf_fields,
         lines.append("    </tags>")
     if extension:
         lines.append("    <modExtensions>")
+        if drink_liquid:
+            # LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: a Water-tagged terrain no LiquidDef lists is read as FreshWater
+            # by RM_ThirstUtility.DrinkLiquidAt; name what a pawn drinks here.
+            lines.append('      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">')
+            lines.append(f"        <liquid>{drink_liquid}</liquid>")
+            lines.append("      </li>")
         lines.append('      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">')
         for fk, fv in extension.items():
             if isinstance(fv, dict):
@@ -665,13 +679,13 @@ def generate(liquid_key, defs_by_name, out_dir: Path):
         f"{prefix}Shallow", row["label_shallow"], row["description"],
         shallow_leaf, shallow_overrides, row["extension"],
         RENDER_PRECEDENCE_SHALLOW, extra_tags=["Water"] + row.get("extra_tags_shallow", []),
-        dbh_water=prefix in DBH_WATER_PREFIXES,
+        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"),
     )
     deep_xml = build_terrain_xml(
         f"{prefix}Deep", row["label_deep"], row["description"],
         deep_leaf, deep_overrides, row["extension"],
         RENDER_PRECEDENCE_DEEP, extra_tags=["Water"] + row.get("extra_tags_deep", []),
-        dbh_water=prefix in DBH_WATER_PREFIXES,
+        dbh_water=prefix in DBH_WATER_PREFIXES, drink_liquid=row.get("drink_liquid"),
     )
 
     header = f"""<?xml version="1.0" encoding="utf-8"?>

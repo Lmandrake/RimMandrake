@@ -401,6 +401,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_Tar</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- Tier 2 of 3 — half full, read as knee-to-waist shallow (about 1 m). -->
@@ -428,6 +435,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_Tar</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
@@ -455,6 +469,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_Tar</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- A FLOODED SUPERDEEP cell. Same reasoning as RM_Fill_Water_Superdeep:
@@ -485,6 +506,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- LIQUID_TERRAINS_FIX_DRUNK_AS_FRESHWATER: without this, DrinkLiquidAt's fallback (Water tag, no LiquidDef suite)
+           reads this fill as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_Tar</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
 </Defs>
