@@ -727,6 +727,48 @@ def audit_run(run, dirs=None):
     return out
 
 
+def run_mode(run):
+    """The gate mode a run JSON recorded (on | shadow | off), or None for a run that predates the field."""
+    return ((run.get("summary") or run).get("gate") or {}).get("mode")
+
+
+def audit_report(runs, dirs=None):
+    """The audit's printed lines for [(name, run json)]. The skip and miss RATES are those of the SHADOW runs only:
+    a shadow run decides every chain and skips none, so its would_skip chains are the whole population the gate
+    would have reused. Runs in mode `on` skipped their known-good chains (nothing to compare) and a targeted run
+    holds a handful of chains, so mixing them in made a 1% skip rate from 180 chains (the first Steve measurement).
+    Without a shadow run the header says so: that is not the section 9 measurement."""
+    def tally(rs):
+        tot = {"chains": 0, "would_skip": 0, "skipped": 0, "misses": [], "drift": [], "unreadable": []}
+        for name, run in rs:
+            r = audit_run(run, dirs=dirs)
+            for k in ("chains", "would_skip", "skipped"):
+                tot[k] += r[k]
+            for k in ("misses", "drift", "unreadable"):
+                tot[k] += ["%s: %s" % (name, x) for x in r[k]]
+        return tot
+    shadow = [r for r in runs if run_mode(r[1]) == SHADOW]
+    other = [r for r in runs if run_mode(r[1]) != SHADOW]
+    out = ["runs %d: %d in shadow, %d not (gate on/off/unrecorded)" % (len(runs), len(shadow), len(other))]
+    if not shadow:
+        out.append("NO SHADOW RUN: the rates below are not the section 9 gate audit; do one deliberate --full "
+                   "sweep with MODCHECK_GATE=shadow and audit that sheet")
+    ts = tally(shadow)
+    tn = tally(other)
+    ws = ts["would_skip"]
+    out.append("SHADOW: chains %d, would_skip %d (skip rate %.0f%%), misses %d in %d chain(s) (miss rate %s)" % (
+        ts["chains"], ws, 100.0 * ws / max(1, ts["chains"]), len(ts["misses"]),
+        len({m.split(": ", 1)[1].split("/")[0] for m in ts["misses"]}),
+        "%.0f%%" % (100.0 * len({m.split(": ", 1)[1].split("/")[0] for m in ts["misses"]}) / ws) if ws else "n/a"))
+    out.append("OTHER (informational, not a rate): chains %d, would_skip %d, skipped %d, misses %d" % (
+        tn["chains"], tn["would_skip"], tn["skipped"], len(tn["misses"])))
+    for label, tot in (("shadow", ts), ("other", tn)):
+        for k, word in (("misses", "miss"), ("drift", "drift"), ("unreadable", "unreadable")):
+            for x in tot[k]:
+                out.append("  %s %s %s" % (label, word, x))
+    return out
+
+
 def preview(mod_folder, environ=None):
     import runner as R  # noqa: E402
     mod_dir = R.find_mod_dir(mod_folder)
@@ -772,22 +814,12 @@ def main(argv=None):
         for name, act, why, key in rows:
             print("  %-34s %-10s %s  %s" % (name, act, (key or "-")[:10], why[:150]))
         return 0
-    tot = {"chains": 0, "would_skip": 0, "skipped": 0, "misses": [], "drift": [], "unreadable": []}
+    runs = []
     for path in a.runs:
         with open(path, encoding="utf-8") as f:
-            r = audit_run(json.load(f))
-        for k in ("chains", "would_skip", "skipped"):
-            tot[k] += r[k]
-        for k in ("misses", "drift", "unreadable"):
-            tot[k] += ["%s: %s" % (os.path.basename(path), x) for x in r[k]]
-    ws = tot["would_skip"] + tot["skipped"]
-    print("runs %d, chains %d, known-good %d (skip rate %.0f%%), audited %d, misses %d (miss rate %s)" % (
-        len(a.runs), tot["chains"], ws, 100.0 * ws / max(1, tot["chains"]), tot["would_skip"], len(tot["misses"]),
-        "%.0f%%" % (100.0 * len({m.split("/")[0] for m in tot["misses"]}) / tot["would_skip"])
-        if tot["would_skip"] else "n/a"))
-    for k in ("misses", "drift", "unreadable"):
-        for x in tot[k]:
-            print("  %s %s" % (k[:-1] if k != "drift" else "drift", x))
+            runs.append((os.path.basename(path), json.load(f)))
+    for line in audit_report(runs):
+        print(line)
     return 0
 
 

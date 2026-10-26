@@ -300,6 +300,20 @@ def t_audit_drift(m):
                                      "components": [_comp("r1", "UNMEASURED"), _comp("r2")]}]}, dirs=[m.hist])
     ok(au["misses"] == ["a/r1: UNMEASURED now, PASS in record"] and au["drift"] == ["a/r2: UNMEASURED -> PASS"],
        "audit_run: PASS lost is a miss, UNMEASURED->PASS is drift", au)
+    # the report's rates come from SHADOW runs only; a targeted/on run is informational, and no shadow run says so
+    sh = {"summary": {"gate": {"mode": "shadow"}, "chains": [
+        {"name": "a", "components": [_comp("r1", "FAIL")], "gate": {"action": gate.WOULD, "record": rec}},
+        {"name": "z", "components": [_comp("r1")], "gate": {"action": gate.RUN}}]}}
+    on = {"summary": {"gate": {"mode": "on"}, "chains": [
+        {"name": "a", "components": [_comp("r1", "FAIL")], "gate": {"action": gate.WOULD, "record": rec}}]}}
+    rep = gate.audit_report([("sh.json", sh), ("on.json", on)], dirs=[m.hist])
+    ok(rep[0].startswith("runs 2: 1 in shadow, 1 not") and not any(l.startswith("NO SHADOW") for l in rep)
+       and "chains 2, would_skip 1 (skip rate 50%), misses 1 in 1 chain(s) (miss rate 100%)" in rep[1]
+       and any(l.startswith("OTHER") and "misses 1" in l for l in rep) and any(l.startswith("  shadow miss sh.json: a/r1") for l in rep),
+       "audit_report: rates over the shadow runs, other runs apart, a miss labelled 'miss'", rep)
+    rep2 = gate.audit_report([("on.json", on)], dirs=[m.hist])
+    ok(any(l.startswith("NO SHADOW RUN") for l in rep2) and "would_skip 0 (skip rate 0%)" in rep2[2],
+       "audit_report: with no shadow run it says the rates are not the section 9 audit", rep2)
 
 
 def t_run_suite(m):
