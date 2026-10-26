@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS: an encased item (CompEncased, Source/Encasing.cs) is worth and weighs
+       what it holds, so a carbonite pack sells for its food and a caravan carries its food's mass. Both stats already
+       have a parts list in Core (Stats_Basics_General.xml). Colony wealth counts the pack once
+       (Patch_WealthWatcher_WealthItemsFilter skips the held items). -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="MarketValue"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.ColdStorage.StatPart_EncasedContents" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="Mass"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.ColdStorage.StatPart_EncasedContents" />
+    </value>
+  </Operation>
+</Patch>

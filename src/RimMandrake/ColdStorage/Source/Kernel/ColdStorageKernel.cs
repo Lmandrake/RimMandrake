@@ -522,5 +522,50 @@ namespace RimMandrake.ColdStorage
         {
             return ownSwitch && (!hasExternal || !externalReadable || externalValue);
         }
+
+        /// <summary>COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS: how many of <paramref name="count"/> released meals come
+        /// out shocked, one roll per meal against <paramref name="unit"/> (uniform in [0,1)). The chance is clamped to
+        /// [0,1]; 0 or no meals gives none, 1 gives all, without rolling.</summary>
+        public static int ShockedCount(int count, float chance, Func<float> unit)
+        {
+            chance = Clamp01(chance);
+            if (count <= 0 || chance <= 0f)
+            {
+                return 0;
+            }
+            if (chance >= 1f)
+            {
+                return count;
+            }
+            int n = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (unit() < chance)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+
+        /// <summary>What an encased item adds to a per-unit stat (market value, mass): the sum over its held stacks of
+        /// value per unit times count. Negative values and counts add nothing.</summary>
+        public static float StackSum(float[] unitValues, int[] counts)
+        {
+            if (unitValues == null || counts == null)
+            {
+                return 0f;
+            }
+            float sum = 0f;
+            int n = Math.Min(unitValues.Length, counts.Length);
+            for (int i = 0; i < n; i++)
+            {
+                if (unitValues[i] > 0f && counts[i] > 0)
+                {
+                    sum += unitValues[i] * counts[i];
+                }
+            }
+            return sum;
+        }
     }
 }

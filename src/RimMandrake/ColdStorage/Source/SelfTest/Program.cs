@@ -65,6 +65,8 @@ namespace RimMandrake.ColdStorage.SelfTest
             SealsProductHazard();
             SealsTaste();
             SealsGates();
+            EncaseShock();
+            EncasedStackSum();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -481,6 +483,33 @@ namespace RimMandrake.ColdStorage.SelfTest
             Check("external off: closed", !ColdStorageKernel.GateOpen(true, true, true, false));
             Check("external on: open", ColdStorageKernel.GateOpen(true, true, true, true));
             Check("external unreadable: open", ColdStorageKernel.GateOpen(true, true, false, false));
+        }
+
+        // 25. Carbon-freezing thaw: one roll per meal, chance clamped; 0 or 1 never rolls
+        private static void EncaseShock()
+        {
+            Func<float> never = () => throw new InvalidOperationException("rolled");
+            Check("chance 0: none, no roll", ColdStorageKernel.ShockedCount(20, 0f, never) == 0);
+            Check("chance 1: all, no roll", ColdStorageKernel.ShockedCount(20, 1f, never) == 20);
+            Check("chance 3 clamps to all", ColdStorageKernel.ShockedCount(7, 3f, never) == 7);
+            Check("negative chance: none", ColdStorageKernel.ShockedCount(7, -1f, never) == 0);
+            Check("no meals: none", ColdStorageKernel.ShockedCount(0, 0.5f, never) == 0);
+            float[] seq = { 0.01f, 0.5f, 0.049f, 0.05f, 0.9f };
+            int k = 0;
+            Check("5 % against a fixed sequence: 2 of 5 (0.05 itself is safe)", ColdStorageKernel.ShockedCount(5, 0.05f, () => seq[k++]) == 2);
+            Random r = new Random(4242);
+            int burnt = ColdStorageKernel.ShockedCount(20000, 0.05f, () => (float)r.NextDouble());
+            Check("20000 meals at 5 %: 4..6 % burnt", burnt >= 800 && burnt <= 1200, "got " + burnt);
+        }
+
+        // 26. An encased pack is worth and weighs what it holds: sum of unit value times count
+        private static void EncasedStackSum()
+        {
+            Near("100 meat at 2 + 20 at 0.5", ColdStorageKernel.StackSum(new[] { 2f, 0.5f }, new[] { 100, 20 }), 210f);
+            Near("empty", ColdStorageKernel.StackSum(new float[0], new int[0]), 0f);
+            Near("null", ColdStorageKernel.StackSum(null, null), 0f);
+            Near("negative value or count adds nothing", ColdStorageKernel.StackSum(new[] { -3f, 4f }, new[] { 5, -2 }), 0f);
+            Near("mismatched lengths: the shorter", ColdStorageKernel.StackSum(new[] { 1f, 1f, 1f }, new[] { 2 }), 2f);
         }
     }
 }

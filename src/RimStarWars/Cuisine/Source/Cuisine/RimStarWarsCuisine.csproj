@@ -46,6 +46,7 @@
     <Compile Include="CuisineDefOf.cs" />
     <Compile Include="NameGenComp.cs" />
     <Compile Include="IngredientValueGetter_ExcludeSkewer.cs" />
+    <Compile Include="CuisineSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -87,4 +87,10 @@
   <RM_ColdStorage_TapNoTree>No tree beside it: nothing to tap.</RM_ColdStorage_TapNoTree>
   <RM_ColdStorage_TapDrawing>Tapping {0}: {1} resin a day ({2} gathered, drops every {3}).</RM_ColdStorage_TapDrawing>
   <RM_ColdStorage_TapNeedsTree>Must be placed next to a tree.</RM_ColdStorage_TapNeedsTree>
+  <!-- Encasing (COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS, Source/Encasing.cs) -->
+  <RM_ColdStorage_EncasedEmpty>empty</RM_ColdStorage_EncasedEmpty>
+  <RM_ColdStorage_EncasedNothing>Holds nothing.</RM_ColdStorage_EncasedNothing>
+  <RM_ColdStorage_EncasedHolds>Holds, frozen: {0}</RM_ColdStorage_EncasedHolds>
+  <RM_ColdStorage_EncasedStat>Contents</RM_ColdStorage_EncasedStat>
+  <RM_ColdStorage_ReleaseShocked>{0} meals came out of the thaw as {1}.</RM_ColdStorage_ReleaseShocked>
 </LanguageData>

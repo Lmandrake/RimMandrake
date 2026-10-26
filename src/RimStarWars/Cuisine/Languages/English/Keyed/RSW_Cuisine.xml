@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Mod Settings (Source/Cuisine/CuisineSettings.cs) -->
+  <RSW_Cuisine_SettingsCategory>RimStarWars: Cuisine</RSW_Cuisine_SettingsCategory>
+  <RSW_Cuisine_SettingsCarbon>Carbon freezing</RSW_Cuisine_SettingsCarbon>
+  <RSW_Cuisine_SettingsNeedsColdStorage>Needs Cold Storage. Applies at once.</RSW_Cuisine_SettingsNeedsColdStorage>
+  <RSW_Cuisine_SettingCarbonPress>Carbon-freezing press</RSW_Cuisine_SettingCarbonPress>
+  <RSW_Cuisine_SettingCarbonPressDesc>Off: the press leaves the build menu and its bills stop. Built presses and packs stay; packs keep their food.</RSW_Cuisine_SettingCarbonPressDesc>
+  <RSW_Cuisine_SettingCarbonShock>Carbon-shock chance per thawed meal: {0}</RSW_Cuisine_SettingCarbonShock>
+  <RSW_Cuisine_SettingCarbonShockDesc>Each meal thawed out of a carbonite pack may come out carbon-burnt: edible, tastes of metal, a small bad thought. Raw food never burns.</RSW_Cuisine_SettingCarbonShockDesc>
+  <RSW_Cuisine_SettingsReset>Reset to defaults</RSW_Cuisine_SettingsReset>
+</LanguageData>

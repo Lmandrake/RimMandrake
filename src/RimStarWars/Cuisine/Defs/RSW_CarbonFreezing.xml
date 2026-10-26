@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The carbon-freezing press (design/RimStarWars/cold_storage_line_2026-10-26.md §4.3,
+  COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS). Every def here runs on the Cold Storage engine (mandrake.rm.coldstorage):
+  each carries MayRequire="mandrake.rm.coldstorage", so without the engine the whole line silently stays out and
+  Cuisine loads as before.
+
+  The press freezes food INTO a carbonite pack (RimMandrake.ColdStorage.RecipeWorker_Encase, CompEncased): the pack
+  holds the real items, so quality, ingredients and rot progress come back unchanged, and nothing inside ever rots.
+  One carbonite charge per batch. Thawing gives the contents back; a meal may come out carbon-burnt (shock chance,
+  Mod Settings, default 5%). Blast-chill mode turns milk into blast-chilled cream, no charge.
+  Mod Settings (Cuisine): press on/off (hides the press and every bill below), carbon-shock chance.
+
+  INTERIM ART: the press, the charge, the packs, the cream and the burnt meal draw vanilla textures until their own art
+  lands (art queue, COLD_STORAGE_CARBONFREEZE item). No geometric placeholder ships (placeholder_lint, owner 2026-10-07).
+-->
+<Defs>
+
+  <ResearchProjectDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonFreezing</defName>
+    <label>carbon freezing</label>
+    <description>Encasing food in carbonite, the way smugglers ship perishables across the Outer Rim: a pack keeps whatever it holds exactly as it went in, for as long as it stays frozen.</description>
+    <baseCost>2000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>RSW_CryoStorage</li>
+    </prerequisites>
+    <researchViewX>17.00</researchViewX>
+    <researchViewY>5.60</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- ================================ The press ================================ -->
+
+  <ThingDef ParentName="BenchBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonFreezingPress</defName>
+    <label>carbon-freezing press</label>
+    <description>A compact carbonite chamber that encases food in a frozen block. Whatever goes in comes out exactly as it was: a carbonite pack never rots. Each batch burns one carbonite charge. Thawing a pack gives its contents back, though a cooked meal occasionally comes out tasting of metal. The chamber can also blast-chill milk into cream.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <graphicData>
+      <texPath>Things/Building/SerumCentrifuge/SerumCentrifuge</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(150,170,185)</color>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.20</staticSunShadowHeight>
+    <altitudeLayer>Building</altitudeLayer>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <designationCategory>Production</designationCategory>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>30</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>300</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Breakdownable"/>
+    </comps>
+    <researchPrerequisites>
+      <li>RSW_CarbonFreezing</li>
+    </researchPrerequisites>
+    <constructEffect>ConstructMetal</constructEffect>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ================================ Items ================================ -->
+
+  <ThingDef ParentName="ResourceBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarboniteCharge</defName>
+    <label>carbonite charge</label>
+    <description>A sealed canister of carbonite gas mix, enough to freeze one batch in a carbon-freezing press.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.85</drawSize>
+      <color>(120,135,150)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>35</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>1.0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef Name="RSW_CarbonitePackBase" ParentName="ResourceBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <graphicData>
+      <texPath>Things/Item/Resource/ReinforcedBarrel/ReinforcedBarrel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(110,120,130)</color>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>30</MarketValue>
+      <Mass>1</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Encased"/>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_CarbonFreeze</method>
+        <flavours>
+          <li>carbonite</li>
+          <li>frost</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_CarbonitePackBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonitePack_Meat</defName>
+    <label>carbonite meat pack</label>
+    <description>Raw meat encased in a block of carbonite. It never rots while frozen; thaw it at a carbon-freezing press to get the meat back exactly as it went in.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_CarbonitePackBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonitePack_Fish</defName>
+    <label>carbonite fish pack</label>
+    <description>Raw fish encased in a block of carbonite. It never rots while frozen; thaw it at a carbon-freezing press to get the fish back exactly as it went in.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_CarbonitePackBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonitePack_Produce</defName>
+    <label>carbonite produce pack</label>
+    <description>Raw plant food encased in a block of carbonite. It never rots while frozen; thaw it at a carbon-freezing press to get the produce back exactly as it went in.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RSW_CarbonitePackBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonitePack_Meal</defName>
+    <label>carbonite meal pack</label>
+    <description>Cooked meals encased in a block of carbonite. They never rot while frozen; thaw the pack at a carbon-freezing press to get the meals back. Now and then a meal comes out of the thaw carbon-burnt.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="OrganicProductBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_BlastChilledCream</defName>
+    <label>blast-chilled cream</label>
+    <description>Milk flash-chilled in a carbon-freezing press until it thickens into a sweet, half-frozen cream. It keeps far longer than fresh milk.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Milk</texPath>
+      <color>(235,240,250)</color>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>2.5</MarketValue>
+      <Mass>0.045</Mass>
+      <Nutrition>0.05</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>AnimalProduct, Fluid</foodType>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_CarbonFreeze</method>
+        <flavours>
+          <li>frost</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCooked" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonBurntMeal</defName>
+    <label>carbon-burnt meal</label>
+    <description>A meal that came out of a carbonite thaw scorched by the cold: still nourishing, but it tastes of metal.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Simple</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+      <color>(150,150,160)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <specialThoughtDirect>RSW_AteCarbonBurntMeal</specialThoughtDirect>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+  </ThingDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_AteCarbonBurntMeal</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate carbon-burnt meal</label>
+        <description>That meal came out of the carbonite wrong. It tasted of metal.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ================================ Recipes ================================ -->
+
+  <RecipeDef ParentName="RM_SealRecipeBase" Name="RSW_CarbonFreezeRecipeBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <workerClass>RimMandrake.ColdStorage.RecipeWorker_Encase</workerClass>
+    <workAmount>600</workAmount>
+    <recipeUsers>
+      <li>RSW_CarbonFreezingPress</li>
+    </recipeUsers>
+    <researchPrerequisite>RSW_CarbonFreezing</researchPrerequisite>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CarbonFreezeRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonFreezeMeat</defName>
+    <label>carbon-freeze meat</label>
+    <description>Encase raw meat in a carbonite pack. It never rots while frozen.</description>
+    <jobString>Carbon-freezing meat.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </disallowedCategories>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_CarboniteCharge</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_CarboniteCharge</li>
+      </thingDefs>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_CarbonitePack_Meat>1</RSW_CarbonitePack_Meat>
+    </products>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageEncaseExtension">
+        <mode>Encase</mode>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CarbonFreezeRecipeBase" MayRequire="mandrake.rm.coldstorage,Ludeon.RimWorld.Odyssey">
+    <defName>RSW_CarbonFreezeFish</defName>
+    <label>carbon-freeze fish</label>
+    <description>Encase raw fish in a carbonite pack. It never rots while frozen.</description>
+    <jobString>Carbon-freezing fish.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Fish</li>
+          </categories>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_CarboniteCharge</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_CarboniteCharge</li>
+      </thingDefs>
+      <categories>
+        <li>Fish</li>
+      </categories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_CarbonitePack_Fish>1</RSW_CarbonitePack_Fish>
+    </products>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageEncaseExtension">
+        <mode>Encase</mode>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CarbonFreezeRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonFreezeProduce</defName>
+    <label>carbon-freeze produce</label>
+    <description>Encase raw plant food in a carbonite pack. It never rots while frozen.</description>
+    <jobString>Carbon-freezing produce.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_CarboniteCharge</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_CarboniteCharge</li>
+      </thingDefs>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_CarbonitePack_Produce>1</RSW_CarbonitePack_Produce>
+    </products>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageEncaseExtension">
+        <mode>Encase</mode>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CarbonFreezeRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonFreezeMeals</defName>
+    <label>carbon-freeze meals</label>
+    <description>Encase cooked meals in a carbonite pack. They never rot while frozen.</description>
+    <jobString>Carbon-freezing meals.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>FoodMeals</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>RSW_CarbonBurntMeal</li>
+          </disallowedThingDefs>
+        </filter>
+        <count>18</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_CarboniteCharge</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_CarboniteCharge</li>
+      </thingDefs>
+      <categories>
+        <li>FoodMeals</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>RSW_CarbonBurntMeal</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_CarbonitePack_Meal>1</RSW_CarbonitePack_Meal>
+    </products>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageEncaseExtension">
+        <mode>Encase</mode>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CarbonFreezeRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarbonThaw</defName>
+    <label>thaw carbonite pack</label>
+    <description>Thaw a carbonite pack and take out what it holds, exactly as it went in. A cooked meal may come out carbon-burnt.</description>
+    <jobString>Thawing a carbonite pack.</jobString>
+    <workAmount>300</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_CarbonitePack_Meat</li>
+            <li>RSW_CarbonitePack_Fish</li>
+            <li>RSW_CarbonitePack_Produce</li>
+            <li>RSW_CarbonitePack_Meal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_CarbonitePack_Meat</li>
+        <li>RSW_CarbonitePack_Fish</li>
+        <li>RSW_CarbonitePack_Produce</li>
+        <li>RSW_CarbonitePack_Meal</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageEncaseExtension">
+        <mode>Release</mode>
+        <shockedMealInto>RSW_CarbonBurntMeal</shockedMealInto>
+        <shockChance>0.05</shockChance>
+        <shockChanceSettingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonShockChance</shockChanceSettingField>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_MakeCarboniteCharge</defName>
+    <label>make carbonite charges</label>
+    <description>Mix chemfuel and uranium into two carbonite charges, one per carbon-freezing batch.</description>
+    <jobString>Mixing carbonite charges.</jobString>
+    <workAmount>800</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Uranium</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chemfuel</li>
+        <li>Uranium</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_CarboniteCharge>2</RSW_CarboniteCharge>
+    </products>
+    <recipeUsers>
+      <li>RSW_CarbonFreezingPress</li>
+    </recipeUsers>
+    <researchPrerequisite>RSW_CarbonFreezing</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_BlastChillMilk</defName>
+    <label>blast-chill milk</label>
+    <description>Flash-chill milk into blast-chilled cream, which keeps far longer. Needs no carbonite charge.</description>
+    <jobString>Blast-chilling milk.</jobString>
+    <workAmount>400</workAmount>
+    <ingredientValueGetterClass>IngredientValueGetter_Volume</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milk</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Milk</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_BlastChilledCream>10</RSW_BlastChilledCream>
+    </products>
+    <recipeUsers>
+      <li>RSW_CarbonFreezingPress</li>
+    </recipeUsers>
+    <researchPrerequisite>RSW_CarbonFreezing</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:carbonPressEnabled</settingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

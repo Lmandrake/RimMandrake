@@ -53,6 +53,7 @@ def static_checks():
         fails.append("%s: no LWM.DeepStorage.Properties found (instrument blind?)" % os.path.basename(lwm))
     fails += seal_static_checks(ET, re)
     fails += stasis_unlock_checks(ET)
+    fails += encase_static_checks(ET, re)
     return fails
 
 
@@ -228,6 +229,94 @@ def seal_static_checks(ET, re):
                      "(a switched-off method's existing bills keep running)")
     fails += duplicate_comp_checks(ET, files)
     fails += food_kind_checks(ET, files)
+    return fails
+
+
+ENCASE_WORKER = "RimMandrake.ColdStorage.RecipeWorker_Encase"
+CUISINE_SETTINGS = "RimMandrake.StarWars.Cuisine.RSW_CuisineSettings"
+
+
+def encase_static_checks(ET, re):
+    """COLD_STORAGE_CARBONFREEZE_BUILD_FOOD_PRESS pins on Star Wars Cuisine's Defs/RSW_CarbonFreezing.xml.
+    An encase or release recipe that runs vanilla's RecipeWorker DESTROYS the food it just put in the pack (vanilla
+    consumes every ingredient), so each must name RecipeWorker_Encase. A pack that stacks merges two packs' contents
+    into one label, so CompEncased needs stackLimit 1. Every def rides Cold Storage classes or parents, so each is
+    MayRequire'd on it. Every gate and the shock-chance slider name a real public static field of the Cuisine
+    settings (an unreadable one reads as ON / the XML default and silently ignores the player)."""
+    fails = []
+    mods = os.path.dirname(HERE)
+    path = os.path.join(mods, "..", "RimStarWars", "Cuisine", "Defs", "RSW_CarbonFreezing.xml")
+    root = ET.parse(path).getroot()
+    named = {d.get("Name"): d for d in root if d.get("Name")}
+
+    def lookup(d, xp):
+        while d is not None:
+            v = d.find(xp)
+            if v is not None:
+                return v
+            d = named.get(d.get("ParentName"))
+        return None
+
+    settings_src = os.path.join(mods, "..", "RimStarWars", "Cuisine", "Source", "Cuisine", "CuisineSettings.cs")
+    src = open(settings_src, encoding="utf-8").read()
+    packs, encase, release, gated, refs = set(), 0, 0, 0, 0
+    for d in root:
+        name = d.findtext("defName") or d.get("Name") or "?"
+        if "mandrake.rm.coldstorage" not in (d.get("MayRequire") or "").split(","):
+            fails.append("RSW_CarbonFreezing.xml: %s %s lacks MayRequire mandrake.rm.coldstorage" % (d.tag, name))
+        if d.tag == "ThingDef" and d.get("Abstract") != "True":
+            if any(li.get("Class") == "RimMandrake.ColdStorage.CompProperties_Encased" for li in lookup(d, "comps") or []):
+                packs.add(name)
+                if (lookup(d, "stackLimit").text if lookup(d, "stackLimit") is not None else "") != "1":
+                    fails.append("%s: has CompEncased but stackLimit is not 1" % name)
+        for tag in ("settingField", "shockChanceSettingField"):
+            for el in d.iter(tag):
+                refs += 1
+                typ, _, field = (el.text or "").strip().rpartition(":")
+                want = "bool" if tag == "settingField" else "float"
+                if typ != CUISINE_SETTINGS or not re.search(r"public\s+static\s+%s\s+%s\s*=" % (want, re.escape(field)), src):
+                    fails.append("%s: %s %r names no public static %s of %s" % (name, tag, el.text, want, CUISINE_SETTINGS))
+    for d in root:
+        if d.tag != "RecipeDef" or d.get("Abstract") == "True":
+            continue
+        name = d.findtext("defName")
+        users = [li.text for li in (lookup(d, "recipeUsers") or [])]
+        exts = lookup(d, "modExtensions")
+        classes = [li.get("Class") for li in (exts if exts is not None else [])]
+        if "RSW_CarbonFreezingPress" in users:
+            if "RimMandrake.ColdStorage.ColdStorageGateExtension" not in classes:
+                fails.append("%s: a press recipe without the carbonPressEnabled gate" % name)
+            else:
+                gated += 1
+        ext = [li for li in (exts if exts is not None else []) if li.get("Class") == "RimMandrake.ColdStorage.ColdStorageEncaseExtension"]
+        if not ext:
+            continue
+        worker = lookup(d, "workerClass")
+        if worker is None or worker.text != ENCASE_WORKER:
+            fails.append("%s: encase extension but workerClass is not %s (vanilla consumes the encased food)" % (name, ENCASE_WORKER))
+        mode = ext[0].findtext("mode") or "Encase"
+        if mode == "Encase":
+            encase += 1
+            prods = [p.tag for p in (d.find("products") or [])]
+            if len(prods) != 1 or prods[0] not in packs:
+                fails.append("%s: an encase recipe must make exactly one pack with CompEncased, makes %s" % (name, prods))
+        else:
+            release += 1
+            taken = {li.text for li in d.iter("li") if li.text in packs}
+            if taken != packs:
+                fails.append("%s: the thaw recipe must take every pack; missing %s" % (name, sorted(packs - taken)))
+    press = [d for d in root if d.findtext("defName") == "RSW_CarbonFreezingPress"]
+    if len(press) != 1 or not any(li.get("Class") == "RimMandrake.ColdStorage.ColdStorageGateExtension" for li in press[0].iter("li")):
+        fails.append("RSW_CarbonFreezingPress: missing, or without the carbonPressEnabled gate")
+    if len(packs) != 4 or encase != 4 or release != 1 or gated < 7 or refs < 8:
+        fails.append("carbon freeze check: packs=%d encase=%d release=%d gated=%d refs=%d, want 4/4/1/>=7/>=8 (instrument blind?)"
+                     % (len(packs), encase, release, gated, refs))
+    # Every key Encasing.cs translates is in Cold Storage's English keyed file.
+    keyed = open(os.path.join(HERE, "Languages", "English", "Keyed", "ColdStorage.xml"), encoding="utf-8").read()
+    enc = open(os.path.join(HERE, "Source", "Encasing.cs"), encoding="utf-8").read()
+    for key in sorted(set(re.findall(r'"(RM_ColdStorage_\w+)"\.Translate', enc))):
+        if "<%s>" % key not in keyed:
+            fails.append("Encasing.cs: key %s missing from Keyed/ColdStorage.xml" % key)
     return fails
 
 
