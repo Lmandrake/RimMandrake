@@ -11,7 +11,8 @@ nothing not refusing (a "?glob" refusing); `inputs=[]` not being stored; any dec
 must run (no record, a FAIL at the key, a newer non-pass record, a partial record outside a prefix request, an
 unresolved manifest, gate off) or not skipping when it may; purpose sweep / shadow mode skipping instead of
 would_skip; a skipped chain not carrying freshness reused@<file>; index_run writing a SKIPPED chain or missing a
-fresh one; audit_run missing a miss or calling drift a miss; run_suite running a skipped chain body or calling such a
+fresh one; audit_run missing a miss or calling drift a miss; record_misses writing a miss twice or an open miss
+not forcing RUN (or clear-miss not re-allowing the skip); run_suite running a skipped chain body or calling such a
 run fresh_green.
 """
 import contextlib
@@ -335,10 +336,44 @@ def t_run_suite(m):
         ok(all("gate" in ch for ch in res["chains"]), "run_suite: every chain carries a gate stamp", ran)
 
 
+def t_misses(m):
+    """record_misses writes each audit miss once; an open miss makes decide RUN where it would SKIP; clear_miss
+    re-allows the skip and refuses without a reason."""
+    s, g = m.gate(index=[])
+    ka = g.manifest("a", dict(s.chains)["a"])["key"]
+    p = os.path.join(m.hist, "GateT_20261025-130000.json")
+    with open(p, "w", encoding="utf-8") as fh:
+        json.dump({"summary": {"chains": [{"name": "a", "components": [_comp("r1")]}]}}, fh)
+    idx = [_rec(ka, "a", file=os.path.basename(p))]
+    _, g0 = m.gate(index=idx)
+    ok(g0.decide("a", dict(g0.suite.chains)["a"])["action"] == gate.SKIP, "misses: no open miss, the chain skips")
+    rec = {"file": os.path.basename(p)}
+    now = {"chains": [{"name": "a", "components": [_comp("r1", "FAIL")],
+                       "gate": {"action": gate.WOULD, "record": rec, "key": ka}}]}
+    jp = os.path.join(m.hist, "GateT_20261025-140000.json")
+    w1 = gate.record_misses("GateT", now, jp, dirs=[m.hist])
+    w2 = gate.record_misses("GateT", now, jp, dirs=[m.hist])
+    om = gate.open_misses([m.hist])
+    ok(len(w1) == 1 and w1[0]["key"] == ka and w2 == [] and list(om) == [("GateT", "a")],
+       "record_misses: one line per miss, not rewritten on a second call; open_misses sees it", (w1, w2, om))
+    _, g1 = m.gate(index=idx)
+    d = g1.decide("a", dict(g1.suite.chains)["a"])
+    ok(d["action"] == gate.RUN and "miss" in d["why"], "decide: an open miss forces RUN over a usable record", d)
+    try:
+        gate.clear_miss("GateT", "a", "  ", base=m.hist)
+        ok(False, "clear_miss refuses an empty --why")
+    except ValueError:
+        ok(True, "clear_miss refuses an empty --why")
+    gate.clear_miss("GateT", "a", "declared the missing input", base=m.hist)
+    ok(gate.open_misses([m.hist]) == {}, "clear_miss closes the open miss")
+    _, g2 = m.gate(index=idx)
+    ok(g2.decide("a", dict(g2.suite.chains)["a"])["action"] == gate.SKIP, "after clear-miss the chain skips again")
+
+
 def main():
     m = Mod()
     try:
-        for t in (t_slice_isolation, t_inputs, t_decide, t_classify, t_index_reuse_audit, t_audit_drift, t_run_suite):
+        for t in (t_slice_isolation, t_inputs, t_decide, t_classify, t_index_reuse_audit, t_audit_drift, t_misses, t_run_suite):
             try:
                 t(m) if t is not t_classify else t()
             except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

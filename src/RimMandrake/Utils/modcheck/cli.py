@@ -48,6 +48,10 @@ if _UTILS not in sys.path:
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv[:1] == ["metrics"]:     # its own argparse (metrics.py --help); listed below for discoverability
+        import metrics
+        return metrics.main(argv[1:])
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -171,6 +175,10 @@ def main(argv=None):
                                   "name must agree with disk. Reports and "
                                   "stops -- never repairs; the ownership calls "
                                   "it surfaces are the owner's")
+
+    sub.add_parser("metrics", add_help=False,
+                   help="the daily test-orchestration metrics file (WASTE, unclassified share, lanes, gate misses, "
+                        "alarms) at <testq>/metrics/<day>.json; `metrics --help` for its flags (modcheck/metrics.py)")
 
     args = ap.parse_args(argv)
 

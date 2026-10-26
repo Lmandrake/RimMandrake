@@ -30,7 +30,9 @@ GREEN status entry from it.
 MODE (env MODCHECK_GATE / `run --gate`): on (default) | shadow (decide, never skip: `would_skip`) | off (no manifest).
 PURPOSE (env MODCHECK_PURPOSE / `run --purpose`): fix | guard (the gate applies) | sweep | sensitivity | flake |
 commission (the gate is advisory: `would_skip`, the chain runs -- a deliberate full sweep measures the gate).
-A MISS is a would_skip chain whose fresh run recorded a valid FAIL, or lost a PASS the record had (`audit`).
+A MISS is a would_skip chain whose fresh run recorded a valid FAIL, or lost a PASS the record had (`audit`). write_sheet
+records each into Transient/modcheck/gate_misses.jsonl; while a chain has an OPEN miss it is never skipped (its manifest
+missed an input: declare it, then `gate.py clear-miss --mod M --chain C --why "..."`).
 
 LIMITS: third-party mods and the game build are not in the key (the profile hashes repo mods only); a local module's
 import side effects count only when the slice names or imports it; a helper module's own file reads are covered only
@@ -55,6 +57,7 @@ SRC = os.path.dirname(UTILS)                       # src/RimMandrake
 ROOT = os.path.dirname(os.path.dirname(SRC))
 SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
 INDEX = "gate_index.jsonl"
+MISSES = "gate_misses.jsonl"     # one line per miss / clear; an open miss stops the chain being skipped
 MINIMAL = os.path.join(ROOT, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 SCHEMA = 1
 
@@ -471,6 +474,70 @@ def index_run(mod, summary, json_path, environ=None):
     return len(lines)
 
 
+def open_misses(dirs=None):
+    """{(mod, chain): last miss line} for every miss not cleared after it, over `dirs` (default history_dirs())."""
+    evs = [r for r in _all_miss_lines(dirs) if r.get("mod") and r.get("chain")]
+    out = {}
+    for r in sorted(evs, key=lambda r: str(r.get("ts"))):
+        k = (r["mod"], r["chain"])
+        if r.get("event") == "clear":
+            out.pop(k, None)
+        elif r.get("event") == "miss":
+            out[k] = r
+    return out
+
+
+def _append_miss_lines(lines, base=None):
+    if not lines:
+        return 0
+    with open(os.path.join(base or SHEET_DIR, MISSES), "a", encoding="utf-8") as f:
+        for r in lines:
+            f.write(json.dumps(r, sort_keys=True) + "\n")
+    return len(lines)
+
+
+def record_misses(mod, summary, json_path, dirs=None, base=None):
+    """Audit one run's would_skip chains (audit_run) and append each new miss beside the run's JSON. Returns the
+    misses written (beside the JSON, or into `base`). Called by runner.write_sheet; metrics.py calls it with
+    base=SHEET_DIR for runs fetched from another host, so this host's gate stops skipping those chains too."""
+    au = audit_run({"summary": summary}, dirs=dirs)
+    have = {(r.get("mod"), r.get("chain"), r.get("file"), r.get("detail"))
+            for r in _all_miss_lines(dirs) if r.get("event") == "miss"}
+    keys = {ch.get("name"): (ch.get("gate") or {}).get("key") for ch in summary.get("chains") or []}
+    ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    lines = []
+    for m in au["misses"]:
+        chain = m.split("/", 1)[0]
+        r = {"event": "miss", "mod": mod, "chain": chain, "key": keys.get(chain), "detail": m,
+             "file": os.path.basename(json_path), "ts": ts}
+        if (mod, chain, r["file"], m) not in have:
+            lines.append(r)
+    _append_miss_lines(lines, base or os.path.dirname(os.path.abspath(json_path)))
+    return lines
+
+
+def _all_miss_lines(dirs=None):
+    out = []
+    for d in dirs or history_dirs():
+        try:
+            with open(os.path.join(d, MISSES), encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        out.append(json.loads(line))
+                    except ValueError:
+                        continue
+        except OSError:
+            continue
+    return [r for r in out if isinstance(r, dict)]
+
+
+def clear_miss(mod, chain, why, base=None):
+    if not (why or "").strip():
+        raise ValueError("clear-miss needs --why (what was fixed in the manifest)")
+    return _append_miss_lines([{"event": "clear", "mod": mod, "chain": chain, "why": why,
+                                "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}], base)
+
+
 # ------------------------------------------------------------------------------------------------ the gate
 class Gate(object):
     """One per suite run. `suite` the (possibly filtered) suite; `full_suite` the module's suite (for the inputs and
@@ -485,6 +552,7 @@ class Gate(object):
         self.environ = env
         self._cache, self._man = {}, {}
         self._index = index
+        self._misses = None
         self.common_unresolved = []
         st = _status()
         try:
@@ -545,6 +613,12 @@ class Gate(object):
             return d
         if not m["inputs_known"]:
             d["why"] = "inputs unknown (reads %s; declare inputs=)" % ", ".join(m["reads"][:3])
+            return d
+        if self._misses is None:
+            self._misses = open_misses(history_dirs(self.environ))
+        miss = self._misses.get((self.mod, name))
+        if miss:
+            d["why"] = "open gate miss %s (gate.py clear-miss once the manifest is fixed)" % miss.get("detail")
             return d
         same = [r for r in self.index() if r.get("key") == m["key"] and r.get("chain") == name]
         if not same:
@@ -674,7 +748,18 @@ def main(argv=None):
     p.add_argument("--json", action="store_true")
     a2 = sub.add_parser("audit", help="skip rate and misses of runs (would_skip chains vs their records)")
     a2.add_argument("runs", nargs="+")
+    c = sub.add_parser("clear-miss", help="re-allow skipping a chain whose miss has been fixed in its manifest")
+    c.add_argument("--mod", required=True)
+    c.add_argument("--chain", required=True)
+    c.add_argument("--why", required=True)
     a = ap.parse_args(argv)
+    if a.cmd == "clear-miss":
+        if (a.mod, a.chain) not in open_misses():
+            print("no open miss for %s/%s" % (a.mod, a.chain))
+            return 1
+        clear_miss(a.mod, a.chain, a.why)
+        print("cleared %s/%s" % (a.mod, a.chain))
+        return 0
     if a.cmd == "preview":
         t0 = time.time()
         g, rows = preview(a.mod, environ=dict(os.environ, **{ENV_MODE: SHADOW}))

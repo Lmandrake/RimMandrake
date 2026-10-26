@@ -804,6 +804,11 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     # option B fields: what was reused (never a fresh PASS), the canary, and the leads an invalid row kept
     import reuse as _RU  # noqa: E402
     summary["reuse"] = _RU.summarize(chains_out)
+    # modcheck/metrics.py: which lane ran it, and which chains ran in the live slot although they need no game
+    import socket as _so  # noqa: E402
+    summary["host"] = _so.gethostname()
+    _ran = {c["name"] for c in chains_out}
+    summary["offline_chains"] = sorted(n for n in getattr(suite, "offline_chains", ()) if n in _ran)
     summary["fresh_green"] = all_green and not summary["reuse"]["reused"]
     summary["invalid"] = ["%s/%s" % (ch["name"], c["name"]) for ch in chains_out for c in ch["components"]
                           if c.get("validity") == "invalid"]
@@ -1070,6 +1075,8 @@ def write_sheet(mod, summary):
     try:        # the known-good gate's history: one line per freshly run chain with a manifest (modcheck/gate.py)
         import gate as _G  # noqa: E402
         _G.index_run(mod, summary, path[:-5] + ".json")
+        for m in _G.record_misses(mod, summary, path[:-5] + ".json"):
+            print("[modcheck] GATE MISS %s: the chain was known good and is not now" % m["detail"], file=sys.stderr)
     except Exception as ex:  # noqa: BLE001 - the sheet is the evidence; a lost index line only costs a future skip
         print("[modcheck] gate index not written: %s: %s" % (type(ex).__name__, ex), file=sys.stderr)
     return path
