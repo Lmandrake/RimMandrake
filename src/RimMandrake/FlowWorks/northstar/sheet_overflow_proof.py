@@ -342,6 +342,20 @@ def main(argv=None):
     feats = parse((B.call("jawa/static_call", type=SHEET, method="ProofSheetFeatures", args="-", _answer=True) or {})
                   .get("result") or "")
     res["features"] = feats
+    switch0 = None
+
+    def restore():
+        """Everything this run changed (GPT review 5.8: the preflight exits ran before the try/finally that did this)."""
+        if switch0 is not None:
+            B.call("jawa/mod_settings_field", typeName=S_SHEET, action="set", field="sheetOverflowEnabled", value=str(switch0),
+                   _answer=True)
+        for (typ, field), v in TOUCHED.items():
+            if v is not None and not (typ == S_SHEET and field == "sheetOverflowEnabled"):
+                B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(v), _answer=True)
+        if not a.mock:
+            B.call("jawa/weather_set", weather="Clear", lockWeather=False, _answer=True)
+            V.site_calm_restore(B)
+
     if not a.mock:
         rect = (max(ox - 8, 1), max(oz - 6, 1), 30, 200)
         res["site_calm"] = V.site_calm(B)
@@ -354,6 +368,7 @@ def main(argv=None):
         if bad:
             for rid in only:
                 row(rid, "UNMEASURED", {"why": "site not prepared", "rect": rect, "site": bad[:3]}, cls="SITE")
+            restore()
             return 2
         B.call("rimworld/set_god_mode", enabled=True)
         B.call("jawa/weather_set", weather="Clear", lockWeather=True)
@@ -387,15 +402,7 @@ def main(argv=None):
                     continue
                 SCENES[rid](ctx)
     finally:
-        if switch0 is not None:
-            B.call("jawa/mod_settings_field", typeName=S_SHEET, action="set", field="sheetOverflowEnabled", value=str(switch0),
-                   _answer=True)
-        for (typ, field), v in TOUCHED.items():
-            if v is not None and not (typ == S_SHEET and field == "sheetOverflowEnabled"):
-                B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(v), _answer=True)
-        if not a.mock:
-            B.call("jawa/weather_set", weather="Clear", lockWeather=False, _answer=True)
-            V.site_calm_restore(B)
+        restore()
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
     if a.mock:

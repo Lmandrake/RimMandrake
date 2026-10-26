@@ -415,7 +415,9 @@ def main(argv=None, bridge=None):
                 ticks(60)
                 h2 = harm(pid)
             finally:
-                sfield(S_SP, "sprinklerNonWaterEffects", saved[(S_SP, "sprinklerNonWaterEffects")])
+                # GPT review 5.11: the chemfuel arm below tests the effects, so they go back ON (not to the saved value,
+                # which may be OFF); the saved value is restored after the arm and again by the run's finally
+                sfield(S_SP, "sprinklerNonWaterEffects", True)
             # chemfuel: spill filth on covered cells
             print(fill(tx, tz, "RM_Liquid_Chemfuel", 50000))
             rect = "%d,%d,7,7" % (hx - 3, hz - 3)
@@ -428,6 +430,7 @@ def main(argv=None, bridge=None):
             ticks(60)
             f1 = filth()
             line_fuel = inspect(n["headId"])
+            sfield(S_SP, "sprinklerNonWaterEffects", saved[(S_SP, "sprinklerNonWaterEffects")])
             bad = []
             if "Spraying" not in (line_acid or ""):
                 bad.append("acid head did not spray: %r" % line_acid)

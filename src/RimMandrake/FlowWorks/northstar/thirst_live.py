@@ -415,9 +415,18 @@ def main(argv=None, bridge=None):
                                            "BoilingWater", "IcyWater")
         for t in ("Trace", "Half", "Brim", "Superdeep"))
 
+    msize = []
+
     def wet_cells(kinds):
-        """Ops of every cell on the map whose terrain is in `kinds`; None when the terrain read was refused."""
-        tb_ = B.call("jawa/get_terrain_batch", rects="0,0,250,250") or {}
+        """Ops of every cell on the map whose terrain is in `kinds`; None when the terrain read was refused.
+        GPT review 5.2: the whole map as jawa/map_info sizes it (a fixed 250x250 left water on a 325 map); no size -> None."""
+        if not msize:
+            mi = B.call("jawa/map_info") or {}
+            sx, sz = mi.get("sizeX"), mi.get("sizeZ") or mi.get("sizeY")
+            if not sx or not sz:
+                return None
+            msize.extend((int(sx), int(sz)))
+        tb_ = B.call("jawa/get_terrain_batch", rects="0,0,%d,%d" % tuple(msize)) or {}
         if tb_.get("success") is False:
             return None
         return [op for op in (tb_.get("ops") or "").split(";") if op and op.split(":")[0] in kinds]
@@ -431,6 +440,8 @@ def main(argv=None, bridge=None):
         if wet_:
             B.call("jawa/set_terrain_batch", ops=";".join("Soil:" + op.split(":")[1] for op in wet_))
             left_ = wet_cells(kinds)
+            if left_ is None:      # GPT review 5.3: a refused read-back is not a dry map
+                raise RuntimeError("terrain read-back refused after painting Soil: cannot confirm the map is dry")
             if left_:
                 raise RuntimeError("%d liquid cells still on the map after painting Soil (first %s)" % (len(left_), left_[:2]))
         return wet_
@@ -1227,8 +1238,8 @@ def main(argv=None, bridge=None):
                     bad.append("the 15 L bucket took %d drinks (want 10), %d still filled" % (drinks, left))
                 if dirty < 1:
                     bad.append("no dirty/empty bucket after the last drink")
-                if None in (u0, u1):
-                    pour_unread = True
+                if None in (u0, u1) or not pr.get("accepted"):
+                    pour_unread = True     # GPT review 5.10: a refused pour order is no pour; not a mod defect
                 elif u1 - u0 != 105:
                     bad.append("pouring a bucket with 4.5 L drunk added %s units (want 105 = 10.5 L)" % (u1 - u0))
                 if insp is not None and "Partly drunk" not in insp:

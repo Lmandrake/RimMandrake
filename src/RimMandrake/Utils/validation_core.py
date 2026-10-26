@@ -57,6 +57,17 @@ def row(rows, rid, status, cls, detail):
     print("%-28s %-9s %s" % (rid, status, str(detail)[:150]), flush=True)
 
 
+def rows_exit(rows):
+    """Process exit for a proof driver from its rows: 1 if any FAIL, 2 if any UNMEASURED or no rows at all, else 0.
+    A driver that returns 0 after writing FAIL rows tells every command-based caller the proof passed."""
+    st = [r.get("status") for r in rows or []]
+    if "FAIL" in st:
+        return 1
+    if not st or "UNMEASURED" in st:
+        return 2
+    return 0
+
+
 def hrow(rows, rid, status, cls, detail):
     """A harness/site row: a row of its own standalone; in SHARED mode only when it is not PASS."""
     if SHARED and status == "PASS":

@@ -584,8 +584,11 @@ def waters(ctx):
                   for p in (o.get("pawns") or [])}.get(w)
             V.require(at is not None, "order_pawn read back the walker", o)
             V.require(bool(ex), "the river drag has interior deck squares to read", {"drag": r})
-            good = bool(ex) and kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" and at == r[1]
-            row("WAT_river_cross_no_drift", "PASS" if good else "FAIL", {"build": txt, "exempt": ex, "path": txtp, "arrived": at})
+            # GPT review 5.7: as the sea arm, the path must stand on the deck (decked > 0), not walk around the bridge
+            good = bool(ex) and kv.get("ok") == "True" and all(e == "True" for e in ex) and kvp.get("found") == "True" \
+                and int(kvp.get("decked") or 0) > 0 and at == r[1]
+            row("WAT_river_cross_no_drift", "PASS" if good else "FAIL", {"build": txt, "exempt": ex, "path": txtp, "arrived": at,
+                                                                         "decked": kvp.get("decked")})
     else:
         row("WAT_river_cross_no_drift", "UNMEASURED", {"why": "no --river x1,z1,x2,z2 given (this map's river crossing)"})
     lk = site(a.lake)

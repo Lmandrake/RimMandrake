@@ -15,6 +15,10 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+UTILS = os.path.abspath(os.path.join(HERE, "..", "..", "Utils"))
+if UTILS not in sys.path:
+    sys.path.insert(0, UTILS)
+import validation_core as V  # noqa: E402
 
 import river_scenes_walk as R  # noqa: E402
 
@@ -124,7 +128,7 @@ def main():
                 {"posAtReturn": pos0, "returnCellOnEdge": on_edge, "posAfter600": p.get("position"), "book": guest(None)})
     for i in staged.values():
         w.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
-    return 0
+    return V.rows_exit(res["rows"])
 
 
 if __name__ == "__main__":

@@ -141,6 +141,11 @@ def main():
     if len(left) != 1 or not p2:
         row("XING_one_ladder_no_cross", "UNMEASURED", "SITE", {"why": "the control scene did not stand", "laddersLeft": left,
                                                                "raw": str(raw2)[:300]})
+    elif e2 is None or not (p2.get("ticksElapsed") or 0) > 0:
+        # GPT review 6.3: no end cell, or no ticks ran after the order: the pawn was never asked to try the crossing
+        row("XING_one_ladder_no_cross", "UNMEASURED", "HARNESS", {"why": "no end cell or no ticks elapsed after the order",
+                                                                  "end": e2, "ticksElapsed": p2.get("ticksElapsed"),
+                                                                  "raw": str(raw2)[:300]})
     else:
         good = e2 != b_bank and not in_trench(e2)
         row("XING_one_ladder_no_cross", "PASS" if good else "FAIL", "MOD",

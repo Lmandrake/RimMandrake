@@ -34,6 +34,25 @@ def kv(txt):
     return out
 
 
+
+def _tank_units(s):
+    tank = s["kv"].get("tank") or ""
+    tail = tank.split(":")[-1]
+    return int(tail) if ":" in tank and tail.isdigit() else None
+
+
+def moved(s):
+    """-> (moved, tank units): water moved into the station's tank, or the channel it draws from fell."""
+    units = _tank_units(s) or 0
+    return units > 0 or sum(x or 0 for x in s["water1"]) < sum(x or 0 for x in s["water0"]), units
+
+
+def rig_readable(s):
+    """True when the scene can show a draw: ProofPump named a tank (not tank=none) and every channel fill read answered."""
+    w = list(s.get("water0") or []) + list(s.get("water1") or [])
+    return _tank_units(s) is not None and bool(s.get("water0")) and bool(s.get("water1")) and all(x is not None for x in w)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out", nargs="?", default=None)
@@ -102,17 +121,17 @@ def main():
     res["scenes"] = scenes
     a_, b_ = scenes["A"], scenes["B"]
 
-    def moved(s):
-        tank = s["kv"].get("tank", "")
-        units = int(tank.split(":")[-1]) if ":" in tank and tank.split(":")[-1].isdigit() else 0
-        return units > 0 or sum(x or 0 for x in s["water1"]) < sum(x or 0 for x in s["water0"]), units
     ma, ua = moved(a_)
     mb, ub = moved(b_)
     run_a, run_b = a_["kv"].get("running") == "True", b_["kv"].get("running") == "True"
+    rig_b = rig_readable(b_)
     row("STATION_DRAWS_AT_4", "UNMEASURED" if not run_a else ("PASS" if ma else "FAIL"), "SITE" if not run_a else "MOD",
         {"after": a_["after"], "water": [a_["water0"], a_["water1"]], "tankUnits": ua, "off": 4})
-    row("STATION_SKIPS_AT_5", "UNMEASURED" if not run_b else ("PASS" if not mb else "FAIL"), "SITE" if not run_b else "MOD",
-        {"after": b_["after"], "water": [b_["water0"], b_["water1"]], "tankUnits": ub, "off": 5})
+    # GPT review 5.4: "did not move" is only evidence when the station had a receiving tank and every water read answered
+    row("STATION_SKIPS_AT_5", "UNMEASURED" if not (run_b and rig_b) else ("PASS" if not mb else "FAIL"),
+        "SITE" if not (run_b and rig_b) else "MOD",
+        {"after": b_["after"], "water": [b_["water0"], b_["water1"]], "tankUnits": ub, "off": 5, "tank": b_["kv"].get("tank"),
+         "rigReadable": rig_b})
     res["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
     return 0 if all(r["status"] == "PASS" for r in rows) else 1

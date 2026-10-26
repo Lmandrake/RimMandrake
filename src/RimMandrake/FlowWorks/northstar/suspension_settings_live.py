@@ -156,7 +156,10 @@ def main():
         if k1.get("state") != "Over":
             row("SB_settings_off_never_breaks", "UNMEASURED", "SITE", {"why": "the span never read Over", "span": t1})
             return 2
-        B.call("rimworld/step_game_ticks", ticks=120, pauseFirst=True, timeoutMs=60000)
+        stepped = B.call("rimworld/step_game_ticks", ticks=120, pauseFirst=True, timeoutMs=60000) or {}
+        if stepped.get("success") is not True:     # GPT review 5.5: no ticks ran, so no load pass was exercised
+            row("SB_settings_off_never_breaks", "UNMEASURED", "HARNESS", {"why": "step_game_ticks refused", "step": str(stepped)[:200]})
+            return 2
         k2, t2 = proof("ProofSpan", xz(P(3, 0)))
         ps = {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []}
         on_deck = [pid for pid in riders if (ps.get(pid) or {}).get("z") == oz and ox + 1 <= ((ps.get(pid) or {}).get("x") or -1) <= ox + 6]

@@ -483,10 +483,13 @@ def s3_forbidden(origin, own):
     return {(x + ox, z + oz) for x, z in cells}
 
 
-def s3_verdict(laid, crossings):
-    """laid: {A, B} bools; crossings: {A: [cells], B: [cells]}."""
+def s3_verdict(laid, crossings, drawn=None):
+    """laid: {A, B} bools; crossings: {A: [cells], B: [cells]}; drawn: {A, B} bools, the census read poseCells (None = not
+    passed, the old callers). GPT review 5.6: a hose with no readable drawing crosses nothing only because it shows nothing."""
     if not all(laid.get(k) for k in ("A", "B")):
         return "UNMEASURED", "SITE", "hose(s) not laid: %s" % [k for k in ("A", "B") if not laid.get(k)]
+    if drawn is not None and not all(drawn.get(k) for k in ("A", "B")):
+        return "UNMEASURED", "HARNESS", "no poseCells read for hose(s) %s" % [k for k in ("A", "B") if not drawn.get(k)]
     bad = ["hose %s crosses %s" % (k, sorted(crossings.get(k) or [])[:4]) for k in ("A", "B") if crossings.get(k)]
     return ("FAIL" if bad else "PASS"), "MOD", "; ".join(bad)
 
@@ -974,13 +977,14 @@ def scene_s3(ctx, mine):
             break
         la = B.hp("lay:%d,%d,%d,%d" % (posA + L(alt)), answer=True)
     lb = B.hp("lay:%d,%d,%d,%d" % (posB + L(S3["outflow"])), answer=True)
-    laid, cross = {}, {}
+    laid, cross, drawn = {}, {}, {}
     for k, corner in (("A", ra), ("B", rb)):
         h = _census_hose(B, corner) or {}
         laid[k] = bool(h.get("laid")) and (la if k == "A" else lb).get("success") is True
         bad = s3_forbidden(ctx["origin"], k)
         cross[k] = sorted({tuple(p) for p in h.get("poseCells") or []} & bad)
-    st, cls, why = s3_verdict(laid, cross)
+        drawn[k] = bool(h.get("poseCells"))
+    st, cls, why = s3_verdict(laid, cross, drawn)
     ctx["row"]("S3_HOSES_ON_BARE_GROUND", st, cls, dict(why=why, laid=laid, crossings=cross, layA=la.get("reason"),
                                                         layB=lb.get("reason"),
                                                         shot=ctx["shot"]("s3_hoses", L((-2, 28)) + (26, 12))))

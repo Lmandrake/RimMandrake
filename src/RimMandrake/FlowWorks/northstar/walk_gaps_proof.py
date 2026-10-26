@@ -199,8 +199,10 @@ def thrown_verdict(flyer_new, person_new, launched):
     """flyer_new / person_new: hediffs gained after the throw (lists, None = unread); launched: both throws accepted."""
     if not launched or flyer_new is None or person_new is None:
         return "UNMEASURED", "HARNESS"
-    if not person_new:
-        return "UNMEASURED", "HARNESS"         # the control did not fall: the read is blind, the flyer's 'unhurt' proves nothing
+    if not [h for h in person_new if h != "RM_PitExposure"]:
+        # the control did not fall: the read is blind, the flyer's 'unhurt' proves nothing. GPT review 6.5: pit exposure is
+        # not a fall injury (see below), so a control that only gained RM_PitExposure did not prove the fall hurts
+        return "UNMEASURED", "HARNESS"
     # HARNESS (belt live 2026-10-22): RM_PitExposure is the pit's temperature exposure, gained by anything standing in a pit
     # (the thrown duck AND the person both got it): it is not a fall injury, so it does not count against the flyer
     hurt = [h for h in flyer_new if h != "RM_PitExposure"]

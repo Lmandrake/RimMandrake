@@ -234,6 +234,10 @@ class ThirstFakeBridge(object):
         return {"success": True, "roofs": []}
 
     # --- terrain / things
+    def t_jawa_map_info(self, **kw):
+        # thirst_live sizes its whole-map terrain read from this (GPT review 5.2); the modelled map is 250 x 250
+        return {"success": True, "sizeX": 250, "sizeZ": 250}
+
     def t_jawa_get_terrain_batch(self, rects="", **kw):
         r = _rect(rects)
         ops = ["%s:%d,%d,1,1" % (d, c[0], c[1]) for c, d in sorted(self.terrain.items()) if _in(r, *c) and d != "Soil"]

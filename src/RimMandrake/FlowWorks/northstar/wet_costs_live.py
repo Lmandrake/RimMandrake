@@ -28,10 +28,23 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+UTILS = os.path.abspath(os.path.join(HERE, "..", "..", "Utils"))
+if UTILS not in sys.path:
+    sys.path.insert(0, UTILS)
+import validation_core as V  # noqa: E402
 
 WET = "RimMandrake.FlowWorks.Swimming.RM_WetCosts"
 S_SW = "RimMandrake.FlowWorks.Swimming.RM_SwimSettings"
 SW_FIELDS = ("deepWaterAimPenalty", "wetFeelsColder", "swimmersCannotShoot")
+
+
+def storyteller_value(B):
+    """The live DebugSettings.enableStoryteller, or None when the list reply cannot be read (never a guessed default)."""
+    r = B.call("jawa/debug_settings", action="list") or {}
+    for f in r.get("fields") or []:
+        if f.get("name") == "enableStoryteller" and isinstance(f.get("value"), bool):
+            return f["value"]
+    return None
 
 
 def kv(txt):
@@ -68,6 +81,7 @@ def main():
         os.replace(out + ".tmp", out)
 
     could_not = []
+    story = {"prior": None, "set": False}   # enableStoryteller as the run found it; restored only if this run changed it
 
     def row(rid, st, det):
         if st == "FAIL" and could_not:     # "could not ask" is UNMEASURED, never a MOD FAIL
@@ -136,7 +150,9 @@ def main():
             return 2
         B.call("jawa/kill_hostiles")
         B.call("jawa/quiet_site", action="apply", clearThreats=True, proximityLetters=True)
+        story["prior"] = storyteller_value(B)
         B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=False)   # restored in finally
+        story["set"] = True
         ox, oz = 140, 100
         rect = (ox, oz, 30, 14)
         if not V.prepare_site(B, rect, rows, "WET_site_ready"):
@@ -211,30 +227,41 @@ def main():
         ms0 = B.call("rimworld/list_messages", limit=20) or {}
         seen0 = set(m.get("text") or m.get("label") or "" for m in (ms0.get("messages") or []))
         inc = (B.call("jawa/pawn_force_incapacitate", pawn=dn, action="downed", allowBleedingWounds=False) or {}) if dn else {}
-        warned, alive_then, trace = None, None, []
+        pr0 = ((B.call("jawa/pawn_get", pawn=dn) or {}).get("pawns") or [{}])[0] if dn else {}
+        nm = str(pr0.get("name") or pr0.get("label") or "").split(" ")[0].strip("'\"")
+        warned, alive_then, trace, anon = None, None, [], []
         for k in range(8):
             B.call("rimworld/step_game_ticks", ticks=250, pauseFirst=True, timeoutMs=60000)
             ms = B.call("rimworld/list_messages", limit=20) or {}
             texts = [m.get("text") or m.get("label") or "" for m in (ms.get("messages") or [])]
-            hit = [t for t in texts if t not in seen0 and "drowning" in t.lower()]
+            anyd = [t for t in texts if t not in seen0 and "drowning" in t.lower()]
+            hit = [t for t in anyd if not nm or nm.lower() in t.lower()]
+            anon += [t for t in anyd if t not in hit and t not in anon]
             pr = B.call("jawa/pawn_get", pawn=dn) or {}
             alive = bool(pr.get("pawns")) and not pr["pawns"][0].get("dead")
             trace.append({"t": (k + 1) * 250, "alive": alive, "msgs": hit[:2]})
             if hit and warned is None:
                 warned, alive_then = (k + 1) * 250, alive
                 break
-        row("WET_downed_drowning_warned", "UNMEASURED" if not dn else ("PASS" if warned and alive_then else "FAIL"),
-            {"incap": str(inc)[:200], "warnedAtTick": warned, "aliveWhenWarned": alive_then, "trace": trace,
+        # GPT review 6.8: a refused incapacitate is no downed pawn, and only a warning naming THIS pawn counts
+        st = "UNMEASURED" if not dn or not inc.get("success") else ("PASS" if warned and alive_then else "FAIL")
+        if st == "FAIL" and not warned and anon:
+            st = "UNMEASURED"    # a drowning warning that does not name this pawn: someone else's, or a nameless text
+        row("WET_downed_drowning_warned", st,
+            {"incap": str(inc)[:200], "pawnName": nm, "unnamedDrowningMsgs": anon[:3], "warnedAtTick": warned, "aliveWhenWarned": alive_then, "trace": trace,
              "wet": sc("ProofWet", "%d,%d" % dp)})
     finally:
         for f, v in before.items():
             if v is not None:
                 fset(f, v)
-        B.call("jawa/debug_settings", action="set", field="enableStoryteller", value=True)
+        if story["set"]:     # GPT review 6.9: put back what the run found (True only when the read was refused)
+            B.call("jawa/debug_settings", action="set", field="enableStoryteller",
+                   value=story["prior"] if story["prior"] is not None else True)
+        res["storyteller"] = dict(story, after=storyteller_value(B))
         res["settings_restored"] = {f: fget(f) for f in SW_FIELDS}
         save()
         print("result ->", out)
-    return 0
+    return V.rows_exit(rows)     # GPT review 6.1: FAIL -> 1, UNMEASURED -> 2
 
 
 if __name__ == "__main__":
