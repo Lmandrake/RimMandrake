@@ -2077,6 +2077,41 @@ def _bottle_census(t, x0, z0):
     return {d: _count(t, d, x0, z0, PW, PH) for d in ("RM_BottleEmpty", "RM_BottleDirty", "RM_Bottle_FreshWater")}
 
 
+BOTTLE_DEFS = ("RM_BottleEmpty", "RM_BottleDirty", "RM_Bottle_FreshWater")
+
+
+def _bottles_everywhere(t, x0, z0, defs=BOTTLE_DEFS):
+    """RM_NorthstarProofs.ProofBottleCount: {def: (on the plot, spawned on the map, held by a pawn)} plus the holders
+    ("pawnId:job:def"). BOTTLE_WASH_FIX_LOSES_BOTTLE (run7): the plot census read Empty 0, Dirty 0, FreshWater 1 and
+    called a bottle destroyed, while all three plot bottles had left the plot within 125 ticks and the pond side had
+    refilled two -- in a hauler's hands, a colonist's pack or a stockpile, none of which a plot list_things sees.
+    Anything but a BOTTLES reading is UNMEASURED; offline (None, None)."""
+    if not t._guard():
+        return None, None
+    res = _sc(t, NS_PROOF, "ProofBottleCount", "%s;%s" % (",".join(defs), _rect(x0, z0, PW, PH)))
+    if not res.startswith("BOTTLES"):
+        raise ExpectationFailed("UNMEASURED: ProofBottleCount gave no reading: %r" % res)
+    kv = _kv(res)
+    try:
+        got = {d: tuple(int(v) for v in kv[d].split("/")) for d in defs}
+    except (KeyError, ValueError):
+        raise ExpectationFailed("UNMEASURED: ProofBottleCount reading unparsed: %r" % res)
+    return got, kv.get("holders", "-")
+
+
+def _bottle_total(got, d=None):
+    """Bottles anywhere on the map (spawned + held) of one def, or of every def."""
+    return sum(v[1] + v[2] for k, v in got.items() if d is None or k == d)
+
+
+def _fixture_jobs(t):
+    """'pawnId:curJob' for this chain's own spawned colonists (jawa/list_pawns), for a FAIL that has to say what the
+    fixture pawns were doing instead of the job under test."""
+    mine = set(pid for owner, pid in _SPAWNED if owner == _chain_token(t) and pid)
+    rows = ((t.bridge_call("jawa/list_pawns", limit=200) or {}).get("pawns") or [])
+    return ",".join("%s:%s" % (r.get("id"), r.get("curJob")) for r in rows if r.get("id") in mine) or "-"
+
+
 @suite.chain("toggle_bottle_dirty")
 def toggle_bottle_dirty(t):
     """LIQUID_BOTTLE_LOOP_1 A1 (drink -> dirty -> wash -> clean) and A3 (dirty stage OFF: a drink leaves a clean empty,
@@ -2099,17 +2134,25 @@ def toggle_bottle_dirty(t):
                 _expect(c1["RM_BottleEmpty"] == c0["RM_BottleEmpty"],
                         "a drink with the dirty stage ON left a clean empty: %s -> %s" % (c0, c1))
     with t.component("bottle_wash_returns_clean", toggle="bottleLoopEnabled"):
-        c2 = None
+        # Counted MAP-WIDE, held bottles included (_bottles_everywhere): with the loop ON a hauler, a packing colonist or
+        # a stockpile can take any plot bottle off the plot, so the old plot-only census read a carried bottle as lost.
+        # A wash turns one dirty bottle clean: the map's dirty count falls and its bottle total never does (a wash that
+        # destroyed the bottle drops the total). A drink meanwhile (fresh -> dirty) keeps the total and only delays it.
+        w0, _ = _bottles_everywhere(t, x0, z0)
+        w, holders = w0, "-"
         for _ in range(32):                       # 4000 ticks: carry to the pond, wash, (refill)
             t.wait_ticks(125)
-            c2 = _bottle_census(t, x0, z0)
-            clean = (c2["RM_BottleEmpty"] or 0) + (c2["RM_Bottle_FreshWater"] or 0)
-            if c2["RM_BottleDirty"] == 0 and clean >= 3:   # both: a bottle in a hauler's hands is on no cell
+            w, holders = _bottles_everywhere(t, x0, z0)
+            if t._guard() and _bottle_total(w, "RM_BottleDirty") < _bottle_total(w0, "RM_BottleDirty") \
+                    and _bottle_total(w) >= _bottle_total(w0):
                 break
         if t._guard():
-            _expect(c2["RM_BottleDirty"] == 0, "the dirty bottle was never washed in 4000 ticks: %s" % c2)
-            # the plot's own empty + the washed one + the undrunk full one; a wash that destroyed the bottle reads 2
-            _expect(clean >= 3, "washing lost a bottle: %s" % c2)
+            _expect(_bottle_total(w, "RM_BottleDirty") < _bottle_total(w0, "RM_BottleDirty"),
+                    "the dirty bottle was never washed in 4000 ticks: (plot, map, held) %s -> %s holders %s"
+                    % (w0, w, holders))
+            _expect(_bottle_total(w) >= _bottle_total(w0),
+                    "washing lost a bottle: map-wide bottles %d -> %d, (plot, map, held) %s -> %s holders %s"
+                    % (_bottle_total(w0), _bottle_total(w), w0, w, holders))
     with t.component("bottle_dirty_off", toggle="bottleDirtyStageEnabled"):
         with _setting(t, "bottleDirtyStageEnabled", False), _setting(t, "bottleLoopEnabled", False):
             # the first drinker worked through the wash row and stands wherever his last job left him: a fresh one at
@@ -2221,12 +2264,17 @@ def toggle_tank_loop(t):
                 _expect(bool(seq), "no RM_LiquidTank answered ProofTank at %s" % (tank,))
                 _expect(seq[-1] < TANK_STAGE_UNITS, "draw-out never ran: tank units %s never fell below the staged %d "
                                        "(WorkGiver_FillBottleFromTank)" % (seq, TANK_STAGE_UNITS))
-        _, _, tank = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
+        x0, z0, tank = _tank_loop_plot(t, "Fill", "RM_Bottle_FreshWater")
         with t.component("tank_loop_pour_in"):
             seq = _watch_tank(t, tank, 3000, lambda s: bool(s) and max(s) > 0, mode="Fill")
             if t._guard():
                 _expect(bool(seq), "no RM_LiquidTank answered ProofTank at %s" % (tank,))
-                _expect(max(seq) > 0, "pour-in never ran: Fill-mode tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
+                if not max(seq) > 0:
+                    # TANK_POUR_FIX_FILL_MODE_NEVER_RUNS (run7 read only "[0]"): say where the bottle went and what the
+                    # fixture colonists were doing, so the next live FAIL classifies itself
+                    w, holders = _bottles_everywhere(t, x0, z0, ("RM_Bottle_FreshWater", "RM_BottleDirty"))
+                    _expect(False, "pour-in never ran: Fill-mode tank units %s (WorkGiver_EmptyBottleIntoTank); bottles "
+                                   "(plot, map, held) %s holders %s; fixture jobs %s" % (seq, w, holders, _fixture_jobs(t)))
         with _setting(t, "tankLoopEnabled", False):
             _, _, tank = _tank_loop_plot(t, "Store", "RM_BottleEmpty", WATER_LIQUID, TANK_STAGE_UNITS)
             with t.component("tank_loop_off", toggle="tankLoopEnabled"):

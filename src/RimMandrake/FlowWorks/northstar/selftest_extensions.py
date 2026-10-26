@@ -1227,8 +1227,27 @@ def _new_probes(EXT, RIV, base):
     # works through the wash row and wanders off the plot; reusing him for bottle_dirty_off put the clean empty off the
     # census and read FAIL on a mod that did right. A stateful fake: pawns have positions, a drink places the residue
     # at the drinker, the wash row's census moves the first drinker off the plot.
-    def bottle_game(mod_ok):
-        st = {"pawns": {}, "things": [], "drinks": 0, "washed": False, "n": 0}
+    # BOTTLE_WASH_FIX_LOSES_BOTTLE (run7): the wash row counts bottles MAP-WIDE, held ones included (ProofBottleCount).
+    # wash="walk": the wash turns the dirty one clean on the plot; "carry": the run7 shape, the wash happens and every
+    # plot bottle is then in a hauler's hands or pack (old plot census: 0/0/0 -> "washing lost a bottle", FAIL; new:
+    # PASS); "destroy": the wash deletes the bottle (FAIL either way); "never": nothing is washed (FAIL).
+    def bottle_game(mod_ok, wash="walk"):
+        st = {"pawns": {}, "things": [], "drinks": 0, "washed": False, "n": 0, "counts": 0}
+
+        def do_wash():
+            st["washed"] = True
+            if wash == "never":
+                return
+            for th in [th for th in st["things"] if th[0] == "RM_BottleDirty"]:
+                if wash == "destroy":
+                    st["things"].remove(th)
+                else:
+                    th[0] = "RM_BottleEmpty"
+            if wash == "carry":
+                for th in st["things"]:
+                    th[1] = th[2] = None                              # in a hauler's hands / a pack
+            first = st["drinker"]
+            st["pawns"][first] = (st["pawns"][first][0] - 40, st["pawns"][first][1] + 8)   # walked off
 
         def h(tl, p):
             if tl == "jawa/spawn_pawn":
@@ -1255,19 +1274,28 @@ def _new_probes(EXT, RIV, base):
                 res = "RM_BottleDirty" if st["drinks"] == 1 or not mod_ok else "RM_BottleEmpty"
                 st["things"].append([res, px, pz + 1])
                 return {"result": "DRANK RM_Bottle_FreshWater by %s at %s residueAt=%d,%d" % (pid, cell, px, pz + 1)}
+            if tl == "jawa/static_call" and p.get("method") == "ProofBottleCount":
+                st["counts"] += 1
+                if st["counts"] == 2 and not st["washed"]:                     # the wash row's first poll
+                    do_wash()
+                defs, rect = p["args"].split(";")
+                x, z, w, hh = (int(v) for v in rect.split(","))
+                parts = []
+                for d in defs.split(","):
+                    mine = [th for th in st["things"] if th[0] == d]
+                    on = [th for th in mine if th[1] is not None]
+                    inr = [th for th in on if x <= th[1] < x + w and z <= th[2] < z + hh]
+                    parts.append("%s=%d/%d/%d" % (d, len(inr), len(on), len(mine) - len(on)))
+                return {"result": "BOTTLES " + " ".join(parts) + " holders=-"}
             if tl == "jawa/list_things":
                 if st["drinks"] == 1:
                     st["polls"] = st.get("polls", 0) + 1
-                if st["drinks"] == 1 and not st["washed"] and st["polls"] > 3:   # past the ON row's 3-def census
-                    dirty = [th for th in st["things"] if th[0] == "RM_BottleDirty"]
-                    if dirty:                                                 # the wash row's first poll
-                        st["washed"] = True
-                        for th in dirty:
-                            th[0] = "RM_BottleEmpty"
-                        first = st["drinker"]
-                        st["pawns"][first] = (st["pawns"][first][0] - 40, st["pawns"][first][1] + 8)   # walked off
+                if st["drinks"] == 1 and not st["washed"] and st["polls"] > 3 and not st["counts"]:
+                    if any(th[0] == "RM_BottleDirty" for th in st["things"]):   # HEAD's plot-census wash row
+                        do_wash()
                 x, z, w, hh = (int(v) for v in p["rect"].split(","))
-                n = [th for th in st["things"] if th[0] == p.get("defName") and x <= th[1] < x + w and z <= th[2] < z + hh]
+                n = [th for th in st["things"] if th[0] == p.get("defName") and th[1] is not None
+                     and x <= th[1] < x + w and z <= th[2] < z + hh]
                 return {"success": True, "things": [{"id": "B", "x": th[1], "z": th[2]} for th in n]}
             return base(tl, p)
         return h
@@ -1277,6 +1305,10 @@ def _new_probes(EXT, RIV, base):
     got = _ext_run(EXT, "toggle_bottle_dirty", bottle_game(False))
     if got.get("bottle_dirty_off") != "FAIL":
         out.append("bottle_dirty_off on a mod that leaves a dirty bottle with the stage OFF must FAIL: %s" % got)
+    for wash, want in (("walk", "PASS"), ("carry", "PASS"), ("destroy", "FAIL"), ("never", "FAIL")):
+        got = _ext_run(EXT, "toggle_bottle_dirty", bottle_game(True, wash)).get("bottle_wash_returns_clean")
+        if got != want:
+            out.append("bottle_wash_returns_clean when the wash %s: %s, want %s" % (wash, got, want))
     # rivers (FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY): returns_home used to only READ the book, and nothing ever
     # put a pawn in the current, so it read UNMEASURED on every pass 4-8. It now stages throwaway colonists on edge
     # river cells and waits for the book to rise. A stateful fake: `wash` = whether the current carries anyone off.

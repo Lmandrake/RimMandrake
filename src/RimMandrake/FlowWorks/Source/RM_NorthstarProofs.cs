@@ -137,6 +137,64 @@ namespace RimMandrake.FlowWorks
 			return "DRANK " + def + " by " + p.ThingID + " at " + a[1] + " residueAt=" + p.PositionHeld.x + "," + p.PositionHeld.z;
 		}
 
+		/// <summary>BOTTLE_WASH_FIX_LOSES_BOTTLE / TANK_POUR_FIX_FILL_MODE_NEVER_RUNS. A census that counts only spawned
+		/// things on the plot calls every bottle in a hauler's hands, in a colonist's pack (JobGiver_RM_PackBottles) or
+		/// hauled to a stockpile off the plot "lost" (run7: all three plot bottles left the plot within 125 ticks while the
+		/// pond side refilled them). arg "Def1,Def2,...;x,z,w,h". Per def "Def=rect/map/held": spawned inside the rect,
+		/// spawned anywhere on the current map, held by a pawn on it (carried or packed, ThingOwnerUtility recursion);
+		/// stack counts. Then "holders=" pawnId:job:def per held stack ("-" when none). Reads only.
+		/// "BOTTLES Def=a/b/c ... holders=...", or "REFUSED: ...".</summary>
+		public static string ProofBottleCount(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			string[] r = a.Length == 2 ? a[1].Split(',') : new string[0];
+			if (map == null || r.Length != 4 || !int.TryParse(r[0], out int x) || !int.TryParse(r[1], out int z)
+				|| !int.TryParse(r[2], out int w) || !int.TryParse(r[3], out int h))
+			{
+				return "REFUSED: arg must be Def1,Def2;x,z,w,h on the current map";
+			}
+			CellRect rect = new CellRect(x, z, w, h);
+			var sb = new System.Text.StringBuilder("BOTTLES");
+			var holders = new System.Collections.Generic.List<string>();
+			foreach (string name in a[0].Split(','))
+			{
+				ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(name.Trim());
+				if (def == null)
+				{
+					return "REFUSED: no ThingDef " + name;
+				}
+				var found = new System.Collections.Generic.List<Thing>();
+				ThingOwnerUtility.GetAllThingsRecursively(map, ThingRequest.ForDef(def), found, true, null, true);
+				int inRect = 0, onMap = 0, held = 0;
+				foreach (Thing th in found)
+				{
+					if (th.Spawned)
+					{
+						onMap += th.stackCount;
+						if (rect.Contains(th.Position))
+						{
+							inRect += th.stackCount;
+						}
+						continue;
+					}
+					IThingHolder up = th.ParentHolder;
+					while (up != null && !(up is Pawn))
+					{
+						up = up.ParentHolder;
+					}
+					if (up is Pawn p)
+					{
+						held += th.stackCount;
+						holders.Add(p.ThingID + ":" + (p.CurJobDef?.defName ?? "none") + ":" + def.defName);
+					}
+				}
+				sb.Append(" ").Append(def.defName).Append("=").Append(inRect).Append("/").Append(onMap).Append("/").Append(held);
+			}
+			sb.Append(" holders=").Append(holders.Count == 0 ? "-" : string.Join(",", holders));
+			return sb.ToString();
+		}
+
 		/// <summary>SUPERDEEP_PRISON_ROOM_1. arg "px,pz;lx,lz" (a pit cell, a lip cell):
 		/// "ROOM split=b pitRoom=b proper=b edge=b prison=b roomsOn=b pitId=n lipId=n".</summary>
 		public static string ProofRoom(string arg)
