@@ -142,16 +142,16 @@ def _regen(t):
 def _need_surface_map(t):
     """The footprint surface is RM_Stillsand sand, so the suite stands up a Stillsand map when the current one is
     another biome (LIVE 2026-10-07: the old 'current map is X' UNMEASURED made four components unreachable)."""
-    mi = t.bridge_call("jawa/map_info")
+    mi = t.bridge_call("jawa/map_info") or {}     # a None reply must read UNMEASURED below, not AttributeError (FAIL)
     if not _live(t):
         return
-    biome = (mi or {}).get("mapBiome") or ((mi or {}).get("tileInfo") or {}).get("biome")
+    biome = mi.get("mapBiome") or (mi.get("tileInfo") or {}).get("biome")
     if biome != SURFACE_BIOME and mi.get("tile") is not None:
         t.bridge_call("jawa/world_tile_set", tiles=str(mi["tile"]), biome=SURFACE_BIOME, temperature=15.0)
         t.bridge_call("jawa/world_commit")
         _regen(t)
-        mi = t.bridge_call("jawa/map_info")
-        biome = (mi or {}).get("mapBiome")
+        mi = t.bridge_call("jawa/map_info") or {}
+        biome = mi.get("mapBiome")
         if biome == SURFACE_BIOME:
             t.session.call("jawa/spawn_pawn", kindDef="Colonist", x=int(mi["sizeX"]) // 2, z=int(mi["sizeZ"]) // 2,
                            faction="player", count=3)
@@ -414,8 +414,11 @@ def perceived_beauty(t):
             _setting(t, "set", "perceivedBeautyEnabled", "False")
             off = _pb_probe(t, pid)
         finally:
-            if old is not None:
-                _setting(t, "set", "perceivedBeautyEnabled", old)
+            # Straight through the session (as toggle_off_no_prints does): an unreadable probe above sets
+            # upstream_failed, after which _setting -> t.bridge_call is a no-op and the mechanic stayed OFF.
+            if old is not None and t.session is not None:
+                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set",
+                               field="perceivedBeautyEnabled", value=str(old))
         if not (on and cm and off):
             return
         if not on[1]:
