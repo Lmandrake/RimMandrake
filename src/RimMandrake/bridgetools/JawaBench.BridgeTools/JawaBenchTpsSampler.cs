@@ -335,9 +335,27 @@ namespace JawaBench.BridgeTools
         private static Action _pendingArchive;   // set by Install (any thread), taken by the main-thread pump; Interlocked both ways
         private static double _idleSince = -1;            // main thread only
 
-        /// <summary>Main thread, once per frame (RootFinalizer): start the deferred Player-prev archive after
-        /// <see cref="ArchiveIdleSeconds"/> of frames with no long event (startup's static constructors and patching run
-        /// inside long events). If the game quits first the archive is skipped - best effort, as before.</summary>
+        /// <summary>Main thread, once per frame (RootFinalizer, after every early return): start the deferred Player-prev
+        /// archive after <see cref="ArchiveIdleSeconds"/> of frames with no long event (startup's static constructors and
+        /// patching run inside long events). Runs whether or not the sampler body is healthy - a fault must not cost the
+        /// previous session's log. If the game quits first the archive is skipped - best effort, as before. Never throws.</summary>
+        private static void PumpIdleSafe()
+        {
+            if (Volatile.Read(ref _pendingArchive) == null) return;
+            try
+            {
+                if (!OnMain()) return;
+                bool busy = LongEventHandler.ShouldWaitForEvent || LongEventHandler.AnyEventNowOrWaiting;
+                PumpArchive(WD.Now, busy);
+            }
+            catch (Exception e)
+            {
+                // drop the work rather than throw every frame; say so on the record
+                Interlocked.Exchange(ref _pendingArchive, null);
+                try { W.Enqueue("error", "\"where\":\"idle-pump\",\"error\":" + W.Json(e.GetType().Name + ": " + e.Message)); } catch { }
+            }
+        }
+
         private static void PumpArchive(double now, bool busy)
         {
             if (Volatile.Read(ref _pendingArchive) == null) return;
@@ -462,7 +480,6 @@ namespace JawaBench.BridgeTools
                 bool waiting = LongEventHandler.ShouldWaitForEvent;
                 WD.LastLongEvent = waiting || LongEventHandler.AnyEventNowOrWaiting;
                 Explained.RootPost(waiting);
-                PumpArchive(WD.Now, WD.LastLongEvent);
                 WD.Set(WD.PGuiRender);
                 try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
                 double now = WD.Now;
@@ -470,6 +487,11 @@ namespace JawaBench.BridgeTools
                 JawaBenchTpsTier.Frame(now);
             }
             catch (Exception e) { GRoot.Fault("root-finalizer", e); Fail("root-finalizer", e); }
+            // JAWABENCH_TPSARCHIVE_FIX_SKIPPED_AFTER_FAULT: the deferred startup work is pumped on EVERY main-thread frame,
+            // after the scope closed - including a frame whose Root.Update threw, a sampler that faulted (RuntimeError) and
+            // a Root guard that disabled itself (__state not Valid). Inside the try above, any of those returned first and
+            // the crashed session's Player-prev.log was lost to the next launch's overwrite.
+            PumpIdleSafe();
         }
 
         // MUST 15: long-event and save scopes open in a prefix and close in a void FINALIZER, which runs whether
