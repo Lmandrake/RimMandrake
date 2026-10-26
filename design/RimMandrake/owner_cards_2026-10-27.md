@@ -2,7 +2,7 @@
 
 ## Summary (10 lines)
 1. Twelve cards: five answer your questions of 2026-10-26 (Q1-Q5); seven are the one-primary cards D1-D7 as changed by the GPT review.
-2. Q1 BENCH's memory: today the "hand off soon" warning is printed on your screen; as far as we know (not yet tested) BENCH itself never sees it. Recommended: let BENCH see its own fill level and hand off by itself.
+2. Q1 BENCH's memory: BENCH cannot restart itself; automatic compaction is its restart, and an existing hook repairs a missed handoff after it. Recommended: keep BENCH thin and make that repair trustworthy (its counter reads 100% MISSING today, a fault).
 3. Q2 Seeing what is running: the queue lists 123 items as "being worked", and none of them has a live claim. Recommended: one "now" record built from running workers, not from the queue.
 4. Q3 Focus: our numbers do NOT clearly show that focus closed more mods, because nothing records "this mod is finished". Recommended: a FOCUS lane for 1-2 named mods, each with a written finish list.
 5. Q4 Blocked-by: the queue can say "this waits on that", but only one link per item, and only after something has gone wrong. Recommended: a planned "after" link set when work is filed.
@@ -10,7 +10,7 @@
 7. D1-D7: same shape as before. Changes: D2 becomes "pilot only", D3 now has conditions, D6 lets running workers finish their item, and D7 gets a longer drill and stricter rules for retiring the old window.
 8. One clash to settle: "one worker per mod" (D1) and focus (Q3) pull against each other. Q3's recommendation narrows the rule to one worker per C# project, and D1 and D3 are written with that narrower rule.
 9. No screens are proposed. Each card names only the data and the rule that would produce the answer.
-10. Not measured: whether focus really closes mods faster; how often BENCH is compacted without a handoff; whether "dependencies" would be kept true.
+10. Not measured: whether focus really closes mods faster;  whether "dependencies" would be kept true.
 
 Words used throughout:
 - **Item**: one piece of work in the queue.
@@ -43,19 +43,18 @@ Words used throughout:
 - **The gap:** the status line is drawn on your screen, not put into BENCH's conversation. As far as we know, BENCH never sees its own warning; we have not proven this with a test. On the phone you may not see it either. If that holds, today the warning only works if a human notices it.
 - **Measured on 09-17** (`infrastructure/agents/BENCH.md` line 61): 60% of the next steps written in handoffs died unread. The wake step that now prints each open step was added because of that.
 - **The one-primary design (D1) shrinks the problem.** BENCH would keep only your conversation and the live game work you do together; queue work goes to one-item workers that start fresh. BENCH still fills, but far more slowly than today.
-- **UNMEASURED:** how often BENCH is compacted without a handoff. Nothing counts it today.
+- **BENCH cannot restart itself.** It cannot type `/clear` into its own window, and a restarted process would lose Remote Control (only a human can turn that back on). Your correction, 2026-10-26: *"Bench can't handoff and restart bench, can it?"* So a fill warning delivered to BENCH buys only one thing: writing the handoff a little before automatic compaction instead of repairing it after.
+- **The repair-after already exists.** `~/dev/Lodestar/bin/hooks/compaction_watch.py` (owner, 2026-10-22) runs on every compaction: before it, it logs whether a handoff was written; after it, it tells the resumed BENCH to push you a notice and, if no handoff was written, rebuild one from the transcript on disk. Compaction is, in effect, BENCH's restart.
+- **Its counter is not trustworthy yet:** `D:\ClaudeWork\logs\compactions.jsonl` lists 435 compactions under the BENCH clone, 203 of them today, and every one says handoff MISSING. A 100% reading is an instrument fault until proven otherwise; helpers working in the same folder are probably logged as BENCH (filed: `COMPACTION_LOG_FIX_HELPERS_COUNTED_AS_SEAT`).
 
 **Options:**
-1. **Let BENCH see its own fill level and act on it (recommended).**
-   - Why: the warning already exists; the fix is to deliver it to the one reader who must act on it.
-   - How: the status-line script already reads the fill percentage. It would also write that number to a small file. A hook that runs on every turn reads the file and, at 60% and 85%, adds one line to BENCH's own input: "finish this step, then hand off". A count of "compactions with no handoff" goes into the twice-daily digest so you can see it working.
-   - Trade: you never have to watch the bar, and a missed handoff becomes a number you can see. But it is a small build (one hook plus one counter), and a turn-by-turn hook adds a little to every turn.
-2. **Keep today's guards.**
-   - Why: they cost nothing, and compaction plus the "HANDOFF OWED" flag already catches some cases (how many is not counted).
-   - Trade: no build. But the warning stays one that BENCH (we believe) never sees, so it keeps relying on you noticing it.
-3. **Restart BENCH on a timetable** (for example every morning, from the handoff).
-   - Why: a predictable fresh start, never a forced one.
-   - Trade: a cold start costs about 47,546 tokens (two probes on 10-26; about $0.38 at API list prices, single_primary_design §2.4), which is small. But a restart in the middle of a talk with you loses nuance the handoff did not capture, and it is blind to how full BENCH actually is.
+1. **Compaction is the restart; make it lossless (recommended).**
+   - How: keep automatic compaction; keep BENCH thin (chatty work in helpers, so it fills slowly); fix the compaction counter so it counts only the seat and judges the handoff correctly; put "compactions without a handoff" in the digest.
+   - Trade: no new hook, nothing for you to watch. Some nuance from the hurried summary is still lost, recovered from the transcript on disk.
+2. **Also feed BENCH its fill level** (the earlier recommendation, withdrawn).
+   - Trade: lets BENCH write the handoff before compaction rather than after. Small gain, a per-turn hook, and it cannot restart anything.
+3. **You restart BENCH on a timetable** (for example each morning: `/clear`, then "wake").
+   - Trade: a clean start for about 47,546 tokens (two probes, 10-26), but it needs your hand at the window, which is exactly what you asked not to do.
 
 ---
 
