@@ -932,6 +932,7 @@ def _summarise_one(rows, now, window_s, writer):
     in_window = [r for r in rows if r["_t"] >= now - window_s]
     return {
         "session": (rows[0].get("session") or "?") if rows else None,
+        "windowS": window_s,
         "coverage": coverage,
         "writer": w,
         "samples": len(recent),
@@ -973,6 +974,12 @@ def summarise(rows, now=None, window_s=300, writer=None):
     return out
 
 
+def _span_label(seconds):
+    """'5m' for 300, '90s' for 90: the window the summary was taken over, as --window set it."""
+    seconds = int(seconds)
+    return "%dm" % (seconds // 60) if seconds and seconds % 60 == 0 else "%ds" % seconds
+
+
 def verdict(summary):
     """(level, detail) for belt_watchdog. COVERAGE (MISSING/STALE/ERROR) is reported apart from
     PERFORMANCE (SUSTAINED LOW/HIGH); a stale record never yields a performance WARN, and the line never
@@ -992,8 +999,8 @@ def verdict(summary):
     if not s["run"]:
         st = (" ; %d stall%s, worst %.0fs" % (s["stalls"], "" if s["stalls"] == 1 else "s", s.get("stallMaxS") or 0)) \
             if s.get("stalls") else ""
-        return "INFO", "%d windows in 5m, none judged (%s)%s%s" % (
-            s["samples"], ", ".join("%s %d" % kv for kv in sorted(s["states"].items(), key=str)), st, err)
+        return "INFO", "%d windows in %s, none judged (%s)%s%s" % (
+            s["samples"], _span_label(s.get("windowS", 300)), ", ".join("%s %d" % kv for kv in sorted(s["states"].items(), key=str)), st, err)
     tg = ", ".join("target %s: tps %.0f ratio %.2f (n %d)" % (k, v["tpsMedian"], v["ratioMedian"], v["n"])
                    for k, v in sorted(s["byTarget"].items(), key=lambda kv: float(kv[0])))
     stalls = ""

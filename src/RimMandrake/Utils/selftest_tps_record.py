@@ -609,6 +609,14 @@ def reader_checks():
                     target=60 if i % 2 else 180) for i in range(8)]
     s = T.summarise(mixed, now=now)
     check(set(s["byTarget"]) == {"60", "180"}, "TPS reported per target, never one mixed median: %r" % s["byTarget"])
+    # TPS_VERDICT_FIX_WINDOW_LABEL: the 'none judged' line names the window --window asked for, not a fixed 5m
+    paused = [sample(now - 5 * (8 - i), i, state="paused") for i in range(8)]
+    v = T.verdict(T.summarise(paused, now=now, window_s=600))
+    check("in 10m," in v[1] and "5m" not in v[1], "window label follows window_s=600: %r" % (v,))
+    v = T.verdict(T.summarise(paused, now=now, window_s=90))
+    check("in 90s," in v[1], "a window not a whole minute is labelled in seconds: %r" % (v,))
+    v = T.verdict(T.summarise(paused, now=now))
+    check("in 5m," in v[1], "default window still reads 5m: %r" % (v,))
 
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
