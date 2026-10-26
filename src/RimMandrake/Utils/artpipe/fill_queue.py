@@ -506,8 +506,39 @@ def _art_eval_record(run: str, target: str, runs_root: Path | None = None) -> tu
     return hit[-1], ""
 
 
-def _owner_ruling_ok(m, target: str) -> str:
-    """'' when the owner_ruling marker verifies, else why not."""
+def _owner_redraw_why(v, slot) -> str:
+    """'' when record V is the OWNER's own redraw ruling (never an agent prefill / delegated call) for SLOT, else why not.
+    Distinguished by decisions_v2.decision_is_his (a seeded `prefill` letter he never changed is not his; a letter needs
+    decidedAt / carriedRuledAt / a saved `at`); slot states and asks are his only on a record he saved (`at`/`decidedAt`)."""
+    if not isinstance(v, dict):
+        return "the ruling is not a record"
+    import decisions_v2 as DV
+    his = DV.decision_is_his(v)
+    saved = bool(v.get("at") or v.get("decidedAt") or v.get("carriedRuledAt"))
+    slots = v.get("slots") if isinstance(v.get("slots"), dict) else {}
+    st = slots.get(slot) if slot and isinstance(slots.get(slot), dict) else None
+    if st is not None and st.get("state") != "redraw":
+        return f"his ruling for slot {slot!r} is {st.get('state')!r}, not a redraw"
+    if st is not None and st.get("state") == "redraw":
+        return "" if saved else "the slot redraw is an agent prefill: he never saved this row"
+    asks = DV.asks_of(v)
+    if saved:
+        for m in (asks.get("more") or []):
+            if isinstance(m, dict) and (not slot or m.get("slot") in (None, "", slot)):
+                return ""
+        fa = asks.get("facings")
+        if isinstance(fa, dict) and fa.get("faces") and (not slot or fa.get("slot") in (None, "", slot)):
+            return ""
+    if his and (v.get("decision") or "").strip() == "redo":
+        return ""
+    if not his and (v.get("decision") or "").strip():
+        return f"decision {v.get('decision')!r} is an agent prefill he never changed, not his ruling"
+    return "the record holds no owner redraw (redo / slot redraw / asks) for this subject and slot"
+
+
+def _owner_ruling_ok(m, target: str, slot=None) -> str:
+    """'' when the owner_ruling marker verifies, else why not. The decisions record for TARGET must be the OWNER's own
+    redraw verdict for this subject (and SLOT when the row names one); anything else refuses (fail closed)."""
     if not isinstance(m, dict) or m.get("by") != "art.py enact":
         return "owner_ruling must be {by: 'art.py enact', decisions, sheet, row}"
     if m.get("row") != target:
@@ -517,12 +548,16 @@ def _owner_ruling_ok(m, target: str) -> str:
         return f"owner_ruling decisions file missing: {p}"
     try:
         doc = json.loads(p.read_text())
-        ruled = target in (doc.get("decisions") or {})
+        rec = (doc.get("decisions") or {}).get(target)
     except Exception as e:                                           # noqa: BLE001 — not a decisions doc: fail closed
         return f"owner_ruling decisions file unreadable ({type(e).__name__}: {e})"
-    if not ruled:
+    if rec is None:
         return f"{p.name} holds no ruling on {target}"
-    return ""
+    try:
+        why = _owner_redraw_why(rec, slot if isinstance(slot, str) and slot else None)
+    except Exception as e:                                           # noqa: BLE001 — cannot judge: fail closed
+        return f"owner_ruling cannot be judged ({type(e).__name__}: {e})"
+    return f"{p.name}: {target}: {why}" if why else ""
 
 
 def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = None) -> tuple[bool, dict]:
@@ -536,7 +571,7 @@ def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = Non
         return True, {"verdict": "NO_SUBJECT", "reason": "names no def and installs nowhere"}
     named = str(row.get("target_def") or "").strip()  # the markers name the def as the ROW did (before donor mapping)
     if row.get("owner_ruling") not in (None, ""):
-        why = _owner_ruling_ok(row["owner_ruling"], named)
+        why = _owner_ruling_ok(row["owner_ruling"], named, row.get("slot"))
         if why:
             return False, {"verdict": "REFUSED_MARKER", "reason": why}
         return True, {"verdict": "EXEMPT", "exemption": "OWNER_RULING",

@@ -4236,7 +4236,15 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                        {"subject": "ST_MixK", "decision": "REGEN"}])
             run_dir("test_r1", True, [{"subject": "ST_RegenT", "decision": "REGEN"}])
             dec = td / "sheet.decisions.json"
-            dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {"ST_Ruled": {"decision": "redo"}}}))
+            dec.write_text(json.dumps({"sheetId": "st_sheet", "decisions": {
+                "ST_Ruled": {"decision": "redo", "prefill": "A", "decidedAt": "2026-10-26T01:00:00"},
+                "ST_SlotOk": {"slots": {"g/body": {"state": "redraw"}}, "at": "2026-10-26T01:00:00"},
+                # OWNER_RULING_ONLY_HIS_REDRAW: none of these is the owner's redraw ruling for that subject+slot
+                "ST_Prefill": {"decision": "redo", "prefill": "redo"},          # agent seeded, never changed
+                "ST_Delegated": {"decision": "A", "prefill": "A", "note": "delegated: keep"},
+                "ST_Keep": {"decision": "A", "prefill": "B", "decidedAt": "2026-10-26T01:00:00"},   # his, but a pick
+                "ST_SlotPick": {"slots": {"g/body": {"state": "pick"}}, "at": "2026-10-26T01:00:00"},
+                "ST_SlotPrefill": {"slots": {"g/body": {"state": "redraw"}}, "prefill": "A"}}}))
 
             def row(i, dn, **kw):
                 return dict({"id": i, "rimflow_item_id": "SELFTEST_ARTPIPE", "target_def": dn,
@@ -4261,6 +4269,13 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                     row("ae_mix_kept_no", "ST_MixK", source_run="prod_r1", facings=["east", "south"]),
                     row("ruled_ok", "ST_Ruled", owner_ruling=dict(ruling, row="ST_Ruled")),
                     row("ruled_no", "ST_NotRuled", owner_ruling=dict(ruling, row="ST_NotRuled")),
+                    row("ruled_slot_ok", "ST_SlotOk", slot="g/body", owner_ruling=dict(ruling, row="ST_SlotOk")),
+                    row("ruled_slot_other_no", "ST_SlotOk", slot="g/tail", owner_ruling=dict(ruling, row="ST_SlotOk")),
+                    row("ruled_prefill_no", "ST_Prefill", owner_ruling=dict(ruling, row="ST_Prefill")),
+                    row("ruled_deleg_no", "ST_Delegated", owner_ruling=dict(ruling, row="ST_Delegated")),
+                    row("ruled_keep_no", "ST_Keep", owner_ruling=dict(ruling, row="ST_Keep")),
+                    row("ruled_slotpick_no", "ST_SlotPick", slot="g/body", owner_ruling=dict(ruling, row="ST_SlotPick")),
+                    row("ruled_slotpre_no", "ST_SlotPrefill", slot="g/body", owner_ruling=dict(ruling, row="ST_SlotPrefill")),
                     row("ruled_wrongrow_no", "ST_Other", owner_ruling=dict(ruling, row="ST_Ruled")),
                     {"id": "nosubj_install_no", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "a glyph",
                      "canvas_w": 256, "canvas_h": 256, "no_subject": "glyph", "biome_neutral": True,
@@ -4271,6 +4286,8 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                         "ST_Regen": "REFUSED_REGEN", "ST_RegenT": "REFUSED_REGEN", "ST_Accepted": "REFUSED_REGEN",
                         "ST_KeptOk": "REFUSED_KEPT", "ST_KeptBare": "REFUSED_KEPT", "ST_Unconf": "REFUSED_UNCONFIRMED",
                         "ST_Regen_b": "REFUSED_REGEN", "ST_Ruled": "REFUSED_KEPT", "ST_NotRuled": "REFUSED_KEPT",
+                        "ST_SlotOk": "REFUSED_KEPT", "ST_Prefill": "REFUSED_KEPT", "ST_Delegated": "REFUSED_KEPT",
+                        "ST_Keep": "REFUSED_KEPT", "ST_SlotPick": "REFUSED_KEPT", "ST_SlotPrefill": "REFUSED_KEPT",
                         "ST_Other": "REFUSED_KEPT",
                         ("ST_MixU", "east"): "REFUSED_REGEN", ("ST_MixU", "south"): "REFUSED_UNCONFIRMED",
                         ("ST_MixK", "east"): "REFUSED_REGEN", ("ST_MixK", "south"): "REFUSED_KEPT"}
@@ -4282,7 +4299,7 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
             with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
                 rc = fill_queue.main(["--input", str(art)] + dirs, gate=_FakeEligibilityGate(verdicts))
             filed = {p.stem for p in q.pending.glob("*.json")}
-            want = {"none_ok", "ae_regen_ok", "ae_kept_ok", "ruled_ok"}
+            want = {"none_ok", "ae_regen_ok", "ae_kept_ok", "ruled_ok", "ruled_slot_ok"}
             ok("gate: exactly the eligible and verified-exempt rows are filed", filed == want,
                f"filed={sorted(filed)} stderr={err.getvalue()[-1500:]}")
             ok("gate: a refusal exits 1", rc == 1, rc)
@@ -4294,6 +4311,9 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
                                  ("ae_bad_id_no", "not a run id"), ("ruled_no", "no ruling on ST_NotRuled"),
                                  ("ae_mix_unconf_no", "REFUSED_UNCONFIRMED"), ("ae_mix_kept_no", "replaces_kept"),
                                  ("ruled_wrongrow_no", "is not target_def"),
+                                 ("ruled_prefill_no", "agent prefill"), ("ruled_deleg_no", "agent prefill"),
+                                 ("ruled_keep_no", "no owner redraw"), ("ruled_slotpick_no", "not a redraw"),
+                                 ("ruled_slot_other_no", "no owner redraw"), ("ruled_slotpre_no", "agent prefill"),
                                  ("nosubj_install_no", "no_subject row may not install_to")):
                 line = next((ln for ln in e.splitlines() if f"REFUSED ineligible: {rid}:" in ln), "")
                 ok(f"gate: {rid} refused naming {verdict!r}", verdict in line, line or e[-800:])
