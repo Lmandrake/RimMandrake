@@ -564,7 +564,8 @@ namespace RimMandrake.LanternDeeps
         {
             Map map = p.Map;
             bool tame = p.Faction == Faction.OfPlayer;
-            if (smothered != null && (!smothered.Spawned || !p.Position.InHorDistOf(smothered.Position, 1.9f))) Release();
+            // a tame pooler never holds a heater: one tamed while smothering lets go at once, not when it next walks off
+            if (smothered != null && (tame || !smothered.Spawned || !p.Position.InHorDistOf(smothered.Position, 1.9f))) Release();
             if (Find.TickManager.TicksGame < letGoUntil || Wave3Util.Busy(p)) return "resting";
 
             // 1. loose fires (a tame one only ever hunts these)

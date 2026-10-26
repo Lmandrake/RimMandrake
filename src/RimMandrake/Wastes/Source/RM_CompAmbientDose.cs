@@ -148,6 +148,18 @@ namespace RimMandrake.Wastes
     /// </summary>
     public class RM_CompRadiothermalHeat : CompHeatPusher
     {
+        // Vanilla CompHeatPusher pushes from BOTH CompTick (every 60) and CompTickRare (x4.17 per 250), assuming a
+        // thing runs one ticker. A pawn runs both (Pawn.Tick calls TickRare at hash 250), so the rare push doubled the
+        // heat. CompTick alone is the full heatPerSecond.
+        public override void CompTickRare()
+        {
+            if (parent is Pawn)
+            {
+                return;
+            }
+            base.CompTickRare();
+        }
+
         public override bool ShouldPushHeatNow
         {
             get

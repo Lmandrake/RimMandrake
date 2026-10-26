@@ -8,9 +8,9 @@ namespace RimMandrake.LanternDeeps
 {
     // ════════════════════════════════════════════════════════════════════
     // LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1 (split from LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1; the
-    // XML-only wave the parent names: drifter, candler, galuush, chiller, shoal). Concepts:
-    // design/Jawa/worldbuilding/biomes/rosters/lantern_deeps_repopulation_proposals.md §2, §3, §9,
-    // §10, §12, ruled in by the owner ("Yes all 7 and ensure hydrocarbon"). Three small seams the
+    // XML-only wave the parent names: drifter, candler, galuush, shoal; the chiller was cut on the review sheet).
+    // Concepts: design/Jawa/worldbuilding/biomes/rosters/lantern_deeps_repopulation_proposals.md §2, §3, §9,
+    // §10, §12, ruled in by the owner ("Yes all 7 and ensure hydrocarbon"). Two small seams the
     // proposals' "XML only" lines turned out to need, each measured against decompiled 1.6:
     //
     //  1. RM_DeathActionWorker_HotKill: a methane body that ignites only when killed hot. Vanilla
@@ -22,8 +22,6 @@ namespace RimMandrake.LanternDeeps
     //     bullet... it detonates."
     //  2. RM_CompMobileGlow: vanilla CompGlower registers at a fixed cell; a drifting glower must
     //     re-register as it moves (CompTick every interval ticks: CompTickRare, which a pawn does get every 250, is too coarse).
-    //  3. RM_CompHeatPusherGated: the chiller's cold is vanilla CompHeatPusher (CompTick pushes
-    //     every 60 ticks, which a pawn does run), behind its Mod Settings switch.
     //  Plus RM_GenStep_Galuush: one galuush per Deep at most, by chance, hung in the biggest
     //  open chamber, never from the wildAnimals roster ("one per Deep at most, and many Deeps
     //  have none").
