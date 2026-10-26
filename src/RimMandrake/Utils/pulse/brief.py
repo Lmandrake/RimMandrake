@@ -59,6 +59,15 @@ TITLES = {"word": "Needs your word", "open": "Open these", "overnight": "Overnig
           "decided": "Decided for you", "spend": "Spend", "next": "Next", "coverage": "Coverage"}
 ORDER = ("word", "open", "overnight", "decided", "spend", "next", "coverage")
 
+# A look's review packet (owner card 2026-10-25, "Plus evidence and doubts"): the artifact ships with a
+# recommendation, the alternatives with their reasons, the evidence (what was measured) and the doubts (what
+# was not, where the agent is unsure). Read from `## ` sections of a markdown: the hand's --packet file, or
+# an item look's items/<ID>.md. A look short of any part is listed as "packet incomplete", never a bare link.
+PACKET_PARTS = ("recommendation", "alternatives", "evidence", "doubts")
+PACKET_HEADS = (("recommend", "recommendation"), ("alternative", "alternatives"), ("option", "alternatives"),
+                ("evidence", "evidence"), ("measured", "evidence"), ("doubt", "doubts"), ("unsure", "doubts"),
+                ("not measured", "doubts"), ("unknown", "doubts"))
+
 
 def _model():
     return pc._model()
@@ -103,6 +112,40 @@ def transitions(events: list[dict], since: float, now: float) -> tuple[dict, lis
     return world, moves
 
 
+def packet_path(row: dict) -> str | None:
+    """Where a look row's packet lives: the hand's --packet file, else an item look's own items/<ID>.md."""
+    if row.get("packet"):
+        return str(row["packet"])
+    key = str(row.get("key") or "")
+    if key.startswith("needs:"):
+        for c in pc.CLONES:
+            f = c / "infrastructure" / "state" / "items" / f"{key[6:]}.md"
+            if f.is_file():
+                return str(f)
+    return None
+
+
+def read_packet(path: str | None) -> tuple[dict, list[str]]:
+    """({part: text}, missing parts). A part counts only with words under its heading."""
+    if not path:
+        return {}, list(PACKET_PARTS)
+    try:
+        text = Path(path).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return {}, list(PACKET_PARTS)
+    parts: dict[str, str] = {}
+    cur = None
+    for ln in text.splitlines():
+        m = re.match(r"^##\s+(.+?)\s*$", ln)
+        if m:
+            h = m.group(1).lower()
+            cur = next((part for pre, part in PACKET_HEADS if h.startswith(pre)), None)
+            continue
+        if cur and ln.strip():
+            parts[cur] = (parts.get(cur, "") + " " + ln.strip()).strip()
+    return parts, [k for k in PACKET_PARTS if not parts.get(k)]
+
+
 def _source_down(snap: dict, sec: str) -> list[str]:
     src = snap.get("sources") or {}
     return [s for s in SECTION_SOURCES.get(sec, ()) if not (src.get(s) or {}).get("ok")]
@@ -138,8 +181,13 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
     for r in rows:
         if r["kind"] == "look":
             lk = r.get("link") or {}
-            secs["open"].append({"sec": "open", "text": _short(r.get("text"), 150), "meta": {"since": r.get("since")},
-                                 "link": lk.get("value"), "claim": {"type": "look", "key": r["key"]}})
+            pp = packet_path(r)
+            parts, missing = read_packet(pp)
+            secs["open"].append({"sec": "open", "text": _short(r.get("title") or r.get("text"), 150),
+                                 "meta": {"since": r.get("since")},
+                                 "link": None if missing else lk.get("value"),   # no bare link without a packet
+                                 "packet": {k: _short(v, 220) for k, v in parts.items()}, "missing": missing,
+                                 "claim": {"type": "look", "key": r["key"], "packet": pp, "missing": missing}})
 
     # OVERNIGHT, IN WORDS: per goal one line of counts in the ledger's state words, then its first
     # outcomes (tasks before bugs, closed before checked before built); small goals fold into one line
@@ -256,7 +304,13 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
                 return f"fail: item needs {it.needs}, not owner"
             return "pass"
         if t in ("card", "look"):
-            return "pass" if c.get("key") in keys else "fail: no longer on the monitor"
+            if c.get("key") not in keys:
+                return "fail: no longer on the monitor"
+            if t == "look":
+                _, missing = read_packet(c.get("packet"))   # its own read of the packet, not the composer's
+                if sorted(missing) != sorted(c.get("missing") or []):
+                    return f"fail: packet is missing {missing or 'nothing'}, the line says {c.get('missing') or 'nothing'}"
+            return "pass"
         if t == "moved":
             got = tsn_state.get(c.get("tsn"))
             if not got or got[0] != c.get("id"):
@@ -367,6 +421,8 @@ ul{list-style:none;margin:0;padding:0}li{padding:6px 0;border-bottom:1px solid #
 .m{color:var(--dim);font-size:12.5px}.st{color:var(--mustard);font-size:12.5px;white-space:nowrap}
 .none{color:var(--faint);font-size:13.5px}a{color:var(--lk)}
 .foot{margin-top:26px;color:var(--faint);font-size:12px}
+.pk{font-size:13px;color:var(--dim);margin-top:3px}.pk b{color:var(--ink);font-weight:600;text-transform:capitalize}
+.inc{font-size:13px;color:var(--red);margin-top:3px}
 """
 
 
@@ -401,6 +457,13 @@ def render(brief: dict | None, hb: dict, now: float, base: str = "") -> str:
                 href = base + ln["link"] if ln["link"].startswith("/") else ln["link"]
                 txt = f"<a href='{e(href)}'>{txt}</a>"
             meta = ""
+            if sec == "open":
+                if ln.get("missing"):
+                    meta = ("<div class=inc>packet incomplete: no " + e(", no ".join(ln["missing"]))
+                            + " - the agent that handed it owes these before you look</div>")
+                else:
+                    pk = ln.get("packet") or {}
+                    meta = "".join(f"<div class=pk><b>{e(k)}</b> {e(pk.get(k, ''))}</div>" for k in PACKET_PARTS)
             if sec == "word":
                 mm = ln.get("meta") or {}
                 meta = f"<div class=m>waiting {_ago(mm.get('since'), now)}" + (f" · blocks {mm['blocks']}" if mm.get("blocks") else "") + "</div>"

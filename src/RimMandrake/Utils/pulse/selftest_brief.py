@@ -89,6 +89,31 @@ def main():
     w = cb["sections"]["word"]
     check("a card line has no dangling prefix", len(w) == 1 and w[0]["text"] == "BENCH asks: pick one", w)
 
+    # look packets (owner card 2026-10-25): all four parts or "packet incomplete", and the judge re-reads it
+    full = Path(tempfile.mkdtemp()) / "full.md"
+    full.write_text("# x\n## Recommendation\nkeep A\n## Alternatives\nB: slower\n## Evidence\nmeasured 3 runs\n"
+                    "## Doubts\nnot measured on the full list\n")
+    part = full.with_name("part.md")
+    part.write_text("## Recommendation\nkeep A\n## Evidence\nmeasured\n## Doubts\n\n")
+    check("a full packet has nothing missing", brief.read_packet(str(full))[1] == [], brief.read_packet(str(full)))
+    check("an empty heading does not count", brief.read_packet(str(part))[1] == ["alternatives", "doubts"],
+          brief.read_packet(str(part)))
+    check("no packet misses all four", brief.read_packet(None)[1] == list(brief.PACKET_PARTS))
+    lsnap = {**csnap, "rows": [{"kind": "look", "key": "hand:a", "title": "Sheet A", "since": NOW,
+                                "packet": str(full), "link": {"value": "http://x/a"}},
+                               {"kind": "look", "key": "hand:b", "title": "Sheet B", "since": NOW,
+                                "packet": str(part), "link": {"value": "http://x/b"}}]}
+    lb = brief.compose(lsnap, EVENTS, NOW - 7200, NOW)
+    o = {ln["claim"]["key"]: ln for ln in lb["sections"]["open"]}
+    check("a complete look keeps its link", o["hand:a"]["link"] == "http://x/a" and not o["hand:a"]["missing"], o["hand:a"])
+    check("an incomplete look has no bare link", o["hand:b"]["link"] is None and o["hand:b"]["missing"], o["hand:b"])
+    o["hand:b"]["claim"]["missing"] = []          # tamper: the line claims a complete packet
+    brief.judge(lb, EVENTS, lsnap)
+    check("judge passes the true look line", o["hand:a"]["check"] == "pass", o["hand:a"]["check"])
+    check("judge withholds a look claiming a packet it lacks", o["hand:b"]["check"] != "pass", o["hand:b"]["check"])
+    html_ = brief.render(lb, {"red": False, "text": "x"}, NOW)
+    check("render shows the four parts of a full packet", all(f"<b>{k}</b>" in html_ for k in brief.PACKET_PARTS))
+
     # heartbeat: a stale snapshot is red, a fresh one with a fresh brief is not
     fresh = {"collected_at": NOW, "rows": [], "chips": [{"seat": "BENCH", "state": "run", "since": NOW - 60}], "sources": {}}
     good_brief = {"at": NOW - 600, "judged": True, "sections": {}}

@@ -1298,7 +1298,8 @@ def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: 
         r = _row(h["id"], "look", seat or "", title, h.get("ts") or 0, link=link, src="hands")
         r.update({"seat": seat, "title": title, "ltype": ty, "seen_id": h["id"], "group": None, "opened": opened,
                   "thumb": ty == "image" and not tgt.startswith("http") and not h.get("missing"),
-                  "read_by": h.get("read_by"), "caught": h.get("caught"), "rev": h.get("rev")})
+                  "read_by": h.get("read_by"), "caught": h.get("caught"), "rev": h.get("rev"),
+                  "packet": h.get("packet")})
         if h.get("withdrawn"):
             sup = h.get("superseded_by")
             r.update(ltype=f"superseded by {sup}" if sup else "withdrawn", withdrawn=True, was_opened=opened,

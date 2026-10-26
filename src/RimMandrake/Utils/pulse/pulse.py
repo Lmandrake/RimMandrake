@@ -11,7 +11,7 @@
                                shown in the widget. `./pulse back` is the "I'm back" form.
   pulse.py ack <incident> [--noise]
   pulse.py hand <path-or-url> --read-by seat:<SEAT>|judge:<model> --caught "<one line>"
-                [--title "what it is"] [--seat BENCH|FOUNDRY]
+                [--title "what it is"] [--seat BENCH|FOUNDRY] [--packet PACKET.md]
                                HAND THE OWNER SOMETHING TO LOOK AT. It appears in the widget's
                                "to look at" list (one line, tiny preview for images, an open link,
                                coloured by --seat) until he opens it, which marks it seen. Use it
@@ -20,7 +20,11 @@
                                resolve against the cwd. Nothing reaches the owner unread (owner
                                2026-10-22): --read-by and --caught are required and a missing path is
                                refused. Re-handing the revision he already opened does not re-open it;
-                               a changed file (a new revision) does.
+                               a changed file (a new revision) does. --packet (owner card 2026-10-25):
+                               a markdown with ## Recommendation, ## Alternatives (each with its
+                               reason), ## Evidence (what was measured) and ## Doubts (what was not,
+                               where you are unsure); without all four his brief shows the look as
+                               "packet incomplete" instead of a bare link.
                                Review-sheet servers (Transient/biome_ffar/*.serve.log) need no hand: pulse
                                lists every live one whose sheet has a valid pre-review record
                                (src/RimMandrake/Utils/art/prereview.py); the rest are "held back".
@@ -433,7 +437,7 @@ def target_rev(path: str) -> str | None:
 
 
 def hand(target: str, title: str | None, seat: str | None, read_by: str | None = None,
-         caught: str | None = None) -> dict:
+         caught: str | None = None, packet: str | None = None) -> dict:
     """Write one hand-off record (pure file append; the daemon picks it up within 5 s). REFUSES (ValueError) a
     path that does not exist and a hand nobody read first - Nothing reaches the owner unread (owner 2026-10-22):
     `read_by` is `seat:<SEAT>` or `judge:<model>`, `caught` one line of what was fixed or dropped ('nothing' is
@@ -443,6 +447,12 @@ def hand(target: str, title: str | None, seat: str | None, read_by: str | None =
                          "(Nothing reaches the owner unread, owner 2026-10-22)")
     if not (caught or "").strip():
         raise ValueError("--caught is empty: one line of what was fixed or dropped before he sees it ('nothing' is valid)")
+    pk = None
+    if packet:   # owner card 2026-10-25: a look ships with recommendation, alternatives, evidence and doubts
+        pp = Path(packet).expanduser()
+        pk = os.path.normpath(str(pp if pp.is_absolute() else Path.cwd() / pp))
+        if not os.path.isfile(pk):
+            raise ValueError(f"no such packet: {pk}")
     if re.match(r"^https?://", target):
         tgt, win, rev = target, None, None
     else:
@@ -454,7 +464,7 @@ def hand(target: str, title: str | None, seat: str | None, read_by: str | None =
         win, rev = pc.win_path(tgt), target_rev(tgt)
     rec = {"id": "hand:" + hashlib.sha1(tgt.encode()).hexdigest()[:10], "target": tgt, "win": win,
            "title": title or Path(tgt).name or tgt, "seat": (seat or "").upper() or None, "ts": time.time(),
-           "rev": rev, "read_by": read_by.strip(), "caught": caught.strip()[:200]}
+           "rev": rev, "read_by": read_by.strip(), "caught": caught.strip()[:200], "packet": pk}
     append("hands.jsonl", rec)
     return rec
 
@@ -967,6 +977,8 @@ def main(argv=None) -> int:
     hd.add_argument("--seat")
     hd.add_argument("--read-by", help="who looked at it first: seat:<SEAT> or judge:<model> (required)")
     hd.add_argument("--caught", help="one line: what was fixed or dropped before he sees it; 'nothing' is valid (required)")
+    hd.add_argument("--packet", help="markdown with ## Recommendation / ## Alternatives / ## Evidence / ## Doubts "
+                                     "(owner card 2026-10-25); without it his brief lists the hand as 'packet incomplete'")
     wd = sub.add_parser("withdraw")
     wd.add_argument("id")
     wd.add_argument("--by", help="the hand id or title that supersedes it")
@@ -1018,7 +1030,7 @@ def main(argv=None) -> int:
         print(urllib.request.urlopen(req, timeout=5).read().decode())
     elif args.cmd == "hand":
         try:
-            r = hand(args.target, args.title, args.seat, args.read_by, args.caught)
+            r = hand(args.target, args.title, args.seat, args.read_by, args.caught, args.packet)
         except ValueError as e:
             print(f"hand REFUSED: {e}", file=sys.stderr)
             return 2
