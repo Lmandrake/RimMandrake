@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- RACES_AUDIT_INHERITED_40_NO_LEATHERDEF 2026-10-26. The fish hide of the RimMandrake tier, for the big fish of ours
-       (body size about 0.5 and up; owner card "Only big fish drop it"). Stats mirror RSW_Fishskin
-       (RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Items/RSW_BiomesTeamPort_Items.xml), which an RM mod may
-       not depend on. It lives here because TerminalBiomes holds most of the fish; every user ships in the same
+       (body size about 0.5 and up; owner card "Only big fish drop it"). Stats are the Bestiary port's fishskin; its
+       twin RSW_Fishskin was deleted (FISHSKIN_MERGE_TWIN_DEFS) and the SWBestiary fish name this def, since the
+       Star Wars tier depends on this one and never the reverse. It lives here because TerminalBiomes holds most of the fish; every user ships in the same
        composed mod (mandrake.rm.biomes, Biomes.compose.json) or depends on it (mandrake.rut.patches). -->
   <ThingDef ParentName="LeatherBase">
     <defName>RM_Fishskin</defName>

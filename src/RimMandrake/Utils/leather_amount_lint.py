@@ -33,7 +33,7 @@ exempt by name.
 Each class below was audited race by race (leather picked, or LeatherAmount 0 where vanilla's own convention gives
 none, e.g. small birds <= 0.35 like Sparrow/Chicken/Duck; arthropods by size: <= 0.2 swarm bodies 0, 0.25-0.9
 RM_WeakChitin x25, hard shells near 1 RM_GrayChitin, 1.5-3 RM_MediumChitin; snake-bodied fish by the owner's card
-"Only big fish drop it" (2026-10-26): fish from body size about 0.5 up name RM_Fishskin / RSW_Fishskin, smaller ones
+"Only big fish drop it" (2026-10-26): fish from body size about 0.5 up name RM_Fishskin (the one fishskin), smaller ones
 and the hideless non-fish on the Snake body LeatherAmount 0), and once FINISHED a race of that body that again
 inherits the bare 40 with no leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately yields no
 hide.
@@ -103,7 +103,7 @@ CLASS_BODIES = {
     'turtle': {'TurtleLike'},
     'softbody': {'RM_JellyfishBody', 'RM_TentacledSlug', 'RM_ClawedSlug', 'RM_Butterfly', 'RM_Slug'},
     # fish, eels and the other slithering swimmers of ours ride vanilla's Snake body; the RSW tumorfish
-    # (Spawn/Fry/Adult, RSW_Fishskin) ride RSW_FishBody -- without it a Fry regression (1a03259941) passed
+    # (Spawn/Fry/Adult, RM_Fishskin) ride RSW_FishBody -- without it a Fry regression (1a03259941) passed
     'fish': {'Snake', 'RSW_FishBody'},
 }
 # classes audited to the end; their regressions fail

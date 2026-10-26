@@ -1795,7 +1795,7 @@ copied verbatim from the donor mods' own Textures trees.
       <Wildness>0.2</Wildness>
     </statBases>
     <race>
-      <leatherDef>RSW_Fishskin</leatherDef>
+      <leatherDef>RM_Fishskin</leatherDef>  <!-- FISHSKIN_MERGE_TWIN_DEFS 2026-10-26: was RSW_Fishskin, its identical twin, deleted; RM_Fishskin ships in mandrake.rm.biomes, a hard dependency of this mod -->
       <baseBodySize>0.8</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
       <baseHungerRate>0.25</baseHungerRate>
@@ -3403,7 +3403,7 @@ copied verbatim from the donor mods' own Textures trees.
       <Wildness>0.9</Wildness>
     </statBases>
     <race>
-      <leatherDef>RSW_Fishskin</leatherDef>
+      <leatherDef>RM_Fishskin</leatherDef>  <!-- FISHSKIN_MERGE_TWIN_DEFS 2026-10-26: was RSW_Fishskin, its identical twin, deleted; RM_Fishskin ships in mandrake.rm.biomes, a hard dependency of this mod -->
       <baseBodySize>1.8</baseBodySize>
       <baseHealthScale>1</baseHealthScale>
       <baseHungerRate>0.8</baseHungerRate>
@@ -3906,7 +3906,7 @@ copied verbatim from the donor mods' own Textures trees.
       <Wildness>0.5</Wildness>
     </statBases>
     <race>
-      <leatherDef>RSW_Fishskin</leatherDef>
+      <leatherDef>RM_Fishskin</leatherDef>  <!-- FISHSKIN_MERGE_TWIN_DEFS 2026-10-26: was RSW_Fishskin, its identical twin, deleted; RM_Fishskin ships in mandrake.rm.biomes, a hard dependency of this mod -->
       <baseBodySize>0.8</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
       <foodType>OmnivoreRoughAnimal</foodType>

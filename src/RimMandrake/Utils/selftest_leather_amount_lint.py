@@ -165,8 +165,11 @@ def main():
            'RM_Vaulisk': 'RM_Fishskin', 'RM_Loohn': 'RM_Fishskin'}
     got = {n: r['leather_of'].get(n) for n in big}
     check('fish: the big fish name RM_Fishskin', got == big, got)
-    fish_rows = [n for n, l in r['leather_of'].items() if l in ('RM_Fishskin', 'RSW_Fishskin')]
+    fish_rows = [n for n, l in r['leather_of'].items() if l == 'RM_Fishskin']
     check('fish: fishskin is seen on >= 8 races (5 big fish + 3 tumorfish)', len(fish_rows) >= 8, fish_rows)
+    # FISHSKIN_MERGE_TWIN_DEFS: RSW_Fishskin was RM_Fishskin's identical twin and is deleted; nothing may name it.
+    twin = sorted(n for n, l in r['leather_of'].items() if l == 'RSW_Fishskin')
+    check('fish: no race names the deleted twin RSW_Fishskin', not twin, twin)
     # Every body a fishskin race rides must be strict, else a regression of that race passes (tumorfish fry,
     # RSW_FishBody, did until wave 72).
     fish_bodies = {r['body_of'].get(n) for n in fish_rows}
