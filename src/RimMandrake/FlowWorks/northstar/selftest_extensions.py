@@ -994,9 +994,19 @@ def _new_probes(EXT, RIV, base):
     got = run(EXT, "toggle_river_steam", steam_game(True, 5))
     if got != {"river_steam_on": "PASS", "river_steam_off": "FAIL", "river_steam_biome_gate": "UNMEASURED"}:
         out.append("river steam on a steam biome that ignores the setting: %s" % got)
-    got = run(EXT, "toggle_river_steam", steam_game(False, 0))
+    kept = []
+    got = _ext_run(EXT, "toggle_river_steam", steam_game(False, 0), keep=kept)
     if got != {"river_steam_on": "UNMEASURED", "river_steam_off": "UNMEASURED", "river_steam_biome_gate": "PASS"}:
         out.append("river steam on a silent non-steam biome: %s" % got)
+    # the UNMEASURED reason names the biome to re-run on: it must be a BiomeDef that exists (it named the pre-rename
+    # RM_FE_Pyrelands, PYRELANDS_DEFNAME_RENAME_1, until review 2026-10-26)
+    with open(os.path.join(ROOT, "src", "RimMandrake", "Pyrelands", "Defs", "BiomeDefs", "Pyrelands.xml"), encoding="utf-8") as f:
+        biomes = set(re.findall(r"<defName>(\w+)</defName>", f.read()))
+    on = [c for c in kept if c.name == "river_steam_on"]
+    named = re.findall(r"\bRM_\w+", on[0].detail if on else "")
+    if not named or not set(named) <= biomes:
+        out.append("river steam UNMEASURED reason names no live Pyrelands BiomeDef (%s): %r"
+                   % (sorted(biomes), on[0].detail if on else None))
     got = run(EXT, "toggle_river_steam", steam_game(False, 0, river=0))
     if got.get("river_steam_biome_gate") != "FAIL":
         out.append("river steam gate PASSed with no river painted: %s" % got)

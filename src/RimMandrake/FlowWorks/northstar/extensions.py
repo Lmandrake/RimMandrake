@@ -2451,7 +2451,7 @@ def toggle_river_steam(t):
         gate_why = "biome %s steams; the gate half needs a map without RiverSteamBiomeExtension" % s0.get("biome")
     else:
         on_why = off_why = ("biome %s carries no RiverSteamBiomeExtension; the toggle half needs a Pyrelands river map "
-                            "(RM_FE_Pyrelands)" % s0.get("biome"))
+                            "(RM_Pyrelands: the chain toggle_river_steam_pyrelands)" % s0.get("biome"))
         gate_why = None
     with _unmeasured_if(t, on_why, "river_steam_on", toggle="riverSteamEnabled"):
         t.wait_ticks(300)
