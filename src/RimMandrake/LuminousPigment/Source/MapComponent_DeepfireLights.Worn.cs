@@ -166,12 +166,14 @@ namespace RimMandrake.LuminousPigment
         private void SetMovingLight(WornKey key, IntVec3 cell, Color color, float radius)
         {
             bool moved = false;
+            bool fresh = false;
             if (!entries.TryGetValue(key, out LightEntry e) || e.Proxy == null || e.Proxy.Destroyed)
             {
                 Thing proxy = ThingMaker.MakeThing(DeepfireDefOf.RM_DeepfireWornLightProxy);
                 GenSpawn.Spawn(proxy, cell, map, WipeMode.Vanish);
                 e = new LightEntry { Proxy = proxy, Cell = cell };
                 entries[key] = e;
+                fresh = true;
             }
             else if (e.Cell != cell)
             {
@@ -185,7 +187,16 @@ namespace RimMandrake.LuminousPigment
             {
                 // LIGHT_LEDGER_ONE_1: radius as the light ledger's base; the pawn as its carrier, so another mod can ask
                 // "is this pawn carrying a light" (DEEPFIRE_WORLD_LIGHT_1 d: no lacquer cloak while glowing)
-                glower.GlowColor = new ColorInt(color);
+                // the colour setter DeRegisters + Registers a lit glower on EVERY write (decompiled 1.6
+                // CompGlower.SetGlowColorInternal), dirtying the glow grid round the pawn; the 250-tick sweep
+                // re-reads every glowing pawn, so a colour the glower already shows is not rewritten (compared with
+                // the glower's own value, not a cache, so a colour some other writer changed is still put back)
+                ColorInt ci = new ColorInt(color);
+                ColorInt now = glower.GlowColor;
+                if (fresh || now.r != ci.r || now.g != ci.g || now.b != ci.b || now.a != ci.a)
+                {
+                    glower.GlowColor = ci;
+                }
                 LightLedger.SetBase(glower, radius);
                 LightLedger.SetCarrier(glower, key.Pawn);
                 // a moved light re-registers at its new cell even when neither colour nor radius changed
