@@ -18,6 +18,8 @@
     <order>322</order>
     <genStep Class="RimMandrake.Utinni.FungalSoilTrade.GenStep_ScatterFungalGround">
       <minSpacing>28</minSpacing>
+      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density, a handful of clusters. -->
+      <countPer10kCellsRange>0.5~1</countPer10kCellsRange>
       <groups>
         <li>
           <things>

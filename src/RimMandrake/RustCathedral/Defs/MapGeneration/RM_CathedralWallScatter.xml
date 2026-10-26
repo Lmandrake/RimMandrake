@@ -20,6 +20,8 @@
     <order>321</order>
     <genStep Class="RimMandrake.RustCathedral.Walls.GenStep_ScatterCathedralWallTiers">
       <minSpacing>10</minSpacing>
+      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density. -->
+      <countPer10kCellsRange>2~4</countPer10kCellsRange>
       <groups>
         <li>
           <things>

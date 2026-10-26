@@ -20,6 +20,8 @@
     <order>335</order>
     <genStep Class="GenStep_ScatterGroup">
       <minSpacing>20</minSpacing>
+      <!-- GenStep_Scatterer: no count/countPer10kCellsRange = zero scatters, silently. Placeholder density. -->
+      <countPer10kCellsRange>1~2</countPer10kCellsRange>
       <groups>
         <li>
           <things>
