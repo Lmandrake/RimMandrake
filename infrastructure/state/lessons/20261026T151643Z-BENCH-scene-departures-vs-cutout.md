@@ -1,0 +1,2 @@
+runner.py brief writes scene departures ('shown with the proboscis in a plant stem', 'drawn inside flames', 'shown at a tunnel mouth', 'sits submerged in a pool') that a transparent cutout sprite cannot carry and the creature template's own 'Real alpha: no backdrop, ground patch' rule forbids; GPT then files DEPARTURE_MISSING for the absent prop/backdrop (s1r1 Dovvik, Thrummel, FireWasp). Departures briefs should state anatomy only; I rewrote those 6 into anatomy for wholeset s1r2+ (mkspec.py DEP_FIX).
+home: rimworld-art-evaluation
