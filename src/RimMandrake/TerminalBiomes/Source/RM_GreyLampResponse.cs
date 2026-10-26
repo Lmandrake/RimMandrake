@@ -86,6 +86,9 @@ namespace RimMandrake.TerminalBiomes
                 warnedWatch.Clear();
                 dispatched.Clear();
                 retryAfter.Clear();
+                // A walked-in giant stood down by the switch (BreakGlow fails on it) still goes home; without this
+                // it stayed on the map for good, since SendHomeIdleGiants otherwise runs only from Advance.
+                SendHomeIdleGiants();
                 return;
             }
             Advance(Interval);

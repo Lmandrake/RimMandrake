@@ -314,7 +314,9 @@ namespace RimMandrake.TerminalBiomes
                 // Never lethal from here: this runs inside Plant.TickLong's base call, and Plant.TickLong goes on to
                 // read base.Map (null once destroyed) -> NRE in PlantUtility.GrowthSeasonNow. The killing blow is
                 // dealt on the next map tick by RM_MapComponent_DeferredPlantKill.
-                if (amount >= parent.HitPoints)
+                // DamageWorker.Apply deals GenMath.RoundRandom(amount * plantDamageFactor): 9.6 against 10 HP is a
+                // kill six times in ten, so the guard compares the rounded-UP damage, not the float.
+                if (Mathf.CeilToInt(amount * DamageDefOf.Rotting.plantDamageFactor) >= parent.HitPoints)
                 {
                     parent.Map.GetComponent<RM_MapComponent_DeferredPlantKill>()?.Enqueue(parent);
                     return;

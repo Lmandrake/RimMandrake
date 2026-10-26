@@ -198,7 +198,12 @@ namespace RimMandrake.TerminalBiomes
                         IntVec3 towardChannelOffset = w > 0 ? new IntVec3(-perp.x, 0, -perp.z) : perp;
                         RM_FlowDir towardChannel = DirectionFromOffset(towardChannelOffset);
                         current.SetBankBand(c, towardChannel, band);
-                        PaintIfPresent(map, c, bankSilt);
+                        // Where braids cross, SetBankBand leaves an earlier channel's cell as channel; paint silt
+                        // only on a real bank cell, or the crossing showed bank silt over live current.
+                        if (current.LaneAt(c) == RM_ChannelLane.None)
+                        {
+                            PaintIfPresent(map, c, bankSilt);
+                        }
                     }
                 }
 
