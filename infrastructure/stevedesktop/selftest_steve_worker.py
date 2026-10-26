@@ -412,8 +412,12 @@ def main():
             check("PARSE_OK" in r.stderr and r.returncode == 1,
                   "deploy_custom_mods.py accepts %s: rc %s %s" % (" ".join(argv), r.returncode, r.stderr[-300:]))
 
-        rc, o = w(["result", "--attempt", "../../etc"])
-        check(rc != 0, "a path as an attempt id is refused")
+        # keyed on the id check's own refusal: a bare rc != 0 also passed with the check deleted, since
+        # cmd_result of a missing path answers "no result" with exit 1
+        for verb in ("result", "ack", "stop"):
+            rc, o = w([verb, "--attempt", "../../etc"])
+            check(rc == 2 and "not a job or attempt id" in o.get("raw", ""),
+                  "a path as an attempt id is refused by %s: rc %s %s" % (verb, rc, str(o)[-200:]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))

@@ -202,9 +202,10 @@ def main():
           and "old ask <span class=new>" not in vh, vh[vh.find("old ask") - 40: vh.find("old ask") + 200])
     check("the page says new since the paper he last opened", "the paper you last opened (phone," in vh)
     folder = Path(tempfile.mkdtemp())
-    n0 = brief.read_opens()["phone"]["seen"]
+    o0 = brief.read_opens()
     brief.page("/brief", lambda: {}, folder)                          # loopback / agent fetch: no device
-    check("a fetch with no device of his is not an open", brief.read_opens()["phone"]["seen"] == n0)
+    # the whole record, not just phone's: an open filed under any other key would also be wrong
+    check("a fetch with no device of his is not an open", brief.read_opens() == o0, brief.read_opens())
 
     # RIMPULSE_PLAN_BUILD_ON_TRACK_WHILE_AWAY: the trip plan, on track or not, from the ledger (fixture plan)
     pev = EVENTS + [ev(10, "file", "PLAN_BLOCKED_ITEM", title="Stuck on a part", kind="task", target="v1", **{"for": "BENCH"}),

@@ -1,0 +1,2 @@
+A refusal row that asserts only 'rc != 0' or one key of a shared record is not a test of the refusal: delete the guard and the next layer often fails too (worker.py result of '../../etc' answers 'no result' exit 1) or the wrong write lands under another key (brief.page recording a loopback open). Key the row on the guard's own exit code and message, compare the whole record, and prove it by deleting the guard on a scratch copy. Found twice in code-review wave 69 (selftest_steve_worker, selftest_brief) after the same shape in selftest_rule_canvas.
+home: NONE
