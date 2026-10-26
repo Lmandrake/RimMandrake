@@ -1,0 +1,2 @@
+A Harmony adapter that reads a donor mod's state by reflection must return null (and warn once) when a member is missing, never an empty collection: RM_MineralQuarry.QuarryDictionary returned [] on reflection drift, which the kernel read as 'Quarry has no ores', giving unregistered ores a share of 0 and silently breaking the owner card (unknown ores keep their mod's behaviour). Let the kernel see 'unknown' and keep the donor's own path (fixed 3d4b51a471).
+home: rimworld-modding
