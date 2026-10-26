@@ -3,9 +3,10 @@
 
 A temp queue holds hand-made done/ records; rimflow writes a temp ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS), and the
 git step is off (TESTQ_INGEST_PUSH=0). Proves: DONE with FAIL rows -> verify fail plus one finding per FAIL;
-all PASS -> pass; PASS + UNMEASURED -> partial; INVALID -> a note; no item -> nothing; an unknown item -> an error
-on the record, no crash; a second ingest writes nothing; an ingest that died before marking the record reuses its
-run and findings instead of writing them twice.
+all PASS -> pass; PASS + UNMEASURED -> partial; INVALID -> a note; no item -> nothing; an unknown item -> retried,
+not marked, no crash; a second ingest writes nothing; an ingest that died before marking the record reuses its
+run and findings instead of writing them twice; an item filed late is verified on the retry; an item never filed is
+marked with its error after the last try.
 """
 import json
 import os
@@ -22,6 +23,7 @@ import schema as S  # noqa: E402
 
 FAILS = []
 ITEM = "SOME_ITEM_FIX_IT"
+LATE = "LATE_ITEM_FIX_AFTER"
 
 
 def check(ok, msg):
@@ -68,7 +70,7 @@ def main():
         recs = {"fail": done_rec(ITEM), "pass": done_rec(ITEM, rows=(("r1", "PASS"),)),
                 "partial": done_rec(ITEM, rows=(("r1", "PASS"), ("r4", "UNMEASURED"))),
                 "invalid": done_rec(ITEM, "INVALID", "HANG"), "noitem": done_rec(None),
-                "unknown": done_rec("NO_SUCH_ITEM_HERE")}
+                "unknown": done_rec("NO_SUCH_ITEM_HERE"), "late": done_rec(LATE)}
         for k, rec in recs.items():
             S.dump(rec, os.path.join(queue, "done", rec["job"]["id"] + ".json"))
         r = ingest()
@@ -84,9 +86,12 @@ def main():
               "one finding per FAIL row, from its run: %s" % [e["name"] for e in fnd])
         notes = [e for e in evs if e["event"] == "note"]
         check(len(notes) == 1 and "INVALID/HANG" in notes[0]["text"], "a non-DONE run is a note, not a verify")
-        got = {k: json.load(open(os.path.join(queue, "done", rec["job"]["id"] + ".json")))["ingested"]
-               for k, rec in recs.items()}
-        check("skipped" in got["noitem"] and "error" in got["unknown"], "no item -> skipped; unknown item -> error")
+        def rec_of(k):
+            return json.load(open(os.path.join(queue, "done", recs[k]["job"]["id"] + ".json")))
+
+        check("skipped" in rec_of("noitem")["ingested"], "no item -> skipped")
+        check(all("ingested" not in rec_of(k) and rec_of(k)["ingest_pending"]["tries"] == 1 for k in ("unknown", "late")),
+              "an unknown item -> pending a retry, not marked: %s" % rec_of("unknown").get("ingest_pending"))
         n = len(evs)
         ingest()
         check(len(events()) == n, "a second ingest writes nothing")
@@ -99,6 +104,21 @@ def main():
         again = json.load(open(p))["ingested"]
         check(len(events()) == n and again.get("run") == run and len(again.get("findings", [])) == 2,
               "an ingest that died before marking reuses its run and findings: %s" % again)
+        r = subprocess.run([sys.executable, CLI, "file", LATE, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
+                           env=env, capture_output=True, text=True, timeout=120)
+        check(r.returncode == 0, "the late item is filed: %s" % r.stderr[-200:])
+        r = subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_INGEST_RETRY_S="0"),
+                           capture_output=True, text=True, timeout=300)
+        late = [e for e in events() if e.get("id") == LATE]
+        check(rec_of("late").get("ingested", {}).get("result") == "fail" and len(late) == 3,
+              "an item filed late is verified on the retry, with its findings: %d events, %s %s"
+              % (len(late), rec_of("late").get("ingest_pending"), r.stderr[-300:]))
+        check(rec_of("unknown")["ingest_pending"]["tries"] == 2, "a never-filed item counts its tries")
+        subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")],
+                       env=dict(env, TESTQ_INGEST_RETRY_S="0", TESTQ_INGEST_MAX_TRIES="3"),
+                       capture_output=True, text=True, timeout=300)
+        u = rec_of("unknown")
+        check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))

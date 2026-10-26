@@ -11,7 +11,9 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
   any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod).
   no item           -> nothing on the ledger.
-The done record gets "ingested" either way. Idempotent: a verify already in the RUNNER shard for that attempt is
+The done record gets "ingested" either way, except after an error (typically an item filed in a seat clone that
+has not reached origin yet): that record is retried every TESTQ_INGEST_RETRY_S (600) and marked ingested with the
+error only after TESTQ_INGEST_MAX_TRIES (6) tries. Idempotent: a verify already in the RUNNER shard for that attempt is
 reused, never written twice. Then the shard is committed and pushed (TESTQ_INGEST_PUSH=0 skips the git step).
 """
 import fcntl
@@ -20,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -28,6 +31,8 @@ import testq as T  # noqa: E402
 REPO = T.REPO
 CLI = os.path.join(REPO, "src", "RimMandrake", "rimflow", "cli.py")
 SHARD_REL = os.path.join("infrastructure", "state", "ledger", "events", "RUNNER.jsonl")
+RETRY_S = int(os.environ.get("TESTQ_INGEST_RETRY_S", "600"))
+MAX_TRIES = int(os.environ.get("TESTQ_INGEST_MAX_TRIES", "6"))
 
 
 def shard_path():
@@ -146,7 +151,18 @@ def main():
             rec = T.read_json(T.q("done", path))
             if not rec or "ingested" in rec or not path.endswith(".json"):
                 continue
+            pend = rec.get("ingest_pending") or {}
+            if pend and time.time() - pend.get("last", 0) < RETRY_S:
+                continue
             out = ingest_one(rec)
+            tries = pend.get("tries", 0) + 1
+            if "error" in out and tries < MAX_TRIES:
+                rec["ingest_pending"] = {"tries": tries, "last": time.time(), "error": out["error"]}
+                T.S.dump(rec, T.q("done", path))
+                T.log("ingest %s: try %d of %d failed, retried in %d s: %s"
+                      % (rec["job"]["id"], tries, MAX_TRIES, RETRY_S, out["error"][-200:]))
+                continue
+            rec.pop("ingest_pending", None)
             rec["ingested"] = dict(out, at=T.S.utcnow())
             T.S.dump(rec, T.q("done", path))
             T.log("ingest %s -> %s" % (rec["job"]["id"], json.dumps(out)[:300]))
