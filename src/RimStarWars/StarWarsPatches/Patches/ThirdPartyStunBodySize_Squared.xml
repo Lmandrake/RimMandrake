@@ -11,8 +11,9 @@
      StatPart_InverseBodySize.cs) - multiplies severity by (1/BodySize)^2. No Harmony, no new
      DamageWorker; the owner's squared curve from pure XML on a def we do not own.
 
-     TARGETS, read off guy762.MM.KotORCore's own SpecialDamages.xml / BlasterDamages.xml
-     (workshop 3254370945), not the def dump - both currently declare NEITHER field on their
+     TARGETS: our absorbed copies in mandrake.rsw.armoury
+     (src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/, ported from
+     guy762.MM.KotORCore, workshop 3254370945). Neither declares either field on its
      additionalHediffs li, so PatchOperationAdd cannot collide with an existing value:
 
          guy762_RangedDamage_KOstun  -> additionalHediffs/li (hediff PsychicShock, severityFixed 10)
@@ -22,47 +23,39 @@
      so (1/1)^2 = 1, identical to today. Only the curve away from BodySize 1 changes, same
      invariant the owner's own ruling protected for RSW_JawaIon_Damage.
 
-     ⛔ NOT patched: guy762_RangedDamage_organicstun (commented out, dead, in guy762's own
+     NOT patched: guy762_RangedDamage_organicstun (commented out, dead, in guy762's own
      source), guy762_GrenadeDamage_stun (no additionalHediffs at all - no XML lever exists),
      the whole guy762_*_ion family (survey found these are NOT a flesh-stun mechanism; live-
      tested, ordinary Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
      the full per-weapon read.
 
-     Gated on guy762.MM.KotORCore ("Star Wars KotOR Resources and Materials",
-     workshop 3254370945) - the whole file is a no-op, not an error, if that
-     mod is inactive.
-
-     PATCH_MAYREQUIRE_GUARD_INERT_1: MayRequire on a top-level <Operation> is
-     ignored by vanilla, so the line above was aspirational, not enforced.
-     This mod is NOT in the canonical mod list (MEASURED against the live
-     ModsConfig.xml, 2026-09-27), so it can genuinely be absent - re-gated on
-     a real PatchOperationFindMod, matching Armoury's own Armour_Ratings.xml
-     idiom for the same donor mod.
+     GUARD: each op sits in a PatchOperationConditional on its own target def existing.
+     It used to sit under a PatchOperationFindMod naming the donor mod; the donor was
+     retired and absorbed, so that gate matched nothing and both ops silently never ran
+     (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT; absorbed_gate_lint.py now fails on a
+     donor-name gate).
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-    <operations>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]/additionalHediffs/li</xpath>
+      <value>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+        <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
+      </value>
+    </match>
+  </Operation>
 
-      <li Class="PatchOperationAdd">
-        <xpath>Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]/additionalHediffs/li</xpath>
-        <value>
-          <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
-          <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
-        </value>
-      </li>
-
-      <li Class="PatchOperationAdd">
-        <xpath>Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/additionalHediffs/li</xpath>
-        <value>
-          <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
-          <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
-        </value>
-      </li>
-
-    </operations>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/additionalHediffs/li</xpath>
+      <value>
+        <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
+        <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
+      </value>
     </match>
   </Operation>
 

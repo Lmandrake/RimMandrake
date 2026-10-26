@@ -115660,11 +115660,8 @@
       </operations>
     </match>
   </Operation>
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars KotOR Resources and Materials</li>
-    </mods>
-    <match Class="PatchOperationSequence">
+  <!-- A PatchOperationFindMod on "Star Wars KotOR Resources and Materials" wrapped these; that donor was retired and absorbed into mandrake.rsw.armoury, so the gate never matched and nothing here ran. Each op is already guarded on its own ThoughtDef (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT). -->
+  <Operation Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
           <xpath>Defs/ThoughtDef[defName="RhydoniumHigh"]</xpath>
@@ -116738,7 +116735,6 @@
           </match>
         </li>
       </operations>
-    </match>
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>

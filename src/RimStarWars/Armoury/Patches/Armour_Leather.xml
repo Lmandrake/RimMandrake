@@ -2463,8 +2463,8 @@
        (src/RimMandrake/Greentide), states the same statFactors directly,
        so no patch is needed for it. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Vanilla Animals Expanded — Waste Animals</li></mods>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VAEWaste_ToxicLeather"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- VAEWaste_ToxicLeather : baseline hide; naturally armoured -->

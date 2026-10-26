@@ -43,16 +43,9 @@ ALLOW: dict = {}
 
 # (repo-relative path, donor packageId lowercase) -> the filed item that owes the rekey. Reported as OWED, not
 # red, so this lint can guard NEW gates today; the item closes by emptying this table, never by growing it.
-_OWED_ITEM = "DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT"
-OWED = {
-    ("src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml", "guy762.mm.kotorcore"): _OWED_ITEM,
-    ("src/RimStarWars/Armoury/Patches/Armour_Ratings.xml", "guy762.mm.kotorcore"): _OWED_ITEM,
-    ("src/RimStarWars/Armoury/Patches/Armour_Penetration.xml", "guy762.mm.kotorcore"): _OWED_ITEM,
-    ("src/RimStarWars/Armoury/Patches/Armour_Leather.xml", "vanillaexpanded.vaewaste"): _OWED_ITEM,
-    ("src/RimStarWars/StarWarsPatches/Patches/ThirdPartyStunBodySize_Squared.xml", "guy762.mm.kotorcore"): _OWED_ITEM,
-    ("src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml", "guy762.mm.kotorcore"): _OWED_ITEM,
-    ("src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml", "vanillaexpanded.vaewaste"): _OWED_ITEM,
-}
+# Emptied 2026-10-26 (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT): the 7 kotorcore/vaewaste gates were rekeyed
+# onto PatchOperationConditional on the target def, so any donor-name gate over an absorbed def is now a HIT.
+OWED: dict = {}
 
 ABSORBED_RE = re.compile(r"Absorbed from\s+([A-Za-z0-9_.]+)")
 NAME_IN_XPATH_RE = re.compile(r'(?:defName|@Name)\s*=\s*["\']([^"\']+)["\']|defName\s*\[\s*text\(\)\s*=\s*["\']([^"\']+)["\']')

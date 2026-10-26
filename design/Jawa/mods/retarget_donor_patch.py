@@ -21,7 +21,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import donor_name_map as dnm
 SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), 'src')
-DONOR_MODS = {"Star Wars Animal Collection (Continued)", "Alpha Animals"}
+# kotorcore + vaewaste added 2026-10-26 (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT): retired and absorbed under the
+# same defNames, so a generator re-run that re-emits their name gate is rekeyed here (absorbed_gate_lint.py fails it).
+DONOR_MODS = {"Star Wars Animal Collection (Continued)", "Alpha Animals",
+              "Star Wars KotOR Resources and Materials", "Vanilla Animals Expanded — Waste Animals"}
 DEFRE = re.compile(r'defName="([^"]+)"')
 
 _corpus = None

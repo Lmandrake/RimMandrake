@@ -8,7 +8,7 @@
    PatchOperationConditional is GREEN; a FindMod that also lists a non-donor name (our copy's mod) is GREEN;
    a gate over a defName the copy does not own is GREEN; an OWED row is reported not red, and a stale OWED
    row is red; an empty tree is UNMEASURED (exit 2).
-2. The repo: exit 0, no hit, and RUT_LanternDeepGateKyber.xml is neither hit nor owed.
+2. The repo: exit 0, no hit, nothing owed (OWED empty), and RUT_LanternDeepGateKyber.xml is neither hit nor owed.
 """
 import contextlib
 import io
@@ -126,6 +126,7 @@ def repo():
     check("HIT " not in out, "repo lint printed a HIT:\n%s" % out[-2000:])
     check("RUT_LanternDeepGateKyber.xml" not in out, "kyber gate still reported:\n%s" % out[-2000:])
     r = L.scan()
+    check(not r["owed"] and not L.OWED, "repo still owes donor-gate rekeys (OWED must stay empty): %r" % r["owed"])
     check(r["absorbedDonors"] >= 1 and r["patchFiles"] >= 100, "repo scan looks blind: %r" % {
         k: r[k] for k in ("absorbedDonors", "absorbedNames", "patchFiles", "donorRows")})
     check(any("Absorbed_TheForceLightsaber" in f for f in L.absorbed_copies().get(DONOR, {}).get("files", [])),

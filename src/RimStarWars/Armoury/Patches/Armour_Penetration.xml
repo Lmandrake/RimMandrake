@@ -1466,8 +1466,8 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- KotORSlugBolt slugthrower AP -> 0.85 -->
@@ -1475,6 +1475,13 @@
           <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/armorPenetrationBase</xpath>
           <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
         </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="SWProj_TL50slugbolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
         <!-- SWProj_TL50slugbolt slugthrower AP -> 0.85 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="SWProj_TL50slugbolt"]/projectile/armorPenetrationBase</xpath>
