@@ -247,8 +247,41 @@ OP = """
 """
 
 
+SHIPPED_XML = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches", "Patches",
+                           "BiomeCastEvictions_WildBiomes.xml")
+SHRINK_FRACTION = 0.05      # a regeneration may differ from the shipped op count by this much
+
+
+def shipped_op_count(path=None):
+    """Operations in the shipped eviction file (None if absent)."""
+    path = path or SHIPPED_XML
+    if not os.path.isfile(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        return len(re.findall(r'<Operation Class="PatchOperationConditional">', fh.read()))
+
+
+def shrink_guard(new_n, shipped_n, accept_shrink=False):
+    """None if the write may proceed, else the refusal message.
+
+    EVICTIONS ARE STOPPED: a roster eviction is never silently dropped. On 2026-10-26 this
+    generator, run clean, produced 0 ops against 2018 shipped (the painted set is the RUT_
+    world, the animal-side scan keys vanilla biomes: no overlap), and writing it would have
+    deleted every eviction. Any change beyond SHRINK_FRACTION needs --accept-shrink.
+    """
+    if shipped_n is None or accept_shrink:
+        return None
+    if abs(new_n - shipped_n) > SHRINK_FRACTION * shipped_n:
+        return ("REFUSED: %d new operation(s) vs %d shipped (more than %d%% apart). Writing "
+                "would delete or rewrite roster evictions. Re-run with --accept-shrink only "
+                "if that is the intent." % (new_n, shipped_n, int(SHRINK_FRACTION * 100)))
+    return None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
+    ap.add_argument("--accept-shrink", action="store_true",
+                    help="allow --xml to write an op count far from the shipped file's")
     ap.add_argument("--xml", default=None, help="write the patch file here")
     ap.add_argument("--cache", default=None,
                     help="save/reuse the animal-side scan (minutes) at this path")
@@ -294,6 +327,10 @@ def main(argv=None):
         print("   %-32s %4d" % (b, per[b]))
 
     if a.xml:
+        msg = shrink_guard(len(rows), shipped_op_count(), a.accept_shrink)
+        if msg:
+            print(msg)
+            return 3
         ops = [OP % {"n": i + 1, "race": r, "biome": b} for i, (r, b) in enumerate(rows)]
         prov = ("  Generated from capture %s plus the installed-mod XML walk.\n"
                 "  %d operation(s) over %d painted biome def(s).\n"
