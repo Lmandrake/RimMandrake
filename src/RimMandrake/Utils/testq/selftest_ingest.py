@@ -226,6 +226,14 @@ def main():
                        capture_output=True, text=True, timeout=300)
         u = rec_of("unknown")
         check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
+        # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
+        hr = done_rec(ITEM, "INVALID", "HANG")
+        S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
+        subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_HOST_ITEM=MANY_A),
+                       capture_output=True, text=True, timeout=300)
+        hn = [e for e in events() if e["event"] == "note" and hr["result"]["attempt"] in e.get("text", "")]
+        check([e["id"] for e in hn] == [ITEM], "a non-DONE job with an item notes that item only, not the host: %s"
+              % [e["id"] for e in hn])
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     publish_checks()

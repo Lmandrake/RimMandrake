@@ -130,8 +130,9 @@ def ingest_one(rec):
         return {"error": lane}
     if not item and not job.get("row_items") and not os.environ.get("TESTQ_HOST_ITEM"):
         return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
-    items = sorted({i for i in [item, os.environ.get("TESTQ_HOST_ITEM")] + list((job.get("row_items") or {}).values())
-                    if i})
+    # the standing host stands in only for a job with no item of its own (as in groups_of)
+    host = None if item else os.environ.get("TESTQ_HOST_ITEM")
+    items = sorted({i for i in [item, host] + list((job.get("row_items") or {}).values()) if i})
     if lane:
         for it in items:
             rimflow("note", it, "--text", "testq %s paused the SteveDesktop lane; finding %s" % (att, lane))
