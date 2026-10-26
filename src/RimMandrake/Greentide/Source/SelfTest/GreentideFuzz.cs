@@ -245,7 +245,7 @@ namespace RimMandrake.Greentide.SelfTest
                                     if (!has) { has = true; MireAdds++; }
                                     Check(sev >= 0f && sev <= 1f, "severity left [0,1] on the mire: " + sev + where);
                                     bool stuck = before >= stuckAt;
-                                    if (Near(sev, Math.Max(0f, before - rate), 1e-6) && rate > 0) { MireStruggles++; if (stuck) StuckStruggles++; }
+                                    if (Near(sev, Math.Max(0f, before - rate), 1e-6) && rate > 0) { Check(stuck || before <= rate * 0.5f, "an unstuck pawn made a FULL-step struggle (spec: half)" + where); MireStruggles++; if (stuck) StuckStruggles++; }
                                     else if (Near(sev, Math.Max(0f, before - rate * 0.5f), 1e-6) && rate > 0) { Check(!stuck, "a stuck pawn made a half-step struggle" + where); MireStruggles++; }
                                     else Check(Near(sev, Math.Min(1f, before + rate), 1e-6), $"on the mire {before} -> {sev}, rate {rate}" + where);
                                     Check(draws <= 1, "more than one chance drawn" + where);
@@ -275,8 +275,8 @@ namespace RimMandrake.Greentide.SelfTest
             for (int i = 0; i < N; i++)
             {
                 float roll = (i + 0.5f) / N; float s;
-                RM_MireKernel.Step(true, true, 0.9f, 0.05f, 1f, 0.5f, 0.85f, 0.02f, true, p => roll < p, out s); if (s < 0.9f) stuckHits++;
-                RM_MireKernel.Step(true, true, 0.5f, 0.05f, 1f, 0.5f, 0.85f, 0.02f, true, p => roll < p, out s); if (s < 0.5f) freeHits++;
+                RM_MireKernel.Step(true, true, 0.9f, 0.05f, 1f, 0.5f, 0.85f, 0.02f, true, p => roll < p, out s); if (s < 0.9f) { stuckHits++; Check(Near(s, 0.85f, 1e-5), "stuck struggle should be a FULL step 0.9 -> 0.85, got " + s); }
+                RM_MireKernel.Step(true, true, 0.5f, 0.05f, 1f, 0.5f, 0.85f, 0.02f, true, p => roll < p, out s); if (s < 0.5f) { freeHits++; Check(Near(s, 0.475f, 1e-5), "free struggle should be a HALF step 0.5 -> 0.475, got " + s); }
             }
             Check(Math.Abs(stuckHits / (double)N - 0.05) < 0.01 && Math.Abs(freeHits / (double)N - 0.5) < 0.01, $"struggle rates stuck {stuckHits / (double)N} free {freeHits / (double)N}");
             // with no struggle a pawn at 0 reaches 1 in ceil(1 / rate) checks and no sooner
