@@ -292,6 +292,7 @@ namespace RimMandrake.ColdStorage
             if (ext.mode == EncaseMode.Encase)
             {
                 CompEncased into = null;
+                List<Thing> surplus = new List<Thing>();
                 foreach (Thing t in __result)
                 {
                     if (into == null)
@@ -299,16 +300,38 @@ namespace RimMandrake.ColdStorage
                         into = CompEncased.Of(t);
                         if (into != null)
                         {
+                            // The pawn may have carried whole stacks (more than the recipe counts): the pack takes
+                            // exactly the recipe count of each ingredient line, the surplus comes back as products.
+                            int[] budget = recipeDef.ingredients.Select(ic => (int)ic.GetBaseCount()).ToArray();
                             foreach (Thing ing in ingredients.ToList())
                             {
                                 if (ing != null && !ing.Destroyed && ing.def.IsIngestible && CompEncased.Of(ing) == null)
                                 {
+                                    int line = recipeDef.ingredients.FindIndex(ic => ic.filter.Allows(ing));
+                                    int take = line < 0 ? ing.stackCount : ColdStorageKernel.TakeWithinBudget(ing.stackCount, budget[line]);
+                                    if (line >= 0)
+                                    {
+                                        budget[line] -= take;
+                                    }
+                                    if (take <= 0)
+                                    {
+                                        surplus.Add(ing);
+                                        continue;
+                                    }
+                                    if (take < ing.stackCount)
+                                    {
+                                        surplus.Add(ing.SplitOff(ing.stackCount - take));
+                                    }
                                     into.Take(ing);
                                 }
                             }
                         }
                     }
                     yield return t;
+                }
+                foreach (Thing extra in surplus)
+                {
+                    yield return extra;
                 }
                 yield break;
             }

@@ -548,6 +548,17 @@ namespace RimMandrake.ColdStorage
             return n;
         }
 
+        /// <summary>CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS: how many of a stack of <paramref name="stack"/> the recipe may
+        /// take while <paramref name="budget"/> units of its count are still unfilled; the rest stays on the map.</summary>
+        public static int TakeWithinBudget(int stack, int budget)
+        {
+            if (stack <= 0 || budget <= 0)
+            {
+                return 0;
+            }
+            return stack < budget ? stack : budget;
+        }
+
         /// <summary>What an encased item adds to a per-unit stat (market value, mass): the sum over its held stacks of
         /// value per unit times count. Negative values and counts add nothing.</summary>
         public static float StackSum(float[] unitValues, int[] counts)

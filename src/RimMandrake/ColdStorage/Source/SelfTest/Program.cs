@@ -494,6 +494,13 @@ namespace RimMandrake.ColdStorage.SelfTest
             Check("chance 3 clamps to all", ColdStorageKernel.ShockedCount(7, 3f, never) == 7);
             Check("negative chance: none", ColdStorageKernel.ShockedCount(7, -1f, never) == 0);
             Check("no meals: none", ColdStorageKernel.ShockedCount(0, 0.5f, never) == 0);
+            // press pack takes exactly the recipe count of whole carried stacks (10,10,1 into 18 = 10,8,0)
+            int bud = 18;
+            int[] took = new int[3];
+            int[] stk = { 10, 10, 1 };
+            for (int i = 0; i < 3; i++) { took[i] = ColdStorageKernel.TakeWithinBudget(stk[i], bud); bud -= took[i]; }
+            Check("pack takes 10,8,0 of 10,10,1 for 18", took[0] == 10 && took[1] == 8 && took[2] == 0 && bud == 0);
+            Check("no budget takes none", ColdStorageKernel.TakeWithinBudget(5, 0) == 0);
             float[] seq = { 0.01f, 0.5f, 0.049f, 0.05f, 0.9f };
             int k = 0;
             Check("5 % against a fixed sequence: 2 of 5 (0.05 itself is safe)", ColdStorageKernel.ShockedCount(5, 0.05f, () => seq[k++]) == 2);
