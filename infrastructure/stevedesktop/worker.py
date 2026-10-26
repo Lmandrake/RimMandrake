@@ -37,8 +37,8 @@ Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   outbox/<attempt>.json, outbox/acked/
 
 Tests override the phase commands with TESTQ_CMD_DEPLOY / TESTQ_CMD_LOAD / TESTQ_CMD_DOWN / TESTQ_CMD_RUN (shell
-command strings; RUN gets the modcheck arguments appended) and the bridge client with TESTQ_CMD_BRIDGE, skip the pull with TESTQ_SKIP_PULL=1, and may set
-TESTQ_SHEET_DIR, TESTQ_MODS_DIR, TESTQ_RUN_TIMEOUT_S and TESTQ_NO_SYSTEMD=1.
+command strings; RUN gets the modcheck arguments appended) and the bridge client with TESTQ_CMD_BRIDGE, skip the
+pull with TESTQ_SKIP_PULL=1, and may set TESTQ_SHEET_DIR, TESTQ_MODS_DIR, TESTQ_RUN_TIMEOUT_S and TESTQ_NO_SYSTEMD=1.
 """
 import argparse
 import fcntl
@@ -380,8 +380,12 @@ class Attempt:
         Only markers older than the start are touched, only after a fresh start, and only on this machine, whose game
         the attempt's guard owns; a marker while the same game kept running is a real unknown and stays."""
         base = os.environ.get("TESTQ_CMD_BRIDGE") or "python.exe src/RimMandrake/Utils/rimbridge_client.py"
-        r = subprocess.run(["bash", "-c", base + " --reconcile"], cwd=RUNNER, capture_output=True, text=True,
-                           timeout=120)
+        try:
+            r = subprocess.run(["bash", "-c", base + " --reconcile"], cwd=RUNNER, capture_output=True, text=True,
+                               timeout=120)
+        except (OSError, subprocess.TimeoutExpired) as e:     # the job's own bridge calls will say if it matters
+            self.say("could not list bridge markers: %s" % e)
+            return
         cleared = []
         for line in r.stdout.splitlines():
             f = line.split()
@@ -390,9 +394,13 @@ class Attempt:
                 continue
             note = ("moot: sent to a game process that is gone; testq %s started a fresh game (pid %s) at %s"
                     % (self.aid, pid, since))
-            rr = subprocess.run(["bash", "-c", "%s --reconcile --resolve %s --as not-applied --note %s"
-                                 % (base, f[0], shlex.quote(note))], cwd=RUNNER, capture_output=True, text=True,
-                                timeout=120)
+            try:
+                rr = subprocess.run(["bash", "-c", "%s --reconcile --resolve %s --as not-applied --note %s"
+                                     % (base, f[0], shlex.quote(note))], cwd=RUNNER, capture_output=True,
+                                    text=True, timeout=120)
+            except (OSError, subprocess.TimeoutExpired) as e:
+                self.say("could not resolve marker %s: %s" % (f[0], e))
+                continue
             if rr.returncode == 0:
                 cleared.append(f[0])
             else:

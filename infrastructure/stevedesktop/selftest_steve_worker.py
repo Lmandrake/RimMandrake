@@ -5,8 +5,8 @@ No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a sm
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
 -> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
-than it (a game that kept running keeps them), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt finalized, and
-SOURCE_SHA_MISSING.
+than it (a game that kept running keeps them), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt
+finalized, and SOURCE_SHA_MISSING.
 """
 import json
 import os
@@ -113,7 +113,8 @@ def main():
         check(res.get("outcome") == "DONE" and res.get("modcheck_exit") == 1, "a FAIL row is still a DONE run: %s"
               % res.get("note"))
         verdicts = {r["row"]: r["verdict"] for r in res.get("rows", [])}
-        check(verdicts == {"r1": "PASS", "r2": "FAIL", "r9": "NOT_RUN"}, "requested row absent -> NOT_RUN: %s" % verdicts)
+        check(verdicts == {"r1": "PASS", "r2": "FAIL", "r9": "NOT_RUN"},
+              "requested row absent -> NOT_RUN: %s" % verdicts)
         dep = res.get("deployed", {}).get("mods", {}).get("Mock", {})
         check(dep.get("files") == 2 and len(dep.get("dll_sha256", "")) == 64, "deployed identity attested: %s" % dep)
         check(len(res.get("artifacts", [])) == 3 and "phase_s" in res and "run" in res["phase_s"],
