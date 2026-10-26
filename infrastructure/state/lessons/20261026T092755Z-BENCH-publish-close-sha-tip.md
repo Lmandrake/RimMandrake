@@ -1,0 +1,2 @@
+./publish's closing hint 'close with: rimflow close <ID> --sha X' names the TIP of main after its rebase, which in a shared seat clone can be a peer's commit that landed after yours (review3: it printed 03a71088f8, a testq commit, while the fix was c7f7849afe). Before closing, take the sha from git log --oneline for YOUR subject line; a wrong close cannot be repeated (rimflow refuses a second close), so a pushed wrong close needs a new item.
+home: using-rimflow
