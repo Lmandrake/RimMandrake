@@ -1,0 +1,2 @@
+validate_patch.py --defs against only the game's Data/workshop/Mods folders sees the DEPLOYED copy of our mods. A patch on defs that are new in the clone then shows a '0 nodes ... probably CREATED by another mod's patch' WARN, not an error, so it reads as advisory. Add the clone's own src/<Group> folders as extra --defs roots so the new defs are visible: the stasis ladder patches went from 22 WARN to 0 that way (COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS).
+home: skills/rimworld-deploy
