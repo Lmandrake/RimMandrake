@@ -752,6 +752,27 @@ def test_north_south_facing_clause_names_the_camera_and_the_swimmer_view():
     b = p("north", "RimWorld game building sprite: a crate")
     ok("build_job_prompt: a building north gets no creature camera or swimmer text",
        "building camera" in b and "swimming creature" not in b and "own height" not in b, b[-300:])
+    # ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE: the job carries module; the swimmer clause follows it
+    def pm(facing, module):
+        return artpiped.build_job_prompt({"id": "s", "prompt": "a creature", "module": module,
+                                          "canvas": {"width": 256, "height": 256}, "facing": facing})
+    for f, const in (("north", artpiped.SWIMMER_NORTH), ("south", artpiped.SWIMMER_SOUTH)):
+        sw, wk, fl = pm(f, "swimmer"), pm(f, "walker"), pm(f, "flyer")
+        ok(f"build_job_prompt: a swimmer job's {f} carries the unconditional swimmer sentence",
+           "It is a swimming creature:" in sw and "If it is a swimming" not in sw, sw[-400:])
+        ok(f"build_job_prompt: a walker/flyer job's {f} has no swimmer text at all",
+           "swimming creature" not in wk and "swimming creature" not in fl and "own height" in wk, wk[-300:])
+        ok(f"build_job_prompt: a job with no module keeps the old conditional {f} sentence", const in p(f), "")
+    import fill_queue
+    ok("fill_queue: module is a known row field", "module" in fill_queue.KNOWN_ROW_FIELDS)
+    row = {"id": "t_row", "rimflow_item_id": "X", "prompt": "a creature", "canvas_w": 256, "canvas_h": 256,
+           "facings": ["north"], "module": "swimmer", "target_def": "RM_CoolantEel"}
+    try:
+        jobs = fill_queue.row_to_jobs(row)
+        jobs = jobs[0] if isinstance(jobs, tuple) else jobs
+        ok("fill_queue: row module lands on the job", all(j.get("module") == "swimmer" for j in jobs), str(jobs)[:200])
+    except Exception as e:
+        ok("fill_queue: row_to_jobs carries module", False, repr(e))
 
 
 def test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp():

@@ -517,7 +517,8 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
                         "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"%s\"; "
                                             "revert record in the run's decisions.jsonl" % r["install_by_card"]}
                        if r.get("replaces_kept") else {})
-                    | ({"drawsize": r["drawsize"]} if r.get("drawsize") else {}))
+                    | ({"drawsize": r["drawsize"]} if r.get("drawsize") else {})
+                    | ({"module": r["module"]} if r.get("module") else {}))
         if not r.get("canvas_rule"):
             rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
         if rows[-1]["facings"]:

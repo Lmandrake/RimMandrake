@@ -224,6 +224,8 @@ def tuning_checks():
                   jobs["RM_Ok"]["canvas_w"] == 256 and jobs["RM_Ok"]["canvas_h"] == 256 and jobs["RM_Ok"]["drawsize"] == 1.5, jobs.get("RM_Ok"))
             check("regen job without a drawSize says why it is 1024",
                   runner.regen_jobs([dict(d1["RM_Ok"], canvas_rule=None, drawsize=None)], "x")[0]["canvas_w"] == 1024)
+            check("regen job carries the record's module (ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE)",
+                  runner.regen_jobs([dict(d1["RM_Ok"], module="swimmer")], "x")[0].get("module") == "swimmer")
             check("same picture judged again keeps its round", r2[0]["decision"] == "REGEN" and r2[0]["round"] == 1
                   and "round not advanced" in " ".join(r2[0]["reasons"]), (r2[0]["round"], r2[0]["reasons"][-1:]))
             check("a different picture advances the round", r3[0]["round"] == 2, r3[0]["round"])

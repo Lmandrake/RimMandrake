@@ -122,7 +122,7 @@ KNOWN_ROW_FIELDS = frozenset(REQUIRED_ROW_FIELDS) | {
     "background", "biome_neutral", "biome_register", "canon", "canon_reference", "channel", "derive_from",
     "drawsize", "facings", "install_to", "no_subject", "oversize_reason", "priority", "reference",
     "style_notes", "target_def", "target_original", "target_texpath",
-    "owner_note", "canon_na", "canon_na_reason", "slot", "ask"}
+    "owner_note", "canon_na", "canon_na_reason", "slot", "ask", "module"}
 
 
 def _split_na(v):
@@ -428,7 +428,7 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             if not isinstance(on, (str, list)):
                 raise ValueError(f"row {base_id!r} owner_note must be a string")
             job["owner_note"] = on
-        for k in ("slot", "ask"):
+        for k in ("slot", "ask", "module"):  # module: the creature's body plan (walker/swimmer/flyer...), ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE
             if isinstance(row.get(k), str) and row[k]:
                 job[k] = row[k]
         na = _split_na(row.get("canon_na"))

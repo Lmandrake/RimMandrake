@@ -1613,6 +1613,21 @@ SWIMMER_SOUTH = ("If it is a swimming creature (fish, eel, whale, sea "
                  "the head; no fins the side view does not show.")
 
 
+SWIMMER_NORTH_KNOWN = "It is a swimming creature: " + SWIMMER_NORTH.split("serpent): ", 1)[1]
+SWIMMER_SOUTH_KNOWN = "It is a swimming creature: " + SWIMMER_SOUTH.split("serpent): ", 1)[1]
+
+
+def _body_plan_clause(job: dict, swimmer_text: str, swimmer_known: str) -> str:
+    """ARTPIPE_JOBS_WIRE_BODY_PLAN_CLAUSE: jobs now carry job["module"] (the art_eval module / spec body plan).
+    swimmer -> the unconditional sentence; any other known plan -> nothing (a walker or flyer has no swimmer
+    clause and the prompt has no per-plan clause for them); no module (hand-filed or older job) -> the old
+    conditional sentence, unchanged."""
+    m = str(job.get("module") or "").strip().lower()
+    if not m:
+        return swimmer_text
+    return swimmer_known if m == "swimmer" else ""
+
+
 def build_job_prompt(job: dict) -> str:
     """A REAL per-job scratch directory (_artsrc/<job_id>/) is what makes
     the "your working directory is per-job scratch space" claim in
@@ -1671,14 +1686,15 @@ def build_job_prompt(job: dict) -> str:
                       "top-down or overhead view: the body recedes straight "
                       "away from us, strongly foreshortened, about as tall "
                       "and wide as from the front; we do not see the length "
-                      "of its back from above. " + SWIMMER_NORTH),
+                      "of its back from above. "
+                      + _body_plan_clause(job, SWIMMER_NORTH, SWIMMER_NORTH_KNOWN)).rstrip(),
             "south": ("Facing: south — the creature moves TOWARD the "
                       "viewer; we see its FACE and chest straight on. The "
                       "camera is at about the creature's own height, only "
                       "slightly raised. NOT a top-down or overhead view: the "
                       "body recedes behind the head, foreshortened; we do "
                       "not see the length of its back from above. "
-                      + SWIMMER_SOUTH),
+                      + _body_plan_clause(job, SWIMMER_SOUTH, SWIMMER_SOUTH_KNOWN)).rstrip(),
             # Owner ruling 2026-09-16 (gizka east review): east/west must be
             # side PROFILES, never a top-down/overhead view — "strict side
             # profile" alone still let the model raise the camera.
