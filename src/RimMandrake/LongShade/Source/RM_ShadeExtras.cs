@@ -328,7 +328,8 @@ namespace RimMandrake.LongShade
         public override void CompTick()
         {
             Pawn pawn = parent as Pawn;
-            if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Faction != null) return;
+            // a downed harrok is no ambusher: it would otherwise stab whoever kneels in its strip to tend or capture it
+            if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Downed || pawn.Faction != null) return;
             if (!RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.harrokEnabled) return;
             if (pawn.IsHashIntervalTick(60)) Scan(pawn);
         }
@@ -357,6 +358,8 @@ namespace RimMandrake.LongShade
                 if (!c.InBounds(map)) continue;
                 if (!RM_LongShadeKernel.InShadowStrip(c.x - pawn.Position.x, c.z - pawn.Position.z, dir.x, dir.y,
                         Props.shadowLengthCells, Props.shadowHalfWidth)) continue;
+                // a wall stops the shadow and the strike: never through walls into a room
+                if (!GenSight.LineOfSight(pawn.Position, c, map, skipFirstCell: true)) continue;
                 List<Thing> things = c.GetThingList(map);
                 for (int i = 0; i < things.Count; i++)
                 {
@@ -506,7 +509,8 @@ namespace RimMandrake.LongShade
             if (ext == null) return null;
             foreach (Faction f in Find.FactionManager.AllFactionsVisible)
             {
-                if (f.IsPlayer || f.defeated || f.HostileTo(Faction.OfPlayer) || f.def.defName == null) continue;
+                // pawnGroupMakers is null on a FactionDef that declares none (vanilla FactionDef guards it too)
+                if (f.IsPlayer || f.defeated || f.HostileTo(Faction.OfPlayer) || f.def.defName == null || f.def.pawnGroupMakers == null) continue;
                 if (!f.def.pawnGroupMakers.Any(m => m.kindDef == PawnGroupKindDefOf.Peaceful || m.kindDef == PawnGroupKindDefOf.Combat)) continue;
                 for (int i = 0; i < ext.factionPrefixes.Count; i++)
                 {
