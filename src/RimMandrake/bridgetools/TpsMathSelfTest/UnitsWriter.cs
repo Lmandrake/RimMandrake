@@ -89,6 +89,37 @@ namespace JawaBench.BridgeTools
             W.ResetForTest();
         }
 
+        /// <summary>JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: a deferred writer starts no thread and writes nothing
+        /// until Go(); Go() writes the queued rows on the CALLING thread before it returns (that pass is what compiles
+        /// the writer's code off the patching race), then the thread takes later rows; a second Go/Start is a no-op.</summary>
+        private static void T_WriterDeferredStartDrainsOnCaller()
+        {
+            string d = PrepWriter();
+            W.Start(d, "abcdef0123", 4242, deferThread: true);
+            W.Enqueue("session", "\"pid\":4242");
+            W.Enqueue("marker", "\"why\":\"start\"");
+            int bad;
+            Check(!W.Running, "deferred: no writer thread before Go");
+            Thread.Sleep(200);
+            Check(Seqs(d, out bad).Count == 0, "deferred: nothing on disk before Go");
+            Check(!W.EnqueueSide(() => { }), "deferred: side jobs refused until the thread runs");
+            W.Go();
+            var seqs = Seqs(d, out bad);
+            Check(bad == 0 && seqs.Count == 2 && seqs[0] == 1 && seqs[1] == 2,
+                  "Go wrote the queued rows synchronously on the caller: " + string.Join(",", seqs) + " bad " + bad);
+            Check(W.Running, "Go started the writer thread");
+            W.Go();
+            W.Start(d, "abcdef0123", 4242);
+            W.Enqueue("menu", "\"programState\":\"Entry\"");
+            Check(W.Drain(15000), "the thread writes rows queued after Go");
+            seqs = Seqs(d, out bad);
+            Check(bad == 0 && seqs.Count == 3 && seqs.Distinct().Count() == 3, "three rows once each: " + string.Join(",", seqs));
+            W.ResetForTest();
+            // a never-started record: Go is a no-op and never throws
+            W.Go();
+            Check(!W.Running, "Go without Start starts nothing");
+        }
+
         private static void T_WriterBoundCountsInFlight()
         {
             string d = PrepWriter();

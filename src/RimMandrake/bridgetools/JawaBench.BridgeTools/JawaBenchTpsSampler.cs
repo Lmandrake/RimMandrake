@@ -118,7 +118,7 @@ namespace JawaBench.BridgeTools
                     W.LogRetentionCapBytes = (long)(Settings.LogRetentionMB * 1048576.0);
                     int pid = System.Diagnostics.Process.GetCurrentProcess().Id;
                     try { _logPath = UnityEngine.Application.consoleLogPath; } catch { }
-                    W.Start(RecordDir, Session, pid);
+                    W.Start(RecordDir, Session, pid, deferThread: true);   // thread starts in the finally below (W.Go)
                     StartedBy = startedBy;
                     StartedUtc = W.Utc();
 
@@ -176,6 +176,13 @@ namespace JawaBench.BridgeTools
                     try { JawaBenchTpsProfiler.Rollback(); } catch { }
                     try { W.Enqueue("error", "\"where\":\"install\",\"status\":\"failed\",\"error\":" + W.Json(InstallError)); } catch { }
                     Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallError);
+                }
+                finally
+                {
+                    // JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: every row so far (session, start marker, or the install
+                    // error) is written HERE, on the installing thread, which also compiles the writer's code; only then
+                    // does the writer thread start. No-op if the record was never opened (sampler disabled).
+                    try { W.Go(); } catch { }
                 }
             }
         }
@@ -270,7 +277,10 @@ namespace JawaBench.BridgeTools
                                  ",\"attributionDetail\":" + W.Json(JawaBenchTpsProfiler.InstallDetail) +
                                  ",\"watchdog\":" + (Settings.Watchdog ? "\"started\"" : "\"disabled\"") + "}" +
                                  ",\"segment\":" + W.Json(Path.GetFileName(W.CurrentPath)));
-            ThreadPool.QueueUserWorkItem(_ =>
+            // JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: the manifest file is written once startup is idle (the same
+            // pump as the Player-prev archive), never on a threadpool thread while the main thread is still patching.
+            // If the game quits before that, OnQuit writes it inline.
+            Interlocked.Exchange(ref _pendingManifest, () =>
             {
                 try
                 {
@@ -333,15 +343,16 @@ namespace JawaBench.BridgeTools
         /// <summary>Seconds of continuous no-long-event frames before a deferred archive may start.</summary>
         internal const double ArchiveIdleSeconds = 10;
         private static Action _pendingArchive;   // set by Install (any thread), taken by the main-thread pump; Interlocked both ways
+        private static Action _pendingManifest;  // same contract; the pump runs it on the threadpool, OnQuit inline
         private static double _idleSince = -1;            // main thread only
 
-        /// <summary>Main thread, once per frame (RootFinalizer, after every early return): start the deferred Player-prev
-        /// archive after <see cref="ArchiveIdleSeconds"/> of frames with no long event (startup's static constructors and
+        /// <summary>Main thread, once per frame (RootFinalizer, after every early return): start the deferred startup work
+        /// (session manifest file, Player-prev archive) after <see cref="ArchiveIdleSeconds"/> of frames with no long event (startup's static constructors and
         /// patching run inside long events). Runs whether or not the sampler body is healthy - a fault must not cost the
         /// previous session's log. If the game quits first the archive is skipped - best effort, as before. Never throws.</summary>
         private static void PumpIdleSafe()
         {
-            if (Volatile.Read(ref _pendingArchive) == null) return;
+            if (Volatile.Read(ref _pendingArchive) == null && Volatile.Read(ref _pendingManifest) == null) return;
             try
             {
                 if (!OnMain()) return;
@@ -352,16 +363,18 @@ namespace JawaBench.BridgeTools
             {
                 // drop the work rather than throw every frame; say so on the record
                 Interlocked.Exchange(ref _pendingArchive, null);
+                Interlocked.Exchange(ref _pendingManifest, null);
                 try { W.Enqueue("error", "\"where\":\"idle-pump\",\"error\":" + W.Json(e.GetType().Name + ": " + e.Message)); } catch { }
             }
         }
 
         private static void PumpArchive(double now, bool busy)
         {
-            if (Volatile.Read(ref _pendingArchive) == null) return;
             if (busy) { _idleSince = -1; return; }
             if (_idleSince < 0) { _idleSince = now; return; }
             if (now - _idleSince < ArchiveIdleSeconds) return;
+            var m = Interlocked.Exchange(ref _pendingManifest, null);
+            if (m != null) ThreadPool.QueueUserWorkItem(_ => m());
             var a = Interlocked.Exchange(ref _pendingArchive, null);
             if (a != null) a();
         }
@@ -395,6 +408,8 @@ namespace JawaBench.BridgeTools
             {
                 // MUST 16: intent, bounded drain, bounded log copy, then a completion row that says what finished.
                 // No Unity API here: ProcessExit can call this off the main thread (the log path was cached).
+                var m = Interlocked.Exchange(ref _pendingManifest, null);   // quit before startup went idle: write it now
+                if (m != null) m();
                 string cur = _logPath;
                 W.Shutdown("\"windows\":" + Windows + ",\"incidents\":" + Incidents,
                            Settings.ArchivePlayerLog && !string.IsNullOrEmpty(cur)

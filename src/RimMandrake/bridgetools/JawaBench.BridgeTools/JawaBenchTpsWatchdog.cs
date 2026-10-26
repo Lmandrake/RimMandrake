@@ -109,8 +109,33 @@ namespace JawaBench.BridgeTools
             ProcessStartUtc();
             HeartbeatPath = Path.Combine(dir, "hb_" + W.Session + ".json");
             Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks);
+            WarmOnCaller();
             _thread = new Thread(Loop) { IsBackground = true, Name = "JawaBench.TpsWatchdog" };
             _thread.Start();
+        }
+
+        /// <summary>JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: the watchdog starts at bridge-registration, while the
+        /// installing (main) thread goes on Harmony-patching, and a background thread JIT-compiling at that moment is the
+        /// 2026-10-26 archive crash's hazard class. So everything Loop runs is compiled HERE first: two real heartbeat
+        /// writes (the first publishes by Move, the second by Replace), the silence row's context, and Loop itself.
+        /// The watchdog is not deferred - startup is exactly when a silent main thread must be seen. Never throws.</summary>
+        private static void WarmOnCaller()
+        {
+            try
+            {
+                double now = Now;
+                double quiet = now - Seconds(Interlocked.Read(ref _beatTicks));
+                WriteHeartbeat(now, quiet);
+                WriteHeartbeat(Now, quiet);
+                var unused = ContextFields() + PhaseName + M.F(quiet, 1);
+            }
+            catch { }
+            try
+            {
+                var loop = typeof(JawaBenchTpsWatchdog).GetMethod(nameof(Loop), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                if (loop != null) System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(loop.MethodHandle);
+            }
+            catch { }
         }
 
         private static double Seconds(long ticks) => (double)ticks / Stopwatch.Frequency;

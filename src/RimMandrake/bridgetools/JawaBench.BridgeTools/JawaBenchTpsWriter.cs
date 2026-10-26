@@ -70,6 +70,7 @@ namespace JawaBench.BridgeTools
                 fs.Write(buf, 0, len);
         };
         private static volatile bool _stop;
+        private static bool _started;   // under Q: Start ran (the thread may still be deferred until Go)
 
         /// <summary>Stop the writer thread (harness only) and forget all state, so a test starts clean.</summary>
         internal static void ResetForTest()
@@ -79,7 +80,7 @@ namespace JawaBench.BridgeTools
             _thread?.Join(5000);
             lock (Q)
             {
-                _thread = null; _stop = false;
+                _thread = null; _stop = false; _started = false;
                 Pending.Clear(); Retry.Clear(); Side.Clear(); _inFlight = 0; _seq = 0; _draining = false;
                 SideRefused = SideErrors = 0; SideLastError = null;
                 Enqueued = Written = Dropped = WriteErrors = 0; LastError = null;
@@ -89,11 +90,16 @@ namespace JawaBench.BridgeTools
         internal static int QueueDepth { get { lock (Q) return Pending.Count + Retry.Count + _inFlight; } }
         internal static long TornTails;
 
-        internal static void Start(string dir, string session, int pid)
+        /// <summary>Open the record. <paramref name="deferThread"/>: do NOT start the writer thread yet - rows queue in
+        /// memory until <see cref="Go"/> (JAWABENCH_TPSSTARTUP_HARDEN_REMAINING_BG_JIT: the sampler installs at
+        /// bridge-registration, while the main thread is still Harmony-patching, and a writer thread JIT-compiling its
+        /// first batch at that moment is the same hazard as the 2026-10-26 archive crash).</summary>
+        internal static void Start(string dir, string session, int pid, bool deferThread = false)
         {
             lock (Q)
             {
-                if (_thread != null) return;
+                if (_started) return;
+                _started = true;
                 Dir = dir;
                 LogDir = Path.Combine(dir, "logs");
                 Session = session;
@@ -102,10 +108,32 @@ namespace JawaBench.BridgeTools
                 Directory.CreateDirectory(dir);
                 Directory.CreateDirectory(LogDir);
                 OpenSegment(0);
-                _thread = new Thread(Loop) { IsBackground = true, Name = "JawaBench.TpsWriter", Priority = ThreadPriority.BelowNormal };
-                _thread.Start();
+                if (!deferThread) StartThreadLocked();
             }
             RunRetention();
+        }
+
+        private static void StartThreadLocked()
+        {
+            _thread = new Thread(Loop) { IsBackground = true, Name = "JawaBench.TpsWriter", Priority = ThreadPriority.BelowNormal };
+            _thread.Start();
+        }
+
+        /// <summary>Start a deferred writer thread (no-op if Start never ran or the thread already runs). First writes
+        /// everything queued so far ON THE CALLING THREAD with the same code the thread runs (RunOnce, WriteBatch,
+        /// Reconcile, the append), and JIT-compiles Loop there, so the writer thread starts on compiled code while the
+        /// installing thread goes on patching. Never throws.</summary>
+        internal static void Go()
+        {
+            lock (Q) { if (!_started || _thread != null) return; }
+            try { RunOnce(new List<string>(), new List<Action>(), false); } catch { }
+            try
+            {
+                var loop = typeof(JawaBenchTpsWriter).GetMethod(nameof(Loop), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+                if (loop != null) System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(loop.MethodHandle);
+            }
+            catch { }
+            try { lock (Q) { if (_thread == null) StartThreadLocked(); } } catch { }
         }
 
         private static void OpenSegment(int n)
@@ -225,48 +253,55 @@ namespace JawaBench.BridgeTools
             var batch = new List<string>();
             var side = new List<Action>();
             while (!_stop)
+                if (!RunOnce(batch, side, true)) return;
+        }
+
+        /// <summary>One writer pass: take what is queued, append it, then run side jobs. <paramref name="wait"/> = block
+        /// (bounded) for work, as the thread does; false = return at once if nothing is queued (<see cref="Go"/>).
+        /// Returns false when the writer is stopping.</summary>
+        private static bool RunOnce(List<string> batch, List<Action> side, bool wait)
+        {
+            lock (Q)
             {
-                lock (Q)
-                {
-                    while (Pending.Count == 0 && Retry.Count == 0 && Side.Count == 0 && !_stop) Monitor.Wait(Q, 1000);
-                    if (_stop) return;
-                    side.Clear();
-                    while (Side.Count > 0) side.Add(Side.Dequeue());
-                    batch.Clear();
-                    batch.AddRange(Retry);
-                    Retry.Clear();
-                    while (Pending.Count > 0) batch.Add(Pending.Dequeue());
-                    _inFlight = batch.Count;
-                }
-                int done = batch.Count > 0 ? WriteBatch(batch) : 0;
-                lock (Q)
-                {
-                    // MUST 4: commit-aware. Only the lines NOT yet on disk go back for retry (front of the
-                    // line, in order); the bound already counted them as in flight, so nothing is dropped here.
-                    Written += done;
-                    if (done < batch.Count) Retry.InsertRange(0, batch.GetRange(done, batch.Count - done));
-                    _inFlight = 0;
-                    if (done == batch.Count && _dropPending > 0)
-                    {
-                        long first = _dropFirst, last = _dropLast, n = _dropPending;
-                        _dropFirst = _dropLast = -1;
-                        _dropPending = 0;
-                        long seq = ++_seq;
-                        Pending.Enqueue(Envelope(seq, Utc(), Clock.Elapsed.TotalSeconds, Session, "dropped",
-                            "\"count\":" + n + ",\"seqFirst\":" + first + ",\"seqLast\":" + last +
-                            ",\"wdrop\":" + Dropped + ",\"wdropCrit\":" + DroppedCritical));
-                        Enqueued++;
-                    }
-                    Monitor.PulseAll(Q);
-                }
-                // side jobs AFTER the batch: a flight dump never delays the record lines queued before it
-                foreach (var job in side)
-                {
-                    try { job(); }
-                    catch (Exception e) { SideErrors++; SideLastError = e.GetType().Name + ": " + e.Message; }
-                }
-                if (done < batch.Count) Thread.Sleep(1000);
+                while (wait && Pending.Count == 0 && Retry.Count == 0 && Side.Count == 0 && !_stop) Monitor.Wait(Q, 1000);
+                if (_stop) return false;
+                side.Clear();
+                while (Side.Count > 0) side.Add(Side.Dequeue());
+                batch.Clear();
+                batch.AddRange(Retry);
+                Retry.Clear();
+                while (Pending.Count > 0) batch.Add(Pending.Dequeue());
+                _inFlight = batch.Count;
             }
+            int done = batch.Count > 0 ? WriteBatch(batch) : 0;
+            lock (Q)
+            {
+                // MUST 4: commit-aware. Only the lines NOT yet on disk go back for retry (front of the
+                // line, in order); the bound already counted them as in flight, so nothing is dropped here.
+                Written += done;
+                if (done < batch.Count) Retry.InsertRange(0, batch.GetRange(done, batch.Count - done));
+                _inFlight = 0;
+                if (done == batch.Count && _dropPending > 0)
+                {
+                    long first = _dropFirst, last = _dropLast, n = _dropPending;
+                    _dropFirst = _dropLast = -1;
+                    _dropPending = 0;
+                    long seq = ++_seq;
+                    Pending.Enqueue(Envelope(seq, Utc(), Clock.Elapsed.TotalSeconds, Session, "dropped",
+                        "\"count\":" + n + ",\"seqFirst\":" + first + ",\"seqLast\":" + last +
+                        ",\"wdrop\":" + Dropped + ",\"wdropCrit\":" + DroppedCritical));
+                    Enqueued++;
+                }
+                Monitor.PulseAll(Q);
+            }
+            // side jobs AFTER the batch: a flight dump never delays the record lines queued before it
+            foreach (var job in side)
+            {
+                try { job(); }
+                catch (Exception e) { SideErrors++; SideLastError = e.GetType().Name + ": " + e.Message; }
+            }
+            if (wait && done < batch.Count) Thread.Sleep(1000);
+            return true;
         }
 
         /// <summary>
