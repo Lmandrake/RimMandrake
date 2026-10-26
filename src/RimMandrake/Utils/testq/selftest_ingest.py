@@ -29,6 +29,7 @@ FAILS = []
 ITEM = "SOME_ITEM_FIX_IT"
 LANE = "STEVE_LANE_MONITOR_PAUSE_FINDINGS"
 LATE = "LATE_ITEM_FIX_AFTER"
+MANY_A, MANY_B = "MANY_ROWS_FIX_ALPHA", "MANY_ROWS_FIX_BETA"
 
 
 def check(ok, msg):
@@ -37,8 +38,9 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
-def done_rec(item, outcome="DONE", cause=None, rows=(("r1", "PASS"), ("r2", "FAIL"), ("r3", "FAIL"))):
-    job = S.make_job("Mock", {"rows": [r for r, _ in rows]}, "fix", "BENCH", "abc1234", item=item)
+def done_rec(item, outcome="DONE", cause=None, rows=(("r1", "PASS"), ("r2", "FAIL"), ("r3", "FAIL")), row_items=None):
+    job = S.make_job("Mock", {"rows": [r for r, _ in rows]}, "fix", "BENCH", "abc1234", item=item,
+                     row_items=row_items or {})
     rws = [{"chain": "c1", "row": r, "verdict": v, "detail": "d"} for r, v in rows]
     res = {"schema": S.RESULT_SCHEMA, "job": job["id"], "attempt": job["id"] + ".a1", "outcome": outcome,
            "cause": cause, "rows": rws if outcome == "DONE" else [], "counts": S.count_verdicts(rws),
@@ -139,6 +141,9 @@ def main():
         r = subprocess.run([sys.executable, CLI, "file", LANE, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
                            env=env, capture_output=True, text=True, timeout=120)
         check(r.returncode == 0, "the lane host item is filed in the temp ledger: %s" % r.stderr[-200:])
+        for it in (MANY_A, MANY_B):
+            subprocess.run([sys.executable, CLI, "file", it, "--for", "BENCH", "--title", "t", "--seat", "BENCH"],
+                           env=env, capture_output=True, text=True, timeout=120)
         shard = os.path.join(tmp, "ledger", "events", "RUNNER.jsonl")
 
         def events():
@@ -155,18 +160,27 @@ def main():
                 "partial": done_rec(ITEM, rows=(("r1", "PASS"), ("r4", "UNMEASURED"))),
                 "invalid": done_rec(ITEM, "INVALID", "HANG"), "noitem": done_rec(None),
                 "unknown": done_rec("NO_SUCH_ITEM_HERE"), "late": done_rec(LATE),
-                "canary": done_rec(None, "INVALID", "CANARY")}
+                "canary": done_rec(None, "INVALID", "CANARY"),
+                # TESTQ_INGEST_FIX_ONE_ITEM_MANY_ROWS: one sheet, two items; ITEM's own row PASSes, MANY's rows FAIL
+                "many": done_rec(None, rows=(("m1", "PASS"), ("m2", "FAIL"), ("m3", "PASS")),
+                                 row_items={"m1": MANY_A, "m2": MANY_B, "m3": MANY_B})}
         for k, rec in recs.items():
             S.dump(rec, os.path.join(queue, "done", rec["job"]["id"] + ".json"))
         r = ingest()
         check(r.returncode == 0, "ingest runs: %s" % r.stderr[-300:])
         evs = events()
-        verifies = [e for e in evs if e["event"] == "verify" and e.get("id") != LANE]
+        mv = {e["id"]: e["result"] for e in evs if e["event"] == "verify" and e.get("id") in (MANY_A, MANY_B)}
+        check(mv == {MANY_A: "pass", MANY_B: "fail"},
+              "one sheet, two items: each verdict comes from that item's own rows only: %s" % mv)
+        mf = [e for e in evs if e["event"] == "finding" and e["from"].startswith(MANY_B + "/run-")]
+        check(len(mf) == 1 and not [e for e in evs if e["event"] == "finding" and e["from"].startswith(MANY_A)],
+              "the FAIL row's finding hangs off its own item's run")
+        verifies = [e for e in evs if e["event"] == "verify" and e.get("id") not in (LANE, MANY_A, MANY_B)]
         check(sorted(e["result"] for e in verifies) == ["fail", "partial", "pass"],
               "one verify per DONE job, results fail/pass/partial: %s" % [e["result"] for e in verifies])
         check(all(e["seat"] == "RUNNER" and e["config"] == "steve-targeted" and e["sha"] == "def5678" and
                   "Mock_1.html" in e["evidence"] for e in verifies), "verifies carry seat, config, sha and the sheet")
-        fnd = [e for e in evs if e["event"] == "finding" and e.get("id") != LANE]
+        fnd = [e for e in evs if e["event"] == "finding" and e.get("id") != LANE and not e["from"].startswith("MANY_ROWS")]
         check(len(fnd) == 2 and all(e["from"].startswith(ITEM + "/run-") and e["type"] == "UNTRIAGED" for e in fnd),
               "one finding per FAIL row, from its run: %s" % [e["name"] for e in fnd])
         notes = [e for e in evs if e["event"] == "note"]

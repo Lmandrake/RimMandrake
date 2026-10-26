@@ -70,7 +70,7 @@ NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 DEFAULTS = {"item": None, "profile": "targeted", "priority": 50, "not_before": None, "supersedes": None,
             "owner_gate": None, "lane": "stevedesktop", "deploy": [], "canary": True, "validity": True,
-            "timeout_s": 2700}
+            "timeout_s": 2700, "row_items": {}}
 
 
 class SchemaError(ValueError):
@@ -98,7 +98,7 @@ def make_job(mod, selector, purpose, requested_by, source_sha, **kw):
     job = {"schema": JOB_SCHEMA, "id": new_job_id(), "mod": mod, "selector": selector, "purpose": purpose,
            "requested_by": requested_by, "source_sha": source_sha, "submitted": utcnow()}
     for k, v in DEFAULTS.items():
-        job[k] = kw.get(k, list(v) if isinstance(v, list) else v)
+        job[k] = kw.get(k, list(v) if isinstance(v, list) else dict(v) if isinstance(v, dict) else v)
     validate_job(job)
     return job
 
@@ -133,6 +133,9 @@ def validate_job(job):
                 need(False, "%s must be YYYY-MM-DDTHH:MM:SSZ" % k)
     need(job.get("supersedes") is None or JOB_ID_RE.match(str(job["supersedes"])), "supersedes must be a job id")
     need(job.get("item") is None or NAME_RE.match(str(job["item"])), "item must be an item id")
+    ri = job.get("row_items", {})
+    need(isinstance(ri, dict) and all(isinstance(k, str) and NAME_RE.match(k) and isinstance(v, str) and NAME_RE.match(v)
+                                      for k, v in ri.items()), "row_items must map a row id or chain name to an item id")
     need(isinstance(job.get("deploy"), list) and all(NAME_RE.match(str(m)) for m in job["deploy"]),
          "deploy must be a list of mod folder names")
     need(isinstance(job.get("timeout_s"), int) and 60 <= job["timeout_s"] <= 6 * 3600, "timeout_s 60..21600")

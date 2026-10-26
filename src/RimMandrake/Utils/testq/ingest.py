@@ -10,7 +10,8 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        --evidence the sheet on SteveDesktop plus the attempt id; then ONE finding per FAIL row,
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
   any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod).
-  no item           -> nothing on the ledger.
+  no item           -> nothing on the ledger, unless job.row_items (submit --row-item ROW_OR_CHAIN=ITEM) maps rows to
+                       items or TESTQ_HOST_ITEM names a standing host: then each item is verified from ITS rows only.
 A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
 the lane (verify STEVE_LANE_MONITOR_PAUSE_FINDINGS --config steve-lane) plus one finding from it,
 STEVE_LANE_<CANARY_RED|SYNC_REFUSED>_<JOBHEX6> (design section 6: pause the lane, file a finding).
@@ -127,18 +128,60 @@ def ingest_one(rec):
     lane = lane_finding(job, res)
     if lane and lane.startswith("lane run not recorded"):  # e.g. the host item not yet on origin: retried like a verify
         return {"error": lane}
-    if not item:
+    if not item and not job.get("row_items") and not os.environ.get("TESTQ_HOST_ITEM"):
         return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
+    items = sorted({i for i in [item, os.environ.get("TESTQ_HOST_ITEM")] + list((job.get("row_items") or {}).values())
+                    if i})
     if lane:
-        rimflow("note", item, "--text", "testq %s paused the SteveDesktop lane; finding %s" % (att, lane))
+        for it in items:
+            rimflow("note", it, "--text", "testq %s paused the SteveDesktop lane; finding %s" % (att, lane))
     if res["outcome"] != "DONE":
-        rc, out = rimflow("note", item, "--text", "testq %s on SteveDesktop: %s/%s, no verdict recorded (%s)"
-                          % (att, res["outcome"], res.get("cause"), (res.get("note") or "")[:160]))
-        return {"note": rc == 0, "out": out[-200:]}
+        ok, out = True, ""
+        for it in items:
+            rc, out = rimflow("note", it, "--text", "testq %s on SteveDesktop: %s/%s, no verdict recorded (%s)"
+                              % (att, res["outcome"], res.get("cause"), (res.get("note") or "")[:160]))
+            ok = ok and rc == 0
+        return {"note": ok, "out": out[-200:]}
+    return ingest_done(job, res, item)
+
+
+def groups_of(job, res):
+    """-> {item: [rows]}: each row goes to the item its row id (else its chain) maps to in job["row_items"], else to the
+    job's item, else to TESTQ_HOST_ITEM (a standing host for item-less sweeps/filler; unset: such rows are dropped).
+    A sheet's verdict is never recorded on an item whose rows it does not hold (TESTQ_INGEST_FIX_ONE_ITEM_MANY_ROWS)."""
+    ri = job.get("row_items") or {}
+    default = job.get("item") or os.environ.get("TESTQ_HOST_ITEM") or None
+    out = {}
+    for row in res.get("rows") or []:
+        it = ri.get(row.get("row")) or ri.get(row.get("chain")) or default
+        if it:
+            out.setdefault(it, []).append(row)
+    return out
+
+
+def ingest_done(job, res, item):
+    att = res["attempt"]
+    groups = groups_of(job, res)
+    if item and item not in groups and not job.get("row_items"):
+        groups[item] = []                      # unchanged: a job for an item with no rows still gets its verdict
+    if not groups:
+        return {"skipped": "no row maps to an item"}
+    out = {}
+    for it, rows in sorted(groups.items()):
+        r = ingest_group(job, res, it, dict(res, rows=rows, counts=T.S.count_verdicts(rows)), att)
+        if "error" in r:
+            return r
+        out[it] = r
+    if len(out) == 1:
+        return next(iter(out.values()))
+    return {"groups": out, "result": ",".join("%s=%s" % (i, o["result"]) for i, o in out.items())}
+
+
+def ingest_group(job, res, item, gres, att):
     config = "steve-%s" % job.get("profile", "targeted")
     run = recorded_run(item, att)
     if not run:
-        rc, out = rimflow("verify", item, "--result", verdict(res), "--config", config,
+        rc, out = rimflow("verify", item, "--result", verdict(gres), "--config", config,
                           "--evidence", "stevedesktop:%s (testq %s)" % (sheet_of(res), att),
                           "--sha", res.get("runner_sha") or job["source_sha"])
         m = re.search(r"(\S+/run-\d+@\S+) recorded", out)
@@ -151,7 +194,7 @@ def ingest_one(rec):
             shard = f.read()
     except OSError:
         shard = ""
-    for row in res.get("rows") or []:
+    for row in gres.get("rows") or []:
         if row["verdict"] != "FAIL":
             continue
         name = finding_name(job["mod"], row["row"], job["id"])
@@ -162,7 +205,7 @@ def ingest_one(rec):
                           "--why", "%s/%s FAIL on SteveDesktop: %s" % (row.get("chain"), row["row"],
                                                                        (row.get("detail") or "")[:160]))
         found.append(name if rc == 0 else "%s: %s" % (name, out[-120:]))
-    return {"run": run, "result": verdict(res), "findings": found}
+    return {"run": run, "result": verdict(gres), "findings": found}
 
 
 def publish(n):

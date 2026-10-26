@@ -333,7 +333,14 @@ def cmd_submit(a):
     kw = {k: v for k, v in (("item", a.for_item), ("profile", a.profile), ("priority", a.priority),
                             ("not_before", a.not_before), ("supersedes", a.supersedes), ("owner_gate", a.owner_gate),
                             ("lane", a.lane), ("timeout_s", a.timeout)) if v is not None}
-    kw.update(deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity)
+    ri = {}
+    for pair in getattr(a, "row_item", None) or []:
+        k, sep, v = pair.partition("=")
+        if not sep:
+            print("REFUSED: --row-item wants ROW_OR_CHAIN=ITEM, got %r" % pair)
+            return 2
+        ri[k] = v
+    kw.update(row_items=ri, deploy=a.deploy or [], canary=not a.no_canary, validity=not a.no_validity)
     try:
         job = S.make_job(a.mod, sel, a.purpose, a.by, a.sha, **kw)
     except S.SchemaError as e:
@@ -687,6 +694,9 @@ def main(argv=None):
     s.add_argument("--by", required=True, help="the submitting seat")
     s.add_argument("--sha", required=True, help="a published commit the run must include")
     s.add_argument("--for-item", help="the rimflow item the run is for")
+    s.add_argument("--row-item", action="append", metavar="ROW_OR_CHAIN=ITEM",
+                   help="a row id (or chain name) whose result belongs to ITEM, not --for-item (repeatable); "
+                        "ingest then verifies each item from its own rows only")
     s.add_argument("--profile", choices=S.PROFILES)
     s.add_argument("--priority", type=int)
     s.add_argument("--not-before")
