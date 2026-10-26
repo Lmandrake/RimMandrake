@@ -89,6 +89,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
         /// returns true and logs nothing.</summary>
         protected override bool TryGenerateSubquest()
         {
+            // The base sets its countdown only when a beat may be offered, but fires it without asking again: a beat
+            // offered meanwhile (ForceNextBeat) would otherwise be offered a second time when the countdown ends.
+            if (!CanGenerateSubquest) return true;
             QuestScriptDef beat = GetNextSubquestDef();
             if (beat == null) return true;
             Quest child = QuestUtility.GenerateQuestAndMakeAvailable(beat, InitSlate());
