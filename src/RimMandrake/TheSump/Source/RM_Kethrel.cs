@@ -267,6 +267,12 @@ namespace RimMandrake.TheSump
                 bool left = mode == DestroyMode.Vanish && !Pawn.Dead;
                 carried.TryDropAll(parent.Position, map, ThingPlaceMode.Near, null, null, false);
                 stage = 0;
+                if (!Pawn.Dead && Pawn.health != null)
+                {
+                    // A living kethrel that left (caravan, exit) has no shell now: drop the armour/slow
+                    // hediff too, or it keeps them at stage 0 until it next picks something up.
+                    SetHediff(0);
+                }
                 if (left)
                 {
                     Messages.Message("RM_KethrelLeft".Translate(parent.LabelShort), new TargetInfo(parent.Position, map), MessageTypeDefOf.NeutralEvent, false);
