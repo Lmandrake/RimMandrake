@@ -320,6 +320,28 @@ def published(sha):
     return r.returncode == 0
 
 
+def bad_selection(mod, sel):
+    """-> the modcheck refusal text when SEL names a chain or row that MOD does not declare, else None. Asks
+    `modcheck run MOD --preview` (0.2 s, offline); a mod it cannot find, or any other trouble, is not a refusal."""
+    args = []
+    for k in ("chains", "rows"):
+        if sel.get(k):
+            args += ["--" + k, ",".join(sel[k])]
+    if not args:
+        return None
+    cli = os.path.join(HERE, "..", "modcheck", "cli.py")
+    try:
+        r = subprocess.run([sys.executable, cli, "run", mod] + args + ["--preview"], capture_output=True, text=True,
+                           timeout=60, cwd=REPO)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    out = (r.stdout or "") + (r.stderr or "")
+    for line in out.splitlines():
+        if line.startswith("REFUSED:") and ("unknown row" in line or "unknown chain" in line):
+            return line[len("REFUSED:"):].strip()
+    return None
+
+
 def cmd_submit(a):
     ensure_dirs()
     sel = {}
@@ -345,6 +367,10 @@ def cmd_submit(a):
         job = S.make_job(a.mod, sel, a.purpose, a.by, a.sha, **kw)
     except S.SchemaError as e:
         print("REFUSED: %s" % e)
+        return 2
+    bad = bad_selection(a.mod, sel)
+    if bad:
+        print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
     if not a.no_sha_check and not published(a.sha):
         print("REFUSED: %s is not on origin/main; the runner pulls origin, so ./publish first" % a.sha)

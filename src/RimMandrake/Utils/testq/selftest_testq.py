@@ -53,6 +53,17 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+def t_bad_selection():
+    """submit refuses a row/chain the mod does not declare BEFORE queueing (a bad row id burned a runner slot)."""
+    import testq as T
+    bad = T.bad_selection("FlowWorks", {"rows": ["T12"]})
+    check(bad and "unknown row 'T12'" in bad, "a row id no chain declares is refused: %s" % bad)
+    bad = T.bad_selection("FlowWorks", {"chains": ["no_such_chain_zz"]})
+    check(bad and "unknown chain" in bad, "a chain name the mod lacks is refused: %s" % bad)
+    check(T.bad_selection("FlowWorks", {"rows": ["T12_no_routine_salt"]}) is None, "a real row id passes")
+    check(T.bad_selection("Mock", {"rows": ["zz"]}) is None, "a mod modcheck cannot find is not judged here")
+
+
 def t_fill_policy():
     """The filler's pick and day budget (TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY), offline over hand-made done records."""
     import testq as T
@@ -91,6 +102,7 @@ def t_fill_policy():
 
 def main():
     try:
+        t_bad_selection()
         t_fill_policy()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
         check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))
