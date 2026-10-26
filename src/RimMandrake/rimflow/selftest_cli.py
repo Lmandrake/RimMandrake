@@ -328,6 +328,33 @@ def t_a_thin_proposal_is_OFFERED_and_says_what_is_thin():
     assert "-> doing" in ok("claim", "NO_PROSE_HANDOFF_PROBE_FIXTURE", "--token", token_of(out))
 
 
+def t_an_empty_target_offers_every_target_like_rank_does():
+    """`--target ""` means "no target filter" in `priority.rank()` (`if target and ...`).
+    `_claimable()` once filtered `i.target in (None, target)` with no such guard, so an
+    empty target HID every v1 and v2 proposal from the offer path while `rank()` showed
+    the claimed ones: the two halves of `next` disagreed about what "" means."""
+    fresh()
+    ok("file", "EMPTY_TARGET_VONE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
+       "--target-field", "v1")
+    ok("file", "EMPTY_TARGET_VTWO_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
+       "--target-field", "v2")
+    out = ok("next", "--seat", "BUILD", "--target", "")
+    # 🔴 NOT a bare id check: the "nothing offered ... N open items" diagnostic names
+    # hidden items too, so an id-in-output assertion passed on the broken code.
+    assert "2 items waiting for BUILD to claim" in out and "nothing offered" not in out, (
+        "an empty --target must OFFER proposals of every target: %s" % out)
+    # the default filter still holds: v1 offered, v2 not
+    fresh()
+    ok("file", "EMPTY_TARGET_VONE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
+       "--target-field", "v1")
+    ok("file", "EMPTY_TARGET_VTWO_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
+       "--target-field", "v2")
+    out = ok("next", "--seat", "BUILD")
+    assert "1 item waiting for BUILD to claim" in out, out
+    assert "EMPTY_TARGET_VTWO_PROBE_FIXTURE" not in out, (
+        "the default v1 target must still withhold a v2 proposal: %s" % out)
+
+
 def t_why_explains_a_v2_item_as_planning_not_breakage():
     fresh()
     ok("file", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",

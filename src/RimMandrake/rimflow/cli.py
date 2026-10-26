@@ -1166,7 +1166,8 @@ def _claimable(w, seat, target="v1", now=None):
     now = model.epoch_now() if now is None else now
     out = [i for i in w.items.values()
            if i.owner == seat and i.state == "proposed" and not i.blocked
-           and i.target in (None, target) and model.lease_status(i, now) != "live"]
+           and (not target or i.target in (None, target))  # "" = no filter, as rank()
+           and model.lease_status(i, now) != "live"]
     out.sort(key=lambda i: (not i.this_deployment, i.created_at or "", i.id))
     return out
 
