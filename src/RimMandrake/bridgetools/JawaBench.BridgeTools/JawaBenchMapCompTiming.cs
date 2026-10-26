@@ -37,6 +37,10 @@ namespace JawaBench.BridgeTools
         internal static int MainThreadId = -1;
         internal static int Depth;
         internal static long Foreign;
+        // MAPCOMPTIMING_SCOPE_CORRECT_OTHER_MAPS: the patched overrides run for every map's instances; only the
+        // current map's are counted, the rest are tallied here so a multi-map save does not inflate the rows.
+        internal static Map Target;
+        internal static long OtherMap;
 
         // __state: -1 not counted (disarmed / foreign thread), -2 nested (depth taken, not timed), >= 0 start stamp.
         internal static void Pre(out long __state)
@@ -52,6 +56,7 @@ namespace JawaBench.BridgeTools
             if (__state == -1) return;
             Depth--;
             if (__state < 0 || __instance == null) return;
+            if (__instance.map != Target) { OtherMap++; return; }
             long d = Stopwatch.GetTimestamp() - __state;
             Type t = __instance.GetType();
             if (!Acc.TryGetValue(t, out var a)) { a = new long[3]; Acc[t] = a; }
@@ -72,7 +77,7 @@ namespace JawaBench.BridgeTools
                 "so it is a lead, not a verdict.",
             ResultDescription =
                 "success, ticksElapsed, realSeconds, patchedMethods, patchFailures[], sumMs, sumMsPerTick, " +
-                "foreignThreadCalls, components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs}.")]
+                "foreignThreadCalls, otherMapCalls (instances on other maps, not counted), components[] of {type, assembly, packageId, calls, totalMs, msPerTick, maxMs}.")]
         public static async Task<object> MapCompTiming(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -100,6 +105,8 @@ namespace JawaBench.BridgeTools
                     JawaBenchMapCompTimer.Acc.Clear();
                     JawaBenchMapCompTimer.Depth = 0;
                     JawaBenchMapCompTimer.Foreign = 0;
+                    JawaBenchMapCompTimer.OtherMap = 0;
+                    JawaBenchMapCompTimer.Target = Find.CurrentMap;
                     JawaBenchMapCompTimer.MainThreadId = Thread.CurrentThread.ManagedThreadId;
                     try
                     {
@@ -129,7 +136,9 @@ namespace JawaBench.BridgeTools
                 return await ctx.MainThread.InvokeAsync(() =>
                 {
                     JawaBenchMapCompTimer.Armed = false;
-                    int elapsed = Math.Max(1, Find.TickManager.TicksGame - startTick);
+                    // ticksElapsed reports the real count (0 on a paused game); only the divisor is floored at 1.
+                    int ticksRan = Find.TickManager.TicksGame - startTick;
+                    int elapsed = Math.Max(1, ticksRan);
                     double f = 1000.0 / Stopwatch.Frequency;
                     var asmToPkg = new Dictionary<Assembly, string>();
                     foreach (var mod in LoadedModManager.RunningModsListForReading)
@@ -166,13 +175,14 @@ namespace JawaBench.BridgeTools
                     return (object)new
                     {
                         success = true,
-                        ticksElapsed = elapsed,
+                        ticksElapsed = ticksRan,
                         realSeconds = Math.Round(sw.Elapsed.TotalSeconds, 1),
                         patchedMethods = patched,
                         patchFailures = failures,
                         sumMs = Math.Round(sum, 1),
                         sumMsPerTick = Math.Round(sum / elapsed, 2),
                         foreignThreadCalls = JawaBenchMapCompTimer.Foreign,
+                        otherMapCalls = JawaBenchMapCompTimer.OtherMap,
                         componentsTimed = rows.Count,
                         recordRows = persisted,
                         components = rows.Take(Math.Max(1, top)).ToList(),
@@ -182,6 +192,7 @@ namespace JawaBench.BridgeTools
             finally
             {
                 JawaBenchMapCompTimer.Armed = false;
+                JawaBenchMapCompTimer.Target = null;
                 try { await ctx.MainThread.InvokeAsync(() => { new Harmony(JawaBenchMapCompTimer.HarmonyId).UnpatchAll(JawaBenchMapCompTimer.HarmonyId); return 0; }); }
                 catch { }
             }
