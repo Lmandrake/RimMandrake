@@ -1,0 +1,2 @@
+The daily testq metrics file (modcheck/metrics.py, MODCHECK_METRICS_BUILD_DAILY_WASTE) exists for 2026-10-25 only because it was never put on a timer: the one file was a manual run at 2026-10-26T05:31Z, and no unit in ~/.config/systemd/user or the repo calls 'modcheck metrics'. A collector is not built until something schedules it and a 'last ran' row can go red. Meanwhile pulse/testing_metrics.py (rm-pulse-testing.timer, hourly) does run and covers much of the same ground: two collectors for one question.
+home: design/RimMandrake/work_allocation_framework_2026-10-26.md

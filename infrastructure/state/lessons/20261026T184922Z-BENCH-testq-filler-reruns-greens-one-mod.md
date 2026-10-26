@@ -1,0 +1,2 @@
+testq fill picks the STALEST chains of TESTQ_FILL_MODS (default FlowWorks only) as purpose guard: it keeps SteveDesktop busy by re-running chains by age, not by missing evidence. All 104 done jobs to 2026-10-26 are FlowWorks, while 132 mods have a validation.py and 622 open items need the bridge (447 FOUNDRY). An idle-filler must rank by evidence gaps (UNMEASURED/NOT_RUN rows, built items owing a live level, FAIL awaiting fix verify) across mods before any stale-green re-run.
+home: src/RimMandrake/Utils/testq/testq.py
