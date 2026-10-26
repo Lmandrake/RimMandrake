@@ -310,15 +310,13 @@ namespace RimMandrake.ColdStorage
             {
                 return;
             }
+            Map map = t.Map;
             IntVec3 cell = unit.RoomSideCell;
-            if (forPrisoner)
-            {
-                __result = p == null || cell.GetRoom(t.Map) == p.GetRoom();
-            }
-            else
-            {
-                __result = !cell.IsInPrisonCell(t.Map);
-            }
+            bool hemogenRule = !forPrisoner && ModsConfig.BiotechActive && t.def == ThingDefOf.HemogenPack;
+            __result = ColdStorageKernel.WallItemSociallyProper(forPrisoner, p != null,
+                forPrisoner && p != null && cell.GetRoom(map) == p.GetRoom(),
+                hemogenRule, hemogenRule && SocialProperness.BloodfeedingPrisonerInRoom(cell.GetRoom(map)),
+                !forPrisoner && !hemogenRule && cell.IsInPrisonCell(map));
         }
     }
 

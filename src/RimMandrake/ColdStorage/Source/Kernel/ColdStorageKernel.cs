@@ -364,5 +364,31 @@ namespace RimMandrake.ColdStorage
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);
         }
+
+        /// <summary>COLDSTORAGE_WALL_LIGHT_FIX_RESYNC: the game marks a building's cells as light blockers only when it
+        /// spawns or despawns (Building.SpawnSetup / DeSpawn, if def.blockLight), so a wall-unit light switch flipped
+        /// in play must patch the glow grid of every built unit: +1 add the blocker, -1 remove it, 0 nothing.</summary>
+        public static int LightBlockerResync(bool blockedBefore, bool blocksNow)
+        {
+            return blockedBefore == blocksNow ? 0 : (blocksNow ? 1 : -1);
+        }
+
+        /// <summary>COLDSTORAGE_WALL_PRISON_FIX_HEMOGEN: social properness of an item held in a wall unit, judged by the
+        /// room on the unit's facing side (the wall cell has none), with vanilla's rules: for a prisoner, proper when
+        /// no pawn is given or he is in that room; a hemogen pack (Biotech) is improper only beside a prison cell
+        /// holding a bloodfeeder; anything else is improper when that room is a prison cell.</summary>
+        public static bool WallItemSociallyProper(bool forPrisoner, bool pawnGiven, bool pawnInFacingRoom,
+            bool hemogenRule, bool bloodfeederInFacingRoom, bool facingRoomIsPrisonCell)
+        {
+            if (forPrisoner)
+            {
+                return !pawnGiven || pawnInFacingRoom;
+            }
+            if (hemogenRule)
+            {
+                return !bloodfeederInFacingRoom;
+            }
+            return !facingRoomIsPrisonCell;
+        }
     }
 }

@@ -148,8 +148,11 @@ namespace RimMandrake.ColdStorage
             }
         }
 
-        /// <summary>Wall units take their light and airtight flags from Mod Settings. Building.IsAirtight and the light
-        /// grid read the def live, so a change applies to built units as the map next rebuilds rooms and light.</summary>
+        /// <summary>Wall units take their light and airtight flags from Mod Settings. Building.IsAirtight reads the def
+        /// live, so airtightness applies as rooms are next judged. The glow grid learns a light blocker only when a
+        /// building spawns or despawns, so a light change in play is pushed to every built unit here
+        /// (COLDSTORAGE_WALL_LIGHT_FIX_RESYNC): otherwise switching it off would leave a phantom blocker on the cell
+        /// after the unit is gone, and switching it on would never darken behind units already built.</summary>
         public static void ApplyWallFlags()
         {
             foreach (ThingDef d in climateDefs)
@@ -157,8 +160,35 @@ namespace RimMandrake.ColdStorage
                 CompProperties_StorageClimate p = d.GetCompProperties<CompProperties_StorageClimate>();
                 if (p != null && p.wallMounted && d.building != null)
                 {
+                    bool before = d.blockLight;
                     d.blockLight = RM_ColdStorageSettings.wallUnitsBlockLight;
                     d.building.isAirtight = RM_ColdStorageSettings.wallUnitsAirtight;
+                    ResyncLightBlockers(d, ColdStorageKernel.LightBlockerResync(before, d.blockLight));
+                }
+            }
+        }
+
+        private static void ResyncLightBlockers(ThingDef def, int change)
+        {
+            if (change == 0 || Current.ProgramState != ProgramState.Playing || Find.Maps == null)
+            {
+                return;
+            }
+            foreach (Map map in Find.Maps)
+            {
+                foreach (Thing unit in map.listerThings.ThingsOfDef(def))
+                {
+                    foreach (IntVec3 c in unit.OccupiedRect())
+                    {
+                        if (change > 0)
+                        {
+                            map.glowGrid.LightBlockerAdded(c);
+                        }
+                        else
+                        {
+                            map.glowGrid.LightBlockerRemoved(c);
+                        }
+                    }
                 }
             }
         }

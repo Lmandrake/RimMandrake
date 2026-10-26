@@ -57,6 +57,8 @@ namespace RimMandrake.ColdStorage.SelfTest
             EvaporativeCrock();
             Detents();
             FuelInsteadOfPower();
+            WallLightResync();
+            WallItemPropriety();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -352,6 +354,30 @@ namespace RimMandrake.ColdStorage.SelfTest
             Near("chamber idling a full day: 1.5", ColdStorageKernel.FuelUsed(6f, 60000f, true, true, 0.25f), 1.5f);
             Near("switched off: nothing", ColdStorageKernel.FuelUsed(6f, 60000f, false, false, 0.25f), 0f);
             Near("crock water: 0.5 a day, idle factor 1", ColdStorageKernel.FuelUsed(0.5f, 120000f, true, true, 1f), 1f);
+        }
+
+        // 18. COLDSTORAGE_WALL_LIGHT_FIX_RESYNC: the glow grid learns blockers only at spawn/despawn, so a light switch
+        // flipped in play must add or remove the blocker on built units (else a phantom blocker outlives the unit).
+        private static void WallLightResync()
+        {
+            Check("light on in play: add blockers", ColdStorageKernel.LightBlockerResync(false, true) == 1);
+            Check("light off in play: remove blockers", ColdStorageKernel.LightBlockerResync(true, false) == -1);
+            Check("unchanged on: nothing", ColdStorageKernel.LightBlockerResync(true, true) == 0);
+            Check("unchanged off: nothing", ColdStorageKernel.LightBlockerResync(false, false) == 0);
+        }
+
+        // 19. COLDSTORAGE_WALL_PRISON_FIX_HEMOGEN: a wall-held item follows vanilla's rules, judged by the facing room
+        private static void WallItemPropriety()
+        {
+            Check("prisoner in the facing room: proper", ColdStorageKernel.WallItemSociallyProper(true, true, true, false, false, true));
+            Check("prisoner elsewhere: improper", !ColdStorageKernel.WallItemSociallyProper(true, true, false, false, false, true));
+            Check("prisoner rule, no pawn: proper", ColdStorageKernel.WallItemSociallyProper(true, false, false, false, false, true));
+            Check("meal facing a prison cell: improper", !ColdStorageKernel.WallItemSociallyProper(false, true, false, false, false, true));
+            Check("meal facing a bedroom: proper", ColdStorageKernel.WallItemSociallyProper(false, true, false, false, false, false));
+            Check("hemogen facing a prison cell, no bloodfeeder: proper (vanilla)",
+                ColdStorageKernel.WallItemSociallyProper(false, true, false, true, false, true));
+            Check("hemogen facing a bloodfeeder's cell: improper",
+                !ColdStorageKernel.WallItemSociallyProper(false, true, false, true, true, true));
         }
     }
 }

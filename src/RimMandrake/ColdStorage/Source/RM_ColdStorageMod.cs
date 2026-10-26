@@ -33,7 +33,7 @@ namespace RimMandrake.ColdStorage
         public static bool unitsActAsHoppers = true;
         public static bool showClimateReadout = true;
 
-        // Wall units (a unit with wallMounted: true). Applied to the defs at once; a built wall unit re-reads them live.
+        // Wall units (a unit with wallMounted: true). Applied at once, to built units too (ColdStorageStartup.ApplyWallFlags).
         public static bool wallUnitsBlockLight = false;
         public static bool wallUnitsAirtight = true;
 
