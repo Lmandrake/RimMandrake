@@ -76,6 +76,27 @@ def ledger_kept_install(files: list):
     return out
 
 
+def module_of(flyer: bool, thing, kind_elems, brief_plan) -> str:
+    """The judge module for a creature (FAUNA_SPEC_SWIMMER_FIX_WALKER_MODULE). Flight is the MaxFlightTime stat /
+    flyingAnimationFramePathPrefix (CLAUDE.md). Swimmer is the departures brief's body_plan == 'swimmer' (it is the only
+    marker a pool fish like RM_Vhorrin has: its def carries none) or the def's own: race <waterSeeker>true</waterSeeker>
+    WITH a lifeStage <swimmingGraphicData> (RM_Starmaw). waterSeeker alone is not enough: RM_ScaldWalker is a hoofed
+    wader that carries it."""
+    if flyer:
+        return "flyer"
+    if brief_plan == "swimmer":
+        return "swimmer"
+    seeker = (thing.findtext("race/waterSeeker") or "").strip().lower() == "true"
+    if seeker and any(k.find(".//swimmingGraphicData") is not None for k in kind_elems):
+        return "swimmer"
+    return "walker"
+
+
+def brief_body_plan(defname: str):
+    bf = C.BRIEFS / f"{defname}.json"
+    return json.loads(bf.read_text()).get("body_plan") if bf.is_file() else None
+
+
 def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledger_kept_install) -> dict:
     if defname not in things:
         raise SystemExit(f"fauna_spec: no ThingDef {defname!r} under {SRC}")
@@ -116,7 +137,7 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             if hits:
                 imgs[face] = hits[0]
     shown = imgs.get("south") or imgs.get("single") or (imgs.get("variants") or [None])[0]
-    spec = {"subject": defname, "label": label, "template": "creature", "module": "flyer" if flyer else "walker",
+    spec = {"subject": defname, "label": label, "template": "creature", "module": module_of(flyer, d, [k for _, k in kinds.get(defname, [])], brief_body_plan(defname)),
             "candidate": "live", "provenance": f"live installed art, texPath {tp} ({mod_of(shown or f)}), graphicClass {gclass}",
             "description": desc, "tier": defname.split("_")[0] + "_", "invented": True,
             "size": {"drawSize": [draws[adult], draws[adult]]}, "source": f.replace(str(SRC) + "/", ""),
@@ -200,6 +221,8 @@ def main(argv=None):
         spec["departures"], spec["earth_body_named"] = b.get("departures") or [], bool(b.get("earth_body_named"))
         if b.get("body_plan"):
             spec["body_plan"] = b["body_plan"]
+            if spec["module"] == "walker" and b["body_plan"] == "swimmer":
+                spec["module"] = "swimmer"  # the brief was only just written; build_spec could not see it
         (out / f"{n}.spec.json").write_text(json.dumps(spec, indent=1))
         print(f"spec {n} module={spec['module']} faces={[k for k in spec['images'] if k in C.FACINGS]}", file=sys.stderr, flush=True)
 

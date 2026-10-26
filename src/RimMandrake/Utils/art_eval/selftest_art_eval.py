@@ -660,6 +660,20 @@ def main():
             t4, k4 = mk("RM_SouthOnly", None, "X/S")
             check("a south-only Graphic_Multi still gets a scale panel",
                   "scale" in FS.build_spec("RM_SouthOnly", t4, k4, tex2, td / "o", kept_lookup=lambda f: [])["images"])
+            # FAUNA_SPEC_SWIMMER_FIX_WALKER_MODULE: swimmers get the swimmer module, wading/walking stay walker
+            def mk2(name, race_x, life_x):
+                thing = ET.fromstring(f"<ThingDef><defName>{name}</defName><label>l</label><description>d</description><race>{race_x}</race></ThingDef>")
+                kind = ET.fromstring(f"<PawnKindDef><race>{name}</race><lifeStages><li><bodyGraphicData><texPath>X/Multi</texPath>"
+                                     f"<drawSize>1</drawSize></bodyGraphicData>{life_x}</li></lifeStages></PawnKindDef>")
+                return {name: (str(td / "src/Mod/M/Defs/a.xml"), thing)}, {name: [("f", kind)]}
+            sw = "<swimmingGraphicData><texPath>X/Multi</texPath></swimmingGraphicData>"
+            for nm, rx, lx, want in (("RM_SwA", "<waterSeeker>true</waterSeeker>", sw, "swimmer"),
+                                     ("RM_WadeA", "<waterSeeker>true</waterSeeker>", "", "walker"),
+                                     ("RM_LandA", "", "", "walker")):
+                tt, kk = mk2(nm, rx, lx)
+                check(f"module of {nm} is {want}", FS.build_spec(nm, tt, kk, tex, td / "o", kept_lookup=lambda f: [])["module"] == want)
+            check("module_of: brief body_plan swimmer wins (a pool fish has no def marker)", FS.module_of(False, ET.fromstring("<ThingDef/>"), [], "swimmer") == "swimmer")
+            check("module_of: a flyer stays a flyer", FS.module_of(True, ET.fromstring("<ThingDef/>"), [], "swimmer") == "flyer")
             for what, args in (("no kind", ("RM_One", t1, {}, tex)), ("no def", ("RM_Nope", t1, k1, tex))):
                 try:
                     FS.build_spec(*args, td / "o", kept_lookup=lambda f: [])
