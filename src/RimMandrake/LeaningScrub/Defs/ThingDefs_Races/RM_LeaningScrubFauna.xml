@@ -208,7 +208,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Shokka</defName>
     <label>shokka</label>
-    <description>A low, broad ambush predator with a dappled pelt that blends into bare ground. It lies motionless at gaps in the fuzz until a small animal crosses. Its pelt takes dye poorly but makes effective camouflage clothing.</description>
+    <description>A low, broad ambush predator with a dappled pelt that blends into bare ground. It lies motionless at gaps in the fuzz until a small animal crosses.</description>
     <statBases>
       <MoveSpeed>5.6</MoveSpeed>
       <Mass>60</Mass>
@@ -245,6 +245,7 @@
     <race>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <bloodDef>Filth_Blood</bloodDef>
+      <leatherDef>Leather_Plain</leatherDef>  <!-- SHOKKA_FIX_PELT_HAS_NO_LEATHERDEF: LeatherAmount drops nothing without one (Pawn.cs:3002) -->
       <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
       <hediffGiverSets><li>OrganicStandard</li></hediffGiverSets>
       <baseBodySize>1.2</baseBodySize>
@@ -887,6 +888,7 @@
     <race>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <bloodDef>Filth_Blood</bloodDef>
+      <leatherDef>Leather_Plain</leatherDef>  <!-- SHOKKA_FIX_PELT_HAS_NO_LEATHERDEF: LeatherAmount drops nothing without one (Pawn.cs:3002) -->
       <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
       <hediffGiverSets><li>OrganicStandard</li></hediffGiverSets>
       <baseBodySize>0.7</baseBodySize>

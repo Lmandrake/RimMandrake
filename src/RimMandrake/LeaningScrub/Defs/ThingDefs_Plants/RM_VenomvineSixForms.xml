@@ -91,6 +91,7 @@
     </modExtensions>
   </ThingDef>
 
+  <!-- WALKINGVENOMVINE_FIX_DESC_ONE_CUT_STOPS_IT: one cut does not stop it (RM_FormsKernel.Walk re-sends from every grown leading cell), and the form is wild-only (no sowTags). -->
   <!-- B. Walking: each Gale puts soft runners 1-2 cells downwind of the leading edge and lets
        the oldest tail cells die back to dead venomvine. Runners carry no venom until half grown
        (RM_CompProperties_MarkedThorns minGrowth, this mod's own sweep). A smothered cell stops
@@ -98,7 +99,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_WalkingVenomvine</defName>
     <label>walking venomvine</label>
-    <description>A long, low wedge of venomvine, with man-high black cane at its rear and soft, thornless rust-ochre runners lying flat downwind. Each Gale adds runners at the front while the oldest cane dies behind, slowly carrying the stand across the plain. Cutting the runners stops its advance; an untrimmed stand planted upwind will grow into a wall.</description>
+    <description>A long, low wedge of venomvine, with man-high black cane at its rear and soft, thornless rust-ochre runners lying flat downwind. Each Gale adds runners at the front while the oldest cane dies behind, slowly carrying the stand across the plain. Every grown cell at the front sends new runners each Gale, so it must be trimmed after every Gale to hold it in place; left alone, a stand upwind of a settlement walks up to its walls.</description>
     <statBases>
       <MaxHitPoints>400</MaxHitPoints>
       <Flammability>0.1</Flammability>
