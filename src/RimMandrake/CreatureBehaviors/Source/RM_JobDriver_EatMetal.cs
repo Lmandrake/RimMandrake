@@ -75,7 +75,9 @@ namespace RimMandrake.CreatureBehaviors
             toil.WithProgressBar(FoodInd, () => 1f - toil.actor.jobs.curDriver.ticksLeftThisToil / (float)ChewTicks);
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.handlingFacing = true;
-            toil.FailOnDestroyedOrNull(FoodInd);
+            // Despawned, not only destroyed: a wild eater holds no reservation, so a hauler may pick the stack up
+            // mid-chew, and the finalize would then eat out of the hauler's hands.
+            toil.FailOnDespawnedOrNull(FoodInd);
             toil.AddFinishAction(delegate
             {
                 Pawn actor = toil.actor;
@@ -96,7 +98,7 @@ namespace RimMandrake.CreatureBehaviors
             {
                 Pawn actor = toil.actor;
                 Thing thing = actor.CurJob.GetTarget(FoodInd).Thing;
-                if (thing == null || thing.Destroyed)
+                if (thing == null || thing.Destroyed || !thing.Spawned)
                 {
                     return;
                 }

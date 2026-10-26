@@ -278,10 +278,40 @@ namespace RimMandrake.CreatureBehaviors
         {
             newCapacity = Math.Max(1, newCapacity);
             if (newCapacity == capacity) return;
-            List<RM_TrackRecord> live = RecordsOldestFirst();
+            List<RM_TrackRecord> live = KeepByRule(RecordsOldestFirst(), newCapacity);
             ClearAll();
             Allocate(newCapacity);
             foreach (RM_TrackRecord r in live) Write(r.cell, r.tick, r.bits, r.style);
+        }
+
+        /// <summary>
+        /// The survivors when <paramref name="oldestFirst"/> must fit in <paramref name="cap"/>: drop by tier
+        /// (lowest first), then age (oldest first); the rest keep their oldest-first order. Replaying an
+        /// over-cap list through Write instead lets late low-tier records evict the earlier protected ones
+        /// (a pool already full of humanlike prints, then small-animal prints, ends with only the latter).
+        /// </summary>
+        public static List<RM_TrackRecord> KeepByRule(List<RM_TrackRecord> oldestFirst, int cap)
+        {
+            int drop = oldestFirst.Count - Math.Max(1, cap);
+            if (drop <= 0) return oldestFirst;
+            var dropped = new bool[oldestFirst.Count];
+            for (int t = 0; t < TierCount && drop > 0; t++)
+            {
+                for (int i = 0; i < oldestFirst.Count && drop > 0; i++)
+                {
+                    if (TierOf(oldestFirst[i].bits) == t)
+                    {
+                        dropped[i] = true;
+                        drop--;
+                    }
+                }
+            }
+            var kept = new List<RM_TrackRecord>(Math.Max(1, cap));
+            for (int i = 0; i < oldestFirst.Count; i++)
+            {
+                if (!dropped[i]) kept.Add(oldestFirst[i]);
+            }
+            return kept;
         }
 
         // ── the downwind sweep ───────────────────────────────────────────
@@ -377,6 +407,7 @@ namespace RimMandrake.CreatureBehaviors
                 if (n < 0 || ms.Length - ms.Position < (long)n * 11) { error = "track data truncated"; return null; }
                 var pool = new RM_TrackPool(width, height, capacityOverride > 0 ? capacityOverride : cap);
                 int cells = width * height;
+                var records = new List<RM_TrackRecord>(n);
                 for (int i = 0; i < n; i++)
                 {
                     int cell = r.ReadInt32();
@@ -384,8 +415,10 @@ namespace RimMandrake.CreatureBehaviors
                     byte bits = r.ReadByte();
                     ushort style = r.ReadUInt16();
                     if (cell < 0 || cell >= cells) continue;
-                    pool.Write(cell, tick, bits, style);
+                    records.Add(new RM_TrackRecord { cell = cell, tick = tick, bits = bits, style = style });
                 }
+                // A smaller capacity setting than the save's keeps survivors by the rule, as Resize does.
+                foreach (RM_TrackRecord rec in KeepByRule(records, pool.Capacity)) pool.Write(rec.cell, rec.tick, rec.bits, rec.style);
                 return pool;
             }
         }

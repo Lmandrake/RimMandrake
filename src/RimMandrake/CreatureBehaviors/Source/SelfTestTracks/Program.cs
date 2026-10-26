@@ -204,6 +204,23 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Check(pool.Count == 1000, "resize up lost records");
             });
 
+            Case("shrink below the protected count keeps the newest protected, not later low-tier prints", () =>
+            {
+                var pool = new RM_TrackPool(100, 100, 3000);
+                for (int i = 0; i < 100; i++) pool.Write(i, i, Human, 0);
+                for (int i = 100; i < 3000; i++) pool.Write(i, i, SmallAnimal, 0);
+                byte[] a = pool.ToBytes();
+                pool.Resize(50);
+                Check(pool.Count == 50 && Enumerable.Range(50, 50).All(pool.Has), "resize dropped humanlike prints for small ones");
+                RM_TrackPool loaded = RM_TrackPool.FromBytes(a, 100, 100, 50, out string err);
+                Check(loaded != null && loaded.Count == 50 && Enumerable.Range(50, 50).All(loaded.Has), "capped load dropped humanlike prints: " + err);
+                var one = new RM_TrackPool(10, 10, 5);
+                one.Write(1, 1, Human, 0);
+                one.Write(2, 2, SmallAnimal, 0);
+                one.Resize(1);
+                Check(one.Has(1) && !one.Has(2), "cap 1 kept the small animal over the humanlike");
+            });
+
             Case("downwind sweep order: upwind edge first, every cell once, deterministic", () =>
             {
                 int[] east = RM_TrackPool.SweepOrder(30, 20, 90f);

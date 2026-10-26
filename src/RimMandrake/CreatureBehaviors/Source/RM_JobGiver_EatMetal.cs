@@ -99,15 +99,15 @@ namespace RimMandrake.CreatureBehaviors
             bool ignoreForbidden = ForbidUtility.CaresAboutForbidden(pawn, true)
                 && pawn.playerSettings != null
                 && pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap != null;
-            Thing found = GenClosest.ClosestThingReachable(
+            // The area / forbidden / reservation tests belong in the search, not after it: filtering only the
+            // closest hit made a restricted or out-competed eater give up (and dig steel at its feet) while
+            // usable steel lay elsewhere. IsForbidden(pawn) includes the allowed-area test (vanilla FoodUtility
+            // filters animal food the same way).
+            return GenClosest.ClosestThingReachable(
                 pawn.Position, pawn.Map, ThingRequest.ForDef(thingDef), PathEndMode.ClosestTouch,
                 TraverseParms.For(pawn, Danger.Deadly, TraverseMode.ByPawn, false), 9999f,
-                null, null, 0, -1, false, RegionType.Set_Passable, ignoreForbidden);
-            if (found != null && found.Position.InAllowedArea(pawn))
-            {
-                return found;
-            }
-            return null;
+                t => !t.IsForbidden(pawn) && pawn.Map.reservationManager.CanReserve(pawn, t, 10, 1),
+                null, 0, -1, false, RegionType.Set_Passable, ignoreForbidden);
         }
     }
 }
