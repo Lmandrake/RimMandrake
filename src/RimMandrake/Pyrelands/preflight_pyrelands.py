@@ -790,6 +790,7 @@ def gate_c(s, env, snapshot_dir=None, storyteller_before=None, restore_tier=Fals
         for field, want in sorted(DEFAULTS.items()):
             v = _call(s, "jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field).get("value")
             if _norm_val(v) != _norm_val(want):
+                # restore-check: ok -- gate A row 3.3 refuses a run unless every field starts at DEFAULTS: the default IS the prior
                 _call(s, "jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field,
                       value=str(want).lower() if isinstance(want, bool) else str(want))
                 v2 = _call(s, "jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field).get("value")

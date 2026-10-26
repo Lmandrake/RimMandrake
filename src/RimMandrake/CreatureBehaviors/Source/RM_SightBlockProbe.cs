@@ -119,17 +119,17 @@ namespace RimMandrake.CreatureBehaviors
             bool sEnabled = RM_CreatureBehaviorsSettings.sightBlockEnabled;
             bool sRanged = RM_CreatureBehaviorsSettings.sightBlockRangedFire;
             int sNeeded = RM_CreatureBehaviorsSettings.sightBlockCellsNeeded;
-            RM_CreatureBehaviorsSettings.sightBlockEnabled = true;
-            RM_CreatureBehaviorsSettings.sightBlockRangedFire = true;
-            RM_CreatureBehaviorsSettings.sightBlockCellsNeeded = 1;
-
             IntVec3 plantCell = a + new IntVec3(3, 0, 0);
             IntVec3 b = a + new IntVec3(6, 0, 0);
             List<Thing> made = new List<Thing>();
-            sb.AppendLine("  blocker def " + blockerDef.defName + ", A " + a + ", plant " + plantCell + ", B " + b
-                + ", map " + map + " (" + map.Biome?.defName + "), blocked cells before " + (grid?.BlockedCellCount ?? -1));
             try
             {
+                // the pokes live inside the try: a throw anywhere after them still puts the player's values back
+                RM_CreatureBehaviorsSettings.sightBlockEnabled = true;
+                RM_CreatureBehaviorsSettings.sightBlockRangedFire = true;
+                RM_CreatureBehaviorsSettings.sightBlockCellsNeeded = 1;
+                sb.AppendLine("  blocker def " + blockerDef.defName + ", A " + a + ", plant " + plantCell + ", B " + b
+                    + ", map " + map + " (" + map.Biome?.defName + "), blocked cells before " + (grid?.BlockedCellCount ?? -1));
                 Pawn pa = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
                 Pawn pb = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
                 GenSpawn.Spawn(pa, a, map);

@@ -210,6 +210,9 @@ def _build_suite():
     def _origin(t):
         if state["origins"] is None:
             state["origins"] = _call(t, "Origins", str(len(SCENES))).split(";")
+            # reset rewrites every field to its default: record the player's values first so the chain's finally
+            # (modcheck suite.py) puts them back, whatever happens in between
+            t.remember_settings("RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings", sorted(settings_fields()))
             _call(t, "Settings", "reset")
         o = state["origins"][state["next"] % len(state["origins"])]
         state["next"] += 1

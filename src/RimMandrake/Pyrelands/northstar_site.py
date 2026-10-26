@@ -443,17 +443,20 @@ def name_colony(s, centre):
 
 # ------------------------------------------------------------------ §3.5-3.7 environment
 
-def isolate(s, settings_off=ISOLATION_OFF):
+def isolate(s, settings_off=ISOLATION_OFF, changed=None):
     """Fire/migration mechanics OFF (read back), storyteller quiet, queue empty, Clear locked,
-    fog off (rect unfog, never unfogAll), normal speed pin off. Returns what was changed."""
-    changed = {}
+    fog off (rect unfog, never unfogAll), normal speed pin off. Returns what was changed.
+    `changed` (the caller's dict) gets each field's prior value BEFORE that field is written, so a throw midway still
+    leaves the caller's finally everything it must put back."""
+    changed = {} if changed is None else changed
     for f in settings_off:
         before = _call(s, "jawa/mod_settings_field", typeName=P.SETTINGS, action="get", field=f).get("value")
+        changed[f] = before
+        # restore-check: ok -- the caller's finally (build_fixture -> restore_isolation) writes `changed` back
         _call(s, "jawa/mod_settings_field", typeName=P.SETTINGS, action="set", field=f, value="false")
         after = _call(s, "jawa/mod_settings_field", typeName=P.SETTINGS, action="get", field=f).get("value")
         if P._norm_val(after) is not False:
             raise SiteError("%s did not read back false (%r)" % (f, after))
-        changed[f] = before
     st = _call(s, "jawa/storyteller_swap", storytellerDef=P.QUIET_STORYTELLER)
     _call(s, "jawa/incident_queue_clear")
     _call(s, "jawa/weather_set", weather="Clear", lockWeather=True)
@@ -467,10 +470,11 @@ def isolate(s, settings_off=ISOLATION_OFF):
 
 
 def restore_isolation(s, changed):
-    """Always called in a finally: every toggle back to the SHIPPED default, read back."""
+    """Always called in a finally: every toggle back to the value it held before isolate() (the shipped default only
+    when that prior was unreadable), read back."""
     bad = {}
-    for f in changed:
-        want = P.DEFAULTS[f]
+    for f, before in changed.items():
+        want = before if before is not None else P.DEFAULTS[f]
         _call(s, "jawa/mod_settings_field", typeName=P.SETTINGS, action="set", field=f,
               value=str(want).lower() if isinstance(want, bool) else str(want))
         got = _call(s, "jawa/mod_settings_field", typeName=P.SETTINGS, action="get", field=f).get("value")
@@ -662,10 +666,10 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
     rec["retiled"] = retile(s, rec["pick"]["patch"], temp)
     strip_mutators(s, centre)
     # isolate() runs INSIDE the try: when one read-back refuses midway, the toggles it already turned off are still
-    # put back by the finally (restore_isolation sets every listed field to its shipped default, read back).
-    iso = {"settingsBefore": dict.fromkeys(ISOLATION_OFF)}
+    # put back by the finally (restore_isolation writes each field's prior value, recorded before the write, read back).
+    iso = {"settingsBefore": {}}
     try:
-        iso = isolate(s)                           # before mapgen: no burn line at gen
+        iso = isolate(s, changed=iso["settingsBefore"])  # before mapgen: no burn line at gen
         rec["isolation"] = iso
         # The season is set BEFORE the site map exists (PYRE_SITE_CLOCK_REPAIR_ASH_EXPIRES_FIRST, owner: warping time
         # on a populated map is "an EXTREMELY risky proposition"). time_set_ticks simulates nothing, so with no colony

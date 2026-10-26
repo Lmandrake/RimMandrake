@@ -193,6 +193,15 @@ def main():
             check("site: setting restored in finally", g.settings["paintIntervalTicks"] == "250")
         except Exception as ex:
             check("site: setting restored in finally", False, str(ex))
+        g.settings["paintIntervalTicks"] = "400"           # the player's own value, not the shipped 250
+        try:
+            with site.setting_restored(s, "T", "paintIntervalTicks", 250):
+                s.call("jawa/mod_settings_field", typeName="T", action="set", field="paintIntervalTicks", value="60")
+                raise RuntimeError("scene threw")
+        except RuntimeError:
+            pass
+        check("site: a throw restores the PRIOR value, not the default", g.settings["paintIntervalTicks"] == "400",
+              g.settings.get("paintIntervalTicks"))
         g.faults.add("x")
     check("site: failed read is UNMEASURED not zero",
           _raises(Unmeasured, site._ok, {"success": False}, "t"))

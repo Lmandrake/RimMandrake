@@ -19,8 +19,10 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+sys.path.insert(0, HERE)
 
 PROOF = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof"
+SETTINGS = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
 
 
 def parse_verdict(text):
@@ -41,6 +43,29 @@ def overall(rows):
     if "INVALID" in st:
         return "INVALID"
     return "PASS"
+
+
+def snapshot_settings(b):
+    """Every RimMandrakeExplosiveKnockbackSettings field's current value, read before Settings("reset") wipes them."""
+    from validation import settings_fields
+    snap = {}
+    for f in sorted(settings_fields()):
+        r = b.call("jawa/mod_settings_field", {"typeName": SETTINGS, "action": "get", "field": f})
+        if isinstance(r, dict) and r.get("success", True) is not False and "value" in r:
+            snap[f] = r["value"]
+    return snap
+
+
+def restore_settings(b, snap):
+    """Put the player's values back (the run's finally): a failed write is printed, never raised over the verdict."""
+    for f, v in snap.items():
+        try:
+            r = b.call("jawa/mod_settings_field", {"typeName": SETTINGS, "action": "set", "field": f, "value": str(v)})
+            ok = isinstance(r, dict) and bool(r.get("success"))
+        except Exception as ex:                                  # noqa: BLE001 - restoring never masks the verdict
+            r, ok = "%s: %s" % (type(ex).__name__, ex), False
+        if not ok:
+            print("SETTING RESTORE FAILED %s -> %r: %r" % (f, v, r), file=sys.stderr)
 
 
 def call(b, method, arg):
@@ -70,21 +95,26 @@ def main():
         if len(origins) < len(scenes):
             print("map too small for %d scenes (%d origins)" % (len(scenes), len(origins)))
             return 2
-        call(b, "Settings", "reset")
-        call(b, "Clear", "x")
-        for name, org in zip(scenes, origins):
-            staged = call(b, "Stage", "%s,%s" % (name, org))
-            st, _, detail = parse_verdict(staged)
-            if st != "STAGED":
+        # reset puts every field at its default for the scenes; the player's own values come back in the finally,
+        # even when a scene throws or the bridge drops mid-run (PROOF_SCENE_RESTORE_LEAK sweep 2026-10-26)
+        snap = snapshot_settings(b)
+        try:
+            call(b, "Settings", "reset")
+            call(b, "Clear", "x")
+            for name, org in zip(scenes, origins):
+                staged = call(b, "Stage", "%s,%s" % (name, org))
+                st, _, detail = parse_verdict(staged)
+                if st != "STAGED":
+                    rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
+                    print("%-16s %s %s" % (name, st, detail))
+                    continue
+                b.call("rimworld/step_game_ticks", {"ticks": a.ticks})
+                st, _, detail = parse_verdict(call(b, "Verdict", name))
                 rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
                 print("%-16s %s %s" % (name, st, detail))
-                continue
-            b.call("rimworld/step_game_ticks", {"ticks": a.ticks})
-            st, _, detail = parse_verdict(call(b, "Verdict", name))
-            rows.append({"type": "scenario", "scene": name, "status": st, "detail": detail, "origin": org})
-            print("%-16s %s %s" % (name, st, detail))
-        call(b, "Settings", "reset")
-        journal = call(b, "Journal", "4000")
+            journal = call(b, "Journal", "4000")
+        finally:
+            restore_settings(b, snap)
     with open(path, "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")

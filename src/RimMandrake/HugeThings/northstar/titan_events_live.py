@@ -59,6 +59,7 @@ class Run(object):
         return self.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=f).get("value")
 
     def put(self, f, v):
+        # restore-check: ok -- main() snapshots FIELDS first and puts every one back in its finally
         return self.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=f, value=str(v)).get("success")
 
     def ticks(self, n):

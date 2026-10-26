@@ -197,16 +197,22 @@ def dlc_status(s, want=("Royalty", "Ideology", "Biotech", "Anomaly", "Odyssey"))
 
 @contextlib.contextmanager
 def setting_restored(s, type_name, field, default):
-    """Flip a Mod Settings field for a block and ALWAYS restore + re-read the shipped default."""
+    """Flip a Mod Settings field for a block and ALWAYS restore + re-read the value it held BEFORE the block (the
+    player's, not the shipped one); `default` is written only when that prior could not be read."""
     def get():
         return _ok(s.call("jawa/mod_settings_field", typeName=type_name, action="get", field=field),
                    "mod_settings_field(get)").get("value")
     try:
+        prior = get()
+    except Exception:                                            # noqa: BLE001 - unreadable prior: fall back
+        prior = None
+    want = default if prior is None else prior
+    try:
         yield get
     finally:
-        s.call("jawa/mod_settings_field", typeName=type_name, action="set", field=field, value=str(default))
-        if str(get()) != str(default):
-            raise AssertionError("setting %s did not restore to %r" % (field, default))
+        s.call("jawa/mod_settings_field", typeName=type_name, action="set", field=field, value=str(want))
+        if str(get()) != str(want):
+            raise AssertionError("setting %s did not restore to %r" % (field, want))
 
 
 def read_settings(s, type_name, expect):

@@ -44,6 +44,7 @@ RULES THIS MODULE ENFORCES
   mode. `--debug` additionally implies halt-on-fail, which is the RUNNER's
   concern (it stops calling further chains), not this module's.
 """
+import sys
 import time
 
 import preconditions as _PC
@@ -151,6 +152,28 @@ class _ReportingSession(object):
         return self._pre.reply(tool, kw, r, answer=_answer)
 
 
+class _SettingsTrackingSession(object):
+    """The chain's session for EVERY chain: a Mod Settings write that reaches the game through any path -- set_setting,
+    t.bridge_call, a script's own t.session.call wrapper -- first records the field's prior value on the context, so
+    Suite.chain's finally can put the player's value back even when a component failed or a script threw before its own
+    restore (PROOF_SCENE_RESTORE_LEAK sweep 2026-10-26: ~60 validation.py wrote settings outside any finally)."""
+
+    def __init__(self, session, ctx):
+        self.__dict__["_s"], self.__dict__["_ctx"] = session, ctx
+
+    def __getattr__(self, k):
+        return getattr(self._s, k)
+
+    def __setattr__(self, k, v):
+        setattr(self._s, k, v)
+
+    def call(self, tool, *a, **kw):
+        if tool == "jawa/mod_settings_field" and kw.get("action") == "set" and kw.get("field") \
+                and kw.get("typeName"):
+            self._ctx.remember_settings(kw["typeName"], [kw["field"]], session=self._s)
+        return self._s.call(tool, *a, **kw)
+
+
 class TestContext(object):
     """The `t` a chain function receives. Wraps a `rimdrive.Session` with the
     verb vocabulary v1 (spec §2). Every verb calls `self._guard()` first --
@@ -199,6 +222,12 @@ class TestContext(object):
         # LOG MARK (mark_log): None = never marked (a bare TestContext, the old behaviour); a dict = the weight of every
         # log text already in the buffer when the chain began; False = the mark was attempted and unreadable.
         self._log_base = None
+        # SETTINGS RESTORE (lesson 20261026T161651Z-BENCH-proof-scene-restore-leak): (type_name, field) -> the value the
+        # field held BEFORE this chain first set it (read back via action="get"). Suite.chain's wrapper writes every one
+        # back in its finally (_restore_touched_settings), so a component that fails between `set False` and `set True`
+        # -- after which _guard() makes the second set a no-op -- never leaves the setting flipped for later chains, and
+        # what comes back is the player's value, not a hard-coded default.
+        self._touched_settings = {}
 
     def mark_log(self):
         """Remember what `jawa/drain_log` already holds, so expect_log_contains counts only lines written AFTER this
@@ -435,6 +464,7 @@ class TestContext(object):
             raise ValueError(
                 "jawa/mod_settings_field never persists to ModSettings.xml "
                 "-- persist=True is not supported")
+        self.remember_settings(type_name, list(values))
         for field, value in values.items():
             r = self.session.call("jawa/mod_settings_field", typeName=type_name,
                                   action="set", field=field, value=str(value))
@@ -466,6 +496,52 @@ class TestContext(object):
                 "mod_settings_field(%s, %s) did not take -- read back %s"
                 % (type_name, values, settings))
         return ok
+
+    def remember_settings(self, type_name, fields, session=None):
+        """Record each field's CURRENT value (once per chain) so Suite.chain's finally writes it back. set_setting and
+        every jawa/mod_settings_field set inside a chain call this on their own; call it yourself before anything that
+        rewrites settings another way (a proof's Settings("reset") static call), naming the fields it touches."""
+        s = session if session is not None else self.session
+        if s is None or not hasattr(self, "_touched_settings"):
+            return
+        for field in fields:
+            if (type_name, field) in self._touched_settings:
+                continue
+            try:
+                prior = s.call("jawa/mod_settings_field", typeName=type_name, action="get", field=field)
+            except Exception:                                    # noqa: BLE001 - an unreadable prior is left alone
+                prior = None
+            ok = isinstance(prior, dict) and prior.get("success", True) is not False and "value" in prior
+            self._touched_settings[(type_name, field)] = prior.get("value") if ok else None
+
+    def _restore_touched_settings(self):
+        """Write every field set_setting touched back to the value it held before the chain first set it. Runs from
+        Suite.chain's finally, so it ignores _guard() (a failed component must not skip it) and never raises: a restore
+        that fails is printed and recorded, never a verdict. A field whose prior value was unreadable is left alone."""
+        touched, self._touched_settings = self._touched_settings, {}
+        if self.session is None:
+            return []
+        out = []
+        for (type_name, field), prior in reversed(list(touched.items())):
+            if prior is None:
+                out.append((type_name, field, None, "prior unreadable: left as set"))
+                continue
+            try:
+                r = self.session.call("jawa/mod_settings_field", typeName=type_name,
+                                      action="set", field=field, value=str(prior))
+                ok = bool((r or {}).get("success"))
+            except Exception as ex:                              # noqa: BLE001 - restoring never masks the verdict
+                r, ok = "%s: %s" % (type(ex).__name__, ex), False
+            out.append((type_name, field, prior, ok))
+            if not ok:
+                print("[modcheck] SETTING RESTORE FAILED %s.%s -> %r: %r" % (type_name, field, prior, r),
+                      file=sys.stderr, flush=True)
+        try:
+            self._record("restore_touched_settings %s" % [(f, p) for _, f, p, _ in out],
+                         all(o[3] is True for o in out))
+        except Exception:                                        # noqa: BLE001 - no current component is fine
+            pass
+        return out
 
     def ensure_faction(self, def_name):
         """Make sure a live Faction instance of `def_name` exists in this
@@ -916,17 +992,28 @@ class Suite(object):
             suite = self
 
             def chain_fn(t, _fn=fn, _name=name):
-                if not suite.preconditions or getattr(t, "pre", None) is not None:
-                    return _fn(t)
-                t.pre = _PC.Preconditions()
-                raw = t.session
-                if raw is not None:
-                    t.session = _ReportingSession(raw, t.pre)
+                outer = getattr(t, "session", None)
+                if outer is not None and hasattr(t, "_touched_settings"):
+                    t.session = _SettingsTrackingSession(outer, t)
                 try:
-                    with t.pre.scope("chain %s" % _name):
+                    if not suite.preconditions or getattr(t, "pre", None) is not None:
                         return _fn(t)
+                    t.pre = _PC.Preconditions()
+                    raw = t.session
+                    if raw is not None:
+                        t.session = _ReportingSession(raw, t.pre)
+                    try:
+                        with t.pre.scope("chain %s" % _name):
+                            return _fn(t)
+                    finally:
+                        t.session, t.pre = raw, None
                 finally:
-                    t.session, t.pre = raw, None
+                    if outer is not None and hasattr(t, "_touched_settings"):
+                        t.session = outer
+                    # every setting this chain set goes back to its PRIOR value, even after a failed component or a throw
+                    restore = getattr(t, "_restore_touched_settings", None)
+                    if restore is not None:
+                        restore()
             chain_fn.__name__, chain_fn.__doc__, chain_fn.__wrapped__ = fn.__name__, fn.__doc__, fn
             self.chains.append((name, chain_fn))
             if tick_cap:
