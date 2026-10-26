@@ -50,6 +50,10 @@ namespace RimMandrake.ColdStorage.SelfTest
             OneDayEndToEnd();
             FixedRotFactors();
             RegistryKeepsNewestPerMap();
+            SealedReadoutFollowsRotTickPatch();
+            StasisStrengthFollowsGrade();
+            DeteriorationReadoutUnderStasis();
+            UnspawnedUnitOverridesNothing();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -262,6 +266,52 @@ namespace RimMandrake.ColdStorage.SelfTest
                 "got " + (FirstFor(list, 1)?.name ?? "null"));
             Check("registry: one entry per map", list.Count == 2, "got " + list.Count);
             Check("registry: other maps untouched", FirstFor(list, 2)?.name == "map2");
+        }
+
+        // 11. COLDSTORAGE_SEALED_READOUT_FIX_GATE: readouts show a factor only when the rot-tick prefix applied
+        private static void SealedReadoutFollowsRotTickPatch()
+        {
+            Near("readout: sealed (0) with rot tick patched says never", ColdStorageKernel.ReadoutRotFactor(0f, true), 0f);
+            Near("readout: sealed (0) with rot tick patch MISSING says vanilla", ColdStorageKernel.ReadoutRotFactor(0f, false), 1f);
+            Near("readout: pickled (0.05) with rot tick patch missing says vanilla", ColdStorageKernel.ReadoutRotFactor(0.05f, false), 1f);
+            Near("readout: pickled (0.05) patched", ColdStorageKernel.ReadoutRotFactor(0.05f, true), 0.05f);
+        }
+
+        // 12. COLDSTORAGE_STASIS_WIRE_GRADE_FACTOR: stasis strength follows the grade (owner card 2026-10-26)
+        private static void StasisStrengthFollowsGrade()
+        {
+            Near("strength Kludged 0.2 -> rot x0.8", ColdStorageKernel.StasisRotFactorFromStrength(0.2f), 0.8f);
+            Near("strength Refurbished 0.75 -> rot x0.25", ColdStorageKernel.StasisRotFactorFromStrength(0.75f), 0.25f);
+            Near("strength Original 1 -> rot x0", ColdStorageKernel.StasisRotFactorFromStrength(1f), 0f);
+            Near("strength Wrecked 0.001 -> rot ~x1", ColdStorageKernel.StasisRotFactorFromStrength(0.001f), 0.999f);
+            Near("strength above 1 clamps", ColdStorageKernel.StasisRotFactorFromStrength(2f), 0f);
+            Near("unit: no instance strength -> def factor", ColdStorageKernel.UnitStasisRotFactor(0.1f, float.NaN), 0.1f);
+            Near("unit: Kludged instance overrides def factor 0", ColdStorageKernel.UnitStasisRotFactor(0f, 0.2f), 0.8f);
+            Near("one Kludged day at 30 C rots 0.8 of the floor",
+                ColdStorageKernel.RotPerTick(EffectiveMode.Stasis, true, false, 30f, 30f, Vanilla, ColdStorageKernel.UnitStasisRotFactor(0f, 0.2f)), 0.8f);
+        }
+
+        // 13. COLDSTORAGE_DECAY_READOUT_FIX_UNDER_STASIS: a full field clears the deterioration reasons
+        private static void DeteriorationReadoutUnderStasis()
+        {
+            var reasons = new System.Collections.Generic.List<string> { "outdoors", "rain" };
+            float r = ColdStorageKernel.ApplyStasisToDeterioration(2f, 0f, reasons);
+            Near("full stasis: deterioration 0", r, 0f);
+            Check("full stasis: no reasons left", reasons.Count == 0, "got " + reasons.Count);
+            reasons = new System.Collections.Generic.List<string> { "outdoors" };
+            r = ColdStorageKernel.ApplyStasisToDeterioration(2f, 0.25f, reasons);
+            Near("partial stasis: rate scaled", r, 0.5f);
+            Check("partial stasis: reasons kept", reasons.Count == 1);
+            Near("null reasons list is fine", ColdStorageKernel.ApplyStasisToDeterioration(2f, 0f, null), 0f);
+        }
+
+        // 14. COLDSTORAGE_MINIFIED_FIX_STALE_TEMP: an unspawned (minified/carried) unit overrides no temperature
+        private static void UnspawnedUnitOverridesNothing()
+        {
+            Check("spawned chill unit overrides", ColdStorageKernel.TryHeldTemperature(EffectiveMode.Chill, -10f, true, out float t) && t == -10f);
+            Check("unspawned chill unit does NOT override (stale temp)", !ColdStorageKernel.TryHeldTemperature(EffectiveMode.Chill, -10f, false, out _));
+            Near("unspawned chill unit: held meat rots at the room rate",
+                ColdStorageKernel.TryHeldTemperature(EffectiveMode.Chill, -10f, false, out float h) ? Vanilla(h) : Vanilla(25f), 1f);
         }
     }
 }

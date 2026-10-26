@@ -12,6 +12,7 @@
   <RM_ColdStorage_StasisOffChilling>Stasis is switched off in Mod Settings: this unit chills instead.</RM_ColdStorage_StasisOffChilling>
   <RM_ColdStorage_StasisHolding>{0}: field holding, nothing inside spoils</RM_ColdStorage_StasisHolding>
   <RM_ColdStorage_StasisDown>{0}: field down, contents spoil as normal</RM_ColdStorage_StasisDown>
+  <RM_ColdStorage_StasisPartial>Partial field ({0} strength): contents spoil at {1} of the normal rate</RM_ColdStorage_StasisPartial>
   <RM_ColdStorage_SwitchedOff>Cold storage is switched off in Mod Settings: a plain shelf.</RM_ColdStorage_SwitchedOff>
 
   <!-- Rot line causes -->

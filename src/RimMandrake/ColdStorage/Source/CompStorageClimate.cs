@@ -21,6 +21,13 @@ namespace RimMandrake.ColdStorage
         public float currentTemp = float.NaN;
         public float setpoint = float.NaN;
 
+        /// <summary>Per-instance stasis strength (share of rot the field stops), NaN = none: the Wrecked Machines grade
+        /// or the def's stasisRotFactor decides. Set by code that places a chamber of a known grade (vault loot).</summary>
+        public float stasisStrength = float.NaN;
+
+        /// <summary>The tick this unit's temperature was last stepped; -1 before the first step.</summary>
+        private int lastStepTick = -1;
+
         private CompPowerTrader power;
         private CompRefuelable fuel;
         private CompFlickable flick;
@@ -58,6 +65,14 @@ namespace RimMandrake.ColdStorage
         /// <summary>True while a stasis field holds: the rot tick and deterioration of held items are skipped.</summary>
         public bool StasisHolding => ColdStorageKernel.StasisHolds(Effective, Active);
 
+        /// <summary>The stasis strength this instance has, or NaN to use the def's factor: its own
+        /// <see cref="stasisStrength"/>, else its Wrecked Machines grade's ratio (owner ruling 2026-10-26: stasis strength
+        /// follows the quality grade).</summary>
+        public float InstanceStasisStrength => !float.IsNaN(stasisStrength) ? stasisStrength : ColdStorageStartup.GradeStrength(parent.def);
+
+        /// <summary>The rot (and deterioration) multiplier on what a holding field of this unit holds.</summary>
+        public float StasisRotFactor => ColdStorageKernel.UnitStasisRotFactor(Props.stasisRotFactor, InstanceStasisStrength);
+
         /// <summary>The temperature an item held here reads, if this unit overrides it.</summary>
         public bool TryGetHeldTemperature(out float temperature)
         {
@@ -66,7 +81,7 @@ namespace RimMandrake.ColdStorage
                 temperature = 0f;
                 return false;
             }
-            return ColdStorageKernel.TryHeldTemperature(Effective, currentTemp, out temperature);
+            return ColdStorageKernel.TryHeldTemperature(Effective, currentTemp, parent.Spawned, out temperature);
         }
 
         public float RoomTemperature
@@ -96,6 +111,16 @@ namespace RimMandrake.ColdStorage
             {
                 currentTemp = RoomTemperature;
             }
+            else if (!respawningAfterLoad && lastStepTick >= 0 && Find.TickManager != null)
+            {
+                // Reinstalled after being minified or carried: it was not ticked meanwhile, so let it drift for the time away.
+                float hours = (Find.TickManager.TicksGame - lastStepTick) / ColdStorageKernel.TicksPerHour;
+                currentTemp = ColdStorageKernel.Drift(currentTemp, RoomTemperature, Props.driftPerHour, RM_ColdStorageSettings.insulationMultiplier, hours);
+            }
+            if (Find.TickManager != null)
+            {
+                lastStepTick = Find.TickManager.TicksGame;
+            }
             registeredOn = parent.Map.GetComponent<MapComponent_StorageClimate>();
             registeredRect = parent.OccupiedRect();
             registeredOn?.Register(this);
@@ -114,6 +139,8 @@ namespace RimMandrake.ColdStorage
             base.PostExposeData();
             Scribe_Values.Look(ref currentTemp, "currentTemp", float.NaN);
             Scribe_Values.Look(ref setpoint, "setpoint", float.NaN);
+            Scribe_Values.Look(ref stasisStrength, "stasisStrength", float.NaN);
+            Scribe_Values.Look(ref lastStepTick, "lastStepTick", -1);
         }
 
         public override void CompTickRare()
@@ -135,6 +162,7 @@ namespace RimMandrake.ColdStorage
             {
                 return;
             }
+            lastStepTick = Find.TickManager.TicksGame;
             float room = RoomTemperature;
             EffectiveMode eff = Effective;
             if (eff == EffectiveMode.Chill)
@@ -231,7 +259,14 @@ namespace RimMandrake.ColdStorage
                     }
                     return sb.ToString();
                 case EffectiveMode.Stasis:
-                    return (StasisHolding ? "RM_ColdStorage_StasisHolding" : "RM_ColdStorage_StasisDown").Translate(name);
+                    string line = (StasisHolding ? "RM_ColdStorage_StasisHolding" : "RM_ColdStorage_StasisDown").Translate(name);
+                    float factor = StasisRotFactor;
+                    if (StasisHolding && factor > 0f)
+                    {
+                        // A partial-strength field (a Kludged or Refurbished grade) says how much rot still gets through.
+                        line += "\n" + "RM_ColdStorage_StasisPartial".Translate((1f - factor).ToStringPercent(), factor.ToStringPercent());
+                    }
+                    return line;
                 default:
                     return "RM_ColdStorage_SwitchedOff".Translate();
             }

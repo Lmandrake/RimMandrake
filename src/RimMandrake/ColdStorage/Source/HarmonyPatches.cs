@@ -36,6 +36,36 @@ namespace RimMandrake.ColdStorage
 
     internal static class RotHold
     {
+        private static int rotTickPatched = -1;
+
+        /// <summary>Whether the rot-tick prefix (Patch_CompRottable_TickInterval) applied. Only it makes a rot factor
+        /// real, so the readouts show a factor only when it did (COLDSTORAGE_SEALED_READOUT_FIX_GATE). Read after
+        /// PatchApplier.Apply ran in the mod constructor, so it is final by the first readout.</summary>
+        public static bool RotTickPatched
+        {
+            get
+            {
+                if (rotTickPatched < 0)
+                {
+                    rotTickPatched = 1;
+                    foreach (PatchFailure f in PatchApplier.Failures)
+                    {
+                        if (f.patchClass == nameof(Patch_CompRottable_TickInterval))
+                        {
+                            rotTickPatched = 0;
+                        }
+                    }
+                }
+                return rotTickPatched == 1;
+            }
+        }
+
+        /// <summary>The factor a readout may show: <see cref="Factor(Thing)"/>, or 1 when the rot tick is unpatched.</summary>
+        public static float ReadoutFactor(Thing thing)
+        {
+            return ColdStorageKernel.ReadoutRotFactor(Factor(thing), RotTickPatched);
+        }
+
         /// <summary>The fixed multiplier on <paramref name="thing"/>'s rot tick (ColdStorageKernel.RotFactor): 0 while
         /// sealed or in a true stasis field, the item's own factor for preserved goods, 1 for everything else.
         /// <paramref name="why"/> names the cause for the inspect line, or null at 1.</summary>
@@ -47,7 +77,7 @@ namespace RimMandrake.ColdStorage
             CompStorageClimate unit = !sealedNow && StorageClimateRegistry.UnitCount > 0 ? StorageClimateRegistry.UnitHolding(thing) : null;
             EffectiveMode eff = unit?.Effective ?? EffectiveMode.None;
             bool active = unit != null && unit.Active;
-            float f = ColdStorageKernel.RotFactor(eff, active, sealedNow, unit?.Props.stasisRotFactor ?? 0f, itemFactor);
+            float f = ColdStorageKernel.RotFactor(eff, active, sealedNow, unit?.StasisRotFactor ?? 0f, itemFactor);
             if (f == 1f)
             {
                 why = null;
@@ -83,7 +113,7 @@ namespace RimMandrake.ColdStorage
             CompStorageClimate unit = StorageClimateRegistry.UnitHolding(thing);
             if (unit != null && unit.StasisHolding)
             {
-                f *= unit.Props.stasisRotFactor;
+                f *= unit.StasisRotFactor;
             }
             return f;
         }
@@ -119,7 +149,7 @@ namespace RimMandrake.ColdStorage
     {
         private static void Postfix(CompRottable __instance, ref int __result)
         {
-            float f = RotHold.Factor(__instance.parent);
+            float f = RotHold.ReadoutFactor(__instance.parent);
             if (f != 1f)
             {
                 __result = ColdStorageKernel.TicksUntilRotWithFactor(__result, f);
@@ -139,7 +169,7 @@ namespace RimMandrake.ColdStorage
             {
                 return;
             }
-            float f = RotHold.Factor(__instance.parent, out string why);
+            float f = ColdStorageKernel.ReadoutRotFactor(RotHold.Factor(__instance.parent, out string why), RotHold.RotTickPatched);
             if (f == 1f || why == null)
             {
                 return;
@@ -166,13 +196,13 @@ namespace RimMandrake.ColdStorage
         }
     }
 
-    /// <summary>A holding stasis field stops deterioration of what it holds.</summary>
+    /// <summary>A holding stasis field stops (or, at a partial strength, slows) deterioration of what it holds.</summary>
     [HarmonyPatch(typeof(SteadyEnvironmentEffects), nameof(SteadyEnvironmentEffects.FinalDeteriorationRate),
         new[] { typeof(Thing), typeof(bool), typeof(bool), typeof(TerrainDef), typeof(System.Collections.Generic.List<string>) })]
     [PatchFeature("Stasis stops deterioration", typeof(RM_ColdStorageSettings), nameof(RM_ColdStorageSettings.stasisEnabled))]
     internal static class Patch_FinalDeteriorationRate
     {
-        private static void Postfix(Thing t, ref float __result)
+        private static void Postfix(Thing t, System.Collections.Generic.List<string> reasons, ref float __result)
         {
             if (__result <= 0f || StorageClimateRegistry.UnitCount == 0)
             {
@@ -181,7 +211,8 @@ namespace RimMandrake.ColdStorage
             CompStorageClimate unit = StorageClimateRegistry.UnitHolding(t);
             if (unit != null && unit.StasisHolding)
             {
-                __result *= unit.Props.stasisRotFactor;
+                // A field that stops deterioration also clears the causes the inspect pane would list for a zero rate.
+                __result = ColdStorageKernel.ApplyStasisToDeterioration(__result, unit.StasisRotFactor, reasons);
             }
         }
     }

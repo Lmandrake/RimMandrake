@@ -63,6 +63,67 @@ namespace RimMandrake.ColdStorage
             itemRotFactor = anyFactor ? factors : null;
             ApplyHopperFlags();
             HookReplaceStuff();
+            HookWreckedMachinesGrades();
+        }
+
+        // Wrecked Machines grade signal (optional; reflection, no reference): def -> boxed MachineGrade, and its static
+        // WreckedMachineGrade.RatioFor(MachineGrade), read live so the player's ladder sliders apply at once.
+        private static readonly Dictionary<ThingDef, object> gradeOf = new Dictionary<ThingDef, object>();
+        private static MethodInfo ratioFor;
+
+        /// <summary>The stasis strength a unit's Wrecked Machines grade gives it (Kludged 0.2, Refurbished 0.75, Original 1
+        /// on the default ladder; owner ruling 2026-10-26), or NaN when the def has no grade or the mod is absent.</summary>
+        public static float GradeStrength(ThingDef def)
+        {
+            if (ratioFor == null || def == null || !gradeOf.TryGetValue(def, out object grade))
+            {
+                return float.NaN;
+            }
+            try
+            {
+                return (float)ratioFor.Invoke(null, new[] { grade });
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.ColdStorage] Wrecked Machines grade read failed; units use their def stasis factor: " + e.Message, 0x5C01D57);
+                ratioFor = null;
+                return float.NaN;
+            }
+        }
+
+        private static void HookWreckedMachinesGrades()
+        {
+            if (climateDefs.Count == 0)
+            {
+                return;
+            }
+            Type ext = AccessTools.TypeByName("RimMandrake.WreckedMachines.WreckedMachineGrade");
+            if (ext == null)
+            {
+                return;
+            }
+            FieldInfo gradeField = ext.GetField("grade", BindingFlags.Public | BindingFlags.Instance);
+            MethodInfo ratio = ext.GetMethod("RatioFor", BindingFlags.Public | BindingFlags.Static);
+            if (gradeField == null || ratio == null || ratio.ReturnType != typeof(float))
+            {
+                Log.Warning("[RimMandrake.ColdStorage] Wrecked Machines is loaded but its grade API was not found; graded stasis units use their def factor.");
+                return;
+            }
+            foreach (ThingDef d in climateDefs)
+            {
+                if (d.modExtensions == null)
+                {
+                    continue;
+                }
+                foreach (DefModExtension m in d.modExtensions)
+                {
+                    if (ext.IsInstanceOfType(m))
+                    {
+                        gradeOf[d] = gradeField.GetValue(m);
+                    }
+                }
+            }
+            ratioFor = gradeOf.Count > 0 ? ratio : null;
         }
 
         /// <summary>Hopper-capable units feed a nutrient paste dispenser while the setting is on. Read live by

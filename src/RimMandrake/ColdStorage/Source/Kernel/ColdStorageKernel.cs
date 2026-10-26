@@ -266,6 +266,60 @@ namespace RimMandrake.ColdStorage
             list.Add(item);
         }
 
+        // ---- review follow-ups (COLDSTORAGE_*_FIX/WIRE items, 2026-10-26) ----
+
+        /// <summary>COLDSTORAGE_SEALED_READOUT_FIX_GATE. The rot factor the READOUTS (ticks-until-rot, inspect line) may
+        /// show. Only the rot-tick prefix makes a factor real; if that patch failed to apply, food rots at vanilla's rate
+        /// whatever the factor says, so the readout must say vanilla's (1).</summary>
+        public static float ReadoutRotFactor(float factor, bool rotTickPatched)
+        {
+            return rotTickPatched ? factor : 1f;
+        }
+
+        /// <summary>COLDSTORAGE_STASIS_WIRE_GRADE_FACTOR. A stasis field's strength is the share of rot it stops
+        /// (owner ruling by card 2026-10-26: strength follows the quality grade, 0.2 / 0.75 / full), so the rot factor on
+        /// what it holds is 1 - strength.</summary>
+        public static float StasisRotFactorFromStrength(float strength)
+        {
+            if (float.IsNaN(strength))
+            {
+                return 0f;
+            }
+            return 1f - Clamp01(strength);
+        }
+
+        /// <summary>The rot factor a stasis unit applies: its per-instance strength (a Wrecked Machines grade, or a value
+        /// set by code such as vault loot) when it has one (not NaN), else the def's stasisRotFactor.</summary>
+        public static float UnitStasisRotFactor(float defRotFactor, float instanceStrength)
+        {
+            return float.IsNaN(instanceStrength) ? Math.Max(0f, defRotFactor) : StasisRotFactorFromStrength(instanceStrength);
+        }
+
+        /// <summary>COLDSTORAGE_DECAY_READOUT_FIX_UNDER_STASIS. Apply a holding stasis field's factor to an item's
+        /// deterioration rate. A field that stops deterioration entirely also clears the reasons list, so the inspect pane
+        /// does not name causes (outdoors, rain) for a rate of zero.</summary>
+        public static float ApplyStasisToDeterioration(float rate, float factor, System.Collections.Generic.List<string> reasons)
+        {
+            float r = rate * Math.Max(0f, factor);
+            if (r <= 0f && reasons != null)
+            {
+                reasons.Clear();
+            }
+            return r;
+        }
+
+        /// <summary>COLDSTORAGE_MINIFIED_FIX_STALE_TEMP. A unit that is not spawned (minified, carried, in a caravan) is
+        /// not ticked, so its own temperature is stale: it overrides nothing, and held items read their real ambient.</summary>
+        public static bool TryHeldTemperature(EffectiveMode effective, float unitTemp, bool unitSpawned, out float temperature)
+        {
+            if (!unitSpawned)
+            {
+                temperature = 0f;
+                return false;
+            }
+            return TryHeldTemperature(effective, unitTemp, out temperature);
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);
