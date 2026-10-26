@@ -1,0 +1,38 @@
+[
+ {
+  "id": "arteval_RM_Muttavaq__harvest_a_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The muttavaq is a canyon-floor giant that looks like a patch of cracked clay pan. Its body is very broad and low, wider than it is tall, with a flat-topped back close to the ground, resting on short, splayed, stubby legs the same dried-clay colour as the body. The whole back is a low mounded field of regular polygon plates, like cracked dried clay, with seams between the plates that radiate outward from a single central point on the back like spokes, in a pattern more regular than natural dried clay. Skin and back are the colour and texture of dried canyon clay in ochre, buff and umber, with slightly darker seams, so the animal looks like part of the terrain. The body is one broad mass with no distinct neck and no raised head silhouette. The mouth, set low along the edge of the body, is lined with broad jaw-plates for straining mud, and the eyes are small and set low beneath the plated back. The long, low, flat-topped plated body carries the radiating seams across its back, and its short splayed clay-coloured legs and jaw-plated mouth complete the squat, ground-hugging form. The animal has one consistent palette, one plate pattern and one set of proportions, and it fills the canvas.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DONOR, F_NORTH_FACE, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fc_harvest_c",
+  "drawsize": 4.6
+ },
+ {
+  "id": "arteval_RM_Muttavaq__harvest_b_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A single RimWorld creature sprite on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The muttavaq is a canyon-floor giant that sleeps under a clay pan and looks like part of the terrain. Its body is much wider than it is tall, a broad, low, nearly flat-topped mound with no distinct neck and no raised head, with short squat mud-stained legs barely showing beneath the body edge, so the whole animal could pass for a patch of ground. The skin and back are the colour and texture of dried canyon clay, bare, with no harness, fur or horns. The back is a mounded field of regular polygon plates, like a cracked clay pan, and the seams between the plates radiate in straight, regular lines from one central point at the crown of the mound, more regular than natural dried clay. The mouth is lined with flat jaw-plates for straining mud. The same animal is shown in each view at one shared scale, with the body at the same width and height in the front, side and rear views. Front view: the low plated body seen head-on, eyes toward the viewer, with the jaw-plated mouth low at the front edge of the mound. Side profile: one muttavaq seen from its flank, long and low, with the radiating plate seams on the flat back and the jaw-plated mouth at the front end. Rear view, seen from behind: the cracked clay plate field of the back, the broad haunches and a short tail, with head and eyes hidden behind the mound of the body.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_NORTH_FACE, F_SIZE_JUMP, DONOR, DEPARTURE_MISSING, DEPARTURE_MISSING, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fc_harvest_c",
+  "drawsize": 4.6
+ }
+]

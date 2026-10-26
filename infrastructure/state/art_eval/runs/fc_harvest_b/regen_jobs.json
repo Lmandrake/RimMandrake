@@ -1,0 +1,20 @@
+[
+ {
+  "id": "arteval_RSW_Runyip__harvest_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Runyip",
+  "prompt": "A single RimWorld creature sprite, the runyip, a squat forest herbivore from Yavin 4. Body plan: low-slung, stocky body on short legs, clearly not a tall long-legged deer frame. A long flexible trunk-like snout extends from the face. Tall branching antlers rise from the head. The front toes carry pale claws instead of hooves. The coat is pale cream crossed by bold dark brown stripes, with darker brown shoulders; the rump is striped with a short tufted tail. Style: realistic painterly vanilla RimWorld art, soft painted shading, thin clean dark outline, natural matte eyes, seen from the low three-quarter game camera angle. The animal fills the same share of the canvas in every facing, about 80% of the canvas width in side view with matching height and scale in the front and rear views. Facing: [side view, head toward the right / front view, eyes and trunk-like snout toward the viewer, both antlers rising, front legs with pale claws / rear view, seen from behind: striped rump, tufted tail, haunches and hind legs, the antlers seen from behind, head hidden behind the shoulders]. Transparent background with a clean cut-out: antler tines and body edges fade straight to transparency, with only the dark brown outline color at the edge.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, F_SIZE_JUMP, F_TOPDOWN, F_SOUTH_NOT_FRONT, F_NORTH_FACE, STYLE_CARTOON, DONOR, CANON_MISS, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fc_harvest_b",
+  "drawsize": 1.0
+ }
+]

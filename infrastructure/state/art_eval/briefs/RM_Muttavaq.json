@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Muttavaq",
+ "nearest_earth_animal": "hippopotamus",
+ "earth_body_named": false,
+ "departures": [
+  "back is a low mounded field of regular polygon plates, like a cracked clay pan, not hide or a single shell",
+  "cracks between the plates radiate out from one central point on the back, more regular than natural dried clay",
+  "mouth is lined with jaw-plates for straining mud, not tusks or teeth",
+  "body is so broad, low and flat-topped that it could pass for a patch of ground, with no distinct neck or raised head silhouette",
+  "skin and back are the colour and texture of dried canyon clay, so the animal looks like part of the terrain"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-25T22:54:46-07:00",
+ "source": "description only (no image)"
+}

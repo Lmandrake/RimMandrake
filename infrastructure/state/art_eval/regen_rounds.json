@@ -42,6 +42,7 @@
  "RM_Meltgut": 3,
  "RM_Mirrak": 1,
  "RM_Mullgoth": 3,
+ "RM_Muttavaq": 2,
  "RM_OcularJelly": 3,
  "RM_Ogleknot": 1,
  "RM_Peeper": 3,
@@ -96,5 +97,6 @@
  "RSW_Clodhopper": 1,
  "RSW_Gizka": 1,
  "RSW_KowakianMonkeyLizard": 2,
- "RSW_Mynock": 1
+ "RSW_Mynock": 1,
+ "RSW_Runyip": 1
 }

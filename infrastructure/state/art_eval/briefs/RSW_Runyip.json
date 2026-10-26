@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Runyip",
+ "nearest_earth_animal": "deer",
+ "earth_body_named": false,
+ "departures": [
+  "squat, low-slung body on short legs, not a tall long-legged deer frame",
+  "long flexible trunk-like snout extending from the face, not a short deer muzzle",
+  "clawed toes on the front feet instead of hooves",
+  "pale coat crossed by bold dark brown stripes, not a plain or spotted deer coat"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-25T22:54:35-07:00",
+ "source": "description only (no image)"
+}
