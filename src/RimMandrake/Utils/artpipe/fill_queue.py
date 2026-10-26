@@ -480,6 +480,10 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
 #                  <abs path of the ingested .decisions.json>, "sheet": <sheetId>, "row": <defName>} — the decisions
 #                  file must exist and rule on that row, and row == target_def. His ruling is the authority; no
 #                  eligibility class is needed.
+#                  Or a question card covering several subjects: {"by": "question card", "item": <rimflow id>,
+#                  "card": "<question → option>", "row": <defName>} — the ledger must hold an OWNER event on item with
+#                  byCard == card whose text has `covers: DEF DEF@<slot> ...` naming this row (a bare DEF = its whole
+#                  set, every slot; DEF@slot = that slot only, the row must name it).
 # A no_subject row (template, glyph, fixture) passes as NO_SUBJECT only when it installs nowhere (no install_to): it
 # draws over no def's art. If the gate cannot be built, every row that needs it is refused (GATE_UNAVAILABLE).
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -536,11 +540,59 @@ def _owner_redraw_why(v, slot) -> str:
     return "the record holds no owner redraw (redo / slot redraw / asks) for this subject and slot"
 
 
+LEDGER_EVENTS = None   # selftests inject a list; None reads the whole rimflow ledger (model.read(), every shard)
+
+
+def _ledger_events() -> list:
+    if LEDGER_EVENTS is not None:
+        return LEDGER_EVENTS
+    sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "rimflow"))
+    import model as RF                                               # noqa: E402 — rimflow's one ledger reader
+    return RF.read()
+
+
+def _card_covers(text: str, target: str, slot) -> bool:
+    """Does the `covers:` list of a card-ruling note name TARGET (and SLOT)? A bare `DEF` covers every slot of the def's
+    whole set; `DEF@<slot>` covers that slot only, so a row for it must name the slot."""
+    i = (text or "").find("covers:")
+    if i < 0:
+        return False
+    for tok in text[i + len("covers:"):].split():
+        tok = tok.strip(",;.")
+        d, _, s = tok.partition("@")
+        if d == target and (not s or (isinstance(slot, str) and slot == s)):
+            return True
+    return False
+
+
+def _card_ruling_ok(m: dict, target: str, slot=None) -> str:
+    """'' when a question-card ruling covering several subjects verifies (FACING_SETS_REDRAW_WHOLE_SET_ESCALATED, owner
+    card 2026-10-26 "7 art sets → Redraw all 7 whole sets"), else why not. The ledger must hold an OWNER-authority event
+    on `item` whose byCard is exactly `card` and whose text's `covers:` list names this subject (+ slot)."""
+    item, card = m.get("item"), m.get("card")
+    if not (isinstance(item, str) and item and isinstance(card, str) and card.strip()):
+        return "a card owner_ruling must be {by: 'question card', item, card, row}"
+    try:
+        evs = [e for e in _ledger_events() if e.get("id") == item and e.get("byCard") == card]
+    except Exception as e:                                           # noqa: BLE001 — ledger unreadable: fail closed
+        return f"owner_ruling ledger unreadable ({type(e).__name__}: {e})"
+    if not evs:
+        return f"no ledger event on {item} records card {card!r}"
+    if not any(e.get("seat") == "OWNER" and _card_covers(e.get("text") or "", target, slot) for e in evs):
+        return f"card {card!r} on {item} does not cover {target}" + (f" slot {slot}" if slot else "")
+    return ""
+
+
 def _owner_ruling_ok(m, target: str, slot=None) -> str:
     """'' when the owner_ruling marker verifies, else why not. The decisions record for TARGET must be the OWNER's own
-    redraw verdict for this subject (and SLOT when the row names one); anything else refuses (fail closed)."""
+    redraw verdict for this subject (and SLOT when the row names one); anything else refuses (fail closed).
+    A question-card ruling ({by: 'question card', item, card, row}) verifies against the ledger instead."""
+    if isinstance(m, dict) and m.get("by") == "question card":
+        if m.get("row") != target:
+            return f"owner_ruling row {m.get('row')!r} is not target_def {target!r}"
+        return _card_ruling_ok(m, target, slot if isinstance(slot, str) and slot else None)
     if not isinstance(m, dict) or m.get("by") != "art.py enact":
-        return "owner_ruling must be {by: 'art.py enact', decisions, sheet, row}"
+        return "owner_ruling must be {by: 'art.py enact', decisions, sheet, row} or {by: 'question card', item, card, row}"
     if m.get("row") != target:
         return f"owner_ruling row {m.get('row')!r} is not target_def {target!r}"
     p = Path(str(m.get("decisions") or ""))
@@ -574,8 +626,10 @@ def gate_row(row: dict, jobs: list[dict], gate_get, runs_root: Path | None = Non
         why = _owner_ruling_ok(row["owner_ruling"], named, row.get("slot"))
         if why:
             return False, {"verdict": "REFUSED_MARKER", "reason": why}
+        m = row["owner_ruling"]
+        where = (f"card {m.get('card')!r} on {m.get('item')}" if m.get("by") == "question card" else m.get("sheet"))
         return True, {"verdict": "EXEMPT", "exemption": "OWNER_RULING",
-                      "reason": f"owner ruled a redraw of {named} on {row['owner_ruling'].get('sheet')}"}
+                      "reason": f"owner ruled a redraw of {named} on {where}"}
     try:
         gate = gate_get()
         vs = [gate.classify(j) for j in jobs]

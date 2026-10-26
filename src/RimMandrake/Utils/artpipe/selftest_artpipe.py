@@ -4358,6 +4358,79 @@ def test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies
         fill_queue._WORLD, fill_queue.ART_EVAL_RUNS = saved
 
 
+def test_fill_queue_card_ruling_route_covers_named_subjects_and_slots_only():
+    """FACING_SETS_REDRAW_WHOLE_SET_ESCALATED (owner card 2026-10-26 "7 art sets → Redraw all 7 whole sets"): one
+    question card rules on several subjects. The owner_ruling marker {by: 'question card', item, card, row} files a row
+    only when the ledger holds an OWNER event on that item with exactly that byCard whose `covers:` list names the row's
+    def (and slot, for a DEF@slot entry). Before this route the gate had no form for such a card at all."""
+    import contextlib
+    import io
+    card = "7 sets → Redraw all (Recommended)"
+    item = "ST_CARD_ITEM"
+    saved = (fill_queue._WORLD, fill_queue.LEDGER_EVENTS)
+    fill_queue._WORLD = False
+    fill_queue.LEDGER_EVENTS = [
+        {"seat": "OWNER", "event": "note", "id": item, "byCard": card,
+         "text": "covers: ST_A ST_B, ST_W@g/dess"},
+        {"seat": "BENCH", "event": "note", "id": item, "byCard": card, "text": "covers: ST_AgentOnly"},
+        {"seat": "OWNER", "event": "note", "id": "ST_OTHER_ITEM", "byCard": card, "text": "covers: ST_ElseWhere"},
+        {"seat": "OWNER", "event": "note", "id": item, "byCard": "another card", "text": "covers: ST_OtherCard"},
+    ]
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            q = Queue(td / "q")
+
+            def row(i, dn, mk=None, **kw):
+                m = dict({"by": "question card", "item": item, "card": card, "row": dn}, **(mk or {}))
+                return dict({"id": i, "rimflow_item_id": "SELFTEST_ARTPIPE", "target_def": dn,
+                             "target_texpath": f"Things/{dn}", "prompt": "a creature", "canvas_w": 256,
+                             "canvas_h": 256, "biome_neutral": True, "owner_ruling": m}, **kw)
+            rows = [row("card_ok", "ST_A", facings=["east", "south", "north"]),
+                    row("card_slot_any_ok", "ST_B", slot="g/body"),
+                    row("card_atslot_ok", "ST_W", slot="g/dess"),
+                    row("card_atslot_other_no", "ST_W", slot="g/body"),
+                    row("card_atslot_noslot_no", "ST_W"),
+                    row("card_uncovered_no", "ST_C"),
+                    row("card_prefix_no", "ST_"),
+                    row("card_agent_seat_no", "ST_AgentOnly"),
+                    row("card_other_item_no", "ST_ElseWhere"),
+                    row("card_other_card_no", "ST_OtherCard"),
+                    row("card_wrong_row_no", "ST_C", mk={"row": "ST_A"}),
+                    row("card_no_item_no", "ST_A", mk={"item": ""}),
+                    row("card_unknown_no", "ST_A", mk={"card": "a card he never answered"})]
+            art = td / "rows.json"
+            art.write_text(json.dumps(rows))
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                rc = fill_queue.main(["--input", str(art), "--pending-dir", str(q.pending), "--active-dir",
+                                      str(q.active), "--done-dir", str(q.done), "--failed-dir", str(q.failed)],
+                                     gate=_FakeEligibilityGate({}))
+            filed = {p.stem for p in q.pending.glob("*.json")}
+            want = {"card_ok_east", "card_ok_south", "card_ok_north", "card_slot_any_ok", "card_atslot_ok"}
+            ok("card gate: exactly the covered subject+slot rows are filed", filed == want,
+               f"filed={sorted(filed)} stderr={err.getvalue()[-1500:]}")
+            ok("card gate: a refusal exits 1", rc == 1, rc)
+            e = err.getvalue()
+            for rid, why in (("card_atslot_other_no", "does not cover ST_W slot g/body"),
+                             ("card_atslot_noslot_no", "does not cover ST_W"),
+                             ("card_uncovered_no", "does not cover ST_C"), ("card_prefix_no", "does not cover ST_"),
+                             ("card_agent_seat_no", "does not cover ST_AgentOnly"),
+                             ("card_other_item_no", "does not cover ST_ElseWhere"),
+                             ("card_other_card_no", "does not cover ST_OtherCard"), ("card_unknown_no", "records card"),
+                             ("card_wrong_row_no", "is not target_def"), ("card_no_item_no", "must be {by: 'question card'")):
+                line = next((ln for ln in e.splitlines() if f"REFUSED ineligible: {rid}:" in ln), "")
+                ok(f"card gate: {rid} refused naming {why!r}", why in line, line or e[-800:])
+            if "card_ok_east" in filed:
+                j = json.loads((q.pending / "card_ok_east.json").read_text())
+                el = j.get("eligibility") or {}
+                ok("card gate: the job carries OWNER_RULING and the card marker",
+                   el.get("exemption") == "OWNER_RULING" and card in el.get("reason", "")
+                   and (j.get("owner_ruling") or {}).get("item") == item, j)
+    finally:
+        fill_queue._WORLD, fill_queue.LEDGER_EVENTS = saved
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -4491,6 +4564,7 @@ def main() -> int:
         test_no_image_failure_is_classified_retryable,
         test_no_image_gets_two_firm_retries_end_to_end,
         test_fill_queue_eligibility_gate_refuses_kept_regen_unconfirmed_and_verifies_exemptions,
+        test_fill_queue_card_ruling_route_covers_named_subjects_and_slots_only,
     ):
         print(f"--- {fn.__name__} ---")
         try:
