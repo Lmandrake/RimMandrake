@@ -1,0 +1,74 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Vhorrin": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha ec4a48c729); F_INCONSISTENT: The redrawn north has a noticeably darker, crisper outline than the softer-edged south and east views."
+  },
+  "RSW_Starmaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 0c7d658590); F_INCONSISTENT: East shows a vertical caudal fin with upper and lower lobes. On north and south the tail lobes spread sideways in a V, like a horizontal flu"
+  },
+  "RM_CoolantEel": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha 20f6166f0d); F_INCONSISTENT: The north view adds two large, pointed, sideways fins that appear in neither the south nor the east view. Its body is a short, stocky teardr"
+  },
+  "RM_Dovvik": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r1 (image sha 8f2b0cc4fa); DEPARTURE_MISSING: No legs or feet are visible on any facing. The body looks like it floats or sits as a frond mass rather than walking.; DEPARTURE_MISSING: The proboscis curls freely in a spiral and is not inserted into any plant stem.; F_INCONSISTENT: The redrawn north has a thick dark navy outline. South and east have a soft, light outline."
+  },
+  "RM_CanopySwinger": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, SIBLING_MISMATCH \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate r1 (image sha 2645b1fc53); SIBLING_MISMATCH: The redrawn north has a noticeably thicker, blacker outline than the accepted south and east, most visible on the claws and the tail curl.; DEPARTURE_MISSING: The tail is long and curled but not wrapped around anything, so it does not visibly carry weight."
+  },
+  "RM_Thrummel": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1, K3",
+   "context": "judged candidate r1 (image sha 7e3ed01ca7); DEPARTURE_MISSING: No mound, tunnel mouth, tar-crusted ground or waxy comb appears anywhere.; F_INCONSISTENT: East's body is a noticeably elongated oval and shows no tail tuft, while south and north are near-spherical and north has a distinct tail tu; STYLE_EARTHLY: In profile the whiskered blunt head and oval body read close to a hamster or guinea pig."
+  },
+  "RUT_BrineBattery": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus REALLY_BAD: ALPHA_HALO, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON, STYLE_EARTHLY",
+   "context": "judged candidate r1 (image sha 87bcba1624); STYLE_EARTHLY: A standard tortoise: domed scute carapace, scaly head on a neck, four elephantine legs.; DEPARTURE_MISSING: Departures 1\u20134 are all absent: a domed carapace, plated scutes, a protruding head, neck and legs, and a body raised on legs.; DESC_MISS: There is no lid-like squat form pressed onto a pool floor; it is a walking tortoise on legs."
+  },
+  "RM_FireWasp": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: DEPARTURE_MISSING, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r1 (image sha bc6c88c8ec); DEPARTURE_MISSING: The plating reads as banded segments rather than clearly overlapping scales, and no flame or heat-haze context is drawn.; STYLE_EARTHLY: The profile silhouette (narrow waist, tapered stinger abdomen, curled antennae) is a textbook wasp at first glance."
+  },
+  "RM_Muttavaq": {
+   "prefill": "keep",
+   "why": "PIPELINE: ESCALATE (regen round 3) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, STYLE_EARTHLY, X_WRONG",
+   "context": "judged candidate r1 (image sha 5894fbccf8); DESC_MISS: No clay-pan polygon back and no radiating cracks; the back is white fur under a harness.; DEPARTURE_MISSING: All five departures are absent: fur instead of plates, no radiating cracks, a beak instead of jaw-plates, a tall body with a raised head, an; STYLE_EARTHLY: Reads at first glance as a one-horned white yak or mountain goat used as a pack animal."
+  }
+ }
+}

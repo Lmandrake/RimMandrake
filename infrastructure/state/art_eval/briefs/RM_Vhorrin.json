@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Vhorrin",
+ "nearest_earth_animal": "carp",
+ "earth_body_named": true,
+ "departures": [
+  "a ragged, uneven dorsal comb running along the back in place of a smooth single fin",
+  "an oversized, deep-bodied fish, about arm-long, that looks like a smaller pool fish grown out of proportion",
+  "a mouth with visible teeth able to bite off fingers, not a soft, toothless carp mouth",
+  "a wide, slow body that fills most of the pool, too big for the pen it lives in"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:19-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 30.3,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3304036
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.9,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.11199669999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RUT_BrineBattery",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['STYLE_EARTHLY', 'DEPARTURE_MISSING', 'DESC_MISS', 'F_INCONSISTENT', 'ALPHA_HALO']; polish []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "87bcba16241d14c2659ad76c9b8e694eb835177a16785f93248830e539757e52",
+  "east.png": "7d7c3773ec9ea66a87291092f712521500506a6bc71161fd0b06d69702e7b36c",
+  "north.png": "09a6c40e17650dc690e2802d157ec218403ec1f957825889f7d2c8bac3c0a81a",
+  "scale.png": "431fa8bfe71343ee8c111b1d128b677da82a2ee8b7322e9b8275ccc6cf8f2fb0",
+  "facings.png": "c1b705f39136671b5f39ec1a3acf6d11f66398663c6ed8b5eaa60b5f97231e84"
+ }
+}

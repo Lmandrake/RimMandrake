@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.2,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.341171
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 58.2
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.11389669999999999
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Dovvik",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said really_bad); blocking ['DEPARTURE_MISSING', 'STYLE_CARTOON', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']; polish []",
+  "gpt regen: unsettled ['K1', 'K2', 'K3', 'K4', 'K5'], own blocking ['DEPARTURE_MISSING', 'STYLE_CARTOON', 'F_INCONSISTENT', 'F_SIZE_JUMP', 'DEPARTURE_MISSING']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "8f2b0cc4fafaaec9ad9ef9a6098769f43efaa920f6d27e2787b33f08c4db6717",
+  "east.png": "75d47bbb369702fb5d44f93f4e0ad8fd06eab89c2b3fba79c2f5122b617fd2e9",
+  "north.png": "1dba5b34c44768c87a9684ef19eb72639af099b8c1abfa8532f75d8418fb7897",
+  "scale.png": "979941baab4d5bc07b2ad961d27ff33d2fa6b7f3646f97f1483f74deab884407",
+  "facings.png": "036776ec7fb8e5b0883fa89cb1246640b0ac8b923716788d1126a567b79e637f"
+ }
+}

@@ -1,0 +1,185 @@
+[
+ {
+  "id": "arteval_RM_Vhorrin__live_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vhorrin",
+  "prompt": "A single RimWorld sprite of a vhorrin, the oversized pool fish, in painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The vhorrin is the murrin pool fish grown far past its stock: arm-long, deep-bodied, wide and slow, filling most of a pool, with a ragged, uneven dorsal comb standing upright along its back, pectoral fins at the sides, a vertical forked caudal fin, and a mouth of visible sharp teeth able to bite off fingers. Keep the palette, body plan, ragged comb, deep body and toothed mouth exactly as in the reference image. This is the NORTH facing: the fish is shown swimming away from the game's angled camera, seen from behind and slightly above. The tail fin stands tall and vertical, nearest the viewer, seen end-on as a narrow upright forked fin with the fork opening up and down, the same vertical caudal fin as on the east view. The deep body rises behind the tail with a foreshortened trunk and visible rear body volume; the ragged dorsal comb stands upright along the back; the pectoral fins show at both sides; the head end is hidden behind the body and the eyes are out of sight.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_TOPDOWN, F_INCONSISTENT, F_TOPDOWN, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RSW_Starmaw__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Starmaw",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The starmaw: a colossal filter-feeding sea creature the size of a ship's hull, a vast elongated dark mass with no dolphin- or whale-style head and no blowhole. Its dark hide is densely spotted with point-like bioluminescent lights arranged in star-field and constellation patterns, so it reads as a patch of night sky rising from the water. An oversized filter-feeding maw dominates the head, open as a huge gaping intake. Paired lateral fins and a broad tail fluke. Drawn from the raised, angled game camera, with the body foreshortened along the viewing direction. Points of bioluminescent light glow across the whole broad, dark back in dense star-field and constellation patterns, so the back itself reads as a patch of night sky; any reef or rock growth is small and sparse, in a few isolated patches between the star clusters. The dorsal surface carries the largest and most readable field of luminous stars, brighter than the flanks, fins and tail, which carry fewer, smaller lights. FRONT VIEW (south): seen head-on, eyes toward the viewer; the huge gaping intake is the largest, nearest shape at the lower centre, with the back and tail receding behind the head, foreshortened and mostly hidden by the head mass. REAR VIEW (north): seen from behind as it swims away; the tail fluke and rear haunches are large and nearest the viewer at the bottom of the frame, and the long back recedes upward, foreshortened and shorter on the page, toward a partly hidden, distant head; fins foreshorten and overlap the body. SIDE VIEWS (east, west): profile of the long body, gaping intake at the leading end, the star-field glowing across the broad dorsal surface.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, DEPARTURE_MISSING, F_TOPDOWN, F_SOUTH_NOT_FRONT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 11.4
+ },
+ {
+  "id": "arteval_RM_CoolantEel__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CoolantEel",
+  "prompt": "A single pale, eyeless coolant eel, a short thick-bodied eel about as long as a human forearm. Its skin is pale and colourless, a cool white-grey with a faint wet sheen, perfectly smooth and unbroken where eyes would be. The body is a sturdy, muscular trunk of even thickness that tapers into a rounded tail, with a continuous dorsal fin running along the back and small pectoral fins near the head. The head is smooth and eyeless, with a blunt snout and a broad mouth. The body rests in a gentle S-curve, full-bodied and solid, with the same length and trunk thickness throughout, centred and filling the canvas consistently. Painterly vanilla RimWorld style, realistic proportions, clean dark outline, transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_SIZE_JUMP, F_SIZE_JUMP; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RM_Dovvik__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dovvik",
+  "prompt": "A realistic painterly alien creature sprite in vanilla RimWorld style, clean dark outline, transparent background. The dovvik is a patient, large ground-walking feeder, far larger than any insect, and it has no wings. It has readable living anatomy: a distinct head, a muscular segmented body with soft overlapping body plates, and four jointed, weight-bearing legs ending in clear feet planted firmly on the ground. Its skin is matte, organic hide with natural texture and restrained painterly highlights. A pale blue and gold palette appears as accent markings on the plates and along the back. The head is dominated by one single long curled proboscis, which extends forward and down and is pushed into the stem of a tall floss plant like a straw while it feeds. The stem is clearly visible. The creature has small eyes, a single proboscis in place of any coiled insect tongue, and a smooth head with no antennae. The haunches are broad and lobed, and the body plates are even in width and layered the same way along the whole body. The body is compact and sturdy, with a consistent body height and leg length. Single creature, centered, no text.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: DEPARTURE_MISSING, STYLE_CARTOON, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING, DEPARTURE_MISSING, STYLE_CARTOON, F_INCONSISTENT, F_SIZE_JUMP, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.2
+ },
+ {
+  "id": "arteval_RM_CanopySwinger__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CanopySwinger",
+  "prompt": "A single RimWorld creature sprite of the ookala, a jungle canopy climber, on a transparent background, painterly vanilla RimWorld style, realistic, clean dark outline of consistent fine weight. Body plan: a drawn-out, narrow body about twice as long as it is tall, with a thin vine-like silhouette and an orange stripe running along the back, in muted jungle greens and browns. Every limb is long and spindly and carries four distinct segments with an extra visible knuckle joint, so each limb folds in a zig-zag like a tape measure: upper segment, first elbow, middle segment, second knuckle joint, lower segment. Each limb ends in a hooked hand built for hanging, with curved claws and no thumb. A very long gripping tail extends well beyond the body and curls in loose loops, strong enough to wrap a branch. Facing: the front view shows the face with eyes toward the viewer; the side view shows the profile with the head at one end of the long body; the rear view is seen from behind and shows the thin back with the orange stripe, the legs splayed out to the sides with hooked claws, and the long tail rising from the base of the spine and curling upward, with the eyes hidden. Every facing has the same slender proportions, the same body height, the same limb length and the same tail length, so the animal fills the same extent on all four views. Build the body from this description alone, without any earlier render as a reference.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_INCONSISTENT, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RM_Thrummel__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thrummel",
+  "prompt": "RimWorld creature sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background, one complete subject with empty space around it. A thrummel: a tiny, invented alien burrower, about a fist and a half across, shown as a near-perfect furry sphere covered in dense, matte, soot-black fur with subtle blue-grey highlights along the fur tips. The body is as wide as it is tall. The head is only a shallow bump in the round outline, merged into the body with continuous fur and no neck; the face sits flat within the fur, with a short recessed muzzle the same dark tone as the fur, and tiny dull eyes half-buried in the fur. Short limbs are tucked close under the sphere, with only stubby, functional digging claws and paws showing beneath it. Flecks of black tar crust and amber seepwax are caked on the fur and claws. It holds a small waxy, chitinous comb fragment between its forepaws. Front view: eyes toward the viewer, face set into the round contour. Side view: the same round sphere in profile, as tall as it is wide, with the shallow face bump at the leading edge. Rear view, seen from behind: the back of the round fur ball with a tiny stub tail and short rear legs tucked inside the outline, eyes hidden, the same height and silhouette as the front and side views. Restrained painterly shading, matte fur, no gloss. reference: none.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, STYLE_CARTOON, STYLE_EARTHLY, DEPARTURE_MISSING, DEPARTURE_MISSING, F_SIZE_JUMP, DEPARTURE_MISSING, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7
+ },
+ {
+  "id": "arteval_RUT_BrineBattery__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_BrineBattery",
+  "prompt": "A single RimWorld creature sprite on a fully transparent background, painterly vanilla RimWorld style, realistic, clean dark outline. The isi isi is an alien brine-pool animal: a squat, low, flat disc-shaped body like a fitted lid, wider than tall. The whole body is one unbroken lens-shaped cap of smooth, flexible, rubbery hide in muted olive-grey, divided into broad smooth ribbed panels with soft seams and gentle folds. A continuous rim runs all the way round the body and sits flush and sealed against the ground, with a thin pale salt-crust along it. Head, neck, legs, flippers and tail are all tucked beneath the lid, so the silhouette is a clean rounded disc. A faint pale-teal electrolytic sheen and a few fine mineral specks cross the surface, so the lid reads as a living cap seated on a mineral bed. The same hide, panel layout and crusted rim appear all the way around the lid, with the same rounded arc, the same panels and the same crust throughout. The body ends cleanly at its dark outline, with fully transparent pixels beneath and around the rim.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, ALPHA_HALO; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5
+ },
+ {
+  "id": "arteval_RM_FireWasp__dessicated__live_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp__dessicated",
+  "prompt": "A single RimWorld game sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Subject: the dessicated husk of a fire wasp, a heatproof scavenging insect of grass fires. The husk is dried, hollow and papery, with sunken eye hollows. Its whole body is covered in heavy, overlapping, armour-like scales, like a pangolin or armadillo, in muted ember browns, rust, ash grey and dull bronze, with the colour and pattern set by the scale plating alone. The body is stocky and a blunt wedge in shape: a broad head with wide-set compound eyes and short thick antennae, a thick waist that is not narrow, a rounded plated abdomen ending in a blunt tip, and six sturdy plated legs. Two very broad, long, sail-like gliding wings are held spread wide, as if riding rising hot air. The husk hangs inside a small, localized cloud of translucent orange flames and shimmering heat-haze, with its intact, unburnt scale plating clearly visible against and through the fire. The flames stay compact around the body, with transparent space around the effect. Camera: RimWorld's angled orthographic game camera, the same camera for every facing, the same body and proportions turned about the vertical axis. Facing views: the south view is the front, eyes toward the viewer, with the wings spread to both sides; the north view is the rear, seen from behind, showing the back, wing roots and abdomen tip with the eyes hidden; the east view is a true side profile, with one eye, the near-side legs in front of the far-side legs, the wings seen edge-on along the back, and the abdomen extending to the left. Built from the description, with no reference image.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, F_INCONSISTENT, STYLE_EARTHLY, F_TOPDOWN, F_INCONSISTENT, STYLE_EARTHLY, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0
+ },
+ {
+  "id": "arteval_RM_Muttavaq__live_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A single huge canyon-floor giant creature for a RimWorld sprite, painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. The muttavaq is a very broad, very low, flat-topped animal that could pass for a patch of cracked canyon ground. Its whole back is a low mounded field of regular polygon plates of dried canyon clay, in dry orange-tan and ochre with darker brown crack lines. The cracks between the plates radiate outward from one central point on the back, more regular than natural dried clay. Skin, plates and body share the colour and cracked matte texture of dried clay, so the animal looks like part of the terrain. It has no neck and no raised head: the head is level with the flat back line. At the low front edge sits a wide mouth lined with flat jaw-plates for straining mud. It stands on short, stubby plate-armoured legs that look half-buried in the ground. The silhouette is an alien ground-hugging slab of clay plates. Bare creature: clay skin and plates only, with no gear, no pack and no harness. Draw one single animal, with the same anatomy in every view. Front view, eyes toward the viewer: the wide jaw-plate mouth along the low front edge, with the plate field rising slightly behind it. Side view: one profile of the long low slab, with the plate field on top, the jaw-plate mouth at the front edge, and short legs below. Rear view, seen from behind: the plate field with its radiating cracks, the haunches and the short legs, eyes hidden. reference: none",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DESC_MISS, DEPARTURE_MISSING, STYLE_EARTHLY, DONOR, F_INCONSISTENT, X_WRONG",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_live",
+  "drawsize": 4.6
+ }
+]

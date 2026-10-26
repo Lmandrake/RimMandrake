@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 32.7,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.324361
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Vhorrin",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['STYLE_EARTHLY']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "ec4a48c729da265f39a1b2633485322ee9532a97e0de010e13c295762cc5b5a4",
+  "east.png": "b49768958a7452240e4c018a7c209fee07eee5d0d3b22d9c87240d861033bb00",
+  "north.png": "68fa21264cb9ab1dc599d7cf48cfef989858c863939387cf4cd80d7cb87358dc",
+  "scale.png": "e39c20f4ed35cbd5b1c619bc4dbb070a0235df4470dfbba810f67d5534a76078",
+  "facings.png": "845008b2afcf32b32b0e4467abd813f8411c59783429733e43a76fe6fa7fe426"
+ }
+}

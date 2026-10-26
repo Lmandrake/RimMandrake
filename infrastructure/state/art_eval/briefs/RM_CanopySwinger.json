@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CanopySwinger",
+ "nearest_earth_animal": "spider monkey",
+ "earth_body_named": false,
+ "departures": [
+  "drawn-out, narrow body about twice as long as it is tall, not a compact primate torso",
+  "every limb has one extra joint, so each reach folds out in segments like a tape measure",
+  "hooked hands built for hanging, not primate fingers with a thumb",
+  "very long gripping tail wrapped around a branch and carrying weight",
+  "thin, vine-like overall silhouette that blends with the hanging canopy vines"
+ ],
+ "body_plan": "wall_clinger",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:08-07:00",
+ "source": "description only (no image)"
+}

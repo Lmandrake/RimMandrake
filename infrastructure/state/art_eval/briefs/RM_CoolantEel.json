@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CoolantEel",
+ "nearest_earth_animal": "eel",
+ "earth_body_named": true,
+ "departures": [
+  "no eyes at all: smooth, unbroken skin where eyes would be",
+  "pale, colourless skin, not the dark olive or brown of an Earth eel",
+  "short body, only about forearm length, not a long ribbon"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:07-07:00",
+ "source": "description only (no image)"
+}

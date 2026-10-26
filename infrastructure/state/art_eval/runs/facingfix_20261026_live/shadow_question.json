@@ -1,0 +1,74 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Vhorrin": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate live (image sha ec4a48c729); F_TOPDOWN: North is a dorsal plan view: you look straight down the back, the comb is a flat midline seam, the body is a long teardrop and the head end ; F_INCONSISTENT: The caudal fin is a vertical forked tail on east but is spread flat and horizontal on north, like a whale fluke."
+  },
+  "RSW_Starmaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_TOPDOWN, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1, K2",
+   "context": "judged candidate live (image sha 0c7d658590); F_TOPDOWN: The north view is an almost flat plan of the back. Head dome, fins and fluke are laid out symmetrically with little foreshortening, nearly a; DEPARTURE_MISSING: The reef and rock garden covers most of the broad back, so the constellation glow shows mainly on the flanks and tail, not across the back.; STYLE_EARTHLY: The profile silhouette (blunt head, white-speckled hide, tall crescent tail and ridged flank) is very close to a whale shark. Only the maw, "
+  },
+  "RM_CoolantEel": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate live (image sha 20f6166f0d); F_SIZE_JUMP: The north body is a compact S that is noticeably shorter and smaller in mass than the south and east bodies on the shared-scale sheet. The m"
+  },
+  "RM_Dovvik": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON \u00b7 GPT regen, unsettled K1, K2, K3, K4, K5",
+   "context": "judged candidate live (image sha 8f2b0cc4fa); DEPARTURE_MISSING: No legs or feet on any facing; the body floats like a leaf plume.; STYLE_CARTOON: The body is made of glossy, translucent, glass-like ornamental lobes with gold filigree, like an acanthus carving or a crystal figurine, wit; F_INCONSISTENT: South is a fan of lobes about 1.5 times wider than tall; north is a narrow pinecone oval less than half that width."
+  },
+  "RM_CanopySwinger": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, F_INCONSISTENT, F_SIZE_JUMP",
+   "context": "judged candidate live (image sha 2645b1fc53); F_INCONSISTENT: North shows a bulbous pear-shaped rump, short thick bulging legs, a short spiral tail stub pressed against the rump and a heavy black outlin; DEPARTURE_MISSING: On north the narrow, vine-like body and the very long tail are absent. It reads as a round squat lump with a coiled stub.; F_SIZE_JUMP: North's limbs and overall extent are visibly shorter and more compact than south's. The measured spread is 41%."
+  },
+  "RM_Thrummel": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_SIZE_JUMP, STYLE_CARTOON, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1, K2, K3, K4, K5, K6",
+   "context": "judged candidate live (image sha 7e3ed01ca7); STYLE_EARTHLY: The south face is a bear or sun-bear muzzle with small ears. The east profile is a whiskered wombat or hamster with a distinct head and snou; DEPARTURE_MISSING: South has a protruding pale bear muzzle. East has a distinct head with a snout and whiskers, set apart from the body.; DEPARTURE_MISSING: East is a long, humped loaf about 1.6 times as wide as it is tall. North is a tall oval. Only south comes close to a ball."
+  },
+  "RUT_BrineBattery": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus REALLY_BAD: ALPHA_HALO, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, STYLE_EARTHLY",
+   "context": "judged candidate live (image sha 87bcba1624); STYLE_EARTHLY: An ordinary Earth tortoise: domed shell, scaly legs, a tortoise head on a long neck.; DEPARTURE_MISSING: The shell is a high dome. The head, neck, four legs and tail all protrude past the shell. The animal stands raised on its legs.; DESC_MISS: Nothing reads as a lid seated in a pool. It is a walking tortoise."
+  },
+  "RM_FireWasp": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 1) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT, F_TOPDOWN, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate live (image sha bc6c88c8ec); F_TOPDOWN: East is a dorsal overhead view with wings and legs symmetric on both sides of the body and both eyes visible, like a pinned specimen.; F_INCONSISTENT: South and north show a compact upright body with an upturned abdomen under the angled camera. East shows a long, narrow-waisted body lying f; STYLE_EARTHLY: Wasp waist, banded tapering abdomen with a stinger, standard hornet head and small insect wings: a stranger names it as a wasp at first glan"
+  },
+  "RM_Muttavaq": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS, DONOR, F_INCONSISTENT, STYLE_EARTHLY, X_WRONG",
+   "context": "judged candidate live (image sha 5894fbccf8); DESC_MISS: No cracked clay-pan back anywhere; the back is white fur and a harness pack; DEPARTURE_MISSING: All five departures absent: fur instead of plates, no radiating cracks, a hairy muzzle instead of jaw-plates, tall legs with a raised horned; STYLE_EARTHLY: Reads at a glance as a white yak or mountain goat wearing sci-fi gear"
+  }
+ }
+}

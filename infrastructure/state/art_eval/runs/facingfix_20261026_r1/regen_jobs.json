@@ -1,0 +1,167 @@
+[
+ {
+  "id": "arteval_RM_Vhorrin__r1_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vhorrin",
+  "prompt": "Both are accepted art and the reference you must match. LINE AND EDGE: the outline is the same soft dark-brown contour as images 1 and 2, the same thickness, with the same softly feathered painterly edge where the body meets the transparent background. This is a SWIMMING creature. Exactly ONE creature, centred, whole body visible, nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sentence-drop",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RSW_Starmaw__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Starmaw",
+  "prompt": "The starmaw is a colossal space-whale-like sea beast, a vast elongated mass of ship-hull scale with a deep, rounded, heavy body, a head and body unlike a dolphin or whale, and no blowhole. Its dark hide is smooth and matte, and point-like bioluminescent lights scatter across the broad back and flanks in star-field and constellation patterns, so the creature reads as a patch of night sky rising from the water. The oversized gaping filter-feeding maw dominates the head. Paired lateral fins extend from the sides of the body, broad and muscular, and the thick haunches taper into a single upright caudal fin, a tall narrow blade with an upper lobe and a lower lobe that share the body's vertical plane. Body width, body height and bulk match the approved reference figure: a short, deep, rounded mass with the same palette, the same colour pattern, the same materials and the same anatomy. A clean dark keyline of the same weight surrounds the whole figure. The style is painterly, realistic and vanilla RimWorld, with one creature, centred, whole body visible, nothing cut off, on a fully transparent background with the creature alone on it.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 11.4
+ },
+ {
+  "id": "arteval_RM_CoolantEel__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CoolantEel",
+  "prompt": "The coolant eel is a pale, eyeless, smooth-skinned eel about forearm length, with a slender, unbroken, tapering body that curves and coils in one gentle loop. Its skin is colourless, with a faint cool grey-white sheen. The rounded head is smooth and continuous, and the skin where eyes would be is smooth and unbroken. The slender body keeps one even thickness through the loop and then narrows steadily into a thin tapering tail. Its edges are clean and flowing, with no fins or breaks, so it forms one plain, smooth eel silhouette. A clean dark keyline of consistent weight surrounds the whole figure. The creature is painted in a painterly, realistic vanilla RimWorld style, with soft shading and the same palette and materials throughout. Exactly one creature is drawn, centred, with its whole body visible and nothing cut off, filling the canvas the way a 1.1 x 1.1 drawSize sprite does. The background is fully transparent, with no ground, water, shadow, text or border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RM_Dovvik__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Dovvik",
+  "prompt": "Draw a single creature sprite for the game RimWorld: the dovvik, a large, patient, ground-walking feeder. Its broad body is made of overlapping lobed frond plates in pale blue with gold accents, with lateral structures along both flanks. The body is raised clearly above the ground on four to six short, sturdy, jointed walking legs. Each leg shows its joints and ends in a distinct foot planted on one shared ground line. The fronds stop above the knee joints, so the legs and feet are fully visible beneath the body and the creature reads as walking on foot. It has no wings. It is a big animal, far larger than insect scale, big enough that its passage leaves a swept trail through a floss field. The head carries one single long curled proboscis as its dominant structure, resting in a loose curl with its tip lowered and ready to feed. The eyes are not shown. The plant stem is not in the sprite. The body stands upright on its legs, with a strong, balanced, fully lifted stance. The rendering uses a soft, thin, pale-blue contour with feathered edges, light everywhere, in a painterly vanilla RimWorld style with realistic shading. Exactly one creature, centred, whole body and all feet visible, nothing cut off. Fully transparent background with no ground, no water, no shadow, no text and no border. drawSize 1.2.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.2
+ },
+ {
+  "id": "arteval_RM_CanopySwinger__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CanopySwinger",
+  "prompt": "Image 1 is the APPROVED front (south) view of a creature sprite for the game RimWorld. Image 2 is the APPROVED side (east) view of the SAME individual. Both are accepted art and the reference you must match.\nDraw exactly this creature, the canopy swinger (ookala), in the REAR view: the creature faces straight away from the viewer, seen from directly behind; its back, hindquarters and tail face us, the head turned away with the eyes hidden.\nThis is a DERIVATION of the accepted views: the same figure, species and anatomy, the same proportions, the same palette and colour pattern, the same materials and the same painterly rendering, so it reads as the same individual turned to another side.\nLINE: the outline is the same thin, soft dark keyline as in images 1 and 2, with olive-brown edge shading on the claws, the limbs and the tail curl. The contour weight on the claws and the tail matches the accepted views exactly.\nCAMERA: exactly the camera of the attached views, the game's camera looking at the creature from the side at about its own body height, only slightly raised. The body is drawn upright in elevation, the way a creature stands or hangs in the game, with the rear surface toward the viewer.\nSIZE: the rear view is the same size and shape class as the front view: the same body width, body height and bulk, the same limb length and the same tail length, with limbs reaching just as far from the body.\nTAIL: the very long tail rises from the base of the spine and its tip forms a tight prehensile grip coil wrapped around a thick horizontal branch segment above the body. The tail encircles the branch at a clear supporting contact point, and the narrow body hangs beneath that grip, so the tail visibly carries the animal's weight. The same grip-and-hang pose is drawn on the front and side views' tail logic: a tail that holds on and bears weight.\nBODY: the same slender, narrow animal seen from behind: a thin back with the orange stripe, long spindly multi-jointed legs, each with one extra joint, with hooked claws and no thumbs, splayed out to the sides, hanging below the tail's grip.\nKEEP: slender drawn-out body about twice as long as it is tall; orange stripe along the back; thin vine-like silhouette; same palette and body plan on every facing; drawSize 1.1 extent consistent across facings.\nExactly one creature with its short branch segment, centred, whole body visible, nothing cut off. Fully transparent background, painterly vanilla RimWorld style, realistic, clean thin dark outline.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: SIBLING_MISMATCH, DEPARTURE_MISSING, SIBLING_MISMATCH, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.1
+ },
+ {
+  "id": "arteval_RM_Thrummel__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Thrummel",
+  "prompt": "reference: none. Draw a single creature sprite for the game RimWorld from this description: the thrummel, a fist-and-a-half-sized, comically round burrower, always hurrying between mound and dark. The view is the REAR view: the creature faces straight away from the viewer, seen from directly behind, so its back, rear haunches, tiny rear paws and a short stub of tail face us and its eyes are hidden.\n\nBODY: a near-perfect sphere of dense, soot-black fur, ball-round, with no visible neck. The head merges completely into the round body outline. It has no protruding nose, no muzzle and no whiskers, and the ears are tiny tufts buried flush in the fur. The whole silhouette is one unbroken round mass, a furred ball. The haunches and short rear paws sit within the sphere's outline, with only the small tail stub and two tiny paws touching the bottom of the circle. The fur is thick and matte with soft painterly strands, in deep black with faint warm-grey highlights.\n\nCOMB: the thrummel is working a small waxy, chitinous comb. It is an amber-tan slab of honeycomb cells, with darker chitin plating along its edge and a faint seepwax sheen, about a third as wide as the body, held in the forepaws against the creature's front. Seen from behind, the comb's edge and a few cells show past both flanks of the round body, at the same height and position as in the other facings. The comb is drawn as part of the sprite.\n\nCAMERA: the game's camera looks at the creature from the side at about its own body height, only slightly raised, so the body reads as a round ball standing on the ground and the view is not from above.\n\nSTYLE: painterly vanilla RimWorld style, realistic, with a clean dark keyline around the creature and the comb. Exactly ONE creature with its comb, centred, whole body visible and nothing cut off. The background is fully transparent, with clean empty alpha all around the figure.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, STYLE_EARTHLY, DEPARTURE_MISSING, STYLE_EARTHLY",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.7
+ },
+ {
+  "id": "arteval_RUT_BrineBattery__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RUT_BrineBattery",
+  "prompt": "A creature sprite for the game RimWorld: the brine battery (isi isi), a squat pool animal shaped like a fitted lid. This is the REAR view, seen from directly behind. The animal sits with the back of its body toward the viewer, so we see the rounded rear arc of the lid. Its face is on the far side and hidden.\n\nBODY: one low, wide, smooth disc, like a lid fitted into a socket. It is about 1.5 times as wide as it is tall, and its top is gently rounded. The whole rim sits flush against the ground, and the underside is pressed onto the mineral bed. The outline is one unbroken rounded shape. Head, neck, limbs, flippers and tail are all tucked inside the disc and leave the outline untouched.\n\nSURFACE: smooth, rubbery, flexible-looking hide in broad soft panels with gentle ribbing that flows around the rear arc of the lid, in the same panel layout as the front and side. Along the whole rim runs a thin, pale, crusty line of dried salt. The colour is a muted olive-grey, matte, with a faint teal mineral sheen in the panel creases. The rear arc is a calm, plain alien surface.\n\nCAMERA: the game's camera looks at the creature from the side at about its own body height, only slightly raised. The disc is seen as a low, wide mound, with its rim meeting the ground in a shallow curve. The view is level and eye-height, with the body upright, as a standing figure is drawn in a side-on game sprite.\n\nSIZE: the rear view fills the same width and the same height as the front view, with the same bulk.\n\nSTYLE: painterly vanilla RimWorld sprite, realistic, clean dark keyline of consistent weight, soft hand-painted shading from the upper left.\n\nExactly ONE creature, centred, whole body visible with nothing cut off. The background is fully transparent, with transparent pixels directly under and around the rim and the figure cut out cleanly along its keyline.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS, F_INCONSISTENT, F_SIZE_JUMP, STYLE_CARTOON, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5
+ },
+ {
+  "id": "arteval_RM_FireWasp__dessicated__r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp__dessicated",
+  "prompt": "A desiccated, dried, dead husk of a fire wasp, a scavenger-insect with a hollowed, papery body. The thorax and abdomen are shingled with distinct overlapping scale-plates, each a separate rounded scale whose free edge lifts slightly and casts a thin dark shadow line over the plate beneath it, like armour tiles or pine-cone scales. The plates sit in clearly visible rows over the whole body, so the surface reads as heavy overlapping scales rather than smooth glossy chitin or plain banded segments. The palette is set by the scales: muted ember browns, rust, ash and dull bronze, with the whole body in a single scale-set colour pattern. A single eye sits on the head, the legs are thin and brittle, and the abdomen tapers to a dry tip. Broad papery wings are held spread, as if gliding on rising hot air, with the same weathered ember-brown tones. The husk hangs suspended inside a compact cluster of painted flame tongues and shimmering heat-haze ripples that wrap closely around the body and the spread wings, in glowing orange, ember red and pale yellow; every scale inside the flames stays intact, unburnt and in its own ember-brown, rust and dull bronze colour. The body height and proportions match the approved reference art, with a clean dark outline of the same weight. The style is painterly, realistic, vanilla RimWorld art. Exactly one creature, centred, whole body visible, nothing cut off, surrounded only by its small localized flame and heat-haze cluster, with everything outside that cluster fully transparent background: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "facingfix_20261026_r1",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0
+ }
+]

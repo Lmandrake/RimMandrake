@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Starmaw",
+ "nearest_earth_animal": "whale",
+ "earth_body_named": false,
+ "departures": [
+  "dark body hide densely spotted with point-like bioluminescent lights arranged in star-field and constellation patterns, not plain grey whale skin or whale-shark spots",
+  "an oversized filter-feeding maw that dominates the head, open as a huge gaping intake rather than a whale's narrow baleen mouth line",
+  "glowing pattern visible across the broad back and flanks as it breaks the surface, so the creature reads as a patch of night sky rising from the water",
+  "colossal ship-hull scale, a vast elongated mass with no recognisable dolphin- or whale-style head and blowhole"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:23-07:00",
+ "source": "description only (no image)"
+}

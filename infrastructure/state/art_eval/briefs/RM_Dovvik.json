@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Dovvik",
+ "nearest_earth_animal": "moth",
+ "earth_body_named": false,
+ "departures": [
+  "one single long curled proboscis is the head's dominant structure, not a coiled insect tongue under antennae and compound eyes",
+  "no wings: a ground-walking body that moves through the field on foot",
+  "big enough that its passage leaves a visible swept trail through a floss field, far larger than insect scale",
+  "shown with the proboscis pushed into a plant stem like a straw while it feeds"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:07-07:00",
+ "source": "description only (no image)"
+}

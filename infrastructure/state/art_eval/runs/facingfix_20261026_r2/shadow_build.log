@@ -1,0 +1,31 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_facingfix_20261026_r2",
+ "html": "Transient/biome_ffar/art_eval_shadow_facingfix_20261026_r2_sheet_2026-10-26.html",
+ "decisions": "Transient/biome_ffar/art_eval_shadow_facingfix_20261026_r2_sheet_2026-10-26.decisions.json",
+ "wrote_decisions": true,
+ "gate": "PASS v1",
+ "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_facingfix_20261026_r2_sheet_2026-10-26.snapshot.json",
+ "snapshotId": "6a59cae1bc5eb891",
+ "census_rows": 7,
+ "rows": 7,
+ "ruled_rows_gone_kept_in_snapshot": [],
+ "collapsed_ruled_elsewhere": 0,
+ "dropped_all_ruled": [],
+ "canon_rows": 0,
+ "canon_rows_with_images": 0,
+ "canon_rows_with_must_show": 0,
+ "linked_rows": 0,
+ "prefilled_sit1": 0,
+ "no_art": [],
+ "sets": 18,
+ "images": 9654
+}
+
+--- stderr ---
+, '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/redraw/gen/r2/RM_Vhorrin/RM_Vhorrin_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RSW_Starmaw: reference_textures ['/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_south.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_east.png', '/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_west.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_Starmaw_south_0c7d6585903f.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_Starmaw_north_0bbb8e493582.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_CoolantEel: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/RustCathedral/Textures/Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel_south.png', '/home/mandrake/rm/bench/src/RimMandrake/RustCathedral/Textures/Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel_east.png', '/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/redraw/gen/r2/RM_CoolantEel/RM_CoolantEel_north.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Dovvik: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dovvik/RM_Dovvik_south.png', '/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dovvik/RM_Dovvik_east.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_Dovvik_south_b5fc1315b61a.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_Dovvik_east_55ce5c9d1a84.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_Dovvik_north_1dba5b34c447.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_CanopySwinger: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger_south.png', '/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger_east.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_CanopySwinger_south_5a9e0f10ec65.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_CanopySwinger_east_9abc69ba8e62.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_CanopySwinger_north_0ccb320bd2dc.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RM_Thrummel: reference_textures ['/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_south.png', '/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_east.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RM_Thrummel_south_7e3ed01ca7a7.png'] are already columns of this row (installed / render / history): shown there once, dropped as references
+NOTE RUT_BrineBattery: reference_textures ['/home/mandrake/rm/bench/src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery_south.png', '/home/mandrake/rm/bench/src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery_east.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RUT_BrineBattery_south_87bcba16241d.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RUT_BrineBattery_east_197136bb300d.png', 'infrastructure/state/art_eval/runs/facingfix_20261026_r2/kept/kept_RUT_BrineBattery_north_09a6c40e1765.png'] are already columns of this row (installed / render / history): shown there once, dropped as references

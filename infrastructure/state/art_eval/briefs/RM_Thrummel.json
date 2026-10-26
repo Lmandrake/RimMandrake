@@ -1,0 +1,23 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Thrummel",
+ "nearest_earth_animal": "mole",
+ "earth_body_named": false,
+ "departures": [
+  "near-spherical, ball-round body with no visible neck, not a mole's long tapered body",
+  "no pointed mole snout: the head merges into the round body outline",
+  "dense, soot-black fur over the whole body, not a mole's velvety grey-brown",
+  "tiny scale, about a fist and a half across, small next to a pawn",
+  "shown at a mound or tunnel mouth in black tar-crusted ground, or working a waxy, chitinous comb"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T03:23:09-07:00",
+ "source": "description only (no image)"
+}

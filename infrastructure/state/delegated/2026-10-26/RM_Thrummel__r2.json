@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 32.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.32893639999999996
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 30.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 17.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.12104870000000001
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thrummel",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['STYLE_EARTHLY']; polish ['SCALE_WRONG']",
+  "gpt regen: unsettled [], own blocking ['DEPARTURE_MISSING']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "7e3ed01ca7a79d2c3c45d218922eaaac6c4820474a0bac22467169893c1e1d34",
+  "east.png": "0272e988972c8470818154749edf4b24c6172db87024f165ba4c7236a7bdf676",
+  "north.png": "5a553498e9f446df1fab1d98db46f70cb78944680d537f7740b55105973f4f78",
+  "scale.png": "af4bf23d6270ab155c52b4d14a40c60609e7fc5139acb3df4604a0cecc413ec5",
+  "facings.png": "af99a7bcafbe6055f8c35fd92be1827bcc5902afd535bec5c11d35e99dc5d97a"
+ }
+}

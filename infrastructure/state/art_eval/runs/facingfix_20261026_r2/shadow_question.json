@@ -1,0 +1,64 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Vhorrin": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 3) \u00b7 Opus GOOD",
+   "context": "judged candidate r2 (image sha ec4a48c729); "
+  },
+  "RSW_Starmaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_TOPDOWN, STYLE_EARTHLY \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 0c7d658590); F_INCONSISTENT: North shows the tail as a single vertical blade seen edge-on, matching the profiles' vertical tail. South shows the tail as a wide forked V ; F_TOPDOWN: South is a steep high-angle view: the entire dorsal surface and the tail are laid out above the maw, so the reef crust reads as seen from ab; STYLE_EARTHLY: The profile silhouette (heterocercal tail, dorsal fin, speckled hide, broad head) is close to a whale shark. The maw, constellations and ree"
+  },
+  "RM_CoolantEel": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: F_SIZE_JUMP \u00b7 GPT strong_accept",
+   "context": "judged candidate r2 (image sha 20f6166f0d); F_SIZE_JUMP: North is a tight coil whose body length looks somewhat shorter than the south pose. The measured height spread (34%) comes mainly from east "
+  },
+  "RM_Dovvik": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING, F_INCONSISTENT \u00b7 GPT regen, unsettled K1, K2, K3",
+   "context": "judged candidate r2 (image sha 8f2b0cc4fa); DEPARTURE_MISSING: No legs or feet are visible on any facing. The body floats as a lobed mass, so 'moves through the field on foot' is not shown.; DEPARTURE_MISSING: The proboscis is curled free in a spiral. It is not pushed into any plant stem.; F_INCONSISTENT: North's outline is a darker, crisper blue line than the soft edges on south and east, so the redrawn rear looks slightly more line-drawn."
+  },
+  "RM_CanopySwinger": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: DEPARTURE_MISSING \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r2 (image sha 2645b1fc53); DEPARTURE_MISSING: The tail is long and curled but not wrapped around anything or carrying weight; it ends in a free spiral."
+  },
+  "RM_Thrummel": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: STYLE_EARTHLY \u00b7 GPT regen",
+   "context": "judged candidate r2 (image sha 7e3ed01ca7); STYLE_EARTHLY: The side profile has a distinct short snout with whiskers, a small rodent ear and a stepping gait. Alone, it reads like a dark wombat or ham"
+  },
+  "RUT_BrineBattery": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus REALLY_BAD: ALPHA_HALO, DEPARTURE_MISSING, DESC_MISS, STYLE_CARTOON, STYLE_EARTHLY",
+   "context": "judged candidate r2 (image sha 87bcba1624); STYLE_EARTHLY: A domed tortoise carapace with scute seams, a beaked turtle head on a neck, four elephantine legs and a tail. A stranger says 'tortoise' ins; DEPARTURE_MISSING: Departure 1: the shell is a tall dome raised on legs, not a squat disc flush with the floor.; DEPARTURE_MISSING: Departure 2: the shell is divided into hard plates by raised pale ridged seams, like tortoise scutes."
+  }
+ }
+}

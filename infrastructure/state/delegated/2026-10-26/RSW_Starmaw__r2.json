@@ -1,0 +1,74 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 41.0,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3964754
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 62.4
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.6,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1197547
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Starmaw",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_INCONSISTENT', 'F_TOPDOWN', 'STYLE_EARTHLY']; polish []",
+  "gpt regen: unsettled ['K1'], own blocking ['F_INCONSISTENT']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0c7d6585903fb400f3c656f00bbfdcfb50db5ed623430e47efe152bc1c33e6ed",
+  "east.png": "f8163df38d9c84d780aa971eeaaf45ea869ec7e66dbf81d8c073e40764685fe3",
+  "north.png": "824fd001e1c3617a3cb65477f98ecc41355d6169a72131fb51880fc7b7e129c1",
+  "west.png": "eab6760630e1e106b87c561d7455ec000374aa3ad98095a5e226e41b49da13f1",
+  "scale.png": "4c38d531dba1d74bc96dadddb77982a29827e673d1b3ff17094215187446bdcc",
+  "facings.png": "4073c0a775b962f49e2c1e1e54526e9ffc1e4092e6cba3f5448c19a57831f7df"
+ }
+}

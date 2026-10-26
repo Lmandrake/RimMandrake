@@ -1,0 +1,66 @@
+{
+ "RM_Vhorrin": [
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/WeepingStones/Textures/Things/Pawn/Animal/RM_Vhorrin/RM_Vhorrin_north.png"
+ ],
+ "RSW_Starmaw": [
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_south.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_east.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_north.png",
+  "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/SeaBeasts/Starmaw/Starmaw_west.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_Starmaw_south_0c7d6585903f.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_Starmaw_north_0bbb8e493582.png"
+ ],
+ "RM_CoolantEel": [
+  "/home/mandrake/rm/bench/src/RimMandrake/RustCathedral/Textures/Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/RustCathedral/Textures/Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/RustCathedral/Textures/Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CoolantEel_south_cc36e331325e.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CoolantEel_east_d322b949ab02.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CoolantEel_north_4ccb2beecc02.png"
+ ],
+ "RM_Dovvik": [
+  "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dovvik/RM_Dovvik_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dovvik/RM_Dovvik_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/BlueDesert/Textures/Things/Pawn/Animal/RM_Dovvik/RM_Dovvik_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_Dovvik_south_b5fc1315b61a.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_Dovvik_east_55ce5c9d1a84.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_Dovvik_north_1dba5b34c447.png"
+ ],
+ "RM_CanopySwinger": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CanopySwinger_south_5a9e0f10ec65.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CanopySwinger_east_9abc69ba8e62.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_CanopySwinger_north_0ccb320bd2dc.png"
+ ],
+ "RM_Thrummel": [
+  "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Thrummel/RM_Thrummel_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RM_Thrummel_south_7e3ed01ca7a7.png"
+ ],
+ "RUT_BrineBattery": [
+  "/home/mandrake/rm/bench/src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery_south.png",
+  "/home/mandrake/rm/bench/src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery_east.png",
+  "/home/mandrake/rm/bench/src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RUT_BrineBattery_south_87bcba16241d.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RUT_BrineBattery_east_197136bb300d.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_RUT_BrineBattery_north_09a6c40e1765.png"
+ ],
+ "RM_FireWasp": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/Dessicated_FireWasp_north.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_FireWasp_south_af326d21048b.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_FireWasp_east_029f7aa9e27c.png",
+  "infrastructure/state/art_eval/runs/facingfix_20261026_live/kept/kept_FireWasp_north_69b43fa0517e.png"
+ ],
+ "RM_Muttavaq": [
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq_east.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/CrackedLands/Textures/Things/Pawn/Animal/RM_Muttavaq/RM_Muttavaq_north.png"
+ ]
+}
