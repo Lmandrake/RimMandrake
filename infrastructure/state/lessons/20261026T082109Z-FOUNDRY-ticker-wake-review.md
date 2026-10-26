@@ -1,0 +1,2 @@
+A tickerType Never->Normal/Rare repair wakes base-class behaviour that never ran before, so review the subclass for what ticking now does unguarded: CompProjectileInterceptor recharges with no power check (RUT shield recharged while unpowered) and per-tick state that was never reachable can be unsaved (collapseExplosionArmed re-armed on load). Review the woken comps' CompTick paths, not just the def line (2965619d82 -> 5e4c420499).
+home: rimworld-modding
