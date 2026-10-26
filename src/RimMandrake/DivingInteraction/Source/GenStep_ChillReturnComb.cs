@@ -92,12 +92,27 @@ namespace RimMandrake.DivingInteraction
             {
                 float a = (open + side * GapHalfAngle) * Mathf.Deg2Rad;
                 Vector2 dir = new Vector2(Mathf.Cos(a), Mathf.Sin(a));
+                // RETURNCOMB_FIX_TRUNKS_SEAL_MAP_WEDGE: busbars are Impassable and not deconstructible,
+                // and on the 50x50 pocket map a trunk reaches the edge, so horseshoe + two trunks cut a
+                // wedge of the map off for good (offline sim, 1000 maps: 483 split, median 398 cells
+                // sealed). Leave a service crossing just outside the horseshoe: no trunk cell that the
+                // line takes for k = OuterR+2 .. OuterR+3. Two steps, matched by cell, because a single
+                // step leaves a diagonal corner closed (regions are 4-connected). Sim: 0 of 3000 split.
+                HashSet<IntVec3> crossing = new HashSet<IntVec3>();
+                for (int k = OuterR + 2; k <= OuterR + 3; k++)
+                {
+                    crossing.Add(center + new IntVec3(Mathf.RoundToInt(dir.x * k), 0, Mathf.RoundToInt(dir.y * k)));
+                }
                 for (int k = InnerR; k < OuterR + TrunkLength; k++)
                 {
                     IntVec3 c = center + new IntVec3(Mathf.RoundToInt(dir.x * k), 0, Mathf.RoundToInt(dir.y * k));
                     if (!c.InBounds(map))
                     {
                         break;
+                    }
+                    if (crossing.Contains(c))
+                    {
+                        continue;
                     }
                     TrySpawn(map, busDef, c);
                 }

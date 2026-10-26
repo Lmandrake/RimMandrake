@@ -129,6 +129,67 @@ namespace RimMandrake.DivingInteraction
         }
     }
 
+    // CHILLFIREBAN_FIX_UNLIT_REFUELABLE_BURNS_FUEL: patch (2) puts the flame out, but
+    // CompRefuelable.CompTick still burns ConsumptionRatePerTick whenever it is switched on — it
+    // never asks ShouldBeLitNow. So a dark, cold torch, brazier or fuelled heater on the seabed
+    // emptied itself and pawns hauled wood to it forever. While the ban holds, the passive burn of a
+    // fire-only building is skipped. "Fire-only" = it has a glow, heat or flame overlay comp, is not
+    // a work table (a campfire still cooks, so it still burns) and is not a power plant (a fuelled
+    // generator still makes power, so it still burns) — freezing those would give free cooking and
+    // free power. Whether they should work at all down there is a separate design question.
+    // The skip is done at ConsumeFuel, scoped to this comp during its own CompTick, so the fuel never
+    // reaches 0 and Notify_RanOutOfFuel (destroyOnNoFuel) cannot fire from a burn that did not happen.
+    [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.CompTick))]
+    public static class Patch_CompRefuelable_CompTick
+    {
+        internal static CompRefuelable suppressing;
+        private static readonly System.Collections.Generic.Dictionary<ThingDef, bool> fireOnly =
+            new System.Collections.Generic.Dictionary<ThingDef, bool>();
+
+        public static void Prefix(CompRefuelable __instance)
+        {
+            suppressing = null;
+            ThingWithComps parent = __instance.parent;
+            if (parent == null || !parent.Spawned || !IsFireOnly(parent))
+            {
+                return;
+            }
+            if (!RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent))
+            {
+                suppressing = __instance;
+            }
+        }
+
+        public static void Finalizer()
+        {
+            suppressing = null;
+        }
+
+        private static bool IsFireOnly(ThingWithComps parent)
+        {
+            ThingDef def = parent.def;
+            if (!fireOnly.TryGetValue(def, out bool result))
+            {
+                result = !def.IsWorkTable
+                    && parent.GetComp<CompPowerPlant>() == null
+                    && (parent.GetComp<CompGlower>() != null
+                        || parent.GetComp<CompHeatPusher>() != null
+                        || parent.GetComp<CompFireOverlay>() != null);
+                fireOnly[def] = result;
+            }
+            return result;
+        }
+    }
+
+    [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.ConsumeFuel))]
+    public static class Patch_CompRefuelable_ConsumeFuel
+    {
+        public static bool Prefix(CompRefuelable __instance)
+        {
+            return !ReferenceEquals(__instance, Patch_CompRefuelable_CompTick.suppressing);
+        }
+    }
+
     [HarmonyPatch(typeof(CompFireOverlay), nameof(CompFireOverlay.PostDraw))]
     public static class Patch_CompFireOverlay_PostDraw
     {
