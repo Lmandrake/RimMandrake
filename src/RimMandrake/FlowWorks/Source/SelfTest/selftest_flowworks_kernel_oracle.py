@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26)
 """Differential test: the production pulse kernel (FlowWorks/Source/RM_FlowKernel.cs) against the independent
 Python PulseOracle (FlowWorks/northstar/validation_v2.py), which was validated once against live data.
 

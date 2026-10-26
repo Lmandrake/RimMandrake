@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26)
 """Wrapper for the C# selftest of FlowWorks trench cover (TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT).
 
 Runs FlowWorks/Source/SelfTestTrench (net8.0, no RimWorld/Unity), which compiles the production

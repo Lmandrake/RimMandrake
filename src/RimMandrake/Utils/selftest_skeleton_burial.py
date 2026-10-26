@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26)
 """Wrapper for the C# selftest of the Stillsand skeleton kit's pure math (RM_HorizonMath: the dust-on-the-horizon
 timing). Same shape as selftest_precious_caves.py. (The dune-burial logic it was written for,
 RM_SkeletonBurialLogic.cs, was cut 2026-10-23 by the fluff review; the project keeps its name.)

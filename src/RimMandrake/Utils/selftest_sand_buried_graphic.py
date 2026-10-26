@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 600   (130-200 s alone, over the 240 s default under the 6-worker nightly sweep: CRASH [timeout] 2026-10-26)
 """Wrapper for the C# selftest of the half-buried-in-sand graphic (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1,
 src/RimMandrake/CreatureBehaviors/Source/RM_SandBuriedGraphicDecision.cs).
 Same shape as selftest_track_grid.py. Two halves:
