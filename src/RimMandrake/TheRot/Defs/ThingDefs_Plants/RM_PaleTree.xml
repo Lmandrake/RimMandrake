@@ -156,12 +156,12 @@
         </requiredSubplantCountPerPsylinkLevel>
         <requiredFocus>Natural</requiredFocus>
         <linkSound>AnimaTreeLink</linkSound>
-        <enoughPlantsLetterLabel>The pale tree stirs</enoughPlantsLetterLabel>
-        <enoughPlantsLetterText>The pale moss around this tree has grown thick enough. A pawn who meditates here for long enough may sense the tree reaching back, and gain a faint psychic link to it.</enoughPlantsLetterText>
+        <enoughPlantsLetterLabel>The quellan tree stirs</enoughPlantsLetterLabel>
+        <enoughPlantsLetterText>The lumma moss around this tree has grown thick enough. A pawn who meditates here for long enough may sense the tree reaching back, and gain a faint psychic link to it.</enoughPlantsLetterText>
       </li>
       <li Class="CompProperties_GiveThoughtToAllMapPawnsOnDestroy">
         <thought>AnimaScream</thought>
-        <message>The pale tree has died. Everyone on the map felt something break.</message>
+        <message>The quellan tree has died. Everyone on the map felt something break.</message>
       </li>
       <li Class="CompProperties_PlaySoundOnDestroy">
         <sound>AnimaTreeScream</sound>

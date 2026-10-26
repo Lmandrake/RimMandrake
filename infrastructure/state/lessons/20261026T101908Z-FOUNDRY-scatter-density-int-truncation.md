@@ -1,0 +1,2 @@
+GenStep_ScatterGroup covers (int)(validCellsInClusterRect/10 * coveredCellsPer10Cells) cells per cluster, and with a 0 min it returns success having spawned nothing. A radius 1~2 rect is only 9-25 cells, so any coveredCellsPer10Cells max below 10/cells (0.4 at r2) places zero things, silently. RUT_FungalSoilScatter shipped 0~0.01 and never scattered (FUNGALSOIL_FIX_SCATTER_DENSITY_ZERO). Compute cells/10 x min >= 1 before picking a density. Source: decomp rw16 Verse/GenStep_ScatterGroup.cs 240-243.
+home: rimworld-modding

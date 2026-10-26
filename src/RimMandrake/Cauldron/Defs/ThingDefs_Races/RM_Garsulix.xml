@@ -17,9 +17,10 @@
       blunt blow on HeadClaw instead of the donor's Teeth/Arms);
     * fleshType GR_Insectoid (VGE) -> vanilla Insectoid, blood Filth_BloodInsect;
     * useLeatherFrom AA_Aerofleet (Alpha Animals) -> no leather; extra product AA_BlueGel (Alpha Animals) -> none.
-  Art: Textures/StandIn/<donor texPath>, installed by src/RimMandrake/Utils/art/garsulix_standin.py — the owner's
-  sheet pick (east+south redraw; north was ruled "needs regen", Graphic_Multi draws south for it) and the donor's
-  dessicated picture.
+  Art: the game draws Textures/<texPath> below, the dregen render installed accepted-for-now by 3b6ac41125
+  (east+south only; Graphic_Multi draws south for north). The earlier stand-in, Textures/StandIn/<texPath> from
+  src/RimMandrake/Utils/art/garsulix_standin.py (the owner's sheet pick + the donor's dessicated picture), is not
+  drawn by any def: STANDIN_AUDIT_SHADOWED_COPIES_LEFT.
 -->
 <Defs>
 

@@ -4,36 +4,16 @@
 
        NONCANON_BEAST_RENAME_1 batch 3c — the Contagion. Owner ruled batch 3
        applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
-       noncanon_beast_names_crags_nightside_contagion_slime.md). Fifteen donor
-       ThingDef+PawnKindDef pairs (13 Alpha Animals AA_, 1 Alpha Genes AG_, 1
-       Vanilla Genetics Expanded GR_) get a label/description patch, on the
-       PatchOperationConditional gate pattern of RotSpecies_NamesAndSizes.xml.
+       noncanon_beast_names_crags_nightside_contagion_slime.md). The batch
+       renamed fifteen donor ThingDef+PawnKindDef pairs; one is left. The 13
+       Alpha Animals AA_ pairs went with sarg.alphaanimals (ea19b46b37) and
+       AG_OcularSlinger -> pellorax with Alpha Genes (c5731f7247): their defs
+       no longer load, so their ops were deleted.
 
-       LABEL ONLY on the identity; no defName, stat, or art field is touched.
-
-       Not applied here: AA_Razorjack ("skezzar" drafted in the source doc's
-       3c table) — the doc's own Appendix B flags an UNRESOLVED conflict with
-       the owner's separate card pick "sytheclaw" already live on the
-       Pyrelands port RM_Sytheclaw (RAZORJACK_IDENTITY_RESTYLE_1, 2026-09-14),
-       and forward-references "batch 5 flag 1" as where it is meant to be
-       settled. Left untouched pending that resolution.
-       Not drafted: AA_Swarmling (chittik, ruled in the Rot pass, already
-       applied) and AA_Eyeling (ikee, owner ruling 2026-08-15, already
-       applied). -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- AG_OcularSlinger -> pellorax stood here; Alpha Genes was retired 2026-10-18 and the summoned creature has no twin, so it was deleted. -->
+       What remains: Vanilla Genetics Expanded's GR_Fleshling -> pibbo
+       (a live def, VGE 1.6 Races_Animal_Failures.xml), label and description
+       only, on the PatchOperationConditional gate pattern of
+       RotSpecies_NamesAndSizes.xml. No defName, stat or art field is touched. -->
 
   <!-- ============== GR_Fleshling -> pibbo ============== -->
   <Operation Class="PatchOperationConditional">
