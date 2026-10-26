@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -240,11 +241,98 @@ def test_owner_accepted(tmp: Path):
         check("owner-accepted: refuses a job not in failed/", True)
 
 
+def test_twins(tmp: Path):
+    import contextlib
+    import io
+    st, bk = tmp / "st", tmp / "bk"
+    for d in ("pending", "active", "done", "failed"):
+        (st / d).mkdir(parents=True)
+    old = time.time() - 3600
+
+    def twin(jid, png=True, done_status="ok", png_late=False, done_json=True):
+        if done_json:
+            (st / "done" / f"{jid}.json").write_text(json.dumps({"id": jid}))
+        dm = st / "done" / f"{jid}.manifest.json"
+        dm.write_text(json.dumps({"id": jid, "status": done_status, "worker_status": "ok"}))
+        os.utime(dm, (old, old))
+        (st / "failed" / f"{jid}.json").write_text(json.dumps({"id": jid}))
+        (st / "failed" / f"{jid}.manifest.json").write_text(json.dumps(
+            {"id": jid, "status": "failed", "worker_status": "worker_error"}))
+        if png:
+            p = st / "_artsrc" / jid / f"{jid}.png"
+            p.parent.mkdir(parents=True)
+            p.write_bytes(b"png" + jid.encode())
+            t = time.time() if png_late else old - 10
+            os.utime(p, (t, t))
+
+    twin("good")
+    twin("stray")                                                     # + a misclaimed manifest's manifest
+    (st / "failed" / "stray.json").unlink()
+    (st / "failed" / "stray.manifest.manifest.json").write_text(json.dumps({"status": "failed"}))
+    twin("nopng", png=False)
+    twin("late", png_late=True)
+    twin("badman", done_status="failed")
+    twin("busy")
+    (st / "pending" / "busy.json").write_text("{}")
+    twin("running")
+    (st / "active" / "running.manifest.json").write_text("{}")
+    (st / "failed" / "onlyfailed.json").write_text("{}")             # not a twin
+    (st / "registry.jsonl").write_text(json.dumps({"event": "validated", "job_id": "good", "ts": 5,
+                                                   "verdict": "pass"}) + "\n")
+    before = sorted(p.name for p in (st / "failed").iterdir())
+    plan = {p["id"]: p for p in AS.twins_plan(st)}
+    check("twins: only ids in both done/ and failed/", set(plan) == {"good", "stray", "nopng", "late", "badman",
+                                                                     "busy", "running"})
+    check("twins: done copy with its artifacts wins", plan["good"]["decision"] == "KEEP_DONE"
+          and plan["good"]["prune"] == ["failed/good.json", "failed/good.manifest.json"]
+          and plan["good"]["last_validated"] == (5, "pass"))
+    check("twins: a stray <id>.manifest.manifest.json belongs to <id>", plan["stray"]["decision"] == "KEEP_DONE"
+          and "failed/stray.manifest.manifest.json" in plan["stray"]["prune"])
+    check("twins: no PNG / PNG newer than done / done not ok -> AMBIGUOUS, nothing to prune",
+          all(plan[j]["decision"] == "AMBIGUOUS" and not plan[j]["prune"] for j in ("nopng", "late", "badman")))
+    check("twins: a job in pending/ or active/ is REFUSED",
+          plan["busy"]["decision"] == "REFUSED" and plan["running"]["decision"] == "REFUSED")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = AS.main(["--state", str(st), "twins"])
+    check("twins: dry run moves nothing, exits 2 on ambiguous/refused",
+          rc == 2 and "DRY RUN" in buf.getvalue() and sorted(p.name for p in (st / "failed").iterdir()) == before)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            AS.main(["--state", str(st), "twins", "--apply", "--backup-root", str(bk)])
+        check("twins: --apply without --why refuses", False)
+    except SystemExit:
+        check("twins: --apply without --why refuses", sorted(p.name for p in (st / "failed").iterdir()) == before)
+    try:
+        AS.twins_apply(st, list(plan.values()), st / "inside", "x")
+        check("twins: a backup root inside the state dir is refused", False)
+    except SystemExit:
+        check("twins: a backup root inside the state dir is refused", not (st / "inside").exists())
+    with contextlib.redirect_stdout(io.StringIO()):
+        rc = AS.main(["--state", str(st), "twins", "--apply", "--why", "selftest", "--backup-root", str(bk)])
+    left = sorted(p.name for p in (st / "failed").iterdir())
+    pruned = list((st / AS.PRUNED_DIR).glob("*/failed/*"))
+    log = [json.loads(x) for x in next((st / AS.PRUNED_DIR).glob("*/PRUNED.jsonl")).read_text().splitlines()]
+    check("twins: apply moves exactly the KEEP_DONE failed/ files", rc == 2 and sorted(p.name for p in pruned) ==
+          ["good.json", "good.manifest.json", "stray.manifest.json", "stray.manifest.manifest.json"]
+          and "good.json" not in left and "nopng.json" in left and "busy.json" in left and "onlyfailed.json" in left)
+    check("twins: done/ copies and PNGs untouched", (st / "done" / "good.json").is_file()
+          and (st / "_artsrc" / "good" / "good.png").is_file())
+    check("twins: one provenance line per moved file, sha + why + backup",
+          len(log) == 4 and all(r["why"] == "selftest" and len(r["sha256"]) == 64 and Path(r["backup"]).is_file()
+                                for r in log))
+    check("twins: backup holds the failed files and the kept done copy",
+          all((Path(log[0]["backup"]).parents[1] / rel).is_file()
+              for rel in ("failed/good.json", "done/good.json", "done/good.manifest.json")))
+    check("twins: re-scan finds nothing left to prune",
+          not [p for p in AS.twins_plan(st) if p["decision"] == "KEEP_DONE"])
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
         for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue,
-                                  test_owner_accepted)):
+                                  test_owner_accepted, test_twins)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)

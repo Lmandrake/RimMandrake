@@ -7,9 +7,18 @@
     python3 artpipe_state.py collect --from-jobs        # every done job carrying "install_to" not yet collected
     python3 artpipe_state.py migrate --from /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe [--dry-run]
     python3 artpipe_state.py owner-accepted <job_id> [...] --note "<his words / where he accepted it>"
+    python3 artpipe_state.py twins [--apply --why "<reason>"] [--backup-root DIR]   # done+failed twins: prune failed copy
 
 `owner-accepted` moves a failed/ job the owner accepted anyway (an old `failed_canon` the grader got wrong) to
 done/: status ok, worker_status owner_accepted, the failed record kept under `failed_record`. Nothing else moves.
+
+`twins [--apply --why "…"]` handles a job filed in BOTH done/ and failed/ (a manual copy instead of a move; old
+migrate). Dry run by default: each twin, its failed status, its newest registry `validated` event and the decision.
+The rule: done wins over failed when the done copy's artifacts exist (done/<id>.json, done manifest status ok,
+_artsrc/<id>/<id>.png no newer than that manifest). Then the failed/ files (and a stray `<id>.manifest.manifest.json`
+from a misclaimed manifest) are backed up to <agent storage root>/backups/artpipe_twins_<stamp>/ and MOVED to
+<state>/_pruned_twins/<stamp>/failed/ with a provenance line each in PRUNED.jsonl. Anything else is AMBIGUOUS and
+left in place; a job with a file in pending/ or active/ is REFUSED. Exit 2 when anything was ambiguous or refused.
 
 `collect` is how finished art reaches `src/`: the daemon never writes into a
 clone (it leaves `<state>/_artsrc/<id>/<id>.png` + `done/<id>.manifest.json`);
@@ -434,6 +443,173 @@ def cmd_owner_accepted(args) -> int:
     return 0
 
 
+# ---------------------------------------------------------------- twins
+
+PRUNED_DIR = "_pruned_twins"
+PNG_AFTER_DONE_SLACK_S = 300   # the PNG is written before its done manifest; much newer means a later run rewrote it
+
+
+def _twin_id(name: str) -> tuple[str, str] | None:
+    """failed/ file name -> (job id it belongs to, kind). A `<X>.manifest.manifest.json` is the manifest of a bogus job
+    `<X>.manifest` (a failed/ manifest that reached pending/ and was claimed as a job: bad_job_file), so it is X's."""
+    if not name.endswith(".json"):
+        return None
+    for suf, kind in ((".manifest.manifest.json", "stray"), (".manifest.json", "manifest"), (".json", "job")):
+        if name.endswith(suf):
+            return name[:-len(suf)], kind
+    return None
+
+
+def _last_validated(root: Path) -> dict:
+    """job id -> (ts, verdict) of its newest registry `validated` event (read only; artreg is the sole writer)."""
+    out: dict = {}
+    p = root / "registry.jsonl"
+    if p.is_file():
+        for line in p.read_text(errors="replace").splitlines():
+            if '"validated"' not in line:
+                continue
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r.get("event") == "validated" and r.get("job_id"):
+                if r.get("ts", 0) >= out.get(r["job_id"], (0, None))[0]:
+                    out[r["job_id"]] = (r.get("ts", 0), r.get("verdict"))
+    return out
+
+
+def _manifest(p: Path) -> dict | None:
+    try:
+        return json.loads(p.read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def twins_plan(root: Path) -> list[dict]:
+    """Every job filed in BOTH done/ and failed/, with the decision. Reads only.
+
+    KEEP_DONE (its failed/ files are pruned) only when the done copy's artifacts exist: done/<id>.json, a done
+    manifest with status ok, and _artsrc/<id>/<id>.png no newer than that manifest (a newer PNG was rewritten by a
+    later failed run, so the done record no longer describes the picture on disk). Anything else is AMBIGUOUS and
+    left alone; a job with any file in pending/ or active/ is REFUSED, never touched."""
+    done, failed = root / "done", root / "failed"
+    by_id: dict = {}
+    for f in sorted(failed.iterdir()) if failed.is_dir() else []:
+        t = _twin_id(f.name) if f.is_file() else None
+        if t:
+            by_id.setdefault(t[0], []).append((f, t[1]))
+    lv = _last_validated(root)
+    plan = []
+    for jid, files in sorted(by_id.items()):
+        dj, dm = done / f"{jid}.json", done / f"{jid}.manifest.json"
+        if not (dj.exists() or dm.exists()):
+            continue                                   # failed only: not a twin
+        busy = [f"{d}/{n}" for d in ("pending", "active")
+                for n in (f"{jid}.json", f"{jid}.manifest.json", f"{jid}.manifest.manifest.json")
+                if (root / d / n).exists()]
+        png = root / "_artsrc" / jid / f"{jid}.png"
+        m = _manifest(dm) if dm.is_file() else None
+        fm = next((_manifest(f) for f, k in files if k == "manifest"), None)
+        why = []
+        if busy:
+            decision, why = "REFUSED", [f"live in {', '.join(busy)}"]
+        else:
+            if not dj.is_file():
+                why.append("no done/ job json")
+            if not m or m.get("status") != "ok":
+                why.append(f"done manifest status {m.get('status') if m else 'unreadable/absent'!r}")
+            if not png.is_file():
+                why.append("no _artsrc PNG")
+            elif dm.is_file() and png.stat().st_mtime > dm.stat().st_mtime + PNG_AFTER_DONE_SLACK_S:
+                why.append("PNG newer than the done manifest (rewritten by a later run)")
+            if fm and fm.get("status") == "ok":
+                why.append("failed/ manifest says ok")
+            decision = "AMBIGUOUS" if why else "KEEP_DONE"
+        plan.append({"id": jid, "decision": decision, "why": why,
+                     "prune": [f"failed/{f.name}" for f, _ in files] if decision == "KEEP_DONE" else [],
+                     "failed_files": [f"failed/{f.name}" for f, _ in files],
+                     "failed_status": (fm or {}).get("worker_status"),
+                     "last_validated": lv.get(jid)})
+    return plan
+
+
+def twins_apply(root: Path, plan: list[dict], backup_root: Path, why: str, stamp: str | None = None) -> dict:
+    """Back up every pruned file and its done counterpart under BACKUP_ROOT, then MOVE (never delete) each pruned
+    failed/ file to <state>/_pruned_twins/<stamp>/failed/, one provenance line per file in PRUNED.jsonl there."""
+    stamp = stamp or time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    for bad in (Path.home() / "dev", state_dir.REPO_ROOT, root):
+        try:
+            backup_root.resolve().relative_to(bad.resolve())
+            raise SystemExit(f"twins: backup root {backup_root} is under {bad} — refusing")
+        except ValueError:
+            pass
+    bdir = backup_root / f"artpipe_twins_{stamp}"
+    pdir = root / PRUNED_DIR / stamp
+    todo = [p for p in plan if p["decision"] == "KEEP_DONE"]
+    for p in todo:                                    # backup first, all of it, before anything moves
+        for rel in p["prune"] + [f"done/{p['id']}.json", f"done/{p['id']}.manifest.json"]:
+            s = root / rel
+            if s.is_file():
+                (bdir / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(s, bdir / rel)
+                if _sha256(s) != _sha256(bdir / rel):
+                    raise SystemExit(f"twins: backup of {rel} does not match — nothing moved")
+    (pdir / "failed").mkdir(parents=True, exist_ok=True)
+    moved = 0
+    with (pdir / "PRUNED.jsonl").open("a") as log:
+        for p in todo:
+            for rel in p["prune"]:
+                s, d = root / rel, pdir / rel
+                sha = _sha256(s)
+                shutil.move(str(s), str(d))
+                moved += 1
+                log.write(json.dumps({"id": p["id"], "file": rel, "to": str(d.relative_to(root)), "sha256": sha,
+                                      "kept": [f"done/{p['id']}.json", f"done/{p['id']}.manifest.json"],
+                                      "rule": "done wins over failed when the done copy's artifacts exist",
+                                      "failed_status": p["failed_status"], "last_validated": p["last_validated"],
+                                      "backup": str(bdir / rel), "why": why, "tool": "artpipe_state.py twins",
+                                      "host": socket.gethostname(),
+                                      "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}) + "\n")
+    return {"ids": len(todo), "moved": moved, "pruned_dir": pdir, "backup": bdir}
+
+
+def _default_backup_root() -> Path:
+    """<agent storage root>/backups, from Lodestar's agent_storage.py (never guessed)."""
+    import subprocess
+    tool = Path.home() / "dev" / "Lodestar" / "bin" / "lib" / "agent_storage.py"
+    if not tool.is_file():
+        raise SystemExit(f"twins: {tool} not found — pass --backup-root")
+    out = subprocess.run([sys.executable, str(tool)], capture_output=True, text=True, timeout=60).stdout.strip()
+    if not out:
+        raise SystemExit("twins: agent_storage.py printed no root — pass --backup-root")
+    return Path(out.splitlines()[-1]) / "backups"
+
+
+def cmd_twins(args) -> int:
+    root = state_dir.require(args.state)
+    plan = twins_plan(root)
+    from collections import Counter
+    for p in plan:
+        lv = p["last_validated"]
+        lvs = f"{time.strftime('%Y-%m-%d', time.gmtime(lv[0]))} {lv[1]}" if lv else "none"
+        print(f"  {p['decision']:<9} {p['id']:<44} failed={p['failed_status'] or '-':<16} last_validated={lvs:<16} "
+              f"{', '.join(p['failed_files'])}" + (f"  [{'; '.join(p['why'])}]" if p["why"] else ""))
+    c = Counter(p["decision"] for p in plan)
+    nfiles = sum(len(p["prune"]) for p in plan)
+    print(f"twins: {len(plan)} ids ({dict(c)}); {nfiles} failed/ file(s) to prune")
+    if not args.apply:
+        print("DRY RUN — nothing moved; --apply --why \"…\" moves the KEEP_DONE failed/ files")
+        return 0 if c["AMBIGUOUS"] + c["REFUSED"] == 0 else 2
+    if not args.why:
+        raise SystemExit("twins --apply: give --why (it goes into every provenance line)")
+    res = twins_apply(root, plan, args.backup_root or _default_backup_root(), args.why)
+    print(f"APPLIED: {res['moved']} file(s) of {res['ids']} ids moved to {res['pruned_dir']} "
+          f"(PRUNED.jsonl); backup {res['backup']}")
+    left = [p for p in twins_plan(root) if p["decision"] == "KEEP_DONE"]
+    print(f"re-scan: {len(left)} prunable twin(s) left")
+    return 1 if left else (0 if c["AMBIGUOUS"] + c["REFUSED"] == 0 else 2)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--state", type=Path, default=state_dir.STATE_ROOT,
@@ -462,9 +638,13 @@ def main(argv=None) -> int:
     oa = sub.add_parser("owner-accepted", help="move failed/ jobs the owner accepted anyway to done/")
     oa.add_argument("job_ids", nargs="+")
     oa.add_argument("--note", required=True, help="his words, or where/when he accepted it")
+    tw = sub.add_parser("twins", help="report (default) or --apply-prune jobs filed in both done/ and failed/")
+    tw.add_argument("--apply", action="store_true")
+    tw.add_argument("--why", help="required with --apply: the reason, written into every provenance line")
+    tw.add_argument("--backup-root", type=Path, help="default: <agent storage root>/backups (agent_storage.py)")
     args = ap.parse_args(argv)
-    return {"where": cmd_where, "find": cmd_find, "collect": cmd_collect,
-            "migrate": cmd_migrate, "owner-accepted": cmd_owner_accepted}[args.cmd](args)
+    return {"where": cmd_where, "find": cmd_find, "collect": cmd_collect, "migrate": cmd_migrate,
+            "owner-accepted": cmd_owner_accepted, "twins": cmd_twins}[args.cmd](args)
 
 
 if __name__ == "__main__":
