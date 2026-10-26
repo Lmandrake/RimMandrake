@@ -7,12 +7,15 @@ CSV column order, retire defs listed with no homes, first binding wins), the reg
 vanilla-biomes-plus-deep hard error. Real-data checks: the committed CSV analyses with no
 hard defect from repo XML alone (no def dump needed), and the committed
 src/RimMandrake/DeepDrill/Defs/RM_DeepHomeTable.xml is byte-equal to what --write-deep
-would write now (a hand edit or a CSV change without regeneration FAILS here).
+would write now (a hand edit or a CSV change without regeneration FAILS here), and so is
+src/RimMandrake/Minerals/Defs/RM_MineralRegistry.xml to --registry-out, resolved dump-free from the
+committed XML's own MayRequire packages plus the repo's XML (MINERAL_REGISTRY_HARDEN_STALE_XML).
 Each check has a planted-break probe so a vacuous pass cannot hide.
 
     python3 selftest_gen_mineral_registry.py
 """
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -134,11 +137,61 @@ def test_real_csv():
         ok(f"<thing>{must}</thing>" in committed, f"deep table lists {must}")
 
 
+REGISTRY = os.path.join(g.ROOT, "src", "RimMandrake", "Minerals", "Defs", "RM_MineralRegistry.xml")
+
+
+class CommittedIndex:
+    """Dump-free resolution for the registry byte check: a def resolves to the package the committed XML gives it (MayRequire,
+    else Core), else to the repo's own XML; anything else is unresolved. So a CSV or generator change shows up, and a group
+    whose defs the committed XML never emitted can only stay unemitted if no repo def names them either."""
+
+    def __init__(self, committed_text, src):
+        self.dump, self.src = {}, src
+        m = re.search(r"modlist_fingerprint (.+?)\. Values PROVISIONAL", committed_text)
+        fp = m.group(1) if m else None
+        self.fingerprint = None if fp in (None, "NONE (repo XML only)") else fp
+        self.known = {}
+        for d in ET.fromstring(committed_text.encode("utf-8")):
+            for tag in ("items", "mineables", "producers"):
+                for li in d.findall(tag + "/li"):
+                    self.known[li.text] = li.get("MayRequire") or g.CORE
+
+    def resolve(self, name):
+        if name in self.known:
+            return self.known[name]
+        if name in self.src:
+            return self.src[name] or ""
+        return None
+
+
+def registry_equal(rows, committed):
+    idx = CommittedIndex(committed, g.src_index(g.ROOT))
+    a = g.analyse(rows, idx)
+    return a["hard"] == [] and g.emit_registry(a["emit"], idx) == committed, len(a["emit"])
+
+
+def test_registry_committed():
+    rows = g.load()
+    committed = open(REGISTRY, encoding="utf-8").read()
+    same, n = registry_equal(rows, committed)
+    ok(same and n == committed.count("<RimMandrake.Minerals.RM_MineralRegistryDef>"),
+       "committed RM_MineralRegistry.xml == --registry-out output, dump-free (%d defs; regenerate after a CSV change)" % n)
+    # probes: a CSV value change and a hand edit of the XML must both break equality
+    i = next(k for k, r in enumerate(rows) if r["material"] and re.match(r"(RULED|BUILT)", r["status"].strip())
+             and g.num(r.get("units_per_cell_or_find")) is not None)
+    bent = [dict(r) for r in rows]
+    bent[i]["units_per_cell_or_find"] = str(float(g.num(bent[i]["units_per_cell_or_find"])) + 1.5)
+    ok(not registry_equal(bent, committed)[0], "a CSV value changed without regeneration FAILS the registry check (probe)")
+    ok(not registry_equal(rows, committed.replace("<quarryLocal>true", "<quarryLocal>false", 1))[0],
+       "a hand edit of the committed registry FAILS the registry check (probe)")
+
+
 def main():
     test_grammar()
     test_deep()
     test_analyse_and_registry()
     test_real_csv()
+    test_registry_committed()
     print(("FAIL %d" % len(FAILS)) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
