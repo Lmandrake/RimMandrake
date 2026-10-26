@@ -18,6 +18,15 @@ def sha(p):
 
 def main(argv):
     wrapper, muts = argv[0], json.load(open(argv[1]))
+    # A repo-relative wrapper path used to be joined onto HERE, name a file that does not exist, and score EVERY mutation
+    # "NOT CAUGHT" (python's own error has no FAIL line) - a blind instrument reading as a weak fuzz. Resolve it or refuse.
+    for cand in (os.path.join(HERE, wrapper), os.path.join(REPO, wrapper), os.path.abspath(wrapper)):
+        if os.path.isfile(cand):
+            wrapper = cand
+            break
+    else:
+        print(f"wrapper not found: {argv[0]} (give a name in {HERE} or a repo-relative path)")
+        return 2
     only = int(argv[argv.index("--only") + 1]) if "--only" in argv else None
     bad = 0
     for i, m in enumerate(muts):

@@ -56,10 +56,12 @@ namespace RimMandrake.Greentide
         }
 
         // Digging a cell out. Every cache at the cell is put back in stacks of at most the def's stack limit (a merged cache can
-        // hold many stacks' worth); `place(cache, n)` spawns n of it and says whether it landed. A chunk that cannot land stays
-        // buried (the cache keeps the remainder). Returns how many caches are still buried at the cell: the caller clears the
-        // dig designation only when that is 0.
-        public static int DigOut<T>(List<T> caches, int x, int z, Func<object, int> stackLimitOf, Func<T, int, bool> place) where T : Cache
+        // hold many stacks' worth); `place(cache, n)` spawns n of it and returns how many of the n actually landed. A chunk
+        // that cannot land, or the part of it that did not, stays buried (the cache keeps the remainder). The count matters:
+        // GenPlace.TryPlaceThing(Near) can merge part of a stack into neighbouring stacks and then return false, so a bool
+        // "did it land" re-buried the merged part too and the next dig duplicated it. Returns how many caches are still
+        // buried at the cell: the caller clears the dig designation only when that is 0.
+        public static int DigOut<T>(List<T> caches, int x, int z, Func<object, int> stackLimitOf, Func<T, int, int> place) where T : Cache
         {
             for (int i = caches.Count - 1; i >= 0; i--)
             {
@@ -70,8 +72,9 @@ namespace RimMandrake.Greentide
                 while (remaining > 0)
                 {
                     int chunk = Math.Min(remaining, limit);
-                    if (!place(c, chunk)) break;
-                    remaining -= chunk;
+                    int landed = Math.Max(0, Math.Min(chunk, place(c, chunk)));
+                    remaining -= landed;
+                    if (landed < chunk) break;
                 }
                 c.Count = remaining;
                 if (remaining == 0) caches.RemoveAt(i);

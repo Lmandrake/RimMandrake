@@ -160,8 +160,10 @@ namespace RimMandrake.Greentide.SelfTest
                                 calls++;
                                 Check(n >= 1 && n <= limits[(int)c.Def], $"a placed chunk of {n} exceeds the stack limit {limits[(int)c.Def]}" + where);
                                 bool ok = !block && !(failEvery > 0 && calls % failEvery == 0);
-                                if (ok) { landed[(int)c.Def] += n; DugChunks++; }
-                                return ok;
+                                // a failed Near placement may still have merged part of the chunk (GenPlace.TryPlaceThing)
+                                int got = ok ? n : (!block && calls % 2 == 0 ? n / 2 : 0);
+                                if (got > 0) { landed[(int)c.Def] += got; DugChunks++; }
+                                return got;
                             });
                             int actualLeft = caches.Count(c => c.X == x && c.Z == z);
                             Check(left == actualLeft, "DigOut's remaining count != caches left at the cell" + where);

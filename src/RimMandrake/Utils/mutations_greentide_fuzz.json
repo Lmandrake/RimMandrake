@@ -32,8 +32,14 @@
  {
   "name": "swallow: a chunk that did not land is forgotten",
   "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
-  "old": "if (!place(c, chunk)) break;",
-  "new": "place(c, chunk);"
+  "old": "remaining -= landed;",
+  "new": "remaining -= chunk;"
+ },
+ {
+  "name": "swallow: a partly merged chunk is re-buried whole",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "int landed = Math.Max(0, Math.Min(chunk, place(c, chunk)));",
+  "new": "int landed = place(c, chunk) == chunk ? chunk : 0;"
  },
  {
   "name": "swallow: dig effort cap raised",

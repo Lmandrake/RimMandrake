@@ -127,7 +127,10 @@ namespace RimMandrake.Greentide
 				Thing thing = ThingMaker.MakeThing(cache.thingDef, cache.stuffDef);
 				thing.stackCount = n;
 				// GenPlace.TryPlaceThing's bool return must be checked: on a fully blocked map it silently drops the Thing.
-				return GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near);
+				// On false, Near mode may already have merged part of the stack into neighbouring stacks: what landed is
+				// n minus what is left on the unspawned Thing.
+				if (GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near)) return n;
+				return n - thing.stackCount;
 			});
 			if (left == 0)
 			{
