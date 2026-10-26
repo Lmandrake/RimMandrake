@@ -16,10 +16,8 @@ that art into the mod that owns the creature and deletes the standalone mod. The
   NO-DANGLE  no XML under src/ still names `old` as a texPath unless `old` itself resolves to a
              texture in one of our mods (a same-path row keeps it on purpose).
   UNLISTED   the override's packageId appears in no About.xml, no compose list, and no modlist
-             snapshot (infrastructure/state/modlists/, deployed/config/). Two kinds of record are
-             not inputs: the retired-mod census (RETIRED_CENSUS) and every swap before-copy
-             (ModsConfig.before-tier-*.xml) except the one the active swap marker names, the only
-             one modset_builder.restore_before can copy back.
+             snapshot (infrastructure/state/modlists/, deployed/config/). Only the files named in
+             RECORD_FILES (relpath -> reason) are not inputs; each run prints them with the reason.
   ALTGAP     a donor PawnKindDef's alternateGraphics draws a texPath the fold does not repoint (Dewback DewbackW,
              2026-10-10: 80 percent of spawns kept donor art).
   KEPT       mode "dead" rows: the `kept` path (where the bytes survive) exists.
@@ -145,30 +143,22 @@ def _resolves_anywhere(repo, lit):
     return bool(glob.glob(os.path.join(glob.escape(repo), "src", "*", "*", "Textures", lit + ".png")))
 
 
-# Records, not load lists: naming a retired mod is their job. world_remake_reinstate.txt is the census of
-# every RETIRED mod with a reinstate class (every *artoverride row is NOT-NEEDED); nothing loads from it.
-RETIRED_CENSUS = ("world_remake_reinstate.txt",)
-SWAP_MARKER = "ModsConfig.swap-active.json"   # modset_builder.SWAP_MARKER
+# Records, not load lists: naming a retired mod is their job. Explicit allowlist {repo relpath: reason};
+# a before-copy or census NOT listed here counts as a listing and turns the checker red. Nothing is
+# skipped by file type or by untracked state; every run prints each skipped file with its reason.
+RECORD_FILES = {
+    "infrastructure/state/modlists/world_remake_reinstate.txt":
+        "census of every RETIRED mod with a reinstate class (artoverride rows are NOT-NEEDED); nothing loads from it",
+    "deployed/config/ModsConfig.before-tier-kineticarms.xml":
+        "swap before-copy kept as a record of the pre-kineticarms list; restore_before no longer targets it",
+}
 
 
-def _live_before_copy(cfg):
-    """The one ModsConfig.before-tier-*.xml modset_builder.restore_before can still copy back: the
-    copy the active swap marker names. Every other before-copy is a dead backup a new swap overwrites."""
-    try:
-        with open(os.path.join(cfg, SWAP_MARKER)) as fh:
-            return os.path.join(cfg, json.load(fh)["before"])
-    except (OSError, ValueError, KeyError, TypeError):
-        return None
-
-
-def _listing_files(repo):
+def _listing_files(repo, record_files=None):
+    record_files = RECORD_FILES if record_files is None else record_files
     out = glob.glob(os.path.join(repo, "src", "*", "*", "About", "About.xml"))
-    out += [f for f in glob.glob(os.path.join(repo, "infrastructure", "state", "modlists", "*"))
-            if os.path.basename(f) not in RETIRED_CENSUS]
-    cfg = os.path.join(repo, "deployed", "config")
-    live_before = _live_before_copy(cfg)
-    out += [f for f in glob.glob(os.path.join(cfg, "*"))
-            if not os.path.basename(f).startswith("ModsConfig.before-tier-") or f == live_before]
+    out += glob.glob(os.path.join(repo, "infrastructure", "state", "modlists", "*"))
+    out += glob.glob(os.path.join(repo, "deployed", "config", "*"))
     out += glob.glob(os.path.join(repo, "src", "**", "*compose*"), recursive=True)
     out = [f for f in out if os.path.isfile(f)]
     try:   # tracked files only: an untracked bridge backup is another window's live state, not a snapshot
@@ -178,12 +168,15 @@ def _listing_files(repo):
         out = [f for f in out if f in tracked]
     except (subprocess.CalledProcessError, OSError):
         pass
-    return out
+    skipped = {os.path.relpath(f, repo).replace(os.sep, "/") for f in out} & set(record_files)
+    return [f for f in out if os.path.relpath(f, repo).replace(os.sep, "/") not in skipped], sorted(skipped)
 
 
-def check(rows, repo=REPO, donor_roots=DONOR_ROOTS, check_donor=True):
+def check(rows, repo=REPO, donor_roots=DONOR_ROOTS, check_donor=True, record_files=None):
     texidx = _src_texpath_index(repo)
-    listings = [(f, open(f, encoding="utf-8", errors="replace").read().lower()) for f in _listing_files(repo)]
+    files, skipped = _listing_files(repo, record_files)
+    check.skipped = skipped
+    listings = [(f, open(f, encoding="utf-8", errors="replace").read().lower()) for f in files]
     results = []
     for r in rows:
         bad, unmeasured = [], []
@@ -277,8 +270,9 @@ def selftest():
         cases.append((dict(base, creature="dangling"), "NO-DANGLE"))
         cases.append((dict(base, creature="listed"), "UNLISTED"))
         cases.append((dict(base, creature="census-only"), None))
-        cases.append((dict(base, creature="dead-before"), None))
-        cases.append((dict(base, creature="live-before"), "UNLISTED"))
+        cases.append((dict(base, creature="listed-record"), None))
+        cases.append((dict(base, creature="unlisted-before"), "UNLISTED"))
+        cases.append((dict(base, creature="entry-removed"), "UNLISTED"))   # same file as listed-record, entry gone
         cases.append((dict(base, creature="dead-lost", mode="dead", groups=[], kept="src/T/Own/Nothing"), "KEPT"))
         for row, want in cases:
             if row["creature"] == "still-there":
@@ -289,13 +283,16 @@ def selftest():
                 w("infrastructure/state/modlists/ModsConfig.x.xml", "<li>x.fakeartoverride</li>")
             if row["creature"] == "census-only":
                 w("infrastructure/state/modlists/world_remake_reinstate.txt", "x.fakeartoverride\tX\tNOT-NEEDED\twhy")
-            if row["creature"] in ("dead-before", "live-before"):
-                w("deployed/config/ModsConfig.before-tier-t1.xml", "<li>x.fakeartoverride</li>")
-                w("deployed/config/ModsConfig.before-tier-t2.xml", "<li>x.own</li>")
-                w("deployed/config/" + SWAP_MARKER, json.dumps(
-                    {"before": "ModsConfig.before-tier-%s.xml" % ("t1" if row["creature"] == "live-before" else "t2")}))
+            recs = None   # None = the real RECORD_FILES
+            if row["creature"] in ("listed-record", "unlisted-before", "entry-removed"):
+                rel = "deployed/config/ModsConfig.before-tier-t1.xml"
+                w(rel, "<li>x.fakeartoverride</li>")
+                if row["creature"] == "listed-record":
+                    recs = {rel: "selftest record"}
+                elif row["creature"] == "entry-removed":
+                    recs = {}   # the same file with its RECORD_FILES entry removed: red again
             _donor_cache.clear()
-            (name, bad, unm), = check([row], td, (os.path.join(td, "donors"),))
+            (name, bad, unm), = check([row], td, (os.path.join(td, "donors"),), record_files=recs)
             ok = (not bad and not unm) if want is None else any(want in b for b in bad)
             print("%-4s %-12s %s" % ("PASS" if ok else "FAIL", name, bad or "clean"))
             fails += not ok
@@ -315,6 +312,8 @@ def main():
         return selftest()
     rows = json.load(open(MANIFEST))["rows"]
     res = check(rows, check_donor=not a.no_donor)
+    for f in check.skipped:
+        print("SKIPPED-RECORD %s: %s" % (f, RECORD_FILES[f]))
     red = unm = 0
     probe = None
     for name, bad, um in res:
