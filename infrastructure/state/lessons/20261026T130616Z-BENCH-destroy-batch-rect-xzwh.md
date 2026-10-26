@@ -1,0 +1,2 @@
+jawa/destroy_batch takes rects as 'x,z,w,h'. Wave3 2c passed corners '36,36,58,52', so it cleared 36..93 x 36..87 with categories=All, a 58x52 wipe. Read that tool's rect format before every call, because other jawa tools take corners. A spawn_batch lattice on WaterDeep spawns fine, but GSS marks every cell buried and the census reads cordEdges 0. Sample the terrain before staging a GSS site.
+home: skills/rimbridge/references/traps.md
