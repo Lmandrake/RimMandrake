@@ -2982,3 +2982,29 @@
 {"cleanCount": 1, "date": "2026-10-26", "path": "src/RimMandrake/Utils/telemetry/store.py", "seat": "BENCH", "sha": "6e2a43d695", "sha256": "37b3545aa47fee78b430965d9325718d7707942fc020d31c98b21687d8400990", "ts": "2026-10-26T14:59:55.151781Z", "verdict": "clean"}
 {"cleanCount": 1, "date": "2026-10-26", "path": "src/RimMandrake/Utils/telemetry/host.py", "seat": "BENCH", "sha": "6e2a43d695", "sha256": "2a7b37a85b5e9296ad06d24a628a071fbd9fe9f6b8eaf56aba4e4245e21d6be2", "ts": "2026-10-26T14:59:55.340623Z", "verdict": "clean"}
 {"cleanCount": 1, "date": "2026-10-26", "path": "src/RimMandrake/Utils/telemetry/ingest.py", "seat": "BENCH", "sha": "6e2a43d695", "sha256": "aa12146499114fb57c3a358be130af5a56b8b86023098482cf73191e61963d1c", "ts": "2026-10-26T14:59:55.568370Z", "verdict": "clean"}
+{"path": "Transient/review_walk_2026-10-17/stage_extra.py", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.187543Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/LanternDeeps/Source/RM_Answering.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188366Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Barkwarden.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188390Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188398Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineGuardians.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188407Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Buildings/RM_StruckGlassRing.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188489Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Defs/WorldObjectDefs/WorldObjects_Pyrelands.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188496Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Source/Patch_FurnaceHerdMapRemoval.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188505Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Source/RM_StruckGlass.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188511Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Source/WorldComponent_RM_FurnaceHerdSeeder.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188515Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/Source/WorldObject_RM_FurnaceHerd.cs", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188516Z", "verdict": "pruned"}
+{"path": "src/RimMandrake/Pyrelands/struck_glass_live.py", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.188520Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/HelixTellurox/ThingDefs_Races/Races_Tellurox.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189057Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Karrask.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189060Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/Livestock/RecipeDefs/RecipeDefs_Karrask.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189062Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/Livestock/ThingDefs_Animals/ThingDefs_Karrask.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189063Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189068Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Baseopsis.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189071Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Diplocaulus.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189072Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Holcorobeus.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189073Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Platyhystrix.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189074Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protosolpuga.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189075Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protovermes.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189076Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Segnosaurus.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189077Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Termitotron.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189078Z", "verdict": "pruned"}
+{"path": "src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml", "seat": "BENCH", "sha256": null, "ts": "2026-10-26T14:58:30.189105Z", "verdict": "pruned"}
