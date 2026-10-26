@@ -96,6 +96,22 @@ def scan_map(call, map_id, size_x, size_z):
     return runs
 
 
+def fresh_current(call, gen):
+    """BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP: map_zones, list_things and jawa/fishing read the CURRENT map. A
+    failed switch left the home map current (its own Fishing zone read as 'placed'), and a tile that already had a
+    map brought its zones along. Returns the map id once it is a NEW map and the current one, else None."""
+    if gen.get("wasAlreadyGenerated"):
+        print("    tile already had a map (not a fresh generation) -- result void, nothing removed")
+        return None
+    map_id = gen.get("mapId")
+    call("jawa/set_current_map", mapId=map_id)
+    cur = call("jawa/map_info").get("mapId")
+    if map_id is None or cur != map_id:
+        print(f"    current map is {cur}, not the generated {map_id} -- result void")
+        return None
+    return map_id
+
+
 def cleanup(call, tile):
     objs = call("jawa/world_objects_get", tiles=str(tile))
     for o in objs.get("objects", []):
@@ -125,9 +141,12 @@ def try_tile(call, label, biome, tile, mode):
     if not gen.get("success"):
         print("    generate FAILED:", json.dumps(gen)[:300])
         return None
-    map_id = gen["mapId"]
+    map_id = fresh_current(call, gen)
+    if map_id is None:
+        if not gen.get("wasAlreadyGenerated"):
+            cleanup(call, tile)   # ours, but unusable: still removed
+        return None
     try:
-        call("jawa/set_current_map", mapId=map_id)
         runs = scan_map(call, map_id, gen["mapSize"]["x"], gen["mapSize"]["z"])
         if runs is None:
             return None
@@ -214,7 +233,12 @@ def shore_tiles(call, seas, limit=5):
     with open(e.get("path") or tcsv, newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f):
             biome[int(r["tile"])] = r["biome"]
-            water[int(r["tile"])] = str(r.get("waterCovered")).strip().lower() == "true"
+            # WriteTileCsv writes 0/1, never True/False: comparing to "true" marked every ocean tile as land, so
+            # "shore" tiles were open water beside the sea (BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP)
+            wc = str(r.get("waterCovered")).strip().lower()
+            if wc not in ("0", "1", "true", "false"):
+                raise SystemExit("UNMEASURED: world_tile_export waterCovered=%r is not 0/1" % wc)
+            water[int(r["tile"])] = wc in ("1", "true")
     out = []
     with open(n.get("path") or ncsv, newline="", encoding="utf-8") as f:
         rd = csv.reader(f)
@@ -241,9 +265,12 @@ def try_shore(call, label, tile):
     if not gen.get("success"):
         print("    generate FAILED:", json.dumps(gen)[:300])
         return None
-    map_id = gen["mapId"]
+    map_id = fresh_current(call, gen)
+    if map_id is None:
+        if not gen.get("wasAlreadyGenerated"):
+            cleanup(call, tile)   # ours, but unusable: still removed
+        return None
     try:
-        call("jawa/set_current_map", mapId=map_id)
         runs = scan_map(call, map_id, gen["mapSize"]["x"], gen["mapSize"]["z"])
         if runs is None:
             return None

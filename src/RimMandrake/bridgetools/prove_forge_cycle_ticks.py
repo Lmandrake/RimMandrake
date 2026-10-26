@@ -19,7 +19,19 @@ if _mi.get("mapBiome") != "RM_TheForge":   # any other map "completes a cycle" t
     sys.exit("current map biome is %r, not RM_TheForge - refusing to sample (%s)" % (_mi.get("mapBiome"), str(_mi)[:200]))
 SX, SZ = int(_mi["sizeX"]), int(_mi["sizeZ"])   # not a hardcoded 250: on a bigger map that silently censused only the 250x250 corner
 BAND = max(1, 70000 // SX)   # get_terrain_batch refuses > 70,000 cells per call (MaxCells): z-bands, or a 275+ map never reads
+MAP_ID = _mi.get("mapId")
+def log_blind(since):
+    # an empty forgeLog is only clean if the log could be seen: a Player.log that shrank (the game restarted)
+    # or a silenced Verse.Log (cap reached, logger off) writes nothing (BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP)
+    if os.path.getsize(LOG) < since: return "Player.log shrank since the start (game restarted): log unread"
+    hl = call("jawa/health", action="status"); lg = hl.get("log") if isinstance(hl, dict) else None
+    if not isinstance(lg, dict) or lg.get("state") != "emitting":
+        return "game log not proven to be writing (%s): log unread" % ((lg.get("text") or lg.get("state")) if isinstance(lg, dict) else str(hl)[:200])
+    return None
 def terrain():
+    mid = call("jawa/map_info").get("mapId")
+    if mid != MAP_ID:   # a sample of whatever map took focus would be filed as the Forge's cycle
+        raise SystemExit("the current map is now %r, not the Forge map %s - refusing to sample another map" % (mid, MAP_ID))
     c = collections.Counter(); g = {}
     for z0 in range(0, SZ, BAND):
         g = call("jawa/get_terrain_batch", rects="0,%d,%d,%d" % (z0, SX, min(BAND, SZ - z0)))
@@ -54,7 +66,10 @@ finally:
     with open(LOG, "rb") as f: f.seek(since); txt = f.read().decode("utf-8", "replace")
     out["forgeLog"] = [l[:300] for l in txt.split("\n") if re.search(r"[Ff]orge|RMTheForge", l)][-60:]
     out["errors"] = list(dict.fromkeys(l[:300] for l in txt.split("\n") if not l.startswith(("  at ", "  - ")) and re.search(r"Exception|rror", l)))[:40]
+    out["logBlind"] = log_blind(since)
     json.dump(out, open(sys.argv[1], "w"), indent=1)
+if out["logBlind"]:
+    sys.exit(out["logBlind"] + " - an empty forgeLog/errors list would read as a clean cycle")
 # running out of wall-clock before ~6 game days is a PARTIAL cycle: say so, never exit 0 on it
 if not out.get("cycleComplete"):
     sys.exit("only %s of 400000 ticks elapsed in %.0f s - partial cycle, not a proof (raise maxSeconds)"

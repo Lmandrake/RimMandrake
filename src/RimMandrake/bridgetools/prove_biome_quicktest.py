@@ -28,6 +28,15 @@ def new_errors(since):
             out.append(l[:300])
     return list(dict.fromkeys(out))[:40]
 
+def log_blind(since):
+    # an empty error list is only clean if the log could be seen: a Player.log that shrank (the game restarted)
+    # or a silenced Verse.Log (cap reached, logger off) writes nothing (BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP)
+    if os.path.getsize(LOG) < since: return "Player.log shrank since the start (game restarted): errors unread"
+    hl = call("jawa/health", action="status"); lg = hl.get("log") if isinstance(hl, dict) else None
+    if not isinstance(lg, dict) or lg.get("state") != "emitting":
+        return "game log not proven to be writing (%s): errors unread" % ((lg.get("text") or lg.get("state")) if isinstance(lg, dict) else str(hl)[:200])
+    return None
+
 def wait_new_map(old_id, limit=300):
     # programState stays Playing through a regen, so only a NEW mapId proves the map was rebuilt
     # (BIOMEPROOFS_FIX_OLD_MAP_AND_CAPS)
@@ -57,6 +66,9 @@ for b in biomes:
         json.dump(results, open(out_path, "w"), indent=1)
         sys.exit("%s: the map was not regenerated (mapId still %s) - a census now would read the OLD map" % (b, map_id))
     map_id = mi.get("mapId")
+    if mi.get("tile") != tile:   # a new mapId on ANOTHER tile is another map (a quest/pocket map took focus), not the regen
+        results[b + ("@" + temp if temp else "")] = r; json.dump(results, open(out_path, "w"), indent=1)
+        sys.exit("%s: the new current map %s is on tile %r, not the regenerated tile %s - refusing to census it" % (b, map_id, mi.get("tile"), tile))
     r["mapBiome"] = mi.get("mapBiome"); r["temp"] = mi.get("outdoorTempNow"); r["biomeMatches"] = r["mapBiome"] == b
     if not r["biomeMatches"]:   # a failed world_tile_set regenerates the OLD biome: its census filed under b is a lie
         r["errors"] = new_errors(since); results[b + ("@" + temp if temp else "")] = r
@@ -72,7 +84,9 @@ for b in biomes:
     pd = th.get("perDef") if isinstance(th.get("perDef"), dict) else None
     r["plants"] = dict(collections.Counter(pd).most_common(30)) if pd is not None else "list_things failed: " + str(th)[:200]
     r["plantsTotal"] = th.get("countMatched")
-    r["errors"] = new_errors(since)
+    r["errors"] = new_errors(since); r["errorsBlind"] = log_blind(since)
     results[b + ("@" + temp if temp else "")] = r
-    print(b, r["mapBiome"], "wild", len(pl) if pl is not None else "?", "plants", r["plantsTotal"], "errors", len(r["errors"]), flush=True)
+    print(b, r["mapBiome"], "wild", len(pl) if pl is not None else "?", "(TRUNCATED)" if r["wildTruncated"] else "",
+          "plants", r["plantsTotal"], "errors", "BLIND: " + r["errorsBlind"] if r["errorsBlind"] else len(r["errors"]), flush=True)
     json.dump(results, open(out_path, "w"), indent=1)
+    if r["errorsBlind"]: sys.exit("%s: %s - an empty error list would read as a clean generation" % (b, r["errorsBlind"]))

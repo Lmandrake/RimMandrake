@@ -14,7 +14,16 @@ def call(n, **a):
         except Exception: pass
     if isinstance(r, dict): r.pop("operation", None)
     return r
-out = {"mapBiome": call("jawa/map_info").get("mapBiome")}
+def log_blind(since):
+    # an empty log/errors read is only clean if the log could be seen: a Player.log that shrank (the game restarted)
+    # or a silenced Verse.Log (cap reached, logger off) writes nothing (BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP)
+    if os.path.getsize(LOG) < since: return "Player.log shrank since the start (game restarted): log unread"
+    hl = call("jawa/health", action="status"); lg = hl.get("log") if isinstance(hl, dict) else None
+    if not isinstance(lg, dict) or lg.get("state") != "emitting":
+        return "game log not proven to be writing (%s): log unread" % ((lg.get("text") or lg.get("state")) if isinstance(lg, dict) else str(hl)[:200])
+    return None
+_mi = call("jawa/map_info"); MAP_ID = _mi.get("mapId")
+out = {"mapBiome": _mi.get("mapBiome"), "mapId": MAP_ID}
 if out["mapBiome"] != "RM_Contagion":   # the Burn on any other map samples nothing of ours
     sys.exit("current map biome is %r, not RM_Contagion - refusing to run" % out["mapBiome"])
 since = os.path.getsize(LOG)
@@ -34,6 +43,9 @@ t0 = time.time()
 try:
     while time.time() - t0 < 420:
         time.sleep(20)
+        mid = call("jawa/map_info").get("mapId")
+        if mid != MAP_ID:   # weather/pawns of whatever map took focus would be filed as the Burn's
+            raise SystemExit("the current map is now %r, not the Contagion map %s - refusing to sample another map" % (mid, MAP_ID))
         w = call("jawa/weather_get")
         pr = call("jawa/list_pawns", includeHealth=True, limit=5000); pw = pr.get("pawns")
         if not isinstance(pw, list): raise SystemExit("jawa/list_pawns failed (%s) - a hediff census of 0 pawns would read as none" % str(pr)[:200])
@@ -51,4 +63,7 @@ finally:
     with open(LOG, "rb") as f: f.seek(since); txt = f.read().decode("utf-8", "replace")
     out["log"] = [l[:300] for l in txt.split("\n") if re.search(r"Contagion|Burn|RM_", l) and not l.startswith("  at ")][-30:]
     out["errors"] = list(dict.fromkeys(l[:300] for l in txt.split("\n") if not l.startswith(("  at ", "  - ")) and re.search(r"Exception|rror", l)))[:30]
+    out["logBlind"] = log_blind(since)
     json.dump(out, open(sys.argv[1], "w"), indent=1)
+if out["logBlind"]:
+    sys.exit(out["logBlind"] + " - an empty log/errors list would read as a clean Burn")

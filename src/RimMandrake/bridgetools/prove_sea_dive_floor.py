@@ -80,10 +80,14 @@ old_bands = call("jawa/mod_settings_field", typeName=SETTINGS, action="get", fie
 print("settings before: requireGravEngine=%s seaFloorBandsEnabled=%s" % (old_req, old_bands))
 if old_bands is None:
     sys.exit("FAIL: seaFloorBandsEnabled not readable - is the SEA_DIVE_FLOOR_TERRAIN_1 DLL deployed?")
-call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="requireGravEngine", value="false")
-call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="seaFloorBandsEnabled", value="true")
+# BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP: an unchecked set left the hatch gated / bands off and read as a mod FAIL
+for _f, _v in (("requireGravEngine", "false"), ("seaFloorBandsEnabled", "true")):
+    _r = call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=_f, value=_v)
+    if not _r.get("success"):
+        sys.exit("UNMEASURED: could not set %s=%s: %s" % (_f, _v, json.dumps(_r)[:300]))
 
-colonists = [p for p in ((lambda r: r.get("pawns") or r.get("results") or [])(call("jawa/list_pawns", faction="player"))) if not p.get("dead") and not p.get("downed")]
+colonists = [p for p in ((lambda r: r.get("pawns") or r.get("results") or [])(call("jawa/list_pawns", faction="player"))) if not p.get("dead") and not p.get("downed")
+             and p.get("intelligence") == "Humanlike"]   # a player-faction pet cannot take EnterPortal
 wanted = sys.argv[1:] or list(SEAS)
 verdicts = {}
 try:
@@ -94,14 +98,19 @@ try:
             verdicts[sea] = "UNMEASURED (no free colonist)"; continue
         call("jawa/set_current_map", mapId=home_id)
         call("jawa/world_tile_set", tiles=str(home_tile), biome=biome); call("jawa/world_commit")
-        if call("jawa/map_info").get("mapBiome") != biome:
+        hm = call("jawa/map_info")
+        if hm.get("mapId") != home_id:   # a failed switch back would spawn the hatch on the last pocket map
+            verdicts[sea] = "UNMEASURED (current map %s is not home %s)" % (hm.get("mapId"), home_id); continue
+        if hm.get("mapBiome") != biome:
             verdicts[sea] = "UNMEASURED (parent map biome did not change)"; continue
         pawn = colonists[i]
         px, pz = (int(pawn["x"]), int(pawn["z"])) if pawn.get("x") is not None else xz(pawn)
         sp = call("jawa/spawn_batch", ops="RM_SeaDiveHatch:%d,%d" % (px + 2, pz))
         print("hatch spawn:", {k: sp.get(k) for k in ("success", "thingsPlaced", "failed")})
         hatches = [th for th in (call("jawa/list_things", defName="RM_SeaDiveHatch").get("things") or [])]
-        hatch = min(hatches, key=lambda th: abs(xz(th)[0] - px - 2) + abs(xz(th)[1] - pz)) if hatches else None
+        # the hatch spawned on THAT cell this pass: an older hatch elsewhere caches its pocket map, so a failed
+        # spawn must not fall back to the nearest one
+        hatch = next((th for th in hatches if xz(th) == (px + 2, pz)), None)
         if not hatch:
             verdicts[sea] = "UNMEASURED (hatch did not spawn)"; continue
         before = loaded_maps()
@@ -138,6 +147,8 @@ try:
             tr = call("jawa/get_terrain_batch", rects="%d,%d,1,1" % (ex_x, ex_z), mapId=mid)
             exit_terr.append((tr.get("ops") or "").split(":")[0])
         print("exits", len(exits), "exit terrain", exit_terr)
+        if not all(exit_terr):   # an unread exit cell cannot show it is NOT in brine
+            verdicts[sea] = "UNMEASURED (exit cell terrain unread: %s)" % exit_terr; continue
         print("map biome", mi.get("mapBiome"), "size", sx, sz, "cellsRead", read)
         print("terrain:", json.dumps(dict(terr.most_common(20))))
         print("plants:", json.dumps(dict(plants.most_common(30))))

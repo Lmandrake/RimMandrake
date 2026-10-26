@@ -18,6 +18,8 @@ def terrain():
     # the WHOLE map, in z-bands under get_terrain_batch's 70,000-cell cap (a fixed 250x250 rect read part of a
     # 275/300 map and failed outright on a smaller one); a band with no ops is a failed read, never an empty map
     mi = call("jawa/map_info"); sx, sz = mi.get("sizeX"), mi.get("sizeZ")
+    if PIN[0] is not None and mi.get("mapId") != PIN[0]:   # every sample must read the regenerated map, not whatever took focus
+        raise SystemExit("the current map is now %r, not the timelapse map %s - refusing to sample another map" % (mi.get("mapId"), PIN[0]))
     if not sx or not sz: raise SystemExit("jawa/map_info gave no map size (%s)" % str(mi)[:200])
     band = max(1, 70000 // sx); c = collections.Counter(); g = {}
     for z0 in range(0, sz, band):
@@ -31,6 +33,15 @@ def terrain():
         raise SystemExit("terrain census read %d of %d cells (%s) - instrument blind, refusing to report deltas"
                          % (sum(c.values()), sx * sz, str(g)[:200]))
     return dict(c.most_common(30)), g.get("ticksGame")
+def log_blind(since):
+    # an empty log read is only clean if the log could be seen: a Player.log that shrank (the game restarted)
+    # or a silenced Verse.Log (cap reached, logger off) writes nothing (BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP)
+    if os.path.getsize(LOG) < since: return "Player.log shrank since the start (game restarted): log unread"
+    hl = call("jawa/health", action="status"); lg = hl.get("log") if isinstance(hl, dict) else None
+    if not isinstance(lg, dict) or lg.get("state") != "emitting":
+        return "game log not proven to be writing (%s): log unread" % ((lg.get("text") or lg.get("state")) if isinstance(lg, dict) else str(hl)[:200])
+    return None
+PIN = [None]
 BIOME = sys.argv[2]
 mi0 = call("jawa/map_info"); tile, id0 = mi0.get("tile"), mi0.get("mapId")
 if tile is None or tile == -1 or mi0.get("tileValid") is False or id0 is None:
@@ -44,7 +55,10 @@ for _ in range(100):
 else:
     sys.exit("the map was not regenerated (mapId still %s) - a timelapse now would run the OLD map" % id0)
 since = os.path.getsize(LOG)
-out = {"biome": call("jawa/map_info").get("mapBiome"), "samples": []}
+mi1 = call("jawa/map_info"); PIN[0] = mi1.get("mapId")
+out = {"biome": mi1.get("mapBiome"), "mapId": PIN[0], "samples": []}
+if mi1.get("tile") != tile:   # a new mapId on another tile is a map that took focus, not the regen
+    sys.exit("the new current map %s is on tile %r, not the regenerated tile %s - refusing to run" % (PIN[0], mi1.get("tile"), tile))
 if out["biome"] != BIOME:   # a failed world_tile_set regenerates the OLD biome, and its timelapse would be filed as BIOME
     sys.exit("the regenerated map is %r, not %s - refusing to run the timelapse" % (out["biome"], BIOME))
 t0c, _ = terrain(); out["terrain0"] = t0c
@@ -73,7 +87,10 @@ finally:
     with open(LOG, "rb") as f: f.seek(since); txt = f.read().decode("utf-8", "replace")
     out["forgeLog"] = [l[:300] for l in txt.split("\n") if re.search(r"\[RM|RimMandrake", l)][-60:]
     out["errors"] = list(dict.fromkeys(l[:300] for l in txt.split("\n") if not l.startswith(("  at ", "  - ")) and re.search(r"Exception|rror", l)))[:40]
+    out["logBlind"] = log_blind(since)
     json.dump(out, open(sys.argv[1], "w"), indent=1)
+if out["logBlind"]:
+    sys.exit(out["logBlind"] + " - an empty forgeLog/errors list would read as a clean run")
 # running out of wall-clock before maxTicks is a PARTIAL timelapse: say so, never exit 0 on it
 if not out.get("reachedMaxTicks"):
     sys.exit("only %s of %d ticks elapsed in %.0f s - partial timelapse (raise maxSeconds)"

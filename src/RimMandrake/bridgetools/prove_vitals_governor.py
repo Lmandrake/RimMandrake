@@ -31,7 +31,12 @@ def rec(case, ok, **ev):
     OUT[case] = {"result": "PASS" if ok else "FAIL", **ev}
     print(("PASS " if ok else "FAIL ") + case + "  " + json.dumps(ev, default=str)[:600], flush=True)
 
-def ticks(): return call("jawa/time_clock").get("ticksGame")
+def ticks():
+    # BRIDGE_PROOFS_W50_BLIND_LOG_AND_WRONG_MAP: a failed read was None == None, so "no tick ran" passed blind
+    t = call("jawa/time_clock").get("ticksGame")
+    if not isinstance(t, int):
+        raise SystemExit("UNMEASURED: jawa/time_clock gave no ticksGame, so a refusal cannot be shown to have run no tick")
+    return t
 
 def fresh_map():
     call("rimworld/go_to_main_menu")
@@ -46,7 +51,14 @@ def fresh_map():
     ps = call("jawa/list_pawns", faction="player").get("pawns") or []
     return [p["id"] for p in ps if p.get("def") == "Human" and not p.get("dead")]
 
-def events(): return call("jawa/vitals", action="events", limit=500)
+def events():
+    # the latch holds 512 (JawaBenchVitalsCore.LatchCapacity) and events returns only the NEWEST `limit`: a dropped
+    # trigger would let G.judge read PASS on a list missing what disqualifies it
+    r = call("jawa/vitals", action="events", limit=512)
+    if not isinstance(r.get("triggers"), list) or r.get("truncated") or r.get("overflow"):
+        raise SystemExit("UNMEASURED: jawa/vitals events incomplete (truncated=%r overflow=%r): %s"
+                         % (r.get("truncated"), r.get("overflow"), json.dumps(r, default=str)[:300]))
+    return r
 
 def arm(row, critical=None, **kw):
     p = {"action": "arm", "row": row, "ttlMin": 30, "why": "live proof"}
@@ -69,7 +81,9 @@ if "clock" in which:
     rec("advance_600k_refused_before_any_tick", r.get("state") == "refused" and ticks() == t0,
         state=r.get("state"), refused=r.get("refused"), tick_before=t0, tick_after=ticks())
     r = call("jawa/time_set_ticks", ticks=t0 + 2500)
-    rec("clock_set_refused_on_populated_map", r.get("success") is False and ticks() == t0, message=r.get("message"))
+    # any failure (bad param, no game) is not THE refusal: it names the populated map
+    rec("clock_set_refused_on_populated_map", r.get("success") is False and str(r.get("message") or "").startswith("REFUSED")
+        and (r.get("details") or {}).get("populated") is True and ticks() == t0, message=r.get("message"))
     r = call("jawa/time_set_ticks", ticks=t0 + 2500, timeException=True, why="live proof: declared reassignment")
     time.sleep(1.0)
     ev = events()
@@ -102,7 +116,8 @@ if "modal" in which:
         governor_uncorrected=v["outcome"], env_items=v["env_items"][:1])
     call("rimworld/close_window", windowType="RimWorld.Dialog_Options")
     v = G.judge(G.RowContract("proof_modal"), ev["triggers"], "PASS", corrected={t["seq"] for t in ms})
-    rec("modal_closed_corrected_may_pass", v["outcome"] == G.PASS and v["validity"] == "CLEAN", governor=v["outcome"], notes=v["notes"])
+    # an empty trigger list also judges PASS/CLEAN: only a seen-then-corrected modal shows the correction path
+    rec("modal_closed_corrected_may_pass", bool(ms) and v["outcome"] == G.PASS and v["validity"] == "CLEAN", governor=v["outcome"], notes=v["notes"])
 
 if "cluster" in which:
     cols = fresh_map()
@@ -167,7 +182,8 @@ if "death" in which:
     r2 = call("jawa/list_pawns", includeCorpses=True, faction="player"); corpses2 = r2.get("pawns")
     ev = events()
     tomb = [t for t in ev.get("tombs", []) if ('"label"' in t)]
-    death = [t for t in ev.get("triggers", []) if t["kind"] == "death"]
+    vnum = int("".join(ch for ch in victim if ch.isdigit()) or -1)   # triggers carry thingIDNumber
+    death = [t for t in ev.get("triggers", []) if t["kind"] == "death" and t.get("subjectId") == vnum]
     # "after corpse removal" needs a corpse that was SEEN and destroyed, and a second read that worked: a failed
     # list_pawns read (no rows) used to count as "corpse gone" with nothing ever removed
     removed = bool(c) and bool((gone or {}).get("success")) and isinstance(corpses2, list) \

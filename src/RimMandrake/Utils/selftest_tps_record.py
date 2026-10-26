@@ -620,7 +620,7 @@ def unit_checks(lines):
         if ln.startswith("U "):
             parts = ln.split(" ", 3)
             units[parts[1]] = parts[2] if len(parts) > 2 else "?"
-            if len(parts) > 2 and parts[2] != "ok":
+            if len(parts) < 3 or parts[2] != "ok":   # a status-less line (output cut mid-write) is not a pass
                 FAILS.append("C# unit %s: %s" % (parts[1], ln[len("U " + parts[1]) + 1:][:400]))
     for name in CS_UNITS:
         if name not in units:

@@ -82,10 +82,12 @@ if not things:
     things = found.get("things") or found.get("results") or []
 print("route:", route, "| list_things:", short(found, 400))
 
-def read():
+def read(tid=None):
     f = call("jawa/list_things", defName="RM_Middenshell", limit=5)
     th = (f.get("things") or f.get("results") or [])
-    ins = call("jawa/inspect_string", defName="RM_Middenshell", limit=1)
+    tid = tid or (th[0].get("id") if th else None)
+    # the footprint of THIS shell (by ThingID), not whichever shell inspect_string lists first
+    ins = call("jawa/inspect_string", thingIds=tid) if tid else {"success": False, "error": "no shell to inspect"}
     txt = json.dumps(ins)
     m = re.search(r"Footprint: (\d+)x(\d+)", txt)
     return th, (tuple(map(int, m.groups())) if m else None), txt
@@ -93,7 +95,7 @@ def read():
 th1, fp1, txt1 = read(); t1 = th1[0] if th1 else None
 print("read 1:", short(t1, 300), "footprint:", fp1)
 call("rimworld/step_game_ticks", ticks=2500)
-th2, fp2, txt2 = read()
+th2, fp2, txt2 = read(t1.get("id") if t1 else None)
 t2 = next((x for x in th2 if t1 and x.get("id") == t1.get("id")), None)   # the SAME shell, not whichever is listed first
 print("read 2:", short(t2, 300), "footprint:", fp2)
 print("inspect:", txt2[:600])

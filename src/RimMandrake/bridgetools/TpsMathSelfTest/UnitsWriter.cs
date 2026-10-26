@@ -61,6 +61,9 @@ namespace JawaBench.BridgeTools
             Check(seqs.Count == 3 && seqs.Distinct().Count() == 3,
                   "each committed line is on disk ONCE after a retry: seqs " + string.Join(",", seqs));
             Check(bad == 0, bad + " unparseable lines");
+            // the failure must have fired AND been retried, or the checks above pass on a write that never failed
+            // (e.g. a SegmentBytes change that puts all three rows in one append)
+            Check(Volatile.Read(ref calls) >= 3, "the injected failure fired and was retried: " + calls + " append(s)");
             W.ResetForTest();
         }
 
@@ -68,6 +71,7 @@ namespace JawaBench.BridgeTools
         {
             string d = PrepWriter();
             int calls = 0;
+            long tornBefore = W.TornTails;
             W.AppendImpl = (p, b, n) =>
             {
                 if (Interlocked.Increment(ref calls) == 1)
@@ -86,6 +90,7 @@ namespace JawaBench.BridgeTools
             var seqs = Seqs(d, out bad);
             Check(bad == 0, "a torn tail never joins a later row: " + bad + " unparseable line(s)");
             Check(seqs.Count == 4 && seqs.Distinct().Count() == 4, "all four rows once: " + string.Join(",", seqs));
+            Check(W.TornTails > tornBefore, "the torn fragment reached the disk and was reconciled (wtorn did not move)");
             W.ResetForTest();
         }
 
