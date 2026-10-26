@@ -8621,3 +8621,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUITE_EVIDENCE_HARDEN_OUTSIDE_PROBES_DROPPED","why":"briefed wave 88 builder","ts":"2026-10-26T15:48:51Z","tsn":1793029731184663280}
 {"seat":"FOUNDRY","event":"start","id":"SUITE_EVIDENCE_HARDEN_OUTSIDE_PROBES_DROPPED","why":"briefed wave 88 builder","ts":"2026-10-26T15:48:51Z","tsn":1793029731799663888}
 {"seat":"FOUNDRY","event":"close","id":"SUITE_EVIDENCE_HARDEN_OUTSIDE_PROBES_DROPPED","sha":"730e76a2bc14","why":"outside-repo stat probes now recorded by absolute path and re-checked; selftest red on old behaviour, green now","ts":"2026-10-26T15:52:44Z","tsn":1793029964509486478}
+{"seat":"FOUNDRY","event":"close","id":"SHIRREL_BILLOW_WIDEN_NORTH_FAINT","sha":"156476ef64","why":"delegated: art infrastructure/state/delegated/2026-10-26/RM_Shirrel__flight_cut4r2.json (ACCEPT round 2); motion gate PASS on installed set","ts":"2026-10-26T15:54:02Z","tsn":1793030042590175159}
