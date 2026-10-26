@@ -29,8 +29,12 @@ namespace RimMandrake.FlowWorks.Machinery
 	{
 		/// <summary>PROVISIONAL: squares walked per dug run (a bigger run is under-counted, which only slows it).</summary>
 		public const int MaxRunCells = 20000;
-		/// <summary>PROVISIONAL: squares walked per cycle across all runs; links past it wait for a later cycle.</summary>
-		public const int WalkBudget = 60000;
+		/// <summary>PROVISIONAL: squares walked per cycle across all runs; links past it wait for a later cycle (the next cycle
+		/// starts at the first hose the budget turned away). A square is walked at most once per cycle: an end in a run already
+		/// walked this cycle takes that run's body for nothing (HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP, live 2026-10-26: every end
+		/// re-walked its 20000-square run before it could know the key, so two 325 basins gave 3 walks and 2 links of 100).
+		/// Two of the largest runs a 325 map holds, 125 x 320 basins, are 80000 squares.</summary>
+		public const int WalkBudget = 120000;
 		/// <summary>PROVISIONAL: links planned per cycle (the rest rotate in; RM_LevellingMath integrates the wait).</summary>
 		public const int MaxLinksPerCycle = 64;
 		/// <summary>Open ends per component considered (pairs grow as the square).</summary>
@@ -43,6 +47,14 @@ namespace RimMandrake.FlowWorks.Machinery
 		private sealed class MapState
 		{
 			public int cursor;
+			/// <summary>The hose index the next cycle starts at: the first one the walk budget turned away, else 0.</summary>
+			public int hoseCursor;
+			/// <summary>Per-square walk marks (the walk id that reached the square) and the body that walk found (-1: none), sized
+			/// to the map once: a walk allocates no per-square set (each end used to fill a HashSet of up to 20000).</summary>
+			public int[] mark, bodyOf;
+			public int walkId, cycleFirstWalk;
+			public readonly List<IntVec3> queue = new List<IntVec3>();
+			public readonly List<int> depths = new List<int>();
 			public readonly Dictionary<object, RM_LevelLinkState> portState = new Dictionary<object, RM_LevelLinkState>();
 		}
 
@@ -117,8 +129,19 @@ namespace RimMandrake.FlowWorks.Machinery
 			var ends = new List<(End a, End b)>();
 			var done = new HashSet<RM_NetComponent>();
 			int walked = 0;
-			foreach (RM_NetLink h in hoses)
+			int nCells = map.cellIndices.NumGridCells;
+			if (st.mark == null || st.mark.Length != nCells || st.walkId > int.MaxValue - 1000000)
 			{
+				st.mark = new int[nCells];
+				st.bodyOf = new int[nCells];
+				st.walkId = 0;
+			}
+			st.cycleFirstWalk = st.walkId + 1;
+			int startAt = st.hoseCursor < hoses.Count ? st.hoseCursor : 0, turnedAway = -1;
+			for (int hi = 0; hi < hoses.Count; hi++)
+			{
+				int hIndex = (startAt + hi) % hoses.Count;
+				RM_NetLink h = hoses[hIndex];
 				RM_NetComponent c = comps.ComponentOf(h);
 				if (c == null || c.Refused || !done.Add(c) || c.Ports.Count < 2)
 				{
@@ -132,11 +155,16 @@ namespace RimMandrake.FlowWorks.Machinery
 				foreach (RM_NetPort p in c.Ports.Where(q => q.Role != RM_FreeEndRole.Capped && q.Cell is IntVec3 && q.Reel is CompHoseReel)
 					.OrderBy(q => ((CompHoseReel)q.Reel).parent.thingIDNumber).Take(MaxPortsPerComponent))
 				{
-					if (Resolve(map, ex, (IntVec3)p.Cell, bodies, bodyFluid, keyIndex, ref walked, out End e))
+					bool budgetLeft = walked < WalkBudget;
+					if (Resolve(map, ex, st, (IntVec3)p.Cell, bodies, bodyFluid, keyIndex, ref walked, out End e))
 					{
 						e.port = p;
 						e.comp = c;
 						resolved.Add(e);
+					}
+					else if (turnedAway < 0 && (!budgetLeft || walked >= WalkBudget))
+					{
+						turnedAway = hIndex;
 					}
 				}
 				for (int i = 0; i < resolved.Count; i++)
@@ -156,6 +184,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					}
 				}
 			}
+			st.hoseCursor = turnedAway < 0 ? 0 : turnedAway;
 			LastLinks = links.Count;
 			Cycles++;
 			if (links.Count == 0)
@@ -214,7 +243,7 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>The end square as a pump finds it (the end, then its 8 neighbours: the first dug or natural liquid square),
 		/// and its body, added to <paramref name="bodies"/> once per key.</summary>
-		private static bool Resolve(Map map, RM_MapComponent_Excavation ex, IntVec3 end, List<RM_LevelBody> bodies, List<FluidDef> fluids,
+		private static bool Resolve(Map map, RM_MapComponent_Excavation ex, MapState st, IntVec3 end, List<RM_LevelBody> bodies, List<FluidDef> fluids,
 			Dictionary<long, int> keyIndex, ref int walked, out End e)
 		{
 			e = default;
@@ -228,7 +257,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					e.cell = c;
 					e.dug = true;
-					return DugBody(map, ex, c, bodies, fluids, keyIndex, ref walked, out e.body);
+					return DugBody(map, ex, st, c, bodies, fluids, keyIndex, ref walked, out e.body);
 				}
 				if (ex.IsSourceCell(c))
 				{
@@ -278,11 +307,19 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 
 		/// <summary>The 4-way run of dug squares from <paramref name="start"/>: wet squares of its liquid (or, from a dry square,
-		/// dry squares), not across a shut sluice. Keyed by its lowest cell index, so two ends in one run share a body.</summary>
-		private static bool DugBody(Map map, RM_MapComponent_Excavation ex, IntVec3 start, List<RM_LevelBody> bodies, List<FluidDef> fluids,
+		/// dry squares), not across a shut sluice. Two ends in one run share a body: an end on a square a walk reached this cycle
+		/// takes that walk's body without walking (MapState.mark/bodyOf), so a run is walked once per cycle, not once per end.</summary>
+		private static bool DugBody(Map map, RM_MapComponent_Excavation ex, MapState st, IntVec3 start, List<RM_LevelBody> bodies, List<FluidDef> fluids,
 			Dictionary<long, int> keyIndex, ref int walked, out int index)
 		{
 			index = -1;
+			int startIdx = map.cellIndices.CellToIndex(start);
+			if (st.mark[startIdx] >= st.cycleFirstWalk)
+			{
+				// a run walked this cycle (a capped walk's queued edge included): its body, for nothing
+				index = st.bodyOf[startIdx];
+				return index >= 0;
+			}
 			if (walked >= WalkBudget || RM_FlowDoorRules.SealsLiquid(start.GetEdifice(map)))
 			{
 				return false;
@@ -293,11 +330,15 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return false;
 			}
-			var seen = new HashSet<int> { map.cellIndices.CellToIndex(start) };
-			var queue = new List<IntVec3> { start };
+			int walk = ++st.walkId;
+			st.mark[startIdx] = walk;
+			List<IntVec3> queue = st.queue;
+			List<int> depths = st.depths;
+			queue.Clear();
+			depths.Clear();
+			queue.Add(start);
 			int maxDepth = 0, low = int.MaxValue;
 			long water = 0;
-			var depths = new List<int>();
 			for (int head = 0; head < queue.Count && queue.Count <= MaxRunCells; head++)
 			{
 				IntVec3 c = queue[head];
@@ -306,30 +347,49 @@ namespace RimMandrake.FlowWorks.Machinery
 				maxDepth = System.Math.Max(maxDepth, d);
 				water += ex.WaterDlAt(c);
 				low = System.Math.Min(low, map.cellIndices.CellToIndex(c));
-				foreach (IntVec3 dir in GenAdj.CardinalDirections)
+				for (int k = 0; k < 4; k++)
 				{
-					IntVec3 n = c + dir;
-					if (!n.InBounds(map) || !ex.IsExcavated(n) || !seen.Add(map.cellIndices.CellToIndex(n)))
+					IntVec3 n = c + GenAdj.CardinalDirections[k];
+					if (!n.InBounds(map) || !ex.IsExcavated(n))
 					{
 						continue;
+					}
+					int ni = map.cellIndices.CellToIndex(n);
+					if (st.mark[ni] >= st.cycleFirstWalk)
+					{
+						continue;   // this walk's, or an earlier run's this cycle: runs are disjoint, no square counted twice
 					}
 					bool nWet = ex.WaterDlAt(n) > 0;
 					if (nWet != wet || (wet && (ex.FluidAt(n) ?? ex.ActiveFluid) != fluid) || RM_FlowDoorRules.SealsLiquid(n.GetEdifice(map)))
 					{
 						continue;
 					}
+					st.mark[ni] = walk;
 					queue.Add(n);
 				}
 			}
 			walked += depths.Count;
-			long key = (1L << 40) + low;
-			if (keyIndex.TryGetValue(key, out index))
+			index = WalkedBody(depths, maxDepth, low, water, fluid, bodies, fluids, keyIndex);
+			// every square this walk reached (the processed run and a capped walk's queued edge) answers later ends for nothing
+			foreach (IntVec3 q in queue)
 			{
-				return true;
+				st.bodyOf[map.cellIndices.CellToIndex(q)] = index;
+			}
+			return index >= 0;
+		}
+
+		/// <summary>The body of a walked run (keyed by its lowest cell index), added once; -1 for a run with no depth.</summary>
+		private static int WalkedBody(List<int> depths, int maxDepth, int low, long water, FluidDef fluid,
+			List<RM_LevelBody> bodies, List<FluidDef> fluids, Dictionary<long, int> keyIndex)
+		{
+			long key = (1L << 40) + low;
+			if (keyIndex.TryGetValue(key, out int index))
+			{
+				return index;
 			}
 			if (maxDepth <= 0)
 			{
-				return false;
+				return -1;
 			}
 			var hist = new int[maxDepth + 1];
 			foreach (int d in depths)
@@ -343,7 +403,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			keyIndex[key] = index;
 			bodies.Add(new RM_LevelBody { Key = key, Fluid = fluid, Hist = hist, Water = water });
 			fluids.Add(fluid);
-			return true;
+			return index;
 		}
 
 		/// <summary>The floor under an end, as a surface height (dL-per-square; 0 = brim).</summary>

@@ -462,7 +462,15 @@ namespace RimMandrake.FlowWorks.Hose
             V2 s0 = a + u * straight;
             if (w != null && !Clear(w, new List<V2> { a, s0 })) return outp;
             double Rd = R * 1.05;
-            var cands = new List<(double extra, List<V2> sec, int j)>();
+            // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: a candidate keeps only its Dubins arc; its section (a, the densified straight
+            // run, the arc) and the pose it would make are assembled in this thread's scratch when it is judged, and copied
+            // out only when it is taken (most are turned away: a wall, a loop). The section's length is summed in the same
+            // order Geo.Length sums it, so the ranking is unchanged.
+            int ns = Math.Max(1, (int)Math.Ceiling(straight / Sample));
+            LayScratch ls = LayScratch.Get();
+            List<V2> arc = ls.Arc;
+            var words = new List<DubinsWord>();
+            var cands = new List<(double extra, DubinsWord dw, V2 Q, int j, double secLen)>();
             for (int k = 0; k < 24; k++)
             {
                 double d = straight + R * (0.5 + 0.5 * k);
@@ -473,28 +481,71 @@ namespace RimMandrake.FlowWorks.Hose
                 V2 Q = seg < 1e-12 ? P[j] : P[j - 1] + (P[j] - P[j - 1]) * ((d - s[j - 1]) / seg);
                 // the join's heading is the chord Q lies on, so the hose runs on from Q to P[j] with no kink
                 // every Dubins word, shortest first: the shortest often turns back over the reel, the other way round is clear
-                foreach (List<V2> arc in DubinsAll(s0, u, Q, (P[j] - P[j - 1]).Norm(), Rd, Sample / 4, true))
+                V2 hQ = (P[j] - P[j - 1]).Norm();
+                words.Clear();
+                DubinsWords(s0, u, Q, hQ, Rd, Sample / 4, true, words, arc);
+                foreach (DubinsWord dw in words)
                 {
-                var sec = new List<V2> { a };
-                int ns = Math.Max(1, (int)Math.Ceiling(straight / Sample));
-                for (int i = 1; i <= ns; i++) sec.Add(a + u * (straight * i / ns));   // densified so the smooth resample keeps it straight
-                sec.AddRange(arc);
-                double extra = Geo.Length(sec) - d;
-                int jj = V2.Dist(sec[sec.Count - 1], P[j]) < 1e-9 ? j + 1 : j;
+                DubinsArc(s0, u, Q, dw, Rd, Sample / 4, arc);
+                double secLen = 0;
+                V2 prev = a;
+                for (int i = 1; i <= ns; i++) { V2 q = a + u * (straight * i / ns); secLen += V2.Dist(prev, q); prev = q; }   // densified so the smooth resample keeps it straight
+                for (int i = 0; i < arc.Count; i++) { secLen += V2.Dist(prev, arc[i]); prev = arc[i]; }
+                double extra = secLen - d;
+                int jj = V2.Dist(arc[arc.Count - 1], P[j]) < 1e-9 ? j + 1 : j;
                 if (jj >= P.Count) continue;
-                cands.Add((extra, sec, jj));
+                cands.Add((extra, dw, Q, jj, secLen));
                 }
             }
+            List<V2> o = ls.Pose, r = ls.Resampled;
             foreach (var c in cands.OrderBy(c => c.extra))
             {
-                if (w != null && !Clear(w, new List<V2>(c.sec) { P[c.j] }, 0.5)) continue;
-                var o = new List<V2>(c.sec);
+                o.Clear();
+                o.Add(a);
+                for (int i = 1; i <= ns; i++) o.Add(a + u * (straight * i / ns));
+                o.AddRange(DubinsArc(s0, u, c.Q, c.dw, Rd, Sample / 4, arc));
+                int secCount = o.Count;
+                if (w != null) { o.Add(P[c.j]); bool clear = Clear(w, o, 0.5); o.RemoveAt(secCount); if (!clear) continue; }
                 for (int i = c.j; i < P.Count; i++) o.Add(P[i]);
-                if (SelfIntersects(ResampleN(o, Math.Max(8, (int)(Geo.Length(o) / Sample) + 1)))) continue;   // no loops (design)
-                outp.Add((c.extra, o, Geo.Length(c.sec)));
+                ResampleNInto(o, Math.Max(8, (int)(Geo.Length(o) / Sample) + 1), r);
+                if (SelfIntersects(r)) continue;   // no loops (design)
+                outp.Add((c.extra, new List<V2>(o), c.secLen));
                 if (outp.Count >= max) break;
             }
             return outp;
+        }
+
+        /// <summary>One lay thread's reusable point lists and arc-length buffer for poses that are judged and mostly thrown
+        /// away (HOSE_LAY_FIX_GC_STORM_FROM_WORKER). A user fills and reads one before calling anything else that uses it.</summary>
+        private sealed class LayScratch
+        {
+            [ThreadStatic] private static LayScratch mine;
+            internal readonly List<V2> Pose = new List<V2>(), Resampled = new List<V2>(), Dense = new List<V2>(), Arc = new List<V2>();
+            internal double[] Cum = new double[64], ClearCum = new double[64];
+            internal static LayScratch Get() => mine ?? (mine = new LayScratch());
+            internal static double[] CumOf(IList<V2> p, ref double[] buf)
+            {
+                if (buf.Length < p.Count) buf = new double[Math.Max(p.Count, 2 * buf.Length)];
+                buf[0] = 0;
+                for (int i = 1; i < p.Count; i++) buf[i] = buf[i - 1] + V2.Dist(p[i - 1], p[i]);
+                return buf;
+            }
+        }
+
+        /// <summary>One finished lead-out pose (LeadOutFinish) and the pair tests LayOnce runs on it, each worked out once: the
+        /// wall test now, the arc lengths for the bend test, and the stray-reel count and body gap on first use (both pure in
+        /// the pose for one lay).</summary>
+        private sealed class LeadFin
+        {
+            internal readonly List<V2> Pts;
+            internal readonly bool Clear;
+            private double[] s;
+            private int rig = -1;
+            private double gap = double.NaN;
+            internal LeadFin(CordWorld w, List<V2> pts) { Pts = pts; Clear = HoseMath.Clear(w, pts); }
+            internal double MinBendUpTo(double upTo) => MinBendRadiusUpTo(Pts, s ?? (s = Geo.CumLen(Pts)), EndSkip, upTo);
+            internal int RigOf(CordWorld w, HashSet<Cell> planCells) => rig >= 0 ? rig : (rig = RigHits(w, Pts, planCells));
+            internal double GapOf(CordWorld w, double startSkip) => !double.IsNaN(gap) ? gap : (gap = BodyGap(w, Pts, startSkip, EndSkip));
         }
 
         /// <summary>Points of P within <paramref name="straight"/> of a projected back onto the outlet line.</summary>
@@ -522,7 +573,9 @@ namespace RimMandrake.FlowWorks.Hose
         internal static List<V2> ResampleSmooth(IList<V2> p, int n)
         {
             if (p.Count < 3) return ResampleN(p, n);
-            var d = new List<V2>(p.Count * 8 + 1) { p[0] };
+            List<V2> d = LayScratch.Get().Dense;   // ResampleN copies out of it before anything else can refill it
+            d.Clear();
+            d.Add(p[0]);
             for (int i = 0; i < p.Count - 1; i++)
             {
                 V2 p0 = i > 0 ? p[i - 1] : p[0] * 2 - p[1], p1 = p[i], p2 = p[i + 1], p3 = i + 2 < p.Count ? p[i + 2] : p[i + 1] * 2 - p[i];
@@ -543,9 +596,11 @@ namespace RimMandrake.FlowWorks.Hose
         internal static int LeadOutSamples(IList<V2> p) => Math.Max(8, (int)Math.Ceiling(Geo.Length(p) / LeadOutSpacing) + 1);
 
         /// <summary>MinBendRadius restricted to arc positions [skip, upTo].</summary>
-        internal static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo)
+        internal static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo) => MinBendRadiusUpTo(X, Geo.CumLen(X), skip, upTo);
+
+        /// <summary>As above on X's own cumulative arc lengths <paramref name="s"/> (Geo.CumLen).</summary>
+        internal static double MinBendRadiusUpTo(IList<V2> X, double[] s, double skip, double upTo)
         {
-            double[] s = Geo.CumLen(X);
             double best = 99;
             for (int i = 1; i < X.Count - 1; i++)
             {
@@ -562,6 +617,30 @@ namespace RimMandrake.FlowWorks.Hose
         /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1; shortest first, only the
         /// shortest unless <paramref name="allWords"/>. Empty if none does (Dubins returns null then).</summary>
         internal static List<List<V2>> DubinsAll(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords)
+        {
+            var all = new List<List<V2>>();
+            var words = new List<DubinsWord>();
+            DubinsWords(p0, h0, p1, h1, R, step, allWords, words, null);
+            foreach (DubinsWord dw in words) all.Add(DubinsArc(p0, h0, p1, dw, R, step, new List<V2>()));
+            return all;
+        }
+
+        /// <summary>One Dubins word that lands (DubinsWords): its letters and its three section lengths (cells).</summary>
+        internal struct DubinsWord { internal string W; internal double L0, L1, L2; }
+
+        /// <summary>DubinsAll's arc for <paramref name="dw"/>, sampled into <paramref name="o"/> (cleared; returned), its last
+        /// point exactly p1.</summary>
+        internal static List<V2> DubinsArc(V2 p0, V2 h0, V2 p1, DubinsWord dw, double R, double step, List<V2> o)
+        {
+            DubinsSampleInto(p0, Math.Atan2(h0.Z, h0.X), dw.W, dw.L0, dw.L1, dw.L2, R, step, o, out _);
+            o[o.Count - 1] = p1;
+            return o;
+        }
+
+        /// <summary>DubinsAll's words, shortest first, only those whose sampled arc lands on p1 heading h1, appended to
+        /// <paramref name="into"/>; the landing test samples into <paramref name="scratch"/> (a fresh list when null). The
+        /// lay's lead-out search keeps these and samples an arc only when it judges it (HOSE_LAY_FIX_GC_STORM_FROM_WORKER).</summary>
+        internal static void DubinsWords(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords, List<DubinsWord> into, List<V2> scratch)
         {
             double Mod(double x) { x %= 2 * Math.PI; return x < 0 ? x + 2 * Math.PI : x; }
             V2 D = p1 - p0;
@@ -582,18 +661,17 @@ namespace RimMandrake.FlowWorks.Hose
             if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(al - Math.Atan2(ca - cb, d - sa + sb) + pp / 2); cands.Add(("RLR", t, pp, Mod(al - be - t + pp))); }
             tmp = (6 - d * d + 2 * cab + 2 * d * (-sa + sb)) / 8;
             if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(-al - Math.Atan2(ca - cb, d + sa - sb) + pp / 2); cands.Add(("LRL", t, pp, Mod(be - al - t + pp))); }
-            var all = new List<List<V2>>();
             double h1a = Math.Atan2(h1.Z, h1.X);
+            List<V2> pts = scratch ?? new List<V2>();
             foreach (var c in cands.OrderBy(c => c.t + c.p + c.q))
             {
-                List<V2> pts = DubinsSample(p0, Math.Atan2(h0.Z, h0.X), c.w, new[] { c.t * R, c.p * R, c.q * R }, R, step, out double thEnd);
+                var dw = new DubinsWord { W = c.w, L0 = c.t * R, L1 = c.p * R, L2 = c.q * R };
+                DubinsSampleInto(p0, Math.Atan2(h0.Z, h0.X), dw.W, dw.L0, dw.L1, dw.L2, R, step, pts, out double thEnd);
                 double hErr = Math.Abs(Math.Atan2(Math.Sin(thEnd - h1a), Math.Cos(thEnd - h1a)));
                 if (V2.Dist(pts[pts.Count - 1], p1) > 1e-3 * Math.Max(1, R) || hErr > 1e-3) continue;
-                pts[pts.Count - 1] = p1;
-                all.Add(pts);
+                into.Add(dw);
                 if (!allWords) break;
             }
-            return all;
         }
 
         internal static List<V2> Dubins(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step)
@@ -602,13 +680,13 @@ namespace RimMandrake.FlowWorks.Hose
             return a.Count > 0 ? a[0] : null;
         }
 
-        private static List<V2> DubinsSample(V2 p0, double th, string word, double[] lens, double R, double step, out double thEnd)
+        private static void DubinsSampleInto(V2 p0, double th, string word, double l0, double l1, double l2, double R, double step, List<V2> o, out double thEnd)
         {
-            var o = new List<V2>();
+            o.Clear();
             double x = p0.X, z = p0.Z;
             for (int k = 0; k < 3; k++)
             {
-                double l = lens[k];
+                double l = k == 0 ? l0 : k == 1 ? l1 : l2;
                 if (l <= 1e-12) continue;
                 int n = Math.Max(1, (int)Math.Ceiling(l / step));
                 double ds = l / n;
@@ -623,7 +701,6 @@ namespace RimMandrake.FlowWorks.Hose
             }
             if (o.Count == 0) o.Add(p0);
             thEnd = th;
-            return o;
         }
 
         /// <summary>How far out of the outlet the route is planned from: the straight run plus two bend radii, so even a turn
@@ -840,6 +917,13 @@ namespace RimMandrake.FlowWorks.Hose
                 // pair can join the plump pose by a long detour the flat pose does not take, so the hose visibly grows when it
                 // fills. Such a pair is only kept as the last resort, after every other join was tried.
                 (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? longPlump = null;
+                // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: the candidates and finished poses depend on neither pass flag, so they are
+                // made once per lay for all four passes; the 4-list is the 24-list's prefix (both shortest first, cut at
+                // the count), so a finished pose keyed by its index is the same pose in either
+                var fFin = new Dictionary<long, LeadFin>();
+                var qFin = new Dictionary<long, LeadFin>();
+                var fcOf = new Dictionary<int, List<(double extra, List<V2> pts, double leadLen)>>();
+                var qcOf = new Dictionary<int, List<(double extra, List<V2> pts, double leadLen)>>();
                 foreach (bool body in new[] { true, false })
                 {
                 if (done || (!body && BodyRuleOn && !bodyTurnedAway) || (body && !BodyRuleOn)) continue;
@@ -854,17 +938,31 @@ namespace RimMandrake.FlowWorks.Hose
                 foreach (int cmax in new[] { 4, 24 })
                 {
                 if (done) break;
-                var fc = LeadOutCandidates(w, lay.Flat, a, u, S, R, cmax);
-                var qc = LeadOutCandidates(w, lay.Plump, a, u, S, R, cmax);
-                foreach (var pair in fc.SelectMany(x => qc.Select(y => (x, y))).OrderBy(t => t.x.extra + t.y.extra))
+                if (!fcOf.TryGetValue(cmax, out var fc)) fcOf[cmax] = fc = LeadOutCandidates(w, lay.Flat, a, u, S, R, cmax);
+                if (!qcOf.TryGetValue(cmax, out var qc)) qcOf[cmax] = qc = LeadOutCandidates(w, lay.Plump, a, u, S, R, cmax);
+                // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: a pair's finished pose and every test on it depend on its own candidate and
+                // the sample count only, so each is made and judged once (LeadFin) rather than once per pair it is in: up to
+                // 24 x 24 pairs re-finished both sides each, ~265 MB of garbage per outflow lay on the 325 basin map
+                LeadFin Fin(Dictionary<long, LeadFin> memo, List<V2> pts, int idx, int m)
                 {
+                    long key = ((long)idx << 32) | (uint)m;
+                    if (!memo.TryGetValue(key, out LeadFin fin)) memo[key] = fin = new LeadFin(w, LeadOutFinish(w, pts, m, a, u, S, R));
+                    return fin;
+                }
+                var pairs = new List<(int x, int y)>(fc.Count * qc.Count);
+                for (int xi = 0; xi < fc.Count; xi++) for (int yi = 0; yi < qc.Count; yi++) pairs.Add((xi, yi));
+                // stable, as the OrderBy it replaces: equal sums keep the flat-major order
+                foreach (var ix in pairs.OrderBy(t => fc[t.x].extra + qc[t.y].extra))
+                {
+                    var pair = (x: fc[ix.x], y: qc[ix.y]);
                     int m = Math.Max(LeadOutSamples(pair.x.pts), LeadOutSamples(pair.y.pts));
-                    List<V2> f = LeadOutFinish(w, pair.x.pts, m, a, u, S, R), q = LeadOutFinish(w, pair.y.pts, m, a, u, S, R);
-                    if (!Clear(w, f) || !Clear(w, q)) continue;
+                    LeadFin fF = Fin(fFin, pair.x.pts, ix.x, m), qF = Fin(qFin, pair.y.pts, ix.y, m);
+                    List<V2> f = fF.Pts, q = qF.Pts;
+                    if (!fF.Clear || !qF.Clear) continue;
                     double lead = Math.Max(pair.x.leadLen, pair.y.leadLen);
-                    if (Math.Min(MinBendRadiusUpTo(f, EndSkip, lead + 2 * R + 1), MinBendRadiusUpTo(q, EndSkip, lead + 2 * R + 1)) < R * 0.97) continue;
-                    if (scenic && Rig(f) + Rig(q) > 0) { rigTurnedAway = true; continue; }
-                    double gap = Math.Min(BodyGap(w, f, S, EndSkip), BodyGap(w, q, S, EndSkip));
+                    if (Math.Min(fF.MinBendUpTo(lead + 2 * R + 1), qF.MinBendUpTo(lead + 2 * R + 1)) < R * 0.97) continue;
+                    if (scenic && fF.RigOf(w, planCells) + qF.RigOf(w, planCells) > 0) { rigTurnedAway = true; continue; }
+                    double gap = Math.Min(fF.GapOf(w, S), qF.GapOf(w, S));
                     if (body && gap < bodyHalf) { bodyTurnedAway = true; continue; }
                     var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
                     if (Geo.Length(q) > Geo.Length(f) * PlumpGrowthMax + 0.5)
@@ -1299,8 +1397,9 @@ namespace RimMandrake.FlowWorks.Hose
         internal static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
         {
             if (pts.Count < 2) return true;
-            double[] s = Geo.CumLen(pts);
-            double L = s[s.Length - 1];
+            LayScratch ls = LayScratch.Get();
+            double[] s = LayScratch.CumOf(pts, ref ls.ClearCum);
+            double L = s[pts.Count - 1];
             Cell prev = pts[0].Floor;
             for (int i = 1; i < pts.Count; i++)
             {
@@ -1400,16 +1499,20 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>n equal-arc samples of a polyline (both ends kept exactly).</summary>
-        internal static List<V2> ResampleN(IList<V2> p, int n)
+        internal static List<V2> ResampleN(IList<V2> p, int n) => ResampleNInto(p, n, new List<V2>(n));
+
+        /// <summary>ResampleN into <paramref name="o"/> (cleared first; returned).</summary>
+        internal static List<V2> ResampleNInto(IList<V2> p, int n, List<V2> o)
         {
-            double[] s = Geo.CumLen(p);
-            double L = s[s.Length - 1];
-            var o = new List<V2>(n);
+            LayScratch ls = LayScratch.Get();
+            double[] s = LayScratch.CumOf(p, ref ls.Cum);
+            double L = s[p.Count - 1];
+            o.Clear();
             int j = 0;
             for (int i = 0; i < n; i++)
             {
                 double t = L * i / (n - 1);
-                while (j < s.Length - 2 && s[j + 1] < t) j++;
+                while (j < p.Count - 2 && s[j + 1] < t) j++;
                 double seg = s[j + 1] - s[j];
                 double u = seg < 1e-12 ? 0 : (t - s[j]) / seg;
                 o.Add(p[j] + (p[j + 1] - p[j]) * Geo.Clamp(u, 0, 1));

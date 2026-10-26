@@ -222,7 +222,10 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 if (!first) sb.Append(',');
                 first = false;
-                HoseLay lay = comp.EnsureLay(r);
+                // HOSE_CENSUS_FIX_RELAYS_IN_PROBE: the census reads the cached lay and never lays: a synchronous EnsureLay per reel
+                // laid every changed hose on the main thread inside the measured window (a relay wave of 100 rigs). A changed
+                // reset lay shows as layKeyed false (not re-laid yet), a queued one as layRunning; relays and the queue counters are reported above.
+                HoseLay lay = r.HoseOut ? r.lay : null;
                 RM_MapComponent_Hoses.PoseInfo pi = RM_MapComponent_Hoses.Info(r);
                 HoseFreeEnd fe = HoseEnds.Read(r);
                 sb.Append("{\"id\":").Append(r.parent.thingIDNumber)
@@ -231,6 +234,7 @@ namespace RimMandrake.FlowWorks.Hose
                   .Append(",\"far\":[").Append(r.far.x).Append(',').Append(r.far.z).Append(']')
                   .Append(",\"laid\":").Append(B(r.laid))
                   .Append(",\"layOk\":").Append(B(lay != null))
+                  .Append(",\"layKeyed\":").Append(B(r.layKey != null)).Append(",\"layRunning\":").Append(B(comp.LayRunning(r)))
                   .Append(",\"layReason\":").Append(S(r.lastLayReason))
                   .Append(",\"carry\":").Append(S(r.carry.ToString()))
                   .Append(",\"carrier\":").Append(r.carrier == null ? "null" : "{\"id\":" + r.carrier.thingIDNumber + ",\"name\":" + S(r.carrier.LabelShort) + ",\"pos\":" + Pos(r.carrier.Position) + "}")

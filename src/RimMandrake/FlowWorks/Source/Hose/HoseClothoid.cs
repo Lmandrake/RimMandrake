@@ -288,35 +288,33 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int i = 0; i <= N; i++) { f += wB2 * KK[i] * KK[i]; double o = Math.Abs(KK[i]) - kIn; if (o > 0) f += wI2 * o * o; }
                 return 0.5 * f;
             }
-            double[] Cons()
+            void Cons(double[] c)
             {
-                var c = new double[nE];
                 c[0] = pN[N].X - pr.P1.X; c[1] = pN[N].Z - pr.P1.Z;
                 if (nE == 3) c[2] = thN[N] - th1;
-                return c;
             }
+            // HOSE_LAY_FIX_GC_STORM_FROM_WORKER (2026-10-26): the iteration allocates nothing. The current and trial profiles
+            // (KC, KN) and end residuals (cC, cN) are two buffers each, swapped when a step is taken; the dense work arrays
+            // (normal matrix, Jacobian rows, Cholesky factor) come from this thread's grow-only Scratch. They had been made
+            // fresh every iteration and every line-search try: ~10 MB per solve, ~330 MB per outflow lay on the 325 basin
+            // map, the garbage behind 60 full Boehm collections in 78 s of a relay wave.
+            Scratch sc = Scratch.Get(nv, N, nE);
             var KC = (double[])K.Clone();
+            var KN = new double[N + 1];
+            var cC = new double[nE];
+            var cN = new double[nE];
             double thC = th0;
             int it = 0, ran = 0, stall = 0, active = 0;
             bool done = false;
             {
-                var U = new V2[nv];
-                var Cc = new double[nv];
-                var D = new V2[nv];
-                var St = new int[nv];
-                var Sn = new double[N + 2];
-                var Sr = new V2[N + 2];
-                var SW = new V2[N + 2];
-                var SWr = new double[N + 2];
-                var S2 = new double[N + 2];
-                var H = new double[nv * nv];
-                var g = new double[nv];
-                var A = new double[nE * nv];
+                V2[] U = sc.U, D = sc.D, Sr = sc.Sr, SW = sc.SW;
+                double[] Cc = sc.Cc, Sn = sc.Sn, SWr = sc.SWr, S2 = sc.S2, H = sc.H, g = sc.G, A = sc.A, dS = sc.Step, lam = sc.Lam;
+                int[] St = sc.St;
                 double rho = 10, mu = 1e-8;
                 bool perturbed = false;
                 Chain(KC, thC, true);
                 double fC = SoftCost(KC);
-                double[] cC = Cons();
+                Cons(cC);
                 for (; it < 60; it++)
                 {
                     Iters++;
@@ -390,8 +388,8 @@ namespace RimMandrake.FlowWorks.Hose
                     bool took = false, restart = false;
                     for (int tries = 0; tries < 8 && !took; tries++)
                     {
-                        double[] d = KktStep(H, g, A, cC, nv, nE, mu, out double[] lam);
-                        if (d == null && !perturbed)
+                        bool stepped = KktStep(sc, H, g, A, cC, nv, nE, mu, dS, lam);
+                        if (!stepped && !perturbed)
                         {
                             // a degenerate start (a dead straight chain with slack to spare: the end cannot move along the
                             // chord to first order) is broken by one small deterministic drape, then made to hold the bounds
@@ -400,22 +398,22 @@ namespace RimMandrake.FlowWorks.Hose
                             MakeFeasible(KC, fixedK, kIn, dInI);
                             break;
                         }
-                        if (d == null) { mu = Math.Max(1e-6, mu * 100); stall++; continue; }
+                        if (!stepped) { mu = Math.Max(1e-6, mu * 100); stall++; continue; }
                         for (int e = 0; e < nE; e++) rho = Math.Max(rho, 1.5 * Math.Abs(lam[e]));
                         double phi0 = fC + rho * L1(cC);
                         for (double alpha = 1; alpha > 1e-3 && !took; alpha *= 0.5)
                         {
-                            var KN = (double[])KC.Clone();
-                            for (int v = 0; v < nk; v++) KN[vars[v]] += alpha * d[v];
-                            double thT = freeTh ? thC + alpha * d[nv - 1] : thC;
+                            Array.Copy(KC, KN, N + 1);
+                            for (int v = 0; v < nk; v++) KN[vars[v]] += alpha * dS[v];
+                            double thT = freeTh ? thC + alpha * dS[nv - 1] : thC;
                             Chain(KN, thT, false);
                             double fN = SoftCost(KN);
-                            double[] cN = Cons();
+                            Cons(cN);
                             if (fN + rho * L1(cN) < phi0 - 1e-12 * (1 + Math.Abs(phi0)))
                             {
                                 double moved = 0;
-                                for (int v = 0; v < nv; v++) moved = Math.Max(moved, Math.Abs(alpha * d[v]));
-                                KC = KN; thC = thT; fC = fN; cC = cN;
+                                for (int v = 0; v < nv; v++) moved = Math.Max(moved, Math.Abs(alpha * dS[v]));
+                                (KC, KN) = (KN, KC); thC = thT; fC = fN; (cC, cN) = (cN, cC);
                                 took = true;
                                 mu = Math.Max(1e-10, mu * 0.3);
                                 if (moved < 1e-9 && L1(cC) < 1e-7) done = true;
@@ -424,7 +422,7 @@ namespace RimMandrake.FlowWorks.Hose
                         }
                         if (!took) mu = Math.Max(1e-6, mu * 100);
                     }
-                    if (restart) { Chain(KC, thC, true); fC = SoftCost(KC); cC = Cons(); continue; }
+                    if (restart) { Chain(KC, thC, true); fC = SoftCost(KC); Cons(cC); continue; }
                     if (!took || done) break;
                     Chain(KC, thC, true);
                 }
@@ -443,17 +441,18 @@ namespace RimMandrake.FlowWorks.Hose
                         A[v] = dpN.X; A[nv + v] = dpN.Z; if (nE == 3) A[2 * nv + v] = cj;
                     }
                     if (freeTh) { V2 r0 = Rot(pN[N] - pN[0]); A[nv - 1] = r0.X; A[2 * nv - 1] = r0.Z; if (nE == 3) A[3 * nv - 1] = 1; }
-                    var I = new double[nv * nv];
+                    double[] I = H;   // the normal matrix is not read again: the polish's identity metric reuses it
+                    Array.Clear(I, 0, nv * nv);
                     for (int v = 0; v < nv; v++) I[v * nv + v] = 1;
-                    double[] d = KktStep(I, new double[nv], A, cC, nv, nE, 0, out _);
-                    if (d == null) break;
-                    var KN = (double[])KC.Clone();
-                    for (int v = 0; v < nk; v++) KN[vars[v]] += d[v];
-                    double thT = freeTh ? thC + d[nv - 1] : thC;
+                    Array.Clear(g, 0, nv);
+                    if (!KktStep(sc, I, g, A, cC, nv, nE, 0, dS, lam)) break;
+                    Array.Copy(KC, KN, N + 1);
+                    for (int v = 0; v < nk; v++) KN[vars[v]] += dS[v];
+                    double thT = freeTh ? thC + dS[nv - 1] : thC;
                     Chain(KN, thT, false);
-                    double[] cN = Cons();
+                    Cons(cN);
                     if (L1(cN) >= L1(cC)) break;
-                    KC = KN; thC = thT; cC = cN;
+                    (KC, KN) = (KN, KC); thC = thT; (cC, cN) = (cN, cC);
                 }
                 for (int i = 0; i <= N; i++) if (Math.Abs(KC[i]) > kIn + 1e-9) active++;
                 for (int i = 0; i < N; i++) if (Math.Abs(KC[i + 1] - KC[i]) > dInI[i] + 1e-9) active++;
@@ -564,38 +563,64 @@ namespace RimMandrake.FlowWorks.Hose
 
         private static double L1(double[] c) { double t = 0; foreach (double v in c) t += Math.Abs(v); return t; }
 
-        /// <summary>One Gauss-Newton step of min 1/2 d'Md + g'd subject to A d = -c (M = H + mu diag, nE &lt;= 3 rows of A): the
-        /// Schur complement through one Cholesky of M. Null when M is not positive definite or the constraints are degenerate.</summary>
-        internal static double[] KktStep(double[] H, double[] g, double[] A, double[] c, int n, int nE, double mu, out double[] lam)
+        /// <summary>One solving thread's dense work arrays, grown to the largest solve it has seen and reused by every later one
+        /// (lays run on ThreadPool workers, each with its own). Every reader indexes by the solve's own nv / N / nE, never by
+        /// Length.</summary>
+        internal sealed class Scratch
         {
-            lam = new double[nE];
-            var M = new double[n * n];
-            for (int i = 0; i < n * n; i++) M[i] = H[i];
+            [ThreadStatic] private static Scratch mine;
+            internal V2[] U = new V2[0], D = new V2[0], Sr = new V2[0], SW = new V2[0];
+            internal double[] Cc = new double[0], Sn = new double[0], SWr = new double[0], S2 = new double[0], H = new double[0],
+                G = new double[0], A = new double[0], Step = new double[0], Lam = new double[3], M = new double[0], Y = new double[0], Z = new double[0];
+            internal int[] St = new int[0];
+            internal readonly double[,] S = new double[3, 4];
+            internal static Scratch Get(int nv, int N, int nE)
+            {
+                Scratch sc = mine ?? (mine = new Scratch());
+                if (sc.Cc.Length < nv)
+                {
+                    int c = Math.Max(nv, 2 * sc.Cc.Length);
+                    sc.U = new V2[c]; sc.D = new V2[c]; sc.Cc = new double[c]; sc.St = new int[c]; sc.G = new double[c];
+                    sc.Step = new double[c]; sc.Y = new double[c]; sc.H = new double[c * c]; sc.M = new double[c * c];
+                    sc.A = new double[3 * c]; sc.Z = new double[3 * c];
+                }
+                if (sc.Sn.Length < N + 2)
+                {
+                    int c = Math.Max(N + 2, 2 * sc.Sn.Length);
+                    sc.Sn = new double[c]; sc.Sr = new V2[c]; sc.SW = new V2[c]; sc.SWr = new double[c]; sc.S2 = new double[c];
+                }
+                return sc;
+            }
+        }
+
+        /// <summary>One Gauss-Newton step of min 1/2 d'Md + g'd subject to A d = -c (M = H + mu diag, nE &lt;= 3 rows of A): the
+        /// Schur complement through one Cholesky of M, into <paramref name="d"/> (n) and the multipliers <paramref name="lam"/>
+        /// (nE), working in <paramref name="sc"/>. False when M is not positive definite or the constraints are degenerate.</summary>
+        internal static bool KktStep(Scratch sc, double[] H, double[] g, double[] A, double[] c, int n, int nE, double mu, double[] d, double[] lam)
+        {
+            double[] M = sc.M, y = sc.Y, Z = sc.Z;
+            Array.Copy(H, M, n * n);
             for (int i = 0; i < n; i++) M[i * n + i] += mu * (H[i * n + i] + 1e-6) + 1e-12;
-            if (!Cholesky(M, n)) return null;
-            double[] y = CholSolve(M, n, g);
-            var Z = new double[nE][];
-            for (int e = 0; e < nE; e++) { var a = new double[n]; Array.Copy(A, e * n, a, 0, n); Z[e] = CholSolve(M, n, a); }
+            if (!Cholesky(M, n)) return false;
+            CholSolve(M, n, g, 0, y, 0);
+            for (int e = 0; e < nE; e++) CholSolve(M, n, A, e * n, Z, e * n);
             // (A M^-1 A') lam = c - A M^-1 g
-            var S = new double[nE, nE + 1];
+            double[,] S = sc.S;
             for (int e = 0; e < nE; e++)
             {
                 double ay = 0;
                 for (int i = 0; i < n; i++) ay += A[e * n + i] * y[i];
                 S[e, nE] = c[e] - ay;
-                for (int f = 0; f < nE; f++) { double t = 0; for (int i = 0; i < n; i++) t += A[e * n + i] * Z[f][i]; S[e, f] = t; }
+                for (int f = 0; f < nE; f++) { double t = 0; for (int i = 0; i < n; i++) t += A[e * n + i] * Z[f * n + i]; S[e, f] = t; }
             }
-            double[] l = Gauss(S, nE);
-            if (l == null) return null;
-            lam = l;
-            var d = new double[n];
+            if (!Gauss(S, nE, lam)) return false;
             for (int i = 0; i < n; i++)
             {
                 double t = y[i];
-                for (int e = 0; e < nE; e++) t += Z[e][i] * l[e];
+                for (int e = 0; e < nE; e++) t += Z[e * n + i] * lam[e];
                 d[i] = -t;
             }
-            return d;
+            return true;
         }
 
         /// <summary>In-place lower Cholesky of a dense symmetric n x n matrix (row-major); false when not positive definite.</summary>
@@ -619,23 +644,23 @@ namespace RimMandrake.FlowWorks.Hose
             return true;
         }
 
-        private static double[] CholSolve(double[] M, int n, double[] b)
+        /// <summary>Solves L L' y = b for the factor in <paramref name="M"/>: b read from b[bo..], y written to y[yo..].</summary>
+        private static void CholSolve(double[] M, int n, double[] b, int bo, double[] y, int yo)
         {
-            var y = new double[n];
-            for (int i = 0; i < n; i++) { double t = b[i]; for (int k = 0; k < i; k++) t -= M[i * n + k] * y[k]; y[i] = t / M[i * n + i]; }
-            for (int i = n - 1; i >= 0; i--) { double t = y[i]; for (int k = i + 1; k < n; k++) t -= M[k * n + i] * y[k]; y[i] = t / M[i * n + i]; }
-            return y;
+            for (int i = 0; i < n; i++) { double t = b[bo + i]; for (int k = 0; k < i; k++) t -= M[i * n + k] * y[yo + k]; y[yo + i] = t / M[i * n + i]; }
+            for (int i = n - 1; i >= 0; i--) { double t = y[yo + i]; for (int k = i + 1; k < n; k++) t -= M[k * n + i] * y[yo + k]; y[yo + i] = t / M[i * n + i]; }
         }
 
-        /// <summary>Gaussian elimination with partial pivoting on an n x (n+1) augmented matrix; null when singular.</summary>
-        internal static double[] Gauss(double[,] A, int n)
+        /// <summary>Gaussian elimination with partial pivoting on an n x (n+1) augmented matrix, into <paramref name="x"/>; false
+        /// when singular (x then untouched).</summary>
+        internal static bool Gauss(double[,] A, int n, double[] x)
         {
             for (int c = 0; c < n; c++)
             {
                 int p = c;
                 double best = Math.Abs(A[c, c]);
                 for (int r = c + 1; r < n; r++) if (Math.Abs(A[r, c]) > best) { best = Math.Abs(A[r, c]); p = r; }
-                if (best < 1e-14) return null;
+                if (best < 1e-14) return false;
                 if (p != c) for (int k = c; k <= n; k++) { double t = A[c, k]; A[c, k] = A[p, k]; A[p, k] = t; }
                 for (int r = c + 1; r < n; r++)
                 {
@@ -644,14 +669,13 @@ namespace RimMandrake.FlowWorks.Hose
                     for (int k = c; k <= n; k++) A[r, k] -= f * A[c, k];
                 }
             }
-            var x = new double[n];
             for (int r = n - 1; r >= 0; r--)
             {
                 double s = A[r, n];
                 for (int k = r + 1; k < n; k++) s -= A[r, k] * x[k];
                 x[r] = s / A[r, r];
             }
-            return x;
+            return true;
         }
 
         // ------------------------------------------------------------------------------------------------ uses

@@ -612,6 +612,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>Probe: the lay queue's counters (HoseProbe census "layQueue").</summary>
         internal string LayQueueJson() => layQueue.Json();
 
+        /// <summary>Probe: is a lay of this reel's running on the queue now (HoseProbe census "layRunning"; asks nothing).</summary>
+        internal bool LayRunning(CompHoseReel r) => layQueue.Running(r.parent.thingIDNumber);
+
         /// <summary>A changed key: the landed lay (applied under its own key) or the last one while the new lay is made.</summary>
         private HoseLay LayLater(CompHoseReel r, string key, V2 end, V2? inward, V2? portAt, V2 portAxis)
         {
