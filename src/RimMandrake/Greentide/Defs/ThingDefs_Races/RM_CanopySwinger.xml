@@ -38,6 +38,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Light</leatherDef>
       <body>Monkey</body>
       <predator>false</predator>
       <petness>0.15</petness>

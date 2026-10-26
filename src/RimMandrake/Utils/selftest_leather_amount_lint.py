@@ -128,6 +128,7 @@ def main():
         with redirect_stdout(buf):
             rc = lint.main([tmp])
         check('main exits 1 on offenders', rc == 1, buf.getvalue())
+        check('body_counts sees the fixture birds', r['body_counts'].get('Bird') == 3, r['body_counts'])
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
@@ -141,12 +142,14 @@ def main():
     r = lint.scan(lint.DEFAULT_ROOT, lint.FINISHED_CLASSES)
     check('every STRICT_EXEMPT entry still inherits the bare 40', not r['stale_exempt'], r['stale_exempt'])
     for c in lint.FINISHED_CLASSES:
-        # Non-blind: the body walk must still see this class's exempt races (they inherit the bare 40 on
-        # purpose), else a body-resolution regression would pass every strict class silently.
+        # Non-blind: the body walk must still resolve races of this class, else a body-resolution regression
+        # would pass every strict class silently; and every bare-40 race of it left must be an exemption.
         bodies = set(lint.CLASS_BODIES[c])
+        n_body = sum(v for k, v in r['body_counts'].items() if k in bodies)
         of_class = [o['defName'] for o in r['vanilla_inherited_amount'] if o['body'] in bodies]
-        check('finished class %s is non-blind (its exempt races are seen with their body)' % c,
-              bool(of_class) and all(n in lint.STRICT_EXEMPT for n in of_class), of_class)
+        check('finished class %s is non-blind (>= 2 races resolve to its bodies)' % c, n_body >= 2, n_body)
+        check('finished class %s: every bare-40 race left is exempt' % c,
+              all(n in lint.STRICT_EXEMPT for n in of_class), of_class)
     check('real src/ sees >= %d races' % lint.MIN_RACES, r['races'] >= lint.MIN_RACES, r['races'])
     check('probe %s seen as good' % lint.PROBE_GOOD, lint.PROBE_GOOD in r['good_explicit'])
     check('real src/ parses every Defs/Patches file', not r['parse_failures'], r['parse_failures'][:3])

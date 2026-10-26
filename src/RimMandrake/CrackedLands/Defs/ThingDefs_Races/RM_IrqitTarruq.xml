@@ -207,6 +207,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Light</leatherDef>
       <body>Monkey</body>
       <predator>true</predator>
       <herdAnimal>false</herdAnimal>

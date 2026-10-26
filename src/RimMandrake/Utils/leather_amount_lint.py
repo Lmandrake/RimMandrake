@@ -92,7 +92,7 @@ CLASS_BODIES = {
                   'QuadrupedAnimalWithHoovesAndHump', 'QuadrupedAnimalWithHoovesAndHorn',
                   'QuadrupedAnimalWithHoovesAndTusks', 'QuadrupedAnimalWithClawsTailAndJowl'},
 }
-FINISHED_CLASSES = ('bird',)   # classes audited to the end; their regressions fail
+FINISHED_CLASSES = ('bird', 'monkey')   # classes audited to the end; their regressions fail
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
@@ -205,6 +205,7 @@ def scan(root, strict=()):
         return None, False
 
     races, offenders, vanilla40, unresolved, good = [], [], [], [], []
+    body_counts = {}  # body -> concrete races of it; the strict classes' non-blind floor
     for el, rel in concrete:
         links, missing = chain(el)
         if not any(e is not None and e.find('race') is not None for e, _ in links) and \
@@ -221,6 +222,7 @@ def scan(root, strict=()):
             leather = leather or '(patched)'
         body = next((e.findtext('race/body').strip() for e, _ in links
                      if e is not None and (e.findtext('race/body') or '').strip()), None)
+        body_counts[body] = body_counts.get(body, 0) + 1
         row = {'defName': dn, 'file': rel, 'leatherAmount': amt, 'leather': leather, 'body': body}
         if leather and amt and amt > 0 and amt_ours:
             good.append(dn)
@@ -242,7 +244,7 @@ def scan(root, strict=()):
     return {'races': len(races), 'offenders': offenders, 'vanilla_inherited_amount': vanilla40,
             'strict_failures': strict_fail, 'strict_classes': list(strict), 'stale_exempt': stale_exempt,
             'unresolved_parent': unresolved, 'good_explicit': good, 'parse_failures': parse_fail,
-            'patch_ops_unmodelled': unmodelled, 'race_names': races}
+            'patch_ops_unmodelled': unmodelled, 'race_names': races, 'body_counts': body_counts}
 
 
 def main(argv=None):
