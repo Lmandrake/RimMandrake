@@ -40,6 +40,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import pulse_core as pc  # noqa: E402
+import usage  # noqa: E402
 
 BRIEF_PORT = int(os.environ.get("RM_BRIEF_PORT", "8791"))
 BRIEF_MAX_AGE = 14 * 3600      # rm-pulse-brief.timer: 05:45 and 17:15; older than this one was missed
@@ -370,8 +371,9 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
         part = "" if burn.get("complete") else " - partial, the reader is still catching up"
         secs["spend"].append({"sec": "spend", "text": f"Claude tokens, last 24 h: {_human(day)} (peak {_human(peak)}/h){part}",
                               "claim": {"type": "measure", "src": "tokens", "value": day}})
-    secs["spend"].append({"sec": "spend", "text": "Claude plan window used / resets: unknown (no measured source yet)",
-                          "claim": {"type": "unknown"}})
+    # plan usage per account against the budget rule (usage.py); "unknown" where nothing measured it
+    for ln in usage.lines((snap.get("charts") or {}).get("usage"), now):
+        secs["spend"].append({"sec": "spend", **ln})
 
     # TESTING: the rigs' day so far (TESTING_RIG_MONITOR_EFFICIENCY_IN_PULSE), one line, re-derived by the judge
     ln = testing_line(snap)
@@ -526,6 +528,8 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
             return "pass" if it and it.open else "fail: item not open"
         if t == "testing":
             return check_testing(c)
+        if t == "usage":
+            return usage.check_claim(c, (snap.get("charts") or {}).get("usage"))
         if t in ("unknown", "coverage"):
             return "pass"
         return f"fail: unknown claim type {t!r}"

@@ -164,6 +164,21 @@ def main():
                        "withheld": 0}, {"red": False, "text": "x"}, NOW)
     check("render titles the home list with its total time", "When you&#x27;re home (1 · ~10 min)" in rh, rh[:0])
 
+    # CLAUDE_PLAN_USAGE_MEASURE_A_SOURCE: spend lines come from the monitor's measured usage panel
+    up = {"at": NOW, "evening_share": 0.4, "codex": None, "accounts": [
+        {"name": "own_a", "role": "owned", "cap": None, "state": "measured", "pct": 40.0, "resets_at": NOW + 2 * 86400,
+         "five_pct": 1.0, "measured_at": NOW - 60, "why": ""}]}
+    usnap = {**csnap, "charts": {"usage": up}}
+    ub = brief.compose(usnap, EVENTS, NOW - 7200, NOW)
+    sp = [ln for ln in ub["sections"]["spend"] if (ln.get("claim") or {}).get("type") == "usage"]
+    check("a measured account becomes a spend line", len(sp) == 1 and sp[0]["text"].startswith("own_a: 40% of the week used"), sp)
+    nob = brief.compose(csnap, EVENTS, NOW - 7200, NOW)
+    check("no usage panel reads unknown", any("unknown" in ln["text"] and ln["claim"]["type"] == "unknown"
+                                                for ln in nob["sections"]["spend"]), nob["sections"]["spend"])
+    sp[0]["claim"]["pct"] = 41.0                    # tamper
+    brief.judge(ub, EVENTS, {**usnap, "sources": {**usnap["sources"], "tokens": {"ok": True}}})
+    check("judge withholds a usage line the panel does not hold", sp[0]["check"] != "pass", sp[0]["check"])
+
     print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
     return 1 if FAILS else 0
 

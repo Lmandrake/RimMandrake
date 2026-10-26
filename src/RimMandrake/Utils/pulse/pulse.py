@@ -62,6 +62,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pulse_core as pc  # noqa: E402
+import usage  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 WIDGET_HTML = HERE / "widget" / "index.html"
@@ -154,6 +155,17 @@ class Collector:
         self.last_refresh: dict | None = None
         self.wake = threading.Event()       # ack/seen ask the ONE loop for an early tick; they never start their own
         self.burn: dict = {"cache": None, "at": 0, "saved": 0, "error": None}   # token burn reader (pc.burn_scan)
+        # plan usage (usage.py): network calls, so off the tick in their own thread, at most every REFETCH
+        self.usage: dict = {"panel": None, "at": 0, "busy": False, "status": {"ok": False, "at": None, "error": "not read yet"}}
+
+    def _usage(self, now: float) -> None:
+        try:
+            p = usage.refresh(now)
+            self.usage.update(panel=p, status={"ok": True, "at": now})
+        except Exception as e:   # a broken reader leaves the last panel and says why; it never guesses
+            self.usage["status"] = {"ok": False, "at": self.usage["status"].get("at"), "error": f"{type(e).__name__}: {e}"[:160]}
+        finally:
+            self.usage["busy"] = False
 
     def _ledger(self) -> list[dict]:
         """Re-read (and re-fold through rimflow's replay) only when a ledger file in either clone moved.
@@ -252,6 +264,11 @@ class Collector:
         raw["testing"] = src("testing", pc.read_testing)
         raw["services"] = src("services", pc.read_services) or {}
         raw["burn"], raw["burn_error"] = self._burn(now, force, src, status)
+        if now - self.usage["at"] > usage.REFETCH and not self.usage["busy"]:
+            self.usage.update(at=now, busy=True)
+            threading.Thread(target=self._usage, args=(now,), daemon=True).start()
+        raw["usage"] = self.usage["panel"]
+        status["usage"] = dict(self.usage["status"])
         raw["probe"] = self.probe
         status["probe"] = {"ok": self.probe is not None, "at": (self.probe or {}).get("at")}
         raw["source_status"] = status
@@ -649,7 +666,10 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
             "note": f"{held} held back: nobody recorded reading them first" if held else ""},
            {"id": "home", "title": f"When you're home ({pc.chores_time([r for r in rows if r['kind'] == 'chore' and not r.get('agent')])})",
             "lines": home, "backlog": []},
-           {"id": "done", "title": "Done", "lines": done, "backlog": []}]
+           {"id": "done", "title": "Done", "lines": done, "backlog": []},
+           {"id": "usage", "title": "Plan usage (measured)", "backlog": [],   # usage.py: unknown where unmeasured
+            "lines": [{"g": "◔", "kind": "usage", "t": now, "text": ln["text"], "link": None, "new": False}
+                      for ln in usage.lines((snap.get("charts") or {}).get("usage"), now)]}]
     return out
 
 
@@ -671,6 +691,11 @@ def make_digest(mode: str, since: float | None = None) -> dict:
                  else f"the last {DIGEST_CAP_SECS // 3600} h (no digest since)")
     col = Collector()
     raw = col.gather(now)
+    if raw.get("usage") is None:   # a one-shot collector has no usage thread: read it here (cached, ≤1 call/10 min)
+        try:
+            raw["usage"] = usage.refresh(now)
+        except Exception:   # the section then reads unknown, never a number
+            raw["usage"] = None
     snap, _, _ = pc.collect_snapshot(raw, {**state, "done_since": since}, now)
     secs = build_digest(snap, since, now)
     c = snap["counts"]
@@ -699,6 +724,8 @@ def make_digest(mode: str, since: float | None = None) -> dict:
         label = f"{sc['title']}: {n_new} new" + (f" · {n_old} waiting from before" if n_old else "")
         if sc["id"] in ("issues", "done"):
             label = f"{sc['title']}: {n_new}"
+        elif sc["id"] == "usage":
+            label = sc["title"]
         text.append(label)
         md += [f"## {label}", ""]
         for ln in sc["lines"]:

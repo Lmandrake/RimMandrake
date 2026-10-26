@@ -2048,7 +2048,8 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "charts": {"burn": burn_series(raw.get("burn"), now, raw.get("burn_error")),
                    "tickets": (ticket_series(raw["ledger"], now) if raw.get("ledger")
                                else {"unmeasured": "ledger not read"}),
-                   "testing": testing_panel(raw.get("testing"), now)},
+                   "testing": testing_panel(raw.get("testing"), now),
+                   "usage": raw.get("usage")},   # usage.panel: measured plan usage per account + codex
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked") and not r.get("agent"))
