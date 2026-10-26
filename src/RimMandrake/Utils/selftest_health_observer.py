@@ -111,6 +111,24 @@ def main():
     check("seq is 0..n without gaps across segments", seqs == list(range(len(seqs))) and len(seqs) >= 13, seqs)
     check("a torn line is counted as malformed, not dropped silently", rd["malformed"] == 1, rd["malformed"])
 
+    # 4b. two collector runs (the scheduled task restarted it): rows read back in TIME order, whatever the pids.
+    # Before 2026-10-26 read_stream sorted by the id "host-pid-stamp", so a later run with a lower pid came first
+    # and health_section never saw the hour the observer was down (review 2026-10-26).
+    sd = os.path.join(tmp, "s4b")
+    os.makedirs(sd)
+    for cid, fn, stamps in (("h-900-20261010T150000Z", "observer_20261010T150000Z_900_001.jsonl",
+                             ("15:00:00", "15:00:30")),
+                            ("h-100-20261010T160000Z", "observer_20261010T160000Z_100_001.jsonl", ("16:00:00",))):
+        with open(os.path.join(sd, fn), "w") as f:
+            for i, hms in enumerate(stamps):
+                f.write(json.dumps({"v": 1, "kind": "sample", "utc": "2026-10-10T%s.000Z" % hms, "seq": i,
+                                    "collector": {"id": cid}, "sources": {}}) + "\n")
+    ts = [x["utc"][11:19] for x in H.read_stream(sd)["rows"]]
+    check("rows of two collector runs read back in time order (not pid order)",
+          ts == ["15:00:00", "15:00:30", "16:00:00"], ts)
+    sec = H.health_section(H.epoch("2026-10-10T14:59:00Z"), H.epoch("2026-10-10T16:01:00Z"), [], directory=sd)
+    check("the hour between two collector runs is an OBSERVER GAP", any("OBSERVER GAP" in x for x in sec), sec)
+
     # 5. log tail: growth, truncation, rotation, read cap (never rereads the whole file)
     lp = os.path.join(tmp, "Player.log")
     with open(lp, "wb") as f:

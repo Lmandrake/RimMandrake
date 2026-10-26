@@ -828,7 +828,12 @@ def read_stream(directory=None):
                         malformed += 1
         except OSError:
             pass
-    rows.sort(key=lambda r: ((r.get("collector") or {}).get("id") or "", r["seq"]))
+    # collector id is "<host>-<pid>-<startStamp>": order runs by their START, then seq within a run. Sorting on
+    # the whole id put a later run with a lower pid first, hiding the gap between runs (review 2026-10-26).
+    def run_key(r):
+        cid = (r.get("collector") or {}).get("id") or ""
+        return (cid.rsplit("-", 1)[-1], cid, r["seq"])
+    rows.sort(key=run_key)
     return {"rows": rows, "malformed": malformed, "files": files, "dir": d}
 
 
@@ -925,12 +930,9 @@ def health_section(t0, t1, incidents, directory=None, window_s=30):
         st["dir"], len(samples), st["files"], st["malformed"])]
     prev = None
     for r in samples:
-        hb = (r["sources"].get("obs.heartbeat") or {}).get("value") or {}
         if prev is not None and r["_t"] - prev > 3 * 30:
             out.append("%s  OBSERVER GAP %ds (no observer samples)" % (utc(prev), r["_t"] - prev))
         prev = r["_t"]
-        if hb.get("failedProbes"):
-            pass
     for e in rows:
         if e.get("kind") in ("event", "start", "stop") and t0 <= e["_t"] <= t1:
             out.append("%s  observer %s %s" % (e["utc"], e.get("kind"), json.dumps(
