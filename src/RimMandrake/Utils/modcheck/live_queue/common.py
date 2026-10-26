@@ -53,9 +53,13 @@ def read_results(dry_run=False, path=None):
                 line = line.strip()
                 if line:
                     try:
-                        out.append(json.loads(line))
+                        r = json.loads(line)
                     except ValueError:
-                        pass
+                        continue
+                    # one file for both when LIVE_QUEUE_RESULTS is set: a rehearsal must never mark a live job done
+                    if isinstance(r, dict) and "dry_run" in r and bool(r["dry_run"]) != bool(dry_run):
+                        continue
+                    out.append(r)
     except OSError:
         pass
     return out

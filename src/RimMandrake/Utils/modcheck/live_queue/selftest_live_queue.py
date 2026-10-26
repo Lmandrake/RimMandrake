@@ -269,6 +269,13 @@ def main():
                              capture_output=True, text=True, env=dict(os.environ))
         check("run_next --list prints every job and the next pointer",
               all(j["id"] in out.stdout for j in jobs.JOBS) and "next: (queue done)" in out.stdout, out.stdout[-300:])
+        # wave 11: LIVE_QUEUE_RESULTS names ONE file for dry and live; a dry MEASURED record must not mark the live job done
+        open(res, "w").close()
+        with open(res, "a") as f:
+            f.write(json.dumps({"job": "preflight", "status": "MEASURED", "verdict": "PASS", "dry_run": True}) + "\n")
+        check("a dry-run record never marks the live job done (shared LIVE_QUEUE_RESULTS)",
+              jobs.next_job(dry_run=False)["id"] == "preflight" and jobs.next_job(dry_run=True)["id"] != "preflight",
+              (jobs.next_job(dry_run=False), jobs.next_job(dry_run=True)))
         check("job ids are unique and every job file exists",
               len({j["id"] for j in jobs.JOBS}) == len(jobs.JOBS) and
               all(os.path.isfile(os.path.join(_HERE, j["file"])) for j in jobs.JOBS))
