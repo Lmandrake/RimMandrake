@@ -111,6 +111,7 @@
     <Compile Include="HoseLayoutChecks.cs" />
     <Compile Include="HoseClothoidChecks.cs" />
     <Compile Include="HoseSpliceChecks.cs" />
+    <Compile Include="HoseMateCacheChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />
     <Compile Include="DeckCollapseLinesChecks.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="..\Hose\HoseSpliceMath.cs" />
+    <Compile Include="..\Hose\HoseMateCache.cs" />
     <Compile Include="..\Hose\HoseCurveMetrics.cs" />
     <Compile Include="..\Hose\HoseClothoid.cs" />
     <Compile Include="..\Hose\HoseBandMath.cs" />

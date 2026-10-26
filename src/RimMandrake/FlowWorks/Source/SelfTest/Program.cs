@@ -173,6 +173,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (args.Length > 0 && args[0] == "--hose-splice")
             {
                 HoseSpliceChecks.Run(Case);
+                HoseMateCacheChecks.Run(Case);
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
             }
@@ -2195,6 +2196,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipePoleChecks.Run(Case);          // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 4: pipe pole support rule, span cap, sag extremes, not pawn topology (PipePoleChecks.cs)
             PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
             LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
+            HoseMateCacheChecks.Run(Case);     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: pair solves keyed on inputs, budgeted, off the frame (HoseMateCacheChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
             HoseCurveChecks.Guard(Case);       // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 5: the G2 ruler over the hard stations holds its floor; owed rows only fail (HoseCurveChecks.cs)

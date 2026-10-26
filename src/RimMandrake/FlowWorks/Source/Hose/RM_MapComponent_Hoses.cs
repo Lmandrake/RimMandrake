@@ -1366,7 +1366,13 @@ namespace RimMandrake.FlowWorks.Hose
             public HoseLay layA, layB;
             public CompHoseReel A, B;
             public HoseSpliceMath.Mate mate;
+            /// <summary>The content-keyed solve this pair draws (HoseMateCache); null on the legacy path.</summary>
+            public HoseMateCache.Entry entry;
         }
+        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP (ticking): pair solves keyed on their inputs, changed ones solved off the frame.</summary>
+        private readonly HoseMateCache mateCache = new HoseMateCache();
+        /// <summary>Ends whose pair solve is still running: drawn as laid this frame and not offered to another partner.</summary>
+        private readonly HashSet<CompHoseReel> mateWaiting = new HashSet<CompHoseReel>();
         private readonly Dictionary<CompHoseReel, MateInfo> mateOf = new Dictionary<CompHoseReel, MateInfo>();
         /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: one solve per PAIR (A id, B id), kept while its key holds. The old
         /// cache was keyed by the solve key and cleared whenever it passed 64 entries; with more than 64 pairs in reach (four
@@ -1397,6 +1403,8 @@ namespace RimMandrake.FlowWorks.Hose
             if (mateFrame == Time.frameCount) return;
             mateFrame = Time.frameCount;
             mateOf.Clear();
+            mateWaiting.Clear();
+            if (!LegacyFrame) mateCache.BeginFrame(mateFrame);
             var cands = new List<CompHoseReel>();
             foreach (CompHoseReel r in reels) if (MateCandidate(r)) cands.Add(r);
             if (cands.Count < 2) { mateKept.Clear(); return; }
@@ -1407,11 +1415,11 @@ namespace RimMandrake.FlowWorks.Hose
             for (int i = 0; i < cands.Count; i++)
             {
                 CompHoseReel a = cands[i];
-                if (mateOf.ContainsKey(a)) continue;
+                if (mateOf.ContainsKey(a) || mateWaiting.Contains(a)) continue;
                 for (int j = i + 1; j < cands.Count; j++)
                 {
                     CompHoseReel b = cands[j];
-                    if (mateOf.ContainsKey(b)) continue;
+                    if (mateOf.ContainsKey(b) || mateWaiting.Contains(b)) continue;
                     IntVec3 ea = a.EndCell, eb = b.EndCell;
                     if (Math.Max(Math.Abs(ea.x - eb.x), Math.Abs(ea.z - eb.z)) > 1) continue;
                     string key = a.layKey + "#" + b.layKey + "#" + kmax.ToString("0.###") + "#" + vis.ToString("0.###");
@@ -1426,11 +1434,19 @@ namespace RimMandrake.FlowWorks.Hose
                     }
                     else
                     {
+                        // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP (ticking): keyed on the solve's inputs, not the HoseLay instance, so
+                        // a 250-tick re-lay to the same shape re-solves nothing; a changed pair is solved off the frame
+                        // (HoseMateCache) and both ends are drawn as laid -- and kept from other partners -- until it lands
                         long pair = ((long)a.parent.thingIDNumber << 32) | (uint)b.parent.thingIDNumber;
-                        if (!mateSolved.TryGetValue(pair, out mi) || mi.full != key || !ReferenceEquals(mi.layA, a.lay) || !ReferenceEquals(mi.layB, b.lay))
-                            mateSolved[pair] = mi = SolveMate(a, b, key, kmax, vis);
-                        mi.seen = mateFrame;
                         met++;
+                        List<V2> fa = a.lay.Flat, fb = b.lay.Flat;
+                        if (fa == null || fb == null || fa.Count <= 2 || fb.Count <= 2) continue;
+                        HoseMateCache.Entry e = mateCache.Get(pair, fa, fb, kmax, vis, a.lay.Lead0, b.lay.Lead0);
+                        if (e == null) { mateWaiting.Add(a); mateWaiting.Add(b); break; }
+                        if (e.mate == null) continue;   // no gentle route: both drawn as laid
+                        if (!mateSolved.TryGetValue(pair, out mi) || !ReferenceEquals(mi.entry, e) || mi.A != a || mi.B != b)
+                            mateSolved[pair] = mi = new MateInfo { key = e.key.ToString("x16"), full = key, A = a, B = b, mate = e.mate, layA = a.lay, layB = b.lay, entry = e };
+                        mi.seen = mateFrame;
                     }
                     if (mi.mate == null) continue;   // no gentle route: both drawn as laid
                     mateOf[a] = mateOf[b] = mi;
@@ -1438,6 +1454,7 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             // pairs no longer in reach (an end moved, a reel gone) are forgotten once they outnumber the live ones
+            if (!LegacyFrame) mateCache.Prune(met);
             if (mateSolved.Count > 64 && mateSolved.Count > 2 * met)
             {
                 var stale = new List<long>();
@@ -1495,7 +1512,7 @@ namespace RimMandrake.FlowWorks.Hose
                 if (!seen.Add(mi)) continue;
                 sb.Append($"{mi.A.parent.thingIDNumber}+{mi.B.parent.thingIDNumber} at {mi.mate.C} axis {mi.mate.Axis} cost {mi.mate.Cost:0.00}; ");
             }
-            return $"mates {seen.Count}: {sb}solves {mateSolves}, joiner halves drawn {lastMateJoins}";
+            return $"mates {seen.Count}: {sb}solves {mateSolves}, joiner halves drawn {lastMateJoins}; cache started {mateCache.Started} reused {mateCache.Reused} deferred {mateCache.Deferred} pending {mateCache.Pending} faulted {mateCache.Faulted}";
         }
         public bool lastFar;
 
