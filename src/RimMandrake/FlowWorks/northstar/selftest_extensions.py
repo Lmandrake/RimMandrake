@@ -755,6 +755,34 @@ def _repair_probes(EXT, base):
         got = _ext_run(EXT, "toggle_fill_in", fillin_off(has_job))
         if got.get("fill_in_off") != want:
             out.append("fill_in_off with hasJobOnCell=%s: %s, want %s (%s)" % (has_job, got.get("fill_in_off"), want, got))
+    # FILLIN_PROOF_FIX_BYSTANDER_DOWNED_MIDWAIT: the map's own colonist (Hansol) is vanished AFTER the fixture colonist spawns; the
+    # fixture, a dead pawn and a hostile are not touched
+    for chain in ("toggle_fill_in", "toggle_fill_in_displacement"):
+        log = []
+
+        def hb(tl, p, log=log):
+            if tl == "jawa/list_pawns":
+                return {"success": True, "pawns": [
+                    {"id": "Human46068", "isPlayer": True, "dead": False},
+                    {"id": "P1", "isPlayer": True, "dead": False},
+                    {"id": "Human9", "isPlayer": True, "dead": True},
+                    {"id": "Raider1", "isPlayer": False, "dead": False}]}
+            if tl == "jawa/pawn_force_incapacitate":
+                log.append(("vanish", p.get("pawn")))
+            if tl == "jawa/spawn_pawn":
+                log.append(("spawn", None))
+            g = _gravel_mock(tl, p)
+            if g is not None:
+                return g
+            return base(tl, p)
+        _ext_run(EXT, chain, hb)
+        vs = [e for e in log if e[0] == "vanish" and e[1] == "Human46068"]
+        # (the sweep of an EARLIER chain's P1 before the spawn is the existing behaviour; only vanishes after it count)
+        after = log[log.index(("spawn", None)) + 1:] if ("spawn", None) in log else log
+        if not vs or [e for e in after if e[0] == "vanish" and e[1] != "Human46068"]:
+            out.append("%s: bystander colonist not vanished, or a fixture/dead/hostile pawn was: %r" % (chain, log))
+        elif log.index(("spawn", None)) > log.index(vs[0]):
+            out.append("%s: bystander vanished before the fixture colonist spawned (colony would read empty): %r" % (chain, log))
     # fire: an unlit run is UNMEASURED (the old vanilla-Fire light silently never took)
     for lit, flames, want in (("REFUSED", 1, "UNMEASURED"), ("LIT (1,1)", 0, "FAIL"), ("LIT (1,1)", 1, "PASS")):
         got = _ext_run(EXT, "plot_E_fire", lambda tl, p: {"result": lit} if (

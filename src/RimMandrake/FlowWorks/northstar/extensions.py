@@ -489,6 +489,23 @@ def _fight_expected(t, pawn_ids, hediff="Bruise"):
         yield
 
 
+def _spawn_lone_filler(t, x, z):
+    """FILLIN_PROOF_FIX_BYSTANDER_DOWNED_MIDWAIT (HARNESS, 2026-10-26, job J20261026T090334Z-0c5943): the fill-in wait ran 3,000+
+    ticks beside the map's own colonists (Hansol 46068 went downed, health 1, at tick 6601, a pawn the chain never spawned and
+    _prep_plot never touched; the wait's stop is a real-harm stop and stays). The fixture's colonist spawns FIRST (the colony
+    never reads empty), then every OTHER living player pawn that no chain spawned is vanished (no death, no corpse), the same
+    sweep deep_stone_live makes, so the only pawn left to wade a dug cell is the one the chain watches."""
+    pid = _spawn_pawn_at(t, "Colonist", x, z)
+    if not (t._guard() and pid):
+        return pid
+    mine = set(p for _, p in _SPAWNED)
+    ps = t.bridge_call("jawa/list_pawns", limit=400) or {}
+    for p in ps.get("pawns") or []:
+        if p.get("isPlayer") and not p.get("dead") and p.get("id") and p.get("id") not in mine:
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=p.get("id"), action="vanish")
+    return pid
+
+
 def _spawn_pawn_at(t, kind, x, z, faction="player"):
     _sweep_earlier_chains(t)
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
@@ -1263,7 +1280,7 @@ def toggle_fill_in(t):
     pid = None
     with t.component("fill_in_on", toggle="fillInEnabled"):
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % a)
-        pid = _spawn_pawn_at(t, "Colonist", a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
+        pid = _spawn_lone_filler(t, a[0] - 2, a[1])     # registered in _SPAWNED: the next chain vanishes it
         _order_fill_in(t, pid, a)
         _wait_filled_in(t, pid, a)
         _expect_state(t, [a], depth=0, what="filled-in cell")
@@ -1295,7 +1312,7 @@ def toggle_fill_in_displacement(t):
         # a colonist must do the fill-in (_prep_plot vanished every earlier chain's pawn); the filled cell must reach
         # D=0 before the sums mean anything, and the sanctioned overflow (RM_MapComponent_Excavation.cs ~643-662,
         # counted in overflowDestroyedTotal) is added back, so a correct engine that overflows is not a FAIL
-        pid = _spawn_pawn_at(t, "Colonist", cells[1][0], cells[1][1] - 2)
+        pid = _spawn_lone_filler(t, cells[1][0], cells[1][1] - 2)
         r0 = [_rep(t, x, z) for x, z in cells] if t._guard() else []
         _stage(t, "jawa/designate_batch", action="add", designation="RM_FillInCanal", rect="%d,%d,1,1" % cells[1])
         _order_fill_in(t, pid, cells[1])
