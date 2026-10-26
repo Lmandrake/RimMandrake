@@ -14,7 +14,7 @@ Part 2, the REAL src/: every plant ThingDef resolves to a factor > 0 at glow 0 w
 SANITY PROBE: the scan must see a few hundred plant defs and resolve RM_Brindeth (Sump) to 0/0, or it is not looking.
 
 ALLOW lists a plant that deliberately sets min 0 with optimal > 0 (it then grows only under some light and dies in
-the dark). Each entry carries its reason. Empty on purpose.
+the dark). Each entry carries its reason.
 """
 from __future__ import annotations
 
@@ -31,7 +31,11 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 DEFAULT_MIN, DEFAULT_OPT = 0.51, 1.0     # Verse.PlantProperties defaults (1.6)
-ALLOW: dict[str, str] = {}
+_DAY_SHROOM = ("TileFeatures 'light-resistant' VEE_Day* port, donor values kept: vanilla's mushroom is 0/0 plus "
+               "diesToLight; the donor drops both so it grows like a surface plant (0 at glow 0, full at 1) and only "
+               "dies after 7.5 days of unbroken dark. Whether it should be 0/0 instead is item "
+               "DAYSHROOMS_DECIDE_GLOW_ON_DARK_TILES")
+ALLOW: dict[str, str] = {"RM_DayBoomshroom": _DAY_SHROOM, "RM_DayWillowgill": _DAY_SHROOM}
 FAILS = []
 
 
@@ -59,15 +63,26 @@ def scan(root: Path):
                 if dn and d.get("Abstract", "").lower() != "true":
                     concrete[dn] = d
         elif top.tag == "Patch":
-            for op in top.iter("Operation"):
+            # Every element holding a <value> is an op: a top-level <Operation>, an <li> inside a
+            # PatchOperationSequence's <operations>, or a PatchOperationFindMod <match>/<nomatch>.
+            # Iterating only "Operation" missed the nested ones (wave 62).
+            for op in top.iter():
                 v = op.find("value")
                 if v is None:
                     continue
                 for pl in [v] + list(v.iter("plant")):
-                    mg, og = pl.findtext("growMinGlow"), pl.findtext("growOptimalGlow")
-                    if mg is not None and float(mg) == 0 and (og is None or float(og) > 0):
+                    mg, og = _num(pl.findtext("growMinGlow")), _num(pl.findtext("growOptimalGlow"))
+                    if mg == 0 and (og is None or og > 0):
                         patch_hits.append((p.relative_to(root).as_posix(), op.findtext("xpath") or "?"))
     return concrete, abstract, patch_hits
+
+
+def _num(s):
+    """float of a glow field's text; None when absent or empty (an empty element must not crash the scan)."""
+    try:
+        return float(s) if s is not None and s.strip() else None
+    except ValueError:
+        return None
 
 
 def resolve(d, abstract, path, depth=0):
@@ -99,8 +114,9 @@ def lint(root: Path):
             continue
         mg = resolve(d, abstract, "plant/growMinGlow")
         og = resolve(d, abstract, "plant/growOptimalGlow")
-        mn = float(mg) if mg is not None else DEFAULT_MIN
-        op = float(og) if og is not None else DEFAULT_OPT
+        mn, op = _num(mg), _num(og)
+        mn = DEFAULT_MIN if mn is None else mn
+        op = DEFAULT_OPT if op is None else op
         seen[dn] = (mn, op)
         if mn == 0 and op > 0 and dn not in ALLOW:
             bad.append((dn, mn, op))
@@ -125,6 +141,15 @@ def synthetic() -> None:
 </Defs>""")
     (d / "Patches" / "p.xml").write_text("""<Patch><Operation Class="PatchOperationAdd">
   <xpath>Defs/ThingDef[defName="X"]/plant</xpath><value><growMinGlow>0</growMinGlow></value></Operation></Patch>""")
+    (d / "Patches" / "nested.xml").write_text("""<Patch>
+  <Operation Class="PatchOperationSequence"><operations>
+    <li Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="SeqHalf"]/plant</xpath><value><growMinGlow>0</growMinGlow></value></li>
+    <li Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="SeqGood"]/plant</xpath><value><growMinGlow>0</growMinGlow><growOptimalGlow>0</growOptimalGlow></value></li>
+  </operations></Operation>
+  <Operation Class="PatchOperationFindMod"><mods><li>Some Mod</li></mods>
+    <match Class="PatchOperationAdd"><xpath>Defs/ThingDef[defName="FindModHalf"]/plant</xpath><value><growMinGlow>0</growMinGlow><growOptimalGlow></growOptimalGlow></value></match>
+  </Operation>
+</Patch>""")
     bad, n, seen, ph = lint(d)
     names = [b[0] for b in bad]
     check(names == ["InheritedHalf", "OwnHalf", "OwnHalfExplicit"], "synthetic: flags own, explicit-1 and inherited half-sets",
@@ -134,7 +159,10 @@ def synthetic() -> None:
           seen.get("ChildFixes"))
     check(seen.get("SunPlant") == (DEFAULT_MIN, DEFAULT_OPT), "synthetic: unset fields read the vanilla defaults",
           seen.get("SunPlant"))
-    check(len(ph) == 1, "synthetic: a patch adding growMinGlow 0 alone is flagged", ph)
+    hit_x = sorted(x for _, x in ph)
+    check(len(ph) == 3 and all(k in " ".join(hit_x) for k in ('"X"', '"SeqHalf"', '"FindModHalf"')),
+          "synthetic: a patch adding growMinGlow 0 alone is flagged, top-level, in a Sequence <li> and in a "
+          "FindMod <match> (empty optimal reads as unset); the 0/0 Sequence op is not", hit_x)
 
 
 def real() -> None:

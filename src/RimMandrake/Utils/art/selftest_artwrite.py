@@ -87,6 +87,7 @@ def main():
     n = tw3.sync(tex)
     check((tex / "One_south.png").is_file(), "sync never retires an owner-kept picture it was refused on")
     check(not (tex / "Two.png").exists() and n == 1, "sync retires PNGs the run did not write")
+    check(not (tex / "Three.dds").exists(), "sync removes a non-PNG the run did not write (rmtree-then-regenerate)")
     check(L.store_has(idx.live[("src/Fix", "A/Two.png")]["sha"]), "retired picture is archived")
     check(("src/Fix", "A/Two.png") not in L.Index().live, "retire recorded (no longer live)")
     check(tw3.report() == 1, "report returns the refusal count")
@@ -106,7 +107,10 @@ def main():
         L.append({"type": "live", "mod": "src/Fix", "rel": "A/Stray.png", "sha": L.store_put_bytes(blue),
                   "prev": None, "reason": "fixture"})
         n4 = tw4.sync("Textures/A")
-        check(not (tex / "Stray.png").exists() and n4 >= 1, "sync with a cwd-relative root retires what the run did not write")
+        # exact: Stray is the only retirable PNG; One_south is owner-kept and this writer never touched it
+        check(not (tex / "Stray.png").exists() and n4 == 1, "sync with a cwd-relative root retires what the run did not write")
+        check((tex / "One_south.png").read_bytes() == red and tw4.counts["kept"] == 1,
+              "sync by a writer that never touched an owner-kept picture still leaves it (refused, counted kept)")
         check((tex / "Rel.png").is_file(), "sync keeps what the run wrote via a relative path")
     finally:
         os.chdir(old_cwd)

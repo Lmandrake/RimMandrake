@@ -1,5 +1,5 @@
 // DivingInteraction offline fuzz entry. Knobs (forwarded by selftest_divinginteraction_fuzz.py): --fuzz-scale F
-// (multiplies every case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (garden|elder|units|oxygen|trample|fireban).
+// (multiplies every case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (garden|elder|units|oxygen|trample|fireban|ignition).
 using System;
 
 namespace RimMandrake.DivingInteraction.SelfTest

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Approach B fuzz of the DivingInteraction kernels (RM_GardenDefenseKernel.cs, RM_ElderEconomyKernel.cs), no game.
+"""Approach B fuzz of the DivingInteraction kernels (RM_GardenDefenseKernel.cs, RM_ElderEconomyKernel.cs,
+RM_OxygenLedgerKernel.cs, RM_WalkerTrampleKernel.cs, RM_ChillFireBanKernel.cs), no game.
 
 Seeded action sequences over the production kernels (Chill garden offense/cooldown scoring; Brine Elder novelty ledger,
 unique-treasure claims and silver payout; save/load round trips), with design invariants checked after every step. Same wrapper shape as selftest_gimmesomeslack.py: the project
 is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_bazaar_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only garden|elder|units]
+    python3 src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py [--fuzz-scale F] [--fuzz-seed N]
+        [--fuzz-only garden|elder|units|oxygen|trample|fireban|ignition]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

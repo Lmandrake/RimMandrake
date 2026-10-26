@@ -98,9 +98,10 @@ def main():
     check(not any("Faction_21" in k for k in unknown), "a <faction> load ID is not mistaken for a def", dict(unknown))
     text = open(p).read()
     G = {g["grid"]: g for g in S.grids(text, L, U, R)}
-    check(G["map terrain"]["lostOnLoad"] == {"hash:101": 2} or "AB_Ash" in str(G["map terrain"]["lostOnLoad"]),
+    # The universe dump names hash 101, so the loss is keyed by name; the count is the check (was `or "AB_Ash" in str`).
+    check(G["map terrain"]["lostOnLoad"] == {"AB_Ash": 2},
           "PLANTED: a terrain hash the live table lacks is lost on load (2 cells)", G["map terrain"])
-    check(G["world tileBiome"]["lostOnLoad"] and G["world tileBiome"]["cells"] == 3,
+    check(G["world tileBiome"]["lostOnLoad"] == {"AB_Fungal": 1} and G["world tileBiome"]["cells"] == 3,
           "PLANTED: a biome hash the live table lacks is lost on load", G["world tileBiome"])
     W = S.worklist(things, rels, lms, kinds, refs)
     w = "\n".join(W)
