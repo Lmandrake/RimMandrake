@@ -95,7 +95,12 @@ namespace JawaBench.BridgeTools
             int cap = JawaBenchTpsMath.QueueCapacity - JawaBenchTpsMath.QueueCapacity / 8;   // a full bulk share
             for (int i = 0; i < cap; i++) W.Enqueue("sample", "\"i\":" + i);
             W.Start(d, "abcdef0123", 4242);
-            Thread.Sleep(500);                                // the writer takes them as ONE in-flight batch
+            // the writer takes them as ONE in-flight batch: wait until it says so, or the bound below is not tested
+            // (while the batch still sits in Pending the queue is full anyway and the check passes for free)
+            string flying = "\"wfly\":" + cap + ",";
+            var waited = System.Diagnostics.Stopwatch.StartNew();
+            while (!W.HealthFields().Contains(flying) && waited.ElapsedMilliseconds < 10000) Thread.Sleep(20);
+            Check(W.HealthFields().Contains(flying), "the stuck writer holds the whole batch in flight: " + W.HealthFields());
             int more = 0;
             for (int i = 0; i < cap; i++) if (W.Enqueue("sample", "\"j\":" + i) > 0) more++;
             Check(more <= JawaBenchTpsMath.QueueCapacity / 8,

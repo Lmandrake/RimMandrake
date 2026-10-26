@@ -604,7 +604,10 @@ def reader_checks():
 # from the harness is a failure, not a pass.
 CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded",
             "TierHistBuckets", "TierRingWrap", "TierExclusiveAndCounters", "TierSpikeTrigger", "TierSignature", "TierExcWindow",
-            "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs"]
+            "TierGate", "TierPlanCap", "TierFlightFile", "TierCadence", "TierSettings", "TierWriterSideJobs",
+            "GuardForeignThreadRejectedBeforeState", "GuardNestedRejectedKeepsOuterState", "GuardNestingAllowedIsBalanced",
+            "GuardOrphanFinalizerIsCountedNotApplied", "GuardInnerLeftOpenClosedByOuter", "GuardFaultDisablesAndIsVisible",
+            "GuardOriginalSkippedAndThrewCounted"]
 
 
 def unit_checks(lines):
