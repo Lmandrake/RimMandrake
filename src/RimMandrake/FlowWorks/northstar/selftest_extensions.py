@@ -1032,6 +1032,31 @@ def _new_probes(EXT, RIV, base):
     run(EXT, "liquid_pump", pump_h)
     if not ponds or not pump_cells or pump_cells & ring:
         out.append("liquid_pump fixture inside a recession pond's footprint or 8-ring: %s" % sorted(pump_cells & ring))
+    # (c2) PUMP_TANK_FIX_DRAWS_TOO_LITTLE (run7): the channel levels its water, so two draws leave 40,000 dL as 13,333 a
+    # cell; excavation_report's floored fill reads 1+1+1 = 3 and the old bar FAILed "channel levels 3, expected 6 - moved 2"
+    # with the tank holding exactly 20,000. The bar reads exact water (ProofPitWater): unpowered 6.00, drawn 4.00 -> PASS.
+    # A channel that really kept all six levels while the pump claims two moves must still FAIL.
+    def pump_game(drawn_dl):
+        st = {"on": False}
+
+        def h(tl, p):
+            if tl == "jawa/battery_set":
+                st["on"] = True
+            if tl == "jawa/static_call" and p.get("method") == "ProofPump":
+                if st["on"]:
+                    return {"result": "PUMP running=True moved=2 pour=False tank=RM_Liquid_FreshWater:20000"}
+                return {"result": "PUMP running=False moved=0 pour=False tank=empty"}
+            if tl == "jawa/static_call" and p.get("method") == "ProofPitWater":
+                return {"result": "PITWATER dl=%d wet=1 cells=1" % (drawn_dl if st["on"] else 20000)}
+            if tl == "jawa/flowworks_excavation_report":
+                return {"success": True, "depth": 2, "fill": (drawn_dl // 10000) if st["on"] else 2}
+            return base(tl, p)
+        got = run(EXT, "liquid_pump", h)
+        return got.get("pump_unpowered_idle"), got.get("pump_draws_into_tank")
+    for dl, want in ((13333, ("PASS", "PASS")), (20000, ("PASS", "FAIL"))):
+        got = pump_game(dl)
+        if got != want:
+            out.append("liquid_pump levelled channel %d dL/cell after 2 draws: (unpowered, draws) %s, want %s" % (dl, got, want))
     # (d) slime_slips_the_wader wades ONE cell per order along the canal (one long _march let the pather detour on the bank)
     canal, orders = [], []
 

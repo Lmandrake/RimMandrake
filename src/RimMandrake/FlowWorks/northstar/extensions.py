@@ -3029,6 +3029,7 @@ def pit_prison_room(t):
 
 
 PUMP_DX = 12   # liquid_pump's channel starts at x0+PUMP_DX on plot D
+PUMP_LEVEL_TOL = 0.02   # levels: 200 dL of slack on the exact channel sum (a pump move is 10,000 dL)
 
 
 @suite.chain("liquid_pump")
@@ -3052,14 +3053,18 @@ def liquid_pump(t):
         return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d" % pump + ((";" + mode) if mode else "")))
 
     def level():
-        return sum((f or 0) for _, f in _state(t, ch))
+        # EXACT water in levels (_water: ProofPitWater decilitres), never excavation_report's integer `fill`: the channel
+        # levels its water out, so after two draws its 40,000 dL sit 13,333 dL a cell and the floored fills read 1+1+1 = 3
+        # (PUMP_TANK_FIX_DRAWS_TOO_LITTLE, run7: "channel levels 3, expected 6 - moved 2" with the tank holding 20,000)
+        return sum(_water(t, ch))
 
     with t.component("pump_unpowered_idle"):
         t.wait_ticks(600)
         k = rd()
         if t._guard():
-            _expect(k.get("running") == "False" and k.get("moved") == "0" and level() == 6,
-                    "an unpowered pump moved liquid: %s level %s" % (k, level()))
+            lv = level()
+            _expect(k.get("running") == "False" and k.get("moved") == "0" and abs(lv - 6) < PUMP_LEVEL_TOL,
+                    "an unpowered pump moved liquid: %s level %.2f" % (k, lv))
     _stage(t, "jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
     bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
            .get("things") or [{}])[0].get("id")
@@ -3071,7 +3076,7 @@ def liquid_pump(t):
             moved = int(k.get("moved", 0))
             tk = k.get("tank", "none")
             _expect(k.get("running") == "True" and moved >= 2, "powered pump not drawing: %s" % k)
-            _expect(lv == 6 - moved, "channel levels %s, expected 6 - moved %d" % (lv, moved))
+            _expect(abs(lv - (6 - moved)) < PUMP_LEVEL_TOL, "channel levels %.2f, expected 6 - moved %d" % (lv, moved))
             _expect(":" in tk and not tk.startswith("empty") and int(tk.split(":")[1]) == UNITS_PER_LEVEL * moved,
                     "tank %s after %d draws (10000 units/level)" % (tk, moved))
     with t.component("pump_off_idles", toggle="liquidPumpEnabled"):
@@ -3086,7 +3091,7 @@ def liquid_pump(t):
         rd("pour")
         t.wait_ticks(600)
         lv1 = level()
-        _expect(lv1 > lv0 if t._guard() else None, "pour mode did not raise the channel: %s -> %s" % (lv0, lv1))
+        _expect(lv1 > lv0 + PUMP_LEVEL_TOL if t._guard() else None, "pour mode did not raise the channel: %.2f -> %.2f" % (lv0, lv1))
 
 
 @suite.chain("bottle_revert")
