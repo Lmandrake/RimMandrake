@@ -161,6 +161,20 @@ def t_cli_flag():
     ok("_DRV.run(" in rsrc and 'summary["drivers"]' in rsrc, "runner.run runs the drivers and records the receipts")
 
 
+def t_need_s():
+    """TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN: what testq submit reserves = each planned "pre" driver's timeout_s plus
+    the per-driver slack run() spends outside it; "chain"-stage drivers and drivers of unselected chains add nothing."""
+    need, ds = D.need_s(_suite(), ["c1"])
+    names = [d["name"] for d in ds]
+    want = sum(d["timeout_s"] for d in ds) + D.AFTER_SLACK_S * len(ds)
+    ok(names == [d["name"] for d in D.plan(_suite(), ["c1"])] and need == want and need > 0,
+       "need_s sums the planned drivers' timeouts plus slack: %s %s" % (need, names))
+    ok(D.need_s(_suite(), ["no_such_chain"]) == (0, []), "no planned driver: nothing reserved")
+    th = [d for d in _fw_suite().suite.live_drivers if d["name"] in ("thirst_live", "sprinkler_live")]
+    ok(len(th) == 2 and all(d["timeout_s"] <= 1800 for d in th),
+       "thirst_live / sprinkler_live are sized from their measured walls (<= 1090 s / 203 s seen), not padded to 2700")
+
+
 def t_worker_passes_flag():
     p = os.path.join(ROOT, "infrastructure", "stevedesktop", "worker.py")
     spec = importlib.util.spec_from_file_location("steve_worker_probe", p)
@@ -284,7 +298,7 @@ def t_pyrelands_river_site():
 
 
 def main():
-    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_worker_passes_flag, t_flowworks_table, t_river_wrapper, t_steam_chain_on_river_site, t_pyrelands_river_site):
+    for t in (t_flag_and_plan, t_call_utf8, t_cli_flag, t_need_s, t_worker_passes_flag, t_flowworks_table, t_river_wrapper, t_steam_chain_on_river_site, t_pyrelands_river_site):
         try:
             t()
         except Exception as ex:     # noqa: BLE001 - one broken test must not hide the others

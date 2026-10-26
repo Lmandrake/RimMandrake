@@ -46,6 +46,19 @@ def plan(suite, chain_names, stage="pre"):
             if d.get("stage", "pre") == stage and want.intersection(d.get("chains") or ())]
 
 
+# Per started driver, the time run() spends outside its timeout (the runner's after() map recovery, interpreter start):
+# a budget sized as the bare sum of timeouts would SKIPPED_BUDGET the last driver whenever an earlier one ran long.
+AFTER_SLACK_S = 120
+
+
+def need_s(suite, chain_names):
+    """-> (seconds of driver budget the "pre" drivers for `chain_names` need so none is SKIPPED_BUDGET, [{name,
+    timeout_s}]). testq submit sizes a job's timeout from it (TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN)."""
+    ds = [{"name": d["name"], "timeout_s": int(d.get("timeout_s") or DEFAULT_TIMEOUT_S)}
+          for d in plan(suite, chain_names)]
+    return sum(d["timeout_s"] + AFTER_SLACK_S for d in ds), ds
+
+
 PLAYER_LOG_TOKEN = "@player_log"
 
 

@@ -101,6 +101,77 @@ def t_bad_selection():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_driver_sizing():
+    """TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN: a default targeted thirst job must give its drivers room. The worker
+    hands the drivers half the job timeout and modcheck never starts a driver whose timeout_s exceeds the budget left
+    (06c8d1e10d), so a 2700 s job SKIPPED_BUDGET thirst_live on every targeted thirst fix job. End to end: submit, the
+    REAL worker's budget for the job's timeout, the REAL drivers.run over the FlowWorks table on a clock where every
+    driver runs its full timeout and the map recovery between them takes 100 s: nothing may be skipped."""
+    import importlib.util
+    tmp = tempfile.mkdtemp(prefix="rf_testq_size_")
+    try:
+        r = subprocess.run([sys.executable, TESTQ, "submit", "FlowWorks", "--rows", "T15_slime_effects", "--purpose",
+                            "fix", "--by", "BENCH", "--sha", "abc1234", "--no-sha-check"],
+                           env=dict(os.environ, TESTQ_QUEUE=tmp), capture_output=True, text=True, timeout=120)
+        try:
+            out = json.loads(r.stdout.strip().splitlines()[-1])
+        except (ValueError, IndexError):
+            out = {"raw": (r.stdout + r.stderr)[-400:]}
+        jobs = glob.glob(os.path.join(tmp, "pending", "*.json"))
+        job = json.load(open(jobs[0])) if jobs else {}
+        check(out.get("drivers") == ["thirst_live", "sprinkler_live"] and out.get("driver_need_s"),
+              "submit reports the drivers the plan starts and what they need: %s" % out)
+        wp = os.path.join(REPO, "infrastructure", "stevedesktop", "worker.py")
+        spec = importlib.util.spec_from_file_location("steve_worker_sizing_probe", wp)
+        w = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(w)
+        exp = w.driver_budget_export(job.get("timeout_s", 2700))
+        budget = int(exp.split("MODCHECK_DRIVERS_BUDGET_S=")[1].split()[0])
+        for d in (os.path.join(HERE, ".."), os.path.join(HERE, "..", "modcheck")):   # validation.py: `from modcheck`
+            if d not in sys.path:
+                sys.path.insert(0, d)
+        import drivers as D
+        fws = importlib.util.spec_from_file_location("testq_sizing_fw", os.path.join(REPO, "src", "RimMandrake",
+                                                                                     "FlowWorks", "validation.py"))
+        fw = importlib.util.module_from_spec(fws)
+        fws.loader.exec_module(fw)
+        clock = [0.0]
+
+        class _T(object):
+            @staticmethod
+            def monotonic():
+                return clock[0]
+
+        def full_timeout(argv, cwd, timeout_s):
+            clock[0] += timeout_s
+            return None, "killed"
+
+        def after(rec):
+            clock[0] += 100
+
+        saved_t, saved_env = D.time, os.environ.get(D.ENV)
+        D.time, os.environ[D.ENV] = _T, "1"
+        try:
+            recs = D.run(fw.suite, "/m", ["thirst"], budget_s=budget, _call_fn=full_timeout, after=after,
+                         log=open(os.devnull, "w"))
+        finally:
+            D.time = saved_t
+            if saved_env is None:
+                os.environ.pop(D.ENV, None)
+            else:
+                os.environ[D.ENV] = saved_env
+        check(recs and all(x["status"] != "SKIPPED_BUDGET" for x in recs),
+              "a default targeted thirst job (timeout %s, driver budget %d s) starts every driver even when each runs "
+              "its whole timeout: %s" % (job.get("timeout_s"), budget, [(x["driver"], x["status"]) for x in recs]))
+        T = __import__("testq")
+        t, need, warn = T.sized_timeout(2700, [])
+        check((t, need, warn) == (2700, 0, None), "no drivers planned: the asked timeout stands: %s" % ((t, need, warn),))
+        t, need, warn = T.sized_timeout(14400, [{"name": "x", "timeout_s": 9000}])
+        check(t == 14400 and warn and "SKIPPED_BUDGET" in warn, "drivers past the worker's cap: warned, not hidden")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def t_fill_policy():
     """The filler's pick and day budget (TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY), offline over hand-made done records."""
     import testq as T
@@ -167,6 +238,7 @@ def t_fill_drops_unknown_chains():
 def main():
     try:
         t_bad_selection()
+        t_driver_sizing()
         t_fill_policy()
         t_fill_drops_unknown_chains()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs

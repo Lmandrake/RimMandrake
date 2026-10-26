@@ -635,31 +635,62 @@ def published(sha):
 SELECTION_REFUSALS = ("unknown row", "unknown chain", "is offline", "catalogue is incomplete", "empty selection")
 
 
-def preview_plan(mod, sel):
-    """-> (refusal text or None, the row ids the run will execute or None) from `modcheck run MOD --preview` (0.2 s,
-    offline; TESTQ_JOB_PLAN_WIRE_PREVIEW). A mod it cannot find, or any other trouble, is neither refused nor planned."""
+def preview(mod, sel):
+    """-> {"refusal", "rows", "drivers"} from `modcheck run MOD --preview` (0.2 s, offline; TESTQ_JOB_PLAN_WIRE_PREVIEW):
+    the refusal text when modcheck would refuse SEL, the row ids the run will execute, and the "pre" drivers
+    [{name, timeout_s}] `--drivers on` would start. A full selector previews the drivers only. A mod it cannot find,
+    or any other trouble, is neither refused nor planned (every value None)."""
+    out = {"refusal": None, "rows": None, "drivers": None}
     args = []
     for k in ("chains", "rows"):
         if sel.get(k):
             args += ["--" + k, ",".join(sel[k])]
+    if not args and sel.get("full"):
+        args = ["--full"]
     if not args:
-        return None, None
+        return out
     cli = os.path.join(HERE, "..", "modcheck", "cli.py")
     try:
         r = subprocess.run([sys.executable, cli, "run", mod] + args + ["--preview"], capture_output=True, text=True,
                            timeout=60, cwd=REPO)
     except (OSError, subprocess.SubprocessError):
-        return None, None
-    rows = None
+        return out
     for line in ((r.stdout or "") + (r.stderr or "")).splitlines():
         if line.startswith("REFUSED:") and any(k in line for k in SELECTION_REFUSALS):
-            return line[len("REFUSED:"):].strip(), None
-        if line.startswith("EXPECTED_ROWS "):
-            try:
-                rows = json.loads(line[len("EXPECTED_ROWS "):])
-            except ValueError:
-                rows = None
-    return None, rows
+            return dict(out, refusal=line[len("REFUSED:"):].strip())
+        for tag, key in (("EXPECTED_ROWS ", "rows"), ("EXPECTED_DRIVERS ", "drivers")):
+            if line.startswith(tag):
+                try:
+                    out[key] = json.loads(line[len(tag):])
+                except ValueError:
+                    out[key] = None
+    return out
+
+
+def preview_plan(mod, sel):
+    """-> (refusal text or None, the row ids the run will execute or None): preview() without the drivers."""
+    p = preview(mod, sel)
+    return p["refusal"], p["rows"]
+
+
+# The worker (infrastructure/stevedesktop/worker.py driver_budget_export) gives a job's drivers half its run timeout,
+# never more than 2 h; modcheck/drivers.py never starts a driver whose timeout_s exceeds the budget left.
+WORKER_DRIVER_SHARE, WORKER_DRIVER_CAP_S = 2, 7200
+DRIVER_SLACK_S = 120    # modcheck/drivers.py AFTER_SLACK_S: per driver, the runner's map recovery between drivers
+
+
+def sized_timeout(requested_s, drivers):
+    """-> (the job's run timeout, seconds the drivers need, warning or None). TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN:
+    a 2700 s job gives its drivers 1350 s, so thirst_live (then 2700 s) was SKIPPED_BUDGET on every targeted thirst
+    job and its rows read UNMEASURED. The timeout is raised until the worker's share covers every planned driver."""
+    need = sum(int(d.get("timeout_s") or 0) + DRIVER_SLACK_S for d in drivers or [])
+    t = max(int(requested_s), need * WORKER_DRIVER_SHARE)
+    warn = None
+    if need > WORKER_DRIVER_CAP_S:
+        t = max(int(requested_s), WORKER_DRIVER_CAP_S * WORKER_DRIVER_SHARE)
+        warn = ("the planned drivers need %d s but the worker caps the driver budget at %d s: the drivers past it "
+                "will be SKIPPED_BUDGET and their chains read UNMEASURED" % (need, WORKER_DRIVER_CAP_S))
+    return min(t, 6 * 3600), need, warn
 
 
 def bad_selection(mod, sel):
@@ -705,10 +736,13 @@ def cmd_submit(a):
     if why:
         print("REFUSED: --deploy %s; the worker would die INVALID/DEPLOY on a booked slot" % why)
         return 2
-    bad, planned = preview_plan(a.mod, sel)
+    pv = preview(a.mod, sel)
+    bad, planned = pv["refusal"], pv["rows"]
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
+    asked = job["timeout_s"]
+    job["timeout_s"], driver_need, size_warn = sized_timeout(asked, pv["drivers"])
     if not a.no_sha_check and not published(a.sha):
         print("REFUSED: %s is not on origin/main; the runner pulls origin, so ./publish first" % a.sha)
         return 2
@@ -727,6 +761,13 @@ def cmd_submit(a):
             return 2
     S.dump(job, q("pending", job["id"] + ".json"))
     out = {"job": job["id"], "state": "pending"}
+    if driver_need:             # what the planned drivers reserve, and the timeout raised to give them room
+        out.update(drivers=[d.get("name") for d in pv["drivers"]], driver_need_s=driver_need,
+                   timeout_s=job["timeout_s"])
+        if job["timeout_s"] != asked:
+            out["timeout_raised_from"] = asked
+        if size_warn:
+            out["warning"] = size_warn
     if planned is not None:     # the plan modcheck will run, so the submitter sees prerequisites and the time it costs
         out["planned_rows"] = len(planned)
         per = row_seconds(a.mod)

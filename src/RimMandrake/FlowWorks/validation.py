@@ -1673,11 +1673,16 @@ for _src in (EXT.suite, RIV.suite):
 # deliberate: thirst then sprinklers on the run's own map (they shared a map in the desk runs of 2026-10-22), then the
 # --fresh-map drivers; live_session B2,B4 on the trench driver's map. No row that needs a saved test site: SteveDesktop
 # has none (thirst T15R is opt-in and is left out; v2 runs --fresh-map).
+# timeout_s is the wall a driver may take AND what testq reserves for it (a targeted job's timeout is sized from it;
+# a driver whose timeout exceeds the budget left is never started): keep it near 1.5-3x the observed worst, not padded.
+# TESTQ_SIZING_FIX_DRIVER_BUDGET_FROM_PLAN, measured started->ended in the result JSONs: thirst_live full 26-row runs
+# took 1090 / 897 / 823 s (SteveDesktop 2026-10-26) and 807 / 849 / 855 s (desk 2026-10-17) -> 1800; sprinkler_live
+# took 27 / 54 / 37 s (SteveDesktop 2026-10-26), 203 s worst (2026-10-22 belt) -> 600.
 suite.live_drivers = [
     {"name": "thirst_live", "script": "northstar/thirst_live.py", "args": ["--site", "150,130", "--log", "@player_log"],
-     "chains": ["thirst"], "timeout_s": 2700},
+     "chains": ["thirst"], "timeout_s": 1800},
     {"name": "sprinkler_live", "script": "northstar/sprinkler_live.py", "args": ["--origin", "120,140"],
-     "chains": ["sprinklers", "thirst"], "timeout_s": 1800},          # it also measures thirst T21/T22 (DRIVER_OF)
+     "chains": ["sprinklers", "thirst"], "timeout_s": 600},           # it also measures thirst T21/T22 (DRIVER_OF)
     {"name": "drawbridge_proof", "script": "northstar/drawbridge_proof.py", "args": ["--origin", "140,140", "--fresh-map"],
      "chains": ["drawbridges"], "timeout_s": 1200},
     {"name": "lines_proof", "script": "northstar/lines_proof.py", "args": ["--origin", "30,30", "--fresh-map"],

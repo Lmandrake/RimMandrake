@@ -358,6 +358,17 @@ def main(argv=None):
         if targeted and args.full:
             print("REFUSED: --full and a target (--chains/--rows/--item ITEM_ID) contradict each other")
             return 2
+        if args.preview and args.full and len(args.mods) == 1:
+            # a sweep's driver plan only: testq submit sizes the job's timeout from it (TESTQ_SIZING_FIX_...)
+            import drivers  # noqa: E402
+            import json as _json
+            try:
+                suite = runner.load_validation(runner.find_mod_dir(args.mods[0]))
+            except RuntimeError as ex:
+                print("REFUSED: %s" % ex)
+                return 2
+            print("EXPECTED_DRIVERS " + _json.dumps(drivers.need_s(suite, [n for n, _ in suite.chains])[1]))
+            return 0
         if args.preview and not targeted:
             print("REFUSED: --preview previews a TARGETED run; name --chains, --rows or --item ITEM_ID")
             return 2
@@ -384,6 +395,8 @@ def main(argv=None):
                 print(line)
             import json as _json                    # machine line: the worker marks planned rows that never ran NOT_RUN
             print("EXPECTED_ROWS " + _json.dumps(list(sel.get("rows_run", []))))
+            import drivers  # noqa: E402            # the "pre" drivers --drivers on would start, with their timeouts
+            print("EXPECTED_DRIVERS " + _json.dumps(drivers.need_s(suite, sel["chains"])[1]))
             if args.preview:
                 return 0
             targets[mod] = sel
