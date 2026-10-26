@@ -313,7 +313,8 @@ namespace RimMandrake.Wastes
         /// <summary>One convoy load. Public so a debug action / state read can drive it.</summary>
         public bool TryDeliver()
         {
-            if (State != QuestPartState.Enabled)
+            // A debug drive can reach here before the tick's void check (lost map or convoy faction).
+            if (State != QuestPartState.Enabled || map == null || convoyFaction == null)
             {
                 return false;
             }
@@ -399,6 +400,12 @@ namespace RimMandrake.Wastes
         /// <summary>Hand one cask over as evidence. Returns false if no cask is on the map.</summary>
         public bool GiveEvidence()
         {
+            // The asker can vanish before the letter is answered (Notify_FactionRemoved nulls it).
+            if (evidenceFaction == null)
+            {
+                Messages.Message("Nobody is asking for evidence any more.", MessageTypeDefOf.RejectInput, historical: false);
+                return false;
+            }
             Thing cask = RM_CompWasteCask.AllCasks(map).FirstOrDefault(t => t.Spawned);
             if (cask == null)
             {
@@ -409,7 +416,7 @@ namespace RimMandrake.Wastes
             cask.Destroy(DestroyMode.Vanish);
             FleckMaker.ThrowDustPuff(at, map, 1f);
             evidenceFaction.TryAffectGoodwillWith(Faction.OfPlayer, Ext.evidenceGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
-            convoyFaction.TryAffectGoodwillWith(Faction.OfPlayer, Ext.evidenceConvoyGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
+            convoyFaction?.TryAffectGoodwillWith(Faction.OfPlayer, Ext.evidenceConvoyGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
             Messages.Message("A sample cask has gone to " + evidenceFaction.Name + " as evidence.", MessageTypeDefOf.NeutralEvent);
             return true;
         }
