@@ -142,7 +142,11 @@ def main():
         br = [e for e in evs if e.get("event") == "bridge"]
         check(br and br[-1].get("host") == "stevedesktop", "the ledger event names the host")
         r = rf("FOUNDRY", "bridge", "take", "--host", "stevedesktop", "--for", "second")
-        check(r.returncode != 0, "a second window's take of the same host is refused")
+        # a bare rc != 0 also passed when the take CRASHED before deciding (wave 75 mutation): key it on die()'s
+        # exit 2, the holder being named, and no traceback
+        check(r.returncode == 2 and "BENCH" in r.stderr and "Traceback" not in r.stderr,
+              "a second window's take of the same host is refused, naming the holder: rc %s %s"
+              % (r.returncode, r.stderr.strip()[-200:]))
         r = rf("FOUNDRY", "bridge", "take", "--for", "archmagi at the same time")
         check(r.returncode == 0, "while Archmagi's bridge is still free for another window: "
               + (r.stdout + r.stderr).strip()[-200:])
