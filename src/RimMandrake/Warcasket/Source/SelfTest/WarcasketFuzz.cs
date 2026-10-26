@@ -161,7 +161,7 @@ namespace RimMandrake.Warcasket.SelfTest
         private static string RunImmersion(IList<Act> acts, int seed, bool count)
         {
             var rr = new Random(seed ^ 0x2c1b3c6d);
-            // three pawns: A (least protected), B (more), C (naked). Pawns share one path through the terrain unless the action moves one.
+            // three pawns: naked (prot 0), A (0.3), B (0.9). Every Move action moves all three together (they share one path), or the ordering invariant below would not hold.
             // naked, A and B with B always at least as protected as A: severity must order naked >= A >= B whatever the path
             var ps = new[] { new Swimmer { prot = 0 }, new Swimmer { prot = 0.3 }, new Swimmer { prot = 0.9 } };
             bool master = true, immersion = true; int countdown = 250; long mapTicks = 0, checksRun = 0; int stepNo = 0;
@@ -385,7 +385,7 @@ namespace RimMandrake.Warcasket.SelfTest
                     Check(ground.Count == ground.Distinct().Count(), "an item was dropped twice");
                     // nothing stranded: with both switches on, every sealed suit still on the corpse can be cracked
                     if (dead && master && sarcOn)
-                        foreach (Gear g in gear.Where(x => x.worn && x.locked))
+                        if (gear.Any(x => x.worn && x.locked))
                             Check(RM_WarcasketKernel.OffersCrack(master, sarcOn, true, true), "a sealed suit cannot be cracked");
                 }
                 return null;
@@ -418,8 +418,7 @@ namespace RimMandrake.Warcasket.SelfTest
                     Check(RM_WarcasketKernel.HoldsClock(f[0], f[1], f[2]) == (f[0] && f[1] && f[2]), "HoldsClock");
                     Check(RM_WarcasketKernel.HazardCount(f[0], f[1], f[2]) == (f[0] ? 1 : 0) + (f[1] ? 1 : 0) + (f[2] ? 1 : 0), "HazardCount");
                     Check(RM_WarcasketKernel.HazardousCell(f[0], f[1], f[2], f[3], f[4]) == (f[0] && f[1] && f[2] && (!f[3] || !f[4])), "HazardousCell " + k);
-                    for (int m = 0; m < 2; m++)
-                        Check(RM_WarcasketKernel.OffersCrack(f[0], f[1], f[2], f[3]) == (f[0] && f[1] && f[2] && f[3]), "OffersCrack");
+                    Check(RM_WarcasketKernel.OffersCrack(f[0], f[1], f[2], f[3]) == (f[0] && f[1] && f[2] && f[3]), "OffersCrack");
                     Check(RM_WarcasketKernel.IsShielded(f[0], f[1], f[2], f[3], f[4]) == (f[0] && f[1] && f[2] && f[3] && f[4]), "IsShielded " + k);
                     Check(RM_WarcasketKernel.SalvageRowWanted(f[0], f[1] ? 1 : 0) == (f[0] && f[1]) && !RM_WarcasketKernel.SalvageRowWanted(true, 0) && !RM_WarcasketKernel.SalvageRowWanted(true, -1), "SalvageRowWanted");
                 }
@@ -500,7 +499,7 @@ namespace RimMandrake.Warcasket.SelfTest
                 // expected checks to the first failure: a pristine suit under two hazards fails about once in 67 checks (~4.6 h at 250 ticks)
                 Check(Math.Abs(1.0 / RM_WarcasketKernel.FailureChance(2, 0.015f, 0.02f, 320, 320) - 66.67) < 0.1, "mean checks to first failure");
                 // a lone hazard never fails the suit, at any damage
-                foreach (int hp in new[] { 1, 100, 320 }) for (int h = 0; h < 2; h++) Check(!RM_WarcasketKernel.CanFail(h), "lone hazard fails");
+                for (int h = 0; h < 2; h++) Check(!RM_WarcasketKernel.CanFail(h), "lone hazard fails");
                 Check(RM_WarcasketKernel.FailureChance(2, 5f, 5f, 1, 320) == 1f && RM_WarcasketKernel.FailureChance(2, -1f, 0f, 320, 320) == 0f, "chance clamps");
                 { float c0 = RM_WarcasketKernel.FailureChance(2, 0.1f, 0f, 0, 0); Check(c0 >= 0.1f && c0 <= 0.16f + 1e-6f, "a suit with no max hit points gave chance " + c0); }
                 Check(RM_WarcasketKernel.FailureChance(2, 0.1f, 0f, 5, 0) > 0f && RM_WarcasketKernel.FailureChance(2, 0.1f, 0f, -50, 320) <= 0.16f + 1e-6f, "unusual hp");
