@@ -32,6 +32,10 @@ How a job runs (one attempt at a time on this machine):
     source_sha for the attempt and put back on main when it ends (a crashed attempt is healed at the next start).
   * When load starts a FRESH game process, the bridge client's UNKNOWN-outcome markers older than that start are
     resolved as moot (their game is gone); otherwise one killed game refuses every later job's mutating calls.
+    When load KEEPS a running game that carries markers older than the load (a driver killed mid-call), the game is
+    restarted once first, so the fresh start resolves them, instead of the job ending INVALID/HARNESS.
+  * A start that finds this machine's game guard HELD by a live driver (no testq attempt running) is deferred: busy,
+    exit 75, the job stays pending; no attempt is made.
 
 Files (outside git): TESTQ_HOME (default /mnt/d/RimTest/testq)
   attempts/<attempt>/{job.json, state.json, worker.log, modcheck.log, result.json}
@@ -257,6 +261,9 @@ def cmd_start(retry):
                 state, info = attempt_state(last)
             if state == "running" or not retry:
                 return out({"attempt": last, "state": state, "duplicate": True, **info})
+        held = guard_held_by_other()
+        if held:        # a live driver that is not a testq attempt owns this game: defer (busy), never INVALID
+            return out({"state": "busy", "busy_with": "guard: " + held, "deferred": True}, EX_BUSY)
         n = int(last.rsplit(".a", 1)[1]) + 1 if last else 1
         aid = "%s.a%d" % (job["id"], n)
         d = p("attempts", aid)
@@ -296,6 +303,24 @@ def cmd_start(retry):
         write_text(p("current"), aid)
         unit = spawn(aid, d)
     return out({"attempt": aid, "state": "started", "runner_sha": head, "unit": unit})
+
+
+def guard_held_by_other():
+    """-> 'SEAT (purpose)' when this machine's game guard is HELD by a live driver, else None (FREE, STALE, unreadable).
+
+    Checked before an attempt is created (STEVE_RIG_FIX_OUTOFBAND_DRIVER_MARKER): a window or script driving the game
+    makes the job wait (busy, exit 75: the dispatcher leaves it pending) instead of starting an attempt that its
+    calls would collide with. No testq attempt is live here (current was checked first), so a HELD lock is someone
+    else's. A STALE lock is taken over by the attempt's own acquire, as before."""
+    try:
+        import host_guard
+        st = host_guard.status()
+    except Exception as e:      # noqa: BLE001 - an unreadable lock is the attempt's acquire to judge, not a defer
+        sys.stderr.write("worker: guard status unreadable (%s); the attempt's acquire decides\n" % e)
+        return None
+    if st.get("state") != "HELD":
+        return None
+    return "%s (%s)" % (st.get("seat"), st.get("purpose"))
 
 
 def spawn(aid, d):
@@ -474,11 +499,49 @@ class Attempt:
         if rc != 0:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
         m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
+        if not m:
+            stale = self.pending_markers(since)
+            if stale:
+                # STEVE_RIG_FIX_OUTOFBAND_DRIVER_MARKER: a game kept from before this attempt carries a mutating call
+                # whose outcome nobody knows (2026-10-26: a modcheck driver killed on its budget mid step_game_ticks).
+                # Every mutating call this job makes would be refused (INVALID/HARNESS, three jobs in a row), and
+                # nothing can read what that call did to a game we are about to reuse. We hold the guard, so no one
+                # else is driving it: restart the game; the fresh start below resolves the markers as moot.
+                self.res["bounced_for_markers"] = stale
+                self.say("kept game carries %d unknown-outcome bridge marker(s) older than this load (%s): "
+                         "restarting it" % (len(stale), " ".join(stale)))
+                rc, tail = self.sh(self.cmd_down(), timeout=300)
+                if rc != 0:
+                    return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
+                                     "stale bridge marker(s) %s on a kept game; game down failed: %s"
+                                     % (" ".join(stale), refused_line(tail) or tail))
+                since = S.utcnow()
+                rc, tail = self.sh(cmd, timeout=900)
+                if rc != 0:
+                    return self.fail("INVALID", "LOAD", "game reload after the marker restart failed: " + tail)
+                m = re.search(r"started pid (\d+)", tail)
+                if not m:
+                    return self.fail("INVALID", "LOAD", "restarted the game for stale bridge marker(s) %s, but load "
+                                     "did not report a fresh process: %s" % (" ".join(stale), tail[-200:]))
         if m:
             self.clear_moot_markers(since, m.group(1))
         alive = m or re.search(r"already running \(pid (\d+)\)", tail)
         self.game_pid = alive.group(1) if alive else None
         return True
+
+    def bridge_cmd(self):
+        return os.environ.get("TESTQ_CMD_BRIDGE") or "python.exe src/RimMandrake/Utils/rimbridge_client.py"
+
+    def pending_markers(self, before):
+        """-> cids of the bridge client's unresolved UNKNOWN-outcome markers sent before `before` ([] if none or the
+        list cannot be read: the job's own calls will then say if it matters)."""
+        try:
+            r = subprocess.run(["bash", "-c", self.bridge_cmd() + " --reconcile"], cwd=RUNNER, capture_output=True,
+                               text=True, timeout=120)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            self.say("could not list bridge markers: %s" % e)
+            return []
+        return [cid for cid, t in parse_markers(r.stdout) if t < before]
 
     def game_gone(self):
         """-> why the game this attempt loaded is no longer the one running, or None (alive, or cannot tell).
@@ -513,32 +576,22 @@ class Attempt:
         every later job INVALID/HARNESS (killed-game drill, 2026-10-26: one jawa/time_clock marker wedged the lane).
         Only markers older than the start are touched, only after a fresh start, and only on this machine, whose game
         the attempt's guard owns; a marker while the same game kept running is a real unknown and stays."""
-        base = os.environ.get("TESTQ_CMD_BRIDGE") or "python.exe src/RimMandrake/Utils/rimbridge_client.py"
-        try:
-            r = subprocess.run(["bash", "-c", base + " --reconcile"], cwd=RUNNER, capture_output=True, text=True,
-                               timeout=120)
-        except (OSError, subprocess.TimeoutExpired) as e:     # the job's own bridge calls will say if it matters
-            self.say("could not list bridge markers: %s" % e)
-            return
+        base = self.bridge_cmd()
         cleared = []
-        for line in r.stdout.splitlines():
-            f = line.split()
-            if len(f) < 2 or not re.fullmatch(r"[0-9a-f]{16}", f[0]) or not re.fullmatch(r"\d{4}-\S+Z", f[1]) \
-                    or f[1] >= since:
-                continue
+        for cid in self.pending_markers(since):
             note = ("moot: sent to a game process that is gone; testq %s started a fresh game (pid %s) at %s"
                     % (self.aid, pid, since))
             try:
                 rr = subprocess.run(["bash", "-c", "%s --reconcile --resolve %s --as not-applied --note %s"
-                                     % (base, f[0], shlex.quote(note))], cwd=RUNNER, capture_output=True,
+                                     % (base, cid, shlex.quote(note))], cwd=RUNNER, capture_output=True,
                                     text=True, timeout=120)
             except (OSError, subprocess.TimeoutExpired) as e:
-                self.say("could not resolve marker %s: %s" % (f[0], e))
+                self.say("could not resolve marker %s: %s" % (cid, e))
                 continue
             if rr.returncode == 0:
-                cleared.append(f[0])
+                cleared.append(cid)
             else:
-                self.say("could not resolve marker %s: %s" % (f[0], (rr.stdout + rr.stderr).strip()[-200:]))
+                self.say("could not resolve marker %s: %s" % (cid, (rr.stdout + rr.stderr).strip()[-200:]))
         if cleared:
             self.res["moot_markers"] = cleared
             self.say("resolved %d bridge marker(s) older than the fresh game as moot: %s" % (len(cleared),
@@ -676,6 +729,16 @@ class Attempt:
                 os.remove(p("current"))
             self.say("result %s %s %s" % (self.res["outcome"], self.res["cause"], self.res["counts"]))
         return 0
+
+
+def parse_markers(text):
+    """`rimbridge_client.py --reconcile` listing -> [(cid, sent_utc)] of its unresolved UNKNOWN-outcome markers."""
+    found = []
+    for line in (text or "").splitlines():
+        f = line.split()
+        if len(f) >= 2 and re.fullmatch(r"[0-9a-f]{16}", f[0]) and re.fullmatch(r"\d{4}-\S+Z", f[1]):
+            found.append((f[0], f[1]))
+    return found
 
 
 def refused_line(text):

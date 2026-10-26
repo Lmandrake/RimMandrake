@@ -5,8 +5,8 @@ No game, no ssh, no pull: the deploy/load/down/run commands are replaced by a sm
 file, and the attempt detaches as a plain new session (TESTQ_NO_SYSTEMD=1). Proves DONE with attested deploy hashes
 and NOT_RUN accounting, duplicate delivery, --retry, hang -> one restart -> DONE, hang twice -> INVALID/HANG, no sheet
 -> INVALID/HARNESS, a modcheck refusal -> BLOCKED_SELECTION, a fresh game start resolving only the bridge markers older
-than it (a game that kept running keeps them), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
-the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held -> REFUSED, busy -> 75, stop -> INTERRUPTED, a dead attempt
+than it (a kept game with an older marker is restarted first), a game gone or replaced after the run -> INVALID/GAME_DIED (also in
+the canary; alive + red canary -> CANARY; a status that cannot tell keeps the verdict), guard held by another driver -> deferred busy 75, busy -> 75, stop -> INTERRUPTED, a dead attempt
 finalized, SOURCE_SHA_MISSING, and the real deploy route: deploy_flags' flags pass deploy_custom_mods.py's checks.
 """
 import json
@@ -173,11 +173,36 @@ def main():
         left = json.load(open(markers))
         check(res.get("outcome") == "DONE" and res.get("moot_markers") == [old_cid] and list(left) == [new_cid],
               "a fresh game resolves only the markers older than it: %s left %s" % (res.get("moot_markers"), left))
+        # 3b'. STEVE_RIG_FIX_OUTOFBAND_DRIVER_MARKER: a KEPT game carrying a marker older than this load (2026-10-26:
+        # a modcheck driver killed mid step_game_ticks) is restarted, then the fresh start resolves it moot; before
+        # the fix the job ran on and its handshake was refused -> INVALID/HARNESS, three jobs in a row
+        fresh_markers()
+        flag, downs = os.path.join(tmp, "load_once"), os.path.join(tmp, "downs")
+        # (the pid is computed: worker.log echoes the command line, and load reads that log's tail)
+        flaky = ("if [ -f %s ]; then echo started pid $((4300+43)); else touch %s; echo 'already running (pid 4242)'; fi"
+                 % (flag, flag))
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky, TESTQ_CMD_DOWN="echo down >> %s" % downs,
+                  TESTQ_CMD_STATUS="echo 'running pid=4343 session=1'", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        left = json.load(open(markers))
+        check(res.get("outcome") == "DONE" and res.get("bounced_for_markers") == [old_cid]
+              and res.get("moot_markers") == [old_cid] and list(left) == [new_cid]
+              and os.path.exists(downs) and len(open(downs).read().split()) == 1,
+              "a kept game with a stale marker is restarted once and the marker resolved moot: %s %s %s bounced=%s "
+              "moot=%s left=%s" % (res.get("outcome"), res.get("cause"), res.get("note"),
+                                   res.get("bounced_for_markers"), res.get("moot_markers"), list(left)))
+        json.dump({new_cid: "2999-01-01T00:00:00Z"}, open(markers, "w"))
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD="echo 'already running (pid 4242)'", **bx)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and "bounced_for_markers" not in res and "moot_markers" not in res
+              and list(json.load(open(markers))) == [new_cid],
+              "a kept game with no marker older than the load is not restarted: %s" % res.get("note"))
         fresh_markers()
         rc, o = w(["start"], job(), TESTQ_CMD_LOAD="echo 'already running (pid 4242)'", **bx)
         res = wait_result(o.get("attempt", "x"))
-        check("moot_markers" not in res and len(json.load(open(markers))) == 2,
-              "a game that kept running keeps every marker: %s" % res.get("moot_markers"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and len(json.load(open(markers))) == 2,
+              "a restart that never yields a fresh game is INVALID/LOAD, markers kept: %s %s"
+              % (res.get("cause"), res.get("note")))
 
         # 3c. the game dies mid-run (TESTQ_DEAD_GAME_RUN_FIX_READS_DONE): modcheck still writes a sheet of
         # UNMEASURED rows, but a game that is gone, or is another process, measured nothing -> INVALID/GAME_DIED
@@ -223,11 +248,15 @@ def main():
         import driver_lock as D
         other = {"pid": 4242, "start": 7.0, "boot_id": None, "platform": "wsl", "host": "archmagi-elsewhere"}
         D.acquire(lock, "BENCH", "interactive session", other)
-        rc, o = w(["start"], job())
-        res = wait_result(o.get("attempt", "x"))
-        check(res.get("outcome") == "REFUSED" and res.get("cause") == "GUARD_HELD", "guard held -> REFUSED/GUARD_HELD: "
-              + str(res.get("note")))
+        jg = job()
+        rc, o = w(["start"], jg)
+        check(rc == 75 and o.get("state") == "busy" and o.get("deferred") and "BENCH" in o.get("busy_with", "")
+              and not os.path.exists(os.path.join(home, "jobs", jg["id"])),
+              "guard held by a live non-testq driver -> deferred busy (75), no attempt made: %s %s" % (rc, o))
         D.release(lock, "BENCH", other)
+        rc, o = w(["start"], jg)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE", "the deferred job runs once the guard is free: %s" % res.get("note"))
 
         # 6. busy, then stop
         ja = job()
