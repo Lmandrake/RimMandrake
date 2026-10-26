@@ -39,20 +39,23 @@ mod stays active. Not blocked, not ported -- just verbatim, same as
 kotorweapons' classes resolving against kotorcore staying active.
 
 What this generator does NOT do, on purpose:
-  - does not deploy. lee.theforce.lightsaber is STILL ACTIVE; a defName-
-    preserving copy loaded alongside it collides on every defName
-    (Force_KyberCrystal, Force_CrystalFormation_Small, etc). Generated
-    dormant, matching gen_kotorcore_absorption.py's precedent.
+  - does not deploy (deploy_custom_mods.py does). LIGHTSABER_ABSORB_COPY_DEPLOYED_BESIDE_DONOR
+    (2026-10-26) measured the copy deployed beside the still-active donor: Armoury
+    loads after it, so the copy's defs replace the donor's same-named ones with no
+    log line (Player.log: 0 duplicate-def errors; the def dump attributes all five
+    defs to mandrake.rsw.armoury). That is the intended state, not a collision: the
+    old "generated dormant, do not deploy" note is retired.
   - does not absorb the hilt/lightsaber-crafting system, Force powers, melee
     parry, or any Lightsaber.dll Harmony patch -- out of this item's scope.
-  - does not build the Lantern-Deeps scatter gate itself -- that patches the
-    LIVE donor defs directly (mineableScatterCommonality -> 0 on the three
+  - does not build the Lantern-Deeps scatter gate itself -- that zeroes
+    whichever copies exist, keyed on the defs (mineableScatterCommonality -> 0 on the three
     Force_CrystalFormation_* ThingDefs, since vanilla GenStep_RocksFromGrid
     reads that field regardless of the dedicated genstep; plus a
     PatchOperationRemove if the dedicated Force_CrystalFormation GenStepDef
     is ever confirmed wired into a MapGeneratorDef's genSteps list -- MEASURED
     0 rows in the live def dump today, so no such removal is needed, see the
-    patch file's own header) -- lives under src/RimUtinni/LanternDeeps/Patches/.
+    patch file's own header) -- lives in
+    src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepGateKyber.xml.
 
 Idempotent / re-runnable: wipes and rewrites its own OUT_SUBDIR each run.
 """
@@ -237,10 +240,12 @@ def write_defs_file(rel_dir, filename, elements, src_relpath):
         "     defNames preserved verbatim. Lightsaber.* comp/genStep Class= values are\n"
         "     UNCHANGED === lee.theforce.lightsaber must stay active in the live\n"
         "     ModsConfig for these to resolve (see generator module docstring).\n"
-        "     Source pack stays active for now; do NOT deploy this file until it\n"
-        "     retires, or duplicate defNames result. The Lantern-Deeps scatter gate\n"
-        "     lives separately under src/RimUtinni/LanternDeeps/Patches/ === it patches\n"
-        "     the LIVE donor def directly since that is what is actually loaded today. -->\n"
+        "     The donor stays upstream (owner, 2026-09-02) and this copy IS deployed\n"
+        "     beside it: same defNames, Armoury loads after the donor, so these are the\n"
+        "     defs the game keeps (the later def of a name replaces the earlier, no log\n"
+        "     line). Gates over these defs key on the defs, never on the donor's name:\n"
+        "     src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepGateKyber.xml, checked\n"
+        "     by src/RimMandrake/Utils/absorbed_gate_lint.py. -->\n"
         "<Defs>\n\n" % (os.path.basename(WORKSHOP_FOLDER), src_relpath)
     )
     with open(path, "w", encoding="utf-8") as f:

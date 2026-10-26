@@ -5,10 +5,12 @@
      defNames preserved verbatim. Lightsaber.* comp/genStep Class= values are
      UNCHANGED === lee.theforce.lightsaber must stay active in the live
      ModsConfig for these to resolve (see generator module docstring).
-     Source pack stays active for now; do NOT deploy this file until it
-     retires, or duplicate defNames result. The Lantern-Deeps scatter gate
-     lives separately under src/RimUtinni/LanternDeeps/Patches/ === it patches
-     the LIVE donor def directly since that is what is actually loaded today. -->
+     The donor stays upstream (owner, 2026-09-02) and this copy IS deployed
+     beside it: same defNames, Armoury loads after the donor, so these are the
+     defs the game keeps (the later def of a name replaces the earlier, no log
+     line). Gates over these defs key on the defs, never on the donor's name:
+     src/RimUtinni/UtinniPatches/Patches/RUT_LanternDeepGateKyber.xml, checked
+     by src/RimMandrake/Utils/absorbed_gate_lint.py. -->
 <Defs>
 
   <ThingDef Name="KyberCrystalBase" Abstract="False">

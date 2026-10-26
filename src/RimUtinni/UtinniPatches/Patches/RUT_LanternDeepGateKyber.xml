@@ -24,42 +24,47 @@
   RUT_LanternDeepGenerator's own genSteps list, which only ever generates a Lantern Deep
   pocket map).
 
-  Patches the LIVE, ACTIVE donor defs directly (lee.theforce.lightsaber is not retired
-  === see src/RimStarWars/Armoury/Defs/Absorbed_TheForceLightsaber/'s own header) rather
-  than the dormant absorbed copy, because the donor's defs are what the running game
-  actually loads today.
+  LIGHTSABER_ABSORB_COPY_DEPLOYED_BESIDE_DONOR (2026-10-26): gated on the DEFS, not on a
+  mod. The three formations are defined twice on the live list: by the donor
+  lee.theforce.lightsaber (workshop, stays upstream per the owner's 2026-09-02 ruling) and by
+  our absorbed copy in mandrake.rsw.armoury (Defs/Absorbed_TheForceLightsaber/, same
+  defNames, loads after the donor, so it is the def the game keeps === the 2026-10-26 dump
+  attributes all three to mandrake.rsw.armoury). This used to be a PatchOperationFindMod on
+  the donor's name: the day the donor leaves the list that gate goes false, the zeroing never
+  runs and our copy's 0.25 scatter leaks onto every rocky map, silently. Each Conditional
+  below tests the field itself, so it zeroes whichever copies exist (a Replace hits every
+  matching node, donor's and ours), and is a quiet no-op when neither does.
+  src/RimMandrake/Utils/absorbed_gate_lint.py goes red on a donor-keyed gate over defs we own.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Star Wars : The Force - Lightsaber</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <operations>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Small"]/building/mineableScatterCommonality</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Small"]/building/mineableScatterCommonality</xpath>
+      <value>
+        <mineableScatterCommonality>0</mineableScatterCommonality>
+      </value>
+    </match>
+  </Operation>
 
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Small"]/building/mineableScatterCommonality</xpath>
-          <value>
-            <mineableScatterCommonality>0</mineableScatterCommonality>
-          </value>
-        </li>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Medium"]/building/mineableScatterCommonality</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Medium"]/building/mineableScatterCommonality</xpath>
+      <value>
+        <mineableScatterCommonality>0</mineableScatterCommonality>
+      </value>
+    </match>
+  </Operation>
 
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Medium"]/building/mineableScatterCommonality</xpath>
-          <value>
-            <mineableScatterCommonality>0</mineableScatterCommonality>
-          </value>
-        </li>
-
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Large"]/building/mineableScatterCommonality</xpath>
-          <value>
-            <mineableScatterCommonality>0</mineableScatterCommonality>
-          </value>
-        </li>
-
-      </operations>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Large"]/building/mineableScatterCommonality</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="Force_CrystalFormation_Large"]/building/mineableScatterCommonality</xpath>
+      <value>
+        <mineableScatterCommonality>0</mineableScatterCommonality>
+      </value>
     </match>
   </Operation>
 
@@ -68,8 +73,9 @@
        rest of the Star Wars carve-out when RM_LanternDeeps split off as a
        RimMandrake-tier mod, so it is no longer in RM_LanternDeepGenerator's
        own genSteps list. Wire it back in from Utinni — the def itself is
-       always inert without lee.theforce.lightsaber (every entry inside it
-       carries its own MayRequire), so this add is unconditional on that mod,
+       inert without either copy of the formations (every entry inside it
+       carries MayRequireAnyOf="mandrake.rsw.armoury,lee.theforce.lightsaber"),
+       so this add is unconditional on either mod,
        only conditional on RM_LanternDeeps existing at all.
 
        PATCH_MAYREQUIRE_GUARD_INERT_1: the MayRequire this Operation used to

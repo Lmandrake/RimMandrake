@@ -3,8 +3,11 @@
   CRYSTAL_INGEST_EXECUTION_1 item 2: kyber's replacement Deeps-only scatter. Same "gate
   by genStep-list membership" trick as RUT_LanternDeepPyrinthScatter.xml === this
   GenStepDef always exists (it is ours), but every `things` entry carries
-  MayRequire="lee.theforce.lightsaber", so it is a harmless no-op if that mod is ever
-  inactive, and RUT_LanternDeepGenerator.genSteps can reference it unconditionally.
+  MayRequireAnyOf="mandrake.rsw.armoury,lee.theforce.lightsaber" (our absorbed copy in
+  Armoury, or the donor; LIGHTSABER_ABSORB_COPY_DEPLOYED_BESIDE_DONOR, same shape as
+  RM_LanternDeepPyrinthScatter, whose AnyOf row the 2026-10-26 dump shows kept with its donor
+  retired), so it is a harmless no-op only if neither is active, and
+  RUT_LanternDeepGenerator.genSteps can reference it unconditionally.
 
   order=335, not 211 (DIRTY_CODE_REVIEW_STANDING_LOOP_1 fix, see
   RUT_LanternDeepPyrinthScatter.xml's header for the full mechanism): genStep execution
@@ -26,9 +29,9 @@
       <groups>
         <li>
           <things>
-            <Force_CrystalFormation_Small MayRequire="lee.theforce.lightsaber">0.4</Force_CrystalFormation_Small>
-            <Force_CrystalFormation_Medium MayRequire="lee.theforce.lightsaber">0.4</Force_CrystalFormation_Medium>
-            <Force_CrystalFormation_Large MayRequire="lee.theforce.lightsaber">0.2</Force_CrystalFormation_Large>
+            <Force_CrystalFormation_Small MayRequireAnyOf="mandrake.rsw.armoury,lee.theforce.lightsaber">0.4</Force_CrystalFormation_Small>
+            <Force_CrystalFormation_Medium MayRequireAnyOf="mandrake.rsw.armoury,lee.theforce.lightsaber">0.4</Force_CrystalFormation_Medium>
+            <Force_CrystalFormation_Large MayRequireAnyOf="mandrake.rsw.armoury,lee.theforce.lightsaber">0.2</Force_CrystalFormation_Large>
           </things>
           <!-- SCATTER_AUDIT_DENSITY_TRUNCATES_ZERO: 0~0.4 at r1~2 covered (int)(9|25/10 * d) = 0 cells for
                nearly every draw (max 1, and Medium is 1x2, Large 2x2). r2~3 at 0.6~1.0 covers 1-2 cells at

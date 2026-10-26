@@ -1,0 +1,2 @@
+A patch guarding defs we own an absorbed copy of must key on the defs (PatchOperationConditional on the xpath), never PatchOperationFindMod / MayRequire on the donor: the day the donor leaves the list the gate goes false and nothing logs. 7 such gates on RETIRED donors (kotorcore, vaewaste) were already silently dead (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT). absorbed_gate_lint.py now goes red on a new one.
+home: skills/rimworld-modding
