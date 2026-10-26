@@ -23,7 +23,11 @@
   GetComp<CompCanBeDormant>() etc., nothing on it hardcodes a defName, so a
   new ThingDef pointed at it needs no subclass.
 
-  RM_SandBusterTunnel is the ONE thing in this build that needed real C#:
+  (The breeding comp is RM_CompSpawnerMounds, a CompSpawnerHives subclass:
+  vanilla's 30-hive breeding cap counts ThingDefOf.Hive only, so without it
+  the mounds bred without limit.)
+
+  RM_SandBusterTunnel is the other thing in this build that needed real C#:
   vanilla TunnelHiveSpawner.Spawn() hardcodes ThingMaker.MakeThing(
   ThingDefOf.Hive) with no def-level hook to redirect it. thingClass here is
   RimMandrake.Stillsand.RM_SandBusterTunnelSpawner (Source/
@@ -100,7 +104,10 @@
       <li Class="CompProperties_SelfhealHitpoints">
         <ticksPerHeal>6000</ticksPerHeal>
       </li>
-      <li Class="CompProperties_SpawnerHives"></li>
+      <!-- RM_CompSpawnerMounds: vanilla's breeding cap counts ThingDefOf.Hive only (0 here); this holds it at 30 of ours. -->
+      <li Class="CompProperties_SpawnerHives">
+        <compClass>RimMandrake.Stillsand.RM_CompSpawnerMounds</compClass>
+      </li>
     </comps>
     <killedLeavings />
   </ThingDef>

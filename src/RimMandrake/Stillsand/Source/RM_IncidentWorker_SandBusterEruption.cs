@@ -1,3 +1,4 @@
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -19,7 +20,8 @@ namespace RimMandrake.Stillsand
     //      though its thingClass is the same RimWorld.Hive), so that vanilla
     //      cap-counter would always read 0 for us and never actually cap
     //      anything. This worker re-derives the same 30-mound cap against our
-    //      own def instead.
+    //      own def instead. The mounds' own breeding (CompSpawnerHives) has the
+    //      same blind cap; RM_CompSpawnerMounds at the bottom of this file fixes it.
     //   2. InfestationUtility.SpawnTunnels hardcodes ThingDefOf.TunnelHiveSpawner.
     //      SpawnMounds() below is the same shape, spawning
     //      RM_StillsandDefOf.RM_SandBusterTunnel instead — whose thingClass
@@ -122,15 +124,71 @@ namespace RimMandrake.Stillsand
             Thing spawnedMarker = GenSpawn.Spawn(ThingMaker.MakeThing(tunnelDef), loc, map, WipeMode.FullRefund);
             for (int i = 0; i < moundCount - 1; i++)
             {
+                // Vanilla passes infestationLocOverride.HasValue here: a forced spot may be unroofed.
                 IntVec3 childLoc = CompSpawnerHives.FindChildHiveLocation(
                     spawnedMarker.Position, map, moundDef, hiveProps,
-                    ignoreRoofedRequirement: false, allowUnreachable: true);
+                    ignoreRoofedRequirement: overrideLoc.HasValue, allowUnreachable: true);
                 if (childLoc.IsValid)
                 {
                     spawnedMarker = GenSpawn.Spawn(ThingMaker.MakeThing(tunnelDef), childLoc, map, WipeMode.FullRefund);
                 }
             }
             return spawnedMarker;
+        }
+    }
+
+    // SANDBUSTER_MOUND_BREED_CAP_FIX: a mound's reproduction. Vanilla CompSpawnerHives stops a hive breeding at
+    // HiveUtility.TotalSpawnedHivesCount(map) >= 30, which counts ThingDefOf.Hive only and so reads 0 on a map of
+    // sand buster mounds: they bred without limit. This is the same comp held at the same cap counted against our
+    // own mound def. At the cap it does what vanilla does when CanSpawnChildHive is false: when the breeding tick
+    // comes, it re-rolls the next one instead of breeding, and the inspect line goes quiet.
+    // Wired by <compClass> on RM_SandBusterMound's CompProperties_SpawnerHives.
+    public class RM_CompSpawnerMounds : CompSpawnerHives
+    {
+        // Resolved guarded: a renamed field logs once and falls back to holding the comp still at the cap.
+        private static readonly AccessTools.FieldRef<CompSpawnerHives, int> NextSpawnTick = ResolveNextSpawnTick();
+
+        private static AccessTools.FieldRef<CompSpawnerHives, int> ResolveNextSpawnTick()
+        {
+            try
+            {
+                return AccessTools.FieldRefAccess<CompSpawnerHives, int>("nextHiveSpawnTick");
+            }
+            catch (System.Exception e)
+            {
+                Log.Error("[RimMandrake.Stillsand] RM_CompSpawnerMounds: CompSpawnerHives.nextHiveSpawnTick not found ("
+                          + e.Message + "); a capped mound will hold still and breed the moment the cap frees.");
+                return null;
+            }
+        }
+
+        public static bool AtCap(Map map)
+        {
+            return map != null && map.listerThings.ThingsOfDef(RM_StillsandDefOf.RM_SandBusterMound).Count
+                   >= RM_IncidentWorker_SandBusterEruption.MaxMoundsPerMap;
+        }
+
+        public override void CompTick()
+        {
+            if (parent.Spawned && AtCap(parent.Map))
+            {
+                if (NextSpawnTick != null && Find.TickManager.TicksGame >= NextSpawnTick(this))
+                {
+                    CalculateNextHiveSpawnTick();
+                }
+                return;
+            }
+            base.CompTick();
+        }
+
+        public override string CompInspectStringExtra()
+        {
+            if (canSpawnHives && Find.Storyteller.difficulty.enemyReproductionRateFactor > 0f
+                && parent.Spawned && AtCap(parent.Map))
+            {
+                return null;
+            }
+            return base.CompInspectStringExtra();
         }
     }
 }

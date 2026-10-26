@@ -48,5 +48,20 @@ namespace JawaBench.BridgeTools
             double b = e.Take(6.0);
             Check(Near(a, 2.0) && Near(b, 2.0), "an open scope is split at the observation (2 + 2 s): " + a + " + " + b);
         }
+
+        private static void T_ExplainedScopeSpansFrames()
+        {
+            // a long-event scope that closes after two separate waiting frames recorded inside it: the union is
+            // the frames plus the scope, gaps between the frames included (was 2.5, the gap 2.0..2.5 dropped)
+            var e = new E();
+            e.RootPre(0.0); e.RootPost(true);                           // frame 0 waits on an async event
+            e.LongEventBegin(0.5);
+            e.RootPre(2.0); e.RootPost(false);                          // records frame 0: 0.0..2.0
+            e.RootPre(2.5); e.RootPost(true);
+            e.RootPre(2.8); e.RootPost(false);                          // records frame 2: 2.5..2.8
+            e.LongEventEnd(3.0);                                        // scope 0.5..3.0
+            double ex = e.Take(3.1);
+            Check(Near(ex, 3.0), "a scope spanning several stored frames covers the gaps between them (3.0 s): " + ex);
+        }
     }
 }

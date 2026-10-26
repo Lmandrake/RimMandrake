@@ -108,15 +108,24 @@ namespace JawaBench.BridgeTools
                     int? effDamage = null;
                     float? effPen = null;
                     string effError = null;
-                    try
+                    if (pp.damageDef == null)
                     {
-                        effDamage = pp.GetDamageAmount((ThingDef)null, null);
-                        effPen = pp.GetArmorPenetration(null);
+                        // 1.6 GetDamageAmount answers a made-up 1 and logs "Failed to find sane damage amount",
+                        // and GetArmorPenetration NREs on damageDef.armorCategory: no effective value exists, say so
+                        // without writing a red error into the log the caller may be budgeting. Raw fields still answer.
+                        effError = "no damageDef: the engine has no effective damage for this projectile";
                     }
-                    catch (Exception e)
+                    else
                     {
-                        // a projectile with no damageDef NREs the accessor; the raw fields still answer
-                        effError = e.GetType().Name + ": " + e.Message;
+                        try
+                        {
+                            effDamage = pp.GetDamageAmount((ThingDef)null, null);
+                            effPen = pp.GetArmorPenetration(null);
+                        }
+                        catch (Exception e)
+                        {
+                            effError = e.GetType().Name + ": " + e.Message;
+                        }
                     }
                     rows.Add(new
                     {

@@ -27,7 +27,15 @@ namespace JawaBench.BridgeTools
         private void Add(double s, double e)
         {
             if (e <= s) return;
-            if (_n > 0 && s <= _e[_n - 1]) { if (e > _e[_n - 1]) _e[_n - 1] = e; return; }
+            // A scope closes AFTER the frame intervals recorded while it was open, so its start can lie before
+            // several stored intervals: absorb every one it overlaps (each ends at or before `e`, times only grow).
+            // Extending just the last one dropped the gaps between them from the union.
+            while (_n > 0 && s <= _e[_n - 1])
+            {
+                _n--;
+                if (_s[_n] < s) s = _s[_n];
+                if (_e[_n] > e) e = _e[_n];
+            }
             if (_n == MaxIntervals)
             {
                 // bounded: merge the two oldest (over-covers the gap between them; only on pathological churn)
