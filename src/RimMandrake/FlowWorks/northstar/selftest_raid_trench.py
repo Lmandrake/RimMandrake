@@ -77,6 +77,15 @@ chk(R.tree_verdict(6, 6, False, 3)[0] == "FAIL", "trees: can-fail, raiders near 
 chk(R.tree_verdict(0, 0, False, 3)[0] == "UNMEASURED", "trees: nothing planted UNMEASURED")
 chk(R.tree_verdict(6, 6, False, 0)[0] == "UNMEASURED", "trees: no raider near UNMEASURED")
 chk(R.tree_verdict(6, None, False, 3)[0] == "UNMEASURED", "trees: uncounted UNMEASURED")
+# MASKSWAP: a crossing over the PLAYER's ladders (--colony-ladders; filtered out of the raider ways) is legal, never a FAIL
+chk(R.maskswap_verdict(3, "PASS", [5], [], staged_way=True) == "UNMEASURED",
+    "maskswap: a crossing with colony ladders staged is masked, not a mask FAIL")
+chk(R.maskswap_verdict(3, "PASS", [5], [], staged_way=False) == "FAIL", "maskswap: can-fail, a crossing with no way across")
+chk(R.maskswap_verdict(3, "PASS", [5], [{"def_": "RM_LadderPortable"}], staged_way=False) == "UNMEASURED",
+    "maskswap: a crossing over the raid's own ladder is masked")
+chk(R.maskswap_verdict(3, "PASS", [], [], staged_way=False) == "PASS", "maskswap: no crossing PASS")
+chk(R.maskswap_verdict(1, "PASS", [], [], staged_way=False) == "UNMEASURED", "maskswap: under 2 raiders near UNMEASURED")
+chk(R.maskswap_verdict(3, "FAIL", [], [], staged_way=False) == "UNMEASURED", "maskswap: an unsealed island UNMEASURED")
 import ladder_wall_proof as LW  # noqa: E402
 ok_reads = {k: "ladder=RM_LadderPortable faction=x mayClimb=%s letsOut=True" % w for k, _f, w in LW.CENSUS}
 chk(LW.census_verdict(ok_reads)[0] == "PASS", "census: the table read back PASS")

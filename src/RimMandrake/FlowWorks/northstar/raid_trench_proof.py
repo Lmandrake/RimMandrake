@@ -196,6 +196,16 @@ def tree_verdict(planted, standing_after, chop_seen, came_near):
     return "FAIL", "raiders came near, every oak still stands and no RM_RaiderChopForLadder job was seen"
 
 
+def maskswap_verdict(came_near, sealed, crossed, ways, staged_way):
+    """MASKSWAP_no_wall_crossing. ways: raider-faction ladders/planks read back; staged_way: the run itself put a legal way
+    across (jump packs worn, raid ladders or the PLAYER's ladders pre-placed -- the player's are not in `ways`). Pure."""
+    if came_near < 2 or sealed != "PASS":
+        return "UNMEASURED"
+    if not crossed:
+        return "PASS"
+    return "UNMEASURED" if (ways or staged_way) else "FAIL"
+
+
 def main(argv=None):
     """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
     hold = {}
@@ -469,13 +479,9 @@ def _run(argv, hold):
         lt = B.call("jawa/list_things", defName=dn, rect="%d,%d,15,15" % (c[0] - 7, c[1] - 7), limit=50) or {}
         ways += [dict(def_=t.get("def"), x=t.get("x"), z=t.get("z"), faction=t.get("faction")) for t in lt.get("things") or []
                  if t.get("faction") and not str(t.get("faction")).startswith("Player") and cheb((t.get("x"), t.get("z")), c) in (4, 5, 6, 7)]
-    if cameNear < 2 or sealed != "PASS":
-        ms = "UNMEASURED"
-    elif not crossed:
-        ms = "PASS"
-    else:
-        # a jump-pack crossing is legal too (A4): with --jump-packs worn the mask question is masked as by a ladder
-        ms = "UNMEASURED" if (ways or a.jump_packs or a.preladder) else "FAIL"
+    # a jump-pack crossing is legal too (A4), and so is one over the PLAYER's ladders (--colony-ladders, LADDER_PARITY: those
+    # are filtered out of `ways`, so leaving them out here read a legal crossing as a mask FAIL -- review 2026-10-26)
+    ms = maskswap_verdict(cameNear, sealed, crossed, ways, bool(a.jump_packs or a.preladder or a.colony_ladders))
     row("MASKSWAP_no_wall_crossing", ms,
         {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
          "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
@@ -562,7 +568,7 @@ def _run(argv, hold):
                                    "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a "
                                           "raider used them (in the trench or on the island) -- no stall"})
     save()
-    say("result: %s" % os.path.relpath(a.out, REPO))
+    say("result: %s" % a.out)   # not relpath: under python.exe an out on D: vs a \\wsl.localhost REPO raises ValueError
     return 0
 
 
