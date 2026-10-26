@@ -166,7 +166,9 @@ namespace JawaBench.BridgeTools
                     failReason, jobOnThingFailReason = failReason2, job, construction, neighbours, swim, errors,
                     ticksGame = TicksGameSafe()
                 };
-            });
+            }, cancellationToken).ConfigureAwait(false);
+            // WORKGIVERPROBE_FIX_UNCANCELLABLE_INVOKE: the token was not passed, so a call queued while frames had
+            // stalled could never be cancelled by the caller and held its bridge request forever.
         }
 
         private static object DescribeJob(Job j)

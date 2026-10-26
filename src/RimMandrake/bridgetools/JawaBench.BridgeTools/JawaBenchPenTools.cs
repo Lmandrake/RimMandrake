@@ -34,7 +34,7 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
-        private sealed class PenStash { public IntVec3 cell; public Rot4 rot; public int releasedTick; }
+        private sealed class PenStash { public IntVec3 cell; public Rot4 rot; public int releasedTick; public int mapId; }
 
         // Where each released animal stood and faced when it was let go, so pen_pin can put it back.
         // Weak keys: a destroyed or garbage-collected pawn drops out by itself. Not saved with the game.
@@ -165,7 +165,7 @@ namespace JawaBench.BridgeTools
                     {
                         released++;
                         PenStashes.Remove(p);
-                        PenStashes.Add(p, new PenStash { cell = cell, rot = rot, releasedTick = TicksGameSafe() });
+                        PenStashes.Add(p, new PenStash { cell = cell, rot = rot, releasedTick = TicksGameSafe(), mapId = map.uniqueID });
                     }
                     rows.Add(new { pawn = p.ThingID, kind = p.kindDef?.defName, x = cell.x, z = cell.z, jobAfter = after });
                 }
@@ -226,9 +226,17 @@ namespace JawaBench.BridgeTools
                     if (restore && PenStashes.TryGetValue(p, out PenStash st))
                     {
                         want = st.rot;
-                        if (p.Position != st.cell)
+                        // PEN_FIX_RESTORE_WRONG_MAP: the stash cell belongs to the map the pawn was released on. A pawn that
+                        // has since moved maps was teleported to that cell on THIS map, and GetFirstPawn ran before the
+                        // bounds check, so a smaller map threw instead of refusing.
+                        if (st.mapId != map.uniqueID)
                         {
-                            Pawn other = st.cell.GetFirstPawn(map);
+                            want = null;
+                            homeRefused.Add(new { pawn = p.ThingID, reason = "released on map " + st.mapId + ", not this map: pinned where it stands" });
+                        }
+                        else if (p.Position != st.cell)
+                        {
+                            Pawn other = st.cell.InBounds(map) ? st.cell.GetFirstPawn(map) : null;
                             if (!st.cell.InBounds(map) || !st.cell.Standable(map)) homeRefused.Add(new { pawn = p.ThingID, reason = "release cell " + st.cell + " not standable" });
                             else if (other != null && other != p) homeRefused.Add(new { pawn = p.ThingID, reason = "release cell " + st.cell + " holds " + other.ThingID });
                             else { p.Position = st.cell; p.Notify_Teleported(true, true); home++; }

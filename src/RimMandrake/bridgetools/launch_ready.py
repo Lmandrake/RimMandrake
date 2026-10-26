@@ -78,8 +78,21 @@ def _first_exception(text):
 
 
 def run(env, pol, kill_existing=True, log=print):
+    # LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT: a hung powershell/taskkill/cmd (subprocess.TimeoutExpired), a failed
+    # log move or an unparsable process line used to escape as a traceback - no verdict line, no receipt, and the
+    # steps already taken (a kill, a launch) were lost. Any exception is now the verdict LAUNCHER_ERROR (exit 1)
+    # with the steps so far kept. It is never READY and never retried here: the process may be up.
     r = {"verdict": None, "policy": pol.get("name"), "steps": []}
+    try:
+        return _run(env, pol, kill_existing, log, r)
+    except Exception as e:  # noqa: BLE001 - every escape becomes a recorded verdict
+        r["verdict"] = "LAUNCHER_ERROR"
+        r["why"] = "%s: %s (after steps %s)" % (type(e).__name__, str(e)[:300], [s[1] for s in r["steps"]])
+        log("launch_ready: LAUNCHER_ERROR - %s" % r["why"])
+        return r
 
+
+def _run(env, pol, kill_existing, log, r):
     def done(verdict, why=""):
         r["verdict"] = verdict
         r["why"] = why

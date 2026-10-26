@@ -227,14 +227,18 @@ namespace JawaBench.BridgeTools
                     foreach (var p in pits)
                     {
                         int bad = 0; string first = null;
-                        foreach (IntVec3 c in p.r.Cells)
+                        try
                         {
-                            if (p.F > 0) QCall(exc, "TrySetDriverFill", c, p.F, p.fluid);
-                            int d = Convert.ToInt32(QCall(exc, "DepthAt", c)), f = Convert.ToInt32(QCall(exc, "FillAt", c));
-                            string fl = (QCall(exc, "FluidAt", c) as Def)?.defName;
-                            bool ok = d == p.D && f == p.F && (p.F == 0 || fl == p.fluid?.defName);
-                            if (!ok) { bad++; if (first == null) first = c.x + "," + c.z + " D" + d + "F" + f + " " + fl; }
+                            foreach (IntVec3 c in p.r.Cells)
+                            {
+                                if (p.F > 0) QCall(exc, "TrySetDriverFill", c, p.F, p.fluid);
+                                int d = Convert.ToInt32(QCall(exc, "DepthAt", c)), f = Convert.ToInt32(QCall(exc, "FillAt", c));
+                                string fl = (QCall(exc, "FluidAt", c) as Def)?.defName;
+                                bool ok = d == p.D && f == p.F && (p.F == 0 || fl == p.fluid?.defName);
+                                if (!ok) { bad++; if (first == null) first = c.x + "," + c.z + " D" + d + "F" + f + " " + fl; }
+                            }
                         }
+                        catch (Exception e) { p.row["ok"] = false; p.row["error"] = "fill/read-back threw " + Inner(e); continue; }
                         p.row["readBack"] = new { cells = p.r.Area, badCells = bad, firstBad = first };
                         if (bad > 0) { p.row["ok"] = false; p.row["error"] = bad + "/" + p.r.Area + " cells read back wrong, e.g. " + first; }
                     }
@@ -323,6 +327,7 @@ namespace JawaBench.BridgeTools
             int x = GetInt(kv, "x", int.MinValue), z = GetInt(kv, "z", int.MinValue);
             if (x == int.MinValue || z == int.MinValue) { row["error"] = "needs x and z"; return; }
             int w = GetInt(kv, "w", 1), h = GetInt(kv, "h", 1);
+            if (w < 1 || h < 1) { row["error"] = "w and h must be >= 1"; return; }   // a 0/negative rect has no cells and read back 'ok' with nothing placed
             var rect = new CellRect(x, z, w, h);
             row["requested"] = RectObj(rect);
             if (!rect.InBounds(map)) { row["error"] = "out of bounds"; return; }
@@ -483,16 +488,19 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Rect height in cells.")] int h = 0,
             [ToolParameter(Description = "Pixels per cell (integer, 8..256). Default 48.")] int ppc = 48,
             [ToolParameter(Description = "Absolute output PNG path (Windows).")] string path = null,
-            [ToolParameter(Description = "Frames to run with the rect armed before rendering (>=2). Default 2.")] int frames = 2,
+            [ToolParameter(Description = "Frames to run with the rect armed before rendering (clamped 2..600). Default 2.")] int frames = 2,
             [ToolParameter(Description = "Clear the selection first so no selection brackets are drawn.")] bool clearSelection = true,
-            [ToolParameter(Description = "Give up after this many ms of real time.")] int timeoutMs = 15000)
+            [ToolParameter(Description = "Give up after this many ms of real time (clamped 1000..120000).")] int timeoutMs = 15000)
         {
             if (string.IsNullOrWhiteSpace(path)) return Fail("Give an absolute output PNG path in 'path'.");
             if (w <= 0 || h <= 0) return Fail("w and h must be positive.");
             if (ppc < 8 || ppc > 256) return Fail("ppc must be 8..256.");
             int W = w * ppc, H = h * ppc;
             if (W > 8192 || H > 8192) return Fail("frame " + W + "x" + H + " exceeds 8192 px; split the board into tiles.");
-            frames = Math.Max(2, frames);
+            // Bounded on purpose (ARTBOARD_FIX_UNBOUNDED_CAPTURE_WAIT): timeoutMs=-1 was Task.Delay's "forever", and a huge
+            // frames overflowed armed+frames (rendering at once) or outlived any sane wait.
+            frames = Math.Max(2, Math.Min(600, frames));
+            timeoutMs = Math.Max(1000, Math.Min(120000, timeoutMs));
             var tcs = new TaskCompletionSource<object>();
             object armErr = await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -519,13 +527,12 @@ namespace JawaBench.BridgeTools
             Task done = await Task.WhenAny(tcs.Task, Task.Delay(timeoutMs, cancellationToken)).ConfigureAwait(false);
             if (done != tcs.Task)
             {
-                await ctx.MainThread.InvokeAsync<object>(() =>
-                {
-                    JawaArtboardCapture.Token++;          // the coroutine, if it ever resumes, sees a stale token and quits
-                    JawaArtboardCapture.Armed = false;
-                    artboardBusy = false;
-                    return null;
-                }).ConfigureAwait(false);
+                // Disarm from THIS thread: a timeout usually means frames are not advancing, and then the main-thread
+                // queue is not pumped either, so awaiting InvokeAsync here hung the tool for good with artboardBusy set.
+                // Plain static flags; the coroutine (if it ever resumes) sees a stale token and quits.
+                Interlocked.Increment(ref JawaArtboardCapture.Token);
+                JawaArtboardCapture.Armed = false;
+                artboardBusy = false;
                 return Fail("Timed out after " + timeoutMs + " ms waiting for " + frames + " rendered frames - is the game " +
                             "window minimised with Run in background off, or the game loading? Nothing was written.");
             }

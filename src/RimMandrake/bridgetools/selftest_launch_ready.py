@@ -163,6 +163,18 @@ def main():
     good.append(case("old log left in place is never read as this run's token", r["verdict"] != "READY",
                      r["verdict"]))
 
+    # a subprocess hang after the launch must be a recorded verdict, not a traceback that loses the receipt
+    class Hung(Fake):
+        def list_game_procs(self):
+            if self.launched is not None:
+                import subprocess
+                raise subprocess.TimeoutExpired("powershell.exe", 60)
+            return Fake.list_game_procs(self)
+    f = Hung()
+    r = L.run(f, POL, log=lambda *a: None)
+    good.append(case("subprocess timeout after launch -> LAUNCHER_ERROR with steps kept, exit 1",
+                     r["verdict"] == "LAUNCHER_ERROR" and "launched" in r["why"] and L.exit_code(r) == 1, r))
+
     # the policy file: one source, kill_on_deadline refused, profiles chosen by list size
     import json
     import tempfile

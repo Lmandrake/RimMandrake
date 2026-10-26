@@ -1,0 +1,2 @@
+A bridge tool's TIMEOUT branch must not clean up through ctx.MainThread.InvokeAsync: the main-thread queue is pumped from Update, so the very stall that caused the timeout (frames stopped advancing) makes the cleanup await hang forever and the tool never returns. Disarm with Interlocked/volatile fields off-thread instead, clamp every caller timeout (timeoutMs=-1 meant wait forever), and always pass cancellationToken to InvokeAsync (found in jawa/artboard_capture and jawa/workgiver_probe, wave 38).
+home: rimbridge-companion
