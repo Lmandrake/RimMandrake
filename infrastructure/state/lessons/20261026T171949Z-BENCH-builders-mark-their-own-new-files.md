@@ -1,0 +1,1 @@
+Builders mark their OWN new files CLEAN in code_review_status (seen twice 2026-10-26: GSS round 3, cold-storage seals) — and the seals reviewer then found 3 real bugs in files the builder had marked clean. A self-mark is not a review. Briefs must say 'do not mark your own files CLEAN'; independent reviewers must re-read author-marked files in full rather than trusting the mark.
