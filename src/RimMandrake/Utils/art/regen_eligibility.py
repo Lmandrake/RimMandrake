@@ -45,6 +45,26 @@ sys.path.insert(0, str(HERE.parent))
 REPO = HERE.parents[3]
 TEXTAGS = {"texPath", "texturePath", "uiIconPath", "wornGraphicPath", "flyingAnimationFramePathPrefix",
            "flyingAnimationFramePathPrefixFemale", "iconPath", "graphicPath", "texPathFemale"}
+
+
+FLIP_PREFIX_TAGS = {"flyingAnimationFramePathPrefix", "flyingAnimationFramePathPrefixFemale"}
+
+
+def _tex_texts(el, d):
+    """The texture texts one TEXTAGS element names. A flip-book prefix is not a texture: the game loads
+    <prefix><N> for N = 1..flyingAnimationFrameCount (Graphic_Multi, so <prefix><N>_<facing>), so the prefix is
+    expanded into those frame paths, read from the SAME def's flyingAnimationFrameCount; the bare prefix stays too.
+    No readable count expands nothing (fail closed: the frames stay undrawn, as before)."""
+    yield el.text
+    if el.tag in FLIP_PREFIX_TAGS:
+        try:
+            n = int((d.findtext("flyingAnimationFrameCount") or "").strip())
+        except ValueError:
+            return
+        for i in range(1, n + 1):
+            yield el.text.strip() + str(i)
+
+
 FACINGS = ("north", "south", "east", "west")
 ELIGIBLE = ("NONE", "PLACEHOLDER", "DONOR")
 REFUSED = ("REFUSED_KEPT", "REFUSED_REGEN", "REFUSED_UNCONFIRMED")
@@ -213,17 +233,19 @@ class Gate:
                                              {dn} | {(c.text or "").strip().rsplit(".", 1)[-1] for c in d.findall("overlayClasses/li")})
                 for el in d:
                     if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
-                        self.drawn[low(el.text)].add(r)
+                        for t in _tex_texts(el, d):
+                            self.drawn[low(t)].add(r)
                 if not dn:
                     continue
                 race = (d.findtext("race") or "").strip() if d.tag == "PawnKindDef" else ""
                 for el in d.iter():
                     if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
-                        self.def_tex[dn].add(el.text.strip())
-                        self.drawn[low(el.text)].add(dn)
-                        self.def_draws[dn].add(key(el.text))
-                        if race:
-                            self.def_draws[race].add(key(el.text))
+                        for t in _tex_texts(el, d):
+                            self.def_tex[dn].add(t.strip())
+                            self.drawn[low(t)].add(dn)
+                            self.def_draws[dn].add(key(t))
+                            if race:
+                                self.def_draws[race].add(key(t))
 
         self._scan_contract_paths(src)
 

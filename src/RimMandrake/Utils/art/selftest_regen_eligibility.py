@@ -188,6 +188,32 @@ def main() -> int:
     (root / M / "Textures/Terrain/Surfaces/RM_SurfT.png").write_bytes(B["regen"])
     v = gate(root).classify(row("RM_SurfT", install_to=it("Terrain/Surfaces/RM_SurfT")))
     check(v["verdict"] == "REFUSED_REGEN", "TerrainDef contract path already holding a render stays refused", v)
+    # flip-book: a PawnKindDef's flyingAnimationFramePathPrefix names <prefix>1..<FrameCount>, never the bare prefix
+    # (before: the frames read as "no def draws it" and a NONE flight frame was refused as renamed-to-a-render)
+    (root / M / "Defs" / "f.xml").write_text(
+        "<Defs><ThingDef><defName>RM_Fly</defName><race><body>Bird</body></race></ThingDef>"
+        "<PawnKindDef><defName>RM_Fly</defName><race>RM_Fly</race>"
+        "<flyingAnimationFramePathPrefix>Things/RM_Fly/Flying/RM_Fly_Flying_</flyingAnimationFramePathPrefix>"
+        "<flyingAnimationFrameCount>4</flyingAnimationFrameCount>"
+        "<lifeStages><li><bodyGraphicData><texPath>Things/RM_Fly/RM_Fly</texPath></bodyGraphicData></li></lifeStages>"
+        "</PawnKindDef>"
+        "<ThingDef><defName>RM_FlyNoCount</defName></ThingDef>"
+        "<PawnKindDef><defName>RM_FlyNoCount</defName><race>RM_FlyNoCount</race>"
+        "<flyingAnimationFramePathPrefix>Things/RM_FlyNoCount/F_</flyingAnimationFramePathPrefix></PawnKindDef></Defs>")
+    gf = gate(root)
+    fl = "Things/RM_Fly/Flying/RM_Fly_Flying_"
+    for msg, r, want in [
+        ("flip-book frame 1 (install_to, per facing) the prefix names: NONE",
+         row("RM_Fly", install_to=it(fl + "1_{facing}"), facings=["east", "north", "south"]), "NONE"),
+        ("flip-book last frame (FrameCount) via target_texpath: NONE", row("RM_Fly", target_texpath=fl + "4"), "NONE"),
+        ("flip-book frame past FrameCount is not drawn", row("RM_Fly", install_to=it(fl + "5_east"), facing="east"),
+         "REFUSED_UNCONFIRMED"),
+        ("flip-book prefix with no FrameCount expands nothing (fail closed)",
+         row("RM_FlyNoCount", install_to=it("Things/RM_FlyNoCount/F_1_east"), facing="east"), "REFUSED_UNCONFIRMED"),
+    ]:
+        v = gf.classify(r)
+        check(v["verdict"] == want, msg, v)
+    (root / M / "Defs" / "f.xml").unlink()
     # facings: every facing must be confirmed; one regenerated facing refuses the row
     (root / M / "Textures/Things/RM_Fac").mkdir(parents=True)
     (root / M / "Textures/Things/RM_Fac/RM_Fac_east.png").write_bytes(B["donor"])
