@@ -9,11 +9,4 @@
   Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "ShadowCharger").
 -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger"]</xpath>
-      <value><texPath>RimUtinni/UtinniPatches/ShadowCharger/AA_ShadowCharger</texPath></value>
-    </match>
-  </Operation>
 </Patch>

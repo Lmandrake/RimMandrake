@@ -9,11 +9,4 @@
   Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "DecayDrake").
 -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"]</xpath>
-      <value><texPath>Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake</texPath></value>
-    </match>
-  </Operation>
 </Patch>

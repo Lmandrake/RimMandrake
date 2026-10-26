@@ -12,36 +12,5 @@
 
        Both renames were the owner's own ask in the roster itself. -->
 
-  <!-- ============== AA_ShockGoat -> zhissa ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]/label</xpath>
-          <value><label>zhissa</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_ShockGoat"]/description</xpath>
-          <value><description>A pale-eyed grazer of the ice sheets, its body running with static it can discharge in a crackling pale-blue burst when threatened. Six eyes see nothing on the nightside — the zhissa reads the world entirely by heat instead. Farmed where it can be kept, for the milk it still gives.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]/label</xpath>
-          <value><label>zhissa</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_ShockGoat"]/lifeStages/li[1]/label</xpath>
-          <value><label>zhissa lamb</label></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 
 </Patch>

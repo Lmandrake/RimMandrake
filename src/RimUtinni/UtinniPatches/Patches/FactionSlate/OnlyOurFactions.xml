@@ -32,25 +32,6 @@
      *Player* def. Regenerate after any mod-list change.
 -->
 <Patch>
-  <!-- AA_BlackHive -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="AA_BlackHive"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="AA_BlackHive"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="AA_BlackHive"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="AA_BlackHive"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
   <!-- BMT_PustuleHornets -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/FactionDef[defName="BMT_PustuleHornets"]</xpath>

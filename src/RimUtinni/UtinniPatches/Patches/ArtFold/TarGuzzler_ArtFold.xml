@@ -9,11 +9,4 @@
   Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "TarGuzzler").
 -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_TarGuzzler/AA_TarGuzzler"]</xpath>
-      <value><texPath>RimUtinni/UtinniPatches/TarGuzzler/AA_TarGuzzler</texPath></value>
-    </match>
-  </Operation>
 </Patch>

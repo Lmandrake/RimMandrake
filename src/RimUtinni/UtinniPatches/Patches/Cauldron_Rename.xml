@@ -94,45 +94,4 @@
     </match>
   </Operation>
 
-  <!-- ============== AA_Radyak -> ossrith ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Radyak"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Radyak"]/label</xpath>
-          <value><label>ossrith</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Radyak"]/description</xpath>
-          <value><description>A placid herd grazer with long legs, bone-white armour and a bare skull-like face. Green crystals grow through its spinal plates as it expels metals taken from the Cauldron's vegetation. The crystals can be harvested periodically and refined into uranium at a biofuel refinery.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/label</xpath>
-          <value><label>ossrith</label></value>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/label</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/label</xpath>
-            <value><label>ossrith calf</label></value>
-          </match>
-        </li>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/labelPlural</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/labelPlural</xpath>
-            <value><labelPlural>ossrith calves</labelPlural></value>
-          </match>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 </Patch>

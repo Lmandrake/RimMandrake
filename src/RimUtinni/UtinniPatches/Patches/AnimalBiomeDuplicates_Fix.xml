@@ -267,13 +267,6 @@
        that biome, at the commonality we chose. Each pair has exactly ONE
        animal-side registration (verified), so no [2] predicate is needed.
        -->
-  <!-- == ExtremeDesert : 10 pair(s) : Alpha Animals; Star Wars Animal Collection (Continued) == -->
-  <Operation Class="PatchOperationConditional">   <!-- 5. AA_Dunealisk x ExtremeDesert (Alpha Animals) -->
-    <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
-    </match>
-  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 6. Cannok x ExtremeDesert (Star Wars Animal Collection (Continued)) -->
     <xpath>/Defs/ThingDef[defName="Cannok"]/race/wildBiomes/ExtremeDesert</xpath>
     <match Class="PatchOperationRemove">
@@ -347,30 +340,10 @@
       <xpath>/Defs/ThingDef[defName="TYR_KangarooRat"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
     </match>
   </Operation>
-  <!-- == Scarlands : 1 pair(s) : Alpha Animals == -->
-  <Operation Class="PatchOperationConditional">   <!-- 22. AA_CrystallineCaracal x Scarlands (Alpha Animals) -->
-    <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
-    </match>
-  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 24. Penguin x SeaIce (Beasts of the Rim (Continued)) -->
     <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Penguin"]/race/wildBiomes/SeaIce</xpath>
-    </match>
-  </Operation>
-  <!-- == IceSheet : 9 pair(s) : Alpha Animals; Dark Ages : Beasts and Monsters; Mythic Ages: Megafauna Bestiary; Star Wars Animal Collection (Continued) == -->
-  <Operation Class="PatchOperationConditional">   <!-- 25. AA_ArcticLion x IceSheet (Alpha Animals) -->
-    <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="AA_ArcticLion"]/race/wildBiomes/IceSheet</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 26. AA_Frostmite x IceSheet (Alpha Animals) -->
-    <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="AA_Frostmite"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 27. DA_ArcticOwlcat x IceSheet (Dark Ages : Beasts and Monsters) -->

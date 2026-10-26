@@ -9,11 +9,4 @@
   Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "Bumbledrone").
 -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_Bumbledrone/AA_Bumbledrone"]</xpath>
-      <value><texPath>RimUtinni/UtinniPatches/Bumbledrone/AA_Bumbledrone</texPath></value>
-    </match>
-  </Operation>
 </Patch>

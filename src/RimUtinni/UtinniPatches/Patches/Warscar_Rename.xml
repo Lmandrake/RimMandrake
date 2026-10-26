@@ -11,27 +11,5 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/label</xpath>
-          <value><label>bileworm</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/description</xpath>
-          <value><description>A vast, slow slug in mottled grey-green skin, ribbed along its pale underside and pitted with a row of dark breathing holes down each flank, its two eye-stalks nodding over a cluster of yellow, finger-like mouthparts. It breathes out a foul, corrosive gas wherever it goes: mostly harmless to the living, but murder on the dead. Anything it passes near rots in minutes into a black, reeking fluid, which the bileworm then happily drinks.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]/label</xpath>
-      <value><label>bileworm</label></value>
-    </match>
-  </Operation>
 
 </Patch>
