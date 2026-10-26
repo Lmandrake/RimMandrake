@@ -146,6 +146,39 @@ if harness:
 else:
     print(f"memory pen probe failed ({why}) — those checks are UNMEASURED here")
 
+# DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 11.
+# (a) --only on a named file OUTSIDE the repo is run (main() says so), so the runner must not die on
+#     relative_to(REPO_ROOT) while sorting/saving timings and print no N/N at all.
+with tempfile.TemporaryDirectory() as tmp:
+    outside = Path(tmp) / "selftest_outside_fixture.py"
+    outside.write_text("print('ok')\n")
+    r = _sp.run([sys.executable, rs.__file__, "--only", str(outside)], capture_output=True, text=True, timeout=120,
+                env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1",
+                     "SELFTEST_TIMINGS_FILE": str(Path(tmp) / "timings.json"),
+                     "RM_SELFTEST_STATE_DIR": str(Path(tmp) / "state")})
+    eq((r.returncode, "PASS 1/1" in r.stdout, "Traceback" in r.stderr), (0, True, False),
+       "--only on a file outside the repo runs it and reports N/N (no relative_to crash)")
+# (b) two pool threads building scope argv at once must get DIFFERENT unit names (the old `_SEQ[0] += 1` then a
+#     later `_SEQ[0]` read interleaved across the os.getpid() call between them).
+import threading
+_real_getpid = os.getpid
+def _slow_getpid():
+    import time as _t
+    _t.sleep(0.05)
+    return _real_getpid()
+units = []
+os.getpid = _slow_getpid
+try:
+    ths = [threading.Thread(target=lambda: units.append(
+        next(a for a in rs._scope_argv(1 << 28, 30, ["x"]) if a.startswith("--unit=")))) for _ in range(4)]
+    for t in ths:
+        t.start()
+    for t in ths:
+        t.join()
+finally:
+    os.getpid = _real_getpid
+eq(len(set(units)), 4, "concurrent _scope_argv calls get distinct systemd unit names: %r" % units)
+
 if FAILS:
     print("FAIL selftest_run_selftests.py")
     for f in FAILS:

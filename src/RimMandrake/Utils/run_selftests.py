@@ -45,6 +45,7 @@ inactive file cache) plus the recorded memory.peak of what is starting — never
 file or counter, which leaks on SIGKILL (design doc §8 #10).
 """
 import argparse
+import itertools
 import json
 import os
 import re
@@ -167,8 +168,9 @@ def load_timings() -> dict:
 def save_timings(results) -> None:
     old = load_timings()
     for path, status, elapsed, _ in results:
-        if status in ("PASS", "FAIL", "UNMEASURED"):  # a TIMEOUT time is the cap, not a measurement
-            old[path.relative_to(REPO_ROOT).as_posix()] = round(elapsed, 1)
+        rel = _rel(path)                              # '' for a named file outside the repo: nothing to key it by
+        if rel and status in ("PASS", "FAIL", "UNMEASURED"):  # a TIMEOUT time is the cap, not a measurement
+            old[rel] = round(elapsed, 1)
     try:
         TIMINGS_FILE.write_text(json.dumps(old, indent=0, sort_keys=True))
     except OSError:
@@ -236,7 +238,10 @@ def find_selftests() -> tuple[list[Path], list[tuple[Path, str]]]:
 _HARNESS = None
 _RUNNING: dict = {}          # Popen pid -> (estimate bytes) for tests in flight
 _PEAK_SEEN: dict = {}        # rel path -> memory.peak bytes reported by its wrapper
-_SEQ = [0]
+# One counter for scope unit names and evidence trace dirs, read ONCE per use: `_SEQ[0] += 1` then a later
+# `_SEQ[0]` read let two pool threads interleave and both read the same value (duplicate unit -> systemd-run
+# refuses -> CRASH; duplicate trace dir -> one test's clear_trace wipes the other's trace). next() is atomic.
+_SEQ = itertools.count(1)
 
 
 def _rel(path: Path) -> str:
@@ -322,9 +327,9 @@ def _install_slice() -> None:
 
 
 def _scope_argv(cap: int, timeout: int, inner: list) -> list:
-    _SEQ[0] += 1
+    seq = next(_SEQ)
     return ["systemd-run", "--user", "--scope", "--quiet", f"--slice={HARNESS_SLICE}",
-            f"--unit=rm-harness-{os.getpid()}-{_SEQ[0]}",
+            f"--unit=rm-harness-{os.getpid()}-{seq}",
             "-p", "MemoryAccounting=yes", "-p", f"MemoryMax={cap}", "-p", "MemorySwapMax=0",
             # continue: an OOM kill of the test must not stop the scope and take the
             # wrapper (our only reporter) with it. RuntimeMaxSec: if this runner is
@@ -498,8 +503,8 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
     rel = _rel(path)
     if ev is None or not rel or path not in ev["eligible"]:
         return _run_one(path, cap, est)
-    _SEQ[0] += 1
-    tdir = Path(os.environ.get("RM_SELFTEST_CACHE_DIR") or STATE_DIR) / "trace" / f"{os.getpid()}-{_SEQ[0]}"
+    seq = next(_SEQ)
+    tdir = Path(os.environ.get("RM_SELFTEST_CACHE_DIR") or STATE_DIR) / "trace" / f"{os.getpid()}-{seq}"
     E = ev["mod"]
     try:
         r = _run_one(path, cap, est, env=ev["store"].trace_env(tdir))
@@ -730,7 +735,7 @@ def _suite(args) -> int:
     # Slowest-first (from last run's timings); unknown tests go first too, so a new
     # slow test cannot become the tail.
     prior = load_timings()
-    pooled.sort(key=lambda t: -prior.get(t.relative_to(REPO_ROOT).as_posix(), 1e9))
+    pooled.sort(key=lambda t: -prior.get(_rel(t), 1e9))   # _rel: a named file outside the repo has no timing
 
     results = []
     wall_start = time.monotonic()
