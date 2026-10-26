@@ -226,6 +226,7 @@ def calibrate(repo: str) -> dict:
     real_ite, real_ctx, real_rounds = 0.0, [], 0
     per_call = []   # (gap_s, ctx, cache_read, cache_write, out, full_rewrite, first_call_of_round)
     used, base_ctx, deltas, cpr, outs, gaps, call_gaps = [], [], [], [], [], [], []
+    round_dur = []          # wall seconds from a round's first call to its last (gaps are idle time between rounds)
     miss_events, max_ctx, c1h, c5m, tool_tok = [], [], 0, 0, 0.0
     lags = [1, 2, 3, 5, 8, 12, 20, 30, 50, 80, 120]
     H = 30          # look-ahead window of the proxy: referenced in [r+lag, r+lag+H)
@@ -265,6 +266,7 @@ def calibrate(repo: str) -> dict:
             if 0 <= dlt < 150_000:
                 deltas.append(dlt)
             gaps.append(max(0.0, b[0]["t"] - a[-1]["t"]))
+            round_dur.append(max(0.0, a[-1]["t"] - a[0]["t"]))
         for r in ridx:
             cpr.append(len(by_round[r]))
             outs.extend(c["out"] for c in by_round[r])
@@ -312,6 +314,7 @@ def calibrate(repo: str) -> dict:
         "calls_per_round": cpr, "calls_per_round_pct": _pct(cpr),
         "out_per_call": outs, "out_per_call_pct": _pct(outs),
         "round_gaps_s": gaps, "round_gaps_pct": _pct(gaps),
+        "round_dur_s": round_dur, "round_dur_pct": _pct(round_dur),
         "call_gaps_pct": _pct(call_gaps),
         "warm_window": warm_window_table(per_call),
         "share_round_gaps_over_5m": sum(g > 300 for g in gaps) / max(1, len(gaps)),
@@ -337,6 +340,7 @@ NIGHT_IDLE_EVERY = 0        # sweep knob: insert an owner-away gap of NIGHT_IDLE
 NIGHT_IDLE_S = 8 * 3600
 STATE_OUT = 600             # S3: tokens the stateless orchestrator writes to disk per round (assumption)
 STUB = 40                   # S4: tokens a cleared tool result leaves behind
+SOFT_DELAY = 3              # S6: rounds the seat keeps working after the soft limit before it hands off (assumption)
 
 
 def load_cal() -> dict:
@@ -384,6 +388,7 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
     rng = random.Random(seed)
     nrng = random.Random(seed + 1_000_003)     # S2 noise on its own stream: paired comparisons stay paired
     crng = random.Random(seed + 2_000_003)     # in-round cache expiry on its own stream
+    drng = random.Random(seed + 3_000_003)     # S5 round durations on their own stream
     p_in = P["P_INROUND_COLD"]
     w = WRITE_X[P["TTL"]]
     ttl = TTL_S[P["TTL"]]
@@ -449,12 +454,15 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
                 + w * (base - shared) + w * (C_new - base))
         return saving * noise > cost
 
-    t_since = 0.0
+    durs = cal.get("round_dur_s") or [0.0]
+    t_sess = 0.0            # S5: wall seconds since the current session began
+    soft_left = None        # S6: rounds left before the soft-limit handoff
     for r in range(P["ROUNDS"]):
         g = rng.choice(gaps) * GAP_SCALE
         if NIGHT_IDLE_EVERY and r % NIGHT_IDLE_EVERY == NIGHT_IDLE_EVERY - 1:
             g += NIGHT_IDLE_S
         cold = g > ttl
+        t_sess += g + drng.choice(durs) if kind == "S5" else 0.0
         D = rng.choice(deltas)
         k = rng.choice(cprs)
         o = [rng.choice(outs) for _ in range(k)]
@@ -464,6 +472,21 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
             restart(r, cold)
         elif kind == "S1" and seat.ctx > (float(arg) * W if float(arg) <= 1 else float(arg)):
             restart(r, cold)
+        elif kind == "S5" and (t_sess > float(arg) or cold):
+            # owner's smart batching: a session never outlives the 1-h cache of its wake; it also hands
+            # off early whenever the seat wakes cold (batch finished, idle) instead of re-writing context
+            restart(r, cold)
+            t_sess = 0.0
+        elif kind == "S6":
+            # owner's soft limit: past the size, finish the work in hand and hand off SOFT_DELAY rounds later
+            if soft_left is None and seat.ctx > float(arg):
+                soft_left = SOFT_DELAY
+            if soft_left is not None:
+                if soft_left <= 0 or cold:
+                    restart(r, cold)
+                    soft_left = None
+                else:
+                    soft_left -= 1
         elif kind in ("S2", "S2i"):
             probe = (kind == "S2" and r % PROBE_EVERY == 0) or cold
             if probe:
@@ -492,7 +515,7 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
         if kind in ("S0", "S2", "S2i", "S4") and seat.ctx > COMPACT_FRAC * W:
             compact(r, cold)
             cold = False
-        if kind in ("S1",) and seat.ctx > COMPACT_FRAC * W:   # never reached for f < COMPACT_FRAC
+        if kind in ("S1", "S5", "S6") and seat.ctx > COMPACT_FRAC * W:   # safety net; rare below the window
             compact(r, cold)
             cold = False
 
@@ -587,6 +610,47 @@ SCENARIOS = [
 SWEEP_STRATS = ["S0", "S2", "S2i", "S3", "S4"]
 
 
+MATTER_STRATS = [  # (label, strategy, window)
+    ("measured practice (mimic: hand off near 347k on a 1M window)", "S1:347000", 1_000_000),
+    ("(3) let it compact, 1M window (auto-compaction at 750k)", "S0", 1_000_000),
+    ("(3') let it compact, 200k window", "S0", 200_000),
+    ("best fixed size threshold, 125k", "S1:125000", 1_000_000),
+    ("(1) smart batching: session <= 55 min, early handoff when cold", "S5:3300", 1_000_000),
+    ("(1) smart batching: session <= 30 min, early handoff when cold", "S5:1800", 1_000_000),
+    ("(2) soft limit 100k, hand off 3 rounds later", "S6:100000", 1_000_000),
+    ("(2) soft limit 150k, hand off 3 rounds later", "S6:150000", 1_000_000),
+    ("(2) soft limit 250k, hand off 3 rounds later", "S6:250000", 1_000_000),
+    ("restart every round (S3)", "S3", 1_000_000),
+]
+
+
+def does_it_matter(cal, seeds):
+    """Each orchestrator strategy's saving vs measured practice, as a % of ALL spend (spend_census.json)."""
+    cen = json.load(open(os.path.join(OUT_DIR, "spend_census.json")))
+    T = cen["total"]["ite"]
+    orch = sum(v["ite"] for k, v in cen["families"].items() if k.endswith("/ top-level")) / T
+    rows = []
+    for label, strat, W in MATTER_STRATS:
+        r = run_all(cal, strats=[strat], seeds=seeds, WINDOW=W)[strat]
+        rows.append((label, strat, W, r))
+    base = rows[0][3]["cost_per_round"]
+    out = [f"orchestrator (top-level) share of total spend: {100 * orch:.1f}% "
+           f"(census over {cen['days']} days, {T / cen['days'] / 1e6:,.1f}M ITE/day)", "",
+           "| strategy | sim ITE/round | vs measured practice | % of TOTAL spend | mean ctx | restarts/1k rounds | compactions/1k |",
+           "|---|---|---|---|---|---|---|"]
+    for label, strat, W, r in rows:
+        rel_ = r["cost_per_round"] / base - 1
+        out.append(f"| {label} (`{strat}`@{W // 1000}k) | {r['cost_per_round']:,.0f} | {100 * rel_:+.1f}% | "
+                   f"{100 * rel_ * orch:+.2f}% | {r['mean_ctx']:,.0f} | {1000 * r['restarts'] / ROUNDS:.0f} | "
+                   f"{1000 * r['compactions'] / ROUNDS:.0f} |")
+    rd = cal.get("round_dur_pct") or {}
+    out += ["", f"round wall duration (first to last call) p50 {rd.get('p50', 0):,.0f} s, p90 {rd.get('p90', 0):,.0f} s; "
+            f"seeds {seeds}, rounds {ROUNDS}"]
+    txt = "\n".join(out)
+    open(os.path.join(OUT_DIR, "matter.md"), "w").write(txt + "\n")
+    print(txt)
+
+
 def _with_globals(g):
     old = {k: globals()[k] for k in g}
     globals().update(g)
@@ -599,8 +663,13 @@ def main():
     ap.add_argument("--repo", default=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
     ap.add_argument("--seeds", type=int, default=SEEDS)
     ap.add_argument("--sweep-seeds", type=int, default=6)
+    ap.add_argument("--matter", action="store_true",
+                    help="express each strategy's saving as a share of TOTAL spend (needs spend_census.json)")
     a = ap.parse_args()
     os.makedirs(OUT_DIR, exist_ok=True)
+    if a.matter:
+        does_it_matter(load_cal(), a.seeds)
+        return
     if a.calibrate:
         cal = calibrate(a.repo)
         json.dump(cal, open(os.path.join(OUT_DIR, "calibration.json"), "w"))
