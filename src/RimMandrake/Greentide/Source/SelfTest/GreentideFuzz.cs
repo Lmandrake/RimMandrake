@@ -134,7 +134,10 @@ namespace RimMandrake.Greentide.SelfTest
                             foreach (var id in streak.Keys.ToList()) if (!items.Any(i => i.id == id)) streak.Remove(id);
                             var got = dwell.Scan(now, items.Count, ids, on, sw);
                             Check(got.SequenceEqual(expect), $"scan buried [{string.Join(",", got)}], ledger [{string.Join(",", expect)}]" + where);
-                            Check(dwell.FirstSeen.Keys.All(id => items.Any(i => i.id == id && i.mire >= 0)) || true, "");
+                            // the kernel's clocks must be exactly the ledger's open streaks: an id it still timed after leaving the mire
+                            // (or vanishing) would be buried early on its return
+                            Check(dwell.FirstSeen.Count == streak.Count && streak.All(kv => dwell.FirstSeen.TryGetValue(kv.Key, out int fs) && fs == kv.Value),
+                                  $"kernel clocks [{string.Join(",", dwell.FirstSeen.Select(kv => kv.Key + "@" + kv.Value))}], ledger [{string.Join(",", streak.Select(kv => kv.Key + "@" + kv.Value))}]" + where);
                             foreach (int id in got)
                             {
                                 var it = items.First(i => i.id == id); items.Remove(it);
@@ -287,7 +290,7 @@ namespace RimMandrake.Greentide.SelfTest
         }
 
         // ════════════════════════ ladder ════════════════════════
-        private static readonly string[] LdNames = { "Poll", "Rise", "Fall", "Noise", "Jump" };
+        private static readonly string[] LdNames = { "Poll", "Rise", "Fall", "Noise", "Jump", "CatToggle" };   // one per weight in Run
         public static long Shakes, Heals, Catastrophes, Rearmed;
 
         private static string RunLadder(int seed, List<Act> acts)
@@ -328,7 +331,10 @@ namespace RimMandrake.Greentide.SelfTest
                         if (cataed) { cats++; Catastrophes++; Check(cats == 1, "a second catastrophe" + where); }
                         if (f < shake - h) { if (!shakeLow) Rearmed++; shakeLow = true; }
                         if (f < heal - h) healLow = true;
-                        Check(st.ShakingArmed == (armedBefore ? !(f < shake - h) : f >= shake) || e != RM_LadderKernel.Events.None || true, "");
+                        // the hysteresis state itself: armed stays armed until the fraction drops below thr - h, then re-arms at thr
+                        Check(st.ShakingArmed == (armedBefore ? !(f < shake - h) : f >= shake), $"shaking armed={st.ShakingArmed} after {armedBefore} at fraction {f}" + where);
+                        Check(st.HealingAnnounced == (healBefore ? !(f < heal - h) : f >= heal), $"healing announced={st.HealingAnnounced} after {healBefore} at fraction {f}" + where);
+                        Check(st.CatastropheDone == cataed, "the catastrophe flag disagrees with the event" + where);
                     }
                 }
             }

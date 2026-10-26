@@ -1,0 +1,2 @@
+jawa/get_terrain_batch refuses more than 70,000 cells per call (MaxCells, JawaBenchTerrainTools.cs) with a Fail and no ops, so a whole-map rect '0,0,sizeX,sizeZ' only works up to ~264x264; any 275x275 or larger map reads nothing. Read in z-bands of 70000//sizeX rows (terrain_census.py, prove_forge_cycle_ticks.py). Also: 'map regenerated' is proven by jawa/map_info mapId changing, not by mapBiome (Map.Biome reads the tile live, so it shows the new biome straight after world_tile_set) nor by programState (stays Playing).
+home: rimbridge

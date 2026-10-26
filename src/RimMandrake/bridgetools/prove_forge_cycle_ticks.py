@@ -16,13 +16,15 @@ def call(n, **a):
     return r
 _mi = call("jawa/map_info")
 SX, SZ = int(_mi["sizeX"]), int(_mi["sizeZ"])   # not a hardcoded 250: on a bigger map that silently censused only the 250x250 corner
+BAND = max(1, 70000 // SX)   # get_terrain_batch refuses > 70,000 cells per call (MaxCells): z-bands, or a 275+ map never reads
 def terrain():
-    g = call("jawa/get_terrain_batch", rects="0,0,%d,%d" % (SX, SZ))
-    c = collections.Counter()
-    for op in (g.get("ops") or "").split(";"):
-        if ":" not in op: continue
-        d, rect = op.split(":", 1); parts = rect.split(",")
-        c[d] += int(parts[2]) * int(parts[3]) if len(parts) == 4 else 1
+    c = collections.Counter(); g = {}
+    for z0 in range(0, SZ, BAND):
+        g = call("jawa/get_terrain_batch", rects="0,%d,%d,%d" % (z0, SX, min(BAND, SZ - z0)))
+        for op in (g.get("ops") or "").split(";"):
+            if ":" not in op: continue
+            d, rect = op.split(":", 1); parts = rect.split(",")
+            c[d] += int(parts[2]) * int(parts[3]) if len(parts) == 4 else 1
     if sum(c.values()) != SX * SZ:
         raise SystemExit("terrain census read %d of %d cells (%s) - instrument blind, refusing to report deltas"
                          % (sum(c.values()), SX * SZ, str(g)[:200]))
@@ -44,10 +46,15 @@ try:
              "terrainDelta": {k: v - t0c.get(k, 0) for k, v in tc.items() if v != t0c.get(k, 0)}}
         out["samples"].append(s); print(s["t"], s["ticks"], s["weather"], cond, list(s["terrainDelta"].items())[:5], flush=True)
         json.dump(out, open(sys.argv[1], "w"), indent=1)
-        if tk and start_ticks and tk - start_ticks > 400000: break
+        if tk and start_ticks and tk - start_ticks > 400000: out["cycleComplete"] = True; break
 finally:
     call("rimworld/pause_game", pause=True)
     with open(LOG, "rb") as f: f.seek(since); txt = f.read().decode("utf-8", "replace")
     out["forgeLog"] = [l[:300] for l in txt.split("\n") if re.search(r"[Ff]orge|RMTheForge", l)][-60:]
     out["errors"] = list(dict.fromkeys(l[:300] for l in txt.split("\n") if not l.startswith(("  at ", "  - ")) and re.search(r"Exception|rror", l)))[:40]
     json.dump(out, open(sys.argv[1], "w"), indent=1)
+# running out of wall-clock before ~6 game days is a PARTIAL cycle: say so, never exit 0 on it
+if not out.get("cycleComplete"):
+    sys.exit("only %s of 400000 ticks elapsed in %.0f s - partial cycle, not a proof (raise maxSeconds)"
+             % ((out["samples"][-1]["ticks"] - start_ticks) if out["samples"] and out["samples"][-1]["ticks"] and start_ticks
+                else "?", limit))

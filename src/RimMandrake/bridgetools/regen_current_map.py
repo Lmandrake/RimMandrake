@@ -10,15 +10,20 @@ def call(n, **a):
         try: r = json.loads(r["content"][0]["text"])
         except Exception: pass
     return r
-tile = call("jawa/map_info").get("tile")
-if tile is None or tile == -1: sys.exit("no current map tile in jawa/map_info - nothing regenerated")
+mi0 = call("jawa/map_info"); tile, id0 = mi0.get("tile"), mi0.get("mapId")
+if tile is None or tile == -1 or mi0.get("tileValid") is False or id0 is None:
+    sys.exit("no current planet-tile map in jawa/map_info (%s) - nothing regenerated" % str(mi0)[:200])
 if len(sys.argv) > 1:
     call("jawa/world_tile_set", tiles=str(tile), biome=sys.argv[1]); call("jawa/world_commit")
 call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); time.sleep(5)
+# programState stays "Playing" through a regen, so polling it proved nothing; the regenerated map is a NEW Map
+# with a new uniqueID. And mapBiome alone is no verdict either: Map.Biome reads the tile live, so it already
+# reads the new biome straight after world_tile_set, regenerated or not.
+mi = {}
 for _ in range(100):
-    if call("rimworld/get_ui_state").get("programState") == "Playing": break
+    mi = call("jawa/map_info")
+    if mi.get("mapId") not in (None, id0): break
     time.sleep(3)
-got = call("jawa/map_info").get("mapBiome")
-print("regenerated:", got)
-# the tile write is not checked above; the biome the new map actually has is the verdict
-sys.exit(0 if len(sys.argv) < 2 or got == sys.argv[1] else 1)
+got = mi.get("mapBiome")
+print("regenerated: mapId %s -> %s, biome %s" % (id0, mi.get("mapId"), got))
+sys.exit(0 if mi.get("mapId") not in (None, id0) and (len(sys.argv) < 2 or got == sys.argv[1]) else 1)
