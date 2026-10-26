@@ -20,10 +20,15 @@ namespace RimMandrake.Minerals
         public const float ReferenceBlotchesPer10k = 11f;   // design §4: EPM is stated for a "large hills" map
         public const float ReferenceMapCells = 62500f;      // 250 x 250
 
-        /// <summary>The surface adapter can place a row only when its number is EPM with a yield per cell to convert it.</summary>
+        /// <summary>The surface adapter can place a row only when its number is EPM with a yield per cell to convert it, and some
+        /// biome holds a positive number of it. A herd/unbounded token is surface presence but not a count: the adapter reads it as
+        /// no value and places nothing, so a row whose only surface source is a token would lose every vein once zeroed.</summary>
         public static bool Placeable(MineralRow row)
         {
-            return row != null && row.Unit == "EPM" && row.UnitsPerCellOrFind > 0f;
+            if (row == null || row.Unit != "EPM" || !(row.UnitsPerCellOrFind > 0f)) return false;
+            if (row.OtherBiomes > 0f) return true;
+            foreach (float v in row.Cells.Values) if (v > 0f) return true;
+            return false;
         }
 
         /// <summary>Expected lumps on one map: EPM (already times overrides and the vein multiplier) x hilliness policy (blotches/11)

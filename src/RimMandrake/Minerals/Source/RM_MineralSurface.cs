@@ -32,7 +32,8 @@ namespace RimMandrake.Minerals
         private static readonly AccessTools.FieldRef<GenStep_RocksFromGrid, float?> OverrideBlotches =
             AccessTools.FieldRefAccess<GenStep_RocksFromGrid, float?>("overrideBlotchesPer10kCells");
 
-        // map generation runs on one thread; a depth counter keeps a nested RocksFromGrid (a modded generator calling it) honest
+        // map generation runs on one thread. The depth counter only scopes the kept-share hook to "inside RocksFromGrid"; the ctx
+        // fields are single-slot, so a nested RocksFromGrid (none known) would leave the outer call the inner one's context
         private static int depth;
         private static float ctxMaxValue = float.MaxValue;
         private static float ctxBlotches;

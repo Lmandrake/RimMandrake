@@ -230,7 +230,9 @@ def _build_suite():
             if not _live(t):
                 return
             reason = _call(t, "ProofState", "").get("reason", "")
-            if reason.startswith("proof:") or reason == "settings changed" or reason.startswith("surface placer registered"):
+            # "surface placer registered" is a startup reason (a [StaticConstructorOnStartup] runs before any game): left last
+            # in a running game it means FinalizeInit never re-asserted, so it falls through to the FAIL below
+            if reason.startswith("proof:") or reason == "settings changed":
                 _unmeasured(t, "last apply was %r, after the game started; FinalizeInit is proven on a fresh load only" % reason)
             elif reason != "Game.FinalizeInit":
                 raise ExpectationFailed("last apply reason %r in a running game: the FinalizeInit re-assert never ran" % reason)

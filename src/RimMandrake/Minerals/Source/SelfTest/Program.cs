@@ -366,6 +366,14 @@ namespace RimMandrake.Minerals.SelfTest
             // failing on old: R2 zeroed every governed vein once a placer registered, so a row the placer cannot place lost its veins
             Check(!sp["MineableUP"].SurfacePlaced && sp["MineableUP"].Scatter == 0.2f, "a non-EPM row keeps vanilla scatter under the placer");
             Check(sp["MineableSteel"].Unregistered && sp["MineableSteel"].Scatter == 1f, "unregistered steel untouched by the placer");
+            // failing on old: an EPM row whose only surface source is a token (herd/unbounded) was zeroed for the placer, which reads
+            // a token as no value and places nothing - its veins vanished from every biome
+            var tokOnly = new MineralRow { MaterialId = "tok", UnitsPerCellOrFind = 1f }; tokOnly.Items.Add("TK"); tokOnly.Tokens["RM_X"] = "unbounded";
+            var tokDec = ByName(RM_MineralPolicyKernel.Decide(new List<MineralRow> { tokOnly }, new List<MineralDefInfo> {
+                new MineralDefInfo("MineableTK", 0.2f, 0f, "TK", true) }, new PolicyOptions { SurfacePlacerActive = true }));
+            Check(tokOnly.HasSurfacePresence && !RM_MineralSurfaceKernel.Placeable(tokOnly), "a token-only EPM row has surface presence but nothing to place");
+            Check(!tokDec["MineableTK"].SurfacePlaced && tokDec["MineableTK"].Scatter == 0.2f, "a token-only EPM row keeps vanilla scatter under the placer");
+            Check(RM_MineralSurfaceKernel.Placeable(ep), "probe: an EPM row with a positive cell is placeable");
             var synOrig = synDefs.ToDictionary(d => d.DefName);
             List<SurfaceTarget> st = RM_MineralSurfaceKernel.SurfaceTargets(new List<MineralRow> { ep, ups }, synPlaced, synOrig);
             Check(st.Count == 1 && st[0].MaterialId == "ep" && st[0].Mineables.Count == 2 && st[0].UnitsPerCell == 40f, "one target, two weighted mineables");

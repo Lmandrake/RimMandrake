@@ -171,6 +171,12 @@ def main():
     k, (vd, _) = find(rows, "registry_loaded")
     ok(vd == "PASS", "a reassert FAIL does not blank registry_loaded (own chain): got %s" % vd)
 
+    # failing on old: the placer registers from a static constructor at startup, so this reason last in a running game means the
+    # FinalizeInit re-assert never ran; it used to read UNMEASURED and hide that
+    rows, _ = run(v, "surface placer registered: RM_MineralSurface")
+    key, (verdict, _) = find(rows, "reassert_on_game_init")
+    ok(verdict == "FAIL", "last reason is the startup placer registration: %s is FAIL (got %s)" % (key, verdict))
+
     rows, _ = run(v, "proof: earlier run")
     key, (verdict, _) = find(rows, "reassert_on_game_init")
     ok(verdict == "UNMEASURED", "a session someone already proved in: %s is UNMEASURED (got %s)" % (key, verdict))

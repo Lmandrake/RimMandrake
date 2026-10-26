@@ -153,10 +153,11 @@ namespace RimMandrake.Minerals
                         string how = role == Role.Inferred ? " (yields " + d.MinedItem + ")" : "";
                         if (!row.HasSurfacePresence) { p.Scatter = 0f; p.ScatterReason = "no surface source in any biome" + how; }
                         else if (!(d.Scatter > 0f)) p.ScatterReason = "no vanilla scatter (its own GenStep, if any, places it)" + how;
-                        // the placer can only place an EPM row with a yield per cell; zeroing any other row would make its veins vanish
+                        // the placer can only place an EPM row with a yield per cell and a positive biome value (Placeable); zeroing
+                        // any other row would make its veins vanish
                         else if (o.SurfacePlacerActive && d.IsBuilding && RM_MineralSurfaceKernel.Placeable(row))
                         { p.Scatter = 0f; p.SurfacePlaced = true; p.ScatterReason = "placed per biome by the surface adapter" + how; }
-                        else if (o.SurfacePlacerActive) p.ScatterReason = "kept: its row is not in deposits the surface adapter can place (" + row.Unit + ")" + how;
+                        else if (o.SurfacePlacerActive) p.ScatterReason = "kept: its row has no deposit count the surface adapter can place (" + row.Unit + ")" + how;
                         else p.ScatterReason = "kept until the surface adapter (R3) places it per biome" + how;
                         if (d.Deep > 0f && !row.HasDeepHome) { p.Deep = 0f; p.DeepReason = "no deep home"; }
                         break;
