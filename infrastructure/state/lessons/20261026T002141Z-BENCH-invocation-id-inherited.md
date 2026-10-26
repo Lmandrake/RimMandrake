@@ -1,0 +1,2 @@
+INVOCATION_ID is inherited by every child of a systemd service, including agent shells, so 'am I in a systemd unit' must never be inferred from it: the testq worker's no-systemd fallback reported a unit name that did not exist and 'stop' killed nothing. Pass the unit name down explicitly (worker.py sets TESTQ_UNIT via systemd-run --setenv) and fall back to the pid when systemctl stop fails.
+home: NONE
