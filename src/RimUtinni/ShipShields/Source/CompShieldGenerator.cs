@@ -1,3 +1,4 @@
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -62,9 +63,68 @@ namespace RimMandrake.Utinni.ShipShields
             }
         }
 
+        // SHIELDGEN_DECIDE_INTERCEPT_UNPOWERED (delegated: design): an unpowered bubble blocks
+        // nothing. "Just use power for fuel ... Power does the trick" (owner, ship_shields_deep_design.md
+        // thermal-veil row), and the other three fields already stop when PowerOn is false
+        // (ShieldHazardUtility.IsPowered, CompShieldCryoEnvelope, CompShieldThermalVeil). Vanilla's
+        // Active getter has no power test and is not virtual, so the base's own private shutDown
+        // flag is driven instead: it already gates CheckIntercept, damage absorption, bombardment,
+        // the drawn bubble and the "Shut down" inspect line. Only a shutdown THIS comp set is ever
+        // cleared (unpoweredShutDown), so another cause's shutdown is never undone. Hit points are
+        // kept (no drain, no collapse explosion: a power cut is not a forced collapse) and the field
+        // returns at the hit points it had once power is back.
+        private static readonly AccessTools.FieldRef<CompProjectileInterceptor, bool> ShutDownRef = ResolveShutDownRef();
+        private bool unpoweredShutDown;
+
+        private static AccessTools.FieldRef<CompProjectileInterceptor, bool> ResolveShutDownRef()
+        {
+            try
+            {
+                return AccessTools.FieldRefAccess<CompProjectileInterceptor, bool>("shutDown");
+            }
+            catch (System.Exception e)
+            {
+                Log.Error("[RimMandrake.Utinni.ShipShields] CompProjectileInterceptor.shutDown not found; an unpowered bubble will keep intercepting: " + e.Message);
+                return null;
+            }
+        }
+
+        // True when the generator has power (or no power comp at all, so the comp still works standalone).
+        public bool FieldPowered
+        {
+            get
+            {
+                CompPowerTrader power = PowerTrader;
+                return power == null || power.PowerOn;
+            }
+        }
+
+        private void SyncPowerShutdown()
+        {
+            if (ShutDownRef == null)
+            {
+                return;
+            }
+            ref bool shutDown = ref ShutDownRef(this);
+            if (!FieldPowered)
+            {
+                if (!shutDown)
+                {
+                    shutDown = true;
+                    unpoweredShutDown = true;
+                }
+            }
+            else if (unpoweredShutDown)
+            {
+                shutDown = false;
+                unpoweredShutDown = false;
+            }
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
+            Scribe_Values.Look(ref unpoweredShutDown, "unpoweredShutDown", false);
             // SHIELDGEN_FIX_COLLAPSE_REARM_ON_LOAD: unsaved, a load inside the hp==0 window (until the
             // next recharge interval) re-armed it to true and the generator exploded a second time.
             Scribe_Values.Look(ref collapseExplosionArmed, "collapseExplosionArmed", true);
@@ -75,6 +135,7 @@ namespace RimMandrake.Utinni.ShipShields
 
         public override void CompTick()
         {
+            SyncPowerShutdown();
             base.CompTick();
 
             if (ShipShieldsSettings.predictiveFailureAlertEnabled)

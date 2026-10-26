@@ -81,4 +81,74 @@ namespace RimMandrake.Utinni.CathedralPass
             return true;
         }
     }
+
+    // CATHEDRALPASS_DECIDE_RETALIATION (delegated: design) — striking a Cathedral machine
+    // voids the striker's pass.
+    //
+    // Without this the exception above made a holder untouchable: drafted and ordered to
+    // attack, a holder could take a Sentinel apart while every machine read them as
+    // non-hostile. The arc rules the pass "revocable when the relationship cools"
+    // (cathedral_concealment_arc_spec.md §3) and the Cathedral's answer to betrayal is
+    // "withdrawal, not vengeance" (§0, §6.2): so the answer is the pass's own REVOKE verb on
+    // the one pawn who struck, after which vanilla hostility (the mechanoid faction is
+    // hostile to the player) lets the machines defend themselves. No goodwill change, no raid,
+    // no pursuit, no clan-wide revoke — cooling the whole relationship is the GM layer's
+    // REVOKE (CATHEDRAL_REGARD_BLACKBOARD_1), not this patch's.
+    //
+    // Counts only a deliberate strike: the holder's own shot/blow aimed at THIS machine
+    // (DamageInfo.IntendedTarget, or the holder's current job target for melee and thrown
+    // attacks, which carry no intended target). A stray round meant for someone else does not
+    // void it; neither does extinguishing a burning machine, nor anything done in a mental
+    // state (not the player's choice; ForceHostileTo already lets the machine answer that).
+    [RimMandrake.Shared.PatchFeature("Patch_CathedralPassRetaliation", typeof(CathedralPassSettings), "cathedralPassEnabled")]
+    [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
+    public static class Patch_CathedralPassRetaliation
+    {
+        public static void Prefix(Thing __instance, DamageInfo dinfo)
+        {
+            if (!CathedralPassSettings.cathedralPassEnabled || !(dinfo.Instigator is Pawn holder) || dinfo.Amount <= 0f)
+            {
+                return;
+            }
+            if (holder.Faction != Faction.OfPlayer || __instance == null || __instance == holder)
+            {
+                return;
+            }
+            Faction mechs = Find.FactionManager?.OfMechanoids;
+            if (mechs == null || __instance.Faction != mechs)
+            {
+                return;
+            }
+            if (dinfo.Def == null || dinfo.Def == DamageDefOf.Extinguish || holder.InMentalState)
+            {
+                return;
+            }
+            Map map = __instance.MapHeld;
+            if (map == null || holder.MapHeld != map || !CathedralPass.IsCathedralMap(map))
+            {
+                return;
+            }
+            if (!CathedralPass.Holds(holder) || !IsDeliberateStrike(holder, __instance, dinfo))
+            {
+                return;
+            }
+            if (CathedralPass.Revoke(holder))
+            {
+                Messages.Message(
+                    "The Cathedral's machines no longer know " + holder.LabelShort + ".",
+                    new LookTargets(holder),
+                    MessageTypeDefOf.NegativeEvent);
+            }
+        }
+
+        private static bool IsDeliberateStrike(Pawn holder, Thing victim, DamageInfo dinfo)
+        {
+            Thing intended = dinfo.IntendedTarget;
+            if (intended != null)
+            {
+                return intended == victim;
+            }
+            return holder.CurJob != null && holder.CurJob.targetA.Thing == victim;
+        }
+    }
 }
