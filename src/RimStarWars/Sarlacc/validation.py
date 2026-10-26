@@ -162,6 +162,17 @@ def _build_suite():
         t.upstream_reason = "UNMEASURED: " + why
         t.upstream_failed = True
 
+    def _declared(t, name, toggle, why):
+        """A row no bridge tool can drive, in a chain of INDEPENDENT declared rows: UNMEASURED with its OWN reason.
+        _unmeasured's latch would hand this row's reason to every later row (SARLACC_UNMEASURED_FIX_BORROWED_REASON),
+        so the latch is lifted after a declared row -- never after a real upstream failure, which still ends the chain."""
+        latched, reason = t.upstream_failed, t.upstream_reason
+        with t.component(name, toggle=toggle):
+            if _live(t):
+                _unmeasured(t, why)
+        if not latched:
+            t.upstream_failed, t.upstream_reason = False, reason
+
     def _raw(t, action, field, value=None):
         if value is not None:
             r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action=action, field=field, value=str(value))
@@ -372,28 +383,22 @@ def _build_suite():
              "with brine cells (earliestDay 15, once per map); needs a generated Stillsand map; "
              "fire_incident dry-run reports success=False with canFireNow=False and gives no gate read"),
         ):
-            with t.component(name, toggle="swimmerRoadEnabled" if "road" in name else "swimmerSeepEnabled"):
-                if _live(t):
-                    _unmeasured(t, why)
-        with t.component("rooting_evacuates_the_patch", toggle="rootingEvacuatesPatch"):
-            if _live(t):
-                _unmeasured(t, "pawns standing on the patch being cleared when the road swimmer roots needs the road incident "
-                               "on a Long Shade map")
-        with t.component("take_signs_leave_sand_and_message", toggle="takeSignsEnabled"):
-            if _live(t):
-                _unmeasured(t, "the disturbed-sand decal and 'sand heaves' message need a completed swallow (a pawn eaten by "
-                               "the Devourer comp), which no tool stages")
+            _declared(t, name, "swimmerRoadEnabled" if "road" in name else "swimmerSeepEnabled", why)
+        _declared(t, "rooting_evacuates_the_patch", "rootingEvacuatesPatch",
+                  "pawns standing on the patch being cleared when the road swimmer roots needs the road incident "
+                  "on a Long Shade map")
+        _declared(t, "take_signs_leave_sand_and_message", "takeSignsEnabled",
+                  "the disturbed-sand decal and 'sand heaves' message need a completed swallow (a pawn eaten by "
+                  "the Devourer comp), which no tool stages")
 
     @suite.chain("changed_return")
     def changed_return(t):
-        with t.component("changed_return_granted_to_a_survivor", toggle="changedReturnHediffsEnabled"):
-            if _live(t):
-                _unmeasured(t, "one of the seven hediffs (a second at secondHediffChance) is granted when a swallowed pawn "
-                               "survives and is spat free; needs a swallow to complete with the prey alive (CompDevourer "
-                               "digestion is 10-60 s of game time and the grant is random per hediff). Defs resolve in defs_resolve")
-        with t.component("anchored_mouth_tithe_strike", toggle="anchoredTitheEnabled"):
-            if _live(t):
-                _unmeasured(t, "a strike at mtbStrikeDays 20 is statistical (debug_process.md section 4); the roll cannot be forced")
+        _declared(t, "changed_return_granted_to_a_survivor", "changedReturnHediffsEnabled",
+                  "one of the seven hediffs (a second at secondHediffChance) is granted when a swallowed pawn "
+                  "survives and is spat free; needs a swallow to complete with the prey alive (CompDevourer "
+                  "digestion is 10-60 s of game time and the grant is random per hediff). Defs resolve in defs_resolve")
+        _declared(t, "anchored_mouth_tithe_strike", "anchoredTitheEnabled",
+                  "a strike at mtbStrikeDays 20 is statistical (debug_process.md section 4); the roll cannot be forced")
 
     return suite
 
