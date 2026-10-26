@@ -333,7 +333,7 @@ SETUPS = {
                             "a climb out that never ends"),
     # ---- 3 fire
     "fire_lights": dict(short="Fire lights tar", notice="a tar pond and its canal; the mark is where to drop a fire",
-                        terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)], marks=[(14, 8, "light here")],
+                        terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)], marks=[(14, 7, "light here")],   # z7: NotifyFireAt reaches adj8 only (review 7.9)
                         try_=["dev: Spawn fire (or an explosion) at the mark: the flame runs back along the canal",
                               "nothing lights? Mod Settings > FlowWorks: burning liquid and liquid ignition both ship ON"],
                         look="weak spot: a flame that lights and dies at once; fire jumping onto dry ground"),
@@ -344,7 +344,7 @@ SETUPS = {
                        look="weak spot: the whole canal burnt out within an hour; the pond never catching"),
     "fire_out": dict(short="Foam or rain puts it out", notice="a tar canal with a firefoam popper beside it",
                      terrain=[("RM_TarDeep", 0, 5, 3, 4)], dig=[(3, 6, 12, 1, 2)],
-                     build=[("FirefoamPopper", 9, 8, None, None)], marks=[(13, 8, "light here")],
+                     build=[("FirefoamPopper", 9, 8, None, None)], marks=[(13, 7, "light here")],
                      try_=["light it, then trigger the popper: foamed cells stop burning while the foam lies there"],
                      look="weak spot: foamed cells relighting while the foam still lies there"),
     # CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL (owner by card, 2026-10-15): both fuel channels frozen UNLIT; the owner lights them.
@@ -560,7 +560,7 @@ SETUPS = {
                          look="weak spot: slime that looks like tinted water; no bubbles or surface motion"),
     "look_fire": dict(short="Burning liquid looks alight", notice="a tar canal to light, and a scorched-dry pit beside it",
                       terrain=[("RM_TarDeep", 0, 5, 3, 3)], dig=[(3, 6, 6, 1, 2), (11, 5, 3, 3, 3)],
-                      scorch=[(11, 5, 3, 3)], marks=[(8, 8, "light here")],
+                      scorch=[(11, 5, 3, 3)], marks=[(8, 7, "light here")],
                       try_=["dev: Spawn fire at the mark"],
                       look="weak spot: the scorched pit looking like plain dirt; the flame drawn as a vanilla fire"),
     # ---- 7 carry
@@ -868,10 +868,11 @@ SETUPS = {
                                  look="weak spot: a kludged and a repaired plant drawn alike"),
     "carry_kits": dict(short="Liquid kits", notice="a reaction vat between two tanks; the bath bills, scalding floods "
                        "and tar stains have nothing to show until a biome wires them in",
-                       build=[("RM_LiquidTank", 2, 6, None, None), ("RM_ReactionVat", 7, 6, None, None),
-                              ("RM_LiquidTank", 11, 6, None, None)],
-                       tank=[(2, 6, "Store", "RM_Liquid_Tar", 8000), (11, 6, "Store", "RM_Liquid_AcidWater", 8000)],
-                       marks=[(2, 4, "tar tank"), (7, 4, "vat"), (11, 4, "acid tank")],
+                       # the 2x2 tanks TOUCH the 1x1 vat (x5-6 | x7 | x8-9): TanksFor takes adj8 tanks only (review 7.8)
+                       build=[("RM_LiquidTank", 5, 6, None, None), ("RM_ReactionVat", 7, 6, None, None),
+                              ("RM_LiquidTank", 8, 6, None, None)],
+                       tank=[(5, 6, "Store", "RM_Liquid_Tar", 8000), (8, 6, "Store", "RM_Liquid_AcidWater", 8000)],
+                       marks=[(5, 4, "tar tank"), (7, 4, "vat"), (9, 4, "acid tank")],
                        try_=["unpause: with tar and acid water in the tanks the vat vents a gas cloud"],
                        look="weak spot: no gas although both tanks hold their liquids"),
     # ---- 8 land
@@ -1304,6 +1305,18 @@ def visual_verdict(p, want_f, scorched, rows, strength, n_player_pawns):
     return built and (strength > 0) == bool(scorched)
 
 
+def ladder_plan(gizmos, op):
+    """-> ("done", None) when the player's ladder button reads exactly the wanted state with no order pending,
+    ("press", <the DEV "ladder up/down now" gizmo>) when that would set it, (None, None) when neither is there."""
+    want = "Ladder up" if op == "raise" else "Ladder down"
+    labels = [str(q.get("label") or "") for q in gizmos]
+    if want in labels:
+        return "done", None
+    dev = "DEV: ladder %s now" % ("up" if op == "raise" else "down")
+    g = next((q for q in gizmos if str(q.get("label") or "") == dev), None)
+    return ("press", g) if g is not None else (None, None)
+
+
 def gallery_verdict(placeholder, dig_ok, missing, want_kinds, got_kinds):
     """One gallery station: True / False, or None for a placeholder (NOT BUILT): nothing was read, so it is not
     "verified as built". Pawns are matched by KIND (multiset), not by a head count of whatever stands there."""
@@ -1593,8 +1606,8 @@ class Review(object):
 
     def late_hoses(self, S):
         """After every station is placed (the hose stations from the GSS walk, 2026-10-15): flow the Plump hoses, the
-        Filling ones half a transition later (frozen mid-swell), reel in the reelin ones, then build the build_after walls
-        and give the hoses 60 ticks to answer. The ticks run the whole map, so this is one pass, not one per station."""
+        build_after walls and give the hoses 60 ticks to answer, then the Filling ones half a transition before the freeze
+        (frozen mid-swell) with the reelin ones in its last 2 ticks. The ticks run the whole map, so this is one pass, not one per station."""
         todo = [s for s in S if not (s["placeholder"] or s.get("absent"))
                 and any(s["setup"].get(k) for k in ("hose_flow", "hose_reelin", "build_after"))]
         if not todo:
@@ -1609,15 +1622,6 @@ class Review(object):
                 if state == "Plump":
                     self.hose_cmd(s["n"], "flow:%d,%d=on" % g(s, rx, rz))
         B.ticks(HOSE_TRANSITION_TICKS - HOSE_TRANSITION_TICKS // 2 + 5)
-        for s in todo:
-            for rx, rz, state in s["setup"].get("hose_flow", []):
-                if state == "Filling":
-                    self.hose_cmd(s["n"], "flow:%d,%d=on" % g(s, rx, rz))
-        B.ticks(HOSE_TRANSITION_TICKS // 2)
-        for s in todo:
-            for rx, rz in s["setup"].get("hose_reelin", []):
-                self.hose_cmd(s["n"], "reelin:%d,%d" % g(s, rx, rz))
-        B.ticks(2)
         walls = 0
         for s in todo:
             for d, x, z, rot, stuff in s["setup"].get("build_after", []):
@@ -1630,6 +1634,17 @@ class Review(object):
                 walls += 1
         if walls:
             B.ticks(60)
+        # the Filling hoses LAST: from their flow order to the freeze is half a transition and no more (review 7.6: the
+        # walls' 60 ticks after it ran past the whole 30-tick swell, and the saved "filling" hose was already Plump)
+        for s in todo:
+            for rx, rz, state in s["setup"].get("hose_flow", []):
+                if state == "Filling":
+                    self.hose_cmd(s["n"], "flow:%d,%d=on" % g(s, rx, rz))
+        B.ticks(max(1, HOSE_TRANSITION_TICKS // 2 - 2))
+        for s in todo:
+            for rx, rz in s["setup"].get("hose_reelin", []):
+                self.hose_cmd(s["n"], "reelin:%d,%d" % g(s, rx, rz))
+        B.ticks(2)
 
     def gizmo_cycle(self, n, cell, prefix, want, max_clicks=4):
         """Press the thing's own button until its label reads `want` (liquid_checks.gizmo_cycle's route: select by
@@ -1657,6 +1672,33 @@ class Review(object):
         finally:
             B.call("rimworld/clear_selection")
 
+    def ladder_set(self, n, cell, op):
+        """A frozen raised/lowered ladder. The player's button only ORDERS the move ("Ladder up (ordered)"; a colonist
+        works it later), so the frozen map would keep the old state under a "SLID UP" sign (review 7.5). The DEV
+        "ladder up now" button runs SetRaised (state, wantRaised, path and mesh refresh); then the player's button must
+        read exactly "Ladder up"/"Ladder down" with no order pending."""
+        B = self.B
+        B.call("rimworld/clear_selection")
+        B.call("rimworld/click_cell", x=cell[0], z=cell[1])
+        try:
+            for _ in range(2):
+                gz = (B.call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+                act, g = ladder_plan(gz, op)
+                if act == "done":
+                    return True
+                if act is None:
+                    self.notes.append("station %s: ladder at %s cannot be set %s (saw %s)" % (
+                        n, cell, op, [q.get("label") for q in gz][:8]))
+                    return False
+                r = B.call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id"))
+                if not isinstance(r, dict) or r.get("success") is False:
+                    self.notes.append("station %s: %r refused: %s" % (n, g.get("label"), json.dumps(r)[:120]))
+                    return False
+            self.notes.append("station %s: ladder at %s never read %s" % (n, cell, op))
+            return False
+        finally:
+            B.call("rimworld/clear_selection")
+
     def stage(self, s, u, g):
         """Frozen mid-states. Contents through the proof surface (ProofTank: stock only, in Store), every mode and
         state through the player's own button (gizmo_cycle), so the save holds what a player's click leaves."""
@@ -1675,7 +1717,7 @@ class Review(object):
             self.gizmo_cycle(n, g(x, z), ("Pouring", "Drawing"),
                              "Pouring into the channel" if mode == "pour" else "Drawing into the tank")
         for x, z, op in u.get("ladder", []):
-            self.gizmo_cycle(n, g(x, z), "Ladder", "Ladder up" if op == "raise" else "Ladder down")
+            self.ladder_set(n, g(x, z), op)
         if any(u.get(k) for k in ("hose", "hose_order", "hose_trail")):
             self.B.ticks(1)     # the hose layer's whole-map CordWorld is cached per TICK: paused, it still sees the pre-clear map
         for rx, rz, x, z, end in u.get("hose", []):
@@ -1740,9 +1782,7 @@ class Review(object):
             got = {(c["x"], c["z"]): c.get("d") for c in ex.get("rows") or [] if c.get("isExcavated")}
             dig_ok = all(got.get(c) == d for c, d in want.items() if ox <= c[0] < ox + SW)
             things = B.call("jawa/list_things", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=300).get("things") or []
-            defs = {t.get("def") or t.get("defName") for t in things}
-            need = {d for d, *_ in u.get("build", []) + u.get("spawn", [])} if not s["placeholder"] else set()
-            miss = sorted(d for d in need if d not in defs)
+            miss = RV.missing_defs(u.get("build", []) + u.get("spawn", []) if not s["placeholder"] else [], things)
             pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % (ox, oz, SW, SH), limit=50).get("pawns") or []
             want_kinds = [r[0] for r in u.get("pawns", [])] if not s["placeholder"] else []
             got_kinds = [q.get("kind") or q.get("kindDef") for q in pw]

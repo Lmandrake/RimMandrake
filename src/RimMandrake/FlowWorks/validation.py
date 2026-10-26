@@ -1190,7 +1190,9 @@ THIRST_LIVE = [
      "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
     ("T2_one_thirst_need", "thirstEnabled", "bridge pawn needs read on every free colonist: count(RM_Thirst)+count(DBHThirst) "
      "== 1 (== 0 with thirstEnabled off in Own mode)"),
-    ("T3_need_falls", "thirstHeatScaling", "read RM_Thirst, advance 0.25 day at 20 C: drop 0.2 +/- 0.03 x thirstRateMultiplier"),
+    # toggle None (review 7.10): thirst_live.py's T3 sets thirstHeatScaling OFF to measure the baseline drop, so its PASS
+    # says nothing about heat scaling ON; crediting it to that switch certified a feature no row measures
+    ("T3_need_falls", None, "read RM_Thirst, advance 0.25 day at 20 C: drop 0.2 +/- 0.03 x thirstRateMultiplier"),
     ("T4_bottle_satisfies", None, "set need 0.2, give RM_Bottle_FreshWater, order Ingest: level rises >= 0.45 (Own) / DBH "
      "need rises (Dbh); a dirty bottle appears"),
     ("T5_salt_water_quality", "waterQualityEffects", "ORDERED drink of RM_Bottle_SaltWater x4 on test pawns: hydrate x0.7; "
@@ -1590,7 +1592,9 @@ EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "liquidDrillingEnabled", "liquidIgnitionEnabled", "liquidWorksRuinStockEnabled",
                           "liquidWorksRuinsEnabled", "pipeAdaptersEnabled",
                           "superdeepShootingRuleEnabled", "typedLiquidShoresEnabled",
-                          "machineDigEnabled"]   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: needs a staged colony mech (design §8)
+                          "machineDigEnabled",   # DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL: needs a staged colony mech (design §8)
+                          # review 7.10 (2026-10-26): THIRST_LIVE T3 runs with heat scaling OFF, so no row claims ON
+                          "thirstHeatScaling"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
 TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDeathEnabled", "pitGuardrailEnabled", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",

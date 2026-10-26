@@ -211,6 +211,27 @@ def read_terrain(B, size, chunk=50):
     return out
 
 
+def missing_defs(entries, things):
+    """The requested defs the station is SHORT of, by count: every build/spawn entry is one thing, so one survivor of
+    four requested pipes is three missing, not "built" (review 7.3: a def-name set let one copy satisfy every copy).
+    -> sorted ["def x<short>", ...]"""
+    from collections import Counter
+    need = Counter(e[0] for e in entries)
+    have = Counter(t.get("def") or t.get("defName") for t in things)
+    return sorted(d if need[d] - have[d] == need[d] == 1 else "%s x%d" % (d, need[d] - have[d])
+                  for d in need if have[d] < need[d])
+
+
+def river_verdict(built_any, missing, staging_failed):
+    """One river station: False when a staging write failed (terrain, item, pawn, building) or a requested building is
+    short; True when buildings were requested and read back; None when nothing built was there to read (the current,
+    the ford) and every write succeeded. Review 7.4: failed spawns and ford-terrain writes read None and the build
+    exited 0."""
+    if staging_failed or missing:
+        return False
+    return True if built_any else None
+
+
 def build(R, label_line):
     """Stage map R on the CURRENT map (river_site.py made it current). R is review_map.Review (calls, notes, say).
     -> (placed [(station, crossing, ops)] in R-number order, verify {"R<n>": dict})."""
@@ -227,14 +248,17 @@ def build(R, label_line):
     for sid in unplaced:
         R.notes.append("river station %s: no free crossing left on this river" % sid)
     B.call("jawa/review_label", action="clear", tag=TAG)
+    staged_fail = {}                     # station index -> the staging writes that failed (review 7.4: never recorded)
     for k, (st, cr, o) in enumerate(placed):
+        sf = staged_fail.setdefault(k, [])
         (bx, bz), d = cr[0], cr[1]
         x0, z0 = min(bx, cr[3][0]) - 6, min(bz, cr[3][1]) - 6
         rr = "%d,%d,%d,%d" % (x0, z0, abs(cr[3][0] - bx) + 13, abs(cr[3][1] - bz) + 13)
         B.call("jawa/destroy_batch", rects=rr, categories="Plant")
         B.call("jawa/set_fog", action="unfog", rect=rr)
         for t, (x, z) in o["terrain"]:
-            R.call("jawa/set_terrain_batch", ops="%s:%d,%d,1,1" % (t, x, z))
+            if R.call("jawa/set_terrain_batch", ops="%s:%d,%d,1,1" % (t, x, z)).get("success") is not True:
+                sf.append("terrain %s@%d,%d" % (t, x, z))
         for dname, (x, z), rot, stuff in o["build"]:
             kw = dict(ops="%s:%d,%d" % (dname, x, z) + ("" if rot is None else ",%d" % rot), faction="player",
                       wipeExisting=False)
@@ -242,6 +266,7 @@ def build(R, label_line):
                 kw["stuff"] = stuff
             r = R.call("jawa/build_batch", **kw)
             if r.get("survived") == 0:
+                sf.append("build %s" % dname)
                 R.notes.append("R%d %s: %s not built %s" % (k + 1, st["id"], dname, (r.get("failed") or [])[:1]))
         for dname, (x, z), frac in o["hp"]:
             th = B.call("jawa/list_things", defName=dname, rect="%d,%d,1,1" % (x, z), limit=3).get("things") or []
@@ -251,10 +276,13 @@ def build(R, label_line):
                 if isinstance(mx, (int, float)) and mx > 0:
                     R.call("jawa/set_thing_props", thing=tid, hitPoints=max(1, int(mx * frac)))
         for dname, n_, (x, z) in o["items"]:
-            R.call("rimworld/spawn_thing", defName=dname, stackCount=n_, x=x, z=z)
+            if R.call("rimworld/spawn_thing", defName=dname, stackCount=n_, x=x, z=z).get("success") is not True:
+                sf.append("item %s@%d,%d" % (dname, x, z))
         for kind, (x, z), fac, role in o["pawns"]:
             r = R.call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=fac, count=1)
             pid = (r.get("pawns") or [{}])[0].get("id") if r.get("pawns") else r.get("id")
+            if pid is None:
+                sf.append("pawn %s@%d,%d" % (kind, x, z))
             if pid is not None and role == "drafted":
                 R.call("jawa/set_draft", pawnId=str(pid), drafted=True)
             elif pid is not None and str(role).startswith("face:"):
@@ -264,14 +292,13 @@ def build(R, label_line):
     R.call("rimworld/pause_game", pause=True)
     verify = {}
     for k, (st, cr, o) in enumerate(placed):
-        need = sorted({b[0] for b in o["build"]})
+        need = o["build"]
         xs = [c[1][0] for c in o["build"]] + [cr[0][0]]
         zs = [c[1][1] for c in o["build"]] + [cr[0][1]]
         rr = "%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 2, max(zs) - min(zs) + 2)
-        defs = {t.get("def") or t.get("defName") for t in B.call("jawa/list_things", rect=rr, limit=100).get("things") or []}
-        miss = [d for d in need if d not in defs]
-        # nothing built to read (the current, the ford): None, never "as built"
-        verify["R%d" % (k + 1)] = dict(id=st["id"], ok=(not miss) if need else None, missing=miss, at=cr[0], width=cr[2])
+        miss = missing_defs(need, B.call("jawa/list_things", rect=rr, limit=100).get("things") or []) if need else []
+        verify["R%d" % (k + 1)] = dict(id=st["id"], ok=river_verdict(bool(need), miss, staged_fail.get(k)), missing=miss,
+                                       staging_failed=staged_fail.get(k) or [], at=cr[0], width=cr[2])
     labels(B, placed, label_line)
     from modcheck import reviewmap as RMH
     sg = RMH.place_signs(B, sign_ops(placed))
