@@ -1,0 +1,2 @@
+A cross-run fingerprint (e.g. hashing hose lays to prove a refactor byte-identical) must not use string.GetHashCode: the FlowWorks selftest runs on net8.0, where string hashes are randomized per process, so identical lays hashed differently run to run. Hash the chars yourself (HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC, 2026-10-26). Also: a 256-lay fingerprint on the 325 basin map exceeds the 540 s tool budget; 64 lays fit.
+home: NONE
