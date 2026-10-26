@@ -58,6 +58,17 @@ OUT_MOCK = os.path.join(REPO, "Transient", "fw_scenes", "mock")      # --mock ou
 FLAG = os.path.join(OUT, "CONTINUE")
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 PROMO = "RimMandrake.FlowWorks.RM_PromotionProofs"
+
+
+def show_path(p):
+    """`p` relative to REPO when it can be; else absolute. Under python.exe, `os.path.relpath` raises ValueError when OUT is on
+    D: and the repo on \\\\wsl.localhost (pit walk 2026-10-26: every capture read "screenshot copy failed: path is on mount 'D:'")."""
+    try:
+        return os.path.relpath(p, REPO)
+    except ValueError:
+        return os.path.abspath(p)
+
+
 NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"
 GATES = "RimMandrake.FlowWorks.RM_FlowDoorRules"   # RM_Sluice / RM_SecurityGrateDoor are Building_RM_FlowDoor
 HPROBE = "RimMandrake.FlowWorks.Hose.HoseProbe"
@@ -441,7 +452,7 @@ class Walk(object):
         try:
             dst = os.path.join(OUT, name + ".png")
             shutil.copyfile(src, dst)
-            return os.path.relpath(dst, REPO)
+            return show_path(dst)
         except Exception as ex:  # noqa: BLE001
             return "screenshot copy failed: %s (%s)" % (ex, src)
 
@@ -456,7 +467,7 @@ class Walk(object):
         p = os.path.join(OUT, "%s_%s.txt" % (scene, time.strftime("%Y%m%dT%H%M%S")))
         with open(p, "w", encoding="utf-8") as f:
             f.write("\n".join(self.log_lines) + "\n")
-        return os.path.relpath(p, REPO)
+        return show_path(p)
 
 
 def fills_str(m, cells):
@@ -1614,10 +1625,10 @@ def _do_scene(w, sid, stage=True, go=True):
         p = os.path.join(OUT, "%s_traceback_%s.txt" % (sid, time.strftime("%Y%m%dT%H%M%S")))
         with open(p, "w", encoding="utf-8") as f:
             f.write(tb)
-        w.say("  CRASHED (traceback kept at %s):" % os.path.relpath(p, REPO))
+        w.say("  CRASHED (traceback kept at %s):" % show_path(p))
         for line in tb.rstrip().splitlines():
             w.say("    " + line)
-        w.rows.append(dict(id=sid + ".crash", status="CRASHED", game=tb.rstrip().splitlines()[-1], traceback=os.path.relpath(p, REPO)))
+        w.rows.append(dict(id=sid + ".crash", status="CRASHED", game=tb.rstrip().splitlines()[-1], traceback=show_path(p)))
     if go or not ok:
         w.say("  log: %s" % w.write_log(sid))
         with open(os.path.join(OUT, "%s_rows.json" % sid), "w", encoding="utf-8") as f:
@@ -1668,7 +1679,7 @@ def main(argv=None):
             if not do_scene(w, sid):
                 rc = 1
             if not a.no_wait:
-                w.say("%s done. Waiting for %s (create it to continue)..." % (sid, os.path.relpath(FLAG, REPO)))
+                w.say("%s done. Waiting for %s (create it to continue)..." % (sid, show_path(FLAG)))
                 while not os.path.exists(FLAG):
                     time.sleep(2)
                 os.remove(FLAG)

@@ -125,11 +125,98 @@ with tempfile.TemporaryDirectory() as tmp:
         check("fault %s -> %s" % (fault, rid), st.get(rid), "FAIL")
         check("fault %s exit" % fault, rc, 1)
         check("fault %s only its row" % fault, sorted(k for k, v in st.items() if v != "PASS"), [rid])
+    # PITWALK_FIX_FIVE_ROWS_NEVER_MEASURE: the round-4 harness (fixtures undeclared, so the governor's whole-map
+    # remove_intruders ate them) reproduced: exactly the four fixture rows lose their pawns, and each says WHY it could
+    # not ask (couldNotAsk, class HARNESS) -- the clean run above passes the same sweep only because spawn() keeps them
+    rc, st, res, _ = mock_run(tmp, "keep_ignored")
+    swept_rows = ["PSW_capture_down_from_lip", "PSW_cover_gives_way", "PSW_grate_seals_from_pit", "PSW_sluice_shut_holds_all"]
+    check("keep_ignored rows", sorted(k for k, v in st.items() if v != "PASS"), swept_rows)
+    check("keep_ignored all UNMEASURED", sorted({st[k] for k in swept_rows}), ["UNMEASURED"])
+    by = {r["id"]: r for r in res["rows"]}
+    check("keep_ignored cover says why", bool(by["PSW_cover_gives_way"]["detail"].get("couldNotAsk")), True)
+    check("keep_ignored cover class", by["PSW_cover_gives_way"]["class"], "HARNESS")
+    # S2: the real pit_report lists only the pawns ON the queried cell; the mock does the same, so a report away from
+    # the pawn's own cell (round 4: P(18,4) for a hare at 18,2) cannot read it
+    fp = W.FakePit()
+    hid = fp.call("jawa/spawn_pawn", kindDef="Hare", x=1, z=1, faction="none")["pawns"][0]["id"]
+    check("report other cell empty", fp.call("jawa/flowworks_pit_report", x=1, z=2)["pawns"], [])
+    check("report own cell", [r["id"] for r in fp.call("jawa/flowworks_pit_report", x=1, z=1)["pawns"]], [hid])
+    # PIT_EXPOSURE_FIX_NO_HEDIFF_OPEN_FLOOR: exposure needs a pit floor (pitRoomMinDepthMetres, 3 m); round 4 dug S10 at 4
+    # notches (2 m). That staging now reads UNMEASURED/SITE, never a MOD fail, and the mock model itself exposes only at
+    # the room depth (a 2 m pawn gets no hediff, a 4 m one does)
+    check("exposure shallow", W.v_exposure({"hediffs": []}, 3.0, 4)[0], "UNMEASURED")
+    check("exposure deep miss", W.v_exposure({"hediffs": []}, 3.0, 8)[0], "FAIL")
+    old_n = W.S10_NOTCHES
+    try:
+        W.S10_NOTCHES = 4
+        rc, st, res, _ = mock_run(tmp, "")
+        by = {r["id"]: r for r in res["rows"]}
+        check("old S10 staging", (st["PSW_child_pit_exposure"], by["PSW_child_pit_exposure"]["class"]),
+              ("UNMEASURED", "SITE"))
+    finally:
+        W.S10_NOTCHES = old_n
+    fp = W.FakePit()
+    for x, n in ((1, 4), (5, 8)):
+        fp.call("jawa/flowworks_excavation_drive", x=x, z=1, deepenLevels=n, setFill=-1)
+    sh = fp.call("jawa/spawn_pawn", kindDef="Colonist", x=1, z=1, faction="player")["pawns"][0]["id"]
+    dp = fp.call("jawa/spawn_pawn", kindDef="Colonist", x=5, z=1, faction="player")["pawns"][0]["id"]
+    fp.ticks(300)
+    hd = {pid: [h["def"] for h in fp.call("jawa/pawn_get", pawn=pid)["pawns"][0]["hediffs"]] for pid in (sh, dp)}
+    check("mock 2 m floor no exposure", hd[sh], [])
+    check("mock 4 m floor exposure", hd[dp], ["RM_PitExposure"])
+    # PIT_FLOOD_FIX_NEAR_BRIM_NO_EXIT: ProofDrown's exit is cardinal-neighbour-only (RM_Drowning.ExitInReach); round 4
+    # stood the control in the 3x3 centre, where it rightly reads no exit. Restaged there, the row goes red again.
+    old_c = W.BRIM_CTL
+    try:
+        W.BRIM_CTL = (W.BRIM_PIT[0] + 1, W.BRIM_PIT[1] + 1)
+        rc, st, _, _ = mock_run(tmp, "")
+        check("old brim staging", st["PSW_flood_near_brim_exit"], "FAIL")
+    finally:
+        W.BRIM_CTL = old_c
     rc2 = W.main(["--mock", "--out-dir", os.path.join(tmp, "only9"), "--only", "S9"])
     with open(os.path.join(tmp, "only9", "result.json"), encoding="utf-8") as f:
         st9 = {r["id"] for r in json.load(f)["rows"]}
     check("only S9", sorted(st9), ["PSW_flood_near_brim_exit", "PSW_flood_swims_cannot_climb",
                                    "PSW_flood_warned_before_under"])
+
+
+# PITWALK_FIX_SHOT_RELPATH_ACROSS_MOUNTS: under python.exe the out dir (D:) and the repo (\\wsl.localhost) are on
+# different mounts and os.path.relpath raises ValueError; round 4 lost every labelled station image to it. With relpath
+# made to raise, a LIVE-mode snap still copies the capture, returns a real .png, and it labels.
+import types  # noqa: E402
+import fw_walk_common as C  # noqa: E402
+import water_scenes_walk as M  # noqa: E402
+
+
+def _cross_mount(p, start=None):
+    raise ValueError("path is on mount 'D:', start on mount '\\\\wsl.localhost\\Ubuntu'")
+
+
+with tempfile.TemporaryDirectory() as tmp:
+    src = C.synthetic_png(os.path.join(tmp, "game_shot.png"), tag="raw")
+    said = []
+    fake = types.SimpleNamespace(args=types.SimpleNamespace(no_shots=False, mock=False), say=said.append,
+                                 frame=lambda rect: None, call=lambda tool, **kw: {"filePath": src})
+    fake.shot = types.MethodType(M.Walk.shot, fake)
+    keep = (os.path.relpath, M.OUT, M.time.sleep)
+    os.path.relpath, M.OUT, M.time.sleep = _cross_mount, tmp, (lambda s: None)
+    try:
+        got = C.snap(fake, "S5_raw", (0, 0, 4, 4))
+        check("cross-mount show_path", M.show_path(os.path.join(tmp, "x.png")), os.path.join(tmp, "x.png"))
+        try:
+            raise RuntimeError("boom")
+        except RuntimeError:
+            tbp, last = C.keep_traceback(fake, tmp, "S5")
+        check("cross-mount traceback kept", os.path.exists(tbp), True)
+    finally:
+        os.path.relpath, M.OUT, M.time.sleep = keep
+    check("cross-mount snap png", bool(got) and got.endswith("S5_raw.png") and os.path.exists(got), True)
+    check("cross-mount no failure said", [x for x in said if "FAILED" in x], [])
+    if got:
+        dst = os.path.join(tmp, "S5.png")
+        C.label_image(got, dst, "5. cover", "station S5", ["PASS  PSW_cover_gives_way"])
+        check("cross-mount labelled", os.path.exists(dst), True)
+    check("same-mount show_path relative", M.show_path(os.path.join(M.REPO, "a", "b.png")), os.path.join("a", "b.png"))
 
 if fails:
     print("FAIL %d" % len(fails))

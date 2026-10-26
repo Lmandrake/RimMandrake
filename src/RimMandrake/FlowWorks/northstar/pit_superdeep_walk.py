@@ -68,15 +68,31 @@ Stations and rows (PROVE / EXPECT / LIES):
                                 prisoner is alive, in the pit and headUp, and rimworld/list_messages gains "is tiring in deep
                                 water" at that crossing. LIES: messages unreadable -> UNMEASURED; never reaching the warning
                                 within the budget -> FAIL with the exhaustion trail.
-  PSW_flood_near_brim_exit      the control: 4 m pit holding 3.5 m (surface 1 level below the lip) -> ProofDrown exit True,
-                                ProofClimb trapped False.
+  PSW_flood_near_brim_exit      the control: 4 m pit holding 3.5 m (surface 1 level below the lip), the prisoner on the
+                                pit's west EDGE cell (BRIM_CTL) -> ProofDrown exit True, ProofClimb trapped False.
+                                ProofDrown's exit is RM_Drowning.ExitInReach: the 4 cardinal neighbours only, so a pawn in
+                                the 3x3 centre (round 4) has none and rightly reads False; the pocket-wide answer is ProofClimb.
  S10 child acceptance:
-  PSW_child_pit_exposure        PIT_TEMPERATURE_SOFTENING_1: a colonist on an unroofed open D4 floor for 4 x 250 ticks has
-                                RM_PitExposure (jawa/pawn_get hediffs).
+  PSW_child_pit_exposure        PIT_TEMPERATURE_SOFTENING_1: a colonist on an unroofed open D8 (4 m, S10_NOTCHES) pit floor
+                                for 4 x 250 ticks has RM_PitExposure (jawa/pawn_get hediffs). A pit floor is a person
+                                pocket at least pitRoomMinDepthMetres deep (3 m); a shallower staging is UNMEASURED/SITE.
   PSW_child_wall_art            EXCAVATION_WALL_ART_1: ProofWallFaces on S1's pit edge -> visible True, verts > 0 (the
                                 picture is the owner's judgement; the capture is in the index).
 Not covered (gaps, say so in the report): being BLASTED into a pit (an explosion's knockback; only a shove is driven), a full
 recruit session from the lip, flight of any flyer (standing rule).
+
+## anti-guessing notes (live round 4, 2026-10-26)
+  - every spawned pawn is a declared clock-gate fixture and kept from every sweep (keep()): undeclared, its own arrival
+    stopped safe_advance (hostile_arrival, declared=false) and site_recover's map-wide remove_intruders vanished S5/S7/S8's
+    pirates, muffalo and hare before their rows read them. A row that lost its pawn names the refused call (couldNotAsk).
+  - jawa/flowworks_pit_report lists only the pawns standing ON the queried cell: read each pawn at its own cell (pawn_get).
+  - a capture path is shown relative to the repo only when it can be (show_path): python.exe raises on D: vs \\wsl.
+  - RULED OUT: "RM_PitExposure never fires on an open floor" (MOD) -- RM_PitExposure.IsExposed needs RM_PitRooms.IsPitFloor,
+    which needs the pit-room depth (3 m = 6 notches); round 4's S10 was dug 4 notches (2 m). S10 digs S10_NOTCHES and the
+    mock exposes only at the room depth, so the old staging reads UNMEASURED/SITE, not a MOD fail.
+  - RULED OUT: "a near-brim pit gives no exit" (MOD) -- ProofDrown's exit is cardinal-neighbour-only by design
+    (RM_Drowning.ExitInReach); ProofClimb, the pocket-wide rule, said not trapped. The control stood in the 3x3 centre;
+    it now stands on the edge (BRIM_CTL), and the mock's ProofDrown is cardinal-only so a centre control reads FAIL.
 """
 import argparse
 import json
@@ -98,6 +114,15 @@ FILLFX = "RimMandrake.FlowWorks.RM_PitFillEffects"
 SWIMPOSE = "RimMandrake.FlowWorks.Swimming.RM_Patch_Pawn_SwimPose"
 SWIM = "RimMandrake.FlowWorks.Swimming.RM_Swim"
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
+# PIT_EXPOSURE_FIX_NO_HEDIFF_OPEN_FLOOR: RM_PitExposure needs a PIT FLOOR (RM_PitRooms.IsPitFloor: a person-band pocket dug
+# at least pitRoomMinDepthMetres, ruled 3 m = 6 notches of 0.5 m; owner card PIT_ROOM_TUNE_TALL_FOLK_DIG_DEEPER). Round 4
+# staged S10 at 4 notches (2 m), correctly no pit floor, and read the missing hediff as a MOD fail. 8 notches = 4 m.
+S10_NOTCHES = 8
+METRES_PER_NOTCH = 0.5
+# PIT_FLOOD_FIX_NEAR_BRIM_NO_EXIT: ProofDrown's exit is RM_Drowning.ExitInReach, the pawn's own 4 CARDINAL neighbours
+# (a step, not a swim). Round 4 stood the control in the CENTRE of the 3x3 near-brim pit, where every neighbour is
+# 3.5 m water, so exit False was right. The control stands on the west EDGE, the lip one step away.
+BRIM_PIT, BRIM_CTL = (10, 13), (10, 14)
 S_SWIM = "RimMandrake.FlowWorks.Swimming.RM_SwimSettings"
 SLUICE, GRATE, LADDER, WOVEN = "RM_Sluice", "RM_SecurityGrateDoor", "RM_Ladder", "RM_PitCover_WovenScrap"
 SETTLE = 70                    # > RM_PocketGrid.RebuildMinTicks: every depth/ladder change is ticked this before a read
@@ -127,7 +152,7 @@ STATIONS = {
     "S8": ("Sluice shut for all, lifted from the bank; grate seals the pit", (47, 1, 9, 9), [(51, 2, 3, 3, 4)]),
     "S9": ("Flooded sheer pit: swims, cannot climb out, warned; near-brim control exits", (1, 11, 14, 7),
            [(3, 13, 3, 3, 8), (10, 13, 3, 3, 8)]),
-    "S10": ("Children: pit exposure; excavation wall art", (56, 1, 5, 5), [(57, 2, 3, 3, 4)]),
+    "S10": ("Children: pit exposure; excavation wall art", (56, 1, 5, 5), [(57, 2, 3, 3, S10_NOTCHES)]),
 }
 ITEMS = {
     "PSW_child_pit_exposure": "PIT_TEMPERATURE_SOFTENING_1", "PSW_child_wall_art": "EXCAVATION_WALL_ART_1",
@@ -183,7 +208,7 @@ def in_rect(rect, xz):
 def v_width(hare_row, muff_row):
     """S2: the hare (W 1) is held in a 1-wide trench, the adult muffalo (W 2) is not."""
     if not hare_row or not muff_row:
-        return "UNMEASURED", {"why": "a pawn is not on its trench cell", "hare": hare_row, "muffalo": muff_row}
+        return "UNMEASURED", {"why": "pit_report did not list the pawn at its own cell", "hare": hare_row, "muffalo": muff_row}
     if muff_row.get("requiredWidth") != 2 or hare_row.get("requiredWidth") != 1:
         return "UNMEASURED", {"why": "fixture widths wrong (want hare W1, muffalo W2)",
                               "w": (hare_row.get("requiredWidth"), muff_row.get("requiredWidth"))}
@@ -333,11 +358,17 @@ def v_near_brim(drown_kv, climb_kv):
                                                                           "climb": d.get("mismatch")}
 
 
-def v_exposure(pawn_row):
+def v_exposure(pawn_row, room_min_m=None, notches=None):
+    """S10: RM_PitExposure on a pit floor. A floor shallower than pitRoomMinDepthMetres is no pit floor by rule, so the
+    row could not ask: UNMEASURED (the staging, not the mod)."""
+    if room_min_m is not None and notches is not None and notches * METRES_PER_NOTCH < room_min_m:
+        return "UNMEASURED", {"why": "S10 floor %.1f m is shallower than pitRoomMinDepthMetres %.1f m: no pit floor by rule"
+                                     % (notches * METRES_PER_NOTCH, room_min_m)}
     if not pawn_row:
         return "UNMEASURED", {"why": "pawn_get found no pawn"}
     defs = [h.get("def") for h in pawn_row.get("hediffs") or []]
-    return ("PASS" if "RM_PitExposure" in defs else "FAIL"), {"hediffs": defs[:8]}
+    return ("PASS" if "RM_PitExposure" in defs else "FAIL"), {"hediffs": defs[:8], "floorMetres":
+                                                             None if notches is None else notches * METRES_PER_NOTCH}
 
 
 def v_wallart(txt):
@@ -438,6 +469,9 @@ class FakePit(object):
         self.messages = []
         self.prison_bed = False
         self.capture = {}
+        self.kept = set()           # fixtures the walk declared (keep()); `keep_ignored` = the round-4 harness
+        self.announced = set()      # hostile arrivals the governor has already seen
+        self.swept = []
 
     # ---- model
     def _d(self, c):
@@ -464,6 +498,16 @@ class FakePit(object):
                     step = d0 - self._d(n)
                     best = step if best is None else min(best, step)
         return best if best is not None else 0, pk
+
+    def _climb_d(self, c):
+        f = self.fill.get(tuple(c), 0)
+        return self._d(c) - (f if f >= 4 else 0)                  # water lifts the climb to its surface
+
+    def _step_exit(self, c):
+        """RM_Drowning.ExitInReach: a CARDINAL neighbour within the climb step whose water is under a 1.75 m head."""
+        x, z = c
+        return any(abs(self._climb_d(c) - self._climb_d(n)) <= 2 and self.fill.get(n, 0) / 2.0 < 1.75 * 0.9
+                   for n in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)))
 
     def _trapped(self, pid):
         p = self.pawns[pid]
@@ -504,8 +548,21 @@ class FakePit(object):
                 if before < warn <= p["ex"] and p.get("prisoner") and "no_warning" not in self.faults:
                     self.messages.append("Mock prisoner %s: about 12 minutes of swimming left before going under." % WARN_TEXT)
 
+    def _governor(self):
+        """validation_core.Bridge.ticks: a hostile arrival stops safe_advance; a declared fixture resumes, anything else
+        goes to site_recover -> remove_intruders() on the WHOLE map (every hostile and factionless pawn not kept)."""
+        kept = set() if "keep_ignored" in self.faults else self.kept
+        live = {q: p for q, p in self.pawns.items() if not p.get("prisoner")}     # a prisoner is neither (round 4: S9)
+        new = [pid for pid, p in live.items() if p["faction"] == "hostile" and pid not in self.announced]
+        self.announced.update(new)
+        if any(pid not in kept for pid in new):
+            for pid in [q for q, p in live.items() if p["faction"] in ("hostile", "none") and q not in kept]:
+                self.pawns.pop(pid)
+                self.swept.append(pid)
+
     def ticks(self, n):
         self.tick += n
+        self._governor()
         self._swim_tick(n)
         for c, sprung in list(self.covers.items()):
             pid = self._at(c)
@@ -558,14 +615,14 @@ class FakePit(object):
             key = "%s.%s" % (kw["typeName"], kw["field"])
             if kw.get("action") == "set":
                 self.settings[key] = kw.get("value")
-            return {"success": True, "value": self.settings.get(key, {"swimWarnAt": "0.6", "swimEnduranceHours": "3"}.get(
+            return {"success": True, "value": self.settings.get(key, {"swimWarnAt": "0.6", "swimEnduranceHours": "3",
+                                                                   "pitRoomMinDepthMetres": "3"}.get(
                 kw["field"], "True"))}
         if tool == "jawa/flowworks_pit_report":
             c = (int(kw["x"]), int(kw["z"]))
-            pk = self._pocket(c) if self._d(c) else {c}
             rows = []
             for pid, p in self.pawns.items():
-                if tuple(p["cell"]) in pk:
+                if tuple(p["cell"]) == c:                         # the real tool: c.GetThingList(map), this cell only
                     t = self._trapped(pid)
                     rows.append({"id": pid, "held": t, "requiredWidth": self.W.get(p["kind"], 1), "spawned": True,
                                  "dead": False, "lipReachable": 0 if t else 3, "canReachMapEdge": not t})
@@ -602,7 +659,9 @@ class FakePit(object):
             if not p:
                 return {"success": True, "pawns": []}
             hd = []
-            if self._d(p["cell"]) >= 4 and self.tick - p["born"] >= 250 and "no_exposure" not in self.faults:
+            room_min = float(self.settings.get(S_FW + ".pitRoomMinDepthMetres", 3.0))
+            if (self._d(p["cell"]) * METRES_PER_NOTCH >= room_min and self.tick - p["born"] >= 250
+                    and "no_exposure" not in self.faults):
                 hd.append({"def": "RM_PitExposure"})
             return {"success": True, "pawns": [{"id": kw["pawn"], "hediffs": hd, "dead": False,
                                                 "position": {"x": p["cell"][0], "z": p["cell"][1]}}]}
@@ -653,6 +712,8 @@ class FakePit(object):
             return "TRAP descents=%d lastCell=none pos=%d,%d held=%s last=-" % (self.descents, p["cell"][0], p["cell"][1], held)
         if method == "ProofShove":
             pid, xz = a.split(";")
+            if pid not in self.pawns:
+                return "REFUSED: no spawned pawn %s" % pid               # RM_NorthstarProofs.ProofShove
             self.pawns[pid]["cell"] = tuple(int(v) for v in xz.split(","))
             return "SHOVE at=" + xz
         if method == "ProofCover":
@@ -667,6 +728,8 @@ class FakePit(object):
             return ""
         if method == "ProofCaptureDown":
             p = self.pawns.get(a)
+            if not p:
+                return "REFUSED: no spawned pawn %s" % a                 # RM_NorthstarProofs.ProofCaptureDown
             return "VERDICT Allowed held=True prisoner=%s cell=%d,%d" % (bool(p.get("prisoner")), p["cell"][0], p["cell"][1])
         if method == "ProofLip":
             return "LIP serve=True kind=Interact lipInPit=False dist=1.4"
@@ -696,10 +759,11 @@ class FakePit(object):
             pid = self._at(c)
             if not pid:
                 return "REFUSED: no pawn"
-            step, _ = self._exit_step(c)
             return "DROWN %s H=1.75 lying=False water=%.2f under=False headUp=True exit=%s perCheck=0" % (
-                pid, self.fill.get(c, 0) / 2.0, step <= 2)
+                pid, self.fill.get(c, 0) / 2.0, self._step_exit(c))
         if method == "ExhaustionOf":
+            if a not in self.pawns:
+                return "REFUSED: no pawn"
             return "%.3f" % self.pawns[a].get("ex", 0.0)
         if method == "ProofWallFaces":
             return "WALLS visible=True verts=%d" % (0 if "no_walls" in self.faults else 96)
@@ -750,8 +814,10 @@ def main(argv=None):
 
     def row(rid, st, det, cls="MOD"):
         if st == "FAIL" and could_not:          # a refused call in this row: could not ask
-            det = dict(det, couldNotAsk=list(could_not))
             st, cls = "UNMEASURED", "HARNESS"
+        if st == "UNMEASURED" and could_not:    # say WHICH call could not ask (round 4 lost the reason on 5 rows)
+            det = dict(det, couldNotAsk=list(could_not))
+            cls = "HARNESS"
         if st == "UNMEASURED" and cls == "MOD":
             cls = "SITE" if "why" in det else "HARNESS"
         del could_not[:]
@@ -788,6 +854,30 @@ def main(argv=None):
 
     spawned = []
 
+    def keep(pid, on=True):
+        """PITWALK_FIX_FIVE_ROWS_NEVER_MEASURE: a pawn the walk spawned is a FIXTURE. Undeclared, its own arrival stopped
+        safe_advance (hostile_arrival), site_recover ran remove_intruders() map-wide and vanished the station's pirates,
+        muffalo and hare before their row read them (round 4: S5, S7, S8 x2 UNMEASURED). Declared to the clock gate (the
+        arrival resumes) and kept from every sweep (KEEP_PAWNS of validation_core and of the modcheck helpers)."""
+        if a.mock:
+            (B.kept.add if on else B.kept.discard)(pid)
+            return
+        try:
+            cg, H = w.V._clockgate(), w.V._helpers()
+            if on:
+                cg.declare_fixture(pid)
+                w.V.KEEP_PAWNS.add(pid)
+                H.KEEP_PAWNS.add(pid)
+            else:
+                cg.withdraw_fixture(pid)
+                w.V.KEEP_PAWNS.discard(pid)
+                H.KEEP_PAWNS.discard(pid)
+        except Exception as ex:  # noqa: BLE001 - an undeclared fixture is swept: the row must say why it could not ask
+            if on:
+                could_not.append(("keep %s: %r" % (pid, ex))[:120])
+            else:                                 # a failed withdraw is no reason the NEXT row could not ask
+                w.say("  withdraw fixture %s failed: %r" % (pid, ex))
+
     def spawn(kind, c, faction="player"):
         r = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0], z=c[1], faction=faction, count=1) or {}
         pid = ((r.get("pawns") or [{}])[0]).get("id")
@@ -795,12 +885,27 @@ def main(argv=None):
             could_not.append("spawn %s at %s failed" % (kind, c))
         else:
             spawned.append(pid)
+            keep(pid)
         return pid
 
     def vanish(*pids):
         for pid in pids:
             if pid:
                 B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+                keep(pid, on=False)
+
+    def cell_of(pid):
+        """The pawn's current cell from pawn_get, or None."""
+        pg = ((B.call("jawa/pawn_get", pawn=pid) or {}).get("pawns") or [{}])[0].get("position") or {}
+        return (pg["x"], pg["z"]) if pg.get("x") is not None and pg.get("z") is not None else None
+
+    def report_at(pid, fallback):
+        """flowworks_pit_report lists only the pawns standing ON the queried cell (JawaBenchFlowWorksPulseTools.cs
+        GetThingList), so a pawn is read at its own cell (round 4 S2 read P(18,4) with the hare at 18,2: both null)."""
+        c = cell_of(pid) if pid else None
+        if pid and c is None:
+            could_not.append("pawn_get %s: no position" % pid)
+        return CP.pit_pawn(report(c or fallback), pid)
 
     def order(pid, c, wait=WAIT_OUT):
         o = B.call("jawa/order_pawn", pawnId=pid, x=c[0], z=c[1], waitTicks=wait, draft=True, unpause=True) or {}
@@ -893,9 +998,9 @@ def main(argv=None):
         dig(P(39, 3), 4)                                           # S5 careless 1x1
         pit(P(44, 2), 3, 3, 6)                                     # S6/S7 prison pit
         pit(P(51, 2), 3, 3, 4)                                     # S8 grate pit
-        pit(P(57, 2), 3, 3, 4)                                     # S10 exposure pit
+        pit(P(57, 2), 3, 3, S10_NOTCHES)                           # S10 exposure pit (a pit-room depth)
         pit(P(3, 13), 3, 3, 8, 4)                                  # S9 sheer 4 m, 2 m water
-        pit(P(10, 13), 3, 3, 8, 7)                                 # S9 near-brim control: 3.5 m water
+        pit(P(*BRIM_PIT), 3, 3, 8, 7)                              # S9 near-brim control: 3.5 m water
         bad = CP.dig_misses(digs)
         if bad:
             row("PSW_site_dug", "UNMEASURED", {"why": "%d drive(s) missed their depth" % len(bad), "misses": bad[:6]}, "SITE")
@@ -935,8 +1040,7 @@ def main(argv=None):
             if muff:
                 B.call("jawa/set_pawn_age", pawn=muff, biologicalYears=8.0)
             B.ticks(SETTLE)
-            rp = report(P(18, 4))
-            st, det = v_width(CP.pit_pawn(rp, hare), CP.pit_pawn(rp, muff))
+            st, det = v_width(report_at(hare, P(18, 2)), report_at(muff, P(18, 5)))
             row("PSW_width_trench", st, det)
             shoot("S2", STATIONS["S2"][1], ["a 1-wide D4 trench: the hare (south) is held, the adult muffalo is not"])
             vanish(hare, muff)
@@ -1064,7 +1168,7 @@ def main(argv=None):
             down = sc(DOORS, "ProofSetGate", "current|%d,%d|false" % sl) or ""
             st, det = v_sluice_lift(up, down)
             row("PSW_sluice_lifts_from_bank", st, det)
-            hp = CP.pit_pawn(report(P(51, 3)), held) or {}
+            hp = report_at(held, P(51, 3)) or {}
             txt = sc(DOORS, "ProofOpen", "current|%d,%d" % gr) or ""
             st, det = v_grate(txt, held, hp.get("held"))
             row("PSW_grate_seals_from_pit", st, det)
@@ -1075,7 +1179,7 @@ def main(argv=None):
         # ---------------------------------------------------------------- S9 flooded sheer pit + near-brim control
         if want("S9"):
             station[0] = "S9"
-            pc, cc = P(4, 14), P(11, 14)
+            pc, cc = P(4, 14), P(*BRIM_CTL)
             pr = spawn("Villager", pc, "hostile")
             ctl = spawn("Villager", cc, "hostile")
             for pid in (pr, ctl):
@@ -1123,11 +1227,11 @@ def main(argv=None):
             B.call("jawa/order_pawn", pawnId=col, x=P(58, 3)[0], z=P(58, 3)[1], waitTicks=1, draft=True)
             B.ticks(4 * 250 + 10)
             pg = ((B.call("jawa/pawn_get", pawn=col) or {}).get("pawns") or [None])[0]
-            st, det = v_exposure(pg)
+            st, det = v_exposure(pg, fnum(sget(S_FW, "pitRoomMinDepthMetres")), S10_NOTCHES)
             row("PSW_child_pit_exposure", st, det)
             st, det = v_wallart(sc(NSP, "ProofWallFaces", "%d,%d" % P(2, 3)) or "")
             row("PSW_child_wall_art", st, det)
-            shoot("S10", STATIONS["S10"][1], ["a colonist on an open D4 floor (RM_PitExposure)",
+            shoot("S10", STATIONS["S10"][1], ["a colonist on an open D%d pit floor (RM_PitExposure)" % S10_NOTCHES,
                                               "the excavation wall faces: judge the art on S1's capture too"])
             vanish(col)
     finally:

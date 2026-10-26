@@ -108,10 +108,12 @@ def keep_traceback(w, out_dir, name):
     p = os.path.join(out_dir, "%s_traceback_%s.txt" % (name, time.strftime("%Y%m%dT%H%M%S")))
     with open(p, "w", encoding="utf-8") as f:
         f.write(tb)
-    w.say("  CRASHED (traceback kept at %s):" % os.path.relpath(p, REPO))
+    import water_scenes_walk as m
+    shown = m.show_path(p)        # relpath raises across D: / \\wsl mounts under python.exe
+    w.say("  CRASHED (traceback kept at %s):" % shown)
     for line in tb.rstrip().splitlines():
         w.say("    " + line)
-    return os.path.relpath(p, REPO), tb.rstrip().splitlines()[-1]
+    return shown, tb.rstrip().splitlines()[-1]
 
 
 # ---------------------------------------------------------------- PIL labels
