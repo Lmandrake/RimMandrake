@@ -3,7 +3,8 @@
 Offline: no game, no bridge; every driver call goes to a fake.
 
 Reds on: a driver running with MODCHECK_RUN_DRIVERS unset, or without UTF-8 stdio; a driver for an unselected chain running, or table order
-not kept; a timeout or a raising after-hook crashing instead of being a receipt; the shared budget not skipping; a
+not kept; a timeout or a raising after-hook crashing instead of being a receipt; the shared budget not skipping, or
+starting a driver whose declared timeout exceeds the budget left (the budget would kill it mid bridge call); a
 "chain"-stage driver running up front or more than once; `modcheck run --drivers on` not setting the flag; the
 SteveDesktop worker's run command not passing `--drivers on`; FlowWorks naming a driver script that does not exist, a
 chain that is not in its suite, or leaving a driver-reading chain (thirst, sprinklers, drawbridges, lines,
@@ -96,7 +97,34 @@ def t_flag_and_plan():
         ok([r["status"] for r in recs] == ["SKIPPED_BUDGET", "SKIPPED_BUDGET"], "a spent budget skips the drivers")
         calls = []
         recs = D.run(_suite(), "/m", ["c1"], budget_s=100, _call_fn=_fake(calls), log=_Null())
-        ok(calls and calls[0][1] <= 100, "a driver's timeout is capped by the budget left")
+        ok(calls and calls[0][1] == 50, "a driver that fits the budget left runs with its own declared timeout")
+        # MODCHECK_DRIVERS_FIX_BUDGET_KILL_MIDCALL: the budget must never be what kills a driver (testq
+        # J20261026T083309Z-a1c268 killed suspension_bridge_proof at the 112 s left, mid step_game_ticks, stranding an
+        # UNKNOWN-outcome bridge marker). A driver whose declared timeout exceeds the budget left is not started.
+        calls = []
+        recs = D.run(_suite(), "/m", ["c2"], budget_s=1000, _call_fn=_fake(calls), log=_Null())
+        ok(not calls and [r["status"] for r in recs] == ["SKIPPED_BUDGET"],
+           "a driver whose timeout (1200) exceeds the budget left (1000) is SKIPPED_BUDGET, never started to be killed")
+        ok("1200" in recs[0]["tail"] and "1000" in recs[0]["tail"], "the skip receipt says needed vs left")
+        clock = [0.0]
+
+        class _T(object):
+            @staticmethod
+            def monotonic():
+                return clock[0]
+
+        def slow(argv, cwd, timeout_s):
+            calls.append((argv, timeout_s))
+            clock[0] += 40.0
+            return 0, "out"
+        real_time, D.time = D.time, _T
+        try:
+            calls = []
+            recs = D.run(_suite(), "/m", ["c1", "c2"], budget_s=1230, _call_fn=slow, log=_Null())
+        finally:
+            D.time = real_time
+        ok([r["status"] for r in recs] == ["RC0", "SKIPPED_BUDGET"] and len(calls) == 1,
+           "after a first driver spends 40 s of 1230, the 1200 s driver is skipped, not run under a shrunk timeout")
         calls = []
         r1 = D.once("/m", _suite().live_drivers[2], _call_fn=_fake(calls), log=_Null())
         r2 = D.once("/m", _suite().live_drivers[2], _call_fn=_fake(calls), log=_Null())

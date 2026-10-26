@@ -29,6 +29,7 @@ import time
 ENV = "MODCHECK_RUN_DRIVERS"
 DEFAULT_TIMEOUT_S = 1200
 # All "pre" drivers of one run share this wall budget: a sweep's job timeout (14400 s) must still cover the chains.
+# A driver starts only when the budget left covers its whole timeout_s (run()); the budget never cuts one short.
 DEFAULT_BUDGET_S = int(os.environ.get("MODCHECK_DRIVERS_BUDGET_S") or 7200)
 
 _DONE = {}      # (mod_dir, name) -> receipt: a "chain"-stage driver runs at most once per process
@@ -102,7 +103,8 @@ def run_one(mod_dir, d, cwd=None, _call_fn=None, python=None, log=None):
 
 def run(suite, mod_dir, chain_names, cwd=None, after=None, budget_s=None, _call_fn=None, python=None, log=None):
     """Run the "pre" drivers plan() selects; `after(receipt)` runs after each (runner: ensure_playing_map), and an
-    exception it raises is recorded on that receipt. Drivers past the shared budget are SKIPPED_BUDGET receipts.
+    exception it raises is recorded on that receipt. A driver whose declared timeout exceeds the shared budget left is
+    a SKIPPED_BUDGET receipt: never started, so the budget never kills one mid bridge call.
     Returns [] when the flag is off."""
     if not enabled():
         return []
@@ -111,11 +113,19 @@ def run(suite, mod_dir, chain_names, cwd=None, after=None, budget_s=None, _call_
     out = []
     for d in plan(suite, chain_names):
         left = budget - (time.monotonic() - t0)
-        if left < 60:
+        need = int(d.get("timeout_s") or DEFAULT_TIMEOUT_S)
+        # MODCHECK_DRIVERS_FIX_BUDGET_KILL_MIDCALL: the budget never shrinks a driver's timeout. Shrinking it made the
+        # budget the killer: testq J20261026T083309Z-a1c268 started suspension_bridge_proof with the 112 s left and
+        # killed it mid rimworld/step_game_ticks, stranding an UNKNOWN-outcome bridge marker that refused every later
+        # mutating call. A driver that may need more than is left is not started; its chains read UNMEASURED.
+        if left < need:
             out.append({"driver": d["name"], "chains": list(d.get("chains") or []), "status": "SKIPPED_BUDGET",
-                        "rc": None, "wall_s": 0.0, "tail": "driver budget %d s spent" % budget})
+                        "rc": None, "wall_s": 0.0,
+                        "tail": "driver budget: %d s left of %d, driver timeout needs %d s"
+                                % (max(left, 0), budget, need)})
+            print("[modcheck] driver %s SKIPPED_BUDGET (%d s left, timeout %d s)" % (d["name"], max(left, 0), need),
+                  file=log or sys.stderr, flush=True)
             continue
-        d = dict(d, timeout_s=min(int(d.get("timeout_s") or DEFAULT_TIMEOUT_S), int(left)))
         rec = run_one(mod_dir, d, cwd=cwd, _call_fn=_call_fn, python=python, log=log)
         if after is not None:
             try:
