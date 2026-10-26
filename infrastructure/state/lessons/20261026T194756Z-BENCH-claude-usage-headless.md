@@ -1,0 +1,2 @@
+Claude Code's /usage runs headless: 'claude -p /usage --output-format json --no-session-persistence' makes no model call (num_turns 0, cost 0) and its .result holds the exact session/week % used and reset lines of the interactive /usage, for whatever login CLAUDE_CONFIG_DIR points at. Pair it with 'claude auth status' in the same env to prove which login answered. Never run it against a dormant vault login whose access token is near expiry: Claude Code will refresh and rotate the credential under claude-account.
+home: src/RimMandrake/Utils/account_usage.py
