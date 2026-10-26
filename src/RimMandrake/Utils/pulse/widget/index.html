@@ -100,6 +100,24 @@ html,body{height:100%;background:var(--term);color:var(--text);font:12.5px/1.5 v
 .sparks span{display:flex;align-items:center;gap:3px} .sparks svg{width:54px;height:14px}
 .sparks polyline{fill:none;stroke:var(--sand);stroke-width:1.2} .sparks b{color:var(--muted);font-weight:normal}
 body.collapsed .sparks{display:none}
+/* his burn charts (owner 2026-10-25): tokens/h 7 d + 24 h, tickets/day opened/closed 7 d. Colours validated
+   (dataviz validate_palette, dark, surface --term): one-series sand; opened/closed pair L 0.48-0.67, CVD dE 26 */
+.charts{flex:none;padding:3px 10px 2px 12px;border-top:1px solid var(--line2);font-size:10px;color:var(--dim)}
+.charts .ch-h{cursor:pointer;user-select:none;color:var(--faint)} .charts .ch-h:hover{color:var(--muted)}
+.charts .ch-row{display:flex;gap:10px;margin-top:2px}
+.charts .ch{flex:1 1 0;min-width:0}
+.charts .ch-t{display:flex;justify-content:space-between;gap:6px;white-space:nowrap;overflow:hidden}
+.charts .ch-t b{color:var(--muted);font-weight:normal} .charts .ch-t em{font-style:normal;color:var(--faint)}
+.charts svg{display:block;width:100%;height:34px}
+.charts .ch-x{display:flex;justify-content:space-between;color:var(--faint);font-size:9px}
+.charts .base{stroke:var(--line);stroke-width:1;vector-effect:non-scaling-stroke}
+.charts .tok{fill:#a8957d} .charts .tokl{fill:none;stroke:#a8957d;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.charts .tokf{fill:#a8957d;opacity:.18}
+.charts .op{fill:#c4862e} .charts .cl{fill:#9575e0}
+.charts .hit{fill:transparent} .charts .hit:hover{fill:rgba(243,228,199,.08)}
+.charts .key i{display:inline-block;width:7px;height:7px;border-radius:2px;margin:0 3px 0 6px;vertical-align:0}
+.charts .unm{color:var(--faint)} .charts .ch-d{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+body.collapsed .charts{display:none}
 .pill{padding:1px 9px;border-radius:9px;flex:none;margin-right:4px}
 .p-red{background:var(--rust);color:#fff3e6;box-shadow:0 0 14px #ff5a3c;animation:pillred 1.6s ease-in-out infinite}
 .p-amber,.p-amber_soft{color:var(--a,var(--sand));box-shadow:inset 0 0 0 1px var(--a,var(--sand))}
@@ -150,6 +168,7 @@ body.still *{animation:none!important}
   </div>
   <div class="body" id="body"><div class="empty">Waiting for the first pulse from WSL…</div></div>
   <div class="sparks" id="sparks"></div>
+  <div class="charts" id="charts"></div>
   <div class="strip" id="strip"></div>
 </div>
 <script>
@@ -322,7 +341,7 @@ function render(){
   const body = $('body'), st = body.scrollTop;
   body.innerHTML = h; body.scrollTop = st;
   for (const r of rows) seenKeys.add(r.key + '|' + r.kind);
-  renderStrip(); renderSparks(); firstPaint = false; toastNew();
+  renderStrip(); renderSparks(); renderCharts(); firstPaint = false; toastNew();
 }
 
 // four telemetry sparklines (design 08 §8): last 2 h, one point a minute; absent = not drawn, never 0
@@ -342,6 +361,54 @@ function renderSparks(){
     const pts = sp[k] || [], last = [...pts].reverse().find(p => p[1] !== null);
     return `<span title="${esc(label)} · last 2 h (telemetry)">${esc(label)} ${sparkSVG(pts)}<b>${last ? last[1].toFixed(dp) : '–'}</b></span>`;
   }).join('');
+}
+
+// his burn charts: tokens/hour (Claude Code transcripts) 7 d and 24 h, tickets/day opened/closed 7 d (ledger).
+// No data is never drawn as zero: an unreadable source says UNMEASURED; a reader still catching up says partial.
+function fmtN(v){ return v >= 1e9 ? (v/1e9).toFixed(1)+'B' : v >= 1e6 ? (v/1e6).toFixed(v >= 1e8 ? 0 : 1)+'M'
+  : v >= 1e3 ? Math.round(v/1e3)+'k' : String(Math.round(v)) }
+function hourLbl(t){ const d = new Date(t*1000); return d.toLocaleDateString([], {weekday:'short'}) + ' ' + d.toTimeString().slice(0,5) }
+function tokTitle(b, h, v){ const p = (b.parts || {})[String(h)];
+  return `${hourLbl(h)} · ${fmtN(v)} tokens` + (p ? ` (in ${fmtN(p[0])}, cache write ${fmtN(p[1])}, cache read ${fmtN(p[2])}, out ${fmtN(p[3])})` : ''); }
+function tokChart(b, pts, label, span, bars){
+  const n = pts.length, W = 240, H = 34, max = Math.max(1, ...pts.map(p => p[1]));
+  const y = v => (H - 1 - (H - 3) * v / max).toFixed(2), w = W / n;
+  let marks = '';
+  if (bars) marks = pts.map((p, i) => p[1] > 0 ? `<rect class="tok" x="${(i*w + 1).toFixed(2)}" y="${y(p[1])}" width="${Math.max(0.5, w - 2).toFixed(2)}" height="${(H - 1 - y(p[1])).toFixed(2)}" rx="1.5"/>` : '').join('');
+  else { const xy = pts.map((p, i) => `${(i*w + w/2).toFixed(2)},${y(p[1])}`).join(' ');
+    marks = `<polygon class="tokf" points="${(w/2).toFixed(2)},${H-1} ${xy} ${(W - w/2).toFixed(2)},${H-1}"/><polyline class="tokl" points="${xy}"/>`; }
+  const hits = pts.map((p, i) => `<rect class="hit" x="${(i*w).toFixed(2)}" y="0" width="${w.toFixed(2)}" height="${H}"><title>${esc(tokTitle(b, p[0], p[1]))}</title></rect>`).join('');
+  const last = pts[n-1], peak = pts.reduce((a, p) => p[1] > a[1] ? p : a, pts[0]);
+  const tot = pts.reduce((a, p) => a + p[1], 0);
+  return `<div class="ch"><div class="ch-t"><span>tokens/h · ${label}</span><b title="peak ${esc(hourLbl(peak[0]))}">peak ${fmtN(peak[1])}</b></div>`
+    + `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="tokens per hour, ${label}">${marks}<line class="base" x1="0" y1="${H-0.5}" x2="${W}" y2="${H-0.5}"/>${hits}</svg>`
+    + `<div class="ch-x"><span>${span}</span><span title="mean ${fmtN(tot / n)}/h">${fmtN(tot)} total · this hour ${fmtN(last[1])}</span></div></div>`;
+}
+function ticketChart(t){
+  const d = t.days || [], n = d.length, W = 240, H = 34, max = Math.max(1, ...d.flatMap(x => [x[1], x[2]]));
+  const g = W / n, bw = (g - 6) / 2, y = v => (H - 1 - (H - 3) * v / max).toFixed(2);
+  const bar = (cls, x, v, tip) => `<rect class="${cls}" x="${x.toFixed(2)}" y="${y(v)}" width="${bw.toFixed(2)}" height="${(H - 1 - y(v)).toFixed(2)}" rx="2"><title>${esc(tip)}</title></rect>`;
+  const marks = d.map((x, i) => { const dl = new Date(x[0] + 'T12:00:00').toLocaleDateString([], {weekday:'short', month:'short', day:'numeric'});
+    return bar('op', i*g + 2, x[1], `${dl} · ${x[1]} opened`) + bar('cl', i*g + 4 + bw, x[2], `${dl} · ${x[2]} closed`); }).join('');
+  const so = d.reduce((a, x) => a + x[1], 0), sc = d.reduce((a, x) => a + x[2], 0);
+  const days = d.map((x, i) => `<span>${i === n-1 ? 'today' : new Date(x[0] + 'T12:00:00').toLocaleDateString([], {weekday:'short'})}</span>`).join('');
+  return `<div class="ch"><div class="ch-t"><span>tickets/day · 7 d</span><span class="key"><i style="background:#c4862e"></i>opened ${so}<i style="background:#9575e0"></i>closed ${sc}</span></div>`
+    + `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="tickets opened and closed per day, last 7 days">${marks}<line class="base" x1="0" y1="${H-0.5}" x2="${W}" y2="${H-0.5}"/></svg>`
+    + `<div class="ch-x ch-d">${days}</div></div>`;
+}
+function renderCharts(){
+  const el = $('charts'), c = snap && snap.charts;
+  if (!c) { el.innerHTML = ''; return; }
+  const open = pref.charts !== false, b = c.burn || {}, t = c.tickets || {};
+  let h = `<div class="ch-h" id="chh" title="tokens/hour from Claude Code transcripts; tickets from the rimflow ledger (file / close events, all seats)">burn ${open ? '▴' : '▾'}`
+    + (b.unmeasured ? '' : !b.complete ? ` <span class="unm">· tokens partial, reader catching up (${b.behind_mb} MB behind)</span>` : '') + `</div>`;
+  if (open) {
+    h += '<div class="ch-row">' + (b.unmeasured ? `<div class="ch unm">tokens/h · UNMEASURED: ${esc(b.unmeasured)}</div>`
+      : tokChart(b, b.week, '7 d', '7 d ago', false) + tokChart(b, b.day, '24 h', '24 h ago', true)) + '</div>';
+    h += '<div class="ch-row">' + (t.unmeasured ? `<div class="ch unm">tickets/day · UNMEASURED: ${esc(t.unmeasured)}</div>` : ticketChart(t)) + '</div>';
+  }
+  el.innerHTML = h;
+  $('chh').onclick = () => { pref.charts = !open; savePref(); renderCharts(); };
 }
 
 function chipHTML(c){

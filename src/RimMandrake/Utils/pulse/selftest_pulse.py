@@ -802,7 +802,11 @@ check("digest: new asks and new looks are split from the backlog",
       and [ln["text"] for ln in dsec["look"]["backlog"]] == ["last week's sheet"], dsec)
 check("digest: opened looks, answered asks and recoveries/done from before the interval are left out",
       not any(t in " ".join(alltxt) for t in ("opened one", "DONE_ASK", "an old recovered one", "before he left")), alltxt)
-check("digest: answered asks are one counted note, not rows", "1 you already answered" in dsec["rule"]["note"], dsec["rule"])
+DGV = {"rows": pc.owner_view([{**r, "addressee": "owner"} if r["key"].startswith("needs:") else r for r in DG["rows"]], NOW)}
+dsec_v = {sc["id"]: sc for sc in pl.build_digest(DGV, T0, NOW)}
+check("digest: answered asks are one counted note, not rows",
+      "1 answered" in dsec_v["rule"]["note"] and "DONE_ASK" not in str(dsec_v["rule"]["lines"] + dsec_v["rule"]["backlog"]),
+      dsec_v["rule"])
 
 # --- RIMPULSE_LOOKS_BUILD_UNREAD_NEVER_LISTED: nothing reaches him unread; revisions; withdrawn; missing -------
 UNREAD = [{"id": "hand:un", "target": "https://example.org/u", "title": "nobody read me", "ts": NOW - 30}]
@@ -1109,7 +1113,7 @@ check("his list holds only the asks addressed to him (agent / judge / unknown as
 check("the strip counts only his asks: 2 to rule, not 6", {p["text"] for p in ad_snap["strip"]} >= {"◇ 2 to rule"}
       and not any(p["text"].startswith("◇ 6") for p in ad_snap["strip"]), ad_snap["strip"])
 check("unknown-addressee asks are counted in one dim health line, agent-addressed ones are not",
-      "2 unaddressed" in ad_snap["health"], ad_snap["health"])
+      [h for h in ad_snap["health"] if "not shown" in h] == ["2 not shown: 2 unaddressed"], ad_snap["health"])
 check("a question card up in a seat window is his and stays a top amber",
       any(r["kind"] == "amber" and not r.get("agent") and r.get("addressee") == "owner" for r in ad_snap["rows"]),
       [(r["key"], r["kind"], r.get("agent")) for r in ad_snap["rows"] if r["kind"] == "amber"])
@@ -1118,6 +1122,99 @@ ad_txt = " ".join(ln["text"] for ln in ad_dig["rule"]["lines"] + ad_dig["rule"][
 check("his digest names only his asks and says how many were unaddressed",
       "ADDR_OWNER_TEXT" in ad_txt and not any(k in ad_txt for k in ("ADDR_AGENT", "ADDR_JUDGE", "ADDR_UNKNOWN", "ADDR_MENTION"))
       and "2 unaddressed" in (ad_dig["rule"].get("note") or ""), (ad_txt, ad_dig["rule"].get("note")))
+
+# --- owner 2026-10-25: "ONLY things actually for the user to look at or immediately rule on" + his burn charts ------
+def _ask(iid, kind, text, ago, **kw):
+    return pc._row(f"needs:{iid}", kind, "FOUNDRY", f"{iid} — {text}", NOW - ago, src="ledger", title=iid, full=text,
+                   addressee="owner", **kw)
+GV = pc.owner_view([
+    _ask("G_FRESH", "review", "pick the cap: 4 or 6", 3600, state="proposed"),
+    _ask("G_LOOK", "look", "the new contact sheet", 5 * 86400, state="proposed"),        # a thing to view stays
+    _ask("G_FACT", "provide", "the PC's IP address", 600, state="proposed"),
+    _ask("G_STALE", "review", "should we try the other bore", 4 * 86400, state="proposed"),
+    _ask("G_BUILT", "review", "approve the gate", 3600, state="built"),                  # done, pending verification
+    _ask("G_DEPLOY", "review", "cap fixed, deploy owed before he can see it", 3600, state="doing"),
+    _ask("G_LIVE", "review", "awaiting live check of the drawbridge", 3600, state="doing"),
+    _ask("G_FYI", "review", "FYI: the ice melt rate changed", 3600, state="proposed"),
+    _ask("G_ANS", "answered", "answered by card", 3 * 86400, state="proposed")], NOW)
+gv_mine = sorted(r["key"] for r in GV if not r.get("agent"))
+check("his list keeps only fresh rulings/facts and things to view",
+      gv_mine == ["needs:G_FACT", "needs:G_FRESH", "needs:G_LOOK"], gv_mine)
+gv_why = {r["key"]: r.get("not_shown") for r in GV if r.get("agent")}
+check("each dropped ask says why: stale / verify-owed / deploy-live-owed / fyi / answered",
+      gv_why == {"needs:G_STALE": "stale", "needs:G_BUILT": "verify-owed", "needs:G_DEPLOY": "deploy/live-owed",
+                 "needs:G_LIVE": "deploy/live-owed", "needs:G_FYI": "fyi", "needs:G_ANS": "answered"}, gv_why)
+check("one dim line counts what is not shown, by reason",
+      pc.not_shown_line(GV) == "6 not shown: 1 stale, 1 verify-owed, 2 deploy/live-owed, 1 fyi, 1 answered",
+      pc.not_shown_line(GV))
+check("a stale ruling re-asked (since moves) is back on his list",
+      not pc.owner_view([_ask("G_STALE", "review", "should we try the other bore", 60)], NOW)[0].get("agent"))
+gv_strip = {p["text"] for p in pc.build_strip(GV)}
+check("the strip counts only what is shown", {"◇ 1 to rule", "✎ 1 to provide", "▣ 1 to look at"} <= gv_strip, gv_strip)
+
+# token burn: an incremental transcript reader over a synthetic projects folder
+BT = Path(tempfile.mkdtemp(prefix="pulse_burn_"))
+_st_atexit.register(_st_shutil.rmtree, BT, True)
+(BT / "proj" / "subagents").mkdir(parents=True)
+def _iso(t):
+    return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(t)) + ".000Z"
+def _rec(mid, rid, t, i=1, cw=10, cr=100, o=5, typ="assistant"):
+    return json.dumps({"type": typ, "timestamp": _iso(t), "requestId": rid,
+                       "message": {"id": mid, "usage": {"input_tokens": i, "cache_creation_input_tokens": cw,
+                                                        "cache_read_input_tokens": cr, "output_tokens": o}}}) + "\n"
+H0 = int(NOW // 3600 * 3600)
+fa, fb = BT / "proj" / "a.jsonl", BT / "proj" / "subagents" / "b.jsonl"
+half = _rec("m4", "r4", H0 + 60, i=7)
+fa.write_text(_rec("m1", "r1", H0 - 3600 + 5) + _rec("m1", "r1", H0 - 3600 + 6)   # one reply, two records: once
+              + json.dumps({"type": "user", "message": {"content": "hi"}}) + "\n"
+              + _rec("m0", "r0", NOW - 9 * 86400)                                   # outside the window: skipped
+              + _rec("m2", "r2", H0 + 30) + half[:40])                               # a record still being written
+fb.write_text(_rec("m3", "r3", H0 - 2 * 3600 + 1, cr=1000))
+b1 = pc.burn_scan(None, NOW, 5, root=BT)
+check("burn: hourly totals sum all four usage fields, one reply counted once, old records skipped",
+      b1["complete"] and b1["hours"] == {str(H0 - 3600): [1, 10, 100, 5], str(H0): [1, 10, 100, 5],
+                                         str(H0 - 7200): [1, 10, 1000, 5]}, b1["hours"])
+with open(fa, "a") as fh:
+    fh.write(half[40:] + _rec("m4", "r4", H0 + 61, i=7) + _rec("m5", "r5", H0 + 90))
+b2 = pc.burn_scan(json.loads(json.dumps(b1)), NOW, 5, root=BT)
+check("burn: a second pass reads only the appended bytes (the finished half-record counts once, nothing twice)",
+      b2["hours"][str(H0)] == [1 + 7 + 1, 30, 300, 15] and b2["hours"][str(H0 - 3600)] == [1, 10, 100, 5], b2["hours"])
+b0 = pc.burn_scan(None, NOW, 0, root=BT)
+check("burn: a pass that runs out of budget says partial and how far behind, never complete",
+      not b0["complete"] and b0["behind_mb"] >= 0 and sum(sum(v) for v in b0["hours"].values()) < 1000, b0)
+bs = pc.burn_series(b2, NOW)
+check("burn series: 168 hourly points for the week, the last 24 for the day, measured zeros in a complete pass",
+      len(bs["week"]) == 168 and bs["day"] == bs["week"][-24:] and bs["week"][-1] == [H0, 9 + 30 + 300 + 15]
+      and bs["week"][-2] == [H0 - 3600, 116] and bs["week"][-4][1] == 0 and bs["complete"], bs["week"][-4:])
+missing = None
+try:
+    pc.burn_scan(None, NOW, 1, root=BT / "nope")
+except FileNotFoundError as e:
+    missing = str(e)
+check("burn: no transcript folder is an error, and the chart says UNMEASURED (never zeros)",
+      missing and pc.burn_series(None, NOW, missing).get("unmeasured") and "week" not in pc.burn_series(None, NOW, missing),
+      missing)
+
+# tickets/day: distinct items filed / closed per local day, last 7 days, all seats
+def _tk(ev, iid, t, seat="FOUNDRY"):
+    return {"event": ev, "id": iid, "seat": seat, "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(t))}
+from datetime import datetime as _dt
+_mid = _dt.fromtimestamp(NOW).replace(hour=12, minute=0, second=0, microsecond=0).timestamp()
+TL = [_tk("file", "T1", _mid), _tk("file", "T1", _mid + 60), _tk("file", "T2", _mid, "BENCH"), _tk("close", "T1", _mid),
+      _tk("implemented", "T2", _mid), _tk("drop", "T3", _mid),
+      _tk("file", "T4", _mid - 86400), _tk("close", "T4", _mid - 2 * 86400),
+      _tk("file", "T5", _mid - 8 * 86400), _tk("close", "T5", _mid - 7 * 86400)]                  # outside the 7 days
+ts_ = pc.ticket_series(TL, NOW)["days"]
+check("tickets/day: 7 local days, today last; opened = distinct filed items, closed = close events only",
+      len(ts_) == 7 and ts_[-1][1:] == [2, 1] and ts_[-2][1:] == [1, 0] and ts_[-3][1:] == [0, 1]
+      and sum(d[1] for d in ts_) == 3 and sum(d[2] for d in ts_) == 2
+      and ts_[-1][0] == _dt.fromtimestamp(NOW).date().isoformat(), ts_)
+cs = pc.collect_snapshot({"ledger": TL, "sessions": [], "burn": b2}, {}, NOW)[0]
+check("the snapshot carries both charts",
+      cs["charts"]["burn"].get("week") and cs["charts"]["tickets"]["days"] == ts_, cs.get("charts", {}).keys())
+cs0 = pc.collect_snapshot({"sessions": []}, {}, NOW)[0]
+check("no token source and no ledger: both charts UNMEASURED",
+      cs0["charts"]["burn"].get("unmeasured") and cs0["charts"]["tickets"].get("unmeasured"), cs0["charts"])
 
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

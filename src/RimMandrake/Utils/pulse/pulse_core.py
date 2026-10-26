@@ -1236,6 +1236,7 @@ def classify_ledger(ledger: list[dict], since: float, now: float,
                       "iid": iid, "ask": ru.get("class") or "rule", "ask_why": ru.get("class_why"),
                       # no addressee recorded is 'unknown', never his (owner_view keeps it out of his list)
                       "addressee": ru.get("addressee") or "unknown", "addressee_why": ru.get("addressee_why"),
+                      "state": ru.get("state"),
                       "answered": an, "src_detail": f"rimflow: {iid} open, needs=owner since {e.get('event')}"})
             if kind == "look":
                 if not _is_artifact_link(lk):
@@ -1686,6 +1687,37 @@ KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "r
 
 
 ANSWERED_SHOW_SECS = 24 * 3600     # "answered, agent to follow up" is agent debt: his view only after it ages a day
+
+# What reaches his list from the ledger (owner 2026-10-25: "ONLY things actually for the user to look at or
+# immediately rule on should be put there"): a thing to view, or a ruling / fact that work waits on now. An ask he
+# already answered, a finished item waiting on verification, an FYI, a deploy or live check someone owes, and a
+# ruling nobody has re-asked in STALE_ASK_SECS are counted in the one dim "N not shown" line instead.
+STALE_ASK_SECS = 3 * 86400        # a ruling or fact asked 3+ days ago and not re-asked is a stale proposal, not "immediate"
+NOT_SHOWN_ORDER = ("unaddressed", "stale", "verify-owed", "deploy/live-owed", "fyi", "answered")
+_VERIFY_STATES = {"built", "validated"}    # rimflow: `implemented` -> built; built/validated = done, pending verification
+_FYI_RE = r"(\bFYI\b|\bfor (your )?information\b|\bheads[- ]up\b|\bno action\b|\bnothing to (do|decide)\b|^\s*fyi:)"
+_OWED_RE = (r"(\bdeploy(s|ed|ment)?\s+(owed|pending|due)\b|\b(owes?|owed|awaits?|awaiting|pending|needs?)\s+(a\s+)?"
+            r"(deploy|live[- ](check|test|run|proof|verify)|cold[- ]load|restart|game[- ]up|bridge)\b|"
+            r"\blive[- ](check|test|proof)\s+(owed|pending|due)\b|\bverif(y|ication)\s+(owed|pending)\b)")
+
+
+def ask_gate(r: dict, now: float) -> str | None:
+    """None when an owner-addressed ledger ask belongs on his list now, else the reason it is not shown
+    (one of NOT_SHOWN_ORDER). Pure over the row classify_ledger built."""
+    import re
+    k = r["kind"]
+    if k == "answered":
+        return "answered"           # his card/words landed: an agent owes the follow-through, he owes nothing
+    text = f"{r.get('title') or ''} {r.get('full') or r.get('text') or ''}"
+    if str(r.get("state") or "").lower() in _VERIFY_STATES or re.search(r"\bverif(y|ication)\s+(owed|pending)\b", text, re.I):
+        return "verify-owed"        # done, pending verification: not a question
+    if re.search(_OWED_RE, text, re.I):
+        return "deploy/live-owed"   # a deploy or a live check someone owes is not his verdict
+    if re.search(_FYI_RE, text, re.I):
+        return "fyi"
+    if k in ("review", "provide") and now - (r.get("since") or now) > STALE_ASK_SECS:
+        return "stale"              # a re-ask (`needs --to owner` again) moves `since` and brings it back
+    return None
 AGENT_KINDS = ("recovered", "failed", "held")     # §3 remove-list: agent iteration, kept for the digest only
 
 
@@ -1705,8 +1737,14 @@ def owner_view(rows: list[dict], now: float) -> list[dict]:
         if str(r.get("key", "")).startswith("needs:") and r.get("addressee") != "owner":
             # an ask not addressed to him (an agent's / judge's question, or nobody said who): never his list.
             # 'unknown' is counted in one dim health line; an agent-addressed ask is quiet (digest-free too)
-            out.append({**r, "agent": True, "unaddressed": r.get("addressee") != "agent" and k != "answered"})
+            un = r.get("addressee") != "agent" and k != "answered"
+            out.append({**r, "agent": True, "unaddressed": un, "not_shown": "unaddressed" if un else None})
             continue
+        if str(r.get("key", "")).startswith("needs:"):
+            gate = ask_gate(r, now)
+            if gate:   # his, but not something to view or rule on NOW: counted in the dim line, never listed
+                out.append({**r, "agent": True, "not_shown": gate})
+                continue
         if k == "red":
             inc = r.get("incident") or ""
             seat_dead = ((inc.startswith("lost:") or inc.startswith("oom:seat:")) and (r.get("who") or "").upper() in SEATS)
@@ -1737,10 +1775,20 @@ def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
     for c in chips:
         if c.get("seat") in SEATS and c["state"] == "missing":
             lines.append(f"{c['seat']} has no window open")
-    n = sum(1 for r in rows if r.get("unaddressed"))
-    if n:   # asks nobody addressed to him: not his, but never hidden silently
-        lines.append(f"{n} unaddressed")
+    line = not_shown_line(rows)
+    if line:   # asks kept off his list are never hidden silently: one dim line says how many and why
+        lines.append(line)
     return lines
+
+
+def not_shown_line(rows: list[dict]) -> str:
+    """'N not shown: 2 unaddressed, 1 stale ...' over owner_view's `not_shown` reasons, or '' when none."""
+    from collections import Counter
+    c = Counter(r["not_shown"] for r in rows if r.get("not_shown"))
+    if not c:
+        return ""
+    order = list(NOT_SHOWN_ORDER) + sorted(set(c) - set(NOT_SHOWN_ORDER))
+    return f"{sum(c.values())} not shown: " + ", ".join(f"{c[k]} {k}" for k in order if c.get(k))
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
@@ -1846,6 +1894,10 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now), "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
         "sparks": None,          # sparklines are Grafana's, not his
+        # his two burn charts: tokens/hour (transcripts) and tickets/day opened/closed (ledger); absent = UNMEASURED
+        "charts": {"burn": burn_series(raw.get("burn"), now, raw.get("burn_error")),
+                   "tickets": (ticket_series(raw["ledger"], now) if raw.get("ledger")
+                               else {"unmeasured": "ledger not read"})},
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked") and not r.get("agent"))
@@ -1853,3 +1905,138 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
                             "recovered", "failed", "held")},
     }
     return snap, new_state, events
+
+
+# --- the owner's two burn charts (owner 2026-10-25: "a 1 week and 1 day tokens/hour burn rate graph, as well as a
+# tickets/day closed and tickets/day opened for the last 1 week") ------------------------------------------------
+# Tokens come from Claude Code's own transcripts (every assistant record carries message.usage); nothing is estimated.
+# The transcripts run to ~6 GB a week, so the reader is incremental: a per-file byte offset and hourly totals are
+# cached in STATE_DIR/token_burn.json and each pass reads only appended bytes, inside a time budget. Until a pass has
+# reached the end of every file the series is marked partial (a lower bound), never presented as complete.
+CLAUDE_PROJECTS = Path(os.environ.get("RM_PULSE_TRANSCRIPTS", HOME / ".claude" / "projects"))
+BURN_CACHE = STATE_DIR / "token_burn.json"
+BURN_KEEP_SECS = 8 * 86400        # hours kept in the cache; a record older than this is skipped on a first read
+BURN_KEYS = 8                     # last (message.id, requestId) keys kept per file: one reply is several ADJACENT records
+USAGE_FIELDS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
+
+
+def _hour_of(ts: str, memo: dict) -> int | None:
+    """Epoch hour of a transcript timestamp. Transcripts stamp UTC ('...T08:47:26.123Z'), so the hour is the
+    first 13 chars (memoised); any other form is parsed whole."""
+    if not ts.endswith("Z") or len(ts) < 13:
+        e = iso_to_epoch(ts)
+        return int(e // 3600 * 3600) if e else None
+    h = ts[:13]
+    if h not in memo:
+        e = iso_to_epoch(h + ":00:00+00:00")
+        memo[h] = int(e) if e else None
+    return memo[h]
+
+
+def burn_scan(cache: dict | None, now: float, budget_s: float = 1.5, root: Path | None = None) -> dict:
+    """One incremental pass over the transcripts. Returns the new cache:
+    {"v": 1, "files": {path: [offset, [recent keys]]}, "hours": {"<epoch hour>": [in, cache_w, cache_r, out]},
+     "complete": bool, "at": now, "files_n": int, "behind_mb": float}. Pure apart from reading the files."""
+    root = root or CLAUDE_PROJECTS
+    c = {"v": 1, "files": {}, "hours": {}, **(cache or {})}
+    files, hours = dict(c["files"]), {k: list(v) for k, v in c["hours"].items()}
+    cut = now - BURN_KEEP_SECS
+    paths = glob.glob(str(root) + "/**/*.jsonl", recursive=True)
+    if not paths and not root.is_dir():
+        raise FileNotFoundError(f"no transcript folder at {root}")
+    t0, memo, behind, done = time.monotonic(), {}, 0, True
+    live = set(paths)
+    for p in paths:
+        try:
+            st = os.stat(p)
+        except OSError:
+            continue
+        off, keys = files.get(p, [0, []])
+        if p not in files and st.st_mtime < cut:
+            files[p] = [st.st_size, []]   # untouched for the whole window: nothing in it can be in a bucket
+            continue
+        if st.st_size < off:
+            off, keys = 0, []             # truncated or replaced: read it again
+        if st.st_size == off:
+            files[p] = [off, keys]
+            continue
+        if time.monotonic() - t0 > budget_s:
+            behind += st.st_size - off
+            done = False
+            files[p] = [off, keys]
+            continue
+        seen = list(keys)
+        with open(p, "rb") as fh:
+            fh.seek(off)
+            for line in fh:
+                if not line.endswith(b"\n"):
+                    break                 # a record still being written: the next pass reads it whole
+                off += len(line)
+                if b'"usage"' not in line or b'"assistant"' not in line:
+                    continue
+                try:
+                    d = json.loads(line)
+                except ValueError:
+                    continue
+                if d.get("type") != "assistant":
+                    continue
+                m = d.get("message") or {}
+                u = m.get("usage") or {}
+                ts = d.get("timestamp") or ""
+                if not u or not ts:
+                    continue
+                key = f"{m.get('id')}|{d.get('requestId')}"
+                if key in seen:
+                    continue
+                seen.append(key)
+                if len(seen) > BURN_KEYS:
+                    del seen[:-BURN_KEYS]
+                h = _hour_of(ts, memo)
+                if h is None or h < cut:
+                    continue
+                b = hours.setdefault(str(h), [0, 0, 0, 0])
+                for i, f in enumerate(USAGE_FIELDS):
+                    v = u.get(f)
+                    b[i] += v if isinstance(v, int) else 0
+        files[p] = [off, seen]
+    files = {p: v for p, v in files.items() if p in live}
+    hours = {k: v for k, v in hours.items() if int(k) >= cut}
+    return {"v": 1, "files": files, "hours": hours, "complete": done, "at": now, "files_n": len(files),
+            "behind_mb": round(behind / 1e6, 1)}
+
+
+def burn_series(burn: dict | None, now: float, error: str | None = None) -> dict:
+    """{"day": [[hour, tokens] x 24], "week": [[hour, tokens] x 168], "parts": {hour: [in, cw, cr, out]},
+    "complete", "behind_mb"} - or {"unmeasured": why} when the transcripts could not be read. An hour with no
+    record in a complete pass is a measured 0. Pure."""
+    if burn is None or error:
+        return {"unmeasured": error or "token source not read yet"}
+    end = int(now // 3600 * 3600)
+    hrs = burn.get("hours") or {}
+    week = [[h, sum(hrs.get(str(h)) or (0,))] for h in range(end - 167 * 3600, end + 1, 3600)]
+    return {"week": week, "day": week[-24:], "complete": bool(burn.get("complete")),
+            "behind_mb": burn.get("behind_mb") or 0, "at": burn.get("at"),
+            "parts": {str(h): hrs[str(h)] for h, _ in week if str(h) in hrs}}
+
+
+def ticket_series(ledger: list[dict], now: float, days: int = 7) -> dict:
+    """Tickets per LOCAL day over the last `days` days (today last, partial): opened = distinct items with a `file`
+    event that day, closed = distinct items with a `close` event that day (all seats; `implemented` and `drop`
+    are not closes). Pure."""
+    from datetime import datetime, timedelta
+    today = datetime.fromtimestamp(now).date()
+    keys = [(today - timedelta(days=i)).isoformat() for i in range(days - 1, -1, -1)]
+    op: dict[str, set] = {k: set() for k in keys}
+    cl: dict[str, set] = {k: set() for k in keys}
+    for e in ledger:
+        ev = e.get("event")
+        if ev not in ("file", "close") or not e.get("id"):
+            continue
+        t = iso_to_epoch(e.get("ts") or "")
+        if not t:
+            continue
+        d = datetime.fromtimestamp(t).date().isoformat()
+        tgt = op if ev == "file" else cl
+        if d in tgt:
+            tgt[d].add(e["id"])
+    return {"days": [[k, len(op[k]), len(cl[k])] for k in keys]}

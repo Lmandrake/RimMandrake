@@ -149,6 +149,7 @@ class Collector:
         self.tick_lock = threading.Lock()   # one collection at a time: the 5 s loop and a refresh never interleave
         self.last_refresh: dict | None = None
         self.wake = threading.Event()       # ack/seen ask the ONE loop for an early tick; they never start their own
+        self.burn: dict = {"cache": None, "at": 0, "saved": 0, "error": None}   # token burn reader (pc.burn_scan)
 
     def _ledger(self) -> list[dict]:
         """Re-read (and re-fold through rimflow's replay) only when a ledger file in either clone moved.
@@ -166,6 +167,32 @@ class Collector:
             self.ledger_cache = {"sig": sig, "events": events, "rulings": pc.owner_rulings(events),
                                  "changed_at": time.time()}
         return self.ledger_cache["events"]
+
+    def _burn(self, now: float, force: bool, src, status: dict) -> tuple[dict | None, str | None]:
+        """Token burn: an incremental pass every 30 s (every tick while still catching up, 1.5 s budget), the cache
+        persisted to token_burn.json at most every 5 min so a restart resumes instead of re-reading ~6 GB."""
+        b = self.burn
+        if b["cache"] is None and not b.get("loaded"):
+            b["loaded"] = True
+            try:
+                b["cache"] = json.loads(_p(pc.BURN_CACHE.name).read_text())
+            except (OSError, ValueError):
+                b["cache"] = None
+        due = force or not (b["cache"] or {}).get("complete") or now - b["at"] >= 30
+        if due:
+            c = src("tokens", lambda: pc.burn_scan(b["cache"], now))
+            b["at"] = now
+            if c is None:
+                b["error"] = status.get("tokens", {}).get("error") or "transcripts unreadable"
+            else:
+                b["cache"], b["error"] = c, None
+                if now - b["saved"] >= 300 or (c.get("complete") and not b.get("was_complete")):
+                    save_json(pc.BURN_CACHE.name, c)
+                    b["saved"] = now
+                b["was_complete"] = c.get("complete")
+        else:
+            status["tokens"] = (self.snapshot.get("sources") or {}).get("tokens", {"ok": True, "at": b["at"]})
+        return b["cache"], b["error"]
 
     def gather(self, now: float, force: bool = False) -> dict:
         """force=True (a refresh) re-reads every source now: the ledger is re-folded even if no file moved,
@@ -219,6 +246,7 @@ class Collector:
         raw["bridge"] = src("bridge", pc.read_bridge)
         raw["telemetry"] = src("telemetry", pc.read_telemetry)
         raw["services"] = src("services", pc.read_services) or {}
+        raw["burn"], raw["burn_error"] = self._burn(now, force, src, status)
         raw["probe"] = self.probe
         status["probe"] = {"ok": self.probe is not None, "at": (self.probe or {}).get("at")}
         raw["source_status"] = status
@@ -564,8 +592,8 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     for r in rows:
         if r["kind"] == "amber" and r.get("seat") and take(r):   # a card up right now is always news
             asks.append({**line("◐", r, f"{r['who']} asks: {r.get('full') or r.get('question') or r['text']}"), "new": True})
-    # an ask not addressed to him (owner_view flags it `agent`) is never in his brief; unknown ones are counted
-    unaddressed = sum(1 for r in rows if r.get("unaddressed"))
+    # an ask owner_view keeps off his list (not his, unaddressed, stale, answered, owed...) is never in his brief;
+    # the ones that were his to know about are counted in one note
     for r in rows:
         if str(r.get("key", "")).startswith("needs:") and r.get("agent"):
             used.add(r["key"])
@@ -582,9 +610,7 @@ def build_digest(snap: dict, since: float, now: float) -> list[dict]:
     held = sum(1 for r in rows if r["kind"] == "held")
     done = [line("✓", r, f"{r['who']:<8} {r['text']}") for r in sorted(rows, key=lambda r: r.get("since") or 0)
             if r["kind"] == "done" and (r.get("since") or 0) >= since and take(r)]
-    answered = [r for r in rows if r["kind"] == "answered" and r["key"] not in used]
-    note = "; ".join(x for x in ((f"{len(answered)} you already answered, an agent still owes the follow-through"
-                                  if answered else ""), (f"{unaddressed} unaddressed" if unaddressed else "")) if x)
+    note = pc.not_shown_line(rows)
     out = [{"id": "issues", "title": "What broke", "lines": issues, "backlog": []},
            {"id": "rule", "title": "Needs your verdict or a fact", "lines": asks, "backlog": ask_old,
             "note": note},
