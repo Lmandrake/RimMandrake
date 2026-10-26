@@ -141,6 +141,13 @@ def main():
           % ','.join(lint.FINISHED_CLASSES), rc == 0, out.strip()[-600:])
     r = lint.scan(lint.DEFAULT_ROOT, lint.FINISHED_CLASSES)
     check('every STRICT_EXEMPT entry still inherits the bare 40', not r['stale_exempt'], r['stale_exempt'])
+    check('every STRICT_EXEMPT entry carries a reason',
+          all((v or '').strip() for v in lint.STRICT_EXEMPT.values()), lint.STRICT_EXEMPT)
+    # Pinned here, not read back from the lint: a class dropped from FINISHED_CLASSES would otherwise just
+    # vanish from the loop below and every check would still pass.
+    audited = {'bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish'}
+    check('FINISHED_CLASSES still holds every audited class', audited <= set(lint.FINISHED_CLASSES),
+          sorted(audited - set(lint.FINISHED_CLASSES)))
     for c in lint.FINISHED_CLASSES:
         # Non-blind: the body walk must still resolve races of this class, else a body-resolution regression
         # would pass every strict class silently; and every bare-40 race of it left must be an exemption.
@@ -160,6 +167,11 @@ def main():
     check('fish: the big fish name RM_Fishskin', got == big, got)
     fish_rows = [n for n, l in r['leather_of'].items() if l in ('RM_Fishskin', 'RSW_Fishskin')]
     check('fish: fishskin is seen on >= 8 races (5 big fish + 3 tumorfish)', len(fish_rows) >= 8, fish_rows)
+    # Every body a fishskin race rides must be strict, else a regression of that race passes (tumorfish fry,
+    # RSW_FishBody, did until wave 72).
+    fish_bodies = {r['body_of'].get(n) for n in fish_rows}
+    check('fish: every body carrying a fishskin race is in the fish class',
+          fish_bodies <= lint.CLASS_BODIES['fish'], sorted(map(str, fish_bodies - lint.CLASS_BODIES['fish'])))
     print(out.strip().splitlines()[-1] if out.strip() else '')
     print('%d/%d passed' % (sum(RESULTS), len(RESULTS)))
     return 0 if all(RESULTS) else 1

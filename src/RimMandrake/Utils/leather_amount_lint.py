@@ -102,7 +102,9 @@ CLASS_BODIES = {
     'crab': {'Crab'},
     'turtle': {'TurtleLike'},
     'softbody': {'RM_JellyfishBody', 'RM_TentacledSlug', 'RM_ClawedSlug', 'RM_Butterfly', 'RM_Slug'},
-    'fish': {'Snake'},   # fish, eels and the other slithering swimmers of ours all ride vanilla's Snake body
+    # fish, eels and the other slithering swimmers of ours ride vanilla's Snake body; the RSW tumorfish
+    # (Spawn/Fry/Adult, RSW_Fishskin) ride RSW_FishBody -- without it a Fry regression (1a03259941) passed
+    'fish': {'Snake', 'RSW_FishBody'},
 }
 # classes audited to the end; their regressions fail
 FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish')
@@ -240,6 +242,7 @@ def scan(root, strict=()):
 
     races, offenders, vanilla40, unresolved, good = [], [], [], [], []
     leather_of = {}  # defName -> effective leatherDef / useLeatherFrom (None when it names none)
+    body_of = {}  # defName -> effective race body (None when none resolves)
     body_counts = {}  # body -> concrete races of it; the strict classes' non-blind floor
     for el, rel in concrete:
         links, missing = chain(el)
@@ -260,6 +263,7 @@ def scan(root, strict=()):
         body_counts[body] = body_counts.get(body, 0) + 1
         row = {'defName': dn, 'file': rel, 'leatherAmount': amt, 'leather': leather, 'body': body}
         leather_of[dn] = leather
+        body_of[dn] = body
         if leather and amt and amt > 0 and amt_ours:
             good.append(dn)
         if leather or not amt or amt <= 0:
@@ -281,7 +285,7 @@ def scan(root, strict=()):
             'strict_failures': strict_fail, 'strict_classes': list(strict), 'stale_exempt': stale_exempt,
             'unresolved_parent': unresolved, 'good_explicit': good, 'parse_failures': parse_fail,
             'patch_ops_unmodelled': unmodelled, 'race_names': races, 'body_counts': body_counts,
-            'leather_of': leather_of}
+            'leather_of': leather_of, 'body_of': body_of}
 
 
 def main(argv=None):
@@ -306,7 +310,7 @@ def main(argv=None):
     r = scan(root, strict)
     if out_json:
         with open(out_json, 'w', encoding='utf-8') as fh:
-            json.dump({k: v for k, v in r.items() if k not in ('race_names', 'leather_of')}, fh, indent=1)
+            json.dump({k: v for k, v in r.items() if k not in ('race_names', 'leather_of', 'body_of')}, fh, indent=1)
     for o in r['offenders']:
         print('FAIL %s (%s): LeatherAmount %g, no race.leatherDef / useLeatherFrom'
               % (o['defName'], o['file'], o['leatherAmount']))
