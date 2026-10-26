@@ -52,6 +52,8 @@ def main():
         with contextlib.redirect_stdout(io.StringIO()):
             T.main(["rm", "Transient/keep"])
         check(ignored(td, "Transient/keep/b.json"), "unpinning makes the dir ignored again")
+    check("Claude-Session" not in T.TRAILER and "Co-Authored-By" not in T.TRAILER and "transient_pin.py" in T.TRAILER,
+          "commit trailer names the script, not a stale session/model (%r)" % T.TRAILER)
     print("ALL PASS" if not FAILS else "%d FAIL" % len(FAILS))
     return 1 if FAILS else 0
 

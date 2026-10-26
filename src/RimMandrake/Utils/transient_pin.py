@@ -178,8 +178,9 @@ def land_untrack(paths: list[str], msg: str) -> int:
     return r.returncode
 
 
-TRAILER = ("\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n"
-           "Claude-Session: https://claude.ai/code/session_01QobXckUXJ6LnxbpPwWBirk")
+# No agent trailer: a hardcoded Co-Authored-By / Claude-Session pinned every commit on one old session
+# (TRANSIENT_PIN_FIX_STALE_TRAILER). The message names the script instead.
+TRAILER = "\n\nLanded by src/RimMandrake/Utils/transient_pin.py"
 
 
 def cmd_untrack(a) -> int:

@@ -292,8 +292,7 @@ def install_ready(rows) -> list[str]:
 def publish(paths: list[str], n: int) -> str:
     st = str(STATE.relative_to(REPO))
     msg = (f"Facings stand tall batch: {n} creatures' redrawn S/N installed via art ledger (owner's words)\n\n"
-           "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n"
-           "Claude-Session: https://claude.ai/code/session_01FXK6MoYNNZRBtF6RgSvTgY")
+           "Landed by src/RimMandrake/Utils/art/facing_regen_batch.py")
     allp = sorted(set(paths)) + [st, str(LOG.relative_to(REPO)), "infrastructure/state/art/events/BENCH.jsonl"]
     subprocess.run(["git", "-C", str(REPO), "pull", "--ff-only", "-q"], capture_output=True)
     p = subprocess.run(["./publish", "-m", msg] + allp, capture_output=True, text=True, cwd=REPO)
