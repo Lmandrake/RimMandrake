@@ -30,8 +30,9 @@ namespace RimMandrake.LeaningScrub
     //   strips the corpse (gear lies at the larder, never destroyed) and over the
     //   following days RM_CompCarrionLarder takes vanilla-shaped bites: one
     //   outside body part becomes a fresh Bite MissingBodyPart and its nutrition
-    //   feeds the bug; when only the core part is left (or the corpse has
-    //   dried out) the corpse is gone. No item is ever made, so nothing is
+    //   feeds the bug; when only the core part is left the corpse is gone (a
+    //   ball that dries out first is no longer Rollable: it lies there like
+    //   vanilla dessicated remains). No item is ever made, so nothing is
     //   duplicated; Corpse.Destroy would destroy gear (lesson 20261026T091325Z),
     //   so every Destroy is preceded by Strip.
     // ════════════════════════════════════════════════════════════════════
@@ -75,6 +76,11 @@ namespace RimMandrake.LeaningScrub
     {
         private IntVec3 den = IntVec3.Invalid;
 
+        // The tether home before the first den replaced it (its spawn cell). The setting is SettingScope.Now and its
+        // tooltip promises "Off: it picks no den (it still keeps near where it first appeared)", so switching dens off
+        // mid-game hands the tether this cell back instead of leaving the thornhold bound to its old vine.
+        private IntVec3 preDenHome = IntVec3.Invalid;
+
         public RM_CompProperties_VineDen Props => (RM_CompProperties_VineDen)props;
 
         public IntVec3 Den => den;
@@ -97,6 +103,14 @@ namespace RimMandrake.LeaningScrub
             base.CompTickInterval(delta);
             if (!parent.Spawned || !parent.IsHashIntervalTick(Mathf.Max(60, Props.retryIntervalTicks), delta))
             {
+                return;
+            }
+            if (!DenOn)
+            {
+                if (den.IsValid)
+                {
+                    ReleaseDen();
+                }
                 return;
             }
             // Re-pick only when there is no den or its vine is gone (cut, burnt, trimmed).
@@ -163,9 +177,26 @@ namespace RimMandrake.LeaningScrub
             {
                 return "no reachable den plant within " + Props.searchRadius.ToString("F0") + " cells";
             }
+            RM_CompHomeTether tether = pawn.TryGetComp<RM_CompHomeTether>();
+            if (!preDenHome.IsValid && tether != null && tether.Home.IsValid && tether.Home != den)
+            {
+                preDenHome = tether.Home;   // a save from before this field has den == tether home: nothing to keep
+            }
             den = found;
-            pawn.TryGetComp<RM_CompHomeTether>()?.SetHome(den);
+            tether?.SetHome(den);
             return null;
+        }
+
+        /// <summary>Dens switched off: forget the den and give the tether back the home it had before (or, for a save
+        /// made before preDenHome existed, where the thornhold stands now).</summary>
+        public void ReleaseDen()
+        {
+            RM_CompHomeTether tether = parent.TryGetComp<RM_CompHomeTether>();
+            if (tether != null && tether.Home == den)
+            {
+                tether.SetHome(preDenHome.IsValid ? preDenHome : parent.Position);
+            }
+            den = IntVec3.Invalid;
         }
 
         /// <summary>Why a hit from `instigator` would not start the stand, or null when it would.</summary>
@@ -243,6 +274,7 @@ namespace RimMandrake.LeaningScrub
         {
             base.PostExposeData();
             Scribe_Values.Look(ref den, "rmVineDen", IntVec3.Invalid);
+            Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);
         }
 
         /// <summary>Bridge proof: the thornhold at `cell` — its den, or why it has none.</summary>

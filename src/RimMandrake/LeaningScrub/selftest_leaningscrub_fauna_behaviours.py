@@ -326,6 +326,16 @@ def check_thornholdden(t):
     for need in ("otherPawn: attacker", "stand.anchorCell = den", "stand.disengageRadius"):
         if start is None or need not in start:
             errs.append("StartStand lacks %r" % need)
+    # Dens switched off mid-game (SettingScope.Now) hand the tether its pre-den home back: the tooltip promises
+    # "it still keeps near where it first appeared".
+    tick = method_body(cs, r"public\s+override\s+void\s+CompTickInterval\s*\(")
+    if tick is None or not re.search(r"if\s*\(\s*!DenOn\s*\)\s*\{\s*if\s*\(\s*den\.IsValid\s*\)\s*\{\s*ReleaseDen\(\);", tick):
+        errs.append("CompTickInterval does not ReleaseDen() when thornhold dens are off")
+    rel = method_body(cs, r"public\s+void\s+ReleaseDen\s*\(")
+    if rel is None or "SetHome(preDenHome.IsValid ? preDenHome : parent.Position)" not in rel:
+        errs.append("ReleaseDen does not give the tether back its pre-den home")
+    if 'Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);' not in cs:
+        errs.append("preDenHome is not saved (rmVineDenPrevHome)")
     errs += check_settings(t, ("thornholdDenEnabled", "thornholdStandEnabled"))
     return errs
 
@@ -427,6 +437,9 @@ BREAKS = [
     ("thornholdden", "dens", "damage.ExternalViolenceFor(pawn)", "damage.Equals(pawn)"),
     ("thornholdden", "dens", "otherPawn: attacker", "otherPawn: null"),
     ("thornholdden", "settings", "thornholdStandEnabled = true", "thornholdStandEnabled = false"),
+    ("thornholdden", "dens", "                    ReleaseDen();\n", "\n"),
+    ("thornholdden", "dens", "SetHome(preDenHome.IsValid ? preDenHome : parent.Position)", "SetHome(den)"),
+    ("thornholdden", "dens", 'Scribe_Values.Look(ref preDenHome, "rmVineDenPrevHome", IntVec3.Invalid);', ""),
     ("rollbug", "dens", "ball.Strip(false);\n            }\n            Pawn inner", "}\n            Pawn inner"),
     ("rollbug", "dens", "ball.Strip(false);\n                    }\n                }\n            };", "}\n                }\n            };"),
     ("rollbug", "dens", "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);",

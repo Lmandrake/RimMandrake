@@ -66,6 +66,12 @@ BLOOM = {"RM_Crustweevil", "RM_Fuzzrunner", "RM_Dustflutter", "RM_Vissler"}
 SMALL_SPAWN_ONLY = None
 
 
+def _cs_cell(s):
+    """IntVec3.ToString as the C# proof replies print a cell: "x,z" -> "(x, 0, z)"."""
+    x, z = [int(v) for v in s.split(",")]
+    return "(%d, 0, %d)" % (x, z)
+
+
 def rect(s):
     return [int(v) for v in str(s).split(",")]
 
@@ -539,22 +545,27 @@ class Fake(object):
         if "dens_empty" in b:
             return {"success": True, "result": ""}
         if "dens_blind" in b or p is None:
+            if method == "ProofStand":     # RM_ScrubDens.cs ProofStand refuses a missing den pawn in its own words
+                return {"success": True, "result": "REFUSED: need a vine-den pawn at %s and a pawn at %s"
+                        % (_cs_cell(cell), _cs_cell(parts[2]))}
             what = "larder" if want == "RM_Rollbug" else "vine-den"
-            return {"success": True, "result": "REFUSED: no %s pawn at (%s)" % (what, cell.replace(",", ", 0, "))}
+            return {"success": True, "result": "REFUSED: no %s pawn at %s" % (what, _cs_cell(cell))}
         x, z = p["x"], p["z"]
         if method == "ProofDen":
             if "den_never" in b or not self.on("thornholdDenEnabled") and "den_ignores_toggle" not in b:
-                return {"success": True, "result": "REFUSED: no venomvine within reach"}
+                return {"success": True, "result": "REFUSED: " + ("no reachable den plant within 30 cells" if "den_never" in b
+                                                                  else "thornhold dens are off")}
             dx, dz = (x - 2, z + 5) if "den_wrong_cell" in b else (x - 2, z)
             return {"success": True, "result": "DEN %s den=(%d, 0, %d) home=(%d, 0, %d)" % (p["id"], dx, dz, dx, dz)}
         if method == "ProofStand":
             tx, tz = [int(v) for v in parts[2].split(",")]
             att = [q for q in self.pawns.values() if (q["x"], q["z"]) == (tx, tz) and not q["dead"]]
             if not att:
-                return {"success": True, "result": "REFUSED: need a vine-den pawn at %s and a pawn at %s" % (cell, parts[2])}
+                return {"success": True, "result": "REFUSED: need a vine-den pawn at %s and a pawn at %s"
+                        % (_cs_cell(cell), _cs_cell(parts[2]))}
             off = not self.on("thornholdStandEnabled") and "stand_ignores_toggle" not in b
             if off or "stand_never" in b:
-                return {"success": True, "result": "REFUSED: standing its ground is off" if off else "REFUSED: TryStartMentalState refused"}
+                return {"success": True, "result": "REFUSED: thornhold stand is off" if off else "REFUSED: TryStartMentalState refused"}
             who = "T0" if "stand_wrong_target" in b else att[0]["id"]
             return {"success": True, "result": "STAND %s state=RM_ThornholdStand target=%s" % (p["id"], who)}
         if method == "ProofOrderRoll":
@@ -563,7 +574,9 @@ class Fake(object):
             pool = corpses if self.on("rollbugTakesColonyCorpses") or "roll_ignores_toggle" in b else \
                 [c for c in corpses if c.get("faction") != "player"]
             if "roll_never" in b or not self.on("rollbugCarrionEnabled") or not pool:
-                return {"success": True, "result": "REFUSED: " + ("no corpse in reach" if not pool else "carrion rolling is off")}
+                return {"success": True, "result": "REFUSED: " + ("rollbug carrion is off" if "roll_never" not in b
+                                                                  and not self.on("rollbugCarrionEnabled") else
+                                                                  "no rollable corpse within 14 cells")}
             c = pool[0]
             lx, lz = x - 3, z
             if "roll_far" in b:
@@ -577,8 +590,8 @@ class Fake(object):
             p["x"], p["z"] = lx, lz
             return {"success": True, "result": "ORDERED %s -> %s larder=(%d, 0, %d)" % (p["id"], c["id"], lx, lz)}
         if "bite_never" in b:
-            return {"success": True, "result": "REFUSED: no ball within reach"}
-        return {"success": True, "result": "ATE a hare corpse BIT"}
+            return {"success": True, "result": "REFUSED: no ball in its larder"}
+        return {"success": True, "result": "ATE BIT left hind leg (0.05 nutrition)"}
 
     def t_spawn_batch(self, ops="", **k):
         for op in ops.split(";"):
