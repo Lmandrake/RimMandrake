@@ -226,6 +226,11 @@ def check_hooks(t):
     seg = method_body(bloom[m.start():], r"if\s*\(") if m else None
     if seg is None or "ForceSurface()" not in seg:
         errs.append("runway bloom Surface branch does not call RM_CompSandSwim.ForceSurface()")
+    elif "bool wasUnder" not in seg or not re.search(r"if\s*\(\s*wasUnder\s*&&\s*ext\.exitFilth", seg):
+        errs.append("runway bloom drops exit-hole filth without checking the swimmer was under the crust")
+    sway = method_body(bloom, r"private\s+void\s+EndSway\s*\(")
+    if sway is None or "EndCurrentJob" not in sway or "CurJob == " not in sway:
+        errs.append("runway bloom EndSway does not end the still-running sway hold (it outlives the rock)")
     rip = strip_comments(t["ripple"])
     should = method_body(rip, r"private\s+bool\s+ShouldHide\s*\(\s*Pawn\s+p\s*,\s*bool\s+on\s*,\s*bool\s+gale")
     if should is None or "IsCrustSwimmer(p.def)" not in should:
@@ -359,6 +364,15 @@ def check_rollbug(t):
         errs.append("RollCarrion driver has no finish action dropping the carried corpse (ExitMap would destroy it)")
     elif "ball.Strip(false)" not in toils:
         errs.append("RollCarrion drop toil does not strip the ball at the larder")
+    elif "Notify_RolledHome(ball)" not in toils:
+        # Stripped gear fills the 13 larder cells (one item per cell), so a Near drop can land past larderRadius;
+        # unless the comp remembers the ball, BallAtLarder misses it and the bug re-rolls the same corpse forever.
+        errs.append("RollCarrion drop toil does not tell the larder comp which corpse it rolled home")
+    at = method_body(cs, r"public\s+Corpse\s+BallAtLarder\s*\(")
+    if at is None or "ball != null" not in at or "BallKeepMargin" not in at:
+        errs.append("BallAtLarder must return the remembered ball within larderRadius + BallKeepMargin")
+    if 'Scribe_References.Look(ref ball, "rmLarderBall")' not in cs:
+        errs.append("the remembered larder ball is not saved")
     why = method_body(cs, r"public\s+string\s+WhyNotRoll\s*\(")
     if why is None or "rollbugTakesColonyCorpses" not in why or "Faction != null" not in why:
         errs.append("WhyNotRoll must be wild-only and honour rollbugTakesColonyCorpses")
@@ -400,6 +414,11 @@ BREAKS = [
     ("surrik", "fauna", "<li>SoilRich</li>\n", ""),
     ("hooks", "bloom", "ForceSurface();", "GetHashCode();"),
     ("hooks", "ripple", "&& !IsCrustSwimmer(p.def)", ""),
+    ("hooks", "bloom", "if (wasUnder && ext.exitFilth != null)", "if (ext.exitFilth != null)"),
+    ("hooks", "bloom", "p.jobs.EndCurrentJob(JobCondition.Succeeded);", "p.jobs.GetHashCode();"),
+    ("rollbug", "dens", "pawn.TryGetComp<RM_CompCarrionLarder>()?.Notify_RolledHome(ball);", ""),
+    ("rollbug", "dens", "if (ball != null)\n", "if (false)\n"),
+    ("rollbug", "dens", 'Scribe_References.Look(ref ball, "rmLarderBall");', ""),
     ("hooks", "comp", "public void ForceSurface()", "internal void ForceSurface()"),
     ("ribbonwhip", "settings", "rippleMaxBodySize = 0.6f", "rippleMaxBodySize = 0.2f"),
     ("thornholdden", "fauna", "<standState>RM_ThornholdStand</standState>", "<standState>Manhunter</standState>"),
@@ -409,7 +428,7 @@ BREAKS = [
     ("thornholdden", "dens", "otherPawn: attacker", "otherPawn: null"),
     ("thornholdden", "settings", "thornholdStandEnabled = true", "thornholdStandEnabled = false"),
     ("rollbug", "dens", "ball.Strip(false);\n            }\n            Pawn inner", "}\n            Pawn inner"),
-    ("rollbug", "dens", "ball.Strip(false);\n                }\n            };", "}\n            };"),
+    ("rollbug", "dens", "ball.Strip(false);\n                    }\n                }\n            };", "}\n                }\n            };"),
     ("rollbug", "dens", "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);",
      "pawn.carryTracker.GetHashCode();"),
     ("rollbug", "settings", "rollbugTakesColonyCorpses = true", "rollbugTakesColonyCorpses = false"),

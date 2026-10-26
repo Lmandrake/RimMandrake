@@ -463,7 +463,10 @@ class Fake(object):
             return {"success": True, "result": "DELTA %.2f" % d}
         if method == "ProofVisuals":
             on = self.on("runwayBloomEnabled")
-            return {"success": True, "result": "SWAYING %d HOLES +%d ANSWERED %d" % ((1, 1, 2) if on else (0, 0, 0))}
+            sway, under, holes, answered = (1, 1, 1, 2) if on else (0, 0, 0, 0)
+            if "no_exit_hole" in self.broken:
+                holes = 0
+            return {"success": True, "result": "SWAYING %d UNDER %d HOLES +%d ANSWERED %d" % (sway, under, holes, answered)}
         if method == "ProofMapStep":
             chance = float(args.split("|")[1])
             n = 0
@@ -705,6 +708,7 @@ BREAKS = {
     "no_crown": "crown.crown_mob_gathers",
     "bloom_ignores_toggle": "bloom.bloom_toggle_off_quiet",
     "no_bloom": "bloom.bloom_answers_a_walker",
+    "no_exit_hole": "bloom.bloom_sway_and_exit_hole",
     "station_ignores_toggle": "sweetline.station_toggle_off_plain",
     "no_name": "sweetline.station_named_and_timed",
     "no_wool": "sweetline.station_sheds_wool",

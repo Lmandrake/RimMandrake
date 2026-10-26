@@ -82,6 +82,11 @@ namespace RimMandrake.LeaningScrub
         private readonly List<Pawn> tmpPawns = new List<Pawn>();
         // Swayers: pawn -> tick the sway ends. Transient, like pending.
         private readonly Dictionary<Pawn, int> swaying = new Dictionary<Pawn, int>();
+        // RUNWAYBLOOM_FIX_SWAY_HOLD_OUTLIVES_ROCK: the hold job each swayer was given, so the sway's end ends exactly that
+        // hold. Its expiryInterval alone ends it only at the first IsHashIntervalTick(expiryInterval) after
+        // startTick + expiryInterval (decomp 1.6 Pawn_JobTracker), up to another swayTicks of standing frozen, unrocked.
+        // The expiry stays as the backstop for a hold that outlives this transient table (save/load).
+        private readonly Dictionary<Pawn, Job> holds = new Dictionary<Pawn, Job>();
         private readonly List<Pawn> tmpSway = new List<Pawn>();
         // TUNED: half a swing every 12 ticks; 0.2 cells decays to rest (0.018/tick) just before the next push.
         private const int SwayHalfPeriod = 12;
@@ -96,7 +101,16 @@ namespace RimMandrake.LeaningScrub
             if (!RM_WindCalendar.On(RM_LeaningScrubSettings.runwayBloomEnabled))
             {
                 bloom.Clear();
-                swaying.Clear();
+                if (swaying.Count > 0)
+                {
+                    tmpSway.Clear();
+                    tmpSway.AddRange(swaying.Keys);
+                    for (int i = 0; i < tmpSway.Count; i++)
+                    {
+                        EndSway(tmpSway[i]);
+                    }
+                    tmpSway.Clear();
+                }
                 return;
             }
             int now = Find.TickManager.TicksGame;
@@ -184,13 +198,19 @@ namespace RimMandrake.LeaningScrub
             }
             if (ext.response == RM_RunwayBloomResponse.Surface)
             {
-                if (ext.exitFilth != null)
+                // LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS: a crust-swimmer (CreatureBehaviors sand-swim kit) is
+                // driven up out of the crust before it flees, so the bloom shows it. No comp (kit off for the race): no-op.
+                // RUNWAYBLOOM_FIX_SWAY_HOLD_OUTLIVES_ROCK (second finding): the exit hole marks where it BROKE OUT, so only
+                // a swimmer that was under the crust leaves one; one already up (ForceSurface only keeps it up), or the
+                // kit off (sandSwimEnabled: CompTick has surfaced it), leaves none.
+                RimMandrake.CreatureBehaviors.RM_CompSandSwim swim = a.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompSandSwim>();
+                bool wasUnder = swim != null && RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings.sandSwimEnabled
+                    && swim.Submerged;
+                swim?.ForceSurface();
+                if (wasUnder && ext.exitFilth != null)
                 {
                     FilthMaker.TryMakeFilth(a.Position, map, ext.exitFilth, 1);
                 }
-                // LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS: a crust-swimmer (CreatureBehaviors sand-swim kit) is
-                // driven up out of the crust before it flees, so the bloom shows it. No comp (kit off for the race): no-op.
-                a.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompSandSwim>()?.ForceSurface();
             }
             if (ext.response == RM_RunwayBloomResponse.Shed && ext.shedThing != null && Rand.Chance(ext.shedChance))
             {
@@ -231,6 +251,23 @@ namespace RimMandrake.LeaningScrub
             Job hold = JobMaker.MakeJob(JobDefOf.Wait_MaintainPosture);
             hold.expiryInterval = ticks;
             a.jobs.StartJob(hold, JobCondition.InterruptForced);
+            holds[a] = hold;
+        }
+
+        // The sway is over (or the pawn is gone): forget it, and end its hold if that hold is still the pawn's job, so it
+        // walks off as the rocking stops. A pawn that has moved on to another job (fled, was hunted) is left alone.
+        private void EndSway(Pawn p)
+        {
+            swaying.Remove(p);
+            if (p == null || !holds.TryGetValue(p, out Job hold))
+            {
+                return;
+            }
+            holds.Remove(p);
+            if (p.Spawned && !p.Dead && p.jobs != null && p.CurJob == hold)
+            {
+                p.jobs.EndCurrentJob(JobCondition.Succeeded);
+            }
         }
 
         private void TickSway(int now)
@@ -246,7 +283,7 @@ namespace RimMandrake.LeaningScrub
                 Pawn p = tmpSway[i];
                 if (p == null || !p.Spawned || p.Map != map || p.Dead || now >= swaying[p])
                 {
-                    swaying.Remove(p);
+                    EndSway(p);
                     continue;
                 }
                 // Alternate east and west: the ribbon leans one way, then the other.
@@ -256,7 +293,8 @@ namespace RimMandrake.LeaningScrub
         }
 
         /// <summary>Bridge proof (jawa/static_call "current"): fires a bloom at the first answering animal's cell and
-        /// reports what answered after delays run: "SWAYING 1 HOLES +1 ANSWERED 4". Needs bloom animals on the map.</summary>
+        /// reports what answered after delays run: "SWAYING 1 UNDER 1 HOLES +1 ANSWERED 4" (UNDER: surfacers put under the
+        /// crust first, the only ones that leave an exit hole). Needs bloom animals on the map.</summary>
         public static string ProofVisuals(Map map)
         {
             var comp = map?.GetComponent<RM_MapComponent_RunwayBloom>();
@@ -293,12 +331,39 @@ namespace RimMandrake.LeaningScrub
             {
                 return "REFUSED: no wild ribbonwhip with a wild surrik within the bloom radius (spawn the pair together)";
             }
+            // Only a surfacer that was under the crust leaves a hole: put every wild surfacer in the bloom's reach under
+            // first (the kit's own submerged hediff), so the row measures the break-out. UNDER 0 (kit off, no hediff):
+            // the hole count proves nothing.
+            int under = 0;
+            for (int j = 0; j < all.Count; j++)
+            {
+                Pawn u = all[j];
+                if (!IsWildBloomAnimal(u, RM_RunwayBloomResponse.Surface)
+                    || !RM_CoatKernel.InBloomRadius(u.Position.x, u.Position.z, first.Position.x, first.Position.z))
+                {
+                    continue;
+                }
+                RimMandrake.CreatureBehaviors.RM_CompSandSwim swim = u.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompSandSwim>();
+                if (swim == null || !RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings.sandSwimEnabled
+                    || swim.Ext?.submergedHediff == null || u.health == null)
+                {
+                    continue;
+                }
+                if (!swim.Submerged)
+                {
+                    u.health.AddHediff(HediffMaker.MakeHediff(swim.Ext.submergedHediff, u));
+                }
+                if (swim.Submerged)
+                {
+                    under++;
+                }
+            }
             int now = Find.TickManager.TicksGame;
             comp.Bloom(first.Position, now);
             int answered = comp.bloom.PendingTick.Count;
             comp.RunPending(now + 1000);
             int holesAfter = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
-            return "SWAYING " + comp.swaying.Count + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;
+            return "SWAYING " + comp.swaying.Count + " UNDER " + under + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;
         }
 
         /// <summary>SCRUB_BLOOM_FIX_MANHUNTER_GETS_SHY A1 (jawa/static_call "manhunter@x,z", a cleared pad): two wild

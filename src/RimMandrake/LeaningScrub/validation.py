@@ -1507,9 +1507,15 @@ def bloom_chain(t):
                 r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_MapComponent_RunwayBloom",
                                   method="ProofVisuals", args="current")
                 txt = str((r or {}).get("result", ""))
-                _note(t, "bloom visuals (SWAYING n HOLES +n ANSWERED n)", txt)
-                if not txt.startswith("SWAYING") or txt.startswith("SWAYING 0") or "HOLES +0" in txt:
-                    _fail("no ribbonwhip swaying or no surrik exit hole after a bloom: %s" % txt)
+                _note(t, "bloom visuals (SWAYING n UNDER n HOLES +n ANSWERED n)", txt)
+                # RUNWAYBLOOM_FIX_SWAY_HOLD_OUTLIVES_ROCK: only a surrik that was under the crust leaves a hole; the proof
+                # puts the staged one under first (UNDER n). UNDER 0 (sand-swim kit off): the hole count proves nothing.
+                if not txt.startswith("SWAYING") or txt.startswith("SWAYING 0"):
+                    _fail("no ribbonwhip swaying after a bloom: %s" % txt)
+                if " UNDER 0 " in txt:
+                    _unmeasured(t, "no surrik under the crust before the bloom (sand-swim kit off?): %s" % txt)
+                if "HOLES +0" in txt:
+                    _fail("a surrik under the crust broke out without an exit hole: %s" % txt)
                 t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
     _stable(t, body)
 

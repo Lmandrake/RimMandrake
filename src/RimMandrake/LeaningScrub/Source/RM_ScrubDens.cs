@@ -319,6 +319,14 @@ namespace RimMandrake.LeaningScrub
     {
         private IntVec3 fallbackLarder = IntVec3.Invalid;
 
+        // The corpse this bug last rolled home. The drop is ThingPlaceMode.Near and a cell holds one item (GenPlace
+        // PlaceSpotQualityAt), so once stripped gear fills the larder's cells the ball lands beyond larderRadius; the
+        // radial scan alone then missed it, the bug rolled the same corpse home again and again and never ate it.
+        // Remembered, it counts as the larder's ball while it lies within larderRadius + BallKeepMargin of the larder.
+        private Corpse ball;
+
+        private const float BallKeepMargin = 6f;
+
         public RM_CompProperties_CarrionLarder Props => (RM_CompProperties_CarrionLarder)props;
 
         public static bool On => RM_WindCalendar.On(RM_LeaningScrubSettings.rollbugCarrionEnabled);
@@ -356,6 +364,15 @@ namespace RimMandrake.LeaningScrub
             if (map == null || !larder.IsValid)
             {
                 return null;
+            }
+            if (ball != null)
+            {
+                float keep = Props.larderRadius + BallKeepMargin;
+                if (ball.Spawned && ball.Map == map && Rollable(ball) && (ball.Position - larder).LengthHorizontalSquared <= keep * keep)
+                {
+                    return ball;
+                }
+                ball = null;   // eaten, hauled off, burnt, dried out or carried away: forget it
             }
             foreach (IntVec3 c in GenRadial.RadialCellsAround(larder, Props.larderRadius, true))
             {
@@ -546,6 +563,17 @@ namespace RimMandrake.LeaningScrub
         {
             base.PostExposeData();
             Scribe_Values.Look(ref fallbackLarder, "rmLarderFallback", IntVec3.Invalid);
+            if (Scribe.mode == LoadSaveMode.Saving && ball != null && !ball.Spawned)
+            {
+                ball = null;   // only a ball lying on the map is worth a reference (a carried-off one may never come back)
+            }
+            Scribe_References.Look(ref ball, "rmLarderBall");
+        }
+
+        /// <summary>The driver's drop: this corpse is now the larder's ball, wherever Near put it.</summary>
+        public void Notify_RolledHome(Corpse corpse)
+        {
+            ball = corpse;
         }
 
         /// <summary>Bridge proof: ask the real job giver for the rollbug at `cell`. "ORDERED ..." or "REFUSED: why".</summary>
@@ -628,9 +656,13 @@ namespace RimMandrake.LeaningScrub
             drop.initAction = delegate
             {
                 if (pawn.carryTracker.TryDropCarriedThing(job.GetTarget(LarderInd).Cell, ThingPlaceMode.Near, out Thing dropped)
-                    && dropped is Corpse ball && ball.AnythingToStrip())
+                    && dropped is Corpse ball)
                 {
-                    ball.Strip(false);
+                    pawn.TryGetComp<RM_CompCarrionLarder>()?.Notify_RolledHome(ball);
+                    if (ball.AnythingToStrip())
+                    {
+                        ball.Strip(false);
+                    }
                 }
             };
             drop.defaultCompleteMode = ToilCompleteMode.Instant;
