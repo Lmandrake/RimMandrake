@@ -7,8 +7,10 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import sys, json, time, os
-sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
-sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\modcheck")
+# VITALSPROOF_FIX_EXIT0_AND_MIRROR_IMPORT: governor came from the hardcoded mirror path, so a clone's run judged
+# with the mirror's (possibly older) governor; the path is now derived from this file, like rmpaths above.
+_UTILS = _rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"
+sys.path.insert(0, str(_UTILS / "modcheck"))
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()
 S = rb.RimBridge(host=host, port=port, token=token, timeout=900.0); S.connect()
@@ -206,5 +208,10 @@ if "colonyloss" in which:
     rec("colony_loss_letter_detected_while_paused", bool(cl2), sent=sl.get("success"), trigger=cl2[:1])
 
 name = os.path.join(rm_win("scratch", "vitals"), "proof_" + "_".join(which)) + "_" + time.strftime("%Y%m%dT%H%M%S") + ".json"
+os.makedirs(os.path.dirname(name), exist_ok=True)
 with open(name, "w") as f: json.dump(OUT, f, indent=1, default=str)
 print("wrote", name)
+# VITALSPROOF_FIX_EXIT0_AND_MIRROR_IMPORT: the old script exited 0 whatever rec() recorded.
+failed = [k for k, v in OUT.items() if v["result"] != "PASS"]
+print("%d/%d passed%s" % (len(OUT) - len(failed), len(OUT), ("; FAILED: " + ", ".join(failed)) if failed else ""))
+sys.exit(1 if failed or not OUT else 0)

@@ -75,7 +75,9 @@ things = found.get("things") or found.get("results") or []
 route = "incident"
 if not things:
     route = "direct spawn (incident did not place one: see above)"
-    print("spawn_thing:", short(call("rimworld/spawn_thing", ops="RM_Middenshell:75,75"), 300))
+    # MIDDENSHELLPROOF_FIX_FALLBACK_SPAWN_ARGS: 'ops' is jawa/spawn_batch's format ('Def:x,z[,count]');
+    # rimworld/spawn_thing takes defName/x/z, so the old fallback never placed one.
+    print("spawn_batch:", short(call("jawa/spawn_batch", ops="RM_Middenshell:75,75"), 300))
     found = call("jawa/list_things", defName="RM_Middenshell", limit=5)
     things = found.get("things") or found.get("results") or []
 print("route:", route, "| list_things:", short(found, 400))

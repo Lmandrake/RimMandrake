@@ -39,23 +39,45 @@ print("programState:", st.get("programState"))
 info = call("rimworld/get_game_info")
 print("map info:", json.dumps(info, indent=2)[:400])
 
-plant_r = call("rimworld/spawn_thing", ops="RM_Ullavess:20,20")
+# PLANTPREDATORPROOF_FIX_NO_SPAWN_NO_VERDICT: 'ops' is jawa/spawn_batch's format; rimworld/spawn_thing takes
+# defName/x/z, so the plant was never placed. list_pawns has no animalsOnly filter and hides the dead unless
+# includeCorpses, and the script printed rows with no verdict -- it now judges the one prey it spawned, by id.
+plant_r = call("jawa/spawn_batch", ops="RM_Ullavess:20,20")
 print("spawn plant:", json.dumps(plant_r, indent=2)[:400])
+plants = call("jawa/list_things", defName="RM_Ullavess", rect="20,20,1,1", limit=5)
+if not plants.get("countMatched"):
+    print("UNMEASURED: no RM_Ullavess at (20,20) after spawning:", json.dumps(plants)[:300])
+    sys.exit(2)
 
 prey_r = call("jawa/spawn_pawn", kindDef="RM_Karravel", x=21, z=20, faction="none")
 print("spawn prey:", json.dumps(prey_r, indent=2)[:600])
+prey_ids = [p.get("id") for p in (prey_r.get("pawns") or []) if p.get("spawned")]
+if not prey_r.get("success") or len(prey_ids) != 1:
+    print("UNMEASURED: wild RM_Karravel did not spawn")
+    sys.exit(2)
+prey_id = prey_ids[0]
 
-before = call("jawa/list_pawns", animalsOnly=True)
-print("pawns before:", json.dumps(before, indent=2)[:600])
+
+def prey_row():
+    r = call("jawa/list_pawns", includeCorpses=True, limit=5000)
+    return next((p for p in (r.get("pawns") or []) if p.get("id") == prey_id), None)
+
+
+before = prey_row()
+print("prey before:", json.dumps(before)[:400])
 
 print("== stepping ticks (aiming past one TickLong interval) ==")
-call("rimworld/step_game_ticks", ticks=2500)
-call("rimworld/step_game_ticks", ticks=2500)
-call("rimworld/step_game_ticks", ticks=2500)
+for _ in range(3):
+    call("rimworld/step_game_ticks", ticks=2500)
 
-after = call("jawa/list_pawns", animalsOnly=True)
-print("pawns after:", json.dumps(after, indent=2)[:600])
+after = prey_row()
+print("prey after:", json.dumps(after)[:400])
 
-logs = call("jawa/drain_log", errorsOnly=False)
-print("== recent logs ==")
+logs = call("jawa/drain_log", errorsOnly=True)
+print("== error logs ==")
 print(json.dumps(logs, indent=2)[:3000])
+
+ok = bool(before and not before.get("dead") and after and after.get("dead"))
+print("VERDICT: prey %s alive before, %s after 7500 ticks beside the plant => %s"
+      % (prey_id, "dead" if after and after.get("dead") else "NOT dead/unseen", "PASS" if ok else "FAIL"))
+sys.exit(0 if ok else 1)

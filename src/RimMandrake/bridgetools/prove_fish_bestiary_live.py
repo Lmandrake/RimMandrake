@@ -141,14 +141,16 @@ def try_tile(call, label, biome, tile, mode):
             return {"tile": tile, "water": False}
 
         if mode == "brine":
-            things = call("jawa/list_things", limit=100000)
-            all_things = things.get("things") or things.get("items") or []
-            deposits = [t for t in all_things
-                        if isinstance(t, dict) and str(t.get("defName", "")).startswith("RUT_BrineDeposit_")]
-            print(f"    scanned {len(all_things)} things; RUT_BrineDeposit_* found: {len(deposits)}")
-            for d in deposits[:5]:
-                print("      ", d.get("defName"), d.get("position") or d.get("pos"))
-            return {"tile": tile, "water": True, "deposits": len(deposits)}
+            # FISHBESTIARY_FIX_BRINE_DEPOSITS_UNSEEN: list_things rows carry "def", never "defName", so the old
+            # row filter counted 0 deposits on every map. perDef counts EVERY match whatever the row cap.
+            things = call("jawa/list_things", limit=1)  # current map: set_current_map above
+            per_def = things.get("perDef")
+            if not isinstance(per_def, dict) or not things.get("scanned"):
+                print("    list_things gave no perDef/scanned -- result void:", json.dumps(things)[:300])
+                return None
+            deposits = {k: v for k, v in per_def.items() if str(k).startswith("RUT_BrineDeposit_")}
+            print(f"    scanned {things.get('scanned')} things; RUT_BrineDeposit_* found: {deposits}")
+            return {"tile": tile, "water": True, "deposits": sum(deposits.values())}
 
         # mode == "fish": find a shallow water run and try a Fishing zone there
         shallow_runs = []
@@ -290,9 +292,22 @@ def main():
         results[label] = result
     print("\n=== SUMMARY ===")
     for label, r in results.items():
-        print(f"  {label}: {r}")
+        print(f"  {label}: {r} -> {'PASS' if passed(r) else 'FAIL'}")
     return results
 
 
+def passed(r):
+    """FISHBESTIARY_FIX_BRINE_DEPOSITS_UNSEEN: one label's verdict. The old exit was 0 whenever any label ran,
+    even with every water rejected or void."""
+    if not r or not r.get("water"):
+        return False
+    if "verdict" in r:
+        return r["verdict"] == "PASS"
+    if "deposits" in r:
+        return r["deposits"] > 0
+    return bool(r.get("fishing_zone"))
+
+
 if __name__ == "__main__":
-    sys.exit(0 if main() else 1)
+    res = main()
+    sys.exit(0 if res and all(passed(r) for r in res.values()) else 1)

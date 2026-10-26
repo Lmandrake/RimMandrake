@@ -119,7 +119,14 @@ try:
         call("jawa/set_current_map", mapId=mid)
         mi = call("jawa/map_info"); sx, sz = mi.get("sizeX"), mi.get("sizeZ")
         terr, read = terrain_census(mid, sx, sz)
-        plants = collections.Counter(th.get("def") for th in (call("jawa/list_things", group="Plant", limit=100000).get("things") or []))
+        # SEADIVEPROOF_FIX_EXIT0_AND_BLIND_CENSUS: perDef counts every plant whatever the row cap, and a census
+        # that did not read every cell is not evidence of an absent band.
+        pl = call("jawa/list_things", group="Plant", limit=1)
+        plants = collections.Counter(pl.get("perDef") or {})
+        if not isinstance(pl.get("perDef"), dict) or read != (sx or 0) * (sz or 0):
+            verdicts[sea] = "UNMEASURED (census read %s of %s cells; plant perDef %s)" % (
+                read, (sx or 0) * (sz or 0), "present" if isinstance(pl.get("perDef"), dict) else "missing")
+            continue
         # SEA_DIVE_LIVE_ERRORS_1: exactly one exit, and not standing in water (the Grey Sea
         # basin used to carve over it).
         exits = call("jawa/list_things", defName="RM_SeaDiveExit").get("things") or []
@@ -155,3 +162,7 @@ finally:
 print("\nVERDICTS:")
 for k, v in verdicts.items():
     print("  %-12s %s" % (k, v))
+# SEADIVEPROOF_FIX_EXIT0_AND_BLIND_CENSUS: the old script always exited 0 whatever the verdicts said.
+# 0 = every sea asked for PASSed, 1 = any FAIL, 2 = no FAIL but something UNMEASURED.
+vals = [verdicts.get(sea, "UNMEASURED (not run)") for sea in wanted]
+sys.exit(0 if vals and all(v.startswith("PASS") for v in vals) else 1 if any(v.startswith("FAIL") for v in vals) else 2)

@@ -20,11 +20,12 @@ WHAT IT RESTORES: the same def under its new name, not a repaint -
 The RM_ twins move at the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1), not here.
 """
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]
-import json, sys
+import json, os, sys, time
 try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
 sys.path.insert(0, str(_RM_ROOT / "src" / "RimMandrake" / "Utils"))
 import rimbridge_client as rb
+from game_paths import SAVES
 
 DATA = _RM_ROOT / "world" / "lost_biomes_repair_2026-10-18.json"
 SAVE_AS = "CANONICAL_ASHKARR_START_2026-10-18_DONORFREE_REPAIRED"
@@ -71,7 +72,9 @@ for g in data["groups"]:
                  biome=g["target"], readBack=0)
         if not w.get("success"):
             sys.exit("world_tile_set failed for %s: %s" % (g["target"], str(w)[:300]))
-call("jawa/world_commit")
+c = call("jawa/world_commit")
+if not c.get("success"):
+    sys.exit("world_commit failed, NOT saving: %s" % str(c)[:300])
 
 bad = 0
 for g in data["groups"]:
@@ -82,7 +85,19 @@ for g in data["groups"]:
 if bad:
     sys.exit("STOP: %d tiles did not take; NOT saving" % bad)
 print(json.dumps(call("jawa/world_stats", limit=80))[:1500])
+t0 = time.time()
 r = call("rimworld/save_game", saveName=SAVE_AS)
-print("saved:", SAVE_AS, str(r)[:200])
+if not r.get("success"):
+    sys.exit("save_game refused: %s" % str(r)[:300])
+# save_game answers before the file is written: the save counts only once THIS call wrote it and its size holds
+path, last, saved = os.path.join(SAVES, SAVE_AS + ".rws"), -1, False
+while time.time() - t0 < 120 and not saved:
+    time.sleep(1.0)
+    size = os.path.getsize(path) if os.path.exists(path) else -1
+    saved = size > 0 and size == last and os.path.getmtime(path) >= t0 - 5
+    last = size
+if not saved:
+    sys.exit("STOP: %s was not written by this save within 120 s" % path)
+print("saved:", path, last, "bytes")
 print("NEXT: re-read the new .rws offline (worldmap.WorldGrid) - TemperateForest must be 0,"
       " every non-target tile identical to the donor-free save.")
