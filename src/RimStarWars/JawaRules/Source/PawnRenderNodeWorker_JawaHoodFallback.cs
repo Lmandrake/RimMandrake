@@ -78,9 +78,22 @@ namespace RimMandrake.StarWars.JawaRules
         {
             ThingDef hood = JawaHoodDef;
             Pawn_ApparelTracker apparel = parms.pawn?.apparel;
-            bool applies = JawaHoodRender.SwimForceApplies(parms);
+            // The swim re-ask only happens for a KEPT hood (the def carries RSW_KeepHoodWhileSwimming), so the restored flags
+            // only count when this hood is one; otherwise a swimming Jawa would lose both hoods.
+            bool applies = JawaHoodRender.SwimForceApplies(parms) && JawaHoodRender.IsKeptHood(hood);
             return RSW_HoodKernel.RealHoodIsDrawing(hood != null,
-                flags => { PawnDrawParms p = parms; p.flags = (PawnRenderFlags)flags; return PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(p); },
+                flags =>
+                {
+                    PawnDrawParms p = parms; p.flags = (PawnRenderFlags)flags;
+                    if (!applies) return PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(p);
+                    // Ask under the same re-ask flag the real hood's CanDrawNow re-ask runs under, so
+                    // Patch_HeadgearVisible_KeptHoodReask answers here exactly as it does there (ReGrowthCore's
+                    // swimming veto would otherwise say "not drawing" while the real hood draws: a doubled hood).
+                    bool prev = Patch_ApparelHead_CanDrawNow_SwimHood.reentry;
+                    Patch_ApparelHead_CanDrawNow_SwimHood.reentry = true;
+                    try { return PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(p); }
+                    finally { Patch_ApparelHead_CanDrawNow_SwimHood.reentry = prev; }
+                },
                 (int)parms.flags, applies, apparel != null,
                 () =>
                 {

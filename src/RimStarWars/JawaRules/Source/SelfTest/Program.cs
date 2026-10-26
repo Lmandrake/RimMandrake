@@ -1,5 +1,6 @@
-// JawaRules offline fuzz entry. Knobs (forwarded by selftest_swbestiary_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (hood|rules).
+// JawaRules offline fuzz entry. Knobs (forwarded by selftest_jawarules_fuzz.py): --fuzz-scale F (multiplies every case
+// count; a scale that runs 0 cases FAILS, a fuzz that checked nothing is not a pass), --fuzz-seed N (replay one seed of
+// every family), --fuzz-only NAME (hood|rules).
 using System;
 
 namespace RimMandrake.StarWars.JawaRules.SelfTest

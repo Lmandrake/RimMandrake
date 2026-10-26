@@ -180,8 +180,9 @@ namespace RimMandrake.StarWars.JawaRules
             }
         }
 
-        // The PawnRenderNodeWorker base gates only (rotDrawMode, facing, skip flags, side, linked parts, DebugEnabled),
-        // re-stated so a reader can tell a base-gate refusal from the apparel-head flag gate.
+        // A subset of the PawnRenderNodeWorker base gates (rotDrawMode, visibleFacing, skip flag, DebugEnabled; NOT the
+        // hediff-rot, side/mirrored-part or linked-body-part gates), re-stated so a reader can tell a base-gate refusal from
+        // the apparel-head flag gate. Diagnostic only: a hood node has no bodyPart, so the omitted gates do not apply to it.
         private static bool BaseGate(PawnRenderNode node, PawnDrawParms parms)
         {
             if (!node.Props.rotDrawMode.HasFlag(parms.rotDrawMode)) return false;

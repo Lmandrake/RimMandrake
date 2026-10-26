@@ -121,15 +121,18 @@ namespace RimMandrake.StarWars.JawaRules.SelfTest
                                 if (swimSetting && swimming && !portrait && kept && !reentry && otherGates && !bedHides && !(hatsOnlyOnMap && !onMap))
                                     Check(final, "a swimming Jawa lost its hood although nothing else forbids it");
                                 if (!applies && !reentry) Check(final == vanillaResult, "the rule acted outside swimming / with the setting off / on a portrait");
-                                // the fallback hood
-                                bool realDrawing = RSW_HoodKernel.RealHoodIsDrawing(hoodResolved, visible, flags, applies, tracker, () => wearsHood);
-                                bool want = hoodResolved && visible(RSW_HoodKernel.EffectiveFlags(flags, applies)) && tracker && wearsHood;
+                                // the fallback hood: the caller (PawnRenderNodeWorker_JawaHoodFallback) only counts the restored
+                                // flags when the worn hood is a kept one, exactly as the real hood's re-ask does
+                                bool fbApplies = applies && kept;
+                                bool realDrawing = RSW_HoodKernel.RealHoodIsDrawing(hoodResolved, visible, flags, fbApplies, tracker, () => wearsHood);
+                                bool want = hoodResolved && visible(RSW_HoodKernel.EffectiveFlags(flags, fbApplies)) && tracker && wearsHood;
                                 Check(realDrawing == want, $"RealHoodIsDrawing {realDrawing} vs {want}");
                                 bool fb = RSW_HoodKernel.FallbackDraws(fallbackBase, () => realDrawing);
                                 Check(fb == (fallbackBase && !realDrawing), "FallbackDraws");
                                 if (count && fb) Fallbacks++;
-                                // never both, and never neither when the real hood's other gates pass
-                                if (kept && !reentry && wearsHood && hoodResolved && tracker && fallbackBase)
+                                // never both, and never neither when the real hood's other gates pass (kept or not: a hood
+                                // that lost its RSW_KeepHoodWhileSwimming extension must leave the fallback drawing in the water)
+                                if (!reentry && wearsHood && hoodResolved && tracker && fallbackBase)
                                 {
                                     bool realFinal = final;
                                     if (otherGates) Check(realFinal != fb, $"hood/fallback: real {realFinal}, fallback {fb} (both or neither)");
