@@ -13,6 +13,10 @@ RM_MineralPolicyProof.ProofState / ProofApply, RM_MineralQuarryProof.ProofQuarry
 cannot ask records UNMEASURED.
 QUARRY (MINERAL_QUARRY_WIRE_LOCAL_POOL, R4): with Quarry loaded, Building_Quarry.GiveResources draws its Resources roll from the
 biome's local registry pool (RM_QuarryKernel); Quarry entries the registry does not govern keep their own share and weights.
+METEORITES (R5; owner card 2026-10-25 "only metals and space-ish ores"): the generator emits RM_MineralMeteorites from the CSV's
+meteoritic=yes rows; RM_MineralMeteorite trims ThingSetMaker_Meteorite.nonSmoothedMineables to it and replaces the private
+FindRandomMineableDef draw (stone gone, vanilla's 40% rock roll would pick from nothing). Proof: RM_MineralMeteoriteProof.ProofState /
+ProofSample / ProofRefresh; chain "meteorite".
 """
 import os
 import re
@@ -25,6 +29,10 @@ SETTINGS_TYPE = NS + "RM_MineralsSettings"
 PROOF_TYPE = NS + "RM_MineralPolicyProof"
 QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
 SURFACE_PROOF_TYPE = NS + "RM_MineralSurfaceProof"
+METEOR_PROOF_TYPE = NS + "RM_MineralMeteoriteProof"
+METEOR_CLASS = NS + "RM_MineralMeteoriteDef"
+# names that must never fall: stone types (owner card 2026-10-25) and what the 2026-09-25 ruling bars from rock
+METEOR_NEVER = ["Granite", "Marble", "Sandstone", "Slate", "Limestone", "Jade", "MineablePlasteel", "MineableComponentsIndustrial"]
 # Quarry (ogliss.thewhitecrayon.quarry, workshop 2007576583): the adapter finds these members by name; a rename upstream un-wires it
 QUARRY_DLL = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2007576583/1.6/Assemblies/Quarry.dll"
 QUARRY_NAMES = ["TakeOne", "GiveResources", "resourceModifer", "oreDictionary", "ChunksUnder", "ThingCountExposable",
@@ -108,6 +116,16 @@ def static_checks():
         if needle not in sf:
             bad.append("RM_MineralSurface.cs lacks %s" % needle)
 
+    mt = _read("Source", "RM_MineralMeteorite.cs")
+    for needle in ("[HarmonyPatch(typeof(ThingSetMaker_Meteorite), nameof(ThingSetMaker_Meteorite.Reset))]",
+                   "[HarmonyPatch(typeof(ThingSetMaker_Meteorite), \"FindRandomMineableDef\")]", "RM_MineralMeteoriteKernel.Filter(",
+                   "RM_MineralMeteoriteKernel.Pick(", "RM_MineralsSettings.enabled && PickPatched", "public static string ProofState(string unused)",
+                   "public static string ProofSample(string args)"):
+        if needle not in mt:
+            bad.append("RM_MineralMeteorite.cs lacks %s" % needle)
+    if "RM_MineralMeteorite.Refresh(why)" not in pol:
+        bad.append("RM_MineralPolicy.Apply no longer refreshes the meteorite list (master toggle would not reach it)")
+
     proj = _read("Source", "RimMandrake_Minerals.csproj")
     classes = set()
     for dp, _, files in os.walk(os.path.join(HERE, "Source")):
@@ -119,7 +137,8 @@ def static_checks():
                     bad.append("%s is not in the csproj" % fn)
                 classes |= set(re.findall(r"\bclass (\w+)", _read(os.path.relpath(os.path.join(dp, fn), HERE))))
     for c in ("RM_MineralRegistryDef", "RM_MineralBiomeCell", "RM_MineralsSettings", "RM_MineralPolicyProof",
-              "RM_MineralQuarryProof", "RM_QuarryKernel", "RM_MineralSurfaceProof", "RM_GenStep_RegistryLumps"):
+              "RM_MineralQuarryProof", "RM_QuarryKernel", "RM_MineralSurfaceProof", "RM_GenStep_RegistryLumps",
+              "RM_MineralMeteoriteDef", "RM_MineralMeteoriteProof", "RM_MineralMeteoriteKernel"):
         if c not in classes:
             bad.append("sanity: the class scan cannot see %s" % c)
 
@@ -128,7 +147,17 @@ def static_checks():
         bad.append("RM_MineralRegistryDef.KnownUnits %s != mineral_registry_check units %s" % (sorted(known), sorted(UNITS)))
 
     root = ET.parse(os.path.join(HERE, "Defs", "RM_MineralRegistry.xml")).getroot()
-    defs = list(root)
+    meteor = [d for d in root if d.tag == METEOR_CLASS]
+    defs = [d for d in root if d.tag != METEOR_CLASS]
+    if len(meteor) != 1 or meteor[0].findtext("defName") != "RM_MineralMeteorites":
+        bad.append("registry holds %d %s defs, want exactly RM_MineralMeteorites" % (len(meteor), METEOR_CLASS))
+    else:
+        fall = [li.text for li in meteor[0].findall("mineables/li")]
+        if "MineableSteel" not in fall:
+            bad.append("sanity: the meteorite list scan cannot see MineableSteel (%r)" % fall)
+        barred = sorted({m for m in fall for n in METEOR_NEVER if n in m})
+        if barred:
+            bad.append("meteorite list names a stone type or barred mineable: %s (owner card 2026-10-25)" % barred)
     if len(defs) < 20:
         bad.append("registry has %d defs (sanity probe: R1 emitted 31)" % len(defs))
     ids, names = [], []
@@ -386,6 +415,49 @@ def _build_suite():
                         raise ExpectationFailed("kept share out of range: %r" % s.get("share"))
                     if share < 1.0 and int(before) > 0 and int(after) > int(before):
                         raise ExpectationFailed("vanilla scatter count grew under a kept share < 1: %r" % s.get("vanilla"))
+
+    def _meteor(t, method, args):
+        r = t.bridge_call("jawa/static_call", type=METEOR_PROOF_TYPE, method=method, args=args)
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("meteorite %s could not run: %r" % (method, r))
+        return _parse_state(str(r.get("result", "")))
+
+    def _meteor_barred(names):
+        return sorted({m for m in names for n in METEOR_NEVER if n in m})
+
+    @suite.chain("meteorite")
+    def meteorite(t):
+        with t.component("meteorite_filter_active", toggle="enabled"):
+            if _live(t):
+                s = _meteor(t, "ProofState", "")
+                if s.get("reset") != "1" or s.get("pick") != "1":
+                    raise ExpectationFailed("meteorite patches not installed: reset=%r pick=%r" % (s.get("reset"), s.get("pick")))
+                if s.get("active") != "1" or s.get("fellback") == "1":
+                    raise ExpectationFailed("meteorite filter inactive: active=%r fellback=%r reason=%r"
+                                            % (s.get("active"), s.get("fellback"), s.get("reason")))
+                kept = [x for x in (s.get("list") or "").split(",") if x]
+                if s.get("stones") != "0" or _meteor_barred(kept) or "MineableSteel" not in kept:
+                    raise ExpectationFailed("meteorite list wrong: stones=%r barred=%r list=%r" % (s.get("stones"), _meteor_barred(kept), kept))
+        with t.component("meteorites_carry_no_stone", beyond_toggle=True):
+            if _live(t) and not t.upstream_failed:
+                s = _meteor(t, "ProofSample", "500")
+                tally = _pairs(s.get("tally"))
+                if int(s.get("picks", 0)) <= 0:
+                    raise ExpectationFailed("500 meteorites, our draw ran %r times: the FindRandomMineableDef prefix is not reached" % s.get("picks"))
+                if s.get("stones") != "0" or _meteor_barred(tally) or "(empty)" in tally:
+                    raise ExpectationFailed("a meteorite carried stone, a barred mineable or nothing: %r" % s)
+        with t.component("master_off_restores_vanilla_meteorites", toggle="enabled"):
+            if _live(t) and not t.upstream_failed:
+                try:
+                    _set(t, "enabled", False)
+                    s = _meteor(t, "ProofRefresh", "master off")
+                    if s.get("active") != "0" or int(s.get("stones", 0)) <= 0:
+                        raise ExpectationFailed("master off: vanilla meteorite list not restored: active=%r stones=%r" % (s.get("active"), s.get("stones")))
+                finally:
+                    _restore(t, "enabled")
+                s = _meteor(t, "ProofState", "")
+                if s.get("active") != "1" or s.get("stones") != "0":
+                    raise ExpectationFailed("master back on: meteorite filter not re-applied: %r" % s)
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

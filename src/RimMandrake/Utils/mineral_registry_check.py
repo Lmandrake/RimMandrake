@@ -14,6 +14,7 @@ CSV = os.path.join(ROOT, "design/RimMandrake/mineral_abundance_registry_2026-10-
 UNITS = {"EPM", "EPM/yr", "UPY", "deep share", "—"}
 TOKENS = {"deep-only", "herd", "unbounded"}
 PSEUDO = {"OTHER_vanilla_biomes"}
+METEORITIC = {"yes", "no"}   # per-row flag: may this material's mineable fall in a meteorite (R5 meteorite adapter)
 
 def biome_defnames(root=ROOT):
     names = set()
@@ -41,6 +42,8 @@ def check(path, biomes):
         seen.add(m)
         if r["unit"] not in UNITS: hard.append(f"{m}: illegal unit {r['unit']!r}")
         if not r["status"].strip(): hard.append(f"{m}: empty status")
+        if "meteoritic" in r and (r["meteoritic"] or "").strip() not in METEORITIC:
+            hard.append(f"{m}: meteoritic must be yes or no, got {r['meteoritic']!r}")
         for c in cols:
             v = r[c].strip()
             if v in TOKENS or re.fullmatch(r"\d+(\.\d+)?", v): continue
@@ -51,13 +54,15 @@ def check(path, biomes):
 def selftest():
     import tempfile
     d = tempfile.mkdtemp(); p = os.path.join(d, "r.csv")
-    open(p, "w", encoding="utf-8").write("material,defs,unit,RM_A,RM_B,status\nx,d,EPM,5,bogus,RULED\nx,d,zz,0,deep-only,\n")
+    open(p, "w", encoding="utf-8").write("material,defs,unit,RM_A,RM_B,meteoritic,status\nx,d,EPM,5,bogus,yes,RULED\nx,d,zz,0,deep-only,maybe,\n")
     _, hard, soft, el = check(p, {"RM_A"})
+    assert sum("meteoritic" in h for h in hard) == 1, hard
     assert any("bad cell" in h for h in hard) and any("duplicate" in h for h in hard)
     assert any("illegal unit" in h for h in hard) and any("empty status" in h for h in hard)
     assert any("RM_B" in s for s in soft) and el == ["x"]
     rows, hard, _, _ = check(CSV, biome_defnames())
     assert len(rows) > 40 and not hard, hard
+    assert "meteoritic" in rows[0], "the shipped CSV lost its meteoritic column"
     print("selftest ok")
 
 if __name__ == "__main__":

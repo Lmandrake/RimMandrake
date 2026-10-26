@@ -152,6 +152,9 @@ namespace RimMandrake.Minerals
             if (opts.Enabled && opts.SuppressUnregistered && unreg.Count > 0 && why == "startup")
                 Log.Warning("[RM Minerals] suppressed " + unreg.Count + " minerals the registry has no row for (setting 'Suppress unregistered "
                           + "minerals' is on): " + string.Join(", ", unreg.Select(p => p.DefName)));
+            // the meteorite whitelist follows the same master toggle and the same re-assert points (settings change, FinalizeInit)
+            try { RM_MineralMeteorite.Refresh(why); }
+            catch (System.Exception e) { Log.Error("[RM Minerals] meteorite filter refresh failed (" + why + "): " + e); }
         }
     }
 

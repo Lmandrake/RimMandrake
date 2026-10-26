@@ -124,6 +124,35 @@ def test_analyse_and_registry():
     ok(any("MineableX" in u for u in a2["uncovered"]), "coverage sees an unbound resource mineable (probe)")
 
 
+def test_meteorites():
+    """R5 meteorite whitelist (owner card 2026-10-25: only metals and space-ish ores fall; stone types never)."""
+    known = {"Gold": "ludeon.rimworld", "MineableGold": "ludeon.rimworld", "Jade": "ludeon.rimworld", "MineableJade": "ludeon.rimworld",
+             "RSW_Zersium": "mandrake.rsw.armoury", "RSW_MineableZersium": "mandrake.rsw.armoury"}
+    rows = [dict(row("gold", "item:Gold mineable:MineableGold", status="PROPOSED"), meteoritic="yes"),
+            dict(row("jade", "item:Jade mineable:MineableJade"), meteoritic="no"),
+            dict(row("zersium", "item:RSW_Zersium mineable:RSW_MineableZersium"), meteoritic="yes"),
+            dict(row("ghost ore", "item:Gold2 mineable:Nope_Mineable"), meteoritic="yes"),
+            dict(row("unbuilt metal", ""), meteoritic="yes")]
+    a = g.analyse(rows, FakeIndex(known))
+    ok(a["hard"] == [], "meteorite fixture: no hard defect %s" % a["hard"])
+    ok(a["meteor"] == [("gold", "MineableGold"), ("zersium", "RSW_MineableZersium")],
+       "only yes rows list their resolved mineables, whatever the status: %s" % a["meteor"])
+    ok(any("Nope_Mineable" in x for x in a["soft"]) and any("unbuilt metal" in x for x in a["soft"]),
+       "unresolved meteoritic mineable and a yes row binding nothing are soft findings")
+    root = ET.fromstring(g.emit_registry([], FakeIndex(known), a["meteor"]).split("?>", 1)[1])
+    md = root.findall("RimMandrake.Minerals.RM_MineralMeteoriteDef")
+    ok(len(md) == 1 and md[0].findtext("defName") == "RM_MineralMeteorites", "one meteorite def emitted")
+    lis = {li.text: li.get("MayRequire") for li in md[0].iter("li")}
+    ok(lis == {"MineableGold": None, "RSW_MineableZersium": "mandrake.rsw.armoury"}, "meteorite list + MayRequire: %s" % lis)
+    ok("RM_MineralMeteoriteDef" not in g.emit_registry([], FakeIndex(known)), "no meteor argument = no meteorite def (old callers)")
+    # planted break: a yes row binding a stone type (dump says not a resource rock) is HARD
+    stone = g.analyse([dict(row("granite", "item:BlocksGranite mineable:Granite"), meteoritic="yes")],
+                      FakeIndex({"Granite": "ludeon.rimworld", "BlocksGranite": "ludeon.rimworld"},
+                                dump={"Granite": {"pkg": "ludeon.rimworld", "mineableThing": "ChunkGranite", "deep": 0, "resourceRock": False}}))
+    ok(any("Granite" in h and "stone" in h for h in stone["hard"]) and stone["meteor"] == [],
+       "a meteoritic row binding a stone type is hard and not listed (probe)")
+
+
 def test_real_csv():
     rows = g.load()
     ok(len(rows) >= 40, "real CSV has rows (%d)" % len(rows))
@@ -135,6 +164,14 @@ def test_real_csv():
        "committed RM_DeepHomeTable.xml == --write-deep output (regenerate after a CSV change)")
     for must in ("Gold", "Jade", "RM_Lanternstone", "RM_LivePatternMetal"):
         ok(f"<thing>{must}</thing>" in committed, f"deep table lists {must}")
+    flags = {r["material"]: r.get("meteoritic") for r in rows}
+    ok(set(flags.values()) == {"yes", "no"}, "every CSV row carries meteoritic yes/no: %s" % sorted(set(map(str, flags.values()))))
+    ok(flags.get("steel") == "yes" and flags.get("jade") == "no" and flags.get("plasteel") == "no",
+       "meteoritic sanity: steel yes, jade (stone) no, plasteel (owner: never mined) no")
+    # vanilla mineables resolve only through a dump; the committed registry XML carries what the dump said
+    met = {n for _, n in g.analyse(rows, CommittedIndex(open(REGISTRY, encoding="utf-8").read(), g.src_index(g.ROOT)))["meteor"]}
+    ok("MineableSteel" in met and "MineableJade" not in met and "MineablePlasteel" not in met,
+       "real CSV meteorite list holds steel, not jade or plasteel: %s" % sorted(met))
 
 
 REGISTRY = os.path.join(g.ROOT, "src", "RimMandrake", "Minerals", "Defs", "RM_MineralRegistry.xml")
@@ -167,7 +204,7 @@ class CommittedIndex:
 def registry_equal(rows, committed):
     idx = CommittedIndex(committed, g.src_index(g.ROOT))
     a = g.analyse(rows, idx)
-    return a["hard"] == [] and g.emit_registry(a["emit"], idx) == committed, len(a["emit"])
+    return a["hard"] == [] and g.emit_registry(a["emit"], idx, a["meteor"]) == committed, len(a["emit"])
 
 
 def test_registry_committed():
@@ -190,6 +227,7 @@ def main():
     test_grammar()
     test_deep()
     test_analyse_and_registry()
+    test_meteorites()
     test_real_csv()
     test_registry_committed()
     print(("FAIL %d" % len(FAILS)) if FAILS else "ALL PASS")

@@ -385,6 +385,49 @@ namespace RimMandrake.Minerals.SelfTest
             Check(RM_MineralPolicyKernel.EffectiveValue(ep, "TemperateForest", null, 1f) == 0f, "a biome the row does not bear gets no lumps");
             Check(Math.Abs(RM_MineralSurfaceKernel.OrePer1000Rock(30, 6000) - 5f) < 1e-5f && RM_MineralSurfaceKernel.OrePer1000Rock(5, 0) == 0f, "diagnostic per 1000 rock");
 
+            // --- meteorites (owner card 2026-10-25: only metals and space-ish ores fall, stone types never)
+            var meteorWl = new List<string>();
+            foreach (XElement d in XDocument.Load(args[0]).Root.Elements("RimMandrake.Minerals.RM_MineralMeteoriteDef"))
+                foreach (XElement li in d.Element("mineables")?.Elements("li") ?? Enumerable.Empty<XElement>()) meteorWl.Add(li.Value.Trim());
+            Check(XDocument.Load(args[0]).Root.Elements("RimMandrake.Minerals.RM_MineralMeteoriteDef").Count() == 1, "registry holds exactly one meteorite def");
+            Check(meteorWl.Contains("MineableSteel") && meteorWl.Contains("MineableGold") && meteorWl.Count >= 4, "shipped meteorite list sees steel and gold (" + meteorWl.Count + ")");
+            Check(!meteorWl.Any(n => n.Contains("Plasteel") || n.Contains("Jade") || n.Contains("Granite") || n.Contains("Marble")
+                                  || n.Contains("Sandstone") || n.Contains("Slate") || n.Contains("Limestone") || n.Contains("Components")),
+                  "shipped meteorite list holds no stone, jade, plasteel or components");
+            var vanillaMeteor = new List<MeteorCandidate>
+            {
+                new MeteorCandidate("Granite", false, 0f), new MeteorCandidate("Marble", false, 0f),
+                new MeteorCandidate("MineableSteel", true, 1.9f), new MeteorCandidate("MineableJade", true, 5f),
+                new MeteorCandidate("MineableGold", true, 10f), new MeteorCandidate("MineableComponentsIndustrial", true, 32f),
+                new MeteorCandidate("MineablePlasteel", true, 9f), new MeteorCandidate("MineableUranium", true, 6f),
+            };
+            MeteorFilter mf = RM_MineralMeteoriteKernel.Filter(vanillaMeteor, meteorWl, true);
+            Check(mf.Active && !mf.FellBack && mf.Kept.SequenceEqual(new[] { "MineableSteel", "MineableGold", "MineableUranium" }),
+                  "meteorite filter keeps whitelisted ores in vanilla order: " + string.Join(",", mf.Kept));
+            Check(mf.Dropped.Count == 5 && mf.Dropped.Contains("Granite") && mf.Dropped.Contains("MineablePlasteel"), "meteorite filter drops stone, jade, plasteel, components");
+            MeteorFilter mOff = RM_MineralMeteoriteKernel.Filter(vanillaMeteor, meteorWl, false);
+            Check(!mOff.Active && mOff.Kept.Count == vanillaMeteor.Count && mOff.Dropped.Count == 0, "master toggle off keeps the vanilla list");
+            MeteorFilter mNone = RM_MineralMeteoriteKernel.Filter(vanillaMeteor, new[] { "RSW_MineableNothing" }, true);
+            Check(mNone.FellBack && !mNone.Active && mNone.Kept.Count == vanillaMeteor.Count, "no whitelisted ore present: vanilla list kept, adapter inactive");
+            MeteorFilter mStone = RM_MineralMeteoriteKernel.Filter(vanillaMeteor, new[] { "Granite", "MineableSteel" }, true);
+            Check(mStone.Kept.SequenceEqual(new[] { "MineableSteel" }), "a whitelisted stone type is refused");
+            List<MeteorCandidate> keptC = vanillaMeteor.Where(c => mf.Kept.Contains(c.DefName)).ToList();
+            bool pickOk = true;
+            var pickSeen = new HashSet<string>();
+            for (int i = 0; i < 100; i++) for (int j = 0; j < 10; j++)
+            {
+                MeteorCandidate pc = RM_MineralMeteoriteKernel.Pick(keptC, i / 99f, j / 9f);
+                if (pc == null || !pc.ResourceRock) pickOk = false; else pickSeen.Add(pc.DefName);
+            }
+            Check(pickOk && pickSeen.Count == 3, "pick never returns null or stone and reaches every kept ore (" + pickSeen.Count + ")");
+            Check(RM_MineralMeteoriteKernel.Pick(new List<MeteorCandidate>(), 0.5f, 0.5f) == null, "pick of an empty list is null");
+            float[] shares = RM_MineralMeteoriteKernel.BucketShares(keptC);
+            Check(shares[0] == 0f && Math.Abs(shares[1] - 0.35f / 0.6f) < 1e-5f && Math.Abs(shares[2] - 0.25f / 0.6f) < 1e-5f, "bucket shares renormalise without stone");
+            float[] vShares = RM_MineralMeteoriteKernel.BucketShares(vanillaMeteor);
+            Check(Math.Abs(vShares[0] - 0.4f) < 1e-5f && Math.Abs(vShares[2] - 0.25f) < 1e-5f, "probe: the vanilla list keeps vanilla shares");
+            Check(RM_MineralMeteoriteKernel.Pick(keptC, 0f, 0f).DefName == "MineableSteel" && RM_MineralMeteoriteKernel.Pick(keptC, 1f, 0f).DefName == "MineableGold",
+                  "pick boundaries: roll 0 cheap ore, roll 1 precious ore");
+
             Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + (checks - fails) + "/" + checks + " checks; " + rows.Count + " registry rows, "
                             + defs.Count + " fixture defs, " + on.Count + " decided");
             return fails == 0 ? 0 : 1;

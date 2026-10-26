@@ -537,4 +537,10 @@
 <items><li MayRequire="mandrake.rsw.armoury">RSW_DooniumOre</li></items>
 <mineables><li MayRequire="mandrake.rsw.armoury">RSW_MineableDoonium</li></mineables>
 </RimMandrake.Minerals.RM_MineralRegistryDef>
+<RimMandrake.Minerals.RM_MineralMeteoriteDef>
+<defName>RM_MineralMeteorites</defName>
+<label>meteorite materials</label>
+<!-- rows flagged meteoritic=yes: doonium ore, gold, phrikite, silver, steel, uranium, zersium -->
+<mineables><li>MineableSteel</li><li>MineableGold</li><li>MineableSilver</li><li>MineableUranium</li><li MayRequire="mandrake.rsw.armoury">RSW_MineableZersium</li><li MayRequire="mandrake.rsw.armoury">RSW_MineablePhrikite</li><li MayRequire="mandrake.rsw.armoury">RSW_MineableDoonium</li></mineables>
+</RimMandrake.Minerals.RM_MineralMeteoriteDef>
 </Defs>
