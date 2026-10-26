@@ -268,7 +268,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             int a = src.IndexOf("private void DrawAll()", StringComparison.Ordinal);
             if (a < 0) return false;
-            int lay = src.IndexOf("HoseLay lay = EnsureLay(r);", a, StringComparison.Ordinal);
+            int lay = src.IndexOf("HoseLay lay = EnsureLay(r", a, StringComparison.Ordinal);
             int look = lay < 0 ? -1 : src.IndexOf("meshes.TryGetValue(r, out Cached c);", lay, StringComparison.Ordinal);
             int drop = lay < 0 ? -1 : src.IndexOf("if (!LegacyFrame && r.carry == HoseCarryState.Retracting && meshes.ContainsKey(r)) DropMeshes(r);", lay, StringComparison.Ordinal);
             return look > 0 && drop > lay && drop < look;

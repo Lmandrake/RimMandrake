@@ -180,6 +180,7 @@ namespace RimMandrake.FlowWorks.Hose
             placedKind.Remove(r);
             drawnFittings.Remove(r);
             ghosts.RemoveAll(g => g.reel == r);
+            layQueue.Forget(r.parent.thingIDNumber);
         }
 
         // ------------------------------------------------------------------ world snapshot for hoses
@@ -553,7 +554,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// coming off the drum; the deployed art paints no hose of its own.</summary>
         internal static V2 Start(CompHoseReel r) => r.Rect.Mouth;
 
-        public HoseLay EnsureLay(CompHoseReel r)
+        /// <summary>The reel's lay, re-laid now if its key changed (probes, install checks, the bridge tools). The draw and the
+        /// tick ask with <c>deferred</c> instead.</summary>
+        public HoseLay EnsureLay(CompHoseReel r) => EnsureLay(r, false);
+
+        /// <summary>HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: <paramref name="deferred"/> (DrawAll, the 250-tick check; never under
+        /// FrameLegacy) hands a changed key to the lay queue (HoseLayQueue: off the frame, budgeted) and returns the last lay
+        /// until the new one lands.</summary>
+        internal HoseLay EnsureLay(CompHoseReel r, bool deferred)
         {
             if (!r.HoseOut) return null;
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
@@ -588,8 +596,89 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
+            if (deferred && !LegacyFrame) return LayLater(r, key, end, inward, portAt, portAxis);
             return LayAgain(r, key, end, inward, portAt, portAxis);
         }
+
+        // ------------------------------------------------------------------ HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: lays off the frame
+        /// <summary>The draw's and tick's lays (HoseLayQueue); a component's own, so one map's lays never wait on another's budget.</summary>
+        private readonly HoseLayQueue layQueue = new HoseLayQueue();
+        private bool layFaultLogged;
+        /// <summary>World copies the lay jobs run on (a lay marks its reel's footprint solid while it runs, restored after), reused
+        /// while the snapshot they copy holds: at most MaxInFlight copies a snapshot, not one per lay.</summary>
+        private readonly Stack<CordWorld> layWorlds = new Stack<CordWorld>();
+        private CordWorld layWorldsOf;
+
+        /// <summary>Probe: the lay queue's counters (HoseProbe census "layQueue").</summary>
+        internal string LayQueueJson() => layQueue.Json();
+
+        /// <summary>A changed key: the landed lay (applied under its own key) or the last one while the new lay is made.</summary>
+        private HoseLay LayLater(CompHoseReel r, string key, V2 end, V2? inward, V2? portAt, V2 portAxis)
+        {
+            layQueue.BeginFrame(Time.frameCount);
+            int id = r.parent.thingIDNumber;
+            Func<HoseLayQueue.Work> prepare = () => PrepareLay(r, end, inward, portAt, portAxis);
+            HoseLayQueue.Job job = layQueue.Ask(id, key, prepare);
+            if (job != null)
+            {
+                ApplyLay(r, job.key, job.result, job.work.World, (IntVec3)job.work.Tag, (int)job.ms);
+                GiveBackLayWorld(job.work.World);
+                // the reel moved on while it was laid: its newest lay is drawn, and the current key starts its own job
+                if (job.key != key) job = layQueue.Ask(id, key, prepare);
+                if (job != null)
+                {
+                    ApplyLay(r, job.key, job.result, job.work.World, (IntVec3)job.work.Tag, (int)job.ms);
+                    GiveBackLayWorld(job.work.World);
+                }
+            }
+            if (!layFaultLogged && layQueue.LastFault != null)
+            {
+                layFaultLogged = true;
+                Log.Warning("[FlowWorks] hose lay failed (last lay kept, not retried until its inputs change): " + layQueue.LastFault);
+            }
+            return r.lay;
+        }
+
+        /// <summary>Main thread, at a job's start: everything the lay reads, copied (HoseLayInputs), and a world copy of its own.</summary>
+        private HoseLayQueue.Work PrepareLay(CompHoseReel r, V2 end, V2? inward, V2? portAt, V2 portAxis)
+        {
+            HoseShapeParams sp = RM_HoseSettings.Shape();
+            sp.MaxLength = r.MaxLength;
+            var i = new HoseLayInputs
+            {
+                Rect = r.Rect, Start = Start(r), End = end, Inward = inward, PortAt = portAt, PortAxis = portAxis,
+                Outward = !IsFed(r) ? r.Rect.Outward : null,
+                Shape = sp, Seed = r.Seed,
+            };
+            i.Trail.AddRange(r.TrailCells());
+            if (portAt.HasValue)
+            {
+                CellRect body = FreeEndOf(r).Port.OccupiedRect();
+                i.HasBody = true;
+                i.BodyX0 = body.minX; i.BodyZ0 = body.minZ; i.BodyW = body.Width; i.BodyH = body.Height;
+            }
+            CordWorld w = TakeLayWorld();
+            return new HoseLayQueue.Work { Run = () => HoseLayQueue.Compute(w, i), World = w, Tag = r.EndCell };
+        }
+
+        private CordWorld TakeLayWorld()
+        {
+            CordWorld src = World();
+            if (!ReferenceEquals(src, layWorldsOf)) { layWorlds.Clear(); layWorldsOut.Clear(); layWorldsOf = src; }
+            CordWorld w = layWorlds.Count > 0 ? layWorlds.Pop() : src.Clone();
+            layWorldsOut.Add(w);
+            return w;
+        }
+
+        /// <summary>A landed job's world copy back to the pool (its lay restored what it marked); a copy of an older snapshot
+        /// (not in layWorldsOut any more) is dropped.</summary>
+        private void GiveBackLayWorld(CordWorld w)
+        {
+            if (w != null && layWorldsOut.Remove(w)) layWorlds.Push(w);
+        }
+
+        /// <summary>The copies of layWorldsOf now lent to jobs.</summary>
+        private readonly HashSet<CordWorld> layWorldsOut = new HashSet<CordWorld>();
 
         /// <summary>EnsureLay's re-lay. Its own method (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE): its lambdas capture r, so while they
         /// sat in EnsureLay C# allocated their closure at EnsureLay's entry -- per hose per frame, cache hit or not.</summary>
@@ -611,41 +700,38 @@ namespace RimMandrake.FlowWorks.Hose
             HoseLay lay = HoseMath.PortLay((e1, in1) => LayFrom(r, e1, in1, trail), end, inward, portAt, portAxis, bodyHit);
             // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
             // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
-            LastLayMs = (int)sw.ElapsedMilliseconds;
+            ApplyLay(r, key, lay, w, r.EndCell, (int)sw.ElapsedMilliseconds);
+            return r.lay;
+        }
+
+        /// <summary>A lay made for <paramref name="key"/> (to <paramref name="endCell"/>, on <paramref name="w"/>) becomes the reel's:
+        /// LayAgain's at once, the lay queue's when it lands.</summary>
+        private void ApplyLay(CompHoseReel r, string key, HoseLay lay, CordWorld w, IntVec3 endCell, int ms)
+        {
+            LastLayMs = ms;
             Relays++;
             // FINAL §3.2 lifecycle: a refused lay carries nothing, and a hose laid to a NEW end starts without the old lease
-            if (!lay.Ok || r.layEnd != r.EndCell) r.EndLease();
-            r.layEnd = r.EndCell;
-            r.lay = lay.Ok ? lay : null;
-            r.lastLayReason = lay.Ok ? null : (lay.Reason ?? "could not be laid");
+            if (lay == null || !lay.Ok || r.layEnd != endCell) r.EndLease();
+            r.layEnd = endCell;
+            r.lay = lay != null && lay.Ok ? lay : null;
+            r.lastLayReason = lay != null && lay.Ok ? null : (lay?.Reason ?? "could not be laid");
             r.layKey = key;
-            r.corridorHash = lay.Ok ? CorridorHash(w, lay) : 0;
+            r.corridorHash = r.lay != null ? CorridorHash(w, lay) : 0;
             DropMeshes(r);
-            return r.lay;
         }
 
         /// <summary>The lay of r's hose to <paramref name="end"/> (EnsureLay's, and CheckInstall's trial with an empty route).</summary>
         private HoseLay LayFrom(CompHoseReel r, V2 end, V2? inward, IList<Cell> route)
         {
-            CordWorld w = World();
             HoseShapeParams sp = RM_HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
             // 2026-10-05: a nozzled reel's hose leaves through its west outlet, so for this lay its own footprint is solid: a
-            // target behind the reel is reached round it, never by running back under the reel from the outlet
-            var held = new List<KeyValuePair<Cell, BlockKind>>();
-            // a relay reel's west nozzle is where the FEEDING hose couples (HoseRelay.DrawnEnd), so its own hose keeps the
-            // pre-2026-10-05 start; flagged to the owner, not redesigned here
+            // target behind the reel is reached round it, never by running back under the reel from the outlet.
+            // A relay reel's west nozzle is where the FEEDING hose couples (HoseRelay.DrawnEnd), so its own hose keeps the
+            // pre-2026-10-05 start; flagged to the owner, not redesigned here. The body is HoseLayQueue.LayFromOn, shared with
+            // the queued lays so the two cannot drift.
             V2? outward = !IsFed(r) ? r.Rect.Outward : null;
-            if (outward.HasValue)
-                for (int x = r.Rect.X0; x < r.Rect.X0 + r.Rect.W; x++)
-                    for (int z = r.Rect.Z0; z < r.Rect.Z0 + r.Rect.H; z++)
-                    {
-                        var c = new Cell(x, z);
-                        held.Add(new KeyValuePair<Cell, BlockKind>(c, w.BlockAt(c)));
-                        w.SetBlocked(c, BlockKind.Device);
-                    }
-            try { return HoseMath.LayAlong(w, Start(r), route ?? new List<Cell>(), end, sp, r.Seed, inward, outward); }
-            finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
+            return HoseLayQueue.LayFromOn(World(), r.Rect, Start(r), outward, end, inward, route, sp, r.Seed);
         }
 
         internal static ulong CorridorHash(CordWorld w, HoseLay lay) => CorridorHash(lay, c => CordSig.CellSig(w, c));
@@ -725,7 +811,9 @@ namespace RimMandrake.FlowWorks.Hose
                 // GPT source read 2026-10-06 B1: the lay used to be made only by DrawAll (the CURRENT map, on screen), so a hose on
                 // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
                 // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
-                if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r);
+                // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: a changed key is laid off the tick (HoseLayQueue); the check below reads the
+                // last landed lay until then
+                if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r, true);
                 // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
                 // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
                 if (RM_HoseSettings.enabled && (now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
@@ -867,7 +955,7 @@ namespace RimMandrake.FlowWorks.Hose
                     continue;
                 }
                 if (carryCache.Count > 0) DropCarryCache(r);
-                HoseLay lay = EnsureLay(r);
+                HoseLay lay = EnsureLay(r, true);   // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: never a lay inside the draw (FrameLegacy: as before)
                 if (lay == null)
                 {
                     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: a wound-in hose (EnsureLay returns null without re-laying) dropped no

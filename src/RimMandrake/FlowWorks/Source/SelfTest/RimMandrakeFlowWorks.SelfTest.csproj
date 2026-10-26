@@ -112,6 +112,7 @@
     <Compile Include="HoseClothoidChecks.cs" />
     <Compile Include="HoseSpliceChecks.cs" />
     <Compile Include="HoseMateCacheChecks.cs" />
+    <Compile Include="HoseLayQueueChecks.cs" />
     <Compile Include="HoseFrameMemoChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="..\Hose\HoseSpliceMath.cs" />
     <Compile Include="..\Hose\HoseMateCache.cs" />
+    <Compile Include="..\Hose\HoseLayQueue.cs" />
     <Compile Include="..\Hose\HoseFrameMemo.cs" />
     <Compile Include="..\Hose\HoseCurveMetrics.cs" />
     <Compile Include="..\Hose\HoseClothoid.cs" />

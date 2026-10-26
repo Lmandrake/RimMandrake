@@ -160,6 +160,26 @@ namespace RimMandrake.Shared.Slack
         }
         public bool IsBusy(Cell c) => busy != null && InBounds(c) && busy[Idx(c)];
 
+        /// <summary>HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: an independent copy (every grid copied; Machines a new list of the same
+        /// infos; LinkAllowed shared). A FlowWorks hose lay runs on a worker thread against its own copy, because the lay
+        /// marks the reel's footprint solid for its duration (RM_MapComponent_Hoses.LayFrom) and the main thread keeps
+        /// using the snapshot it was copied from.</summary>
+        public CordWorld Clone()
+        {
+            var o = new CordWorld(Width, Height);
+            Array.Copy(conduit, o.conduit, conduit.Length);
+            Array.Copy(block, o.block, block.Length);
+            Array.Copy(door, o.door, door.Length);
+            Array.Copy(extraCost, o.extraCost, extraCost.Length);
+            Array.Copy(forcedBuried, o.forcedBuried, forcedBuried.Length);
+            if (band != null) o.band = (int[])band.Clone();
+            if (bandLinks != null) o.bandLinks = new HashSet<long>(bandLinks);
+            if (busy != null) o.busy = (bool[])busy.Clone();
+            o.Machines.AddRange(Machines);
+            o.LinkAllowed = LinkAllowed;
+            return o;
+        }
+
         /// <summary>A walkable conduit cell that must still count as buried (an untagged or Hidden
         /// conduit def): it carries connectivity but is never drawn (design §8.7.6 last rows).</summary>
         public void SetForcedBuried(Cell c) { if (InBounds(c)) forcedBuried[Idx(c)] = true; }

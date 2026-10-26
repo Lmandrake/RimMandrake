@@ -174,6 +174,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 HoseSpliceChecks.Run(Case);
                 HoseMateCacheChecks.Run(Case);
+                HoseLayQueueChecks.Run(Case);
                 HoseFrameMemoChecks.Run(Case);
                 Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
                 return Fail.Count == 0 ? 0 : 1;
@@ -2198,6 +2199,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipeSpanNetChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 5: the liquid net's pole-to-pole edge, cap after join, ring cut, one rebuild per cut (PipeSpanNetChecks.cs)
             LineReadoutChecks.Run(Case);       // PIPE_POLES_BUILD_SAG_WITH_SUBSTANCE phase 7: P9 readout lines for the four crossing cases, P8 gravship re-key (LineReadoutChecks.cs)
             HoseFrameMemoChecks.Run(Case);     // HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE: per-frame key memos match the old strings, allocate nothing (HoseFrameMemoChecks.cs)
+            HoseLayQueueChecks.Run(Case);      // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: draw/tick lays off the frame, budgeted (HoseLayQueueChecks.cs)
             HoseMateCacheChecks.Run(Case);     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: pair solves keyed on inputs, budgeted, off the frame (HoseMateCacheChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
