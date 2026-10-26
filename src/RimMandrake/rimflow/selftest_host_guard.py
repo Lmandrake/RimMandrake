@@ -157,6 +157,10 @@ def main():
         r = rf("BENCH", "bridge", "release", "--host", "stevedesktop")
         check(r.returncode == 0 and not os.path.exists(lock), "release --host frees that host's lock: "
               + (r.stdout + r.stderr).strip()[-200:])
+        # a typo'd host is a plain refusal (exit 2, names the known hosts), not a SchemaError traceback
+        r = rf("BENCH", "bridge", "take", "--host", "stevedeskop", "--for", "typo")
+        check(r.returncode == 2 and "unknown bridge host" in r.stderr and "Traceback" not in r.stderr,
+              "an unknown --host is refused cleanly: rc %s %s" % (r.returncode, r.stderr.strip()[-200:]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("\n%d failed" % len(FAILS))

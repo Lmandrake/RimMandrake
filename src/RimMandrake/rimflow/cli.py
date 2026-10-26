@@ -2558,7 +2558,10 @@ def cmd_bridge(args, seat):
             "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
             % (args.action, args.to, args.action))
 
-    hk = model.bridge_host_key(getattr(args, "host", None))
+    try:
+        hk = model.bridge_host_key(getattr(args, "host", None))
+    except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
+        die(str(e))
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
