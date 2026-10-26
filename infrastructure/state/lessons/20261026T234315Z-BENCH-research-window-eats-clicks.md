@@ -1,0 +1,2 @@
+jawa/research_finish_project opens TriumphantResearch.Window_ResearchComplete, which absorbs all input and force-pauses: a later rimworld/click_cell selects nothing and list_selected_gizmos returns 0 gizmos with success true. Close it with rimworld/close_window windowType=... (check get_ui_state anyWindowAbsorbingAllInput) before any click/gizmo step. Live round 8, 2026-10-26.
+home: live-debugging-proof-harness
