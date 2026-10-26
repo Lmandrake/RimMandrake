@@ -94,7 +94,8 @@ namespace RimMandrake.ColdStorage
         {
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard();
+            // maxOneColumn is load-bearing: without it the overflow wraps into a hidden second column.
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 

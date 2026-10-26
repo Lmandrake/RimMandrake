@@ -13,9 +13,8 @@ namespace RimMandrake.Wastes
     // called from the Mod subclass). Defaults = shipped behavior throughout.
     //
     // Owned mechanics: the brine mining archetype (three GenStepDefs scattering
-    // RM_BrineDeposit_Tekk/Drazz/BrinePlate — its toggle is still scaffolding:
-    // the scatter is plain XML with no runtime gate), and the
-    // WASTELAND_MECHANICS_BUILD_1 layer — storm dose / ash-fall pollution /
+    // RM_BrineDeposit_Tekk/Drazz/BrinePlate — plain XML, no setting: its dead
+    // toggle was deleted in 523cb4e454), and the WASTELAND_MECHANICS_BUILD_1 layer — storm dose / ash-fall pollution /
     // cinderfelt germination (RM_MapComponent_WastesStorms), ambient dose and
     // radiothermal heat (RM_CompAmbientDose, RM_CompRadiothermalHeat), and the
     // processor animals (RM_CompProcessorGatherable), and the gripper's theft
@@ -135,10 +134,10 @@ namespace RimMandrake.Wastes
         private static Vector2 scrollPos;
         private static float viewHeight = 1400f;
         private static string searchQuery = "";
-        private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every setting is read on a tick, a job, a storm or a launch check ([now]); nothing is read at world or map generation. The brine switch is read by nothing (its scatter is plain XML), so it sits in the collapsed change-nothing group the validation walk still expects.</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every setting is read on a tick, a job, a storm or a launch check ([now]); nothing is read at world or map generation. The brine scatter is plain XML with no setting.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
