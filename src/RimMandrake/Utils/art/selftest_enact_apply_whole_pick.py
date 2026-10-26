@@ -37,7 +37,8 @@ def main():
     dec.write_text('{"decisions": {}}')
     ins = lambda row, letter, rel, **k: {"row": row, "letter": letter, "mod": "RimMandrake/M", "rel": rel, "sha": "s" + rel,
                                          "ruling": "r1", "kind": "slot", "rebind": None, "names": {row}, **k}
-    P = {"sheet": "t", "biome": "b", "conflicts": [], "todo": [], "withdraw": [], "queue": [], "refile": [], "purge": [],
+    # build_plan's shape: job_rows reads "decisions" for the owner_ruling marker (ea640a7247)
+    P = {"decisions": dec, "sheet": "t", "biome": "b", "conflicts": [], "todo": [], "withdraw": [], "queue": [], "refile": [], "purge": [],
          "cuts": [], "followed": {}, "asks": [], "done": [], "blocked": [], "installed_already": [], "in_game_not_ours": 0,
          "install": [ins("RM_A", "B", "Things/A_east.png", rebind={"old": "o", "new": "n"}), ins("RM_A", "B", "Things/A_north.png"),
                      ins("RM_F", "V", "Things/F/v_1.png"),

@@ -290,12 +290,13 @@ def main():
         cq = [x for x in P2["queue"] if x["row"] == "RM_HulCatch"]
         check(cq and cq[0].get("ref_shas") == [s["ha"]] and not P2.get("blocked"),
               "5 once RM_Hul is picked the catch is filed with RM_Hul's picture as its reference")
-        rows = E.job_rows({"queue": cq, "sheet": "test_sheet"})
+        JP = {"queue": cq, "sheet": "test_sheet", "decisions": P2["decisions"]}   # job_rows reads both (ea640a7247)
+        rows = E.job_rows(JP)
         check(rows and any(s["ha"] in str(x) for x in rows[0]["canon_reference"])
               and rows[0]["id"] != "enact_early_hulcatch_v1", "5 ...the job row carries that reference, with a fresh id")
         base = rows[0]["id"].rsplit("_v", 1)[0]
         (F["ap"] / "_withdrawn" / f"{base}_v1_east.json").write_text("{}")
-        check(E.job_rows({"queue": cq, "sheet": "test_sheet"})[0]["id"] == f"{base}_v2",
+        check(E.job_rows(JP)[0]["id"] == f"{base}_v2",
               "a re-filed redraw never reuses a withdrawn job's id (v1 withdrawn -> v2)")
         # mark-done for both def halves
         E.enact(F["decisions"], apply=False, mark_done=["RM_Kir", "RM_Viz"], no_deploy=True)
