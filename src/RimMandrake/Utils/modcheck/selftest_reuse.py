@@ -405,14 +405,18 @@ def t_run_suite_validity_scope():
     @s.chain("off_x", offline=True)
     def off_x(t):
         armed["off_x"] = len(t.validity_checks)
+    from modcheck import reuse as PR      # validation.py's copy: a second module object with its own cache
     reuse._CURRENT[("x", "y")] = {}
+    PR._CURRENT[("x", "y")] = {}
     sess = _fake_session()
     fake = _Sess()
     sess.call, sess.things_at = fake.call, fake.things_at
     with contextlib.redirect_stderr(io.StringIO()):
         runner.run_suite(s, sess, anchor=(5, 5), validity=True)
     ok(armed.get("live_x") == 3 and armed.get("off_x") == 0, "run_suite --validity: live chain armed, offline chain not", armed)
-    ok(not reuse._CURRENT, "run_suite: the current-manifest cache is cleared per suite run")
+    ok(not reuse._CURRENT and not PR._CURRENT,
+       "run_suite: both current-manifest caches (bare reuse and modcheck.reuse) are cleared per suite run",
+       (len(reuse._CURRENT), len(PR._CURRENT)))
 
 
 def t_run_suite_canary():
