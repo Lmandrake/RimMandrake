@@ -1,0 +1,2 @@
+A comp declared on an abstract base AND again on each child is not overridden: Verse.XmlInheritance appends <li> list items, so every child gets two (cold-storage seals: 24 foods had two CompIngredients -> two <ingredients> save nodes, the ingredients line twice, the base's noIngredientsFoodKind won on fruit/veg). Put a comp on the base OR the children, never both; selftest_coldstorage duplicate_comp_checks resolves ParentName chains to pin it. Fixed c8fc7fac4e.
+home: rimworld-modding
