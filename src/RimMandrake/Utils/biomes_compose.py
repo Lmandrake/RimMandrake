@@ -279,17 +279,23 @@ def stage_rewritten(src_dir, mapping, log=print, names=None):
         return None
     tmp = tempfile.mkdtemp(prefix="mrfix_")
     root = os.path.join(tmp, os.path.basename(os.path.normpath(src_dir)))
-    for dp, dn, fn in os.walk(src_dir):
-        rel = os.path.relpath(dp, src_dir)
-        os.makedirs(os.path.join(root, rel), exist_ok=True)
-        for f in fn:
-            s, t = os.path.join(dp, f), os.path.join(root, rel, f)
-            if s in bad:
-                with open(t, "wb") as fh:
-                    fh.write(bad[s][0].encode("utf-8"))
-                shutil.copystat(s, t)
-            else:
-                os.symlink(s, t)
+    try:
+        for dp, dn, fn in os.walk(src_dir):
+            rel = os.path.relpath(dp, src_dir)
+            os.makedirs(os.path.join(root, rel), exist_ok=True)
+            for f in fn:
+                s, t = os.path.join(dp, f), os.path.join(root, rel, f)
+                if s in bad:
+                    with open(t, "wb") as fh:
+                        fh.write(bad[s][0].encode("utf-8"))
+                    shutil.copystat(s, t)
+                else:
+                    os.symlink(s, t)
+    except BaseException:
+        # the caller only learns the dir on success: a failed farm (a symlink refused on native Windows without the
+        # privilege, a source vanishing mid-walk) must not strand it
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise
     log("  MayRequire: rewrote %d folded-id/name guard(s) in %d file(s) of %s (deployed copy only)"
         % (sum(n for _, n in bad.values()), len(bad), os.path.basename(src_dir)))
     return root
@@ -405,7 +411,10 @@ def build(src_root, tree_fn, holds, log=print):
         about = os.path.join(sdir, "About", "About.xml")
         if not os.path.isfile(about):
             raise ComposeError("%s: no About/About.xml at %s" % (e["key"], sdir))
-        ab = ET.parse(about).getroot()
+        try:
+            ab = ET.parse(about).getroot()
+        except ET.ParseError as ex:     # deploy_custom_mods catches ComposeError only: refuse, never a traceback
+            raise ComposeError("%s: About/About.xml does not parse: %s" % (e["key"], ex))
         pid = (ab.findtext("packageId") or "").strip().lower()
         if not pid:
             raise ComposeError("%s: About.xml has no packageId" % e["key"])
@@ -414,6 +423,10 @@ def build(src_root, tree_fn, holds, log=print):
         rels = sorted(r for r in tree_fn(sdir)
                       if r.split(os.sep)[0] != "About")
         plan.append((e, sdir, pid, rels))
+
+    # A mod ABSORBED into a member (manifest "absorbed", see folded_ids) is retired exactly like a folded one: a
+    # member's MayRequire naming it is rewritten and a member's About list naming it dropped.
+    retired = drop_ids | {(p or "").strip().lower() for p in m.get("absorbed", ())} - {""}
 
     owners = {}
     for e, _, _, rels in plan:
@@ -447,7 +460,7 @@ def build(src_root, tree_fn, holds, log=print):
         out = os.path.join(tmp, target)
         os.makedirs(out)
         extra_holds = []
-        fmap = {p: m["about"]["packageId"].lower() for p in drop_ids
+        fmap = {p: m["about"]["packageId"].lower() for p in retired
                 if p != m["about"]["packageId"].lower()}
         nfix = 0
         tname = (m["about"].get("name") or "").strip()
@@ -499,7 +512,7 @@ def build(src_root, tree_fn, holds, log=print):
         log("  compose  %-20s %-34s %4d file(s) -> Assemblies/"
             % ("(settings shell)", m["shell"]["source"], len(shell_files)))
 
-        about_root, prov = union_about(abouts, drop_ids, m)
+        about_root, prov = union_about(abouts, retired, m)
         _write_xml(about_root, os.path.join(out, "About", "About.xml"))
 
         lf = ET.Element("loadFolders")
