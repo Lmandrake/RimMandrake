@@ -37,8 +37,9 @@ def load(path):
 class FakeGame(object):
     """Answers what perceived_beauty reads. With the mechanic off the Probe reply is unreadable (off_arm='dead')."""
 
-    def __init__(self, off_arm="ok"):
+    def __init__(self, off_arm="ok", get_dead=False):
         self.off_arm = off_arm
+        self.get_dead = get_dead
         self.settings = {"perceivedBeautyEnabled": "True"}
         self.writes = []
         self.n = 0
@@ -62,6 +63,8 @@ class FakeGame(object):
                 self.writes.append(kw.get("value"))
                 self.settings[f] = kw.get("value")
                 return {"success": True}
+            if self.get_dead:
+                return {"success": False, "error": "get channel dead"}
             return {"success": True, "value": self.settings.get(f)}
         if tool == "jawa/static_call":
             on = str(self.settings["perceivedBeautyEnabled"]).lower() == "true"
@@ -93,6 +96,11 @@ def main(argv):
     ok("False" in g.writes, "planted probe: the off arm really wrote False (writes %s)" % g.writes)
     ok(g.settings["perceivedBeautyEnabled"] == "True",
        "dead off arm: perceivedBeautyEnabled restored to True, not left off (now %r)" % g.settings["perceivedBeautyEnabled"])
+    # an unreadable `get` of the old value must still restore the switch (to its shipped default), not leave it off
+    g = FakeGame(get_dead=True)
+    run(v, g)
+    ok("False" in g.writes and g.settings["perceivedBeautyEnabled"] == "True",
+       "unreadable get: perceivedBeautyEnabled restored to the shipped True, not left off (writes %s)" % g.writes)
     # a None map_info reply is UNMEASURED (the map cannot be read), never an AttributeError that the component reads as FAIL
     t = TestContext(type("NoMap", (FakeGame,), {"call": lambda self, tool, **kw: None})(), anchor=(50, 50))
     try:

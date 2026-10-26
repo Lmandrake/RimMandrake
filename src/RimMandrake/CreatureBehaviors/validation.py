@@ -407,6 +407,8 @@ def perceived_beauty(t):
         for p in (pid, ctrl):
             t.session.call("jawa/set_draft", pawnId=p, drafted=True)      # animals ignore it; harmless if so
         old = _setting(t, "get", "perceivedBeautyEnabled").get("value")
+        if old is None:     # an unreadable get must still restore: to the shipped default parsed from the C#
+            old = SETTING_FIELDS.get("perceivedBeautyEnabled", ("bool", True))[1]
         try:
             _setting(t, "set", "perceivedBeautyEnabled", "True")
             on = _pb_probe(t, pid)
