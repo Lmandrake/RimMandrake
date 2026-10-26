@@ -1278,9 +1278,9 @@ def _new_probes(EXT, RIV, base):
     slow, fast, unread = (EXT._fill_in_budget(_FT(s), "P1") for s in (0.1, 2.0, None))
     ft = _FT(0.1)
     waited = EXT._wait_filled_in(ft, "P1", (1, 1))
-    if slow < 16000 or not fast < slow or unread != EXT.FILL_IN_TICKS_MAX or waited < 16000 or ft.ticks < 16000:
+    if slow < 37650 or not fast < slow or unread != EXT.FILL_IN_TICKS_MAX or waited < 37650 or ft.ticks < 37650:
         out.append("fill-in budget: speed 0.1 -> %d, 2.0 -> %d, unread -> %d; waited %d (game ticks %d) on a D=1 cell that"
-                   " never filled (want >= 16000)" % (slow, fast, unread, waited, ft.ticks))
+                   " never filled (want >= 37650: 6400 work / (0.1 x 1.7))" % (slow, fast, unread, waited, ft.ticks))
 
     # list_things with no `success` used to read as "no flame" (canal_fire OFF, explosion OFF PASSed blind)
     def fire(chain, lit_cells, shape=True):

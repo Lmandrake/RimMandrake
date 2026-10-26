@@ -1234,8 +1234,9 @@ def _order_fill_in(t, pid, cell):
         raise ExpectationFailed("UNMEASURED: the fill-in order was not taken (reservation?): %r" % o)
 
 
-FILL_IN_WORK = 1600    # JobDriver_FillInCanal.BaseWorkAmount at D=1: WorkToDeepen(0) / 2 = RM_DigDepthMath 3,200 x notch 1 / 2
-FILL_IN_TICKS_MAX = 20000   # a MiningSpeed-floor (0.1) pawn needs 16,000 ticks of work; walking and slack on top
+FILL_IN_WORK = 1600 * 4    # JobDriver_FillInCanal.BaseWorkAmount at D=1: WorkToDeepen(0) / 2 = 3,200 x notch 1 / 2 = 1,600, x digLabourMultiplier 4.0 (site_spec RUN_SETTINGS and the shipped default)
+FILL_IN_WORK_PER_TICK = 1.7   # RM_DigDepthMath.WorkPerTickAtSpeedOne: JobDriver_AffectFloor does 1.7 x MiningSpeed of work a tick
+FILL_IN_TICKS_MAX = 50000   # FILLIN_PROOF_FIX_BUDGET_IGNORED_LABOUR_MULT: a MiningSpeed-floor (0.1) pawn needs 6,400 / 0.17 = 37,650 ticks; the old 16,000-tick sum (no x4, no 1.7) timed out at 20,000 with D=1 (J20261026T115804Z-46d3a2)
 
 
 def _fill_in_budget(t, pid):
@@ -1254,7 +1255,7 @@ def _fill_in_budget(t, pid):
                 sp = None
     if not sp or sp <= 0:
         return FILL_IN_TICKS_MAX
-    return min(FILL_IN_TICKS_MAX, int(FILL_IN_WORK / sp * 1.25) + 600)
+    return min(FILL_IN_TICKS_MAX, int(FILL_IN_WORK / (sp * FILL_IN_WORK_PER_TICK) * 1.25) + 600)
 
 
 def _wait_filled_in(t, pid, cell):
