@@ -1599,6 +1599,20 @@ _SPRITE_ART_DIRECTION = (
 )
 
 
+SWIMMER_NORTH = ("If it is a swimming creature (fish, eel, whale, sea "
+                 "serpent): it is seen end-on from directly behind at its "
+                 "own level, its tail end nearest the viewer and largest, "
+                 "the body receding straight away behind it; the tail fin "
+                 "is seen edge-on as from directly behind (a vertical fin "
+                 "is a thin upright blade, a horizontal fluke a flat bar), "
+                 "never fanned out flat or split into a V; no fins the side "
+                 "view does not show; the head is hidden behind the body.")
+SWIMMER_SOUTH = ("If it is a swimming creature (fish, eel, whale, sea "
+                 "serpent): it is seen head-on at its own level, face and "
+                 "mouth nearest the viewer, the body and tail hidden behind "
+                 "the head; no fins the side view does not show.")
+
+
 def build_job_prompt(job: dict) -> str:
     """A REAL per-job scratch directory (_artsrc/<job_id>/) is what makes
     the "your working directory is per-job scratch space" claim in
@@ -1640,12 +1654,31 @@ def build_job_prompt(job: dict) -> str:
         # top-down camera convention, and it guessed wrong often enough to
         # invert whole creatures (PYRELANDS_FACING_REGRESSION_1, owner live
         # review 2026-09-14). Spell the convention out per facing.
+        # North/south carry the camera height too (ARTPIPE_FACING_COHERENCE_1,
+        # 2026-10-26): "we see its BACK" with no camera words drew Vhorrin,
+        # Starmaw and CoolantEel north as top-down dorsal views — for a fish
+        # "its back" IS the dorsal surface seen from above. The swimmer
+        # sentence is conditional prompt text (jobs carry no body plan); its
+        # wording is the one that fixed those three in the facingfix r2 redraw
+        # (end-on, tail nearest, fin edge-on, no invented fins).
         facing_direction = {
-            "north": ("Facing: north — the creature walks AWAY from the "
-                      "viewer; we see its BACK, rear haunches and the back "
-                      "of its head. No face, no eyes visible."),
-            "south": ("Facing: south — the creature walks TOWARD the "
-                      "viewer; we see its FACE and chest straight on."),
+            "north": ("Facing: north — the creature moves AWAY from the "
+                      "viewer; we see its REAR: hindquarters, tail end and "
+                      "the backs of its legs nearest us, the back of its "
+                      "head beyond. No face, no eyes visible. The camera is "
+                      "at about the creature's own height, only slightly "
+                      "raised, the same camera as its side view. NOT a "
+                      "top-down or overhead view: the body recedes straight "
+                      "away from us, strongly foreshortened, about as tall "
+                      "and wide as from the front; we do not see the length "
+                      "of its back from above. " + SWIMMER_NORTH),
+            "south": ("Facing: south — the creature moves TOWARD the "
+                      "viewer; we see its FACE and chest straight on. The "
+                      "camera is at about the creature's own height, only "
+                      "slightly raised. NOT a top-down or overhead view: the "
+                      "body recedes behind the head, foreshortened; we do "
+                      "not see the length of its back from above. "
+                      + SWIMMER_SOUTH),
             # Owner ruling 2026-09-16 (gizka east review): east/west must be
             # side PROFILES, never a top-down/overhead view — "strict side
             # profile" alone still let the model raise the camera.

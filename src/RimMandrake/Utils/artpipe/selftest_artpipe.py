@@ -732,6 +732,28 @@ def test_building_facing_gets_the_top_down_building_clause():
        "eye level" in c and "building camera" not in c, c[-200:])
 
 
+def test_north_south_facing_clause_names_the_camera_and_the_swimmer_view():
+    """ARTPIPE_FACING_COHERENCE_1 (2026-10-26): "we see its BACK" with no camera
+    words drew three swimmers' north as a top-down dorsal view. North and south
+    must state the camera height, refuse overhead, and carry the swimmer
+    end-on sentence; a building job still gets only the building clause."""
+    def p(facing, prompt="a long eel-like swimmer"):
+        return artpiped.build_job_prompt({"id": "s", "prompt": prompt,
+                                          "canvas": {"width": 256, "height": 256}, "facing": facing})
+    n, s = p("north"), p("south")
+    for name, t in (("north", n), ("south", s)):
+        ok(f"build_job_prompt: {name} names the camera height and refuses overhead",
+           "own height" in t and "NOT a top-down or overhead view" in t, t[-400:])
+    ok("build_job_prompt: north carries the swimmer end-on, tail-nearest, fin edge-on sentence",
+       artpiped.SWIMMER_NORTH in n and "tail end nearest" in n and "edge-on" in n
+       and "No face, no eyes" in n, n[-600:])
+    ok("build_job_prompt: south carries the swimmer head-on sentence, north's does not leak",
+       artpiped.SWIMMER_SOUTH in s and artpiped.SWIMMER_NORTH not in s, s[-400:])
+    b = p("north", "RimWorld game building sprite: a crate")
+    ok("build_job_prompt: a building north gets no creature camera or swimmer text",
+       "building camera" in b and "swimming creature" not in b and "own height" not in b, b[-300:])
+
+
 def test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp():
     """ARTPIPE_FACING_COHERENCE_1 §1's refusal half.
 
@@ -4121,6 +4143,7 @@ def main() -> int:
         test_load_job_validates_value_shapes_not_just_key_presence,
         test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp,
         test_building_facing_gets_the_top_down_building_clause,
+        test_north_south_facing_clause_names_the_camera_and_the_swimmer_view,
         test_load_job_accepts_and_validates_derive_from,
         test_claim_next_holds_derived_job_until_master_resolves,
         test_claim_next_releases_derived_job_when_master_failed,
