@@ -51,7 +51,11 @@ def done_rec(item, outcome="DONE", cause=None, rows=(("r1", "PASS"), ("r2", "FAI
     return {"job": job, "result": res, "attempts": [res["attempt"]], "finished": S.utcnow()}
 
 
-def publish_sandbox(conflict):
+LINT_CLEAN = 'print("ledger_lint: 0 findings over 1 commit")\n'
+LINT_REFUSE = 'import sys\nprint("NOT_APPEND events/RUNNER.jsonl")\nprint("ledger_lint: 1 finding over 1 commit")\nsys.exit(1)\n'
+
+
+def publish_sandbox(conflict, lint=LINT_CLEAN):
     """Bare origin + a dispatch clone + a rival clone that pushes first. Returns (publish result, dispatch dir, sh)."""
     import ingest as I
     root = tempfile.mkdtemp(prefix="rf_pub_")
@@ -81,6 +85,10 @@ def publish_sandbox(conflict):
     sh("add", target, cwd=rival)
     sh("commit", "-qm", "rival", cwd=rival)
     sh("push", "-q", "origin", "HEAD:main", cwd=rival)
+    lint_py = os.path.join(disp, "src", "RimMandrake", "Utils", "ledger_lint.py")   # untracked: a stand-in lint
+    os.makedirs(os.path.dirname(lint_py))
+    with open(lint_py, "w") as f:
+        f.write(lint)
     old = I.REPO
     I.REPO = disp
     try:
@@ -91,6 +99,20 @@ def publish_sandbox(conflict):
 
 
 def publish_checks():
+    out, root, disp, sh = publish_sandbox(conflict=False, lint=LINT_REFUSE)
+    try:
+        sh("fetch", "-q", "origin", cwd=disp)
+        ahead = sh("rev-list", "--count", "origin/main..HEAD", cwd=disp).stdout.strip()
+        check(out.startswith("publish stopped: ledger_lint") and "NOT_APPEND" in out and ahead == "1",
+              "ledger_lint refusing HEAD withholds the push, the commit stays local (%r ahead=%s)" % (out, ahead))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    out, root, disp, sh = publish_sandbox(conflict=False, lint="import sys\nsys.exit(2)\n")
+    try:
+        check(out.startswith("publish stopped: ledger_lint") and "exit 2" in out,
+              "a lint that cannot finish also withholds the push (unattended pusher): %r" % out)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
     out, root, disp, sh = publish_sandbox(conflict=True)
     try:
         rebasing = any(os.path.isdir(os.path.join(disp, ".git", d)) for d in ("rebase-merge", "rebase-apply"))

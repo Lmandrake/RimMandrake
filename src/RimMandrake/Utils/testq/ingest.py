@@ -258,10 +258,33 @@ def publish(n):
                 git("rebase", "--abort")
             return "publish stopped: pull --rebase failed%s, the commit stays local (the next ingest retries): " % \
                 (", rebase aborted" if rebasing else "") + (r.stderr or r.stdout).strip()[-200:]
+        bad = lint_refusal()
+        if bad:
+            return "publish stopped: ledger_lint refuses HEAD, the commit stays local (the next ingest retries): " + bad
         p = git("push", "-q", "origin", "HEAD:main")
         if p.returncode == 0:
             return "pushed"
     return "push failed (the commit stays local; the next ingest retries): " + p.stderr.strip()[-200:]
+
+
+def lint_refusal():
+    """ledger_lint on HEAD vs origin/main, as the pre-push hook runs it (the dispatch clone has no hooks:
+    TESTQ_DISPATCH_PUSH_ENFORCE_LINT) -> None when clean, else why not to push. A lint that cannot run or crashes
+    refuses too: this pusher is unattended, so it never pushes unlinted."""
+    script = os.path.join(REPO, "src", "RimMandrake", "Utils", "ledger_lint.py")
+    if not os.path.isfile(script):                   # a sparse clone without it: lint with this checkout's copy
+        script = os.path.join(HERE, "..", "ledger_lint.py")
+    try:
+        r = subprocess.run([sys.executable, script, "--rev", "HEAD", "--root", REPO, "--base", "origin/main"],
+                           capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "ledger_lint could not run: %s" % e
+    out = (r.stdout or "") + (r.stderr or "")
+    finished = re.search(r"^ledger_lint: \d+ findings? over ", out, re.M)
+    if r.returncode == 0 and finished:
+        return None
+    lines = [ln.strip() for ln in out.splitlines() if ln.strip() and not ln.startswith("note:")]
+    return ("exit %d: " % r.returncode) + " | ".join(lines[-4:])[-300:]
 
 
 def unpublished():
