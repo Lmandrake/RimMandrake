@@ -323,8 +323,9 @@ def run_live(args):
         # comparing against the stage-1 read taken BEFORE S9 reported them as "changed by the load". Read again just
         # before saving: the comparison is then load-only.
         d4_built = s12d_stage(B)
+        pre_save = _cst(B)      # review 9.1: S9e's before-set is read HERE, after every SITE2 build (s12 D1/D7 included)
         res["save"] = _save_load(B, rows, args.save, B.ap("styles"), stage=d4_built)
-        s9_after_load(B, rows, s9, s10)
+        s9_after_load(B, rows, s9, s10, pre_save)
         s12d_after_load(B, rows, d4_built)
     elif not V.SHARED:               # SHARED: S7 + S9e are proof_all's SL3 over the session's one save (doc section 2)
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
@@ -683,8 +684,14 @@ def _s9_snap(st):
             sorted((tuple(p["owner"]), p.get("key"), p.get("g"), p.get("strandTex"), p.get("legacy")) for p in st.get("pieces") or []))
 
 
-def s9_after_load(B, rows, s9, s10):
-    before = s10.get("st") or s9.get("st") or {}
+def s9_before_state(s9, s10, pre_save=None):
+    """S9e's baseline: the read taken just before the save. The stage-2 reads (s10, s9) pre-date s12's D1/D7 builds inside
+    SITE2, so comparing against them reported those builds as 'changed by the load' (review 9.1)."""
+    return pre_save or s10.get("st") or s9.get("st") or {}
+
+
+def s9_after_load(B, rows, s9, s10, pre_save=None):
+    before = s9_before_state(s9, s10, pre_save)
     st = {}
     t0 = time.time()
     while time.time() - t0 < 12.0:

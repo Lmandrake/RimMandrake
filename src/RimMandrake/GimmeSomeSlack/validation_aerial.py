@@ -466,7 +466,8 @@ def run_live(args):
     mixed_net = net_at(B, MHCOND[0]).get("net") == net_at(B, MOCOND).get("net")
     ours = ap0[M1].get("faction")
     m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and r1 == r0
-    V.row(rows, "M19m_tap_mixed_net_connects_own_conduit", "PASS" if m19m else "FAIL", "MOD",
+    st19, cl19 = m19m_status(mixed_net, m19m)
+    V.row(rows, "M19m_tap_mixed_net_connects_own_conduit", st19, cl19,
           {"built": [b.get("survived") for b in mb], "mixedNet": mixed_net, "tap": mtap, "ourFaction": ours,
            "guardRefused_t0": r0, "guardRefused_t300": r1})
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
@@ -983,6 +984,24 @@ def theft_stop(B, rows, res):
                   "played": st["played"], "stop": "clamp removed (it has no switch)"})
 
 
+UNFINISHED = "UNFINISHED"
+THEFT_PHASE_ROW = {"catch": "PT_A2_letter", "day": "PT_A3_goodwill_day", "stop": "PT_A3_removed_stops"}
+
+
+def theft_phase_gap(phase, rows):
+    """The row id a --theft phase owes and did not write, else None (review 9.4)."""
+    rid = THEFT_PHASE_ROW[phase]
+    return None if any(r.get("id") == rid for r in rows) else rid
+
+
+def m19m_status(mixed_net, connects):
+    """(status, class). The row proves a tap on a MIXED-faction net connects its own conduit; when the staged conduits did
+    not land on one net the scene never posed that question, so it is UNMEASURED SITE, not a FAIL or PASS (review 9.5)."""
+    if not mixed_net:
+        return "UNMEASURED", "SITE"
+    return ("PASS" if connects else "FAIL"), "MOD"
+
+
 def run_theft(args):
     global SHOTS
     SHOTS = os.path.join(V.REPO, "Transient", "power_theft_live_" + time.strftime("%Y%m%d"))
@@ -997,9 +1016,14 @@ def run_theft(args):
     if args.origin and not res.get("origin"):
         res["origin"] = [int(v) for v in args.origin.split(",")]
     phase = args.theft
+    rows[:] = [r for r in rows if not str(r.get("detail", "")).startswith(UNFINISHED)]   # a resumed phase re-measures
     {"catch": theft_catch, "day": theft_day, "stop": theft_stop}[phase](B, rows, res)
     res.setdefault("phases", []).append({"phase": phase, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
+    gap = theft_phase_gap(phase, rows)
     res["aborted"] = None
+    if gap:                                  # review 9.4: an unfinished phase wrote no row and the run exited 0
+        V.row(rows, gap, "UNMEASURED", "HARNESS", UNFINISHED + ": phase %r stopped before its row; rerun the same command with the same --out" % phase)
+        res["aborted"] = "theft phase %s unfinished" % phase
     return res
 
 

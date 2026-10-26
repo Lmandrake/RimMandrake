@@ -25,6 +25,14 @@ CSPROJ = os.path.join(SELFTEST, "RimMandrakeGimmeSomeSlack.SelfTest.csproj")
 SOURCE = os.path.dirname(SELFTEST)
 
 
+def selftest_cwd():
+    """Working directory for dotnet.exe: agent scratch on D:, a drive path Windows can use. It was the read-only mirror
+    /mnt/d/Luke/dev (review 9.7), which an agent must never write and which the run could litter."""
+    d = os.path.join("/mnt/d/ClaudeWork/rimmandrake/scratch", "gss_selftest_cwd")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
 def sliced_rebuild_callers():
     """GSS round 3 review (2026-10-26): a budgeted Rebuild lays only ~8 ms of edges and leaves the rest to later frames, so a
     scripted caller that reads Pieces right after it (cstyles probe, JawaBench gss staging) saw a half-laid set. The public
@@ -74,7 +82,7 @@ def main(argv):
         args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
-    return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
+    return subprocess.run(args, cwd=selftest_cwd()).returncode
 
 
 if __name__ == "__main__":

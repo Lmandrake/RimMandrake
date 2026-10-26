@@ -135,6 +135,42 @@ SHARED = False
 SITE_NOTES = []
 
 
+def m5_verdict(changed, gone, far_keys, last_planned, build_resp):
+    """M5 (review 9.3): local invalidation needs the far run to HAVE changed (else a build that did nothing passes), the
+    build to have succeeded, and nothing outside the far run to have changed."""
+    if not (build_resp or {}).get("success"):
+        return False
+    if not far_keys:
+        return False
+    return not [k for k in list(changed) + list(gone) if k not in far_keys] and (last_planned or 0) <= 2
+
+
+_PLOG_BAD = ("error", "exception", "failed", "could not", "cannot", "stack trace", "nullreference")
+
+
+def m9_bad_log_lines(plog):
+    """M9 (review 9.2): Player.log lines naming the mod that read as failures. The row once passed on bridge errors alone
+    and ignored the log the mod's own load errors land in."""
+    return [ln for ln in plog or [] if any(w in ln.lower() for w in _PLOG_BAD)]
+
+
+OFF_SITE_RECTS = []      # scenes built OUTSIDE SITE (B4d's powered stub ~70 cells away); SITE's teardown never reached them
+
+
+def clear_off_site(call):
+    """Destroy every registered off-SITE scene (review 9.8: the stub was left standing when a row threw before its own
+    teardown, and the finally cleared SITE only). Returns the rects it tried."""
+    done = []
+    while OFF_SITE_RECTS:
+        r = OFF_SITE_RECTS.pop()
+        done.append(r)
+        try:
+            call("jawa/destroy_batch", rects=r, categories="All")
+        except Exception:                    # noqa: BLE001 - best effort, the rest still go
+            pass
+    return done
+
+
 def hrow(rows, rid, status, cls, detail):
     """A harness/site row: a row of its own standalone; in SHARED mode only when it is not PASS."""
     if SHARED and status == "PASS":
@@ -878,16 +914,16 @@ def live_battery(B, fresh_map=False, rows=None):
             "MOD", fr)
     # ---------------------------------------------------------------- M5: local invalidation
     hashes0 = c0.get("edgeHashes") or {}
-    B.call("jawa/build_batch", ops=ops("PowerConduit", [(FAR[-1][0] + 1, FAR[-1][1])]), faction="player", wipeExisting=False)
+    m5_build = B.call("jawa/build_batch", ops=ops("PowerConduit", [(FAR[-1][0] + 1, FAR[-1][1])]), faction="player", wipeExisting=False)
     B.ticks(2)
     c1 = B.probe("census")
     hashes1 = c1.get("edgeHashes") or {}
     changed = sorted(k for k in hashes0 if k in hashes1 and hashes0[k] != hashes1[k])
     gone = sorted(k for k in hashes0 if k not in hashes1)
     far_keys = [k for k in gone + changed if ("%d," % FAR[0][0]) in k or ("%d," % FAR[-1][0]) in k]
-    m5 = not [k for k in changed + gone if k not in far_keys] and (c1.get("lastPlanned") or 0) <= 2
+    m5 = m5_verdict(changed, gone, far_keys, c1.get("lastPlanned"), m5_build)
     row(rows, "M5_local_invalidation", "PASS" if m5 else "FAIL", "MOD",
-        {"changed": changed, "gone": gone, "lastPlanned": c1.get("lastPlanned"), "lastReused": c1.get("lastReused")})
+        {"changed": changed, "gone": gone, "farKeys": far_keys, "buildSuccess": (m5_build or {}).get("success"), "lastPlanned": c1.get("lastPlanned"), "lastReused": c1.get("lastReused")})
     # ---------------------------------------------------------------- M8: a break -> two dangling ends
     B.call("jawa/destroy_batch", rects="%d,%d,1,1" % GAP, categories="Building")
     B.ticks(2)
@@ -1073,6 +1109,7 @@ def lane_a_live(B, rows, log):
     # live ends on screen); framed on the scene, one of the scene's. Measured 2026-10-09: a whole-scene frame alone could not tell.
     fx, fz = (X0 - 70, Z0) if X0 >= 80 else (X0 + 70, Z0)
     frect = "%d,%d,8,6" % (fx - 1, fz - 1)
+    OFF_SITE_RECTS.append(frect)         # review 9.8: torn down by the suite's finally even if a row below throws
     B.call("jawa/destroy_batch", rects=frect, categories="All")
     B.call("jawa/set_terrain_batch", ops="Soil:" + frect)
     B.call("jawa/set_fog", action="unfog", rect=frect)
@@ -1115,6 +1152,8 @@ def lane_a_live(B, rows, log):
         and c_.get("sparkSet") == min(24, c_.get("liveEndsAll") or 0)
     row(rows, "B4d_spark_budget_shared_visible_first", "PASS" if b4d else "FAIL", "MOD", bud)
     B.call("jawa/destroy_batch", rects=frect, categories="All")
+    if frect in OFF_SITE_RECTS:
+        OFF_SITE_RECTS.remove(frect)
     B.ticks(2)
     B.probe("poll")
     frame_fit(B, SITE)   # 2026-10-10: the kept zoom can be a 12x6 view on the full list (B7 swayDraws 0, R2)
@@ -1650,9 +1689,10 @@ def run_removal_check(args):
         tail = f.read().decode("utf-8", "replace").splitlines()
     plog = [ln.strip()[:240] for ln in tail if any(m in ln for m in MOD_MARKERS)]
     lt = B.call("jawa/list_things", defName="PowerConduit", limit=3)
-    row(rows, "M9_remove_mod_clean", "PASS" if not ours and lt.get("things") else "FAIL", "MOD",
+    plog_bad = m9_bad_log_lines(plog)
+    row(rows, "M9_remove_mod_clean", "PASS" if not ours and not plog_bad and lt.get("things") else "FAIL", "MOD",
         {"running": len(running), "loadSeconds": waited, "errorsNamingMod": [str(e.get("Message", ""))[:240] for e in ours[:6]],
-         "playerLogLinesNamingMod": plog[:8], "otherErrors": [str(e.get("Message", ""))[:160] for e in errs if e not in ours][:6],
+         "playerLogLinesNamingMod": plog[:8], "playerLogErrorLines": plog_bad[:8], "otherErrors": [str(e.get("Message", ""))[:160] for e in errs if e not in ours][:6],
          "newWarnings": len(new) - len(errs), "conduitStillThere": len(lt.get("things") or [])})
     return res
 
@@ -1813,6 +1853,7 @@ def live_battery_chain(t):
                 t.session.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
             except Exception:                # noqa: BLE001 - the runner's own sweep still follows
                 pass
+            clear_off_site(t.session.call)
             _set_origin(150, 150)
 
 
