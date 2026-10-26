@@ -30,6 +30,12 @@
     <fillPercent>0.25</fillPercent>
     <rotatable>false</rotatable>
     <neverMultiSelect>false</neverMultiSelect>
+    <!-- BuildingBase sets no tickerType (= Never): CompPipeRupture's
+         CompTick (per-tick jet countdown, unresolved-goodwill timer, the
+         depressurize check that ends a rupture) never ran, so a rupture
+         never jetted and never stopped. Normal, because the comp counts
+         single ticks; an intact segment returns on its first check. -->
+    <tickerType>Normal</tickerType>
     <size>(1,1)</size>
     <constructEffect>ConstructMetal</constructEffect>
     <designationCategory>Production</designationCategory>

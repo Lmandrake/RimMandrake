@@ -54,6 +54,12 @@
     <selectable>true</selectable>
     <drawerType>MapMeshAndRealTime</drawerType>
     <drawOffscreen>true</drawOffscreen>
+    <!-- BuildingBase sets no tickerType (= Never), which left every comp
+         below dead: CompProjectileInterceptor recharges and collapses in
+         CompTick, and the veil/screen/envelope sample on
+         IsHashIntervalTick(250) inside CompTick. Vanilla's own
+         GravshipShieldGenerator sets Normal for the same reason. -->
+    <tickerType>Normal</tickerType>
     <repairEffect>Repair</repairEffect>
     <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
     <constructEffect>ConstructMetal</constructEffect>

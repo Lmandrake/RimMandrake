@@ -10,7 +10,7 @@ three times: RM_CompCrackFall, a Plant comp overriding CompTick (plants only tic
 Offline, no game, no build. Reads every Defs XML and C# under src/:
   * resolves each concrete ThingDef's ParentName chain INSIDE src/ (comps lists concatenate, tickerType is
     first-explicit-wins up the chain); a chain that leaves src/ is resolved only for the vanilla roots in
-    VANILLA_TICKER (PlantBase/TreeBase -> Long, pawn bases -> Normal); anything else is counted UNRESOLVED,
+    VANILLA_TICKER (PlantBase/TreeBase -> Long, pawn bases -> Normal, BuildingBase/BenchBase -> Never); anything else is counted UNRESOLVED,
     never guessed;
   * maps each <li Class="PropsClass"> to its comp class (<compClass> in XML, else `compClass = typeof(X)`
     in the CompProperties constructor), then to the tick methods that class overrides, through its src/
@@ -38,7 +38,11 @@ SKIP = {"bin", "obj", "__pycache__", ".git", "Textures", "Sounds", "Assemblies",
 
 METHOD_FOR = {"Normal": "CompTick", "Rare": "CompTickRare", "Long": "CompTickLong"}
 VANILLA_TICKER = {"PlantBase": "Long", "TreeBase": "Long", "BasePawn": "Normal", "BaseHumanlike": "Normal",
-                  "AnimalThingBase": "Normal", "BaseAnimal": "Normal"}
+                  "AnimalThingBase": "Normal", "BaseAnimal": "Normal",
+                  # TICKERLINT_BUILDINGBASE_WIDEN_VANILLA_NEVER: vanilla 1.6 Core Buildings_Base.xml BuildingBase and
+                  # Buildings_Production.xml BenchBase (ParentName BuildingBase) set no tickerType, and ThingDef.tickerType
+                  # defaults to TickerType.Never (decompiled Verse/ThingDef.cs, Verse/TickerType.cs).
+                  "BuildingBase": "Never", "BenchBase": "Never"}
 PAWN_ROOTS = {"BasePawn", "BaseHumanlike", "AnimalThingBase", "BaseAnimal"}
 # Pawn.Tick (decompiled 1.6, RimSage) also calls TickRare every 250 ticks, so a pawn def with tickerType Normal
 # runs BOTH CompTick and CompTickRare. Every other thing runs only the one method its tickerType names.
@@ -400,10 +404,18 @@ public class CompPN : CompProperties { public CompPN() { compClass = typeof(Comp
     f, c = lint(cs, D('<ThingDef><defName>B</defName><tickerType>Never</tickerType><comps/></ThingDef>'), tpatch)
     if f or c["ticking_comps"] != 1:
         fails.append("patch that sets tickerType Long and adds a Long comp flagged or unseen: %r %r" % (f, c))
+    # TICKERLINT_BUILDINGBASE_WIDEN_VANILLA_NEVER: vanilla BuildingBase/BenchBase resolve to Never, not UNRESOLVED.
+    for root in ("BuildingBase", "BenchBase"):
+        f, c = lint(cs, D('<ThingDef ParentName="%s"><defName>W</defName><comps><li Class="CompPN"/></comps></ThingDef>' % root))
+        if [x[0] for x in f] != ["NEVER_TICKER"] or c["unresolved_ticker"]:
+            fails.append("%s child with a CompTick comp and no tickerType not flagged NEVER_TICKER: %r %r" % (root, f, c))
+        f, c = lint(cs, D('<ThingDef ParentName="%s"><defName>W</defName><tickerType>Normal</tickerType><comps><li Class="CompPN"/></comps></ThingDef>' % root))
+        if f or c["ticking_comps"] != 1:
+            fails.append("%s child with tickerType Normal + CompTick comp flagged or unseen: %r %r" % (root, f, c))
     if fails:
         print("lint_ticker_compat selftest FAILED:\n  " + "\n  ".join(fails))
         return 1
-    print("lint_ticker_compat selftest: 14/14 cases OK")
+    print("lint_ticker_compat selftest: 18/18 cases OK")
     return 0
 
 
