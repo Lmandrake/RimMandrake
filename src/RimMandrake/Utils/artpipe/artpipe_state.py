@@ -253,7 +253,9 @@ def cmd_collect(args) -> int:
                 job = json.loads(f.read_text())
             except (OSError, ValueError):
                 continue
-            dest = job.get("install_to")
+            # collect_one records the dest with its leading '/' stripped: compare the same form, or an
+            # install_to of "/src/..." is never seen as collected and is re-collected on every run (review w94)
+            dest = (job.get("install_to") or "").lstrip("/")
             if dest and (job["id"], dest) not in done:
                 pairs.append((job["id"], dest))
     else:
@@ -316,6 +318,15 @@ def _where_is(root: Path, name: str) -> tuple[str, int] | None:
     return best
 
 
+def _other_terminal(root: Path, job_name: str, d: str) -> bool:
+    """True when ROOT already files JOB_NAME in the OTHER terminal stage (done vs failed share a rank). Copying the
+    source's record in beside it made a done/failed twin of one job (review w94: 4 of the live queue's 32 twins);
+    the destination's own terminal record is the newer truth and is kept."""
+    if STAGE_RANK.get(d) != STAGE_RANK["done"]:
+        return False
+    return any((root / o / job_name).exists() for o in ("done", "failed") if o != d)
+
+
 def migrate(src: Path, dst: Path, dry: bool) -> dict:
     stats: dict = {}
     # queue dirs: stage precedence, never regress a job
@@ -329,11 +340,17 @@ def migrate(src: Path, dst: Path, dry: bool) -> dict:
             if not f.is_file():
                 continue
             if f.name.endswith(".manifest.json") or not f.name.endswith(".json"):
+                if f.name.endswith(".manifest.json") and _other_terminal(dst, f.name[:-len(".manifest.json")] + ".json", d):
+                    stats["kept_other_terminal"] = stats.get("kept_other_terminal", 0) + 1
+                    continue
                 _copy(f, dst / d / f.name, dry, stats, f"{d}/other")
                 continue
             here = _where_is(dst, f.name)
             if here is not None and here[1] > rank:
                 stats["kept_further_along"] = stats.get("kept_further_along", 0) + 1
+                continue
+            if _other_terminal(dst, f.name, d):
+                stats["kept_other_terminal"] = stats.get("kept_other_terminal", 0) + 1
                 continue
             if not _copy(f, dst / d / f.name, dry, stats, f"{d}/jobs"):
                 continue                # never drop dst's earlier-stage copy for a job that did not arrive

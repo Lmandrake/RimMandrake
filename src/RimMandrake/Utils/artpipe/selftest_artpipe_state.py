@@ -103,6 +103,18 @@ def test_collect(tmp: Path):
     check("--from-jobs: a refused job does not block the next one",
           rc == 1 and (repo / "src/M/Textures/b1.png").is_file() and "NOT COLLECTED" in buf.getvalue()
           and "b0" in buf.getvalue() and ("b1", "src/M/Textures/b1.png") in AS._collected(st))
+    # an install_to with a leading '/' (review w94): collect_one records it stripped, so --from-jobs must compare it
+    # stripped too, or the job is collected again on every run
+    _job(st / "done", "c1", install_to="/src/M/Textures/c1.png")
+    (st / "done" / "c1.manifest.json").write_text("{}")
+    (st / "_artsrc" / "c1").mkdir(parents=True)
+    (st / "_artsrc" / "c1" / "c1.png").write_bytes(b"\x89PNGc1")
+    with contextlib.redirect_stdout(io.StringIO()):
+        for _ in range(2):
+            AS.main(["--state", str(st), "collect", "--from-jobs", "--repo", str(repo)])
+    c1 = [r for r in (st / "collected.jsonl").read_text().splitlines() if '"c1"' in r]
+    check("--from-jobs: a leading-'/' install_to is collected once, not on every run",
+          len(c1) == 1 and (repo / "src/M/Textures/c1.png").is_file())
 
 
 def test_find_legacy(tmp: Path):
@@ -174,6 +186,23 @@ def test_migrate(tmp: Path):
     check("a job that vanished mid-copy keeps dst's earlier copy (never lost from both stages)",
           st.get("vanished_mid_copy") == 1 and (dst / "pending" / "j4.json").exists()
           and not (dst / "done" / "j4.json").exists())
+    # done and failed share a rank: a job dst already files in one terminal stage must not gain a twin in the other
+    # (review w94: 4 of the live queue's 32 done/failed twins came from the legacy migrate)
+    src2, dst2 = tmp / "old2", tmp / "new2"
+    for d in ("done", "failed"):
+        _job(src2 / d, "t1")                 # already a twin in the source: the first stage walked wins
+        (src2 / d / "t1.manifest.json").write_text("{}")
+    _job(src2 / "failed", "t2")              # dst re-ran it and filed it done since
+    (src2 / "failed" / "t2.manifest.json").write_text("{}")
+    _job(dst2 / "done", "t2")
+    (dst2 / "done" / "t2.manifest.json").write_text("{}")
+    _job(src2 / "failed", "t3")              # control: a failed job with no record in dst still arrives
+    st2 = AS.migrate(src2, dst2, dry=False)
+    check("migrate never files one job in both done/ and failed/",
+          (dst2 / "done" / "t1.json").exists() and not (dst2 / "failed" / "t1.json").exists()
+          and not (dst2 / "failed" / "t1.manifest.json").exists()
+          and not (dst2 / "failed" / "t2.json").exists() and not (dst2 / "failed" / "t2.manifest.json").exists()
+          and (dst2 / "failed" / "t3.json").exists() and st2.get("kept_other_terminal") == 4)
 
 
 def test_requeue(tmp: Path):
