@@ -42,9 +42,12 @@ def _tank_units(s):
 
 
 def moved(s):
-    """-> (moved, tank units): water moved into the station's tank, or the channel it draws from fell."""
+    """-> (moved, tank units): water moved into the station's tank, or the channel it draws from fell. A fall is only
+    read when every channel fill answered both times: an unread cell after the wait (None) is no drop."""
     units = _tank_units(s) or 0
-    return units > 0 or sum(x or 0 for x in s["water1"]) < sum(x or 0 for x in s["water0"]), units
+    w0, w1 = list(s.get("water0") or []), list(s.get("water1") or [])
+    read = bool(w0) and len(w0) == len(w1) and all(x is not None for x in w0 + w1)
+    return units > 0 or (read and sum(w1) < sum(w0)), units
 
 
 def rig_readable(s):

@@ -36,6 +36,10 @@ def t_station_reach():
     check("5.4 tank=none is not a usable rig", S.rig_readable(none_tank) is False)
     check("5.4 an unread water cell is not a usable rig", S.rig_readable(blind) is False)
     check("5.4 moved() still reads tank units", S.moved(dict(good, kv={"tank": "RM_Liquid_Water:7"})) == (True, 7))
+    # review 2026-10-26: scene A graded on moved() with no readability gate; an unread fill after the wait read as a drop
+    check("5.4 an unread fill after the wait is no channel fall",
+          S.moved(dict(good, kv={"tank": "RM_Liquid_Water:0"}, water1=[None, None])) == (False, 0))
+    check("5.4 a real channel fall still moves", S.moved(dict(good, water1=[9, 12]))[0] is True)
 
 
 def t_s3():
