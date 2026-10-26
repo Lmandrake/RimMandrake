@@ -1,0 +1,2 @@
+belt_watchdog reports WEDGED ('repeating every frame', kill and relaunch) whenever the Player.log tail is dominated by one error, even when that error is a FINITE burst: 2026-10-26 a section regen printed 159 then 166 'Exception printing RM_GiantAgariluxN' NREs (AGARILUX_PRINT_FIX_NRE_ON_RELOAD) once, the count did not grow over 25 s, and the bridge answered (ticksGame advancing). Before killing on WEDGED, count the line twice ~20 s apart and call the bridge; a 'repeating every frame' verdict should require the count to grow.
+home: src/RimMandrake/Utils/belt_watchdog.py
