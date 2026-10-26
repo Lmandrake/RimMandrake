@@ -1,0 +1,2 @@
+validate_patch.py does not descend into a custom PatchOperation class (e.g. RimMandrake.StarWars.SithLine.RSW_PatchOperationSithSetting wrapping a Sequence): it reports 0 lines for the whole file, no error, no info. A silent file in its output is UNMEASURED, not passed. Evaluate the inner xpaths yourself (lxml over the merged Defs, prefix '/'); w95 did this for RSW_SithRelabel.xml (100 ops) and RSW_SithClosedRoutes.xml.
+home: skills/rimworld-modding

@@ -9,15 +9,10 @@
   frequent rimworld sound be converted to disturbances in the force in rim
   star wars."
 
-  🔴 DRAFT TEXT — NOT YET OWNER-APPROVED. Every label/description/letterText
-  below is FOUNDRY's first pass at the wording direction the item already
-  states (drone = "a disturbance in the Force" pressing on minds; soothe =
-  "the Force at peace"; the psychic ship = a ship carrying a Sith relic). Per the
-  item's own criteria this must go past the owner as a BENCH card BEFORE it
-  is deployed to the live Mods folder or the item is closed. This file is
-  committed to source only - do not deploy it with deploy_custom_mods.py
-  (apply mode) and do not close FORCE_DISTURBANCE_REFLAVOR_1 until he has
-  seen and approved this exact text.
+  OWNER-APPROVED TEXT (d4db5c07dc, 2026-10-08) and deployed: drone = "a
+  disturbance in the Force" pressing on minds; soothe = "the Force at peace";
+  the psychic ship = a ship carrying a Sith relic. A wording change is a new
+  owner card, not an edit here.
 
   LABELS AND FLAVOUR TEXT ONLY. Mechanics are untouched: same incident/
   condition defs fire, same durations, same mood/stat effects. The one
