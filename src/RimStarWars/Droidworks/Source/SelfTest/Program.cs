@@ -1,5 +1,6 @@
 // Droidworks offline fuzz entry. Knobs (forwarded by selftest_droidworks_fuzz.py): --fuzz-scale F (multiplies every
-// case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (drift|power|spike|trade|units).
+// case count; a scale that runs 0 cases FAILS, a fuzz that checked nothing is not a pass), --fuzz-seed N (replay one seed of
+// every family), --fuzz-only NAME (drift|power|spike|trade|units).
 using System;
 
 namespace RimMandrake.StarWars.Droidworks.SelfTest

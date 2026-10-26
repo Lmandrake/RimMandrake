@@ -17,6 +17,8 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
     internal static class DroidFuzz
     {
         public static long Cases, Steps;
+        // reach counters: a full default run that never fires one of these paths is blind and FAILS (see Run)
+        public static long DriftGains, Promotions, Blasts, Captures, Advantaged;
 
         internal struct Act
         {
@@ -104,7 +106,6 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
             public float scale;
             public bool enabled, promote;
             public int oracleReset;               // independent bookkeeping of the same clock
-            public long gains;
         }
 
         private static DriftWorld MakeDrift(int seed)
@@ -187,8 +188,9 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
                         ", tier " + tierBefore + ", enabled " + w.enabled + ", pool has a positive weight " + poolHas + ") says it should" + (expect ? "" : " not"));
                     if (gained >= 0)
                     {
-                        w.gains++;
+                        DriftGains++;
                         bool promoted = heldBefore.Count == 0 && w.promote && tierBefore == DroidFormatTier.Programmable;
+                        if (promoted) Promotions++;
                         Check(w.tier == (promoted ? DroidFormatTier.Sapient : tierBefore),
                             "tier went " + tierBefore + " -> " + w.tier + " on drift #" + (heldBefore.Count + 1) + " (promote " + w.promote + ")");
                         Check(w.held.Count == heldBefore.Count + 1, "a single check gained more than one idiosyncrasy");
@@ -369,6 +371,7 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
                     Check((scale > 0f) == wantBlast, "blast=" + (scale > 0f) + " for charge " + charge + " density " + density + " deny " + deny + " (wanted " + wantBlast + ")");
                     if (scale > 0f)
                     {
+                        Blasts++;
                         float radius = DroidworksKernel.DetonationRadius(3.9f, scale);
                         int dmg = DroidworksKernel.DetonationDamage(scale);
                         double so = (double)charge * effO * size;
@@ -446,7 +449,7 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
                 w.resLow = DroidworksKernel.ResistanceAfterSpike(w.resLow, w.perUse, level);
                 rejected = w.resLow > 0f;
             }
-            if (!rejected) w.captured = true;
+            if (!rejected) { w.captured = true; if (w.perUse > 0f && w.hasGuest) Captures++; }
             Check(w.resLow >= 0f, "resistance went negative");
             Check(w.resLow <= before, "resistance rose after a spike: " + before + " -> " + w.resLow);
             if (w.perUse > 0f && w.hasGuest && before > 0f) Check(w.resLow < before, "a spike made no progress at level " + level + " (resistance stuck at " + before + ")");
@@ -478,6 +481,7 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
             float v = VanillaRound(Vanilla[a.b % Vanilla.Length] * (a.c % 5 == 0 ? 1f : 1f + (a.c % 7) * 0.013f));
             const float MinBuy = 0.5f, MinSell = 0.01f;
             float adv = DroidworksKernel.TradeAdvantage(p, known, th, w.perSide);
+            if (adv != 0f) Advantaged++;
             int net = (p ? 1 : -1) + (known ? (th ? -1 : 1) : 0);
             Check(adv == net * w.perSide, "advantage " + adv + " != net " + net + " x " + w.perSide);
             Check(Math.Abs(adv) <= 2 * w.perSide + 1e-9f, "advantage " + adv + " beyond two sides");
@@ -658,6 +662,11 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
+            if (only == null && !oneSeed.HasValue && scale >= 1)
+            {
+                Console.WriteLine("reached: drift gains " + DriftGains + ", promotions " + Promotions + ", blasts " + Blasts + ", spike captures " + Captures + ", shifted trades " + Advantaged);
+                if (DriftGains == 0 || Promotions == 0 || Blasts == 0 || Captures == 0 || Advantaged == 0) { Console.WriteLine("FAIL droidworks fuzz never reached a path (blind)"); ok = false; }
+            }
             Console.WriteLine("droidworks fuzz: " + Cases + " cases, " + Steps + " steps, " + sw.Elapsed.TotalSeconds.ToString("F2") + "s total -> " + (ok ? "OK" : "FAILED"));
             return ok;
         }
