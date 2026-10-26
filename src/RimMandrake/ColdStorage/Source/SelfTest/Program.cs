@@ -59,6 +59,11 @@ namespace RimMandrake.ColdStorage.SelfTest
             FuelInsteadOfPower();
             WallLightResync();
             WallItemPropriety();
+            SealsResinTap();
+            SealsStationClimate();
+            SealsProductHazard();
+            SealsTaste();
+            SealsGates();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -378,6 +383,73 @@ namespace RimMandrake.ColdStorage.SelfTest
                 ColdStorageKernel.WallItemSociallyProper(false, true, false, true, false, true));
             Check("hemogen facing a bloodfeeder's cell: improper",
                 !ColdStorageKernel.WallItemSociallyProper(false, true, false, true, true, true));
+        }
+
+        // 20. COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE: a resin tap draws by tree size, native trees double, settings scale
+        private static void SealsResinTap()
+        {
+            Near("no tree: nothing", ColdStorageKernel.ResinPerDay(2f, false, 1f, 25f, true, 1f), 0f);
+            Near("ungrown tree: nothing", ColdStorageKernel.ResinPerDay(2f, true, 0f, 25f, false, 1f), 0f);
+            Near("grown 25-wood tree: the def rate", ColdStorageKernel.ResinPerDay(2f, true, 1f, 25f, false, 1f), 2f);
+            Near("native tree: double", ColdStorageKernel.ResinPerDay(2f, true, 1f, 25f, true, 1f), 4f);
+            Near("half-grown: half", ColdStorageKernel.ResinPerDay(2f, true, 0.5f, 25f, false, 1f), 1f);
+            Near("shrub yield clamps at 0.5", ColdStorageKernel.ResinPerDay(2f, true, 1f, 2f, false, 1f), 1f);
+            Near("giant yield clamps at 2", ColdStorageKernel.ResinPerDay(2f, true, 1f, 500f, false, 1f), 4f);
+            Near("settings x0.5", ColdStorageKernel.ResinPerDay(2f, true, 1f, 25f, false, 0.5f), 1f);
+            Near("settings off: nothing", ColdStorageKernel.ResinPerDay(2f, true, 1f, 25f, true, 0f), 0f);
+        }
+
+        // 21. The sand-drying box works only under open sky and only while it is hot outdoors
+        private static void SealsStationClimate()
+        {
+            Check("hot, open sky: works", ColdStorageKernel.StationClimateOk(40f, 35f, false, true));
+            Check("at the threshold: works", ColdStorageKernel.StationClimateOk(35f, 35f, false, true));
+            Check("too cold: idle", !ColdStorageKernel.StationClimateOk(20f, 35f, false, true));
+            Check("hot but roofed: idle", !ColdStorageKernel.StationClimateOk(40f, 35f, true, true));
+            Check("roofed, no sky needed, no minimum: works", ColdStorageKernel.StationClimateOk(-50f, -274f, true, false));
+        }
+
+        // 22. Tar sealing: below the skill threshold a bill's product is ruined at the set chance; never for a debug spawn
+        private static void SealsProductHazard()
+        {
+            Near("cook 4 < 8: 10 %", ColdStorageKernel.ProductHazardChance(true, 4, 8, 0.1f), 0.1f);
+            Near("cook 8: safe", ColdStorageKernel.ProductHazardChance(true, 8, 8, 0.1f), 0f);
+            Near("no worker: safe", ColdStorageKernel.ProductHazardChance(false, 0, 8, 0.1f), 0f);
+            Near("chance clamps at 1", ColdStorageKernel.ProductHazardChance(true, 0, 8, 3f), 1f);
+            Near("negative chance clamps at 0", ColdStorageKernel.ProductHazardChance(true, 0, 8, -1f), 0f);
+        }
+
+        // 23. A pawn's taste is stable per pawn and food, and the share of strange reactions follows the chance
+        private static void SealsTaste()
+        {
+            Check("same pawn and food: same reaction", ColdStorageKernel.TasteIsStrange(17, 99, 0.3f) == ColdStorageKernel.TasteIsStrange(17, 99, 0.3f));
+            Check("chance 0: never strange", !ColdStorageKernel.TasteIsStrange(17, 99, 0f));
+            Check("chance 1: always strange", ColdStorageKernel.TasteIsStrange(17, 99, 1f));
+            int strange = 0;
+            for (int pawn = 0; pawn < 2000; pawn++)
+            {
+                if (ColdStorageKernel.TasteIsStrange(pawn * 7919 + 13, 4242, 0.25f))
+                {
+                    strange++;
+                }
+            }
+            Check("2000 pawns at 25 %: 20..30 % strange", strange >= 400 && strange <= 600, "got " + strange);
+        }
+
+        // 24. Gates: an external Mod Settings switch ("Type:field") closes a station only when it can be read and is off
+        private static void SealsGates()
+        {
+            Check("ref splits", ColdStorageKernel.SplitSettingRef("A.B.Settings:tarSealEnabled", out string t, out string f)
+                && t == "A.B.Settings" && f == "tarSealEnabled");
+            Check("no colon: malformed", !ColdStorageKernel.SplitSettingRef("A.B.Settings", out _, out _));
+            Check("empty field: malformed", !ColdStorageKernel.SplitSettingRef("A.B:", out _, out _));
+            Check("empty type: malformed", !ColdStorageKernel.SplitSettingRef(":f", out _, out _));
+            Check("null: malformed", !ColdStorageKernel.SplitSettingRef(null, out _, out _));
+            Check("own switch off: closed", !ColdStorageKernel.GateOpen(false, false, false, false));
+            Check("own on, no external: open", ColdStorageKernel.GateOpen(true, false, false, false));
+            Check("external off: closed", !ColdStorageKernel.GateOpen(true, true, true, false));
+            Check("external on: open", ColdStorageKernel.GateOpen(true, true, true, true));
+            Check("external unreadable: open", ColdStorageKernel.GateOpen(true, true, false, false));
         }
     }
 }

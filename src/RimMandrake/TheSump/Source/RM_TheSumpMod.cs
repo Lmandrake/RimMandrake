@@ -83,6 +83,10 @@ namespace RimMandrake.TheSump
         public static float capstanMaxMass = 150f;
         public static float capstanMaxBodySize = 2.5f;
         public static float capstanSnapDamage = 20f;
+        // COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT: the tar-sealing vat and its bills (Defs/ThingDefs_Buildings/RM_TarSealing.xml)
+        // read these by name through Cold Storage's gate and hazard extensions ("RimMandrake.TheSump.RM_TheSumpSettings:field").
+        public static bool tarSealEnabled = true;
+        public static float tarSealRuinChance = 0.10f;
         public override void ExposeData()
         {
             base.ExposeData();
@@ -104,6 +108,8 @@ namespace RimMandrake.TheSump
             Scribe_Values.Look(ref capstanMaxMass, "capstanMaxMass", 150f, true);
             Scribe_Values.Look(ref capstanMaxBodySize, "capstanMaxBodySize", 2.5f, true);
             Scribe_Values.Look(ref capstanSnapDamage, "capstanSnapDamage", 20f, true);
+            Scribe_Values.Look(ref tarSealEnabled, "tarSealEnabled", true, true);
+            Scribe_Values.Look(ref tarSealRuinChance, "tarSealRuinChance", 0.10f, true);
         }
 
                 // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -181,6 +187,16 @@ namespace RimMandrake.TheSump
                 list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
                     "The tar vault (RM_TarVault) freezes rot on anything sealed inside it. "
                   + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Tar sealing (with Cold Storage)", RimMandrake.Shared.SettingScope.Now, new[] { "tarSealEnabled", "tarSealRuinChance" }))
+            {
+                list.CheckboxLabeled("Tar-sealing vat and its bills", ref tarSealEnabled,
+                    "Shipped default: ON. Needs RimMandrake: Cold Storage. The vat seals meat, fish, eggs and produce under "
+                  + "bitumen; sealed food keeps until opened and ages into pitch-aged food. Off: the vat and its bills are hidden.");
+                list.Label("Chance a stack is ruined when the cook is below Cooking 8: " + tarSealRuinChance.ToStringPercent());
+                tarSealRuinChance = Mathf.Round(list.Slider(tarSealRuinChance, 0f, 0.5f) * 100f) / 100f;
                 list.GapLine();
             }
 

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The strange seals (design/RimStarWars/cold_storage_line_2026-10-26.md §4.4): shared categories, item and recipe
+       parents, research, thoughts and the break-seal job. Tar goods and the tar vat live in The Sump, which owns bitumen,
+       and use these parents through MayRequire. -->
+
+  <ThingCategoryDef>
+    <defName>RM_SealedFoods</defName>
+    <label>sealed foods</label>
+    <parent>Foods</parent>
+  </ThingCategoryDef>
+
+  <ThingCategoryDef>
+    <defName>RM_PreservedFoods</defName>
+    <label>preserved foods</label>
+    <parent>Foods</parent>
+  </ThingCategoryDef>
+
+  <ThingCategoryDef>
+    <defName>RM_AgedFoods</defName>
+    <label>aged foods</label>
+    <parent>FoodRaw</parent>
+  </ThingCategoryDef>
+
+  <!-- A sealed stack: does not rot while sealed (CompSealed), eaten only in desperation until the seal is broken, then
+       rots from that moment. Ingredients are kept through aging (CompSealed.Replace). -->
+  <ThingDef Name="RM_SealedFoodBase" ParentName="OrganicProductBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <thingCategories>
+      <li>RM_SealedFoods</li>
+    </thingCategories>
+    <graphicData>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.06</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meal</foodType>
+      <preferability>DesperateOnly</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Preserved but not sealed (sand-dried, pickled): rots slowly from the start, at the rotFactor its
+       ColdStoragePreservedExtension names. -->
+  <ThingDef Name="RM_PreservedFoodBase" ParentName="OrganicProductBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <thingCategories>
+      <li>RM_PreservedFoods</li>
+    </thingCategories>
+    <graphicData>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.3</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meal</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+      <li Class="CompProperties_FoodPoisonable" />
+    </comps>
+  </ThingDef>
+
+  <!-- What a seal ages into: raw food with a taste, a cooking ingredient in its own right. -->
+  <ThingDef Name="RM_AgedFoodBase" ParentName="OrganicProductBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+    </thingCategories>
+    <graphicData>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>2.6</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Meal</foodType>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+      <li Class="CompProperties_FoodPoisonable" />
+    </comps>
+  </ThingDef>
+
+  <!-- Sealing bills: food measured by nutrition, the sealing agent by count (IngredientValueGetter_NutritionOrCount).
+       A bill takes 0.5 nutrition of food and makes 10 units. -->
+  <RecipeDef Name="RM_SealRecipeBase" Abstract="True">
+    <ingredientValueGetterClass>RimMandrake.ColdStorage.IngredientValueGetter_NutritionOrCount</ingredientValueGetterClass>
+    <workAmount>800</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Root</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>Meat_Human</li>
+        <li>Meat_Megaspider</li>
+        <li MayRequire="Ludeon.RimWorld.Anomaly">Meat_Twisted</li>
+      </disallowedThingDefs>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <ResearchProjectDef>
+    <defName>RM_ResinWork</defName>
+    <label>resin work</label>
+    <description>Tapping trees for their sap, boiling it down to a sealing resin, and keeping food under it or in brine. Resin-sealed food keeps until the seal is broken, and slowly turns to something sweeter.</description>
+    <baseCost>200</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>7.20</researchViewY>
+  </ResearchProjectDef>
+
+  <ThoughtDef>
+    <defName>RM_AtePreservedDelicacy</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate an aged delicacy</label>
+        <description>Sweet, resinous and deep. Time did something good to that.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RM_AteStrangePreserved</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate something strange</label>
+        <description>Everyone else seems to like it. It tasted of old trees and something I cannot name.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Amber is a fungicide resin (portaak amber): a day of slightly quicker immunity. -->
+  <HediffDef>
+    <defName>RM_AmberAntiseptic</defName>
+    <label>amber aftertaste</label>
+    <description>Resin from aged amber food. It slightly helps the body fight infection for a day.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.75, 0.4)</defaultLabelColor>
+    <isBad>false</isBad>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statFactors>
+          <ImmunityGainSpeed>1.08</ImmunityGainSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- Break seal: the gizmo marks a sealed stack, a basic worker opens it (JobDriver_BreakSeal). -->
+  <DesignationDef>
+    <defName>RM_BreakSeal</defName>
+    <texturePath>UI/Designators/Open</texturePath>
+    <targetType>Thing</targetType>
+  </DesignationDef>
+
+  <JobDef>
+    <defName>RM_BreakSealJob</defName>
+    <driverClass>RimMandrake.ColdStorage.JobDriver_BreakSeal</driverClass>
+    <reportString>breaking the seal on TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_BreakSeal</defName>
+    <label>break seals</label>
+    <giverClass>RimMandrake.ColdStorage.WorkGiver_BreakSeal</giverClass>
+    <workType>BasicWorker</workType>
+    <verb>open</verb>
+    <gerund>opening</gerund>
+    <priorityInType>45</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+</Defs>

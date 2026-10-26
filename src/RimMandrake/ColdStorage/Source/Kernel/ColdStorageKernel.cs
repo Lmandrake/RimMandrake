@@ -390,5 +390,103 @@ namespace RimMandrake.ColdStorage
             }
             return !facingRoomIsPrisonCell;
         }
+
+        // ---- Seals line (COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE, COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT) ----
+
+        /// <summary>Resin a tap draws from its tree in one day: the def rate, scaled by how grown the tree is (0..1), by
+        /// its harvest yield against a 25-wood reference (clamped 0.5..2, so a sapling-yield shrub still drips and a
+        /// giant does not flood), doubled for a tree native to the map's biome, then by the Mod Settings multiplier.
+        /// No tree, or a tree not yet grown at all, gives nothing.</summary>
+        public static float ResinPerDay(float baseRate, bool hasTree, float growth, float harvestYield, bool nativeTree, float settingMult)
+        {
+            if (!hasTree || baseRate <= 0f || settingMult <= 0f)
+            {
+                return 0f;
+            }
+            float g = Clamp01(growth);
+            float y = harvestYield / 25f;
+            if (y < 0.5f)
+            {
+                y = 0.5f;
+            }
+            else if (y > 2f)
+            {
+                y = 2f;
+            }
+            return baseRate * g * y * (nativeTree ? 2f : 1f) * settingMult;
+        }
+
+        /// <summary>Whether a climate-bound station (a sand-drying box) works now: hot enough outdoors, and under open
+        /// sky when it needs the sun. A minimum at or below -273 means no heat is needed.</summary>
+        public static bool StationClimateOk(float outdoorTemp, float minOutdoorTemp, bool roofed, bool needsOpenSky)
+        {
+            if (needsOpenSky && roofed)
+            {
+                return false;
+            }
+            return minOutdoorTemp <= -273f || outdoorTemp >= minOutdoorTemp;
+        }
+
+        /// <summary>Chance a crafted product is spoiled by an unskilled hand: the def chance when the worker's skill is
+        /// under <paramref name="belowLevel"/>, nothing otherwise, nothing with no worker (a debug spawn), clamped 0..1.</summary>
+        public static float ProductHazardChance(bool hasWorker, int skillLevel, int belowLevel, float chance)
+        {
+            if (!hasWorker || skillLevel >= belowLevel)
+            {
+                return 0f;
+            }
+            return Clamp01(chance);
+        }
+
+        /// <summary>A pawn's reaction to a preserved taste, stable per pawn and food: the same pawn always finds the same
+        /// amber-aged fruit strange or wonderful. A seed from the two ids picks a value in [0, 1) against the chance.</summary>
+        public static bool TasteIsStrange(int pawnSeed, int foodSeed, float strangeChance)
+        {
+            if (strangeChance <= 0f)
+            {
+                return false;
+            }
+            if (strangeChance >= 1f)
+            {
+                return true;
+            }
+            unchecked
+            {
+                uint h = (uint)pawnSeed * 2654435761u ^ (uint)foodSeed * 2246822519u;
+                h ^= h >> 15;
+                h *= 2246822519u;
+                h ^= h >> 13;
+                h *= 3266489917u;
+                h ^= h >> 16;
+                return (h & 0xFFFFFF) / 16777216f < strangeChance;
+            }
+        }
+
+        /// <summary>A "Type:field" setting reference for an external gate: the type part and the field part, or false when
+        /// the reference is malformed (no colon, or an empty half).</summary>
+        public static bool SplitSettingRef(string reference, out string typeName, out string fieldName)
+        {
+            typeName = null;
+            fieldName = null;
+            if (string.IsNullOrEmpty(reference))
+            {
+                return false;
+            }
+            int c = reference.LastIndexOf(':');
+            if (c <= 0 || c >= reference.Length - 1)
+            {
+                return false;
+            }
+            typeName = reference.Substring(0, c).Trim();
+            fieldName = reference.Substring(c + 1).Trim();
+            return typeName.Length > 0 && fieldName.Length > 0;
+        }
+
+        /// <summary>A gate is open when its own switch is on and, if it names an external switch, that one is too. An
+        /// external switch that cannot be read (its mod is absent) counts as on: a missing mod must not hide our work.</summary>
+        public static bool GateOpen(bool ownSwitch, bool hasExternal, bool externalReadable, bool externalValue)
+        {
+            return ownSwitch && (!hasExternal || !externalReadable || externalValue);
+        }
     }
 }

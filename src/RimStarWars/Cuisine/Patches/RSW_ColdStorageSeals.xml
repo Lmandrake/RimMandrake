@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE (design/RimStarWars/cold_storage_line_2026-10-26.md §4.4): Star Wars
+       inputs for the Cold Storage seals line, added from here so Cold Storage names nothing canon. Every operation
+       is conditional on the defs it touches, so either mod runs without the other. -->
+
+  <!-- Taozin brine is the canon pickling brine: every brine-crock bill takes it. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RecipeDef[defName="RM_PickleMeat"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/RecipeDef[defName="RM_PickleMeat" or defName="RM_PickleFish" or defName="RM_PickleRoe" or defName="RM_PickleVeg" or defName="RM_PickleEgg"]/ingredients/li[2]/filter/thingDefs</xpath>
+      <value>
+        <li>RSW_TaozinBrine</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RecipeDef[defName="RM_PickleMeat"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/RecipeDef[defName="RM_PickleMeat" or defName="RM_PickleFish" or defName="RM_PickleRoe" or defName="RM_PickleVeg" or defName="RM_PickleEgg"]/fixedIngredientFilter/thingDefs</xpath>
+      <value>
+        <li>RSW_TaozinBrine</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- Bestiary roe (coodler roe and kin) pickles as roe. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_EggRoeUnfertilized"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/RecipeDef[defName="RM_PickleRoe"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/RecipeDef[defName="RM_PickleRoe"]/ingredients/li[1]/filter/thingDefs</xpath>
+            <value>
+              <li>RSW_EggRoeUnfertilized</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/RecipeDef[defName="RM_PickleRoe"]/fixedIngredientFilter/thingDefs</xpath>
+            <value>
+              <li>RSW_EggRoeUnfertilized</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+  <!-- The shipped Grey-salt rations are salt-crusted food: tag them so recipes can require the method (§4.4, §5). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RimMandrake.ColdStorage.ColdStorageMethodDef[defName="RM_ColdMethod_SaltCrust"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="RSW_SaltCuredRation_Amber" or defName="RSW_SaltCuredRation_Pink" or defName="RSW_SaltCuredRation_Violet" or defName="RSW_SaltCuredRation_White"]</xpath>
+      <value>
+        <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+          <method>RM_ColdMethod_SaltCrust</method>
+          <flavours>
+            <li>salty</li>
+            <li>crystal</li>
+          </flavours>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

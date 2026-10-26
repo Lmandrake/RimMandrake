@@ -44,6 +44,8 @@ namespace RimMandrake.ColdStorage
             }
             bool[] sealable = new bool[max];
             float[] factors = new float[max];
+            bool[] stationClimate = new bool[max];
+            bool anyStation = false;
             bool any = false;
             bool anyFactor = false;
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -63,7 +65,14 @@ namespace RimMandrake.ColdStorage
                 {
                     climateDefs.Add(d);
                 }
+                if (d.HasComp(typeof(CompStationClimate)))
+                {
+                    stationClimate[d.index] = true;
+                    anyStation = true;
+                }
             }
+            CompStationClimate.byIndex = anyStation ? stationClimate : null;
+            ColdStorageGates.HideEmptyRecipes();
             CompSealed.sealableByIndex = any ? sealable : null;
             itemRotFactor = anyFactor ? factors : null;
             StripEmptyFuel();

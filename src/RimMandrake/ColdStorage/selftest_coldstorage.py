@@ -51,6 +51,44 @@ def static_checks():
                     fails.append("%s: LWM.DeepStorage.Properties under <%s>, must be <comps>" % (os.path.basename(lwm), parent.tag))
     if found == 0:
         fails.append("%s: no LWM.DeepStorage.Properties found (instrument blind?)" % os.path.basename(lwm))
+    fails += seal_static_checks(ET, re)
+    return fails
+
+
+def seal_static_checks(ET, re):
+    """COLD_STORAGE_SEALS_BUILD_RESIN_SAND_BRINE / COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT pins. An external "Type:field"
+    setting that names no public static field reads as unreadable, and GateOpen then treats it as ON: a typo would
+    silently ignore the player's switch. The Sump's tar defs ride Cold Storage parents, so each must be MayRequire'd."""
+    fails = []
+    mods = os.path.dirname(HERE)
+    files = [os.path.join(HERE, "Defs", "Seals", f) for f in sorted(os.listdir(os.path.join(HERE, "Defs", "Seals")))]
+    tar = os.path.join(mods, "TheSump", "Defs", "ThingDefs_Buildings", "RM_TarSealing.xml")
+    files.append(tar)
+    refs = 0
+    for path in files:
+        root = ET.parse(path).getroot()
+        for tag in ("settingField", "chanceSettingField"):
+            for el in root.iter(tag):
+                refs += 1
+                typ, _, field = (el.text or "").strip().rpartition(":")
+                cls = typ.rpartition(".")[2]
+                src = None
+                for d in (HERE, os.path.join(mods, "TheSump")):
+                    for dp, dn, fs in os.walk(os.path.join(d, "Source")):
+                        dn[:] = [x for x in dn if x not in ("SelfTest", "obj", "bin")]
+                        for f in fs:
+                            if f.endswith(".cs"):
+                                t = open(os.path.join(dp, f), encoding="utf-8").read()
+                                if re.search(r"class\s+%s\b" % re.escape(cls), t):
+                                    src = t
+                if src is None or not re.search(r"public\s+static\s+\w+\s+%s\s*=" % re.escape(field), src):
+                    fails.append("%s: %s %r names no public static field" % (os.path.basename(path), tag, el.text))
+        if path == tar:
+            for d in root:
+                if d.get("MayRequire") != "mandrake.rm.coldstorage":
+                    fails.append("RM_TarSealing.xml: %s %s lacks MayRequire mandrake.rm.coldstorage" % (d.tag, d.findtext("defName")))
+    if refs < 5:
+        fails.append("seal settings refs: only %d found (instrument blind?)" % refs)
     return fails
 
 

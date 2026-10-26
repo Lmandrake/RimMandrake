@@ -230,7 +230,7 @@ namespace RimMandrake.ColdStorage
                 return;
             }
             ColdStorageGateExtension ext = __instance.PlacingDef?.GetModExtension<ColdStorageGateExtension>();
-            if (ext != null && !RM_ColdStorageSettings.GateOpen(ext.gate))
+            if (ext != null && !ColdStorageGates.Open(ext))
             {
                 __result = false;
             }
@@ -331,8 +331,7 @@ namespace RimMandrake.ColdStorage
             {
                 return;
             }
-            ColdStorageGateExtension ext = __instance.GetModExtension<ColdStorageGateExtension>();
-            if (ext != null && !RM_ColdStorageSettings.GateOpen(ext.gate))
+            if (!ColdStorageGates.RecipeOpen(__instance))
             {
                 __result = false;
             }

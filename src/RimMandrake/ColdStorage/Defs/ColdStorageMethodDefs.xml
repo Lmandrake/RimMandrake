@@ -48,6 +48,7 @@
     <description>Packed in a hard crust of salt.</description>
     <mode>Sealed</mode>
     <sealedLabel>salt-crusted</sealedLabel>
+    <gate>SaltCrust</gate>
   </RimMandrake.ColdStorage.ColdStorageMethodDef>
 
   <RimMandrake.ColdStorage.ColdStorageMethodDef>

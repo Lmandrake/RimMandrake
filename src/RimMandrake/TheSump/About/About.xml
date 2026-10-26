@@ -25,6 +25,7 @@
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.coldstorage</li>
   </loadAfter>
   <description>THESUMP_RM_MOD_BUILD_1 (Phase A row 23 of
 design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).

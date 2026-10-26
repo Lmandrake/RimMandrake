@@ -12,6 +12,11 @@ namespace RimMandrake.ColdStorage
         SandDry,
         Brine,
         EvaporativeCrock,
+        SaltCrust,
+
+        /// <summary>No switch of ours: the gate reads only <see cref="ColdStorageGateExtension.settingField"/> (another
+        /// mod's switch, e.g. the Sump's tar sealing).</summary>
+        External,
     }
 
     /// <summary>
@@ -48,6 +53,65 @@ namespace RimMandrake.ColdStorage
     public class ColdStorageGateExtension : DefModExtension
     {
         public ColdStorageGate gate = ColdStorageGate.None;
+
+        /// <summary>Optional "Namespace.Type:field" naming a public static bool in another mod's settings, read live by
+        /// reflection so that mod is never a dependency. The station or recipe shows only while that switch is on too.
+        /// Unreadable (mod absent, field renamed): counts as on, with one warning.</summary>
+        public string settingField;
+
+        /// <summary>On a recipe whose ingredients come only from optional mods (MayRequire filter entries, e.g. brine
+        /// or salt): when, after load, any ingredient's filter allows nothing, the recipe is hidden rather than left as
+        /// a bill no pawn can ever fill.</summary>
+        public bool hideIfIngredientEmpty = false;
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string e in base.ConfigErrors())
+            {
+                yield return e;
+            }
+            if (!settingField.NullOrEmpty() && !ColdStorageKernel.SplitSettingRef(settingField, out _, out _))
+            {
+                yield return "settingField must read Namespace.Type:field, got " + settingField;
+            }
+            if (gate == ColdStorageGate.External && settingField.NullOrEmpty())
+            {
+                yield return "gate External needs a settingField";
+            }
+        }
+    }
+
+    /// <summary>
+    /// On a RecipeDef: an unskilled worker may spoil the product. Each product stack is rolled once; a spoiled stack
+    /// becomes the same count of <see cref="ruinedInto"/>. Tar sealing uses it (Cooking under 8: 10% tar-ruined);
+    /// Cuisine can reuse it for any "skill or it goes wrong" step.
+    /// </summary>
+    public class ColdStorageProductHazardExtension : DefModExtension
+    {
+        public SkillDef skill;
+        public int belowLevel = 8;
+        public float chance = 0.1f;
+        public ThingDef ruinedInto;
+
+        /// <summary>Optional "Namespace.Type:field" naming a public static float that overrides <see cref="chance"/>
+        /// live (a Mod Settings slider in the mod that owns the recipe). Unreadable: the def chance.</summary>
+        public string chanceSettingField;
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string e in base.ConfigErrors())
+            {
+                yield return e;
+            }
+            if (skill == null || ruinedInto == null)
+            {
+                yield return "ColdStorageProductHazardExtension needs skill and ruinedInto";
+            }
+            if (!chanceSettingField.NullOrEmpty() && !ColdStorageKernel.SplitSettingRef(chanceSettingField, out _, out _))
+            {
+                yield return "chanceSettingField must read Namespace.Type:field, got " + chanceSettingField;
+            }
+        }
     }
 
     /// <summary>
@@ -60,6 +124,10 @@ namespace RimMandrake.ColdStorage
 
         /// <summary>Fixed multiplier on the item's rot tick: 0.1 = ten times slower. 1 = tag only.</summary>
         public float rotFactor = 1f;
+
+        /// <summary>Flavour words a cuisine recipe may require or a dish may name ("amber", "pitch", "smoke", "brine").
+        /// Free vocabulary for Star Wars Cuisine; the engine only stores it (ColdStorageFlavour reads it).</summary>
+        public List<string> flavours;
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -229,6 +297,64 @@ namespace RimMandrake.ColdStorage
             if (parentDef.category != ThingCategory.Item)
             {
                 yield return "CompProperties_Sealed on a non-item def";
+            }
+        }
+    }
+
+    /// <summary>
+    /// On a workbench that works only in the right weather (a sand-drying box): bills wait while it is too cold
+    /// outdoors or the box is roofed. Enforced by a postfix on Building_WorkTable.UsableForBillsAfterFueling.
+    /// </summary>
+    public class CompProperties_StationClimate : CompProperties
+    {
+        /// <summary>Outdoor temperature at or over which it works. -9999 = no heat needed. The sand box takes it from
+        /// Mod Settings when <see cref="minTempFromSettings"/> is set.</summary>
+        public float minOutdoorTemp = -9999f;
+        public bool minTempFromSettings = false;
+        public bool needsOpenSky = false;
+
+        public CompProperties_StationClimate()
+        {
+            compClass = typeof(CompStationClimate);
+        }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef))
+            {
+                yield return e;
+            }
+            if (!typeof(Building_WorkTable).IsAssignableFrom(parentDef.thingClass))
+            {
+                yield return "CompProperties_StationClimate needs a Building_WorkTable (it gates bills)";
+            }
+        }
+    }
+
+    /// <summary>A tap on a living tree: draws resin (sap) from an adjacent tree and drops it in batches.</summary>
+    public class CompProperties_ResinTap : CompProperties
+    {
+        public ThingDef resinDef;
+
+        /// <summary>Resin a day from a fully grown, 25-wood, non-native tree, before the Mod Settings multiplier.</summary>
+        public float perDay = 2f;
+
+        public int batch = 10;
+
+        public CompProperties_ResinTap()
+        {
+            compClass = typeof(CompResinTap);
+        }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef))
+            {
+                yield return e;
+            }
+            if (resinDef == null || perDay <= 0f || batch < 1)
+            {
+                yield return "CompProperties_ResinTap needs resinDef, a positive perDay and a batch of at least 1";
             }
         }
     }

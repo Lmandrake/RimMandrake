@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Seal and preserve bills (§4.4). 0.5 nutrition of food makes 10 units. Brine and salt agents come from other
+       mods (MayRequire); a bill whose agent no loaded mod provides is hidden at startup (hideIfIngredientEmpty).
+       Star Wars Cuisine adds Taozin brine and bestiary roe by patch. -->
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SealResinFruit</defName>
+    <label>seal fruit in resin</label>
+    <description>Seal fruit in resin.</description>
+    <jobString>Sealing fruit in resin.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>RawFungus</li>
+          </disallowedThingDefs>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SealingResin</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SealingResin</li>
+      </thingDefs>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>RawFungus</li>
+      </disallowedThingDefs>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_ResinSealedFruit>10</RM_ResinSealedFruit>
+    </products>
+    <recipeUsers>
+      <li>RM_ResinSealingJarShelf</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Resin</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SealResinMeat</defName>
+    <label>seal meat in resin</label>
+    <description>Seal meat in resin.</description>
+    <jobString>Sealing meat in resin.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SealingResin</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SealingResin</li>
+      </thingDefs>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_ResinSealedMeat>10</RM_ResinSealedMeat>
+    </products>
+    <recipeUsers>
+      <li>RM_ResinSealingJarShelf</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Resin</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SealResinSweet</defName>
+    <label>seal sweets in resin</label>
+    <description>Seal sweets in resin.</description>
+    <jobString>Sealing sweets in resin.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Chocolate</li>
+            <li>InsectJelly</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_SealingResin</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Chocolate</li>
+        <li>InsectJelly</li>
+        <li>RM_SealingResin</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_ResinSealedSweet>10</RM_ResinSealedSweet>
+    </products>
+    <recipeUsers>
+      <li>RM_ResinSealingJarShelf</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Resin</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SandDryMeat</defName>
+    <label>sand-dry meat</label>
+    <description>Sand-dry meat.</description>
+    <jobString>Sand-drying meat.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SandDriedMeat>10</RM_SandDriedMeat>
+    </products>
+    <recipeUsers>
+      <li>RM_SandDryingBox</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SandDry</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SandDryFruit</defName>
+    <label>sand-dry fruit</label>
+    <description>Sand-dry fruit.</description>
+    <jobString>Sand-drying fruit.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+          <disallowedThingDefs>
+            <li>RawFungus</li>
+          </disallowedThingDefs>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedThingDefs>
+        <li>RawFungus</li>
+      </disallowedThingDefs>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SandDriedFruit>10</RM_SandDriedFruit>
+    </products>
+    <recipeUsers>
+      <li>RM_SandDryingBox</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SandDry</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SandDryFungus</defName>
+    <label>sand-dry fungus</label>
+    <description>Sand-dry fungus.</description>
+    <jobString>Sand-drying fungus.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RawFungus</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RawFungus</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SandDriedFungus>10</RM_SandDriedFungus>
+    </products>
+    <recipeUsers>
+      <li>RM_SandDryingBox</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SandDry</gate>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_PickleMeat</defName>
+    <label>pickle meat</label>
+    <description>Pickle meat.</description>
+    <jobString>Pickling meat.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PickledMeat>10</RM_PickledMeat>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_PickleFish</defName>
+    <label>pickle fish</label>
+    <description>Pickle fish.</description>
+    <jobString>Pickling fish.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PickledFish>10</RM_PickledFish>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_PickleRoe</defName>
+    <label>pickle roe</label>
+    <description>Pickle roe.</description>
+    <jobString>Pickling roe.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PickledRoe>10</RM_PickledRoe>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_PickleVeg</defName>
+    <label>pickle vegetables</label>
+    <description>Pickle vegetables.</description>
+    <jobString>Pickling vegetables.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PickledVeg>10</RM_PickledVeg>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_PickleEgg</defName>
+    <label>pickle eggs</label>
+    <description>Pickle eggs.</description>
+    <jobString>Pickling eggs.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>EggsUnfertilized</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li>EggsUnfertilized</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PickledEgg>10</RM_PickledEgg>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SaltCrustMeat</defName>
+    <label>salt-crust meat</label>
+    <description>Salt-crust meat.</description>
+    <jobString>Salt-crusting meat.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SaltCrustedMeat>10</RM_SaltCrustedMeat>
+    </products>
+    <recipeUsers>
+      <li>TableButcher</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SaltCrust</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_SaltCrustFish</defName>
+    <label>salt-crust fish</label>
+    <description>Salt-crust fish.</description>
+    <jobString>Salt-crusting fish.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SaltCrustedFish>10</RM_SaltCrustedFish>
+    </products>
+    <recipeUsers>
+      <li>TableButcher</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SaltCrust</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

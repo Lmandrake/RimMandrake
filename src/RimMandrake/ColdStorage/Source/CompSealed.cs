@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.ColdStorage
 {
@@ -211,6 +212,16 @@ namespace RimMandrake.ColdStorage
             ThingDef stuff = into.MadeFromStuff ? (old.Stuff ?? GenStuff.DefaultStuffFor(into)) : null;
             Thing made = ThingMaker.MakeThing(into, stuff);
             made.stackCount = count;
+            // Keep what it was made from: aged human meat must still be human meat to a cannibal or a vegetarian.
+            CompIngredients was = old.TryGetComp<CompIngredients>();
+            CompIngredients now = made.TryGetComp<CompIngredients>();
+            if (was != null && now != null)
+            {
+                foreach (ThingDef ing in was.ingredients)
+                {
+                    now.RegisterIngredient(ing);
+                }
+            }
             if (old.Spawned)
             {
                 Map map = old.Map;
@@ -248,14 +259,54 @@ namespace RimMandrake.ColdStorage
             {
                 yield break;
             }
-            // Instant for now; a short "break the seal" job is owed (COLD_STORAGE_SEAL_OPEN_JOB note).
+            // A short pawn job (JobDriver_BreakSeal): the gizmo marks or unmarks the stack for a basic worker.
+            DesignationManager dm = parent.Map.designationManager;
+            bool marked = dm.DesignationOn(parent, ColdStorageDefOf.RM_BreakSeal) != null;
             yield return new Command_Action
             {
-                defaultLabel = "RM_ColdStorage_BreakSeal".Translate(),
+                defaultLabel = (marked ? "RM_ColdStorage_BreakSealCancel" : "RM_ColdStorage_BreakSeal").Translate(),
                 defaultDesc = "RM_ColdStorage_BreakSealDesc".Translate(),
-                icon = TexCommand.ForbidOff,
-                action = Open,
+                icon = marked ? TexCommand.ClearPrioritizedWork : ContentFinder<Texture2D>.Get("UI/Designators/Open"),
+                action = delegate
+                {
+                    Designation d = dm.DesignationOn(parent, ColdStorageDefOf.RM_BreakSeal);
+                    if (d != null)
+                    {
+                        d.Delete();
+                    }
+                    else
+                    {
+                        dm.AddDesignation(new Designation(parent, ColdStorageDefOf.RM_BreakSeal));
+                    }
+                },
             };
+        }
+
+        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+        {
+            foreach (FloatMenuOption o in base.CompFloatMenuOptions(selPawn))
+            {
+                yield return o;
+            }
+            if (opened || !parent.Spawned || selPawn == null || !selPawn.RaceProps.Humanlike)
+            {
+                yield break;
+            }
+            string label = "RM_ColdStorage_BreakSealOrder".Translate(parent.LabelShort);
+            if (!selPawn.CanReach(parent, PathEndMode.ClosestTouch, Danger.Deadly))
+            {
+                yield return new FloatMenuOption(label + ": " + "NoPath".Translate().CapitalizeFirst(), null);
+                yield break;
+            }
+            if (!selPawn.CanReserve(parent))
+            {
+                yield return new FloatMenuOption(label + ": " + "Reserved".Translate().CapitalizeFirst(), null);
+                yield break;
+            }
+            yield return new FloatMenuOption(label, delegate
+            {
+                selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(ColdStorageDefOf.RM_BreakSealJob, parent), JobTag.Misc);
+            });
         }
 
         public override string CompInspectStringExtra()

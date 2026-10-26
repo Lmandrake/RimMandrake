@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Seal and preserve products made in this mod (§4.4). Generated once from a table; edit freely.
+       Interim vanilla textures until the queued art lands. -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SealingResin</defName>
+    <label>sealing resin</label>
+    <description>Tree sap boiled down to a thick, sticky resin. Poured over food in a jar it hardens into a seal that keeps out air and rot. Drawn from trees by a resin tap.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>1.2</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase">
+    <defName>RM_ResinSealedFruit</defName>
+    <label>resin-sealed fruit</label>
+    <description>A jar of fruit under a coat of hardened resin. It will not spoil while the seal holds, and in about twenty days it turns to amber-aged fruit. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <agesInto>RM_AmberAgedFruit</agesInto>
+        <agingDays>20</agingDays>
+        <failureChance>0.03</failureChance>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase">
+    <defName>RM_AmberAgedFruit</defName>
+    <label>amber-aged fruit</label>
+    <description>Resin-sealed fruit left to age. Sweet, resinous and faintly antiseptic, like the amber of a portaak tree. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RM_AmberAntiseptic</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <flavours>
+          <li>amber</li>
+          <li>sweet</li>
+          <li>resinous</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase">
+    <defName>RM_ResinSealedMeat</defName>
+    <label>resin-sealed meat</label>
+    <description>A jar of meat under a coat of hardened resin. It will not spoil while the seal holds, and in about twenty days it turns to amber-aged meat. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <agesInto>RM_AmberAgedMeat</agesInto>
+        <agingDays>20</agingDays>
+        <failureChance>0.03</failureChance>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase">
+    <defName>RM_AmberAgedMeat</defName>
+    <label>amber-aged meat</label>
+    <description>Resin-sealed meat left to age. Sweet, resinous and faintly antiseptic, like the amber of a portaak tree. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RM_AmberAntiseptic</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <flavours>
+          <li>amber</li>
+          <li>sweet</li>
+          <li>resinous</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase">
+    <defName>RM_ResinSealedSweet</defName>
+    <label>resin-sealed sweets</label>
+    <description>A jar of sweets under a coat of hardened resin. It will not spoil while the seal holds, and in about twenty days it turns to amber-aged sweets. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <agesInto>RM_AmberAgedSweet</agesInto>
+        <agingDays>20</agingDays>
+        <failureChance>0.03</failureChance>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase">
+    <defName>RM_AmberAgedSweet</defName>
+    <label>amber-aged sweets</label>
+    <description>Resin-sealed sweets left to age. Sweet, resinous and faintly antiseptic, like the amber of a portaak tree. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+    </thingCategories>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>RM_AmberAntiseptic</hediffDef>
+          <severity>1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_ResinSeal</method>
+        <flavours>
+          <li>amber</li>
+          <li>sweet</li>
+          <li>resinous</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase">
+    <defName>RM_SaltCrustedMeat</defName>
+    <label>salt-crusted meat</label>
+    <description>Meat packed in a hard crust of salt. It keeps while the crust is whole. Break the crust to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Pemmican</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_SaltCrust</method>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase">
+    <defName>RM_SaltCrustedFish</defName>
+    <label>salt-crusted fish</label>
+    <description>Fish packed in a hard crust of salt. It keeps while the crust is whole. Break the crust to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Pemmican</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_SaltCrust</method>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_SandDriedMeat</defName>
+    <label>sand-dried jerky</label>
+    <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Kibble</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_SandDry</method>
+        <rotFactor>0.1</rotFactor>
+        <flavours>
+          <li>dry</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_SandDriedFruit</defName>
+    <label>sand-dried fruit</label>
+    <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Kibble</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_SandDry</method>
+        <rotFactor>0.1</rotFactor>
+        <flavours>
+          <li>dry</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_SandDriedFungus</defName>
+    <label>sand-dried fungus</label>
+    <description>Strips dried in a box of hot sand under the open sky. Light and slow to spoil, which makes it good travel food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Kibble</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_SandDry</method>
+        <rotFactor>0.1</rotFactor>
+        <flavours>
+          <li>dry</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_PickledMeat</defName>
+    <label>pickled meat</label>
+    <description>Food kept in a crock of brine. It spoils very slowly and tastes sharp and salty.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_PickledFish</defName>
+    <label>pickled fish</label>
+    <description>Food kept in a crock of brine. It spoils very slowly and tastes sharp and salty.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_PickledRoe</defName>
+    <label>pickled roe</label>
+    <description>Food kept in a crock of brine. It spoils very slowly and tastes sharp and salty.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_PickledVeg</defName>
+    <label>pickles</label>
+    <description>Food kept in a crock of brine. It spoils very slowly and tastes sharp and salty.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_PickledEgg</defName>
+    <label>pickled eggs</label>
+    <description>Food kept in a crock of brine. It spoils very slowly and tastes sharp and salty.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

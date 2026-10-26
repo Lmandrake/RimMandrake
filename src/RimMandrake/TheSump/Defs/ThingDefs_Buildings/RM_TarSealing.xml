@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- COLD_STORAGE_TARSEAL_BUILD_SUMP_VAT (design/RimStarWars/cold_storage_line_2026-10-26.md §4.4): tar-sealing on
+       the Cold Storage engine. The Sump owns bitumen, so the vat lives here; every def is MayRequire'd on Cold Storage
+       (its parents, comps and extensions come from there), so the Sump runs without it.
+       Gate: RM_TheSumpSettings.tarSealEnabled (Mod Settings, "Tar sealing"). Hazard: below Cooking 8 a bill's stack is
+       ruined into RM_TarRuinedGoods at RM_TheSumpSettings.tarSealRuinChance (10 % shipped).
+       INTERIM ART: the jar shelf's tool-cabinet texture for the vat and bitumen/chocolate textures for the goods until
+       the queued art lands. -->
+
+  <ThingDef ParentName="RM_SealStationBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealingVat</defName>
+    <label>tar-sealing vat</label>
+    <description>A vat of bitumen kept hot over a firebox. Jars of meat, fish, eggs or produce are dipped and plugged with tar; the seal keeps them until it is broken, and in about thirty days the food turns to smoky, mineral pitch-aged food that good cooks prize. Hot tar is dangerous: an unskilled cook ruins some of what they seal.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/ToolCabinet</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <costList>
+      <WoodLog>30</WoodLog>
+      <Steel>40</Steel>
+      <RM_Bitumen>10</RM_Bitumen>
+    </costList>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <WorkToBuild>1500</WorkToBuild>
+      <Flammability>1</Flammability>
+    </statBases>
+    <researchPrerequisites>
+      <li>RM_TarRendering</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelCapacity>50.0</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>WoodLog</li>
+            <li>RM_Bitumen</li>
+          </thingDefs>
+        </fuelFilter>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>CompHeatPusherPowered</compClass>
+        <heatPerSecond>3</heatPerSecond>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealEnabled</settingField>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealedMeat</defName>
+    <label>tar-sealed meat</label>
+    <description>A jar of meat plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged meat. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_TarSeal</method>
+        <agesInto>RM_PitchAgedMeat</agesInto>
+        <agingDays>30</agingDays>
+        <failureChance>0.03</failureChance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_PitchAgedMeat</defName>
+    <label>pitch-aged meat</label>
+    <description>Tar-sealed meat left to age. Smoky and mineral, with a dark depth no other method gives; the best ingredient in the larder. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>3.2</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_TarSeal</method>
+        <flavours>
+          <li>pitch</li>
+          <li>smoky</li>
+          <li>mineral</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealedFish</defName>
+    <label>tar-sealed fish</label>
+    <description>A jar of fish plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged fish. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_TarSeal</method>
+        <agesInto>RM_PitchAgedFish</agesInto>
+        <agingDays>30</agingDays>
+        <failureChance>0.03</failureChance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_PitchAgedFish</defName>
+    <label>pitch-aged fish</label>
+    <description>Tar-sealed fish left to age. Smoky and mineral, with a dark depth no other method gives; the best ingredient in the larder. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>MeatRaw</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>3.2</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_TarSeal</method>
+        <flavours>
+          <li>pitch</li>
+          <li>smoky</li>
+          <li>mineral</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealedEgg</defName>
+    <label>tar-sealed eggs</label>
+    <description>A jar of eggs plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged eggs. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_TarSeal</method>
+        <agesInto>RM_PitchAgedEgg</agesInto>
+        <agingDays>30</agingDays>
+        <failureChance>0.03</failureChance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_PitchAgedEgg</defName>
+    <label>pitch-aged eggs</label>
+    <description>Tar-sealed eggs left to age. Smoky and mineral, with a dark depth no other method gives; the best ingredient in the larder. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>EggsUnfertilized</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>3.2</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_TarSeal</method>
+        <flavours>
+          <li>pitch</li>
+          <li>smoky</li>
+          <li>mineral</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SealedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealedProduce</defName>
+    <label>tar-sealed produce</label>
+    <description>A jar of produce plugged with tar. It will not spoil while the seal holds, and in about thirty days it turns to pitch-aged produce. A poor seal can fail and ruin it. Break the seal to eat it; after that it rots like fresh food.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Bitumen</texPath>
+    </graphicData>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_Sealed">
+        <method>RM_ColdMethod_TarSeal</method>
+        <agesInto>RM_PitchAgedProduce</agesInto>
+        <agingDays>30</agingDays>
+        <failureChance>0.03</failureChance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_PitchAgedProduce</defName>
+    <label>pitch-aged produce</label>
+    <description>Tar-sealed produce left to age. Smoky and mineral, with a dark depth no other method gives; the best ingredient in the larder. Most people love it; a few find it strange.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chocolate</texPath>
+      <drawSize>0.88</drawSize>
+    </graphicData>
+    <thingCategories>
+      <li>RM_AgedFoods</li>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>3.2</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AtePreservedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.15</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Plant</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_TarSeal</method>
+        <flavours>
+          <li>pitch</li>
+          <li>smoky</li>
+          <li>mineral</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealMeat</defName>
+    <label>tar-seal meat</label>
+    <description>Tar-seal meat.</description>
+    <jobString>Tar-sealing meat.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Bitumen</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Bitumen</li>
+      </thingDefs>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_TarSealedMeat>10</RM_TarSealedMeat>
+    </products>
+    <recipeUsers>
+      <li>RM_TarSealingVat</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_TarRendering</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealEnabled</settingField>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageProductHazardExtension">
+        <skill>Cooking</skill>
+        <belowLevel>8</belowLevel>
+        <chance>0.1</chance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+        <chanceSettingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealRuinChance</chanceSettingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealFish</defName>
+    <label>tar-seal fish</label>
+    <description>Tar-seal fish.</description>
+    <jobString>Tar-sealing fish.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+          </thingDefs>
+          <categories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Bitumen</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+        <li>RM_Bitumen</li>
+      </thingDefs>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_TarSealedFish>10</RM_TarSealedFish>
+    </products>
+    <recipeUsers>
+      <li>RM_TarSealingVat</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_TarRendering</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealEnabled</settingField>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageProductHazardExtension">
+        <skill>Cooking</skill>
+        <belowLevel>8</belowLevel>
+        <chance>0.1</chance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+        <chanceSettingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealRuinChance</chanceSettingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealEgg</defName>
+    <label>tar-seal eggs</label>
+    <description>Tar-seal eggs.</description>
+    <jobString>Tar-sealing eggs.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>EggsUnfertilized</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Bitumen</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Bitumen</li>
+      </thingDefs>
+      <categories>
+        <li>EggsUnfertilized</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_TarSealedEgg>10</RM_TarSealedEgg>
+    </products>
+    <recipeUsers>
+      <li>RM_TarSealingVat</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_TarRendering</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealEnabled</settingField>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageProductHazardExtension">
+        <skill>Cooking</skill>
+        <belowLevel>8</belowLevel>
+        <chance>0.1</chance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+        <chanceSettingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealRuinChance</chanceSettingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RM_TarSealProduce</defName>
+    <label>tar-seal produce</label>
+    <description>Tar-seal produce.</description>
+    <jobString>Tar-sealing produce.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+          <disallowedCategories>
+            <li>RM_AgedFoods</li>
+          </disallowedCategories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Bitumen</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Bitumen</li>
+      </thingDefs>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedCategories>
+        <li>RM_AgedFoods</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_TarSealedProduce>10</RM_TarSealedProduce>
+    </products>
+    <recipeUsers>
+      <li>RM_TarSealingVat</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_TarRendering</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealEnabled</settingField>
+      </li>
+      <li Class="RimMandrake.ColdStorage.ColdStorageProductHazardExtension">
+        <skill>Cooking</skill>
+        <belowLevel>8</belowLevel>
+        <chance>0.1</chance>
+        <ruinedInto>RM_TarRuinedGoods</ruinedInto>
+        <chanceSettingField>RimMandrake.TheSump.RM_TheSumpSettings:tarSealRuinChance</chanceSettingField>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+</Defs>

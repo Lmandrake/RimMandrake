@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Seal and preserve stations (design/RimStarWars/cold_storage_line_2026-10-26.md §4.4). Each is gated by its Mod
+       Settings switch (ColdStorageGateExtension). INTERIM ART: vanilla textures until the queued art lands. -->
+
+  <ThingDef Name="RM_SealStationBase" ParentName="BenchBase" Abstract="True">
+    <thingClass>Building_WorkTable</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <designationCategory>Production</designationCategory>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <constructEffect>ConstructWood</constructEffect>
+    <uiOrder>2400</uiOrder>
+  </ThingDef>
+
+  <!-- Resin tap: placed beside a tree, it draws sealing resin over time. More from a bigger tree, double from a tree
+       that grows wild in this biome (the terroir rule); Mod Settings scale the rate. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ResinTap</defName>
+    <label>resin tap</label>
+    <description>A spout and a cup set against a tree trunk. It slowly draws the tree's sap, which hardens into sealing resin. Place it next to a tree: a bigger tree gives more, and a tree native to this land gives twice as much.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/Hopper</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.3</fillPercent>
+    <tickerType>Rare</tickerType>
+    <rotatable>true</rotatable>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2401</uiOrder>
+    <costList>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>1</Flammability>
+      <Mass>5</Mass>
+    </statBases>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <researchPrerequisites>
+      <li>RM_ResinWork</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>RimMandrake.ColdStorage.PlaceWorker_NextToTree</li>
+    </placeWorkers>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_ResinTap">
+        <resinDef>RM_SealingResin</resinDef>
+        <perDay>2</perDay>
+        <batch>10</batch>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Resin</gate>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Jar shelf: where food is packed into jars and sealed with resin. A workbench, not storage: the bills need a
+       station (the design doc called it storage; the sealed jars store anywhere). -->
+  <ThingDef ParentName="RM_SealStationBase">
+    <defName>RM_ResinSealingJarShelf</defName>
+    <label>resin jar shelf</label>
+    <description>A shelf of clay jars and a pot of warm resin. Food is packed into a jar and sealed under a coat of resin, which keeps it until the seal is broken and slowly ages it into something sweet.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/ToolCabinet</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <costList>
+      <WoodLog>40</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>1</Flammability>
+    </statBases>
+    <researchPrerequisites>
+      <li>RM_ResinWork</li>
+    </researchPrerequisites>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Resin</gate>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Sand-drying box: works only under the open sky while it is hot outdoors (35 C by default, Mod Settings), so
+       the land decides where it is useful. -->
+  <ThingDef ParentName="RM_SealStationBase">
+    <defName>RM_SandDryingBox</defName>
+    <label>sand-drying box</label>
+    <description>A low wooden box full of sand, left out in the sun. Strips of meat, fruit or fungus buried in the hot sand dry into light food that keeps a long time. It only works under the open sky, and only while the day outside is hot.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/EggBox</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <pathCost>30</pathCost>
+    <fillPercent>0.25</fillPercent>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_StationClimate">
+        <minTempFromSettings>true</minTempFromSettings>
+        <needsOpenSky>true</needsOpenSky>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SandDry</gate>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Brine crock: the pickling crock. -->
+  <ThingDef ParentName="RM_SealStationBase">
+    <defName>RM_BrineCrock</defName>
+    <label>brine crock</label>
+    <description>A heavy crock of brine with a weighted lid. Meat, fish, roe, vegetables or eggs kept in it turn sharp and salty and spoil very slowly.</description>
+    <graphicData>
+      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Flammability>0.8</Flammability>
+    </statBases>
+    <researchPrerequisites>
+      <li>RM_ResinWork</li>
+    </researchPrerequisites>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

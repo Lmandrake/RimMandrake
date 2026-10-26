@@ -28,6 +28,11 @@ namespace RimMandrake.ColdStorage
         public static bool methodSandDry = true;
         public static bool methodBrine = true;
         public static bool methodEvaporativeCrock = true;
+        public static bool methodSaltCrust = true;
+
+        // Seals line stations
+        public static float resinTapRateMultiplier = 1f; // 0 - 3; 0 = taps draw nothing
+        public static float sandDryMinTemp = 35f;        // 15 - 50 C outdoors before a sand-drying box works
 
         // Behaviour
         public static bool unitsActAsHoppers = true;
@@ -79,6 +84,9 @@ namespace RimMandrake.ColdStorage
             Scribe_Values.Look(ref methodSandDry, "methodSandDry", true);
             Scribe_Values.Look(ref methodBrine, "methodBrine", true);
             Scribe_Values.Look(ref methodEvaporativeCrock, "methodEvaporativeCrock", true);
+            Scribe_Values.Look(ref methodSaltCrust, "methodSaltCrust", true);
+            Scribe_Values.Look(ref resinTapRateMultiplier, "resinTapRateMultiplier", 1f);
+            Scribe_Values.Look(ref sandDryMinTemp, "sandDryMinTemp", 35f);
             Scribe_Values.Look(ref unitsActAsHoppers, "unitsActAsHoppers", true);
             Scribe_Values.Look(ref showClimateReadout, "showClimateReadout", true);
             Scribe_Values.Look(ref wallUnitsBlockLight, "wallUnitsBlockLight", false);
@@ -106,6 +114,9 @@ namespace RimMandrake.ColdStorage
             methodSandDry = true;
             methodBrine = true;
             methodEvaporativeCrock = true;
+            methodSaltCrust = true;
+            resinTapRateMultiplier = 1f;
+            sandDryMinTemp = 35f;
             unitsActAsHoppers = true;
             showClimateReadout = true;
             wallUnitsBlockLight = false;
@@ -123,6 +134,7 @@ namespace RimMandrake.ColdStorage
                 case ColdStorageGate.SandDry: return methodSandDry;
                 case ColdStorageGate.Brine: return methodBrine;
                 case ColdStorageGate.EvaporativeCrock: return methodEvaporativeCrock;
+                case ColdStorageGate.SaltCrust: return methodSaltCrust;
                 default: return true;
             }
         }
@@ -171,6 +183,10 @@ namespace RimMandrake.ColdStorage
             list.CheckboxLabeled("RM_ColdStorage_SettingSandDry".Translate(), ref methodSandDry);
             list.CheckboxLabeled("RM_ColdStorage_SettingBrine".Translate(), ref methodBrine);
             list.CheckboxLabeled("RM_ColdStorage_SettingCrock".Translate(), ref methodEvaporativeCrock);
+            list.CheckboxLabeled("RM_ColdStorage_SettingSaltCrust".Translate(), ref methodSaltCrust);
+            Slider(list, "RM_ColdStorage_SettingResinRate", ref resinTapRateMultiplier, 0f, 3f);
+            list.Label("RM_ColdStorage_SettingSandTemp".Translate(sandDryMinTemp.ToStringTemperature("F0")));
+            sandDryMinTemp = Mathf.Round(list.Slider(sandDryMinTemp, 15f, 50f));
             list.GapLine();
 
             Text.Font = GameFont.Medium;
