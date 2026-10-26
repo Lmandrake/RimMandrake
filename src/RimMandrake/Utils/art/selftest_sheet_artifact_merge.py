@@ -252,6 +252,8 @@ def main() -> int:
         check(len(good) == 1 and [len(o["members"]) for o in good[0]["options"]] == [3, 3]
               and all(m["panel"] for o in good[0]["options"] for m in o["members"]),
               "a state set is one question; each option shows every state with its true-scale panel")
+        check([m["caption"] for m in good[0]["options"][0]["members"]] == ["Wrecked", "Patched up", "Repaired"],
+              "state captions are plain words (Kludged -> Patched up; naive judge 2026-10-26)")
         check(refused(q(options=[{"label": "render RM_Pump_v1", "noChange": True, "members": {r: "A" for r in rid}},
                                   {"label": "Rusty", "members": {r: "B" for r in rid}}]), "what it looks like"),
               "an option labelled by render id is refused")
@@ -280,6 +282,20 @@ def main() -> int:
             js = re.search(r"<script>\n(.*?)</script>", qp, re.S).group(1)
             r = subprocess.run([node, "--check", "-"], input=js, capture_output=True, text=True, timeout=30)
             check(r.returncode == 0, "page script parses " + r.stderr[-200:])
+            # a fresh decisions file carries the builder's prefill of a second lane in rec.picks: not his answer
+            fns = "\n".join(re.search(rf"function {f}\(.*?\n}}\n", SA.PAGE, re.S).group(0) for f in ("hisRec", "laneState"))
+            probe = fns + """
+const S = {}, ln = {key: 'K', primary: false};
+const mk = (p, pre) => ({id: 'x', prefillPicks: {K: pre}, rec: {decision: 'A', prefill: 'A', picks: {K: p}}});
+console.log(JSON.stringify([laneState(mk('D', 'D'), ln).state, laneState(mk('E', 'D'), ln).pick]));"""
+            r = subprocess.run([node, "-e", probe], capture_output=True, text=True, timeout=30)
+            check(r.stdout.strip() == '["","E"]', f"a prefilled second lane is not shown as answered; a changed one is ({r.stdout.strip()} {r.stderr[-120:]})")
+        one = SA.load_questions({"questions": [{"id": "weir", "title": "Weir: which look?", "deciding": "How the weir looks.",
+                                                "rows": [ITEMS[0]["id"]], "options": [
+                                                    {"label": "Today's weir", "noChange": True, "members": {ITEMS[0]["id"]: "A"}},
+                                                    {"label": "Stone weir", "members": {ITEMS[0]["id"]: "redo"}}]}]}, ITEMS, qrows)
+        check(all(m["caption"] == "" for o in one[0]["options"] for m in o["members"]),
+              "a single-object question shows no lane jargon under its pictures (the option label names it)")
     print(f"{'FAILED' if FAILS else 'ALL PASS'} ({len(FAILS)} failing)")
     return 1 if FAILS else 0
 

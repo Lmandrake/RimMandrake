@@ -222,6 +222,9 @@ def build_rows(items: list, cfg: dict, decisions: dict, imgs: Images) -> list[di
 LOOKS_LIKE_AN_ID = re.compile(r"_v\d|\brender\b|\bRM_|liqcont|fwart|^[A-Z]$|^(set|option) [A-Z]$", re.I)
 
 
+PLAIN_STATE = {"Kludged": "Patched up", "Jury": "Patched up"}   # captions in his words, not the def suffix
+
+
 class Refused(Exception):
     pass
 
@@ -270,7 +273,7 @@ def load_questions(spec: dict, items: list, rows: list) -> list[dict]:
             for rid in rids:
                 v, ln = str(mem[rid]), lanes[rid]
                 st = prereview.state_of(rid)
-                cap = st[1] if st else (ln["label"] or by[rid]["label"])
+                cap = PLAIN_STATE.get(st[1], st[1]) if st else ""   # the option label already names the object; a lane label is jargon ("ANOTHER GRAPHIC")
                 if v == "redo":
                     out.append({"row": rid, "lane": ln["key"], "state": "redraw", "L": "", "caption": cap})
                     continue
@@ -475,7 +478,7 @@ border-radius:7px;padding:8px;margin-top:10px}
 .foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:8px}
 .state{font-size:12px;color:var(--mute)}
 .state.err{color:var(--bad)}
-.chip{font-size:12px;background:var(--chip);border-radius:10px;padding:1px 8px}
+.chip{font-size:12px;background:var(--chip);border-radius:10px;padding:1px 8px;white-space:nowrap}
 .q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 20px;min-width:0}
 .q.answered{border-color:var(--pick)}
 .q h2{font-size:19px;margin:0 0 4px}
@@ -490,8 +493,9 @@ border-radius:7px;padding:8px;margin-top:10px}
 .set{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:8px;margin:8px 0}
 .mem{min-width:0;text-align:center;font-size:13px}
 .mem img{display:block;width:100%;height:auto;border-radius:6px;background:var(--panel);image-rendering:auto}
-.mem .redo{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:2px dashed var(--line);border-radius:6px;color:var(--mute);padding:6px}
+.mem .redo{display:flex;align-items:center;justify-content:center;aspect-ratio:2;border:2px dashed var(--line);border-radius:6px;color:var(--mute);padding:6px}
 .choose{width:100%;font-size:16px;min-height:48px}
+@media (max-width:600px){.set{grid-template-columns:1fr;gap:10px}.mem .redo{aspect-ratio:6}}   /* a phone: one big picture per state, in order, not three thumbnails */
 .intro{font-size:15px;margin:6px 0 12px}
 pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:var(--card);border:1px solid var(--line);padding:8px;border-radius:6px}
 </style>
@@ -506,7 +510,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:var(--
 size beside a vanilla human. Each change is saved here as you go; the decisions file in the repo is updated only when
 Claude merges this page's saved picks.</p></details>
 <div class="bar"><span id="count"></span><label><input type="checkbox" id="hidedone"> hide answered</label>
-<button id="copy" type="button">copy my picks</button><span class="state" id="gstate"></span></div>
+<button id="copy" type="button">copy answers as text</button><span class="state" id="gstate"></span></div>
 <pre id="copied" class="hide"></pre>
 <p class="intro hide" id="intro"></p>
 <div id="rows"></div>
@@ -542,7 +546,8 @@ function laneState(r, ln) {
   const sl = (rec.slots || {})[ln.key];
   if (sl && sl.state && !sl.migrated && (h || sl.at)) return {state: sl.state, pick: sl.pick, from: 'file'};
   if (ln.primary && h) { if (h.decision === 'redo') return {state: 'redraw', from: 'file'}; if (h.decision.length === 1) return {state: 'pick', pick: h.decision, from: 'file'}; }
-  const lp = (rec.picks || {})[ln.key]; if (lp) return {state: 'pick', pick: lp, from: 'file'};   /* legacy second-slot map (SLX.state) */
+  const lp = (rec.picks || {})[ln.key];   /* a fresh decisions file carries the builder's prefill here: not his pick */
+  if (lp && (h || lp !== (r.prefillPicks || {})[ln.key])) return {state: 'pick', pick: lp, from: 'file'};   /* legacy second-slot map (SLX.state) */
   return {state: ''};
 }
 function suggested(r, ln) {
@@ -606,7 +611,7 @@ function paintState(id, msg, err) {
 function answered(r) { return rowHold(r) || r.lanes.some(ln => ln.pickable && laneState(r, ln).state); }
 function paintCount() {
   const touched = Object.keys(S).filter(k => S[k].ts).length;
-  if (Q) { const n = Q.filter(qAnswered).length; $('count').textContent = `${n} of ${Q.length} answered · ${touched} saved`; }
+  if (Q) { const n = Q.filter(qAnswered).length; $('count').textContent = `${n} of ${Q.length} answered`; }
   else $('count').textContent = `${D.rows.filter(answered).length} of ${D.rows.length} answered · ${touched} saved`;
   $('gstate').textContent = saving ? 'saving…' : '';
 }
@@ -628,7 +633,7 @@ function body(id) {
 }
 async function save(id) {
   paintCount();
-  if (!db || readOnly) { paintState(id, db ? 'read-only: not saved' : 'not saved: storage unavailable (use "copy my picks")', true); return; }
+  if (!db || readOnly) { paintState(id, db ? 'read-only: not saved' : 'not saved: storage unavailable (use "copy answers as text")', true); return; }
   if (writing[id]) { dirty[id] = true; return; }        /* one write at a time per document */
   writing[id] = true; saving++; paintCount(); paintState(id, 'saving…');
   try {
@@ -650,9 +655,9 @@ async function save(id) {
   } catch (e) {
     const code = (e && e.code) || 'unavailable';
     if (code === 'invalid_argument' || code === 'revoked' || code === 'not_granted') {
-      readOnly = true; showDb('This page is read-only for you: your picks are not being saved (' + code + '). Use "copy my picks" to keep them.', 'bad');
+      readOnly = true; showDb('This page is read-only for you: your picks are not being saved (' + code + '). Use "copy answers as text" to keep them.', 'bad');
       D.rows.forEach(r => paintRow(r.id));
-    } else if (code === 'quota_exceeded') showDb('Storage is full: this pick was not saved. Use "copy my picks" and send the text to Claude.', 'bad');
+    } else if (code === 'quota_exceeded') showDb('Storage is full: this pick was not saved. Use "copy answers as text" and send the text to Claude.', 'bad');
     paintState(id, 'NOT saved (' + code + ')', true);
   } finally { writing[id] = false; saving--; paintCount(); }
 }
@@ -757,7 +762,7 @@ $('brief').textContent = D.brief; $('posture').textContent = D.posture; $('crit'
 if (Q) {
   const mins = Math.max(1, Math.round(Q.length * 0.75));
   $('sub').textContent = `${Q.length} question${Q.length === 1 ? '' : 's'} · about ${mins} minute${mins === 1 ? '' : 's'}`;
-  $('intro').textContent = D.intro || 'Each question is one choice. Tap "choose this" under the option you want; that is your answer, nothing else to press. Tap a picture to see it full size.';
+  $('intro').textContent = D.intro || 'Each question is one choice. Tap "choose this" under the option you want; that is your answer and it saves by itself ("saved" shows under the question). Change your mind by choosing the other option. Tap a picture to see it full size.';
   $('intro').classList.remove('hide');
   document.querySelector('details.brief').classList.add('hide');
   $('rows').innerHTML = Q.map(qHTML).join('');
@@ -771,7 +776,7 @@ if (D.frozen) showDb('This sheet is frozen: it is shown for reference and nothin
 (async () => {
   try { db = (window.claude && typeof window.claude.use === 'function') ? await window.claude.use('db') : null; }
   catch (e) { db = null; }
-  if (!db) { showDb('Saving is unavailable on this view: picks you make here are NOT kept. Open the page inside claude.ai to save, or use "copy my picks" and send the text to Claude.', 'bad'); return; }
+  if (!db) { showDb('Saving is unavailable on this view: picks you make here are NOT kept. Open the page inside claude.ai to save, or use "copy answers as text" and send the text to Claude.', 'bad'); return; }
   if (!D.frozen) showDb('', 'warn');
   db.collection('picks').onSnapshot(q => { q.docs.forEach(applyRemote); paintCount(); },
     e => showDb('Live updates stopped (' + ((e && e.code) || 'error') + '). Your picks still save; reload to see changes from another device.', 'warn'));
