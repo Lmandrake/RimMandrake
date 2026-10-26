@@ -115,6 +115,19 @@ def main(argv=None):
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)
+    if result.returncode != 0:
+        # The nightly log keeps only the last lines of a failing test; the failing check is mid-output.
+        # Echo every FAIL line (and its detail line) last so the tail names it. (FLOWWORKS_STOCK_BISECT_RED_CHECK)
+        lines = result.stdout.splitlines()
+        bad = []
+        for i, ln in enumerate(lines):
+            if ln.startswith("FAIL") or "FAILED" in ln or ln.lstrip().startswith("MISMATCH"):
+                bad.append(ln)
+                if i + 1 < len(lines) and lines[i + 1].startswith(" " * 4):
+                    bad.append(lines[i + 1])
+        print("\nFAILING CHECKS (rc %d)%s" % (result.returncode, ": none found in stdout - see stderr/crash" if not bad else ":"))
+        for ln in bad[:20]:
+            print("  " + ln.strip())
     sys.exit(result.returncode)
 
 
