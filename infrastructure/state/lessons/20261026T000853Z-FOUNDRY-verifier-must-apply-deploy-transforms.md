@@ -1,0 +1,2 @@
+A checker that compares 'repo == deployed' must apply every transform the deploy tool applies on the way out, or it reports drift right after a clean deploy. preflight_bridge.c_deploy compared raw src while deploy_custom_mods ships biomes_compose.stage_rewritten copies (folded-id MayRequire/FindMod rewritten) for ordinary mods: ~28 guard sites (UtinniPatches RUT_*.xml, SWBestiary, StarWarsRaces) read as drift. Fixed 7860e890da. When a deploy gains a transform, grep its verifiers (preflight c_deploy, check_load) the same commit.
+home: skill rimworld-deploy
