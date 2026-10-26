@@ -84,8 +84,24 @@ def main():
     os.remove(path)
     D.process_alive = lambda i: True
     r1 = D.acquire(path, "FOUNDRY", "a", A)
-    r2 = D.acquire(path, "BENCH", "b", B)
-    good.append(case("exactly one of two acquirers wins", r1["ok"] != r2["ok"]))
+    # the race itself: B read the lock as FREE before A created it (stale first read), so only O_EXCL stands
+    # between B and overwriting A. Sequential calls alone never reach _create (review 2026-10-26).
+    real_read, stale = D._read, [True]
+
+    def racy_read(p):
+        if stale and p == path:
+            stale.pop()
+            return None, None
+        return real_read(p)
+    D._read = racy_read
+    try:
+        r2 = D.acquire(path, "BENCH", "b", B)
+    finally:
+        D._read = real_read
+    with open(path) as fh:
+        holder = json.load(fh).get("seat")
+    good.append(case("exactly one of two racing acquirers wins (O_EXCL), and the winner's lock is intact",
+                     r1["ok"] and not r2["ok"] and not stale and holder == "FOUNDRY", (r1, r2, holder)))
 
     D.current_boot_id = real_boot
     good.append(case("owner identity finds a real process", D.my_identity()["pid"] > 1, D.my_identity()))
