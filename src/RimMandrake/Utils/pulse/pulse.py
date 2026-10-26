@@ -249,6 +249,7 @@ class Collector:
         raw["sheets"] = self.sheets["rows"]
         raw["bridge"] = src("bridge", pc.read_bridge)
         raw["telemetry"] = src("telemetry", pc.read_telemetry)
+        raw["testing"] = src("testing", pc.read_testing)
         raw["services"] = src("services", pc.read_services) or {}
         raw["burn"], raw["burn_error"] = self._burn(now, force, src, status)
         raw["probe"] = self.probe
@@ -483,7 +484,8 @@ def withdraw(hid: str, superseded_by: str | None = None) -> dict:
 ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
 # what the sparse deploy checkout holds (systemd/install.sh sets the same list): pulse itself, rimflow's fold,
 # and art/ for prereview.py (the "to look at" gate). Files directly in a parent dir (Utils/rmpaths.py) come free.
-SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art")
+SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
+               "src/RimMandrake/Utils/modcheck")    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
 _CODE: dict = {}
 
 

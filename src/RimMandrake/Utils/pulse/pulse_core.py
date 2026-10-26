@@ -1397,6 +1397,76 @@ def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
     return rows
 
 
+TESTING_IDLE_WARN_SECS = 3600      # Steve idle this long with nothing queued: agents should feed it (warn, agent)
+TESTING_DOWN_RED_SECS = 3600       # Steve unreachable this long WITH jobs waiting: his verb (wake it) -> red
+TESTING_MACHINES = (("steve", "SteveDesktop"), ("archmagi", "Archmagi"))
+_testing_cache: dict = {}
+
+
+def read_testing(path: str | None = None) -> dict:
+    """The Testing panel's inputs (TESTING_RIG_MONITOR_EFFICIENCY_IN_PULSE): the last 7 owner-days from the hourly
+    collector's history (testing_metrics.py; best record per day) + SteveDesktop's live queue state for the red
+    rule. The history is re-read only when its mtime moves."""
+    import testing_metrics as T
+    p = path or T.history_path()
+    try:
+        mt = os.stat(p).st_mtime
+    except OSError:
+        mt = None
+    if _testing_cache.get("key") != (p, mt):
+        best = T.best_per_day(T.read_history(p)) if mt else {}
+        _testing_cache.update(key=(p, mt), days=[best[d] for d in sorted(best)[-7:]])
+    src = T.load_testq()
+    return {"days": _testing_cache["days"], "history": p, "live": {"steve": T.steve_live(src, time.time())}}
+
+
+def testing_panel(data: dict | None, now: float) -> dict:
+    """Steve vs Archmagi side by side: per metric today's value (null + why when UNMEASURED, never 0) and a
+    7-day series (null for an UNMEASURED day)."""
+    if not data or not data.get("days"):
+        return {"unmeasured": "no testing history yet (rm-pulse-testing.timer writes it hourly)"}
+    days = data["days"][-7:]
+    machines = []
+    for key, label in TESTING_MACHINES:
+        mets = {}
+        for k in ("busy_pct", "rows_per_hour", "findings", "waste_pct"):
+            vals = [((d.get("machines") or {}).get(key) or {}).get(k) or {"m": "UNMEASURED", "why": "absent"} for d in days]
+            last = vals[-1]
+            mets[k] = {"v": last.get("v") if last.get("m") == "MEASURED" else None, "m": last.get("m"),
+                       "why": last.get("why"), "note": last.get("note"),
+                       "series": [x.get("v") if x.get("m") == "MEASURED" else None for x in vals]}
+        machines.append({"key": key, "label": label, "metrics": mets})
+    return {"day": days[-1].get("day"), "days": [d.get("day") for d in days], "generated": days[-1].get("generated"),
+            "machines": machines, "live": data.get("live") or {}}
+
+
+def classify_testing(live: dict | None, acks: dict, now: float) -> list[dict]:
+    """RimPulse's red rule (RIMPULSE_RED_FIX_MEANS_YOUR_VERB) for the rigs: red ONLY when SteveDesktop has been
+    unreachable over an hour while jobs wait - waking that machine is his verb. A paused lane (testq resume) or an
+    idle Steve with nothing queued (feed it) are agent verbs: warn, flagged agent."""
+    s = (live or {}).get("steve") or {}
+    rows, pend = [], int(s.get("pending") or 0)
+    down = s.get("ssh_down_since")
+    if s.get("paused") and pend:
+        p = s["paused"] if isinstance(s["paused"], dict) else {}
+        since = iso_to_epoch(p["since"]) if p.get("since") else now
+        rows.append(_row("testing:paused", "warn", "STEVE", f"SteveDesktop lane paused ({p.get('cause') or '?'}) · "
+                         f"{pend} job{'s' * (pend != 1)} waiting · agents: testq resume", since, src="testing", agent=True))
+    elif down and pend:
+        if now - down >= TESTING_DOWN_RED_SECS:
+            r = _red(f"testq:down@{int(down)}", "STEVE", f"SteveDesktop unreachable {int((now - down) // 3600)} h · "
+                     f"{pend} test job{'s' * (pend != 1)} waiting · wake SteveDesktop", down, acks, "testing")
+            rows.append({**r, "owner_verb": "wake SteveDesktop"})
+        else:
+            rows.append(_row("testing:down", "warn", "STEVE", f"SteveDesktop unreachable {int((now - down) // 60)} min · "
+                             f"{pend} waiting", down, src="testing", agent=True))
+    elif not pend and not s.get("running") and s.get("idle_since") and now - s["idle_since"] >= TESTING_IDLE_WARN_SECS:
+        h = (now - s["idle_since"]) / 3600
+        rows.append(_row("testing:idle", "warn", "STEVE", f"SteveDesktop idle {h:.0f} h, queue empty · agents: feed it",
+                         s["idle_since"], src="testing", agent=True))
+    return rows
+
+
 def read_telemetry(path: Path = TELEMETRY_STATE) -> dict | None:
     """None = telemetry not installed (its state dir is absent: no row). Installed but the alerts file is
     missing or unreadable RAISES - silence is not health. A stale payload is reported by classify_telemetry
@@ -1749,7 +1819,8 @@ def owner_view(rows: list[dict], now: float) -> list[dict]:
         if k == "red":
             inc = r.get("incident") or ""
             seat_dead = ((inc.startswith("lost:") or inc.startswith("oom:seat:")) and (r.get("who") or "").upper() in SEATS)
-            if not seat_dead and r.get("src") != "telemetry":   # telemetry reds are already gated by owner_play
+            his_verb = r.get("src") == "testing" and r.get("owner_verb")   # classify_testing's only red: wake Steve
+            if not seat_dead and not his_verb and r.get("src") != "telemetry":   # telemetry reds are already gated by owner_play
                 r = {**r, "kind": "warn", "agent": True, "was": "red", "pill": None}
         elif k in AGENT_KINDS or k == "amber_soft" or r.get("key") == "oom:planted":
             r = {**r, "agent": True}
@@ -1872,7 +1943,8 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now)
             + classify_telemetry(tel, acks, now, owner_play)
-            + classify_failures(raw.get("failures") or [], acks, now))
+            + classify_failures(raw.get("failures") or [], acks, now)
+            + classify_testing((raw.get("testing") or {}).get("live"), acks, now))
     wins = [r["win"] for r in srows if r.get("win")]
     rows, incidents, inc_events = track_incidents(rows, state.get("incidents", {}), wins, raw.get("services") or {}, now)
     events.extend(inc_events)
@@ -1899,6 +1971,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "charts": {"burn": burn_series(raw.get("burn"), now, raw.get("burn_error")),
                    "tickets": (ticket_series(raw["ledger"], now) if raw.get("ledger")
                                else {"unmeasured": "ledger not read"})},
+        "testing": testing_panel(raw.get("testing"), now),
         "telemetry": ({k: raw["telemetry"].get(k) for k in ("at", "grafana", "tier_armed", "game_running")}
                       if raw.get("telemetry") else None),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked") and not r.get("agent"))

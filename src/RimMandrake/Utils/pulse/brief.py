@@ -54,10 +54,10 @@ JUDGE = "brief.py judge (separate process; its own rimflow replay)"
 
 # which collector each section stands on: when it is down the section says "unknown", never "nothing"
 SECTION_SOURCES = {"word": ("ledger",), "open": ("hands", "sheets"), "overnight": ("ledger",),
-                   "decided": ("ledger",), "spend": ("tokens",), "next": ("sessions",)}
+                   "decided": ("ledger",), "spend": ("tokens",), "testing": ("testing",), "next": ("sessions",)}
 TITLES = {"word": "Needs your word", "open": "Open these", "overnight": "Overnight, in words",
-          "decided": "Decided for you", "spend": "Spend", "next": "Next", "coverage": "Coverage"}
-ORDER = ("word", "open", "overnight", "decided", "spend", "next", "coverage")
+          "decided": "Decided for you", "spend": "Spend", "testing": "Testing rigs", "next": "Next", "coverage": "Coverage"}
+ORDER = ("word", "open", "overnight", "decided", "spend", "testing", "next", "coverage")
 
 # A look's review packet (owner card 2026-10-25, "Plus evidence and doubts"): the artifact ships with a
 # recommendation, the alternatives with their reasons, the evidence (what was measured) and the doubts (what
@@ -244,6 +244,13 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
     secs["spend"].append({"sec": "spend", "text": "Claude plan window used / resets: unknown (no measured source yet)",
                           "claim": {"type": "unknown"}})
 
+    # TESTING: the rigs' day so far (TESTING_RIG_MONITOR_EFFICIENCY_IN_PULSE), one line, re-derived by the judge
+    ln = testing_line(snap)
+    if ln:
+        secs.setdefault("testing", []).append(ln)
+    else:
+        notes["testing"] = "no testing history yet"
+
     # NEXT: what each seat is on, from the live session chips, item named by the ledger
     for c in snap.get("chips") or []:
         if c.get("seat") in SEATS:
@@ -266,6 +273,48 @@ def compose(snap: dict, events: list[dict], since: float, now: float) -> dict:
             notes[sec] = "unknown: the " + "/".join(d) + " collector is down"
     return {"v": 1, "at": now, "since": since, "snap_at": snap.get("collected_at"), "sections": secs,
             "notes": notes, "judged": False}
+
+
+TESTING_LINE = (("busy_pct", "busy", "%"), ("rows_per_hour", "rows/h", ""), ("findings", "findings", ""),
+                ("waste_pct", "waste", "%"))
+
+
+def testing_line(snap: dict) -> dict | None:
+    """'Testing <day>: SteveDesktop busy 40% · 12 rows/h · 2 findings · waste 10% | Archmagi ...' from the
+    monitor's Testing panel; an UNMEASURED value is the word, never 0. The claim carries every number shown."""
+    panel = (snap.get("charts") or {}).get("testing") or {}
+    if not panel.get("machines"):
+        return None
+    parts, values = [], {}
+    for m in panel["machines"]:
+        bits = []
+        for k, word, unit in TESTING_LINE:
+            x = m["metrics"].get(k) or {}
+            if x.get("m") == "MEASURED" and x.get("v") is not None:
+                values[f"{m['key']}.{k}"] = x["v"]
+                n = x["v"]
+                bits.append(f"{word} {n:g}{unit}" if word in ("busy", "waste") else f"{n:g} {word}")
+            else:
+                values[f"{m['key']}.{k}"] = None
+                bits.append(f"{word} unmeasured")
+        parts.append(f"{m['label']} " + " · ".join(bits))
+    return {"sec": "testing", "text": f"Testing {panel.get('day')}: " + " | ".join(parts),
+            "claim": {"type": "testing", "day": panel.get("day"), "values": values}}
+
+
+def check_testing(c: dict) -> str:
+    """Re-derive the line from the collector's own history file (not the monitor's copy)."""
+    import testing_metrics as T
+    rec = T.best_per_day(T.read_history()).get(c.get("day") or "")
+    if not rec:
+        return f"fail: no testing record for {c.get('day')}"
+    for key, shown in (c.get("values") or {}).items():
+        mach, k = key.split(".", 1)
+        x = ((rec.get("machines") or {}).get(mach) or {}).get(k) or {}
+        got = x.get("v") if x.get("m") == "MEASURED" else None
+        if got != shown:
+            return f"fail: {key} reads {got} in the history, the line says {shown}"
+    return "pass"
 
 
 def _human(n: float) -> str:
@@ -337,6 +386,8 @@ def judge(brief: dict, events: list[dict], snap: dict) -> dict:
                 return "pass"
             it = world.items.get(c["id"])
             return "pass" if it and it.open else "fail: item not open"
+        if t == "testing":
+            return check_testing(c)
         if t in ("unknown", "coverage"):
             return "pass"
         return f"fail: unknown claim type {t!r}"

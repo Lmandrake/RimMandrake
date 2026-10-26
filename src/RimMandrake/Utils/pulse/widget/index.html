@@ -117,6 +117,14 @@ body.collapsed .sparks{display:none}
 .charts .hit{fill:transparent} .charts .hit:hover{fill:rgba(243,228,199,.08)}
 .charts .key i{display:inline-block;width:7px;height:7px;border-radius:2px;margin:0 3px 0 6px;vertical-align:0}
 .charts .unm{color:var(--faint)} .charts .ch-d{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+/* Testing rigs (TESTING_RIG_MONITOR_EFFICIENCY_IN_PULSE): Steve vs Archmagi per metric, 7-day bars. One series per
+   mini chart, so the already-validated sand; machine identity is the column head, never colour. UNMEASURED is a
+   hollow baseline tick and the word, never a zero bar */
+.charts .tg{display:grid;grid-template-columns:auto 1fr 1fr;gap:1px 10px;margin-top:2px;align-items:center}
+.charts .tg .th{color:var(--muted)} .charts .tg .tm{color:var(--faint);white-space:nowrap}
+.charts .tg .tc{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;white-space:nowrap}
+.charts .tg .tc b{color:var(--muted);font-weight:normal} .charts .tg svg{width:63px;height:14px;flex:none}
+.charts .tgu{fill:none;stroke:var(--faint);stroke-width:1}
 body.collapsed .charts{display:none}
 .pill{padding:1px 9px;border-radius:9px;flex:none;margin-right:4px}
 .p-red{background:var(--rust);color:#fff3e6;box-shadow:0 0 14px #ff5a3c;animation:pillred 1.6s ease-in-out infinite}
@@ -408,8 +416,37 @@ function renderCharts(){
       : tokChart(b, b.week, '7 d', '7 d ago', false) + tokChart(b, b.day, '24 h', '24 h ago', true)) + '</div>';
     h += '<div class="ch-row">' + (t.unmeasured ? `<div class="ch unm">tickets/day · UNMEASURED: ${esc(t.unmeasured)}</div>` : ticketChart(t)) + '</div>';
   }
+  if (c.testing) h += testingPanel(c.testing, pref.testing !== false);
   el.innerHTML = h;
   $('chh').onclick = () => { pref.charts = !open; savePref(); renderCharts(); };
+  if ($('tgh')) $('tgh').onclick = () => { pref.testing = pref.testing === false; savePref(); renderCharts(); };
+}
+// Testing rigs: per metric, today's value and a 7-bar day series for SteveDesktop and Archmagi (hourly collector
+// testing_metrics.py -> history.jsonl). A null day is UNMEASURED: drawn as a hollow tick, never a zero bar.
+const TG_ROWS = [['busy_pct', 'busy', '%'], ['rows_per_hour', 'rows/h', ''], ['findings', 'findings', ''], ['waste_pct', 'waste', '%']];
+function tgSpark(m, days, unit, what){
+  const s = m.series || [], n = s.length, W = 63, H = 14, g = W / 7, max = Math.max(1, ...s.filter(v => v != null));
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(what)}, last ${n} days">` + s.map((v, i) => {
+    const x = (i + 7 - n) * g + 1, dl = days[i] || '', tip = `${dl} · ${v == null ? 'UNMEASURED' : (+v).toLocaleString() + unit}`;
+    const bh = v == null ? 0 : Math.max(v > 0 ? 1.5 : 0, (H - 2) * v / max);
+    return (v == null ? `<rect class="tgu" x="${(x + .5).toFixed(2)}" y="${H - 3.5}" width="${(g - 3).toFixed(2)}" height="3" rx="1"/>`
+      : `<rect class="tok" x="${x.toFixed(2)}" y="${(H - 1 - bh).toFixed(2)}" width="${(g - 2).toFixed(2)}" height="${bh.toFixed(2)}" rx="1.5"/>`)
+      + `<rect class="hit" x="${(i + 7 - n) * g}" y="0" width="${g}" height="${H}"><title>${esc(tip)}</title></rect>`;
+  }).join('') + `<line class="base" x1="0" y1="${H - .5}" x2="${W}" y2="${H - .5}"/></svg>`;
+}
+function testingPanel(t, open){
+  const tip = 'Testing rigs, owner-day so far: SteveDesktop = testq jobs + RUNNER ledger; Archmagi = bridge-active time + local modcheck sheets. Hover a value for its note; bars = last 7 days';
+  let h = `<div class="ch-h" id="tgh" title="${esc(tip)}">testing rigs${t.day ? ' · ' + esc(t.day) : ''} ${open ? '▴' : '▾'}</div>`;
+  if (!open) return h;
+  if (t.unmeasured || !t.machines) return h + `<div class="ch unm">UNMEASURED: ${esc(t.unmeasured || 'no data')}</div>`;
+  h += '<div class="tg"><span></span>' + t.machines.map(m => `<span class="th">${esc(m.label)}</span>`).join('');
+  for (const [k, word, unit] of TG_ROWS) {
+    h += `<span class="tm">${word}</span>` + t.machines.map(m => { const x = m.metrics[k] || {};
+      const val = x.m === 'MEASURED' && x.v != null ? `<b title="${esc(x.note || '')}">${(+x.v).toLocaleString()}${unit}</b>`
+        : `<span class="unm" title="${esc(x.why || '')}">unmeasured</span>`;
+      return `<span class="tc">${val}${tgSpark(x, t.days || [], unit, m.label + ' ' + word)}</span>`; }).join('');
+  }
+  return h + '</div>';
 }
 
 function chipHTML(c){
