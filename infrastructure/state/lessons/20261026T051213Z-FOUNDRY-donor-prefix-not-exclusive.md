@@ -1,0 +1,2 @@
+A donor's defName prefix is not its own: AB_ is Alpha Biomes AND live Alpha Memes (PreceptDef AB_MiningYield_VeryHigh), and Alpha Biomes declares abstract Name="Plant_Bush", shadowing vanilla's def. Find a retired donor's dead references by an inventory of its defNames filtered against a donor-off def dump (retired_donor_refs.py), and match its abstracts only as ParentName, never by prefix.
+home: infrastructure/state/facts/instrument_traps.md
