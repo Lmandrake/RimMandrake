@@ -155,7 +155,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
             if (!open) return false;
             list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
                 ? " changes take effect the next time the game starts"
-                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or opened"
+                : " changes apply to what is on the map now"));
             RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
             return true;
         }
