@@ -2402,6 +2402,64 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
   </PawnKindDef>
 
   <PawnKindDef>
+    <defName>RUT_Jawa_Blackstar_Breacher</defName>
+    <label>Blackstar breacher</label>
+    <race>Human</race>
+    <defaultFactionDef>Pirate</defaultFactionDef>
+    <combatPower>70</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
+    <canBeSapper>true</canBeSapper>
+    <isGoodBreacher>true</isGoodBreacher>
+    <weaponMoney>400~480</weaponMoney>
+    <apparelMoney>350~420</apparelMoney>
+    <initialResistanceRange>8~14</initialResistanceRange>
+    <initialWillRange>1~3</initialWillRange>
+    <weaponTags>
+      <li>GrenadeDestructive</li>
+    </weaponTags>
+      <apparelTags>
+      <li>SaV_outfit_merc</li>
+      <li>KotORArmor_mid</li>
+      <li>KotORClothing_undersuit</li>
+    </apparelTags>
+      <!-- professional mercenaries: combat drugs, real medicine, and paid in silver -->
+    <inventoryOptions>
+      <skipChance>0.35</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>MedicineIndustrial</thingDef><countRange>2~4</countRange></li>
+        <li><thingDef>GoJuice</thingDef><countRange>1~2</countRange></li>
+        <li><thingDef>MealSurvivalPack</thingDef><countRange>1~3</countRange></li>
+        <li><thingDef>Silver</thingDef><countRange>50~150</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
+      <!-- near-black — owner. It is in the name, and it makes them read instantly against white stormtroopers and brown Jawa -->
+    <apparelColor>(38,38,42)</apparelColor>
+      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
+         families this kind does not use itself are listed - its own apparelTags and
+         every tag its apparelRequired items carry are excluded, so a disallow can
+         never strand it. -->
+    <apparelDisallowTags>
+      <li>DroidArmor</li>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>KotORDroidArmorT1</li>
+      <li>KotORDroidArmorT2</li>
+      <li>KotORDroidArmorT3</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+      <li>Warcasket</li>
+      <li>WarcasketAll</li>
+      <li>WarcasketVeteran</li>
+    </apparelDisallowTags>
+  </PawnKindDef>
+
+  <PawnKindDef>
     <defName>RUT_Jawa_Blackstar_Specialist</defName>
     <label>Blackstar hunter</label>
     <race>Human</race>

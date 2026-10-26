@@ -275,6 +275,9 @@ R = [
 
  ("Blackstar","Grunt","hired gun",400,350,None,["SWKotORWeaponCategoryTag_rifle","SimpleGun"],[]),
  ("Blackstar","Heavy","Mandalorian",700,500,None,["SWKotORWeaponCategoryTag_heavyranged","KotORRanged_strong"],["guy762_MandoArmor_battle","guy762_MandoHelmet_supercom"]),
+ # BLACKSTAR_SAPPERS_RESTORE_BREACH_KIND: the Company's only canBeSapper kind (see KIT; vanilla
+ # Grenadier_Destructive pattern). Without it Pirate can never send ImmediateAttackSappers.
+ ("Blackstar","Breacher","Blackstar breacher",400,350,None,["GrenadeDestructive"],[]),
  # 🔴 BUDGETS RAISED 2026-08-23 on the owner's ruling. MEASURED: these two kinds could
  # afford NOTHING their tags named — Specialist 1320 against KotORRanged_rare whose
  # cheapest survivor is 12799, Leader 2160 against KotORRanged_legendary at 12000. Nothing
@@ -389,7 +392,7 @@ WILL   = {"Grunt": (1, 3),  "Heavy": (2, 4),   "Specialist": (2, 5),   "Leader":
 #
 # ⇒ The clamp is GONE. If Blackstar raids start arriving as a duo, that is the
 # intended shape and not a regression — do not "fix" it back.
-COMBAT_POWER_OVERRIDE = {}
+COMBAT_POWER_OVERRIDE = {("Blackstar", "Breacher"): 70}  # vanilla Grenadier_Destructive
 
 
 def combat_power(wm, am, role, fac=None):
@@ -2939,6 +2942,19 @@ KIT = {
       <li>SaV_apparel_tusken</li>
     </apparelDisallowTags>""",
 }
+
+# BLACKSTAR_SAPPERS_RESTORE_BREACH_KIND: the Company's breacher. Same mercenary kit as the
+# Grunt (art reused, nothing new) but armed with GrenadeDestructive and flagged exactly like
+# vanilla Grenadier_Destructive (canBeSapper + isGoodBreacher). The BlackstarCompany patch
+# replaced every Pirate Combat option with kinds that had neither flag, so
+# RaidStrategyWorker_ImmediateAttackSappers found no usable group.
+_g = KIT["Jawa_Blackstar_Grunt"]
+_head, _tail = _g.split("    <weaponTags>", 1)
+_tail = _tail.split("</weaponTags>", 1)[1]
+KIT["Jawa_Blackstar_Breacher"] = (
+    "    <canBeSapper>true</canBeSapper>\n    <isGoodBreacher>true</isGoodBreacher>\n"
+    + _head + "    <weaponTags>\n      <li>GrenadeDestructive</li>\n    </weaponTags>" + _tail)
+
 
 
 def emit():
