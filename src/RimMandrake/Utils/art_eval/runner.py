@@ -353,6 +353,13 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     policy, settings = P.load_policy(), P.load_settings()
     work = (work_root or storage_root() / "runs") / run_id
     out = (state_root or STATE / "runs") / run_id
+    if (out / "run.json").is_file():
+        # run.json's `test` is what fill_queue's source_run gate trusts: a --test record (no owner_kept guard, no
+        # rounds) appended to a production run would be filed as production, and a production record in a test run
+        # would be refused (ARTEVAL_RUNNER_FIX_TEST_RESUMES_PROD_RUN) -- a run id is resumed only in its own mode
+        was = json.loads((out / "run.json").read_text()).get("test")
+        if was is not test:
+            raise SystemExit(f"run {run_id} was started with test={was}: resume it in that mode or use a new run id")
     work.mkdir(parents=True, exist_ok=True); out.mkdir(parents=True, exist_ok=True)
     rounds_file = STATE / "regen_rounds.json"
     rounds = {} if test else (json.loads(rounds_file.read_text()) if rounds_file.is_file() else {})

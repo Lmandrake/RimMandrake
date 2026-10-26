@@ -751,6 +751,28 @@ def main():
             finally:
                 RN.STATE = old_state
             check("resume keeps the crashed run's regen rounds", rf.get("RM_Two") == 2, rf)
+            # ARTEVAL_RUNNER_FIX_TEST_RESUMES_PROD_RUN: run.json's `test` is what fill_queue's source_run gate
+            # trusts; a --test run (no owner_kept guard, no rounds) appended under a production run id would ride it
+            n_before = len((sd / "r1" / "decisions.jsonl").read_text().splitlines())
+            ps2 = {}
+            for f in ("south", "east", "north", "scale"):
+                ps2[f] = str(td / f"m_{f}.png"); im.save(ps2[f])
+            spec_b = dict(two[1], images=ps2)
+            for mode, rid in ((True, "r1"), (False, "two_t")):
+                if mode is False:
+                    RN.run([dict(spec_b, candidate="A")], "two_t", rev=Clean(), test=True, work_root=td / "w2", state_root=sd)
+                old_state, RN.STATE = RN.STATE, sd
+                try:
+                    RN.run([spec_b], rid, rev=Clean(), test=mode, work_root=td / "w2", state_root=sd)
+                    refused = False
+                except SystemExit as e:
+                    refused = "test" in str(e)
+                finally:
+                    RN.STATE = old_state
+                check(f"a run id is never resumed in the other mode (test={mode} onto test={not mode})", refused)
+            check("the refused resume appended nothing",
+                  len((sd / "r1" / "decisions.jsonl").read_text().splitlines()) == n_before)
+            check("run.json keeps its mode", json.loads((sd / "r1" / "run.json").read_text()).get("test") is False)
         check("sheet path read from art_sheet's stdout", SH.built_sheet_path('{\n "html": "Transient/biome_ffar/x_sheet_2026-10-25.html"}', "x", "2026-10-24")
               == SH.ROOT / "Transient/biome_ffar/x_sheet_2026-10-25.html")
         check("sheet path falls back to the date", SH.built_sheet_path("", "x", "2026-10-24").name == "x_sheet_2026-10-24.html")
