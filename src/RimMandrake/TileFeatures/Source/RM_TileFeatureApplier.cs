@@ -130,7 +130,8 @@ namespace RimMandrake.TileFeatures
                 FieldInfo f = AccessTools.Field(t, "diseaseMTBMultiplier");
                 if (f != null && f.FieldType == typeof(float)) f.SetValue(ext, RM_TileFeaturesSettings.diseaseMtbMultiplier);
             }
-            if (snapshots.TryGetValue(def, out Snapshot s) && s.prefabsToSpawnAmount.HasValue)
+            // Only the vents' prefab count is a Mod Setting; every VEF extension carries a default 1~1 that must stay put.
+            if (Array.IndexOf(Vents, def.defName) >= 0 && snapshots.TryGetValue(def, out Snapshot s) && s.prefabsToSpawnAmount.HasValue)
             {
                 FieldInfo f = AccessTools.Field(t, "prefabsToSpawnAmount");
                 IntRange r = s.prefabsToSpawnAmount.Value;

@@ -50,7 +50,7 @@ namespace RimMandrake.TileFeatures
 
         public override string CompInspectStringExtra()
         {
-            return active ? "Venting gas." : "Dormant.";
+            return active && RM_TileFeaturesSettings.ventsEnabled ? "Venting gas." : "Dormant.";
         }
 
         public override void PostExposeData()

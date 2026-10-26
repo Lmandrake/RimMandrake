@@ -13,7 +13,7 @@ LIVE CHAIN (owed, needs the bridge; recorded here so the next poking session fil
   2. quicktest map on a tile given RM_Cactus_Barrel (world_* tools): RM_Plant_BarrelCactus is among the wild plants.          [UNMEASURED]
   3. tile given RM_ToxicVents: 6-12 RM_ToxicVent on the map; one dev-forced active cycle puts ToxGas in the gas grid.          [UNMEASURED]
   4. tile given RM_RottenStench: the permanent condition is active; a colonist gains RM_RottenStench within 2500 ticks; weather
-     switch off: no new hediff.                                                                                                [UNMEASURED]
+     switch off: the hediff is gone within 2500 ticks.                                                                                      [UNMEASURED]
   5. tile given RM_DustStorms: WeatherDecider commonality of RM_DustStorm > 0 (it is 0 on the same biome without the feature). [UNMEASURED]
   6. tile given RM_PoisonousFlora: harvesting a wild plant raises ToxicBuildup by ~0.05 x (1 - ToxicResistance); a sown one does not. [UNMEASURED]
   7. tile given RM_IncreasedInfestations: IncidentDefOf.Infestation Worker.ChanceFactorNow(map) is x1.5 against an ordinary map. [UNMEASURED]
@@ -162,6 +162,16 @@ def static_checks():
                    "[HarmonyPatch(typeof(IncidentWorker), nameof(IncidentWorker.ChanceFactorNow))]", "IncidentWorker_Infestation"):
         if needle not in pt:
             bad.append("RM_TileFeaturePatches.cs lacks %s" % needle)
+    # switches mean what their tooltips say (TILEFEATURES_SOURCE_VET_STILL_WARM review fixes)
+    tune = app.split("private static void Tune", 1)[1].split("private static object VefExt", 1)[0]
+    if "Array.IndexOf(Vents, def.defName)" not in tune:
+        bad.append("Tune scales prefabsToSpawnAmount on non-vent features (every VEF extension has a default 1~1)")
+    gz = _read("Source", "RM_CompGeyserGas.cs").split("CompInspectStringExtra", 1)[1].split("PostExposeData", 1)[0]
+    if "ventsEnabled" not in gz:
+        bad.append("a switched-off vent still reads 'Venting gas.'")
+    rs = _read("Source", "RM_GameCondition_RottenStench.cs")
+    if "RemoveHediff" not in rs or "!RM_TileFeaturesSettings.weatherEnabled) return" in rs:
+        bad.append("weather off leaves the two-day RM_RottenStench hediff on pawns (tooltip: 'stops at once')")
     # planted negative: the donor-reference check must see a VEE_ def name and must pass a category string
     probe = ET.fromstring("<TileMutatorDef><defName>RM_Probe</defName><categories><li>VEE_Fertility</li></categories>"
                           "<additionalGameConditions><li>VEE_RottenStench</li></additionalGameConditions></TileMutatorDef>")

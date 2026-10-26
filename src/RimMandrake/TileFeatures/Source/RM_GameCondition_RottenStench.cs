@@ -12,13 +12,21 @@ namespace RimMandrake.TileFeatures
         public override void GameConditionTick()
         {
             base.GameConditionTick();
-            if (Find.TickManager.TicksGame % Interval != 0 || !RM_TileFeaturesSettings.weatherEnabled) return;
+            if (Find.TickManager.TicksGame % Interval != 0) return;
             HediffDef hd = RM_TileFeatureDefOf.RM_RottenStench;
             if (hd == null) return;
+            bool on = RM_TileFeaturesSettings.weatherEnabled;
             foreach (Map map in AffectedMaps)
             {
                 foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
                 {
+                    if (!on)
+                    {
+                        // Switched off: the stench stops at once, so the hediff (which lasts two days) goes too.
+                        Hediff old = p?.health?.hediffSet?.GetFirstHediffOfDef(hd);
+                        if (old != null) p.health.RemoveHediff(old);
+                        continue;
+                    }
                     if (p?.RaceProps == null || !p.RaceProps.IsFlesh || p.Dead) continue;
                     if (!p.health.capacities.CapableOf(PawnCapacityDefOf.Breathing)) continue;
                     Hediff h = p.health.hediffSet.GetFirstHediffOfDef(hd) ?? p.health.AddHediff(hd);
