@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using RimMandrake.FlowWorks.Hose;
 using RimMandrake.FlowWorks.Machinery;
@@ -143,6 +144,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string src = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
                 Assert(src.Contains("Core.Register(PipeStyles.StyledDefs, PipeStyles.StyleDefName)"), "PipeLook registers through the shared StylePickerCore");
                 Assert(src.Contains("new StylePickerCore("), "the shared picker, not a copy");
+            });
+            // MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH (live A/B 2026-10-26: a reprinted unstyled pipe kept the old look, because
+            // Thing.Graphic caches styleGraphicInt). Source anchors, each can fail: the switch drops the cached graphic of every
+            // default-following thing (not only a mesh flag), keeps picked looks, reprints both layers, and every switch calls it.
+            // NOT proven here: the repaint on screen (live NEXT on the item).
+            Case("DefaultLook_switch_repaints_cached_graphics", () =>
+            {
+                string look = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "PipeLook.cs"));
+                int at = look.IndexOf("internal static int RepaintDefaultLook(StylePickerCore core)", StringComparison.Ordinal);
+                Assert(at >= 0, "PipeLook.RepaintDefaultLook exists");
+                string body = look.Substring(at, Math.Min(1800, look.Length - at));
+                Assert(body.Contains("foreach (Map m in Find.Maps)"), "every map, not just the current one");
+                Assert(body.Contains("core.IsIndexed(t.def) && StylePickerCore.RawStyle(t) == null"), "only things with no stored style follow the default (a picked look stays)");
+                Assert(body.Contains("t.Notify_ColorChanged()"), "drops the cached graphic (graphicInt/styleGraphicInt), not just the mesh");
+                Assert(body.Contains("Building_DrawbridgeWinch") && body.Contains("Building_DrawbridgeGate"), "the drawbridge winch and gate caches too");
+                Assert(body.Contains("MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things"), "both mesh layers reprint (decks/railings print in Things)");
+                string set = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_MachinerySettings.cs"));
+                Assert(set.Contains("pipeDefaultLook = l; PipeLook.RepaintDefaultLook(PipeStyleIndex.core);"), "the pipe default-look menu repaints");
+                Assert(Regex.Matches(set, @"PipeLook\.RepaintDefaultLook\(PipeStyleIndex\.core\)").Count >= 2, "ResetAll repaints too (it resets pipeDefaultLook)");
+                string hose = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
+                Assert(hose.Contains("defaultLook = look; Machinery.PipeLook.RepaintDefaultLook(HoseLook.Core);"), "the reel default-look menu repaints");
+                string ctl = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeControl.cs"));
+                Assert(Regex.IsMatch(ctl, @"Notify_ColorChanged\(\)\s*\{\s*lookGraphic = null;"), "the winch drops its once-per-spawn look graphic");
+                Assert(Regex.IsMatch(ctl, @"Notify_ColorChanged\(\)\s*\{\s*artReadTick = -99999;"), "the gate re-reads its look next frame");
             });
             Case("BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab", () =>
             {

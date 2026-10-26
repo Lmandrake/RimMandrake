@@ -73,6 +73,41 @@ namespace RimMandrake.FlowWorks.Machinery
             return true;
         }
 
+        /// <summary>
+        /// MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH (live A/B 2026-10-26, D:\ClaudeWork\rimmandrake\live_wave2_20261026\ev\look):
+        /// a default-look switch in the settings must repaint every already-built thing that follows the default look. A thing
+        /// with no stored style reads the default look's style through the Thing.StyleDef postfix (StylePickerCore.StyleDefPostfix),
+        /// but Thing.Graphic caches the resolved style graphic (styleGraphicInt) on first read, so a map-mesh flag alone reprints
+        /// the OLD picture. Per map: every spawned thing of a def this picker indexes with no stored style, plus the drawbridge
+        /// winch and gate (their own look caches; RM_DrawbridgeControl), drops its cached graphic (Notify_ColorChanged); then
+        /// the whole map's Buildings and Things layers reprint (multi-cell footprints and the drawbridge leaf/planks, which read
+        /// the look at print). A thing with a picked look keeps it. Returns how many things were repainted (the state read).
+        /// </summary>
+        internal static int RepaintDefaultLook(StylePickerCore core)
+        {
+            if (core == null || Current.ProgramState != ProgramState.Playing || Find.Maps == null) return lastRepainted = 0;
+            int n = 0;
+            foreach (Map m in Find.Maps)
+            {
+                List<Thing> all = m.listerThings.AllThings;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    Thing t = all[i];
+                    bool followsDefault = core.IsIndexed(t.def) && StylePickerCore.RawStyle(t) == null;
+                    if (!followsDefault && !(t is Pits.Building_DrawbridgeWinch) && !(t is Pits.Building_DrawbridgeGate)) continue;
+                    t.Notify_ColorChanged();
+                    n++;
+                }
+                m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.Things);
+            }
+            RM_PipePoles.RedrawSpans();   // the span shadows reprint with the rest, as ResetAll does
+            lastRepainted = n;
+            return n;
+        }
+
+        /// <summary>State read: things repainted by the last default-look switch.</summary>
+        public static int lastRepainted;
+
         /// <summary>Every pipe of the run that holds <paramref name="start"/> (cardinal pipe neighbours, like the net walk), capped
         /// at the net's own search cap.</summary>
         public static List<Thing> RunOf(Thing start)

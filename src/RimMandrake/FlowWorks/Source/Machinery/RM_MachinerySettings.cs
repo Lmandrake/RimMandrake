@@ -137,6 +137,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					foreach (Map m in Find.Maps) m.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Buildings);
 				}
+				// MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: the reset puts pipeDefaultLook back too; drop the cached graphics
+				PipeLook.RepaintDefaultLook(PipeStyleIndex.core);
 			}
 		}
 
@@ -251,7 +253,8 @@ namespace RimMandrake.FlowWorks.Machinery
 				foreach (string look in PipeStyles.Looks)
 				{
 					string l = look;
-					opts.Add(new FloatMenuOption(l, () => pipeDefaultLook = l));
+					// MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: repaint what follows the default look now (cached graphics, not just the mesh)
+					opts.Add(new FloatMenuOption(l, () => { pipeDefaultLook = l; PipeLook.RepaintDefaultLook(PipeStyleIndex.core); }));
 				}
 				Find.WindowStack.Add(new FloatMenu(opts));
 			}

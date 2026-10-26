@@ -297,7 +297,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (list.ButtonText("Change default reel look"))
             {
                 var opts = new List<FloatMenuOption>();
-                foreach (string l in HoseStyles.Looks) { string look = l; opts.Add(new FloatMenuOption(look, () => defaultLook = look)); }
+                foreach (string l in HoseStyles.Looks) { string look = l; opts.Add(new FloatMenuOption(look, () => { defaultLook = look; Machinery.PipeLook.RepaintDefaultLook(HoseLook.Core); })); }   // MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: unpicked reels repaint now
                 Find.WindowStack.Add(new FloatMenu(opts));
             }
                 list.GapLine();

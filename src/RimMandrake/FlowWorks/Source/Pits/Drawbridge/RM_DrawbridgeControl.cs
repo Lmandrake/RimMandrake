@@ -95,6 +95,14 @@ namespace RimMandrake.FlowWorks.Pits
 			}
 		}
 
+		/// <summary>MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: a default-look switch (PipeLook.RepaintDefaultLook) re-resolves the
+		/// winch's picture; otherwise it is resolved once per spawn.</summary>
+		public override void Notify_ColorChanged()
+		{
+			lookGraphic = null;
+			base.Notify_ColorChanged();
+		}
+
 		/// <summary>Every way off the map passes here (Destroy, deconstruct and kill call DeSpawn; a gravship launch despawns
 		/// without destroying, WillReplace; the winch is not minifiable). The leaf stays behind on the map, so this is a lost winch: the leaf crashes and the
 		/// link is cleared (idempotent: a second call finds no leaf on this winch). A map removed whole takes winch and leaf
@@ -363,6 +371,14 @@ namespace RimMandrake.FlowWorks.Pits
 		private int artReadTick = -99999;
 		private SuspensionTier artTier = SuspensionTier.Timber;
 		private string artLook;
+
+		/// <summary>MACHINERY_LOOK_FIX_DECK_REPAINT_ON_SWITCH: a default-look switch re-reads the look on the next frame, not
+		/// up to 250 ticks later.</summary>
+		public override void Notify_ColorChanged()
+		{
+			artReadTick = -99999;
+			base.Notify_ColorChanged();
+		}
 
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
