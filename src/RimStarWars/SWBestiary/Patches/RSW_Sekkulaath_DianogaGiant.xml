@@ -248,4 +248,16 @@
     </match>
   </Operation>
 
+  <!-- DIANOGA_FIX_YOUNGCASK_LABEL_LEFTOVER: the brood-ransom cask (added after this file) names its young.
+       Its description names nothing, so only the label is replaced. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathYoungCask"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathYoungCask"]/label</xpath>
+      <value>
+        <label>dianoga young-cask</label>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
