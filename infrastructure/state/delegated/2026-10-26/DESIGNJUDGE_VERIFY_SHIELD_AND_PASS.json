@@ -1,0 +1,34 @@
+{
+ "judge_model": {"opus": [{"model_requested": "opus", "models_reported": ["claude-opus-5-5"], "role": "independent design judge, no maker context (delegation_policy.md §4)"}]},
+ "brief": "delegation_policy.md §4.3 design call: item criteria + governing design doc + touched standing rulings",
+ "subject": "c7f5b6a928",
+ "item": "DESIGNJUDGE_VERIFY_SHIELD_AND_PASS",
+ "calls": [
+  {
+   "item": "SHIELDGEN_DECIDE_INTERCEPT_UNPOWERED",
+   "decision": "KEEP",
+   "verdict": "UPHOLD",
+   "reasons": [
+    "ship_shields_deep_design.md RULED table, thermal-veil row (owner verbatim): \"Just use power for fuel ... Power does the trick. All shields are modulated plasma fields\" - power is the shields' fuel; no fuel, no field.",
+    "loadout-tradeoff row (owner verbatim): \"they should be the same shields, you're just installing modules\" - applying the power rule to the bubble as to the other three fields is applying his ruling to a case it does not name (delegated, policy §2.4), not changing it.",
+    "bubble-not-wall row (owner verbatim): \"prone to overheating or even explosion when forcibly collapsed\" - a power cut is a shutdown, not a forcible collapse; keeping the explosion on HP-break only is the narrower reading and avoids a blackout or solar flare detonating every generator at once (consistent with no-hard-landing-gate: \"no environment is immediately lethal\").",
+    "HP kept, no recharge while unpowered (HitPointsPerInterval returns 0 unpowered), returns at prior HP - no free healing, no punishment; simplest coherent reading.",
+    "No conflict found in standing_rulings.md, biome_rulings.md or CLAUDE.md (only shield hit: standing_rulings.md:160, shade items, unrelated)."
+   ]
+  },
+  {
+   "item": "CATHEDRALPASS_DECIDE_RETALIATION",
+   "decision": "REDO (text only)",
+   "verdict": "REVISE",
+   "mechanic": "UPHOLD",
+   "reasons": [
+    "Mechanic follows the arc: §3 pass is \"revocable\" and REVOKE is the arc's own verb; reverting one striker to the baseline every non-holder already has (mechanoid faction hostile, faction-level hostility untouched) is withdrawal of tolerance, not vengeance (law block + §6.2: \"no manhunts, no pursuit, no Sentinel vengeance story\"; §8: \"no raid, no manhunt\"). No goodwill, raid or clan-wide revoke keeps clan-level cooling with the GM layer, as §3/§6 place it.",
+    "Exclusions (stray shots via IntendedTarget, Extinguish, mental states) keep it to the player's deliberate choice; a simpler 'temporary hostility while attacking' reading would need a new timer mechanism the spec never names and leaves the holder able to resume immunity - the permanent per-pawn revoke is the simpler reading.",
+    "REVISE: the player-facing message \"The Cathedral's machines no longer know <pawn>.\" attributes cognition (recognition) to the machines and implicitly explains their prior mercy. Arc law block: before the reveal every beat \"must read, in-world, as a place with strange weather - never as a person\"; Cathedral sheet ban 2: \"no explanation of the droids' mercy\"; §3: letters are \"the world describing behavior, never intent\"; §8 grep gate: no player-facing string attributes agency before stage 3. Pass grant happens at VOUCHED, before the reveal, so this string can fire pre-reveal.",
+    "Exact fix: replace the string with behaviour-register text matching the RUT_CathedralPass hediff description, e.g. \"The old sentinels no longer look away from <pawn>.\" No code logic change."
+   ],
+   "followup": "CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER"
+  }
+ ],
+ "needs_owner": false
+}
