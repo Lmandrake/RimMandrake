@@ -1,0 +1,2 @@
+Corpse.Destroy (1.6) calls PostCorpseDestroy, which destroys the inner pawn's equipment and inventory. Code that deletes a corpse on purpose (dissolve, cremate-in-place) must drop apparel, equipment AND inventory (inventory.DropAllNearPawn works while the corpse is spawned, it uses MapHeld) before Destroy, or carried meds/drugs/silver vanish silently. Seen in RM_ReactionPools.cs (REACTIONPOOL_FIX_DISSOLVE_DESTROYS_INVENTORY).
+home: rimworld-modding
