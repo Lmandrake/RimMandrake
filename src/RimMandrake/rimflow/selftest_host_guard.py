@@ -149,7 +149,7 @@ def main():
         g = subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0,%r); from rimflow import model as m; "
                             "print(m.bridge_gate('BENCH','stevedesktop') is None, m.bridge_gate('FOUNDRY','stevedesktop') is None,"
                             " m.bridge_gate('FOUNDRY') is None)" % os.path.dirname(HERE)],
-                           env=env, capture_output=True, text=True).stdout.strip()
+                           env=env, capture_output=True, text=True, timeout=60).stdout.strip()  # the one call without one (wave 72)
         check(g == "True False True", "bridge_gate is per host: " + g)
         r = rf("BENCH", "bridge", "who", "--host", "stevedesktop")
         check("held by BENCH" in r.stdout and "HELD" in r.stdout, "who --host reports ledger and guard: "
