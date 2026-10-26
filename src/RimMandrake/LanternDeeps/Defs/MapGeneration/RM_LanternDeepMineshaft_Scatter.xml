@@ -6,12 +6,14 @@
     <order>321</order>
     <genStep Class="RimMandrake.LanternDeeps.GenStep_ScatterMineshaftPortal">
       <minSpacing>60</minSpacing>
+      <!-- One portal per map that passes the C# gates (toggle, biome, chancePerMap roll).
+           GenStep_Scatterer's count defaults to -1 with countPer10kCellsRange 0, which
+           scatters ZERO times; and a <things> list with coveredCellsPer10Cells 0~0.02 on a
+           7x7 rect rounds to zero placements. spawnAtCenter places exactly one, centred. -->
+      <count>1</count>
       <groups>
         <li>
-          <things>
-            <RM_LanternDeepMineshaft>1</RM_LanternDeepMineshaft>
-          </things>
-          <coveredCellsPer10Cells>0~0.02</coveredCellsPer10Cells>
+          <spawnAtCenter>RM_LanternDeepMineshaft</spawnAtCenter>
           <clusterRectRadius>3~3</clusterRectRadius>
         </li>
       </groups>

@@ -75,9 +75,12 @@ VANILLA = {
     "GenStep": set(),
     "DeathActionProperties": {"workerClass"},
     "ThinkNode_JobGiver": {"priority"},
-    "GenStep_ScatterGroup": {"allowInWaterBiome", "allowOnWater", "allowRoofed", "clearSpaceSize", "countPer10kCellsRange", "extraNoBuildEdgeDist",
-                             "minSpacing", "minSpacingIgnoreTerrain", "nearMapCenter", "neverOnDamagedTerrain", "spotMustBeStandable",
-                             "terrainValidationRadius", "terrainValidator", "validators", "warnOnFail", "groups"},
+    # GenStep_Scatterer's public fields + GenStep_ScatterGroup.groups (decomp rw16 Verse/GenStep_Scatterer.cs, GenStep_ScatterGroup.cs).
+    # allowOnWater/clearSpaceSize/minSpacingIgnoreTerrain/neverOnDamagedTerrain/terrainValidator* are GenStep_ScatterThings', not these.
+    "GenStep_ScatterGroup": {"count", "countPer10kCellsRange", "nearPlayerStart", "nearMapCenter", "minSpacing", "spotMustBeStandable",
+                             "minDistToPlayerStart", "minDistToPlayerStartPct", "minEdgeDist", "minEdgeDistPct", "extraNoBuildEdgeDist",
+                             "validators", "fallbackValidators", "allowInWaterBiome", "allowFoggedPositions", "allowRoofed",
+                             "onlyOnStartingMap", "minPollution", "allowMechanoidDatacoreReadOrLost", "isJunk", "warnOnFail", "groups"},
 }
 
 

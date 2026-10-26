@@ -6,12 +6,15 @@
     <order>320</order>
     <genStep Class="RimMandrake.LanternDeeps.GenStep_ScatterCavePortal">
       <minSpacing>60</minSpacing>
+      <!-- One portal per map that passes the C# gates (toggle, biome, chancePerMap roll).
+           GenStep_Scatterer's count defaults to -1 with countPer10kCellsRange 0, which
+           scatters ZERO times; and a <things> list with coveredCellsPer10Cells 0~0.02 on a
+           7x7 rect rounds to zero placements. spawnAtCenter places exactly one, centred
+           (the 6x6 footprint fits the radius-3 rect). -->
+      <count>1</count>
       <groups>
         <li>
-          <things>
-            <RM_LanternDeepEmergence>1</RM_LanternDeepEmergence>
-          </things>
-          <coveredCellsPer10Cells>0~0.02</coveredCellsPer10Cells>
+          <spawnAtCenter>RM_LanternDeepEmergence</spawnAtCenter>
           <clusterRectRadius>3~3</clusterRectRadius>
         </li>
       </groups>
