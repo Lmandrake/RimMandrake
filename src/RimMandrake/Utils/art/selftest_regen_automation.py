@@ -424,9 +424,13 @@ def run_installer(base, work, spec):
         shutil.copy(base / "tool.py", d / "bulk_accept_renders.py")
         (work / "publish").write_text(f"#!/bin/sh\nexec {sys.executable} {base / 'publish.py'} {marker}\n")
         (work / "publish").chmod(0o755)
-        subprocess.run([sys.executable, str(d / "donor_regen_install_hourly.py")], cwd=work, capture_output=True,
-                       timeout=120, env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t",
-                                             GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t"))
+        # its sibling import (REPO/src/RimMandrake/Utils/selftest_no_case_twins.py, resolved from its own path)
+        shutil.copy(HERE.parent / "selftest_no_case_twins.py", work / "src/RimMandrake/Utils/selftest_no_case_twins.py")
+        r = subprocess.run([sys.executable, str(d / "donor_regen_install_hourly.py")], cwd=work, capture_output=True,
+                           text=True, timeout=120, env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t",
+                                                            GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t"))
+        # a version that cannot even start proves nothing about any check below: say so instead of failing them blind
+        check("Traceback" not in r.stderr, "the installer under test runs (no crash)", r.stderr[-400:])
         return
     import donor_regen_install_hourly as H
     env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
@@ -489,14 +493,19 @@ def installer_cases():
     check(pub2 == 1 and remote == head1, "#10 a foreign unpublished commit blocks publish (logged, skipped)",
           (pub2, remote[:9], head1[:9]))
 
-    # 9: a commit that fails (here: a refusing pre-commit hook) must not leave the run's paths staged in the shared index
+    # 9: the commit is built with commit-tree + update-ref, which run no hooks, so a refusing pre-commit hook cannot make
+    # it fail (the failing-commit case is the racer check below). What a hook CAN show: the run's commit still lands and
+    # nothing of its own is left staged in the shared index.
     base, work = fake_repo()
     hook = work / ".git/hooks/pre-commit"
     hook.write_text("#!/bin/sh\nexit 1\n")
     hook.chmod(0o755)
+    head_h = g(work, "rev-parse", "HEAD").strip()
     run_installer(base, work, {"install": ["src/M/Textures/H.png"]})
     staged = g(work, "diff", "--cached", "--name-only").split()
-    check(staged == [], "#9 after the hourly run nothing of its own is left staged in the shared index", staged)
+    landed = g(work, "rev-parse", "HEAD").strip() != head_h
+    check(landed and staged == [], "#9 a refusing pre-commit hook neither blocks the hourly commit nor leaves anything "
+          "of its own staged in the shared index", (landed, staged))
 
     # timeouts: a hung child ends the run, nothing committed
     if not os.environ.get("INSTALLER_UNDER_TEST"):
