@@ -18,7 +18,7 @@ Order (owner, 2026-10-26): "full belt", ended when he wrote "finish up and hando
 
 <!-- Anything left mid-flight, one bullet each: `- ITEM_OR_TOPIC — state; NEXT: <one imperative action>`. A pointer without a NEXT: measured ~0% pickup; with one, near-100%. -->
 - `ARTPIPE_FOREIGN_COPY_AUDIT_111_DONE_JOBS` — real renders harvested, nothing installed; NEXT: on a seat with the artpipe daemon requeue or finalize the 4 jobs, run art-eval, then `art install` with --why "delegated: art-eval foreign-copy harvest".
-- `TILEFEATURES_SOURCE_VET_STILL_WARM` — a reviewer was running at wrap; NEXT: run `code_review_status.py check` over src/RimMandrake/TileFeatures and mark-clean what a full read passes.
+- `TILEFEATURES_SOURCE_VET_STILL_WARM` — closed; 3 bugs fixed (0b5b4e7a70), C#/csproj/validation.py CLEAN, About.xml and 9 Defs XML DIRTY by design; NEXT: none until the live checks 1-9 in TileFeatures/validation.py run.
 - `VEE_FLORA_VENTS_BUILD_XML_FIRST` — built offline at ee2e8c910532; NEXT: when the bridge is free, run the L1 cold load and L2 quicktests in TileFeatures/validation.py.
 - `MINERAL_SURFACE_PROVE_LIVE_MAP` — R3 built offline (b5b48cf8e6); NEXT: live-prove the surface check when the bridge is free.
 - `ALPHA_ANIMALS_DEAD_OPS_DELETE_REMAINING_REFS` — done but unmeasured; NEXT: run validate_patch.py --defs as a background job longer than 540 s and read the verdict.
