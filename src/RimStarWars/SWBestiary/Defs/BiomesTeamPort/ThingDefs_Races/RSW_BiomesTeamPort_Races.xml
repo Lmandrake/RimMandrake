@@ -4242,8 +4242,10 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </tools>
     <comps>
+      <!-- The glowing tail tip, pale yellow like the sprite's tip. Had a radius but no colour, so it shone 1.45x white. -->
       <li Class="CompProperties_Glower">
         <glowRadius>1</glowRadius>
+        <glowColor>(230,230,170,0)</glowColor>
       </li>
       <li Class="CompProperties_EggLayer">
         <eggFertilizedDef>RSW_EggGlowtailFertilized</eggFertilizedDef>
@@ -6367,8 +6369,12 @@ A qattora does not fight well, but it does not need to: struck or seized, it fir
         <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
         <eggCountRange>5~10</eggCountRange>
       </li>
+      <!-- Wing markings that "glow faintly in the dark": a short sickly yellow-green, the colour of the sprite's
+           brightest markings. Was an empty glower, which loads the engine default: radius 14, 1.45x white. -->
       <li Class="CompProperties_Glower">
-				</li>
+        <glowRadius>2.5</glowRadius>
+        <glowColor>(200,210,110,0)</glowColor>
+      </li>
     </comps>
     <tools>
       <li>
