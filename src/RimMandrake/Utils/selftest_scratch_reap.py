@@ -106,10 +106,15 @@ def main() -> int:
         (sess_bad / "scratchpad").mkdir(parents=True)
         inner = clone(origin, sess_bad / "scratchpad" / "rename_work")
         (inner / "c.txt").write_text("c\n"); git(inner, "add", "--", "c.txt"); git(inner, "commit", "-q", "-m", "local only")
+        # an unpushed commit held ONLY by a ref outside heads/tags/stash/backup/rescue (refs/wip/...): the branch
+        # itself is pushed, so a tip list limited to those namespaces sees nothing unpushed and would delete it
+        oddref = clone(origin, seat / "odd_ref_clone")
+        (oddref / "w.txt").write_text("w\n"); git(oddref, "add", "--", "w.txt"); git(oddref, "commit", "-q", "-m", "wip")
+        git(oddref, "update-ref", "refs/wip/keep", "HEAD"); git(oddref, "reset", "-q", "--hard", "HEAD~1")
         loose = seat / "loose_file.txt"
         loose.write_text("not a clone\n")
 
-        for d in [stale, clean, unpushed, dirty, untracked, stashed, mentioned, noremote, lender, borrower, sess_ok, sess_bad]:
+        for d in [oddref, stale, clean, unpushed, dirty, untracked, stashed, mentioned, noremote, lender, borrower, sess_ok, sess_bad]:
             age(d)
 
         rows = run_reaper()
@@ -129,6 +134,8 @@ def main() -> int:
         check(v.get("lender_clone") == "REFUSE" and "borrows" in why["lender_clone"],
               "a clone another clone borrows objects from is REFUSED")
         check(v.get("stale_ref_clone") == "DELETE", "a commit on origin per the mirror counts as pushed despite a stale ref")
+        check(v.get("odd_ref_clone") == "REFUSE" and "on no remote" in why["odd_ref_clone"],
+              "an unpushed commit held only by a non-branch ref (refs/wip/...) is REFUSED")
         check(v.get("young_clone") == "YOUNG", "a clone touched within the TTL is left alone (YOUNG)")
         check(v.get(sess_ok.name) == "DELETE", "an old session dir whose clones are all pushed is a DELETE")
         check(v.get(sess_bad.name) == "REFUSE" and "on no remote" in why[sess_bad.name],
@@ -143,7 +150,7 @@ def main() -> int:
         v = {k: r["verdict"] for k, r in rows.items()}
         check(not clean.exists() and not sess_ok.exists(), "--apply deletes exactly the DELETE rows")
         check(not borrower.exists(), "a clean, pushed BORROWER is deletable (only its lender must stay)")
-        check(all(p.exists() for p in [unpushed, dirty, untracked, stashed, mentioned, noremote, lender,
+        check(all(p.exists() for p in [oddref, unpushed, dirty, untracked, stashed, mentioned, noremote, lender,
                                          young, sess_bad, loose]),
               "--apply leaves every refused, young or non-candidate path in place")
         check(git(unpushed, "log", "-1", "--format=%s") == "only here", "the unpushed commit survives")

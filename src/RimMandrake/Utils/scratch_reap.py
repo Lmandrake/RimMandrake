@@ -166,8 +166,11 @@ def still_unpushed(c: Path, unpushed: list[str]) -> list[str]:
     """A clone's remote-tracking refs go stale (its commits were pushed from elsewhere, or landed later):
     a local ref tip that is an ANCESTOR of origin/main in the locally kept mirror/store is on origin, and so is
     everything it reaches. Only exact commits count — a patch-equivalent replay is still refused."""
-    tips = set(git(c, "for-each-ref", "--format=%(objectname)", "refs/heads", "refs/tags", "refs/stash",
-                   "refs/backup", "refs/rescue").stdout.split())
+    # Every local ref, not a namespace list: `rev-list --all` (the caller) counts commits held by ANY ref, so a
+    # commit held only by e.g. refs/wip/x or refs/original/... must be a tip here too, or none of `left` names
+    # it and the clone reads as fully pushed (review 2026-10-26). refs/remotes is the remote side, never a tip.
+    tips = {ln.split()[0] for ln in git(c, "for-each-ref", "--format=%(objectname) %(refname)").stdout.splitlines()
+            if ln.strip() and not ln.split()[1].startswith("refs/remotes/")}
     h = git(c, "rev-parse", "-q", "--verify", "HEAD").stdout.strip()
     if h:
         tips.add(h)
