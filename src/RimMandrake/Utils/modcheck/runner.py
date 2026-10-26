@@ -600,6 +600,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 world_before = dict(world_before or {}, pond={"error": "%s: %s" % (type(e).__name__, e)})
     hold_tx = None
     hold_err = None
+    hold_restore_err = None
     if hold:
         # One settings transaction for the whole suite (storyteller and random events off, wild spawner blocked),
         # restored after the last chain; the per-chain Watch opens its own, this path has none.
@@ -780,6 +781,12 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         try:
             if hold_tx is not None:
                 hold_tx.__exit__(None, None, None)
+        except Exception as e:     # noqa: BLE001 - recorded on the sheet (hold_restore_error), never a lost sheet
+            # testq J20261026T152116Z-162d96: a 30 s bridge timeout left the client IndeterminateError, the restore's
+            # first debug_settings call raised it, and 59 measured PASS rows died with the process. The rows stand; the
+            # sheet says the game's settings were NOT restored, so a kept game is known to be dirty.
+            hold_restore_err = "site hold settings restore raised %s: %s" % (type(e).__name__, e)
+            print("[modcheck] HARNESS %s" % hold_restore_err, file=sys.stderr, flush=True)
         finally:
             if declared:
                 import clockgate  # noqa: E402
@@ -809,6 +816,8 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                                         for c in all_comps)
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
+    if hold_restore_err:
+        summary["hold_restore_error"] = hold_restore_err
     # option B fields: what was reused (never a fresh PASS), the canary, and the leads an invalid row kept
     import reuse as _RU  # noqa: E402
     summary["reuse"] = _RU.summarize(chains_out)

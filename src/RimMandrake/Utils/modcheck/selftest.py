@@ -759,6 +759,25 @@ def t_site_held_between_chains_without_watch():
         verdicts = [c["verdict"] for ch in r["chains"] for c in ch["components"]]
         check("hold: settings that cannot be opened make every chain UNMEASURED, never a crash",
               verdicts and all(v == UNMEASURED for v in verdicts), verdicts)
+        # testq J20261026T152116Z-162d96: the restore raised (bridge IndeterminateError) and the whole sheet was lost.
+        # Can-fail: before the fix this run_suite raised; now the measured rows stand and the sheet names the restore.
+        del problems[:]
+
+        def ok_enter(self):
+            calls.append("tx_enter")
+            return self
+
+        def bad_exit(self, *a):
+            raise RuntimeError("IndeterminateError: a mutating call's outcome is unknown")
+        Tx.__enter__, Tx.__exit__ = ok_enter, bad_exit
+        try:
+            r = runner.run_suite(make_suite(), _fake_session(), hold_site=True)
+        except Exception as e:     # noqa: BLE001
+            r = {"raised": repr(e)}
+        verdicts = [c["verdict"] for ch in r.get("chains", ()) for c in ch["components"]]
+        check("hold: a settings restore that raises keeps the sheet (rows stand, hold_restore_error names it)",
+              "raised" not in r and verdicts and all(v == PASS for v in verdicts)
+              and "IndeterminateError" in (r.get("hold_restore_error") or ""), r)
     finally:
         (H.prepare_bland_map, H.SettingsTransaction, H.kill_hostiles, runner.load_fixtures,
          runner.save_fixtures) = real

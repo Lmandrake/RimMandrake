@@ -1353,7 +1353,7 @@ DRAWBRIDGE_CASES = [
     "Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid",
     "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth",
     "Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started", "Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge",
-    "Drawbridge_OneDrag_designator_plans_and_places_the_whole_package"]
+    "Drawbridge_OneDrag_designator_plans_and_places_the_whole_package", "Drawbridge_Leaf_toggle_repaints_things_layer"]
 DRAWBRIDGE_LIVE = [
     ("RAISE_PATH", None, "a colonist holding a path over a lowered steel leaf; raised: the production path no longer crosses "
      "it, ToggleCount and RepathCount rise within 10 ticks"),

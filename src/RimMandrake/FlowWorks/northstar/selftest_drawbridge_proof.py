@@ -111,6 +111,25 @@ def main():
         fails.append("ProofLeaf off a leaf must answer 'LEAF none' (the preflight probe asks an off-map square)")
     if "drawbridge_result_*.json" not in VAL.DRIVER_RESULTS:
         fails.append("validation.DRIVER_RESULTS does not read drawbridge_result_*.json")
+    # RAID_UP's plot sweep never vanishes the map's last colonists (testq J20261026T153314Z-bbef21: the sapper variant's sweep took
+    # the assault island's two, colony_loss stopped the driver, the canary read no live colonist). Origin plot corner (136,138).
+    o = (136, 138)
+    pawns = {"Isl1": {"x": 168, "z": 210, "kind": "Colonist"}, "Isl2": {"x": 169, "z": 210, "kind": "Colonist"},
+             "Old": {"x": 150, "z": 150, "kind": "Colonist"}, "Dead": {"x": 150, "z": 151, "dead": True},
+             "Far": {"x": 20, "z": 20, "kind": "Colonist"}, "Edge": {"x": 134, "z": 136}, "Out": {"x": 186, "z": 230}}
+    gone, kept = DP.plot_vanish_ids(pawns, o, ["Isl1", "Isl2", None])
+    if sorted(gone) != ["Edge", "Old"] or sorted(kept) != ["Isl1", "Isl2"]:
+        fails.append("plot sweep: gone %s kept %s, want gone [Edge, Old] kept [Isl1, Isl2]" % (sorted(gone), sorted(kept)))
+    only_island = {k: v for k, v in pawns.items() if k in ("Isl1", "Isl2")}
+    old_gone, _ = DP.plot_vanish_ids(only_island, o)            # can-fail: the pre-fix sweep (no keep) empties the colony
+    new_gone, _ = DP.plot_vanish_ids(only_island, o, ["Isl1", "Isl2"])
+    if sorted(old_gone) != ["Isl1", "Isl2"] or new_gone:
+        fails.append("plot sweep can-fail: without keep %s (want both island colonists), with keep %s (want none)"
+                     % (sorted(old_gone), new_gone))
+    src = open(os.path.join(HERE, "drawbridge_proof.py"), encoding="utf-8").read()
+    if ('plot_vanish_ids(ctx["pawns"](), o, ctx.get("raid_island_colonists")' not in src
+            or 'ctx["raid_island_colonists"] = [i for i in inside if i]' not in src):
+        fails.append("_raid_variant no longer hands its island colonists to the next variant's plot sweep")
     for f in fails:
         print("FAIL " + f)
     print("drawbridge proof mock: %d rows, %d can-fail faults, %s" % (len(DP.ROW_IDS), len(CAN_FAIL), "ok" if not fails else "FAIL"))

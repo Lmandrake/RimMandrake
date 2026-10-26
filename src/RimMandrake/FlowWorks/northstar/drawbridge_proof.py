@@ -411,6 +411,22 @@ def _c(ctx, *ks):
     return [ctx[k] for k in ks]
 
 
+def plot_vanish_ids(pawns, o, keep=()):
+    """(ids to vanish, ids kept) for a raid variant's sweep of the origin plot (o = its x,z corner, 50x90, 2-cell margin).
+    Every living pawn standing in the plot goes, except `keep`: the previous variant's island colonists, whose own teardown
+    already destroyed their winch (so no leaf can crash on them) and who may be the map's last colonists. Vanishing them
+    left zero colonists and the vitals governor stopped the run on colony_loss (testq J20261026T153314Z-bbef21)."""
+    keep = set(k for k in keep if k)
+    gone, kept = [], []
+    for i, p in pawns.items():
+        px, pz = p.get("x"), p.get("z")
+        if (px is None or pz is None or p.get("dead") or not (o[0] - 2 <= px < o[0] + 52)
+                or not (o[1] - 2 <= pz < o[1] + 92)):
+            continue
+        (kept if i in keep else gone).append(i)
+    return gone, kept
+
+
 # ====================================================================== the rows
 def raise_path(ctx):
     """PROVE ProofPath (production path finder) for a colonist from bank A to bank B before and right after a raise.
@@ -769,14 +785,14 @@ def _raid_variant(ctx, rid, sappers, dx=30):
         # HARNESS (BENCH belt 2026-10-22): the PM run's RAID_UP stopped in this prep's reveal on 'hurt: Cut/Head' with no
         # hostile on the map. Destroying the earlier rows' winches CRASHES any leaf still raised (WINCH_LOST_CRASHES is the
         # mod doing its job) onto whoever stands in the plot. The earlier rows' pawns leave the plot before its buildings go.
-        gone = []
-        for i, p in ctx["pawns"]().items():
-            px, pz = p.get("x"), p.get("z")
-            if (px is not None and pz is not None and not p.get("dead") and o[0] - 2 <= px < o[0] + 52
-                    and o[1] - 2 <= pz < o[1] + 92):
-                B.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
-                gone.append(i)
-        V.SITE_NOTES.append({"id": "raid_%s_plot_pawns_vanished" % rid, "detail": gone})
+        # HARNESS (testq J20261026T153314Z-bbef21, SteveDesktop 2026-10-26): the sapper variant's sweep vanished the assault
+        # variant's two island colonists, the last colonists on the fresh map; the vitals governor's colony_loss stopped
+        # safe_advance in this prep (rc 1), the driver died mid-row and modcheck's canary read 'no live colonist'. It raced the
+        # 60-tick census, so the same run had passed. The previous variant's island colonists stay (plot_vanish_ids).
+        gone, kept = plot_vanish_ids(ctx["pawns"](), o, ctx.get("raid_island_colonists") or ())
+        for i in gone:
+            B.call("jawa/pawn_force_incapacitate", pawn=i, action="vanish")
+        V.SITE_NOTES.append({"id": "raid_%s_plot_pawns_vanished" % rid, "detail": gone, "kept": kept})
         B.call("jawa/destroy_batch", rects="%d,%d,50,90" % o, categories="Building")
         B.call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
                args="%d;%d;%d;%d" % rect)
@@ -795,6 +811,9 @@ def _raid_variant(ctx, rid, sappers, dx=30):
            if x in (c[0] - 3, c[0]) or z in (c[1] - 2, c[1] + 2)]
     ctx["walls"](box)
     inside = [spawn((c[0] - 2 + k, c[1]), draft=False) for k in range(2)]
+    ctx["raid_island_colonists"] = [i for i in inside if i]
+    # an island with no colonist would vanish the map's last ones below: that is colony_loss, not a raid reading
+    V.require(ctx["a"].mock or ctx["raid_island_colonists"], "%s island colonists spawned" % rid, inside, cls="HARNESS")
     if not ctx["a"].mock:
         # SITE (live 2026-10-22): with the island hidden, the gunners walked 60+ cells to the start colonists and chased a wild
         # animal (enemyTarget Human / RM_Ssurr), so 'nobody enters the trench' measured the map, not the duty. Every pawn that
