@@ -7,10 +7,13 @@ private `shutDown` field (which Active, CheckIntercept, absorption and the drawn
 the C# that does it, because nothing offline can run it:
 
   * the shutDown field is reached by AccessTools.FieldRefAccess<CompProjectileInterceptor, bool>("shutDown");
-  * CompTick calls SyncPowerShutdown() BEFORE base.CompTick() (so a cut lands the same tick);
-  * SyncPowerShutdown only clears a shutdown it set itself (unpoweredShutDown), and that flag is scribed;
+  * CompTick calls SyncFieldShutdown() BEFORE base.CompTick() (so a cut lands the same tick);
+  * SyncFieldShutdown only clears a shutdown it set itself (unpoweredShutDown), and that flag is scribed;
   * a power cut never zeroes currentHitPoints (that would fire the collapse explosion);
   * HitPointsPerInterval still returns 0 unpowered (the recharge fix);
+  * the same shutdown is held while a non-Bubble mode is selected (SHIELDGEN_FIX_NONBUBBLE_MODE_INTERCEPTS:
+    vanilla's bombardment intercept, drawn bubble and ambient sound read Active, not CheckIntercept);
+  * an uninitialised (-1) hit-point value disarms the collapse explosion instead of firing it;
   * the built DLL carries the new member and its .srchash matches the source.
 
 Sanity probe: each regex must MISS on a mutated copy of the source, or the check could not see a regression.
@@ -29,15 +32,17 @@ CHECKS = [
     ("shutDown reached by FieldRefAccess",
      r'AccessTools\.FieldRefAccess<CompProjectileInterceptor,\s*bool>\("shutDown"\)'),
     ("CompTick syncs power before base.CompTick",
-     r'void CompTick\(\)\s*\{\s*SyncPowerShutdown\(\);\s*base\.CompTick\(\);'),
-    ("unpowered sets shutDown and remembers it",
-     r'if \(!FieldPowered\)\s*\{\s*if \(!shutDown\)\s*\{\s*shutDown = true;\s*unpoweredShutDown = true;'),
+     r'void CompTick\(\)\s*\{\s*SyncFieldShutdown\(\);\s*base\.CompTick\(\);'),
+    ("unpowered or non-Bubble mode sets shutDown and remembers it (SHIELDGEN_FIX_NONBUBBLE_MODE_INTERCEPTS)",
+     r'if \(!FieldPowered \|\| !BubbleModeActive\)\s*\{\s*if \(!shutDown\)\s*\{\s*shutDown = true;\s*unpoweredShutDown = true;'),
     ("only its own shutdown is cleared",
      r'else if \(unpoweredShutDown\)\s*\{\s*shutDown = false;\s*unpoweredShutDown = false;'),
     ("own flag is scribed",
      r'Scribe_Values\.Look\(ref unpoweredShutDown, "unpoweredShutDown", false\)'),
     ("no recharge unpowered",
      r'power == null \|\| power\.PowerOn \? base\.HitPointsPerInterval : 0'),
+    ("uninitialised hit points (-1) disarm instead of exploding",
+     r'if \(currentHitPoints < 0\)\s*\{\s*collapseExplosionArmed = false;\s*return;'),
 ]
 FORBIDDEN = [
     ("a power cut must not zero hit points (collapse explosion is for forced collapse)",
@@ -77,12 +82,14 @@ def main():
     # Sanity: every check must be able to fail.
     mutants = [
         text.replace('"shutDown"', '"shutdown"'),
-        text.replace("SyncPowerShutdown();\n            base.CompTick();", "base.CompTick();\n            SyncPowerShutdown();"),
+        text.replace("SyncFieldShutdown();\n            base.CompTick();", "base.CompTick();\n            SyncFieldShutdown();"),
         text.replace("unpoweredShutDown = true;", ""),
         text.replace("else if (unpoweredShutDown)", "else"),
         text.replace('"unpoweredShutDown", false', '"x", false'),
         text.replace("? base.HitPointsPerInterval : 0", "? base.HitPointsPerInterval : 1"),
         text + "\n// currentHitPoints = 0;\n",
+        text.replace("!FieldPowered || !BubbleModeActive", "!FieldPowered"),
+        text.replace("collapseExplosionArmed = false;\n                return;", "return;"),
     ]
     for i, m in enumerate(mutants):
         if m == text or not check(m):

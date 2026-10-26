@@ -34,9 +34,10 @@ namespace RimMandrake.Utinni.ShipShields
         // base Props with our subclass so callers get the extra fields.
         public new CompProperties_ShieldGenerator Props => (CompProperties_ShieldGenerator)props;
 
-        // Read by HarmonyPatches.Patch_CompProjectileInterceptor_CheckIntercept.
-        // Defaults to active when no CompShieldModuleSwitch is present, so
-        // this comp still works standalone.
+        // Read by SyncFieldShutdown (the authoritative gate) and by
+        // HarmonyPatches.Patch_CompProjectileInterceptor_CheckIntercept (a second gate for when the
+        // shutDown field cannot be resolved). Defaults to active when no CompShieldModuleSwitch is
+        // present, so this comp still works standalone.
         public bool BubbleModeActive
         {
             get
@@ -73,7 +74,15 @@ namespace RimMandrake.Utinni.ShipShields
         // cleared (unpoweredShutDown), so another cause's shutdown is never undone. Hit points are
         // kept (no drain, no collapse explosion: a power cut is not a forced collapse) and the field
         // returns at the hit points it had once power is back.
+        //
+        // SHIELDGEN_FIX_NONBUBBLE_MODE_INTERCEPTS: the same shutdown is held while another field mode
+        // (Thermal/Particulate/Cryo) is selected. The Harmony prefix only gates CheckIntercept; vanilla's
+        // CheckBombardmentIntercept, BombardmentCanStartFireAt, PostDraw and the ambient sustainer all read
+        // Active, so a thermal-configured generator still stopped orbital bombardment and drew and hummed a
+        // bubble. "only the currently-selected field should ever intercept anything" (shd:loadout-tradeoff).
         private static readonly AccessTools.FieldRef<CompProjectileInterceptor, bool> ShutDownRef = ResolveShutDownRef();
+        // True while shutDown is set by THIS comp (unpowered or not in Bubble mode). The save key keeps its
+        // original name so saves written before the mode gate still load the flag.
         private bool unpoweredShutDown;
 
         private static AccessTools.FieldRef<CompProjectileInterceptor, bool> ResolveShutDownRef()
@@ -99,14 +108,14 @@ namespace RimMandrake.Utinni.ShipShields
             }
         }
 
-        private void SyncPowerShutdown()
+        private void SyncFieldShutdown()
         {
             if (ShutDownRef == null)
             {
                 return;
             }
             ref bool shutDown = ref ShutDownRef(this);
-            if (!FieldPowered)
+            if (!FieldPowered || !BubbleModeActive)
             {
                 if (!shutDown)
                 {
@@ -122,8 +131,8 @@ namespace RimMandrake.Utinni.ShipShields
         }
 
         // Vanilla's other shutdown cause (a destroyed lord) sets the same flag. If it lands while this comp
-        // holds an unpowered shutdown, the flag now belongs to the lord: forget ours so power returning
-        // does not undo it.
+        // holds its own (unpowered / non-Bubble) shutdown, the flag now belongs to the lord: forget ours so
+        // power returning or a switch back to Bubble does not undo it.
         public override void Notify_LordDestroyed()
         {
             base.Notify_LordDestroyed();
@@ -144,7 +153,7 @@ namespace RimMandrake.Utinni.ShipShields
 
         public override void CompTick()
         {
-            SyncPowerShutdown();
+            SyncFieldShutdown();
             base.CompTick();
 
             if (ShipShieldsSettings.predictiveFailureAlertEnabled)
@@ -155,6 +164,16 @@ namespace RimMandrake.Utinni.ShipShields
             if (currentHitPoints > 0)
             {
                 collapseExplosionArmed = true;
+                return;
+            }
+
+            // -1 is the base class's "never initialised" value (PostPostMake did not run, e.g. a comp added
+            // to an existing building by a def change); the base recharges it upward. Only 0, reached by
+            // being drained, is a collapse. Disarm here: the first recharge clamps -1+1 to exactly 0, which
+            // must not read as a collapse either.
+            if (currentHitPoints < 0)
+            {
+                collapseExplosionArmed = false;
                 return;
             }
 

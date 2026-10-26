@@ -1,0 +1,2 @@
+Prefixing CompProjectileInterceptor.CheckIntercept does NOT switch an interceptor off: vanilla 1.6 CheckBombardmentIntercept, BombardmentCanStartFireAt (Bombardment.cs), PostDraw (the drawn bubble), the activeSound sustainer and BroadshieldPack all read the non-virtual Active getter. To disable a subclass, drive the base private shutDown field (AccessTools.FieldRefAccess) and track that YOU set it. Found in SHIELDGEN_FIX_NONBUBBLE_MODE_INTERCEPTS (a thermal-mode shield still stopped orbital bombardment).
+home: rimworld-modding
