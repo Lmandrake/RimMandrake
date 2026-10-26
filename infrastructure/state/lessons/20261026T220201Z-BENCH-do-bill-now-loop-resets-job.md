@@ -1,0 +1,2 @@
+HARNESS: never call jawa/do_bill_now inside a wait loop. Each call re-issues the DoBill job (beforeJobDef DoBill -> restart) and cost 17 s on the 325 map, so a loop of do_bill_now + ticks(300) made zero progress for 520 s (live round 7 carbon press). Call it once, then tick in 500-tick chunks polling list_things for the product (pwait.py); a single call finished the pack in ~2000 ticks. Also run bridge scripts with python -u: the killed run printed nothing because stdout was buffered, and its finally never restored the setting it changed.
+home: live-debugging-proof-harness
