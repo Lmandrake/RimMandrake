@@ -54,6 +54,9 @@ DEFS = """<?xml version="1.0"?>
   <ThingDef ParentName="AnimalThingBase"><defName>T_StrictBirdZero</defName>
     <statBases><LeatherAmount>0</LeatherAmount></statBases><race><body>Bird</body></race></ThingDef>
   <ThingDef ParentName="AnimalThingBase"><defName>T_StrictMonkeyLoose</defName><race><body>Monkey</body></race></ThingDef>
+  <ThingDef ParentName="AnimalThingBase"><defName>T_OtherBlobLoose</defName><race><body>T_BlobBody</body></race></ThingDef>
+  <ThingDef ParentName="AnimalThingBase"><defName>T_OtherBlobZero</defName>
+    <statBases><LeatherAmount>0</LeatherAmount></statBases><race><body>T_BlobBody</body></race></ThingDef>
   <ThingDef><defName>T_NotARace</defName><statBases><LeatherAmount>30</LeatherAmount></statBases></ThingDef>
 </Defs>"""
 
@@ -94,7 +97,8 @@ def main():
             check('%s passes and is seen as good' % n, n in good, sorted(good))
         v40 = sorted(o['defName'] for o in r['vanilla_inherited_amount'])
         check('vanilla AnimalThingBase 40 alone is counted, not failed',
-              v40 == ['T_StrictBirdBad', 'T_StrictBirdExempt', 'T_StrictMonkeyLoose', 'T_VanillaFortyOnly'], v40)
+              v40 == ['T_OtherBlobLoose', 'T_StrictBirdBad', 'T_StrictBirdExempt', 'T_StrictMonkeyLoose',
+                      'T_VanillaFortyOnly'], v40)
         check('no strict classes -> no strict failures', r['strict_failures'] == [], r['strict_failures'])
         saved = dict(lint.STRICT_EXEMPT)
         lint.STRICT_EXEMPT.clear()
@@ -109,6 +113,13 @@ def main():
             rm = lint.scan(tmp, ('bird', 'monkey'))
             check('strict monkey adds the monkey', sorted(o['defName'] for o in rm['strict_failures']) ==
                   ['T_StrictBirdBad', 'T_StrictMonkeyLoose'], rm['strict_failures'])
+            # LEATHERLINT_WIDEN_STRICT_TO_UNCLASSED_BODIES: 'other' is every body no named class lists
+            ro = lint.scan(tmp, ('other',))
+            check('strict other: a bare-40 race on an unclassed body fails; its LeatherAmount 0 twin and every '
+                  'named-class body (bird, monkey, beetle) pass', sorted(o['defName'] for o in ro['strict_failures'])
+                  == ['T_OtherBlobLoose'], ro['strict_failures'])
+            check('a race with no resolvable body is in other', lint.in_class('other', None)
+                  and not any(lint.in_class(c, None) for c in lint.CLASS_BODIES), '')
         finally:
             lint.STRICT_EXEMPT.clear()
             lint.STRICT_EXEMPT.update(saved)
@@ -145,15 +156,14 @@ def main():
           all((v or '').strip() for v in lint.STRICT_EXEMPT.values()), lint.STRICT_EXEMPT)
     # Pinned here, not read back from the lint: a class dropped from FINISHED_CLASSES would otherwise just
     # vanish from the loop below and every check would still pass.
-    audited = {'bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish'}
+    audited = {'bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish', 'other'}
     check('FINISHED_CLASSES still holds every audited class', audited <= set(lint.FINISHED_CLASSES),
           sorted(audited - set(lint.FINISHED_CLASSES)))
     for c in lint.FINISHED_CLASSES:
         # Non-blind: the body walk must still resolve races of this class, else a body-resolution regression
         # would pass every strict class silently; and every bare-40 race of it left must be an exemption.
-        bodies = set(lint.CLASS_BODIES[c])
-        n_body = sum(v for k, v in r['body_counts'].items() if k in bodies)
-        of_class = [o['defName'] for o in r['vanilla_inherited_amount'] if o['body'] in bodies]
+        n_body = sum(v for k, v in r['body_counts'].items() if lint.in_class(c, k))
+        of_class = [o['defName'] for o in r['vanilla_inherited_amount'] if lint.in_class(c, o['body'])]
         check('finished class %s is non-blind (>= 2 races resolve to its bodies)' % c, n_body >= 2, n_body)
         check('finished class %s: every bare-40 race left is exempt' % c,
               all(n in lint.STRICT_EXEMPT for n in of_class), of_class)

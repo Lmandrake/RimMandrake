@@ -37,6 +37,10 @@ RM_WeakChitin x25, hard shells near 1 RM_GrayChitin, 1.5-3 RM_MediumChitin; snak
 and the hideless non-fish on the Snake body LeatherAmount 0), and once FINISHED a race of that body that again
 inherits the bare 40 with no leather FAILS, unless STRICT_EXEMPT names it with the reason it deliberately yields no
 hide.
+The catch-all class 'other' (LEATHERLINT_WIDEN_STRICT_TO_UNCLASSED_BODIES) is every body no named class lists, and a
+race whose body resolves to nothing: 183 races on 136 bodies (RSW_LarvaLike, RM_AmorphousBody, RSW_Dewback, humanlikes,
+...) when measured 2026-10-26, none of them on the bare 40, so it cost no exemption. A new race there that inherits
+the bare 40 with no leather fails like any other: name a leather, set LeatherAmount 0, or exempt it with the reason.
 
     --strict-classes bird,monkey     # check only these; 'none' turns strict checking off; default FINISHED_CLASSES
 
@@ -106,8 +110,17 @@ CLASS_BODIES = {
     # (Spawn/Fry/Adult, RM_Fishskin) ride RSW_FishBody -- without it a Fry regression (1a03259941) passed
     'fish': {'Snake', 'RSW_FishBody'},
 }
+# every body some named class above lists; 'other' is the rest (and a race with no resolvable body)
+NAMED_BODIES = frozenset().union(*CLASS_BODIES.values())
+OTHER = 'other'
+KNOWN_CLASSES = tuple(CLASS_BODIES) + (OTHER,)
 # classes audited to the end; their regressions fail
-FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish')
+FINISHED_CLASSES = ('bird', 'monkey', 'pinniped', 'quadruped', 'insect', 'crab', 'turtle', 'softbody', 'fish', OTHER)
+
+
+def in_class(c, body):
+    """Is a race of this body in strict class c? 'other' is every body outside NAMED_BODIES, None included."""
+    return body not in NAMED_BODIES if c == OTHER else body in CLASS_BODIES[c]
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
@@ -156,7 +169,7 @@ def iter_files(root):
 
 
 def scan(root, strict=()):
-    """Return a result dict. Pure: reads files under root, writes nothing. strict: class names of CLASS_BODIES."""
+    """Return a result dict. Pure: reads files under root, writes nothing. strict: names from KNOWN_CLASSES."""
     named, concrete, parse_fail = {}, [], []
     patch_cover, patch_amount, unmodelled = set(), {}, 0
     for kind, path in iter_files(root):
@@ -271,10 +284,8 @@ def scan(root, strict=()):
             offenders.append(row)
         else:
             vanilla40.append(row)
-    strict_bodies = set()
-    for c in strict:
-        strict_bodies |= CLASS_BODIES[c]
-    strict_fail = [o for o in vanilla40 if o['body'] in strict_bodies and o['defName'] not in STRICT_EXEMPT]
+    strict_fail = [o for o in vanilla40 if any(in_class(c, o['body']) for c in strict)
+                   and o['defName'] not in STRICT_EXEMPT]
     v40 = {o['defName'] for o in vanilla40}
     stale_exempt = sorted(n for n in STRICT_EXEMPT if n not in v40)
     return {'races': len(races), 'offenders': offenders, 'vanilla_inherited_amount': vanilla40,
@@ -297,9 +308,9 @@ def main(argv=None):
         txt = argv[i + 1]
         del argv[i:i + 2]
         strict = [] if txt == 'none' else [c.strip() for c in txt.split(',') if c.strip()]
-        unknown = [c for c in strict if c not in CLASS_BODIES]
+        unknown = [c for c in strict if c not in KNOWN_CLASSES]
         if unknown:
-            print('unknown class(es) %s; known: %s' % (', '.join(unknown), ', '.join(sorted(CLASS_BODIES))))
+            print('unknown class(es) %s; known: %s' % (', '.join(unknown), ', '.join(sorted(KNOWN_CLASSES))))
             return 2
     root = os.path.abspath(argv[0]) if argv else DEFAULT_ROOT
     probe = PROBE_GOOD if root == DEFAULT_ROOT else None
