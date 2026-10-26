@@ -1,0 +1,2 @@
+./publish rebases: a sha taken from git log BEFORE ./publish (and even 'git merge-base --is-ancestor' against an unfetched origin) is not the origin sha. Close rimflow items only after ./publish, using its printed 'close with' sha or the fix commit's hash read from 'git log origin/main' after a fetch; closing with the local pre-publish sha is irreversible (close refuses a second record), leaving only a note.
+home: using-rimflow
