@@ -216,9 +216,11 @@ namespace RimMandrake.FlowWorks.Hose
                 try { RunJob(job); }
                 finally
                 {
+                    // HOSE_LAY_FIX_COUNTER_ORDER: done first (Drain implies done), the process-wide count before the
+                    // queue's own, so Drain (InFlight == 0) never returns while AllInFlight still counts this job
                     job.done = true;
-                    Interlocked.Decrement(ref q.inFlight);
                     Interlocked.Decrement(ref allInFlight);
+                    Interlocked.Decrement(ref q.inFlight);
                 }
             });
         }

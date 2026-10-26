@@ -18,7 +18,8 @@
 //  L8 HoseMath.RouteCells budget is per thread (HOSE_ROUTE_FIX_THREAD_BUDGET: the shared static counter let concurrent
 //     searches cap each other into a false "no route");
 //  L9 a job landing after its reel's lay was reset (layEpoch) is dropped and released, never applied (HOSE_LAY_FIX_STALE_EPOCH);
-//  L10 the in-flight cap holds across queues; L11 source: every layKey reset bumps layEpoch.
+//  L10 the in-flight cap holds across queues; L11 source: every layKey reset bumps layEpoch;
+//  L12 source: a worker drops AllInFlight before its queue's InFlight, so Drain implies both (HOSE_LAY_FIX_COUNTER_ORDER).
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -338,6 +339,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(comp.Contains("layQueue.Ask(id, key, r.layEpoch, prepare)"), "LayLater asks under the reel's epoch");
                 int again = comp.IndexOf("private HoseLay LayAgain(", StringComparison.Ordinal);
                 Assert(again > 0 && comp.IndexOf("r.layEpoch++", again, StringComparison.Ordinal) > again, "a synchronous lay bumps the epoch");
+            });
+            Case("L12 counters (source): a worker's finally sets done, then drops AllInFlight before its queue's InFlight", () =>
+            {
+                // HOSE_LAY_FIX_COUNTER_ORDER: Drain waits on the queue's InFlight only; were it decremented first, Drain could
+                // return with AllInFlight still counting the job (L10's closing AllInFlight == 0 raced)
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "HoseLayQueue.cs"));
+                int at = src.IndexOf("private static void Queue(", StringComparison.Ordinal);
+                Assert(at > 0, "HoseLayQueue.Queue not found");
+                int done = src.IndexOf("job.done = true;", at, StringComparison.Ordinal);
+                int all = src.IndexOf("Interlocked.Decrement(ref allInFlight);", at, StringComparison.Ordinal);
+                int own = src.IndexOf("Interlocked.Decrement(ref q.inFlight);", at, StringComparison.Ordinal);
+                Assert(done > 0 && all > 0 && own > 0, "Queue's finally lost a counter step");
+                Assert(done < all && all < own, "Queue's finally must set done, then decrement allInFlight, then q.inFlight");
             });
         }
     }
