@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
+  <!-- OWNER RULING 2026-10-25: "I want only our names everywhere, alwys. The Cauldron. Period."
+       Every donor label below now equals its RUT_ twin label (PoisonForest=the Cauldron,
+       ExtremeDesert=the Extreme Desert, Scarlands=the Warscar, Wasteland=the Wastes).
+       This supersedes the older notes below where they say otherwise (incl. SCARLANDS_RENAME_OURS_1
+       distinctness and "the Deep Desert"). SeaIce has no twin: untouched. -->
+
   <!-- Ash'karr biome names. Owner 2026-09-07, on reading the world map: "I see
        'Cypre Jungle' - I thought we were renaming all of this?" 30 distinct
        biomes are painted on the planet; only 4 carry our own defNames
@@ -59,7 +65,7 @@
     <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
-      <value><label>the Poison Forest</label></value>
+      <value><label>the Cauldron</label></value>
     </match>
   </Operation>   <!-- was "poison forest" -->
 
@@ -99,7 +105,7 @@
     <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/label</xpath>
-      <value><label>the Deep Desert</label></value>
+      <value><label>the Extreme Desert</label></value>
     </match>
   </Operation>   <!-- was "extreme desert" - R22 shared def: dune_sea.md + deep_desert.md
                       both paint this, so it takes deep_desert.md's own higher-level
@@ -109,7 +115,7 @@
     <xpath>/Defs/BiomeDef[defName="Scarlands"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="Scarlands"]/label</xpath>
-      <value><label>the Scarlands</label></value>
+      <value><label>the Warscar</label></value>
     </match>
   </Operation>   <!-- was "scarlands" (vanilla Odyssey) - BIOME_TEXT_PORT_1 -->
 
@@ -117,7 +123,7 @@
     <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
-      <value><label>the Wasteland</label></value>
+      <value><label>the Wastes</label></value>
     </match>
   </Operation>   <!-- was "wastes" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
 

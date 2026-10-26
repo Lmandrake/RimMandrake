@@ -43,7 +43,7 @@
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_CauldronSoilRich</defName>
     <label>rich poison soil</label>
-    <description>Dense, blackened ground where the vented gas has settled longest — the richest soil the Poison Forest has to offer, and the most saturated.</description>
+    <description>Dense, blackened ground where the vented gas has settled longest — the richest soil the Cauldron has to offer, and the most saturated.</description>
     <texturePath>Terrain/Surfaces/RM_CauldronSoilRich</texturePath>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>335</renderPrecedence>
