@@ -1094,6 +1094,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(art.Contains("Mesh mesh = LeafMesh(path, spanFromHinge == Rot4.West);"), "the raised leaf draws through the stub crop");
                 Assert(art.Contains("slack = deck.leafRaised"), "raised = the deck square the ropes face is a raised leaf");
             });
+
+            Case("Drawbridge_Leaf_toggle_repaints_things_layer", () =>
+            {
+                // DRAWBRIDGE_LEAF_FIX_RAISED_STILL_DRAWN (live 2026-10-25): a raised leaf kept its lowered deck and taut ropes
+                // drawn in every look until an unrelated build dirtied the section. Decks and anchors print in
+                // SectionLayer_ThingsGeneral, which regenerates on the Things flag; the toggle dirtied Buildings only.
+                const string both = "MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings)";
+                string notify = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_Drawbridges.cs"));
+                string around = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs"));
+                Assert(notify.Contains("map.mapDrawer?." + both), "can-fail: a toggled square must dirty the Things layer its deck prints in");
+                Assert(!notify.Contains("MapMeshDirty(c, MapMeshFlagDefOf.Buildings)") && !around.Contains("MapMeshDirty(n, MapMeshFlagDefOf.Buildings)"), "can-fail: Buildings alone never repaints the deck");
+                Assert(around.Contains("MapMeshDirty(n, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings)"),
+                    "can-fail: the neighbours (anchors' ropes, linked decks) must be repainted on the Things layer too");
+            });
         }
     }
 }

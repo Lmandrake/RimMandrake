@@ -346,7 +346,10 @@ namespace RimMandrake.FlowWorks.Pits
 			foreach (IntVec3 c in changed)
 			{
 				map.pathing?.RecalculatePerceivedPathCostAt(c);
-				map.mapDrawer?.MapMeshDirty(c, MapMeshFlagDefOf.Buildings);
+				// DRAWBRIDGE_LEAF_FIX_RAISED_STILL_DRAWN: a deck and an anchor print in SectionLayer_ThingsGeneral, which
+				// regenerates on the Things flag; Buildings alone left the lowered deck and taut ropes drawn until something
+				// else dirtied the section
+				map.mapDrawer?.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings);
 				RM_MapComponent_SuspensionBridges.DirtyAround(map, c);
 			}
 			map.reachability?.ClearCache();

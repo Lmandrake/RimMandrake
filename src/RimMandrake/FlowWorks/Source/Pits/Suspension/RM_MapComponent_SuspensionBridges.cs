@@ -597,7 +597,8 @@ namespace RimMandrake.FlowWorks.Pits
 				IntVec3 n = c + GenAdj.CardinalDirections[i];
 				if (n.InBounds(map))
 				{
-					map.mapDrawer.MapMeshDirty(n, MapMeshFlagDefOf.Buildings);
+					// Things too: decks, anchors and railings print in SectionLayer_ThingsGeneral (DRAWBRIDGE_LEAF_FIX_RAISED_STILL_DRAWN)
+					map.mapDrawer.MapMeshDirty(n, (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings);
 				}
 			}
 		}
