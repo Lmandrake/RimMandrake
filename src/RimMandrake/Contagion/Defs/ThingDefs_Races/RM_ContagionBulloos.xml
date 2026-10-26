@@ -170,7 +170,9 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_OcularJelly</defName>
     <label>zhool</label>
-    <description>A gas-filled, veined bell trailing loose tendrils through the canopy. It exhales a reddish haze that turns nearby plants into growths of the same strange flesh. When zhools sink and settle, a Burn is close.</description>
+    <description>A gas-filled, veined bell trailing loose tendrils through the canopy. It exhales a reddish haze that turns nearby plants into growths of the same strange flesh.</description>
+    <!-- ZHOOL_FIX_DESC_CLAIMS_BURN_SINK: the "zhools sink before a Burn" sentence was struck; the sink tell is the
+         gawpsack's alone (RM_Contagion.xml tellSinkers). -->
     <statBases>
       <MoveSpeed>2</MoveSpeed>
       <ComfyTemperatureMin>-35</ComfyTemperatureMin>
