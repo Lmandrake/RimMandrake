@@ -150,10 +150,31 @@ def l0_wiring(fields):
             bad.append("setting %s is not restored by Reset()" % f)
         if not re.search(r"\b%s\b" % f, window):
             bad.append("setting %s has no control in the settings window" % f)
+    bad += proof_restore_wiring(src("RM_KnockbackProof.cs"))
     prog = open(os.path.join(HERE, "Source", "SelfTest", "Program.cs"), encoding="utf-8").read()
     for k in ("K-13", "K-14", "K-15", "K-16"):
         if '"%s ' % k not in prog:
             bad.append("kernel selftest has no %s rows" % k)
+    return bad
+
+
+def proof_restore_wiring(proof):
+    """A scene that changes a def or a setting must undo it even when Stage fails or Verdict never runs: a leaked
+    extension on vanilla Bullet_Revolver would make every revolver shot throw pawns for the rest of the session."""
+    bad = []
+    stage = proof.split("public static string Stage(", 1)[1].split("public static string Verdict(", 1)[0]
+    if stage.count("RunRestore(") < 3:
+        bad.append("RM_KnockbackProof.Stage does not run the scene restore on re-stage, INVALID and ERROR (%d calls)"
+                   % stage.count("RunRestore("))
+    if "s.restore = null" not in proof:
+        bad.append("RM_KnockbackProof restore can run twice (RunRestore does not clear it)")
+    # every settings poke registers its restore BEFORE the poke, so a throw in between still undoes it
+    for m in re.finditer(r"\n( +)RimMandrakeExplosiveKnockbackSettings\.(\w+) = [^;]+;", proof):
+        before = proof[:m.start()]
+        last = before.rfind("s.restore = ")
+        case = before.rfind("case \"")
+        if last < case:
+            bad.append("RM_KnockbackProof pokes setting %s before registering its restore" % m.group(2))
     return bad
 
 

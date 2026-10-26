@@ -31,6 +31,9 @@ namespace RimMandrake.KineticArms
             public readonly Dictionary<string, IntVec3> starts = new Dictionary<string, IntVec3>();
             public readonly Dictionary<string, float> numbers = new Dictionary<string, float>();
             public Func<Scene, string> verdict;
+            /// <summary>Undoes a setting the scene poked. Runs after Verdict, and on ERROR/INVALID/re-stage, so a scene
+            /// that fails half-built never leaves (say) kinetic strength 0 behind for the rest of the session.</summary>
+            public Action restore;
         }
 
         private static readonly Dictionary<string, Scene> scenes = new Dictionary<string, Scene>();
@@ -88,6 +91,10 @@ namespace RimMandrake.KineticArms
             {
                 return "REFUSED: arg must be scene,x,z on a current map";
             }
+            if (scenes.TryGetValue(a[0], out Scene pending))
+            {
+                RunRestore(pending); // re-staged before its Verdict ran
+            }
             var s = new Scene { name = a[0], o = new IntVec3(x, 0, z), stagedTick = Find.TickManager.TicksGame };
             try
             {
@@ -95,11 +102,13 @@ namespace RimMandrake.KineticArms
                 string why = Build(s);
                 if (why != null)
                 {
+                    RunRestore(s);
                     return "INVALID " + s.name + " " + why;
                 }
             }
             catch (Exception ex)
             {
+                RunRestore(s);
                 return "ERROR " + s.name + " " + ex.GetType().Name + ": " + ex.Message;
             }
             scenes[s.name] = s;
@@ -120,6 +129,18 @@ namespace RimMandrake.KineticArms
             {
                 return "ERROR " + name + " " + ex.GetType().Name + ": " + ex.Message;
             }
+            finally
+            {
+                RunRestore(s);
+            }
+        }
+
+        /// <summary>Runs a scene's restore once; a second call is a no-op.</summary>
+        private static void RunRestore(Scene s)
+        {
+            Action r = s.restore;
+            s.restore = null;
+            r?.Invoke();
         }
 
         // ── helpers ──────────────────────────────────────────────────────
@@ -278,6 +299,13 @@ namespace RimMandrake.KineticArms
                     {
                         if (s.name == "thump_off")
                         {
+                            // the shot reads the force ApplySettings wrote, so it stays off until restore (after Verdict)
+                            bool was = RimMandrakeKineticArmsSettings.thumpCannonThrows;
+                            s.restore = () =>
+                            {
+                                RimMandrakeKineticArmsSettings.thumpCannonThrows = was;
+                                RimMandrakeKineticArmsMod.ApplySettings();
+                            };
                             RimMandrakeKineticArmsSettings.thumpCannonThrows = false;
                             RimMandrakeKineticArmsMod.ApplySettings();
                         }
@@ -291,10 +319,8 @@ namespace RimMandrake.KineticArms
                         Fire(sh, "Bullet_ThumpCannon", O(s, 0, 0), "Gun_ThumpCannon");
                         if (s.name == "thump_off")
                         {
-                            RimMandrakeKineticArmsSettings.thumpCannonThrows = true;
                             s.verdict = sc =>
                             {
-                                RimMandrakeKineticArmsMod.ApplySettings();
                                 bool still = NotThrown(sc, "p", out string m);
                                 return Result(sc, still && sc.numbers["force"] == 0f, m + " forceWhileOff=" + sc.numbers["force"]);
                             };
@@ -543,9 +569,16 @@ namespace RimMandrake.KineticArms
                             Thing hit = RM_ThingSetMaker_KineticRuins.Make(0f, 0f, 0.5f);
                             Thing miss = RM_ThingSetMaker_KineticRuins.Make(0.99f, 0f, 0.5f);
                             bool was = RimMandrakeKineticArmsSettings.foundInRuins;
-                            RimMandrakeKineticArmsSettings.foundInRuins = false;
-                            Thing off = RM_ThingSetMaker_KineticRuins.Make(0f, 0f, 0.5f);
-                            RimMandrakeKineticArmsSettings.foundInRuins = was;
+                            Thing off;
+                            try
+                            {
+                                RimMandrakeKineticArmsSettings.foundInRuins = false;
+                                off = RM_ThingSetMaker_KineticRuins.Make(0f, 0f, 0.5f);
+                            }
+                            finally
+                            {
+                                RimMandrakeKineticArmsSettings.foundInRuins = was;
+                            }
                             var gen = new List<string>();
                             for (int i = 0; i < 8; i++)
                             {
@@ -568,10 +601,19 @@ namespace RimMandrake.KineticArms
                         var mine = (RM_Building_KickerMine)GenSpawn.Spawn(ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("RM_KickerMine")), s.o, Map, Rot4.East);
                         mine.SetFactionDirect(Faction.OfPlayer);
                         Pawn h = Hostile(s, "h", O(s, -3, 0));
-                        bool hiddenKnows = mine.KnowsOfTrap(h);
-                        RimMandrakeKineticArmsSettings.kickerHidden = false;
-                        bool shownKnows = mine.KnowsOfTrap(h);
-                        RimMandrakeKineticArmsSettings.kickerHidden = true;
+                        bool wasHidden = RimMandrakeKineticArmsSettings.kickerHidden;
+                        bool hiddenKnows, shownKnows;
+                        try
+                        {
+                            RimMandrakeKineticArmsSettings.kickerHidden = true;
+                            hiddenKnows = mine.KnowsOfTrap(h);
+                            RimMandrakeKineticArmsSettings.kickerHidden = false;
+                            shownKnows = mine.KnowsOfTrap(h);
+                        }
+                        finally
+                        {
+                            RimMandrakeKineticArmsSettings.kickerHidden = wasHidden;
+                        }
                         s.verdict = sc => Result(sc, !hiddenKnows && shownKnows, "hiddenRaiderKnows=" + hiddenKnows + " shownRaiderKnows=" + shownKnows);
                         return null;
                     }
@@ -584,13 +626,25 @@ namespace RimMandrake.KineticArms
                             string[] dds = { "RM_Concussive_Thudder", "RM_Concussive_Slam", "RM_Concussive_ThumpShell", "RM_Repulse_Palm",
                                 "RM_Repulse_Repulsor", "RM_Repulse_Pulse", "RM_Repulse_GravRam", "RM_Repulse_Kicker" };
                             Func<bool> allMarked = () => dds.All(d => DefDatabase<DamageDef>.GetNamed(d).GetModExtension<RM_KineticBlastExtension>() != null);
-                            bool on = allMarked();
-                            RimMandrakeKineticArmsSettings.kineticCutsCords = true;
-                            RimMandrakeKineticArmsMod.ApplySettings();
-                            bool removed = dds.All(d => DefDatabase<DamageDef>.GetNamed(d).GetModExtension<RM_KineticBlastExtension>() == null);
-                            RimMandrakeKineticArmsSettings.kineticCutsCords = false;
-                            RimMandrakeKineticArmsMod.ApplySettings();
-                            bool back = allMarked();
+                            bool wasCuts = RimMandrakeKineticArmsSettings.kineticCutsCords;
+                            bool on, removed, back;
+                            try
+                            {
+                                RimMandrakeKineticArmsSettings.kineticCutsCords = false;
+                                RimMandrakeKineticArmsMod.ApplySettings();
+                                on = allMarked();
+                                RimMandrakeKineticArmsSettings.kineticCutsCords = true;
+                                RimMandrakeKineticArmsMod.ApplySettings();
+                                removed = dds.All(d => DefDatabase<DamageDef>.GetNamed(d).GetModExtension<RM_KineticBlastExtension>() == null);
+                                RimMandrakeKineticArmsSettings.kineticCutsCords = false;
+                                RimMandrakeKineticArmsMod.ApplySettings();
+                                back = allMarked();
+                            }
+                            finally
+                            {
+                                RimMandrakeKineticArmsSettings.kineticCutsCords = wasCuts;
+                                RimMandrakeKineticArmsMod.ApplySettings();
+                            }
                             bool thumpUnmarked = DefDatabase<DamageDef>.GetNamed("Thump").GetModExtension<RM_KineticBlastExtension>() == null;
                             return Result(sc, on && removed && back && thumpUnmarked, "marked=" + on + " cutSettingRemoves=" + removed + " restored=" + back
                                 + " thumpCannonStillCuts=" + thumpUnmarked);
@@ -612,6 +666,12 @@ namespace RimMandrake.KineticArms
 
                 case "strength_zero":
                     {
+                        float wasStrength = RimMandrakeKineticArmsSettings.kineticStrength;
+                        s.restore = () =>
+                        {
+                            RimMandrakeKineticArmsSettings.kineticStrength = wasStrength;
+                            RimMandrakeKineticArmsMod.ApplySettings();
+                        };
                         RimMandrakeKineticArmsSettings.kineticStrength = 0f;
                         RimMandrakeKineticArmsMod.ApplySettings();
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
@@ -619,8 +679,6 @@ namespace RimMandrake.KineticArms
                         Fire(sh, "RM_Proj_RepulsorBolt", t, "RM_Gun_RepulsorRifle");
                         s.verdict = sc =>
                         {
-                            RimMandrakeKineticArmsSettings.kineticStrength = 1f;
-                            RimMandrakeKineticArmsMod.ApplySettings();
                             bool still = NotThrown(sc, "p", out string m);
                             return Result(sc, still, m + " (strength 0: no throw)");
                         };

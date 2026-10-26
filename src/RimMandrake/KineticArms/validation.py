@@ -95,6 +95,7 @@ def static_checks():
     # 2026-10-07 live: a pit left at a reused origin stopped thump_cannon at 2 cells (and hurt the repulsor's target);
     # bystanders that walk fake a throw. Prepare must fill pits; every "did not move" verdict holds its pawn.
     prep = proof.split("private static void Prepare", 1)[1].split("private static", 1)[0]
+    bad += proof_restore_wiring(proof)
     if "FillToSurface" not in prep:
         bad.append("RM_KineticArmsProof.Prepare does not fill pits left by earlier scenes (FillToSurface)")
     for scene, key in (("thump_off", "p"), ("palm_shove", "side"), ("gravram_big_body", "control"), ("strength_zero", "p")):
@@ -115,6 +116,25 @@ def static_checks():
         for _s, chain, comp, _t in SCENES:
             if "%s.%s" % (chain, comp) not in sec:
                 bad.append("walk does not cover %s.%s" % (chain, comp))
+    return bad
+
+
+def proof_restore_wiring(proof):
+    """A scene that pokes a setting must put it back even when Stage fails or Verdict never runs (strength 0 left
+    behind silences every kinetic weapon for the rest of the session), and never by assuming the default."""
+    bad = []
+    stage = proof.split("public static string Stage(", 1)[1].split("public static string Verdict(", 1)[0]
+    if stage.count("RunRestore(") < 3:
+        bad.append("RM_KineticArmsProof.Stage does not run the scene restore on re-stage, INVALID and ERROR")
+    verdict = proof.split("public static string Verdict(", 1)[1].split("private static void RunRestore", 1)[0]
+    if "finally" not in verdict or "RunRestore(s)" not in verdict:
+        bad.append("RM_KineticArmsProof.Verdict does not run the scene restore in a finally")
+    for m in re.finditer(r"RimMandrakeKineticArmsSettings\.(\w+) = (true|false|-?[0-9.]+f?);", proof):
+        before = proof[:m.start()]
+        case = before.rfind("case \"")
+        guarded = max(before.rfind("s.restore = "), before.rfind("try"))
+        if guarded < case:
+            bad.append("RM_KineticArmsProof pokes %s outside a restore/try-finally" % m.group(1))
     return bad
 
 

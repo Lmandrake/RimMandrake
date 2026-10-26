@@ -104,6 +104,11 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return "REFUSED: arg must be scene,x,z on a current map";
             }
+            // a re-stage of a scene whose Verdict never ran: undo what it changed (a def extension, a setting) first
+            if (scenes.TryGetValue(a[0], out Scene pending))
+            {
+                RunRestore(pending);
+            }
             var s = new Scene { name = a[0], o = new IntVec3(x, 0, z), stagedTick = Find.TickManager.TicksGame };
             try
             {
@@ -111,11 +116,14 @@ namespace RimMandrake.ExplosiveKnockback
                 string why = Build(s);
                 if (why != null)
                 {
+                    RunRestore(s);
                     return "INVALID " + s.name + " " + why;
                 }
             }
             catch (Exception ex)
             {
+                // Build may already have added an extension to a vanilla def or poked a setting: never leave it behind
+                RunRestore(s);
                 return "ERROR " + s.name + " " + ex.GetType().Name + ": " + ex.Message;
             }
             scenes[s.name] = s;
@@ -138,8 +146,16 @@ namespace RimMandrake.ExplosiveKnockback
             }
             finally
             {
-                s.restore?.Invoke();
+                RunRestore(s);
             }
+        }
+
+        /// <summary>Runs a scene's restore once; a second call (re-stage, repeated Verdict) is a no-op.</summary>
+        private static void RunRestore(Scene s)
+        {
+            Action r = s.restore;
+            s.restore = null;
+            r?.Invoke();
         }
 
         // ── scene construction ───────────────────────────────────────────
@@ -640,9 +656,12 @@ namespace RimMandrake.ExplosiveKnockback
                         }
                         s.numbers["items"] = n;
                     }
+                    {
+                        int wasCap = RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick;
+                        s.restore = () => RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = wasCap; // before the poke: a throw still undoes it
+                    }
                     RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = 3;
                     Blast(s.o, 2.9f);
-                    s.restore = () => RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = 60;
                     s.verdict = sc =>
                     {
                         var moves = Recs(sc, "item_move");
@@ -656,9 +675,12 @@ namespace RimMandrake.ExplosiveKnockback
                 case "settings_off":
                     Colonist(s, "p", O(s, 1, 0));
                     Item(s, "steel", "Steel", 10, O(s, -1, 0));
+                    {
+                        bool wasEnabled = RimMandrakeExplosiveKnockbackSettings.enabled;
+                        s.restore = () => RimMandrakeExplosiveKnockbackSettings.enabled = wasEnabled;
+                    }
                     RimMandrakeExplosiveKnockbackSettings.enabled = false;
                     Blast(s.o, 2.9f);
-                    s.restore = () => RimMandrakeExplosiveKnockbackSettings.enabled = true;
                     s.verdict = sc =>
                     {
                         string m1 = Moved(sc, "p", out Thing t1, out int c1);
@@ -753,8 +775,8 @@ namespace RimMandrake.ExplosiveKnockback
                 case "immunity_window":
                 {
                     int was = RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks;
-                    RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 600;
                     s.restore = () => RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = was;
+                    RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 600;
                     Pawn p = Colonist(s, "p", O(s, -3, 0));
                     Blast(O(s, -4, 0), 2.9f); // throws p east ~3 cells, toward the origin
                     Map m0 = Map;
