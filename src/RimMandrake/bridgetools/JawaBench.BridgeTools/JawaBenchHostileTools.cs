@@ -130,7 +130,11 @@ namespace JawaBench.BridgeTools
                     if (ft.Length == 2 && int.TryParse(ft[0].Trim(), out int a) && int.TryParse(ft[1].Trim(), out int b))
                     {
                         if (b < a) { int t = a; a = b; b = t; }
-                        for (int i = a; i <= b; i++) ids.Add(i);
+                        // TILECACHERESET_RANGE_HARDEN_CLAMP: clamp to the grid first. Unclamped, b = int.MaxValue looped
+                        // forever (i <= b never fails) on the main thread, and any huge range filled ids before the bounds check.
+                        int lo = Math.Max(a, 0), hi = Math.Min(b, grid.TilesCount - 1);
+                        if (lo != a || hi != b) refused.Add(new { value = range, reason = "clamped to 0-" + (grid.TilesCount - 1) });
+                        for (int i = lo; i <= hi; i++) ids.Add(i);
                     }
                     else refused.Add(new { value = range, reason = "not a 'from-to' range" });
                 }
