@@ -19,7 +19,27 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)                                   # src/RimMandrake
 SHARED = os.path.join(SRC, "_Shared", "LightLedger")
-WRITE = re.compile(r"\bGlowRadius\s*=(?!=)")
+# Plain AND compound assignment: `g.GlowRadius *= dim` is exactly how a dimmer writes (review 2026-10-26: the
+# old `GlowRadius\s*=(?!=)` let every compound write through). Comparisons (==, !=, <=, >=) are not writes.
+WRITE = re.compile(r"\bGlowRadius\s*(?:[-+*/%&|^]|<<|>>|\?\?)?=(?!=)")
+WRITES = ("g.GlowRadius = 1f;", "g.GlowRadius *= dim;", "g.GlowRadius-=1;", "g.GlowRadius /= 2;",
+          "g.GlowRadius ??= 3;")
+NOT_WRITES = ("if (g.GlowRadius == 0f)", "g.GlowRadius != r", "g.GlowRadius <= r", "g.GlowRadius >= r",
+              "float r = g.GlowRadius;")
+
+
+def probe_pattern():
+    """The lint's own instrument check: every write form is seen, no comparison is."""
+    ok = True
+    for s in WRITES:
+        if not WRITE.search(s):
+            print("FAIL lint pattern misses a write: %s" % s)
+            ok = False
+    for s in NOT_WRITES:
+        if WRITE.search(s):
+            print("FAIL lint pattern flags a non-write: %s" % s)
+            ok = False
+    return ok
 
 
 def lint():
@@ -41,7 +61,7 @@ def lint():
                         ledger_hits += 1
                     else:
                         bad.append("%s:%d: %s" % (rel, i, line.strip()))
-    ok = True
+    ok = probe_pattern()
     if ledger_hits == 0:
         print("FAIL sanity probe: the ledger's own GlowRadius write was not found - the lint sees nothing")
         ok = False
