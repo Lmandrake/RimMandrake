@@ -242,15 +242,20 @@ class TankStub(object):
     """Just enough bridge for the chain goal: tanks {id: (x, z, units)}, units = decilitres, one colonist, a click -> selection."""
 
     def __init__(self, tanks, colonist=(30, 0), sem_names_id=True, things_key=True, complete_field=True, pawns=None,
-                 row_shape="real"):
+                 row_shape="real", modal=False):
         self.row_shape = row_shape
         self.tanks, self.col, self.names, self.things_key = dict(tanks), colonist, sem_names_id, things_key
         # jawa/list_pawns row shape (JawaBenchTerrainTools.cs ListPawns): id/name/.../x/z/dead/intelligence/health
         self.pawns = {"success": True, "pawns": [ada()]} if pawns is None else pawns
         self.complete_field = complete_field      # False = an older list_things reply without isCompleteList
         self.sel = None
+        self.modal = modal                        # a Window_ResearchComplete absorbing all input until jawa/clear_ui all
 
     def call(self, tool, a):
+        if tool == "jawa/clear_ui":
+            if a.get("all"):
+                self.modal = False
+            return {"success": True}
         if tool == "rimworld/list_colonists":
             return {"colonists": [{"name": "Ada", "position": {"x": self.col[0], "z": self.col[1]}}]}
         if tool == "jawa/list_pawns":
@@ -272,7 +277,7 @@ class TankStub(object):
                 reply.update(isCompleteList=len(hit) <= lim, truncated=max(0, len(hit) - lim))
             return reply
         if tool == "rimworld/click_cell":
-            self.sel = next((i for i, t in self.tanks.items() if (t[0], t[1]) == (a["x"], a["z"])), None)
+            self.sel = None if self.modal else next((i for i, t in self.tanks.items() if (t[0], t[1]) == (a["x"], a["z"])), None)
             return {"success": True}
         if tool == "rimworld/get_selection_semantics":
             if self.sel is None:
@@ -292,6 +297,9 @@ def test_chain_goal(spec):
         if baseline != "absent":
             r["tank_baseline"] = baseline
         return pm.goal_check(stub, r)
+    # the research-complete window absorbs input: the baseline read must clear the UI first or it reads nothing
+    rd, cm = pm.read_dest_tanks(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, modal=True), "RM_LiquidTank", tuple(rects["site"]))
+    ok(rd and rd[0]["units"] == 40000, "a modal research window is cleared before the tank read (%s)" % (rd,))
     v, ev = verdict(TankStub({"RM_LiquidTank1": (50, 60, 40000)}, colonist=(70, 60)), {})
     ok(v == "PASS" and ev["destTank"] == "RM_LiquidTank1", "new destination tank filled 4 kL -> PASS (%s)" % v)
     # the G6.5 defect: a filled tank OUTSIDE the destination rect used to pass the goal

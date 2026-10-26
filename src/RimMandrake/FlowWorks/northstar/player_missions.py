@@ -672,6 +672,13 @@ def read_dest_tanks(B, tank_def, dest):
     else:
         complete = len(things) < TANK_LIST_LIMIT
     out = []
+    if things:
+        # A fixture's research completion opens a Window_ResearchComplete that absorbs ALL input, so click_cell selects
+        # nothing and every read is blind (live 2026-10-26, MISSION_TANK_GOAL A2). Close every window before reading.
+        try:
+            B.call("jawa/clear_ui", {"all": True})
+        except Exception:                      # noqa: BLE001
+            pass
     for t in things:
         # jawa/list_things rows carry x/z at the TOP level (JawaBenchTerrainTools.cs ListThings); a `position`
         # object is accepted only as a fallback. A row with neither is a blind read, never "outside the rect":
