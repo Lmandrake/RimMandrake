@@ -256,7 +256,12 @@ namespace RimMandrake.CreatureBehaviors
                 lastVictim = null;
                 return false;
             }
-            if (cur == JobDefOf.Ingest || pawn.needs?.food == null || pawn.needs.food.CurLevelPercentage > 0.9f)
+            // Only from an idle job: never override a flee, a fight or a meal already under way.
+            if (!IsIdle(cur, false) || pawn.needs?.food == null || pawn.needs.food.CurLevelPercentage > 0.9f)
+            {
+                return false;
+            }
+            if (!pawn.WillEat(corpse))
             {
                 return false;
             }

@@ -73,7 +73,9 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		/// <summary>Product of growthRateFactor over active growth-pulse conditions (1 when none / off).
 		/// Walks the map manager AND its Parent (the world manager), as vanilla's
-		/// AggregatePlantDensityFactor does, so a world-scope condition grows plants as well as thickening them.</summary>
+		/// AggregatePlantDensityFactor does, so a world-scope condition grows plants as well as thickening them.
+		/// Each condition must CanApplyOnMap(map) (as vanilla ElectricityDisabled checks): a world-scope
+		/// condition does not reach an underground map or a planet layer its def filters out (orbit).</summary>
 		public static float GrowthFactor(Map map)
 		{
 			if (map == null || !RM_CreatureBehaviorsSettings.conditionGrowthEffectsEnabled)
@@ -87,7 +89,7 @@ namespace RimMandrake.CreatureBehaviors
 				for (int i = 0; i < conds.Count; i++)
 				{
 					RM_GrowthPulseExtension ext = conds[i].def.GetModExtension<RM_GrowthPulseExtension>();
-					if (ext != null)
+					if (ext != null && conds[i].CanApplyOnMap(map))
 					{
 						f *= ext.growthRateFactor;
 					}
@@ -105,7 +107,7 @@ namespace RimMandrake.CreatureBehaviors
 				for (int i = 0; i < conds.Count; i++)
 				{
 					RM_GrowthPulseExtension ext = conds[i].def.GetModExtension<RM_GrowthPulseExtension>();
-					if (ext != null)
+					if (ext != null && conds[i].CanApplyOnMap(map))
 					{
 						return ext.growthLabel.NullOrEmpty() ? conds[i].def.label : ext.growthLabel;
 					}
@@ -131,7 +133,7 @@ namespace RimMandrake.CreatureBehaviors
 				for (int i = 0; i < conds.Count; i++)
 				{
 					RM_SandLockExtension ext = conds[i].def.GetModExtension<RM_SandLockExtension>();
-					if (ext == null)
+					if (ext == null || !conds[i].CanApplyOnMap(map))
 					{
 						continue;
 					}

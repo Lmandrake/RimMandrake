@@ -1,0 +1,2 @@
+Corpse.Destroy (any DestroyMode) runs Corpse.PostCorpseDestroy, which DESTROYS the inner pawn's equipment, inventory and apparel (rw16 Verse/Corpse.cs). Code that makes a body vanish (dissolve, eat, absorb) must call corpse.Strip(false) first if the gear should survive; otherwise relics, persona weapons and quest items vanish with no sign. Found in RM_BilewormGas (Scarlands) 2026-10-26.
+home: rimworld-modding

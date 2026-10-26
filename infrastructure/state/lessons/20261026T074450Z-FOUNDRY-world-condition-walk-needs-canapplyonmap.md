@@ -1,0 +1,2 @@
+Walking map.gameConditionManager then .Parent (the world manager) reaches world-scope conditions, but each must still pass cond.CanApplyOnMap(map) (underground maps without allowUnderground, layerWhitelist/blacklist, orbit layers with onlyAllowWhitelistedGameConditions) as vanilla ElectricityDisabled checks. Also: vanilla AggregatePlantDensityFactor passes ownerMap to CanApplyOnMap, which is null for the world manager, so a WORLD condition's PlantDensityFactor is never applied in vanilla (rw16 GameConditionManager.cs:448).
+home: rimworld-modding

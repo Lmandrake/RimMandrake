@@ -11,7 +11,8 @@ namespace RimMandrake.Scarlands
     //   - every corpse within rotRadius rots rotTicksPerTick times faster than its own clock, frozen or not (it is
     //     the gas doing it, not the air);
     //   - a corpse that reaches Rotting within drinkRadius dissolves into corpse bile (filth, the readable sign) and
-    //     the worm drinks it: food need up by its body size times nutritionPerBodySize;
+    //     the worm drinks it: food need up by its body size times nutritionPerBodySize; what the dead wore or
+    //     carried drops where the body lay;
     //   - a colonist's corpse dissolving says so in a message, so nobody vanishes without a sign;
     //   - a colonist within stenchRadius gets the stench memory (renewed, never stacked).
     // All numbers PROVISIONAL. Settings: bilewormGasEnabled (off = an ordinary slug).
@@ -121,6 +122,13 @@ namespace RimMandrake.Scarlands
             {
                 Messages.Message("A bileworm has dissolved " + dead.LabelShort + "'s body into corpse bile and is drinking it.",
                     new TargetInfo(cell, map), MessageTypeDefOf.NegativeEvent);
+            }
+            // The worm drinks the body, not the kit: Corpse.Destroy would also destroy the dead pawn's equipment,
+            // apparel and inventory (Corpse.PostCorpseDestroy), so a relic, a persona weapon or a quest item on it
+            // would vanish with no sign. Drop it all where the body lay first (no faction notice: nobody stripped it).
+            if (dead != null && corpse.AnythingToStrip())
+            {
+                corpse.Strip(false);
             }
             corpse.Destroy(DestroyMode.Vanish);
             if (Props.bileFilth != null)

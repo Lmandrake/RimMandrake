@@ -75,14 +75,15 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			scratch.Clear();
 			// The map manager AND its Parent (the world manager), as vanilla's Aggregate* reads do:
-			// a world-scope haze condition is active on this map too.
+			// a world-scope haze condition is active on this map too, unless it cannot apply here
+			// (underground map, filtered planet layer), the gate vanilla ElectricityDisabled uses.
 			for (GameConditionManager mgr = map.gameConditionManager; mgr != null; mgr = mgr.Parent)
 			{
 				List<GameCondition> conds = mgr.ActiveConditions;
 				for (int i = 0; i < conds.Count; i++)
 				{
 					RM_ShadeHazeExtension ext = conds[i].def.GetModExtension<RM_ShadeHazeExtension>();
-					if (ext != null)
+					if (ext != null && conds[i].CanApplyOnMap(map))
 					{
 						scratch.Add(length ? ext.shadowLengthFactor : ext.soundVolumeFactor);
 					}

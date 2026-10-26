@@ -255,9 +255,20 @@ namespace RimMandrake.CrackedLands
         {
             int now = Find.TickManager.TicksGame;
             bool active = Active;
-            if (active && !wasActive && !CanyonGate && st.Phase == FloodPhase.Dry && st.NextFloodTick <= now)
+            // Switch-on edge, on or off the canyon (the setting toggled, or a trigger lifted the gate): a clock that aged
+            // while idle gets a fresh period rather than a flood whose warnings are squeezed into a few ticks. Dry: too
+            // close to keep the full lead. Herald/Warned (frozen while off): already due, so the rest would never ring.
+            if (active && !wasActive && st.Phase != FloodPhase.Flooding)
             {
-                ScheduleNextFlood();
+                int lead = RM_FloodKernel.HoursToTicks(RM_CrackedLandsSettings.chimeLeadTimeHours)
+                    + (RM_CrackedLandsSettings.fiveBeatsEnabled ? RM_FloodKernel.HoursToTicks(RM_CrackedLandsSettings.heraldLeadHours) : 0);
+                if (st.Phase == FloodPhase.Dry ? st.NextFloodTick - now < lead : st.NextFloodTick <= now)
+                {
+                    st.Phase = FloodPhase.Dry;
+                    st.ChimeStage = 0;
+                    st.HeraldBeat = 0;
+                    ScheduleNextFlood();
+                }
             }
             wasActive = active;
             FloodCfg cfg = new FloodCfg
