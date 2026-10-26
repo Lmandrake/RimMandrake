@@ -545,7 +545,7 @@ def c_live_first_exception(ctx):
     ce = len(re.findall(r'^Config error in', log, re.M))
     ev = {'first_exception': first, 'config_errors': ce, 'missing_types': g['missing_types']}
     if g['missing_types']:
-        return FAIL('%d missing RimMandrake types (stale DLL?): %s | first: %s' % (len(g['missing_types']),
+        return FAIL('%d missing types of our own (stale DLL?): %s | first: %s' % (len(g['missing_types']),
                                                                                 g['missing_types'][:5], first), **ev)
     if not g['probe']:
         return UNM('launch_gate probe line absent: %s' % g['problems'], **ev)
@@ -679,12 +679,22 @@ def c_deploy(ctx):
     for mod, d in dm.mod_dirs().items():
         if about_id(d) in want:
             pairs.append((mod, d, holds))
-    cleanup = None
+    cleanup = []
     try:
+        import biomes_compose
+        # deploy ships a MayRequire/FindMod-rewritten copy of any ordinary mod naming a folded member
+        # (deploy_custom_mods: biomes_compose.stage_rewritten); compare that copy, not the raw src, or every such
+        # mod reads as drift right after a clean deploy
+        fmap, nmap = biomes_compose.folded_ids(dm.SRC_ROOT), biomes_compose.folded_names(dm.SRC_ROOT)
+        if fmap or nmap:
+            for i, (mod, d, hl) in enumerate(pairs):
+                staged = biomes_compose.stage_rewritten(d, fmap, log=lambda *a, **k: None, names=nmap)
+                if staged:
+                    cleanup.append(os.path.dirname(staged))
+                    pairs[i] = (mod, staged, hl)
         if 'mandrake.rm.biomes' in want:
-            import biomes_compose
             cname, csrc, extra = biomes_compose.build(dm.SRC_ROOT, dm.tree, holds, log=lambda *a, **k: None)
-            cleanup = os.path.dirname(csrc)
+            cleanup.append(os.path.dirname(csrc))
             pairs.append((cname, csrc, holds + extra))
         if not pairs:
             return UNM('no repo mod maps onto the intended list (sanity: expected dozens)')
@@ -710,8 +720,8 @@ def c_deploy(ctx):
                         drift=drift)
         return PASS('%d mods, %d files: deployed == repo byte for byte' % (len(pairs), nfiles))
     finally:
-        if cleanup:
-            shutil.rmtree(cleanup, ignore_errors=True)
+        for c in cleanup:
+            shutil.rmtree(c, ignore_errors=True)
 
 
 def emit_trees(req_path):

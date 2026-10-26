@@ -190,10 +190,51 @@ def t_manifest():
         check('unreadable input never equals readable', em.diff({'k': {'unreadable': 'x'}}, {'k': {'a': 1}}) == ['k'])
 
 
+def t_deploy_staged():
+    """c_deploy compares what deploy SHIPS: an ordinary mod naming a folded member's packageId is deployed as a
+    MayRequire-rewritten copy (biomes_compose.stage_rewritten), so the raw src must not read as drift (wave 9;
+    the old code compared raw src and FAILed every such mod right after a clean deploy)."""
+    import deploy_custom_mods as dm
+    import biomes_compose as bc
+    with tempfile.TemporaryDirectory() as td:
+        old_tmp = tempfile.tempdir
+        tempfile.tempdir = os.path.join(td, 'tmp')
+        os.makedirs(tempfile.tempdir)
+        src, game = os.path.join(td, 'src', 'ModB'), os.path.join(td, 'Mods')
+        about = '<ModMetaData><name>B</name><packageId>x.b</packageId></ModMetaData>'
+        raw = '<Defs><ThingDef MayRequire="old.member"><defName>X</defName></ThingDef></Defs>'
+
+        def put(root, rel, text):
+            p = os.path.join(root, rel)
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            open(p, 'w', encoding='utf-8').write(text)
+        put(src, 'About/About.xml', about)
+        put(src, 'Defs/a.xml', raw)
+        put(os.path.join(game, 'ModB'), 'About/About.xml', about)
+        saved = (dm.mod_dirs, dm.load_holds, dm.LOCAL_MODS, bc.folded_ids, bc.folded_names, pf.deployed_trees)
+        try:
+            dm.mod_dirs, dm.load_holds, dm.LOCAL_MODS = (lambda: {'ModB': src}), (lambda: []), game
+            bc.folded_ids, bc.folded_names = (lambda r: {'old.member': 'x.composed'}), (lambda r: {})
+            pf.deployed_trees = lambda dirs, ex: {d: (pf._tree_sha(d, ex) if os.path.isdir(d) else None) for d in dirs}
+            put(os.path.join(game, 'ModB'), 'Defs/a.xml', raw.replace('old.member', 'x.composed'))
+            r = pf.c_deploy({'want': ['x.b']})
+            check('c_deploy: rewritten deployed copy of a mod naming a folded id is in sync', r.status == 'PASS',
+                  '%s %s' % (r.status, r.reason))
+            check('c_deploy: staged link farm removed after the check', os.listdir(tempfile.tempdir) == [],
+                  os.listdir(tempfile.tempdir))
+            put(os.path.join(game, 'ModB'), 'Defs/a.xml', raw)
+            r = pf.c_deploy({'want': ['x.b']})
+            check('c_deploy negative control: an UNrewritten deployed copy is drift', r.status == 'FAIL',
+                  '%s %s' % (r.status, r.reason))
+        finally:
+            dm.mod_dirs, dm.load_holds, dm.LOCAL_MODS, bc.folded_ids, bc.folded_names, pf.deployed_trees = saved
+            tempfile.tempdir = old_tmp
+
+
 def main():
     import io
     import contextlib
-    for t in (t_verdict, t_modsconfig, t_live, t_manifest):
+    for t in (t_verdict, t_modsconfig, t_live, t_manifest, t_deploy_staged):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             before = len(RESULTS)
