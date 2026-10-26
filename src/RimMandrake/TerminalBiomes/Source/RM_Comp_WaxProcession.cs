@@ -44,9 +44,11 @@ namespace RimMandrake.TerminalBiomes
             }
         }
 
-        // Notify_Killed, not PostDestroy: Pawn.Kill despawns the pawn into its corpse and never calls
-        // Destroy(KillFinalize), so a PostDestroy hook never saw a death (decompiled 1.6 Pawn.Kill,
-        // ThingWithComps.Kill). The corpse's later destruction is Vanish and does not spoil twice.
+        // Notify_Killed, not PostDestroy. Pawn.Kill does reach Destroy(KillFinalize) (via ThingWithComps.Kill
+        // -> Thing.Kill), but only after the pawn is despawned into its corpse, so PostDestroy's map is the
+        // corpse's MapHeld -- null when no corpse was placed, which lost the spoil. Notify_Killed is handed
+        // pawn.prevMap, the map it died on (decompiled 1.6 Pawn.Kill, ThingWithComps.Kill). The dead pawn is
+        // already Destroyed, so the corpse's later destruction fires neither hook again.
         public override void Notify_Killed(Map previousMap, DamageInfo? dinfo = null)
         {
             base.Notify_Killed(previousMap, dinfo);

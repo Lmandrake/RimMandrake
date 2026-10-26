@@ -298,18 +298,6 @@ namespace RimMandrake.TerminalBiomes
             return IntVec3.Invalid;
         }
 
-        private static IntVec3 FindStandableNear(Map map, IntVec3 centre)
-        {
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, 3f, useCenter: true))
-            {
-                if (c.InBounds(map) && c.Standable(map) && c.GetEdifice(map) == null)
-                {
-                    return c;
-                }
-            }
-            return IntVec3.Invalid;
-        }
-
         private void RegisterSink(Map map, RM_MapComponent_ChannelCurrent current, IntVec3 sink)
         {
             TerrainDef pool = Named<TerrainDef>("RM_ChannelBed");
