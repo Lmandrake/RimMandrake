@@ -50,6 +50,10 @@ namespace RimMandrake.BlueDesert
     {
         private int departTick = -1;
         private bool departing;
+        // True while the vhaulk's current job ends in exitMapOnArrival (refreshed every tick). Pawn.DeSpawn stops
+        // the job before PostDeSpawn runs, so this is how PostDeSpawn tells an exit from a map being closed
+        // under it (MapDeiniter.PassPawnsToWorld despawns every pawn, edge-standers included).
+        private bool onExitJob;
 
         public CompProperties_VhaulkRoad Props => (CompProperties_VhaulkRoad)props;
 
@@ -97,6 +101,7 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
+            onExitJob = pawn.CurJob != null && pawn.CurJob.exitMapOnArrival;
             if (!parent.IsHashIntervalTick(Mathf.Max(1, Props.stepIntervalTicks)))
             {
                 return;
@@ -142,12 +147,14 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            // ExitMap despawns from the edge cell; anything else (a transport
-            // pod, a debug despawn) is not a walk-off and gets no letter.
-            if (!pawn.Position.IsValid || pawn.Position.DistanceToEdge(map) > 1)
+            // ExitMap despawns from the edge cell at the end of an exit job; anything
+            // else (a transport pod, a debug despawn, the map closing) is not a
+            // walk-off and gets no letter.
+            if (!onExitJob || !pawn.Position.IsValid || pawn.Position.DistanceToEdge(map) > 1)
             {
                 return;
             }
+            onExitJob = false;
             departing = false;
             if (!RM_BlueDesertSettings.masterEnabled || Props.departureLetterText.NullOrEmpty())
             {
