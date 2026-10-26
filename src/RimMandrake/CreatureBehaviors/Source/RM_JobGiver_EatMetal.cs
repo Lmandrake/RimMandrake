@@ -70,8 +70,12 @@ namespace RimMandrake.CreatureBehaviors
 
             // Nothing edible reachable. Dig some up rather than starve — this is
             // what keeps the creature alive on a map that has no loose steel.
+            // Not while standing on a cell forbidden to it (outside its allowed area): the dug chunk would be
+            // forbidden too, so it could never eat it and would dig another on every rethink — a slag flood
+            // under an animal stranded outside an unreachable area.
             if (RM_MetalEaterKernel.DigDue(comp.Props.digThingIfMapEmpty, !comp.Props.thingToDigIfMapEmpty.NullOrEmpty(),
-                food.CurLevelPercentage, food.PercentageThreshHungry, pawn.Awake()))
+                food.CurLevelPercentage, food.PercentageThreshHungry, pawn.Awake())
+                && !pawn.Position.IsForbidden(pawn))
             {
                 ThingDef dugDef = DefDatabase<ThingDef>.GetNamedSilentFail(comp.Props.thingToDigIfMapEmpty);
                 if (dugDef != null)
