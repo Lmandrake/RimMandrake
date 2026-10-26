@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Species name-makers for the xenotypes that had none (XENOTYPE_CANON_CORRECTION_1).
+       Word lists are the named individuals of each Wookieepedia species category
+       (Category:<species>; Gungans = its three race subcategories), species without a surname
+       pool of 15 also draw surnames from the given-name pool (mononym cultures).
+       fetched 2026-10-26 through the MediaWiki categorymembers API, split first/last token.
+       Removed: Unidentified/relational titles, callsigns, English-word nicknames, real-world
+       tribute names, and headline characters (Ackbar, Raddus, Plo Koon, Saesee Tiin, Grievous, Kuiil, Jar Jar, Ki-Adi-Mundi...).
+       Hand-authored; gen_races_mod.py wires them through OWNER_NAMERS and does not rewrite this file. -->
+  <RulePackDef>
+    <defName>RSW_NamerIthorian</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameIthorian]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameIthorian]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameIthorian</keyword>
+          <path>RimMandrakeSWNames/Canon/Ithorian/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameIthorian</keyword>
+          <path>RimMandrakeSWNames/Canon/Ithorian/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerMonCalamari</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameMonCalamari]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameMonCalamari]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameMonCalamari</keyword>
+          <path>RimMandrakeSWNames/Canon/MonCalamari/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameMonCalamari</keyword>
+          <path>RimMandrakeSWNames/Canon/MonCalamari/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerUgnaught</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameUgnaught]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameUgnaught]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameUgnaught</keyword>
+          <path>RimMandrakeSWNames/Canon/Ugnaught/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameUgnaught</keyword>
+          <path>RimMandrakeSWNames/Canon/Ugnaught/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerKelDor</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameKelDor]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameKelDor]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameKelDor</keyword>
+          <path>RimMandrakeSWNames/Canon/KelDor/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameKelDor</keyword>
+          <path>RimMandrakeSWNames/Canon/KelDor/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerKaleesh</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameKaleesh]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameKaleesh]</li>
+        <li>lastGenerated-&gt;[NameKaleesh]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameKaleesh</keyword>
+          <path>RimMandrakeSWNames/Canon/Kaleesh/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameKaleesh</keyword>
+          <path>RimMandrakeSWNames/Canon/Kaleesh/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerIktotchi</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameIktotchi]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameIktotchi]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameIktotchi</keyword>
+          <path>RimMandrakeSWNames/Canon/Iktotchi/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameIktotchi</keyword>
+          <path>RimMandrakeSWNames/Canon/Iktotchi/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerMassassi</defName>
+    <include>
+      <li>RSW_NamerPersonPureblood</li>
+    </include>
+    <rulePack>
+      <rulesStrings>
+        <!-- the six canon Massassi are mononyms; they share the pool with the Sith pureblood given names and take a Sith surname -->
+        <li>firstName(p=3)-&gt;[NameMassassi]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameMassassi</keyword>
+          <path>RimMandrakeSWNames/Canon/Massassi/First</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerAbednedo</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameAbednedo]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameAbednedo]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameAbednedo</keyword>
+          <path>RimMandrakeSWNames/Canon/Abednedo/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameAbednedo</keyword>
+          <path>RimMandrakeSWNames/Canon/Abednedo/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerAnzati</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameAnzati]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameAnzati]</li>
+        <li>lastGenerated-&gt;[NameAnzati]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameAnzati</keyword>
+          <path>RimMandrakeSWNames/Canon/Anzati/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameAnzati</keyword>
+          <path>RimMandrakeSWNames/Canon/Anzati/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerCerean</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameCerean]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameCerean]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameCerean</keyword>
+          <path>RimMandrakeSWNames/Canon/Cerean/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameCerean</keyword>
+          <path>RimMandrakeSWNames/Canon/Cerean/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerChagrian</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameChagrian]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameChagrian]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameChagrian</keyword>
+          <path>RimMandrakeSWNames/Canon/Chagrian/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameChagrian</keyword>
+          <path>RimMandrakeSWNames/Canon/Chagrian/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerDefel</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameDefel]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameDefel]</li>
+        <li>lastGenerated-&gt;[NameDefel]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameDefel</keyword>
+          <path>RimMandrakeSWNames/Canon/Defel/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameDefel</keyword>
+          <path>RimMandrakeSWNames/Canon/Defel/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerGeonosian</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameGeonosian]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameGeonosian]</li>
+        <li>lastGenerated-&gt;[NameGeonosian]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameGeonosian</keyword>
+          <path>RimMandrakeSWNames/Canon/Geonosian/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameGeonosian</keyword>
+          <path>RimMandrakeSWNames/Canon/Geonosian/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerGungan</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameGungan]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameGungan]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameGungan</keyword>
+          <path>RimMandrakeSWNames/Canon/Gungan/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameGungan</keyword>
+          <path>RimMandrakeSWNames/Canon/Gungan/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerHerglic</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameHerglic]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameHerglic]</li>
+        <li>lastGenerated-&gt;[NameHerglic]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameHerglic</keyword>
+          <path>RimMandrakeSWNames/Canon/Herglic/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameHerglic</keyword>
+          <path>RimMandrakeSWNames/Canon/Herglic/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerKaminoan</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameKaminoan]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameKaminoan]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameKaminoan</keyword>
+          <path>RimMandrakeSWNames/Canon/Kaminoan/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameKaminoan</keyword>
+          <path>RimMandrakeSWNames/Canon/Kaminoan/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerMuun</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameMuun]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameMuun]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameMuun</keyword>
+          <path>RimMandrakeSWNames/Canon/Muun/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameMuun</keyword>
+          <path>RimMandrakeSWNames/Canon/Muun/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerOrtolan</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameOrtolan]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameOrtolan]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameOrtolan</keyword>
+          <path>RimMandrakeSWNames/Canon/Ortolan/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameOrtolan</keyword>
+          <path>RimMandrakeSWNames/Canon/Ortolan/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerPyke</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NamePyke]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNamePyke]</li>
+        <li>lastGenerated-&gt;[NamePyke]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NamePyke</keyword>
+          <path>RimMandrakeSWNames/Canon/Pyke/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNamePyke</keyword>
+          <path>RimMandrakeSWNames/Canon/Pyke/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerRakata</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameRakata]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[NameRakata]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameRakata</keyword>
+          <path>RimMandrakeSWNames/Canon/Rakata/First</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerSelkath</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameSelkath]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameSelkath]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameSelkath</keyword>
+          <path>RimMandrakeSWNames/Canon/Selkath/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameSelkath</keyword>
+          <path>RimMandrakeSWNames/Canon/Selkath/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RSW_NamerTogorian</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name-&gt;[firstName] [lastName]</li>
+        <li>firstName-&gt;[NameTogorian]</li>
+        <li>lastName-&gt;[lastGenerated]</li>
+        <li>lastGenerated-&gt;[LastNameTogorian]</li>
+        <li>lastGenerated-&gt;[NameTogorian]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>NameTogorian</keyword>
+          <path>RimMandrakeSWNames/Canon/Togorian/First</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>LastNameTogorian</keyword>
+          <path>RimMandrakeSWNames/Canon/Togorian/Last</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+</Defs>

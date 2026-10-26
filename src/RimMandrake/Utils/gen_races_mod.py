@@ -1258,6 +1258,38 @@ NAMER_DROPPED = {
     "RSW_RimMandrakeKaleesh": "RSW_KoTOR_NamerNagai",
 }
 
+# XENOTYPE_CANON_CORRECTION_1, 2026-10-26: species name-makers authored from the named
+# individuals of each Wookieepedia species category, hand-written in
+# Defs/RulePackDefs/RSW_CanonSpeciesNamers.xml (this script never rewrites that file).
+# Taung has none: its category holds only epithets ("Mandalore the Ultimate").
+# Overrides whatever nameMaker the build carried (Massassi had the shared Sith one); SithZ
+# (Zuguruk caste, no named canon individuals) takes the Sith namer its two sibling castes use.
+OWNER_NAMERS = {
+    "RSW_RimMandrakeIthorian": "RSW_NamerIthorian",
+    "RSW_RimMandrakeMonCalamari": "RSW_NamerMonCalamari",
+    "RSW_RimMandrakeUgnaught": "RSW_NamerUgnaught",
+    "RSW_RimMandrakeKelDor": "RSW_NamerKelDor",
+    "RSW_RimMandrakeKaleesh": "RSW_NamerKaleesh",
+    "RSW_RimMandrakeIktotchi": "RSW_NamerIktotchi",
+    "RSW_RimMandrakeSithMassassi": "RSW_NamerMassassi",
+    "RSW_RimMandrakeSithZ": "RSW_NamerPersonPureblood",
+    "RSW_RimMandrakeAbednedo": "RSW_NamerAbednedo",
+    "RSW_RimMandrakeAnzati": "RSW_NamerAnzati",
+    "RSW_RimMandrakeCerean": "RSW_NamerCerean",
+    "RSW_RimMandrakeChagrian": "RSW_NamerChagrian",
+    "RSW_RimMandrakeDefel": "RSW_NamerDefel",
+    "RSW_RimMandrakeGeonosianVariants": "RSW_NamerGeonosian",
+    "RSW_RimMandrakeGungan": "RSW_NamerGungan",
+    "RSW_RimMandrakeHerglic": "RSW_NamerHerglic",
+    "RSW_RimMandrakeKaminoan": "RSW_NamerKaminoan",
+    "RSW_RimMandrakeMuun": "RSW_NamerMuun",
+    "RSW_RimMandrakeOrtolan": "RSW_NamerOrtolan",
+    "RSW_RimMandrakePyke": "RSW_NamerPyke",
+    "RSW_RimMandrakeRakata": "RSW_NamerRakata",
+    "RSW_RimMandrakeSelkath": "RSW_NamerSelkath",
+    "RSW_RimMandrakeTogorian": "RSW_NamerTogorian",
+}
+
 _SHIPPED_GENES = {}
 
 
@@ -1281,6 +1313,15 @@ def apply_owner_tables(els):
         nm = e.find("nameMaker")
         if nm is not None and nm.text == NAMER_DROPPED.get(dn):
             e.remove(nm)
+            nm = None
+        want = OWNER_NAMERS.get(dn)
+        if want and (nm is None or nm.text != want):
+            if nm is None:
+                nm = ET.Element("nameMaker")
+                at = e.find("genes")
+                kids = list(e)
+                e.insert(kids.index(at) if at is not None else len(kids), nm)
+            nm.text = want
         t = OWNER_DESCRIPTION_APPEND.get(dn)
         d = e.find("description")
         if t and d is not None and t not in (d.text or ""):

@@ -23,6 +23,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerAbednedo</nameMaker>
     <genes>
       <li>WoundHealing_Slow</li>
       <li>Hair_BaldOnly</li>
@@ -53,6 +54,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerAnzati</nameMaker>
     <genes>
       <li>RSW_Beard_chintendril</li>
       <li>Hemogenic</li>
@@ -240,6 +242,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerCerean</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_big</li>
       <li>Turn_Gene_SlowNeuralHeat</li>
@@ -299,6 +302,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerChagrian</nameMaker>
     <genes>
       <li>RSW_statgene_metabolismcheat</li>
       <li>FireWeakness</li>
@@ -391,6 +395,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.6000000238418579</combatPowerFactor>
+    <nameMaker>RSW_NamerDefel</nameMaker>
     <genes>
       <li>RSW_Face_pointyteeth</li>
       <li>RSW_Nose_Dog</li>
@@ -710,6 +715,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.699999988079071</combatPowerFactor>
+    <nameMaker>RSW_NamerGeonosian</nameMaker>
     <genes>
       <li>RSW_butchergene_insectmeat</li>
       <li>RSW_BodySizeGene_small</li>
@@ -744,6 +750,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerGungan</nameMaker>
     <genes>
       <li>Outland_LeaperLegs</li>
       <li>RSW_BodySizeGene_big</li>
@@ -769,6 +776,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerHerglic</nameMaker>
     <genes>
       <li>MeleeDamage_Strong</li>
       <li>Hair_BaldOnly</li>
@@ -840,6 +848,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerIktotchi</nameMaker>
     <genes>
       <li>Immunity_Weak</li>
       <li>PsychicAbility_Enhanced</li>
@@ -889,6 +898,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerIthorian</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_big</li>
       <li>MoveSpeed_Slow</li>
@@ -955,6 +965,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerKaleesh</nameMaker>
     <genes>
       <li>RSW_statgene_predator</li>
       <li>RSW_HeadAttachment_kaleeshmask</li>
@@ -993,6 +1004,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.800000011920929</combatPowerFactor>
+    <nameMaker>RSW_NamerKaminoan</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_bigger</li>
       <li>Turn_Gene_BiosculptAccelerated</li>
@@ -1023,6 +1035,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerKelDor</nameMaker>
     <genes>
       <li>RSW_Ears_weirdflap</li>
       <li>RSW_FacialRidges_bumpy</li>
@@ -1213,6 +1226,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerMonCalamari</nameMaker>
     <genes>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_SmallDecrease</li>
@@ -1243,6 +1257,7 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.800000011920929</combatPowerFactor>
+    <nameMaker>RSW_NamerMuun</nameMaker>
     <genes>
       <li>RSW_Head_quarren</li>
       <li>RSW_Body_gaunt</li>
@@ -1426,6 +1441,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerOrtolan</nameMaker>
     <genes>
       <li>RSW_OrtolanHead</li>
       <li>Immunity_Strong</li>
@@ -1477,6 +1493,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerPyke</nameMaker>
     <genes>
       <li>RSW_Body_gaunt</li>
       <li>RSW_BodySizeGene_big</li>
@@ -1534,6 +1551,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerRakata</nameMaker>
     <genes>
       <li>RSW_Body_gaunt</li>
       <li>Turn_Gene_TraitGrandeur</li>
@@ -1605,6 +1623,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerSelkath</nameMaker>
     <genes>
       <li>RSW_Beard_fishmouth</li>
       <li>RSW_Head_selkath</li>
@@ -1667,7 +1686,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
-    <nameMaker>RSW_NamerPersonPureblood</nameMaker>
+    <nameMaker>RSW_NamerMassassi</nameMaker>
     <genes>
       <li>RSW_BodySizeGene_big</li>
       <li>WoundHealing_Fast</li>
@@ -1701,6 +1720,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerPersonPureblood</nameMaker>
     <genes>
       <li>RSW_FacialRidges_bumpy</li>
       <li>RSW_Beard_chintendril</li>
@@ -1827,6 +1847,7 @@
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerTogorian</nameMaker>
     <genes>
       <li>RSW_Furskin_shortfur</li>
       <li>RSW_statgene_predator</li>
@@ -2006,6 +2027,7 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
     <inheritable>true</inheritable>
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
+    <nameMaker>RSW_NamerUgnaught</nameMaker>
     <genes>
       <li>RSW_statgene_compliant</li>
       <li>RSW_Beard_Chops</li>
