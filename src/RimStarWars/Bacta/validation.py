@@ -72,12 +72,16 @@ def _unmeasured(t, why):
     t._why = why
     t._record("UNMEASURED", why)
     t.upstream_failed = True
+    t.upstream_reason = "an UNMEASURED component ended this chain earlier: " + str(why)[:200]
     raise _Unmeasured(why)
 
 
 @contextlib.contextmanager
-def _comp(t, name, **kw):
-    """t.component() plus the UNMEASURED fix-up (verdict UNMEASURED, real reason in the detail, chain not poisoned)."""
+def _comp(t, name, independent=False, **kw):
+    """t.component() plus the UNMEASURED fix-up (verdict UNMEASURED, real reason in the detail). An UNMEASURED row ends
+    the chain's measurement (later rows UNMEASURED) unless `independent`: only a row that asks the game a question no
+    later row builds on (the content chain) may let the chain go on (BACTA_UNMEASURED_FIX_FALSE_FAIL_DOWNSTREAM: a
+    stateful chain carried on past an unbuilt fixture and FAILed the mod for it)."""
     before = t.upstream_failed
     t._why = None
     with t.component(name, **kw) as tt:
@@ -85,7 +89,8 @@ def _comp(t, name, **kw):
     why = getattr(t, "_why", None)
     if why and not before:
         t.components[-1].detail = "UNMEASURED: %s" % why
-        t.upstream_failed = False
+        if independent:
+            t.upstream_failed = False
     t._why = None
     if t.session is not None and t.components:
         c = t.components[-1]
@@ -283,7 +288,7 @@ def _enter(t, S):
 
 @suite.chain("content")
 def content(t):
-    with _comp(t, "defs_resolve"):
+    with _comp(t, "defs_resolve", independent=True):
         if _live(t):
             want = ["ThingDef/RSW_BactaTank", "ThingDef/RSW_Bacta", "ThingDef/RSW_BactaPatch", "ThingDef/RSW_BactaSpray",
                     "ThingDef/RSW_MedicalDroid", "ResearchProjectDef/RSW_BactaImmersion",
@@ -295,7 +300,7 @@ def content(t):
             if r.get("notFound") or r.get("foundCount") != len(want):
                 _fail("defs missing: notFound=%r foundCount=%r of %d" % (r.get("notFound"), r.get("foundCount"), len(want)))
 
-    with _comp(t, "tank_def_wiring"):
+    with _comp(t, "tank_def_wiring", independent=True):
         if _live(t):
             r = _ok(t.bridge_call("jawa/get_def", defName=TANK, defType="ThingDef"), "get_def tank")
             ex = r.get("extra") or {}
@@ -315,7 +320,7 @@ def content(t):
             if "CompFacility" not in [c.get("compClass") or c.get("class") for c in (d.get("comps") or [])]:
                 _fail("medical droid has no CompFacility")
 
-    with _comp(t, "fluid_and_items_trade"):
+    with _comp(t, "fluid_and_items_trade", independent=True):
         if _live(t):
             for dn in (FLUID, PATCH, SPRAY):
                 ex = _ok(t.bridge_call("jawa/get_def", defName=dn, defType="ThingDef"), "get_def " + dn).get("extra") or {}
@@ -324,7 +329,7 @@ def content(t):
                 if ex.get("tradeability") != "All":
                     _fail("%s tradeability %r, expected All" % (dn, ex.get("tradeability")))
 
-    with _comp(t, "trader_stock_patch_landed"):
+    with _comp(t, "trader_stock_patch_landed", independent=True):
         if _live(t):
             kinds = ["Orbital_Exotic", "Caravan_Outlander_Exotic", "Base_Outlander_Standard"]
             r = t.bridge_call("jawa/get_defs", defs=";".join("TraderKindDef/" + k for k in kinds),
@@ -370,7 +375,7 @@ def content(t):
                     _fail("%s stockGenerators lack the patch's rows %s: the patch matched nothing, or another mod "
                           "rewrote the list" % (row.get("defName"), missing))
 
-    with _comp(t, "doctor_recipes_patch_landed"):
+    with _comp(t, "doctor_recipes_patch_landed", independent=True):
         if _live(t):
             r = t.bridge_call("jawa/get_defs", defs="ThingDef/Human;ThingDef/Muffalo", fields="recipes", deep=False)
             _ok(r, "get_defs recipes")
@@ -388,13 +393,13 @@ def content(t):
                 if rc not in ani:
                     _fail("animal recipes lack %s: the AnimalThingBase patch matched nothing" % rc)
 
-    with _comp(t, "settings_ship_defaults"):
+    with _comp(t, "settings_ship_defaults", independent=True):
         if _live(t):
             bad = dict((k, _sget(t, k)) for k, v in DEFAULTS.items() if not _same(_sget(t, k), v))
             if bad:
                 _fail("not at shipped defaults (a prior run's leftovers or a changed ship value): %s" % bad)
 
-    with _comp(t, "no_bacta_errors_in_log"):
+    with _comp(t, "no_bacta_errors_in_log", independent=True):
         if _live(t):
             r = _ok(t.bridge_call("jawa/drain_log", contains="Bacta", errorsOnly=True, limit=50), "drain_log")
             errs = [m for m in (r.get("messages") or []) if m.get("type") == "Error"]
