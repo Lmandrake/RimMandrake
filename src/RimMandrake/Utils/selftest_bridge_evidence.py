@@ -119,10 +119,26 @@ def main():
     os.environ["RIMBRIDGE_CALL_DEADLINE"] = "%.3f" % (_t.time() + 600)
     bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
     good.append(case("a mutation with time to finish before the deadline runs", rows()[-1]["status"] == "ok"))
-    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "not-a-number"
+    # RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN: a deadline that is SET but cannot be read is not "no deadline" -- the
+    # process may still be killed at an unknown time, so a mutation fails closed ('nan' compared False and let it run).
+    for bad in ("not-a-number", "nan", "", "-inf"):
+        os.environ["RIMBRIDGE_CALL_DEADLINE"] = bad
+        n0 = len(rows())
+        try:
+            bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+            refused = False
+        except C.DeadlineError:
+            refused = True
+        good.append(case("an unreadable deadline %r refuses a mutation (fails closed)" % bad,
+                         refused and len(rows()) == n0, rows()[n0:]))
+    bridge({"success": True}).call("rimworld/get_game_info", check=False)
+    good.append(case("an unreadable deadline does not block a read", rows()[-1]["status"] == "ok"))
+    os.environ["RIMBRIDGE_CALL_DEADLINE"] = "inf"
     bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
-    good.append(case("an unparseable deadline is ignored", rows()[-1]["status"] == "ok"))
+    good.append(case("an infinite deadline lets a mutation run", rows()[-1]["status"] == "ok"))
     del os.environ["RIMBRIDGE_CALL_DEADLINE"]
+    bridge({"success": True}).call("jawa/spawn_pawn", {"kind": "Hare"}, check=False)
+    good.append(case("an unset deadline lets a mutation run", rows()[-1]["status"] == "ok"))
 
     # bounded: rotation
     C.EVIDENCE_MAX_BYTES = 2000

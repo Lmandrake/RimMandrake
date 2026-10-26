@@ -340,11 +340,19 @@ class DeadlineError(RimBridgeError):
 
 
 def _deadline_left():
-    """Seconds until RIMBRIDGE_CALL_DEADLINE (None when unset or unparseable)."""
-    try:
-        return float(os.environ[DEADLINE_ENV]) - time.time()
-    except (KeyError, ValueError):
+    """Seconds until RIMBRIDGE_CALL_DEADLINE: None only when UNSET. A set value that is unparseable or NaN reads as
+    already expired (-inf): the process may still be killed at a time it cannot read, so a mutation fails closed
+    (RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN -- 'nan' compared False and let every mutation run). 'inf' is no limit."""
+    raw = os.environ.get(DEADLINE_ENV)
+    if raw is None:
         return None
+    try:
+        at = float(raw)
+    except ValueError:
+        return float("-inf")
+    if at != at:   # NaN
+        return float("-inf")
+    return at - time.time()
 
 
 class UnknownParameterError(RimBridgeError):
@@ -699,9 +707,10 @@ class RimBridge:
         if mutating:
             left = _deadline_left()
             if left is not None and left < self.timeout + self.connect_timeout:
-                raise DeadlineError("refusing %s: %.0f s to %s, less than this call's %.0f s timeout + %.0f s "
+                raise DeadlineError("refusing %s: %.0f s to %s (=%r), less than this call's %.0f s timeout + %.0f s "
                                     "connect: a kill mid call would strand an UNKNOWN-outcome marker"
-                                    % (tool, max(left, 0), DEADLINE_ENV, self.timeout, self.connect_timeout))
+                                    % (tool, max(left, 0), DEADLINE_ENV, os.environ.get(DEADLINE_ENV),
+                                       self.timeout, self.connect_timeout))
             pending = outstanding_indeterminate()
             if pending:
                 raise IndeterminateError(
