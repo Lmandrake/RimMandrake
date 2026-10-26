@@ -315,7 +315,15 @@ namespace RimMandrake.ColdStorage
                                     }
                                     if (take <= 0)
                                     {
-                                        surplus.Add(ing);
+                                        // None of this stack goes in: it must leave the ingredient list, or Toils_Recipe's
+                                        // ConsumeIngredients (run on this same list after the products are listed) destroys it.
+                                        // A stack still on the bench stays where it is; only an unspawned one is placed as a
+                                        // product (placing a spawned or destroyed thing is an error and lost the meal).
+                                        ingredients.Remove(ing);
+                                        if (!ing.Spawned && ing.holdingOwner == null)
+                                        {
+                                            surplus.Add(ing);
+                                        }
                                         continue;
                                     }
                                     if (take < ing.stackCount)
