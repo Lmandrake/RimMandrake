@@ -176,13 +176,13 @@ def _unmeasured(t, why):
 @contextlib.contextmanager
 def _comp(t, name, **kw):
     """t.component() whose UNMEASURED does not poison the independent components after it."""
-    before = t.upstream_failed
+    before, reason = t.upstream_failed, t.upstream_reason
     t._why = None
     with t.component(name, **kw):
         yield
     if getattr(t, "_why", None) and not before:
-        t.upstream_failed = False
-        t.upstream_reason = None
+        # restore, never None: a later plain FAIL latches without setting a reason (BRAINWORMS_VALIDATION_FIX_BORROWED_REASON)
+        t.upstream_failed, t.upstream_reason = False, reason
     t._why = None
 
 
@@ -405,8 +405,13 @@ def _build_suite():
                     # this is not a mod verdict
                     _unmeasured(t, "pawn_health add succeeded but pawn_get lists no %s (an undiscovered hediff may "
                                    "be hidden from the snapshot)" % HEDIFF)
+                box["infected"] = True
         with _comp(t, "severity_advances_while_warm", toggle="progressionSpeedMultiplier"):
             if _live(t):
+                if not box.get("infected"):
+                    # this row reads the pawn the row above infected: without it, say why, not a symptom of it
+                    _unmeasured(t, "the row above established no readable infected pawn: %s"
+                                % str(t.components[-1].detail if t.components else None)[:200])
                 s0 = _hediff_row(_snap(t, box["sick"]), HEDIFF)[1] or {}
                 if "severity" not in s0:
                     _unmeasured(t, "pawn_get hediff rows carry no severity field")
