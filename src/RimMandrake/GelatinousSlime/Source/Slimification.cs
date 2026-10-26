@@ -182,6 +182,12 @@ namespace RimMandrake.GelatinousSlime
                     map = corpse.MapHeld;
                     pos = corpse.PositionHeld;
                 }
+                // CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY: the flow keeps the body, not the gear. Corpse.Destroy ->
+                // PostCorpseDestroy destroys apparel, equipment and inventory, so strip first (drops where they lay).
+                if (corpse.AnythingToStrip())
+                {
+                    corpse.Strip(false);
+                }
                 corpse.Destroy();
             }
 

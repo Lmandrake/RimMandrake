@@ -79,6 +79,10 @@ namespace RimMandrake.TheRot
             }
             SoundDef burst = DefDatabase<SoundDef>.GetNamedSilentFail("Hive_Spawn");
             burst?.PlayOneShot(new TargetInfo(at, map));
+            // CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY: the larvae eat the body, not its gear. Corpse.Destroy ->
+            // PostCorpseDestroy destroys apparel, equipment and inventory, so strip first (drops at the corpse).
+            if (corpse.AnythingToStrip())
+                corpse.Strip(false);
             corpse.Destroy();
         }
     }

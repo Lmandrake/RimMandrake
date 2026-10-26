@@ -817,6 +817,11 @@ namespace RimMandrake.GelatinousSlime
             {
                 victim.equipment.DropAllEquipment(victim.PositionHeld, false);
             }
+            // CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY: nor is what it carried; Corpse.Destroy would destroy the inventory.
+            if (victim.inventory != null)
+            {
+                victim.inventory.DropAllNearPawn(victim.PositionHeld);
+            }
 
             if (!victim.Dead)
             {
