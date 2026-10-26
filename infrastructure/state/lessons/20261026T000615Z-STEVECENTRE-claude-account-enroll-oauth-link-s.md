@@ -1,0 +1,1 @@
+claude-account enroll: the OAuth link's login_hint is ignored; the browser authorizes as whoever is already signed in to claude.ai (twice handed steven's code for a lukas enroll, 2026-10-25). Log that browser out of claude.ai, or use a private window, before opening the link. claude-account code checks the account and discards a mismatch, so nothing breaks.
