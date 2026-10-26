@@ -92,6 +92,25 @@ def main() -> int:
     finally:
         BF.ARTPIPE = old_ap
     check(rc != 0, "an UNMEASURED backfill step exits non-zero", rc)
+    # the same class in the donor and canon steps (w94): a source that is not there is UNMEASURED, never a clean 0
+    saved = BF.BUNDLES, BF.CENSUS_CSV, BF.CANON
+    BF.BUNDLES, BF.CENSUS_CSV, BF.CANON = tmp / "no_bundles", tmp / "no_census.csv", tmp / "no_canon"
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc_d = A.cmd_backfill(argparse.Namespace(step="donor", budget=60))
+            rc_c = A.cmd_backfill(argparse.Namespace(step="canon", budget=60))
+            BF.BUNDLES = tmp / "bundles"
+            BF.BUNDLES.mkdir()
+            r_half = BF.step_donor(budget=60)
+            BF.CENSUS_CSV.write_text("source,path,row_id\n")
+            rc_ok = A.cmd_backfill(argparse.Namespace(step="donor", budget=60))
+    finally:
+        BF.BUNDLES, BF.CENSUS_CSV, BF.CANON = saved
+    check(rc_d != 0, "backfill donor with neither donor source present exits non-zero", rc_d)
+    check(rc_c != 0, "backfill canon with no canon_references dir exits non-zero", rc_c)
+    check("census" in r_half.get("error", "").lower() or "no_census" in r_half.get("error", ""),
+          "backfill donor names the one source it could not see", r_half)
+    check(rc_ok == 0, "control: backfill donor with both sources present (and empty) exits 0", rc_ok)
     print("ALL PASS" if not FAILS else f"{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 

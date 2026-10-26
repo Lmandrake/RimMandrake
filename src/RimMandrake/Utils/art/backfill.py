@@ -338,6 +338,7 @@ def step_donor(budget=480):
     w = L.Writer()
     n0 = len(w.known)
     n = 0
+    blind = []      # a source this step could not see: the run is UNMEASURED (art.py exits 2), not clean (w94)
     if BUNDLES.is_dir():
         for pkg in sorted(BUNDLES.iterdir()):
             if not pkg.is_dir():
@@ -356,6 +357,7 @@ def step_donor(budget=480):
                 n += 1
     else:
         print(f"  donor: {BUNDLES} absent — bundle donors UNMEASURED", flush=True)
+        blind.append(f"{BUNDLES} absent — bundle donors UNMEASURED, not zero")
     if CENSUS_CSV.exists():
         for row in csv.DictReader(open(CENSUS_CSV)):
             if row["source"] != "donor-loose" or not os.path.isfile(row["path"]):
@@ -369,12 +371,19 @@ def step_donor(budget=480):
                      extra={"donor_pkg": pth.split("/294100/", 1)[-1].split("/", 1)[0], "how": "loose",
                             "subject_key": L.subject_key(row["row_id"])})
             n += 1
+    else:
+        blind.append(f"{CENSUS_CSV} absent — loose donors UNMEASURED, not zero")
     w.flush(); _phsave()
-    return {"our_texpaths": len(ours), "donor_matches": n, "new_events": len(w.known) - n0,
-            "secs": round(time.time() - t0)}
+    r = {"our_texpaths": len(ours), "donor_matches": n, "new_events": len(w.known) - n0,
+         "secs": round(time.time() - t0)}
+    if blind:
+        r["error"] = "; ".join(blind)
+    return r
 
 
 def step_canon(budget=480):
+    if not CANON.is_dir():
+        return {"error": f"{CANON} absent — UNMEASURED, not zero"}
     w = L.Writer()
     n0 = len(w.known)
     n = 0
