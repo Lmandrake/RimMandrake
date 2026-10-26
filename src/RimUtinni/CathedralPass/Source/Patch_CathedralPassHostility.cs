@@ -135,7 +135,7 @@ namespace RimMandrake.Utinni.CathedralPass
             if (CathedralPass.Revoke(holder))
             {
                 Messages.Message(
-                    "The Cathedral's machines no longer know " + holder.LabelShort + ".",
+                    "The old sentinels no longer look away from " + holder.LabelShort + ".",
                     new LookTargets(holder),
                     MessageTypeDefOf.NegativeEvent);
             }

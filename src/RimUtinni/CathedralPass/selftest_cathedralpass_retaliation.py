@@ -45,11 +45,14 @@ CHECKS = [
     ("intended target decides when set", r'if \(intended != null\)\s*\{\s*return intended == victim;'),
     ("else the current job target", r'holder\.CurJob\.targetA\.Thing == victim'),
     ("revokes the striker only", r'CathedralPass\.Revoke\(holder\)'),
+    ("revoke message in behaviour register", r'Messages\.Message\(\s*"The old sentinels no longer look away from "'),
 ]
 FORBIDDEN = [
     ("no clan-wide revoke here (that is the GM layer's verb)", r'RevokeFromAll'),
     ("no goodwill change (withdrawal, not vengeance)", r'TryAffectGoodwillWith|Goodwill'),
     ("no incident or raid", r'IncidentDef|TryExecute|Raid'),
+    ("revoke message names no agency/recognition/mercy pre-reveal (arc ban 2, knowledge gate)",
+     r'(?i)Messages\.Message\(\s*"[^"]*(cathedral|machine|droid|\bknow|recogni|mercy|spare|forgiv|\bdecid)'),
 ]
 
 
