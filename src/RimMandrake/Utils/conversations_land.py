@@ -59,8 +59,9 @@ def land(paths, root=ROOT):
     last = ""
     for i in range(0, len(paths), BATCH):
         chunk = paths[i:i + BATCH]
-        msg = ("conversations: catch-up %d record(s)\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\n"
-               "Claude-Session: https://claude.ai/code/session_01QobXckUXJ6LnxbpPwWBirk" % len(chunk))
+        # No agent trailer: this is a script's catch-up commit, run by whichever seat hands off. A hardcoded
+        # Co-Authored-By / Claude-Session pinned every landing on one old session (CONVERSATIONS_LAND_FIX_STALE_TRAILER).
+        msg = "conversations: catch-up %d record(s)\n\nLanded by src/RimMandrake/Utils/conversations_land.py --apply" % len(chunk)
         r = subprocess.run([LAND, "-m", msg, *chunk], cwd=root, capture_output=True, text=True)
         if r.returncode:
             sys.stderr.write(r.stderr[-800:])

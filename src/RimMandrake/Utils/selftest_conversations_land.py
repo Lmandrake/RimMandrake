@@ -69,6 +69,17 @@ def main() -> int:
         write(seat, "conversations/new.md", "n\nmore\n")
         got = CL.pending(seat)
         check(got == ["conversations/new.md"], "a record that grew again after landing is pending (%s)" % got)
+
+    # land() commit message carries no hardcoded agent session or model (CONVERSATIONS_LAND_FIX_STALE_TRAILER)
+    seen, real = [], CL.subprocess.run
+    CL.subprocess.run = lambda argv, **kw: (seen.append(argv), subprocess.CompletedProcess(argv, 0, "PUBLISHED x", ""))[1]
+    try:
+        rc, _last = CL.land(["conversations/a.md"])
+    finally:
+        CL.subprocess.run = real
+    msg = seen[0][seen[0].index("-m") + 1] if seen and "-m" in seen[0] else ""
+    check(rc == 0 and "catch-up 1 record" in msg and "Claude-Session" not in msg and "Co-Authored-By" not in msg,
+          "land() message names the script, not a stale session/model trailer (%r)" % msg[-120:])
     print("ALL PASS" if not FAILS else "%d FAIL" % len(FAILS))
     return 1 if FAILS else 0
 
