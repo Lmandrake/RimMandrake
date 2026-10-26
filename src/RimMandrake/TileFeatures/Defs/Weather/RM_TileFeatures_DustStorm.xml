@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (group W): the weather the RM_DustStorms tile feature makes more frequent, replacing
+     Vanilla Exploration Expanded's VEE_DustStorm. Donor text, temperatures, wind, movement and sky colours kept.
+     Changed on purpose: the donor drew a custom overlay with its own art (not kept) and blinded pawns through a hediff
+     (sight capped low); ours uses vanilla Odyssey's sandstorm overlay with no sand fall, and impedes vision through the
+     vanilla weather accuracy multiplier (PROVISIONAL). The mood thought is a plain vanilla weather memory like Odyssey's
+     "sand in everything". No Star Wars weather is named here: an RSW storm may only be added by a Star Wars-layer patch. -->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_DustStorm</defName>
+    <label>dust storm</label>
+    <description>A choking wall of wind-driven dust sweeps across the land, reducing visibility, slowing movement, and scouring anything left exposed.</description>
+    <temperatureRange>10~999</temperatureRange>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <weatherThought>RM_DustStorm</weatherThought>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <moveSpeedMultiplier>0.75</moveSpeedMultiplier>
+    <accuracyMultiplier>0.7</accuracyMultiplier>
+    <preventSkygaze>true</preventSkygaze>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>RimWorld.WeatherOverlay_SandHard</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <ThoughtDef>
+    <defName>RM_DustStorm</defName>
+    <durationDays>0.1</durationDays>
+    <stackLimit>1</stackLimit>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <nullifyingPrecepts>
+      <li>RoughLiving_Welcomed</li>
+    </nullifyingPrecepts>
+    <stages>
+      <li>
+        <label>dust storm</label>
+        <description>This dust gets everywhere!</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

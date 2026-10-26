@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST: the gen step RM_MechanoidShipChunks adds, replacing Vanilla Exploration Expanded's
+     VEE_MechanoidShipChunks (donor values kept; vanilla GenStep_ScatterThings, Odyssey's ShipChunk_Mech). -->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_MechanoidShipChunks</defName>
+    <order>950</order>
+    <genStep Class="GenStep_ScatterThings">
+      <thingDef>ShipChunk_Mech</thingDef>
+      <createUsedRect>true</createUsedRect>
+      <skipRoofed>true</skipRoofed>
+      <count>5</count>
+      <warnOnFail>false</warnOnFail>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

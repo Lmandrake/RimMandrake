@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (vee_port_plan_2026-10-22.md group V). The geysers the vent tile features place,
+     replacing Vanilla Exploration Expanded's VEE_ToxicVent / VEE_RotstinkVent / VEE_SmokeVent (donor building values kept:
+     4x4 floor-level natural building, not destroyable, not deconstructible). The donor's own building classes are replaced by
+     our comp RM_CompGeyserGas: an on/off cycle that feeds the vanilla gas grid (tox gas, rot stink, blind smoke) while on.
+     Cycle lengths and gas amounts are PROVISIONAL, tuned live later. The deadlife geyser is NOT ported (owner card,
+     VEE_DEADLIFE_VENTS_ASK_ZOMBIES_AGAIN).
+
+     PLACEHOLDER ART: all three wear the vanilla Odyssey ancient tox vent texture (the donor's geyser art is not kept);
+     own art is owed and goes to the art judge first. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_ToxicVent</defName>
+    <label>toxic geyser</label>
+    <description>A volatile fissure that periodically spews noxious green gas, poisoning the air and sickening anything that breathes it.</description>
+    <graphicData>
+      <texPath>Things/Building/AncientToxVent</texPath><!-- PLACEHOLDER ART -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Rare</tickerType>
+    <selectable>true</selectable>
+    <size>(4,4)</size>
+    <blockPlants>true</blockPlants>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.TileFeatures.RM_CompProperties_GeyserGas">
+        <gasType>ToxGas</gasType>
+        <activeTicksRange>1500~3000</activeTicksRange>
+        <inactiveTicksRange>30000~90000</inactiveTicksRange>
+        <gasPerRareTick>1020</gasPerRareTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_RotstinkVent</defName>
+    <label>rotstink geyser</label>
+    <description>A foul geyser that intermittently belches clouds of corpse-born miasma, choking the air with the stench of decay.</description>
+    <graphicData>
+      <texPath>Things/Building/AncientToxVent</texPath><!-- PLACEHOLDER ART -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Rare</tickerType>
+    <selectable>true</selectable>
+    <size>(4,4)</size>
+    <blockPlants>true</blockPlants>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.TileFeatures.RM_CompProperties_GeyserGas">
+        <gasType>RotStink</gasType>
+        <activeTicksRange>1500~3000</activeTicksRange>
+        <inactiveTicksRange>30000~90000</inactiveTicksRange>
+        <gasPerRareTick>1020</gasPerRareTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_SmokeVent</defName>
+    <label>smoke geyser</label>
+    <description>A smoldering fissure that intermittently exhales thick, acrid smoke, reducing visibility and choking the lungs.</description>
+    <graphicData>
+      <texPath>Things/Building/AncientToxVent</texPath><!-- PLACEHOLDER ART -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Rare</tickerType>
+    <selectable>true</selectable>
+    <size>(4,4)</size>
+    <blockPlants>true</blockPlants>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.TileFeatures.RM_CompProperties_GeyserGas">
+        <gasType>BlindSmoke</gasType>
+        <activeTicksRange>1500~3000</activeTicksRange>
+        <inactiveTicksRange>30000~90000</inactiveTicksRange>
+        <gasPerRareTick>1020</gasPerRareTick>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

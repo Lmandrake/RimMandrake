@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (group W): the permanent condition the RM_RottenStench tile feature registers when a map
+     is generated (vanilla TileMutatorDef.additionalGameConditions), replacing Vanilla Exploration Expanded's VEE_RottenStench
+     condition, hediff and thought. Donor text and hediff values kept. Our condition class gives the hediff to every breathing
+     flesh pawn on the map and keeps it topped up while the condition lasts; Mod Settings can switch it off at any time. -->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_RottenStench</defName>
+    <label>rotten stench</label>
+    <description>Acrid vapors seep from the ground, blanketing the area in a foul smell that burns the lungs and sours the mood.</description>
+    <conditionClass>RimMandrake.TileFeatures.RM_GameCondition_RottenStench</conditionClass>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+
+  <HediffDef>
+    <defName>RM_RottenStench</defName>
+    <label>rotten stench</label>
+    <description>Acrid vapors seep from the ground, blanketing the area in a foul smell that burns the lungs and sours the mood.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <allowMothballIfLowPriorityWorldPawn>true</allowMothballIfLowPriorityWorldPawn>
+    <defaultLabelColor>(0.52, 1, 0.95)</defaultLabelColor>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>120000~120000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThoughtDef>
+    <defName>RM_RottenStench</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_RottenStench</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>rotten stench</label>
+        <description>The whole region stinks.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

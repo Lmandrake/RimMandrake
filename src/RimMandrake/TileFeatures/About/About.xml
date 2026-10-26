@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.tilefeatures</packageId>
+  <name>RimMandrake: Tile Features</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>VEE_FLORA_VENTS_BUILD_XML_FIRST (design/RimMandrake/vee_port_plan_2026-10-22.md, groups F, W and V): world-tile features ported from Vanilla Exploration Expanded into our own defs, so that mod can be retired.
+
+Flora: wild cacti, red desert cacti, light-resistant mushrooms, overgrown and decimated plant life, no trees, poisonous flora, reduced soil fertility, marine sanctuaries and crashed mechanoid ship chunks.
+Weather and conditions: sandstorms, dust storms, a permanent rotten stench, more diseases and more infestations.
+Vents: toxic, rotstink and smoke geysers that vent gas on a cycle.
+
+These features are never placed on the world by this mod (no worldgen): they act only on tiles that already carry them.
+
+Every group has its own Mod Settings switch; all off gives plain maps. Uses the Vanilla Expanded Framework and every DLC.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+  </loadAfter>
+</ModMetaData>

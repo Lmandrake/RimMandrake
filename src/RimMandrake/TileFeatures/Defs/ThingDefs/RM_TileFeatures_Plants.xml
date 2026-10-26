@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (vee_port_plan_2026-10-22.md group F). Plants the flora tile features add to the wild
+     plant pool, replacing Vanilla Exploration Expanded's (vanillaexpanded.vexploratione) VEE_Plant_*Cactus and VEE_Day*
+     plants. Donor values kept as found.
+
+     PLACEHOLDER ART: the six cacti all wear the vanilla saguaro cactus (the donor's cactus art is not kept); own art is
+     owed and goes to the art judge first. The three mushrooms use the vanilla Odyssey textures, as the donor did. -->
+<Defs>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_BarrelCactus</defName>
+    <label>barrel cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_BeavertailCactus</defName>
+    <label>beavertail cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_HedgehogCactus</defName>
+    <label>hedgehog cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>7</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_OrganPipeCactus</defName>
+    <label>organ pipe cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_ChollaCactus</defName>
+    <label>cholla cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Plant_HoodiaCactus</defName>
+    <label>hoodia cactus</label>
+    <description>A large cactus native to arid Earth environments. Though it is not a tree, it yields a small amount of fibrous material that can be used like wood.</description>
+    <minifiedDef IsNull="True"/>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SaguaroCactus</texPath><!-- PLACEHOLDER ART (vanilla saguaro); own art owed -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>5</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>15</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <maxGrowthTemperature>75</maxGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_DayBoomshroom</defName>
+    <label>light-resistant boomshroom</label>
+    <thingClass>Plant_Boomshroom</thingClass>
+    <description>These mushrooms produce volatile chemicals as a defensive measure. They can be harvested for chemfuel. However, this must be done with extreme caution, as the mushrooms can explode if they're destroyed.\n\nGlitterworld researchers have used genetic material from boomshrooms to bioengineer a number of chemfuel-producing animals.</description>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Plant/Boomshroom</texPath>
+    </graphicData>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>30</pathCost>
+    <plant>
+      <fertilityMin>0.01</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>60</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <harvestYield>3</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Chemfuel</harvestedThingDef>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+      <neverBlightable>true</neverBlightable>
+      <visualSizeRange>0.9~1.1</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <growMinGlow>0</growMinGlow>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>200</wildClusterWeight>
+      <purpose>Misc</purpose>
+      <pollution>Any</pollution>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(255,150,100,0)</glowColor>
+        <overrideIsCavePlant>true</overrideIsCavePlant>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_DayPsilocap</defName>
+    <label>light-resistant psilocap</label>
+    <thingClass>Plant_Psilocap</thingClass>
+    <tickerType>Normal</tickerType>
+    <description>A fungus that gives off hallucinogenic spores. Standing next to them is enough to produce mild hallucinations. Psilocaps can be harvested and ingested to produce a vivid sensory experience that increases the user's mood.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Psilocap</texPath>
+      <drawSize>1.7</drawSize>
+    </graphicData>
+    <uiIconScale>0.588</uiIconScale>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>14</pathCost>
+    <plant>
+      <fertilityMin>0.01</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>20</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>3</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Drug_Psilocap</harvestedThingDef>
+      <neverBlightable>true</neverBlightable>
+      <visualSizeRange>0.3~0.5</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+      <purpose>Food</purpose>
+      <pollution>Any</pollution>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_DayWillowgill</defName>
+    <label>light-resistant willowgill</label>
+    <description>A tall spindly slow-growing mushroom with gills that droop like a willow tree.</description>
+    <fillPercent>0.4</fillPercent>
+    <altitudeLayer>Building</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Plant/Willowgill</texPath>
+      <drawSize>0.8</drawSize>
+      <shadowData>
+        <volume>(0.2, 0.6, 0.2)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <Mass>150</Mass>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <selectable>true</selectable>
+    <blockWind>true</blockWind>
+    <neverMultiSelect>false</neverMultiSelect>
+    <minifiedDef IsNull="True"/>
+    <plant>
+      <topWindExposure>0.1</topWindExposure>
+      <fertilityMin>0.01</fertilityMin>
+      <growDays>40</growDays>
+      <neverBlightable>true</neverBlightable>
+      <growMinGlow>0</growMinGlow>
+      <visualSizeRange>1~1.5</visualSizeRange>
+      <wildClusterRadius>12</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <sowResearchPrerequisites Inherit="False"/>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <burnedThingDef IsNull="True"/>
+      <choppedThingDef IsNull="True"/>
+      <smashedThingDef IsNull="True"/>
+    </plant>
+  </ThingDef>
+
+</Defs>

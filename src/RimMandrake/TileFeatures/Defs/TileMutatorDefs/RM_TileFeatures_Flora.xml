@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (design/RimMandrake/vee_port_plan_2026-10-22.md group F): world-tile features ported
+     from Vanilla Exploration Expanded (vanillaexpanded.vexploratione), VEE_<Stem> -> RM_<Stem>. No worldgen: every port has
+     chanceOnNonLandmarkTile 0 and no biome lists, so these act only on tiles that already carry them. Categories keep the
+     donor's strings so a tile's mutator conflicts stay like-for-like. Numbers live in Mod Settings, not in the text.
+
+     Workers: cacti, red desert cacti and mycelium use the Vanilla Expanded Framework's PlantsWithCommonality (VEF stays);
+     overgrown/decimated are vanilla plantDensityFactor; no trees, reduced fertility and marine sanctuary are our workers;
+     poisonous flora is a Harmony postfix on Plant.PlantCollected (wild plants only); mechanoid chunks is a vanilla gen step. -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_Cactus_Barrel</defName>
+    <label>barrel cacti</label>
+    <description>This area can grow a large number of wild barrel cacti.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <plantDensityRange>0~4</plantDensityRange>
+    <pollutionRange>0~0.25</pollutionRange>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_Plant_BarrelCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Cactus_Beavertail</defName>
+    <label>beavertail cacti</label>
+    <description>This area can grow a large number of wild beavertail cacti.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <plantDensityRange>0~4</plantDensityRange>
+    <pollutionRange>0~0.25</pollutionRange>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_Plant_BeavertailCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Cactus_Hedgehog</defName>
+    <label>hedgehog cacti</label>
+    <description>This area can grow a large number of wild hedgehog cacti.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <plantDensityRange>0~4</plantDensityRange>
+    <pollutionRange>0~0.25</pollutionRange>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_Plant_HedgehogCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Cactus_OrganPipe</defName>
+    <label>organ pipe cacti</label>
+    <description>This area can grow a large number of wild organ pipe cacti.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <plantDensityRange>0~4</plantDensityRange>
+    <pollutionRange>0~0.25</pollutionRange>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_Plant_OrganPipeCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RedDesertPlants</defName>
+    <label>red desert cacti</label>
+    <description>This region contains some cacti adapted to the red sands.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <plantKinds>
+      <li>RM_Plant_ChollaCactus</li>
+      <li>RM_Plant_HoodiaCactus</li>
+    </plantKinds>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_Plant_ChollaCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+          <li>
+            <plantDef>RM_Plant_HoodiaCactus</plantDef>
+            <commonality>1</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Mycelium</defName>
+    <label>mycelium</label>
+    <description>A variety of light-resistant mushrooms similar to the ones growing in glowforests are common in this area.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>VEF.Maps.TileMutatorWorker_PlantsWithCommonality</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <plantDefsWithCommonality>
+          <li>
+            <plantDef>RM_DayBoomshroom</plantDef>
+            <commonality>0.25</commonality>
+          </li>
+          <li>
+            <plantDef>RM_DayPsilocap</plantDef>
+            <commonality>0.25</commonality>
+          </li>
+          <li>
+            <plantDef>RM_DayWillowgill</plantDef>
+            <commonality>0.25</commonality>
+          </li>
+        </plantDefsWithCommonality>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_PlantLife_Overgrown</defName>
+    <label>overgrown</label>
+    <description>Plant life is extremely more abundant here.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>PlantLife</li>
+    </categories>
+    <plantDensityFactor>4</plantDensityFactor>
+    <plantDensityRange>0.0001~1</plantDensityRange>
+    <pollutionRange>0~0.01</pollutionRange>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_PlantLife_Decimated</defName>
+    <label>decimated</label>
+    <description>Plant life is extremely scarce here.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>PlantLife</li>
+    </categories>
+    <plantDensityFactor>0.15</plantDensityFactor>
+    <plantDensityRange>0.3~4</plantDensityRange>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_NoTrees</defName>
+    <label>lack of trees</label>
+    <description>Trees of any kind do not grow here naturally.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>VEE_FruitTreesAndNoTrees</li>
+      <li>VEE_GroveAndNoTrees</li>
+      <li>VEE_MangroveAndNoTrees</li>
+      <li>VEE_AuburnTree_OaksAndNoTrees</li>
+      <li>VEE_AuburnTree_PoplarsAndNoTrees</li>
+      <li>VEE_AuburnTree_MaplesAndNoTrees</li>
+      <li>VEE_AuburnTree_BirchesAndNoTrees</li>
+    </categories>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_NoTrees</workerClass>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_PoisonousFlora</defName>
+    <label>poisonous flora</label>
+    <description>Harvesting any flora in this area will cause toxic buildup. Crops planted by colonists won't be affected.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_Fertility_Reduced</defName>
+    <label>decreased soil fertility</label>
+    <description>This area contains no fertile soils.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>VEE_Fertility</li>
+    </categories>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_ReducedFertility</workerClass>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_MarineSanctuary</defName>
+    <label>marine sanctuary</label>
+    <description>Coastal animals appear in greater numbers here.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>VEE_AnimalDensities</li>
+    </categories>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_MarineSanctuary</workerClass>
+    <coastSidesRange>1~5</coastSidesRange>
+    <animalDensityRange>0.3~7</animalDensityRange>
+    <pollutionRange>0~0.25</pollutionRange>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_MechanoidShipChunks</defName>
+    <label>mechanoid chunks</label>
+    <description>Chunks of a crashed mechanoid ship are found around this region.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <extraGenSteps>
+      <li>RM_MechanoidShipChunks</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

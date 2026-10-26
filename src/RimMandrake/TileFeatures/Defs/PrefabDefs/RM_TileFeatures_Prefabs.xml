@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST: one geyser per prefab, spawned by the Vanilla Expanded Framework's
+     TileMutatorWorker_GenericPrefabSpawner from the RM_*Vents tile features. Donor layout kept (size and position). -->
+<Defs>
+
+  <PrefabDef>
+    <defName>RM_ToxicVent_Prefab</defName>
+    <size>(2,2)</size>
+    <things>
+      <RM_ToxicVent>
+        <position>(0,0,0)</position>
+      </RM_ToxicVent>
+    </things>
+  </PrefabDef>
+
+  <PrefabDef>
+    <defName>RM_RotstinkVent_Prefab</defName>
+    <size>(2,2)</size>
+    <things>
+      <RM_RotstinkVent>
+        <position>(0,0,0)</position>
+      </RM_RotstinkVent>
+    </things>
+  </PrefabDef>
+
+  <PrefabDef>
+    <defName>RM_SmokeVent_Prefab</defName>
+    <size>(2,2)</size>
+    <things>
+      <RM_SmokeVent>
+        <position>(0,0,0)</position>
+      </RM_SmokeVent>
+    </things>
+  </PrefabDef>
+
+</Defs>

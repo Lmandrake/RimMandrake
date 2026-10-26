@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (design/RimMandrake/vee_port_plan_2026-10-22.md group W): world-tile features ported
+     from Vanilla Exploration Expanded (vanillaexpanded.vexploratione), VEE_<Stem> -> RM_<Stem>. No worldgen: every port has
+     chanceOnNonLandmarkTile 0 and no biome lists, so these act only on tiles that already carry them. Categories keep the
+     donor's strings so a tile's mutator conflicts stay like-for-like. Numbers live in Mod Settings, not in the text.
+
+     Sandstorms raise vanilla Odyssey's Sandstorm; dust storms raise our RM_DustStorm. Rotten stench registers the permanent
+     RM_RottenStench condition. More diseases is the Vanilla Expanded Framework's diseaseMTBMultiplier (VEF applies it; the
+     multiplier is overwritten from Mod Settings at startup). More infestations is a Harmony postfix on
+     IncidentWorker.ChanceFactorNow for the vanilla infestation worker. -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_Sandstorms</defName>
+    <label>sandstorms</label>
+    <description>Sandstorms are much more frequent in this area.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>Weather</li>
+    </categories>
+    <workerClass>TileMutatorWorker_IncreaseWeatherFrequency</workerClass>
+    <weathersToAffect>
+      <li>Sandstorm</li>
+    </weathersToAffect>
+    <weatherFrequencyOffset>10</weatherFrequencyOffset>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_DustStorms</defName>
+    <label>dust storms</label>
+    <description>Dust storms that impede vision are much stronger in this area.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>Weather</li>
+    </categories>
+    <workerClass>TileMutatorWorker_IncreaseWeatherFrequency</workerClass>
+    <weathersToAffect>
+      <li>RM_DustStorm</li>
+    </weathersToAffect>
+    <weatherFrequencyOffset>10</weatherFrequencyOffset>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RottenStench</defName>
+    <label>rotten stench</label>
+    <description>Acrid vapors seep from the ground, blanketing the area in a foul smell that burns the lungs and sours the mood.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <additionalGameConditions>
+      <li>RM_RottenStench</li>
+    </additionalGameConditions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_IncreasedDiseases</defName>
+    <label>increased diseases</label>
+    <description>Diseases are more common in this region.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories>
+      <li>VEE_Diseases</li>
+    </categories>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <diseaseMTBMultiplier>0.75</diseaseMTBMultiplier>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_IncreasedInfestations</defName>
+    <label>increased infestations</label>
+    <description>Insectoid infestations are more common in this region.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+  </TileMutatorDef>
+
+</Defs>

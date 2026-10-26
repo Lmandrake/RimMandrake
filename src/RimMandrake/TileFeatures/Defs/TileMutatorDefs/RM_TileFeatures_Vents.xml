@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEE_FLORA_VENTS_BUILD_XML_FIRST (design/RimMandrake/vee_port_plan_2026-10-22.md group V): world-tile features ported
+     from Vanilla Exploration Expanded (vanillaexpanded.vexploratione), VEE_<Stem> -> RM_<Stem>. No worldgen: every port has
+     chanceOnNonLandmarkTile 0 and no biome lists, so these act only on tiles that already carry them. Categories keep the
+     donor's strings so a tile's mutator conflicts stay like-for-like. Numbers live in Mod Settings, not in the text.
+
+     Spawned by the Vanilla Expanded Framework's GenericPrefabSpawner (VEF stays) from our prefabs and geyser buildings;
+     the geyser count is scaled from Mod Settings at startup. The deadlife geysers are NOT ported (owner card,
+     VEE_DEADLIFE_VENTS_ASK_ZOMBIES_AGAIN). -->
+<Defs>
+
+  <TileMutatorDef>
+    <defName>RM_ToxicVents</defName>
+    <label>toxic geysers</label>
+    <description>Volatile fissures that periodically spew noxious green gas, poisoning the air and sickening anything that breathes it.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>VEF.Maps.TileMutatorWorker_GenericPrefabSpawner</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <prefabsToSpawn>
+          <li>RM_ToxicVent_Prefab</li>
+        </prefabsToSpawn>
+        <prefabsToSpawnAmount>6~12</prefabsToSpawnAmount>
+        <minSeparationBetweenPrefabs>30</minSeparationBetweenPrefabs>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_RotstinkVents</defName>
+    <label>rotstink geysers</label>
+    <description>Foul geysers that intermittently belch clouds of corpse-born miasma, choking the air with the stench of decay.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>VEF.Maps.TileMutatorWorker_GenericPrefabSpawner</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <prefabsToSpawn>
+          <li>RM_RotstinkVent_Prefab</li>
+        </prefabsToSpawn>
+        <prefabsToSpawnAmount>6~12</prefabsToSpawnAmount>
+        <minSeparationBetweenPrefabs>30</minSeparationBetweenPrefabs>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+  <TileMutatorDef>
+    <defName>RM_SmokeVents</defName>
+    <label>smoke geysers</label>
+    <description>Smoldering fissures that intermittently exhale thick, acrid smoke, reducing visibility and choking the lungs.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <workerClass>VEF.Maps.TileMutatorWorker_GenericPrefabSpawner</workerClass>
+    <modExtensions>
+      <li Class="VEF.Maps.TileMutatorExtension">
+        <prefabsToSpawn>
+          <li>RM_SmokeVent_Prefab</li>
+        </prefabsToSpawn>
+        <prefabsToSpawnAmount>6~12</prefabsToSpawnAmount>
+        <minSeparationBetweenPrefabs>30</minSeparationBetweenPrefabs>
+      </li>
+    </modExtensions>
+  </TileMutatorDef>
+
+</Defs>
