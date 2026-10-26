@@ -493,6 +493,73 @@ namespace RimMandrake.DivingInteraction.SelfTest
             return fails;
         }
 
+        // CHILL_FIRE_BAN_1 + CHILLFIREBAN_DECIDE_FUELLED_COOKING_POWER: a random fuel-burning (or not) building lives on
+        // the seabed while a pump switches the air on and off. Drive RM_ChillFireBanKernel exactly as Patch_ChillFireBan
+        // does (UsesFlame per def; Output gates lit/heat/bills/power with the flame flag; SkipFuelBurn on CompTick) and
+        // check it against the ruling written out here: "total ban — no flame works on the Chill seabed map. Campfires
+        // fizzle, chemfuel won't light"; pumped air brings fire back; electric things and fuelled machines are untouched.
+        public static List<string> FireBan(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < n && fails.Count < 5; c++)
+            {
+                Cases++;
+                var r = new Random(baseSeed * 104729 + c);
+                bool refuel = r.Next(4) != 0, glow = r.Next(2) == 0, heat = r.Next(2) == 0, overlay = r.Next(3) == 0;
+                bool table = r.Next(3) == 0, plant = r.Next(4) == 0, powered = plant || r.Next(3) == 0;
+                bool flame = RM_ChillFireBanKernel.UsesFlame(refuel, glow, heat, overlay, table, plant, powered);
+                bool wantFlame = refuel && (plant || (!powered && (glow || heat || overlay || table)));
+                string who = $"refuel {refuel} glow {glow} heat {heat} overlay {overlay} table {table} plant {plant} powered {powered}";
+                if (flame != wantFlame) { fails.Add($"fireban seed {c}: UsesFlame {flame}, want {wantFlame} ({who})"); continue; }
+                if (powered && !plant && flame) { fails.Add($"fireban seed {c}: a powered machine counted as a flame ({who})"); continue; }
+                float fuel = refuel ? r.Next(1, 50) : 0f;
+                bool air = r.Next(2) == 0;
+                try
+                {
+                    for (int step = 0; step < 40; step++)
+                    {
+                        Steps++;
+                        if (r.Next(5) == 0) air = !air;   // the pump starts, stops, the room unseals
+                        bool hasFuel = !refuel || fuel > 0f;
+                        bool vLit = refuel && hasFuel, vHeat = hasFuel && (heat || !refuel), vBills = table && hasFuel && r.Next(6) != 0, vPower = plant && hasFuel;
+                        bool lit = RM_ChillFireBanKernel.Output(vLit, true, air);                // ShouldBeLitNow: always a refuelable
+                        bool hot = RM_ChillFireBanKernel.Output(vHeat, refuel, air);             // heater: fuelled ones only
+                        bool bills = RM_ChillFireBanKernel.Output(vBills, flame, air);           // Gate(): flame buildings only
+                        bool power = RM_ChillFireBanKernel.Output(vPower, flame, air);
+                        bool skip = RM_ChillFireBanKernel.SkipFuelBurn(flame, air);
+                        bool note = RM_ChillFireBanKernel.ShowNoAirNote(flame, air);
+                        Check((!lit || vLit) && (!hot || vHeat) && (!bills || vBills) && (!power || vPower), "the ban turned an output ON");
+                        if (air) Check(lit == vLit && hot == vHeat && bills == vBills && power == vPower && !skip && !note, "pumped air did not give the building back its vanilla behaviour");
+                        if (!refuel) Check(hot == vHeat && bills == vBills && power == vPower && !skip && !note, "an electric building was touched by the fire ban");
+                        if (flame && !air)
+                        {
+                            Check(!lit && !hot && !bills && !power, $"a banned flame building still works: lit {lit} heat {hot} bills {bills} power {power}");
+                            Check(skip, "a banned flame building still burns fuel");
+                            Check(note, "a banned flame building does not say why it is out");
+                        }
+                        if (!flame) Check(bills == vBills && power == vPower && !skip && !note, "a non-flame building (machine, turret barrel, tank) was gated");
+                        float before = fuel;
+                        if (refuel && !skip && hasFuel) fuel = Math.Max(0f, fuel - 1f);
+                        if (flame && !air) Check(fuel == before, "fuel fell while the ban held");
+                    }
+                }
+                catch (Exception e) { fails.Add($"fireban seed {c}: {e.Message} ({who})"); }
+            }
+            // the named vanilla and modded buildings the ruling and the review name
+            Cases++; Steps++;
+            bool Banned(bool rf, bool g, bool h, bool o, bool t, bool p, bool pw) { return RM_ChillFireBanKernel.UsesFlame(rf, g, h, o, t, p, pw); }
+            if (!Banned(true, true, true, true, true, false, false)) fails.Add("fireban units: Campfire (fuel, glow, heat, flame, bills) is not a flame building — it would still cook on the seabed");
+            if (!Banned(true, false, true, false, true, false, false)) fails.Add("fireban units: FueledStove is not a flame building");
+            if (!Banned(true, false, false, false, true, false, false)) fails.Add("fireban units: FueledSmithy is not a flame building");
+            if (!Banned(true, false, false, true, false, true, true)) fails.Add("fireban units: WoodFiredGenerator / ChemfuelPoweredGenerator is not a flame building — it would still make power");
+            if (!Banned(true, true, false, true, false, false, false)) fails.Add("fireban units: TorchLamp is not a flame building");
+            if (Banned(false, true, true, false, true, false, true)) fails.Add("fireban units: ElectricStove (no fuel) was banned");
+            if (Banned(true, true, false, false, false, false, true)) fails.Add("fireban units: KoltoTank (fuelled powered machine) was banned");
+            if (Banned(true, false, false, false, false, false, false)) fails.Add("fireban units: a turret barrel / shuttle tank (fuel, no flame use) was banned");
+            if (RM_ChillFireBanKernel.Output(false, true, false) || RM_ChillFireBanKernel.Output(false, true, true)) fails.Add("fireban units: Output turned an off output on");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -506,6 +573,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("units", () => Units(N(2000), S(1))),
                 ("oxygen", () => Oxygen(N(3000), S(1))),
                 ("trample", () => Trample(N(3000), S(1))),
+                ("fireban", () => FireBan(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

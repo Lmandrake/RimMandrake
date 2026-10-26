@@ -26,6 +26,7 @@
     <Compile Include="..\RM_ElderEconomyKernel.cs" />
     <Compile Include="..\RM_OxygenLedgerKernel.cs" />
     <Compile Include="..\RM_WalkerTrampleKernel.cs" />
+    <Compile Include="..\RM_ChillFireBanKernel.cs" />
     <Compile Include="DivingFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

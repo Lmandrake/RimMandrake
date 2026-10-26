@@ -53,6 +53,8 @@
   <RM_ChillAirPump_TooLarge>Room too large to fill ({0} cells; each pump fills {1}). Add pumps or wall it smaller.</RM_ChillAirPump_TooLarge>
   <RM_ChillAirPump_NotSealed>Not a sealed room: the air bleeds away into the cold. Enclose and roof it.</RM_ChillAirPump_NotSealed>
   <RM_ChillAirPump_Idle>Not pumping: no air down here, no fire.</RM_ChillAirPump_Idle>
+  <!-- CHILLFIREBAN_DECIDE_FUELLED_COOKING_POWER: inspect line on a fuel-burning building that the seabed fire ban has put out. -->
+  <RM_ChillFireBan_NoAir>No air: fuel will not burn here. Pump air into a sealed room to light it.</RM_ChillFireBan_NoAir>
 
   <!-- SCALD_WALKING_PASTURE_1 trample (owner card 2026-10-09: tramples and deals damage; a warning is owed with it). {0} = pawn. -->
   <RM_WalkerTrampleWarning>{0} is close to a moving bottom-walker herd. Walkers on the move trample anyone in their path.</RM_WalkerTrampleWarning>

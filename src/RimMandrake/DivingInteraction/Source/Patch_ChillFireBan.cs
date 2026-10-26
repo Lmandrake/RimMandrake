@@ -92,10 +92,8 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            if (!RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent))
-            {
-                __result = false;
-            }
+            __result = RM_ChillFireBanKernel.Output(__result, true,
+                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent));
         }
     }
 
@@ -122,10 +120,116 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            if (!RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent))
+            __result = RM_ChillFireBanKernel.Output(__result, true,
+                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent));
+        }
+    }
+
+    // CHILLFIREBAN_DECIDE_FUELLED_COOKING_POWER (delegated: design, follows CHILL_FIRE_BAN_1's card ruling "total ban —
+    // no flame works on the Chill seabed map. Campfires fizzle, chemfuel won't light"). A fuelled bill-giver (campfire,
+    // fuelled stove, fuelled smithy) cannot work bills while the ban holds. Building_WorkTable.CurrentlyUsableForBills and
+    // UsableForBillsAfterFueling both read refuelableComp.HasFuel, never ShouldBeLitNow, so patch (2) alone left them
+    // cooking. BOTH are gated: WorkGiver_DoBill offers the job on UsableForBillsAfterFueling and JobDriver_DoBill drops it
+    // on CurrentlyUsableForBills — gating only the second would loop pawns into a job that fails every tick. With both
+    // gated a pawn never takes the bill, and never hauls fuel to it (the refuel giver is fed by the same bill scan).
+    // An electric stove has no CompRefuelable and is untouched. Pumped air lifts the gate (IsIgnitionAllowed).
+    [HarmonyPatch(typeof(Building_WorkTable), nameof(Building_WorkTable.CurrentlyUsableForBills))]
+    public static class Patch_BuildingWorkTable_CurrentlyUsableForBills
+    {
+        public static void Postfix(Building_WorkTable __instance, ref bool __result)
+        {
+            __result = Patch_ChillFireBan_Fuelled.Gate(__instance, __result);
+        }
+    }
+
+    [HarmonyPatch(typeof(Building_WorkTable), nameof(Building_WorkTable.UsableForBillsAfterFueling))]
+    public static class Patch_BuildingWorkTable_UsableForBillsAfterFueling
+    {
+        public static void Postfix(Building_WorkTable __instance, ref bool __result)
+        {
+            __result = Patch_ChillFireBan_Fuelled.Gate(__instance, __result);
+        }
+    }
+
+    // Same item: a fuelled generator (wood-fired, chemfuel) makes no power while the ban holds.
+    // CompPowerPlant.UpdateDesiredPowerOutput reads refuelableComp.HasFuel directly and runs every CompTick; no vanilla
+    // subclass overrides it (checked against the decompiled 1.6 RimWorld namespace), so this postfix sees every plant.
+    // Solar, wind, geothermal, watermill, aurora collector: no CompRefuelable, untouched.
+    [HarmonyPatch(typeof(CompPowerPlant), nameof(CompPowerPlant.UpdateDesiredPowerOutput))]
+    public static class Patch_CompPowerPlant_UpdateDesiredPowerOutput
+    {
+        public static void Postfix(CompPowerPlant __instance)
+        {
+            if (__instance.PowerOutput <= 0f)
             {
-                __result = false;
+                return;
             }
+            if (!Patch_ChillFireBan_Fuelled.Gate(__instance.parent, true))
+            {
+                __instance.PowerOutput = 0f;
+            }
+        }
+    }
+
+    // Same item: the player sees WHY the stove, campfire or generator is dead — a line on its inspect pane.
+    [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.CompInspectStringExtra))]
+    public static class Patch_CompRefuelable_CompInspectStringExtra
+    {
+        public static void Postfix(CompRefuelable __instance, ref string __result)
+        {
+            ThingWithComps parent = __instance.parent;
+            if (parent == null || !parent.Spawned)
+            {
+                return;
+            }
+            bool usesFlame = Patch_ChillFireBan_Fuelled.UsesFlame(parent);
+            if (!usesFlame)
+            {
+                return; // cheap reject first: the gate is only asked about flame buildings
+            }
+            if (RM_ChillFireBanKernel.ShowNoAirNote(usesFlame,
+                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent)))
+            {
+                string note = "RM_ChillFireBan_NoAir".Translate();
+                __result = string.IsNullOrEmpty(__result) ? note : __result + "\n" + note;
+            }
+        }
+    }
+
+    internal static class Patch_ChillFireBan_Fuelled
+    {
+        private static readonly System.Collections.Generic.Dictionary<ThingDef, bool> usesFlame =
+            new System.Collections.Generic.Dictionary<ThingDef, bool>();
+
+        /// <summary>Per-def cache of RM_ChillFireBanKernel.UsesFlame (a def's comps are fixed).</summary>
+        internal static bool UsesFlame(ThingWithComps thing)
+        {
+            ThingDef def = thing.def;
+            if (!usesFlame.TryGetValue(def, out bool result))
+            {
+                CompPowerTrader trader = thing.GetComp<CompPowerTrader>();
+                result = RM_ChillFireBanKernel.UsesFlame(
+                    thing.GetComp<CompRefuelable>() != null,
+                    thing.GetComp<CompGlower>() != null,
+                    thing.GetComp<CompHeatPusher>() != null,
+                    thing.GetComp<CompFireOverlay>() != null,
+                    def.IsWorkTable,
+                    trader is CompPowerPlant,
+                    trader != null);
+                usesFlame[def] = result;
+            }
+            return result;
+        }
+
+        /// <summary>Gate one vanilla output of a building by the ban; anything that is not a flame building passes through.</summary>
+        internal static bool Gate(ThingWithComps thing, bool vanillaOn)
+        {
+            if (!vanillaOn || thing?.Map == null || !Patch_ChillFireBan_Fuelled.UsesFlame(thing))
+            {
+                return vanillaOn;
+            }
+            return RM_ChillFireBanKernel.Output(vanillaOn, true,
+                RM_ChillFireGate.IsIgnitionAllowed(thing.Map, thing.Position, thing));
         }
     }
 
@@ -133,19 +237,17 @@ namespace RimMandrake.DivingInteraction
     // CompRefuelable.CompTick still burns ConsumptionRatePerTick whenever it is switched on — it
     // never asks ShouldBeLitNow. So a dark, cold torch, brazier or fuelled heater on the seabed
     // emptied itself and pawns hauled wood to it forever. While the ban holds, the passive burn of a
-    // fire-only building is skipped. "Fire-only" = it has a glow, heat or flame overlay comp, is not
-    // a work table (a campfire still cooks, so it still burns) and has no power comp (a fuelled
-    // generator still makes power, a powered kolto tank still heals, so they still burn) — freezing
-    // those would give free cooking, free power and free machine work. Whether they should work at
-    // all down there is a separate design question.
+    // flame building is skipped (RM_ChillFireBanKernel.UsesFlame): a fuelled generator, or an unpowered
+    // building that glows, heats, draws a flame or works bills. Work tables and generators joined the set with
+    // CHILLFIREBAN_DECIDE_FUELLED_COOKING_POWER — they no longer cook or make power while banned (patches
+    // above), so freezing their fuel gives nothing away. A powered consumer (kolto tank, autobong, fuel
+    // processor: CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL) is a machine, not a fire, and keeps burning.
     // The skip is done at ConsumeFuel, scoped to this comp during its own CompTick, so the fuel never
     // reaches 0 and Notify_RanOutOfFuel (destroyOnNoFuel) cannot fire from a burn that did not happen.
     [HarmonyPatch(typeof(CompRefuelable), nameof(CompRefuelable.CompTick))]
     public static class Patch_CompRefuelable_CompTick
     {
         internal static CompRefuelable suppressing;
-        private static readonly System.Collections.Generic.Dictionary<ThingDef, bool> fireOnly =
-            new System.Collections.Generic.Dictionary<ThingDef, bool>();
 
         public static void Prefix(CompRefuelable __instance)
         {
@@ -155,7 +257,8 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            if (!RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent))
+            if (RM_ChillFireBanKernel.SkipFuelBurn(true,
+                RM_ChillFireGate.IsIgnitionAllowed(parent.Map, parent.Position, parent)))
             {
                 suppressing = __instance;
             }
@@ -168,22 +271,7 @@ namespace RimMandrake.DivingInteraction
 
         private static bool IsFireOnly(ThingWithComps parent)
         {
-            ThingDef def = parent.def;
-            if (!fireOnly.TryGetValue(def, out bool result))
-            {
-                // CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL: any powered comp (CompPowerPlant is a
-                // CompPowerTrader) means the glow is an electric status light and the fuel feeds a
-                // machine that reads HasFuel, not ShouldBeLitNow: KoltoTank heals, Autobong's smoke
-                // cloud and hediff run, Spaceports_FuelProcessor processes (def dump 2026-10-26).
-                // Freezing their burn gave that work for free.
-                result = !def.IsWorkTable
-                    && parent.GetComp<CompPowerTrader>() == null
-                    && (parent.GetComp<CompGlower>() != null
-                        || parent.GetComp<CompHeatPusher>() != null
-                        || parent.GetComp<CompFireOverlay>() != null);
-                fireOnly[def] = result;
-            }
-            return result;
+            return Patch_ChillFireBan_Fuelled.UsesFlame(parent);
         }
     }
 
