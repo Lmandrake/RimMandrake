@@ -172,8 +172,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             LivePerf();
         }
 
-        /// <summary>The reach is a promise the map component acts on (it skips the rebuild): over the cord fuzz's worlds, any
-        /// terrain/tree change confined to cells outside the reach must leave a fresh Build's cords bit-identical.</summary>
         /// <summary>Round 2: the builder names why it re-reduced (the live probe's lastReduceWhy), and the per-graph edge plan
         /// keeps every edge reused across a run of identical Builds (a key that drifted would re-plan an edge).</summary>
         private static void ReduceWhyAndKeys(BuildOptions opt)
@@ -196,6 +194,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Program.Check(edges > 0 && worst == 0, $"rebuild-per-dig: repeated identical Builds re-planned {worst} of {edges} edges (unstable edge plan keys)");
         }
 
+        /// <summary>The reach is a promise the map component acts on (it skips the rebuild): over the cord fuzz's worlds, any
+        /// terrain/tree change confined to cells outside the reach must leave a fresh Build's cords bit-identical.</summary>
         private static void Soundness()
         {
             int worlds = 0, probed = 0, bad = 0;
