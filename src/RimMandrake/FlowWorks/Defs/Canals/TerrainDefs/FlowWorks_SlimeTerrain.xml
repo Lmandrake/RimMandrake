@@ -53,6 +53,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeRed</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -76,6 +83,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeRed</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -99,6 +113,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeRed</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -120,6 +141,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeRed</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- ── GREEN ───────────────────────────────────────────────────────── -->
@@ -142,6 +170,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeGreen</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -165,6 +200,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeGreen</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -188,6 +230,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeGreen</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -209,6 +258,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeGreen</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- ── WHITE ───────────────────────────────────────────────────────── -->
@@ -232,6 +288,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeWhite</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -256,6 +319,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeWhite</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -280,6 +350,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeWhite</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -302,6 +379,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeWhite</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <!-- ── YELLOW (the documented example row's canal side) ───────────── -->
@@ -324,6 +408,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeYellow</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -347,6 +438,13 @@
       <li>WaterFreshShallowStill</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeYellow</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -370,6 +468,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeYellow</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="WaterShallow">
@@ -391,6 +496,13 @@
       <li>WaterFreshDeep</li>
       <li>Flood</li>
     </tags>
+    <modExtensions>
+      <!-- THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: without this, DrinkLiquidAt's fallback
+           (Water tag, no LiquidDef suite) reads canal slime as FreshWater. -->
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_SlimeYellow</liquid>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
 </Defs>

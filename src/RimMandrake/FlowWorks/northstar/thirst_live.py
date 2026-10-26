@@ -96,9 +96,14 @@ DEBUG RECORD, 2026-10-18 BENCH reruns (Transient/bench_live_20261018{,b}/, offli
     poisoning: the Ingest job was still running. Vanilla carries the drink to a chew spot (a chair at a table within
     chairSearchRadius 32) and chews 500 / EatingSpeed ticks; the outcome doers run only at the end, and the row waited a
     fixed 600 ticks. Fix: ingest_done() waits for the job to end (budget 3,000), UNMEASURED if it never does.
-  - TRUE (T15/T16/T27, SITE): the 10-17 PASS runs loaded 20 mods incl. mandrake.rm.biomes; the 10-18 runs loaded the
-    11-mod flowworks tier. T27's meltwater can, T16's living-slime terrain and T15's red/green/white hediffs are biomes
-    content (yellow's own RM_SlimeNausea, the purge and the thought all landed). Rows now read UNMEASURED SITE without it.
+  - TRUE (T16/T27, SITE): the 10-17 PASS runs loaded 20 mods incl. mandrake.rm.biomes; the 10-18 runs loaded the
+    11-mod flowworks tier. T27's meltwater can and T16's living-slime terrain are biomes content. Rows now read
+    UNMEASURED SITE without it.
+  - FALSE for T15 (2026-10-26, THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER): the purge and the thought are FlowWorks rows,
+    applied for every colour. Red/green/white ended with dehydration HEALED, and a slime drink (0.3) cannot heal, so
+    they drank Potable water instead. RM_Fill_Slime*/Tar/BoilingWater/IcyWater are Water-tagged with no liquid, which
+    DrinkLiquidAt (RM_ThirstUtility.cs:141-144) maps to FreshWater, and WETS did not dry them. Fixed both ways: the
+    slime fills name their liquid (FlowWorks_SlimeTerrain.xml) and WETS now dries every canal fill.
 """
 import argparse
 import json
@@ -402,7 +407,13 @@ def main(argv=None, bridge=None):
                               # review 2026-10-17: canal fill water is fresh water too (round 2's T25 replay ran
                               # RM_FillBottleJob on the 'dried' map, so the 'no liquid water' arm was not). LIES: the canal
                               # sim may repaint a cell it still holds depth for; a fill job in T25's jobs list says so.
-                              "RM_Fill_Water_Trace", "RM_Fill_Water_Half", "RM_Fill_Water_Brim", "RM_Fill_Water_Superdeep")
+                              "RM_Fill_Water_Trace", "RM_Fill_Water_Half", "RM_Fill_Water_Brim", "RM_Fill_Water_Superdeep") + tuple(
+        # THIRST_FIX_SLIME_ROWS_NEED_BIOMES_TIER: every other canal fill is Water-tagged too, and until its def
+        # names a liquid DrinkLiquidAt reads it as FreshWater (Potable, outranks any test pool within 60 cells).
+        # A fill this tuple misses is a drink source the row did not stage.
+        "RM_Fill_%s_%s" % (f, t) for f in ("SlimeRed", "SlimeGreen", "SlimeWhite", "SlimeYellow", "Tar",
+                                           "BoilingWater", "IcyWater")
+        for t in ("Trace", "Half", "Brim", "Superdeep"))
 
     def wet_cells(kinds):
         """Ops of every cell on the map whose terrain is in `kinds`; None when the terrain read was refused."""
