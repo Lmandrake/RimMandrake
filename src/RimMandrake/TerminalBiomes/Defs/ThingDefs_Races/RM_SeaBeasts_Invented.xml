@@ -1338,6 +1338,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
       <body>Pinniped</body>
       <predator>false</predator>
       <canBePredatorPrey>false</canBePredatorPrey>
@@ -1459,6 +1460,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
       <body>Pinniped</body>
       <predator>false</predator>
       <canBePredatorPrey>false</canBePredatorPrey>
@@ -1580,6 +1582,7 @@
       </li>
     </tools>
     <race>
+      <leatherDef>Leather_Sealskin</leatherDef>
       <body>Pinniped</body>
       <predator>false</predator>
       <canBePredatorPrey>false</canBePredatorPrey>

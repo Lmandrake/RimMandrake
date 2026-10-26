@@ -92,7 +92,7 @@ CLASS_BODIES = {
                   'QuadrupedAnimalWithHoovesAndHump', 'QuadrupedAnimalWithHoovesAndHorn',
                   'QuadrupedAnimalWithHoovesAndTusks', 'QuadrupedAnimalWithClawsTailAndJowl'},
 }
-FINISHED_CLASSES = ('bird', 'monkey')   # classes audited to the end; their regressions fail
+FINISHED_CLASSES = ('bird', 'monkey', 'pinniped')   # classes audited to the end; their regressions fail
 # defName -> why it deliberately butchers to no hide (audited, left as it is; see the item note).
 STRICT_EXEMPT = {
     'RM_Skellarn': 'bird: butchers to its own RM_SkellarnChitin (butcherProducts); a hide on top is a design call',
