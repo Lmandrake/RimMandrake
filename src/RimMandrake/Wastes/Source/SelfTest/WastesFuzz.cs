@@ -106,7 +106,7 @@ namespace RimMandrake.Wastes.SelfTest
             int polCells = 1 + r.Next(8), gas = 20 * (1 + r.Next(9));
 
             int now = 1000, maxHp = 100, bayHp = 100;
-            float charge = 1f, heat = 0f, procProgress = 0f; double specHeat = 0;
+            float charge = 1f, heat = 0f, procProgress = 0f;
             int bayNext = -1;
             bool powered = true, wasteland = true, leaksOn = true, processing = false, processor = false;
             var casks = new List<CaskM>();
@@ -159,9 +159,7 @@ namespace RimMandrake.Wastes.SelfTest
                                 Check(target == (powered ? heatTarget * pf : heatTarget), $"heat target {target} != spec (powered={powered}, raw {heatTarget}, cooling {pf})");
                                 float prevHeat = heat;
                                 heat = RM_WasteCaskKernel.NextHeat(heat, target);
-                                specHeat = specHeat + (target - specHeat) * 0.1;
-                                // the float recurrence tracks the double one; compare to a tolerance
-                                specHeat = heat; // re-anchor to the kernel's float so errors do not compound, then check one step from the previous
+                                // one step from the kernel's previous float, so float error does not compound
                                 double stepSpec = prevHeat + (target - prevHeat) * 0.1;
                                 Check(Math.Abs(heat - stepSpec) <= 1e-3 * Math.Max(1.0, Math.Abs(stepSpec)), $"heat {prevHeat} -> {heat}, one-step spec {stepSpec} (target {target})");
                                 Check(heat >= 0f, "internal heat negative");
@@ -377,7 +375,7 @@ namespace RimMandrake.Wastes.SelfTest
                                     else Check((e & (PhaseEvent.Storm | PhaseEvent.Warn)) == 0, "storm or warning events while the phases are switched off");
                                 }
                                 // the storm layer gate: dose and fall never run during a named storm's warning
-                                bool holding = RM_StormKernel.IsHolding(enabled && wasteland ? enabled : enabled, cur >= 0, s, cur);
+                                bool holding = RM_StormKernel.IsHolding(enabled, cur >= 0, s, cur);
                                 bool specHolding = enabled && cur >= 0 && s.weather == cur && !s.unleashed;
                                 Check(holding == specHolding, $"IsHolding kernel={holding} spec={specHolding}");
                                 bool runs = RM_StormKernel.LayerRuns(optedIn, wasteland, HasDose(cur), holding);
@@ -452,7 +450,7 @@ namespace RimMandrake.Wastes.SelfTest
                 int d = RM_StormKernel.GerminationDraws(cnt, fr, x => r.Next(2) == 0 ? (int)Math.Floor(x) : (int)Math.Ceiling(x));
                 Steps++;
                 Check(d >= 0 && d <= cnt, $"germination drew {d} from {cnt} cells at fraction {fr}");
-                Check(d >= Math.Floor(cnt * fr) - 0 && d <= Math.Ceiling(cnt * fr) + 0, $"germination drew {d}, expected about {cnt * fr}");
+                Check(d >= Math.Floor(cnt * fr) && d <= Math.Ceiling(cnt * fr), $"germination drew {d}, expected about {cnt * fr}");
             }
             // warning clock, click interval, hand-off
             Check(RM_StormKernel.WarningTicks(2500, 0.5f) == 1250 && RM_StormKernel.WarningTicks(2500, 0f) == 0 && RM_StormKernel.WarningTicks(5, 0.5f) == 2, "WarningTicks rounding");
@@ -520,7 +518,7 @@ namespace RimMandrake.Wastes.SelfTest
                         case 5: if (a.a % 2 == 0) hasEv = !hasEv; else hasFin = !hasFin; break;
                         case 6: // reburial discovery, exhaustive over chance
                             {
-                                float chance = new[] { 0f, 0.5f, 1f, 1.5f, -1f }[a.a % 5]; float roll = a.b % 7 == 0 ? 1f : a.b / 1000f; int calls = 0;   // Rand.Value includes 1.0 int calls = 0;
+                                float chance = new[] { 0f, 0.5f, 1f, 1.5f, -1f }[a.a % 5]; float roll = a.b % 7 == 0 ? 1f : a.b / 1000f; int calls = 0;   // Rand.Value includes 1.0
                                 bool d = RM_TippingKernel.Discovers(hasEv, evUsable, chance, () => { calls++; return roll; });
                                 bool spec = hasEv && evUsable && (chance >= 1f || (chance > 0f && roll < chance));
                                 Check(d == spec, $"Discovers(chance {chance}, roll {roll}) kernel={d} spec={spec}");
@@ -574,8 +572,8 @@ namespace RimMandrake.Wastes.SelfTest
                     Check(st.missed <= allowed + 1, "missed beyond allowed + 1 (should have failed)");
                     Check(sGrants <= 1, "finance granted more than once");
                     Check(sAsks <= 1, "evidence asked more than once");
-                    Check(sGrants == 0 || sHints <= 1, "hinted more than once");
-                    Check(!(st.financeGranted && st.financeHinted && sGrants == 0), "hinted state inconsistent");
+                    Check(sHints <= 1, "hinted more than once");
+                    Check(st.financeGranted == (sGrants > 0) && st.financeHinted == (sHints > 0) && st.evidenceAsked == (sAsks > 0), "one-shot flags disagree with the spec ledger");
                     Check(silverPaid <= deliveries * RM_TippingKernel.SilverPerDelivery(casks, perCask), "paid more silver than deliveries x per-delivery");
                     Check(gwSum == sGood, $"convoy goodwill {gwSum} != spec {sGood}");
                     if (!st.active && st.deliveriesDone >= deliveries) Check(st.deliveriesDone == deliveries, "completed with a different count than the contract");
