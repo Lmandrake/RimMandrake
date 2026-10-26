@@ -1,5 +1,5 @@
 # project: RimMandrake/AcousticScanner/Source/RM_AcousticScanner.csproj
-# dll: a6ccac733434adc11ea4cbba814e3cb79b3ff0d343723ee5e8cecd01d7f7d8d2
+# dll: c510286c7e259b590d6be538acfc18477e2b9d12087885c55d645b8eb76408fc
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
 3c2ecce55cd40c7960334477ca75163ccb33dbaafd4103629bf79d51a109dce2 RM_AcousticBanding.cs
 8ac1594704af30349a4b458e481a8c9184bd88ceade5a20cc34b0525c4a40b4f Kernel/RM_AcousticKernel.cs
