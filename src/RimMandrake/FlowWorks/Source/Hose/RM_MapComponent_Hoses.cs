@@ -1302,6 +1302,10 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         private HoseMath.Layering layering;
+        /// <summary>HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: Layered's per-lay geometry and per-pair facts between rebuilds.</summary>
+        private readonly HoseMath.LayerCache layerCache = new HoseMath.LayerCache();
+        /// <summary>Probe: the layering cache's counters.</summary>
+        internal string LayerCacheJson() => "{\"rebuilds\":" + layerCache.Rebuilds + ",\"pairsTested\":" + layerCache.PairsTested + ",\"pairsReused\":" + layerCache.PairsReused + ",\"geoms\":" + layerCache.GeomCount + ",\"pairs\":" + layerCache.PairCount + "}";
         private string layeringKey;
         private int layeringFrame = -1;
 
@@ -1327,7 +1331,11 @@ namespace RimMandrake.FlowWorks.Hose
             else if (layering != null && SameLayering()) return layering;
             var hs = new List<HoseMath.LayeredHose>(reels.Count);
             foreach (CompHoseReel r in reels) hs.Add(new HoseMath.LayeredHose { Id = r.parent.thingIDNumber, Lay = r.lay ?? new HoseLay() });
-            layering = HoseMath.Layer(hs, HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount));
+            // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP (live round 5): this rebuild runs whenever any lay lands, i.e. every frame of a
+            // re-lay wave; uncached it was all pairs of 200 hoses (~1 s a frame). The cache keeps each lay's geometry and each
+            // pair's facts, so a rebuild tests only pairs with a new lay whose boxes meet (HoseMath.LayerCache). FrameLegacy: as before.
+            double layVis = HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
+            layering = LegacyFrame ? HoseMath.LayerAllPairs(hs, layVis) : HoseMath.Layer(hs, layVis, layerCache);
             layeringKey = key;
             layeredIds.Clear();
             layeredLays.Clear();

@@ -114,6 +114,7 @@
     <Compile Include="HoseMateCacheChecks.cs" />
     <Compile Include="HoseLayQueueChecks.cs" />
     <Compile Include="HoseAllocChecks.cs" />
+    <Compile Include="HoseLayerChecks.cs" />
     <Compile Include="HoseFrameMemoChecks.cs" />
     <Compile Include="PipePoleChecks.cs" />
     <Compile Include="LineReadoutChecks.cs" />

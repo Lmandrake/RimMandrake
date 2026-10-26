@@ -208,6 +208,7 @@ namespace RimMandrake.FlowWorks.Hose
               .Append(",\"worldBuilds\":").Append(RM_MapComponent_Hoses.WorldBuilds).Append(",\"liveCorridorChecks\":").Append(RM_MapComponent_Hoses.LiveCorridorChecks)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
               .Append(",\"layQueue\":").Append(comp.LayQueueJson())   // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW
+              .Append(",\"layerCache\":").Append(comp.LayerCacheJson())   // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP
               .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"relayCouplings\":").Append(comp.lastRelayCouplings)
               .Append(",\"fittingsOnTop\":").Append(comp.FittingsOnTopNow())   // MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 3
               .Append(",\"queues\":{\"hose\":").Append(HoseMaterials.Queue).Append('}').Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)

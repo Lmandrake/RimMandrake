@@ -2170,7 +2170,238 @@ namespace RimMandrake.FlowWorks.Hose
         /// reel-id order; a cycle (two hoses each ending on the other) is broken at the lowest id, so the order is always
         /// total.
         /// </summary>
-        public static Layering Layer(IList<LayeredHose> hoses, double visible)
+        public static Layering Layer(IList<LayeredHose> hoses, double visible) => Layer(hoses, visible, null);
+
+        /// <summary>
+        /// HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP (live round 5, 2026-10-26): <see cref="Layer(IList{LayeredHose}, double)"/> was
+        /// all pairs with no broad phase, and every pair re-summed both strands (Geo.CumLen, two arrays a variant) before testing
+        /// a footprint sample against every segment of the other hose. RM_MapComponent_Hoses.Layered rebuilds it whenever ANY
+        /// reel's lay object changes, so on the 325 basin map (200 hoses) every frame of a re-lay wave paid a full rebuild inside
+        /// DrawAll -- the ~1 s mean / 5.9 s max DrawAll that the lay queue had moved the lays themselves off.
+        /// Same result, bit for bit (HoseLayerChecks HL1 against the old body, kept there as the oracle):
+        ///  1. each lay's strands, arc sums and box are made once (<see cref="LayerCache"/>: once per lay OBJECT, kept across
+        ///     rebuilds while the lay is still some hose's);
+        ///  2. a pair whose boxes (grown by the fitting reach) do not meet has no fitting on the other: it is not tested;
+        ///  3. a pair's facts (an end fitting on the other's body; which joiners sit over it) depend on the two lays only, so a
+        ///     rebuild re-tests only pairs with a lay it has not seen (a re-lay wave tests ~ changed x overlapping);
+        ///  4. the order (reel id, end fittings first, cycles broken at the lowest id) and the joiner pass are unchanged.
+        /// A visible-width change (the plump setting) empties the cache. Main thread only; the cache is the caller's.
+        /// </summary>
+        public static Layering Layer(IList<LayeredHose> hoses, double visible, LayerCache cache)
+        {
+            cache = cache ?? new LayerCache();
+            cache.Begin(visible);
+            var res = new Layering();
+            int n = hoses.Count;
+            var g = new LayerGeom[n];
+            for (int i = 0; i < n; i++) g[i] = cache.Geom(hoses[i].Lay);
+            // facts[i] = (j, facts of i's fittings on j) for every j whose box meets i's
+            var near = new List<KeyValuePair<int, LayerPair>>[n];
+            var mustPrecede = new List<int>[n];
+            var indeg = new int[n];
+            for (int i = 0; i < n; i++) mustPrecede[i] = new List<int>();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == j || !g[i].Meets(g[j], cache.Reach)) continue;
+                    LayerPair f = cache.Pair(g[i], g[j]);
+                    (near[i] ?? (near[i] = new List<KeyValuePair<int, LayerPair>>())).Add(new KeyValuePair<int, LayerPair>(j, f));
+                    if (f.EndOn) { mustPrecede[i].Add(j); indeg[j]++; }
+                }
+            var placed = new bool[n];
+            var rank = new int[n];
+            for (int r = 0; r < n; r++)
+            {
+                int pick = -1;
+                for (int i = 0; i < n; i++)
+                    if (!placed[i] && indeg[i] == 0 && (pick < 0 || hoses[i].Id < hoses[pick].Id)) pick = i;
+                if (pick < 0)   // cycle: the lowest id goes next, its unmet constraints dropped
+                    for (int i = 0; i < n; i++)
+                        if (!placed[i] && (pick < 0 || hoses[i].Id < hoses[pick].Id)) pick = i;
+                placed[pick] = true;
+                res.Rank[hoses[pick].Id] = r;
+                foreach (int j in mustPrecede[pick]) indeg[j]--;
+            }
+            // the rank a hose's joiners are judged at: the dictionary's (a repeated id keeps its last rank, as the old body read it)
+            for (int i = 0; i < n; i++) rank[i] = res.Rank[hoses[i].Id];
+            for (int i = 0; i < n; i++)
+            {
+                HoseLay lay = hoses[i].Lay;
+                var keep = new List<int>();
+                foreach (int jt in lay.Joints)
+                {
+                    bool over = false;
+                    if (near[i] != null)
+                        foreach (KeyValuePair<int, LayerPair> kv in near[i])
+                            if (rank[kv.Key] < rank[i] && kv.Value.JointsOver != null && kv.Value.JointsOver.Contains(jt)) { over = true; break; }
+                    if (!over) keep.Add(jt);
+                }
+                res.Joints[hoses[i].Id] = keep;
+            }
+            cache.End();
+            return res;
+        }
+
+        /// <summary>One lay as <see cref="Layer(IList{LayeredHose}, double, LayerCache)"/> reads it: its strands (null = fewer
+        /// than 2 points, never tested), their arc sums (Geo.CumLen, as the old body summed them) and one box over both.</summary>
+        public sealed class LayerGeom
+        {
+            internal HoseLay Lay;
+            internal int Id;
+            internal int Used;
+            internal List<V2> Flat, Plump;
+            internal double[] SFlat, SPlump;
+            internal double FlatLen;
+            internal double X0 = double.PositiveInfinity, Z0 = double.PositiveInfinity, X1 = double.NegativeInfinity, Z1 = double.NegativeInfinity;
+
+            internal LayerGeom(HoseLay lay, int id)
+            {
+                Lay = lay;
+                Id = id;
+                seenFlat = lay.Flat; seenPlump = lay.Plump; seenJoints = lay.Joints;
+                nFlat = lay.Flat?.Count ?? -1; nPlump = lay.Plump?.Count ?? -1; nJoints = lay.Joints?.Count ?? -1;
+                if (lay.Flat != null && lay.Flat.Count >= 2) { Flat = lay.Flat; SFlat = Geo.CumLen(Flat); FlatLen = Geo.Length(Flat); Grow(Flat); }
+                if (lay.Plump != null && lay.Plump.Count >= 2) { Plump = lay.Plump; SPlump = Geo.CumLen(Plump); Grow(Plump); }
+            }
+
+            private readonly List<V2> seenFlat, seenPlump;
+            private readonly List<int> seenJoints;
+            private readonly int nFlat, nPlump, nJoints;
+
+            /// <summary>The lay still holds the lists this was built from, at the same lengths (landed lays are never edited; a
+            /// lay that was is re-read rather than trusted).</summary>
+            internal bool Current =>
+                ReferenceEquals(Lay.Flat, seenFlat) && ReferenceEquals(Lay.Plump, seenPlump) && ReferenceEquals(Lay.Joints, seenJoints)
+                && (Lay.Flat?.Count ?? -1) == nFlat && (Lay.Plump?.Count ?? -1) == nPlump && (Lay.Joints?.Count ?? -1) == nJoints;
+
+            // a NaN coordinate never widens the box: no distance to a NaN point is below anything (the old test was false too)
+            private void Grow(List<V2> p)
+            {
+                foreach (V2 v in p)
+                {
+                    if (v.X < X0) X0 = v.X;
+                    if (v.X > X1) X1 = v.X;
+                    if (v.Z < Z0) Z0 = v.Z;
+                    if (v.Z > Z1) Z1 = v.Z;
+                }
+            }
+
+            /// <summary>The two boxes, this one grown by <paramref name="reach"/>, overlap (false = provably no fitting of one on
+            /// the other: every sample is in its box, every segment in the other's).</summary>
+            internal bool Meets(LayerGeom o, double reach) =>
+                X0 - reach <= o.X1 && o.X0 <= X1 + reach && Z0 - reach <= o.Z1 && o.Z0 <= Z1 + reach;
+        }
+
+        /// <summary>What lay A's fittings do over lay B's body: an end fitting rests on it; these joiner samples sit over it.</summary>
+        public sealed class LayerPair
+        {
+            internal bool EndOn;
+            internal HashSet<int> JointsOver;
+            internal int Used;
+        }
+
+        /// <summary>Per-lay geometry and per-pair facts kept between <see cref="Layer(IList{LayeredHose}, double, LayerCache)"/>
+        /// rebuilds; an entry no rebuild used is dropped at the rebuild's end. Probe counters: pairs tested, pairs reused.</summary>
+        public sealed class LayerCache
+        {
+            private readonly Dictionary<HoseLay, LayerGeom> geoms = new Dictionary<HoseLay, LayerGeom>();
+            private readonly Dictionary<long, LayerPair> pairs = new Dictionary<long, LayerPair>();
+            private double visible = double.NaN;
+            private int nextId, pass;
+            internal double Reach, Half;
+            public long PairsTested, PairsReused, Rebuilds, EndsOn, JointsOver;
+            public int GeomCount => geoms.Count;
+            public int PairCount => pairs.Count;
+
+            internal void Begin(double vis)
+            {
+                // the margin covers rounding in SegDist's foot point (a box test must never reject a pair the exact test keeps)
+                if (!(vis == visible)) { geoms.Clear(); pairs.Clear(); visible = vis; }
+                Reach = 0.5 * WrapWidth(vis) + 0.5 * vis + 1e-6;
+                Half = JoinerHalf(vis);
+                pass++;
+                Rebuilds++;
+            }
+
+            internal LayerGeom Geom(HoseLay lay)
+            {
+                if (!geoms.TryGetValue(lay, out LayerGeom g) || !g.Current) geoms[lay] = g = new LayerGeom(lay, nextId++);
+                g.Used = pass;
+                return g;
+            }
+
+            internal LayerPair Pair(LayerGeom a, LayerGeom b)
+            {
+                long k = ((long)a.Id << 32) | (uint)b.Id;
+                if (pairs.TryGetValue(k, out LayerPair f)) { PairsReused++; f.Used = pass; return f; }
+                PairsTested++;
+                f = new LayerPair { Used = pass };
+                double vis = visible;
+                f.EndOn = EndFittingOnG(a, true, b, vis, Half) || EndFittingOnG(a, false, b, vis, Half);
+                foreach (int jt in a.Lay.Joints)
+                    if (JointFittingOnG(a, jt, b, vis, Half)) (f.JointsOver ?? (f.JointsOver = new HashSet<int>())).Add(jt);
+                if (f.EndOn) EndsOn++;
+                if (f.JointsOver != null) JointsOver += f.JointsOver.Count;
+                pairs[k] = f;
+                return f;
+            }
+
+            /// <summary>Entries this rebuild did not use belong to lays no hose has any more.</summary>
+            internal void End()
+            {
+                List<HoseLay> goneG = null;
+                foreach (var kv in geoms) if (kv.Value.Used != pass) (goneG ?? (goneG = new List<HoseLay>())).Add(kv.Key);
+                if (goneG != null) foreach (HoseLay l in goneG) geoms.Remove(l);
+                List<long> goneP = null;
+                foreach (var kv in pairs) if (kv.Value.Used != pass) (goneP ?? (goneP = new List<long>())).Add(kv.Key);
+                if (goneP != null) foreach (long k in goneP) pairs.Remove(k);
+            }
+        }
+
+        // the old FootprintOn / EndFittingOn / JointFittingOn over a LayerGeom: the same samples, sums and tests, made once
+        private static bool FootprintOnG(LayerGeom a, double lo, double hi, LayerGeom b, double visible)
+        {
+            double reach = 0.5 * WrapWidth(visible) + 0.5 * visible, skip = JoinerHalf(visible);
+            for (int v = 0; v < 2; v++)
+            {
+                bool plump = v == 1;
+                List<V2> P = plump ? a.Plump : a.Flat, Q = plump ? b.Plump : b.Flat;
+                if (P == null || Q == null) continue;
+                double[] sp = plump ? a.SPlump : a.SFlat, sq = plump ? b.SPlump : b.SFlat;
+                double Lq = sq[sq.Length - 1];
+                for (int k = 0; k < P.Count; k++)
+                {
+                    if (sp[k] < lo || sp[k] > hi) continue;
+                    V2 p = P[k];
+                    // a sample outside the other strand's box by more than the reach is no nearer any of its segments
+                    if (p.X + reach < b.X0 - 1e-6 || p.X - reach > b.X1 + 1e-6 || p.Z + reach < b.Z0 - 1e-6 || p.Z - reach > b.Z1 + 1e-6) continue;
+                    for (int m = 0; m + 1 < Q.Count; m++)
+                    {
+                        if (sq[m + 1] < skip || sq[m] > Lq - skip) continue;
+                        if (SegDist(p, Q[m], Q[m + 1]) < reach) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static bool EndFittingOnG(LayerGeom a, bool start, LayerGeom b, double visible, double h)
+        {
+            if (a.Flat == null) return false;
+            double L = a.FlatLen;
+            return start ? FootprintOnG(a, 0, h, b, visible) : FootprintOnG(a, L - h, L, b, visible);
+        }
+
+        private static bool JointFittingOnG(LayerGeom a, int jt, LayerGeom b, double visible, double h)
+        {
+            if (a.Flat == null || jt < 0 || jt >= a.Flat.Count) return false;
+            double s = a.SFlat[jt];
+            return FootprintOnG(a, s - h, s + h, b, visible);
+        }
+
+        /// <summary>The pre-2026-10-26 body of <see cref="Layer(IList{LayeredHose}, double)"/>: all pairs, every strand re-summed
+        /// per pair. Kept for RM_MapComponent_Hoses.FrameLegacy (the live A/B) and as HoseLayerChecks' oracle.</summary>
+        internal static Layering LayerAllPairs(IList<LayeredHose> hoses, double visible)
         {
             var res = new Layering();
             int n = hoses.Count;
