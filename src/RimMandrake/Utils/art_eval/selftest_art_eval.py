@@ -265,6 +265,11 @@ def tuning_checks():
           and P.canvas_mismatch(dict(card, artpipe_job="artpipe_other")) == [])
     check("canvas: unknown drawSize never held", P.canvas_mismatch(dict(card, size={})) == [])
     check("canvas: right canvas passes", P.canvas_mismatch(dict(card, canvas_px={"south": [256, 256]})) == [])
+    view = dict(card, canvas_px={"east": [512, 512], "north": [512, 512]}, installed_facings=["east"])
+    check("canvas: view-only redraw on the installed east's canvas passes; installed facing never held",
+          P.canvas_mismatch(view) == [] and P.canvas_mismatch(dict(view, installed_facings=[])) != [])
+    check("canvas: view-only redraw on neither rule nor installed canvas is held",
+          P.canvas_mismatch(dict(view, canvas_px={"east": [512, 512], "north": [1024, 1024]})) == [("north", [1024, 1024], 256)])
 
     # --- runner: HOLD_CANVAS before any model; regen job canvas from drawSize; stopped series not judged;
     #     one picture judged in two runs keeps its round

@@ -306,7 +306,12 @@ def canvas_mismatch(card: dict) -> list:
     rule = canvas_rule(((card.get("size") or {}).get("drawSize")))
     if rule is None:
         return []
-    return [(k, wh, rule) for k, wh in sorted((card.get("canvas_px") or {}).items()) if list(wh) != [rule, rule]]
+    # A view-only redraw (new north/south beside the installed east) lists the installed facings: they are owner /
+    # shipped art, not ours to dictate, and a new facing drawn on the SAME canvas as them keeps the set consistent.
+    installed = set(card.get("installed_facings") or [])
+    px = card.get("canvas_px") or {}
+    ok = [[rule, rule]] + [list(px[f]) for f in installed if f in px]
+    return [(k, wh, rule) for k, wh in sorted(px.items()) if k not in installed and list(wh) not in ok]
 
 
 def pre_route(card: dict, template: dict, living_decision: str | None) -> str | None:
