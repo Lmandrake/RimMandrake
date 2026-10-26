@@ -18,6 +18,8 @@ This mod is the engine. The units, seals and presses come with the cold storage 
     <li>brrainz.harmony</li>
     <li>LWM.DeepStorage</li>
     <li>Memegoddess.ReplaceStuff</li>
+    <!-- the evaporative crock's water (FlowWorks bottles, MayRequire'd) -->
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 
   <modDependencies>

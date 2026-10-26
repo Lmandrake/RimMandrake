@@ -111,6 +111,28 @@ namespace RimMandrake.ColdStorage
         /// deterioration); 0.1 = a weaker field that slows rot tenfold.</summary>
         public float stasisRotFactor = 0f;
 
+        /// <summary>Coarse setpoint detents (warmest first, e.g. cool / cold / deep). When set, the setpoint gizmo cycles
+        /// these instead of offering 1-degree steps: a crude machine has three settings, not a thermostat.</summary>
+        public List<float> detents;
+
+        /// <summary>Evaporative cooling: the passive drop scales with how dry the map's tile is and stops while it rains.
+        /// Full drop at or under <see cref="evaporativeFullBelowRainfall"/> mm a year, none at or over
+        /// <see cref="evaporativeZeroAtRainfall"/>.</summary>
+        public bool evaporative = false;
+        public float evaporativeFullBelowRainfall = 400f;
+        public float evaporativeZeroAtRainfall = 1600f;
+
+        /// <summary>Built into a wall: it replaces a wall (building.canPlaceOverWall), stores in its own cell, and serves
+        /// the room on its facing side. Gets the wall Mod Settings (blocks light, airtight) and the propriety and reach
+        /// patches.</summary>
+        public bool wallMounted = false;
+
+        /// <summary>Optional fuel the unit can burn instead of power (Mod Settings, per unit; takes effect on restart).
+        /// The unit's CompProperties_Power is swapped for a CompProperties_Refuelable of this fuel.</summary>
+        public ThingDef fuelAlternative;
+        public float fuelAlternativePerDay = 6f;
+        public float fuelAlternativeCapacity = 30f;
+
         public CompProperties_StorageClimate()
         {
             compClass = typeof(CompStorageClimate);
@@ -133,6 +155,32 @@ namespace RimMandrake.ColdStorage
             if (stasisRotFactor < 0f || stasisRotFactor >= 1f)
             {
                 yield return "stasisRotFactor must be in [0, 1)";
+            }
+            if (detents != null)
+            {
+                if (detents.Count < 2)
+                {
+                    yield return "detents needs at least two settings";
+                }
+                foreach (float d in detents)
+                {
+                    if (d < minSetpoint || d > maxSetpoint)
+                    {
+                        yield return "detent " + d + " outside minSetpoint..maxSetpoint";
+                    }
+                }
+            }
+            if (evaporative && (passiveDrop <= 0f || evaporativeZeroAtRainfall <= evaporativeFullBelowRainfall))
+            {
+                yield return "evaporative needs passiveDrop > 0 and evaporativeZeroAtRainfall above evaporativeFullBelowRainfall";
+            }
+            if (wallMounted && (parentDef.building == null || !parentDef.building.canPlaceOverWall || parentDef.passability != Traversability.Impassable))
+            {
+                yield return "wallMounted needs building.canPlaceOverWall and Impassable passability";
+            }
+            if (fuelAlternative != null && (fuelAlternativePerDay <= 0f || fuelAlternativeCapacity <= 0f))
+            {
+                yield return "fuelAlternative needs a positive fuelAlternativePerDay and fuelAlternativeCapacity";
             }
             if (hopperCapable && parentDef.building == null)
             {

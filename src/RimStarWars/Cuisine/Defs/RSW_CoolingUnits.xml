@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Star Wars cooling-unit ladder (design/RimStarWars/cold_storage_line_2026-10-26.md §3.1,
+  COLD_STORAGE_COOLERS_BUILD_RSW_LADDER). Every def here runs on the Cold Storage engine (mandrake.rm.coldstorage):
+  each carries MayRequire="mandrake.rm.coldstorage", so without the engine the whole ladder silently stays out and
+  Cuisine loads as before (a loadAfter, never a modDependency).
+
+  Coarse setpoints (three detents: Cool / Cold / Deep) and a frost-up chance (vanilla breakdown: the unit warms until
+  a pawn repairs it). Per-unit Mod Settings in Cold Storage: buildable on/off; the chamber can burn chemfuel instead
+  of power; wall units block light and are airtight by switch.
+
+  INTERIM ART: each unit draws a vanilla texture until its own art lands (art queue, LADDER item). No geometric
+  placeholder ships (placeholder_lint, owner 2026-10-07).
+-->
+<Defs>
+
+  <ResearchProjectDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CoolingUnits</defName>
+    <label>cooling units</label>
+    <description>Refrigerated storage: small powered units that keep food cold, from a kitchen supply unit to a wall-set cooling unit and a walk-in cooling chamber.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>5.60</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CryoStorage</defName>
+    <label>cryo storage</label>
+    <description>Deep-cold cargo units of the kind freighters use to keep foodstuffs fresh across long hauls. Cold enough to frost-age delicacies.</description>
+    <baseCost>1500</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>RSW_CoolingUnits</li>
+      <li>Cryptosleep</li>
+    </prerequisites>
+    <researchViewX>16.00</researchViewX>
+    <researchViewY>5.60</researchViewY>
+  </ResearchProjectDef>
+
+  <!-- Shared parent: a powered, flickable chill unit for food, with frost-up, made of steel and components. -->
+  <ThingDef Name="RSW_CoolingUnitBase" ParentName="RM_ColdStorageUnitBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <stuffCategories Inherit="False" />
+    <costStuffCount>0</costStuffCount>
+    <statBases>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <building>
+      <defaultStorageSettings Inherit="False">
+        <priority>Preferred</priority>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <!-- 1x1 kitchen mini-fridge. Feeds a nutrient paste dispenser (hopper setting). -->
+  <ThingDef ParentName="RSW_CoolingUnitBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CoolingSupplyUnit</defName>
+    <label>cooling supply unit</label>
+    <description>A small powered food cooler of the kind found in galley corners and starliner cabins. Keeps what it holds at about -5 C. Set against a nutrient paste dispenser it serves as a hopper.</description>
+    <graphicData>
+      <texPath>Things/Building/Furniture/ShelfSmall</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Mass>10</Mass>
+      <WorkToBuild>900</WorkToBuild>
+    </statBases>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_CoolingUnits</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>60</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Chill</mode>
+        <method>RM_ColdMethod_Chill</method>
+        <defaultSetpoint>-5</defaultSetpoint>
+        <minSetpoint>-5</minSetpoint>
+        <maxSetpoint>10</maxSetpoint>
+        <detents>
+          <li>4</li>
+          <li>-2</li>
+          <li>-5</li>
+        </detents>
+        <hopperCapable>true</hopperCapable>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 1x1 set into a wall (it replaces the wall), storing in its own cell and cooling for the room it faces.
+       Stays Impassable and roof-holding like the wall it replaced; light and airtightness follow Mod Settings. -->
+  <ThingDef ParentName="RSW_CoolingUnitBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CoolingUnit_Wall</defName>
+    <label>wall cooling unit</label>
+    <description>A cooling unit built into a wall, as in a moisture farm kitchen. It replaces a wall section, holds food in the wall itself at down to -8 C, and opens onto the room it faces.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/TempControl/Cooler</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <pathCost>0</pathCost>
+    <holdsRoof>true</holdsRoof>
+    <blockWind>true</blockWind>
+    <blockWeather>true</blockWeather>
+    <coversFloor>true</coversFloor>
+    <blockLight>false</blockLight>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>15</Mass>
+      <WorkToBuild>1400</WorkToBuild>
+    </statBases>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_CoolingUnits</li>
+    </researchPrerequisites>
+    <building>
+      <canPlaceOverWall>true</canPlaceOverWall>
+      <isAirtight>true</isAirtight>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>80</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Chill</mode>
+        <method>RM_ColdMethod_Chill</method>
+        <defaultSetpoint>-8</defaultSetpoint>
+        <minSetpoint>-8</minSetpoint>
+        <maxSetpoint>10</maxSetpoint>
+        <detents>
+          <li>4</li>
+          <li>-3</li>
+          <li>-8</li>
+        </detents>
+        <wallMounted>true</wallMounted>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 2x2 walk-in larder: 12 stacks. Power, or chemfuel 6 a day by Mod Settings. -->
+  <ThingDef ParentName="RSW_CoolingUnitBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CoolingChamber</defName>
+    <label>cooling chamber</label>
+    <description>A walk-in cooling chamber for a whole larder. Holds twelve stacks at down to -10 C. Draws power, or can be set (in Mod Settings) to burn chemfuel instead.</description>
+    <graphicData>
+      <texPath>Things/Building/Furniture/ShelfSmall</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Mass>40</Mass>
+      <WorkToBuild>2400</WorkToBuild>
+    </statBases>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_CoolingUnits</li>
+      <li>AirConditioning</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Chill</mode>
+        <method>RM_ColdMethod_Chill</method>
+        <defaultSetpoint>-10</defaultSetpoint>
+        <minSetpoint>-10</minSetpoint>
+        <maxSetpoint>10</maxSetpoint>
+        <detents>
+          <li>4</li>
+          <li>-4</li>
+          <li>-10</li>
+        </detents>
+        <fuelAlternative>Chemfuel</fuelAlternative>
+        <fuelAlternativePerDay>6</fuelAlternativePerDay>
+        <fuelAlternativeCapacity>30</fuelAlternativeCapacity>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- 1x2 spacer deep-cold unit at -25 C, the frost-aging threshold. A cargo-hold device: buildable on substructure
+       (a normal building needs nothing special for that), so it rides a gravship. -->
+  <ThingDef ParentName="RSW_CoolingUnitBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CryoUnit</defName>
+    <label>cryo unit</label>
+    <description>A cryogenic cargo unit that freighters use to keep foodstuffs fresh across long hauls. Holds what it carries at down to -25 C, cold enough to frost-age delicacies.</description>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipCryptosleepCasket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <size>(1,2)</size>
+    <costList>
+      <Steel>60</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Mass>30</Mass>
+      <WorkToBuild>3000</WorkToBuild>
+    </statBases>
+    <researchPrerequisites Inherit="False">
+      <li>RSW_CryoStorage</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Chill</mode>
+        <method>RM_ColdMethod_Chill</method>
+        <defaultSetpoint>-25</defaultSetpoint>
+        <minSetpoint>-25</minSetpoint>
+        <maxSetpoint>10</maxSetpoint>
+        <detents>
+          <li>-5</li>
+          <li>-15</li>
+          <li>-25</li>
+        </detents>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

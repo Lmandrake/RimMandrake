@@ -54,6 +54,9 @@ namespace RimMandrake.ColdStorage.SelfTest
             StasisStrengthFollowsGrade();
             DeteriorationReadoutUnderStasis();
             UnspawnedUnitOverridesNothing();
+            EvaporativeCrock();
+            Detents();
+            FuelInsteadOfPower();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -312,6 +315,43 @@ namespace RimMandrake.ColdStorage.SelfTest
             Check("unspawned chill unit does NOT override (stale temp)", !ColdStorageKernel.TryHeldTemperature(EffectiveMode.Chill, -10f, false, out _));
             Near("unspawned chill unit: held meat rots at the room rate",
                 ColdStorageKernel.TryHeldTemperature(EffectiveMode.Chill, -10f, false, out float h) ? Vanilla(h) : Vanilla(25f), 1f);
+        }
+        // 15. COLD_STORAGE_COOLERS_BUILD_RSW_LADDER: the evaporative crock cools only in dry air and never in rain
+        private static void EvaporativeCrock()
+        {
+            Near("desert (200 mm): full drop", ColdStorageKernel.EvaporativeDryness(200f, 0f, 400f, 1600f), 1f);
+            Near("at the dry threshold: full drop", ColdStorageKernel.EvaporativeDryness(400f, 0f, 400f, 1600f), 1f);
+            Near("1000 mm: half drop", ColdStorageKernel.EvaporativeDryness(1000f, 0f, 400f, 1600f), 0.5f);
+            Near("rainforest (2500 mm): no drop", ColdStorageKernel.EvaporativeDryness(2500f, 0f, 400f, 1600f), 0f);
+            Near("raining in a desert: no drop", ColdStorageKernel.EvaporativeDryness(200f, 0.5f, 400f, 1600f), 0f);
+            Near("unknown rainfall: no drop", ColdStorageKernel.EvaporativeDryness(float.NaN, 0f, 400f, 1600f), 0f);
+            // A 12 C drop in a 35 C desert room holds 23 C; with a -30 setpoint the drop, not the setpoint, is the floor.
+            float t = 35f;
+            for (int h = 0; h < 48; h++)
+            {
+                t = ColdStorageKernel.StepUnitTemperature(t, -30f, 35f, true, false, 2f, 1f,
+                    12f * ColdStorageKernel.EvaporativeDryness(200f, 0f, 400f, 1600f), 1f, 1f);
+            }
+            Near("dry crock settles 12 C below a 35 C room", t, 23f, 0.01f);
+        }
+
+        // 16. Coarse detents cycle in order and wrap; an off-detent setpoint goes to the first detent
+        private static void Detents()
+        {
+            var d = new System.Collections.Generic.List<float> { 4f, -3f, -8f };
+            Near("4 -> -3", ColdStorageKernel.NextDetent(d, 4f), -3f);
+            Near("-3 -> -8", ColdStorageKernel.NextDetent(d, -3f), -8f);
+            Near("-8 wraps to 4", ColdStorageKernel.NextDetent(d, -8f), 4f);
+            Near("off-detent -> first", ColdStorageKernel.NextDetent(d, 1f), 4f);
+        }
+
+        // 17. A unit burning fuel instead of power: full rate while cooling, the idle fraction at the setpoint, none off
+        private static void FuelInsteadOfPower()
+        {
+            Near("chamber cooling a full day: 6 chemfuel", ColdStorageKernel.FuelUsed(6f, 60000f, true, false, 0.25f), 6f);
+            Near("chamber idling a full day: 1.5", ColdStorageKernel.FuelUsed(6f, 60000f, true, true, 0.25f), 1.5f);
+            Near("switched off: nothing", ColdStorageKernel.FuelUsed(6f, 60000f, false, false, 0.25f), 0f);
+            Near("crock water: 0.5 a day, idle factor 1", ColdStorageKernel.FuelUsed(0.5f, 120000f, true, true, 1f), 1f);
         }
     }
 }

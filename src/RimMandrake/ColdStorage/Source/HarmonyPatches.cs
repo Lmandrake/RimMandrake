@@ -2,6 +2,7 @@ using HarmonyLib;
 using RimMandrake.Shared;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.ColdStorage
 {
@@ -232,6 +233,91 @@ namespace RimMandrake.ColdStorage
             if (ext != null && !RM_ColdStorageSettings.GateOpen(ext.gate))
             {
                 __result = false;
+            }
+            else if (__instance.PlacingDef is ThingDef td && !RM_ColdStorageSettings.UnitEnabled(td))
+            {
+                __result = false;
+            }
+        }
+    }
+
+    /// <summary>Wall units: the wall unit holding a spawned item on its own (impassable) cell, or null.</summary>
+    internal static class WallUnits
+    {
+        internal static CompStorageClimate At(Thing thing)
+        {
+            if (StorageClimateRegistry.UnitCount == 0 || thing == null || !thing.Spawned
+                || thing.def.category != ThingCategory.Item)
+            {
+                return null;
+            }
+            CompStorageClimate unit = StorageClimateRegistry.UnitHolding(thing);
+            return unit != null && unit.Props.wallMounted ? unit : null;
+        }
+    }
+
+    /// <summary>
+    /// An item stored in a wall unit sits on an impassable cell, so a job that must stand ON the item's cell can never
+    /// reach it. Standing next to it is enough, as for RimFridge's wall fridge: OnCell becomes Touch for such items.
+    /// </summary>
+    [HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReach), typeof(IntVec3), typeof(LocalTargetInfo),
+        typeof(PathEndMode), typeof(TraverseParms))]
+    [PatchFeature("Wall units (reach)")]
+    internal static class Patch_Reachability_CanReach
+    {
+        private static void Prefix(LocalTargetInfo dest, ref PathEndMode peMode)
+        {
+            if (peMode == PathEndMode.OnCell && StorageClimateRegistry.UnitCount != 0 && dest.HasThing
+                && WallUnits.At(dest.Thing) != null)
+            {
+                peMode = PathEndMode.Touch;
+            }
+        }
+    }
+
+    /// <summary>The region-lister reach check (GenClosest's item searches) with the same OnCell to Touch rule.</summary>
+    [HarmonyPatch(typeof(ReachabilityWithinRegion), nameof(ReachabilityWithinRegion.ThingFromRegionListerReachable))]
+    [PatchFeature("Wall units (reach)")]
+    internal static class Patch_ReachabilityWithinRegion_ThingFromRegionListerReachable
+    {
+        private static void Prefix(Thing thing, ref PathEndMode peMode)
+        {
+            if (peMode == PathEndMode.OnCell && StorageClimateRegistry.UnitCount != 0 && WallUnits.At(thing) != null)
+            {
+                peMode = PathEndMode.Touch;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Social properness reads the room of the item's cell; a wall unit's cell is wall and has no room, so a prisoner
+    /// would never take food from a wall unit in his own cell. Judge such an item by the room on the unit's facing side.
+    /// </summary>
+    [HarmonyPatch(typeof(SocialProperness), nameof(SocialProperness.IsSociallyProper), typeof(Thing), typeof(Pawn),
+        typeof(bool), typeof(bool))]
+    [PatchFeature("Wall units (prisoner food)")]
+    internal static class Patch_SocialProperness_IsSociallyProper
+    {
+        private static void Postfix(Thing t, Pawn p, bool forPrisoner, bool animalsCare, ref bool __result)
+        {
+            if (StorageClimateRegistry.UnitCount == 0 || !t.def.socialPropernessMatters
+                || (!animalsCare && p != null && !p.RaceProps.Humanlike))
+            {
+                return;
+            }
+            CompStorageClimate unit = WallUnits.At(t);
+            if (unit == null)
+            {
+                return;
+            }
+            IntVec3 cell = unit.RoomSideCell;
+            if (forPrisoner)
+            {
+                __result = p == null || cell.GetRoom(t.Map) == p.GetRoom();
+            }
+            else
+            {
+                __result = !cell.IsInPrisonCell(t.Map);
             }
         }
     }

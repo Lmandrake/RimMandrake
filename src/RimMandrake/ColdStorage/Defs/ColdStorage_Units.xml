@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Generic cold storage units (design/RimStarWars/cold_storage_line_2026-10-26.md §3.1). No Star Wars words here:
+       the Star Wars ladder lives in mandrake.rsw.cuisine. -->
+
+  <!-- The evaporative crock (a zeer pot): a day-one cold box that needs no power. Its water evaporates and cools what
+       it holds up to 12 C below the room, at full strength on a tile with 400 mm of rain a year or less, fading to
+       nothing at 1600 mm, and not at all while it rains (the engine's humidity proxy is the tile's rainfall).
+       Water comes from FlowWorks bottles (a MayRequire filter); without FlowWorks the crock needs no water at all
+       (ColdStorageStartup strips an empty refuelable comp).
+       INTERIM ART: the vanilla plant pot texture until the crock's own art lands (art queue, LADDER item). -->
+  <ThingDef ParentName="RM_ColdStorageUnitBase">
+    <defName>RM_EvaporativeCrock</defName>
+    <label>evaporative crock</label>
+    <description>A double clay pot with wet sand between the walls. As the water evaporates it cools what is stored inside, up to 12 degrees below the room. It works best in dry country and not at all in the rain, and someone has to bring it water every couple of days.</description>
+    <graphicData>
+      <texPath>Things/Building/Furniture/PlantPot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <stuffCategories Inherit="False">
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>8</Mass>
+      <WorkToBuild>600</WorkToBuild>
+    </statBases>
+    <researchPrerequisites Inherit="False" />
+    <building>
+      <maxItemsInCell>2</maxItemsInCell>
+      <defaultStorageSettings Inherit="False">
+        <priority>Preferred</priority>
+        <filter>
+          <categories>
+            <li>Foods</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>water</fuelLabel>
+        <fuelGizmoLabel>Water</fuelGizmoLabel>
+        <outOfFuelMessage>Dry: needs water</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_FreshWater</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>1</fuelCapacity>
+        <initialFuelPercent>1</initialFuelPercent>
+        <fuelConsumptionRate>0.5</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
+        <mode>Chill</mode>
+        <method>RM_ColdMethod_Chill</method>
+        <defaultSetpoint>-30</defaultSetpoint>
+        <minSetpoint>-30</minSetpoint>
+        <maxSetpoint>10</maxSetpoint>
+        <passiveDrop>12</passiveDrop>
+        <coolPerHour>2</coolPerHour>
+        <idlePowerFactor>1</idlePowerFactor>
+        <evaporative>true</evaporative>
+        <evaporativeFullBelowRainfall>400</evaporativeFullBelowRainfall>
+        <evaporativeZeroAtRainfall>1600</evaporativeZeroAtRainfall>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>EvaporativeCrock</gate>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

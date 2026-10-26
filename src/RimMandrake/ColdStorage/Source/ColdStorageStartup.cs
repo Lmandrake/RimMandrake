@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.ColdStorage
@@ -15,6 +17,9 @@ namespace RimMandrake.ColdStorage
     public static class ColdStorageStartup
     {
         private static readonly List<ThingDef> climateDefs = new List<ThingDef>();
+
+        /// <summary>Every def with a storage-climate comp, in def order (the Mod Settings unit list).</summary>
+        public static IReadOnlyList<ThingDef> ClimateDefs => climateDefs;
 
         /// <summary>Indexed by ThingDef.index: the fixed rot multiplier of a preserved item
         /// (ColdStoragePreservedExtension.rotFactor). Null when no def has one other than 1.</summary>
@@ -61,7 +66,10 @@ namespace RimMandrake.ColdStorage
             }
             CompSealed.sealableByIndex = any ? sealable : null;
             itemRotFactor = anyFactor ? factors : null;
+            StripEmptyFuel();
+            ApplyFuelAlternatives();
             ApplyHopperFlags();
+            ApplyWallFlags();
             HookReplaceStuff();
             HookWreckedMachinesGrades();
         }
@@ -137,6 +145,63 @@ namespace RimMandrake.ColdStorage
                 {
                     d.building.isHopper = RM_ColdStorageSettings.unitsActAsHoppers;
                 }
+            }
+        }
+
+        /// <summary>Wall units take their light and airtight flags from Mod Settings. Building.IsAirtight and the light
+        /// grid read the def live, so a change applies to built units as the map next rebuilds rooms and light.</summary>
+        public static void ApplyWallFlags()
+        {
+            foreach (ThingDef d in climateDefs)
+            {
+                CompProperties_StorageClimate p = d.GetCompProperties<CompProperties_StorageClimate>();
+                if (p != null && p.wallMounted && d.building != null)
+                {
+                    d.blockLight = RM_ColdStorageSettings.wallUnitsBlockLight;
+                    d.building.isAirtight = RM_ColdStorageSettings.wallUnitsAirtight;
+                }
+            }
+        }
+
+        /// <summary>A unit whose water or fuel comes only from an optional mod (a MayRequire filter entry) loses its
+        /// refuelable comp when that mod is absent, and works as a plain passive unit instead of starving.</summary>
+        private static void StripEmptyFuel()
+        {
+            foreach (ThingDef d in climateDefs)
+            {
+                CompProperties_Refuelable r = d.GetCompProperties<CompProperties_Refuelable>();
+                if (r != null && (r.fuelFilter == null || !r.fuelFilter.AllowedThingDefs.Any()))
+                {
+                    d.comps.Remove(r);
+                    Log.Message("[ColdStorage] " + d.defName + ": no fuel def is loaded, so it runs without one.");
+                }
+            }
+        }
+
+        /// <summary>Units the player set to burn fuel (Mod Settings, applies after a restart): the power comp is swapped
+        /// for a refuelable comp. ConnectToPower, HasComp and the Refuelable request group read comps live.</summary>
+        private static void ApplyFuelAlternatives()
+        {
+            foreach (ThingDef d in climateDefs)
+            {
+                CompProperties_StorageClimate p = d.GetCompProperties<CompProperties_StorageClimate>();
+                if (p == null || p.fuelAlternative == null || !RM_ColdStorageSettings.UnitBurnsFuel(d)
+                    || d.GetCompProperties<CompProperties_Refuelable>() != null)
+                {
+                    continue;
+                }
+                d.comps.RemoveAll(c => c is CompProperties_Power);
+                CompProperties_Refuelable r = new CompProperties_Refuelable
+                {
+                    fuelConsumptionRate = p.fuelAlternativePerDay,
+                    fuelCapacity = p.fuelAlternativeCapacity,
+                    consumeFuelOnlyWhenUsed = true,
+                    fuelFilter = new ThingFilter(),
+                    showAllowAutoRefuelToggle = true,
+                };
+                r.fuelFilter.SetAllow(p.fuelAlternative, true);
+                d.comps.Add(r);
+                r.ResolveReferences(d);
             }
         }
 

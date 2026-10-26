@@ -320,6 +320,46 @@ namespace RimMandrake.ColdStorage
             return TryHeldTemperature(effective, unitTemp, out temperature);
         }
 
+        /// <summary>How much of an evaporative unit's passive drop works on a tile: 1 at or under fullBelow mm of rain a
+        /// year, 0 at or over zeroAt, linear between; 0 while it rains (rainRate above 0.1).</summary>
+        public static float EvaporativeDryness(float rainfallMm, float rainRate, float fullBelow, float zeroAt)
+        {
+            if (rainRate > 0.1f || float.IsNaN(rainfallMm))
+            {
+                return 0f;
+            }
+            if (zeroAt <= fullBelow)
+            {
+                return rainfallMm <= fullBelow ? 1f : 0f;
+            }
+            return Clamp01((zeroAt - rainfallMm) / (zeroAt - fullBelow));
+        }
+
+        /// <summary>The next detent after <paramref name="current"/> in the list's order, wrapping; the first when the
+        /// current setpoint is not on a detent.</summary>
+        public static float NextDetent(System.Collections.Generic.IList<float> detents, float current)
+        {
+            for (int i = 0; i < detents.Count; i++)
+            {
+                if (Math.Abs(detents[i] - current) < 0.01f)
+                {
+                    return detents[(i + 1) % detents.Count];
+                }
+            }
+            return detents[0];
+        }
+
+        /// <summary>Fuel a fuel-burning unit uses over a step: the full rate while cooling, the idle fraction at the
+        /// setpoint, none when inactive.</summary>
+        public static float FuelUsed(float perDay, float ticks, bool active, bool atSetpoint, float idleFactor)
+        {
+            if (!active || ticks <= 0f || perDay <= 0f)
+            {
+                return 0f;
+            }
+            return perDay * (ticks / 60000f) * (atSetpoint ? Clamp01(idleFactor) : 1f);
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

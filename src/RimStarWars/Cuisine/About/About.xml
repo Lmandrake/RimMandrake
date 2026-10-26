@@ -19,5 +19,8 @@ This mod is the intended eventual home for the rest of high_cuisine_deep_design.
          ruling is "no hard dependency in either direction", so a cook with no
          Grey Sea simply never sees those four recipes. -->
     <li>mandrake.rm.biomes</li>
+    <!-- COLD_STORAGE_COOLERS_BUILD_RSW_LADDER: the cooling-unit ladder (Defs/RSW_CoolingUnits.xml) runs on the
+         Cold Storage engine, every def MayRequire'd on it: no hard dependency. -->
+    <li>mandrake.rm.coldstorage</li>
   </loadAfter>
 </ModMetaData>

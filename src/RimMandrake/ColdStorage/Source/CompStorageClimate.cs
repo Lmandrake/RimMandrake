@@ -31,6 +31,7 @@ namespace RimMandrake.ColdStorage
         private CompPowerTrader power;
         private CompRefuelable fuel;
         private CompFlickable flick;
+        private CompBreakdownable breakdown;
         private MapComponent_StorageClimate registeredOn;
         private CellRect registeredRect;
 
@@ -48,6 +49,11 @@ namespace RimMandrake.ColdStorage
             {
                 if (flick != null && !flick.SwitchIsOn)
                 {
+                    return false;
+                }
+                if (breakdown != null && breakdown.BrokenDown)
+                {
+                    // Frost-up: a broken-down unit warms until a pawn repairs it.
                     return false;
                 }
                 if (power != null)
@@ -93,7 +99,26 @@ namespace RimMandrake.ColdStorage
                 {
                     return parent.AmbientTemperature;
                 }
-                return GenTemperature.GetTemperatureForCell(parent.PositionHeld, map);
+                return GenTemperature.GetTemperatureForCell(RoomSideCell, map);
+            }
+        }
+
+        /// <summary>The cell whose room the unit serves: its own cell, or for a wall unit (whose own cell is wall, with
+        /// no room) the cell on its facing side.</summary>
+        public IntVec3 RoomSideCell
+        {
+            get
+            {
+                IntVec3 cell = parent.PositionHeld;
+                if (Props.wallMounted && parent.Spawned)
+                {
+                    IntVec3 roomSide = cell + parent.Rotation.FacingCell;
+                    if (roomSide.InBounds(parent.Map))
+                    {
+                        return roomSide;
+                    }
+                }
+                return cell;
             }
         }
 
@@ -103,6 +128,7 @@ namespace RimMandrake.ColdStorage
             power = parent.GetComp<CompPowerTrader>();
             fuel = parent.GetComp<CompRefuelable>();
             flick = parent.GetComp<CompFlickable>();
+            breakdown = parent.GetComp<CompBreakdownable>();
             if (float.IsNaN(setpoint))
             {
                 setpoint = Props.defaultSetpoint;
@@ -171,10 +197,21 @@ namespace RimMandrake.ColdStorage
                 {
                     currentTemp = room;
                 }
-                float passiveDrop = power == null && fuel == null ? Props.passiveDrop : 0f;
-                currentTemp = ColdStorageKernel.StepUnitTemperature(currentTemp, EffectiveSetpoint, room, Active, Props.canHeat,
+                float passiveDrop = power == null ? PassiveDrop : 0f;
+                bool active = Active;
+                currentTemp = ColdStorageKernel.StepUnitTemperature(currentTemp, EffectiveSetpoint, room, active, Props.canHeat,
                     Props.coolPerHour, Props.driftPerHour, passiveDrop, RM_ColdStorageSettings.insulationMultiplier,
                     ticks / ColdStorageKernel.TicksPerHour);
+                if (fuel != null && fuel.Props.consumeFuelOnlyWhenUsed)
+                {
+                    // Units tick rare, so the engine burns their fuel (or evaporates a crock's water) itself.
+                    float used = ColdStorageKernel.FuelUsed(fuel.Props.fuelConsumptionRate, ticks, active,
+                        Mathf.Abs(currentTemp - EffectiveSetpoint) < 0.5f, Props.idlePowerFactor);
+                    if (used > 0f)
+                    {
+                        fuel.ConsumeFuel(used);
+                    }
+                }
             }
             else
             {
@@ -183,6 +220,36 @@ namespace RimMandrake.ColdStorage
             }
             UpdatePower(Mathf.Abs(currentTemp - EffectiveSetpoint) < 0.5f);
         }
+
+        /// <summary>How far below the room a passive (unpowered) unit can go now: an evaporative crock loses its drop
+        /// in wet climates and in rain.</summary>
+        public float PassiveDrop
+        {
+            get
+            {
+                if (Props.passiveDrop <= 0f || !Props.evaporative)
+                {
+                    return Props.passiveDrop;
+                }
+                return Props.passiveDrop * Dryness;
+            }
+        }
+
+        public float Dryness
+        {
+            get
+            {
+                Map map = parent.MapHeld;
+                if (map == null)
+                {
+                    return 1f;
+                }
+                return ColdStorageKernel.EvaporativeDryness(map.TileInfo.rainfall, map.weatherManager.RainRate,
+                    Props.evaporativeFullBelowRainfall, Props.evaporativeZeroAtRainfall);
+            }
+        }
+
+        private bool Passive => Props.passiveDrop > 0f && power == null;
 
         private void UpdatePower(bool atSetpoint)
         {
@@ -205,8 +272,20 @@ namespace RimMandrake.ColdStorage
             {
                 yield return g;
             }
-            if (Effective != EffectiveMode.Chill || Props.mode != StorageMode.Chill || parent.Faction != Faction.OfPlayer)
+            if (Effective != EffectiveMode.Chill || Props.mode != StorageMode.Chill || parent.Faction != Faction.OfPlayer || Passive)
             {
+                yield break;
+            }
+            if (Props.detents != null && Props.detents.Count > 1)
+            {
+                int i = Props.detents.FindIndex(d => Mathf.Abs(d - setpoint) < 0.01f);
+                yield return new Command_Action
+                {
+                    defaultLabel = "RM_ColdStorage_Detent".Translate(DetentLabel(i), setpoint.ToStringTemperature("F0")),
+                    defaultDesc = "RM_ColdStorage_DetentDesc".Translate(),
+                    icon = TexLower,
+                    action = () => setpoint = ColdStorageKernel.NextDetent(Props.detents, setpoint),
+                };
                 yield break;
             }
             yield return SetpointCommand(-10f, TexLower, "RM_ColdStorage_SetpointLower10");
@@ -220,6 +299,20 @@ namespace RimMandrake.ColdStorage
             };
             yield return SetpointCommand(1f, TexRaise, "RM_ColdStorage_SetpointRaise1");
             yield return SetpointCommand(10f, TexRaise, "RM_ColdStorage_SetpointRaise10");
+        }
+
+        private string DetentLabel(int i)
+        {
+            if (i < 0)
+            {
+                return "RM_ColdStorage_DetentCustom".Translate();
+            }
+            // Three detents read cool / cold / deep; a longer list numbers them.
+            if (Props.detents.Count == 3)
+            {
+                return ("RM_ColdStorage_Detent" + i).Translate();
+            }
+            return (i + 1).ToString();
         }
 
         private Command_Action SetpointCommand(float delta, Texture2D icon, string labelKey)
@@ -248,7 +341,19 @@ namespace RimMandrake.ColdStorage
                         return null;
                     }
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("RM_ColdStorage_ChillReadout".Translate(name, currentTemp.ToStringTemperature("F0"), EffectiveSetpoint.ToStringTemperature("F0")));
+                    if (Passive)
+                    {
+                        sb.Append("RM_ColdStorage_PassiveReadout".Translate(name, currentTemp.ToStringTemperature("F0"),
+                            PassiveDrop.ToStringTemperatureOffset("F0")));
+                        if (Props.evaporative)
+                        {
+                            sb.AppendLine().Append("RM_ColdStorage_Evaporation".Translate(Dryness.ToStringPercent()));
+                        }
+                    }
+                    else
+                    {
+                        sb.Append("RM_ColdStorage_ChillReadout".Translate(name, currentTemp.ToStringTemperature("F0"), EffectiveSetpoint.ToStringTemperature("F0")));
+                    }
                     if (!Active)
                     {
                         sb.Append(" ").Append("RM_ColdStorage_Drifting".Translate());

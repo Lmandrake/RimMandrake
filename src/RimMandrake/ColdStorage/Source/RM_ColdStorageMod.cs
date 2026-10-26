@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -7,7 +8,8 @@ namespace RimMandrake.ColdStorage
     // Mod Settings for Cold Storage (design/RimStarWars/cold_storage_line_2026-10-26.md §6).
     // Defaults are the shipped behaviour. With every switch off, cooling units are plain shelves, stasis units are plain
     // shelves, sealed goods keep without aging, and every station stays buildable: the game degrades to vanilla storage.
-    // The wall-unit switches (blocks light, airtight) arrive with the wall unit itself (COLD_STORAGE_COOLERS_BUILD_RSW_LADDER).
+    // Per-unit switches (build menu, burn fuel instead of power) and the wall-unit switches (blocks light, airtight)
+    // came with the unit ladder (COLD_STORAGE_COOLERS_BUILD_RSW_LADDER).
     public class RM_ColdStorageSettings : ModSettings
     {
         // Engine
@@ -31,6 +33,37 @@ namespace RimMandrake.ColdStorage
         public static bool unitsActAsHoppers = true;
         public static bool showClimateReadout = true;
 
+        // Wall units (a unit with wallMounted: true). Applied to the defs at once; a built wall unit re-reads them live.
+        public static bool wallUnitsBlockLight = false;
+        public static bool wallUnitsAirtight = true;
+
+        // Per unit, by defName. Disabled units leave the build menu (built ones keep working). Fuel units burn their
+        // fuelAlternative instead of drawing power; that swaps the unit's comps, so it applies after a restart.
+        public static List<string> disabledUnits = new List<string>();
+        public static List<string> fuelUnits = new List<string>();
+
+        public static bool UnitEnabled(ThingDef def)
+        {
+            return def == null || disabledUnits == null || !disabledUnits.Contains(def.defName);
+        }
+
+        public static bool UnitBurnsFuel(ThingDef def)
+        {
+            return def != null && fuelUnits != null && fuelUnits.Contains(def.defName);
+        }
+
+        private static void Toggle(List<string> set, string defName, bool on)
+        {
+            if (on && !set.Contains(defName))
+            {
+                set.Add(defName);
+            }
+            else if (!on)
+            {
+                set.Remove(defName);
+            }
+        }
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
@@ -48,6 +81,15 @@ namespace RimMandrake.ColdStorage
             Scribe_Values.Look(ref methodEvaporativeCrock, "methodEvaporativeCrock", true);
             Scribe_Values.Look(ref unitsActAsHoppers, "unitsActAsHoppers", true);
             Scribe_Values.Look(ref showClimateReadout, "showClimateReadout", true);
+            Scribe_Values.Look(ref wallUnitsBlockLight, "wallUnitsBlockLight", false);
+            Scribe_Values.Look(ref wallUnitsAirtight, "wallUnitsAirtight", true);
+            Scribe_Collections.Look(ref disabledUnits, "disabledUnits", LookMode.Value);
+            Scribe_Collections.Look(ref fuelUnits, "fuelUnits", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                disabledUnits = disabledUnits ?? new List<string>();
+                fuelUnits = fuelUnits ?? new List<string>();
+            }
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
@@ -66,6 +108,10 @@ namespace RimMandrake.ColdStorage
             methodEvaporativeCrock = true;
             unitsActAsHoppers = true;
             showClimateReadout = true;
+            wallUnitsBlockLight = false;
+            wallUnitsAirtight = true;
+            disabledUnits = new List<string>();
+            fuelUnits = new List<string>();
         }
 
         /// <summary>Whether a gated station or recipe is available under the current settings.</summary>
@@ -132,6 +178,28 @@ namespace RimMandrake.ColdStorage
             Text.Font = GameFont.Small;
             list.CheckboxLabeled("RM_ColdStorage_SettingHopper".Translate(), ref unitsActAsHoppers, "RM_ColdStorage_SettingHopperDesc".Translate());
             list.CheckboxLabeled("RM_ColdStorage_SettingReadout".Translate(), ref showClimateReadout);
+            list.CheckboxLabeled("RM_ColdStorage_SettingWallLight".Translate(), ref wallUnitsBlockLight, "RM_ColdStorage_SettingWallLightDesc".Translate());
+            list.CheckboxLabeled("RM_ColdStorage_SettingWallAirtight".Translate(), ref wallUnitsAirtight, "RM_ColdStorage_SettingWallAirtightDesc".Translate());
+            list.GapLine();
+
+            Text.Font = GameFont.Medium;
+            list.Label("RM_ColdStorage_SettingsUnits".Translate());
+            Text.Font = GameFont.Small;
+            list.Label("RM_ColdStorage_SettingsUnitsNote".Translate());
+            foreach (ThingDef d in ColdStorageStartup.ClimateDefs)
+            {
+                bool on = UnitEnabled(d);
+                list.CheckboxLabeled("RM_ColdStorage_SettingUnitBuildable".Translate(d.LabelCap), ref on);
+                Toggle(disabledUnits, d.defName, !on);
+                CompProperties_StorageClimate p = d.GetCompProperties<CompProperties_StorageClimate>();
+                if (p != null && p.fuelAlternative != null)
+                {
+                    bool fuel = UnitBurnsFuel(d);
+                    list.CheckboxLabeled("RM_ColdStorage_SettingUnitFuel".Translate(d.LabelCap, p.fuelAlternative.label), ref fuel,
+                        "RM_ColdStorage_SettingUnitFuelDesc".Translate());
+                    Toggle(fuelUnits, d.defName, fuel);
+                }
+            }
             list.GapLine();
 
             if (list.ButtonText("RM_ColdStorage_SettingsReset".Translate()))
@@ -168,6 +236,7 @@ namespace RimMandrake.ColdStorage
         {
             base.WriteSettings();
             ColdStorageStartup.ApplyHopperFlags();
+            ColdStorageStartup.ApplyWallFlags();
         }
     }
 }

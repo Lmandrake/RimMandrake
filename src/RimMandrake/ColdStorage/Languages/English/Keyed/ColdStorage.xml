@@ -53,4 +53,21 @@
   <RM_ColdStorage_SettingHopperDesc>Units built to do so act as hoppers when placed against a dispenser.</RM_ColdStorage_SettingHopperDesc>
   <RM_ColdStorage_SettingReadout>Show the unit temperature readout</RM_ColdStorage_SettingReadout>
   <RM_ColdStorage_SettingsReset>Reset to defaults</RM_ColdStorage_SettingsReset>
+  <RM_ColdStorage_SettingWallLight>Wall units block light</RM_ColdStorage_SettingWallLight>
+  <RM_ColdStorage_SettingWallLightDesc>When off, a unit built into a wall lets light through like a window.</RM_ColdStorage_SettingWallLightDesc>
+  <RM_ColdStorage_SettingWallAirtight>Wall units are airtight</RM_ColdStorage_SettingWallAirtight>
+  <RM_ColdStorage_SettingWallAirtightDesc>When on, a unit built into a wall seals it like the wall it replaced (matters in vacuum).</RM_ColdStorage_SettingWallAirtightDesc>
+  <RM_ColdStorage_SettingsUnits>Units</RM_ColdStorage_SettingsUnits>
+  <RM_ColdStorage_SettingsUnitsNote>A unit switched off leaves the build menu; built ones keep working. Burning fuel instead of power applies after a restart.</RM_ColdStorage_SettingsUnitsNote>
+  <RM_ColdStorage_SettingUnitBuildable>{0}: buildable</RM_ColdStorage_SettingUnitBuildable>
+  <RM_ColdStorage_SettingUnitFuel>{0}: burn {1} instead of power</RM_ColdStorage_SettingUnitFuel>
+  <RM_ColdStorage_SettingUnitFuelDesc>The unit needs no power line but must be refuelled. Takes effect after a restart.</RM_ColdStorage_SettingUnitFuelDesc>
+  <RM_ColdStorage_Detent>{0}: {1}</RM_ColdStorage_Detent>
+  <RM_ColdStorage_DetentDesc>Step the unit to its next temperature setting.</RM_ColdStorage_DetentDesc>
+  <RM_ColdStorage_Detent0>Cool</RM_ColdStorage_Detent0>
+  <RM_ColdStorage_Detent1>Cold</RM_ColdStorage_Detent1>
+  <RM_ColdStorage_Detent2>Deep</RM_ColdStorage_Detent2>
+  <RM_ColdStorage_DetentCustom>Custom</RM_ColdStorage_DetentCustom>
+  <RM_ColdStorage_PassiveReadout>{0}: {1} (up to {2} below the room)</RM_ColdStorage_PassiveReadout>
+  <RM_ColdStorage_Evaporation>Evaporation: {0} (dry air and no rain cool best)</RM_ColdStorage_Evaporation>
 </LanguageData>
