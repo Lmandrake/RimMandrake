@@ -34,7 +34,7 @@ SOURCE = os.path.join(REPO, "src", "RimUtinni", "Rites", "Source")
 SELFTEST = os.path.join(SOURCE, "SelfTest")
 CSPROJ = os.path.join(SELFTEST, "RimMandrake.Utinni.Rites.SelfTest.csproj")
 FIXTURES = sorted(glob.glob(os.path.join(SELFTEST, "fixtures", "ninefold_save_blocks_*.xml")))
-SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+from game_paths import SAVES  # noqa: E402
 OLD_NS = "RimMandrake.Ninefold"
 NEW_NS = "RimMandrake.Utinni.Rites"
 # Names that must NOT map: a near-miss namespace, the bare namespace, and an unrelated game type.

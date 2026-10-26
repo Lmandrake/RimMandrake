@@ -26,8 +26,8 @@ SELFTEST = os.path.join(MOD, "Source", "SelfTest")
 CSPROJ = os.path.join(SELFTEST, "RimMandrakeMinerals.SelfTest.csproj")
 FIXTURE = os.path.join(SELFTEST, "mineral_defs.tsv")
 DEEP_DEFS = os.path.join(REPO, "src", "RimMandrake", "DeepDrill", "Defs")
-DUMP_DEFAULT = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+from game_paths import DUMP_ROOT  # noqa: E402
+DUMP_DEFAULT = os.path.join(DUMP_ROOT, "defs.sqlite")
 
 
 def _num(rx, j):

@@ -28,8 +28,9 @@ ORIGINAL = {
                          "[gameConditionDuration_duration], potentially damaging infrastructure and doubling psychic "
                          "sensitivity of every living being.",
 }
-DUMP_GLOB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures/*/defs/"
-             "GameConditionDef.json")
+sys.path.insert(0, os.path.join(HERE, "..", "..", "RimMandrake", "Utils"))
+from game_paths import CAPTURES  # noqa: E402
+DUMP_GLOB = os.path.join(CAPTURES, "*", "defs", "GameConditionDef.json")
 FAILS = []
 # "psychic sensitivity" is the real, unrenamed stat and stays (the file's own rule); [placeholders] are stripped first
 PSY = re.compile(r"psychic(?! sensitivity)", re.I)

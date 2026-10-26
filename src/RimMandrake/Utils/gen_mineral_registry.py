@@ -47,8 +47,8 @@ import mineral_registry_check as mrc  # noqa: E402
 CSV = mrc.CSV
 DEEP_TABLE = os.path.join(ROOT, "src", "RimMandrake", "DeepDrill", "Defs", "RM_DeepHomeTable.xml")
 DUMP_ENV = "RM_DEFDUMP_SQLITE"
-DUMP_DEFAULT = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+from game_paths import DUMP_ROOT  # noqa: E402
+DUMP_DEFAULT = os.path.join(DUMP_ROOT, "defs.sqlite")
 ROLES = ("id", "item", "mineable", "producer", "zero", "retire")
 PLACED = ("item", "mineable", "producer")      # must resolve for a group to be emitted
 CORE = "ludeon.rimworld"

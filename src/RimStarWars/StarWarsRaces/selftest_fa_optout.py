@@ -27,8 +27,9 @@ SRC = os.path.dirname(os.path.dirname(HERE))
 DEF_XML = os.path.join(HERE, "Defs", "Misc", "RSW_FacialAnimationOptOut.xml")
 CS = os.path.join(HERE, "Source", "RSW_FacialAnimationOptOut.cs")
 CSPROJ = os.path.join(HERE, "Source", "RSW_StarWarsRaces.csproj")
-FA_CONFIG = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/"
-             "Mod_1635901197_FacialAnimationMod.xml")
+sys.path.insert(0, os.path.join(HERE, "..", "..", "RimMandrake", "Utils"))
+from game_paths import LOCALLOW  # noqa: E402
+FA_CONFIG = os.path.join(LOCALLOW, "Config", "Mod_1635901197_FacialAnimationMod.xml")
 FA_DLL = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1635901197/1.6/Assemblies/"
           "FacialAnimation.dll")
 DEF_CLASS = "RimMandrake.StarWars.Races.RSW_FacialAnimationOptOutDef"

@@ -237,7 +237,8 @@ def install(out, dry):
 
 
 # ---------------------------------------------------------------------------------------------------- offline preview
-SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+sys.path.insert(0, os.path.join(REPO, "src/RimMandrake/Utils"))
+from game_paths import SAVES  # noqa: E402
 GAME_MODS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 SNOW_C = -8.0          # mirror of RM_WorldPeaks.snowBelowC
 HIGH_SUN_ARC = 40.0    # mirror of RM_WorldPeaks.highSunArc
