@@ -1,0 +1,2 @@
+RimWorld 1.6 engine trap: a Fire's instigator escapes any scope you put around Fire.TickInterval. One spread in five (TrySpread to radius 10-20) launches a Spark with the Fire as launcher, and Spark.Impact (decomp Spark.cs:11-16) swaps in fire.instigator before calling TryStartFireIn on a later tick. Any gate keyed on 'inside a fire's tick' must also cover Spark.Impact when Launcher is Fire. Comments that say a spark 'carries the Fire as instigator' are wrong (CHILLFIREBAN_FIX_SPARK_CARRIES_OXIDIZER).
+home: rimworld-modding

@@ -31,7 +31,7 @@ namespace RimMandrake.DivingInteraction
     //    explosion still burns (RM_SelfOxidizingExtension) and a fission
     //    Genetron's meltdown flame does not (RM_NonCombustionExtension is
     //    not an oxidizer: CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN). The fire Fuselight's
-    //    flash lights does not inherit its oxidizer (Patch_Fire_TickInterval).
+    //    flash lights does not inherit its oxidizer (Patch_Fire_TickInterval, Patch_Spark_Impact).
     //
     // 2) CompRefuelable.ShouldBeLitNow() is NOT wired through
     //    TryStartFireIn at all — a campfire/torch/brazier never spawns a
@@ -107,19 +107,44 @@ namespace RimMandrake.DivingInteraction
     // CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS. A Fire passes its instigator on: TrySpread (Fire.cs:403), the attach to a
     // pawn in its cell (:272) and DoFireDamage (`instigator ?? this`, whose Flame damage attaches via DamageWorker_Flame and
     // Thing.TakeDamage) all run inside Fire.TickInterval. Marking that scope keeps a Fuselight flash's fire from carrying
-    // the flash's oxidizer into the tar and wax plants around it. A Spark launched by TrySpread lands later with the Fire
-    // as instigator, which carries no extension. Prefix + finalizer, so a throw inside the tick cannot leave it raised.
+    // the flash's oxidizer into the tar and wax plants around it. Prefix + finalizer, so a throw inside the tick cannot
+    // leave it raised.
     [HarmonyPatch(typeof(Fire), "TickInterval")]
     public static class Patch_Fire_TickInterval
     {
         public static void Prefix()
         {
-            RM_ChillFireGate.insideFireTick++;
+            RM_ChillFireGate.insideBurningFire++;
         }
 
         public static void Finalizer()
         {
-            RM_ChillFireGate.insideFireTick--;
+            RM_ChillFireGate.insideBurningFire--;
+        }
+    }
+
+    // CHILLFIREBAN_FIX_SPARK_CARRIES_OXIDIZER. The fifth of TrySpread's spreads (radius 10-20, Fire.cs:398)
+    // goes by Spark, which lands outside the Fire's tick and re-reads the instigator (Spark.Impact: `launcher is Fire
+    // fire` -> `fire.instigator`), so it would hand TryStartFireIn the Fuselight again. A Spark launched by a Fire is
+    // marked like the Fire's own tick; any other launcher stays as it was.
+    [HarmonyPatch(typeof(Spark), "Impact")]
+    public static class Patch_Spark_Impact
+    {
+        public static void Prefix(Spark __instance, out bool __state)
+        {
+            __state = __instance.Launcher is Fire;
+            if (__state)
+            {
+                RM_ChillFireGate.insideBurningFire++;
+            }
+        }
+
+        public static void Finalizer(bool __state)
+        {
+            if (__state)
+            {
+                RM_ChillFireGate.insideBurningFire--;
+            }
         }
     }
 
