@@ -169,7 +169,7 @@
        melter." RM_BlueIce (BlueDesert, a 3 kg block) melts at 1 L per kg like every other ice-to-water recipe here
        (Thirst RM_MeltBlueIceIntoBucket: 5 blocks = 15 L): 3 L = 30 dL a block; a craft takes 25 blocks = 75 L = 750 dL.
        Unlike crushed ice (the notch its cut removed, 1,000 L) a block is a hand-cut brick. -->
-  <RecipeDef MayRequire="mandrake.rm.bluedesert">
+  <RecipeDef MayRequire="mandrake.rm.biomes">
     <defName>RM_MeltBlueIceInMelter</defName>
     <label>melt blue ice</label>
     <description>Melt 25 blocks of blue ice into 75 L of fresh water, piped into a tank on this melter's liquid net.</description>
