@@ -187,7 +187,7 @@ namespace RimMandrake.Greentide
             if (victim.Faction == Faction.OfPlayer && !victim.Dead)
             {
                 Messages.Message("The bank under " + victim.LabelShort + " was a " + pawn.KindLabel + ". It has bitten "
-                    + victim.Possessive() + " legs out from under " + victim.Possessive() + ".",
+                    + victim.Possessive() + " legs out from under " + victim.ProObj() + ".",
                     new LookTargets(pawn), MessageTypeDefOf.ThreatSmall);
             }
             if (!victim.Dead && victim.Spawned)
