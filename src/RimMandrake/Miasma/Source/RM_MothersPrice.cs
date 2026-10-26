@@ -240,6 +240,8 @@ namespace RimMandrake.Miasma
 
         private List<int> offered = new List<int>();
         private Dictionary<int, int> buyerAt = new Dictionary<int, int>();
+        // Not saved: after a load a refused young may hear the refusal once more, then the window holds again.
+        private readonly Dictionary<int, int> refusedAt = new Dictionary<int, int>();
         private List<int> tmpKeys;
         private List<int> tmpVals;
 
@@ -270,6 +272,7 @@ namespace RimMandrake.Miasma
                 return 0;
             }
             int taken = 0;
+            int now = Find.TickManager.TicksGame;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned.ToList())
             {
                 Pawn young = null;
@@ -293,9 +296,26 @@ namespace RimMandrake.Miasma
                     continue;
                 }
                 Pawn mother = mothers.FirstOrDefault(m => RM_MiasmaKernel.ReturnInReach(true, m.Position.DistanceTo(at), RM_MothersPrice.ReachOf(m)));
-                if (mother != null && RM_MothersPrice.TryReturn(young, carrier, mother))
+                if (mother == null)
+                {
+                    continue;
+                }
+                // MOTHERSPRICE_FIX_REFUSAL_NAGS_EVERY_POLL: a refused young parked in her water would otherwise re-flash the
+                // refusal (with its sound) every poll.
+                bool refusedBefore = refusedAt.TryGetValue(young.thingIDNumber, out int when);
+                if (RM_MiasmaKernel.ReturnRefused(RM_MothersPrice.MotherBetrayed(mother))
+                    && !RM_MiasmaKernel.RefusalMaySpeak(refusedBefore, when, now))
+                {
+                    continue;
+                }
+                if (RM_MothersPrice.TryReturn(young, carrier, mother))
                 {
                     taken++;
+                    refusedAt.Remove(young.thingIDNumber);
+                }
+                else
+                {
+                    refusedAt[young.thingIDNumber] = now;
                 }
             }
             return taken;

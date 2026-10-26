@@ -136,6 +136,18 @@ namespace RimMandrake.Miasma
 
         public static bool ReturnRefused(bool motherBetrayed) { return motherBetrayed; }
 
+        /// <summary>MOTHERSPRICE_FIX_REFUSAL_NAGS_EVERY_POLL: quiet window after a refusal, per young.</summary>
+        public const int RefusalQuietTicks = 60000;
+
+        /// <summary>
+        /// Whether CheckReturns may try a refused young again (and so repeat the refusal message, which vanilla re-flashes with its sound
+        /// on every live duplicate): never refused, its window passed, or the clock went backwards (another game).
+        /// </summary>
+        public static bool RefusalMaySpeak(bool refusedBefore, int refusedAt, int now)
+        {
+            return !refusedBefore || now < refusedAt || now - refusedAt >= RefusalQuietTicks;
+        }
+
         /// <summary>
         /// RM_MapComponent_MothersPrice.CheckBuyers over the stranded young the player holds: the first sighting schedules a buyer 60k..120k
         /// ticks out, a due one is sent (success: offered for good; failure: try again in 60k). rangeExclusive is Rand.Range(int,int).

@@ -504,6 +504,22 @@ namespace RimMandrake.Miasma.Fuzz
                 if (!RM_MiasmaKernel.ReturnInReach(true, 16f, 16f) || RM_MiasmaKernel.ReturnInReach(true, 16.01f, 16f) || RM_MiasmaKernel.ReturnInReach(false, 1f, 16f)) bad("return reach boundary");
                 if (RM_MiasmaKernel.SaleCounts(false, true) || RM_MiasmaKernel.SaleCounts(true, false) || !RM_MiasmaKernel.SaleCounts(true, true)) bad("sale gate");
                 if (!RM_MiasmaKernel.ReturnRefused(true) || RM_MiasmaKernel.ReturnRefused(false)) bad("betrayed mother must refuse");
+                int q = RM_MiasmaKernel.RefusalQuietTicks;
+                if (q < 2500) bad("refusal quiet window shorter than an hour");
+                if (!RM_MiasmaKernel.RefusalMaySpeak(false, 0, 0) || RM_MiasmaKernel.RefusalMaySpeak(true, 1000, 1000)
+                    || RM_MiasmaKernel.RefusalMaySpeak(true, 1000, 1000 + q - 1) || !RM_MiasmaKernel.RefusalMaySpeak(true, 1000, 1000 + q)
+                    || !RM_MiasmaKernel.RefusalMaySpeak(true, 5000, 10)) bad("refusal quiet window");
+                // a young parked in her water under a betrayed mother, polled every 250 t for 10 days: one refusal per window
+                {
+                    bool had = false;
+                    int at = 0, spoke = 0;
+                    for (int now = 0; now < 600000; now += 250)
+                    {
+                        Steps++;
+                        if (RM_MiasmaKernel.RefusalMaySpeak(had, at, now)) { spoke++; had = true; at = now; }
+                    }
+                    if (spoke != 600000 / q) bad("refusal spoke " + spoke + " times in 10 days");
+                }
             }
 
             // --- attar balm: a scar of severity s needs ceil((s - 0.01) / 3) applications
