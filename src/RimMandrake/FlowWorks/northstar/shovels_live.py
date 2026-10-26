@@ -255,8 +255,12 @@ def main():
             step(5)
             st = {p.get("id"): p for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []}.get(got[0]) or {}
             nomine = (probe(dig_a, "dig", got[0]).get("pawn") or {}).get("workTypeDisabled") is True
-            rolls.append({"id": got[0], "downed": st.get("downed"), "miningDisabled": nomine})
-            if st and not st.get("downed") and not st.get("dead") and not nomine:
+            # HARNESS (live 2026-10-25): SH_drift_clear_needs_shovel bars Cleaning 1 later; a roll incapable of Cleaning
+            # refuses that write (the row read UNMEASURED after 464 s), so the roll proves Cleaning can be set (the bar
+            # below puts it back to 0)
+            noclean = not work_bar.set_priority(B.call, got[0], "Cleaning", 1)[0]
+            rolls.append({"id": got[0], "downed": st.get("downed"), "miningDisabled": nomine, "cleaningDisabled": noclean})
+            if st and not st.get("downed") and not st.get("dead") and not nomine and not noclean:
                 pid = got[0]
                 break
             B.call("jawa/pawn_force_incapacitate", pawn=got[0], action="vanish", _answer=True)
