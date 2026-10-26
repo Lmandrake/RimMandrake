@@ -189,6 +189,7 @@ class Gate:
         self.def_tex = defaultdict(set)               # defName -> {texture texts} (our own defs)
         self.def_draws = defaultdict(set)             # defName -> {key(texture)}: its own XML, its PawnKindDefs, and
         #                                               patches whose xpath names it (#4: per-target-def attribution)
+        self.surface_defs = {}                        # TerrainDef/WeatherDef defName -> (mod dir, {defName, overlay class names})
         for x in src.rglob("*.xml"):
             r = x.relative_to(self.repo).as_posix()
             if "/textures/" in r.lower():
@@ -207,6 +208,9 @@ class Gate:
                             self.def_draws[name].add(key(el.text))
             for d in root.iter():
                 dn = (d.findtext("defName") or "").strip() if isinstance(d.tag, str) else ""
+                if dn and d.tag in ("TerrainDef", "WeatherDef"):
+                    self.surface_defs[dn] = ("/".join(r.split("/")[1:3]),
+                                             {dn} | {(c.text or "").strip().rsplit(".", 1)[-1] for c in d.findall("overlayClasses/li")})
                 for el in d:
                     if isinstance(el.tag, str) and el.tag in TEXTAGS and (el.text or "").strip() and not list(el):
                         self.drawn[low(el.text)].add(r)
@@ -220,6 +224,34 @@ class Gate:
                         self.def_draws[dn].add(key(el.text))
                         if race:
                             self.def_draws[race].add(key(el.text))
+
+        self._scan_contract_paths(src)
+
+    def _scan_contract_paths(self, src: Path):
+        """TerrainDef / WeatherDef art is installed at a CONTRACT path the def's XML does not name (its texturePath is a
+        vanilla stand-in; the overlay material is built in C#). Such a path counts as drawn by the def only when a C#
+        file of the SAME mod holds the path as a string literal AND names the def (or, for weather, its overlay class)."""
+        by_mod = defaultdict(list)
+        for n, (mod, toks) in self.surface_defs.items():
+            by_mod[mod].append((n, toks))
+        for cs in src.rglob("*.cs"):
+            parts = cs.relative_to(src).parts
+            modkey = "/".join(parts[:2])                  # <ModsGroup>/<Mod>: the C# must sit in the def's own mod
+            if len(parts) < 3 or modkey not in by_mod:
+                continue
+            try:
+                txt = cs.read_text(encoding="utf-8-sig", errors="replace")
+            except OSError as e:
+                raise GateError(f"C# scan failed on {cs}: {e}") from e
+            lits = re.findall(r'"((?:Terrain|Weather)/[^"\\]+)"', txt)
+            if not lits:
+                continue
+            for n, toks in by_mod[modkey]:
+                if any(re.search(r"\b" + re.escape(t) + r"\b", txt) for t in toks):
+                    for lit in lits:
+                        self.def_draws[n].add(key(lit))
+                        self.drawn[low(lit)].add(n)
+                    self.def_tex.setdefault(n, set()).update(lits)
 
     def _ledger(self):
         idx = self.idx

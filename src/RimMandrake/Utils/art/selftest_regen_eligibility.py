@@ -163,6 +163,31 @@ def main() -> int:
     for msg, r, want in cases:
         v = g.classify(r)
         check(v["verdict"] == want and v["eligible"] == (want in RE.ELIGIBLE), msg, v)
+    # TerrainDef / WeatherDef: the art lands at a CONTRACT path only C# names (texturePath is a vanilla stand-in)
+    (root / M / "Defs" / "s.xml").write_text(
+        "<Defs><TerrainDef><defName>RM_SurfT</defName><texturePath>Terrain/Surfaces/Carpet</texturePath></TerrainDef>"
+        "<TerrainDef><defName>RM_SurfNoCs</defName><texturePath>Terrain/Surfaces/Carpet</texturePath></TerrainDef>"
+        "<WeatherDef><defName>RM_SurfW</defName><overlayClasses><li>Foo.RM_Overlay_SurfW</li></overlayClasses></WeatherDef></Defs>")
+    (root / M / "Source").mkdir(exist_ok=True)
+    (root / M / "Source" / "Art.cs").write_text('class A { const string T = "Terrain/Surfaces/RM_SurfT"; '
+                                                'const string W = "Weather/RM_SurfWOverlay"; class RM_Overlay_SurfW {} }')
+    g3 = gate(root)
+    for msg, r, want in [
+        ("TerrainDef contract path named in the mod's C#: NONE (owed), not 'no def draws'",
+         row("RM_SurfT", install_to=it("Terrain/Surfaces/RM_SurfT")), "NONE"),
+        ("WeatherDef overlay texture named in C# beside its overlay class: NONE",
+         row("RM_SurfW", install_to=it("Weather/RM_SurfWOverlay")), "NONE"),
+        ("TerrainDef whose contract path no C# names stays refused",
+         row("RM_SurfNoCs", install_to=it("Terrain/Surfaces/RM_SurfNoCs")), "REFUSED_UNCONFIRMED"),
+        ("TerrainDef: a C# literal for ANOTHER def's path does not make this def draw it",
+         row("RM_SurfNoCs", install_to=it("Terrain/Surfaces/RM_SurfT")), "REFUSED_UNCONFIRMED"),
+    ]:
+        v = g3.classify(r)
+        check(v["verdict"] == want, msg, v)
+    (root / M / "Textures/Terrain/Surfaces").mkdir(parents=True)
+    (root / M / "Textures/Terrain/Surfaces/RM_SurfT.png").write_bytes(B["regen"])
+    v = gate(root).classify(row("RM_SurfT", install_to=it("Terrain/Surfaces/RM_SurfT")))
+    check(v["verdict"] == "REFUSED_REGEN", "TerrainDef contract path already holding a render stays refused", v)
     # facings: every facing must be confirmed; one regenerated facing refuses the row
     (root / M / "Textures/Things/RM_Fac").mkdir(parents=True)
     (root / M / "Textures/Things/RM_Fac/RM_Fac_east.png").write_bytes(B["donor"])
