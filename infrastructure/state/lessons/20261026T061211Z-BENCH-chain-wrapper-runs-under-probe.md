@@ -1,0 +1,2 @@
+A modcheck chain function is CALLED offline before any live run: targeting.catalogue(), visual floor, required_checks, runsheet and extension_proof all walk every chain with a session-less _DeclarationProbe. Any side effect put in a chain wrapper (FlowWorks river wrapper ran river_site.py, replacing the map, in a job that selected only core/hose chains: SteveDesktop J20261026T060806Z-63c715) fires there too. Guard side effects with getattr(t, 'session', None) is None -> just call the chain. Fixed e9ffeb32ac.
+home: live-debugging-proof-harness
