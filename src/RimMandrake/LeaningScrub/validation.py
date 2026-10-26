@@ -74,6 +74,8 @@ DEFAULTS = {
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
+    "thornholdDenEnabled": True, "thornholdStandEnabled": True, "rollbugCarrionEnabled": True,
+    "rollbugTakesColonyCorpses": True,
     # LEANINGSCRUB_MECHANICS_BUILD_1 parts 6, 5b, 8 (RM_Ripple.cs, RM_CallingPyre.cs, RM_ScrubInjections.cs)
     "rippleEnabled": True, "rippleMaxBodySize": 0.6, "stallHuntEnabled": True, "leanWakesEnabled": True,
     "callingPyreEnabled": True, "callingPyreRadius": 14.0, "callingPyreHerdFactor": 1.0,

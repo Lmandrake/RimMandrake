@@ -461,6 +461,8 @@ class Fake(object):
             on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
             d = 0.10 if on and "no_comfort" not in self.broken else 0.0
             return {"success": True, "result": "DELTA %.2f" % d}
+        if method in ("ProofDen", "ProofStand", "ProofOrderRoll", "ProofBite"):
+            return self.dens_proof(type, method, args)
         if method == "ProofVisuals":
             on = self.on("runwayBloomEnabled")
             sway, under, holes, answered = (1, 1, 1, 2) if on else (0, 0, 0, 0)
@@ -509,6 +511,74 @@ class Fake(object):
             return {"success": True, "result": "REFUSED: scratching is off"}
         self.scratch = {"due": self.ticks + 700}
         return {"success": True, "result": "ORDERED P1 -> T1"}
+
+    # ------------------------------------------------------------ den proofs (RM_ScrubDens.cs)
+    def _pawn_at(self, kind, cell):
+        """RM_CompVineDen.FindAt: the first pawn standing ON `cell` that carries the comp (kind stands in for the comp)."""
+        x, z = [int(v) for v in cell.split(",")]
+        for p in self.pawns.values():
+            if p["kind"] == kind and (p["x"], p["z"]) == (x, z) and not p["dead"]:
+                return p
+        return None
+
+    def t_damage(self, damageDef=None, amount=0, thingId=None, **k):
+        p = self.pawns.get(thingId)
+        if p is not None and amount >= 100 and not p["dead"]:
+            p["dead"] = True
+            self.new("Corpse_" + p["kind"], p["x"], p["z"], faction=p["faction"])
+        return {"success": True}
+
+    def dens_proof(self, type, method, args):
+        """Replies in the exact shapes RM_ScrubDens.cs returns (ProofDen/ProofStand/ProofOrderRoll/ProofBite): the
+        pawn is found only ON the named cell, so a spawn on the wrong cell reads 'REFUSED: no ... pawn at'."""
+        b = self.broken
+        parts = args.split("|")
+        cell = parts[1]
+        want = "RM_Rollbug" if method in ("ProofOrderRoll", "ProofBite") else "RM_Thornhold"
+        p = self._pawn_at(want, cell)
+        if "dens_empty" in b:
+            return {"success": True, "result": ""}
+        if "dens_blind" in b or p is None:
+            what = "larder" if want == "RM_Rollbug" else "vine-den"
+            return {"success": True, "result": "REFUSED: no %s pawn at (%s)" % (what, cell.replace(",", ", 0, "))}
+        x, z = p["x"], p["z"]
+        if method == "ProofDen":
+            if "den_never" in b or not self.on("thornholdDenEnabled") and "den_ignores_toggle" not in b:
+                return {"success": True, "result": "REFUSED: no venomvine within reach"}
+            dx, dz = (x - 2, z + 5) if "den_wrong_cell" in b else (x - 2, z)
+            return {"success": True, "result": "DEN %s den=(%d, 0, %d) home=(%d, 0, %d)" % (p["id"], dx, dz, dx, dz)}
+        if method == "ProofStand":
+            tx, tz = [int(v) for v in parts[2].split(",")]
+            att = [q for q in self.pawns.values() if (q["x"], q["z"]) == (tx, tz) and not q["dead"]]
+            if not att:
+                return {"success": True, "result": "REFUSED: need a vine-den pawn at %s and a pawn at %s" % (cell, parts[2])}
+            off = not self.on("thornholdStandEnabled") and "stand_ignores_toggle" not in b
+            if off or "stand_never" in b:
+                return {"success": True, "result": "REFUSED: standing its ground is off" if off else "REFUSED: TryStartMentalState refused"}
+            who = "T0" if "stand_wrong_target" in b else att[0]["id"]
+            return {"success": True, "result": "STAND %s state=RM_ThornholdStand target=%s" % (p["id"], who)}
+        if method == "ProofOrderRoll":
+            corpses = [c for c in self.things.values() if c["def"].startswith("Corpse_")]
+            colony = [c for c in corpses if c.get("faction") == "player"]
+            pool = corpses if self.on("rollbugTakesColonyCorpses") or "roll_ignores_toggle" in b else \
+                [c for c in corpses if c.get("faction") != "player"]
+            if "roll_never" in b or not self.on("rollbugCarrionEnabled") or not pool:
+                return {"success": True, "result": "REFUSED: " + ("no corpse in reach" if not pool else "carrion rolling is off")}
+            c = pool[0]
+            lx, lz = x - 3, z
+            if "roll_far" in b:
+                lx, lz = x + 9, z      # the corpse is left where it lay: > 3 from the larder
+            else:
+                c["x"], c["z"] = lx + 1, lz
+            if "roll_copies" in b:
+                self.new(c["def"], c["x"], c["z"], faction=c.get("faction"))
+            if "roll_loses" in b:
+                del self.things[c["id"]]
+            p["x"], p["z"] = lx, lz
+            return {"success": True, "result": "ORDERED %s -> %s larder=(%d, 0, %d)" % (p["id"], c["id"], lx, lz)}
+        if "bite_never" in b:
+            return {"success": True, "result": "REFUSED: no ball within reach"}
+        return {"success": True, "result": "ATE a hare corpse BIT"}
 
     def t_spawn_batch(self, ops="", **k):
         for op in ops.split(";"):
@@ -709,6 +779,19 @@ BREAKS = {
     "bloom_ignores_toggle": "bloom.bloom_toggle_off_quiet",
     "no_bloom": "bloom.bloom_answers_a_walker",
     "no_exit_hole": "bloom.bloom_sway_and_exit_hole",
+    "dens_empty": "dens.thornhold_dens_in_venomvine",
+    "dens_blind": "dens.thornhold_dens_in_venomvine",
+    "den_never": "dens.thornhold_dens_in_venomvine",
+    "den_wrong_cell": "dens.thornhold_dens_in_venomvine",
+    "stand_ignores_toggle": "dens.thornhold_stand_toggle_off_refused",
+    "stand_never": "dens.thornhold_stands_at_den",
+    "stand_wrong_target": "dens.thornhold_stands_at_den",
+    "roll_ignores_toggle": "dens.rollbug_colony_corpse_toggle_off_refused",
+    "roll_never": "dens.rollbug_rolls_any_corpse",
+    "roll_copies": "dens.rollbug_rolls_any_corpse",
+    "roll_loses": "dens.rollbug_rolls_any_corpse",
+    "roll_far": "dens.rollbug_rolls_any_corpse",
+    "bite_never": "dens.rollbug_bites_its_ball",
     "station_ignores_toggle": "sweetline.station_toggle_off_plain",
     "no_name": "sweetline.station_named_and_timed",
     "no_wool": "sweetline.station_sheds_wool",
