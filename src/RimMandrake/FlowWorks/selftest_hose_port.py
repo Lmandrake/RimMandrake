@@ -67,7 +67,7 @@ def p1_planted():
     return shared, none
 
 
-# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (25: L7's 19 + pond return + sprinkler draw + levelling + pump overflow spill + gravity overflow + faucet draw). Each tag must appear exactly
+# P9: every hose credit site, mirroring Source/SelfTest/TransferChecks.cs CreditTags (26: L7's 19 + pond return + sprinkler draw + levelling + pump overflow spill + gravity overflow + faucet draw + ice melter). Each tag must appear exactly
 # once, in its file, on a line that makes a credit call, inside the block of a committed transfer (an `RM_LiquidTransfer.Move(`
 # a few lines above; the pre-L1 Try*Liquid guard is still accepted).
 CREDIT_SITES = [
@@ -87,6 +87,7 @@ CREDIT_SITES = [
     ("LiquidTypes/Building_LiquidPump.cs", "credit site: pump overflow spill"),   # CANAL_OVERFLOW stage 1 (mirrors TransferChecks.CreditTags)
     ("Machinery/RM_LiquidNet.cs", "credit site: gravity overflow"),   # CANAL_OVERFLOW stage 2
     ("Thirst/Building_RM_PipeFaucet.cs", "credit site: faucet draw"),   # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE (mirrors TransferChecks.CreditTags)
+    ("RM_IceMelter.cs", "credit site: ice melter"),   # a8f10174f1 ice melter (mirrors TransferChecks.CreditTags)
 ]
 CREDIT_CALL = re.compile(r"(?:RM_LiquidNet\.Credit|\bCreditTo|\bCreditRoute)\(")
 CREDIT_DEF = re.compile(r"static void (?:Credit|CreditTo|CreditRoute)\(")
@@ -259,7 +260,7 @@ def main():
           and "save-skip, type alias, def alias" in ess)
     # P9
     bad, calls = p9_credit_sites()
-    check("P9 %d credit sites (FINAL's 11 + tank settle + 6 pump hose ends + dump drain + pond return + sprinkler draw + levelling + overflow spills + faucet draw), each inside a committed transfer"
+    check("P9 %d credit sites (FINAL's 11 + tank settle + 6 pump hose ends + dump drain + pond return + sprinkler draw + levelling + overflow spills + faucet draw + ice melter), each inside a committed transfer"
           % len(CREDIT_SITES), not bad and calls == len(CREDIT_SITES), (bad, calls))
     pbad, pcalls = p9_planted()
     check("P9 can-fail: a planted unguarded credit, a missing tag and an extra call are all caught", len(pbad) == 2 and pcalls == len(CREDIT_SITES) + 1,
