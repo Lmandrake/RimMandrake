@@ -1,0 +1,1 @@
+A 7-day spend census pooled across a fix reports the pre-fix waste as live: subagent >100k-context share was ~80%/day before the 10-23 bounded-helper fix and ~16% after, but the pooled week read 19.1% and was recommended as the top lever. Split any census by day before ranking levers.
