@@ -32,7 +32,8 @@
     directly instead of as a hatching clump.
   KEPT, guarded on VEF (a framework we keep): asexual reproduction, HighlyFlammable, cap-flesh harvest.
   ART: ours. Rennok and vorrugath use this mod's RotSpecies art; the gromma's is installed through the
-  art ledger at Things/Pawn/Animal/RM_Agaripod (Patches/ArtFold/Agaripod_ArtFold.xml points the donor at it too).
+  art ledger at Things/Pawn/Animal/RM_Agaripod. RENNOK_FIX_DESC_CLAIMS_KIN_AID: the rennok is not a herd animal and
+  nothing moves its kin to defend it; they only take a share of its wounds (RM_CompWoundLink).
 -->
 <Defs>
 
@@ -40,7 +41,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Agaripawn</defName>
     <label>rennok</label>
-    <description>A massive, shambling animal whose back and flanks are buried beneath living lilac caps that feed it. It burns readily, and nearby kin feel its injuries and come to its aid. It breeds by shedding spores and yields a little edible cap-flesh that keeps longer than most fungus.</description>
+    <description>A massive, shambling animal whose back and flanks are buried beneath living lilac caps that feed it. It burns readily, and nearby kin take a share of its injuries. It breeds by shedding spores and yields a little edible cap-flesh that keeps longer than most fungus.</description>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
       <ComfyTemperatureMin>-15</ComfyTemperatureMin>
