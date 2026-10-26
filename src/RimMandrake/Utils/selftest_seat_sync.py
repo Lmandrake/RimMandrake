@@ -192,6 +192,15 @@ def main() -> int:
         check(rc == 0 and "SYNCED" in out and Path(seat, "M/f1199.txt").is_file(),
               f"a landing of 1200 added files syncs with per-call argv capped ({out.strip()[-80:]})")
 
+        # literal pathspecs: upstream adds `G/a[b].txt`; an unrelated untracked `G/ab.txt` here is not that path
+        # (as a glob, `a[b].txt` matches `ab.txt`, and the sync refused over a file upstream never touches)
+        write(seat, "G/ab.txt", "mine, unrelated\n")
+        peer_push(peer, {"G/a[b].txt": "upstream\n"}, "bracket name")
+        rc, out = run(seat)
+        check(rc == 0 and "SYNCED" in out and Path(seat, "G/a[b].txt").read_text() == "upstream\n"
+              and Path(seat, "G/ab.txt").read_text() == "mine, unrelated\n",
+              f"a bracketed upstream path is matched literally, not as a glob ({out.strip()[-120:]})")
+
         # wrong branch / dry run
         git(seat, "checkout", "-q", "-b", "side")
         rc, out = run(seat)

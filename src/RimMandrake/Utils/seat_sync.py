@@ -44,18 +44,24 @@ class Refused(Exception):
     pass
 
 
+def _git_env() -> dict:
+    """os.environ as of THIS call plus GIT_LITERAL_PATHSPECS=1: every path this tool hands git is a real repo path,
+    never a pattern, so `a[b].txt` must not also match `ab.txt` (review 2026-10-26, SEAT_SYNC_HARDEN_LITERAL_PATHSPECS)."""
+    return {**os.environ, "GIT_LITERAL_PATHSPECS": "1"}
+
+
 class Git:
     def __init__(self, repo: str):
         self.repo = repo
 
     def run(self, *a, check=True, inp: str | None = None) -> str:
-        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp)
+        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp, env=_git_env())
         if check and r.returncode:
             raise Refused(f"git {' '.join(a[:3])} failed: {(r.stderr or r.stdout).strip()[-600:]}")
         return r.stdout
 
     def ok(self, *a) -> bool:
-        return subprocess.run(["git", "-C", self.repo, *a], capture_output=True).returncode == 0
+        return subprocess.run(["git", "-C", self.repo, *a], capture_output=True, env=_git_env()).returncode == 0
 
     def lines(self, *a) -> list[str]:
         return [x for x in self.run(*a).split("\0" if "-z" in a else "\n") if x]
