@@ -668,6 +668,18 @@ CAPS = [
     dict(id="K18", g="K", label="A pump has one hose port on each side", item="FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE",
          effect="A hose joins a pump only at one of its four side ports, one to a port; a pipe joins wherever it is adjacent.",
          probes=["cs:class RM_PumpPortMath"], bars=["pump_hose_joins_at_side_port"], src="Owner 2026-10-20"),
+    # ---- the 2 bars added by card 2026-10-26 (FlowWorks.md north star; claimed in validation.py ice_dig / dig_fill chains)
+    dict(id="A13", g="A", label="Cutting ice leaves crushed ice that melts to water and cools its room", item="ICE_DIG_BUILD_CRUSHED_ICE_MELTS_DOWN",
+         effect="Ice and packed snow dig to crushed ice; a stack melts one pile at a time to the notch its cut removed, "
+                "cooling a roofed room; blue ice melts at the melter.",
+         probes=["xml:defName>RM_CrushedIce<", "xml:defName>RM_IceMelter<", "cs:class RM_IceMelter\\b", "set:iceDigEnabled",
+                 "set:iceMeltCoolingPerSecond"], bars=["ice_cuts_to_crushed_ice_that_melts"],
+         src="Owner cards 2026-10-25 (ICE_DIG, ICE_MELT_TAME_STACK_FLOOD)"),
+    dict(id="A14", g="A", label="Digging or filling a square takes hours of shovel work; raiders fetch their fill", item="DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK",
+         effect="Dig and fill work carry the labour multiplier (x4: 3 h a soil notch, 1.5 h to fill); a raider carries "
+                "gravel or a chunk in before filling a trench.",
+         probes=["set:digLabourMultiplier", "cs:RM_DigDepthMath\\.LabourWork\\(", "xml:defName>RM_RaiderFetchFill<"],
+         bars=["digging_takes_hours"], src="DIG_FILL owner card 2026-10-25"),
 ]
 
 # ------------------------------------------------------------------------------------------------ THE DESIGNER VIEW
@@ -836,6 +848,8 @@ PLAIN = {
     "A12": "walking beneath a suspension bridge",
     "K17": "pipes and hoses drawn running under a building to its centre",
     "K18": "one hose port on each side of a pump",
+    "A13": "cut ice leaving crushed ice that melts to water and cools the room",
+    "A14": "digging or filling a square taking hours of shovel work, raiders carrying their fill in",
 }
 
 # Plain captions for the pictures (the scene-group shots of the 2026-10-05 live test, the Quarry reference, and the
@@ -874,7 +888,7 @@ FEATURES = [
     # ---- 1 digging
     dict(id="dig_canal", s="dig", title="You mark ground and a colonist digs a canal there; dig again to go one level deeper",
          say="There are four depths. The fourth is a pit: nothing more than the deepest dug ground.",
-         caps=["A01", "A02", "A03", "A08"], minor=["A04"], shots=["S_ladder"]),
+         caps=["A01", "A02", "A03", "A08", "A14"], minor=["A04"], shots=["S_ladder"]),
     dict(id="dig_fill_in", s="dig", title="You can fill a canal back in, and the liquid in it is pushed along, not deleted",
          say="Only liquid with nowhere at all to go is lost, and the game counts it.",
          caps=["A05", "B10", "B11"], shots=["J_jobs"]),
@@ -883,7 +897,7 @@ FEATURES = [
          caps=["A06", "A07"]),
     dict(id="dig_finds", s="dig", title="Digging a canal sometimes turns up local minerals, with a letter the first time each one appears",
          say="Deep cuts can reach the minerals deep drills find; where there are none, you get chunks of local rock.",
-         caps=["M01", "M02", "M03", "M04"]),
+         caps=["M01", "M02", "M03", "M04", "A13"]),
     # ---- 2 flow
     dict(id="flow_spreads", s="flow", title="Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel",
          say="It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the "
@@ -1130,10 +1144,11 @@ def latest_result(path=None):
                 src[rid] = f
                 rows[rid] = (str(r.get("status", "")), str(r.get("detail", "")))
     label = ", ".join(os.path.basename(f) + " [%s]" % fresh[f] if f in fresh and "validation_v2_result_" in os.path.basename(f) else os.path.basename(f) for f in files) or "(no result file)"
-    # a row whose winning source is not at today's hash reads STALE (result_is_stale), proof file or validation alike
-    stale = sorted({os.path.basename(f) for f in src.values() if fresh[f].startswith("STALE:")})
-    if stale and "STALE:" not in label:
-        label += " [STALE: rows from %s not at today's mod_hash]" % ", ".join(stale)
+    # a row whose winning source is not PROVEN at today's hash reads STALE (result_is_stale), proof file or validation
+    # alike: an older hash, no hash, or a hash that could not be measured. Freshness unknown is never assumed current.
+    stale = sorted({os.path.basename(f) for f in src.values() if fresh[f] != "mod_hash current"})
+    if stale:
+        label += " [STALE: rows from %s not proven at today's mod_hash]" % ", ".join(stale)
     return label, rows
 
 
@@ -1580,7 +1595,7 @@ def glance_html(sec_counts, totals, nfeat, asks, rem, board_rel):
 def freshness_html(rlabel):
     """The live-test evidence line for the sheet brief and the board header: which result, and whether it is STALE."""
     if result_is_stale(rlabel):
-        return ("<p><b>Live test evidence is STALE:</b> the newest live test ran on older code than today's. Features it "
+        return ("<p><b>Live test evidence is STALE:</b> the newest live test is not proven to have run on today's code. Features it "
                 "passed are shown as built, not as working in game, until a fresh test runs. (%s)</p>" % _esc(rlabel))
     return "<p><b>Live test evidence:</b> %s</p>" % _esc(rlabel)
 

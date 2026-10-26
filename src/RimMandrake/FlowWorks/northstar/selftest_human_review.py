@@ -117,11 +117,26 @@ def main():
         states = {i: ("done", "") for i in {x["item"] for x in caps}}
         base = H.build(os.path.join(tmp, "a", "s.html"), states=states)
         target = next(x for x in base["caps"] if x["d"]["status"] == "BUILT-UNPROVEN")
+        try:
+            sys.path.insert(0, os.path.join(H.REPO, "src", "RimMandrake", "Utils", "modcheck"))
+            import status as _STp
+            cur_hash = _STp.mod_hash(H.HERE)
+        except Exception:  # noqa: BLE001
+            cur_hash = None
+        ok(cur_hash, "sanity: today's FlowWorks mod_hash is measurable (else no PASS can prove anything)")
         planted = os.path.join(tmp, "validation_v2_result_planted.json")
-        json.dump({"rows": [{"id": "FAKE_PLANTED_ROW", "status": "PASS", "detail": "planted"}]}, open(planted, "w"))
+        json.dump({"mod_hash": cur_hash, "rows": [{"id": "FAKE_PLANTED_ROW", "status": "PASS", "detail": "planted"}]},
+                  open(planted, "w"))
         caps2 = [dict(x, rows=x.get("rows", []) + ["FAKE_PLANTED_ROW"]) if x["id"] == target["id"] else x for x in caps]
         before = H.build(os.path.join(tmp, "b", "s.html"), states=states, caps=caps2)
         after = H.build(os.path.join(tmp, "c", "s.html"), result=planted, states=states, caps=caps2)
+        # a result with NO mod_hash has freshness UNMEASURED: its PASS cannot prove today's code (review wave 2026-10-26)
+        nohash = os.path.join(tmp, "validation_v2_result_nohash.json")
+        json.dump({"rows": [{"id": "FAKE_PLANTED_ROW", "status": "PASS", "detail": "x"}]}, open(nohash, "w"))
+        nh = H.build(os.path.join(tmp, "e", "s.html"), result=nohash, states=states, caps=caps2)
+        sn = next(x for x in nh["caps"] if x["id"] == target["id"])["d"]["status"]
+        ok(sn == "BUILT-UNPROVEN" and H.result_is_stale(nh["result"]),
+           "a PASS from a result with no mod_hash does not prove %s (%s; %s)" % (target["id"], sn, nh["result"]))
         stale_res = os.path.join(tmp, "validation_v2_result_stale.json")
         json.dump({"mod_hash": "deadbeef0000", "rows": [{"id": "FAKE_PLANTED_ROW", "status": "PASS", "detail": "x"}]},
                   open(stale_res, "w"))
