@@ -8,6 +8,9 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py show JOB                  at most 20 lines: state, selection, attempt, outcome, the failing rows
   testq.py cancel JOB --reason R     pending -> cancelled; running -> the worker is told to stop
   testq.py resume --reason R         lift a lane pause (paused.json) once its cause is dealt with
+  testq.py sweep MOD [--by SEAT]     queue today's one full sweep of MOD (purpose=sweep, origin/main), unless a sweep
+                                     of MOD was submitted in the last TESTQ_SWEEP_GAP_H (20) hours; the testq-sweep
+                                     timer runs it nightly at 01:30 local for each of TESTQ_SWEEP_MODS (FlowWorks)
   testq.py tick                      one dispatch pass (a systemd user timer runs it every 60 s)
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
@@ -33,7 +36,8 @@ One tick, under a non-blocking lock (a second tick while one runs exits at once)
      runner pull failed) PAUSES the lane: paused.json is written and ingest.py files a finding.
   3. Drain the worker's outbox: duplicates of results already in done/ are acked; results for jobs the queue
      does not know go to orphans/ and are acked.
-  4. Admit one ready job when the lane is idle and not paused: no owner_gate, not_before passed, lane stevedesktop or any;
+  4. Admit one ready job when the lane is idle and not paused: no owner_gate, not_before passed, lane stevedesktop
+     or any;
      highest priority first, then the current train (same profile as the last job sent), then oldest.
      The worker's exit 75 (busy) leaves it pending.
 Archmagi lane: jobs with lane=archmagi stay pending; the dispatcher never drives Archmagi's game (the BENCH seat
@@ -385,6 +389,30 @@ def sel_text(job):
     return " ".join("%s=%s" % (k, ",".join(v) if isinstance(v, list) else v) for k, v in sel.items())
 
 
+def cmd_sweep(a):
+    """The design's sweep rotation, one mod per call: at most one --full per mod per day, overnight (the timer)."""
+    ensure_dirs()
+    gap = float(os.environ.get("TESTQ_SWEEP_GAP_H", "20")) * 3600
+    now = time.time()
+    for st in STATES:
+        for rec in records(st):
+            job = job_of(rec)
+            if job.get("mod") == a.mod and job.get("purpose") == "sweep" and (job.get("selector") or {}).get("full") \
+                    and now - S.parse_ts(job["submitted"]) < gap:
+                print("already: %s (%s, submitted %s)" % (job["id"], st, job["submitted"]))
+                return 0
+    r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
+                       timeout=60)
+    if r.returncode != 0:
+        print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
+        return 2
+    sub = argparse.Namespace(mod=a.mod, chains=None, rows=None, item=None, full=True, purpose="sweep", by=a.by,
+                             sha=r.stdout.strip(), for_item=a.for_item, profile=None, priority=a.priority,
+                             not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
+                             timeout=14400, no_canary=False, no_validity=False, no_sha_check=True)
+    return cmd_submit(sub)
+
+
 def cmd_list(a):
     ensure_dirs()
     pz = paused()
@@ -446,6 +474,26 @@ ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
 TimeoutStartSec=900
 """,
+    "testq-sweep.service": """[Unit]
+Description=testq daily full sweep request (design: at most one --full per mod per day, overnight)
+
+[Service]
+Type=oneshot
+WorkingDirectory={clone}
+ExecStartPre=-/usr/bin/git -C {clone} pull -q --ff-only origin main
+ExecStart=/bin/bash -c 'for m in ${{TESTQ_SWEEP_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py sweep "$m"; done'
+TimeoutStartSec=300
+""",
+    "testq-sweep.timer": """[Unit]
+Description=testq daily full sweep at 01:30 local
+
+[Timer]
+OnCalendar=*-*-* 01:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+""",
     "testq-tick.timer": """[Unit]
 Description=testq dispatch tick every 60 s
 
@@ -473,7 +521,8 @@ def cmd_install_timer(a):
             with open(path, "w", encoding="utf-8") as f:
                 f.write(text.format(clone=DISPATCH))
     if a.apply:
-        for argv in (["daemon-reload"], ["enable", "--now", "testq-tick.timer"]):
+        for argv in (["daemon-reload"], ["enable", "--now", "testq-tick.timer"],
+                     ["enable", "--now", "testq-sweep.timer"]):
             r = subprocess.run(["systemctl", "--user"] + argv, capture_output=True, text=True, timeout=60)
             print("systemctl --user %s: exit %d %s" % (" ".join(argv), r.returncode, r.stderr.strip()[-200:]))
     return 0
@@ -512,6 +561,11 @@ def main(argv=None):
     s.add_argument("--reason", required=True)
     s = sub.add_parser("resume")
     s.add_argument("--reason", required=True)
+    s = sub.add_parser("sweep")
+    s.add_argument("mod")
+    s.add_argument("--by", default="BENCH", help="the requesting seat (BENCH owns FlowWorks)")
+    s.add_argument("--for-item")
+    s.add_argument("--priority", type=int, default=40)
     sub.add_parser("tick")
     s = sub.add_parser("install-timer")
     s.add_argument("--apply", action="store_true")
@@ -520,6 +574,7 @@ def main(argv=None):
         print("REFUSED: %r is not a job id" % a.job)
         return 2
     return {"submit": cmd_submit, "list": cmd_list, "show": cmd_show, "cancel": cmd_cancel, "resume": cmd_resume,
+            "sweep": cmd_sweep,
             "tick": cmd_tick,
             "install-timer": cmd_install_timer}[a.cmd](a)
 

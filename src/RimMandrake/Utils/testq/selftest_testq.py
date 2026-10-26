@@ -9,6 +9,7 @@ retried once (attempt id asked first), a red canary pausing the lane until resum
 mid-run -> GAME_DIED retried once without a pause, orphan results kept, show within 20 lines, a concurrent tick refused.
 """
 import fcntl
+import glob
 import json
 import os
 import shutil
@@ -78,6 +79,17 @@ def main():
             r = subprocess.run([sys.executable, TESTQ] + list(args), env=dict(env, **extra), capture_output=True,
                                text=True, timeout=120)
             return r.returncode, r.stdout
+
+        def read_job(jid):
+            for st in ("pending", "running", "done", "cancelled"):
+                pth = os.path.join(queue, st, jid + ".json")
+                if os.path.exists(pth):
+                    rec = json.load(open(pth))
+                    return rec.get("job", rec) if st != "pending" else rec
+            return {}
+
+        def njobs():
+            return len(glob.glob(os.path.join(queue, "*", "*.json")))
 
         def submit(*args):
             rc, o = tq("submit", "Mock", "--purpose", "commission", "--by", "BENCH", "--sha", sha, *args)
@@ -224,6 +236,19 @@ def main():
         rk = json.load(open(os.path.join(queue, "done", k + ".json")))
         check(rk["result"]["cause"] == "GAME_DIED" and len(rk["attempts"]) == 2 and not os.path.exists(paused),
               "the second GAME_DIED closes the job without pausing the lane: %s" % rk["result"]["cause"])
+
+        # the daily sweep (design: at most one --full per mod per day, overnight): idempotent within a day
+        rc, o = tq("sweep", "Mock")
+        sj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip() else None
+        sw = read_job(sj) if sj else {}
+        check(sw.get("purpose") == "sweep" and sw.get("selector") == {"full": True} and state(sj) == "pending",
+              "sweep MOD queues one full sweep job: %s %s" % (rc, o[-200:]))
+        n0 = njobs()
+        rc, o = tq("sweep", "Mock")
+        check(rc == 0 and "already" in o and njobs() == n0,
+              "a second sweep the same day queues nothing: %s" % o[-200:])
+        rc, o = tq("install-timer")
+        check(rc != 0 or "testq-sweep.timer" in o, "install-timer also installs the daily sweep timer: %s" % o[-200:])
 
         rc, o = tq("show", "../../x")
         check(rc == 2, "a path as a job id is refused")
