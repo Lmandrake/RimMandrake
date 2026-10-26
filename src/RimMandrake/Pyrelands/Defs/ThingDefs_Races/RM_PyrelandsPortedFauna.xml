@@ -574,7 +574,8 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Barbslinger</defName>
     <label>barbslinger</label>
-    <description>A shield-backed scorpion the size of a calf, plated in heat-cured chitin that the Pyrelands' burns have taught it to wear. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The barbed tail is not for hunting — it is what the barbslinger does to anything that stands over its find and refuses to move.</description>
+    <!-- BARBSLINGER_FIX_DESC_CALF_SIZE: baseBodySize 2.5 is above a grown cow (2.4, Races_Animal_CowGroup.xml), not a calf. -->
+    <description>A shield-backed scorpion bigger than a cow, plated in heat-cured chitin that the Pyrelands' burns have taught it to wear. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The barbed tail is not for hunting — it is what the barbslinger does to anything that stands over its find and refuses to move.</description>
     <statBases>
       <MoveSpeed>4.00</MoveSpeed>
       <ComfyTemperatureMin>-2</ComfyTemperatureMin>
