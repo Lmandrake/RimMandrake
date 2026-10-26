@@ -1,0 +1,2 @@
+A race with statBases LeatherAmount > 0 and no race.leatherDef (or useLeatherFrom) butchers to NO leather, silently: Pawn.ButcherProducts only reads RaceProps.leatherDef (Pawn.cs:3002), RaceProperties.ResolveReferences sets no default, and AnimalThingBase carries none. Every vanilla race names its leather. Found on RM_Shokka (45) and RM_Shirrel (12), commit 18063c93f0. Grep any new race for LeatherAmount without leatherDef.
+home: skills/rimworld-modding
