@@ -371,6 +371,7 @@ function hourLbl(t){ const d = new Date(t*1000); return d.toLocaleDateString([],
 function tokTitle(b, h, v){ const p = (b.parts || {})[String(h)];
   return `${hourLbl(h)} · ${fmtN(v)} tokens` + (p ? ` (in ${fmtN(p[0])}, cache write ${fmtN(p[1])}, cache read ${fmtN(p[2])}, out ${fmtN(p[3])})` : ''); }
 function tokChart(b, pts, label, span, bars){
+  if (!pts || !pts.length) return `<div class="ch unm">tokens/h · ${label}: no hours yet</div>`;
   const n = pts.length, W = 240, H = 34, max = Math.max(1, ...pts.map(p => p[1]));
   const y = v => (H - 1 - (H - 3) * v / max).toFixed(2), w = W / n;
   let marks = '';
@@ -439,6 +440,8 @@ function renderStrip(){
   const dg = snap && snap.digest;
   $('strip').innerHTML = pills.join('') + live.map(chipHTML).join('') + '<span class="gap"></span>' + dim.map(chipHTML).join('')
     + (dg && dg.path ? `<span class="done" data-link="${esc(dg.path)}" data-type="path" title="open the since-you-left digest">digest</span>` : '')
+    + (snap && snap.brief_url ? `<span class="done" data-link="${esc(snap.brief_url)}" data-type="url" title="The phone-sized brief (also on the tailnet, port 8791)">brief</span>` : '')
+    + (snap && snap.accounts_url ? `<span class="done" data-link="${esc(snap.accounts_url)}" data-type="url" title="Claude account switcher (this machine)">accounts</span>` : '')
     + `<button class="btn${refreshing ? ' spin' : ''}" id="bref2" title="Refresh: re-read every source now" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">&#8635;</button>`
     + `<button class="btn" id="bexp" title="Expand" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">▴</button>`;
   $('bexp').onclick = () => setCollapsed(false);

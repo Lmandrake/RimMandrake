@@ -271,6 +271,8 @@ class Collector:
             snap["widget_version"] = widget_version()
             snap["code"] = code_rev()
             snap["refresh"] = self.last_refresh
+            snap["accounts_url"] = account_page_url()
+            snap["brief_url"] = f"http://localhost:{PORT}/brief"
             self.state = new_state
             save_json("state.json", self.state)
             save_json("pulse_now.json", snap)
@@ -512,6 +514,19 @@ def update_code(root: Path = ROOT, timeout: float = 60) -> dict:
     return {"old": old[:12], "new": new[:12], "changed": old != new}
 
 
+def account_page_url() -> str | None:
+    """This machine's own-browser link to the Claude account switcher (claude-remote-control's
+    claude_account_page.py), or None when this machine runs no such page. Read from the switcher's
+    own config (`page_loopback_port`), never guessed: on Archmagi 8765 is RimPulse, so the page has
+    its own loopback port (ACCOUNT_PAGE_FIX_PULSE_TOOK_THE_PORT)."""
+    try:
+        conf = json.loads((Path.home() / ".claude-accounts" / "machine.json").read_text())
+        port = int(conf.get("page_loopback_port") or 0)
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    return f"http://localhost:{port}/" if port else None
+
+
 def widget_version() -> str:
     try:
         return hashlib.sha1(WIDGET_HTML.read_bytes()).hexdigest()[:10]
@@ -726,6 +741,11 @@ def make_handler(col: Collector):
             elif self.path in ("/", "/index.html"):
                 self._hdr(200, "text/html; charset=utf-8")
                 self.wfile.write(WIDGET_HTML.read_bytes())
+            elif self.path.split("?")[0] in ("/brief", "/brief/", "/heartbeat", "/brief.json") or self.path.startswith("/item/"):
+                import brief   # RIMPULSE_BRIEF_BUILD_MORNING_PAPER_PHONE: the same pages his phone gets over the tailnet
+                code, ctype, body = brief.page(self.path, lambda: col.snapshot, DIGEST_DIR)
+                self._hdr(code, ctype)
+                self.wfile.write(body)
             elif self.path.startswith("/api/now"):
                 self._hdr()
                 self.wfile.write(json.dumps(col.snapshot).encode())
@@ -806,6 +826,8 @@ def daemon() -> None:
     srv.daemon_threads = True
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     print(f"pulse: serving http://127.0.0.1:{PORT}/  state {pc.STATE_DIR}", flush=True)
+    import brief
+    brief.start_tailnet(lambda: col.snapshot, DIGEST_DIR)   # read-only brief pages for his phone
     while True:
         col.wake.wait(INTERVAL)   # the ONE collection loop: every INTERVAL, or at once after an ack/seen
         col.wake.clear()
@@ -963,6 +985,7 @@ def main(argv=None) -> int:
     h = sub.add_parser("health")
     h.add_argument("--restart", action="store_true")
     sub.add_parser("refresh")
+    sub.add_parser("brief", help="compose the morning brief, have it judged, store it in the digests folder")
     up = sub.add_parser("update")
     up.add_argument("--restart", action="store_true", help="restart rm-pulse.service when new code arrived")
     args = ap.parse_args(argv)
@@ -1039,6 +1062,18 @@ def main(argv=None) -> int:
               + (f" - {res['error']}" if res.get("error") else "")
               + (f"; sources not ok: {res['sources_down']}" if res.get("sources_down") else ""))
         return 0 if res["ok"] else 1
+    elif args.cmd == "brief":
+        import brief
+        try:   # the daemon's own latest snapshot (the heartbeat says if it is stale)
+            snap = json.loads(_p("pulse_now.json").read_text())
+        except (OSError, ValueError):
+            snap = None
+        if not snap:
+            print("brief: no pulse_now.json - is rm-pulse running?", file=sys.stderr)
+            return 1
+        p = brief.write_brief(DIGEST_DIR, snap)
+        b = json.loads(p.read_text())
+        print(f"brief: {p} ({sum(len(v) for v in b['sections'].values())} lines, {b.get('withheld', '?')} withheld by the judge)")
     elif args.cmd == "update":
         u = update_code()
         print(f"pulse update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))

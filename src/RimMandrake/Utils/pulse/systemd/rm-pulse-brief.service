@@ -1,0 +1,9 @@
+# Phone morning brief (RIMPULSE_BRIEF_BUILD_MORNING_PAPER_PHONE): compose, then a separate judge process
+# checks every line against its own ledger replay; read at /brief (loopback) and tailnet :8791.
+[Unit]
+Description=RimFlow pulse phone brief
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 ${RM_PULSE_DEPLOY}/src/RimMandrake/Utils/pulse/pulse.py brief
+TimeoutStartSec=300s

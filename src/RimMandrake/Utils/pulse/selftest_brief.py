@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+"""Selftest for the morning brief's second-agent judge (RIMPULSE_BRIEF_BUILD_MORNING_PAPER_PHONE).
+
+Sanity probe for the instrument: a judge that passes everything is worthless, so every claim type is
+checked BOTH ways on fixture events - a true claim passes and a tampered one is withheld. Also checks
+that compose only puts owner-needs items on the page and that the heartbeat goes red on a stale monitor.
+Fixture events only; touches no live state.
+"""
+import atexit
+import os
+import shutil
+import sys
+import tempfile
+from pathlib import Path
+
+tempfile.tempdir = os.environ["TMPDIR"] = tempfile.mkdtemp(prefix="st_selftest_brief_")
+atexit.register(shutil.rmtree, tempfile.tempdir, True)
+os.environ["RM_PULSE_STATE"] = tempfile.mkdtemp(prefix="brief_state_")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import brief  # noqa: E402
+
+FAILS = []
+NOW = 1_792_900_000.0
+
+
+def check(name, cond, detail=""):
+    print(("PASS " if cond else "FAIL ") + name + ("" if cond else f"  -- {detail}"))
+    if not cond:
+        FAILS.append(name)
+
+
+def ev(n, event, iid, **kw):
+    t = NOW - 3600 + n * 60
+    import time as _t
+    return {"seat": "BENCH", "event": event, "id": iid, "ts": _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime(t)),
+            "tsn": int(t * 1e9), **kw}
+
+
+EVENTS = [
+    ev(0, "file", "ASK_OPEN_ITEM", title="Owner must pick a colour", kind="task", target="v1", needs="owner", **{"for": "BENCH"}),
+    ev(1, "file", "ASK_CLOSED_ITEM", title="Owner question already answered", kind="task", target="v1", needs="owner", **{"for": "BENCH"}),
+    ev(2, "close", "ASK_CLOSED_ITEM", sha="abc1234", reason="answered"),
+    ev(3, "file", "AGENT_WORK_ITEM", title="Agent work", kind="task", target="v1", needs="offline", **{"for": "BENCH"}),
+    ev(4, "close", "AGENT_WORK_ITEM", sha="abc1235", reason="built and tested"),
+    ev(5, "note", "AGENT_WORK_ITEM", text="delegated call", why="delegated: design default"),
+]
+CLOSE_TSN = EVENTS[4]["tsn"]
+
+
+def line(claim):
+    return {"text": "x", "claim": claim}
+
+
+def main():
+    snap = {"rows": [{"key": "card:1", "agent": False}, {"key": "agentrow", "agent": True}],
+            "sources": {"tokens": {"ok": True}, "dead": {"ok": False}}}
+    cases = [
+        ("ask open owner item passes", {"type": "ask", "id": "ASK_OPEN_ITEM"}, True),
+        ("ask on a closed item is withheld", {"type": "ask", "id": "ASK_CLOSED_ITEM"}, False),
+        ("ask on a non-owner item is withheld", {"type": "ask", "id": "AGENT_WORK_ITEM"}, False),
+        ("ask on an invented id is withheld", {"type": "ask", "id": "NO_SUCH_ITEM"}, False),
+        ("card still on the monitor passes", {"type": "card", "key": "card:1"}, True),
+        ("card gone from the monitor is withheld", {"type": "card", "key": "card:2"}, False),
+        ("card that is an agent row is withheld", {"type": "look", "key": "agentrow"}, False),
+        ("moved with the real close event passes", {"type": "moved", "id": "AGENT_WORK_ITEM", "to": "done", "tsn": CLOSE_TSN}, True),
+        ("moved with a wrong tsn is withheld", {"type": "moved", "id": "AGENT_WORK_ITEM", "to": "done", "tsn": CLOSE_TSN + 1}, False),
+        ("moved naming the wrong item is withheld", {"type": "moved", "id": "ASK_OPEN_ITEM", "to": "done", "tsn": CLOSE_TSN}, False),
+        ("moved with a wrong state is withheld", {"type": "moved", "id": "AGENT_WORK_ITEM", "to": "validated", "tsn": CLOSE_TSN}, False),
+        ("moved_many with one bad member is withheld", {"type": "moved_many", "items": [
+            {"id": "AGENT_WORK_ITEM", "to": "done", "tsn": CLOSE_TSN}, {"id": "X", "to": "done", "tsn": 1}]}, False),
+        ("delegated with real events passes", {"type": "delegated", "tsns": [EVENTS[5]["tsn"]]}, True),
+        ("delegated with a non-delegated event is withheld", {"type": "delegated", "tsns": [EVENTS[4]["tsn"]]}, False),
+        ("measure from a live source passes", {"type": "measure", "src": "tokens"}, True),
+        ("measure from a down source is withheld", {"type": "measure", "src": "dead"}, False),
+        ("seat naming an open item passes", {"type": "seat", "id": "ASK_OPEN_ITEM"}, True),
+        ("seat naming a closed item is withheld", {"type": "seat", "id": "AGENT_WORK_ITEM"}, False),
+        ("an unknown claim type is withheld", {"type": "made_up"}, False),
+    ]
+    b = {"sections": {"t": [line(c) for _, c, _ in cases]}}
+    brief.judge(b, EVENTS, snap)
+    for (name, _, want), ln in zip(cases, b["sections"]["t"]):
+        check(name, (ln["check"] == "pass") == want, ln["check"])
+    check("withheld count matches the failing lines", b["withheld"] == sum(1 for *_, w in cases if not w), b["withheld"])
+
+    # heartbeat: a stale snapshot is red, a fresh one with a fresh brief is not
+    fresh = {"collected_at": NOW, "rows": [], "chips": [{"seat": "BENCH", "state": "run", "since": NOW - 60}], "sources": {}}
+    good_brief = {"at": NOW - 600, "judged": True, "sections": {}}
+    hb = brief.heartbeat(fresh, good_brief, NOW)
+    check("heartbeat calm on a fresh snapshot + brief", not hb["red"], hb)
+    hb = brief.heartbeat({**fresh, "collected_at": NOW - 3600}, good_brief, NOW)
+    check("heartbeat red when the monitor is stale", hb["red"], hb)
+    hb = brief.heartbeat(fresh, {**good_brief, "at": NOW - 20 * 3600}, NOW)
+    check("heartbeat red when the brief is missed", hb["red"] and hb["why"] == "brief", hb)
+    hb = brief.heartbeat({**fresh, "rows": [{"kind": "amber", "text": "card", "key": "c"}]}, good_brief, NOW)
+    check("heartbeat red when an amber card blocks a seat", hb["red"] and hb["why"] == "card", hb)
+    hb = brief.heartbeat(None, good_brief, NOW)
+    check("heartbeat red with no snapshot at all", hb["red"], hb)
+
+    print(f"\n{'FAILED ' + str(len(FAILS)) if FAILS else 'ALL PASS'}")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
