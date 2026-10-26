@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Muttavaq__s1r3_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Muttavaq",
+  "prompt": "A creature sprite for RimWorld: the muttavaq, a huge alien canyon-floor animal that sleeps for years as a patch of dried clay pan. Its body is one enormous, flat slab, about four times as long as it is tall, with a nearly flat, level top like a tabletop of ground, not a dome or a shell. The slab keeps one constant breadth: it is very broad, and the body fills the full width of the frame at the same width in every view. The slab's thick edge overhangs and hides its legs: only the broad, short feet show beneath, set wide apart at the same lateral spacing in every view, so the whole animal sits low to the ground like a raised piece of terrain. There is no neck and no head: the front edge of the slab simply opens in a long, perfectly straight, horizontal mouth slit, its corners level or turned slightly down, expressionless. The slit is filled with a dense fringe of thin, flat, clay-coloured vertical plates packed close together like a comb or baleen, a sieve for straining mud, with tusks, horns, fangs and teeth absent from the design. Its whole flat top is a field of hard, regular polygon plates of dried cracked clay, separated by dark cracks that radiate outward from one central point on the top, more regular than natural mud. The plate canopy spans the whole breadth of the slab. Skin, feet and plates are all the pale ochre and dusty tan of dried canyon clay, so it looks like part of the terrain. Front view, eyes toward the viewer: two tiny deep-set eyes sit in the front edge above the mouth. Rear view, seen from behind: the broad back edge of the slab, as wide as the front edge, with the same wide-set short feet beneath and the full plate canopy above, eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "wholeset_20261026_s1r3",
+  "drawsize": 4.6,
+  "module": "walker"
+ }
+]
