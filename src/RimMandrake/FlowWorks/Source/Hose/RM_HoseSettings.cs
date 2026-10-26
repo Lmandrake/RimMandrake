@@ -360,6 +360,8 @@ namespace RimMandrake.FlowWorks.Hose
                 if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
             ApplyThickness();   // WidthScale is derived from `thickness`; a reset with the section collapsed never reaches the slider's own call
+            // HOSE_LOOK_FIX_RESET_SKIPS_REPAINT: a reset that puts defaultLook back must repaint reels with no picked look, as the menu does
+            if (System.Array.IndexOf(names, "defaultLook") >= 0) Machinery.PipeLook.RepaintDefaultLook(HoseLook.Core);
         }
 
         private static string searchQuery = "";

@@ -165,6 +165,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Regex.Matches(set, @"PipeLook\.RepaintDefaultLook\(PipeStyleIndex\.core\)").Count >= 2, "ResetAll repaints too (it resets pipeDefaultLook)");
                 string hose = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "RM_HoseSettings.cs"));
                 Assert(hose.Contains("defaultLook = look; Machinery.PipeLook.RepaintDefaultLook(HoseLook.Core);"), "the reel default-look menu repaints");
+                int rf = hose.IndexOf("public static void ResetFields(string[] names)", StringComparison.Ordinal);
+                Assert(rf >= 0 && hose.Substring(rf, Math.Min(900, hose.Length - rf)).Contains("\"defaultLook\") >= 0) Machinery.PipeLook.RepaintDefaultLook(HoseLook.Core);"), "hose ResetFields repaints when defaultLook is reset (HOSE_LOOK_FIX_RESET_SKIPS_REPAINT)");
                 string ctl = RiverSwitchFlipChecks.Src(Path.Combine("Pits", "Drawbridge", "RM_DrawbridgeControl.cs"));
                 Assert(Regex.IsMatch(ctl, @"Notify_ColorChanged\(\)\s*\{\s*lookGraphic = null;"), "the winch drops its once-per-spawn look graphic");
                 Assert(Regex.IsMatch(ctl, @"Notify_ColorChanged\(\)\s*\{\s*artReadTick = -99999;"), "the gate re-reads its look next frame");
