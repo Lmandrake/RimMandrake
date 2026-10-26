@@ -2482,3 +2482,6 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-10-25T23:16:43Z","tsn":1792970203432129749}
 {"seat":"OWNER","event":"close","id":"STEVEDESKTOP_KIT_DECIDE_PUSH_ACCESS","sha":"c5ab8384eb","reason":"write deploy key on RimMandrake only, ssh alias, dry-run proven; read-only key still fails","byCard":"Should SteveDesktop be able to push? → Push to RimMandrake only","ts":"2026-10-25T23:38:30Z","tsn":1792971510693880126}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","why":"BENCH live run 2026-10-25 done (targeted rows for suspension, drawbridge, gravel, shovels)","ts":"2026-10-26T00:34:54Z","tsn":1792974894437950087}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","why":"BENCH launching after reboot for gravel/sapper/melter rows","ts":"2026-10-26T02:24:14Z","tsn":1792981454148205980}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH: at main menu after cold load","ts":"2026-10-26T02:36:10Z","tsn":1792982170827553026}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","why":"BENCH done: gravel/melter/sapper rows PASS; game left running, healthy (only baseline/third-party errors)","ts":"2026-10-26T02:41:43Z","tsn":1792982503774098182}
