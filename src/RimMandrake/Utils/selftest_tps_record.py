@@ -535,6 +535,17 @@ def reader_checks():
             check(a1 and not a2 and a3 and len(names) == 2 and all(re.match(r"^Player-prev_\d{8}T\d{6}Z_[0-9a-f]{12}\.log$", n)
                                                                    for n in names),
                   "MUST 12: preserve_prev_log archives each distinct content once, named by sha: %r" % names)
+            # it runs every 2 min (tps_observer) and every watchdog pass: a log ALREADY kept must cost a read,
+            # never a full copy written to the archive and deleted again (review 2026-10-26)
+            if os.name != "nt" and os.geteuid() != 0:
+                os.chmod(logs, 0o555)
+                try:
+                    a4 = T.preserve_prev_log(prev, logs)
+                    check(a4 is None, "an already-archived Player-prev.log writes nothing (got %r)" % a4)
+                except OSError as e:
+                    check(False, "an already-archived Player-prev.log writes nothing, yet it wrote: %r" % e)
+                finally:
+                    os.chmod(logs, 0o755)
         except AttributeError as e:
             check(False, "MUST 12: no external Player-prev.log preservation: %r" % e)
 

@@ -727,15 +727,27 @@ def preserve_prev_log(prev_path=None, archive_dir=None):
     if not os.path.isfile(prev_path):
         return None
     os.makedirs(archive_dir, exist_ok=True)
-    tmp = os.path.join(archive_dir, ".archiving_%d.tmp" % os.getpid())
+
+    def kept(tag):
+        return any(n.endswith("_%s.log" % tag) for n in os.listdir(archive_dir))
+
+    # hash read-only first: this runs every 2 min and every watchdog pass, and a log already kept must not
+    # cost a full copy written and deleted again (review 2026-10-26)
     h = hashlib.sha256()
-    mtime = os.path.getmtime(prev_path)
+    with open(prev_path, "rb") as src:
+        for chunk in iter(lambda: src.read(1 << 16), b""):
+            h.update(chunk)
+    if kept(h.hexdigest()[:12]):
+        return None
+    tmp = os.path.join(archive_dir, ".archiving_%d.tmp" % os.getpid())
+    h = hashlib.sha256()                                        # the copy's own hash names it, in case
+    mtime = os.path.getmtime(prev_path)                         # the game rotated the log in between
     with open(prev_path, "rb") as src, open(tmp, "wb") as dst:
         for chunk in iter(lambda: src.read(1 << 16), b""):
             h.update(chunk)
             dst.write(chunk)
     tag = h.hexdigest()[:12]
-    if any(n.endswith("_%s.log" % tag) for n in os.listdir(archive_dir)):
+    if kept(tag):
         os.remove(tmp)
         return None
     out = os.path.join(archive_dir, "Player-prev_%s_%s.log" % (time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(mtime)), tag))
