@@ -1074,7 +1074,8 @@ def container_styles(t):
 # a row no such result carries is UNMEASURED naming the driver. T21 / T22 are thirst rows the sprinkler driver measures, so
 # both chains read one pool. Same contract as core_live_rows: never PASS from a stale or missing result.
 DRIVER_RESULTS = ("thirst_live_result_*.json", "sprinkler_live_result_*.json", "drawbridge_result_*.json", "lines_result_*.json",
-                  "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json")
+                  "suspension_bridge_result_*.json", "trench_cover_proof_result_*.json", "live_session_result_*.json",
+                  "mission_fixture_result_*.json")
 DRIVER_OF = {"T21_drinking_reserve": "sprinkler_live.py", "T22_no_brine_spray": "sprinkler_live.py"}
 
 
@@ -1485,6 +1486,28 @@ def lines(t):
         _driver_live_report(t, [r for r in LINES_LIVE if _LP.ROW_ITEM[r[0]] == item], "lines_proof.py", item)
 
 
+# MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS / MISSION_PROBE_WIRE_PLAYER_MISSIONS_CHAIN: northstar/player_missions.py is played by
+# an agent, so no chain runs it. northstar/mission_fixture_probe.py starts each mission (fixture + baseline) and reports once,
+# asking only whether the fixture left the game readable (a research-complete window used to blind the tank read). The rows
+# below read its result at the current mod hash; modcheck --drivers on runs it before this chain.
+MISSION_LIVE = [
+    ("PM_canal_fixture", None, "canal mission: every fixture op succeeds"),
+    ("PM_canal_report_reads", None, "canal mission: report's goal check gives PASS/FAIL/TIMEOUT, not UNMEASURED"),
+    ("PM_pit_fixture", None, "pit mission: every fixture op succeeds"),
+    ("PM_pit_report_reads", None, "pit mission: report's goal check gives PASS/FAIL/TIMEOUT, not UNMEASURED"),
+    ("PM_chain_fixture", None, "chain mission: every fixture op succeeds"),
+    ("PM_chain_tank_baseline_read", None, "chain mission: the start-of-mission tank baseline is read (not None) after the "
+     "fixture's research-complete window is cleared"),
+    ("PM_chain_report_reads", None, "chain mission: report's goal check gives PASS/FAIL/TIMEOUT, not UNMEASURED"),
+]
+
+
+@suite.chain("player_missions")
+def player_missions(t):
+    """Live rows only: read from the newest mission_fixture_probe results at the current mod hash, else UNMEASURED."""
+    _driver_live_report(t, MISSION_LIVE, "mission_fixture_probe.py", "MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS")
+
+
 # the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
 # extensions and, since the River Works merge (409d1f57c), the rivers suite
 import extensions_rivers as RIV  # noqa: E402
@@ -1626,7 +1649,7 @@ for _name in ("rivers_switch_flips", "flow_door_facing", "ladder_hung_on_wall", 
 for _name in ("limitless_endless", "ladder_rails_raise_lower", "pit_travel_fly_jump_float", "ice_dig_crushed_ice",
               "dig_fill_shovel_hours", "pump_ports_one_per_side", "water_ladder_silt", "deep_water_swims",
               "pit_access_gear_ladders", "wall_scaling_gear", "suspension_bridges_and_covers", "pipes_meet_centre",
-              "thirst", "sprinklers", "drawbridges", "lines"):
+              "thirst", "sprinklers", "drawbridges", "lines", "player_missions"):
     suite.chain_inputs[_name] = GATE_SELFTEST_INPUTS + GATE_READER_INPUTS
 suite.chain_inputs["trench_cover_and_raiders"] = (["Source/**/*.cs", "Source/**/*.csproj",
                                                    "@closure:../Utils/selftest_flowworks_trench_cover.py"]
@@ -1667,6 +1690,8 @@ suite.live_drivers = [
      "chains": ["limitless_endless", "pit_access_gear_ladders", "pit_travel_fly_jump_float"], "timeout_s": 1500},
     {"name": "validation_v2_live", "script": "northstar/validation_v2.py", "args": ["--live", "--fresh-map"],
      "chains": ["core_live_rows"], "timeout_s": 1500},
+    {"name": "mission_fixture_probe", "script": "northstar/mission_fixture_probe.py", "args": ["--fresh-map"],
+     "chains": ["player_missions"], "timeout_s": 1200},
     {"name": "proof_hose_live", "script": "northstar/proof_hose.py", "args": ["--live"],
      "chains": ["hose_live_rows"], "timeout_s": 1500},
     # RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE: the river chains need a map with a river (they ran on AridShrubland). The
