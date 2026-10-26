@@ -253,7 +253,9 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Sytheclaw</defName>
     <label>sytheclaw</label>
-    <description>A low-slung pack predator with dry gold plates, a furnace-red underside and serrated forelimb blades. It follows fire fronts through tall, dry grass, taking animals driven from cover by smoke. Ash packs into the wounds left by its blades.</description>
+    <description>A low-slung pack predator with dry gold plates, a furnace-red underside and serrated forelimb blades. It follows fire fronts through tall, dry grass, taking animals driven from cover by smoke.</description>
+    <!-- SYTHECLAW_FIX_DESC_ASH_INFECTS_WOUNDS: no "ash in the wound" line; the blades are vanilla Scratch since the donor's infecter was dropped (OWED, see the port notes above) -->
+
     <statBases>
       <MoveSpeed>4.00</MoveSpeed>
       <ComfyTemperatureMin>-50</ComfyTemperatureMin>
