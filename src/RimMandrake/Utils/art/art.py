@@ -5,6 +5,7 @@
                                             plus a committed sha manifest. Resumable.
     art.py backfill  <step|all> [--budget S] Phase 1 imports: disk | git | artpipe | donor |
                                             canon | rulings  (idempotent: deterministic ids)
+                                            exit 0 clean, 1 drift, 2 a step UNMEASURED, 3 budget hit
     art.py status    <subject|texPath>      live picture(s), protections, rulings, flags
     art.py variants  <subject|texPath>      every known picture of it, with provenance
     art.py put       <png>...                put files into the art store (regular files inside this clone,
@@ -135,7 +136,8 @@ def cmd_backfill(a):
     for s in steps:
         r = getattr(backfill, f"step_{s}")(budget=a.budget)
         print(f"backfill {s}: {json.dumps(r)}", flush=True)
-        rc = rc or (3 if r.get("budget_reached") else 1 if r.get("drift") else 0)
+        # a step that could not see its source reports {"error": ... UNMEASURED}: that is not a clean run (w90)
+        rc = rc or (3 if r.get("budget_reached") else 2 if r.get("error") else 1 if r.get("drift") else 0)
     return rc
 
 

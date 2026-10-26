@@ -169,12 +169,15 @@ def step_git(budget=480):
                 continue
             blob = meta.split()[3]
             blobs.setdefault(blob, []).append((cur[0], cur[1], cur[2], path))
+    # "on disk now" is read from the worktree, never from the newest texture snapshot: a snapshot is a dated record,
+    # and a picture it lists that was deleted since would be skipped by the store copy (w90 review)
     disk = {}
-    snap = sorted((L.ledger_dir() / "snapshots").glob("*_textures.tsv"))
-    if snap:
-        for line in snap[-1].read_text().splitlines()[1:]:
-            sha, _sz, path = line.split("\t")
-            disk[path] = sha
+
+    def disk_sha(path):
+        if path not in disk:
+            f = L.REPO_ROOT / path
+            disk[path] = L.sha256_bytes(f.read_bytes()) if f.is_file() else None
+        return disk[path]
     w = L.Writer()
     n0 = len(w.known)
     done_marker = L.ledger_dir() / "git_backfill_done.txt"
@@ -195,7 +198,7 @@ def step_git(budget=480):
         proc.stdout.read(1)
         sha = L.sha256_bytes(b)
         occ = sorted(blobs[blob], key=lambda o: o[1])
-        on_disk_now = any(disk.get(o[3]) == sha for o in occ)
+        on_disk_now = any(disk_sha(o[3]) == sha for o in occ)
         if not on_disk_now and not L.store_has(sha):
             L.store_put_bytes(b, sha)
             stored += 1
