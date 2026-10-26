@@ -9,6 +9,9 @@
 //      all-pairs oracle for every hose after every frame; it re-collects far fewer strands than all-pairs and its relay frame
 //      costs a fraction of the old policy's (all re-scan, every changed upper rebuilt by CrossSpans).
 //  HX4 source: the component feeds the index off FrameLegacy (Set at the mesh build, Drop, Clear, RanksMoved, Check).
+//  HX5 (HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET) a whole wave relaid at once, scanned at most 8 pending strands a frame:
+//      Pending says exactly whether Check rescans, and the deferred strands drain to the all-pairs spans; source: DrawAll's
+//      re-pose and DrawCrossShadow's scans are budgeted per frame.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -224,6 +227,55 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(newMax < 50, $"the index's worst relay frame {newMax:F1} ms");
                 Assert(newTotal * 3 < oldTotal, $"the index ({newTotal:F0} ms) well under the old policy ({oldTotal:F0} ms)");
                 Console.WriteLine($"    HX3 {n} hoses, {frames} relay frames (up to {maxMoving} strands re-posed a frame): old policy {oldTotal:F0} ms (max {oldMax:F0}/frame), index {newTotal:F0} ms (max {newMax:F1}/frame); re-collections {rescans} vs {frames * n}; span builds {idx.SpanBuilds}, marks {idx.Marked}");
+            });
+
+            Case("HX5 a budgeted wave: Pending tells Check's rescans exactly, and deferred strands converge to all-pairs", () =>
+            {
+                // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: DrawCrossShadow scans a pending strand only while the frame has budget;
+                // the rest stay dirty. Here every strand relays at once and a frame scans at most 8 pending strands.
+                var ss = BasinStrands(out var rank, out double vis);
+                Func<int, int> rankOf = id => rank.TryGetValue(id, out int k) ? k : -1;
+                var idx = new HoseCrossShadows();
+                foreach (var s in ss) idx.Set(s.id, s.rp);
+                foreach (var s in ss) idx.Check(s.id, rankOf(s.id), rankOf, vis, Margin, out _);
+                var cur = new List<(int id, List<V2> rp)>();
+                foreach (var s in ss)
+                {
+                    var np = new List<V2>(s.rp.Count);
+                    foreach (V2 p in s.rp) np.Add(new V2(p.X + 0.02, p.Z));
+                    cur.Add((s.id, np));
+                    idx.Set(s.id, np);
+                }
+                int frames = 0, deferred = 0;
+                while (true)
+                {
+                    int scanned = 0, pendingNow = 0;
+                    foreach (var s in cur)
+                    {
+                        bool pending = idx.Pending(s.id, rankOf(s.id));
+                        if (pending) pendingNow++;
+                        if (pending && scanned >= 8) { deferred++; continue; }
+                        long r0 = idx.Rescans;
+                        idx.Check(s.id, rankOf(s.id), rankOf, vis, Margin, out _);
+                        Assert((idx.Rescans != r0) == pending, $"frame {frames}, hose {s.id}: Pending {pending} but Check rescanned {idx.Rescans != r0}");
+                        if (pending) scanned++;
+                    }
+                    frames++;
+                    if (pendingNow == 0) break;
+                    Assert(frames < 1000, "the deferred wave drains");
+                }
+                foreach (var s in cur)
+                {
+                    idx.TryGet(s.id, out HoseCrossShadows.Strand st);
+                    string d = SpanDiff(HoseOverDraw.CrossSpans(s.rp, LowersOf(s.id, rankOf(s.id), cur, rankOf), vis, Margin), st.Spans ?? new List<double[]>());
+                    Assert(d == "", $"after the deferred wave, hose {s.id}: {d}");
+                }
+                Assert(deferred > 0 && frames > 2, $"the budget deferred ({deferred} deferrals over {frames} frames)");
+                Console.WriteLine($"    HX5 {cur.Count} strands relaid at once, 8 scans a frame: drained in {frames} frames, {deferred} deferrals");
+                string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                RiverSwitchFlipChecks.Has(src, @"if \(crossSpent >= CrossBudgetMs \* TicksPerMs && crossIndex\.Pending\(id, rank\)\)", "the shadow defers a pending strand past budget");
+                RiverSwitchFlipChecks.Has(src, @"&& rebuildSpent >= RebuildBudgetMs \* TicksPerMs\)\s*\{[^}]*key = c\.key;\s*pts = c\.pts;", "a hose past the re-pose budget draws its cached pose");
+                RiverSwitchFlipChecks.Has(src, @"rebuildSpent = crossSpent = 0;", "the budgets reset each frame");
             });
 
             Case("HX4 source: the component feeds HoseCrossShadows off FrameLegacy and keeps the all-pairs body for FrameLegacy", () =>

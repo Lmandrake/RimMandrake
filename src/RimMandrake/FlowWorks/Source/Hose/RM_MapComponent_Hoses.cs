@@ -935,6 +935,8 @@ namespace RimMandrake.FlowWorks.Hose
             lastPortStubs = 0;
             lastMateJoins = 0;
             lastOverDraws = lastCrossShadowDraws = 0;
+            lastDeferredRebuilds = lastDeferredCross = 0;
+            rebuildSpent = crossSpent = 0;
             RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
@@ -989,9 +991,21 @@ namespace RimMandrake.FlowWorks.Hose
                 // review 2026-10-22: the key is built first, so a cache hit reuses the pose its meshes were built from
                 meshes.TryGetValue(r, out Cached c);
                 List<V2> pts;
+                long rebuildT0 = 0;
                 if (r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key == key) pts = c.pts;
+                else if (!LegacyFrame && r.carry != HoseCarryState.Retracting && c != null && c.pts != null && c.key != null
+                         && rebuildSpent >= RebuildBudgetMs * TicksPerMs)
+                {
+                    // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: this frame's re-posing is spent; the cached pose and meshes are drawn
+                    // as they were and the key stays unmet, so the next frame re-poses it
+                    key = c.key;
+                    pts = c.pts;
+                    lastDeferredRebuilds++;
+                    DeferredRebuildsTotal++;
+                }
                 else
                 {
+                    rebuildT0 = System.Diagnostics.Stopwatch.GetTimestamp();
                     // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS: one entry point (HoseMath.DrawnPose) for the pose and its port end, so the
                     // offline selftest (HoseCurveChecks) measures exactly what is drawn here. It stays inside this update, behind the
                     // world-map guard above (HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP).
@@ -1046,6 +1060,7 @@ namespace RimMandrake.FlowWorks.Hose
                     }
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
+                if (rebuildT0 != 0) rebuildSpent += System.Diagnostics.Stopwatch.GetTimestamp() - rebuildT0;
                 Color tint = Tint(r);
                 HoseLookMats hm = HoseMaterials.For(r);      // stage 3: the hose draws in its REEL's look
                 if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow((float)HoseMath.ShadowAlpha(e)), 0);
@@ -1171,10 +1186,22 @@ namespace RimMandrake.FlowWorks.Hose
                 // or its own rank moved (HoseCrossShadows); the mesh is rebuilt only when its lower set changed
                 int id = r.parent.thingIDNumber;
                 if (!crossIndex.TryGet(id, out HoseCrossShadows.Strand st) || !ReferenceEquals(st.Rp, c.rp)) crossIndex.Set(id, c.rp);
-                if (crossIndex.Check(id, rank, rankOfId ?? (rankOfId = RankOfId), vis, CrossShadowMargin, out List<double[]> spans))
+                // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: past this frame's crossing-shadow budget a pending strand is not scanned
+                // (it stays dirty and keeps its old mesh until a later frame has budget)
+                if (crossSpent >= CrossBudgetMs * TicksPerMs && crossIndex.Pending(id, rank))
                 {
-                    c.crossSpans = spans;
-                    BuildCrossMesh(c, vis, e, y);
+                    lastDeferredCross++;
+                    DeferredCrossTotal++;
+                }
+                else
+                {
+                    long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                    if (crossIndex.Check(id, rank, rankOfId ?? (rankOfId = RankOfId), vis, CrossShadowMargin, out List<double[]> spans))
+                    {
+                        c.crossSpans = spans;
+                        BuildCrossMesh(c, vis, e, y);
+                    }
+                    crossSpent += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
                 }
             }
             else
@@ -1257,6 +1284,21 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>State reads: over-building / crossing-shadow draws last frame, and rebuilds since load.</summary>
         public int lastOverDraws, lastCrossShadowDraws;
         public static int OverBuilds, CrossBuilds;
+
+        /// <summary>
+        /// HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET (live round 7, T3: a paused 510-relay wave, Root_Play.Update max 191 ms with no
+        /// DrawAll child over 50 ms). A landed wave re-posed every hose whose lay changed in ONE frame: per hose a DrawnPose, a
+        /// Mated re-shape (max 50 ms), three Ribbons (max 14 ms each), a crossIndex.Set that dirties its neighbours, and then
+        /// each dirtied strand's crossing-shadow scan and mesh (BuildCrossMesh max 9 ms) -- each piece under its bar, their sum
+        /// over it. Now a frame spends at most RebuildBudgetMs re-posing and CrossBudgetMs on crossing shadows (always at least
+        /// one of each); a hose past the budget keeps drawing its cached pose and meshes and is re-posed next frame, a dirty
+        /// crossing shadow keeps its old mesh and stays dirty. lastDeferred* count what waited last frame; *Total since load.
+        /// </summary>
+        public const double RebuildBudgetMs = 8, CrossBudgetMs = 4;
+        public int lastDeferredRebuilds, lastDeferredCross;
+        public static int DeferredRebuildsTotal, DeferredCrossTotal;
+        private long rebuildSpent, crossSpent;
+        private static readonly double TicksPerMs = System.Diagnostics.Stopwatch.Frequency / 1000.0;
 
         public static Color Tint(CompHoseReel r)
         {

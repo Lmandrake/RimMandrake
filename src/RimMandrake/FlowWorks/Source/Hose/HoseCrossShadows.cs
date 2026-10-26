@@ -147,6 +147,14 @@ namespace RimMandrake.FlowWorks.Hose
         /// caller rebuilds its mesh); false = keep what was built (spans is the kept list). Lowers are strands whose boxes meet
         /// this one's and whose rank (<paramref name="rankOf"/>) is lower -- the set the all-pairs scan found.
         /// </summary>
+        /// <summary>Would Check rescan this strand now (dirty, rank moved or never keyed)? Asks without consuming the dirt
+        /// (HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET: a frame past its budget leaves a pending strand for the next).</summary>
+        public bool Pending(int id, int rank)
+        {
+            if (!strands.TryGetValue(id, out Strand s) || s.Rp == null || s.Rp.Count < 2) return false;
+            return s.Dirty || s.Rank != rank || !s.Keyed;
+        }
+
         public bool Check(int id, int rank, Func<int, int> rankOf, double reach, double margin, out List<double[]> spans)
         {
             spans = null;

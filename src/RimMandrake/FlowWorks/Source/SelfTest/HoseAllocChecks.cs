@@ -6,8 +6,13 @@
 //  A1 a lay on a worker's world copy allocates under 6 MB on average after warmup (GC.GetAllocatedBytesForCurrentThread
 //     around 40 lays). Before the fix it was 340 MB (the clothoid solver's per-iteration arrays, LayOnce re-finishing every
 //     lead-out pair, every Dubins arc sampled up front); a Boehm heap collects about once per third of its size allocated,
-//     so on the live 3.45 GB heap a 200-lay wave went from about 60 collections to about one. The rest is the lay's own
-//     output and the per-fit point lists: further cuts buy nothing a player sees.
+//     so on the live 3.45 GB heap a 200-lay wave went from about 60 collections to about one.
+//     HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC (live round 7: lays at speed grew the heap ~40 MB/s, a full GC froze a frame
+//     ~1.1 s): 4.7 MB -> 1.6 MB, bound 2.5 MB. Lead-out candidates keep their Dubins word, not a pose copy, and a pair's
+//     finished poses come from a per-thread pool; the pair and Dubins-word rankings sort reused arrays (index-tiebroken,
+//     the order LINQ OrderBy gave); RigHits samples into a reused set; the centre's join is found once per lay, not per
+//     pair; the clothoid solve's per-node arrays are its thread's Scratch. 64 lays on this map hash identical before and
+//     after. The rest is the lay's own output, the planner and Geo.Resample (shared with GSS).
 //  A2 source: the levelling cycle walks a dug run once per cycle (an end in a run already walked takes its body for nothing)
 //     and starts the next cycle at the first hose its walk budget turned away (HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: every
 //     end re-walked its 20000-square basin, so 60000 squares linked 2 rigs of 100).
@@ -77,14 +82,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            Case("A1 a hose lay on the 325 basin map allocates under 6 MB after warmup", () =>
+            Case("A1 a hose lay on the 325 basin map allocates under 2.5 MB after warmup", () =>
             {
                 CordWorld w = BasinWorld(out var rigs);
                 CordWorld copy = w.Clone();
                 double per = BytesPerLay(copy, rigs, 8, 40, out int ok, out int gcs);
                 Console.WriteLine($"    A1: {per / 1024.0:0.0} KB/lay over 40 lays ({ok} laid, gen0 GCs {gcs})");
                 Assert(ok >= 30, $"the lays lay ({ok}/40): the layout is the live one");
-                Assert(per < 6 * 1024 * 1024, $"{per / 1024.0:0.0} KB per lay (bound 6 MB; 340 MB before the fix)");
+                Assert(per < 2.5 * 1024 * 1024, $"{per / 1024.0:0.0} KB per lay (bound 2.5 MB; 4.7 MB before HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC, 340 MB before HOSE_LAY_FIX_GC_STORM_FROM_WORKER)");
                 Assert(gcs <= 40, $"gen0 collections over 40 lays: {gcs}");
             });
             Case("A2 source: a levelling cycle walks each dug run once and resumes at the hose its budget turned away", () =>

@@ -110,6 +110,14 @@ namespace RimMandrake.FlowWorks.Hose
             return o;
         }
 
+        /// <summary>Sample's end heading without the samples (the same sum in the same order).</summary>
+        internal static double EndHeading(double th0, double[] K, double[] h)
+        {
+            double th = th0;
+            for (int i = 0; i + 1 < K.Length; i++) th += 0.5 * h[i] * (K[i] + K[i + 1]);
+            return th;
+        }
+
         /// <summary>The curvature nodes' material positions: a node exactly at every end of a straight lead or span (so a run
         /// is exactly its length plus <see cref="RunPad"/>, never rounded out to a uniform grid: HOSE_FIT_HARDEN_FREE_LENGTH_SHORT_LEAD, 2026-10-24 --
         /// the rounding made a 0.6 lead act as ~0.85 and a 0.75 coupling as ~1.15, which no tight mate can afford), and each
@@ -171,13 +179,18 @@ namespace RimMandrake.FlowWorks.Hose
             double kmax = pr.Kmax, J = pr.J > 0 ? pr.J : JerkPerKmax * pr.Kmax;
             double[] Sn0 = Nodes(pr, pr.Step > 0 ? pr.Step : NodeStep, out var runs);
             int N = Sn0.Length - 1;
-            var h = new double[N];
+            // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC (live round 7): the per-solve arrays that never leave the solve (all but the
+            // profile, which becomes Result.Kappa, and the end residuals, read by Length) are this thread's too, sized to N
+            // and indexed by N, never by Length: ~38 KB a solve, 21 solves a lay, the largest garbage left after round 4's fix
+            Scratch sc = Scratch.Get(0, N, 0);
+            double[] h = sc.Hh;
             for (int i = 0; i < N; i++) h[i] = Sn0[i + 1] - Sn0[i];
             double l = pr.L / N; // the mean interval: the track and bending weights, and Result.Step (mean drawn-sample spacing)
             int sub = Math.Max(1, pr.Sub);
             res.Step = l / sub;
             // fixed nodes: the start node at Kappa0, the end node at 0, both nodes of every interval inside a straight run
-            var fixedK = new double?[N + 1];
+            double?[] fixedK = sc.FixedK;
+            Array.Clear(fixedK, 0, N + 1);
             fixedK[0] = Clamp(pr.Kappa0, -kmax, kmax);
             fixedK[N] = 0;
             for (int i = 0; i < N; i++)
@@ -185,25 +198,27 @@ namespace RimMandrake.FlowWorks.Hose
                 double mid = 0.5 * (Sn0[i] + Sn0[i + 1]);
                 foreach (var r in runs) if (mid >= r.a - 1e-9 && mid <= r.b + 1e-9) { fixedK[i] = 0; fixedK[i + 1] = 0; }
             }
-            var dkI = new double[N];
+            double[] dkI = sc.DkI;
             for (int i = 0; i < N; i++) dkI[i] = J * h[i];
             if (pr.Lead0 > 0 && Math.Abs(fixedK[0].Value) > 0) fixedK[0] = 0;
-            var vars = new List<int>();
+            List<int> vars = sc.Vars;
+            vars.Clear();
             for (int i = 0; i <= N; i++) if (!fixedK[i].HasValue) vars.Add(i);
             bool freeTh = !pr.Theta0.HasValue;
             int nv = vars.Count + (freeTh ? 1 : 0);
             // the route, resampled at the drawn samples' arc fractions
             int ns = N * sub + 1;
-            var Q = new V2[ns];
+            V2[] Q = sc.QOf(ns);
             {
-                double[] sr = Geo.CumLen(pr.Track);
-                double Lr = sr[sr.Length - 1];
+                int nr = pr.Track.Count;
+                double[] sr = sc.TrackCum(pr.Track);
+                double Lr = sr[nr - 1];
                 int j = 0;
                 for (int q = 0; q < ns; q++)
                 {
                     int qi = Math.Min(N - 1, q / sub);
                     double t = Lr * (Sn0[qi] + h[qi] * (q - qi * sub) / sub) / pr.L;
-                    while (j < sr.Length - 2 && sr[j + 1] < t) j++;
+                    while (j < nr - 2 && sr[j + 1] < t) j++;
                     double seg = sr[j + 1] - sr[j];
                     double u = seg < 1e-12 ? 0 : Clamp((t - sr[j]) / seg, 0, 1);
                     Q[q] = pr.Track[j] + (pr.Track[j + 1] - pr.Track[j]) * u;
@@ -230,7 +245,7 @@ namespace RimMandrake.FlowWorks.Hose
             double th1 = 0;
             if (pr.Theta1.HasValue)
             {
-                Sample(pr.P0, th0, K, h, sub, out double thE);
+                double thE = EndHeading(th0, K, h);
                 th1 = pr.Theta1.Value + Math.Round((thE - pr.Theta1.Value) / (2 * Math.PI)) * 2 * Math.PI;
             }
             // Gauss-Newton SQP on the node curvatures (2026-10-24, replaces a finite-difference Levenberg-Marquardt that cost
@@ -241,22 +256,20 @@ namespace RimMandrake.FlowWorks.Hose
             // kappa_j only turns the rest of the chain rigidly about node j+1, so every product of two columns over the track
             // rows is a closed form in suffix sums and the normal matrix costs O(nv^2) per iteration, not O(rows x nv^2).
             double kIn = kmax * 0.995;
-            var dInI = new double[N];
+            double[] dInI = sc.DIn;
             for (int i = 0; i < N; i++) dInI[i] = dkI[i] * 0.995;
             int nE = 2 + (pr.Theta1.HasValue ? 1 : 0);
             double wT2 = Math.Max(1e-9, pr.TrackWeight) * l, wB2 = 0.02 * l, wI2 = 1e6;
-            var wF2 = new double[N];
+            double[] wF2 = sc.WF2;
             for (int i = 0; i < N; i++) wF2[i] = 0.15 / h[i];
-            var Qn = new V2[N + 1];
+            V2[] Qn = sc.Qn;
             for (int i = 0; i <= N; i++) Qn[i] = Q[Math.Min(ns - 1, i * sub)];
             int nk = vars.Count;
-            var varOf = new int[N + 1];
+            int[] varOf = sc.VarOf;
             for (int i = 0; i <= N; i++) varOf[i] = -1;
             for (int v = 0; v < nk; v++) varOf[vars[v]] = v;
-            var pN = new V2[N + 1];
-            var thN = new double[N + 1];
-            var E0 = new V2[N];
-            var E1 = new V2[N];
+            V2[] pN = sc.PN, E0 = sc.E0, E1 = sc.E1;
+            double[] thN = sc.ThN;
             // the node chain (positions, headings) and, per interval, d(end of piece)/d(k at its start, k at its end)
             void Chain(double[] KK, double t0, bool derivs)
             {
@@ -298,7 +311,7 @@ namespace RimMandrake.FlowWorks.Hose
             // (normal matrix, Jacobian rows, Cholesky factor) come from this thread's grow-only Scratch. They had been made
             // fresh every iteration and every line-search try: ~10 MB per solve, ~330 MB per outflow lay on the 325 basin
             // map, the garbage behind 60 full Boehm collections in 78 s of a relay wave.
-            Scratch sc = Scratch.Get(nv, N, nE);
+            Scratch.Get(nv, N, nE);
             var KC = (double[])K.Clone();
             var KN = new double[N + 1];
             var cC = new double[nE];
@@ -574,6 +587,20 @@ namespace RimMandrake.FlowWorks.Hose
                 G = new double[0], A = new double[0], Step = new double[0], Lam = new double[3], M = new double[0], Y = new double[0], Z = new double[0];
             internal int[] St = new int[0];
             internal readonly double[,] S = new double[3, 4];
+            // per-solve arrays by node (SolveCore's set-up), grown with Sn
+            internal double[] Hh = new double[0], DkI = new double[0], DIn = new double[0], WF2 = new double[0], ThN = new double[0], Cum = new double[0];
+            internal double?[] FixedK = new double?[0];
+            internal V2[] Qn = new V2[0], PN = new V2[0], E0 = new V2[0], E1 = new V2[0], Qs = new V2[0];
+            internal int[] VarOf = new int[0];
+            internal readonly List<int> Vars = new List<int>();
+            internal V2[] QOf(int ns) => Qs.Length >= ns ? Qs : (Qs = new V2[Math.Max(ns, 2 * Qs.Length)]);
+            internal double[] TrackCum(IList<V2> p)
+            {
+                if (Cum.Length < p.Count) Cum = new double[Math.Max(p.Count, 2 * Cum.Length)];
+                Cum[0] = 0;
+                for (int i = 1; i < p.Count; i++) Cum[i] = Cum[i - 1] + V2.Dist(p[i - 1], p[i]);
+                return Cum;
+            }
             internal static Scratch Get(int nv, int N, int nE)
             {
                 Scratch sc = mine ?? (mine = new Scratch());
@@ -588,6 +615,8 @@ namespace RimMandrake.FlowWorks.Hose
                 {
                     int c = Math.Max(N + 2, 2 * sc.Sn.Length);
                     sc.Sn = new double[c]; sc.Sr = new V2[c]; sc.SW = new V2[c]; sc.SWr = new double[c]; sc.S2 = new double[c];
+                    sc.Hh = new double[c]; sc.DkI = new double[c]; sc.DIn = new double[c]; sc.WF2 = new double[c]; sc.ThN = new double[c];
+                    sc.FixedK = new double?[c]; sc.Qn = new V2[c]; sc.PN = new V2[c]; sc.E0 = new V2[c]; sc.E1 = new V2[c]; sc.VarOf = new int[c];
                 }
                 return sc;
             }

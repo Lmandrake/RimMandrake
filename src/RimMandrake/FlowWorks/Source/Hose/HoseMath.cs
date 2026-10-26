@@ -453,24 +453,28 @@ namespace RimMandrake.FlowWorks.Hose
         /// is chosen among candidates d = straight + R/2 .. straight + 8R (the least extra length whose new section is clear
         /// of walls; world null = no wall test). Null when no candidate fits. <paramref name="leadLen"/> = the new section's
         /// arc length (a to the join).</summary>
-        internal static List<(double extra, List<V2> pts, double leadLen)> LeadOutCandidates(CordWorld w, IList<V2> P, V2 a, V2 u, double straight, double R, int max)
+        internal static List<LeadCand> LeadOutCandidates(CordWorld w, IList<V2> P, V2 a, V2 u, double straight, double R, int max)
         {
-            var outp = new List<(double extra, List<V2> pts, double leadLen)>();
+            var outp = new List<LeadCand>();
             if (P == null || P.Count < 2) return outp;
-            double[] s = Geo.CumLen(P);
-            double L = s[s.Length - 1];
+            LayScratch ls = LayScratch.Get();
+            double[] s = LayScratch.CumOf(P, ref ls.CandCum);
+            double L = s[P.Count - 1];
             V2 s0 = a + u * straight;
-            if (w != null && !Clear(w, new List<V2> { a, s0 })) return outp;
+            if (w != null) { List<V2> run = ls.Pose; run.Clear(); run.Add(a); run.Add(s0); if (!Clear(w, run)) return outp; }
             double Rd = R * 1.05;
             // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: a candidate keeps only its Dubins arc; its section (a, the densified straight
             // run, the arc) and the pose it would make are assembled in this thread's scratch when it is judged, and copied
             // out only when it is taken (most are turned away: a wall, a loop). The section's length is summed in the same
             // order Geo.Length sums it, so the ranking is unchanged.
+            // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC (live round 7): a taken candidate keeps only what makes its pose (its
+            // Dubins word, where it joins P); the pose is rebuilt in scratch by whoever reads it (LeadCand.PoseInto). The word and candidate lists are this thread's, and the
+            // ranking is an index-tiebroken sort (the stable order OrderBy gave) on a reused array, not a LINQ sort.
             int ns = Math.Max(1, (int)Math.Ceiling(straight / Sample));
-            LayScratch ls = LayScratch.Get();
             List<V2> arc = ls.Arc;
-            var words = new List<DubinsWord>();
-            var cands = new List<(double extra, DubinsWord dw, V2 Q, int j, double secLen)>();
+            List<DubinsWord> words = ls.Words;
+            List<RawCand> cands = ls.Cands;
+            cands.Clear();
             for (int k = 0; k < 24; k++)
             {
                 double d = straight + R * (0.5 + 0.5 * k);
@@ -494,12 +498,14 @@ namespace RimMandrake.FlowWorks.Hose
                 double extra = secLen - d;
                 int jj = V2.Dist(arc[arc.Count - 1], P[j]) < 1e-9 ? j + 1 : j;
                 if (jj >= P.Count) continue;
-                cands.Add((extra, dw, Q, jj, secLen));
+                cands.Add(new RawCand { extra = extra, dw = dw, Q = Q, j = jj, secLen = secLen, order = cands.Count });
                 }
             }
+            RawCand[] sorted = ls.SortedCands(cands);
             List<V2> o = ls.Pose, r = ls.Resampled;
-            foreach (var c in cands.OrderBy(c => c.extra))
+            for (int ci = 0; ci < cands.Count; ci++)
             {
+                RawCand c = sorted[ci];
                 o.Clear();
                 o.Add(a);
                 for (int i = 1; i <= ns; i++) o.Add(a + u * (straight * i / ns));
@@ -507,12 +513,44 @@ namespace RimMandrake.FlowWorks.Hose
                 int secCount = o.Count;
                 if (w != null) { o.Add(P[c.j]); bool clear = Clear(w, o, 0.5); o.RemoveAt(secCount); if (!clear) continue; }
                 for (int i = c.j; i < P.Count; i++) o.Add(P[i]);
-                ResampleNInto(o, Math.Max(8, (int)(Geo.Length(o) / Sample) + 1), r);
+                double len = Geo.Length(o);
+                ResampleNInto(o, Math.Max(8, (int)(len / Sample) + 1), r);
                 if (SelfIntersects(r)) continue;   // no loops (design)
-                outp.Add((c.extra, new List<V2>(o), c.secLen));
+                outp.Add(new LeadCand { extra = c.extra, leadLen = c.secLen, Len = len, P = P, J = c.j, A = a, U = u, Straight = straight, Ns = ns, Q = c.Q, Dw = c.dw, Rd = Rd });
                 if (outp.Count >= max) break;
             }
             return outp;
+        }
+
+        /// <summary>A lead-out join LeadOutCandidates found: its extra length over the arc it replaces, the section's arc
+        /// length (leadLen), the whole pose's length (Geo.Length of the pose, summed in the same order), and what makes the
+        /// pose: a, the densified straight run, the Dubins arc for Dw, then P from index J on.</summary>
+        internal sealed class LeadCand
+        {
+            internal double extra, leadLen, Len, Straight, Rd;
+            internal IList<V2> P;
+            internal int J, Ns;
+            internal V2 A, U, Q;
+            internal DubinsWord Dw;
+            /// <summary>The whole pose into <paramref name="o"/> (cleared; returned). Uses this thread's arc scratch.</summary>
+            internal List<V2> PoseInto(List<V2> o)
+            {
+                o.Clear();
+                o.Add(A);
+                for (int i = 1; i <= Ns; i++) o.Add(A + U * (Straight * i / Ns));
+                o.AddRange(DubinsArc(A + U * Straight, U, Q, Dw, Rd, Sample / 4, LayScratch.Get().Arc));
+                for (int i = J; i < P.Count; i++) o.Add(P[i]);
+                return o;
+            }
+        }
+
+        private struct RawCand : IComparable<RawCand>
+        {
+            internal double extra, secLen;
+            internal DubinsWord dw;
+            internal V2 Q;
+            internal int j, order;
+            public int CompareTo(RawCand o) { int c = extra.CompareTo(o.extra); return c != 0 ? c : order.CompareTo(o.order); }
         }
 
         /// <summary>One lay thread's reusable point lists and arc-length buffer for poses that are judged and mostly thrown
@@ -520,8 +558,16 @@ namespace RimMandrake.FlowWorks.Hose
         private sealed class LayScratch
         {
             [ThreadStatic] private static LayScratch mine;
-            internal readonly List<V2> Pose = new List<V2>(), Resampled = new List<V2>(), Dense = new List<V2>(), Arc = new List<V2>();
-            internal double[] Cum = new double[64], ClearCum = new double[64];
+            internal readonly List<V2> Pose = new List<V2>(), Resampled = new List<V2>(), Dense = new List<V2>(), Arc = new List<V2>(), Cand = new List<V2>();
+            internal double[] Cum = new double[64], ClearCum = new double[64], CandCum = new double[64], KeepCum = new double[64];
+            internal readonly List<DubinsWord> Words = new List<DubinsWord>();
+            internal readonly List<RawCand> Cands = new List<RawCand>();
+            private RawCand[] sorted = new RawCand[64];
+            internal PairKey[] Pairs = new PairKey[64];
+            /// <summary>HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: finished lead-out poses (LeadFin) and their arc lengths, handed
+            /// back by LayOnce once its join is chosen (never the poses the lay kept).</summary>
+            internal readonly Stack<List<V2>> FreePoses = new Stack<List<V2>>();
+            internal readonly Stack<double[]> FreeCums = new Stack<double[]>();
             internal static LayScratch Get() => mine ?? (mine = new LayScratch());
             internal static double[] CumOf(IList<V2> p, ref double[] buf)
             {
@@ -530,11 +576,29 @@ namespace RimMandrake.FlowWorks.Hose
                 for (int i = 1; i < p.Count; i++) buf[i] = buf[i - 1] + V2.Dist(p[i - 1], p[i]);
                 return buf;
             }
+            internal RawCand[] SortedCands(List<RawCand> c)
+            {
+                if (sorted.Length < c.Count) sorted = new RawCand[Math.Max(c.Count, 2 * sorted.Length)];
+                c.CopyTo(sorted);
+                Array.Sort(sorted, 0, c.Count);
+                return sorted;
+            }
+            internal List<V2> TakePose() => FreePoses.Count > 0 ? FreePoses.Pop() : new List<V2>();
+            internal double[] TakeCum() => FreeCums.Count > 0 ? FreeCums.Pop() : new double[64];
+        }
+
+        /// <summary>A lead-out pair's rank key (the summed extra), ties broken by the flat-major index: the stable order the
+        /// OrderBy it replaces gave.</summary>
+        private struct PairKey : IComparable<PairKey>
+        {
+            internal double k;
+            internal int x, y, order;
+            public int CompareTo(PairKey o) { int c = k.CompareTo(o.k); return c != 0 ? c : order.CompareTo(o.order); }
         }
 
         /// <summary>One finished lead-out pose (LeadOutFinish) and the pair tests LayOnce runs on it, each worked out once: the
         /// wall test now, the arc lengths for the bend test, and the stray-reel count and body gap on first use (both pure in
-        /// the pose for one lay).</summary>
+        /// the pose for one lay). Its pose and arc lengths come from this thread's pools and go back by Release.</summary>
         private sealed class LeadFin
         {
             internal readonly List<V2> Pts;
@@ -543,15 +607,26 @@ namespace RimMandrake.FlowWorks.Hose
             private int rig = -1;
             private double gap = double.NaN;
             internal LeadFin(CordWorld w, List<V2> pts) { Pts = pts; Clear = HoseMath.Clear(w, pts); }
-            internal double MinBendUpTo(double upTo) => MinBendRadiusUpTo(Pts, s ?? (s = Geo.CumLen(Pts)), EndSkip, upTo);
+            internal double MinBendUpTo(double upTo)
+            {
+                if (s == null) { s = LayScratch.Get().TakeCum(); s = LayScratch.CumOf(Pts, ref s); }
+                return MinBendRadiusUpTo(Pts, s, EndSkip, upTo);
+            }
             internal int RigOf(CordWorld w, HashSet<Cell> planCells) => rig >= 0 ? rig : (rig = RigHits(w, Pts, planCells));
             internal double GapOf(CordWorld w, double startSkip) => !double.IsNaN(gap) ? gap : (gap = BodyGap(w, Pts, startSkip, EndSkip));
+            /// <summary>Back to the pools: the arc lengths always, the pose unless the lay kept it.</summary>
+            internal void Release(LayScratch ls, HoseLay kept)
+            {
+                if (s != null) { ls.FreeCums.Push(s); s = null; }
+                if (!ReferenceEquals(Pts, kept.Flat) && !ReferenceEquals(Pts, kept.Plump) && !ReferenceEquals(Pts, kept.Centre)) ls.FreePoses.Push(Pts);
+            }
         }
 
         /// <summary>Points of P within <paramref name="straight"/> of a projected back onto the outlet line.</summary>
         internal static void KeepStraight(List<V2> P, V2 a, V2 u, double straight)
         {
-            double[] s = Geo.CumLen(P);
+            LayScratch ls = LayScratch.Get();
+            double[] s = LayScratch.CumOf(P, ref ls.KeepCum);
             P[0] = a;
             for (int i = 1; i < P.Count - 1 && s[i] <= straight + 1e-9; i++)
             {
@@ -562,18 +637,18 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>The final pose of a lead-out candidate at n samples: resampled along its Catmull-Rom curve (a plain
         /// equal-arc resample of a polyline at another spacing reads its bends up to ~2x tighter), the straight run kept.</summary>
-        internal static List<V2> LeadOutFinish(CordWorld w, List<V2> o, int n, V2 a, V2 u, double straight, double R)
+        internal static List<V2> LeadOutFinishInto(IList<V2> o, int n, V2 a, V2 u, double straight, List<V2> into)
         {
-            List<V2> X = ResampleSmooth(o, n);
+            List<V2> X = ResampleSmoothInto(o, n, into);
             KeepStraight(X, a, u, straight);
             return X;
         }
 
         /// <summary>n equal-arc samples of the uniform Catmull-Rom curve through p (8 sub-steps per segment), ends exact.</summary>
-        internal static List<V2> ResampleSmooth(IList<V2> p, int n)
+        internal static List<V2> ResampleSmoothInto(IList<V2> p, int n, List<V2> o)
         {
-            if (p.Count < 3) return ResampleN(p, n);
-            List<V2> d = LayScratch.Get().Dense;   // ResampleN copies out of it before anything else can refill it
+            if (p.Count < 3) return ResampleNInto(p, n, o);
+            List<V2> d = LayScratch.Get().Dense;   // ResampleNInto copies out of it before anything else can refill it
             d.Clear();
             d.Add(p[0]);
             for (int i = 0; i < p.Count - 1; i++)
@@ -585,15 +660,16 @@ namespace RimMandrake.FlowWorks.Hose
                     d.Add((p1 * 2 + (p2 - p0) * t + (p0 * 2 - p1 * 5 + p2 * 4 - p3) * t2 + (p1 * 3 - p0 - p2 * 3 + p3) * t3) * 0.5);
                 }
             }
-            List<V2> o = ResampleN(d, n);
+            ResampleNInto(d, n, o);
             o[0] = p[0];
             o[n - 1] = p[p.Count - 1];
             return o;
         }
 
-        /// <summary>The lead-out lay's sample spacing (cells) and count for a polyline.</summary>
+        /// <summary>The lead-out lay's sample spacing (cells).</summary>
         public const double LeadOutSpacing = Sample;
-        internal static int LeadOutSamples(IList<V2> p) => Math.Max(8, (int)Math.Ceiling(Geo.Length(p) / LeadOutSpacing) + 1);
+        /// <summary>The lead-out lay's sample count for a pose of length <paramref name="len"/> (LeadCand.Len).</summary>
+        internal static int LeadOutSamplesOfLen(double len) => Math.Max(8, (int)Math.Ceiling(len / LeadOutSpacing) + 1);
 
         /// <summary>MinBendRadius restricted to arc positions [skip, upTo].</summary>
         internal static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo) => MinBendRadiusUpTo(X, Geo.CumLen(X), skip, upTo);
@@ -627,6 +703,8 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>One Dubins word that lands (DubinsWords): its letters and its three section lengths (cells).</summary>
         internal struct DubinsWord { internal string W; internal double L0, L1, L2; }
+        private struct DubCand { internal string w; internal double t, p, q, key; }
+        [ThreadStatic] private static DubCand[] dubScratch;
 
         /// <summary>DubinsAll's arc for <paramref name="dw"/>, sampled into <paramref name="o"/> (cleared; returned), its last
         /// point exactly p1.</summary>
@@ -647,24 +725,35 @@ namespace RimMandrake.FlowWorks.Hose
             double d = D.Len / R, th = Math.Atan2(D.Z, D.X);
             double al = Mod(Math.Atan2(h0.Z, h0.X) - th), be = Mod(Math.Atan2(h1.Z, h1.X) - th);
             double sa = Math.Sin(al), sb = Math.Sin(be), ca = Math.Cos(al), cb = Math.Cos(be), cab = Math.Cos(al - be);
-            var cands = new List<(string w, double t, double p, double q)>();
+            // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: the (at most six) words on this thread's reused array, ranked by an
+            // insertion sort that keeps equal lengths in the order found (the stable order the LINQ OrderBy gave)
+            DubCand[] cands = dubScratch ?? (dubScratch = new DubCand[6]);
+            int nc = 0;
+            void Add(string wd, double t, double p, double q)
+            {
+                var c = new DubCand { w = wd, t = t, p = p, q = q, key = t + p + q };
+                int i = nc++;
+                while (i > 0 && cands[i - 1].key.CompareTo(c.key) > 0) { cands[i] = cands[i - 1]; i--; }
+                cands[i] = c;
+            }
             double tmp;
             tmp = 2 + d * d - 2 * cab + 2 * d * (sa - sb);
-            if (tmp >= 0) { double at = Math.Atan2(cb - ca, d + sa - sb); cands.Add(("LSL", Mod(-al + at), Math.Sqrt(tmp), Mod(be - at))); }
+            if (tmp >= 0) { double at = Math.Atan2(cb - ca, d + sa - sb); Add("LSL", Mod(-al + at), Math.Sqrt(tmp), Mod(be - at)); }
             tmp = 2 + d * d - 2 * cab + 2 * d * (sb - sa);
-            if (tmp >= 0) { double at = Math.Atan2(ca - cb, d - sa + sb); cands.Add(("RSR", Mod(al - at), Math.Sqrt(tmp), Mod(-be + at))); }
+            if (tmp >= 0) { double at = Math.Atan2(ca - cb, d - sa + sb); Add("RSR", Mod(al - at), Math.Sqrt(tmp), Mod(-be + at)); }
             tmp = -2 + d * d + 2 * cab + 2 * d * (sa + sb);
-            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(-ca - cb, d + sa + sb) - Math.Atan2(-2, pp); cands.Add(("LSR", Mod(-al + at), pp, Mod(-be + at))); }
+            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(-ca - cb, d + sa + sb) - Math.Atan2(-2, pp); Add("LSR", Mod(-al + at), pp, Mod(-be + at)); }
             tmp = -2 + d * d + 2 * cab - 2 * d * (sa + sb);
-            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(ca + cb, d - sa - sb) - Math.Atan2(2, pp); cands.Add(("RSL", Mod(al - at), pp, Mod(be - at))); }
+            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(ca + cb, d - sa - sb) - Math.Atan2(2, pp); Add("RSL", Mod(al - at), pp, Mod(be - at)); }
             tmp = (6 - d * d + 2 * cab + 2 * d * (sa - sb)) / 8;
-            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(al - Math.Atan2(ca - cb, d - sa + sb) + pp / 2); cands.Add(("RLR", t, pp, Mod(al - be - t + pp))); }
+            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(al - Math.Atan2(ca - cb, d - sa + sb) + pp / 2); Add("RLR", t, pp, Mod(al - be - t + pp)); }
             tmp = (6 - d * d + 2 * cab + 2 * d * (-sa + sb)) / 8;
-            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(-al - Math.Atan2(ca - cb, d + sa - sb) + pp / 2); cands.Add(("LRL", t, pp, Mod(be - al - t + pp))); }
+            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(-al - Math.Atan2(ca - cb, d + sa - sb) + pp / 2); Add("LRL", t, pp, Mod(be - al - t + pp)); }
             double h1a = Math.Atan2(h1.Z, h1.X);
             List<V2> pts = scratch ?? new List<V2>();
-            foreach (var c in cands.OrderBy(c => c.t + c.p + c.q))
+            for (int ci = 0; ci < nc; ci++)
             {
+                DubCand c = cands[ci];
                 var dw = new DubinsWord { W = c.w, L0 = c.t * R, L1 = c.p * R, L2 = c.q * R };
                 DubinsSampleInto(p0, Math.Atan2(h0.Z, h0.X), dw.W, dw.L0, dw.L1, dw.L2, R, step, pts, out double thEnd);
                 double hErr = Math.Abs(Math.Atan2(Math.Sin(thEnd - h1a), Math.Cos(thEnd - h1a)));
@@ -911,19 +1000,24 @@ namespace RimMandrake.FlowWorks.Hose
                 // centreline rule only when every join was turned away for that alone
                 double bodyHalf = BodyHalf(p.PlumpAmount);
                 bool bodyTurnedAway = false;
-                (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? shave = null;
+                (List<V2> f, List<V2> q, LeadCand cc, int m, double lead)? shave = null;
                 double shaveGap = double.NegativeInfinity;
                 // HOSE_ENDS_FIX_MISSES_THE_PORTS (fuzz seeds 144 & co. once the nozzle moved to the measured art): the cheapest
                 // pair can join the plump pose by a long detour the flat pose does not take, so the hose visibly grows when it
                 // fills. Such a pair is only kept as the last resort, after every other join was tried.
-                (List<V2> f, List<V2> q, List<V2> cc, int m, double lead)? longPlump = null;
+                (List<V2> f, List<V2> q, LeadCand cc, int m, double lead)? longPlump = null;
                 // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: the candidates and finished poses depend on neither pass flag, so they are
                 // made once per lay for all four passes; the 4-list is the 24-list's prefix (both shortest first, cut at
                 // the count), so a finished pose keyed by its index is the same pose in either
                 var fFin = new Dictionary<long, LeadFin>();
                 var qFin = new Dictionary<long, LeadFin>();
-                var fcOf = new Dictionary<int, List<(double extra, List<V2> pts, double leadLen)>>();
-                var qcOf = new Dictionary<int, List<(double extra, List<V2> pts, double leadLen)>>();
+                var fcOf = new Dictionary<int, List<LeadCand>>();
+                var qcOf = new Dictionary<int, List<LeadCand>>();
+                // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: the centre's join depends on no pair, so it is found once (it was found
+                // again for every pair that passed the wall, bend, rig and body tests); finished poses come from this thread's
+                // pool and go back to it below, all but the two the lay keeps
+                List<LeadCand> ccs = null;
+                LayScratch ls = LayScratch.Get();
                 foreach (bool body in new[] { true, false })
                 {
                 if (done || (!body && BodyRuleOn && !bodyTurnedAway) || (body && !BodyRuleOn)) continue;
@@ -943,20 +1037,27 @@ namespace RimMandrake.FlowWorks.Hose
                 // HOSE_LAY_FIX_GC_STORM_FROM_WORKER: a pair's finished pose and every test on it depend on its own candidate and
                 // the sample count only, so each is made and judged once (LeadFin) rather than once per pair it is in: up to
                 // 24 x 24 pairs re-finished both sides each, ~265 MB of garbage per outflow lay on the 325 basin map
-                LeadFin Fin(Dictionary<long, LeadFin> memo, List<V2> pts, int idx, int m)
+                LeadFin Fin(Dictionary<long, LeadFin> memo, LeadCand c, int idx, int m)
                 {
                     long key = ((long)idx << 32) | (uint)m;
-                    if (!memo.TryGetValue(key, out LeadFin fin)) memo[key] = fin = new LeadFin(w, LeadOutFinish(w, pts, m, a, u, S, R));
+                    if (!memo.TryGetValue(key, out LeadFin fin))
+                        memo[key] = fin = new LeadFin(w, LeadOutFinishInto(c.PoseInto(ls.Cand), m, a, u, S, ls.TakePose()));
                     return fin;
                 }
-                var pairs = new List<(int x, int y)>(fc.Count * qc.Count);
-                for (int xi = 0; xi < fc.Count; xi++) for (int yi = 0; yi < qc.Count; yi++) pairs.Add((xi, yi));
-                // stable, as the OrderBy it replaces: equal sums keep the flat-major order
-                foreach (var ix in pairs.OrderBy(t => fc[t.x].extra + qc[t.y].extra))
+                // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: ranked on this thread's reused array, ties by the flat-major index (the
+                // stable order the LINQ OrderBy gave)
+                int np = fc.Count * qc.Count;
+                if (ls.Pairs.Length < np) ls.Pairs = new PairKey[Math.Max(np, 2 * ls.Pairs.Length)];
+                PairKey[] pairs = ls.Pairs;
+                for (int xi = 0, o = 0; xi < fc.Count; xi++)
+                    for (int yi = 0; yi < qc.Count; yi++, o++) pairs[o] = new PairKey { k = fc[xi].extra + qc[yi].extra, x = xi, y = yi, order = o };
+                Array.Sort(pairs, 0, np);
+                for (int pi = 0; pi < np; pi++)
                 {
+                    PairKey ix = pairs[pi];
                     var pair = (x: fc[ix.x], y: qc[ix.y]);
-                    int m = Math.Max(LeadOutSamples(pair.x.pts), LeadOutSamples(pair.y.pts));
-                    LeadFin fF = Fin(fFin, pair.x.pts, ix.x, m), qF = Fin(qFin, pair.y.pts, ix.y, m);
+                    int m = Math.Max(LeadOutSamplesOfLen(pair.x.Len), LeadOutSamplesOfLen(pair.y.Len));
+                    LeadFin fF = Fin(fFin, pair.x, ix.x, m), qF = Fin(qFin, pair.y, ix.y, m);
                     List<V2> f = fF.Pts, q = qF.Pts;
                     if (!fF.Clear || !qF.Clear) continue;
                     double lead = Math.Max(pair.x.leadLen, pair.y.leadLen);
@@ -964,17 +1065,17 @@ namespace RimMandrake.FlowWorks.Hose
                     if (scenic && fF.RigOf(w, planCells) + qF.RigOf(w, planCells) > 0) { rigTurnedAway = true; continue; }
                     double gap = Math.Min(fF.GapOf(w, S), qF.GapOf(w, S));
                     if (body && gap < bodyHalf) { bodyTurnedAway = true; continue; }
-                    var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
+                    var cc = ccs ?? (ccs = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1));
                     if (Geo.Length(q) > Geo.Length(f) * PlumpGrowthMax + 0.5)
                     {
-                        if (longPlump == null) longPlump = (f, q, cc.Count > 0 ? cc[0].pts : null, m, pair.x.leadLen);
+                        if (longPlump == null) longPlump = (f, q, cc.Count > 0 ? cc[0] : null, m, pair.x.leadLen);
                         continue;
                     }
                     // no join clears the body: of the joins that fit, the one standing farthest off the walls
-                    if (!body && BodyRuleOn) { if (gap > shaveGap) { shave = (f, q, cc.Count > 0 ? cc[0].pts : null, m, pair.x.leadLen); shaveGap = gap; } continue; }
+                    if (!body && BodyRuleOn) { if (gap > shaveGap) { shave = (f, q, cc.Count > 0 ? cc[0] : null, m, pair.x.leadLen); shaveGap = gap; } continue; }
                     lay.Flat = f;
                     lay.Plump = q;
-                    lay.Centre = cc.Count > 0 ? ResampleN(cc[0].pts, m) : ResampleN(StraightenStart(lay.Centre, a, u, S), m);
+                    lay.Centre = cc.Count > 0 ? ResampleN(cc[0].PoseInto(ls.Cand), m) : ResampleN(StraightenStart(lay.Centre, a, u, S), m);
                     lay.LeadOutLen = pair.x.leadLen;
                     done = true;
                     break;
@@ -984,7 +1085,7 @@ namespace RimMandrake.FlowWorks.Hose
                     var sv = shave.Value;
                     lay.Flat = sv.f;
                     lay.Plump = sv.q;
-                    lay.Centre = sv.cc != null ? ResampleN(sv.cc, sv.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), sv.m);
+                    lay.Centre = sv.cc != null ? ResampleN(sv.cc.PoseInto(ls.Cand), sv.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), sv.m);
                     lay.LeadOutLen = sv.lead;
                     done = true;
                 }
@@ -996,10 +1097,12 @@ namespace RimMandrake.FlowWorks.Hose
                     var lp = longPlump.Value;
                     lay.Flat = lp.f;
                     lay.Plump = lp.q;
-                    lay.Centre = lp.cc != null ? ResampleN(lp.cc, lp.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), lp.m);
+                    lay.Centre = lp.cc != null ? ResampleN(lp.cc.PoseInto(ls.Cand), lp.m) : ResampleN(StraightenStart(lay.Centre, a, u, S), lp.m);
                     lay.LeadOutLen = lp.lead;
                     done = true;
                 }
+                foreach (LeadFin fin in fFin.Values) fin.Release(ls, lay);
+                foreach (LeadFin fin in qFin.Values) fin.Release(ls, lay);
                 if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }
             return Finish(w, lay, p, Rig, endInward, startOutward);
@@ -2105,11 +2208,22 @@ namespace RimMandrake.FlowWorks.Hose
         /// not in <paramref name="allowed"/> (the plan's own cells). 0 in any world with no reel or pump near the hose.</summary>
         internal static int RigHits(CordWorld w, IList<V2> pts, HashSet<Cell> allowed)
         {
-            HashSet<Cell> hit = null;
-            foreach (Cell c in CellsAlong(pts))
-                if (!allowed.Contains(c) && w.ExtraCost(c) >= BuildingCrossCost) (hit ?? (hit = new HashSet<Cell>())).Add(c);
-            return hit == null ? 0 : hit.Count;
+            // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: walks the same 0.05-cell samples CellsAlong takes into this thread's
+            // reused set (a fresh CellsAlong set per call was ~0.5 MB a lay: 158 calls)
+            HashSet<Cell> hit = rigHitScratch ?? (rigHitScratch = new HashSet<Cell>());
+            hit.Clear();
+            void Try(Cell c) { if (!allowed.Contains(c) && w.ExtraCost(c) >= BuildingCrossCost) hit.Add(c); }
+            if (pts.Count > 0) Try(pts[0].Floor);
+            for (int i = 1; i < pts.Count; i++)
+            {
+                int k = Math.Max(1, (int)Math.Ceiling(V2.Dist(pts[i - 1], pts[i]) / 0.05));
+                for (int j = 0; j <= k; j++) Try((pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k)).Floor);
+            }
+            int n = hit.Count;
+            hit.Clear();
+            return n;
         }
+        [ThreadStatic] private static HashSet<Cell> rigHitScratch;
 
         /// <summary>True when the straight segment a-b enters no building-costed cell (<see cref="BuildingCrossCost"/>) other
         /// than those in <paramref name="allowed"/> (a walked trail's own cells) and the two end cells. The any-angle pulls
