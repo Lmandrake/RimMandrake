@@ -72,8 +72,9 @@ namespace RimMandrake.CreatureBehaviors
 	public static class RM_ConditionGround
 	{
 		/// <summary>Product of growthRateFactor over active growth-pulse conditions (1 when none / off).
-		/// Walks the map manager AND its Parent (the world manager), as vanilla's
-		/// AggregatePlantDensityFactor does, so a world-scope condition grows plants as well as thickening them.
+		/// Walks the map manager AND its Parent (the world manager), so a world-scope condition grows plants too.
+		/// (Vanilla's AggregatePlantDensityFactor also walks Parent but gates on CanApplyOnMap(ownerMap), which is
+		/// null for the world manager, so a WORLD-scope condition never thickens plants, only grows them here.)
 		/// Each condition must CanApplyOnMap(map) (as vanilla ElectricityDisabled checks): a world-scope
 		/// condition does not reach an underground map or a planet layer its def filters out (orbit).</summary>
 		public static float GrowthFactor(Map map)

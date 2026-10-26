@@ -67,10 +67,13 @@ namespace RimMandrake.CrackedLands
 
         private CompCanBeDormant Dormant => parent.TryGetComp<CompCanBeDormant>();
 
+        // A def that sets checkIntervalTicks to 0 (or less) would divide by zero in IsHashIntervalTick every tick.
+        private int Interval => System.Math.Max(1, Props.checkIntervalTicks);
+
         public override void CompTick()
         {
             base.CompTick();
-            if (!parent.Spawned || !parent.IsHashIntervalTick(Props.checkIntervalTicks))
+            if (!parent.Spawned || !parent.IsHashIntervalTick(Interval))
             {
                 return;
             }
@@ -88,7 +91,7 @@ namespace RimMandrake.CrackedLands
             RM_MapComponent_CanyonFlood flood = parent.Map.GetComponent<RM_MapComponent_CanyonFlood>();
             RM_PanKernel.Do act = RM_PanKernel.Check(state, false, false, d.Props.startsDormant, d.wokeUpTick != int.MinValue, d.Awake, CanSeal(pawn), WaterNear(),
                 RM_CrackedLandsSettings.muttavaqWaterWakeEnabled, RM_CrackedLandsSettings.muttavaqDigInEnabled, flood != null && flood.IsFlooding,
-                Props.checkIntervalTicks, Props.dryHoursToDigIn);
+                Interval, Props.dryHoursToDigIn);
             switch (act)
             {
                 case RM_PanKernel.Do.Seal:

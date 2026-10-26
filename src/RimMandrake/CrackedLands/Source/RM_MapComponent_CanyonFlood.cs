@@ -79,9 +79,11 @@ namespace RimMandrake.CrackedLands
         // maker's explicit choice), so a standing aimed flood is never torn down next tick by the biome gate.
         private IntVec3 aimedAt = IntVec3.Invalid;
 
-        // Last tick's Active (not saved: a load is not a switch-on). Off the canyon the clock idles while no trigger
-        // lifts the gate, so its next flood ages into the past; on the switch-on edge it gets a fresh period instead of
-        // playing the whole warning and the wall within a few ticks.
+        // Last tick's Active. Off the canyon (or with the cycle switched off) the clock idles, so its next flood ages
+        // into the past; on the switch-on edge it gets a fresh period instead of playing the whole warning and the wall
+        // within a few ticks. Saved: a game saved idle and loaded with the gate open (setting turned on between
+        // sessions) is a switch-on too. Default true, so a save from before this field never fakes an edge. An explicit
+        // arm (trigger button, debug arm) sets it true: its own schedule is not an aged clock.
         private bool wasActive = true;
         private IntVec3 roarCell = IntVec3.Invalid;
         private Sustainer roar;
@@ -126,14 +128,15 @@ namespace RimMandrake.CrackedLands
         public FloodPhase Phase => st.Phase;
         public IntVec3 AimedAt => aimedAt;
 
-        // Test surface for RM_CrackedLandsDebugActions — schedules the
-        // chime to ring on the very next tick, so the full sequence (chime
-        // -> wait chimeLeadTimeHours -> wall -> floodDurationHours -> soil)
-        // plays out in real time without waiting on floodPeriodDays.
+        // Test surface for RM_CrackedLandsDebugActions — makes the flood due
+        // on the very next tick, so the whole sequence (herald beats, chimes,
+        // wall) plays in ~3 ticks, then floodDurationHours, then soil, without
+        // waiting on floodPeriodDays.
         public void DebugArmFloodSoon()
         {
             st.Phase = FloodPhase.Dry;
             st.NextFloodTick = Find.TickManager.TicksGame + 1;
+            wasActive = true;   // armed before the gate opens (setting toggled this frame): keep the arm, no edge reschedule
         }
 
         // Test surface: skip straight past the chime to the wall itself.
@@ -170,6 +173,7 @@ namespace RimMandrake.CrackedLands
             }
             aimedAt = at;
             pendingSeed = at;
+            wasActive = true;   // aimedAt may just have lifted the gate: not a switch-on edge that reschedules this arm
             int now = Find.TickManager.TicksGame;
             if (warn)
             {
@@ -675,6 +679,7 @@ namespace RimMandrake.CrackedLands
             Scribe_Values.Look(ref pendingSeed, "pendingSeed", IntVec3.Invalid);
             Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
             Scribe_Values.Look(ref aimedAt, "aimedAt", IntVec3.Invalid);
+            Scribe_Values.Look(ref wasActive, "wasActive", true);
             // ExposeData runs once per load phase (LoadingVars, ResolveCrossRefs, PostLoadInit); the loaded lists must live in FIELDS so
             // the LoadingVars read survives to PostLoadInit. Same labels as before the kernel extraction, so old saves load.
             if (Scribe.mode == LoadSaveMode.Saving)

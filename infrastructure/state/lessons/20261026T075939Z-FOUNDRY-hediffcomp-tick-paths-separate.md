@@ -1,0 +1,2 @@
+RimWorld 1.6 HediffWithComps runs two separate severity passes: PostTick sums CompPostTick(ref adj) every tick, PostTickInterval sums CompPostTickInterval(ref adj, delta). Vanilla SeverityPerDay/SeverityModifierBase adjust only on the interval path (every 200 ticks). A comp that clamps or floors severity in CompPostTick never sees that fade, so it lags it by a tick; override both and list the clamp comp after the one it clamps (WARSCARMARK_FLOOR_ENFORCE_INTERVAL_FADE).
+home: rimworld-modding

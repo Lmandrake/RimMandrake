@@ -1,0 +1,2 @@
+Vanilla 1.6 GameConditionManager.AggregatePlantDensityFactor walks Parent (the world manager) but gates each condition on CanApplyOnMap(ownerMap), and the world manager's ownerMap is null, so CanApplyOnMap(null) is false: a WORLD-scope condition never changes wild-plant density on any map. Pass the asking map yourself if a world condition must reach maps (RM_AshPulse GrowthFactor does).
+home: rimworld-modding

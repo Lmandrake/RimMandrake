@@ -34,6 +34,20 @@ namespace RimMandrake.Scarlands
 
         public override void CompPostTick(ref float severityAdjustment)
         {
+            Floor(ref severityAdjustment);
+        }
+
+        // The fade (HediffComp_SeverityPerDay) runs on the interval path (CompPostTickInterval, every 200 ticks), whose
+        // severityAdjustment the per-tick path never sees: clamping only per tick let an armed mark dip below the floor
+        // (0.25, the "mild mark" stage boundary) for a tick every 200, flipping it to the hidden onset stage and back.
+        // This comp is listed after SeverityPerDay, so here the adjustment already holds the fade.
+        public override void CompPostTickInterval(ref float severityAdjustment, int delta)
+        {
+            Floor(ref severityAdjustment);
+        }
+
+        private void Floor(ref float severityAdjustment)
+        {
             if (!RM_WarscarSettings.markFloorEnabled)
             {
                 return;
