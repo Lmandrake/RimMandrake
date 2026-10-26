@@ -3636,6 +3636,8 @@ copied verbatim from the donor mods' own Textures trees.
       <fleshType>Insectoid</fleshType>
       <bloodDef>Filth_BloodInsect</bloodDef>
       <useMeatFrom>Megaspider</useMeatFrom>
+      <!-- RACES_FIX_LEATHER_AMOUNT_WITHOUT_LEATHERDEF 2026-10-26: LeatherAmount 2 had no leatherDef, so it butchered to nothing. The adult's chitin (RSW_AaroxisDendoria), as RSW_FacetMothPupa carries its adult's. -->
+      <leatherDef>RM_GrayChitin</leatherDef>
       <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
       <foodType>VegetarianRoughAnimal</foodType>
@@ -4324,6 +4326,8 @@ copied verbatim from the donor mods' own Textures trees.
       <fleshType>Insectoid</fleshType>
       <bloodDef>Filth_BloodInsect</bloodDef>
       <useMeatFrom>Megaspider</useMeatFrom>
+      <!-- RACES_FIX_LEATHER_AMOUNT_WITHOUT_LEATHERDEF 2026-10-26: LeatherAmount 2 had no leatherDef, so it butchered to nothing. The adult's chitin (RSW_RoyalRhino), as RSW_FacetMothPupa carries its adult's. -->
+      <leatherDef>RSW_RoyalChitin</leatherDef>
       <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
       <foodType>OmnivoreRoughAnimal</foodType>

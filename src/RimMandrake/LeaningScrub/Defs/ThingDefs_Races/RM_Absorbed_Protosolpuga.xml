@@ -22,8 +22,10 @@
      names are left free so the two can coexist during the changeover.
    * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
      vanilla AnimalThingBase, with that abstract's two statBases inlined.
-   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> vanilla
-     Leather_Lizard. useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
+   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> RM_MediumChitin
+     for this arthropod (RACES_FIX_LEATHER_AMOUNT_WITHOUT_LEATHERDEF; the vertebrate
+     ports got vanilla
+     Leather_Lizard). useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
      absorbed) dropped, so the species carries its own auto-generated meat;
      useMeatFrom Megaspider / Boomrat are VANILLA and are kept as-is.
    * ExtraButcheringProducts.CompProperties_SpecialButcherChance removed - that
@@ -107,6 +109,8 @@ An extinct genus of solifugae. They do not possess any venom or stinger, but uti
       <predator>true</predator>
       <foodType>CarnivoreAnimal</foodType>
       <useMeatFrom>Megaspider</useMeatFrom>
+      <!-- RACES_FIX_LEATHER_AMOUNT_WITHOUT_LEATHERDEF 2026-10-26: no leatherDef was set, so LeatherAmount 30 butchered to nothing (Pawn.ButcherProducts reads only race.leatherDef). Tough chitin, the shared arthropod ladder rung other 1.5-2.5 bodied bugs use; the donor's DinoChitin drop was removed with its DLL. -->
+      <leatherDef>RM_MediumChitin</leatherDef>
       <gestationPeriodDays>30</gestationPeriodDays>
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.25</manhunterOnTameFailChance>
