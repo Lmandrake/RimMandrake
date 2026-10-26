@@ -44,10 +44,13 @@ namespace RimMandrake.TerminalBiomes
             }
         }
 
-        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        // Notify_Killed, not PostDestroy: Pawn.Kill despawns the pawn into its corpse and never calls
+        // Destroy(KillFinalize), so a PostDestroy hook never saw a death (decompiled 1.6 Pawn.Kill,
+        // ThingWithComps.Kill). The corpse's later destruction is Vanish and does not spoil twice.
+        public override void Notify_Killed(Map previousMap, DamageInfo? dinfo = null)
         {
-            base.PostDestroy(mode, previousMap);
-            if (mode != DestroyMode.KillFinalize || previousMap == null) return;
+            base.Notify_Killed(previousMap, dinfo);
+            if (previousMap == null) return;
             ThingDef spoil = DefDatabase<ThingDef>.GetNamedSilentFail(Props.spoilDefName);
             if (spoil == null) return;
             int pending = 1;   // the sheet it was carrying

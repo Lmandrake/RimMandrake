@@ -1,0 +1,2 @@
+A comp's PostDestroy(mode == KillFinalize) never fires when a PAWN dies: Pawn.Kill despawns the pawn into its corpse (DeSpawnOrDeselect) and never calls Destroy, so death logic there is dead code (RM_Comp_WaxProcession). Use Notify_Killed(Map prevMap, DamageInfo? dinfo), which ThingWithComps.Kill calls for every comp. Related: Thing.Destroy never drops an IThingHolder's contents; a holder Thing must spill them in its own Destroy override (RM_Thing_CargoFloat).
+home: rimworld-modding

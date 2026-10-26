@@ -38,7 +38,9 @@ namespace RimMandrake.TerminalBiomes
             }
             sb.Append(CryoActive
                 ? "Cryogenic bath: running"
-                : "Cryogenic bath: offline (needs power)");
+                : !RM_TerminalBiomesSettings.ChillCryoponicsActive
+                    ? "Cryogenic bath: switched off in Mod Settings"
+                    : "Cryogenic bath: offline (needs power)");
             return sb.ToString();
         }
 

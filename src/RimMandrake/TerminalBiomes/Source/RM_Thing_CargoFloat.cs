@@ -185,6 +185,22 @@ namespace RimMandrake.TerminalBiomes
             return false;
         }
 
+        // Thing.Destroy never touches a holder's contents (decompiled 1.6), so a loaded float that burned, rotted
+        // or was destroyed any other way took its cargo with it unseen. A spawned float spills its load where it
+        // stood; one destroyed while held somewhere has nowhere to spill, so the cargo goes with it, destroyed properly.
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (container != null && container.Count > 0)
+            {
+                if (Spawned)
+                {
+                    container.TryDropAll(Position, Map, ThingPlaceMode.Near);
+                }
+                container.ClearAndDestroyContents();
+            }
+            base.Destroy(mode);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
