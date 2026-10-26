@@ -144,6 +144,7 @@ namespace RimMandrake.RustCathedral.Hum
 		private static readonly Dictionary<int, int> edgeCacheTick = new Dictionary<int, int>();
 		private static readonly Dictionary<int, List<IntVec3>> edgeCache = new Dictionary<int, List<IntVec3>>();
 		private static readonly Dictionary<int, HashSet<IntVec3>> edgeSetCache = new Dictionary<int, HashSet<IntVec3>>();
+		private static Game cacheGame;
 
 		public static List<IntVec3> HullCells(Map map)
 		{
@@ -151,8 +152,17 @@ namespace RimMandrake.RustCathedral.Hum
 			{
 				return new List<IntVec3>();
 			}
+			// Keyed by map.uniqueID, which restarts per save: a cache from the previous game (or an earlier
+			// save of this one, whose clock is behind) must never answer for this one.
+			if (cacheGame != Current.Game)
+			{
+				cacheGame = Current.Game;
+				edgeCacheTick.Clear();
+				edgeCache.Clear();
+				edgeSetCache.Clear();
+			}
 			int now = Find.TickManager.TicksGame;
-			if (edgeCacheTick.TryGetValue(map.uniqueID, out int at) && now - at < 600 && edgeCache.TryGetValue(map.uniqueID, out List<IntVec3> cached))
+			if (edgeCacheTick.TryGetValue(map.uniqueID, out int at) && at <= now && now - at < 600 && edgeCache.TryGetValue(map.uniqueID, out List<IntVec3> cached))
 			{
 				return cached;
 			}
