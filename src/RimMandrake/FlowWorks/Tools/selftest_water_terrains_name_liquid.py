@@ -12,16 +12,21 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]  # src/RimMandrake
+SRC = Path(__file__).resolve().parents[3]  # src/
+ROOTS = [SRC / "RimMandrake", SRC / "RimStarWars", SRC / "RimUtinni"]  # every tier ships terrains
 FRESH_BY_DESIGN = re.compile(r"^RM_Fill_Water_(Trace|Half|Brim|Superdeep)$")
 FRESH_BY_DESIGN_NAMES = {"RM_WaterChestDeepStill", "RM_WaterThin", "RM_WaterVeryShallow"}  # pond stages
 VANILLA_WATER_PARENTS = re.compile(r"^(Water|River|Lake|Ocean)")
 PARENTS = {}  # Name -> TerrainDef element, abstract or not
 
 
+def _globs(sub):
+    return [f for r in ROOTS for f in r.glob(f"*/{sub}/**/*.xml")]
+
+
 def load():
     terrains, suite, patched = {}, set(), set()
-    for f in ROOT.glob("*/Defs/**/*.xml"):
+    for f in _globs("Defs"):
         try:
             root = ET.parse(f).getroot()
         except ET.ParseError:
@@ -39,7 +44,7 @@ def load():
                     if v:
                         suite.add(v)
     # a patch may add the extension (foreign mods that do not depend on FlowWorks)
-    for f in ROOT.glob("*/Patches/**/*.xml"):
+    for f in _globs("Patches"):
         try:
             root = ET.parse(f).getroot()
         except ET.ParseError:
@@ -86,6 +91,7 @@ def main():
            and not FRESH_BY_DESIGN.match(n) and n not in FRESH_BY_DESIGN_NAMES]
     # sanity probe: the instrument must see the known cases
     assert len(water) > 60, f"instrument blind: only {len(water)} Water terrains found"
+    assert "RUT_WastesBrineShallow" in water, "instrument blind to RimUtinni (second tier) terrains"
     assert "RM_Fill_Tar_Brim" in water and "RM_AmmoniaShallow" in water, "probe terrains not seen"
     # inherited-tag probe: RM_Water_Rust lists only WaterFresh* tags and gets Water from WaterShallowBase
     assert "RM_Water_Rust" in water, "instrument blind to Water tags inherited through a child's own <tags>"

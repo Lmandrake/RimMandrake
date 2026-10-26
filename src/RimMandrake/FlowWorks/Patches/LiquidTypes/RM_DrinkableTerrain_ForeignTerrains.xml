@@ -201,4 +201,54 @@
     </match>
   </Operation>
 
+  <!-- RimUtinni's own copies of the Wastes brine terrains (UtinniPatches/RUT_WastesBrineWater.xml) -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_Brine</liquid>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineMovingChestDeep"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineMovingChestDeep"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_Brine</liquid>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineMovingShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineMovingShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_Brine</liquid>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineShallow"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/TerrainDef[defName="RUT_WastesBrineShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+          <liquid>RM_Liquid_Brine</liquid>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
