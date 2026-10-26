@@ -30,7 +30,8 @@ namespace RimMandrake.DivingInteraction
     //    Both prefixes ask with the INSTIGATOR, so Fuselight's own
     //    explosion still burns (RM_SelfOxidizingExtension) and a fission
     //    Genetron's meltdown flame does not (RM_NonCombustionExtension is
-    //    not an oxidizer: CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN).
+    //    not an oxidizer: CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN). The fire Fuselight's
+    //    flash lights does not inherit its oxidizer (Patch_Fire_TickInterval).
     //
     // 2) CompRefuelable.ShouldBeLitNow() is NOT wired through
     //    TryStartFireIn at all — a campfire/torch/brazier never spawns a
@@ -100,6 +101,25 @@ namespace RimMandrake.DivingInteraction
                 return true; // vanilla decides (CanEverAttachFire refuses it anyway)
             }
             return RM_ChillFireGate.IsIgnitionAllowed(t.Map, t.Position, instigator);
+        }
+    }
+
+    // CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS. A Fire passes its instigator on: TrySpread (Fire.cs:403), the attach to a
+    // pawn in its cell (:272) and DoFireDamage (`instigator ?? this`, whose Flame damage attaches via DamageWorker_Flame and
+    // Thing.TakeDamage) all run inside Fire.TickInterval. Marking that scope keeps a Fuselight flash's fire from carrying
+    // the flash's oxidizer into the tar and wax plants around it. A Spark launched by TrySpread lands later with the Fire
+    // as instigator, which carries no extension. Prefix + finalizer, so a throw inside the tick cannot leave it raised.
+    [HarmonyPatch(typeof(Fire), "TickInterval")]
+    public static class Patch_Fire_TickInterval
+    {
+        public static void Prefix()
+        {
+            RM_ChillFireGate.insideFireTick++;
+        }
+
+        public static void Finalizer()
+        {
+            RM_ChillFireGate.insideFireTick--;
         }
     }
 

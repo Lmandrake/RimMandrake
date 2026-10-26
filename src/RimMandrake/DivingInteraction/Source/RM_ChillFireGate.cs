@@ -108,9 +108,16 @@ namespace RimMandrake.DivingInteraction
             }
             RM_MapComponent_ChillOxygenation oxygenation = map.GetComponent<RM_MapComponent_ChillOxygenation>();
             return RM_ChillFireBanKernel.IgnitionAllowed(true, banEnabled,
-                IsSelfOxidizing(relevantThing), BurnsNothing(relevantThing),
+                IsSelfOxidizing(relevantThing), BurnsNothing(relevantThing), insideFireTick > 0,
                 oxygenation != null && oxygenation.IsCellOxygenated(cell));
         }
+
+        /// <summary>
+        /// Above 0 while a Fire's TickInterval runs (Patch_Fire_TickInterval): every ignition asked then is that fire
+        /// spreading, damaging or attaching, and its instigator's oxidizer no longer counts
+        /// (CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS). Main thread only, like the tick itself.
+        /// </summary>
+        internal static int insideFireTick;
     }
 
     /// <summary>

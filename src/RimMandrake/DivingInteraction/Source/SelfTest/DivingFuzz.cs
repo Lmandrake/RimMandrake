@@ -588,7 +588,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
             return fails;
         }
 
-        // CHILLFIREBAN_FIX_ATTACHED_FIRE_UNGATED + CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN. A fire source (named below)
+        // CHILLFIREBAN_FIX_ATTACHED_FIRE_UNGATED + _MELTDOWN_FIRE_ESCAPES_BAN + _FUSELIGHT_FIRE_SPREADS. A fire source (named below)
         // goes off on a small map; its fire tries cells (TryStartFireIn) and pawns standing in burning cells
         // (TryAttachFire), and spreads cell to cell carrying its instigator (Fire.cs:403), all asked through
         // RM_ChillFireBanKernel.IgnitionAllowed exactly as RM_ChillFireGate does. The oracle is the ruling written out,
@@ -628,13 +628,17 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 }
                 var pawn = new bool[W * W];
                 for (int i = 0; i < W * W; i++) pawn[i] = r.Next(8) == 0;
-                bool Ask(int cell) { return RM_ChillFireBanKernel.IgnitionAllowed(seabed, banOn, src.selfOx, src.burnsNothing, air[cell]); }
-                // independent truth: does the ruling allow fire from THIS source in THIS cell?
+                // byFire: asked from inside a burning Fire's tick (spread, attach, its own damage), as Patch_Fire_TickInterval marks it
+                bool Ask(int cell, bool byFire) { return RM_ChillFireBanKernel.IgnitionAllowed(seabed, banOn, src.selfOx, src.burnsNothing, byFire, air[cell]); }
+                // independent truth: does the ruling allow fire from THIS source in THIS cell? Fuselight's oxidizer is its
+                // flash: the cells the blast itself reaches. What then burns is the tar or wood, which has no air either.
                 bool vanilla = !seabed || !banOn;
-                bool Ruled(int cell) { return vanilla || air[cell] || src.selfOx; }
+                bool Ruled(int cell, bool byFire) { return vanilla || air[cell] || (src.selfOx && !byFire); }
                 string who = $"{src.name} seabed {seabed} ban {banOn}";
                 var burning = new bool[W * W];
                 var onFire = new bool[W * W];
+                var flashed = new bool[W * W];   // cell lit by the blast itself, not by a fire
+                var pawnFlashed = new bool[W * W];
                 try
                 {
                     // the blast: a few cells around a centre (DamageWorker_Flame.ExplosionAffectCell -> TryStartFireIn, victim -> TryAttachFire)
@@ -643,8 +647,8 @@ namespace RimMandrake.DivingInteraction.SelfTest
                         for (int y = Math.Max(0, cy - rad); y < Math.Min(W, cy + rad + 1); y++)
                         {
                             int i = x * W + y;
-                            if (Ask(i)) burning[i] = true;
-                            if (pawn[i] && Ask(i)) onFire[i] = true;
+                            if (Ask(i, false)) burning[i] = flashed[i] = true;
+                            if (pawn[i] && Ask(i, false)) onFire[i] = pawnFlashed[i] = true;
                         }
                     for (int step = 0; step < 30; step++)
                     {
@@ -656,19 +660,22 @@ namespace RimMandrake.DivingInteraction.SelfTest
                             int nx = x + (d == 0 ? 1 : d == 1 ? -1 : 0), ny = y + (d == 2 ? 1 : d == 3 ? -1 : 0);
                             if (nx < 0 || ny < 0 || nx >= W || ny >= W) continue;
                             int j = nx * W + ny;
-                            if (Ask(j)) burning[j] = true;               // Fire.TrySpread, instigator carried
-                            if (pawn[j] && burning[j] && Ask(j)) onFire[j] = true;   // Fire.cs:272 attach to a pawn in the cell
+                            if (Ask(j, true)) burning[j] = true;               // Fire.TrySpread, instigator carried
+                            if (pawn[j] && burning[j] && Ask(j, true)) { if (!onFire[j]) pawnFlashed[j] = false; onFire[j] = true; }   // Fire.cs:272 attach to a pawn in the cell
                         }
                     }
                     for (int i = 0; i < W * W; i++)
                     {
-                        if (burning[i] && !Ruled(i)) Check(false, $"a cell with no air burned on the seabed (cell {i})");
-                        if (onFire[i] && !Ruled(i)) Check(false, $"a pawn with no air around it caught fire on the seabed (cell {i})");
-                        if (onFire[i] && !burning[i] && !Ruled(i)) Check(false, "a pawn caught fire where no cell may burn");
+                        if (burning[i] && !Ruled(i, !flashed[i])) Check(false, $"a cell with no air burned on the seabed (cell {i}, {(flashed[i] ? "blast" : "spread")})");
+                        if (onFire[i] && !Ruled(i, !pawnFlashed[i])) Check(false, $"a pawn with no air around it caught fire on the seabed (cell {i})");
                     }
-                    if (vanilla) for (int i = 0; i < W * W; i++) Check(Ask(i), "fire was refused off the seabed or with the ban switched off");
-                    if (src.selfOx) for (int i = 0; i < W * W; i++) Check(Ask(i), "Fuselight's own fire was refused (it carries its oxidizer)");
-                    if (seabed && banOn && !src.selfOx) for (int i = 0; i < W * W; i++) Check(Ask(i) == air[i], "on the banned seabed a non-oxidizer source's fire did not follow the pumped air exactly");
+                    for (int i = 0; i < W * W; i++)
+                    {
+                        if (vanilla) Check(Ask(i, false) && Ask(i, true), "fire was refused off the seabed or with the ban switched off");
+                        if (src.selfOx) Check(Ask(i, false), "Fuselight's own flash was refused (it carries its oxidizer)");
+                        if (seabed && banOn) Check(Ask(i, true) == air[i], "on the banned seabed a fire's spread did not follow the pumped air exactly (it inherited its source's oxidizer)");
+                        if (seabed && banOn && !src.selfOx) Check(Ask(i, false) == air[i], "on the banned seabed a non-oxidizer source's fire did not follow the pumped air exactly");
+                    }
                 }
                 catch (Exception e) { fails.Add($"ignition seed {seed}: {e.Message} ({who})"); }
             }
@@ -676,11 +683,12 @@ namespace RimMandrake.DivingInteraction.SelfTest
             Cases++; Steps++;
             foreach (var src in FireSources)
             {
-                bool noAir = RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, false);
+                bool noAir = RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, false, false);
                 bool expect = src.name.StartsWith("RM_Fuselight");
                 if (noAir != expect) fails.Add($"ignition units: {src.name} on the banned seabed with no air: fire {noAir}, ruling says {expect}");
-                if (!RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, true)) fails.Add($"ignition units: {src.name} refused in a pumped-air cell");
-                if (!RM_ChillFireBanKernel.IgnitionAllowed(false, true, src.selfOx, src.burnsNothing, false)) fails.Add($"ignition units: {src.name} refused on a surface map");
+                if (RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, true, false)) fails.Add($"ignition units: {src.name}'s fire spread on the banned seabed with no air (CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS: a Tarspool beside a Fuselight lit the floor)");
+                if (!RM_ChillFireBanKernel.IgnitionAllowed(true, true, src.selfOx, src.burnsNothing, true, true)) fails.Add($"ignition units: {src.name} refused in a pumped-air cell");
+                if (!RM_ChillFireBanKernel.IgnitionAllowed(false, true, src.selfOx, src.burnsNothing, true, false)) fails.Add($"ignition units: {src.name} refused on a surface map");
             }
             return fails;
         }

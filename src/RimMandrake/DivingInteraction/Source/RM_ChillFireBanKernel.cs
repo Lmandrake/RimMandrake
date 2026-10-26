@@ -59,19 +59,23 @@ namespace RimMandrake.DivingInteraction
         /// FireUtility.TryAttachFire; RM_ChillFireGate.IsIgnitionAllowed reads the map, settings, the instigator's def
         /// extensions and the cell's air and plays what this returns. Off the seabed, or with the mechanic switched off,
         /// fire is vanilla. On it, fire needs an oxidizer: pumped air in the cell, or an instigator that carries its own
-        /// (RM_SelfOxidizingExtension: Fuselight). `instigatorBurnsNothing` (RM_NonCombustionExtension) is taken on
+        /// (RM_SelfOxidizingExtension: Fuselight) igniting directly. `instigatorBurnsNothing` (RM_NonCombustionExtension) is taken on
         /// purpose and never grants fire: a fission reactor makes power without burning, but the flame explosions of its
         /// meltdown have no oxidizer either, and their fire would carry the reactor as instigator to every cell it spreads
         /// to (CHILLFIREBAN_FIX_MELTDOWN_FIRE_ESCAPES_BAN).
+        /// `byBurningFire`: the ignition is asked from inside a burning Fire's own tick (its spread, its damage, its attach
+        /// to a pawn in its cell). That Fire carries the source's instigator (Fire.cs:403 `instigator`, DoFireDamage
+        /// `instigator ?? this`), but what burns now is the wood or tar it landed on, which brings no oxidizer: the
+        /// Fuselight exemption is its flash only, never the fire the flash lit (CHILLFIREBAN_FIX_FUSELIGHT_FIRE_SPREADS).
         /// </summary>
         public static bool IgnitionAllowed(bool chillSeabed, bool banEnabled, bool instigatorSelfOxidizing,
-            bool instigatorBurnsNothing, bool cellOxygenated)
+            bool instigatorBurnsNothing, bool byBurningFire, bool cellOxygenated)
         {
             if (!chillSeabed || !banEnabled)
             {
                 return true;
             }
-            return instigatorSelfOxidizing || cellOxygenated;
+            return (instigatorSelfOxidizing && !byBurningFire) || cellOxygenated;
         }
 
         /// <summary>True when the passive fuel burn of this tick is skipped: a flame building that cannot burn.</summary>
