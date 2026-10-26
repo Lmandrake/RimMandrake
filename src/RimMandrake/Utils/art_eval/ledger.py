@@ -78,6 +78,8 @@ def add(subject, template, source, missed, decision, owner_said=None, run=None, 
 def fix(cid, change, files, regression=None, expect=None, why=None, path=None, reg_path=None):
     if cid not in entries(path):
         raise SystemExit(f"{cid} is not in the ledger")
+    if regression and expect not in ("ACCEPT", "NOT_ACCEPT"):   # refuse BEFORE appending: the log is append-only
+        raise SystemExit("--expect ACCEPT|NOT_ACCEPT with --regression")
     v = {n: P.prompt_version(P.REFS / "prompts" / f"{n}.md")["tag"] for n in
          ("preamble", "opus_first_pass", "gpt_targeted_second_look", "regen_prompt_edit", "departures_brief")}
     for t in P.TEMPLATES:
@@ -86,8 +88,6 @@ def fix(cid, change, files, regression=None, expect=None, why=None, path=None, r
     _append({"event": "fix", "id": cid, "at": _now(), "change": change, "files": files, "versions_after": v,
              "regression": regression, "expect": expect}, path)
     if regression:
-        if expect not in ("ACCEPT", "NOT_ACCEPT"):
-            raise SystemExit("--expect ACCEPT|NOT_ACCEPT with --regression")
         rp = reg_path or STATE / "regression.jsonl"
         with rp.open("a") as fh:
             fh.write(json.dumps({"pilot": regression, "expect": expect, "from": cid, "why": why or change}) + "\n")

@@ -537,6 +537,15 @@ def main():
             check("override without his words refused", False)
         except SystemExit:
             pass
+        # a refused fix writes nothing: before 2026-10-26 `--regression` without `--expect` appended the
+        # fix event (entry reads "fixed") and only THEN refused, so the miss closed with no regression row
+        cid2 = "CL-002"
+        try:
+            LG.fix(cid2, "moved code", ["a.md"], regression="RM_U:B", expect=None, path=lp, reg_path=rp)
+            check("fix --regression without --expect refused", False)
+        except SystemExit:
+            pass
+        check("a refused fix leaves the entry open", LG.entries(lp)[cid2]["status"] == "open", LG.entries(lp)[cid2])
 
     # --- runner dry run end to end on a synthetic card (mock reviewers, no model)
     try:
