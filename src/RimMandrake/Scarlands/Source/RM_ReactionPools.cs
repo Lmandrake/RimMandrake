@@ -255,6 +255,8 @@ namespace RimMandrake.Scarlands
                 {
                     if (c.InnerPawn.apparel != null) c.InnerPawn.apparel.DropAll(at);
                     if (c.InnerPawn.equipment != null) c.InnerPawn.equipment.DropAllEquipment(at);
+                    // Corpse.Destroy -> PostCorpseDestroy destroys the inventory: drop it while the corpse is still spawned.
+                    if (c.InnerPawn.inventory != null) c.InnerPawn.inventory.DropAllNearPawn(at);
                 }
                 c.Destroy();
                 FilthMaker.TryMakeFilth(at, map, RM_PoolDefOf.RM_FilthBone, Mathf.Clamp(Mathf.RoundToInt(size * 2f), 1, 5));
