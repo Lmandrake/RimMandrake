@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Saluksis",
+ "nearest_earth_animal": "tick",
+ "earth_body_named": false,
+ "departures": [
+  "a swollen milky translucent sac body with a faint pulse showing through",
+  "a fringe of many thin legs around the sac",
+  "no face: a ring of feeding pores where a head should be",
+  "hand-sized and soft, pale all over"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_PodWorm",
+ "nearest_earth_animal": "caterpillar",
+ "earth_body_named": false,
+ "departures": [
+  "a great slow segmented worm the size of a muffalo",
+  "swollen pods studding its back, glowing sickly orange",
+  "venomous mandibles at the front"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

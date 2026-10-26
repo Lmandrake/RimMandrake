@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Chellow",
+ "nearest_earth_animal": "pigeon",
+ "earth_body_named": false,
+ "departures": [
+  "a bare wrinkled head with no feathers at all",
+  "no beak: a lipless flap of skin in place of a mouth",
+  "a translucent veined throat-fan hanging below, faintly lit from behind",
+  "a squat round body"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

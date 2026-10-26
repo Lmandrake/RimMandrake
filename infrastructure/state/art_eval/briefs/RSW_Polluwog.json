@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Polluwog",
+ "nearest_earth_animal": "tadpole",
+ "earth_body_named": true,
+ "departures": [
+  "the larva of the gastro toad",
+  "a tadpole body in murky polluted colours",
+  "a feeding mouth for detritus"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

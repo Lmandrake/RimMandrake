@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Gennok",
+ "nearest_earth_animal": "rhino",
+ "earth_body_named": false,
+ "departures": [
+  "heavy thick-hided body",
+  "broad parasol-like growths spreading over its back like shade canopies",
+  "plodding, endurance build"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

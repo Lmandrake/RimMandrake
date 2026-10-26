@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Mee",
+ "nearest_earth_animal": "fish",
+ "earth_body_named": true,
+ "departures": [
+  "the canon mee scalefish (see canon entry meescalefish)",
+  "silver-blue schooling fish",
+  "a single line of bioluminescent dots along the flank"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

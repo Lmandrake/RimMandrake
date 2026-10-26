@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Kasselith",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": false,
+ "departures": [
+  "a narrow hard-shelled insect the length of a forearm",
+  "plated body built like a folded blade, long and slim",
+  "heavy shearing mandibles",
+  "dark hard chitin, not a yellow-striped wasp"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

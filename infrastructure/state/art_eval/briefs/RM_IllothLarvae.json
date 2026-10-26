@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_IllothLarvae",
+ "nearest_earth_animal": "caterpillar",
+ "earth_body_named": true,
+ "departures": [
+  "the larva of the illoth",
+  "toxic warning colours of the fungus it hosts",
+  "fungal patches on a soft segmented body"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

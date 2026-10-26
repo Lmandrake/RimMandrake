@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Igitz",
+ "nearest_earth_animal": "newt",
+ "earth_body_named": false,
+ "departures": [
+  "the canon Naboo igitz (see canon entry igitz)",
+  "blue skin",
+  "clawed forepaws in front and finned hindquarters behind"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

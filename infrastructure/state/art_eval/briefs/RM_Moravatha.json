@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Moravatha",
+ "nearest_earth_animal": "tortoise",
+ "earth_body_named": false,
+ "departures": [
+  "many legs (more than four) under the shell",
+  "a domed carapace of overlapping blood-dark plates, as long as a cart",
+  "four glowing yellow eyes set in a blunt head",
+  "huge, slow grazing bulk far larger than any tortoise"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

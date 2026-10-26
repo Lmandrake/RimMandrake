@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Irqit",
+ "nearest_earth_animal": "frog",
+ "earth_body_named": false,
+ "departures": [
+  "palm-sized soft body with glossy wet skin",
+  "short paddling limbs for a quick scramble",
+  "no visible ears, fur or scales",
+  "clay-wet colouring of a flood-pan creature"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

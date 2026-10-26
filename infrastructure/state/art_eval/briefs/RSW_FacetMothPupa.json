@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_FacetMothPupa",
+ "nearest_earth_animal": "chrysalis",
+ "earth_body_named": false,
+ "departures": [
+  "an immobile moth pupa: a hard, faceted shell lying on the ground, not a moth and not a crawling insect",
+  "the shell is cut in flat gem-like facets that catch the light",
+  "no visible legs, wings or eyes: a sealed casing",
+  "a slight taper at one end where the moth will emerge"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

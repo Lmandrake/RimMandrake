@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Krannock",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": true,
+ "departures": [
+  "dog-sized slab-plated beetle",
+  "grey-green chitin dulled under a fur of moss and bark-dust",
+  "wings folded flat along the back when grounded",
+  "heavy grinding jaws for green wood"
+ ],
+ "body_plan": "flyer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

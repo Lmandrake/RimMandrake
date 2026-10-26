@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Ollathrix",
+ "nearest_earth_animal": "spider",
+ "earth_body_named": true,
+ "departures": [
+  "elephant-sized, mostly a mass of nimble sharp legs",
+  "a low, wide, bone-white body with an unmarked faintly translucent abdomen",
+  "a raised ring of small colourless eyes that read blind"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

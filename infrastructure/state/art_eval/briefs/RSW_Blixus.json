@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Blixus",
+ "nearest_earth_animal": "crayfish",
+ "earth_body_named": false,
+ "departures": [
+  "the canon Sljee blixus (see canon entry blixus)",
+  "half-shelled crustapod: shell covers only part of the body",
+  "long feeler tentacles"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

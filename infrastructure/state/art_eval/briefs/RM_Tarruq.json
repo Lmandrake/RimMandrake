@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Tarruq",
+ "nearest_earth_animal": "gibbon",
+ "earth_body_named": false,
+ "departures": [
+  "lean, very long limbs built for vertical climbing",
+  "grip-padded feet",
+  "a deep resonating throat-chamber swelling under the head",
+  "no fur coat or primate face"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

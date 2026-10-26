@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Aveluthia",
+ "nearest_earth_animal": "elephant",
+ "earth_body_named": false,
+ "departures": [
+  "thick wrinkled folds of black flesh hanging from the whole body, not grey elephant skin",
+  "four glowing yellow eyes set above the snout",
+  "a long head ending in a heavy drooping snout, with no tusks and no large ears",
+  "four pillar legs ending in broad splayed toes, not round elephant pads"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

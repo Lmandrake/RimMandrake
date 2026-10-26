@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_HarvesterBeetle",
+ "nearest_earth_animal": "beetle",
+ "earth_body_named": true,
+ "departures": [
+  "the canon Neimoidian harvester beetle (see canon entry harvesterbeetle)",
+  "a large insect with a swept-back carrying back",
+  "domesticated beast of burden proportions"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

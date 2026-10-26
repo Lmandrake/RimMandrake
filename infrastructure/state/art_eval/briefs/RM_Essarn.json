@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Essarn",
+ "nearest_earth_animal": "eel",
+ "earth_body_named": false,
+ "departures": [
+  "a finless, bone-white ribbon of a swimmer: an eel, NOT a four-legged animal, in every view",
+  "no eyes",
+  "salt-rime dusting the pale ribbon body"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

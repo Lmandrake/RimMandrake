@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Candler",
+ "nearest_earth_animal": "slug",
+ "earth_body_named": true,
+ "departures": [
+  "a slow legless slab of pale blue",
+  "a single broad foot along the whole underside",
+  "a swollen dorsal sac of the brightest yellow running down its spine",
+  "eye-stalks at the front"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

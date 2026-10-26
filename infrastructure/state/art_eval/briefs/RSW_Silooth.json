@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_Silooth",
+ "nearest_earth_animal": "rhinoceros beetle",
+ "earth_body_named": false,
+ "departures": [
+  "a HUGE six-legged armoured beetle warbeast, not a grub and not a cartoon",
+  "spiked rust-brown armour plates",
+  "heavy forward mandibles framing an acid-wet maw",
+  "six thick legs planted wide"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

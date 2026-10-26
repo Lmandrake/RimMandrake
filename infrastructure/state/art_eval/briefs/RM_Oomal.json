@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Oomal",
+ "nearest_earth_animal": "eel",
+ "earth_body_named": false,
+ "departures": [
+  "a blind, arm-long brine-eel: an eel body, NOT a squid and with no tentacles or limbs, in every view",
+  "the colour of boiled paper and translucent, with a grey line of swallowed salt down the middle",
+  "lesions on the skin where salt has got in"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_ShiroTrap",
+ "nearest_earth_animal": "tortoise",
+ "earth_body_named": false,
+ "departures": [
+  "the canon shiro-trap (see canon entry shirotrap)",
+  "a slow armoured reptile with a ridged shell",
+  "a Tooke-trap plant growing between the ridges of its shell"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

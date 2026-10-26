@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_FrogDog",
+ "nearest_earth_animal": "frog",
+ "earth_body_named": true,
+ "departures": [
+  "the canon frog dog (see canon entry frogdog)",
+  "a reptilian creature with both frog-like and dog-like features",
+  "a squat hopping body"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

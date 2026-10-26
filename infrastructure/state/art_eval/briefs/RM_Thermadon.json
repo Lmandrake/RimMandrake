@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Thermadon",
+ "nearest_earth_animal": "spider",
+ "earth_body_named": false,
+ "departures": [
+  "a long-legged black chitin hunter the size of a crouching man",
+  "an abdomen swollen with paired chemical glands glowing dull ember-red through the chitin",
+  "NOT a lizard: no scales, no spines, not olive-green",
+  "lean predator stance on long thin legs"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

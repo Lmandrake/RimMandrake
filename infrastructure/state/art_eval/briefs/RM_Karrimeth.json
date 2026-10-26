@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Karrimeth",
+ "nearest_earth_animal": "hermit crab",
+ "earth_body_named": false,
+ "departures": [
+  "a thumb-sized humped pale grey shell, salt-frosted",
+  "small legs barely visible under the shell rim",
+  "one lone straggler of a swarm, not a carpet of many"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

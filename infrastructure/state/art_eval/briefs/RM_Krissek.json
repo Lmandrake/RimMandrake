@@ -1,0 +1,22 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Krissek",
+ "nearest_earth_animal": "hyena",
+ "earth_body_named": false,
+ "departures": [
+  "a low, long body that is all haunches and jaw",
+  "grey hide that reads like grey ice when still",
+  "a coat of blue arc-fire standing off its whole body",
+  "an oversized jaw dominating the head"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

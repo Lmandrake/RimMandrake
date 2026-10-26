@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RUT_SealedSleeper",
+ "nearest_earth_animal": "armadillo",
+ "earth_body_named": false,
+ "departures": [
+  "a squat, armour-clad burrower",
+  "plated hide crusted with clay and pale wax",
+  "short digging limbs"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_SandLeaper",
+ "nearest_earth_animal": "jerboa",
+ "earth_body_named": false,
+ "departures": [
+  "no forelimbs at all: it stands on two long many-jointed hind legs",
+  "a body sheathed in overlapping plates of glossy chitin",
+  "a long naked prehensile tail used like a hand"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

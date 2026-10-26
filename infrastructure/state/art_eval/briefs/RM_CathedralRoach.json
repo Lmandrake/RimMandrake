@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_CathedralRoach",
+ "nearest_earth_animal": "cockroach",
+ "earth_body_named": true,
+ "departures": [
+  "a small mechanoid: metal plating, joints and bolts, not organic shell",
+  "roach-shaped with twitching metal antennae",
+  "rust-stained cleaning machine"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

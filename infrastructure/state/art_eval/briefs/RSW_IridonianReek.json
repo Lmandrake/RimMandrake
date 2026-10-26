@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RSW_IridonianReek",
+ "nearest_earth_animal": "rhino",
+ "earth_body_named": false,
+ "departures": [
+  "the canon reek (see canon entry iridonianreek)",
+  "a tall central horn and two forward-curving cheek horns",
+  "red head and shoulders over knobbly brown hide"
+ ],
+ "body_plan": "walker",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}

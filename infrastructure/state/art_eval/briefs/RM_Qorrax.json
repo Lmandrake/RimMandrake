@@ -1,0 +1,21 @@
+{
+ "schema": "rm-art-eval/departures@v1",
+ "subject": "RM_Qorrax",
+ "nearest_earth_animal": "squid",
+ "earth_body_named": true,
+ "departures": [
+  "a deer-sized squid-descended predator that runs on its tentacles",
+  "a hard venomous beak",
+  "a mantle body carried above the running tentacles"
+ ],
+ "body_plan": "swimmer",
+ "by": [
+  "claude-opus-5-5"
+ ],
+ "prompt_version": {
+  "tag": "departures_brief@v2",
+  "sha": "9cda888a5233"
+ },
+ "at": "2026-10-26T08:20:00-07:00",
+ "source": "description only (no image)"
+}
