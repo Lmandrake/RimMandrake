@@ -656,7 +656,7 @@ def preview(mod, sel):
     the refusal text when modcheck would refuse SEL, the row ids the run will execute, and the "pre" drivers
     [{name, timeout_s}] `--drivers on` would start. A full selector previews the drivers only. A mod it cannot find,
     or any other trouble, is neither refused nor planned (every value None)."""
-    out = {"refusal": None, "rows": None, "drivers": None}
+    out = {"refusal": None, "rows": None, "drivers": None, "chains": None, "driver_chains": None}
     args = []
     for k in ("chains", "rows"):
         if sel.get(k):
@@ -674,7 +674,8 @@ def preview(mod, sel):
     for line in ((r.stdout or "") + (r.stderr or "")).splitlines():
         if line.startswith("REFUSED:") and any(k in line for k in SELECTION_REFUSALS):
             return dict(out, refusal=line[len("REFUSED:"):].strip())
-        for tag, key in (("EXPECTED_ROWS ", "rows"), ("EXPECTED_DRIVERS ", "drivers")):
+        for tag, key in (("EXPECTED_ROWS ", "rows"), ("EXPECTED_DRIVERS ", "drivers"),
+                         ("EXPECTED_CHAINS ", "chains"), ("EXPECTED_DRIVER_CHAINS ", "driver_chains")):
             if line.startswith(tag):
                 try:
                     out[key] = json.loads(line[len(tag):])
@@ -707,6 +708,38 @@ def sized_timeout(requested_s, drivers):
         warn = ("the planned drivers need %d s but the worker caps the driver budget at %d s: the drivers past it "
                 "will be SKIPPED_BUDGET and their chains read UNMEASURED" % (need, WORKER_DRIVER_CAP_S))
     return min(t, 6 * 3600), need, warn
+
+
+def split_sweep(drivers, driver_chains, chains, cap_s=WORKER_DRIVER_CAP_S):
+    """TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP -> a list of chain-name lists, one per sweep job, each needing at most cap_s of
+    driver time, covering every chain once. Drivers that share a chain go together (a chain selection starts every
+    driver that serves any selected chain); components are packed first-fit-decreasing; chains no driver serves ride
+    with the first job. One list (all chains) when everything already fits."""
+    need = {d["name"]: int(d.get("timeout_s") or 0) + DRIVER_SLACK_S for d in drivers or []}
+    comps = []                          # [set of driver names, set of chains]
+    for name, cs in (driver_chains or {}).items():
+        mine = [{name}, set(cs)]
+        for c in [c for c in comps if c[1] & mine[1]]:
+            mine[0] |= c[0]
+            mine[1] |= c[1]
+            comps.remove(c)
+        comps.append(mine)
+    cost = lambda c: sum(need.get(n, 0) for n in c[0])
+    if sum(cost(c) for c in comps) <= cap_s:
+        return [list(chains)]
+    bins = []                           # [seconds, set of chains]
+    for c in sorted(comps, key=cost, reverse=True):
+        for b in bins:
+            if b[0] + cost(c) <= cap_s:
+                b[0] += cost(c)
+                b[1] |= c[1]
+                break
+        else:
+            bins.append([cost(c), set(c[1])])
+    served = set().union(*[b[1] for b in bins]) if bins else set()
+    out = [[c for c in chains if c in b[1]] for b in bins]
+    out[0] += [c for c in chains if c not in served]
+    return out
 
 
 def bad_selection(mod, sel):
@@ -877,26 +910,44 @@ def sel_text(job):
 
 
 def cmd_sweep(a):
-    """The design's sweep rotation, one mod per call: at most one --full per mod per day, overnight (the timer)."""
+    """The design's sweep rotation, one mod per call: at most one --full per mod per day, overnight (the timer).
+    TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP: when the mod's drivers need more than the worker's driver cap, the sweep is
+    queued as N chain-group jobs (purpose=sweep) that each fit, so no driver is SKIPPED_BUDGET; each group is
+    queued at most once a day."""
     ensure_dirs()
     today = time.strftime("%Y-%m-%d")
-    for st in STATES:
-        for rec in records(st):
-            job = job_of(rec)
-            if job.get("mod") == a.mod and job.get("purpose") == "sweep" and (job.get("selector") or {}).get("full") \
-                    and time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(job["submitted"]))) == today:
-                print("already: %s (%s, submitted %s)" % (job["id"], st, job["submitted"]))
-                return 0
     r = subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "origin/main"], capture_output=True, text=True,
                        timeout=60)
     if r.returncode != 0:
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
-    sub = argparse.Namespace(mod=a.mod, chains=None, rows=None, item=None, full=True, purpose="sweep", by=a.by,
-                             sha=r.stdout.strip(), for_item=a.for_item, profile=None, priority=a.priority,
-                             not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
-                             timeout=14400, no_canary=False, no_validity=False, no_sha_check=True)
-    return cmd_submit(sub)
+    pv = preview(a.mod, {"full": True})
+    groups = None
+    if pv["drivers"] and pv["chains"] and pv["driver_chains"]:
+        g = split_sweep(pv["drivers"], pv["driver_chains"], pv["chains"])
+        groups = g if len(g) > 1 else None
+    sels = [{"chains": g} for g in groups] if groups else [{"full": True}]
+    todays = []
+    for st in STATES:
+        for rec in records(st):
+            job = job_of(rec)
+            if job.get("mod") == a.mod and job.get("purpose") == "sweep" \
+                    and time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(job["submitted"]))) == today:
+                todays.append((job, st))
+    rc = 0
+    for sel in sels:
+        dup = [(j, st) for j, st in todays if (j.get("selector") or {}).get("full")
+               or (j.get("selector") or {}) == sel]
+        if dup:
+            print("already: %s (%s, submitted %s)" % (dup[0][0]["id"], dup[0][1], dup[0][0]["submitted"]))
+            continue
+        sub = argparse.Namespace(mod=a.mod, chains=",".join(sel["chains"]) if "chains" in sel else None, rows=None,
+                                 item=None, full="full" in sel, purpose="sweep", by=a.by,
+                                 sha=r.stdout.strip(), for_item=a.for_item, profile=None, priority=a.priority,
+                                 not_before=None, supersedes=None, owner_gate=None, lane="stevedesktop", deploy=None,
+                                 timeout=14400, no_canary=False, no_validity=False, no_sha_check=True)
+        rc = cmd_submit(sub) or rc
+    return rc
 
 
 FILLER = "BENCH.filler"     # requested_by of a filler job: BENCH's dispatcher, not a window

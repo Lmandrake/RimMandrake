@@ -368,6 +368,10 @@ def main(argv=None):
                 print("REFUSED: %s" % ex)
                 return 2
             print("EXPECTED_DRIVERS " + _json.dumps(drivers.need_s(suite, [n for n, _ in suite.chains])[1]))
+            # TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP: which chains each driver serves, so testq sweep can split the sweep
+            print("EXPECTED_CHAINS " + _json.dumps([n for n, _ in suite.chains]))
+            print("EXPECTED_DRIVER_CHAINS " + _json.dumps(
+                {d["name"]: list(d.get("chains") or ()) for d in drivers.plan(suite, [n for n, _ in suite.chains])}))
             return 0
         if args.preview and not targeted:
             print("REFUSED: --preview previews a TARGETED run; name --chains, --rows or --item ITEM_ID")

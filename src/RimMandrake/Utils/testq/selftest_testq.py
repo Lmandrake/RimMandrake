@@ -172,6 +172,41 @@ def t_driver_sizing():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_sweep_split():
+    """TESTQ_SWEEP_FIX_DRIVERS_OVER_CAP: a full sweep whose drivers need more than the worker's driver cap is queued as
+    chain-group jobs that each fit, and together start every driver (none is SKIPPED_BUDGET)."""
+    import testq as T
+    d = [{"name": n, "timeout_s": t} for n, t in (("a", 3000), ("b", 3000), ("c", 3000), ("d", 3000))]
+    dc = {"a": ["c1"], "b": ["c2", "c3"], "c": ["c3"], "d": ["c4"]}
+    g = T.split_sweep(d, dc, ["c1", "c2", "c3", "c4", "c5"], cap_s=7200)
+    check(len(g) == 2 and sorted(sum(g, [])) == ["c1", "c2", "c3", "c4", "c5"], "split covers every chain once: %s" % g)
+    check(any({"c2", "c3"} <= set(x) for x in g), "drivers sharing a chain stay in one job: %s" % g)
+    check(T.split_sweep(d[:2], dc, ["c1", "c2"], cap_s=7200) == [["c1", "c2"]], "when it all fits, one job")
+    tmp = tempfile.mkdtemp(prefix="rf_testq_split_")
+    try:
+        r = subprocess.run([sys.executable, TESTQ, "sweep", "FlowWorks", "--by", "BENCH"],
+                           env=dict(os.environ, TESTQ_QUEUE=tmp), capture_output=True, text=True, timeout=240)
+        jobs = [json.load(open(p)) for p in glob.glob(os.path.join(tmp, "pending", "*.json"))]
+        check(len(jobs) >= 2 and all(j["purpose"] == "sweep" and j["selector"].get("chains") for j in jobs),
+              "the FlowWorks sweep is queued as chain-group jobs: %s %s" % (len(jobs), (r.stdout + r.stderr)[-300:]))
+        names = []
+        for j in jobs:
+            pv = T.preview("FlowWorks", {"chains": j["selector"]["chains"]})
+            need = sum(x["timeout_s"] + T.DRIVER_SLACK_S for x in pv["drivers"])
+            check(need <= T.WORKER_DRIVER_CAP_S and j["timeout_s"] >= need * T.WORKER_DRIVER_SHARE,
+                  "each sweep job's drivers fit the worker cap: need %d s, timeout %s" % (need, j["timeout_s"]))
+            names += [x["name"] for x in pv["drivers"]]
+        full = T.preview("FlowWorks", {"full": True})
+        check(sorted(names) == sorted(x["name"] for x in full["drivers"]),
+              "together the jobs start every driver of the full sweep: %s" % sorted(names))
+        n0 = len(glob.glob(os.path.join(tmp, "pending", "*.json")))
+        subprocess.run([sys.executable, TESTQ, "sweep", "FlowWorks", "--by", "BENCH"],
+                       env=dict(os.environ, TESTQ_QUEUE=tmp), capture_output=True, text=True, timeout=240)
+        check(len(glob.glob(os.path.join(tmp, "pending", "*.json"))) == n0, "a second sweep the same day queues nothing")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def t_fill_policy():
     """The filler's pick and day budget (TESTQ_FILL_CAP_SCALE_AND_SKIP_DRY), offline over hand-made done records."""
     import testq as T
@@ -239,6 +274,7 @@ def main():
     try:
         t_bad_selection()
         t_driver_sizing()
+        t_sweep_split()
         t_fill_policy()
         t_fill_drops_unknown_chains()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
