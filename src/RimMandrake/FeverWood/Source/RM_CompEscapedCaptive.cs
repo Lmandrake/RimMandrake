@@ -109,9 +109,11 @@ namespace RimMandrake.FeverWood
                 "The escaped creature has reached the water and settled in — the pools have gained a new tenant.",
                 new TargetInfo(pos, map), MessageTypeDefOf.ThreatBig);
 
-            if (pawn.Spawned)
+            // Destroy, not DeSpawn: Pawn.Destroy releases its lord, tales and Master links and passes it to the
+            // world; a bare DeSpawn leaves an orphan no list holds, whose references fail to load.
+            if (!pawn.Destroyed)
             {
-                pawn.DeSpawn(DestroyMode.Vanish);
+                pawn.Destroy(DestroyMode.Vanish);
             }
         }
 
@@ -297,9 +299,11 @@ namespace RimMandrake.FeverWood
                 Messages.Message("The young slips into the water and settles in. This is not the deep's water; nothing answers.",
                     new TargetInfo(water, map), MessageTypeDefOf.NeutralEvent);
             }
-            if (pawn.Spawned)
+            // Destroy, not DeSpawn: Pawn.Destroy releases its lord, tales and Master links and passes it to the
+            // world; a bare DeSpawn leaves an orphan no list holds, whose references fail to load.
+            if (!pawn.Destroyed)
             {
-                pawn.DeSpawn(DestroyMode.Vanish);
+                pawn.Destroy(DestroyMode.Vanish);
             }
             RM_WorldComponent_DeepYoung.Get?.Recompute();
         }
