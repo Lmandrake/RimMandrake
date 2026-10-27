@@ -2145,3 +2145,14 @@ archotech_is_rakatan:
     (ArchotechEye and kin) are mechanical and unaffected - the ruling
     governs lore, not enum values. Design + progression:
     RAKATAN_ARCHOTECH_MACHINES_1.
+art_geometric_correction_delegated:
+  ruled: true
+  src: >
+    Owner card, 2026-10-26 18:46 PDT: "To make the system more
+    fire-and-forget, may I decide this class of art change without you from
+    now on?" -> "Yes, delegate this class (Recommended)". Class: a geometric
+    correction of existing art, kept or not (move/align/trim pixels, no new
+    drawing, no style or colour change) where a player-truth check measures
+    the defect before and confirms it gone after; judged by a non-maker agent,
+    logged delegated, archived for one-command revert, listed in the daily
+    digest. Text and procedure: design/RimMandrake/delegation_policy.md §2.3.

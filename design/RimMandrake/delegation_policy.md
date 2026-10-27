@@ -56,8 +56,15 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    pipeline (`skills/rimworld-art-evaluation`) MAY redraw a kept picture when its verdict is regen (Opus really
    bad, or a weak one GPT did not strong-accept), only with a revert record, installing through
    `art.py install --by-card "Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"`; every such swap appears on the next shadow sheet flagged
-   *replaced your kept art* with a one-click revert to the kept version through the art ledger. Any other
-   replacement of kept art is still his.
+   *replaced your kept art* with a one-click revert to the kept version through the art ledger.
+   **Second exception (owner card 2026-10-26 18:46, *"Yes, delegate this class"*):** a *geometric correction* of
+   existing art, kept or not — moving, aligning or trimming pixels, with no new drawing and no change of style or
+   colour — MAY be installed without him when a player-truth check measures the defect before and confirms it gone
+   after. It is judged by an agent that did not make it, logged `--why "delegated: art geometric correction"`,
+   installed through `art.py install --by-card "To make the system more fire-and-forget, may I decide this class of
+   art change without you from now on? → Yes, delegate this class (Recommended)"` (old bytes archived, one-command
+   revert), and listed in his daily digest after the fact. First use: the pipe elbow seams (PIPE_ELBOW_FIX_SEAM_JOGS).
+   Any other replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
    `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
    deliberate departures from canon. Applying a ruling to a case it does not name is delegated; changing what

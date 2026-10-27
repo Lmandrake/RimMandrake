@@ -6,7 +6,9 @@ The elbows were drawn 3 px (in the 132 px visible tile) off-centre on each arm; 
 is translated by the integer offset (searched) that best centres both arms on the 57-74 bore. Nothing is regenerated.
 Output goes through the art ledger (art.py put + install --reason script:<this file>).
 
-    fix_pipe_elbow_seams.py [--apply]     (default: write to a work dir and report only)
+    fix_pipe_elbow_seams.py [--apply [--by-card "q -> option"]]   (default: write to a work dir and report only)
+
+The atlases are owner-kept, so --apply needs the authority: --by-card is passed to art.py install.
 """
 import subprocess, sys, shutil
 from pathlib import Path
@@ -15,7 +17,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[4]
 TEX = ROOT / "src/RimMandrake/FlowWorks/Textures"
 ART = ROOT / "src/RimMandrake/Utils/art/art.py"
-WORK = ROOT / "_pipe_elbow_fix_work"
+WORK = ROOT / "Transient" / "pipe_elbow_fix_work"     # inside the clone: art.py put refuses files outside it
 LOOKS = ("Modern", "Industrial", "Futuristic")
 SHIFT = {3: (-3, 2), 6: (-3, -2), 9: (2, 2), 12: (2, -3)}     # mask -> (dx, dy) in atlas px (y down); searched so each arm best matches the straight bore (arms are slightly slanted, so not a plain 3 px)
 
@@ -37,7 +39,10 @@ def fixed(look):
 
 def main():
     apply = "--apply" in sys.argv
-    WORK.mkdir(exist_ok=True)
+    auth = ["--reason", "script:src/RimMandrake/FlowWorks/Tools/fix_pipe_elbow_seams.py"]
+    if "--by-card" in sys.argv:
+        auth = ["--by-card", sys.argv[sys.argv.index("--by-card") + 1]]
+    WORK.mkdir(parents=True, exist_ok=True)
     try:
         for look in LOOKS:
             p = WORK / (look + ".png")
@@ -46,8 +51,7 @@ def main():
                 print("wrote", p)
                 continue
             rel = "RimMandrake/FlowWorks/Pipe/%s/UniversalPipe_Atlas.png" % look
-            r = subprocess.run([sys.executable, str(ART), "install", "FlowWorks", rel, "--file", str(p),
-                                "--reason", "script:src/RimMandrake/FlowWorks/Tools/fix_pipe_elbow_seams.py"],
+            r = subprocess.run([sys.executable, str(ART), "install", "FlowWorks", rel, "--file", str(p)] + auth,
                                capture_output=True, text=True)
             print(look, r.returncode, (r.stdout + r.stderr).strip()[-300:])
     finally:
