@@ -36,6 +36,11 @@ An event run fits beside the day's scheduled runs still to come (their budgets a
   - `slot_when: "done_claims"` (Arbiter): a scheduled slot launches only when a done claim — a `rimflow implemented`
     event (built) or a `rimflow close` — landed after the cursor; else the slot is marked "no done claims" (a hold,
     no alarm). The batches stay at the clock slots: the event is "claims are pending" (arbiter.md).
+  - `slot_when: "pending_work"` (Arbiter since ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK): a scheduled slot launches
+    when any `pending_work` kind (arbiter_pending.py: escapes, unresolved, done_claims, verify_backlog) has work, read
+    from STATE (the ledger plus verdicts.jsonl and tiers_history.jsonl), never from the cursor: a launch consumes
+    nothing, so what a run did not judge is pending again at the next slot. Nothing pending: the slot is marked
+    "nothing pending" (a hold, no alarm). Unreadable stores: the slot launches, the reason in its trigger.
   - `event_runs` (Producer: plan_step_failure, replan_request): a run outside the clock, at most
     `event_runs_per_day`, when one happened after the cursor. A plan-step failure is a `verify` with result fail or a
     `block`, on an item still open AND on the plan (`plan_scope`: "raised" = put atop `next` by `rimflow raise`;
@@ -94,6 +99,11 @@ import signal
 import subprocess
 import sys
 import time
+
+try:
+    import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
+except ImportError:
+    from rimflow import arbiter_pending as PW
 
 LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800}
@@ -208,6 +218,14 @@ def validate_role(role):
                 raise ValueError("throttle band %s: %s %r is not a number" % (name, k, b[k]))
     if bands and not any("runway_ge" in b for b in bands.values()):
         raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
+    if role.get("slot_when") not in (None, "done_claims", "pending_work"):
+        raise ValueError("slot_when %r is not done_claims or pending_work" % role["slot_when"])
+    kinds = role.get("pending_work", list(PW.KINDS))
+    if not (isinstance(kinds, list) and kinds and all(k in PW.KINDS for k in kinds)):
+        raise ValueError("pending_work %r is not a non-empty list of %s" % (kinds, ", ".join(PW.KINDS)))
+    days = role.get("claim_window_days", PW.CLAIM_WINDOW_DAYS)
+    if not (_num(days) and days > 0):
+        raise ValueError("claim_window_days %r is not a number > 0" % (days,))
     per_day = role.get("event_runs_per_day", 1)
     if not isinstance(per_day, int) or isinstance(per_day, bool) or per_day < 0:
         raise ValueError("event_runs_per_day %r is not a whole number >= 0" % (per_day,))
@@ -786,8 +804,6 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             today = slots(cfg, now)
             if cfg.get("after_role"):
                 slots(dict(ROLE_DEFAULTS, **(by_name.get(cfg["after_role"]) or {})), now)
-            if cfg.get("slot_when") not in (None, "done_claims"):
-                raise ValueError("slot_when %r is not done_claims" % cfg["slot_when"])
         except ValueError as e:
             act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
                 blind=blind(name, "schedule_unreadable"),
@@ -918,6 +934,24 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 return
             job["trigger"] += ", %d done claim(s) since %s (oldest %s %s)" % (
                 len(claims), iso(rs["event_cursor"]), claims[0][2], claims[0][1])
+        if job["slot"] and cfg.get("slot_when") == "pending_work":
+            # state, not a cursor: nothing is consumed, so work a launch did not finish is pending at the next slot
+            # (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK). Unreadable stores: launch, since work may be pending.
+            try:
+                stores = obs["pending_stores"]() if obs.get("pending_stores") else None
+                if stores is None:
+                    raise OSError("no pending_stores reader in obs")
+                pend = PW.pending(lr, stores, now, cfg.get("pending_work") or PW.KINDS,
+                                  cfg.get("claim_window_days", PW.CLAIM_WINDOW_DAYS))
+                what = PW.summary(pend)
+            except (OSError, ValueError) as e:
+                pend, what = True, "work stores UNMEASURED (%s), launched since work may be pending" % e
+            if not pend:
+                mark(rs, job, "nothing pending")
+                act(do="role_hold", role=name, why="%s %s not run: nothing pending (%s)" % (
+                    name, job["trigger"], ", ".join(cfg.get("pending_work") or PW.KINDS)))
+                return
+            job["trigger"] += ", pending: " + what
         wait = after_ready(cfg, rst, busy, job, now, dict(ROLE_DEFAULTS, **(by_name.get(cfg.get("after_role")) or {})))
         if wait:
             if (rs.get("waiting") or [None])[0] != job["key"]:      # journal the wait once, not every tick
@@ -1133,7 +1167,7 @@ def procs_of(marker, proc="/proc"):
 
 
 def launch_argv(role, unit, msg, out, err, claude):
-    """The transient unit's argv. A role's `pre_launch` (an argv, run in its clone) runs first inside the same unit,
+    """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
     (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
@@ -1142,10 +1176,15 @@ def launch_argv(role, unit, msg, out, err, claude):
            "--output-format", "json", "--dangerously-skip-permissions"]
     pre = role.get("pre_launch")
     if pre:
-        if not (isinstance(pre, list) and pre and all(isinstance(x, str) and x for x in pre)):
-            raise ValueError("role %s: pre_launch must be a non-empty argv list, got %r" % (role.get("name"), pre))
-        # the pre-step's words are quoted into the script; the claude argv (the message) stays positional, unquoted
-        cmd = ["/bin/sh", "-c", " ".join(shlex.quote(x) for x in pre) + ' 1>&2 && exec "$@"', "role-pre-launch"] + cmd
+        # one argv, or a list of argvs run in order, each only if the one before exited 0 (the Arbiter:
+        # isolated_evidence.py, then arbiter_tiers.py)
+        steps = pre if isinstance(pre, list) and pre and all(isinstance(x, list) for x in pre) else [pre]
+        if not all(isinstance(st, list) and st and all(isinstance(x, str) and x for x in st) for st in steps):
+            raise ValueError("role %s: pre_launch must be a non-empty argv list or a list of them, got %r"
+                             % (role.get("name"), pre))
+        # the pre-steps' words are quoted into the script; the claude argv (the message) stays positional, unquoted
+        script = " && ".join(" ".join(shlex.quote(x) for x in st) + " 1>&2" for st in steps)
+        cmd = ["/bin/sh", "-c", script + ' && exec "$@"', "role-pre-launch"] + cmd
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
             "--working-directory", role["clone"],

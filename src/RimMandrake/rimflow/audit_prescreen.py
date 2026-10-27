@@ -146,23 +146,11 @@ def build(rows, rules, seed):
 
 
 def past_failed_items(path):
-    """Items with a DEFECT audit in the Auditor's audits.jsonl. A missing or unreadable file, or a line that is not
-    JSON, raises (OSError / ValueError): no file is UNMEASURED, never 'no past failures' (review AA, brief AA8)."""
-    out = set()
-    with open(path, encoding="utf-8") as fh:
-        for i, line in enumerate(fh):
-            if not line.strip():
-                continue
-            try:
-                d = json.loads(line)
-            except ValueError:
-                raise ValueError("%s line %d is not JSON" % (path, i + 1))
-            if not (isinstance(d, dict) and d.get("item") and d.get("verdict") in ("SOUND", "DEFECT", "UNRESOLVED")):
-                raise ValueError("%s line %d lacks item or a SOUND/DEFECT/UNRESOLVED verdict (audits.schema.json)"
-                                 % (path, i + 1))
-            if d["verdict"] == "DEFECT":
-                out.add(d["item"])
-    return out
+    """Items with a DEFECT audit in the Auditor's audits.jsonl, read through audits.py (the schema's one reader). A
+    missing or unreadable file raises OSError, a line that breaks audits.schema.json raises ValueError: no file is
+    UNMEASURED, never 'no past failures' (review AA, brief AA8)."""
+    from rimflow import audits
+    return audits.past_failed(audits.read(path))
 
 
 def main(argv=None, events=None):

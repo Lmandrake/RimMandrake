@@ -934,6 +934,7 @@ def default_obs(sch, root):
             "scope": RL.scope_of,
             "procs": RL.procs_of,
             "ledger": RL.read_ledger,
+            "pending_stores": RL.PW.read_stores,
             "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         },
     }

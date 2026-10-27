@@ -626,6 +626,17 @@ ok("main with a torn past-audit line exits 2", at.main(["--data", d9, "--judge-d
                                                          "--evidence-dir", EVD], events=events,
                                                         _inject={"clean": CLEAN}), 2)
 ok("nothing written on either", sorted(f for f in os.listdir(d9) if f != "audits.jsonl"), [])
+# AUDITOR_BUILD_AUDITS_FILE: arbiter_tiers reads audits.jsonl through audits.schema.json, not "item + verdict"
+with open(pa9, "w") as f:
+    f.write('{"item": "GOOD", "verdict": "DEFECT"}\n')       # JSON, item and verdict, but not the schema's line
+ok("AF a line missing the schema's required fields exits 2", at.main(
+    ["--data", d9, "--judge-dir", d9, "--past-audits", pa9, "--evidence-dir", EVD], events=events,
+    _inject={"clean": CLEAN}), 2)
+_full = {"ts": "2026-10-27T00:00:00Z", "item": "GOOD", "sha": "abc1234", "run": "rm-role-auditor-1",
+         "why_picked": "rank", "flags": [], "verdict": "DEFECT", "defect_class": "check", "evidence": []}
+with open(pa9, "w") as f:
+    f.write(json.dumps(_full) + "\n" + json.dumps(dict(_full, item="OTHER", verdict="SOUND", defect_class=None)) + "\n")
+ok("AF a schema line reads: DEFECT items only", at.past_failed_strict(pa9), {"GOOD"})
 
 ok("empty ledger exits 2", at.main(["--data", td, "--judge-dir", td], events=[]), 2)
 

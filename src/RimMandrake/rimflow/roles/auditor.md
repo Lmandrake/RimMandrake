@@ -107,7 +107,8 @@ weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog 
 A pick UNRESOLVED because evidence is missing is **waiting**: its audit line says what it waits for (`waiting_for`);
 it never holds the head of the queue meanwhile. The waiting lines in `audits.jsonl` are the durable waiting index
 (review roles r2 #7): a wait ends only with a later line for the same item and sha that settles it (SOUND / DEFECT),
-never by being dropped. Every run, before step 2, scan every waiting line without a settling successor and check
+never by being dropped. `python3 src/RimMandrake/rimflow/audits.py waiting` prints the index (the rule is the
+schema's `x-waiting-index`). Every run, before step 2, scan every waiting line without a settling successor and check
 whether its `waiting_for` evidence now exists; each that has it is requeued in its place in the order above (a
 mandatory re-check goes back into step 2). One still waiting after three runs is also put to the Conductor once as a
 question (noted on its item), and stays in the index and in the scan: escalation adds attention, it never removes the
@@ -115,12 +116,15 @@ wait, and a mandatory one's red keeps blocking until it is settled. A program th
 (`AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`).
 
 **Two records per result, both every time:**
-1. Append one JSON line to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` in the shape of
-   `src/RimMandrake/rimflow/audits.schema.json` (ts, item, sha, why picked: flag / mandatory / disagreement / rank /
+1. Append one JSON line to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` with
+   `python3 src/RimMandrake/rimflow/audits.py append < line.json`, in the shape of
+   `src/RimMandrake/rimflow/audits.schema.json` (ts, item, sha, `run` = your unit `$RM_ROLE_UNIT`, why picked: flag / mandatory / disagreement / rank /
    random, the pre-screen's flags, the verdict SOUND / DEFECT / UNRESOLVED, the defect class, evidence paths, and
    `waiting_for` when waiting). Append only: never delete or rewrite a line; the pre-screen reads the file for
-   `past_audit_failed` and treats a missing file or a torn line as UNMEASURED. One line per item, sha and run: before
-   appending, check the run has not already written that one.
+   `past_audit_failed` and treats a missing file or a torn line as UNMEASURED. One line per item, sha and run (the
+   schema's `x-idempotency-key`): `audits.py append` refuses a duplicate with exit 1 and a schema-breaking line with
+   exit 2. Your pre_launch (`audits.py ensure`) has already created the file if it was absent; an empty file means no
+   audits yet.
 2. Then one ledger note on the item, same verdict words: `--why "audit: SOUND|DEFECT|UNRESOLVED <class> <sha>"` (the
    AU1 instrument).
 

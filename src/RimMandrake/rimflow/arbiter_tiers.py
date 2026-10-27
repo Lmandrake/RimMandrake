@@ -564,10 +564,12 @@ def bounce_list(rows):
 
 
 def past_failed_strict(path):
-    """Items with a DEFECT audit. A missing or unreadable file, or a line that is not JSON (it could be the DEFECT that
-    matters), raises OSError: no file is not 'nothing failed'."""
+    """Items with a DEFECT audit, read via audits.py against audits.schema.json (AUDITOR_BUILD_AUDITS_FILE). A missing
+    or unreadable file, or a line that breaks the schema (it could be the DEFECT that matters), raises OSError: no
+    file is not 'nothing failed'. `audits.py ensure` creates the empty file."""
+    from rimflow import audits
     try:
-        return ap.past_failed_items(path)
+        return audits.past_failed(audits.read(path))
     except ValueError as ex:
         raise OSError(str(ex))
 
@@ -698,8 +700,9 @@ def main(argv=None, events=None, _inject=None):
         try:
             past_failed = past_failed_strict(past)
         except OSError as ex:
-            raise ValueError("past audits unreadable (%s): past_audit_failed would never fire. The Auditor creates "
-                             "it (an empty file = no audits yet); or pass --past-audits" % ex)
+            raise ValueError("past audits unreadable (%s): past_audit_failed would never fire. Create it with "
+                             "`python3 src/RimMandrake/rimflow/audits.py ensure` (an empty file = no audits yet); or "
+                             "pass --past-audits" % ex)
         efolder = a.evidence_dir or str(ce.evidence_dir())
         if not os.path.isdir(efolder):
             raise ValueError("close-evidence folder %s missing" % efolder)

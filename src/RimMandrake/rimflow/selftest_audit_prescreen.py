@@ -89,10 +89,14 @@ open(pa, "w").close()
 ok("good ledger -> exit 0", ap.main(["--out", out, "--now", "2026-10-27T00:00:00Z", "--past-audits", pa],
                                     events=good + bad), 0)
 ok("file written", json.load(open(out))["closes_seen"], 2)
+LINE = {"ts": "2026-10-27T00:00:00Z", "item": "X", "sha": "abc1234", "run": "r1", "why_picked": "rank", "flags": [],
+        "verdict": "DEFECT", "defect_class": "check", "evidence": []}
 with open(pa, "w") as f:
-    f.write('{"item": "X", "verdict": "DEFECT"}\n\n{"item": "Y", "verdict": "SOUND"}\n')
+    f.write(json.dumps(LINE) + '\n\n' + json.dumps(dict(LINE, item="Y", verdict="SOUND", defect_class=None)) + '\n')
 ok("past_failed_items reads DEFECT only", ap.past_failed_items(pa), {"X"})
-for bad in ('{"item": "X", "verdict": "defect"}\n', '{"verdict": "DEFECT"}\n', '["X", "DEFECT"]\n'):
+for bad in ('{"item": "X", "verdict": "defect"}\n', '{"verdict": "DEFECT"}\n', '["X", "DEFECT"]\n',
+            '{"item": "X", "verdict": "DEFECT"}\n',            # item + verdict alone is not the schema's line
+            json.dumps(dict(LINE, sha="HEAD")) + '\n'):
     with open(pa, "w") as f:
         f.write(bad)
     try:

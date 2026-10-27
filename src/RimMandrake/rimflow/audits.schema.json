@@ -2,18 +2,98 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "rimmandrake/rimflow/audits.schema.json",
   "title": "One Auditor re-check result: one JSON line in D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl",
-  "description": "Appended by the Auditor (roles/auditor.md); read by audit_prescreen.past_failed_items. The file exists and may be empty (= no audits yet); a missing file or a line that is not an object with item and a known verdict is UNMEASURED, never 'no past failures' (review AA, brief AA8).",
+  "description": "Appended by the Auditor (roles/auditor.md) through audits.py, the one reader/writer of this schema; read by audit_prescreen and arbiter_tiers through audits.read(). The file exists and may be empty (= no audits yet): `python3 src/RimMandrake/rimflow/audits.py ensure` creates it (the Auditor's pre_launch and the wave-2 setup step). A missing file, or a line that breaks this schema, is UNMEASURED, never 'no past failures' (review AA, brief AA8).",
   "type": "object",
-  "required": ["ts", "item", "sha", "why_picked", "flags", "verdict", "defect_class", "evidence"],
+  "required": [
+    "ts",
+    "item",
+    "sha",
+    "run",
+    "why_picked",
+    "flags",
+    "verdict",
+    "defect_class",
+    "evidence"
+  ],
   "properties": {
-    "ts": {"type": "string", "description": "UTC ISO-8601 time the verdict was written"},
-    "item": {"type": "string", "minLength": 1, "description": "ledger item id"},
-    "sha": {"type": "string", "pattern": "^[0-9a-f]{7,40}$", "description": "the closed commit re-checked"},
-    "why_picked": {"enum": ["mandatory", "disagreement", "flag", "rank", "random"]},
-    "flags": {"type": "array", "items": {"type": "string"}, "description": "the pre-screen's flags for the item"},
-    "verdict": {"enum": ["SOUND", "DEFECT", "UNRESOLVED"]},
-    "defect_class": {"type": ["string", "null"], "description": "null unless verdict is DEFECT"},
-    "evidence": {"type": "array", "items": {"type": "string"}, "description": "absolute Windows paths the re-checker read or wrote"}
+    "ts": {
+      "type": "string",
+      "description": "UTC ISO-8601 time the verdict was written"
+    },
+    "item": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ledger item id"
+    },
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$",
+      "description": "the closed commit re-checked"
+    },
+    "why_picked": {
+      "enum": [
+        "mandatory",
+        "disagreement",
+        "flag",
+        "rank",
+        "random"
+      ]
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "the pre-screen's flags for the item"
+    },
+    "verdict": {
+      "enum": [
+        "SOUND",
+        "DEFECT",
+        "UNRESOLVED"
+      ]
+    },
+    "defect_class": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "a non-empty string when verdict is DEFECT, else null"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "absolute Windows paths the re-checker read or wrote"
+    },
+    "run": {
+      "type": "string",
+      "minLength": 1,
+      "description": "the Auditor run that wrote the line: its role_launch unit (env RM_ROLE_UNIT), else a run id the Auditor chose for the whole run"
+    },
+    "waiting_for": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "UNRESOLVED only: the evidence the re-check waits for (a path or a named run). Present and non-empty = a WAITING line"
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "x-idempotency-key": [
+    "item",
+    "sha",
+    "run"
+  ],
+  "x-idempotency-doc": "One line per item, sha and run: audits.append() refuses a second line with the same key (auditor.md 'Two records per result').",
+  "x-waiting-index": {
+    "waiting": "verdict UNRESOLVED with a non-empty waiting_for",
+    "settled_by": "a LATER line (file order) for the same item and sha whose verdict is SOUND or DEFECT",
+    "doc": "the durable waiting index (auditor.md 'Carried picks', review roles r2 #7): audits.waiting() lists every waiting line with no settling successor; a wait is never dropped"
+  },
+  "x-conditionals": [
+    "defect_class is a non-empty string iff verdict is DEFECT",
+    "waiting_for only on verdict UNRESOLVED"
+  ]
 }

@@ -864,6 +864,35 @@ def test_role_execute_and_dry():
         check(False, "pre_launch as a string is refused")
     except ValueError:
         check(True, "pre_launch as a string is refused")
+    # a list of argvs runs in order, each only after the one before exited 0 (the Arbiter: isolated_evidence.py,
+    # then arbiter_tiers.py; ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK item 3)
+    with tempfile.TemporaryDirectory() as pd:
+        log, errf = os.path.join(pd, "log"), os.path.join(pd, "err")
+        for steps, want_rc, want_log, want_out in (
+                ([["sh", "-c", "echo one >> '%s'" % log], ["sh", "-c", "echo two >> '%s'" % log]], 0, "one\ntwo\n",
+                 "ARGS:-p|m"),
+                ([["sh", "-c", "echo one >> '%s'; exit 3" % log], ["sh", "-c", "echo two >> '%s'" % log]], 3,
+                 "one\n", "")):
+            if os.path.exists(log):
+                os.remove(log)
+            try:
+                sa = RL.launch_argv(dict(role, pre_launch=steps), "u", "m", "/o", "/e", "/opt/bin/claude")
+            except ValueError as e:
+                check(False, "pre_launch as a list of argvs is accepted (%s)" % e)
+                continue
+            body = sa[sa.index("--") + 1:]
+            body = body[:4] + ["sh", "-c", 'printf "ARGS:%s|%s" "$1" "$2"', "fake-claude"] + body[5:7]
+            with open(errf, "w") as ef:
+                p = subprocess.run(body, stdout=subprocess.PIPE, stderr=ef, text=True, timeout=30)
+            got_log = open(log).read() if os.path.exists(log) else ""
+            check((p.returncode, got_log, p.stdout) == (want_rc, want_log, want_out),
+                  "pre_launch list: rc %s, steps ran %r, claude ran %s" % (p.returncode, got_log, bool(p.stdout)))
+    for bad in ([["python3", "x.py"], []], [["python3"], "x.py"], [[]]):
+        try:
+            RL.launch_argv(dict(role, pre_launch=bad), "u", "m", "/o", "/e", "/opt/bin/claude")
+            check(False, "pre_launch %r is refused" % (bad,))
+        except ValueError:
+            check(True, "pre_launch %r is refused" % (bad,))
     calls.clear()
     RL.stop("u", "s.scope", runner=fake_run)
     check(calls == [["systemctl", "--user", "stop", "s.scope"], ["systemctl", "--user", "stop", "u"]],
@@ -1477,6 +1506,114 @@ def test_role_done_claims_gate():
     check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "claims pending + off file: held")
 
 
+class BacklogItem(object):
+    def __init__(self, state, owed):
+        self.state, self._owed, self.open, self.raised, self.row = state, owed, True, None, None
+
+    def owed_levels(self):
+        return list(self._owed)
+
+
+def pwobs(t, events, items=None, stores=None, **kw):
+    o = lrobs(ops_status(t), lread([BASE_EV] + events, items), **kw)
+    if callable(stores):
+        o["pending_stores"] = stores
+    elif stores is not False:
+        st = dict({"verdicts": [], "tiers_history": []}, **(stores or {}))
+        o["pending_stores"] = lambda: st
+    return o
+
+
+def test_role_pending_work_gate():
+    """ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK: a slot launches on ANY pending work, read from state; a launch that
+    did not judge it leaves it pending."""
+    t, t17 = at_local("11:00"), at_local("17:00")
+    arb = arbiter(slot_when="pending_work")
+    sha = "abcdef1234567890"
+
+    def run(st, tt, *a, **kw):
+        acts = role_acts(rdecide([arb], st, pwobs(tt, *a, **kw), tt))
+        return [x for x in acts if x["do"] == "role_launch"], acts
+
+    def based():
+        st = fresh()
+        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60, "events_seen": []}}
+        return st
+
+    la, acts = run(based(), t, [])
+    check(not la and any("nothing pending" in x.get("why", "") for x in acts), "pending_work: nothing pending: held")
+    # a carried UNRESOLVED alone (no new claim on the ledger) starts a batch
+    unres = {"item": "CARRIED", "sha": sha[:7], "disposition": "UNRESOLVED", "ts": lts(t - 86400 * 30)}
+    la, _ = run(based(), t, [], stores={"verdicts": [unres]})
+    check(la and "1 unresolved (first CARRIED)" in la[0]["why"], "pending_work: a carried UNRESOLVED alone launches")
+    # an escape alone: work filed against an item after the Arbiter passed it, no check spec filed yet
+    passed = {"item": "GOOD", "sha": sha, "disposition": "PASS", "ts": lts(t - 86400 * 20)}
+    esc = dict(BASE_EV, event="file", id="GOOD_BROKE_LATER", ts=lts(t - 86400 * 10), caused_by="GOOD")
+    la, _ = run(based(), t, [esc], stores={"verdicts": [passed]})
+    check(la and "1 escapes (first GOOD_BROKE_LATER)" in la[0]["why"], "pending_work: an escape alone launches")
+    spec = dict(BASE_EV, event="spawn", ts=lts(t - 3600), **{"from": "GOOD_BROKE_LATER", "for": "BENCH",
+                                                               "name": "GOOD_CHECK_SPEC"})
+    la, _ = run(based(), t, [esc, spec], stores={"verdicts": [passed]})
+    check(not la, "pending_work: an escape whose check spec is filed is no longer pending")
+    before = dict(esc, ts=lts(t - 86400 * 25))
+    la, _ = run(based(), t, [before], stores={"verdicts": [passed]})
+    check(not la, "pending_work: work filed BEFORE the pass is not an escape")
+    # the verify backlog alone (an L4-only item is his, not pending)
+    items = {"BUILT_L1": BacklogItem("built", ["L1", "L4"])}
+    la, _ = run(based(), t, [], items=items)
+    check(la and "verify backlog (first BUILT_L1)" in la[0]["why"], "pending_work: a verify-backlog item launches")
+    la, _ = run(based(), t, [], items={"ONLY_L4": BacklogItem("validated", ["L4"]),
+                                       "CLOSED": BacklogItem("closed", ["L1"])})
+    check(not la, "pending_work: L4-only and closed items are not the Arbiter's backlog")
+    # a done claim, and a launch that never wrote a verdict: still pending at the next slot (nothing consumed)
+    close = dict(BASE_EV, event="close", id="CLAIMED", sha=sha, ts=lts(t - 3600))
+    st = based()
+    la, _ = run(st, t, [close])
+    check(la and "1 done claims (first CLAIMED)" in la[0]["why"], "pending_work: a done claim launches")
+    st["roles"]["Arbiter"].pop("pending_launch", None)
+    la, _ = run(st, t17, [close])
+    check(la and "CLAIMED" in la[0]["why"],
+          "pending_work: a launch that wrote no verdict consumed nothing: the claim launches the next slot too")
+    final = {"item": "CLAIMED", "sha": sha[:9], "disposition": "FAIL-check", "ts": lts(t + 60)}
+    la, _ = run(based(), t, [close], stores={"verdicts": [final]})
+    check(not la, "pending_work: a final verdict (short sha) acknowledges the claim")
+    la, _ = run(based(), t, [close], stores={"verdicts": [dict(final, disposition="UNRESOLVED")]})
+    check(la, "pending_work: an UNRESOLVED verdict does not acknowledge it")
+    for dec, want in (("PASS", False), ("AI", True), ("BOUNCE", True), ("HOLD", True)):
+        la, _ = run(based(), t, [close], stores={"tiers_history": [{"item": "CLAIMED", "sha": sha, "decision": dec}]})
+        check(bool(la) == want, "pending_work: tiers_history decision %s %s the claim" % (
+            dec, "leaves pending" if want else "acknowledges"))
+    old = dict(close, ts=lts(t - 86400 * 8))
+    la, _ = run(based(), t, [old])
+    check(not la, "pending_work: a close older than claim_window_days (7) is out of the claim window")
+    # blind stores launch (work may be pending), with the reason in the trigger
+    def torn():
+        raise ValueError("verdicts.jsonl line 3 is not JSON")
+    la, _ = run(based(), t, [], stores=torn)
+    check(la and "UNMEASURED" in la[0]["why"] and "line 3" in la[0]["why"], "pending_work: torn store: launch, said")
+    la, _ = run(based(), t, [], stores=False)
+    check(la and "no pending_stores reader" in la[0]["why"], "pending_work: no store reader: launch, said")
+    # kinds can be narrowed; a bad kind is a schedule alarm, never a launch
+    a2 = role_acts(rdecide([arbiter(slot_when="pending_work", pending_work=["verify_backlog"])], based(),
+                           pwobs(t, [], stores={"verdicts": [unres]}), t))
+    check(not [x for x in a2 if x["do"] == "role_launch"], "pending_work: kinds narrowed to the backlog ignore UNRESOLVED")
+    for bad in ({"pending_work": ["escape"]}, {"pending_work": []}, {"claim_window_days": 0},
+                {"slot_when": "claims"}):
+        a2 = role_acts(rdecide([arbiter(**dict({"slot_when": "pending_work"}, **bad))], based(), pwobs(t, []), t))
+        check([x.get("kind") for x in a2] == ["role:Arbiter:schedule"], "pending_work: schedule %r refused" % (bad,))
+    # the store reader: absent files are empty (never ran), a misspelt disposition is torn
+    with tempfile.TemporaryDirectory() as d:
+        v, h = os.path.join(d, "verdicts.jsonl"), os.path.join(d, "tiers_history.jsonl")
+        check(RL.PW.read_stores(v, h) == {"verdicts": [], "tiers_history": []}, "read_stores: absent files are empty")
+        with open(v, "w") as f:
+            f.write(json.dumps(dict(unres, disposition="PASSED")) + "\n")
+        try:
+            RL.PW.read_stores(v, h)
+            check(False, "read_stores: an unknown disposition is refused")
+        except ValueError:
+            check(True, "read_stores: an unknown disposition is refused")
+
+
 def test_role_plan_failure_events():
     t = at_local("13:00")
     items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": FakeItem(row="R3"),
@@ -1579,8 +1716,21 @@ def test_role_real_schedule_triggers():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
     a, p = roles["Arbiter"], roles["Producer"]
-    check(a.get("slot_when") == "done_claims" and a["runs_local"] == ["11:00", "17:00"],
-          "schedule: Arbiter batches at 11:00/17:00 gated on pending done claims")
+    check(a.get("slot_when") == "pending_work" and a["runs_local"] == ["11:00", "17:00"]
+          and a.get("pending_work", list(RL.PW.KINDS)) == list(RL.PW.KINDS),
+          "schedule: Arbiter batches at 11:00/17:00 gated on ANY pending work (escapes, unresolved, claims, backlog)")
+    check(a.get("pre_launch") == [["python3", "src/RimMandrake/rimflow/isolated_evidence.py", "--run", "--seat",
+                                   "DISPATCHER"], ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py"]],
+          "schedule: the Arbiter's pre_launch runs isolated_evidence.py, then arbiter_tiers.py")
+    check(roles["Auditor"].get("pre_launch") == ["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
+          "schedule: the Auditor's pre_launch creates/validates audits.jsonl (audits.py ensure)")
+    for r in sch["roles"]:
+        if r.get("pre_launch"):
+            RL.launch_argv(dict(r, unit="u"), "u", "m", "/o", "/e", "/opt/bin/claude")   # raises if unusable
+            steps = r["pre_launch"] if isinstance(r["pre_launch"][0], list) else [r["pre_launch"]]
+            here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+            check(all(os.path.isfile(os.path.join(here, st[1])) for st in steps),
+                  "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
           and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
     check(p["daily_token_cap"] == 125000, "schedule: Producer daily cap 125,000 (one 100k run + 25%)")
@@ -2618,7 +2768,8 @@ def main():
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
-              test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
+              test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
+              test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,

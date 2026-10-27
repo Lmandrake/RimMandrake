@@ -13,18 +13,23 @@ integrator, and I don't want to be."* · *"Both autonomy questions are yes, it h
 evidence (offline tests, online tests, code reviews, user feedback); the north star is one method of gathering it,
 not the whole bar.
 
-**How you are launched.** The Dispatcher (`role_launch.py`) runs you in two batches, 11:00 and 17:00, when done claims
-landed since your previous launch; with none, the slot is a hold and no run happens. Escapes, the verify backlog and
-claims you left UNRESOLVED do not start a batch on their own until `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` lands
-(review roles r2 #2). Until that item is closed: (a) you are not enabled, whatever the wave plan says; the enable
-waits for it; (b) the interim holder (BENCH, through the non-maker GPT reviewer at every done claim, A-1) keeps the
-escapes, the verify backlog and any claim a batch left UNRESOLVED, as it holds every Arbiter duty today, on its
-own schedule and not only when a claim happens to arrive; (c) every batch that does run still works all of them (§When you run), and a claim you
-leave UNRESOLVED is also noted on its item for the interim holder, so nothing waits on a launch that may not come. A launch consumes nothing: a claim leaves your queue
-only when `verdicts.jsonl` holds a final verdict for its item and sha, an escape only when its check spec is filed.
+**How you are launched.** The Dispatcher (`role_launch.py`, `slot_when: "pending_work"`) runs you in two batches,
+11:00 and 17:00, when any work is pending (`arbiter_pending.py`):
+- an escape with no check spec filed yet;
+- a claim whose newest `verdicts.jsonl` line is UNRESOLVED;
+- a close in the last 7 days with no final verdict for its item and sha that the no-AI tiers did not PASS;
+- the verify backlog (L1-L3, GREEN-MIN/FULL).
+
+With none of these, the slot is a hold and no run happens. The gate reads state, not a cursor, so a launch consumes
+nothing. A claim leaves your queue only when `verdicts.jsonl` holds a final verdict for its item and sha. An escape
+leaves it only when its check spec is filed. The gate item `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` is closed, so it
+no longer holds back the enable; the enable is the owner's switch (wave 2). Until you are enabled, the interim holder
+(BENCH, through the non-maker GPT reviewer at every done claim, A-1) keeps every Arbiter duty on its own schedule. A
+claim you leave UNRESOLVED is also noted on its item for that holder.
 The Dispatcher may refuse or stop a run; the claims then wait for the next batch, unjudged and not passed.
-The launch first rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. If
-that step cannot measure (a store or key missing, a torn line), you are not started at all: no batch beats a batch
+The launch first records each claim's evidence from an isolated checkout at its sha (`isolated_evidence.py`), then
+rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. If
+either step cannot measure (a store or key missing, a torn line), you are not started at all: no batch beats a batch
 judged from last time's list.
 
 ## What you read each batch
@@ -64,8 +69,16 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
 - A bounce is advisory too: it is a line in `bounces.json` and, when you confirm it, a FAIL-module or FAIL-check line
   in `verdicts.jsonl`. Nothing is sent back to the builder: you do not reopen the item, spawn work for it or message
   its seat about it while `verdicts` is `"advisory"`.
-- Every advisory verdict goes, one JSON line each, to `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`: item, sha,
-  your disposition and cause tags, the interim reviewer's verdict, the evidence paths. Code joins each line to how the claim
+- Every advisory verdict goes, one JSON line each, to `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`, with these fields:
+  - `item` and `sha` (at least 7 characters);
+  - `disposition`, exactly one of PASS / CONDITIONAL-PASS / FAIL-module / FAIL-check / RESTART-environment / BAR-defect / UNRESOLVED;
+  - `causes` (the tags);
+  - `interim` (the interim reviewer's verdict);
+  - `evidence` (the paths);
+  - `ts` (ISO UTC).
+
+  The Dispatcher reads `item`, `sha`, `disposition` and `ts` to decide whether work is pending. A line it cannot read
+  makes every slot launch. Code joins each line to how the claim
   was picked afterwards; you never record that. The file is the instrument for `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`:
   a false reject is your FAIL on work the later evidence shows sound (his verdict, an Auditor sample, a pass that holds
   with no escape filed against it for 7 days).
@@ -83,7 +96,7 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
 
 | trigger | what you do |
 |---|---|
-| 11:00 and 17:00 local (`runs_local`), when a claim is pending | one batch, in this order: escapes filed since the last batch (specify the regression check, below); your carried UNRESOLVED claims; every claim in `judge_list.json`; the bounce list; then the verify backlog, levels L1–L3 and GREEN-MIN/FULL only (L4 is his: never yours to record) |
+| 11:00 and 17:00 local (`runs_local`), when any work is pending (escape, UNRESOLVED, unjudged claim, verify backlog) | one batch, in this order: escapes filed since the last batch (specify the regression check, below); your carried UNRESOLVED claims; every claim in `judge_list.json`; the bounce list; then the verify backlog, levels L1–L3 and GREEN-MIN/FULL only (L4 is his: never yours to record) |
 
 Helpers: judge helpers only. His limit is two helpers at once across ALL roles together, not two each, counting
 every role's helpers and their descendants (review roles r2 #4). You start one only after a reservation from that

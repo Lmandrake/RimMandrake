@@ -205,3 +205,20 @@ Success test and kill criterion, verbatim intent of design §6: measured weekly 
 process-commit share (70 % -> below 61 %; `process.share_7d` was 65.3 on 2026-10-27). **Kill criterion: after a week of v3.0, if his keep-going messages have not dropped and accepted items have not risen, stop and reconsider; the baseline tag restores v2.**
 Owed instruments (UNMEASURED today, never read as 0): keep-going messages, failure-signal share, accepted items/day (`OPS_KPI_MEASURE_OWED_VTHREE`). A week of v3.0 therefore cannot trigger the kill
 criterion mechanically yet; Mandrake's own count of "keep going" messages is the stand-in until the classifier lands. Decision day is one week after step 15, his.
+
+## 9. Wave 2 setup (Arbiter ADVISORY, Fri 2026-10-30): before the Arbiter's `"enabled": true`
+
+Wave 2 turns on the Arbiter, advisory only. Its pre_launch reads the Auditor's audit record, and the Auditor stays off, so nothing
+else creates that file. Run these from `$B`, in order, and stop at the first failure. None of them enables anything.
+
+1. **Audit record (AUDITOR_BUILD_AUDITS_FILE):** `python3 src/RimMandrake/rimflow/audits.py ensure`.
+   - It creates an empty `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` if the file is absent. Empty means no audits yet.
+   - It never truncates an existing file, and it validates every line against `src/RimMandrake/rimflow/audits.schema.json`.
+   - Expect `... created (0 line(s))` or `... exists (N line(s))` and exit 0. Exit 2 means a torn or schema-breaking line: fix it, do not delete the file.
+   - The Auditor's own pre_launch runs the same command, so this step only matters while the Auditor is off.
+2. **Tiers dry run:** `python3 src/RimMandrake/rimflow/arbiter_tiers.py` must exit 0.
+   - Exit 2 is UNMEASURED, and the Arbiter would never start. Read its stderr.
+3. **Pending-work gate (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK):** `python3 src/RimMandrake/rimflow/arbiter_pending.py`.
+   - It prints the pending kinds and counts that make the next slot launch. A non-empty verify backlog alone launches every slot (§0 of this runbook does not cover it; the backlog was 521 on 2026-10-27).
+4. **Isolated evidence:** the Arbiter's pre_launch runs `isolated_evidence.py --run --seat DISPATCHER` before `arbiter_tiers.py`.
+   - Check that its work root has room and that a claim's checkout finishes inside `run_max_s` (2700 s).

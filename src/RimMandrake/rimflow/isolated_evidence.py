@@ -28,9 +28,9 @@ Checkout cost, MEASURED 2026-10-27 on the bench clone (37,990 files, 3.67 GB wor
 ext4 (~/.seat-tmp) 12.6-14.7 s + 0.4 s delete; D: (drvfs) 312.4 s + 29.8 s delete. So checkouts go on ext4:
 DEFAULT_ROOT, override with RM_ISOLATED_ROOT or --root. One checkout at a time (flock), deleted after each claim.
 
-NOT SCHEDULED. Dry run is the default: it prints the plan and runs nothing. `--run` executes. Wiring it as the
-Arbiter's pre_launch (before arbiter_tiers.py, dispatcher_schedule.json) is the Dispatcher owner's switch, after
-wave-1 go-live.
+Scheduled as the Arbiter's first pre_launch step (`--run --seat DISPATCHER`, before arbiter_tiers.py,
+dispatcher_schedule.json), so it runs only while the Arbiter is enabled. Dry run is the default: it prints the plan
+and runs nothing. `--run` executes.
 
     python3 src/RimMandrake/rimflow/isolated_evidence.py [--days 2] [--item ID] [--max N] [--json]      # plan only
     python3 src/RimMandrake/rimflow/isolated_evidence.py --run [--seat DISPATCHER] [--root DIR] [--again]
