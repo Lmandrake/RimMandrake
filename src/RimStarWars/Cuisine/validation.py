@@ -262,6 +262,62 @@ def rotting_bed_grows_marsh_fungus(t):
             raise ExpectationFailed("RM_RottingBed.comps lacks the RSW_MarshFungus spawner: %r" % got)
 
 
+@suite.chain("cooking_disabled_pawn_roasts_cleanly")
+def cooking_disabled_pawn_roasts_cleanly(t):
+    """ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS (ported from the r12 live script roast.py): a colonist whose Cooking is
+    disabled (MidworldSailor91) roasts one RSW_RoastOnAStick at a campfire. The roast must appear, and no fresh
+    "disabled stat" error may name CookSpeed or FoodPoisonChance (vanilla's dev-mode ErrorOnce; fixed by the recipe XML
+    and the FoodPoisonDisabledCookGuard prefix). A fresh pawn each run, so ErrorOnce cannot hide a repeat."""
+    t.clear_area(size=15)
+    x, z = t.anchor
+    with t.component("roast_made_by_cooking_disabled_pawn", beyond_toggle=True):
+        t.bridge_call("jawa/build_batch", ops="Campfire:%d,%d" % (x, z), faction="player", wipeExisting=False)
+        fires = [r for r in ((t.bridge_call("jawa/list_things", defName="Campfire") or {}).get("things") or [])
+                 if r.get("x") == x and r.get("z") == z]
+        if not fires:
+            raise ExpectationFailed("UNMEASURED: no Campfire at (%d,%d) after build_batch (SITE)" % (x, z))
+        fid = fires[0]["id"]
+        t.bridge_call("jawa/thing_refuel", thingId=fid, amount=50)
+        t.bridge_call("jawa/spawn_batch", ops="RSW_Skewer:%d,%d,4;Meat_Cow:%d,%d,30" % (x - 2, z, x - 2, z + 1))
+        pid = t.spawn_pawn("Colonist", beyond=[(x, z - 1)])
+        if not pid:
+            raise ExpectationFailed("UNMEASURED: spawn_pawn Colonist returned no id (SITE)")
+        bs = t.bridge_call("jawa/set_pawn_backstory", pawn=pid, adulthood="MidworldSailor91")
+        t._record("set_pawn_backstory %s MidworldSailor91 (Cooking disabled) -> %r" % (pid, bs), bool(bs))
+
+        def roasts():
+            rows = (t.bridge_call("jawa/list_things", defName="RSW_RoastOnAStick") or {}).get("things") or []
+            return sum(int(r.get("stackCount") or 1) for r in rows if abs(r["x"] - x) < 10 and abs(r["z"] - z) < 10)
+        n0 = roasts()
+        t.bridge_call("jawa/bill_add", giverId=fid, recipe="RSW_CookRoastOnAStick", repeatMode="repeatcount",
+                      repeatCount=1, storeMode="dropfloor")
+        r = t.bridge_call("jawa/do_bill_now", pawnId=pid, billGiverId=fid, workGiverDef="RSW_DoBillsRoastCampfire")
+        t._record("do_bill_now -> accepted=%r job=%r" % ((r or {}).get("accepted"), (r or {}).get("afterJobDef")),
+                  bool((r or {}).get("accepted")))
+        if not (r or {}).get("accepted"):
+            raise ExpectationFailed("the Cooking-disabled pawn was refused the roast bill: %r" % (r,))
+        n = n0
+        for _ in range(20):
+            t.wait_ticks(300)
+            n = roasts()
+            if n > n0:
+                break
+        t._record("RSW_RoastOnAStick near the fire %d -> %d" % (n0, n), n > n0)
+        if n <= n0:
+            raise ExpectationFailed("no RSW_RoastOnAStick appeared after 6000 ticks (%d -> %d)" % (n0, n))
+    with t.component("no_disabled_stat_error", beyond_toggle=True):
+        r = t.bridge_call("jawa/drain_log", limit=400, contains="disabled stat")
+        if not (r or {}).get("success") or t._log_base is False:
+            raise ExpectationFailed("UNMEASURED: jawa/drain_log or the chain-start log mark was unreadable: %r" % (r,))
+        base = t._log_base or {}
+        fresh = [m.get("text", "") for m in ((r or {}).get("messages") or [])
+                 if m.get("text", "") not in base]
+        bad = [m for m in fresh if "CookSpeed" in m or "FoodPoisonChance" in m]
+        t._record("fresh 'disabled stat' lines naming CookSpeed/FoodPoisonChance -> %r" % bad, not bad)
+        if bad:
+            raise ExpectationFailed("disabled-stat error(s) while a Cooking-disabled pawn roasted: %r" % bad)
+
+
 if __name__ == "__main__":
     problems = static_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
