@@ -665,8 +665,11 @@ def test_role_gates():
     a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now))
     check([x["do"] for x in a] == ["role_launch"] and a[0]["budget"] == 30000 and a[0]["note"]
           and a[0]["ticket"] == "ROLES_ITEM_X", "GREEN 08:00: launch, full quick cap, noted on the role's item")
-    check("conductor.md" in a[0]["message"] and "30000" in a[0]["message"] and "bridge" in a[0]["message"],
-          "launch prompt names the instructions, the budget and the no-bridge line")
+    check("conductor.md" in a[0]["message"] and "bridge" in a[0]["message"],
+          "launch prompt names the instructions and the no-bridge line")
+    blind = a[0]["message"].lower()
+    check(not any(w in blind for w in ("30000", "token", "budget", "cap ", "runway", "week left", "band", "green")),
+          "F1: a token-blind role's launch message carries no budget, cap, band, runway or week (review T)")
     a2 = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now + 120))
     check(a2 == [], "a slot runs once a day (next tick: nothing)")
     st = fresh()
@@ -952,9 +955,11 @@ def test_review_q():
     con_md = open(os.path.join(here, "roles", "conductor.md"), encoding="utf-8").read()
     check("skips this whole run" in ops_md and "07:30 and 19:30 local" not in ops_md,
           "Q6 operations.md: a band without the economy pass skips the whole 07:30 run (as the code does)")
+    cb = real["Conductor"]["throttle_bands"]
     check(real["Conductor"].get("after_role") == "Operations" and "after_role" in con_md
-          and "the 20:00 check only" in con_md and "the 08:00 check only" not in con_md,
-          "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check")
+          and cb["AMBER"]["slots"] == cb["RED"]["slots"] == "last",
+          "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check (schedule bands; "
+          "the role file carries no band text since review T, F6)")
     rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CQ_OFF"))
     ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
     c8 = at_local("08:00")
@@ -1282,12 +1287,348 @@ def test_account_pick_dispatch():
     check("account_pick" not in kinds(a), "nothing to release: the pick is not made")
 
 
+# ---------------------------------------------------------------- weekday slots and ledger event triggers
+# (item DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS)
+
+class FakeItem(object):
+    def __init__(self, open_=True, raised=None, row=None):
+        self.open, self.raised, self.row = open_, raised, row
+
+
+class FakeWorld(object):
+    def __init__(self, items):
+        self.items = items
+
+
+def lts(t):
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+
+
+def lread(events, items=None):
+    return lambda: {"events": list(events), "world": FakeWorld(items or {})}
+
+
+BASE_EV = {"seat": "BENCH", "event": "file", "id": "OLD_ONE", "ts": "2026-01-01T00:00:00Z"}
+
+
+def arbiter(**kw):
+    r = {"name": "Arbiter", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/arbiter.md",
+         "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
+         "off_file": os.path.join(TMP, "ARBITER_OFF"), "runs_local": ["11:00", "17:00"], "slot_when": "done_claims",
+         "run_token_cap": 100000, "daily_token_cap": 250000}
+    r.update(kw)
+    return r
+
+
+def producer(**kw):
+    r = {"name": "Producer", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/producer.md",
+         "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "opus", "ledger_item": "ROLES_ITEM_X",
+         "off_file": os.path.join(TMP, "PRODUCER_OFF"), "runs_local": ["09:00"], "weekly_plan_weekday": "Wed",
+         "run_token_cap": 100000, "daily_token_cap": 250000, "event_runs": ["plan_step_failure", "replan_request"],
+         "event_runs_per_day": 1, "plan_scope": ["raised", "row"], "replan_note_prefix": "REPLAN REQUEST",
+         "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
+                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "weekly"},
+                            "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}}
+    r.update(kw)
+    return r
+
+
+def lrobs(status, ledger, **kw):
+    o = robs(status, **kw)
+    o["ledger"] = ledger
+    return o
+
+
+def day_with_weekday(wd):
+    """A local midnight at or after DAY0 whose weekday is wd (0 = Mon)."""
+    t = DAY0
+    while time.localtime(t).tm_wday != wd:
+        t += 86400
+    return t
+
+
+def test_role_weekday_slots():
+    check(RL.parse_slot("09:00") == (None, "09:00"), "slot: HH:MM runs every day")
+    check(RL.parse_slot("Wed 09:00") == (frozenset([2]), "09:00"), "slot: 'Wed 09:00' -> Wednesday only")
+    check(RL.parse_slot("mon,Thu 10:30") == (frozenset([0, 3]), "10:30"), "slot: 'Mon,Thu 10:30' -> two weekdays")
+    for bad in ("Wday 09:00", "25:00", "9", "Wed 09:00 x", "Wed 9:7x"):
+        try:
+            RL.parse_slot(bad)
+            check(False, "slot %r should be refused" % bad)
+        except ValueError:
+            check(True, "slot %r refused (ValueError)" % bad)
+    wed, thu = day_with_weekday(2), day_with_weekday(3)
+    inn = producer(name="Innovator", runs_local=["Mon,Thu 10:00", "Wed 15:00"], weekly_plan_weekday=None,
+                   event_runs=None)
+    check([t for t, _, _ in RL.slots(inn, wed)] == ["Wed 15:00"], "weekday filter: Wednesday keeps only 'Wed 15:00'")
+    check([t for t, _, _ in RL.slots(inn, thu)] == ["Mon,Thu 10:00"], "weekday filter: Thursday keeps 'Mon,Thu 10:00'")
+    check([m for _, m, _ in RL.slots(producer(), wed)] == ["weekly"], "Producer on Wednesday: the 09:00 is the weekly run")
+    check([m for _, m, _ in RL.slots(producer(), thu)] == ["run"], "Producer on Thursday: the 09:00 is a daily run")
+    # a weekday slot launches on its day only
+    o = operations(runs_local=["Wed 07:30"], economy_pass_local=None, alarm_runs=False)
+    tw, tt = RL.slot_epoch(wed, "07:30") + 60, RL.slot_epoch(thu, "07:30") + 60
+    a = role_acts(rdecide([o], fresh(), robs(ops_status(tw)), tw))
+    check([x["do"] for x in a] == ["role_launch"] and a[0]["slot"].endswith("Wed 07:30"),
+          "'Wed 07:30' launches on Wednesday")
+    a = role_acts(rdecide([o], fresh(), robs(ops_status(tt)), tt))
+    check(a == [], "'Wed 07:30' does nothing on Thursday")
+    a = role_acts(rdecide([operations(runs_local=["Wdy 07:30"])], fresh(), robs(ops_status(tw)), tw))
+    check([x.get("kind") for x in a] == ["role:Operations:schedule"] and "unreadable" in a[0]["why"],
+          "an unreadable weekday slot: alarm, no launch")
+    # Producer weekly mode and the RED band (weekly only)
+    led = lread([BASE_EV])
+    t9w, t9t = RL.slot_epoch(wed, "09:00") + 60, RL.slot_epoch(thu, "09:00") + 60
+    p = producer(after_role=None)
+    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9w), led), t9w))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] == "weekly" and "weekly plan" in la[0]["message"], "Wednesday 09:00: weekly-plan run")
+    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9w, runway=0.3), led), t9w))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["budget"] == 75000, "RED Wednesday: the weekly run goes at x0.75")
+    a = role_acts(rdecide([p], fresh(), lrobs(ops_status(t9t, runway=0.3), led), t9t))
+    check(not [x for x in a if x["do"] == "role_launch"] and any("band RED" in x.get("why", "") for x in a),
+          "RED Thursday: the daily run is held (weekly only)")
+
+
+def test_role_done_claims_gate():
+    t = at_local("11:00")
+    st = fresh()
+    led0 = lread([BASE_EV])
+    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t - 7200), led0), t - 7200))
+    check(st["roles"]["Arbiter"]["event_cursor"] == t - 7200 and [x["do"] for x in a] == ["role_hold"]
+          and "baseline" in a[0]["why"], "Arbiter first seen enabled: baseline cursor, nothing run")
+    old_claim = dict(BASE_EV, event="close", id="BEFORE_BASELINE", ts=lts(t - 9000))
+    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t), lread([BASE_EV, old_claim])), t))
+    check(not [x for x in a if x["do"] == "role_launch"] and any("no done claim" in x.get("why", "") for x in a),
+          "11:00 with only claims before the baseline: slot held, no batch")
+    check(st["roles"]["Arbiter"]["done"].get("%s 11:00" % RL.day_of(t)) == "no done claims",
+          "the empty slot is spent (not retried every tick)")
+    t17 = at_local("17:00")
+    claims = [dict(BASE_EV, event="implemented", id="BUILT_ONE", ts=lts(t + 600)),
+              dict(BASE_EV, event="close", id="CLOSED_ONE", ts=lts(t + 900)),
+              dict(BASE_EV, event="note", id="NOISE", ts=lts(t + 950), text="x")]
+    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t17), lread([BASE_EV] + claims)), t17))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and "2 done claim(s)" in la[0]["why"] and "implemented BUILT_ONE" in la[0]["why"],
+          "17:00 with an implemented + a close since the cursor: the batch launches, naming the oldest")
+    check(st["roles"]["Arbiter"]["event_cursor"] == t17, "the launch moves the cursor to its own time")
+    check([c[1] for c in RL.done_claims(claims, t)] == ["BUILT_ONE", "CLOSED_ONE"],
+          "done_claims: implemented and close only, oldest first")
+    st2 = fresh()
+    st2["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60}}
+    a = role_acts(rdecide([arbiter()], st2, lrobs(ops_status(t), lread([BASE_EV] + claims[:1]), off="owner: off"), t))
+    check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "claims pending + off file: held")
+
+
+def test_role_plan_failure_events():
+    t = at_local("13:00")
+    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": FakeItem(row="R3"),
+             "OFF_PLAN": FakeItem(), "PLAN_CLOSED": FakeItem(open_=False, raised="x")}
+    evs = [BASE_EV,
+           dict(BASE_EV, event="block", id="OFF_PLAN", ts=lts(t - 300)),
+           dict(BASE_EV, event="verify", id="PLAN_CLOSED", result="fail", ts=lts(t - 290)),
+           dict(BASE_EV, event="verify", id="PLAN_A", result="pass", ts=lts(t - 280))]
+    st = fresh()
+    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
+    p = producer(after_role=None)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread(evs, items)), t))
+    check(a == [], "no event run for: a block off the plan, a fail on a closed item, a verify pass")
+    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
+    blk = dict(BASE_EV, event="block", id="PLAN_ROW", ts=lts(t - 100))
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread(evs + [fail, blk], items)), t))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] == "event" and "verify fail on PLAN_A" in la[0]["why"] and "+1 more" in la[0]["why"],
+          "a verify fail on a raised item (and a block on a rowed one): one event run, naming the oldest")
+    check(la and la[0]["budget"] == 100000 and la[0]["slot"] == "%s event#1" % RL.day_of(t),
+          "event run: run cap, keyed once per day")
+    st["roles"]["Producer"]["runs"][:0] = []
+    t2 = t + 3600
+    blk2 = dict(BASE_EV, event="block", id="PLAN_A", ts=lts(t2 - 60))
+    st["roles"]["Producer"]["runs"] = [{"unit": "u", "at": t, "day": RL.day_of(t), "budget": 100000, "mode": "event",
+                                        "state": "done", "tokens": 50000, "item": "ROLES_ITEM_X"}]
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t2), lread(evs + [fail, blk, blk2], items)), t2))
+    check(not [x for x in a if x["do"] == "role_launch"] and any("event_runs_per_day" in x.get("why", "") for x in a),
+          "a second failure the same day: no second event run (per-day count), journaled once")
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t2 + 120), lread(evs + [fail, blk, blk2], items)), t2 + 120))
+    check(a == [], "... and not journaled again on the next tick")
+    # replan request
+    st3 = fresh()
+    st3["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
+    notes = [dict(BASE_EV, event="note", id="OTHER_ITEM", text="REPLAN REQUEST elsewhere", ts=lts(t - 50)),
+             dict(BASE_EV, event="note", id="ROLES_ITEM_X", text="economy pass: fine", ts=lts(t - 40))]
+    a = role_acts(rdecide([p], st3, lrobs(ops_status(t), lread(evs + notes, items)), t))
+    check(a == [], "a note without the prefix, or on another item: no replan run")
+    req = dict(BASE_EV, event="note", id="ROLES_ITEM_X", text="Replan request: 30% of the plan misses", ts=lts(t - 30))
+    a = role_acts(rdecide([p], st3, lrobs(ops_status(t), lread(evs + notes + [req], items)), t))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and "replan request on ROLES_ITEM_X" in la[0]["why"], "an Operations REPLAN REQUEST note: event run")
+    # RED: event runs still go; FLOOR: nothing
+    st4 = fresh()
+    st4["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
+    a = role_acts(rdecide([p], st4, lrobs(ops_status(t, runway=0.3), lread(evs + [fail], items)), t))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] == "event" and la[0]["budget"] == 75000, "RED: the event run goes at x0.75")
+    st4 = fresh()
+    st4["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
+    a = role_acts(rdecide([p], st4, lrobs(ops_status(t, week_left=5), lread(evs + [fail], items)), t))
+    check(not [x for x in a if x["do"] == "role_launch"], "FLOOR: no event run")
+    # a slot due in the same tick wins; its launch covers the events (cursor moves)
+    t9 = at_local("09:00")
+    st5 = fresh()
+    st5["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t9 - 3600}}
+    early = dict(fail, ts=lts(t9 - 100))
+    a = role_acts(rdecide([p], st5, lrobs(ops_status(t9), lread(evs + [early], items)), t9))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] in ("run", "weekly") and st5["roles"]["Producer"]["event_cursor"] == t9,
+          "slot and event due together: the slot runs and covers the event")
+    a = role_acts(rdecide([p], st5, lrobs(ops_status(t9 + 2000), lread(evs + [early], items), unit="inactive",
+                                         result={"usage": usage(output_tokens=10)}), t9 + 2000))
+    check(not [x for x in a if x["do"] == "role_launch"], "... and no event run follows for that covered failure")
+
+
+def test_role_ledger_unmeasured():
+    t = at_local("11:00")
+
+    def boom():
+        raise ValueError("torn line 812")
+
+    for led, label in ((boom, "raises"), (lambda: None, "returns nothing"), (lread([]), "zero events")):
+        st = fresh()
+        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 3600},
+                       "Producer": {"done": {}, "runs": [], "event_cursor": t - 3600}}
+        roles = [arbiter(), producer(after_role=None, runs_local=["11:00"])]
+        a = role_acts(rdecide(roles, st, lrobs(ops_status(t), led), t))
+        check(not [x for x in a if x["do"] == "role_launch"], "ledger %s: nothing launches, clock slots included" % label)
+        al = [x for x in a if x.get("kind") == "role:ledger"]
+        check(len(al) == 1 and "UNMEASURED" in al[0]["why"] and al[0]["note"], "ledger %s: ONE alarm" % label)
+        check("%s 11:00" % RL.day_of(t) not in st["roles"]["Arbiter"]["done"],
+              "ledger %s: the slot is not spent (it waits, missed only after slot_late_s)" % label)
+        a = role_acts(rdecide(roles, st, lrobs(ops_status(t + 120), led), t + 120))
+        check(not [x for x in a if x.get("kind") == "role:ledger"] and not a,
+              "ledger %s: next tick, no second alarm" % label)
+    claim = dict(BASE_EV, event="close", id="C1", ts=lts(t - 60))
+    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t + 240), lread([BASE_EV, claim])), t + 240))
+    check(any("readable again" in x.get("why", "") for x in a) and [x for x in a if x["do"] == "role_launch"]
+          and "ledger_blind" not in st, "ledger readable again: journaled, the batch launches")
+    st = fresh()
+    a = role_acts(rdecide([arbiter()], st, lrobs(ops_status(t), boom), t))
+    check("event_cursor" not in st["roles"]["Arbiter"], "a blind first tick sets no baseline")
+    a = role_acts(rdecide([conductor()], fresh(), robs(ops_status(at_local("08:00"))), at_local("08:00")))
+    check([x["do"] for x in a] == ["role_launch"], "a role with no event keys never reads the ledger")
+    check(RL.ledger_reading(RL.read_ledger)["state"] == "MEASURED", "read_ledger: the real ledger reads MEASURED")
+
+
+def test_role_real_schedule_triggers():
+    sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
+    roles = {r["name"]: r for r in sch["roles"]}
+    a, p = roles["Arbiter"], roles["Producer"]
+    check(a.get("slot_when") == "done_claims" and a["runs_local"] == ["11:00", "17:00"],
+          "schedule: Arbiter batches at 11:00/17:00 gated on pending done claims")
+    check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
+          and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
+    check(p["daily_token_cap"] == 125000, "schedule: Producer daily cap 125,000 (one 100k run + 25%)")
+    for r in sch["roles"]:
+        if r.get("enabled") is not False:
+            check(False, "role %s must stay disabled (owner's switch)" % r["name"])
+        for t in r.get("runs_local") or r.get("quick_checks_local") or []:
+            RL.parse_slot(t)
+    check(True, "schedule: every role disabled, every slot parses")
+
+
+# ---------------------------------------------------------------- review T (launcher findings)
+
+def test_review_t():
+    # F1: only a token_aware role (Operations) is told band, runway, budget and caps
+    t = at_local("07:30")
+    o = operations(token_aware=True, alarm_runs=False)
+    a = role_acts(rdecide([o], fresh(), robs(ops_status(t)), t))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and "Token budget" in la[0]["message"] and "runway" in la[0]["message"]
+          and "does not stop you" in la[0]["message"], "F1: Operations (token_aware) is told its band and budget")
+    a = role_acts(rdecide([operations(alarm_runs=False)], fresh(), robs(ops_status(t)), t))
+    msg = [x for x in a if x["do"] == "role_launch"][0]["message"].lower()
+    check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band")),
+          "F1: a role without token_aware: no token content in its launch message")
+    for r in (producer(after_role=None), arbiter(slot_when=None)):
+        msg = RL.prompt(r, "run", "x", "GREEN", {"runway": 2.0, "runway_m": "MEASURED", "week_left": 40,
+                                                "week_left_m": "MEASURED", "at": "now"}, 1, 2, 1.0, 3, "u").lower()
+        check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band", "stop at")),
+              "F1: %s's launch message is token-blind" % r["name"])
+    sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+    aware = [r["name"] for r in sch["roles"] if r.get("token_aware")]
+    check(aware == ["Operations"], "F1: in the schedule only Operations is token_aware")
+    # F2: no code claims a mid-run token stop
+    src = open(os.path.join(HERE, "role_launch.py"), encoding="utf-8").read()
+    check("At the budget" not in src and "stops a run at its cap" not in src, "F2: role_launch claims no token stop")
+    # F4: Operations' 07:30 skipped by its band -> the Producer's 09:00 follows the 19:30 run of the day before
+    t9 = at_local("09:00")
+    ops = operations(throttle_bands={"AMBER": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick"}})
+    p = producer(after_role="Operations", event_runs=None, slot_when=None, weekly_plan_weekday=None)
+    yday = RL.day_of(t9 - 86400)
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {"%s 19:30" % yday: "launch", "%s 07:30" % RL.day_of(t9): "band AMBER"},
+                                  "runs": [{"unit": "u", "at": t9 - 50000, "day": yday, "slot": "%s 19:30" % yday,
+                                            "mode": "run", "state": "done", "tokens": 1, "budget": 1}]}}
+    a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
+    check([x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
+          "F4: AMBER, Operations 07:30 band-skipped: the Producer's 09:00 follows yesterday's 19:30 run")
+    st["roles"]["Operations"]["runs"][0]["state"] = "failed"
+    st["roles"].pop("Producer", None)
+    a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
+    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
+          "F4: ... but not when that 19:30 run failed")
+    st["roles"]["Operations"]["done"]["%s 07:30" % RL.day_of(t9)] = "off switch"
+    st["roles"]["Operations"]["runs"][0]["state"] = "done"
+    st["roles"].pop("Producer", None)
+    a = role_acts(rdecide([ops, p], st, robs(ops_status(t9)), t9))
+    check(not [x for x in a if x["do"] == "role_launch" and x["role"] == "Producer"],
+          "F4: a 07:30 skipped for another reason (off switch) is not passed over")
+    # F7: every role on opus (Agent_Policy.md, the one ladder)
+    check(all(r.get("model") == "opus" for r in sch["roles"] if r["name"] in
+              ("Conductor", "Operations", "Producer", "Arbiter", "Auditor", "Innovator")),
+          "F7: Conductor, Operations, Producer, Arbiter, Auditor, Innovator are opus")
+
+
+def test_account_hold_dispatch():
+    """DISPATCHER_FIX_LENT_HOLD_ALARM: on a lent account under its limit with nothing else fit, the work is held and
+    one alarm is raised per hold (again only every HOLD_ALARM_EVERY_S); F10: the schedule's ops_stale_s rules."""
+    now = at_local("08:00")
+    accts = {"lent": (2.0, 40, 50, "MEASURED"), "b": (0.2, 5, 20, "MEASURED")}
+    sch = sched(roles=[conductor()], account_pick=PICK_RULE)
+
+    def hobs(t):
+        o = pobs(t, accts, cur="lent")
+        o["roles"]["lent"] = lambda: (LENT_RULES, lambda view, rules, n: (0.0, "off-limits"))
+        return o
+    st = fresh()
+    a = D.decide(sch, st, hobs(now), now, True)
+    al = [x for x in a if x["do"] == "alarm" and x["kind"].startswith("account:")]
+    check([x["do"] for x in a if x["do"].startswith("role")] == ["role_hold"], "HOLD: the role launch is held")
+    check(len(al) == 1 and al[0]["kind"] == "account:hold:lent" and al[0]["note"], "HOLD: one alarm, noted")
+    a = D.decide(sch, st, hobs(now + 120), now + 120, True)
+    check(not [x for x in a if x["do"] == "alarm" and x["kind"].startswith("account:")]
+          and not [x for x in a if x["do"] == "role_launch"], "HOLD tick 2: still held, no second alarm")
+    t2 = now + D.HOLD_ALARM_EVERY_S + 60
+    a = D.decide(sch, st, hobs(t2), t2, True)
+    check(len([x for x in a if x["do"] == "alarm" and x["kind"] == "account:hold:lent"]) == 1,
+          "HOLD lasting HOLD_ALARM_EVERY_S: alarmed again")
+    # F10: the schedule's ops_stale_s overrides a stale line in the rule (both gates read the same one)
+    st = fresh()
+    a = D.decide(sched(roles=[conductor()], account_pick=dict(PICK_RULE, ops_stale_s=100), ops_stale_s=2700),
+                 st, pobs(now, {"a": (2.0, 40, 50, "MEASURED")}), now, True)
+    check([x for x in a if x["do"] == "account_pick" and x["state"] == "KEEP"]
+          and [x for x in a if x["do"] == "role_launch"], "F10: the pick uses the schedule's ops_stale_s")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
-              test_review_r, test_account_pick_rule, test_account_pick_dispatch):
+              test_review_r, test_account_pick_rule, test_account_pick_dispatch,
+              test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
+              test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
+              test_account_hold_dispatch):
         try:
             t()
         except Exception as e:  # noqa: BLE001

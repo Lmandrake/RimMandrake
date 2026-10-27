@@ -28,16 +28,20 @@ is MEASURED idle >= 20 min (UNMEASURED holds too), and every ring sent while he 
 
 Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, recoveries per seat per
 day, a cooldown after a give-up, and a PAUSE file (state/PAUSE) that stops everything. §3's roles are listed in the
-schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (its own transient
-systemd unit, so the run outlives this oneshot tick), gated by its off switch, the ops_watch reading, its throttle
-band and its token caps; an enabled role without launch keys is an alarm.
+schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (daily or
+weekday-qualified, "Wed 09:00") and on ledger events (a done claim gates the Arbiter's batches; a failed plan step or
+a replan request launches the Producer), each as its own transient systemd unit, so the run outlives this oneshot
+tick, gated by its off switch, the ops_watch reading, its throttle band and its token caps; an enabled role without
+launch keys is an alarm, and an unreadable ledger launches no ledger-triggered role (one alarm per outage).
 
 ACCOUNT FIRST (account_pick.py; item DISPATCHER_BUILD_PICK_ACCOUNT_FIRST): before it releases work that spends a
 Claude session — a role launch, a ring, a recover — the tick picks the account by the schedule's `account_pick` rule
 from the ops_watch reading, once per tick and only when something is about to be released. KEEP releases the work
 (the launch's ledger note names the account); SWITCH holds the kinds listed under `hold` and alarms with the account
 to switch to (recommend only: a switch is `claude-account use`, machine-wide); UNMEASURED keeps the current account
-and alarms. Each change of the pick is a ledger note on `ledger_item` (default the alarm item).
+and alarms; HOLD (the machine is on a lent account under its limit and nothing else is fit) holds the `hold` kinds and
+alarms once per hold, again every HOLD_ALARM_EVERY_S. The pick reads ops_watch with the schedule's `ops_stale_s`.
+Each change of the pick is a ledger note on `ledger_item` (default the alarm item).
 
 Ledger notes and their publish run under testq's ingest.lock (the RUNNER ingest commits/pulls/pushes in the same
 dispatch clone). A side effect that raises never skips the state save (the caps live there); an unreadable state
@@ -463,11 +467,15 @@ def decide(sch, st, obs, now, apply):
     return actions
 
 
+HOLD_ALARM_EVERY_S = 6 * 3600
+
+
 def account_gate(sch, st, obs, now, act):
     """-> gate(kind) -> (go, pick). The pick is made once per tick, on the first release that asks (so a tick with
     nothing to release reads nothing). No `account_pick` block, or enabled false, or no role observer: always go.
     Acts: an `account_pick` record each tick it is made (a ledger note only when its key changed), and an alarm on
-    SWITCH (the account to switch to) and on UNMEASURED (kept, never guessed)."""
+    SWITCH (the account to switch to), on UNMEASURED (kept, never guessed), and on HOLD (on a lent account under its
+    limit with nothing else fit: the `hold` kinds wait; one alarm per hold, again every HOLD_ALARM_EVERY_S)."""
     rule = sch.get("account_pick") or {}
     ro = obs.get("roles")
     cache = {}
@@ -483,7 +491,9 @@ def account_gate(sch, st, obs, now, act):
             else:
                 current = ro["account"]()
                 lent_rules, allowance = ro["lent"]() if ro.get("lent") else AP.load_lent(rule)
-                p = AP.pick(rule, ro["ops"](), current, lent_rules, allowance, now)
+                # one staleness line for the pick and the role gates: the schedule's (review T, F10)
+                eff = dict(rule, ops_stale_s=sch["ops_stale_s"]) if "ops_stale_s" in sch else rule
+                p = AP.pick(eff, ro["ops"](), current, lent_rules, allowance, now)
             cache["p"] = p
             prev = (st.get("account_pick") or {}).get("key")
             changed = prev != p["key"]
@@ -500,6 +510,19 @@ def account_gate(sch, st, obs, now, act):
             elif p["state"] == "UNMEASURED":
                 act(do="alarm", kind="account:unmeasured", note=True,
                     ticket=rule.get("ledger_item") or sch.get("alarm_item"), why=p["why"])
+            elif p["state"] == "HOLD":
+                # on a lent account under its limit, nothing else fit: the work waits (DISPATCHER_FIX_LENT_HOLD_ALARM).
+                # One alarm per hold, repeated at most every HOLD_ALARM_EVERY_S while it lasts.
+                last = st.get("account_hold_alarm") or {}
+                if last.get("key") != p["key"] or now - (last.get("at") or 0) >= HOLD_ALARM_EVERY_S:
+                    act(do="alarm", kind="account:hold:%s" % p["account"], note=True,
+                        ticket=rule.get("ledger_item") or sch.get("alarm_item"),
+                        why="work held: the machine is on lent account %s, under its limit, and no other account is "
+                            "fit (held: %s): %s" % (p["account"], ", ".join(rule.get("hold") or []) or "nothing",
+                                                     p["why"]))
+                    st["account_hold_alarm"] = {"key": p["key"], "at": now}
+            if p["state"] != "HOLD":
+                st.pop("account_hold_alarm", None)
         p = cache["p"]
         return not (p.get("hold") and kind in (rule.get("hold") or [])), p
 
@@ -769,6 +792,7 @@ def default_obs(sch, root):
             "result": RL.read_result,
             "off": RL.off_switch,
             "scope": RL.scope_of,
+            "ledger": RL.read_ledger,
             "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         },
     }
