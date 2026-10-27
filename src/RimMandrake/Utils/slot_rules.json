@@ -74,5 +74,16 @@
   "helpers": {
     "live_window_s": 900,
     "_doc": "A helper is running when its transcript was written in the last live_window_s (over the 600 s silence kill) and its last assistant record is not a clean end_turn (no tool_use pending); a clean end_turn is finished at once. When in doubt, running."
-  }
+  },
+ "ops": {
+  "_doc": "What the allocator takes from ops_watch.py's status.json (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Only MEASURED points act (Codex runway also ESTIMATE). The disk brake caps the total before the owner's word, so his override still wins; Codex and the Steve lane are advice lines, because this allocator places Claude helpers, not Codex or testq work. A status older than stale_min is ignored and said so.",
+  "stale_min": 45,
+  "disk_brake_free_gb": 210,
+  "_disk_brake_free_gb": "the DISK_LOW line in ops_watch_rules.json: one worst day of scratch growth (207 GB, 2026-10-26) left on the WSL volume",
+  "disk_brake_total": 1,
+  "_disk_brake_total": "one helper: enough to clear scratch or fix the cause, not enough to fill the disk",
+  "codex_conserve_runway": 1.0,
+  "steve_stall_min": 30,
+  "steve_invalid_streak": 3
+ }
 }

@@ -292,7 +292,7 @@ streams.mkdir()
     "A1": {"v": 80, "m": "MEASURED"}, "D1": {"v": 32, "m": "MEASURED"}}}) + "\n")
 owner = tmp / "OWNER.jsonl"
 owner.write_text(json.dumps({"seat": "OWNER", "event": "note", "byCard": "Q -> A", "ts": SA.iso_z(real_now - 20 * 60)}) + "\n")
-env = dict(os.environ, RM_ACCOUNT_USAGE_DIR=str(au), RM_STREAMS_DIR=str(streams), RM_SLOT_PROJECTS=str(tmp / "projects"),
+env = dict(os.environ, RM_OPS_WATCH_DIR=str(tmp / "ops_watch"), RM_ACCOUNT_USAGE_DIR=str(au), RM_STREAMS_DIR=str(streams), RM_SLOT_PROJECTS=str(tmp / "projects"),
            RM_SLOT_OWNER_LEDGER=str(owner), RM_SLOT_MACHINE="testhost", AGENT_SEAT="BENCH")
 cli = [sys.executable, str(HERE / "slot_allocator.py")]
 p = subprocess.run(cli + ["now", "--json"], env=env, capture_output=True, text=True, timeout=60)
@@ -325,6 +325,76 @@ check("set without the owner's words is refused", p.returncode != 0, p.stdout)
 subprocess.run(cli + ["clear"], env=env, capture_output=True, text=True, timeout=60)
 p2 = subprocess.run(cli + ["now"], env=env, capture_output=True, text=True, timeout=60)
 check("clear drops the owner's word", "N=5 BENCH" in p2.stdout, p2.stdout)
+
+check("CLI: no ops status -> the decision says so and changes nothing", "no ops watch status" in p2.stdout, p2.stdout)
+
+# ---- the ops watch feed (ops_watch.py status.json, V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE)
+OPS_OK = {"ok": True, "age_min": 5, "root_free_gb": 450.0, "codex_runway": 3.0, "steve_state": "RUNNING",
+          "steve_unowned_stall_min": 0.0, "steve_invalid_streak": 0, "alarms_open": []}
+ops = lambda **k: dict(OPS_OK, **k)  # noqa: E731
+base_seats = seats(d())
+r = d(ops=ops())
+check("ops all OK changes no seat", seats(r) == base_seats and r["ops"] == {"disk": "OK", "codex": "OK", "steve_lane": "OK"},
+      (seats(r), r["ops"]))
+r = d(ops=ops(root_free_gb=150.0))
+check("disk under the DISK_LOW line caps the total at disk_brake_total", r["n_total"] == R["ops"]["disk_brake_total"]
+      and r["ops"]["disk"] == "BRAKE" and "disk brake" in r["why"], (r["n_total"], r["why"]))
+r = d(ops=ops(root_free_gb=150.0), override=ov(n=7))
+check("his word stands over the disk brake (BENCH 7) and says so", r["seats"]["BENCH"] == 7
+      and "his word stands over the disk brake" in r["why"], (r["seats"], r["why"]))
+r = d(ops=ops(root_free_gb=None))
+check("an UNMEASURED disk brakes nothing (never read as 0 GB)", seats(r) == base_seats and r["ops"]["disk"] == "UNMEASURED",
+      (seats(r), r["ops"]))
+r = d(ops=ops(codex_runway=0.6))
+check("Codex runway 0.6 -> CONSERVE advice, seats unchanged", r["ops"]["codex"] == "CONSERVE" and seats(r) == base_seats
+      and "Codex runway 0.60" in r["why"], (r["ops"], r["why"]))
+r = d(ops=ops(steve_unowned_stall_min=45.0))
+check("Steve stalled 45 min unowned -> STALLED advice", r["ops"]["steve_lane"] == "STALLED" and "Steve lane STALLED" in r["why"],
+      r["ops"])
+r = d(ops=ops(steve_invalid_streak=3))
+check("3 INVALID in a row -> INVALID_STREAK advice", r["ops"]["steve_lane"] == "INVALID_STREAK", r["ops"])
+r = d(ops={"ok": False, "why": "ops watch status is 90 min old (rm-ops-watch.timer stopped?)"})
+check("a stale ops status is ignored and named", seats(r) == base_seats and "90 min old" in r["why"]
+      and r["ops"]["disk"] == "UNMEASURED", r["why"])
+r = d(ops=ops(root_free_gb=150.0), session_pct_used=95.0)
+check("the session brake still zeroes everything under a disk brake", r["n_total"] == 0, r["seats"])
+od = tmp / "ops_watch_unit"
+od.mkdir(parents=True, exist_ok=True)
+os.environ["RM_OPS_WATCH_DIR"] = str(od)
+(od / "status.json").write_text(json.dumps({"t": NOW - 600, "points": {
+    "disk.root_free_gb": {"v": 100.0, "m": "MEASURED"}, "codex.runway": {"v": 0.5, "m": "ESTIMATE"},
+    "steve.unowned_stall_min": {"v": None, "m": "UNMEASURED"}, "steve.invalid_streak": {"v": 4, "m": "MEASURED"}},
+    "alarms": {"DISK_LOW:disk.root_free_gb": {"state": "OPEN"}, "X:y": {"state": "CLEARED"}}}))
+oi = SA.ops_inputs(NOW, R)
+check("ops_inputs reads MEASURED points, Codex ESTIMATE, drops UNMEASURED, lists open alarms",
+      oi["ok"] and oi["root_free_gb"] == 100.0 and oi["codex_runway"] == 0.5 and oi["steve_unowned_stall_min"] is None
+      and oi["steve_invalid_streak"] == 4 and oi["alarms_open"] == ["DISK_LOW:disk.root_free_gb"], oi)
+oi = SA.ops_inputs(NOW + 3 * H, R)
+check("ops_inputs: a status 3 h old is not ok", not oi["ok"] and "old" in oi["why"], oi)
+(od / "status.json").write_text(json.dumps({"t": NOW - 600, "points": {
+    "disk.root_free_gb": {"v": 50.0, "m": "ESTIMATE"}, "codex.runway": {"v": 0.4, "m": "ESTIMATE"},
+    "steve.unowned_stall_min": {"v": 90, "m": "ESTIMATE"}, "steve.invalid_streak": {"v": 9, "m": "ESTIMATE"}}}))
+oi = SA.ops_inputs(NOW, R)
+check("ops_inputs: ESTIMATE disk and Steve readings are dropped; a Codex ESTIMATE counts",
+      oi["ok"] and oi["root_free_gb"] is None and oi["steve_unowned_stall_min"] is None
+      and oi["steve_invalid_streak"] is None and oi["codex_runway"] == 0.4, oi)
+r = d(ops=oi)
+check("an ESTIMATE low disk applies no brake", r["ops"]["disk"] == "UNMEASURED" and seats(r) == base_seats, r["ops"])
+(od / "status.json").write_text(json.dumps({"t": NOW - 600, "points": {
+    "disk.root_free_gb": {"v": "150", "m": "MEASURED"}, "codex.runway": {"v": None, "m": "MEASURED"},
+    "steve.invalid_streak": {"v": float("inf"), "m": "MEASURED"}, "steve.state": {"v": 3, "m": "MEASURED"},
+    "steve.unowned_stall_min": [1]}, "alarms": {"a": "OPEN"}}))
+oi = SA.ops_inputs(NOW, R)
+check("ops_inputs: malformed values (string GB, Infinity, a list point, a non-dict alarm) are ignored, not a crash",
+      oi["ok"] and oi["root_free_gb"] is None and oi["steve_invalid_streak"] is None and oi["steve_state"] is None
+      and oi["steve_unowned_stall_min"] is None and oi["alarms_open"] == [], oi)
+r = d(ops=oi)
+check("decide() survives a malformed ops status", r["ops"]["disk"] == "UNMEASURED", r["ops"])
+for bad_t in ("NaN", "Infinity", None, True):
+    (od / "status.json").write_text(json.dumps({"t": float(bad_t) if isinstance(bad_t, str) else bad_t, "points": {
+        "disk.root_free_gb": {"v": 100.0, "m": "MEASURED"}}}))
+    oi = SA.ops_inputs(NOW, R)
+    check(f"ops_inputs: status time {bad_t!r} is not fresh", not oi["ok"], oi)
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

@@ -21,13 +21,23 @@
             "clone": "/home/mandrake/rm/bench", "model": "opus",
             "_why": "BENCH is the owner's workshop window (the Conductor's session mode): watched, never woken or resumed by a program"}
  },
+ "measure": [
+  {"name": "ops_watch", "enabled": true, "every_s": 900, "unit": "rm-ops-watch.timer",
+   "run": "python3 src/RimMandrake/Utils/ops_watch.py run --file-alarms",
+   "rules": "src/RimMandrake/Utils/ops_watch_rules.json", "out": "D:\\ClaudeWork\\rimmandrake\\ops_watch",
+   "_why": "the Dispatcher measures deterministically, Operations analyses (owner 2026-10-27, ledger OWNER 05:59:41Z: Operations \"should just have those things automatically gathered for it, so it's not constantly burning tokens gathering it all up for every question considered\"). A systemd user timer runs it, not dispatcher.py; listed here so the one schedule file names everything that runs."}
+ ],
  "roles": [
   {"name": "Conductor", "enabled": false, "trigger": "his message", "from": "v3.1"},
-  {"name": "Arbiter", "enabled": false, "trigger": "feature claims done", "from": "v3.2"},
-  {"name": "Auditor", "enabled": false, "trigger": "daily", "from": "v3.2"},
-  {"name": "Operations", "enabled": false, "trigger": "2x/day + alarms", "from": "v3.3"},
-  {"name": "Producer", "enabled": false, "trigger": "daily list, weekly plan", "from": "v3.4"},
-  {"name": "Innovator", "enabled": false, "trigger": "process 2x/week, design weekly", "from": "v3.5"}
+  {"name": "Arbiter", "enabled": false, "trigger": "feature claims done", "from": "v3.3"},
+  {"name": "Auditor", "enabled": false, "trigger": "daily", "from": "v3.4"},
+  {"name": "Operations", "enabled": false, "trigger": "2x/day + alarms", "from": "v3.2",
+   "instructions": "src/RimMandrake/rimflow/roles/operations.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest.md",
+   "runs_local": ["07:30", "19:30"], "on_alarm": "OPS_* items spawned from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
+   "economy_pass_local": "07:30", "run_token_cap": 60000, "economy_token_cap": 150000, "daily_token_cap": 300000,
+   "off_switch": "enabled false here, or the file D:\\ClaudeWork\\rimmandrake\\ops_watch\\OPERATIONS_OFF"},
+  {"name": "Producer", "enabled": false, "trigger": "daily list, weekly plan", "from": "v3.3"},
+  {"name": "Innovator", "enabled": false, "trigger": "process 2x/week, design weekly", "from": "v3.4"}
  ],
  "throttle_order": ["Innovator", "Auditor", "Producer", "Arbiter", "Operations"]
 }

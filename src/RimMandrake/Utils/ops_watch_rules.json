@@ -1,0 +1,74 @@
+{
+ "_doc": "Rules for ops_watch.py (the Dispatcher's deterministic measurement arm, V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Keys are glob patterns over point keys (family.name). Only MEASURED points feed the band, run and silent rules; a target names the marks it accepts. A target with alarm true files one rimflow item when the condition is NEW, and re-arms only after it clears.",
+ "series_days": 8,
+ "band": {
+  "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
+  "baseline_days": 7,
+  "exclude_recent_h": 1,
+  "min_points": 20,
+  "k_sigma": 3.0,
+  "sigma_floor_rel": 0.05,
+  "sigma_floor_abs": 0.5,
+  "keys": ["*"],
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "production.record_age_min", "steve.last_done_age_min"]
+ },
+ "run": {
+  "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
+  "n": 8,
+  "keys": ["accounts.*.runway", "codex.runway", "testing.nothing_h_7d", "process.share_7d", "flow.untriaged_findings", "flow.lapsed_leases", "production.P1", "production.P2", "production.P4", "production.V0", "production.D1", "production.A1", "production.G3", "production.G7", "production.O3", "tps.ratio_median", "disk.root_free_gb", "disk.scratch_total_gb"]
+ },
+ "silent": {
+  "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind.",
+  "default_h": 2,
+  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3},
+  "keys": ["*"],
+  "skip": ["*._collector"]
+ },
+ "targets": [
+  {"key": "accounts.*.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
+   "why": "owner brief 2026-10-26: an account whose runway is below 1 runs out before its weekly reset"},
+  {"key": "codex.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
+   "why": "owner brief 2026-10-26: Codex runs out before its weekly reset"},
+  {"key": "steve.unowned_stall_min", "op": ">", "value": 30, "alarm": true, "tag": "STEVE_STALL", "name": "OPS_STEVE_UNSTICK", "marks": ["MEASURED"],
+   "why": "owner brief: Steve lane stalled over 30 min. Counted only where the steward is not already escalating it (a fault with no steward incident, or the steward AND its watcher both silent)"},
+  {"key": "steve.invalid_streak", "op": ">=", "value": 3, "alarm": true, "tag": "STEVE_INVALID", "name": "OPS_STEVE_DIAGNOSE_INVALID", "marks": ["MEASURED"],
+   "why": "owner brief: 3 or more INVALID results in a row on the Steve lane"},
+  {"key": "disk.root_free_gb", "op": "<", "value": 210, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
+   "why": "the WSL ext4 volume holds every clone and agent scratch; scratch grew 207 GB on 2026-10-26 (181 -> 389 GB, rm-scratch-reap runs.jsonl), the worst day seen. Under 210 GB free, one more such day fills it and git, builds and the ledger fail together"},
+  {"key": "disk.root_free_gb", "op": "<", "value": 420, "alarm": false, "tag": "DISK_TWO_DAYS",
+   "why": "two worst days of scratch growth left: a warning flag, not an alarm"},
+  {"key": "disk.c_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
+   "why": "C: holds the WSL disk image and the game; the image grows with ext4 (see root), so C: gets the same one-worst-day margin"},
+  {"key": "disk.d_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
+   "why": "D: holds agent storage (D:\\ClaudeWork: builds, saves, testq, series); one worst day of scratch growth (207 GB) as margin"},
+  {"key": "timers.failed_units", "op": ">", "value": 0, "alarm": true, "tag": "TIMER_FAILED", "name": "OPS_TIMER_REPAIR", "marks": ["MEASURED"],
+   "why": "owner brief: a failed timer or service (systemctl --user --failed)"},
+  {"key": "timers.overdue_timers", "op": ">", "value": 0, "alarm": false, "tag": "TIMER_OVERDUE",
+   "why": "a timer whose next elapse is in the past (missed), a flag only"},
+  {"key": "testing.nothing_h_7d", "op": ">", "value": 18, "alarm": false, "tag": "TEST_HOURS_WASTED", "marks": ["MEASURED", "ESTIMATE"],
+   "why": "v3 section 6 target: test hours that catch nothing <= 18 h/wk"},
+  {"key": "process.share_7d", "op": ">=", "value": 61, "alarm": false, "tag": "PROCESS_SHARE",
+   "why": "v3 section 6 target: process-commit share 70% -> under 61%"},
+  {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": false, "tag": "UNTRIAGED",
+   "why": "findings filed UNTRIAGED and not yet turned into items"}
+ ],
+ "alarm": {
+  "_doc": "Filing: spawn as RUNNER from the dispatch clone (its testq/ingest.py: rimflow + publish) under QHOME/ingest.lock, the lock the ingest and the Dispatcher take. RM_OPS_ALARM_CLONE / RM_OPS_ALARM_PARENT override.",
+  "clone": "/home/mandrake/rm/dispatch",
+  "parent": "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
+  "for": "BENCH",
+  "needs": "offline",
+  "lock_wait_s": 90,
+  "clear_passes": 4,
+  "_clear_passes_doc": "an open alarm clears (and re-arms) only after 4 clear readings in a row (1 h at 15 min): a reading that wobbles across its line files one item, not one per wobble. UNMEASURED readings neither clear nor reset the count (a flaky instrument must not pin an alarm open forever)"
+ },
+ "accounts_fit": {"window_h": 6, "slope_min_points": 4, "slope_min_span_h": 2.0},
+ "codex": {"lookback_days": 8, "slope_window_h": 24, "slope_min_span_h": 3.0, "stale_h": 6, "_stale_h_doc": "a last reading older than this is an ESTIMATE floor: Codex may be spent from another machine"},
+ "testing": {"close_after_h": 24},
+ "process_regex": "^(infrastructure/|design/|conversations/|src/RimMandrake/Utils/|src/RimMandrake/rimflow/|\\.claude/|skills/|CLAUDE\\.md|Transient/)",
+ "v3_owed": {
+  "keep_going_per_day": "his keep-going messages per day (31 -> <=26): only an AI tagging pass measures it today (csuite friction census); owed a deterministic classifier (OPS_KPI_MEASURE_OWED_VTHREE)",
+  "failure_signal_share": "share of his messages that signal a failure (27.5% -> <=25%): only an AI tagging pass measures it today; owed a deterministic classifier (OPS_KPI_MEASURE_OWED_VTHREE)",
+  "accepted_per_day": "accepted items per day (pass on named scenarios, specific build, non-maker check): no ledger event records the non-maker check yet (OPS_KPI_MEASURE_OWED_VTHREE)"
+ }
+}

@@ -350,6 +350,84 @@ def read_json(p):
         return None
 
 
+def ops_dir() -> Path:
+    return Path(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"))
+
+
+def ops_inputs(now, rules):
+    """The ops watch's last pass (ops_watch.py status.json), cut to what the allocator acts on. A point counts only
+    when MEASURED; a status older than ops.stale_min is reported and ignored (no brake from an old reading)."""
+    o = rules.get("ops") or {}
+    st = read_json(ops_dir() / "status.json")
+    t = st.get("t") if isinstance(st, dict) else None
+    if not isinstance(t, (int, float)) or isinstance(t, bool) or not math.isfinite(t):
+        return {"ok": False, "why": f"no ops watch status with a time ({ops_dir() / 'status.json'})"}
+    age = (now - float(t)) / 60.0
+    if not age <= o.get("stale_min", 45):
+        return {"ok": False, "why": f"ops watch status is {age:.0f} min old (rm-ops-watch.timer stopped?)",
+                "age_min": round(age, 1)}
+    pts = st.get("points") or {}
+
+    pts = pts if isinstance(pts, dict) else {}
+
+    def mv(k, marks=("MEASURED",), numeric=True):
+        # a malformed point is ignored, never a crash in decide() and never a brake
+        p = pts.get(k)
+        if not isinstance(p, dict) or p.get("m") not in marks:
+            return None
+        v = p.get("v")
+        if not numeric:
+            return v if isinstance(v, str) else None
+        return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) else None
+    return {"ok": True, "age_min": round(age, 1), "root_free_gb": mv("disk.root_free_gb"),
+            "codex_runway": mv("codex.runway", ("MEASURED", "ESTIMATE")), "steve_state": mv("steve.state", numeric=False),
+            "steve_unowned_stall_min": mv("steve.unowned_stall_min"), "steve_invalid_streak": mv("steve.invalid_streak"),
+            "alarms_open": sorted(k for k, a in (st.get("alarms") if isinstance(st.get("alarms"), dict) else {}).items()
+                                  if isinstance(a, dict) and a.get("state") in ("OPEN", "PENDING"))}
+
+
+def _ops(inp, rules, total, why):
+    """-> (total, advice). The disk brake caps the total (applied before the owner's word, which still wins);
+    Codex and the Steve lane are advice lines only: this allocator places Claude helpers, not Codex or testq work."""
+    o = rules.get("ops") or {}
+    ops = inp.get("ops")
+    adv = {"disk": "UNMEASURED", "codex": "UNMEASURED", "steve_lane": "UNMEASURED"}
+    if not ops:
+        return total, adv
+    if not ops.get("ok"):
+        why.append("ops watch: " + ops.get("why", "unreadable") + " -- no disk brake, no Codex/Steve advice")
+        return total, adv
+    free = ops.get("root_free_gb")
+    if free is not None:
+        adv["disk"] = "OK"
+        if free < o["disk_brake_free_gb"]:
+            adv["disk"] = "BRAKE"
+            if total > o["disk_brake_total"]:
+                why.append(f"disk brake: {free:.0f} GB free on / (< {o['disk_brake_free_gb']} GB, the DISK_LOW line) "
+                           f"-> total {total} capped at {o['disk_brake_total']}")
+                total = o["disk_brake_total"]
+            else:
+                why.append(f"disk brake: {free:.0f} GB free on / (< {o['disk_brake_free_gb']} GB); total already "
+                           f"{total}")
+    cx = ops.get("codex_runway")
+    if cx is not None:
+        adv["codex"] = "CONSERVE" if cx < o["codex_conserve_runway"] else "OK"
+        if adv["codex"] == "CONSERVE":
+            why.append(f"Codex runway {cx:.2f} (< {o['codex_conserve_runway']}): send GPT/Codex consults only where "
+                       f"a review is required")
+    stall, inv = ops.get("steve_unowned_stall_min"), ops.get("steve_invalid_streak")
+    if stall is not None or inv is not None:
+        adv["steve_lane"] = "OK"
+        if (stall or 0) > o["steve_stall_min"]:
+            adv["steve_lane"] = "STALLED"
+        elif (inv or 0) >= o["steve_invalid_streak"]:
+            adv["steve_lane"] = "INVALID_STREAK"
+        if adv["steve_lane"] != "OK":
+            why.append(f"Steve lane {adv['steve_lane']} (stall {stall} min, INVALID streak {inv}): do not start a "
+                       f"helper whose item waits on a testq run")
+    return total, adv
+
+
 def gather(now=None, rules=None):
     now = now or time.time()
     rules = rules or load_rules()
@@ -400,6 +478,10 @@ def gather(now=None, rules=None):
     inp["A1"], inp["D1"] = latest_streams(now)
     ov = read_json(streams_dir() / "slot_override.json")
     inp["override"] = ov if isinstance(ov, dict) else None
+    try:
+        inp["ops"] = ops_inputs(now, rules)
+    except Exception as e:  # noqa: BLE001
+        inp["ops"] = {"ok": False, "why": f"{type(e).__name__}: {e}"}
     return inp
 
 
@@ -657,6 +739,7 @@ def decide(inp, state, rules, now):
             why.append(f"raised one step from {prev_total} (at most {fit['raise_step']} per check)")
             total = prev_total + fit["raise_step"]
     total = max(0, min(total, rules["total_max"]))
+    total, ops_advice = _ops(inp, rules, total, why)
     # split per seat
     share = rules["split"]["FOUNDRY_share"]
     per = {s: 0 for s in seats}
@@ -685,6 +768,8 @@ def decide(inp, state, rules, now):
             per["BENCH"] = int(ov["n"])
         label = f"{label}+OWNER"
         why.insert(0, f"his word: \"{ov['ownerSaid']}\"" + (f" until {ov['until']}" if ov.get("until") else ""))
+        if ops_advice["disk"] == "BRAKE":
+            why.append("his word stands over the disk brake")
     pre_cut_total = sum(per.values())
     overage = _overage(inp, state, rules, now, base, per, ov, presence, why)
     sess = inp.get("session_pct_used")
@@ -704,7 +789,7 @@ def decide(inp, state, rules, now):
     return {"at": iso_local(now), "t": now, "mode": label, "token_mode": mode, "queue_mode": queue_mode,
             "presence": presence, "presence_why": pwhy, "n_total": sum(per.values()), "seats": per,
             "n": per.get(inp.get("seat") or "BENCH"), "why": "; ".join(why), "inputs": inputs,
-            "overage": overage, "override": ov, "state": new_state}
+            "overage": overage, "override": ov, "ops": ops_advice, "state": new_state}
 
 
 def line(dec):

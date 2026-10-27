@@ -9,14 +9,26 @@ Dirs: ~/.codex/sessions and the Windows user's .codex/sessions (override: args).
 """
 import collections, datetime as dt, glob, json, os, sys
 
-DIRS = sys.argv[1:] or [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/.codex/sessions"]
+DEFAULT_DIRS = [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/.codex/sessions"]
+DIRS = (sys.argv[1:] if __name__ == "__main__" else []) or DEFAULT_DIRS   # argv only when run as a script, never an importer's
 
 
-def main():
+def readings(dirs=None, newer_than=None):
+    """Every rate_limits reading in the rollout files under `dirs`, oldest first, plus the file count.
+
+    Each reading is a tuple (ts, prim_used%, prim_window_min, prim_resets_at, sec_used%, sec_window_min,
+    sec_resets_at, plan_type). `newer_than` (epoch s) skips files last modified before it, so a caller
+    that wants only the latest reading need not open the whole history (ops_watch.py does this)."""
     recs = []
     nfiles = 0
-    for d in DIRS:
+    for d in (dirs or DIRS):
         for f in glob.glob(os.path.join(d, "**", "rollout-*.jsonl"), recursive=True):
+            if newer_than is not None:
+                try:
+                    if os.path.getmtime(f) < newer_than:
+                        continue
+                except OSError:
+                    continue
             nfiles += 1
             try:
                 fh = open(f, encoding="utf-8", errors="replace")
@@ -39,6 +51,11 @@ def main():
                                  s.get("used_percent"), s.get("window_minutes"), s.get("resets_at"),
                                  rl.get("plan_type")))
     recs.sort()
+    return recs, nfiles
+
+
+def main():
+    recs, nfiles = readings(DIRS)
     print(f"files {nfiles}, rate_limit readings {len(recs)}")
     if not recs:
         return 0

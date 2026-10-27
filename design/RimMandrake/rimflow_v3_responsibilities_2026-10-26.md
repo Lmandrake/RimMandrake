@@ -228,13 +228,48 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   proposes cuts, and enacts check merges only when detection is preserved and the floor stays fully covered; a bar
   cut is always his).
 - **Decides alone:** anything already ruled; resource budgets. **Never:** touch the game while he plays; lower a bar.
+- **The Dispatcher measures, Operations analyses.** His words, 2026-10-26: *"I am most eager to have a competent
+  agent appearing to check the spend of all the accounts including CODEX, SteveDesktop's operation... monitor the
+  disk... And that it's feeding back into the subagent allotment and plan."* And 2026-10-27 (ledger OWNER note
+  05:59:41Z): *"Operations should also time-trend varous production metrics. In essence it's taking the place of
+  RimPulse. instead of me having a semi-useful dashboard I look at twice a day, Ops can analyze it anytime needed.
+  That's spectacular. So it definitely should have KPI/Andon-type timelines its tracks to look for anomalies. It
+  should just have those things automatically gathered for it, so it's not constantly burning tokens gathering it all
+  up for every question considered."* So gathering is a program, `src/RimMandrake/Utils/ops_watch.py` (no AI, every
+  15 min from `rm-ops-watch.timer`, rules `ops_watch_rules.json`); the Operations agent reads its one-screen
+  `D:\ClaudeWork\rimmandrake\ops_watch\digest.md` and never re-gathers (`src/RimMandrake/rimflow/roles/operations.md`).
+- **KPI series** (append-only JSONL, one file per family, `D:\ClaudeWork\rimmandrake\ops_watch\series\<family>.jsonl`,
+  every point MEASURED / ESTIMATE / UNMEASURED with its `why`; an instrument that errors is UNMEASURED, never 0):
+  `accounts` (per-account % left, slope, runway), `codex` (% used, hours to reset, runway), `steve` (lane state,
+  INVALID streak, unowned stall minutes, jobs and INVALID per 24 h), `flow` (untriaged findings, lapsed leases, closes
+  per 24 h), `testing` (test hours catching nothing per 7 d, Steve and archmagi parts), `disk` (free GB on /, C:, D:;
+  scratch total and refused), `timers` (failed units, overdue timers), `process` (process-commit share 24 h / 7 d),
+  `tps` (ratio median, stalls), `production` (every RimPulse streams measure, copied each pass), `v3` (the §6 success
+  test: what is measured, and what is owed).
+- **Andon rules** (each opens a flag in the digest; only a target with `alarm: true` files an item): **band** a point
+  outside the 7-day MEASURED baseline ± 3σ (σ floored so a flat series does not flag on noise); **run** 8
+  same-direction changes in a row on a named KPI; **silent** a series MEASURED in the baseline and not MEASURED for its
+  hours (an instrument gone blind); **target** a threshold. Alarms, once per NEW crossing and re-armed only after it
+  clears: `RUNWAY_LOW` (any account or Codex below 1), `STEVE_STALL` (over 30 min, where the steward is not already
+  escalating), `STEVE_INVALID` (3 in a row), `DISK_LOW` (/ below 210 GB: one worst day of scratch growth, 207 GB on
+  2026-10-26; C: and D: below 200 GB), `TIMER_FAILED`. Flags only: two days of disk left, overdue timers, test hours
+  above 18 h/wk, process share at or above 61%, untriaged findings.
+- **RimPulse, covered and not.** Covered: every streams measure (D1-D4, V0, P1-P4, W1-W4, O1-O4, A1-A5, G1-G9, B)
+  as `production.*`, with its own mark, so the trend and Andon now run over all of them; its plan-usage panel, Steve
+  and testing panels, and its tps× and disk sparklines are the `accounts`, `codex`, `steve`, `testing`, `tps` and
+  `disk` families. Still UNMEASURED upstream (the watch carries the mark, it does not invent a number): D2, W2, W3,
+  W4, O4, A4, G8. Not covered: the live-game sparklines exc/s and host memory GB (owed: a `game` family), RimPulse's
+  per-item views (item pages, queue lists) and its review sheets; those stay in RimPulse as a viewer.
+- **Feeds the allocator:** `slot_allocator.py` reads `ops_watch\status.json` (ignored when older than 45 min, MEASURED
+  points only): disk below 210 GB free caps N at 1 (his override still stands over it); Codex runway below 1 advises
+  CONSERVE; a stalled or INVALID-streak Steve lane advises against test-lane work. Rules: `slot_rules.json` → `ops`.
 
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
-| O1 | token runway | per account: hours of quota left at the current burn ÷ hours to the weekly reset (below 1 = runs out early) | `python3 src/RimMandrake/Utils/account_usage.py now`; Codex `src/RimMandrake/Utils/sim/csuite_codex_limits.py` | MEASURED 2026-10-26 22:33: system 30% left, 38 h to reset; lukas 7% (ESTIMATE) |
-| O2 | test hours catching nothing | busy test-rig hours per week on runs with no finding, no regression and no close (including wasted runs) | `src/RimMandrake/Utils/pulse/testing_metrics.py` (USEFULNESS) | MEASURABLE; target ≤18 h/wk (v3 §6) |
-| O3 | stale work | open items with a lapsed lease + doing items with no lease | `rimflow_metrics.py` → `leases.open_items_lapsed_now`; `baseline_2026-10-26\doing_leases.py` (M9) | MEASURED 166 lapsed; 123 doing, 0 with a live lease |
-| O4 | scratch disk | GB under agent scratch eligible for the reaper | `scratch_reap.py` (dry run), `scratch_clone.py sample` | MEASURED 240 GB (csuite evidence) |
+| O1 | token runway | per account: hours of quota left at the current burn ÷ hours to the weekly reset (below 1 = runs out early) | `ops_watch.py` → `accounts.*.runway`, `codex.runway` (from `account_usage.py`, `slot_allocator.slope`, `sim/csuite_codex_limits.readings`) | MEASURED 2026-10-27: system 0.71, Codex 0.77; lukas 0.24 and steven 1.45 (ESTIMATE) |
+| O2 | test hours catching nothing | busy test-rig hours per week on runs with no finding, no regression and no close (including wasted runs) | `ops_watch.py` → `testing.nothing_h_7d` (Steve from testq `done/`, archmagi from `testing_metrics` history) | ESTIMATE 10.6 h/7 d (archmagi had blind days); target ≤18 h/wk (v3 §6) |
+| O3 | stale work | open items with a lapsed lease + doing items with no lease | `ops_watch.py` → `flow.lapsed_leases` (ledger replay, `lease_status`) | MEASURED 166 lapsed (matches streams P2) |
+| O4 | scratch disk | GB under agent scratch, and free GB on each volume | `ops_watch.py` → `disk.*` (`df`, `rm-scratch-reap` `runs.jsonl`) | MEASURED 2026-10-27: scratch 386 GB; / 486 GB free |
 
 ### Dispatcher — a program, not an AI
 - **Duties:** run every role from the one schedule file; wake a stalled builder, hand it the next ticket, check that
@@ -242,6 +277,9 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   token-pressure throttle order (v3 §3); one bridge holder at a time; never take the game while he plays; verify that
   a woken seat consumed its handoff; run the test lane (testq tick/steward/ingest is the RUNNER's Dispatcher
   instance on SteveDesktop).
+- **Measures, deterministically:** the Dispatcher's measurement arm is `ops_watch.py` (schedule `measure[ops_watch]`,
+  every 15 min). It gathers every KPI family, raises the Andon flags and files the alarm items, so Operations analyses
+  readings it never has to gather (his words above, 2026-10-26 and 2026-10-27).
 - **Decides:** nothing; it follows the plan and the rules.
 
 | # | metric | definition | measure | value |
