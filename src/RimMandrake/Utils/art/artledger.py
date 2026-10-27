@@ -108,7 +108,7 @@ def sha256_file(p: Path) -> str:
 
 def dhash(png_bytes: bytes, size: int = 16) -> tuple[str, int, int]:
     """16x16 difference hash over alpha-composited luminance -> (hex, w, h).
-    A comparison aid for the sheet ONLY; never authorises anything (GPT #3)."""
+    A comparison aid for the sheet and the ✕ ban's near-duplicate REFUSAL; never authorises anything (GPT #3)."""
     from io import BytesIO
     from PIL import Image
     im = Image.open(BytesIO(png_bytes))
@@ -637,6 +637,10 @@ class Index:
         self.bindings = defaultdict(list)      # sha -> [binding events: a job's target_def tied a render to a subject]
         self.bindings_by_subject = defaultdict(list)
         self.provenance_fixes = {}             # ruling id -> the latest provenance_fix correcting its authority fields
+        self.bans = {}                         # sha -> its active ban event (his ✕ = delete forever + ban, 19:54 card)
+        self.lifted = {}                       # ban id -> the unban (his typed words) that lifted it
+        self._ban_ints = None                  # cached [(ban, ph int, mirror int)] for near-duplicate matching
+        self._ban_memo = {}                    # sha -> is_banned answer, cleared with _ban_ints
         for ev in self.events:
             self._take(ev)
 
@@ -667,6 +671,16 @@ class Index:
         elif t == "binding":
             self.bindings[ev["sha"]].append(ev)
             self.bindings_by_subject[ev["subject"]].append(ev)
+        elif t == "ban":
+            if ev.get("id") not in self.lifted:
+                self.bans[ev["sha"]] = ev
+                self._ban_ints, self._ban_memo = None, {}
+        elif t == "unban":
+            self.lifted[ev.get("follows")] = ev
+            cur = self.bans.get(ev.get("sha"))
+            if cur is not None and cur.get("id") == ev.get("follows"):
+                self.bans.pop(ev["sha"], None)
+                self._ban_ints, self._ban_memo = None, {}
         elif t == "provenance_fix":
             cur = self.provenance_fixes.get(ev.get("corrects"))
             if cur is None or ev.get("ts", "") >= cur.get("ts", ""):
@@ -1020,6 +1034,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         protected by an owner keep — only his selection may replace a kept picture.
     """
     idx = cached_index()
+    hit = ban_match(idx, sha=sha)   # ph_of reads the store copy
+    if hit:
+        raise Refused(ban_refusal(hit, sha))
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged by the owner — it cannot be installed")
     if not store_has(sha):
@@ -1166,6 +1183,9 @@ def install_bytes(dest, data: bytes, *, reason: str, provenance: dict | None = N
     into Textures: put `data` in the store, then `install` it at `dest` on a mechanical
     reason (refused over an owner-kept picture)."""
     mod, rel = locate(dest)
+    hit = ban_match(sha=sha256_bytes(data), data=data)
+    if hit:                      # before the store: banned bytes never re-enter it (his ✕ deleted them for ever)
+        raise Refused(ban_refusal(hit, sha256_bytes(data)))
     if dry_run:
         sha = sha256_bytes(data)
         if not store_has(sha):
@@ -1221,11 +1241,13 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     return {"status": "retired", "path": str(target), "old": old}
 
 
-# ─────────────────────────────────────────────── newest mark wins; X archives ──
+# ──────────────────────────────── newest mark wins; X = delete forever + ban ──
 # Owner card 2026-10-26 19:06 ("Newest mark wins, X archives"): his sheet marks are carried out without asking
 # again. A mark is the stamp of HIS click on a decisions row: {sheet, row, at, via, kind, ruling_id?}. A live event
-# carrying one is authorised by it when no keep of his on the displaced picture is NEWER than the mark. An ✕ on a
-# kept or in-game picture is `archive` (bytes stay in the store, restorable), never `purge`.
+# carrying one is authorised by it when no keep of his on the displaced picture is NEWER than the mark. Card
+# 2026-10-26 19:54 ("X = delete forever + ban") replaced "X archives": an ✕ is `x_delete` - game files and store
+# bytes removed, a `ban` recorded (sha + perceptual hash) that sheets, install, artpipe and art-eval enforce; only
+# `art.py unban --owner-said` lifts it. `archive` events from before 19:54 stay readable (restore still works).
 
 MARKS_WHY = "delegated: art marks"
 MARK_ROOT: Path | None = None        # where a mark's decisions file is looked up; selftests only (default: the clone)
@@ -1388,8 +1410,8 @@ def archive_events(idx: "Index | None" = None) -> list[dict]:
 
 
 def archived_shas(idx: "Index | None" = None) -> set:
-    """Pictures an ✕ moved to the art archive that are in no game file now (a restore puts one back live). A sheet ✕
-    never purges these - his card made the archive the end of an ✕ on a once-kept or in-game picture (review r11)."""
+    """Pictures an ✕ moved to the art archive (rule of 19:06-19:54) that are in no game file now (a restore puts one
+    back live). A bare `purge` refuses these; a newer ✕ of his deletes + bans them through `x_delete` (card 19:54)."""
     idx = idx or cached_index()
     out = {e["prev"] for e in archive_events(idx) if e.get("prev")} - {ev.get("sha") for ev in idx.live.values()}
     return out | {(e.get("target") or {}).get("sha") for e in idx.events
@@ -1446,11 +1468,12 @@ def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = No
 
 
 def marks_digest(since: str | None = None, idx: "Index | None" = None) -> list[str]:
-    """One digest line per newest-mark act (install over an older keep, ✕ archive, restore) since `since` (ISO),
+    """One digest line per newest-mark act (install over an older keep, ✕ delete + ban, unban, a pipeline ban hit,
+    and the older ✕ archive / restore) since `since` (ISO),
     newest first - the data source of delegation_policy.md section 5, class `art marks`."""
     out = []
     for e in (idx or cached_index()).events:
-        if e.get("type") != "live" or not str(e.get("why") or "").startswith(MARKS_WHY):
+        if e.get("type") != "live" or not str(e.get("why") or "").startswith(MARKS_WHY) or e.get("reason") == "x-delete":
             continue
         if since and (e.get("ts") or "") < since:
             continue
@@ -1463,6 +1486,7 @@ def marks_digest(since: str | None = None, idx: "Index | None" = None) -> list[s
         if e.get("reason") == "archive":
             line += f" | undo: art.py restore {str(e.get('id'))[:12]} --owner-said \"...\""
         out.append((e.get("ts") or "", line))
+    out += ban_digest(since, idx)
     return [l for _t, l in sorted(out, reverse=True)]
 
 
@@ -1516,10 +1540,10 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         raise Refused(f"{sha[:12]} is live at {len(live_paths)} slot(s): {', '.join(live_paths[:4])}"
                       f"{' …' if len(live_paths) > 4 else ''}{under} — install a replacement first")
     if not archived_ok and sha in archived_shas(idx):
-        # his ✕ on a once-kept or in-game picture archives it, never purges (owner card 2026-10-26 19:06); a later ✕
-        # (another sheet, a re-decided row) must not finish the job - only `art.py purge` on his words does
-        raise Refused(f"{sha[:12]} is in the art archive (his ✕ moved it out of the game) — a sheet ✕ never purges "
-                      f"it; `art.py purge {sha[:12]} --owner-said \"…\"` if he asks")
+        # archived under the 19:06 rule; a bare purge must not finish it - his newer ✕ goes through x_delete (card
+        # 19:54, delete forever + ban), anything else needs his words
+        raise Refused(f"{sha[:12]} is in the art archive (his ✕ moved it out of the game) — a bare purge does not "
+                      f"delete it; a newer ✕ of his deletes + bans it, or `art.py purge {sha[:12]} --owner-said \"…\"`")
     prot = idx.protected(sha)
     w = Writer({e["id"] for e in idx.events})
     if release_keep is True:
@@ -1575,6 +1599,233 @@ def unpurge(sha: str, *, owner_said: str, via: str = "art unpurge") -> dict:
     w.flush()
     _absorb([ev])
     return {"sha": sha, "reverses": pev["id"], "bytes_in_store": ev["bytes_in_store"]}
+
+
+# ─────────────────────────────────── ✕ = delete forever + ban (owner card 2026-10-26 19:54) ──
+# "I constantly mark things with x and even explicitly do for them to never return. Yet they do time and time again."
+# His ✕, enacted, removes the picture from the game and the art store and appends a `ban` {sha, ph, ph_mirror, subject,
+# mark}. A ban refuses the exact bytes and any near-duplicate (dHash within BAN_NEAR bits, either way round) at the
+# sheet builders, at install, and in the art pipeline (a matching redraw is discarded and re-rolled). Only his typed
+# words lift one (`art.py unban <sha> --owner-said "…"`). Threshold measured on the ledger 2026-10-26
+# (D:\ClaudeWork\rimmandrake\art_x_ban\returns.md): d<=10 matched 28 of 399,512 known-distinct pairs, 20 of them
+# low-information hashes; with BAN_MIN_BITS 8 (0.002%).
+
+BAN_NEAR = 10            # dHash bits; the sheet's own near-duplicate fold (art_sheet.NEAR)
+BAN_MIN_BITS = 32        # a hash with fewer set bits (tiny or flat sprite) bans by exact sha only
+
+
+def _bits(h: str | None) -> int:
+    return int(h, 16).bit_count() if h else 0
+
+
+def mirror_dhash(png_bytes: bytes) -> str:
+    """dHash of the horizontally mirrored sprite (a west facing redrawn from an east one hashes ~58 bits away)."""
+    from io import BytesIO
+    from PIL import Image, ImageOps
+    im = Image.open(BytesIO(png_bytes)).convert("RGBA")
+    b = BytesIO()
+    ImageOps.mirror(im).save(b, "PNG")
+    return dhash(b.getvalue())[0]
+
+
+def ph_of(idx: "Index", sha: str | None, data: bytes | None = None) -> str | None:
+    """The picture's stored dHash (every variant event carries `ph`), else computed from its bytes (given, or the
+    store's copy)."""
+    for v in (idx.variants.get(sha) or ()) if sha else ():
+        if v.get("ph"):
+            return v["ph"]
+    if data is None and sha and store_has(sha):
+        data = store_get(sha)
+    if data is not None:
+        try:
+            return dhash(data)[0]
+        except Exception:        # not an image: no near-duplicate test, exact sha still applies
+            return None
+    return None
+
+
+def _ban_table(idx: "Index") -> list:
+    if idx._ban_ints is None:
+        tab = []
+        for b in idx.bans.values():
+            hs = [int(h, 16) for h in (b.get("ph"), b.get("ph_mirror")) if h and _bits(h) >= BAN_MIN_BITS]
+            if hs:
+                tab.append((b, hs))
+        idx._ban_ints = tab
+    return idx._ban_ints
+
+
+def ban_match(idx: "Index | None" = None, *, sha: str | None = None, data: bytes | None = None,
+              ph: str | None = None, near: bool = True) -> dict | None:
+    """The ban that refuses this picture, or None: {ban, how: exact|near, d}. Exact sha always; a near-duplicate only
+    when the picture's hash carries >= BAN_MIN_BITS bits and it is not owner-kept (his keep of a look-alike wins over
+    an older ✕ of another copy - 78 of his same-subject keep/✕ pairs sit within d<=10, most at d=0)."""
+    idx = idx or cached_index()
+    if not idx.bans:
+        return None
+    if sha is None and data is not None:
+        sha = sha256_bytes(data)
+    if sha and sha in idx.bans:
+        return {"ban": idx.bans[sha], "how": "exact", "d": 0}
+    if not near or (sha and idx.protected(sha)):
+        return None
+    ph = ph or ph_of(idx, sha, data)
+    if not ph or _bits(ph) < BAN_MIN_BITS:
+        return None
+    v = int(ph, 16)
+    best = None
+    for b, hs in _ban_table(idx):
+        d = min((v ^ h).bit_count() for h in hs)
+        if d <= BAN_NEAR and (best is None or d < best["d"]):
+            best = {"ban": b, "how": "near", "d": d}
+    return best
+
+
+def is_banned(idx: "Index", sha: str) -> bool:
+    """ban_match(sha) as a yes/no, memoised on the index (a sheet asks it for every face of every column)."""
+    if not getattr(idx, "bans", None):     # no ban yet (or a selftest's stub index)
+        return False
+    if sha not in idx._ban_memo:
+        idx._ban_memo[sha] = ban_match(idx, sha=sha) is not None
+    return idx._ban_memo[sha]
+
+
+def ban_refusal(hit: dict, sha: str | None = None) -> str:
+    b = hit["ban"]
+    m = b.get("mark") or {}
+    what = "is" if hit["how"] == "exact" else f"is a near-duplicate (dHash {hit['d']} bits) of"
+    return (f"{(sha or '')[:12]} {what} picture {b['sha'][:12]} he ✕'d for ever ({b.get('subject') or '?'}; sheet "
+            f"{m.get('sheet')} row {m.get('row')} at {m.get('at')}) — banned; only his words lift it: "
+            f"art.py unban {b['sha'][:12]} --owner-said \"…\"")
+
+
+def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MARKS_WHY) -> dict:
+    """His ✕ enacted: every game file holding `sha` is removed through the ledger (`live` sha None, reason
+    `x-delete`, carrying the mark the art guard checks), keeps of his OLDER than the mark are released, a `ban` is
+    appended, then the store bytes are deleted under a `purge` event naming the mark and the ban. Refused when the mark
+    is not a stamped owner click listing this sha under purge, or a keep of his is NEWER than it (newest mark wins).
+    The caller (enact) guarantees no game file is left drawing nothing (archive_hole); this never checks defs."""
+    mark = {**mark, "kind": "x"}
+    bad = mark_in_sheet(mark, sha)
+    if bad:
+        raise Refused(f"✕ delete refused - {bad}")
+    idx = cached_index()
+    newer = newer_keeps(idx, sha, mark["at"])
+    if newer:
+        raise Refused(f"a keep of his ({newer[0]['id']}) is newer than this ✕ ({mark['at']}) - the newest mark wins")
+    bid = det_id("ban", sha, mark["at"])
+    if bid in idx.lifted:
+        raise Refused(f"{sha[:12]}: his words lifted the ban this ✕ made ({idx.lifted[bid].get('said')!r}) - "
+                      f"this ✕ is spent")
+    data = store_get(sha) if store_has(sha) else None
+    ban = {"type": "ban", "id": bid, "sha": sha, "ph": ph_of(idx, sha, data), "subject": subject,
+           "mark": mark, "by": "owner", "via": mark["via"], "why": why}
+    if data is not None:
+        try:
+            ban["ph_mirror"] = mirror_dhash(data)
+        except Exception:
+            pass
+    root = src_root().resolve().parent
+    w = Writer({e["id"] for e in idx.events})
+    removed_files = []
+    for (m, r), ev in list(idx.live.items()):
+        if ev.get("sha") != sha:
+            continue
+        target = root / m / "Textures" / r
+        if target.is_file():
+            if sha256_file(target) != sha:
+                raise Refused(f"{target} does not hold {sha[:12]} though the ledger says so - run art.py doctor")
+            target.unlink()
+            removed_files.append(str(target))
+        w.add({"type": "live", "mod": ev["mod"], "rel": ev["rel"], "sha": None, "prev": sha, "reason": "x-delete",
+               "mark": mark, "ban": bid, "why": why})
+    released = []
+    for k in idx.protected(sha):
+        rl = {"type": "ruling", "id": det_id("release", k["id"], sha, "mark", mark["at"]), "target": {"sha": sha},
+              "verdict": "release", "releases": k["id"], "by": "owner", "trust": "ruled", "via": mark["via"],
+              "at": mark["at"], "mark": mark, "why": why}
+        w.add(rl)
+        released.append(rl["id"])
+    w.add(ban)
+    bytes_removed = False
+    p = store_path(sha)
+    if p.is_file():
+        p.unlink()
+        bytes_removed = True
+    pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner", "via": mark["via"], "mark": mark,
+           "ban": bid, "why": why, "bytes_removed": bytes_removed}
+    un = idx.unpurged.get(sha)
+    if un:
+        pev.update(id=det_id("purge", sha, un["id"]), follows=un["id"])
+    if not idx.is_purged(sha):
+        w.add(pev)
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"status": "deleted", "sha": sha, "ban": bid, "files_removed": removed_files,
+            "bytes_removed": bytes_removed, "released": released}
+
+
+def unban(ref: str, *, owner_said: str, via: str = "art unban") -> dict:
+    """Lift his ban on his typed words only (no card, no standing ruling, no agent reason). `ref` is the banned
+    sha or a prefix. Appends `unban` naming the ban (the ban stays in history) and, when the ✕'s own purge is still
+    the picture's state, an `unpurge` of it on the same words. It returns no bytes (they were deleted): put the PNG in
+    the store again before installing it."""
+    if not owner_said or not owner_said.strip():
+        raise Refused("unban lifts his ✕ - it needs his typed words (--owner-said \"…\"); nothing else lifts a ban")
+    idx = Index()
+    hits = [s for s in idx.bans if s.startswith(ref)]
+    if len(hits) != 1:
+        raise Refused(f"{ref!r} matches {len(hits)} banned pictures")
+    b = idx.bans[hits[0]]
+    ev = {"type": "unban", "id": det_id("unban", b["id"]), "sha": b["sha"], "follows": b["id"], "by": "owner",
+          "said": owner_said.strip(), "via": via}
+    w = Writer({e["id"] for e in idx.events})
+    w.add(ev)
+    pev = idx.purged.get(b["sha"])
+    if pev and pev.get("ban") == b["id"]:
+        w.add({"type": "unpurge", "id": det_id("unpurge", b["sha"], pev["id"]), "sha": b["sha"], "by": "owner",
+               "said": owner_said.strip(), "via": via, "follows": pev["id"], "bytes_in_store": store_has(b["sha"])})
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"sha": b["sha"], "lifts": b["id"], "unpurged": bool(pev and pev.get("ban") == b["id"])}
+
+
+def ban_hit(sha: str, hit: dict, *, where: str, detail: str | None = None) -> dict:
+    """Record that a ban stopped a picture in the art pipeline (a redraw discarded and re-rolled): the digest shows it."""
+    ev = {"type": "ban_hit", "id": det_id("ban_hit", sha, hit["ban"]["id"], where), "sha": sha,
+          "ban": hit["ban"]["id"], "banned_sha": hit["ban"]["sha"], "how": hit["how"], "d": hit["d"], "where": where}
+    if detail:
+        ev["detail"] = detail
+    append(ev)
+    return ev
+
+
+def ban_digest(since: str | None = None, idx: "Index | None" = None) -> list[tuple[str, str]]:
+    """(ts, line) per ban, unban, ✕ file removal and pipeline ban hit since `since`."""
+    out = []
+    for e in (idx or cached_index()).events:
+        t = e.get("type")
+        if t not in ("ban", "unban", "ban_hit") and not (t == "live" and e.get("reason") == "x-delete"):
+            continue
+        if since and (e.get("ts") or "") < since:
+            continue
+        m = e.get("mark") or {}
+        mk = f"mark: sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}"
+        if t == "ban":
+            line = (f"art marks | deleted forever + banned (✕) {e['sha'][:12]} ({e.get('subject') or '?'}) | {mk} | "
+                    f"event {str(e.get('id'))[:12]} | undo: art.py unban {e['sha'][:12]} --owner-said \"...\"")
+        elif t == "unban":
+            line = f"art marks | ban lifted on his words {e['sha'][:12]}: {e.get('said')!r} | event {str(e.get('id'))[:12]}"
+        elif t == "ban_hit":
+            line = (f"art marks | {e.get('where')} discarded {e['sha'][:12]} - {e.get('how')} match (d={e.get('d')}) "
+                    f"of banned {str(e.get('banned_sha'))[:12]}")
+        else:
+            line = (f"art marks | ✕ removed {str(e.get('prev'))[:12]} from {e['mod'].rsplit('/', 1)[-1]}/{e['rel']} | "
+                    f"{mk} | event {str(e.get('id'))[:12]}")
+        out.append((e.get("ts") or "", line))
+    return out
 
 
 # ─────────────────────────────────────────── sheet snapshots: stable letters ──

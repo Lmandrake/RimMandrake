@@ -55,6 +55,12 @@ CANON = L.REPO_ROOT / "design" / "RimStarWars" / "canon_references"
 FACINGS = ("south", "east", "north", "west", "single")
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"   # >26 sets: lowercase continues
 NEAR = 10   # dHash bits: at or under this on every facing = near-duplicate (shown folded, never hidden)
+
+
+def _gone(idx, sha: str) -> bool:
+    """Never shown as an option: purged, or banned by his ✕ - the exact bytes or a near-duplicate of them (owner card
+    2026-10-26 19:54 "X = delete forever + ban"; artledger.ban_match)."""
+    return idx.is_purged(sha) or L.is_banned(idx, sha)
 PH_NOSELECT = "placeholder — not selectable"
 _GEO_CACHE: dict = {}
 
@@ -370,7 +376,7 @@ def all_options_ruled(cols: list[dict], idx) -> bool:
     sel = [c for c in cols if c.get("faces") and not c.get("noSelect")]
     if not sel:
         return False
-    return all(all(idx.protected(s) or idx.is_purged(s) for s in c["faces"].values()) for c in sel)
+    return all(all(idx.protected(s) or _gone(idx, s) for s in c["faces"].values()) for c in sel)
 
 
 def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> dict:
@@ -546,7 +552,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict, former=()) -> di
         if any(h and h in c.get("label", "") for h in HIDE_SETS):
             continue                     # --hide-sets: an agent-judged non-match, left off THIS sheet (nothing purged)
         was = bool(c["faces"])
-        c["faces"] = {f: s for f, s in c["faces"].items() if not idx.is_purged(s)}
+        c["faces"] = {f: s for f, s in c["faces"].items() if not _gone(idx, s)}
         if not c["faces"]:
             if was and c["kind"] == "donor" and not c.get("ours"):
                 donor_purged = True      # a donor ORIGINAL the owner purged: shown and rejected (gate req 4)
@@ -1375,7 +1381,7 @@ def name_render_cols(idx: L.Index, words, exact, defs=(), exact_any=False) -> li
     targets = job_targets() if defs else {}
     fams, meta, jobs_of, seen_ts = defaultdict(dict), {}, defaultdict(dict), {}
     for sha, vs in idx.variants.items():
-        if idx.is_purged(sha):
+        if _gone(idx, sha):
             continue
         for v in vs:
             if v.get("kind") != "artpipe":
@@ -1430,7 +1436,7 @@ def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
     exact = {e.lower() for e in exact}
     seqs, meta = defaultdict(dict), {}
     for sha, vs in idx.variants.items():
-        if idx.is_purged(sha):
+        if _gone(idx, sha):
             continue
         for v in vs:
             if v.get("kind") != "artpipe":
@@ -3025,12 +3031,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                                  "reference": True})
         if named:
             graphics.append({"res": None, "role": ROLE_TEXT[None], "cols": named, "prior_raw": None})
-        # req 14: a picture the ledger has PURGED (his reject+purge, on any sheet) is never shown as a column
+        # req 14: a picture the ledger has PURGED (his reject+purge, on any sheet) or BANNED (his ✕, exact or near-duplicate) is never shown as a column
         n_hidden = 0
         for g in graphics:
             kept_cols = []
             for c in g["cols"]:
-                live = {f: sh for f, sh in c["faces"].items() if not idx.is_purged(sh)}
+                live = {f: sh for f, sh in c["faces"].items() if not _gone(idx, sh)}
                 if c.get("winner") and len(live) < len(c["faces"]):
                     # purged but STILL what the game shows today: keep it as the IN GAME column, flagged, never pickable
                     c["purgedLive"] = True
@@ -3067,7 +3073,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         _assign_letters(allcols, mem.get("columns"), mem.get("reserved"),
                         lanes=[g["res"] or "_byname" for g in graphics for _c in g["cols"]], prev_lanes=mem.get("graphic_of"))
         kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
-        _k = [c for c in kept if not any(idx.is_purged(sh) for sh in c["faces"].values())]
+        _k = [c for c in kept if not any(_gone(idx, sh) for sh in c["faces"].values())]
         for c in kept:      # a set he picked that has since been purged is hidden from the page but its letter stays in the snapshot
             if c not in _k:
                 hidden_kept.setdefault(r["key"], []).append((c, (mem.get("graphic_of") or {}).get(c["letter"])))

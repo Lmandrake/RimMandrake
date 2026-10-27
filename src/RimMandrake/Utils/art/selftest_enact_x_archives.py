@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""selftest_enact_x_archives.py — a ✕ never PURGES a picture he once kept or that is in the game (ENACT_X_FIX_PURGE_OF_KEPT_ART).
+"""selftest_enact_x_archives.py — his ✕ on a picture he once kept or that is in the game (ENACT_X_FIX_PURGE_OF_KEPT_ART).
 
-Owner card 2026-10-26 19:06 "Newest mark wins, X archives"; delegation_policy 2.3. Cases (each purged on the old enact):
-  * a picture live inside a Graphic_Random folder -> ARCHIVED (file gone, bytes kept, restorable), sibling untouched;
-  * a picture kept only by an OLDER keep of the same row (another decisions file) -> ARCHIVED, keep released, bytes kept;
-  * a picture that is the ONLY texture a def draws, with no replacement pick -> PENDING: file stays, nothing archived,
-    nothing purged, listed in the digest; it archives once a replacement is live.
+UPDATED 2026-10-26 to the owner card 19:54 "X = delete forever + ban" (it replaced 19:06 "X archives", which this test
+used to assert: bytes kept, restorable). Newest mark still wins and the game is still never left with a hole. Cases:
+  * a picture live inside a Graphic_Random folder -> DELETED (file and store bytes gone) + BANNED, sibling untouched;
+  * a picture kept only by an OLDER keep of the same row (another decisions file) -> DELETED + BANNED, keep released;
+  * a picture that is the ONLY texture a def draws, with no replacement pick -> PENDING: file stays, nothing deleted,
+    nothing banned, listed in the digest; it is deleted + banned once a replacement is live.
 Fixture under the scratch tree (never /tmp)."""
 from __future__ import annotations
 
@@ -77,28 +78,30 @@ def main():
 
         R0 = E.enact(F["decisions"], apply=False, no_deploy=True)
         P = R0["plan"]
-        planned_arch = {a["sha"] for a in P["archive"]}
+        planned_arch = {a["sha"] for a in P["x_delete"]}
         check(not P["purge"], f"the dry run plans NO purge at all (planned {[p['sha'][:8] for p in P['purge']]})")
-        check(s["fb"] in planned_arch, "(a) the picture live in a Graphic_Random folder is planned for the archive")
-        check(s["kd"] in planned_arch, "(b) the picture kept only by an older keep of the same row is planned for the archive")
+        check(s["fb"] in planned_arch, "(a) the picture live in a Graphic_Random folder is planned for ✕ delete")
+        check(s["kd"] in planned_arch, "(b) the picture kept only by an older keep of the same row is planned for ✕ delete")
         check(s["solo"] not in planned_arch and any(s["solo"][:12] in x for x in P["x_pending"]),
-              "(c) the sole texture of a def with no replacement is PENDING, not archived")
+              "(c) the sole texture of a def with no replacement is PENDING, not deleted")
         check(not any(r["sha"] == s["fb"] for r in P["retire"]), "the folder picture is not retired-and-purged")
 
         R1 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
         idx = L.Index()
-        check(R1["purged"] == 0 and not any(idx.is_purged(s[k]) for k in s), "--apply purges nothing")
-        check(not (mt / "Textures" / rels["fb"]).exists() and L.store_has(s["fb"]) and s["fb"] in L.archived_shas(idx),
-              "(a) the folder picture left the game, bytes kept, in the archive (restorable)")
+        check(R1["x_deleted"] == 2, f"--apply deletes + bans the 2 planned ✕ ({R1['x_deleted']})")
+        check(not (mt / "Textures" / rels["fb"]).exists() and not L.store_has(s["fb"]) and s["fb"] in idx.bans
+              and idx.is_purged(s["fb"]), "(a) the folder picture left the game and the store, and is banned")
         check((mt / "Textures" / rels["fa"]).exists(), "(a) the folder's other picture stays")
-        check(L.store_has(s["kd"]) and not idx.protected(s["kd"]) and not idx.is_purged(s["kd"]),
-              "(b) the older-kept picture: bytes kept, his old keep released, not purged")
+        check(not L.store_has(s["kd"]) and not idx.protected(s["kd"]) and s["kd"] in idx.bans,
+              "(b) the older-kept picture: bytes deleted, his old keep released, banned")
+        check(idx.bans[s["kd"]].get("mark", {}).get("at") == at and idx.bans[s["kd"]].get("subject") == "RM_Old"
+              and idx.bans[s["kd"]].get("ph"), "(b) the ban records his mark (click time), the subject and the hash")
         check((mt / "Textures" / rels["solo"]).is_file() and L.store_has(s["solo"]) and not idx.is_purged(s["solo"]),
               "(c) the sole texture stays in the game (no hole), is not purged")
-        check(s["solo"] not in L.archived_shas(idx), "(c) nothing was archived for it yet")
+        check(s["solo"] not in idx.bans, "(c) nothing was banned for it yet")
         out = E.report(R1)
         check("X PENDING" in out and s["solo"][:12] in out, "(c) the digest lists the pending ✕")
-        # the owner now ALSO picks a replacement (column B) in the same slot: the ✕ no longer leaves a hole -> archived
+        # the owner now ALSO picks a replacement (column B) in the same slot: the ✕ no longer leaves a hole -> deleted
         snap["rows"]["RM_Solo"]["columns"]["B"] = {"east": s["rep"]}
         snap["rows"]["RM_Solo"]["graphic_of"]["B"] = gs
         snap["rows"]["RM_Solo"]["labels"]["B"] = "render solo_v2"
@@ -107,8 +110,8 @@ def main():
         F["decisions"].write_text(json.dumps(doc))
         R2 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
         idx = L.Index()
-        check(R2["purged"] == 0 and not idx.is_purged(s["solo"]) and L.store_has(s["solo"]),
-              "with a replacement pick the old sole texture is still never purged (bytes kept)")
+        check(R2["x_deleted"] == 1 and s["solo"] in idx.bans and not L.store_has(s["solo"]),
+              "with a replacement pick the old sole texture is deleted for ever + banned")
         check(not any(s["solo"][:12] in c for c in R2["conflicts"]) and
               (mt / "Textures" / rels["solo"]).read_bytes() == L.store_get(s["rep"]),
               "the replacement landed in the slot and the ✕ raised no pending/conflict")

@@ -1797,6 +1797,50 @@ def run_gemini_worker(worker_script: Path, prompt: str, out_png: Path, reference
         return 124, out, err, time.monotonic() - started, True
 
 
+BAN_REROLLS = 2      # a render his ✕ banned is re-rolled at most this many times, then left in failed/ for a human
+
+
+def ban_failure(png: Path, job_id: str = "") -> str:
+    """'' unless the render is a picture his ✕ banned — the same bytes or a near-duplicate redraw (owner card
+    2026-10-26 19:54 "X = delete forever + ban"). A hit is logged to the art ledger (`ban_hit`, in the daily digest).
+    Fails open only when the ledger itself cannot be read (that is not his ban saying no)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "art"))
+        import artledger as _L
+        data = png.read_bytes()
+        sha = _L.sha256_bytes(data)
+        hit = _L.ban_match(sha=sha, data=data)
+    except Exception:                                   # noqa: BLE001
+        return ""
+    if not hit:
+        return ""
+    try:
+        _L.ban_hit(sha, hit, where="artpipe", detail=job_id)
+    except Exception:                                   # noqa: BLE001
+        pass
+    return _L.ban_refusal(hit, sha)
+
+
+def ban_reroll(failed_job: Path, job_id: str, pending_dir: Path) -> str:
+    """Refile a job whose render was banned as `<base>_ban<n>` in pending/ (n <= BAN_REROLLS); '' when the budget is
+    spent or the refile failed, else the new id."""
+    try:
+        job = json.loads(failed_job.read_text())
+    except (OSError, ValueError):
+        return ""
+    n = int(job.get("ban_reroll") or 0) + 1
+    if n > BAN_REROLLS:
+        return ""
+    base = job_id.rsplit("_ban", 1)[0] if job.get("ban_reroll") else job_id
+    new_id = f"{base}_ban{n}"
+    job.update(id=new_id, ban_reroll=n, ban_reroll_of=job_id)
+    dest = pending_dir / f"{new_id}.json"
+    if dest.exists():
+        return ""
+    common.atomic_write_json(dest, job)
+    return new_id
+
+
 def placeholder_failure(png: Path) -> str:
     """'' for real art; else why the render is a geometric placeholder (art/placeholder_detect.py). A picture the
     detector cannot read is left to the validator below (which rejects unreadable files itself)."""
@@ -2116,6 +2160,13 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     ph = placeholder_failure(out_png)
     if ph:
         result.update(status="failed", worker_status="placeholder_output", validator="PLACEHOLDER", note=ph[:300])
+        return result
+
+    # Owner card 2026-10-26 19:54 "X = delete forever + ban": a redraw that is (near-)identical to a picture he ✕'d is
+    # discarded here — finalize_job re-rolls it (BAN_REROLLS) and the hit is logged to the art ledger.
+    bf = ban_failure(out_png, str(job.get("id") or ""))
+    if bf:
+        result.update(status="failed", worker_status="banned_output", validator="BANNED", note=bf[:300])
         return result
 
     # Geometry/alpha passed (or had no reference). Now the legibility gate —
@@ -2826,6 +2877,16 @@ def finalize_job(job_path: Path, result: dict, done_dir: Path, failed_dir: Path,
             console_obj.warn(f"{job_id}'s active/ file disappeared before it could be "
                              f"filed to {target_dir.name}/ — manifest written, job file "
                              f"itself is now unaccounted for (run --repair)")
+
+    if result.get("worker_status") == "banned_output" and dest_job.is_file():
+        new_id = ban_reroll(dest_job, job_id, failed_dir.parent / "pending")
+        msg = (f"{job_id}: render matches a picture his ✕ banned — discarded, re-rolled as {new_id}" if new_id else
+               f"{job_id}: render matches a picture his ✕ banned — discarded; re-roll budget ({BAN_REROLLS}) spent, "
+               f"left in failed/")
+        if console_obj is not None:
+            console_obj.note(msg)
+        else:
+            print(msg, file=sys.stderr)
 
     stray = active_dir / f"{job_id}.worker_last_message.json"
     if stray.is_file():

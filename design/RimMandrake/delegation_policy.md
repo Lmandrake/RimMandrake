@@ -84,8 +84,10 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    purged from the art store and a permanent ban record (exact sha + near-duplicates by visual similarity) is
    checked by every sheet build, every install and every redraw, so an ✕'d picture never returns by any route.
    Each act is listed in his daily digest. Tooling: `art.py enact` applies newest-mark-wins (each act carries his
-   mark: sheet, row, click time, `why "delegated: art marks"`); the ✕ ban is being built
-   (`ART_X_BUILD_DELETE_FOREVER_BAN`). Leftover pictures that he did NOT ✕ follow the cleanup ruling (§2.2:
+   mark: sheet, row, click time, `why "delegated: art marks"`); the ✕ is carried out by `artledger.x_delete`
+   (file + store bytes removed, `ban` recorded) and the ban is enforced by `art_sheet` / `sheet_to_artifact`,
+   `install` / `install_bytes`, artpipe (discard + re-roll, `ban_hit`) and art_eval (regen); only
+   `art.py unban <sha> --owner-said "…"` lifts it (`ART_X_BUILD_DELETE_FOREVER_BAN`). Leftover pictures that he did NOT ✕ follow the cleanup ruling (§2.2:
    archive, then delete) — only his ✕ means forever.
    Any other replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
@@ -146,8 +148,8 @@ Once a day, at his first sitting (BENCH) or with the nightly run (FOUNDRY), the 
 since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
 from the ledger (`why` starting `delegated:`) and `git log --grep '^Delegated:'`; a zero-line digest is checked
 against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
-a digest line: each newest-mark enactment and ✕-archive (§2.3, class `art marks`; `art.py marks-digest` lists
-them), each bridge take, deploy and
+a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and redraw a ban discarded (§2.3, class
+`art marks`; `art.py marks-digest` lists them), each bridge take, deploy and
 restart (§2.6, class `bridge idle`), each leftover deleted with its archive or bundle path (§2.2, class
 `leftovers`) — logged `--why "delegated: <class>"` so the digest finds it.
 

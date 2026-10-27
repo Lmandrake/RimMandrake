@@ -127,7 +127,7 @@ def main():
     check(not L.cached_index().protected(B), "the older keep on the archived picture is released")
     check(B in L.archived_shas() and refused(L.purge, B, owner_said="reject+purge on sheet sy", via=sheet("sy", T5, [B]),
                                              release_from_sheet=("sheets/sy.json", "RM_Nuna")) is not None
-          and L.store_has(B), "a later sheet ✕ (another stamp) never purges an archived picture")
+          and L.store_has(B), "a bare purge (another stamp) never deletes an archived picture (a newer ✕ goes through x_delete)")
     check(refused(L.restore, "sx", ) is not None, "restore refuses without his words")
     ar = [e for e in L.archive_events()][-1]
     rr = L.restore(ar["id"][:10], owner_said="put it back")

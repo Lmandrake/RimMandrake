@@ -201,11 +201,14 @@ def main():
         check(tree_digest(F["root"]) == before, "dry run changes nothing on disk (ledger, store, src, queue)")
         check(R["ingest_new"] > 0, f"dry run counts the rulings ingest would add ({R['ingest_new']})")
         check(len(P["install"]) == 1 and P["install"][0]["rel"].endswith("RM_Foo_east.png"), "plans the RM_Foo pick B install")
-        check(not P["purge"] and any(a["sha"] == shas["rej"] for a in P["archive"]), "plans NO purge: the free ✕ is archived too (owner ruling: an X never purges)")
+        # UPDATED 2026-10-26 to the owner card 19:54 "X = delete forever + ban" (it replaced 19:06 "an X never purges",
+        # under which these three ✕ were ARCHIVED): the same three ✕ are now planned for ✕ DELETE, none as a bare purge.
+        check(not P["purge"] and any(a["sha"] == shas["rej"] for a in P["x_delete"]),
+              "plans NO bare purge: the free ✕ is a ✕ DELETE (delete forever + ban)")
         conf = "\n".join(R["conflicts"])
-        arch = {a["sha"] for a in P["archive"]}
-        check(shas["livex"] in arch and shas["kept"] in arch and shas["livex"][:12] not in conf,
-              "a ✕ on a live or owner-kept picture is ARCHIVED (newest mark wins), not a conflict, not a purge")
+        xdel = {a["sha"] for a in P["x_delete"]}
+        check(shas["livex"] in xdel and shas["kept"] in xdel and shas["livex"][:12] not in conf,
+              "a ✕ on a live or owner-kept picture is a ✕ DELETE (newest mark wins), not a conflict")
         check(len(P["queue"]) == 1 and P["queue"][0]["row"] == "RM_Redo", "plans one redraw (RM_Redo)")
         check(P["held"] == ["RM_HeldVine"], "--hold vine skips the held row in every step")
         check(any(t.startswith("RM_Note: note not enacted") for t in R["todo"]), "a note that is no redo is a TODO, not a guess")
@@ -216,7 +219,7 @@ def main():
         check(not cuts["RM_Shared"]["deleted"] and "RM_Shared" in cuts["RM_Shared"]["kept"],
               "a def another biome still uses is kept (sheet cut is scoped to its biome)")
         check(cuts["RM_Cut"]["tex_retire"] == ["Things/Pawn/Animal/RM_Cut/RM_Cut"], "cut retires the def's texture")
-        check("TODO (1)" in out and "archive    3 picture" in out, "report lists the TODOs and the planned archives")
+        check("TODO (1)" in out and "✕ delete   3 picture" in out, "report lists the TODOs and the planned ✕ deletes")
 
         # a LATER owner keep of the live picture on this row (another decisions file) must not be undone by re-enacting this one
         evf = F["led"] / "events" / "TEST.jsonl"
@@ -296,9 +299,11 @@ def main():
         R = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         check(R["ok"], "apply succeeds")
         check(foo.read_bytes() == L.store_get(shas["new"]), "pick B is installed in the live slot")
-        check(L.store_has(shas["rej"]) and shas["rej"] in L.archived_shas() and not L.Index().is_purged(shas["rej"]) and L.store_has(shas["livex"]) and L.store_has(shas["kept"]),
-              "every ✕ (free, live, kept) is archived, bytes stay in the store, nothing purged (owner ruling: an X never purges)")
-        check(R["archived"] == 3 and not L.Index().is_purged(shas["livex"]) and not L.Index().protected(shas["kept"])
+        ix = L.Index()
+        check(not any(L.store_has(shas[k]) for k in ("rej", "livex", "kept"))
+              and all(ix.is_purged(shas[k]) and shas[k] in ix.bans for k in ("rej", "livex", "kept")),
+              "every ✕ (free, live, kept) deletes the bytes from the store and bans them (owner card 2026-10-26 19:54)")
+        check(R["x_deleted"] == 3 and not L.Index().protected(shas["kept"])
               and not L.Index().live_anywhere(shas["livex"]),
               "the ✕ on the live picture took it out of the game and the ✕ on the kept one released its keep")
         bt, rt, pt = biomes.read_text(), races.read_text(), patch.read_text()

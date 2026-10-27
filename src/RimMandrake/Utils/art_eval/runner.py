@@ -257,6 +257,33 @@ def ask_validated(ask, validate, retry_note):
 
 
 # ------------------------------------------------------------------ the pipeline for one subject
+def banned_candidates(spec: dict) -> list:
+    """[(panel, refusal)] for every candidate picture his ✕ banned — the same bytes or a near-duplicate redraw (owner
+    card 2026-10-26 19:54 "X = delete forever + ban"). Each hit is logged to the art ledger (`ban_hit`, daily digest).
+    [] when the ledger cannot be read."""
+    try:
+        sys.path.insert(0, str(HERE.parent / "art"))
+        import artledger as L
+        idx = L.cached_index()
+        if not idx.bans:
+            return []
+        out = []
+        for panel, f in C.source_files(spec).items():
+            data = Path(f).read_bytes()
+            sha = L.sha256_bytes(data)
+            hit = L.ban_match(idx, sha=sha, data=data)
+            if hit:
+                L.ban_hit(sha, hit, where="art_eval", detail=f"{spec.get('subject')} {panel}")
+                out.append((panel, L.ban_refusal(hit, sha)))
+        return out
+    except Exception:                                   # noqa: BLE001
+        return []
+
+
+BANNED_FIX = ("Draw a clearly different design: the owner deleted and banned a picture this redraw nearly repeats "
+              "— change the silhouette, pose and palette, not just the details.")
+
+
 def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings: dict, living: dict,
              rounds: dict) -> dict:
     tpl = P.load_template(spec["template"])
@@ -291,6 +318,17 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
         return rec
     if card.get("depends_on") and living_dec is None:
         rec["reasons"].append(f"living {card['depends_on']} not decided in this run or the log — judged on its own")
+
+    # 0. his ✕ ban: a candidate that repeats a banned picture is discarded before any model call and re-rolled
+    banned = banned_candidates(spec)
+    if banned:
+        decision, rnd = P.cap_regen("REGEN", rounds.get(card["subject"], 0), settings["max_regen_rounds"])
+        rec["decision"], rec["round"] = decision, rnd
+        rec["reasons"] += [f"banned by his ✕: {panel} — {why}" for panel, why in banned]
+        if decision == "REGEN":
+            fs = [{"code": "BANNED_REDRAW", "fix": BANNED_FIX}]
+            rec["regen"] = {"findings": ["BANNED_REDRAW"], "request": P.deterministic_regen_prompt(card, fs)}
+        return rec
 
     # 1. Opus first pass
     base = opus_prompt(card, tpl, items, policy, card_dir)

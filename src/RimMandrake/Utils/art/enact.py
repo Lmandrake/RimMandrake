@@ -32,10 +32,12 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               the def half — an art job alone never "follows" it. A catch row (RM_XCatch) is not filed while RM_X is
               being redrawn; catch jobs drawn before RM_X was settled are withdrawn (artpipe _withdrawn/), and once
               RM_X is picked the catch is filed with RM_X's picture as its reference.
-  4 PURGE     every ✕ except protected pictures — live in a mod, owner-kept, or the row's own pick/variants.
-              Those are listed as CONFLICTS, one line each, and are never deleted. A ✕ on a picture of the row's OWN
-              pick/variant column wins for that picture (it is neither installed nor kept), and a keep that this same
-              row of this same file recorded is released by the purge rather than blocking it.
+  4 ✕ DELETE  every ✕ = delete for ever + ban (owner card 2026-10-26 19:54): the picture leaves every game file and the
+              art store and a ban refuses its bytes and near-duplicates on every later sheet, install and redraw
+              (artledger.x_delete; `art.py unban --owner-said` lifts it). The newest mark wins: a keep of his NEWER
+              than the ✕ is a CONFLICT; an in-game picture whose removal would leave a def drawing nothing is X
+              PENDING until a replacement is in. A ✕ on the row's OWN pick/variant column wins for that picture,
+              and a keep this same row of this same file recorded is released rather than blocking it.
   5 CUT       a row whose decision is `cut`, or `hold` with a note saying cut / not needed, is removed from
               THIS sheet's biome only (inline BiomeDef rosters and every PatchOperation whose own xpath targets
               it, read as XML elements). Our own defs are then deleted with the products/eggs/meat they alone
@@ -243,8 +245,8 @@ def foreign_only(src, names: set, texpath: str) -> bool:
 def archive_hole(idx, src, sha: str, installs=()) -> list[str]:
     """The game files an archive of `sha` would leave drawing NOTHING: a file some def of ours names as a texPath (or whose
     Graphic_Random folder is named) that this picture fills alone, with no installed pick landing on it and no other
-    picture left in the folder. An X archives only once a replacement exists (ENACT_X_FIX_PURGE_OF_KEPT_ART); until then
-    it is pending, never a hole in the game and never a purge."""
+    picture left in the folder. An X deletes + bans a live picture only once a replacement exists
+    (ENACT_X_FIX_PURGE_OF_KEPT_ART); until then it is pending, never a hole in the game."""
     held = {(i["mod"], i["rel"]) for i in installs}
     holes = []
     for (m, r), ev in idx.live.items():
@@ -1075,11 +1077,11 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     src = L.src_root()
     done_ev = {(e.get("sheet"), e.get("row"), e.get("note")): e.get("evidence") or "" for e in idx.events
                if e.get("type") == "enact_done"}
-    x_done, x_archived = marked_x(idx), L.archived_shas(idx)     # computed once, not per ✕
+    x_done = marked_x(idx)     # computed once, not per ✕
     done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "retire": [], "blocked": [], "withdraw": [],
-         "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "archive": [], "x_pending": [], "archived_already": 0, "purged_already": 0,
+         "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "x_delete": [], "x_pending": [], "x_done_already": 0, "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
          "ignored_variants": [], "legacy_unconfirmed": [], "asks": [], "lane_resolved": []}
     held_back: set = set()      # (row, letter) picks with a facing refused: no facing of them is installed
@@ -1718,15 +1720,28 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                  f"{nt[:110]!r} (`--mark-done {row}` once the def edit is done)")
         # ── 4 purge
         for sha in v.get("purge") or []:
-            if idx.is_purged(sha):
-                P["purged_already"] += 1
-                continue
-            if (sha, I.ts(v.get("decidedAt") or v.get("at"))) in x_done or sha in x_archived:
-                # this very ✕ already archived it (a re-run never re-archives what he restored), or any ✕ did and it is
-                # still out of the game: a later ✕ never turns an archive into a purge (review r11)
-                P["archived_already"] += 1
+            # ✕ = DELETE FOREVER + BAN (owner card 2026-10-26 19:54, replacing "X archives"): his ✕ removes the picture
+            # from the game and the store and bans its bytes and near-duplicates (artledger.x_delete). Done once per
+            # picture; a ban his words lifted (art.py unban) is never re-imposed by a ✕ older than those words
+            x_raw = v.get("decidedAt") or v.get("at")
+            x_at = I.ts(x_raw)
+            lifted = [u for u in idx.lifted.values() if u.get("sha") == sha
+                      and (not x_at or (I.ts(u.get("ts")) is not None and I.ts(u.get("ts")) >= x_at))]
+            if sha in idx.bans or lifted:
+                P["x_done_already"] += 1
                 continue
             live = idx.live_anywhere(sha)
+            if live and (sha, x_at) in x_done:
+                P["x_done_already"] += 1     # this ✕ archived it (19:06 rule) and his words restored it since
+                continue
+            if idx.is_purged(sha):
+                if x_at:     # purged before bans existed: the ✕ still bans it, or its redraws come back (route c)
+                    P["x_delete"].append({"row": row, "sha": sha, "slots": [],
+                                          "mark": {"sheet": sheet, "row": row, "at": x_raw,
+                                                   "via": I.rel_via(decisions), "kind": "x"}})
+                else:
+                    P["purged_already"] += 1
+                continue
             kept_all = idx.protected(sha)
             # a keep minted by THIS row of THIS file (pick or default variant) does not protect a picture the same row
             # ✕'d: ingest used to record both (fixed there; this releases the keeps it already wrote)
@@ -1736,7 +1751,6 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             # the same age rule holds for an older keep by THIS row from ANOTHER decisions file (as keep_blocks_pick's
             # pick side does); his ✕ is dated by his click (decidedAt), not the row's last touch
             # (ENACT_PURGE_FIX_ALIAS_ASYMMETRY, ENACT_KEEP_AGE_FIX_DECIDED_AT)
-            x_at = I.ts(v.get("decidedAt") or v.get("at"))
 
             def _older_own(k):
                 krow = (k.get("target") or {}).get("row")
@@ -1751,19 +1765,19 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             # a picture kept only by an OLDER keep of this row/alias was kept by him all the same: archive, never purge
             older_kept = [k for k in kept_all if _older_own(k)]
             if (live or kept or older_kept) and sha not in protect_here and x_at:
-                # NEWEST MARK WINS, X ARCHIVES (owner card 2026-10-26 19:06): his ✕ on a picture he once kept or that is
-                # in the game archives it (bytes kept, one-command restore) unless a keep of his is NEWER than the ✕
+                # NEWEST MARK WINS (owner card 2026-10-26 19:06): his ✕ on a picture he once kept or that is in the game
+                # deletes it for ever + bans it (19:54) unless a keep of his is NEWER than the ✕
                 own = {k["id"] for k in kept_all if (k.get("target") or {}).get("row") == row and k.get("via") == I.rel_via(decisions)}
                 newer = L.newer_keeps(idx, sha, v.get("decidedAt") or v.get("at"), ignore=own)
                 if newer:
-                    P["conflicts"].append(f"{row}: ✕ {sha[:12]} not archived - a keep of his is newer "
+                    P["conflicts"].append(f"{row}: ✕ {sha[:12]} not deleted - a keep of his is newer "
                                           f"({newer[0]['id']}); the newest mark wins")
                 elif live and archive_hole(idx, src, sha, P["install"]):
-                    P["x_pending"].append(f"{row}: ✕ {sha[:12]} pending - archiving it would leave "
+                    P["x_pending"].append(f"{row}: ✕ {sha[:12]} pending - deleting it would leave "
                                           f"{archive_hole(idx, src, sha, P['install'])[0]} with no texture; "
-                                          f"it archives once a replacement pick is in the game")
+                                          f"it is deleted + banned once a replacement pick is in the game")
                 else:
-                    P["archive"].append({"row": row, "sha": sha, "slots": live,
+                    P["x_delete"].append({"row": row, "sha": sha, "slots": live,
                                          "mark": {"sheet": sheet, "row": row, "at": v.get("decidedAt") or v.get("at"),
                                                   "via": I.rel_via(decisions), "kind": "x"}})
                 continue
@@ -1773,14 +1787,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                        "it is this row's own pick/variant")
                 P["conflicts"].append(f"{row}: ✕ {sha[:12]} not purged — {why}")
                 continue
-            # neither live nor kept: still no purge (owner ruling, "an X never purges, without exception"): the bytes go
-            # to the art archive through the same marked act (store kept, `art.py restore`), his own just-minted keep released
+            # neither live nor kept: the same marked act, delete for ever + ban (his own just-minted keep released)
             if x_at:
-                P["archive"].append({"row": row, "sha": sha, "slots": [],
+                P["x_delete"].append({"row": row, "sha": sha, "slots": [],
                                      "mark": {"sheet": sheet, "row": row, "at": v.get("decidedAt") or v.get("at"),
                                               "via": I.rel_via(decisions), "kind": "x"}})
             else:
-                P["conflicts"].append(f"{row}: ✕ {sha[:12]} not archived - the row carries no click time")
+                P["conflicts"].append(f"{row}: ✕ {sha[:12]} not deleted - the row carries no click time")
     # two picks bound for ONE file with different pictures (rows whose defs once shared a texPath — the bridge
     # anchors' Heavy/Steel/Timber of a look): installing both keeps only whichever runs last, so his other picks
     # vanish without a word. None of them is installed; each is listed (bug 2026-10-24, bridge_art_redraw)
@@ -2081,7 +2094,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     idx = L.Index()
     P = build_plan(decisions, holds, idx, stale=ing.get("stale_rows"))
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
-         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "archived": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
+         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "x_deleted": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
@@ -2274,23 +2287,21 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 R["refiled"] += 1
             except OSError as e:
                 R["conflicts"].append(f"{rf['row']}: re-file of {rf['job']['id']} failed — {e}")
-        # 4a archive (his ✕ on a kept or in-game picture, newest mark wins): never a purge
-        for ar in P.get("archive", []):
-            slots = [(m, r) for (m, r), e in L.Index().live.items() if e.get("sha") == ar["sha"]]
-            hole = archive_hole(L.Index(), src, ar["sha"]) if slots else []
+        # 4a ✕ = delete for ever + ban (owner card 2026-10-26 19:54; newest mark wins; never a hole in the game)
+        for ar in P.get("x_delete", []):
+            idx_now = L.Index()
+            slots = [(m, r) for (m, r), e in idx_now.live.items() if e.get("sha") == ar["sha"]]
+            hole = archive_hole(idx_now, src, ar["sha"]) if slots else []
             if hole:        # the replacement did not land (installs ran first): hold, never a hole in the game
-                R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} pending - archiving it would leave {hole[0]} "
-                                      f"with no texture; it archives once a replacement is in the game")
+                R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} pending - deleting it would leave {hole[0]} "
+                                      f"with no texture; it is deleted + banned once a replacement is in the game")
                 continue
             try:
-                if not slots:        # kept but not in a game file: the store is the archive; the ✕ releases the keep
-                    L.release_keeps(ar["sha"], ar["mark"])
-                for m, r in slots:
-                    L.archive(L.src_root().parent / m / "Textures" / r, mark=ar["mark"])
-                    touched_mods.add(m)
-                R["archived"] += 1
+                L.x_delete(ar["sha"], ar["mark"], subject=ar["row"])
+                touched_mods.update(m for m, _r in slots)
+                R["x_deleted"] += 1
             except L.Refused as e:
-                R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not archived - {e}")
+                R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not deleted - {e}")
         # 4 purge
         for p in P["purge"]:
             try:
@@ -2431,8 +2442,8 @@ def report(R: dict) -> str:
     L_.append(f"AWAITING OWNER PICK ({len(P['awaiting_pick'])}) — rendered for his note, neither installed nor rejected:")
     L_ += [f"  {a}" for a in P["awaiting_pick"]] or ["  none"]
     L_.append(f"  purge      {R['purged']} picture(s); {P['purged_already']} already purged")
-    L_.append(f"  archive    {len(P['archive'])} picture(s) ✕'d while kept or in the game; {P['archived_already']} already archived (newest mark wins; bytes kept, art.py restore)")
-    L_.append(f"  X PENDING  {len(P['x_pending'])} ✕ held until a replacement exists (nothing archived, nothing purged):")
+    L_.append(f"  ✕ delete   {len(P['x_delete'])} picture(s) ✕'d: deleted for ever + banned (newest mark wins; art.py unban --owner-said lifts); {P['x_done_already']} already done")
+    L_.append(f"  X PENDING  {len(P['x_pending'])} ✕ held until a replacement exists (nothing deleted yet):")
     L_ += [f"     {x}" for x in P["x_pending"]]
     L_.append(f"  cut        {R['cut_rows']} row(s), {R['defs_deleted']} def(s) deleted, {R['textures_retired']} texture(s) retired")
     for c in P["cuts"]:

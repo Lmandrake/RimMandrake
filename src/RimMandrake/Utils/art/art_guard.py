@@ -91,7 +91,7 @@ def delegated_verdict(ev: dict):
     return p if p.is_file() else None
 
 
-ENFORCE_MARKS_FROM = "2026-10-26T19:06:00-0700"      # owner card: newest mark wins, X archives
+ENFORCE_MARKS_FROM = "2026-10-26T19:06:00-0700"      # owner card: newest mark wins (X = delete + ban since 19:54)
 
 
 def _mark_refusal(ev: dict, idx: L.Index) -> str | None:
@@ -121,6 +121,8 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
     deleg = delegated_verdict(ev) is not None
     if ev.get("reason") == "archive" and ev.get("sha") is None and ev.get("mark"):
         return _mark_refusal(ev, idx)                  # his ✕ (newest mark) moved the picture to the art archive
+    if ev.get("reason") == "x-delete" and ev.get("sha") is None and ev.get("mark"):
+        return _mark_refusal(ev, idx)                  # his ✕ = delete forever + ban (owner card 2026-10-26 19:54)
     if ev.get("reason") == "restore-archive" and ev.get("restores"):
         a = next((e for e in idx.events if e.get("id") == ev["restores"]), None)
         if not a or a.get("reason") != "archive" or a.get("prev") != ev.get("sha") \

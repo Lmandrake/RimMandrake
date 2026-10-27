@@ -49,6 +49,8 @@
     art.py restore   <archive-event|sha> (--owner-said "..." | --by-card "q → option" | --per-ruling REF)
                                             one-command undo of an archive: the same bytes back at the same slot
     art.py marks-digest [--since ISO]       one line per newest-mark act (digest data source, class `art marks`)
+    art.py unban     <sha> --owner-said "..."   lift the ban his ✕ made (delete forever + ban, card 2026-10-26 19:54)
+    art.py bans      [--check <png>]        list banned pictures; test a file against the bans (exact + near-duplicate)
     art.py rotate    <SEAT> (--before ISO | --keep-mb N) [--apply]
                                             move a byte-exact PREFIX of events/<SEAT>.jsonl into write-once
                                             events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl; dry run by default.
@@ -391,6 +393,30 @@ def cmd_restore(a):
     return 0
 
 
+def cmd_unban(a):
+    try:
+        r = L.unban(a.sha, owner_said=a.owner_said)
+    except L.Refused as e:
+        print(f"REFUSED: {e}")
+        return 2
+    print(json.dumps(r))
+    return 0
+
+
+def cmd_bans(a):
+    idx = L.Index()
+    for sha, b in sorted(idx.bans.items(), key=lambda kv: kv[1].get("ts") or ""):
+        m = b.get("mark") or {}
+        print(f"{sha[:12]}  {b.get('subject') or '?':28}  sheet {m.get('sheet')} row {m.get('row')} at {m.get('at')}")
+    print(f"{len(idx.bans)} banned picture(s); {len(idx.lifted)} ban(s) lifted on his words")
+    if a.check:
+        data = Path(a.check).read_bytes()
+        hit = L.ban_match(idx, data=data)
+        print(L.ban_refusal(hit, L.sha256_bytes(data)) if hit else f"{a.check}: not banned")
+        return 2 if hit else 0
+    return 0
+
+
 def cmd_marks_digest(a):
     lines = L.marks_digest(a.since)
     for ln in lines:
@@ -488,6 +514,10 @@ def main(argv=None):
     p = sp.add_parser("restore"); p.add_argument("ref"); p.add_argument("--owner-said")
     p.add_argument("--by-card"); p.add_argument("--per-ruling")
     p = sp.add_parser("marks-digest"); p.add_argument("--since")
+    p = sp.add_parser("unban", help="lift a ban his ✕ made - his typed words only"); p.add_argument("sha")
+    p.add_argument("--owner-said", default="")
+    p = sp.add_parser("bans", help="list banned pictures; --check <png> tests a file against them")
+    p.add_argument("--check")
     p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
@@ -516,7 +546,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "unban": cmd_unban, "bans": cmd_bans, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

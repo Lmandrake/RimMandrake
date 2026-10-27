@@ -447,7 +447,8 @@ def main():
             cpath.write_text(json.dumps(c))
             r, inst = plan(dict({"decision": "B", "purge": [xsha]}, **(rec or {})))
             got = {i["rel"] for i in inst if i["letter"] == "B"}
-            purged = any(x["sha"] == xsha for x in r["plan"]["purge"])
+            # ✕ carried out = a ✕ DELETE (owner card 2026-10-26 19:54 "X = delete forever + ban"; was a bare purge)
+            purged = any(x["sha"] == xsha for x in r["plan"]["purge"] + r["plan"].get("x_delete", []))
             return got, purged, r["conflicts"]
         L.Index.__init__, L.Index.protected = idx_init, prot16
         try:
@@ -471,16 +472,21 @@ def main():
             census0 = json.dumps(c_)
             got, purged, cf = run16("RM_Kite", old)
             census0 = census0_real
-            check(not got and not purged, f"16 ...RM_Kite a separate census row: its older keep still blocks ({got} / {purged})")
+            # UPDATED 2026-10-26: an OLDER keep from another row still blocks the pick, but no longer his ✕ — the newest
+            # mark wins (owner card 19:06, canon art_marks_newest_wins_delegated; the ✕ was archived then, deleted +
+            # banned since 19:54), so the ✕ is carried out.
+            check(not got and purged, f"16 ...RM_Kite a separate census row: its older keep still blocks the pick; "
+                                      f"his newer ✕ wins ({got} / {purged})")
             got, purged, cf = run16("RUT_Kite", old, twins=[{"defName": "RUT_Kite", "relation": "tier_twin_same_stem"}])
             check(got == {EAST, NORTH} and purged,
                   f"16 an older keep by a census tier_twin_same_stem twin: installs ({got} / {purged} / {cf})")
             got, purged, cf = run16("RUT_Kite", old,
                                     twins=[{"defName": "RUT_Kite", "relation": "tier_twin_shared_texpath"}])
-            check(not got and not purged, f"16 ...a shared-texPath twin is another creature: blocks ({got} / {purged})")
+            check(not got and purged, f"16 ...a shared-texPath twin is another creature: blocks the pick; his newer ✕ "
+                                      f"wins ({got} / {purged})")
             got, purged, cf = run16("RSW_Other", old)
-            check(not got and not purged and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
-                  f"16 an older keep by a real other row still blocks pick and ✕ ({got} / {purged} / {cf})")
+            check(not got and purged and any(c.startswith("RSW_Kite: pick B not installed at all") for c in cf),
+                  f"16 an older keep by a real other row still blocks the pick; his newer ✕ wins ({got} / {purged} / {cf})")
             # 19 the pick's age is his CLICK (decidedAt), not the row's last touch (`at` moves with a later note edit):
             # a keep landing between the click and the note edit is NEWER than the pick and blocks it
             # (ENACT_KEEP_AGE_FIX_DECIDED_AT); the control, with the edit stamp equal to the click, agrees

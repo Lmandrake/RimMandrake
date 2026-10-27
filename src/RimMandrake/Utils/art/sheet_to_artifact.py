@@ -172,28 +172,46 @@ class Images:
         return downgraded
 
 
-def build_rows(items: list, cfg: dict, decisions: dict, imgs: Images) -> list[dict]:
+def ban_checker():
+    """sha -> True when his ✕ banned it (exact bytes or a near-duplicate; owner card 2026-10-26 19:54)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import artledger as L
+    idx = L.cached_index()
+    return lambda sha: L.is_banned(idx, sha)
+
+
+def build_rows(items: list, cfg: dict, decisions: dict, imgs: Images, banned=None) -> list[dict]:
+    """`banned(sha)` (ban_checker): a banned picture is never offered. Its face leaves a non-game column (a column left
+    with no face leaves the lane); an IN GAME column keeps it, flagged purgedLive (never pickable). Each row lists what
+    it withheld under `withheld`, and main prints the total: nothing is dropped silently."""
     letters_ok = {o["key"] for o in cfg.get("options") or [] if isinstance(o, dict) and o.get("key")}
     rows = []
     for it in items:
         thumbs, fulls = it.get("thumbs") or {}, it.get("fulls") or {}
-        lanes = []
+        lanes, withheld = [], []
         for g in it.get("graphics") or []:
             slot = g.get("slot") or {}
             cols = []
             for c in g.get("cols") or []:
-                faces = []
+                faces, gone = [], []
                 for face, sha in (c.get("faces") or {}).items():
+                    if banned and banned(sha):
+                        gone.append(sha)
+                        if not c.get("winner"):
+                            withheld.append(f"{c.get('letter') or '?'}/{face} {sha[:12]}")
+                            continue
                     t, f = thumbs.get(sha), fulls.get(sha)
                     if not (t or f):
                         raise SystemExit(f"FAIL: row {it.get('id')} set {c.get('letter')} face {face}: no picture "
                                          f"for {sha[:12]} in ITEMS — the sheet itself is broken")
                     faces.append({"face": face, "thumb": imgs.thumb(t or f), "full": imgs.sprite(f or t)})
+                if not faces:
+                    continue
                 sc = c.get("scale") or {}
                 cols.append({
                     "L": c.get("letter") or "", "label": c.get("short") or c.get("label") or "",
                     "detail": c.get("detail") or "", "kind": c.get("kind") or "", "winner": bool(c.get("winner")),
-                    "setId": c.get("setId"), "noSelect": bool(c.get("noSelect")), "purgedLive": bool(c.get("purgedLive")),
+                    "setId": c.get("setId"), "noSelect": bool(c.get("noSelect")), "purgedLive": bool(c.get("purgedLive") or gone),
                     "ppc": c.get("ppc"), "srcPx": c.get("srcPx"), "faces": faces,
                     "panel": imgs.panel(sc["img"]) if sc.get("img") else None, "panelFace": sc.get("face"),
                 })
@@ -215,6 +233,7 @@ def build_rows(items: list, cfg: dict, decisions: dict, imgs: Images) -> list[di
             "scaleStatus": scale.get("status") or "", "cells": scale.get("cells"), "footprint": scale.get("footprint"),
             "lanes": lanes, "rec": decisions.get(it["id"]) if isinstance(decisions.get(it["id"]), dict) else None,
             "letters": sorted({c["L"] for ln in lanes for c in ln["cols"] if c["L"] in letters_ok}),
+            "withheld": withheld,
         })
     return rows
 
@@ -366,7 +385,7 @@ def main(argv=None) -> int:
         shutil.rmtree(out / "img", ignore_errors=True)
     out.mkdir(parents=True, exist_ok=True)
     imgs = Images(sheet.parent, out)
-    rows = build_rows(items, cfg, ddoc.get("decisions") or {}, imgs)
+    rows = build_rows(items, cfg, ddoc.get("decisions") or {}, imgs, banned=ban_checker())
     questions, qspec = None, {}
     try:
         if a.questions:
@@ -416,6 +435,10 @@ def main(argv=None) -> int:
               f"not shown: {', '.join(sorted({it['id'] for it in items} - {r['id'] for r in rows})) or 'none'})")
     print(f"rows {len(rows)} · lanes {nlanes} · pictures {len(imgs.published())} · total {total / MB:.2f} MiB "
           f"(cap {budget / MB:.1f}) · sprites near-exact (q95) {len(downgraded)} of {len(imgs.full)}")
+    nw = [(r["id"], w) for r in rows for w in r.get("withheld") or []]
+    if nw:
+        print(f"banned by his ✕, withheld: {len(nw)} picture(s) — " + "; ".join(f"{i} {w}" for i, w in nw[:12])
+              + (" …" if len(nw) > 12 else ""))
     print(f"files: {out / 'files.json'}")
     print("capabilities: " + json.dumps(CAPABILITIES, separators=(",", ":")))
     return 0

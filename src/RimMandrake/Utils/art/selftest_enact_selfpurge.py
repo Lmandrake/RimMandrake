@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """selftest_enact_selfpurge.py — a ✕ on a picture of the row's OWN pick/variant column is carried out.
-ALIGNED 2026-10-26 with the owner ruling "an X never purges, without exception": the carried-out ✕ now ARCHIVES (bytes
-kept, restorable) where it used to purge; every other check (no self-keep conflict, ingest records no keep) is unchanged.
+UPDATED 2026-10-26 to the owner card 19:54 "X = delete forever + ban" (it replaced "an X never purges", under which the
+carried-out ✕ ARCHIVED): the ✕ now deletes the bytes and bans them; every other check (no self-keep conflict, ingest
+records no keep) is unchanged.
 
 Bug (Cauldron sheet, 2026-10-09): the dry run planned 3 purges, the --apply purged 0 and listed them as
 "owner-kept (cauldron_sheet…)". Ingest ran first on --apply and recorded a keep for the row's pick column
@@ -10,7 +11,7 @@ variants [B], every B picture ✕'d); step 4 then read that fresh keep as protec
   * ingest records no keep for a ✕'d picture of the same row (pick, per-graphic pick, variant);
   * dry run and --apply agree: the ✕'s are purged, not CONFLICTS; the ✕'d facing is not installed;
   * a keep the same row of the same file ALREADY wrote (the pre-fix ledger) is released by the purge;
-  * a ✕ over a keep from ANOTHER row archives only if newer, else CONFLICT.
+  * a ✕ over a keep from ANOTHER row deletes + bans only if newer, else CONFLICT.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp).
 """
 from __future__ import annotations
@@ -79,19 +80,19 @@ def main():
         F["decisions"].write_text(json.dumps(doc))
 
         R0 = E.enact(F["decisions"], apply=False, no_deploy=True)
-        planned = sorted(p["sha"] for p in R0["plan"]["archive"] if p["row"] != "RM_Other")
+        planned = sorted(p["sha"] for p in R0["plan"]["x_delete"] if p["row"] != "RM_Other")
         check(planned == sorted([s["bB_n"], s["aB_e"], s["aB_n"]]) and not R0["plan"]["purge"],
-              "dry run plans the 3 same-row ✕ as ARCHIVES, no purge (owner ruling: an X never purges)")
-        check(any(a["sha"] == s["oX"] for a in R0["plan"].get("archive", [])),
-              "a ✕ (10-09) on a picture another row kept earlier (10-01) is planned for the ARCHIVE (newest mark wins)")
+              "dry run plans the 3 same-row ✕ as ✕ DELETE (delete forever + ban), none as a bare purge")
+        check(any(a["sha"] == s["oX"] for a in R0["plan"].get("x_delete", [])),
+              "a ✕ (10-09) on a picture another row kept earlier (10-01) is planned for ✕ DELETE (newest mark wins)")
         check(not any(i["sha"] == s["bB_n"] for i in R0["plan"]["install"]), "the ✕'d facing of the pick is not installed")
 
         R1 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R1["purged"] == 0 and R1["archived"] == 4, f"--apply archives what the dry run planned, purges nothing ({R1['archived']} of 4)")
+        check(R1["x_deleted"] == 4, f"--apply deletes + bans what the dry run planned ({R1['x_deleted']} of 4)")
         check(not any(x in c for c in R1["conflicts"] for x in (s["bB_n"][:12], s["aB_e"][:12], s["aB_n"][:12])),
               "no same-row ✕ is reported as owner-kept")
-        check(L.store_has(s["oX"]) and L.store_has(s["bB_n"]) and s["bB_n"] in L.archived_shas(),
-              "same-row ✕ bytes kept in the archive (restorable), not deleted")
+        check(not L.store_has(s["oX"]) and not L.store_has(s["bB_n"]) and {s["oX"], s["bB_n"]} <= set(L.Index().bans),
+              "same-row ✕ bytes deleted from the store and banned")
         idx = L.Index()
         for r in idx.rulings:
             t = r.get("target") or {}
@@ -112,8 +113,8 @@ def main():
         doc["decisions"]["RM_Beet"]["purge"].append(s2)
         F["decisions"].write_text(json.dumps(doc))
         R2 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R2["purged"] == 0 and L.store_has(s2) and s2 in L.archived_shas() and not L.Index().protected(s2),
-              "a keep the same row of the same file already wrote is released and the ✕ archived (bytes kept)")
+        check(not L.store_has(s2) and s2 in L.Index().bans and not L.Index().protected(s2),
+              "a keep the same row of the same file already wrote is released and the ✕ deletes + bans")
         # a release is per picture: purging one facing of a kept column leaves its sibling facings kept
         s3, s4 = L.store_put_bytes(T.noise_png(301)), L.store_put_bytes(T.noise_png(302))
         with open(evf, "a") as fh:
@@ -124,7 +125,7 @@ def main():
         check(L.Index().protected(s4) and not L.Index().protected(s3),
               "purging one facing releases the keep for THAT picture only; its sibling stays owner-kept")
         R3 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R3["purged"] == 0 and R3["archived"] == 0 and R3["plan"]["archived_already"] >= 5, "second --apply is a no-op (already archived)")
+        check(R3["x_deleted"] == 0 and R3["plan"]["x_done_already"] >= 5, "second --apply is a no-op (already deleted + banned)")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")

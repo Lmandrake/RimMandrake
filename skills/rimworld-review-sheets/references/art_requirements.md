@@ -57,10 +57,10 @@ set and never merges biome rosters.
    `owner_note` at ingest. Never paraphrase it into the prompt in place of the quote.
 10. **Links stay put.** Re-serving keeps the same port and token (`refresh_sheets.py`); a link he
     has open must keep working through every refresh. Check every URL returns 200 before giving it.
-11. **Per-picture ✕ is reject-and-purge**, honoured at ingest through the art ledger — except a
-    picture he kept or that is live: that ✕ ARCHIVES it (one-command restore) and is never re-asked; his
-    newest mark wins over an older keep (owner card 2026-10-26, `delegation_policy.md` §2.3; tool
-    ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE — until it lands the ✕ waits, listed in his digest).
+11. **Per-picture ✕ is delete forever + ban** (owner card 2026-10-26 19:54, `delegation_policy.md` §2.3):
+    `art.py enact` removes the game files and store bytes and records a ban (sha + perceptual hash) that
+    sheets withhold, install refuses, and artpipe / art-eval discard and re-roll. His newest mark wins over
+    an older keep; a live picture waits for its replacement. Only `art.py unban --owner-said` lifts a ban.
 12. **Nothing installs from the sheet.** Picks become ledger rulings via `art.py ingest`; install is
     `art install` only.
 13. **A sheet renders** (no blank page, no uncaught console error) — gate req 13.
