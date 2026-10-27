@@ -757,8 +757,9 @@ def test_role_real_schedule_caps_and_ops_bands():
     c, o = roles["Conductor"], roles["Operations"]
     check(c["quick_token_cap"] == 80000 and c["daily_token_cap"] == 300000 and c["session_week_pct_cap"] == 6,
           "schedule: Conductor caps 80,000 / 300,000 / 6%")
-    check(o["run_token_cap"] == 80000 and o["daily_token_cap"] == round(80000 * 2 * 1.25),
-          "schedule: Operations run cap 80,000, daily 80,000 x 2 + 25%")
+    check(o["run_token_cap"] == 80000
+          and o["daily_token_cap"] >= o["economy_token_cap"] + o["run_token_cap"] * 2,
+          "schedule: Operations daily cap fits economy + evening + one alarm run")
     for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
         for bn, b in r["throttle_bands"].items():
             check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 60000,
@@ -2101,8 +2102,8 @@ def test_review_x_alarm_flap():
     keys = ["RUNWAY_LOW:accounts.lukas.runway"]
     got, refused, rs = day(base, keys)
     modes = [m for m, _ in got]
-    check(modes.count("alarm") == 0 and not refused and len(got) == 2,
-          "X1: real caps, flapping alarm: both scheduled runs launch, no cap REFUSED, alarm runs wait: %s %s"
+    check(modes.count("alarm") <= 1 and "economy" in modes and "run" in modes and not refused,
+          "X1: real caps, flapping alarm: both scheduled runs launch, at most one alarm run, no cap REFUSED: %s %s"
           % (modes, refused[:1]))
     roomy = dict(base, daily_token_cap=1000000)
     got, refused, rs = day(roomy, keys)

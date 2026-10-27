@@ -75,7 +75,7 @@
    "token_aware": true, "_token_aware_why": "the only AI that analyses burn (owner 2026-10-27): only its launch message carries the band, runway, budget and caps; every other role is token-blind and is told none of it (review T, F1)",
    "instructions": "src/RimMandrake/rimflow/roles/operations.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest.md",
    "runs_local": ["07:30", "19:30"], "on_alarm": "OPS_* items spawned from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
-   "economy_pass_local": "07:30", "run_token_cap": 80000, "economy_token_cap": 100000, "daily_token_cap": 200000,
+   "economy_pass_local": "07:30", "run_token_cap": 80000, "economy_token_cap": 100000, "daily_token_cap": 300000, "_daily_cap_why": "2026-10-27 BENCH (delegated: role caps): 100,000 economy + 80,000 evening + one 80,000 alarm run + headroom, so one alarm a day still fits after the scheduled runs are reserved (review X)",
    "throttle_reads": "ops_watch status.json accounts.<its account>.runway",
    "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
                       "AMBER": {"runway_ge": 1.0, "quick_cap_x": 1.0, "slots": "quick"},

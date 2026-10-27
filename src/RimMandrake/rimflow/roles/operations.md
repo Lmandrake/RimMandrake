@@ -36,7 +36,7 @@ burning tokens gathering it all up for every question considered."
 | 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (its running check too: the 19:30 check covers the day) | `economy_token_cap` |
 
 Starting values (schedule): `run_token_cap` 80,000 (the measured run floor is 35-53k tokens); `economy_token_cap` 100,000;
-`daily_token_cap` 200,000 (80,000 × 2 scheduled runs, plus 25%).
+`daily_token_cap` 300,000: the 07:30 economy run, the 19:30 run and one alarm run a day, with headroom; scheduled runs are reserved first.
 
 ## Throttle (same runway bands as the Conductor)
 
