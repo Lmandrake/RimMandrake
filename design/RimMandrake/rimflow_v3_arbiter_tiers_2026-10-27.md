@@ -59,6 +59,13 @@ were never recorded. Review happens after the close, so G5 must be read at verdi
 
 ### Missing gates (to build, in this order)
 
+**Evidence for 1-4 is now recorded** (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): `run_selftests.py` (outer runs, `--only`
+and nightly), `winbuild.py`, `validate_patch.py` and modcheck's `status.record_run` each append one line per run to
+`<agent storage>/rimmandrake/evidence/YYYY-MM-DD.jsonl` via `src/RimMandrake/Utils/close_evidence.py` (tool, HEAD sha,
+dirty flag, paths, PASS/FAIL/UNMEASURED, `$RIMFLOW_ITEM`). `close_evidence.lookup(sha=, item=)` returns only clean-tree
+records; G6/G7 and the validator/north-star gates read it. The gates themselves are not yet wired into
+`arbiter_tiers.gates`.
+
 1. **Selftest result per claim.** The runner already caches PASS records by tree hash, but no claim names them. Fix:
    `rimflow close` or `implemented` records the `run_selftests --only` set and its result for the claimed sha (or the
    records key). Then G6 reads it.

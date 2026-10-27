@@ -866,6 +866,7 @@ def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=fr
             for line in detail.splitlines():
                 print(f"             {line}")
     _write_last_run(allr, wall_elapsed)
+    _record_evidence(allr)
 
     # Denominator is what was DISCOVERED, not what came back — so a dropped result
     # shrinks every numerator and shows, instead of shrinking both and reading green.
@@ -912,6 +913,27 @@ def _write_last_run(allr, wall) -> None:
         os.replace(tmp, STATE_DIR / "last_run.json")
     except OSError:
         pass
+
+
+def _record_evidence(allr) -> None:
+    """One close-evidence line per outer run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): the tests that reached a
+    verdict, keyed by the clone's HEAD and dirty flag. SKIPPED tests are not evidence and are left out."""
+    if _OUTER[0] is not True or os.environ.get("RM_SELFTEST_REPO_ROOT"):
+        return
+    ran = [r for r in allr if r[1] != "SKIPPED"]
+    if not ran:
+        return
+    states = {s for _, s, _, _ in ran}
+    result = ("FAIL" if states & {"FAIL", "CRASH"} else "PASS" if states == {"PASS"} else "UNMEASURED")
+    try:
+        import close_evidence
+    except Exception as exc:  # noqa: BLE001 -- evidence never fails the run
+        print(f"!!! CLOSE-EVIDENCE unavailable ({type(exc).__name__}: {exc}); this run is not recorded",
+              file=sys.stderr)
+        return
+    close_evidence.record("selftest", result, [p for p, *_ in ran], clone=REPO_ROOT, force=True,
+                          detail={"states": {_show(p): s for p, s, _, d in ran},
+                                  "cached": sorted(_show(p) for p, _, _, d in ran if d == "cached")})
 
 
 if __name__ == "__main__":

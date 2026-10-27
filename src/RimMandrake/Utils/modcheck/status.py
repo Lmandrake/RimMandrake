@@ -463,7 +463,32 @@ def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=Non
             if k not in data[mod]:
                 data[mod][k] = v
         save(data)
+    _record_evidence(mod, mod_dir, data[mod], all_green, refused)
     return data[mod]
+
+
+_REAL_LOG_PATH = LOG_PATH
+
+
+def _record_evidence(mod, mod_dir, entry, all_green, refused):
+    """One close-evidence line per recorded run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE), so a claim can be matched to
+    the north-star run of its sha: the machine verdict (all rows green and not refused -> PASS; refused -> UNMEASURED;
+    else FAIL), with the registry status, run_id and mod hash beside it. Skipped when a test redirected LOG_PATH.
+    Never fails the run."""
+    if LOG_PATH != _REAL_LOG_PATH:
+        return
+    import sys
+    try:
+        utils = os.path.dirname(_HERE)
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import close_evidence
+        close_evidence.record("modcheck", "UNMEASURED" if refused else ("PASS" if all_green else "FAIL"), [mod_dir],
+                              clone=ROOT, detail={"mod": mod, "status": entry.get("status"),
+                                                  "run_id": entry.get("run_id"), "mod_hash": entry.get("hash")})
+    except Exception as exc:  # noqa: BLE001
+        print("!!! CLOSE-EVIDENCE unavailable for modcheck %s (%s: %s); this run is not recorded"
+              % (mod, type(exc).__name__, exc), file=sys.stderr, flush=True)
 
 
 def record_owner_review(mod, said, run_id=None):

@@ -2463,6 +2463,31 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
     return f.report(quiet), len(f.errors), len(f.warnings)
 
 
+_RUN: dict = {}      # filled by main() once a validation run starts; read by _record_evidence
+
+
+def _record_evidence(rc: int) -> None:
+    """One close-evidence line per validation run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): exit 0 PASS, 1 FAIL,
+    anything else UNMEASURED, keyed by the HEAD of the clone holding the first target (paths = the targets as
+    given, not every expanded file). Files in the game's Mods folder live in no clone, so their line carries sha
+    None and is never evidence for a commit. Never fails."""
+    if not _RUN.get("files"):
+        return
+    try:
+        here = os.path.dirname(os.path.realpath(__file__))
+        sys.path.insert(0, os.path.normpath(os.path.join(here, "..", "..", "..", "src", "RimMandrake", "Utils")))
+        import close_evidence
+    except Exception as exc:  # noqa: BLE001
+        print(f"!!! CLOSE-EVIDENCE unavailable ({type(exc).__name__}: {exc}); this run is not recorded",
+              file=sys.stderr)
+        return
+    a = _RUN["args"]
+    close_evidence.record("validate_patch", {0: "PASS", 1: "FAIL"}.get(rc, "UNMEASURED"),
+                          [str(t) for t in a.patch],
+                          detail={"rc": rc, "n_files": len(_RUN["files"]), "live": a.live, "defs": a.defs, "defnames": a.defnames,
+                                  "all_versions": a.all_versions})
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Validate RimWorld XML PatchOperation files against the "
@@ -2522,6 +2547,7 @@ def main() -> int:
         return 0
 
     files, bad = collect_patch_files(args.patch)
+    _RUN.update(files=list(files), args=args)
     for b in bad:
         print(f"cannot read {b}")
     if not files:
@@ -2696,4 +2722,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    _rc = main()
+    _record_evidence(_rc)
+    sys.exit(_rc)

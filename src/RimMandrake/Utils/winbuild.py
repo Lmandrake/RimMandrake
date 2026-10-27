@@ -299,6 +299,22 @@ def pulse_report(csproj, rc, stage=None):
         pass
 
 
+def evidence_report(csproj, rc, config, rec=None):
+    """One close-evidence line per build (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): PASS on exit 0, else FAIL, keyed
+    by the clone's HEAD and whole-tree dirty flag (close_evidence.py). Never fails the build."""
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import close_evidence
+    except Exception as exc:  # noqa: BLE001
+        print("!!! CLOSE-EVIDENCE unavailable (%s: %s); this build is not recorded" % (type(exc).__name__, exc),
+              file=sys.stderr)
+        return
+    rec = rec or {}
+    close_evidence.record("winbuild", "PASS" if rc == 0 else "FAIL", [csproj], clone=ROOT,
+                          detail={"rc": rc, "configuration": config, "outputs": rec.get("outputs", []),
+                                  "staged_dirs_dirty": rec.get("dirty"), "source_sha": rec.get("source_sha")})
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -316,11 +332,13 @@ def main(argv=None):
             return 0
         rc = run_dotnet(win(csproj), os.path.dirname(csproj), a.configuration, extra)
         pulse_report(csproj, rc)
+        evidence_report(csproj, rc, a.configuration)
         return rc
 
     rc, rec = stage_build(csproj, a.configuration, extra, dry_run=a.dry_run)
     if not a.dry_run:
         pulse_report(csproj, rc, rec.get("stage"))
+        evidence_report(csproj, rc, a.configuration, rec)
     if rc or a.dry_run:
         return rc
     if not rec["outputs"]:
