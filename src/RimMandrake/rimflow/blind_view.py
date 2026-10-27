@@ -15,6 +15,11 @@ $ unit, and any number of 10,000 or more is replaced with "[…]". Dates, clock 
 An item about accounts by its id or kind (withheld()) is withheld whole: the queue counts it and names nothing, `show`
 prints only that it is withheld, and its id is redacted out of any other item's free text.
 
+Free-text redaction can never be perfect, and this one does not try to be: a phrasing nobody has thought of will get
+through. The backstop is ops_watch's token-talk drift check (ops_watch_rules.json token_talk), which measures how often
+each blind seat's and role's reports hold token talk at all. Add a phrasing to selftest_blind_view.py when one is found;
+do not chase a perfect regex (review X).
+
 Usage:
   python3 src/RimMandrake/rimflow/blind_view.py queue BENCH
   python3 src/RimMandrake/rimflow/blind_view.py show <ID> [--last N] [--prefix "REPLAN REQUEST"]
@@ -34,7 +39,23 @@ BIG_NUMBER = 10000                   # a bare number this large is a token count
 # a word part (split at _ . - and case) that makes a number near it sensitive; matched as a prefix of the part
 SENSITIVE_PREFIXES = ("account", "token", "quota", "budget", "runway", "burn", "spend", "spent", "usage", "limit",
                       "week", "pct", "percent", "economy")
-SENSITIVE_WORDS = {"cap", "caps", "capped", "capping", "capx"}
+SENSITIVE_WORDS = {"cap", "caps", "capped", "capping", "capx", "wk", "wkly", "headroom",
+                   "allowance", "pace"}
+TABLE_WORDS = {"share", "used", "left", "remaining", "pct", "percent"}   # also make a whole table sensitive
+# "soft" sensitive parts: ordinary project words too, so a count of work items next to them is kept (review X, X7)
+SOFT_PARTS = ("week", "limit")
+WORK_NOUNS = {"item", "items", "ticket", "tickets", "row", "rows", "file", "files", "def", "defs", "test", "tests",
+              "commit", "commits", "claim", "claims", "patch", "patches", "mod", "mods", "bug", "bugs", "finding",
+              "findings", "job", "jobs", "task", "tasks", "sprite", "sprites", "step", "steps", "milestone",
+              "milestones", "check", "checks", "review", "reviews", "helper", "helpers", "role", "roles", "seat",
+              "seats", "line", "lines", "page", "pages", "round", "rounds"}
+TIME_NOUNS = {"week", "weeks", "day", "days"}
+ACCOUNT_NAMES = {"lukas", "steven", "system", "codex", "sonnet", "opus", "haiku"}    # + lent_accounts of slot_rules
+SOFT_NAMES = {"system"}               # an ordinary word as well as an account: its counts of work items stay
+NAME_AFTER, NAME_BEFORE = 6, 4        # a number this many words after / before an account name is its value
+# an id with one of these parts (or an NNK part) has the digits in it masked: PRODUCER_RUN_30K_EVENT
+ID_DIGIT_PARTS = {"K", "TOKEN", "TOKENS", "CAP", "CAPS", "BUDGET", "RUNWAY", "WEEK", "PCT", "PERCENT", "BURN", "QUOTA",
+                  "SPEND", "USAGE"}
 # an item whose id starts with one of these, or whose id or kind has one of these parts, is about accounts: withheld
 # whole. Kept narrow on purpose: CAP, BURN, RUNWAY and BUDGET are ordinary game words here (a wildlife cap, Burn
 # weather, RM_RunwayBloom, a frame budget), and withholding hides real work from the Conductor; their numbers are
@@ -43,10 +64,15 @@ WITHHELD_ID_PREFIXES = ("OPS_", "OPERATIONS_")
 WITHHELD_ID_PARTS = {"ACCOUNT", "ACCOUNTS", "TOKEN", "TOKENS", "QUOTA", "QUOTAS", "SPEND"}
 WITHHELD_KIND_PARTS = WITHHELD_ID_PARTS | {"OPS", "OPERATIONS", "BUDGET", "BUDGETS", "RUNWAY", "BURN"}
 
+_MAGN = (r"(?i:(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|(?:thir|four|fif|six|seven|eigh|nine)"
+         r"teen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|and|a|\d+(?:[.,]\d+)*)[\s-]+)*")
 _TOKEN_RE = re.compile(
     r"(?P<date>\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?Z?)?)"
     r"|(?P<time>\b\d{1,2}:\d{2}(?::\d{2})?Z?\b)"
-    r"|(?P<unit>\$\s?\d+(?:[.,]\d+)*(?:\s?[kKM])?|\d+(?:[.,]\d+)*(?:\s?(?:[kKM]|%|pct|percent|tokens?|tok))(?![A-Za-z0-9]))"
+    r"|(?P<unit>\$\s?\d+(?:[.,]\d+)*(?:\s?[kKM])?|[€£₤]\s?\d+(?:[.,]\d+)*"
+    r"|\d+(?:[.,]\d+)*(?:\s?(?:[kKM]|%|pct|percent|tokens?|tok|kt))(?![A-Za-z0-9])"
+    r"|\b" + _MAGN + r"(?i:thousand|million|billion)\b)"
+    r"|(?P<scaled>\d+(?:[.,]\d+)*\s?(?:[xX×]|d|days?|h|hrs?|hours?|w|wks?|weeks?)(?![A-Za-z0-9_]))"
     r"|(?P<word>[A-Za-z0-9_]*[A-Za-z_][A-Za-z0-9_]*)"
     r"|(?P<num>\d+(?:[.,]\d+)*)")
 
@@ -86,29 +112,145 @@ def _number(s):
         return None
 
 
+_names_cache = []
+
+
+def account_names():
+    """Account and model names, lower case: ACCOUNT_NAMES plus every key of slot_rules.json lent_accounts and every
+    account name ops_watch's rules or the slot rules mention under `accounts` (read at run time, never hard-coded)."""
+    if not _names_cache:
+        names = set(ACCOUNT_NAMES)
+        try:
+            import json
+            utils = os.path.join(os.path.dirname(HERE), "Utils")
+            for fn, keys in (("slot_rules.json", ("lent_accounts", "accounts")),
+                             ("ops_watch_rules.json", ("accounts", "lent_accounts"))):
+                try:
+                    d = json.load(open(os.path.join(utils, fn), encoding="utf-8"))
+                except (OSError, ValueError):
+                    continue
+                for k in keys:
+                    if isinstance(d.get(k), dict):
+                        names |= {str(n).lower() for n in d[k] if re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{2,}", str(n))
+                                  and not str(n).startswith("_")}
+        except Exception:  # noqa: BLE001 — names are best effort on top of the built-in set
+            pass
+        _names_cache.append(names)
+    return _names_cache[0]
+
+
+def _is_name(word):
+    n = account_names()
+    return word.lower() in n or any(p in n for p in _parts(word))
+
+
+def digit_id(word):
+    """An upper-case id with a number in it and a K / TOKEN / CAP / BUDGET / RUNWAY ... part (or an NNK part), or an
+    account name: PRODUCER_RUN_30K_EVENT, LUKAS_93_WEEK_DRAIN."""
+    if "_" not in word or word.upper() != word or not re.search(r"\d", word):
+        return False
+    parts = word.split("_")
+    return any(p in ID_DIGIT_PARTS or re.fullmatch(r"\d+K", p) or p.lower() in account_names() for p in parts)
+
+
+def mask_id(word):
+    """-> the id with the digits of a digit_id masked, else unchanged."""
+    return re.sub(r"\d+", MASK, word) if digit_id(word) else word
+
+
+def _blank_tables(text):
+    """A markdown table with an account or token column (a sensitive word or account name anywhere in it) is blanked
+    whole: a number far from the word is still in its column (review X, X4)."""
+    lines, out, i = text.split("\n"), [], 0
+    while i < len(lines):
+        if lines[i].lstrip().startswith("|"):
+            j = i
+            while j < len(lines) and lines[j].lstrip().startswith("|"):
+                j += 1
+            block = lines[i:j]
+            words = re.findall(r"[A-Za-z0-9_]*[A-Za-z_][A-Za-z0-9_]*", "\n".join(block))
+            if any(sensitive_word(w) or _is_name(w) or w.lower() in TABLE_WORDS for w in words):
+                out.append("[table redacted: it has an account or token column]")
+            else:
+                out += block
+            i = j
+        else:
+            out.append(lines[i])
+            i += 1
+    return "\n".join(out)
+
+
 def redact(text, hide_ids=()):
     """Pure. Free text -> the same text with every account/cap number replaced by MASK, and every id in hide_ids
     (items withheld from blind roles) replaced by MASK. None -> ""."""
     if not text:
         return ""
-    text = str(text)
+    text = _blank_tables(str(text))
     toks = [m for m in _TOKEN_RE.finditer(text)]
-    hot = [i for i, m in enumerate(toks) if m.lastgroup == "word" and sensitive_word(m.group())]
+    # hot[i] = "strong" | "soft" | ("name", soft): a word that makes a number near it sensitive
+    hot = {}
+    for i, m in enumerate(toks):
+        if m.lastgroup == "scaled" and re.search(r"(?:w|wks?|weeks?)$", m.group()):
+            hot[i] = "soft"
+        if m.lastgroup != "word":
+            continue
+        w = m.group()
+        if _is_name(w):
+            hot[i] = ("name", w.lower() in SOFT_NAMES)
+        elif sensitive_word(w):
+            hot[i] = "soft" if all(p in SOFT_PARTS or not (p in SENSITIVE_WORDS or p.startswith(SENSITIVE_PREFIXES))
+                                   for p in _parts(w)) else "strong"
+
+    def word_at(k):
+        return toks[k].group().lower() if 0 <= k < len(toks) and toks[k].lastgroup == "word" else ""
+
+    def near(i):
+        """-> 'strong' | 'soft' | None: how a number at token i is tied to an account word."""
+        best = None
+        for h, kind in hot.items():
+            d = i - h
+            if isinstance(kind, tuple):
+                if not (1 <= d <= NAME_AFTER or -NAME_BEFORE <= d <= -1):
+                    continue
+                c = "soft" if kind[1] else "strong"
+            elif abs(d) <= NEAR_TOKENS and d != 0:
+                c = kind
+            else:
+                continue
+            if c == "strong":
+                return "strong"
+            best = "soft"
+        return best
+
     cut = []
     for i, m in enumerate(toks):
         g = m.lastgroup
         if g == "unit":
-            cut.append(m.span())
-        elif g == "num":
-            v = _number(m.group())
-            if (v is not None and v >= BIG_NUMBER) or any(abs(i - h) <= NEAR_TOKENS for h in hot):
-                cut.append(m.span())
-        elif g == "word" and (m.group() in hide_ids or _account_id(m.group())):
-            cut.append(m.span())
+            cut.append((m.start(), m.end(), MASK))
+        elif g in ("num", "scaled"):
+            v = _number(re.match(r"\d+(?:[.,]\d+)*", m.group()).group())
+            n = near(i)
+            if g == "num" and v is not None and v >= BIG_NUMBER:
+                cut.append((m.start(), m.end(), MASK))
+            elif n == "strong":
+                cut.append((m.start(), m.end(), MASK))
+            elif n == "soft":
+                # a count of work items or of weeks/days stays (review X, X7): "3 tickets this week", "rows 4 and 5"
+                nxt, prv = word_at(i + 1), word_at(i - 1)
+                keep = nxt in WORK_NOUNS or prv in WORK_NOUNS or (g == "num" and nxt in TIME_NOUNS) or (
+                    g == "scaled" and re.search(r"(?:w|wks?|weeks?)$", m.group()))
+                if not keep:
+                    cut.append((m.start(), m.end(), MASK))
+        elif g == "word":
+            w = m.group()
+            if w in hide_ids or _account_id(w):
+                cut.append((m.start(), m.end(), MASK))
+            elif digit_id(w):
+                cut.append((m.start(), m.end(), mask_id(w)))
     out, pos = [], 0
-    for a, b in cut:
+    for a, b, r in cut:
         out.append(text[pos:a])
-        out.append(MASK)
+        out.append(r)
         pos = b
     out.append(text[pos:])
     return "".join(out)
@@ -144,7 +286,7 @@ def queue_text(world, seat, target="v1", ctx=None, summaries=True):
            "reads %s. %d open item(s) about accounts are withheld (Operations' alone)." % (MASK, n_hidden), ""]
 
     def item(it):
-        lines = ["## %s %s" % (it.id, redact(it.title, hide)),
+        lines = ["## %s %s" % (mask_id(it.id), redact(it.title, hide)),
                  "state: %s%s   kind: %s   needs: %s   row: %s" % (
                      it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.needs,
                      it.row if it.row not in (None, "") else "unassigned")]
@@ -175,7 +317,7 @@ def show_text(evs, world, iid, last=10, prefix=None):
     if iid in hide:
         return "%s: withheld from the blind view (an item about accounts: Operations' alone)\n" % iid
     out = ["%s   state %s%s   kind %s   owner %s   needs %s" % (
-        it.id, it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.owner, it.needs),
+        mask_id(it.id), it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.owner, it.needs),
         "title: %s" % redact(it.title, hide)]
     if it.blocked:
         out.append("blocked: %s" % redact(it.blocked_reason or "unexplained", hide))

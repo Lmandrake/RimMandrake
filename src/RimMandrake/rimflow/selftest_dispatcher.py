@@ -2069,6 +2069,62 @@ def test_review_w_alarm_rearm():
           % [x.get("why", "")[:80] for x in a])
 
 
+def test_review_x_alarm_flap():
+    """Review X, X1: a runway alarm flapping near its line (open 15 min, clear 60 min, every 75 min, all day) must not
+    crowd out the 07:30 / 19:30 scheduled runs: alarm runs reserve the scheduled runs' budget, and the schedule's
+    alarm_runs_per_alarm_per_day / alarm_runs_per_day limit them."""
+    real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
+    base = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    check(base.get("alarm_runs_per_alarm_per_day") == 1 and base.get("alarm_runs_per_day") == 2,
+          "X1: the real schedule holds the alarm limits as data (1 per alarm, 2 per day)")
+
+    def day(ro, keys):
+        t0 = at_local("00:00")
+        st = fresh()
+        st["roles"] = {"Operations": {"done": {}, "runs": []}}
+        rs = st["roles"]["Operations"]
+        got, refused = [], []
+        for i in range(96):
+            now = t0 + i * 900
+            op = {}
+            if i % 5 == 0:
+                op = {k: {"state": "OPEN", "for": "Operations"} for k in keys}
+            for x in role_acts(rdecide([ro], st, robs(ops_status(now, runway=2.0, alarms=op)), now)):
+                if x["do"] == "role_launch":
+                    got.append((x["mode"], RL.local_hhmm(now) if hasattr(RL, "local_hhmm") else i))
+                    rs["runs"].append({"day": RL.day_of(now), "budget": x["budget"], "at": now, "state": "done",
+                                       "mode": x["mode"], "tokens": x["budget"]})
+                    rs.pop("pending_launch", None)
+                elif x["do"] == "alarm" and ":cap" in str(x.get("kind")):
+                    refused.append(x["why"])
+        return got, refused, rs
+    keys = ["RUNWAY_LOW:accounts.lukas.runway"]
+    got, refused, rs = day(base, keys)
+    modes = [m for m, _ in got]
+    check(modes.count("alarm") == 0 and not refused and len(got) == 2,
+          "X1: real caps, flapping alarm: both scheduled runs launch, no cap REFUSED, alarm runs wait: %s %s"
+          % (modes, refused[:1]))
+    roomy = dict(base, daily_token_cap=1000000)
+    got, refused, rs = day(roomy, keys)
+    modes = [m for m, _ in got]
+    check(modes.count("alarm") == 1 and len(got) == 3 and rs["alarm_day"]["keys"][
+          "alarm:" + keys[0]] == 1, "X1: room in the cap: one alarm run per alarm per day, not one per flap: %s" % modes)
+    two = ["RUNWAY_LOW:accounts.lukas.runway", "RUNWAY_LOW:accounts.steven.runway", "RUNWAY_LOW:codex.runway"]
+    got, refused, rs = day(dict(roomy, alarm_runs_per_alarm_per_day=9), two)
+    check([m for m, _ in got].count("alarm") == 2, "X1: alarm_runs_per_day caps the day's alarm runs at 2: %s"
+          % [m for m, _ in got])
+    got, refused, rs = day(dict(roomy, alarm_runs_per_alarm_per_day=None, alarm_runs_per_day=None), keys)
+    check([m for m, _ in got].count("alarm") > 2, "X1: instrument: without the limits the same flap runs more than twice")
+    # unlaunch gives the day's count back
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {}, "runs": []}}
+    t = at_local("12:00")
+    a = role_acts(rdecide([roomy], st, robs(ops_status(t, alarms={"RUNWAY_LOW:x": {"state": "OPEN", "for": "Operations"}})), t))
+    unit = [x for x in a if x["do"] == "role_launch"][0]["unit"]
+    check(st["roles"]["Operations"]["alarm_day"]["n"] == 1 and RL.unlaunch(st["roles"]["Operations"], unit)
+          and "alarm_day" not in st["roles"]["Operations"], "X1: a launch that did not happen gives back the day's count")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -2078,7 +2134,7 @@ def main():
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
-              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm):
+              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap):
         try:
             t()
         except Exception as e:  # noqa: BLE001

@@ -762,6 +762,25 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 rs.pop("alarm_blind", None)
                 rs["alarms_seen"] = [k for k in rs.get("alarms_seen") or [] if k in open_items]
                 fresh = [k for k in open_items if k not in rs["alarms_seen"]]
+                # daily limits, held as data in the schedule (review X, X1): at most alarm_runs_per_alarm_per_day runs
+                # for one alarm key and alarm_runs_per_day alarm runs in all, so a flapping alarm cannot make a paid
+                # run every cycle. Absent = no limit. Limited keys stay unseen: they wait for tomorrow (or clearing).
+                ad = rs.get("alarm_day") if (rs.get("alarm_day") or {}).get("day") == day_of(now) else \
+                    {"day": day_of(now), "n": 0, "keys": {}}
+                per_key, per_day = cfg.get("alarm_runs_per_alarm_per_day"), cfg.get("alarm_runs_per_day")
+                if fresh and per_day is not None and ad["n"] >= int(per_day):
+                    capped = fresh
+                    fresh = []
+                elif fresh and per_key is not None:
+                    capped = [k for k in fresh if ad["keys"].get(k, 0) >= int(per_key)]
+                    fresh = [k for k in fresh if k not in capped]
+                else:
+                    capped = []
+                if capped and rs.get("alarm_limit_hold") != [day_of(now)] + capped:     # journal each set once a day
+                    rs["alarm_limit_hold"] = [day_of(now)] + capped
+                    act(do="role_hold", role=name, why="%s alarm run for %s waits: the daily alarm-run limit is used "
+                        "(alarm_runs_per_alarm_per_day %s, alarm_runs_per_day %s); the scheduled running checks read "
+                        "it" % (name, ", ".join(capped), per_key, per_day))
                 gap = int(cfg.get("alarm_run_gap_s", ALARM_RUN_GAP_S))
                 last = rs.get("alarm_last_run")
                 if fresh and last is not None and now - last < gap:
@@ -847,14 +866,15 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         budget = int(job["cap"] * factor)
         spent = spent_today(rs, now)
         daily = role.get("daily_token_cap")
-        if daily and job["mode"] == "event":
+        if daily and job["mode"] in ("event", "alarm"):
+            # (an alarm run reserves too: it may spend only what the day's scheduled runs leave, review X, X1)
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
             # a slot this band will block never runs, so it reserves nothing (review V, V6)
             reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
                           for i, (hh, m, c) in enumerate(today) if c and "%s %s" % (day_of(now), hh) not in rs["done"]
                           and not slot_blocked(allowed, {"slot": hh, "first": i == 0, "mode": m}, cfg, now))
-            if reserve and spent + budget + reserve > daily:
+            if (reserve or job["mode"] == "alarm") and spent + budget + reserve > daily:
                 if rs.get("event_reserve_day") != day_of(now):          # journalled once a day; the event waits
                     rs["event_reserve_day"] = day_of(now)
                     act(do="role_hold", role=name, why="%s %s waits: the day's scheduled run(s) still to come keep "
@@ -882,10 +902,17 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
                                 "done": rs["done"].get(job["key"]), "had_done": job["key"] in rs["done"],
                                 "alarms_seen": rs.get("alarms_seen"), "event_cursor": rs.get("event_cursor"),
+                                "alarm_day": json.loads(json.dumps(rs.get("alarm_day"))),
                                 "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
         mark(rs, job, "launch")
         if job["mode"] == "alarm":
             rs["alarm_last_run"] = now        # the gap runs from launched alarm runs only, not from passed-over ones
+            ad = rs.get("alarm_day") if (rs.get("alarm_day") or {}).get("day") == day_of(now) else \
+                {"day": day_of(now), "n": 0, "keys": {}}
+            ad["n"] += 1
+            for k in job.get("seen") or []:
+                ad["keys"][k] = ad["keys"].get(k, 0) + 1
+            rs["alarm_day"] = ad
         if lr is not None:
             rs["event_cursor"] = now      # every run reads the events up to its launch (arbiter.md, producer.md)
             rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
@@ -926,6 +953,10 @@ def unlaunch(rs, unit):
     rs.pop("pending_launch", None)
     if p["mode"] == "alarm":
         rs["alarms_seen"] = p["alarms_seen"]
+        if p.get("alarm_day") is None:
+            rs.pop("alarm_day", None)
+        else:
+            rs["alarm_day"] = p["alarm_day"]
         if p.get("alarm_last_run") is None:
             rs.pop("alarm_last_run", None)
         else:

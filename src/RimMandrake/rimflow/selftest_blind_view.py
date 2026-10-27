@@ -37,7 +37,7 @@ _DT = re.compile(r"\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?Z?)?|
 _ID = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")       # item ids: their words are names, not values
 _ACCOUNT_ID = re.compile(r"\b(?:OPS|OPERATIONS|ACCOUNTS?|QUOTAS?)_[A-Z0-9_]+")
 # a duration or a frame rate is never an account value (a frame budget of 8 ms, a wait of 5 min)
-_DURATION = re.compile(r"\b\d+(?:\.\d+)?\s?(?:ms|s|min|h|TPS|FPS)\b")
+_DURATION = re.compile(r"\b\d+(?:\.\d+)?\s?(?:ms|s|min|h|TPS|FPS|weeks?)\b")
 
 
 def leaks(text):
@@ -123,8 +123,46 @@ def test_real_ledger():
           "show on a withheld item prints one line")
 
 
+def test_review_x():
+    """Review X: the phrasings that got through, each masked; and counts of work items that must survive."""
+    M = B.MASK
+    gone = [("lukas has 7 left", "7"), ("lukas fell from 93 to 41 since Monday", "93"),
+            ("codex sits at 61/100", "61"), ("sonnet at 30, opus at 85", "85"),
+            ("forecast: plan misses by 1.4 days on lukas", "1.4"),
+            ("REPLAN REQUEST: the rows will not fit; lukas has 0.4d", "0.4"),
+            ("steven remaining 7, system 12", "12"),
+            ("running 2.6x over pace", "2.6"), ("burn rate 2.6x", "2.6"), ("headroom 0.4d on codex 1.3d", "1.3"),
+            ("0.4 days of headroom left", "0.4"),
+            ("~120 thousand used so far", "120"), ("a hundred and twenty five thousand", "twenty"),
+            ("daily cap is one hundred twenty five thousand", "thousand"), ("spent 3 million", "million"),
+            ("allowance of \u20ac120", "120"),
+            ("| item | runway |\n|---|---|\n| a | 3 |\n| b | 4 |\n| c | 5 |\n| d | 88 |", "88"),
+            ("| seat | share |\n| BENCH | 61 |", "61"), ("| who | n |\n| lukas | 0.4 |", "0.4"),
+            ("see PRODUCER_RUN_30K_EVENT", "30"), ("see LUKAS_93_WEEK_DRAIN", "93"),
+            ("see HELPER_WAITS_93_PERCENT", "93"), ("see PRODUCER_CAP_125K_EVENT_ROOM", "125"),
+            ("see X_TOKEN_77_FIX", "77"), ("see X_BUDGET_5_FIX", "5"), ("see X_RUNWAY_9_FIX", "9")]
+    for t, bad in gone:
+        r = B.redact(t)
+        check(bad not in r, "X: %r -> %r" % (t, r))
+    check(B.redact("see PRODUCER_RUN_30K_EVENT") == "see PRODUCER_RUN_%sK_EVENT" % M, "X: only the digits of an id go")
+    check("[table redacted" in B.redact("| item | runway |\n| a | 3 |") and "after" in B.redact("| a | runway |\nafter"),
+          "X: a table with an account column is blanked whole, the text after it stays")
+    t = "| id | state |\n| X | open 3 |"
+    check(B.redact(t) == t, "X: a table with no account or token column stays")
+    for t in ("3 tickets this week", "This week we closed 12 items and 3 rows are left for Friday",
+              "due in 2 weeks: rows 4 and 5".replace(" and 5", ""), "V1 milestone row 7 slips one week",
+              "limit the sprint to 3 items", "the system handles 3 tickets", "closed in 2 weeks",
+              "ids like DUNG_HATCH_WILDLIFE_CAP and PRODUCER_RUN_EVENT pass", "5m wait on 3x faster tests"):
+        check(B.redact(t) == t, "X7: a count of work items survives: %r -> %r" % (t, B.redact(t)))
+    check(B.mask_id("DUNG_HATCH_WILDLIFE_CAP_1") == "DUNG_HATCH_WILDLIFE_CAP_" + M, "X: an id with CAP and a digit")
+    check(B.mask_id("V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE") == "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
+          "X: an ordinary id keeps its digits")
+    check({"lukas", "steven", "system", "codex"} <= B.account_names(), "X: account names are known (%s)"
+          % sorted(B.account_names()))
+
+
 def main():
-    for t in (test_units, test_withheld, test_real_ledger):
+    for t in (test_units, test_withheld, test_review_x, test_real_ledger):
         try:
             t()
         except Exception as e:  # noqa: BLE001
