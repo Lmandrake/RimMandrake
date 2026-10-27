@@ -473,8 +473,8 @@ _REAL_LOG_PATH = LOG_PATH
 def _record_evidence(mod, mod_dir, entry, all_green, refused):
     """One close-evidence line per recorded run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE), so a claim can be matched to
     the north-star run of its sha: the machine verdict (all rows green and not refused -> PASS; refused -> UNMEASURED;
-    else FAIL), with the registry status, run_id and mod hash beside it. Skipped when a test redirected LOG_PATH.
-    Never fails the run."""
+    else FAIL), with the registry status, run_id and mod hash beside it, marked live-only: it is never sha evidence.
+    Skipped when a test redirected LOG_PATH. Never fails the run."""
     if LOG_PATH != _REAL_LOG_PATH:
         return
     import sys
@@ -483,9 +483,13 @@ def _record_evidence(mod, mod_dir, entry, all_green, refused):
         if utils not in sys.path:
             sys.path.insert(0, utils)
         import close_evidence
+        # live_only (review Z F3): the verdict describes the RUNNING game, which holds whatever it loaded at launch;
+        # nothing fingerprints that load (run_identity compares repo vs the deployed FOLDER), so this line is never
+        # evidence for the repo sha. Under Windows python.exe close_evidence ships the line to WSL (F4).
         close_evidence.record("modcheck", "UNMEASURED" if refused else ("PASS" if all_green else "FAIL"), [mod_dir],
-                              clone=ROOT, detail={"mod": mod, "status": entry.get("status"),
-                                                  "run_id": entry.get("run_id"), "mod_hash": entry.get("hash")})
+                              clone=ROOT, live_only=True,
+                              detail={"mod": mod, "status": entry.get("status"),
+                                      "run_id": entry.get("run_id"), "mod_hash": entry.get("hash")})
     except Exception as exc:  # noqa: BLE001
         print("!!! CLOSE-EVIDENCE unavailable for modcheck %s (%s: %s); this run is not recorded"
               % (mod, type(exc).__name__, exc), file=sys.stderr, flush=True)

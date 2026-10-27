@@ -224,6 +224,10 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     started = time.time()
     rels = [os.path.relpath(d, ROOT) + "/" for d in dirs] + ["src/Directory.Build.targets", "src/Directory.Build.props"]
     excl = sum((["--exclude", e] for e in RSYNC_EXCLUDES), [])
+    # close evidence (review Z F2/F7): the build reads the STAGE, so the tree it tested is the clone between these two
+    # snapshots, scoped to what was staged; the DLLs copied back afterwards never make the record dirty
+    record["ev_scope"] = rels
+    record["ev_start"] = _ce_snapshot(rels)
     # -R keeps repo-relative layout; --delete prunes files removed from the clone (excludes kept).
     # rsync exit 24 = "some source files vanished": another agent saved/renamed a file in the clone mid-copy (the stage
     # copies whole src/). Transient, not a build verdict - the copy is idempotent, so retry before failing (2026-10-22).
@@ -235,7 +239,10 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
         time.sleep(2)
     if r.returncode:
         print("rsync failed (%d)" % r.returncode, file=sys.stderr)
+        record["staged"] = False                   # nothing was built: UNMEASURED, not FAIL (review Z F7)
         return r.returncode, record
+    record["staged"] = True
+    record["ev_end"] = _ce_snapshot(rels)
     staged_proj = os.path.join(stage, rel_proj)
     sha, dirty = source_sha(dirs + [os.path.join(ROOT, "src", "Directory.Build.targets"), os.path.join(ROOT, "src", "Directory.Build.props")])
     record.update(source_sha=sha, dirty=dirty, clone=ROOT)
@@ -299,20 +306,40 @@ def pulse_report(csproj, rc, stage=None):
         pass
 
 
-def evidence_report(csproj, rc, config, rec=None):
-    """One close-evidence line per build (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): PASS on exit 0, else FAIL, keyed
-    by the clone's HEAD and whole-tree dirty flag (close_evidence.py). Never fails the build."""
+def _ce():
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import close_evidence
+    return close_evidence
+
+
+def _ce_snapshot(scope=None):
+    """close_evidence tree snapshot of ROOT (scoped to `scope` pathspecs); None when unavailable. Never raises."""
     try:
-        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        import close_evidence
+        return _ce().tree_state(ROOT, scope)
+    except Exception as exc:  # noqa: BLE001
+        print("!!! CLOSE-EVIDENCE snapshot failed (%s: %s)" % (type(exc).__name__, exc), file=sys.stderr)
+        return None
+
+
+def evidence_report(csproj, rc, config, rec=None, start=None):
+    """One close-evidence line per build (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): PASS on exit 0, FAIL on a build
+    failure, UNMEASURED when staging failed and nothing was built. Staged builds are keyed by the tree between the
+    snapshots taken around the rsync, scoped to the staged dirs (review Z F2/F7); in-place builds by `start` and the
+    tree at the end. Never fails the build."""
+    try:
+        ce = _ce()
     except Exception as exc:  # noqa: BLE001
         print("!!! CLOSE-EVIDENCE unavailable (%s: %s); this build is not recorded" % (type(exc).__name__, exc),
               file=sys.stderr)
         return
     rec = rec or {}
-    close_evidence.record("winbuild", "PASS" if rc == 0 else "FAIL", [csproj], clone=ROOT,
-                          detail={"rc": rc, "configuration": config, "outputs": rec.get("outputs", []),
-                                  "staged_dirs_dirty": rec.get("dirty"), "source_sha": rec.get("source_sha")})
+    result = "UNMEASURED" if rec.get("staged") is False else ("PASS" if rc == 0 else "FAIL")
+    scope = rec.get("ev_scope")
+    covers = [os.path.join(ROOT, r.rstrip("/")) for r in scope] if scope else None
+    ce.record("winbuild", result, [csproj], clone=ROOT, start=rec.get("ev_start", start), end=rec.get("ev_end"),
+              scope=scope, covers=([csproj] + covers) if covers else None,
+              detail={"rc": rc, "configuration": config, "outputs": rec.get("outputs", []),
+                      "staged_dirs_dirty": rec.get("dirty"), "source_sha": rec.get("source_sha")})
 
 
 def main(argv=None):
@@ -330,9 +357,10 @@ def main(argv=None):
         if a.dry_run:
             print("in place: %s" % win(csproj))
             return 0
+        start = _ce_snapshot()
         rc = run_dotnet(win(csproj), os.path.dirname(csproj), a.configuration, extra)
         pulse_report(csproj, rc)
-        evidence_report(csproj, rc, a.configuration)
+        evidence_report(csproj, rc, a.configuration, start=start)
         return rc
 
     rc, rec = stage_build(csproj, a.configuration, extra, dry_run=a.dry_run)

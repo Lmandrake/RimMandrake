@@ -694,6 +694,7 @@ def _suite(args) -> int:
         # a file outside discovery (e.g. a planted fixture) is still run when named
         tests += sorted(w for w in want if w.is_file() and w not in {t.resolve() for t in tests})
         excluded = []
+    _evidence_start(tests)
     missing = set() if args.only else REQUIRED - {p.resolve().as_posix()[len(str(REPO_ROOT.resolve())) + 1:] for p in tests}
     if missing:
         print("REQUIRED lint selftest(s) not discovered: " + ", ".join(sorted(missing)))
@@ -866,7 +867,7 @@ def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=fr
             for line in detail.splitlines():
                 print(f"             {line}")
     _write_last_run(allr, wall_elapsed)
-    _record_evidence(allr)
+    _record_evidence(allr, discovered)
 
     # Denominator is what was DISCOVERED, not what came back — so a dropped result
     # shrinks every numerator and shows, instead of shrinking both and reading green.
@@ -915,26 +916,65 @@ def _write_last_run(allr, wall) -> None:
         pass
 
 
-def _record_evidence(allr) -> None:
-    """One close-evidence line per outer run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): the tests that reached a
-    verdict, keyed by the clone's HEAD and dirty flag. SKIPPED tests are not evidence and are left out."""
-    if _OUTER[0] is not True or os.environ.get("RM_SELFTEST_REPO_ROOT"):
+_EV_START: dict = {}     # {clone: close_evidence.snapshot} taken when the suite starts (review Z F2)
+
+
+def _evidence_on() -> bool:
+    return _OUTER[0] is True and not os.environ.get("RM_SELFTEST_REPO_ROOT")
+
+
+def _clone_for(path, ce):
+    p = Path(path).resolve()
+    root = REPO_ROOT.resolve()
+    return str(root) if p == root or root in p.parents else ce.clone_of(p)
+
+
+def _evidence_start(tests) -> None:
+    """Snapshot every clone the selected tests live in BEFORE any runs: a commit landing mid-run must not turn into a
+    PASS for a sha that was never tested (review Z F2). Never fails the run."""
+    _EV_START.clear()
+    if not _evidence_on():
+        return
+    try:
+        import close_evidence as ce
+        for c in {_clone_for(t, ce) for t in tests}:
+            if c:
+                _EV_START[c] = ce.snapshot(c)
+    except Exception as exc:  # noqa: BLE001
+        print(f"!!! CLOSE-EVIDENCE start snapshot failed ({type(exc).__name__}: {exc}); this run will not count",
+              file=sys.stderr)
+
+
+def _record_evidence(allr, discovered=None) -> None:
+    """One close-evidence line per outer run and clone (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): the tests that reached a
+    verdict, keyed by the clone's HEAD and dirty flag at START and END. SKIPPED tests are not evidence and are left out.
+    A run where results were DROPPED (fewer came back than were discovered) is UNMEASURED, never PASS (review Z F5);
+    a test file in another clone is recorded under that clone's sha, not this one's (F9)."""
+    if not _evidence_on():
         return
     ran = [r for r in allr if r[1] != "SKIPPED"]
     if not ran:
         return
-    states = {s for _, s, _, _ in ran}
-    result = ("FAIL" if states & {"FAIL", "CRASH"} else "PASS" if states == {"PASS"} else "UNMEASURED")
     try:
         import close_evidence
     except Exception as exc:  # noqa: BLE001 -- evidence never fails the run
         print(f"!!! CLOSE-EVIDENCE unavailable ({type(exc).__name__}: {exc}); this run is not recorded",
               file=sys.stderr)
         return
-    close_evidence.record("selftest", result, [p for p, *_ in ran], clone=REPO_ROOT, force=True,
-                          detail={"states": {_show(p): s for p, s, _, d in ran},
-                                  "cached": sorted(_show(p) for p, _, _, d in ran if d == "cached")})
-
+    dropped = discovered is not None and len(allr) != discovered
+    groups: dict = {}
+    for r in ran:
+        groups.setdefault(_clone_for(r[0], close_evidence), []).append(r)
+    for clone, rs in groups.items():
+        states = {s for _, s, _, _ in rs}
+        result = ("FAIL" if states & {"FAIL", "CRASH"} else "UNMEASURED" if dropped
+                  else "PASS" if states == {"PASS"} else "UNMEASURED")
+        close_evidence.record("selftest", result, [p for p, *_ in rs], clone=clone, force=True,
+                              start=_EV_START.get(clone),
+                              detail={"states": {_show(p): s for p, s, _, d in rs},
+                                      "cached": sorted(_show(p) for p, _, _, d in rs if d == "cached"),
+                                      "dropped": ({"discovered": discovered, "returned": len(allr)}
+                                                  if dropped else None)})
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--_harness-child":

@@ -4,25 +4,38 @@
 CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE (design/RimMandrake/rimflow_v3_arbiter_tiers_2026-10-27.md, "Missing gates"):
 94% of closes recorded no machine evidence, although selftests, C# builds, patch validation and modcheck all ran.
 Each of those tools now appends ONE line here when it finishes; a gate looks the sha up at claim time with no AI and
-no re-run.
+no re-run. Review Z (D:/ClaudeWork/rimmandrake/review_v3_Z/answer.md) hardened it to v2.
 
 Where: one JSONL per UTC day, `<agent storage>/rimmandrake/evidence/YYYY-MM-DD.jsonl`. The root comes from
 `python3 ~/dev/Lodestar/bin/lib/agent_storage.py rimmandrake` (never hard-wired); `RM_CLOSE_EVIDENCE_DIR` overrides it
-(selftests). Append-only: a line is never rewritten.
+(selftests). Append-only: a line is never rewritten. Appends hold an flock on `<day>.jsonl.lock`: on D: (drvfs)
+O_APPEND alone is NOT atomic -- 24 concurrent writers kept 41 of 960 lines (review Z F1).
 
-A line: {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, paths, result, item, seat, detail}
-  * sha    -- HEAD of the clone the covered paths live in; None when they live in no git clone (a game Mods folder).
-  * dirty  -- the clone had uncommitted changes (tracked or untracked) outside DIRTY_IGNORE; None when git could
-              not say. A dirty or unknown run is RECORDED (so its existence is auditable) but `lookup` never returns
-              it as evidence for a sha: the result describes the working tree, not the commit.
+A line (v2): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths, covers, result, item, seat, who,
+              live_only, variant, detail}
+  * seat/who -- WHO ran it (whoami(): rimflow's seat order, the session id, the agent); seat None when nothing names a
+              valid rimflow seat. Optional on read: older lines carry seat only, or nothing.
+  * sha/dirty -- HEAD and uncommitted state of the clone at the END of the run (dirty: tracked or untracked changes
+              outside DIRTY_IGNORE, limited to `scope` pathspecs when the tool knows exactly what it read; None when
+              git could not say).
+  * start  -- {sha, dirty, dirty_n} taken when the run STARTED (snapshot()). A run is evidence for a sha only when
+              start and end are the same sha and both clean: a commit landing mid-run is not tested (review Z F2).
+  * covers -- what the run actually read (paths are what it was pointed at). lookup(paths=) returns a record only
+              for the paths it covers: a partial run never speaks for the whole item (F5).
+  * live_only -- the result describes a running game, not a tree (modcheck: the game holds whatever it loaded at
+              launch, and nothing fingerprints that load). Never sha evidence (F3).
+  * variant -- a weaker form of the tool (validate_patch "static" / "defnames"): summarize keys it apart (F6).
   * result -- PASS / FAIL / UNMEASURED, nothing else.
-  * item   -- `$RIMFLOW_ITEM` when the caller set it, else None.
+Lines of v1 (before review Z) are never evidence: they were written by the racy, end-only recorder.
+
+Under Windows python.exe (modcheck's interpreter) a record is shipped as JSON to `wsl.exe -e python3 close_evidence.py
+record`, so the store, git and the lock are the WSL ones (F4).
 
 Writing evidence never fails the tool: every error is printed loudly to stderr and swallowed.
 Under the selftest runner (`RM_SELFTEST_NESTED`) a tool run by a test writes nothing unless the test pointed
 `RM_CLOSE_EVIDENCE_DIR` somewhere, so fixtures never pose as evidence; the runner itself records with force=True.
 
-    python3 src/RimMandrake/Utils/close_evidence.py lookup --sha <sha> [--item ID] [--tool T] [--all]
+    python3 src/RimMandrake/Utils/close_evidence.py lookup --sha <sha> [--item ID] [--tool T] [--path P ...] [--all]
     python3 src/RimMandrake/Utils/close_evidence.py where
 """
 from __future__ import annotations
@@ -31,11 +44,12 @@ import argparse
 import datetime
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
 
-V = 1
+V = 2
 RESULTS = ("PASS", "FAIL", "UNMEASURED")
 ENV_DIR = "RM_CLOSE_EVIDENCE_DIR"
 AGENT_STORAGE = Path.home() / "dev/Lodestar/bin/lib/agent_storage.py"
@@ -43,7 +57,23 @@ AGENT_STORAGE = Path.home() / "dev/Lodestar/bin/lib/agent_storage.py"
 #: into the bench clone, so counting them would make every run "dirty" and the record worthless.
 DIRTY_IGNORE = ("conversations/",)
 DIRTY_KEEP = 20
+ALL = "*"                      # a covers entry that covers every path (an unreadable-line marker)
 _ROOT_CACHE: list = []
+_SHA_RE = re.compile(r"\b[0-9a-f]{40}\b")
+
+
+# ------------------------------------------------------------------ paths and git
+
+def to_wsl(p) -> str:
+    """`\\\\wsl.localhost\\<distro>\\home\\x` -> `/home/x`; `D:\\x` -> `/mnt/d/x`; a POSIX path passes through."""
+    s = str(p)
+    u = re.match(r"^[\\/]{2}wsl(?:\.localhost|\$)[\\/][^\\/]+[\\/]?(.*)$", s, re.I)
+    if u:
+        return "/" + u.group(1).replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):[\\/]?(.*)$", s)
+    if m:
+        return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+    return s
 
 
 def evidence_dir() -> Path:
@@ -65,7 +95,16 @@ def evidence_dir() -> Path:
 
 
 def _git(clone, *args, timeout=60):
-    r = subprocess.run(["git", "-C", str(clone), *args], capture_output=True, text=True, timeout=timeout)
+    """`git -C clone args`, never taking optional locks (a shared clone: `git status` refreshing the index must not
+    make another agent's commit fail on index.lock -- F8). Under Windows python a \\\\wsl.localhost clone is reached
+    through `wsl.exe -e git`."""
+    base = ["git", "--no-optional-locks", "-C"]
+    if os.name == "nt":
+        cmd = ["wsl.exe", "-e"] + base + [to_wsl(clone)] + list(args)
+    else:
+        cmd = base + [str(clone)] + list(args)
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout,
+                       env=dict(os.environ, GIT_OPTIONAL_LOCKS="0"))
     return r.returncode, r.stdout
 
 
@@ -82,14 +121,16 @@ def clone_of(path) -> str | None:
     return out.strip() if rc == 0 and out.strip() else None
 
 
-def tree_state(clone) -> dict:
-    """{sha, dirty, dirty_n, dirty_paths} for a clone. dirty None when git status could not run."""
+def tree_state(clone, scope=None) -> dict:
+    """{sha, dirty, dirty_n, dirty_paths} for a clone. dirty None when git status could not run. `scope`: repo-relative
+    pathspecs -- dirtiness counted only there (a tool that knows exactly what it read, e.g. winbuild's staged dirs)."""
     st = {"sha": None, "dirty": None, "dirty_n": None, "dirty_paths": []}
     try:
         rc, out = _git(clone, "rev-parse", "HEAD", timeout=30)
         if rc == 0 and out.strip():
             st["sha"] = out.strip()
-        rc, out = _git(clone, "status", "--porcelain=v1", "-z", "--untracked-files=normal")
+        spec = ["--", *scope] if scope else []
+        rc, out = _git(clone, "status", "--porcelain=v1", "-z", "--untracked-files=normal", *spec)
     except (OSError, subprocess.SubprocessError):
         return st
     if rc != 0:
@@ -109,6 +150,24 @@ def tree_state(clone) -> dict:
     return st
 
 
+def snapshot(clone, scope=None) -> dict:
+    """Tree state at the START of a run: pass it to record(start=...). Never raises."""
+    try:
+        clone = os.path.realpath(str(clone)) if os.name != "nt" else str(clone)
+        st = tree_state(clone, scope)
+    except Exception:  # noqa: BLE001
+        st = {"sha": None, "dirty": None, "dirty_n": None}
+    return {"sha": st["sha"], "dirty": st["dirty"], "dirty_n": st["dirty_n"]}
+
+
+def by_clone(paths) -> dict:
+    """{clone or None: [paths]} -- a run over several clones is recorded once per clone (F6, F9)."""
+    out: dict = {}
+    for p in paths:
+        out.setdefault(clone_of(p), []).append(p)
+    return out
+
+
 def _rel(path, clone) -> str:
     p = os.path.abspath(str(path))
     if clone:
@@ -121,34 +180,140 @@ def _rel(path, clone) -> str:
     return p
 
 
-def build_record(tool, result, paths, clone=None, detail=None, item=None, now=None) -> dict:
+# ------------------------------------------------------------------ who ran it
+
+#: rimflow's seat vocabulary (rimflow/model.py SEATS), read at call time; a fallback copy only if it cannot be imported
+_SEATS_FALLBACK = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
+_RIMFLOW = Path(__file__).resolve().parents[1] / "rimflow"
+
+
+def _seats_and_root():
+    try:
+        sys.path.insert(0, str(_RIMFLOW.parent))
+        from rimflow import model
+        return tuple(model.SEATS), model.ROOT
+    except Exception:  # noqa: BLE001
+        return _SEATS_FALLBACK, str(Path(__file__).resolve().parents[3])
+    finally:
+        if sys.path and sys.path[0] == str(_RIMFLOW.parent):
+            sys.path.pop(0)
+
+
+def whoami() -> dict:
+    """WHO ran a tool, in rimflow's own seat order (rimflow/cli.py resolve_seat, minus --seat): RIMFLOW_SEAT, AGENT_SEAT,
+    then `.claude/session_roles/<this session id>` -- this session's file only, never the newest. A value that is not a
+    rimflow seat is kept as `seat_raw` and the seat stays None: a wrong seat is worse than none. Never raises.
+    -> {seat, seat_from, seat_raw, session, agent}"""
+    seats, root = _seats_and_root()
+    sid = os.environ.get("CLAUDE_SESSION_ID") or os.environ.get("CLAUDE_CODE_SESSION_ID") or None
+    out = {"seat": None, "seat_from": None, "seat_raw": None, "session": sid,
+           "agent": os.environ.get("AI_AGENT") or None}
+    cands = [("RIMFLOW_SEAT", os.environ.get("RIMFLOW_SEAT")), ("AGENT_SEAT", os.environ.get("AGENT_SEAT"))]
+    if sid:
+        try:
+            words = (Path(root) / ".claude" / "session_roles" / sid).read_text(encoding="utf-8").replace("-", " ").split()
+            cands.append(("session role file", next((w for w in words if w.upper() in seats), None)))
+        except OSError:
+            pass
+    for src, val in cands:
+        if not val or not val.strip():
+            continue
+        v = val.strip().upper()
+        if v in seats:
+            out.update(seat=v, seat_from=src)
+        else:
+            out.update(seat_raw=val.strip(), seat_from=src)
+        break
+    return out
+
+
+# ------------------------------------------------------------------ write
+
+def build_record(tool, result, paths, clone=None, detail=None, item=None, now=None, start=None, end=None,
+                 scope=None, covers=None, live_only=False, variant=None, seat=None, who=None) -> dict:
     if result not in RESULTS:
         raise ValueError("result must be one of %s, got %r" % (RESULTS, result))
     paths = [str(p) for p in (paths or [])]
     if clone is None and paths:
         clone = clone_of(paths[0])
     clone = os.path.realpath(str(clone)) if clone else None
-    st = tree_state(clone) if clone else {"sha": None, "dirty": None, "dirty_n": None, "dirty_paths": []}
+    if end is None:
+        end = tree_state(clone, scope) if clone else {"sha": None, "dirty": None, "dirty_n": None, "dirty_paths": []}
+    st = {"sha": end.get("sha"), "dirty": end.get("dirty"), "dirty_n": end.get("dirty_n"),
+          "dirty_paths": list(end.get("dirty_paths") or [])}
+    start = ({"sha": start.get("sha"), "dirty": start.get("dirty"), "dirty_n": start.get("dirty_n")}
+             if isinstance(start, dict) else None)
     now = now or datetime.datetime.now(datetime.timezone.utc)
-    return {"v": V, "ts": now.isoformat(timespec="seconds"), "tool": tool, "clone": clone, **st,
-            "paths": [_rel(p, clone) for p in paths], "result": result,
-            "item": item if item is not None else (os.environ.get("RIMFLOW_ITEM") or None),
-            "seat": os.environ.get("RIMFLOW_SEAT") or None, "detail": detail or {}}
+    rel = [_rel(p, clone) for p in paths]
+    who = dict(who) if isinstance(who, dict) else whoami()
+    if seat:
+        who.update(seat=seat, seat_from=who.get("seat_from") or "caller")
+    return {"v": V, "ts": now.isoformat(timespec="seconds"), "tool": tool, "clone": clone, **st, "start": start,
+            "paths": rel, "covers": [_rel(p, clone) for p in covers] if covers is not None else rel,
+            "result": result, "item": item if item is not None else (os.environ.get("RIMFLOW_ITEM") or None),
+            "seat": who.get("seat"), "who": who,
+            "live_only": bool(live_only), "variant": variant, "detail": detail or {}}
 
 
-def record(tool, result, paths, clone=None, detail=None, item=None, force=False) -> dict | None:
-    """Append one evidence line. NEVER raises: a failure is printed loudly and None returned."""
+def _append(path: Path, data: bytes) -> None:
+    """Append under an exclusive flock on `<file>.lock` (drvfs O_APPEND is not atomic across processes -- F1);
+    a short write is retried until the whole line is down."""
+    import fcntl
+    lfd = os.open(str(path) + ".lock", os.O_WRONLY | os.O_CREAT, 0o644)
+    try:
+        fcntl.flock(lfd, fcntl.LOCK_EX)
+        fd = os.open(str(path), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        try:
+            view = memoryview(data)
+            while view:
+                n = os.write(fd, view)
+                if n <= 0:
+                    raise OSError("short write (%d of %d bytes left)" % (n, len(view)))
+                view = view[n:]
+        finally:
+            os.close(fd)
+    finally:
+        try:
+            fcntl.flock(lfd, fcntl.LOCK_UN)
+        finally:
+            os.close(lfd)
+
+
+def _ship_to_wsl(payload: dict) -> dict | None:
+    """Windows python: the WSL side records (its store, its git, its flock)."""
+    if os.environ.get(ENV_DIR):
+        payload["evidence_dir"] = to_wsl(os.environ[ENV_DIR])
+    payload.setdefault("item", os.environ.get("RIMFLOW_ITEM") or None)
+    payload.setdefault("who", whoami())          # the CALLER's environment: wsl.exe does not carry it across
+    payload["paths"] = [to_wsl(p) for p in payload.get("paths") or []]
+    if payload.get("covers") is not None:
+        payload["covers"] = [to_wsl(p) for p in payload["covers"]]
+    if payload.get("clone"):
+        payload["clone"] = to_wsl(payload["clone"])
+    r = subprocess.run(["wsl.exe", "-e", "python3", to_wsl(os.path.abspath(__file__)), "record"],
+                       input=json.dumps(payload, default=str), capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        raise RuntimeError("wsl.exe close_evidence record exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-400:]))
+    return json.loads(r.stdout.strip().splitlines()[-1])
+
+
+def record(tool, result, paths, clone=None, detail=None, item=None, force=False, start=None, end=None, scope=None,
+           covers=None, live_only=False, variant=None) -> dict | None:
+    """Append one evidence line. NEVER raises: a failure is printed loudly and None returned.
+    start: snapshot() taken when the run began (without it the line is recorded but is not evidence)."""
     try:
         if os.environ.get("RM_SELFTEST_NESTED") and not force and not os.environ.get(ENV_DIR):
             return None                       # a tool run by a selftest: fixture, not evidence
-        rec = build_record(tool, result, paths, clone, detail, item)
-        day = rec["ts"][:10]
+        if os.name == "nt":
+            return _ship_to_wsl({"tool": tool, "result": result, "paths": [str(p) for p in paths or []],
+                                 "clone": str(clone) if clone else None, "detail": detail, "item": item,
+                                 "start": start, "end": end, "scope": scope,
+                                 "covers": [str(c) for c in covers] if covers is not None else None,
+                                 "live_only": live_only, "variant": variant})
+        rec = build_record(tool, result, paths, clone, detail, item, start=start, end=end, scope=scope,
+                           covers=covers, live_only=live_only, variant=variant)
         line = (json.dumps(rec, sort_keys=True, default=str) + "\n").encode("utf-8")
-        fd = os.open(str(evidence_dir() / ("%s.jsonl" % day)), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
-        try:
-            os.write(fd, line)                # one write per line: concurrent appenders do not interleave
-        finally:
-            os.close(fd)
+        _append(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]), line)
         return rec
     except Exception as exc:  # noqa: BLE001 -- evidence is a side channel; the tool's own verdict stands
         print("!!! CLOSE-EVIDENCE WRITE FAILED (%s, tool=%s): %s: %s -- the tool's result is unaffected, but no "
@@ -156,25 +321,35 @@ def record(tool, result, paths, clone=None, detail=None, item=None, force=False)
         return None
 
 
+# ------------------------------------------------------------------ read
+
 def _days(n, today=None):
     today = today or datetime.datetime.now(datetime.timezone.utc).date()
     return [(today - datetime.timedelta(days=k)).isoformat() for k in range(n)]
 
 
-def read_all(days=30, folder=None):
-    """Every record in the last `days` day files, oldest first. Bad lines are skipped and counted."""
+def read_all(days=30, folder=None, bad_out=None):
+    """Every record in the last `days` day files, oldest first. Unreadable lines are skipped, counted on stderr and,
+    when `bad_out` (a list) is given, appended to it as (day, fragment) so a caller can refuse to call the day clean."""
     folder = Path(folder) if folder else evidence_dir()
     out, bad = [], 0
     for day in sorted(_days(days)):
         f = folder / ("%s.jsonl" % day)
         if not f.is_file():
             continue
-        with f.open(encoding="utf-8") as fh:
+        with f.open(encoding="utf-8", errors="replace") as fh:
             for ln in fh:
+                if not ln.strip():
+                    continue
                 try:
-                    out.append(json.loads(ln))
+                    r = json.loads(ln)
+                    if not isinstance(r, dict):
+                        raise ValueError("not an object")
+                    out.append(r)
                 except ValueError:
                     bad += 1
+                    if bad_out is not None:
+                        bad_out.append((day, ln))
     if bad:
         print("close_evidence: %d unreadable line(s) skipped" % bad, file=sys.stderr)
     return out
@@ -188,43 +363,142 @@ def _sha_match(a, b) -> bool:
 
 
 def counts_as_evidence(rec) -> bool:
-    """A record speaks for its sha only from a clean tree at a known sha."""
-    return bool(rec.get("sha")) and rec.get("dirty") is False and rec.get("result") in RESULTS
+    """A record speaks for its sha only from a clean tree at a known sha, the same at the start and the end of the run,
+    and only when it describes a tree (not a live game). v1 lines (pre review Z) never do."""
+    if not (bool(rec.get("sha")) and rec.get("dirty") is False and rec.get("result") in RESULTS):
+        return False
+    if rec.get("live_only"):
+        return False
+    v = rec.get("v")
+    if v is None:                     # hand-built record (fixtures): judged on sha/dirty alone
+        return True
+    if v < 2:
+        return False
+    st = rec.get("start")
+    return isinstance(st, dict) and st.get("dirty") is False and bool(st.get("sha")) and \
+        st["sha"].lower() == rec["sha"].lower()
 
 
-def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=False):
+def _covers(rp, f) -> bool:
+    """Record path rp covers touched file f: equal, f under rp/, or rp is selftest_<stem>.py beside <stem>.py."""
+    if rp == ALL:
+        return True
+    rp, f = rp.rstrip("/"), f.rstrip("/")
+    if f == rp or f.startswith(rp + "/") or rp in ("", "."):
+        return True
+    d, b = os.path.split(rp)
+    return b.startswith("selftest_") and f == os.path.join(d, b[len("selftest_"):])
+
+
+def _norm_path(p, clone) -> str:
+    s = str(p)
+    if os.path.isabs(s):
+        return _rel(s, clone)
+    s = s.replace(os.sep, "/")
+    while s.startswith("./"):
+        s = s[2:]
+    return s
+
+
+def covered(rec, paths) -> list:
+    """The subset of `paths` this record actually covers (its `covers`, else its `paths`)."""
+    cov = rec.get("covers")
+    cov = cov if isinstance(cov, list) else (rec.get("paths") or [])
+    return [p for p in paths if any(_covers(c, _norm_path(p, rec.get("clone"))) for c in cov)]
+
+
+def uncovered(records, paths) -> list:
+    """`paths` that no record covers: a gate that needs every touched path tested reads this."""
+    return [p for p in paths if not any(covered(r, [p]) for r in records)]
+
+
+def _bad_marker(sha, frags) -> dict:
+    """An UNMEASURED record standing for unreadable line(s) that may have held a run at `sha` (F1: a lost FAIL must
+    never leave an older PASS standing)."""
+    return {"v": V, "ts": "", "tool": "close_evidence", "clone": None, "sha": sha, "dirty": False, "dirty_n": 0,
+            "dirty_paths": [], "start": {"sha": sha, "dirty": False, "dirty_n": 0}, "paths": [ALL], "covers": [ALL],
+            "result": "UNMEASURED", "item": None, "seat": None, "live_only": False, "variant": None,
+            "detail": {"unreadable_lines": len(frags), "days": sorted({d for d, _ in frags})}}
+
+
+def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=False, paths=None,
+           include_live=False):
     """Evidence for sha S and/or item X, oldest first.
 
     sha given: records at that commit (prefix match, >=7 chars), whatever item they name.
     item given: records tagged with that item; with sha too, both must match.
-    Dirty-tree and unknown-tree records are excluded unless include_dirty (audit only)."""
+    paths given: only records that cover at least one of them (repo-relative or absolute), so a partial run counts
+    only for what it tested; uncovered(records, paths) names the rest.
+    Dirty, unknown-tree, start/end-drift and v1 records are excluded unless include_dirty (audit only); live-only
+    (modcheck) records unless include_live. An unreadable line in the window that names this sha, or names no sha at
+    all, adds an UNMEASURED `close_evidence` record: a corrupted FAIL is never read as absent."""
     if not sha and not item:
         raise ValueError("lookup needs a sha or an item")
+    bad: list = []
     hits = []
-    for r in read_all(days, folder):
+    for r in read_all(days, folder, bad_out=bad):
         if sha and not _sha_match(r.get("sha"), sha):
             continue
         if item and r.get("item") != item:
             continue
         if tool and r.get("tool") != tool:
             continue
-        if not include_dirty and not counts_as_evidence(r):
+        if r.get("live_only"):
+            if not include_live:
+                continue
+        elif not include_dirty and not counts_as_evidence(r):
+            continue
+        if paths and not covered(r, list(paths)):
             continue
         hits.append(r)
+    if bad and sha:
+        def maybe_ours(ln):
+            low = ln.lower()
+            shas = _SHA_RE.findall(low)
+            if shas and not any(_sha_match(s, sha) for s in shas):
+                return False                  # names other commits only
+            return not (tool and '"tool": "' in ln and '"tool": "%s"' % tool not in ln)
+        frags = [(d, ln) for d, ln in bad if maybe_ours(ln)]
+        if frags:
+            hits.append(_bad_marker(sha, frags))
     return hits
 
 
 def summarize(records) -> dict:
     """{tool: PASS|FAIL|UNMEASURED}: per tool, the latest record per covered-path set; FAIL beats UNMEASURED
-    beats PASS across sets. A gate reads PASS only when every latest run of that tool passed."""
+    beats PASS across sets. A gate reads PASS only when every latest run of that tool passed. A record's variant
+    (validate_patch without --defs) is its own key, `tool:variant`, so a static check never stands in for the real one."""
     latest = {}
     for r in sorted(records, key=lambda r: r.get("ts") or ""):
-        latest[(r["tool"], tuple(r.get("paths") or ()))] = r["result"]
+        key = r["tool"] + (":%s" % r["variant"] if r.get("variant") else "")
+        latest[(key, tuple(r.get("paths") or ()))] = r["result"]
     out = {}
     for (tool, _), res in latest.items():
         prev = out.get(tool)
         out[tool] = res if prev is None else min(prev, res, key=("FAIL", "UNMEASURED", "PASS").index)
     return out
+
+
+# ------------------------------------------------------------------ cli
+
+def _record_cli() -> int:
+    """`record`: one JSON payload on stdin (from a Windows python.exe caller) -> one line; prints the record."""
+    p = json.loads(sys.stdin.read())
+    if p.get("evidence_dir"):
+        os.environ[ENV_DIR] = p["evidence_dir"]
+    for k in ("RM_SELFTEST_NESTED",):
+        os.environ.pop(k, None)               # the Windows side already applied the nested rule
+    try:
+        rec = build_record(p["tool"], p["result"], p.get("paths"), p.get("clone"), p.get("detail"), p.get("item"),
+                           start=p.get("start"), end=p.get("end"), scope=p.get("scope"), covers=p.get("covers"),
+                           live_only=p.get("live_only", False), variant=p.get("variant"), who=p.get("who"))
+        _append(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]),
+                (json.dumps(rec, sort_keys=True, default=str) + "\n").encode("utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        print("record failed: %s: %s" % (type(exc).__name__, exc), file=sys.stderr)
+        return 1
+    print(json.dumps(rec, sort_keys=True, default=str))
+    return 0
 
 
 def _main(argv=None) -> int:
@@ -234,21 +508,30 @@ def _main(argv=None) -> int:
     lk.add_argument("--sha")
     lk.add_argument("--item")
     lk.add_argument("--tool")
+    lk.add_argument("--path", action="append", default=[], help="only records covering this path (repeatable)")
     lk.add_argument("--days", type=int, default=30)
     lk.add_argument("--all", action="store_true", help="include dirty-tree records (audit; never evidence)")
+    lk.add_argument("--live", action="store_true", help="include live-only (modcheck) records (never sha evidence)")
     sub.add_parser("where", help="print the evidence folder")
+    sub.add_parser("record", help="internal: one JSON record payload on stdin (Windows python.exe callers)")
     a = ap.parse_args(argv)
     if a.cmd == "where":
         print(evidence_dir())
         return 0
+    if a.cmd == "record":
+        return _record_cli()
     if not (a.sha or a.item):
         ap.error("lookup needs --sha or --item")
-    hits = lookup(a.sha, a.item, a.tool, a.days, include_dirty=a.all)
+    hits = lookup(a.sha, a.item, a.tool, a.days, include_dirty=a.all, paths=a.path or None, include_live=a.live)
     for r in hits:
-        print("%s %-12s %-10s %s%s %s%s" % (r["ts"], r["tool"], r["result"], (r.get("sha") or "-")[:12],
-                                            "" if r.get("dirty") is False else " DIRTY", ",".join(r["paths"][:4]),
-                                            " (+%d)" % (len(r["paths"]) - 4) if len(r["paths"]) > 4 else ""))
+        ps = r.get("paths") or []
+        print("%s %-14s %-10s %s%s%s %s%s" % (r["ts"], r["tool"], r["result"], (r.get("sha") or "-")[:12],
+                                              "" if counts_as_evidence(r) else " NOT-EVIDENCE",
+                                              " LIVE" if r.get("live_only") else "", ",".join(ps[:4]),
+                                              " (+%d)" % (len(ps) - 4) if len(ps) > 4 else ""))
     print("%d record(s); summary %s" % (len(hits), json.dumps(summarize(hits), sort_keys=True)))
+    if a.path:
+        print("uncovered: %s" % (", ".join(uncovered(hits, a.path)) or "none"))
     return 0
 
 

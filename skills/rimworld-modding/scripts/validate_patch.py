@@ -2466,26 +2466,51 @@ def validate_file(path: str, docs, scanner: PatchScanner | None,
 _RUN: dict = {}      # filled by main() once a validation run starts; read by _record_evidence
 
 
+def _ce():
+    here = os.path.dirname(os.path.realpath(__file__))
+    sys.path.insert(0, os.path.normpath(os.path.join(here, "..", "..", "..", "src", "RimMandrake", "Utils")))
+    import close_evidence
+    return close_evidence
+
+
+def _evidence_start(files: list) -> None:
+    """Snapshot each clone the targets live in BEFORE validating (review Z F2). Never fails."""
+    try:
+        ce = _ce()
+        groups = ce.by_clone(files)
+        _RUN["groups"] = groups
+        _RUN["start"] = {c: ce.snapshot(c) for c in groups if c}
+    except Exception as exc:  # noqa: BLE001
+        print(f"!!! CLOSE-EVIDENCE start snapshot failed ({type(exc).__name__}: {exc}); this run will not count",
+              file=sys.stderr)
+
+
 def _record_evidence(rc: int) -> None:
-    """One close-evidence line per validation run (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): exit 0 PASS, 1 FAIL,
-    anything else UNMEASURED, keyed by the HEAD of the clone holding the first target (paths = the targets as
-    given, not every expanded file). Files in the game's Mods folder live in no clone, so their line carries sha
-    None and is never evidence for a commit. Never fails."""
+    """One close-evidence line per validation run and clone (CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE): exit 0 PASS,
+    1 FAIL, anything else UNMEASURED; also UNMEASURED when any target could not be read (review Z F6). Paths are the
+    files actually validated, grouped by the clone holding each, keyed by that clone's HEAD at start and end. Files in
+    the game's Mods folder live in no clone, so their line carries sha None and is never evidence for a commit. A run
+    without --defs is variant "static" (or "defnames"): xpath matching was NOT checked, so it is summarized apart.
+    Never fails."""
     if not _RUN.get("files"):
         return
     try:
-        here = os.path.dirname(os.path.realpath(__file__))
-        sys.path.insert(0, os.path.normpath(os.path.join(here, "..", "..", "..", "src", "RimMandrake", "Utils")))
-        import close_evidence
+        ce = _ce()
     except Exception as exc:  # noqa: BLE001
         print(f"!!! CLOSE-EVIDENCE unavailable ({type(exc).__name__}: {exc}); this run is not recorded",
               file=sys.stderr)
         return
     a = _RUN["args"]
-    close_evidence.record("validate_patch", {0: "PASS", 1: "FAIL"}.get(rc, "UNMEASURED"),
-                          [str(t) for t in a.patch],
-                          detail={"rc": rc, "n_files": len(_RUN["files"]), "live": a.live, "defs": a.defs, "defnames": a.defnames,
-                                  "all_versions": a.all_versions})
+    result = {0: "PASS", 1: "FAIL"}.get(rc, "UNMEASURED")
+    if _RUN.get("bad") and result == "PASS":
+        result = "UNMEASURED"
+    variant = None if a.defs else ("defnames" if (a.live or a.defnames) else "static")
+    groups = _RUN.get("groups") or {None: list(_RUN["files"])}
+    for clone, files in groups.items():
+        ce.record("validate_patch", result, files, clone=clone, start=(_RUN.get("start") or {}).get(clone),
+                  variant=variant,
+                  detail={"rc": rc, "n_files": len(files), "unreadable": list(_RUN.get("bad") or []),
+                          "live": a.live, "defs": a.defs, "defnames": a.defnames, "all_versions": a.all_versions})
 
 
 def main() -> int:
@@ -2547,7 +2572,9 @@ def main() -> int:
         return 0
 
     files, bad = collect_patch_files(args.patch)
-    _RUN.update(files=list(files), args=args)
+    _RUN.update(files=list(files), args=args, bad=list(bad))
+    if files:
+        _evidence_start(list(files))
     for b in bad:
         print(f"cannot read {b}")
     if not files:

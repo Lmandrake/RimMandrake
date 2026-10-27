@@ -6,10 +6,16 @@ evidence store is never touched. Checks: a clean run is found by sha (prefix) an
 but never returned as evidence; session transcripts do not make a tree dirty; a write error never raises; a tool run
 inside a selftest writes nothing unless redirected; summarize lets FAIL win; validate_patch, run_selftests and
 modcheck each write their line (or, for a redirected modcheck registry, do not).
+Review Z (v2), one check group per finding: F1 24 concurrent writers on D: keep every line, an unreadable line reads
+UNMEASURED; F2 start/end drift and v1 lines are not evidence; F3 modcheck is live-only; F4 python.exe records via WSL;
+F5 lookup(paths=) and DROPPED -> UNMEASURED; F6 validate_patch unread target -> UNMEASURED, static variant; F7 winbuild
+stage snapshots and rsync failure; F8 --no-optional-locks; F9 per-clone selftest lines; F10 AGENT_SEAT; WHO seat/session/agent per line.
 """
 import io
 import json
+import multiprocessing
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -54,7 +60,7 @@ def main():
         repo, sha = make_repo(td)
 
         # clean tree: found by full sha, by 12-char prefix, by item; a 6-char prefix is too short to match
-        r1 = CE.record("selftest", "PASS", [repo / "src" / "a.py"], clone=repo, item="ITEM_ONE")
+        r1 = CE.record("selftest", "PASS", [repo / "src" / "a.py"], clone=repo, item="ITEM_ONE", start=CE.snapshot(repo))
         check(r1 is not None and r1["sha"] == sha and r1["dirty"] is False, "clean record carries HEAD, dirty False")
         check(r1["paths"] == ["src/a.py"], "paths are clone-relative: %r" % (r1 and r1["paths"],))
         check(len(CE.lookup(sha=sha)) == 1, "lookup by sha finds the clean run")
@@ -124,8 +130,8 @@ def main():
 
         # every line on disk is one JSON object with the fixed fields
         lines = [json.loads(ln) for f in store.glob("*.jsonl") for ln in f.read_text().splitlines()]
-        want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "paths", "result", "item",
-                "seat", "detail"}
+        want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "start", "paths", "covers",
+                "result", "item", "seat", "who", "live_only", "variant", "detail"}
         check(lines and all(set(l) == want for l in lines), "%d lines, each with exactly the schema fields" % len(lines))
 
         # validate_patch end to end: a run on a file in the fixture clone writes one validate_patch line
@@ -150,11 +156,15 @@ def main():
         # run_selftests: the outer run records the verdict-reaching tests, not the SKIPPED ones
         import run_selftests as RS
         RS._OUTER[0] = True
+        os.environ.pop("RM_SELFTEST_REPO_ROOT", None)
         ran = [(REPO / "src/RimMandrake/Utils/selftest_close_evidence.py", "PASS", 1.0, ""),
                (REPO / "src/RimMandrake/Utils/close_evidence.py", "SKIPPED", 0.0, "unchanged")]
         before = len(CE.read_all(folder=store))
+        RS._evidence_start([r[0] for r in ran])
         RS._record_evidence(ran)
         RS._record_evidence([ran[0], (ran[1][0], "FAIL", 1.0, "boom")])
+        check(all(r["start"] and r["start"]["sha"] for r in CE.read_all(folder=store)[before:]),
+              "F2 the runner stores the start snapshot it took before running")
         RS._OUTER[0] = None
         RS._record_evidence(ran)                     # not an outer run: nothing
         new = CE.read_all(folder=store)[before:]
@@ -174,10 +184,249 @@ def main():
         last = CE.read_all(folder=store)[-1]
         check(last["tool"] == "modcheck" and last["result"] == "PASS" and last["detail"]["status"] == "GREEN",
               "modcheck records the machine verdict beside the registry status")
+        # F3: the running game holds what it loaded at launch -> live-only, never sha evidence
+        check(last["live_only"] is True and not CE.counts_as_evidence(last), "F3 modcheck line is live-only, not evidence")
+        check(not CE.lookup(sha=last["sha"], tool="modcheck", include_dirty=True)
+              and CE.lookup(sha=last["sha"], tool="modcheck", include_live=True),
+              "F3 lookup hides modcheck unless include_live")
+
+        review_z(td, store, repo, sha2)
 
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
 
+
+# ------------------------------------------------------------------ review Z
+
+def _writer(args):
+    store, k, n = args
+    os.environ[CE.ENV_DIR] = store
+    pad = "x" * 2000
+    for j in range(n):
+        CE.record("selftest", "PASS", [], detail={"w": k, "j": j, "pad": pad})
+
+
+def review_z(td, store, repo, sha):
+    # F1: 24 writers x 40 lines x 2 KB on D: (drvfs, where O_APPEND alone kept 41 of 960) -- every line survives
+    dbase = Path("/mnt/d/ClaudeWork/rimmandrake/selftest_tmp")
+    if Path("/mnt/d/ClaudeWork").is_dir():
+        dbase.mkdir(parents=True, exist_ok=True)
+        dst = tempfile.mkdtemp(prefix="ce_f1_", dir=str(dbase))
+        try:
+            with multiprocessing.get_context("fork").Pool(24) as pool:
+                pool.map(_writer, [(dst, k, 40) for k in range(24)])
+            lines = [ln for f in Path(dst).glob("*.jsonl") for ln in f.read_text().splitlines()]
+            good = set()
+            for ln in lines:
+                try:
+                    d = json.loads(ln)["detail"]
+                    good.add((d["w"], d["j"]))
+                except (ValueError, KeyError):
+                    pass
+            check(len(lines) == 960 and len(good) == 960,
+                  "F1 24 concurrent writers on D: kept %d/960 lines, %d distinct intact" % (len(lines), len(good)))
+        finally:
+            shutil.rmtree(dst, ignore_errors=True)
+    else:
+        print("F1 drvfs probe: no /mnt/d here -- UNMEASURED, not a pass or a fail")
+    # F1: an unreadable line that may hold this sha is UNMEASURED, never silently absent
+    fx = Path(td) / "f1store"
+    fx.mkdir()
+    os.environ[CE.ENV_DIR] = str(fx)
+    st = CE.snapshot(repo)
+    CE.record("selftest", "PASS", [repo / "src"], clone=repo, start=st)
+    day = next(fx.glob("*.jsonl"))
+    with day.open("a") as f:
+        f.write('{"result": "FAIL", "sha": "%s", "tool": "self\n' % sha)
+    hits = CE.lookup(sha=sha)
+    check(CE.summarize(hits).get("close_evidence") == "UNMEASURED" and len(hits) == 2,
+          "F1 a torn line naming this sha adds an UNMEASURED marker: %r" % CE.summarize(hits))
+    with day.open("a") as f:
+        f.write('{"sha": "%s", "torn\n' % ("f" * 40))
+    check(len(CE.lookup(sha=sha)) == 2, "F1 a torn line naming only another sha is not ours")
+    os.environ[CE.ENV_DIR] = str(store)
+
+    # F2: a commit landing mid-run, a dirty start, and a v1 line are not evidence
+    st = CE.snapshot(repo)
+    (repo / "src" / "a.py").write_text("x = 3\n")
+    git(repo, "commit", "-q", "-am", "mid-run")
+    sha3 = git(repo, "rev-parse", "HEAD")
+    r = CE.record("selftest", "PASS", [repo / "src" / "a.py"], clone=repo, start=st)
+    check(r["start"]["sha"] == sha and r["sha"] == sha3 and not CE.counts_as_evidence(r),
+          "F2 start sha != end sha -> not evidence")
+    check(not CE.lookup(sha=sha3, tool="selftest") and not any(x["ts"] == r["ts"] and x["sha"] == sha3
+                                                               for x in CE.lookup(sha=sha)),
+          "F2 neither the start nor the end sha gets the mid-run PASS")
+    r = CE.record("selftest", "PASS", [repo / "src"], clone=repo)
+    check(r["start"] is None and not CE.counts_as_evidence(r), "F2 a record without a start snapshot is not evidence")
+    check(not CE.counts_as_evidence(dict(r, v=1, start={"sha": sha3, "dirty": False})), "F2 a v1 line is not evidence")
+    good = CE.record("selftest", "PASS", [repo / "src"], clone=repo, start=CE.snapshot(repo))
+    check(CE.counts_as_evidence(good), "F2 same sha clean at start and end is evidence")
+    (repo / "junk.txt").write_text("j")
+    dst = CE.snapshot(repo)
+    (repo / "junk.txt").unlink()
+    check(not CE.counts_as_evidence(CE.record("selftest", "PASS", [repo / "src"], clone=repo, start=dst)),
+          "F2 dirty at start, clean at end -> not evidence")
+
+    # F4: under Windows python.exe the line is shipped to WSL and carries the clone's sha
+    pyexe, distro = shutil.which("python.exe"), os.environ.get("WSL_DISTRO_NAME")
+    if pyexe and shutil.which("wsl.exe") and distro:
+        def w(p):
+            return "\\\\wsl.localhost\\%s%s" % (distro, str(p).replace("/", "\\"))
+        wstore = Path(td) / "winstore"
+        script = Path(td) / "win_probe.py"
+        script.write_text("import os, sys\nsys.path.insert(0, sys.argv[1])\nimport close_evidence as CE\n"
+                          "os.environ[CE.ENV_DIR] = sys.argv[2]\n"
+                          "r = CE.record('modcheck', 'PASS', [sys.argv[3]], clone=sys.argv[3], live_only=True)\n"
+                          "print('OSNAME', os.name, 'SHA', r and r.get('sha'))\n")
+        p = subprocess.run([pyexe, w(script), w(HERE), w(wstore), w(repo)], capture_output=True, text=True, timeout=180)
+        recs = CE.read_all(folder=wstore)
+        check("OSNAME nt" in p.stdout and len(recs) == 1 and recs[0]["sha"] == sha3 and recs[0]["live_only"],
+              "F4 python.exe recorder wrote via WSL: %s %r" % (p.stdout.strip()[-120:] or p.stderr.strip()[-200:],
+                                                               [(x["tool"], x["sha"]) for x in recs]))
+    else:
+        print("F4 python.exe probe: no python.exe/wsl.exe here -- UNMEASURED, not a pass or a fail")
+
+    # F5: a partial run counts only for the paths it covered; a DROPPED suite is UNMEASURED
+    (repo / "src" / "selftest_a.py").write_text("print('ok')\n")
+    (repo / "src" / "b.py").write_text("z = 1\n")
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "tests")
+    sha4 = git(repo, "rev-parse", "HEAD")
+    CE.record("selftest", "PASS", [repo / "src" / "selftest_a.py"], clone=repo, start=CE.snapshot(repo))
+    check(len(CE.lookup(sha=sha4, paths=["src/a.py"])) == 1, "F5 selftest_a.py covers src/a.py")
+    check(CE.lookup(sha=sha4, paths=["src/b.py"]) == [], "F5 it does not cover src/b.py")
+    check(CE.uncovered(CE.lookup(sha=sha4), ["src/a.py", "src/b.py"]) == ["src/b.py"], "F5 uncovered names src/b.py")
+    check(len(CE.lookup(sha=sha4, paths=[str(repo / "src" / "a.py")])) == 1, "F5 an absolute path is matched too")
+    import run_selftests as RS
+    RS._OUTER[0] = True
+    t = repo / "src" / "selftest_a.py"
+    RS._evidence_start([t])
+    before = len(CE.read_all(folder=store))
+    RS._record_evidence([(t, "PASS", 1.0, "")], discovered=3)
+    new = CE.read_all(folder=store)[before:]
+    check([x["result"] for x in new] == ["UNMEASURED"] and new[0]["detail"]["dropped"]["discovered"] == 3,
+          "F5 DROPPED (1 of 3 came back) records UNMEASURED: %r" % [x["result"] for x in new])
+    # F9: that line is keyed to the fixture clone, not this repo
+    check(new and new[0]["clone"] == os.path.realpath(repo) and new[0]["sha"] == sha4 and new[0]["start"]["sha"] == sha4,
+          "F9 a selftest in another clone is recorded under that clone's sha")
+    RS._OUTER[0] = None
+
+    # F6: an unreadable target makes the run UNMEASURED; paths are only the files validated; no --defs = static
+    vp = REPO / "skills" / "rimworld-modding" / "scripts" / "validate_patch.py"
+    env = dict(os.environ)
+    env.pop("RM_SELFTEST_NESTED", None)
+    (repo / "Patches" / "q.xml").write_text('<?xml version="1.0"?><Patch/>')
+    git(repo, "add", "Patches/q.xml")
+    git(repo, "commit", "-q", "-m", "q")
+    sha5 = git(repo, "rev-parse", "HEAD")
+    p = subprocess.run([sys.executable, str(vp), "--quiet", "--mods-config", str(Path(td) / "none.xml"),
+                        str(repo / "Patches" / "q.xml"), str(repo / "Patches" / "typo.xml")],
+                       capture_output=True, text=True, env=env, timeout=120)
+    v = CE.lookup(sha=sha5, tool="validate_patch")
+    check(len(v) == 1 and v[0]["result"] == "UNMEASURED" and v[0]["paths"] == ["Patches/q.xml"]
+          and v[0]["variant"] == "static" and v[0]["detail"]["unreadable"],
+          "F6 exit %d with a typo target -> UNMEASURED over the read file only: %r"
+          % (p.returncode, [(x["result"], x["paths"], x["variant"]) for x in v]))
+    check(list(CE.summarize(v)) == ["validate_patch:static"], "F6 a static run is summarized apart")
+
+    # F7: winbuild keys a staged build by its stage snapshots (copy-back DLLs do not dirty it); rsync failure UNMEASURED
+    import winbuild as W
+    old_root = W.ROOT
+    W.ROOT = os.path.realpath(repo)
+    try:
+        s0 = W._ce_snapshot(["src/"])
+        s1 = W._ce_snapshot(["src/"])
+        (repo / "src" / "Assemblies").mkdir()
+        (repo / "src" / "Assemblies" / "x.dll").write_bytes(b"MZ")          # the copy-back
+        before = len(CE.read_all(folder=store))
+        W.evidence_report(str(repo / "src" / "a.csproj"), 0, "Release",
+                          {"staged": True, "ev_start": s0, "ev_end": s1, "ev_scope": ["src/"]})
+        W.evidence_report(str(repo / "src" / "a.csproj"), 23, "Release", {"staged": False})
+        new = CE.read_all(folder=store)[before:]
+        check([x["result"] for x in new] == ["PASS", "UNMEASURED"] and CE.counts_as_evidence(new[0])
+              and new[0]["sha"] == sha5, "F7 staged build is evidence despite copy-back; rsync failure UNMEASURED: %r"
+              % [(x["result"], x["dirty"]) for x in new])
+        check(CE.covered(new[0], ["src/b.py"]) == ["src/b.py"], "F7 a build covers its staged dirs")
+    finally:
+        W.ROOT = old_root
+        shutil.rmtree(repo / "src" / "Assemblies", ignore_errors=True)
+
+    # F8: git never takes optional locks (a shared clone's index.lock)
+    seen = []
+    real_run = CE.subprocess.run
+
+    def spy(cmd, **kw):
+        seen.append(list(cmd))
+        return real_run(cmd, **kw)
+    CE.subprocess.run = spy
+    try:
+        CE.tree_state(repo)
+    finally:
+        CE.subprocess.run = real_run
+    check(seen and all("--no-optional-locks" in c for c in seen), "F8 every git call passes --no-optional-locks")
+
+    # F10 + WHO: seat in rimflow's order (RIMFLOW_SEAT, AGENT_SEAT, this session's role file), validated, never guessed
+    keys = ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID", "AI_AGENT")
+    saved = {k: os.environ.pop(k, None) for k in keys}
+    real_sr = CE._seats_and_root
+    try:
+        os.environ.update(AGENT_SEAT="foundry", CLAUDE_CODE_SESSION_ID="sess-z", AI_AGENT="agent-z")
+        r = CE.record("selftest", "PASS", [repo / "src"], clone=repo, start=CE.snapshot(repo))
+        w = r.get("who") or {}
+        check(r["seat"] == "FOUNDRY" and w.get("seat_from") == "AGENT_SEAT" and w.get("session") == "sess-z"
+              and w.get("agent") == "agent-z", "F10/WHO seat+session+agent from AGENT_SEAT: %r" % w)
+        os.environ["RIMFLOW_SEAT"] = "RUNNER"
+        w = CE.whoami()
+        check(w["seat"] == "RUNNER" and w["seat_from"] == "RIMFLOW_SEAT", "WHO RIMFLOW_SEAT outranks AGENT_SEAT: %r" % w)
+        os.environ["RIMFLOW_SEAT"] = "ZSEAT"
+        w = CE.whoami()
+        check(w["seat"] is None and w["seat_raw"] == "ZSEAT" and w["seat_from"] == "RIMFLOW_SEAT",
+              "WHO a non-rimflow seat is kept raw, seat stays None (no fallthrough guess): %r" % w)
+        for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
+            os.environ.pop(k)
+        roles = Path(td) / "root" / ".claude" / "session_roles"
+        roles.mkdir(parents=True)
+        (roles / "sess-z").write_text("dispatcher seat for the night\n", encoding="utf-8")
+        (roles / "sess-other").write_text("BENCH\n", encoding="utf-8")
+        CE._seats_and_root = lambda: (real_sr()[0], str(Path(td) / "root"))
+        w = CE.whoami()
+        check(w["seat"] == "DISPATCHER" and w["seat_from"] == "session role file",
+              "WHO seat from THIS session's role file: %r" % w)
+        os.environ["CLAUDE_CODE_SESSION_ID"] = "sess-none"
+        w = CE.whoami()
+        check(w["seat"] is None and w["seat_from"] is None and w["session"] == "sess-none",
+              "WHO no source -> seat None, never another session's file: %r" % w)
+        # the Windows ship carries the CALLER's who (wsl.exe does not forward the environment)
+        os.environ["AGENT_SEAT"] = "BENCH"
+        sent = []
+
+        class _R:
+            returncode, stderr = 0, ""
+            stdout = '{"ok": 1}\n'
+        real_run = CE.subprocess.run
+        CE.subprocess.run = lambda cmd, **kw: (sent.append(json.loads(kw["input"])), _R())[1]
+        try:
+            CE._ship_to_wsl({"tool": "modcheck", "result": "PASS", "paths": []})
+        finally:
+            CE.subprocess.run = real_run
+        check(sent and sent[0].get("who", {}).get("seat") == "BENCH", "WHO shipped to WSL in the payload: %r"
+              % (sent[0].get("who") if sent else None))
+        # old lines (seat only, or no seat at all) stay readable
+        day = store / ("%s.jsonl" % r["ts"][:10])
+        old_line = dict(r)
+        old_line.pop("who"); old_line.pop("seat"); old_line["tool"] = "oldseatless"
+        with open(day, "a", encoding="utf-8") as f:
+            f.write(json.dumps(old_line) + "\n")
+        got = [x for x in CE.read_all(folder=store) if x.get("tool") == "oldseatless"]
+        check(len(got) == 1 and got[0].get("seat") is None and CE.summarize(got) == {"oldseatless": "PASS"},
+              "WHO a line without seat/who still reads and summarizes: %d %r" % (len(got), CE.summarize(got)))
+    finally:
+        CE._seats_and_root = real_sr
+        for k, v in saved.items():
+            os.environ.pop(k, None)
+            if v is not None:
+                os.environ[k] = v
 
 if __name__ == "__main__":
     sys.exit(main())
