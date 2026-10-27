@@ -362,7 +362,10 @@ namespace RimMandrake.ColdStorage
                     pack.Contents.Remove(held);
                     if (chance > 0f && held.def.ingestible != null && held.def.ingestible.IsMeal && held.def != ext.shockedMealInto)
                     {
-                        int n = ColdStorageKernel.ShockedCount(held.stackCount, chance, () => Rand.Value);
+                        // capped at one burnt stack: Shock makes a single stack, so a held stack larger than the burnt
+                        // def's stackLimit (a stack-size mod) would otherwise lose the meals above it
+                        int n = Mathf.Min(ColdStorageKernel.ShockedCount(held.stackCount, chance, () => Rand.Value),
+                            ext.shockedMealInto.stackLimit);
                         if (n > 0)
                         {
                             shocked += n;
