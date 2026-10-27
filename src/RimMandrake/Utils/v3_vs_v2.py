@@ -57,6 +57,7 @@ RULES_PATH = os.path.join(HERE, "v3_vs_v2_rules.json")
 # checks both, so the rule cannot change silently. A pin with before_v3_data False is printed on every verdict.
 RULE_PINS = [
     ("c2f177518417fb637d888c8695398ccf65fd35f30dcee75211bd6b7257cd17dd", "2026-10-27", "pre-registered with the program, before any v3 week existed", True),
+    ("1f721889fc08f199da61151d54fe82be4f133ee58ab6fe0ae98a57bea7d58474", "2026-10-27", "owner by card: majority of measures (4 of 7 BETTER, no guard or veto primary WORSE)", True),
 ]
 SIM = os.path.join(HERE, "sim", "rimflow_v3_sim.py")
 DAY = 86400.0
@@ -432,12 +433,13 @@ def judge_week(week, ref, rules, cf=None):
     worse = [k for k in prim if cls[k] == "WORSE"]
     gworse = [k for k, p in per.items() if p["group"] == "guard" and cls[k] == "WORSE"]
     V = rules["verdict"]
+    veto = [k for k in worse if k in V.get("superior_veto", [])]
     if len(measured) < V["min_primary_measured"] or cls.get("ite_wk") not in ("BETTER", "SAME", "WORSE"):
         verdict = "UNMEASURED"
-    elif len(worse) >= V["worse_min_worse"] or (worse and not better):
+    elif not gworse and not veto and len(better) >= V["superior_min_better"]:
+        verdict = "SUPERIOR"      # majority of measures (owner by card 2026-10-27): a non-veto primary may be WORSE
+    elif (len(worse) >= V["worse_min_worse"] and len(worse) >= len(better)) or (worse and not better):
         verdict = "WORSE"
-    elif not worse and not gworse and len(better) >= V["superior_min_better"]:
-        verdict = "SUPERIOR"
     else:
         verdict = "NOT_SHOWN"
     cc = [cls.get("ite_wk"), cls.get("ite_per_done")]
