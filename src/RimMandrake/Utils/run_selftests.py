@@ -566,6 +566,9 @@ def _parser():
     ap.add_argument("--full", "--no-skip", dest="full", action="store_true",
                     help="run every selected test even where an evidence record says its inputs are unchanged "
                          "(still records fresh evidence on PASS)")
+    ap.add_argument("--no-cache", dest="no_cache", action="store_true",
+                    help="ignore the declared-input PASS cache (selftest_cache.py) and run every test; a PASS still "
+                         "refreshes its entry. The nightly full sweep runs with this. --full implies it")
     return ap
 
 
@@ -730,6 +733,33 @@ def _suite(args) -> int:
             (reused.append((t, why)) if ok else keep.append(t))
         tests = keep
 
+    # Declared-input PASS cache (selftest_cache.py): a hit prints CACHED PASS and the test does not run.
+    cache_keys, cached_res = {}, []
+    try:
+        import selftest_cache as SC
+    except Exception as exc:  # the cache is an optimisation: never let it break a run
+        SC = None
+        print(f"selftest cache unavailable ({type(exc).__name__}: {exc}) - running everything", file=sys.stderr)
+    if SC is not None and not os.environ.get("RM_SELFTEST_REPO_ROOT"):
+        use = not (args.no_cache or args.full or os.environ.get("RM_SELFTEST_NO_CACHE"))
+        keep = []
+        for t in tests:
+            rel = _rel(t)
+            try:
+                ck = SC.compute_key(rel, REPO_ROOT) if rel and rel in SC.DECLS else None
+                rec = SC.lookup(rel, ck[0]) if (ck and use) else None
+            except Exception as exc:
+                print(f"selftest cache: {rel}: {type(exc).__name__}: {exc} - running it", file=sys.stderr)
+                ck = rec = None
+            if ck:
+                cache_keys[t] = ck[0]
+            if rec:
+                print(SC.hit_line(rel, ck[0], rec), flush=True)
+                cached_res.append((t, "PASS", 0.0, "cached"))
+            else:
+                keep.append(t)
+        tests = keep
+
     ISOLATED = SEQUENTIAL_ISOLATED | (set() if _HARNESS else MEMORY_HEAVY)
     pooled = [t for t in tests if t.name not in ISOLATED]
     isolated = [t for t in tests if t.name in ISOLATED]
@@ -746,6 +776,11 @@ def _suite(args) -> int:
     def _progress(r):
         # Live line per finished test (flushed) so a long run is never silent.
         results.append(r)
+        if r[0] in cache_keys:      # PASS refreshes the cache entry; anything else drops it (failures always rerun)
+            try:
+                (SC.store_pass(_rel(r[0]), cache_keys[r[0]], r[2], REPO_ROOT) if r[1] == "PASS" else SC.forget(_rel(r[0])))
+            except Exception as exc:
+                print(f"selftest cache: could not update {_rel(r[0])}: {exc}", file=sys.stderr)
         print(f"[{len(results)}/{total}] {r[1]:10s} {r[2]:6.1f}s  "
               f"{_show(r[0])}", file=sys.stderr, flush=True)
 
@@ -789,7 +824,8 @@ def _suite(args) -> int:
             pass
     skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier + reused]
     _evidence_summary(_EVID, reused, len(elig), args.full)
-    return report(results, skipped, len(tests) + len(skipped), wall_elapsed, contain_note,
+    print(f"cache: {len(cached_res)} CACHED PASS, {len(cache_keys) - len(cached_res)} declared test(s) ran")
+    return report(results + cached_res, skipped, len(tests) + len(cached_res) + len(skipped), wall_elapsed, contain_note,
                   ISOLATED, args.timings)
 
 
