@@ -510,7 +510,8 @@ ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
 # what the sparse deploy checkout holds (systemd/install.sh sets the same list): pulse itself, rimflow's fold,
 # and art/ for prereview.py (the "to look at" gate). Files directly in a parent dir (Utils/rmpaths.py) come free.
 SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
-               "src/RimMandrake/Utils/modcheck")    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
+               "src/RimMandrake/Utils/modcheck",    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
+               "src/RimMandrake/Utils/sim")         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
 _CODE: dict = {}
 
 

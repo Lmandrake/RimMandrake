@@ -12,7 +12,7 @@ DEPLOY="$ROOT/pulse-deploy"
 ORIGIN=$(git -C "$HERE" remote get-url origin)
 # the same list as pulse.py SPARSE_DIRS (update_code re-applies it when it grows); set on an existing clone too,
 # or a newly imported dir stays absent until the update timer fires
-SPARSE="src/RimMandrake/Utils/pulse src/RimMandrake/rimflow src/RimMandrake/Utils/art src/RimMandrake/Utils/modcheck"
+SPARSE="src/RimMandrake/Utils/pulse src/RimMandrake/rimflow src/RimMandrake/Utils/art src/RimMandrake/Utils/modcheck src/RimMandrake/Utils/sim"
 if [ ! -d "$DEPLOY/.git" ]; then
   git clone -q --filter=blob:none --no-checkout --sparse "$ORIGIN" "$DEPLOY"
   git -C "$DEPLOY" sparse-checkout set $SPARSE
