@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 945" width="1320" height="945" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2b4c7e"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c07a10"/></marker>
+    <style>
+      .t{font-size:17px;font-weight:700;fill:#1c232c}
+      .s{font-size:12px;fill:#4a5460}
+      .h{font-size:11px;fill:#4a5460;font-style:italic}
+      .l{font-size:11.5px;fill:#1c232c;paint-order:stroke;stroke:#f6f7f9;stroke-width:4px;stroke-linejoin:round}
+      .A{stroke:#2b4c7e;stroke-width:2.2;fill:none;marker-end:url(#a)}
+      .B{stroke:#c07a10;stroke-width:2.2;fill:none;stroke-dasharray:7 5;marker-end:url(#b)}
+      .frame{fill:none;stroke:#8a929c;stroke-width:1.5;stroke-dasharray:3 4}
+      .ft{font-size:15px;font-weight:700;fill:#5a636e;letter-spacing:.5px}
+    </style>
+  </defs>
+  <rect width="1320" height="945" fill="#f6f7f9"/>
+
+  <!-- ===== nodes ===== -->
+  <g>
+    <rect x="540" y="20" width="240" height="68" rx="10" fill="#fff" stroke="#b07a10" stroke-width="2.5"/>
+    <text x="660" y="48" class="t" text-anchor="middle">Mandrake</text>
+    <text x="660" y="68" class="s" text-anchor="middle">the human: vision, taste, final say</text>
+  </g>
+  <g>
+    <rect x="510" y="140" width="300" height="88" rx="10" fill="#fff" stroke="#c02f6c" stroke-width="2.5"/>
+    <text x="660" y="166" class="t" text-anchor="middle">Conductor</text>
+    <text x="660" y="185" class="s" text-anchor="middle">sets goals · the single voice to Mandrake</text>
+    <text x="660" y="201" class="s" text-anchor="middle">gathers every question and status</text>
+    <text x="660" y="219" class="h" text-anchor="middle">helpers (session): design · builder · live-test</text>
+  </g>
+  <g>
+    <rect x="320" y="290" width="250" height="88" rx="10" fill="#fff" stroke="#0d8577" stroke-width="2.5"/>
+    <text x="445" y="316" class="t" text-anchor="middle">Producer</text>
+    <text x="445" y="335" class="s" text-anchor="middle">turns goals into the plan and tickets</text>
+    <text x="445" y="351" class="s" text-anchor="middle">replans when the forecast misses</text>
+    <text x="445" y="369" class="h" text-anchor="middle">works alone</text>
+  </g>
+  <g>
+    <rect x="750" y="290" width="250" height="88" rx="10" fill="#fff" stroke="#2f8a3a" stroke-width="2.5"/>
+    <text x="875" y="316" class="t" text-anchor="middle">Operations</text>
+    <text x="875" y="335" class="s" text-anchor="middle">keeps both machines healthy</text>
+    <text x="875" y="351" class="s" text-anchor="middle">the only AI that watches token burn</text>
+    <text x="875" y="369" class="h" text-anchor="middle">helpers: small fixes</text>
+  </g>
+  <g>
+    <rect x="1040" y="290" width="250" height="88" rx="10" fill="#fff" stroke="#7a8a12" stroke-width="2.5"/>
+    <text x="1165" y="316" class="t" text-anchor="middle">Innovator</text>
+    <text x="1165" y="335" class="s" text-anchor="middle">"what could be much better?"</text>
+    <text x="1165" y="351" class="s" text-anchor="middle">process experiments, design review</text>
+    <text x="1165" y="369" class="h" text-anchor="middle">helpers: experiments</text>
+  </g>
+  <g>
+    <rect x="30" y="290" width="220" height="88" rx="10" fill="#eef3f8" stroke="#3a6f9e" stroke-width="2" stroke-dasharray="6 3"/>
+    <text x="140" y="316" class="t" text-anchor="middle">Dispatcher</text>
+    <text x="140" y="335" class="s" text-anchor="middle">a program, not an AI · every 2 min</text>
+    <text x="140" y="351" class="s" text-anchor="middle">starts every AI role and</text>
+    <text x="140" y="367" class="s" text-anchor="middle">hands out tickets; enforces caps</text>
+  </g>
+  <g>
+    <rect x="110" y="450" width="260" height="88" rx="10" fill="#fff" stroke="#d0602a" stroke-width="2.5"/>
+    <text x="240" y="476" class="t" text-anchor="middle">Foundry</text>
+    <text x="240" y="495" class="s" text-anchor="middle">the autonomous builder</text>
+    <text x="240" y="511" class="s" text-anchor="middle">code, art, tests; asks via the Conductor</text>
+    <text x="240" y="529" class="h" text-anchor="middle">helpers: builder · fixer · live-test</text>
+  </g>
+  <g>
+    <rect x="470" y="450" width="250" height="88" rx="10" fill="#fff" stroke="#4a5fc8" stroke-width="2.5"/>
+    <text x="595" y="476" class="t" text-anchor="middle">Arbiter</text>
+    <text x="595" y="495" class="s" text-anchor="middle">"good enough?" weighs all evidence:</text>
+    <text x="595" y="511" class="s" text-anchor="middle">tests, live runs, reviews, feedback</text>
+    <text x="595" y="529" class="h" text-anchor="middle">helpers: judges that never built it</text>
+  </g>
+  <g>
+    <rect x="790" y="450" width="240" height="88" rx="10" fill="#fff" stroke="#8a46c0" stroke-width="2.5"/>
+    <text x="910" y="476" class="t" text-anchor="middle">Auditor</text>
+    <text x="910" y="495" class="s" text-anchor="middle">"are you sure?" samples passes</text>
+    <text x="910" y="511" class="s" text-anchor="middle">repeat errors become rules</text>
+    <text x="910" y="529" class="h" text-anchor="middle">helpers: re-checkers</text>
+  </g>
+  <g>
+    <rect x="1080" y="450" width="210" height="88" rx="10" fill="#eef3f8" stroke="#3a6f9e" stroke-width="2" stroke-dasharray="6 3"/>
+    <text x="1185" y="476" class="t" text-anchor="middle">ops_watch</text>
+    <text x="1185" y="495" class="s" text-anchor="middle">a program · every 15 min</text>
+    <text x="1185" y="511" class="s" text-anchor="middle">measures accounts, disk,</text>
+    <text x="1185" y="527" class="s" text-anchor="middle">both machines, production</text>
+  </g>
+
+  <!-- ===== environments ===== -->
+  <rect x="30" y="630" width="790" height="200" rx="14" class="frame"/>
+  <text x="50" y="656" class="ft">ARCHMAGI</text>
+  <rect x="50" y="670" width="350" height="140" rx="10" fill="#fff" stroke="#8a929c"/>
+  <text x="225" y="698" class="t" text-anchor="middle">Build &amp; offline tests</text>
+  <text x="225" y="720" class="s" text-anchor="middle">C# builds, selftests, validators,</text>
+  <text x="225" y="737" class="s" text-anchor="middle">def dumps, art pipeline</text>
+  <text x="225" y="758" class="s" text-anchor="middle">Foundry and every helper work here</text>
+  <rect x="430" y="670" width="370" height="140" rx="10" fill="#fff" stroke="#8a929c"/>
+  <text x="615" y="698" class="t" text-anchor="middle">Live RimWorld (bridge)</text>
+  <text x="615" y="720" class="s" text-anchor="middle">live tests and proofs, one driver at a time</text>
+  <text x="615" y="737" class="s" text-anchor="middle">bench sessions: Mandrake + Conductor</text>
+  <text x="615" y="754" class="s" text-anchor="middle">test together here</text>
+
+  <rect x="850" y="630" width="440" height="200" rx="14" class="frame"/>
+  <text x="870" y="656" class="ft">STEVEDESKTOP</text>
+  <rect x="870" y="670" width="400" height="140" rx="10" fill="#fff" stroke="#8a929c"/>
+  <text x="1070" y="698" class="t" text-anchor="middle">Live RimWorld test rig</text>
+  <text x="1070" y="720" class="s" text-anchor="middle">fully automated lane: long runs,</text>
+  <text x="1070" y="737" class="s" text-anchor="middle">soak tests, colony survival</text>
+  <text x="1070" y="754" class="s" text-anchor="middle">no hands at its keyboard</text>
+
+  <!-- ===== direction & work (solid) ===== -->
+  <path class="A" d="M635,88 L635,129"/>
+  <text x="627" y="118" class="l" text-anchor="end">vision, rulings, decisions</text>
+  <path class="A" d="M590,228 L520,278"/>
+  <text x="530" y="250" class="l" text-anchor="end">goals</text>
+  <path class="A" d="M320,334 L252,334"/>
+  <text x="286" y="326" class="l" text-anchor="middle">tickets</text>
+  <path class="A" d="M140,378 L177,437"/>
+  <text x="170" y="420" class="l">next ticket</text>
+  <path class="A" d="M180,538 L180,668"/>
+  <text x="172" y="600" class="l" text-anchor="end">build, test</text>
+  <path class="A" d="M300,538 L300,612 L520,612 L520,668"/>
+  <text x="410" y="606" class="l" text-anchor="middle">live tests</text>
+  <path class="A" d="M340,538 L340,588 L1000,588 L1000,668"/>
+  <text x="900" y="582" class="l" text-anchor="middle">automated live runs</text>
+  <path class="A" d="M470,512 L372,512"/>
+  <text x="421" y="528" class="l" text-anchor="middle">fail: fix it</text>
+
+  <!-- ===== information flowing up (dashed) ===== -->
+  <path class="B" d="M685,138 L685,90"/>
+  <text x="693" y="118" class="l">questions, status, trade-offs</text>
+  <path class="B" d="M540,290 L625,230"/>
+  <text x="590" y="278" class="l">plan status, cut list</text>
+  <path class="B" d="M820,290 L745,230"/>
+  <text x="790" y="250" class="l">alarms, health</text>
+  <path class="B" d="M750,334 L572,334"/>
+  <text x="661" y="326" class="l" text-anchor="middle">burn forecast</text>
+  <path class="B" d="M1120,290 L1120,184 L812,184"/>
+  <text x="966" y="176" class="l" text-anchor="middle">proposals</text>
+  <path class="B" d="M370,478 L468,478"/>
+  <text x="419" y="470" class="l" text-anchor="middle">done + evidence</text>
+  <path class="B" d="M530,450 L455,380"/>
+  <text x="470" y="420" class="l" text-anchor="end">verdicts</text>
+  <path class="B" d="M790,494 L722,494"/>
+  <text x="756" y="486" class="l" text-anchor="middle">checks passes</text>
+  <path class="B" d="M870,439 L870,420 L560,420 L560,380"/>
+  <text x="720" y="414" class="l" text-anchor="middle">findings → tickets</text>
+  <path class="B" d="M240,668 L240,540"/>
+  <text x="248" y="600" class="l">results</text>
+  <path class="B" d="M1185,668 L1185,540"/>
+  <text x="1193" y="600" class="l">rig health</text>
+  <path class="B" d="M1100,450 L960,380"/>
+  <text x="1040" y="404" class="l">digest</text>
+
+  <!-- ===== launch chips: when the Dispatcher starts each role ===== -->
+  <g><rect x="511" y="131" width="298" height="18" rx="9" fill="#3a6f9e"/><text x="660" y="144" font-size="10.5" fill="#fff" text-anchor="middle">▶ Dispatcher starts quick checks 08:00 · 20:00</text></g>
+  <g><rect x="305" y="281" width="280" height="18" rx="9" fill="#3a6f9e"/><text x="445" y="294" font-size="10.5" fill="#fff" text-anchor="middle">▶ daily list · weekly plan · on a plan miss</text></g>
+  <g><rect x="774" y="281" width="201" height="18" rx="9" fill="#3a6f9e"/><text x="875" y="294" font-size="10.5" fill="#fff" text-anchor="middle">▶ 07:30 · 19:30 · on any alarm</text></g>
+  <g><rect x="1056" y="281" width="219" height="18" rx="9" fill="#3a6f9e"/><text x="1165" y="294" font-size="10.5" fill="#fff" text-anchor="middle">▶ process 2×/week · design weekly</text></g>
+  <g><rect x="152" y="441" width="176" height="18" rx="9" fill="#3a6f9e"/><text x="240" y="454" font-size="10.5" fill="#fff" text-anchor="middle">▶ woken whenever it stalls</text></g>
+  <g><rect x="516" y="441" width="158" height="18" rx="9" fill="#3a6f9e"/><text x="595" y="454" font-size="10.5" fill="#fff" text-anchor="middle">▶ on every “done” claim</text></g>
+  <g><rect x="858" y="441" width="103" height="18" rx="9" fill="#3a6f9e"/><text x="910" y="454" font-size="10.5" fill="#fff" text-anchor="middle">▶ daily sample</text></g>
+
+  <!-- ===== legend ===== -->
+  <g transform="translate(30,858)">
+    <path class="A" d="M0,10 L52,10"/><text x="62" y="14" class="s">direction and work flowing down</text>
+    <path class="B" d="M290,10 L342,10"/><text x="352" y="14" class="s">information flowing up: questions, status, evidence</text>
+    <rect x="690" y="0" width="34" height="20" rx="4" fill="#eef3f8" stroke="#3a6f9e" stroke-dasharray="6 3"/><text x="734" y="14" class="s">a program, no AI: keeps time, measures</text>
+    <rect x="0" y="30" width="34" height="18" rx="9" fill="#3a6f9e"/><text x="17" y="43" font-size="10.5" fill="#fff" text-anchor="middle">▶</text><text x="44" y="43" class="s">when the Dispatcher starts that role (every AI role is started by it; the Conductor's session is your own window)</text>
+    <text x="0" y="68" class="s">Every role's questions for Mandrake go to the Conductor; nothing else talks to him. No AI wakes itself: the Dispatcher starts each role on its clock or event.</text>
+  </g>
+</svg>
