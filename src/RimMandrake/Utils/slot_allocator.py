@@ -313,6 +313,13 @@ def pick_burn_account(accounts, rules, here):
     return None, f"no MEASURED reading from this machine ({here})"
 
 
+def same_reset(a, b):
+    """Two reset_at readings name the same weekly reset: within RESET_TOL_S (review U F9: account_usage's series
+    carries 16:00 and 15:59, 15:00 and 15:00:00 for one week). None is not comparable -> False."""
+    a, b = epoch(a), epoch(b)
+    return a is not None and b is not None and abs(a - b) <= RESET_TOL_S
+
+
 def slope(account, resets_at, now, rules):
     """(%/h, points, span_h) from account_usage's series for this account and week, or (None, n, span)."""
     fit = rules["fit"]
@@ -324,7 +331,7 @@ def slope(account, resets_at, now, rules):
             break
         if rec.get("account") != account or rec.get("source") != "MEASURED" or rec.get("week_pct_used") is None:
             continue
-        if resets_at and epoch(rec.get("week_resets_at")) != epoch(resets_at):
+        if resets_at and not same_reset(rec.get("week_resets_at"), resets_at):
             continue
         m = epoch(rec.get("measured_at"))
         if m is not None and m >= lo:
@@ -355,6 +362,9 @@ def latest_streams(now):
 
 
 SITTING_IDLE_H = 2.0
+# review U F9: one account's reset_at jitters by about a minute between readings (series.jsonl: 16:00 x70 vs 15:59
+# x5, 13:00 vs 12:59); a weekly reset moves it by days. Within this many seconds it is the same reset.
+RESET_TOL_S = 600
 
 
 def session_cap_pct():
@@ -370,7 +380,9 @@ def session_cap_pct():
 
 
 def sitting_step(inp, state, now):
-    """Pure: (sitting stamp or None, live?, drop %-points or None, measured?) from inputs and the previous stamp."""
+    """Pure: (sitting stamp or None, live?, drop %-points or None, measured?) from inputs and the previous stamp.
+    A reset_at within RESET_TOL_S of the stamp's is the same reset (jitter, review U F9). Across a real weekly reset
+    the drop already measured is carried into the new week: conservative, it over-counts the sitting (review U N8)."""
     sit = dict(state.get("sitting") or {}) or None
     w = inp.get("owner_window_t")
     measured = inp.get("source") == "MEASURED" and isinstance(inp.get("week_pct_left"), (int, float))
@@ -393,12 +405,14 @@ def sitting_step(inp, state, now):
     # reading; until then the drop is unknown (hold), never zero.
     sit.setdefault("carried", 0.0)
     old_acct, old_reset = sit.get("account"), epoch(sit.get("reset_at"))
-    changed = bool((acct and old_acct and acct != old_acct) or (reset and old_reset and reset != old_reset))
+    changed = bool((acct and old_acct and acct != old_acct)
+                   or (reset and old_reset and not same_reset(reset, old_reset)))
     if changed and left is not None:
-        if sit.get("start_left") is not None and sit.get("last_left") is not None and sit.get("carried") is not None:
-            sit["carried"] = float(sit["carried"]) + max(0.0, sit["start_left"] - sit["last_left"])
-        else:
+        if sit.get("start_left") is None or sit.get("carried") is None:
             sit["carried"] = None  # the old meter's spend was never measured: unknown, held
+        elif sit.get("last_left") is not None:
+            sit["carried"] = float(sit["carried"]) + max(0.0, sit["start_left"] - sit["last_left"])
+        # else: a legacy stamp with no last_left: a fresh base, carried as it was (review U F9, LOW)
         sit["start_left"], sit["account"], sit["reset_at"] = left, acct, inp.get("week_resets_at")
     elif not changed:
         if acct and not old_acct:

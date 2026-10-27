@@ -522,6 +522,33 @@ check("F9: weekly reset mid-sitting carries the drop (6) instead of starting a n
 r = d({"sitting": dict(sit()["sitting"])}, session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctB", week_pct_left=36.0)
 check("F9: an old unstamped sitting adopts the account without a spurious carry",
       r["state"]["sitting"]["carried"] == 0.0 or r["state"]["sitting"].get("carried") in (None, 0.0), r["state"]["sitting"])
+# review U F9: reset_at jitter on ONE account (account_usage series.jsonl, 2026-10-27: lukas 16:00 x70 / 15:59 x5,
+# steven 15:00 / 15:00:00 / 14:59, system 13:00 / 12:59) is the same reset: no re-base, no lost drop
+JIT = ["2026-10-28T16:00-07:00", "2026-10-28T15:59-07:00", "2026-10-28T16:00-07:00", "2026-10-28T15:59-07:00",
+       "2026-10-28T16:00:00-07:00", "2026-10-28T15:59-07:00"]
+st_, drop = {}, None
+for i, (left, ra) in enumerate(zip([50.0, 48.0, 46.0, 44.0, 42.0, 40.0], JIT)):
+    sg, live, drop, _ = SA.sitting_step({"owner_window_t": NOW - 3000 + i * 300, "source": "MEASURED",
+                                         "week_pct_left": left, "week_resets_at": ra, "account": "lukas"},
+                                        st_, NOW - 3000 + i * 300)
+    st_ = {"sitting": sg}
+check("F9 jitter: 50 -> 40 with reset_at flipping 16:00/15:59 is a drop of 10 (was 2 before the tolerance)",
+      drop == 10.0 and st_["sitting"]["carried"] == 0.0 and st_["sitting"]["start_left"] == 50.0, (drop, st_))
+check("F9 jitter: same_reset sees the real variants as one reset, a week apart as two",
+      SA.same_reset("2026-10-28T15:00-07:00", "2026-10-28T14:59-07:00")
+      and SA.same_reset("2026-10-28T15:00:00-07:00", "2026-10-28T15:00-07:00")
+      and not SA.same_reset("2026-10-28T13:00-07:00", "2026-11-04T13:00-07:00")
+      and not SA.same_reset(None, "2026-10-28T13:00-07:00"), "same_reset")
+sg, _, drop, _ = SA.sitting_step({"owner_window_t": NOW - 60, "source": "MEASURED", "week_pct_left": 100.0,
+                                  "week_resets_at": "2026-11-04T16:00-07:00", "account": "lukas"}, st_, NOW - 60)
+check("F9 jitter: a real weekly reset still re-bases and carries the 10", sg["carried"] == 10.0 and drop == 10.0,
+      (sg, drop))
+legacy = {"sitting": {"start": NOW - H, "start_left": 50.0, "last_active": NOW - 600, "account": "acctA",
+                      "reset_at": "2026-10-28T16:00-07:00", "carried": 0.0}}
+sg, _, drop, _ = SA.sitting_step({"owner_window_t": NOW - 60, "source": "MEASURED", "week_pct_left": 70.0,
+                                  "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctB"}, legacy, NOW - 60)
+check("F9 LOW: a legacy stamp with no last_left re-bases as a fresh base (carried stays a number, not held)",
+      sg["carried"] == 0.0 and drop == 0.0 and sg["start_left"] == 70.0, (sg, drop))
 r = d(dict(sit(), bench_n=2), session_cap_pct=CAP, owner_window_t=NOW - 600, source="UNMEASURED", week_pct_left=None,
       week_pct_used=None)
 check("cap: unmeasured reading holds BENCH at the last count and says UNMEASURED",
