@@ -329,5 +329,82 @@ namespace RimMandrake.FlowWorks
 			}
 			return forced || paused || now - builtTick >= minTicks;
 		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the most queued connectivity deltas checked one by one; past this
+		/// the labels are simply marked stale (the old behaviour), so the per-tick check stays bounded.</summary>
+		public const int MaxQueuedDeltas = 4096;
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: do these connectivity deltas move the labels' input? Vanilla's
+		/// PathFinderMapData.GatherData hands ConnectivitySource EVERY cell delta of the tick (a thing spawned or despawned, a
+		/// reservation, a haul en route, a terrain or path-cost change), so nearly every tick a pawn paths carried one, and
+		/// stamping each of them stale rebuilt every labelling at the throttle ceiling (~100 whole-map builds per 1000 ticks on a
+		/// quiet map, 2026-10-22 soak). The labels read kinds[] only, so a delta whose square's kind is what the snapshot
+		/// already holds cannot change them. True: some delta square's kind differs (or there is no snapshot, or a delta is out
+		/// of range, or the queue overflowed); false: none does (an empty list included).</summary>
+		public static bool DeltaMovesKinds(byte[] snapshot, IReadOnlyList<int> deltas, Func<int, byte> kindNow, bool overflowed)
+		{
+			if (overflowed || snapshot == null)
+			{
+				return overflowed || (deltas != null && deltas.Count > 0);
+			}
+			if (deltas == null)
+			{
+				return false;
+			}
+			for (int j = 0; j < deltas.Count; j++)
+			{
+				int i = deltas[j];
+				if (i < 0 || i >= snapshot.Length || kindNow(i) != snapshot[i])
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: byte-identical inputs (both null counts as identical). Labelling is
+		/// a pure function of (kinds, depth, ramps, band, class), so identical inputs give identical labels and a rebuild may
+		/// keep the old ones.</summary>
+		public static bool SameBytes(byte[] a, byte[] b)
+		{
+			if (ReferenceEquals(a, b))
+			{
+				return true;
+			}
+			if (a == null || b == null || a.Length != b.Length)
+			{
+				return false;
+			}
+			for (int i = 0; i < a.Length; i++)
+			{
+				if (a[i] != b[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the same ramp pairs (both null or empty counts as identical).</summary>
+		public static bool SameRamps(IReadOnlyDictionary<int, int> a, IReadOnlyDictionary<int, int> b)
+		{
+			int na = a?.Count ?? 0, nb = b?.Count ?? 0;
+			if (na != nb)
+			{
+				return false;
+			}
+			if (na == 0)
+			{
+				return true;
+			}
+			foreach (KeyValuePair<int, int> kv in a)
+			{
+				if (!b.TryGetValue(kv.Key, out int v) || v != kv.Value)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }

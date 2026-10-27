@@ -55,6 +55,11 @@ namespace RimMandrake.FlowWorks
 			public long stamp;
 			public int builtTick;
 			public int lastUsedTick;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the inputs of the last labelling (kinds by reference: Kinds keeps the
+			// old array when its content did not change), so a rebuild over identical inputs keeps the labels.
+			public byte[] builtKinds;
+			public byte[] builtDepth;
+			public Dictionary<int, int> builtRamps;
 		}
 
 		private sealed class MapState
@@ -67,6 +72,14 @@ namespace RimMandrake.FlowWorks
 			public byte[] kinds;
 			public long kindsStamp = long.MinValue;
 			public int builds;
+			public int skipped;      // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: builds whose inputs were identical (labels kept)
+			public int deltaBumps, deltaQuiet;   // connectivity deltas that moved a kind / that did not
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: GatherData's deltas, queued (under the lock: Parallel.ForEach worker)
+			// and judged on the map tick against the kinds snapshot (DeltaMovesKinds).
+			public readonly object deltaLock = new object();
+			public readonly List<int> pendingDeltas = new List<int>();
+			public bool deltaOverflow;
+			public readonly List<int> deltaScratch = new List<int>();
 			public double lastMs, maxMs, totalMs;
 			public int firstBuiltTick = int.MinValue;
 			public int pausedFrameTick = int.MinValue;   // the tick and stamp the last paused frame left (PausedUnthrottled)
@@ -108,19 +121,42 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			MapState st = StateOf(map);
-			Interlocked.Increment(ref st.wallGen);
 			if (all)
 			{
+				Interlocked.Increment(ref st.wallGen);
 				Interlocked.Exchange(ref st.forced, 1);
+				return;
+			}
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: an empty delta list (most gathers) changes nothing; the rest is queued and
+			// judged on the map tick (FlushDeltas), which bumps the generation only when a square's kind really moved.
+			if (deltas == null || deltas.Count == 0)
+			{
 				return;
 			}
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
 			byte[] kinds = st.kinds;
-			if (deltas == null || pg == null || kinds == null)
+			CellIndices ci = map.cellIndices;
+			lock (st.deltaLock)
 			{
+				for (int i = 0; i < deltas.Count && !st.deltaOverflow; i++)
+				{
+					if (!deltas[i].InBounds(map))
+					{
+						continue;
+					}
+					if (st.pendingDeltas.Count >= RM_WallReachMath.MaxQueuedDeltas)
+					{
+						st.deltaOverflow = true;
+						break;
+					}
+					st.pendingDeltas.Add(ci.CellToIndex(deltas[i]));
+				}
+			}
+			if (pg == null || kinds == null)
+			{
+				Interlocked.Increment(ref st.wallGen);   // no snapshot to judge against: stale, as before
 				return;
 			}
-			CellIndices ci = map.cellIndices;
 			for (int i = 0; i < deltas.Count; i++)
 			{
 				if (!deltas[i].InBounds(map))
@@ -130,10 +166,50 @@ namespace RimMandrake.FlowWorks
 				int idx = ci.CellToIndex(deltas[i]);
 				if (idx < kinds.Length && kinds[idx] == RM_WallReachMath.Wall && pg.WalkableFast(idx))
 				{
+					Interlocked.Increment(ref st.wallGen);
 					Interlocked.Exchange(ref st.forced, 1);
 					return;
 				}
 			}
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: judge the queued connectivity deltas (main thread, from Tick before
+		/// the stamp is read): the walkability generation moves only if some delta square's kind differs from the kinds
+		/// snapshot the current labels were built from (RM_WallReachMath.DeltaMovesKinds). Bounded: at most MaxQueuedDeltas
+		/// squares, each one KindAt.</summary>
+		private static void FlushDeltas(Map map, MapState st)
+		{
+			List<int> work = st.deltaScratch;
+			work.Clear();
+			bool overflow;
+			lock (st.deltaLock)
+			{
+				if (st.pendingDeltas.Count == 0 && !st.deltaOverflow)
+				{
+					return;
+				}
+				work.AddRange(st.pendingDeltas);
+				st.pendingDeltas.Clear();
+				overflow = st.deltaOverflow;
+				st.deltaOverflow = false;
+			}
+			byte[] kinds = st.kinds;
+			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
+			PathGrid pg = map.pathing.Normal.pathGrid;
+			if (kinds != null && kinds.Length != map.cellIndices.NumGridCells)
+			{
+				kinds = null;
+			}
+			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, i => KindAt(map, pg, swim, i), overflow))
+			{
+				Interlocked.Increment(ref st.wallGen);
+				st.deltaBumps++;
+			}
+			else
+			{
+				st.deltaQuiet++;
+			}
+			work.Clear();
 		}
 
 		/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: the path grid's walkability moved on one square (RegionDirtyer, called
@@ -277,41 +353,48 @@ namespace RimMandrake.FlowWorks
 			var kinds = new byte[n];
 			PathGrid pg = map.pathing.Normal.pathGrid;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
-			CellIndices ci = map.cellIndices;
 			for (int i = 0; i < n; i++)
 			{
-				Building ed = map.edificeGrid[i];
-				if (ed is Building_Door d)
-				{
-					kinds[i] = KindOfDoor(d);
-					continue;
-				}
-				if (ed != null && ed.def.IsFence)
-				{
-					kinds[i] = RM_WallReachMath.Fence;
-					continue;
-				}
-				if (!pg.WalkableFast(i))
-				{
-					kinds[i] = RM_WallReachMath.Wall;
-					continue;
-				}
-				kinds[i] = swim && Swimming.RM_SwimWater.IsDeepSwimCell(map, ci.IndexToCell(i)) ? RM_WallReachMath.DeepWater : RM_WallReachMath.Open;
+				kinds[i] = KindAt(map, pg, swim, i);
 			}
-			st.kinds = kinds;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: identical content keeps the old array, so a labelling built from it can
+			// tell by reference that its walls did not move (Build's skip).
+			if (!RM_WallReachMath.SameBytes(kinds, st.kinds))
+			{
+				st.kinds = kinds;
+			}
 			st.kindsStamp = stamp;
-			return kinds;
+			return st.kinds;
 		}
 
-		private static void Build(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Func<int, int, bool> ramps)> views)
+		/// <summary>The kind of one square (Kinds' rule, and FlushDeltas' judge of a delta).</summary>
+		private static byte KindAt(Map map, PathGrid pg, bool swim, int i)
+		{
+			Building ed = map.edificeGrid[i];
+			if (ed is Building_Door d)
+			{
+				return KindOfDoor(d);
+			}
+			if (ed != null && ed.def.IsFence)
+			{
+				return RM_WallReachMath.Fence;
+			}
+			if (!pg.WalkableFast(i))
+			{
+				return RM_WallReachMath.Wall;
+			}
+			return swim && Swimming.RM_SwimWater.IsDeepSwimCell(map, map.cellIndices.IndexToCell(i)) ? RM_WallReachMath.DeepWater : RM_WallReachMath.Open;
+		}
+
+		private static void Build(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views)
 		{
 			var sw = System.Diagnostics.Stopwatch.StartNew();
 			byte[] kinds = Kinds(map, st, stamp);
 			byte[] depth = null;
-			Func<int, int, bool> ramps = null;
+			Dictionary<int, int> ramps = null;
 			if (e.grid != null)
 			{
-				if (views == null || !views.TryGetValue(e.grid, out (byte[] depth, Func<int, int, bool> ramps) v))
+				if (views == null || !views.TryGetValue(e.grid, out (byte[] depth, Dictionary<int, int> ramps) v))
 				{
 					byte[] d = e.grid.ViewDepth();
 					bool anyDug = false;
@@ -319,13 +402,26 @@ namespace RimMandrake.FlowWorks
 					{
 						anyDug = d[i] != 0;
 					}
-					v = (anyDug ? d : null, anyDug ? e.grid.RampJoins(d, true) : null);
+					v = (anyDug ? d : null, anyDug ? e.grid.RampPairs(d, true) : null);
 					views?.Add(e.grid, v);
 				}
 				depth = v.depth;
 				ramps = v.ramps;
 			}
-			e.labels = RM_WallReachMath.Label(kinds, depth, map.Size.x, map.Size.z, e.band, e.cls, ramps);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling is a pure function of (kinds, depth, ramps, band, class);
+			// identical inputs keep it (WallReach_content_skip_equals_rebuild), a whole-map flood saved.
+			if (e.labels != null && ReferenceEquals(kinds, e.builtKinds) && RM_WallReachMath.SameBytes(depth, e.builtDepth)
+				&& RM_WallReachMath.SameRamps(ramps, e.builtRamps))
+			{
+				st.skipped++;
+			}
+			else
+			{
+				e.labels = RM_WallReachMath.Label(kinds, depth, map.Size.x, map.Size.z, e.band, e.cls, RM_PocketGrid.RampJoinsOf(ramps));
+			}
+			e.builtKinds = kinds;
+			e.builtDepth = depth;
+			e.builtRamps = ramps;
 			e.stamp = stamp;
 			int now = Find.TickManager?.TicksGame ?? 0;
 			e.builtTick = now;
@@ -359,6 +455,7 @@ namespace RimMandrake.FlowWorks
 			{
 				st.steppedFrames++;
 			}
+			FlushDeltas(map, st);   // a paused write's deltas move the stamp before it is compared (as the eager bump did)
 			bool unthrottled = RM_WallReachMath.PausedUnthrottled(now, st.pausedFrameTick, StampOf(map, st), st.pausedFrameStamp);
 			Tick(map, unthrottled);
 			st.pausedFrameTick = now;
@@ -370,7 +467,12 @@ namespace RimMandrake.FlowWorks
 		/// stale ones when due. Never inside a query.</summary>
 		public static void Tick(Map map, bool paused)
 		{
-			if (map == null || !On || !states.TryGetValue(map, out MapState st) || st.entries.Count == 0)
+			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			{
+				return;
+			}
+			FlushDeltas(map, st);
+			if (st.entries.Count == 0)
 			{
 				return;
 			}
@@ -379,7 +481,7 @@ namespace RimMandrake.FlowWorks
 			long stamp = StampOf(map, st);
 			bool forced = Volatile.Read(ref st.forced) != 0;
 			List<(RM_PocketGrid, int, int)> drop = null;
-			Dictionary<RM_PocketGrid, (byte[], Func<int, int, bool>)> views = null;
+			Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)> views = null;
 			bool any = false;
 			foreach (KeyValuePair<(RM_PocketGrid, int, int), Entry> kv in st.entries)
 			{
@@ -391,7 +493,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (RM_WallReachMath.RebuildDue(e.stamp != stamp, forced, paused, now, e.builtTick, RebuildMinTicks))
 				{
-					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Func<int, int, bool>)>();
+					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
 					Build(map, st, e, stamp, views);
 					any = true;
 				}
@@ -512,6 +614,18 @@ namespace RimMandrake.FlowWorks
 				{
 					st.doorPrint = DoorPrint(map);
 					st.doorTick = now;
+				}
+				// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: deltas not yet judged may have moved a kind the snapshot holds;
+				// a first build here (a query, any thread) takes them as a change, the eager bump's rule, so it never labels
+				// from a stale snapshot. Tick judges them later; one extra rebuild at worst.
+				bool unjudged;
+				lock (st.deltaLock)
+				{
+					unjudged = st.pendingDeltas.Count > 0 || st.deltaOverflow;
+				}
+				if (unjudged)
+				{
+					Interlocked.Increment(ref st.wallGen);
 				}
 				Build(map, st, e, StampOf(map, st), null);
 				st.entries[key] = e;
@@ -733,7 +847,8 @@ namespace RimMandrake.FlowWorks
 				+ " per1000=" + (span > 0 ? (st.builds * 1000.0 / span).ToString("0.00") : "-")
 				+ " lastMs=" + st.lastMs.ToString("0.000") + " maxMs=" + st.maxMs.ToString("0.000")
 				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-")
-				+ " steppedFrames=" + st.steppedFrames;
+				+ " steppedFrames=" + st.steppedFrames + " skipped=" + st.skipped
+				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet;
 		}
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N

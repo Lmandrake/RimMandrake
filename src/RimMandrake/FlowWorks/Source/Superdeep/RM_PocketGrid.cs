@@ -61,6 +61,11 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Rebuild count, for the bridge proof (a pocket must survive save/reload identically).</summary>
 		public int Rebuilds { get; private set; }
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: rebuilds whose view depth and ramps were byte-identical to the
+		/// last build's, so the floods were skipped (counted inside Rebuilds too).</summary>
+		public int SkippedRebuilds { get; private set; }
+		private byte[] lastDepth;
+		private Dictionary<int, int> lastRamps;
 
 		// REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (de-risk step 1, reachability_review.md §4): what one rebuild costs, per band,
 		// read through ProofPocketTiming. Wall-clock milliseconds of RM_PocketGridMath.Label (the floods), and of the whole Build.
@@ -282,7 +287,18 @@ namespace RimMandrake.FlowWorks
 		/// Null when the view has no ramp (or no dug square).</summary>
 		internal System.Func<int, int, bool> RampJoins(byte[] depth, bool anyDug)
 		{
-			Dictionary<int, int> ramps = anyDug ? RM_PitRamp.Pairs(map, depth) : null;
+			return RampJoinsOf(RampPairs(depth, anyDug));
+		}
+
+		/// <summary>The ramp pairs RampJoins reads (null with no dug square). EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: kept so a
+		/// rebuild can tell its inputs did not move.</summary>
+		internal Dictionary<int, int> RampPairs(byte[] depth, bool anyDug)
+		{
+			return anyDug ? RM_PitRamp.Pairs(map, depth) : null;
+		}
+
+		internal static System.Func<int, int, bool> RampJoinsOf(Dictionary<int, int> ramps)
+		{
 			return ramps == null || ramps.Count == 0 ? null
 				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
 		}
@@ -301,15 +317,33 @@ namespace RimMandrake.FlowWorks
 			{
 				anyDug = depth[i] != 0;
 			}
-			System.Func<int, int, bool> rampJoins = RampJoins(depth, anyDug);
-			var band = new System.Diagnostics.Stopwatch();
-			for (int k = 1; k < BandCount; k++)
+			Dictionary<int, int> rampPairs = RampPairs(depth, anyDug);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the climb generation moves on every write that MIGHT change the view (a
+			// bed square re-levelled with hollows off, a swim refresh, a ladder over a square already at that depth), and each
+			// move re-flooded every band of every view over the whole map (a 325x325 map: ~106k cells x 5 bands per view). The
+			// labels are a pure function of (view depth, ramp pairs, band), so a view byte-identical to the last build's keeps
+			// its labels (RM_PocketGridMath.Label on the same input gives the same output: PocketGrid_content_skip_equals_rebuild).
+			bool sameInput = old != null && old.Length == BandCount && RM_WallReachMath.SameBytes(depth, lastDepth)
+				&& RM_WallReachMath.SameRamps(rampPairs, lastRamps);
+			if (sameInput)
 			{
-				band.Restart();
-				// No dug cell: every band is one surface component per map; skip the floods.
-				fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
-				lastBandMs[k] = band.Elapsed.TotalMilliseconds;
+				fresh = old;
+				SkippedRebuilds++;
 			}
+			else
+			{
+				System.Func<int, int, bool> rampJoins = RampJoinsOf(rampPairs);
+				var band = new System.Diagnostics.Stopwatch();
+				for (int k = 1; k < BandCount; k++)
+				{
+					band.Restart();
+					// No dug cell: every band is one surface component per map; skip the floods.
+					fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
+					lastBandMs[k] = band.Elapsed.TotalMilliseconds;
+				}
+			}
+			lastDepth = depth;
+			lastRamps = rampPairs;
 			bands = fresh;
 			builtGeneration = eng?.ClimbGeneration ?? 0;
 			builtSalt = settingsSalt;
@@ -324,7 +358,7 @@ namespace RimMandrake.FlowWorks
 				firstBuiltTick = builtTick;
 				firstBuildMidLoad = builtMidLoad;
 			}
-			if (notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
+			if (!sameInput && notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
 				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
 				for (int i = 0; i < n; i++)
@@ -349,7 +383,7 @@ namespace RimMandrake.FlowWorks
 			int now = Find.TickManager?.TicksGame ?? 0;
 			int span = firstBuiltTick == int.MinValue ? 0 : now - firstBuiltTick;
 			var sb = new System.Text.StringBuilder();
-			sb.Append(name).Append(" rebuilds=").Append(Rebuilds).Append(" firstMidLoad=").Append(firstBuildMidLoad ? 1 : 0).Append(" overTicks=").Append(span)
+			sb.Append(name).Append(" rebuilds=").Append(Rebuilds).Append(" skipped=").Append(SkippedRebuilds).Append(" firstMidLoad=").Append(firstBuildMidLoad ? 1 : 0).Append(" overTicks=").Append(span)
 				.Append(" per1000=").Append(span > 0 ? (Rebuilds * 1000.0 / span).ToString("0.00") : "-")
 				.Append(" lastMs=").Append(lastBuildMs.ToString("0.000")).Append(" maxMs=").Append(maxBuildMs.ToString("0.000"))
 				.Append(" meanMs=").Append(Rebuilds > 0 ? (totalBuildMs / Rebuilds).ToString("0.000") : "-").Append(" bandMs=");
