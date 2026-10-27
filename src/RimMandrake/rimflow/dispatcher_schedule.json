@@ -15,7 +15,7 @@
  "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",
  "caps": {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3},
  "seats": {
-  "FOUNDRY": {"enabled": true, "wake": true, "recover_dead": true, "session_name": "AGENT FOUNDRY",
+  "FOUNDRY": {"enabled": true, "wake": true, "recover_dead": false, "session_name": "AGENT FOUNDRY",
               "clone": "/home/mandrake/rm/foundry", "model": "sonnet"},
   "BENCH": {"enabled": true, "wake": false, "recover_dead": false, "session_name": "AGENT BENCH",
             "clone": "/home/mandrake/rm/bench", "model": "opus",
