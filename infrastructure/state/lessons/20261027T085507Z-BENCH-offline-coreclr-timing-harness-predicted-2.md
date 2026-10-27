@@ -1,0 +1,1 @@
+An offline CoreCLR timing harness predicted a 2.6 ms worst excavation pulse slice; live Mono measured 161 ms (r12). Offline cost bounds on FlowWorks C# do not predict live cost until the gap is explained; confirm every perf fix live before closing.
