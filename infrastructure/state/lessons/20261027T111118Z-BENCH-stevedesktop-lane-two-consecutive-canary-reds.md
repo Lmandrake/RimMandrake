@@ -1,0 +1,1 @@
+SteveDesktop lane: two consecutive canary REDs 'no live colonist' with a ~1 s load phase mean the long-lived game session's colony died and jobs keep reusing it; fix is rw_game.sh down/init/up --wait then testq.py resume (2026-10-27, STEVE_LANE_UNSTICK_PAUSED_UNOWNED_A686). The dispatcher could restart the game itself on the first red.
