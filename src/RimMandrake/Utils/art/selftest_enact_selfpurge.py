@@ -125,7 +125,7 @@ def main():
         check(L.Index().protected(s4) and not L.Index().protected(s3),
               "purging one facing releases the keep for THAT picture only; its sibling stays owner-kept")
         R3 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R3["x_deleted"] == 0 and R3["plan"]["x_done_already"] >= 5, "second --apply is a no-op (already deleted + banned)")
+        check(R3["purged"] == 0 and R3["x_deleted"] == 0 and R3["plan"]["x_done_already"] >= 5, "second --apply is a no-op (already deleted + banned)")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")

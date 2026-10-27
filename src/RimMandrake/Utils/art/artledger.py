@@ -641,6 +641,7 @@ class Index:
         self.lifted = {}                       # ban id -> the unban (his typed words) that lifted it
         self._ban_ints = None                  # cached [(ban, ph int, mirror int)] for near-duplicate matching
         self._ban_memo = {}                    # sha -> is_banned answer, cleared with _ban_ints
+        self._ban_all = defaultdict(dict)      # sha -> {ban id: ban event} not lifted (bans = newest of these)
         for ev in self.events:
             self._take(ev)
 
@@ -672,15 +673,16 @@ class Index:
             self.bindings[ev["sha"]].append(ev)
             self.bindings_by_subject[ev["subject"]].append(ev)
         elif t == "ban":
+            # shards fold seat after seat, not in time order: every unlifted ban of a sha is held, so an unban lifts
+            # only the ban it names and a newer ✕ folded before an older lifted one stays in force
             if ev.get("id") not in self.lifted:
-                self.bans[ev["sha"]] = ev
-                self._ban_ints, self._ban_memo = None, {}
+                self._ban_all[ev["sha"]][ev.get("id")] = ev
+                self._ban_settle(ev["sha"])
         elif t == "unban":
             self.lifted[ev.get("follows")] = ev
-            cur = self.bans.get(ev.get("sha"))
-            if cur is not None and cur.get("id") == ev.get("follows"):
-                self.bans.pop(ev["sha"], None)
-                self._ban_ints, self._ban_memo = None, {}
+            if ev.get("sha") in self._ban_all:
+                self._ban_all[ev["sha"]].pop(ev.get("follows"), None)
+                self._ban_settle(ev["sha"])
         elif t == "provenance_fix":
             cur = self.provenance_fixes.get(ev.get("corrects"))
             if cur is None or ev.get("ts", "") >= cur.get("ts", ""):
@@ -734,6 +736,14 @@ class Index:
     def was_purged(self, sha: str) -> bool:
         """Ever purged, including a purge his later words reversed: a mechanical install may not bring it back."""
         return any(e.get("type") == "purge" for e in self.purge_history.get(sha, ()))
+
+    def _ban_settle(self, sha: str):
+        live = self._ban_all.get(sha) or {}
+        if live:
+            self.bans[sha] = max(live.values(), key=lambda b: ((b.get("mark") or {}).get("at") or "", b.get("ts") or ""))
+        else:
+            self.bans.pop(sha, None)
+        self._ban_ints, self._ban_memo = None, {}
 
     def protected(self, sha: str) -> list[dict]:
         """Owner keeps with real provenance that name this sha and are not released."""
@@ -1413,9 +1423,10 @@ def archived_shas(idx: "Index | None" = None) -> set:
     """Pictures an ✕ moved to the art archive (rule of 19:06-19:54) that are in no game file now (a restore puts one
     back live). A bare `purge` refuses these; a newer ✕ of his deletes + bans them through `x_delete` (card 19:54)."""
     idx = idx or cached_index()
-    out = {e["prev"] for e in archive_events(idx) if e.get("prev")} - {ev.get("sha") for ev in idx.live.values()}
-    return out | {(e.get("target") or {}).get("sha") for e in idx.events
-                  if e.get("type") == "ruling" and e.get("verdict") == "archive" and (e.get("target") or {}).get("sha")}
+    out = {e["prev"] for e in archive_events(idx) if e.get("prev")}
+    out |= {(e.get("target") or {}).get("sha") for e in idx.events
+            if e.get("type") == "ruling" and e.get("verdict") == "archive" and (e.get("target") or {}).get("sha")}
+    return out - {ev.get("sha") for ev in idx.live.values()}     # a restored picture is live, not archived
 
 
 def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = None, per_ruling: str | None = None) -> dict:
@@ -1443,6 +1454,9 @@ def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = No
         raise Refused(f"{target} is occupied - restore only refills an archived (empty) slot")
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged - it cannot be restored")
+    hit = ban_match(idx, sha=sha)      # a near-duplicate of a picture he ✕'d stays out: only unban lifts a ban
+    if hit:
+        raise Refused(ban_refusal(hit, sha))
     data = store_get(sha)
     if sha256_bytes(data) != sha:
         raise Refused(f"the art store's copy of {sha[:12]} does not hash to its name - not restoring damaged bytes")
@@ -1608,7 +1622,7 @@ def unpurge(sha: str, *, owner_said: str, via: str = "art unpurge") -> dict:
 # sheet builders, at install, and in the art pipeline (a matching redraw is discarded and re-rolled). Only his typed
 # words lift one (`art.py unban <sha> --owner-said "…"`). Threshold measured on the ledger 2026-10-26
 # (D:\ClaudeWork\rimmandrake\art_x_ban\returns.md): d<=10 matched 28 of 399,512 known-distinct pairs, 20 of them
-# low-information hashes; with BAN_MIN_BITS 8 (0.002%).
+# low-information hashes; with the BAN_MIN_BITS 32 guard, 8 (0.002%).
 
 BAN_NEAR = 10            # dHash bits; the sheet's own near-duplicate fold (art_sheet.NEAR)
 BAN_MIN_BITS = 32        # a hash with fewer set bits (tiny or flat sprite) bans by exact sha only
@@ -1702,8 +1716,8 @@ def ban_refusal(hit: dict, sha: str | None = None) -> str:
 def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MARKS_WHY) -> dict:
     """His ✕ enacted: every game file holding `sha` is removed through the ledger (`live` sha None, reason
     `x-delete`, carrying the mark the art guard checks), keeps of his OLDER than the mark are released, a `ban` is
-    appended, then the store bytes are deleted under a `purge` event naming the mark and the ban. Refused when the mark
-    is not a stamped owner click listing this sha under purge, or a keep of his is NEWER than it (newest mark wins).
+    appended FIRST (flushed before any deletion), then the store bytes are deleted under a `purge` event naming the
+    mark and the ban. Refused when the mark is not a stamped owner click listing this sha under purge, or a keep of his is NEWER than it (newest mark wins).
     The caller (enact) guarantees no game file is left drawing nothing (archive_hole); this never checks defs."""
     mark = {**mark, "kind": "x"}
     bad = mark_in_sheet(mark, sha)
@@ -1726,15 +1740,20 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
         except Exception:
             pass
     root = src_root().resolve().parent
-    w = Writer({e["id"] for e in idx.events})
+    slots = [(root / m / "Textures" / r, ev) for (m, r), ev in list(idx.live.items()) if ev.get("sha") == sha]
+    for target, _ev in slots:
+        if target.is_file() and sha256_file(target) != sha:
+            raise Refused(f"{target} does not hold {sha[:12]} though the ledger says so - run art.py doctor")
+    # the ban is on disk BEFORE any byte is deleted: a crash or a failed append part-way must never leave his picture
+    # deleted but unbanned (it would come back). A rerun dedups the ban by its id and finishes the deletion
+    wb = Writer({e["id"] for e in idx.events})
+    if wb.add(ban):
+        wb.flush()
+        _absorb([ban])
+    w = Writer({e["id"] for e in idx.events} | {bid})
     removed_files = []
-    for (m, r), ev in list(idx.live.items()):
-        if ev.get("sha") != sha:
-            continue
-        target = root / m / "Textures" / r
+    for target, ev in slots:
         if target.is_file():
-            if sha256_file(target) != sha:
-                raise Refused(f"{target} does not hold {sha[:12]} though the ledger says so - run art.py doctor")
             target.unlink()
             removed_files.append(str(target))
         w.add({"type": "live", "mod": ev["mod"], "rel": ev["rel"], "sha": None, "prev": sha, "reason": "x-delete",
@@ -1746,7 +1765,6 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
               "at": mark["at"], "mark": mark, "why": why}
         w.add(rl)
         released.append(rl["id"])
-    w.add(ban)
     bytes_removed = False
     p = store_path(sha)
     if p.is_file():

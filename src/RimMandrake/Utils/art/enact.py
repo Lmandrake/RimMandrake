@@ -1727,7 +1727,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             x_at = I.ts(x_raw)
             lifted = [u for u in idx.lifted.values() if u.get("sha") == sha
                       and (not x_at or (I.ts(u.get("ts")) is not None and I.ts(u.get("ts")) >= x_at))]
-            if sha in idx.bans or lifted:
+            # banned but still in a game file or the store = an x_delete cut short after its ban (it writes the ban
+            # first): not done, the ✕ is carried out again (the ban dedups by id)
+            if lifted or (sha in idx.bans and not idx.live_anywhere(sha) and not L.store_has(sha)):
                 P["x_done_already"] += 1
                 continue
             live = idx.live_anywhere(sha)

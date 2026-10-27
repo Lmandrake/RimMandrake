@@ -257,6 +257,16 @@ def ask_validated(ask, validate, retry_note):
 
 
 # ------------------------------------------------------------------ the pipeline for one subject
+_REFERENCE_PANELS = ("scale", "wall_context", "living_reference_", "siblings_")
+
+
+def _candidate_panel(panel: str) -> bool:
+    """A panel holding the candidate's own pixels (facings, single, assembled/flight/variants sets). The reference
+    panels - the living animal, siblings, the scale and wall composites - are not the redraw: a banned picture shown
+    there as context must not discard the candidate."""
+    return not any(panel == r or (r.endswith("_") and panel.startswith(r)) for r in _REFERENCE_PANELS)
+
+
 def banned_candidates(spec: dict) -> list:
     """[(panel, refusal)] for every candidate picture his ✕ banned — the same bytes or a near-duplicate redraw (owner
     card 2026-10-26 19:54 "X = delete forever + ban"). Each hit is logged to the art ledger (`ban_hit`, daily digest).
@@ -269,6 +279,8 @@ def banned_candidates(spec: dict) -> list:
             return []
         out = []
         for panel, f in C.source_files(spec).items():
+            if not _candidate_panel(panel):
+                continue
             data = Path(f).read_bytes()
             sha = L.sha256_bytes(data)
             hit = L.ban_match(idx, sha=sha, data=data)
