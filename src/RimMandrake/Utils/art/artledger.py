@@ -1087,6 +1087,13 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             return {"status": "already-live-ruled", "path": str(target), "new": sha, "ruling": rl["id"]}
         return {"status": "already-live", "path": str(target), "new": sha}
     old_protected = bool(old_sha and idx.protected(old_sha))
+    mark = mark_of_ruling(ruling) if ruling else None
+    if mark and old_protected:
+        newer = newer_keeps(idx, old_sha, mark["at"], ignore=keeps_of_same_click(ruling))
+        if newer:
+            raise Refused(f"{target} holds {old_sha[:12]}, kept by a NEWER mark of his ({newer[0]['id']}, "
+                          f"{newer[0].get('at') or newer[0].get('ts')}) than the pick ({mark['at']}) — the newest "
+                          f"mark wins; an older pick never replaces it")
     if old_protected and not (ruling or owner_auth):
         raise Refused(f"{target} holds {old_sha[:12]}, an owner-KEPT picture — a mechanical "
                       f"install ({reason or 'agent --why'}) may not displace it; it needs his ruling "
@@ -1126,6 +1133,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         live.update(reason=reason or "agent-why")
     if why:
         live["why"] = why
+    if mark and old_protected:                       # newest mark over an older keep: the act is digest-listed
+        live["mark"] = mark
+        live["why"] = MARKS_WHY
     w.add(live)
     added = list(w.buf)
     w.flush()
@@ -1209,6 +1219,232 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     append(ev)
     _absorb([ev])
     return {"status": "retired", "path": str(target), "old": old}
+
+
+# ─────────────────────────────────────────────── newest mark wins; X archives ──
+# Owner card 2026-10-26 19:06 ("Newest mark wins, X archives"): his sheet marks are carried out without asking
+# again. A mark is the stamp of HIS click on a decisions row: {sheet, row, at, via, kind, ruling_id?}. A live event
+# carrying one is authorised by it when no keep of his on the displaced picture is NEWER than the mark. An ✕ on a
+# kept or in-game picture is `archive` (bytes stay in the store, restorable), never `purge`.
+
+MARKS_WHY = "delegated: art marks"
+MARK_ROOT: Path | None = None        # where a mark's decisions file is looked up; selftests only (default: the clone)
+
+
+def _when(s) -> float | None:
+    from datetime import datetime
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp() if s else None
+    except ValueError:
+        return None
+
+
+def mark_of_ruling(r: dict | None) -> dict | None:
+    """The mark a sheet-born owner ruling carries (its click time `at`, its decisions file); None for a ruling
+    without a click stamp (his typed words, a card) - those are not sheet marks."""
+    if not r or r.get("by") != "owner" or _when(r.get("at")) is None or not r.get("via"):
+        return None
+    tg = r.get("target") or {}
+    return {"sheet": Path(r["via"]).stem, "row": tg.get("row"), "at": r["at"], "via": r["via"],
+            "kind": "pick", "ruling_id": r["id"]}
+
+
+def keeps_of_same_click(ruling: dict | None) -> set:
+    """Keeps minted by the very row of the very file the mark comes from: they are the mark itself, not older."""
+    return keeps_same_click_in(cached_index(), ruling) if ruling else set()
+
+
+def keeps_same_click_in(idx: "Index", ruling: dict) -> set:
+    return {k["id"] for k in idx.rulings if k.get("via") == ruling.get("via")
+            and (k.get("target") or {}).get("row") == (ruling.get("target") or {}).get("row")}
+
+
+def newer_keeps(idx: "Index", sha: str, mark_at: str, *, ignore=(), before_ts: str | None = None) -> list[dict]:
+    """Owner keeps on `sha` made STRICTLY after the mark (by click time `at`, else ledger `ts`); with `before_ts` only
+    keeps the ledger had by then (a guard judging history must not count a later pick against an earlier act)."""
+    m = _when(mark_at)
+    out = []
+    for k in idx.protected(sha):
+        if k["id"] in ignore:
+            continue
+        if before_ts and (k.get("ts") or "") > before_ts:
+            continue
+        kt = _when(k.get("at") or k.get("ts"))
+        if m is not None and kt is not None and kt > m:
+            out.append(k)
+    return out
+
+
+def mark_in_sheet(mark: dict, sha: str | None = None) -> str | None:
+    """None when the decisions file the mark names is in this clone and its row carries the owner's click stamp the
+    mark claims (and, for an ✕, lists `sha` under purge); else the reason it is not his mark. An agent's guess has
+    no click stamp, so it never qualifies."""
+    for f in ("sheet", "row", "at", "via"):
+        if not mark.get(f):
+            return f"mark lacks {f}"
+    if _when(mark["at"]) is None:
+        return f"mark time {mark['at']!r} is not an ISO stamp"
+    root = (MARK_ROOT or REPO_ROOT).resolve()
+    p = (root / mark["via"]).resolve()
+    try:
+        p.relative_to(root)
+    except ValueError:
+        return f"mark names {mark['via']}, outside this clone"
+    if not p.is_file():
+        return f"mark names {mark['via']}, which is not in this clone"
+    try:
+        doc = json.loads(p.read_text())
+    except (OSError, ValueError):
+        return f"{mark['via']} is not readable JSON"
+    v = (doc.get("decisions") or {}).get(mark["row"])
+    if not isinstance(v, dict):
+        return f"{mark['via']} has no row {mark['row']}"
+    want = _when(mark["at"])
+    stamps = [v.get(k) for k in ("decidedAt", "at", "variantsAt")]
+    stamps += [st.get("at") for st in (v.get("slots") or {}).values() if isinstance(st, dict)]
+    if not any(_when(x) == want for x in stamps if x):
+        return f"row {mark['row']} of {mark['via']} carries no owner click stamped {mark['at']}"
+    if mark.get("kind") == "x" and sha and sha not in (v.get("purge") or []):
+        return f"row {mark['row']} of {mark['via']} has no ✕ on {sha[:12]}"
+    return None
+
+
+def archive(dest, *, mark: dict, why: str = MARKS_WHY, release_older: bool = True) -> dict:
+    """Retire-to-archive: the owner's ✕ (a newest mark) on a picture that is in the game. Stores the bytes, removes
+    the file through the ledger with a `live` event (sha None, reason `archive`) carrying the mark, releases the
+    keeps older than the mark, and is undone by `restore`. Refused when a keep of his is newer than the mark, or the
+    mark is not a stamped owner click on a real decisions row. Never a purge."""
+    mod, rel = locate(dest)
+    target = src_root().parent / mod / "Textures" / rel
+    if not target.is_file():
+        return {"status": "absent", "path": str(target)}
+    old = sha256_file(target)
+    bad = mark_in_sheet({**mark, "kind": "x"}, old)
+    if bad:
+        raise Refused(f"archive refused - {bad}")
+    idx = cached_index()
+    newer = newer_keeps(idx, old, mark["at"])
+    if newer:
+        raise Refused(f"{target} holds {old[:12]}, kept by a NEWER mark of his ({newer[0]['id']}) than this ✕ "
+                      f"({mark['at']}) - the newest mark wins; an older ✕ never archives it")
+    store_put_file(target)
+    if not store_has(old):
+        raise Refused("archive did not verify - nothing removed")
+    target.unlink()
+    ev = {"type": "live", "mod": mod, "rel": rel, "sha": None, "prev": old, "reason": "archive",
+          "mark": {**mark, "kind": "x"}, "why": why}
+    w = Writer({e["id"] for e in idx.events})
+    w.add(ev)
+    ev = w.buf[-1]
+    rel_ids = []
+    if release_older:
+        for k in idx.protected(old):
+            rl = {"type": "ruling", "id": det_id("release", k["id"], old, "mark", mark["at"]), "target": {"sha": old},
+                  "verdict": "release", "releases": k["id"], "by": "owner", "trust": "ruled", "via": mark["via"],
+                  "at": mark["at"], "mark": {**mark, "kind": "x"}, "why": why}
+            w.add(rl)
+            rel_ids.append(rl["id"])
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"status": "archived", "path": str(target), "old": old, "event": ev.get("id"), "released": rel_ids}
+
+
+def release_keeps(sha: str, mark: dict) -> list[str]:
+    """His ✕ on a kept picture that is in no game file: release the keeps older than the mark (the store is the archive)."""
+    mark = {**mark, "kind": "x"}
+    bad = mark_in_sheet(mark, sha)
+    if bad:
+        raise Refused(f"release refused - {bad}")
+    idx = cached_index()
+    newer = newer_keeps(idx, sha, mark["at"])
+    if newer:
+        raise Refused(f"a keep of his ({newer[0]['id']}) is newer than this ✕")
+    w = Writer({e["id"] for e in idx.events})
+    ids = []
+    for k in idx.protected(sha):
+        rl = {"type": "ruling", "id": det_id("release", k["id"], sha, "mark", mark["at"]), "target": {"sha": sha},
+              "verdict": "release", "releases": k["id"], "by": "owner", "trust": "ruled", "via": mark["via"],
+              "at": mark["at"], "mark": mark, "why": MARKS_WHY}
+        w.add(rl)
+        ids.append(rl["id"])
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return ids
+
+
+def archive_events(idx: "Index | None" = None) -> list[dict]:
+    """Every `archive` live event (sha None, reason archive), oldest first."""
+    evs = (idx or cached_index()).events
+    return [e for e in evs if e.get("type") == "live" and e.get("reason") == "archive" and e.get("sha") is None]
+
+
+def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = None, per_ruling: str | None = None) -> dict:
+    """One-command undo of an archive: `ref` is an archive event id (prefix) or the picture's sha (prefix). Writes the
+    bytes back to the slot they left (which must be empty), through a `live` event (reason `restore-archive`,
+    `restores` = the archive event). His words / card / standing ruling are required - an agent never overturns
+    his ✕ alone. Restores no keep: the picture is back, not re-ruled."""
+    if not ((owner_said or "").strip() or (by_card or "").strip() or (per_ruling or "").strip()):
+        raise Refused("restore undoes his ✕ - it needs his words (--owner-said), his card pick (--by-card) or a "
+                      "standing ruling (--per-ruling)")
+    idx = cached_index()
+    hits = [e for e in archive_events(idx) if e["id"].startswith(ref) or (e.get("prev") or "").startswith(ref)]
+    if not hits:
+        raise Refused(f"no archive event or archived picture matches {ref!r}")
+    ids = {e["id"] for e in hits}
+    if len({(e["mod"], e["rel"], e["prev"]) for e in hits}) > 1:
+        raise Refused(f"{ref!r} matches {len(ids)} archives - give an event id: " + ", ".join(sorted(i[:12] for i in ids)))
+    e = sorted(hits, key=lambda x: x.get("ts", ""))[-1]
+    mod, rel, sha = e["mod"], e["rel"], e["prev"]
+    if not store_has(sha):
+        raise Refused(f"{sha[:12]} is no longer in the art store - cannot restore")
+    cur = idx.live.get((mod, rel))
+    target = src_root().parent / mod / "Textures" / rel
+    if target.is_file() or (cur and cur.get("sha")):
+        raise Refused(f"{target} is occupied - restore only refills an archived (empty) slot")
+    if idx.is_purged(sha):
+        raise Refused(f"{sha[:12]} was purged - it cannot be restored")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=target.parent, prefix=".art-restore-")
+    with os.fdopen(fd, "wb") as fh:
+        fh.write(store_get(sha))
+    os.replace(tmp, target)
+    ev = {"type": "live", "mod": mod, "rel": rel, "sha": sha, "prev": None, "reason": "restore-archive",
+          "restores": e["id"], "why": MARKS_WHY + " (restored)"}
+    if owner_said and owner_said.strip():
+        ev["said"] = owner_said.strip()
+    if by_card and by_card.strip():
+        ev["by_card"] = by_card.strip()
+    if per_ruling and per_ruling.strip():
+        ev["per_ruling"] = per_ruling.strip()
+    w = Writer({x["id"] for x in idx.events})
+    w.add(ev)
+    added = list(w.buf)
+    w.flush()
+    _absorb(added)
+    return {"status": "restored", "path": str(target), "sha": sha, "archive_event": e["id"]}
+
+
+def marks_digest(since: str | None = None, idx: "Index | None" = None) -> list[str]:
+    """One digest line per newest-mark act (install over an older keep, ✕ archive, restore) since `since` (ISO),
+    newest first - the data source of delegation_policy.md section 5, class `art marks`."""
+    out = []
+    for e in (idx or cached_index()).events:
+        if e.get("type") != "live" or not str(e.get("why") or "").startswith(MARKS_WHY):
+            continue
+        if since and (e.get("ts") or "") < since:
+            continue
+        m = e.get("mark") or {}
+        what = ("archived (✕)" if e.get("reason") == "archive" else
+                "restored from archive" if e.get("reason") == "restore-archive" else "installed over an older keep")
+        line = (f"art marks | {what} {str(e.get('sha') or e.get('prev') or '')[:12]} at "
+                f"{e['mod'].rsplit('/', 1)[-1]}/{e['rel']} | mark: sheet {m.get('sheet')} row {m.get('row')} "
+                f"at {m.get('at')} | event {str(e.get('id'))[:12]}")
+        if e.get("reason") == "archive":
+            line += f" | undo: art.py restore {str(e.get('id'))[:12]} --owner-said \"...\""
+        out.append((e.get("ts") or "", line))
+    return [l for _t, l in sorted(out, reverse=True)]
 
 
 # ─────────────────────────────────────────────────────────────── purging ──

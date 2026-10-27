@@ -1058,7 +1058,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "retire": [], "blocked": [], "withdraw": [],
-         "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
+         "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "archive": [], "archived_already": 0, "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
          "ignored_variants": [], "legacy_unconfirmed": [], "asks": [], "lane_resolved": []}
     held_back: set = set()      # (row, letter) picks with a facing refused: no facing of them is installed
@@ -1700,6 +1700,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             if idx.is_purged(sha):
                 P["purged_already"] += 1
                 continue
+            if (sha, I.ts(v.get("decidedAt") or v.get("at"))) in marked_x(idx):
+                P["archived_already"] += 1        # this very ✕ already archived it: a re-run never purges what it archived
+                continue
             live = idx.live_anywhere(sha)
             kept_all = idx.protected(sha)
             # a keep minted by THIS row of THIS file (pick or default variant) does not protect a picture the same row
@@ -1731,6 +1734,19 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 for m, r in fl:
                     P["retire"].append({"row": row, "mod": m, "rel": r, "sha": sha, "xed": True})
                 P["purge"].append({"row": row, "sha": sha, "note": note, "release": [k["id"] for k in kept_all]})
+                continue
+            if (live or kept) and sha not in protect_here and x_at:
+                # NEWEST MARK WINS, X ARCHIVES (owner card 2026-10-26 19:06): his ✕ on a picture he once kept or that is
+                # in the game archives it (bytes kept, one-command restore) unless a keep of his is NEWER than the ✕
+                own = {k["id"] for k in kept_all if (k.get("target") or {}).get("row") == row and k.get("via") == I.rel_via(decisions)}
+                newer = L.newer_keeps(idx, sha, v.get("decidedAt") or v.get("at"), ignore=own)
+                if newer:
+                    P["conflicts"].append(f"{row}: ✕ {sha[:12]} not archived - a keep of his is newer "
+                                          f"({newer[0]['id']}); the newest mark wins")
+                else:
+                    P["archive"].append({"row": row, "sha": sha, "slots": live,
+                                         "mark": {"sheet": sheet, "row": row, "at": v.get("decidedAt") or v.get("at"),
+                                                  "via": I.rel_via(decisions), "kind": "x"}})
                 continue
             if live or kept or sha in protect_here:
                 why = (f"live at {live[0]}" if live else
@@ -1857,6 +1873,19 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
 
 
 # ──────────────────────────────────────────────────────────── applying ──
+
+def marked_x(idx: L.Index) -> set:
+    """{(sha, click time)} of every picture a ✕ mark already archived (its `archive` live event or keep release)."""
+    out = set()
+    for e in idx.events:
+        m = e.get("mark")
+        if not isinstance(m, dict) or m.get("kind") != "x":
+            continue
+        sha = e.get("prev") if e.get("type") == "live" else (e.get("target") or {}).get("sha")
+        if sha:
+            out.add((sha, I.ts(m.get("at"))))
+    return out
+
 
 def keep_blocks_pick(k: dict, row: str, mine_at, via: str, aliases=()) -> bool:
     """Does owner keep K on the live picture stop his pick on ROW (made at MINE_AT, in decisions file VIA) installing?
@@ -2026,7 +2055,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     idx = L.Index()
     P = build_plan(decisions, holds, idx, stale=ing.get("stale_rows"))
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
-         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
+         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "archived": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
@@ -2219,6 +2248,18 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 R["refiled"] += 1
             except OSError as e:
                 R["conflicts"].append(f"{rf['row']}: re-file of {rf['job']['id']} failed — {e}")
+        # 4a archive (his ✕ on a kept or in-game picture, newest mark wins): never a purge
+        for ar in P.get("archive", []):
+            slots = [(m, r) for (m, r), e in L.Index().live.items() if e.get("sha") == ar["sha"]]
+            try:
+                if not slots:        # kept but not in a game file: the store is the archive; the ✕ releases the keep
+                    L.release_keeps(ar["sha"], ar["mark"])
+                for m, r in slots:
+                    L.archive(L.src_root().parent / m / "Textures" / r, mark=ar["mark"])
+                    touched_mods.add(m)
+                R["archived"] += 1
+            except L.Refused as e:
+                R["conflicts"].append(f"{ar['row']}: ✕ {ar['sha'][:12]} not archived - {e}")
         # 4 purge
         for p in P["purge"]:
             try:
@@ -2359,6 +2400,7 @@ def report(R: dict) -> str:
     L_.append(f"AWAITING OWNER PICK ({len(P['awaiting_pick'])}) — rendered for his note, neither installed nor rejected:")
     L_ += [f"  {a}" for a in P["awaiting_pick"]] or ["  none"]
     L_.append(f"  purge      {R['purged']} picture(s); {P['purged_already']} already purged")
+    L_.append(f"  archive    {len(P['archive'])} picture(s) ✕'d while kept or in the game; {P['archived_already']} already archived (newest mark wins; bytes kept, art.py restore)")
     L_.append(f"  cut        {R['cut_rows']} row(s), {R['defs_deleted']} def(s) deleted, {R['textures_retired']} texture(s) retired")
     for c in P["cuts"]:
         pl = c["plan"]

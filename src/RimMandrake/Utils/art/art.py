@@ -43,6 +43,12 @@
     art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
                                             a ruled sheet in ONE pass: ingest, install picks, queue redraws,
                                             purge ✕ (never protected ones), cut rows, deploy touched mods (enact.py)
+    art.py archive   <sha> --decisions FILE --row ROW   his ✕ (newest mark) on a picture in the game: bytes stay in the
+                                            store, the file leaves through the ledger carrying the sheet mark; never a
+                                            purge. Refused when a keep of his is newer than the ✕. [--dry-run]
+    art.py restore   <archive-event|sha> (--owner-said "..." | --by-card "q → option" | --per-ruling REF)
+                                            one-command undo of an archive: the same bytes back at the same slot
+    art.py marks-digest [--since ISO]       one line per newest-mark act (digest data source, class `art marks`)
     art.py rotate    <SEAT> (--before ISO | --keep-mb N) [--apply]
                                             move a byte-exact PREFIX of events/<SEAT>.jsonl into write-once
                                             events/archive/<SEAT>.<NNNN>.<from>_<to>.jsonl; dry run by default.
@@ -341,6 +347,58 @@ def cmd_unpurge(a):
     return 0
 
 
+def cmd_archive(a):
+    import enact
+    idx = L.Index()
+    full = sorted({e["sha"] for e in idx.live.values() if e.get("sha") and e["sha"].startswith(a.sha)})
+    if len(full) != 1:
+        print(f"REFUSED: {a.sha} matches {len(full)} pictures live in the game")
+        return 2
+    sha = full[0]
+    dp = Path(a.decisions)
+    try:
+        v = (json.loads(dp.read_text()).get("decisions") or {}).get(a.row) or {}
+    except (OSError, ValueError) as e:
+        print(f"REFUSED: {dp}: {e}")
+        return 2
+    at = v.get("decidedAt") or v.get("at")
+    mark = {"sheet": dp.stem, "row": a.row, "at": at, "via": enact.I.rel_via(dp), "kind": "x"}
+    slots = [(m, r) for (m, r), e in idx.live.items() if e.get("sha") == sha]
+    out = []
+    for m, r in slots:
+        dest = L.src_root().parent / m / "Textures" / r
+        try:
+            if a.dry_run:
+                bad = L.mark_in_sheet(mark, sha) or (f"a newer keep ({L.newer_keeps(idx, sha, at)[0]['id']})"
+                                                     if L.newer_keeps(idx, sha, at) else None)
+                out.append({"status": "refused" if bad else "planned", "path": str(dest), "why": bad})
+            else:
+                out.append(L.archive(dest, mark=mark))
+        except L.Refused as e:
+            print(f"REFUSED: {e}")
+            return 2
+    print(json.dumps(out))
+    return 0
+
+
+def cmd_restore(a):
+    try:
+        r = L.restore(a.ref, owner_said=a.owner_said, by_card=a.by_card, per_ruling=a.per_ruling)
+    except L.Refused as e:
+        print(f"REFUSED: {e}")
+        return 2
+    print(json.dumps(r))
+    return 0
+
+
+def cmd_marks_digest(a):
+    lines = L.marks_digest(a.since)
+    for ln in lines:
+        print(ln)
+    print(f"art marks: {len(lines)} act(s)")
+    return 0
+
+
 def cmd_ingest(a):
     import ingest
     r = ingest.ingest(Path(a.decisions), dry_run=a.dry_run, redo_jobs=Path(a.redo_jobs) if a.redo_jobs else None,
@@ -425,6 +483,11 @@ def main(argv=None):
     p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
     p.add_argument("--why", help="the agent's own reason (recorded; grants nothing)")
     p.add_argument("--release-keep", action="store_true")
+    p = sp.add_parser("archive"); p.add_argument("sha"); p.add_argument("--decisions", required=True)
+    p.add_argument("--row", required=True); p.add_argument("--dry-run", action="store_true")
+    p = sp.add_parser("restore"); p.add_argument("ref"); p.add_argument("--owner-said")
+    p.add_argument("--by-card"); p.add_argument("--per-ruling")
+    p = sp.add_parser("marks-digest"); p.add_argument("--since")
     p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
@@ -453,7 +516,7 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "ingest": cmd_ingest, "index": cmd_index,
+            "install": cmd_install, "correct-provenance": cmd_correct_provenance, "put": cmd_put, "doctor": cmd_doctor, "kept-purged": cmd_kept_purged, "purge": cmd_purge, "unpurge": cmd_unpurge, "archive": cmd_archive, "restore": cmd_restore, "marks-digest": cmd_marks_digest, "ingest": cmd_ingest, "index": cmd_index,
             "backfill-rejections": cmd_backfill_rejections, "rotate": cmd_rotate}[a.cmd](a)
 
 

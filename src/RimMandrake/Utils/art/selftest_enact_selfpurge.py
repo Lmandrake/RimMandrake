@@ -8,7 +8,7 @@ variants [B], every B picture ✕'d); step 4 then read that fresh keep as protec
   * ingest records no keep for a ✕'d picture of the same row (pick, per-graphic pick, variant);
   * dry run and --apply agree: the ✕'s are purged, not CONFLICTS; the ✕'d facing is not installed;
   * a keep the same row of the same file ALREADY wrote (the pre-fix ledger) is released by the purge;
-  * a keep from ANOTHER row still protects (CONFLICT, nothing deleted).
+  * a ✕ over a keep from ANOTHER row archives only if newer, else CONFLICT.
 Fixture under /home/mandrake/rm/scratch/BENCH (never /tmp).
 """
 from __future__ import annotations
@@ -78,8 +78,8 @@ def main():
         R0 = E.enact(F["decisions"], apply=False, no_deploy=True)
         planned = sorted(p["sha"] for p in R0["plan"]["purge"])
         check(planned == sorted([s["bB_n"], s["aB_e"], s["aB_n"]]), "dry run plans the 3 same-row ✕ purges")
-        check(any(s["oX"][:12] in c and "owner-kept" in c for c in R0["conflicts"]),
-              "a ✕ kept by ANOTHER row is still a CONFLICT")
+        check(any(a["sha"] == s["oX"] for a in R0["plan"].get("archive", [])) or any(s["oX"][:12] in c and "owner-kept" in c for c in R0["conflicts"]),
+              "a ✕ kept by ANOTHER row is ARCHIVED (newest mark wins) or a CONFLICT (an older ✕ never beats a newer keep)")
         check(not any(i["sha"] == s["bB_n"] for i in R0["plan"]["install"]), "the ✕'d facing of the pick is not installed")
 
         R1 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")

@@ -91,10 +91,48 @@ def delegated_verdict(ev: dict):
     return p if p.is_file() else None
 
 
+ENFORCE_MARKS_FROM = "2026-10-26T19:06:00-0700"      # owner card: newest mark wins, X archives
+
+
+def _mark_refusal(ev: dict, idx: L.Index) -> str | None:
+    """None when this event's `mark` is his newest on the picture it displaces: a stamped owner click on a real
+    decisions row, with no keep of his NEWER than it (counting only keeps the ledger had when the event was made)."""
+    m = ev.get("mark") or {}
+    bad = L.mark_in_sheet(m, ev.get("prev") if ev.get("sha") is None else ev.get("sha"))
+    if bad:
+        return f"mark is not his: {bad}"
+    if (ev.get("ts") or "") and L._when(ev["ts"]) is not None and L._when(m["at"]) > L._when(ev["ts"]):
+        return "mark is dated after the act it authorises"
+    ignore = set()
+    if m.get("ruling_id"):
+        r = next((r for r in idx.rulings if r["id"] == m["ruling_id"]), None)
+        if r:
+            ignore = L.keeps_same_click_in(idx, r)
+    newer = L.newer_keeps(idx, ev.get("prev"), m["at"], ignore=ignore, before_ts=ev.get("ts")) if ev.get("prev") else []
+    if newer:
+        return (f"a keep of his ({newer[0]['id']}, {newer[0].get('at') or newer[0].get('ts')}) is NEWER than the mark "
+                f"({m['at']}) - the newest mark wins; an older mark never beats a newer keep")
+    return None
+
+
 def _authorized(ev: dict, idx: L.Index) -> str | None:
     """None if this live event is an authorized transition, else the reason it is not."""
     reason = ev.get("reason") or ""
     deleg = delegated_verdict(ev) is not None
+    if ev.get("reason") == "archive" and ev.get("sha") is None and ev.get("mark"):
+        return _mark_refusal(ev, idx)                  # his ✕ (newest mark) moved the picture to the art archive
+    if ev.get("reason") == "restore-archive" and ev.get("restores"):
+        a = next((e for e in idx.events if e.get("id") == ev["restores"]), None)
+        if not a or a.get("reason") != "archive" or a.get("prev") != ev.get("sha") \
+                or L.mod_key(a["mod"]) != L.mod_key(ev["mod"]) or L.rel_key(a["rel"]) != L.rel_key(ev["rel"]):
+            return f"restore names archive {ev['restores']} which does not match this slot and picture"
+        if not (ev.get("said") or ev.get("by_card") or ev.get("per_ruling")):
+            return "a restore undoes his ✕ - it needs his words, card or standing ruling"
+        return None
+    if ev.get("mark") and ev.get("ruling_id") and (ev.get("ts") or "") >= ENFORCE_MARKS_FROM:
+        why = _mark_refusal(ev, idx)                   # an install over an older keep: the pick must be the newest mark
+        if why:
+            return why
     if ev.get("ruling_id"):
         r = next((r for r in idx.rulings if r["id"] == ev["ruling_id"]), None)
         if not r:

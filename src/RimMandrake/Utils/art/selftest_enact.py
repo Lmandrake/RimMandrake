@@ -182,6 +182,8 @@ def build(root: Path) -> dict:
 
 def main():
     F = build(SCRATCH / f"enact_selftest_{os.getpid()}")
+    import artledger as L  # noqa: E402
+    L.MARK_ROOT = F["root"]          # the sheet's decisions file lies inside the clone, so his ✕ stamp can be verified
     import artledger as L
     import enact as E
     src, shas = F["src"], F["shas"]
@@ -201,8 +203,9 @@ def main():
         check(len(P["install"]) == 1 and P["install"][0]["rel"].endswith("RM_Foo_east.png"), "plans the RM_Foo pick B install")
         check(len(P["purge"]) == 1 and P["purge"][0]["sha"] == shas["rej"], "plans exactly the one free ✕")
         conf = "\n".join(R["conflicts"])
-        check(shas["livex"][:12] in conf and "live at" in conf, "a ✕ on a live picture is a CONFLICT")
-        check(shas["kept"][:12] in conf and "owner-kept" in conf, "a ✕ on an owner-kept picture is a CONFLICT")
+        arch = {a["sha"] for a in P["archive"]}
+        check(shas["livex"] in arch and shas["kept"] in arch and shas["livex"][:12] not in conf,
+              "a ✕ on a live or owner-kept picture is ARCHIVED (newest mark wins), not a conflict, not a purge")
         check(len(P["queue"]) == 1 and P["queue"][0]["row"] == "RM_Redo", "plans one redraw (RM_Redo)")
         check(P["held"] == ["RM_HeldVine"], "--hold vine skips the held row in every step")
         check(any(t.startswith("RM_Note: note not enacted") for t in R["todo"]), "a note that is no redo is a TODO, not a guess")
@@ -213,7 +216,7 @@ def main():
         check(not cuts["RM_Shared"]["deleted"] and "RM_Shared" in cuts["RM_Shared"]["kept"],
               "a def another biome still uses is kept (sheet cut is scoped to its biome)")
         check(cuts["RM_Cut"]["tex_retire"] == ["Things/Pawn/Animal/RM_Cut/RM_Cut"], "cut retires the def's texture")
-        check("CONFLICTS (2)" in out and "TODO (1)" in out, "report lists conflicts and TODOs")
+        check("TODO (1)" in out and "archive    2 picture" in out, "report lists the TODOs and the planned archives")
 
         # a LATER owner keep of the live picture on this row (another decisions file) must not be undone by re-enacting this one
         evf = F["led"] / "events" / "TEST.jsonl"
@@ -294,7 +297,10 @@ def main():
         check(R["ok"], "apply succeeds")
         check(foo.read_bytes() == L.store_get(shas["new"]), "pick B is installed in the live slot")
         check(not L.store_has(shas["rej"]) and L.store_has(shas["livex"]) and L.store_has(shas["kept"]),
-              "the free ✕ is purged; the protected two are untouched")
+              "the free ✕ is purged; the live and kept ✕'s are archived (bytes stay in the store), never purged")
+        check(R["archived"] == 2 and not L.Index().is_purged(shas["livex"]) and not L.Index().protected(shas["kept"])
+              and not L.Index().live_anywhere(shas["livex"]),
+              "the ✕ on the live picture took it out of the game and the ✕ on the kept one released its keep")
         bt, rt, pt = biomes.read_text(), races.read_text(), patch.read_text()
         check("<RM_Cut>" not in bt and "<RM_Foo>0.5" in bt, "cut row gone from the inline roster, others stay")
         check(bt.count("<RM_Shared>") == 1 and "RM_OtherBiome" in bt and "<RM_Shared>0.3" in bt,
