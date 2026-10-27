@@ -2192,3 +2192,13 @@ leftovers_archive_then_delete_delegated:
     deletion listed in his daily digest. Work not ours stays his. Text:
     design/RimMandrake/delegation_policy.md §2.2. Build:
     LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE.
+northstar_bars_additions_delegated:
+  ruled: true
+  src: >
+    Owner, typed 2026-10-26 ~23:05 PDT, answering whether (a) regression
+    checks against already-approved north-star bars may land without him and
+    (b) new bars may be added without him: "Both autonomy questions are yes,
+    it has authorization for autonomy." Loosening a bar (remove, merge, relax
+    a threshold) was not asked and stays his. Text:
+    design/RimMandrake/delegation_policy.md §2.1;
+    design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md Part 1.

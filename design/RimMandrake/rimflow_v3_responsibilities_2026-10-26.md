@@ -69,9 +69,9 @@ uncovered). 132 walks are DRAFT.
 5. **Which contract changes need him is unsaid.** Today **every** edit to a hashed section needs him (the hash covers
    the prose; only `modcheck validate --owner-said` binds). Delegating all "tightening" would ratchet scope: harmless
    additions pile up into an unaffordable or contradictory contract, and "tighter" can hide changed scope. What can
-   be delegated: **regression checks against already-approved bars** (no contract change at all). **New bars** go to
-   him, or only inside a scope and cost allowance he grants per mod. **Loosening** (remove, merge, relax a
-   threshold) is always his. **Prose corrections** re-validate in the same sitting (his 2026-09-17 ruling).
+   be delegated: **regression checks against already-approved bars** (no contract change at all). **New bars**:
+   the Arbiter may add them on its own (the Producer and Efficiency reviews still apply). **Loosening** (remove,
+   merge, relax a threshold) stays his. Owner, 2026-10-26 23:0x PDT, answering (a) and (b): *"Both autonomy questions are yes, it has authorization for autonomy."* **Prose corrections** re-validate in the same sitting (his 2026-09-17 ruling).
 6. **Three standing reviews per escape is too much loop.** A design, a Producer review, an Efficiency review, a rerun
    and maybe him, for every escape, costs tokens and days. Ordinary check changes get one independent reviewer;
    Producer and Efficiency review only contract changes, batched weekly per mod; contract changes reach him batched
@@ -87,7 +87,7 @@ uncovered). 132 walks are DRAFT.
 ### Amended proposal
 ```
 CONTRACT  Producer drafts bars from the vision ─► Efficiency: needed? combinable? ─► Arbiter: testable?
-          ─► Lukas validates the hash (new bars: him, or inside his allowance; loosening: always him)
+          ─► Lukas validates the hash (new bars: delegated; loosening: always him)
 CHECKS    Arbiter specifies ─► builder implements ─► one independent reviewer
           merges: detection preserved (old reds + seeded defects still red) and floor fully covered
 JUDGE     claim done ─► checks run ─► Arbiter: PASS | FAIL(module/check/environment/bar, may be several) | UNRESOLVED
@@ -98,9 +98,8 @@ DEADLOCK  one round each ─► card to him; meanwhile the disputed check runs a
 ```
 In one line, the separation is: **he owns a versioned contract; builders maintain checks; the Arbiter judges; the
 Auditor reviews passes and anything that discards blocking evidence; the Producer advises on intent and Operations
-on cost.** **For his ruling:** (a) may regression checks against approved bars land without him (they change no
-bar)? (b) does he want a per-mod allowance for new bars, or should every new bar come to him? Nothing in this
-review changes a bar or a hash.
+on cost.** **Ruled:** regression checks against approved bars land without him, and new bars are delegated too.
+Owner, 2026-10-26 23:0x PDT, answering (a) and (b): *"Both autonomy questions are yes, it has authorization for autonomy."* Loosening a bar stays his.
 
 GPT second opinion (`gpt_consult.py`, 2026-10-26; `D:\ClaudeWork\rimmandrake\resp_register\gpt_review.md`), folded
 in above: `floor` coverage is not detection; delegating all tightening ratchets scope; the deadline, not the budget,

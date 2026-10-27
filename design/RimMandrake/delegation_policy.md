@@ -52,6 +52,10 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    functional scripts, *"the owner's hash-bound `## north star` bars stay his"* (CHARTER, How we debug;
    CLAUDE.md, North-star validation, 2026-09-17). The 2026-09-16 carve-out stands: a model's `must read` YES
    greens a line (Agent_Policy.md). Criteria tagged **L4** are his by definition (FOUNDRY.md).
+   **Delegated (owner, 2026-10-26 23:0x PDT, *"Both autonomy questions are yes, it has authorization for
+   autonomy."*):** regression checks against bars he already approved, and NEW bars, are the Arbiter's to add
+   (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,
+   relax a threshold) stays his.
 2. **Irreversible acts on work that is not ours.** Force-push, `reset --hard` over work you did not make,
    deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
    frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the

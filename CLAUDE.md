@@ -23,7 +23,8 @@ and its measurements live in the file it points at:
 *"I really do mean stop and start working a new way."* Every mod gets a functional script
 and is debugged through it; every live poking session ends by writing what it learned —
 including informative false theories — into that script. Agents write and approve those
-scripts; the owner's hash-bound `## north star` bars stay his. The 2026-10-01 build pause was
+scripts. North-star bars: agents may add regression checks and new bars (owner 2026-10-26,
+*"Both autonomy questions are yes"*; `delegation_policy.md` §2.1); loosening a bar stays his. The 2026-10-01 build pause was
 **lifted by the owner 2026-10-02** (*"Build pause is lifted."*); every new mod still ships with
 its first script. Process: `design/RimMandrake/debug_process.md`.
 
