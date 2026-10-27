@@ -1,0 +1,1 @@
+A word-list (denylist) check for token leaks passed a blind digest that still said 'B | 93 % of the week used' — no token word in the line. Keep secrets out of a view with an ALLOW-list of the fields it may carry, never a denylist of words (review V, 2026-10-27).
