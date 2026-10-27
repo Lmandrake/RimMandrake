@@ -23,6 +23,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: bumped by every map change the snapshot reads (MapChanged), and
         /// the value the snapshot was built from; World() rebuilds when they differ, paused or not.</summary>
         private int mapVersion, worldVersion = -1;
+        /// <summary>The ladder raise/lower counter and line-crossing switch the version last folded in (World()).</summary>
+        private int ladderVerSeen = int.MinValue;
+        private bool bandsOnSeen;
         private bool mapEventsHooked;
         private bool drawErrorLogged;
         public static int Relays, LastLayMs, Retracts;
@@ -179,6 +182,15 @@ namespace RimMandrake.FlowWorks.Hose
         {
             HookMapEvents();
             int now = Find.TickManager.TicksGame;
+            // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE (review 2026-10-26): a ladder raised or lowered (SetRaised) and the
+            // line-crossing rules switch change what RM_HoseBands.Apply links and closes, but fire no map event; a lay reuses the
+            // snapshot up to LayWorldMaxAge ticks (and paused, indefinitely), so they bump the version here
+            if (ladderVerSeen != RM_LadderUtility.StateVersion || bandsOnSeen != RM_HoseBands.On)
+            {
+                ladderVerSeen = RM_LadderUtility.StateVersion;
+                bandsOnSeen = RM_HoseBands.On;
+                MapChanged();
+            }
             if (world != null && HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)) return world;
             return BuildWorld(now);
         }
