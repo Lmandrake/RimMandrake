@@ -91,7 +91,9 @@ decide together, then record what he chose as one note on the parent item headed
    BENCH lane; an ambiguous reading goes to him on a card; (c) new `--for OWNER` items and Operations hand-ups: gate
    them (only delegation-policy §2 calls reach him, batched on one card, nothing unread), and the Producer's plan
    status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
-   delivered once (`Transient/delegated_digest_<date>.md`, built by a program).
+   delivered once (`Transient/delegated_digest_<date>.md`, built by a program); (e) the digest points him at the
+   innovations list, `design/RimMandrake/innovations.md` (lines that changed since the last digest, and the
+   Innovator's proposals awaiting his yes; owner 2026-10-27: ask first until it proves itself).
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
 ## Session mode (he is at the bench)

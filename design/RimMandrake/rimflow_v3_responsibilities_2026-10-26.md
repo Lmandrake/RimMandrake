@@ -214,17 +214,26 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 | AU4 | unverified closes | closes since a date with no level-tagged verify event | `D:\ClaudeWork\rimmandrake\baseline_2026-10-26\ledger_measures.py 2026-10-19` (M8) | MEASURED 813 of 823 (98.8%) |
 
 ### Innovator — "what could be much better?"
-- **Duties:** process experiments, each with a named metric and a keep/kill date (2×/week); a weekly design review
-  of what the game design lacks, has out of place, misaligned, confusing, or an unneeded appendix; propose cadence
-  changes as experiments; tend `design/V2_DREAMS.md` with the Producer reading it.
-- **Decides alone:** reversible process experiments. **Hands:** design findings to him through the Conductor.
-  **Never:** change a bar or the vision.
+- **Duties (owner, 2026-10-27, ledger OWNER note on V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE):** *"real innovation:
+  redesigns of agents. New concepts for the game. New mods to create, or merging mods, or insights into new
+  opportunities to consider."* Not optimization: the plan is the Producer's, hardware, environment and accounts are
+  Operations', sub-component behaviour is FOUNDRY's; an optimization idea goes to its owner as a note. Proposals
+  with kind and size (the step size is still open, so it proposes a spread); trials of accepted ones, each with a
+  named metric, a measured guard, a kill date and a revert ticket (2×/week); a weekly game review for new concepts,
+  mods, merges and opportunities; keeps the innovations list `design/RimMandrake/innovations.md` (proposed /
+  accepted / running / killed / adopted, one line each, his view); tends `design/V2_DREAMS.md` with the Producer
+  reading it.
+- **Authority:** *"Ask first until it proves itself."* Every change is a proposal through the Conductor to him until
+  at least 3 innovations he accepted reach `adopted` and no trial of its own ended `revert-failed` or was reverted for
+  a guard breach in the last 30 days (a starting rule he can change); then design §3's rule applies to its reversible
+  agent and opportunity trials (they apply, the Conductor reports, silencing a role is his). **Never:** change a bar,
+  the vision, canon, or add a concept or mod without him.
 
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
-| I1 | experiments | started / kept / killed per week | — | UNMEASURED: no experiment registry (`experiment_manifest.py` freezes measurement inputs; it is not a registry) |
+| I1 | trials | started / adopted / killed per week | — | UNMEASURED: no experiment registry (`experiment_manifest.py` freezes measurement inputs; it is not a registry) |
 | I2 | process-commit share | commits whose every path is under `infrastructure/ design/ conversations/ src/RimMandrake/Utils/ src/RimMandrake/rimflow/ .claude/ skills/ Transient/` or `CLAUDE.md`, ÷ commits with files | `D:\ClaudeWork\rimmandrake\resp_register\process_share.py <since>` (to move into the repo) | MEASURED 70.3% (721 of 1,026 since 10-26 00:00 PDT); target below 61% |
-| I3 | design findings he takes | design findings he answers yes ÷ findings shown | — | UNMEASURED: findings are not tagged; instrument owed is `rimflow file --kind design` plus his ruling event |
+| I3 | innovations he takes | proposals he answers yes ÷ proposals shown (`design/RimMandrake/innovations.md`) | — | UNMEASURED: findings are not tagged; instrument owed is `rimflow file --kind design` plus his ruling event |
 
 ### Operations — keeps it running and efficient
 - **Running:** stuck processes and stale helpers; lapsed leases on doing items; disk (`scratch_reap.py`,
@@ -392,7 +401,8 @@ build order (v3.0 → v3.4), so each home also names who holds the duty **until*
    does not belong in Ash'karr", is meaning, which no checker encodes, and stays the Innovator's.
    **Home:** the Dispatcher's measuring arm runs the check when `canon.yml` changes (all docs), on commit (changed
    docs) and nightly; the Conductor fixes the doc to canon (it records canon and propagates rulings), never canon to
-   the doc; an ambiguous reading goes to him. Meaning-level review: Innovator's weekly design letter, deferred until
+   the doc; an ambiguous reading goes to him. Meaning-level review: Innovator's weekly game review, where "does not
+   belong" becomes a move, merge or cut proposal to him (owner 2026-10-27: mods and merges are his), deferred until
    v3.4 (nobody does it today either). Build: `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`.
 3. **Spare capacity: finish, then strengthen, then explore; stop at a conditional pass.** His: *"Spare capacity:
    this seems like the experimentor."* **Verdict: push back.** Only the third step, explore, is experimenting. The
@@ -571,10 +581,10 @@ Rules of the table:
 ### Innovator (Sun)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
 |---|---|---|---|---|---|
-| I-1 | process experiments with a named metric and keep/kill date | **deferred**: none run until the role does (nobody holds it today) | 2×/week once live | Operations reads the metric | Sun |
-| I-2 | weekly design review (meaning-level canon fit, appendixes) | **deferred** (Orphan home 2: nobody does it today) | weekly once live | Lukas | Sun |
+| I-1 | innovation proposals (agent, concept, mod, opportunity) and trials of accepted ones, each with a named metric and kill date; ask first until proved (owner 2026-10-27) | **deferred**: none run until the role does (nobody holds it today) | 2×/week once live | Operations reads the metric | Sun |
+| I-2 | weekly game review (new concepts, mods, merges, opportunities; meaning-level fit: what does not belong) | **deferred** (Orphan home 2: nobody does it today) | weekly once live | Lukas | Sun |
 | I-3 | cadence changes proposed as experiments | Operations' economy pass (BENCH before Wed) | daily | Lukas (silencing a role is his) | Sun |
-| I-4 | tend `design/V2_DREAMS.md` | any seat | on idea | Producer reads | Sun |
+| I-4 | tend `design/V2_DREAMS.md`; keep `design/RimMandrake/innovations.md` | any seat (adds `proposed` lines) | on idea | Producer reads | Sun |
 
 ### Foundry (no handover: already in its v3 shape)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
