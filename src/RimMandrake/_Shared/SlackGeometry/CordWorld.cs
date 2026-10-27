@@ -101,7 +101,7 @@ namespace RimMandrake.Shared.Slack
         public void SetBand(Cell c, int b)
         {
             if (!InBounds(c)) return;
-            if (band == null) { if (b == 0) return; band = new int[Width * Height]; }
+            if (band == null) { if (b == 0) return; band = TakeSpare(ref bandSpare) ?? new int[Width * Height]; }
             band[Idx(c)] = b;
         }
         public int BandAt(Cell c) => band != null && InBounds(c) ? band[Idx(c)] : 0;
@@ -110,7 +110,7 @@ namespace RimMandrake.Shared.Slack
         public void LinkBands(Cell a, Cell b)
         {
             if (!InBounds(a) || !InBounds(b)) return;
-            if (bandLinks == null) bandLinks = new HashSet<long>();
+            if (bandLinks == null) { bandLinks = linksSpare ?? new HashSet<long>(); linksSpare = null; }
             bandLinks.Add(LinkKey(a, b));
             bandLinks.Add(LinkKey(b, a));
         }
@@ -155,10 +155,76 @@ namespace RimMandrake.Shared.Slack
         public void SetBusy(Cell c)
         {
             if (!InBounds(c)) return;
-            if (busy == null) busy = new bool[Width * Height];
+            if (busy == null) busy = TakeSpare(ref busySpare) ?? new bool[Width * Height];
             busy[Idx(c)] = true;
         }
         public bool IsBusy(Cell c) => busy != null && InBounds(c) && busy[Idx(c)];
+
+        // ---------------------------------------------------------------- reuse (HOSE_TICK_FIX_SPIKES_AT_SUPERFAST)
+        // Live round 9: every whole-map hose snapshot was a new ~1.3 MB world (325 map: five grids, the band grid, the link
+        // set) and every lay-pool copy of a dropped snapshot was garbage too, so rebuilds fed the Boehm heap that freezes a
+        // frame ~1.3 s per full collection. Reset and CopyFrom refill a retired world in place: afterwards it reads exactly
+        // as a new CordWorld (Reset) or as src.Clone() (CopyFrom) through every accessor. The band grid, link set and busy
+        // grid keep their "never set" state (null: HasBands, HasBusy, LinkMask's fast path); their storage waits as a spare.
+        private int[] bandSpare;
+        private HashSet<long> linksSpare;
+        private bool[] busySpare;
+
+        private static T[] TakeSpare<T>(ref T[] spare)
+        {
+            T[] a = spare;
+            spare = null;
+            if (a != null) Array.Clear(a, 0, a.Length);
+            return a;
+        }
+
+        /// <summary>Back to a new CordWorld of the same size: every grid cleared, no bands, links, busy cells or machines.</summary>
+        public void Reset()
+        {
+            Array.Clear(conduit, 0, conduit.Length);
+            Array.Clear(block, 0, block.Length);
+            Array.Clear(door, 0, door.Length);
+            Array.Clear(extraCost, 0, extraCost.Length);
+            Array.Clear(forcedBuried, 0, forcedBuried.Length);
+            if (band != null) { bandSpare = band; band = null; }
+            if (bandLinks != null) { bandLinks.Clear(); linksSpare = bandLinks; bandLinks = null; }
+            if (busy != null) { busySpare = busy; busy = null; }
+            Machines.Clear();
+            LinkAllowed = null;
+        }
+
+        /// <summary>This world made a copy of <paramref name="src"/> (same size), in place: what <see cref="Clone"/> returns.</summary>
+        public void CopyFrom(CordWorld src)
+        {
+            if (src.Width != Width || src.Height != Height) throw new ArgumentException("CordWorld.CopyFrom: size differs");
+            Array.Copy(src.conduit, conduit, conduit.Length);
+            Array.Copy(src.block, block, block.Length);
+            Array.Copy(src.door, door, door.Length);
+            Array.Copy(src.extraCost, extraCost, extraCost.Length);
+            Array.Copy(src.forcedBuried, forcedBuried, forcedBuried.Length);
+            if (src.band == null) { if (band != null) { bandSpare = band; band = null; } }
+            else
+            {
+                if (band == null) { band = bandSpare ?? new int[Width * Height]; bandSpare = null; }
+                Array.Copy(src.band, band, band.Length);
+            }
+            if (src.bandLinks == null) { if (bandLinks != null) { bandLinks.Clear(); linksSpare = bandLinks; bandLinks = null; } }
+            else
+            {
+                if (bandLinks == null) { bandLinks = linksSpare ?? new HashSet<long>(); linksSpare = null; }
+                bandLinks.Clear();
+                bandLinks.UnionWith(src.bandLinks);
+            }
+            if (src.busy == null) { if (busy != null) { busySpare = busy; busy = null; } }
+            else
+            {
+                if (busy == null) { busy = busySpare ?? new bool[Width * Height]; busySpare = null; }
+                Array.Copy(src.busy, busy, busy.Length);
+            }
+            Machines.Clear();
+            Machines.AddRange(src.Machines);
+            LinkAllowed = src.LinkAllowed;
+        }
 
         /// <summary>HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: an independent copy (every grid copied; Machines a new list of the same
         /// infos; LinkAllowed shared). A FlowWorks hose lay runs on a worker thread against its own copy, because the lay

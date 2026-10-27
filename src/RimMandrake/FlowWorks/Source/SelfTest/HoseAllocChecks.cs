@@ -80,6 +80,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             return (b1 - b0) / (double)n;
         }
 
+        private static ulong CellSigOf(CordWorld w, Cell c)
+            => ((ulong)w.BlockAt(c) << 56) ^ ((w.IsDoor(c) ? 1UL : 0UL) << 55) ^ ((w.IsBusy(c) ? 1UL : 0UL) << 54)
+               ^ ((ulong)(uint)w.BandAt(c) << 16) ^ ((ulong)w.LinkMask(c) << 8) ^ (ulong)BitConverter.SingleToInt32Bits(w.ExtraCost(c)) * 0x9E3779B97F4A7C15UL;
+
         public static void Run(Action<string, Action> Case)
         {
             Case("A1 a hose lay on the 325 basin map allocates under 2.5 MB after warmup", () =>
@@ -91,6 +95,68 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ok >= 30, $"the lays lay ({ok}/40): the layout is the live one");
                 Assert(per < 2.5 * 1024 * 1024, $"{per / 1024.0:0.0} KB per lay (bound 2.5 MB; 4.7 MB before HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC, 340 MB before HOSE_LAY_FIX_GC_STORM_FROM_WORKER)");
                 Assert(gcs <= 40, $"gen0 collections over 40 lays: {gcs}");
+            });
+            Case("A3 a recycled world (Reset + refill, CopyFrom) reads and lays exactly as a new one; the draw and recheck reuse", () =>
+            {
+                // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST / HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC (live round 9): BuildWorld refills the
+                // snapshot before last (CordWorld.Reset) and the lay pool refills stale copies (CordWorld.CopyFrom) instead of
+                // allocating ~1.3 MB per rebuild or copy. A dirty world -- other bands, link, busy cells, blocks -- refilled
+                // must give the fresh world's every cell signature and the same lays, byte for byte.
+                CordWorld w = BasinWorld(out var rigs);
+                CordWorld dirty = new CordWorld(Size, Size);
+                for (int x = 0; x < Size; x += 3) { dirty.SetBand(new Cell(x, 7), 9); dirty.SetBlocked(new Cell(x, 9), BlockKind.Wall); dirty.SetBusy(new Cell(x, 11)); dirty.SetDoor(new Cell(x, 13)); dirty.SetExtraCost(new Cell(x, 15), 7f); }
+                dirty.LinkBands(new Cell(5, 7), new Cell(5, 8));
+                CordWorld copied = new CordWorld(Size, Size);
+                copied.SetBand(new Cell(1, 1), 3); copied.SetBusy(new Cell(2, 2)); copied.LinkBands(new Cell(1, 1), new Cell(1, 2));
+                copied.CopyFrom(w);
+                // Reset then BasinWorld's own writes (what BuildWorld does) on the dirty world
+                dirty.Reset();
+                Assert(!dirty.HasBands && !dirty.HasBusy, "Reset leaves no band grid and no busy grid (HasBands / HasBusy as a new world)");
+                for (int z = 2; z <= 321; z++)
+                {
+                    for (int x = 10; x <= 134; x++) { dirty.SetBand(new Cell(x, z), -4); dirty.SetExtraCost(new Cell(x, z), 3f); }
+                    for (int x = 190; x <= 314; x++) { dirty.SetBand(new Cell(x, z), -4); dirty.SetExtraCost(new Cell(x, z), 3f); }
+                }
+                foreach (var (cx, z) in rigs)
+                {
+                    for (int dz = 0; dz < 4; dz++)
+                        for (int dx = 0; dx < 2; dx++) dirty.SetExtraCost(new Cell(cx + dx, z + dz), HoseMath.BuildingCrossCost);
+                    for (int dz = 0; dz < 4; dz++) dirty.SetExtraCost(new Cell(cx + 2, z + dz), HoseMath.BuildingCrossCost);
+                }
+                int diff = 0;
+                for (int z = -1; z <= Size; z++)
+                    for (int x = -1; x <= Size; x++)
+                    {
+                        var c = new Cell(x, z);
+                        ulong sig = CellSigOf(w, c);
+                        if (CellSigOf(dirty, c) != sig || CellSigOf(copied, c) != sig) diff++;
+                    }
+                Assert(diff == 0, $"{diff} cells read differently from a new world after Reset/CopyFrom");
+                Assert(copied.HasBands == w.HasBands && copied.HasBusy == w.HasBusy, "CopyFrom copies the band/busy state");
+                int laid = 0;
+                for (int i = 0; i < 24; i++)
+                {
+                    var (cx, z) = rigs[(i * 11 + 5) % rigs.Count];
+                    bool outflow = i % 2 == 1;
+                    HoseLay a = HoseLayQueue.Compute(w.Clone(), Inputs(cx, z, outflow));
+                    ulong fresh = HoseMateEndQueueChecks.LayHash(a);
+                    Assert(HoseMateEndQueueChecks.LayHash(HoseLayQueue.Compute(dirty, Inputs(cx, z, outflow))) == fresh, $"lay {i}: a Reset world lays differently");
+                    Assert(HoseMateEndQueueChecks.LayHash(HoseLayQueue.Compute(copied, Inputs(cx, z, outflow))) == fresh, $"lay {i}: a CopyFrom world lays differently");
+                    if (a != null && a.Ok) laid++;
+                }
+                Assert(laid >= 18, $"the lays lay ({laid}/24): the check can fail");
+                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                dirty.Reset();
+                copied.CopyFrom(w);
+                long bytes = GC.GetAllocatedBytesForCurrentThread() - b0;
+                Assert(bytes < 4096, $"Reset + CopyFrom allocate {bytes} B (a new world is ~1.3 MB)");
+                string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
+                RiverSwitchFlipChecks.Has(comp, @"cw\.Reset\(\);", "BuildWorld refills a retired snapshot");
+                RiverSwitchFlipChecks.Has(comp, @"spareTick != now \|\| spareFrame != Time\.frameCount", "a snapshot retired in this same tick and frame is never refilled");
+                RiverSwitchFlipChecks.Has(comp, @"w = layWorldsStale\.Pop\(\); w\.CopyFrom\(src\);", "the lay pool refills stale copies");
+                RiverSwitchFlipChecks.Has(comp, @"CordWorld w = LegacyFrame \? World\(\) : World\(LayWorldMaxAge\);\s*if \(r\.trail\.Count > 0 && \(r\.lay == null \|\| !r\.TrailWalkable\(w\)\)\)", "TickRecheck reads the version-valid snapshot");
+                RiverSwitchFlipChecks.Has(comp, @"List<Vector3> v = RibbonV; List<Vector2> uv = RibbonUv; List<int> tr = RibbonTr;", "Ribbon builds in scratch lists");
+                Assert(!comp.Contains("all.AddRange(m.vertices)"), "the crossing shadow appends strips, no temporary mesh copied out");
             });
             Case("A2 source: a levelling cycle walks each dug run once and resumes at the hose its budget turned away", () =>
             {

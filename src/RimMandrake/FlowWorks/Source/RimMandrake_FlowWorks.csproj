@@ -109,6 +109,7 @@
     <Compile Include="Hose\RM_HoseLegacyMath.cs" />
     <Compile Include="Hose\RM_HoseLegacy.cs" />
     <Compile Include="Hose\HoseLook.cs" />
+    <Compile Include="Hose\HoseTickWatch.cs" />
     <Compile Include="Hose\CompHoseReel.cs" />
     <Compile Include="Hose\HoseFlow.cs" />
     <Compile Include="Hose\RM_MapComponent_Hoses.cs" />

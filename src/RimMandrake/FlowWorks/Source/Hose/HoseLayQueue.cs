@@ -129,6 +129,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// moved on (Behind), asks deferred by the budget, lays that threw, landed lays dropped as older than a reset (Dropped);
         /// the slowest lay so far (ms, worker time).</summary>
         internal long Started, Taken, Behind, Deferred, Faulted, Dropped, MaxMs;
+        /// <summary>Lays started on every queue (main thread; HoseTickWatch's per-tick delta).</summary>
+        internal static long AllStarted;
         internal string LastFault;
         internal int InFlight => Volatile.Read(ref inFlight);
         internal int Jobs => jobs.Count;
@@ -174,6 +176,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (startedThisFrame >= MaxStartsPerFrame || (Async && (InFlight >= MaxInFlight || AllInFlight >= MaxInFlightAll))) { Deferred++; return null; }
             startedThisFrame++;
             Started++;
+            AllStarted++;
             var job = new Job { id = id, key = key, epoch = epoch, work = prepare() };
             if (!Async)
             {

@@ -19,6 +19,12 @@ namespace RimMandrake.FlowWorks.Hose
         private readonly List<CompHoseReel> reels = new List<CompHoseReel>();
         private readonly Dictionary<CompHoseReel, Cached> meshes = new Dictionary<CompHoseReel, Cached>();
         private CordWorld world;
+        /// <summary>BuildWorld's count on this map (TakeLayWorld's pool key) and the retired snapshot it refills next.</summary>
+        private int worldSerial;
+        private CordWorld worldSpare;
+        private int spareTick, spareFrame;
+        /// <summary>BuildWorld's time on every map, Stopwatch ticks (HoseTickWatch's per-tick delta).</summary>
+        internal static long BuildWorldStopwatchTicks;
         private int worldTick = -1;
         /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: bumped by every map change the snapshot reads (MapChanged), and
         /// the value the snapshot was built from; World() rebuilds when they differ, paused or not.</summary>
@@ -210,9 +216,19 @@ namespace RimMandrake.FlowWorks.Hose
         private CordWorld BuildWorld(int now)
         {
             int version = mapVersion;
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             int w = map.Size.x, h = map.Size.z;
             WorldBuilds++;
-            var cw = new CordWorld(w, h);
+            worldSerial++;
+            // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST / HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC: the snapshot before last is refilled in
+            // place, not a new ~1.3 MB world per rebuild. World()'s readers hold a snapshot only as a local of one call chain
+            // (no field keeps one; the lay pool copies it), so a world retired on an earlier tick or frame is nobody's; one
+            // retired in this same tick and frame may still be a caller's local and is left to the collector instead.
+            CordWorld cw = worldSpare;
+            worldSpare = null;
+            if (cw != null && cw.Width == w && cw.Height == h && (spareTick != now || spareFrame != Time.frameCount)) cw.Reset();
+            else cw = new CordWorld(w, h);
+            if (world != null) { worldSpare = world; spareTick = now; spareFrame = Time.frameCount; }
             CellIndices ci = map.cellIndices;
             for (int idx = 0; idx < w * h; idx++)
             {
@@ -233,6 +249,7 @@ namespace RimMandrake.FlowWorks.Hose
             world = cw;
             worldTick = now;
             worldVersion = version;
+            BuildWorldStopwatchTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
             return cw;
         }
 
@@ -623,7 +640,11 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>World copies the lay jobs run on (a lay marks its reel's footprint solid while it runs, restored after), reused
         /// while the snapshot they copy holds: at most MaxInFlight copies a snapshot, not one per lay.</summary>
         private readonly Stack<CordWorld> layWorlds = new Stack<CordWorld>();
-        private CordWorld layWorldsOf;
+        /// <summary>The snapshot (BuildWorld's serial) the pooled copies hold; a recycled snapshot is a new serial.</summary>
+        private int layWorldsOf = -1;
+        /// <summary>Copies of an older snapshot, done with: refilled (CordWorld.CopyFrom) instead of a new clone.</summary>
+        private readonly Stack<CordWorld> layWorldsStale = new Stack<CordWorld>();
+        private const int LayWorldsStaleCap = 8;
 
         /// <summary>Probe: the lay queue's counters (HoseProbe census "layQueue").</summary>
         internal string LayQueueJson() => layQueue.Json();
@@ -690,17 +711,34 @@ namespace RimMandrake.FlowWorks.Hose
             // The snapshot is versioned by the map events World() reads (HookMapEvents), so one up to LayWorldMaxAge ticks
             // old that its version still holds is the same grid a rebuild would give: the lay is the same, the pool is kept.
             CordWorld src = LegacyFrame ? World() : World(LayWorldMaxAge);
-            if (!ReferenceEquals(src, layWorldsOf)) { layWorlds.Clear(); layWorldsOut.Clear(); layWorldsOf = src; }
-            CordWorld w = layWorlds.Count > 0 ? layWorlds.Pop() : src.Clone();
-            layWorldsOut.Add(w);
+            // round 9 (HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC): a new snapshot no longer drops the pool; its copies are refilled
+            // from the new one (same bytes as a Clone: CordWorld.CopyFrom), so a snapshot change costs a copy, not garbage
+            if (worldSerial != layWorldsOf)
+            {
+                while (layWorlds.Count > 0) Stale(layWorlds.Pop());
+                layWorldsOf = worldSerial;
+            }
+            CordWorld w;
+            if (layWorlds.Count > 0) w = layWorlds.Pop();
+            else if (layWorldsStale.Count > 0) { w = layWorldsStale.Pop(); w.CopyFrom(src); }
+            else w = src.Clone();
+            layWorldsOut[w] = layWorldsOf;
             return w;
         }
 
+        private void Stale(CordWorld w)
+        {
+            if (layWorldsStale.Count < LayWorldsStaleCap && world != null && w.Width == world.Width && w.Height == world.Height)
+                layWorldsStale.Push(w);
+        }
+
         /// <summary>A landed job's world copy back to the pool (its lay restored what it marked); a copy of an older snapshot
-        /// (not in layWorldsOut any more) is dropped.</summary>
+        /// waits to be refilled.</summary>
         private void GiveBackLayWorld(CordWorld w)
         {
-            if (w != null && layWorldsOut.Remove(w)) layWorlds.Push(w);
+            if (w == null || !layWorldsOut.TryGetValue(w, out int of)) return;
+            layWorldsOut.Remove(w);
+            if (of == layWorldsOf) layWorlds.Push(w); else Stale(w);
         }
 
         /// <summary>HoseLayQueue.Released: a dropped or forgotten job's copy. A done one goes back to the pool; one a worker may
@@ -714,8 +752,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>How old (ticks) a version-valid snapshot a queued lay may copy: World(60)'s readers' bound.</summary>
         internal const int LayWorldMaxAge = 60;
 
-        /// <summary>The copies of layWorldsOf now lent to jobs.</summary>
-        private readonly HashSet<CordWorld> layWorldsOut = new HashSet<CordWorld>();
+        /// <summary>The copies now lent to jobs, each with the snapshot serial it copies.</summary>
+        private readonly Dictionary<CordWorld, int> layWorldsOut = new Dictionary<CordWorld, int>();
 
         /// <summary>EnsureLay's re-lay. Its own method (HOSE_FRAME_SHRINK_PER_FRAME_GARBAGE): its lambdas capture r, so while they
         /// sat in EnsureLay C# allocated their closure at EnsureLay's entry -- per hose per frame, cache hit or not.</summary>
@@ -870,14 +908,18 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
                 // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
-                if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(World())))
+                // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST (live round 9 T2c: 159 whole-map rebuilds, up to 188 ms each): the check
+                // reads the lays' version-valid snapshot (World(LayWorldMaxAge): the same map events, ladder counter, climb
+                // generation and settings salt invalidate it), not a fresh rebuild on every tick a recheck needs a world
+                CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);
+                if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(w)))
                 {
                     r.trail.Clear();
                     r.layKey = null;
                     r.layEpoch++;
                     return;
                 }
-                string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
+                string why = HoseMath.CheckReplan(w, r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
                 if (why != null)
                 {
                     // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
@@ -1112,8 +1154,7 @@ namespace RimMandrake.FlowWorks.Hose
                     fm = e < 0.999f ? Ribbon(rp, (float)HoseMath.MeshWidthFlat(vis), y, 0.37) : null;
                     pm = e > 0.001f ? Ribbon(rp, (float)HoseMath.MeshWidthPlump(vis), y + 0.0004f, 0.37) : null;
                     var off = new V2(0.03 + 0.05 * e, -(0.03 + 0.06 * e));
-                    var sp = new List<V2>(rp.Count);
-                    foreach (V2 p in rp) sp.Add(p + off);
+                    List<V2> sp = Offset(rp, off);
                     sm = Ribbon(sp, vis * (float)HoseMath.ShadowWidth(e), y - 0.0004f, 0.11);
                     if (key != null)
                     {
@@ -1216,8 +1257,7 @@ namespace RimMandrake.FlowWorks.Hose
                 {
                     List<V2> part = HoseOverDraw.Slice(c.rp, sp[0], sp[1]);
                     if (part.Count < 2) continue;
-                    var sh = new List<V2>(part.Count);
-                    foreach (V2 p in part) sh.Add(p + off);
+                    List<V2> sh = Offset(part, off);
                     // the texture phase carries on from the main strand (Ribbon: u = 4 s0 + arc / (4 width))
                     c.overMeshes.Add(Ribbon(sh, ws, yo - 0.0004f, 0.11 + sp[0] / (16.0 * ws)));
                     c.overMeshes.Add(e < 0.999f ? Ribbon(part, wf, yo, 0.37 + sp[0] / (16.0 * wf)) : null);
@@ -1311,22 +1351,16 @@ namespace RimMandrake.FlowWorks.Hose
                 if (c.crossSpans.Count > 0)
                 {
                     var off = new V2(CrossShadowOffset + 0.04 * e, -(CrossShadowOffset + 0.04 * e));
-                    var all = new List<Vector3>();
-                    var tris = new List<int>();
-                    var uvs = new List<Vector2>();
+                    // HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET (round 9: 5 full GCs in an 87 s wave): the spans' strips are appended
+                    // straight into the shared scratch (RibbonInto), not built as a temporary mesh per span whose
+                    // vertices/uv/triangles were then copied out as fresh arrays
+                    List<Vector3> all = RibbonV; List<Vector2> uvs = RibbonUv; List<int> tris = RibbonTr;
+                    all.Clear(); uvs.Clear(); tris.Clear();
                     foreach (double[] sp in c.crossSpans)
                     {
                         List<V2> part = HoseOverDraw.Slice(c.rp, sp[0], sp[1]);
                         if (part.Count < 2) continue;
-                        var sh = new List<V2>(part.Count);
-                        foreach (V2 p in part) sh.Add(p + off);
-                        Mesh m = Ribbon(sh, vis * (float)HoseMath.ShadowWidth(e) * CrossShadowWiden, y - 0.0004f, 0.11);
-                        if (m == null) continue;
-                        int b = all.Count;
-                        all.AddRange(m.vertices);
-                        uvs.AddRange(m.uv);
-                        foreach (int t in m.triangles) tris.Add(b + t);
-                        UnityEngine.Object.Destroy(m);
+                        RibbonInto(Offset(part, off), vis * (float)HoseMath.ShadowWidth(e) * CrossShadowWiden, y - 0.0004f, 0.11, all, uvs, tris);
                     }
                     if (tris.Count > 0)
                     {
@@ -2190,13 +2224,42 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>State read for the probe: depth pre-pass draws last frame (reset per DrawAll).</summary>
         public static int lastDepthDraws;
 
-        /// <summary>A strip along pts: u runs along it (tile = width x 4, the strips are 256x64), v across.</summary>
+        /// <summary>A strip along pts: u runs along it (tile = width x 4, the strips are 256x64), v across.
+        /// HOSE_RELAY_FIX_WAVE_FRAME_OVER_BUDGET (live round 9 T3: 13420 ribbons in the wave, each three new lists): the
+        /// vertex, uv and triangle lists are scratch (main thread only: a Mesh is made here), copied into the mesh by
+        /// SetVertices/SetUVs/SetTriangles, so a ribbon's only allocation is its Mesh.</summary>
         internal static Mesh Ribbon(List<V2> pts, float width, float y, double s0)
         {
-            if (pts.Count < 2 || width <= 0) return null;
-            var v = new List<Vector3>(pts.Count * 2);
-            var uv = new List<Vector2>(pts.Count * 2);
-            var tr = new List<int>(pts.Count * 6);
+            List<Vector3> v = RibbonV; List<Vector2> uv = RibbonUv; List<int> tr = RibbonTr;
+            v.Clear(); uv.Clear(); tr.Clear();
+            if (!RibbonInto(pts, width, y, s0, v, uv, tr)) return null;
+            var m = new Mesh { name = "RM_Hose" };
+            m.SetVertices(v);
+            m.SetUVs(0, uv);
+            m.SetTriangles(tr, 0);
+            m.RecalculateBounds();
+            return m;
+        }
+
+        private static readonly List<Vector3> RibbonV = new List<Vector3>(512);
+        private static readonly List<Vector2> RibbonUv = new List<Vector2>(512);
+        private static readonly List<int> RibbonTr = new List<int>(1536);
+        private static readonly List<V2> OffsetScratch = new List<V2>(256);
+
+        /// <summary>pts moved by off, in a scratch list valid until the next call (Ribbon and RibbonInto do not keep it).</summary>
+        private static List<V2> Offset(List<V2> pts, V2 off)
+        {
+            OffsetScratch.Clear();
+            for (int i = 0; i < pts.Count; i++) OffsetScratch.Add(pts[i] + off);
+            return OffsetScratch;
+        }
+
+        /// <summary>Ribbon's strip appended to v/uv/tr (its triangles index from v's count on entry); false, nothing added,
+        /// where Ribbon gives no mesh.</summary>
+        internal static bool RibbonInto(List<V2> pts, float width, float y, double s0, List<Vector3> v, List<Vector2> uv, List<int> tr)
+        {
+            if (pts.Count < 2 || width <= 0) return false;
+            int b = v.Count;
             float hw = width / 2f;
             double tile = width * 4.0, u = s0 * 4.0;
             for (int i = 0; i < pts.Count; i++)
@@ -2209,16 +2272,11 @@ namespace RimMandrake.FlowWorks.Hose
                 uv.Add(new Vector2((float)u, 1f));
                 uv.Add(new Vector2((float)u, 0f));
                 if (i == 0) continue;
-                int a = 2 * (i - 1);
+                int a = b + 2 * (i - 1);
                 tr.Add(a); tr.Add(a + 2); tr.Add(a + 3);
                 tr.Add(a); tr.Add(a + 3); tr.Add(a + 1);
             }
-            var m = new Mesh { name = "RM_Hose" };
-            m.SetVertices(v);
-            m.SetUVs(0, uv);
-            m.SetTriangles(tr, 0);
-            m.RecalculateBounds();
-            return m;
+            return true;
         }
     }
 

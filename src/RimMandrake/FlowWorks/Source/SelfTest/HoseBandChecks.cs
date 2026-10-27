@@ -296,7 +296,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(live.Contains("RM_HoseBands.BandAt(map, c)") && live.Contains("RM_HoseBands.LinkMask(map, c, band)"), "LiveCellSig ignores band or links");
                 Assert(comp.Contains("CordSig.Of(walkable, door, extra, band, linkMask)"), "SigOf is not the shared CordSig.Of formula");
                 string tick = Body(comp, "private void TickRecheck(");  // the 250-tick block, its own profilable method since round 9
-                Assert(tick.Contains("CorridorHashLive(r.lay) != r.corridorHash") && tick.Contains("HoseMath.CheckReplan(World()") && tick.Contains("r.Retract(why)"),
+                Assert(tick.Contains("CorridorHashLive(r.lay) != r.corridorHash") && tick.Contains("HoseMath.CheckReplan(w, r.Rect") && tick.Contains("CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);") && tick.Contains("r.Retract(why)"),
                     "the 250-tick corridor branch is not the re-plan-or-retract");
                 Assert(Body(Src("Hose", "CompHoseReel.cs"), "internal bool TrailWalkable(").Contains("w.StepAllowed(prev.Value, k)"),
                     "a walked trail over a newly dug square still reads walkable");
