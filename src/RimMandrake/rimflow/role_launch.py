@@ -9,7 +9,10 @@ is still an ALARM, as in v3.0: switching on a role nobody can run must be loud.
 
 When: the role's clock slots — `quick_checks_local` (Conductor) or `runs_local` (Operations), local "HH:MM" — each
 once per local day, launched in the first tick at or after the slot and no later than `slot_late_s` after it (a
-missed slot is journaled, never run late). The slot equal to `economy_pass_local` is the economy pass. Operations
+missed slot is journaled, never run late). The slot equal to `economy_pass_local` is the economy pass, which carries
+that slot's running check with it: when a band skips the economy pass the whole slot is skipped (the cheaper reading,
+operations.md says so). A role with `after_role` (Conductor -> Operations) launches a slot only after a run of that
+role launched since its previous slot has finished done and none is going (after_ready). Operations
 also runs once per ops_watch alarm item FILED after the role was first seen enabled (`alarm_runs`); alarms already
 open at that first tick are the baseline, covered by the next running check. One run per role at a time.
 
@@ -23,7 +26,7 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      (account_usage.registry()/live_email()): no account is named here.
   3. throttle band (role `throttle_bands`, as conductor.md writes them): FLOOR when week_left_pct < its line, else
      the highest band whose `runway_ge` the runway meets (an ESTIMATE counts as its value). The band's `slots`
-     ("all" | "first" | "none") says which scheduled slots still run and `quick_cap_x` scales the run's budget.
+     ("all" | "first" | "last" | "none") says which scheduled slots still run and `quick_cap_x` scales the run's budget.
      A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
   4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
      passes `daily_token_cap`. Today's spend = tokens of finished runs + the full budget of runs still going.
@@ -31,7 +34,9 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
 Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields (input, cache_creation,
 cache_read, output): the conservative reading. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop, so the budget is told to the role in its prompt and checked on its result. A run still going after
-`run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm.
+`run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm; it stays `running` and the stop is
+re-issued each tick until systemd says the unit is inactive/failed. supervise_roles() does this for every persisted
+run before PAUSE, a blind tick or a disabled role can end the tick (review round Q).
 
 How it launches (proved 2026-10-27, D:\\ClaudeWork\\rimmandrake\\role_launch_2026-10-27\\proof\\RESULT.md): as its OWN
 transient user service, `systemd-run --user --collect --unit rm-role-<name>-<epoch>`, which runs
@@ -47,6 +52,7 @@ Names no host, account or model id.
 """
 import calendar
 import json
+import math
 import os
 import subprocess
 import sys
@@ -56,6 +62,9 @@ LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800}
 OPS_STALE_S = 45 * 60
 ACTIVE = ("active", "activating", "deactivating", "reloading")
+TERMINAL = ("inactive", "failed")      # the only states that end a run; anything else ("unknown", a failed query) is busy
+FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
+USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
 MODEL_VARS = {"opus": "ANTHROPIC_DEFAULT_OPUS_MODEL", "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL",
               "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
@@ -86,6 +95,11 @@ def utc_epoch(iso_s):
         return None
 
 
+def finite(v):
+    """A real number: int/float, not bool, not NaN/inf (Python's json accepts NaN and Infinity)."""
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
 def ops_reading(status, account, now, stale_s=OPS_STALE_S):
     """Pure. status = parsed status.json (or None), account = resolved label (or None).
     -> {"state": "MEASURED", "account", "runway", "runway_m", "week_left", "week_left_m", "at"}
@@ -95,6 +109,9 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S):
     at = utc_epoch(status.get("at"))
     if at is None:
         return {"state": "UNMEASURED", "why": "ops_watch status.json has no readable 'at'"}
+    if at - now > FUTURE_TOL_S:
+        return {"state": "UNMEASURED", "why": "ops_watch status.json 'at' %s is %d min in the FUTURE (clock or file "
+                "wrong)" % (status.get("at"), (at - now) // 60)}
     if now - at > stale_s:
         return {"state": "UNMEASURED", "why": "ops_watch status.json is STALE: at %s, %d min old (> %d)"
                 % (status.get("at"), (now - at) // 60, stale_s // 60)}
@@ -104,9 +121,12 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S):
     out = {"state": "MEASURED", "account": account, "at": status.get("at")}
     for key, name in (("runway", "runway"), ("week_left_pct", "week_left")):
         p = pts.get("accounts.%s.%s" % (account, key)) or {}
-        if p.get("m") not in ("MEASURED", "ESTIMATE") or not isinstance(p.get("v"), (int, float)):
-            return {"state": "UNMEASURED", "why": "accounts.%s.%s is %s%s" % (
-                account, key, p.get("m") or "absent", (" (%s)" % p["why"]) if p.get("why") else "")}
+        if not isinstance(p, dict):
+            p = {}
+        if p.get("m") not in ("MEASURED", "ESTIMATE") or not finite(p.get("v")):
+            return {"state": "UNMEASURED", "why": "accounts.%s.%s is %s%s%s" % (
+                account, key, p.get("m") or "absent", (" (%s)" % p["why"]) if p.get("why") else "",
+                "" if p.get("m") not in ("MEASURED", "ESTIMATE") else ", value %r not a finite number" % (p.get("v"),))}
         out[name], out[name + "_m"] = float(p["v"]), p["m"]
     return out
 
@@ -128,12 +148,15 @@ def band(role, reading):
 
 def slot_blocked(allowed, job, role):
     """Pure. May this band's `slots` setting stop this job? "all": never. "none": every scheduled slot and every
-    alarm run. "first": scheduled slots but the first. "quick": the economy pass is skipped, running checks and alarm
-    runs go. "quick_one": the economy pass and alarm runs are skipped, and only the first running check runs."""
+    alarm run. "first" / "last": only the first / last scheduled slot. "quick": the economy-pass slot is skipped whole
+    (its running check goes with it: operations.md), the other running checks and alarm runs go. "quick_one": the
+    economy-pass slot and alarm runs are skipped, and only the first NON-economy running check runs (Ops: 19:30)."""
     if allowed == "none":
         return True
     if allowed == "first":
         return bool(job["slot"]) and not job["first"]
+    if allowed == "last":
+        return bool(job["slot"]) and job["slot"] != slots(role)[-1][0]
     if allowed in ("quick", "quick_one"):
         if job["mode"] == "economy":
             return True
@@ -169,12 +192,16 @@ def day_of(t):
 
 
 def run_tokens(result):
-    """Pure. usage of a `claude -p --output-format json` result -> total tokens (all four fields) or None."""
-    u = (result or {}).get("usage")
+    """Pure. usage of a `claude -p --output-format json` result -> total tokens (all four fields) or None
+    (UNMEASURED) when the usage block or any field is missing, not a whole non-negative number, or a bool: an absent
+    field is unknown spend, never zero (review Q 8). The run is then failed and its spend counted at its budget."""
+    u = result.get("usage") if isinstance(result, dict) else None
     if not isinstance(u, dict):
         return None
-    return sum(int(u.get(k) or 0) for k in ("input_tokens", "cache_creation_input_tokens",
-                                             "cache_read_input_tokens", "output_tokens"))
+    vals = [u.get(k) for k in USAGE_KEYS]
+    if not all(finite(v) and v >= 0 and float(v).is_integer() for v in vals):
+        return None
+    return int(sum(vals))
 
 
 def spent_today(rs, now):
@@ -205,10 +232,95 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
 
 # ---------------------------------------------------------------- decide (pure but for obs)
 
-def decide_roles(sch, st, obs, now, act):
-    """Mutates st["roles"]; calls act(**kw) per action. obs needs: ops() -> status dict|None, account() -> label|None,
-    unit_state(unit) -> str, result(run) -> dict|None, off(path) -> first line|None."""
+def supervise_roles(sch, st, obs, now, act):
+    """Every persisted run still `running`, of every role (enabled or not, in the schedule or not), checked on every
+    tick BEFORE anything can end the tick early: PAUSE, a blind `claude agents`, a disabled role (review Q 1). A run
+    stays `running` (busy, its budget counted) until systemd says its unit is inactive/failed: a stop is re-issued
+    every tick until then (review Q 2), and any other unit state ("unknown", a failed query) is UNMEASURED, busy and
+    alarmed, never a finish (review Q 3). -> the set of role names with a run in flight."""
     rst = st.setdefault("roles", {})
+    by_name = {r.get("name"): r for r in sch.get("roles") or []}
+    busy = set()
+    for name, rs in sorted(rst.items()):
+        if not isinstance(rs, dict):
+            continue
+        cfg = dict(ROLE_DEFAULTS, **(by_name.get(name) or {}))
+        for run in rs.get("runs") or []:
+            if run.get("state") != "running":
+                continue
+            ustate = obs["unit_state"](run["unit"])
+            if ustate not in TERMINAL:
+                busy.add(name)
+                if ustate not in ACTIVE:
+                    act(do="alarm", kind="role:%s:unit" % name, ticket=run.get("item"), note=True,
+                        why="%s run %s unit state UNMEASURED (%s): kept as running, retried next tick"
+                        % (name, run["unit"], ustate))
+                max_s = run.get("run_max_s") or cfg["run_max_s"]
+                if now - run["at"] >= max_s:
+                    tries = run.get("stop_tries", 0)
+                    run["stop_tries"] = tries + 1
+                    act(do="role_stop", role=name, unit=run["unit"], scope=run.get("scope"),
+                        seat=run.get("seat") or cfg.get("seat"), ticket=run.get("item"), note=tries == 0,
+                        why="%s run %s still %s after %d s (run_max_s %d): stop #%d" % (
+                            name, run["unit"], ustate, now - run["at"], max_s, tries + 1))
+                    if tries == 0:
+                        act(do="alarm", kind="role:%s:overtime" % name, ticket=run.get("item"), note=True,
+                            why="%s run %s passed run_max_s %d" % (name, run["unit"], max_s))
+                    else:
+                        act(do="alarm", kind="role:%s:stop_failed" % name, ticket=run.get("item"), note=True,
+                            why="%s run %s still %s after %d stop(s): NOT confirmed stopped, kept as running"
+                            % (name, run["unit"], ustate, tries))
+                continue
+            res = obs["result"](run)
+            tok = run_tokens(res)
+            run["tokens"] = tok
+            run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or tok is None) else "done"
+            res = res if isinstance(res, dict) else {}
+            models = sorted(res.get("modelUsage") or {})
+            act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
+                why="%s %s run %s %s%s: %s tokens of a %d budget, model %s, %s" % (
+                    name, run.get("mode"), run["unit"], run["state"],
+                    " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
+                    tok if tok is not None else "UNMEASURED (counted at its budget)",
+                    run.get("budget") or 0, ",".join(models) or "?", res.get("subtype") or "no result"))
+            if tok is not None and tok > (run.get("budget") or 0):
+                act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
+                    why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
+            if run["state"] == "failed":
+                act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True,
+                    why="%s run %s ended without a good result (%s)" % (
+                        name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
+                        + (res.get("result") or run.get("err_tail") or "no result file")[:160]))
+        rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+    return busy
+
+
+def after_ready(cfg, rst, busy, job, now):
+    """`after_role` (Conductor: "each after an Operations run", conductor.md): a scheduled slot waits until that role
+    has a run that FINISHED (done) and was launched since this role's previous slot, and none of its runs is in
+    flight. -> None when ready, else why it waits."""
+    after = cfg.get("after_role")
+    if not after or not job["slot"]:
+        return None
+    if after in busy:
+        return "an %s run is still going" % after
+    times = [t for t, _, _ in slots(cfg)]
+    i = times.index(job["slot"])
+    since = slot_epoch(now, times[i - 1]) if i else slot_epoch(now - 86400, times[-1])
+    for r in (rst.get(after) or {}).get("runs") or []:
+        if r.get("state") == "done" and r.get("at", 0) >= since:
+            return None
+    return "no finished %s run since %s" % (after, time.strftime("%Y-%m-%d %H:%M", time.localtime(since)))
+
+
+def decide_roles(sch, st, obs, now, act, busy=None):
+    """Mutates st["roles"]; calls act(**kw) per action. obs needs: ops() -> status dict|None, account() -> label|None,
+    unit_state(unit) -> str, result(run) -> dict|None, off(path) -> first line|None. busy = supervise_roles()'s
+    answer (run here when the caller did not)."""
+    if busy is None:
+        busy = supervise_roles(sch, st, obs, now, act)
+    rst = st.setdefault("roles", {})
+    by_name = {r.get("name"): r for r in sch.get("roles") or []}
     reading_cache = {}
 
     def reading():
@@ -227,43 +339,13 @@ def decide_roles(sch, st, obs, now, act):
                 % (name, ", ".join(missing)))
             continue
         cfg = dict(ROLE_DEFAULTS, **role)
+        if cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
+            act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
+                why="role %s runs only after a %s run, and %s is not enabled: its scheduled checks will not run"
+                % (name, cfg["after_role"], cfg["after_role"]))
         rs = rst.setdefault(name, {})
         rs.setdefault("done", {})
         rs.setdefault("runs", [])
-        # ---- runs in flight: finished? over time?
-        busy = False
-        for run in rs["runs"]:
-            if run.get("state") != "running":
-                continue
-            ustate = obs["unit_state"](run["unit"])
-            if ustate in ACTIVE:
-                if now - run["at"] >= cfg["run_max_s"]:
-                    act(do="role_stop", role=name, unit=run["unit"], scope=run.get("scope"), ticket=run["item"],
-                        note=True, why="%s run %s still going after %d s (run_max_s): stopped"
-                        % (name, run["unit"], now - run["at"]))
-                    act(do="alarm", kind="role:%s:overtime" % name, ticket=run["item"], note=True,
-                        why="%s run %s passed run_max_s %d" % (name, run["unit"], cfg["run_max_s"]))
-                    run["state"] = "stopped"
-                else:
-                    busy = True
-                continue
-            res = obs["result"](run)
-            tok = run_tokens(res)
-            run["tokens"] = tok
-            run["state"] = "failed" if (res is None or res.get("is_error") or tok is None) else "done"
-            models = sorted((res or {}).get("modelUsage") or {})
-            act(do="role_done", role=name, unit=run["unit"], ticket=run["item"], note=True,
-                why="%s %s run %s %s: %s tokens of a %d budget, model %s, %s" % (
-                    name, run["mode"], run["unit"], run["state"], tok if tok is not None else "UNMEASURED",
-                    run["budget"], ",".join(models) or "?", (res or {}).get("subtype") or "no result"))
-            if tok is not None and tok > run["budget"]:
-                act(do="alarm", kind="role:%s:overbudget" % name, ticket=run["item"], note=True,
-                    why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run["budget"]))
-            if run["state"] == "failed":
-                act(do="alarm", kind="role:%s:failed" % name, ticket=run["item"], note=True,
-                    why="%s run %s ended without a good result (%s)" % (
-                        name, run["unit"], ((res or {}).get("result") or run.get("err") or "no result file")[:160]))
-        rs["runs"] = [r for r in rs["runs"] if now - r["at"] < 2 * 86400]
         # ---- what is due now
         due = []
         for i, (hhmm, mode, cap) in enumerate(slots(cfg)):
@@ -273,8 +355,9 @@ def decide_roles(sch, st, obs, now, act):
                 continue
             if now - t > cfg["slot_late_s"]:
                 rs["done"][key] = "missed"
-                act(do="role_hold", role=name, why="%s slot %s missed (tick %d s late > slot_late_s)"
-                    % (name, hhmm, now - t))
+                act(do="role_hold", role=name, why="%s slot %s missed (tick %d s late > slot_late_s)%s"
+                    % (name, hhmm, now - t, ("; it waited: " + rs["waiting"][1]) if (rs.get("waiting") or [None])[0]
+                       == key else ""))
                 continue
             due.append({"key": key, "slot": hhmm, "first": i == 0, "mode": mode, "cap": cap,
                         "item": role["ledger_item"], "trigger": "slot %s local" % hhmm})
@@ -297,8 +380,16 @@ def decide_roles(sch, st, obs, now, act):
             act(do="role_hold", role=name, why="%s %s skipped: off switch %s (%s)" % (
                 name, job["trigger"], role.get("off_file"), off or "no reason given"))
             continue
-        if busy:
+        if name in busy:
             continue                                      # one run at a time: wait for the running one
+        wait = after_ready(cfg, rst, busy, job, now)
+        if wait:
+            if (rs.get("waiting") or [None])[0] != job["key"]:      # journal the wait once, not every tick
+                act(do="role_hold", role=name, why="%s %s waits: runs after a finished %s run; %s" % (
+                    name, job["trigger"], cfg["after_role"], wait))
+            rs["waiting"] = [job["key"], wait]
+            continue
+        rs.pop("waiting", None)
         r = reading()
         if r["state"] != "MEASURED":
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
@@ -328,7 +419,7 @@ def decide_roles(sch, st, obs, now, act):
         mark(rs, job, "launch")
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
-            slot=job["key"], band=bname,
+            slot=job["key"], band=bname, seat=role["seat"], run_max_s=cfg["run_max_s"],
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s" % (
                 name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"]),
             message=prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit))
@@ -376,25 +467,38 @@ def launch_argv(role, unit, msg, out, err, claude):
 
 
 def launch(role, unit, msg, root, claude, runner=subprocess.run):
-    """-> (ok, out, run-record fields). Starts the transient unit and returns at once."""
+    """-> (ok, out, run-record fields). Starts the transient unit and returns at once. ok False only when
+    systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
+    The MainPID lookup cannot lose the run: a failure leaves scope None, and stop() resolves it then (review Q 4)."""
     out, err = run_paths(root, unit)
     r = runner(launch_argv(role, unit, msg, out, err, claude), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
-    pid = runner(["systemctl", "--user", "show", "-p", "MainPID", "--value", unit], capture_output=True, text=True,
-                 timeout=30, stdin=subprocess.DEVNULL)
-    main_pid = (pid.stdout or "").strip()
-    scope = ("claude-seat-%s-%s.scope" % (role["seat"], main_pid)) if main_pid not in ("", "0") else None
+    scope = scope_of(unit, role["seat"], runner)
     return True, "unit %s started (scope %s)" % (unit, scope or "not yet known"), {
         "out": out, "err": err, "scope": scope, "model_id": model_id(role["model"])}
 
 
+def scope_of(unit, seat, runner=subprocess.run):
+    """claude_bounded's scope for the unit (claude-seat-<seat>-<unit MainPID>.scope), or None when not knowable now."""
+    try:
+        r = runner(["systemctl", "--user", "show", "-p", "MainPID", "--value", unit], capture_output=True, text=True,
+                   timeout=30, stdin=subprocess.DEVNULL)
+        main_pid = (r.stdout or "").strip() if not r.returncode else ""
+    except Exception:  # noqa: BLE001
+        main_pid = ""
+    return ("claude-seat-%s-%s.scope" % (seat, main_pid)) if main_pid.isdigit() and main_pid != "0" else None
+
+
 def unit_state(unit, runner=subprocess.run):
+    """ActiveState, or "unknown" when systemctl fails, times out or says nothing (supervise_roles keeps it busy)."""
     try:
         r = runner(["systemctl", "--user", "show", "-p", "ActiveState", "--value", unit], capture_output=True,
                    text=True, timeout=30, stdin=subprocess.DEVNULL)
+        if r.returncode:
+            return "unknown"
         return (r.stdout or "").strip() or "unknown"
     except Exception:  # noqa: BLE001
         return "unknown"
@@ -413,9 +517,12 @@ def read_result(run):
         return None
 
 
-def stop(unit, scope, runner=subprocess.run):
+def stop(unit, scope, runner=subprocess.run, seat=None):
     """The claude process lives in claude_bounded's scope (claude-seat-<seat>-<unit MainPID>.scope), outside the
-    unit: stopping the unit alone would leave it running."""
+    unit: stopping the unit alone would leave it running. No scope recorded (its lookup failed at launch): resolve it
+    now, while the unit still runs. Whether the stop took is decided by the next tick's unit state, not here."""
+    if not scope and seat:
+        scope = scope_of(unit, seat, runner)
     names = [n for n in (scope, unit) if n]
     r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120,
                stdin=subprocess.DEVNULL)

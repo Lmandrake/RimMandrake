@@ -30,7 +30,7 @@ Dispatcher's role launcher (`DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`) must l
 
 | trigger | mode | what you do | budget |
 |---|---|---|---|
-| `quick_checks_local` (08:00, 20:00), each after an Operations run | quick | the scheduled check below | `quick_token_cap` |
+| `quick_checks_local` (08:00, 20:00), each only once an Operations run launched since the previous check has finished (`after_role`; none finished by `slot_late_s` = that check is missed) | quick | the scheduled check below | `quick_token_cap` |
 | he speaks in the BENCH window (session mode: the BENCH seat window itself, not a Dispatcher launch) | session | the workshop below | `session_week_pct_cap` |
 
 His message is not a Dispatcher trigger: the Dispatcher launches only the `quick_checks_local` runs. Session mode is the
@@ -58,7 +58,7 @@ first beat pausing roles on every output and escape measure).
 | band | reading | session helpers | quick mode |
 |---|---|---|---|
 | GREEN | runway ≥ 1.5 | min(slot allocator N for BENCH, 3) | `quick_token_cap`; both scheduled checks |
-| AMBER | 1.0 ≤ runway < 1.5 | min(N, 2): builder and live-test only, no design fan-out | cap × 0.75 (60,000); the 08:00 check only |
+| AMBER | 1.0 ≤ runway < 1.5 | min(N, 2): builder and live-test only, no design fan-out | cap × 0.75 (60,000); the 20:00 check only (after the 19:30 Operations run: AMBER and RED skip the 07:30 one) |
 | RED | runway < 1.0 (the `RUNWAY_LOW` alarm line) | min(N, 1) | cap × 0.75 (60,000, above the run floor); answers from `digest.md` only; scheduled check only for enact items and canon findings older than 24 h |
 | FLOOR | `week_left_pct` < 10 | none | digest answers, no tickets beyond filing |
 

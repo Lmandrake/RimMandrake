@@ -273,6 +273,9 @@ def decide(sch, st, obs, now, apply):
         kw.setdefault("at", iso(now))
         actions.append(kw)
 
+    # Runs already launched are supervised FIRST, whatever ends this tick early (PAUSE, a blind `claude agents`, a
+    # disabled role): a launched role stays tracked and time-limited no matter what (review round Q 1).
+    role_busy = RL.supervise_roles(sch, st, obs["roles"], now, act) if obs.get("roles") else None
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -284,7 +287,7 @@ def decide(sch, st, obs, now, apply):
         act(do="skip", why="claude agents UNMEASURED (%s): no action on a blind instrument" % agents.get("why"))
         return actions
     if obs.get("roles"):          # role_launch.py: enabled roles with launch keys run on their clock; others alarm
-        RL.decide_roles(sch, st, obs["roles"], now, act)
+        RL.decide_roles(sch, st, obs["roles"], now, act, busy=role_busy)
     else:
         for role in sch.get("roles") or []:
             if role.get("enabled"):
@@ -524,6 +527,7 @@ def execute(actions, sch, st, root, apply, now, fx=None):
     do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get("publish", publish)
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
+    do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
     lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
     ledger_ok = lk is not None
@@ -557,16 +561,34 @@ def execute(actions, sch, st, root, apply, now, fx=None):
                         st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
                     elif a["do"] == "role_launch":
                         role = next(r for r in sch["roles"] if r.get("name") == a["role"])
-                        ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
-                        res = ("launched: " if ok else "failed: ") + out
-                        if ok:
-                            st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", []).append(dict(
-                                rec, unit=a["unit"], at=now, day=RL.day_of(now), mode=a["mode"], budget=a["budget"],
-                                slot=a["slot"], band=a["band"], item=a["ticket"], state="running", tokens=None))
+                        # the off switch and PAUSE again, now: decide() read them before the ingest.lock wait
+                        off = do_off(RL.wsl_path(role.get("off_file") or ""))
+                        paused = do_paused()
+                        if off is not None or paused or not role.get("enabled"):
+                            res = "held at launch: %s" % (
+                                ("PAUSE (%s)" % paused) if paused else ("off switch %s (%s)" % (
+                                    role.get("off_file"), off or "no reason given")) if off is not None
+                                else "role no longer enabled")
+                            a["why"] = "%s — NOT LAUNCHED, %s" % (a["why"], res)
                         else:
-                            a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                            # the run is recorded BEFORE systemd-run: a raise after the unit started (a timeout, a
+                            # failed MainPID query) must not leave a launched role untracked (review round Q 4)
+                            out_p, err_p = RL.run_paths(root, a["unit"])
+                            runs = st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", [])
+                            run = dict(out=out_p, err=err_p, scope=None, unit=a["unit"], at=now, day=RL.day_of(now),
+                                       mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
+                                       item=a["ticket"], seat=a.get("seat") or role.get("seat"),
+                                       run_max_s=a.get("run_max_s"), state="running", tokens=None)
+                            runs.append(run)
+                            ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
+                            res = ("launched: " if ok else "failed: ") + out
+                            if ok:
+                                run.update(rec or {})
+                            else:
+                                runs.remove(run)            # systemd-run said no: nothing started
+                                a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
                     elif a["do"] == "role_stop":
-                        res = do_stop(a["unit"], a.get("scope"))
+                        res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"))
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
@@ -597,11 +619,22 @@ def execute(actions, sch, st, root, apply, now, fx=None):
     return actions
 
 
+def paused_now():
+    """The PAUSE file's reason ('paused' when empty), or None."""
+    p = os.path.join(doorbell.state_dir(), "PAUSE")
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p, encoding="utf-8", errors="replace") as f:
+            return f.read().strip() or "paused"
+    except OSError:
+        return "paused (PAUSE unreadable)"
+
+
 def default_obs(sch, root):
-    paused = os.path.join(doorbell.state_dir(), "PAUSE")
     seats = sch.get("seats") or {}
     return {
-        "paused": (open(paused).read().strip() or "paused") if os.path.exists(paused) else None,
+        "paused": paused_now(),
         "agents": observe_agents(),
         "owner": owner_reading,
         "peek": lambda seat: peek_ticket(seats[seat]["clone"], seat),
@@ -635,11 +668,16 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             journal(root, rec)
             return [rec]
         acts = []
+        st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
-            acts = decide(sch, st, obs or default_obs(sch, root), now, apply)
+            o = obs or default_obs(sch, root)
+            acts = decide(sch, st, o, now, apply)
             execute(acts, sch, st, root, apply, now, fx)
+            # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
+            if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
+                st["last_ok_tick"] = iso(now)
         finally:     # the caps and pending rings are in st: save them even when a step raised
-            st["last_tick"] = iso(now)
+            st["last_tick"] = iso(now)        # last ATTEMPT
             st["apply"] = apply
             S.dump(st, os.path.join(root, "state.json"))
     return acts

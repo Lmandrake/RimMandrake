@@ -7,14 +7,22 @@ missing, or unreadable), files ONE ledger alarm the same way ops_watch does (ops
 from the dispatch clone under ingest.lock, published). Edge-triggered: one item per outage, a note when it clears.
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; timer every 15 min)  limit 50 min
-    dispatcher  $RM_DISPATCHER_STATE/state.json key "last_tick" (ISO; timer every 2 min), live or dry/  limit 15 min
+    dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; timer every 2 min)            limit 15 min
+                the state of the mode the rm-dispatcher.service timer RUNS (`--apply` in its ExecStart: live, else
+                dry/; $RM_DISPATCHER_MODE live|dry overrides), never the fresher of the two: a dry run must not mask a
+                dead live Dispatcher. Mode unknown -> no stamp (a fault). last_ok_tick is stamped only by a tick that
+                completed and was not blind; last_tick (any attempt) is read only from a state file that has no
+                last_ok_tick key at all (a dispatcher clone older than review round Q).
+    A stamp that is not a finite number (NaN, inf, bool) is no stamp.
 
     python3 src/RimMandrake/Utils/deadman_check.py run [--file-alarms]
     python3 src/RimMandrake/Utils/deadman_check.py install [--apply]    systemd user timer (plan unless --apply)
 """
 import argparse
 import json
+import math
 import os
+import re
 import subprocess
 import sys
 import time
@@ -55,19 +63,47 @@ def _iso_epoch(s):
         return None
 
 
-def stamps():
+def finite(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
+def dispatcher_mode(runner=subprocess.run):
+    """'live' | 'dry' | None: the mode the rm-dispatcher.service timer runs, read from its ExecStart."""
+    env = os.environ.get("RM_DISPATCHER_MODE")
+    if env in ("live", "dry"):
+        return env
+    try:
+        r = runner(["systemctl", "--user", "show", "-p", "ExecStart", "--value", "rm-dispatcher.service"],
+                   capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+    except Exception:  # noqa: BLE001
+        return None
+    m = re.search(r"argv\[\]=([^;]*)", r.stdout or "") if not r.returncode else None
+    if not m or "dispatcher.py" not in m.group(1):
+        return None
+    return "live" if "--apply" in m.group(1).split() else "dry"
+
+
+def dispatcher_stamp(d):
+    """Pure. A parsed state.json -> epoch | None."""
+    if not isinstance(d, dict):
+        return None
+    key = "last_ok_tick" if "last_ok_tick" in d else "last_tick"
+    e = _iso_epoch(d.get(key)) if isinstance(d.get(key), str) else None
+    return e if e is not None and finite(e) else None
+
+
+def stamps(mode=None):
     """-> {arm: epoch | None}. None = missing or unreadable (reported as such, never as fresh)."""
     out = {}
     st = _json(ops_dir() / "status.json")
     t = st.get("t") if isinstance(st, dict) else None
-    out["ops_watch"] = float(t) if isinstance(t, (int, float)) and not isinstance(t, bool) else None
-    best = None
-    for p in (dispatcher_dir() / "state.json", dispatcher_dir() / "dry" / "state.json"):
-        d = _json(p)
-        e = _iso_epoch(d.get("last_tick")) if isinstance(d, dict) and d.get("last_tick") else None
-        if e is not None and (best is None or e > best):
-            best = e
-    out["dispatcher"] = best
+    out["ops_watch"] = float(t) if finite(t) else None
+    mode = mode or dispatcher_mode()
+    if mode is None:
+        out["dispatcher"] = None
+    else:
+        p = dispatcher_dir() / "state.json" if mode == "live" else dispatcher_dir() / "dry" / "state.json"
+        out["dispatcher"] = dispatcher_stamp(_json(p))
     return out
 
 
@@ -77,7 +113,7 @@ def judge(st, now, limits=None):
     res = {}
     for arm, lim in limits.items():
         t = st.get(arm)
-        if t is None:
+        if not finite(t):
             res[arm] = "%s has no readable last-run stamp" % arm
         elif now - t > lim:
             res[arm] = "%s last ran %d min ago (limit %d min)" % (arm, (now - t) // 60, lim // 60)

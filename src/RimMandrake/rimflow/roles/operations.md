@@ -27,9 +27,9 @@ burning tokens gathering it all up for every question considered."
 
 | trigger | what you do | budget |
 |---|---|---|
-| 07:30 and 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
+| 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
 | an ops_watch alarm item filed (`OPS_*` under the parent item) | diagnose that one alarm: cause, owner, fix or a filed item; note the alarm item | `run_token_cap` |
-| once a day, the 07:30 run (`economy_pass_local`) | the economy pass below | `economy_token_cap` |
+| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (its running check too: the 19:30 check covers the day) | `economy_token_cap` |
 
 Starting values (schedule): `run_token_cap` 80,000 (the measured run floor is 35-53k tokens); `economy_token_cap` 100,000;
 `daily_token_cap` 200,000 (80,000 × 2 scheduled runs, plus 25%).
@@ -40,9 +40,9 @@ Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.j
 
 | band | reading | what runs |
 |---|---|---|
-| GREEN | runway ≥ 1.5 | everything: both running checks, the economy pass, alarm runs |
-| AMBER | 1.0 ≤ runway < 1.5 | quick runs only: the running checks and alarm runs; no economy pass |
-| RED | runway < 1.0 | one quick run a day (the first running check, cap × 0.75 = 60,000); no economy pass, no alarm runs |
+| GREEN | runway ≥ 1.5 | everything: the 07:30 run (running check + economy pass), the 19:30 check, alarm runs |
+| AMBER | 1.0 ≤ runway < 1.5 | quick runs only: the 19:30 running check and alarm runs; no 07:30 run |
+| RED | runway < 1.0 | one quick run a day (the 19:30 running check, cap × 0.75 = 60,000); no 07:30 run, no alarm runs |
 | FLOOR | `week_left_pct` < 10 | nothing |
 
 A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;

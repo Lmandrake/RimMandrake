@@ -578,6 +578,12 @@ def operations(**kw):
     return r
 
 
+def usage(**kw):
+    u = {k: 0 for k in RL.USAGE_KEYS}
+    u.update(kw)
+    return u
+
+
 def robs(status=None, account="acct", unit="active", result=None, off=None):
     return {"ops": lambda: status, "account": lambda: account, "unit_state": lambda u: unit,
             "result": lambda run: result, "off": lambda p: off}
@@ -653,7 +659,7 @@ def test_role_gates():
     check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 18000, "AMBER 08:00: runs at x0.6")
     t20 = at_local("20:00")
     a = role_acts(rdecide([conductor()], st, robs(ops_status(t20, runway=1.2), unit="inactive",
-                                                  result={"usage": {"output_tokens": 10}}), t20))
+                                                  result={"usage": usage(output_tokens=10)}), t20))
     check("role_launch" not in [x["do"] for x in a] and any("band AMBER" in x.get("why", "") for x in a),
           "AMBER 20:00: held (first slot only)")
     st = fresh()
@@ -687,7 +693,7 @@ def test_role_economy_and_alarms():
     alarms2 = dict(alarms, k2={"state": "OPEN", "item": "OPS_NEW_ONE"})
     a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="active"), t))
     check(a == [], "a new alarm waits while a run is going (one run per role)")
-    res = {"usage": {"input_tokens": 100, "output_tokens": 50}, "modelUsage": {"m-x": {}}, "subtype": "success"}
+    res = {"usage": usage(input_tokens=100, output_tokens=50), "modelUsage": {"m-x": {}}, "subtype": "success"}
     a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="inactive", result=res), t))
     ds = [x["do"] for x in a]
     check(ds == ["role_done", "role_launch"], "run finished -> role_done (noted), then the new alarm runs: %s" % ds)
@@ -697,7 +703,7 @@ def test_role_economy_and_alarms():
     st["roles"]["Operations"]["runs"] = [{"unit": "u2", "at": t, "day": RL.day_of(t), "budget": 1000,
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running"}]
     a = role_acts(rdecide([operations()], st, robs(ops_status(t + 60), unit="inactive",
-                                                   result={"usage": {"output_tokens": 5000}}), t + 60))
+                                                   result={"usage": usage(output_tokens=5000)}), t + 60))
     check("role:Operations:overbudget" in [x.get("kind") for x in a], "a run over its budget: alarm")
     st["roles"]["Operations"]["runs"] = [{"unit": "u3", "at": t, "day": RL.day_of(t), "budget": 1000,
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running"}]
@@ -794,7 +800,8 @@ def test_role_execute_and_dry():
     st = fresh()
     fx["role_launch"] = lambda *a: (False, "systemd-run exit 1", {})
     a = D.execute([dict(act)], sch, st, root, True, 100.0, fx)
-    check(not st.get("roles") and "LAUNCH FAILED" in a[0]["why"], "execute: a failed launch records no run, says so")
+    check(not st["roles"]["Conductor"]["runs"] and "LAUNCH FAILED" in a[0]["why"],
+          "execute: a failed launch records no run, says so")
     # dry-run tick: decides the launch, launches nothing
     launched = []
     fx = {k: (lambda *a, **kw: launched.append(a)) for k in ("ring", "withdraw", "recover", "note", "publish",
@@ -818,11 +825,176 @@ def test_role_execute_and_dry():
         check(all(r.get(k) for k in RL.LAUNCH_KEYS) and r.get("off_file"), "shipped schedule: %s has launch keys" % name)
 
 
+def test_review_q():
+    """GPT review round Q (2026-10-27): run supervision, execute-time off switch, non-finite / missing data."""
+    t0 = at_local("19:00")
+    late = t0 + 1900
+
+    def running(**kw):
+        r = {"unit": "uq", "at": t0, "day": RL.day_of(t0), "budget": 1000, "mode": "run", "item": "ROLES_ITEM_X",
+             "state": "running", "scope": "s.scope", "seat": "BENCH"}
+        r.update(kw)
+        return {"Operations": {"done": {}, "runs": [r]}}
+    # 1: PAUSE / blind agents / disabled role still supervise (and time-limit) a launched run
+    for label, kw, role in (("PAUSE", {"paused": "owner stop"}, operations()),
+                            ("agents UNMEASURED", {"agents_ok": False}, operations()),
+                            ("role disabled", {}, operations(enabled=False)),
+                            ("role gone from the schedule", {}, conductor())):
+        st = fresh()
+        st["roles"] = running()
+        a = role_acts(rdecide([role], st, robs(ops_status(late), unit="active"), late, **kw))
+        check([x["do"] for x in a][:2] == ["role_stop", "alarm"],
+              "Q1 %s: an overtime run is still stopped: %s" % (label, [x["do"] for x in a]))
+    # 2: the stop is not trusted until systemd says inactive; re-issued with stop_failed
+    st = fresh()
+    st["roles"] = running()
+    rdecide([operations()], st, robs(ops_status(late), unit="active"), late)
+    run = st["roles"]["Operations"]["runs"][0]
+    check(run["state"] == "running" and run["stop_tries"] == 1, "Q2 stop issued: the run stays running until confirmed")
+    a = role_acts(rdecide([operations()], st, robs(ops_status(late + 120), unit="active"), late + 120))
+    check([x["do"] for x in a][:2] == ["role_stop", "alarm"] and a[1]["kind"] == "role:Operations:stop_failed"
+          and not a[0]["note"], "Q2 still active after a stop: stop again + stop_failed alarm (one ledger note)")
+    a = role_acts(rdecide([operations()], st, robs(ops_status(late + 240), unit="inactive"), late + 240))
+    check(a and a[0]["do"] == "role_done" and "after 2 stop(s)" in a[0]["why"], "Q2 inactive: then it is finished")
+    # 3: an unknown unit state is busy and alarmed, never a finish
+    st = fresh()
+    st["roles"] = running(at=at_local("19:30") - 60)
+    t = at_local("19:30")
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t), unit="unknown"), t))
+    ds = [x["do"] for x in a]
+    check("role_done" not in ds and "role_launch" not in ds and any(x.get("kind") == "role:Operations:unit" for x in a)
+          and st["roles"]["Operations"]["runs"][0]["state"] == "running",
+          "Q3 unit state unknown: kept running, UNMEASURED alarm, no new launch: %s" % ds)
+    check(RL.unit_state("u", runner=lambda argv, **kw: subprocess.CompletedProcess(argv, 1, "inactive", "")) == "unknown",
+          "Q3 systemctl exit != 0: unknown, not its stdout")
+
+    def raising(argv, **kw):
+        raise subprocess.TimeoutExpired(argv, 30)
+    st = fresh()
+    st["roles"] = running(at=t - 1900)
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t), unit="unknown"), t))
+    check(any(x["do"] == "role_stop" for x in a), "Q3 unknown and overtime: stopped anyway")
+    # 4: a launch that raised after systemd-run stays tracked; MainPID failure keeps the run; stop resolves the scope
+    sch = sched(roles=[conductor()])
+    act = {"do": "role_launch", "role": "Conductor", "unit": "UQ", "message": "m", "ticket": "ROLES_ITEM_X",
+           "note": False, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w", "seat": "BENCH",
+           "run_max_s": 1800}
+    base_fx = {"note": lambda i, x: (True, ""), "publish": lambda n: None, "lock": lambda: open(os.devnull),
+               "off": lambda p: None, "paused": lambda: None}
+
+    def boom(*a):
+        raise subprocess.TimeoutExpired("systemd-run", 60)
+    st = fresh()
+    D.execute([dict(act)], sch, st, TMP, True, 100.0, dict(base_fx, role_launch=boom))
+    r = st["roles"]["Conductor"]["runs"]
+    check(len(r) == 1 and r[0]["state"] == "running" and r[0]["unit"] == "UQ" and r[0]["run_max_s"] == 1800,
+          "Q4 launch raised: the run is still recorded (unit may be up) and supervised")
+    calls = []
+
+    def sd_ok_pid_raises(argv, **kw):
+        calls.append(argv)
+        if argv[0] == "systemd-run":
+            return subprocess.CompletedProcess(argv, 0, "", "")
+        raise subprocess.TimeoutExpired(argv, 30)
+    ok, out, rec = RL.launch(conductor(), "UQ2", "m", os.path.join(TMP, "q4"), "/opt/bin/claude", runner=sd_ok_pid_raises)
+    check(ok and rec["scope"] is None, "Q4 MainPID query raised: still launched, scope resolved later")
+    calls.clear()
+
+    def pid_then_stop(argv, **kw):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0, "777\n" if "MainPID" in argv else "", "")
+    RL.stop("UQ2", None, runner=pid_then_stop, seat="BENCH")
+    check(calls[-1] == ["systemctl", "--user", "stop", "claude-seat-BENCH-777.scope", "UQ2"],
+          "Q4 stop with no recorded scope: resolves it from MainPID, stops scope + unit")
+    # 5: the off switch and PAUSE are rechecked at execution
+    for label, fx in (("off file", dict(base_fx, off=lambda p: "owner: now")),
+                      ("PAUSE", dict(base_fx, paused=lambda: "owner stop"))):
+        launched = []
+        st = fresh()
+        a = D.execute([dict(act)], sch, st, TMP, True, 100.0,
+                      dict(fx, role_launch=lambda *x: launched.append(x) or (True, "", {})))
+        check(not launched and not (st.get("roles") or {}).get("Conductor", {}).get("runs")
+              and "NOT LAUNCHED" in a[0]["why"], "Q5 %s appearing after decide: not launched" % label)
+    # 6 + 7: the shipped schedule and role docs agree (cheaper readings)
+    here = os.path.dirname(os.path.abspath(__file__))
+    real = {r["name"]: r for r in json.load(open(os.path.join(here, "dispatcher_schedule.json")))["roles"]}
+    ops_md = open(os.path.join(here, "roles", "operations.md"), encoding="utf-8").read()
+    con_md = open(os.path.join(here, "roles", "conductor.md"), encoding="utf-8").read()
+    check("skips this whole run" in ops_md and "07:30 and 19:30 local" not in ops_md,
+          "Q6 operations.md: a band without the economy pass skips the whole 07:30 run (as the code does)")
+    check(real["Conductor"].get("after_role") == "Operations" and "after_role" in con_md
+          and "the 20:00 check only" in con_md and "the 08:00 check only" not in con_md,
+          "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check")
+    rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CQ_OFF"))
+    ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
+    c8 = at_local("08:00")
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(c8): "x"}, "runs": []}}
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8)), c8))
+    check([x["do"] for x in a if x.get("role") == "Conductor"] == ["role_hold"] and "waits" in a[0]["why"],
+          "Q7 Conductor 08:00 with no finished Operations run: waits")
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8 + 120)), c8 + 120))
+    check(not [x for x in a if x.get("role") == "Conductor"], "Q7 the wait is journaled once, not every tick")
+    st["roles"]["Operations"]["runs"] = [{"unit": "o1", "at": at_local("07:30"), "day": RL.day_of(c8), "state": "running",
+                                          "budget": 1, "mode": "economy", "item": "X"}]
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8 + 240), unit="active"), c8 + 240))
+    check(not [x for x in a if x.get("do") == "role_launch"], "Q7 Operations still running: Conductor waits")
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8 + 360), unit="inactive",
+                                             result={"usage": usage(output_tokens=9), "subtype": "success"}), c8 + 360))
+    check([x["role"] for x in a if x["do"] == "role_launch"] == ["Conductor"],
+          "Q7 Operations run finished done: the Conductor check launches")
+    st = fresh()
+    a = role_acts(rdecide([rc], st, robs(ops_status(c8)), c8))
+    check(any(x.get("kind") == "role:Conductor:after" for x in a), "Q7 Operations not enabled: alarm")
+    st = fresh()
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8, runway=1.2)), c8))
+    check(not [x for x in a if x["do"] == "role_launch"], "Q7 Conductor AMBER 08:00: not its slot")
+    c20 = at_local("20:00")
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {}, "runs": [{"unit": "o2", "at": at_local("19:30"), "day": RL.day_of(c20),
+                                                        "state": "done", "budget": 1, "mode": "run", "item": "X"}]},
+                   "Conductor": {"done": {"%s 08:00" % RL.day_of(c20): "x"}, "runs": []}}
+    a = role_acts(rdecide([rc, ro], st, robs(ops_status(c20, runway=1.2)), c20))
+    check([(x["role"], x["budget"]) for x in a if x["do"] == "role_launch" and x["role"] == "Conductor"] == [("Conductor", 60000)],
+          "Q7 Conductor AMBER 20:00, after the 19:30 Operations run: launches at 60,000")
+    # 8: missing / malformed usage is UNMEASURED, failed, counted at its budget
+    for bad in ({}, {"input_tokens": "abc"}, dict(usage(), output_tokens=True), dict(usage(), output_tokens=-1),
+                dict(usage(), output_tokens=float("nan"))):
+        check(RL.run_tokens({"usage": bad}) is None, "Q8 usage %r -> UNMEASURED" % (bad,))
+    st = fresh()
+    st["roles"] = running(at=t - 60, budget=50000)
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t), unit="inactive", result={"usage": {}}), t))
+    check(any(x.get("kind") == "role:Operations:failed" and "usage UNMEASURED" in x["why"] for x in a)
+          and RL.spent_today(st["roles"]["Operations"], t) == 50000,
+          "Q8 a result with usage {}: failed alarm, spend counted at its full budget")
+    # 9 + 10: a future reading and non-finite / bool points are UNMEASURED
+    now = at_local("08:00")
+    check("FUTURE" in RL.ops_reading(ops_status(now, age_s=-3600), "acct", now)["why"], "Q9 'at' an hour ahead: UNMEASURED")
+    check(RL.ops_reading(ops_status(now, age_s=-120), "acct", now)["state"] == "MEASURED", "Q9 2 min skew: tolerated")
+    for kw in ({"week_left": float("nan")}, {"runway": float("inf")}, {"runway": True}):
+        check(RL.ops_reading(ops_status(now, **kw), "acct", now)["state"] == "UNMEASURED", "Q10 %r: UNMEASURED" % (kw,))
+    # 11: last_ok_tick only for a tick that worked
+    rooted = D.state_root(False)
+    sp = os.path.join(rooted, "state.json")
+    if os.path.exists(sp):
+        os.remove(sp)
+    try:
+        D.tick(sched(), False, obs={"paused": None, "roles": None}, now=5000.0, fx={})
+    except Exception:  # noqa: BLE001
+        pass
+    sv = json.load(open(sp))
+    check(sv["last_tick"] and sv["last_ok_tick"] is None, "Q11 a tick that raised: last_tick (attempt) only")
+    D.tick(sched(), False, obs=obs(agents_ok=False), now=5200.0, fx={})
+    check(json.load(open(sp))["last_ok_tick"] is None, "Q11 a blind tick: not a working tick")
+    D.tick(sched(), False, obs=obs(), now=5400.0, fx={})
+    check(json.load(open(sp))["last_ok_tick"] == D.iso(5400.0), "Q11 a working tick stamps last_ok_tick")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
-              test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry):
+              test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q):
         try:
             t()
         except Exception as e:  # noqa: BLE001

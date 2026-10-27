@@ -48,10 +48,33 @@ def main():
     check(DM.judge({"ops_watch": NOW + 3600, "dispatcher": NOW}, NOW)["ops_watch"], "future stamp is a fault")
 
     write_stamps(NOW - 60, NOW - 60, dry=True)
-    s = DM.stamps()
+    s = DM.stamps(mode="dry")
     check(abs(s["dispatcher"] - (NOW - 60)) < 1 and abs(s["ops_watch"] - (NOW - 60)) < 1, "stamps read (dry dispatcher counts)")
+    # review Q 12: the timer's mode is monitored, a fresh dry stamp never masks a dead live one
+    write_stamps(NOW - 60, NOW - 3600, dry=False)
+    s = DM.stamps(mode="live")
+    check(abs(s["dispatcher"] - (NOW - 3600)) < 1, "live mode: the live stamp, not the fresher dry one")
+    check(DM.judge(s, NOW)["dispatcher"], "live mode: a stale live Dispatcher is a fault despite fresh dry ticks")
+    import subprocess as SP
+    fake = lambda out, rc=0: (lambda argv, **kw: SP.CompletedProcess(argv, rc, out, ""))
+    os.environ.pop("RM_DISPATCHER_MODE", None)
+    ex = "{ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 /x/dispatcher.py tick%s ; ignore_errors=no }"
+    check(DM.dispatcher_mode(fake(ex % " --apply")) == "live", "mode: --apply in ExecStart -> live")
+    check(DM.dispatcher_mode(fake(ex % "")) == "dry", "mode: no --apply -> dry")
+    check(DM.dispatcher_mode(fake("", 1)) is None, "mode: systemctl failure -> unknown, not dry")
+    # review Q 11: last_ok_tick wins; last_tick only for a state with no last_ok_tick key
+    check(DM.dispatcher_stamp({"last_tick": OW.iso(NOW), "last_ok_tick": None}) is None,
+          "last_ok_tick null (every tick raised): no stamp, last_tick does not count")
+    check(abs(DM.dispatcher_stamp({"last_tick": OW.iso(NOW), "last_ok_tick": OW.iso(NOW - 999)}) - (NOW - 999)) < 1,
+          "last_ok_tick is the stamp, not last_tick")
+    check(abs(DM.dispatcher_stamp({"last_tick": OW.iso(NOW)}) - NOW) < 1, "pre-Q state (no last_ok_tick key): last_tick")
+    # review Q 10: non-finite stamps are no stamps
+    for bad in (float("nan"), float("inf"), True):
+        check(DM.judge({"ops_watch": bad, "dispatcher": NOW}, NOW)["ops_watch"], "stamp %r is a fault" % (bad,))
+    (TMP / "ops/status.json").write_text('{"t": NaN}')
+    check(DM.stamps(mode="dry")["ops_watch"] is None, "status.json t NaN -> None, not alive")
     (TMP / "ops/status.json").write_text("{torn")
-    check(DM.stamps()["ops_watch"] is None, "torn status.json -> None, not fresh")
+    check(DM.stamps(mode="dry")["ops_watch"] is None, "torn status.json -> None, not fresh")
 
     filed = []
 
