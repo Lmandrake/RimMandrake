@@ -22,6 +22,8 @@ Rules:
     armed file exits 0 quietly (it was superseded, not rung).
   * Dies with its window: it finds its Claude Code ancestor at start and exits 0 the moment that process is gone
     (measured 2026-10-26: killing a session left its doorbell running, re-parented to /init, for 23 h).
+    No Claude Code ancestor found -> it does not arm at all (fail closed; the seat then reads UNWAKEABLE).
+  * A ring names the session it is for; a doorbell of another session on the same seat leaves it alone.
   * Gives up (exit 0, disarms) after RM_DOORBELL_MAX_WAIT_S (default 23 h), before Claude Code's hook timeout.
   * Rings that the window started a turn in the meantime are still delivered: the Dispatcher only rings an idle
     window, and a message arriving mid-turn is read at the next opportunity instead of lost.
@@ -77,10 +79,15 @@ def arm(seat, session_id, root=None, pid=None, owner_pid=None):
     return rec
 
 
-def take_ring(seat, root=None):
-    """If a ring is waiting: move it to consumed/ (atomic, so exactly one doorbell wins) and return its record."""
+def take_ring(seat, root=None, session_id=None):
+    """If a ring is waiting: move it to consumed/ (atomic, so exactly one doorbell wins) and return its record.
+    A ring addressed to another session (its `session_id` set and not ours) is left for that session's doorbell:
+    a `claude -p` child that inherited AGENT_SEAT, or a second window on the seat, must not take the seat's ring."""
     src = inbox_path(seat, root)
     if not os.path.exists(src):
+        return None
+    want = (_read_json(src) or {}).get("session_id")
+    if want and session_id and want != session_id:
         return None
     dst_dir = os.path.join(root or state_dir(), "consumed")
     os.makedirs(dst_dir, exist_ok=True)
@@ -142,10 +149,8 @@ def wait(seat, session_id, root=None, max_wait=None, poll=POLL_S, clock=time.tim
     deadline = clock() + (max_wait if max_wait is not None
                           else float(os.environ.get("RM_DOORBELL_MAX_WAIT_S", 23 * 3600)))
     while True:
-        rec = take_ring(seat, root)
-        if rec is not None:
-            _disarm_if_mine(seat, me["pid"], root)
-            return 2, render(rec)
+        # Superseded / orphaned / expired are checked BEFORE taking a ring, so a doorbell that no longer speaks for
+        # a live window never consumes (and so never "delivers") a ring meant for its replacement.
         cur = _read_json(armed_path(seat, root)) or {}
         if cur.get("pid") != me["pid"]:
             return 0, "superseded by doorbell pid %s" % cur.get("pid")
@@ -155,6 +160,10 @@ def wait(seat, session_id, root=None, max_wait=None, poll=POLL_S, clock=time.tim
         if clock() >= deadline:
             _disarm_if_mine(seat, me["pid"], root)
             return 0, "gave up waiting"
+        rec = take_ring(seat, root, session_id)
+        if rec is not None:
+            _disarm_if_mine(seat, me["pid"], root)
+            return 2, render(rec)
         sleep(poll)
 
 
@@ -176,7 +185,12 @@ def main():
         hook = json.load(sys.stdin)
     except ValueError:
         hook = {}
-    code, text = wait(seat, hook.get("session_id"), owner_pid=claude_ancestor())
+    anc = claude_ancestor()
+    if anc is None:
+        # Fail closed: without its window's pid the doorbell cannot tell when to die (the 23 h orphan, lesson
+        # 20261027T054627Z-BENCH-async-hook-orphan). Not arming leaves the seat UNWAKEABLE, which the Dispatcher alarms.
+        return 0
+    code, text = wait(seat, hook.get("session_id"), owner_pid=anc)
     if code == 2:
         sys.stderr.write(text + "\n")
     return code

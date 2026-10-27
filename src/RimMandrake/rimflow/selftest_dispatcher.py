@@ -22,6 +22,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 TMP = tempfile.mkdtemp(prefix="selftest_dispatcher_")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
+os.environ["TESTQ_QUEUE"] = os.path.join(TMP, "testq")      # git_lock's ingest.lock: never the real queue
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import dispatcher as D  # noqa: E402
@@ -217,6 +218,125 @@ def test_dead_recover():
     check(ok and "--bg" in argv and argv[argv.index("--resume") + 1] == "sid-1" and argv[-1] == "hello"
           and kw["cwd"] == sch["seats"]["FOUNDRY"]["clone"] and kw["env"]["AGENT_SEAT"] == "FOUNDRY",
           "recover argv: claude --bg --resume <session> in the seat's clone as AGENT_SEAT")
+    # The seat windows' real launch line (install_wt_seat_profiles.LAUNCH), minus the shell quoting, must be inside
+    # the recover argv, run through the seat clone's claude_bounded.sh (memory scope, out of the oneshot cgroup).
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+    import install_wt_seat_profiles as W
+    clone = sch["seats"]["FOUNDRY"]["clone"]
+    launch = W.LAUNCH.format(script=W.BOUNDED.format(home=clone), label="AGENT FOUNDRY",
+                             model="sonnet").replace("'AGENT FOUNDRY'", "AGENT_FOUNDRY").split()
+    launch = [x.replace("AGENT_FOUNDRY", "AGENT FOUNDRY") for x in launch]
+    rest = [x for x in argv if x not in ("--bg", "--resume", "sid-1", "hello")]
+    check(rest == launch, "recover argv is the seat launcher's own line + --bg --resume (%s vs %s)" % (rest, launch))
+
+
+def test_never_adopt_or_resume_a_stranger():
+    sch = sched()
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    owners = [{"name": "EMERGENCY", "status": "idle", "sessionId": "OWNER-SID", "kind": "interactive", "pid": 9,
+               "cwd": sch["seats"]["FOUNDRY"]["clone"]}, sess("AGENT BENCH", "busy", "b")]
+    for t in (1000.0, 1000.0 + sch["dead_after_s"] + 1, 1000.0 + 2 * sch["dead_after_s"]):
+        a = D.decide(sch, st, obs(sessions=owners), t, True)
+        check(not any(x["do"] in ("ring", "recover") for x in a), "an unnamed window in the seat's clone: never "
+              "adopted, rung or resumed (%s)" % kinds(a))
+    check(st["seats"]["FOUNDRY"].get("session_id") != "OWNER-SID", "its session id is never remembered")
+    # recovered only when the RESUMED session is back, not any window with the name
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    gone = [sess("AGENT BENCH", "busy", "b")]
+    D.decide(sch, st, obs(), 1000.0, True)
+    D.decide(sch, st, obs(sessions=gone), 1100.0, True)
+    a = D.decide(sch, st, obs(sessions=gone, owner=PRESENT), 1100.0 + sch["dead_after_s"], True)
+    check(kinds(a) == ["recover"] and "owner present: do not take the bridge" in a[0]["message"],
+          "recover while the owner is present: the resumed session is told not to take the game")
+    a = D.decide(sch, st, obs(sessions=[sess(sid="other")]), 1100.0 + sch["dead_after_s"] + 60, True)
+    check("recovered" not in kinds(a), "another session under the seat's name is not the recovered one")
+
+
+def test_review_fixes():
+    sch = sched()
+    # armed doorbell of another session: no ring
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    o = obs()
+    o["armed"] = lambda seat: {"pid": 4242, "session_id": "a-claude-p-child"}
+    a = stall(sch, st, o)
+    check(kinds(a) == ["alarm"] and "not ringing a stranger" in a[0]["why"],
+          "doorbell armed by another session (claude -p child): alarm, no ring")
+    o["armed"] = lambda seat: {"pid": 4242, "session_id": "sid-1"}
+    a = stall(sch, {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, o)
+    check([x for x in a if x["do"] == "ring"][0]["session_id"] == "sid-1", "the ring names the observed session")
+    # PAUSE withdraws a ring still in an inbox
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    stall(sch, st, obs())
+    a = D.decide(sch, st, obs(paused="stop"), 2000.0, True)
+    check(kinds(a) == ["skip", "withdraw"] and "ring" not in st["seats"]["FOUNDRY"], "PAUSE withdraws a queued ring")
+    # a hand-off in the same second as the ring is not after it
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    stall(sch, st, obs())
+    p = st["seats"]["FOUNDRY"]["ring"]
+    sc = os.path.join(TMP, "sameclone")
+    sh = os.path.join(sc, "infrastructure", "state", "ledger", "events", "FOUNDRY.jsonl")
+    os.makedirs(os.path.dirname(sh), exist_ok=True)
+    with open(sh, "w") as f:
+        f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "X_Y", "ts": p["rung_iso"]}) + "\n")
+    check(D.seat_events_since(sc, "FOUNDRY", p["rung_iso"]) == [],
+          "an event stamped in the ring's own second is not a hand-off (it may predate the ring)")
+    # busy during verification is not stall time; success resets the retry count
+    st["seats"]["FOUNDRY"]["ring"]["attempt"] = 2
+    st["seats"]["FOUNDRY"]["attempt"] = 1
+    lease = {"seat": "FOUNDRY", "event": "lease", "action": "take", "id": "X_Y", "ts": D.iso(p["rung_at"] + 10)}
+    busy = [sess(status="busy"), sess("AGENT BENCH", "busy", "b")]
+    a = D.decide(sch, st, obs(sessions=busy, consumed={"consumed_at": 1}, events=[lease]), p["rung_at"] + 60, True)
+    check(kinds(a) == ["verified"] and st["seats"]["FOUNDRY"]["attempt"] == 0
+          and "idle_since" not in st["seats"]["FOUNDRY"], "verified: attempt reset, busy cleared idle_since")
+    check(kinds(D.decide(sch, st, obs(), p["rung_at"] + 120, True)) == [],
+          "idle again right after a busy verification: waits a full stall window, no immediate re-ring")
+    # withdraw that lost the race to the doorbell keeps verifying, never rings twice
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    root = os.path.join(TMP, "race")
+    stall(sch, st, obs())
+    p = dict(st["seats"]["FOUNDRY"]["ring"])
+    a = D.decide(sch, st, obs(), p["rung_at"] + sch["verify_s"], True)
+    D.execute(a, sch, st, root, True, p["rung_at"] + sch["verify_s"],
+              {"withdraw": lambda *x: "gone (the doorbell took it)", "lock": lambda: None})
+    check(st["seats"]["FOUNDRY"].get("ring", {}).get("ring_id") == p["ring_id"],
+          "withdraw lost to the doorbell: the ring stays pending (delivered), no second ring")
+    # a side effect that raises still saves the caps; the next ticks are capped
+    sch3 = sched(caps={"wakes_per_seat_hour": 1})
+    sch3["max_retries"] = 0
+    boom = {"note": lambda i, t: (_ for _ in ()).throw(subprocess.TimeoutExpired("rimflow", 120)),
+            "ring": lambda *x: None, "withdraw": lambda *x: "withdrawn", "publish": lambda n: "p", "lock": lambda: None}
+    os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state_boom")
+    try:
+        t0 = 10000.0
+        D.tick(sch3, True, obs=obs(), now=t0, fx=boom)
+        D.tick(sch3, True, obs=obs(), now=t0 + 240, fx=boom)
+        rings = []
+        for i in range(2, 12):
+            rings += [x for x in D.tick(sch3, True, obs=obs(), now=t0 + 240 * i, fx=boom) if x["do"] == "ring"]
+        st = D.load_state(D.state_root(True))
+        check(len(st["wakes"]) == 1 and not rings, "caps survive a raising note: 1 wake/hour holds (%d extra rings)"
+              % len(rings))
+        with open(os.path.join(D.state_root(True), "state.json"), "w") as f:
+            f.write("{torn")
+        a = D.tick(sch3, True, obs=obs(), now=t0 + 9999, fx=boom)
+        check(kinds(a) == ["skip"] and "UNREADABLE" in a[0]["why"], "unreadable state: skip (fail closed), not reset")
+    finally:
+        os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
+    # testq's ingest.lock busy: no ledger note (unstaged lines would break RUNNER's pull --rebase), journal says so
+    noted = []
+    acts = [{"do": "verified", "seat": "FOUNDRY", "ticket": "X_Y", "note": True, "ring_id": "r"}]
+    D.execute(acts, sch, {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}, os.path.join(TMP, "lk"), True,
+              1.0, {"note": lambda i, t: noted.append(i) or (True, ""), "lock": lambda: None, "publish": lambda n: "p"})
+    check(not noted and "ingest.lock busy" in acts[0]["ledger"], "ingest.lock busy: no note, journal records why")
+    import testq
+    testq.ensure_dirs()
+    with open(testq.q("ingest.lock"), "w") as held:
+        import fcntl
+        fcntl.flock(held, fcntl.LOCK_EX)
+        check(D.git_lock(wait_s=0) is None, "git_lock sees testq's ingest.lock held")
+    lk = D.git_lock(wait_s=0)
+    check(lk is not None, "git_lock takes a free ingest.lock")
+    lk.close()
 
 
 def test_doorbell():
@@ -236,6 +356,27 @@ def test_doorbell():
     check(res.get("r") == (2, "wake up") and not os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
           "doorbell: a ring wakes the waiting hook (exit 2, message) and is consumed")
     check((D.consumed_ring(root, "FOUNDRY", "R1") or {}).get("consumed_at"), "consumed record is findable by ring id")
+    D.ring(root, "FOUNDRY", "R9", "for another", session_id="other-session")
+    code, _ = doorbell.wait("FOUNDRY", "sid", root=root, max_wait=0.3, poll=0.05)
+    check(code == 0 and os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
+          "doorbell: a ring addressed to another session is left alone")
+    os.remove(doorbell.inbox_path("FOUNDRY", root))
+    import io
+    saved = (doorbell.claude_ancestor, sys.stdin, os.environ.get("AGENT_SEAT"), os.environ["RM_DISPATCHER_STATE"])
+    doorbell.claude_ancestor = lambda pid=None: None
+    sys.stdin = io.StringIO('{"session_id": "s"}')
+    os.environ["AGENT_SEAT"], os.environ["RM_DISPATCHER_STATE"] = "FOUNDRY", os.path.join(TMP, "noanc")
+    try:
+        code = doorbell.main()
+    finally:
+        doorbell.claude_ancestor, sys.stdin = saved[0], saved[1]
+        if saved[2] is None:
+            os.environ.pop("AGENT_SEAT", None)
+        else:
+            os.environ["AGENT_SEAT"] = saved[2]
+        os.environ["RM_DISPATCHER_STATE"] = saved[3]
+    check(code == 0 and not os.path.exists(doorbell.armed_path("FOUNDRY", os.path.join(TMP, "noanc"))),
+          "doorbell with no Claude Code ancestor: exits 0 without arming (fail closed, no orphan)")
     check(not os.path.exists(doorbell.armed_path("FOUNDRY", root)), "doorbell disarms after a ring")
 
     def superseded():
@@ -244,8 +385,12 @@ def test_doorbell():
     th.start()
     time.sleep(0.3)
     doorbell._write_json_atomic(doorbell.armed_path("FOUNDRY", root), {"pid": -7})
+    D.ring(root, "FOUNDRY", "R7", "for the newer doorbell")
     th.join(10)
     check(res.get("s", (None,))[0] == 0 and "superseded" in res["s"][1], "doorbell: a newer arm supersedes the old")
+    check(os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
+          "doorbell: a superseded doorbell does not consume the newer one's ring")
+    os.remove(doorbell.inbox_path("FOUNDRY", root))
     p = subprocess.Popen(["true"])
     p.wait()
     code, why = doorbell.wait("FOUNDRY", "sid", root=root, max_wait=20, poll=0.05, owner_pid=p.pid)
@@ -346,11 +491,22 @@ def test_seat_rule():
     except model.LedgerError as e:
         msg = str(e)
     check(msg is not None and "DISPATCHER" in msg, "ledger: DISPATCHER may not claim (%s)" % (msg or "accepted")[:80])
+    for verb, extra in (("close", {"sha": "abc"}), ("start", {}), ("drop", {"reason": "x"}),
+                        ("lease", {"action": "take", "token": "DISPATCHER.t1234", "expires": "2026-10-26T01:00:00Z"}),
+                        ("bridge", {"state": "taken", "id": None}), ("file", {"title": "t", "kind": "task", "for": "BENCH"})):
+        ev = dict({"seat": "DISPATCHER", "event": verb, "id": "SOME_ITEM_DO_IT" if verb != "file" else "NEW_ITEM_X",
+                   "ts": "2026-10-26T00:01:00Z"}, **extra)
+        try:
+            model.replay(base + [ev], strict=True)
+            msg = None
+        except model.LedgerError as e:
+            msg = str(e)
+        check(msg is not None and "DISPATCHER" in msg, "ledger: DISPATCHER may not %s (%s)" % (verb, (msg or "accepted")[:60]))
 
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
-              test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule):
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule):
         try:
             t()
         except Exception as e:  # noqa: BLE001

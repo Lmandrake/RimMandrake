@@ -13,9 +13,10 @@ Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the sched
      lease take / claim / start after the ring (the hand-off happened). Not consumed in `verify_s` -> withdrawn and
      retried, up to `max_retries`, then an ALARM and a cooldown. Consumed but no hand-off in `handoff_s` -> recorded
      as WOKE_NO_HANDOFF (partial).
-  4. RECOVERS a dead window — its session gone from `claude agents` for `dead_after_s` — by resuming that session in
-     the background in the seat's clone (`recover_argv`, default `claude --bg --resume <session> …`), then checks it
-     reappears.
+  4. RECOVERS a dead window — its session (found by its `--name`, never by cwd) gone from `claude agents` for
+     `dead_after_s` — by resuming that session in the background in the seat's clone with the seat launcher's own
+     line (`recover_argv`, default `claude_bounded.sh --bg --resume <session> --dangerously-skip-permissions --name …
+     --model … --remote-control …`), then checks that SAME session reappears.
   5. RECORDS: every action to state/journal.jsonl; verified hand-offs, give-ups and recoveries as `rimflow note`s by
      seat DISPATCHER (note-only, model.DISPATCHER_VERBS), committed and pushed with the testq RUNNER's publisher
      (ingest.publish, given the DISPATCHER shard).
@@ -28,6 +29,10 @@ is MEASURED idle >= 20 min (UNMEASURED holds too), and every ring sent while he 
 Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, recoveries per seat per
 day, a cooldown after a give-up, and a PAUSE file (state/PAUSE) that stops everything. §3's roles are listed in the
 schedule; v3.0 runs none of them (all disabled) and says so if one is switched on.
+
+Ledger notes and their publish run under testq's ingest.lock (the RUNNER ingest commits/pulls/pushes in the same
+dispatch clone). A side effect that raises never skips the state save (the caps live there); an unreadable state
+file stops the tick instead of resetting the caps.
 
 Dry-run is the DEFAULT. Without --apply it rings nobody, recovers nothing, writes no ledger, and keeps its own
 bookkeeping under state/dry/ only, so a dry week shows what it would have done.
@@ -68,8 +73,14 @@ DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 6
             "cooldown_s": 3600, "dead_after_s": 600, "recover_verify_s": 300, "owner_idle_s": 20 * 60,
             "ledger_notes": True, "publish": True}
 CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3}
-DEFAULT_RECOVER = ["{claude}", "--bg", "--resume", "{session_id}", "--name", "{name}", "--model", "{model}",
-                   "--dangerously-skip-permissions", "{message}"]
+# The seat windows' own launch line (src/RimMandrake/Utils/install_wt_seat_profiles.py LAUNCH: `claude_bounded.sh
+# --dangerously-skip-permissions --name '<label>' --model <m> --remote-control '<label>'`, AGENT_SEAT exported, cwd =
+# the clone), plus `--bg --resume <id>`. Through claude_bounded.sh, never bare claude: the wrapper puts the session in
+# its own memory-capped systemd scope (the 2026-08-14 whole-VM OOM) and so OUT of this oneshot unit's cgroup, which
+# systemd kills when the tick exits.
+DEFAULT_RECOVER = ["{clone}/src/RimMandrake/Utils/claude_bounded.sh", "--bg", "--resume", "{session_id}",
+                   "--dangerously-skip-permissions", "--name", "{name}", "--model", "{model}",
+                   "--remote-control", "{name}", "{message}"]
 
 
 # ---------------------------------------------------------------- schedule and state
@@ -90,8 +101,18 @@ def state_root(apply):
     return root if apply else os.path.join(root, "dry")
 
 
+class StateUnreadable(Exception):
+    pass
+
+
 def load_state(root):
-    st = doorbell._read_json(os.path.join(root, "state.json")) or {}
+    p = os.path.join(root, "state.json")
+    st = doorbell._read_json(p)
+    if st is None:
+        if os.path.exists(p):
+            # Fail closed: a torn/unreadable state would silently reset every cap and pending ring.
+            raise StateUnreadable("%s exists but is unreadable" % p)
+        st = {}
     st.setdefault("seats", {})
     st.setdefault("wakes", [])          # [{seat, at}] for the caps
     st.setdefault("recovers", [])
@@ -166,7 +187,7 @@ def seat_events_since(clone, seat, since_iso):
                     ev = json.loads(line)
                 except ValueError:
                     continue
-                if ev.get("seat") == seat and (ev.get("ts") or "") >= since_iso:
+                if ev.get("seat") == seat and (ev.get("ts") or "") > since_iso:   # strictly after the ring's second
                     out.append(ev)
     except OSError:
         pass
@@ -197,12 +218,13 @@ def iso(t):
 
 
 def find_session(sessions, cfg):
-    name, clone = cfg.get("session_name"), cfg.get("clone")
+    """The seat's window BY NAME only. Every seat is launched with `--name 'AGENT <SEAT>'`
+    (install_wt_seat_profiles.py: the name is what makes a seat addressable). No cwd fallback: an owner window, a
+    remote-control session or HESTIA/EMERGENCY can sit in a seat's clone, and adopting one would remember ITS session
+    id for a `--dangerously-skip-permissions` resume."""
+    name = cfg.get("session_name")
     for s in sessions:
         if name and s.get("name") == name:
-            return s
-    for s in sessions:
-        if clone and s.get("cwd") == clone and s.get("kind") == "interactive":
             return s
     return None
 
@@ -250,6 +272,9 @@ def decide(sch, st, obs, now, apply):
 
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
+        for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
+            if ss.get("ring") and not ss["ring"].get("consumed_at"):
+                act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
     agents = obs["agents"]
     if agents.get("state") != "MEASURED":
@@ -275,6 +300,8 @@ def decide(sch, st, obs, now, apply):
         pend = ss.get("ring")
         # ---- a ring in flight: verify it
         if pend:
+            if status != "idle":
+                ss.pop("idle_since", None)       # busy time is not stall time
             rec = obs["consumed"](seat, pend["ring_id"])
             if rec and not pend.get("consumed_at"):
                 pend["consumed_at"] = rec.get("consumed_at") or now
@@ -285,16 +312,18 @@ def decide(sch, st, obs, now, apply):
                         evidence="%s %s at %s" % (ev.get("event"), ev.get("action") or "", ev.get("ts")),
                         note=True)
                     ss.pop("ring")
+                    ss["attempt"] = 0
                     ss["last_verified"] = now
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
                     act(do="woke_no_handoff", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"),
                         why="doorbell consumed but no lease/claim/start by %s in %d s" % (seat, sch["handoff_s"]),
                         note=True)
                     ss.pop("ring")
+                    ss["attempt"] = 0
                     ss["cooldown_until"] = now + sch["cooldown_s"]
                 continue
             if now - pend["rung_at"] >= sch["verify_s"]:
-                act(do="withdraw", seat=seat, ring_id=pend["ring_id"])
+                act(do="withdraw", seat=seat, ring_id=pend["ring_id"], pending=dict(pend))
                 ss.pop("ring")
                 if pend["attempt"] >= sch["max_retries"] + 1:
                     act(do="alarm", kind="undelivered:" + seat, seat=seat, ticket=pend.get("ticket"), note=True,
@@ -307,7 +336,7 @@ def decide(sch, st, obs, now, apply):
         # ---- recovery in flight: verify it
         rv = ss.get("recover")
         if rv:
-            if sess:
+            if sess and (not rv.get("session_id") or sess.get("sessionId") == rv["session_id"]):
                 act(do="recovered", seat=seat, session=sess.get("sessionId"), note=True,
                     why="session back after recover at %s" % iso(rv["at"]))
                 ss.pop("recover")
@@ -339,12 +368,16 @@ def decide(sch, st, obs, now, apply):
                 act(do="alarm", kind="cap:recover:" + seat, seat=seat,
                     why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
                 continue
-            act(do="recover", seat=seat, session_id=ss["session_id"],
-                message="[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
-                        "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
+            import idle_probe
+            owner_ok, owner_why = idle_probe.decide(owner(), "", need=sch["owner_idle_s"])
+            msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
+                   "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
+            if not owner_ok:     # the resumed session may have died mid bridge/deploy work: tell it not to resume that
+                msg += "\nowner present: do not take the bridge, restart the game or deploy (%s)." % owner_why
+            act(do="recover", seat=seat, session_id=ss["session_id"], message=msg)
             st["recovers"].append({"seat": seat, "at": now})
             if apply:
-                ss["recover"] = {"at": now}
+                ss["recover"] = {"at": now, "session_id": ss["session_id"]}
             else:
                 ss["cooldown_until"] = now + sch["cooldown_s"]   # dry: say it once per cooldown, not every tick
             continue
@@ -361,6 +394,12 @@ def decide(sch, st, obs, now, apply):
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat,
                 why="%s is idle but no doorbell is armed (install doorbell.py as its Stop hook)" % seat)
+            continue
+        if armed.get("session_id") and sess.get("sessionId") and armed["session_id"] != sess["sessionId"]:
+            act(do="alarm", kind="unwakeable:" + seat, seat=seat,
+                why="%s's armed doorbell is session %s, not the window's %s (a `claude -p` child or second window "
+                    "with AGENT_SEAT re-armed it): not ringing a stranger" % (seat, armed["session_id"],
+                                                                               sess["sessionId"]))
             continue
         ticket = obs["peek"](seat)
         if ticket is None:
@@ -382,7 +421,7 @@ def decide(sch, st, obs, now, apply):
         attempt = ss.get("attempt", 0) + 1
         ring_id = "%s-%d-%d" % (seat, int(now), attempt)
         act(do="ring", seat=seat, ring_id=ring_id, ticket=ticket["id"], attempt=attempt,
-            message=message(seat, cfg, ticket, owner_line, ring_id))
+            session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, owner_line, ring_id))
         st["wakes"].append({"seat": seat, "at": now})
         if apply:
             ss["ring"] = {"ring_id": ring_id, "rung_at": now, "rung_iso": iso(now), "ticket": ticket["id"],
@@ -396,9 +435,10 @@ def decide(sch, st, obs, now, apply):
 
 # ---------------------------------------------------------------- side effects
 
-def ring(root, seat, ring_id, msg):
+def ring(root, seat, ring_id, msg, session_id=None):
     doorbell._write_json_atomic(doorbell.inbox_path(seat, root),
-                                {"seat": seat, "ring_id": ring_id, "message": msg, "rung_at": time.time()})
+                                {"seat": seat, "ring_id": ring_id, "message": msg, "rung_at": time.time(),
+                                 "session_id": session_id})
 
 
 def withdraw(root, seat, ring_id):
@@ -416,7 +456,7 @@ def withdraw(root, seat, ring_id):
 
 
 def recover(cfg, session_id, msg, runner=subprocess.run):
-    argv = [a.format(claude=claude_exe(), session_id=session_id, name=cfg.get("session_name") or "",
+    argv = [a.format(claude=claude_exe(), clone=cfg["clone"], session_id=session_id, name=cfg.get("session_name") or "",
                      model=cfg.get("model") or "sonnet", message=msg) for a in (cfg.get("recover_argv") or DEFAULT_RECOVER)]
     env = dict(os.environ, AGENT_SEAT=cfg["seat"], RIMFLOW_SEAT=cfg["seat"])
     try:
@@ -437,7 +477,28 @@ def ledger_note(item, text, run=subprocess.run):
 
 def publish(n):
     import ingest
+    if not n and not ingest.unpublished(SHARD_REL):
+        return None
     return ingest.publish(n, shard_rel=SHARD_REL, message="ledger: DISPATCHER notes (%d)" % n)
+
+
+def git_lock(wait_s=90):
+    """testq's ingest.lock: the RUNNER ingest commits, pull --rebases and pushes in this same dispatch clone. Our note
+    appends (an unstaged DISPATCHER.jsonl) and our publish must not interleave with its pull --rebase, or each makes
+    the other's rebase refuse. -> an open locked file, or None when it stayed busy for wait_s."""
+    import testq
+    testq.ensure_dirs()
+    lk = open(testq.q("ingest.lock"), "w")
+    end = time.time() + wait_s
+    while True:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return lk
+        except BlockingIOError:
+            if time.time() >= end:
+                lk.close()
+                return None
+            time.sleep(2)
 
 
 def execute(actions, sch, st, root, apply, now, fx=None):
@@ -445,38 +506,65 @@ def execute(actions, sch, st, root, apply, now, fx=None):
     fx = fx or {}
     do_ring, do_withdraw = fx.get("ring", ring), fx.get("withdraw", withdraw)
     do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get("publish", publish)
+    do_lock = fx.get("lock", git_lock)
+    wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
+    lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
+    ledger_ok = lk is not None
     notes = 0
-    for a in actions:
-        res = None
-        if a["do"] == "alarm":
-            last = st["alarms"].get(a["kind"])
-            if last is not None and now - last < sch.get("alarm_every_s", 6 * 3600):
-                a["note"] = False
-                res = "repeat alarm (rate-limited)"
-            else:
-                st["alarms"][a["kind"]] = now
-        if apply:
-            if a["do"] == "ring":
-                do_ring(root, a["seat"], a["ring_id"], a["message"])
-                res = "rung"
-            elif a["do"] == "withdraw":
-                res = do_withdraw(root, a["seat"], a["ring_id"])
-            elif a["do"] == "recover":
-                cfg = dict(sch["seats"][a["seat"]], seat=a["seat"])
-                ok, out = do_recover(cfg, a["session_id"], a["message"])
-                res = ("started: " if ok else "failed: ") + out
-                st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
-            if a.get("note") and sch.get("ledger_notes"):
-                item = a.get("ticket") or sch.get("alarm_item")
-                if item:
-                    ok, out = do_note(item, "dispatcher %s %s: %s" % (
-                        a["do"], a.get("seat", ""), a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
-                    notes += ok
-                    a["ledger"] = "noted" if ok else "note failed: " + out
-        a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
-        journal(root, dict(a, message=None) if a.get("message") else a)
-    if apply and notes and sch.get("publish"):
-        journal(root, {"at": iso(now), "do": "publish", "result": do_publish(notes)})
+    try:
+        for a in actions:
+            res = None
+            if a["do"] == "alarm":
+                last = st["alarms"].get(a["kind"])
+                if last is not None and now - last < sch.get("alarm_every_s", 6 * 3600):
+                    a["note"] = False
+                    res = "repeat alarm (rate-limited)"
+                else:
+                    st["alarms"][a["kind"]] = now
+            if apply:
+                try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
+                    if a["do"] == "ring":
+                        do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
+                        res = "rung"
+                    elif a["do"] == "withdraw":
+                        res = do_withdraw(root, a["seat"], a["ring_id"])
+                        if res.startswith("gone") and a.get("pending"):
+                            # the doorbell consumed it between decide and here: it WAS delivered — keep verifying it
+                            # instead of ringing a second time
+                            ss = st["seats"].setdefault(a["seat"], {})
+                            ss["ring"] = dict(a["pending"], consumed_at=now)
+                    elif a["do"] == "recover":
+                        cfg = dict(sch["seats"][a["seat"]], seat=a["seat"])
+                        ok, out = do_recover(cfg, a["session_id"], a["message"])
+                        res = ("started: " if ok else "failed: ") + out
+                        st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
+                except Exception as e:  # noqa: BLE001
+                    res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                if a.get("note") and sch.get("ledger_notes"):
+                    item = a.get("ticket") or sch.get("alarm_item")
+                    if item and not ledger_ok:
+                        a["ledger"] = "not noted: testq ingest.lock busy (the journal holds it)"
+                    elif item:
+                        try:
+                            ok, out = do_note(item, "dispatcher %s %s: %s" % (
+                                a["do"], a.get("seat", ""),
+                                a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
+                        except Exception as e:  # noqa: BLE001 - a rimflow timeout
+                            ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
+                        notes += ok
+                        a["ledger"] = "noted" if ok else "note failed: " + out
+            a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
+            journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)
+        if apply and ledger_ok and sch.get("publish"):
+            try:
+                out = do_publish(notes)       # also retries an earlier publish that stopped (ingest.unpublished)
+            except Exception as e:  # noqa: BLE001
+                out = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+            if out is not None:
+                journal(root, {"at": iso(now), "do": "publish", "result": out})
+    finally:
+        if lk is not None:
+            lk.close()
     return actions
 
 
@@ -504,12 +592,20 @@ def tick(sch, apply, obs=None, now=None, fx=None):
         except BlockingIOError:
             return [{"do": "skip", "why": "a tick is already running"}]
         now = time.time() if now is None else now
-        st = load_state(root)
-        acts = decide(sch, st, obs or default_obs(sch, root), now, apply)
-        execute(acts, sch, st, root, apply, now, fx)
-        st["last_tick"] = iso(now)
-        st["apply"] = apply
-        S.dump(st, os.path.join(root, "state.json"))
+        try:
+            st = load_state(root)
+        except StateUnreadable as e:
+            rec = {"at": iso(now), "do": "skip", "why": "state UNREADABLE, no action (fix or remove it): %s" % e}
+            journal(root, rec)
+            return [rec]
+        acts = []
+        try:
+            acts = decide(sch, st, obs or default_obs(sch, root), now, apply)
+            execute(acts, sch, st, root, apply, now, fx)
+        finally:     # the caps and pending rings are in st: save them even when a step raised
+            st["last_tick"] = iso(now)
+            st["apply"] = apply
+            S.dump(st, os.path.join(root, "state.json"))
     return acts
 
 
