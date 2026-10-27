@@ -1,0 +1,2 @@
+jawa/health_profile refuses an allowlist over 32 entries ("allowlist has 48 entries; the maximum is 32") but the window's mct still runs, so a profiled window silently yields timing with no profile. Excavation r16 lost two windows (ON2, OFF) this way. Guard in the driver: count entries before arming, require the arm output to match ^START True (None|\[\]), and mark the window PROFILER ARM INVALID otherwise (D:\ClaudeWork\rimmandrake\bench_live_r16\tprof.py, mctprof3.sh, arm_ON2.txt).
+home: live-debugging-proof-harness
