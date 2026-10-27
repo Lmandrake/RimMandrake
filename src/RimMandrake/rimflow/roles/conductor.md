@@ -52,8 +52,9 @@ These, and nothing else, are your inputs. A source not named here is closed to y
 - The queue and item notes through `python3 src/RimMandrake/rimflow/blind_view.py queue <SEAT>` / `show <ID>`; never
   raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry account and cap values.
 - `infrastructure/state/CONDUCTOR_GOALS.md`; the canon check's findings; the reconciler's mismatches;
-  `design/RimMandrake/innovations.md`; the daily digest a program builds (`Transient/delegated_digest_<date>.md`, `DELEGATED_DIGEST_FIX_NEVER_WRITTEN`;
-  while no program builds it, say so in one line; never assemble it by hand); `rimflow_metrics.py` output; and the
+  `design/RimMandrake/innovations.md`; the daily digest a program builds (`Transient/delegated_digest_<date>.md`, written by
+  `delegated_digest.py`, your scheduled run's pre-step, token-blind by allow-list; if it is missing or
+  `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line; never assemble it by hand); `rimflow_metrics.py` output; and the
   files a role's note on the parent item points you to that are not on the closed list below.
 - Design docs, rulings, code and evidence files, read for their substance, when his question or a scheduled-check
   step needs them.

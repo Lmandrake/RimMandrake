@@ -149,10 +149,12 @@ work waits on it. It never times out into a decision.
 
 ## 5. How he audits and overturns cheaply — the daily digest
 
-Once a day, at his first sitting (BENCH) or with the nightly run (FOUNDRY), the seat writes
-`Transient/delegated_digest_<YYYY-MM-DD>.md` and gives him its full native path: one line per delegated call
+Once a day, before the Conductor's first scheduled check, a program writes
+`Transient/delegated_digest_<YYYY-MM-DD>.md` and the Conductor gives him its full native path: one line per delegated call
 since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
-from the ledger (`why` starting `delegated:`) and `git log --grep '^Delegated:'`; a zero-line digest is checked
+by a program, `src/RimMandrake/rimflow/delegated_digest.py` (the Conductor's scheduled pre-step; token-blind by
+allow-list), from the ledger (`why` starting `delegated:`), `git log --grep '^Delegated:'`, the judge records in
+`infrastructure/state/delegated/`, the art ledger's delegated installs and marks, and the leftovers acts log; a zero-line digest is checked
 against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
 a digest line: each newest-mark enactment, ✕ delete + ban, ban lifted, and redraw a ban discarded (§2.3, class
 `art marks`; `art.py marks-digest` lists them), each bridge take, deploy and
