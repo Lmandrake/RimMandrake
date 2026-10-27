@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Roast-on-a-stick is open to anyone (owner card 2026-10-26, "Anyone roasts, then self-serve").
+  WorkGiver_DoBill skips any bill whose recipe.requiredGiverWorkType differs from the giver's workType, so
+  the two RSW_CookRoastOnAStick recipes (requiredGiverWorkType BasicWorker) are invisible to vanilla's
+  DoBillsCookCampfire (Cooking) and appear exactly once, here. Why BasicWorker: its workTags are
+  Commoner + AllWork only, so the fewest pawns are barred from it (Hauling adds ManualDumb + Hauling,
+  which more backstories forbid). A colonist incapable of Cooking can still be assigned BasicWorker.
+  The recipe keeps workSkill Cooking, so vanilla's skill-based food-poisoning chance is unchanged.
+-->
+<Defs>
+  <WorkGiverDef>
+    <defName>RSW_DoBillsRoastCampfire</defName>
+    <label>roast food on a stick at campfire</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>BasicWorker</workType>
+    <priorityInType>97</priorityInType>
+    <fixedBillGiverDefs>
+      <li>Campfire</li>
+    </fixedBillGiverDefs>
+    <verb>roast at</verb>
+    <gerund>roasting at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+</Defs>

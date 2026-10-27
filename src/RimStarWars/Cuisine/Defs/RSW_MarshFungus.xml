@@ -3,7 +3,7 @@
      kept in his pantry and mashed into a sweet, creamy yogurt; source Star Wars: Absolutely Everything You Need to Know, 2015),
      found by the search API before inventing a name. It is what a spent Miasma decay cell (RM_RottingBed) grows: the
      cross-tier wiring is Patches/RSW_RottingBed_MarshFungus.xml, guarded on mandrake.rm.miasma.
-     It is PlantFoodRaw (through RSW_CultureStarters, a child of PlantFoodRaw) so RSW_CookFungusOnAStick and vanilla cooking
+     It is PlantFoodRaw (through RSW_CultureStarters, a child of PlantFoodRaw) so RSW_CookRoastOnAStick and vanilla cooking
      take it today; RSW_CultureStarters is the tag the hazard-pantry and the fermentation crock will read when those rungs
      of high_cuisine_deep_design.md land. Numbers // INVENTED. ART: own (artpipe RSW_MarshFungus). -->
 <Defs>

@@ -13,36 +13,49 @@
 -->
 <Defs>
 
-  <!-- Base: meat only, no skewer resource required -->
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookMeatOnAStick</defName>
-    <label>cook meat on a stick</label>
-    <description>Cook raw meat over an open fire.</description>
-    <jobString>Cooking meat on a stick.</jobString>
+  <RecipeDef>
+    <defName>RSW_CookRoastOnAStick</defName>
+    <label>cook roast on a stick</label>
+    <description>Cook raw meat, fish or vegetables over an open fire.</description>
+    <jobString>Roasting food on a stick.</jobString>
     <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
           <categories>
             <li>MeatRaw</li>
+            <li>Fish</li>
+            <li>PlantFoodRaw</li>
           </categories>
         </filter>
         <count>0.5</count>
       </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
     </ingredients>
     <fixedIngredientFilter>
-      <disallowedCategories>
+      <categories>
+        <li>MeatRaw</li>
+        <li>Fish</li>
         <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedCategories>
         <li>AnimalProductRaw</li>
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RSW_MeatOnAStick>1</RSW_MeatOnAStick>
+      <RSW_RoastOnAStick>1</RSW_RoastOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>95</displayPriority>
@@ -51,36 +64,50 @@
     </recipeUsers>
   </RecipeDef>
 
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookMeatOnAStickBulk</defName>
-    <label>cook meat on a stick x4</label>
-    <description>Cook raw meat over an open fire (x4).</description>
-    <jobString>Cooking 4 meat on a stick.</jobString>
+  <RecipeDef>
+    <defName>RSW_CookRoastOnAStick4</defName>
+    <label>cook roast on a stick x4</label>
+    <description>Cook raw meat, fish or vegetables over an open fire.</description>
+    <jobString>Roasting food on a stick.</jobString>
     <workAmount>760</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
           <categories>
             <li>MeatRaw</li>
+            <li>Fish</li>
+            <li>PlantFoodRaw</li>
           </categories>
         </filter>
         <count>2.0</count>
       </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
     </ingredients>
     <fixedIngredientFilter>
-      <disallowedCategories>
+      <categories>
+        <li>MeatRaw</li>
+        <li>Fish</li>
         <li>PlantFoodRaw</li>
+      </categories>
+      <disallowedCategories>
         <li>AnimalProductRaw</li>
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RSW_MeatOnAStick>4</RSW_MeatOnAStick>
+      <RSW_RoastOnAStick>4</RSW_RoastOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>96</displayPriority>
@@ -123,655 +150,5 @@
       <RSW_Skewer>10</RSW_Skewer>
     </products>
   </RecipeDef>
-
-  <!-- Vegetables -->
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookVegOnAStick</defName>
-    <label>cook veg on a stick</label>
-    <description>Cook raw veg over an open fire.</description>
-    <jobString>Cooking vegetable skewer.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>0.5</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li>MeatRaw</li>
-        <li>AnimalProductRaw</li>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </disallowedCategories>
-      <disallowedThingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
-      </disallowedThingDefs>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li>PlantFoodRaw</li>
-      </categories>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_VegOnAStick>1</RSW_VegOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookVegOnAStick4</defName>
-    <label>cook veg on a stick x4</label>
-    <description>Cook raw veg over an open fire (x4).</description>
-    <jobString>Cooking 4 vegetable skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>2.0</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li>MeatRaw</li>
-        <li>AnimalProductRaw</li>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </disallowedCategories>
-      <disallowedThingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
-      </disallowedThingDefs>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li>PlantFoodRaw</li>
-      </categories>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_VegOnAStick>4</RSW_VegOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!-- Little meat -->
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookLittleMeatOnAStick</defName>
-    <label>cook a morsel of meat on a stick</label>
-    <description>Cook a morsel of meat over an open fire.</description>
-    <jobString>Cooking a morsel meat skewer.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>MeatRaw</li>
-          </categories>
-        </filter>
-        <count>0.25</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-        <li>PlantFoodRaw</li>
-        <li>AnimalProductRaw</li>
-      </disallowedCategories>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_LittleMeatOnAStick>1</RSW_LittleMeatOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookLittleMeatOnAStick4</defName>
-    <label>cook a morsel of meat on a stick x4</label>
-    <description>Cook a morsel of meat over an open fire (x4).</description>
-    <jobString>Cooking 4 morsel meat skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>MeatRaw</li>
-          </categories>
-        </filter>
-        <count>1.0</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-        <li>PlantFoodRaw</li>
-        <li>AnimalProductRaw</li>
-      </disallowedCategories>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_LittleMeatOnAStick>4</RSW_LittleMeatOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!-- Meat and vegetables -->
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookBlendedMeatOnAStick</defName>
-    <label>cook meat and veg on a stick</label>
-    <description>Cook meat and veg over an open fire.</description>
-    <jobString>Cooking meat and veg skewer.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>MeatRaw</li>
-          </categories>
-        </filter>
-        <count>0.25</count>
-      </li>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>0.25</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-        <li>AnimalProductRaw</li>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </disallowedCategories>
-      <disallowedThingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
-      </disallowedThingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_BlendOnAStick>1</RSW_BlendOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookBlendedMeatOnAStick4</defName>
-    <label>cook meat and veg on a stick x4</label>
-    <description>Cook meat and veg over an open fire (x4).</description>
-    <jobString>Cooking 4 meat and veg skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>MeatRaw</li>
-          </categories>
-        </filter>
-        <count>1.0</count>
-      </li>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>1.0</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-        <li>AnimalProductRaw</li>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </disallowedCategories>
-      <disallowedThingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>
-      </disallowedThingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_BlendOnAStick>4</RSW_BlendOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!-- Fish -->
-  <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
-    <defName>RSW_CookFishOnAStick</defName>
-    <label>cook fish on a stick</label>
-    <description>Cook fish over an open fire.</description>
-    <jobString>Cooking fish skewer.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-          </categories>
-        </filter>
-        <count>0.5</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-      </categories>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-      </categories>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_FishOnAStick>1</RSW_FishOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
-    <defName>RSW_CookFishOnAStick4</defName>
-    <label>cook fish on a stick x4</label>
-    <description>Cook fish over an open fire (x4).</description>
-    <jobString>Cooking 4 fish skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-          </categories>
-        </filter>
-        <count>2.0</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-      </categories>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
-      </categories>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_FishOnAStick>4</RSW_FishOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!-- Fruit -->
-  <RecipeDef>
-    <defName>RSW_CookFruitOnAStick</defName>
-    <label>cook fruit on a stick</label>
-    <description>Cook fruit over an open fire.</description>
-    <jobString>Cooking fruit skewers.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>0.5</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </categories>
-      <thingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
-      </thingDefs>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </categories>
-      <thingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
-      </thingDefs>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_FruitOnAStick>1</RSW_FruitOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef>
-    <defName>RSW_CookFruitOnAStick4</defName>
-    <label>cook fruit on a stick x4</label>
-    <description>Cook raw fruit over an open fire (x4).</description>
-    <jobString>Cooking 4 fruit skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>2</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </categories>
-      <thingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
-      </thingDefs>
-    </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
-      </categories>
-      <thingDefs>
-        <li>RawAgave</li>
-        <li>RawBerries</li>
-        <li MayRequire="mandrake.rm.biomes">RM_RawLanneth</li>  <!-- Sump fruit, SUMP_NOOTHELM_B_PLANT_1 -->
-      </thingDefs>
-    </defaultIngredientFilter>
-    <products>
-      <RSW_FruitOnAStick>4</RSW_FruitOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!-- Fungus -->
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookFungusOnAStick</defName>
-    <label>cook mushroom on a stick</label>
-    <description>Cook mushrooms over an open fire.</description>
-    <jobString>Cooking mushroom skewer.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>0.5</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li>MeatRaw</li>
-        <li>AnimalProductRaw</li>
-      </disallowedCategories>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_FungusOnAStick>1</RSW_FungusOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef ParentName="CookMealBase">
-    <defName>RSW_CookFungusOnAStick4</defName>
-    <label>cook mushroom on a stick x4</label>
-    <description>Cook mushrooms over an open fire (x4).</description>
-    <jobString>Cooking 4 mushroom skewers.</jobString>
-    <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>PlantFoodRaw</li>
-          </categories>
-        </filter>
-        <count>2.0</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>RSW_Skewer</li>
-          </thingDefs>
-        </filter>
-        <count>4</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <disallowedCategories>
-        <li>MeatRaw</li>
-        <li>AnimalProductRaw</li>
-      </disallowedCategories>
-    </fixedIngredientFilter>
-    <products>
-      <RSW_FungusOnAStick>4</RSW_FungusOnAStick>
-    </products>
-    <workSkill>Cooking</workSkill>
-    <displayPriority>97</displayPriority>
-    <recipeUsers>
-      <li>Campfire</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <!--
-    No ThingDef patch needed for Campfire/CraftingSpot: each RecipeDef's own
-    <recipeUsers> list above is the real wiring mechanism (RimWorld resolves
-    RecipeDef.recipeUsers -> the workbench's AllRecipes at startup) - the
-    same pattern both donor mods used, confirmed by reading their XML
-    directly. Redeclaring the vanilla Campfire/CraftingSpot ThingDefs here
-    (even meaning only to append) would risk discarding their real fields
-    the way a bare re-declaration does; not done.
-  -->
 
 </Defs>

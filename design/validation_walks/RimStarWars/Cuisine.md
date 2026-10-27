@@ -1,23 +1,22 @@
 # Cuisine — validation walk
 subject: src/RimStarWars/Cuisine  (packageId: mandrake.rsw.cuisine)
-deps: none declared. RSW_FishOnAStick / RSW_CookFishOnAStick carry MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef" (optional — absence is not an error)
+deps: none declared (all DLC assumed; Fish category needs no MayRequire).
 list: minimal
-status-hint: campfire-cooked "on a stick" food line (meat/veg/fungus/fruit/blend/fish) plus the raw RSW_Skewer resource and its crafting recipe — Wave 1 of the high-cuisine build ladder, absorbed from badoaks.meatonastick(.expansion) per STICK_FOOD_INGEST_1.
+status-hint: one campfire-roasted "roast on a stick" item (meat, fish or plant, named from its first ingredient; owner card 2026-10-26) plus the raw RSW_Skewer resource and its crafting recipe — Wave 1 of the high-cuisine build ladder, absorbed from badoaks.meatonastick(.expansion) per STICK_FOOD_INGEST_1.
 
 ## must be true
-- RSW_Skewer (ParentName ResourceBase) and the 7 stick-meal ThingDefs (RSW_MeatOnAStick, RSW_VegOnAStick, RSW_FungusOnAStick, RSW_LittleMeatOnAStick, RSW_BlendOnAStick, RSW_FishOnAStick, RSW_FruitOnAStick) all resolve as real ThingDefs (ParentName MealCookedIngredientless).
+- RSW_Skewer (ParentName ResourceBase) and the ONE stick-meal ThingDef RSW_RoastOnAStick (ParentName MealCookedIngredientless) resolve as real ThingDefs.
 - RSW_CraftSkewers (recipeUsers: CraftingSpot) turns 1 Woody-stuff ingredient into 10 RSW_Skewer.
-- Each stick-meal RecipeDef (e.g. RSW_CookMeatOnAStick, recipeUsers: Campfire) consumes RSW_Skewer alongside its named raw-food category and yields the matching ThingDef.
-- Cooking any stick meal relabels the resulting item "Roasted <first ingredient>" via CompProperties_NameGen/NameGenComp, overriding the raw defName label.
-- RSW_FishOnAStick and RSW_CookFishOnAStick exist only when Ludeon.RimWorld.Odyssey or vanillaexpanded.vcef is active — legitimately absent otherwise, not a Config error.
+- RSW_CookRoastOnAStick (0.5 nutrition of MeatRaw/Fish/PlantFoodRaw + 1 skewer -> 1) and RSW_CookRoastOnAStick4 (2.0 + 4 skewers -> 4), recipeUsers Campfire, requiredGiverWorkType BasicWorker, done through WorkGiverDef RSW_DoBillsRoastCampfire (any colonist, not only cooks; vanilla food-poisoning odds kept).
+- Roasting a stick relabels the resulting item "Roasted <first ingredient>" via CompProperties_NameGen/NameGenComp, overriding the raw defName label.
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rsw.cuisine" and no XML error naming ThingDefs_Cuisine.xml, or RecipeDefs_Cuisine.xml   # load-time
-2. [D] jawa/get_defs {defs: "ThingDef/RSW_Skewer;ThingDef/RSW_MeatOnAStick"} → RSW_Skewer statBases.MarketValue = 0.12
+2. [D] jawa/get_defs {defs: "ThingDef/RSW_Skewer;ThingDef/RSW_RoastOnAStick"} → RSW_Skewer statBases.MarketValue = 0.12
 3. [D] jawa/get_def {defType: "RecipeDef", defName: "RSW_CraftSkewers"} → products.RSW_Skewer = 10, ingredients[0].count = 1, recipeUsers contains CraftingSpot
-4. [D] jawa/get_def {defType: "RecipeDef", defName: "RSW_CookMeatOnAStick"} → recipeUsers contains Campfire, ingredientValueGetterClass = IngredientValueGetter_Nutrition, products.RSW_MeatOnAStick = 1
+4. [D] jawa/get_def {defType: "RecipeDef", defName: "RSW_CookRoastOnAStick"} → recipeUsers contains Campfire, ingredientValueGetterClass = IngredientValueGetter_ExcludeSkewer, products.RSW_RoastOnAStick = 1
 5. [B] rimworld/spawn_thing {defName: "RSW_Skewer", x, z, stackCount: 10} then jawa/list_things {defName: "RSW_Skewer"} → a stack of 10 exists at the target cell
-X. [S] (human pass) cook meat-on-a-stick at a campfire and confirm the item's in-game label reads "Roasted <ingredient>" (NameGenComp)
+X. [S] (human pass) roast one at a campfire and confirm the label reads "Roasted <ingredient>" (NameGenComp); then repeat with a colonist whose Cooking is disabled — they must be able to take the bill (BasicWorker)
 
 ## north star
 state: DRAFT
@@ -36,9 +35,8 @@ least certain. `### the experience` is his to dictate.
 ### must show
 
 **Food on a stick**
-- [ ] `cuisine_sticks_read_as_skewers` — each stick meal (`RSW_MeatOnAStick` and its
-      kin) in a stockpile reads as food on a skewer, and the meat, veg, fungus,
-      fruit and fish sticks are visibly different.
+- [ ] `cuisine_sticks_read_as_skewers` — the roast on a stick (`RSW_RoastOnAStick`)
+      in a stockpile reads as food on a skewer.
 - [ ] `cuisine_skewer_reads_as_sticks` — `RSW_Skewer` reads as a bundle of bare
       sticks. (guess)
 - [ ] `cuisine_cooked_at_campfire` — a colonist cooking a stick meal is seen at a

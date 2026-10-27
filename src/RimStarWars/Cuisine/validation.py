@@ -9,27 +9,18 @@ without it, `WorkGiver_DoBill`'s ingredient-picking loop divides by zero
 and no bill naming `RSW_Skewer` can ever be satisfied), `NameGenComp.cs`
 (the "Roasted <first ingredient>" `TransformLabel` override, ported from
 badoaks.meatonastick per STICK_FOOD_INGEST_1), `ThingDefs_Cuisine.xml`
-(`RSW_Skewer` plus the 7 `MealCookedIngredientless`-parented meal defs),
-`RecipeDefs_Cuisine.xml` (15 RecipeDefs: 2 skewer-free meat recipes using
-plain `IngredientValueGetter_Nutrition`, 1 skewer-crafting recipe, and 12
-skewer-consuming recipes using `IngredientValueGetter_ExcludeSkewer`), and
+(`RSW_Skewer` plus the ONE `RSW_RoastOnAStick` meal def, owner card
+2026-10-26 "One roast-on-a-stick item"),
+`RecipeDefs_Cuisine.xml` (3 RecipeDefs: 1 skewer-crafting recipe and the 2
+skewer-consuming `RSW_CookRoastOnAStick`/`...4` using
+`IngredientValueGetter_ExcludeSkewer`), and
 `About.xml` (no ModSettings anywhere in this mod's tree -- pure content,
 `suite.toggles = []`).
 
-WHY TWO DIFFERENT `ingredientValueGetterClass` VALUES APPEAR ACROSS THE 15
-RECIPES, and why this suite checks both: `RSW_CookMeatOnAStick`/
-`RSW_CookMeatOnAStickBulk` need no skewer at all (the file's own comment:
-"Base: meat only, no skewer resource required") and use plain
-`IngredientValueGetter_Nutrition`; every OTHER cooked-meal recipe consumes
-`RSW_Skewer` as a real ingredient line and MUST use
-`RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer` or the
-skewer requirement becomes unsatisfiable (module docstring's own C#
-comment, verified against `WorkGiver_DoBill.
-TryFindBestBillIngredientsInSet_AllowMix`'s division). `recipes_readback`
-below checks a representative recipe from each of the three shapes
-(meat-only, skewer-crafting, skewer-consuming), not all 15 -- enough to
-catch a whole-file load break without being a rubber stamp, per this
-suite family's own sampling precedent (PawnFlavor's backstory sample).
+Every cooked-meal recipe consumes `RSW_Skewer` as a real ingredient line and
+MUST use `RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer` or
+the skewer requirement becomes unsatisfiable (see that C# file's header).
+`recipes_readback` checks both shapes (skewer-crafting, skewer-consuming).
 
 The cooked empty skewer (`RSW_CookedSkewer`), its two `RSW_CookEmptySkewer*`
 recipes and its `RSW_AteEmptySkewer` taste thought were removed from the
@@ -103,10 +94,7 @@ from modcheck import Suite, ExpectationFailed, shipped_defs  # noqa: E402
 suite = Suite("Cuisine")
 suite.toggles = []   # no Settings.cs / ModSettings anywhere in this mod's tree
 
-MEAL_THINGDEFS = [
-    "RSW_MeatOnAStick", "RSW_VegOnAStick", "RSW_FungusOnAStick",
-    "RSW_LittleMeatOnAStick", "RSW_BlendOnAStick", "RSW_FruitOnAStick",
-]
+MEAL_THINGDEFS = ["RSW_RoastOnAStick"]
 NAME_GEN_COMP = "RimMandrake.StarWars.Cuisine.CompProperties_NameGen"
 EXCLUDE_SKEWER_GETTER = "RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer"
 
@@ -173,28 +161,8 @@ def thingdefs_readback(t):
 
 @suite.chain("recipes_readback")
 def recipes_readback(t):
-    """One representative recipe per shape (module docstring): meat-only
-    (no skewer), skewer-crafting, and skewer-consuming (ExcludeSkewer
+    """One representative recipe per shape (module docstring): skewer-crafting and skewer-consuming (ExcludeSkewer
     getter) -- not all 15, per this family's own sampling precedent."""
-    with t.component("meat_only_recipe_no_skewer_getter", beyond_toggle=True):
-        r = _get_defs(t, "RecipeDef/RSW_CookMeatOnAStick",
-                     "recipeUsers,ingredientValueGetterClass,products")
-        row = _row_for(r, "RecipeDef/RSW_CookMeatOnAStick")
-        fields = (row or {}).get("fields") or {}
-        got_users = str(fields.get("recipeUsers", ""))
-        got_getter = str(fields.get("ingredientValueGetterClass", ""))
-        got_products = str(fields.get("products", ""))
-        ok = ("Campfire" in got_users and "IngredientValueGetter_Nutrition" in got_getter
-              and "RSW_MeatOnAStick" in got_products)
-        t._record("RSW_CookMeatOnAStick -> users=%r getter=%r products=%r"
-                  % (got_users, got_getter, got_products), ok)
-        if not ok:
-            raise ExpectationFailed(
-                "RSW_CookMeatOnAStick did not match expected recipeUsers="
-                "Campfire, getter=IngredientValueGetter_Nutrition, "
-                "products contains RSW_MeatOnAStick: %r/%r/%r"
-                % (got_users, got_getter, got_products))
-
     with t.component("craft_skewers_recipe", beyond_toggle=True):
         r = _get_defs(t, "RecipeDef/RSW_CraftSkewers", "recipeUsers,products")
         row = _row_for(r, "RecipeDef/RSW_CraftSkewers")
@@ -211,18 +179,18 @@ def recipes_readback(t):
                 % (got_users, got_products))
 
     with t.component("skewer_consuming_recipe_uses_exclude_getter", beyond_toggle=True):
-        r = _get_defs(t, "RecipeDef/RSW_CookVegOnAStick",
+        r = _get_defs(t, "RecipeDef/RSW_CookRoastOnAStick",
                      "ingredientValueGetterClass,products")
-        row = _row_for(r, "RecipeDef/RSW_CookVegOnAStick")
+        row = _row_for(r, "RecipeDef/RSW_CookRoastOnAStick")
         fields = (row or {}).get("fields") or {}
         got_getter = str(fields.get("ingredientValueGetterClass", ""))
         got_products = str(fields.get("products", ""))
-        ok = EXCLUDE_SKEWER_GETTER in got_getter and "RSW_VegOnAStick" in got_products
-        t._record("RSW_CookVegOnAStick -> getter=%r products=%r"
+        ok = EXCLUDE_SKEWER_GETTER in got_getter and "RSW_RoastOnAStick" in got_products
+        t._record("RSW_CookRoastOnAStick -> getter=%r products=%r"
                   % (got_getter, got_products), ok)
         if not ok:
             raise ExpectationFailed(
-                "RSW_CookVegOnAStick.ingredientValueGetterClass = %r, "
+                "RSW_CookRoastOnAStick.ingredientValueGetterClass = %r, "
                 "expected to contain %r" % (got_getter, EXCLUDE_SKEWER_GETTER))
 
 
@@ -254,17 +222,17 @@ def namegen_fallback_on_bare_spawn(t):
     early-return branch and the label should read unchanged."""
     t.clear_area(size=10)
     with t.component("unchanged_label_with_no_ingredients", beyond_toggle=True):
-        cells = t.spawn("RSW_MeatOnAStick", count=1, at="point")
+        cells = t.spawn("RSW_RoastOnAStick", count=1, at="point")
         x, z = cells[0] if cells else t.anchor
         r = t.bridge_call("jawa/list_things", rect="%d,%d,3,3" % (x - 1, z - 1))
         rows = (r or {}).get("things") or []
-        row = next((row for row in rows if row.get("def") == "RSW_MeatOnAStick"), None)
+        row = next((row for row in rows if row.get("def") == "RSW_RoastOnAStick"), None)
         label = (row or {}).get("label", "")
         ok = "roasted" not in label.lower()
-        t._record("bare-spawned RSW_MeatOnAStick label -> %r" % label, ok)
+        t._record("bare-spawned RSW_RoastOnAStick label -> %r" % label, ok)
         if not ok:
             raise ExpectationFailed(
-                "bare-spawned RSW_MeatOnAStick label = %r, expected the "
+                "bare-spawned RSW_RoastOnAStick label = %r, expected the "
                 "unchanged fallback label (not a 'Roasted ...' rename, "
                 "which needs recorded ingredients this spawn never sets)"
                 % label)

@@ -135,9 +135,10 @@ def static_checks():
         bad.append("RM_Lanneth is not in the Sump's wildPlants")
     cuis = os.path.join(HERE, "..", "..", "RimStarWars", "Cuisine", "Defs", "RecipeDefs_Cuisine.xml")
     if os.path.isfile(cuis):
-        fr = open(cuis, encoding="utf-8").read().split("<defName>RSW_CookFruitOnAStick</defName>", 1)[-1].split("</RecipeDef>", 1)[0]
-        if "RM_RawLanneth" not in fr:
-            bad.append("RSW_CookFruitOnAStick does not accept RM_RawLanneth")
+        fr = open(cuis, encoding="utf-8").read().split("<defName>RSW_CookRoastOnAStick</defName>", 1)[-1].split("</RecipeDef>", 1)[0]
+        # RM_RawLanneth is a PlantFoodRawBase child, so the one roast recipe's PlantFoodRaw filter takes it
+        if "PlantFoodRaw" not in fr:
+            bad.append("RSW_CookRoastOnAStick does not accept PlantFoodRaw (so not RM_RawLanneth)")
     else:
         bad.append("RimStarWars/Cuisine RecipeDefs_Cuisine.xml missing")
     # SUMP_SOLVENT_WAKE_BUILD_1: the pour order's seams (the C# lives in EnvironmentalHazards)
