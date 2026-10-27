@@ -19,9 +19,11 @@ Kinds and what `check` must prove (every reason below is a NOT-SAFE reason; SAFE
            appears in any tracked repo file (items, docs, scenes), or it is a review save (an unjudged review
            save counts as read), or it is younger than --min-age-days.
   clone    a scratch git clone under CLONE_ROOTS whose origin is this repo's origin. Read/unpushed = dirty or
-           untracked files, a stash, a merge/rebase in progress, extra worktrees, any local commit not on a
-           remote ref and not patch-equivalent to this repo's origin/main, a live process with its cwd inside,
-           or git activity younger than --min-age-days.
+           untracked/ignored files, a stash, a merge/rebase in progress, extra worktrees, any commit a ref, HEAD
+           or reflog entry reaches that the real origin lacks (this repo's refs/remotes/origin/* + `ls-remote
+           origin`; the clone's own remote refs are not trusted) and that is not patch-equivalent to origin/main,
+           a live process with its cwd inside, or git activity younger than --min-age-days. A --kind that
+           disagrees with the path's own kind is REFUSED.
   modfolder a folder in the game Mods dir whose About.xml packageId starts `mandrake.`. Read = that packageId
            is active in ModsConfig.xml (parsed), listed in a canonical save's mod list, or named anywhere in the
            repo (About.xml in src, test tier lists, docs).
@@ -252,14 +254,41 @@ class Ctx(object):
 
     def origin_main(self):
         if "origin_main" not in self._cache:
-            sha = ""
-            for ref in ("refs/remotes/origin/main", "refs/heads/main", "HEAD"):
-                rc, out, _ = _git(self.repo, "rev-parse", "--verify", "-q", ref)
-                if rc == 0 and out.strip():
-                    sha = out.strip()
-                    break
-            self._cache["origin_main"] = sha
+            # the PUSHED state only: a fallback to local main/HEAD would vouch for this clone's own unpushed work
+            rc, out, _ = _git(self.repo, "rev-parse", "--verify", "-q", "refs/remotes/origin/main")
+            self._cache["origin_main"] = out.strip() if rc == 0 else ""
         return self._cache["origin_main"]
+
+    def pushed_shas(self):
+        """Commit shas the real origin holds (ls-remote heads + peeled tags), limited to objects this repo has;
+        plus this repo's refs/remotes/origin/*. -> (shas, how)."""
+        if "pushed" not in self._cache:
+            rc, out, _ = _git(self.repo, "for-each-ref", "--format=%(objectname)", "refs/remotes/origin")
+            shas = {x for x in out.split() if x}
+            how = "refs/remotes/origin"
+            rc, ls, _ = _git(self.repo, "ls-remote", "origin", timeout=60)
+            if rc == 0 and ls.strip():
+                cand = {}
+                for line in ls.splitlines():
+                    sha, _t, ref = line.partition("\t")
+                    if ref.startswith(("refs/heads/", "refs/tags/")):
+                        cand[ref] = sha.strip()      # a peeled "^{}" line overwrites with the commit
+                p = subprocess.run(["git", "-C", self.repo, "cat-file", "--batch-check"],
+                                   input=("\n".join(sorted(set(cand.values()))) + "\n").encode(),
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+                shas |= {l.split()[0] for l in p.stdout.decode().splitlines()
+                         if len(l.split()) >= 2 and l.split()[1] == "commit"}
+                how += " + ls-remote origin"
+            self._cache["pushed"] = (sorted(shas), how)
+        return self._cache["pushed"]
+
+    def landed_keys(self):
+        """author email + author time + subject of every commit on origin/main (a rebased commit keeps all three)."""
+        if "landed" not in self._cache:
+            om = self.origin_main()
+            rc, out, _ = _git(self.repo, "log", "--format=%ae%x1f%at%x1f%s", om) if om else (1, "", "")
+            self._cache["landed"] = {l for l in out.splitlines() if l.strip()} if rc == 0 else set()
+        return self._cache["landed"]
 
     def git_grep_files(self, needle):
         """Tracked repo files naming `needle` (fixed string, case-insensitive)."""
@@ -488,6 +517,8 @@ def repo_file_pushed(ctx, p):
     if out.strip():
         return "modified in the working tree"
     om = ctx.origin_main()
+    if not om:
+        return "no refs/remotes/origin/main in the repo: cannot prove it is pushed"
     rc, _o, _e = _git(ctx.repo, "diff", "--quiet", om, "--", rel)
     if rc != 0:
         return "differs from origin/main (unpushed)"
@@ -618,35 +649,53 @@ def check_clone(ctx, p, v):
     rc, wt, _ = _git(p, "worktree", "list", "--porcelain")
     if wt.count("worktree ") > 1:
         v.no("has extra worktrees")
-    # unpushed: commits on any local branch, tag or HEAD not on any remote ref ...
-    rc, out, err = _git(p, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes")
-    if rc != 0:
-        return v.blind("rev-list failed: %s" % err.strip()[:200])
-    unpushed = [s for s in out.split() if s]
+    # unpushed: every commit any ref, HEAD or reflog entry of the clone reaches that THIS repo's
+    # refs/remotes/origin/* do not. The clone's own remote-tracking refs are not trusted: a second remote
+    # (another scratch clone, a local path) or a hand-moved refs/remotes/origin/x would vouch for work that
+    # exists nowhere else. Reflog-only commits (a detached HEAD left behind) are counted: the bundle drops them.
+    env = dict(os.environ)
+    alt = os.path.join(ctx.repo, ".git", "objects")
+    env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = alt + (":" + env["GIT_ALTERNATE_OBJECT_DIRECTORIES"]
+                                                     if env.get("GIT_ALTERNATE_OBJECT_DIRECTORIES") else "")
+    om = ctx.origin_main()
+    pushed, how = ctx.pushed_shas()
+    if not om or not pushed:
+        return v.blind("this repo has no refs/remotes/origin/main: cannot tell pushed from unpushed")
+    stdin = "\n".join(["HEAD", "--all", "--reflog", "--not"] + pushed) + "\n"
+    pr = subprocess.run(["git", "-C", p, "rev-list", "--parents", "--stdin"], input=stdin.encode(), env=dict(
+        env, GIT_OPTIONAL_LOCKS="0"), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+    if pr.returncode != 0:
+        return v.blind("rev-list failed: %s" % pr.stderr.decode("utf-8", "replace").strip()[:200])
+    rows = [l.split() for l in pr.stdout.decode().splitlines() if l.strip()]
+    unpushed = [r[0] for r in rows]
     if unpushed:
         # ... and not patch-equivalent to this repo's origin/main (publish rebases, so shas change).
-        om = ctx.origin_main()
-        env = dict(os.environ)
-        alt = os.path.join(ctx.repo, ".git", "objects")
-        env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = alt + (":" + env["GIT_ALTERNATE_OBJECT_DIRECTORIES"]
-                                                         if env.get("GIT_ALTERNATE_OBJECT_DIRECTORIES") else "")
-        rc, heads, _ = _git(p, "for-each-ref", "--format=%(objectname)", "refs/heads")
-        rc, tags, _ = _git(p, "for-each-ref", "--format=%(objectname) %(*objectname)", "refs/tags")
-        tips = set(heads.split()) | {_git(p, "rev-parse", "HEAD")[1].strip()} | {
-            l.split()[-1] for l in tags.splitlines() if l.strip()}
-        plus = set()
-        for tip in sorted(t for t in tips if t):
+        parents = {x for r in rows for x in r[1:]}
+        local = set(unpushed)
+        tips = [s for s in unpushed if s not in parents]   # heads of the unpushed graph
+        real = None
+        for tip in tips:
             rc, ch, err = _git(p, "cherry", om, tip, env=env, timeout=300)
             if rc != 0:
                 return v.blind("git cherry against origin/main failed: %s" % err.strip()[:200])
-            plus |= {l[2:].strip() for l in ch.splitlines() if l.startswith("+ ")}
-        real = [s for s in unpushed if s in plus]
+            plus = [x for x in (l[2:].strip() for l in ch.splitlines() if l.startswith("+ ")) if x in local]
+            if plus:
+                # publish rebases through ledger conflicts, so a landed commit's patch-id can differ; the
+                # same author + author time + subject on origin/main is that commit, landed
+                rc, keys, _ = _git(p, "log", "--no-walk", "--format=%H%x1f%ae%x1f%at%x1f%s", *plus)
+                landed = ctx.landed_keys()
+                left = [l.split("\x1f", 1)[0] for l in keys.splitlines()
+                        if l.strip() and l.split("\x1f", 1)[1] not in landed]
+                if rc != 0 or left:
+                    real = left[0] if left else plus[0]
+                    break                   # one is enough for NOT-SAFE; a clone can hold hundreds of refs
         if real:
-            v.no("%d commit(s) not on any remote and not on origin/main (e.g. %s)" % (len(real), real[0][:10]))
+            v.no("commit(s) not on origin and not patch-equivalent on origin/main (e.g. %s)" % real[:10])
         else:
-            v.evidence.append("%d local-only sha(s), all patch-equivalent on origin/main" % len(unpushed))
+            v.evidence.append("%d local-only sha(s), all landed on origin/main (patch-id, or author+time+subject) (pushed = %s)" % (
+                len(unpushed), how))
     else:
-        v.evidence.append("every local commit is on a remote ref")
+        v.evidence.append("every commit any ref/HEAD/reflog reaches is pushed (%s)" % how)
     for cwd in _proc_cwds():
         if _inside(cwd, rp):
             v.no("a live process has its cwd inside (%s)" % cwd)
@@ -833,8 +882,14 @@ CHECKERS = {"save": check_save, "clone": check_clone, "modfolder": check_modfold
 
 def check(ctx, path, kind=None):
     path = os.path.abspath(path)
-    kind = kind or kind_of(ctx, path)
+    detected = kind_of(ctx, path) if os.path.lexists(path) else None
+    kind = kind or detected
     v = Verdict(path, kind)
+    if kind and detected and kind != detected or kind and not detected and os.path.lexists(path):
+        # a caller's --kind must agree with the path: `--kind save` on any RM_*.xml would otherwise run the
+        # save checker on a repo file, and `--kind save` on a .png would slip past the picture refusal
+        v.refuse("--kind %s disagrees with the path's own kind (%s)" % (kind, detected))
+        return v
     if not os.path.lexists(path):
         v.refuse("does not exist")
         return v
@@ -1150,7 +1205,8 @@ def find_manifest(ctx, path):
 def delete(ctx, path, item="LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE", ledger=True, kind=None):
     path = os.path.abspath(path)
     v = check(ctx, path, kind)
-    if v.kind == "picture":
+    if v.kind == "picture" or kind_of(ctx, path) == "picture" or (
+            os.path.isfile(path) and path.lower().endswith(".png")):
         # ruling: a picture leaves only through the art ledger (art.py), never a raw file delete; the
         # leftovers check also does not consult art-ledger keeps or review-sheet decisions.
         raise SystemExit("REFUSED delete of %s: a picture leaves only through the art ledger (art.py), "
@@ -1165,6 +1221,9 @@ def delete(ctx, path, item="LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE", ledger=True, k
     if not ok:
         raise SystemExit("REFUSED delete of %s: archive %s does not verify: %s" % (path, man, why))
     arc = json.load(io.open(man, encoding="utf-8"))["archive"]
+    if _inside(arc, path) or _inside(man, path) or _inside(ctx.archive_root, path):
+        raise SystemExit("REFUSED delete of %s: its archive %s lives inside it (would be deleted with it)" % (
+            path, arc))
     tracked = _inside(path, ctx.repo)
     if os.path.isdir(path):
         shutil.rmtree(path)

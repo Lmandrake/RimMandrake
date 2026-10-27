@@ -202,12 +202,83 @@ def main():
         ok(s(clones["clean"]) == L.NOT_SAFE, "clone: an unpushed annotated tag is NOT-SAFE")
         git(clones["clean"], "tag", "-d", "v-local")
         age_git(clones["clean"])
-        ok(s(clones["clean"]) == L.SAFE, "clone: clean again once the ignored file and the tag are gone")
+        # the reset left the 'tagged' commit reachable only from the reflog: the bundle would drop it
+        ok(s(clones["clean"]) == L.NOT_SAFE, "clone: a reflog-only unpushed commit is NOT-SAFE")
+        git(clones["clean"], "reflog", "expire", "--expire=now", "--all")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.SAFE, "clone: clean again once the ignored file, tag and reflog commit are gone")
+        # a second remote (another scratch clone, a local path) must not vouch for unpushed work
+        side = os.path.join(t, "side.git")
+        subprocess.run(["git", "clone", "-q", "--bare", os.path.join(t, "remote.git"), side], check=True)
+        w(os.path.join(clones["clean"], "side.txt"), "work")
+        git(clones["clean"], "add", "side.txt")
+        git(clones["clean"], "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "side")
+        git(clones["clean"], "remote", "add", "side", side)
+        git(clones["clean"], "push", "-q", "side", "HEAD:refs/heads/main")
+        git(clones["clean"], "fetch", "-q", "side")
+        # ... nor a hand-moved origin tracking ref
+        git(clones["clean"], "update-ref", "refs/remotes/origin/fake", "HEAD")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.NOT_SAFE, "clone: work only on a non-origin remote / fake origin ref is NOT-SAFE")
+        git(clones["clean"], "update-ref", "-d", "refs/remotes/origin/fake")
+        git(clones["clean"], "remote", "remove", "side")
+        git(clones["clean"], "reset", "-q", "--hard", "HEAD~1")
+        git(clones["clean"], "reflog", "expire", "--expire=now", "--all")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.SAFE, "clone: SAFE again once the side commit is gone")
+        # a tag that IS on origin (ls-remote) is pushed, though no refs/remotes/* names it
+        git(clones["clean"], "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "rt")
+        git(clones["clean"], "tag", "remote-tag")
+        git(clones["clean"], "push", "-q", "origin", "refs/tags/remote-tag")
+        git(clones["clean"], "reset", "-q", "--hard", "HEAD~1")
+        git(clones["clean"], "reflog", "expire", "--expire=now", "--all")
+        subprocess.run(["git", "-C", repo, "fetch", "-q", "--tags", "origin"], check=True)
+        ctx._cache.pop("pushed", None)
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.SAFE, "clone: a tag pushed to origin (seen by ls-remote) is not unpushed work")
+        # a repo with no refs/remotes/origin/main cannot vouch for anything (no fallback to its local main/HEAD)
+        bare_repo = os.path.join(t, "nofetch")
+        subprocess.run(["git", "init", "-q", bare_repo], check=True)
+        git(bare_repo, "remote", "add", "origin", os.path.join(t, "remote.git"))
+        nof = L.Ctx(repo=bare_repo, saves=saves, config=config, mods=mods, clone_roots=[sc],
+                    archive_root=ctx.archive_root, dump="", retired=ctx._retired)
+        nof._cache["pushed"] = ([], "none")     # no network fallback either
+        ok(L.check(nof, clones["unpushed"]).status in (L.UNMEASURED, L.NOT_SAFE) and
+           L.check(nof, clones["rebased"]).status == L.UNMEASURED,
+           "clone: no origin/main in the repo reads UNMEASURED, never SAFE")
         # rebased: push the repo's local commit, so the clone's cherry-pick is patch-equivalent on origin/main
         subprocess.run(["git", "-C", repo, "push", "-q", "origin", "main"], check=True)
         ctx._cache.pop("origin_main", None)
         ok(s(clones["rebased"]) == L.SAFE, "clone: local sha patch-equivalent on origin/main is SAFE")
         ok(s(clones["unpushed"]) == L.NOT_SAFE, "clone: unpushed stays NOT-SAFE after the push")
+        # publish rebased a commit through a conflict: different patch, same author+time+subject on origin/main
+        cl, idn = clones["clean"], ["-c", "user.name=t", "-c", "user.email=t@t"]
+        dated = dict(os.environ, GIT_AUTHOR_DATE="1700000000 +0000", GIT_COMMITTER_DATE="1700000000 +0000")
+        w(os.path.join(cl, "ledger.txt"), "clone side")
+        git(cl, "add", "ledger.txt")
+        subprocess.run(["git", "-C", cl] + idn + ["commit", "-q", "-m", "ledger: same subject"], check=True, env=dated)
+        land = os.path.join(t, "landing")
+        subprocess.run(["git", "clone", "-q", os.path.join(t, "remote.git"), land], check=True)
+        w(os.path.join(land, "ledger.txt"), "resolved differently")
+        git(land, "add", "ledger.txt")
+        subprocess.run(["git", "-C", land] + idn + ["commit", "-q", "-m", "ledger: same subject"], check=True, env=dated)
+        git(land, "push", "-q", "origin", "HEAD:main")
+        subprocess.run(["git", "-C", repo, "fetch", "-q", "origin"], check=True)
+        for k in ("origin_main", "pushed", "landed"):
+            ctx._cache.pop(k, None)
+        git(cl, "fetch", "-q", "origin")
+        git(cl, "reset", "-q", "--hard", "origin/main")   # the pre-rebase sha now lives only in the reflog
+        age_git(cl)
+        ok(s(cl) == L.SAFE, "clone: a commit rebased through a conflict (same author+time+subject landed) is SAFE")
+        w(os.path.join(cl, "ledger.txt"), "never landed")
+        git(cl, "add", "ledger.txt")
+        subprocess.run(["git", "-C", cl] + idn + ["commit", "-q", "-m", "ledger: same subject"], check=True,
+                       env=dict(dated, GIT_AUTHOR_DATE="1700000999 +0000"))
+        git(cl, "reset", "-q", "--hard", "origin/main")
+        age_git(cl)
+        ok(s(cl) == L.NOT_SAFE, "clone: same subject but another author time is not landed: NOT-SAFE")
+        git(cl, "reflog", "expire", "--expire=now", "--all")
+        age_git(cl)
 
         # ---- modfolder
         ok(s(os.path.join(mods, "Orphan")) == L.SAFE, "modfolder: orphan mandrake folder is SAFE")
@@ -297,6 +368,30 @@ def main():
             ok(False, "delete: refuses a picture (art ledger only)")
         except SystemExit as e:
             ok("art ledger" in str(e) and os.path.exists(orphan), "delete: refuses a picture (art ledger only)")
+        # a caller's --kind must agree with the path: '--kind save' on an RM_* repo file or a picture is REFUSED
+        stray = os.path.join(repo, "src/RimMandrake/ModA/RM_stray.txt")
+        w(stray, "not a save")
+        ok(V(stray, "save").status == L.REFUSED, "kind: --kind save on a repo RM_* file is REFUSED")
+        rmpng = os.path.join(tex, "Things/Unused/RM_pic.png")
+        png(rmpng)
+        ok(V(rmpng, "save").status == L.REFUSED, "kind: --kind save on a picture is REFUSED")
+        try:
+            L.delete(ctx, rmpng, ledger=False, kind="save")
+            ok(False, "delete: --kind save cannot delete a picture")
+        except SystemExit:
+            ok(os.path.exists(rmpng), "delete: --kind save cannot delete a picture")
+        ok(V(os.path.join(saves, "RM_old.rws"), "save").status == L.SAFE, "kind: a matching --kind still checks")
+        # an archive that lives inside the path it backs up would be deleted with it
+        bk = os.path.join(os.path.dirname(saves), "Saves_backup_x")
+        inner = L.Ctx(repo=repo, saves=saves, config=config, mods=mods, clone_roots=[sc],
+                      archive_root=os.path.join(bk, "arch"), dump="", retired=ctx._retired)
+        try:
+            L.archive(inner, bk)
+            L.delete(inner, bk, ledger=False)
+            ok(False, "delete: refuses when the archive lives inside the path")
+        except SystemExit:
+            ok(os.path.isdir(bk), "delete: refuses when the archive lives inside the path")
+        shutil.rmtree(os.path.join(bk, "arch"), ignore_errors=True)
         old = os.path.join(saves, "RM_old.rws")
         before = L._sha256(old)
         man = L.archive(ctx, old)
