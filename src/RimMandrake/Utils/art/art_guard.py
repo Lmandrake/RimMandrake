@@ -118,6 +118,12 @@ def _mark_refusal(ev: dict, idx: L.Index) -> str | None:
 def _authorized(ev: dict, idx: L.Index) -> str | None:
     """None if this live event is an authorized transition, else the reason it is not."""
     reason = ev.get("reason") or ""
+    if ev.get("sha") and reason not in ("archive", "x-delete") and getattr(idx, "bans", None):
+        # a banned picture (exact sha or perceptual near-duplicate, as install() judges it) is refused on ANY reason,
+        # mechanical or backfill alike; only a live event made after the ban is judged (earlier history stands)
+        hit = L.ban_match(idx, sha=ev["sha"])
+        if hit and (ev.get("ts") or "9") >= (hit["ban"].get("ts") or ""):
+            return L.ban_refusal(hit, ev["sha"])
     deleg = delegated_verdict(ev) is not None
     if ev.get("reason") == "archive" and ev.get("sha") is None and ev.get("mark"):
         return _mark_refusal(ev, idx)                  # his ✕ (newest mark) moved the picture to the art archive

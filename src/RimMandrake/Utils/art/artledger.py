@@ -1732,6 +1732,15 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
         raise Refused(f"{sha[:12]}: his words lifted the ban this ✕ made ({idx.lifted[bid].get('said')!r}) - "
                       f"this ✕ is spent")
     data = store_get(sha) if store_has(sha) else None
+    root = src_root().resolve().parent
+    slots = [(root / m / "Textures" / r, ev) for (m, r), ev in list(idx.live.items()) if ev.get("sha") == sha]
+    if data is None:         # store lacks the bytes: the game file may hold them - hash that, or the ban loses its ph
+        for target, _ev in slots:
+            if target.is_file():
+                b = target.read_bytes()
+                if sha256_bytes(b) == sha:
+                    data = b
+                    break
     ban = {"type": "ban", "id": bid, "sha": sha, "ph": ph_of(idx, sha, data), "subject": subject,
            "mark": mark, "by": "owner", "via": mark["via"], "why": why}
     if data is not None:
@@ -1739,8 +1748,6 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
             ban["ph_mirror"] = mirror_dhash(data)
         except Exception:
             pass
-    root = src_root().resolve().parent
-    slots = [(root / m / "Textures" / r, ev) for (m, r), ev in list(idx.live.items()) if ev.get("sha") == sha]
     for target, _ev in slots:
         if target.is_file() and sha256_file(target) != sha:
             raise Refused(f"{target} does not hold {sha[:12]} though the ledger says so - run art.py doctor")

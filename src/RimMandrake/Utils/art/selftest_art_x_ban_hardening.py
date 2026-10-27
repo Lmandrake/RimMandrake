@@ -165,6 +165,35 @@ def main():
                                               "banned picture")
         spec_v = {"subject": "RM_BanCatch", "images": {"east": str(out / "other.png"), "variants": [str(out / "exact.png")]}}
         check(len(RU.banned_candidates(spec_v)) == 1, "art_eval still discards a banned picture among the variants")
+
+        # ── ARTLEDGER_BAN_FIX_PH_FROM_LIVE_FILE: store lacks the bytes, the game file holds them -> ban keeps its ph
+        pic = XB.sprite(61)
+        tex2 = texdir / "RM_Ban2_east.png"
+        sha2 = L.install_bytes(tex2, pic, reason=WHY).get("new") or L.sha256_bytes(pic)
+        L.store_path(sha2).unlink()
+        check(not L.store_has(sha2) and tex2.is_file(), "fixture: bytes only in the game file")
+        at2 = "2026-10-26T20:10:00.000Z"
+        doc = json.loads(F["decisions"].read_text())
+        doc["decisions"]["RM_Ban2"] = {"decision": "redo", "at": at2, "decidedAt": at2, "purge": [sha2]}
+        F["decisions"].write_text(json.dumps(doc))
+        mark2 = {"sheet": "test_sheet", "row": "RM_Ban2", "at": at2, "via": via, "kind": "x"}
+        L.x_delete(sha2, mark2, subject="RM_Ban2")
+        b2 = L.Index().bans.get(sha2) or {}
+        check(bool(b2.get("ph")) and bool(b2.get("ph_mirror")),
+              f"x_delete hashes the live game file when the store lacks the bytes (ph {b2.get('ph')}, mirror {b2.get('ph_mirror')})")
+
+        # ── ART_GUARD_FIX_ALLOWS_LIVE_OF_BANNED: a live install of a banned sha / near-dup fails on a mechanical reason
+        import art_guard as G
+        idx = L.Index()
+        for cand, what in ((sha, "exact banned sha"), (L.store_put_bytes(near_dup(banned_b, 60)), "near-duplicate")):
+            for rsn in ("backfill-observed", "script:src/RimMandrake/Utils/art/art.py"):
+                ev = {"type": "live", "id": "g_" + cand[:6] + rsn[:3], "mod": T.MOD, "rel": "Things/x.png", "sha": cand,
+                      "prev": None, "reason": rsn, "ts": "2999-01-01T00:00:00"}
+                why = G._authorized(ev, idx)
+                check(bool(why) and "banned" in why, f"art_guard refuses a live of the {what} on {rsn} ({str(why)[:40]})")
+        okev = {"type": "live", "id": "g_ok", "mod": T.MOD, "rel": "Things/x.png", "sha": L.sha256_bytes(other_b),
+                "prev": None, "reason": "backfill-observed", "ts": "2999-01-01T00:00:00"}
+        check("banned" not in (G._authorized(okev, idx) or ""), "art_guard still allows an unbanned distinct picture")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")
