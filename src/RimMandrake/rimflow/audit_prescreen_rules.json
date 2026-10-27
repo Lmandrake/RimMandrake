@@ -1,26 +1,51 @@
 {
-  "window_days": 7,
-  "calibration_every": 5,
-  "hard_flags": ["no_verify_event", "sha_missing", "sha_head_literal", "sha_unresolvable", "evidence_path_absent"],
-  "weights": {
-    "no_verify_event": 40,
-    "sha_missing": 40,
-    "sha_head_literal": 40,
-    "sha_unresolvable": 40,
-    "evidence_path_absent": 30,
-    "verify_not_pass": 25,
-    "sha_touches_nothing": 20,
-    "closed_by_maker_only": 10,
-    "reopened_before": 20,
-    "flowworks_or_live": 15,
-    "many_files": 10,
-    "short_claim_to_close": 15,
-    "gate_or_harness_path": 15,
-    "past_audit_failed": 25
-  },
-  "many_files_threshold": 25,
-  "short_claim_seconds": 300,
-  "flowworks_id_markers": ["FLOWWORKS", "LIVE_", "_LIVE", "BRIDGE", "COLD_LOAD"],
-  "gate_path_markers": ["rimflow/", ".claude/hooks/", "Utils/run_selftests", "validate_", "Utils/rimbench/", "harness/", "gate_"],
-  "past_audits_file": "/mnt/d/ClaudeWork/rimmandrake/auditor/audits.jsonl"
+ "window_days": 7,
+ "calibration_every": 5,
+ "hard_flags": [
+  "sha_missing",
+  "sha_head_literal",
+  "sha_unresolvable",
+  "evidence_path_absent"
+ ],
+ "weights": {
+  "no_check_evidence": 1.5,
+  "sha_missing": 2,
+  "sha_head_literal": 2,
+  "sha_unresolvable": 2,
+  "evidence_path_absent": 1.5,
+  "verify_not_pass": 1.5,
+  "sha_touches_nothing": 1,
+  "closed_by_maker_only": 1,
+  "reopened_before": 1.5,
+  "flowworks_or_live": 1,
+  "many_files": 1,
+  "short_claim_to_close": 1,
+  "gate_or_harness_path": 1,
+  "past_audit_failed": 1.5
+ },
+ "many_files_threshold": 25,
+ "short_claim_seconds": 300,
+ "flowworks_id_markers": [
+  "FLOWWORKS",
+  "LIVE_",
+  "_LIVE",
+  "BRIDGE",
+  "COLD_LOAD"
+ ],
+ "gate_path_markers": [
+  "rimflow/",
+  ".claude/hooks/",
+  "Utils/run_selftests",
+  "validate_",
+  "Utils/rimbench/",
+  "harness/",
+  "gate_"
+ ],
+ "past_audits_file": "/mnt/d/ClaudeWork/rimmandrake/auditor/audits.jsonl",
+ "weights_note": "hand multipliers; effective weight = mult * min(info_cap_bits, -log2(rate in window))",
+ "info_cap_bits": 6,
+ "max_signal_rate": 0.5,
+ "min_sample": 20,
+ "prior_rate": 0.1,
+ "check_evidence_regex": "\\b(self-?tests?|tests?|pytest|PASS(ED)?|measured?|measure\\b|verified|verify|review(ed)?|proof|validat\\w*|lint|build|built|compil\\w*|run_selftests|Transient/)"
 }

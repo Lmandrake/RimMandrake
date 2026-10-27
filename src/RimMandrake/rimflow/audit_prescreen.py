@@ -6,7 +6,7 @@ Unreadable ledger => UNMEASURED: no file written, exit 2.
 
     python3 src/RimMandrake/rimflow/audit_prescreen.py [--days N] [--out PATH] [--now ISO]
 """
-import argparse, json, os, random, subprocess, sys, time
+import argparse, json, math, os, random, re, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -36,12 +36,52 @@ def git_files(sha, repo=REPO):
     return [l for l in r.stdout.splitlines() if l]
 
 
+def _checked(evs, close, rules):
+    """True if the item shows any sign it was checked: a verify event, or text (close reason/why,
+    notes, finding) naming a test, selftest, review or measurement."""
+    if any(e.get("event") in ("verify", "finding") for e in evs):
+        return True
+    rx = re.compile(rules["check_evidence_regex"], re.I)
+    for e in evs:
+        if e.get("event") in ("close", "note", "implemented", "reconcile"):
+            if rx.search(" ".join(str(e.get(k) or "") for k in ("reason", "why", "text", "note"))):
+                return True
+    return False
+
+
+def _rank(rows, rules):
+    """Weight each signal by its rarity over this window: mult * min(cap, -log2(rate)).
+    A signal with rate > max_signal_rate carries no weight and is never a hard flag."""
+    n = len(rows)
+    rate = {}
+    for r in rows:
+        for f in set(r["flags"]):
+            rate[f] = rate.get(f, 0) + 1
+    for f in rate:
+        rate[f] = rate[f] / n if n >= rules["min_sample"] else rules["prior_rate"]
+    mult, cap, mx = rules["weights"], rules["info_cap_bits"], rules["max_signal_rate"]
+    for r in rows:
+        r["score"] = round(sum(mult.get(f, 1) * min(cap, -math.log2(rate[f]))
+                               for f in r["flags"] if rate[f] <= mx), 1)
+        r["hard"] = [f for f in r["flags"] if f in rules["hard_flags"] and rate[f] <= mx]
+    rows.sort(key=lambda r: (-r["score"], r["closed_at"], r["item"]))
+    return rows
+
+
+def signal_rates(rows):
+    n = len(rows) or 1
+    c = {}
+    for r in rows:
+        for f in set(r["flags"]):
+            c[f] = c.get(f, 0) + 1
+    return {f: [k, round(k / n, 3)] for f, k in sorted(c.items(), key=lambda x: -x[1])}
+
+
 def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists):
     by = {}
     for e in events:
         if e.get("id"):
             by.setdefault(e["id"], []).append(e)
-    w = rules["weights"]
     rows = []
     for iid, evs in by.items():
         closes = [e for e in evs if e.get("event") == "close" and _epoch(e["ts"]) >= since_epoch]
@@ -52,9 +92,9 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
         sha = (c.get("sha") or "").strip()
         verifies = [e for e in evs if e.get("event") == "verify"]
         files = None
-        if not verifies:
-            flags.append("no_verify_event")
-        elif verifies[-1].get("result") != "pass":
+        if not _checked(evs, c, rules):
+            flags.append("no_check_evidence")
+        if verifies and verifies[-1].get("result") != "pass":
             flags.append("verify_not_pass")
         if not sha:
             flags.append("sha_missing")
@@ -90,11 +130,9 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
         if iid in past_failed:
             flags.append("past_audit_failed")
         rows.append({"item": iid, "sha": sha, "closed_at": c["ts"], "closed_by": c.get("seat"),
-                     "flags": flags, "score": sum(w.get(f, 0) for f in flags),
-                     "hard": [f for f in flags if f in rules["hard_flags"]],
+                     "flags": flags,
                      "files_changed": None if files is None else len(files)})
-    rows.sort(key=lambda r: (-r["score"], r["closed_at"], r["item"]))
-    return rows
+    return _rank(rows, rules)
 
 
 def build(rows, rules, seed):
@@ -103,7 +141,8 @@ def build(rows, rules, seed):
     k = n // rules["calibration_every"] if n else 0
     calib = sorted(r["item"] for r in rnd.sample(rows, k)) if k else []
     return {"closes_seen": n, "ranked": rows, "calibration_picks": calib,
-            "hard_flagged": [r["item"] for r in rows if r["hard"]]}
+            "hard_flagged": [r["item"] for r in rows if r["hard"]],
+            "signal_counts_rates": signal_rates(rows)}
 
 
 def past_failed_items(path):
@@ -149,6 +188,8 @@ def main(argv=None, events=None):
         json.dump(doc, f, indent=1)
     os.replace(tmp, a.out)
     print("closes seen: %d; hard-flagged: %d" % (doc["closes_seen"], len(doc["hard_flagged"])))
+    for f, (k, rt) in doc["signal_counts_rates"].items():
+        print("  %-24s %4d  %.1f%%" % (f, k, 100 * rt))
     for r in rows[:5]:
         print("%4d  %s  %s" % (r["score"], r["item"], ",".join(r["flags"])))
     return 0
