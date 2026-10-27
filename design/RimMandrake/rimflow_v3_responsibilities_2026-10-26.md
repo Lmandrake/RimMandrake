@@ -197,7 +197,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 | A4 | check-defect share | FAIL-check verdicts ÷ all FAIL verdicts | `src/RimMandrake/Utils/pulse/testing_metrics.py` (harness vs mod failures) | MEASURABLE per day and machine, not yet taken |
 
 ### Auditor — "are you sure?"
-- **Duties:** daily sample of closed items and Arbiter passes (≤4 investigations); re-check **every** check-defect
+- **Duties:** daily sample of closed items and Arbiter passes (risk-ranked from a no-AI pre-screen of every close, no count cap: `src/RimMandrake/rimflow/roles/auditor.md`, decided on RIMFLOW_AUDITOR_RETHINK_DAILY_CAP after sim finding 8); re-check **every** check-defect
   verdict; repeat error → an enforced rule (a hook, or a charter line replacing one); curate lessons into skills in a
   fresh-context session; run the scheduled adversarial reviews of scripts (`NORTHSTAR_ADVERSARIAL_REVIEW_1`); spot
   check the delegated digest; instrument trust (a round, zero or alarming count is a query bug until probed,
@@ -436,7 +436,7 @@ Auditor; compactions without a handoff → Operations once `COMPACTION_LOG_FIX_H
 - Operations *enacts* check merges, so the efficiency advocate certifies its own cut → Operations proposes, a
   builder implements, the Arbiter verifies detection is kept before it goes live.
 - The Auditor re-checks *every* check-defect verdict inside a ≤4-a-day cap → a mandatory queue with reserved
-  capacity and a backlog-age alarm; a check ruled faulty stays live until re-checked.
+  capacity and a backlog-age alarm; a check ruled faulty stays live until re-checked. (Taken 2026-10-27: no count cap; the mandatory queue is worked first every run, `roles/auditor.md`. The backlog-age alarm is not built.)
 - The Innovator owns the process-commit share, which measures the work it promotes, in the role paused first →
   the Dispatcher measures, Operations analyses, read beside accepted items/day.
 - Review pages (Conductor + Operations): the Conductor owns them end to end, with a scheduled check that pages are
@@ -560,7 +560,7 @@ Rules of the table:
 ### Auditor (Sun)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
 |---|---|---|---|---|---|
-| AU-1 | sample closed items and passes (≤4 a day) | BENCH samples 2 FOUNDRY closes per sitting (never its own) | each sitting | Lukas (weekly read of the audit notes) | Sun |
+| AU-1 | sample closed items and passes (risk-ranked from the pre-screen; roles/auditor.md) | BENCH samples 2 FOUNDRY closes per sitting (never its own) | each sitting | Lukas (weekly read of the audit notes) | Sun |
 | AU-2 | re-check every check-defect / evidence-discarding verdict | GPT reviewer | per verdict | Lukas on a contested one | Sun |
 | AU-3 | repeat error → enforced rule; lessons → skills | every seat files lessons (rule); BENCH weekly lesson pass | weekly | AU3 count (git, program) | Sun |
 | AU-4 | scheduled adversarial reviews of scripts | Lukas, on his clock | when he releases one | — | Sun |
