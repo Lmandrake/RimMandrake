@@ -41,6 +41,148 @@ namespace RimMandrake.FlowWorks.SelfTest
             return true;
         }
 
+        // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the two floods exactly as they were before the scratch rewrite (r13, 54dd83e4d1),
+        // kept as the reference the rewritten ones must equal on every input.
+        private static RM_PocketGridMath.Labels RefPocketLabel(byte[] depth, int width, int height, int k, Func<int, int, bool> rampJoins = null)
+        {
+            if (depth == null || width <= 0 || height <= 0 || depth.Length < width * height)
+            {
+                throw new ArgumentException("depth grid does not match " + width + "x" + height);
+            }
+            int n = width * height;
+            var lab = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                lab[i] = -1;
+            }
+            var surface = new List<bool>();
+            var size = new List<int>();
+            var queue = new int[n];
+            int count = 0;
+            for (int seed = 0; seed < n; seed++)
+            {
+                if (lab[seed] >= 0)
+                {
+                    continue;
+                }
+                int id = count++;
+                bool surf = false;
+                int sz = 0;
+                int head = 0, tail = 0;
+                queue[tail++] = seed;
+                lab[seed] = id;
+                while (head < tail)
+                {
+                    int c = queue[head++];
+                    sz++;
+                    int d = depth[c];
+                    if (d == 0)
+                    {
+                        surf = true;
+                    }
+                    int x = c % width, z = c / width;
+                    for (int dir = 0; dir < 4; dir++)
+                    {
+                        int nx = x, nz = z;
+                        switch (dir)
+                        {
+                            case 0: nz++; break;
+                            case 1: nx++; break;
+                            case 2: nz--; break;
+                            default: nx--; break;
+                        }
+                        if (nx < 0 || nz < 0 || nx >= width || nz >= height)
+                        {
+                            continue;
+                        }
+                        int ni = nz * width + nx;
+                        if (lab[ni] >= 0)
+                        {
+                            continue;
+                        }
+                        bool ramp = rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c));
+                        if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k, ramp))
+                        {
+                            continue;
+                        }
+                        lab[ni] = id;
+                        queue[tail++] = ni;
+                    }
+                }
+                surface.Add(surf);
+                size.Add(sz);
+            }
+            return new RM_PocketGridMath.Labels
+            {
+                label = lab, count = count, surface = surface.ToArray(), size = size.ToArray(),
+                width = width, height = height, k = k,
+            };
+        }
+
+        private static RM_WallReachMath.Labels RefWallLabel(byte[] kind, byte[] depth, int width, int height, int k, int cls, Func<int, int, bool> rampJoins = null)
+        {
+            if (kind == null || width <= 0 || height <= 0 || kind.Length < width * height || (depth != null && depth.Length < width * height))
+            {
+                throw new ArgumentException("grids do not match " + width + "x" + height);
+            }
+            int n = width * height;
+            var lab = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                lab[i] = RM_WallReachMath.Passable(kind[i], cls) ? int.MaxValue : -1;   // MaxValue = passable, not yet labelled
+            }
+            var queue = new int[n];
+            int count = 0;
+            for (int seed = 0; seed < n; seed++)
+            {
+                if (lab[seed] != int.MaxValue)
+                {
+                    continue;
+                }
+                int id = count++;
+                int head = 0, tail = 0;
+                queue[tail++] = seed;
+                lab[seed] = id;
+                while (head < tail)
+                {
+                    int c = queue[head++];
+                    int x = c % width, z = c / width;
+                    int d = depth == null ? 0 : depth[c];
+                    for (int dir = 0; dir < 4; dir++)
+                    {
+                        int nx = x, nz = z;
+                        switch (dir)
+                        {
+                            case 0: nz++; break;
+                            case 1: nx++; break;
+                            case 2: nz--; break;
+                            default: nx--; break;
+                        }
+                        if (nx < 0 || nz < 0 || nx >= width || nz >= height)
+                        {
+                            continue;
+                        }
+                        int ni = nz * width + nx;
+                        if (lab[ni] != int.MaxValue)
+                        {
+                            continue;
+                        }
+                        if (depth != null)
+                        {
+                            bool ramp = rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c));
+                            if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k, ramp))
+                            {
+                                continue;
+                            }
+                        }
+                        lab[ni] = id;
+                        queue[tail++] = ni;
+                    }
+                }
+            }
+            return new RM_WallReachMath.Labels { label = lab, count = count, width = width, height = height, k = k, cls = cls };
+        }
+
         private static readonly byte[] KindPool =
         {
             RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Wall,
@@ -503,6 +645,142 @@ namespace RimMandrake.FlowWorks.SelfTest
                 var once = new RM_TerrainWriteBudget();
                 once.Defer(5, 100); once.Defer(5, 100); once.Defer(7, 100);
                 Assert(once.Count == 2, $"a square deferred twice waits twice ({once.Count})");
+            });
+            Case("ExcavationTick_label_scratch_equals_reference", () =>
+            {
+                // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the rewritten floods (per-thread queue and tallies, a reused label array,
+                // ramp pairs read only for a refused step, no div/mod per cell) equal the r13 floods on random grids: every
+                // size down to one square wide, every band, every class, ramps or none, a reused array full of garbage or of
+                // the wrong length.
+                var rng = new Random(1414);
+                int checkedCells = 0, reused = 0;
+                for (int t = 0; t < 600; t++)
+                {
+                    int w = 1 + rng.Next(t % 7 == 0 ? 3 : 40), h = 1 + rng.Next(t % 5 == 0 ? 3 : 40), n = w * h;
+                    var depth = new byte[n];
+                    var kind = new byte[n];
+                    int deep = 1 + rng.Next(9);
+                    for (int i = 0; i < n; i++)
+                    {
+                        depth[i] = (byte)(rng.Next(3) == 0 ? 0 : rng.Next(deep));
+                        kind[i] = KindPool[rng.Next(KindPool.Length)];
+                    }
+                    Dictionary<int, int> ramps = null;
+                    if (rng.Next(2) == 0)
+                    {
+                        ramps = new Dictionary<int, int>();
+                        for (int q = rng.Next(n / 4 + 1); q > 0; q--)
+                        {
+                            int a = rng.Next(n), b = rng.Next(4) switch { 0 => a + 1, 1 => a - 1, 2 => a + w, _ => a - w };
+                            if (b >= 0 && b < n) ramps[a] = b;
+                        }
+                    }
+                    Func<int, int, bool> joins = ramps == null ? null : (Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int to) && to == b);
+                    int k = rng.Next(RM_PitTrapMath.ClimbBands + 1);
+                    int[] Garbage(int len) { var g = new int[len]; for (int i = 0; i < len; i++) g[i] = rng.Next(-3, 50); return g; }
+                    int[] reuse = rng.Next(3) == 0 ? null : Garbage(rng.Next(4) == 0 ? n + 1 : n);
+                    RM_PocketGridMath.Labels want = RefPocketLabel(depth, w, h, k, joins), got = RM_PocketGridMath.Label(depth, w, h, k, joins, reuse);
+                    Assert(SameLabels(want, got) && got.surface.Length == got.count && got.size.Length == got.count && got.width == w && got.height == h,
+                        $"case {t} ({w}x{h}, k {k}): the pocket labels differ from the reference");
+                    if (reuse != null && reuse.Length == n) { Assert(ReferenceEquals(got.label, reuse), $"case {t}: the reused array was not used"); reused++; }
+                    int cls = rng.Next(16);
+                    byte[] wd = rng.Next(4) == 0 ? null : depth;
+                    reuse = rng.Next(3) == 0 ? null : Garbage(rng.Next(4) == 0 ? n - 1 : n);
+                    RM_WallReachMath.Labels wantW = RefWallLabel(kind, wd, w, h, k, cls, joins), gotW = RM_WallReachMath.Label(kind, wd, w, h, k, cls, joins, reuse);
+                    Assert(SameLabels(wantW, gotW) && gotW.k == k && gotW.cls == cls, $"case {t} ({w}x{h}, k {k}, cls {cls}): the wall-reach labels differ from the reference");
+                    if (reuse != null && reuse.Length == n) { Assert(ReferenceEquals(gotW.label, reuse), $"case {t}: the reused wall array was not used"); reused++; }
+                    checkedCells += 2 * n;
+                }
+                // The instrument can see: a one-cell change in the rewrite's rule would show here (a sanity probe on the
+                // comparison itself: a refused step joined by hand differs).
+                var probe = RM_PocketGridMath.Label(new byte[] { 0, 5 }, 2, 1, 1);
+                Assert(!SameLabels(probe, RM_PocketGridMath.Label(new byte[] { 0, 5 }, 2, 1, 1, (a, b) => true)), "a ramp join does not change the labels (sanity probe)");
+                Assert(checkedCells > 200000 && reused > 500, $"too little compared ({checkedCells} cells, {reused} reused)");
+                Console.WriteLine($"    {checkedCells} cell labels equal the r13 floods, {reused} through a reused array");
+            });
+            Case("ExcavationTick_alloc_per_tick_325", () =>
+            {
+                // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14): bytes the hot paths allocate, measured on this thread
+                // (GC.GetAllocatedBytesForCurrentThread). The game's heap is ~3.6 GB and a full collection ~1.2 s, so every
+                // byte allocated here brings the next one closer. Per-tick figures use the live rates: one pulse per
+                // 250 ticks, ~3 pocket-grid rebuilds (6 bands each) and ~12 wall-reach labellings per 1000 ticks (r11/r12).
+                const int w = 325, h = 325, pulseTicks = 250;
+                foreach (bool sinks in new[] { false, true })
+                {
+                    var aw = new ArrayWorld(w, h);
+                    var k = aw.k;
+                    k.levelExactEnabled = true; k.maxComponentCells = 6000; k.seamRotationEnabled = true; k.levelBySurfaceEnabled = true;
+                    k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
+                    k.part = new ushort[w * h];
+                    k.edgeSinksEnabled = sinks;
+                    var seeds = new List<int>();
+                    for (int z = 2; z <= 321; z++)
+                        for (int x = 10; x <= 314; x++)
+                        {
+                            bool a = x <= 134, b = x >= 190;
+                            if (!a && !b) continue;
+                            int i = z * w + x;
+                            k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                            aw.sink[i] = x < 10 || z < 10 || x >= w - 10 || z >= h - 10;
+                        }
+                    long bytes = 0;
+                    double ms = 0;
+                    for (int p = 1; p <= 6; p++)
+                    {
+                        for (int q = 0; q < 100; q++)
+                        {
+                            int ia = (4 + q * 3) * w + 134, ib = (6 + q * 3) * w + 190;
+                            if (k.fill[ia] > 0) { k.fill[ia]--; k.fill[ib]++; }
+                        }
+                        aw.pulse++;
+                        long before = GC.GetAllocatedBytesForCurrentThread();
+                        var sw = Stopwatch.StartNew();
+                        k.BeginPulse(seeds, aw.pulse);
+                        while (!k.StepPulse(RM_FlowKernel.DefaultSliceCells)) { }
+                        double one = sw.Elapsed.TotalMilliseconds;
+                        long got = GC.GetAllocatedBytesForCurrentThread() - before;
+                        aw.Sync();
+                        if (p > 1) { bytes += got; ms += one; }   // pulse 1 sizes the reused scratch
+                    }
+                    Console.WriteLine($"    kernel pulse (sinks {(sinks ? "on" : "off")}): {bytes / 5 / 1024.0:F1} KB a pulse = {bytes / 5.0 / pulseTicks:F0} B/tick; "
+                        + $"{ms / 5:F1} ms a pulse");
+                }
+                // A dug 325x325 view: the two basins at 4, terraced slopes, scattered deep holes, a few ramps.
+                var depth = new byte[w * h];
+                var rng = new Random(14);
+                for (int z = 2; z <= 321; z++)
+                    for (int x = 10; x <= 314; x++)
+                    {
+                        if (x > 134 && x < 190) depth[z * w + x] = (byte)Math.Min(6, Math.Abs(x - 162) / 5);
+                        else depth[z * w + x] = 4;
+                    }
+                for (int q = 0; q < 400; q++) depth[rng.Next(w * h)] = (byte)rng.Next(0, 9);
+                var ramps = new Dictionary<int, int>();
+                for (int q = 0; q < 40; q++) { int a = rng.Next(w, w * h - w); ramps[a] = a + w; }
+                Func<int, int, bool> joins = (a, b) => ramps.TryGetValue(a, out int t) && t == b;   // RM_PocketGrid.RampJoinsOf
+                var kind = new byte[w * h];
+                for (int q = 0; q < 3000; q++) kind[rng.Next(w * h)] = RM_WallReachMath.Wall;
+                int bands = RM_PitTrapMath.ClimbBands;
+                // As RM_PocketGrid.Build and RM_WallReach.Build call them: each rebuild overwrites the arrays of the one before last.
+                var spare = new RM_PocketGridMath.Labels[bands];
+                for (int band = 1; band < bands; band++) spare[band] = RM_PocketGridMath.Label(depth, w, h, band, joins);   // warm (JIT, scratch)
+                RM_WallReachMath.Labels wspare = RM_WallReachMath.Label(kind, depth, w, h, 1, 0, joins);
+                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                var swp = Stopwatch.StartNew();
+                for (int band = 1; band < bands; band++) RM_PocketGridMath.Label(depth, w, h, band, joins, spare[band].label);
+                double pgMs = swp.Elapsed.TotalMilliseconds;
+                long pg = GC.GetAllocatedBytesForCurrentThread() - b0;
+                b0 = GC.GetAllocatedBytesForCurrentThread();
+                swp.Restart();
+                RM_WallReachMath.Label(kind, depth, w, h, 2, 0, joins, wspare.label);
+                double wrMs = swp.Elapsed.TotalMilliseconds;
+                long wr = GC.GetAllocatedBytesForCurrentThread() - b0;
+                Console.WriteLine($"    pocket grid rebuild ({bands - 1} bands): {pg / 1024.0:F0} KB, {pgMs:F1} ms = {pg * 3 / 1000.0:F0} B/tick at 3/1000; "
+                    + $"wall-reach labelling: {wr / 1024.0:F0} KB, {wrMs:F1} ms = {wr * 12 / 1000.0:F0} B/tick at 12/1000");
+                // r13 allocated ~4,970 KB a pocket rebuild and ~825 KB a wall-reach labelling (two int[n] per flood); the double
+                // buffer leaves only the per-label tallies and the result objects.
+                Assert(pg < 64 * 1024 && wr < 4 * 1024, $"a rebuild still allocates {pg / 1024} KB (pocket) / {wr / 1024} KB (wall reach)");
+                Assert(pgMs > 0 && wrMs > 0, "the floods took no time (sanity probe)");
             });
         }
 

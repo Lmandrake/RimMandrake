@@ -329,7 +329,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
                 Assert(grid.Contains("(bool floor, int s) = RM_PocketGridMath.ReachGridView(differs, uses, striderFloor, f => RM_TrenchStride.ViewStride(p, map, f));")
                     && grid.Contains("return For(map, s, floor);"), "ForPawn picks the grid by the path request's view");
-                Assert(grid.Contains("byte[] depth = EffectiveDepth(map, eng, floorView);") && grid.Contains("floorGrids"),
+                Assert(grid.Contains("depth = EffectiveDepth(map, eng, floorView);") && grid.Contains("FillEffectiveDepth(into, map, eng, floorView);") && grid.Contains("floorGrids"),
                     "a floor-view grid is labelled on the floor view");
                 Assert(grid.Contains("floorView ? Pits.RM_SuspensionUnderpass.FloorViewDepthAt(map, eng, c) : RM_SuperdeepTrap.StepDepthAt(map, eng, c)"),
                     "its ladder edges read the same view's depths as the masks");

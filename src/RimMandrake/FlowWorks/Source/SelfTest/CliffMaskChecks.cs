@@ -213,7 +213,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ramp.Contains("RM_LadderUtility.HasLadder(map, loc)") && ramp.Contains("RMFlow_RampMustFaceUphill"), "placement rules (§8.4)");
                 Assert(Src("Superdeep", "RM_CliffMask.cs").Contains("return RM_PitRamp.Joins(map, a, b, aD, bD);"), "the masks and the floor see ramps");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
-                Assert(grid.Contains("RM_PitRamp.Pairs(map, depth)") && grid.Contains("RM_PocketGridMath.Label(depth, w, h, k, rampJoins)"), "the pocket grid sees ramps");
+                Assert(grid.Contains("RM_PitRamp.Pairs(map, depth)") && grid.Contains("RM_PocketGridMath.Label(depth, w, h, k, rampJoins, reuse)"), "the pocket grid sees ramps");
                 string lad = Src("Superdeep", "RM_LadderUtility.cs");
                 Assert(lad.Contains("RMFlow_LadderNeedsWall") && lad.Contains("RM_PitRamp.RampAt(map, loc)"), "a ladder stands at a wall, never on a ramp");
                 string mod = Src("RimMandrakeFlowWorksMod.cs");

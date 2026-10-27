@@ -52,6 +52,9 @@ namespace RimMandrake.FlowWorks
 			public int band;             // RM_PocketGridMath.BandFor(k); 0 with no grid
 			public int cls;
 			public RM_WallReachMath.Labels labels;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling before this one, whose array the next flood overwrites (no
+			// reader holds a labelling across two rebuilds: the query reads e.labels and lets go).
+			public RM_WallReachMath.Labels spareLabels;
 			public long stamp;
 			public int builtTick;
 			public int lastUsedTick;
@@ -71,6 +74,8 @@ namespace RimMandrake.FlowWorks
 			public readonly Dictionary<(RM_PocketGrid, int, int), Entry> entries = new Dictionary<(RM_PocketGrid, int, int), Entry>();
 			public byte[] kinds;
 			public long kindsStamp = long.MinValue;
+			public byte[] kindsScratch;   // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: never published; Kinds reads into it
+			public int viewsReused;       // Build took the pocket grid's built view instead of reading the map again
 			public int builds;
 			public int skipped;      // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: builds whose inputs were identical (labels kept)
 			public int deltaBumps, deltaQuiet;   // connectivity deltas that moved a kind / that did not
@@ -350,7 +355,10 @@ namespace RimMandrake.FlowWorks
 				return st.kinds;
 			}
 			int n = map.cellIndices.NumGridCells;
-			var kinds = new byte[n];
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: read into the scratch (every square written below); it is published only when
+			// its content moved, else it stays scratch for the next stamp.
+			byte[] kinds = st.kindsScratch != null && st.kindsScratch.Length == n ? st.kindsScratch : new byte[n];
+			st.kindsScratch = null;
 			PathGrid pg = map.pathing.Normal.pathGrid;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 			for (int i = 0; i < n; i++)
@@ -362,6 +370,10 @@ namespace RimMandrake.FlowWorks
 			if (!RM_WallReachMath.SameBytes(kinds, st.kinds))
 			{
 				st.kinds = kinds;
+			}
+			else
+			{
+				st.kindsScratch = kinds;
 			}
 			st.kindsStamp = stamp;
 			return st.kinds;
@@ -396,13 +408,23 @@ namespace RimMandrake.FlowWorks
 			{
 				if (views == null || !views.TryGetValue(e.grid, out (byte[] depth, Dictionary<int, int> ramps) v))
 				{
-					byte[] d = e.grid.ViewDepth();
-					bool anyDug = false;
-					for (int i = 0; i < d.Length && !anyDug; i++)
+					// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the pocket grid's own view when it is still the map's (same climb
+					// generation, salt and ramp settings), else read the map
+					if (e.grid.BuiltView(out byte[] builtDepth, out Dictionary<int, int> builtRamps))
 					{
-						anyDug = d[i] != 0;
+						v = (builtDepth, builtRamps);
+						st.viewsReused++;
 					}
-					v = (anyDug ? d : null, anyDug ? e.grid.RampPairs(d, true) : null);
+					else
+					{
+						byte[] d = e.grid.ViewDepth();
+						bool anyDug = false;
+						for (int i = 0; i < d.Length && !anyDug; i++)
+						{
+							anyDug = d[i] != 0;
+						}
+						v = (anyDug ? d : null, anyDug ? e.grid.RampPairs(d, true) : null);
+					}
 					views?.Add(e.grid, v);
 				}
 				depth = v.depth;
@@ -417,7 +439,12 @@ namespace RimMandrake.FlowWorks
 			}
 			else
 			{
-				e.labels = RM_WallReachMath.Label(kinds, depth, map.Size.x, map.Size.z, e.band, e.cls, RM_PocketGrid.RampJoinsOf(ramps));
+				RM_WallReachMath.Labels spare = e.spareLabels;
+				e.spareLabels = null;
+				RM_WallReachMath.Labels built = RM_WallReachMath.Label(kinds, depth, map.Size.x, map.Size.z, e.band, e.cls, RM_PocketGrid.RampJoinsOf(ramps),
+					spare?.label);
+				e.spareLabels = e.labels;
+				e.labels = built;
 			}
 			e.builtKinds = kinds;
 			e.builtDepth = depth;
@@ -848,7 +875,7 @@ namespace RimMandrake.FlowWorks
 				+ " lastMs=" + st.lastMs.ToString("0.000") + " maxMs=" + st.maxMs.ToString("0.000")
 				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-")
 				+ " steppedFrames=" + st.steppedFrames + " skipped=" + st.skipped
-				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet;
+				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet + " viewsReused=" + st.viewsReused;
 		}
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N

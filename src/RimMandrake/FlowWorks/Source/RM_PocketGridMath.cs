@@ -49,22 +49,31 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Label every cell for band K. depth: effective climb depth per cell (a covered cell reads 0).
-		/// rampJoins(i, j), optional: a ramp joins cells i and j (both directions, any band). Null until ramps exist.</summary>
-		public static Labels Label(byte[] depth, int width, int height, int k, Func<int, int, bool> rampJoins = null)
+		/// rampJoins(i, j), optional: a ramp joins cells i and j (both directions, any band). Null until ramps exist.
+		/// reuse, optional (EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES): an int[width × height] no reader holds any more, overwritten
+		/// whole and returned as the new label array (the caller's double buffer); any other length is ignored. The BFS queue
+		/// and the per-label tallies are per-thread scratch, so a rebuild allocates only what it returns (live r13: a full
+		/// collection of the game's ~3.6 GB heap costs ~1.2 s, and every band of every rebuild allocated ~0.85 MB).</summary>
+		public static Labels Label(byte[] depth, int width, int height, int k, Func<int, int, bool> rampJoins = null, int[] reuse = null)
 		{
 			if (depth == null || width <= 0 || height <= 0 || depth.Length < width * height)
 			{
 				throw new ArgumentException("depth grid does not match " + width + "x" + height);
 			}
 			int n = width * height;
-			var lab = new int[n];
+			int[] lab = reuse != null && reuse.Length == n ? reuse : new int[n];
 			for (int i = 0; i < n; i++)
 			{
 				lab[i] = -1;
 			}
-			var surface = new List<bool>();
-			var size = new List<int>();
-			var queue = new int[n];
+			int[] queue = QueueScratch(n);
+			if (sizeScratch == null || sizeScratch.Length < n)
+			{
+				sizeScratch = new int[n];
+				surfaceScratch = new bool[n];
+			}
+			int[] size = sizeScratch;
+			bool[] surface = surfaceScratch;
 			int count = 0;
 			for (int seed = 0; seed < n; seed++)
 			{
@@ -87,28 +96,25 @@ namespace RimMandrake.FlowWorks
 					{
 						surf = true;
 					}
-					int x = c % width, z = c / width;
+					int z = c / width, x = c - z * width;
 					for (int dir = 0; dir < 4; dir++)
 					{
-						int nx = x, nz = z;
+						int ni;
 						switch (dir)
 						{
-							case 0: nz++; break;
-							case 1: nx++; break;
-							case 2: nz--; break;
-							default: nx--; break;
+							case 0: if (z + 1 >= height) { continue; } ni = c + width; break;
+							case 1: if (x + 1 >= width) { continue; } ni = c + 1; break;
+							case 2: if (z == 0) { continue; } ni = c - width; break;
+							default: if (x == 0) { continue; } ni = c - 1; break;
 						}
-						if (nx < 0 || nz < 0 || nx >= width || nz >= height)
-						{
-							continue;
-						}
-						int ni = nz * width + nx;
 						if (lab[ni] >= 0)
 						{
 							continue;
 						}
-						bool ramp = rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c));
-						if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k, ramp))
+						// A ramp only ever adds a join (StepAllowed is true whenever rampJoins is), so the ramp pairs are read
+						// only for a step the depth rule refuses: the same verdict, two dictionary reads fewer per open step.
+						if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k)
+							&& !(rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c))))
 						{
 							continue;
 						}
@@ -116,14 +122,34 @@ namespace RimMandrake.FlowWorks
 						queue[tail++] = ni;
 					}
 				}
-				surface.Add(surf);
-				size.Add(sz);
+				surface[id] = surf;
+				size[id] = sz;
 			}
+			var surfaceOut = new bool[count];
+			var sizeOut = new int[count];
+			Array.Copy(surface, surfaceOut, count);
+			Array.Copy(size, sizeOut, count);
 			return new Labels
 			{
-				label = lab, count = count, surface = surface.ToArray(), size = size.ToArray(),
+				label = lab, count = count, surface = surfaceOut, size = sizeOut,
 				width = width, height = height, k = k,
 			};
+		}
+
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: per-thread flood scratch (Label is main-thread in play; a selftest or a query-time
+		// first build on another thread gets its own). Never escapes a call.
+		[ThreadStatic] private static int[] queueScratch;
+		[ThreadStatic] private static int[] sizeScratch;
+		[ThreadStatic] private static bool[] surfaceScratch;
+
+		/// <summary>The calling thread's BFS queue, at least n long (shared by RM_WallReachMath.Label; neither nests).</summary>
+		internal static int[] QueueScratch(int n)
+		{
+			if (queueScratch == null || queueScratch.Length < n)
+			{
+				queueScratch = new int[n];
+			}
+			return queueScratch;
 		}
 
 		/// <summary>Every cell index carrying this label, ascending.</summary>

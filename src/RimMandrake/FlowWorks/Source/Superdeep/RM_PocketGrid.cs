@@ -66,6 +66,15 @@ namespace RimMandrake.FlowWorks
 		public int SkippedRebuilds { get; private set; }
 		private byte[] lastDepth;
 		private Dictionary<int, int> lastRamps;
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the ramp settings lastRamps was read under (BuiltView's guard: the window applies
+		// them, and so the salt, only on close, while RM_PitRamp.Pairs reads them live).
+		private bool lastRampsOn;
+		private int lastRampSpan;
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: never published. depthScratch: the plain view read into it is kept only when it
+		// differs from lastDepth (else it waits for the next build). spareBands: the bands of the build before last, whose label
+		// arrays the next flood overwrites (no reader holds a band across two rebuilds: BandOf's callers read it and let go).
+		private byte[] depthScratch;
+		private RM_PocketGridMath.Labels[] spareBands;
 
 		// REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE (de-risk step 1, reachability_review.md §4): what one rebuild costs, per band,
 		// read through ProofPocketTiming. Wall-clock milliseconds of RM_PocketGridMath.Label (the floods), and of the whole Build.
@@ -272,9 +281,26 @@ namespace RimMandrake.FlowWorks
 		/// view's bridging. The one input this grid and the wall-aware reach labels (RM_WallReach) both label.</summary>
 		internal byte[] ViewDepth()
 		{
+			return ViewDepth(null);
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the plain view (no stride) read into <paramref name="into"/> when it is
+		/// one map long (cleared first, so the result equals a fresh array's); the stride view always allocates.</summary>
+		private byte[] ViewDepth(byte[] into)
+		{
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
-			byte[] depth = EffectiveDepth(map, eng, floorView);
+			byte[] depth;
+			if (stride == 0 && into != null && into.Length == map.cellIndices.NumGridCells)
+			{
+				System.Array.Clear(into, 0, into.Length);
+				FillEffectiveDepth(into, map, eng, floorView);
+				depth = into;
+			}
+			else
+			{
+				depth = EffectiveDepth(map, eng, floorView);
+			}
 			if (stride > 0)
 			{
 				// TITAN_TRENCHES_WIRE_MIND_THE_GAP: the stride view (RM_TrenchStride's masks bridge the same cells)
@@ -291,6 +317,32 @@ namespace RimMandrake.FlowWorks
 			return anyDug ? RM_PitRamp.Pairs(map, depth) : null;
 		}
 
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the view and ramp pairs this grid last labelled, when they are still the
+		/// map's (built in play at the current climb generation and salt, under the ramp settings now live): what ViewDepth and
+		/// RampPairs would return now, by the same rule RebuildIfStale trusts its own labels by. RM_WallReach.Build reads it instead
+		/// of reading the whole map again. depth and ramps are null with no dug square (Build's anyDug). The arrays are never
+		/// written after a build, so a holder may keep them.</summary>
+		internal bool BuiltView(out byte[] depth, out Dictionary<int, int> ramps)
+		{
+			depth = null;
+			ramps = null;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (bands == null || lastDepth == null || builtMidLoad || eng == null || builtGeneration != eng.ClimbGeneration
+				|| builtSalt != settingsSalt || lastRampsOn != RM_PitRamp.Usable || lastRampSpan != RM_PitRamp.MaxSpan
+				|| lastDepth.Length != map.cellIndices.NumGridCells)
+			{
+				return false;
+			}
+			bool anyDug = false;
+			for (int i = 0; i < lastDepth.Length && !anyDug; i++)
+			{
+				anyDug = lastDepth[i] != 0;
+			}
+			depth = anyDug ? lastDepth : null;
+			ramps = anyDug ? lastRamps : null;
+			return true;
+		}
+
 		internal static System.Func<int, int, bool> RampJoinsOf(Dictionary<int, int> ramps)
 		{
 			return ramps == null || ramps.Count == 0 ? null
@@ -303,7 +355,18 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
 			int n = w * h;
-			byte[] depth = ViewDepth();
+			byte[] depth = ViewDepth(depthScratch);
+			depthScratch = null;
+			if (!ReferenceEquals(depth, lastDepth) && lastDepth != null && RM_WallReachMath.SameBytes(depth, lastDepth))
+			{
+				// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: an unchanged view keeps the array already built from (and shared with
+				// RM_WallReach); the one just read is scratch for the next build.
+				if (stride == 0)
+				{
+					depthScratch = depth;
+				}
+				depth = lastDepth;
+			}
 			RM_PocketGridMath.Labels[] old = bands;
 			var fresh = new RM_PocketGridMath.Labels[BandCount];
 			bool anyDug = false;
@@ -328,16 +391,25 @@ namespace RimMandrake.FlowWorks
 			{
 				System.Func<int, int, bool> rampJoins = RampJoinsOf(rampPairs);
 				var band = new System.Diagnostics.Stopwatch();
+				RM_PocketGridMath.Labels[] spare = spareBands;
+				spareBands = null;
 				for (int k = 1; k < BandCount; k++)
 				{
 					band.Restart();
 					// No dug cell: every band is one surface component per map; skip the floods.
-					fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins) : AllSurface(w, h, k);
+					int[] reuse = spare != null && k < spare.Length ? spare[k]?.label : null;
+					fresh[k] = anyDug ? RM_PocketGridMath.Label(depth, w, h, k, rampJoins, reuse) : AllSurface(w, h, k);
 					lastBandMs[k] = band.Elapsed.TotalMilliseconds;
 				}
 			}
+			if (!sameInput)
+			{
+				spareBands = old;   // read by nobody once fresh is published below; overwritten by the build after next
+			}
 			lastDepth = depth;
 			lastRamps = rampPairs;
+			lastRampsOn = RM_PitRamp.Usable;
+			lastRampSpan = RM_PitRamp.MaxSpan;
 			bands = fresh;
 			builtGeneration = eng?.ClimbGeneration ?? 0;
 			builtSalt = settingsSalt;
@@ -441,6 +513,13 @@ namespace RimMandrake.FlowWorks
 		public static byte[] EffectiveDepth(Map map, RM_MapComponent_Excavation eng, bool floorView)
 		{
 			var depth = new byte[map.cellIndices.NumGridCells];
+			FillEffectiveDepth(depth, map, eng, floorView);
+			return depth;
+		}
+
+		/// <summary>EffectiveDepth into a zeroed array one map long.</summary>
+		private static void FillEffectiveDepth(byte[] depth, Map map, RM_MapComponent_Excavation eng, bool floorView)
+		{
 			if (eng != null)
 			{
 				eng.CopyClimbDepth(depth);
@@ -455,7 +534,6 @@ namespace RimMandrake.FlowWorks
 					depth[idx] = (byte)RM_SpanMath.WalkingDepth(depth[idx], c.Read);
 				}
 			}
-			return depth;
 		}
 
 		private static RM_PocketGridMath.Labels AllSurface(int w, int h, int k)

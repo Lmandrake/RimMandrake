@@ -134,20 +134,23 @@ namespace RimMandrake.FlowWorks
 		/// (RM_PitTrapMath.StepAllowed, a ramp joining any pair it spans). depth null: walls only (no dug square on the map, or a
 		/// pawn the depth rule does not apply to). Four-neighbour components are exact for the pathfinder's eight-way walk: a
 		/// diagonal is never cut past an impassable corner (vanilla) nor past a cliff corner (RM_PitTrapMath.DiagonalAllowed holds
-		/// all four squares within K), so every diagonal step has a cardinal detour inside the same component.</summary>
-		public static Labels Label(byte[] kind, byte[] depth, int width, int height, int k, int cls, Func<int, int, bool> rampJoins = null)
+		/// all four squares within K), so every diagonal step has a cardinal detour inside the same component.
+		/// reuse, optional (EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES): an int[width × height] no reader holds any more, overwritten
+		/// whole and returned as the label array; the BFS queue is per-thread scratch (RM_PocketGridMath.QueueScratch).</summary>
+		public static Labels Label(byte[] kind, byte[] depth, int width, int height, int k, int cls, Func<int, int, bool> rampJoins = null,
+			int[] reuse = null)
 		{
 			if (kind == null || width <= 0 || height <= 0 || kind.Length < width * height || (depth != null && depth.Length < width * height))
 			{
 				throw new ArgumentException("grids do not match " + width + "x" + height);
 			}
 			int n = width * height;
-			var lab = new int[n];
+			int[] lab = reuse != null && reuse.Length == n ? reuse : new int[n];
 			for (int i = 0; i < n; i++)
 			{
 				lab[i] = Passable(kind[i], cls) ? int.MaxValue : -1;   // MaxValue = passable, not yet labelled
 			}
-			var queue = new int[n];
+			int[] queue = RM_PocketGridMath.QueueScratch(n);
 			int count = 0;
 			for (int seed = 0; seed < n; seed++)
 			{
@@ -162,34 +165,27 @@ namespace RimMandrake.FlowWorks
 				while (head < tail)
 				{
 					int c = queue[head++];
-					int x = c % width, z = c / width;
+					int z = c / width, x = c - z * width;
 					int d = depth == null ? 0 : depth[c];
 					for (int dir = 0; dir < 4; dir++)
 					{
-						int nx = x, nz = z;
+						int ni;
 						switch (dir)
 						{
-							case 0: nz++; break;
-							case 1: nx++; break;
-							case 2: nz--; break;
-							default: nx--; break;
+							case 0: if (z + 1 >= height) { continue; } ni = c + width; break;
+							case 1: if (x + 1 >= width) { continue; } ni = c + 1; break;
+							case 2: if (z == 0) { continue; } ni = c - width; break;
+							default: if (x == 0) { continue; } ni = c - 1; break;
 						}
-						if (nx < 0 || nz < 0 || nx >= width || nz >= height)
-						{
-							continue;
-						}
-						int ni = nz * width + nx;
 						if (lab[ni] != int.MaxValue)
 						{
 							continue;
 						}
-						if (depth != null)
+						// A ramp only adds a join (StepAllowed is true whenever rampJoins is): read the pairs only for a refused step.
+						if (depth != null && !RM_PitTrapMath.StepAllowed(d, depth[ni], k)
+							&& !(rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c))))
 						{
-							bool ramp = rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c));
-							if (!RM_PitTrapMath.StepAllowed(d, depth[ni], k, ramp))
-							{
-								continue;
-							}
+							continue;
 						}
 						lab[ni] = id;
 						queue[tail++] = ni;
