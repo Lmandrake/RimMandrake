@@ -119,6 +119,51 @@ def main():
         check("like scenes across sessions pool into one row (A+B+G's second game: 6 readings)",
               len(calm) == 1 and calm[0].split()[3] == "6", calm)
 
+    # --pawn-band (opt-in tolerance; default 0 keeps the exact key above)
+    check("pawn band: 10 vs 11 alike at 10% (ceil of 1.1 = 2), 10 vs 13 not, band 0 exact",
+          C.pawn_like(10, 11, 10) and C.pawn_like(10, 12, 10) and not C.pawn_like(10, 13, 10)
+          and not C.pawn_like(10, 11, 0) and C.pawn_like(10, 10, 0))
+    k10 = {"save": "calm", "mapCount": 1, "maps": "250x250:AridShrubland", "pawns": 10, "mods": "0aa9a9ae"}
+    check("pawn band: one pawn more is one scene at 10%", C.banded([k10, dict(k10, pawns=11)], 10) is None)
+    check("pawn band: band 0 is the exact key", C.banded([k10, dict(k10, pawns=11)], 0) == "NOT COMPARABLE: pawns: 10 != 11")
+    check("pawn band: the band never bridges another field",
+          C.banded([k10, dict(k10, pawns=11, mapCount=2)], 50) == "NOT COMPARABLE: mapCount: 1 != 2")
+    r4 = C.banded([k10, dict(k10, pawns=14)], 10)
+    check("pawn band: a spread beyond the band names the band", r4 == "NOT COMPARABLE: pawns: 10 != 14 (beyond the 10% band)", r4)
+    check("pawn band: an unknown scene is still like nothing", C.banded([None, k10], 50) is not None)
+    with tempfile.TemporaryDirectory() as d:
+        a = session_rows("aaaa1111", "0aa9a9ae") + [game("aaaa1111", 2, "calm"), ctx("aaaa1111", 3, "calm", ONE),
+             sample("aaaa1111", 4, 355.0)]
+        n = session_rows("nnnn6666", "0aa9a9ae") + [game("nnnn6666", 2, "calm"),
+             ctx("nnnn6666", 3, "calm", [("250x250", "AridShrubland", 11)]), sample("nnnn6666", 4, 350.0)]
+        f = session_rows("ffff7777", "0aa9a9ae") + [game("ffff7777", 2, "calm"),
+             ctx("ffff7777", 3, "calm", [("250x250", "AridShrubland", 30)]), sample("ffff7777", 4, 300.0)]
+        for nm, rows in (("a", a), ("n", n), ("f", f)):
+            write(d, "tps_2026_%s_000.jsonl" % nm, rows)
+
+        def run(*args):
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                code = C.main(["--dir", d] + list(args))
+            return code, buf.getvalue()
+
+        code, txt = run("--compare", "aaaa", "nnnn")
+        check("pawn band: --compare 10 vs 11 pawns refused without a band", code == 2 and "pawns: 10 != 11" in txt, (code, txt))
+        code, txt = run("--compare", "aaaa", "nnnn", "--pawn-band", "10")
+        check("pawn band: --compare 10 vs 11 at 10%: exit 0, scene labelled pawns=10..11~10%",
+              code == 0 and "pawns=10..11~10%" in txt and "delta=-5.0" in txt, (code, txt))
+        code, txt = run("--compare", "aaaa", "ffff", "--pawn-band", "10")
+        check("pawn band: --compare 10 vs 30 pawns still refused at 10%", code == 2 and "beyond the 10% band" in txt, (code, txt))
+        code, txt = run("--compare", "2026-10-26", "aaaa", "--pawn-band", "10")
+        check("pawn band: a side spanning 10, 11 and 30 pawns is refused", code == 2 and "2026-10-26 spans" in txt, (code, txt))
+        _, txt = run()
+        rows0 = [ln for ln in txt.splitlines()[1:] if ln.strip()]
+        _, txt = run("--pawn-band", "10")
+        rows10 = [ln for ln in txt.splitlines()[1:] if ln.strip()]
+        check("pawn band: census pools 10+11 into one labelled row, keeps 30 apart (3 exact rows -> 2)",
+              len(rows0) == 3 and len(rows10) == 2 and any("pawns=10..11~10%" in ln and ln.split()[3] == "2" for ln in rows10)
+              and any("pawns=30..30~10%" in ln for ln in rows10), (rows0, rows10))
+
     print("\n%d failed" % len(FAILS) if FAILS else "\nall passed")
     return 1 if FAILS else 0
 

@@ -14,6 +14,11 @@ Why: the 2026-10-26 BENCH bisect found the "full-list TPS drop" was a 2-map RM_P
     csuite_tps.py --compare A B         A, B = a session-id prefix or a day (YYYY-MM-DD); median TPS of each and the
                                         difference, or "NOT COMPARABLE: <diff>" (exit 2) when their scene keys differ
 
+    --pawn-band PCT                     OPT-IN tolerance (default 0 = exact pawn count, the strict key): readings whose
+                                        other key fields agree and whose pawn counts all lie within PCT% of the largest
+                                        (ceil) are one scene, labelled pawns=lo..hi~PCT%. Why: a running colony drifts by
+                                        a pawn or two (births, visitors), and exact keys split one save into a dozen rows.
+
 Only samples with dTicks>0 (game actually ticking) count for TPS.
 """
 import argparse, collections, glob, json, os, statistics as st, sys
@@ -78,6 +83,71 @@ def comparable(a, b):
     return None if not d else "NOT COMPARABLE: " + d
 
 
+def pawn_like(lo, hi, band):
+    """True when pawn counts lo..hi (lo <= hi) are one scene under a band of PCT% of the larger (ceil); band 0 = exact."""
+    if lo is None or hi is None:
+        return lo is None and hi is None
+    return hi - lo <= -(-hi * band // 100)
+
+
+def _rest(k):
+    return None if k is None else tuple(k[f] for f in KEY_FIELDS if f != "pawns")
+
+
+def banded(keys, band):
+    """Refusal line for pooling all of keys (a list of scene keys) under a pawn band, or None when they are one scene:
+    every non-pawn field equal and the whole pawn spread inside the band. band 0 is the exact key."""
+    if not keys or any(k is None for k in keys):
+        return comparable(keys[0] if keys else None, None)
+    for k in keys[1:]:
+        d = "; ".join("%s: %s != %s" % (f, keys[0][f], k[f]) for f in KEY_FIELDS if f != "pawns" and keys[0][f] != k[f])
+        if d:
+            return "NOT COMPARABLE: " + d
+    ps = [k["pawns"] for k in keys]
+    if None in ps:
+        return None if all(p is None for p in ps) else "NOT COMPARABLE: pawns: %s" % sorted(ps, key=str)
+    lo, hi = min(ps), max(ps)
+    if not pawn_like(lo, hi, band):
+        return "NOT COMPARABLE: pawns: %d != %d%s" % (lo, hi, (" (beyond the %d%% band)" % band) if band else "")
+    return None
+
+
+def band_label(k, lo, hi, band):
+    """key_str with the pawn field shown as the band's range, so a banded row never passes for an exact one."""
+    if k is None or not band:
+        return key_str(k)
+    return key_str(dict(k, pawns="%s..%s~%d%%" % (lo, hi, band)))
+
+
+def band_rows(rs, band):
+    """{id(reading): label}: readings clustered per non-pawn key, greedily over sorted distinct pawn counts (a cluster
+    runs from its smallest count while pawn_like holds). band 0 labels every reading with its exact key_str."""
+    if not band:
+        return {id(r): key_str(r.get("scene")) for r in rs}
+    by_rest = collections.defaultdict(set)
+    for r in rs:
+        k = r.get("scene")
+        if k is not None and isinstance(k.get("pawns"), int):
+            by_rest[_rest(k)].add(k["pawns"])
+    span = {}
+    for rest, ps in by_rest.items():
+        cl = []
+        for p in sorted(ps):
+            if cl and pawn_like(cl[-1][0], p, band):
+                cl[-1].append(p)
+            else:
+                cl.append([p])
+        for c in cl:
+            for p in c:
+                span[(rest, p)] = (c[0], c[-1])
+    out = {}
+    for r in rs:
+        k = r.get("scene")
+        sp = span.get((_rest(k), k.get("pawns"))) if k is not None else None
+        out[id(r)] = band_label(k, sp[0], sp[1], band) if sp else key_str(k)
+    return out
+
+
 def read_rows(directory):
     rows = []
     for f in sorted(glob.glob(os.path.join(directory, "tps_*.jsonl"))):
@@ -135,9 +205,10 @@ def select(rs, sel):
     return [r for r in rs if str(r.get("session") or "").startswith(sel) or str(r.get("utc") or "")[:10] == sel]
 
 
-def compare(rs, a, b, out=print):
+def compare(rs, a, b, out=print, band=0):
     """Median TPS of selection a vs b, or NOT COMPARABLE. Each side must itself be one scene (pooling two scenes into a
-    median is the same mistake). Returns the process exit code: 0 compared, 2 refused, 1 nothing to compare."""
+    median is the same mistake). Returns the process exit code: 0 compared, 2 refused, 1 nothing to compare. band > 0
+    (--pawn-band) lets pawn counts differ within PCT% across both sides together; the scene line then shows the range."""
     sides = []
     for sel in (a, b):
         run = running(select(rs, sel))
@@ -147,29 +218,37 @@ def compare(rs, a, b, out=print):
         keys = {}
         for r in run:
             keys.setdefault(key_str(r.get("scene")), r.get("scene"))
-        if len(keys) != 1 or None in keys.values():
-            ks = list(keys.values())
+        ks = list(keys.values())
+        if band:
+            refusal = banded(ks, band)
+            if refusal:
+                out("NOT COMPARABLE: %s spans %d scenes (%s)" % (sel, len(keys), refusal[len("NOT COMPARABLE: "):]))
+                return 2
+        elif len(keys) != 1 or None in keys.values():
             diff = key_diff(ks[0], ks[1]) if len(ks) > 1 else key_diff(ks[0], ks[0])
             out("NOT COMPARABLE: %s spans %d scenes (%s)" % (sel, len(keys), diff))
             return 2
-        sides.append((sel, next(iter(keys.values())), run))
-    refusal = comparable(sides[0][1], sides[1][1])
+        sides.append((sel, ks, run))
+    allk = sides[0][1] + sides[1][1]
+    refusal = banded(allk, band) if band else comparable(sides[0][1][0], sides[1][1][0])
     if refusal:
         out(refusal)
         return 2
     ma, mb = (st.median([r["tps"] for r in s[2]]) for s in sides)
-    out("scene: %s" % key_str(sides[0][1]))
+    ps = [k["pawns"] for k in allk]
+    out("scene: %s" % (band_label(allk[0], min(ps), max(ps), band) if band and None not in ps else key_str(allk[0])))
     out("%s: n=%d medTPS=%.1f | %s: n=%d medTPS=%.1f | delta=%+.1f (%+.1f%%)"
         % (a, len(sides[0][2]), ma, b, len(sides[1][2]), mb, mb - ma, (mb - ma) * 100.0 / ma if ma else float("nan")))
     return 0
 
 
-def census(rs, out=print):
+def census(rs, out=print, band=0):
     groups = collections.defaultdict(list)
     sess_seen = collections.defaultdict(set)
+    label = band_rows(rs, band)
     for r in rs:
         day = str(r.get("utc") or "")[:10]
-        ks = key_str(r.get("scene"))
+        ks = label[id(r)]
         sess_seen[(day, ks)].add(r.get("session"))
         groups[(day, ks, r.get("mult"))].append(r)
     out("day        class    mult  n_run  medTPS  medRatio  medFPS(all)  maxHeapMB  sessions  scene")
@@ -191,11 +270,15 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dir", default=D, help="the JawaBench tps record directory (env JB_TPS)")
     ap.add_argument("--compare", nargs=2, metavar=("A", "B"), help="session-id prefix or YYYY-MM-DD for each side")
+    ap.add_argument("--pawn-band", type=int, default=0, metavar="PCT",
+                    help="pawn counts within PCT%% of the larger are one scene (default 0: exact); labelled pawns=lo..hi~PCT%%")
     a = ap.parse_args(argv)
+    if not 0 <= a.pawn_band < 100:
+        ap.error("--pawn-band must be 0..99")
     rs = readings(read_rows(a.dir))
     if a.compare:
-        return compare(rs, a.compare[0], a.compare[1])
-    census(rs)
+        return compare(rs, a.compare[0], a.compare[1], band=a.pawn_band)
+    census(rs, band=a.pawn_band)
     return 0
 
 

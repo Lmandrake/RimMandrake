@@ -284,14 +284,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>PIT_RAMP_BUILD_STAIRS_BEAT_LADDERS: a ramp joins its square to the one it faces, for every band (design §8.3).
-		/// Null when the view has no ramp (or no dug square).</summary>
-		internal System.Func<int, int, bool> RampJoins(byte[] depth, bool anyDug)
-		{
-			return RampJoinsOf(RampPairs(depth, anyDug));
-		}
-
-		/// <summary>The ramp pairs RampJoins reads (null with no dug square). EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: kept so a
-		/// rebuild can tell its inputs did not move.</summary>
+		/// The ramp pairs RampJoinsOf reads (null with no dug square). EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: kept as data
+		/// so a rebuild can tell its inputs did not move.</summary>
 		internal Dictionary<int, int> RampPairs(byte[] depth, bool anyDug)
 		{
 			return anyDug ? RM_PitRamp.Pairs(map, depth) : null;
