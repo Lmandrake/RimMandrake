@@ -899,6 +899,9 @@ def main(argv=None):
     if a.n is None and not a.mode:
         print("refused: give --n or --mode", file=sys.stderr)
         return 2
+    if a.seat and a.n is None:
+        print("refused: --seat needs --n (a mode sets every seat; say the seat's count)", file=sys.stderr)
+        return 2
     rules = load_rules()
     if a.mode and not (isinstance(rules["token"].get(a.mode), dict) and "n" in rules["token"][a.mode]):
         print(f"refused: mode must be one of {sorted(k for k in rules['token'] if k.isupper())}", file=sys.stderr)
