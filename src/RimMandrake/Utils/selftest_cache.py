@@ -27,7 +27,8 @@ SKIP_DIRS = {"__pycache__", "bin", "obj", ".git", "node_modules"}
 CODE = (".py", ".cs", ".csproj", ".props", ".targets", ".xml", ".json")
 DOTNET = ("/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe")
 
-# trees: (repo-relative dir, extensions or None for every file, recursive)
+# trees: (repo-relative dir, extensions or None for every file, recursive). names_only: sibling mod folders a dotnet
+# SelfTest names in a string literal without reading them (selftest_selftest_cache checks every other one is a tree)
 _GSS_PY = dict(trees=[
     ("src/RimMandrake/GimmeSomeSlack", CODE, True),
     ("src/RimMandrake/FlowWorks", CODE, True),                 # review_map.py, northstar/playtest_runner.py
@@ -37,13 +38,26 @@ _GSS_PY = dict(trees=[
 DECLS: dict[str, dict] = {
     "src/RimMandrake/Utils/selftest_flowworks_stock.py": dict(
         csproj="src/RimMandrake/FlowWorks/Source/SelfTest/RimMandrakeFlowWorks.SelfTest.csproj",
-        trees=[("src/RimMandrake/FlowWorks/Source", None, True)],
+        # the SelfTest reads these at RUN time from the stage (extra_dirs=[src]), not only what it compiles:
+        # FlowWorks Defs/Patches/Languages/art_source json, GSS Source + Defs + Textures, HugeThings/MovingDunes/
+        # Pyrelands Source, GelatinousSlime, _Shared, BlueDesert Defs, RimUtinni UtinniPatches (selftest_selftest_cache guards this)
+        trees=[("src/RimMandrake/FlowWorks", CODE, True),
+               ("src/RimMandrake/FlowWorks/Source", None, True),
+               ("src/RimMandrake/GimmeSomeSlack", CODE + (".png",), True),
+               ("src/RimMandrake/HugeThings/Source", CODE, True),
+               ("src/RimMandrake/MovingDunes/Source", CODE, True),
+               ("src/RimMandrake/Pyrelands/Source", CODE, True),
+               ("src/RimMandrake/GelatinousSlime", CODE, True),
+               ("src/RimMandrake/_Shared", CODE, True),
+               ("src/RimMandrake/BlueDesert/Defs", (".xml",), True),
+               ("src/RimUtinni/UtinniPatches", (".xml",), True)],
         files=["src/RimMandrake/Utils/selftest_winstage.py", "src/RimMandrake/Utils/winbuild.py"], dotnet=True),
     "src/RimMandrake/Utils/selftest_gimmesomeslack.py": dict(
         csproj="src/RimMandrake/GimmeSomeSlack/Source/SelfTest/RimMandrakeGimmeSomeSlack.SelfTest.csproj",
         trees=[("src/RimMandrake/GimmeSomeSlack/Source", None, True),
                ("src/RimMandrake/Utils/mockups/messy_conduit", None, True)],
-        files=["src/RimMandrake/Utils/winbuild.py", "src/RimMandrake/Utils/selftest_winstage.py"], dotnet=True),
+        files=["src/RimMandrake/Utils/winbuild.py", "src/RimMandrake/Utils/selftest_winstage.py"], dotnet=True,
+        names_only={"MessyConduit"}),       # the legacy-name migration text, not a folder the test reads
     "src/RimMandrake/ColdStorage/selftest_coldstorage.py": dict(
         csproj="src/RimMandrake/ColdStorage/Source/SelfTest/RimMandrakeColdStorage.SelfTest.csproj",
         trees=[("src/RimMandrake/ColdStorage", None, True),
@@ -201,3 +215,7 @@ def forget(rel: str) -> None:
 
 def hit_line(rel: str, key: str, rec: dict) -> str:
     return f"CACHED PASS {rel} key={key} from {rec.get('date')} {rec.get('sha')}"
+
+
+if __name__ == "__main__":      # the selftest*.py glob picks this library up; say so instead of a silent pass
+    print("selftest_cache.py is a library; its test is selftest_selftest_cache.py")

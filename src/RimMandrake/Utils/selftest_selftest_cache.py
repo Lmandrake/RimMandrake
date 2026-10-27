@@ -112,6 +112,30 @@ check("the nightly sweep runs with --no-cache", "run_selftests.py --no-cache" in
 check("every real declaration names an existing test",
       all((HERE.parents[2] / r).is_file() for r in SC.DECLS if r != REL))
 
+# a dotnet SelfTest runs from a stage that carries all of src, so it can READ any sibling mod at runtime; every sibling
+# mod folder its .cs sources name in a string literal must sit under a declared tree (FlowWorks once read 9 undeclared)
+import re  # noqa: E402
+REAL = HERE.parents[2]
+SRC_ROOTS = ("RimMandrake", "RimUtinni", "RimStarWars", "Jawa")
+mod_dirs = {d.name: r for r in SRC_ROOTS if (REAL / "src" / r).is_dir() for d in (REAL / "src" / r).iterdir()
+            if d.is_dir() and d.name not in SC.SKIP_DIRS}
+check("the sibling-mod probe can see mod folders", {"FlowWorks", "GimmeSomeSlack"} <= set(mod_dirs))
+for rel, decl in SC.DECLS.items():
+    if rel == REL or not decl.get("csproj"):
+        continue
+    test_dir = (REAL / decl["csproj"]).parent
+    named = set()
+    for cs in test_dir.rglob("*.cs"):
+        if SC.SKIP_DIRS & set(cs.relative_to(test_dir).parts):
+            continue
+        for lit in re.findall(r'"([^"\\]{2,})"', cs.read_text(encoding="utf-8", errors="replace")):
+            if lit in mod_dirs and lit not in decl.get("names_only", ()):    # names_only: named, never read
+                named.add(f"src/{mod_dirs[lit]}/{lit}")
+    trees = [d for d, _e, _r in decl.get("trees", [])]
+    missing = sorted(n for n in named if not any(t == n or t.startswith(n + "/") for t in trees))
+    check(f"{Path(rel).name}: every sibling mod its SelfTest names is a declared tree" +
+          (f" (missing {missing})" if missing else ""), not missing)
+
 shutil.rmtree(tmp, ignore_errors=True)
 print("\n%s" % ("FAIL: " + ", ".join(FAILS) if FAILS else "ALL PASS"))
 sys.exit(1 if FAILS else 0)

@@ -221,8 +221,21 @@ def commits_touching(mod: str) -> set[str]:
     return set(out.split())
 
 
-MOD_ROOT = re.compile(r"^src/(?:RimMandrake|RimStarWars|RimUtils)/([^/]+)/")
-SHARED_DIRS = {"Utils", "rimflow", "Bridge"}
+MOD_ROOT = re.compile(r"^src/([^/]+)/([^/]+)/")    # every src root counts (RimStarWars, RimUtinni, Jawa, ...)
+SHARED_DIRS = {"Utils", "rimflow", "Bridge"}           # under src/RimMandrake only
+
+
+def touched_mods(paths) -> set[str]:
+    """Mods a commit's paths touch: a RimMandrake mod by its bare name, any other root as root/name, shared dirs out."""
+    mods = set()
+    for m in map(MOD_ROOT.match, paths):
+        if m:
+            root, name = m.groups()
+            if root != "RimMandrake":
+                mods.add(f"{root}/{name}")
+            elif name not in SHARED_DIRS:
+                mods.add(name)
+    return mods
 
 
 def only_this_mod(sha: str, mod: str) -> bool:
@@ -233,8 +246,7 @@ def only_this_mod(sha: str, mod: str) -> bool:
                              capture_output=True, text=True, timeout=60).stdout
     except subprocess.TimeoutExpired:
         return False
-    mods = {m.group(1) for m in map(MOD_ROOT.match, out.split()) if m} - SHARED_DIRS
-    return mods == {mod}
+    return touched_mods(out.splitlines()) == {mod}
 
 
 def attribute(items: dict, mod: str, all_mods: list[str]) -> set[str]:
@@ -307,7 +319,8 @@ def changed_since(sha: str, mod: str) -> set[str] | None:
 
 
 def proof_runs(mod: str, extra_paths: set[str]) -> list[dict]:
-    paths = set(glob.glob(str(SRC / mod / "**" / "*.json"), recursive=True)) | extra_paths
+    paths = {os.path.realpath(p) for p in glob.glob(str(SRC / mod / "**" / "*.json"), recursive=True)}
+    paths |= {os.path.realpath(p) for p in extra_paths}      # one file named two ways counts once
     runs = []
     for p in sorted(paths):
         pp = Path(p)
