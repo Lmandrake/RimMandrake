@@ -16,8 +16,10 @@ integrator, and I don't want to be."* · *"Both autonomy questions are yes, it h
 evidence (offline tests, online tests, code reviews, user feedback); the north star is one method of gathering it,
 not the whole bar.
 
-**Launch is partly owed.** The design triggers you on every done claim; `role_launch.py` has clock slots only, so you
-run as two daily batches over the claims since the last batch. Event launch: `DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS`.
+**How you are launched.** The Dispatcher (`role_launch.py`) runs you in two batches, 11:00 and 17:00, and a batch
+launches only when a done claim (a `rimflow implemented` or `close` event) landed since your previous launch; with
+none, the slot is a hold and no run happens. Each run takes every claim since the last launch. The Dispatcher may
+refuse or stop a run; claims then wait for the next batch.
 
 ## Advisory first (the conservative start, chosen 2026-10-27)
 

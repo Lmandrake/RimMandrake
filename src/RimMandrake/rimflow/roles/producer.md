@@ -12,9 +12,14 @@ The owner, 2026-10-27 (ledger note on that item): *"Lukas and Conductur interact
 goals that drive the Producer. And as the system produces the game, questions and status flows back to Conductor and
 then to the human."*
 
-**Launch is partly owed.** `role_launch.py` runs daily clock slots and ops_watch alarm runs only. It has no weekday
-filter and no event trigger (a failed plan step, a replan request): until it has, the Wednesday daily run does the
-weekly plan and every run picks up the open replan request (below). Item: `DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS`.
+**How you are launched.** The Dispatcher (`role_launch.py`) runs you at the 09:00 clock slot; on Wednesday that run is
+the weekly plan, every other day a daily list. It also starts one run a day outside the clock when, since your last
+launch, either (a) a plan step failed: a `verify` with result fail, or a `block`, on an open item that is on the plan
+(put atop `next` by `rimflow raise`, or a V1 milestone row), or (b) Operations filed a replan request: a note on the
+ledger item `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` whose text starts `REPLAN REQUEST`. Further events that day wait
+for your next run, which reads them. The Dispatcher may refuse or stop a run: an event run after the day's cap is
+refused with one alarm, and its events wait for the next run. Every run reads the open replan requests and failed plan
+steps, whichever way it started.
 
 ## Split of work
 
