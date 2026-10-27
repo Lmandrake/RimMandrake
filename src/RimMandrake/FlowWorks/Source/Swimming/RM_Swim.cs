@@ -811,7 +811,20 @@ namespace RimMandrake.FlowWorks.Swimming
 		{
 			if (map != null && grids.TryGetValue(map, out MapGrids g))
 			{
+				UnnamedBumps++;
 				g.plan.Bump();
+			}
+		}
+
+		/// <summary>SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: a writer that changed one square's swim terrain names it (r16 live: the
+		/// fill-terrain flips' unnamed bumps forced +21..+47 full re-reads per 4000 ticks against +2..+11 patches). The deep
+		/// predicate (DeepAt) reads only the square itself, so naming it is exact.</summary>
+		public static void BumpCell(Map map, int cell)
+		{
+			if (map != null && grids.TryGetValue(map, out MapGrids g))
+			{
+				NamedBumps++;
+				g.plan.BumpCell(cell);
 			}
 		}
 
@@ -821,6 +834,7 @@ namespace RimMandrake.FlowWorks.Swimming
 		{
 			if (map != null && grids.TryGetValue(map, out MapGrids g))
 			{
+				NamedBumps++;
 				g.plan.BumpCells(cells);
 			}
 		}
@@ -836,14 +850,17 @@ namespace RimMandrake.FlowWorks.Swimming
 		// r15 fix 2 counters (POCKETTIME's SWIMGRID part): full re-reads, patches, squares a patch re-read, patches that
 		// moved no square (grids kept), and the time each kind took
 		public static int FullBuilds, PatchBuilds, PatchCells, PatchKept;
+		// SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: bumps that named their squares vs bumps that did not (each unnamed bump makes the
+		// next build a full re-read, so unnamed is the full-reread sub-bar's numerator)
+		public static int NamedBumps, UnnamedBumps;
 		public static double FullMs, PatchMs, FullMaxMs, PatchMaxMs;
 
-		/// <summary>"SWIMGRID full=N fullMs=T fullMaxMs=M patch=N patchCells=N kept=N patchMs=T patchMaxMs=M".</summary>
+		/// <summary>"SWIMGRID full=N fullMs=T fullMaxMs=M patch=N patchCells=N kept=N patchMs=T patchMaxMs=M named=N unnamed=N".</summary>
 		public static string TimingLine()
 		{
 			return "SWIMGRID full=" + FullBuilds + " fullMs=" + FullMs.ToString("0.0") + " fullMaxMs=" + FullMaxMs.ToString("0.000")
 				+ " patch=" + PatchBuilds + " patchCells=" + PatchCells + " kept=" + PatchKept + " patchMs=" + PatchMs.ToString("0.0")
-				+ " patchMaxMs=" + PatchMaxMs.ToString("0.000");
+				+ " patchMaxMs=" + PatchMaxMs.ToString("0.000") + " named=" + NamedBumps + " unnamed=" + UnnamedBumps;
 		}
 
 		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: how many squares the non-swimmer block closes (0: no deep water).</summary>
@@ -1194,11 +1211,20 @@ namespace RimMandrake.FlowWorks.Swimming
 	public static class RM_Patch_TerrainGrid_SwimVersion
 	{
 		[HarmonyPostfix]
-		public static void Postfix(TerrainDef oldTerr, TerrainDef newTerr, Map ___map)
+		public static void Postfix(IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr, Map ___map)
 		{
 			if (RM_SwimWater.IsSwimTerrain(oldTerr) != RM_SwimWater.IsSwimTerrain(newTerr))
 			{
-				RM_SwimPathing.Bump(___map);
+				// SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: name the square (the grid patches it) instead of an unnamed bump (a full
+				// re-read of every square on the map, ~1 ms live, once per dug-water band flip into or out of swim depth)
+				if (___map != null && c.InBounds(___map))
+				{
+					RM_SwimPathing.BumpCell(___map, ___map.cellIndices.CellToIndex(c));
+				}
+				else
+				{
+					RM_SwimPathing.Bump(___map);
+				}
 			}
 		}
 	}

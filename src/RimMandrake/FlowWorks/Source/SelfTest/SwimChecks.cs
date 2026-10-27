@@ -577,7 +577,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                         truth[rng.Next(n)] ^= true;   // a terrain change: unnamed
                         plan.Bump();
                     }
-                    else if (r < 14)
+                    else if (r < 16)
+                    {
+                        // SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: a fill-terrain swim flip names its one square (BumpCell)
+                        int c = rng.Next(n);
+                        if (rng.Next(4) > 0) truth[c] = !truth[c];
+                        plan.BumpCell(c);
+                    }
+                    else if (r < 17)
                     {
                         var named = new List<int>();
                         for (int j = 0; j < 400; j++) { int c = rng.Next(n); truth[c] ^= true; named.Add(c); }   // past maxPatch
@@ -628,6 +635,52 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\);.{0,160}Swimming\.RM_SwimPathing\.BumpCells\(map, changed\);",
                     "the dug-swim refresh names the squares it changed");
+                // SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: the terrain-change postfix names its square, and the bump counters show
+                RiverSwitchFlipChecks.Has(sw, @"public static void Postfix\(IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr, Map ___map\)\s*\{\s*if \(RM_SwimWater\.IsSwimTerrain\(oldTerr\) != RM_SwimWater\.IsSwimTerrain\(newTerr\)\)\s*\{.{0,400}?RM_SwimPathing\.BumpCell\(___map, ___map\.cellIndices\.CellToIndex\(c\)\);",
+                    "a swim flip by a terrain write names its square");
+                RiverSwitchFlipChecks.Has(sw, @""" named="" \+ NamedBumps \+ "" unnamed="" \+ UnnamedBumps", "SWIMGRID counts named and unnamed bumps");
+            });
+
+            Case("Swim_grid_fill_flips_patch_not_full", () =>
+            {
+                // SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS (r16 live, sinks on: +21..+47 full re-reads per 4000 ticks from fill-terrain
+                // flips' unnamed bumps against +2..+11 patches). The r16 window's shape: a dug-swim refresh every 300 ticks plus
+                // fill flips of band-edge squares between builds. Old (unnamed Bump per flip): every build after a flip re-reads the
+                // map. New (BumpCell): only the first build re-reads it; every patched grid equals a full re-read.
+                foreach (bool named in new[] { false, true })
+                {
+                    const int n = 105625;
+                    var rng = new Random(16016);
+                    var truth = new bool[n];
+                    var built = new bool[n];
+                    var plan = new RM_SwimGridPlan();
+                    int full = 0, patches = 0;
+                    for (int tick = 0; tick < 4000; tick += 50)
+                    {
+                        if (tick % 300 == 0)
+                        {
+                            var cs = new List<int>();
+                            for (int j = 0; j < 20; j++) { int c = rng.Next(n); truth[c] ^= true; cs.Add(c); }
+                            plan.BumpCells(cs);
+                        }
+                        int flips = rng.Next(3);
+                        for (int j = 0; j < flips; j++)
+                        {
+                            int c = rng.Next(n);
+                            truth[c] ^= true;
+                            if (named) plan.BumpCell(c); else plan.Bump();
+                        }
+                        if (!plan.Due) continue;
+                        List<int> patch = plan.Take(n / 16, tick > 0);
+                        if (patch == null) { full++; Array.Copy(truth, built, n); }
+                        else { patches++; foreach (int i in patch) built[i] = truth[i]; }
+                        for (int i = 0; i < n; i++)
+                            if (built[i] != truth[i]) { Assert(false, "tick " + tick + ": square " + i + " differs from a full re-read"); break; }
+                    }
+                    Console.WriteLine("        fill flips " + (named ? "named" : "unnamed") + ": " + full + " full re-reads, " + patches + " patches");
+                    if (named) Assert(full == 1 && patches > 30, "named flips: one full re-read (the first build), " + full + " seen");
+                    else Assert(full > 30, "the instrument can see: unnamed flips force full re-reads (" + full + ")");
+                }
             });
 
             Case("Swim_shallow_drowning_switch_alone", () =>

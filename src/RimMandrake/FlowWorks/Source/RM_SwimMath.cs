@@ -542,6 +542,17 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>One named square (SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: a terrain write names the square it changed), the same
+		/// as <see cref="BumpCells"/> with a list of one, without the list.</summary>
+		public void BumpCell(int cell)
+		{
+			Version++;
+			if (exact && pending.Add(cell))
+			{
+				order.Add(cell);
+			}
+		}
+
 		/// <summary>Marks the grids built at <see cref="Version"/>. Returns the squares to re-read (in the order named), or null
 		/// when every square must be re-read: a writer did not name its squares, more than <paramref name="maxPatch"/> were
 		/// named, the caller refuses a patch (<paramref name="canPatch"/>: no earlier build, a setting moved, a periodic full

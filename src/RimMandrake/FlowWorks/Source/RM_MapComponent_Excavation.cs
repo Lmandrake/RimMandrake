@@ -222,6 +222,24 @@ namespace RimMandrake.FlowWorks
 		/// eventually fills a trench instead of rounding to nothing forever.</summary>
 		private float rainAccumulator;
 
+		/// <summary>EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the pulse tick whose rain has been decided (it lands ahead of that pulse,
+		/// a slice a tick: <see cref="RM_RainPass"/>). Scribed, so a save inside the lead window (which lands the rest of the pass)
+		/// never decides the same pulse's rain twice after the load.</summary>
+		private int rainDecidedForPulse = int.MinValue;
+
+		/// <summary>The squares of the decided rain still to land (not scribed: a save lands them all first, see FinishPulse).</summary>
+		private readonly RM_RainPass rainPass = new RM_RainPass();
+		private FluidDef rainFluid;
+		private System.Action<int, int> landRain;
+
+		/// <summary>The tick the pulse now starting was due at (DoPulse's rain reads it; nextPulseTick has already moved on).</summary>
+		private int pulseDueTick = int.MinValue;
+
+		// EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE counters (POCKETTIME's RAIN part): passes decided, squares landed ahead of the
+		// pulse vs whole when the pulse (or a save) was due, and the most squares / ms one tick landed
+		private int rainPasses, rainAheadSquares, rainWholeSquares, rainMaxTickSquares;
+		private double rainMaxTickMs;
+
 		/// <summary>Disclosed the same way <see cref="overflowDestroyedTotal"/>
 		/// is, and kept SEPARATE from it on purpose (ruling 9): liquid down a
 		/// sink is transferred off-map, not destroyed. A drain that deletes
@@ -925,6 +943,7 @@ namespace RimMandrake.FlowWorks
 				LookMode.Value, LookMode.Def, ref originalTerrainKeys, ref originalTerrainValues);
 			Scribe_Deep.Look(ref stock, "RM_liquidStock");
 			Scribe_Values.Look(ref rainAccumulator, "RM_rainAccumulator", 0f);
+			Scribe_Values.Look(ref rainDecidedForPulse, "RM_rainDecidedForPulse", int.MinValue);
 			Scribe_Values.Look(ref sinkTransferredTotal, "RM_sinkTransferredTotal", 0f);
 			Scribe_Deep.Look(ref superdeepTrap, "RM_superdeepTrap");
 			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
@@ -2739,10 +2758,20 @@ namespace RimMandrake.FlowWorks
 				{
 					ContinuePulse(PulseSliceCells);
 				}
+				else
+				{
+					StepRainAhead(now);   // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the next pulse's rain, a slice a tick
+				}
 				return;
 			}
 			// A pulse still in slices when the next is due (a huge dug area) ends first, whole: pulses never overlap.
-			FinishPulse();
+			// EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the waiting pictures are NOT all drawn here any more (a rain pass's deferred
+			// pictures would land in this one tick); they keep draining at their budget, and a save draws them all (FinishPulse).
+			if (PulseInFlight)
+			{
+				ContinuePulse(int.MaxValue);
+			}
+			pulseDueTick = nextPulseTick;
 			nextPulseTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			DoPulse();
 		}
@@ -2830,6 +2859,13 @@ namespace RimMandrake.FlowWorks
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the flow runs in slices of about PulseSliceCells cells a tick (this tick
 			// first); the steps after it wait for the last slice (FinishPulseSlices).
 			pulseHeadRule = headRule;
+			// Pocket rain (ApplyRain decided it for this pulse): the kernel lands it pocket by pocket as it walks.
+			flowKernel.rainNotches = pocketRainNotches;
+			flowKernel.rainFluid = pocketRainFluid;
+			flowKernel.rainCatches = rainCatchesPred ??= idx => !map.roofGrid.Roofed(idx);
+			flowKernel.rainOverflow = rainOverflowCb ??= (idx, dl, fl) =>
+				Sheet.RM_MapComponent_Sheet.RainOverflowDl(map, map.cellIndices.IndexToCell(idx), dl, fl as FluidDef);
+			pocketRainNotches = 0;
 			flowKernel.BeginPulse(pulseSeeds, pulseCount);
 			ContinuePulse(PulseSliceCells);
 		}
@@ -2846,15 +2882,18 @@ namespace RimMandrake.FlowWorks
 		/// RM_Patch_SaveGame_FinishPulse).</summary>
 		public bool PulseInFlight => flowKernel != null && flowKernel.PulseInFlight;
 
-		/// <summary>Runs the pulse in flight to its end now (before a save, or when the next pulse is already due).</summary>
+		/// <summary>Before a save: runs the pulse in flight to its end, lands any rain still owed and draws every waiting picture.</summary>
 		public void FinishPulse()
 		{
 			if (PulseInFlight)
 			{
 				ContinuePulse(int.MaxValue);
 			}
-			// Before a save (the terrain grid is written) or the next pulse, every waiting picture is drawn. At WritesPerTick a
-			// pulse's backlog has normally drained long before the next pulse is due, so this is only a save's flush in practice.
+			// EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: rain decided ahead of the next pulse and not landed yet lands now (a save
+			// scribes the grids, never the pass), so the loaded game holds exactly the water the unsaved one does.
+			LandRainOwed();
+			// Before a save (the terrain grid is written) every waiting picture is drawn (the pulse-due path no longer calls
+			// this: there the backlog keeps draining at its budget).
 			DrainTerrainWrites(true);
 		}
 
@@ -2891,6 +2930,9 @@ namespace RimMandrake.FlowWorks
 				sinkTransferredTotal += flowKernel.sinkDrained;
 			}
 			RunIntoBeds();
+			pocketRainLandedDl += flowKernel.rainLandedDl;
+			pocketRainRunOverDl += flowKernel.rainOverflowDl;
+			pocketRainPockets += flowKernel.rainPockets;
 			if (Prefs.DevMode)
 			{
 				for (int i = 0; i < flowKernel.imbalanceReports.Count; i++)
@@ -3185,14 +3227,107 @@ namespace RimMandrake.FlowWorks
 		/// </summary>
 		private void ApplyRain()
 		{
-			if (!RimMandrakeFlowWorksSettings.rainFillsExcavationsEnabled || excavatedCells.Count == 0)
+			// EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the rain of the pulse now starting normally landed AHEAD of it, a slice a
+			// tick (StepRainAhead). Whatever is still owed lands here, whole, before the ledger's "before": a pass a long
+			// pulse in flight kept from starting, a pass not finished, or a pulse with no lead window (the first one).
+			if (rainDecidedForPulse != pulseDueTick)
+			{
+				if (RimMandrakeFlowWorksSettings.rainPocketApproxEnabled)
+				{
+					// Pocket rain (the owner's "rain approximation"): no pass at all. The notches go to the kernel, which lands
+					// them pocket by pocket inside this pulse's own walk (RM_FlowKernel.PocketRain), sliced with it.
+					LandRainOwed();   // a pass decided ahead before the switch flipped lands first: never lost, never doubled
+					rainDecidedForPulse = pulseDueTick;
+					pocketRainNotches = RainLevelsNow(out pocketRainFluid);
+					if (pocketRainNotches > 0)
+					{
+						rainPasses++;
+					}
+					return;
+				}
+				DecideRain(pulseDueTick);
+			}
+			LandRainOwed();
+		}
+
+		/// <summary>Pocket rain for the pulse DoPulse is starting (handed to the kernel there, then cleared).</summary>
+		private int pocketRainNotches;
+		private FluidDef pocketRainFluid;
+		private System.Predicate<int> rainCatchesPred;
+		private System.Action<int, long, object> rainOverflowCb;
+		private long pocketRainLandedDl, pocketRainRunOverDl, pocketRainPockets;
+
+		/// <summary>The quiet ticks before a pulse (no pulse in flight): from <see cref="RM_RainPass.LeadTicks"/> before it is due,
+		/// decide its rain once and land at most <see cref="RM_RainPass.CellsPerTick"/> squares a tick.</summary>
+		private void StepRainAhead(int now)
+		{
+			if (rainDecidedForPulse != nextPulseTick)
+			{
+				if (RimMandrakeFlowWorksSettings.rainPocketApproxEnabled)
+				{
+					return;   // pocket rain lands in the pulse itself (ApplyRain)
+				}
+				if (now < nextPulseTick - RM_RainPass.LeadTicks(excavatedCells.Count, RimMandrakeFlowWorksSettings.PulseIntervalTicks))
+				{
+					return;
+				}
+				DecideRain(nextPulseTick);
+			}
+			if (rainPass.Remaining > 0)
+			{
+				long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+				int n = rainPass.Step(RM_RainPass.CellsPerTick, landRain);
+				double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+				rainAheadSquares += n;
+				rainMaxTickSquares = Mathf.Max(rainMaxTickSquares, n);
+				rainMaxTickMs = System.Math.Max(rainMaxTickMs, ms);
+			}
+		}
+
+		/// <summary>Every square of a decided pass not landed yet, now (the pulse is due, or a save).</summary>
+		private void LandRainOwed()
+		{
+			if (rainPass.Remaining > 0)
+			{
+				rainWholeSquares += rainPass.Step(int.MaxValue, landRain);
+			}
+		}
+
+		/// <summary>Decide the rain of the pulse due at <paramref name="forPulse"/> (the accumulator, the burst cap, the fluid:
+		/// the one-tick rain's rules, unchanged) and snapshot the excavated squares it walks, in the set's own order.</summary>
+		private void DecideRain(int forPulse)
+		{
+			LandRainOwed();   // an earlier pass's squares first: rain is never lost, never doubled
+			rainDecidedForPulse = forPulse;
+			int levels = RainLevelsNow(out rainFluid);
+			rainPass.Begin(levels);
+			if (levels <= 0)
 			{
 				return;
+			}
+			rainPasses++;
+			if (landRain == null)
+			{
+				landRain = LandRain;
+			}
+			foreach (IntVec3 c in excavatedCells)
+			{
+				rainPass.Add(map.cellIndices.CellToIndex(c));
+			}
+		}
+
+		/// <summary>The notches this pulse's rain adds to each unroofed square (0: none), and the fluid it is.</summary>
+		private int RainLevelsNow(out FluidDef fluid)
+		{
+			fluid = null;
+			if (!RimMandrakeFlowWorksSettings.rainFillsExcavationsEnabled || excavatedCells.Count == 0)
+			{
+				return 0;
 			}
 			float rainRate = map.weatherManager != null ? map.weatherManager.RainRate : 0f;
 			if (rainRate <= 0.01f)
 			{
-				return;
+				return 0;
 			}
 			rainAccumulator += rainRate * RimMandrakeFlowWorksSettings.rainFillPerPulse;
 			int levels = 0;
@@ -3205,55 +3340,73 @@ namespace RimMandrake.FlowWorks
 			}
 			if (levels == 0)
 			{
-				return;
+				return 0;
 			}
 			// Rain is water (step 2b): it lands on a dry cell (claiming it) or a water cell, never on another fluid.
-			FluidDef fluid = RimMandrakeFlowWorks_DefOf.RM_Fluid_Water ?? ActiveFluid;
+			fluid = RimMandrakeFlowWorks_DefOf.RM_Fluid_Water ?? ActiveFluid;
 			if (!InputAllowed(fluid))
 			{
-				return;   // FLUID_DISABLE_ALL_INPUTS_1: water switched off means rain adds none
+				return 0;   // FLUID_DISABLE_ALL_INPUTS_1: water switched off means rain adds none
 			}
-			foreach (IntVec3 c in excavatedCells)
+			return levels;
+		}
+
+		/// <summary>One square of a decided pass: the one-tick rain's per-square rule, unchanged, except that the picture waits
+		/// its turn in the terrain-write budget (a deluge flips thousands of look bands at once).</summary>
+		private void LandRain(int i, int levels)
+		{
+			IntVec3 c = map.cellIndices.IndexToCell(i);
+			FluidDef fluid = rainFluid;
+			if (!excavatedCells.Contains(c))
 			{
-				int i = map.cellIndices.CellToIndex(c);
-				// The roof grid IS the rule. A roofed excavation stays dry in a
-				// downpour, which is what makes roofing a trap a real decision.
-				// Checked FIRST (FlowWorks review 2026-10-22): a roofed brimming square catches no rain, so none runs over its lip.
-				if (map.roofGrid.Roofed(c))
-				{
-					continue;
-				}
-				int room = RoomNotches(i);
-				if (room <= 0)
-				{
-					// CANAL_OVERFLOW stage 1 (D2): rain on a brimming square runs over the canal's lip (switch off: as before)
-					if (WetDug(i) && FluidAt(c) == fluid)
-					{
-						Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels, fluid);
-					}
-					continue;
-				}
-				if (!RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid))
-				{
-					continue;
-				}
-				int add = room < levels ? room : levels;
-				if (!WetDug(i))
-				{
-					byte rainKey;
-					if (!TryPaletteKey(fluid, out rainKey))
-					{
-						continue;   // P7: no key for water -> this dry cell stays dry, never mis-recorded (and spills nothing)
-					}
-					fluidGrid[i] = rainKey;
-				}
-				if (add < levels)
-				{
-					Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
-				}
-				fillGrid[i] += (byte)add;
-				ApplyFillTerrain(c, fluid);
+				return;   // filled back in since the pass was decided: the one-tick rain would not have walked it either
 			}
+			// The roof grid IS the rule. A roofed excavation stays dry in a
+			// downpour, which is what makes roofing a trap a real decision.
+			// Checked FIRST (FlowWorks review 2026-10-22): a roofed brimming square catches no rain, so none runs over its lip.
+			if (map.roofGrid.Roofed(c))
+			{
+				return;
+			}
+			int room = RoomNotches(i);
+			if (room <= 0)
+			{
+				// CANAL_OVERFLOW stage 1 (D2): rain on a brimming square runs over the canal's lip (switch off: as before)
+				if (WetDug(i) && FluidAt(c) == fluid)
+				{
+					Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels, fluid);
+				}
+				return;
+			}
+			if (!RM_StockMath.FluidsCompatible(WetDug(i), FluidAt(c), fluid))
+			{
+				return;
+			}
+			int add = room < levels ? room : levels;
+			if (!WetDug(i))
+			{
+				byte rainKey;
+				if (!TryPaletteKey(fluid, out rainKey))
+				{
+					return;   // P7: no key for water -> this dry cell stays dry, never mis-recorded (and spills nothing)
+				}
+				fluidGrid[i] = rainKey;
+			}
+			if (add < levels)
+			{
+				Sheet.RM_MapComponent_Sheet.RainOverflow(map, c, levels - add, fluid);   // CANAL_OVERFLOW stage 1 (D2)
+			}
+			fillGrid[i] += (byte)add;
+			ApplyFillTerrain(c, fluid, true);
+		}
+
+		/// <summary>"RAIN passes=N ahead=N whole=N maxTickSquares=N maxTickMs=M owed=N" (EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE).</summary>
+		public string RainTimingLine()
+		{
+			return "RAIN passes=" + rainPasses + " ahead=" + rainAheadSquares + " whole=" + rainWholeSquares + " maxTickSquares="
+				+ rainMaxTickSquares + " maxTickMs=" + rainMaxTickMs.ToString("0.000") + " owed=" + rainPass.Remaining
+				+ " pocket=" + (RimMandrakeFlowWorksSettings.rainPocketApproxEnabled ? "on" : "off") + " pockets=" + pocketRainPockets
+				+ " landedDl=" + pocketRainLandedDl + " overflowDl=" + pocketRainRunOverDl;
 		}
 
 		// ── rendering F ───────────────────────────────────────────────────

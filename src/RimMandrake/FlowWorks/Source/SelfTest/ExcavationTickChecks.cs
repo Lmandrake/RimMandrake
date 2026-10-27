@@ -807,6 +807,275 @@ namespace RimMandrake.FlowWorks.SelfTest
             public void NoteLimitlessDl(object fluid, long dl) => a.NoteLimitlessDl(fluid, dl);
         }
 
+        // ── EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: the exact rain pass (RM_MapComponent_Excavation.LandRain) and pocket rain ──
+
+        /// <summary>The adapter's LandRain, rule for rule, on an ArrayWorld square (roof first; a brimming water square runs
+        /// its notches over the lip; another liquid takes none; a dry square is claimed). Returns the dL run over.</summary>
+        private static long ExactRainSquare(ArrayWorld aw, int i, int levels, bool[] roof, ref long landedDl)
+        {
+            var k = aw.k; int U = RM_LevelSolve.U;
+            if (k.depth[i] == 0 || roof[i]) return 0;
+            long w = k.part != null ? k.WaterOf(i) : k.fill[i] * (long)U;
+            long roomDl = k.depth[i] * (long)U - w;
+            int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
+            bool wet = w > 0;
+            if (room <= 0) return wet && aw.cellFluid[i] == ArrayWorld.Water ? levels * (long)U : 0;
+            if (wet && aw.cellFluid[i] != ArrayWorld.Water) return 0;
+            int add = room < levels ? room : levels;
+            if (!wet) aw.cellFluid[i] = ArrayWorld.Water;
+            k.fill[i] += (byte)add;
+            landedDl += add * (long)U;
+            return (levels - add) * (long)U;
+        }
+
+        /// <summary>Deep pits with room (depth 3-12, a little water or tar, no ponds), random kernel switches: rain below the brim.</summary>
+        private static (ArrayWorld w, List<int> seeds) RainScene(int seed, bool exact)
+        {
+            var r = new Random(seed * 101 + 9);
+            int w = r.Next(10, 31), h = r.Next(10, 31), n = w * h;
+            var aw = new ArrayWorld(w, h);
+            var k = aw.k;
+            k.levelExactEnabled = exact;
+            k.part = exact ? new ushort[n] : null;
+            k.levelBySurfaceEnabled = r.Next(4) != 0;
+            k.levelSetEnabled = k.levelBySurfaceEnabled && r.Next(2) == 0;
+            k.viscosityEnabled = r.Next(2) == 0;
+            k.creepEnabled = k.viscosityEnabled && r.Next(2) == 0;
+            k.creepWaterEnabled = r.Next(2) == 0;
+            k.flowPerPulse = r.Next(1, 3);
+            k.seamRotationEnabled = r.Next(4) != 0;
+            k.maxComponentCells = r.Next(12, 120);
+            k.edgeSinksEnabled = r.Next(3) == 0;
+            if (k.edgeSinksEnabled) for (int i = 0; i < n; i++) aw.sink[i] = i % w == 0 || i / w == 0;
+            var seeds = new List<int>();
+            int digs = r.Next(2, 7);
+            for (int d = 0; d < digs; d++)
+            {
+                int x0 = r.Next(w), z0 = r.Next(h), bw = r.Next(1, 12), bh = r.Next(1, 12), depth = r.Next(3, 13);
+                Fluid f = r.Next(5) == 0 ? ArrayWorld.Tar : ArrayWorld.Water;
+                for (int x = x0; x < Math.Min(w, x0 + bw); x++)
+                    for (int z = z0; z < Math.Min(h, z0 + bh); z++)
+                    {
+                        int i = z * w + x;
+                        if (k.depth[i] == 0) seeds.Add(i);
+                        k.depth[i] = (byte)depth;
+                        int fill = r.Next(3);
+                        k.fill[i] = (byte)fill;
+                        aw.cellFluid[i] = fill > 0 ? f : null;
+                    }
+            }
+            aw.Sync();
+            return (aw, seeds);
+        }
+
+        /// <summary>Copies the water state of <paramref name="from"/> into <paramref name="to"/> (same scene).</summary>
+        private static void Resync(ArrayWorld from, ArrayWorld to)
+        {
+            Array.Copy(from.k.fill, to.k.fill, from.k.fill.Length);
+            if (from.k.part != null) Array.Copy(from.k.part, to.k.part, from.k.part.Length);
+            Array.Copy(from.cellFluid, to.cellFluid, from.cellFluid.Length);
+            for (int b = 0; b < from.bodies.Count; b++) to.bodies[b].SetDl(from.bodies[b].Dl());
+            to.externalIn.Clear();
+            foreach (var kv in from.externalIn) to.externalIn[kv.Key] = kv.Value;
+        }
+
+        private static void ArmPocketRain(ArrayWorld aw, bool[] roof, Action<long> onOffer)
+        {
+            aw.k.rainFluid = ArrayWorld.Water;
+            aw.k.rainCatches = i => !roof[i];
+            aw.k.rainOverflow = (i, dl, f) => onOffer(dl);
+        }
+
+        private static void RainCases(Action<string, Action> Case)
+        {
+            Case("Rain_pocket_equals_exact_pass_unless_brimming", () =>
+            {
+                // Pocket rain lands each open square's own notches inside the pulse walk; the exact pass lands them before it.
+                // While no square brims the two end every pulse byte-identical; a pulse where one brims may differ only by the
+                // pocket keeping water the exact pass ran over the lip (more water, never less in total, ledger balanced).
+                int same = 0, brimPulses = 0, rained = 0;
+                for (int seed = 0; seed < 200; seed++)
+                {
+                    bool exact = seed % 4 != 3;
+                    var (exW, seeds) = seed % 2 == 0 ? RainScene(seed, exact) : PulseScene(seed, exact);
+                    var (apW, _) = seed % 2 == 0 ? RainScene(seed, exact) : PulseScene(seed, exact);
+                    var r = new Random(seed * 13 + 1);
+                    var roof = new bool[exW.w * exW.h];
+                    for (int i = 0; i < roof.Length; i++) roof[i] = r.Next(4) == 0;
+                    long offers = 0;
+                    ArmPocketRain(apW, roof, dl => offers++);
+                    for (int p = 0; p < 20; p++)
+                    {
+                        int levels = r.Next(3) != 0 ? 0 : r.Next(1, 3);
+                        long over = 0, landedEx = 0;
+                        if (levels > 0) foreach (int i in Enumerable.Range(0, roof.Length)) over += ExactRainSquare(exW, i, levels, roof, ref landedEx);
+                        apW.k.rainNotches = levels;
+                        exW.Pulse(seeds);
+                        apW.Pulse(seeds);
+                        apW.k.rainNotches = 0;
+                        if (levels > 0) rained++;
+                        Assert(apW.k.worstImbalance == 0 || !exact, $"seed {seed} pulse {p}: pocket rain unbalanced the ledger: {string.Join("; ", apW.k.imbalanceReports)}");
+                        if (over > 0)
+                        {
+                            // a square brimmed: the pocket may keep what the exact pass ran over. Start the next pulse level again.
+                            brimPulses++;
+                            Resync(exW, apW);
+                        }
+                        else
+                        {
+                            Assert(PulseSnap(exW) == PulseSnap(apW), $"seed {seed} pulse {p}: no square brimmed, yet pocket rain differs from the exact pass");
+                            Assert(apW.k.rainLandedDl == landedEx, $"seed {seed} pulse {p}: landed {apW.k.rainLandedDl} dL, the exact pass {landedEx}");
+                            if (levels > 0) same++;
+                        }
+                    }
+                }
+                Console.WriteLine($"    200 scenes x 20 pulses: {same} rained pulses with no brim byte-identical, {brimPulses} pulses brimmed (resynced), {rained} rained");
+                Assert(same > 300 && rained > 800 && brimPulses > 50, "the scenes do not exercise rain both below and at the brim (sanity probe)");
+            });
+            Case("Rain_pocket_conserves_and_offers_once_per_pocket", () =>
+            {
+                // Every notch on an open water-or-dry square is landed or run over; the run-over is ONE offer per pocket walked
+                // (the exact pass offered once per brimming square: 78,400 a pulse on a brim-full 280x280 pit).
+                int offerPulses = 0;
+                for (int seed = 0; seed < 150; seed++)
+                {
+                    var (aw, seeds) = PulseScene(seed, true);
+                    var r = new Random(seed * 7 + 3);
+                    var roof = new bool[aw.w * aw.h];
+                    for (int i = 0; i < roof.Length; i++) roof[i] = r.Next(5) == 0;
+                    long offers = 0, offerDl = 0;
+                    ArmPocketRain(aw, roof, dl => { offers++; offerDl += dl; });
+                    for (int p = 0; p < 15; p++)
+                    {
+                        int levels = r.Next(1, 4), U = RM_LevelSolve.U;
+                        long due = 0;
+                        for (int i = 0; i < roof.Length; i++)
+                        {
+                            if (aw.k.depth[i] == 0 || roof[i]) continue;
+                            bool wet = aw.k.WaterOf(i) > 0;
+                            if (!wet || aw.cellFluid[i] == ArrayWorld.Water) due += levels * (long)U;
+                        }
+                        long o0 = offers, d0 = offerDl;
+                        aw.k.rainNotches = levels;
+                        aw.Pulse(seeds);
+                        aw.k.rainNotches = 0;
+                        Assert(aw.k.worstImbalance == 0, $"seed {seed} pulse {p}: ledger {string.Join("; ", aw.k.imbalanceReports)}");
+                        Assert(aw.k.rainLandedDl + (offerDl - d0) == due, $"seed {seed} pulse {p}: landed {aw.k.rainLandedDl} + run over {offerDl - d0} != rain due {due}");
+                        Assert(offerDl - d0 == aw.k.rainOverflowDl, $"seed {seed} pulse {p}: offered {offerDl - d0} dL, the kernel counts {aw.k.rainOverflowDl}");
+                        Assert(offers - o0 <= aw.k.rainPockets, $"seed {seed} pulse {p}: {offers - o0} offers from {aw.k.rainPockets} pockets");
+                        if (offers > o0) offerPulses++;
+                    }
+                }
+                Assert(offerPulses > 100, $"only {offerPulses} pulses ran rain over a lip (sanity probe)");
+            });
+            Case("Rain_pocket_sliced_equals_atomic_and_inert_dry", () =>
+            {
+                int multi = 0;
+                for (int seed = 0; seed < 120; seed++)
+                {
+                    bool exact = seed % 4 != 3;
+                    var (atomW, seeds) = PulseScene(seed, exact);
+                    var (sliceW, _) = PulseScene(seed, exact);
+                    var (dryW, _) = PulseScene(seed, exact);
+                    var (plainW, _) = PulseScene(seed, exact);
+                    var roof = new bool[atomW.w * atomW.h];
+                    var r = new Random(seed * 3 + 11);
+                    for (int i = 0; i < roof.Length; i++) roof[i] = r.Next(4) == 0;
+                    ArmPocketRain(atomW, roof, dl => { });
+                    ArmPocketRain(sliceW, roof, dl => { });
+                    ArmPocketRain(dryW, roof, dl => { });   // armed, but never a notch: the kernel must be the plain one
+                    for (int p = 0; p < 15; p++)
+                    {
+                        int levels = r.Next(2) == 0 ? 0 : r.Next(1, 3);
+                        atomW.k.rainNotches = levels; sliceW.k.rainNotches = levels;
+                        atomW.Pulse(seeds);
+                        if (SlicedPulse(sliceW, seeds, 40, r) > 1) multi++;
+                        Assert(PulseSnap(atomW) == PulseSnap(sliceW), $"seed {seed} pulse {p}: sliced pocket rain differs from atomic");
+                        dryW.Pulse(seeds); plainW.Pulse(seeds);
+                        Assert(PulseSnap(dryW) == PulseSnap(plainW), $"seed {seed} pulse {p}: an unrained pulse differs from the kernel without rain");
+                    }
+                }
+                Assert(multi > 300, "the slices were not exercised (sanity probe)");
+            });
+            Case("Rain_lead_pass_sliced_equals_one_tick_deluge_325", () =>
+            {
+                // The exact fallback (rainPocketApproxEnabled off): a deluge on 80,000 dug squares. The pass landed a slice a tick
+                // (RM_RainPass.CellsPerTick) ends with the grids the one-tick pass gives, pictures through the write budget.
+                const int w = 325, h = 325;
+                ArrayWorld Scene()
+                {
+                    var aw = new ArrayWorld(w, h);
+                    for (int z = 2; z <= 321; z++)
+                        for (int x = 10; x <= 314; x++)
+                        {
+                            if (x > 134 && x < 190) continue;
+                            int i = z * w + x;
+                            aw.k.depth[i] = 7; aw.k.fill[i] = (byte)(x <= 134 ? 6 : 0); aw.cellFluid[i] = x <= 134 ? ArrayWorld.Water : null;
+                        }
+                    return aw;
+                }
+                var one = Scene(); var sliced = Scene();
+                var roof = new bool[w * h];
+                for (int i = 0; i < roof.Length; i++) roof[i] = (i % w) % 50 < 7;
+                var order = new List<int>();
+                for (int i = 0; i < w * h; i++) if (one.k.depth[i] > 0) order.Add(i);
+                const int levels = 4;
+                long l1 = 0, l2 = 0, o1 = 0, o2 = 0;
+                foreach (int i in order) o1 += ExactRainSquare(one, i, levels, roof, ref l1);
+                var pass = new RM_RainPass();
+                var budget = new RM_TerrainWriteBudget();
+                var drawn = new int[w * h];
+                int Band(ArrayWorld a, int i) => RM_LevelSolve.LookBand(a.k.fill[i] * (long)RM_LevelSolve.U);
+                foreach (int i in order) drawn[i] = Band(sliced, i);
+                long tick = 0;
+                bool Apply(int i)
+                {
+                    int want = Band(sliced, i);
+                    if (drawn[i] == want) return true;
+                    if (!budget.TryTakeWrite(tick)) { budget.Defer(i, w * h); return false; }
+                    drawn[i] = want; return true;
+                }
+                pass.Begin(levels);
+                foreach (int i in order) pass.Add(i);
+                int lead = RM_RainPass.LeadTicks(order.Count, 250), ticks = 0, maxSquares = 0, maxWrites = 0;
+                Assert(lead <= 125 && lead * RM_RainPass.CellsPerTick >= order.Count, $"lead {lead} ticks cannot land {order.Count} squares");
+                while (pass.Remaining > 0 || budget.Count > 0)
+                {
+                    tick++; ticks++;
+                    budget.Drain(RM_TerrainWriteBudget.JudgedPerTick, Apply);
+                    int n = pass.Step(RM_RainPass.CellsPerTick, (i, lv) => { o2 += ExactRainSquare(sliced, i, lv, roof, ref l2); Apply(i); });
+                    maxSquares = Math.Max(maxSquares, n);
+                    maxWrites = Math.Max(maxWrites, budget.WritesThisTick);
+                    Assert(ticks < 2000, "the backlog never drained");
+                }
+                for (int i = 0; i < w * h; i++)
+                {
+                    Assert(one.k.fill[i] == sliced.k.fill[i] && one.cellFluid[i] == sliced.cellFluid[i], $"square {i}: the sliced pass ends otherwise than the one-tick pass");
+                    if (sliced.k.depth[i] > 0) Assert(drawn[i] == Band(sliced, i), $"square {i}: its picture never caught up");
+                }
+                Assert(l1 == l2 && o1 == o2, $"landed {l1}/{l2}, run over {o1}/{o2}");
+                Assert(maxSquares <= RM_RainPass.CellsPerTick && maxWrites <= RM_TerrainWriteBudget.WritesPerTick, $"a tick landed {maxSquares} squares, wrote {maxWrites} pictures");
+                Console.WriteLine($"    deluge on {order.Count} squares: lead {lead} ticks; rain in {(order.Count + RM_RainPass.CellsPerTick - 1) / RM_RainPass.CellsPerTick} ticks, pictures drained by tick {ticks}; max {maxSquares} squares, {maxWrites} writes a tick");
+                Assert(l1 > 0 && o1 > 0, "the deluge neither landed nor ran over (sanity probe)");
+            });
+            Case("Rain_pins_save_drains_pulse_does_not", () =>
+            {
+                string exc = Src("RM_MapComponent_Excavation.cs");
+                int all = 0;
+                for (int at = exc.IndexOf("DrainTerrainWrites(true)"); at >= 0; at = exc.IndexOf("DrainTerrainWrites(true)", at + 1)) all++;
+                Assert(all == 1, $"DrainTerrainWrites(true) is called {all} times: only the save (FinishPulse) may draw every waiting picture at once");
+                int fp = exc.IndexOf("public void FinishPulse()");
+                Assert(fp >= 0 && exc.IndexOf("DrainTerrainWrites(true)") > fp && exc.IndexOf("LandRainOwed();", fp) > fp, "FinishPulse no longer lands owed rain and draws the backlog before a save");
+                string k = Src("RM_FlowKernel.cs");
+                int er = k.IndexOf("private void ResolveExact(");
+                Assert(er >= 0 && k.IndexOf("PocketRain(exDug);", er) > er && k.IndexOf("PocketRain(exDug);", er) < k.IndexOf("long before = 0;", er), "pocket rain no longer lands before the exact ledger's before");
+                int pr = k.IndexOf("private void PocketRain(");
+                Assert(pr >= 0 && k.IndexOf("rainCatches(c)", pr) < k.IndexOf("long roomDl", pr), "pocket rain asks the roof before the room (a roofed brimming square spills nothing)");
+                string mod = Src("RimMandrakeFlowWorksMod.cs");
+                Assert(mod.Contains("public static bool rainPocketApproxEnabled = true;") && mod.Contains("\"rainPocketApproxEnabled\", true"), "pocket rain is not the scribed default");
+            });
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             // Randomized maps: every step carries GatherData noise (deltas whose square's kind did not move: a haul, a
@@ -814,6 +1083,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             // some a depth edit (a dig). The new policy's labels must equal a fresh full Label of the live state at every
             // step; the old policy flooded every step.
             PulseCases(Case);
+            RainCases(Case);
             Case("WallReach_delta_policy_equals_full_scan", () =>
             {
                 int cls = RM_WallReachMath.ClassOf(true, true, false, false, false, false);

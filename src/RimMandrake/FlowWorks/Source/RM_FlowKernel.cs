@@ -263,6 +263,114 @@ namespace RimMandrake.FlowWorks
 		/// ExcavationTick_exact_shortcuts_equal_reference can prove the cuts change nothing.</summary>
 		public bool exactShortcutsEnabled = true;
 
+		// ── EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: pocket rain (owner 2026-10-27: "Sounds like we need a rain approximation of
+		// some kind.") ── Rain lands inside the pulse's own walk, one pocket (the unit being resolved) at a time, instead of a
+		// pass over every dug square before the pulse. Each open square still takes its own notches (ruling 25: only where
+		// unroofed); what an open square has no room for stays in the POCKET and runs to any square of the same water with room
+		// (the solve below levels it this pulse), and only what the whole pocket cannot hold runs over its lip, as ONE offer.
+
+		/// <summary>Whole notches of rain each open square takes this pulse (0: none). The adapter sets it before <see cref="BeginPulse"/>.</summary>
+		public int rainNotches;
+		/// <summary>The liquid the rain is (the world's fluid object).</summary>
+		public object rainFluid;
+		/// <summary>True when the dug square catches rain (open to the sky). Null: no rain.</summary>
+		public Predicate<int> rainCatches;
+		/// <summary>A pocket's rain it had no room for: (an open brimming square of it, decilitres, fluid). Null: it is lost.</summary>
+		public Action<int, long, object> rainOverflow;
+		/// <summary>This pulse: dL of rain landed in dug squares, and dL run over pocket lips (offered to rainOverflow).</summary>
+		public long rainLandedDl, rainOverflowDl;
+		/// <summary>This pulse: pockets that took rain.</summary>
+		public int rainPockets;
+		private readonly RM_StampSet rained = new RM_StampSet();
+		private bool rainArmed;
+
+		/// <summary>The rain of one pocket (<paramref name="cells"/>: its dug squares, any order; non-dug members skipped), before
+		/// the pocket's ledger measures "before". Every square is rained on at most once a pulse.</summary>
+		private void PocketRain(List<int> cells)
+		{
+			int n = rainNotches;
+			if (n <= 0 || rainCatches == null || !rainArmed)
+			{
+				return;   // rainArmed: the notches were set before this pulse began (the stamp set is sized for it)
+			}
+			int U = RM_LevelSolve.U;
+			long owed = 0;
+			long landed = 0;
+			int lip = -1;
+			for (int i = 0; i < cells.Count; i++)
+			{
+				int c = cells[i];
+				if (!IsExcavated(c) || rained.Contains(c))
+				{
+					continue;
+				}
+				rained.Add(c);
+				if (!rainCatches(c))
+				{
+					continue;
+				}
+				long w = WaterOf(c);
+				if (w > 0 ? !SameFluid(world.CellFluid(c), rainFluid) : !world.CanClaim(rainFluid))
+				{
+					continue;   // rain is water: never on another liquid (step 2b); a dry square that cannot record it stays dry
+				}
+				long roomDl = depth[c] * (long)U - w;
+				int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
+				int add = room < n ? room : n;
+				if (add < n)
+				{
+					owed += n - add;
+					if (lip < 0)
+					{
+						lip = c;
+					}
+				}
+				if (add > 0)
+				{
+					if (w == 0)
+					{
+						world.Claim(c, rainFluid);
+					}
+					fill[c] += (byte)add;
+					landed += add;
+				}
+			}
+			// The pocket's aggregate: what an open square could not hold runs to the pocket's other squares of the same water
+			// (roofed ones too: the water runs under the roof, as the level solve would carry it), whole notches, index order.
+			for (int i = 0; i < cells.Count && owed > 0; i++)
+			{
+				int c = cells[i];
+				if (!IsExcavated(c))
+				{
+					continue;
+				}
+				long w = WaterOf(c);
+				if (w <= 0 || !SameFluid(world.CellFluid(c), rainFluid))
+				{
+					continue;
+				}
+				long roomDl = depth[c] * (long)U - w;
+				int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
+				int add = (int)Math.Min(room, owed);
+				if (add > 0)
+				{
+					fill[c] += (byte)add;
+					landed += add;
+					owed -= add;
+				}
+			}
+			if (landed > 0 || owed > 0)
+			{
+				rainPockets++;
+			}
+			rainLandedDl += landed * U;
+			if (owed > 0 && lip >= 0)
+			{
+				rainOverflowDl += owed * U;
+				rainOverflow?.Invoke(lip, owed * U, rainFluid);
+			}
+		}
+
 		// per-pulse outputs
 		public float sinkDrained;
 		/// <summary>Largest absolute per-component ledger imbalance this pulse (0 when every component balances).</summary>
@@ -443,6 +551,14 @@ namespace RimMandrake.FlowWorks
 			sinkDrained = 0f;
 			exactCreditDl = 0;
 			exactDrainDl = 0;
+			rainLandedDl = 0;
+			rainOverflowDl = 0;
+			rainPockets = 0;
+			rainArmed = rainNotches > 0;
+			if (rainArmed)
+			{
+				rained.Reset(width * height);
+			}
 			worstImbalance = 0f;
 			imbalanceReports.Clear();
 			visited.Reset(width * height);
@@ -675,6 +791,7 @@ namespace RimMandrake.FlowWorks
 				ResolveExact(levelWorld, pulseCount, networkOrder);
 				return;
 			}
+			PocketRain(component);
 			float before = 0f;
 			for (int i = 0; i < component.Count; i++)
 			{
@@ -892,6 +1009,7 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			exDug.Sort();
+			PocketRain(exDug);   // pocket rain: before "before", so the ledger reads it as input, never a leak
 			long before = 0;
 			for (int i = 0; i < exDug.Count; i++)
 			{

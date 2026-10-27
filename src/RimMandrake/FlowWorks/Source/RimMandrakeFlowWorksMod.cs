@@ -190,6 +190,10 @@ namespace RimMandrake.FlowWorks
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
         public static float rainFillPerPulse = 0.1f;
+        // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE (owner 2026-10-27: "Sounds like we need a rain approximation of some kind."):
+        // on, rain lands pocket by pocket inside the pulse's own walk (RM_FlowKernel.PocketRain: what an open square cannot
+        // hold runs to its pocket, one overflow per pocket); off, the per-square rain pass, spread over the ticks before the pulse.
+        public static bool rainPocketApproxEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // PHASE 5 — CAPTURE, LADDERS, AND THE ONE SHOOTING RULE.
@@ -612,6 +616,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
             Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
+            Scribe_Values.Look(ref rainPocketApproxEnabled, "rainPocketApproxEnabled", true);
             // ── Phase 5 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
             Scribe_Values.Look(ref blastsBreakPitCovers, "blastsBreakPitCovers", true);
@@ -779,7 +784,7 @@ namespace RimMandrake.FlowWorks
             .Declare("refillEnabled", "refillRateMultiplier")
             .Declare("deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres")
             .Declare("pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse")
-            .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse")
+            .Declare("rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled")
             .Declare("viscosityEnabled", "thickCreepEnabled")
             .Declare("liquidHeatPushEnabled", "liquidHeatStrength")
             .Declare("canalFireEnabled", "burnDaysPerNotch", "fireFrontSpeedMultiplier", "sourceFireReach",
@@ -1251,7 +1256,7 @@ namespace RimMandrake.FlowWorks
 
             }
 
-            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            if (Section(list, "Ponds, lakes, rain and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "stickyLimitlessEnabled", "wetnessCutoffEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "pondReturnLegEnabled", "refillWaitsForOccupants", "dugBedLeavesPondEnabled", "pondBedHollowEnabled", "deepBedsEnabled", "deepBedMaxDepth", "lakeDepthScale", "lakeFloorRoughness", "lakeShoreShelfMetres", "lakeWayOutMetres", "drainableLakeMaxCells", "pondDepthEnabled", "pondMudDays", "pondStageWritesPerPulse", "pondHeadRuleEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "rainPocketApproxEnabled", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
             {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -1403,6 +1408,13 @@ namespace RimMandrake.FlowWorks
                 rainFillPerPulse = list.Slider(rainFillPerPulse, 0.01f, 1f);
                 list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
                          + "roughly an in-game hour to add half a metre.");
+            }
+            using (Dependent(list, "rainPocketApproxEnabled"))
+            {
+                list.CheckboxLabeled("Rain fills each pit as a whole (fast)", ref rainPocketApproxEnabled,
+                    "On: rain lands pit by pit while the water levels, and what an open square cannot hold runs into the "
+                  + "rest of its pit before any spills over the lip. Cheap on a huge dig. Off: rain lands square by square "
+                  + "in the ticks before each pulse, and an open square's surplus spills even when its pit has room.");
             }
 
             list.CheckboxLabeled("Repair dig data on load", ref excavationLoadRepairEnabled,

@@ -488,6 +488,23 @@ namespace RimMandrake.FlowWorks.Sheet
 			Of(map)?.Offer(c, levels * (long)RM_LevelSolve.U, rain, Source.Rain);
 		}
 
+		/// <summary>Pocket rain (EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE): the decilitres a whole pocket had no room for run over
+		/// its lip at <paramref name="c"/> (an open square of it), one offer for the pocket. The rules of <see cref="RainOverflow"/>.</summary>
+		public static void RainOverflowDl(Map map, IntVec3 c, long dl, FluidDef rain)
+		{
+			if (dl <= 0 || map.roofGrid.Roofed(c))
+			{
+				return;
+			}
+			RM_MapComponent_Excavation e = map.GetComponent<RM_MapComponent_Excavation>();
+			FluidDef held = e?.FluidAt(c);
+			if (held != null && held != rain)
+			{
+				return;
+			}
+			Of(map)?.Offer(c, dl, rain, Source.Rain);
+		}
+
 		/// <summary>The pump hook (D2), part 1: the brimming outlet square of water in a backed-up pump's reach whose canal lip
 		/// takes a whole level now (exact probe). False with the switch off or when no lip has room (backed up, as before).</summary>
 		public static bool PumpSpillOutlet(Map map, List<IntVec3> cells, List<(int room, bool wet, FluidDef fill)> cd, int units,
