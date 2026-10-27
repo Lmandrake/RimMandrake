@@ -718,20 +718,10 @@ namespace RimMandrake.FlowWorks.SelfTest
             Func<Cell, bool> walk = c => w.InBounds(c) && w.IsWalkable(c) && !from.Contains(c);
             if (!HoseRelay.TryIntake(to, from.Mouth, walk, out intake)) return new HoseLay { Reason = "no intake" };
             end = HoseRelay.DrawnEnd(to, intake, to.Look ?? "Scrapper", false, out V2 inward);
-            var held = new List<KeyValuePair<Cell, BlockKind>>();
-            for (int x = from.X0; x < from.X0 + from.W; x++)
-                for (int z = from.Z0; z < from.Z0 + from.H; z++)
-                {
-                    var c = new Cell(x, z);
-                    held.Add(new KeyValuePair<Cell, BlockKind>(c, w.BlockAt(c)));
-                    w.SetBlocked(c, BlockKind.Device);
-                }
-            try
-            {
-                return HoseMath.LayAlong(w, from.Mouth, new List<Cell>(), end, new HoseShapeParams { MaxLength = HoseMath.DefaultMaxLength },
-                                         1234, inward, from.Outward);
-            }
-            finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
+            // review r10: through the shipped body (HoseLayQueue.LayFromOn, what LayFrom and the queued lays run), not a copy
+            // of it, so PT10 and these checks cannot drift from the game's lay; an unfed reel passes its outward as LayFrom does
+            return HoseLayQueue.LayFromOn(w, from, from.Mouth, from.Outward, end, inward, null,
+                                          new HoseShapeParams { MaxLength = HoseMath.DefaultMaxLength }, 1234);
         }
 
         private static void WalkStation()

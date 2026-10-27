@@ -9,7 +9,7 @@ def get(d, f=None):
     if f: kw["fields"] = f
     return S.call("jawa/get_defs", **kw)
 for f in ("fixedIngredientFilter", "defaultIngredientFilter"):
-    r = get("RecipeDef/RSW_CookFruitOnAStick", f)
+    r = get("RecipeDef/RSW_CookRoastOnAStick", f)
     t = json.dumps(r, default=str)
     print("FIELD", f, "success=%s" % (r.get("success") if isinstance(r, dict) else "?"), "len=%d" % len(t),
           "RawBerries=%s RawLanneth=%s NoSuch=%s" % ("RawBerries" in t, "RM_RawLanneth" in t, "RM_NoSuchXYZ" in t), flush=True)

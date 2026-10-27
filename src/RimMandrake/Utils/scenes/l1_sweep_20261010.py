@@ -31,7 +31,7 @@ if (p1, p2) != ("found", "notFound"): sys.exit(2)
 
 # SUMP_NOOTHELM_B_PLANT_1 A1
 a, b = present("ThingDef/RM_Lanneth"), present("ThingDef/RM_RawLanneth")
-r = get("RecipeDef/RSW_CookFruitOnAStick", "ingredients")
+r = get("RecipeDef/RSW_CookRoastOnAStick", "ingredients")
 txt = j(r, 4000)
 acc = "RM_RawLanneth" in txt
 out("SUMP_NOOTHELM_B_PLANT_1/A1", "PASS" if (a, b) == ("found", "found") and acc else "FAIL",
