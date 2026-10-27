@@ -99,7 +99,7 @@ DEFAULT_MISTAG_MIN = 2      # how many bridge-free / game-UP events "many times"
 # model.py: "BENCH and FOUNDRY are the live windows (redesign #4, 2026-08-27). The
 # four retired seats stay listed so the ledger's history replays and legacy items
 # keep their owners." Those four are exactly the seats this tool flags as orphaned.
-RETIRED_SEATS = tuple(s for s in model.SEATS if s not in ("BENCH", "FOUNDRY", "OWNER", "RUNNER"))
+RETIRED_SEATS = tuple(s for s in model.SEATS if s not in ("BENCH", "FOUNDRY", "OWNER", "RUNNER", "DISPATCHER"))
 
 
 def _parse_ts(ts):

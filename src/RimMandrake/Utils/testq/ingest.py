@@ -235,14 +235,16 @@ def ingest_group(job, res, item, gres, att):
     return {"run": run, "result": verdict(gres), "findings": found}
 
 
-def publish(n):
+def publish(n, shard_rel=SHARD_REL, message=None):
+    """Commit `shard_rel` alone, pull --rebase, lint, push. Also the RimFlow v3 Dispatcher's publisher for its
+    DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
-    a = git("add", "--", SHARD_REL)
+    a = git("add", "--", shard_rel)
     if a.returncode != 0:
         return "add failed (the lines stay in the working tree; the next ingest retries): " + a.stderr.strip()[-200:]
-    if git("diff", "--cached", "--quiet", "--", SHARD_REL).returncode != 0:
-        c = git("commit", "-q", "-m", "ledger: RUNNER ingest of %d testq job(s)" % n, "--", SHARD_REL)
+    if git("diff", "--cached", "--quiet", "--", shard_rel).returncode != 0:
+        c = git("commit", "-q", "-m", message or "ledger: RUNNER ingest of %d testq job(s)" % n, "--", shard_rel)
         if c.returncode != 0:
             return "commit failed: " + c.stderr.strip()[-200:]
     p = None
@@ -287,12 +289,12 @@ def lint_refusal():
     return ("exit %d: " % r.returncode) + " | ".join(lines[-4:])[-300:]
 
 
-def unpublished():
+def unpublished(shard_rel=SHARD_REL):
     """True when an earlier ingest left work behind: RUNNER lines not committed (a publish that died or failed
     before its commit; the done records are already marked, so n is 0 from then on) or commits not pushed."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=60).stdout.strip()
-    return bool(git("status", "--porcelain", "--", SHARD_REL)) or git("rev-list", "--count", "origin/main..HEAD") \
+    return bool(git("status", "--porcelain", "--", shard_rel)) or git("rev-list", "--count", "origin/main..HEAD") \
         not in ("", "0")
 
 

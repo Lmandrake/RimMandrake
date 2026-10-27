@@ -88,7 +88,7 @@ LEDGER = REPO_ROOT / "infrastructure" / "state" / "ledger" / "events.jsonl"
 # `rimflow.model.SEATS` on purpose: this script is stdlib-only and must still run when
 # the ledger it repairs is too broken for `rimflow` to import cleanly.
 SHARDS = LEDGER.parent / "events"
-SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER")
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
 TRANSIENT_DIR = REPO_ROOT / "Transient"
 MAX_BAD_LINES = 25
 

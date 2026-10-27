@@ -190,8 +190,12 @@ def item_path(iid, for_write=False):
 # RUNNER (2026-10-25, owner by card: "a new RUNNER record of its own") is no window: the
 # test queue's dispatcher writes it from its own clone (~/rm/dispatch) to record what a
 # SteveDesktop run measured. It may emit RUNNER_VERBS only - see `_who_refusal`.
-SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER")
+# DISPATCHER (2026-10-26, RimFlow v3.0, design/RimMandrake/rimflow_v3_2026-10-26.md §2: "a program, not an AI
+# ... records") is no window either: `rimflow/dispatcher.py` notes on an item what it handed out, woke, verified
+# or gave up on. It may emit DISPATCHER_VERBS only — it never claims, closes or files.
+SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
 RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise")
+DISPATCHER_VERBS = ("note",)
 # 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward
 # (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design/RimMandrake/work_allocation_framework_2026-10-26.md
 # §6.4): an idle lane nobody owns escalates as WORK, so the steward must be able to file
@@ -2285,6 +2289,9 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     if seat == "RUNNER" and verb not in RUNNER_VERBS:      # above `file`, which `_may` never sees
         raise PermissionError_("RUNNER records test runs only (%s); `%s` is a window's verb."
                                % (", ".join(RUNNER_VERBS), verb))
+    if seat == "DISPATCHER" and verb not in DISPATCHER_VERBS:
+        raise PermissionError_("DISPATCHER records what it dispatched only (%s); `%s` is a window's verb."
+                               % (", ".join(DISPATCHER_VERBS), verb))
     if verb == "file":
         _apply_file(ev, index, world)
         return

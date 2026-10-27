@@ -1,0 +1,2 @@
+A Claude Code hook marked asyncRewake keeps running after its session is killed: measured 2026-10-26 (Claude Code 2.1.308), the doorbell Stop hook survived the session kill re-parented to /init and would have waited its full 23 h timeout. Any long-waiting async hook must find its claude ancestor at start and exit when that pid dies (doorbell.claude_ancestor + owner_pid guard, fixed in the same build, RIMFLOW_V3_BUILD_DISPATCHER_FIRST).
+home: src/RimMandrake/rimflow/doorbell.py

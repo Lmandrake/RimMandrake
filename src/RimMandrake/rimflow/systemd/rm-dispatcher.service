@@ -1,0 +1,14 @@
+# RimFlow v3.0 Dispatcher tick (RIMFLOW_V3_BUILD_DISPATCHER_FIRST; src/RimMandrake/rimflow/dispatcher.py).
+# Runs from the dispatch clone like testq-tick.service. DRY-RUN: no --apply on purpose. Turning it live is the
+# owner's 48 h proof: add --apply to ExecStart (and install doorbell.py as the seat's Stop hook) only then.
+# Install: cp rm-dispatcher.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload
+#          && systemctl --user enable --now rm-dispatcher.timer
+[Unit]
+Description=RimFlow v3.0 Dispatcher tick (dry-run)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=GIT_CONFIG_COUNT=2 GIT_CONFIG_KEY_0=gc.autoDetach GIT_CONFIG_VALUE_0=false GIT_CONFIG_KEY_1=maintenance.autoDetach GIT_CONFIG_VALUE_1=false
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/dispatcher.py tick
+TimeoutStartSec=600

@@ -1,0 +1,11 @@
+# Every 2 min (design §2: the Dispatcher runs every 2 min). The clone is pulled by testq-tick.service every minute.
+[Unit]
+Description=RimFlow v3.0 Dispatcher every 2 min
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=120s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

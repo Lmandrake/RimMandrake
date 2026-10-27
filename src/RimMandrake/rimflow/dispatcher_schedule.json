@@ -1,0 +1,33 @@
+{
+ "_doc": "RimFlow v3.0 Dispatcher schedule (design/RimMandrake/rimflow_v3_2026-10-26.md §3: one schedule file runs every role). Read by src/RimMandrake/rimflow/dispatcher.py. Times in seconds. The owner sets this file; v3.0 runs no roles.",
+ "tick_s": 120,
+ "stall_after_s": 240,
+ "verify_s": 300,
+ "handoff_s": 600,
+ "max_retries": 2,
+ "cooldown_s": 3600,
+ "dead_after_s": 600,
+ "recover_verify_s": 300,
+ "owner_idle_s": 1200,
+ "alarm_every_s": 21600,
+ "ledger_notes": true,
+ "publish": true,
+ "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",
+ "caps": {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3},
+ "seats": {
+  "FOUNDRY": {"enabled": true, "wake": true, "recover_dead": true, "session_name": "AGENT FOUNDRY",
+              "clone": "/home/mandrake/rm/foundry", "model": "sonnet"},
+  "BENCH": {"enabled": true, "wake": false, "recover_dead": false, "session_name": "AGENT BENCH",
+            "clone": "/home/mandrake/rm/bench", "model": "opus",
+            "_why": "BENCH is the owner's workshop window (the Conductor's session mode): watched, never woken or resumed by a program"}
+ },
+ "roles": [
+  {"name": "Conductor", "enabled": false, "trigger": "his message", "from": "v3.1"},
+  {"name": "Arbiter", "enabled": false, "trigger": "feature claims done", "from": "v3.2"},
+  {"name": "Auditor", "enabled": false, "trigger": "daily", "from": "v3.2"},
+  {"name": "Operations", "enabled": false, "trigger": "2x/day + alarms", "from": "v3.3"},
+  {"name": "Producer", "enabled": false, "trigger": "daily list, weekly plan", "from": "v3.4"},
+  {"name": "Innovator", "enabled": false, "trigger": "process 2x/week, design weekly", "from": "v3.5"}
+ ],
+ "throttle_order": ["Innovator", "Auditor", "Producer", "Arbiter", "Operations"]
+}
