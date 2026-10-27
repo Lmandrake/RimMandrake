@@ -62,8 +62,11 @@ the Conductor.
 ## The run
 
 1. Read, in this order and only these unless a step needs more: `CONDUCTOR_GOALS.md` (newest block), the newest
-   `REPLAN REQUEST` note on the parent item (`rimflow show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, last notes only), the
-   Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `rimflow queue BENCH` / `rimflow queue FOUNDRY`. A round,
+   `REPLAN REQUEST` note on the parent item (`python3 src/RimMandrake/rimflow/blind_view.py show
+   V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --last 3 --prefix "REPLAN REQUEST"`), the
+   Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` / `... queue FOUNDRY`
+   (never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values; the
+   blind view redacts them and withholds items about accounts). A round,
    zero or alarming number is a query bug until a sanity probe proves the instrument can see
    (`infrastructure/state/facts/instrument_traps.md`).
 2. **Replan first** if a request or a failed plan step is open: a cut list (what drops, which goal it served, what

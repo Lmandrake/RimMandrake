@@ -75,7 +75,9 @@ decide together. You only RAISE it; you never cut, reorder or drop work on your 
 
 ## Quick mode (fresh per scheduled run; short)
 
-1. Read `digest_blind.md` (one screen; never `digest.md`, which is Operations') and `rimflow queue BENCH`. Answer him from them. A round, zero or alarming number is
+1. Read `digest_blind.md` (one screen; never `digest.md`, which is Operations') and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` (an item's notes:
+   `blind_view.py show <ID>`; never raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry
+   account and cap values). Answer him from them. A round, zero or alarming number is
    a query bug until a sanity probe proves the instrument can see (`infrastructure/state/facts/instrument_traps.md`).
 2. His words become work: a ruling → ledger with the right flag (`--owner-said` his words, `--by-card`,
    `--per-ruling`), then propagate it (`deciding-and-superseding`) or file the propagation as an item; an

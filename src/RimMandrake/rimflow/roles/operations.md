@@ -19,7 +19,7 @@ burning tokens gathering it all up for every question considered."
 - **The Dispatcher measures** (no AI): `src/RimMandrake/Utils/ops_watch.py`, every 15 min from `rm-ops-watch.timer`,
   gathers every KPI family into `D:\ClaudeWork\rimmandrake\ops_watch\series\<family>.jsonl`, raises the Andon flags,
   and files an alarm item once per NEW crossing. An account, runway or burn alarm (`accounts.*`, `codex.*`,
-  `tokentalk.*`) is yours alone and is NEVER a ledger item (the token-blind roles read `rimflow queue`): it stays
+  `tokentalk.*`) is yours alone and is NEVER a ledger item (the token-blind roles read the queue, through `blind_view.py`): it stays
   OPEN in `alarms.json` with `"for": "Operations"`, and its run notes on your own item, never with a value on any
   other item (review V, V2). It already fed the slot allocator (disk brake, Codex and Steve
   advice) before you woke.

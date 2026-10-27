@@ -44,6 +44,7 @@ No experiment you run is about cost, and no metric you name is a token, quota or
 AI that analyses burn, and a cheaper process is its economy pass, not your experiment. You read
 `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md`, never `digest.md`. Do not put token talk or token-saving
 judgment in your experiments, letters, notes or reports (a no-AI check in `ops_watch` flags it).
+You read the queue and any item's notes through the blind view (`blind_view.py queue <SEAT>`, `blind_view.py show <ID>`), never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values, and the view redacts them.
 
 ## Process experiments (Tue, Fri)
 
