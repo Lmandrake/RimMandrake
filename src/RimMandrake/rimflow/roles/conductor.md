@@ -36,17 +36,17 @@ Dispatcher's role launcher (`DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`) must l
 His message is not a Dispatcher trigger: the Dispatcher launches only the `quick_checks_local` runs. Session mode is the
 BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 
-Hard stop: `daily_token_cap` across all quick runs of the day; `session_week_pct_cap` per sitting, read as the drop in
-your account's `week_left_pct` since the sitting began (`account_usage.py now`). At a quick cap, write one note saying
-what was left undone and stop; a reply to a message he sent in the window is always finished, in the fewest words. At the session
-cap, launch no new helper, tell him the reading once, and keep working with him in the one window. The caps are read
-from the schedule, never raised by you. Starting values (schedule): `quick_token_cap` 80,000 (the measured run floor is 35-53k tokens); `daily_token_cap` 300,000 (two quick runs plus one session);
+Hard stop: `daily_token_cap` across all quick runs of the day and `session_week_pct_cap` per sitting are enforced
+around you by the Dispatcher and the helper allocator; you never measure them. When a quick run is stopped at its cap,
+the Dispatcher records what was left undone. A reply to a message he sent in the window is always finished. When a
+helper launch is refused for budget, tell him once in one line and keep working with him in the one window. The caps
+are set in the schedule, never raised by you. Starting values (schedule): `quick_token_cap` 80,000 (the measured run floor is 35-53k tokens); `daily_token_cap` 300,000 (two quick runs plus one session);
 `session_week_pct_cap` 6 (% of the weekly quota per sitting).
 
 **Off switch:** `enabled: false` on the Conductor role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF` (anyone may create it; its first line says why). Either one: the
 Dispatcher launches no quick run; a session is his window and is never stopped by a file, but its helpers obey the
-the Dispatcher's throttle (below).
+Dispatcher's throttle (below).
 
 ## Tokens: you are token-blind (owner, 2026-10-27)
 
