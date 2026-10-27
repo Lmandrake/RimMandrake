@@ -389,9 +389,82 @@ def test_r2_6_disabled_seat():
           "r2#6 disabled seat with no ring: nothing done for it")
 
 
+# ------------------------------------------------------------------------------------------------ review r3
+def test_r3_lock_and_missing_state():
+    """r3 #1: stop-runs holds the live tick.lock through snapshot + verification (a mid-launch tick cannot start a run
+    after the snapshot). r3 #2: state.json MISSING with live runs on the registry is not a fresh start."""
+    import fcntl
+    old_env = os.environ["RM_DISPATCHER_STATE"]
+    try:
+        root = os.path.join(TMP, "r3")
+        os.environ["RM_DISPATCHER_STATE"] = root
+        os.makedirs(root, exist_ok=True)
+        t = at_local("19:00")
+        run = {"unit": "rm-role-operations-7", "at": t, "day": RL.day_of(t), "budget": 1, "mode": "run",
+               "state": "running", "seat": "BENCH", "run_max_s": 1800, "marker": "rm-role-operations-7",
+               "scope": RL.role_scope("BENCH", "rm-role-operations-7")}
+        st = fresh()
+        st["roles"] = {"Operations": {"done": {}, "runs": [dict(run)]}}
+        D.save(st, root)
+        sch = sched(roles=[operations()])
+        ro = {"unit_state": lambda u: "inactive", "procs": lambda m, **k: []}
+        # #1: a tick holds the lock -> stop-runs waits; past the budget it is UNMEASURED, never "all ended"
+        clock = {"t": 0.0}
+        with open(os.path.join(root, "tick.lock"), "w") as held:
+            fcntl.flock(held, fcntl.LOCK_EX)
+            ok, lines = D.stop_runs(sch, wait_s=10, force_after_s=5, obs=ro, clock=lambda: clock["t"],
+                                    sleep=lambda s: clock.__setitem__("t", clock["t"] + s),
+                                    stopper=lambda *a, **k: "x")
+        check(not ok and "UNMEASURED" in lines[0] and clock["t"] >= sch.get("tick_budget_s", 420),
+              "r3#1 stop-runs waits for a running tick's lock and never verifies around it (%r)" % lines[:1])
+        ok, lines = D.stop_runs(sch, wait_s=10, force_after_s=5, obs=ro, stopper=lambda *a, **k: "x")
+        check(ok, "r3#1 ... and with the lock free it verifies as before (%r)" % lines)
+        lk = open(os.path.join(root, "tick.lock"), "w")
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            freed = True
+        except BlockingIOError:
+            freed = False
+        lk.close()
+        check(freed, "r3#1 stop-runs releases the lock when it returns")
+        # #2: state.json removed while the registry still lists a live run
+        os.remove(os.path.join(root, "state.json"))
+        try:
+            D.load_state(root)
+            raised = False
+        except D.StateUnreadable:
+            raised = True
+        check(raised, "r3#2 state.json missing + a live run on the registry -> not a fresh state")
+        stops = []
+        fx = {"role_stop": lambda *a, **k: stops.append((a, k)) or "stopped", "lock": lambda: None,
+              "note": lambda i, tx: (True, ""), "publish": lambda n: "p"}
+        o = obs()
+        o["roles"] = robs(ops_status(t + 4000), unit="active")
+        acts = D.tick(sch, True, obs=o, now=t + 4000, fx=fx)
+        check(not any(x.get("do") == "role_launch" for x in acts) and len(stops) == 1
+              and not os.path.exists(os.path.join(root, "state.json")),
+              "r3#2 ... the tick supervises the registry (overtime run stopped), launches nothing, writes no fresh "
+              "state (%d stop(s))" % len(stops))
+        ro_live = {"unit_state": lambda u: "active", "procs": lambda m, **k: []}
+        ok, lines = D.stop_runs(sch, wait_s=0, force_after_s=0, obs=ro_live, stopper=lambda *a, **k: "x")
+        check(not ok and any(run["unit"] in ln for ln in lines),
+              "r3#2 stop-runs with state.json missing still finds the registry's live run (%r)" % lines)
+        # a readable state that lost a run the registry still lists: the union is stopped
+        D.save(fresh(), root)
+        S_reg = {"roles": {"Operations": {"runs": [dict(run)]}}, "alarms": {}, "saved_at": time.time()}
+        with open(D.runs_path(root), "w") as f:
+            json.dump(S_reg, f)
+        ok, lines = D.stop_runs(sch, wait_s=0, force_after_s=0, obs=ro_live, stopper=lambda *a, **k: "x")
+        check(not ok and any(run["unit"] in ln for ln in lines),
+              "r3#2 stop-runs takes the union of state and registry")
+    finally:
+        os.environ["RM_DISPATCHER_STATE"] = old_env
+
+
 def main():
     for t in (test_r2_1_stop_isolated, test_r2_2_bound_registry_rollback, test_r2_3_unreadable_is_unmeasured,
-              test_r2_4_withdraw_outcomes, test_r2_5_raise_before_run, test_r2_6_disabled_seat):
+              test_r2_4_withdraw_outcomes, test_r2_5_raise_before_run, test_r2_6_disabled_seat,
+              test_r3_lock_and_missing_state):
         try:
             t()
         except Exception as e:  # noqa: BLE001

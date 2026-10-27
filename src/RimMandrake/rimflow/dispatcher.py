@@ -130,6 +130,11 @@ def load_state(root):
         if os.path.exists(p):
             # Fail closed: a torn/unreadable state would silently reset every cap and pending ring.
             raise StateUnreadable("%s exists but is unreadable" % p)
+        # Missing state with live runs on the registry is not a fresh start: deleting state.json must not reset
+        # run tracking and caps while a role still runs (review r3 #2) -> supervise the registry, decide nothing.
+        n = _registry_live(root)
+        if n:
+            raise StateUnreadable("%s is missing but the run registry has %d live run(s)" % (p, n))
         st = {}
     st.setdefault("seats", {})
     st.setdefault("wakes", [])          # [{seat, at}] for the caps
@@ -1075,6 +1080,11 @@ def save(st, root):
         pass
 
 
+def _registry_live(root):
+    reg = load_registry(root)
+    return sum(len(rs.get("runs") or []) for rs in (reg or {}).get("roles", {}).values() if isinstance(rs, dict))
+
+
 def load_registry(root):
     """-> {"roles": {...}} or None when absent or unreadable."""
     reg = doorbell._read_json(runs_path(root))
@@ -1085,7 +1095,7 @@ def supervise_registry(sch, root, apply, now, obs, fx, why):
     """state.json is unreadable: nothing is decided (no wakes, no launches), but the runs on the registry are
     supervised and stopped past run_max_s exactly as a normal tick would (review r2 #2). The registry is written
     back (stop_tries); state.json is left alone for the owner. -> the actions."""
-    rec = {"at": iso(now), "do": "skip", "why": "state UNREADABLE, no decisions (fix or remove it): %s" % why}
+    rec = {"at": iso(now), "do": "skip", "why": "state UNREADABLE or missing with live runs, no decisions (fix it; removing it changes nothing while the registry holds live runs): %s" % why}
     reg = load_registry(root)
     if reg is None:
         rec["why"] += ("; the run registry %s is unreadable too: live runs are bounded only by their scopes' own "
@@ -1126,18 +1136,50 @@ def stop_runs(sch, wait_s=120, force_after_s=60, obs=None, clock=time.time, slee
     (unit and scope terminal, marker scan clean: role_launch.ended). TERM first, KILL after force_after_s. Writes
     no state (the next tick records the runs' ends). -> (all_ended, lines)."""
     root = state_root(True)
+    os.makedirs(root, exist_ok=True)
+    # Hold the live tick.lock for the whole snapshot + verification: an apply tick mid-launch could otherwise start a
+    # run after the snapshot and "ALL ENDED" would be false (review r3 #1). The lock is released on return.
+    lk = open(os.path.join(root, "tick.lock"), "w")
+    t_lock = clock()
+    while True:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            break
+        except BlockingIOError:
+            if clock() - t_lock >= sch.get("tick_budget_s", 420) + 60:
+                lk.close()
+                return False, ["a tick holds %s past its budget: live runs UNMEASURED; retry, or list them: "
+                               "systemctl --user list-units 'claude-seat-*-rm-role-*' 'rm-role-*'"
+                               % os.path.join(root, "tick.lock")]
+            sleep(2)
     try:
-        st = load_state(root)
-        roles = st.get("roles") or {}
+        return _stop_runs_locked(sch, root, wait_s, force_after_s, obs, clock, sleep, stopper)
+    finally:
+        lk.close()
+
+
+def _stop_runs_locked(sch, root, wait_s, force_after_s, obs, clock, sleep, stopper):
+    roles, blind = {}, []
+    try:
+        roles = dict(load_state(root).get("roles") or {})
     except StateUnreadable as e:
-        reg = load_registry(root)
-        if reg is None:     # blind: never "all ended" (list the scopes by hand)
-            return False, ["state UNREADABLE (%s) and the run registry %s unreadable: live runs UNMEASURED; list "
-                           "them: systemctl --user list-units 'claude-seat-*-rm-role-*' 'rm-role-*'" % (
-                               e, runs_path(root))]
-        roles = reg.get("roles") or {}
-    runs = [(n, r) for n, rs in sorted(roles.items()) if isinstance(rs, dict)
-            for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"]
+        blind.append("state: %s" % e)
+    reg = load_registry(root)
+    if reg is None and os.path.exists(runs_path(root)):
+        blind.append("run registry %s unreadable" % runs_path(root))
+    if blind and reg is None:     # blind: never "all ended" (list the scopes by hand)
+        return False, ["%s: live runs UNMEASURED; list them: systemctl --user list-units "
+                       "'claude-seat-*-rm-role-*' 'rm-role-*'" % "; ".join(blind)]
+    # union of state and registry (review r3 #2): a run either one still lists as running is stopped and verified
+    seen, runs = set(), []
+    for src in (roles, (reg or {}).get("roles") or {}):
+        for n, rs in sorted(src.items()):
+            if not isinstance(rs, dict):
+                continue
+            for r in rs.get("runs") or []:
+                if isinstance(r, dict) and r.get("state", "running") == "running" and r.get("unit") not in seen:
+                    seen.add(r.get("unit"))
+                    runs.append((n, r))
     o = obs or role_obs(sch)
     stopper = stopper or RL.stop
     lines, t0, forced = [], clock(), False
