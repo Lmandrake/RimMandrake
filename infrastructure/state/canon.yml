@@ -2159,15 +2159,14 @@ art_geometric_correction_delegated:
 art_marks_newest_wins_delegated:
   ruled: true
   src: >
-    Owner card, 2026-10-26 19:06 PDT: "May 'newest mark wins' become a
-    delegated rule, with X moving the picture to the art archive (one-command
-    restore) instead of deleting it, and each act listed in your digest?" ->
-    "Newest mark wins, X archives (Recommended)". Class: carrying out his own
-    sheet marks without re-asking. When his newer mark conflicts with an older
-    keep, the newest mark wins; his X on a picture (kept or in the game) moves
-    it to the art archive with a one-command restore, never a purge. Each act
-    is listed in his daily digest. Text: design/RimMandrake/delegation_policy.md
-    §2.3. Build: ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE.
+    Owner card, 2026-10-26 19:06 PDT: newest mark wins - when his newer sheet
+    mark conflicts with an older keep, the newest mark wins, carried out
+    without re-asking, each act in his digest. Owner card, 2026-10-26 19:54
+    PDT ("What should X mean now?" -> "X = delete forever + ban"): his X
+    deletes the picture's bytes forever and records a permanent ban (exact sha
+    and near-duplicates) that every sheet, install and redraw refuses, so an
+    X'd picture never returns. Text: design/RimMandrake/delegation_policy.md
+    section 2.3. Build: ART_X_BUILD_DELETE_FOREVER_BAN.
 bridge_free_idle_restart_delegated:
   ruled: true
   src: >

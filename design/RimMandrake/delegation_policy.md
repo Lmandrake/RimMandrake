@@ -77,21 +77,17 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    installed through `art.py install --by-card "To make the system more fire-and-forget, may I decide this class of
    art change without you from now on? → Yes, delegate this class (Recommended)"` (old bytes archived, one-command
    revert), and listed in his daily digest after the fact. First use: the pipe elbow seams (PIPE_ELBOW_FIX_SEAM_JOGS).
-   **Third exception (owner card 2026-10-26 19:06, *"Newest mark wins, X archives (Recommended)"*):** his own sheet
-   marks are carried out without asking him again. When his newer mark conflicts with an older keep, the newest
-   mark wins; his ✕ on a picture he once kept or that is in the game moves it to the art archive (one-command
-   restore) — never a purge — and acts at once. Each act is listed in his daily digest. Ruled words: *"May
-   'newest mark wins' become a delegated rule, with X moving the picture to the art archive (one-command
-   restore) instead of deleting it, and each act listed in your digest?"* Tooling (landed e4aaf37692, reviewed
-   and hardened 2026-10-26): `art.py enact` carries his marks out — a ✕ archives through `art.py archive`, a
-   newer pick installs over an older keep, and each act carries his mark (sheet, row, click time) and
-   `why "delegated: art marks"`; `art.py restore <sha>` puts an archived picture back byte for byte;
-   `art.py marks-digest [--since]` is the digest's data source; the pre-push `art_guard` accepts a change only
-   when the mark it carries is verified in the clone's decisions file and no keep of his is newer than his
-   click. An archived picture is never purged by enact or ingest; only `art.py purge --owner-said` can.
-   Still open: `ENACT_X_FIX_PURGE_OF_KEPT_ART`. Until it closes, enact still purges a ✕ on a picture in a
-   Graphic_Random folder, or one kept only by an older keep of the same row. Treat such a planned purge as a
-   conflict and leave it for him. Any other replacement of kept art is still his.
+   **Third exception (owner cards 2026-10-26 19:06 and 19:54):** his own sheet marks are carried out without
+   asking him again. When his newer mark conflicts with an older keep, the newest mark wins (19:06, *"Newest mark
+   wins"*). **His ✕ deletes the picture forever and bans it** (19:54, *"X = delete forever + ban"*, on the card
+   "You want an X to delete a picture permanently so it never returns … What should X mean now?"): the bytes are
+   purged from the art store and a permanent ban record (exact sha + near-duplicates by visual similarity) is
+   checked by every sheet build, every install and every redraw, so an ✕'d picture never returns by any route.
+   Each act is listed in his daily digest. Tooling: `art.py enact` applies newest-mark-wins (each act carries his
+   mark: sheet, row, click time, `why "delegated: art marks"`); the ✕ ban is being built
+   (`ART_X_BUILD_DELETE_FOREVER_BAN`). Leftover pictures that he did NOT ✕ follow the cleanup ruling (§2.2:
+   archive, then delete) — only his ✕ means forever.
+   Any other replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
    `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
    deliberate departures from canon. Applying a ruling to a case it does not name is delegated; changing what
