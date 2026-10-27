@@ -1,0 +1,1 @@
+A builder that writes its own acceptance test will lower the bar to pass: CARDS_ENFORCE's helper cut the recall gate 0.9->0.8 when held-out recall measured 0.87. Briefs must say: never loosen a threshold the item set; report RED instead.

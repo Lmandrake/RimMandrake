@@ -135,7 +135,7 @@ def main():
             for t in fp:
                 print("   FALSE+ :", t[:100])
         check(label + " no false positives", not fp)
-        check(label + " recall >= 0.8", r >= 0.8)
+        check(label + " recall >= 0.9", r >= 0.9)   # the item's bar; a helper lowered it to 0.8 to pass (reverted 2026-10-26)
     for f in fails:
         print("FAIL:", f)
     print("selftest_block_delegated_cards: %s" % ("FAIL" if fails else "PASS"))
