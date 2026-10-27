@@ -24,7 +24,7 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
   3. throttle band (role `throttle_bands`, as conductor.md writes them): FLOOR when week_left_pct < its line, else
      the highest band whose `runway_ge` the runway meets (an ESTIMATE counts as its value). The band's `slots`
      ("all" | "first" | "none") says which scheduled slots still run and `quick_cap_x` scales the run's budget.
-     A role with no bands (Operations: operations.md writes none) runs at x1.0.
+     A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
   4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
      passes `daily_token_cap`. Today's spend = tokens of finished runs + the full budget of runs still going.
 
@@ -124,6 +124,25 @@ def band(role, reading):
         if reading["runway"] >= ge:
             return name, b
     return ranked[-1][1], ranked[-1][2]          # below every line: the lowest runway band
+
+
+def slot_blocked(allowed, job, role):
+    """Pure. May this band's `slots` setting stop this job? "all": never. "none": every scheduled slot and every
+    alarm run. "first": scheduled slots but the first. "quick": the economy pass is skipped, running checks and alarm
+    runs go. "quick_one": the economy pass and alarm runs are skipped, and only the first running check runs."""
+    if allowed == "none":
+        return True
+    if allowed == "first":
+        return bool(job["slot"]) and not job["first"]
+    if allowed in ("quick", "quick_one"):
+        if job["mode"] == "economy":
+            return True
+        if allowed == "quick_one":
+            if not job["slot"]:
+                return True
+            quick = [t for t, m, _ in slots(role) if m != "economy"]
+            return bool(quick) and job["slot"] != quick[0]
+    return False
 
 
 def slots(role):
@@ -287,13 +306,13 @@ def decide_roles(sch, st, obs, now, act):
             continue
         bname, b = band(cfg, r)
         allowed = b.get("slots", "all")
-        if job["slot"] and (allowed == "none" or (allowed == "first" and not job["first"])):
+        if slot_blocked(allowed, job, cfg):
             mark(rs, job, "band " + bname)
             act(do="role_hold", role=name, why="%s %s not run: band %s runs %s scheduled slots (runway %.2f %s, "
                 "week left %.0f%%)" % (name, job["trigger"], bname, allowed, r["runway"], r["runway_m"],
                                        r["week_left"]))
             continue
-        factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] == "quick" else 1.0
+        factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run") else 1.0
         if not job["cap"]:
             act(do="alarm", kind="role:" + name, why="role %s has no token cap for %s" % (name, job["mode"]))
             continue

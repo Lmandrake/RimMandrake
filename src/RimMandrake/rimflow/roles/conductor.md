@@ -30,15 +30,17 @@ Dispatcher's role launcher (`DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`) must l
 
 | trigger | mode | what you do | budget |
 |---|---|---|---|
-| his message (phone or any channel he uses away from the bench) | quick | answer it; turn it into Dispatcher instructions or tickets | `quick_token_cap` |
 | `quick_checks_local` (08:00, 20:00), each after an Operations run | quick | the scheduled check below | `quick_token_cap` |
-| he sits down at the bench (the BENCH window is his) | session | the workshop below | `session_week_pct_cap` |
+| he speaks in the BENCH window (session mode: the BENCH seat window itself, not a Dispatcher launch) | session | the workshop below | `session_week_pct_cap` |
+
+His message is not a Dispatcher trigger: the Dispatcher launches only the `quick_checks_local` runs. Session mode is the
+BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 
 Hard stop: `daily_token_cap` across all quick runs of the day; `session_week_pct_cap` per sitting, read as the drop in
 your account's `week_left_pct` since the sitting began (`account_usage.py now`). At a quick cap, write one note saying
-what was left undone and stop; a reply to a message he sent is always finished, in the fewest words. At the session
+what was left undone and stop; a reply to a message he sent in the window is always finished, in the fewest words. At the session
 cap, launch no new helper, tell him the reading once, and keep working with him in the one window. The caps are read
-from the schedule, never raised by you. Starting values (schedule): `quick_token_cap` 30,000; `daily_token_cap` 200,000;
+from the schedule, never raised by you. Starting values (schedule): `quick_token_cap` 80,000 (the measured run floor is 35-53k tokens); `daily_token_cap` 300,000 (two quick runs plus one session);
 `session_week_pct_cap` 6 (% of the weekly quota per sitting).
 
 **Off switch:** `enabled: false` on the Conductor role in the schedule (the owner's), or the file
@@ -56,14 +58,16 @@ first beat pausing roles on every output and escape measure).
 | band | reading | session helpers | quick mode |
 |---|---|---|---|
 | GREEN | runway ≥ 1.5 | min(slot allocator N for BENCH, 3) | `quick_token_cap`; both scheduled checks |
-| AMBER | 1.0 ≤ runway < 1.5, or the reading UNMEASURED, or `status.json` older than 45 min | min(N, 2): builder and live-test only, no design fan-out | cap × 0.6; the 08:00 check only |
-| RED | runway < 1.0 (the `RUNWAY_LOW` alarm line) | min(N, 1) | cap × 0.4; answers from `digest.md` only; scheduled check only for enact items and canon findings older than 24 h |
-| FLOOR | `week_left_pct` < 10 | none | his messages only, digest answers, no tickets beyond filing |
+| AMBER | 1.0 ≤ runway < 1.5 | min(N, 2): builder and live-test only, no design fan-out | cap × 0.75 (60,000); the 08:00 check only |
+| RED | runway < 1.0 (the `RUNWAY_LOW` alarm line) | min(N, 1) | cap × 0.75 (60,000, above the run floor); answers from `digest.md` only; scheduled check only for enact items and canon findings older than 24 h |
+| FLOOR | `week_left_pct` < 10 | none | digest answers, no tickets beyond filing |
+
+A stale (`status.json` older than 45 min) or UNMEASURED reading is not a band: the Dispatcher refuses the launch with an alarm (the dead-man timer covers ops_watch's own death), so a scheduled quick run never starts blind. In a session you read it yourself and act as AMBER until it is measured.
 
 An ESTIMATE runway counts as its value. Entering a lower band, tell him once (one line, with the reading and its
 word); never more than once a day. Loosening this table is his.
 
-## Quick mode (fresh per message; short)
+## Quick mode (fresh per scheduled run; short)
 
 1. Read `digest.md` (one screen) and `rimflow queue BENCH`. Answer him from them. A round, zero or alarming number is
    a query bug until a sanity probe proves the instrument can see (`infrastructure/state/facts/instrument_traps.md`).

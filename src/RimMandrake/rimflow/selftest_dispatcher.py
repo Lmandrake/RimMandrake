@@ -710,6 +710,53 @@ def test_role_economy_and_alarms():
           "a run past run_max_s: its scope and unit are stopped, with an alarm")
 
 
+def test_role_real_schedule_caps_and_ops_bands():
+    sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
+    roles = {r["name"]: r for r in sch["roles"]}
+    c, o = roles["Conductor"], roles["Operations"]
+    check(c["quick_token_cap"] == 80000 and c["daily_token_cap"] == 300000 and c["session_week_pct_cap"] == 6,
+          "schedule: Conductor caps 80,000 / 300,000 / 6%")
+    check(o["run_token_cap"] == 80000 and o["daily_token_cap"] == round(80000 * 2 * 1.25),
+          "schedule: Operations run cap 80,000, daily 80,000 x 2 + 25%")
+    for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
+        for bn, b in r["throttle_bands"].items():
+            check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 60000,
+                  "%s band %s: launches nothing or stays >= 60,000" % (r["name"], bn))
+    base = at_local("07:30")
+    ev = at_local("19:30")
+
+    def run(now, **kw):
+        st = fresh()
+        if now == ev:                      # the morning slot is long past (else it is reported missed first)
+            st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x"}, "runs": []}}
+        return st, role_acts(rdecide([dict(o, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+                                          clone=os.path.join(TMP, "clone"))], st,
+                                     robs(ops_status(now, **kw)), now))
+    st, a = run(base, runway=2.0)
+    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 100000, "Ops GREEN 07:30: economy pass")
+    st, a = run(base, runway=1.2)
+    check([x["do"] for x in a] == ["role_hold"] and "band AMBER" in a[0]["why"], "Ops AMBER 07:30: no economy pass")
+    st, a = run(ev, runway=1.2)
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 80000, "Ops AMBER 19:30: quick run, 80,000")
+    st, a = run(ev, runway=0.5)
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 60000, "Ops RED 19:30: the one quick run, 60,000")
+    st, a = run(base, runway=0.5)
+    check([x["do"] for x in a] == ["role_hold"], "Ops RED 07:30: economy pass held")
+    st, a = run(ev, week_left=5)
+    check([x["do"] for x in a] == ["role_hold"] and "FLOOR" in a[0]["why"], "Ops FLOOR: nothing")
+    # alarm runs: RED and FLOOR block, AMBER allows
+    for rw, wl, want in ((1.2, 50, True), (0.5, 50, False), (2.0, 5, False)):
+        st = fresh()
+        st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x", "%s 19:30" % RL.day_of(ev): "x"},
+                                      "runs": [], "alarms_seen": []}}
+        al = {"k": {"state": "OPEN", "item": "OPS_NEW"}}
+        a = role_acts(rdecide([dict(o, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+                                    clone=os.path.join(TMP, "clone"))], st,
+                              robs(ops_status(ev, runway=rw, week_left=wl, alarms=al)), ev))
+        check(bool([x for x in a if x["do"] == "role_launch"]) == want,
+              "Ops alarm run at runway %s week_left %s: %s" % (rw, wl, "runs" if want else "blocked"))
+
+
 def test_role_execute_and_dry():
     calls = []
 
@@ -774,7 +821,8 @@ def test_role_execute_and_dry():
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner,
-              test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms, test_role_execute_and_dry):
+              test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
+              test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry):
         try:
             t()
         except Exception as e:  # noqa: BLE001

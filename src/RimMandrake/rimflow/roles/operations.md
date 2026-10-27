@@ -31,6 +31,23 @@ burning tokens gathering it all up for every question considered."
 | an ops_watch alarm item filed (`OPS_*` under the parent item) | diagnose that one alarm: cause, owner, fix or a filed item; note the alarm item | `run_token_cap` |
 | once a day, the 07:30 run (`economy_pass_local`) | the economy pass below | `economy_token_cap` |
 
+Starting values (schedule): `run_token_cap` 80,000 (the measured run floor is 35-53k tokens); `economy_token_cap` 100,000;
+`daily_token_cap` 200,000 (80,000 × 2 scheduled runs, plus 25%).
+
+## Throttle (same runway bands as the Conductor)
+
+Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.json` before every launch.
+
+| band | reading | what runs |
+|---|---|---|
+| GREEN | runway ≥ 1.5 | everything: both running checks, the economy pass, alarm runs |
+| AMBER | 1.0 ≤ runway < 1.5 | quick runs only: the running checks and alarm runs; no economy pass |
+| RED | runway < 1.0 | one quick run a day (the first running check, cap × 0.75 = 60,000); no economy pass, no alarm runs |
+| FLOOR | `week_left_pct` < 10 | nothing |
+
+A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;
+ops_watch's death is covered by the dead-man timer. Loosening this table is the owner's.
+
 Hard stop: `daily_token_cap` across all runs of the day. When the cap is reached, write one note saying what was left
 undone and stop. The cap is read from the schedule, never raised by you.
 
