@@ -132,6 +132,8 @@ Both roles carry the builder's defaults `seat BENCH`, `clone /home/mandrake/rm/b
     `python3 -c "import json;s=json.load(open('src/RimMandrake/rimflow/dispatcher_schedule.json'));print([(r['name'],r['enabled']) for r in s['roles']])"`
     prints Conductor True, Operations True, the other four False; and `git diff --stat src/RimMandrake/rimflow/dispatcher_schedule.json` is 2 lines changed.
     Run `python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/rimflow/selftest_dispatcher.py` again (GREEN).
+    The selftest accepts exactly this wave-1 set (Conductor and Operations may be enabled; the other four must be `false` and every seat's
+    `recover_dead` false): a RED naming `must stay disabled` means a third key was flipped (review dispatcher-full #3).
 15. **[WRITES]** Publish (explicit paths; the repo unit file from step 11 goes in the same commit):
     `./publish -m "Dispatcher wave 1: timer --apply (wakes), Conductor + Operations enabled" src/RimMandrake/rimflow/dispatcher_schedule.json src/RimMandrake/rimflow/systemd/rm-dispatcher.service`
     Proves: prints `PUBLISHED <sha>`.
@@ -172,7 +174,15 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
 - **Conductor off:** `mkdir -p /mnt/d/ClaudeWork/rimmandrake/conductor && printf 'off: <why>\n' > /mnt/d/ClaudeWork/rimmandrake/conductor/CONDUCTOR_OFF`
   (instant, no commit; the dir does not exist yet). Durable form: `"enabled": false` for Conductor in the schedule, publish.
 - **Operations off:** `printf 'off: <why>\n' > $O/OPERATIONS_OFF`. Durable: `"enabled": false`.
-- **A launched run still going:** `systemctl --user list-units 'rm-role-*' --no-pager`, then `systemctl --user stop rm-role-<name>-<epoch>.service`.
+- **A launched run still going:** Claude does NOT run inside the `rm-role-*` unit: `claude_bounded.sh` puts it in its own scope
+  `claude-seat-<SEAT>-rm-role-<name>-<epoch>.scope`, so stopping only the `.service` leaves Claude running. Stop both, scope first:
+  `systemctl --user list-units 'rm-role-*' 'claude-seat-*-rm-role-*' --no-pager`, then
+  `systemctl --user stop claude-seat-BENCH-rm-role-<name>-<epoch>.scope; systemctl --user stop rm-role-<name>-<epoch>.service`.
+  Every process of the run carries `RM_ROLE_UNIT=rm-role-<name>-<epoch>` in its environment. Proves: 
+  `grep -lsz '^RM_ROLE_UNIT=rm-role-<name>-<epoch>$' /proc/[0-9]*/environ` prints nothing (if it prints `/proc/<pid>/environ`
+  lines, `kill <pid>` each, then `kill -9` any left after 10 s). The Dispatcher keeps the run busy (it launches no other run of
+  that role) until the unit and the scope are both inactive AND that scan finds none; while it cannot tell, it alarms
+  `role:<name>:overtime` / `termination UNCONFIRMED` and stops again (KILL from the third try) (review dispatcher-full #1).
 - **Other roles' off files** (not in wave 1; for completeness): `.../arbiter/ARBITER_OFF`, `.../auditor/AUDITOR_OFF`, `.../producer/PRODUCER_OFF`, `.../innovator/INNOVATOR_OFF` under `/mnt/d/ClaudeWork/rimmandrake/`.
 - **Both roles via the schedule:** set the two `"enabled": true` back to `false` in `src/RimMandrake/rimflow/dispatcher_schedule.json`, `./publish -m "Dispatcher wave 1 rollback: roles off" src/RimMandrake/rimflow/dispatcher_schedule.json`, check step 16's command shows False.
 - **Wakes back to dry-run:** `sed -i 's#dispatcher.py tick --apply$#dispatcher.py tick#' ~/.config/systemd/user/rm-dispatcher.service && systemctl --user daemon-reload`; proves

@@ -88,7 +88,9 @@ import calendar
 import json
 import math
 import os
+import re
 import shlex
+import signal
 import subprocess
 import sys
 import time
@@ -519,21 +521,11 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             continue
         ustate = obs["unit_state"](run["unit"])
         if ustate in ACTIVE and not run.get("scope") and obs.get("scope"):
-            # claude runs in claude_bounded's scope, outside the unit: learn its name while the unit's MainPID
-            # still exists (review round R, D)
+            # a run recorded before the scope was named at creation (no `marker`): learn claude_bounded's
+            # MainPID-named scope while the unit's MainPID still exists (review round R, D)
             run["scope"] = obs["scope"](run["unit"], run.get("seat") or cfg.get("seat"))
         if ustate in TERMINAL:
-            # the unit ending is not claude ending: claude_bounded's shell traps TERM and claude lives on in its
-            # scope. Retired only when the scope is empty too (inactive/failed = no process left or no such
-            # unit) (review round R, D).
-            if run.get("scope"):
-                sstate = obs["unit_state"](run["scope"])
-                if sstate not in TERMINAL:
-                    ustate = "unit %s but scope %s %s" % (ustate, run["scope"], sstate)
-            elif now - run["at"] < max_s_of(run, cfg):
-                ustate = "unit %s, scope never resolved (claude may still run)" % ustate
-            else:
-                run["scope_unconfirmed"] = True
+            ustate = ended(run, ustate, obs)
         if ustate not in TERMINAL:
             busy.add(name)
             if ustate.startswith("unit "):
@@ -548,8 +540,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 tries = run.get("stop_tries", 0)
                 run["stop_tries"] = tries + 1
                 act(do="role_stop", role=name, unit=run["unit"], scope=run.get("scope"),
-                    unit_gone=ustate.startswith("unit "),     # stop the scope alone: `systemctl stop` of a
-                    # collected unit fails the whole call
+                    unit_gone=ustate.startswith("unit "),     # stop the scope alone: the unit was collected
+                    marker=run.get("marker"), force=tries >= 2,     # TERM the run's stray processes, KILL from #3
                     seat=run.get("seat") or cfg.get("seat"), ticket=run.get("item"), note=tries == 0,
                     why="%s run %s still %s after %d s (run_max_s %d): stop #%d" % (
                         name, run["unit"], ustate, now - run["at"], max_s, tries + 1))
@@ -561,12 +553,6 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                         why="%s run %s still %s after %d stop(s): NOT confirmed stopped, kept as running"
                         % (name, run["unit"], ustate, tries))
             continue
-        if run.get("scope_unconfirmed"):
-            act(do="alarm", kind="role:%s:scope_unconfirmed:%s" % (name, run["unit"]), ticket=run.get("item"),
-                note=True,      # its own kind: role:<name>:scope was raised every tick and rate-limited this away
-                why="%s run %s: unit ended, its claude_bounded scope was never resolved; retired at run_max_s "
-                "UNCONFIRMED (a claude may still run under claude-seat-%s-*)" % (name, run["unit"],
-                                                                               run.get("seat") or "?"))
         res = obs["result"](run)
         tok = run_tokens(res)
         run["tokens"] = tok
@@ -579,23 +565,91 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
                 tok if tok is not None else "UNMEASURED (counted at its budget)",
                 run.get("budget") or 0, ",".join(models) or "?", res.get("subtype") or "no result"),
-            # a token-blind role reads its ledger item: its note carries no tokens or budget (review U N2); the
-            # journal keeps `why`
-            note_text=None if cfg.get("token_aware") is True else "%s %s run %s %s, %s" % (
-                name, run.get("mode"), run["unit"], run["state"], res.get("subtype") or "no result"))
+            # a token-blind role reads its ledger item: its note is a FIXED outcome (blind_note), never the result's
+            # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
+            blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
         if tok is not None and tok > (run.get("budget") or 0):
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                 why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
         if run["state"] == "failed":
             act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True,
-                # a blind role's item gets this line only: the result text is outside text (a usage-limit message
-                # names no token word); the full why goes to Operations' item (dispatcher.route_note, roles r2 #1)
-                note_text=None if cfg.get("token_aware") is True else "%s run %s ended without a good result "
-                "(details: the Dispatcher journal)" % (name, run["unit"]),
+                # a blind role's item gets the fixed line only: the result text is outside text (a usage-limit
+                # message names no token word); the full why goes to Operations' item (dispatcher.route_note)
+                blind=blind(name, "failed", run.get("mode"), run["unit"]),
                 why="%s run %s ended without a good result (%s)" % (
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
                     + (res.get("result") or run.get("err_tail") or "no result file")[:160]))
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+
+
+# ---- notes for a token-blind role's ledger item (review dispatcher-full #2). A blind item gets ONLY a text built
+# here from closed sets: a known role name, a known mode, a dispatcher unit name, and a fixed outcome. Reasons, error
+# output, exception text, result subtypes and triggers (alarm keys, ledger event text) are outside text that can
+# carry an account id or a figure in words no token list knows: they go to the journal and Operations' item only.
+BLIND_ROLES = ("Conductor", "Arbiter", "Auditor", "Operations", "Producer", "Innovator")
+BLIND_MODES = ("quick", "run", "weekly", "economy", "event", "alarm")
+BLIND_OUTCOMES = {
+    "launched": "launched",
+    "held_pause": "held by PAUSE, not launched",
+    "held_off": "held by its off switch, not launched",
+    "held_disabled": "held, the role is no longer enabled, not launched",
+    "launch_failed": "launch failed, retried",
+    "launch_unknown": "launch outcome unknown, the run stays tracked",
+    "completed": "completed",
+    "failed": "ended without a good result",
+    "after_disabled": "not run, the role it runs after is not enabled",
+    "schedule_unreadable": "not run, its schedule entry is unreadable",
+    "events_unreadable": "not run, its event triggers are unreadable",
+}
+
+
+def blind(role, outcome, mode=None, unit=None):
+    """An action's blind-note fields (dispatcher.route_note renders them with blind_note)."""
+    return {"role": role, "outcome": outcome, "mode": mode, "unit": unit}
+
+
+def blind_note(b):
+    """Pure. -> the fixed text for a blind item, or None when ANY field is outside its closed set (the note then goes
+    to Operations' item, never to the blind one). "dispatcher: Conductor quick run rm-role-conductor-<epoch>:
+    completed"."""
+    if not isinstance(b, dict) or b.get("role") not in BLIND_ROLES or b.get("outcome") not in BLIND_OUTCOMES:
+        return None
+    mode, unit = b.get("mode"), b.get("unit")
+    if mode is not None and mode not in BLIND_MODES:
+        return None
+    if unit is not None and not re.match(r"rm-role-%s-[0-9]{1,12}\Z" % b["role"].lower(), str(unit)):
+        return None
+    subject = " ".join(x for x in (b["role"], mode, "run" if (mode or unit) else None, unit) if x)
+    return "dispatcher: %s: %s" % (subject, BLIND_OUTCOMES[b["outcome"]])
+
+
+def ended(run, ustate, obs):
+    """The unit is inactive/failed. -> ustate (terminal) only when the run's termination is POSITIVELY established,
+    else a "unit ..." reason it is still busy (review dispatcher-full #1). claude lives in claude_bounded's scope,
+    outside the unit (its shell traps TERM), so the unit ending is not claude ending:
+      - the scope, named at creation (role_scope: claude-seat-<seat>-<unit>.scope, persisted with the run before
+        systemd-run), must be inactive/failed too; and
+      - no process may still carry the run's RM_ROLE_UNIT=<unit> marker (procs_of: claude and every child inherit
+        it), which also covers a clone whose claude_bounded.sh predates CLAUDE_SCOPE_UNIT and named the scope by
+        PID. The scan UNMEASURED is busy, never a finish.
+    A run recorded before markers existed has only its scope; with no scope resolved it is never retired by the
+    clock any more (the old run_max_s "UNCONFIRMED" retirement let a surviving claude overlap the next run)."""
+    scope = run.get("scope")
+    if not scope:
+        return "unit %s, scope never resolved: termination UNCONFIRMED, kept busy (stop claude-seat-%s-* by hand)" \
+            % (ustate, run.get("seat") or "?")
+    sstate = obs["unit_state"](scope)
+    if sstate not in TERMINAL:
+        return "unit %s but scope %s %s" % (ustate, scope, sstate)
+    if run.get("marker"):
+        n = obs["procs"](run["marker"]) if obs.get("procs") else None
+        n = len(n) if isinstance(n, list) else n
+        if n is None:
+            return "unit %s, scope %s %s, its process check UNMEASURED" % (ustate, scope, sstate)
+        if n:
+            return "unit %s, scope %s %s, but %d process(es) marked RM_ROLE_UNIT=%s still run" % (
+                ustate, scope, sstate, n, run["marker"])
+    return ustate
 
 
 def after_slots(after_cfg, job, now):
@@ -702,7 +756,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         cfg = dict(ROLE_DEFAULTS, **role)
         if cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
-                note_text="role %s runs only after %s, which is not enabled" % (name, cfg["after_role"]),
+                blind=blind(name, "after_disabled"),
                 why="role %s runs only after a %s run, and %s is not enabled: its scheduled checks will not run"
                 % (name, cfg["after_role"], cfg["after_role"]))
         rs = rst.setdefault(name, {})
@@ -717,7 +771,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 raise ValueError("slot_when %r is not done_claims" % cfg["slot_when"])
         except ValueError as e:
             act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
-                note_text="role %s NOT RUN: its schedule entry is unreadable (details: the Dispatcher journal)" % name,
+                blind=blind(name, "schedule_unreadable"),
                 why="role %s NOT RUN: its schedule entry is unreadable: %s" % (name, e))
             return
         # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
@@ -809,8 +863,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 pend = unseen(pending_events(cfg, lr, rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             except ValueError as e:
                 act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
-                    note_text="role %s NOT RUN: its event triggers are unreadable (details: the Dispatcher journal)"
-                    % name, why="role %s NOT RUN: %s" % (name, e))
+                    blind=blind(name, "events_unreadable"), why="role %s NOT RUN: %s" % (name, e))
                 return
             per_day = int(cfg.get("event_runs_per_day", 1))
             used = [k for k in rs["done"] if k.startswith(day_of(now) + " event")]
@@ -929,10 +982,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
                 name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"],
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
-            note_text=None if cfg.get("token_aware") is True else "%s %s launched, unit %s" % (
-                name, job["trigger"], unit),
-            # the launch's subject for execute's true-outcome note (held / failed: review V, V4); None = use `why`
-            note_base=None if cfg.get("token_aware") is True else "%s %s, unit %s" % (name, job["trigger"], unit),
+            # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
+            # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
+            blind=blind(name, "launched", job["mode"], unit),
             message=message)
         tick_launch.pop(name, None)
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
@@ -1033,6 +1085,34 @@ def run_paths(root, unit):
     return os.path.join(d, unit + ".json"), os.path.join(d, unit + ".err")
 
 
+def role_scope(seat, unit):
+    """The claude_bounded scope a role run gets, named by the launcher (CLAUDE_SCOPE_UNIT), known before
+    systemd-run and persisted with the run: claude-seat-<seat>-<unit>.scope (review dispatcher-full #1)."""
+    return "claude-seat-%s-%s.scope" % (seat, unit)
+
+
+def procs_of(marker, proc="/proc"):
+    """-> the pids (not ours) whose environment carries RM_ROLE_UNIT=<marker>, or None when /proc cannot be read.
+    A process that exits or is not ours mid-scan is skipped (it cannot be this user's run)."""
+    want = ("RM_ROLE_UNIT=%s" % marker).encode()
+    try:
+        names = os.listdir(proc)
+    except OSError:
+        return None
+    me, out = os.getpid(), []
+    for n in names:
+        if not n.isdigit() or int(n) == me:
+            continue
+        try:
+            with open(os.path.join(proc, n, "environ"), "rb") as f:
+                env = f.read()
+        except OSError:
+            continue
+        if want in env.split(b"\0"):
+            out.append(int(n))
+    return out
+
+
 def launch_argv(role, unit, msg, out, err, claude):
     """The transient unit's argv. A role's `pre_launch` (an argv, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
@@ -1051,22 +1131,26 @@ def launch_argv(role, unit, msg, out, err, claude):
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
             "--working-directory", role["clone"],
             "--setenv", "AGENT_SEAT=" + role["seat"], "--setenv", "RIMFLOW_SEAT=" + role["seat"],
+            # the scope's name, chosen here and persisted with the run, and the marker every process of the run
+            # inherits: the two things supervise checks before a run counts as ended (review dispatcher-full #1)
+            "--setenv", "CLAUDE_SCOPE_UNIT=" + role_scope(role["seat"], unit)[:-len(".scope")],
+            "--setenv", "RM_ROLE_UNIT=" + unit,
             "--setenv", "PATH=" + path, "--"] + cmd
 
 
 def launch(role, unit, msg, root, claude, runner=subprocess.run):
     """-> (ok, out, run-record fields). Starts the transient unit and returns at once. ok False only when
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
-    The MainPID lookup cannot lose the run: a failure leaves scope None, and stop() resolves it then (review Q 4)."""
+    The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
     r = runner(launch_argv(role, unit, msg, out, err, claude), capture_output=True, text=True, timeout=60,
                stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
-    scope = scope_of(unit, role["seat"], runner)
-    return True, "unit %s started (scope %s)" % (unit, scope or "not yet known"), {
-        "out": out, "err": err, "scope": scope, "model_id": model_id(role["model"])}
+    scope = role_scope(role["seat"], unit)
+    return True, "unit %s started (scope %s)" % (unit, scope), {
+        "out": out, "err": err, "scope": scope, "marker": unit, "model_id": model_id(role["model"])}
 
 
 def scope_of(unit, seat, runner=subprocess.run):
@@ -1105,17 +1189,36 @@ def read_result(run):
         return None
 
 
-def stop(unit, scope, runner=subprocess.run, seat=None, unit_gone=False):
-    """The claude process lives in claude_bounded's scope (claude-seat-<seat>-<unit MainPID>.scope), outside the
-    unit: stopping the unit alone would leave it running. No scope recorded (its lookup failed at launch): resolve it
-    now, while the unit still runs. Whether the stop took is decided by the next tick's unit state, not here."""
-    if not scope and seat:
+def stop(unit, scope, runner=subprocess.run, seat=None, unit_gone=False, marker=None, force=False, procs=None,
+         kill=os.kill):
+    """The claude process lives in claude_bounded's scope (role_scope, persisted with the run), outside the unit:
+    stopping the unit alone would leave it running. Each name is stopped by its own call (one not loaded any more
+    must not fail the other). Then every process still carrying the run's marker (a claude whose clone's
+    claude_bounded.sh named its scope by PID) is sent TERM, KILL when `force`. A run recorded before scopes were
+    named and with none resolved: resolve it now from the unit's MainPID. Whether the stop took is decided by the
+    next tick (supervise: unit, scope AND marker scan), not here."""
+    if not scope and seat and not unit_gone:
         scope = scope_of(unit, seat, runner)
     names = [n for n in (scope, None if unit_gone else unit) if n]
-    r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120,
-               stdin=subprocess.DEVNULL)
-    return "stopped %s" % " ".join(names) if r.returncode == 0 else "stop exit %d: %s" % (
-        r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-160:])
+    said = []
+    for n in names:
+        r = runner(["systemctl", "--user", "stop", n], capture_output=True, text=True, timeout=120,
+                   stdin=subprocess.DEVNULL)
+        said.append("stopped %s" % n if r.returncode == 0 else "stop %s exit %d: %s" % (
+            n, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-120:]))
+    if marker:
+        pids = (procs or procs_of)(marker)
+        if pids is None:
+            said.append("marker scan UNMEASURED")
+        elif pids:
+            sig = signal.SIGKILL if force else signal.SIGTERM
+            for pid in pids:
+                try:
+                    kill(pid, sig)
+                except OSError:
+                    pass
+            said.append("%s to %d process(es) marked %s" % ("KILL" if force else "TERM", len(pids), marker))
+    return "; ".join(said) or "nothing to stop (no scope, unit gone, no marker)"
 
 
 def off_switch(path):

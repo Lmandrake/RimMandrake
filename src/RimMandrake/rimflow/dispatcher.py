@@ -621,8 +621,8 @@ def blind_items(sch):
 def route_note(sch, item, text, rx=None, blind_text=None):
     """-> (item, text) where a dispatcher note goes. On an item a token-blind role reads, an ALLOW-LIST (review
     roles r2 #1; owner 2026-10-27: every role but Operations is token-blind): only `blind_text`, a note the code built
-    for a blind reader (an action's `note_text`: names, unit, trigger, outcome; never a reading, budget or free text
-    from outside), is written there, and only when the token_talk word list, a second net, finds no term in it.
+    for a blind reader (role_launch.blind_note: a closed-set role, mode and unit and a FIXED outcome; never a reason,
+    an error, a result subtype or any other text from outside: review dispatcher-full #2), is written there, and only when the token_talk word list, a second net, finds no term in it.
     Anything else bound for a blind item (an alarm's `why`, a run's result text, a refusal reason) goes to
     `token_notes_item` (Operations' own item) instead, naming where it was meant to go; with no token_notes_item it is
     not noted (item None: the journal holds it). The word list is no longer the gate: a phrasing it lacks ("usage
@@ -747,8 +747,10 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     role.get("off_file"), off or "no reason given")) if off is not None
                                 else "role no longer enabled")
                             a["why"] = "%s — NOT LAUNCHED, %s" % (a["why"], res)
-                            if a.get("note_base"):     # the ledger note says what happened, never "launched" (V4)
-                                a["note_text"] = "%s — NOT LAUNCHED, %s" % (a["note_base"], res)
+                            if a.get("blind"):     # the ledger note says what happened, never "launched" (V4);
+                                # a fixed outcome only: the PAUSE/off reason stays in `why` (dispatcher-full #2)
+                                a["blind"] = dict(a["blind"], outcome="held_pause" if paused else "held_off"
+                                                  if off is not None else "held_disabled")
                             # the slot/event stays due: decide gave it up for a launch that did not happen (U, N6)
                             RL.unlaunch(st.setdefault("roles", {}).setdefault(a["role"], {}), a["unit"])
                         else:
@@ -756,9 +758,13 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             # failed MainPID query) must not leave a launched role untracked (review round Q 4)
                             out_p, err_p = RL.run_paths(root, a["unit"])
                             runs = st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", [])
-                            run = dict(out=out_p, err=err_p, scope=None, unit=a["unit"], at=now, day=RL.day_of(now),
+                            # the scope and the marker are known before systemd-run and persisted with the run:
+                            # supervise stops and verifies exactly these (review dispatcher-full #1)
+                            seat = a.get("seat") or role.get("seat")
+                            run = dict(out=out_p, err=err_p, scope=RL.role_scope(seat, a["unit"]), marker=a["unit"],
+                                       unit=a["unit"], at=now, day=RL.day_of(now),
                                        mode=a["mode"], budget=a["budget"], slot=a["slot"], band=a["band"],
-                                       item=a["ticket"], seat=a.get("seat") or role.get("seat"),
+                                       item=a["ticket"], seat=seat,
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None)
                             runs.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
@@ -768,7 +774,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
                                 res = ("launched: " if ok else "failed: ") + out
                                 if ok:
-                                    run.update(rec or {})
+                                    # the scope and marker recorded above stay authoritative
+                                    run.update({k: v for k, v in (rec or {}).items() if k not in ("scope", "marker")})
                                     rs.pop("pending_launch", None)
                                 else:
                                     runs.remove(run)            # systemd-run said no: nothing started
@@ -782,10 +789,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     # fails again is noted once: the journal and the rate-limited alarm keep the rest
                                     failed_before = rs.get("launch_failed_key") == a["slot"]
                                     rs["launch_failed_key"] = a["slot"]
-                                    if a.get("note_base"):
-                                        a["note_text"] = "%s — %s" % (a["note_base"], "LAUNCH FAILED: %s" % out
-                                                                      if run not in runs else "launch outcome UNKNOWN "
-                                                                      "(%s); the run stays tracked" % out)
+                                    if a.get("blind"):     # fixed outcome; the error text stays in `why`
+                                        a["blind"] = dict(a["blind"], outcome="launch_failed" if run not in runs
+                                                          else "launch_unknown")
                                     if failed_before:
                                         a["note"] = False
                                     # a failed launch is never silent (review U, N6). systemd-run said no: the slot
@@ -802,16 +808,17 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     rs.pop("launch_failed_key", None)
                                 do_persist()
                     elif a["do"] == "role_stop":
-                        res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False))
+                        res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
+                                      marker=a.get("marker"), force=a.get("force", False))
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
                     who = (a["do"], a.get("seat") or a.get("role") or "")
                     item, text = route_note(sch, a.get("ticket") or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
-                        # the full text (an action with a blind note_text is a blind role's: its full why is
-                        # what Operations' item gets when the note is diverted)
-                        who + (a.get("evidence") or a.get("why") or a.get("note_text") or a.get("ring_id") or "",)),
-                        blind_text=("dispatcher %s %s: %s" % (who + (a["note_text"],))) if a.get("note_text") else None)
+                        # the full text (what Operations' item gets when a blind role's note is diverted)
+                        who + (a.get("evidence") or a.get("why") or a.get("ring_id") or "",)),
+                        # a blind item gets only the closed-set text (None: diverted) - review dispatcher-full #2
+                        blind_text=RL.blind_note(a.get("blind")))
                     if item and item != (a.get("ticket") or sch.get("alarm_item")):
                         a["noted_on"] = item
                     if not item:
@@ -887,6 +894,7 @@ def default_obs(sch, root):
             "result": RL.read_result,
             "off": RL.off_switch,
             "scope": RL.scope_of,
+            "procs": RL.procs_of,
             "ledger": RL.read_ledger,
             "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         },

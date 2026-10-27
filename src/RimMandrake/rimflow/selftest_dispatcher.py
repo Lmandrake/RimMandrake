@@ -11,6 +11,7 @@ Covers the §6 acceptance list with SIMULATED windows (no real Claude window is 
 plus retry/give-up, caps, PAUSE, blind instrument, dry-run writes nothing, doorbell supersede/orphan, and the
 DISPATCHER seat's ledger rule (note only). Nothing outside a temp dir is touched.
 """
+import copy
 import json
 import os
 import subprocess
@@ -489,7 +490,8 @@ def test_review_s():
     D.execute(acts, sch, st, root, True, 10.0, fx)
     check(len(noted) == 2, "both the scope alarm and the unconfirmed alarm reach the ledger: %r" % noted)
     src = open(os.path.join(HERE, "role_launch.py")).read()
-    check('kind="role:%s:scope_unconfirmed:%s"' in src, "role_launch gives the retirement its own kind")
+    check("scope_unconfirmed" not in src, "role_launch has no clock retirement of an unconfirmed run any more "
+          "(dispatcher-full #1: busy until termination is established)")
     noted.clear()
     class _Lk:
         def close(self):
@@ -817,7 +819,10 @@ def test_role_execute_and_dry():
     i = argv.index("--")
     check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", "hello"]
           and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv, "launch: claude_bounded -p, alias, json")
-    check(rec["scope"] == "claude-seat-BENCH-4242.scope", "launch: the scope to stop is claude-seat-<seat>-<MainPID>")
+    check(rec["scope"] == "claude-seat-BENCH-rm-role-conductor-1.scope" and rec["marker"] == "rm-role-conductor-1"
+          and len(calls) == 1, "launch: the scope is named by the launcher (claude-seat-<seat>-<unit>), no MainPID query")
+    check("CLAUDE_SCOPE_UNIT=claude-seat-BENCH-rm-role-conductor-1" in argv and "RM_ROLE_UNIT=rm-role-conductor-1" in argv,
+          "launch: the unit tells claude_bounded the scope name and marks every process of the run")
     # pre_launch (review AA brief AA7): the Arbiter's tiers.json is produced inside the unit before claude starts
     pre_role = dict(role, pre_launch=["python3", "src/x y/arbiter_tiers.py"])
     pa = RL.launch_argv(pre_role, "u-pre", "it's \"msg\" $HOME", "/o", "/e", "/opt/bin/claude")
@@ -848,20 +853,23 @@ def test_role_execute_and_dry():
         check(True, "pre_launch as a string is refused")
     calls.clear()
     RL.stop("u", "s.scope", runner=fake_run)
-    check(calls[0] == ["systemctl", "--user", "stop", "s.scope", "u"], "stop: scope first, then the unit")
+    check(calls == [["systemctl", "--user", "stop", "s.scope"], ["systemctl", "--user", "stop", "u"]],
+          "stop: scope first, then the unit, each its own call")
     # execute: a launch records the run; a failed launch records nothing
     sch = sched(roles=[role])
     st = fresh()
     act = {"do": "role_launch", "role": "Conductor", "unit": "U1", "message": "m", "ticket": "ROLES_ITEM_X",
            "note": True, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w",
-           "note_text": "Conductor quick launched, unit U1", "note_base": "Conductor quick, unit U1"}   # as decide builds it
+           "blind": RL.blind("Conductor", "launched", "quick", "rm-role-conductor-1")}   # as decide builds it
     noted = []
     fx = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p", "lock": lambda: open(os.devnull),
           "role_launch": lambda *a: (True, "unit U1 started", {"out": "o", "err": "e", "scope": "s"})}
     D.execute([dict(act)], sch, st, root, True, 100.0, fx)
     run = st["roles"]["Conductor"]["runs"][0]
-    check(run["state"] == "running" and run["budget"] == 30000 and run["scope"] == "s", "execute: the run is recorded")
-    check(noted and noted[0][0] == "ROLES_ITEM_X" and "Conductor" in noted[0][1], "execute: the launch is noted on the ledger")
+    check(run["state"] == "running" and run["budget"] == 30000 and run["scope"] == "claude-seat-BENCH-U1.scope"
+          and run["marker"] == "U1", "execute: the run is recorded with the scope and marker named at creation")
+    check(noted and noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run rm-role-conductor-1: launched"),
+          "execute: the launch is noted on the ledger, the fixed outcome")
     st = fresh()
     fx["role_launch"] = lambda *a: (False, "systemd-run exit 1", {})
     a = D.execute([dict(act)], sch, st, root, True, 100.0, fx)
@@ -882,9 +890,10 @@ def test_role_execute_and_dry():
     D.recover({"seat": "FOUNDRY", "clone": TMP}, "sid", "m",
               runner=lambda argv, **kw: seen.update(kw) or subprocess.CompletedProcess(argv, 0, "", ""))
     check(os.path.dirname(D.claude_exe()) in seen["env"]["PATH"].split(":"), "recover: claude's dir on PATH")
-    # the shipped schedule: every role disabled, Conductor and Operations launchable once enabled
+    # the shipped schedule: at most the wave-1 set enabled (runbook step 14 enables it), Conductor and Operations
+    # launchable once enabled
     real = D.load_schedule()
-    check(all(not r.get("enabled") for r in real["roles"]), "shipped schedule: every role enabled false")
+    check(not wave1_problems(real), "shipped schedule within wave 1: %s" % (wave1_problems(real) or "ok"))
     for name in ("Conductor", "Operations"):
         r = next(x for x in real["roles"] if x["name"] == name)
         check(all(r.get(k) for k in RL.LAUNCH_KEYS) and r.get("off_file"), "shipped schedule: %s has launch keys" % name)
@@ -962,14 +971,16 @@ def test_review_q():
             return subprocess.CompletedProcess(argv, 0, "", "")
         raise subprocess.TimeoutExpired(argv, 30)
     ok, out, rec = RL.launch(conductor(), "UQ2", "m", os.path.join(TMP, "q4"), "/opt/bin/claude", runner=sd_ok_pid_raises)
-    check(ok and rec["scope"] is None, "Q4 MainPID query raised: still launched, scope resolved later")
+    check(ok and rec["scope"] == "claude-seat-BENCH-UQ2.scope" and len(calls) == 1,
+          "Q4 launched: the scope is named, never looked up (no MainPID query to fail)")
     calls.clear()
 
     def pid_then_stop(argv, **kw):
         calls.append(argv)
         return subprocess.CompletedProcess(argv, 0, "777\n" if "MainPID" in argv else "", "")
     RL.stop("UQ2", None, runner=pid_then_stop, seat="BENCH")
-    check(calls[-1] == ["systemctl", "--user", "stop", "claude-seat-BENCH-777.scope", "UQ2"],
+    check(calls[-2:] == [["systemctl", "--user", "stop", "claude-seat-BENCH-777.scope"],
+                         ["systemctl", "--user", "stop", "UQ2"]],
           "Q4 stop with no recorded scope: resolves it from MainPID, stops scope + unit")
     # 5: the off switch and PAUSE are rechecked at execution
     for label, fx in (("off file", dict(base_fx, off=lambda p: "owner: now")),
@@ -1561,11 +1572,10 @@ def test_role_real_schedule_triggers():
           and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
     check(p["daily_token_cap"] == 125000, "schedule: Producer daily cap 125,000 (one 100k run + 25%)")
     for r in sch["roles"]:
-        if r.get("enabled") is not False:
-            check(False, "role %s must stay disabled (owner's switch)" % r["name"])
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
             RL.parse_slot(t)
-    check(True, "schedule: every role disabled, every slot parses")
+    check(not wave1_problems(sch), "schedule: only the wave-1 roles may be enabled, recovery off, every slot parses: "
+          "%s" % (wave1_problems(sch) or "ok"))
 
 
 # ---------------------------------------------------------------- review T (launcher findings)
@@ -1655,8 +1665,8 @@ def test_account_hold_dispatch():
 
 def test_review_u_notes():
     """review U N2: no token figure is noted on an item a token-blind role reads. A note with a token term bound for
-    one goes to token_notes_item (Operations' own item); blind roles' launch and done notes carry note_text with no
-    term; with no token_notes_item the note is not written; Operations' own item is not blind."""
+    one goes to token_notes_item (Operations' own item); blind roles' launch and done notes carry a closed-set blind
+    note with no term; with no token_notes_item the note is not written; Operations' own item is not blind."""
     rx = D.token_rx()
     check(rx.search("used 40000 tokens") and rx.search("daily_token_cap 1, 2 used + 3 budget".replace("_", " "))
           and not rx.search("Conductor quick 08:00 launched, unit rm-role-conductor-1"), "N2: the word list sees terms")
@@ -1685,17 +1695,18 @@ def test_review_u_notes():
     noted.clear()
     D.execute([{"do": "alarm", "kind": "role:Conductor:failed", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
                 "why": "Conductor run U ended without a good result (Claude AI usage limit reached|1730000000)",
-                "note_text": "Conductor run U ended without a good result (details: the Dispatcher journal)"},
+                "blind": RL.blind("Conductor", "failed", "quick", "rm-role-conductor-7")},
                {"do": "alarm", "kind": "role:Conductor:x", "ticket": "ROLES_ITEM_X", "note": True,
                 "why": "Conductor run U: usage limit reached"},
                {"do": "role_done", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
-                "why": "x", "note_text": "Conductor quick run U done, 30000 tokens"}], sch, fresh(), root, True, 100.0, fx)
-    check(noted[0] == ("ROLES_ITEM_X", "dispatcher alarm Conductor: Conductor run U ended without a good result "
-                                      "(details: the Dispatcher journal)"),
-          "r2 #1: the blind note_text, and only it, lands on the shared item")
+                "why": "x", "blind": RL.blind("Conductor", "completed", "quick", "30000 tokens")}],
+              sch, fresh(), root, True, 100.0, fx)
+    check(noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run rm-role-conductor-7: ended without a good "
+                                      "result"),
+          "r2 #1: the fixed blind note, and only it, lands on the shared item")
     check(noted[1][0] == "OPS_OWN_X" and "usage limit" in noted[1][1] and "[meant for ROLES_ITEM_X" in noted[1][1],
           "r2 #1: free text the word list misses ('usage limit reached') goes to Operations' item")
-    check(noted[2][0] == "OPS_OWN_X", "r2 #1: a note_text with a term is diverted too (the word list as second net)")
+    check(noted[2][0] == "OPS_OWN_X", "r2 #1: a blind note with a field outside its closed set is diverted")
     check(not any(i == "ROLES_ITEM_X" and ("limit" in t or "1730000000" in t) for i, t in noted),
           "r2 #1: no outside text on the shared item")
     noted.clear()
@@ -1713,7 +1724,8 @@ def test_review_u_notes():
     a = D.decide(sched(roles=[conductor()], account_pick=PICK_RULE), st, pobs(now, {"a": (2.0, 40, 50, "MEASURED")}),
                  now, True)
     la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "budget" in la[0]["why"] and la[0].get("note_text") and not rx.search(la[0]["note_text"]),
+    check(la and "budget" in la[0]["why"] and RL.blind_note(la[0].get("blind"))
+          and not rx.search(RL.blind_note(la[0]["blind"])),
           "N2: the Conductor launch note has no token term (the journal keeps the budget)")
     # supervise: a blind role's done note has no tokens; Operations' keeps them
     for role, blind in ((conductor(), True), (operations(token_aware=True), False)):
@@ -1724,9 +1736,9 @@ def test_review_u_notes():
             "usage": usage(input_tokens=1000, output_tokens=10), "modelUsage": {"opus": {}}, "subtype": "success"}},
             5000.0, lambda **k: out.append(k))
         d = [x for x in out if x["do"] == "role_done"]
-        check(d and "tokens" in d[0]["why"] and (bool(d[0].get("note_text")) and not rx.search(d[0]["note_text"])
-                                                 if blind else d[0].get("note_text") is None),
-              "N2: %s done note %s" % (role["name"], "token-free" if blind else "keeps its tokens"))
+        bn = RL.blind_note(dict(d[0]["blind"], unit="rm-role-%s-1" % role["name"].lower())) if d else None
+        check(d and "tokens" in d[0]["why"] and bn and not rx.search(bn) and "success" not in bn,
+              "N2: %s done: the blind note is fixed and token-free; the why keeps its tokens" % role["name"])
 
 
 def test_review_u_lent_unmeasured():
@@ -1967,23 +1979,25 @@ def test_review_v():
         acts = [x for x in rdecide([conductor()], st, robs(ops_status(now)), now) if x["do"] == "role_launch"]
         del notes[:]
         D.execute(acts, sch, st, root, True, now, dict(base_fx, **fx_extra))
-        return [n for n in notes if "role_launch" in n]
+        return [n for n in notes if n.startswith("dispatcher: Conductor ")]
     ln = launch(fresh(), {"paused": lambda: "owner: away"})
-    check(ln and "NOT LAUNCHED" in ln[0] and "launched, unit" not in ln[0], "V4: a held launch is noted NOT LAUNCHED")
+    check(ln and ln[0].endswith(": held by PAUSE, not launched") and "away" not in ln[0],
+          "V4: a held launch is noted held by PAUSE, the reason kept off")
     st = fresh()
     ln = launch(st, {"role_launch": lambda *a: (False, "systemd-run exit 1", {})})
-    check(ln and "LAUNCH FAILED: systemd-run exit 1" in ln[0] and "launched, unit" not in ln[0],
-          "V4: a failed launch is noted LAUNCH FAILED")
+    check(ln and ln[0].endswith(": launch failed, retried") and "systemd" not in ln[0],
+          "V4: a failed launch is noted launch failed, the error kept off")
     ln = launch(st, {"role_launch": lambda *a: (False, "systemd-run exit 1", {})}, t8 + 120)
     check(not ln, "V4: the retry that fails again is not noted a second time")
     ln = launch(st, {"role_launch": lambda *a: (True, "started", {"scope": "s"})}, t8 + 240)
-    check(ln and "launched, unit" in ln[0] and "launch_failed_key" not in st["roles"]["Conductor"],
+    check(ln and ln[0].endswith(": launched") and "launch_failed_key" not in st["roles"]["Conductor"],
           "V4: the launch that then succeeds is noted launched and clears the failure record")
 
     def boom(*a):
         raise TimeoutError("MainPID")
     ln = launch(fresh(), {"role_launch": boom})
-    check(ln and "UNKNOWN" in ln[0] and "launched, unit" not in ln[0], "V4: a launch that raised is noted UNKNOWN")
+    check(ln and ln[0].endswith(": launch outcome unknown, the run stays tracked") and "MainPID" not in ln[0],
+          "V4: a launch that raised is noted unknown, the exception kept off")
     # V2: an Operations-only alarm (no ledger item) triggers one Operations alarm run, keyed alarm:<aid>, once
     ops = operations(runs_local=["07:30"], economy_pass_local=None)
     oal = {"RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations", "item": None, "title": "t"}}
@@ -2173,6 +2187,223 @@ def test_review_x_alarm_flap():
           and "alarm_day" not in st["roles"]["Operations"], "X1: a launch that did not happen gives back the day's count")
 
 
+# ---------------------------------------------------------------- go-live review (DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND)
+# go-live wave 1 (design/RimMandrake/rimflow_v3_golive_wave1.md): the owner's switch may enable these and no others
+WAVE1_ROLES = ("Conductor", "Operations")
+
+
+def wave1_problems(sch):
+    """-> the ways a schedule exceeds wave 1: a role outside WAVE1_ROLES not `enabled: false`, or a seat whose
+    recover_dead is not false. [] = within wave 1 (the wave-1 roles may be enabled or not)."""
+    bad = ["role %s must stay disabled (wave 1 enables only %s)" % (r.get("name"), "/".join(WAVE1_ROLES))
+           for r in sch.get("roles") or [] if r.get("name") not in WAVE1_ROLES and r.get("enabled") is not False]
+    bad += ["seat %s recover_dead must stay false in wave 1" % k for k, v in sorted((sch.get("seats") or {}).items())
+            if v.get("recover_dead") is not False]
+    return bad
+
+
+def test_golive_b3_wave1_config():
+    """dispatcher-full #3: the config assertions accept the wave-1 enabled set (runbook step 14 then reaches GREEN)
+    and still refuse any other role or recovery being enabled."""
+    real = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+    check(not wave1_problems(real), "B3 the shipped schedule is within wave 1")
+    on = copy.deepcopy(real)
+    for r in on["roles"]:
+        if r["name"] in WAVE1_ROLES:
+            r["enabled"] = True
+    check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
+    for name in ("Arbiter", "Auditor", "Producer", "Innovator"):
+        x = copy.deepcopy(on)
+        next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
+        check(wave1_problems(x) == ["role %s must stay disabled (wave 1 enables only Conductor/Operations)" % name],
+              "B3 %s enabled is refused" % name)
+        del next(r for r in x["roles"] if r["name"] == name)["enabled"]
+        check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
+    check({r["name"] for r in real["roles"]} >= set(WAVE1_ROLES) | {"Arbiter", "Auditor", "Producer", "Innovator"},
+          "B3 the probe roles exist in the schedule")
+    for seat in sorted(real["seats"]):
+        x = copy.deepcopy(on)
+        x["seats"][seat]["recover_dead"] = True
+        check(wave1_problems(x) == ["seat %s recover_dead must stay false in wave 1" % seat],
+              "B3 recover_dead on %s is refused" % seat)
+
+
+def test_golive_b1_busy_until_ended():
+    """dispatcher-full #1: a run is busy until its termination is POSITIVELY established (unit, the scope named at
+    creation, and no process with its marker); never retired by the clock; the stop hits that exact scope."""
+    t = at_local("19:00")
+    def one_run(**kw):
+        r = {"unit": "rm-role-operations-1", "at": t, "day": RL.day_of(t), "budget": 1, "mode": "run", "item": "X",
+             "state": "running", "seat": "BENCH", "run_max_s": 1800}
+        r.update(kw)
+        return {"Operations": {"done": {}, "runs": [r]}}
+    # the review's case: the scope never resolved (old record), unit gone, long past run_max_s -> still busy
+    st = fresh()
+    st["roles"] = one_run(scope=None)
+    ro = robs(ops_status(t + 7200), unit="inactive")
+    a = role_acts(rdecide([operations(runs_local=["21:00"])], st, ro, t + 7200))
+    run = st["roles"]["Operations"]["runs"][0]
+    check(run["state"] == "running" and "role_done" not in kinds(a) and any(x.get("kind") == "role:Operations:scope"
+          for x in a), "B1 scope never resolved, unit gone, 2 h past run_max_s: kept running (was retired UNCONFIRMED)")
+    # a marked run: unit and scope inactive, but a marked process survives -> busy, stopped (TERM, then KILL)
+    st = fresh()
+    st["roles"] = one_run(scope=RL.role_scope("BENCH", "rm-role-operations-1"), marker="rm-role-operations-1")
+    left = {"n": 1}
+    ro = robs(ops_status(t + 600), unit="inactive")
+    ro["procs"] = lambda m: [4711] * left["n"] if m == "rm-role-operations-1" else []
+    a = role_acts(rdecide([operations()], st, ro, t + 600))
+    check(st["roles"]["Operations"]["runs"][0]["state"] == "running" and "role_done" not in kinds(a),
+          "B1 unit+scope inactive but a marked process lives: still running")
+    stops = []
+    for k in range(3):
+        a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 1900 + k * 120)), t + 1900 + k * 120))
+        stops += [x for x in a if x["do"] == "role_stop"]
+    check(len(stops) == 3 and all(x["scope"] == "claude-seat-BENCH-rm-role-operations-1.scope" and x["unit_gone"]
+                                  and x["marker"] == "rm-role-operations-1" for x in stops)
+          and [x["force"] for x in stops] == [False, False, True],
+          "B1 overtime: the exact scope + marker are stopped each tick, KILL from the third stop")
+    ro["procs"] = lambda m: None
+    a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2400)), t + 2400))
+    check(st["roles"]["Operations"]["runs"][0]["state"] == "running", "B1 marker scan UNMEASURED: still running")
+    del ro["procs"]
+    a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2500)), t + 2500))
+    check(st["roles"]["Operations"]["runs"][0]["state"] == "running", "B1 no marker observer at all: still running")
+    ro["procs"] = lambda m: []
+    a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2600)), t + 2600))
+    check(st["roles"]["Operations"]["runs"][0]["state"] in ("done", "failed") and "role_done" in kinds(a),
+          "B1 unit, scope and marker scan all clear: then the run is finished")
+    # stop(): each name its own call; marked survivors get TERM, KILL when forced; scan blind is said
+    calls, sigs = [], []
+    run_ok = lambda argv, **kw: calls.append(argv) or subprocess.CompletedProcess(argv, 0, "", "")
+    out = RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: [11, 12],
+                  kill=lambda pid, sig: sigs.append((pid, sig)))
+    check(calls == [["systemctl", "--user", "stop", "S.scope"]] and sigs == [(11, 15), (12, 15)] and "TERM" in out,
+          "B1 stop: the exact scope, then TERM to the marked survivors")
+    sigs.clear()
+    RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: [11], force=True,
+            kill=lambda pid, sig: sigs.append((pid, sig)))
+    check(sigs == [(11, 9)], "B1 stop forced: KILL")
+    check("UNMEASURED" in RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: None),
+          "B1 stop: a blind marker scan is said, not hidden")
+    # procs_of: a fake /proc, and the real one with a live marked child
+    fp = os.path.join(TMP, "fakeproc")
+    for pid, env in (("101", b"A=1\0RM_ROLE_UNIT=uX\0"), ("102", b"RM_ROLE_UNIT=uXY\0"), ("self", b"")):
+        os.makedirs(os.path.join(fp, pid), exist_ok=True)
+        with open(os.path.join(fp, pid, "environ"), "wb") as f:
+            f.write(env)
+    os.makedirs(os.path.join(fp, "103"), exist_ok=True)       # no environ: skipped, not a failure
+    check(RL.procs_of("uX", proc=fp) == [101], "B1 procs_of: exact marker match only (uXY is another run)")
+    check(RL.procs_of("uX", proc=os.path.join(TMP, "no_such_proc")) is None, "B1 procs_of: /proc unreadable -> None")
+    mk = "selftest-marker-%d" % os.getpid()
+    p = subprocess.Popen(["sleep", "30"], env=dict(os.environ, RM_ROLE_UNIT=mk))
+    try:
+        check(RL.procs_of(mk) == [p.pid], "B1 procs_of on the real /proc sees a live marked process")
+    finally:
+        p.kill()
+        p.wait()
+    check(RL.procs_of(mk) == [], "B1 procs_of: none once it is gone")
+    # execute: the scope and marker are on disk BEFORE systemd-run, and a launcher's own scope cannot replace them
+    sch = sched(roles=[conductor()])
+    act = {"do": "role_launch", "role": "Conductor", "unit": "UB1", "message": "m", "ticket": "ROLES_ITEM_X",
+           "note": False, "mode": "quick", "budget": 1, "slot": "k", "band": "GREEN", "why": "w", "seat": "BENCH",
+           "run_max_s": 1800}
+    seen = []
+    st = fresh()
+    def persist():
+        r = (st.get("roles", {}).get("Conductor", {}).get("runs") or [{}])[0]
+        seen.append((r.get("scope"), r.get("marker")))
+    D.execute([act], sch, st, TMP, True, 100.0, {"note": lambda i, x: (True, ""), "publish": lambda n: None,
+              "lock": lambda: open(os.devnull), "off": lambda p: None, "paused": lambda: None, "persist": persist,
+              "role_launch": lambda *x: (True, "ok", {"scope": "other.scope", "marker": "zz"})})
+    check(seen and seen[0] == ("claude-seat-BENCH-UB1.scope", "UB1")
+          and st["roles"]["Conductor"]["runs"][0]["scope"] == "claude-seat-BENCH-UB1.scope",
+          "B1 execute: scope+marker persisted before systemd-run and kept authoritative")
+    # claude_bounded.sh: the launcher's name is used, a bad one refused, and it is not inherited by the child
+    src = open(os.path.join(os.path.dirname(HERE), "Utils", "claude_bounded.sh")).read()
+    blk = src[src.index('SCOPE_NAME="claude-seat-'):src.index("unset CLAUDE_SCOPE_UNIT")]
+    for val, want in (("claude-seat-BENCH-rm-role-x-1", "claude-seat-BENCH-rm-role-x-1"), ("", "claude-seat-S-"),
+                      ("bad name;rm", "claude-seat-S-")):
+        sh = "red(){ :; }; SEAT=S; " + blk + "unset CLAUDE_SCOPE_UNIT; printf '%s|%s' \"$SCOPE_NAME\" \"${CLAUDE_SCOPE_UNIT-unset}\""
+        o = subprocess.run(["bash", "-c", sh], env=dict(os.environ, CLAUDE_SCOPE_UNIT=val), capture_output=True,
+                           text=True, timeout=30).stdout
+        check(o.startswith(want) and o.endswith("|unset"), "B1 claude_bounded scope name for %r: %r" % (val, o))
+    check('--unit="$SCOPE_NAME"' in src, "B1 claude_bounded: the scope is created under that name")
+
+
+def test_golive_b2_blind_fixed_outcomes():
+    """dispatcher-full #2: a blind item gets fixed outcome texts only. Outside text with an account id or a figure in
+    words no token list knows (PAUSE/off reasons, launch errors, exception text, result subtypes) never reaches it;
+    it stays in the journal (`why`) or goes to Operations' item. A blind field outside its closed set diverts."""
+    secret = ("acct-7781", "4.2M", "42%")
+    sch = sched(roles=[conductor(), operations(ledger_item="OPS_OWN_X", token_aware=True)],
+                token_notes_item="OPS_OWN_X", ledger_notes=True)
+    rx = D.token_rx()
+    check(not any(rx.search(x) for x in secret), "B2 probe: the outside figures carry no token keyword")
+    root = os.path.join(TMP, "golive_b2")
+    t8 = at_local("08:00")
+    noted = []
+    base = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p",
+            "lock": lambda: open(os.devnull), "off": lambda p: None, "paused": lambda: None}
+
+    def run(fx_extra, st=None):
+        st = st or fresh()
+        acts = [x for x in rdecide([conductor()], st, robs(ops_status(t8)), t8) if x["do"] == "role_launch"]
+        del noted[:]
+        out = D.execute(acts, sch, st, root, True, t8, dict(base, **fx_extra))
+        return out, [t for i, t in noted if i == "ROLES_ITEM_X"], [t for i, t in noted if i == "OPS_OWN_X"]
+
+    def boom(*a):
+        raise RuntimeError("acct-7781 has 4.2M left")
+    cases = (("PAUSE reason", {"paused": lambda: "acct-7781 at 42%"}, "held by PAUSE, not launched"),
+             ("off reason", {"off": lambda p: "acct-7781 down to 4.2M"}, "held by its off switch, not launched"),
+             ("launch error", {"role_launch": lambda *a: (False, "systemd-run exit 1: acct-7781 4.2M left", {})},
+              "launch failed, retried"),
+             ("exception text", {"role_launch": boom}, "launch outcome unknown, the run stays tracked"))
+    for label, fx, want in cases:
+        out, blind_notes, ops_notes = run(fx)
+        journal = repr(out)
+        check(len(blind_notes) == 1 and blind_notes[0].endswith(": " + want)
+              and not any(x in blind_notes[0] for x in secret),
+              "B2 %s: the shared item gets the fixed outcome only: %r" % (label, blind_notes))
+        check("acct-7781" in journal or any("acct-7781" in t for t in ops_notes),
+              "B2 %s: the detail stays in the journal / Operations' item" % label)
+    # a result subtype with an account id: the done note is the fixed outcome
+    role = conductor()
+    for sub, want in (("success", "completed"), ("error_acct_7781_4.2M", "ended without a good result")):
+        st = {"roles": {"Conductor": {"runs": [{"state": "running", "unit": "rm-role-conductor-5", "at": 0,
+                                                "budget": 30000, "item": role["ledger_item"], "mode": "quick",
+                                                "scope": "s"}]}}}
+        acts = []
+        RL.supervise_roles({"roles": [role]}, st, {"unit_state": lambda u: "inactive", "result": lambda r: {
+            "usage": usage(input_tokens=1000, output_tokens=10), "modelUsage": {"opus": {}}, "subtype": sub,
+            "is_error": sub != "success"}}, 5000.0, lambda **k: acts.append(k))
+        notes = [RL.blind_note(a.get("blind")) for a in acts if a.get("blind")]
+        check(any(n and n.endswith(": " + want) for n in notes)
+              and not any("7781" in (n or "") or "4.2M" in (n or "") or sub in (n or "") for n in notes),
+              "B2 subtype %r: blind notes are fixed (%r)" % (sub, notes))
+    # closed sets: any field outside them -> None, and execute diverts that note to Operations' item
+    good = RL.blind("Conductor", "completed", "quick", "rm-role-conductor-9")
+    check(RL.blind_note(good) == "dispatcher: Conductor quick run rm-role-conductor-9: completed", "B2 a good note")
+    for bad in (dict(good, role="acct-7781"), dict(good, mode="acct-7781"), dict(good, outcome="acct-7781 at 42%"),
+                dict(good, unit="rm-role-conductor-9 acct-7781"), dict(good, unit="rm-role-arbiter-9"),
+                dict(good, outcome="subtype"), "Conductor completed", None):
+        check(RL.blind_note(bad) is None, "B2 closed set refuses %r" % (bad,))
+    del noted[:]
+    D.execute([{"do": "role_done", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
+                "why": "Conductor run done, acct-7781 4.2M", "blind": dict(good, outcome="acct-7781")}],
+              sch, fresh(), root, True, 100.0, base)
+    check(noted and noted[0][0] == "OPS_OWN_X" and "acct-7781" in noted[0][1],
+          "B2 a refused blind note goes to Operations' item, never the shared one")
+    src = open(os.path.join(HERE, "role_launch.py")).read() + open(os.path.join(HERE, "dispatcher.py")).read()
+    check("note_text" not in src and "note_base" not in src, "B2 no free-text note_text/note_base path is left")
+
+
+def robs_with(ro, status):
+    r = dict(ro)
+    r["ops"] = lambda: status
+    return r
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -2182,7 +2413,9 @@ def main():
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
-              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap):
+              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,
+              test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
+              test_golive_b3_wave1_config):
         try:
             t()
         except Exception as e:  # noqa: BLE001

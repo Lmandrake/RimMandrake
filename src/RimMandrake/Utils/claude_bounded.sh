@@ -189,10 +189,21 @@ exec "$@"'
 # Foreground, not exec (header §3). The traps are handlers, not ignores, so the
 # child still gets default signal dispositions; they only keep this shell alive
 # long enough to reset the terminal. The seat lock fd is closed for the child.
+# The scope's name: the Dispatcher's role launcher chooses it (CLAUDE_SCOPE_UNIT, persisted
+# with the run before systemd-run) so it can stop and verify exactly this scope even after
+# the launching unit is gone (DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND). Unset before the
+# child starts: a claude_bounded launched from inside this seat must not reuse the name.
+SCOPE_NAME="claude-seat-${SEAT}-$$"
+case "${CLAUDE_SCOPE_UNIT:-}" in
+  "") ;;
+  *[!A-Za-z0-9_.-]*) red "!!! claude_bounded: CLAUDE_SCOPE_UNIT '$CLAUDE_SCOPE_UNIT' is not a unit name — using $SCOPE_NAME" ;;
+  *) SCOPE_NAME="$CLAUDE_SCOPE_UNIT" ;;
+esac
+unset CLAUDE_SCOPE_UNIT
 trap ':' INT TERM HUP QUIT
 CLAUDE_CODE_TOOL_MEMORY_LIMIT="$TOOL_MEM" systemd-run --user --scope --quiet \
   --slice=claude-seats.slice \
-  --unit="claude-seat-${SEAT}-$$" \
+  --unit="$SCOPE_NAME" \
   -p MemoryMax="$MEM_MAX" \
   -p MemorySwapMax="$SWAP_MAX" \
   -p MemoryAccounting=yes \
