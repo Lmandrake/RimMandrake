@@ -581,6 +581,44 @@ def ledger_note(item, text, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
+OPS_RULES = os.path.join(REPO, "src", "RimMandrake", "Utils", "ops_watch_rules.json")
+_TOKEN_RX = {}
+
+
+def token_rx(path=None):
+    """ops_watch_rules.json token_talk.terms as one whole-word, case-insensitive regex (ops_watch.tt_regex's shape).
+    Unreadable or empty -> a regex that matches EVERYTHING: a blind word list fails closed, every note on a shared
+    item goes to the token-notes item (review U N2)."""
+    import re
+    path = path or OPS_RULES
+    if path not in _TOKEN_RX:
+        try:
+            with open(path, encoding="utf-8") as f:
+                terms = (json.load(f).get("token_talk") or {}).get("terms") or []
+            if not terms:
+                raise ValueError("token_talk.terms is empty")
+            _TOKEN_RX[path] = re.compile(r"(?<![A-Za-z0-9_])(?:" + "|".join(terms) + r")(?![A-Za-z0-9_])", re.I)
+        except Exception:  # noqa: BLE001
+            _TOKEN_RX[path] = re.compile("")
+    return _TOKEN_RX[path]
+
+
+def blind_items(sch):
+    """The ledger items a token-blind role reads: every role's ledger_item unless the role is `token_aware`."""
+    return {r["ledger_item"] for r in sch.get("roles") or [] if r.get("ledger_item") and r.get("token_aware") is not True}
+
+
+def route_note(sch, item, text, rx=None):
+    """-> (item, text) where a dispatcher note goes. A note holding a token term (the token_talk word list) on an item
+    a token-blind role reads goes to `token_notes_item` (Operations' own item) instead, naming where it was meant to
+    go; with no token_notes_item it is not noted (item None: the journal holds it). Owner 2026-10-27: every role but
+    Operations is token-blind; review U N2."""
+    if item not in blind_items(sch) or not (rx or token_rx(sch.get("token_rules"))).search(text):
+        return item, text
+    to = sch.get("token_notes_item")
+    return (to, "%s [meant for %s; token values stay off it]" % (text, item)) if to else (None, text)
+
+
 def publish(n):
     import ingest
     if not n and not ingest.unpublished(SHARD_REL):
@@ -719,16 +757,21 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
-                    item = a.get("ticket") or sch.get("alarm_item")
-                    if item and not ledger_ok:
+                    item, text = route_note(sch, a.get("ticket") or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
+                        a["do"], a.get("seat") or a.get("role") or "",
+                        a.get("note_text") or a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
+                    if item and item != (a.get("ticket") or sch.get("alarm_item")):
+                        a["noted_on"] = item
+                    if not item:
+                        if a.get("ticket") or sch.get("alarm_item"):
+                            a["ledger"] = "not noted: token values on a token-blind item and no token_notes_item"
+                    elif not ledger_ok:
                         a["ledger"] = "not noted: testq ingest.lock busy (the journal holds it)"
-                    elif item and time.time() >= deadline:
+                    elif time.time() >= deadline:
                         a["ledger"] = "not noted: tick budget spent (the journal holds it)"
-                    elif item:
+                    else:
                         try:
-                            ok, out = do_note(item, "dispatcher %s %s: %s" % (
-                                a["do"], a.get("seat") or a.get("role") or "",
-                                a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
+                            ok, out = do_note(item, text)
                         except Exception as e:  # noqa: BLE001 - a rimflow timeout
                             ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
                         notes += ok

@@ -621,5 +621,38 @@ check("tokentalk: the family is registered and its series is in the run and sile
       "tokentalk" in OW.COLLECTORS and "tokentalk" in OW.ORDER and OW.matches("tokentalk.role.conductor.share", R["run"]["keys"])
       and OW.matches("tokentalk.BENCH.share", list(R["silent"]["per_key"])))
 
+# ---------------------------------------------------------------- digest_blind.md (review U N2/F6)
+RX = OW.tt_regex(RULES)
+pts = {"accounts.lukas.runway": M(0.82), "accounts.lukas.week_left_pct": M(40.0), "codex.runway": M(0.5),
+       "tokentalk.role.producer.share": M(12.0), "steve.state": M("ok"), "disk.root_free_gb": M(300.0),
+       "production.G7": dict(M(9.0), unit="tokens per merged commit"),
+       "flow.untriaged_findings": OW.U("collector error: the burn table was unreadable")}
+fl = [{"rule": "target", "tag": "RUNWAY_LOW", "key": "accounts.lukas.runway", "window": "now",
+       "detail": "0.82 < 1 runway"},
+      {"rule": "target", "tag": "DISK_TWO_DAYS", "key": "disk.root_free_gb", "window": "now", "detail": "300 < 420"}]
+al = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "since": "x", "item": "OPS_RUNWAY_RESCUE"},
+      "DISK_LOW:disk.root_free_gb": {"state": "OPEN", "since": "x", "item": "OPS_DISK_DRAIN"}}
+dg = OW.build_digest(pts, {}, fl, al, NOW, 1.0)
+blind = OW.blind_digest_md(dg, RULES)
+hits = [ln for ln in blind.splitlines() if RX.search(ln)]
+check("blind digest: no line holds a token_talk term (ops_watch_rules.json word list)", not hits, hits)
+check("blind digest: no account, codex or tokentalk key, value or alarm",
+      not any(x in blind for x in ("accounts.", "codex", "tokentalk", "0.82", "RUNWAY", "G7")), blind)
+check("blind digest: the full digest DOES carry them (the instrument can see)",
+      RX.search(OW.digest_md(dg)) and "0.82" in OW.digest_md(dg))
+check("blind digest: health stays (steve, disk alarm, disk flag)",
+      "steve ok" in blind and "DISK_LOW:disk.root_free_gb" in blind and "DISK_TWO_DAYS" in blind
+      and "1 flag(s), 1 alarm(s) open" in blind, blind)
+check("blind digest: run() writes digest_blind.md", (TMP / "ops" / "digest_blind.md").exists())
+title_al = OW.run_alarms({"accounts.lukas.runway": M(0.5)}, RULES, NOW, set(), None)
+tt = [a.get("title") for a in title_al.values() if isinstance(a, dict) and a.get("title")]
+check("alarm title: an account alarm's title (listed by rimflow queue) holds no value and no token term",
+      tt and not any(RX.search(t) or "0.5" in t for t in tt), tt)
+live = Path(os.environ.get("RM_OPS_WATCH_LIVE", "/mnt/d/ClaudeWork/rimmandrake/ops_watch")) / "digest.json"
+if live.exists():
+    lb = OW.blind_digest_md(json.loads(live.read_text()), RULES)
+    check("blind digest over the live digest.json: no token term (%d lines)" % len(lb.splitlines()),
+          not [ln for ln in lb.splitlines() if RX.search(ln)] and len(lb.splitlines()) > 5, lb[:400])
+
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

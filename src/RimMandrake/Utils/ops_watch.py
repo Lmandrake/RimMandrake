@@ -33,6 +33,8 @@ rimflow/dispatcher_schedule.json "measure"):
            from the dispatch clone (its testq/ingest.py) under QHOME/ingest.lock. Only with --file-alarms.
    HAND    status.json (every current point: slot_allocator.py reads it), digest.json and digest.md: per KPI the
    OVER    current value, its mark, the change over 24 h and 7 d, and its open flags; one cheap read for Operations.
+           digest_blind.md: the same minus every token, runway, quota or burn reading (TOKEN_FAMILIES, and any line
+           holding a token_talk term): the only digest the token-blind roles read (review U N2).
 
     python3 src/RimMandrake/Utils/ops_watch.py run [--file-alarms]   one pass (the timer passes --file-alarms)
     python3 src/RimMandrake/Utils/ops_watch.py digest                 print digest.md
@@ -1084,8 +1086,14 @@ def run_alarms(points, rules, now, known_ids, filer):
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a.get("name") for a in state.values() if isinstance(a, dict) and a.get("name")}
             cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
-        title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
-                                                            pt.get("m"), tg["op"], tg["value"])
+        if key.split(".", 1)[0] in TOKEN_FAMILIES:
+            # the title is listed by `rimflow queue`, which token-blind roles read: no value, no line (review U N2).
+            # Operations reads the reading in digest.md.
+            title = "Ops alarm for Operations: %s crossed its line (%s); the reading is in digest.md" % (
+                key.split(".", 1)[0], pt.get("m"))
+        else:
+            title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
+                                                                pt.get("m"), tg["op"], tg["value"])
         cur["title"] = title[:160]
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"]})
     if todo and filer:
@@ -1204,6 +1212,77 @@ def digest_md(dg):
     return "\n".join(L) + "\n"
 
 
+# The families whose every point is a token, runway, quota or burn reading: Operations' alone (owner 2026-10-27:
+# every other role is token-blind). tokentalk is the drift measure OF token talk: Operations' too.
+TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
+
+
+def blind_keep(key, p, rx):
+    """May a token-blind role see this point? Not a TOKEN_FAMILIES point, and no token term in its key, unit or why."""
+    if key.split(".", 1)[0] in TOKEN_FAMILIES:
+        return False
+    p = p if isinstance(p, dict) else {}
+    return not rx.search(" ".join(str(x) for x in (key, p.get("unit") or "", p.get("why") or "")))
+
+
+def blind_digest_md(dg, rules):
+    """digest_blind.md: the digest for the token-blind roles (Conductor, Producer; review U N2/F6). Health only: the
+    non-token headline parts, the alarms and flags on non-token keys, and the non-token KPI table. Every line is then
+    checked against the token_talk word list (ops_watch_rules.json): a line holding a term is withheld, so a new
+    collector that talks tokens cannot leak through here. The count withheld is printed; never the lines."""
+    rx = tt_regex(rules)
+    kp = dg["kpis"]
+    keep = {k for k, r in kp.items() if blind_keep(k, r, rx)}
+    al = {k: a for k, a in (dg.get("alarms") or {}).items()
+          if not str(k).startswith("_") and (str(k).split(":", 1)[-1] in keep)}
+    fl = [f for f in dg.get("flags") or [] if f.get("key") in keep]
+    hl = [x for x in dg["headline"].split(" | ")[1:-1]]          # drop the runway part and the all-alarm counts
+    opened = [a for a in al.values() if a.get("state") == "OPEN"]
+    hl.append("%d flag(s), %d alarm(s) open, %d pending" % (
+        len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"])))
+    L = ["# Ops watch, health digest %s (no account readings: those are Operations')" % dg["at"], "",
+         " | ".join(hl), ""]
+    body = []
+    if al:
+        body.append("## Alarms")
+        for k, a in sorted(al.items()):
+            body.append("- %s %s since %s%s" % (a.get("state"), k, a.get("since"),
+                                                " item " + a["item"] if a.get("item") else ""))
+        body.append("")
+    if fl:
+        body.append("## Open flags")
+        for f in fl:
+            body.append("- %s %s [%s] %s (open since %s)" % (f["rule"] + ("/" + f["tag"] if f.get("tag") else ""),
+                                                             f["key"], f["window"], f["detail"][:200],
+                                                             f.get("since", "now")))
+        body.append("")
+    fam = None
+    for k in sorted(keep):
+        r = kp[k]
+        f = k.split(".", 1)[0]
+        if f != fam:
+            fam = f
+            body += ["## " + f, "key | now | mark | d24h | d7d", "---|---|---|---|---"]
+        body.append("%s | %s | %s | %s | %s" % (
+            k.split(".", 1)[1], fmt(r["v"]) + (" " + r["unit"] if r.get("unit") and len(r["unit"]) < 40 else ""),
+            r["m"] if r["m"] == "MEASURED" else "%s: %s" % (r["m"], (r.get("why") or "")[:90]),
+            fmt(r["d24"]), fmt(r["d7"])))
+    withheld = 0
+    for line in L + body:
+        if rx.search(line):
+            withheld += 1
+    out = [x for x in L + body if not rx.search(x)]
+    if withheld:
+        out.append("(%d line(s) withheld: they named an account reading)" % withheld)
+    return "\n".join(out) + "\n"
+
+
+def write_text_atomic(path, text):
+    tmp = Path(str(path) + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
+
+
 # ======================================================================================================= run
 class Busy(RuntimeError):
     pass
@@ -1274,10 +1353,8 @@ def run(now=None, rules=None, filer=None, families=None):
                         else []) for k, v in hist.items()}
     dg = build_digest(points, hist_all, flags, alarms, now, run_s)
     atomic_json(ops_dir() / "digest.json", dg)
-    md = digest_md(dg)
-    tmp = ops_dir() / "digest.md.tmp"
-    tmp.write_text(md, encoding="utf-8")
-    os.replace(tmp, ops_dir() / "digest.md")
+    write_text_atomic(ops_dir() / "digest.md", digest_md(dg))
+    write_text_atomic(ops_dir() / "digest_blind.md", blind_digest_md(dg, rules))
     return dg
 
 
@@ -1365,7 +1442,8 @@ def main(argv=None):
     r = sub.add_parser("run")
     r.add_argument("--file-alarms", action="store_true", help="file NEW alarm crossings as rimflow items")
     r.add_argument("--family", action="append", help="only these families (testing)")
-    sub.add_parser("digest")
+    d = sub.add_parser("digest")
+    d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-pulse-streams' history")
     i = sub.add_parser("install")
     i.add_argument("--apply", action="store_true")
@@ -1383,7 +1461,7 @@ def main(argv=None):
         print("production records backfilled: %d" % backfill_production())
         return 0
     if a.cmd == "digest":
-        p = ops_dir() / "digest.md"
+        p = ops_dir() / ("digest_blind.md" if a.blind else "digest.md")
         print(p.read_text(encoding="utf-8") if p.exists() else "no digest yet: run ops_watch.py run")
         return 0
     return install(a.apply, a.deploy)

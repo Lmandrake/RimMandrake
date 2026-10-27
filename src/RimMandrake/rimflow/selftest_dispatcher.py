@@ -1620,6 +1620,64 @@ def test_account_hold_dispatch():
           and [x for x in a if x["do"] == "role_launch"], "F10: the pick uses the schedule's ops_stale_s")
 
 
+def test_review_u_notes():
+    """review U N2: no token figure is noted on an item a token-blind role reads. A note with a token term bound for
+    one goes to token_notes_item (Operations' own item); blind roles' launch and done notes carry note_text with no
+    term; with no token_notes_item the note is not written; Operations' own item is not blind."""
+    rx = D.token_rx()
+    check(rx.search("used 40000 tokens") and rx.search("daily_token_cap 1, 2 used + 3 budget".replace("_", " "))
+          and not rx.search("Conductor quick 08:00 launched, unit rm-role-conductor-1"), "N2: the word list sees terms")
+    check(D.token_rx(os.path.join(TMP, "no_such_rules.json")).search("anything"), "N2: no word list fails closed")
+    sch = sched(roles=[conductor(), operations(ledger_item="OPS_OWN_X", token_aware=True)],
+                token_notes_item="OPS_OWN_X", ledger_notes=True)
+    check(D.blind_items(sch) == {"ROLES_ITEM_X"}, "N2: the blind items are every role's but the token_aware one's")
+    noted = []
+    fx = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p",
+          "lock": lambda: open(os.devnull)}
+    root = os.path.join(TMP, "u_notes")
+    acts = [{"do": "alarm", "kind": "role:Conductor:cap", "ticket": "ROLES_ITEM_X", "note": True,
+             "why": "Conductor quick REFUSED: daily token cap 200000, 190000 used today + 30000 budget"},
+            {"do": "alarm", "kind": "role:Conductor:failed", "ticket": "ROLES_ITEM_X", "note": True,
+             "why": "Conductor run U ended without a good result (no result file)"},
+            {"do": "alarm", "kind": "role:Operations:cap", "ticket": "OPS_OWN_X", "note": True,
+             "why": "Operations run REFUSED: 9 tokens used"}]
+    D.execute([dict(x) for x in acts], sch, fresh(), root, True, 100.0, fx)
+    check(noted[0][0] == "OPS_OWN_X" and "190000" in noted[0][1] and "ROLES_ITEM_X" in noted[0][1],
+          "N2: a token note bound for the shared item goes to Operations' item, naming where it was meant to go")
+    check(noted[1][0] == "ROLES_ITEM_X", "N2: a note with no token term stays on the shared item")
+    check(noted[2][0] == "OPS_OWN_X" and "[meant for" not in noted[2][1], "N2: Operations' own item is not blind")
+    check(not any(i == "ROLES_ITEM_X" and rx.search(t) for i, t in noted), "N2: nothing on the shared item has a term")
+    noted.clear()
+    sch2 = dict(sch)
+    sch2.pop("token_notes_item")
+    a = D.execute([dict(acts[0])], sch2, fresh(), root, True, 100.0, fx)
+    check(not noted and a[0]["ledger"].startswith("not noted"), "N2: no token_notes_item -> not noted, journalled")
+    real = D.load_schedule()
+    check(real.get("token_notes_item") and real["token_notes_item"] not in D.blind_items(real)
+          and "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE" in D.blind_items(real),
+          "N2 real schedule: token notes go to Operations' own item, off the shared table")
+    # decide: a blind role's launch note_text carries no term; the journal's why keeps the budget
+    now = at_local("08:00")
+    st = fresh()
+    a = D.decide(sched(roles=[conductor()], account_pick=PICK_RULE), st, pobs(now, {"a": (2.0, 40, 50, "MEASURED")}),
+                 now, True)
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and "budget" in la[0]["why"] and la[0].get("note_text") and not rx.search(la[0]["note_text"]),
+          "N2: the Conductor launch note has no token term (the journal keeps the budget)")
+    # supervise: a blind role's done note has no tokens; Operations' keeps them
+    for role, blind in ((conductor(), True), (operations(token_aware=True), False)):
+        st = {"roles": {role["name"]: {"runs": [{"state": "running", "unit": "U", "at": 0, "budget": 30000,
+                                                  "item": role["ledger_item"], "mode": "quick", "scope": "s"}]}}}
+        out = []
+        RL.supervise_roles({"roles": [role]}, st, {"unit_state": lambda u: "inactive", "result": lambda r: {
+            "usage": usage(input_tokens=1000, output_tokens=10), "modelUsage": {"opus": {}}, "subtype": "success"}},
+            5000.0, lambda **k: out.append(k))
+        d = [x for x in out if x["do"] == "role_done"]
+        check(d and "tokens" in d[0]["why"] and (bool(d[0].get("note_text")) and not rx.search(d[0]["note_text"])
+                                                 if blind else d[0].get("note_text") is None),
+              "N2: %s done note %s" % (role["name"], "token-free" if blind else "keeps its tokens"))
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -1628,7 +1686,7 @@ def main():
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
-              test_account_hold_dispatch):
+              test_account_hold_dispatch, test_review_u_notes):
         try:
             t()
         except Exception as e:  # noqa: BLE001

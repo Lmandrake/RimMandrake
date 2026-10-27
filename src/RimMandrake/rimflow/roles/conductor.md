@@ -32,7 +32,7 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
 
 ## Split of work
 
-- **Programs measure and build the pack** (no AI): `ops_watch.py` every 15 min → `D:\ClaudeWork\rimmandrake\ops_watch\digest.md`
+- **Programs measure and build the pack** (no AI): `ops_watch.py` every 15 min → `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md` (the token-free digest: health, alarms and flags with no account reading; review U N2)
   and `status.json`; `rimflow_metrics.py`; `account_usage.py now`; the canon check (`check_canon.py`, run by the
   Dispatcher's measuring arm when `canon.yml` changes, on commit and nightly, `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`);
   the rulings reconciler (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
@@ -51,8 +51,8 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
 His message is not a Dispatcher trigger: the Dispatcher launches only the `quick_checks_local` runs. Session mode is the
 BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 
-The Dispatcher may refuse to start a quick run or stop one that has gone on too long, and it records what was left
-undone; the helper allocator may give you fewer helpers than you ask for. Those are theirs, never yours. A reply to a
+The Dispatcher may refuse to start a quick run or stop one that has gone on too long, and it journals what it refused
+or stopped; the helper allocator may give you fewer helpers than you ask for. Those are theirs, never yours. A reply to a
 message he sent in the window is always finished. When a helper launch is refused, tell him once in one line and keep
 working with him in the one window.
 
@@ -75,7 +75,7 @@ decide together. You only RAISE it; you never cut, reorder or drop work on your 
 
 ## Quick mode (fresh per scheduled run; short)
 
-1. Read `digest.md` (one screen) and `rimflow queue BENCH`. Answer him from them. A round, zero or alarming number is
+1. Read `digest_blind.md` (one screen; never `digest.md`, which is Operations') and `rimflow queue BENCH`. Answer him from them. A round, zero or alarming number is
    a query bug until a sanity probe proves the instrument can see (`infrastructure/state/facts/instrument_traps.md`).
 2. His words become work: a ruling → ledger with the right flag (`--owner-said` his words, `--by-card`,
    `--per-ruling`), then propagate it (`deciding-and-superseding`) or file the propagation as an item; an

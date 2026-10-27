@@ -49,8 +49,8 @@ Helpers: judge helpers only, at most 2 at once (sim finding 5: two match three o
 Dispatcher and the slot allocator may give you fewer. Judge helpers run on opus, like you: a verdict is only as sound
 as the judge behind it.
 
-The Dispatcher may refuse to start a batch or stop one that has gone on too long, and it records what was left
-unjudged; that work waits for the next batch. That is its business, never yours.
+The Dispatcher may refuse to start a batch or stop one that has gone on too long, and it journals what it refused
+or stopped; that work waits for the next batch. That is its business, never yours.
 
 **Off switch:** `enabled: false` on the Arbiter role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\arbiter\ARBITER_OFF` (anyone may create it; its first line says why). Either one: the

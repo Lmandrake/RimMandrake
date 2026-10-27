@@ -480,7 +480,11 @@ def supervise_roles(sch, st, obs, now, act):
                     name, run.get("mode"), run["unit"], run["state"],
                     " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
                     tok if tok is not None else "UNMEASURED (counted at its budget)",
-                    run.get("budget") or 0, ",".join(models) or "?", res.get("subtype") or "no result"))
+                    run.get("budget") or 0, ",".join(models) or "?", res.get("subtype") or "no result"),
+                # a token-blind role reads its ledger item: its note carries no tokens or budget (review U N2); the
+                # journal keeps `why`
+                note_text=None if cfg.get("token_aware") is True else "%s %s run %s %s, %s" % (
+                    name, run.get("mode"), run["unit"], run["state"], res.get("subtype") or "no result"))
             if tok is not None and tok > (run.get("budget") or 0):
                 act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                     why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
@@ -745,6 +749,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
                 name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"],
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
+            note_text=None if cfg.get("token_aware") is True else "%s %s launched, unit %s" % (
+                name, job["trigger"], unit),
             message=prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit))
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
 

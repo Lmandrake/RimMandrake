@@ -14,6 +14,8 @@
  "ledger_notes": true,
  "publish": true,
  "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",
+ "token_notes_item": "OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE",
+ "_token_notes_item_doc": "review U N2: a dispatcher note holding a token term (ops_watch_rules.json token_talk.terms) bound for an item a token-blind role reads (any role ledger_item but a token_aware role's) goes here instead; Operations has its own ledger_item so its launch, done and cap notes never reach the shared table. The Producer still reads Operations' REPLAN REQUEST notes on its own ledger_item (operations.md: plan terms only, no numbers).",
  "caps": {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3},
  "seats": {
   "FOUNDRY": {"enabled": true, "wake": true, "recover_dead": false, "session_name": "AGENT FOUNDRY",
@@ -68,7 +70,7 @@
                       "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick_one"},
                       "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}},
    "off_switch": "enabled false here, or the file D:\\ClaudeWork\\rimmandrake\\ops_watch\\OPERATIONS_OFF",
-   "seat": "BENCH", "clone": "/home/mandrake/rm/bench", "model": "opus", "ledger_item": "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
+   "seat": "BENCH", "clone": "/home/mandrake/rm/bench", "model": "opus", "ledger_item": "OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE",
    "off_file": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\OPERATIONS_OFF", "alarm_runs": true, "slot_late_s": 3600, "run_max_s": 1800,
    "_why": "role_launch.py runs runs_local (07:30 is the economy pass, economy_token_cap, and carries the morning running check: a band without the economy pass skips the whole 07:30 slot, the cheaper reading, operations.md) and once per ops_watch alarm item filed after it is first seen enabled (alarm_runs). daily 200,000 = 80,000 x 2 runs x 1.25; economy pass 100,000 (so it plus the evening run fit the day); bands as operations.md (quick = no economy pass; quick_one = one running check, no economy pass, no alarm runs). seat/clone are the builder's defaults of 2026-10-27: confirm before enabling. model opus per infrastructure/agents/Agent_Policy.md, the one ladder (review T, F7)."},
   {"name": "Producer", "enabled": false, "trigger": "daily list, weekly plan (Wednesday run), replan on a forecast miss or failed plan step", "from": "v3.3",
