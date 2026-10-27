@@ -105,7 +105,7 @@ The project produces artifacts of intent (items, lessons, rules, design edits) f
 | H10 | Ceremony vs need in asks | 40% of his messages, about 31/day, drive the machine. 5 card classes are 69-89% rule-predictable, about 47 min/wk (E-Q7, DC) | none | him |
 | H11 | Could we have found it ourselves? | 12 of 21 sampled defect reports had an instrument we own or nearly own (E-Q8) | none | him |
 | H12 | Have we asked this already? | R tag 9.4%, rising to 11.1%. 7 "already ruled" (BL-M6). 24 cards asked him to reconcile his own rulings (E-Q11) | none | him |
-| H13 | Validating too much or too little | Too little at close (98.8% no level). Too much in selftests (H5). Verify non-pass 29% (E-Q9) | on demand | nobody |
+| H13 | Validating too much or too little | Too little at close (98.8% no level). Too much in selftests (H5). Verify non-pass 38.9% (E-Q9 printed 29%, an arithmetic error; S3.2) | on demand | nobody |
 | H14 | Archmagi vs SteveDesktop balance | Steve: 148 jobs, 40 findings in 2 d. Archmagi: 34 jobs, 3 findings in 14 d (E-Q10) | **surfaced** (testing_metrics) | him |
 | H15 | Design flapping | 1,122 docs edited. 45% of spec docs edited after close. Only about 2 genuine owner reversals; the churn is agents' (E-Q11) | none | nobody |
 | H16 | Git/disk health | Scratch 240 GB. 121 packs in bench. index.lock 1-8/day. WSL 450 GB free (E-Q12) | partial | him (reaper found by accident) |
@@ -522,9 +522,254 @@ All five share one foundation, so they differ in what sits **on top of** it:
 - Can T6 be measured automatically at all, or does it need a human tagger every week?
 - Is Foundry's accepted output per token below Bench's? (UNMEASURED.)
 
-## S3 GPT teardown, round 1 (pending)
+## S3 GPT teardown, round 1
 
-## S4 Opus repair (pending)
+**How it was run.**
+- Command: `gpt_consult.py`, effort high.
+- Attached: the brief, evidence.md, frustration_census.md and this doc as of S2.
+- Instruction: as in the brief.
+- Raw answer, 1,217 words: `D:\ClaudeWork\rimmandrake\csuite\gpt_round1.md`.
+
+### S3.1 Its points, most damaging first (condensed)
+
+1. **The designs reorganise the owner's burden; they do not remove it.**
+   - A and D detect and display. B, C and E have authority on paper.
+   - **No design specifies the path from a finding, through execution, to an independently accepted repair.** "A thin slice of B's hands" hides the actual product.
+   - Verdict: kill D as a standalone supervisor and A as a standalone solution.
+2. **The numbers are not reconciled.**
+   - T2 alternates between 496, 343 and 521.
+   - Verify non-pass is 38.9%, not 29%.
+   - 1,531 − 922 = 609, not +567.
+   - Focus bugs for week 10-19 read 48 in one table and 107 in another.
+   - "Done" is called "acceptance" although 98.8% of closes carry no level.
+3. **The freeze rule manufactures certainty.**
+   - Why is 25% unverified acceptable?
+   - Bugs per run is not a Duane curve: runs differ in length, coverage and effort.
+   - A flat discovery rate can mean stalled testing.
+   - Define the supported player experience first.
+4. **"One builder-day" for the pack is fantasy.** Many inputs are not measured at all:
+   - accepted throughput and acceptance timestamps
+   - exposure per mod and escape lineage
+   - skip-cache hits
+   - per-seat accepted output per token
+   - ruling-to-enactment latency
+   - brief opens and attributable actions
+   - repeat-failure classes
+
+   Separately, T6 at "80% agreement" is weak, because predicting "no failure" already scores 72.5%.
+5. **B's forecasts are invented.** The standing seat should die until its actuator (the wake) works.
+   - The 574 verify events include partials and repeats.
+   - The "unchanged-input repeats" claim is unproven: E-Q2 says only "repeats".
+6. **A's smaller numbers are no better evidenced.**
+   - The 32 never-failing tests total only 0.5 h.
+   - Asking him for a daily agree/disagree is ceremony.
+7. **C has the strongest problem selection,** but its payoffs are unsupported. The Foundry trigger "under 50% of Bench" is arbitrary and confounded by lane and task difficulty.
+8. **D's forecasts expose its irrelevance.**
+   - An as-of time does not stop fresh computation over unapplied rulings from being freshly wrong.
+   - The A/B of visual forms lacks instrumentation and randomisation.
+9. **E's independence is overstated.**
+   - A separate prompt still trusts the same ledger and tools.
+   - 5 closes a day is not a representative trust score without eligibility rules and uncertainty.
+   - Reading full files contradicts the numbers-only premise.
+10. **The controls can optimise the wrong things (Goodhart).**
+    - T1 and T6 reward fewer messages.
+    - T3 rewards fewer discoveries.
+    - T2 rewards shrinking inventory.
+    - "Codex 64% unused" is not proven, because of moving resets and unidentified accounts.
+    - More art feeds the constrained judge loop.
+11. **Undelivered owner needs:**
+    - the conversational assistant he wants to *talk to*
+    - an actionable account and art schedule
+    - balanced test allocation
+    - design-readiness decisions
+    - a safe way to evolve the workflow itself
+    - Also: presence windows contradict his *unscheduled* phone check-ins, and the "IG:" tagging is more work for him.
+    - Missing across all designs: acknowledgement, precedence, retries, escalation on non-execution, rollback, and supervisor-failure detection.
+    - "Compare against simply enforcing existing rulings."
+
+### S3.2 Fact-check (each point checked against the files, not taken on trust)
+
+| # | Verdict | Check |
+|---|---|---|
+| 2 non-pass | **CORRECT** | (56 + 167) / 574 = 38.9%. evidence.md line 298 says 29%, an arithmetic error, and I copied it into H13. Lesson filed: `20261027T031905Z-BENCH-csuite-census-counts-unreconciled` |
+| 2 net | **CORRECT as stated** | 1,531 − 922 = 609. The census's +567 probably nets drops and supersedes, but it never says so. Unreconciled |
+| 2 T2 | **CORRECT** | 343 is the rimflow BUILT state (E-Q6). 496 is the friction-census BUILT count, from a different snapshot. 521 is the verify backlog, items that owe a level. Three populations |
+| 2 48/107 | **CORRECT** | 48 comes from lane-pattern matching (FlowWorks + GSS, "of which bugs"). 107 is the FlowWorks bug table. Two methods, never reconciled |
+| 4 72.5% | **CORRECT** | 100 − 27.5. Agreement must be per class, against a chance-corrected baseline |
+| 5 unchanged-input | **CORRECT** | E-Q2 says "33% of runs are repeats", and the skip rate is UNMEASURED. My S2 wording overclaimed |
+| 6 0.5 h | **CORRECT** | evidence.md line 60, a partial sample from tails |
+| 10 Codex 64% | **PARTLY** | The doc's H8 says "at or above 64% unused every observed week". That is 100 − 36% maximum observed (E-Q5), and E-Q5 itself says the reset times move and the account identity is UNMEASURED. So "unused" is right for *the observed windows*; "expired unused" is not proven. E-Q5 also says art is bound by the judge loop, not quota (line 147). GPT is right that more art is not the lever |
+| 11 unscheduled | **CORRECT** | The brief: "I enjoy checking in during the day on my phone but **I can't schedule it**". My S2.7 #4 batching into windows was half wrong: batching *asks* is fine, assuming *availability* is not |
+| 1, 3, 7, 8, 9 | **Judgment, accepted** | No factual error. The execution-contract gap is the strongest point in the review |
+
+Nothing GPT claimed was false. Every numeric claim checked out.
+
+## S4 Opus repair
+
+### S4.1 Point-by-point answers
+
+1. **Accepted.**
+   - The product is the **execution contract** (S4.2), not a watcher.
+   - D dies as a supervisor and survives as the *read-only face* of whichever design wins.
+   - A dies as a standalone design. Its cadence and its 12 questions fold into R1.
+2. **Accepted. The numbers are repaired in S4.3.**
+   - T2 is now **one population**: the rimflow BUILT state, 343 on 10-26. Not 496.
+   - Non-pass is 38.9%.
+   - Net filing is reported as gross (filed, done, dropped), not as a single net.
+   - Focus bugs: one definition, the lane file, used everywhere.
+   - "Done" is no longer called "accepted" unless a verify level is recorded.
+3. **Accepted.**
+   - Freeze is redefined against a **supported-experience checklist** per mod, a finite list of player scenarios, each needing an L2+ pass on the current build.
+   - The Duane plot stays as a picture with a caveat (runs are not equal exposure). It is never a gate.
+4. **Accepted.**
+   - Pack v0 is one day **for the metrics that already exist**.
+   - Each missing measurement is listed in S4.3 as a gap with a build cost. It is not assumed.
+   - T6 is re-specified: a second, independent tagger (GPT), per-class kappa, and the baseline rate stated.
+5. **Accepted.**
+   - B's standing seat is dead until a wake actuator passes a 48 h unattended test.
+   - B's *levers* survive inside R1.
+6. **Accepted.** The daily agree/disagree is removed. He owes nothing to the supervisor.
+7. **Accepted.**
+   - The Foundry rule is re-made as a **controlled comparison** (S4.5), not a 50% threshold.
+8. **Accepted.** See 1.
+   - The visual-form test is now an instrumented within-subject test (S4.6), with opens and actions logged by the brief server.
+9. **Partly accepted.**
+   - Independence is strengthened: the Inspector re-derives from **raw artifacts**, not ledger notes. That means the commit diff, the test log, the Player.log and the screenshot.
+   - Sampling is stratified by seat and class, and reported with a 90% interval.
+   - The full-file reads are budgeted at about 0.3 M ITE a day. "Numbers-only" was too strong. The principle is now: *numbers for the routine, raw artifacts for samples.*
+10. **Accepted. Every success metric now has a guard metric (S4.3).** A design "wins" only if the success metric moves *and* its guard does not worsen.
+11. **Accepted, with repairs:**
+    - **The assistant he talks to:** the **Front Desk** (S4.4), a fresh session started by *his* message at any hour. It answers from the pack and ledger, so it does not depend on availability.
+    - **Account and art schedule:** an R1 lever, using the measured reset times.
+    - **Test allocation:** an R1 lever, using the measured jobs-per-finding ratio per host (E-Q10).
+    - **Design readiness:** an R2 gate. No build item is admitted on a spec edited in the last 48 h; the evidence is that 45% of specs were edited after close (E-Q11).
+    - **Workflow evolution:** pre-registered experiments with rollback (S4.2, step 6).
+    - **"IG:" tagging is removed.** Complaint replay finds his complaints in the transcripts itself; the FC extractor already exists.
+    - **The baseline "just enforce what exists" arm is adopted as R0,** and it runs first.
+
+### S4.2 The execution contract (the missing product)
+
+Every finding, ruling or lever pull becomes a ledger item that carries six things:
+1. **Owner seat and due time.**
+2. **Acknowledgement.**
+   - The seat must `start` it within its next wake.
+   - No ack within 2 wakes means **escalation**: the item is re-dispatched to the other seat, or the supervisor executes it itself if it is a lever it owns.
+3. **Precedence.** Owner ruling > freeze or focus plan > supervisor lever > seat's own plan. Conflicts are recorded, never silently resolved.
+4. **Acceptance by a non-maker.**
+   - The Inspector, or a deterministic check, re-derives the result.
+   - The maker's CLEAN or PASS never closes it (H24).
+5. **Rollback.** Every lever pull logs its prior value and an undo command. Experiments name a kill threshold in advance.
+6. **Supervisor-failure detection.**
+   - A dead-man's switch. If the pack's as-of time is older than 2 cadences, or the supervisor's own run fails, the phone brief shows **one red line, "supervisor down since HH:MM"**, and nothing else from it.
+   - A broken supervisor must look broken, never calm.
+
+### S4.3 Repaired metrics and baselines, with guard metrics
+
+| | Success metric (one definition) | Baseline | Guard (must not worsen) |
+|---|---|---|---|
+| T1 | Owner machine-driving messages a day: go/continue/wake/status/restart/belt families | ~31/day (E-Q7; families overlap, so it is counted as messages, not family sums) | Owner *new-work* messages a day, and asks of his left unanswered more than 4 h |
+| T2 | rimflow BUILT-state count | **343** (10-26) | Accepted per week = closes **with** a recorded verify level |
+| T3 | Selftest agent-hours a week | 72.1 h / 22 d, about 23 h/wk (E-Q2) | Escaped defects: owner-found bugs a week in the tested areas |
+| T4 | FlowWorks+GSS bugs filed a week, by the lane file, **per live-run hour** | runs 14/37/73/116 (E-Q3); hours per run **UNMEASURED (gap G3)** | Live-run hours a week (testing must not stall) |
+| T5 | His "how is it going?" answered without a follow-up: share of Front Desk answers with no clarifying reply within 30 min | **UNMEASURED (gap G6)** | Front Desk claims that the Inspector finds wrong |
+| T6 | Failure-signal share of his messages | 27.5% (FC, one tagger) | The total number of his messages. A fall in T6 caused by fewer messages overall is not a win |
+
+**Gaps that must be built.** No design may claim progress on a metric until its gap is closed.
+
+| Gap | What | Cost estimate |
+|---|---|---|
+| G1 | A reconciled ledger snapshot: filed, done, dropped, superseded and BUILT per day, from one query | 0.5 d |
+| G2 | Accepted = close with a verify level, plus its timestamp | 0.5 d, and needs the close gate to *require* a level for code items (R0) |
+| G3 | Live-run hours per mod, from bridge lease time × lane | 1 d |
+| G4 | Skip-cache hits, logged to a file, not to a transcript tail | 0.25 d |
+| G5 | Ruling-to-enactment latency: card or sheet answer time to the enact commit | 1 d |
+| G6 | Brief and Front Desk open/answer log, with follow-ups | 0.5 d |
+| G7 | T6 auto-tagger | 1.5 d. Validated against FC's hand tags **and** a GPT second tagger on the same 300 messages; Cohen's kappa ≥ 0.6 per class for B, R, S |
+| G8 | Per-seat accepted items per M ITE | follows G2 |
+
+**Total pack:** about 6 builder-days, not 1.
+
+### S4.4 The Front Desk (answers point 11, the assistant he talks to)
+
+- A thin, **stateless** responder. His phone message to it starts a fresh Opus session loaded with:
+  - the pack JSON
+  - the last 7 days of supervisor output
+  - the open asks addressed to him
+- It answers "how is it going?", "why is X slow?" and "what do you need from me?". It can **enqueue** an instruction through the execution contract.
+- It never holds context between messages, so there is nothing to compact.
+- Every factual line it states is checked against the pack before it is sent. This reuses brief.py's judge.
+- Cost: about 30k tokens an answer.
+- This is the "who I want to be talking to". The other roles are its back office.
+
+### S4.5 The Foundry question, made fair
+
+- Ending Foundry is decided by a **2-week controlled swap**, not by a ratio.
+  - Week 1: both seats run with lanes **randomised by item** on an eligible pool, for example verify-backlog items of matching level.
+  - Week 2: Foundry paused. Bench runs alone with the freed quota.
+- Measures: accepted items per day for the whole system (G2), escaped defects, and his T1.
+- **Decision rule:** if week 2 accepts at least 90% of week 1's system total, with no worse escapes, Foundry's lane is not adding value at the margin. The proposal to retire it goes to him with the numbers.
+- Confound to state: one week each is a small sample, and quota resets (Wednesday) must fall equally in both.
+
+### S4.6 Visualisation test, instrumented
+
+- The brief server logs open time and the first action after open: a card answered, a "go" sent, or a Front Desk question. This is G6.
+- Forms rotate **by day in a fixed Latin-square order**: V1 burn-up, V5 train map, V6 weather sentence plus 3 reasons (the text-only control), V4 quota runway.
+- Outcome: median open-to-first-action time, and the follow-up-question count.
+- After 2 weeks, keep the best form and its runner-up.
+- n ≈ 14 opens per form will only detect large effects. That is said up front.
+
+### S4.7 The surviving designs after repair
+
+**Died:** A and D as standalone designs. **Merged:** A's cadence and B's levers into R1. **B's standing seat:** suspended until the wake actuator passes.
+
+**R0 — "Just enforce" (control arm, first week, no new agent).** Do what is already ruled and built:
+- Flip the close gate from warn to **refuse** without a verify level for code items.
+- Turn on skip-when-unchanged logging (G4).
+- Run the switch audit once and enact each switch.
+- Push burn alerts on TPS below 0.8 of baseline and on the lukas pace above 1.15.
+- Measure T1-T6 and the guards for 7 days. **Every later design must beat R0, not beat today.**
+
+**R1 — "Steward" (A + B's hands, no standing seat).**
+- A fresh Opus session every 3 h, plus on any dead-man or burn alert. It reads the pack and answers the 12 questions.
+- It **executes** its levers through the execution contract:
+  - PAYDOWN mode when BUILT grows 3 days running
+  - per-host test job allocation (Steve 40 findings / 148 jobs against Archmagi 3 / 34, E-Q10)
+  - Codex art jobs scheduled into measured headroom, *only* for subjects whose judge queue is under its cap (FC cause #2)
+  - seat wake, through the existing handoff/wake tools once the actuator passes
+  - flipping ruled switches
+  - lowering the cost of known-good tests by enforcing the skip-cache
+- Owner contact goes only through the Front Desk and the brief.
+
+**R2 — "Producer" (C, repaired).**
+- Plan file, FOCUS ≤ 2, states as before.
+- Freeze is decided by the **supported-experience checklist** plus his one tap.
+- Design-readiness gate: admission refuses build items on specs edited in the last 48 h.
+- Ideas go to the bank.
+- It runs the Foundry swap test.
+
+**R3 — "Inspector" (E, repaired).**
+- Daily. A stratified sample of 8 closes, with seat × class strata, plus every close that carries an owner-ruling ref.
+- It re-derives each one from raw artifacts.
+- Trust score with a 90% interval.
+- Repeat classes become enforcement items.
+- It audits R1's lever log and the Front Desk's claims, and it watches the dead-man's switch.
+- Severity floor: player-visible or owner-visible defects only.
+
+### S4.8 Repaired predictions, labelled as hypotheses with falsifiers
+
+These are **not** forecasts from the evidence. They are the smallest effect that would justify keeping each arm. Each arm is compared with R0, not with today.
+
+| | Minimum effect to keep it (2 weeks vs R0) | Falsified if |
+|---|---|---|
+| R0 | the guards hold, and G1-G4 produce numbers | the close gate refusing raises T1 (he gets asked more) |
+| R1 | T1 −5/day; T3 −20%; T2 not rising | T1 unchanged after the wake actuator passes, or escapes rise |
+| R2 | 1 mod with a written checklist at 80% or more; T2 −10% on the FOCUS mods; off-plan commits under 25% | he overrides the focus plan more than twice a week |
+| R3 | ≥1 repeat class turned into enforcement a week; trust-score interval narrower than ±15 pts | most of its reopens are rejected by the maker *and* by a second check (it is a nitpick generator) |
+| Front Desk | T5 at 70% or more, answered without follow-up | the Inspector finds a wrong claim in more than 5% of answers |
+
+**Opus after repair.**
+- The leading candidate is now **R0 first, then R1 + R3 behind the Front Desk**, with R2 owning *what* once the checklists exist.
+- The single thing every reviewer agrees is missing, the execution contract, is common infrastructure, not a design.
 
 ## S5 GPT teardown, round 2 (pending)
 
