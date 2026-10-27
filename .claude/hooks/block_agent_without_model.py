@@ -32,7 +32,7 @@ REASON = (
     "Haiku 5.5 is a live rung (2026-10-20); `haiku` resolves via ANTHROPIC_DEFAULT_HAIKU_MODEL.\n"
     "`fable` is the name that genuinely 400s.\n\n"
     "Full ladder: infrastructure/agents/Agent_Policy.md\n"
-    "What the gateway serves right now: ~/dev/DispatchOpenCode/bin/delegate where\n"
+    "What the gateway serves right now: ~/dev/Dispatch/bin/delegate where\n"
     "Not gated: `fork` (ignores the parameter) and any named agent type "
     "(carries its own model in frontmatter)."
 )

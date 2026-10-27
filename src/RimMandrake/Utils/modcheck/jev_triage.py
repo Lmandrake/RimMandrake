@@ -22,8 +22,8 @@ SHADOW_LOG = os.path.join(ROOT, "Transient", "modcheck", "jev_shadow.jsonl")
 
 
 def _real_ask():
-    """consultjev.ask from CONSULTJEV_PATH (default ~/dev/ConsultJev); (None, reason) if unusable."""
-    path = os.environ.get("CONSULTJEV_PATH") or os.path.join(os.path.expanduser("~"), "dev", "ConsultJev")
+    """consultjev.ask from CONSULTJEV_PATH (default ~/dev/Dispatch/providers/jev); (None, reason) if unusable."""
+    path = os.environ.get("CONSULTJEV_PATH") or os.path.join(os.path.expanduser("~"), "dev", "Dispatch", "providers", "jev")
     if path not in sys.path and os.path.isdir(path):
         sys.path.insert(0, path)
     try:
