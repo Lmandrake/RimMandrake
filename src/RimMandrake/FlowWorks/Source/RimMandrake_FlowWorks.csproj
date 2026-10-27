@@ -64,6 +64,7 @@
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="RM_EngineSwitch.cs" />
+    <Compile Include="RM_TerrainWriteBudget.cs" />
     <Compile Include="RM_SettingsSearchIndex.cs" />
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_WaterLadder.cs" />

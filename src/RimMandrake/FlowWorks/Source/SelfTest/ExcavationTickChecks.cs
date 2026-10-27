@@ -435,6 +435,99 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // Wall time, generous (CoreCLR here; the game's Mono is slower): the unsliced pulse measured 25-90 ms here.
                 Assert(stepMax < 40, $"one slice took {stepMax:F1} ms");
             });
+            Case("ExcavationTick_edge_drain_picture_writes_budgeted_325", () =>
+            {
+                // Live r12 (161 ms in one slice): the perf scene's basins run z 2..321, inside the 10-square edge band, and the
+                // game's edge sinks are on by default, so both drain off the map; with moving seams the water near the edge swings
+                // about half a level each pulse, and every square whose look band changes is one SetTerrain (about 25 us live).
+                // The pulse's picture writes go through RM_TerrainWriteBudget: per tick at most WritesPerTick, the rest drained on
+                // later ticks, and the final picture equals the unbudgeted one before the next pulse.
+                const int w = 325, h = 325, edge = 10, pulseTicks = 250;
+                var aw = new ArrayWorld(w, h);
+                var k = aw.k;
+                k.levelExactEnabled = true; k.maxComponentCells = 6000; k.seamRotationEnabled = true; k.levelBySurfaceEnabled = true;
+                k.levelSetEnabled = true; k.creepWaterEnabled = true; k.viscosityEnabled = true; k.creepEnabled = true; k.flowPerPulse = 1;
+                k.part = new ushort[w * h];
+                k.edgeSinksEnabled = true;
+                var seeds = new List<int>();
+                for (int z = 2; z <= 321; z++)
+                    for (int x = 10; x <= 314; x++)
+                    {
+                        bool a = x <= 134, b = x >= 190;
+                        if (!a && !b) continue;
+                        int i = z * w + x;
+                        k.depth[i] = 4; k.fill[i] = (byte)(a ? 4 : 1); aw.cellFluid[i] = ArrayWorld.Water; seeds.Add(i);
+                        aw.sink[i] = x < edge || z < edge || x >= w - edge || z >= h - edge;
+                    }
+                int Band(int i) => k.depth[i] == 0 ? -1 : RM_LevelSolve.LookBand(k.fill[i] * (long)RM_LevelSolve.U + k.part[i]);
+                var drawn = new int[w * h];
+                foreach (int i in seeds) drawn[i] = Band(i);
+                var budget = new RM_TerrainWriteBudget();
+                long tick = 0;
+                int maxWritesTick = 0, maxChangesSlice = 0, changesTotal = 0, deferredMax = 0;
+                // The adapter's ApplyFillTerrain(budgeted): no write when the picture already matches; else a write if the tick
+                // has one left, else the square waits.
+                bool Apply(int i)
+                {
+                    int want = Band(i);
+                    if (drawn[i] == want) return true;
+                    if (!budget.TryTakeWrite(tick)) { budget.Defer(i, w * h); return false; }
+                    drawn[i] = want;
+                    return true;
+                }
+                var world = new ResolvedHook(aw, comp => { int n = 0; foreach (int i in comp) { if (k.depth[i] == 0) continue; if (drawn[i] != Band(i)) n++; Apply(i); } changesTotal += n; maxChangesSlice = Math.Max(maxChangesSlice, n); });
+                k.world = world;
+                for (int p = 1; p <= 8; p++)
+                {
+                    aw.pulse++;
+                    long pulseStart = tick;
+                    k.BeginPulse(seeds, aw.pulse);
+                    bool done = false;
+                    for (; tick < pulseStart + pulseTicks; tick++)
+                    {
+                        budget.Drain(RM_TerrainWriteBudget.JudgedPerTick, Apply);   // MapComponentTick drains first
+                        if (!done && (done = k.StepPulse(RM_FlowKernel.DefaultSliceCells))) aw.Sync();
+                        maxWritesTick = Math.Max(maxWritesTick, budget.WritesThisTick);
+                        deferredMax = Math.Max(deferredMax, budget.Count);
+                    }
+                    Assert(done, $"pulse {p} did not finish in {pulseTicks} ticks");
+                    Assert(budget.Count == 0, $"pulse {p}: {budget.Count} squares still wait for their picture when the next pulse is due");
+                    foreach (int i in seeds) Assert(drawn[i] == Band(i), $"pulse {p}: square {i} shows band {drawn[i]}, its water says {Band(i)}");
+                }
+                Console.WriteLine($"    325x325 draining down the edge: {changesTotal} picture changes in 8 pulses, at most {maxChangesSlice} in one slice; "
+                    + $"budgeted at most {maxWritesTick} a tick, at most {deferredMax} waiting");
+                // The instrument can see: this scene is the churn the budget exists for (thousands per slice unbudgeted).
+                Assert(maxChangesSlice > 10 * RM_TerrainWriteBudget.WritesPerTick, $"the scene changed only {maxChangesSlice} pictures in a slice: it no longer exercises the budget");
+                Assert(maxWritesTick <= RM_TerrainWriteBudget.WritesPerTick, $"{maxWritesTick} picture writes in one tick");
+                // A square waits once, however often its pulse resolves it.
+                var once = new RM_TerrainWriteBudget();
+                once.Defer(5, 100); once.Defer(5, 100); once.Defer(7, 100);
+                Assert(once.Count == 2, $"a square deferred twice waits twice ({once.Count})");
+            });
+        }
+
+        /// <summary>ArrayWorld with a hook on ComponentResolved (the adapter's RenderComponentFill).</summary>
+        private sealed class ResolvedHook : RM_IFlowWorld, RM_ILevelWorld
+        {
+            private readonly ArrayWorld a;
+            private readonly Action<List<int>> resolved;
+            public ResolvedHook(ArrayWorld a, Action<List<int>> resolved) { this.a = a; this.resolved = resolved; }
+            public bool IsNaturalLiquid(int idx) => a.IsNaturalLiquid(idx);
+            public bool CanSupply(int idx) => a.CanSupply(idx);
+            public bool TryDebitLevel(int idx) => a.TryDebitLevel(idx);
+            public object DonorFluid(int idx, bool source) => a.DonorFluid(idx, source);
+            public object CellFluid(int idx) => a.CellFluid(idx);
+            public void Claim(int idx, object fluid) => a.Claim(idx, fluid);
+            public bool CanClaim(object fluid) => a.CanClaim(fluid);
+            public int TicksPerTile(object fluid) => a.TicksPerTile(fluid);
+            public bool IsSink(int idx) => a.IsSink(idx);
+            public void ComponentResolved(List<int> component) => resolved(component);
+            public int LevelBodyOf(int src) => a.LevelBodyOf(src);
+            public long BodyStockDl(int body) => a.BodyStockDl(body);
+            public void SetBodyStockDl(int body, long dl) => a.SetBodyStockDl(body, dl);
+            public int[] BodyHistogram(int body) => a.BodyHistogram(body);
+            public int BedAt(int src) => a.BedAt(src);
+            public void NoteLimitlessDl(object fluid, long dl) => a.NoteLimitlessDl(fluid, dl);
         }
 
         public static void Run(Action<string, Action> Case)

@@ -210,7 +210,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"private bool IsNaturalLiquid\(IntVec3 c\) \{ //[^{]*?if \(c\.InBounds\(map\) && depthGrid\[map\.cellIndices\.CellToIndex\(c\)\] != 0\) \{ return false; \}",
                     "IsNaturalLiquid is false on a dug square");
-                RiverSwitchFlipChecks.Has(ex, @"if \(depthGrid\[i\] == 0\) \{ return; //", "ApplyFillTerrain never draws on an undug (lake) square");
+                RiverSwitchFlipChecks.Has(ex, @"if \(depthGrid\[i\] == 0\) \{ return true; //", "ApplyFillTerrain never draws on an undug (lake) square");
             });
 
             Case("P14_save_migration_temp_fill_to_base_write_litres_logged", () =>

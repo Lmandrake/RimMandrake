@@ -2706,6 +2706,8 @@ namespace RimMandrake.FlowWorks
 			{
 				lookWatcher.Tick(map, this, excavatedCells);
 			}
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the water pictures the last pulse could not afford in its own ticks.
+			DrainTerrainWrites(false);
 			int now = Find.TickManager.TicksGame;
 			if (!RimMandrakeFlowWorksSettings.DepthEngineActive)
 			{
@@ -2847,6 +2849,9 @@ namespace RimMandrake.FlowWorks
 			{
 				ContinuePulse(int.MaxValue);
 			}
+			// Before a save (the terrain grid is written) or the next pulse, every waiting picture is drawn. At WritesPerTick a
+			// pulse's backlog has normally drained long before the next pulse is due, so this is only a save's flush in practice.
+			DrainTerrainWrites(true);
 		}
 
 		/// <summary>One slice of the pulse in flight; after the last, the steps that follow the flow.</summary>
@@ -3056,6 +3061,14 @@ namespace RimMandrake.FlowWorks
 
 		bool RM_IFlowWorld.IsSink(int idx)
 		{
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the kernel asks twice for every dug square in every pulse (160,000 calls on
+			// the 325x325 perf scene). A square outside the edge band is never a sink under either rule (RM_MapControlMath.EdgeSink
+			// and CloseToEdge both need it near an edge), so it is answered from arithmetic before the per-tick edge-mode lookup.
+			int w = map.Size.x, x = idx % w, z = idx / w, band = GenGrid.NoBuildEdgeWidth;
+			if (x >= band && z >= band && x < w - band && z < map.Size.z - band)
+			{
+				return false;
+			}
 			return IsSinkCell(map.cellIndices.IndexToCell(idx));
 		}
 
@@ -3250,21 +3263,46 @@ namespace RimMandrake.FlowWorks
 				FluidDef fluid = FluidAt(c) ?? fallback;
 				if (fluid != null && IsExcavated(c))
 				{
-					ApplyFillTerrain(c, fluid);
+					ApplyFillTerrain(c, fluid, true);
 				}
 			}
 		}
 
-		private void ApplyFillTerrain(IntVec3 c, FluidDef fluid)
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the pulse's picture writes beyond this tick's share wait here
+		/// (RM_TerrainWriteBudget); MapComponentTick drains them.</summary>
+		private readonly RM_TerrainWriteBudget terrainWrites = new RM_TerrainWriteBudget();
+
+		/// <summary>Squares whose water picture waits for a later tick (the pulse's writes were spent).</summary>
+		public int TerrainWritesWaiting => terrainWrites.Count;
+
+		/// <summary>Redraw waiting squares, at most this tick's share; <paramref name="all"/> (before a save) redraws every one.</summary>
+		private void DrainTerrainWrites(bool all)
+		{
+			if (terrainWrites.Count == 0)
+			{
+				return;
+			}
+			FluidDef fallback = ActiveFluid;
+			terrainWrites.Drain(all ? int.MaxValue : RM_TerrainWriteBudget.JudgedPerTick, idx =>
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(idx);
+				FluidDef fluid = FluidAt(c) ?? fallback;
+				return fluid == null || !IsExcavated(c) || ApplyFillTerrain(c, fluid, !all);
+			});
+		}
+
+		/// <summary>Draws a dug square's water picture. <paramref name="budgeted"/> (the pulse and its backlog): when this tick's
+		/// picture writes are spent the square waits in <see cref="terrainWrites"/> and this returns false.</summary>
+		private bool ApplyFillTerrain(IntVec3 c, FluidDef fluid, bool budgeted = false)
 		{
 			if (!c.InBounds(map))
 			{
-				return;
+				return true;
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			if (depthGrid[i] == 0)
 			{
-				return;   // the engine draws only its own dug squares; a lake square is RM_LiquidStock.StagePond's
+				return true;   // the engine draws only its own dug squares; a lake square is RM_LiquidStock.StagePond's
 			}
 			// LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD (unified depth spec §4.1): ONE rule for every dug square, canal or pit, exact-level
 			// water or not: the look is chosen by the TRUE metres of water standing in it (under 25 cm, 0.5, 1, 1.5, 2 m and
@@ -3288,7 +3326,7 @@ namespace RimMandrake.FlowWorks
 			{
 				if (fluid == null)
 				{
-					return;
+					return true;
 				}
 				want = fluid.WetTerrainForBand(RM_ExcavationDepth.FillTier(WaterDl(i)));
 			}
@@ -3298,12 +3336,17 @@ namespace RimMandrake.FlowWorks
 			}
 			if (want == null)
 			{
-				return;
+				return true;
 			}
 			TerrainDef cur = map.terrainGrid.BaseTerrainAt(c);
 			if (cur == want)
 			{
-				return;
+				return true;
+			}
+			if (budgeted && !terrainWrites.TryTakeWrite(Find.TickManager.TicksGame))
+			{
+				terrainWrites.Defer(i, map.cellIndices.NumGridCells);
+				return false;
 			}
 			FluidDef held = FluidAt(c) ?? fluid;
 			bool drained = held != null && held.OwnsWetTerrain(cur) && !held.OwnsWetTerrain(want);
@@ -3312,6 +3355,7 @@ namespace RimMandrake.FlowWorks
 			{
 				Machinery.Kits.RM_FluidResidue.NoteDrained(map, c, held);
 			}
+			return true;
 		}
 
 		/// <summary>Take the water picture off a square being filled back in to the surface (its depth already 0): a pre-P14

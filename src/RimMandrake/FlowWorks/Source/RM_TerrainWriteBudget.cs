@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+
+namespace RimMandrake.FlowWorks
+{
+	/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (live r12: one pulse slice took 161 ms). The pulse redraws a dug square's
+	/// water picture with one TerrainGrid.SetTerrain each time its look band changes, and SetTerrain is not cheap (vanilla's
+	/// DoTerrainChangedEffects: the mesh of the square and its neighbours, its things, perceived path cost, district, water body,
+	/// map events). Where a big body's water swings across a band edge (a basin draining down an edge sink with moving seams:
+	/// the offline bench counted 6,000 changes in one slice and 12,000 in one pulse) those writes all landed in one tick. This
+	/// caps the picture writes the pulse makes in a tick; the rest wait here, in order, and the component drains them on the
+	/// ticks that follow (each is re-judged from the grids when its turn comes, so a square whose water moved back again costs
+	/// nothing). Verse-free so the selftest drives the production code.</summary>
+	public sealed class RM_TerrainWriteBudget
+	{
+		/// <summary>Picture writes (SetTerrain) the pulse may make in one tick. About 25 microseconds each live on Mono (161 ms
+		/// over 6,000), so 200 is about 5 ms; 12,000 waiting drain in 60 ticks, well inside a 250-tick pulse.</summary>
+		public const int WritesPerTick = 200;
+
+		/// <summary>Squares judged from the backlog in one tick, changed or not (a judgement without a write is a few grid
+		/// reads), so a backlog of squares that need nothing still clears quickly without an unbounded tick.</summary>
+		public const int JudgedPerTick = 4 * WritesPerTick;
+
+		private bool[] queued = new bool[0];
+		private readonly List<int> fifo = new List<int>();
+		private int head;
+		private long tick = long.MinValue;
+		private int writes;
+
+		/// <summary>Squares waiting for their picture.</summary>
+		public int Count => fifo.Count - head;
+
+		/// <summary>Picture writes spent in the current tick.</summary>
+		public int WritesThisTick => writes;
+
+		/// <summary>Is a write allowed in tick <paramref name="now"/>? Counts it if so.</summary>
+		public bool TryTakeWrite(long now)
+		{
+			if (now != tick)
+			{
+				tick = now;
+				writes = 0;
+			}
+			if (writes >= WritesPerTick)
+			{
+				return false;
+			}
+			writes++;
+			return true;
+		}
+
+		/// <summary>Defer square <paramref name="idx"/> of a map of <paramref name="cells"/> squares (once: a square already
+		/// waiting keeps its place).</summary>
+		public void Defer(int idx, int cells)
+		{
+			if (queued.Length != cells)
+			{
+				Clear(cells);
+			}
+			if (queued[idx])
+			{
+				return;
+			}
+			queued[idx] = true;
+			fifo.Add(idx);
+		}
+
+		/// <summary>Judge waiting squares in order with <paramref name="apply"/> (which returns false when it had to defer the
+		/// square again because this tick's writes are spent), at most <paramref name="maxJudged"/> of them. Returns how many
+		/// were judged.</summary>
+		public int Drain(int maxJudged, Func<int, bool> apply)
+		{
+			int judged = 0;
+			while (head < fifo.Count && judged < maxJudged)
+			{
+				int idx = fifo[head++];
+				queued[idx] = false;
+				judged++;
+				if (!apply(idx))
+				{
+					break;
+				}
+			}
+			if (head == fifo.Count)
+			{
+				fifo.Clear();
+				head = 0;
+			}
+			else if (head > 4096 && head * 2 > fifo.Count)
+			{
+				fifo.RemoveRange(0, head);
+				head = 0;
+			}
+			return judged;
+		}
+
+		/// <summary>Forget everything waiting (a new map size, or a flush that judged every square).</summary>
+		public void Clear(int cells)
+		{
+			if (queued.Length != cells)
+			{
+				queued = new bool[cells];
+			}
+			else
+			{
+				Array.Clear(queued, 0, queued.Length);
+			}
+			fifo.Clear();
+			head = 0;
+		}
+	}
+}
