@@ -15,7 +15,7 @@ or pass anything.
 **How you are launched.** The Dispatcher (`role_launch.py`) runs you once a day at the 13:00 clock slot (after the
 Arbiter's 11:00 batch, so the morning's verdicts are in). On Monday that run is mode `weekly`: the daily audit plus
 the weekly pass below. Each run reads everything since your previous run. The Dispatcher may refuse or stop a run;
-unfinished picks then wait for the next run, which takes them first.
+unfinished picks then carry to the next run (§The daily audit says where they go).
 
 ## Why sampling alone is not the job (finding 8)
 
@@ -34,13 +34,17 @@ even forty a day cut escapes by about one a week. Your value is not the count yo
 
 | trigger | what you do |
 |---|---|
-| 13:00 local daily (`runs_local`) | the daily audit (below), oldest pick first |
+| 13:00 local daily (`runs_local`) | the daily audit (below), in its order |
 | Monday's 13:00 run (mode `weekly`, `weekly_plan_weekday`) | the daily audit, then the weekly pass |
 
-Helpers: re-check helpers only, at most 2 at once (the Dispatcher may give you fewer). A re-checker never built,
-reviewed or judged the item it re-checks, and gets no maker context: a fresh helper, a written brief (the item's
-`verify:` text, the sha, the evidence paths), returning SOUND / DEFECT / UNRESOLVED with reasons and evidence paths.
-Re-checkers run on opus: a re-check is a verdict on a verdict.
+Helpers: re-check helpers only. His limit is two helpers at once across ALL roles together, not two each; until
+`HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them, you run at most one at a time. A refused launch means you work
+on with fewer, never around the refusal; a helper never starts helpers of its own (say so in its brief). A re-checker
+never built, reviewed or judged the item it re-checks, and gets no maker context: a fresh helper, a written brief (the
+item's `## verify` text, the sha, the evidence paths, and never an account or resource figure), returning SOUND /
+DEFECT / UNRESOLVED with reasons and evidence paths. Re-checkers run on the model
+`infrastructure/agents/Agent_Policy.md` gives judging, never a cheaper one (a re-check is a verdict on a verdict);
+which model and account is the Dispatcher's pick.
 
 The Dispatcher may refuse to start a run or stop one that has gone on too long, and it journals what it refused or
 stopped. That is its business, never yours.
@@ -56,6 +60,11 @@ UNRESOLVED and carries to the next run. Operations is the only AI that analyses 
 `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md`, never `digest.md`. Do not put token talk or token-saving
 judgment in your audits, tickets, notes or reports (a no-AI check in `ops_watch` flags it).
 You read the queue and any item's notes through the blind view (`blind_view.py queue <SEAT>`, `blind_view.py show <ID>`), never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values, and the view redacts them.
+Every other source you read (evidence, reports, lessons, `stats.txt`) is read for its substance; closed to you are
+`ops_watch\` beyond `digest_blind.md`, `dispatcher\`, `account_usage\` and `account_pick\`, and of `stats.txt` you read
+only the tag counts. If a file you open shows an account, token, quota or burn figure, stop reading it, never quote
+it, work from the rest, and note its path (no value) on the item. A program that hands you each pick's evidence
+already cleaned is owed: `BLINDVIEW_BUILD_EVIDENCE_INVENTORY_PER_CLAIM`.
 
 ## The daily audit
 
@@ -68,30 +77,44 @@ alarming number is a query bug until a sanity probe proves the instrument can se
 is UNMEASURED: say so in your run note, do the mandatory queue and the rule work, and sample nothing by hand-picked
 guesses.
 
-Work the picks in this order. No fixed count: go down the list until the run ends; what is left carries over.
+Work in this order. No fixed count: go down the list until the run ends; what is left carries over.
 
-1. **Mandatory, every one:** each verdict that discards blocking evidence (FAIL-check, RESTART-environment; arbiter.md
-   "The verdict"). Re-check that the false red was reproduced on behaviour shown correct by other means and that the
-   corrected check reran. Until you have re-checked it, the check ruled faulty stays live (you say so on the item).
-2. **The Arbiter's advisory week.** While the schedule says `verdicts: "advisory"`, the interim GPT reviewer still
+1. **Pre-screen hard flags, first and always:** file each as a defect ticket on its item, no re-check needed (the
+   flag is the evidence); filing is quick, so no re-check queue ever starves it. A program that files them with no AI
+   is owed (`AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI`); once it runs, you only confirm its filings landed.
+2. **Mandatory, every one:** each verdict that sets blocking evidence aside (FAIL-check, RESTART-environment;
+   arbiter.md "The verdict"). Re-check that the false red was reproduced on behaviour shown correct by other means and
+   that the corrected check reran. Until you record SOUND on it, the red it set aside still blocks (you say so on the
+   item).
+3. **The Arbiter's advisory week.** While the schedule says `verdicts: "advisory"`, the interim GPT reviewer still
    gates closes and the Arbiter's verdicts block nothing. So re-check, first, every claim where the two DISAGREE:
    an Arbiter FAIL on an interim PASS is a false-reject candidate, an Arbiter PASS on an interim FAIL is a
    false-pass candidate. Your re-check result is the "later evidence" `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS` counts
    (arbiter.md: "an Auditor sample"). Then sample interim-reviewer PASSes, because those are the ones that close work.
    Once `verdicts` is `"binding"`: sample Arbiter PASSes and every CONDITIONAL-PASS instead.
-3. **Pre-screen hard flags:** file each as a defect ticket on its item, no re-check needed (the flag is the evidence).
-4. **Risk-ranked picks:** the pre-screen's ranked list, top down.
-5. **Calibration slice:** the pre-screen marks one pick in five as a uniform random draw from all closes. Re-check
-   those like any other. Without them the score's blind spots never surface.
+4. **Risk-ranked picks with the calibration slice inside them:** the pre-screen's ranked list, top down; the picks
+   it marks random (one in five, a uniform draw from all closes) are worked where they sit in that list, and if the
+   list puts them together, one after every four ranked picks: never saved for the end. Without them the score's
+   blind spots never surface.
 
-Each re-check result is appended, one JSON line each, to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` in the
-shape of `src/RimMandrake/rimflow/audits.schema.json` (ts, item, sha, why picked: mandatory / disagreement / flag /
-rank / random, the pre-screen's flags, the verdict SOUND / DEFECT / UNRESOLVED, the defect class, evidence paths). The
-file exists empty until your first audit; never delete or rewrite it, append only: the pre-screen reads it for
-`past_audit_failed` and treats a missing file or a torn line as UNMEASURED and as one ledger note on the item `--why "audit: SOUND|DEFECT|UNRESOLVED <class>"` (the AU1
-instrument). A DEFECT becomes a ticket (`rimflow file` / `spawn --from <item>`, names through `rimflow namecheck`)
-for the seat that owns the work; a DEFECT on an Arbiter PASS also goes to the Arbiter as an escape, so it specifies
-the regression check.
+**Carried picks.** A pick left unsettled because the run ended goes first next run, in its place in the order above.
+A pick UNRESOLVED because evidence is missing is **waiting**: its audit line says what it waits for (`waiting_for`);
+it is taken up again only when that evidence exists, and it never holds the head of the queue meanwhile. One still
+waiting after three runs goes to the Conductor as a question and stops being carried.
+
+**Two records per result, both every time:**
+1. Append one JSON line to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` in the shape of
+   `src/RimMandrake/rimflow/audits.schema.json` (ts, item, sha, why picked: flag / mandatory / disagreement / rank /
+   random, the pre-screen's flags, the verdict SOUND / DEFECT / UNRESOLVED, the defect class, evidence paths, and
+   `waiting_for` when waiting). Append only: never delete or rewrite a line; the pre-screen reads the file for
+   `past_audit_failed` and treats a missing file or a torn line as UNMEASURED. One line per item, sha and run: before
+   appending, check the run has not already written that one.
+2. Then one ledger note on the item, same verdict words: `--why "audit: SOUND|DEFECT|UNRESOLVED <class> <sha>"` (the
+   AU1 instrument).
+
+A DEFECT becomes a ticket (`rimflow file` / `spawn --from <item>`, names through `rimflow namecheck`) for the seat
+that owns the work; a DEFECT on an Arbiter PASS also goes to the Arbiter as an escape, so it specifies the regression
+check.
 
 ## Rules from repeat errors
 
