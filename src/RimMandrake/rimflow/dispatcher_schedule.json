@@ -28,7 +28,16 @@
    "_why": "the Dispatcher measures deterministically, Operations analyses (owner 2026-10-27, ledger OWNER 05:59:41Z: Operations \"should just have those things automatically gathered for it, so it's not constantly burning tokens gathering it all up for every question considered\"). A systemd user timer runs it, not dispatcher.py; listed here so the one schedule file names everything that runs."}
  ],
  "roles": [
-  {"name": "Conductor", "enabled": false, "trigger": "his message", "from": "v3.1"},
+  {"name": "Conductor", "enabled": false, "trigger": "his message; his presence (session); quick checks", "from": "v3.1",
+   "instructions": "src/RimMandrake/rimflow/roles/conductor.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest.md",
+   "quick_checks_local": ["08:00", "20:00"], "quick_token_cap": 30000, "daily_token_cap": 200000,
+   "session_week_pct_cap": 6, "throttle_reads": "ops_watch status.json accounts.<its account>.runway",
+   "throttle_bands": {"GREEN": {"runway_ge": 1.5, "session_helpers_max": 3, "quick_cap_x": 1.0},
+                      "AMBER": {"runway_ge": 1.0, "session_helpers_max": 2, "quick_cap_x": 0.6},
+                      "RED": {"runway_ge": 0.0, "session_helpers_max": 1, "quick_cap_x": 0.4},
+                      "FLOOR": {"week_left_pct_lt": 10, "session_helpers_max": 0, "quick_cap_x": 0.4}},
+   "off_switch": "enabled false here, or the file D:\\ClaudeWork\\rimmandrake\\conductor\\CONDUCTOR_OFF",
+   "_why": "never paused by throttle_order (v3 §3); its helpers shrink first (sim finding 7). Launch owed: DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE"},
   {"name": "Arbiter", "enabled": false, "trigger": "feature claims done", "from": "v3.3"},
   {"name": "Auditor", "enabled": false, "trigger": "daily", "from": "v3.4"},
   {"name": "Operations", "enabled": false, "trigger": "2x/day + alarms", "from": "v3.2",

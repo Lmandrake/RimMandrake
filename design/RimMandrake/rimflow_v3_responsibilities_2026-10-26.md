@@ -2,7 +2,8 @@
 
 Status: **DESIGN, companion to `design/RimMandrake/rimflow_v3_2026-10-26.md`** (the design of record). Part 1 is the
 review of Lukas's north-star proposal (his to read; under two pages). Part 2 is the responsibilities register with
-metrics. Part 3 is the gap check of today's duties against the v3 roles.
+metrics. Part 3 is the gap check of today's duties against the v3 roles. Part 4 is the activation table: each
+duty's interim holder until its role runs.
 
 Rulings this answers (owner, by card on `RIMFLOW_V3_BUILD_DISPATCHER_FIRST`, 2026-10-26 22:38 PDT):
 - Start shape: *"Run it, then right things, then learning (Operations → Producer+Arbiter → Auditor+Innovator)"*.
@@ -447,3 +448,129 @@ Auditor; compactions without a handoff → Operations once `COMPACTION_LOG_FIX_H
 **Metrics left UNMEASURED:** L4 his checking time · C4 answer corrections · P1 non-maker part · P3 mods finished ·
 A3 true escapes (proxy only) · AU1 audit yield · I1 experiments · I3 design findings taken · D1 wake success ·
 D2 idle with work queued · D4 cap breaches. Measurable but not yet taken: C3, A4, AU3, O2.
+
+---
+
+## Part 4. Activation table — who holds each duty until its role runs
+
+Item `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` (GPT r2, `D:\ClaudeWork\rimmandrake\orphan_homes\r2_answer.md`: "a
+future owner plus a filed ticket does not establish someone running the duty today"). Waves, from the owner's item
+`V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (2026-10-27): **Wed** (after the weekly reset) Dispatcher + Conductor +
+Operations (build order v3.0-v3.2); **Fri** Producer + Arbiter (v3.3); **Sun** Auditor + Innovator (v3.4).
+
+Rules of the table:
+- **A duty hands over when its role is `enabled` in `dispatcher_schedule.json` and its first run is recorded**, not
+  on the date. A slipped or metric-gated wave leaves the interim holder holding it; no duty waits on a role arriving.
+- **BENCH** below means today's BENCH window; from Wed it is the Conductor's session mode, and its quick mode takes the
+  scheduled parts (`src/RimMandrake/rimflow/roles/conductor.md`). The Conductor's role launch is owed:
+  `DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE` (v3.0 `dispatcher.py` runs no roles).
+- **GPT reviewer** = an outside non-maker read (`gpt_consult.py`) with the Arbiter's evidence rules and mandatory
+  bars, requested by the maker at the done claim and never written by it (Orphan homes 3, 4). It stands in for the
+  Arbiter until Fri and for the Auditor's per-verdict re-checks until Sun.
+- The checker is never the holder. "program" means a deterministic instrument whose reading someone else acts on.
+
+### Lukas (no handover: his)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| L-1 | vision, taste, focus mods, freezes, validations, §2 calls, silencing a role, the starting schedule | Lukas | whenever | — | never |
+
+### Conductor (Wed)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| C-1 | answer him from the metrics pack, each number with its word | BENCH | his message | C1 "already ruled" count, weekly (`already_ruled.py`); Auditor sample from Sun | Wed |
+| C-2 | record his rulings with the right flag and propagate them | BENCH | his words | `rimflow lint --citations` STALE_GATE; the reconciler once built | Wed |
+| C-3 | carry out what he rules (enact items to state) | BENCH works pending enact items each sitting (Orphan home 1) | each sitting; from Wed quick checks 08:00 / 20:00 | the state reconciler (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`); until built, Lukas's sheet view | Wed |
+| C-4 | card him on §2 calls only; gate what reaches him (nothing unread) | BENCH | per card / sheet | the judge prereview (`rimworld-art-evaluation`); Lukas's overturns | Wed |
+| C-5 | daily digest delivery (D1, incl. pulse digests) | BENCH at first sitting, FOUNDRY nightly; pulse timers | daily | Lukas overturns lines; Auditor spot check from Sun | Wed |
+| C-6 | `./game --said` on his game-state words; canon lines into `canon.yml` | BENCH | his words | `block_canon_contradiction.py` hook | Wed |
+| C-7 | fix design docs to canon after a contradiction check | BENCH, on hook refusals; the sweep is owed (`CANON_BUILD_SWEEP_WHEN_CANON_MOVES`) | canon change, commit, nightly (once built) | `check_canon.py` rerun; ambiguous reading → Lukas | Wed |
+| C-8 | session: design, hardest bugs, live testing with him | BENCH | his presence | GPT reviewer until Fri, then Arbiter | Wed (rename only) |
+| C-9 | FlowWorks + GSS lane between sittings | BENCH at sittings only; headless bench-lane builder needs the role launch and the schedule rule (Orphan home 4) | continuous once launched | GPT reviewer until Fri, then Arbiter | Wed |
+| C-10 | weekly success-test pack delivered with an outside read | BENCH | weekly, after the trial week | outside GPT read; INCONCLUSIVE → stop-and-reconsider card | Wed |
+| C-11 | review pages fresh and every click works (GPT proposal, not yet his ruling) | BENCH | at serve | `serve_gated.py` gates | Wed |
+
+### Operations (Wed)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| O-1 | running check: stuck processes, stale helpers, lapsed leases (D3 leases) | BENCH reads `ops_watch\digest.md` each sitting | 15 min program; BENCH per sitting; from Wed 07:30 / 19:30 | ops_watch silent/band flags; Auditor from Sun | Wed |
+| O-2 | ops_watch alarm response (`OPS_*` items) | BENCH | per alarm | the alarm clears in ops_watch (program) | Wed |
+| O-3 | economy pass: tokens on every account incl. Codex, slot rules, test hours catching nothing, art redraw loops, ceremony | BENCH; `slot_allocator.py` acts on token state by itself | daily | Lukas (loosening is his, through the Conductor) | Wed |
+| O-4 | north-star skepticism: propose check cuts and merges | BENCH (none run on a cadence today) | weekly, batched per mod | Arbiter verifies detection kept (GPT reviewer until Fri); bar cuts → Lukas | Wed |
+| O-5 | disk and scratch (`scratch_reap.py`, `scratch_clone.py sample`) | `rm-scratch-reap` / `rm-objstore` timers; BENCH on `DISK_LOW` | timers; per alarm | ops_watch `disk` family | Wed |
+| O-6 | git health: locks, `mirror.py`, publish failures, torn ledger | each seat on sight; `rm-mirror` timer | on sight | `ledger_lint.py` push guard; ops_watch `timers` | Wed |
+| O-7 | game restarts and speed (D4), never while he plays | any seat under the bridge-idle delegation | on need | `idle_probe` gate; `rimflow bridge` record | Wed |
+| O-8 | health of timers and services (pulse, telemetry, `artpiped`, memwatch, testq on SteveDesktop) | the timers themselves; SteveDesktop steward; BENCH on `TIMER_FAILED` | 15 min program | ops_watch `timers` / `steve` families | Wed |
+| O-9 | nightly selftest reds → tickets | BENCH reads `Transient/selftests_nightly.log` each sitting | daily | Auditor from Sun; until then the next nightly run | Wed |
+| O-10 | leftovers archive-then-delete | any seat | on sight | an independent usage census before delete | Wed |
+| O-11 | compactions without a handoff | each seat's handoff rule; `compaction_watch.py` (counter suspect) | per compaction | `COMPACTION_LOG_FIX_HELPERS_COUNTED_AS_SEAT` once landed | Wed |
+| O-12 | windows popping up, focus theft, dialogs left open | BENCH triages (Orphan home 5) | per event | Auditor checks the control works; `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST` | Wed |
+| O-13 | owed v3 instruments (keep-going, failure share, accepted/day) | BENCH (`OPS_KPI_MEASURE_OWED_VTHREE`) | before the trial week | outside GPT read of the baseline | Wed |
+| O-14 | set `slot_rules.json` (tightening) | BENCH | on need | Lukas for any loosening | Wed |
+
+### Dispatcher (Wed; a program)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| D-1 | wake a stalled builder, hand the ticket, verify, retry, record | Lukas's keep-going messages; `dispatcher.py` dry-run journal | every 2 min | D1 wake success (journal); outside dead-man heartbeat owed (`DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT`) | Wed (`--apply`) |
+| D-2 | lease-based "doing" | `lease.py` through `rimflow next` (live) | per take | ops_watch `flow.lapsed_leases` | live now |
+| D-3 | enforce caps (slot allocator N) and the throttle order | `slot_allocator.py` hook | per launch | D4 cap breaches (owed) | Wed |
+| D-4 | one bridge holder; never the game while he plays | `rimflow bridge` + `idle_probe` | per take | the bridge record | live now |
+| D-5 | verify a woken seat consumed its handoff | each seat's `handoff.py` ritual | per wake | dispatcher journal | Wed |
+| D-6 | test lane (testq tick / steward / ingest) | RUNNER on SteveDesktop (live) | timers | ops_watch `steve` family | live now |
+| D-7 | measuring arm (`ops_watch.py`) | `rm-ops-watch.timer` (live since 2026-10-27) | 15 min | Operations reads it; silent flag | live now |
+| D-8 | run the canon sweep; re-create missing enact items | nobody: owed builds (`CANON_BUILD_SWEEP_WHEN_CANON_MOVES`, `RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`); write-time canon hook only | on canon change / nightly | BENCH reads the findings | when built |
+| D-9 | launch roles and the headless bench-lane builder from the schedule | nobody (owed, `DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`); roles held as in this table | per schedule | dispatcher journal; Operations | Wed blocker |
+
+### Producer (Fri)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| P-1 | daily list, weekly plan, focus WIP cap | BENCH (Conductor from Wed) orders the BENCH lane; FOUNDRY takes `rimflow next` order | daily / weekly | Lukas reads the plan | Fri |
+| P-2 | critical path per focus mod | BENCH | weekly | Lukas | Fri |
+| P-3 | named scenarios written before building | the filing seat writes them into the item spec | per item | GPT reviewer at the done claim | Fri |
+| P-4 | re-plan when a plan step fails | BENCH | per failure | Lukas | Fri |
+| P-5 | backlog hygiene (D3 items: blocked, stale; `queue_staleness_review.py`) | any seat on sight; BENCH weekly | weekly | ops_watch / `rimflow_metrics.py` P4 blocked | Fri |
+| P-6 | choose what the test lane runs (`TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS`) | BENCH | weekly | Operations' test-hours reading (O2) | Fri |
+| P-7 | bar coverage review; per-mod test budget proposal | BENCH | weekly, batched | Arbiter (testability), Lukas (validates, budgets) | Fri |
+| P-8 | spare capacity: order finish → strengthen → explore; set each item's stopping budget | BENCH | per item | GPT reviewer rules the conditional pass (A-3) | Fri |
+| P-9 | idea bank (`design/V2_DREAMS.md`) | any seat | on idea | — (read by the Producer) | Fri |
+
+### Arbiter (Fri)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| A-1 | verdict on every done claim (D2), with evidence | GPT reviewer, requested by the maker at the claim | per claim | Auditor sample from Sun; until then Lukas's later verdicts | Fri |
+| A-2 | verify backlog L1-L3, GREEN-MIN/FULL | FOUNDRY, BENCH, RUNNER verify events | daily | GPT reviewer on each pass | Fri |
+| A-3 | rule PASS / CONDITIONAL-PASS | GPT reviewer before every conditional close (Orphan home 3) | per close | Lukas | Fri |
+| A-4 | keep each mod's floor WIRED | the mod's builder | per mod change | `modcheck floor` (program) | Fri |
+| A-5 | judge protocol for taste calls | the acting seat's judge helper | per call | Lukas's overturns | Fri |
+| A-6 | non-maker code review gate (D5) | GPT review through `code_review_status.py` | per commit | `code_review_status.py check` | Fri |
+| A-7 | escape → a check red on the old build, within 1 day | the fixing seat | per escape | GPT reviewer reads the check | Fri |
+| A-8 | his north-star calls as drafts; check merges keep detection | BENCH drafts; builder + GPT reviewer for merges | per call / merge | Lukas validates | Fri |
+
+### Auditor (Sun)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| AU-1 | sample closed items and passes (≤4 a day) | BENCH samples 2 FOUNDRY closes per sitting (never its own) | each sitting | Lukas (weekly read of the audit notes) | Sun |
+| AU-2 | re-check every check-defect / evidence-discarding verdict | GPT reviewer | per verdict | Lukas on a contested one | Sun |
+| AU-3 | repeat error → enforced rule; lessons → skills | every seat files lessons (rule); BENCH weekly lesson pass | weekly | AU3 count (git, program) | Sun |
+| AU-4 | scheduled adversarial reviews of scripts | Lukas, on his clock | when he releases one | — | Sun |
+| AU-5 | spot check the delegated digest | Lukas (overturns lines) | daily | — | Sun |
+| AU-6 | instrument trust (round, zero, alarming counts probed) | whoever counts (rule) | per count | ops_watch silent flags | Sun |
+| AU-7 | read codebase health (`rm-codebase-health`) | BENCH | weekly | — | Sun |
+
+### Innovator (Sun)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| I-1 | process experiments with a named metric and keep/kill date | **deferred**: none run until the role does (nobody holds it today) | 2×/week once live | Operations reads the metric | Sun |
+| I-2 | weekly design review (meaning-level canon fit, appendixes) | **deferred** (Orphan home 2: nobody does it today) | weekly once live | Lukas | Sun |
+| I-3 | cadence changes proposed as experiments | Operations' economy pass (BENCH before Wed) | daily | Lukas (silencing a role is his) | Sun |
+| I-4 | tend `design/V2_DREAMS.md` | any seat | on idea | Producer reads | Sun |
+
+### Foundry (no handover: already in its v3 shape)
+| # | duty | interim holder | trigger / cadence | independent checker | hands over |
+|---|---|---|---|---|---|
+| F-1 | build handed tickets, `src/`, deploys, game build, live test when granted | FOUNDRY | continuous | GPT reviewer until Fri, then Arbiter | — |
+
+Cross-cutting rules (handoff at a wave boundary, lessons, fix a false line on sight, end a dead item on sight,
+explicit-path commits, delegated `--why`) stay with every seat and role; they have no handover.
+
+Count: every duty in Part 2 and every row of Part 3 has a holder above; two are held by nobody on purpose (I-1, I-2,
+deferred until the Innovator runs), and two are owed builds held only partially until they land (D-8, D-9).
