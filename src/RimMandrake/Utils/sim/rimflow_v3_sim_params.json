@@ -1,0 +1,768 @@
+{
+ "_doc": "Parameters for rimflow_v3_sim.py (item RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE). Every number says what it is: CALIBRATED (measured on disk, source given), CONFIG (read from dispatcher_schedule.json or the v3 design), DERIVED (computed from calibrated numbers by a stated rule), or ASSUMED (no measurement; a prior range that is swept, never fitted to a single value). Calibration window: ledger 7 d to 2026-10-27T06:25Z (rimflow_metrics.py --days 7 --json), spend census 7 d (D:\\ClaudeWork\\rimmandrake\\perpetual_ctx\\spend_census.json), owner messages 10-05..10-27 (D:\\ClaudeWork\\rimmandrake\\orch_record\\friction\\owner_classified.jsonl).",
+ "fixed": {
+  "helper_ite_q": {
+   "status": "CALIBRATED",
+   "source": "spend_census.json subagents, family BENCH+FOUNDRY role subagent, 1,271 helpers, 41 quantiles (pooled by seat below)",
+   "BENCH": [
+    11299,
+    52061,
+    73161,
+    83815,
+    93888,
+    106308,
+    125918,
+    142123,
+    161569,
+    176644,
+    194931,
+    237107,
+    270826,
+    311205,
+    353455,
+    424166,
+    515508,
+    582388,
+    648544,
+    721573,
+    807960,
+    917098,
+    993808,
+    1075458,
+    1171924,
+    1230778,
+    1376293,
+    1445352,
+    1596047,
+    1696480,
+    1844764,
+    1989536,
+    2142034,
+    2302480,
+    2451136,
+    2650010,
+    3040937,
+    3357540,
+    3930133,
+    4665397,
+    12000000
+   ],
+   "FOUNDRY": [
+    5351,
+    54915,
+    95013,
+    107836,
+    128625,
+    144224,
+    162100,
+    187479,
+    212177,
+    265153,
+    300106,
+    336686,
+    378914,
+    416325,
+    453519,
+    491900,
+    535721,
+    577081,
+    619334,
+    685525,
+    733253,
+    788833,
+    835771,
+    875085,
+    931652,
+    1003920,
+    1072299,
+    1151579,
+    1214591,
+    1331756,
+    1400215,
+    1495921,
+    1586953,
+    1777886,
+    1936613,
+    2190937,
+    2583911,
+    3024203,
+    3947647,
+    5481918,
+    12000000
+   ],
+   "_note": "top quantile clipped from 42.4M/25.3M to 12M (single outliers; the clip lowers mean ITE by ~2%)"
+  },
+  "helper_dur_q": {
+   "status": "CALIBRATED",
+   "source": "same helpers, wall seconds; ITE and duration are sampled with ONE shared uniform (measured Spearman 0.89 BENCH, 0.88 FOUNDRY)",
+   "BENCH": [
+    30,
+    30,
+    47,
+    65,
+    78,
+    94,
+    114,
+    147,
+    179,
+    213,
+    244,
+    282,
+    305,
+    342,
+    406,
+    467,
+    528,
+    574,
+    631,
+    677,
+    757,
+    836,
+    884,
+    953,
+    1003,
+    1088,
+    1215,
+    1314,
+    1434,
+    1624,
+    1755,
+    1906,
+    2113,
+    2364,
+    2692,
+    2899,
+    3402,
+    3830,
+    4697,
+    6004,
+    10800
+   ],
+   "FOUNDRY": [
+    30,
+    35,
+    62,
+    76,
+    87,
+    105,
+    131,
+    156,
+    181,
+    200,
+    233,
+    265,
+    286,
+    309,
+    347,
+    370,
+    399,
+    437,
+    458,
+    504,
+    532,
+    565,
+    601,
+    629,
+    672,
+    718,
+    781,
+    841,
+    893,
+    969,
+    1053,
+    1148,
+    1300,
+    1398,
+    1497,
+    1697,
+    2031,
+    2465,
+    2743,
+    3699,
+    10800
+   ]
+  },
+  "seat_ite_per_close": {
+   "value": 184000,
+   "status": "DERIVED",
+   "source": "top-level ITE BENCH 126.0M + FOUNDRY 45.0M per 7 d / 928 closes"
+  },
+  "background_ite_week": {
+   "value": 146800000,
+   "status": "CALIBRATED",
+   "source": "spend census: every family other than BENCH/FOUNDRY (art-eval headless 107M, other headless, Hestia) per 7 d; charged flat"
+  },
+  "owner_present_p_by_hour": {
+   "status": "CALIBRATED",
+   "source": "share of the 23 days with >=1 typed owner message in that local (PDT) hour; 1,638 messages; 11.8 present h/day. CAUTION (GPT r2 #7): message timestamps are endogenous, more breakdowns -> more presence; swept by owner_presence_mult",
+   "value": [
+    0.565,
+    0.13,
+    0.043,
+    0.087,
+    0.217,
+    0.261,
+    0.478,
+    0.739,
+    0.739,
+    0.522,
+    0.478,
+    0.435,
+    0.478,
+    0.391,
+    0.478,
+    0.435,
+    0.435,
+    0.565,
+    0.609,
+    0.783,
+    0.739,
+    0.696,
+    0.783,
+    0.696
+   ]
+  },
+  "p_verify": {
+   "value": 0.66,
+   "status": "CALIBRATED",
+   "source": "verify results 615 / closes 928, 7 d"
+  },
+  "foundry_share": {
+   "value": 0.42,
+   "status": "CALIBRATED",
+   "source": "FOUNDRY 2,337 of 5,572 BENCH+FOUNDRY ledger events, 7 d (proxy for the share of work it takes)"
+  },
+  "account_used_at_128h": {
+   "value": {
+    "lukas": 0.93,
+    "steven": 0.69,
+    "system": 0.71
+   },
+   "status": "CALIBRATED",
+   "source": "account_usage series.jsonl 2026-10-26 (lukas, steven ESTIMATE; system MEASURED)"
+  },
+  "account_quota": {
+   "status": "DERIVED",
+   "source": "Q_a = sim ITE routed to account a by hour 128 of the member's own v2 calibration week / account_used_at_128h[a]. Consequence: token results are RELATIVE to today's burn, never absolute"
+  },
+  "week_reset": {
+   "value": "Wed 13:00 local; the sim week starts at a reset",
+   "status": "CONFIG",
+   "source": "account_usage"
+  },
+  "dispatcher": {
+   "status": "CONFIG",
+   "source": "src/RimMandrake/rimflow/dispatcher_schedule.json",
+   "tick_s": 120,
+   "stall_after_s": 240,
+   "verify_s": 300,
+   "max_retries": 2,
+   "cooldown_s": 3600,
+   "wakes_per_seat_hour": 3,
+   "wakes_per_seat_day": 30,
+   "wakes_per_day": 80,
+   "wake_seats": [
+    "FOUNDRY"
+   ]
+  },
+  "throttle_order": {
+   "value": [
+    "Innovator",
+    "Auditor",
+    "Producer",
+    "Arbiter",
+    "Operations"
+   ],
+   "status": "CONFIG",
+   "source": "dispatcher_schedule.json throttle_order; design \u00a73"
+  },
+  "role_costs": {
+   "status": "CONFIG/ASSUMED",
+   "source": "Operations caps from the schedule (60k/run, 150k economy, 2 runs/day) are CONFIG ceilings used as costs; all other role costs ASSUMED (see priors *_ite)"
+  },
+  "auditor_max_per_day": {
+   "value": 4,
+   "status": "CONFIG",
+   "source": "design \u00a72: daily, <=4 investigations"
+  },
+  "n_rig": {
+   "value": 2,
+   "status": "CONFIG",
+   "source": "two test machines (Steve, archmagi) share the Arbiter's check slots"
+  }
+ },
+ "priors": {
+  "lam_ext_h": {
+   "lo": 2.0,
+   "hi": 14.0,
+   "why": "owner-origin tickets filed per present hour",
+   "status": "ASSUMED"
+  },
+  "p_prod_ext": {
+   "lo": 0.3,
+   "hi": 0.7,
+   "why": "share of owner-origin tickets that are product work",
+   "status": "ASSUMED"
+  },
+  "f_prod": {
+   "lo": 0.1,
+   "hi": 0.8,
+   "why": "follow-up tickets filed per finished product ticket",
+   "status": "ASSUMED"
+  },
+  "f_proc": {
+   "lo": 0.2,
+   "hi": 0.9,
+   "why": "follow-up tickets per finished process ticket (process breeds process; branching factor, GPT r2 #6)",
+   "status": "ASSUMED"
+  },
+  "p_proc_child": {
+   "lo": 0.4,
+   "hi": 0.9,
+   "why": "share of follow-ups that are process tickets",
+   "status": "ASSUMED"
+  },
+  "p_park": {
+   "lo": 0.2,
+   "hi": 0.55,
+   "why": "filed tickets parked (proposed, never worked in the horizon); WIP shows 798 proposed",
+   "status": "ASSUMED"
+  },
+  "p_quick": {
+   "lo": 0.35,
+   "hi": 0.85,
+   "why": "worked tickets closed by the seat itself with no helper (697/928 closes never started)",
+   "status": "ASSUMED"
+  },
+  "quick_min": {
+   "lo": 1.0,
+   "hi": 8.0,
+   "why": "seat minutes per quick close",
+   "status": "ASSUMED"
+  },
+  "dispatch_min": {
+   "lo": 0.5,
+   "hi": 4.0,
+   "why": "seat minutes to brief and launch one helper",
+   "status": "ASSUMED"
+  },
+  "helpers_per_job": {
+   "lo": 1.0,
+   "hi": 3.5,
+   "why": "mean helpers launched per helper-backed ticket (182 helpers/day vs 133 closes/day, most closes quick)",
+   "status": "ASSUMED"
+  },
+  "init_queue": {
+   "lo": 5,
+   "hi": 60,
+   "int": true,
+   "why": "ready tickets per seat at the start of the warm-up week (today's 'ready'+'doing' WIP is mostly stale; never start empty)",
+   "status": "ASSUMED"
+  },
+  "helper_cap_v2": {
+   "lo": 2,
+   "hi": 4,
+   "int": true,
+   "why": "concurrent helpers per seat today (CLAUDE.md asks for <=N; actual UNMEASURED, D4)",
+   "status": "ASSUMED"
+  },
+  "kappa": {
+   "lo": 0.0,
+   "hi": 0.15,
+   "why": "extra defect rate per additional concurrent helper (coordination cost)",
+   "status": "ASSUMED"
+  },
+  "mu_prod": {
+   "lo": 0.1,
+   "hi": 0.9,
+   "why": "true defects per product/rework ticket",
+   "status": "ASSUMED"
+  },
+  "mu_proc": {
+   "lo": 0.05,
+   "hi": 0.5,
+   "why": "true defects per process ticket",
+   "status": "ASSUMED"
+  },
+  "b_shared": {
+   "lo": 0.1,
+   "hi": 0.5,
+   "why": "share of defects invisible to every check (shared blind spot, GPT r1/r2)",
+   "status": "ASSUMED"
+  },
+  "s_self": {
+   "lo": 0.0,
+   "hi": 0.15,
+   "why": "maker self-check sensitivity (0 findings in 2,744 self-reviews is an observation, not a sensitivity)",
+   "status": "ASSUMED"
+  },
+  "s_rig": {
+   "lo": 0.2,
+   "hi": 0.8,
+   "why": "v2 verify-run sensitivity to a visible defect",
+   "status": "ASSUMED"
+  },
+  "fr_rig": {
+   "lo": 0.0,
+   "hi": 0.06,
+   "why": "verify false-fail probability (harness defects)",
+   "status": "ASSUMED"
+  },
+  "p_fix": {
+   "lo": 0.6,
+   "hi": 0.95,
+   "why": "a repair removes a detected defect",
+   "status": "ASSUMED"
+  },
+  "e_disc": {
+   "lo": 0.02,
+   "hi": 0.3,
+   "why": "per latent defect discovery hazard, per day (exposure)",
+   "status": "ASSUMED"
+  },
+  "p_link": {
+   "lo": 0.5,
+   "hi": 1.0,
+   "why": "a discovered defect is filed with caused_by an already-done item (the rework observable)",
+   "status": "ASSUMED"
+  },
+  "p_stall": {
+   "lo": 0.03,
+   "hi": 0.35,
+   "why": "seat ends its turn and waits when nothing is in flight",
+   "status": "ASSUMED"
+  },
+  "r_self_h": {
+   "lo": 0.05,
+   "hi": 1.5,
+   "why": "stalled seat resumes on its own (task notification, scheduled wake), per hour",
+   "status": "ASSUMED"
+  },
+  "notice_min": {
+   "lo": 3.0,
+   "hi": 45.0,
+   "why": "owner's mean delay before he notices a stalled window, when present",
+   "status": "ASSUMED"
+  },
+  "p_watch": {
+   "lo": 0.4,
+   "hi": 1.0,
+   "why": "owner watches a given window while present",
+   "status": "ASSUMED"
+  },
+  "lam_status_h": {
+   "lo": 0.2,
+   "hi": 2.5,
+   "why": "status/'how is it going' pings per present hour",
+   "status": "ASSUMED"
+  },
+  "p_owner_card": {
+   "lo": 0.03,
+   "hi": 0.09,
+   "why": "filed tickets that need an owner decision (~110 owner-wait items in 7 d / 1,550 filed)",
+   "status": "ASSUMED"
+  },
+  "owner_presence_mult": {
+   "lo": 0.8,
+   "hi": 1.2,
+   "why": "scales the presence profile (endogeneity hedge)",
+   "status": "ASSUMED"
+  },
+  "c_wake_ite": {
+   "lo": 50000,
+   "hi": 400000,
+   "why": "ITE of one woken turn (cache-cold reload)",
+   "status": "ASSUMED"
+  },
+  "p_ring_ok": {
+   "lo": 0.6,
+   "hi": 0.98,
+   "why": "a Dispatcher ring is consumed and the window resumes",
+   "status": "ASSUMED"
+  },
+  "p_unwork": {
+   "lo": 0.0,
+   "hi": 0.3,
+   "why": "a woken window finds its next ticket unworkable (needs owner/bridge) and stops again",
+   "status": "ASSUMED"
+  },
+  "commits_prod": {
+   "lo": 1.0,
+   "hi": 4.0,
+   "why": "commits per product job",
+   "status": "ASSUMED"
+  },
+  "commits_proc": {
+   "lo": 1.0,
+   "hi": 4.0,
+   "why": "commits per process job",
+   "status": "ASSUMED"
+  },
+  "commits_ledger": {
+   "lo": 0.5,
+   "hi": 3.0,
+   "why": "process-only (ledger/notes) commits per close",
+   "status": "ASSUMED"
+  },
+  "acct_w_lukas": {
+   "lo": 0.2,
+   "hi": 0.45,
+   "why": "share of burn routed to the lukas account (system and steven split the rest)",
+   "status": "ASSUMED"
+  },
+  "arb_s_lo": {
+   "lo": 0.2,
+   "hi": 0.5,
+   "why": "Arbiter sensitivity at strictness 0",
+   "status": "ASSUMED"
+  },
+  "arb_s_hi": {
+   "lo": 0.6,
+   "hi": 0.95,
+   "why": "Arbiter sensitivity at strictness 1",
+   "status": "ASSUMED"
+  },
+  "arb_fr_max": {
+   "lo": 0.05,
+   "hi": 0.3,
+   "why": "Arbiter false-reject probability at strictness 1 (scales with strictness^2)",
+   "status": "ASSUMED"
+  },
+  "arb_check_min": {
+   "lo": 8.0,
+   "hi": 40.0,
+   "why": "rig minutes per Arbiter check",
+   "status": "ASSUMED"
+  },
+  "arb_ite": {
+   "lo": 100000.0,
+   "hi": 800000.0,
+   "why": "ITE per Arbiter verdict (judge helper)",
+   "status": "ASSUMED"
+  },
+  "arb_batch_q": {
+   "lo": 10,
+   "hi": 40,
+   "int": true,
+   "why": "Arbiter queue length above which it batches",
+   "status": "ASSUMED"
+  },
+  "arb_batch_gamma": {
+   "lo": 0.3,
+   "hi": 0.85,
+   "why": "sensitivity multiplier while batching (the rubber-stamp mechanism)",
+   "status": "ASSUMED"
+  },
+  "teeth": {
+   "lo": 0.5,
+   "hi": 1.0,
+   "why": "a new role's effectiveness multiplier in its first week",
+   "status": "ASSUMED"
+  },
+  "s_aud": {
+   "lo": 0.4,
+   "hi": 0.9,
+   "why": "Auditor sensitivity to a visible latent defect",
+   "status": "ASSUMED"
+  },
+  "aud_ite": {
+   "lo": 200000.0,
+   "hi": 1200000.0,
+   "why": "ITE per audit investigation",
+   "status": "ASSUMED"
+  },
+  "p_rule": {
+   "lo": 0.0,
+   "hi": 0.5,
+   "why": "an audit finding becomes an enforced rule",
+   "status": "ASSUMED"
+  },
+  "rule_delta": {
+   "lo": 0.0,
+   "hi": 0.04,
+   "why": "fractional cut in mu_prod per enforced rule (0 = learning does nothing)",
+   "status": "ASSUMED"
+  },
+  "rule_check_min": {
+   "lo": 0.0,
+   "hi": 2.0,
+   "why": "rig minutes each rule adds to every Arbiter check (check-suite ratchet)",
+   "status": "ASSUMED"
+  },
+  "m_ops_stall": {
+   "lo": 0.7,
+   "hi": 1.05,
+   "why": "Operations' effect on p_stall (scenario; >1 = harm)",
+   "status": "ASSUMED"
+  },
+  "m_ops_waste": {
+   "lo": 0.85,
+   "hi": 1.03,
+   "why": "Operations' effect on helper ITE (economy pass)",
+   "status": "ASSUMED"
+  },
+  "m_prod_f": {
+   "lo": 0.6,
+   "hi": 1.1,
+   "why": "Producer's effect on f_proc",
+   "status": "ASSUMED"
+  },
+  "prod_ite_day": {
+   "lo": 100000.0,
+   "hi": 600000.0,
+   "why": "Producer ITE per day",
+   "status": "ASSUMED"
+  },
+  "innov_ite_week": {
+   "lo": 500000.0,
+   "hi": 3000000.0,
+   "why": "Innovator ITE per week",
+   "status": "ASSUMED"
+  },
+  "m_innov": {
+   "lo": 0.9,
+   "hi": 1.05,
+   "why": "Innovator's weekly effect on mu_prod (scenario; >1 = harm)",
+   "status": "ASSUMED"
+  },
+  "m_cond": {
+   "lo": 0.4,
+   "hi": 1.0,
+   "why": "Conductor quick mode's effect on status pings",
+   "status": "ASSUMED"
+  },
+  "cond_ite_msg": {
+   "lo": 20000.0,
+   "hi": 150000.0,
+   "why": "Conductor ITE per owner message (fresh context + metrics pack)",
+   "status": "ASSUMED"
+  },
+  "role_build_tix": {
+   "lo": 5,
+   "hi": 40,
+   "int": true,
+   "why": "process tickets filed to build/tune a role when it is switched on",
+   "status": "ASSUMED"
+  },
+  "role_cards_day": {
+   "lo": 0.5,
+   "hi": 5.0,
+   "why": "owner cards per day per new role during its first week",
+   "status": "ASSUMED"
+  },
+  "q_card": {
+   "lo": 0.01,
+   "hi": 0.2,
+   "status": "ASSUMED",
+   "note": "per present hour, chance the owner answers any one waiting card (a card he defers stays queued); replaces a fixed card service rate, which gave either ~0 or unbounded waits"
+  }
+ },
+ "targets": {
+  "filed_d": {
+   "value": 221.4,
+   "tol": 0.1,
+   "kind": "rel",
+   "source": "rimflow_metrics 7 d: 1,550 filed"
+  },
+  "done_d": {
+   "value": 132.6,
+   "tol": 0.1,
+   "kind": "rel",
+   "source": "rimflow_metrics 7 d: 928 done"
+  },
+  "rework_share": {
+   "value": 0.128,
+   "tol": 0.03,
+   "kind": "abs",
+   "source": "rimflow_metrics 7 d: 198 / 1,550 caused_by already done"
+  },
+  "vfail_share": {
+   "value": 0.093,
+   "tol": 0.03,
+   "kind": "abs",
+   "source": "rimflow_metrics 7 d: 57 fail / 615 verify results"
+  },
+  "nudges_d": {
+   "value": 31.0,
+   "tol": 0.15,
+   "kind": "rel",
+   "source": "friction census: 40% of ~78 typed msgs/day machine-driving"
+  },
+  "ite_week": {
+   "value": 1896000000.0,
+   "tol": 0.15,
+   "kind": "rel",
+   "source": "spend census 7 d total ITE"
+  },
+  "helpers_week": {
+   "value": 1271,
+   "tol": 0.15,
+   "kind": "rel",
+   "source": "spend census: BENCH 624 + FOUNDRY 647 helper transcripts"
+  },
+  "proc_share": {
+   "value": 0.703,
+   "tol": 0.07,
+   "kind": "abs",
+   "source": "process_share.py 721/1,026 since 10-26 (1-day window: wide tolerance)"
+  },
+  "owner_resolve_med_d": {
+   "value": 1.59,
+   "tol": 0.35,
+   "kind": "rel",
+   "source": "rimflow_metrics 7 d owner_wait_resolved median (n 61)"
+  }
+ },
+ "policies": {
+  "v2": {
+   "dispatcher": false,
+   "roles": [],
+   "_doc": "today: two windows, owner un-sticks them"
+  },
+  "v3.0": {
+   "dispatcher": true,
+   "roles": []
+  },
+  "v3.1": {
+   "dispatcher": true,
+   "roles": [
+    "Conductor"
+   ]
+  },
+  "v3.2": {
+   "dispatcher": true,
+   "roles": [
+    "Conductor",
+    "Operations"
+   ]
+  },
+  "v3.3": {
+   "dispatcher": true,
+   "roles": [
+    "Conductor",
+    "Operations",
+    "Producer",
+    "Arbiter"
+   ]
+  },
+  "v3.4": {
+   "dispatcher": true,
+   "roles": [
+    "Conductor",
+    "Operations",
+    "Producer",
+    "Arbiter",
+    "Auditor",
+    "Innovator"
+   ]
+  },
+  "_defaults": {
+   "helper_cap": null,
+   "arb_strict": 0.6,
+   "aud_rate": 0.1,
+   "throttle": "config",
+   "wake_caps": null,
+   "rollout": null
+  }
+ }
+}
