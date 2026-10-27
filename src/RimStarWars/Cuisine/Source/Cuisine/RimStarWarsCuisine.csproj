@@ -42,11 +42,16 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="CuisineDefOf.cs" />
     <Compile Include="NameGenComp.cs" />
     <Compile Include="IngredientValueGetter_ExcludeSkewer.cs" />
     <Compile Include="CuisineSettings.cs" />
+    <Compile Include="FoodPoisonDisabledCookGuard.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +61,10 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">
