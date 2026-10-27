@@ -19,13 +19,12 @@ waiting index ("Carried picks").
 Exit: 0 ok, 1 append refused as a duplicate, 2 UNMEASURED (missing/unreadable file, a schema-breaking line).
 A missing file or a torn line is never "no audits": the readers raise and their callers report UNMEASURED.
 """
-import argparse, fcntl, json, os, re, sys
+import argparse, fcntl, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_PATH = os.path.join(HERE, "audits.schema.json")
 DEFAULT_PATH = "/mnt/d/ClaudeWork/rimmandrake/auditor/audits.jsonl"
 SETTLING = ("SOUND", "DEFECT")
-_TYPES = {"string": str, "array": list, "object": dict, "null": type(None)}
 _SCHEMA = None
 
 
@@ -41,42 +40,20 @@ def key_fields():
     return tuple(schema()["x-idempotency-key"])
 
 
-def _type_ok(v, t):
-    return any(isinstance(v, _TYPES[x]) for x in (t if isinstance(t, list) else [t]))
+def _contracts():
+    """-> (contracts.jsonl, contracts.models), imported on first use (pydantic costs ~50 ms; an empty file pays none)."""
+    root = os.path.dirname(HERE)
+    if root not in sys.path:
+        sys.path.append(root)
+    from contracts import jsonl, models
+    return jsonl, models
 
 
 def problems(d):
-    """Pure. -> the ways one decoded line breaks audits.schema.json ([] = valid). Reads the schema's own keywords
-    (type, required, enum, minLength, pattern, items.type) and its two x-conditionals."""
-    sch = schema()
-    if not isinstance(d, dict):
-        return ["not a JSON object"]
-    out = ["missing %s" % k for k in sch["required"] if k not in d]
-    for k, p in sch["properties"].items():
-        if k not in d:
-            continue
-        v = d[k]
-        if "enum" in p and v not in p["enum"]:
-            out.append("%s %r is not one of %s" % (k, v, "/".join(p["enum"])))
-            continue
-        if "type" in p and not _type_ok(v, p["type"]):
-            out.append("%s is not %s" % (k, p["type"]))
-            continue
-        if isinstance(v, str) and len(v) < p.get("minLength", 0):
-            out.append("%s is empty" % k)
-        if isinstance(v, str) and "pattern" in p and not re.search(p["pattern"], v):
-            out.append("%s %r does not match %s" % (k, v, p["pattern"]))
-        if isinstance(v, list) and "items" in p and not all(_type_ok(x, p["items"]["type"]) for x in v):
-            out.append("%s has an item that is not %s" % (k, p["items"]["type"]))
-    verdict = d.get("verdict")
-    dc = d.get("defect_class")
-    if verdict == "DEFECT" and not (isinstance(dc, str) and dc.strip()):
-        out.append("a DEFECT needs a defect_class")
-    if verdict in ("SOUND", "UNRESOLVED") and dc is not None:
-        out.append("defect_class must be null unless verdict is DEFECT")
-    if d.get("waiting_for") not in (None, "") and verdict != "UNRESOLVED":
-        out.append("waiting_for only on an UNRESOLVED line")
-    return out
+    """Pure. -> the ways one decoded line breaks audits.schema.json ([] = valid). The rule is contracts.models.AuditRecord
+    (the schema's type/required/enum/minLength/pattern/items keywords and its two x-conditionals);
+    selftest_contracts proves the model and this schema file say the same thing."""
+    return _contracts()[1].audits_problems(d)
 
 
 def key(d):
@@ -87,13 +64,17 @@ def parse(text, where="audits.jsonl"):
     """Pure. File text -> rows, in file order. Blank lines are skipped; a line that is not JSON or breaks the schema
     raises ValueError naming it: it could be the DEFECT that matters."""
     rows = []
-    for i, line in enumerate(text.splitlines()):
-        if not line.strip():
+    lines = text.splitlines()
+    if not any(ln.strip() for ln in lines):
+        return rows
+    cj = _contracts()[0]
+    for i, line in enumerate(lines):
+        r = cj.decode(line, i + 1, need_object=False)
+        if not r.ok and r.code == cj.BLANK:
             continue
-        try:
-            d = json.loads(line)
-        except ValueError:
+        if not r.ok:                            # not JSON (or nested past the decoder's depth)
             raise ValueError("%s line %d is not JSON" % (where, i + 1))
+        d = r.value
         bad = problems(d)
         if bad:
             raise ValueError("%s line %d breaks audits.schema.json: %s" % (where, i + 1, "; ".join(bad)))

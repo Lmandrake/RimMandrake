@@ -1,0 +1,15 @@
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"], "extra_field": 1}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "DEFECT", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": "check", "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"], "waiting_for": "/x"}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "HEAD", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1\n", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [1], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": true, "defect_class": null, "evidence": ["D:\\a.txt"]}
+{"ts": "2026-10-27T00:00:00Z", "item": "
+[null]
+{"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "random", "flags": [], "verdict": "SOUND", "defect_class": null, "evidence": ["D:\\a.txt"], "verdict": "SOUND"}
+#DEEP#
+

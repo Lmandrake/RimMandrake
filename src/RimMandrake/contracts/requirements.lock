@@ -1,0 +1,9 @@
+# Pinned for contracts.models (pydantic v2). Versions measured on this WSL host 2026-10-27 (pydantic 2.13.5).
+# Archmagi reportedly runs 2.13 too (brief); not re-measured: ssh archmagi refused 2026-10-27 23:5x UTC.
+# Install on SteveDesktop:  py -3 -m pip install --user -r src\RimMandrake\contracts\requirements.lock
+# contracts.jsonl needs none of this (stdlib only).
+pydantic==2.13.5
+pydantic-core==2.46.5
+typing-extensions==4.16.0
+annotated-types==0.8.0
+typing-inspection==0.4.4

@@ -1,0 +1,83 @@
+{
+ "additionalProperties": false,
+ "description": "One line of arbiter/verdicts.jsonl (roles/arbiter.md 'Every advisory verdict goes ...'). Exported as JSON Schema\n(contracts/schemas/arbiter_verdict.schema.json) for `claude -p --json-schema`.",
+ "properties": {
+  "causes": {
+   "description": "coexisting cause tags beside the disposition",
+   "items": {
+    "enum": [
+     "module",
+     "check",
+     "environment",
+     "bar"
+    ],
+    "type": "string"
+   },
+   "title": "Causes",
+   "type": "array"
+  },
+  "disposition": {
+   "enum": [
+    "PASS",
+    "CONDITIONAL-PASS",
+    "FAIL-module",
+    "FAIL-check",
+    "RESTART-environment",
+    "BAR-defect",
+    "UNRESOLVED"
+   ],
+   "title": "Disposition",
+   "type": "string"
+  },
+  "evidence": {
+   "description": "absolute Windows paths of the evidence",
+   "items": {
+    "type": "string"
+   },
+   "minItems": 1,
+   "title": "Evidence",
+   "type": "array"
+  },
+  "interim": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "the interim reviewer's verdict, null when there was none",
+   "title": "Interim"
+  },
+  "item": {
+   "description": "ledger item id",
+   "minLength": 1,
+   "title": "Item",
+   "type": "string"
+  },
+  "sha": {
+   "description": "the judged commit, at least 7 hex characters",
+   "pattern": "^[0-9a-f]{7,40}$",
+   "title": "Sha",
+   "type": "string"
+  },
+  "ts": {
+   "description": "UTC ISO-8601, Z suffix",
+   "pattern": "^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?Z$",
+   "title": "Ts",
+   "type": "string"
+  }
+ },
+ "required": [
+  "item",
+  "sha",
+  "disposition",
+  "causes",
+  "interim",
+  "evidence",
+  "ts"
+ ],
+ "title": "ArbiterVerdict",
+ "type": "object"
+}

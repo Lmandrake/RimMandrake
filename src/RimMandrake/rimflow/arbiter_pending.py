@@ -35,12 +35,12 @@ or the tiers never ran: every claim is unjudged); an unreadable or torn one rais
 import argparse, calendar, json, os, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from contracts import compat as CC, jsonl as CJ   # noqa: E402 - stdlib only: the dispatcher tick imports this module
 
 VERDICTS = "/mnt/d/ClaudeWork/rimmandrake/arbiter/verdicts.jsonl"
 TIERS_HISTORY = "/mnt/d/ClaudeWork/rimmandrake/arbiter_tiers/tiers_history.jsonl"
 KINDS = ("escapes", "unresolved", "done_claims", "verify_backlog")
-DISPOSITIONS = ("PASS", "CONDITIONAL-PASS", "FAIL-module", "FAIL-check", "RESTART-environment", "BAR-defect",
-                "UNRESOLVED")
+DISPOSITIONS = CC.DISPOSITIONS
 PASSING = ("PASS", "CONDITIONAL-PASS")
 BACKLOG_LEVELS = ("L1", "L2", "L3", "GREEN-MIN", "GREEN-FULL")
 CUTOFF = "/mnt/d/ClaudeWork/rimmandrake/arbiter/cutoff.json"
@@ -111,15 +111,14 @@ def read_jsonl(path, need=()):
     rows = []
     with fh:
         for i, line in enumerate(fh):
-            if not line.strip():
+            r = CJ.decode(line, i + 1, need_object=False)
+            if not r.ok and r.code == CJ.BLANK:
                 continue
-            try:
-                d = json.loads(line)
-            except ValueError:
+            if not r.ok:
                 raise ValueError("%s line %d is not JSON" % (path, i + 1))
-            if not isinstance(d, dict) or any(not d.get(k) for k in need):
+            if CC.truthy_problems(r.value, need):
                 raise ValueError("%s line %d lacks %s" % (path, i + 1, "/".join(need)))
-            rows.append(d)
+            rows.append(r.value)
     return rows
 
 
@@ -127,7 +126,7 @@ def read_stores(verdicts=VERDICTS, history=TIERS_HISTORY, cutoff=None):
     """-> {"verdicts": rows, "tiers_history": rows, "cutoff": epoch or None}; raises like read_jsonl. A verdict line
     needs item, sha and a known disposition (arbiter.md), so a misspelt one is a torn store, not a silent non-verdict."""
     v = read_jsonl(verdicts, ("item", "sha", "disposition"))
-    bad = [d for d in v if d["disposition"] not in DISPOSITIONS]
+    bad = [d for d in v if CC.verdict_row_problems(d)]
     if bad:
         raise ValueError("%s: disposition %r is not one of %s" % (verdicts, bad[0]["disposition"],
                                                                    "/".join(DISPOSITIONS)))

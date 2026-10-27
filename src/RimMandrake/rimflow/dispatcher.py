@@ -74,6 +74,9 @@ TESTQ = os.path.join(REPO, "src", "RimMandrake", "Utils", "testq")
 for _d in (HERE, TESTQ):
     if _d not in sys.path:
         sys.path.insert(0, _d)
+if os.path.dirname(HERE) not in sys.path:
+    sys.path.append(os.path.dirname(HERE))          # src/RimMandrake, for contracts (stdlib-only modules)
+from contracts import compat as CC, jsonl as CJ  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import account_pick as AP  # noqa: E402
@@ -157,7 +160,7 @@ def claude_exe():
 
 def sessions_ok(data):
     """A `claude agents --json` reading: a list whose every entry is an object (review dispatcher-full #5)."""
-    return isinstance(data, list) and all(isinstance(x, dict) for x in data)
+    return CC.sessions_ok(data)
 
 
 def observe_agents(timeout=60):
@@ -209,12 +212,14 @@ def seat_events_since(clone, seat, since_iso):
     p = os.path.join(clone, "infrastructure", "state", "ledger", "events", "%s.jsonl" % seat)
     out = []
     try:
-        with open(p, encoding="utf-8") as f:
+        # contracts.jsonl: a line that is not a JSON object, has a non-string ts, or holds bytes that are not UTF-8 is
+        # skipped; before contracts each of those three crashed the whole tick (AttributeError/TypeError/UnicodeError).
+        with open(p, encoding="utf-8", errors="replace") as f:
             for line in f:
-                try:
-                    ev = json.loads(line)
-                except ValueError:
+                r = CJ.decode(line)
+                if not r.ok or not CC.ledger_event_usable(r.value):
                     continue
+                ev = r.value
                 if ev.get("seat") == seat and (ev.get("ts") or "") > since_iso:   # strictly after the ring's second
                     out.append(ev)
     except OSError:

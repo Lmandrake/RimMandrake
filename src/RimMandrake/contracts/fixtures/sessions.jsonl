@@ -1,0 +1,6 @@
+[{"pid": 1, "cwd": "/home/mandrake/rm/bench", "kind": "interactive", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000001", "name": "AGENT BENCH", "status": "idle"}, {"id": "bg1", "cwd": "/home/mandrake/rm/bench", "kind": "background", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000002", "name": "helper", "state": "blocked"}]
+[]
+[null]
+{"sessions": [{"pid": 1, "cwd": "/home/mandrake/rm/bench", "kind": "interactive", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000001", "name": "AGENT BENCH", "status": "idle"}, {"id": "bg1", "cwd": "/home/mandrake/rm/bench", "kind": "background", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000002", "name": "helper", "state": "blocked"}]}
+[{"pid": 1, "cwd": "/home/mandrake/rm/bench", "kind": "interactive", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000001", "name": "AGENT BENCH", "status": 3}]
+[{"pid": 1, "cwd": "/home/mandrake/rm/bench", "kind": "interactive", "startedAt": 1761600000000, "sessionId": "00000000-0000-0000-0000-000000000001", "name": null, "status": "idle"}]

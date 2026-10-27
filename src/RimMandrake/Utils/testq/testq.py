@@ -84,6 +84,9 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import schema as S  # noqa: E402
+if os.path.dirname(os.path.dirname(HERE)) not in sys.path:
+    sys.path.append(os.path.dirname(os.path.dirname(HERE)))      # src/RimMandrake, for contracts (stdlib-only modules)
+from contracts import compat as CC  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 QHOME = os.environ.get("TESTQ_QUEUE", "/mnt/d/ClaudeWork/rimmandrake/testq")
@@ -149,12 +152,27 @@ def move(job_id, src, dst, record):
 
 
 def records(state):
-    out = []
+    """Every readable record file in `state`. An unreadable one is skipped as before, but named on stderr: a
+    skipped file is accounted, never silent (contracts policy)."""
+    out, bad = [], []
     for f in sorted(glob.glob(q(state, "*.json"))):
         r = read_json(f)
         if r is not None:
             out.append(r)
+        else:
+            bad.append(os.path.basename(f))
+    if bad:
+        print("testq: %d unreadable %s record(s) skipped: %s" % (len(bad), state, " ".join(bad[:5])), file=sys.stderr)
     return out
+
+
+def result_problems(res):
+    """Shadow: what schema.validate_result says about a result testq.py is about to use. Logged, never acted on."""
+    try:
+        S.validate_result(res)
+        return None
+    except Exception as e:  # noqa: BLE001 - shadow only
+        return "%s: %s" % (type(e).__name__, e)
 
 
 def job_of(rec):
@@ -239,9 +257,12 @@ def reconcile(rec):
         log("%s: the worker has no attempt for it (%s); back to pending" % (jid, st.get("error") or state))
         return
     rc, res = remote(["result", "--attempt", latest])
-    if res.get("schema") != S.RESULT_SCHEMA:
+    if not CC.testq_result_readable(res):
         log("%s: result for %s unreadable: %s" % (jid, latest, res.get("error")))
         return
+    shadow = result_problems(res)
+    if shadow:
+        log("%s: result for %s breaks testq.result/1 (shadow, not acted on): %s" % (jid, latest, shadow))
     if host == ARCHMAGI and not rec.get("cancel") and archmagi_bounce(rec, res):
         return
     if (res["outcome"], res["cause"]) in AUTO_RETRY and rec.get("auto_retries", 0) < 1 and not rec.get("cancel"):
@@ -313,7 +334,7 @@ def drain_outbox(outbox, host=STEVE):
             remote(["ack", "--attempt", aid])
             continue
         rc, res = remote(["result", "--attempt", aid])
-        if res.get("schema") == S.RESULT_SCHEMA:
+        if CC.testq_result_readable(res):
             S.dump(res, q("orphans", aid + ".json"))
             remote(["ack", "--attempt", aid])
             log("orphan result %s (%s %s) kept in orphans/" % (aid, res.get("outcome"), res.get("cause") or ""))

@@ -1,0 +1,598 @@
+{
+ "close_evidence": [
+  {
+   "class": "valid_v4",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "valid_v4_fail",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "torn_line",
+   "where": "review AA8 (torn line blinds 38 days)",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "damaged_sha",
+   "where": "review AB5 / arbiter_code #1 (damaged FAIL sha)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "valid JSON and well-shaped: only close_evidence.mac_ok can refuse it (it does: lookup -> UNMEASURED)"
+  },
+  {
+   "class": "same_second_replay",
+   "where": "arbiter_code #3 / AD5 (replayed PASS)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "an exact duplicate decodes fine; lookup's seen_macs dedupe drops it (nonce makes real repeats distinct)"
+  },
+  {
+   "class": "non_ascii_mac",
+   "where": "arbiter_code #5 (mac 'e-acute')",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the reader accepts the JSON; mac_ok refuses it (AC5); strict refuses mac not 64 hex"
+  },
+  {
+   "class": "duplicate_key",
+   "where": "review AB6 (duplicate top-level key)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "json.loads keeps the last value; strict-JSON notes dup_key; lookup's _top_level treats it as ambiguous"
+  },
+  {
+   "class": "replacement_char",
+   "where": "UTF-8 damage read with errors=replace",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "decodes; strict-JSON notes replacement_char; mac fails"
+  },
+  {
+   "class": "legacy_v1",
+   "where": "review Z (v1 never evidence)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "strict reads it as CloseEvidenceLegacy: never evidence"
+  },
+  {
+   "class": "legacy_v2",
+   "where": "review Z",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "legacy"
+  },
+  {
+   "class": "legacy_v3",
+   "where": "review AB2 (v3 never evidence)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "legacy"
+  },
+  {
+   "class": "legacy_vless",
+   "where": "review AA5 (v-less legacy hole)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "legacy"
+  },
+  {
+   "class": "unsupported_version_float",
+   "where": "version confusion",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "schema_problems: 4.0 == 4 so it looks v4; strict refuses a float version"
+  },
+  {
+   "class": "unsupported_version_5",
+   "where": "unsupported version",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "strict: v5 is neither v4 nor legacy"
+  },
+  {
+   "class": "not_object_list",
+   "where": "non-object JSON",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "not_object_null",
+   "where": "non-object JSON",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "not_object_string",
+   "where": "non-object JSON",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "nonfinite",
+   "where": "NaN in a record",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "Python json accepts NaN; strict-JSON notes nonfinite (no other JSON reader would parse the line)"
+  },
+  {
+   "class": "bom",
+   "where": "UTF-8 BOM on a line",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "json.loads refuses a str starting with a BOM"
+  },
+  {
+   "class": "too_deep",
+   "where": "absurd nesting",
+   "old": "crash",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): json.loads raises RecursionError, which read_all did not catch -> the caller crashed; contracts.jsonl refuses the line as too_deep and counts it like any unreadable line"
+  },
+  {
+   "class": "sha_wrong_type",
+   "where": "type confusion",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "schema_problems checks presence, not types; strict refuses an int sha"
+  },
+  {
+   "class": "blank",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": ""
+  },
+  {
+   "class": "whitespace",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": ""
+  }
+ ],
+ "audits": [
+  {
+   "class": "valid",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "extra_field",
+   "where": "additionalProperties true",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "defect_without_class",
+   "where": "x-conditionals",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "sound_with_class",
+   "where": "x-conditionals",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "waiting_on_sound",
+   "where": "x-conditionals",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "sha_not_hex",
+   "where": "pattern",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "sha_trailing_newline",
+   "where": "pattern via re.search",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "audits.problems used re.search: `$` matches before a final newline, so 'abcdef1\\n' passed; the model keeps that (compat). Filed as a finding, not changed here"
+  },
+  {
+   "class": "empty_item",
+   "where": "minLength",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "flag_not_string",
+   "where": "items.type",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "verdict_bool",
+   "where": "enum",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "torn",
+   "where": "review AA8 class",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "null_list",
+   "where": "dispatcher_full #5 class",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "dup_key",
+   "where": "review AB6 class",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "json.loads keeps the last value; strict-JSON notes dup_key"
+  },
+  {
+   "class": "too_deep",
+   "where": "absurd nesting",
+   "old": "crash",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): RecursionError used to escape parse(); now 'line N is not JSON'"
+  },
+  {
+   "class": "blank",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": ""
+  }
+ ],
+ "verdicts": [
+  {
+   "class": "valid",
+   "where": "arbiter.md fields",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "valid_fail_tagged",
+   "where": "arbiter.md",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "misspelt_disposition",
+   "where": "read_stores",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "empty_item",
+   "where": "read_jsonl truthy rule",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "sha_head",
+   "where": "tiers_history writes sha HEAD",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat only needs a truthy sha; strict needs 7-40 hex: 'HEAD' cannot be joined to a commit"
+  },
+  {
+   "class": "missing_causes",
+   "where": "arbiter.md",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat reads item/sha/disposition only; strict needs every arbiter.md field"
+  },
+  {
+   "class": "sha_int",
+   "where": "type confusion",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "truthy int passes compat; strict refuses"
+  },
+  {
+   "class": "bad_ts",
+   "where": "digest review #8 (invalid ts)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat ignores ts; strict needs ISO UTC Z"
+  },
+  {
+   "class": "extra_field",
+   "where": "closed type",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "strict is extra=forbid"
+  },
+  {
+   "class": "null_list",
+   "where": "dispatcher_full #5 class",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "torn",
+   "where": "review AA8 class",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "too_deep",
+   "where": "absurd nesting",
+   "old": "crash",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')"
+  }
+ ],
+ "ledger_events": [
+  {
+   "class": "valid",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "other_seat",
+   "where": "seat filter",
+   "old": "skip",
+   "new": "skip",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "before_cutoff",
+   "where": "since filter",
+   "old": "skip",
+   "new": "skip",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "not_utf8",
+   "where": "byte damage in a shard",
+   "old": "crash",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): the shard was opened strict UTF-8; one bad byte raised UnicodeDecodeError out of the read loop and crashed the tick. Now read with errors=replace and the line is passed over. The fixture line is written as raw bytes 0xff 0xfe (see main)"
+  },
+  {
+   "class": "not_object",
+   "where": "dispatcher seat_events_since",
+   "old": "crash",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): ev.get on a list raised AttributeError and crashed the dispatcher tick"
+  },
+  {
+   "class": "ts_int",
+   "where": "type confusion",
+   "old": "crash",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): 5 > str raised TypeError and crashed the tick"
+  },
+  {
+   "class": "ts_not_iso",
+   "where": "digest review #8 (invalid ts)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "a non-ISO ts string compares lexicographically ('y' > '2'), so it counts as after any cutoff; strict refuses it. Filed, not changed (decision preserved)"
+  },
+  {
+   "class": "torn",
+   "where": "review AA8 class",
+   "old": "skip",
+   "new": "skip",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "blank",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": ""
+  }
+ ],
+ "sessions": [
+  {
+   "class": "valid",
+   "where": "captured 2026-10-27 shape",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "empty",
+   "where": "no sessions",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "null_entry",
+   "where": "dispatcher_full #5 ([null] observation)",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "not_list",
+   "where": "shape drift",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "status_int",
+   "where": "type confusion",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "strict: status must be a string"
+  },
+  {
+   "class": "unnamed",
+   "where": "find_session by name",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  }
+ ],
+ "testq_results": [
+  {
+   "class": "valid",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": ""
+  },
+  {
+   "class": "undeclared_markers",
+   "where": "worker writes fields testq_schema.json lacks",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "declared in the strict model; schema drift filed"
+  },
+  {
+   "class": "rows_only",
+   "where": "GPT design: schema-tag-only check",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "testq.py checks only the schema tag, then reads res['outcome'] (KeyError); strict and validate_result refuse; testq.py now logs the shadow refusal"
+  },
+  {
+   "class": "invalid_without_cause",
+   "where": "validate_result rule",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat reads the tag only"
+  },
+  {
+   "class": "extra_field",
+   "where": "closed type",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "strict is extra=forbid"
+  },
+  {
+   "class": "unsupported_version",
+   "where": "unsupported version",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "torn",
+   "where": "truncated file",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": ""
+  },
+  {
+   "class": "not_object",
+   "where": "non-object JSON",
+   "old": "crash",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): testq.py at base did res.get('schema') on whatever read_json returned; a JSON list in done/ raised AttributeError and stopped collect/orphans. compat.testq_result_readable refuses it"
+  }
+ ]
+}

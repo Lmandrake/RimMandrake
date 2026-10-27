@@ -577,6 +577,21 @@ def _read_locked(f: Path) -> list:
             os.close(lfd)
 
 
+def _contracts_jsonl():
+    """contracts.jsonl (stdlib only) from src/RimMandrake, without leaving that directory on sys.path."""
+    import importlib.util
+    if "contracts.jsonl" in sys.modules:
+        return sys.modules["contracts.jsonl"]
+    spec = importlib.util.spec_from_file_location("contracts.jsonl",
+                                                  Path(__file__).resolve().parents[1] / "contracts" / "jsonl.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_CJ = _contracts_jsonl()
+
+
 def read_all(days=30, folder=None, bad_out=None):
     """Every record in the last `days` day files, oldest first. Unreadable lines are skipped, counted on stderr and,
     when `bad_out` (a list) is given, appended to it as (day, fragment) so a caller can refuse to call the day clean."""
@@ -587,14 +602,10 @@ def read_all(days=30, folder=None, bad_out=None):
         if not f.is_file():
             continue
         for ln in _read_locked(f):
-            if not ln.strip():
-                continue
-            try:
-                r = json.loads(ln)
-                if not isinstance(r, dict):
-                    raise ValueError("not an object")
-                out.append(r)
-            except ValueError:
+            r = _CJ.decode(ln)                  # contracts.jsonl: the one line policy (json.loads + object, never raises)
+            if r.ok:
+                out.append(r.value)
+            elif r.code != _CJ.BLANK:
                 bad += 1
                 if bad_out is not None:
                     bad_out.append((day, ln))

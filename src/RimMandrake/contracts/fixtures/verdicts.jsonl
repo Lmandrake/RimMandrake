@@ -1,0 +1,12 @@
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "FAIL-module", "causes": ["check"], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "Pass", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "", "sha": "abcdef1", "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": "HEAD", "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "PASS", "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": 1234567, "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z"}
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "yesterday"}
+{"item": "X_Y_Z", "sha": "abcdef1", "disposition": "PASS", "causes": [], "interim": null, "evidence": ["D:\\ClaudeWork\\rimmandrake\\arbiter\\x.md"], "ts": "2026-10-27T00:00:00Z", "surplus": 1}
+[null]
+{"item": "X_Y_Z", "sha": "abcd
+#DEEP#
