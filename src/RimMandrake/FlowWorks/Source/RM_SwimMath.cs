@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RimMandrake.FlowWorks
 {
@@ -354,6 +355,142 @@ namespace RimMandrake.FlowWorks
 		public static int ClimbDepthWithSwim(int hollowDepth, int swimClimbDepth)
 		{
 			return swimClimbDepth >= 0 && swimClimbDepth < hollowDepth ? swimClimbDepth : hollowDepth;
+		}
+		// ── DUG_SWIM_REFRESH_SHRINK_HASH_SETS: the dug swim squares on flat per-cell arrays ─────────────────────────────
+
+		/// <summary>One dug square's swim code, as RM_MapComponent_Excavation.RefreshDugSwim has always derived it: -1 = the pit
+		/// rules stand (no water, or under chest-deep); else climb depth * 2, low bit set when the square is SWUM (2 m+ of a
+		/// swimmable liquid). <paramref name="hole"/>: the dug depth in notches; <paramref name="dl"/>: decilitres of liquid.</summary>
+		public static int DugSwimCode(bool swimmable, int hole, long dl)
+		{
+			if (dl <= 0)
+			{
+				return -1;
+			}
+			double metres = RM_LevelSolve.Metres(dl);
+			int whole = (int)(dl / RM_LevelSolve.U);
+			int s = DugSwimClimbDepth(true, swimmable, hole, metres, whole);
+			// WATERED_PIT_FIX_NO_WAY_IN: chest-deep (1.5 m) water already lifts the climb to its surface; only 2 m+ is SWUM
+			int lift = s >= 0 ? s : DugWadeLiftDepth(true, swimmable, hole, metres, whole);
+			return lift >= 0 ? lift * 2 + (s >= 0 ? 1 : 0) : -1;
+		}
+
+		/// <summary>DUG_SWIM_REFRESH_SHRINK_HASH_SETS (r13 exprof: RefreshDugSwim 4.8 ms a call, every 60 ticks per map): the
+		/// derived dug swim squares, kept on a flat per-cell array instead of a Dictionary of climb depths, a HashSet of swum
+		/// squares and a Dictionary of fresh codes rebuilt and compared through hashing every refresh. A refresh is
+		/// <see cref="Begin"/>, one <see cref="Put"/> per square with a code (each square at most once), then
+		/// <see cref="End"/>, which lists the squares whose code moved (new, changed or gone) and publishes the fresh set only
+		/// when one did. Owner: the map's main-thread tick (as the dictionaries were).</summary>
+		public sealed class DugSwimSet
+		{
+			private int[] code = new int[0];       // code + 1 per square; 0 = not a dug swim/lift square
+			private int[] fresh = new int[0];      // this refresh's code + 1; zero again after End
+			private List<int> cells = new List<int>();
+			private List<int> freshCells = new List<int>();
+
+			/// <summary>Squares with a code (the old swimClimb.Count).</summary>
+			public int Count => cells.Count;
+
+			/// <summary>Squares that are swum (the old swimCells.Count).</summary>
+			public int SwimCount { get; private set; }
+
+			/// <summary>The squares with a code, in ascending index order. Read only; replaced by the next End that moves.</summary>
+			public List<int> Cells => cells;
+
+			/// <summary>The climb depth of square i (the old swimClimb[i]); false when it has none.</summary>
+			public bool TryClimb(int i, out int climb)
+			{
+				int c = (uint)i < (uint)code.Length ? code[i] : 0;
+				climb = (c - 1) >> 1;
+				return c != 0;
+			}
+
+			/// <summary>Square i is swum (the old swimCells.Contains(i)).</summary>
+			public bool IsSwim(int i)
+			{
+				int c = (uint)i < (uint)code.Length ? code[i] : 0;
+				return c != 0 && ((c - 1) & 1) == 1;
+			}
+
+			public void Begin(int n)
+			{
+				if (code.Length != n)
+				{
+					// a map's grid never changes size; kept total for the selftest and a first refresh
+					var grown = new int[n];
+					var kept = new List<int>();
+					foreach (int i in cells)
+					{
+						if (i < n)
+						{
+							grown[i] = code[i];
+							kept.Add(i);
+						}
+					}
+					code = grown;
+					cells = kept;
+					fresh = new int[n];
+				}
+				freshCells.Clear();
+			}
+
+			public void Put(int i, int value)
+			{
+				fresh[i] = value + 1;
+				freshCells.Add(i);
+			}
+
+			/// <summary>Fills <paramref name="changed"/> (cleared first) with every square whose code moved: the fresh squares
+			/// in Put order, then the squares that lost their code in the old set's order. Publishes the fresh set when any
+			/// moved. Returns changed.Count.</summary>
+			public int End(List<int> changed)
+			{
+				changed.Clear();
+				foreach (int i in freshCells)
+				{
+					if (code[i] != fresh[i])
+					{
+						changed.Add(i);
+					}
+				}
+				foreach (int i in cells)
+				{
+					if (fresh[i] == 0)
+					{
+						changed.Add(i);
+					}
+				}
+				if (changed.Count > 0)
+				{
+					foreach (int i in cells)
+					{
+						code[i] = 0;
+					}
+					int swim = 0;
+					foreach (int i in freshCells)
+					{
+						code[i] = fresh[i];
+						swim += (fresh[i] - 1) & 1;
+					}
+					SwimCount = swim;
+					List<int> was = cells;
+					cells = freshCells;
+					freshCells = was;
+					foreach (int i in cells)
+					{
+						fresh[i] = 0;
+					}
+				}
+				else
+				{
+					foreach (int i in freshCells)
+					{
+						fresh[i] = 0;
+					}
+				}
+				freshCells.Clear();
+				return changed.Count;
+			}
 		}
 	}
 }

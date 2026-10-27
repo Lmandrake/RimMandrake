@@ -301,6 +301,13 @@ namespace RimMandrake.FlowWorks.Swimming
 			return ex != null && ex.IsDugSwimCell(c);
 		}
 
+		/// <summary>May a creature swim in this dug liquid (null: the unrecorded default, swum)? The one rule LiquidSwimmableAt
+		/// and RM_MapComponent_Excavation.RefreshDugSwim's per-fluid-key memo both read.</summary>
+		public static bool FluidSwimmable(FluidDef f)
+		{
+			return f == null || SwimFluids.Contains(f.defName);
+		}
+
 		/// <summary>May a creature swim in the liquid on this square (dug: the cell's fluid; natural: the terrain)?</summary>
 		public static bool LiquidSwimmableAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c)
 		{
@@ -310,8 +317,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 			if (ex != null && ex.IsExcavated(c))
 			{
-				FluidDef f = ex.FluidAt(c) ?? ex.ActiveFluid;
-				return f == null || SwimFluids.Contains(f.defName);
+				return FluidSwimmable(ex.FluidAt(c) ?? ex.ActiveFluid);
 			}
 			TerrainDef t = map.terrainGrid.TerrainAt(c);
 			if (t == null)

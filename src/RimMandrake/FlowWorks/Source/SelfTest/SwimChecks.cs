@@ -367,11 +367,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_SwimMath.ClimbDepthWithSwim(6, -1) == 6 && RM_SwimMath.ClimbDepthWithSwim(2, 4) == 2, "never deeper than the hollow");
                 // production wiring
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"int s = RM_SwimMath\.DugSwimClimbDepth\(true, swimmable, depthGrid\[i\], metres, \(int\)\(dl / RM_LevelSolve\.U\)\);",
+                RiverSwitchFlipChecks.Has(ex, @"int code = RM_SwimMath\.DugSwimCode\(swimmable, hole, dl\);",
                     "the refresh runs the production rule on every dug square");
-                RiverSwitchFlipChecks.Has(ex, @"bool swimmable = Swimming\.RM_SwimWater\.LiquidSwimmableAt\(map, this, c\); double metres = RM_LevelSolve\.Metres\(dl\);",
-                    "on the square's own liquid and water");
-                RiverSwitchFlipChecks.Has(ex, @"into\[kv\.Key\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[kv\.Key\], kv\.Value\);", "the pocket grid and the cliff masks read the swim surface");
+                RiverSwitchFlipChecks.Has(ex, @"bool swimmable = k == 0 \|\| k > keys \? unrecorded : swimByKey\[k\];",
+                    "on the square's own liquid (memoised per fluid key)");
+                RiverSwitchFlipChecks.Has(ex, @"swimByKey\[k\] = Swimming\.RM_SwimWater\.FluidSwimmable\(fluidPalette\[k - 1\] \?\? ActiveFluid\);",
+                    "the memo is LiquidSwimmableAt's dug rule, key by key");
+                RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[i\], climb\);", "the pocket grid and the cliff masks read the swim surface");
                 RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
                 RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
                 RiverSwitchFlipChecks.Has(ex, @"% SwimRefreshTicks == 11\) \{ RefreshDugSwim\(\); \}", "refreshed on its own timer");
@@ -402,13 +404,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "never for an unswimmable liquid, nor with swimming off");
                 Assert(RM_SwimMath.DugWadeLiftDepth(true, true, 4, 2.0, 4) == RM_SwimMath.DugSwimClimbDepth(true, true, 4, 2.0, 4), "the two agree at 2 m+");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"int lift = s >= 0 \? s : RM_SwimMath\.DugWadeLiftDepth\(true, swimmable, depthGrid\[i\], metres, \(int\)\(dl / RM_LevelSolve\.U\)\);",
-                    "the refresh lifts chest-deep squares");
-                RiverSwitchFlipChecks.Has(ex, @"fresh\[i\] = lift \* 2 \+ \(s >= 0 \? 1 : 0\);", "the climb depth and the swim bit travel together");
-                RiverSwitchFlipChecks.Has(ex, @"swimClimb\[kv\.Key\] = kv\.Value >> 1; if \(\(kv\.Value & 1\) == 1\) \{ swimCells\.Add\(kv\.Key\); \}",
-                    "only 2 m+ squares join the SWIM set (cost, non-swimmer closure)");
-                RiverSwitchFlipChecks.Has(ex, @"if \(h == 0 \|\| swimClimb\.Count == 0\)", "can-fail: ClimbDepthAt no longer skips the lift when no square is swum");
-                RiverSwitchFlipChecks.Has(ex, @"excavatedCells\.Count > 0 \|\| swimClimb\.Count > 0\)", "the refresh keeps running while any square is lifted");
+                Assert(RM_SwimMath.DugSwimCode(true, 3, 3 * RM_LevelSolve.U) == 0, "the refresh lifts chest-deep squares (climb 0, not swum)");
+                Assert(RM_SwimMath.DugSwimCode(true, 4, 4 * RM_LevelSolve.U) == 1 && RM_SwimMath.DugSwimCode(true, 7, 4 * RM_LevelSolve.U) == 3 * 2 + 1,
+                    "the climb depth and the swim bit travel together; only 2 m+ is SWUM");
+                Assert(RM_SwimMath.DugSwimCode(false, 4, 4 * RM_LevelSolve.U) == -1 && RM_SwimMath.DugSwimCode(true, 4, 0) == -1, "unswimmable or dry: the pit rule");
+                string sm = RiverSwitchFlipChecks.Src("RM_SwimMath.cs");
+                RiverSwitchFlipChecks.Has(sm, @"int lift = s >= 0 \? s : DugWadeLiftDepth\(true, swimmable, hole, metres, whole\); return lift >= 0 \? lift \* 2 \+ \(s >= 0 \? 1 : 0\) : -1;",
+                    "the code is the wade lift, else the swim climb, with the swim bit");
+                RiverSwitchFlipChecks.Has(ex, @"swimSet\.Put\(i, code\);", "only squares with a code join the set");
+                RiverSwitchFlipChecks.Has(ex, @"return swimSet\.SwimCount > 0 && c\.InBounds\(map\) && swimSet\.IsSwim\(", "only 2 m+ squares are the SWIM set (cost, non-swimmer closure)");
+                RiverSwitchFlipChecks.Has(ex, @"if \(h == 0 \|\| swimSet\.Count == 0\)", "can-fail: ClimbDepthAt no longer skips the lift when no square is swum");
+                RiverSwitchFlipChecks.Has(ex, @"excavatedCells\.Count > 0 \|\| swimSet\.Count > 0\)", "the refresh keeps running while any square is lifted");
                 string doors = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_FlowDoors.cs"));
                 Assert(doors.Contains("RM_FlowDoorRules.IsFlowDoorDef(td) || StandsInWetPit(td)")
                     && doors.Contains("RM_LadderUtility.IsLadderDef(td)") && doors.Contains("typeof(RM_Building_PitRamp).IsAssignableFrom(td.thingClass)"),
@@ -421,6 +427,121 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
             // Review day 2 (2026-10-17): drowning in wadeable natural water (a downed person in 0.5 m shallows) is an open owner
             // question; it stays shipped ON, but one setting must turn it off ALONE (deep water and pits keep the rule).
+            // DUG_SWIM_REFRESH_SHRINK_HASH_SETS: the flat DugSwimSet against the old Dictionary/HashSet refresh, step by step on
+            // random dug scenes (water rising, draining, swapping liquid, squares filled in, the master switch flipping).
+            Case("DugSwim_flat_set_equals_dictionary_refresh", () =>
+            {
+                var rng = new Random(1027);
+                int moved = 0, swum = 0, quiet = 0;
+                for (int scene = 0; scene < 40; scene++)
+                {
+                    int n = 64 + rng.Next(400);
+                    var hole = new int[n];
+                    var dl = new long[n];
+                    var swimmable = new bool[n];
+                    var set = new RM_SwimMath.DugSwimSet();
+                    var oldClimb = new Dictionary<int, int>();
+                    var oldSwim = new HashSet<int>();
+                    var changed = new List<int>();
+                    for (int step = 0; step < 30; step++)
+                    {
+                        int edits = step == 0 ? n : rng.Next(4) == 0 ? 0 : 1 + rng.Next(n / 4);
+                        for (int e = 0; e < edits; e++)
+                        {
+                            int i = rng.Next(n);
+                            hole[i] = rng.Next(3) == 0 ? 0 : 1 + rng.Next(12);
+                            dl[i] = rng.Next(3) == 0 ? 0 : rng.Next(hole[i] * RM_LevelSolve.U + 1);
+                            swimmable[i] = rng.Next(5) != 0;
+                        }
+                        bool on = rng.Next(8) != 0;
+                        // the old refresh, verbatim in shape
+                        var fresh = new Dictionary<int, int>();
+                        var oldChanged = new List<int>();
+                        for (int i = 0; on && i < n; i++)
+                        {
+                            long w = hole[i] == 0 ? 0 : dl[i];
+                            if (w <= 0)
+                            {
+                                continue;
+                            }
+                            double metres = RM_LevelSolve.Metres(w);
+                            int sc = RM_SwimMath.DugSwimClimbDepth(true, swimmable[i], hole[i], metres, (int)(w / RM_LevelSolve.U));
+                            int lift = sc >= 0 ? sc : RM_SwimMath.DugWadeLiftDepth(true, swimmable[i], hole[i], metres, (int)(w / RM_LevelSolve.U));
+                            if (lift >= 0)
+                            {
+                                fresh[i] = lift * 2 + (sc >= 0 ? 1 : 0);
+                            }
+                        }
+                        foreach (var kv in fresh)
+                        {
+                            if (!oldClimb.TryGetValue(kv.Key, out int o) || o != kv.Value >> 1 || oldSwim.Contains(kv.Key) != ((kv.Value & 1) == 1))
+                            {
+                                oldChanged.Add(kv.Key);
+                            }
+                        }
+                        foreach (int i in oldClimb.Keys)
+                        {
+                            if (!fresh.ContainsKey(i))
+                            {
+                                oldChanged.Add(i);
+                            }
+                        }
+                        if (oldChanged.Count > 0)
+                        {
+                            oldClimb.Clear();
+                            oldSwim.Clear();
+                            foreach (var kv in fresh)
+                            {
+                                oldClimb[kv.Key] = kv.Value >> 1;
+                                if ((kv.Value & 1) == 1)
+                                {
+                                    oldSwim.Add(kv.Key);
+                                }
+                            }
+                        }
+                        // the flat refresh, as production drives it
+                        set.Begin(n);
+                        for (int i = 0; on && i < n; i++)
+                        {
+                            if (hole[i] == 0)
+                            {
+                                continue;
+                            }
+                            int code = RM_SwimMath.DugSwimCode(swimmable[i], hole[i], dl[i]);
+                            if (code >= 0)
+                            {
+                                set.Put(i, code);
+                            }
+                        }
+                        int got = set.End(changed);
+                        Assert(got == oldChanged.Count && changed.Count == got, "scene " + scene + " step " + step + ": " + got + " changed, the old refresh " + oldChanged.Count);
+                        var a = new HashSet<int>(changed);
+                        Assert(a.Count == changed.Count && a.SetEquals(oldChanged), "the same squares changed, each once");
+                        Assert(set.Count == oldClimb.Count && set.SwimCount == oldSwim.Count, "Count and SwimCount match the old sets");
+                        for (int i = -1; i <= n; i++)
+                        {
+                            bool has = set.TryClimb(i, out int climb);
+                            Assert(has == oldClimb.ContainsKey(i) && (!has || climb == oldClimb[i]), "square " + i + ": the same climb depth");
+                            Assert(set.IsSwim(i) == oldSwim.Contains(i), "square " + i + ": the same swim bit");
+                        }
+                        Assert(set.Cells.Count == oldClimb.Count, "Cells lists every square with a code");
+                        moved += got > 0 ? 1 : 0;
+                        quiet += got == 0 ? 1 : 0;
+                        swum += set.SwimCount;
+                    }
+                }
+                Assert(moved > 100 && quiet > 50 && swum > 1000, "can-fail: the scenes exercise change, no change and swum squares (moved=" + moved + " quiet=" + quiet + " swum=" + swum + ")");
+                // a grid of another size (never in play; kept total): old squares past the end are dropped, not indexed
+                var g = new RM_SwimMath.DugSwimSet();
+                var ch = new List<int>();
+                g.Begin(10);
+                g.Put(2, 1);
+                g.Put(9, 4);
+                Assert(g.End(ch) == 2 && g.SwimCount == 1, "two squares, one swum");
+                g.Begin(5);
+                g.Put(2, 1);
+                Assert(g.End(ch) == 0 && g.Count == 1 && !g.TryClimb(9, out _), "shrunk: square 9 is gone, square 2 kept, nothing moved");
+            });
             Case("Swim_shallow_drowning_switch_alone", () =>
             {
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));

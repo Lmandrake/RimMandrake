@@ -50,9 +50,11 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("DugSwim_refresh_reuses_scratch", () =>
             {
                 string body = Between(Src("RM_MapComponent_Excavation.cs"), "public int RefreshDugSwim()", "public int HollowDepthAt(");
-                Assert(!body.Contains("new Dictionary<int, int>()") && !body.Contains("new List<int>()"),
+                Assert(!body.Contains("new Dictionary<int, int>()") && !body.Contains("new List<int>()") && !body.Contains("new HashSet<"),
                     "RefreshDugSwim (every 60 ticks per map) allocates no collections");
-                Assert(body.Contains("swimFreshScratch") && body.Contains("swimChangedScratch"), "it reuses the scratch fields");
+                // DUG_SWIM_REFRESH_SHRINK_HASH_SETS: the fresh set lives in the DugSwimSet's flat arrays
+                Assert(body.Contains("swimSet.Begin(n)") && body.Contains("swimSet.End(changed)") && body.Contains("swimChangedScratch"),
+                    "it reuses the flat swim set and the scratch list");
             });
 
             Case("SuspensionBridges_band_reset_and_lean_load_tick", () =>

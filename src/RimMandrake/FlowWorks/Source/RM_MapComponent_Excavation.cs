@@ -343,11 +343,11 @@ namespace RimMandrake.FlowWorks
 		public int ClimbDepthAt(IntVec3 c)
 		{
 			int h = HollowDepthAt(c);
-			if (h == 0 || swimClimb.Count == 0)
+			if (h == 0 || swimSet.Count == 0)
 			{
 				return h;
 			}
-			return swimClimb.TryGetValue(map.cellIndices.CellToIndex(c), out int s) ? RM_SwimMath.ClimbDepthWithSwim(h, s) : h;
+			return swimSet.TryClimb(map.cellIndices.CellToIndex(c), out int s) ? RM_SwimMath.ClimbDepthWithSwim(h, s) : h;
 		}
 
 		// ── SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug water 2 m or deeper is swum (owner R12) ──────────
@@ -359,76 +359,64 @@ namespace RimMandrake.FlowWorks
 		// scribed: refreshed every SwimRefreshTicks and after each pulse; a change moves the climb generation, re-cuts the swim
 		// grids and re-reads those squares' path costs.
 		public const int SwimRefreshTicks = 60;
-		private readonly Dictionary<int, int> swimClimb = new Dictionary<int, int>();
-		private readonly HashSet<int> swimCells = new HashSet<int>();
-		private readonly Dictionary<int, int> swimFreshScratch = new Dictionary<int, int>();
+		// DUG_SWIM_REFRESH_SHRINK_HASH_SETS: flat per-cell arrays (RM_SwimMath.DugSwimSet), not a Dictionary + HashSet + a
+		// fresh Dictionary hashed every refresh (r13: 4.8 ms a call).
+		private readonly RM_SwimMath.DugSwimSet swimSet = new RM_SwimMath.DugSwimSet();
 		private readonly List<int> swimChangedScratch = new List<int>();
+		private readonly bool[] swimByKey = new bool[256];
 
 		/// <summary>A dug square holding swimmable water 2 m or deeper (swimming on).</summary>
 		public bool IsDugSwimCell(IntVec3 c)
 		{
-			return swimCells.Count > 0 && c.InBounds(map) && swimCells.Contains(map.cellIndices.CellToIndex(c));
+			return swimSet.SwimCount > 0 && c.InBounds(map) && swimSet.IsSwim(map.cellIndices.CellToIndex(c));
 		}
 
-		public int DugSwimCellCount => swimCells.Count;
+		public int DugSwimCellCount => swimSet.SwimCount;
 
 		/// <summary>Re-derive the dug swim squares; returns how many changed (each change re-cuts what reads them).</summary>
 		public int RefreshDugSwim()
 		{
 			bool on = Swimming.RM_SwimWater.On;
 			// Scratch reused across calls (FlowWorks review 2026-10-22): this runs every SwimRefreshTicks on every map.
-			Dictionary<int, int> fresh = swimFreshScratch;
-			fresh.Clear();
-			List<int> changed = swimChangedScratch;
-			changed.Clear();
+			int n = depthGrid.Length;
+			swimSet.Begin(n);
 			if (on)
 			{
-				foreach (IntVec3 c in excavatedCells)
+				// Swimmable per fluid key, read once a refresh (RM_SwimWater.LiquidSwimmableAt's dug branch: the cell's
+				// recorded fluid, else the map's ActiveFluid). Keys 0 and past the palette read as unrecorded.
+				bool unrecorded = Swimming.RM_SwimWater.FluidSwimmable(ActiveFluid);
+				int keys = fluidGrid == null ? 0 : System.Math.Min(fluidPalette.Count, 255);
+				for (int k = 1; k <= keys; k++)
 				{
-					int i = map.cellIndices.CellToIndex(c);
-					long dl = WaterDl(i);
+					swimByKey[k] = Swimming.RM_SwimWater.FluidSwimmable(fluidPalette[k - 1] ?? ActiveFluid);
+				}
+				// The dug set is exactly the cells with depthGrid != 0 (RebuildExcavatedSet); a scan of the grid replaces
+				// hashing through excavatedCells, and keeps the cells in index order.
+				for (int i = 0; i < n; i++)
+				{
+					int hole = depthGrid[i];
+					if (hole == 0)
+					{
+						continue;
+					}
+					long dl = fillGrid[i] * (long)RM_LevelSolve.U + partGrid[i];
 					if (dl <= 0)
 					{
 						continue;
 					}
-					bool swimmable = Swimming.RM_SwimWater.LiquidSwimmableAt(map, this, c);
-					double metres = RM_LevelSolve.Metres(dl);
-					int s = RM_SwimMath.DugSwimClimbDepth(true, swimmable, depthGrid[i], metres, (int)(dl / RM_LevelSolve.U));
-					// WATERED_PIT_FIX_NO_WAY_IN: chest-deep (1.5 m) water already lifts the climb to its surface; only 2 m+ is SWUM
-					int lift = s >= 0 ? s : RM_SwimMath.DugWadeLiftDepth(true, swimmable, depthGrid[i], metres, (int)(dl / RM_LevelSolve.U));
-					if (lift >= 0)
+					int k = fluidGrid == null ? 0 : fluidGrid[i];
+					bool swimmable = k == 0 || k > keys ? unrecorded : swimByKey[k];
+					int code = RM_SwimMath.DugSwimCode(swimmable, hole, dl);
+					if (code >= 0)
 					{
-						fresh[i] = lift * 2 + (s >= 0 ? 1 : 0);   // climb depth, low bit = a swim square
+						swimSet.Put(i, code);   // climb depth, low bit = a swim square
 					}
 				}
 			}
-			foreach (KeyValuePair<int, int> kv in fresh)
-			{
-				if (!swimClimb.TryGetValue(kv.Key, out int old) || old != kv.Value >> 1 || swimCells.Contains(kv.Key) != ((kv.Value & 1) == 1))
-				{
-					changed.Add(kv.Key);
-				}
-			}
-			foreach (int i in swimClimb.Keys)
-			{
-				if (!fresh.ContainsKey(i))
-				{
-					changed.Add(i);
-				}
-			}
-			if (changed.Count == 0)
+			List<int> changed = swimChangedScratch;
+			if (swimSet.End(changed) == 0)
 			{
 				return 0;
-			}
-			swimClimb.Clear();
-			swimCells.Clear();
-			foreach (KeyValuePair<int, int> kv in fresh)
-			{
-				swimClimb[kv.Key] = kv.Value >> 1;
-				if ((kv.Value & 1) == 1)
-				{
-					swimCells.Add(kv.Key);
-				}
 			}
 			BumpClimbGeneration();
 			Swimming.RM_SwimPathing.Bump(map);
@@ -493,11 +481,11 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: a dug swim square at its water surface (same rule as ClimbDepthAt)
-			foreach (KeyValuePair<int, int> kv in swimClimb)
+			foreach (int i in swimSet.Cells)
 			{
-				if (kv.Key < n)
+				if (i < n && swimSet.TryClimb(i, out int climb))
 				{
-					into[kv.Key] = (byte)RM_SwimMath.ClimbDepthWithSwim(into[kv.Key], kv.Value);
+					into[i] = (byte)RM_SwimMath.ClimbDepthWithSwim(into[i], climb);
 				}
 			}
 		}
@@ -2694,7 +2682,7 @@ namespace RimMandrake.FlowWorks
 			}
 			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: which dug squares are swum (own timer: pumps, hoses and fill-ins write
 			// water between pulses, and the engine may be off)
-			if ((excavatedCells.Count > 0 || swimClimb.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
+			if ((excavatedCells.Count > 0 || swimSet.Count > 0) && Find.TickManager.TicksGame % SwimRefreshTicks == 11)
 			{
 				RefreshDugSwim();
 			}
