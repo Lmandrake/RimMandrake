@@ -1,0 +1,2 @@
+In a seat clone, ./publish replays local commits onto origin (new shas). A rimflow close --sha taken from the local commit BEFORE ./publish records a sha that never reaches main, and rimflow refuses a second close. Order: commit code -> ./publish -> close with the PUBLISHED sha -> commit ledger shard -> ./publish again. Hit on ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL (456e902b4b local, 4d8e6b184a published; recorded by note).
+home: using-rimflow
