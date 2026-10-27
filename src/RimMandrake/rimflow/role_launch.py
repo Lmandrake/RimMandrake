@@ -15,9 +15,11 @@ operations.md says so). A role with `after_role` (Conductor -> Operations) launc
 scheduled run for the slot it follows (08:00 -> 07:30, 20:00 -> 19:30; never an alarm run or yesterday's late run)
 finished done and none is going (after_ready); a slot of that role its band skipped on purpose is passed over for
 its previous one within 24 h (Producer 09:00 in AMBER/RED -> Operations 19:30); it is decided after that role in each tick. Operations
-also runs once per ops_watch alarm item FILED after the role was first seen enabled (`alarm_runs`); alarms already
-open at that first tick are the baseline, covered by the next running check; the baseline is taken only from a
-MEASURED ops_watch reading (a blind first tick sets none and runs no alarm). One run per role at a time.
+also runs once per OPEN ops_watch alarm crossing (`alarm_runs`): `alarms_seen` is pruned to the alarms open now, so
+one that clears runs again when it re-crosses (review W, W1); alarms already open when the role is first enabled run
+once too (no baseline). One alarm run covers every open alarm not yet run, and alarm runs are at least
+`alarm_run_gap_s` (ALARM_RUN_GAP_S) apart; alarms are read only from a MEASURED reading whose alarms dict is readable
+(a blind tick prunes nothing and runs no alarm). One run per role at a time.
 
 Weekdays (item DISPATCHER_BUILD_WEEKDAY_AND_EVENT_TRIGGERS): a slot may name its days, "Wed 09:00" or
 "Mon,Thu 10:00" (parse_slot; an unreadable slot is an alarm and the role does not run). `weekly_plan_weekday` makes
@@ -93,6 +95,7 @@ import time
 LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800}
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
+ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
 OPS_STALE_S = 45 * 60
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")      # time.localtime().tm_wday order
 DONE_CLAIM_VERBS = ("implemented", "close")   # a done claim on the ledger: built (L0 passed) or closed against a sha
@@ -741,27 +744,40 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                         "item": role["ledger_item"], "trigger": "slot %s local%s" % (
                             hhmm, " (weekly plan, %s)" % cfg["weekly_plan_weekday"] if mode == "weekly" else "")})
         if role.get("alarm_runs"):
-            open_items = sorted(alarm_keys((obs["ops"]() or {}).get("alarms")))
-            if "alarms_seen" not in rs:
-                if reading()["state"] != "MEASURED":
-                    # a blind first reading is not a baseline: [] would make every alarm already open a paid run on
-                    # the next readable tick (review round R, C). No alarm runs until a MEASURED reading sets it.
-                    if not rs.get("baseline_wait"):
-                        act(do="role_hold", role=name, why="%s alarm runs: no baseline yet, the ops_watch reading is "
-                            "UNMEASURED (%s); no alarm run launches until it is MEASURED" % (name, reading()["why"]))
-                    rs["baseline_wait"] = True
-                    open_items = []
-                else:
-                    rs.pop("baseline_wait", None)
-                    rs["alarms_seen"] = open_items       # the baseline at first enable: not run
-            for item in open_items:
-                if item not in rs["alarms_seen"]:
+            # alarms_seen holds the OPEN alarms a run already covered (or a band/cap/off switch passed over). It is
+            # pruned to what is open now, so an alarm that clears is eligible again when it re-crosses (review W, W1).
+            # Read only from a MEASURED reading with a readable alarms dict: a blind one would prune every key and
+            # re-run every open alarm when it reads again (review R, C). No baseline: alarms already open when the
+            # role is first enabled run once. One alarm run covers every unseen open alarm, at most one per
+            # alarm_run_gap_s.
+            open_items = alarm_reading((obs["ops"]() or {}).get("alarms")) if reading()["state"] == "MEASURED" \
+                else None
+            if open_items is None:
+                if not rs.get("alarm_blind"):
+                    act(do="role_hold", role=name, why="%s alarm runs held: %s; none launches until both read" % (
+                        name, reading()["why"] if reading()["state"] != "MEASURED"
+                        else "ops_watch alarms unreadable in status.json"))
+                rs["alarm_blind"] = True
+            else:
+                rs.pop("alarm_blind", None)
+                rs["alarms_seen"] = [k for k in rs.get("alarms_seen") or [] if k in open_items]
+                fresh = [k for k in open_items if k not in rs["alarms_seen"]]
+                gap = int(cfg.get("alarm_run_gap_s", ALARM_RUN_GAP_S))
+                last = rs.get("alarm_last_run")
+                if fresh and last is not None and now - last < gap:
+                    if rs.get("alarm_gap_hold") != fresh:          # journal each waiting set once
+                        act(do="role_hold", role=name, why="%s alarm run for %s waits: the last alarm run was %d s "
+                            "ago (alarm_run_gap_s %d)" % (name, ", ".join(fresh), now - last, gap))
+                    rs["alarm_gap_hold"] = fresh
+                elif fresh:
+                    rs.pop("alarm_gap_hold", None)
                     # an account alarm has no ledger item (it is Operations' alone, never on a seat queue: review V,
-                    # V2): its run notes on the role's own ledger_item; mark() still records it by its key
+                    # V2): its run notes on the role's own ledger_item; mark() records every key the run covers
+                    item = fresh[0]
                     due.append({"key": "alarm " + item, "slot": None, "first": False, "mode": "alarm",
-                                "cap": cfg.get("run_token_cap"), "seen": item,
+                                "cap": cfg.get("run_token_cap"), "seen": fresh,
                                 "item": role["ledger_item"] if item.startswith(ALARM_KEY_PREFIX) else item,
-                                "trigger": "ops_watch alarm " + item})
+                                "trigger": "ops_watch alarm " + ", ".join(fresh)})
         if cfg.get("event_runs"):
             try:
                 pend = unseen(pending_events(cfg, lr, rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
@@ -866,8 +882,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
                                 "done": rs["done"].get(job["key"]), "had_done": job["key"] in rs["done"],
                                 "alarms_seen": rs.get("alarms_seen"), "event_cursor": rs.get("event_cursor"),
-                                "events_seen": rs.get("events_seen")}
+                                "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
         mark(rs, job, "launch")
+        if job["mode"] == "alarm":
+            rs["alarm_last_run"] = now        # the gap runs from launched alarm runs only, not from passed-over ones
         if lr is not None:
             rs["event_cursor"] = now      # every run reads the events up to its launch (arbiter.md, producer.md)
             rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
@@ -908,6 +926,10 @@ def unlaunch(rs, unit):
     rs.pop("pending_launch", None)
     if p["mode"] == "alarm":
         rs["alarms_seen"] = p["alarms_seen"]
+        if p.get("alarm_last_run") is None:
+            rs.pop("alarm_last_run", None)
+        else:
+            rs["alarm_last_run"] = p["alarm_last_run"]
     elif p["had_done"]:
         rs.setdefault("done", {})[p["key"]] = p["done"]
     else:
@@ -934,9 +956,18 @@ def alarm_keys(alarms):
     return out
 
 
+def alarm_reading(alarms):
+    """Pure. -> the sorted keys of the OPEN alarms, or None when the alarms are not readable (absent, not a mapping,
+    or ops_watch's UNREADABLE marker): None never prunes alarms_seen."""
+    if not isinstance(alarms, dict) or "_alarm_state" in alarms:
+        return None
+    return sorted(alarm_keys(alarms))
+
+
 def mark(rs, job, how):
     if job["mode"] == "alarm":
-        rs["alarms_seen"] = sorted(set(rs.get("alarms_seen") or []) | {job.get("seen") or job["item"]})
+        seen = job.get("seen") or [job["item"]]
+        rs["alarms_seen"] = sorted(set(rs.get("alarms_seen") or []) | set([seen] if isinstance(seen, str) else seen))
     else:
         rs["done"][job["key"]] = how
 

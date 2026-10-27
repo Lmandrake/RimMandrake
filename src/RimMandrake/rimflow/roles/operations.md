@@ -32,7 +32,7 @@ burning tokens gathering it all up for every question considered."
 | trigger | what you do | budget |
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
-| an ops_watch alarm item filed (`OPS_*` under the parent item), or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`) | diagnose that one alarm: cause, owner, fix or a filed item; note the alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
+| an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
 | 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (its running check too: the 19:30 check covers the day) | `economy_token_cap` |
 
 Starting values (schedule): `run_token_cap` 80,000 (the measured run floor is 35-53k tokens); `economy_token_cap` 100,000;

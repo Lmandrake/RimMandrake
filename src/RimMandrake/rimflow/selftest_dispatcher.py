@@ -716,7 +716,7 @@ def test_role_economy_and_alarms():
     a = role_acts(rdecide([operations()], st, robs(ops_status(now, runway=0.1, week_left=3, alarms=alarms)), now))
     check([x["do"] for x in a] == ["role_launch"] and a[0]["mode"] == "economy" and a[0]["budget"] == 150000,
           "Operations 07:30: economy pass at economy_token_cap, no bands (x1.0 even when low)")
-    check(st["roles"]["Operations"]["alarms_seen"] == ["OPS_OLD_ONE"], "alarms open at first enable: baseline")
+    check(st["roles"]["Operations"]["alarms_seen"] == [], "W1: alarms open at first enable are no baseline: not seen")
     t = now + 600
     st["roles"]["Operations"]["runs"] = [{"unit": "u1", "at": now, "day": RL.day_of(now), "budget": 150000,
                                           "mode": "economy", "item": "ROLES_ITEM_X", "state": "running",
@@ -730,6 +730,8 @@ def test_role_economy_and_alarms():
     check(ds == ["role_done", "role_launch"], "run finished -> role_done (noted), then the new alarm runs: %s" % ds)
     check("150 tokens" in a[0]["why"] and "m-x" in a[0]["why"], "role_done records tokens and the model used")
     check(a[1]["ticket"] == "OPS_NEW_ONE" and a[1]["budget"] == 60000, "alarm run: noted on the alarm item, run cap")
+    check(st["roles"]["Operations"]["alarms_seen"] == ["OPS_NEW_ONE", "OPS_OLD_ONE"]
+          and "OPS_OLD_ONE" in a[1]["why"], "W1: one alarm run covers every unseen open alarm, the one open at enable too")
     check(st["roles"]["Operations"]["runs"][0]["tokens"] == 150, "spend recorded on the run")
     st["roles"]["Operations"]["runs"] = [{"unit": "u2", "at": t, "day": RL.day_of(t), "budget": 1000,
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running",
@@ -1076,16 +1078,17 @@ def test_review_r():
         got = [(x["role"], x["slot"]) for x in a if x["do"] == "role_launch"]
         check(got == [("Operations", "%s 07:30" % RL.day_of(t801))],
               "R-B %s: Operations 07:30 launches, the Conductor waits for it: %s" % (label, got))
-    # C: a blind first reading sets no alarm baseline; the first MEASURED one does, and runs nothing
+    # C: a blind first reading reads no alarms (nothing pruned, nothing run); the first MEASURED one runs the open
+    # alarm once (review W, W1: no baseline)
     st = fresh()
     noon = at_local("12:00")
     al = {"k": {"state": "OPEN", "item": "OPS_OPEN_BEFORE"}}
     a = role_acts(rdecide([operations()], st, robs(None), noon))
-    check("alarms_seen" not in st["roles"]["Operations"] and any("no baseline" in x.get("why", "") for x in a),
-          "R-C status.json missing on the first tick: no baseline, and it says so")
+    check(not st["roles"]["Operations"].get("alarms_seen") and any("alarm runs held" in x.get("why", "") for x in a),
+          "R-C status.json missing on the first tick: no alarm read, and it says so")
     a = role_acts(rdecide([operations()], st, robs(ops_status(noon + 120, alarms=al)), noon + 120))
-    check(not [x for x in a if x["do"] == "role_launch"] and st["roles"]["Operations"]["alarms_seen"]
-          == ["OPS_OPEN_BEFORE"], "R-C first MEASURED tick: the open alarm is the baseline, no paid run")
+    check([x["mode"] for x in a if x["do"] == "role_launch"] == ["alarm"] and st["roles"]["Operations"]["alarms_seen"]
+          == ["OPS_OPEN_BEFORE"], "R-C/W1 first MEASURED tick: the alarm open before enable runs once")
     # D: unit gone but claude still in its scope -> kept running; scope resolved while the unit runs
     st = fresh()
     t = at_local("19:00")
@@ -2011,6 +2014,61 @@ def test_review_v():
           and "pending_launch" not in rs, "V7: a raise building the prompt consumes nothing")
 
 
+def test_review_w_alarm_rearm():
+    """Review W, W1: an alarm that clears and re-crosses runs Operations again; alarms open at enable run once; alarm
+    runs are rate-limited; a blind or unreadable reading prunes nothing."""
+    ops = operations(runs_local=["07:30"], economy_pass_local=None)
+    t = at_local("12:00")
+    A = {"RUNWAY_LOW:accounts.x.runway": {"state": "OPEN", "for": "Operations", "item": None, "title": "t"}}
+    key = "alarm:RUNWAY_LOW:accounts.x.runway"
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(t): "launch"}, "runs": []}}
+    rs = st["roles"]["Operations"]
+
+    def tick(now, status):
+        rs["runs"] = []
+        return role_acts(rdecide([ops], st, robs(status), now))
+
+    def launches(a):
+        return [x for x in a if x["do"] == "role_launch"]
+    a = tick(t, ops_status(t, alarms=A))
+    check(len(launches(a)) == 1 and rs["alarms_seen"] == [key], "W1: an alarm open at first enable runs once")
+    check(not launches(tick(t + 600, ops_status(t + 600, alarms=A))), "W1: still open: no second run")
+    a = tick(t + 700, None)
+    check(not launches(a) and rs["alarms_seen"] == [key] and any("alarm runs held" in x.get("why", "") for x in a),
+          "W1: a blind tick prunes nothing and says so")
+    tick(t + 800, ops_status(t + 800, alarms={"_alarm_state": {"state": "UNREADABLE"}}))
+    check(rs["alarms_seen"] == [key], "W1: an UNREADABLE alarms dict prunes nothing")
+    check(not launches(tick(t + 900, ops_status(t + 900, alarms=A))), "W1: readable again, same crossing: no run")
+    tick(t + 1200, ops_status(t + 1200, alarms={}))
+    check(rs["alarms_seen"] == [], "W1: the alarm cleared: it is re-armed (pruned from alarms_seen)")
+    a = tick(t + 1800, ops_status(t + 1800, alarms=A))
+    check(not launches(a) and any("alarm_run_gap_s" in x.get("why", "") for x in a),
+          "W1: re-crossed inside alarm_run_gap_s of the last alarm run: it waits, journaled")
+    a = tick(t + 1900, ops_status(t + 1900, alarms=A))
+    check(a == [], "W1: the wait is journaled once")
+    a = tick(t + 3700, ops_status(t + 3700, alarms=A))
+    check(len(launches(a)) == 1 and launches(a)[0]["mode"] == "alarm",
+          "W1: cross, clear, re-cross: the alarm runs Operations a second time")
+    unit = launches(a)[0]["unit"]
+    check(RL.unlaunch(rs, unit) and rs["alarm_last_run"] == t and rs["alarms_seen"] == [],
+          "W1: a launch that did not happen gives back the alarm and the gap clock")
+    # the real schedule's Operations, enabled with both live runway alarms open: one run covers both
+    real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
+    ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    two = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "for": "Operations"},
+           "RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations"}}
+    t13 = at_local("13:00")
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(t13): "x"}, "runs": []}}
+    a = role_acts(rdecide([ro], st, robs(ops_status(t13, runway=1.2, alarms=two)), t13))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(len(la) == 1 and la[0]["mode"] == "alarm" and "codex.runway" in la[0]["why"]
+          and len(st["roles"]["Operations"]["alarms_seen"]) == 2,
+          "W1: real schedule, first enable with two runway alarms open: one alarm run covers both: %s"
+          % [x.get("why", "")[:80] for x in a])
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -2020,7 +2078,7 @@ def main():
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
-              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v):
+              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm):
         try:
             t()
         except Exception as e:  # noqa: BLE001
