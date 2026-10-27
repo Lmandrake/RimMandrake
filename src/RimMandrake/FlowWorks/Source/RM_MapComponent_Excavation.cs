@@ -2729,8 +2729,14 @@ namespace RimMandrake.FlowWorks
 			}
 			if (now < nextPulseTick)
 			{
+				if (PulseInFlight)
+				{
+					ContinuePulse(PulseSliceCells);
+				}
 				return;
 			}
+			// A pulse still in slices when the next is due (a huge dug area) ends first, whole: pulses never overlap.
+			FinishPulse();
 			nextPulseTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			DoPulse();
 		}
@@ -2815,8 +2821,51 @@ namespace RimMandrake.FlowWorks
 				&& stock != null && !RimMandrakeFlowWorksSettings.levelExactEnabled;
 			flowKernel.sourceDrawdown = headRule ? (System.Func<int, int>)(idx => stock.DrawdownAt(map, map.cellIndices.IndexToCell(idx), this)) : null;
 			flowKernel.returnLevel = headRule ? (System.Func<int, int, bool>)ReturnLevelToPond : null;
-			flowKernel.Pulse(pulseSeeds, pulseCount);
-			if (headRule)
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the flow runs in slices of about PulseSliceCells cells a tick (this tick
+			// first); the steps after it wait for the last slice (FinishPulseSlices).
+			pulseHeadRule = headRule;
+			flowKernel.BeginPulse(pulseSeeds, pulseCount);
+			ContinuePulse(PulseSliceCells);
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (live r11, 325x325: one pulse took up to 576 ms in a single tick):
+		/// cells of the pulse in flight resolved per tick. A slice ends after the unit that crosses it (one component, one
+		/// partition of a network over the cap, or that network's walk).</summary>
+		public const int PulseSliceCells = RM_FlowKernel.DefaultSliceCells;
+
+		/// <summary>DoPulse's head rule for the pulse in flight (its return half runs after the last slice).</summary>
+		private bool pulseHeadRule;
+
+		/// <summary>True while a pulse's flow is still running in slices (not scribed: a save first finishes it, see
+		/// RM_Patch_SaveGame_FinishPulse).</summary>
+		public bool PulseInFlight => flowKernel != null && flowKernel.PulseInFlight;
+
+		/// <summary>Runs the pulse in flight to its end now (before a save, or when the next pulse is already due).</summary>
+		public void FinishPulse()
+		{
+			if (PulseInFlight)
+			{
+				ContinuePulse(int.MaxValue);
+			}
+		}
+
+		/// <summary>One slice of the pulse in flight; after the last, the steps that follow the flow.</summary>
+		private void ContinuePulse(int cellBudget)
+		{
+			// The grids the kernel writes are this component's; EnsureGrids may replace one between ticks.
+			flowKernel.depth = depthGrid;
+			flowKernel.fill = fillGrid;
+			flowKernel.part = partGrid;
+			if (!flowKernel.StepPulse(cellBudget))
+			{
+				return;
+			}
+			FinishPulseSlices();
+		}
+
+		private void FinishPulseSlices()
+		{
+			if (pulseHeadRule)
 			{
 				pondReturned.Clear();
 				if (flowKernel.ReturnToPonds(pulseSeeds) > 0)
@@ -3493,6 +3542,37 @@ namespace RimMandrake.FlowWorks
 		public bool TryFloodDriverCell(IntVec3 c)
 		{
 			return TrySetDriverFill(c, DepthAt(c));
+		}
+	}
+
+	/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: a pulse's flow may be mid-way through its slices when the game
+	/// saves, and the slice cursor is not scribed. Every save (manual, autosave, a probe's) goes through
+	/// GameDataSaveLoader.SaveGame, so the pulse in flight finishes first and a reload continues from a whole pulse, as
+	/// before the slicing (precedent: GSS Patch_GameDataSaveLoader_SaveGame_DrainConduitRuns). Should this patch fail (or
+	/// finishing throw), a reload of a save made mid-pulse resumes at the next pulse: that pulse's remaining components,
+	/// its return to ponds and its bed run-in wait for it, and the water it had already sent off the map edge is missing from
+	/// the ledger's sink total. The save still goes ahead: a lost save costs the player more than a pulse.</summary>
+	[HarmonyLib.HarmonyPatch(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) })]
+	[RimMandrake.Shared.PatchFeature("A save finishes the water pulse in flight first")]
+	internal static class RM_Patch_SaveGame_FinishPulse
+	{
+		private static void Prefix()
+		{
+			if (Current.Game?.Maps == null)
+			{
+				return;
+			}
+			foreach (Map m in Current.Game.Maps)
+			{
+				try
+				{
+					m.GetComponent<RM_MapComponent_Excavation>()?.FinishPulse();
+				}
+				catch (System.Exception ex)
+				{
+					Log.ErrorOnce("[RimMandrake.FlowWorks] finishing the water pulse before a save failed: " + ex, 0x52A17C3);
+				}
+			}
 		}
 	}
 }

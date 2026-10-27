@@ -141,7 +141,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string root = ModRoot();
                 string ex = File.ReadAllText(Path.Combine(root, "Source", "RM_MapComponent_Excavation.cs"));
-                string pulse = Between(ex, "private void DoPulse()", "flowKernel.Pulse(pulseSeeds, pulseCount);");
+                string pulse = Between(ex, "private void DoPulse()", "flowKernel.BeginPulse(pulseSeeds, pulseCount);");
                 int rain = pulse.IndexOf("ApplyRain();", StringComparison.Ordinal);
                 int taps = pulse.IndexOf("MapControls.RM_MapControls.PulseAll(map, this);", StringComparison.Ordinal);
                 Assert(rain >= 0 && taps > rain, "DoPulse does not run the map controls after rain and before the kernel");

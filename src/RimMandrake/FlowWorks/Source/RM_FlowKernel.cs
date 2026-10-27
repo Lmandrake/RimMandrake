@@ -55,6 +55,82 @@ namespace RimMandrake.FlowWorks
 		void NoteLimitlessDl(object fluid, long dl);
 	}
 
+	/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: a set of grid indices (with an optional int per member) cleared in
+	/// O(1) by a generation stamp: the exact path's per-partition and per-domain membership, which a HashSet paid a hash
+	/// for on every neighbour look. Indices must lie in [0, the size given to Reset).</summary>
+	internal sealed class RM_StampSet
+	{
+		private int[] stamp = new int[0];
+		private int[] value = new int[0];
+		private int gen;
+
+		public void Reset(int size)
+		{
+			if (stamp.Length < size)
+			{
+				stamp = new int[size];
+				value = new int[size];
+				gen = 0;
+			}
+			if (gen == int.MaxValue)
+			{
+				Array.Clear(stamp, 0, stamp.Length);
+				gen = 0;
+			}
+			gen++;
+		}
+
+		public bool Contains(int i)
+		{
+			return stamp[i] == gen;
+		}
+
+		/// <summary>True if <paramref name="i"/> was not yet a member.</summary>
+		public bool Add(int i)
+		{
+			if (stamp[i] == gen)
+			{
+				return false;
+			}
+			stamp[i] = gen;
+			return true;
+		}
+
+		public void Set(int i, int v)
+		{
+			stamp[i] = gen;
+			value[i] = v;
+		}
+
+		public bool TryGetValue(int i, out int v)
+		{
+			if (stamp[i] == gen)
+			{
+				v = value[i];
+				return true;
+			}
+			v = 0;
+			return false;
+		}
+
+		public void Remove(int i)
+		{
+			if (stamp[i] == gen)
+			{
+				stamp[i] = 0;
+			}
+		}
+
+		public int ValueOf(int i)
+		{
+			if (stamp[i] != gen)
+			{
+				throw new KeyNotFoundException("RM_StampSet: " + i + " is not a member");
+			}
+			return value[i];
+		}
+	}
+
 	/// <summary>Approach B phase 2 (design/RimMandrake/flowworks_offline_kernel_B.md): the grid transition of one
 	/// flow pulse — component resolution, sink drain, flow order, recipient order, donor selection and the
 	/// per-component conservation ledger — on integer cell indices (z * width + x, Verse's CellIndices) and
@@ -121,8 +197,8 @@ namespace RimMandrake.FlowWorks
 		/// moves and, over a few pulses, liquid crosses all of them. Networks within the cap are untouched (same walk,
 		/// same order), so the offline oracle and every small-scene case are unaffected. Off by default; the adapter sets it.</summary>
 		public bool seamRotationEnabled;
-		private readonly HashSet<int> networkVisited = new HashSet<int>();
-		private readonly HashSet<int> networkSources = new HashSet<int>();
+		private readonly RM_StampSet networkVisited = new RM_StampSet();
+		private readonly RM_StampSet networkSources = new RM_StampSet();
 		private readonly List<int> networkCells = new List<int>();
 		private readonly List<int> networkExcavated = new List<int>();
 		/// <summary>Pulses on which a network over the cap was walked with a moved seam (the selftest reads it).</summary>
@@ -179,6 +255,13 @@ namespace RimMandrake.FlowWorks
 		public long exactDrainDl;
 		private readonly RM_LevelSolve exactSolve = new RM_LevelSolve();
 		private readonly RM_LevelSolve canalSolve = new RM_LevelSolve();
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the exact path's two work cuts, each the same result by
+		/// construction. (a) A rotated network walks no static flow order (ResolveExact reads its own hops, never
+		/// sourceHops/sinkHops/lowHops); only the order's world calls (CanSupply, which may form a body) are kept, in the same
+		/// order. (b) A domain with no pond and no limitless mouth solves once: the joint solve's target would only feed an
+		/// exchange that cannot happen, and the canal re-solve reads the same input. Off = the pre-fix work, kept so
+		/// ExcavationTick_exact_shortcuts_equal_reference can prove the cuts change nothing.</summary>
+		public bool exactShortcutsEnabled = true;
 
 		// per-pulse outputs
 		public float sinkDrained;
@@ -187,10 +270,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>One line per component whose ledger did not balance (the adapter logs each in dev mode).</summary>
 		public readonly List<string> imbalanceReports = new List<string>();
 
-		private readonly HashSet<int> visited = new HashSet<int>();
-		private readonly HashSet<int> componentSources = new HashSet<int>();
-		private readonly List<int> neighbourScratch = new List<int>();
-		private readonly Queue<int> queue = new Queue<int>();
+		private readonly RM_StampSet visited = new RM_StampSet();
+		private readonly RM_StampSet componentSources = new RM_StampSet();
+		private readonly List<int> walkQueue = new List<int>();
 		private readonly List<int> seedScratch = new List<int>();
 		private readonly List<int> component = new List<int>();
 		private readonly List<int> recipients = new List<int>();
@@ -202,7 +284,6 @@ namespace RimMandrake.FlowWorks
 		private readonly HashSet<int> componentSet = new HashSet<int>();
 		private readonly Predicate<int> isSourcePred;
 		private readonly Predicate<int> isExcavatedPred;
-		private readonly Action<int, List<int>> cardinalPred;
 		private readonly Comparison<int> deepestFirst;
 
 		// Verse's GenAdj.CardinalDirections order: N, E, S, W.
@@ -218,7 +299,6 @@ namespace RimMandrake.FlowWorks
 			this.height = height;
 			isSourcePred = IsSource;
 			isExcavatedPred = IsExcavated;
-			cardinalPred = CardinalInBounds;
 			deepestFirst = CompareDeepestFirst;
 		}
 
@@ -308,7 +388,8 @@ namespace RimMandrake.FlowWorks
 			return s <= 0 || RM_PondDepthMath.SourceMayGive(s, depth[r], fill[r]);
 		}
 
-		private void CardinalInBounds(int c, List<int> into)
+		/// <summary>The in-bounds cardinal neighbours N, E, S, W (the selftest drives the generic walk with it).</summary>
+		internal void CardinalInBounds(int c, List<int> into)
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -322,47 +403,206 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The flow half of one pulse: every component reachable from <paramref name="seedOrder"/> (the
 		/// excavated cells; sorted here by cell index, which decides who a scarce LIMITED body pays first),
-		/// resolved in that order.</summary>
+		/// resolved in that order. <see cref="BeginPulse"/> then one unlimited <see cref="StepPulse"/>.</summary>
 		public void Pulse(IEnumerable<int> seedOrder, long pulseCount)
+		{
+			BeginPulse(seedOrder, pulseCount);
+			StepPulse(int.MaxValue);
+		}
+
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (live r11: a 325x325 map's pulse took up to 576 ms in one tick): a pulse
+		// may run as slices over several ticks. The units are the atomic pulse's own, in its own order: one component, the
+		// uncapped walk of a network bigger than the cap, or one partition of it. Nothing is cut inside a unit, so every
+		// component's ledger still balances on its own.
+		private const int StageSeeds = 0, StageNetworkStart = 1, StageNetworkRest = 2;
+		private readonly List<int> pulseSeedOrder = new List<int>();
+		private readonly List<bool> pulseSeedExcavated = new List<bool>();
+		private int sliceStage;
+		private int sliceSeedCursor;
+		private int sliceNetCursor;
+		private int sliceNetStart;
+		private long slicePulseCount;
+
+		/// <summary>The adapter's slice: cells a tick. One partition at the default network cap, so a map of a few thousand dug
+		/// squares still finishes on the pulse tick and a large one spreads over a few of the pulse's 250 ticks.</summary>
+		public const int DefaultSliceCells = 6000;
+
+		/// <summary>True between <see cref="BeginPulse"/> and the <see cref="StepPulse"/> that finishes it.</summary>
+		public bool PulseInFlight { get; private set; }
+
+		/// <summary>Cells the last <see cref="StepPulse"/> walked plus cells it resolved, every walk counted (its cost measure;
+		/// the selftest bounds it).</summary>
+		public long lastStepCells;
+
+		/// <summary>Starts a pulse: clears the per-pulse outputs and sorts the seeds by cell index (owner ruling 2026-10-06:
+		/// a scarce body pays its channels by MAP POSITION, never by dig order, so a session and a reload that rebuilds the
+		/// set in index order give the same outcome). Each seed's excavated state is noted now, so a slice that runs after
+		/// the map changed skips a seed filled in or dug since, as the atomic pulse never saw it either way.</summary>
+		public void BeginPulse(IEnumerable<int> seedOrder, long pulseCount)
 		{
 			sinkDrained = 0f;
 			exactCreditDl = 0;
 			exactDrainDl = 0;
 			worstImbalance = 0f;
 			imbalanceReports.Clear();
-			visited.Clear();
-			// Owner ruling 2026-10-06: a scarce body pays its channels by MAP POSITION (cell index), never by dig
-			// order, so a session and a reload that rebuilds the set in index order give the same outcome.
-			seedScratch.Clear();
-			seedScratch.AddRange(seedOrder);
-			seedScratch.Sort();
-			foreach (int seed in seedScratch)
+			visited.Reset(width * height);
+			pulseSeedOrder.Clear();
+			pulseSeedOrder.AddRange(seedOrder);
+			pulseSeedOrder.Sort();
+			pulseSeedExcavated.Clear();
+			for (int i = 0; i < pulseSeedOrder.Count; i++)
 			{
-				if (visited.Contains(seed))
+				pulseSeedExcavated.Add(IsExcavated(pulseSeedOrder[i]));
+			}
+			sliceStage = StageSeeds;
+			sliceSeedCursor = 0;
+			slicePulseCount = pulseCount;
+			PulseInFlight = true;
+		}
+
+		/// <summary>Runs units of the pulse in flight until at least <paramref name="cellBudget"/> cells were walked or resolved
+		/// (at least one unit, so every call progresses). Returns true once the pulse is complete (also when none is in flight).
+		/// Run back to back with nothing changing in between, the slices do exactly what one <see cref="Pulse"/> does
+		/// (ExcavationTick_sliced_pulse_equals_atomic). Between slices the adapter may dig or fill: a cell listed earlier this
+		/// pulse whose excavated state changed since is skipped, and no cell is resolved twice in one pulse.</summary>
+		public bool StepPulse(int cellBudget)
+		{
+			lastStepCells = 0;
+			if (!PulseInFlight)
+			{
+				return true;
+			}
+			long budget = Math.Max(1, cellBudget);
+			while (lastStepCells < budget)
+			{
+				if (sliceStage == StageNetworkStart)
+				{
+					sliceStage = StageNetworkRest;
+					sliceNetCursor = 0;
+					if (IsExcavated(sliceNetStart) && !visited.Contains(sliceNetStart))
+					{
+						CollectComponentGrid(sliceNetStart, isSourcePred, isExcavatedPred, width, height,
+							visited, componentSources, walkQueue, component, maxComponentCells);
+						ResolveComponent(slicePulseCount, true);
+						lastStepCells += 2L * component.Count;   // walked, then resolved
+					}
+					continue;
+				}
+				if (sliceStage == StageNetworkRest)
+				{
+					if (sliceNetCursor >= networkExcavated.Count)
+					{
+						sliceStage = StageSeeds;
+						continue;
+					}
+					int c = networkExcavated[sliceNetCursor++];
+					if (visited.Contains(c) || !IsExcavated(c))
+					{
+						continue;
+					}
+					CollectComponentGrid(c, isSourcePred, isExcavatedPred, width, height,
+						visited, componentSources, walkQueue, component, maxComponentCells);
+					ResolveComponent(slicePulseCount, true);
+					lastStepCells += 2L * component.Count;
+					continue;
+				}
+				if (sliceSeedCursor >= pulseSeedOrder.Count)
+				{
+					break;
+				}
+				int i = sliceSeedCursor++;
+				int seed = pulseSeedOrder[i];
+				if (visited.Contains(seed) || IsExcavated(seed) != pulseSeedExcavated[i])
 				{
 					continue;
 				}
-				RM_StockMath.CollectComponent(seed, isSourcePred, isExcavatedPred, cardinalPred,
-					visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
-				if (seamRotationEnabled && component.Count >= maxComponentCells && ResolveRotatedNetwork(seed, pulseCount))
+				CollectComponentGrid(seed, isSourcePred, isExcavatedPred, width, height,
+					visited, componentSources, walkQueue, component, maxComponentCells);
+				// The cost counts every walk: the capped one, the network's uncapped one when the cap was hit, the resolve.
+				int cappedWalk = component.Count;
+				bool networkWalked = seamRotationEnabled && cappedWalk >= maxComponentCells;
+				if (networkWalked && BeginRotatedNetwork(seed, slicePulseCount))
+				{
+					lastStepCells += cappedWalk + networkCells.Count;
+					continue;
+				}
+				ResolveComponent(slicePulseCount);
+				lastStepCells += cappedWalk + (networkWalked ? networkCells.Count : 0) + component.Count;
+			}
+			if (sliceStage == StageSeeds && sliceSeedCursor >= pulseSeedOrder.Count)
+			{
+				PulseInFlight = false;
+			}
+			return !PulseInFlight;
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: <see cref="RM_StockMath.CollectComponent{T}"/> on the grid's
+		/// indices with stamp sets and a list queue (no hashing): the same breadth-first walk, the same predicate calls in the
+		/// same order (cardinal neighbours N, E, S, W as <see cref="CardinalInBounds"/>), the same cap un-marking. Pinned to
+		/// the generic walk by ExcavationTick_grid_walk_equals_generic.</summary>
+		internal static void CollectComponentGrid(int seed, Predicate<int> isSource, Predicate<int> isExcavated, int width, int height,
+			RM_StampSet visitedExcavated, RM_StampSet componentSources, List<int> queue, List<int> component, int maxCells)
+		{
+			component.Clear();
+			componentSources.Reset(width * height);
+			queue.Clear();
+			queue.Add(seed);
+			visitedExcavated.Add(seed);
+			int head = 0;
+			while (head < queue.Count && component.Count < maxCells)
+			{
+				int c = queue[head++];
+				component.Add(c);
+				if (isSource(c))
 				{
 					continue;
 				}
-				ResolveComponent(pulseCount);
+				int x = c % width;
+				int z = c / width;
+				for (int d = 0; d < 4; d++)
+				{
+					int nx = x + CardX[d];
+					int nz = z + CardZ[d];
+					if (nx < 0 || nz < 0 || nx >= width || nz >= height)
+					{
+						continue;
+					}
+					int n = nz * width + nx;
+					if (isExcavated(n))
+					{
+						if (visitedExcavated.Add(n))
+						{
+							queue.Add(n);
+						}
+					}
+					else if (isSource(n) && componentSources.Add(n))
+					{
+						queue.Add(n);
+					}
+				}
+			}
+			// Cap hit: cells still queued were marked visited but never added; un-marked, a later seed picks them up.
+			for (; head < queue.Count; head++)
+			{
+				int left = queue[head];
+				if (isExcavated(left))
+				{
+					visitedExcavated.Remove(left);
+				}
 			}
 		}
 
 		/// <summary>Part 2: <paramref name="seed"/>'s capped walk hit the cap. Walk its whole network (uncapped, own
-		/// scratch sets), and if it really is bigger than the cap, undo the capped walk's marks and resolve the network
-		/// as capped partitions whose first one starts at a cell chosen by the pulse count; the rest follow in cell-index
-		/// order. Every excavated cell of the network is still resolved exactly once this pulse, every partition reads
+		/// scratch sets), and if it really is bigger than the cap, undo the capped walk's marks and queue the network for
+		/// <see cref="StepPulse"/> as capped partitions whose first one starts at a cell chosen by the pulse count; the rest
+		/// follow in cell-index order. Every excavated cell of the network is still resolved exactly once this pulse, every partition reads
 		/// one static flow order walked over the whole network (FLOWWORKS_CHANNEL_OSCILLATION_1) and keeps its own balanced ledger. Returns false (the
 		/// caller resolves the capped walk as before) when the network is exactly the cap.</summary>
-		private bool ResolveRotatedNetwork(int seed, long pulseCount)
+		private bool BeginRotatedNetwork(int seed, long pulseCount)
 		{
-			networkVisited.Clear();
-			RM_StockMath.CollectComponent(seed, isSourcePred, isExcavatedPred, cardinalPred,
-				networkVisited, networkSources, queue, neighbourScratch, networkCells, int.MaxValue);
+			networkVisited.Reset(width * height);
+			CollectComponentGrid(seed, isSourcePred, isExcavatedPred, width, height,
+				networkVisited, networkSources, walkQueue, networkCells, int.MaxValue);
 			networkExcavated.Clear();
 			for (int i = 0; i < networkCells.Count; i++)
 			{
@@ -375,10 +615,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			// The capped walk marked only cells of this network; clear them so the partitions below re-walk it.
-			for (int i = 0; i < networkExcavated.Count; i++)
+			// Clear the capped walk's own marks so the partitions re-walk them. Only its marks: between slices a new dig can
+			// join a component resolved earlier this pulse to this network, and those cells must stay done (in an unsliced
+			// pulse no other cell of the network is marked, so this is every marked network cell).
+			for (int i = 0; i < component.Count; i++)
 			{
-				visited.Remove(networkExcavated[i]);
+				if (IsExcavated(component[i]))
+				{
+					visited.Remove(component[i]);
+				}
 			}
 			networkExcavated.Sort();
 			int n = networkExcavated.Count;
@@ -387,25 +632,36 @@ namespace RimMandrake.FlowWorks
 			// and the order stays the same static, acyclic one whichever way the seams fall this pulse.
 			component.Clear();
 			component.AddRange(networkCells);
-			ComputeFlowOrder();
-			// A large odd stride spreads successive starts across the network instead of creeping one cell a pulse.
-			int start = networkExcavated[SeamSlot(pulseCount, n)];
-			rotatedNetworks++;
-			RM_StockMath.CollectComponent(start, isSourcePred, isExcavatedPred, cardinalPred,
-				visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
-			ResolveComponent(pulseCount, true);
-			for (int i = 0; i < n; i++)
+			if (exactShortcutsEnabled && ExactPath)
 			{
-				int c = networkExcavated[i];
-				if (visited.Contains(c))
-				{
-					continue;
-				}
-				RM_StockMath.CollectComponent(c, isSourcePred, isExcavatedPred, cardinalPred,
-					visited, componentSources, queue, neighbourScratch, component, maxComponentCells);
-				ResolveComponent(pulseCount, true);
+				TouchSuppliers();
 			}
+			else
+			{
+				ComputeFlowOrder();
+			}
+			// A large odd stride spreads successive starts across the network instead of creeping one cell a pulse.
+			sliceNetStart = networkExcavated[SeamSlot(pulseCount, n)];
+			rotatedNetworks++;
+			sliceStage = StageNetworkStart;
 			return true;
+		}
+
+		/// <summary>Every component resolves by <see cref="ResolveExact"/> (see <see cref="levelExactEnabled"/>).</summary>
+		private bool ExactPath => levelExactEnabled && world is RM_ILevelWorld;
+
+		/// <summary>ComputeFlowOrder's world calls without its walks: CanSupply on each source of the component, in the same
+		/// order (the adapter's may form a body, so the exact path keeps the call and drops only the hop walks).</summary>
+		private void TouchSuppliers()
+		{
+			for (int i = 0; i < component.Count; i++)
+			{
+				int c = component[i];
+				if (IsSource(c))
+				{
+					world.CanSupply(c);
+				}
+			}
 		}
 
 		private void ResolveComponent(long pulseCount, bool networkOrder = false)
@@ -596,16 +852,18 @@ namespace RimMandrake.FlowWorks
 
 		private readonly List<int> exDug = new List<int>();
 		private readonly Dictionary<int, int> exHops = new Dictionary<int, int>();
-		private readonly HashSet<int> exAssigned = new HashSet<int>();
+		private readonly RM_StampSet exAssigned = new RM_StampSet();
 		private readonly Dictionary<int, long> exPondBefore = new Dictionary<int, long>();
 		private readonly List<int> exCells = new List<int>();
-		private readonly HashSet<int> exInDom = new HashSet<int>();
+		private readonly RM_StampSet exInDom = new RM_StampSet();
 		private readonly List<int> exPonds = new List<int>();
 		private readonly HashSet<int> exPondSet = new HashSet<int>();
 		private readonly HashSet<int> exLimMouths = new HashSet<int>();
 		private readonly Dictionary<long, int> exMouthEdge = new Dictionary<long, int>();
 		private readonly List<int> exQueue = new List<int>();
-		private readonly Dictionary<int, int> exIndex = new Dictionary<int, int>();
+		private readonly RM_StampSet exIndex = new RM_StampSet();
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the partition's membership (was componentSet here).</summary>
+		private readonly RM_StampSet exComp = new RM_StampSet();
 		private readonly Dictionary<int, HashSet<int>> exMouths = new Dictionary<int, HashSet<int>>();
 		private readonly List<int> exSrcScratch = new List<int>();
 		private long[] exOld = new long[16];
@@ -620,10 +878,10 @@ namespace RimMandrake.FlowWorks
 		{
 			int U = RM_LevelSolve.U;
 			// this partition's membership (a rotated network's partitions each resolve on their own cells)
-			componentSet.Clear();
+			exComp.Reset(width * height);
 			for (int i = 0; i < component.Count; i++)
 			{
-				componentSet.Add(component[i]);
+				exComp.Add(component[i]);
 			}
 			exDug.Clear();
 			for (int i = 0; i < component.Count; i++)
@@ -683,7 +941,7 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4; d++)
 					{
 						int nb = Cardinal(c, d);
-						if (nb < 0 || exHops.ContainsKey(nb) || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
+						if (nb < 0 || exHops.ContainsKey(nb) || !exComp.Contains(nb) || !IsExcavated(nb) || IsSealed(nb))
 						{
 							continue;
 						}
@@ -695,7 +953,7 @@ namespace RimMandrake.FlowWorks
 			}
 			exPondBefore.Clear();
 			exCredit = 0;
-			exAssigned.Clear();
+			exAssigned.Reset(width * height);
 			for (int i = 0; i < exDug.Count; i++)
 			{
 				int c = exDug[i];
@@ -714,7 +972,7 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4 && src < 0; d++)
 					{
 						int nb = Cardinal(c, d);
-						if (nb >= 0 && componentSet.Contains(nb) && IsSource(nb) && !IsSealed(nb))
+						if (nb >= 0 && exComp.Contains(nb) && IsSource(nb) && !IsSealed(nb))
 						{
 							src = nb;
 						}
@@ -774,7 +1032,7 @@ namespace RimMandrake.FlowWorks
 
 		private void ExactTouchSource(RM_ILevelWorld lw, int cell, int s, object fl)
 		{
-			if (!componentSet.Contains(s) || !IsSource(s) || IsSealed(s))
+			if (!exComp.Contains(s) || !IsSource(s) || IsSealed(s))
 			{
 				return;
 			}
@@ -810,7 +1068,7 @@ namespace RimMandrake.FlowWorks
 		private void ExactDomain(RM_ILevelWorld lw, int seed, object fl)
 		{
 			exCells.Clear();
-			exInDom.Clear();
+			exInDom.Reset(width * height);
 			exPonds.Clear();
 			exPondSet.Clear();
 			exLimMouths.Clear();
@@ -827,7 +1085,7 @@ namespace RimMandrake.FlowWorks
 					for (int d = 0; d < 4; d++)
 					{
 						int nb = Cardinal(c, d);
-						if (nb < 0 || !componentSet.Contains(nb))
+						if (nb < 0 || !exComp.Contains(nb))
 						{
 							continue;
 						}
@@ -878,7 +1136,7 @@ namespace RimMandrake.FlowWorks
 						for (int d = 0; d < 4; d++)
 						{
 							int nb = Cardinal(s, d);
-							if (nb < 0 || !componentSet.Contains(nb) || !IsExcavated(nb) || IsSealed(nb) || exAssigned.Contains(nb))
+							if (nb < 0 || !exComp.Contains(nb) || !IsExcavated(nb) || IsSealed(nb) || exAssigned.Contains(nb))
 							{
 								continue;
 							}
@@ -954,12 +1212,25 @@ namespace RimMandrake.FlowWorks
 				exTarget = new long[cap];
 				exNew = new long[cap];
 			}
-			exIndex.Clear();
+			exIndex.Reset(width * height);
+			if (exactShortcutsEnabled && exPonds.Count == 0 && exLimMouths.Count == 0)
+			{
+				// (b): no pond, no limitless mouth: nothing exchanges (exNew = exOld), so the canal re-solve below is the whole
+				// answer and the joint solve would be the same solve twice (a failing one fails the canal solve too: no write).
+				for (int i = 0; i < nCells; i++)
+				{
+					int c = exCells[i];
+					exIndex.Set(c, i);
+					exNew[i] = WaterOf(c);
+				}
+				ExactCanalWrite(fl, nCells);
+				return;
+			}
 			exactSolve.Clear();
 			for (int i = 0; i < nCells; i++)
 			{
 				int c = exCells[i];
-				exIndex[c] = i;
+				exIndex.Set(c, i);
 				exactSolve.AddCell(depth[c], WaterOf(c));
 			}
 			long[] excess = new long[exPonds.Count];
@@ -987,7 +1258,7 @@ namespace RimMandrake.FlowWorks
 			{
 				int c = (int)(kv.Key >> 32);
 				int bid = (int)(uint)kv.Key;
-				exactSolve.AddEdge(exIndex[c], nCells + exPonds.IndexOf(bid), kv.Value);
+				exactSolve.AddEdge(exIndex.ValueOf(c), nCells + exPonds.IndexOf(bid), kv.Value);
 				if (!exMouths.TryGetValue(bid, out HashSet<int> set))
 				{
 					set = exMouths[bid] = new HashSet<int>();
@@ -1110,7 +1381,20 @@ namespace RimMandrake.FlowWorks
 					lw.NoteLimitlessDl(fl, gain);
 				}
 			}
-			// the canal squares, re-solved on their own (the ponds keep what the exchange gave them)
+			if (!ExactCanalWrite(fl, nCells))
+			{
+				return;
+			}
+			for (int k = 0; k < exPonds.Count; k++)
+			{
+				lw.SetBodyStockDl(exPonds[k], exNew[nCells + k] + excess[k]);
+			}
+		}
+
+		/// <summary>The canal squares, re-solved on their own from exNew (the ponds keep what the exchange gave them), and
+		/// written. False (nothing written) if the solve would not conserve.</summary>
+		private bool ExactCanalWrite(object fl, int nCells)
+		{
 			canalSolve.Clear();
 			for (int i = 0; i < nCells; i++)
 			{
@@ -1119,7 +1403,7 @@ namespace RimMandrake.FlowWorks
 			ExactCellEdges(canalSolve);
 			if (!canalSolve.Solve())
 			{
-				return;
+				return false;
 			}
 			for (int i = 0; i < nCells; i++)
 			{
@@ -1131,10 +1415,7 @@ namespace RimMandrake.FlowWorks
 				}
 				SetWaterOf(c, w);
 			}
-			for (int k = 0; k < exPonds.Count; k++)
-			{
-				lw.SetBodyStockDl(exPonds[k], exNew[nCells + k] + excess[k]);
-			}
+			return true;
 		}
 
 		private readonly List<int> regionSeeds = new List<int>();

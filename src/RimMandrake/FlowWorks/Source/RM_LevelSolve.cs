@@ -197,7 +197,7 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					int k = pieceCount;
-					Piece p = NewPiece(band);
+					NewPiece(band);
 					curPiece[i] = k;
 					bfs.Clear();
 					bfs.Add(i);
@@ -216,22 +216,25 @@ namespace RimMandrake.FlowWorks
 							}
 						}
 					}
-					p.members.AddRange(bfs);
-					p.members.Sort();
-					long w = 0, cap = 0;
-					for (int m = 0; m < p.members.Count; m++)
-					{
-						int a = p.members[m];
-						long cb = CapBelow(a, band);
-						w += Math.Min(water[a], cb);
-						cap += cb;
-					}
-					p.water = w;
-					p.cap = cap;
 					if (band > 1)
 					{
 						pieces[prevPiece[i]].children.Add(k);
 					}
+				}
+				// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: each piece's members in ascending node order (what sorting each BFS
+				// gave), by one pass over the nodes instead of a sort per piece; the sums are the same.
+				for (int a = 0; a < n; a++)
+				{
+					int k = curPiece[a];
+					if (k < 0)
+					{
+						continue;
+					}
+					Piece p = pieces[k];
+					p.members.Add(a);
+					long cb = CapBelow(a, band);
+					p.water += Math.Min(water[a], cb);
+					p.cap += cb;
 				}
 				int[] t = prevPiece;
 				prevPiece = curPiece;
