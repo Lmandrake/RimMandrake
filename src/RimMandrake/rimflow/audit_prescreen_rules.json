@@ -1,0 +1,26 @@
+{
+  "window_days": 7,
+  "calibration_every": 5,
+  "hard_flags": ["no_verify_event", "sha_missing", "sha_head_literal", "sha_unresolvable", "evidence_path_absent"],
+  "weights": {
+    "no_verify_event": 40,
+    "sha_missing": 40,
+    "sha_head_literal": 40,
+    "sha_unresolvable": 40,
+    "evidence_path_absent": 30,
+    "verify_not_pass": 25,
+    "sha_touches_nothing": 20,
+    "closed_by_maker_only": 10,
+    "reopened_before": 20,
+    "flowworks_or_live": 15,
+    "many_files": 10,
+    "short_claim_to_close": 15,
+    "gate_or_harness_path": 15,
+    "past_audit_failed": 25
+  },
+  "many_files_threshold": 25,
+  "short_claim_seconds": 300,
+  "flowworks_id_markers": ["FLOWWORKS", "LIVE_", "_LIVE", "BRIDGE", "COLD_LOAD"],
+  "gate_path_markers": ["rimflow/", ".claude/hooks/", "Utils/run_selftests", "validate_", "Utils/rimbench/", "harness/", "gate_"],
+  "past_audits_file": "/mnt/d/ClaudeWork/rimmandrake/auditor/audits.jsonl"
+}
