@@ -1,0 +1,1 @@
+Owner frustration census (2026-10-02..27, 2114 msgs read): keyword scan finds ~2%, reading finds ~28% carrying B/R/S/O/L/C; top causes are stale/broken review surfaces, art defects passed by pipeline, rulings not enacted/remembered. Rising in last 6 days. Full: D:\ClaudeWork\rimmandrake\csuite\frustration_census.md
