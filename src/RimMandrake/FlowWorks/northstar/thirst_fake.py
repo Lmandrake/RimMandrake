@@ -36,6 +36,8 @@ faults (name -> intended effect):
   draft_refused       set_draft answers success=False and drafts nobody -> T3/T6 UNMEASURED HARNESS (not a vacuous PASS)
   zones_refused       map_zones answers success=False -> T24 UNMEASURED HARNESS
   snow_refused        set_weather_buildup answers success=False -> T25 UNMEASURED HARNESS
+  stray_fresh_bucket  an undrafted colonist refills a leftover empty bucket while T20 runs (job 832567): a second fresh
+                      bucket lands beside every one T20 spawns (the refill already made) -> T20 must still PASS
 Unmodelled tools answer success=False and are listed in `unmodelled` (a clean run must leave it empty).
 """
 import re
@@ -267,6 +269,8 @@ class ThirstFakeBridge(object):
         return {"success": True, "pawns": [out]}
 
     def t_rimworld_spawn_thing(self, defName="", x=0, z=0, stackCount=1, **kw):
+        if "stray_fresh_bucket" in self.faults and defName == "RM_Bucket_FreshWater":
+            self._thing("RM_Bucket_FreshWater", int(x) - 3, int(z))   # older id: list_things answers it first
         t = self._thing(defName, int(x), int(z), int(stackCount))
         return {"success": True, "thingId": "Thing_" + t["id"]}
 

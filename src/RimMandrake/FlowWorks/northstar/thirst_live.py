@@ -1184,13 +1184,29 @@ def main(argv=None, bridge=None):
             purge_drinks()
             quench_all()
             BX, BZ = X3 + 22, Z0 + 2
+            # HARNESS (job 832567, 2026-10-27): purge_drinks leaves empty/dirty buckets (T24's douse bucket), and an
+            # undrafted colonist refilled it (WorkGiver_FillBottle) mid-loop: a second fresh bucket took drinks 11-14 and
+            # was the 'part-drunk' bucket the pour arm read. Every leftover bucket goes, bystanders are drafted, and both
+            # arms follow the bucket they spawned by id.
+            for d_ in ("RM_BucketEmpty", "RM_BucketDirty", "RM_Bucket_FreshWater"):
+                for t_ in things(d_):
+                    B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (t_.get("x"), t_.get("z")), categories="Item")
             p20 = spawn_colonist(BX, BZ + 2)
             UNDER_TEST.add(p20)
             draft(p20)
+            draft_bystanders({p20})
+
+            def bare(tid):
+                return re.sub(r"^Thing_", "", str(tid or ""))
+
+            def the_bucket(tid):
+                """[the spawned fresh bucket] while it is still a fresh bucket; [] once drunk dry (or never spawned)."""
+                return [t for t in things("RM_Bucket_FreshWater") if tid and bare(t.get("id")) == bare(tid)]
+
             bid = spawn("RM_Bucket_FreshWater", BX + 1, BZ)
             drinks, trace = 0, []
             for i in range(14):
-                cur = things("RM_Bucket_FreshWater")
+                cur = the_bucket(bid)
                 if not cur:
                     break
                 need(p20, 0.1)
@@ -1200,7 +1216,7 @@ def main(argv=None, bridge=None):
                 drinks += 1
                 trace.append([r.get("accepted"), r.get("afterJobDef"), round(need(p20) or 0, 3)])
             dirty = count("RM_BucketDirty") + count("RM_BucketEmpty")
-            left = count("RM_Bucket_FreshWater")
+            left = len(the_bucket(bid))   # the spawned bucket still fresh (a stray one is purged above)
             # arm 2: drink 3 (4.5 L of 15), then a player's order pours what is left into a Store tank
             TX, TZ = BX + 6, BZ + 4
             B.call("jawa/destroy_batch", rects="%d,%d,4,4" % (TX - 1, TZ - 1), categories="Building,Item,Plant")
@@ -1210,13 +1226,13 @@ def main(argv=None, bridge=None):
             b2 = spawn("RM_Bucket_FreshWater", BX + 1, BZ)
             for i in range(3):
                 need(p20, 0.1)
-                cur = things("RM_Bucket_FreshWater")
+                cur = the_bucket(b2)
                 if not cur:          # review: an IndexError here lost the whole run; the pour arm then reads the absence
                     break
                 B.call("jawa/ordered_job", pawnId=p20, jobDef="RM_DrinkFromContainer", targetAId=cur[0]["id"], waitTicks=30)
                 wait_job_end(p20, "RM_DrinkFromContainer", 900)
                 ticks(30)
-            cur = things("RM_Bucket_FreshWater")
+            cur = the_bucket(b2)
             insp = None
             if cur:
                 for t in (B.call("jawa/inspect_string", thingIds=cur[0]["id"]) or {}).get("things") or []:

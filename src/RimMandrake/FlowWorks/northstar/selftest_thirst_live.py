@@ -136,6 +136,8 @@ CASES = [
     ("draft refused: a free pawn could drink, so no vacuous PASS", "T3,T6", ["draft_refused"], [("T3", "UNMEASURED"), ("T6", "UNMEASURED")]),
     ("Home area not painted", "T24", ["zones_refused"], [("T24", "UNMEASURED")]),
     ("snow not laid", "T25", ["snow_refused"], [("T25", "UNMEASURED")]),
+    # job 832567 (2026-10-27): a refilled leftover bucket took drinks 11-14 and was read as the part-drunk one
+    ("a stray fresh bucket is not the row's bucket", "T20", ["stray_fresh_bucket"], [("T20", "PASS")]),
 ]
 for label, only, faults, wants in CASES:
     code, res, B, _ = run(only, faults)
