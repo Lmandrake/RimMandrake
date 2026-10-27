@@ -2,7 +2,10 @@
 
 Item `ARBITER_REDESIGN_RISK_TIERED_VERDICTS` (caused by `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`).
 Code: `src/RimMandrake/rimflow/arbiter_tiers.py` (+ `selftest_arbiter_tiers.py`). Role text:
-`src/RimMandrake/rimflow/roles/arbiter.md`. Data: `D:\ClaudeWork\rimmandrake\arbiter_tiers\`.
+`src/RimMandrake/rimflow/roles/arbiter.md`. Data for the Auditor and Operations (tier labels, history):
+`D:\ClaudeWork\rimmandrake\arbiter_tiers\`. Judge-facing files (no tier labels): `D:\ClaudeWork\rimmandrake\arbiter\`
+`judge_list.json` and `bounces.json`. Fixes after review Y (14 findings, all real):
+`D:\ClaudeWork\rimmandrake\review_v3_Y\fixes.md`.
 
 ## 1. Why
 
@@ -49,12 +52,24 @@ were never recorded. Review happens after the close, so G5 must be read at verdi
 | G1 build identity | close `sha` | missing, `HEAD`, or found in neither clone | resolves |
 | G2 recorded verification | latest `verify` per criterion before the close | a `fail` that no later pass supersedes | every latest result is `pass` |
 | G3 acceptance coverage | `implemented.criteria` vs passing verifies | (never; uncovered means OPEN) | every declared criterion has a pass |
-| G4 evidence exists | local paths cited by verifies | every cited path of a verify is gone | at least one cited path exists |
-| G5 code review | each touched code file's sha256 at the sha vs clean records | (never; unreviewed means OPEN) | every touched code file is clean at that content |
+| G4 evidence exists | local paths cited by the latest verify per criterion | every cited path is gone | every cited path exists (some gone: UNMEASURED, missing paths listed) |
+| G5 code review | each touched code file's sha256 at the sha vs code-review records replayed in time order (the last verdict for a path and hash decides; files the commit deleted are skipped) | (never; unreviewed means OPEN) | every touched code file is clean at that content. A blob git could not read is UNMEASURED |
+| G6 close evidence | `close_evidence.lookup(sha=, item=, paths=)`: clean-tree runs (selftests, winbuild, validate_patch, modcheck) at the close sha that cover the touched paths or are tagged with the item | the latest result of any covering run is FAIL | every covering run's latest result is PASS (UNMEASURED run: UNMEASURED) |
 
-- **BOUNCE**: G1, G2 or G4 is FAIL. The claim goes straight back to its builder seat (Foundry, or the seat that
-  closed it) with the failing gate and its evidence (`gate_evidence`). No AI is spent on it.
-- **PASS0**: G2 is PASS, G3 and G5 are PASS or NONE, and no risk flag is set (`NOT_LOW_RISK` in the module).
+G2 and G6 each carry an independence gate (`G2_independent`, `G6_independent`): PASS only when the passing record is
+from a seat that is not a maker of the claim (the close seat, or a claim, start, reclaim or implemented seat before
+the close). A close-evidence record with no seat makes `G6_independent` UNMEASURED. A git error (timeout, failure)
+is not "the sha does not resolve": G1 reads UNMEASURED, not FAIL.
+
+- **BOUNCE**: G1, G2, G4 or G6 is FAIL. While `verdicts` is `"advisory"` a bounce is a record only: a line in
+  `bounces.json` with the failing gate and its evidence, and, when the Arbiter confirms it, a FAIL-module or
+  FAIL-check line in `verdicts.jsonl`. Nothing is returned to the builder: no reopen, no spawned work, no message.
+- **PASS0**: an independent pass (G2 PASS with G2_independent PASS, or G6 PASS with G6_independent PASS and G2 PASS
+  or NONE), G1 PASS, G3, G4, G5 and G6 PASS or NONE, and no risk flag (`NOT_LOW_RISK`). A builder's own verify or
+  run never passes tier 0.
+- **No machine evidence** (G2 NONE, G5 not PASS, G6 NONE): never passed by code. It goes to AI review
+  (`T2_NOEVIDENCE`), or is held when the AI batch is refused. Prose in the close reason is not machine evidence.
+- **Unmeasured** (any gate UNMEASURED): `T2_UNMEASURED`, same handling. An unreadable input is never a pass.
 - **OPEN**: everything else goes to tier 1.
 
 ### Missing gates (to build, in this order)
@@ -63,8 +78,12 @@ were never recorded. Review happens after the close, so G5 must be read at verdi
 and nightly), `winbuild.py`, `validate_patch.py` and modcheck's `status.record_run` each append one line per run to
 `<agent storage>/rimmandrake/evidence/YYYY-MM-DD.jsonl` via `src/RimMandrake/Utils/close_evidence.py` (tool, HEAD sha,
 dirty flag, paths, PASS/FAIL/UNMEASURED, `$RIMFLOW_ITEM`). `close_evidence.lookup(sha=, item=)` returns only clean-tree
-records; G6/G7 and the validator/north-star gates read it. The gates themselves are not yet wired into
-`arbiter_tiers.gates`.
+records. G6 reads it (above), so items 1-4 below are covered by G6 once their records are trustworthy. Review Z
+found they are not yet: concurrent writes can lose lines, a commit landing mid-run can be recorded as PASS, and
+`lookup` ignored the paths a run covered. That fix is in `close_evidence.py` (another item). Until it lands,
+`arbiter_tiers` calls `lookup(sha=, paths=)` and, if `paths=` is not accepted, falls back to a sha-only lookup
+filtered by path here; every G6 result before the fix rests on unfixed records. All 8 records in the window carry
+no seat, so no G6 pass is independent yet.
 
 1. **Selftest result per claim.** The runner already caches PASS records by tree hash, but no claim names them. Fix:
    `rimflow close` or `implemented` records the `run_selftests --only` set and its result for the claimed sha (or the
@@ -83,23 +102,34 @@ records; G6/G7 and the validator/north-star gates read it. The gates themselves 
 
 ## 3. Tier 1: risk rank
 
-`audit_prescreen.score` (rules in `audit_prescreen_rules.json`, unchanged) scores every claim that was not bounced.
-Each flag is weighted by its rarity in the window: `mult * min(6, -log2(rate))`. Two flags are added here:
-`owner_words_after_close` and `finding_against_item`. Then:
+`audit_prescreen.score` (rules in `audit_prescreen_rules.json`, unchanged) flags every claim. Flags added here:
+`owner_words_after_close`, `finding_against_item`, `review_by_closing_seat_only` (the only clean review records of
+the touched files were recorded by the closing seat; records carry no reviewer identity) and `git_unreadable`.
+`no_check_evidence` is dropped when a machine record exists, and `closed_by_maker_only` when an independent G2 or G6
+pass exists.
+
+Only OPEN claims that have machine evidence, are fully measured and are not forced are ranked (`rank_evidenced`).
+Each flag is weighted by its rarity within that set, `mult * min(6, -log2(rate))`, with no rarity zeroing: a gap
+shared by most of the set still weighs more than 0 (review Y F1; before, a flag on over half the window weighed 0,
+so the commoner a gap, the more claims passed). Then:
 
 - **Forced to tier 2**, whatever the score: `gate_or_harness_path`, `flowworks_or_live`, `past_audit_failed`,
   `reopened_before`, `owner_words_after_close`, `finding_against_item`. A change to the gates themselves, a live
   FlowWorks claim, or anything the owner spoke on after the close is never passed by code.
-- **Risky slice**: OPEN claims scoring at or above the 75th percentile of OPEN scores (`SLICE_QUANTILE`) and above 0.
-  Ties at the cut go in together, because tied scores carry the same flags. In the cold window the cut was 3.3,
-  which is exactly one `no_check_evidence` flag.
+- **Risky slice**: ranked claims scoring at or above the 75th percentile of ranked scores (`SLICE_QUANTILE`) and
+  above 0. Ties at the cut go in together. In the re-measured window the cut was 0.6, one
+  `review_by_closing_seat_only` flag.
 - The rest pass on rank (**PASS1**).
 
 ## 4. Tier 2: AI judgment
 
-- **Who gets an AI verdict:** the risky slice, plus a calibration slice of 1 in 10 of PASS0 and PASS1 claims
-  (`CALIB_EVERY`). The calibration sample is seeded by day and picked by code. The judge is not told which claims
-  are calibration.
+- **Who gets an AI verdict:** every T2 claim (risky slice, forced, no evidence, unmeasured), plus calibration: each
+  PASS0 and PASS1 claim is drawn independently with probability 1/10 (`CALIB_EVERY`) by a keyed hash of item and sha
+  (key: env `ARBITER_CALIB_SALT`, else a generated `arbiter_tiers\.calib_salt`). The draw is stable across runs, has
+  no floor at small windows and cannot be predicted from the code.
+- **Blinding:** the judge reads `arbiter\judge_list.json`: item and sha only, T2 and calibration claims mixed in an
+  order set by a keyed hash. The tier labels stay in `arbiter_tiers\`, which the role does not read; code joins the
+  tier into `verdicts_tiered.jsonl` afterwards (`arbiter_tiers.py join`).
 - **Who judges:** the Arbiter with judge helpers, at most 2 at a time. They are fresh, have no maker context, and
   never touched the item's commits. The verdict classes are those of `arbiter.md`.
 - **What they read:** all the evidence, including what tier 0 read, because a gate result is evidence and not a
@@ -115,8 +145,8 @@ owner.
 
 | number | definition | recorded in | computed by |
 |---|---|---|---|
-| tier of each claim | T0_BOUNCE / T0_PASS / T1_PASS / T2_RISK, plus the `calibration` flag | `D:\ClaudeWork\rimmandrake\arbiter\tiers.json` (one file per batch run of `arbiter_tiers.py`, kept as `tiers_<ts>.json`) | code, before each Arbiter batch |
-| verdict | the Arbiter's class per claim, with tier, interim reviewer verdict and evidence paths | `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl` (exists in `arbiter.md`), adding a field `tier` | the Arbiter |
+| tier of each claim | T0_BOUNCE / T0_PASS / T1_PASS / T2_RISK / T2_NOEVIDENCE / T2_UNMEASURED, plus the `calibration` flag | `D:\ClaudeWork\rimmandrake\arbiter_tiers\tiers.json` (latest), `tiers_<ts>.json` (one per run, kept) and `tiers_history.jsonl` (one line per claim per run) | code, before each Arbiter batch |
+| verdict | the Arbiter's class per claim, with interim reviewer verdict and evidence paths (no tier: the judge never sees it) | `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`; code joins the tier into `arbiter_tiers\verdicts_tiered.jsonl` | the Arbiter; the join by code |
 | **false-reject rate** | (FAIL or BOUNCE verdicts later shown sound) / (FAIL or BOUNCE verdicts). "Shown sound": the owner says so; or an Auditor sample says sound; or the same sha passes with no escape filed for 7 days. Reported separately for T0 bounces and T2 fails | `D:\ClaudeWork\rimmandrake\arbiter\outcomes.jsonl`: `{item, sha, tier, verdict, outcome: sound\|defect\|unknown, by: owner\|auditor\|live\|7day, evidence}` | Auditor (`AU-*`), from the ledger: `finding`, reopen, `ownerSaid` notes and verify fails on the item after the verdict |
 | **false-pass rate** | (PASS-class verdicts or T0/T1 passes later caught defective) / (passes). "Caught": a `finding` or reopen against the item, a failing Auditor sample, a failing live run, or the owner. Reported per tier. The calibration slice gives an unbiased T0/T1 estimate: AI FAIL on a calibration claim that a gate or the rank passed | same `outcomes.jsonl` | Auditor |
 | **rank lift** | defect rate in T2_RISK / defect rate in calibration claims | derived from `outcomes.jsonl` | Auditor |
@@ -139,30 +169,42 @@ with the binding card.
 
 ## 6. The tier mix now, and the simulator's prediction
 
-### Tier mix (MEASURED)
+### Tier mix (MEASURED, re-measured after review Y)
 
-Cold run of `arbiter_tiers.py --days 7` over 816 closes, 2026-10-20T15:21Z to 2026-10-27. Output:
-`D:\ClaudeWork\rimmandrake\arbiter_tiers\tiers_cold_7d.json`.
+Run of `arbiter_tiers.py --days 7` over 817 closes, 2026-10-20T15:48Z to 2026-10-27, with the review-Y fixes.
+Output: `D:\ClaudeWork\rimmandrake\review_v3_Y\remeasure_data\tiers.json` and `remeasure.txt`. The first run
+(784f31250602, 816 closes, before the fixes) is beside it for comparison.
 
-| tier | claims | share |
+**This mix rests on close-evidence records that are not fixed yet (review Z).** G6 found 8 records in the window and
+passed 1 claim on them. When the fix lands, re-run; the mix can only move from T2_NOEVIDENCE toward ranked or T0
+as records accumulate.
+
+| tier | before fixes (816) | after fixes (817) |
 |---|---|---|
-| T0 BOUNCE | 25 | 3.1% |
-| T0 PASS | 8 | 1.0% |
-| T1 PASS on rank | 485 | 59.4% |
-| T2 risky slice | 298 | 36.5% |
-| **AI verdicts (T2 + calibration)** | **347** | **42.5%** |
+| T0 BOUNCE | 25 (3.1%) | 25 (3.1%) |
+| T0 PASS | 8 (1.0%) | 2 (0.2%) |
+| T1 PASS on rank | 485 (59.4%) | 41 (5.0%) |
+| T2 risky slice or forced | 298 (36.5%) | 153 (18.7%) |
+| T2 no machine evidence | (passed or ranked) | 595 (72.8%) |
+| T2 unmeasured | (passed) | 1 (0.1%) |
+| **AI verdicts (T2 + calibration)** | **347 (42.5%)** | **755 (92.4%)** |
 
 How to read it:
-- Tier 0 decides 4% today, because 94% of closes record no verify event. That is the gap in §2.
-- The rank, not the gates, carries the saving. PASS1 rests on the pre-screen's precision, which is UNMEASURED; the
-  calibration slice measures it.
-- Of the 298 T2 claims, 75 are forced by a flag. The other 223 cross the score cut, nearly all through
-  `no_check_evidence`.
+- The first mix passed claims with no recorded evidence on rank (F1). 595 closes (73%) carry no verify, no clean
+  review of their files and no close-evidence run; by the F1 rule none of them is passed by code.
+- T0 PASS fell from 8 to 2 because a builder's own verify no longer passes tier 0 (F5).
+- Of the 194 ranked claims, 129 carry `review_by_closing_seat_only`. Without rarity zeroing that flag sets the cut,
+  so the rank passes only 41.
+- The saving the first mix promised is not there on today's records. It returns only as machine evidence is
+  recorded by someone other than the maker: non-maker verifies, close-evidence runs with a seat, and code-review
+  records that name the reviewer.
 
-Limits of the cold run:
-- G4 looks at disk today, so evidence deleted since the close reads as FAIL. Only 1 claim failed G4.
+Limits:
+- Past audits: `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` does not exist, and the module now refuses to run
+  without it (exit 2). The re-measure passed an empty file, so `past_audit_failed` could not fire.
+- Code-review records carry only the recording seat, never the reviewer, so a review cannot be shown independent.
 - G5 accepts reviews made after the close.
-- Closes include OWNER closes (46) and non-code kinds. The live Arbiter would take the same stream.
+- Closes include OWNER closes and non-code kinds. The live Arbiter would take the same stream.
 
 ### Simulator prediction (ASSUMED; rests on assumptions)
 
@@ -171,7 +213,8 @@ params have no coverage knob.
 
 Setup:
 - Base: the `isolate` setup (v3.2 + Arbiter), under quotas, 240 members, both structures.
-- AI share 0.425 is MEASURED.
+- AI share 0.425 was MEASURED on the first mix. The re-measured share is 0.924, so this prediction is stale: at that
+  share the tiered Arbiter is close to the all-claims one. It has not been re-run.
 - Non-AI claims close at no token or rig cost and get no extra detection.
 - Rank lift L is ASSUMED. L is how much likelier a claim with an undetected defect is to be sent to AI: L=1 is
   random, L=2 or 3 is a useful rank.
@@ -199,8 +242,8 @@ all-claims Arbiter:
 
 ## 7. Rollout
 
-1. Advisory week. Before each batch, `arbiter_tiers.py` writes `tiers.json`, and the Arbiter judges T2 and
-   calibration claims. Gate results and bounces are logged, but the interim GPT reviewer still gates closes (A-1).
+1. Advisory week. Before each batch, `arbiter_tiers.py` writes `judge_list.json` and `bounces.json` for the
+   Arbiter and `tiers.json` for the Auditor, and the Arbiter judges every claim on the judge list. Gate results and bounces are logged, but the interim GPT reviewer still gates closes (A-1).
    The module is not wired into `role_launch.py` yet; that is a Dispatcher change for its owner.
 2. Build missing gates 1-5 as their own items. Each new gate shifts claims from T1/T2 into T0.
 3. Measure (§5). Re-run the sim on the measured values. The Conductor carries the result to the owner. Binding is his
