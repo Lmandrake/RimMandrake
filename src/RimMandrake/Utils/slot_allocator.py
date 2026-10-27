@@ -32,6 +32,16 @@ HOW N IS SET, in order (each step can only lower what the previous one allowed, 
 A rule never fires on an UNMEASURED input: a blind meter holds the previous mode, or 2 helpers if there is none.
 Spare accounts are named as a recommendation; this file never switches an account.
 
+SESSION CAP (Conductor session mode, `session_week_pct_cap` in rimflow/dispatcher_schedule.json, role Conductor): the
+BENCH sitting is stamped by this allocator, in allocation.json state["sitting"] = {start, start_left, last_active,
+reset_at}. A sitting starts at his first typed message in the BENCH window after >= sitting_idle_h (2 h) with none (the
+newest such message is read each check, so the stamp lands within one 15-min check of it); start_left is the burn
+account's week_pct_left as the allocator reads it then. A new weekly reset starts a new sitting. While the sitting is live
+(his last BENCH message < 2 h ago) and start_left - week_pct_left >= the cap, BENCH helper allocation is 0 ("session cap
+reached: X% of the week this sitting"). An unmeasured reading never allows more: BENCH holds the last measured BENCH count
+(never above the computed one) and the why says UNMEASURED. His `set --owner-said` word stands over it. The Conductor
+never measures tokens itself; the spawn hook reading allocation.json is what refuses.
+
 Files (program-read, so scratch): $RM_STREAMS_DIR (default D:\\ClaudeWork\\rimmandrake\\streams) allocation.json
 (the latest decision and its hysteresis state) and slot_override.json (his word). The 15-min writer is
 pulse/streams.py collect (rm-pulse-streams.timer); the spawn hook is .claude/hooks/block_agent_over_slots.py.
@@ -343,6 +353,43 @@ def latest_streams(now):
     return v("A1"), v("D1")
 
 
+SITTING_IDLE_H = 2.0
+
+
+def session_cap_pct():
+    """The Conductor's session_week_pct_cap from dispatcher_schedule.json (RM_DISPATCHER_SCHEDULE overrides the path)."""
+    p = Path(os.environ.get("RM_DISPATCHER_SCHEDULE") or HERE.parent / "rimflow" / "dispatcher_schedule.json")
+    try:
+        for r in json.loads(p.read_text(encoding="utf-8")).get("roles") or []:
+            if r.get("name") == "Conductor" and isinstance(r.get("session_week_pct_cap"), (int, float)):
+                return float(r["session_week_pct_cap"])
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+def sitting_step(inp, state, now):
+    """Pure: (sitting stamp or None, live?, drop %-points or None, measured?) from inputs and the previous stamp."""
+    sit = dict(state.get("sitting") or {}) or None
+    w = inp.get("owner_window_t")
+    measured = inp.get("source") == "MEASURED" and isinstance(inp.get("week_pct_left"), (int, float))
+    left = inp.get("week_pct_left") if measured else None
+    reset = epoch(inp.get("week_resets_at"))
+    if w is not None:
+        if (sit is None or w - (sit.get("last_active") or 0) > SITTING_IDLE_H * HOUR
+                or (reset and sit.get("reset_at") and epoch(sit["reset_at"]) != reset)):
+            sit = {"start": w, "start_left": left, "last_active": w, "reset_at": inp.get("week_resets_at")}
+        else:
+            sit["last_active"] = max(sit.get("last_active") or 0, w)
+    if sit is None:
+        return None, False, None, measured
+    if sit.get("start_left") is None and left is not None:
+        sit["start_left"] = left
+    live = now - (sit.get("last_active") or 0) <= SITTING_IDLE_H * HOUR
+    drop = None if (left is None or sit.get("start_left") is None) else sit["start_left"] - left
+    return sit, live, drop, measured
+
+
 def read_json(p):
     try:
         return json.loads(Path(p).read_text(encoding="utf-8"))
@@ -490,6 +537,9 @@ def gather(now=None, rules=None):
                                   else None) for s, p in seat_paths.items()}
     w = owner_last_window(list(seat_paths.values()), now)
     inp["owner_window_min"] = None if w is None else round((now - w) / 60, 1)
+    bw = owner_last_window([seat_paths["BENCH"]], now, SITTING_IDLE_H * HOUR * 3) if "BENCH" in seat_paths else None
+    inp["owner_window_t"] = bw
+    inp["session_cap_pct"] = session_cap_pct()
     c = owner_last_card(owner_ledger(), now)
     inp["owner_card_min"] = None if c is None else round((now - c) / 60, 1)
     inp["A1"], inp["D1"] = latest_streams(now)
@@ -809,13 +859,30 @@ def decide(inp, state, rules, now):
     if sess is not None and sess > tk["session_brake_pct_used_gt"]:
         per = {s: 0 for s in per}
         why.insert(0, f"5-hour window {sess:.0f}% used: no new helpers until it resets")
+    sit, live, drop, _m = sitting_step(inp, state, now)
+    cap = inp.get("session_cap_pct")
+    held_n = state.get("bench_n")
+    if cap is not None and live and "BENCH" in per and not ov:
+        if drop is not None and drop >= cap:
+            per["BENCH"] = 0
+            why.insert(0, f"session cap reached: {drop:.1f}% of the week this sitting (cap {cap:g}%, started at "
+                          f"{sit['start_left']:.1f}% left)")
+        elif drop is None:
+            if held_n is not None:
+                per["BENCH"] = min(per["BENCH"], int(held_n))
+            why.insert(0, f"session cap UNMEASURED: no usable week reading for this sitting (cap {cap:g}%); BENCH held at "
+                          f"{per['BENCH']}")
+        else:
+            why.append(f"sitting used {max(drop, 0):.1f}% of the week (cap {cap:g}%)")
     for sp in inp.get("spare") or []:
         rec = spare_line(sp, rules, now)
         if rec:
             why.append(rec)
     new_state = {"token_mode": mode, "since": since, "pending": pending, "queue_mode": queue_mode,
                  "reset_at": inp.get("week_resets_at") or state.get("reset_at"), "overage_h": overage["owed_h"],
-                 "overage_t": now, "total": pre_cut_total
+                 "overage_t": now, "sitting": sit,
+                 "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
+                 "total": pre_cut_total
                  if not (sess is not None and sess > tk["session_brake_pct_used_gt"]) else total}
     inputs = {k: v for k, v in inp.items() if k != "override"}
     inputs["P"] = None if P is None else round(P, 3)

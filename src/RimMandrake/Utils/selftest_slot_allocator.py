@@ -471,5 +471,42 @@ check("a persisted reset already past is not used", u is None and e, (u, e))
 u, e = SA.override_until(2, None, None, NOW)
 check("--hours still works with no reset", e is None and u, (u, e))
 
+# ---- session cap (Conductor session mode)
+CAP = 6.0
+sit = lambda left=40.0, last=NOW - 0.5 * H: {"sitting": {"start": NOW - 1 * H, "start_left": left, "last_active": last,  # noqa: E731
+                                                          "reset_at": "2026-10-28T13:00-07:00"}}
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=33.0, week_pct_used=67.0)
+check("cap: a 7-point drop since sitting start -> BENCH 0 with the reason",
+      r["seats"]["BENCH"] == 0 and "session cap reached: 7.0% of the week this sitting" in r["why"], (r["seats"], r["why"]))
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=36.0, week_pct_used=64.0)
+check("cap: a 4-point drop leaves BENCH alone", r["seats"]["BENCH"] > 0 and "reached" not in r["why"], (r["seats"], r["why"]))
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=34.0, week_pct_used=66.0)
+check("cap: exactly the cap (6.0) refuses", r["seats"]["BENCH"] == 0, r["seats"])
+r = d({}, session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=40.0)
+st = r["state"]["sitting"]
+check("cap: first message after idle stamps a sitting at the current week_left", st["start_left"] == 40.0 and st["start"] == NOW - 600, st)
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=20.0)
+check("cap: a message 30 min into a live sitting keeps the old start (no reset of the allowance)",
+      r["state"]["sitting"]["start_left"] == 40.0 and r["seats"]["BENCH"] == 0, r["state"]["sitting"])
+old = {"sitting": {"start": NOW - 9 * H, "start_left": 60.0, "last_active": NOW - 5 * H, "reset_at": "2026-10-28T13:00-07:00"}}
+r = d(old, session_cap_pct=CAP, owner_window_t=NOW - 300, week_pct_left=40.0)
+check("cap: >= 2 h idle starts a fresh sitting, the old drop is forgotten", r["seats"]["BENCH"] > 0
+      and r["state"]["sitting"]["start_left"] == 40.0, (r["seats"], r["state"]["sitting"]))
+r = d(old, session_cap_pct=CAP, owner_window_t=None, week_pct_left=10.0)
+check("cap: a dead sitting (idle > 2 h, no new message) caps nothing", r["seats"]["BENCH"] > 0, r["seats"])
+r = d(dict(sit(), bench_n=2), session_cap_pct=CAP, owner_window_t=NOW - 600, source="UNMEASURED", week_pct_left=None,
+      week_pct_used=None)
+check("cap: unmeasured reading holds BENCH at the last count and says UNMEASURED",
+      r["seats"]["BENCH"] <= 2 and "session cap UNMEASURED" in r["why"] and r["state"]["bench_n"] == 2, (r["seats"], r["why"]))
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, source="STALE", week_pct_left=10.0)
+check("cap: a STALE reading is unmeasured too, never 'unlimited'", "session cap UNMEASURED" in r["why"], r["why"])
+r = d(sit(), session_cap_pct=None, owner_window_t=NOW - 600, week_pct_left=10.0)
+check("cap: no cap configured -> no cap line", "session cap" not in r["why"], r["why"])
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=20.0, override=ov(n=4, seats=None, mode=None))
+check("cap: his word stands over the cap", r["seats"]["BENCH"] == 4, r["seats"])
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=33.0, week_pct_used=67.0)
+check("cap: FOUNDRY is not touched by BENCH's sitting cap", r["seats"]["FOUNDRY"] >= 0 and r["seats"]["BENCH"] == 0)
+check("cap: the configured value is read from dispatcher_schedule.json", SA.session_cap_pct() == 6.0, SA.session_cap_pct())
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
