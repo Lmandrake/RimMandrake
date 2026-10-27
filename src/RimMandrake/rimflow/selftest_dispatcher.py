@@ -1111,12 +1111,183 @@ def test_review_r():
           "R-D scope unknown at launch: resolved while the unit runs")
 
 
+# ---------------------------------------------------------------- account first (DISPATCHER_BUILD_PICK_ACCOUNT_FIRST)
+import account_pick as AP  # noqa: E402
+
+LENT_RULES = {"lent_accounts": {"lent": {"max_used_by_us_pct": 50, "floor_pct_left": 10, "end_window_h": 24,
+                                         "prefer_start_of_week_h": 48}}}
+PICK_RULE = {"enabled": True, "act": "recommend", "hold": ["role_launch", "ring", "recover"],
+             "switch_when": {"runway_lt": 0.8, "week_left_pct_lt": 10},
+             "target_min": {"runway_ge": 1.2, "week_left_pct_ge": 20, "m": ["MEASURED"]},
+             "rank": "soonest_reset", "lent_min_draw_pct": 10}
+
+
+def accounts_status(now, accts, age_s=300):
+    """accts: {label: (runway, week_left, hours_to_reset, m)}."""
+    pts = {}
+    for a, (rw, wl, h, m) in accts.items():
+        pts["accounts.%s.runway" % a] = {"m": m, "v": rw}
+        pts["accounts.%s.week_left_pct" % a] = {"m": m, "v": wl}
+        pts["accounts.%s.hours_to_reset" % a] = {"m": "MEASURED", "v": h}
+    return {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - age_s)), "alarms": {}, "points": pts}
+
+
+def lent_fn():
+    sys.path.append(os.path.join(os.path.dirname(HERE), "Utils"))
+    import slot_allocator
+    return slot_allocator.lent_allowance
+
+
+def test_account_pick_rule():
+    now = at_local("08:00")
+    fn = lent_fn()
+
+    def pk(accts, cur="a", rule=None, lent=LENT_RULES, allowance=fn):
+        return AP.pick(dict(PICK_RULE, **(rule or {})), accounts_status(now, accts), cur, lent, allowance, now)
+    p = pk({"a": (2.0, 40, 50, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")})
+    check(p["state"] == "KEEP" and not p["hold"] and p["account"] == "a", "pick: current over the line -> KEEP")
+    three = {"a": (0.3, 30, 50, "MEASURED"), "b": (3.0, 50, 40, "MEASURED"), "c": (2.0, 60, 10, "MEASURED")}
+    p = pk(three)
+    check(p["state"] == "SWITCH" and p["to"] == "c" and p["hold"], "pick: runway under the line -> SWITCH, soonest "
+          "reset first (c)")
+    check(pk(three, rule={"rank": "most_runway"})["to"] == "b", "pick: rank most_runway -> b")
+    check(pk({"a": (2.0, 5, 50, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")})["to"] == "b",
+          "pick: week left under the line -> SWITCH")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "b": (3.0, 60, 20, "ESTIMATE")})
+    check(p["state"] == "KEEP" and "not MEASURED" in p["why"], "pick: an ESTIMATE candidate is never a target")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "b": (1.0, 60, 20, "MEASURED")})
+    check(p["state"] == "KEEP" and "no other account is fit" in p["why"], "pick: no fit candidate -> KEEP (bands "
+          "pace it)")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "b": (3.0, 60, 20, "UNMEASURED")})
+    check(p["state"] == "KEEP" and "b unmeasured" in p["why"], "pick: an UNMEASURED candidate is not a candidate")
+    # unmeasured current: keep, never guess
+    p = pk({"a": (0.3, 30, 50, "UNMEASURED"), "b": (3.0, 60, 20, "MEASURED")})
+    check(p["state"] == "UNMEASURED" and not p["hold"] and p["to"] is None, "pick: current UNMEASURED -> keep + "
+          "UNMEASURED, no switch guessed")
+    check(pk({"b": (3.0, 60, 20, "MEASURED")}, cur=None)["state"] == "UNMEASURED", "pick: current account unresolved "
+          "-> UNMEASURED")
+    st = accounts_status(now, three, age_s=3000)
+    check(AP.pick(PICK_RULE, st, "a", LENT_RULES, fn, now)["state"] == "UNMEASURED", "pick: stale reading -> "
+          "UNMEASURED")
+    check(pk(three, lent=None)["state"] == "UNMEASURED" and not pk(three, lent=None)["hold"],
+          "pick: lent rules unreadable -> no switch (fail closed)")
+    check(pk(three, allowance=None)["state"] == "UNMEASURED", "pick: allocator not importable -> no switch")
+    # lent accounts: data rule (<= 50% of his week used early, never under the 10% floor near reset)
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 5, "MEASURED"), "b": (3.0, 60, 100, "MEASURED")})
+    check(p["to"] == "b", "pick: an owned account goes before a lent one, even one resetting sooner")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 100, "MEASURED")})
+    check(p["to"] == "lent" and "may draw 30%" in p["why"], "pick: only the lent one fit, 20% used -> may draw 30% "
+          "(to 50%)")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 45, 100, "MEASURED")})
+    check(p["state"] == "KEEP" and "lent, allowance 0%" in p["why"], "pick: lent account 55% used early in his week "
+          "-> refused (50% rule)")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 40, 10, "MEASURED")})
+    check(p["to"] == "lent", "pick: near his reset, 40% left -> may draw toward the 10% floor")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 15, 10, "MEASURED")})
+    check(p["state"] == "KEEP", "pick: near his reset, 15% left -> 5% to the floor < 10% minimum: refused")
+    off = {"lent_accounts": {"lent": dict(LENT_RULES["lent_accounts"]["lent"],
+                                          off_limits_through="2099-01-01T00:00:00-07:00")}}
+    check(pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 90, 100, "MEASURED")}, lent=off)["state"] == "KEEP",
+          "pick: lent account off-limits -> never a target")
+    p = pk({"lent": (5.0, 45, 100, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")}, cur="lent")
+    check(p["to"] == "b" and "lent account allowance" in p["why"], "pick: ON a lent account past its allowance -> "
+          "switch to an owned one")
+    check(AP.validate(PICK_RULE) == [], "rule: the test rule validates")
+    check(len(AP.validate(dict(PICK_RULE, act="switch", hold=["x"], rank="r"))) == 3, "rule: act switch / bad hold / "
+          "bad rank are refused")
+    # the real schedule: the rule is data, enabled, valid, and its lent rules are the allocator's file with the
+    # owner's lent line (50% / 10% floor); no account is named in the schedule block
+    sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
+    rule = sch.get("account_pick") or {}
+    check(rule.get("enabled") and AP.validate(rule) == [], "schedule: account_pick enabled and valid")
+    rules, fn2 = AP.load_lent(rule)
+    pols = list(((rules or {}).get("lent_accounts") or {}).values())
+    check(fn2 is not None and any(p.get("max_used_by_us_pct") == 50 and p.get("floor_pct_left") == 10 for p in pols),
+          "schedule: lent_rules loads the allocator's lent_accounts (50% early, 10% floor) and lent_allowance")
+    names = set(rules.get("lent_accounts") or {}) if rules else set()
+    blob = json.dumps(rule)
+    check(not any(n in blob for n in names), "schedule: the account_pick block names no account")
+    code = open(os.path.join(HERE, "account_pick.py")).read()
+    check(not any(n in code for n in names) and "@" not in code, "account_pick.py names no account or email")
+
+
+def pobs(now, accts, cur="a", **kw):
+    o = obs(**kw)
+    o["roles"] = robs(accounts_status(now, accts), account=cur)
+    o["roles"]["lent"] = lambda: (LENT_RULES, lent_fn())
+    return o
+
+
+def test_account_pick_dispatch():
+    now = at_local("08:00")
+    keep = {"a": (2.0, 40, 50, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")}
+    low = {"a": (0.3, 30, 50, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")}
+    # role launch, SWITCH: held once per slot, alarm names the target, the pick is noted on change only
+    st = fresh()
+    sch = sched(roles=[conductor()], account_pick=PICK_RULE)
+    a = D.decide(sch, st, pobs(now, low), now, True)
+    check([x["do"] for x in a if x["do"].startswith("role")] == ["role_hold"] and "account switch" in
+          [x for x in a if x["do"] == "role_hold"][0]["why"], "SWITCH: the role launch is held")
+    ap = [x for x in a if x["do"] == "account_pick"]
+    al = [x for x in a if x["do"] == "alarm" and x["kind"].startswith("account:")]
+    check(len(ap) == 1 and ap[0]["note"] and ap[0]["to"] == "b" and ap[0]["ticket"] == "DISPATCHER_ALARMS_X",
+          "SWITCH: one account_pick record, noted on the ledger (alarm item)")
+    check(len(al) == 1 and al[0]["kind"] == "account:switch:b" and "claude-account use b" in al[0]["why"],
+          "SWITCH: alarm names the account to switch to")
+    check(not st["roles"]["Conductor"]["done"], "SWITCH: the slot stays due (not marked)")
+    a = D.decide(sch, st, pobs(now + 120, low), now + 120, True)
+    check(not [x for x in a if x["do"].startswith("role")], "SWITCH tick 2: the hold is journaled once per slot")
+    check([x["note"] for x in a if x["do"] == "account_pick"] == [False], "SWITCH tick 2: unchanged pick not re-noted")
+    a = D.decide(sch, st, pobs(now + 240, keep), now + 240, True)
+    rl = [x for x in a if x["do"] == "role_launch"]
+    check(rl and rl[0]["account"] == "a" and "account a (KEEP)" in rl[0]["why"], "KEEP after the switch line clears: "
+          "launched, the note names the account")
+    check([x["note"] for x in a if x["do"] == "account_pick"] == [True], "KEEP: the changed pick is noted")
+    # ring / recover
+    t0 = at_local("09:00")
+    st = fresh()
+    a = stall(sch, st, pobs(t0, low), t0)
+    check("ring" not in kinds(a) and [x for x in a if x["do"] == "hold" and "ring held" in x["why"]],
+          "SWITCH: the ring is held")
+    check(not st["wakes"], "SWITCH: a held ring spends no wake cap")
+    st = fresh()
+    a = stall(sch, st, pobs(t0, keep), t0)
+    r = [x for x in a if x["do"] == "ring"]
+    check(r and r[0]["account"] == "a", "KEEP: rung, the ring records the account")
+    st = fresh()
+    a = stall(sch, st, pobs(t0, keep, cur=None), t0)
+    check("ring" in kinds(a) and [x for x in a if x.get("kind") == "account:unmeasured"],
+          "UNMEASURED: kept (rung) and alarmed")
+    st = fresh()
+    a = stall(sched(roles=[], account_pick=dict(PICK_RULE, hold=["role_launch"])), st, pobs(t0, low), t0)
+    check("ring" in kinds(a), "SWITCH with ring not under hold: rung")
+    st = fresh()
+    a = stall(sched(roles=[], account_pick=dict(PICK_RULE, act="switch")), st, pobs(t0, low), t0)
+    check("ring" in kinds(a) and [x for x in a if x.get("kind") == "account:unmeasured" and "unusable" in x["why"]],
+          "an unusable rule holds nothing and is alarmed")
+    st = fresh()
+    st["seats"] = {"FOUNDRY": {"session_id": "sid-9", "dead_since": t0 - 10000}}
+    a = D.decide(sch, st, pobs(t0, low, sessions=[sess("AGENT BENCH", "busy", "b")]), t0, True)
+    check("recover" not in kinds(a) and [x for x in a if x["do"] == "hold" and "recover held" in x["why"]]
+          and not st["recovers"], "SWITCH: the recover is held")
+    st = fresh()
+    st["seats"] = {"FOUNDRY": {"session_id": "sid-9", "dead_since": t0 - 10000}}
+    a = D.decide(sch, st, pobs(t0, keep, sessions=[sess("AGENT BENCH", "busy", "b")]), t0, True)
+    check([x for x in a if x["do"] == "recover" and x["account"] == "a"], "KEEP: recovered, with the account")
+    st = fresh()
+    a = stall(sched(roles=[]), st, pobs(t0, low), t0)
+    check("ring" in kinds(a) and "account_pick" not in kinds(a), "no account_pick block: no pick, no hold")
+    st = fresh()
+    a = stall(sch, st, pobs(t0, low, ticket={}), t0)
+    check("account_pick" not in kinds(a), "nothing to release: the pick is not made")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
-              test_review_r):
+              test_review_r, test_account_pick_rule, test_account_pick_dispatch):
         try:
             t()
         except Exception as e:  # noqa: BLE001

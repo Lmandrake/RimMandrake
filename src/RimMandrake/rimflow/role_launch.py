@@ -32,6 +32,9 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      A role with no bands runs at x1.0. "quick" / "quick_one" (Operations): see slot_blocked.
   4. caps: the run's budget = its cap x the band factor; it is REFUSED (alarm) when today's spend plus that budget
      passes `daily_token_cap`. Today's spend = tokens of finished runs + the full budget of runs still going.
+  5. account (dispatcher.account_gate, account_pick.py): the schedule's `account_pick` rule, asked at the moment of
+     release; a SWITCH pick holds the launch (journaled once per slot) until the machine is switched or the slot is
+     missed. The launch records the account it runs on.
 
 Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields (input, cache_creation,
 cache_read, output): the conservative reading. A run over its budget is an ALARM after the fact: `claude -p` has no
@@ -363,10 +366,12 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
     return "the %s %s run has not run yet" % (after, key)
 
 
-def decide_roles(sch, st, obs, now, act, busy=None):
+def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     """Mutates st["roles"]; calls act(**kw) per action. obs needs: ops() -> status dict|None, account() -> label|None,
     unit_state(unit) -> str, result(run) -> dict|None, off(path) -> first line|None. busy = supervise_roles()'s
-    answer (run here when the caller did not)."""
+    answer (run here when the caller did not). gate("role_launch") -> (go, pick) is the dispatcher's account pick
+    (account_pick.py), asked last, at the moment of release: a held launch keeps its slot due (it is missed only
+    after slot_late_s, like any wait)."""
     if busy is None:
         busy = supervise_roles(sch, st, obs, now, act)
     rst = st.setdefault("roles", {})
@@ -478,12 +483,21 @@ def decide_roles(sch, st, obs, now, act, busy=None):
                 why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget" % (
                     name, job["trigger"], daily, spent, budget))
             continue
+        go, pk = gate("role_launch") if gate else (True, {})
+        if not go:
+            if rs.get("account_hold") != job["key"]:     # journal the hold once per job, not every tick
+                act(do="role_hold", role=name, why="%s %s held for the account switch: %s" % (
+                    name, job["trigger"], pk.get("why")))
+            rs["account_hold"] = job["key"]
+            continue
+        rs.pop("account_hold", None)
         mark(rs, job, "launch")
         unit = "rm-role-%s-%d" % (name.lower(), int(now))
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
-            slot=job["key"], band=bname, seat=role["seat"], run_max_s=cfg["run_max_s"],
-            why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s" % (
-                name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"]),
+            slot=job["key"], band=bname, seat=role["seat"], run_max_s=cfg["run_max_s"], account=pk.get("account"),
+            why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
+                name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"],
+                (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
             message=prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit))
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
 

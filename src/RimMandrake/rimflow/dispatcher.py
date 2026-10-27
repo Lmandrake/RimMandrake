@@ -32,6 +32,13 @@ schedule; role_launch.py starts an enabled role that has its launch keys on its 
 systemd unit, so the run outlives this oneshot tick), gated by its off switch, the ops_watch reading, its throttle
 band and its token caps; an enabled role without launch keys is an alarm.
 
+ACCOUNT FIRST (account_pick.py; item DISPATCHER_BUILD_PICK_ACCOUNT_FIRST): before it releases work that spends a
+Claude session — a role launch, a ring, a recover — the tick picks the account by the schedule's `account_pick` rule
+from the ops_watch reading, once per tick and only when something is about to be released. KEEP releases the work
+(the launch's ledger note names the account); SWITCH holds the kinds listed under `hold` and alarms with the account
+to switch to (recommend only: a switch is `claude-account use`, machine-wide); UNMEASURED keeps the current account
+and alarms. Each change of the pick is a ledger note on `ledger_item` (default the alarm item).
+
 Ledger notes and their publish run under testq's ingest.lock (the RUNNER ingest commits/pulls/pushes in the same
 dispatch clone). A side effect that raises never skips the state save (the caps live there); an unreadable state
 file stops the tick instead of resetting the caps.
@@ -65,6 +72,7 @@ for _d in (HERE, TESTQ):
         sys.path.insert(0, _d)
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
+import account_pick as AP  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
 
 DEFAULT_SCHEDULE = os.path.join(HERE, "dispatcher_schedule.json")
@@ -279,6 +287,7 @@ def decide(sch, st, obs, now, apply):
     # Runs already launched are supervised FIRST, whatever ends this tick early (PAUSE, a blind `claude agents`, a
     # disabled role): a launched role stays tracked and time-limited no matter what (review round Q 1).
     role_busy = RL.supervise_roles(sch, st, obs["roles"], now, act) if obs.get("roles") else None
+    gate = account_gate(sch, st, obs, now, act)
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -290,7 +299,7 @@ def decide(sch, st, obs, now, apply):
         act(do="skip", why="claude agents UNMEASURED (%s): no action on a blind instrument" % agents.get("why"))
         return actions
     if obs.get("roles"):          # role_launch.py: enabled roles with launch keys run on their clock; others alarm
-        RL.decide_roles(sch, st, obs["roles"], now, act, busy=role_busy)
+        RL.decide_roles(sch, st, obs["roles"], now, act, busy=role_busy, gate=gate)
     else:
         for role in sch.get("roles") or []:
             if role.get("enabled"):
@@ -386,7 +395,11 @@ def decide(sch, st, obs, now, apply):
                    "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
             if not owner_ok:     # the resumed session may have died mid bridge/deploy work: tell it not to resume that
                 msg += "\nowner present: do not take the bridge, restart the game or deploy (%s)." % owner_why
-            act(do="recover", seat=seat, session_id=ss["session_id"], message=msg)
+            go, pk = gate("recover")
+            if not go:
+                act(do="hold", seat=seat, why="recover held for the account switch: %s" % pk["why"])
+                continue
+            act(do="recover", seat=seat, session_id=ss["session_id"], message=msg, account=pk.get("account"))
             st["recovers"].append({"seat": seat, "at": now})
             if apply:
                 ss["recover"] = {"at": now, "session_id": ss["session_id"]}
@@ -430,10 +443,15 @@ def decide(sch, st, obs, now, apply):
             continue
         owner_line = None if owner_ok else (
             "owner present: do not take the bridge, restart the game or deploy (%s)." % owner_why)
+        go, pk = gate("ring")
+        if not go:
+            act(do="hold", seat=seat, ticket=ticket["id"], why="ring held for the account switch: %s" % pk["why"])
+            continue
         attempt = ss.get("attempt", 0) + 1
         ring_id = "%s-%d-%d" % (seat, int(now), attempt)
         act(do="ring", seat=seat, ring_id=ring_id, ticket=ticket["id"], attempt=attempt,
-            session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, owner_line, ring_id))
+            session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, owner_line, ring_id),
+            account=pk.get("account"))
         st["wakes"].append({"seat": seat, "at": now})
         if apply:
             ss["ring"] = {"ring_id": ring_id, "rung_at": now, "rung_iso": iso(now), "ticket": ticket["id"],
@@ -443,6 +461,49 @@ def decide(sch, st, obs, now, apply):
     st["wakes"] = [w for w in st["wakes"] if now - w["at"] < 86400]
     st["recovers"] = [r for r in st["recovers"] if now - r["at"] < 86400]
     return actions
+
+
+def account_gate(sch, st, obs, now, act):
+    """-> gate(kind) -> (go, pick). The pick is made once per tick, on the first release that asks (so a tick with
+    nothing to release reads nothing). No `account_pick` block, or enabled false, or no role observer: always go.
+    Acts: an `account_pick` record each tick it is made (a ledger note only when its key changed), and an alarm on
+    SWITCH (the account to switch to) and on UNMEASURED (kept, never guessed)."""
+    rule = sch.get("account_pick") or {}
+    ro = obs.get("roles")
+    cache = {}
+
+    def gate(kind):
+        if not rule.get("enabled") or not ro:
+            return True, {}
+        if "p" not in cache:
+            bad = AP.validate(rule)
+            if bad:
+                p = {"state": "UNMEASURED", "account": None, "to": None, "hold": False, "key": "INVALID",
+                     "why": "account_pick rule unusable, nothing held: " + "; ".join(bad)}
+            else:
+                current = ro["account"]()
+                lent_rules, allowance = ro["lent"]() if ro.get("lent") else AP.load_lent(rule)
+                p = AP.pick(rule, ro["ops"](), current, lent_rules, allowance, now)
+            cache["p"] = p
+            prev = (st.get("account_pick") or {}).get("key")
+            changed = prev != p["key"]
+            act(do="account_pick", state=p["state"], account=p["account"], to=p.get("to"), note=changed,
+                ticket=rule.get("ledger_item") or sch.get("alarm_item"),
+                why="%s%s" % (p["why"], (" (was: %s)" % prev) if changed and prev else ""))
+            st["account_pick"] = {"key": p["key"], "at": iso(now)}
+            if p["state"] == "SWITCH":
+                act(do="alarm", kind="account:switch:%s" % p["to"], note=True,
+                    ticket=rule.get("ledger_item") or sch.get("alarm_item"),
+                    why="switch the machine to account %s before more work is released (`claude-account use %s "
+                        "--confirm <machine>` closes every Claude window; held: %s): %s" % (
+                            p["to"], p["to"], ", ".join(rule.get("hold") or []) or "nothing", p["why"]))
+            elif p["state"] == "UNMEASURED":
+                act(do="alarm", kind="account:unmeasured", note=True,
+                    ticket=rule.get("ledger_item") or sch.get("alarm_item"), why=p["why"])
+        p = cache["p"]
+        return not (p.get("hold") and kind in (rule.get("hold") or [])), p
+
+    return gate
 
 
 # ---------------------------------------------------------------- side effects
@@ -708,6 +769,7 @@ def default_obs(sch, root):
             "result": RL.read_result,
             "off": RL.off_switch,
             "scope": RL.scope_of,
+            "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
         },
     }
 
