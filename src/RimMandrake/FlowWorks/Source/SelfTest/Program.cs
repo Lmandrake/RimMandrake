@@ -2183,6 +2183,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)
+            PlayerTruthSweeps.Run(Case);       // PLAYER-TRUTH PILOT: exhaustive sweeps of what a player expects (PlayerTruthSweeps.cs)
             PitAccessChecks.Run(Case);         // PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: portable ladder, climbing gear, safe jumps/skips, rescue ladder (PitAccessChecks.cs)
             WallClimbChecks.Run(Case);         // WALL_SCALING_BUILD_ROPE_OVER_RAMPARTS: gear climbs unroofed built walls, slowly (WallClimbChecks.cs)
             TrenchStrideChecks.Run(Case);      // TITAN_TRENCHES_WIRE_MIND_THE_GAP: titans step over trenches narrower than B/4 (TrenchStrideChecks.cs)
