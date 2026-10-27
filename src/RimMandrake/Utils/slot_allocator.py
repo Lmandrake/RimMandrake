@@ -521,7 +521,8 @@ def _token(inp, state, rules, now, P):
         prev, pending = None, None
     if used is not None and used >= tk["DARK"]["enter_pct_used_ge"]:
         return "DARK", None, since if prev == "DARK" else now
-    burn_line = measured and P > tk["BURN"]["enter_p_gt"] and h is not None and h < tk["BURN"]["enter_reset_h_lt"]
+    burn_line = (measured and P > tk["BURN"]["enter_p_gt"] and h is not None and h < tk["BURN"]["enter_reset_h_lt"]
+                 and h >= tk["BURN"]["leave_reset_h_lt"])  # never enter BURN already inside its own exit window
     age = now - since
 
     def hold(to, hold_h):
@@ -713,6 +714,10 @@ def decide(inp, state, rules, now):
     if blind:
         mode = state.get("token_mode") or "CRUISE"
         pending, since = None, state.get("since") or now
+        used = inp.get("week_pct_used")
+        if inp.get("source") == "MEASURED" and isinstance(used, (int, float)) and used >= tk["DARK"]["enter_pct_used_ge"]:
+            # no pace (reset time unknown), but a measured near-empty week is DARK whatever the pace
+            mode, since = "DARK", (since if state.get("token_mode") == "DARK" else now)
         why.append(f"meter {inp.get('source') or 'UNMEASURED'} for {inp.get('account') or 'the burn account'}: holding "
                    f"{mode}" + ("" if state.get("token_mode") else " (no history)"))
     else:

@@ -423,5 +423,13 @@ check("an override naming a scalar token key is not a mode (no crash, no relabel
 r = d(override=ov(mode=["CRUISE"]))
 check("an override whose mode is a list is not a mode (no crash)", r["mode"].endswith("+OWNER"), r["mode"])
 
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "pending": {"to": "BURN", "since": NOW - 2.5 * H}, "total": 6},
+      week_pct_left=10.0, week_pct_used=90.0, hours_to_week_reset=3.0)
+check("BURN is never entered inside its own exit window (3 h to reset)", r["token_mode"] != "BURN", r["token_mode"])
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "total": 6}, week_pct_used=99.0, week_pct_left=1.0,
+      hours_to_week_reset=None)
+check("MEASURED 99% used with no reset time is DARK, not a held CRUISE", r["token_mode"] == "DARK"
+      and r["n_total"] <= R["token"]["DARK"]["n"], (r["token_mode"], r["n_total"]))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

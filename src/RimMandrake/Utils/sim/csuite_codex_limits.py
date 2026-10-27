@@ -7,7 +7,7 @@ max primary/secondary used %, the distinct secondary reset times seen, and the u
 last reading before each secondary reset (idle quota thrown away at the reset).
 Dirs: ~/.codex/sessions and the Windows user's .codex/sessions (override: args).
 """
-import collections, datetime as dt, glob, json, os, sys
+import collections, datetime as dt, glob, json, math, os, sys
 
 DEFAULT_DIRS = [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/.codex/sessions"]
 DIRS = (sys.argv[1:] if __name__ == "__main__" else []) or DEFAULT_DIRS   # argv only when run as a script, never an importer's
@@ -50,7 +50,8 @@ def readings(dirs=None, newer_than=None):
                     if not isinstance(p, dict) or not isinstance(s, dict):
                         continue
                     ts = r.get("timestamp")
-                    if not ts or p.get("used_percent") is None:
+                    up = p.get("used_percent")
+                    if not ts or not isinstance(up, (int, float)) or isinstance(up, bool) or not math.isfinite(up):
                         continue
                     recs.append((ts, p.get("used_percent"), p.get("window_minutes"), p.get("resets_at"),
                                  s.get("used_percent"), s.get("window_minutes"), s.get("resets_at"),
