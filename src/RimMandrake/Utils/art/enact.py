@@ -1773,7 +1773,14 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                        "it is this row's own pick/variant")
                 P["conflicts"].append(f"{row}: ✕ {sha[:12]} not purged — {why}")
                 continue
-            P["purge"].append({"row": row, "sha": sha, "note": note, "release": [k["id"] for k in kept_all]})
+            # neither live nor kept: still no purge (owner ruling, "an X never purges, without exception"): the bytes go
+            # to the art archive through the same marked act (store kept, `art.py restore`), his own just-minted keep released
+            if x_at:
+                P["archive"].append({"row": row, "sha": sha, "slots": [],
+                                     "mark": {"sheet": sheet, "row": row, "at": v.get("decidedAt") or v.get("at"),
+                                              "via": I.rel_via(decisions), "kind": "x"}})
+            else:
+                P["conflicts"].append(f"{row}: ✕ {sha[:12]} not archived - the row carries no click time")
     # two picks bound for ONE file with different pictures (rows whose defs once shared a texPath — the bridge
     # anchors' Heavy/Steel/Timber of a look): installing both keeps only whichever runs last, so his other picks
     # vanish without a word. None of them is installed; each is listed (bug 2026-10-24, bridge_art_redraw)

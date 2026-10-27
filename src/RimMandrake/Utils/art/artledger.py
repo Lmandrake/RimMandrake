@@ -1370,6 +1370,11 @@ def release_keeps(sha: str, mark: dict) -> list[str]:
               "at": mark["at"], "mark": mark, "why": MARKS_WHY}
         w.add(rl)
         ids.append(rl["id"])
+    # the archive record itself: a ✕ on a picture in no game file and kept by no one still ends in the archive, never a purge
+    ar = {"type": "ruling", "id": det_id("archive-store", sha, mark["at"]), "target": {"sha": sha}, "verdict": "archive",
+          "by": "owner", "trust": "ruled", "via": mark["via"], "at": mark["at"], "mark": mark, "why": MARKS_WHY}
+    w.add(ar)
+    ids.append(ar["id"])
     added = list(w.buf)
     w.flush()
     _absorb(added)
@@ -1386,7 +1391,9 @@ def archived_shas(idx: "Index | None" = None) -> set:
     """Pictures an ✕ moved to the art archive that are in no game file now (a restore puts one back live). A sheet ✕
     never purges these - his card made the archive the end of an ✕ on a once-kept or in-game picture (review r11)."""
     idx = idx or cached_index()
-    return {e["prev"] for e in archive_events(idx) if e.get("prev")} - {ev.get("sha") for ev in idx.live.values()}
+    out = {e["prev"] for e in archive_events(idx) if e.get("prev")} - {ev.get("sha") for ev in idx.live.values()}
+    return out | {(e.get("target") or {}).get("sha") for e in idx.events
+                  if e.get("type") == "ruling" and e.get("verdict") == "archive" and (e.get("target") or {}).get("sha")}
 
 
 def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = None, per_ruling: str | None = None) -> dict:

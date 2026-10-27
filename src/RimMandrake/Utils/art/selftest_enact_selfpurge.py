@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """selftest_enact_selfpurge.py — a ✕ on a picture of the row's OWN pick/variant column is carried out.
+ALIGNED 2026-10-26 with the owner ruling "an X never purges, without exception": the carried-out ✕ now ARCHIVES (bytes
+kept, restorable) where it used to purge; every other check (no self-keep conflict, ingest records no keep) is unchanged.
 
 Bug (Cauldron sheet, 2026-10-09): the dry run planned 3 purges, the --apply purged 0 and listed them as
 "owner-kept (cauldron_sheet…)". Ingest ran first on --apply and recorded a keep for the row's pick column
@@ -37,6 +39,7 @@ def main():
     import artledger as L
     import enact as E
     import ingest as I
+    L.MARK_ROOT = F["root"]          # his ✕ stamp is verified against the decisions file inside the clone
     try:
         s = {k: L.store_put_bytes(T.noise_png(100 + i)) for i, k in enumerate(
             ("bA_e", "bB_e", "bB_n", "aA_e", "aB_e", "aB_n", "oB_e", "oX"))}
@@ -76,17 +79,19 @@ def main():
         F["decisions"].write_text(json.dumps(doc))
 
         R0 = E.enact(F["decisions"], apply=False, no_deploy=True)
-        planned = sorted(p["sha"] for p in R0["plan"]["purge"])
-        check(planned == sorted([s["bB_n"], s["aB_e"], s["aB_n"]]), "dry run plans the 3 same-row ✕ purges")
+        planned = sorted(p["sha"] for p in R0["plan"]["archive"] if p["row"] != "RM_Other")
+        check(planned == sorted([s["bB_n"], s["aB_e"], s["aB_n"]]) and not R0["plan"]["purge"],
+              "dry run plans the 3 same-row ✕ as ARCHIVES, no purge (owner ruling: an X never purges)")
         check(any(a["sha"] == s["oX"] for a in R0["plan"].get("archive", [])),
               "a ✕ (10-09) on a picture another row kept earlier (10-01) is planned for the ARCHIVE (newest mark wins)")
         check(not any(i["sha"] == s["bB_n"] for i in R0["plan"]["install"]), "the ✕'d facing of the pick is not installed")
 
         R1 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R1["purged"] == 3, f"--apply purges what the dry run planned ({R1['purged']} of 3)")
+        check(R1["purged"] == 0 and R1["archived"] == 4, f"--apply archives what the dry run planned, purges nothing ({R1['archived']} of 4)")
         check(not any(x in c for c in R1["conflicts"] for x in (s["bB_n"][:12], s["aB_e"][:12], s["aB_n"][:12])),
               "no same-row ✕ is reported as owner-kept")
-        check(L.store_has(s["oX"]) and not L.store_has(s["bB_n"]), "other-row keep untouched; same-row ✕ bytes gone")
+        check(L.store_has(s["oX"]) and L.store_has(s["bB_n"]) and s["bB_n"] in L.archived_shas(),
+              "same-row ✕ bytes kept in the archive (restorable), not deleted")
         idx = L.Index()
         for r in idx.rulings:
             t = r.get("target") or {}
@@ -107,8 +112,8 @@ def main():
         doc["decisions"]["RM_Beet"]["purge"].append(s2)
         F["decisions"].write_text(json.dumps(doc))
         R2 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R2["purged"] == 1 and not L.store_has(s2) and not L.Index().protected(s2),
-              "a keep the same row of the same file already wrote is released and the ✕ purged")
+        check(R2["purged"] == 0 and L.store_has(s2) and s2 in L.archived_shas() and not L.Index().protected(s2),
+              "a keep the same row of the same file already wrote is released and the ✕ archived (bytes kept)")
         # a release is per picture: purging one facing of a kept column leaves its sibling facings kept
         s3, s4 = L.store_put_bytes(T.noise_png(301)), L.store_put_bytes(T.noise_png(302))
         with open(evf, "a") as fh:
@@ -119,7 +124,7 @@ def main():
         check(L.Index().protected(s4) and not L.Index().protected(s3),
               "purging one facing releases the keep for THAT picture only; its sibling stays owner-kept")
         R3 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
-        check(R3["purged"] == 0 and R3["plan"]["purged_already"] == 4, "second --apply is a no-op (4 already purged)")
+        check(R3["purged"] == 0 and R3["archived"] == 0 and R3["plan"]["archived_already"] >= 5, "second --apply is a no-op (already archived)")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")
