@@ -200,20 +200,22 @@ RIMLUA_FIX = ("python3 -m venv ~/.local/venvs/rimlua && "
 SPRITE_REFERENCE = ("src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/"
                     "Pyrinth/Pyrinth_a.png")
 
-# Selftests that cannot run as bare `python3 <file>` from the repo root: rel path ->
-# (argv builder, cwd). A missing prerequisite is a visible FAIL, never a skip.
-def _rimplace():
+# Selftests that cannot run as bare `python3 <file>` from the repo root: rel path (to the TESTED checkout) ->
+# argv builder(root) -> (argv, cwd), `root` being the checkout the test lives in (review AD1: an isolated checkout's
+# test must build and read that checkout, never this instrument clone). A missing prerequisite is a visible FAIL.
+def _rimplace(root=None):
     if not RIMLUA_PY.exists():
         raise FileNotFoundError(f"{RIMLUA_PY} missing (rimplace needs lupa) — create it: {RIMLUA_FIX}")
-    return [str(RIMLUA_PY), "-m", "rimplace", "selftest"], REPO_ROOT / "src/RimMandrake/Utils"
+    return [str(RIMLUA_PY), "-m", "rimplace", "selftest"], Path(root or REPO_ROOT) / "src/RimMandrake/Utils"
 
 
-def _sprite():
-    ref = REPO_ROOT / SPRITE_REFERENCE
+def _sprite(root=None):
+    root = Path(root or REPO_ROOT)
+    ref = root / SPRITE_REFERENCE
     if not ref.exists():
         raise FileNotFoundError(f"committed reference PNG missing: {ref}")
-    return [sys.executable, str(REPO_ROOT / "skills/generating-rimworld-sprites/scripts/selftest.py"),
-            "--reference", str(ref)], REPO_ROOT
+    return [sys.executable, str(root / "skills/generating-rimworld-sprites/scripts/selftest.py"),
+            "--reference", str(ref)], root
 
 
 SPECIAL_INVOCATIONS = {
@@ -246,11 +248,29 @@ _PEAK_SEEN: dict = {}        # rel path -> memory.peak bytes reported by its wra
 _SEQ = itertools.count(1)
 
 
-def _rel(path: Path) -> str:
+def _rel(path: Path, root=None) -> str:
     try:
-        return path.relative_to(REPO_ROOT).as_posix()
+        return Path(path).relative_to(root or REPO_ROOT).as_posix()
     except ValueError:  # a fixture outside the repo (selftest_run_selftests.py)
         return ""
+
+
+def _test_root(path) -> Path:
+    """The checkout a test runs FROM (its cwd, and the root its special invocation is built for): REPO_ROOT for a test
+    inside it, else the git toplevel holding the test -- an isolated_evidence private checkout runs this clone's
+    runner over ITS files (review AD1), and a test using relative paths must read and build that tree. A path in no
+    clone at all (a scratch fixture) keeps REPO_ROOT."""
+    p = Path(path).resolve()
+    root = REPO_ROOT.resolve()
+    if p == root or root in p.parents:
+        return REPO_ROOT
+    try:
+        r = subprocess.run(["git", "-C", str(p.parent), "rev-parse", "--show-toplevel"], capture_output=True,
+                           text=True, timeout=30, env=dict(os.environ, GIT_OPTIONAL_LOCKS="0"))
+    except (OSError, subprocess.SubprocessError):
+        return REPO_ROOT
+    top = r.stdout.strip()
+    return Path(top) if r.returncode == 0 and top else REPO_ROOT
 
 
 def _read_int(p: str):
@@ -405,8 +425,9 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
     until IT exits -- so a "240 s" timeout could silently take far longer.
     Returns (CompletedProcess, wrapper report or None).
     """
-    special = SPECIAL_INVOCATIONS.get(_rel(path))
-    argv, cwd = special() if special else ([sys.executable, str(path)], REPO_ROOT)
+    root = _test_root(path)
+    special = SPECIAL_INVOCATIONS.get(_rel(path, root))
+    argv, cwd = special(root) if special else ([sys.executable, str(path)], root)
     if _HARNESS:
         argv = _scope_argv(cap, timeout, argv)
     p = subprocess.Popen(argv, cwd=cwd, text=True, env=env,
@@ -984,19 +1005,16 @@ def _evidence_start(tests) -> None:
 
 
 def _covers_of(clone, rs, ce):
-    """(covers as absolute paths, covers_by {source rel: [test rels]}) for one clone's results. A test that ran
-    contributes its traced + declared sources; a cached PASS (it did not run) only its declared ones."""
+    """(covers as absolute paths, covers_by {source rel: [test rels]}) for one clone's results: each test that RAN
+    contributes its traced + declared sources. A cached PASS never reaches here (review AD2: it did not run)."""
     per = {}
     try:
         import evidence_covers as EC
     except Exception:  # noqa: BLE001
         EC = None
-    for p, _s, _t, d in rs:
+    for p, _s, _t, _d in rs:
         rel = ce._rel(p, clone)
-        srcs = _COVERS.get(str(Path(p).resolve()))
-        if srcs is None and d == "cached" and EC is not None and clone in _COV_ON:
-            srcs = EC.declared(rel, clone)
-        per[rel] = set(srcs or ())
+        per[rel] = set(_COVERS.get(str(Path(p).resolve())) or ())
     if EC is None:
         return [os.path.join(clone, t) for t in sorted(per)], {}
     covers, by = EC.merge(per)
@@ -1010,7 +1028,10 @@ def _record_evidence(allr, discovered=None) -> None:
     a test file in another clone is recorded under that clone's sha, not this one's (F9)."""
     if not _evidence_on():
         return
-    ran = [r for r in allr if r[1] != "SKIPPED"]
+    # review AD2: a CACHED PASS did not run here -- it is never fresh close evidence (not in paths, not in covers).
+    # The run that filled the cache wrote its own record, with its own provenance, when it ran.
+    cached = [r for r in allr if r[1] == "PASS" and r[3] == "cached"]
+    ran = [r for r in allr if r[1] != "SKIPPED" and r not in cached]
     if not ran:
         return
     try:
@@ -1031,7 +1052,8 @@ def _record_evidence(allr, discovered=None) -> None:
         close_evidence.record("selftest", result, [p for p, *_ in rs], clone=clone, force=True,
                               start=_EV_START.get(clone), covers=covers,
                               detail={"states": {_show(p): s for p, s, _, d in rs}, "covers_by": covers_by,
-                                      "cached": sorted(_show(p) for p, _, _, d in rs if d == "cached"),
+                                      "not_run_cached": sorted(close_evidence._rel(p, clone) for p, *_ in cached
+                                                               if _clone_for(p, close_evidence) == clone),
                                       "dropped": ({"discovered": discovered, "returned": len(allr)}
                                                   if dropped else None)})
 

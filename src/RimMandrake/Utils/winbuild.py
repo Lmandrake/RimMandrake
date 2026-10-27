@@ -335,9 +335,20 @@ def evidence_report(csproj, rc, config, rec=None, start=None):
     rec = rec or {}
     result = "UNMEASURED" if rec.get("staged") is False else ("PASS" if rc == 0 else "FAIL")
     scope = rec.get("ev_scope")
-    covers = [os.path.join(ROOT, r.rstrip("/")) for r in scope] if scope else None
+    # covers = what this build provably COMPILED (review AD F3): the csproj plus the .cs items its own .srchash stamp
+    # (copied back from this build) lists with the clone's current hash -- never the staged folders, which would
+    # credit every file under src/. No stamp (in-place build, SelfTest project) -> the csproj alone.
+    covers = None
+    try:
+        import evidence_covers as EC
+        rel = os.path.relpath(os.path.realpath(csproj), os.path.realpath(ROOT)).replace(os.sep, "/")
+        stamps = [o for o in rec.get("outputs", []) if str(o).endswith(".srchash")]
+        covers = sorted(EC.stamped_sources(ROOT, rel, stamps))
+    except Exception as exc:  # noqa: BLE001 -- a coverage claim is optional; the build line is not
+        print("!!! winbuild covers unavailable (%s: %s); recording the csproj only" % (type(exc).__name__, exc),
+              file=sys.stderr)
     ce.record("winbuild", result, [csproj], clone=ROOT, start=rec.get("ev_start", start), end=rec.get("ev_end"),
-              scope=scope, covers=([csproj] + covers) if covers else None,
+              scope=scope, covers=[os.path.join(ROOT, c) for c in covers] if covers else [csproj],
               detail={"rc": rc, "configuration": config, "outputs": rec.get("outputs", []),
                       "staged_dirs_dirty": rec.get("dirty"), "source_sha": rec.get("source_sha")})
 

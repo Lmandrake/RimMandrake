@@ -155,7 +155,7 @@ def main():
         # every line on disk is one JSON object with the fixed fields
         lines = [json.loads(ln) for f in store.glob("*.jsonl") for ln in f.read_text().splitlines()]
         want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "start", "paths", "covers",
-                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "route", "mac"}
+                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "nonce", "route", "mac"}
         check(lines and all(set(l) == want for l in lines), "%d lines, each with exactly the schema fields" % len(lines))
 
         # validate_patch end to end: a run on a file in the fixture clone writes one validate_patch line
@@ -257,7 +257,7 @@ def review_aa(root):
     um = lambda hs: [(h["tool"], h["result"]) for h in hs]      # noqa: E731
     check(um(CE.lookup(sha=sha, tool="novtool")) == [("close_evidence", "UNMEASURED")],
           "AA-NOV a line with no v is not evidence (AB5: unverifiable -> UNMEASURED, never a PASS)")
-    v2 = {k: v for k, v in good.items() if k not in ("origin", "mac", "route")}   # a real v2 line had neither seal
+    v2 = {k: v for k, v in good.items() if k not in ("origin", "mac", "route", "nonce")}   # a real v2 line had neither seal (nor a nonce)
     append(dict(v2, v=2, tool="v2tool"))
     check(um(CE.lookup(sha=sha, tool="v2tool")) == [("close_evidence", "UNMEASURED")],
           "AA-NOV a v2 line is not evidence (AB5: UNMEASURED)")
@@ -575,8 +575,8 @@ def review_z(td, store, repo, sha):
     rex = dict(base, covers=["src/selftest_a.py", "src/a.py"], detail={"covers_by": {"src/a.py": ["src/selftest_a.py"]}})
     check(CE.covered(rex, ["src/a.py"]) and not CE.covered(rex, ["src/a.py/x"]),
           "COVERS a derived source covers that file only, never as a folder")
-    check(CE.covered(dict(base, tool="winbuild", covers=["src"]), ["src/a.py"]),
-          "COVERS a non-derived tool's folder covers still cover by folder")
+    check(not CE.covered(dict(base, tool="winbuild", covers=["src"]), ["src/a.py"]),
+          "COVERS a winbuild covers folder covers nothing beneath it (review AD F3: exact build inputs only)")
     import run_selftests as RS
     RS._OUTER[0] = True
     t = repo / "src" / "selftest_a.py"
@@ -651,7 +651,8 @@ def review_z(td, store, repo, sha):
         check([x["result"] for x in new] == ["PASS", "UNMEASURED"] and CE.counts_as_evidence(new[0])
               and new[0]["sha"] == sha5, "F7 staged build is evidence despite copy-back; rsync failure UNMEASURED: %r"
               % [(x["result"], x["dirty"]) for x in new])
-        check(CE.covered(new[0], ["src/b.py"]) == ["src/b.py"], "F7 a build covers its staged dirs")
+        check(not CE.covered(new[0], ["src/b.py"]) and CE.covered(new[0], ["src/a.csproj"]) == ["src/a.csproj"],
+              "F7 a build covers its csproj, not its staged dirs (review AD F3): %r" % new[0].get("covers"))
     finally:
         W.ROOT = old_root
         shutil.rmtree(repo / "src" / "Assemblies", ignore_errors=True)

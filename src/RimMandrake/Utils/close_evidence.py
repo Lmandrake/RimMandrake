@@ -21,7 +21,10 @@ A line (v4): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths
   * start  -- {sha, dirty, dirty_n} taken when the run STARTED (snapshot()). A run is evidence for a sha only when
               start and end are the same sha and both clean: a commit landing mid-run is not tested (review Z F2).
   * covers -- what the run actually read (paths are what it was pointed at). lookup(paths=) returns a record only
-              for the paths it covers: a partial run never speaks for the whole item (F5).
+              for the paths it covers: a partial run never speaks for the whole item (F5). A covers entry beyond the
+              paths matches only that FILE, never as a folder (review AD3: a build's staged `src/` is not what it
+              compiled -- see cover_entries).
+  * nonce  -- a fresh random id per line, under the mac, so two genuine runs never seal alike (review AD5).
   * live_only -- the result describes a running game, not a tree (modcheck: the game holds whatever it loaded at
               launch, and nothing fingerprints that load). Never sha evidence (F3).
   * variant -- a weaker form of the tool (validate_patch "static" / "defnames"): summarize keys it apart (F6) and the
@@ -470,7 +473,11 @@ def build_record(tool, result, paths, clone=None, detail=None, item=None, now=No
     who = dict(who) if isinstance(who, dict) else whoami()
     if seat:
         who.update(seat=seat, seat_from=who.get("seat_from") or "caller")
-    return {"v": V, "ts": now.isoformat(timespec="seconds"), "tool": tool, "clone": clone, **st, "start": start,
+    # nonce (review AD5): a fresh random id per record, under the mac. Without it two runs with the same result in the
+    # same second by the same process (FAIL -> PASS -> FAIL) seal to the SAME mac and lookup's replay dedupe drops the
+    # second FAIL, leaving the PASS standing; a true replay (the same line again) still dedupes.
+    return {"v": V, "ts": now.isoformat(timespec="seconds"), "nonce": secrets.token_hex(16), "tool": tool,
+            "clone": clone, **st, "start": start,
             "paths": rel, "covers": [_rel(p, clone) for p in covers] if covers is not None else rel,
             "result": result, "item": item if item is not None else (os.environ.get("RIMFLOW_ITEM") or None),
             "seat": who.get("seat"), "who": who, "origin": origin,
@@ -648,6 +655,8 @@ def _covers(rp, f) -> bool:
 
 #: tools whose covers beyond `paths` must each be vouched for by detail.covers_by (evidence_covers.py)
 DERIVED_COVERS = ("selftest",)
+#: tools none of whose entries is a folder: a build vouches for the files it compiled, never the dirs it staged (AD3)
+EXACT_TOOLS = ("winbuild",)
 
 
 def _bad_source(c) -> bool:
@@ -656,16 +665,20 @@ def _bad_source(c) -> bool:
 
 
 def cover_entries(rec) -> list:
-    """[(entry, exact)] -- what a record may vouch for. A path the run was pointed at (or any covers entry of a tool
-    that names its own coverage, like winbuild's csproj tree) matches as itself or as a folder (_covers). A selftest's
-    SOURCE entry (in covers, not in paths: SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY) counts only when detail.covers_by
-    names it with a non-empty list of tests that are all among the run's paths, and is a plain relative file path;
-    it then matches that file EXACTLY, never as a folder. Anything else in covers is a forged claim and is dropped."""
+    """[(entry, exact)] -- what a record may vouch for. A path the run was pointed at matches as itself or as a folder
+    (_covers) -- except for an EXACT_TOOLS build, whose every entry is a file it compiled. Any other covers entry (not
+    in paths) is a plain relative FILE path matching only itself, never as a folder (review AD3: winbuild used to
+    cover its staged dirs, so a passing build of one csproj covered every .py under src/; it now names the compile
+    items its own .srchash stamp lists). A selftest's SOURCE entry (SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY) counts
+    only when detail.covers_by names it with a non-empty list of tests that are all among the run's paths. Anything
+    else in covers is a forged (or pre-AD folder) claim and is dropped."""
     cov = rec.get("covers")
     cov = cov if isinstance(cov, list) else (rec.get("paths") or [])
-    if rec.get("tool") not in DERIVED_COVERS:
-        return [(c, False) for c in cov]
     paths = set(p for p in (rec.get("paths") or []) if isinstance(p, str))
+    if rec.get("tool") not in DERIVED_COVERS:
+        exact_tool = rec.get("tool") in EXACT_TOOLS
+        return [(c, exact_tool) if c in paths else (c, True) for c in cov
+                if (c in paths and not exact_tool) or not _bad_source(c)]
     det = rec.get("detail") if isinstance(rec.get("detail"), dict) else {}
     by = det.get("covers_by") if isinstance(det.get("covers_by"), dict) else {}
     out = []

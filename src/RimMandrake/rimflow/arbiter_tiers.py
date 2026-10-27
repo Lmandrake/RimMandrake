@@ -204,23 +204,30 @@ _HEX_SHA = re.compile(r"[0-9a-fA-F]{7,40}")
 
 def _rev_one(sha, repo):
     """The full commit sha `sha` names in `repo`; None when it names none there; GIT_ERROR when git could not answer
-    or the prefix is ambiguous inside the clone."""
+    or the prefix is ambiguous inside the clone. No `--quiet`: it silences the ambiguity message (rc 1, empty stderr),
+    which made an ambiguous prefix read as "not here" (review AD F6)."""
+    if not os.path.isdir(repo):
+        return GIT_ERROR
     try:
-        r = subprocess.run(["git", "-C", repo, "rev-parse", "--verify", "--quiet", "%s^{commit}" % sha],
-                           capture_output=True, text=True, timeout=30)
+        r = subprocess.run(["git", "-C", repo, "rev-parse", "--verify", "%s^{commit}" % sha],
+                           capture_output=True, text=True, timeout=30, env=dict(os.environ, GIT_OPTIONAL_LOCKS="0"))
     except Exception:
         return GIT_ERROR
-    if r.returncode == 0 and re.fullmatch(r"[0-9a-f]{40}", r.stdout.strip()):
-        return r.stdout.strip()
-    if "ambiguous" in (r.stderr or "") or not os.path.isdir(repo):
+    out, err = (r.stdout or "").strip(), (r.stderr or "")
+    if r.returncode == 0 and re.fullmatch(r"[0-9a-f]{40}", out):
+        return out
+    if "ambiguous" in err.lower():
         return GIT_ERROR
-    return None
+    if r.returncode != 0 and re.search(r"Needed a single revision|unknown revision|bad revision", err):
+        return None
+    return GIT_ERROR
 
 
 def resolve_sha_any(sha, repos=REPOS, rev=_rev_one):
     """The ONE full commit sha a claim's sha names across every clone (review AC2): None when it is not a hex sha
     (a rev expression like `child^` is not a build identity) or no clone has it; GIT_ERROR when clones disagree (a
-    short sha naming different commits) or none could answer while none had it."""
+    short sha naming different commits), when an ABBREVIATED sha met an error or ambiguity in any clone, or none could
+    answer while none had it."""
     sha = (sha or "").strip()
     if not _HEX_SHA.fullmatch(sha):
         return None
@@ -232,6 +239,8 @@ def resolve_sha_any(sha, repos=REPOS, rev=_rev_one):
         elif f:
             found.add(f.lower())
     if len(found) > 1:
+        return GIT_ERROR
+    if err and len(sha) < 40:     # review AD F6: a prefix unique here may be ambiguous there -- not one identity
         return GIT_ERROR
     if found:
         return found.pop()
