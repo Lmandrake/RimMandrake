@@ -11,10 +11,12 @@ When: the role's clock slots — `quick_checks_local` (Conductor) or `runs_local
 once per local day, launched in the first tick at or after the slot and no later than `slot_late_s` after it (a
 missed slot is journaled, never run late). The slot equal to `economy_pass_local` is the economy pass, which carries
 that slot's running check with it: when a band skips the economy pass the whole slot is skipped (the cheaper reading,
-operations.md says so). A role with `after_role` (Conductor -> Operations) launches a slot only after a run of that
-role launched since its previous slot has finished done and none is going (after_ready). Operations
+operations.md says so). A role with `after_role` (Conductor -> Operations) launches a slot only after that role's own
+scheduled run for the slot it follows (08:00 -> 07:30, 20:00 -> 19:30; never an alarm run or yesterday's late run)
+finished done and none is going (after_ready); it is decided after that role in each tick. Operations
 also runs once per ops_watch alarm item FILED after the role was first seen enabled (`alarm_runs`); alarms already
-open at that first tick are the baseline, covered by the next running check. One run per role at a time.
+open at that first tick are the baseline, covered by the next running check; the baseline is taken only from a
+MEASURED ops_watch reading (a blind first tick sets none and runs no alarm). One run per role at a time.
 
 Gates, in order, each journaled (and each refusal an ALARM when it needs a human):
   1. off switch: the role's `off_file` exists (its first line is the reason) -> skip the slot, no alarm.
@@ -35,7 +37,8 @@ Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields
 cache_read, output): the conservative reading. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop, so the budget is told to the role in its prompt and checked on its result. A run still going after
 `run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm; it stays `running` and the stop is
-re-issued each tick until systemd says the unit is inactive/failed. supervise_roles() does this for every persisted
+re-issued each tick until systemd says the unit AND its claude_bounded scope are inactive/failed (claude lives in the
+scope, outside the unit; the scope is resolved while the unit runs). supervise_roles() does this for every persisted
 run before PAUSE, a blind tick or a disabled role can end the tick (review round Q).
 
 How it launches (proved 2026-10-27, D:\\ClaudeWork\\rimmandrake\\role_launch_2026-10-27\\proof\\RESULT.md): as its OWN
@@ -249,9 +252,28 @@ def supervise_roles(sch, st, obs, now, act):
             if run.get("state") != "running":
                 continue
             ustate = obs["unit_state"](run["unit"])
+            if ustate in ACTIVE and not run.get("scope") and obs.get("scope"):
+                # claude runs in claude_bounded's scope, outside the unit: learn its name while the unit's MainPID
+                # still exists (review round R, D)
+                run["scope"] = obs["scope"](run["unit"], run.get("seat") or cfg.get("seat"))
+            if ustate in TERMINAL:
+                # the unit ending is not claude ending: claude_bounded's shell traps TERM and claude lives on in its
+                # scope. Retired only when the scope is empty too (inactive/failed = no process left or no such
+                # unit) (review round R, D).
+                if run.get("scope"):
+                    sstate = obs["unit_state"](run["scope"])
+                    if sstate not in TERMINAL:
+                        ustate = "unit %s but scope %s %s" % (ustate, run["scope"], sstate)
+                elif now - run["at"] < (run.get("run_max_s") or cfg["run_max_s"]):
+                    ustate = "unit %s, scope never resolved (claude may still run)" % ustate
+                else:
+                    run["scope_unconfirmed"] = True
             if ustate not in TERMINAL:
                 busy.add(name)
-                if ustate not in ACTIVE:
+                if ustate.startswith("unit "):
+                    act(do="alarm", kind="role:%s:scope" % name, ticket=run.get("item"), note=True,
+                        why="%s run %s: %s; kept as running, checked again next tick" % (name, run["unit"], ustate))
+                elif ustate not in ACTIVE:
                     act(do="alarm", kind="role:%s:unit" % name, ticket=run.get("item"), note=True,
                         why="%s run %s unit state UNMEASURED (%s): kept as running, retried next tick"
                         % (name, run["unit"], ustate))
@@ -260,6 +282,8 @@ def supervise_roles(sch, st, obs, now, act):
                     tries = run.get("stop_tries", 0)
                     run["stop_tries"] = tries + 1
                     act(do="role_stop", role=name, unit=run["unit"], scope=run.get("scope"),
+                        unit_gone=ustate.startswith("unit "),     # stop the scope alone: `systemctl stop` of a
+                        # collected unit fails the whole call
                         seat=run.get("seat") or cfg.get("seat"), ticket=run.get("item"), note=tries == 0,
                         why="%s run %s still %s after %d s (run_max_s %d): stop #%d" % (
                             name, run["unit"], ustate, now - run["at"], max_s, tries + 1))
@@ -271,6 +295,11 @@ def supervise_roles(sch, st, obs, now, act):
                             why="%s run %s still %s after %d stop(s): NOT confirmed stopped, kept as running"
                             % (name, run["unit"], ustate, tries))
                 continue
+            if run.get("scope_unconfirmed"):
+                act(do="alarm", kind="role:%s:scope" % name, ticket=run.get("item"), note=True,
+                    why="%s run %s: unit ended, its claude_bounded scope was never resolved; retired at run_max_s "
+                    "UNCONFIRMED (a claude may still run under claude-seat-%s-*)" % (name, run["unit"],
+                                                                                   run.get("seat") or "?"))
             res = obs["result"](run)
             tok = run_tokens(res)
             run["tokens"] = tok
@@ -295,22 +324,42 @@ def supervise_roles(sch, st, obs, now, act):
     return busy
 
 
-def after_ready(cfg, rst, busy, job, now):
-    """`after_role` (Conductor: "each after an Operations run", conductor.md): a scheduled slot waits until that role
-    has a run that FINISHED (done) and was launched since this role's previous slot, and none of its runs is in
-    flight. -> None when ready, else why it waits."""
+def after_slot(after_cfg, job, now):
+    """Pure. The after_role's slot this scheduled job follows: its latest slot at or before the job's slot today,
+    else its last slot yesterday. -> its done/run key "YYYY-MM-DD HH:MM", or None when it has no slots."""
+    times = [t for t, _, _ in slots(after_cfg)]
+    if not times:
+        return None
+    mine = slot_epoch(now, job["slot"])
+    before = [t for t in times if slot_epoch(now, t) <= mine]
+    if before:
+        return "%s %s" % (day_of(now), max(before, key=lambda t: slot_epoch(now, t)))
+    return "%s %s" % (day_of(now - 86400), max(times, key=lambda t: slot_epoch(now - 86400, t)))
+
+
+def after_ready(cfg, rst, busy, job, now, after_cfg=None):
+    """`after_role` (Conductor: "each after an Operations run", conductor.md): a scheduled slot waits until that
+    role's OWN scheduled run for the slot it follows (after_slot: Conductor 08:00 -> Operations 07:30 today, 20:00 ->
+    19:30) finished done, and none of its runs is in flight. An alarm run, or yesterday's run launched late, never
+    counts (review round R, B). -> None when ready, else why it waits."""
     after = cfg.get("after_role")
     if not after or not job["slot"]:
         return None
     if after in busy:
         return "an %s run is still going" % after
-    times = [t for t, _, _ in slots(cfg)]
-    i = times.index(job["slot"])
-    since = slot_epoch(now, times[i - 1]) if i else slot_epoch(now - 86400, times[-1])
-    for r in (rst.get(after) or {}).get("runs") or []:
-        if r.get("state") == "done" and r.get("at", 0) >= since:
-            return None
-    return "no finished %s run since %s" % (after, time.strftime("%Y-%m-%d %H:%M", time.localtime(since)))
+    key = after_slot(after_cfg or {}, job, now)
+    if key is None:
+        return "%s has no scheduled slots to follow" % after
+    ars = rst.get(after) or {}
+    mine = [r for r in ars.get("runs") or [] if r.get("slot") == key and r.get("mode") != "alarm"]
+    if any(r.get("state") == "done" for r in mine):
+        return None
+    if mine:
+        return "the %s %s run ended %s" % (after, key, mine[-1].get("state"))
+    how = (ars.get("done") or {}).get(key)
+    if how:
+        return "the %s %s slot was not run (%s)" % (after, key, how)
+    return "the %s %s run has not run yet" % (after, key)
 
 
 def decide_roles(sch, st, obs, now, act, busy=None):
@@ -329,7 +378,9 @@ def decide_roles(sch, st, obs, now, act, busy=None):
                                              sch.get("ops_stale_s", OPS_STALE_S))
         return reading_cache["r"]
 
-    for role in sch.get("roles") or []:
+    # a role that runs after another is decided after it, so the one it follows is marked/launched first (R, B)
+    roles = sorted(sch.get("roles") or [], key=lambda r: 1 if r.get("after_role") else 0)
+    for role in roles:
         name = role.get("name", "?")
         if not role.get("enabled"):
             continue
@@ -365,7 +416,17 @@ def decide_roles(sch, st, obs, now, act, busy=None):
             open_items = sorted({a.get("item") for a in ((obs["ops"]() or {}).get("alarms") or {}).values()
                                  if a.get("state") == "OPEN" and a.get("item")})
             if "alarms_seen" not in rs:
-                rs["alarms_seen"] = open_items           # the baseline at first enable: not run
+                if reading()["state"] != "MEASURED":
+                    # a blind first reading is not a baseline: [] would make every alarm already open a paid run on
+                    # the next readable tick (review round R, C). No alarm runs until a MEASURED reading sets it.
+                    if not rs.get("baseline_wait"):
+                        act(do="role_hold", role=name, why="%s alarm runs: no baseline yet, the ops_watch reading is "
+                            "UNMEASURED (%s); no alarm run launches until it is MEASURED" % (name, reading()["why"]))
+                    rs["baseline_wait"] = True
+                    open_items = []
+                else:
+                    rs.pop("baseline_wait", None)
+                    rs["alarms_seen"] = open_items       # the baseline at first enable: not run
             for item in open_items:
                 if item not in rs["alarms_seen"]:
                     due.append({"key": "alarm " + item, "slot": None, "first": False, "mode": "alarm",
@@ -382,7 +443,7 @@ def decide_roles(sch, st, obs, now, act, busy=None):
             continue
         if name in busy:
             continue                                      # one run at a time: wait for the running one
-        wait = after_ready(cfg, rst, busy, job, now)
+        wait = after_ready(cfg, rst, busy, job, now, dict(ROLE_DEFAULTS, **(by_name.get(cfg.get("after_role")) or {})))
         if wait:
             if (rs.get("waiting") or [None])[0] != job["key"]:      # journal the wait once, not every tick
                 act(do="role_hold", role=name, why="%s %s waits: runs after a finished %s run; %s" % (
@@ -423,6 +484,7 @@ def decide_roles(sch, st, obs, now, act, busy=None):
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s" % (
                 name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"]),
             message=prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit))
+        busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
 
 
 def mark(rs, job, how):
@@ -517,13 +579,13 @@ def read_result(run):
         return None
 
 
-def stop(unit, scope, runner=subprocess.run, seat=None):
+def stop(unit, scope, runner=subprocess.run, seat=None, unit_gone=False):
     """The claude process lives in claude_bounded's scope (claude-seat-<seat>-<unit MainPID>.scope), outside the
     unit: stopping the unit alone would leave it running. No scope recorded (its lookup failed at launch): resolve it
     now, while the unit still runs. Whether the stop took is decided by the next tick's unit state, not here."""
     if not scope and seat:
         scope = scope_of(unit, seat, runner)
-    names = [n for n in (scope, unit) if n]
+    names = [n for n in (scope, None if unit_gone else unit) if n]
     r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120,
                stdin=subprocess.DEVNULL)
     return "stopped %s" % " ".join(names) if r.returncode == 0 else "stop exit %d: %s" % (

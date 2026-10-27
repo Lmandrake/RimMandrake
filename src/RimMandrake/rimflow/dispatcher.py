@@ -52,6 +52,7 @@ import glob
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -74,7 +75,9 @@ HANDOFF = ("claim", "start")            # plus a lease event with action take
 
 DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 600, "max_retries": 2,
             "cooldown_s": 3600, "dead_after_s": 600, "recover_verify_s": 300, "owner_idle_s": 20 * 60,
-            "ledger_notes": True, "publish": True}
+            "ledger_notes": True, "publish": True, "tick_budget_s": 420}
+# tick_budget_s: rm-dispatcher.service is a oneshot with TimeoutStartSec=600; past this budget a tick writes no more
+# ledger notes and kills its publish, so systemd never SIGTERMs it mid-tick (review round R, A).
 CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80, "recovers_per_seat_day": 3}
 # The seat windows' own launch line (src/RimMandrake/Utils/install_wt_seat_profiles.py LAUNCH: `claude_bounded.sh
 # --dangerously-skip-permissions --name '<label>' --model <m> --remote-control '<label>'`, AGENT_SEAT exported, cwd =
@@ -501,6 +504,36 @@ def publish(n):
     return ingest.publish(n, shard_rel=SHARD_REL, message="ledger: DISPATCHER notes (%d)" % n)
 
 
+def publish_bounded(n, timeout, argv=None):
+    """publish(n) in a child process (its own process group) killed when it outlives timeout: ingest.publish's git
+    calls each wait up to 300 s, and a hung push must not carry the tick past the service's 600 s. A killed
+    publish leaves its commit local; the next tick's publish retries it (ingest.unpublished), and a rebase it left
+    half done is aborted there (review round R, A)."""
+    if timeout <= 0:
+        return "publish skipped: tick budget spent (the next tick retries)"
+    argv = argv or [sys.executable, os.path.abspath(__file__), "publish", str(int(n))]
+    p = subprocess.Popen(argv, cwd=REPO, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                         stdin=subprocess.DEVNULL, start_new_session=True)
+    try:
+        out, _ = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        for sig, wait in ((signal.SIGTERM, 10), (signal.SIGKILL, 10)):   # TERM first: git removes its own locks
+            try:
+                os.killpg(p.pid, sig)
+            except OSError:
+                pass
+            try:
+                p.communicate(timeout=wait)
+                break
+            except subprocess.TimeoutExpired:
+                continue
+        return "publish KILLED after %d s (tick budget; the commit stays local, the next tick retries)" % timeout
+    out = (out or "").strip()
+    if p.returncode:
+        return "publish child exit %d: %s" % (p.returncode, out[-200:])
+    return None if out == "None" else (out.splitlines() or [""])[-1]
+
+
 def git_lock(wait_s=90):
     """testq's ingest.lock: the RUNNER ingest commits, pull --rebases and pushes in this same dispatch clone. Our note
     appends (an unstaged DISPATCHER.jsonl) and our publish must not interleave with its pull --rebase, or each makes
@@ -520,11 +553,17 @@ def git_lock(wait_s=90):
             time.sleep(2)
 
 
-def execute(actions, sch, st, root, apply, now, fx=None):
-    """Carry the actions out (apply) or only journal them (dry). fx overrides the side effects (selftests)."""
+def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None):
+    """Carry the actions out (apply) or only journal them (dry). fx overrides the side effects (selftests).
+    persist() saves st durably (tick: an atomic state.json write); it runs around every role launch so a tick killed
+    after systemd-run cannot forget the run and launch the role again (review round R, A). deadline (epoch, real
+    clock): past it no more ledger notes, and publish is killed at it."""
     fx = fx or {}
+    deadline = deadline if deadline is not None else time.time() + sch.get("tick_budget_s", 420)
+    do_persist = fx.get("persist") or persist or (lambda: None)
     do_ring, do_withdraw = fx.get("ring", ring), fx.get("withdraw", withdraw)
-    do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get("publish", publish)
+    do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get(
+        "publish", lambda n: publish_bounded(n, deadline - time.time()))
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
@@ -580,21 +619,27 @@ def execute(actions, sch, st, root, apply, now, fx=None):
                                        item=a["ticket"], seat=a.get("seat") or role.get("seat"),
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None)
                             runs.append(run)
-                            ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
-                            res = ("launched: " if ok else "failed: ") + out
-                            if ok:
-                                run.update(rec or {})
-                            else:
-                                runs.remove(run)            # systemd-run said no: nothing started
-                                a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                            do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
+                            try:
+                                ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
+                                res = ("launched: " if ok else "failed: ") + out
+                                if ok:
+                                    run.update(rec or {})
+                                else:
+                                    runs.remove(run)            # systemd-run said no: nothing started
+                                    a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                            finally:
+                                do_persist()
                     elif a["do"] == "role_stop":
-                        res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"))
+                        res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False))
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
                     item = a.get("ticket") or sch.get("alarm_item")
                     if item and not ledger_ok:
                         a["ledger"] = "not noted: testq ingest.lock busy (the journal holds it)"
+                    elif item and time.time() >= deadline:
+                        a["ledger"] = "not noted: tick budget spent (the journal holds it)"
                     elif item:
                         try:
                             ok, out = do_note(item, "dispatcher %s %s: %s" % (
@@ -648,6 +693,7 @@ def default_obs(sch, root):
             "unit_state": RL.unit_state,
             "result": RL.read_result,
             "off": RL.off_switch,
+            "scope": RL.scope_of,
         },
     }
 
@@ -668,19 +714,25 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             journal(root, rec)
             return [rec]
         acts = []
+        st_path = os.path.join(root, "state.json")
+        deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
             o = obs or default_obs(sch, root)
             acts = decide(sch, st, o, now, apply)
-            execute(acts, sch, st, root, apply, now, fx)
+            execute(acts, sch, st, root, apply, now, fx, persist=lambda: S.dump(st, st_path), deadline=deadline)
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
             if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
                 st["last_ok_tick"] = iso(now)
         finally:     # the caps and pending rings are in st: save them even when a step raised
             st["last_tick"] = iso(now)        # last ATTEMPT
             st["apply"] = apply
-            S.dump(st, os.path.join(root, "state.json"))
+            S.dump(st, st_path)
     return acts
+
+
+def _sigterm_exit(signum, frame):
+    raise SystemExit(128 + signum)
 
 
 def main(argv=None):
@@ -693,7 +745,15 @@ def main(argv=None):
     s = sub.add_parser("status")
     s.add_argument("--schedule")
     s.add_argument("--apply", action="store_true", help="show the live state instead of the dry one")
+    pb = sub.add_parser("publish", help="internal: the tick's bounded publish child (publish_bounded)")
+    pb.add_argument("n", type=int)
     a = ap.parse_args(argv)
+    if a.cmd == "publish":
+        print(publish(a.n))
+        return 0
+    # systemd stops a tick past TimeoutStartSec with SIGTERM, whose default action skips every `finally` (the state
+    # save): raise instead so tick() saves what it has (review round R, A)
+    signal.signal(signal.SIGTERM, _sigterm_exit)
     sch = load_schedule(a.schedule)
     if a.cmd == "status":
         print(json.dumps(load_state(state_root(a.apply)), indent=1, sort_keys=True))
