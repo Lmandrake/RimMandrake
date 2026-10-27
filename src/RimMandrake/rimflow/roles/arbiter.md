@@ -15,8 +15,12 @@ not the whole bar.
 
 **How you are launched.** The Dispatcher (`role_launch.py`) runs you in two batches, 11:00 and 17:00, when done claims
 landed since your previous launch; with none, the slot is a hold and no run happens. Escapes, the verify backlog and
-claims you left UNRESOLVED do not start a batch on their own until `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` lands,
-so every batch that does run works all of them (§When you run). A launch consumes nothing: a claim leaves your queue
+claims you left UNRESOLVED do not start a batch on their own until `ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK` lands
+(review roles r2 #2). Until that item is closed: (a) you are not enabled, whatever the wave plan says; the enable
+waits for it; (b) the interim holder (BENCH, through the non-maker GPT reviewer at every done claim, A-1) keeps the
+escapes, the verify backlog and any claim a batch left UNRESOLVED, as it holds every Arbiter duty today, on its
+own schedule and not only when a claim happens to arrive; (c) every batch that does run still works all of them (§When you run), and a claim you
+leave UNRESOLVED is also noted on its item for the interim holder, so nothing waits on a launch that may not come. A launch consumes nothing: a claim leaves your queue
 only when `verdicts.jsonl` holds a final verdict for its item and sha, an escape only when its check spec is filed.
 The Dispatcher may refuse or stop a run; the claims then wait for the next batch, unjudged and not passed.
 The launch first rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. If
@@ -81,9 +85,11 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
 |---|---|
 | 11:00 and 17:00 local (`runs_local`), when a claim is pending | one batch, in this order: escapes filed since the last batch (specify the regression check, below); your carried UNRESOLVED claims; every claim in `judge_list.json`; the bounce list; then the verify backlog, levels L1–L3 and GREEN-MIN/FULL only (L4 is his: never yours to record) |
 
-Helpers: judge helpers only. His limit is two helpers at once across ALL roles together, not two each; until
-`HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them, you run at most one at a time. A refused launch means you work
-on with fewer, never around the refusal; a helper never starts helpers of its own (say so in its brief). A brief
+Helpers: judge helpers only. His limit is two helpers at once across ALL roles together, not two each, counting
+every role's helpers and their descendants (review roles r2 #4). You start one only after a reservation from that
+shared pool is confirmed, and `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is what gives it; until that item is closed you
+run no helper at all and judge alone (a taste call that needs a fresh judge waits UNRESOLVED, noted for the interim
+holder). A refused or unconfirmed reservation means no helper, never a way around it; a helper never starts helpers of its own (say so in its brief). A brief
 carries the item, sha, `## verify` text and evidence paths, never an account or resource figure. Judge helpers run on
 the model `infrastructure/agents/Agent_Policy.md` gives judging, never a cheaper one; which model and account is the
 Dispatcher's pick.

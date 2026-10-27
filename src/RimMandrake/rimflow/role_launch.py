@@ -588,6 +588,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
         if run["state"] == "failed":
             act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True,
+                # a blind role's item gets this line only: the result text is outside text (a usage-limit message
+                # names no token word); the full why goes to Operations' item (dispatcher.route_note, roles r2 #1)
+                note_text=None if cfg.get("token_aware") is True else "%s run %s ended without a good result "
+                "(details: the Dispatcher journal)" % (name, run["unit"]),
                 why="%s run %s ended without a good result (%s)" % (
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
                     + (res.get("result") or run.get("err_tail") or "no result file")[:160]))
@@ -698,6 +702,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         cfg = dict(ROLE_DEFAULTS, **role)
         if cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
+                note_text="role %s runs only after %s, which is not enabled" % (name, cfg["after_role"]),
                 why="role %s runs only after a %s run, and %s is not enabled: its scheduled checks will not run"
                 % (name, cfg["after_role"], cfg["after_role"]))
         rs = rst.setdefault(name, {})
@@ -712,6 +717,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 raise ValueError("slot_when %r is not done_claims" % cfg["slot_when"])
         except ValueError as e:
             act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
+                note_text="role %s NOT RUN: its schedule entry is unreadable (details: the Dispatcher journal)" % name,
                 why="role %s NOT RUN: its schedule entry is unreadable: %s" % (name, e))
             return
         # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
@@ -803,7 +809,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 pend = unseen(pending_events(cfg, lr, rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             except ValueError as e:
                 act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
-                    why="role %s NOT RUN: %s" % (name, e))
+                    note_text="role %s NOT RUN: its event triggers are unreadable (details: the Dispatcher journal)"
+                    % name, why="role %s NOT RUN: %s" % (name, e))
                 return
             per_day = int(cfg.get("event_runs_per_day", 1))
             used = [k for k in rs["done"] if k.startswith(day_of(now) + " event")]

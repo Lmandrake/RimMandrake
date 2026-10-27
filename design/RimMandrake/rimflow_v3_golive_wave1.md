@@ -146,8 +146,11 @@ Both roles carry the builder's defaults `seat BENCH`, `clone /home/mandrake/rm/b
 Healthy means all of the below. Any "not healthy" line: switch the named role off (section 7) first, investigate second.
 
 - **Launch notes.** `python3 src/RimMandrake/rimflow/cli.py show OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE | tail -n 12` (Operations' launch, done and cap
-  notes) and `... show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE | tail -n 12` (Conductor). Healthy: one launch note naming mode, band and the account per run, then a
-  "done" note for it; no cap note, no "ended without a good result".
+  notes) and `... show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE | tail -n 12` (Conductor). Healthy: on Operations' item one launch note naming mode, band and the account
+  per run; on the Conductor's item one launch note naming mode and unit only (it is token-blind: no band, no account),
+  then a "done" note for each; no cap note, no "ended without a good result". A dispatcher note meant for a token-blind
+  item that is not on its allow-list of plain texts lands on Operations' item marked `[meant for <item>; token values
+  stay off it]` (review roles r2 #1): look for those there too.
 - **Alarms.** `cat $O/alarms.json | head -c 1500` (ops_watch), `python3 -c "import json;print(json.load(open('$S/state.json'))['alarms'])"` (Dispatcher),
   `python3 src/RimMandrake/Utils/deadman_check.py run`. Healthy: no `unwakeable:*`, no `role:*:scope|supervise`, no account-pick SWITCH/HOLD/UNMEASURED alarm,
   deadman says `all arms alive`. The pre-existing `RUNWAY_LOW:codex.runway` is not new.

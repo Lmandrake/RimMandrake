@@ -618,13 +618,19 @@ def blind_items(sch):
     return {r["ledger_item"] for r in sch.get("roles") or [] if r.get("ledger_item") and r.get("token_aware") is not True}
 
 
-def route_note(sch, item, text, rx=None):
-    """-> (item, text) where a dispatcher note goes. A note holding a token term (the token_talk word list) on an item
-    a token-blind role reads goes to `token_notes_item` (Operations' own item) instead, naming where it was meant to
-    go; with no token_notes_item it is not noted (item None: the journal holds it). Owner 2026-10-27: every role but
-    Operations is token-blind; review U N2."""
-    if item not in blind_items(sch) or not (rx or token_rx(sch.get("token_rules"))).search(text):
+def route_note(sch, item, text, rx=None, blind_text=None):
+    """-> (item, text) where a dispatcher note goes. On an item a token-blind role reads, an ALLOW-LIST (review
+    roles r2 #1; owner 2026-10-27: every role but Operations is token-blind): only `blind_text`, a note the code built
+    for a blind reader (an action's `note_text`: names, unit, trigger, outcome; never a reading, budget or free text
+    from outside), is written there, and only when the token_talk word list, a second net, finds no term in it.
+    Anything else bound for a blind item (an alarm's `why`, a run's result text, a refusal reason) goes to
+    `token_notes_item` (Operations' own item) instead, naming where it was meant to go; with no token_notes_item it is
+    not noted (item None: the journal holds it). The word list is no longer the gate: a phrasing it lacks ("usage
+    limit reached") can no longer reach a blind item (it was the gate in review U N2)."""
+    if item not in blind_items(sch):
         return item, text
+    if blind_text and not (rx or token_rx(sch.get("token_rules"))).search(blind_text):
+        return item, blind_text
     to = sch.get("token_notes_item")
     return (to, "%s [meant for %s; token values stay off it]" % (text, item)) if to else (None, text)
 
@@ -800,9 +806,12 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
+                    who = (a["do"], a.get("seat") or a.get("role") or "")
                     item, text = route_note(sch, a.get("ticket") or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
-                        a["do"], a.get("seat") or a.get("role") or "",
-                        a.get("note_text") or a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
+                        # the full text (an action with a blind note_text is a blind role's: its full why is
+                        # what Operations' item gets when the note is diverted)
+                        who + (a.get("evidence") or a.get("why") or a.get("note_text") or a.get("ring_id") or "",)),
+                        blind_text=("dispatcher %s %s: %s" % (who + (a["note_text"],))) if a.get("note_text") else None)
                     if item and item != (a.get("ticket") or sch.get("alarm_item")):
                         a["noted_on"] = item
                     if not item:

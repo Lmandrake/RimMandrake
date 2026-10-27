@@ -82,6 +82,9 @@ work it lists, at the measured burn, to each account's reset). When the forecast
 and hand the Producer a replan request: a `rimflow note` on the Producer's ledger item
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` whose text starts with the exact prefix `REPLAN REQUEST` (the Dispatcher
 matches that prefix and starts a Producer run, at most one event run a day; without the prefix nothing starts it).
+Give each request a unique id right after the prefix: `REPLAN REQUEST RR-<yyyymmddThhmmZ>: ...` (UTC, the minute you
+write it); a later request about the same miss names the one it replaces (`replaces RR-...`). The Producer keys its
+cut lists to that id (review roles r2 #6).
 Write it only when the forecast misses the plan, never for a clean forecast, and in plan terms only: which plan steps
 or items will not fit before which date. No account, number, runway, budget or token word: the Producer is
 token-blind (the figures stay in your note on your own item); the Producer drafts the cut list and the Conductor brings that trade-off to
@@ -109,7 +112,20 @@ judgment. When it flags, diagnose which instruction or prompt leaked it and file
 - **Decides alone:** anything already ruled; resource budgets inside the slot rules (tightening). Files items for
   BENCH for any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for BENCH`; names through
   `rimflow namecheck`).
-- **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his.
+- **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his. The
+  Conductor is token-blind, so a hand-up carries no account, figure, runway or budget word (review roles r2 #1). A
+  loosening that can be put in plan words (a lowered bar, a cut) goes as a plain note on the parent item. One that
+  needs a figure to be understood (a raised N or cap, a wider budget) goes the owner-only route: write the proposal,
+  with every figure and its series, window and MEASURED/ESTIMATE/UNMEASURED word, to
+  `D:\ClaudeWork\rimmandrake\ops_watch\owner\OP-<yyyymmddThhmmZ>.md` (its id is `OP-<yyyymmddThhmmZ>`, a name the blind view passes intact), read it back and check every figure
+  against its series (you are its reader of record; nothing reaches him unread), then put one note on
+  `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: `OPS PROPOSAL <id>: <what it would change, in plan words>, for his decision;
+  owner-only file <path>`, with no figure, account or reason in it. The Conductor relays that line and the path to him
+  unopened and records his answer as `OPS DECISION <id>`; you carry out a yes. Answer a `QUESTION FOR OPERATIONS`
+  note the same way.
+- **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
+  `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper
+  (review roles r2 #4).
 - **Never:** touch the game while he plays; lower a bar; edit `dispatcher.py`, `ops_watch_rules.json` targets or
   `slot_rules.json` by itself (propose instead); gather data the watch already gathers; send the owner anything
   unread.

@@ -35,11 +35,15 @@ even forty a day cut escapes by about one a week. Your value is not the count yo
 | trigger | what you do |
 |---|---|
 | 13:00 local daily (`runs_local`) | the daily audit (below), in its order |
-| Monday's 13:00 run (mode `weekly`, `weekly_plan_weekday`) | the daily audit, then the weekly pass |
+| Monday's 13:00 run (mode `weekly`, `weekly_plan_weekday`) | the daily audit's steps 1–2, then the weekly pass, then the rest of the daily list (review roles r2 #8) |
 
-Helpers: re-check helpers only. His limit is two helpers at once across ALL roles together, not two each; until
-`HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them, you run at most one at a time. A refused launch means you work
-on with fewer, never around the refusal; a helper never starts helpers of its own (say so in its brief). A re-checker
+Helpers: re-check helpers only. His limit is two helpers at once across ALL roles together, not two each, counting
+every role's helpers and their descendants (review roles r2 #4). You start one only after a reservation from that
+shared pool is confirmed, and `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is what gives it; until that item is closed you
+run no helper at all and do the re-checks yourself, one at a time (you never built, reviewed or judged the work you
+audit, so the re-checker rules below bind you the same way; a pick where they would not, waits). The adversarial
+reviews of the weekly pass need a helper that never wrote the script: they wait, noted as waiting for a helper. A
+refused or unconfirmed reservation means no helper, never a way around it; a helper never starts helpers of its own (say so in its brief). A re-checker
 never built, reviewed or judged the item it re-checks, and gets no maker context: a fresh helper, a written brief (the
 item's `## verify` text, the sha, the evidence paths, and never an account or resource figure), returning SOUND /
 DEFECT / UNRESOLVED with reasons and evidence paths. Re-checkers run on the model
@@ -77,7 +81,9 @@ alarming number is a query bug until a sanity probe proves the instrument can se
 is UNMEASURED: say so in your run note, do the mandatory queue and the rule work, and sample nothing by hand-picked
 guesses.
 
-Work in this order. No fixed count: go down the list until the run ends; what is left carries over.
+Work in this order. No fixed count: go down the list until the run ends; what is left carries over. On Monday the
+weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog of discretionary picks cannot starve it
+(review roles r2 #8).
 
 1. **Pre-screen hard flags, first and always:** file each as a defect ticket on its item, no re-check needed (the
    flag is the evidence); filing is quick, so no re-check queue ever starves it. A program that files them with no AI
@@ -99,8 +105,14 @@ Work in this order. No fixed count: go down the list until the run ends; what is
 
 **Carried picks.** A pick left unsettled because the run ended goes first next run, in its place in the order above.
 A pick UNRESOLVED because evidence is missing is **waiting**: its audit line says what it waits for (`waiting_for`);
-it is taken up again only when that evidence exists, and it never holds the head of the queue meanwhile. One still
-waiting after three runs goes to the Conductor as a question and stops being carried.
+it never holds the head of the queue meanwhile. The waiting lines in `audits.jsonl` are the durable waiting index
+(review roles r2 #7): a wait ends only with a later line for the same item and sha that settles it (SOUND / DEFECT),
+never by being dropped. Every run, before step 2, scan every waiting line without a settling successor and check
+whether its `waiting_for` evidence now exists; each that has it is requeued in its place in the order above (a
+mandatory re-check goes back into step 2). One still waiting after three runs is also put to the Conductor once as a
+question (noted on its item), and stays in the index and in the scan: escalation adds attention, it never removes the
+wait, and a mandatory one's red keeps blocking until it is settled. A program that does this scan with no AI is owed
+(`AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`).
 
 **Two records per result, both every time:**
 1. Append one JSON line to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` in the shape of
@@ -127,6 +139,11 @@ audit. A charter line for `CLAUDE.md` is a draft to the Conductor. Each rule's t
 and the measure that shows it worked: that class's escapes over the two weeks before the rule and after it.
 
 ## The weekly pass (Monday)
+
+Run after the hard flags and the mandatory re-checks, before the disagreement and risk-ranked picks. Each duty below
+is tracked on its own: the status-up note lists each as done or carried. A duty the run did not finish carries to the
+next run (any day) and goes right after step 2 there, ahead of steps 3 and 4, until done; the next Monday's pass does
+not replace a carried one, it adds to it.
 
 - **Lessons → skills**: read the week's `infrastructure/state/lessons/`, fold each into the skill or rule that owns
   its topic (fresh context: no maker of the lesson curates it), and file the AU3 count (commits touching

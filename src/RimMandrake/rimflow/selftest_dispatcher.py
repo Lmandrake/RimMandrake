@@ -853,7 +853,8 @@ def test_role_execute_and_dry():
     sch = sched(roles=[role])
     st = fresh()
     act = {"do": "role_launch", "role": "Conductor", "unit": "U1", "message": "m", "ticket": "ROLES_ITEM_X",
-           "note": True, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w"}
+           "note": True, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w",
+           "note_text": "Conductor quick launched, unit U1", "note_base": "Conductor quick, unit U1"}   # as decide builds it
     noted = []
     fx = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p", "lock": lambda: open(os.devnull),
           "role_launch": lambda *a: (True, "unit U1 started", {"out": "o", "err": "e", "scope": "s"})}
@@ -1676,9 +1677,27 @@ def test_review_u_notes():
     D.execute([dict(x) for x in acts], sch, fresh(), root, True, 100.0, fx)
     check(noted[0][0] == "OPS_OWN_X" and "190000" in noted[0][1] and "ROLES_ITEM_X" in noted[0][1],
           "N2: a token note bound for the shared item goes to Operations' item, naming where it was meant to go")
-    check(noted[1][0] == "ROLES_ITEM_X", "N2: a note with no token term stays on the shared item")
+    check(noted[1][0] == "OPS_OWN_X" and "no result file" in noted[1][1],
+          "r2 #1: a note with no term but no blind note_text is NOT on the shared item (allow-list, not word list)")
     check(noted[2][0] == "OPS_OWN_X" and "[meant for" not in noted[2][1], "N2: Operations' own item is not blind")
     check(not any(i == "ROLES_ITEM_X" and rx.search(t) for i, t in noted), "N2: nothing on the shared item has a term")
+    # r2 #1: only a code-built note_text reaches a blind item; outside text the word list misses goes to Operations'
+    noted.clear()
+    D.execute([{"do": "alarm", "kind": "role:Conductor:failed", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
+                "why": "Conductor run U ended without a good result (Claude AI usage limit reached|1730000000)",
+                "note_text": "Conductor run U ended without a good result (details: the Dispatcher journal)"},
+               {"do": "alarm", "kind": "role:Conductor:x", "ticket": "ROLES_ITEM_X", "note": True,
+                "why": "Conductor run U: usage limit reached"},
+               {"do": "role_done", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
+                "why": "x", "note_text": "Conductor quick run U done, 30000 tokens"}], sch, fresh(), root, True, 100.0, fx)
+    check(noted[0] == ("ROLES_ITEM_X", "dispatcher alarm Conductor: Conductor run U ended without a good result "
+                                      "(details: the Dispatcher journal)"),
+          "r2 #1: the blind note_text, and only it, lands on the shared item")
+    check(noted[1][0] == "OPS_OWN_X" and "usage limit" in noted[1][1] and "[meant for ROLES_ITEM_X" in noted[1][1],
+          "r2 #1: free text the word list misses ('usage limit reached') goes to Operations' item")
+    check(noted[2][0] == "OPS_OWN_X", "r2 #1: a note_text with a term is diverted too (the word list as second net)")
+    check(not any(i == "ROLES_ITEM_X" and ("limit" in t or "1730000000" in t) for i, t in noted),
+          "r2 #1: no outside text on the shared item")
     noted.clear()
     sch2 = dict(sch)
     sch2.pop("token_notes_item")

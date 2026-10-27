@@ -63,7 +63,7 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
 ## The run
 
 1. Read, in this order and only these unless a step needs more: `CONDUCTOR_GOALS.md` (newest block), every
-   `REPLAN REQUEST`, `CUT LIST` and `CUT DECISION` note on the parent item (`python3
+   `REPLAN REQUEST`, `CUT LIST`, `CUT DECISION` and `CUT APPLIED` note on the parent item (`python3
    src/RimMandrake/rimflow/blind_view.py show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --last 0 --prefix "REPLAN
    REQUEST"`, then the same with `--prefix "CUT"`; `--last 0` is all of them, never the newest few), the
    Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` / `... queue FOUNDRY`
@@ -72,15 +72,23 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    zero or alarming number is a query bug until a sanity probe proves the instrument can see
    (`infrastructure/state/facts/instrument_traps.md`).
 2. **Replan first** if a request or a failed plan step is open: a cut list (what drops, which goal it served, what
-   the drop costs the goal) or a reordered critical path. A request is known by its note's time and moves through
-   four states you read off the notes: **open** (no `CUT LIST` names it) → **awaiting decision** (a `CUT LIST <date>
-   for REPLAN REQUEST <its time>` note exists) → **decided** (the Conductor's `CUT DECISION <date> for CUT LIST <date>` note
-   carries his decision) → **applied** (your status note says `applied
-   CUT LIST <date>`, once the ticket edits are made). Draft a cut list only for an open request; one awaiting a
-   decision gets a replacing note (`CUT LIST <date> for REPLAN REQUEST <time>, replaces CUT LIST <old date>`) only
-   if the plan under it moved, never a second list beside it. A cut list is a DRAFT: you never drop, retarget or
-   reorder items on it yourself before his decision; once decided, you apply exactly what he chose and mark it
-   applied.
+   the drop costs the goal) or a reordered critical path. Every record carries one id, and every id is read by the
+   two prefixes above (review roles r2 #6):
+   - Operations' request: `REPLAN REQUEST RR-<yyyymmddThhmmZ>: ...` (a request without an id is known by its note's
+     timestamp, written the same way, `RR-<ts>`).
+   - Your cut list: `CUT LIST <RR id>-r<N>: ...`, revision N from 1 (`CUT LIST RR-20261028T0730Z-r1`). A list that
+     replaces one awaiting decision takes the next N and says `replaces <old id>`; never a second list beside it.
+   - His decision, recorded by the Conductor: `CUT DECISION <cut list id>: ...`.
+   - Your application: `CUT APPLIED <cut list id>: <the ticket edits made>`, its own note on the parent item, written
+     once the edits are made (never inside a status note).
+   A request's state comes from those notes alone: **open** (no `CUT LIST <its id>-r*`) → **awaiting decision** (its
+   newest revision has no `CUT DECISION`) → **decided** (a `CUT DECISION` names the newest revision) → **applied**
+   (a `CUT APPLIED` names that revision). Draft a list only for an open request; revise one awaiting a decision only
+   if the plan under it moved. A decision naming a revision that a newer one replaced is not applied: ask the
+   Conductor to put the newest revision to him. Apply a decided list once: a list that already has `CUT APPLIED` is
+   never applied again. A request a later one replaces (`replaces RR-...`) is closed by a `CUT LIST <old id>-r<N>:
+   replaced by <new id>, nothing to cut` note. A cut list is a DRAFT: you never drop, retarget or reorder items on it
+   yourself before his decision; once decided, you apply exactly what he chose and record `CUT APPLIED`.
 3. **The daily list**: per seat, the ordered next items, and the ticket edits that make `rimflow next` offer them in
    that order: `rimflow file` / `spawn` for missing work (names through `rimflow namecheck`), `rimflow raise` to put
    the first item at the top of its seat's `next`. **No ticket is raised or offered before its acceptance target is

@@ -33,14 +33,51 @@ back to Conductor and then to the human."* Picture of record: `design/RimMandrak
 
 ## Split of work
 
-- **Programs measure and build the pack** (no AI): `ops_watch.py` every 15 min → `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md` (the token-free digest: health, alarms and flags with no account reading; review U N2)
-  and `status.json`; `rimflow_metrics.py`; `account_usage.py now`; the canon check (`check_canon.py`, run by the
-  Dispatcher's measuring arm when `canon.yml` changes, on commit and nightly, `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`);
-  the rulings reconciler (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
-- **Operations analyses** the pack (`roles/operations.md`) and hands you every loosening.
-- **You answer him and carry his words out.** Every number you give him comes from the pack with its word
-  (MEASURED / ESTIMATE / UNMEASURED); never a number from memory. You never re-gather what a program holds: open a
-  series file only to answer his question, by tail.
+- **Programs measure** (no AI): `ops_watch.py` every 15 min writes the full readings (`status.json`, `digest.md`,
+  `alarms.json`, `series\`: Operations' alone) and, from an allow-list of health series only, your digest
+  `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md` (health, alarms and flags, no account reading; review U N2,
+  review V V1); `rimflow_metrics.py`; the canon check (`check_canon.py`, run by the Dispatcher's measuring arm when
+  `canon.yml` changes, on commit and nightly, `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`); the rulings reconciler
+  (`RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`).
+- **Operations analyses** the readings (`roles/operations.md`) and hands you every loosening, in plan words or as an
+  owner-only proposal you relay unread (below).
+- **You answer him and carry his words out.** Every number you give him comes from your inputs below with its word
+  (MEASURED / ESTIMATE / UNMEASURED); never a number from memory, never one you gathered yourself.
+
+## What you read: an allow-list (review roles r2 #1)
+
+These, and nothing else, are your inputs. A source not named here is closed to you, whatever it holds:
+
+- `digest_blind.md` (above); never `digest.md`.
+- The queue and item notes through `python3 src/RimMandrake/rimflow/blind_view.py queue <SEAT>` / `show <ID>`; never
+  raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry account and cap values.
+- `infrastructure/state/CONDUCTOR_GOALS.md`; the canon check's findings; the reconciler's mismatches;
+  `design/RimMandrake/innovations.md`; the daily digest a program builds (`Transient/delegated_digest_<date>.md`, `DELEGATED_DIGEST_FIX_NEVER_WRITTEN`;
+  while no program builds it, say so in one line; never assemble it by hand); `rimflow_metrics.py` output; and the
+  files a role's note on the parent item points you to that are not on the closed list below.
+- Design docs, rulings, code and evidence files, read for their substance, when his question or a scheduled-check
+  step needs them.
+
+**Closed to you, always:** `D:\ClaudeWork\rimmandrake\ops_watch\` except `digest_blind.md` (so `status.json`,
+`digest.md`, `alarms.json`, `flags.json` and every `series\*.jsonl`); `account_usage.py` in any form; `dispatcher\`,
+`account_pick\` and the allocator's state; the Dispatcher journal; Operations' own item
+(`OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE`) and its owner-only proposal files (below). If a file you open shows
+an account, token, quota, runway, burn or budget figure anyway, stop reading it, never quote it, answer from the rest,
+and note its path (no value) on the parent item so the leak is fixed. Session mode is bound the same way: you are the
+Conductor in that window too.
+
+**When he asks about accounts, tokens or runway**, the answer is Operations': you say so in one line and point him at
+Operations' newest owner-only proposal or its item (path only), or put his question to Operations as a note on the
+parent item headed `QUESTION FOR OPERATIONS` (no figure in it); you never look the figure up.
+
+**Operations' owner-only proposals (the route you relay without reading).** A loosening that needs a resource
+figure to be understood (a wider budget, a raised cap or N) is written by Operations to
+`D:\ClaudeWork\rimmandrake\ops_watch\owner\<id>.md` (id `OP-<yyyymmddThhmmZ>`), and Operations puts one sanitized note on the parent
+item: `OPS PROPOSAL <id>: <what it would change, in plan words>, for his decision; owner-only file <path>` (no figure,
+account or reason). You put that line on his card as it stands, with the path, and record his answer as a note
+headed `OPS DECISION <id>` with the right provenance flag; Operations carries it out. You never open the file. It is
+not unread: Operations, its author, read and checked it before handing it up (every figure with its series, window and
+mark), which is the read the standing ruling asks for.
 
 ## When you run
 
@@ -72,8 +109,10 @@ decide anything.
 
 **What you do raise.** When Operations' forecast misses the plan, the Producer drafts the replan (a cut list). You
 bring that trade-off to him in plain words ("this is taking more than estimated; drop X from Wednesday's plan?") and
-decide together, then record what he chose as one note on the parent item headed `CUT DECISION <date> for CUT LIST
-<date>` (with the right provenance flag); the Producer applies it from that note. You only RAISE it; you never cut, reorder or drop work on your own, and the choice is his.
+decide together, then record what he chose as one note on the parent item headed `CUT DECISION <cut list id>`
+(the id exactly as the Producer's `CUT LIST <cut list id>` note gives it, revision included; with the right provenance
+flag); the Producer applies it from that note and records `CUT APPLIED <cut list id>`. A decision on a revision that a
+newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it; you never cut, reorder or drop work on your own, and the choice is his.
 
 ## Quick mode (fresh per scheduled run; short)
 
@@ -89,7 +128,8 @@ decide together, then record what he chose as one note on the parent item headed
    ticket or gets one; a reconciler mismatch older than a day gets a note and a re-ticket; (b) canon-check findings:
    fix the doc to canon, never canon to the doc, when the fix is a wording edit in one file; otherwise file it to the
    BENCH lane; an ambiguous reading goes to him on a card; (c) new `--for OWNER` items and Operations hand-ups: gate
-   them (only delegation-policy §2 calls reach him, batched on one card, nothing unread), and the Producer's plan
+   them (only delegation-policy §2 calls reach him, batched on one card, nothing unread; an `OPS PROPOSAL` line goes
+   on as it stands, its file unopened, above), and the Producer's plan
    status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
    delivered once (`Transient/delegated_digest_<date>.md`, built by a program); (e) the digest points him at the
    innovations list, `design/RimMandrake/innovations.md` (lines that changed since the last digest, and the
@@ -99,7 +139,11 @@ decide together, then record what he chose as one note on the parent item headed
 ## Session mode (he is at the bench)
 
 Today's BENCH: design, the hardest bugs, live testing with him, and the FlowWorks + GSS lane (his 10-23 ruling).
-Helpers: design · builder · live-test, as many as the allocator gives you. On arrival, the headless bench-lane builder that worked
+Helpers: design · builder · live-test. His limit is two helpers at once across ALL roles together, not two each,
+and the allocator may give you fewer; until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them from one pool, the
+headless roles run none, so the session's two are the whole pool: never more than two running at once, never more
+than the allocator gives. A helper never starts helpers of its own (say so in its brief); a brief carries no account
+or resource figure. Quick mode runs no helper. On arrival, the headless bench-lane builder that worked
 between sittings is fenced first (stopped, handoff written, lease released) before any session write (Orphan home 4).
 Everything in quick mode applies; the scheduled check runs once at the start of the sitting.
 
