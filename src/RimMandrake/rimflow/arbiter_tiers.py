@@ -4,7 +4,8 @@ Design: design/RimMandrake/rimflow_v3_arbiter_tiers_2026-10-27.md (item ARBITER_
 
   tier 0  deterministic gates over evidence already recorded (ledger verify/implemented/finding/note events, the
           code-review shards, close_evidence records). Outcome BOUNCE (a recorded hard failure), PASS0 (every gate
-          clear, an independent pass recorded, no risk flag) or OPEN.
+          clear, every touched path covered by a passing close_evidence run from an independent seat in an isolated
+          checkout of the sha -- a ledger verify never substitutes, review AB1 -- no risk flag) or OPEN.
   tier 1  OPEN claims that carry machine evidence are ranked by audit_prescreen's rarity-weighted risk score; those
           in the risky slice (a forced flag, or score at/above the slice cut) go to tier 2; the rest PASS1.
   tier 2  AI judgment by a judge that never built the work: the risky slice; every claim with NO machine evidence
@@ -28,7 +29,7 @@ Outputs (the Arbiter reads only the two judge-facing files; the tier labels stay
 Any unreadable input (ledger, code-review shards, past audits, close evidence, calibration salt) => UNMEASURED,
 exit 2, nothing written.
 """
-import argparse, calendar, glob, hashlib, hmac, json, os, re, secrets, subprocess, sys, time
+import argparse, calendar, contextlib, glob, hashlib, hmac, json, os, re, secrets, subprocess, sys, tempfile, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -295,8 +296,8 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
                 ev["G5_review_seats"] = sorted(seats)
                 if not (seats - makers - {"?"}):
                     ev["G5_review_by_closing_seat_only"] = True
-    # G6 close evidence (selftests, builds, validators at this sha). FAIL/UNMEASURED: the latest run per (tool, paths)
-    # anywhere in the claim's evidence. PASS only when every touched, non-deleted path is covered by a passing run of
+    # G6 close evidence (selftests, builds, validators at this sha). FAIL/UNMEASURED: per tool, the latest run covering
+    # each path anywhere in the claim's evidence (ce.summarize, by actual coverage -- review AB4). PASS only when every touched, non-deleted path is covered by a passing run of
     # the full tool (no variant: a static validate_patch never stands in for --defs); otherwise OPEN (review AA2/AA3).
     g["G6_independent"] = "NONE"
     if not isinstance(files, dict):
@@ -307,8 +308,12 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
         need = sorted(f for f, st in files.items() if st != "D")
         summ = ce.summarize(list(evidence))
         res = set(summ.values())
-        full = [r for r in evidence if r.get("result") == "PASS" and not r.get("variant")]
-        uncov = ce.uncovered(full, need) if need else ["(the commit only deletes: nothing to cover)"]
+        # review AB4: per touched path, only the LATEST run of each full tool that actually covers it may vouch for
+        # it -- an older broad PASS superseded on that path by a FAIL never counts for coverage or independence
+        latest = {f: [r for r in ce.latest_covering(list(evidence), f).values()
+                      if r.get("result") == "PASS" and not r.get("variant")] for f in need}
+        full = [r for rs in latest.values() for r in rs]
+        uncov = [f for f in need if not latest[f]] if need else ["(the commit only deletes: nothing to cover)"]
         g["G6_close_evidence"] = ("FAIL" if "FAIL" in res else "UNMEASURED" if "UNMEASURED" in res else
                                   "OPEN" if uncov else "PASS")
         ev["G6_close_evidence"] = summ
@@ -324,15 +329,16 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
         def seat_sure(r):        # the seat whoami() read in the writing process, not one a caller supplied
             o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
             return bool(r.get("seat")) and who_of(r).get("seat_from") in SEAT_SOURCES and o.get("who") == "whoami"
-        ind = [r for r in full if seat_sure(r) and r["seat"] not in makers
-               and not (csess and who_of(r).get("bridge_session") == csess)]
+        def indep(r):
+            return seat_sure(r) and r["seat"] not in makers and not (csess and who_of(r).get("bridge_session") == csess)
+        ind_all = need and all(any(indep(r) for r in latest[f]) for f in need)
         unsure = [r for r in full if not seat_sure(r)]
         if not full:
             pass                                       # no passing full run: nothing to be independent
         elif not builder_known:
             g["G6_independent"] = "UNMEASURED"
             ev["G6_independent"] = "the ledger names no builder (no claim/start/implemented before the close)"
-        elif need and full and not ce.uncovered(ind, need):
+        elif ind_all:
             g["G6_independent"] = "PASS"
         elif unsure:
             g["G6_independent"] = "UNMEASURED"
@@ -366,11 +372,12 @@ def tier0(g, flags):
             or g.get("G6_close_evidence") == "FAIL"):
         return "BOUNCE"
     g6 = g.get("G6_close_evidence", "NONE")
-    independent = ((g["G2_verify"] == "PASS" and g["G2_independent"] == "PASS") or
-                   (g6 == "PASS" and g.get("G6_independent") == "PASS" and g["G2_verify"] in ("PASS", "NONE")))
+    # review AB1: PASS0 needs independent, clean-ISOLATED-tree runs covering every touched path (G6). A ledger verify
+    # carries no sha, cleanliness or path provenance, so however independent it is it can only add, never substitute.
+    independent = g6 == "PASS" and g.get("G6_independent") == "PASS" and g["G2_verify"] in ("PASS", "NONE")
     clear = (independent and g["G1_sha"] == "PASS" and g["G3_criteria"] in ("PASS", "NONE")
              and g["G4_evidence"] in ("PASS", "NONE") and g["G5_review"] in ("PASS", "NONE")
-             and g6 in ("PASS", "NONE"))
+             and g6 == "PASS")
     if clear and not any(x in NOT_LOW_RISK for x in flags):
         return "PASS0"
     return "OPEN"
@@ -461,8 +468,11 @@ def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blo
         else:
             r["tier"] = "T1_PASS"
         r["calibration"] = r["tier"] in ("T0_PASS", "T1_PASS") and calib_pick(r["item"], r["sha"], salt)
+        # review AB8: a calibration pick needs an AI verdict like a tier-2 claim; with no AI run it is HOLD, never a
+        # silent PASS whose audit vanished from an empty judge list
+        needs_ai = r["tier"].startswith("T2") or r["calibration"]
         r["decision"] = ("BOUNCE" if r["tier"] == "T0_BOUNCE" else
-                         ("HOLD" if ai_refused else "AI") if r["tier"].startswith("T2") else "PASS")
+                         ("HOLD" if ai_refused else "AI") if needs_ai else "PASS")
     return rows, cut
 
 
@@ -505,9 +515,7 @@ def load_salt(data_dir):
         return s
     p = os.path.join(data_dir, ".calib_salt")
     if not os.path.exists(p):
-        os.makedirs(data_dir, exist_ok=True)
-        with open(p, "w") as f:
-            f.write(secrets.token_hex(32))
+        ce.publish_once(p, secrets.token_hex(32))   # review AB9: one complete salt wins; racers read the winner's
     with open(p) as f:
         s = f.read().strip()
     if not s:
@@ -516,11 +524,50 @@ def load_salt(data_dir):
 
 
 def _write_json(path, doc):
+    """Atomic replace through a tmp file unique to this writer (review AB10: a shared `.tmp` name let one writer
+    publish another's half-written document and then crash on os.replace)."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    tmp = path + ".tmp"
-    with open(tmp, "w") as f:
-        json.dump(doc, f, indent=1, default=sorted)
-    os.replace(tmp, path)
+    fd, tmp = tempfile.mkstemp(prefix=os.path.basename(path) + ".", suffix=".tmp", dir=os.path.dirname(path))
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(doc, f, indent=1, default=sorted)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
+@contextlib.contextmanager
+def _locked(data_dir, shared=False):
+    """The batch lock (review AB10): a run publishes tiers.json, its history lines, judge_list.json and bounces.json
+    under an EXCLUSIVE flock on <data>/tiers_history.jsonl.lock, so two runs never interleave and the judge list and
+    bounces always come from one run; `join` reads the history under a SHARED lock (drvfs appends are not atomic)."""
+    import fcntl
+    os.makedirs(data_dir, exist_ok=True)
+    fd = os.open(os.path.join(data_dir, "tiers_history.jsonl.lock"), os.O_RDWR | os.O_CREAT, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_SH if shared else fcntl.LOCK_EX)
+        yield
+    finally:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+        finally:
+            os.close(fd)
+
+
+def _unique(path):
+    """`path`, or `path` with -2, -3 ... before the extension when it exists: a per-run snapshot is never
+    overwritten by a second run in the same second (history is kept). Call under _locked()."""
+    if not os.path.exists(path):
+        return path
+    stem, ext = os.path.splitext(path)
+    k = 2
+    while os.path.exists("%s-%d%s" % (stem, k, ext)):
+        k += 1
+    return "%s-%d%s" % (stem, k, ext)
 
 
 def join(argv):
@@ -531,8 +578,10 @@ def join(argv):
     a = a.parse_args(argv)
     hist = {}
     try:
-        with open(os.path.join(a.data, "tiers_history.jsonl")) as fh:
-            for line in fh:
+        with _locked(a.data, shared=True), open(os.path.join(a.data, "tiers_history.jsonl")) as fh:
+            lines = fh.readlines()
+        for line in lines:
+            if line.strip():
                 d = json.loads(line)
                 hist[(d["item"], d["sha"])] = d
         with open(a.verdicts) as fh:
@@ -545,8 +594,8 @@ def join(argv):
         h = hist.get((v.get("item"), v.get("sha")))
         out.append(dict(v, tier=h["tier"] if h else "UNKNOWN", calibration=h["calibration"] if h else None,
                         tiered_at=h["generated"] if h else None))
-    tmp = os.path.join(a.data, "verdicts_tiered.jsonl.tmp")
-    with open(tmp, "w") as f:
+    fd, tmp = tempfile.mkstemp(prefix="verdicts_tiered.jsonl.", suffix=".tmp", dir=a.data)
+    with os.fdopen(fd, "w") as f:
         f.writelines(json.dumps(r, sort_keys=True) + "\n" for r in out)
     os.replace(tmp, os.path.join(a.data, "verdicts_tiered.jsonl"))
     print("joined %d verdicts; %d with no tier record" % (len(out), sum(1 for r in out if r["tier"] == "UNKNOWN")))
@@ -612,16 +661,17 @@ def main(argv=None, events=None, _inject=None):
            "closes_seen": len(rows), "slice_cut_score": cut, "ai_refused": a.ai_refused, "mix": mix(rows),
            "gate_counts": gate_counts, "signal_counts_rates": ap.signal_rates(rows),
            "close_evidence_records": len(evid), "rows": rows}
-    _write_json(os.path.join(a.data, "tiers.json"), doc)
-    _write_json(os.path.join(a.data, "tiers_%s.json" % gen.replace(":", "").replace("-", "")), doc)
-    with open(os.path.join(a.data, "tiers_history.jsonl"), "a") as f:
-        for r in rows:
-            f.write(json.dumps({"generated": gen, "item": r["item"], "sha": r["sha"], "tier": r["tier"],
-                                "calibration": r["calibration"], "decision": r["decision"]}) + "\n")
-    _write_json(os.path.join(a.judge_dir, "judge_list.json"),
-                {"generated": gen, "claims": [] if a.ai_refused else judge_list(rows, salt)})
-    _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "advisory": True,
-                                                             "bounces": bounce_list(rows)})
+    with _locked(a.data):
+        _write_json(os.path.join(a.data, "tiers.json"), doc)
+        _write_json(_unique(os.path.join(a.data, "tiers_%s.json" % gen.replace(":", "").replace("-", ""))), doc)
+        hist = "".join(json.dumps({"generated": gen, "item": r["item"], "sha": r["sha"], "tier": r["tier"],
+                                   "calibration": r["calibration"], "decision": r["decision"]}) + "\n" for r in rows)
+        with open(os.path.join(a.data, "tiers_history.jsonl"), "a") as f:
+            f.write(hist)
+        _write_json(os.path.join(a.judge_dir, "judge_list.json"),
+                    {"generated": gen, "claims": [] if a.ai_refused else judge_list(rows, salt)})
+        _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "advisory": True,
+                                                                 "bounces": bounce_list(rows)})
     print("closes seen: %d  (since %s)  slice cut score: %s  close-evidence records: %d"
           % (len(rows), doc["since"], cut, len(evid)))
     for t, (k, rt) in doc["mix"].items():

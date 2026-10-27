@@ -11,7 +11,7 @@ Where: one JSONL per UTC day, `<agent storage>/rimmandrake/evidence/YYYY-MM-DD.j
 (selftests). Append-only: a line is never rewritten. Appends hold an flock on `<day>.jsonl.lock`: on D: (drvfs)
 O_APPEND alone is NOT atomic -- 24 concurrent writers kept 41 of 960 lines (review Z F1).
 
-A line (v3): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths, covers, result, item, seat, who,
+A line (v4): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths, covers, result, item, seat, who,
               origin, live_only, variant, detail, mac}
   * seat/who -- WHO ran it (whoami(): rimflow's seat order, the session id, the bridge session that commit trailers
               name, the agent); seat None when nothing names a valid rimflow seat.
@@ -34,9 +34,13 @@ A line (v3): {v, ts, tool, clone, sha, dirty, dirty_n, dirty_paths, start, paths
               payload from another process, whose start/end nothing here can vouch for.
   * mac    -- HMAC-SHA256 over the rest of the line under the user's key file (KEY_ENV, else ~/.config/rimmandrake/
               close_evidence.key, 0600, created on first write). A line written by anything but record() fails it.
-Schema: counts_as_evidence() takes v == 3 lines only, with every REQUIRED field, via "inproc", start "snapshot",
-end "git" and a valid mac. v1 lines (racy end-only recorder), v2 lines (written while `record` trusted its payload)
-and v-less lines (hand-built) are never evidence (review AA5).
+  * origin.tree -- "isolated" when the run's clone is a private checkout make_isolated()/`isolated` made for the
+              end sha (marker under the mac key), else "shared" (review AB2: seat clones are shared by concurrent
+              agents, so a file can change and be restored mid-run and equal clean endpoints prove nothing).
+Schema: counts_as_evidence() takes v == 4 lines only, with every REQUIRED field, via "inproc", start "snapshot",
+end "git", tree "isolated" and a valid mac. v1 lines (racy end-only recorder), v2 lines (written while `record`
+trusted its payload), v3 lines (shared-clone runs) and v-less lines (hand-built) are never evidence (review AA5, AB2).
+To make evidence: `close_evidence.py isolated [--sha S] -- <tool command>` (a ~11 s, ~3.6 GB transient checkout).
 
 THE LIMIT, honestly: these are plain files written by the same Unix user that runs every agent. The mac and the origin
 check stop ACCIDENTAL and LAZY forgery -- a hand-appended or `echo >>` line, a payload piped to `record`, a fixture
@@ -56,6 +60,7 @@ Under the selftest runner (`RM_SELFTEST_NESTED`) a tool run by a test writes not
 
     python3 src/RimMandrake/Utils/close_evidence.py lookup --sha <sha> [--item ID] [--tool T] [--path P ...] [--all]
     python3 src/RimMandrake/Utils/close_evidence.py where
+    python3 src/RimMandrake/Utils/close_evidence.py isolated [--clone C] [--sha S] -- <cmd ...>
 """
 from __future__ import annotations
 
@@ -72,12 +77,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-V = 3
+V = 4                          # v4: origin.tree (review AB2); v3 and older lines are never evidence
 RESULTS = ("PASS", "FAIL", "UNMEASURED")
 ENV_DIR = "RM_CLOSE_EVIDENCE_DIR"
 KEY_ENV = "RM_CLOSE_EVIDENCE_KEY"            # path of the mac key file (selftests); default DEFAULT_KEY
 DEFAULT_KEY = Path.home() / ".config" / "rimmandrake" / "close_evidence.key"
-#: Fields every v3 line carries; a line missing one is not evidence.
+#: Fields every v4 line carries; a line missing one is not evidence.
 REQUIRED = ("v", "ts", "tool", "clone", "sha", "dirty", "start", "paths", "covers", "result", "seat", "who", "origin",
             "live_only", "variant", "mac")
 #: Per-process secret: a start/end state carrying a token under it was made by tree_state() in THIS process.
@@ -173,10 +178,14 @@ def tree_state(clone, scope=None) -> dict:
         if len(e) < 4:
             continue
         code, path = e[:2], e[3:]
-        if code[0] in "RC":          # rename/copy: the next NUL field is the source path
+        both = [path]
+        if code[0] in "RC" and i < len(recs):    # rename/copy: the next NUL field is the source path
+            both.append(recs[i])
             i += 1
-        if not path.startswith(DIRTY_IGNORE):
-            paths.append(path)
+        # review AB3: a rename INTO conversations/ removed a tracked file from outside it -- dirty when EITHER side
+        # lies outside DIRTY_IGNORE (both are named, so the source is never hidden behind an ignored destination)
+        if any(p and not p.startswith(DIRTY_IGNORE) for p in both):
+            paths += [p for p in both if p and not p.startswith(DIRTY_IGNORE)]
     st.update(dirty=bool(paths), dirty_n=len(paths), dirty_paths=sorted(paths)[:DIRTY_KEEP])
     st[_TOKEN] = _state_token(st)
     return st
@@ -282,20 +291,43 @@ def _key_path() -> Path:
     return Path(os.environ.get(KEY_ENV, "").strip() or DEFAULT_KEY)
 
 
+def publish_once(path, content: str, mode=0o600) -> bool:
+    """Publish `content` at `path` only if nothing is there, never exposing a partial file (review AB7/AB9): the text
+    goes into a create-exclusive tmp file with a unique name, is fsynced, then hard-linked into place -- a link is a
+    rename that refuses to replace, so of N racing initialisers exactly one wins and the rest read the winner's
+    complete file. A reader can never see an empty or half-written key/salt. True when this call published it."""
+    p = Path(path)
+    if p.exists():
+        return False
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.parent / (".%s.%d.%s.tmp" % (p.name, os.getpid(), secrets.token_hex(6)))
+    fd = os.open(str(tmp), os.O_WRONLY | os.O_CREAT | os.O_EXCL, mode)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(content)
+            fh.flush()
+            os.fsync(fh.fileno())
+        try:
+            os.link(str(tmp), str(p))
+            return True
+        except FileExistsError:
+            return False
+    finally:
+        try:
+            os.unlink(str(tmp))
+        except OSError:
+            pass
+
+
 def _key(create=False) -> bytes:
     """The mac key. Reading: a missing key raises (nothing could be verified -- that is UNMEASURED, not 'no
-    evidence'). Writing: created once, 0600."""
+    evidence'). Writing: created once, 0600, published atomically by publish_once() (review AB7: a writer racing the
+    initialiser read an empty file and dropped its FAIL)."""
     p = _key_path()
     if not p.is_file():
         if not create:
             raise RuntimeError("close-evidence key %s missing: no line can be verified" % p)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            fd = os.open(str(p), os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-            with os.fdopen(fd, "w") as fh:
-                fh.write(secrets.token_hex(32))
-        except FileExistsError:
-            pass
+        publish_once(p, secrets.token_hex(32))
     k = p.read_text(encoding="utf-8").strip()
     if len(k) < 32:
         raise RuntimeError("close-evidence key %s is empty or short" % p)
@@ -319,6 +351,83 @@ def mac_ok(rec, key) -> bool:
     return isinstance(m, str) and hmac.compare_digest(m, _mac(rec, key))
 
 
+# ------------------------------------------------------------------ isolated checkouts (review AB2)
+#
+# The seat clones are shared by concurrent agents: a file can change and be restored DURING a run, so equal clean
+# snapshots at start and end do not prove the run read that sha (A -> B -> A passes both; a content hash of the
+# covered paths at both ends is blind to it for the same reason). Only a run inside a private checkout of the sha,
+# which no other agent knows the path of, speaks for the sha. make_isolated() makes one (`git clone --shared
+# --no-checkout` + detached checkout: ~11 s and ~3.6 GB transient for the bench clone, deleted afterwards) and leaves
+# a marker in its .git under the mac key; record() writes origin.tree "isolated" only for a clone carrying a valid
+# marker for its end sha. Runs in a shared clone stay recorded (audit) but are never evidence.
+
+ISOLATED_MARK = "rm_isolated"
+ISOLATED_ROOT_ENV = "RM_ISOLATED_ROOT"     # where checkouts go; default the temp dir (ext4, not drvfs)
+
+
+def _iso_msg(clone, sha) -> bytes:
+    return json.dumps(["isolated", os.path.realpath(str(clone)), (sha or "").lower()]).encode()
+
+
+def isolated_ok(clone, sha) -> bool:
+    """`clone` is a checkout make_isolated() made for exactly `sha` (marker valid under the mac key)."""
+    if not clone or not sha:
+        return False
+    try:
+        mark = (Path(clone) / ".git" / ISOLATED_MARK).read_text(encoding="utf-8").strip()
+        return hmac.compare_digest(mark, hmac.new(_key(), _iso_msg(clone, sha), hashlib.sha256).hexdigest())
+    except (OSError, RuntimeError):
+        return False
+
+
+def make_isolated(clone, sha="HEAD", root=None) -> tuple:
+    """A private checkout of `sha` from `clone` -> (checkout dir, full sha, temp dir to delete). Raises on failure."""
+    import tempfile
+    rc, out = _git(clone, "rev-parse", "--verify", "%s^{commit}" % sha, timeout=30)
+    if rc != 0 or not _SHA_RE.fullmatch(out.strip()):
+        raise RuntimeError("%s does not resolve in %s" % (sha, clone))
+    full = out.strip()
+    base = root or os.environ.get(ISOLATED_ROOT_ENV) or tempfile.gettempdir()
+    Path(base).mkdir(parents=True, exist_ok=True)
+    td = tempfile.mkdtemp(prefix="ce_iso_", dir=str(base))
+    co = os.path.join(td, "c")
+    for args in (["clone", "-q", "--shared", "--no-checkout", os.path.realpath(str(clone)), co],
+                 ["-C", co, "checkout", "-q", "--detach", full]):
+        r = subprocess.run(["git", *args], capture_output=True, text=True, timeout=540)
+        if r.returncode != 0:
+            import shutil
+            shutil.rmtree(td, ignore_errors=True)
+            raise RuntimeError("git %s failed: %s" % (args[0] if args[0] != "-C" else args[2], r.stderr.strip()[-300:]))
+    key = _key(create=True)
+    (Path(co) / ".git" / ISOLATED_MARK).write_text(
+        hmac.new(key, _iso_msg(co, full), hashlib.sha256).hexdigest(), encoding="utf-8")
+    return os.path.realpath(co), full, td
+
+
+def _isolated_cli(argv) -> int:
+    """`isolated [--clone C] [--sha S] -- cmd ...`: run cmd (cwd = a private checkout of S) and delete the checkout.
+    Evidence the cmd records there is sha evidence; e.g. `close_evidence.py isolated -- python3
+    src/RimMandrake/Utils/run_selftests.py --only <tests>` (run_selftests' repo root is its own file's clone)."""
+    import shutil
+    ap = argparse.ArgumentParser(prog="close_evidence.py isolated")
+    ap.add_argument("--clone", default=os.getcwd())
+    ap.add_argument("--sha", default="HEAD")
+    ap.add_argument("--keep", action="store_true", help="leave the checkout (debugging)")
+    ap.add_argument("cmd", nargs=argparse.REMAINDER)
+    a = ap.parse_args(argv)
+    cmd = a.cmd[1:] if a.cmd[:1] == ["--"] else a.cmd
+    if not cmd:
+        ap.error("a command is needed after --")
+    clone = clone_of(a.clone) or a.clone
+    co, full, td = make_isolated(clone, a.sha)
+    print("close_evidence: isolated checkout of %s at %s" % (full[:12], co), file=sys.stderr, flush=True)
+    try:
+        return subprocess.run(cmd, cwd=co).returncode
+    finally:
+        if not a.keep:
+            shutil.rmtree(td, ignore_errors=True)
+
+
 def build_record(tool, result, paths, clone=None, detail=None, item=None, now=None, start=None, end=None,
                  scope=None, covers=None, live_only=False, variant=None, seat=None, who=None, via="inproc") -> dict:
     if result not in RESULTS:
@@ -332,6 +441,7 @@ def build_record(tool, result, paths, clone=None, detail=None, item=None, now=No
     who_from = "caller" if isinstance(who, dict) else "whoami"
     origin = {"via": via, "start": "snapshot" if (via == "inproc" and _minted_here(start)) else "caller",
               "end": "git" if (via == "inproc" and _minted_here(end)) else "caller",
+              "tree": "isolated" if (via == "inproc" and isolated_ok(clone, end.get("sha"))) else "shared",
               "who": who_from, "pid": os.getpid(), "host": socket.gethostname()}
     st = {"sha": end.get("sha"), "dirty": end.get("dirty"), "dirty_n": end.get("dirty_n"),
           "dirty_paths": list(end.get("dirty_paths") or [])}
@@ -476,7 +586,7 @@ def _sha_match(a, b) -> bool:
 
 
 def schema_problems(rec) -> list:
-    """Why a line is not a v3 line this module wrote: [] when it is (mac not checked here; see mac_ok)."""
+    """Why a line is not a v4 line this module wrote: [] when it is (mac not checked here; see mac_ok)."""
     probs = []
     if rec.get("v") != V:
         probs.append("v=%r (only v%d lines are evidence)" % (rec.get("v"), V))
@@ -488,11 +598,14 @@ def schema_problems(rec) -> list:
         probs.append("origin.start=%r (start state not minted by snapshot() in the writing process)" % o.get("start"))
     if o.get("end") != "git":
         probs.append("origin.end=%r (end state not read from git by the writer)" % o.get("end"))
+    if o.get("tree") != "isolated":
+        probs.append("origin.tree=%r (run in a clone other agents share: the tree may have changed mid-run)"
+                     % o.get("tree"))
     return probs
 
 
 def counts_as_evidence(rec, key=None) -> bool:
-    """A record speaks for its sha only when it is a v3 line record() wrote (schema_problems() empty; mac valid under
+    """A record speaks for its sha only when it is a v4 line record() wrote in an isolated checkout (schema_problems() empty; mac valid under
     `key` when given -- lookup() always gives it), from a clean tree at a known sha, the same at the start and the end
     of the run, and describes a tree (not a live game). v1, v2 and v-less lines never do."""
     if not (bool(rec.get("sha")) and rec.get("dirty") is False and rec.get("result") in RESULTS):
@@ -539,13 +652,54 @@ def uncovered(records, paths) -> list:
     return [p for p in paths if not any(covered(r, [p]) for r in records)]
 
 
-def _bad_marker(sha, frags) -> dict:
-    """An UNMEASURED record standing for unreadable line(s) that may have held a run at `sha` (F1: a lost FAIL must
-    never leave an older PASS standing)."""
+def _bad_marker(sha, frags, unverifiable=0) -> dict:
+    """An UNMEASURED record standing for unreadable or unverifiable line(s) that may have held a run at `sha` (F1,
+    review AB5: a lost or damaged FAIL must never leave an older PASS standing)."""
     return {"v": V, "ts": "", "tool": "close_evidence", "clone": None, "sha": sha, "dirty": False, "dirty_n": 0,
             "dirty_paths": [], "start": {"sha": sha, "dirty": False, "dirty_n": 0}, "paths": [ALL], "covers": [ALL],
             "result": "UNMEASURED", "item": None, "seat": None, "live_only": False, "variant": None,
-            "detail": {"unreadable_lines": len(frags), "days": sorted({d for d, _ in frags})}}
+            "detail": {"unreadable_lines": len(frags) - unverifiable, "unverifiable_lines": unverifiable,
+                       "days": sorted({d for d, _ in frags})}}
+
+
+def _top_level(text, key):
+    """The string value of TOP-LEVEL `key` in a possibly truncated JSON object text, or None when it cannot be
+    recovered unambiguously: absent, cut off, not a string, or present twice at the top level (review AB6: a hash
+    inside `detail` says nothing about whose line this was)."""
+    found, depth, i, n, last = [], 0, 0, len(text), None
+    while i < n:
+        c = text[i]
+        if c == '"':
+            j, esc = i + 1, False
+            while j < n and (esc or text[j] != '"'):
+                esc = (not esc) and text[j] == "\\"
+                j += 1
+            if j >= n:
+                break                                 # string cut off
+            last = (depth, text[i:j + 1])
+            i = j + 1
+            continue
+        if c in "{[":
+            depth += 1
+        elif c in "}]":
+            depth -= 1
+        elif c == ":" and depth == 1 and last and last[0] == 1:
+            try:
+                k = json.loads(last[1])
+            except ValueError:
+                k = None
+            if k == key:
+                m = re.match(r'\s*("(?:[^"\\]|\\.)*")', text[i + 1:])
+                try:
+                    found.append(json.loads(m.group(1)) if m else None)
+                except ValueError:
+                    found.append(None)
+        last = None if c not in " \t\r\n" else last
+        i += 1
+    return found[0] if len(found) == 1 and isinstance(found[0], str) else None
+
+
+_SHA_ANY = re.compile(r"[0-9a-fA-F]{7,40}")
 
 
 def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=False, paths=None,
@@ -556,15 +710,28 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
     item given: records tagged with that item; with sha too, both must match.
     paths given: only records that cover at least one of them (repo-relative or absolute), so a partial run counts
     only for what it tested; uncovered(records, paths) names the rest.
-    Dirty, unknown-tree, start/end-drift, forged (bad mac / origin) and pre-v3 records are excluded unless include_dirty (audit only); live-only
-    (modcheck) records unless include_live. An unreadable line in the window that names this sha, or names no sha at
-    all, adds an UNMEASURED `close_evidence` record: a corrupted FAIL is never read as absent."""
+    Dirty, unknown-tree, start/end-drift, shared-clone, cli-origin and pre-v4 records are excluded unless include_dirty
+    (audit only); live-only (modcheck) records unless include_live. Lines that cannot be trusted are never dropped
+    silently: an unreadable line, or a JSON line whose mac does not verify (a damaged FAIL, a UTF-8 replacement, a
+    hand-written or pre-v3 line), adds ONE UNMEASURED `close_evidence` record when it may concern this lookup -- its
+    TOP-LEVEL sha matches or cannot be recovered, and (with tool) its top-level tool matches or cannot be recovered."""
     if not sha and not item:
         raise ValueError("lookup needs a sha or an item")
     key = _key()                       # raises when missing: nothing verifiable is UNMEASURED, not "no evidence"
     bad: list = []
-    hits = []
+    hits, unver = [], []
     for r in read_all(days, folder, bad_out=bad):
+        if not mac_ok(r, key):                        # review AB5: unverifiable is UNMEASURED, never absent
+            rs, rt = r.get("sha"), r.get("tool")
+            if isinstance(rs, str) and _SHA_ANY.fullmatch(rs):
+                if not sha or not _sha_match(rs, sha):
+                    continue                          # a readable top-level sha: another commit's line
+            elif not sha:
+                continue                              # an item lookup cannot attribute a line with no sha
+            if tool and isinstance(rt, str) and rt != tool:
+                continue
+            unver.append(("?", json.dumps(r, default=str)))
+            continue
         if sha and not _sha_match(r.get("sha"), sha):
             continue
         if item and r.get("item") != item:
@@ -572,38 +739,65 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
         if tool and r.get("tool") != tool:
             continue
         if r.get("live_only"):
-            if not include_live or not mac_ok(r, key):
+            if not include_live:
                 continue
         elif not include_dirty and not counts_as_evidence(r, key):
             continue
         if paths and not covered(r, list(paths)):
             continue
         hits.append(r)
-    if bad and sha:
+    if sha:
         def maybe_ours(ln):
-            low = ln.lower()
-            shas = _SHA_RE.findall(low)
-            if shas and not any(_sha_match(s, sha) for s in shas):
-                return False                  # names other commits only
-            return not (tool and '"tool": "' in ln and '"tool": "%s"' % tool not in ln)
-        frags = [(d, ln) for d, ln in bad if maybe_ours(ln)]
+            s = _top_level(ln, "sha")
+            if s is not None and _SHA_ANY.fullmatch(s) and not _sha_match(s, sha):
+                return False                  # its own top-level sha names another commit
+            t = _top_level(ln, "tool")
+            return not (tool and t is not None and t != tool)
+        frags = [(d, ln) for d, ln in bad if maybe_ours(ln)] + unver
         if frags:
-            hits.append(_bad_marker(sha, frags))
+            hits.append(_bad_marker(sha, frags, unverifiable=len(unver)))
     return hits
 
 
-def summarize(records) -> dict:
-    """{tool: PASS|FAIL|UNMEASURED}: per tool, the latest record per covered-path set; FAIL beats UNMEASURED
-    beats PASS across sets. A gate reads PASS only when every latest run of that tool passed. A record's variant
-    (validate_patch without --defs) is its own key, `tool:variant`, so a static check never stands in for the real one."""
-    latest = {}
-    for r in sorted(records, key=lambda r: r.get("ts") or ""):
-        key = r["tool"] + (":%s" % r["variant"] if r.get("variant") else "")
-        latest[(key, tuple(r.get("paths") or ()))] = r["result"]
+def _toolkey(r) -> str:
+    return r["tool"] + (":%s" % r["variant"] if r.get("variant") else "")
+
+
+def _cov(r) -> list:
+    cov = r.get("covers")
+    cov = cov if isinstance(cov, list) else (r.get("paths") or [])
+    return cov or ["\0"]                 # a run that names nothing is its own key (never covers a real path)
+
+
+def latest_covering(records, path) -> dict:
+    """{tool key: the latest record (ts, then file order) whose actual coverage includes `path`} (review AB4)."""
     out = {}
-    for (tool, _), res in latest.items():
-        prev = out.get(tool)
-        out[tool] = res if prev is None else min(prev, res, key=("FAIL", "UNMEASURED", "PASS").index)
+    for r in sorted(records, key=lambda r: r.get("ts") or ""):
+        if covered(r, [path]):
+            out[_toolkey(r)] = r
+    return out
+
+
+def summarize(records) -> dict:
+    """{tool: PASS|FAIL|UNMEASURED} by ACTUAL coverage (review AB4): for each path any run of the tool covered, the
+    latest run covering that path decides it; the tool reads the worst over its paths (FAIL < UNMEASURED < PASS). A
+    later narrow PASS of {a} therefore never erases an earlier FAIL of {b}, whatever paths the runs were pointed at;
+    a later run covering b does. A variant (validate_patch without --defs) is its own key, `tool:variant`."""
+    order = ("FAIL", "UNMEASURED", "PASS").index
+    by: dict = {}
+    for r in sorted(records, key=lambda r: r.get("ts") or ""):
+        by.setdefault(_toolkey(r), []).append(r)
+    out = {}
+    for k, rs in by.items():
+        worst = None
+        for p in {c for r in rs for c in _cov(r)}:
+            last = None
+            for r in rs:
+                if any(_covers(c, p) for c in _cov(r)):
+                    last = r
+            res = last["result"] if last else "UNMEASURED"
+            worst = res if worst is None else min(worst, res, key=order)
+        out[k] = worst
     return out
 
 
@@ -635,6 +829,9 @@ def _record_cli() -> int:
 
 
 def _main(argv=None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ["isolated"]:
+        return _isolated_cli(argv[1:])
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     lk = sub.add_parser("lookup", help="evidence for a sha and/or item")
@@ -647,6 +844,7 @@ def _main(argv=None) -> int:
     lk.add_argument("--live", action="store_true", help="include live-only (modcheck) records (never sha evidence)")
     sub.add_parser("where", help="print the evidence folder")
     sub.add_parser("record", help="internal: one JSON record payload on stdin (Windows python.exe callers)")
+    sub.add_parser("isolated", help="isolated [--clone C] [--sha S] -- cmd ...: run cmd in a private checkout of S")
     a = ap.parse_args(argv)
     if a.cmd == "where":
         print(evidence_dir())

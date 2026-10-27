@@ -12,6 +12,9 @@ F5 lookup(paths=) and DROPPED -> UNMEASURED; F6 validate_patch unread target -> 
 stage snapshots and rsync failure; F8 --no-optional-locks; F9 per-clone selftest lines; F10 AGENT_SEAT; WHO seat/session/agent per line.
 Review AA (v3): only sealed v3 lines with an in-process origin are evidence (no-v, v2, edited, typed-in start/end and
 record-CLI lines are not); a missing key raises; 24 writers on D: with a looping reader keep all 960 lines.
+Review AB (v4): AB2 only a run inside an isolated checkout of the sha is evidence (and the `isolated` CLI makes one);
+AB3 a rename into conversations/ is dirt; AB4 summarize by actual coverage; AB5/AB6 an unverifiable or truncated FAIL
+reads UNMEASURED, attributed only by its top-level sha; AB7 racing key initialisers agree.
 """
 import io
 import json
@@ -39,8 +42,22 @@ def check(cond, msg):
 
 
 def git(repo, *a):
-    return subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t", *a],
-                          capture_output=True, text=True, check=True).stdout.strip()
+    out = subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t", *a],
+                         capture_output=True, text=True, check=True).stdout.strip()
+    if a[:1] == ("commit",):
+        iso_mark(repo)
+    return out
+
+
+def iso_mark(repo):
+    """Stamp a fixture clone as an isolated checkout of its HEAD (what CE.make_isolated leaves behind), so the
+    pre-AB groups keep testing what they test. The test is the forger here; the AB group tests the real route."""
+    sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], capture_output=True, text=True,
+                         check=True).stdout.strip()
+    import hashlib
+    import hmac
+    (Path(repo) / ".git" / CE.ISOLATED_MARK).write_text(
+        hmac.new(CE._key(create=True), CE._iso_msg(repo, sha), hashlib.sha256).hexdigest())
 
 
 def make_repo(root):
@@ -195,6 +212,7 @@ def main():
 
         review_z(td, store, repo, sha2)
         review_aa(Path(td) / "aa")
+        review_ab(Path(td) / "ab")
 
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
@@ -232,14 +250,17 @@ def review_aa(root):
 
     # NOV: a hand-written line with no v, a v2 line, an edited sealed line
     append({"tool": "novtool", "sha": sha, "dirty": False, "result": "PASS", "paths": ["src/a.py"], "ts": good["ts"]})
-    check(CE.lookup(sha=sha, tool="novtool") == [], "AA-NOV a line with no v is not evidence")
+    um = lambda hs: [(h["tool"], h["result"]) for h in hs]      # noqa: E731
+    check(um(CE.lookup(sha=sha, tool="novtool")) == [("close_evidence", "UNMEASURED")],
+          "AA-NOV a line with no v is not evidence (AB5: unverifiable -> UNMEASURED, never a PASS)")
     v2 = {k: v for k, v in good.items() if k not in ("origin", "mac")}
     append(dict(v2, v=2, tool="v2tool"))
-    check(CE.lookup(sha=sha, tool="v2tool") == [], "AA-NOV a v2 line is not evidence")
+    check(um(CE.lookup(sha=sha, tool="v2tool")) == [("close_evidence", "UNMEASURED")],
+          "AA-NOV a v2 line is not evidence (AB5: UNMEASURED)")
     bad = CE.record("edittool", "FAIL", [repo / "src" / "a.py"], clone=repo, start=CE.snapshot(repo))
     append(dict(bad, result="PASS", ts=bad["ts"][:-6] + "9" + bad["ts"][-6:]))
-    check([r["result"] for r in CE.lookup(sha=sha, tool="edittool")] == ["FAIL"],
-          "AA-NOV a sealed line edited FAIL->PASS fails its mac; the FAIL stands")
+    check([r["result"] for r in CE.lookup(sha=sha, tool="edittool")] == ["FAIL", "UNMEASURED"],
+          "AA-NOV a sealed line edited FAIL->PASS fails its mac; the FAIL stands, the edit reads UNMEASURED")
     check(not CE.mac_ok(dict(good, seat="RUNNER"), CE._key()), "AA a changed seat breaks the mac")
     # FORGE: typed-in start/end in process; a record CLI payload asserting sha, clean tree and seat
     st = {"sha": sha, "dirty": False, "dirty_n": 0}
@@ -294,6 +315,113 @@ def review_aa(root):
             shutil.rmtree(dst, ignore_errors=True)
     else:
         print("AA1 drvfs reader probe: no /mnt/d here -- UNMEASURED, not a pass or a fail")
+
+
+# ------------------------------------------------------------------ review AB
+
+def _keyinit(kp):
+    """One racing key initialiser (AB7): returns the key it read, or the error it raised."""
+    os.environ[CE.KEY_ENV] = kp
+    try:
+        return CE._key(create=True).decode()
+    except Exception as e:                         # noqa: BLE001 -- the race outcome IS the result
+        return "ERR %r" % e
+
+
+def review_ab(root):
+    """Review AB, one check per real finding: AB2 a shared-clone run is never evidence, an isolated checkout's is;
+    AB3 a rename into conversations/ is dirt; AB4 summarize by actual coverage; AB5 a JSON line whose mac fails reads
+    UNMEASURED; AB6 a truncated FAIL is attributed only by its top-level sha; AB7 racing key initialisers all agree."""
+    root.mkdir()
+    repo, sha = make_repo(root)
+    store = root / "store"
+    os.environ[CE.ENV_DIR] = str(store)
+    os.environ[CE.ISOLATED_ROOT_ENV] = str(root / "iso")
+    a = repo / "src" / "a.py"
+    # AB2: the fixture marker gone = an ordinary shared clone; A -> B -> A mid-run passes both snapshots
+    (repo / ".git" / CE.ISOLATED_MARK).unlink()
+    st = CE.snapshot(repo)
+    a.write_text("x = 99\n")
+    a.write_text("x = 1\n")
+    r = CE.record("sharedtool", "PASS", [a], clone=repo, start=st)
+    check(r["origin"]["tree"] == "shared" and not CE.counts_as_evidence(r)
+          and CE.lookup(sha=sha, tool="sharedtool") == [],
+          "AB2 a run in a shared clone (A->B->A mid-run passes both snapshots) is never evidence: %r" % r["origin"])
+    co, full, td = CE.make_isolated(repo)
+    try:
+        ri = CE.record("isotool", "PASS", [Path(co) / "src" / "a.py"], clone=co, start=CE.snapshot(co))
+        check(full == sha and ri["origin"]["tree"] == "isolated" and len(CE.lookup(sha=sha, tool="isotool")) == 1,
+              "AB2 a run in make_isolated()'s checkout is evidence: %r" % ri["origin"])
+        check(not CE.isolated_ok(co, "0" * 40) and not CE.isolated_ok(repo, sha),
+              "AB2 the marker speaks for its own checkout and sha only")
+    finally:
+        shutil.rmtree(td, ignore_errors=True)
+    prog = ("import os,sys; sys.path.insert(0, %r); import close_evidence as CE; c=os.getcwd(); "
+            "CE.record('isocli', 'PASS', [os.path.join(c, 'src/a.py')], clone=c, start=CE.snapshot(c))" % str(HERE))
+    cp = subprocess.run([sys.executable, str(HERE / "close_evidence.py"), "isolated", "--clone", str(repo), "--",
+                         sys.executable, "-c", prog], capture_output=True, text=True, timeout=300)
+    left = [p for p in (root / "iso").iterdir()] if (root / "iso").is_dir() else []
+    check(cp.returncode == 0 and len(CE.lookup(sha=sha, tool="isocli")) == 1 and not left,
+          "AB2 `close_evidence.py isolated -- cmd` records evidence and deletes its checkout: rc=%s left=%s %s"
+          % (cp.returncode, left, cp.stderr[-200:]))
+    # AB3: git mv src/a.py conversations/a.py -- the source vanished from src/
+    (repo / "conversations").mkdir(exist_ok=True)
+    git(repo, "mv", "src/a.py", "conversations/a.py")
+    ts3 = CE.tree_state(repo)
+    check(ts3["dirty"] is True and "src/a.py" in ts3.get("dirty_paths", []),
+          "AB3 a rename into conversations/ is dirt: %r" % ts3)
+    git(repo, "mv", "conversations/a.py", "src/a.py")
+    check(CE.tree_state(repo)["dirty"] is False, "AB3 sanity: renamed back, the tree is clean again")
+    # AB4: PASS{a,b}, then FAIL{b}, then PASS{a}: b still FAILs
+    mk = lambda t, res, cov: {"tool": "cov", "ts": t, "result": res, "paths": ["src"], "covers": cov}  # noqa: E731
+    recs = [mk("1", "PASS", ["src/a.py", "src/b.py"]), mk("2", "FAIL", ["src/b.py"]), mk("3", "PASS", ["src/a.py"])]
+    check(CE.summarize(recs) == {"cov": "FAIL"}, "AB4 a narrow later PASS never erases a FAIL: %r" % CE.summarize(recs))
+    lc = CE.latest_covering(recs, "src/b.py")
+    check(lc["cov"]["result"] == "FAIL" and CE.latest_covering(recs, "src/a.py")["cov"]["ts"] == "3",
+          "AB4 latest_covering is per path")
+    check(CE.summarize(recs + [mk("4", "PASS", ["src/b.py"])]) == {"cov": "PASS"},
+          "AB4 sanity: a later run covering b does clear it")
+    # AB5: an authenticated PASS, then a FAIL whose detail got damaged (valid JSON, mac fails)
+    git(repo, "commit", "-q", "--allow-empty", "-m", "ab5")
+    s5 = git(repo, "rev-parse", "HEAD")
+    p5 = CE.record("ab5tool", "PASS", [a], clone=repo, start=CE.snapshot(repo))
+    f5 = CE.record("ab5tool", "FAIL", [a], clone=repo, start=CE.snapshot(repo), detail={"err": "boom"})
+    check(p5 and f5 and CE.counts_as_evidence(p5), "AB5 sanity: the PASS is evidence")
+    day = next(store.glob("*.jsonl"))
+    txt = day.read_text()
+    line = next(ln for ln in txt.splitlines() if '"boom"' in ln and '"ab5tool"' in ln)
+    day.write_text(txt.replace(line, line.replace('"boom"', '"b�m"')))
+    res5 = [x["result"] for x in CE.lookup(sha=s5, tool="ab5tool")]
+    check(res5 == ["PASS", "UNMEASURED"] and CE.summarize(CE.lookup(sha=s5, tool="ab5tool"))["close_evidence"]
+          == "UNMEASURED", "AB5 a damaged FAIL (valid JSON, bad mac) reads UNMEASURED, never dropped: %r" % res5)
+    check(CE.lookup(sha=sha, tool="ab5tool") == [], "AB5 sanity: another sha's lookup is not polluted")
+    # AB6: a FAIL for s6 cut off before its top-level sha, with ANOTHER sha in its detail
+    git(repo, "commit", "-q", "--allow-empty", "-m", "ab6")
+    s6 = git(repo, "rev-parse", "HEAD")
+    CE.record("ab6tool", "PASS", [a], clone=repo, start=CE.snapshot(repo))
+    f6 = CE.seal(CE.build_record("ab6tool", "FAIL", [a], clone=repo, detail={"vs": sha}))
+    full6 = json.dumps(f6, sort_keys=True, default=str)
+    cut = full6[:full6.index('"sha"')]
+    check(sha in cut and s6 not in cut, "AB6 sanity: the fragment holds the other sha, not its own")
+    with day.open("a") as fh:
+        fh.write(cut + "\n")
+    res6 = [x["result"] for x in CE.lookup(sha=s6, tool="ab6tool")]
+    check(res6 == ["PASS", "UNMEASURED"], "AB6 a truncated FAIL naming another sha in detail stays UNMEASURED: %r"
+          % res6)
+    whole = full6[:-1]                                                  # cut only the closing brace
+    with day.open("a") as fh:
+        fh.write(whole.replace(s6, "f" * 40) + "\n")
+    check([x["result"] for x in CE.lookup(sha=s6, tool="ab6tool")] == ["PASS", "UNMEASURED"],
+          "AB6 sanity: a fragment whose top-level sha is another commit is not counted twice")
+    # AB7: 16 racing first-time key initialisers all read one complete key
+    kp = str(root / "race" / "k")
+    ctx = multiprocessing.get_context("fork")
+    with ctx.Pool(16) as pool:
+        keys = pool.map(_keyinit, [kp] * 64)
+    check(len(set(keys)) == 1 and not keys[0].startswith("ERR") and len(keys[0]) == 64,
+          "AB7 64 racing key initialisers read one complete key: %r" % sorted(set(keys))[:3])
+    check(not [p for p in (root / "race").iterdir() if p.name != "k"], "AB7 no tmp file left beside the key")
+    os.environ.pop(CE.ISOLATED_ROOT_ENV, None)
 
 
 # ------------------------------------------------------------------ review Z

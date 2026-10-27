@@ -1,5 +1,5 @@
 """selftest_arbiter_tiers.py - python3 src/RimMandrake/rimflow/selftest_arbiter_tiers.py"""
-import json, os, re, sys, tempfile
+import hashlib, hmac, json, os, re, sys, tempfile
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from rimflow import arbiter_tiers as at                            # noqa: E402
 from rimflow import audit_prescreen as ap                          # noqa: E402
@@ -92,7 +92,9 @@ T, rows, cut = tiers_of(events)
 ok("later pass supersedes earlier fail", T["GOOD"]["gates"]["G2_verify"], "PASS")
 ok("criteria covered", T["GOOD"]["gates"]["G3_criteria"], "PASS")
 ok("reviewed at sha content", T["GOOD"]["gates"]["G5_review"], "PASS")
-ok("good passes tier 0", T["GOOD"]["tier"], "T0_PASS")
+# review AB1: an independent ledger verify never substitutes for independent isolated-checkout runs (G6): GOOD has
+# no close evidence, so it ranks in tier 1 instead of passing tier 0 (the AB1 group shows it passing WITH G6)
+ok("good (independent verify, no close evidence) is not PASS0 (AB1)", T["GOOD"]["tier"], "T1_PASS")
 ok("unsuperseded fail bounces", T["FAILED"]["tier"], "T0_BOUNCE")
 ok("bounce carries failing evidence", T["FAILED"]["gate_evidence"]["G2_verify"], [r"D:\w\there.png"])
 ok("HEAD sha bounces", T["NOSHA"]["tier"], "T0_BOUNCE")
@@ -234,7 +236,7 @@ rc = at.main(["--data", d8, "--judge-dir", j8, "--past-audits", pa, "--evidence-
 ok("F8 main runs", rc, 0)
 ok("F8 per-run file kept beside tiers.json",
    sorted(f for f in os.listdir(d8) if f.startswith("tiers")), ["tiers.json", "tiers_20261027T000000Z.json",
-                                                                 "tiers_history.jsonl"])
+                                                                 "tiers_history.jsonl", "tiers_history.jsonl.lock"])
 hist = [json.loads(l) for l in open(os.path.join(d8, "tiers_history.jsonl"))]
 ok("F8 history has a row per claim", len(hist), len(rows))
 ok("F2 judge dir holds no tier labels", "tier" in open(os.path.join(j8, "judge_list.json")).read()
@@ -287,8 +289,17 @@ def minted(sha, dirty=False):
     return st
 
 
-def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False, session=None, tool=None):
-    """One line written by ce.record() from a process whose environment names `seat` (None: names no seat)."""
+def iso_mark(sha):
+    """Stamp REPO6 as an isolated checkout of `sha` (what ce.make_isolated leaves; the test is the forger here)."""
+    os.makedirs(os.path.join(REPO6, ".git"), exist_ok=True)
+    with open(os.path.join(REPO6, ".git", ce.ISOLATED_MARK), "w") as f:
+        f.write(hmac.new(ce._key(), ce._iso_msg(REPO6, sha), hashlib.sha256).hexdigest())
+
+
+def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False, session=None, tool=None,
+        shared=False):
+    """One line written by ce.record() from a process whose environment names `seat` (None: names no seat), in an
+    isolated checkout of `sha` unless `shared` (a seat clone other agents use: never evidence -- review AB2)."""
     saved = {k: os.environ.get(k) for k in _WHO_ENV}
     try:
         for k in _WHO_ENV:
@@ -298,6 +309,13 @@ def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False,
         if session:
             os.environ["CLAUDE_CODE_BRIDGE_SESSION_ID"] = session
         st = minted(sha, dirty)
+        if shared:
+            try:
+                os.unlink(os.path.join(REPO6, ".git", ce.ISOLATED_MARK))
+            except OSError:
+                pass
+        else:
+            iso_mark(sha)
         r = ce.record(tool or ("validate_patch" if variant else "selftest"), result,
                       [os.path.join(REPO6, p) for p in paths], clone=REPO6, item=item, start=st, end=st,
                       variant=variant, force=True)
@@ -434,10 +452,12 @@ ok("AA-FORGE the record CLI still writes its line", cp.returncode, 0)
 ok("AA-FORGE a record-CLI payload is never sha evidence", g6(run6(i, e6))[0], "NONE")
 i, s6, e6 = claim6({"src/d.py": "M"})
 st = {"sha": s6, "dirty": False, "dirty_n": 0}                             # typed in, not minted by snapshot()
+iso_mark(s6)
 append_raw(ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/selftest_d.py")], clone=REPO6,
                                    start=st, end=st)))
 ok("AA-FORGE in-process line with a typed-in start/end is not evidence", g6(run6(i, e6))[0], "NONE")
 i, s6, e6 = claim6({"src/d.py": "M"})
+iso_mark(s6)
 append_raw(ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/selftest_d.py")], clone=REPO6,
                                    start=minted(s6), end=minted(s6), who={"seat": "RUNNER",
                                                                          "seat_from": "RIMFLOW_SEAT"})))
@@ -446,18 +466,91 @@ ok("AA-FORGE a caller-supplied WHO never makes a run independent", g6(run6(i, e6
 i, s6, e6 = claim6({"src/e.py": "M"})
 append_raw({"tool": "selftest", "sha": s6, "dirty": False, "result": "PASS", "paths": ["src/selftest_e.py"],
             "seat": "RUNNER", "ts": "2026-10-27T00:00:01+00:00"})
-ok("AA-NOV a line with no v is not evidence", g6(run6(i, e6))[0], "NONE")
+ok("AA-NOV a line with no v is not evidence (AB5: unverifiable -> UNMEASURED)", g6(run6(i, e6))[0], "UNMEASURED")
 i, s6, e6 = claim6({"src/e.py": "M"})
 append_raw({"v": 2, "tool": "selftest", "sha": s6, "dirty": False, "result": "PASS", "paths": ["src/selftest_e.py"],
             "covers": ["src/selftest_e.py"], "start": {"sha": s6, "dirty": False, "dirty_n": 0}, "seat": "RUNNER",
             "ts": "2026-10-27T00:00:02+00:00", "live_only": False, "variant": None})
-ok("AA-NOV a v2 line is not evidence", g6(run6(i, e6))[0], "NONE")
+ok("AA-NOV a v2 line is not evidence (AB5: unverifiable -> UNMEASURED)", g6(run6(i, e6))[0], "UNMEASURED")
 i, s6, e6 = claim6({"src/e.py": "M"})
 fake = put(s6, "FAIL", ["src/selftest_e.py"])
 fake = dict(fake, result="PASS", ts="2026-10-27T23:59:59+00:00")          # FAIL edited to PASS, mac left as it was
 append_raw(fake)
 ok("AA-NOV an edited sealed line (bad mac) is not evidence; the real FAIL still bounces", run6(i, e6)["tier"],
    "T0_BOUNCE")
+
+# Review AB, one check group per real finding in arbiter_tiers (AB2-AB7 live in selftest_close_evidence).
+# AB1: an independent ledger verify (G2) never substitutes for independent G6 coverage.
+i, s6, e6 = claim6()
+e6 = e6[:1] + [ev("verify", i, "2026-10-26T11:00:00Z", seat="RUNNER", result="pass")] + e6[1:]
+r6 = run6(i, e6)
+ok("AB1 a RUNNER verify with no close evidence is no tier-0 pass", (g6(r6)[0], r6["tier"] != "T0_PASS"), ("NONE", True))
+i, s6, e6 = claim6()
+e6 = e6[:1] + [ev("verify", i, "2026-10-26T11:00:00Z", seat="RUNNER", result="pass")] + e6[1:]
+put(s6, "PASS", ["src/m"], seat="BENCH")
+r6 = run6(i, e6)
+ok("AB1 a RUNNER verify over builder-only runs (G6_independent FAIL) is no tier-0 pass",
+   (g6(r6), r6["tier"] != "T0_PASS"), (("PASS", "FAIL"), True))
+i, s6, e6 = claim6()
+e6 = e6[:1] + [ev("verify", i, "2026-10-26T11:00:00Z", seat="RUNNER", result="pass")] + e6[1:]
+put(s6, "PASS", ["src/m"])
+ok("AB1 control: the verify WITH independent close evidence passes tier 0", run6(i, e6)["tier"], "T0_PASS")
+# AB2: a run in a shared seat clone is recorded but never evidence
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], shared=True)
+ok("AB2 a shared-clone run is not evidence", g6(run6(i, e6))[0], "NONE")
+# AB4: PASS{m/*}, FAIL{m/b.py}, PASS{m/mod.py}: b's FAIL stands
+i, s6, e6 = claim6({"src/m/mod.py": "M", "src/m/b.py": "M"})
+put(s6, "PASS", ["src/m"])
+put(s6, "FAIL", ["src/m/b.py"])
+put(s6, "PASS", ["src/m/mod.py"])
+r6 = run6(i, e6)
+ok("AB4 a later narrow PASS never erases another path's FAIL", (g6(r6)[0], r6["tier"]), ("FAIL", "T0_BOUNCE"))
+i, s6, e6 = claim6({"src/m/mod.py": "M", "src/m/b.py": "M"})
+put(s6, "PASS", ["src/m"], seat="BENCH")
+put(s6, "PASS", ["src/m/mod.py"])
+r6 = run6(i, e6)
+ok("AB4 an old builder-run wide PASS lends no independence to a path only it covers", (g6(r6)[1], r6["tier"] != "T0_PASS"),
+   ("FAIL", True))
+# AB8: a calibration pick with --ai-refused is HOLD, never a silent PASS
+_, rr, _ = tiers_of(big, salt="k1", ai_refused=True)
+cal = [r for r in rr if r["calibration"]]
+ok("AB8 with ai_refused every calibration pick is HOLD", (bool(cal), {r["decision"] for r in cal}), (True, {"HOLD"}))
+ok("AB8 control: without ai_refused calibration picks go to AI", {r["decision"] for r in rb if r["calibration"]}, {"AI"})
+
+
+def _salt(d):
+    os.environ.pop(at.SALT_ENV, None)
+    try:
+        return at.load_salt(d)
+    except Exception as e:                                          # noqa: BLE001 -- the race outcome IS the result
+        return "ERR %r" % e
+
+
+def _mainrun(args):
+    d, j = args
+    return at.main(["--data", d, "--judge-dir", j, "--past-audits", pa, "--evidence-dir", j8,
+                    "--now", "2026-10-27T00:00:00Z"], events=with_builder(events),
+                   _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists})
+
+
+import contextlib, io, multiprocessing                              # noqa: E401,E402
+_ctx = multiprocessing.get_context("fork")
+d9s = tempfile.mkdtemp()
+with _ctx.Pool(16) as _pool:
+    salts = _pool.map(_salt, [d9s] * 48)
+ok("AB9 48 racing first-time salt initialisers read one complete salt",
+   (len(set(salts)), len(salts[0]), sorted(os.listdir(d9s))), (1, 64, [".calib_salt"]))
+d10, j10 = tempfile.mkdtemp(), tempfile.mkdtemp()
+with contextlib.redirect_stdout(io.StringIO()), _ctx.Pool(6) as _pool:
+    rcs = _pool.map(_mainrun, [(d10, j10)] * 6)
+runs = sorted(f for f in os.listdir(d10) if f.startswith("tiers_2"))
+ok("AB10 six concurrent runs all succeed and keep six per-run files", (rcs, runs),
+   ([0] * 6, ["tiers_20261027T000000Z-%d.json" % k for k in range(2, 7)] + ["tiers_20261027T000000Z.json"]))
+ok("AB10 no history line lost", sum(1 for _ in open(os.path.join(d10, "tiers_history.jsonl"))), 6 * len(rows))
+ok("AB10 no tmp file left, judge list parses",
+   ([f for f in os.listdir(d10) + os.listdir(j10) if f.endswith(".tmp")],
+    isinstance(json.load(open(os.path.join(j10, "judge_list.json")))["claims"], list)), ([], True))
 
 # lookup_close_evidence: covering runs plus item-tagged non-PASS runs; an item-tagged PASS elsewhere is dropped
 i, s6, e6 = claim6()
