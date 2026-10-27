@@ -1,0 +1,2 @@
+The art_eval regen cap (policy.py max_rounds=3 then ESCALATE) only counts judge REGEN rounds per series; owner-note/owner-ruling regens (1,012 jobs, 15% of 6,919) and 25 owner-authorised series resets sit outside it, which is how RM_HoseReel reached 40 jobs. 'Add an art cap' proposals (GPT 2026-10-26) miss that a cap exists; the leak is what it does not count. Evidence: D:\ClaudeWork\rimmandrake\orch_record\ff\factcheck.md
+home: rimworld-art-evaluation
