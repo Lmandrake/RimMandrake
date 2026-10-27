@@ -164,6 +164,32 @@ def main():
               len(rows0) == 3 and len(rows10) == 2 and any("pawns=10..11~10%" in ln and ln.split()[3] == "2" for ln in rows10)
               and any("pawns=30..30~10%" in ln for ln in rows10), (rows0, rows10))
 
+    # csuite_codex_limits: weekly figures come only from a window identified as 10080 min; missing is "unavailable"
+    import csuite_codex_limits as CL
+    with tempfile.TemporaryDirectory() as cd:
+        def rl(ts, pu, pw, pr, su=None, sw=None, sr=None):
+            sec = {} if su is None and sw is None and sr is None else {"used_percent": su, "window_minutes": sw, "resets_at": sr}
+            return {"timestamp": ts, "payload": {"rate_limits": {"primary": {"used_percent": pu, "window_minutes": pw,
+                    "resets_at": pr}, "secondary": sec, "plan_type": "pro"}}}
+        write(cd, "rollout-x.jsonl", [rl("2026-10-20T10:00:00Z", 37.0, 300, 1793000000),
+                                      rl("2026-10-21T10:00:00Z", 12.0, 300, 1793100000, 55.0, 4320, 1793200000)])
+        old = CL.DIRS
+        CL.DIRS = [cd]
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            CL.main()
+        CL.DIRS = old
+        out = buf.getvalue()
+        check("codex limits: a 300-min primary is never printed as weekly %", "37.0" not in out.split("weekly window")[1], out)
+        check("codex limits: missing and nonweekly secondary shows unavailable, not 0.0 or a weekly reset",
+              "unavailable" in out and out.count("no weekly window") == 1 and "55.0" in out.split("weekly window")[0]
+              and "55.0" not in out.split("weekly window")[1], out)
+        r = (None, 12.0, 300, 1, 55.0, 4320, 1793200000, "pro")
+        check("codex limits: weekly() ignores a reset on a nonweekly window", CL.weekly(r) == (None, None), CL.weekly(r))
+        r = (None, 12.0, 300, 1, 40.0, 10080, 1793200000, "pro")
+        check("codex limits: weekly() takes pct and reset together from the 10080-min window",
+              CL.weekly(r) == (40.0, 1793200000), CL.weekly(r))
+
     print("\n%d failed" % len(FAILS) if FAILS else "\nall passed")
     return 1 if FAILS else 0
 

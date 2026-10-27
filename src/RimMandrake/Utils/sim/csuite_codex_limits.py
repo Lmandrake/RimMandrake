@@ -71,6 +71,20 @@ def readings(dirs=None, newer_than=None):
     return recs, nfiles
 
 
+def weekly(r):
+    """(used%, resets_at) of the reading's window identified as 10080 minutes, else (None, None): a short window's
+    percentage is never reported as weekly, and a reset on a nonweekly window is not a weekly reset."""
+    if r[5] == 10080:
+        return r[4], r[6]
+    if r[2] == 10080:
+        return r[1], r[3]
+    return None, None
+
+
+def fmt(v):
+    return "unavailable" if v is None else f"{v:.1f}"
+
+
 def main():
     recs, nfiles = readings(DIRS)
     print(f"files {nfiles}, rate_limit readings {len(recs)}")
@@ -84,7 +98,8 @@ def main():
         day[r[0][:10]].append(r)
     print("day(UTC)    n   maxPrim%  maxSec%")
     for d, rs in sorted(day.items()):
-        print(f"{d} {len(rs):5d} {max(x[1] for x in rs):8.1f} {max((x[4] or 0) for x in rs):8.1f}")
+        secs = [x[4] for x in rs if x[4] is not None]
+        print(f"{d} {len(rs):5d} {max(x[1] for x in rs):8.1f} {fmt(max(secs) if secs else None):>8s}")
     # weekly resets: group readings by secondary resets_at (rounded to the hour)
     def hr(v):
         if v is None:
@@ -94,11 +109,12 @@ def main():
         return str(v)[:13]
     wk = collections.OrderedDict()
     for r in recs:
-        weekly = r[6] if r[5] == 10080 or r[6] is not None else (r[3] if r[2] == 10080 else None)
-        wk.setdefault(hr(weekly), []).append(r)
+        wk.setdefault(hr(weekly(r)[1]), []).append(r)
     print("weekly window (resets_at local)   readings  first_seen(UTC)       last_seen(UTC)        weekly% at last reading")
     for k, rs in wk.items():
-        print(f"{str(k):32s} {len(rs):8d}  {rs[0][0][:19]}  {rs[-1][0][:19]}  {rs[-1][4] if rs[-1][5] == 10080 else rs[-1][1]}  max {max((x[4] if x[5] == 10080 else x[1]) or 0 for x in rs)}")
+        pcts = [weekly(x)[0] for x in rs if weekly(x)[0] is not None]
+        print(f"{'no weekly window' if k is None else str(k):32s} {len(rs):8d}  {rs[0][0][:19]}  {rs[-1][0][:19]}  "
+              f"{fmt(weekly(rs[-1])[0])}  max {fmt(max(pcts) if pcts else None)}")
     return 0
 
 

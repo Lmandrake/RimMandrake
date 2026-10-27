@@ -485,7 +485,9 @@ def gather(now=None, rules=None):
                 inp["rate_src"] = (f"{msgs} messages from this machine in {fit['window_h']} h / {fit['msgs_per_pct']} per % "
                                    f"(meter has {n} readings over {span:.1f} h, too few for a slope)")
     inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win), 2)
-    inp["helpers_running"] = {s: len(running_helpers([p], now, rules)) for s, p in seat_paths.items()}
+    # an unreadable transcript directory is "unavailable" (None), never a measured zero helpers
+    inp["helpers_running"] = {s: (len(running_helpers([p], now, rules)) if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK)
+                                  else None) for s, p in seat_paths.items()}
     w = owner_last_window(list(seat_paths.values()), now)
     inp["owner_window_min"] = None if w is None else round((now - w) / 60, 1)
     c = owner_last_card(owner_ledger(), now)
@@ -562,6 +564,8 @@ def _queue(inp, state, rules):
     a1, d1 = inp.get("A1"), inp.get("D1")
     q = rules["queue"]
     if a1 is None and d1 is None:
+        if state.get("queue_mode") == "PAYDOWN":
+            return "PAYDOWN", "queues unmeasured (no streams record in 2 h): holding PAYDOWN, no leave line observed"
         return "UNMEASURED", "queues unmeasured (no streams record in 2 h)"
     enter = (a1 is not None and a1 > q["paydown_enter"]["A1_gt"]) or (d1 is not None and d1 >= q["paydown_enter"]["D1_ge"])
     if enter:
@@ -609,8 +613,11 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
         why.append(f"weekly reset: {forgiven:.1f} helper-h of overage forgiven")
     run = inp.get("helpers_running")
     run = run if isinstance(run, dict) else {}
-    over = sum(max(0, run[s] - base.get(s, 0)) for s in run)
-    under = sum(max(0, base.get(s, 0) - run.get(s, 0)) for s in base) if run else 0
+    blind = sorted(s for s, v in run.items() if v is None)
+    if blind:
+        why.append(f"helper count unavailable for {', '.join(blind)}: no overage credited this check")
+    over = sum(max(0, run[s] - base.get(s, 0)) for s in run if run[s] is not None)
+    under = sum(max(0, base.get(s, 0) - run.get(s, 0)) for s in base) if run and not blind else 0
     paying = ov is None and presence != "BENCH"
     owed += over * dt
     credited = 0.0
@@ -767,10 +774,7 @@ def decide(inp, state, rules, now):
     total, ops_advice = _ops(inp, rules, total, why)
     # split per seat
     share = rules["split"]["FOUNDRY_share"]
-    per = {s: 0 for s in seats}
-    if "FOUNDRY" in per:
-        per["FOUNDRY"] = int(math.floor(total * share))
-    per["BENCH"] = total - sum(v for k, v in per.items() if k != "BENCH")
+    per = split_total(total, seats, share)
     if "FOUNDRY" in per:
         why.append(f"total {total} split BENCH {per['BENCH']} / FOUNDRY {per['FOUNDRY']} (FOUNDRY {share:.0%}, rounded down)")
     presence, pwhy = _presence(inp, rules)
@@ -785,8 +789,7 @@ def decide(inp, state, rules, now):
             label = ov["mode"]
             if ov.get("n") is None and ov.get("seats") is None:
                 total = tk[ov["mode"]]["n"]
-                per = {s: 0 for s in seats}
-                per["BENCH"] = total
+                per = split_total(total, seats, share)
         if isinstance(ov.get("seats"), dict) and ov["seats"]:
             # a seat key we do not place (e.g. "bench") is folded to its seat, never added beside it
             per.update({str(k).upper(): int(v) for k, v in ov["seats"].items() if str(k).upper() in per})
@@ -820,6 +823,26 @@ def decide(inp, state, rules, now):
             "presence": presence, "presence_why": pwhy, "n_total": sum(per.values()), "seats": per,
             "n": per.get(inp.get("seat") or "BENCH"), "why": "; ".join(why), "inputs": inputs,
             "overage": overage, "override": ov, "ops": ops_advice, "state": new_state}
+
+
+def split_total(total, seats, share):
+    """Total helpers -> per seat: FOUNDRY gets floor(total * share), BENCH the rest."""
+    per = {s: 0 for s in seats}
+    if "FOUNDRY" in per:
+        per["FOUNDRY"] = int(math.floor(total * share))
+    per["BENCH"] = total - sum(v for k, v in per.items() if k != "BENCH")
+    return per
+
+
+def override_until(hours, persisted_reset, meter_reset, now):
+    """(until, error) for `set`: --hours, else the burn account's reset (persisted allocation, else the meter now).
+    No reset known is an error, never a silent 24 h."""
+    if hours:
+        return iso_local(now + hours * HOUR), None
+    for r in (persisted_reset, meter_reset):
+        if r and (epoch(r) or 0) > now:
+            return r, None
+    return None, "the burn account's weekly reset is unavailable (no allocation record, meter gave none): pass --hours"
 
 
 def line(dec):
@@ -910,8 +933,14 @@ def main(argv=None):
     if a.hours:
         until = iso_local(now + a.hours * HOUR)
     else:
-        cur = (read_json(streams_dir() / "allocation.json") or {}).get("state", {}).get("reset_at")
-        until = cur if cur and (epoch(cur) or 0) > now else iso_local(now + 24 * HOUR)
+        cur = ((read_json(streams_dir() / "allocation.json") or {}).get("state") or {}).get("reset_at")
+        mr = None
+        if not (cur and (epoch(cur) or 0) > now):
+            mr = gather(now, rules).get("week_resets_at")
+        until, err = override_until(None, cur, mr, now)
+        if err:
+            print("refused: " + err, file=sys.stderr)
+            return 2
     ov = {"ownerSaid": a.owner_said.strip(), "set_at": iso_local(now), "until": until, "mode": a.mode}
     if a.n is not None:
         if a.seat:

@@ -437,5 +437,39 @@ r = d(override=ov(n=None, seats={"bench": 0}))
 check("an override for seat 'bench' zeroes BENCH, never adds a 'bench' seat beside it",
       r["seats"].get("BENCH") == 0 and "bench" not in r["seats"], r["seats"])
 
+# ---- review round P fixes
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "queue_mode": "PAYDOWN"}, A1=None, D1=None)
+check("PAYDOWN held when both queue counts are unmeasured", r["queue_mode"] == "PAYDOWN", r["queue_mode"])
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "queue_mode": "CLEAR"}, A1=None, D1=None)
+check("both queue counts unmeasured from CLEAR stays UNMEASURED", r["queue_mode"] == "UNMEASURED", r["queue_mode"])
+
+ST = {"token_mode": "CRUISE", "since": NOW - 5 * H, "overage_h": 4.0, "overage_t": NOW - H, "total": 6}
+r = d(ST, helpers_running={"BENCH": None, "FOUNDRY": None}, presence_unused=True)
+check("unavailable helper counts do not credit overage debt", r["overage"]["owed_h"] == 4.0
+      and r["overage"]["credited_h"] == 0 and "unavailable" in r["why"], (r["overage"], r["why"]))
+r = d(ST, helpers_running={"BENCH": 0, "FOUNDRY": 0})
+check("measured zero helpers still credits (control)", r["overage"]["credited_h"] > 0, r["overage"])
+with tempfile.TemporaryDirectory() as td:
+    missing = Path(td) / "nope"
+    class _P(dict):
+        pass
+    hr = {s: (len(SA.running_helpers([p], NOW, R)) if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK) else None)
+          for s, p in {"BENCH": missing}.items()}
+    check("a missing transcript dir reads None, not 0", hr == {"BENCH": None}, hr)
+
+r = d(override=ov(mode="BURN", n=None, seats=None))
+check("a mode-only override splits the mode total by the FOUNDRY share, not all to BENCH",
+      r["seats"]["FOUNDRY"] == int(R["token"]["BURN"]["n"] * R["split"]["FOUNDRY_share"]) and r["n_total"] == R["token"]["BURN"]["n"],
+      (r["seats"], r["mode"]))
+
+u, e = SA.override_until(None, None, None, NOW)
+check("set without --hours and no known reset is an error, not 24 h", u is None and e and "unavailable" in e, (u, e))
+u, e = SA.override_until(None, None, "2026-10-29T13:00-07:00", NOW)
+check("set without --hours takes the meter's reset when nothing is persisted", u == "2026-10-29T13:00-07:00" and e is None, (u, e))
+u, e = SA.override_until(None, "2026-10-01T00:00-07:00", None, NOW)
+check("a persisted reset already past is not used", u is None and e, (u, e))
+u, e = SA.override_until(2, None, None, NOW)
+check("--hours still works with no reset", e is None and u, (u, e))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
