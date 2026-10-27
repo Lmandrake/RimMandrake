@@ -150,6 +150,11 @@ def claude_exe():
     return os.environ.get("RM_DISPATCHER_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
 
 
+def sessions_ok(data):
+    """A `claude agents --json` reading: a list whose every entry is an object (review dispatcher-full #5)."""
+    return isinstance(data, list) and all(isinstance(x, dict) for x in data)
+
+
 def observe_agents(timeout=60):
     """-> {"state": MEASURED, "sessions": [...]} or {"state": UNMEASURED, "why": ...}."""
     try:
@@ -158,8 +163,8 @@ def observe_agents(timeout=60):
         if r.returncode:
             return {"state": "UNMEASURED", "why": "claude agents exit %d: %s" % (r.returncode, r.stderr.strip()[-160:])}
         data = json.loads(r.stdout)
-        if not isinstance(data, list):
-            return {"state": "UNMEASURED", "why": "claude agents --json is not a list"}
+        if not sessions_ok(data):
+            return {"state": "UNMEASURED", "why": "claude agents --json is not a list of session objects"}
         return {"state": "MEASURED", "sessions": data}
     except Exception as e:  # noqa: BLE001 - every failure is UNMEASURED
         return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e)[:160])}
@@ -307,6 +312,9 @@ def decide(sch, st, obs, now, apply):
                 act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
     agents = obs["agents"]
+    if agents.get("state") == "MEASURED" and not sessions_ok(agents.get("sessions")):
+        # a list of non-objects is not a reading (review dispatcher-full #5): blind, so nothing is done for the seats
+        agents = {"state": "UNMEASURED", "why": "claude agents --json has a session that is not an object"}
     if agents.get("state") != "MEASURED":
         act(do="skip", why="claude agents UNMEASURED (%s): no action on a blind instrument" % agents.get("why"))
         return actions
@@ -324,9 +332,17 @@ def decide(sch, st, obs, now, apply):
             owner_cache["r"] = obs["owner"]()
         return owner_cache["r"]
 
-    for seat, cfg in sorted((sch.get("seats") or {}).items()):
+    def one_seat(seat, cfg):
+        if not cfg.get("enabled", True) or not cfg.get("wake", True):
+            # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review
+            # dispatcher-full #8); a ring the doorbell already took stays pending (execute's withdraw) and verified
+            old = (st["seats"].get(seat) or {}).get("ring")
+            if old and not old.get("consumed_at"):
+                act(do="withdraw", seat=seat, ring_id=old["ring_id"], pending=st["seats"][seat].pop("ring"),
+                    why="seat %s %s: its waiting ring is withdrawn" % (
+                        seat, "disabled" if not cfg.get("enabled", True) else "wake off"))
         if not cfg.get("enabled", True):
-            continue
+            return
         ss = st["seats"].setdefault(seat, {})
         sess = find_session(agents["sessions"], cfg)
         status = (sess or {}).get("status") or (sess or {}).get("state")
@@ -354,7 +370,7 @@ def decide(sch, st, obs, now, apply):
                     ss.pop("ring")
                     ss["attempt"] = 0
                     ss["cooldown_until"] = now + sch["cooldown_s"]
-                continue
+                return
             if now - pend["rung_at"] >= sch["verify_s"]:
                 act(do="withdraw", seat=seat, ring_id=pend["ring_id"], pending=dict(pend))
                 ss.pop("ring")
@@ -365,7 +381,7 @@ def decide(sch, st, obs, now, apply):
                     ss["attempt"] = 0
                 else:
                     ss["attempt"] = pend["attempt"]
-            continue
+            return
         # ---- recovery in flight: verify it
         rv = ss.get("recover")
         if rv:
@@ -380,27 +396,27 @@ def decide(sch, st, obs, now, apply):
                                                                                     rv.get("out", "")[:160]))
                 ss.pop("recover")
                 ss["cooldown_until"] = now + sch["cooldown_s"]
-            continue
+            return
         if ss.get("cooldown_until", 0) > now:
-            continue
+            return
         # ---- dead window
         if not sess:
             ss.pop("idle_since", None)
             ss.setdefault("dead_since", now)
             if now - ss["dead_since"] < sch["dead_after_s"]:
-                continue
+                return
             if not cfg.get("recover_dead"):
                 act(do="alarm", kind="dead:" + seat, seat=seat, why="%s has had no session for %d s (recovery off)"
                     % (seat, now - ss["dead_since"]))
-                continue
+                return
             if not ss.get("session_id"):
                 act(do="alarm", kind="dead:" + seat, seat=seat, why="%s is dead and no session id was ever seen" % seat)
-                continue
+                return
             day = [r for r in st["recovers"] if r["seat"] == seat and now - r["at"] < 86400]
             if len(day) >= sch["caps"]["recovers_per_seat_day"]:
                 act(do="alarm", kind="cap:recover:" + seat, seat=seat,
                     why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
-                continue
+                return
             import idle_probe
             owner_ok, owner_why = idle_probe.decide(owner(), "", need=sch["owner_idle_s"])
             msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
@@ -410,65 +426,75 @@ def decide(sch, st, obs, now, apply):
             go, pk = gate("recover")
             if not go:
                 act(do="hold", seat=seat, why="recover held for the account switch: %s" % pk["why"])
-                continue
+                return
             act(do="recover", seat=seat, session_id=ss["session_id"], message=msg, account=pk.get("account"))
             st["recovers"].append({"seat": seat, "at": now})
             if apply:
                 ss["recover"] = {"at": now, "session_id": ss["session_id"]}
             else:
                 ss["cooldown_until"] = now + sch["cooldown_s"]   # dry: say it once per cooldown, not every tick
-            continue
+            return
         ss.pop("dead_since", None)
         ss["session_id"] = sess.get("sessionId") or ss.get("session_id")
         if status != "idle":
             ss.pop("idle_since", None)
-            continue
+            return
         ss.setdefault("idle_since", now)
         if now - ss["idle_since"] < sch["stall_after_s"] or not cfg.get("wake", True):
-            continue
+            return
         # ---- stalled: can it be woken, is there work, may it be woken now
         armed = obs["armed"](seat)
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat,
                 why="%s is idle but no doorbell is armed (install doorbell.py as its Stop hook)" % seat)
-            continue
+            return
         if armed.get("session_id") and sess.get("sessionId") and armed["session_id"] != sess["sessionId"]:
             act(do="alarm", kind="unwakeable:" + seat, seat=seat,
                 why="%s's armed doorbell is session %s, not the window's %s (a `claude -p` child or second window "
                     "with AGENT_SEAT re-armed it): not ringing a stranger" % (seat, armed["session_id"],
                                                                                sess["sessionId"]))
-            continue
+            return
         ticket = obs["peek"](seat)
         if ticket is None:
             act(do="alarm", kind="peek:" + seat, seat=seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
-            continue
+            return
         if not ticket:
-            continue                     # empty queue: an idle window is correct
+            return                     # empty queue: an idle window is correct
         ok, why = caps_ok(st, sch, seat, now)
         if not ok:
             act(do="alarm", kind="cap:" + seat, seat=seat, why=why)
-            continue
+            return
         import idle_probe
         owner_ok, owner_why = idle_probe.decide(owner(), ticket.get("id") or "", need=sch["owner_idle_s"])
         if ticket.get("needs") in GAME_NEEDS and not owner_ok:
             act(do="hold", seat=seat, ticket=ticket["id"], why="ticket needs %s; %s" % (ticket["needs"], owner_why))
-            continue
+            return
         owner_line = None if owner_ok else (
             "owner present: do not take the bridge, restart the game or deploy (%s)." % owner_why)
         go, pk = gate("ring")
         if not go:
             act(do="hold", seat=seat, ticket=ticket["id"], why="ring held for the account switch: %s" % pk["why"])
-            continue
+            return
         attempt = ss.get("attempt", 0) + 1
         ring_id = "%s-%d-%d" % (seat, int(now), attempt)
         act(do="ring", seat=seat, ring_id=ring_id, ticket=ticket["id"], attempt=attempt,
             session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, owner_line, ring_id),
-            account=pk.get("account"))
+            account=pk.get("account"), idle_since=ss.get("idle_since"))
         st["wakes"].append({"seat": seat, "at": now})
         if apply:
             ss["ring"] = {"ring_id": ring_id, "rung_at": now, "rung_iso": iso(now), "ticket": ticket["id"],
                           "attempt": attempt}
         ss["idle_since"] = now           # the next wake waits a full stall window again
+
+    for seat, cfg in sorted((sch.get("seats") or {}).items()):
+        # one seat's malformed session or state alarms and skips THAT seat; the other seats and the supervision and
+        # launch actions already decided still execute (review dispatcher-full #5)
+        try:
+            one_seat(seat, cfg)
+        except Exception as e:  # noqa: BLE001
+            act(do="alarm", kind="decide:" + seat, seat=seat, note=True,
+                why="seat %s NOT decided this tick: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+
     # prune the cap windows
     st["wakes"] = [w for w in st["wakes"] if now - w["at"] < 86400]
     st["recovers"] = [r for r in st["recovers"] if now - r["at"] < 86400]
@@ -722,8 +748,20 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             if apply:
                 try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
                     if a["do"] == "ring":
-                        do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
-                        res = "rung"
+                        # PAUSE again, now: decide() read it before the ingest.lock wait (review dispatcher-full #8)
+                        paused = do_paused()
+                        if paused:
+                            res = "held at release: PAUSE (%s)" % paused
+                            ss = st["seats"].setdefault(a["seat"], {})
+                            if (ss.get("ring") or {}).get("ring_id") == a["ring_id"]:
+                                ss.pop("ring")          # never written: nothing to verify, nothing in the inbox
+                            # the wake did not happen: it does not count against the caps, the stall clock resumes
+                            st["wakes"] = [w for w in st["wakes"] if not (w["seat"] == a["seat"] and w["at"] == now)]
+                            if a.get("idle_since") is not None:
+                                ss["idle_since"] = a["idle_since"]
+                        else:
+                            do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
+                            res = "rung"
                     elif a["do"] == "withdraw":
                         res = do_withdraw(root, a["seat"], a["ring_id"])
                         if res.startswith("gone") and a.get("pending"):
@@ -901,6 +939,18 @@ def default_obs(sch, root):
     }
 
 
+def unreserve(st):
+    """Roll back every role launch decided but never started (a pending_launch whose unit has no run on record).
+    -> the units given back."""
+    back = []
+    for rs in (st.get("roles") or {}).values():
+        p = rs.get("pending_launch") if isinstance(rs, dict) else None
+        if isinstance(p, dict) and not any(r.get("unit") == p.get("unit") for r in rs.get("runs") or []):
+            if RL.unlaunch(rs, p.get("unit")):
+                back.append(p.get("unit"))
+    return back
+
+
 def tick(sch, apply, obs=None, now=None, fx=None):
     root = state_root(apply)
     os.makedirs(root, exist_ok=True)
@@ -927,6 +977,15 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
             if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
                 st["last_ok_tick"] = iso(now)
+        except BaseException as e:
+            # a launch decided but never executed must not stay consumed: give its slot/alarm/event back (a run that
+            # reached systemd-run is in `runs` and keeps its mark). Journalled: a raised tick is never silent
+            # (review dispatcher-full #5)
+            back = unreserve(st)
+            journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised",
+                           "why": "tick raised %s: %s; launches given back: %s" % (
+                               type(e).__name__, str(e)[:200], ", ".join(back) or "none")})
+            raise
         finally:     # the caps and pending rings are in st: save them even when a step raised
             st["last_tick"] = iso(now)        # last ATTEMPT
             st["apply"] = apply

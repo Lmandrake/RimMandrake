@@ -14,6 +14,7 @@ DISPATCHER seat's ledger rule (note only). Nothing outside a temp dir is touched
 import copy
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -302,18 +303,30 @@ def test_review_fixes():
     check(st["seats"]["FOUNDRY"].get("ring", {}).get("ring_id") == p["ring_id"],
           "withdraw lost to the doorbell: the ring stays pending (delivered), no second ring")
     # a side effect that raises still saves the caps; the next ticks are capped
-    sch3 = sched(caps={"wakes_per_seat_hour": 1})
+    # (review dispatcher-full #9: the lock is ACQUIRED and ledger notes are on, so the note really is called and raises)
+    sch3 = sched(caps={"wakes_per_seat_hour": 1}, ledger_notes=True)
     sch3["max_retries"] = 0
-    boom = {"note": lambda i, t: (_ for _ in ()).throw(subprocess.TimeoutExpired("rimflow", 120)),
-            "ring": lambda *x: None, "withdraw": lambda *x: "withdrawn", "publish": lambda n: "p", "lock": lambda: None}
+    note_calls = []
+
+    def raising_note(i, t):
+        note_calls.append(i)
+        raise subprocess.TimeoutExpired("rimflow", 120)
+    boom = {"note": raising_note, "ring": lambda *x: None, "withdraw": lambda *x: "withdrawn",
+            "publish": lambda n: "p", "lock": lambda: open(os.devnull)}
     os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state_boom")
     try:
         t0 = 10000.0
-        D.tick(sch3, True, obs=obs(), now=t0, fx=boom)
-        D.tick(sch3, True, obs=obs(), now=t0 + 240, fx=boom)
+        acts = D.tick(sch3, True, obs=obs(), now=t0, fx=boom)
+        acts += D.tick(sch3, True, obs=obs(), now=t0 + 240, fx=boom)
         rings = []
         for i in range(2, 12):
-            rings += [x for x in D.tick(sch3, True, obs=obs(), now=t0 + 240 * i, fx=boom) if x["do"] == "ring"]
+            more = D.tick(sch3, True, obs=obs(), now=t0 + 240 * i, fx=boom)
+            acts += more
+            rings += [x for x in more if x["do"] == "ring"]
+        failed = [x for x in acts if str(x.get("ledger", "")).startswith("note failed: TimeoutExpired")]
+        check(note_calls and failed and len(failed) == len(note_calls),
+              "M9 the note callback ran and raised, and each failure is recorded (%d call(s), %r)"
+              % (len(note_calls), [(x["do"], x.get("kind"), x.get("ledger")) for x in acts if x.get("note")]))
         st = D.load_state(D.state_root(True))
         check(len(st["wakes"]) == 1 and not rings, "caps survive a raising note: 1 wake/hour holds (%d extra rings)"
               % len(rings))
@@ -2398,6 +2411,201 @@ def test_golive_b2_blind_fixed_outcomes():
     check("note_text" not in src and "note_base" not in src, "B2 no free-text note_text/note_base path is left")
 
 
+def test_golive_m4_disabled_parent_holds():
+    """dispatcher-full #4: Operations finished its 19:30 run, then was disabled: the Conductor's 20:00 slot waits; its
+    persisted success does not stand in. Enabled, the same state launches (control)."""
+    t20 = at_local("20:00")
+    key = "%s 19:30" % RL.day_of(t20)
+    for ops_on in (True, False):
+        st = fresh()
+        st["roles"] = {"Operations": {"done": {key: "launched"}, "runs": [
+            {"state": "done", "slot": key, "mode": "run", "unit": "rm-role-operations-1", "at": t20 - 1800}]}}
+        acts = role_acts(rdecide([conductor(after_role="Operations"), operations(enabled=ops_on, alarm_runs=False)],
+                                 st, robs(ops_status(t20)), t20))
+        la = [a for a in acts if a["do"] == "role_launch" and a["role"] == "Conductor"]
+        if ops_on:
+            check(la, "M4 control: Operations enabled and done at 19:30 -> the Conductor's 20:00 launches")
+        else:
+            holds = [a for a in acts if a["do"] == "role_hold" and a.get("role") == "Conductor"]
+            check(not la and any("waits" in h["why"] and h["why"].endswith("Operations is not enabled") for h in holds)
+                  and st["roles"]["Conductor"]["waiting"][1] == "Operations is not enabled",
+                  "M4 Operations disabled after its 19:30 run: the Conductor's 20:00 waits (%r)" % (
+                      [a.get("why") for a in holds],))
+
+
+def test_golive_m5_malformed_obs():
+    """dispatcher-full #5, through tick() with persisted state: a malformed `claude agents` reading is UNMEASURED and
+    the overtime stop still executes; a seat whose processing raises is alarmed and the launch and the stop still
+    execute; a tick that raises gives back the launch it decided and never executed, and journals it."""
+    t8 = at_local("08:00")
+    state = os.path.join(TMP, "state_m5")
+    sch = sched(roles=[conductor(after_role=None), operations(alarm_runs=False, runs_local=["23:00"],
+                                                                economy_pass_local=None)], ledger_notes=False)
+
+    def start(seats=None):
+        if os.path.isdir(state):
+            shutil.rmtree(state)
+        os.makedirs(state)
+        st = fresh()
+        st["seats"] = seats or {}
+        st["roles"] = {"Operations": {"done": {}, "runs": [
+            {"state": "running", "unit": "rm-role-operations-5", "at": t8 - 20000, "run_max_s": 600, "mode": "run",
+             "scope": "claude-seat-BENCH-rm-role-operations-5.scope", "marker": "rm-role-operations-5",
+             "item": "ROLES_ITEM_X", "seat": "BENCH"}]}}
+        D.S.dump(st, os.path.join(state, "state.json"))
+    launched, stopped = [], []
+    fx = {"role_launch": lambda *a: launched.append(a[1]) or (True, "ok", {}),
+          "role_stop": lambda *a, **k: stopped.append(a[0]) or "stopped", "note": lambda i, t: (True, ""),
+          "publish": lambda n: "p", "lock": lambda: open(os.devnull), "off": lambda p: None, "paused": lambda: None,
+          "ring": lambda *x: None, "withdraw": lambda *x: "withdrawn"}
+
+    def o(sessions, consumed=None):
+        x = obs(sessions=sessions)
+        x["roles"] = robs(ops_status(t8))
+        if consumed:
+            x["consumed"] = consumed
+        return x
+    os.environ["RM_DISPATCHER_STATE"] = state
+    real_exec = D.execute
+    try:
+        for bad in ([None], [sess(), "AGENT FOUNDRY"], [sess(), 7]):
+            start()
+            del launched[:], stopped[:]
+            acts = D.tick(sch, True, obs=o(bad), now=t8, fx=fx)
+            st = D.load_state(state)
+            check(stopped == ["rm-role-operations-5"] and any(a["do"] == "skip" and "UNMEASURED" in a["why"]
+                                                              for a in acts)
+                  and not launched and not st["roles"].get("Conductor", {}).get("pending_launch"),
+                  "M5 sessions %r: UNMEASURED, the overtime stop executes, nothing reserved" % (bad,))
+        check(D.sessions_ok([sess()]) and D.sessions_ok([]) and not D.sessions_ok({"a": 1})
+              and not D.sessions_ok([sess(), None]), "M5 sessions_ok: a list of objects only")
+
+        def raises(seat, rid):
+            raise KeyError("consumed_at")
+        start({"FOUNDRY": {"ring": {"ring_id": "r1", "rung_at": t8 - 100, "rung_iso": "2026-01-01T00:00:00Z",
+                                    "ticket": "T"}}})
+        del launched[:], stopped[:]
+        acts = D.tick(sch, True, obs=o(None, raises), now=t8, fx=fx)
+        st = D.load_state(state)
+        check(any(a.get("kind") == "decide:FOUNDRY" for a in acts) and stopped == ["rm-role-operations-5"]
+              and len(launched) == 1 and launched[0].startswith("rm-role-conductor-")
+              and st["roles"]["Conductor"]["runs"] and not st["roles"]["Conductor"].get("pending_launch"),
+              "M5 a seat that raises is alarmed; the stop and the Conductor launch still execute")
+
+        def boom(*a, **k):
+            raise RuntimeError("execute died")
+        start()
+        D.execute = boom
+        raised = False
+        try:
+            D.tick(sch, True, obs=o(None), now=t8, fx=fx)
+        except RuntimeError:
+            raised = True
+        D.execute = real_exec
+        st = D.load_state(state)
+        cr = st["roles"].get("Conductor") or {}
+        jr = open(os.path.join(state, "journal.jsonl")).read()
+        check(raised and not cr.get("pending_launch") and not (cr.get("done") or {}) and "tick:raised" in jr
+              and "rm-role-conductor-" in jr,
+              "M5 a tick that raises gives back the launch it never executed and journals it (%r)" % (cr,))
+        st2 = fresh()
+        D.decide(sch, st2, o(None), t8, True)
+        check(st2["roles"]["Conductor"].get("pending_launch") and st2["roles"]["Conductor"]["done"],
+              "M5 probe: the same tick does reserve a Conductor launch (the give-back above is real)")
+    finally:
+        D.execute = real_exec
+        os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
+
+
+def test_golive_m8_ring_withdraw_and_pause():
+    """dispatcher-full #8: a seat disabled, or its wake switched off, withdraws its unconsumed ring (a consumed one
+    stays and is verified); PAUSE appearing between decide and execute holds the ring: nothing is written, the
+    pending ring and the wake are given back."""
+    t0 = 1000.0
+    for change, label in (({"enabled": False}, "disabled"), ({"wake": False}, "wake off")):
+        sch = sched()
+        st = fresh()
+        a = stall(sch, st, obs(), t0)
+        rid = [x for x in a if x["do"] == "ring"][0]["ring_id"]
+        sch["seats"]["FOUNDRY"].update(change)
+        a = D.decide(sch, st, obs(), t0 + sch["stall_after_s"] + 60, True)
+        w = [x for x in a if x["do"] == "withdraw"]
+        check(w and w[0]["ring_id"] == rid and w[0]["pending"]["ring_id"] == rid and not st["seats"]["FOUNDRY"].get("ring"),
+              "M8 seat %s: its unconsumed ring is withdrawn" % label)
+        st2 = fresh()
+        stall(sched(), st2, obs(), t0)
+        st2["seats"]["FOUNDRY"]["ring"]["consumed_at"] = t0 + 5
+        a = D.decide(sch, st2, obs(), t0 + sch["stall_after_s"] + 60, True)
+        check(not [x for x in a if x["do"] == "withdraw"] and st2["seats"]["FOUNDRY"].get("ring"),
+              "M8 seat %s: a ring the doorbell already took is kept" % label)
+    sch = sched()
+    rung = []
+    fx = {"ring": lambda *x: rung.append(x), "lock": lambda: None, "publish": lambda n: "p",
+          "note": lambda i, t: (True, "")}
+    for paused in ("owner: stop", None):
+        st = fresh()
+        D.decide(sch, st, obs(), t0, True)
+        t1 = t0 + sch["stall_after_s"]
+        before = st["seats"]["FOUNDRY"]["idle_since"]
+        a = D.decide(sch, st, obs(), t1, True)
+        check([x for x in a if x["do"] == "ring"] and st["seats"]["FOUNDRY"].get("ring") and len(st["wakes"]) == 1,
+              "M8 probe: decide rang (paused=%r)" % paused)
+        del rung[:]
+        D.execute(a, sch, st, os.path.join(TMP, "m8"), True, t1, dict(fx, paused=lambda: paused))
+        if paused:
+            check(not rung and not st["seats"]["FOUNDRY"].get("ring") and not st["wakes"]
+                  and st["seats"]["FOUNDRY"]["idle_since"] == before
+                  and a[[x["do"] for x in a].index("ring")]["result"].startswith("held at release: PAUSE"),
+                  "M8 PAUSE after decide: the ring is not released; ring, wake and stall clock given back")
+        else:
+            check(len(rung) == 1 and st["seats"]["FOUNDRY"].get("ring"), "M8 control: no PAUSE -> the ring is rung")
+
+
+def test_golive_m6_weekday_slot_keys():
+    """dispatcher-full #6: a weekday-qualified parent slot ("Wed 07:30") and its dependent ("Wed 08:00") agree on the
+    key: the parent's done run, keyed by the due list (the writer), releases the dependent (after_slots, the reader)."""
+    wd = RL.WEEKDAYS[RL.weekday(DAY0)]
+    t730, t8 = at_local("07:30"), at_local("08:00")
+    roles = [conductor(after_role="Operations", quick_checks_local=[wd + " 08:00"]),
+             operations(runs_local=[wd + " 07:30"], economy_pass_local=None, alarm_runs=False)]
+    st = fresh()
+    acts = role_acts(rdecide(roles, st, robs(ops_status(t730)), t730))
+    keys = list((st["roles"].get("Operations") or {}).get("done") or {})
+    check([a for a in acts if a["do"] == "role_launch" and a["role"] == "Operations"] and len(keys) == 1,
+          "M6 probe: Operations' %s 07:30 slot launches and is keyed (%r)" % (wd, keys))
+    check(RL.after_slots(roles[1], {"slot": wd + " 08:00"}, t8) == keys,
+          "M6 reader and writer agree on the weekday slot key (%r vs %r)" % (
+              RL.after_slots(roles[1], {"slot": wd + " 08:00"}, t8), keys))
+    st["roles"]["Operations"]["runs"] = [{"state": "done", "slot": keys[0] if keys else None, "mode": "run",
+                                           "unit": "rm-role-operations-1", "at": t730}]
+    acts = role_acts(rdecide(roles, st, robs(ops_status(t8)), t8))
+    check([a for a in acts if a["do"] == "role_launch" and a["role"] == "Conductor"],
+          "M6 the Conductor's %s 08:00 follows Operations' done %s 07:30 run (%r)" % (
+              wd, wd, [a.get("why") for a in acts if a.get("role") == "Conductor"]))
+
+
+def test_golive_m7_dst_yesterday():
+    """dispatcher-full #7: "yesterday" is the previous CALENDAR day. 00:30 after a spring-forward Sunday (23 h) minus
+    86400 s is Saturday; the dependent must still find Sunday's 23:30 parent slot. Real transitions, two zones."""
+    old = os.environ.get("TZ")
+    try:
+        for tz, monday, sunday in (("Europe/Berlin", "2026-03-30", "2026-03-29"),
+                                   ("America/New_York", "2026-03-09", "2026-03-08"),
+                                   ("Europe/Berlin", "2026-10-26", "2026-10-25")):
+            os.environ["TZ"] = tz
+            time.tzset()
+            now = time.mktime(time.strptime(monday + " 00:31", "%Y-%m-%d %H:%M"))
+            got = RL.after_slots({"runs_local": ["23:30"]}, {"slot": "00:30"}, now)
+            check(got == [sunday + " 23:30"], "M7 %s %s 00:30 follows %s 23:30 (%r)" % (tz, monday, sunday, got))
+            check(RL.day_of(RL.prev_day(now)) == sunday, "M7 %s prev_day(%s) is %s" % (tz, monday, sunday))
+    finally:
+        if old is None:
+            os.environ.pop("TZ", None)
+        else:
+            os.environ["TZ"] = old
+        time.tzset()
+
+
 def robs_with(ro, status):
     r = dict(ro)
     r["ops"] = lambda: status
@@ -2415,7 +2623,9 @@ def main():
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
-              test_golive_b3_wave1_config):
+              test_golive_b3_wave1_config, test_golive_m4_disabled_parent_holds,
+              test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
+              test_golive_m6_weekday_slot_keys, test_golive_m7_dst_yesterday):
         try:
             t()
         except Exception as e:  # noqa: BLE001

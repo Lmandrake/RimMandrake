@@ -308,6 +308,20 @@ def day_of(t):
     return time.strftime("%Y-%m-%d", time.localtime(t))
 
 
+def slot_key(day, slot):
+    """The ONE done/run key of a scheduled slot: "YYYY-MM-DD <slot as the schedule writes it>" ("2026-10-28 07:30",
+    "2026-10-28 Wed 07:30"). Writers (the due list) and readers (after_slots) both build it here, so a weekday slot's
+    parent and dependent agree (review dispatcher-full #6)."""
+    return "%s %s" % (day_of(day), slot)
+
+
+def prev_day(now):
+    """An epoch on the local CALENDAR day before now's (noon of it): now - 86400 lands two days back just after a
+    spring-forward midnight (a 23-hour day) (review dispatcher-full #7). mktime normalises day 0 to the month before."""
+    lt = time.localtime(now)
+    return time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday - 1, 12, 0, 0, 0, 0, -1))
+
+
 # ---------------------------------------------------------------- ledger events (event triggers)
 
 def ledger_reading(read):
@@ -654,15 +668,15 @@ def ended(run, ustate, obs):
 
 def after_slots(after_cfg, job, now):
     """Pure. The after_role's slots this scheduled job may follow, newest first: its slots at or before the job's slot
-    today, then yesterday's after the job's slot time (24 h back at most). -> ["YYYY-MM-DD HH:MM", ...] (done/run keys),
-    empty when it has no slots."""
+    today, then the previous calendar day's (prev_day) after the job's slot time (24 h back at most). -> slot_key()s
+    ("YYYY-MM-DD HH:MM" / "YYYY-MM-DD Wed HH:MM", the done/run keys), empty when it has no slots."""
     mine = slot_epoch(now, job["slot"])
     keys = []
-    for day in (now, now - 86400):
+    for day in (now, prev_day(now)):
         for t, _, _ in slots(after_cfg, day):
             e = slot_epoch(day, t)
             if mine - 86400 < e <= mine:
-                keys.append((e, "%s %s" % (day_of(day), str(t).split()[-1])))
+                keys.append((e, slot_key(day, t)))
     return [k for _, k in sorted(keys, reverse=True)]
 
 
@@ -672,10 +686,15 @@ def after_ready(cfg, rst, busy, job, now, after_cfg=None):
     Operations 07:30 today, 20:00 -> 19:30) finished done, and none of its runs is in flight. A slot of that role the
     band skipped on purpose (done "band X": Operations' 07:30 in AMBER/RED) is passed over for its previous slot within
     24 h (review T, F4: the Producer's 09:00 then follows the 19:30 run). An alarm run, or yesterday's run launched
-    late, never counts (review round R, B). -> None when ready, else why it waits."""
+    late, never counts (review round R, B). A parent that is not enabled holds every scheduled slot (review
+    dispatcher-full #4). -> None when ready, else why it waits."""
     after = cfg.get("after_role")
     if not after or not job["slot"]:
         return None
+    if not (after_cfg or {}).get("enabled"):
+        # a disabled parent holds its dependent: a run it finished before it was disabled does not stand in for the
+        # checks it no longer makes (review dispatcher-full #4)
+        return "%s is not enabled" % after
     if after in busy:
         return "an %s run is still going" % after
     keys = after_slots(after_cfg or {}, job, now)
@@ -791,7 +810,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         # ---- what is due now
         due = []
         for i, (hhmm, mode, cap) in enumerate(today):
-            key = "%s %s" % (day_of(now), hhmm)
+            key = slot_key(now, hhmm)
             t = slot_epoch(now, hhmm)
             if key in rs["done"] or now < t:
                 continue
@@ -933,7 +952,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
             # a slot this band will block never runs, so it reserves nothing (review V, V6)
             reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
-                          for i, (hh, m, c) in enumerate(today) if c and "%s %s" % (day_of(now), hh) not in rs["done"]
+                          for i, (hh, m, c) in enumerate(today) if c and slot_key(now, hh) not in rs["done"]
                           and not slot_blocked(allowed, {"slot": hh, "first": i == 0, "mode": m}, cfg, now))
             if (reserve or job["mode"] == "alarm") and spent + budget + reserve > daily:
                 if rs.get("event_reserve_day") != day_of(now):          # journalled once a day; the event waits
