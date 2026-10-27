@@ -9,10 +9,15 @@ Output goes through the art ledger (art.py put + install --reason script:<this f
     fix_pipe_elbow_seams.py [--apply [--by-card "q -> option"]]   (default: write to a work dir and report only)
 
 The atlases are owner-kept, so --apply needs the authority: --by-card is passed to art.py install.
+The shift is fixed, not re-measured, so a second run would push already-aligned elbows 3 px the other way: a look whose
+installed atlas already passes PT17 is skipped, and a result that does not pass PT17 is never installed.
 """
 import subprocess, sys, shutil
 from pathlib import Path
 from PIL import Image
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import selftest_player_truths_art as pta  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[4]
 TEX = ROOT / "src/RimMandrake/FlowWorks/Textures"
@@ -37,6 +42,12 @@ def fixed(look):
     return out
 
 
+def seam_violations(atlas, look):
+    """PT17 violations of one atlas image (the player-truth check the fix exists to satisfy)."""
+    tiles = {m: pta.alpha(pta.fc.atlas_tile(atlas, m)) for m in range(16)}
+    return [b for b in pta.pipe_truths(tiles, look) if b.startswith("PT17")]
+
+
 def main():
     apply = "--apply" in sys.argv
     auth = ["--reason", "script:src/RimMandrake/FlowWorks/Tools/fix_pipe_elbow_seams.py"]
@@ -44,20 +55,32 @@ def main():
         auth = ["--by-card", sys.argv[sys.argv.index("--by-card") + 1]]
     WORK.mkdir(parents=True, exist_ok=True)
     try:
+        rc = 0
         for look in LOOKS:
+            rel = "RimMandrake/FlowWorks/Pipe/%s/UniversalPipe_Atlas.png" % look
+            if not seam_violations(Image.open(TEX / rel), look):
+                print(look, "already passes PT17: skipped (a second shift would misalign it)")
+                continue
+            out = fixed(look)
+            left = seam_violations(out, look)
+            if left:
+                print(look, "still %d PT17 violations after the shift: not written" % len(left))
+                rc = 1
+                continue
             p = WORK / (look + ".png")
-            fixed(look).save(p)
+            out.save(p)
             if not apply:
                 print("wrote", p)
                 continue
-            rel = "RimMandrake/FlowWorks/Pipe/%s/UniversalPipe_Atlas.png" % look
             r = subprocess.run([sys.executable, str(ART), "install", "FlowWorks", rel, "--file", str(p)] + auth,
                                capture_output=True, text=True)
             print(look, r.returncode, (r.stdout + r.stderr).strip()[-300:])
+            rc = rc or r.returncode
+        return rc
     finally:
         if apply:
             shutil.rmtree(WORK, ignore_errors=True)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

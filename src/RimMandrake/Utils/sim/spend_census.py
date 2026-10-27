@@ -184,15 +184,15 @@ def main():
             reread_all[0] += rr
             reread_all[1] += len(reads)
             if is_sub or role == "headless":
-                sub_rows.append({"family": fname, "role": role, "ite": ite, "calls": len(win),
-                                 "model": max({c["model"] for c in win}, key=lambda mm: sum(c["ite"] for c in win if c["model"] == mm)),
+                main_model = max({c["model"] for c in win}, key=lambda mm: sum(c["ite"] for c in win if c["model"] == mm))
+                sub_rows.append({"family": fname, "role": role, "ite": ite, "calls": len(win), "model": main_model,
                                  "first_ctx": win[0]["ctx"], "first_ite": win[0]["ite"],
                                  "peak_ctx": max(c["ctx"] for c in win), "mean_ctx": sum(c["ctx"] for c in win) / len(win),
                                  "dur_s": win[-1]["t"] - win[0]["t"], "reads": len(reads), "rereads": rr,
                                  "ite_reads_over_50k": sum(c["x"] * 0.1 * max(0, c["cr"] - 50_000) for c in win),
                                  "ite_reads_over_100k": sum(c["x"] * 0.1 * max(0, c["cr"] - 100_000) for c in win),
                                  "ite_reads_over_150k": sum(c["x"] * 0.1 * max(0, c["cr"] - 150_000) for c in win),
-                                 "reread_tok": rr_tok, "opus": c["x"] == 1.0})
+                                 "reread_tok": rr_tok, "opus": model_x(main_model) == 1.0})   # not the leaked last `c`
             if role == "top-level":
                 for cp in compacts:
                     if cp["t"] is None or cp["t"] < cutoff:

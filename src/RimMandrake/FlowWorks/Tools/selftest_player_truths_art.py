@@ -227,7 +227,7 @@ def main():
         print("  " + f)
     bad, swept = [], 0
     for fam in LADDER_FAMILIES:
-        swept += 1
+        swept += 2                                           # its east and west pictures
         bad += ladder_truths(load_ladder(fam, "east"), load_ladder(fam, "west"), fam, fam == "RM_LadderPortable")
     for look in PIPE_LOOKS:
         swept += 16

@@ -88,7 +88,7 @@ def extract(dirs, since, out):
                                 continue
                             txt = a.get('prompt') if isinstance(a.get('prompt'), str) else _text(a.get('prompt'))
                             key = (txt or '')[:80]
-                            if not txt or key in seen:
+                            if not txt or not txt.strip() or key in seen:
                                 continue
                             seen.add(key)
                             fo.write(json.dumps({'kind': 'owner', 'seat': seat, 'sess': sess, 'ts': ts, 'text': txt, 'via': 'queued'}) + '\n')
@@ -328,6 +328,7 @@ def classify(src, out):
             if e['kind'] != 'owner':
                 continue
             t = e['text'].strip()
+            e['cat'] = 'a'      # an empty text matches no rule (not even '.'); it used to raise KeyError
             for k, rx in RULES_C:
                 if rx.search(t[:600]):
                     e['cat'] = k

@@ -468,6 +468,7 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
         o = [rng.choice(outs) for _ in range(k)]
 
         # ---- strategy decisions at the start of a round (an inbound message wakes the seat)
+        restarts_before = tot["restarts"]
         if kind == "S3":
             restart(r, cold)
         elif kind == "S1" and seat.ctx > (float(arg) * W if float(arg) <= 1 else float(arg)):
@@ -512,6 +513,8 @@ def simulate(strategy: str, P: dict, seed: int, cal: dict) -> dict:
                     seat.blocks.append([lost * REFETCH_X, r, True])
                 seat.cold_prefix = seat.ctx - seat.base       # cache broken after the base: re-write the rest
                 tot["lost"] += lost
+        if tot["restarts"] > restarts_before:
+            cold = False        # restart() already paid the fresh prefix: the round reads it (no second w*C)
         if kind in ("S0", "S2", "S2i", "S4") and seat.ctx > COMPACT_FRAC * W:
             compact(r, cold)
             cold = False
