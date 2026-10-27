@@ -297,9 +297,17 @@ def iso_mark(sha):
 
 
 def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False, session=None, tool=None,
-        shared=False):
+        shared=False, loads=None, covers=None, covers_by=None):
     """One line written by ce.record() from a process whose environment names `seat` (None: names no seat), in an
-    isolated checkout of `sha` unless `shared` (a seat clone other agents use: never evidence -- review AB2)."""
+    isolated checkout of `sha` unless `shared` (a seat clone other agents use: never evidence -- review AB2).
+    loads: sources the run's trace showed paths[0] loading (run_selftests records them as covers + detail.covers_by);
+    covers / covers_by: raw values, for forging."""
+    detail = None
+    if loads:
+        covers = list(paths) + list(loads)
+        covers_by = {l: [paths[0]] for l in loads}
+    if covers_by is not None:
+        detail = {"covers_by": covers_by}
     saved = {k: os.environ.get(k) for k in _WHO_ENV}
     try:
         for k in _WHO_ENV:
@@ -318,7 +326,8 @@ def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False,
             iso_mark(sha)
         r = ce.record(tool or ("validate_patch" if variant else "selftest"), result,
                       [os.path.join(REPO6, p) for p in paths], clone=REPO6, item=item, start=st, end=st,
-                      variant=variant, force=True)
+                      variant=variant, force=True, detail=detail,
+                      covers=[os.path.join(REPO6, c) for c in covers] if covers is not None else None)
         assert r, "ce.record wrote nothing"
         return r
     finally:
@@ -359,12 +368,45 @@ def g6(row):
 i, s6, e6 = claim6()
 ok("G6 no lines and no review: no machine evidence -> T2", run6(i, e6, clean={})["tier"], "T2_NOEVIDENCE")
 i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+r6 = run6(i, e6)
+ok("G6 selftest that LOADED the module (traced), by another seat: PASS, independent, tier 0", (g6(r6), r6["tier"]),
+   (("PASS", "PASS"), "T0_PASS"))
+# SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY: coverage comes from the trace/declaration, never from the name.
+i, s6, e6 = claim6()
 put(s6, "PASS", ["src/m/selftest_mod.py"])
 r6 = run6(i, e6)
-ok("G6 selftest beside the module, by another seat: PASS, independent, tier 0", (g6(r6), r6["tier"]),
-   (("PASS", "PASS"), "T0_PASS"))
+ok("COVERS a selftest beside the module that never loaded it covers only itself: not evidence for the module (NONE)",
+   (g6(r6)[0], r6["tier"] == "T0_PASS"), ("NONE", False))
+i, s6, e6 = claim6({"src/m/mod.py": "M", "src/m/other.py": "M"})
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+r6 = run6(i, e6)
+ok("COVERS a touched source no ran test loads or declares stays OPEN",
+   (g6(r6)[0], r6["gate_evidence"].get("G6_uncovered")), ("OPEN", ["src/m/other.py"]))
 i, s6, e6 = claim6()
-put(s6, "FAIL", ["src/m/selftest_mod.py"])
+put(s6, "PASS", ["src/m/selftest_mod.py"], covers=["src/m/selftest_mod.py", "src/m/mod.py"])
+ok("COVERS-FORGE a source in covers with no covers_by is refused (record vouches for nothing touched: NONE)", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], covers=["src/m/selftest_mod.py", "src/m/mod.py"],
+    covers_by={"src/m/mod.py": ["src/m/selftest_other.py"]})
+ok("COVERS-FORGE covers_by naming a test that did not run is refused (record vouches for nothing touched: NONE)", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], covers=["src/m/selftest_mod.py", "src/m"],
+    covers_by={"src/m": ["src/m/selftest_mod.py"]})
+ok("COVERS-FORGE a derived source never covers as a folder (record vouches for nothing touched: NONE)", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], covers=["src/m/selftest_mod.py", "*"],
+    covers_by={"*": ["src/m/selftest_mod.py"]})
+ok("COVERS-FORGE a derived '*' (cover everything) is refused (record vouches for nothing touched: NONE)", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+r = put(s6, "PASS", ["src/m/selftest_mod.py"])
+append_raw(dict(r, covers=["src/m/selftest_mod.py", "src/m/mod.py"],
+                detail=dict(r["detail"], covers_by={"src/m/mod.py": ["src/m/selftest_mod.py"]}),
+                ts="2026-10-27T23:59:58+00:00"))
+ok("COVERS-FORGE covers added to a sealed line after the fact (bad mac) is never a PASS",
+   g6(run6(i, e6))[0] != "PASS", True)
+i, s6, e6 = claim6()
+put(s6, "FAIL", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
 ok("G6 any latest FAIL bounces", run6(i, e6)["tier"], "T0_BOUNCE")
 i, s6, e6 = claim6()
 put(s6, "FAIL", ["src/m"])
@@ -404,23 +446,23 @@ ok("G6 a run by another session and seat stays independent",
 # Review AA's six forged claims (tierprobe): each must be refused tier 0.
 # PART: two paths touched, a selftest covers one of them.
 i, s6, e6 = claim6({"src/a.py": "M", "src/z.cs": "M"})
-put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY")
+put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY", loads=["src/a.py"])
 r6 = run6(i, e6)
 ok("AA-PART a run covering some paths is OPEN, uncovered named", (g6(r6)[0], r6["gate_evidence"].get("G6_uncovered")),
    ("OPEN", ["src/z.cs"]))
 ok("AA-PART is no tier-0 pass", r6["tier"] != "T0_PASS", True)
 i, s6, e6 = claim6({"src/a.py": "M", "src/z.cs": "M"})
-put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY")
+put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY", loads=["src/a.py"])
 put(s6, "PASS", ["src/z.cs"], seat="FOUNDRY", tool="winbuild")
 ok("AA-PART control: every path covered is PASS", g6(run6(i, e6)), ("PASS", "PASS"))
 # OWN: no claim in the ledger, OWNER closes, the builder's seat ran the selftest.
 i, s6, e6 = claim6({"src/b.py": "M"}, close_seat="OWNER", builder=None)
-put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH")
+put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH", loads=["src/b.py"])
 r6 = run6(i, e6)
 ok("AA-OWN no builder named: independence UNMEASURED -> AI review", (g6(r6)[1], r6["tier"]),
    ("UNMEASURED", "T2_UNMEASURED"))
 i, s6, e6 = claim6({"src/b.py": "M"}, close_seat="OWNER", builder="BENCH")
-put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH")
+put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH", loads=["src/b.py"])
 ok("AA-OWN OWNER close never makes the builder's run independent", g6(run6(i, e6))[1], "FAIL")
 # STAT: a static validate_patch never stands in for the --defs run.
 i, s6, e6 = claim6({"Patches/p.xml": "M"})
@@ -459,6 +501,8 @@ ok("AA-FORGE in-process line with a typed-in start/end is not evidence", g6(run6
 i, s6, e6 = claim6({"src/d.py": "M"})
 iso_mark(s6)
 append_raw(ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/selftest_d.py")], clone=REPO6,
+                                   covers=[os.path.join(REPO6, c) for c in ("src/selftest_d.py", "src/d.py")],
+                                   detail={"covers_by": {"src/d.py": ["src/selftest_d.py"]}},
                                    start=minted(s6), end=minted(s6), who={"seat": "RUNNER",
                                                                          "seat_from": "RIMFLOW_SEAT"})))
 ok("AA-FORGE a caller-supplied WHO never makes a run independent", g6(run6(i, e6)), ("PASS", "UNMEASURED"))
@@ -473,7 +517,7 @@ append_raw({"v": 2, "tool": "selftest", "sha": s6, "dirty": False, "result": "PA
             "ts": "2026-10-27T00:00:02+00:00", "live_only": False, "variant": None})
 ok("AA-NOV a v2 line is not evidence (AB5: unverifiable -> UNMEASURED)", g6(run6(i, e6))[0], "UNMEASURED")
 i, s6, e6 = claim6({"src/e.py": "M"})
-fake = put(s6, "FAIL", ["src/selftest_e.py"])
+fake = put(s6, "FAIL", ["src/selftest_e.py"], loads=["src/e.py"])
 fake = dict(fake, result="PASS", ts="2026-10-27T23:59:59+00:00")          # FAIL edited to PASS, mac left as it was
 append_raw(fake)
 ok("AA-NOV an edited sealed line (bad mac) is not evidence; the real FAIL still bounces", run6(i, e6)["tier"],

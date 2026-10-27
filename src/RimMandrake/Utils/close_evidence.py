@@ -620,14 +620,51 @@ def counts_as_evidence(rec, key=None) -> bool:
 
 
 def _covers(rp, f) -> bool:
-    """Record path rp covers touched file f: equal, f under rp/, or rp is selftest_<stem>.py beside <stem>.py."""
+    """Record path rp covers touched file f: equal, or f under rp/. Never by name: selftest_<stem>.py beside <stem>.py
+    covers <stem>.py only when the run's trace or declaration says so (a `covers` entry of its own, see cover_entries)."""
     if rp == ALL:
         return True
     rp, f = rp.rstrip("/"), f.rstrip("/")
-    if f == rp or f.startswith(rp + "/") or rp in ("", "."):
-        return True
-    d, b = os.path.split(rp)
-    return b.startswith("selftest_") and f == os.path.join(d, b[len("selftest_"):])
+    return f == rp or f.startswith(rp + "/") or rp in ("", ".")
+
+
+#: tools whose covers beyond `paths` must each be vouched for by detail.covers_by (evidence_covers.py)
+DERIVED_COVERS = ("selftest",)
+
+
+def _bad_source(c) -> bool:
+    return (not isinstance(c, str) or c in ("", ".", ALL) or c.endswith("/") or os.path.isabs(c)
+            or c.startswith("..") or "/../" in c)
+
+
+def cover_entries(rec) -> list:
+    """[(entry, exact)] -- what a record may vouch for. A path the run was pointed at (or any covers entry of a tool
+    that names its own coverage, like winbuild's csproj tree) matches as itself or as a folder (_covers). A selftest's
+    SOURCE entry (in covers, not in paths: SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY) counts only when detail.covers_by
+    names it with a non-empty list of tests that are all among the run's paths, and is a plain relative file path;
+    it then matches that file EXACTLY, never as a folder. Anything else in covers is a forged claim and is dropped."""
+    cov = rec.get("covers")
+    cov = cov if isinstance(cov, list) else (rec.get("paths") or [])
+    if rec.get("tool") not in DERIVED_COVERS:
+        return [(c, False) for c in cov]
+    paths = set(p for p in (rec.get("paths") or []) if isinstance(p, str))
+    det = rec.get("detail") if isinstance(rec.get("detail"), dict) else {}
+    by = det.get("covers_by") if isinstance(det.get("covers_by"), dict) else {}
+    out = []
+    for c in cov:
+        if c in paths:
+            out.append((c, False))
+            continue
+        tests = by.get(c)
+        if (not _bad_source(c) and isinstance(tests, list) and tests
+                and all(isinstance(t, str) and t in paths for t in tests)):
+            out.append((c, True))
+    return out
+
+
+def _entry_covers(entry, f) -> bool:
+    c, exact = entry
+    return c == f.rstrip("/") if exact else _covers(c, f)
 
 
 def _norm_path(p, clone) -> str:
@@ -642,9 +679,8 @@ def _norm_path(p, clone) -> str:
 
 def covered(rec, paths) -> list:
     """The subset of `paths` this record actually covers (its `covers`, else its `paths`)."""
-    cov = rec.get("covers")
-    cov = cov if isinstance(cov, list) else (rec.get("paths") or [])
-    return [p for p in paths if any(_covers(c, _norm_path(p, rec.get("clone"))) for c in cov)]
+    ents = cover_entries(rec)
+    return [p for p in paths if any(_entry_covers(e, _norm_path(p, rec.get("clone"))) for e in ents)]
 
 
 def uncovered(records, paths) -> list:
@@ -764,9 +800,8 @@ def _toolkey(r) -> str:
 
 
 def _cov(r) -> list:
-    cov = r.get("covers")
-    cov = cov if isinstance(cov, list) else (r.get("paths") or [])
-    return cov or ["\0"]                 # a run that names nothing is its own key (never covers a real path)
+    """The record's vouched-for entries (cover_entries); a run that names nothing is its own key (covers no path)."""
+    return cover_entries(r) or [("\0", True)]
 
 
 def latest_covering(records, path) -> dict:
@@ -790,10 +825,10 @@ def summarize(records) -> dict:
     out = {}
     for k, rs in by.items():
         worst = None
-        for p in {c for r in rs for c in _cov(r)}:
+        for p in {c for r in rs for c, _x in _cov(r)}:
             last = None
             for r in rs:
-                if any(_covers(c, p) for c in _cov(r)):
+                if any(_entry_covers(e, p) for e in _cov(r)):
                     last = r
             res = last["result"] if last else "UNMEASURED"
             worst = res if worst is None else min(worst, res, key=order)

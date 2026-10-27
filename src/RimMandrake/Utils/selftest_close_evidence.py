@@ -522,10 +522,37 @@ def review_z(td, store, repo, sha):
     git(repo, "commit", "-q", "-m", "tests")
     sha4 = git(repo, "rev-parse", "HEAD")
     CE.record("selftest", "PASS", [repo / "src" / "selftest_a.py"], clone=repo, start=CE.snapshot(repo))
-    check(len(CE.lookup(sha=sha4, paths=["src/a.py"])) == 1, "F5 selftest_a.py covers src/a.py")
+    # SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY: a name never makes coverage; only a traced/declared source does
+    check(CE.lookup(sha=sha4, paths=["src/a.py"]) == [], "COVERS selftest_a.py by name alone does not cover src/a.py")
+    CE.record("selftest", "PASS", [repo / "src" / "selftest_a.py"], clone=repo, start=CE.snapshot(repo),
+              covers=[repo / "src" / "selftest_a.py", repo / "src" / "a.py"],
+              detail={"covers_by": {"src/a.py": ["src/selftest_a.py"]}})
+    check(len(CE.lookup(sha=sha4, paths=["src/a.py"])) == 1, "F5 selftest_a.py that loaded src/a.py covers it")
     check(CE.lookup(sha=sha4, paths=["src/b.py"]) == [], "F5 it does not cover src/b.py")
     check(CE.uncovered(CE.lookup(sha=sha4), ["src/a.py", "src/b.py"]) == ["src/b.py"], "F5 uncovered names src/b.py")
     check(len(CE.lookup(sha=sha4, paths=[str(repo / "src" / "a.py")])) == 1, "F5 an absolute path is matched too")
+    # cover_entries: derived (selftest) covers are trusted only when detail.covers_by ties them to a test in paths
+    base = {"tool": "selftest", "paths": ["src/selftest_a.py"], "detail": {}}
+    ents = lambda covers, by=None: sorted(CE.cover_entries(dict(base, covers=covers, detail={"covers_by": by} if by
+                                                                 is not None else {})))
+    check(ents(["src/selftest_a.py", "src/a.py"]) == [("src/selftest_a.py", False)],
+          "COVERS-FORGE a source with no covers_by is dropped")
+    check(ents(["src/selftest_a.py", "src/a.py"], {"src/a.py": ["src/selftest_z.py"]}) == [("src/selftest_a.py", False)],
+          "COVERS-FORGE covers_by naming a test that did not run is dropped")
+    check(ents(["src/selftest_a.py", "src/a.py"], {"src/a.py": []}) == [("src/selftest_a.py", False)],
+          "COVERS-FORGE an empty covers_by list is dropped")
+    rdir = dict(base, covers=["src/selftest_a.py", "src"], detail={"covers_by": {"src": ["src/selftest_a.py"]}})
+    check(not CE.covered(rdir, ["src/a.py"]), "COVERS-FORGE a derived folder name never covers what is under it")
+    for bad in ("src/", "*", ".", "", "/etc/passwd", "../x.py"):
+        check(ents(["src/selftest_a.py", bad], {bad: ["src/selftest_a.py"]}) == [("src/selftest_a.py", False)],
+              "COVERS-FORGE a derived source %r is dropped" % bad)
+    check(ents(["src/selftest_a.py", "src/a.py"], {"src/a.py": ["src/selftest_a.py"]})
+          == [("src/a.py", True), ("src/selftest_a.py", False)], "COVERS a tied source covers exactly")
+    rex = dict(base, covers=["src/selftest_a.py", "src/a.py"], detail={"covers_by": {"src/a.py": ["src/selftest_a.py"]}})
+    check(CE.covered(rex, ["src/a.py"]) and not CE.covered(rex, ["src/a.py/x"]),
+          "COVERS a derived source covers that file only, never as a folder")
+    check(CE.covered(dict(base, tool="winbuild", covers=["src"]), ["src/a.py"]),
+          "COVERS a non-derived tool's folder covers still cover by folder")
     import run_selftests as RS
     RS._OUTER[0] = True
     t = repo / "src" / "selftest_a.py"
@@ -535,6 +562,31 @@ def review_z(td, store, repo, sha):
     new = CE.read_all(folder=store)[before:]
     check([x["result"] for x in new] == ["UNMEASURED"] and new[0]["detail"]["dropped"]["discovered"] == 3,
           "F5 DROPPED (1 of 3 came back) records UNMEASURED: %r" % [x["result"] for x in new])
+    # COVERS end to end: run_selftests traces the test and records the in-clone sources it LOADED (and only those)
+    (repo / "src" / "m.py").write_text("V = 1\n")
+    (repo / "src" / "unloaded.py").write_text("W = 1\n")
+    (repo / "src" / "selftest_m.py").write_text("import os, sys\nsys.path.insert(0, os.path.dirname(__file__))\n"
+                                                "import m\nprint('ok')\n")
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "m")
+    tm = repo / "src" / "selftest_m.py"
+    os.environ[RS.COVERS_ENV] = "1"
+    try:
+        RS._evidence_start([tm])
+        res = RS.run_one(tm)
+        before = len(CE.read_all(folder=store))
+        RS._record_evidence([res], discovered=1)
+    finally:
+        os.environ.pop(RS.COVERS_ENV, None)
+        shutil.rmtree(repo / "src" / "__pycache__", ignore_errors=True)   # the import's .pyc would dirty the fixture
+    new_m = CE.read_all(folder=store)[before:]
+    rm_ = new_m[0] if new_m else {}
+    check(res[1] == "PASS" and rm_.get("result") == "PASS", "COVERS traced run PASSed and was recorded: %r" % (res[1],))
+    check("src/m.py" in (rm_.get("covers") or []) and "src/unloaded.py" not in (rm_.get("covers") or [])
+          and (rm_.get("detail") or {}).get("covers_by", {}).get("src/m.py") == ["src/selftest_m.py"],
+          "COVERS the loaded module (only) is in covers with covers_by: %r" % (rm_.get("covers"),))
+    check(CE.covered(rm_, ["src/m.py"]) and not CE.covered(rm_, ["src/unloaded.py"]),
+          "COVERS G6 coverage: loaded source covered, unloaded neighbour not")
     # F9: that line is keyed to the fixture clone, not this repo
     check(new and new[0]["clone"] == os.path.realpath(repo) and new[0]["sha"] == sha4 and new[0]["start"]["sha"] == sha4,
           "F9 a selftest in another clone is recorded under that clone's sha")

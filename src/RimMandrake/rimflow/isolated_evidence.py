@@ -18,6 +18,9 @@ What runs (deterministic, from the commit and the ledger only):
                   (DEFS_ROOTS_ENV, else the Steam RimWorld Data + Mods + workshop folders). No root -> not run: a
                   static run is a variant and never counts.
   * winbuild   -- touched .cs/.csproj are listed as OWED, never run here (a Windows build staged on D:).
+Coverage (SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY): a selftest record covers its test files plus the sources the run
+provably loaded (traced imports) or declares (evidence_covers.py). The plan's `predicted` / `uncovered` lists are a
+static one-hop PREDICTION of that, for planning only; G6 reads what the run actually recorded.
 The INSTRUMENTS are this clone's current run_selftests.py / validate_patch.py and close_evidence.py, never the copies
 at the sha: a commit under test could change its own runner. The code under test is the checkout's.
 
@@ -42,6 +45,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 import close_evidence as ce                                                # noqa: E402
+import evidence_covers as EC                                               # noqa: E402
 
 CLONE = os.path.realpath(os.path.join(HERE, "..", "..", ".."))             # the runner's own clone (its instruments)
 RUN_SELFTESTS = os.path.join(CLONE, "src", "RimMandrake", "Utils", "run_selftests.py")
@@ -185,7 +189,7 @@ def plan_claim(claim, repos, roots=None):
     """Pure but for git: what to run for one claim. -> dict with repo, full, selftests, validate, owed, skip."""
     p = {"item": claim["item"], "sha": claim["sha"], "close_ts": claim["close"].get("ts"),
          "close_seat": claim["close"].get("seat"), "repo": None, "full": None, "selftests": [], "validate": [],
-         "defs": [], "owed": [], "notes": [], "skip": None}
+         "defs": [], "owed": [], "notes": [], "predicted": [], "uncovered": [], "skip": None}
     repo, full = resolve(claim["sha"], repos)
     if not full:
         p["skip"] = "sha does not resolve in %s" % ", ".join(repos)
@@ -216,10 +220,20 @@ def plan_claim(claim, repos, roots=None):
     cs = [f for f in live if f.endswith((".cs", ".csproj"))]
     if cs:
         p["owed"].append("winbuild for %d C# file(s): not run by this pre-step" % len(cs))
-    uncovered = [f for f in live if f not in run and f not in p["validate"]]
+    # Sources the selected selftests are PREDICTED to cover (evidence_covers: static one-hop imports at the sha +
+    # selftest_cache.DECLS csproj compile items). A prediction only: the record covers what the run's trace shows.
+    def read_at(rel):
+        rc, out = _git(repo, "show", "%s:%s" % (full, rel))
+        return out if rc == 0 else None
+    pred = set()
+    for t in p["selftests"]:
+        pred |= EC.predict(t, read_at, tree) | EC.declared(t, repo)
+    by_pred = sorted(f for f in live if f in pred and f not in run and f not in p["validate"])
+    uncovered = [f for f in live if f not in run and f not in p["validate"] and f not in pred]
+    p["predicted"], p["uncovered"] = by_pred, uncovered
     if uncovered:
-        p["notes"].append("%d touched path(s) no run here covers (selftest evidence covers only the test files)"
-                          % len(uncovered))
+        p["notes"].append("%d touched path(s) no selftest here is predicted to load or declares, and no validator "
+                          "covers" % len(uncovered))
     if not p["selftests"] and not p["validate"]:
         p["skip"] = "nothing to run: no selftest or validator names this claim"
     return p

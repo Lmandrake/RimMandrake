@@ -503,18 +503,23 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
     anything else deletes it)."""
     ev = _EVID
     rel = _rel(path)
-    if ev is None or not rel or path not in ev["eligible"]:
+    skip_ev = ev is None or not rel or path not in ev["eligible"]
+    cov = _cov_clone(path)          # coverage trace: only where close evidence can count (an isolated checkout)
+    if skip_ev and not cov:
         return _run_one(path, cap, est)
     seq = next(_SEQ)
     tdir = Path(os.environ.get("RM_SELFTEST_CACHE_DIR") or STATE_DIR) / "trace" / f"{os.getpid()}-{seq}"
-    E = ev["mod"]
+    import suite_evidence as E
     try:
-        r = _run_one(path, cap, est, env=ev["store"].trace_env(tdir))
-        if r[1] == "PASS":
-            ok, why = ev["store"].record(rel, tdir, r[2])
-            (ev["recorded"] if ok else ev["unrecorded"]).append((rel, why))
-        else:
-            ev["store"].forget(rel)
+        r = _run_one(path, cap, est, env=(ev["store"] if ev else E.Store(REPO_ROOT, STATE_DIR)).trace_env(tdir))
+        if cov:
+            _note_covers(path, cov, tdir)
+        if not skip_ev:
+            if r[1] == "PASS":
+                ok, why = ev["store"].record(rel, tdir, r[2])
+                (ev["recorded"] if ok else ev["unrecorded"]).append((rel, why))
+            else:
+                ev["store"].forget(rel)
         return r
     finally:
         E.clear_trace(tdir)
@@ -917,6 +922,35 @@ def _write_last_run(allr, wall) -> None:
 
 
 _EV_START: dict = {}     # {clone: close_evidence.snapshot} taken when the suite starts (review Z F2)
+# Source coverage (evidence_covers.py, SELFTEST_EVIDENCE_FIX_COVERS_TESTS_ONLY): clones whose tests run traced, and
+# per test the sources it provably loaded or declares. Traced only where a record can count -- a clone that is an
+# isolated checkout of its start sha -- or everywhere under COVERS_ENV (selftests, diagnosis).
+COVERS_ENV = "RM_SELFTEST_TRACE_COVERS"
+_COV_ON: set = set()
+_COVERS: dict = {}
+
+
+def _cov_clone(path):
+    if not _COV_ON:
+        return None
+    try:
+        import close_evidence as ce
+        c = _clone_for(path, ce)
+    except Exception:  # noqa: BLE001
+        return None
+    return c if c in _COV_ON else None
+
+
+def _note_covers(path, clone, tdir) -> None:
+    """Remember what this test run covers (never fails the run: a coverage error only covers less)."""
+    try:
+        import close_evidence as ce
+        import evidence_covers as EC
+        rel = ce._rel(path, clone)
+        _COVERS[str(Path(path).resolve())] = EC.traced(tdir, clone) | EC.declared(rel, clone)
+    except Exception as exc:  # noqa: BLE001
+        print(f"!!! coverage trace unreadable for {path} ({type(exc).__name__}: {exc}); it covers only itself",
+              file=sys.stderr)
 
 
 def _evidence_on() -> bool:
@@ -940,9 +974,33 @@ def _evidence_start(tests) -> None:
         for c in {_clone_for(t, ce) for t in tests}:
             if c:
                 _EV_START[c] = ce.snapshot(c)
+        _COVERS.clear()
+        _COV_ON.clear()
+        _COV_ON.update(c for c, st in _EV_START.items()
+                       if os.environ.get(COVERS_ENV) == "1" or ce.isolated_ok(c, (st or {}).get("sha")))
     except Exception as exc:  # noqa: BLE001
         print(f"!!! CLOSE-EVIDENCE start snapshot failed ({type(exc).__name__}: {exc}); this run will not count",
               file=sys.stderr)
+
+
+def _covers_of(clone, rs, ce):
+    """(covers as absolute paths, covers_by {source rel: [test rels]}) for one clone's results. A test that ran
+    contributes its traced + declared sources; a cached PASS (it did not run) only its declared ones."""
+    per = {}
+    try:
+        import evidence_covers as EC
+    except Exception:  # noqa: BLE001
+        EC = None
+    for p, _s, _t, d in rs:
+        rel = ce._rel(p, clone)
+        srcs = _COVERS.get(str(Path(p).resolve()))
+        if srcs is None and d == "cached" and EC is not None and clone in _COV_ON:
+            srcs = EC.declared(rel, clone)
+        per[rel] = set(srcs or ())
+    if EC is None:
+        return [os.path.join(clone, t) for t in sorted(per)], {}
+    covers, by = EC.merge(per)
+    return [os.path.join(clone, c) for c in covers], by
 
 
 def _record_evidence(allr, discovered=None) -> None:
@@ -969,9 +1027,10 @@ def _record_evidence(allr, discovered=None) -> None:
         states = {s for _, s, _, _ in rs}
         result = ("FAIL" if states & {"FAIL", "CRASH"} else "UNMEASURED" if dropped
                   else "PASS" if states == {"PASS"} else "UNMEASURED")
+        covers, covers_by = _covers_of(clone, rs, close_evidence)
         close_evidence.record("selftest", result, [p for p, *_ in rs], clone=clone, force=True,
-                              start=_EV_START.get(clone),
-                              detail={"states": {_show(p): s for p, s, _, d in rs},
+                              start=_EV_START.get(clone), covers=covers,
+                              detail={"states": {_show(p): s for p, s, _, d in rs}, "covers_by": covers_by,
                                       "cached": sorted(_show(p) for p, _, _, d in rs if d == "cached"),
                                       "dropped": ({"discovered": discovered, "returned": len(allr)}
                                                   if dropped else None)})

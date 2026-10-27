@@ -101,7 +101,18 @@ ok("plan: abbreviated sha resolves to full", p1["full"], SHA1)
 ok("plan: sibling of touched foo.py + cited path; ambiguous bare name not guessed", p1["selftests"],
    ["src/A/selftest_foo.py", "src/B/selftest_cited.py"])
 ok("plan: ambiguous name reported", any("selftest_dup.py" in n for n in p1["notes"]), True)
-ok("plan: uncovered source path noted", any("no run here covers" in n for n in p1["notes"]), True)
+ok("plan: uncovered source path noted (a sibling selftest that never imports foo.py does not cover it)",
+   (any("no selftest here is predicted to load" in n for n in p1["notes"]), p1["uncovered"], p1["predicted"]),
+   (True, ["src/A/foo.py"], []))
+put("src/G/bar.py", "Y = 1\n"); put("src/G/selftest_bar.py", "import bar\n" + PASS_T)
+put("src/G/baz.py", "Z = 1\n")
+git("add", "-A"); git("commit", "-qm", "bar")
+put("src/G/bar.py", "Y = 2\n"); put("src/G/baz.py", "Z = 2\n")
+git("add", "-A"); git("commit", "-qm", "bar2")
+pb = ie.plan_claim({"item": "IT_BAR", "sha": git("rev-parse", "HEAD"), "close": {"ts": "z"}, "events": []},
+                   [REPO], roots=[])
+ok("plan: a selftest that imports the touched module is predicted to cover it; an unimported neighbour is not",
+   (pb["selftests"], pb["predicted"], pb["uncovered"]), (["src/G/selftest_bar.py"], ["src/G/bar.py"], ["src/G/baz.py"]))
 ok("plan: unresolvable sha is skipped", bool(ie.plan_claim(cl[3], [REPO], roots=[])["skip"]), True)
 put("src/Mod/Defs/x.xml", "<Defs/>\n"); put("src/Mod/Source/y.cs", "class Y{}\n")
 git("add", "-A"); git("commit", "-qm", "xml")
