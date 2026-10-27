@@ -180,9 +180,10 @@ def _blank_tables(text):
     return "\n".join(out)
 
 
-def redact(text, hide_ids=()):
+def redact(text, hide_ids=(), keep_ids=()):
     """Pure. Free text -> the same text with every account/cap number replaced by MASK, and every id in hide_ids
-    (items withheld from blind roles) replaced by MASK. None -> ""."""
+    (items withheld from blind roles) replaced by MASK. An id in keep_ids (a real ledger id) is never
+    altered: ids are keys. None -> ""."""
     if not text:
         return ""
     text = _blank_tables(str(text))
@@ -245,6 +246,8 @@ def redact(text, hide_ids=()):
             w = m.group()
             if w in hide_ids or _account_id(w):
                 cut.append((m.start(), m.end(), MASK))
+            elif w in keep_ids:
+                continue
             elif digit_id(w):
                 cut.append((m.start(), m.end(), mask_id(w)))
     out, pos = [], 0
@@ -261,6 +264,8 @@ def withheld(it):
     review), and a withheld item is work the Conductor cannot see. Its title's numbers are redacted either way."""
     if _account_item_id(it.id or ""):
         return True
+    if any(re.fullmatch(r"\d+K", p) for p in (it.id or "").split("_")):
+        return True     # the id itself carries a token-cost number: withheld, never mangled
     return bool(set(re.split(r"[^A-Z]+", (it.kind or "").upper())) & WITHHELD_KIND_PARTS)
 
 
@@ -268,6 +273,10 @@ def _load():
     from rimflow import model
     evs = model.read()
     return evs, model.replay(evs)
+
+
+def known_ids(world):
+    return {i.id for i in world.items.values() if not withheld(i)}
 
 
 def hidden_ids(world):
@@ -279,6 +288,7 @@ def queue_text(world, seat, target="v1", ctx=None, summaries=True):
     allow-listed fields only and redacted free text."""
     from rimflow import render
     hide = hidden_ids(world)
+    keep = known_ids(world)
     ranked, sections = render.view_sections(world, seat, target, ctx)
     n_hidden = len({i.id for i in world.items.values() if i.owner == seat and i.open and i.id in hide})
     out = ["# %s queue, blind view" % seat,
@@ -286,14 +296,14 @@ def queue_text(world, seat, target="v1", ctx=None, summaries=True):
            "reads %s. %d open item(s) about accounts are withheld (Operations' alone)." % (MASK, n_hidden), ""]
 
     def item(it):
-        lines = ["## %s %s" % (mask_id(it.id), redact(it.title, hide)),
+        lines = ["## %s %s" % (it.id, redact(it.title, hide, keep)),
                  "state: %s%s   kind: %s   needs: %s   row: %s" % (
                      it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.needs,
                      it.row if it.row not in (None, "") else "unassigned")]
         if it.blocked:
-            lines.append("blocked: %s" % redact(it.blocked_reason or "unexplained", hide))
+            lines.append("blocked: %s" % redact(it.blocked_reason or "unexplained", hide, keep))
         if summaries:
-            lines.append("summary: %s" % redact(render.summary(it.id), hide))
+            lines.append("summary: %s" % redact(render.summary(it.id), hide, keep))
         return lines + [""]
     groups = [("NEXT", ranked)] + [(t, items) for t, items, _n, _x in sections]
     for title, items in groups:
@@ -314,13 +324,14 @@ def show_text(evs, world, iid, last=10, prefix=None):
     if it is None:
         return "%s: no such item\n" % iid
     hide = hidden_ids(world)
+    keep = known_ids(world)
     if iid in hide:
         return "%s: withheld from the blind view (an item about accounts: Operations' alone)\n" % iid
     out = ["%s   state %s%s   kind %s   owner %s   needs %s" % (
-        mask_id(it.id), it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.owner, it.needs),
-        "title: %s" % redact(it.title, hide)]
+        it.id, it.state, " (BLOCKED)" if it.blocked else "", it.kind or "task", it.owner, it.needs),
+        "title: %s" % redact(it.title, hide, keep)]
     if it.blocked:
-        out.append("blocked: %s" % redact(it.blocked_reason or "unexplained", hide))
+        out.append("blocked: %s" % redact(it.blocked_reason or "unexplained", hide, keep))
     if it.closed_sha:
         out.append("closed at %s" % it.closed_sha)
     if it.superseded_by:
@@ -332,7 +343,7 @@ def show_text(evs, world, iid, last=10, prefix=None):
     out.append("--- notes: last %d of %d%s (redacted) ---" % (len(shown), len(notes),
                                                               " starting %r" % prefix if prefix else ""))
     for e in shown:
-        out.append("%s %s: %s" % (e.get("ts"), e.get("seat"), redact(e.get("text"), hide)))
+        out.append("%s %s: %s" % (e.get("ts"), e.get("seat"), redact(e.get("text"), hide, keep)))
     others = [evs[i] for i in it.history if evs[i].get("event") != "note"]
     out.append("--- other events: %d (verb, time, seat only) ---" % len(others))
     for e in others[-last:] if last else others:

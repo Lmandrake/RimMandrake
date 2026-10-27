@@ -161,8 +161,29 @@ def test_review_x():
           % sorted(B.account_names()))
 
 
+def test_ids_survive():
+    class W:
+        pass
+    class I(_It):
+        def __init__(self, iid):
+            super().__init__(iid)
+            self.owner, self.state, self.blocked, self.needs = "X", "open", False, ""
+            self.closed_sha = self.superseded_by = self.blocked_reason = None
+            self.history = []
+    w = W()
+    w.items = {i: I(i) for i in ("DUNG_HATCH_WILDLIFE_CAP_1", "PRODUCER_RUN_30K_EVENT")}
+    keep, hide = B.known_ids(w), B.hidden_ids(w)
+    check("DUNG_HATCH_WILDLIFE_CAP_1" in keep and "PRODUCER_RUN_30K_EVENT" in hide, "ids: 30K id withheld, CAP_1 kept")
+    check(B.redact("see DUNG_HATCH_WILDLIFE_CAP_1", hide, keep) == "see DUNG_HATCH_WILDLIFE_CAP_1", "ids: legacy _1 intact")
+    check("30" not in B.redact("see PRODUCER_RUN_30K_EVENT", hide, keep), "ids: withheld 30K id masked in text")
+    check("30" not in B.redact("see OTHER_RUN_30K_EVENT", hide, keep), "ids: unknown 30K id still masked")
+    out = B.show_text([], w, "DUNG_HATCH_WILDLIFE_CAP_1")
+    check(out.startswith("DUNG_HATCH_WILDLIFE_CAP_1   state"), "ids: show finds the CAP_1 item: %r" % out[:60])
+    check("withheld" in B.show_text([], w, "PRODUCER_RUN_30K_EVENT"), "ids: show withholds the 30K item")
+
+
 def main():
-    for t in (test_units, test_withheld, test_review_x, test_real_ledger):
+    for t in (test_units, test_withheld, test_review_x, test_ids_survive, test_real_ledger):
         try:
             t()
         except Exception as e:  # noqa: BLE001
