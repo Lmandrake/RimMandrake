@@ -493,7 +493,9 @@ def account_gate(sch, st, obs, now, act):
                 lent_rules, allowance = ro["lent"]() if ro.get("lent") else AP.load_lent(rule)
                 # one staleness line for the pick and the role gates: the schedule's (review T, F10)
                 eff = dict(rule, ops_stale_s=sch["ops_stale_s"]) if "ops_stale_s" in sch else rule
-                p = AP.pick(eff, ro["ops"](), current, lent_rules, allowance, now)
+                if isinstance(lent_rules, dict):     # the last lent set read: N1 holds on it while the rules are unreadable
+                    st["account_lent_known"] = sorted(AP.lent_set(lent_rules))
+                p = AP.pick(eff, ro["ops"](), current, lent_rules, allowance, now, st.get("account_lent_known"))
             cache["p"] = p
             prev = (st.get("account_pick") or {}).get("key")
             changed = prev != p["key"]
@@ -508,7 +510,7 @@ def account_gate(sch, st, obs, now, act):
                         "--confirm <machine>` closes every Claude window; held: %s): %s" % (
                             p["to"], p["to"], ", ".join(rule.get("hold") or []) or "nothing", p["why"]))
             elif p["state"] == "UNMEASURED":
-                act(do="alarm", kind="account:unmeasured", note=True,
+                act(do="alarm", kind="account:unmeasured%s" % (":held" if p.get("hold") else ""), note=True,
                     ticket=rule.get("ledger_item") or sch.get("alarm_item"), why=p["why"])
             elif p["state"] == "HOLD":
                 # on a lent account under its limit, nothing else fit: the work waits (DISPATCHER_FIX_LENT_HOLD_ALARM).

@@ -15,7 +15,11 @@ A program, not a judgement: pick() applies the schedule's `account_pick` rule to
               account is fit: nothing listed under `hold` is released (never burn an off-limits account). The
               dispatcher must alarm it (account_gate alarms SWITCH/UNMEASURED today: item filed).
   UNMEASURED  the machine's own account or its reading is unknown: KEEP it and alarm, never guess. A candidate whose
-              points are not in `target_min.m` (MEASURED by default) is not a candidate.
+              points are not in `target_min.m` (MEASURED by default) is not a candidate. On a LENT account (the lent
+              rules' set, or the last set read when the rules are unreadable now: `known_lent`) an UNMEASURED pick
+              HOLDS (`hold` true) and is alarmed: an unmeasured lent account is never drawn on (review U N1). The
+              rules unreadable with no set ever read: the machine's account cannot be told owned, so it holds too
+              (fail closed). An unresolved machine account keeps (never guess).
 
 Lent accounts (the owner's rule for an account that belongs to someone else: at most max_used_by_us_pct of his week
 early on, never under floor_pct_left near his reset, off-limits through a date) are DATA in `lent_rules`
@@ -89,13 +93,29 @@ def load_lent(rule):
     return rules, fn
 
 
-def pick(rule, status, current, lent_rules, allowance, now):
-    """Pure. -> {"state", "account", "to", "hold", "why", "key", "candidates"}."""
+def lent_set(lent_rules, known_lent=None):
+    """The lent account labels: the readable rules' set, else the last set read (`known_lent`), else None (unknown)."""
+    if isinstance(lent_rules, dict):
+        return set(lent_rules.get("lent_accounts") or {})
+    return None if known_lent is None else set(known_lent)
+
+
+def pick(rule, status, current, lent_rules, allowance, now, known_lent=None):
+    """Pure. -> {"state", "account", "to", "hold", "why", "key", "candidates"}. known_lent: the lent labels last read
+    (the caller's cache), used only while the lent rules are unreadable."""
+    lents = lent_set(lent_rules, known_lent)
+
     def out(state, why, to=None, cands=()):
         # act "recommend" (the only one built): the work waits for the switch. HOLD: the machine is on a lent
         # account that is off-limits / under its draw line and nothing else is fit: never burn it, wait.
+        # UNMEASURED on a lent account (or one that cannot be told owned) holds as well (review U N1).
         hold = state in ("SWITCH", "HOLD")
-        key = "%s %s%s" % (state, current or "?", (" -> " + to) if to else "")
+        if state == "UNMEASURED" and current and (lents is None or current in lents):
+            hold = True
+            why = "HELD (%s): %s" % ("lent account" if lents is not None else
+                                     "no lent-account set was ever read, the account cannot be told owned", why)
+        key = "%s%s %s%s" % (state, "/held" if state == "UNMEASURED" and hold else "", current or "?",
+                             (" -> " + to) if to else "")
         return {"state": state, "account": current, "to": to, "hold": hold, "why": why, "key": key,
                 "candidates": list(cands)}
 

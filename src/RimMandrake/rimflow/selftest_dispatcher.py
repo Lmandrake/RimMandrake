@@ -1174,8 +1174,8 @@ def test_account_pick_rule():
     st = accounts_status(now, three, age_s=3000)
     check(AP.pick(PICK_RULE, st, "a", LENT_RULES, fn, now)["state"] == "UNMEASURED", "pick: stale reading -> "
           "UNMEASURED")
-    check(pk(three, lent=None)["state"] == "UNMEASURED" and not pk(three, lent=None)["hold"],
-          "pick: lent rules unreadable -> no switch (fail closed)")
+    check(pk(three, lent=None)["state"] == "UNMEASURED" and pk(three, lent=None)["hold"],
+          "pick: lent rules unreadable, no lent set ever read -> no switch, HELD (fail closed, review U N1)")
     check(pk(three, allowance=None)["state"] == "UNMEASURED", "pick: allocator not importable -> no switch")
     # lent accounts: data rule (<= 50% of his week used early, never under the 10% floor near reset)
     p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 5, "MEASURED"), "b": (3.0, 60, 100, "MEASURED")})
@@ -1678,6 +1678,44 @@ def test_review_u_notes():
               "N2: %s done note %s" % (role["name"], "token-free" if blind else "keeps its tokens"))
 
 
+def test_review_u_lent_unmeasured():
+    """review U N1/F3: UNMEASURED on a lent account HOLDS (ring, recover and role launches) and alarms; on an owned
+    account it keeps; an unresolved account keeps (never guess); the lent set last read stands in while the rules are
+    unreadable."""
+    now = at_local("09:00")
+    fn = lent_fn()
+    blind = {"lent": (2.0, 40, 50, "UNMEASURED"), "a": (3.0, 60, 20, "MEASURED")}
+    st_ = accounts_status(now, blind)
+    p = AP.pick(PICK_RULE, st_, "lent", LENT_RULES, fn, now)
+    check(p["state"] == "UNMEASURED" and p["hold"] and "HELD" in p["why"], "N1: lent account, reading UNMEASURED -> held")
+    stale = accounts_status(now, {"lent": (2.0, 40, 50, "MEASURED")}, age_s=3000)
+    check(AP.pick(PICK_RULE, stale, "lent", LENT_RULES, fn, now)["hold"], "N1: lent account, stale reading -> held")
+    check(not AP.pick(PICK_RULE, stale, "a", LENT_RULES, fn, now)["hold"], "N1: owned account, stale reading -> kept")
+    check(not AP.pick(PICK_RULE, st_, None, LENT_RULES, fn, now)["hold"], "N1: unresolved account -> kept, never guess")
+    ok = accounts_status(now, {"lent": (2.0, 40, 50, "MEASURED"), "a": (3.0, 60, 20, "MEASURED")})
+    check(AP.pick(PICK_RULE, ok, "lent", None, fn, now, ["lent"])["hold"],
+          "N1: rules unreadable, on the last-read lent account -> held")
+    check(not AP.pick(PICK_RULE, ok, "a", None, fn, now, ["lent"])["hold"],
+          "N1: rules unreadable, on an account the last-read set calls owned -> kept")
+    # through the dispatcher: the ring is held and the alarm says so; the lent set is cached for an outage
+    sch = sched(roles=[conductor()], account_pick=PICK_RULE)
+    st = fresh()
+    a = stall(sch, st, pobs(now, blind, cur="lent"), now)
+    check("ring" not in kinds(a) and [x for x in a if x.get("kind") == "account:unmeasured:held"],
+          "N1 dispatch: on a lent account with no reading the ring is held and alarmed")
+    check(st.get("account_lent_known") == ["lent"], "N1 dispatch: the lent set read is cached")
+    o = pobs(now, {"lent": (2.0, 40, 50, "MEASURED"), "a": (3.0, 60, 20, "MEASURED")}, cur="lent")
+    o["roles"]["lent"] = lambda: (None, fn)
+    st2 = fresh()
+    st2["account_lent_known"] = ["lent"]
+    a = stall(sch, st2, o, now)
+    check("ring" not in kinds(a) and [x for x in a if x.get("kind") == "account:unmeasured:held"],
+          "N1 dispatch: rules unreadable, the cached set still holds the lent account")
+    st3 = fresh()
+    a = stall(sch, st3, pobs(now, blind, cur="a"), now)
+    check("ring" in kinds(a), "N1 dispatch: on an owned account the ring goes")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -1686,7 +1724,8 @@ def main():
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
-              test_account_hold_dispatch, test_review_u_notes):
+              test_account_hold_dispatch, test_review_u_notes,
+              test_review_u_lent_unmeasured):
         try:
             t()
         except Exception as e:  # noqa: BLE001
