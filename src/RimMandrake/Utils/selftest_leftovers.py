@@ -66,8 +66,21 @@ def build(t):
     m = os.path.join(repo, "src/RimMandrake/ModA")
     w(os.path.join(m, "About/About.xml"), ABOUT % "mandrake.rm.moda")
     w(os.path.join(m, "Defs/a.xml"), "<Defs><ThingDef><graphicData><texPath>Things/Used/Thing</texPath>"
-                                     "</graphicData></ThingDef></Defs>")
-    w(os.path.join(m, "Source/GoneMod.cs"), 'class GoneMod { string s = "Things/Coded/Icon"; }')
+                                     "</graphicData></ThingDef>"
+                                     # slashless texPaths name a Textures-root file / Graphic_Random folder
+                                     "<ThingDef><graphicData><texPath>rootaxe</texPath></graphicData>"
+                                     "<uiIconPath>rooticon</uiIconPath></ThingDef>"
+                                     "<ThingDef><graphicData><graphicClass>Graphic_Random</graphicClass>"
+                                     "<texPath>rootfolder</texPath></graphicData>"
+                                     "<description>things</description><placementMask>Things</placementMask></ThingDef></Defs>")
+    w(os.path.join(m, "Source/GoneMod.cs"), 'class GoneMod { string s = "Things/Coded/Icon"; '
+                                            'string b = "rootcoded"; '
+                                            'string c = "Things/Composed/Debris_" + (ash ? "Ash" : "Char") + i; }')
+    png(os.path.join(m, "RimThemes/Shell/Textures/Widgets.ButtonBGAtlas.png"))
+    for f in ("Things/Composed/Debris_Ash3.png", "rootaxe.png", "rooticon.png", "rootfolder/a.png", "rootcoded.png",
+              "rootorphan.png",
+              "Things/Deep/rootaxe.png"):
+        png(os.path.join(m, "Textures", f))
     png(os.path.join(m, "Textures/Things/Used/Thing_north.png"))
     png(os.path.join(m, "Textures/Things/Coded/Icon.png"))
     png(os.path.join(m, "Textures/Things/Unused/Orphan.png"))
@@ -106,6 +119,8 @@ def build(t):
     w(os.path.join(config, "Mod_Gone_GoneMod.xml"), "<x/>")
     w(os.path.join(config, "Mod_Foreign_ForeignMod.xml"), "<x/>")
     w(os.path.join(mods, "ModA/About/About.xml"), ABOUT % "mandrake.rm.moda")
+    w(os.path.join(mods, "Under_Score/About/About.xml"), ABOUT % "mandrake.rm.under")
+    w(os.path.join(config, "Mod_Under_Score_UnderMod.xml"), "<x/>")
     w(os.path.join(mods, "Orphan/About/About.xml"), ABOUT % "mandrake.rm.orphan")
     png(os.path.join(mods, "Orphan/Textures/Things/Gone/Thing.png"))
     w(os.path.join(mods, "Foreign/About/About.xml"), ABOUT % "someone.else.mod")
@@ -173,6 +188,21 @@ def main():
         ok(s(clones["clean"]) == L.NOT_SAFE, "clone: a stash is NOT-SAFE")
         git(clones["clean"], "stash", "drop", "-q")
         age_git(clones["clean"])
+        # an ignored file is not in the bundle: NOT-SAFE until it is gone
+        w(os.path.join(clones["clean"], ".git", "info", "exclude"), "local.env\n")
+        w(os.path.join(clones["clean"], "local.env"), "SECRET=1")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.NOT_SAFE, "clone: an ignored file (lost by the bundle) is NOT-SAFE")
+        os.remove(os.path.join(clones["clean"], "local.env"))
+        # a tag on a commit no remote has is unpushed work
+        git(clones["clean"], "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "--allow-empty", "-m", "tagged")
+        git(clones["clean"], "tag", "-a", "-m", "t", "v-local")
+        git(clones["clean"], "-c", "advice.detachedHead=false", "reset", "-q", "HEAD~1")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.NOT_SAFE, "clone: an unpushed annotated tag is NOT-SAFE")
+        git(clones["clean"], "tag", "-d", "v-local")
+        age_git(clones["clean"])
+        ok(s(clones["clean"]) == L.SAFE, "clone: clean again once the ignored file and the tag are gone")
         # rebased: push the repo's local commit, so the clone's cherry-pick is patch-equivalent on origin/main
         subprocess.run(["git", "-C", repo, "push", "-q", "origin", "main"], check=True)
         ctx._cache.pop("origin_main", None)
@@ -194,6 +224,8 @@ def main():
         ok(s(os.path.join(config, "ModsConfig.xml.bak-named")) == L.NOT_SAFE, "setting: repo-named backup is NOT-SAFE")
         ok(s(os.path.join(config, "Mod_Gone_GoneMod.xml")) == L.SAFE, "setting: settings of a gone mod of ours is SAFE")
         ok(s(os.path.join(config, "Mod_ModA_ModAMod.xml")) == L.NOT_SAFE, "setting: live settings file is NOT-SAFE")
+        ok(s(os.path.join(config, "Mod_Under_Score_UnderMod.xml")) == L.NOT_SAFE,
+           "setting: live settings of a folder whose name holds '_' is NOT-SAFE")
         ok(s(os.path.join(config, "Mod_Foreign_ForeignMod.xml")) == L.REFUSED, "setting: foreign settings REFUSED")
         ok(s(os.path.join(config, "ModsConfig.xml")) == L.REFUSED, "setting: the live ModsConfig.xml is REFUSED")
 
@@ -207,6 +239,20 @@ def main():
            "picture: unreferenced deployed texture of ours is SAFE")
         ok(s(os.path.join(mods, "Foreign/Textures/Things/Gone/Thing.png")) == L.REFUSED,
            "picture: texture in a foreign mod is REFUSED")
+        ok(s(os.path.join(tex, "rootaxe.png")) == L.NOT_SAFE, "picture: slashless <texPath> file is NOT-SAFE")
+        ok(s(os.path.join(tex, "rooticon.png")) == L.NOT_SAFE, "picture: slashless <uiIconPath> file is NOT-SAFE")
+        ok(s(os.path.join(tex, "rootfolder/a.png")) == L.NOT_SAFE,
+           "picture: file in a slashless Graphic_Random folder is NOT-SAFE")
+        ok(s(os.path.join(tex, "rootcoded.png")) == L.NOT_SAFE, "picture: slashless C# literal file is NOT-SAFE")
+        ok(s(os.path.join(tex, "Things/Composed/Debris_Ash3.png")) == L.NOT_SAFE,
+           "picture: a C# path composed as \"..._\" + kind + i covers its files")
+        ok(s(os.path.join(repo, "src/RimMandrake/ModA/RimThemes/Shell/Textures/Widgets.ButtonBGAtlas.png"))
+           == L.NOT_SAFE, "picture: a RimThemes theme texture (read by file name) is NOT-SAFE")
+        ok(s(os.path.join(tex, "rootorphan.png")) == L.SAFE, "picture: unreferenced Textures-root file is SAFE")
+        ok(s(os.path.join(tex, "Things/Deep/rootaxe.png")) == L.SAFE,
+           "picture: a bare word never vouches for a deeper path of the same name")
+        ok(s(os.path.join(tex, "Things/Unused/Orphan.png")) == L.SAFE,
+           "picture: a non-path element text ('things') does not clear a Textures-root folder")
         png(os.path.join(tex, "Things/Unused/Untracked.png"))
         ok(s(os.path.join(tex, "Things/Unused/Untracked.png")) == L.NOT_SAFE, "picture: untracked repo file is NOT-SAFE")
 
@@ -244,6 +290,13 @@ def main():
             ok(False, "archive: refuses a path not ours")
         except SystemExit as e:
             ok("REFUSED" in str(e), "archive: refuses a path not ours")
+        orphan = os.path.join(tex, "Things/Unused/Orphan.png")
+        ok(s(orphan) == L.SAFE, "picture: the orphan is SAFE by references (so only the kind rule can refuse it)")
+        try:
+            L.delete(ctx, orphan, ledger=False)
+            ok(False, "delete: refuses a picture (art ledger only)")
+        except SystemExit as e:
+            ok("art ledger" in str(e) and os.path.exists(orphan), "delete: refuses a picture (art ledger only)")
         old = os.path.join(saves, "RM_old.rws")
         before = L._sha256(old)
         man = L.archive(ctx, old)

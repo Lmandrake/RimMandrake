@@ -75,6 +75,29 @@ SAVE_PREFIXES = ("RM_", "NS_", "BENCH_", "FOUNDRY_", "rimbridge_save_", "FWSWEEP
 CANONICAL_MARKS = ("CANONICAL", "ASHKARR_DEV")
 REVIEW_MARK = re.compile(r"review", re.I)
 TOKEN = re.compile(r"[\w\-.]+(?:/[\w\-.]+)+/?")
+# A texPath with NO slash ("gamorreanaxe") names a file/folder at the Textures root: TOKEN cannot see it.
+# BARE_XML takes the text of an element whose tag names a path/texture/icon/graphic/mask; BARE_JSON the same for
+# a def-dump key; CS_LIT any C# string literal. Bare tokens can clear only Textures-root files (and, from XML/dump,
+# Textures-root folders) -- a bare word never vouches for a deeper path.
+BARE_MARK = "\x00bare:"
+BARE_XML = re.compile(r"<([A-Za-z_][\w.]*)(?:\s[^<>]*)?>\s*([\w\-.]+)\s*</\1\s*>")
+BARE_JSON = re.compile(r'"(\w+)"\s*:\s*"([\w\-.]+)"')
+CS_LIT = re.compile(r'"([\w\-.]+)"')
+PATHISH = ("path", "tex", "icon", "graphic", "image", "sprite")  # not "mask": placementMask is an enum
+
+
+def _pathish(tag):
+    t = tag.lower()
+    return any(k in t for k in PATHISH) and not t.endswith("class")
+
+
+def _tok(t):
+    """A composed C# path ("Debris/RM_ScorchDebris_" + i) names every file after its trailing separator."""
+    return t.lower().strip("/").rstrip("_-")
+
+
+def bare_from_xml(txt):
+    return {m.group(2).lower() for m in BARE_XML.finditer(txt) if _pathish(m.group(1))}
 
 
 def _now():
@@ -303,7 +326,7 @@ class Ctx(object):
         """Lower-case path-like strings from every XML/C# of ours, deployed mod XML, and the def dump."""
         if "tokens" in self._cache:
             return self._cache["tokens"]
-        toks = set()
+        toks, bdir, bfile = set(), set(), set()
         rc, out, _ = _git(self.repo, "ls-files", "--", "*.xml", "*.cs")
         for rel in out.splitlines():
             if not rel.startswith("src/"):
@@ -312,7 +335,11 @@ class Ctx(object):
                 txt = io.open(os.path.join(self.repo, rel), encoding="utf-8", errors="replace").read()
             except OSError:
                 continue
-            toks.update(t.lower().strip("/") for t in TOKEN.findall(txt))
+            toks.update(_tok(t) for t in TOKEN.findall(txt))
+            if rel.endswith(".xml"):
+                bdir.update(bare_from_xml(txt))
+            else:
+                bfile.update(m.lower() for m in CS_LIT.findall(txt))
         for name in self.deployed():
             for d, _dirs, files in os.walk(os.path.join(self.mods, name)):
                 for f in files:
@@ -321,17 +348,27 @@ class Ctx(object):
                             txt = io.open(os.path.join(d, f), encoding="utf-8", errors="replace").read()
                         except OSError:
                             continue
-                        toks.update(t.lower().strip("/") for t in TOKEN.findall(txt))
-        toks |= self.dump_tokens()
+                        toks.update(_tok(t) for t in TOKEN.findall(txt))
+                        bdir.update(bare_from_xml(txt))
+        dump = self.dump_tokens()
+        toks |= {t for t in dump if not t.startswith(BARE_MARK)}
+        bdir |= {t[len(BARE_MARK):] for t in dump if t.startswith(BARE_MARK)}
         toks.discard("")
+        bdir.discard("")
         self._cache["tokens"] = toks
+        self._cache["bare"] = (bdir, bfile | bdir)
         return toks
+
+    def bare_tokens(self):
+        """(folder-or-file names from path-like XML/dump fields, file names also from C# literals), lower-case."""
+        self.ref_tokens()
+        return self._cache["bare"]
 
     def dump_tokens(self):
         if not self.dump or not os.path.isdir(self.dump):
             return set()
         cache_dir = os.environ.get("LEFTOVERS_CACHE", "/mnt/d/ClaudeWork/rimmandrake/leftovers/cache")
-        cache = os.path.join(cache_dir, "dump_tokens_%s.txt" % os.path.basename(self.dump.rstrip("/")))
+        cache = os.path.join(cache_dir, "dump_tokens_v3_%s.txt" % os.path.basename(self.dump.rstrip("/")))
         if os.path.exists(cache):
             return set(io.open(cache, encoding="utf-8").read().split("\n"))
         toks = set()
@@ -339,7 +376,9 @@ class Ctx(object):
             for f in files:
                 if f.endswith(".json"):
                     txt = io.open(os.path.join(d, f), encoding="utf-8", errors="replace").read()
-                    toks.update(t.lower().strip("/") for t in TOKEN.findall(txt.replace("\\/", "/")))
+                    toks.update(_tok(t) for t in TOKEN.findall(txt.replace("\\/", "/")))
+                    toks.update(BARE_MARK + m.group(2).lower() for m in BARE_JSON.finditer(txt)
+                                if _pathish(m.group(1)))
         try:
             os.makedirs(cache_dir, exist_ok=True)
             io.open(cache, "w", encoding="utf-8").write("\n".join(sorted(toks)))
@@ -368,14 +407,21 @@ def tex_rel(path):
     return os.path.splitext(p[i + len("/textures/"):])[0].lower()
 
 
-def tex_referenced(rel, toks):
-    """A texture is referenced by its own path or by a prefix ending at a variant boundary."""
+def tex_referenced(rel, toks, bare=None):
+    """A texture is referenced by its own path or by a prefix ending at a variant boundary. `bare` =
+    ctx.bare_tokens(): slashless texPaths, which can only name a Textures-root file or (dir set) folder."""
     if rel in toks:
         return rel
     for i in range(3, len(rel)):
         if rel[i] in "/_-" or rel[i].isdigit() or rel[i - 1] == "/":
             if rel[:i] in toks:
                 return rel[:i]
+    if bare:
+        bdir, bfile = bare
+        if "/" in rel:
+            top = rel.split("/", 1)[0]
+            return top if top in bdir else None
+        return tex_referenced(rel, bfile)
     return None
 
 
@@ -555,6 +601,13 @@ def check_clone(ctx, p, v):
         return v.blind("git status failed: %s" % err.strip()[:200])
     if st.strip():
         v.no("%d dirty/untracked path(s)" % len(st.splitlines()))
+    # ignored files: the bundle keeps refs only, so an ignored file (a local .env, data, notes) would be lost
+    rc, ign, err = _git(p, "ls-files", "--others", "--ignored", "--exclude-standard", "--directory")
+    if rc != 0:
+        return v.blind("git ls-files --ignored failed: %s" % err.strip()[:200])
+    ign = [l for l in ign.splitlines() if l.strip() and "__pycache__" not in l and not l.endswith(".pyc")]
+    if ign:
+        v.no("%d ignored path(s) the bundle would not keep (e.g. %s)" % (len(ign), ign[0]))
     rc, stash, _ = _git(p, "stash", "list")
     if stash.strip():
         v.no("%d stash entr(ies)" % len(stash.splitlines()))
@@ -565,8 +618,8 @@ def check_clone(ctx, p, v):
     rc, wt, _ = _git(p, "worktree", "list", "--porcelain")
     if wt.count("worktree ") > 1:
         v.no("has extra worktrees")
-    # unpushed: commits on any local branch or HEAD not on any remote ref ...
-    rc, out, err = _git(p, "rev-list", "HEAD", "--branches", "--not", "--remotes")
+    # unpushed: commits on any local branch, tag or HEAD not on any remote ref ...
+    rc, out, err = _git(p, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes")
     if rc != 0:
         return v.blind("rev-list failed: %s" % err.strip()[:200])
     unpushed = [s for s in out.split() if s]
@@ -578,7 +631,9 @@ def check_clone(ctx, p, v):
         env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = alt + (":" + env["GIT_ALTERNATE_OBJECT_DIRECTORIES"]
                                                          if env.get("GIT_ALTERNATE_OBJECT_DIRECTORIES") else "")
         rc, heads, _ = _git(p, "for-each-ref", "--format=%(objectname)", "refs/heads")
-        tips = set(heads.split()) | {_git(p, "rev-parse", "HEAD")[1].strip()}
+        rc, tags, _ = _git(p, "for-each-ref", "--format=%(objectname) %(*objectname)", "refs/tags")
+        tips = set(heads.split()) | {_git(p, "rev-parse", "HEAD")[1].strip()} | {
+            l.split()[-1] for l in tags.splitlines() if l.strip()}
         plus = set()
         for tip in sorted(t for t in tips if t):
             rc, ch, err = _git(p, "cherry", om, tip, env=env, timeout=300)
@@ -639,6 +694,16 @@ def check_setting(ctx, p, v):
     is_backup_mc = bool(re.match(r"ModsConfig\..+", name)) and name != "ModsConfig.xml"
     if m and not m.group(1).isdigit():
         folder, cls, bak = m.group(1), m.group(2), m.group(3)
+        # Mod_<Folder>_<Class>.xml: a folder name may itself hold '_' -- consider every split, prefer a real folder
+        stem = name[len("Mod_"):name.lower().index(".xml")]
+        splits = [(stem[:i], stem[i + 1:]) for i in range(1, len(stem) - 1) if stem[i] == "_"]
+        for f_, c_ in splits:
+            if f_ in ctx.deployed() or f_ in ctx.our_mod_folders():
+                folder, cls = f_, c_
+                break
+        live = [f_ for f_, _c in splits if f_ in ctx.deployed()]
+        if not bak and live:
+            v.no("live settings file of deployed mod folder %s" % live[0])
         ours = folder in ctx.our_mod_folders()
         if not ours:
             rc, out, _ = _git(ctx.repo, "grep", "-l", "-E", r"class\s+%s\b" % re.escape(cls), "--", "*.cs")
@@ -652,8 +717,6 @@ def check_setting(ctx, p, v):
                 v.evidence.append("folder %s had an About.xml in repo history (%s)" % (folder, out.strip()))
         if not ours:
             return v.refuse("settings of folder %r / class %r: not provably ours" % (folder, cls))
-        if not bak and folder in ctx.deployed():
-            v.no("live settings file of deployed mod folder %s" % folder)
     elif not is_backup_mc:
         return v.refuse("not a settings file of ours")
     if not probe_repo_grep(ctx, v):
@@ -694,12 +757,23 @@ def picture_probe(ctx, v):
                 break
         toks = ctx.ref_tokens()
         ok = bool(known) and tex_referenced(known, toks) is not None
-        ctx._cache["picprobe"] = (ok, known, len(toks))
-    ok, known, n = ctx._cache["picprobe"]
+        # a slashless texPath (Textures-root file) must be visible too, when the repo has one
+        rc, out, _ = _git(ctx.repo, "grep", "-h", "-o", "-m1", "-E", r"<texPath>[A-Za-z0-9_.-]+</texPath>", "--",
+                          "src/*.xml")
+        bare_known = None
+        for line in out.splitlines():
+            bare_known = re.sub(r"</?texPath>", "", line).strip().lower()
+            if bare_known:
+                break
+        if bare_known and tex_referenced(bare_known, set(), ctx.bare_tokens()) is None:
+            ok, known = False, bare_known
+        ctx._cache["picprobe"] = (ok, known, len(toks), bare_known)
+    ok, known, n, bare_known = ctx._cache["picprobe"]
     if not ok:
         v.blind("probe: reference set (%d strings) cannot see known texPath %r" % (n, known))
     else:
-        v.evidence.append("probe: %d reference strings, sees known texPath %r" % (n, known))
+        v.evidence.append("probe: %d reference strings, sees known texPath %r%s" % (
+            n, known, " and slashless %r" % bare_known if bare_known else ""))
     return ok
 
 
@@ -724,11 +798,13 @@ def check_picture(ctx, p, v):
                     break
     if not picture_probe(ctx, v):
         return
-    hit = tex_referenced(rel, ctx.ref_tokens())
+    hit = tex_referenced(rel, ctx.ref_tokens(), ctx.bare_tokens())
     if hit:
         v.no("referenced as %r" % hit)
     elif rel.startswith("ui/"):
         v.no("UI/ path: may override a vanilla ContentFinder texture by path; cannot be cleared")
+    elif "/rimthemes/" in p.replace("\\", "/").lower():
+        v.no("RimThemes theme texture: read by its file name (Class.Field), never by a texPath; cannot be cleared")
     else:
         v.evidence.append("0 references to %r" % rel)
 
@@ -822,11 +898,11 @@ def scan(ctx, kinds=KINDS):
             elif re.match(r"ModsConfig\..+", f) and f != "ModsConfig.xml":
                 out["setting"].append(full)
     if "picture" in out:
-        toks = ctx.ref_tokens()
+        toks, bare = ctx.ref_tokens(), ctx.bare_tokens()
         rc, files, _ = _git(ctx.repo, "ls-files", "--", "src/*.png")
         for rel in files.splitlines():
             t = tex_rel(rel)
-            if t and not tex_referenced(t, toks):
+            if t and not tex_referenced(t, toks, bare):
                 out["picture"].append(os.path.join(ctx.repo, rel))
         repo_rels = {}
         for rel in files.splitlines():
@@ -841,7 +917,7 @@ def scan(ctx, kinds=KINDS):
                     if f.lower().endswith(".png"):
                         full = os.path.join(d, f)
                         t = tex_rel(full)
-                        if t and t not in repo_rels and not tex_referenced(t, toks):
+                        if t and t not in repo_rels and not tex_referenced(t, toks, bare):
                             out["picture"].append(full)
     if "patch" in out:
         ret = ctx.retired()
@@ -1074,6 +1150,11 @@ def find_manifest(ctx, path):
 def delete(ctx, path, item="LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE", ledger=True, kind=None):
     path = os.path.abspath(path)
     v = check(ctx, path, kind)
+    if v.kind == "picture":
+        # ruling: a picture leaves only through the art ledger (art.py), never a raw file delete; the
+        # leftovers check also does not consult art-ledger keeps or review-sheet decisions.
+        raise SystemExit("REFUSED delete of %s: a picture leaves only through the art ledger (art.py), "
+                         "not leftovers.py" % path)
     if v.status != SAFE:
         raise SystemExit("REFUSED delete of %s: check is %s (%s)" % (path, v.status, "; ".join(v.reasons)))
     man = find_manifest(ctx, path)
@@ -1160,6 +1241,9 @@ def main(argv=None):
         print("archived: %s" % archive(ctx, a.path, a.kind))
         return 0
     if a.cmd == "retire":
+        if (a.kind or kind_of(ctx, os.path.abspath(a.path))) == "picture":
+            raise SystemExit("REFUSED retire of %s: a picture leaves only through the art ledger (art.py), "
+                             "not leftovers.py" % a.path)
         if not find_manifest(ctx, a.path) or not verify(ctx, a.path, find_manifest(ctx, a.path))[0]:
             v = check(ctx, a.path, a.kind)
             if v.status != SAFE:
