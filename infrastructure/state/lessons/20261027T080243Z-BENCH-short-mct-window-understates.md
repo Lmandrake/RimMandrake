@@ -1,0 +1,2 @@
+A ~900-tick jawa/map_comp_timing window understates a pulsed MapComponent: r12 Excavation read 0.62 ms/tick, max 29 ms over 982 ticks but 1.05-1.18 ms/tick, max 129-308 ms over 4000 ticks on the same scene minutes later. Measure at least several full pulse periods (>=4000 ticks) before judging a mean/max bar. Evidence D:\ClaudeWork\rimmandrake\bench_live_r12\mct_1_4000.json
+home: skills/live-debugging-proof-harness/references/perf.md
