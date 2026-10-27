@@ -354,15 +354,30 @@ def ops_dir() -> Path:
     return Path(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"))
 
 
+def _finite(v):
+    """A real finite number as float, else None (bools, strings, NaN, inf and ints too big for a float all fail)."""
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return None
+    try:
+        f = float(v)
+    except (OverflowError, ValueError):
+        return None
+    return f if math.isfinite(f) else None
+
+
 def ops_inputs(now, rules):
     """The ops watch's last pass (ops_watch.py status.json), cut to what the allocator acts on. A point counts only
     when MEASURED; a status older than ops.stale_min is reported and ignored (no brake from an old reading)."""
     o = rules.get("ops") or {}
     st = read_json(ops_dir() / "status.json")
     t = st.get("t") if isinstance(st, dict) else None
-    if not isinstance(t, (int, float)) or isinstance(t, bool) or not math.isfinite(t):
+    t = _finite(t)
+    if t is None:
         return {"ok": False, "why": f"no ops watch status with a time ({ops_dir() / 'status.json'})"}
-    age = (now - float(t)) / 60.0
+    age = (now - t) / 60.0
+    if age < -5:
+        return {"ok": False, "why": f"ops watch status is stamped {-age:.0f} min in the future (clock skew?)",
+                "age_min": round(age, 1)}
     if not age <= o.get("stale_min", 45):
         return {"ok": False, "why": f"ops watch status is {age:.0f} min old (rm-ops-watch.timer stopped?)",
                 "age_min": round(age, 1)}
@@ -378,7 +393,7 @@ def ops_inputs(now, rules):
         v = p.get("v")
         if not numeric:
             return v if isinstance(v, str) else None
-        return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) else None
+        return _finite(v)
     return {"ok": True, "age_min": round(age, 1), "root_free_gb": mv("disk.root_free_gb"),
             "codex_runway": mv("codex.runway", ("MEASURED", "ESTIMATE")), "steve_state": mv("steve.state", numeric=False),
             "steve_unowned_stall_min": mv("steve.unowned_stall_min"), "steve_invalid_streak": mv("steve.invalid_streak"),
@@ -528,6 +543,8 @@ def _token(inp, state, rules, now, P):
             return hold("BURN", tk["cross_hold_h"])
         return prev, None, since
     if prev == "BURN":
+        if P < tk["ALMOST_OUT"]["enter_p_lt"]:
+            return "ALMOST_OUT", None, now
         if P < tk["BURN"]["leave_p_lt"] or (h is not None and h < tk["BURN"]["leave_reset_h_lt"]):
             return "SWEEP", None, now
         return prev, None, since
@@ -709,7 +726,9 @@ def decide(inp, state, rules, now):
     ceiling = tk[mode]["n"]
     prev_total = state.get("total")
     if blind:
-        total = prev_total if (state.get("token_mode") and prev_total is not None) else 2
+        # blind: hold the last total, but never above this mode's ceiling (a held total may come from an
+        # owner override that has since expired)
+        total = min(prev_total, ceiling) if (state.get("token_mode") and prev_total is not None) else min(2, ceiling)
     elif mode in ("DARK", "ALMOST_OUT"):
         total = ceiling
         why.append(f"{mode}: N {ceiling}")
@@ -756,7 +775,7 @@ def decide(inp, state, rules, now):
     base = dict(per)
     ov = _override_live(inp.get("override"), now)
     if ov:
-        if ov.get("mode") in tk:
+        if isinstance(tk.get(ov.get("mode")), dict) and "n" in tk[ov["mode"]]:
             label = ov["mode"]
             if ov.get("n") is None and ov.get("seats") is None:
                 total = tk[ov["mode"]]["n"]
@@ -773,6 +792,10 @@ def decide(inp, state, rules, now):
     pre_cut_total = sum(per.values())
     overage = _overage(inp, state, rules, now, base, per, ov, presence, why)
     sess = inp.get("session_pct_used")
+    if sess is not None and inp.get("source") != "MEASURED":
+        # a stale or estimated 5-hour reading may predate the window's reset: it brakes nothing
+        why.append(f"5-hour window {sess:.0f}% used per a {inp.get('source') or 'UNMEASURED'} reading: not braking on it")
+        sess = None
     if sess is not None and sess > tk["session_brake_pct_used_gt"]:
         per = {s: 0 for s in per}
         why.insert(0, f"5-hour window {sess:.0f}% used: no new helpers until it resets")
@@ -870,7 +893,7 @@ def main(argv=None):
         print("refused: give --n or --mode", file=sys.stderr)
         return 2
     rules = load_rules()
-    if a.mode and a.mode not in rules["token"]:
+    if a.mode and not (isinstance(rules["token"].get(a.mode), dict) and "n" in rules["token"][a.mode]):
         print(f"refused: mode must be one of {sorted(k for k in rules['token'] if k.isupper())}", file=sys.stderr)
         return 2
     now = time.time()

@@ -354,7 +354,8 @@ check("cli: install without --apply prints a plan and writes nothing",
 
 # ---------------------------------------------------------------- GPT review fixes (2026-10-27)
 check("runway: an unknown burn rate is None, not 'no burn'", OW.runway(50, None, 100) is None)
-check("runway: a spent quota is 0 whatever the rate", OW.runway(0, 0, 100) == 0.0 and OW.runway(-1, 2.0, 50) == 0.0)
+check("runway: a spent quota is 0 whatever the rate, even with no rate yet", OW.runway(0, 0, 100) == 0.0
+      and OW.runway(-1, 2.0, 50) == 0.0 and OW.runway(0, None, 166) == 0.0)
 check("epoch: NaN / bool are not times", OW.epoch(float("nan")) is None and OW.epoch(True) is None)
 calls.clear()
 (TMP / "ops" / "alarms.json").unlink()
@@ -411,6 +412,137 @@ if old_sd is None:
     os.environ.pop("RM_STREAMS_DIR")
 else:
     os.environ["RM_STREAMS_DIR"] = old_sd
+
+# ---------------------------------------------------------------- testing: provisional "caught nothing" (review round 3)
+TD = TMP / "testing_metrics3"
+TD.mkdir()
+old_td = os.environ.get("RM_TESTING_METRICS_DIR")
+os.environ["RM_TESTING_METRICS_DIR"] = str(TD)
+young = [(NOW - H, {"result": {"outcome": "DONE", "started": OW.iso(NOW - 3 * H)}, "job": {"item": "IT_Y"}})]
+grown = [(NOW - 30 * H, {"result": {"outcome": "DONE", "started": OW.iso(NOW - 32 * H)}, "job": {"item": "IT_G"}})]
+mute = [(NOW - 30 * H, {"result": {"started": OW.iso(NOW - 32 * H)}, "job": {"item": "IT_M"}})]
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown + mute, "closes": {}})
+check("testing: a done record with no outcome is not counted as caught-nothing (ESTIMATE, 2 h not 4)",
+      t["testing.steve_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.steve_nothing_h_7d"]["v"] == 2.0, t)
+t = OW.c_testing(NOW, RULES, {"steve_jobs": young, "closes": {}})
+check("testing: a job still inside its close window makes the Steve total an ESTIMATE",
+      t["testing.steve_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.steve_nothing_h_7d"]["x"].get("young") == 1, t)
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: a job past its close window counts MEASURED", t["testing.steve_nothing_h_7d"]["m"] == "MEASURED"
+      and t["testing.steve_nothing_h_7d"]["v"] == 2.0, t)
+U_ = {"m": "UNMEASURED", "v": None}
+rows = []
+for i in range(7):
+    a_ = {"busy_pct": 50, "window_h": 10, "findings": 0, "closed_after_pass": 0, "regressions": 0, "fail_split": {"mod": 0}}
+    if i == 3:
+        a_.update(closed_after_pass=U_, regressions=U_)        # findings 0 known, the close counter unseen
+    rows.append({"day": time.strftime("%Y-%m-%d", time.localtime(NOW - i * DAY)), "machines": {"archmagi": a_}})
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: a caught-nothing day with an unseen counter makes the week an ESTIMATE, not MEASURED",
+      t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.archmagi_nothing_h_7d"]["x"].get("soft_days") == 1, t)
+rows[3]["machines"]["archmagi"].update(closed_after_pass=0, regressions=0, busy_pct={"m": "ESTIMATE", "v": 50})
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: an ESTIMATE-marked day value keeps the week an ESTIMATE",
+      t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE" and t["testing.nothing_h_7d"]["m"] == "ESTIMATE", t)
+rows[3]["machines"]["archmagi"]["busy_pct"] = 50
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: (control) seven fully measured days are MEASURED 35 h", t["testing.archmagi_nothing_h_7d"]["m"] == "MEASURED"
+      and t["testing.archmagi_nothing_h_7d"]["v"] == 35.0 and t["testing.nothing_h_7d"]["m"] == "MEASURED", t)
+if old_td is None:
+    os.environ.pop("RM_TESTING_METRICS_DIR")
+else:
+    os.environ["RM_TESTING_METRICS_DIR"] = old_td
+sp = OW.soft_point({"m": "ERROR", "v": 0, "why": "x"})
+check("backfill/production share one normaliser: ERROR -> UNMEASURED, no value", sp["m"] == "UNMEASURED" and sp["v"] is None, sp)
+
+# ---------------------------------------------------------------- review round 4
+wj(Q / "steward.json", {"epoch": NOW - 60 * 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
+wj(Q / "steward_watch.json", {"epoch": NOW - 60, "incident": None})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a stale steward cannot report MEASURED 0 fault or 0 stall (it would clear a real alarm)",
+      s["steve.fault_min"]["m"] == "UNMEASURED" and s["steve.unowned_stall_min"]["m"] == "UNMEASURED", s)
+wj(Q / "steward.json", {"epoch": "NaN", "state": "RUNNING", "fault": False})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a NaN steward epoch is unreadable -> UNMEASURED", s["steve.state"]["m"] == "UNMEASURED", s["steve.state"])
+DD = Q / "done"
+DD.mkdir(parents=True, exist_ok=True)
+for i in range(3):
+    wj(DD / ("inv%d.json" % i), {"finished": OW.iso(NOW - (10 - i) * 60), "job": {"id": "j%d" % i},
+                                 "result": {"outcome": "INVALID", "started": OW.iso(NOW - 20 * 60)}})
+(DD / "zz_torn.json").write_text('{"finished": "2026-')
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a torn done record makes the INVALID streak an ESTIMATE (no alarm on a readable subset)",
+      s["steve.invalid_streak"]["m"] == "ESTIMATE" and s["steve.invalid_streak"]["v"] >= 3, s["steve.invalid_streak"])
+check("steve: with a torn done record the last-done age is an ESTIMATE too",
+      s["steve.last_done_age_min"]["m"] == "ESTIMATE", s["steve.last_done_age_min"])
+for f in DD.iterdir():
+    f.unlink()
+calls.clear()
+(TMP / "ops" / "alarms.json").unlink(missing_ok=True)
+OW.mint_name = lambda tag, known, prefix: "OPS_SAME_" + ("AB12" if "OPS_SAME_AB12" not in known else "CD34")
+st = OW.run_alarms({"disk.c_free_gb": M(10.0), "disk.d_free_gb": M(10.0)}, RULES, NOW, set(), filer_ok)
+nm = sorted(a.get("name") for a in st.values())
+check("alarm: two crossings in one pass never get the same name", len(set(nm)) == 2, nm)
+n0 = len(calls)
+(TMP / "ops" / "alarms.json").write_text('{"DISK_LOW:disk.c_free_gb": {"state": "OP')
+st = OW.run_alarms({"disk.c_free_gb": M(10.0), "disk.d_free_gb": M(10.0)}, RULES, NOW + 900, set(), filer_ok)
+check("alarm: an unreadable alarms.json holds all filing (no duplicate items) and is left for a human",
+      len(calls) == n0 and st.get("_alarm_state", {}).get("state") == "UNREADABLE"
+      and (TMP / "ops" / "alarms.json").read_text().endswith('"OP'), st)
+(TMP / "ops" / "alarms.json").unlink()
+OW.append("disk", {"schema": OW.SCHEMA, "t": NOW + 10, "family": "disk", "points": {"disk.weird": 7}})
+saved = dict(OW.COLLECTORS)
+
+
+def dies(now, rules, ctx):
+    raise OSError("gone again")
+
+
+OW.COLLECTORS["disk"] = dies
+try:
+    r = OW.run(now=NOW + 20, rules=RULES, filer=None, families=["disk"])
+    ok = r["kpis"].get("disk.weird", {}).get("m") == "UNMEASURED"
+except Exception as e:  # noqa: BLE001
+    ok, r = False, repr(e)
+check("run: a non-dict point in the last record does not abort the collector-error fallback", ok, r)
+OW.COLLECTORS.clear()
+OW.COLLECTORS.update(saved)
+SD3 = TMP / "streams3"
+SD3.mkdir()
+(SD3 / "series.jsonl").write_text(json.dumps({"t": "NaN", "measures": {"P1": {"m": "MEASURED", "v": 1}}}) + "\n")
+old_sd = os.environ.get("RM_STREAMS_DIR")
+os.environ["RM_STREAMS_DIR"] = str(SD3)
+s = OW.c_production(NOW, RULES, {})
+check("production: a NaN record time is unreadable -> UNMEASURED, not fresh", list(s) == ["production._collector"], s)
+if old_sd is None:
+    os.environ.pop("RM_STREAMS_DIR")
+else:
+    os.environ["RM_STREAMS_DIR"] = old_sd
+
+OW.append("disk", {"schema": OW.SCHEMA, "t": 1e999, "family": "disk", "points": {"disk.inf": M(1.0)}})
+check("series: a record with an infinite time is skipped (it would mute the silent flag forever)",
+      not any("disk.inf" in r["points"] for r in OW.read_series("disk", 0)))
+
+for f in DD.iterdir():
+    f.unlink()
+for i, age in enumerate((8 * DAY, 2 * H, H)):
+    wj(DD / ("old%d.json" % i), {"finished": OW.iso(NOW - age), "job": {"id": "o%d" % i},
+                                 "result": {"outcome": "INVALID", "started": OW.iso(NOW - age - 600)}})
+    os.utime(DD / ("old%d.json" % i), (NOW - age, NOW - age))
+s = OW.c_steve(NOW, RULES, {})
+check("steve: an INVALID run that started before the 7 d window is counted whole (3, not 2)",
+      s["steve.invalid_streak"]["v"] == 3 and s["steve.jobs_24h"]["v"] == 2, s["steve.invalid_streak"])
+wj(DD / "old0.json", {"finished": OW.iso(NOW - 8 * DAY), "job": {"id": "o0"}, "result": {"started": OW.iso(NOW - 8 * DAY - 600)}})
+os.utime(DD / "old0.json", (NOW - 8 * DAY, NOW - 8 * DAY))
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a streak stopped by a record with no outcome is an ESTIMATE", s["steve.invalid_streak"]["m"] == "ESTIMATE"
+      and s["steve.invalid_streak"]["v"] == 2, s["steve.invalid_streak"])
+for f in DD.iterdir():
+    f.unlink()
 
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

@@ -137,10 +137,10 @@ def read_json(p):
 
 def runway(left_pct, rate_pct_h, hours_to_reset):
     """Hours the quota lasts at the burn rate / hours to the reset; capped at 10 (a quota not being spent)."""
+    if left_pct is not None and left_pct <= 0:
+        return 0.0          # spent: runs out now, whatever the rate (known even before there is a rate)
     if left_pct is None or rate_pct_h is None or hours_to_reset is None or hours_to_reset <= 0:
         return None         # an unknown burn is not "no burn"
-    if left_pct <= 0:
-        return 0.0          # spent: runs out now, whatever the rate
     if rate_pct_h <= 0:
         return 10.0
     return round(min(10.0, (left_pct / rate_pct_h) / hours_to_reset), 2)
@@ -183,6 +183,9 @@ def c_accounts(now, rules, ctx):
         rw = runway(left, rate, h)
         if rw is None:
             out[k + "runway"] = U("no burn rate: the week is under 6 h old and the meter has no slope")
+        elif rate is None:      # spent before any rate exists: 0 is as certain as the reading
+            out[k + "runway"] = (M(0.0, "x the time to reset", why="quota spent") if src == "MEASURED" else
+                                 E(0.0, "quota spent per an ESTIMATE reading", "x the time to reset"))
         elif src == "MEASURED" and how and how.startswith("meter"):
             out[k + "runway"] = M(rw, "x the time to reset", rate_pct_h=round(rate, 3), rate_from=how)
         else:
@@ -243,6 +246,10 @@ def c_codex(now, rules, ctx):
     rw = runway(100.0 - used, rate, h)
     if rw is None:
         out["codex.runway"] = U("no burn rate: the week is under 6 h old")
+    elif rate is None:
+        out["codex.runway"] = (M(0.0, "x the time to reset", why="quota spent")
+                               if out["codex.week_used_pct"]["m"] == "MEASURED" else
+                               E(0.0, "quota spent per an ESTIMATE reading", "x the time to reset"))
     elif how.startswith("readings") and out["codex.week_used_pct"]["m"] == "MEASURED":
         out["codex.runway"] = M(rw, "x the time to reset", rate_pct_h=round(rate, 3), rate_from=how)
     else:
@@ -250,20 +257,29 @@ def c_codex(now, rules, ctx):
     return out
 
 
-def done_jobs(since):
-    """testq done records finished at or after `since` (epoch), oldest first, read by file mtime first."""
+def done_jobs(since, bad=None):
+    """testq done records finished at or after `since` (epoch), oldest first, read by file mtime first. A record in the
+    window that cannot be read is appended to `bad` (when given), so a caller never mistakes the readable subset for all."""
     out = []
     for f in glob.glob(str(qhome() / "done" / "*.json")):
         try:
             if os.path.getmtime(f) < since - DAY:
                 continue
         except OSError:
+            if bad is not None:
+                bad.append(os.path.basename(f))     # cannot tell its age: count it as unseen, not as absent
             continue
         d = read_json(f)
-        if not isinstance(d, dict):
+        fin = epoch(d.get("finished") or (d.get("result") or {}).get("finished")) if isinstance(d, dict) else None
+        if fin is None:
+            if bad is not None:
+                try:
+                    if os.path.getmtime(f) >= since:
+                        bad.append(os.path.basename(f))
+                except OSError:
+                    pass
             continue
-        fin = epoch(d.get("finished") or (d.get("result") or {}).get("finished"))
-        if fin is not None and fin >= since:
+        if fin >= since:
             out.append((fin, d))
     out.sort(key=lambda x: x[0])
     return out
@@ -272,14 +288,16 @@ def done_jobs(since):
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
-    if not isinstance(sj, dict) or not sj.get("epoch"):
+    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None:
         out["steve.state"] = U("steward.json missing or unreadable under %s" % qhome())
         for k in ("heartbeat_age_min", "fault_min", "unowned_stall_min"):
             out["steve." + k] = U("steward.json missing or unreadable")
     else:
-        hb = (now - float(sj["epoch"])) / 60.0
-        wj = read_json(qhome() / "steward_watch.json") or {}
-        wage = (now - float(wj["epoch"])) / 60.0 if wj.get("epoch") else None
+        hb = (now - epoch(sj["epoch"])) / 60.0
+        wj = read_json(qhome() / "steward_watch.json")
+        wj = wj if isinstance(wj, dict) else {}
+        we = epoch(wj.get("epoch"))
+        wage = (now - we) / 60.0 if we is not None else None
         st = sj.get("state")
         if hb > 30:
             out["steve.state"] = E(st, "steward.json is %.0f min old: its last word, not now" % hb, "steward state",
@@ -290,7 +308,10 @@ def c_steve(now, rules, ctx):
         out["steve.watch_age_min"] = M(round(wage, 1), "min since steward_watch.json") if wage is not None else \
             U("steward_watch.json has no epoch")
         since = epoch(sj.get("since"))
-        if sj.get("fault") and since is None:
+        if hb > 30:
+            fault_min = None    # a stale steward's fault flag is its last word, not now: unknown, never 0
+            out["steve.fault_min"] = U("steward.json is %.0f min old: whether it is in a fault now is unknown" % hb)
+        elif sj.get("fault") and since is None:
             fault_min = None
             out["steve.fault_min"] = U("steward reports a fault with no readable `since`: duration unknown")
         else:
@@ -302,26 +323,43 @@ def c_steve(now, rules, ctx):
         if hb > 30 and (wage is None or wage > 30) and not wj.get("incident"):
             nobody.append(("steward silent %.0f min and its watcher silent %s" % (
                 hb, "(never ran)" if wage is None else "%.0f min" % wage), hb))
-        if fault_min is None and not sj.get("incident") and not nobody:
-            out["steve.unowned_stall_min"] = U("a fault of unknown duration with no steward incident")
+        if fault_min is None and not nobody:
+            out["steve.unowned_stall_min"] = U("steward state stale or a fault of unknown duration: whether a stall is "
+                                               "owned is unknown")
         elif nobody:
             why, v = max(nobody, key=lambda x: x[1])
             out["steve.unowned_stall_min"] = M(round(v, 1), "min stalled with nobody escalating", why=why)
         else:
             out["steve.unowned_stall_min"] = M(0.0, "min stalled with nobody escalating",
                                                why="the steward owns any stall" if fault_min else "no stall")
-    jobs = done_jobs(now - 7 * DAY)
+    bad = []
+    jobs = done_jobs(now - 7 * DAY, bad)
+    # a record with no outcome cannot say INVALID or not: unseen, like an unreadable one
+    bad += [((d.get("job") or {}).get("id") or "?") + " (no outcome)" for _, d in jobs
+            if not (d.get("result") or {}).get("outcome")]
+    ctx["steve_jobs_bad"] = bad
     if not jobs:
-        why = "no testq done record in 7 d under %s" % (qhome() / "done")
+        why = "no testq done record in 7 d under %s" % (qhome() / "done") + (
+            " (%d unreadable)" % len(bad) if bad else "")
         for k in ("invalid_streak", "jobs_24h", "invalid_24h", "last_done_age_min"):
             out["steve." + k] = U(why)
         return out
-    streak = 0
-    for _, d in reversed(jobs):
-        if (d.get("result") or {}).get("outcome") == "INVALID":
-            streak += 1
-        else:
-            break
+    def run_of_invalid(js):
+        n = 0
+        for _, d in reversed(js):
+            oc = (d.get("result") or {}).get("outcome")
+            if oc != "INVALID":
+                if not oc and ((d.get("job") or {}).get("id") or "?") + " (no outcome)" not in bad:
+                    bad.append(((d.get("job") or {}).get("id") or "?") + " (no outcome)")   # the run's end is unknown
+                break
+            n += 1
+        return n
+    streak = run_of_invalid(jobs)
+    if streak == len(jobs):
+        # every job in the week was INVALID: the run may start before the window, so read the whole done history
+        older_bad = []
+        streak = run_of_invalid(done_jobs(0, older_bad))
+        bad += [b for b in older_bad if b not in bad]
     last = jobs[-1]
     out["steve.invalid_streak"] = M(streak, "INVALID results in a row", last_job=(last[1].get("job") or {}).get("id"),
                                     last_cause=(last[1].get("result") or {}).get("cause"))
@@ -330,6 +368,11 @@ def c_steve(now, rules, ctx):
     out["steve.invalid_24h"] = M(sum(1 for d in d24 if (d.get("result") or {}).get("outcome") == "INVALID"),
                                  "INVALID jobs, 24 h")
     out["steve.last_done_age_min"] = M(round((now - last[0]) / 60.0, 1), "min since the last job finished")
+    if bad:
+        for k in ("invalid_streak", "jobs_24h", "invalid_24h", "last_done_age_min"):
+            p = out["steve." + k]
+            out["steve." + k] = E(p["v"], "%d done record(s) in the window unreadable (%s): counted over the readable "
+                                  "rest" % (len(bad), ", ".join(bad[:3])), p.get("unit"), **(p.get("x") or {}))
     ctx["steve_jobs"] = jobs
     return out
 
@@ -350,24 +393,32 @@ def caught(d, closes, close_after_h):
 def c_testing(now, rules, ctx):
     out = {}
     jobs = ctx.get("steve_jobs")
+    bad = ctx.get("steve_jobs_bad")
     if jobs is None:
-        jobs = done_jobs(now - 7 * DAY)
+        bad = []
+        jobs = done_jobs(now - 7 * DAY, bad)
+    bad = bad or []
     closes = ctx.get("closes")
     if closes is None:
         return {"testing.nothing_h_7d": U("the ledger was not readable, so closes after a run are unknown")}
     ch = rules["testing"]["close_after_h"]
-    steve_h, steve_n, unk = 0.0, 0, 0
+    steve_h, steve_n, unk, young = 0.0, 0, 0, 0
     for fin, d in jobs:
         st = epoch((d.get("result") or {}).get("started"))
-        if st is None or fin - st <= 0:
-            unk += 1
+        if st is None or fin - st <= 0 or not (d.get("result") or {}).get("outcome"):
+            unk += 1        # no span, or no outcome to say whether it caught anything
             continue
         if not caught(d, closes, ch):
             steve_h += (fin - st) / HOUR
             steve_n += 1
-    if jobs and unk:
-        out["testing.steve_nothing_h_7d"] = E(round(steve_h, 2), "%d of %d jobs have no start time (not counted)" % (
-            unk, len(jobs)), "busy h on jobs that caught nothing, 7 d", jobs=len(jobs), nothing_jobs=steve_n, no_span=unk)
+            if now - fin < ch * HOUR:
+                young += 1      # its close window is still open: "caught nothing" is provisional
+    if jobs and (unk or young or bad):
+        out["testing.steve_nothing_h_7d"] = E(round(steve_h, 2), "%d of %d jobs have no start time or outcome (not counted); %d "
+                                              "counted jobs are inside their %d h close window; %d unreadable" % (unk, len(jobs), young, ch,
+                                                                                  len(bad)),
+                                              "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
+                                              nothing_jobs=steve_n, no_span=unk, young=young)
     elif jobs:
         out["testing.steve_nothing_h_7d"] = M(round(steve_h, 2), "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
                                               nothing_jobs=steve_n, no_span=unk,
@@ -387,33 +438,45 @@ def c_testing(now, rules, ctx):
     except OSError:
         days = {}
     lo = time.strftime("%Y-%m-%d", time.localtime(now - 7 * DAY))
-    ah, adays, blind = 0.0, 0, 0
+    ah, adays, blind, soft = 0.0, 0, 0, 0
     for day, r in sorted(days.items()):
-        if not day or day <= lo:
+        if not day or day <= lo or not isinstance(r, dict):
             continue
         a = (r.get("machines") or {}).get("archmagi") or {}
+        est = []
+
         def val(x):
-            # a value the day record itself marks UNMEASURED is unknown, never a 0
+            # a value the day record itself marks UNMEASURED is unknown, never a 0; ESTIMATE taints the day
             if isinstance(x, dict):
-                return x.get("v") if x.get("m", "MEASURED") != "UNMEASURED" else None
+                m = x.get("m", "MEASURED")
+                if m == "ESTIMATE":
+                    est.append(1)
+                return x.get("v") if m in ("MEASURED", "ESTIMATE") else None
             return x
         vals = {k: val(a.get(k)) for k in ("busy_pct", "window_h", "findings", "closed_after_pass", "regressions")}
         vals["mod_fails"] = val((a.get("fail_split") or {}).get("mod"))
-        if vals["busy_pct"] is None or vals["window_h"] is None:
+        if not all(isinstance(vals[k], (int, float)) and not isinstance(vals[k], bool) for k in ("busy_pct", "window_h")):
             blind += 1
             continue
-        if all(vals[k] is None for k in ("findings", "closed_after_pass", "regressions", "mod_fails")):
+        sig = [vals[k] for k in ("findings", "closed_after_pass", "regressions", "mod_fails")]
+        if all(v is None for v in sig):
             blind += 1          # busy but whether it caught anything is unknown: not "caught nothing"
             continue
         adays += 1
-        if not (vals["findings"] or vals["closed_after_pass"] or vals["regressions"] or vals["mod_fails"]):
+        if not any(sig):
+            if any(v is None for v in sig) or est:
+                soft += 1       # a "caught nothing" day with an unseen or estimated counter is provisional
             ah += vals["busy_pct"] / 100.0 * vals["window_h"]
-    if adays and not blind and adays >= 7:
+        elif est:
+            soft += 1
+    if adays and not blind and not soft and adays >= 7:
         out["testing.archmagi_nothing_h_7d"] = M(round(ah, 2), "busy h on days that caught nothing, 7 d (day grain)",
                                                  days=adays)
     elif adays:
-        out["testing.archmagi_nothing_h_7d"] = E(round(ah, 2), "%d of 7 days readable (%d blind: counted 0)" % (
-            adays, blind), "busy h on days that caught nothing, 7 d (day grain)", days=adays, blind_days=blind)
+        out["testing.archmagi_nothing_h_7d"] = E(round(ah, 2), "%d of 7 days readable (%d blind: counted 0; %d with an "
+                                                 "unseen or estimated counter)" % (adays, blind, soft),
+                                                 "busy h on days that caught nothing, 7 d (day grain)", days=adays,
+                                                 blind_days=blind, soft_days=soft)
     else:
         out["testing.archmagi_nothing_h_7d"] = U("no testing_metrics day record in 7 d (%s)" % hist)
     parts = [out[k] for k in ("testing.steve_nothing_h_7d", "testing.archmagi_nothing_h_7d")]
@@ -594,11 +657,19 @@ def streams_series() -> Path:
     return Path(os.environ.get("RM_STREAMS_DIR", "/mnt/d/ClaudeWork/rimmandrake/streams")) / "series.jsonl"
 
 
+def soft_point(p):
+    """A streams measure that is not MEASURED, held to the three marks: an unknown mark is UNMEASURED with no value."""
+    m = p.get("m") if p.get("m") in ("ESTIMATE", "UNMEASURED") else "UNMEASURED"
+    return {"v": p.get("v") if m == "ESTIMATE" else None, "m": m,
+            "why": ("streams mark %r: " % p.get("m") if m != p.get("m") else "") + str(p.get("why") or "")[:200]}
+
+
 def c_production(now, rules, ctx):
     rec = json.loads(last_line(streams_series()) or "null")
-    if not isinstance(rec, dict) or not rec.get("t"):
-        return {"production._collector": U("streams series has no record (%s)" % streams_series())}
-    age = (now - float(rec["t"])) / 60.0
+    rt = epoch(rec.get("t")) if isinstance(rec, dict) else None
+    if rt is None:
+        return {"production._collector": U("streams series has no record with a readable time (%s)" % streams_series())}
+    age = (now - rt) / 60.0
     out = {"production.record_age_min": M(round(age, 1), "min since rm-pulse-streams' last record")}
     stale = age > 60
     for k, p in sorted((rec.get("measures") or {}).items()):
@@ -610,10 +681,7 @@ def c_production(now, rules, ctx):
             unit = ((p.get("x") or {}).get("unit")) if isinstance(p.get("x"), dict) else None
             out["production." + k] = M(p.get("v"), unit, asof=p.get("asof"))
         else:
-            m = p.get("m") if p.get("m") in ("ESTIMATE", "UNMEASURED") else "UNMEASURED"
-            out["production." + k] = {"v": p.get("v") if m == "ESTIMATE" else None, "m": m,
-                                      "why": ("streams mark %r: " % p.get("m") if m != p.get("m") else "") +
-                                             (p.get("why") or "")[:200]}
+            out["production." + k] = soft_point(p)
     ctx["production_src_t"] = rec["t"]
     return out
 
@@ -654,7 +722,8 @@ def read_series(fam, since, max_bytes=32 << 20):
             r = json.loads(ln)
         except ValueError:
             continue
-        if not isinstance(r, dict) or not isinstance(r.get("t"), (int, float)) or not isinstance(r.get("points"), dict):
+        if not isinstance(r, dict) or epoch(r.get("t")) is None or isinstance(r.get("t"), str) \
+                or not isinstance(r.get("points"), dict):
             continue        # a torn or foreign line is skipped, never fatal to the pass
         if r["t"] >= since:
             out.append(r)
@@ -835,7 +904,12 @@ def real_filer(todo, conf):
 def run_alarms(points, rules, now, known_ids, filer):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears."""
     p = ops_dir() / "alarms.json"
-    state = read_json(p) or {}
+    state = read_json(p) if p.exists() else {}
+    if not isinstance(state, dict):
+        # the dedup state is there but unreadable: filing now could file every open alarm a second time. Hold all
+        # filing (and leave the file for a human) until it reads again.
+        return {"_alarm_state": {"state": "UNREADABLE", "error": "%s exists but is not a readable JSON object: alarm "
+                                 "filing held this pass" % p}}
     log = []
     ts = target_state(points, rules)
     conf = alarm_conf(rules)
@@ -883,7 +957,8 @@ def run_alarms(points, rules, now, known_ids, filer):
             state[aid] = cur
             log.append({"ts": iso(now), "event": "crossed", "aid": aid, "v": pt.get("v"), "m": pt.get("m")})
         if not cur.get("name"):  # mint once; a retry keeps the saved name
-            cur["name"] = mint_name(tag, known_ids, tg.get("name") or "OPS_ALARM_DIAGNOSE")
+            taken = set(known_ids) | {a.get("name") for a in state.values() if isinstance(a, dict) and a.get("name")}
+            cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
         title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
                                                             pt.get("m"), tg["op"], tg["value"])
         cur["title"] = title[:160]
@@ -1045,7 +1120,8 @@ def run(now=None, rules=None, filer=None, families=None):
         except Exception as e:  # noqa: BLE001  an instrument that errors is UNMEASURED, never 0
             why = "collector error: %s: %s" % (type(e).__name__, str(e)[:200])
             last = old[-1]["points"] if old else {}
-            pts = {k: U(why, (p or {}).get("unit")) for k, p in last.items() if not k.endswith("._collector")}
+            pts = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in last.items()
+                   if not k.endswith("._collector")}
             pts["%s._collector" % fam] = U(why)
         rec = {"schema": SCHEMA, "t": now, "at": iso(now), "family": fam, "points": pts}
         if fam == "production" and ctx.get("production_src_t"):
@@ -1096,8 +1172,8 @@ def backfill_production(now=None, rules=None):
                 rec = json.loads(line)
             except ValueError:
                 continue
-            t = rec.get("t")
-            if not isinstance(t, (int, float)) or t < since:
+            t = rec.get("t") if isinstance(rec, dict) else None
+            if not isinstance(t, (int, float)) or epoch(t) is None or t < since:
                 continue
             pts = {}
             for k, p in sorted((rec.get("measures") or {}).items()):
@@ -1106,8 +1182,7 @@ def backfill_production(now=None, rules=None):
                 if p.get("m") == "MEASURED":
                     pts["production." + k] = {"v": p.get("v"), "m": "MEASURED"}
                 else:
-                    pts["production." + k] = {"v": p.get("v"), "m": p.get("m") or "UNMEASURED",
-                                              "why": (p.get("why") or "")[:200]}
+                    pts["production." + k] = soft_point(p)
             append("production", {"schema": SCHEMA, "t": t, "at": iso(t), "family": "production", "points": pts,
                                   "src_t": t, "backfill": "rm-pulse-streams series.jsonl"})
             n += 1

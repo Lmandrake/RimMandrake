@@ -50,7 +50,7 @@ def readings(dirs=None, newer_than=None):
                     recs.append((ts, p.get("used_percent"), p.get("window_minutes"), p.get("resets_at"),
                                  s.get("used_percent"), s.get("window_minutes"), s.get("resets_at"),
                                  rl.get("plan_type")))
-    recs.sort()
+    recs.sort(key=lambda r: str(r[0]))  # timestamps only: a None field later in a tuple must not be compared
     return recs, nfiles
 
 

@@ -396,5 +396,29 @@ for bad_t in ("NaN", "Infinity", None, True):
     oi = SA.ops_inputs(NOW, R)
     check(f"ops_inputs: status time {bad_t!r} is not fresh", not oi["ok"], oi)
 
+(od / "status.json").write_text('{"t": 1' + '0' * 400 + ', "points": {}}')
+oi = SA.ops_inputs(NOW, R)
+check("ops_inputs: a status time too big for a float is not fresh, not a crash", not oi["ok"], oi)
+(od / "status.json").write_text(json.dumps({"t": NOW + 3600, "points": {"disk.root_free_gb": {"v": 1.0, "m": "MEASURED"}}}))
+oi = SA.ops_inputs(NOW, R)
+check("ops_inputs: a status stamped an hour in the future is not fresh", not oi["ok"] and "future" in oi["why"], oi)
+
+# ---- GPT round K (2026-10-27): tightening fixes
+r = d({"token_mode": "BURN", "since": NOW - 3 * H}, week_pct_left=2.0, week_pct_used=90.0)
+check("BURN with P under the ALMOST_OUT line goes straight to ALMOST_OUT, not SWEEP",
+      r["token_mode"] == "ALMOST_OUT", (r["token_mode"], r["inputs"]["P"]))
+r = d(session_pct_used=95.0, source="STALE")
+check("a STALE 5-hour reading brakes nothing (it may predate the reset)",
+      r["n_total"] > 0 and "not braking" in r["why"], (r["seats"], r["why"]))
+r = d(session_pct_used=95.0, source="ESTIMATE")
+check("an ESTIMATE 5-hour reading brakes nothing", r["n_total"] > 0, r["seats"])
+r = d({"token_mode": "SWEEP", "since": NOW - H, "total": 40}, source="UNMEASURED", week_pct_left=None,
+      hours_to_week_reset=None, week_pct_used=None)
+check("blind: a held total from an expired override is cut to the held mode's ceiling",
+      r["n_total"] <= R["token"]["SWEEP"]["n"], (r["n_total"], r["why"]))
+r = d(override=ov(mode="cross_hold_h"))
+check("an override naming a scalar token key is not a mode (no crash, no relabel)",
+      not r["mode"].startswith("cross_hold_h"), r["mode"])
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
