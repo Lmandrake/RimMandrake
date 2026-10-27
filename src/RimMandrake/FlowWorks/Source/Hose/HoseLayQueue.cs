@@ -167,6 +167,9 @@ namespace RimMandrake.FlowWorks.Hose
                     if (landed.key != key) Behind++;
                     return landed;
                 }
+                // a faulted lay: nothing will apply it, so its world copy leaves the lent set (not reused: the throw may
+                // have left it half-written)
+                else Released?.Invoke(j.work, false);
             }
             if (faulted.TryGetValue(id, out KeyValuePair<string, int> fk))
             {
@@ -182,7 +185,9 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 RunJob(job);
                 job.done = true;
-                return Land(id, job, true);
+                Job ran = Land(id, job, true);
+                if (ran == null) Released?.Invoke(job.work, false);
+                return ran;
             }
             jobs[id] = job;
             Interlocked.Increment(ref inFlight);

@@ -151,15 +151,19 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("L5 HoseLayQueue: a lay that throws is a fault, not retried while its key holds; a new key is tried", () =>
             {
-                var q = new HoseLayQueue { Async = false };
+                int rel = 0, relReusable = 0;
+                Action<HoseLayQueue.Work, bool> onRel = (w, re) => { rel++; if (re) relReusable++; };
+                var q = new HoseLayQueue { Async = false, Released = onRel };
                 int runs = 0;
                 Func<HoseLayQueue.Work> boom = () => new HoseLayQueue.Work { Run = () => { runs++; throw new InvalidOperationException("boom"); } };
                 for (int f = 0; f < 20; f++) { q.BeginFrame(f); Assert(q.Ask(3, "x", 0, boom) == null, "a fault is not handed back"); }
                 Assert(runs == 1 && q.Faulted == 1 && q.LastFault != null && q.LastFault.Contains("boom"), $"one run, fault kept: runs {runs} {q.LastFault}");
+                // review r10 F1: a faulted lay's work is released (not reusable), or its world copy stays lent forever
+                Assert(rel == 1 && relReusable == 0, $"sync fault releases its work once, not reusable: {rel}/{relReusable}");
                 q.BeginFrame(21);
                 Assert(q.Ask(3, "y", 0, () => Stand(() => runs++)) != null && runs == 2, "a new key is laid");
                 // async: a worker throw lands as a fault too
-                var qa = new HoseLayQueue { Async = true };
+                var qa = new HoseLayQueue { Async = true, Released = onRel };
                 qa.BeginFrame(0);
                 qa.Ask(4, "x", 0, boom);
                 Assert(qa.Drain(5000), "drained");
@@ -167,6 +171,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(qa.Ask(4, "x", 0, boom) == null && qa.Faulted == 1 && runs == 3, $"async fault harvested once: {qa.Json()}");
                 qa.BeginFrame(2);
                 Assert(qa.Ask(4, "x", 0, boom) == null && runs == 3, "async fault not retried");
+                Assert(rel == 2 && relReusable == 0, $"async fault releases its work once, not reusable: {rel}/{relReusable}");
             });
 
             Case("L6 HoseLayQueue.Compute on a CordWorld copy lays what the snapshot lays and leaves both untouched", () =>
