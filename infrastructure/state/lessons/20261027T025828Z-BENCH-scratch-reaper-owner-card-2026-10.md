@@ -1,0 +1,1 @@
+The scratch reaper (owner card 2026-10-18: delete stale clones after 24h if fully pushed) was installed DRY RUN and never switched to --apply: it reported 'DELETE 173' hourly for 8 days while scratch grew to 240 GB. A built safety mechanism that only reports is not on; check the unit's ExecStart, not the design doc.

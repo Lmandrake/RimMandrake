@@ -5,7 +5,7 @@
 # Install:  cp src/RimMandrake/Utils/systemd/rm-scratch-reap.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-scratch-reap.timer
 [Unit]
-Description=RimMandrake scratch reaper (dry run)
+Description=RimMandrake scratch reaper (applies, owner card 2026-10-18)
 
 [Service]
 Type=oneshot
@@ -13,4 +13,4 @@ WorkingDirectory=/home/mandrake/rm/foundry
 Nice=15
 IOSchedulingClass=idle
 TimeoutStartSec=1800
-ExecStart=/bin/sh -c 'python3 src/RimMandrake/Utils/scratch_reap.py | tail -3'
+ExecStart=/bin/sh -c 'python3 src/RimMandrake/Utils/scratch_reap.py --apply | tail -3'
