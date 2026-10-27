@@ -28,7 +28,9 @@ is MEASURED idle >= 20 min (UNMEASURED holds too), and every ring sent while he 
 
 Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, recoveries per seat per
 day, a cooldown after a give-up, and a PAUSE file (state/PAUSE) that stops everything. §3's roles are listed in the
-schedule; v3.0 runs none of them (all disabled) and says so if one is switched on.
+schedule; role_launch.py starts an enabled role that has its launch keys on its clock slots (its own transient
+systemd unit, so the run outlives this oneshot tick), gated by its off switch, the ops_watch reading, its throttle
+band and its token caps; an enabled role without launch keys is an alarm.
 
 Ledger notes and their publish run under testq's ingest.lock (the RUNNER ingest commits/pulls/pushes in the same
 dispatch clone). A side effect that raises never skips the state save (the caps live there); an unreadable state
@@ -61,6 +63,7 @@ for _d in (HERE, TESTQ):
     if _d not in sys.path:
         sys.path.insert(0, _d)
 import doorbell  # noqa: E402
+import role_launch as RL  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
 
 DEFAULT_SCHEDULE = os.path.join(HERE, "dispatcher_schedule.json")
@@ -280,10 +283,13 @@ def decide(sch, st, obs, now, apply):
     if agents.get("state") != "MEASURED":
         act(do="skip", why="claude agents UNMEASURED (%s): no action on a blind instrument" % agents.get("why"))
         return actions
-    for role in sch.get("roles") or []:
-        if role.get("enabled"):
-            act(do="alarm", kind="role:" + role.get("name", "?"),
-                why="role %s is enabled but v3.0 runs no roles (§6: v3.1+)" % role.get("name"))
+    if obs.get("roles"):          # role_launch.py: enabled roles with launch keys run on their clock; others alarm
+        RL.decide_roles(sch, st, obs["roles"], now, act)
+    else:
+        for role in sch.get("roles") or []:
+            if role.get("enabled"):
+                act(do="alarm", kind="role:" + role.get("name", "?"),
+                    why="role %s is enabled but this tick has no role observer" % role.get("name"))
     owner_cache = {}
 
     def owner():
@@ -458,13 +464,23 @@ def withdraw(root, seat, ring_id):
 def recover(cfg, session_id, msg, runner=subprocess.run):
     argv = [a.format(claude=claude_exe(), clone=cfg["clone"], session_id=session_id, name=cfg.get("session_name") or "",
                      model=cfg.get("model") or "sonnet", message=msg) for a in (cfg.get("recover_argv") or DEFAULT_RECOVER)]
-    env = dict(os.environ, AGENT_SEAT=cfg["seat"], RIMFLOW_SEAT=cfg["seat"])
+    env = claude_env(cfg["seat"])
     try:
         r = runner(argv, cwd=cfg["clone"], env=env, capture_output=True, text=True, timeout=120,
                    stdin=subprocess.DEVNULL)
         return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
     except Exception as e:  # noqa: BLE001
         return False, "%s: %s" % (type(e).__name__, str(e)[:160])
+
+
+def claude_env(seat):
+    """The seat env for claude_bounded.sh, with claude's own directory on PATH: the systemd user manager's PATH (the
+    timer's) has no ~/.local/bin, and claude_bounded exits 127 without it (proved 2026-10-27, role_launch proof)."""
+    env = dict(os.environ, AGENT_SEAT=seat, RIMFLOW_SEAT=seat)
+    d = os.path.dirname(claude_exe())
+    if d and d not in env.get("PATH", "").split(":"):
+        env["PATH"] = d + ":" + env.get("PATH", "/usr/bin:/bin")
+    return env
 
 
 def ledger_note(item, text, run=subprocess.run):
@@ -507,6 +523,7 @@ def execute(actions, sch, st, root, apply, now, fx=None):
     do_ring, do_withdraw = fx.get("ring", ring), fx.get("withdraw", withdraw)
     do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get("publish", publish)
     do_lock = fx.get("lock", git_lock)
+    do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
     lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
     ledger_ok = lk is not None
@@ -538,6 +555,18 @@ def execute(actions, sch, st, root, apply, now, fx=None):
                         ok, out = do_recover(cfg, a["session_id"], a["message"])
                         res = ("started: " if ok else "failed: ") + out
                         st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
+                    elif a["do"] == "role_launch":
+                        role = next(r for r in sch["roles"] if r.get("name") == a["role"])
+                        ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
+                        res = ("launched: " if ok else "failed: ") + out
+                        if ok:
+                            st.setdefault("roles", {}).setdefault(a["role"], {}).setdefault("runs", []).append(dict(
+                                rec, unit=a["unit"], at=now, day=RL.day_of(now), mode=a["mode"], budget=a["budget"],
+                                slot=a["slot"], band=a["band"], item=a["ticket"], state="running", tokens=None))
+                        else:
+                            a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                    elif a["do"] == "role_stop":
+                        res = do_stop(a["unit"], a.get("scope"))
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
                 if a.get("note") and sch.get("ledger_notes"):
@@ -547,7 +576,7 @@ def execute(actions, sch, st, root, apply, now, fx=None):
                     elif item:
                         try:
                             ok, out = do_note(item, "dispatcher %s %s: %s" % (
-                                a["do"], a.get("seat", ""),
+                                a["do"], a.get("seat") or a.get("role") or "",
                                 a.get("evidence") or a.get("why") or a.get("ring_id") or ""))
                         except Exception as e:  # noqa: BLE001 - a rimflow timeout
                             ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
@@ -580,6 +609,13 @@ def default_obs(sch, root):
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
+        "roles": {
+            "ops": lambda: RL.read_ops(RL.ops_status_path(sch)),
+            "account": RL.resolve_account,
+            "unit_state": RL.unit_state,
+            "result": RL.read_result,
+            "off": RL.off_switch,
+        },
     }
 
 

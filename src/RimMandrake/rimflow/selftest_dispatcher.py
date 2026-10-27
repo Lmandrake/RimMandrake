@@ -539,9 +539,242 @@ def test_ringed_next_rechecks_owner():
     check(not idle_probe.idle_verdict(idle_probe.unmeasured("x"))[0], "UNMEASURED owner is not idle (so withheld)")
 
 
+# ---------------------------------------------------------------- role launch (role_launch.py)
+import role_launch as RL  # noqa: E402
+
+DAY0 = time.mktime((2026, 10, 28, 0, 0, 0, 0, 0, -1))          # a local midnight
+
+
+def at_local(hhmm, plus_s=60):
+    return RL.slot_epoch(DAY0, hhmm) + plus_s
+
+
+def ops_status(now, runway=2.0, week_left=40.0, m="MEASURED", age_s=300, alarms=None, acct="acct"):
+    return {"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now - age_s)), "alarms": alarms or {},
+            "points": {"accounts.%s.runway" % acct: {"m": m, "v": runway},
+                       "accounts.%s.week_left_pct" % acct: {"m": m, "v": week_left}}}
+
+
+def conductor(**kw):
+    r = {"name": "Conductor", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/conductor.md",
+         "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "sonnet", "ledger_item": "ROLES_ITEM_X",
+         "off_file": os.path.join(TMP, "CONDUCTOR_OFF"), "quick_checks_local": ["08:00", "20:00"],
+         "quick_token_cap": 30000, "daily_token_cap": 200000,
+         "throttle_bands": {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
+                            "AMBER": {"runway_ge": 1.0, "quick_cap_x": 0.6, "slots": "first"},
+                            "RED": {"runway_ge": 0.0, "quick_cap_x": 0.4, "slots": "first"},
+                            "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.4, "slots": "none"}}}
+    r.update(kw)
+    return r
+
+
+def operations(**kw):
+    r = {"name": "Operations", "enabled": True, "instructions": "src/RimMandrake/rimflow/roles/operations.md",
+         "seat": "BENCH", "clone": os.path.join(TMP, "clone"), "model": "sonnet", "ledger_item": "ROLES_ITEM_X",
+         "off_file": os.path.join(TMP, "OPERATIONS_OFF"), "runs_local": ["07:30", "19:30"],
+         "economy_pass_local": "07:30", "run_token_cap": 60000, "economy_token_cap": 150000,
+         "daily_token_cap": 300000, "alarm_runs": True}
+    r.update(kw)
+    return r
+
+
+def robs(status=None, account="acct", unit="active", result=None, off=None):
+    return {"ops": lambda: status, "account": lambda: account, "unit_state": lambda u: unit,
+            "result": lambda run: result, "off": lambda p: off}
+
+
+def rdecide(roles, st, ro, now, **kw):
+    o = obs(**kw)
+    o["roles"] = ro
+    return D.decide(sched(roles=roles), st, o, now, True)
+
+
+def fresh():
+    return {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+
+
+def role_acts(acts):
+    return [a for a in acts if a["do"].startswith("role") or str(a.get("kind", "")).startswith("role")]
+
+
+def test_role_reading_and_band():
+    now = at_local("08:00")
+    r = RL.ops_reading(ops_status(now), "acct", now)
+    check(r["state"] == "MEASURED" and r["runway"] == 2.0, "ops reading: fresh MEASURED points are read")
+    check(RL.ops_reading(ops_status(now, m="ESTIMATE"), "acct", now)["state"] == "MEASURED",
+          "ops reading: an ESTIMATE counts as its value (conductor.md)")
+    check("STALE" in RL.ops_reading(ops_status(now, age_s=2701), "acct", now)["why"], "ops reading: 45 min old is STALE")
+    check(RL.ops_reading(ops_status(now, m="UNMEASURED"), "acct", now)["state"] == "UNMEASURED",
+          "ops reading: an UNMEASURED point is UNMEASURED")
+    check(RL.ops_reading(None, "acct", now)["state"] == "UNMEASURED", "ops reading: no status.json is UNMEASURED")
+    check(RL.ops_reading(ops_status(now), None, now)["state"] == "UNMEASURED", "ops reading: no account is UNMEASURED")
+    c = conductor()
+    for rw, wl, want in ((2.0, 40, "GREEN"), (1.5, 40, "GREEN"), (1.2, 40, "AMBER"), (0.3, 40, "RED"),
+                         (2.0, 9, "FLOOR"), (-0.5, 40, "RED")):
+        check(RL.band(c, {"runway": rw, "week_left": wl})[0] == want, "band: runway %s week_left %s -> %s" % (rw, wl, want))
+    check(RL.band(operations(), {"runway": 0.1, "week_left": 5})[0] == "NONE", "band: a role with no bands -> NONE x1")
+    check(RL.run_tokens({"usage": {"input_tokens": 2, "cache_creation_input_tokens": 24009,
+                                   "cache_read_input_tokens": 11227, "output_tokens": 4}}) == 35242,
+          "run tokens: all four usage fields (the proof's trivial haiku run: 35242)")
+    check(RL.wsl_path("D:\\ClaudeWork\\x\\OFF") == "/mnt/d/ClaudeWork/x/OFF", "off_file: Windows path -> /mnt/d")
+
+
+def test_role_gates():
+    now = at_local("08:00")
+    st = fresh()
+    a = role_acts(rdecide([conductor(enabled=False)], st, robs(ops_status(now)), now))
+    check(a == [], "role enabled false: nothing")
+    st = fresh()
+    a = role_acts(rdecide([{"name": "Auditor", "enabled": True}], st, robs(ops_status(now)), now))
+    check([x["do"] for x in a] == ["alarm"] and "cannot be launched" in a[0]["why"],
+          "enabled role without launch keys: alarm, not run")
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now))
+    check([x["do"] for x in a] == ["role_launch"] and a[0]["budget"] == 30000 and a[0]["note"]
+          and a[0]["ticket"] == "ROLES_ITEM_X", "GREEN 08:00: launch, full quick cap, noted on the role's item")
+    check("conductor.md" in a[0]["message"] and "30000" in a[0]["message"] and "bridge" in a[0]["message"],
+          "launch prompt names the instructions, the budget and the no-bridge line")
+    a2 = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now + 120))
+    check(a2 == [], "a slot runs once a day (next tick: nothing)")
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now), off="owner: quiet today"), now))
+    check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "off file present: hold, no launch")
+    for status, acct, label in ((ops_status(now, age_s=3600), "acct", "stale"),
+                                (ops_status(now, m="UNMEASURED"), "acct", "UNMEASURED"),
+                                (None, "acct", "missing status.json"), (ops_status(now), None, "no account")):
+        st = fresh()
+        a = role_acts(rdecide([conductor()], st, robs(status, account=acct), now))
+        check([x["do"] for x in a] == ["alarm"] and "REFUSED" in a[0]["why"] and a[0]["note"],
+              "ops reading %s: refused loudly (noted alarm), no launch" % label)
+        check("%s 08:00" % RL.day_of(now) not in st["roles"]["Conductor"]["done"],
+              "ops reading %s: the slot is not spent (retried next tick)" % label)
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now, runway=1.2)), now))
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 18000, "AMBER 08:00: runs at x0.6")
+    t20 = at_local("20:00")
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(t20, runway=1.2), unit="inactive",
+                                                  result={"usage": {"output_tokens": 10}}), t20))
+    check("role_launch" not in [x["do"] for x in a] and any("band AMBER" in x.get("why", "") for x in a),
+          "AMBER 20:00: held (first slot only)")
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now, week_left=5)), now))
+    check([x["do"] for x in a] == ["role_hold"] and "FLOOR" in a[0]["why"], "FLOOR: no scheduled check")
+    st = fresh()
+    st["roles"] = {"Conductor": {"done": {}, "runs": [{"day": RL.day_of(now), "tokens": 190000, "state": "done",
+                                                        "at": now - 3600, "unit": "u0", "budget": 30000}]}}
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now))
+    check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"], "daily cap would be passed: refused")
+    late = at_local("08:00", 3601)
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(late)), late))
+    check([x["do"] for x in a] == ["role_hold"] and "missed" in a[0]["why"], "a slot more than slot_late_s late: missed")
+    st = fresh()
+    a = role_acts(rdecide([conductor()], st, robs(ops_status(now)), now - 120))
+    check(a == [], "before the slot: nothing")
+
+
+def test_role_economy_and_alarms():
+    now = at_local("07:30")
+    st = fresh()
+    alarms = {"k1": {"state": "OPEN", "item": "OPS_OLD_ONE"}}
+    a = role_acts(rdecide([operations()], st, robs(ops_status(now, runway=0.1, week_left=3, alarms=alarms)), now))
+    check([x["do"] for x in a] == ["role_launch"] and a[0]["mode"] == "economy" and a[0]["budget"] == 150000,
+          "Operations 07:30: economy pass at economy_token_cap, no bands (x1.0 even when low)")
+    check(st["roles"]["Operations"]["alarms_seen"] == ["OPS_OLD_ONE"], "alarms open at first enable: baseline")
+    t = now + 600
+    st["roles"]["Operations"]["runs"] = [{"unit": "u1", "at": now, "day": RL.day_of(now), "budget": 150000,
+                                          "mode": "economy", "item": "ROLES_ITEM_X", "state": "running"}]
+    alarms2 = dict(alarms, k2={"state": "OPEN", "item": "OPS_NEW_ONE"})
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="active"), t))
+    check(a == [], "a new alarm waits while a run is going (one run per role)")
+    res = {"usage": {"input_tokens": 100, "output_tokens": 50}, "modelUsage": {"m-x": {}}, "subtype": "success"}
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="inactive", result=res), t))
+    ds = [x["do"] for x in a]
+    check(ds == ["role_done", "role_launch"], "run finished -> role_done (noted), then the new alarm runs: %s" % ds)
+    check("150 tokens" in a[0]["why"] and "m-x" in a[0]["why"], "role_done records tokens and the model used")
+    check(a[1]["ticket"] == "OPS_NEW_ONE" and a[1]["budget"] == 60000, "alarm run: noted on the alarm item, run cap")
+    check(st["roles"]["Operations"]["runs"][0]["tokens"] == 150, "spend recorded on the run")
+    st["roles"]["Operations"]["runs"] = [{"unit": "u2", "at": t, "day": RL.day_of(t), "budget": 1000,
+                                          "mode": "run", "item": "ROLES_ITEM_X", "state": "running"}]
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t + 60), unit="inactive",
+                                                   result={"usage": {"output_tokens": 5000}}), t + 60))
+    check("role:Operations:overbudget" in [x.get("kind") for x in a], "a run over its budget: alarm")
+    st["roles"]["Operations"]["runs"] = [{"unit": "u3", "at": t, "day": RL.day_of(t), "budget": 1000,
+                                          "mode": "run", "item": "ROLES_ITEM_X", "state": "running"}]
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t + 60), unit="failed", result=None), t + 60))
+    check("role:Operations:failed" in [x.get("kind") for x in a], "a run with no result: alarm")
+    st["roles"]["Operations"]["runs"] = [{"unit": "u4", "at": t, "day": RL.day_of(t), "budget": 1000, "scope": "s.scope",
+                                          "mode": "run", "item": "ROLES_ITEM_X", "state": "running"}]
+    a = role_acts(rdecide([operations()], st, robs(ops_status(t + 1900), unit="active"), t + 1900))
+    check([x["do"] for x in a][:2] == ["role_stop", "alarm"] and a[0]["scope"] == "s.scope",
+          "a run past run_max_s: its scope and unit are stopped, with an alarm")
+
+
+def test_role_execute_and_dry():
+    calls = []
+
+    def fake_run(argv, **kw):
+        calls.append(argv)
+        out = "4242\n" if argv[:2] == ["systemctl", "--user"] else ""
+        return subprocess.CompletedProcess(argv, 0, out, "")
+    role = conductor()
+    root = os.path.join(TMP, "roles_exec")
+    ok, out, rec = RL.launch(role, "rm-role-conductor-1", "hello", root, "/opt/bin/claude", runner=fake_run)
+    argv = calls[0]
+    check(ok and argv[:5] == ["systemd-run", "--user", "--quiet", "--collect", "--unit"],
+          "launch: its own transient user unit (outlives the oneshot tick)")
+    check("--setenv" in argv and "AGENT_SEAT=BENCH" in argv and any(a.startswith("PATH=/opt/bin:") for a in argv),
+          "launch: seat env and claude's dir on PATH")
+    i = argv.index("--")
+    check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", "hello"]
+          and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv, "launch: claude_bounded -p, alias, json")
+    check(rec["scope"] == "claude-seat-BENCH-4242.scope", "launch: the scope to stop is claude-seat-<seat>-<MainPID>")
+    calls.clear()
+    RL.stop("u", "s.scope", runner=fake_run)
+    check(calls[0] == ["systemctl", "--user", "stop", "s.scope", "u"], "stop: scope first, then the unit")
+    # execute: a launch records the run; a failed launch records nothing
+    sch = sched(roles=[role])
+    st = fresh()
+    act = {"do": "role_launch", "role": "Conductor", "unit": "U1", "message": "m", "ticket": "ROLES_ITEM_X",
+           "note": True, "mode": "quick", "budget": 30000, "slot": "k", "band": "GREEN", "why": "w"}
+    noted = []
+    fx = {"note": lambda i, t: noted.append((i, t)) or (True, ""), "publish": lambda n: "p", "lock": lambda: open(os.devnull),
+          "role_launch": lambda *a: (True, "unit U1 started", {"out": "o", "err": "e", "scope": "s"})}
+    D.execute([dict(act)], sch, st, root, True, 100.0, fx)
+    run = st["roles"]["Conductor"]["runs"][0]
+    check(run["state"] == "running" and run["budget"] == 30000 and run["scope"] == "s", "execute: the run is recorded")
+    check(noted and noted[0][0] == "ROLES_ITEM_X" and "Conductor" in noted[0][1], "execute: the launch is noted on the ledger")
+    st = fresh()
+    fx["role_launch"] = lambda *a: (False, "systemd-run exit 1", {})
+    a = D.execute([dict(act)], sch, st, root, True, 100.0, fx)
+    check(not st.get("roles") and "LAUNCH FAILED" in a[0]["why"], "execute: a failed launch records no run, says so")
+    # dry-run tick: decides the launch, launches nothing
+    launched = []
+    fx = {k: (lambda *a, **kw: launched.append(a)) for k in ("ring", "withdraw", "recover", "note", "publish",
+                                                              "role_launch", "role_stop")}
+    now = at_local("08:00")
+    o = obs()
+    o["roles"] = robs(ops_status(now))
+    acts = D.tick(sched(roles=[role]), False, obs=o, now=now, fx=fx)
+    check("role_launch" in kinds(acts) and not launched and all(x["result"].startswith("DRY") for x in acts),
+          "dry-run: decides the launch, launches nothing")
+    # recover() env: claude's dir on PATH (the timer's PATH has no ~/.local/bin)
+    seen = {}
+    D.recover({"seat": "FOUNDRY", "clone": TMP}, "sid", "m",
+              runner=lambda argv, **kw: seen.update(kw) or subprocess.CompletedProcess(argv, 0, "", ""))
+    check(os.path.dirname(D.claude_exe()) in seen["env"]["PATH"].split(":"), "recover: claude's dir on PATH")
+    # the shipped schedule: every role disabled, Conductor and Operations launchable once enabled
+    real = D.load_schedule()
+    check(all(not r.get("enabled") for r in real["roles"]), "shipped schedule: every role enabled false")
+    for name in ("Conductor", "Operations"):
+        r = next(x for x in real["roles"] if x["name"] == name)
+        check(all(r.get(k) for k in RL.LAUNCH_KEYS) and r.get("off_file"), "shipped schedule: %s has launch keys" % name)
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner):
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner,
+              test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms, test_role_execute_and_dry):
         try:
             t()
         except Exception as e:  # noqa: BLE001
