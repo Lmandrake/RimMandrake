@@ -174,6 +174,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 HoseSpliceChecks.Run(Case);
                 HoseMateCacheChecks.Run(Case);
+                HoseMateEndQueueChecks.Run(Case);
                 HoseLayQueueChecks.Run(Case);
                 HoseFrameMemoChecks.Run(Case);
                 HoseAllocChecks.Run(Case);
@@ -2208,6 +2209,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             HoseCrossShadowChecks.Run(Case);   // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: indexed crossing shadows (HoseCrossShadowChecks.cs)
             HoseLayQueueChecks.Run(Case);      // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: draw/tick lays off the frame, budgeted (HoseLayQueueChecks.cs)
             HoseMateCacheChecks.Run(Case);     // HOSE_FRAME_FIX_CHOKES_325_BASIN_MAP: pair solves keyed on inputs, budgeted, off the frame (HoseMateCacheChecks.cs)
+            HoseMateEndQueueChecks.Run(Case);  // live round 8: mate-end re-shape off the frame, rotating draw start, lay world reuse (HoseMateEndQueueChecks.cs)
             HoseSpliceChecks.Run(Case);        // HOSE_SPLICE_BUILD_MATES_BY_SLOPE: G2 joiner (position, angle, curvature at both ends, |k| <= 1/MinBendRadius); two hose ends mate face to face (HoseSpliceChecks.cs)
             HoseDrawGeometryChecks.Run(Case);  // HOSE_BEND_FIX_SHAVES_WALL_CORNERS + HOSE_LEADIN_FIX_STUB_IN_THE_CANAL: the drawn hose clears wall corners and meets a side port with no stub (HoseDrawGeometryChecks.cs)
             HoseCurveChecks.Guard(Case);       // HOSE_CURVE_REBUILD_SMOOTH_AS_PHYSICS step 5: the G2 ruler over the hard stations holds its floor; owed rows only fail (HoseCurveChecks.cs)

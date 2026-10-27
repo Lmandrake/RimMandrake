@@ -167,6 +167,7 @@ namespace RimMandrake.FlowWorks.Hose
             drawnFittings.Remove(r);
             ghosts.RemoveAll(g => g.reel == r);
             layQueue.Forget(r.parent.thingIDNumber);
+            mateEnds.Forget(r.parent.thingIDNumber);
         }
 
         // ------------------------------------------------------------------ world snapshot for hoses
@@ -179,6 +180,13 @@ namespace RimMandrake.FlowWorks.Hose
             HookMapEvents();
             int now = Find.TickManager.TicksGame;
             if (world != null && HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)) return world;
+            return BuildWorld(now);
+        }
+
+        /// <summary>World()'s whole-map rebuild (its own method so a profile names it: HOSE_TICK_FIX_SPIKES_AT_SUPERFAST).</summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private CordWorld BuildWorld(int now)
+        {
             int version = mapVersion;
             int w = map.Size.x, h = map.Size.z;
             WorldBuilds++;
@@ -651,9 +659,15 @@ namespace RimMandrake.FlowWorks.Hose
             return new HoseLayQueue.Work { Run = () => HoseLayQueue.Compute(w, i), World = w, Tag = r.EndCell };
         }
 
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
         private CordWorld TakeLayWorld()
         {
-            CordWorld src = World();
+            // HOSE_LAY_FIX_GARBAGE_FORCES_FULL_GC / HOSE_TICK_FIX_SPIKES_AT_SUPERFAST (round 8 T2 census: worldBuilds 7 -> 103
+            // over the 300-tick wave): World() took a fresh whole-map snapshot on every tick a lay started, and a new snapshot
+            // dropped this pool, so each started lay paid a map rebuild plus a clone (~0.85 MB each on the 325 map) of garbage.
+            // The snapshot is versioned by the map events World() reads (HookMapEvents), so one up to LayWorldMaxAge ticks
+            // old that its version still holds is the same grid a rebuild would give: the lay is the same, the pool is kept.
+            CordWorld src = LegacyFrame ? World() : World(LayWorldMaxAge);
             if (!ReferenceEquals(src, layWorldsOf)) { layWorlds.Clear(); layWorldsOut.Clear(); layWorldsOf = src; }
             CordWorld w = layWorlds.Count > 0 ? layWorlds.Pop() : src.Clone();
             layWorldsOut.Add(w);
@@ -674,6 +688,9 @@ namespace RimMandrake.FlowWorks.Hose
             if (reusable) GiveBackLayWorld(work.World);
             else if (work.World != null) layWorldsOut.Remove(work.World);
         }
+
+        /// <summary>How old (ticks) a version-valid snapshot a queued lay may copy: World(60)'s readers' bound.</summary>
+        internal const int LayWorldMaxAge = 60;
 
         /// <summary>The copies of layWorldsOf now lent to jobs.</summary>
         private readonly HashSet<CordWorld> layWorldsOut = new HashSet<CordWorld>();
@@ -804,40 +821,51 @@ namespace RimMandrake.FlowWorks.Hose
                     r.history.Add(new KeyValuePair<int, HoseVis>(now, r.sm.State));
                     if (r.history.Count > 64) r.history.RemoveAt(0);
                 }
-                // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
-                // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.
-                // A failed lay is never left laid-but-invisible (no ghost hose).
-                // GPT source read 2026-10-06 B1: the lay used to be made only by DrawAll (the CURRENT map, on screen), so a hose on
-                // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
-                // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
-                // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: a changed key is laid off the tick (HoseLayQueue); the check below reads the
-                // last landed lay until then
-                if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r, true);
-                // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
-                // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
-                if (RM_HoseSettings.enabled && (now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
+                // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST (round 8 T2c: one hose MapComponentTick took 183 ms, no child scope to say
+                // where): the 250-tick re-check is its own method, as are World()'s rebuild (BuildWorld) and the lay's world
+                // copy (TakeLayWorld), so a profile names them
+                if ((now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now);
+            }
+        }
+
+        /// <summary>A reel's 250-tick re-check (MapComponentTick): its lay kept current, and an obstacle across it re-routes or
+        /// winds it in.</summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private void TickRecheck(CompHoseReel r, int now)
+        {
+            // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
+            // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.
+            // A failed lay is never left laid-but-invisible (no ghost hose).
+            // GPT source read 2026-10-06 B1: the lay used to be made only by DrawAll (the CURRENT map, on screen), so a hose on
+            // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
+            // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
+            // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: a changed key is laid off the tick (HoseLayQueue); the check below reads the
+            // last landed lay until then
+            EnsureLay(r, true);
+            // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
+            // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
+            if (RM_HoseSettings.enabled && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
+            {
+                // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
+                // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
+                if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(World())))
                 {
-                    // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
-                    // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
-                    if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(World())))
-                    {
-                        r.trail.Clear();
-                        r.layKey = null;
-                        r.layEpoch++;
-                        continue;
-                    }
-                    string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
-                    if (why != null)
-                    {
-                        // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
-                        // already Stored, as ruled), not vanishing in one frame
-                        if (r.lay != null && r.lay.Flat.Count >= 2)
-                            ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
-                        r.Retract(why); Retracts++; continue;
-                    }
+                    r.trail.Clear();
                     r.layKey = null;
-                    r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied
+                    r.layEpoch++;
+                    return;
                 }
+                string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
+                if (why != null)
+                {
+                    // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
+                    // already Stored, as ruled), not vanishing in one frame
+                    if (r.lay != null && r.lay.Flat.Count >= 2)
+                        ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
+                    r.Retract(why); Retracts++; return;
+                }
+                r.layKey = null;
+                r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied
             }
         }
 
@@ -937,10 +965,16 @@ namespace RimMandrake.FlowWorks.Hose
             lastOverDraws = lastCrossShadowDraws = 0;
             lastDeferredRebuilds = lastDeferredCross = 0;
             rebuildSpent = crossSpent = 0;
+            lastDeferredMates = 0;
             RimMandrake.FlowWorks.Machinery.RM_UnderCouplers.ResetFrame();
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
-            for (int i = 0; i < reels.Count; i++)
+            // HOSE_RELAY_FIX_BUDGET_STARVES_LATE_REELS: the walk starts at the first reel a budget turned away last frame
+            // (HoseDrawRotation); FrameLegacy keeps reel order
+            drawOrder.Begin(reels.Count, !LegacyFrame);
+            if (!LegacyFrame) mateEnds.BeginFrame(Time.frameCount);
+            for (int step = 0; step < reels.Count; step++)
             {
+                int i = drawOrder.At(step);
                 CompHoseReel r = reels[i];
                 // B18: where hoses cross, one passes cleanly over the other, the same way every frame: each hose (and its
                 // fittings) sits in its own altitude band, ordered by when the reel was built
@@ -1002,6 +1036,7 @@ namespace RimMandrake.FlowWorks.Hose
                     pts = c.pts;
                     lastDeferredRebuilds++;
                     DeferredRebuildsTotal++;
+                    drawOrder.Deferred(i);
                 }
                 else
                 {
@@ -1010,7 +1045,13 @@ namespace RimMandrake.FlowWorks.Hose
                     // offline selftest (HoseCurveChecks) measures exactly what is drawn here. It stays inside this update, behind the
                     // world-map guard above (HOSE_DRAW_FIX_LEAKS_ONTO_WORLDMAP).
                     pts = HoseMath.DrawnPose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt, onPort ? portAt : (V2?)null, portAxis);
-                    if (mi != null) pts = Mated(r, mi, pts);
+                    if (mi != null)
+                    {
+                        if (LegacyFrame || MateEndIsCopy(r, mi)) pts = Mated(r, mi, pts);
+                        // HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS (round 8: Mated 11.7 ms mean, 50.7 ms max, in the draw): the
+                        // end's re-shape is solved on a worker (HoseMateEndQueue); until it lands the cached pose is drawn
+                        else MatedLater(r, mi, lay, c, i, ref key, ref pts);
+                    }
                 }
                 // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
                 List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
@@ -1074,7 +1115,9 @@ namespace RimMandrake.FlowWorks.Hose
                 if (key != null && meshes.TryGetValue(r, out Cached cur) && cur.key == key)
                 {
                     DrawOverBuildings(cur, hm, tint, vis, e, rank);
+                    int crossWas = lastDeferredCross;
                     DrawCrossShadow(r, cur, vis, e, y, rank);
+                    if (lastDeferredCross != crossWas) drawOrder.Deferred(i);
                 }
                 DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
             }
@@ -1297,6 +1340,13 @@ namespace RimMandrake.FlowWorks.Hose
         public const double RebuildBudgetMs = 8, CrossBudgetMs = 4;
         public int lastDeferredRebuilds, lastDeferredCross;
         public static int DeferredRebuildsTotal, DeferredCrossTotal;
+        /// <summary>HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS: mated ends re-shaped off the frame, and those waiting on it.</summary>
+        private readonly HoseMateEndQueue mateEnds = new HoseMateEndQueue();
+        private bool mateEndFaultLogged;
+        public int lastDeferredMates;
+        public static int DeferredMatesTotal;
+        /// <summary>HOSE_RELAY_FIX_BUDGET_STARVES_LATE_REELS: where DrawAll's walk over the reels starts this frame.</summary>
+        private readonly HoseDrawRotation drawOrder = new HoseDrawRotation();
         private long rebuildSpent, crossSpent;
         private static readonly double TicksPerMs = System.Diagnostics.Stopwatch.Frequency / 1000.0;
 
@@ -1757,6 +1807,48 @@ namespace RimMandrake.FlowWorks.Hose
             mateKept[r] = same;
             return o;
         }
+
+        /// <summary>MateEnd draws the pair solve's own joint half (a copy, no solve): kept on the frame.</summary>
+        private static bool MateEndIsCopy(CompHoseReel r, MateInfo mi) => HoseMath.G2On && (r == mi.A ? mi.mate.EndA : mi.mate.EndB) != null;
+
+        /// <summary>
+        /// HOSE_DRAW_FIX_STALLS_WHILE_WORKER_LAYS: <see cref="Mated"/> off the frame. The re-shape of <paramref name="pts"/> is
+        /// asked of <see cref="mateEnds"/> under the draw <paramref name="key"/>. A landed re-shape of the SAME lay and pair
+        /// solve is drawn and cached under the key it was asked for (a newer key asks again next frame, so a fill transition
+        /// moves one landed solve at a time); with none, the cached pose is drawn and the key stays unmet (as past the re-pose
+        /// budget), and a hose with nothing cached yet is drawn as laid for this frame only (key null: not cached).
+        /// </summary>
+        private void MatedLater(CompHoseReel r, MateInfo mi, HoseLay lay, Cached c, int index, ref string key, ref List<V2> pts)
+        {
+            bool isA = r == mi.A;
+            double kmax = 1 / Math.Max(0.45, RM_HoseSettings.Shape().MinBendRadius);
+            double vis = HoseMath.VisibleWidth(1, RM_HoseSettings.plumpAmount);
+            HoseMateEndQueue.Landed got = mateEnds.Ask(r.parent.thingIDNumber, key, lay, pts, mi.mate, isA, kmax, vis, r.lay?.Lead0 ?? 0);
+            if (!mateEndFaultLogged && mateEnds.LastFault != null)
+            {
+                mateEndFaultLogged = true;
+                Log.Warning("[FlowWorks] hose end mate re-shape failed (end drawn as laid): " + mateEnds.LastFault);
+            }
+            if (got != null && ReferenceEquals(got.Tag, lay) && ReferenceEquals(got.Of, mi.mate))
+            {
+                if (got.Result == null) { mateKept.Remove(r); pts = got.Source; }
+                else { mateKept[r] = got.Same; pts = got.Result; }
+                key = got.Key;
+                return;
+            }
+            lastDeferredMates++;
+            DeferredMatesTotal++;
+            drawOrder.Deferred(index);
+            if (c != null && c.pts != null && c.key != null) { key = c.key; pts = c.pts; return; }
+            mateKept.Remove(r);
+            key = null;
+        }
+
+        /// <summary>Probe: the mate-end queue's counters and last frame's deferrals (HoseProbe census "mateEnds").</summary>
+        internal string MateEndJson() =>
+            "{\"started\":" + mateEnds.Started + ",\"taken\":" + mateEnds.Taken + ",\"deferred\":" + mateEnds.Deferred + ",\"faulted\":" + mateEnds.Faulted
+            + ",\"inFlight\":" + mateEnds.InFlight + ",\"slots\":" + mateEnds.Count + ",\"lastDeferredMates\":" + lastDeferredMates + ",\"deferredMatesTotal\":" + DeferredMatesTotal
+            + ",\"lastDeferredRebuilds\":" + lastDeferredRebuilds + ",\"lastDeferredCross\":" + lastDeferredCross + ",\"drawStart\":" + drawOrder.Start + "}";
 
         /// <summary>Probe read: every coupled pair now (reel ids, coupling point, axis, cost) and the session's pair solves.</summary>
         public string MateReport()

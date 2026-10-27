@@ -95,6 +95,7 @@
     <Compile Include="Hose\HoseMath.cs" />
     <Compile Include="Hose\HoseSpliceMath.cs" />
     <Compile Include="Hose\HoseMateCache.cs" />
+    <Compile Include="Hose\HoseMateEndQueue.cs" />
     <Compile Include="Hose\HoseLayQueue.cs" />
     <Compile Include="Hose\HoseFrameMemo.cs" />
     <Compile Include="Hose\HoseCurveMetrics.cs" />
