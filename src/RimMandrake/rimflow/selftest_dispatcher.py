@@ -504,9 +504,44 @@ def test_seat_rule():
         check(msg is not None and "DISPATCHER" in msg, "ledger: DISPATCHER may not %s (%s)" % (verb, (msg or "accepted")[:60]))
 
 
+def test_ringed_next_rechecks_owner():
+    """DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING: the wake message says --ringed, and a ringed `next` withholds
+    game-needing items (ranked and claimable) once the owner is back, while offline items still flow."""
+    import types
+    from rimflow import cli, idle_probe
+    sch = sched()
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    r = [a for a in stall(sch, st, obs()) if a["do"] == "ring"]
+    check(r and "next --seat FOUNDRY --ringed" in r[0]["message"], "wake message tells the window to run next --ringed")
+    A = lambda needs: types.SimpleNamespace(item=types.SimpleNamespace(id="X_" + needs, needs=needs, raised=None),
+                                            kind="build")
+    C = lambda needs: types.SimpleNamespace(id="C_" + needs, needs=needs, raised=None)
+    saved = (cli.priority.rank, cli.reconcile.guard, cli._claimable, cli.reconcile.assess)
+    try:
+        cli.priority.rank = lambda *a, **k: [A("bridge"), A("deploy"), A("offline")]
+        cli.reconcile.guard = lambda offers, idx: (offers, [])
+        cli._claimable = lambda *a, **k: [C("game-up"), C("offline")]
+        cli.reconcile.assess = lambda it, idx: types.SimpleNamespace(kind="build", item=it)
+        args = types.SimpleNamespace(target=None)
+        free = cli._choose(None, "FOUNDRY", args, {}, None)
+        check(free["item"].id == "X_bridge", "no hold: game item offered first (control)")
+        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
+        check(held["kind"] == "offer" and held["item"].id == "X_offline", "owner back: first offer skips bridge/deploy")
+        cli.priority.rank = lambda *a, **k: [A("bridge")]
+        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
+        check(held["kind"] == "claimable" and [c.id for c in held["claimable"]] == ["C_offline"],
+              "owner back: claimable list drops game-up")
+        cli._claimable = lambda *a, **k: [C("bridge")]
+        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
+        check(held["kind"] == "nothing", "owner back and only game work: nothing offered")
+    finally:
+        cli.priority.rank, cli.reconcile.guard, cli._claimable, cli.reconcile.assess = saved
+    check(not idle_probe.idle_verdict(idle_probe.unmeasured("x"))[0], "UNMEASURED owner is not idle (so withheld)")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule):
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner):
         try:
             t()
         except Exception as e:  # noqa: BLE001

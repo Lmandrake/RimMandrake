@@ -251,7 +251,7 @@ def caps_ok(st, sch, seat, now):
 def message(seat, cfg, ticket, owner_line, ring_id):
     lines = ["[RimFlow Dispatcher — a program, not a person; ring %s]" % ring_id,
              "Seat %s: you are idle and your queue has work. Run `python3 src/RimMandrake/rimflow/cli.py next "
-             "--seat %s`, which gives you the item under a lease, and work it; renew the lease every 10 min "
+             "--seat %s --ringed`, which gives you the item under a lease, and work it; renew the lease every 10 min "
              "(`rimflow renew`). The peeked next item is %s." % (seat, seat, ticket.get("id")),
              "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`."]
     if owner_line:

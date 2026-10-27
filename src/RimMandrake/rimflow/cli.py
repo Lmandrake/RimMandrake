@@ -871,6 +871,15 @@ def cmd_next(args, seat):
         sync_game_state(w, seat)
     _warn_contested_claims(w, seat)
     ctx = _ctx(args)
+    # 🔴 RINGED WINDOW, OWNER BACK (DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING). The Dispatcher measured the
+    # owner when it rang; this `next` runs minutes later. A ringed call (`--ringed`) re-measures and, unless
+    # the owner is MEASURED idle, withholds every item that needs the game.
+    if getattr(args, "ringed", False) and not peek:
+        from rimflow import idle_probe
+        ok, why = idle_probe.idle_verdict(idle_probe.measure())
+        if not ok:
+            ctx["hold_game"] = why
+            print("(owner present: items needing the game are withheld from this ringed `next` - %s)" % why)
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -984,6 +993,9 @@ def cmd_next(args, seat):
     return 0
 
 
+HOLD_GAME_NEEDS = ("bridge", "game-up", "deploy", "harvest")
+
+
 def _choose(w, seat, args, ctx, idx):
     """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
     inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
@@ -997,6 +1009,9 @@ def _choose(w, seat, args, ctx, idx):
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
     claimable = _claimable(w, seat, args.target, ctx.get("now"))
+    if ctx.get("hold_game"):
+        offers = [a for a in offers if a.item.needs not in HOLD_GAME_NEEDS]
+        claimable = [c for c in claimable if c.needs not in HOLD_GAME_NEEDS]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
     # --seat BENCH`") beats an unraised ranked offer; otherwise ranked work comes first.
     if offers and (offers[0].item.raised is not None
@@ -2988,6 +3003,9 @@ def build_parser():
     s.add_argument("--bench", action="store_true",
                    help="REP/OWNER only: the whole board triaged — per-seat "
                         "counts, RIPE, IN TROUBLE, and what needs him")
+    s.add_argument("--ringed", action="store_true",
+                   help="set by the Dispatcher's wake message: re-measure the owner now and withhold "
+                        "items that need the game unless he is MEASURED idle")
     s.add_argument("--peek", action="store_true",
                    help="read-only: writes nothing (no measured game-state stamp, no "
                         "git-index cache write); shows the recorded game state")
