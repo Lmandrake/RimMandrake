@@ -775,7 +775,7 @@ def decide(inp, state, rules, now):
     base = dict(per)
     ov = _override_live(inp.get("override"), now)
     if ov:
-        if isinstance(tk.get(ov.get("mode")), dict) and "n" in tk[ov["mode"]]:
+        if isinstance(ov.get("mode"), str) and isinstance(tk.get(ov["mode"]), dict) and "n" in tk[ov["mode"]]:
             label = ov["mode"]
             if ov.get("n") is None and ov.get("seats") is None:
                 total = tk[ov["mode"]]["n"]

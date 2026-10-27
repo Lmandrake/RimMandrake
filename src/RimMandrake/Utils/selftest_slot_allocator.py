@@ -420,5 +420,8 @@ r = d(override=ov(mode="cross_hold_h"))
 check("an override naming a scalar token key is not a mode (no crash, no relabel)",
       not r["mode"].startswith("cross_hold_h"), r["mode"])
 
+r = d(override=ov(mode=["CRUISE"]))
+check("an override whose mode is a list is not a mode (no crash)", r["mode"].endswith("+OWNER"), r["mode"])
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

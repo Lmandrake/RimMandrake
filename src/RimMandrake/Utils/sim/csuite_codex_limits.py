@@ -42,8 +42,13 @@ def readings(dirs=None, newer_than=None):
                         r = json.loads(line)
                     except ValueError:
                         continue
-                    rl = (r.get("payload") or {}).get("rate_limits") or {}
+                    pl = r.get("payload") if isinstance(r, dict) else None
+                    rl = pl.get("rate_limits") if isinstance(pl, dict) else None
+                    if not isinstance(rl, dict):
+                        continue
                     p, s = rl.get("primary") or {}, rl.get("secondary") or {}
+                    if not isinstance(p, dict) or not isinstance(s, dict):
+                        continue
                     ts = r.get("timestamp")
                     if not ts or p.get("used_percent") is None:
                         continue
