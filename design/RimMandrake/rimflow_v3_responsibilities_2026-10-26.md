@@ -136,7 +136,8 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   them into every file that contradicts them (`deciding-and-superseding`); card him on §2 calls only; gate what
   reaches him (nothing unread: prereview through judges); deliver the daily digest and triage "what needs me?";
   `./game --said` on his game-state words; record a canon line in `canon.yml`. **Session mode** adds design work, the
-  hardest bugs, live testing with him and, by his 10-23 ruling, the FlowWorks + GSS lane (see the Part 3 orphan O1).
+  hardest bugs, live testing with him and, by his 10-23 ruling, the FlowWorks + GSS lane; between sittings a Dispatcher-launched bench-lane builder works it under the Conductor's
+  accountability (Part 3, Orphan homes 4).
 - **Inputs:** his messages, the metrics pack (`rimflow_metrics.py`, pulse streams, `account_usage.py now`), the ledger.
 - **Outputs:** answers, cards, tickets, ledger rulings, the digest.
 - **Triggers:** every message (quick mode), his presence (session mode).
@@ -278,7 +279,7 @@ list-timers`, 2026-10-26), and the process scripts in `src/RimMandrake/Utils/`.
 |---|---|---|
 | talk with him, triage "what needs me", record and propagate rulings, cards, `./game --said` | BENCH | Conductor |
 | design work, hardest bugs, live testing with him | BENCH | Conductor (session) |
-| FlowWorks + GSS: code, art, live test, acceptance, review, deploy | BENCH (ruling 10-23) | Conductor (session) — **orphan O1** |
+| FlowWorks + GSS: code, art, live test, acceptance, review, deploy | BENCH (ruling 10-23) | Conductor (session); between sittings a headless bench-lane builder (Orphan homes 4) |
 | pull the queue, build, deploy, `src/`, game build | FOUNDRY | Foundry (fed by Dispatcher) |
 | full belt: bridge agent, art pipeline up, offline builder | FOUNDRY | Dispatcher (keeps slots full), Operations (pipeline up), Foundry (builds) |
 | acceptance sweeps L1–L3, GREEN-MIN/FULL | FOUNDRY, BENCH (FlowWorks), RUNNER verify events | Arbiter — **double D2** |
@@ -289,7 +290,7 @@ list-timers`, 2026-10-26), and the process scripts in `src/RimMandrake/Utils/`.
 | stale-drop and ending dead items | any seat | Producer (item sweep) / Operations (lease sweep) — **double D3** |
 | end-of-wave handoff; wake consumption | each seat | each role (rule); Dispatcher verifies the wake |
 | lessons filing | each seat | each role (rule) |
-| lesson → hook / charter line; skill curation | nobody on a cadence | Auditor — **orphan O3** |
+| lesson → hook / charter line; skill curation | nobody on a cadence | Auditor (was an orphan) |
 | owner-found defect → permanent test | the fixing seat | Arbiter specifies, builder writes |
 | test disturbance → environment ticket | the testing seat | Arbiter (RESTART-environment class) files; Foundry fixes |
 | adversarial review of scripts | him, on his clock | Auditor (scheduled); he may still release one |
@@ -300,24 +301,100 @@ list-timers`, 2026-10-26), and the process scripts in `src/RimMandrake/Utils/`.
 | scratch reaper (`rm-scratch-reap`), object-store sample (`rm-objstore`) | timers | Operations |
 | mirror sync (`rm-mirror`), memwatch (`rm-memwatch`) | timers | Operations |
 | telemetry export/health (`rm-telemetry-*`), pulse update/health (`rm-pulse-*`) | timers | Operations |
-| nightly selftests (`rm-selftests-nightly`) → red read and ticketed | timer; nobody reads `Transient/selftests_nightly.log` on a cadence | Operations — **orphan O2** |
+| nightly selftests (`rm-selftests-nightly`) → red read and ticketed | timer; nobody reads `Transient/selftests_nightly.log` on a cadence | Operations (was an orphan) |
 | codebase health (`rm-codebase-health`) | timer | Auditor reads it |
 | testq tick/sweep/steward/ingest on SteveDesktop (RUNNER) | timers | Dispatcher (runs), Producer (what to test), Operations (health) |
 | art pipeline daemon (`rm-artpiped`) | service | Operations (up); Producer (which jobs) |
 | leftovers archive-then-delete | any seat | Operations |
-| compaction-without-handoff watch (`compaction_watch.py`) | hook; counter suspect | Operations — **orphan O4** (instrument broken) |
+| compaction-without-handoff watch (`compaction_watch.py`) | hook; counter suspect | Operations (was an orphan; instrument broken) |
 | instrument trust (zero/round counts probed) | whoever counts | Auditor |
 
-**Orphans** (a duty today with no owner on a cadence):
-- **O1 FlowWorks between sittings.** His 10-23 ruling gives FlowWorks + GSS to BENCH and forbids FOUNDRY; v3 folds
-  BENCH into the Conductor's session mode, which exists only while he sits. FlowWorks would then wait between
-  sittings, which is the mutual waiting he ruled against. **His call:** keep it session-only, or let the Dispatcher
-  feed FlowWorks tickets to a builder under the Conductor's lane rules.
-- **O2 nightly selftest reds.** They run at 03:00, and nothing reads them and files tickets. → Operations.
-- **O3 lessons → rules and skill curation.** Lessons are filed; turning a repeat into a hook or a skill edit has no
-  cadence. → Auditor (AU3 measures it).
-- **O4 compactions without a handoff.** The logger counts helpers as the seat (`COMPACTION_LOG_FIX_HELPERS_COUNTED_AS_SEAT`),
-  so the duty exists with a blind instrument. → Operations, after the fix.
+### Orphan homes (owner proposals 2026-10-26, adjudicated)
+
+The review page's coverage table found six concerns with nobody named. His proposals, verbatim (2026-10-26 ~23:30
+PDT): *"nobody named "carry out what I rule" is mostly about art selection and selection sheets. Couldn't this be
+achieved simply by filing a second ticket that says "validate what the heck the previous one did?" But wait...
+wouldn't Inspector find it now? Check that design docs do not contradict canon: Kinda seems like that vision-keeper
+artist type suggesting when things don't belong or should be reworked, right? Spare capacity: this seems like the
+experimentor. For "Flowworks and GSS between his sittings" isn't that the Producer? "Windows popping up, focus
+theft..." seems like Operations. Weekly success test, seems like Arbiter."* (Inspector = Auditor; the vision-keeper =
+the Innovator's design half; the experimentor = the Innovator.) Each was tested against separation of duties, cost
+and the frustration census, then put through two GPT rounds (critique of both his and BENCH's homes, then an attack on
+the revised plan): `D:\ClaudeWork\rimmandrake\orphan_homes\r1_answer.md`, `r2_answer.md`. Every v3 role arrives in
+build order (v3.0 → v3.4), so each home also names who holds the duty **until** that role runs.
+
+1. **Carry out what he rules** (sheet marks, X deletes and bans, overturned digest lines, the judge-brief fix).
+   His: *"filing a second ticket that says "validate what the heck the previous one did?" But wait... wouldn't
+   Inspector find it now?"* **Verdict: agree with amendment** (the ticket), **push back** (the Auditor). A second
+   ticket that someone must remember to file is today's failure again: the census traces cause 3 (~126 messages) to
+   enactment being "a separate, partial step". So the ruling record itself creates the enact item, and the Dispatcher
+   re-creates any that are missing; a deterministic reconciler checks **state** (art ledger and files, sheet rows,
+   digest reverts, the judge brief), not paperwork, newest ruling winning only within its own scope, and holds the
+   item open until state matches; sheets show "ruled, pending" instead of "needs owner". The Auditor samples, but
+   sampling cannot guarantee every ruling, it is throttled second, and it arrives last (v3.4).
+   **Home:** Conductor accountable from record to done; builders execute; the reconciler checks; the Auditor samples.
+   Until v3.1, BENCH works pending enact items at each sitting. Build: `RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`.
+2. **Design docs must not contradict `canon.yml`.** His: *"Kinda seems like that vision-keeper artist type suggesting
+   when things don't belong or should be reworked, right?"* **Verdict: push back, keeping his half.** A contradiction
+   is a mechanical check: `check_canon.py` already blocks hard contradictions at write time
+   (`.claude/hooks/block_canon_contradiction.py`); the gap is drift, when canon moves under a doc already written.
+   A guard cannot live in the role that runs weekly and pauses first under token pressure. What he describes, "this
+   does not belong in Ash'karr", is meaning, which no checker encodes, and stays the Innovator's.
+   **Home:** the Dispatcher's measuring arm runs the check when `canon.yml` changes (all docs), on commit (changed
+   docs) and nightly; the Conductor fixes the doc to canon (it records canon and propagates rulings), never canon to
+   the doc; an ambiguous reading goes to him. Meaning-level review: Innovator's weekly design letter, deferred until
+   v3.4 (nobody does it today either). Build: `CANON_BUILD_SWEEP_WHEN_CANON_MOVES`.
+3. **Spare capacity: finish, then strengthen, then explore; stop at a conditional pass.** His: *"Spare capacity:
+   this seems like the experimentor."* **Verdict: push back.** Only the third step, explore, is experimenting. The
+   order is work order (Producer), and "stop, this is good enough" is a verdict: the Producer wants the date, so it
+   must not own the bar, and the Innovator would spend spare hours on experiments before existing work is finished.
+   "Test hours catching nothing" alone cannot prove adequacy (a blind harness also finds nothing).
+   **Home:** Producer orders the three steps and sets each item's stopping budget beforehand; the Arbiter alone rules
+   PASS or CONDITIONAL-PASS (evidence plus the weaknesses left; never waives a mandatory bar; budget spent without
+   adequate evidence escalates); explore = the Innovator's experiments and idea bank. Until v3.3, a GPT reviewer
+   (never the maker) checks every conditional pass before the close.
+4. **FlowWorks and GSS between his sittings.** His: *"isn't that the Producer?"* **Verdict: agree with amendment.**
+   The Producer orders FlowWorks like any other mod, but it does not build, so the orphan stays unless someone
+   builds. His 10-23 ruling keeps FlowWorks off Foundry to prevent mutual waiting, and v3 made BENCH the Conductor's
+   session mode, which exists only while he sits.
+   **Home:** Producer orders; the Conductor is accountable for the BENCH lane at all times; between sittings the
+   Dispatcher launches a headless bench-lane builder in the bench clone under an exclusive lease, only while he is
+   away, and fences it (stop, handoff, lease released) before his session writes. Never Foundry. Acceptance and code
+   review are independent (Arbiter; the GPT reviewer until v3.3): "BENCH owns acceptance" means BENCH obtains it,
+   not grants it. Needs one schedule-rule change, which `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` carries: "the
+   watched BENCH window is never woken; a headless bench-lane builder may run while he is away".
+5. **Windows popping up, focus theft, dialogs left on his screen.** His: *"seems like Operations."*
+   **Verdict: agree,** with the mechanism added: watching for it costs no AI. Prevention is hidden-launch defaults
+   at the shared launch points with an allowlist and a selftest; detection is a deterministic foreground-change log
+   that names the process, plus a sweep for dialogs left open, in the measuring arm. Operations reads it and fixes
+   the offender; the Auditor checks that the control works.
+   **Home:** Operations. Until v3.2, BENCH triages the alarm. Build: `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST`.
+6. **Weekly success test and the stop-and-reconsider rule.** His: *"seems like Arbiter."* **Verdict: push back.**
+   The kill criterion decides whether v3 stays, and with it whether the Arbiter exists: a direct stake, and it is
+   not built until v3.3, after the first verdict is due. Stopping or keeping a role is already his. The numbers are a
+   program's job (`ops_watch` family `v3`), against a baseline frozen before the week starts.
+   **Home:** he decides; the program builds the pack; the Conductor delivers it with an outside GPT read of the
+   evidence. Operations owes the missing instruments (his keep-going messages, failure-signal share, accepted
+   items/day with a non-maker stamp, `OPS_KPI_MEASURE_OWED_VTHREE`) before the trial week; BENCH holds that until
+   v3.2. Missing evidence reads INCONCLUSIVE, never success, and INCONCLUSIVE at the week mark triggers the
+   stop-and-reconsider card, never an automatic renewal.
+
+The register's own orphans keep their homes: nightly selftest reds → Operations; lessons → rules and skill curation →
+Auditor; compactions without a handoff → Operations once `COMPACTION_LOG_FIX_HELPERS_COUNTED_AS_SEAT` lands.
+
+**Other mis-homed concerns GPT found** (proposals for him; the homes above do not depend on them):
+- Operations *enacts* check merges, so the efficiency advocate certifies its own cut → Operations proposes, a
+  builder implements, the Arbiter verifies detection is kept before it goes live.
+- The Auditor re-checks *every* check-defect verdict inside a ≤4-a-day cap → a mandatory queue with reserved
+  capacity and a backlog-age alarm; a check ruled faulty stays live until re-checked.
+- The Innovator owns the process-commit share, which measures the work it promotes, in the role paused first →
+  the Dispatcher measures, Operations analyses, read beside accepted items/day.
+- Review pages (Conductor + Operations): the Conductor owns them end to end, with a scheduled check that pages are
+  fresh and every click works; Operations supplies service health only.
+- Restarts (Operations + Conductor): Operations executes, the Conductor requests on his words, the Dispatcher
+  serialises through the bridge lease; the flyer refusal becomes a gate at execution time.
+- Every role duty needs a holder until its role runs, and the Dispatcher needs an outside dead-man heartbeat:
+  `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY`, `DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT`.
 
 **Doubles** (two performers today, one owner in v3):
 - **D1 digests:** the delegated digest (two seats, two schedules) plus the pulse digests and brief → one Conductor
