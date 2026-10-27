@@ -619,7 +619,7 @@ class Sim:
             cand = [tk for (tc, tk) in self.recent_closed if t - tc <= DAY]
             n = 0
             for tk in cand:
-                if n >= self.fx["auditor_max_per_day"]["value"]:
+                if n >= self.pol.get("aud_max", self.fx["auditor_max_per_day"]["value"]):
                     self.add(t, "aud_overflow")
                     continue
                 if u01(self.seed, F_AUDS, tk.key) >= rate:
@@ -699,6 +699,10 @@ class Sim:
 
     def week_reset(self, t):
         w = int(t // WEEK) - 1
+        if 0 <= w < self.weeks:
+            # end-of-week stocks: a policy can look better by deferring closes past the window
+            self.m[w]["arb_q_end"] = len(self.arb_q) + self.arb_busy
+            self.m[w]["prod_q_end"] = sum(len(s.q_prod) for s in self.seats.values())
         if 0 <= w < self.weeks and self.quotas is not None:
             for a in ACCOUNTS:
                 self.m[w]["left_" + a] = max(0.0, 1 - self.used[a] / self.quotas[a])
@@ -1083,7 +1087,15 @@ EXPERIMENTS = {
     + [("v3.0", {"wake_caps": _caps(h, d), "_label": f"w{h}h{d}d", "_unlimited": True})
        for h, d in ((1, 10), (3, 30), (6, 60), (30, 720))],
     "throttle": [("v3.4", {"throttle": m, "_label": m}) for m in ("config", "none", "reverse", "helpers_first")],
+    # one role at a time on top of v3.2 (versions add roles in bundles: v3.3 = Producer AND Arbiter)
+    "isolate": [("v3.2", {})] + [("v3.2", {"_rollout": [(0, "Conductor"), (0, "Operations")] + [(0, r) for r in add],
+                                           "_label": "+" + "+".join(add)})
+                                 for add in (("Arbiter",), ("Producer",), ("Auditor",), ("Innovator",))],
+    # the design caps the Auditor at 4 investigations/day; that cap, not the sample rate, decides what it can find
+    "auditor_cap": [("v3.4", {"_label": "aud_cap4"})] + [("v3.4", {"aud_max": c, "aud_rate": r, "_label": f"aud_cap{c}_r{r}"})
+                                                         for c, r in ((0, 0.1), (12, 0.1), (40, 0.3))],
 }
+EXPERIMENTS["isolate_unlimited"] = [(p, dict(o, _unlimited=True)) for p, o in EXPERIMENTS["isolate"]]
 
 
 def run_policy(P, m, seed, pol_name, over, weeks=4, warm=1):
@@ -1103,7 +1115,7 @@ def run_policy(P, m, seed, pol_name, over, weeks=4, warm=1):
 HEAD = ["sound_prod_d", "accepted_prod_d", "done_d", "nudges_d", "escapes_wk", "pool_left", "blocked_h",
         "min_left_at_reset", "exh_h_max",
         "proc_share", "idle_min_d_FOUNDRY", "idle_min_d_BENCH", "ite_week", "rings_d", "owner_att_min_per_present_h",
-        "cards_waiting_3d", "arb_pass_defective", "arb_verdicts", "arb_batched", "audit_found", "rework_share",
+        "cards_waiting_3d", "arb_pass_defective", "arb_verdicts", "arb_batched", "audits", "audit_found", "arb_q_end", "prod_q_end", "rework_share",
         "vfail_share", "filed_d", "helpers_week"]
 
 
@@ -1197,8 +1209,9 @@ def summarize_experiment(P, out, name, members):
 def cmd_report(a):
     P = load_params()
     members = load_members(a.out, accepted=False)
-    acc = [m for m in members if m["accepted"]]
-    rep = {"calibration": {"drawn": len(members), "accepted": len(acc)}}
+    # unique accepted states with v3-only parameters redrawn: the SAME thetas the experiments ran (keyed by member id)
+    acc = load_members(a.out)
+    rep = {"structure": STRUCTURE, "calibration": {"recorded": len(members), "unique_accepted": len(acc)}}
     # which targets reject most
     fails = collections.Counter()
     for m in members:
@@ -1211,6 +1224,8 @@ def cmd_report(a):
     for p, pr in P["priors"].items():
         if not acc:
             break
+        if p in V3_ONLY:                     # v2 data says nothing about these; their spread is the prior by design
+            continue
         x = np.array([m["theta"][p] for m in acc])
         w = pr["hi"] - pr["lo"]
         post[p] = {"lo": pr["lo"], "hi": pr["hi"], "post_p10": round(float(np.percentile(x, 10)), 4),
@@ -1219,12 +1234,12 @@ def cmd_report(a):
     rep["calibration"]["posterior"] = post
     rep["experiments"] = {}
     for name in EXPERIMENTS:
-        s = summarize_experiment(P, a.out, name, members)
+        s = summarize_experiment(P, a.out, name, acc)
         if s:
             rep["experiments"][name] = s
-    with open(os.path.join(a.out, "results.json"), "w") as fh:
+    with open(os.path.join(a.out, f"results{sfx()}.json"), "w") as fh:
         json.dump(rep, fh, indent=1)
-    print("wrote", os.path.join(a.out, "results.json"))
+    print("wrote", os.path.join(a.out, f"results{sfx()}.json"))
 
 
 def cmd_one(a):
@@ -1234,7 +1249,7 @@ def cmd_one(a):
         if pr.get("int"):
             th[k] = int(round(th[k]))
     if a.member is not None:
-        m = [x for x in load_members(a.out, accepted=False) if x["member"] == a.member][0]
+        m = [x for x in load_members(a.out) if x["member"] == a.member][0]
         th, quotas = m["theta"], m["quotas"]
     else:
         quotas = None
