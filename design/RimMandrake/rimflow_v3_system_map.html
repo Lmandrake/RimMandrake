@@ -1,0 +1,359 @@
+<title>RimFlow v3 System Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#eef1f5;--panel:#ffffff;--panel-2:#f7f9fb;--fg:#18212c;--fg-soft:#4d5968;--ink-soft:#6b7787;--grid:#1b2a3c0d;--band:#ffffff99;--band-line:#1b2a3c1f;--halo:#ffffff;--on-hue:#ffffff;--lukas:#a26c08;--lukas-tint:color-mix(in srgb, #a26c08 13%, var(--panel));--lukas-ink:color-mix(in srgb, #a26c08 88%, var(--fg));--conductor:#c02f6c;--conductor-tint:color-mix(in srgb, #c02f6c 13%, var(--panel));--conductor-ink:color-mix(in srgb, #c02f6c 88%, var(--fg));--producer:#0d8577;--producer-tint:color-mix(in srgb, #0d8577 13%, var(--panel));--producer-ink:color-mix(in srgb, #0d8577 88%, var(--fg));--arbiter:#3554c9;--arbiter-tint:color-mix(in srgb, #3554c9 13%, var(--panel));--arbiter-ink:color-mix(in srgb, #3554c9 88%, var(--fg));--auditor:#7a45c2;--auditor-tint:color-mix(in srgb, #7a45c2 13%, var(--panel));--auditor-ink:color-mix(in srgb, #7a45c2 88%, var(--fg));--innovator:#5f8410;--innovator-tint:color-mix(in srgb, #5f8410 13%, var(--panel));--innovator-ink:color-mix(in srgb, #5f8410 88%, var(--fg));--operations:#27864a;--operations-tint:color-mix(in srgb, #27864a 13%, var(--panel));--operations-ink:color-mix(in srgb, #27864a 88%, var(--fg));--dispatcher:#1c72a6;--dispatcher-tint:color-mix(in srgb, #1c72a6 13%, var(--panel));--dispatcher-ink:color-mix(in srgb, #1c72a6 88%, var(--fg));--foundry:#c2461b;--foundry-tint:color-mix(in srgb, #c2461b 13%, var(--panel));--foundry-ink:color-mix(in srgb, #c2461b 88%, var(--fg));--ledger:#5d6b7c;--ledger-tint:color-mix(in srgb, #5d6b7c 13%, var(--panel));--ledger-ink:color-mix(in srgb, #5d6b7c 88%, var(--fg));}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14181f;--panel:#1b212b;--panel-2:#202733;--fg:#e5e9ef;--fg-soft:#a7b1bf;--ink-soft:#6c7888;--grid:#ffffff0a;--band:#ffffff06;--band-line:#ffffff1c;--halo:#14181f;--on-hue:#14181f;--lukas:#e8b84e;--lukas-tint:color-mix(in srgb, #e8b84e 20%, var(--panel));--lukas-ink:color-mix(in srgb, #e8b84e 85%, var(--fg));--conductor:#f27aaa;--conductor-tint:color-mix(in srgb, #f27aaa 20%, var(--panel));--conductor-ink:color-mix(in srgb, #f27aaa 85%, var(--fg));--producer:#4fd0c0;--producer-tint:color-mix(in srgb, #4fd0c0 20%, var(--panel));--producer-ink:color-mix(in srgb, #4fd0c0 85%, var(--fg));--arbiter:#8fa6ff;--arbiter-tint:color-mix(in srgb, #8fa6ff 20%, var(--panel));--arbiter-ink:color-mix(in srgb, #8fa6ff 85%, var(--fg));--auditor:#bb98f4;--auditor-tint:color-mix(in srgb, #bb98f4 20%, var(--panel));--auditor-ink:color-mix(in srgb, #bb98f4 85%, var(--fg));--innovator:#aed45a;--innovator-tint:color-mix(in srgb, #aed45a 20%, var(--panel));--innovator-ink:color-mix(in srgb, #aed45a 85%, var(--fg));--operations:#62cf8a;--operations-tint:color-mix(in srgb, #62cf8a 20%, var(--panel));--operations-ink:color-mix(in srgb, #62cf8a 85%, var(--fg));--dispatcher:#5db8ea;--dispatcher-tint:color-mix(in srgb, #5db8ea 20%, var(--panel));--dispatcher-ink:color-mix(in srgb, #5db8ea 85%, var(--fg));--foundry:#f5865c;--foundry-tint:color-mix(in srgb, #f5865c 20%, var(--panel));--foundry-ink:color-mix(in srgb, #f5865c 85%, var(--fg));--ledger:#a2b0c0;--ledger-tint:color-mix(in srgb, #a2b0c0 20%, var(--panel));--ledger-ink:color-mix(in srgb, #a2b0c0 85%, var(--fg)); color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181f;--panel:#1b212b;--panel-2:#202733;--fg:#e5e9ef;--fg-soft:#a7b1bf;--ink-soft:#6c7888;--grid:#ffffff0a;--band:#ffffff06;--band-line:#ffffff1c;--halo:#14181f;--on-hue:#14181f;--lukas:#e8b84e;--lukas-tint:color-mix(in srgb, #e8b84e 20%, var(--panel));--lukas-ink:color-mix(in srgb, #e8b84e 85%, var(--fg));--conductor:#f27aaa;--conductor-tint:color-mix(in srgb, #f27aaa 20%, var(--panel));--conductor-ink:color-mix(in srgb, #f27aaa 85%, var(--fg));--producer:#4fd0c0;--producer-tint:color-mix(in srgb, #4fd0c0 20%, var(--panel));--producer-ink:color-mix(in srgb, #4fd0c0 85%, var(--fg));--arbiter:#8fa6ff;--arbiter-tint:color-mix(in srgb, #8fa6ff 20%, var(--panel));--arbiter-ink:color-mix(in srgb, #8fa6ff 85%, var(--fg));--auditor:#bb98f4;--auditor-tint:color-mix(in srgb, #bb98f4 20%, var(--panel));--auditor-ink:color-mix(in srgb, #bb98f4 85%, var(--fg));--innovator:#aed45a;--innovator-tint:color-mix(in srgb, #aed45a 20%, var(--panel));--innovator-ink:color-mix(in srgb, #aed45a 85%, var(--fg));--operations:#62cf8a;--operations-tint:color-mix(in srgb, #62cf8a 20%, var(--panel));--operations-ink:color-mix(in srgb, #62cf8a 85%, var(--fg));--dispatcher:#5db8ea;--dispatcher-tint:color-mix(in srgb, #5db8ea 20%, var(--panel));--dispatcher-ink:color-mix(in srgb, #5db8ea 85%, var(--fg));--foundry:#f5865c;--foundry-tint:color-mix(in srgb, #f5865c 20%, var(--panel));--foundry-ink:color-mix(in srgb, #f5865c 85%, var(--fg));--ledger:#a2b0c0;--ledger-tint:color-mix(in srgb, #a2b0c0 20%, var(--panel));--ledger-ink:color-mix(in srgb, #a2b0c0 85%, var(--fg)); color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Barlow","Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.5;overflow-x:hidden}
+.wrap{max-width:1480px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.mast{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 32px;align-items:end;border-bottom:2px solid var(--fg);padding-bottom:14px;margin-bottom:22px}
+.kicker{font-family:"JetBrains Mono",ui-monospace,"Cascadia Mono",Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-soft);margin:0 0 6px}
+h1{font-family:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;font-weight:700;font-size:clamp(34px,6vw,58px);line-height:.95;letter-spacing:-.01em;margin:0}
+.lede{margin:10px 0 0;max-width:62ch;color:var(--fg-soft)}
+.tempo{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:12px;color:var(--fg-soft);text-align:right;line-height:1.7}
+.tempo b{color:var(--fg);font-weight:600}
+.stage{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--band-line);border-radius:18px;background:var(--panel-2)}
+.map{display:block;width:100%;min-width:1100px;height:auto}
+.hint{display:none;font-size:13px;color:var(--fg-soft);margin:8px 2px 0}
+@media (max-width:1100px){.hint{display:block}}
+.map text{font-family:"Barlow","Segoe UI",Arial,sans-serif;fill:var(--fg)}
+.gridl{fill:none;stroke:var(--grid);stroke-width:1}
+.band{fill:var(--band);stroke:var(--band-line);stroke-width:1}
+.b-machine{stroke-dasharray:2 5}
+.map .bandl{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:11.5px;letter-spacing:.22em;fill:var(--fg-soft)}
+.nbox{fill:var(--panel);stroke-width:1.5}
+.mbox{fill:var(--panel);stroke-width:1.2;stroke-dasharray:5 3}
+.ico{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.map .nname{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:23px;letter-spacing:.01em}
+.map .mname{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-weight:600;font-size:15px}
+.map .nkick{font-size:12.5px;font-style:italic;font-weight:500}
+.map .nact{font-size:13.5px}
+.map .mact{font-size:12.5px;fill:var(--fg-soft)}
+.map .badge{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:10.5px;fill:var(--on-hue);font-weight:600}
+.nobadge{fill:none;stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 3}
+.map .nobadget{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:10.5px;fill:var(--fg-soft);text-anchor:middle}
+.f-launch{fill:none;stroke:var(--dispatcher);stroke-width:2.6;stroke-linecap:round}
+.rail{stroke-width:3.4}
+.dot{fill:var(--dispatcher)}
+.f-hand{fill:none;stroke:var(--fg-soft);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.f-ask{fill:none;stroke:var(--lukas);stroke-width:2;stroke-dasharray:7 5;stroke-linecap:round}
+.mk-launch{fill:var(--dispatcher)}
+.mk-hand{fill:none;stroke:var(--fg-soft);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mk-ask{fill:var(--lukas)}
+.map .lbl{font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--halo);stroke-width:4px;stroke-linejoin:round}
+.map .lbl-launch{fill:var(--dispatcher-ink)}
+.map .lbl-hand{fill:var(--fg-soft)}
+.map .lbl-ask{fill:var(--lukas-ink)}
+.map .legh{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:19px}
+.map .legt{font-size:13px;fill:var(--fg-soft)}
+.map .legk{fill:var(--fg);font-weight:600}
+h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:30px;margin:44px 0 4px}
+.sub{margin:0 0 18px;color:var(--fg-soft);max-width:70ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--band-line);border-top:5px solid var(--c);border-radius:12px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px}
+.card header{display:flex;gap:12px;align-items:center}
+.card .ib{flex:none;width:46px;height:46px;border-radius:11px;background:var(--ct);display:grid;place-items:center;color:var(--c)}
+.card .ib svg{width:30px;height:30px}
+.card h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:24px;line-height:1;margin:0}
+.card .k{font-size:13.5px;font-style:italic;color:var(--ci);margin:2px 0 0}
+.card p.purpose{margin:0;font-size:15px}
+.card ul{margin:0;padding:0;list-style:none;font-size:14.5px}
+.card li{padding-left:16px;position:relative}
+.card li::before{content:"";position:absolute;left:1px;top:.62em;width:6px;height:6px;border-radius:1.5px;background:var(--c)}
+.card .h{margin-top:auto;font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:12px;padding-top:8px;border-top:1px dashed var(--band-line);color:var(--fg-soft)}
+.card .h b{color:var(--ci);font-weight:600}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px;margin-top:6px}
+.rule{border-left:4px solid var(--c);padding:4px 0 4px 14px}
+.rule h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:21px;margin:0 0 4px}
+.rule p{margin:0;font-size:15px;color:var(--fg-soft)}
+.rule p b{color:var(--fg);font-weight:600}
+@media (max-width:640px){.mast{grid-template-columns:1fr}.tempo{text-align:left}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,500&family=JetBrains+Mono:wght@400;600&display=swap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-lukas" viewBox="0 0 24 24"><path d="M5.5 22v-3.6C3.6 17 2.5 14.9 2.5 12.5A7.5 7.5 0 0 1 10 5c3.2 0 5.7 2 6.6 4.8l1.4 3.4-1.6.6v2.4a1.8 1.8 0 0 1-1.8 1.8H12.6V22"/><path d="M14.5 4.2 16 2.4M17.6 6.6l2-1.2M18.6 10l2.1-.2"/><path d="M21 1v3.4M19.3 2.7h3.4"/><circle cx="9.5" cy="10.5" r="1.6"/></symbol><symbol id="i-conductor" viewBox="0 0 24 24"><path d="M4.2 19.8 18.5 5.5"/><path d="M3 22.5c-.8-.8-.8-2.1 0-2.9l1.2-1.2 2.9 2.9-1.2 1.2c-.8.8-2.1.8-2.9 0z"/><path d="M14.5 2.2c2.9.3 5.3 2.6 5.8 5.5"/><path d="M15.2 4.6c1.6.3 2.8 1.5 3.1 3.1"/><path d="M8.5 6.5c.5-1.3 1.3-2.4 2.4-3.2"/></symbol><symbol id="i-producer" viewBox="0 0 24 24"><path d="M2.5 21.5c4.5 0 4.5-5.5 9-5.5s3.5-4.5 6-5.5"/><path d="M18.5 11.2s-3.2-3-3.2-5.4a3.2 3.2 0 0 1 6.4 0c0 2.4-3.2 5.4-3.2 5.4z"/><circle cx="18.5" cy="5.8" r="1"/><path d="M7 13.4s-2.2-2-2.2-3.7a2.2 2.2 0 0 1 4.4 0c0 1.7-2.2 3.7-2.2 3.7z"/><circle cx="2.5" cy="21.5" r=".6"/></symbol><symbol id="i-arbiter" viewBox="0 0 24 24"><path d="M12 3.5V21M7.5 21h9M4.5 6.5h15"/><circle cx="12" cy="3" r="1"/><path d="M4.5 6.5 2 13.5M4.5 6.5 7 13.5M1.8 13.5h5.4a2.7 2.7 0 0 1-5.4 0z"/><path d="M19.5 6.5 17 13.5M19.5 6.5 22 13.5M16.8 13.5h5.4a2.7 2.7 0 0 1-5.4 0z"/></symbol><symbol id="i-auditor" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="M14.8 14.8 21.5 21.5"/><path d="M7.2 10.2l2 2 3.8-4.2"/></symbol><symbol id="i-innovator" viewBox="0 0 24 24"><path d="M9.2 18.5h5.6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.7.6 1.1 1.4 1.1 2.3v.5h5.6v-.5c0-.9.4-1.7 1.1-2.3A6.5 6.5 0 0 0 12 2.5z"/><path d="M10.2 12.5 12 10l1.8 2.5"/><path d="M12 10V7.5"/></symbol><symbol id="i-operations" viewBox="0 0 24 24"><path d="M3 18a9.5 9.5 0 1 1 18 0"/><path d="M12 15.5 16.5 9"/><circle cx="12" cy="15.5" r="1.4"/><path d="M5.4 10.6l1.3.8M12 6.2v1.5M18.6 10.6l-1.3.8M3 18h18"/></symbol><symbol id="i-dispatcher" viewBox="0 0 24 24"><path d="M8.5 2.5h7l4.5 19H4z"/><path d="M12 17 17.2 5.2"/><circle cx="15.6" cy="8.8" r="1.4"/><path d="M6.5 15.5h11"/></symbol><symbol id="i-foundry" viewBox="0 0 24 24"><path d="M3 9.5h13c0 2.6-2 4.3-4.5 4.5v2.5h2l1 3.5H5l1-3.5h2V14C5 13.8 3 12.2 3 9.5z"/><path d="M16 9.5h5.5c-.5 1.6-2.6 2.6-5.6 2.6"/><path d="M13.6 5.6 21 1.8"/><path d="M10.4 3.6 13 1.5l2.6 3.7-2.6 2.1z"/><path d="M7.5 6 6 4.6M9 4.6 8.6 2.6"/></symbol><symbol id="i-watch" viewBox="0 0 24 24"><path d="M3 20.5h18M3 20.5V3.5"/><path d="M6 16l4-5 3 3 5-7 3 3.5"/><circle cx="18" cy="7" r="1.1"/></symbol><symbol id="i-ledger" viewBox="0 0 24 24"><path d="M5 4.5A2 2 0 0 1 7 2.5h12v16H7a2 2 0 0 0-2 2z"/><path d="M5 20.5a2 2 0 0 0 2 2h12v-4"/><path d="M9 7h6.5M9 10h6.5M9 13h4"/></symbol><symbol id="i-schedule" viewBox="0 0 24 24"><path d="M5.5 2.5h9l4.5 4.5v14.5H5.5z"/><path d="M14.5 2.5V7H19"/><path d="M8.5 11.5h7.5M8.5 14.5h7.5M8.5 17.5h4.5"/><circle cx="8.5" cy="7.5" r=".5"/></symbol><symbol id="i-helpers" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></symbol></svg>
+<div class="wrap">
+<header class="mast">
+<div>
+<p class="kicker">RimMandrake · the agent process</p>
+<h1>RimFlow v3: who plays what</h1>
+<p class="lede">Lukas brings the vision. Seven AI roles each own one question. A program, the Dispatcher, keeps time for all of them, the way a metronome does for an orchestra.</p>
+</div>
+<div class="tempo"><b>every 2 min</b> Dispatcher tick<br><b>every 15 min</b> ops_watch measures<br><b>on his message</b> Conductor answers</div>
+</header>
+<div class="stage">
+<svg class="map" viewBox="0 0 1440 1090" role="img" aria-labelledby="map-t map-d" xmlns="http://www.w3.org/2000/svg">
+<title id="map-t">RimFlow v3 system map</title>
+<desc id="map-d">Lukas talks to the Conductor. The Dispatcher, a program, launches every AI role from one schedule file and feeds the Foundry tickets. The Foundry claims done to the Arbiter; the Auditor samples passes. ops_watch measures for Operations, whose forecast feeds the Producer replan and the Conductor.</desc>
+<defs>
+<pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" class="gridl"/></pattern>
+<marker id="mL" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="mk-launch"/></marker>
+<marker id="mH" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 9 5 1 9" class="mk-hand"/></marker>
+<marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M5 1 9 5 5 9 1 5z" class="mk-ask"/></marker>
+</defs>
+<rect x="0" y="0" width="1440" height="1090" fill="url(#grid)"/>
+<rect class="band b-human" x="44" y="20" width="1386" height="200" rx="16"/>
+<text class="bandl" x="30" y="120.0" text-anchor="middle" transform="rotate(-90 30 120.0)">THE HUMAN</text>
+<rect class="band b-ai" x="44" y="236" width="1386" height="528" rx="16"/>
+<text class="bandl" x="30" y="500.0" text-anchor="middle" transform="rotate(-90 30 500.0)">THE AI ROLES</text>
+<rect class="band b-machine" x="44" y="780" width="1386" height="290" rx="16"/>
+<text class="bandl" x="30" y="925.0" text-anchor="middle" transform="rotate(-90 30 925.0)">THE MACHINE</text>
+<g class="legend"><text class="legh" x="470" y="66">How to read the map</text>
+<path class="f-launch" d="M470 96 H540" marker-end="url(#mL)"/>
+<text class="legt" x="556" y="100"><tspan class="legk">launches or wakes</tspan> — only the Dispatcher starts anything; no AI wakes itself</text>
+<path class="f-hand" d="M470 126 H540" marker-end="url(#mH)"/>
+<text class="legt" x="556" y="130"><tspan class="legk">reports or hands work</tspan> — a claim, a digest, a draft, a ticket moving on</text>
+<path class="f-ask" d="M470 156 H540" marker-end="url(#mA)"/>
+<text class="legt" x="556" y="160"><tspan class="legk">asks or decides</tspan> — his words in, his rulings and trade-offs out</text>
+<rect x="1030" y="82" width="92" height="22" rx="11" style="fill:var(--ink-soft)"/><g class="ico" style="color:var(--on-hue)" transform="translate(1038 85) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g><text class="badge" x="1060" y="97">helpers</text>
+<text class="legt" x="1030" y="124">a role that runs its own subagents;</text>
+<text class="legt" x="1030" y="140">the badge names the helper kinds.</text>
+<text class="legt" x="1030" y="166">Each module keeps one colour</text>
+<text class="legt" x="1030" y="182">here and in the cards below.</text>
+</g>
+<g class="flows"><path class="f-ask" d="M190 200 V266" marker-end="url(#mA)"/><text class="lbl lbl-ask" x="182" y="240" text-anchor="end"><tspan x="182" dy="0">his words · rulings</tspan></text>
+<path class="f-ask" d="M240 268 V204" marker-end="url(#mA)"/><text class="lbl lbl-ask" x="250" y="236" text-anchor="start"><tspan x="250" dy="0">answers · trade-offs</tspan><tspan x="250" dy="13">to decide together</tspan></text>
+<path class="f-hand" d="M1265 270 V257 H350 V266" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="840" y="247" text-anchor="middle"><tspan x="840" dy="0">proposals that touch the vision go to him, via the Conductor</tspan></text>
+<path class="f-hand" d="M770 352 H714" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="742" y="326" text-anchor="middle"><tspan x="742" dy="0">forecast</tspan><tspan x="742" dy="13">misses</tspan></text>
+<path class="f-hand" d="M420 352 H364" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="392" y="326" text-anchor="middle"><tspan x="392" dy="0">replan</tspan><tspan x="392" dy="13">draft</tspan></text>
+<path class="f-ask" d="M200 460 V796" marker-end="url(#mA)"/><text class="lbl lbl-ask" x="190" y="600" text-anchor="end"><tspan x="190" dy="0">instructions</tspan><tspan x="190" dy="13">from his</tspan><tspan x="190" dy="13">words</tspan></text>
+<path class="f-hand" d="M580 460 V826" marker-end="url(#mH)"/>
+<text class="lbl lbl-hand" x="566" y="497" text-anchor="middle" transform="rotate(-90 566 497)">work order</text>
+<path class="f-launch rail" d="M230 745 H1265"/>
+<path class="f-launch" d="M470 798 V745"/><circle cx="470" cy="745" r="4" class="dot"/>
+<path class="f-launch" d="M230 745 V463" marker-end="url(#mL)"/>
+<path class="f-launch" d="M545 745 V463" marker-end="url(#mL)"/>
+<path class="f-launch" d="M700 745 V723" marker-end="url(#mL)"/>
+<path class="f-launch" d="M895 745 V463" marker-end="url(#mL)"/>
+<path class="f-launch" d="M1060 745 V723" marker-end="url(#mL)"/>
+<path class="f-launch" d="M1265 745 V463" marker-end="url(#mL)"/>
+<text class="lbl lbl-launch" x="600" y="739">launch rail: every AI role, one schedule file</text>
+<path class="f-launch" d="M400 798 V723" marker-end="url(#mL)"/><text class="lbl lbl-launch" x="410" y="786" text-anchor="start"><tspan x="410" dy="0">wake + next ticket</tspan></text>
+<path class="f-hand" d="M535 600 H592" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="565" y="578" text-anchor="middle"><tspan x="565" dy="0">claims</tspan><tspan x="565" dy="13">done</tspan></text>
+<path class="f-hand" d="M595 650 H538" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="565" y="672" text-anchor="middle"><tspan x="565" dy="0">fail:</tspan><tspan x="565" dy="13">fix it</tspan></text>
+<path class="f-hand" d="M790 720 V826" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="782" y="796" text-anchor="end"><tspan x="782" dy="0">pass: counts as done</tspan></text>
+<path class="f-hand" d="M885 690 H942" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="914" y="666" text-anchor="middle"><tspan x="914" dy="0">passes</tspan><tspan x="914" dy="13">sampled</tspan></text>
+<path class="f-hand" d="M1180 720 V766 H836 V892 H823" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="1010" y="760" text-anchor="middle"><tspan x="1010" dy="0">rules · tickets</tspan></text>
+<path class="f-hand" d="M930 830 V463" marker-end="url(#mH)"/>
+<text class="lbl lbl-hand" x="913" y="590" text-anchor="middle" transform="rotate(-90 913 590)">digest · alarms</text>
+<path class="f-hand" d="M560 892 H513" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="536" y="880" text-anchor="middle"><tspan x="536" dy="0">tickets</tspan></text>
+<path class="f-launch" d="M510 985 H990 V958" marker-end="url(#mL)"/><text class="lbl lbl-launch" x="700" y="978" text-anchor="middle"><tspan x="700" dy="0">runs every 15 min, no AI</tspan></text>
+<path class="f-hand" d="M1290 955 V1045 H300 V1013" marker-end="url(#mH)"/><text class="lbl lbl-hand" x="800" y="1040" text-anchor="middle"><tspan x="800" dy="0">reads</tspan></text></g>
+<g class="node" id="n-lukas">
+<rect class="nbox" x="70" y="40" width="300" height="160" rx="12" style="stroke:var(--lukas)"/>
+<rect x="70" y="40" width="6" height="160" rx="3" style="fill:var(--lukas)"/>
+<rect class="ibox" x="86" y="54" width="44" height="44" rx="10" style="fill:var(--lukas-tint)"/>
+<g class="ico" style="color:var(--lukas)" transform="translate(94 62) scale(1.1667)"><path d="M5.5 22v-3.6C3.6 17 2.5 14.9 2.5 12.5A7.5 7.5 0 0 1 10 5c3.2 0 5.7 2 6.6 4.8l1.4 3.4-1.6.6v2.4a1.8 1.8 0 0 1-1.8 1.8H12.6V22"/><path d="M14.5 4.2 16 2.4M17.6 6.6l2-1.2M18.6 10l2.1-.2"/><path d="M21 1v3.4M19.3 2.7h3.4"/><circle cx="9.5" cy="10.5" r="1.6"/></g>
+<text class="nname" x="142" y="76">Lukas</text>
+<text class="nkick" x="142" y="93" style="fill:var(--lukas-ink)">the owner · vision and taste</text>
+<rect x="90" y="115" width="5" height="5" rx="1" style="fill:var(--lukas)"/>
+<text class="nact" x="102" y="122">holds the vision and taste</text>
+<rect x="90" y="134" width="5" height="5" rx="1" style="fill:var(--lukas)"/>
+<text class="nact" x="102" y="141">has the final word on direction</text>
+<rect x="90" y="153" width="5" height="5" rx="1" style="fill:var(--lukas)"/>
+<text class="nact" x="102" y="160">decides trade-offs with the Conductor</text>
+<rect x="90" y="172" width="5" height="5" rx="1" style="fill:var(--lukas)"/>
+<text class="nact" x="102" y="179">sets the schedule, switches roles on</text>
+</g>
+<g class="node" id="n-conductor">
+<rect class="nbox" x="70" y="270" width="290" height="190" rx="12" style="stroke:var(--conductor)"/>
+<rect x="70" y="270" width="6" height="190" rx="3" style="fill:var(--conductor)"/>
+<rect class="ibox" x="86" y="284" width="44" height="44" rx="10" style="fill:var(--conductor-tint)"/>
+<g class="ico" style="color:var(--conductor)" transform="translate(94 292) scale(1.1667)"><path d="M4.2 19.8 18.5 5.5"/><path d="M3 22.5c-.8-.8-.8-2.1 0-2.9l1.2-1.2 2.9 2.9-1.2 1.2c-.8.8-2.1.8-2.9 0z"/><path d="M14.5 2.2c2.9.3 5.3 2.6 5.8 5.5"/><path d="M15.2 4.6c1.6.3 2.8 1.5 3.1 3.1"/><path d="M8.5 6.5c.5-1.3 1.3-2.4 2.4-3.2"/></g>
+<text class="nname" x="142" y="306">Conductor</text>
+<text class="nkick" x="142" y="323" style="fill:var(--conductor-ink)">the one he talks to</text>
+<rect x="90" y="345" width="5" height="5" rx="1" style="fill:var(--conductor)"/>
+<text class="nact" x="102" y="352">quick: answers from the metrics pack</text>
+<rect x="90" y="364" width="5" height="5" rx="1" style="fill:var(--conductor)"/>
+<text class="nact" x="102" y="371">turns his words into instructions</text>
+<rect x="90" y="383" width="5" height="5" rx="1" style="fill:var(--conductor)"/>
+<text class="nact" x="102" y="390">brings trade-offs to him</text>
+<rect x="90" y="402" width="5" height="5" rx="1" style="fill:var(--conductor)"/>
+<text class="nact" x="102" y="409">session: design, hard bugs, live tests</text>
+<rect x="86" y="428" width="210" height="22" rx="11" style="fill:var(--conductor)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(94 431) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="116" y="443">design · builder · live-test</text>
+</g>
+<g class="node" id="n-producer">
+<rect class="nbox" x="420" y="270" width="290" height="190" rx="12" style="stroke:var(--producer)"/>
+<rect x="420" y="270" width="6" height="190" rx="3" style="fill:var(--producer)"/>
+<rect class="ibox" x="436" y="284" width="44" height="44" rx="10" style="fill:var(--producer-tint)"/>
+<g class="ico" style="color:var(--producer)" transform="translate(444 292) scale(1.1667)"><path d="M2.5 21.5c4.5 0 4.5-5.5 9-5.5s3.5-4.5 6-5.5"/><path d="M18.5 11.2s-3.2-3-3.2-5.4a3.2 3.2 0 0 1 6.4 0c0 2.4-3.2 5.4-3.2 5.4z"/><circle cx="18.5" cy="5.8" r="1"/><path d="M7 13.4s-2.2-2-2.2-3.7a2.2 2.2 0 0 1 4.4 0c0 1.7-2.2 3.7-2.2 3.7z"/><circle cx="2.5" cy="21.5" r=".6"/></g>
+<text class="nname" x="492" y="306">Producer</text>
+<text class="nkick" x="492" y="323" style="fill:var(--producer-ink)">what and when</text>
+<rect x="440" y="345" width="5" height="5" rx="1" style="fill:var(--producer)"/>
+<text class="nact" x="452" y="352">plans the work and the critical path</text>
+<rect x="440" y="364" width="5" height="5" rx="1" style="fill:var(--producer)"/>
+<text class="nact" x="452" y="371">writes scenarios before building</text>
+<rect x="440" y="383" width="5" height="5" rx="1" style="fill:var(--producer)"/>
+<text class="nact" x="452" y="390">keeps the idea bank</text>
+<rect x="440" y="402" width="5" height="5" rx="1" style="fill:var(--producer)"/>
+<text class="nact" x="452" y="409">drafts the replan on a forecast miss</text>
+<rect class="nobadge" x="436" y="428" width="84" height="22" rx="11"/>
+<text class="nobadget" x="478" y="443">no helpers</text>
+</g>
+<g class="node" id="n-operations">
+<rect class="nbox" x="770" y="270" width="290" height="190" rx="12" style="stroke:var(--operations)"/>
+<rect x="770" y="270" width="6" height="190" rx="3" style="fill:var(--operations)"/>
+<rect class="ibox" x="786" y="284" width="44" height="44" rx="10" style="fill:var(--operations-tint)"/>
+<g class="ico" style="color:var(--operations)" transform="translate(794 292) scale(1.1667)"><path d="M3 18a9.5 9.5 0 1 1 18 0"/><path d="M12 15.5 16.5 9"/><circle cx="12" cy="15.5" r="1.4"/><path d="M5.4 10.6l1.3.8M12 6.2v1.5M18.6 10.6l-1.3.8M3 18h18"/></g>
+<text class="nname" x="842" y="306">Operations</text>
+<text class="nkick" x="842" y="323" style="fill:var(--operations-ink)">keeps it running</text>
+<rect x="790" y="345" width="5" height="5" rx="1" style="fill:var(--operations)"/>
+<text class="nact" x="802" y="352">reads the digest, never re-gathers</text>
+<rect x="790" y="364" width="5" height="5" rx="1" style="fill:var(--operations)"/>
+<text class="nact" x="802" y="371">unsticks processes, disk, git</text>
+<rect x="790" y="383" width="5" height="5" rx="1" style="fill:var(--operations)"/>
+<text class="nact" x="802" y="390">the only AI watching token burn</text>
+<rect x="790" y="402" width="5" height="5" rx="1" style="fill:var(--operations)"/>
+<text class="nact" x="802" y="409">forecasts burn against the plan</text>
+<rect x="786" y="428" width="143" height="22" rx="11" style="fill:var(--operations)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(794 431) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="816" y="443">small fix helpers</text>
+</g>
+<g class="node" id="n-innovator">
+<rect class="nbox" x="1120" y="270" width="290" height="190" rx="12" style="stroke:var(--innovator)"/>
+<rect x="1120" y="270" width="6" height="190" rx="3" style="fill:var(--innovator)"/>
+<rect class="ibox" x="1136" y="284" width="44" height="44" rx="10" style="fill:var(--innovator-tint)"/>
+<g class="ico" style="color:var(--innovator)" transform="translate(1144 292) scale(1.1667)"><path d="M9.2 18.5h5.6M10 21.5h4"/><path d="M12 2.5a6.5 6.5 0 0 0-3.9 11.7c.7.6 1.1 1.4 1.1 2.3v.5h5.6v-.5c0-.9.4-1.7 1.1-2.3A6.5 6.5 0 0 0 12 2.5z"/><path d="M10.2 12.5 12 10l1.8 2.5"/><path d="M12 10V7.5"/></g>
+<text class="nname" x="1192" y="306">Innovator</text>
+<text class="nkick" x="1192" y="323" style="fill:var(--innovator-ink)">what could be much better?</text>
+<rect x="1140" y="345" width="5" height="5" rx="1" style="fill:var(--innovator)"/>
+<text class="nact" x="1152" y="352">runs keep/kill process experiments</text>
+<rect x="1140" y="364" width="5" height="5" rx="1" style="fill:var(--innovator)"/>
+<text class="nact" x="1152" y="371">names the metric before starting</text>
+<rect x="1140" y="383" width="5" height="5" rx="1" style="fill:var(--innovator)"/>
+<text class="nact" x="1152" y="390">reviews the game design</text>
+<rect x="1140" y="402" width="5" height="5" rx="1" style="fill:var(--innovator)"/>
+<text class="nact" x="1152" y="409">proposes; the vision stays his</text>
+<rect x="1136" y="428" width="149" height="22" rx="11" style="fill:var(--innovator)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(1144 431) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="1166" y="443">experiment helpers</text>
+</g>
+<g class="node" id="n-foundry">
+<rect class="nbox" x="245" y="530" width="290" height="190" rx="12" style="stroke:var(--foundry)"/>
+<rect x="245" y="530" width="6" height="190" rx="3" style="fill:var(--foundry)"/>
+<rect class="ibox" x="261" y="544" width="44" height="44" rx="10" style="fill:var(--foundry-tint)"/>
+<g class="ico" style="color:var(--foundry)" transform="translate(269 552) scale(1.1667)"><path d="M3 9.5h13c0 2.6-2 4.3-4.5 4.5v2.5h2l1 3.5H5l1-3.5h2V14C5 13.8 3 12.2 3 9.5z"/><path d="M16 9.5h5.5c-.5 1.6-2.6 2.6-5.6 2.6"/><path d="M13.6 5.6 21 1.8"/><path d="M10.4 3.6 13 1.5l2.6 3.7-2.6 2.1z"/><path d="M7.5 6 6 4.6M9 4.6 8.6 2.6"/></g>
+<text class="nname" x="317" y="566">Foundry</text>
+<text class="nkick" x="317" y="583" style="fill:var(--foundry-ink)">the one autonomous builder</text>
+<rect x="265" y="605" width="5" height="5" rx="1" style="fill:var(--foundry)"/>
+<text class="nact" x="277" y="612">takes the next ticket</text>
+<rect x="265" y="624" width="5" height="5" rx="1" style="fill:var(--foundry)"/>
+<text class="nact" x="277" y="631">builds, fixes, live-tests</text>
+<rect x="265" y="643" width="5" height="5" rx="1" style="fill:var(--foundry)"/>
+<text class="nact" x="277" y="650">claims done to the Arbiter</text>
+<rect x="261" y="688" width="204" height="22" rx="11" style="fill:var(--foundry)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(269 691) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="291" y="703">builder · fixer · live-test</text>
+</g>
+<g class="node" id="n-arbiter">
+<rect class="nbox" x="595" y="530" width="290" height="190" rx="12" style="stroke:var(--arbiter)"/>
+<rect x="595" y="530" width="6" height="190" rx="3" style="fill:var(--arbiter)"/>
+<rect class="ibox" x="611" y="544" width="44" height="44" rx="10" style="fill:var(--arbiter-tint)"/>
+<g class="ico" style="color:var(--arbiter)" transform="translate(619 552) scale(1.1667)"><path d="M12 3.5V21M7.5 21h9M4.5 6.5h15"/><circle cx="12" cy="3" r="1"/><path d="M4.5 6.5 2 13.5M4.5 6.5 7 13.5M1.8 13.5h5.4a2.7 2.7 0 0 1-5.4 0z"/><path d="M19.5 6.5 17 13.5M19.5 6.5 22 13.5M16.8 13.5h5.4a2.7 2.7 0 0 1-5.4 0z"/></g>
+<text class="nname" x="667" y="566">Arbiter</text>
+<text class="nkick" x="667" y="583" style="fill:var(--arbiter-ink)">good enough?</text>
+<rect x="615" y="605" width="5" height="5" rx="1" style="fill:var(--arbiter)"/>
+<text class="nact" x="627" y="612">takes a feature&#x27;s claim of done</text>
+<rect x="615" y="624" width="5" height="5" rx="1" style="fill:var(--arbiter)"/>
+<text class="nact" x="627" y="631">weighs all the evidence (see below)</text>
+<rect x="615" y="643" width="5" height="5" rx="1" style="fill:var(--arbiter)"/>
+<text class="nact" x="627" y="650">rules pass or fail, with evidence</text>
+<rect x="611" y="688" width="241" height="22" rx="11" style="fill:var(--arbiter)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(619 691) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="641" y="703">judge helpers that never built it</text>
+</g>
+<g class="node" id="n-auditor">
+<rect class="nbox" x="945" y="530" width="290" height="190" rx="12" style="stroke:var(--auditor)"/>
+<rect x="945" y="530" width="6" height="190" rx="3" style="fill:var(--auditor)"/>
+<rect class="ibox" x="961" y="544" width="44" height="44" rx="10" style="fill:var(--auditor-tint)"/>
+<g class="ico" style="color:var(--auditor)" transform="translate(969 552) scale(1.1667)"><circle cx="10" cy="10" r="6.5"/><path d="M14.8 14.8 21.5 21.5"/><path d="M7.2 10.2l2 2 3.8-4.2"/></g>
+<text class="nname" x="1017" y="566">Auditor</text>
+<text class="nkick" x="1017" y="583" style="fill:var(--auditor-ink)">are you sure?</text>
+<rect x="965" y="605" width="5" height="5" rx="1" style="fill:var(--auditor)"/>
+<text class="nact" x="977" y="612">samples closed work</text>
+<rect x="965" y="624" width="5" height="5" rx="1" style="fill:var(--auditor)"/>
+<text class="nact" x="977" y="631">re-checks the Arbiter&#x27;s passes</text>
+<rect x="965" y="643" width="5" height="5" rx="1" style="fill:var(--auditor)"/>
+<text class="nact" x="977" y="650">turns repeat errors into rules</text>
+<rect x="965" y="662" width="5" height="5" rx="1" style="fill:var(--auditor)"/>
+<text class="nact" x="977" y="669">files tickets, never closes</text>
+<rect x="961" y="688" width="137" height="22" rx="11" style="fill:var(--auditor)"/>
+<g class="ico" style="color:var(--on-hue)" transform="translate(969 691) scale(.6667)"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.4"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14 15c.9-.7 1.9-1 3-1 2.3 0 4 1.7 4.5 4.5"/></g>
+<text class="badge" x="991" y="703">re-check helpers</text>
+</g>
+<g class="node" id="n-dispatcher">
+<rect class="nbox machine" x="70" y="800" width="440" height="210" rx="12" style="stroke:var(--dispatcher)"/>
+<rect x="70" y="800" width="6" height="210" rx="3" style="fill:var(--dispatcher)"/>
+<rect class="ibox" x="86" y="814" width="44" height="44" rx="10" style="fill:var(--dispatcher-tint)"/>
+<g class="ico" style="color:var(--dispatcher)" transform="translate(94 822) scale(1.1667)"><path d="M8.5 2.5h7l4.5 19H4z"/><path d="M12 17 17.2 5.2"/><circle cx="15.6" cy="8.8" r="1.4"/><path d="M6.5 15.5h11"/></g>
+<text class="nname" x="142" y="836">Dispatcher</text>
+<text class="nkick" x="142" y="853" style="fill:var(--dispatcher-ink)">a program, not an AI · every 2 min</text>
+<rect x="90" y="877" width="5" height="5" rx="1" style="fill:var(--dispatcher)"/>
+<text class="nact" x="102" y="884">wakes a stalled builder, hands it the next ticket</text>
+<rect x="90" y="896" width="5" height="5" rx="1" style="fill:var(--dispatcher)"/>
+<text class="nact" x="102" y="903">checks it happened, retries, records</text>
+<rect x="90" y="915" width="5" height="5" rx="1" style="fill:var(--dispatcher)"/>
+<text class="nact" x="102" y="922">launches every role from one schedule file</text>
+<rect x="90" y="934" width="5" height="5" rx="1" style="fill:var(--dispatcher)"/>
+<text class="nact" x="102" y="941">enforces caps, picks the account for new work</text>
+<rect x="90" y="953" width="5" height="5" rx="1" style="fill:var(--dispatcher)"/>
+<text class="nact" x="102" y="960">runs ops_watch to measure (no AI)</text>
+<rect class="nobadge" x="86" y="978" width="210" height="22" rx="11"/>
+<text class="nobadget" x="191" y="993">no helpers · no AI · no tokens</text>
+</g>
+<g class="node" id="n-ledger">
+<rect class="mbox" x="560" y="830" width="263" height="125" rx="8" style="stroke:var(--ledger)"/>
+<g class="ico" style="color:var(--ledger)" transform="translate(574 844) scale(1.0833)"><path d="M5 4.5A2 2 0 0 1 7 2.5h12v16H7a2 2 0 0 0-2 2z"/><path d="M5 20.5a2 2 0 0 0 2 2h12v-4"/><path d="M9 7h6.5M9 10h6.5M9 13h4"/></g>
+<text class="mname" x="610" y="862">Ledger</text>
+<text class="nkick" x="574" y="886" style="fill:var(--ledger-ink)">tickets and state</text>
+<text class="mact" x="574" y="908">holds tickets, state, rulings</text>
+<text class="mact" x="574" y="925">records verdicts and rules</text>
+<text class="mact" x="574" y="942">feeds the next ticket</text>
+</g>
+<g class="node" id="n-watch">
+<rect class="mbox" x="850" y="830" width="280" height="125" rx="8" style="stroke:var(--dispatcher)"/>
+<g class="ico" style="color:var(--dispatcher)" transform="translate(864 844) scale(1.0833)"><path d="M3 20.5h18M3 20.5V3.5"/><path d="M6 16l4-5 3 3 5-7 3 3.5"/><circle cx="18" cy="7" r="1.1"/></g>
+<text class="mname" x="900" y="862">ops_watch</text>
+<text class="nkick" x="864" y="886" style="fill:var(--dispatcher-ink)">the Dispatcher&#x27;s measuring arm</text>
+<text class="mact" x="864" y="908">every 15 min, every KPI series</text>
+<text class="mact" x="864" y="925">raises band · run · silent · target flags</text>
+<text class="mact" x="864" y="942">files one alarm per new crossing</text>
+</g>
+<g class="node" id="n-schedule">
+<rect class="mbox" x="1170" y="830" width="240" height="125" rx="8" style="stroke:var(--ledger)"/>
+<g class="ico" style="color:var(--ledger)" transform="translate(1184 844) scale(1.0833)"><path d="M5.5 2.5h9l4.5 4.5v14.5H5.5z"/><path d="M14.5 2.5V7H19"/><path d="M8.5 11.5h7.5M8.5 14.5h7.5M8.5 17.5h4.5"/><circle cx="8.5" cy="7.5" r=".5"/></g>
+<text class="mname" x="1220" y="862">Schedule file</text>
+<text class="nkick" x="1184" y="886" style="fill:var(--ledger-ink)">one file names all that runs</text>
+<text class="mact" x="1184" y="908">his starting cadence per role</text>
+<text class="mact" x="1184" y="925">roles stay off until he</text>
+<text class="mact" x="1184" y="942">switches each one on</text>
+</g>
+</svg>
+</div>
+<p class="hint">The map is wide: scroll it sideways. The cards below repeat every role.</p>
+<h2>The roles, one by one</h2>
+<p class="sub">Each role owns one question and does not overlap the others. The Producer does not own the bar it is judged against, and the Arbiter's passes are themselves audited.</p>
+<section class="cards">
+<article class="card" style="--c:var(--lukas);--ct:var(--lukas-tint);--ci:var(--lukas-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lukas"/></svg></div><div><h3>Lukas</h3><p class="k">the owner</p></div></header><p class="purpose">Vision and taste; the final word on direction.</p><ul><li>holds the vision and taste</li><li>rules on direction</li><li>decides trade-offs with the Conductor</li><li>sets the schedule file, switches roles on</li></ul><div class="h">The human; the final word</div></article>
+<article class="card" style="--c:var(--conductor);--ct:var(--conductor-tint);--ci:var(--conductor-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-conductor"/></svg></div><div><h3>Conductor</h3><p class="k">the one he talks to</p></div></header><p class="purpose">Quick mode on his phone, fresh per message; session mode when he sits down at the workshop.</p><ul><li>answers him from the metrics pack</li><li>turns his words into Dispatcher instructions</li><li>brings replans and trade-offs to him</li><li>in session: design, hardest bugs, live testing</li></ul><div class="h"><b>Helpers:</b> design · builder · live-test (session mode)</div></article>
+<article class="card" style="--c:var(--producer);--ct:var(--producer-tint);--ci:var(--producer-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-producer"/></svg></div><div><h3>Producer</h3><p class="k">what and when</p></div></header><p class="purpose">Owns the plan: order of work, critical path, scenarios written before building.</p><ul><li>plans the work and the critical path</li><li>writes scenarios before building</li><li>keeps the idea bank</li><li>drafts the replan when a forecast misses</li></ul><div class="h">Runs alone, no helpers</div></article>
+<article class="card" style="--c:var(--arbiter);--ct:var(--arbiter-tint);--ci:var(--arbiter-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arbiter"/></svg></div><div><h3>Arbiter</h3><p class="k">good enough?</p></div></header><p class="purpose">Rules pass or fail when a feature claims done, on all the evidence: offline tests, live tests, code reviews and his feedback. The north star is one way of gathering it.</p><ul><li>takes a feature&#x27;s claim of done</li><li>weighs every kind of evidence</li><li>rules pass or fail, with the evidence</li></ul><div class="h"><b>Helpers:</b> judge helpers that never built it</div></article>
+<article class="card" style="--c:var(--auditor);--ct:var(--auditor-tint);--ci:var(--auditor-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-auditor"/></svg></div><div><h3>Auditor</h3><p class="k">are you sure?</p></div></header><p class="purpose">Checks the yeses: samples closed work and the Arbiter&#x27;s passes, at most four investigations a day.</p><ul><li>samples closed work</li><li>re-checks the Arbiter&#x27;s passes</li><li>turns repeat errors into enforced rules</li><li>files tickets; never closes or accepts</li></ul><div class="h"><b>Helpers:</b> re-check helpers</div></article>
+<article class="card" style="--c:var(--innovator);--ct:var(--innovator-tint);--ci:var(--innovator-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-innovator"/></svg></div><div><h3>Innovator</h3><p class="k">what could be much better?</p></div></header><p class="purpose">Process experiments twice a week, game design review weekly; each experiment names its metric.</p><ul><li>runs keep/kill process experiments</li><li>names the metric before starting</li><li>reviews what the game design lacks</li><li>proposes; vision changes go to him</li></ul><div class="h"><b>Helpers:</b> experiment helpers</div></article>
+<article class="card" style="--c:var(--operations);--ct:var(--operations-tint);--ci:var(--operations-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-operations"/></svg></div><div><h3>Operations</h3><p class="k">keeps it running</p></div></header><p class="purpose">Stuck processes, stale helpers, disk, git, reboots, and the only AI that analyses token burn.</p><ul><li>reads the ops_watch digest, never re-gathers</li><li>unsticks processes, disk, git, reboots</li><li>analyses burn: rates, bleeds, trends</li><li>forecasts burn against the plan</li></ul><div class="h"><b>Helpers:</b> small fix helpers</div></article>
+<article class="card" style="--c:var(--dispatcher);--ct:var(--dispatcher-tint);--ci:var(--dispatcher-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-dispatcher"/></svg></div><div><h3>Dispatcher</h3><p class="k">a program, not an AI</p></div></header><p class="purpose">Every 2 minutes it feeds the builder and launches the roles. It measures; it never decides.</p><ul><li>wakes a stalled builder, hands it the next ticket</li><li>checks it happened, retries, records</li><li>launches every role from one schedule file</li><li>enforces caps; picks the account for new work</li><li>runs ops_watch every 15 min (no AI)</li></ul><div class="h">Runs alone, no helpers</div></article>
+<article class="card" style="--c:var(--foundry);--ct:var(--foundry-tint);--ci:var(--foundry-ink)"><header><div class="ib"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-foundry"/></svg></div><div><h3>Foundry</h3><p class="k">the one autonomous builder</p></div></header><p class="purpose">Builds continuously from the tickets the Dispatcher hands it.</p><ul><li>takes the next ticket</li><li>builds, fixes, live-tests</li><li>claims done to the Arbiter</li></ul><div class="h"><b>Helpers:</b> builder · fixer · live-test</div></article>
+</section>
+<h2>Rules that shape the map</h2>
+<p class="sub">Lukas's rulings that set who touches tokens, numbers and verdicts.</p>
+<section class="rules">
+<div class="rule" style="--c:var(--dispatcher)"><h3>Token duties split by kind</h3><p><b>The Dispatcher</b> enforces caps and picks which account new work runs on before releasing it. <b>Operations</b> is the only AI that analyses burn. When a forecast misses, <b>the Producer</b> drafts the replan and <b>the Conductor</b> brings the trade-off to Lukas to decide together. Every other role is token-blind.</p></div>
+<div class="rule" style="--c:var(--operations)"><h3>Measure once, analyse many</h3><p><b>The Dispatcher measures</b> with ops_watch every 15 minutes, no AI involved. <b>Operations analyses</b> its digest and alarms and never gathers the numbers again.</p></div>
+<div class="rule" style="--c:var(--arbiter)"><h3>All the evidence</h3><p><b>The Arbiter</b> weighs offline tests, live tests, code reviews and user feedback. The north star is one way of gathering evidence, not the whole of it. <b>The Auditor</b> then checks the Arbiter's yeses.</p></div>
+<div class="rule" style="--c:var(--lukas)"><h3>No AI wakes itself</h3><p><b>One schedule file</b> names everything that runs: his message wakes the Conductor; the clock wakes Operations, Producer, Auditor and Innovator; events wake the Arbiter (a claim of done), Operations (an alarm) and the Producer (a failed plan step).</p></div>
+</section>
+</div>
