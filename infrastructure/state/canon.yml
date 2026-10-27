@@ -2202,3 +2202,24 @@ northstar_bars_additions_delegated:
     a threshold) was not asked and stays his. Text:
     design/RimMandrake/delegation_policy.md §2.1;
     design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md Part 1.
+v3_token_duties_split_by_kind:
+  ruled: true
+  src: >
+    Owner, 2026-10-27 (ledger note on V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE).
+    The Dispatcher (a program) enforces token caps and picks the account new
+    work runs on before releasing it. Operations is the ONLY AI that analyses
+    burn (rates, bleeds, trends, forecast vs plan). When a forecast misses the
+    Producer drafts the replan (a cut list) and the Conductor brings the
+    trade-off to him to decide together. Every other role is token-blind: no
+    token talk or token-saving judgment. Guards: quota unused at reset is waste
+    like running dry; a no-AI check flags token talk in blind roles' reports.
+    Text: design/RimMandrake/rimflow_v3_2026-10-26.md section 3;
+    src/RimMandrake/rimflow/roles/conductor.md, operations.md.
+v3_arbiter_weighs_all_evidence:
+  ruled: true
+  src: >
+    Owner, 2026-10-27: "It is NOT just Northstar. It is all the evidence.
+    Offline tests. Online tests. Code reviews. User feedback." The Arbiter
+    rules on all of it; the north star is one method of gathering evidence.
+    Text: design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md
+    (Arbiter section).

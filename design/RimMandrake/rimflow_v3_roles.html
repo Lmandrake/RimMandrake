@@ -72,8 +72,8 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
   <div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:560px;font-size:14px">
     <thead><tr style="text-align:left;border-bottom:2px solid var(--line)"><th style="padding:6px">Role</th><th style="padding:6px">Trigger</th><th style="padding:6px">Default cadence</th><th style="padding:6px">When tokens run low</th></tr></thead>
     <tbody>
-      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Conductor</b></td><td style="padding:6px">event: you send a message</td><td style="padding:6px">every message</td><td style="padding:6px">never throttled</td></tr>
-      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Dispatcher</b></td><td style="padding:6px">clock</td><td style="padding:6px">every 2 min</td><td style="padding:6px">no AI, costs nothing</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Conductor</b></td><td style="padding:6px">event: you send a message</td><td style="padding:6px">every message</td><td style="padding:6px">never throttled; token-blind</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Dispatcher</b></td><td style="padding:6px">clock</td><td style="padding:6px">every 2 min</td><td style="padding:6px">no AI, costs nothing; enforces the caps and picks the account for new work</td></tr>
       <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Operations</b></td><td style="padding:6px">clock + alarms (stuck process, disk, game speed, budget burn)</td><td style="padding:6px">twice a day; economy pass daily</td><td style="padding:6px">alarms only</td></tr>
       <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Arbiter</b></td><td style="padding:6px">event: a feature claims done</td><td style="padding:6px">on demand</td><td style="padding:6px">queues, batches daily</td></tr>
       <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Producer</b></td><td style="padding:6px">clock + event (a plan step fails or a surprise lands)</td><td style="padding:6px">daily list; weekly plan</td><td style="padding:6px">weekly only</td></tr>
@@ -116,7 +116,7 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
     <div class="row">
       <article class="card lead">
         <h3>Arbiter<span class="new">NEW</span></h3>
-        <p class="what">Owns <em>good enough</em>: rules whether a feature meets its north-star bar, before it counts as done. Indifferent to the schedule, so it cannot be tempted to lower a bar to hit a date. Takes over the calls you make today only because you are the integrator.</p>
+        <p class="what">Owns <em>good enough</em>: rules whether a feature is good enough to count as done, weighing all the evidence: offline tests, online tests, code reviews and your feedback. The north star is one way of gathering evidence, not the whole bar. Indifferent to the schedule, so it cannot be tempted to lower a bar to hit a date. Takes over the calls you make today only because you are the integrator.</p>
         <div class="meta"><span class="chip ai">Opus + GPT</span><span class="chip">when a feature claims done</span><span class="chip">judge helpers that never built it</span></div>
         <p class="dec"><strong>Decides:</strong> pass / fail on a bar, with evidence. <strong>Asks you:</strong> only when the bar itself is unclear. <strong>Audited by:</strong> the Auditor.</p>
       </article>
@@ -128,7 +128,7 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
       </article>
       <article class="card lead">
         <h3>Operations</h3>
-        <p class="what"><b>Keeps it running:</b> stuck processes and stale helpers, disk and git, reboots in quiet hours, game speed. <b>Keeps it efficient:</b> once a day, the economy pass: tokens on every account (Codex art included), test hours that catch nothing, art redraw loops, your attention spent on ceremony.</p>
+        <p class="what"><b>Keeps it running:</b> stuck processes and stale helpers, disk and git, reboots in quiet hours, game speed. <b>Keeps it efficient:</b> once a day, the economy pass: it is the only AI that analyses token burn on every account (Codex art included), with rates, surprising bleeds, trends and a forecast against the plan, where quota unused at reset counts as waste. When the forecast misses, the Producer drafts the replan and the Conductor brings you the trade-off to decide together. Every other role is token-blind: the Dispatcher enforces the caps and picks the account before releasing work. It also tracks test hours that catch nothing, art redraw loops, your attention spent on ceremony.</p>
         <div class="meta"><span class="chip ai">Sonnet</span><span class="chip">twice a day + on alarms</span><span class="chip">small fix helpers</span></div>
         <p class="dec"><strong>Decides:</strong> anything already ruled on; resource budgets. <strong>Never:</strong> touches the game while you play, or lowers a bar set for a test.</p>
       </article>

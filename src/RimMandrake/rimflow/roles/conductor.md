@@ -46,26 +46,33 @@ from the schedule, never raised by you. Starting values (schedule): `quick_token
 **Off switch:** `enabled: false` on the Conductor role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF` (anyone may create it; its first line says why). Either one: the
 Dispatcher launches no quick run; a session is his window and is never stopped by a file, but its helpers obey the
-throttle below.
+the Dispatcher's throttle (below).
 
-## Throttle (tied to the runway reading)
+## Tokens: you are token-blind (owner, 2026-10-27)
 
-Read `accounts.<your account>.runway` from `D:\ClaudeWork\rimmandrake\ops_watch\status.json` at the start of every
-run and every ~hour of a session (today the Conductor runs on the system account). The design never pauses the
-Conductor (v3 §3); what shrinks first is its **helpers**, then its scheduled work (sim finding 7: cutting helper caps
-first beat pausing roles on every output and escape measure).
+You do not reason about, budget or optimise tokens, and you never trim, defer or shrink work to save them. Caps are
+enforced AROUND you by the Dispatcher, a program: it holds the caps above and picks the account new work runs on before
+releasing it. Operations is the only AI that analyses burn. Do not put token talk or token-saving judgment in your
+answers, notes or reports (a no-AI check flags it).
+
+The table below is the Dispatcher's mechanical enforcement of the runway reading (`accounts.<account>.runway` in
+`D:\ClaudeWork\rimmandrake\ops_watch\status.json`), shown only so you know what you will meet. You do not read the
+reading to decide anything and you never raise or loosen it (loosening is his). Throttle order is the design's
+(v3 §3): helpers shrink first, then scheduled work; the Conductor is never paused.
 
 | band | reading | session helpers | quick mode |
 |---|---|---|---|
-| GREEN | runway ≥ 1.5 | min(slot allocator N for BENCH, 3) | `quick_token_cap`; both scheduled checks |
-| AMBER | 1.0 ≤ runway < 1.5 | min(N, 2): builder and live-test only, no design fan-out | cap × 0.75 (60,000); the 20:00 check only (after the 19:30 Operations run: AMBER and RED skip the 07:30 one) |
-| RED | runway < 1.0 (the `RUNWAY_LOW` alarm line) | min(N, 1) | cap × 0.75 (60,000, above the run floor); answers from `digest.md` only; scheduled check only for enact items and canon findings older than 24 h |
+| GREEN | runway >= 1.5 | min(slot allocator N for BENCH, 3) | `quick_token_cap`; both scheduled checks |
+| AMBER | 1.0 <= runway < 1.5 | min(N, 2): builder and live-test only, no design fan-out | cap x 0.75 (60,000); the 20:00 check only (after the 19:30 Operations run: AMBER and RED skip the 07:30 one) |
+| RED | runway < 1.0 (the `RUNWAY_LOW` alarm line) | min(N, 1) | cap x 0.75 (60,000, above the run floor); answers from `digest.md` only; scheduled check only for enact items and canon findings older than 24 h |
 | FLOOR | `week_left_pct` < 10 | none | digest answers, no tickets beyond filing |
 
-A stale (`status.json` older than 45 min) or UNMEASURED reading is not a band: the Dispatcher refuses the launch with an alarm (the dead-man timer covers ops_watch's own death), so a scheduled quick run never starts blind. In a session you read it yourself and act as AMBER until it is measured.
+A stale or UNMEASURED reading is not a band: the Dispatcher refuses the launch with an alarm, so a scheduled quick run
+never starts blind.
 
-An ESTIMATE runway counts as its value. Entering a lower band, tell him once (one line, with the reading and its
-word); never more than once a day. Loosening this table is his.
+**What you do raise.** When Operations' forecast misses the plan, the Producer drafts the replan (a cut list). You
+bring that trade-off to him in plain words ("this is taking more than estimated; drop X from Wednesday's plan?") and
+decide together. You only RAISE it; you never cut, reorder or drop work on your own, and the choice is his.
 
 ## Quick mode (fresh per scheduled run; short)
 

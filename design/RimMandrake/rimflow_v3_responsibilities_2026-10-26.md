@@ -144,7 +144,8 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 - **Triggers:** every message (quick mode), his presence (session mode).
 - **Decides alone:** what reaches him, when, and in what form; delegated §1 calls in session work.
 - **Hands:** builds to the Arbiter; repeat errors to the Auditor; plan questions to the Producer; schedule changes to
-  the Dispatcher's schedule file. **Never:** exempt its own builds from the Arbiter or Auditor.
+  the Dispatcher's schedule file; token trade-offs (Operations' forecast + the Producer's cut list) to him, to decide together.
+  **Never:** exempt its own builds from the Arbiter or Auditor; reason about or optimise tokens, or trim work on its own.
 
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
@@ -155,7 +156,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 
 ### Producer — what and when
 - **Duties:** daily list and weekly plan; critical path per focus mod; named scenarios written before building (these
-  become the acceptance targets); idea bank (`design/V2_DREAMS.md`); focus WIP cap; re-plan when a plan step fails;
+  become the acceptance targets); idea bank (`design/V2_DREAMS.md`); focus WIP cap; re-plan when a plan step fails or Operations' forecast misses the plan (drafts the cut list the Conductor brings to him);
   backlog hygiene (blocked items, stale items, `queue_staleness_review.py`); choose what the test lane runs
   (`TESTQ_FILL_MODS`/`TESTQ_SWEEP_MODS`); review bars for vision **coverage**; propose each mod's test budget.
 - **Inputs:** his vision and focus, the ledger, the metrics, Arbiter verdicts. **Outputs:** the ordered plan, scenarios,
@@ -172,7 +173,8 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 
 ### Arbiter — good enough
 - **Duties:** rule PASS / FAIL-module / FAIL-check / RESTART-environment / BAR-defect on a feature that claims done,
-  against its named scenarios and north-star bars, on a specific build, with evidence; work the verify backlog (L1–L3,
+  against its named scenarios and ALL the evidence - offline tests, online/live tests, code reviews, user feedback;
+  the north star is one method of gathering evidence, not the whole bar - on a specific build, with evidence; work the verify backlog (L1–L3,
   GREEN-MIN/FULL; L4 is his); keep each mod's floor WIRED (every bar claimed by a check); run the judge protocol for
   taste calls (`delegation_policy.md` §4); the non-maker code-review gate (`code_review_status.py`); specify a check
   that is red on the old build for every escape; take his north-star calls as drafts for his validation.
@@ -224,7 +226,10 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   reboots and game state and speed (never while he plays); memory (`memwatch.py`); the health of every timer and
   service (pulse, telemetry, `artpiped`, testq on SteveDesktop); nightly selftests red → tickets; leftovers
   archive-then-delete; compactions without a handoff.
-- **Efficiency (the economy pass, daily):** tokens on every account including Codex; slot rules (`slot_rules.json`);
+- **Efficiency (the economy pass, daily):** the only AI that analyses token burn, on every account including Codex: rates,
+  surprising bleeds, trends, and a **forecast against the plan**; a missed forecast goes to the Producer for a replan (cut
+  list) and the Conductor brings that trade-off to him. Unused quota at reset counts as waste, like running dry.
+  Owns the no-AI drift check that flags token talk creeping into the token-blind roles' reports. slot rules (`slot_rules.json`);
   test hours that catch nothing; art redraw loops; ceremony on his attention; **north-star skepticism** (Part 1:
   proposes cuts, and enacts check merges only when detection is preserved and the floor stays fully covered; a bar
   cut is always his).
@@ -275,7 +280,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 ### Dispatcher — a program, not an AI
 - **Duties:** run every role from the one schedule file; wake a stalled builder, hand it the next ticket, check that
   it happened, retry, record; lease-based "doing"; enforce caps (the slot allocator's N) and budgets; apply the
-  token-pressure throttle order (v3 §3); one bridge holder at a time; never take the game while he plays; verify that
+  token-pressure throttle order (v3 §3) as mechanical enforcement; pick the account new work runs on before releasing it; one bridge holder at a time; never take the game while he plays; verify that
   a woken seat consumed its handoff; run the test lane (testq tick/steward/ingest is the RUNNER's Dispatcher
   instance on SteveDesktop).
 - **Measures, deterministically:** the Dispatcher's measurement arm is `ops_watch.py` (schedule `measure[ops_watch]`,
@@ -494,7 +499,7 @@ Rules of the table:
 |---|---|---|---|---|---|
 | O-1 | running check: stuck processes, stale helpers, lapsed leases (D3 leases) | BENCH reads `ops_watch\digest.md` each sitting | 15 min program; BENCH per sitting; from Wed 07:30 / 19:30 | ops_watch silent/band flags; Auditor from Sun | Wed |
 | O-2 | ops_watch alarm response (`OPS_*` items) | BENCH | per alarm | the alarm clears in ops_watch (program) | Wed |
-| O-3 | economy pass: tokens on every account incl. Codex, slot rules, test hours catching nothing, art redraw loops, ceremony | BENCH; `slot_allocator.py` acts on token state by itself | daily | Lukas (loosening is his, through the Conductor) | Wed |
+| O-3 | economy pass (the only AI analysing burn): tokens on every account incl. Codex, forecast vs plan, unused quota at reset as waste, drift check on token talk in blind roles, slot rules, test hours catching nothing, art redraw loops, ceremony | BENCH; `slot_allocator.py` acts on token state by itself | daily | Lukas (loosening is his, through the Conductor) | Wed |
 | O-4 | north-star skepticism: propose check cuts and merges | BENCH (none run on a cadence today) | weekly, batched per mod | Arbiter verifies detection kept (GPT reviewer until Fri); bar cuts → Lukas | Wed |
 | O-5 | disk and scratch (`scratch_reap.py`, `scratch_clone.py sample`) | `rm-scratch-reap` / `rm-objstore` timers; BENCH on `DISK_LOW` | timers; per alarm | ops_watch `disk` family | Wed |
 | O-6 | git health: locks, `mirror.py`, publish failures, torn ledger | each seat on sight; `rm-mirror` timer | on sight | `ledger_lint.py` push guard; ops_watch `timers` | Wed |

@@ -56,6 +56,8 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    autonomy."*):** regression checks against bars he already approved, and NEW bars, are the Arbiter's to add
    (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,
    relax a threshold) stays his.
+   The Arbiter weighs ALL the evidence (offline tests, online tests, code reviews, user feedback); the north star is one
+   method of gathering it, not the whole bar (owner, 2026-10-27).
 2. **Irreversible acts on work that is not ours.** Force-push, `reset --hard` over work you did not make,
    deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
    frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the
