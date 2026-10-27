@@ -544,5 +544,73 @@ check("steve: a streak stopped by a record with no outcome is an ESTIMATE", s["s
 for f in DD.iterdir():
     f.unlink()
 
+# ---------------------------------------------------------------- token-talk drift
+TT = TMP / "tt"
+RR = TT / "roles"
+GIT = TT / "repo"
+GIT.mkdir(parents=True)
+os.environ["RM_ROLE_RUNS_DIR"] = str(RR)
+old_bench = os.environ.get("RM_STREAMS_BENCH")
+os.environ["RM_STREAMS_BENCH"] = str(TT / "notarepo")
+(TT / "notarepo").mkdir()
+
+
+def ev(seat, i, text, kind="note", ago=H):
+    return {"seat": seat, "event": kind, "id": i, "text": text, "ts": OW.iso(NOW - ago)}
+
+
+evs = [ev("BENCH", "X_A", "fixed the thing %d" % n) for n in range(8)] + [ev("BENCH", "X_A", "we are over budget, save tokens")] * 2 \
+    + [ev("BENCH", "OPS_X", "the token burn is high")] * 20 + [ev("FOUNDRY", "Y", "plain note %d" % n) for n in range(3)] \
+    + [ev("BENCH", "X_A", "old token talk", ago=9 * DAY)] * 50
+R = rules()
+rx = OW.tt_regex(R)
+check("tokentalk: the word list matches whole words only (a bare cap and 'tokenizer' do not)",
+      rx.search("save tokens") and rx.search("Budget!") and not rx.search("the log cap") and not rx.search("tokenizer")
+      and rx.search("the daily cap"))
+out = OW.c_tokentalk(NOW, R, {"events": evs})
+b = out["tokentalk.BENCH.share"]
+check("tokentalk: BENCH share counts 2 of 10 reports, Operations' OPS_ items and the 9-day-old ones left out",
+      b["m"] == "MEASURED" and b["v"] == 20.0 and b["x"]["reports"] == 10, b)
+check("tokentalk: a seat with 3 reports (under min_reports) is UNMEASURED, never 0",
+      out["tokentalk.FOUNDRY.share"]["m"] == "UNMEASURED" and out["tokentalk.FOUNDRY.share"]["v"] is None)
+check("tokentalk: a repo that cannot be read makes the commit series UNMEASURED, not 0",
+      out["tokentalk.commits.BENCH.share"]["m"] == "UNMEASURED" and "git log" in out["tokentalk.commits.BENCH.share"]["why"],
+      out["tokentalk.commits.BENCH.share"])
+check("tokentalk: no role run folder makes every role series UNMEASURED",
+      all(out["tokentalk.role.%s.share" % r]["m"] == "UNMEASURED" for r in ("conductor", "producer", "arbiter", "auditor", "innovator")))
+out = OW.c_tokentalk(NOW, R, {"events": []})
+check("tokentalk: an empty ledger read is UNMEASURED (an unreadable source), not a clean 0",
+      out["tokentalk.BENCH.share"]["m"] == "UNMEASURED" and "ledger" in out["tokentalk.BENCH.share"]["why"])
+for n in range(6):
+    wj(RR / ("rm-role-conductor-%d.json" % (NOW - n * 100)), {"result": "ok done" if n else "I will trim work to save tokens"})
+wj(RR / ("rm-role-operations-%d.json" % (NOW - 5)), {"result": "token burn token burn"})
+wj(RR / ("rm-role-producer-%d.json" % (NOW - 5)), {"type": "result"})
+out = OW.c_tokentalk(NOW, R, {"events": evs})
+c = out["tokentalk.role.conductor.share"]
+check("tokentalk: conductor run results are read, 1 of 6 has token talk", c["m"] == "MEASURED" and abs(c["v"] - 16.7) < 0.05, c)
+check("tokentalk: a run with no result text is UNMEASURED with its reason, Operations' runs are not a series",
+      out["tokentalk.role.producer.share"]["m"] == "UNMEASURED" and "tokentalk.role.operations.share" not in out)
+subprocess.run(["git", "-C", str(GIT), "init", "-q"], check=True)
+for name, msg in (("src/RimMandrake/Mod/a.xml", "tokens spent here"), ("src/RimMandrake/Utils/b.py", "plain"),
+                  ("src/RimMandrake/Utils/c.py", "ledger: skip me tokens")):
+    f = GIT / name
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_text(msg)
+    subprocess.run(["git", "-C", str(GIT), "add", "-A"], check=True)
+    subprocess.run(["git", "-C", str(GIT), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", msg], check=True)
+texts, bad = OW.tt_texts(time.time(), R, {"events": evs})
+check("tokentalk: commits are split by path owner and ledger: commits skipped (no repo yet -> bad)", "commits.BENCH" in bad)
+os.environ["RM_STREAMS_BENCH"] = str(GIT)
+texts, bad = OW.tt_texts(time.time(), R, {"events": evs})
+check("tokentalk: Utils commit is BENCH's, mod commit FOUNDRY's, 'ledger:' commit left out",
+      texts.get("commits.BENCH") == ["plain"] and texts.get("commits.FOUNDRY") == ["tokens spent here"], texts)
+if old_bench is None:
+    del os.environ["RM_STREAMS_BENCH"]
+else:
+    os.environ["RM_STREAMS_BENCH"] = old_bench
+check("tokentalk: the family is registered and its series is in the run and silent rules",
+      "tokentalk" in OW.COLLECTORS and "tokentalk" in OW.ORDER and OW.matches("tokentalk.role.conductor.share", R["run"]["keys"])
+      and OW.matches("tokentalk.BENCH.share", list(R["silent"]["per_key"])))
+
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

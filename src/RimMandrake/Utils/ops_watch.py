@@ -62,7 +62,7 @@ for _p in (HERE, HERE / "pulse", HERE / "sim"):
 SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
-FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3")
+FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk")
 
 
 def ops_dir() -> Path:
@@ -690,10 +690,127 @@ def c_v3(now, rules, ctx):
     return {"v3." + k: U(why) for k, why in sorted(rules["v3_owed"].items())}
 
 
+# ============================================================ token-talk drift (OPS_WATCH_BUILD_TOKEN_TALK_DRIFT)
+def tt_regex(rules):
+    """The rules' token_talk.terms as one case-insensitive whole-word regex (each term is a regex fragment)."""
+    terms = (rules.get("token_talk") or {}).get("terms") or []
+    if not terms:
+        raise RuntimeError("rules token_talk.terms is empty: no word list, nothing can be counted")
+    return re.compile(r"(?<![A-Za-z0-9_])(?:" + "|".join(terms) + r")(?![A-Za-z0-9_])", re.I)
+
+
+def tt_roles_dir() -> Path:
+    return Path(os.environ.get("RM_ROLE_RUNS_DIR", "/mnt/d/ClaudeWork/rimmandrake/dispatcher/roles"))
+
+
+def tt_texts(now, rules, ctx):
+    """-> (texts {group: [str]}, bad {group: why}). Groups: a ledger seat (its note/close text; Operations' own OPS_* items
+    are left out), 'commits.<seat>' (commit messages; no commit names its seat, so the seat is the path owner: a commit
+    touching any process path is BENCH's, else FOUNDRY's; 'ledger:' commits are skipped, the ledger is read directly),
+    'role.<name>' (a finished run's result text; Operations excluded). A group in `bad` could not be read."""
+    cfg = rules.get("token_talk") or {}
+    since = now - cfg.get("window_days", 7) * DAY
+    seats = cfg.get("seats") or ["BENCH", "FOUNDRY"]
+    texts, bad = {}, {}
+    try:
+        events = ctx.get("events")
+        if events is None:
+            import pulse_core as pc
+            events = pc.read_ledger()
+        if not events:
+            raise RuntimeError("ledger read gave no events")
+        for ev in events:
+            t = epoch(ev.get("ts"))
+            if t is None or t < since or ev.get("seat") not in seats or ev.get("event") not in ("note", "close"):
+                continue
+            if str(ev.get("id") or "").startswith("OPS_"):
+                continue
+            body = " ".join(str(ev.get(k) or "") for k in ("text", "reason", "why")).strip()
+            if body:
+                texts.setdefault(ev["seat"], []).append(body)
+    except Exception as e:  # noqa: BLE001
+        for sn in seats:
+            bad[sn] = "ledger unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+    try:
+        rx = re.compile(rules["process_regex"])
+        r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(since), "--no-renames", "--name-only",
+                            "--format=%x1e%ct%x1f%B%x1f"], capture_output=True, text=True, timeout=120)
+        if r.returncode != 0:
+            raise RuntimeError("git log: " + r.stderr.strip()[-200:])
+        for rec in r.stdout.split("\x1e")[1:]:
+            parts = rec.split("\x1f")
+            if len(parts) < 3:
+                continue
+            msg, files = parts[1].strip(), [f for f in parts[2].split("\n") if f.strip()]
+            if not msg or msg.startswith("ledger:"):
+                continue
+            seat = "BENCH" if any(rx.match(f) for f in files) else "FOUNDRY"
+            if seat in seats:
+                texts.setdefault("commits." + seat, []).append(msg)
+    except Exception as e:  # noqa: BLE001
+        for sn in seats:
+            bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+    rd = tt_roles_dir()
+    names = set(cfg.get("roles") or ["conductor", "producer", "arbiter", "auditor", "innovator"])
+    try:
+        if not rd.is_dir():
+            raise RuntimeError("role run folder %s absent" % rd)
+        for f in sorted(rd.glob("rm-role-*.json")):
+            m = re.match(r"rm-role-(.+)-(\d+)\.json$", f.name)
+            if not m or m.group(1) not in names or float(m.group(2)) < since:
+                continue
+            d = json.loads(f.read_text(encoding="utf-8"))
+            res = d.get("result") if isinstance(d, dict) else None
+            if not isinstance(res, str) or not res.strip():
+                bad["role." + m.group(1)] = "run %s has no readable result text" % f.name
+                continue
+            texts.setdefault("role." + m.group(1), []).append(res)
+    except Exception as e:  # noqa: BLE001
+        bad["role._all"] = "role runs unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
+    return texts, bad
+
+
+def tt_point(group, items, rx, cfg):
+    n = len(items)
+    if n < cfg.get("min_reports", 5):
+        return U("%d report(s) in the window, under min_reports %d: a share of so few would be noise, not a reading"
+                 % (n, cfg.get("min_reports", 5)), "% of reports")
+    hits = [len(rx.findall(t)) for t in items]
+    words = sum(len(t.split()) for t in items)
+    terms = {}
+    for t in items:
+        for w in rx.findall(t):
+            terms[w.lower()] = terms.get(w.lower(), 0) + 1
+    top = sorted(terms.items(), key=lambda kv: -kv[1])[:5]
+    return M(round(100.0 * sum(1 for h in hits if h) / n, 1), "% of reports with token talk", reports=n,
+             hit_reports=sum(1 for h in hits if h), hits=sum(hits), per_1k_words=round(1000.0 * sum(hits) / max(words, 1), 2),
+             top=top)
+
+
+def c_tokentalk(now, rules, ctx):
+    cfg = rules.get("token_talk") or {}
+    rx = tt_regex(rules)
+    texts, bad = tt_texts(now, rules, ctx)
+    out = {}
+    seats = cfg.get("seats") or ["BENCH", "FOUNDRY"]
+    groups = list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
+              ["conductor", "producer", "arbiter", "auditor", "innovator"])]
+    for g in groups:
+        why = bad.get(g) or bad.get("role._all") if g.startswith("role.") else bad.get(g)
+        if why:
+            out["tokentalk." + g + ".share"] = U(why, "% of reports")
+        elif g not in texts and g.startswith("role."):
+            out["tokentalk." + g + ".share"] = U("no finished %s run in the window (none launched yet, or the folder is empty)"
+                                                 % g[5:], "% of reports")
+        else:
+            out["tokentalk." + g + ".share"] = tt_point(g, texts.get(g, []), rx, cfg)
+    return out
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
-              "v3": c_v3}
-ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3")
+              "v3": c_v3, "tokentalk": c_tokentalk}
+ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk")
 
 
 # ==================================================================================================== storage

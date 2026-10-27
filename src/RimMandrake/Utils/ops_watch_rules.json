@@ -15,12 +15,12 @@
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
   "n": 8,
-  "keys": ["accounts.*.runway", "codex.runway", "testing.nothing_h_7d", "process.share_7d", "flow.untriaged_findings", "flow.lapsed_leases", "production.P1", "production.P2", "production.P4", "production.V0", "production.D1", "production.A1", "production.G3", "production.G7", "production.O3", "tps.ratio_median", "disk.root_free_gb", "disk.scratch_total_gb"]
+  "keys": ["accounts.*.runway", "codex.runway", "testing.nothing_h_7d", "process.share_7d", "flow.untriaged_findings", "flow.lapsed_leases", "production.P1", "production.P2", "production.P4", "production.V0", "production.D1", "production.A1", "production.G3", "production.G7", "production.O3", "tps.ratio_median", "disk.root_free_gb", "disk.scratch_total_gb", "tokentalk.*.share"]
  },
  "silent": {
   "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind.",
   "default_h": 2,
-  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3},
+  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6},
   "keys": ["*"],
   "skip": ["*._collector"]
  },
@@ -49,6 +49,8 @@
    "why": "v3 section 6 target: test hours that catch nothing <= 18 h/wk"},
   {"key": "process.share_7d", "op": ">=", "value": 61, "alarm": false, "tag": "PROCESS_SHARE",
    "why": "v3 section 6 target: process-commit share 70% -> under 61%"},
+  {"key": "tokentalk.*.share", "op": ">=", "value": 10, "alarm": false, "tag": "TOKEN_TALK_DRIFT",
+   "why": "owner 2026-10-27: token-blind roles must not talk tokens; cold 7-day baseline BENCH/FOUNDRY ledger and commits was 2-6%, so 10% is about double"},
   {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": false, "tag": "UNTRIAGED",
    "why": "findings filed UNTRIAGED and not yet turned into items"}
  ],
@@ -61,6 +63,14 @@
   "lock_wait_s": 90,
   "clear_passes": 4,
   "_clear_passes_doc": "an open alarm clears (and re-arms) only after 4 clear readings in a row (1 h at 15 min): a reading that wobbles across its line files one item, not one per wobble. UNMEASURED readings neither clear nor reset the count (a flaky instrument must not pin an alarm open forever)"
+ },
+ "token_talk": {
+  "_doc": "No-AI drift measure (owner 2026-10-27: only Operations analyses burn; every other role is token-blind). Per seat and role: the % of its reports in window_days (ledger notes/closes by that seat, commit messages by path owner, finished role-run result text) holding at least one term. Terms are regex fragments, whole-word, case-insensitive; a bare cap is not a term (log caps, size caps), a token/daily/week/session/usage cap is. Operations is excluded (its OPS_* ledger items and its role runs). Under min_reports reports the point is UNMEASURED, never 0.",
+  "window_days": 7,
+  "min_reports": 5,
+  "seats": ["BENCH", "FOUNDRY"],
+  "roles": ["conductor", "producer", "arbiter", "auditor", "innovator"],
+  "terms": ["tokens?", "burn(?:s|ed|ing)?", "budget(?:s|ed|ing)?", "quota", "runway", "throttl\\w*", "(?:token|daily|week(?:ly)?|session|usage) caps?", "spend(?:s|ing)?", "spent", "cheap(?:er|ly)?", "economi[sz]\\w*", "thrift\\w*"]
  },
  "accounts_fit": {"window_h": 6, "slope_min_points": 4, "slope_min_span_h": 2.0},
  "codex": {"lookback_days": 8, "slope_window_h": 24, "slope_min_span_h": 3.0, "stale_h": 6, "_stale_h_doc": "a last reading older than this is an ESTIMATE floor: Codex may be spent from another machine"},
