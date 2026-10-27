@@ -88,6 +88,7 @@ import calendar
 import json
 import math
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -1026,15 +1027,24 @@ def run_paths(root, unit):
 
 
 def launch_argv(role, unit, msg, out, err, claude):
+    """The transient unit's argv. A role's `pre_launch` (an argv, run in its clone) runs first inside the same unit,
+    its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
+    (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
+    cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit),
+           "--output-format", "json", "--dangerously-skip-permissions"]
+    pre = role.get("pre_launch")
+    if pre:
+        if not (isinstance(pre, list) and pre and all(isinstance(x, str) and x for x in pre)):
+            raise ValueError("role %s: pre_launch must be a non-empty argv list, got %r" % (role.get("name"), pre))
+        # the pre-step's words are quoted into the script; the claude argv (the message) stays positional, unquoted
+        cmd = ["/bin/sh", "-c", " ".join(shlex.quote(x) for x in pre) + ' 1>&2 && exec "$@"', "role-pre-launch"] + cmd
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
             "--working-directory", role["clone"],
             "--setenv", "AGENT_SEAT=" + role["seat"], "--setenv", "RIMFLOW_SEAT=" + role["seat"],
-            "--setenv", "PATH=" + path, "--",
-            bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit),
-            "--output-format", "json", "--dangerously-skip-permissions"]
+            "--setenv", "PATH=" + path, "--"] + cmd
 
 
 def launch(role, unit, msg, root, claude, runner=subprocess.run):

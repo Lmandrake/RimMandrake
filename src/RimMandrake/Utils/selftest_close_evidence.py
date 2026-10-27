@@ -10,6 +10,8 @@ Review Z (v2), one check group per finding: F1 24 concurrent writers on D: keep 
 UNMEASURED; F2 start/end drift and v1 lines are not evidence; F3 modcheck is live-only; F4 python.exe records via WSL;
 F5 lookup(paths=) and DROPPED -> UNMEASURED; F6 validate_patch unread target -> UNMEASURED, static variant; F7 winbuild
 stage snapshots and rsync failure; F8 --no-optional-locks; F9 per-clone selftest lines; F10 AGENT_SEAT; WHO seat/session/agent per line.
+Review AA (v3): only sealed v3 lines with an in-process origin are evidence (no-v, v2, edited, typed-in start/end and
+record-CLI lines are not); a missing key raises; 24 writers on D: with a looping reader keep all 960 lines.
 """
 import io
 import json
@@ -56,6 +58,7 @@ def main():
     with tempfile.TemporaryDirectory() as td:
         store = Path(td) / "evidence"
         os.environ[CE.ENV_DIR] = str(store)
+        os.environ[CE.KEY_ENV] = str(Path(td) / "close_evidence.key")     # never the user's real key
         os.environ.pop("RIMFLOW_ITEM", None)
         repo, sha = make_repo(td)
 
@@ -131,7 +134,7 @@ def main():
         # every line on disk is one JSON object with the fixed fields
         lines = [json.loads(ln) for f in store.glob("*.jsonl") for ln in f.read_text().splitlines()]
         want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "start", "paths", "covers",
-                "result", "item", "seat", "who", "live_only", "variant", "detail"}
+                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "mac"}
         check(lines and all(set(l) == want for l in lines), "%d lines, each with exactly the schema fields" % len(lines))
 
         # validate_patch end to end: a run on a file in the fixture clone writes one validate_patch line
@@ -191,9 +194,106 @@ def main():
               "F3 lookup hides modcheck unless include_live")
 
         review_z(td, store, repo, sha2)
+        review_aa(Path(td) / "aa")
 
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0
+
+
+# ------------------------------------------------------------------ review AA
+
+def _reader(args):
+    """Reads the store in a loop while writers append (review AA1: an unlocked reader cost writers lines on drvfs)."""
+    store, stop_file = args
+    n = 0
+    while not os.path.exists(stop_file):
+        CE.read_all(days=2, folder=store, bad_out=[])
+        n += 1
+    return n
+
+
+def review_aa(root):
+    """Review AA: v3 lines only (schema + origin + mac), the record CLI is never evidence, a missing key is an error,
+    readers hold a shared lock. THE LIMIT: these stop accidental and lazy forgery, not a same-user forger."""
+    root.mkdir()
+    repo, sha = make_repo(root)
+    store = root / "store"
+    os.environ[CE.ENV_DIR] = str(store)
+    good = CE.record("selftest", "PASS", [repo / "src" / "a.py"], clone=repo, start=CE.snapshot(repo))
+    check(good and good["v"] == CE.V and not CE.schema_problems(good) and good["origin"]["via"] == "inproc"
+          and good["origin"]["start"] == "snapshot" and good["origin"]["end"] == "git" and good["mac"],
+          "AA a real run is a v3 line, origin inproc/snapshot/git, sealed: %r" % (good and good.get("origin"),))
+    check(len(CE.lookup(sha=sha, tool="selftest")) == 1, "AA the real run is evidence")
+    day = next(store.glob("*.jsonl"))
+
+    def append(rec):
+        with day.open("a") as f:
+            f.write(json.dumps(rec, sort_keys=True, default=str) + "\n")
+
+    # NOV: a hand-written line with no v, a v2 line, an edited sealed line
+    append({"tool": "novtool", "sha": sha, "dirty": False, "result": "PASS", "paths": ["src/a.py"], "ts": good["ts"]})
+    check(CE.lookup(sha=sha, tool="novtool") == [], "AA-NOV a line with no v is not evidence")
+    v2 = {k: v for k, v in good.items() if k not in ("origin", "mac")}
+    append(dict(v2, v=2, tool="v2tool"))
+    check(CE.lookup(sha=sha, tool="v2tool") == [], "AA-NOV a v2 line is not evidence")
+    bad = CE.record("edittool", "FAIL", [repo / "src" / "a.py"], clone=repo, start=CE.snapshot(repo))
+    append(dict(bad, result="PASS", ts=bad["ts"][:-6] + "9" + bad["ts"][-6:]))
+    check([r["result"] for r in CE.lookup(sha=sha, tool="edittool")] == ["FAIL"],
+          "AA-NOV a sealed line edited FAIL->PASS fails its mac; the FAIL stands")
+    check(not CE.mac_ok(dict(good, seat="RUNNER"), CE._key()), "AA a changed seat breaks the mac")
+    # FORGE: typed-in start/end in process; a record CLI payload asserting sha, clean tree and seat
+    st = {"sha": sha, "dirty": False, "dirty_n": 0}
+    f1 = CE.record("typedtool", "PASS", [repo / "src" / "a.py"], clone=repo, start=st, end=st)
+    check(f1["origin"]["start"] == "caller" and f1["origin"]["end"] == "caller" and not CE.counts_as_evidence(f1)
+          and CE.lookup(sha=sha, tool="typedtool") == [], "AA-FORGE a typed-in start/end is not evidence")
+    tok = CE.snapshot(repo)
+    f2 = CE.record("tamptool", "PASS", [repo / "src" / "a.py"], clone=repo, start=dict(tok, dirty_n=0, sha="0" * 40))
+    check(f2["origin"]["start"] == "caller", "AA-FORGE a minted snapshot edited after minting is the caller's word")
+    pay = {"tool": "clitool", "result": "PASS", "paths": [str(repo / "src" / "a.py")], "clone": str(repo),
+           "start": st, "end": st, "who": {"seat": "RUNNER", "seat_from": "RIMFLOW_SEAT"}, "evidence_dir": str(store)}
+    cp = subprocess.run([sys.executable, str(HERE / "close_evidence.py"), "record"], input=json.dumps(pay),
+                        capture_output=True, text=True, timeout=120)
+    cli = json.loads(cp.stdout.strip().splitlines()[-1]) if cp.returncode == 0 and cp.stdout.strip() else {}
+    check(cli.get("origin", {}).get("via") == "cli" and cli.get("who", {}).get("seat_from") == "shipped:RIMFLOW_SEAT"
+          and CE.lookup(sha=sha, tool="clitool") == [],
+          "AA-FORGE the record CLI writes a via=cli line that is never evidence: rc=%s %s" % (cp.returncode,
+                                                                                              cp.stderr[-200:]))
+    # a missing key: lookup raises (UNMEASURED), the writer creates it
+    kp = os.environ[CE.KEY_ENV]
+    os.environ[CE.KEY_ENV] = str(root / "nokey" / "k")
+    try:
+        CE.lookup(sha=sha)
+        check(False, "AA lookup with no key raises")
+    except RuntimeError:
+        check(True, "AA lookup with no key raises")
+    os.environ[CE.KEY_ENV] = kp
+    check(len(CE.lookup(sha=sha, tool="selftest")) == 1, "AA sanity: with the key back the real run is found again")
+    # AA1: 24 writers x 40 lines x 2 KB on D: WITH a reader looping on read_all -- every line survives
+    dbase = Path("/mnt/d/ClaudeWork/rimmandrake/selftest_tmp")
+    if Path("/mnt/d/ClaudeWork").is_dir():
+        dbase.mkdir(parents=True, exist_ok=True)
+        dst = tempfile.mkdtemp(prefix="ce_aa1_", dir=str(dbase))
+        stop = os.path.join(dst, "stop.flag")
+        try:
+            ctx = multiprocessing.get_context("fork")
+            with ctx.Pool(1) as rp, ctx.Pool(24) as pool:
+                reads = rp.map_async(_reader, [(dst, stop)])
+                pool.map(_writer, [(dst, k, 40) for k in range(24)])
+                Path(stop).write_text("x")
+                nreads = reads.get(timeout=120)[0]
+            got = set()
+            for ln in (ln for f in Path(dst).glob("*.jsonl") for ln in f.read_text().splitlines()):
+                try:
+                    d = json.loads(ln)["detail"]
+                    got.add((d["w"], d["j"]))
+                except (ValueError, KeyError):
+                    pass
+            check(len(got) == 960 and nreads > 0, "AA1 24 writers + a looping reader on D: kept %d/960 lines "
+                                                   "(reader made %d reads)" % (len(got), nreads))
+        finally:
+            shutil.rmtree(dst, ignore_errors=True)
+    else:
+        print("AA1 drvfs reader probe: no /mnt/d here -- UNMEASURED, not a pass or a fail")
 
 
 # ------------------------------------------------------------------ review Z

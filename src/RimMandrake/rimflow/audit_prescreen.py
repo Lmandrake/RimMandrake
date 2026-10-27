@@ -146,17 +146,22 @@ def build(rows, rules, seed):
 
 
 def past_failed_items(path):
+    """Items with a DEFECT audit in the Auditor's audits.jsonl. A missing or unreadable file, or a line that is not
+    JSON, raises (OSError / ValueError): no file is UNMEASURED, never 'no past failures' (review AA, brief AA8)."""
     out = set()
-    try:
-        for line in open(path):
+    with open(path, encoding="utf-8") as fh:
+        for i, line in enumerate(fh):
+            if not line.strip():
+                continue
             try:
                 d = json.loads(line)
             except ValueError:
-                continue
-            if d.get("verdict") == "DEFECT" and d.get("item"):
+                raise ValueError("%s line %d is not JSON" % (path, i + 1))
+            if not (isinstance(d, dict) and d.get("item") and d.get("verdict") in ("SOUND", "DEFECT", "UNRESOLVED")):
+                raise ValueError("%s line %d lacks item or a SOUND/DEFECT/UNRESOLVED verdict (audits.schema.json)"
+                                 % (path, i + 1))
+            if d["verdict"] == "DEFECT":
                 out.add(d["item"])
-    except OSError:
-        pass
     return out
 
 
@@ -165,6 +170,7 @@ def main(argv=None, events=None):
     ap.add_argument("--days", type=float)
     ap.add_argument("--out", default=OUT)
     ap.add_argument("--now")
+    ap.add_argument("--past-audits", help="the Auditor's audits.jsonl (default: rules past_audits_file)")
     a = ap.parse_args(argv)
     rules = load_rules()
     try:
@@ -178,7 +184,13 @@ def main(argv=None, events=None):
         return 2
     now = _epoch(a.now) if a.now else time.time()
     since = now - 86400 * (a.days or rules["window_days"])
-    rows = score(events, rules, since, past_failed=past_failed_items(rules["past_audits_file"]))
+    try:
+        past_failed = past_failed_items(a.past_audits or rules["past_audits_file"])
+    except (OSError, ValueError) as ex:
+        print("UNMEASURED: past audits unreadable (%s): past_audit_failed would never fire. The Auditor creates the "
+              "file (empty = no audits yet); no list written" % ex, file=sys.stderr)
+        return 2
+    rows = score(events, rules, since, past_failed=past_failed)
     doc = build(rows, rules, seed=int(since // 86400))
     doc["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
     doc["since"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(since))

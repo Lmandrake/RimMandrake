@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rimmandrake/rimflow/audits.schema.json",
+  "title": "One Auditor re-check result: one JSON line in D:\\ClaudeWork\\rimmandrake\\auditor\\audits.jsonl",
+  "description": "Appended by the Auditor (roles/auditor.md); read by audit_prescreen.past_failed_items. The file exists and may be empty (= no audits yet); a missing file or a line that is not an object with item and a known verdict is UNMEASURED, never 'no past failures' (review AA, brief AA8).",
+  "type": "object",
+  "required": ["ts", "item", "sha", "why_picked", "flags", "verdict", "defect_class", "evidence"],
+  "properties": {
+    "ts": {"type": "string", "description": "UTC ISO-8601 time the verdict was written"},
+    "item": {"type": "string", "minLength": 1, "description": "ledger item id"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{7,40}$", "description": "the closed commit re-checked"},
+    "why_picked": {"enum": ["mandatory", "disagreement", "flag", "rank", "random"]},
+    "flags": {"type": "array", "items": {"type": "string"}, "description": "the pre-screen's flags for the item"},
+    "verdict": {"enum": ["SOUND", "DEFECT", "UNRESOLVED"]},
+    "defect_class": {"type": ["string", "null"], "description": "null unless verdict is DEFECT"},
+    "evidence": {"type": "array", "items": {"type": "string"}, "description": "absolute Windows paths the re-checker read or wrote"}
+  },
+  "additionalProperties": true
+}

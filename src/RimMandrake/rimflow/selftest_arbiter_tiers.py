@@ -6,6 +6,11 @@ from rimflow import audit_prescreen as ap                          # noqa: E402
 
 FAILED = []
 HERE = os.path.dirname(os.path.abspath(__file__))
+ce = at.ce
+EVD = tempfile.mkdtemp()                                   # the close_evidence store and its mac key for this run only:
+os.environ[ce.ENV_DIR] = EVD                               # the live store is never read or written here
+os.environ[ce.KEY_ENV] = os.path.join(tempfile.mkdtemp(), "close_evidence.key")
+ce._key(create=True)
 
 
 def ok(name, got, want):
@@ -26,7 +31,18 @@ def ev(e, i, ts, seat="BENCH", **k):
     return d
 
 
-def tiers_of(events, **kw):
+def with_builder(events, builder="BENCH"):
+    """A claim event by `builder` for every item the fixture gives no claim/start/implemented event, so the builder
+    is known (review AA7: with none, independence is UNMEASURED)."""
+    named = {e["id"] for e in events if e.get("event") in ("claim", "start", "reclaim", "implemented")}
+    return [ev("claim", i, "2026-10-26T08:00:00Z", seat=builder)
+            for i in sorted({e["id"] for e in events} - named)] + list(events)
+
+
+def tiers_of(events, builder="BENCH", **kw):
+    """builder: see with_builder (None: leave the builder unknown)."""
+    if builder:
+        events = with_builder(events, builder)
     kw.setdefault("git", git)
     kw.setdefault("clean", CLEAN)
     kw.setdefault("blob", blob)
@@ -151,12 +167,25 @@ ok("F4 missing past audits exits 2", at.main(["--data", td, "--judge-dir", td, "
                                               events=events), 2)
 ok("F4 nothing written on UNMEASURED", sorted(os.listdir(td)), [])
 
-# F5: verify and close by the same seat (no claim event) is not a tier-0 pass
+# F5: verify and close by the builder's seat is not a tier-0 pass; with no builder named, independence is unknown
 f5 = [ev("verify", "SELF", "2026-10-26T11:00:00Z", seat="BENCH", result="pass"),
       ev("close", "SELF", "2026-10-26T12:00:00Z", seat="BENCH", sha="good", reason="verified")]
 T5 = tiers_of(f5)[0]["SELF"]
 ok("F5 builder's own verify is not independent", T5["gates"]["G2_independent"], "FAIL")
 ok("F5 builder's own verify does not pass tier 0", T5["tier"] != "T0_PASS", True)
+ok("AA6 builder's bare self-verify is not machine evidence",
+   tiers_of([dict(e, sha="docs") if e["event"] == "close" else e for e in f5])[0]["SELF"]["tier"], "T2_NOEVIDENCE")
+T5n = tiers_of(f5, builder=None)[0]["SELF"]
+ok("AA7 no builder in the ledger: G2 independence UNMEASURED", T5n["gates"]["G2_independent"], "UNMEASURED")
+ok("AA7 no builder in the ledger goes to AI review", T5n["tier"], "T2_UNMEASURED")
+f5o = [ev("verify", "OWNCL", "2026-10-26T11:00:00Z", seat="BENCH", result="pass", evidence=r"D:\w\there.png"),
+       ev("close", "OWNCL", "2026-10-26T12:00:00Z", seat="OWNER", sha="good", reason="relayed")]
+ok("AA7 OWNER close, no claim: a BENCH verify is not independent",
+   tiers_of(f5o, builder=None)[0]["OWNCL"]["gates"]["G2_independent"], "UNMEASURED")
+ok("AA7 OWNER is never the builder: claim by BENCH, close by OWNER, BENCH verify FAILs independence",
+   tiers_of(f5o)[0]["OWNCL"]["gates"]["G2_independent"], "FAIL")
+ok("AA6 a self-verify citing evidence that exists is still machine evidence",
+   tiers_of(f5o)[0]["OWNCL"]["machine_evidence"], True)
 
 # F6: a later dirty record at the same content removes the clean mark; a later clean restores it
 rv = tempfile.mkdtemp()
@@ -200,7 +229,7 @@ pa = os.path.join(d8, "audits.jsonl")
 open(pa, "w").close()
 os.environ[at.SALT_ENV] = "selftest"
 rc = at.main(["--data", d8, "--judge-dir", j8, "--past-audits", pa, "--evidence-dir", j8,
-              "--now", "2026-10-27T00:00:00Z"], events=events,
+              "--now", "2026-10-27T00:00:00Z"], events=with_builder(events),
              _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists})
 ok("F8 main runs", rc, 0)
 ok("F8 per-run file kept beside tiers.json",
@@ -244,76 +273,220 @@ ok("F13 git error is G1 UNMEASURED", T13["gates"]["G1_sha"], "UNMEASURED")
 ok("F13 git error goes to tier 2, not a bounce", T13["tier"], "T2_UNMEASURED")
 ok("F13 unknown sha in a real clone reads unresolvable", at.git_files_any("0" * 40, repos=(at.REPO,)), None)
 
-# G6 close evidence (close_evidence records at the close sha)
-def rec(sha, result, paths, seat=None, dirty=False, item=None, ts="2026-10-26T11:00:00+00:00", tool="selftest"):
-    return {"sha": sha, "dirty": dirty, "result": result, "paths": paths, "seat": seat, "item": item, "ts": ts,
-            "tool": tool}
+# G6 close evidence, through the REAL close_evidence store (temp folder + temp key, set at the top): lines are written
+# by ce.record() as a tool would, or forged the way review AA forged them, and read back by lookup_close_evidence.
+REPO6 = tempfile.mkdtemp()
+_N6 = [0]
+_WHO_ENV = ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_BRIDGE_SESSION_ID")
 
 
-SH = "abcdef1234567"
-FILES[SH] = {"src/m/mod.py": "M"}
-g6 = [ev("claim", "EV", "2026-10-26T09:00:00Z"),
-      ev("close", "EV", "2026-10-26T12:00:00Z", sha=SH, reason="done")]
-CL6 = {("src/m/mod.py", "H_src/m/mod.py"): {"RUNNER"}}
+def minted(sha, dirty=False):
+    """A tree state as snapshot()/tree_state() mint it in this process (the git read itself is not under test)."""
+    st = {"sha": sha, "dirty": dirty, "dirty_n": 1 if dirty else 0}
+    st[ce._TOKEN] = ce._state_token(st)
+    return st
 
 
-def t6(recs):
-    return tiers_of(g6, clean=CL6, evidence_lookup=lambda sha, item, paths: at.covering(
-        recs, sha, item, {p: "M" for p in paths}))[0]["EV"]
+def put(sha, result, paths, seat="RUNNER", item=None, variant=None, dirty=False, session=None, tool=None):
+    """One line written by ce.record() from a process whose environment names `seat` (None: names no seat)."""
+    saved = {k: os.environ.get(k) for k in _WHO_ENV}
+    try:
+        for k in _WHO_ENV:
+            os.environ.pop(k, None)
+        if seat:
+            os.environ["RIMFLOW_SEAT"] = seat
+        if session:
+            os.environ["CLAUDE_CODE_BRIDGE_SESSION_ID"] = session
+        st = minted(sha, dirty)
+        r = ce.record(tool or ("validate_patch" if variant else "selftest"), result,
+                      [os.path.join(REPO6, p) for p in paths], clone=REPO6, item=item, start=st, end=st,
+                      variant=variant, force=True)
+        assert r, "ce.record wrote nothing"
+        return r
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
 
-ok("G6 no lines and no review: no machine evidence -> T2",
-   tiers_of(g6, clean={})[0]["EV"]["tier"], "T2_NOEVIDENCE")
-ok("G6 selftest beside the module covers it, PASS",
-   t6([rec(SH, "PASS", ["src/m/selftest_mod.py"])])["gates"]["G6_close_evidence"], "PASS")
-ok("G6 any latest FAIL bounces", t6([rec(SH, "FAIL", ["src/m/selftest_mod.py"])])["tier"], "T0_BOUNCE")
-ok("G6 later PASS of the same run supersedes a FAIL",
-   t6([rec(SH, "FAIL", ["src/m"]), rec(SH, "PASS", ["src/m"], ts="2026-10-26T11:30:00+00:00")])
-   ["gates"]["G6_close_evidence"], "PASS")
-ok("G6 dirty-tree record is not evidence", t6([rec(SH, "PASS", ["src/m"], dirty=True)])["gates"]["G6_close_evidence"],
-   "NONE")
-ok("G6 other sha is not evidence", t6([rec("9999999aaaaaa", "PASS", ["src/m"])])["gates"]["G6_close_evidence"], "NONE")
-ok("G6 unrelated paths are not evidence", t6([rec(SH, "PASS", ["src/other"])])["gates"]["G6_close_evidence"], "NONE")
-ok("G6 item-tagged record covers", t6([rec(SH, "PASS", ["x"], item="EV")])["gates"]["G6_close_evidence"], "PASS")
-ok("G6 UNMEASURED run goes to tier 2", t6([rec(SH, "UNMEASURED", ["src/m"])])["tier"], "T2_UNMEASURED")
-ok("G6 PASS with no recorded seat: independence UNMEASURED, no tier-0 pass",
-   (t6([rec(SH, "PASS", ["src/m"])])["gates"]["G6_independent"], t6([rec(SH, "PASS", ["src/m"])])["tier"] != "T0_PASS"),
+def append_raw(rec):
+    with open(os.path.join(EVD, "%s.jsonl" % (rec.get("ts") or "2026-10-27")[:10]), "a") as f:
+        f.write(json.dumps(rec, sort_keys=True, default=str) + "\n")
+
+
+def claim6(files=None, close_seat="BENCH", builder="BENCH"):
+    """A fresh claim (its own sha and item) -> (item, sha)."""
+    _N6[0] += 1
+    sha, iid = "%040x" % (0xabc0000 + _N6[0]), "EV%02d" % _N6[0]
+    FILES[sha] = dict(files or {"src/m/mod.py": "M"})
+    evs = ([ev("claim", iid, "2026-10-26T09:00:00Z", seat=builder)] if builder else []) + \
+          [ev("close", iid, "2026-10-26T12:00:00Z", seat=close_seat, sha=sha, reason="done; selftest PASS")]
+    return iid, sha, evs
+
+
+def run6(iid, evs, clean=None, session_of=lambda sha: None):
+    files = {p for sha in FILES for p in (FILES[sha] if isinstance(FILES[sha], dict) else ())}
+    cl = {(p, "H_" + p): {"CHECK"} for p in files} if clean is None else clean
+    return tiers_of(evs, builder=None, clean=cl, session_of=session_of,
+                    evidence_lookup=lambda sha, item, paths: at.lookup_close_evidence(sha, item, paths,
+                                                                                       folder=EVD))[0][iid]
+
+
+def g6(row):
+    return row["gates"]["G6_close_evidence"], row["gates"]["G6_independent"]
+
+
+i, s6, e6 = claim6()
+ok("G6 no lines and no review: no machine evidence -> T2", run6(i, e6, clean={})["tier"], "T2_NOEVIDENCE")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"])
+r6 = run6(i, e6)
+ok("G6 selftest beside the module, by another seat: PASS, independent, tier 0", (g6(r6), r6["tier"]),
+   (("PASS", "PASS"), "T0_PASS"))
+i, s6, e6 = claim6()
+put(s6, "FAIL", ["src/m/selftest_mod.py"])
+ok("G6 any latest FAIL bounces", run6(i, e6)["tier"], "T0_BOUNCE")
+i, s6, e6 = claim6()
+put(s6, "FAIL", ["src/m"])
+put(s6, "PASS", ["src/m"])
+ok("G6 later PASS of the same run supersedes a FAIL", g6(run6(i, e6))[0], "PASS")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], dirty=True)
+ok("G6 dirty-tree record is not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put("9" * 40, "PASS", ["src/m"])
+ok("G6 other sha is not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/other"])
+ok("G6 unrelated paths are not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6()
+put(s6, "UNMEASURED", ["src/m"])
+ok("G6 UNMEASURED run goes to tier 2", run6(i, e6)["tier"], "T2_UNMEASURED")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], seat=None)
+r6 = run6(i, e6)
+ok("G6 PASS with no recorded seat: independence UNMEASURED, no tier-0 pass", (g6(r6)[1], r6["tier"] != "T0_PASS"),
    ("UNMEASURED", True))
-ok("G6 PASS by the builder's seat is not independent",
-   t6([rec(SH, "PASS", ["src/m"], seat="BENCH")])["gates"]["G6_independent"], "FAIL")
-ok("G6 PASS by another seat passes tier 0", t6([rec(SH, "PASS", ["src/m"], seat="RUNNER")])["tier"], "T0_PASS")
-ok("G6 PASS is machine evidence (ranked, not T2_NOEVIDENCE)",
-   t6([rec(SH, "PASS", ["src/m"])])["tier"] != "T2_NOEVIDENCE", True)
+ok("G6 PASS is machine evidence (not T2_NOEVIDENCE)", r6["tier"] != "T2_NOEVIDENCE", True)
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], seat="BENCH")
+ok("G6 PASS by the builder's seat is not independent", g6(run6(i, e6))[1], "FAIL")
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], session="session_01Maker")
+r6 = run6(i, e6, session_of=lambda sha: "session_01Maker" if sha == s6 else None)
+ok("G6 a run by the session that made the commit (Claude-Session) is not independent", g6(r6)[1], "FAIL")
+ok("G6 same-session run is no tier-0 pass", r6["tier"] != "T0_PASS", True)
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"], session="session_01Other")
+ok("G6 a run by another session and seat stays independent",
+   g6(run6(i, e6, session_of=lambda sha: "session_01Maker"))[1], "PASS")
 
-# empty ledger is UNMEASURED, not a zero mix
-# lookup_close_evidence against the close_evidence interface: lookup(sha=, item=, paths=) after the review-Z fix,
-# the sha-only lookup before it. Injected evidence only; the live evidence files are never read here.
-_real = at.ce.lookup
-POOL = [rec(SH, "PASS", ["src/m"]), rec(SH, "PASS", ["src/other"]), rec(SH, "FAIL", ["x"], item="EV")]
+# Review AA's six forged claims (tierprobe): each must be refused tier 0.
+# PART: two paths touched, a selftest covers one of them.
+i, s6, e6 = claim6({"src/a.py": "M", "src/z.cs": "M"})
+put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY")
+r6 = run6(i, e6)
+ok("AA-PART a run covering some paths is OPEN, uncovered named", (g6(r6)[0], r6["gate_evidence"].get("G6_uncovered")),
+   ("OPEN", ["src/z.cs"]))
+ok("AA-PART is no tier-0 pass", r6["tier"] != "T0_PASS", True)
+i, s6, e6 = claim6({"src/a.py": "M", "src/z.cs": "M"})
+put(s6, "PASS", ["src/selftest_a.py"], seat="FOUNDRY")
+put(s6, "PASS", ["src/z.cs"], seat="FOUNDRY", tool="winbuild")
+ok("AA-PART control: every path covered is PASS", g6(run6(i, e6)), ("PASS", "PASS"))
+# OWN: no claim in the ledger, OWNER closes, the builder's seat ran the selftest.
+i, s6, e6 = claim6({"src/b.py": "M"}, close_seat="OWNER", builder=None)
+put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH")
+r6 = run6(i, e6)
+ok("AA-OWN no builder named: independence UNMEASURED -> AI review", (g6(r6)[1], r6["tier"]),
+   ("UNMEASURED", "T2_UNMEASURED"))
+i, s6, e6 = claim6({"src/b.py": "M"}, close_seat="OWNER", builder="BENCH")
+put(s6, "PASS", ["src/selftest_b.py"], seat="BENCH")
+ok("AA-OWN OWNER close never makes the builder's run independent", g6(run6(i, e6))[1], "FAIL")
+# STAT: a static validate_patch never stands in for the --defs run.
+i, s6, e6 = claim6({"Patches/p.xml": "M"})
+put(s6, "PASS", ["Patches/p.xml"], seat="FOUNDRY", variant="static")
+r6 = run6(i, e6)
+ok("AA-STAT a static validate_patch is OPEN, not PASS", (g6(r6)[0], r6["tier"] != "T0_PASS"), ("OPEN", True))
+put(s6, "PASS", ["Patches/p.xml"], seat="FOUNDRY", tool="validate_patch")
+ok("AA-STAT control: the full (--defs) run passes", g6(run6(i, e6)), ("PASS", "PASS"))
+i, s6, e6 = claim6({"Patches/p.xml": "M"})
+put(s6, "PASS", ["Patches/p.xml"], seat="FOUNDRY", variant="defnames")
+ok("AA-STAT a --live/--defnames validate_patch is not the full run either", g6(run6(i, e6))[0], "OPEN")
+# TAG: a run tagged with the item but covering none of its paths.
+i, s6, e6 = claim6({"src/c.py": "M"})
+put(s6, "PASS", ["src/unrelated/selftest_q.py"], seat="FOUNDRY", item=i)
+r6 = run6(i, e6)
+ok("AA-TAG an item tag never supplies a PASS", (g6(r6)[0], r6["tier"] != "T0_PASS"), ("NONE", True))
+i, s6, e6 = claim6({"src/c.py": "M"})
+put(s6, "FAIL", ["src/unrelated/selftest_q.py"], seat="FOUNDRY", item=i)
+ok("AA-TAG an item-tagged FAIL still bounces", run6(i, e6)["tier"], "T0_BOUNCE")
+# FORGE: a `record` CLI payload asserting sha, clean start and end, and seat RUNNER.
+import subprocess                                                          # noqa: E402
+i, s6, e6 = claim6({"src/d.py": "M"})
+pay = {"tool": "selftest", "result": "PASS", "paths": [os.path.join(REPO6, "src/selftest_d.py")], "clone": REPO6,
+       "start": {"sha": s6, "dirty": False, "dirty_n": 0}, "end": {"sha": s6, "dirty": False, "dirty_n": 0},
+       "who": {"seat": "RUNNER", "seat_from": "RIMFLOW_SEAT"}, "evidence_dir": EVD}
+cp = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "Utils", "close_evidence.py"), "record"],
+                    input=json.dumps(pay), capture_output=True, text=True, timeout=120)
+ok("AA-FORGE the record CLI still writes its line", cp.returncode, 0)
+ok("AA-FORGE a record-CLI payload is never sha evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6({"src/d.py": "M"})
+st = {"sha": s6, "dirty": False, "dirty_n": 0}                             # typed in, not minted by snapshot()
+append_raw(ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/selftest_d.py")], clone=REPO6,
+                                   start=st, end=st)))
+ok("AA-FORGE in-process line with a typed-in start/end is not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6({"src/d.py": "M"})
+append_raw(ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/selftest_d.py")], clone=REPO6,
+                                   start=minted(s6), end=minted(s6), who={"seat": "RUNNER",
+                                                                         "seat_from": "RIMFLOW_SEAT"})))
+ok("AA-FORGE a caller-supplied WHO never makes a run independent", g6(run6(i, e6)), ("PASS", "UNMEASURED"))
+# NOV: a hand-appended line with no v (and v2, and an edited sealed line).
+i, s6, e6 = claim6({"src/e.py": "M"})
+append_raw({"tool": "selftest", "sha": s6, "dirty": False, "result": "PASS", "paths": ["src/selftest_e.py"],
+            "seat": "RUNNER", "ts": "2026-10-27T00:00:01+00:00"})
+ok("AA-NOV a line with no v is not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6({"src/e.py": "M"})
+append_raw({"v": 2, "tool": "selftest", "sha": s6, "dirty": False, "result": "PASS", "paths": ["src/selftest_e.py"],
+            "covers": ["src/selftest_e.py"], "start": {"sha": s6, "dirty": False, "dirty_n": 0}, "seat": "RUNNER",
+            "ts": "2026-10-27T00:00:02+00:00", "live_only": False, "variant": None})
+ok("AA-NOV a v2 line is not evidence", g6(run6(i, e6))[0], "NONE")
+i, s6, e6 = claim6({"src/e.py": "M"})
+fake = put(s6, "FAIL", ["src/selftest_e.py"])
+fake = dict(fake, result="PASS", ts="2026-10-27T23:59:59+00:00")          # FAIL edited to PASS, mac left as it was
+append_raw(fake)
+ok("AA-NOV an edited sealed line (bad mac) is not evidence; the real FAIL still bounces", run6(i, e6)["tier"],
+   "T0_BOUNCE")
 
-
-def _new_lookup(sha=None, item=None, paths=None, folder=None, days=30, **kw):
-    out = [r for r in POOL if r["sha"] == sha]
-    if paths is not None:
-        out = [r for r in out if any(at._covers(q, f) for q in r["paths"] for f in paths)]
-    if item is not None:
-        out = [r for r in out if r.get("item") == item]
-    return [dict(r) for r in out]
-
-
-def _old_lookup(sha=None, item=None, folder=None, days=30, tool=None, include_dirty=False):
-    return [dict(r) for r in POOL if r["sha"] == sha and (item is None or r.get("item") == item)]
-
-
+# lookup_close_evidence: covering runs plus item-tagged non-PASS runs; an item-tagged PASS elsewhere is dropped
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m"])
+put(s6, "PASS", ["src/other"])
+put(s6, "PASS", ["x"], item=i)
+put(s6, "FAIL", ["y"], item=i)
+ok("lookup: covering run + item-tagged FAIL; unrelated run and item-tagged PASS dropped",
+   sorted((r["result"], tuple(r["paths"])) for r in at.lookup_close_evidence(s6, i, ["src/m/mod.py"], folder=EVD)),
+   [("FAIL", ("y",)), ("PASS", ("src/m",))])
+_kp = os.environ[ce.KEY_ENV]
+os.environ[ce.KEY_ENV] = os.path.join(EVD, "no_such.key")
 try:
-    at.ce.lookup = _new_lookup
-    got_new = sorted(r["result"] for r in at.lookup_close_evidence(SH, "EV", ["src/m/mod.py"]))
-    at.ce.lookup = _old_lookup
-    got_old = sorted(r["result"] for r in at.lookup_close_evidence(SH, "EV", ["src/m/mod.py"]))
-finally:
-    at.ce.lookup = _real
-ok("lookup with paths=: covering run plus item-tagged run, unrelated run dropped", got_new, ["FAIL", "PASS"])
-ok("lookup without paths= (pre-fix): same claim gets the same runs", got_old, ["FAIL", "PASS"])
+    at.lookup_close_evidence(s6, i, ["src/m/mod.py"], folder=EVD)
+    ok("missing mac key raises (UNMEASURED, never 'no evidence')", "no raise", "raise")
+except RuntimeError:
+    ok("missing mac key raises (UNMEASURED, never 'no evidence')", "raise", "raise")
+d9 = tempfile.mkdtemp()
+pa9 = os.path.join(d9, "audits.jsonl")
+open(pa9, "w").close()
+ok("main with no mac key exits 2", at.main(["--data", d9, "--judge-dir", d9, "--past-audits", pa9,
+                                             "--evidence-dir", EVD], events=events, _inject={"clean": CLEAN}), 2)
+os.environ[ce.KEY_ENV] = _kp
+with open(pa9, "w") as f:
+    f.write('{"item": "GOOD", "verdict": "DEFECT"}\n{"item": "X", "verd')
+ok("main with a torn past-audit line exits 2", at.main(["--data", d9, "--judge-dir", d9, "--past-audits", pa9,
+                                                         "--evidence-dir", EVD], events=events,
+                                                        _inject={"clean": CLEAN}), 2)
+ok("nothing written on either", sorted(f for f in os.listdir(d9) if f != "audits.jsonl"), [])
 
 ok("empty ledger exits 2", at.main(["--data", td, "--judge-dir", td], events=[]), 2)
 

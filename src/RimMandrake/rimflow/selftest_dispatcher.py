@@ -818,6 +818,34 @@ def test_role_execute_and_dry():
     check(argv[i + 1].endswith("claude_bounded.sh") and argv[i + 2:i + 4] == ["-p", "hello"]
           and argv[argv.index("--model") + 1] == "sonnet" and "json" in argv, "launch: claude_bounded -p, alias, json")
     check(rec["scope"] == "claude-seat-BENCH-4242.scope", "launch: the scope to stop is claude-seat-<seat>-<MainPID>")
+    # pre_launch (review AA brief AA7): the Arbiter's tiers.json is produced inside the unit before claude starts
+    pre_role = dict(role, pre_launch=["python3", "src/x y/arbiter_tiers.py"])
+    pa = RL.launch_argv(pre_role, "u-pre", "it's \"msg\" $HOME", "/o", "/e", "/opt/bin/claude")
+    j = pa.index("--")
+    check(pa[j + 1:j + 3] == ["/bin/sh", "-c"] and pa[j + 4] == "role-pre-launch"
+          and pa[j + 5].endswith("claude_bounded.sh") and pa[j + 6:j + 8] == ["-p", "it's \"msg\" $HOME"],
+          "pre_launch: sh -c wraps the step, claude's argv stays positional and unquoted")
+    with tempfile.TemporaryDirectory() as pd:
+        mark, errf = os.path.join(pd, "ran"), os.path.join(pd, "err")
+        for pre, want_rc, want_out in ((["sh", "-c", "echo PRE; touch '%s'" % mark], 0, "ARGS:-p|it's \"msg\" $HOME"),
+                                       (["false"], 1, "")):
+            if os.path.exists(mark):
+                os.remove(mark)
+            sa = RL.launch_argv(dict(role, pre_launch=pre), "u", "it's \"msg\" $HOME", "/o", "/e", "/opt/bin/claude")
+            k = sa.index("--")
+            body = sa[k + 1:]
+            body = body[:4] + ["sh", "-c", 'printf "ARGS:%s|%s" "$1" "$2"', "fake-claude"] + body[5:7]
+            with open(errf, "w") as ef:
+                p = subprocess.run(body, stdout=subprocess.PIPE, stderr=ef, text=True, timeout=30)
+            check(p.returncode == want_rc and p.stdout == want_out and (want_rc != 0 or os.path.exists(mark))
+                  and (want_rc != 0 or "PRE" in open(errf).read()),
+                  "pre_launch %s: rc %s, stdout %r (claude's JSON alone), pre-step stdout to stderr"
+                  % (pre[0], p.returncode, p.stdout))
+    try:
+        RL.launch_argv(dict(role, pre_launch="python3 x.py"), "u", "m", "/o", "/e", "/opt/bin/claude")
+        check(False, "pre_launch as a string is refused")
+    except ValueError:
+        check(True, "pre_launch as a string is refused")
     calls.clear()
     RL.stop("u", "s.scope", runner=fake_run)
     check(calls[0] == ["systemctl", "--user", "stop", "s.scope", "u"], "stop: scope first, then the unit")

@@ -84,9 +84,11 @@ Work the picks in this order. No fixed count: go down the list until the run end
 5. **Calibration slice:** the pre-screen marks one pick in five as a uniform random draw from all closes. Re-check
    those like any other. Without them the score's blind spots never surface.
 
-Each re-check result goes, one JSON line each, to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` (item, sha, why
-picked: mandatory / disagreement / flag / rank / random, the pre-screen's flags, the re-checker's verdict, the defect
-class, evidence paths) and as one ledger note on the item `--why "audit: SOUND|DEFECT|UNRESOLVED <class>"` (the AU1
+Each re-check result is appended, one JSON line each, to `D:\ClaudeWork\rimmandrake\auditor\audits.jsonl` in the
+shape of `src/RimMandrake/rimflow/audits.schema.json` (ts, item, sha, why picked: mandatory / disagreement / flag /
+rank / random, the pre-screen's flags, the verdict SOUND / DEFECT / UNRESOLVED, the defect class, evidence paths). The
+file exists empty until your first audit; never delete or rewrite it, append only: the pre-screen reads it for
+`past_audit_failed` and treats a missing file or a torn line as UNMEASURED and as one ledger note on the item `--why "audit: SOUND|DEFECT|UNRESOLVED <class>"` (the AU1
 instrument). A DEFECT becomes a ticket (`rimflow file` / `spawn --from <item>`, names through `rimflow namecheck`)
 for the seat that owns the work; a DEFECT on an Arbiter PASS also goes to the Arbiter as an escape, so it specifies
 the regression check.

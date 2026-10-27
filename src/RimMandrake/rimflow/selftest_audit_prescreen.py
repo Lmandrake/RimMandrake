@@ -78,8 +78,30 @@ ok("calibration deterministic", d["calibration_picks"], ap.build(ap.score(many5,
 out = os.path.join(tempfile.mkdtemp(), "p.json")
 ok("empty ledger -> exit 2", ap.main(["--out", out], events=[]), 2)
 ok("no file on unmeasured", os.path.exists(out), False)
-ok("good ledger -> exit 0", ap.main(["--out", out, "--now", "2026-10-27T00:00:00Z"], events=good + bad), 0)
+pa = out + ".audits.jsonl"
+ok("missing past audits -> exit 2 (UNMEASURED, not 'no past failures')",
+   ap.main(["--out", out, "--past-audits", pa], events=good + bad), 2)
+ok("no file when past audits missing", os.path.exists(out), False)
+with open(pa, "w") as f:
+    f.write('{"item": "X", "verdict": "DEFECT"}\n{"item": "Y", "verd')
+ok("torn past-audit line -> exit 2", ap.main(["--out", out, "--past-audits", pa], events=good + bad), 2)
+open(pa, "w").close()
+ok("good ledger -> exit 0", ap.main(["--out", out, "--now", "2026-10-27T00:00:00Z", "--past-audits", pa],
+                                    events=good + bad), 0)
 ok("file written", json.load(open(out))["closes_seen"], 2)
+with open(pa, "w") as f:
+    f.write('{"item": "X", "verdict": "DEFECT"}\n\n{"item": "Y", "verdict": "SOUND"}\n')
+ok("past_failed_items reads DEFECT only", ap.past_failed_items(pa), {"X"})
+for bad in ('{"item": "X", "verdict": "defect"}\n', '{"verdict": "DEFECT"}\n', '["X", "DEFECT"]\n'):
+    with open(pa, "w") as f:
+        f.write(bad)
+    try:
+        ap.past_failed_items(pa)
+        ok("schema-breaking line %r raises" % bad.strip(), "no raise", "ValueError")
+    except ValueError:
+        ok("schema-breaking line %r raises" % bad.strip(), "ValueError", "ValueError")
+sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "audits.schema.json")))
+ok("audits.schema.json verdicts = the reader's", sch["properties"]["verdict"]["enum"], ["SOUND", "DEFECT", "UNRESOLVED"])
 
 print("FAILED: %s" % FAILED if FAILED else "all ok")
 sys.exit(1 if FAILED else 0)

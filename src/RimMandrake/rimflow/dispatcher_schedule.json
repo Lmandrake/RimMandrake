@@ -54,6 +54,8 @@
                       "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "last"},
                       "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}},
    "off_switch": "enabled false here, or the file D:\\ClaudeWork\\rimmandrake\\arbiter\\ARBITER_OFF",
+   "pre_launch": ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py"],
+   "_pre_launch_why": "review AA brief AA7: role_launch runs this in the Arbiter's unit before claude; it writes tiers.json, judge_list.json and bounces.json, and a non-zero exit (UNMEASURED: no ledger, no close_evidence key, a torn line) means claude never starts",
    "seat": "BENCH", "clone": "/home/mandrake/rm/bench", "model": "opus", "ledger_item": "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
    "off_file": "D:\\ClaudeWork\\rimmandrake\\arbiter\\ARBITER_OFF", "slot_late_s": 3600, "run_max_s": 2700,
    "_caps_why": "measured run floor 35-53k tokens; a batch runs judge helpers, so 100,000; daily 250,000 = 2 batches x 1.25; RED one batch (17:00, 'Arbiter batches daily', v3 §3) at 75,000, never below 60,000",

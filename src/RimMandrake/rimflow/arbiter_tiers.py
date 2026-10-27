@@ -160,61 +160,63 @@ def _latest_by_criterion(verifies):
     return last
 
 
+def builder_seats(evs, close):
+    """Seats the ledger names as having BUILT the claim: claim/start/reclaim/implemented events before the close.
+    OWNER is never the builder of agent work (it relays and closes). Empty = the builder is unknown (review AA7: true
+    of 1202 of 2983 closes), and then nothing can be shown independent of it."""
+    return {e.get("seat") for e in evs if e.get("event") in ("claim", "start", "reclaim", "implemented")
+            and e["ts"] <= close["ts"] and e.get("seat") and e.get("seat") != "OWNER"}
+
+
 def maker_seats(evs, close):
-    """Seats that built or closed the claim: the close seat, every claim/start seat and implemented seat before it."""
-    s = {close.get("seat")}
-    s |= {e.get("seat") for e in evs if e.get("event") in ("claim", "start", "reclaim", "implemented")
-          and e["ts"] <= close["ts"]}
-    return {x for x in s if x}
+    """Seats that built or closed the claim: the close seat plus builder_seats()."""
+    return {x for x in {close.get("seat")} | builder_seats(evs, close) if x}
 
 
-def _covers(rec_path, f):
-    if not rec_path:
-        return False
-    rp = rec_path.rstrip("/")
-    if f == rp or f.startswith(rp + "/"):
-        return True
-    d, b = os.path.split(rp)
-    return b.startswith("selftest_") and f == os.path.join(d, b[len("selftest_"):])
+#: Where a record's seat may come from for it to count as independent: what whoami() reads. A seat given by a caller,
+#: shipped through the `record` CLI or missing is the writer's word only.
+SEAT_SOURCES = ("RIMFLOW_SEAT", "AGENT_SEAT", "session role file")
 
 
-def covering(records, sha, item, files):
-    """Clean-tree close_evidence records at the close sha that cover the claim: a record path is (or contains) a
-    touched file, a selftest_<stem>.py names a touched <stem>.py beside it, or the record is tagged with the item."""
-    if not sha or not isinstance(files, dict):
-        return []
-    out = []
-    for r in records:
-        if not ce.counts_as_evidence(r) or not ce._sha_match(r.get("sha"), sha):
+def commit_session(sha, repos=REPOS):
+    """The commit's `Claude-Session:` trailer (the bridge session that made it), or None when no clone says."""
+    for repo in repos:
+        try:
+            r = subprocess.run(["git", "-C", repo, "log", "-1", "--format=%(trailers:key=Claude-Session,valueonly)",
+                                sha], capture_output=True, text=True, timeout=30)
+        except Exception:
             continue
-        if r.get("item") == item or any(_covers(p, f) for p in (r.get("paths") or ()) for f in files):
-            out.append(r)
-    return out
+        if r.returncode == 0:
+            m = re.search(r"session_[A-Za-z0-9]+", r.stdout or "")
+            return m.group(0) if m else None
+    return None
 
 
 def lookup_close_evidence(sha, item, paths, folder=None, days=45):
-    """close_evidence.lookup for the claim: runs at the sha covering its paths, plus runs tagged with the item.
-    Uses lookup(paths=) when close_evidence has it (review Z fix); until then filters sha hits here (covering)."""
-    try:
-        hits = ce.lookup(sha=sha, paths=list(paths), folder=folder, days=days)
-    except TypeError:                   # lookup has no paths= yet
-        return covering(ce.lookup(sha=sha, folder=folder, days=days), sha, item, {p: "M" for p in paths})
+    """close_evidence.lookup for the claim: runs at the sha covering its paths. Runs tagged with the item but
+    covering none of them are added only when they FAIL or are UNMEASURED: a tag never supplies a PASS (review AA2)."""
+    hits = ce.lookup(sha=sha, paths=list(paths), folder=folder, days=days) if paths else []
     seen = {json.dumps(h, sort_keys=True, default=str) for h in hits}
     for h in ce.lookup(sha=sha, item=item, folder=folder, days=days):
+        if h.get("result") == "PASS":
+            continue
         if json.dumps(h, sort_keys=True, default=str) not in seen:
             hits.append(h)
     return hits
 
 
-def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evidence=()):
+def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evidence=(), session_of=lambda sha: None):
     """Tier-0 gate results for one claim: {gate: PASS|FAIL|OPEN|PARTIAL|NONE|UNMEASURED} plus the evidence each read.
     FAIL is a recorded hard failure; NONE means nothing recorded to read; UNMEASURED means an input could not be read.
     `files`: {path: status} | list | None (sha does not resolve) | GIT_ERROR. `clean`: {(path, sha256): {seats}}.
-    `evidence`: close_evidence records already matched to this claim (lookup_close_evidence)."""
+    `evidence`: close_evidence records already matched to this claim (lookup_close_evidence). `session_of(sha)`: the
+    commit's Claude-Session (commit_session), so a run by the session that made the commit is never independent.
+    Independence is UNMEASURED, never PASS, when the ledger names no builder (builder_seats empty)."""
     g, ev = {}, {}
     files = _norm_files(files)
     sha = (close.get("sha") or "").strip()
     makers = maker_seats(evs, close)
+    builder_known = bool(builder_seats(evs, close))
     # G1 build identity: the claim names a commit that resolves
     if not sha or sha.upper() == "HEAD" or files is None:
         g["G1_sha"] = "FAIL"
@@ -236,7 +238,7 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
     else:
         g["G2_verify"] = "PARTIAL"
     pass_seats = sorted({v.get("seat") or "?" for v in last.values() if v.get("result") == "pass"})
-    g["G2_independent"] = ("NONE" if not pass_seats else
+    g["G2_independent"] = ("NONE" if not pass_seats else "UNMEASURED" if not builder_known else
                            "PASS" if any(s not in makers and s != "?" for s in pass_seats) else "FAIL")
     if pass_seats:
         ev["G2_verify_seats"] = pass_seats
@@ -293,27 +295,59 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
                 ev["G5_review_seats"] = sorted(seats)
                 if not (seats - makers - {"?"}):
                     ev["G5_review_by_closing_seat_only"] = True
-    # G6 close evidence (selftests, builds, validators, modcheck at this sha): latest run per (tool, paths)
+    # G6 close evidence (selftests, builds, validators at this sha). FAIL/UNMEASURED: the latest run per (tool, paths)
+    # anywhere in the claim's evidence. PASS only when every touched, non-deleted path is covered by a passing run of
+    # the full tool (no variant: a static validate_patch never stands in for --defs); otherwise OPEN (review AA2/AA3).
+    g["G6_independent"] = "NONE"
     if not isinstance(files, dict):
         g["G6_close_evidence"] = "UNMEASURED"
     elif not evidence:
         g["G6_close_evidence"] = "NONE"
     else:
+        need = sorted(f for f, st in files.items() if st != "D")
         summ = ce.summarize(list(evidence))
         res = set(summ.values())
-        g["G6_close_evidence"] = "FAIL" if "FAIL" in res else "UNMEASURED" if "UNMEASURED" in res else "PASS"
+        full = [r for r in evidence if r.get("result") == "PASS" and not r.get("variant")]
+        uncov = ce.uncovered(full, need) if need else ["(the commit only deletes: nothing to cover)"]
+        g["G6_close_evidence"] = ("FAIL" if "FAIL" in res else "UNMEASURED" if "UNMEASURED" in res else
+                                  "OPEN" if uncov else "PASS")
         ev["G6_close_evidence"] = summ
+        if uncov and g["G6_close_evidence"] == "OPEN":
+            ev["G6_uncovered"] = uncov[:10]
         eseats = sorted({r.get("seat") or "?" for r in evidence})
         ev["G6_seats"] = eseats       # "?" = the record names no seat ($RIMFLOW_SEAT unset when it ran)
-        g["G6_independent"] = "PASS" if any(s not in makers and s != "?" for s in eseats) else (
-            "UNMEASURED" if "?" in eseats else "FAIL")
+        csess = session_of(sha) if sha else None
+
+        def who_of(r):
+            return r.get("who") if isinstance(r.get("who"), dict) else {}
+
+        def seat_sure(r):        # the seat whoami() read in the writing process, not one a caller supplied
+            o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
+            return bool(r.get("seat")) and who_of(r).get("seat_from") in SEAT_SOURCES and o.get("who") == "whoami"
+        ind = [r for r in full if seat_sure(r) and r["seat"] not in makers
+               and not (csess and who_of(r).get("bridge_session") == csess)]
+        unsure = [r for r in full if not seat_sure(r)]
+        if not full:
+            pass                                       # no passing full run: nothing to be independent
+        elif not builder_known:
+            g["G6_independent"] = "UNMEASURED"
+            ev["G6_independent"] = "the ledger names no builder (no claim/start/implemented before the close)"
+        elif need and full and not ce.uncovered(ind, need):
+            g["G6_independent"] = "PASS"
+        elif unsure:
+            g["G6_independent"] = "UNMEASURED"
+            ev["G6_independent"] = "a run names no seat, or a seat its writer only asserted"
+        else:
+            g["G6_independent"] = "FAIL"
     return g, ev
 
 
 def has_machine_evidence(g):
-    """Recorded, machine-readable evidence: a verify event, a clean code review at the claimed content, or a
+    """Recorded, machine-readable evidence: a verify event from a seat independent of the builder or citing evidence
+    that exists (a builder's bare self-verify is not -- review AA6), a clean code review at the claimed content, or a
     close_evidence run at the sha. Prose in a close reason is a claim, not evidence."""
-    return g["G2_verify"] != "NONE" or g["G5_review"] == "PASS" or g.get("G6_close_evidence", "NONE") != "NONE"
+    g2 = g["G2_verify"] != "NONE" and (g["G2_independent"] == "PASS" or g["G4_evidence"] == "PASS")
+    return g2 or g["G5_review"] == "PASS" or g.get("G6_close_evidence", "NONE") != "NONE"
 
 
 def extra_flags(evs, close, ev=None):
@@ -366,7 +400,7 @@ def calib_pick(item, sha, salt):
 
 def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blob_sha256,
              exists=os.path.exists, past_failed=frozenset(), salt="selftest-salt", evidence_lookup=lambda sha, item, paths: [],
-             ai_refused=False):
+             ai_refused=False, session_of=lambda sha: None):
     cache = {}
     clean = {} if clean is None else (clean if isinstance(clean, dict) else {k: set() for k in clean})
 
@@ -393,7 +427,8 @@ def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blo
             r["flags"] = [f for f in r["flags"] if f != "sha_unresolvable"] + ["git_unreadable"]
         evid = (evidence_lookup(sha, r["item"], sorted(p for p, st in files.items() if st != "D"))
                 if isinstance(files, dict) and sha else [])
-        r["gates"], r["gate_evidence"] = gates(evs, close, files, clean, blob=blob, exists=exists, evidence=evid)
+        r["gates"], r["gate_evidence"] = gates(evs, close, files, clean, blob=blob, exists=exists, evidence=evid,
+                                               session_of=session_of)
         r["flags"] = r["flags"] + extra_flags(evs, close, r["gate_evidence"])
         r["machine_evidence"] = has_machine_evidence(r["gates"])
         if r["machine_evidence"] and "no_check_evidence" in r["flags"]:
@@ -456,17 +491,12 @@ def bounce_list(rows):
 
 
 def past_failed_strict(path):
-    """Items with a DEFECT audit. A missing or unreadable file raises OSError: no file is not 'nothing failed'."""
-    out = set()
-    with open(path, encoding="utf-8") as fh:
-        for line in fh:
-            try:
-                d = json.loads(line)
-            except ValueError:
-                continue
-            if d.get("verdict") == "DEFECT" and d.get("item"):
-                out.add(d["item"])
-    return out
+    """Items with a DEFECT audit. A missing or unreadable file, or a line that is not JSON (it could be the DEFECT that
+    matters), raises OSError: no file is not 'nothing failed'."""
+    try:
+        return ap.past_failed_items(path)
+    except ValueError as ex:
+        raise OSError(str(ex))
 
 
 def load_salt(data_dir):
@@ -561,6 +591,7 @@ def main(argv=None, events=None, _inject=None):
         efolder = a.evidence_dir or str(ce.evidence_dir())
         if not os.path.isdir(efolder):
             raise ValueError("close-evidence folder %s missing" % efolder)
+        ce._key()          # raises when the mac key is missing: no line could be verified -- UNMEASURED, not "none"
         evid = ce.read_all(days=int(a.days) + 31, folder=efolder)
         salt = load_salt(a.data)
     except Exception as ex:
@@ -569,7 +600,7 @@ def main(argv=None, events=None, _inject=None):
     rows, cut = classify(events, rules, since, clean=clean, past_failed=past_failed, salt=salt,
                          evidence_lookup=lambda sha, item, paths: lookup_close_evidence(
                              sha, item, paths, folder=efolder, days=int(a.days) + 31),
-                         ai_refused=a.ai_refused,
+                         ai_refused=a.ai_refused, session_of=commit_session,
                          **{k: v for k, v in (_inject or {}).items() if k != "clean"})
     gate_counts = {}
     for r in rows:

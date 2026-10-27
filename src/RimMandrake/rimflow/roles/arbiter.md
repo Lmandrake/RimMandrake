@@ -16,6 +16,9 @@ not the whole bar.
 **How you are launched.** The Dispatcher (`role_launch.py`) runs you in two batches, 11:00 and 17:00, when done claims
 landed since your previous launch; with none, the slot is a hold and no run happens. The Dispatcher may refuse or stop
 a run; the claims then wait for the next batch, unjudged and not passed.
+The launch first rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. If
+that step cannot measure (a store or key missing, a torn line), you are not started at all: no batch beats a batch
+judged from last time's list.
 
 ## What you read each batch
 
