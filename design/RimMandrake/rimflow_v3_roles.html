@@ -1,0 +1,181 @@
+<title>RimMandrake Command Structure</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one vertical chain of command, five bands (you → Conductor → leadership → Dispatcher → builders), each card states cadence, helpers, and what it decides. 70s workshop palette. */
+:root{
+  --bg:#f6efe2; --panel:#fffaf0; --ink:#2b2118; --muted:#6f5d4b; --line:#d8c7ab;
+  --rust:#b5562a; --mustard:#c99a2e; --olive:#6b7a3a; --teal:#2f6f73; --plum:#7a4a63;
+  --chip:#efe2c8;
+  --display:"Chivo",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1d1813; --panel:#29211a; --ink:#f1e6d4; --muted:#bba98f; --line:#4a3c2e;
+  --rust:#e07a48; --mustard:#e2b64e; --olive:#a3b464; --teal:#5fb0b5; --plum:#c58aa9; --chip:#3a2f24; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1813; --panel:#29211a; --ink:#f1e6d4; --muted:#bba98f; --line:#4a3c2e;
+  --rust:#e07a48; --mustard:#e2b64e; --olive:#a3b464; --teal:#5fb0b5; --plum:#c58aa9; --chip:#3a2f24; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lede{color:var(--muted);max-width:68ch;margin:6px 0 10px}
+.band{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
+.band-label{font:600 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-top:14px}
+.band-label b{display:block;color:var(--ink);font:700 15px/1.2 var(--display);letter-spacing:0;text-transform:none;margin-bottom:2px}
+.row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--c,var(--line));border-radius:6px;padding:12px 14px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font:800 19px/1.15 var(--display)}
+.card .what{margin:0;font-size:14.5px}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 11.5px/1 var(--mono);background:var(--chip);border-radius:3px;padding:5px 7px;color:var(--ink)}
+.chip.ai{background:color-mix(in srgb,var(--c) 18%,var(--chip))}
+.dec{font-size:13px;color:var(--muted);margin:0}
+.dec strong{color:var(--ink);font-weight:600}
+.new{font:700 10.5px/1 var(--mono);color:var(--panel);background:var(--rust);padding:3px 5px;border-radius:3px;margin-left:6px;vertical-align:3px;letter-spacing:.05em}
+.arrow{display:grid;grid-template-columns:150px 1fr;gap:16px}
+.arrow div:last-child{font:500 12.5px/1.4 var(--mono);color:var(--muted);padding-left:18px;border-left:2px dashed var(--line);margin-left:20px;padding-block:4px}
+.you{--c:var(--plum)} .cond{--c:var(--rust)} .lead{--c:var(--mustard)} .disp{--c:var(--teal)} .build{--c:var(--olive)}
+.legend{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:10px}
+.legend .card{border-top-width:1px}
+.legend p{margin:0;font-size:14px}
+.k{font:700 13px var(--display)}
+@media (max-width:640px){.band,.arrow{grid-template-columns:1fr}.band-label{padding-top:0}.arrow div:first-child{display:none}.arrow div:last-child{margin-left:0}}
+</style>
+
+<div class="wrap">
+  <h1>RimMandrake Command Structure</h1>
+  <p class="lede">Proposed roles around Foundry. Bench is folded into the Conductor. You talk to one agent, the Conductor. Foundry builds around the clock; the Conductor builds with you when you sit down. Everyone else judges, plans, watches or dispatches.</p>
+
+  <h2 style="font:800 22px/1.2 var(--display);margin:8px 0 0">Three competing shapes</h2>
+  <p class="lede" style="margin-top:2px">Five designs went in (Rounds, COO, Producer, Board, Inspector General). Both GPT teardowns killed the two that only watch (Rounds and Board): they show the problem and leave you as the one who makes things happen. The arbiter's three survivors differ in <em>which role leads</em>. All three share the Conductor (which absorbs Bench) and the Dispatcher. The full role map further down is all of them at once: the most capable and the most to build.</p>
+  <div class="row" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <article class="card disp">
+      <h3>1 · Run it</h3>
+      <p class="what"><b>Lead:</b> Operations, including the economy pass. <b>Light:</b> Auditor, weekly. <b>Later:</b> Producer, Arbiter, Innovator.</p>
+      <p class="dec"><strong>Moves:</strong> your "go" messages (31/day → ≤26), test hours that catch nothing. <strong>Weak at:</strong> direction and design quality. <strong>Build:</strong> smallest.</p>
+    </article>
+    <article class="card lead">
+      <h3>2 · Build the right things</h3>
+      <p class="what"><b>Lead:</b> Producer plus Arbiter: the plan, and bars decided before building. <b>Light:</b> Operations. <b>Later:</b> Auditor, Innovator.</p>
+      <p class="dec"><strong>Moves:</strong> "how is it going?" answered at a glance, a real "done" for focus mods. <strong>Weak at:</strong> day-to-day running, learning from repeats. <strong>Build:</strong> medium.</p>
+    </article>
+    <article class="card cond">
+      <h3>3 · Stop repeating mistakes</h3>
+      <p class="what"><b>Lead:</b> Auditor (one recurring failure at a time) plus Innovator (experiments). <b>Light:</b> Operations. <b>Later:</b> Producer, Arbiter.</p>
+      <p class="dec"><strong>Moves:</strong> the 27.5% of your messages that signal a failure, repeat rulings. <strong>Weak at:</strong> planning delivery. <strong>Build:</strong> medium.</p>
+    </article>
+  </div>
+  <p class="dec" style="margin:2px 0 14px"><strong>GPT arbiter's recommendation:</strong> shape 1 first, then add shape 2's planning discipline. <strong>Our recommendation:</strong> grow into the full map in that order: 1, then 2, then 3. Add each role only when its number shows the need, so no role exists as ceremony.</p>
+
+  <h2 style="font:800 22px/1.2 var(--display);margin:8px 0 0">Who decides when each one runs</h2>
+  <p class="lede" style="margin-top:2px">No AI decides when to wake itself. The Dispatcher runs every role from one schedule file, on three kinds of trigger, inside the token budget. Agents can <em>request</em> a run by filing a ticket; the Dispatcher queues it.</p>
+  <div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:560px;font-size:14px">
+    <thead><tr style="text-align:left;border-bottom:2px solid var(--line)"><th style="padding:6px">Role</th><th style="padding:6px">Trigger</th><th style="padding:6px">Default cadence</th><th style="padding:6px">When tokens run low</th></tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Conductor</b></td><td style="padding:6px">event: you send a message</td><td style="padding:6px">every message</td><td style="padding:6px">never throttled</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Dispatcher</b></td><td style="padding:6px">clock</td><td style="padding:6px">every 2 min</td><td style="padding:6px">no AI, costs nothing</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Operations</b></td><td style="padding:6px">clock + alarms (stuck process, disk, game speed, budget burn)</td><td style="padding:6px">twice a day; economy pass daily</td><td style="padding:6px">alarms only</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Arbiter</b></td><td style="padding:6px">event: a feature claims done</td><td style="padding:6px">on demand</td><td style="padding:6px">queues, batches daily</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Producer</b></td><td style="padding:6px">clock + event (a plan step fails or a surprise lands)</td><td style="padding:6px">daily list; weekly plan</td><td style="padding:6px">weekly only</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Auditor</b></td><td style="padding:6px">clock</td><td style="padding:6px">daily, ≤ 4 investigations</td><td style="padding:6px">weekly sample</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px"><b>Innovator</b></td><td style="padding:6px">clock</td><td style="padding:6px">process 2×/week; design weekly</td><td style="padding:6px">paused first</td></tr>
+      <tr><td style="padding:6px"><b>Foundry</b></td><td style="padding:6px">tickets from the Dispatcher</td><td style="padding:6px">continuous</td><td style="padding:6px">helper cap shrinks</td></tr>
+    </tbody></table></div>
+  <p class="dec" style="margin:6px 0 14px"><strong>Who changes the schedule:</strong> you set the starting file. After that, Operations' economy pass and the Innovator may propose a cadence change as an experiment, judged on the numbers it should move. A reversible change is applied and reported by the Conductor; anything that silences a role goes to you.</p>
+
+  <h2 style="font:800 22px/1.2 var(--display);margin:8px 0 0">The full role map</h2>
+
+  <section class="band">
+    <div class="band-label"><b>You</b>vision &amp; taste</div>
+    <div class="row">
+      <article class="card you">
+        <h3>Lukas</h3>
+        <p class="what">Sets the vision and the taste. Talks to the Conductor from the phone whenever he likes; sits down with the Conductor for design and live play-testing.</p>
+        <div class="meta"><span class="chip">whenever you want</span><span class="chip">no fixed schedule</span></div>
+        <p class="dec"><strong>Keeps:</strong> vision, taste, which mods are in focus, freezing a mod, changing his own rulings.</p>
+      </article>
+    </div>
+  </section>
+  <div class="arrow"><div></div><div>asks · instructions · "how is it going?"  ↓   answers · one batched ask at a time  ↑</div></div>
+
+  <section class="band">
+    <div class="band-label"><b>Front door</b>the one you talk to</div>
+    <div class="row">
+      <article class="card cond">
+        <h3>Conductor</h3>
+        <p class="what">Morphs to whatever you need. <b>Quick mode</b> (a phone message): answers "how is it going?", "why is X slow?", "what do you need from me?" from the measured numbers, and turns your words into instructions for the Dispatcher. <b>Session mode</b> (you sit down): becomes your workshop: design with you, the hardest bugs Foundry could not crack, live testing with you at the game.</p>
+        <div class="meta"><span class="chip ai">Opus</span><span class="chip">quick: fresh each message</span><span class="chip">session: one long conversation, handed off at the end</span><span class="chip">session helpers: design · builder · live-test</span></div>
+        <p class="dec"><strong>Gets the live game first</strong> while you are there. <strong>No exemption:</strong> what it builds goes through the Arbiter and Auditor like Foundry's work. <strong>Never:</strong> answers from memory instead of the numbers.</p>
+      </article>
+    </div>
+  </section>
+  <div class="arrow"><div></div><div>reads the reports of everyone below · hands instructions to the Dispatcher</div></div>
+
+  <section class="band">
+    <div class="band-label"><b>Leadership</b>judge · plan · watch</div>
+    <div class="row">
+      <article class="card lead">
+        <h3>Arbiter<span class="new">NEW</span></h3>
+        <p class="what">Owns <em>good enough</em>: rules whether a feature meets its north-star bar, before it counts as done. Indifferent to the schedule, so it cannot be tempted to lower a bar to hit a date. Takes over the calls you make today only because you are the integrator.</p>
+        <div class="meta"><span class="chip ai">Opus + GPT</span><span class="chip">when a feature claims done</span><span class="chip">judge helpers that never built it</span></div>
+        <p class="dec"><strong>Decides:</strong> pass / fail on a bar, with evidence. <strong>Asks you:</strong> only when the bar itself is unclear. <strong>Audited by:</strong> the Auditor.</p>
+      </article>
+      <article class="card lead">
+        <h3>Producer</h3>
+        <p class="what">Owns <em>what and when</em>: the plan and the critical path, the next player experiences to finish, each with its test scenarios written before building. Wants progress, so it never grades its own plan's work. Keeps the idea bank.</p>
+        <div class="meta"><span class="chip ai">Opus</span><span class="chip">weekly plan + daily list</span><span class="chip">no helpers</span></div>
+        <p class="dec"><strong>Decides:</strong> work order, how many mods in focus at once. <strong>Proposes:</strong> focus mods and freezes; you rule.</p>
+      </article>
+      <article class="card lead">
+        <h3>Operations</h3>
+        <p class="what"><b>Keeps it running:</b> stuck processes and stale helpers, disk and git, reboots in quiet hours, game speed. <b>Keeps it efficient:</b> once a day, the economy pass: tokens on every account (Codex art included), test hours that catch nothing, art redraw loops, your attention spent on ceremony.</p>
+        <div class="meta"><span class="chip ai">Sonnet</span><span class="chip">twice a day + on alarms</span><span class="chip">small fix helpers</span></div>
+        <p class="dec"><strong>Decides:</strong> anything already ruled on; resource budgets. <strong>Never:</strong> touches the game while you play, or lowers a bar set for a test.</p>
+      </article>
+      <article class="card lead">
+        <h3>Innovator<span class="new">NEW</span></h3>
+        <p class="what">Asks <em>"what could be much better?"</em> <b>Process:</b> proposes experiments on how we work, runs the reversible ones against a named metric, keeps or kills them on the numbers. <b>Design:</b> reads the game design and asks what it lacks, what is out of place, misaligned, confusing, or an unneeded appendix.</p>
+        <div class="meta"><span class="chip ai">Opus + GPT</span><span class="chip">process twice a week · design weekly</span><span class="chip">experiment helpers</span></div>
+        <p class="dec"><strong>Decides:</strong> reversible process experiments. <strong>Proposes:</strong> design changes to the Producer's idea bank; anything that changes a north-star bar or the vision goes to you.</p>
+      </article>
+      <article class="card lead">
+        <h3>Auditor</h3>
+        <p class="what">Says <em>"are you sure?"</em> Independent and adversarial: spot-checks closed work and the Arbiter's passes, catches builders grading themselves, turns a repeating mistake into an enforced rule.</p>
+        <div class="meta"><span class="chip ai">Opus</span><span class="chip">daily, ≤ 4 investigations</span><span class="chip">re-check helpers</span></div>
+        <p class="dec"><strong>Finds, never fixes:</strong> every finding becomes a ticket for the builders.</p>
+      </article>
+    </div>
+  </section>
+  <div class="arrow"><div></div><div>tickets, priorities and verdicts go into the ledger · the Dispatcher acts on them</div></div>
+
+  <section class="band">
+    <div class="band-label"><b>Dispatch</b>a program, not an AI</div>
+    <div class="row">
+      <article class="card disp">
+        <h3>Dispatcher</h3>
+        <p class="what">Wakes a stalled builder, hands it the next ticket, checks the work really happened, retries, and records the result. Replaces your ~31 "go / continue / wake" messages a day. Must pass a 48-hour unattended run before anything depends on it.</p>
+        <div class="meta"><span class="chip">no AI</span><span class="chip">every 2 minutes</span><span class="chip">enforces helper caps &amp; budgets</span></div>
+        <p class="dec"><strong>Decides nothing:</strong> follows the plan and the rules.</p>
+      </article>
+    </div>
+  </section>
+  <div class="arrow"><div></div><div>one ticket at a time to whichever builder is free</div></div>
+
+  <section class="band">
+    <div class="band-label"><b>Builder</b>builds around the clock</div>
+    <div class="row">
+      <article class="card build">
+        <h3>Foundry</h3>
+        <p class="what">The one autonomous builder. Works the queue around the clock: code, art, tests, live game rounds. Keeps the work moving whether you are there or not.</p>
+        <div class="meta"><span class="chip ai">Opus / Sonnet</span><span class="chip">continuous, fed by the Dispatcher</span><span class="chip">builder · fixer · live-test helpers</span></div>
+        <p class="dec"><strong>Future decided by trial:</strong> two weeks on and off; you make the call.</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="legend">
+    <div class="card"><p><span class="k">Who builds:</span> Foundry, always; the Conductor, in session mode with you. Everyone else judges, plans, watches or dispatches.</p></div>
+    <div class="card"><p><span class="k">Who has helpers:</span> Foundry and the Conductor in session (builders), the Arbiter and the Auditor (independent checkers), the Innovator (experiments), Operations (small fixes). The Conductor, Producer and Dispatcher have none.</p></div>
+    <div class="card"><p><span class="k">Shared ground:</span> the ledger of tickets, one computed metrics pack, and the measured evidence. Nobody reports from memory.</p></div>
+  </div>
+</div>
