@@ -232,7 +232,8 @@ open(pa, "w").close()
 os.environ[at.SALT_ENV] = "selftest"
 rc = at.main(["--data", d8, "--judge-dir", j8, "--past-audits", pa, "--evidence-dir", j8,
               "--now", "2026-10-27T00:00:00Z"], events=with_builder(events),
-             _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists})
+             _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists,
+                      "evidence_lookup": lambda sha, item, paths: []})   # fixture names, not shas; j8 holds no runs
 ok("F8 main runs", rc, 0)
 ok("F8 per-run file kept beside tiers.json",
    sorted(f for f in os.listdir(d8) if f.startswith("tiers")), ["tiers.json", "tiers_20261027T000000Z.json",
@@ -575,7 +576,8 @@ def _mainrun(args):
     d, j = args
     return at.main(["--data", d, "--judge-dir", j, "--past-audits", pa, "--evidence-dir", j8,
                     "--now", "2026-10-27T00:00:00Z"], events=with_builder(events),
-                   _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists})
+                   _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists,
+                            "evidence_lookup": lambda sha, item, paths: []})
 
 
 import contextlib, io, multiprocessing                              # noqa: E401,E402
@@ -626,6 +628,94 @@ ok("main with a torn past-audit line exits 2", at.main(["--data", d9, "--judge-d
 ok("nothing written on either", sorted(f for f in os.listdir(d9) if f != "audits.jsonl"), [])
 
 ok("empty ledger exits 2", at.main(["--data", td, "--judge-dir", td], events=[]), 2)
+
+# ---- review AC (ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL). Last: a damaged line whose routing cannot be verified
+# taints every later lookup in EVD, by design.
+def _rewrite(rec, **changes):
+    """Replace rec's line in its day file with the same line edited (no re-seal: the forger has no key)."""
+    fn = os.path.join(EVD, "%s.jsonl" % rec["ts"][:10])
+    lines = open(fn).read().splitlines()
+    out = [json.dumps(dict(json.loads(l), **changes), sort_keys=True) if json.loads(l).get("mac") == rec["mac"] else l
+           for l in lines]
+    with open(fn, "w") as f:
+        f.write("\n".join(out) + "\n")
+
+
+# AC3: a byte-identical replay of a signed PASS (same second as the FAIL after it) never erases the FAIL
+i, s6, e6 = claim6()
+iso_mark(s6)
+_t = __import__("datetime").datetime(2026, 10, 27, 13, 0, 0, tzinfo=__import__("datetime").timezone.utc)
+_w = {"seat": "RUNNER", "seat_from": "RIMFLOW_SEAT"}
+_kw = dict(clone=REPO6, covers=[os.path.join(REPO6, c) for c in ("src/m/selftest_mod.py", "src/m/mod.py")],
+           detail={"covers_by": {"src/m/mod.py": ["src/m/selftest_mod.py"]}}, now=_t, who=_w)
+_pass = ce.seal(ce.build_record("selftest", "PASS", [os.path.join(REPO6, "src/m/selftest_mod.py")],
+                                start=minted(s6), end=minted(s6), **_kw))
+_fail = ce.seal(ce.build_record("selftest", "FAIL", [os.path.join(REPO6, "src/m/selftest_mod.py")],
+                                start=minted(s6), end=minted(s6), **_kw))
+append_raw(_pass); append_raw(_fail)
+ok("AC3 control: PASS then FAIL in the same second -> FAIL", g6(run6(i, e6))[0], "FAIL")
+append_raw(_pass)
+ok("AC3 a replayed signed PASS (same ts) does not erase the later FAIL", g6(run6(i, e6))[0], "FAIL")
+
+# AC2: evidence is matched to ONE full sha; a rev expression or short sha never matches by prefix
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+def _refused(sha):
+    try:
+        ce.lookup(sha=sha, folder=EVD)
+        return "accepted"
+    except ValueError:
+        return "refused"
+ok("AC2 lookup refuses a rev expression (child^) and a short sha", (_refused(s6 + "^"), _refused(s6[:12])),
+   ("refused", "refused"))
+ok("AC2 a full sha still finds its runs", len(ce.lookup(sha=s6, folder=EVD)) >= 1, True)
+_revs = {"/c1": "a" * 40, "/c2": "b" * 40}
+ok("AC2 a short sha naming different commits in two clones is unresolvable (UNMEASURED), not either",
+   at.resolve_sha_any("abcdef1", repos=["/c1", "/c2"], rev=lambda s, r: _revs[r]), at.GIT_ERROR)
+ok("AC2 the same commit in both clones resolves to it",
+   at.resolve_sha_any("abcdef1", repos=["/c1", "/c2"], rev=lambda s, r: "c" * 40), "c" * 40)
+ok("AC2 a rev expression is not a sha", at.resolve_sha_any(s6 + "^", repos=["/c1"], rev=lambda s, r: "c" * 40), None)
+_short = [dict(e, sha=s6[:12]) if e.get("event") == "close" else e for e in e6]
+r6 = tiers_of(_short, builder=None, clean={(p, "H_" + p): {"CHECK"} for p in FILES[s6]},
+              resolve=lambda s: s6 if s6.startswith(s) else None,
+              evidence_lookup=lambda sha, item, paths: at.lookup_close_evidence(sha, item, paths, folder=EVD))[0][i]
+ok("AC2 classify resolves a short close sha once and matches evidence on the full sha", g6(r6), ("PASS", "PASS"))
+
+# AC4: a Claude-Session lookup that could not read the commit is UNMEASURED independence, never PASS
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"], session="session_01Other")
+ok("AC4 an unreadable commit session -> G6_independent UNMEASURED",
+   g6(run6(i, e6, session_of=lambda sha: at.SESSION_UNREADABLE))[1], "UNMEASURED")
+ok("AC4 commit_session with no clone able to read the commit says so",
+   at.commit_session("f" * 40, repos=[os.path.join(EVD, "no_such_clone")]), at.SESSION_UNREADABLE)
+
+# AC5: a non-ASCII mac is an unverifiable line, never a crash
+ok("AC5 mac_ok on a non-ASCII mac is False", ce.mac_ok({"mac": "\u00e9"}, ce._key()), False)
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+_r = put(s6, "FAIL", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+_rewrite(_r, mac="\u00e9")
+d5 = tempfile.mkdtemp()
+open(os.path.join(d5, "audits.jsonl"), "w").close()
+try:
+    _rc = at.main(["--data", d5, "--judge-dir", d5, "--past-audits", os.path.join(d5, "audits.jsonl"),
+                   "--evidence-dir", EVD, "--now", "2026-10-27T12:00:00Z"], events=with_builder(e6),
+                  _inject={"clean": {(p, "H_" + p): {"CHECK"} for p in FILES[s6]}, "git": git, "blob": blob,
+                           "exists": exists})
+    _row = [r for r in json.load(open(os.path.join(d5, "tiers.json")))["rows"] if r["item"] == i] if _rc == 0 else []
+    ok("AC5 a non-ASCII mac line does not crash the batch; its claim is not a tier-0 PASS",
+       (_rc, [r["tier"] == "T0_PASS" for r in _row]), (0, [False]))
+except TypeError as ex:
+    ok("AC5 a non-ASCII mac line does not crash the batch; its claim is not a tier-0 PASS", "crash %s" % ex, "no crash")
+
+# AC1: a FAIL whose sha was damaged (one hex digit) is unverifiable and may be ours: UNMEASURED, not the older PASS
+i, s6, e6 = claim6()
+put(s6, "PASS", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+_r = put(s6, "FAIL", ["src/m/selftest_mod.py"], loads=["src/m/mod.py"])
+_rewrite(_r, sha=s6[:-1] + ("0" if s6[-1] != "0" else "1"))
+r6 = run6(i, e6)
+ok("AC1 a damaged-sha FAIL leaves the claim UNMEASURED, not T0_PASS", (g6(r6)[0], r6["tier"] == "T0_PASS"),
+   ("UNMEASURED", False))
 
 print("\n%s" % ("ALL PASS" if not FAILED else "FAILED: %s" % FAILED))
 sys.exit(1 if FAILED else 0)

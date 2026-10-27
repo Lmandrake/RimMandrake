@@ -84,8 +84,12 @@ def main():
         check(r1 is not None and r1["sha"] == sha and r1["dirty"] is False, "clean record carries HEAD, dirty False")
         check(r1["paths"] == ["src/a.py"], "paths are clone-relative: %r" % (r1 and r1["paths"],))
         check(len(CE.lookup(sha=sha)) == 1, "lookup by sha finds the clean run")
-        check(len(CE.lookup(sha=sha[:12])) == 1, "lookup by 12-char prefix finds it")
-        check(CE.lookup(sha=sha[:6]) == [], "a 6-char prefix matches nothing")
+        for bad in (sha[:12], sha[:6], sha + "^", sha.upper()):      # review AC2: ONE full sha, never a prefix
+            try:
+                CE.lookup(sha=bad)
+                check(False, "lookup refuses %r (not one full lowercase sha)" % bad)
+            except ValueError:
+                check(True, "lookup refuses %r (not one full lowercase sha)" % bad)
         check(len(CE.lookup(item="ITEM_ONE")) == 1 and CE.lookup(item="OTHER") == [], "lookup by item")
         check(len(CE.lookup(sha=sha, item="ITEM_ONE")) == 1 and CE.lookup(sha=sha, item="OTHER") == [],
               "sha and item together must both match")
@@ -151,7 +155,7 @@ def main():
         # every line on disk is one JSON object with the fixed fields
         lines = [json.loads(ln) for f in store.glob("*.jsonl") for ln in f.read_text().splitlines()]
         want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "start", "paths", "covers",
-                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "mac"}
+                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "route", "mac"}
         check(lines and all(set(l) == want for l in lines), "%d lines, each with exactly the schema fields" % len(lines))
 
         # validate_patch end to end: a run on a file in the fixture clone writes one validate_patch line
@@ -253,7 +257,7 @@ def review_aa(root):
     um = lambda hs: [(h["tool"], h["result"]) for h in hs]      # noqa: E731
     check(um(CE.lookup(sha=sha, tool="novtool")) == [("close_evidence", "UNMEASURED")],
           "AA-NOV a line with no v is not evidence (AB5: unverifiable -> UNMEASURED, never a PASS)")
-    v2 = {k: v for k, v in good.items() if k not in ("origin", "mac")}
+    v2 = {k: v for k, v in good.items() if k not in ("origin", "mac", "route")}   # a real v2 line had neither seal
     append(dict(v2, v=2, tool="v2tool"))
     check(um(CE.lookup(sha=sha, tool="v2tool")) == [("close_evidence", "UNMEASURED")],
           "AA-NOV a v2 line is not evidence (AB5: UNMEASURED)")
@@ -469,9 +473,29 @@ def review_z(td, store, repo, sha):
     hits = CE.lookup(sha=sha)
     check(CE.summarize(hits).get("close_evidence") == "UNMEASURED" and len(hits) == 2,
           "F1 a torn line naming this sha adds an UNMEASURED marker: %r" % CE.summarize(hits))
+    nfr = lambda: next(h for h in CE.lookup(sha=sha) if h["tool"] == "close_evidence")["detail"]["unreadable_lines"]
     with day.open("a") as f:
         f.write('{"sha": "%s", "torn\n' % ("f" * 40))
-    check(len(CE.lookup(sha=sha)) == 2, "F1 a torn line naming only another sha is not ours")
+    check(nfr() == 2, "AC1 a torn line whose other sha is unsealed may be ours (the sha could be the damage)")
+    other = "e" * 40
+    with day.open("a") as f:
+        f.write('{"route": "%s", "sha": "%s", "tool": "selftest", "torn\n' % (CE._route_mac(other, "selftest", CE._key()),
+                                                                              other))
+    check(nfr() == 2, "F1/AC1 a torn line whose SEALED route names another sha is not ours")
+    # AC1 on a whole line: a sealed FAIL with one sha digit changed is unverifiable and unroutable -> ours
+    dmg = CE.record("acdmg", "FAIL", [repo / "src"], clone=repo, start=CE.snapshot(repo))
+    with day.open("a") as f:
+        f.write(json.dumps(dict(dmg, sha=sha[:-1] + ("0" if sha[-1] != "0" else "1")), sort_keys=True) + "\n")
+    check([h["result"] for h in CE.lookup(sha=sha, tool="acdmg")] == ["FAIL", "UNMEASURED"],
+          "AC1 a FAIL with a damaged sha still reaches its commit's lookup as UNMEASURED")
+    # AC3: a byte-identical replay is dropped; the first copy keeps its place
+    rp = CE.record("acrep", "PASS", [repo / "src"], clone=repo, start=CE.snapshot(repo))
+    with day.open("a") as f:
+        f.write(json.dumps(rp, sort_keys=True) + "\n")
+    check(sum(h["tool"] == "acrep" for h in CE.lookup(sha=sha, tool="acrep")) == 1,
+          "AC3 a replayed sealed line is read once")
+    check(CE.mac_ok({"mac": "\u00e9" * 64}, CE._key()) is False and CE.mac_ok({"mac": 5}, CE._key()) is False,
+          "AC5 a non-hex or non-string mac is unverifiable, not a crash")
     os.environ[CE.ENV_DIR] = str(store)
 
     # F2: a commit landing mid-run, a dirty start, and a v1 line are not evidence

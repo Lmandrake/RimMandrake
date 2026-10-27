@@ -339,16 +339,34 @@ def _mac(rec, key) -> str:
     return hmac.new(key, json.dumps(body, sort_keys=True, default=str).encode(), hashlib.sha256).hexdigest()
 
 
+def _route_mac(sha, tool, key) -> str:
+    return hmac.new(key, ("route\0%s\0%s" % (sha, tool)).encode(), hashlib.sha256).hexdigest()
+
+
+def route_ok(sha, tool, route, key) -> bool:
+    """`route` seals this (sha, tool) pair on its own (review AC1): a line whose body is damaged can still be routed to
+    its commit by a sha nobody without the key could have altered."""
+    return (isinstance(sha, str) and isinstance(tool, str) and isinstance(route, str) and bool(_MAC_RX.fullmatch(route))
+            and hmac.compare_digest(route, _route_mac(sha, tool, key)))
+
+
 def seal(rec, key=None) -> dict:
-    """The line as written: JSON-normalised, mac added."""
-    rec = json.loads(json.dumps({k: v for k, v in rec.items() if k != "mac"}, default=str))
-    rec["mac"] = _mac(rec, key or _key(create=True))
+    """The line as written: JSON-normalised, route (sha+tool) and mac (whole line) added."""
+    key = key or _key(create=True)
+    rec = json.loads(json.dumps({k: v for k, v in rec.items() if k not in ("mac", "route")}, default=str))
+    rec["route"] = _route_mac(rec.get("sha"), rec.get("tool"), key)
+    rec["mac"] = _mac(rec, key)
     return rec
 
 
+_MAC_RX = re.compile(r"[0-9a-f]{64}")
+
+
 def mac_ok(rec, key) -> bool:
+    """The line's mac verifies. A mac that is not 64 lowercase hex (e.g. non-ASCII, on which compare_digest raises)
+    is simply unverifiable (review AC5)."""
     m = rec.get("mac")
-    return isinstance(m, str) and hmac.compare_digest(m, _mac(rec, key))
+    return isinstance(m, str) and bool(_MAC_RX.fullmatch(m)) and hmac.compare_digest(m, _mac(rec, key))
 
 
 # ------------------------------------------------------------------ isolated checkouts (review AB2)
@@ -736,6 +754,22 @@ def _top_level(text, key):
 
 
 _SHA_ANY = re.compile(r"[0-9a-fA-F]{7,40}")
+_SHA_FULL = re.compile(r"[0-9a-f]{40}")
+
+
+def _legacy(r) -> bool:
+    """An unsealed line (pre-seal v1/v2, or hand-written: no mac and no route). It never was evidence, so its plain
+    sha may route it; stripping both seals off a sealed line is the same act as deleting it, which no reader of an
+    append-only file can detect. A line that carries either seal and fails is routed only by a route that verifies."""
+    return "mac" not in r and "route" not in r
+
+
+def _routed(sha, tool, route, key, want_sha, want_tool) -> bool:
+    """May an unverifiable line concern lookup (want_sha, want_tool)? Only a route that verifies lets its sha/tool
+    exclude it (review AC1: an unsealed sha is the forger's word)."""
+    if route is not None and route_ok(sha, tool, route, key):
+        return sha == want_sha and not (want_tool and tool != want_tool)
+    return True
 
 
 def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=False, paths=None,
@@ -753,22 +787,31 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
     TOP-LEVEL sha matches or cannot be recovered, and (with tool) its top-level tool matches or cannot be recovered."""
     if not sha and not item:
         raise ValueError("lookup needs a sha or an item")
+    if sha is not None and not (isinstance(sha, str) and _SHA_FULL.fullmatch(sha)):
+        raise ValueError("lookup needs ONE full 40-hex lowercase sha, got %r (review AC2: resolve a short sha or rev "
+                         "expression to its commit first, e.g. arbiter_tiers.resolve_sha_any)" % (sha,))
     key = _key()                       # raises when missing: nothing verifiable is UNMEASURED, not "no evidence"
     bad: list = []
     hits, unver = [], []
+    seen_macs = set()
     for r in read_all(days, folder, bad_out=bad):
         if not mac_ok(r, key):                        # review AB5: unverifiable is UNMEASURED, never absent
             rs, rt = r.get("sha"), r.get("tool")
-            if isinstance(rs, str) and _SHA_ANY.fullmatch(rs):
-                if not sha or not _sha_match(rs, sha):
-                    continue                          # a readable top-level sha: another commit's line
-            elif not sha:
-                continue                              # an item lookup cannot attribute a line with no sha
-            if tool and isinstance(rt, str) and rt != tool:
-                continue
+            if not sha:
+                continue                              # an item lookup cannot attribute an unverifiable line
+            if _legacy(r):
+                if not (isinstance(rs, str) and _SHA_ANY.fullmatch(rs) and _sha_match(rs, sha)):
+                    continue                          # pre-seal line naming another commit
+                if tool and isinstance(rt, str) and rt != tool:
+                    continue
+            elif not _routed(rs, rt, r.get("route"), key, sha, tool):
+                continue                              # its sealed route names another commit or tool
             unver.append(("?", json.dumps(r, default=str)))
             continue
-        if sha and not _sha_match(r.get("sha"), sha):
+        if r["mac"] in seen_macs:
+            continue                                  # review AC3: a replayed line never re-enters, nor moves later
+        seen_macs.add(r["mac"])
+        if sha and r.get("sha") != sha:
             continue
         if item and r.get("item") != item:
             continue
@@ -783,12 +826,8 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
             continue
         hits.append(r)
     if sha:
-        def maybe_ours(ln):
-            s = _top_level(ln, "sha")
-            if s is not None and _SHA_ANY.fullmatch(s) and not _sha_match(s, sha):
-                return False                  # its own top-level sha names another commit
-            t = _top_level(ln, "tool")
-            return not (tool and t is not None and t != tool)
+        def maybe_ours(ln):                   # a torn line: only a sealed route recoverable from it may exclude it
+            return _routed(_top_level(ln, "sha"), _top_level(ln, "tool"), _top_level(ln, "route"), key, sha, tool)
         frags = [(d, ln) for d, ln in bad if maybe_ours(ln)] + unver
         if frags:
             hits.append(_bad_marker(sha, frags, unverifiable=len(unver)))

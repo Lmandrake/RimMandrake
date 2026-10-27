@@ -179,8 +179,14 @@ def maker_seats(evs, close):
 SEAT_SOURCES = ("RIMFLOW_SEAT", "AGENT_SEAT", "session role file")
 
 
+#: commit_session() could not read the commit in any clone (review AC4): distinct from None (read, no trailer), so a
+#: lookup failure never lets a same-session run pass as independent.
+SESSION_UNREADABLE = "?unreadable"
+
+
 def commit_session(sha, repos=REPOS):
-    """The commit's `Claude-Session:` trailer (the bridge session that made it), or None when no clone says."""
+    """The commit's `Claude-Session:` trailer (the bridge session that made it); None when a clone read the commit
+    and it has no trailer; SESSION_UNREADABLE when no clone could read it (timeout, missing clone, unknown sha)."""
     for repo in repos:
         try:
             r = subprocess.run(["git", "-C", repo, "log", "-1", "--format=%(trailers:key=Claude-Session,valueonly)",
@@ -190,7 +196,46 @@ def commit_session(sha, repos=REPOS):
         if r.returncode == 0:
             m = re.search(r"session_[A-Za-z0-9]+", r.stdout or "")
             return m.group(0) if m else None
+    return SESSION_UNREADABLE
+
+
+_HEX_SHA = re.compile(r"[0-9a-fA-F]{7,40}")
+
+
+def _rev_one(sha, repo):
+    """The full commit sha `sha` names in `repo`; None when it names none there; GIT_ERROR when git could not answer
+    or the prefix is ambiguous inside the clone."""
+    try:
+        r = subprocess.run(["git", "-C", repo, "rev-parse", "--verify", "--quiet", "%s^{commit}" % sha],
+                           capture_output=True, text=True, timeout=30)
+    except Exception:
+        return GIT_ERROR
+    if r.returncode == 0 and re.fullmatch(r"[0-9a-f]{40}", r.stdout.strip()):
+        return r.stdout.strip()
+    if "ambiguous" in (r.stderr or "") or not os.path.isdir(repo):
+        return GIT_ERROR
     return None
+
+
+def resolve_sha_any(sha, repos=REPOS, rev=_rev_one):
+    """The ONE full commit sha a claim's sha names across every clone (review AC2): None when it is not a hex sha
+    (a rev expression like `child^` is not a build identity) or no clone has it; GIT_ERROR when clones disagree (a
+    short sha naming different commits) or none could answer while none had it."""
+    sha = (sha or "").strip()
+    if not _HEX_SHA.fullmatch(sha):
+        return None
+    found, err = set(), False
+    for repo in repos:
+        f = rev(sha, repo)
+        if f == GIT_ERROR:
+            err = True
+        elif f:
+            found.add(f.lower())
+    if len(found) > 1:
+        return GIT_ERROR
+    if found:
+        return found.pop()
+    return GIT_ERROR if err else None
 
 
 def lookup_close_evidence(sha, item, paths, folder=None, days=45):
@@ -338,6 +383,9 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
         elif not builder_known:
             g["G6_independent"] = "UNMEASURED"
             ev["G6_independent"] = "the ledger names no builder (no claim/start/implemented before the close)"
+        elif ind_all and csess == SESSION_UNREADABLE:
+            g["G6_independent"] = "UNMEASURED"
+            ev["G6_independent"] = "the commit's Claude-Session could not be read: a same-session run cannot be ruled out"
         elif ind_all:
             g["G6_independent"] = "PASS"
         elif unsure:
@@ -407,7 +455,11 @@ def calib_pick(item, sha, salt):
 
 def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blob_sha256,
              exists=os.path.exists, past_failed=frozenset(), salt="selftest-salt", evidence_lookup=lambda sha, item, paths: [],
-             ai_refused=False, session_of=lambda sha: None):
+             ai_refused=False, session_of=lambda sha: None, resolve=None):
+    """resolve(sha) -> the one full sha the close names (resolve_sha_any; with an injected `git` and no resolve, the
+    close's sha is taken as written)."""
+    if resolve is None:
+        resolve = resolve_sha_any if git is git_files_any else (lambda s: s)
     cache = {}
     clean = {} if clean is None else (clean if isinstance(clean, dict) else {k: set() for k in clean})
 
@@ -429,13 +481,15 @@ def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blo
         evs = by[r["item"]]
         close = [e for e in evs if e.get("event") == "close"][-1]
         sha = (close.get("sha") or "").strip()
-        files = git_c(sha) if sha and sha.upper() != "HEAD" else None
+        full = resolve(sha) if sha and sha.upper() != "HEAD" else None      # review AC2: one full sha, used throughout
+        files = git_c(full) if isinstance(full, str) and full != GIT_ERROR else (GIT_ERROR if full == GIT_ERROR else None)
         if files == GIT_ERROR and "sha_unresolvable" in r["flags"]:
             r["flags"] = [f for f in r["flags"] if f != "sha_unresolvable"] + ["git_unreadable"]
-        evid = (evidence_lookup(sha, r["item"], sorted(p for p, st in files.items() if st != "D"))
-                if isinstance(files, dict) and sha else [])
-        r["gates"], r["gate_evidence"] = gates(evs, close, files, clean, blob=blob, exists=exists, evidence=evid,
-                                               session_of=session_of)
+        evid = (evidence_lookup(full, r["item"], sorted(p for p, st in files.items() if st != "D"))
+                if isinstance(files, dict) and full else [])
+        r["gates"], r["gate_evidence"] = gates(evs, close, files, clean, blob=lambda _s, f, _f=full: blob(_f, f),
+                                               exists=exists, evidence=evid,
+                                               session_of=lambda _s, _f=full: session_of(_f))
         r["flags"] = r["flags"] + extra_flags(evs, close, r["gate_evidence"])
         r["machine_evidence"] = has_machine_evidence(r["gates"])
         if r["machine_evidence"] and "no_check_evidence" in r["flags"]:
@@ -646,11 +700,17 @@ def main(argv=None, events=None, _inject=None):
     except Exception as ex:
         print("UNMEASURED: %s; nothing written" % ex, file=sys.stderr)
         return 2
-    rows, cut = classify(events, rules, since, clean=clean, past_failed=past_failed, salt=salt,
-                         evidence_lookup=lambda sha, item, paths: lookup_close_evidence(
-                             sha, item, paths, folder=efolder, days=int(a.days) + 31),
-                         ai_refused=a.ai_refused, session_of=commit_session,
-                         **{k: v for k, v in (_inject or {}).items() if k != "clean"})
+    kw = dict(clean=clean, past_failed=past_failed, salt=salt,
+              evidence_lookup=lambda sha, item, paths: lookup_close_evidence(
+                  sha, item, paths, folder=efolder, days=int(a.days) + 31),
+              ai_refused=a.ai_refused, session_of=commit_session)
+    kw.update({k: v for k, v in (_inject or {}).items() if k != "clean"})
+    try:
+        rows, cut = classify(events, rules, since, **kw)
+    except Exception as ex:        # review AC5: an evidence read failing mid-classification is UNMEASURED, not a crash
+        print("UNMEASURED: classification could not read its evidence (%s: %s); nothing written"
+              % (type(ex).__name__, ex), file=sys.stderr)
+        return 2
     gate_counts = {}
     for r in rows:
         for gname, v in r["gates"].items():
