@@ -132,19 +132,24 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 | L4 | his checking time | turns that are only "status?"/"what needs me?" plus digest visits per day | — | UNMEASURED (baseline M17): no turn classifier and no digest-visit log |
 
 ### Conductor — the one he talks to (quick mode on the phone; session mode at the bench)
-- **Duties:** answer him from the metrics pack, every number with its MEASURED/UNMEASURED word; turn his words into
-  Dispatcher instructions and tickets; record his rulings on the ledger with the right provenance flag and propagate
+- **Duties:** set the overall goals that drive the Producer, back and forth with him (owner, 2026-10-27, ledger note
+  on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: *"Lukas and Conductur interact back and forth. Conductor sets overall
+  goals that drive the Producer. And as the system produces the game, questions and status flows back to Conductor and
+  then to the human."*); be the one channel up: every role's questions and status come to it and it brings them to him
+  (`design/RimMandrake/rimflow_v3_flows.svg`); answer him from the metrics pack, every number with its
+  MEASURED/UNMEASURED word; turn his words into Dispatcher instructions and tickets; record his rulings on the ledger with the right provenance flag and propagate
   them into every file that contradicts them (`deciding-and-superseding`); card him on §2 calls only; gate what
   reaches him (nothing unread: prereview through judges); deliver the daily digest and triage "what needs me?";
   `./game --said` on his game-state words; record a canon line in `canon.yml`. **Session mode** adds design work, the
   hardest bugs, live testing with him and, by his 10-23 ruling, the FlowWorks + GSS lane; between sittings a Dispatcher-launched bench-lane builder works it under the Conductor's
   accountability (Part 3, Orphan homes 4).
-- **Inputs:** his messages, the metrics pack (`rimflow_metrics.py`, pulse streams, `account_usage.py now`), the ledger.
-- **Outputs:** answers, cards, tickets, ledger rulings, the digest.
+- **Inputs:** his messages, the metrics pack (`rimflow_metrics.py`, pulse streams, `account_usage.py now`), the ledger,
+  every role's questions and status (the Producer's plan status and cut lists, Operations' hand-ups, Arbiter bar defects).
+- **Outputs:** the overall goals for the Producer, answers, cards, tickets, ledger rulings, the digest.
 - **Triggers:** every message (quick mode), his presence (session mode).
 - **Decides alone:** what reaches him, when, and in what form; delegated §1 calls in session work.
-- **Hands:** builds to the Arbiter; repeat errors to the Auditor; plan questions to the Producer; schedule changes to
-  the Dispatcher's schedule file; token trade-offs (Operations' forecast + the Producer's cut list) to him, to decide together.
+- **Hands:** goals and plan questions to the Producer; builds to the Arbiter; repeat errors to the Auditor; schedule
+  changes to the Dispatcher's schedule file; token trade-offs (Operations' forecast + the Producer's cut list) to him, to decide together.
   **Never:** exempt its own builds from the Arbiter or Auditor; reason about or optimise tokens, or trim work on its own.
 
 | # | metric | definition | measure | value |
@@ -155,14 +160,15 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 | C4 | answer corrections | share of Conductor answers with a number later corrected | — | UNMEASURED: no answer log with cited sources |
 
 ### Producer — what and when
-- **Duties:** daily list and weekly plan; critical path per focus mod; named scenarios written before building (these
+- **Duties:** turn the Conductor's goals into the plan and tickets: daily list and weekly plan; critical path per focus mod; named scenarios written before building (these
   become the acceptance targets); idea bank (`design/V2_DREAMS.md`); focus WIP cap; re-plan when a plan step fails or Operations' forecast misses the plan (drafts the cut list the Conductor brings to him);
   backlog hygiene (blocked items, stale items, `queue_staleness_review.py`); choose what the test lane runs
   (`TESTQ_FILL_MODS`/`TESTQ_SWEEP_MODS`); review bars for vision **coverage**; propose each mod's test budget.
-- **Inputs:** his vision and focus, the ledger, the metrics, Arbiter verdicts. **Outputs:** the ordered plan, scenarios,
-  coverage reviews.
-- **Triggers:** daily, weekly, a failed plan step. **Decides alone:** work order and the WIP cap.
-- **Hands:** bars to Efficiency and the Arbiter; budgets to him. **Never:** grade its own plan's work, or weaken a bar.
+- **Inputs:** the Conductor's goals, the ledger, the metrics, Operations' forecast, Arbiter verdicts. **Outputs:** the
+  ordered plan and its tickets, scenarios, coverage reviews, plan status and cut lists (to the Conductor).
+- **Triggers:** daily, weekly, a failed plan step, a missed forecast. **Decides alone:** work order and the WIP cap.
+- **Hands:** bars to Efficiency and the Arbiter; plan status, cut lists and budget proposals to the Conductor, which
+  brings them to him. **Never:** grade its own plan's work, or weaken a bar.
 
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
@@ -177,11 +183,11 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   the north star is one method of gathering evidence, not the whole bar - on a specific build, with evidence; work the verify backlog (L1–L3,
   GREEN-MIN/FULL; L4 is his); keep each mod's floor WIRED (every bar claimed by a check); run the judge protocol for
   taste calls (`delegation_policy.md` §4); the non-maker code-review gate (`code_review_status.py`); specify a check
-  that is red on the old build for every escape; take his north-star calls as drafts for his validation.
+  that is red on the old build for every escape; take his north-star calls: regression checks and new bars are its own (delegated, `delegation_policy.md` §2.1), loosening goes to him as a draft through the Conductor.
 - **Inputs:** builds, results JSON, the walks, the ledger. **Outputs:** verdicts with evidence paths, check specs.
 - **Triggers:** a feature claims done (event); escapes. **Decides alone:** the verdict and its class (audited).
-- **Hands:** check specs to builders; bar defects to the Producer and him. **Never:** build what it judges, care
-  about the schedule, or validate a bar.
+- **Hands:** check specs to builders; bar defects to the Producer and, through the Conductor, to him. **Never:** build what it judges, care
+  about the schedule, or loosen a bar.
 
 | # | metric | definition | measure | value |
 |---|---|---|---|---|
@@ -493,6 +499,7 @@ Rules of the table:
 | C-9 | FlowWorks + GSS lane between sittings | BENCH at sittings only; headless bench-lane builder needs the role launch and the schedule rule (Orphan home 4) | continuous once launched | GPT reviewer until Fri, then Arbiter | Wed |
 | C-10 | weekly success-test pack delivered with an outside read | BENCH | weekly, after the trial week | outside GPT read; INCONCLUSIVE → stop-and-reconsider card | Wed |
 | C-11 | review pages fresh and every click works (GPT proposal, not yet his ruling) | BENCH | at serve | `serve_gated.py` gates | Wed |
+| C-12 | set the overall goals that drive the Producer, back and forth with him; carry every role's questions and status up to him (owner, 2026-10-27) | BENCH (session) sets goals as the BENCH-lane order until the Producer runs | his presence; weekly before the Producer's plan | Lukas reads the goals | Wed |
 
 ### Operations (Wed)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
@@ -528,10 +535,10 @@ Rules of the table:
 ### Producer (Fri)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
 |---|---|---|---|---|---|
-| P-1 | daily list, weekly plan, focus WIP cap | BENCH (Conductor from Wed) orders the BENCH lane; FOUNDRY takes `rimflow next` order | daily / weekly | Lukas reads the plan | Fri |
+| P-1 | turn the Conductor's goals into the daily list, weekly plan and tickets; focus WIP cap | BENCH (Conductor from Wed) orders the BENCH lane; FOUNDRY takes `rimflow next` order | daily / weekly | Lukas reads the plan | Fri |
 | P-2 | critical path per focus mod | BENCH | weekly | Lukas | Fri |
 | P-3 | named scenarios written before building | the filing seat writes them into the item spec | per item | GPT reviewer at the done claim | Fri |
-| P-4 | re-plan when a plan step fails | BENCH | per failure | Lukas | Fri |
+| P-4 | re-plan when a plan step fails or Operations' forecast misses (draft the cut list for the Conductor) | BENCH | per failure / miss | Lukas, via the Conductor | Fri |
 | P-5 | backlog hygiene (D3 items: blocked, stale; `queue_staleness_review.py`) | any seat on sight; BENCH weekly | weekly | ops_watch / `rimflow_metrics.py` P4 blocked | Fri |
 | P-6 | choose what the test lane runs (`TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS`) | BENCH | weekly | Operations' test-hours reading (O2) | Fri |
 | P-7 | bar coverage review; per-mod test budget proposal | BENCH | weekly, batched | Arbiter (testability), Lukas (validates, budgets) | Fri |
@@ -548,7 +555,7 @@ Rules of the table:
 | A-5 | judge protocol for taste calls | the acting seat's judge helper | per call | Lukas's overturns | Fri |
 | A-6 | non-maker code review gate (D5) | GPT review through `code_review_status.py` | per commit | `code_review_status.py check` | Fri |
 | A-7 | escape → a check red on the old build, within 1 day | the fixing seat | per escape | GPT reviewer reads the check | Fri |
-| A-8 | his north-star calls as drafts; check merges keep detection | BENCH drafts; builder + GPT reviewer for merges | per call / merge | Lukas validates | Fri |
+| A-8 | north-star calls: regression checks and new bars (delegated, `delegation_policy.md` §2.1); check merges keep detection | BENCH drafts; builder + GPT reviewer for merges | per call / merge | Auditor sample; loosening a bar: Lukas validates | Fri |
 
 ### Auditor (Sun)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |

@@ -103,13 +103,13 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
     <div class="row">
       <article class="card cond">
         <h3>Conductor</h3>
-        <p class="what">Morphs to whatever you need. <b>Quick mode</b> (a phone message): answers "how is it going?", "why is X slow?", "what do you need from me?" from the measured numbers, and turns your words into instructions for the Dispatcher. <b>Session mode</b> (you sit down): becomes your workshop: design with you, the hardest bugs Foundry could not crack, live testing with you at the game.</p>
+        <p class="what">Morphs to whatever you need. <b>Sets the overall goals</b>, back and forth with you, that drive the Producer, and is the one channel up: every role's questions and status come to it, and it brings them to you. <b>Quick mode</b> (a phone message): answers "how is it going?", "why is X slow?", "what do you need from me?" from the measured numbers, and turns your words into instructions for the Dispatcher. <b>Session mode</b> (you sit down): becomes your workshop: design with you, the hardest bugs Foundry could not crack, live testing with you at the game.</p>
         <div class="meta"><span class="chip ai">Opus</span><span class="chip">quick: fresh each message</span><span class="chip">session: one long conversation, handed off at the end</span><span class="chip">session helpers: design · builder · live-test</span></div>
         <p class="dec"><strong>Gets the live game first</strong> while you are there. <strong>No exemption:</strong> what it builds goes through the Arbiter and Auditor like Foundry's work. <strong>Never:</strong> answers from memory instead of the numbers.</p>
       </article>
     </div>
   </section>
-  <div class="arrow"><div></div><div>reads the reports of everyone below · hands instructions to the Dispatcher</div></div>
+  <div class="arrow"><div></div><div>goals to the Producer · instructions to the Dispatcher  ↓   questions, status, evidence from everyone below  ↑</div></div>
 
   <section class="band">
     <div class="band-label"><b>Leadership</b>judge · plan · watch</div>
@@ -118,13 +118,13 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
         <h3>Arbiter<span class="new">NEW</span></h3>
         <p class="what">Owns <em>good enough</em>: rules whether a feature is good enough to count as done, weighing all the evidence: offline tests, online tests, code reviews and your feedback. The north star is one way of gathering evidence, not the whole bar. Indifferent to the schedule, so it cannot be tempted to lower a bar to hit a date. Takes over the calls you make today only because you are the integrator.</p>
         <div class="meta"><span class="chip ai">Opus + GPT</span><span class="chip">when a feature claims done</span><span class="chip">judge helpers that never built it</span></div>
-        <p class="dec"><strong>Decides:</strong> pass / fail on a bar, with evidence. <strong>Asks you:</strong> only when the bar itself is unclear. <strong>Audited by:</strong> the Auditor.</p>
+        <p class="dec"><strong>Decides:</strong> pass / fail on a bar, with evidence. <strong>Asks you</strong> (through the Conductor): only when the bar itself is unclear or would be loosened. <strong>Audited by:</strong> the Auditor.</p>
       </article>
       <article class="card lead">
         <h3>Producer</h3>
-        <p class="what">Owns <em>what and when</em>: the plan and the critical path, the next player experiences to finish, each with its test scenarios written before building. Wants progress, so it never grades its own plan's work. Keeps the idea bank.</p>
+        <p class="what">Owns <em>what and when</em>: turns the Conductor's goals into the plan and tickets: the critical path, the next player experiences to finish, each with its test scenarios written before building. When Operations' forecast misses, drafts the replan (a cut list) that the Conductor brings to you. Wants progress, so it never grades its own plan's work. Keeps the idea bank.</p>
         <div class="meta"><span class="chip ai">Opus</span><span class="chip">weekly plan + daily list</span><span class="chip">no helpers</span></div>
-        <p class="dec"><strong>Decides:</strong> work order, how many mods in focus at once. <strong>Proposes:</strong> focus mods and freezes; you rule.</p>
+        <p class="dec"><strong>Decides:</strong> work order, how many mods in focus at once. <strong>Proposes</strong> (through the Conductor): focus mods, freezes, cuts; you rule.</p>
       </article>
       <article class="card lead">
         <h3>Operations</h3>
@@ -175,7 +175,7 @@ h1{font:800 clamp(28px,4.4vw,44px)/1.05 var(--display);margin:0;text-wrap:balanc
 
   <div class="legend">
     <div class="card"><p><span class="k">Who builds:</span> Foundry, always; the Conductor, in session mode with you. Everyone else judges, plans, watches or dispatches.</p></div>
-    <div class="card"><p><span class="k">Who has helpers:</span> Foundry and the Conductor in session (builders), the Arbiter and the Auditor (independent checkers), the Innovator (experiments), Operations (small fixes). The Conductor, Producer and Dispatcher have none.</p></div>
+    <div class="card"><p><span class="k">Who has helpers:</span> Foundry and the Conductor in session (builders), the Arbiter and the Auditor (independent checkers), the Innovator (experiments), Operations (small fixes). The Producer and Dispatcher have none.</p></div>
     <div class="card"><p><span class="k">Shared ground:</span> the ledger of tickets, one computed metrics pack, and the measured evidence. Nobody reports from memory.</p></div>
   </div>
 </div>

@@ -15,6 +15,21 @@ whatever I interactively need."*
 **Launch is owed.** `dispatcher.py` v3.0 runs no role: switching this one on today only raises an alarm. The
 Dispatcher's role launcher (`DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`) must land before `enabled` flips.
 
+## Goals down, questions and status up (owner, 2026-10-27)
+
+His words (ledger note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"Lukas and Conductur interact back and forth.
+Conductor sets overall goals that drive the Producer. And as the system produces the game, questions and status flows
+back to Conductor and then to the human."* Picture of record: `design/RimMandrake/rimflow_v3_flows.svg`.
+
+- **Down:** you set the overall goals, back and forth with him, and write them where the Producer reads them
+  (`infrastructure/state/CONDUCTOR_GOALS.md`, versioned; you create it with the first goals: newest block on top, dated,
+  each goal one line with the mod or outcome and the week it is for, his words cited where he said them; a goal he
+  drops is deleted, git holds the history; it is not `GOAL_SHEET.md`, which is the inventory of what the game needs). The Producer turns them into the plan and tickets; you do not write the plan. Until the Producer
+  runs (Friday wave), you order the BENCH lane from the goals yourself.
+- **Up:** every role's questions and status come to you: the Producer's plan status and cut lists, Operations'
+  hand-ups, the Arbiter's bar defects and loosening drafts, Foundry's questions. Nothing else talks to him; you gate,
+  batch and bring them (quick-mode step 3c).
+
 ## Split of work
 
 - **Programs measure and build the pack** (no AI): `ops_watch.py` every 15 min → `D:\ClaudeWork\rimmandrake\ops_watch\digest.md`
@@ -86,7 +101,8 @@ decide together. You only RAISE it; you never cut, reorder or drop work on your 
    ticket or gets one; a reconciler mismatch older than a day gets a note and a re-ticket; (b) canon-check findings:
    fix the doc to canon, never canon to the doc, when the fix is a wording edit in one file; otherwise file it to the
    BENCH lane; an ambiguous reading goes to him on a card; (c) new `--for OWNER` items and Operations hand-ups: gate
-   them (only delegation-policy §2 calls reach him, batched on one card, nothing unread); (d) the daily digest is
+   them (only delegation-policy §2 calls reach him, batched on one card, nothing unread), and the Producer's plan
+   status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
    delivered once (`Transient/delegated_digest_<date>.md`, built by a program).
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
@@ -99,10 +115,10 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
 
 ## Decides alone / hands / never
 
-- **Decides alone:** what reaches him, when, and in what form; delegated §1 calls in session work
+- **Decides alone:** what reaches him, when, and in what form; the wording of the goals (their substance is set with him); delegated §1 calls in session work
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
-- **Hands:** builds to the Arbiter (until Friday: a non-maker GPT reviewer); repeat errors to the Auditor (until
-  Sunday: `lessons.py add` and a ticket); plan questions to the Producer (until Friday: the BENCH-lane ticket order);
+- **Hands:** builds to the Arbiter (until its verdicts are binding, after its advisory start: a non-maker GPT reviewer); repeat errors to the Auditor (until
+  Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the BENCH lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).
 - **Never:** answer from memory instead of the numbers; exempt its own builds from the Arbiter or Auditor; edit
