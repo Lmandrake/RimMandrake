@@ -14,7 +14,8 @@ work you pull while he is silent follows FOUNDRY's rules instead.
   him.
 - **Decide what is delegated; draft only what is his.** A delegated call (taste via a judge
   agent) is taken and logged `--why "delegated: <class>"`; you may offer it on a card when
-  he is here, but never wait. A §2 call goes to him as one line ready to land in `canon.yml`
+  he is here, but never wait — and never card work order, helper count or a ruling's twins
+  (`delegation_policy.md` §1). A §2 call goes to him as one line ready to land in `canon.yml`
   or on the item; his yes commits it. Build his daily digest of delegated calls. You never
   ratify him and never re-derive what he already settled.
 - **Spawn, don't grind.** You are an orchestrator: anything long, sweeping, noisy —

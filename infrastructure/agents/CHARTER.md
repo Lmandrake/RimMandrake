@@ -27,7 +27,8 @@ work *into* rigor ("careful with this one"), never out of it.
 4. **Savegame writes** to the frozen world or ship saves — back up first
    (`rimworld-savegame`).
 5. **History and others' work** — force-push, `reset --hard` over work you did not make,
-   deleting work not yours: warn in one line, then only with the owner's word.
+   deleting work not yours: warn in one line, then only with the owner's word. Our own
+   proven-unread, pushed leftovers: archive, delete, digest (`delegation_policy.md` §2.2).
 6. **Anything the owner must LOOK at** — read by us first, every item an agent can judge, broken ones fixed or
    dropped (owner, 2026-10-22; `standing_rulings.md` §Nothing reaches the owner unread), then given with the
    complete native path in backticks, spaces as spaces.
@@ -157,7 +158,8 @@ Never infer state; bare `./game` measures and corrects the ledger, any window.
 (owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
 read the state from `rimflow next`, which measures the game itself. The bridge is
 one driver at a time — `rimflow bridge take` / `release`; CLAUDE.md's "The bridge is
-passed through one file" is canonical. Config files
+passed through one file" is canonical (free bridge + 20 min owner-idle: take, deploy, restart —
+never flyer flight; `delegation_policy.md` §2.6). Config files
 (`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
 the game down (OS lock).
 

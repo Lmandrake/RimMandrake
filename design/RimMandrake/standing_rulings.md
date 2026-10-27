@@ -348,8 +348,9 @@ gear on a pawn — **build them and save the game.**
 - **One map, all options** (his ruling by card), laid out on a grid with enough
   pitch that nothing overlaps, plus an item file giving the **grid key**: which
   option is at which cell.
-- **Saves stay until he says delete.** Not auto-purged, not overwritten by the
-  next review.
+- **Saves stay until he says delete** while he may still judge them. Not overwritten by the
+  next review. A save nothing reads any more is a leftover: archive, delete, list in his
+  digest (owner card 2026-10-26, `delegation_policy.md` §2.2).
 - 🔴 **Back up the Saves folder's keepers first and stat it afterwards.**
   `rimworld/save_game` has silently written the CURRENT slot instead of `saveName`.
   Confirm a NEW file appeared and no existing one changed size — never trust the
@@ -443,6 +444,12 @@ if you want it, look again.** ⚠️ Do not message the other window — that ch
 
 ⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
 lands in the same file you already read.
+
+⭐ **Free bridge + 20 min idle is a seat's to take** (owner card 2026-10-26 19:06, *"Free
+bridge + 20 min idle (Recommended)"*): when a watcher shows no other seat holds the bridge
+AND he has not touched the game for 20 minutes, a seat MAY take it, deploy and restart the
+game on its own — never for a flyer's flight — and lists each act in his daily digest.
+Detail: `delegation_policy.md` §2.6; watcher BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH.
 
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch

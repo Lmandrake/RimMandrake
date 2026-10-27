@@ -34,6 +34,12 @@ Everything not on the §2 list. That includes, and is not limited to:
 Taste calls (`design`, `art`, `cosmetic`) go through a judge first (§4). Technical and scope calls are taken
 by the acting seat on its own evidence, as before.
 
+**Do not card him about a §1 class.** Work order and helper count (`scope`) and applying a ruling to its twins
+(§2.4: a case the ruling does not name) are already delegated; a question card about either is a leak, not a
+courtesy (`design/RimMandrake/delegation_candidates_2026-10-26.md` §1: 29 ordering cards at 81% agreement, 9 twin
+cards at 8 yes). Decide, log `--why "delegated: <class>"`, and list it in the digest. Check:
+`CARDS_ENFORCE_DELEGATED_CLASSES_STOP`.
+
 **With timeouts.** When he is present, a seat MAY still offer a delegable call on a card if it is cheap for
 him — but it never waits on the answer. Unanswered by the time the work needs it (or at the end of his sitting),
 the call is taken as a delegated decision and logged as one. ⛔ An unanswered card is never his approval.
@@ -49,7 +55,14 @@ Each line is reserved by a ruling of his that says so; nothing else is.
 2. **Irreversible acts on work that is not ours.** Force-push, `reset --hard` over work you did not make,
    deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
    frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the
-   art store — `art.py purge` takes `--owner-said` only.
+   art store — `art.py purge` takes `--owner-said` only (his ✕ on a sheet archives instead, §2.3).
+   **Delegated (owner card 2026-10-26 19:06, *"Archive then delete, in digest (Recommended)"*):** deleting OUR
+   OWN leftovers — old dev saves, scratch clones, orphan mandrake mod folders, settings or pictures nothing
+   reads, patches aimed at retired mods — when a check proves nothing reads it AND everything is pushed, after
+   archiving or bundling it under agent storage (`D:\ClaudeWork`), with each deletion listed in his daily
+   digest. Ruled words: *"May agents delete our own leftovers when a check proves nothing reads them and
+   everything is pushed, after archiving or bundling them, and list each in your digest?"* Checker:
+   `LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE`. Anything not ours, or not proven unread and pushed, is still his.
 3. **Replacing art he KEPT** — with ONE exception. *"Why are we replacing items for which I know I have good
    versions?"* (2026-10-19). `art.py install --reason` refuses over an owner-kept picture; a delegated call never
    works around that refusal. **Exception (owner card 2026-10-23 06:42, *"Yes, but show me after"*):** the art-eval
@@ -64,6 +77,15 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    installed through `art.py install --by-card "To make the system more fire-and-forget, may I decide this class of
    art change without you from now on? → Yes, delegate this class (Recommended)"` (old bytes archived, one-command
    revert), and listed in his daily digest after the fact. First use: the pipe elbow seams (PIPE_ELBOW_FIX_SEAM_JOGS).
+   **Third exception (owner card 2026-10-26 19:06, *"Newest mark wins, X archives (Recommended)"*):** his own sheet
+   marks are carried out without asking him again. When his newer mark conflicts with an older keep, the newest
+   mark wins; his ✕ on a picture he once kept or that is in the game moves it to the art archive (one-command
+   restore) — never a purge — and acts at once. Each act is listed in his daily digest. Ruled words: *"May
+   'newest mark wins' become a delegated rule, with X moving the picture to the art archive (one-command
+   restore) instead of deleting it, and each act listed in your digest?"* Tooling: `art.py` retire-to-archive
+   path and a guard exception tied to his mark's timestamp (`ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE`); until it
+   lands, a newest-mark conflict is enacted with `art.py install --by-card "<the card question> → Newest mark
+   wins, X archives (Recommended)"`, and a ✕ waits for the retire path — it is never purged and never re-carded.
    Any other replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
    `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
@@ -73,7 +95,15 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    Workshop upload, a public post), and the acts his global instructions call his: an interactive login, a
    GUI he must look at, a purchase (`~/.claude/CLAUDE.md`, "RUN IT YOURSELF" ③).
 6. **Presence-bound acts his rulings name.** Live flight tests of a flyer — *"do not do live testing of flyers
-   without a human present"* (CLAUDE.md, flight); `./bridge bench|foundry|free` and `broadcast.py` are his.
+   without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge bench|foundry|free` is his
+   except as delegated here. **Delegated (owner card 2026-10-26 19:06, *"Free bridge + 20 min idle
+   (Recommended)"*):** a seat MAY take the bridge, deploy and restart the game on its own when BOTH hold — a
+   watcher shows no other seat holds the bridge (it is free), AND he has not touched the game for 20 minutes —
+   and never for a flyer's flight. Each take and restart is listed in his daily digest. Ruled words: *"May a seat
+   take the free bridge, deploy and restart the game on its own when a watcher shows no other seat holds it and
+   you haven't touched the game for 20 minutes, never for flyer flight?"* Watcher and idle probe:
+   `BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH`; until it lands, neither condition can be shown, so the bridge stays
+   his.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.
@@ -111,7 +141,10 @@ Once a day, at his first sitting (BENCH) or with the nightly run (FOUNDRY), the 
 `Transient/delegated_digest_<YYYY-MM-DD>.md` and gives him its full native path: one line per delegated call
 since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
 from the ledger (`why` starting `delegated:`) and `git log --grep '^Delegated:'`; a zero-line digest is checked
-against a known delegated event before it is reported as zero.
+against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
+a digest line: each newest-mark enactment and ✕-archive (§2.3, class `art marks`), each bridge take, deploy and
+restart (§2.6, class `bridge idle`), each leftover deleted with its archive or bundle path (§2.2, class
+`leftovers`) — logged `--why "delegated: <class>"` so the digest finds it.
 
 To overturn: he says so, in any words; the seat records his words with `--owner-said` on the item, undoes the
 call, and adds the reason to the brief (§4.6). Silence on a digest line is not his approval — it stays logged as

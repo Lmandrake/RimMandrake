@@ -299,7 +299,7 @@ through the art ledger's `art install` only. **Check for existing regenerated ar
 leaf somewhere in a review sheet"*). Detail: `standing_rulings.md`.
 
 **Options he must LOOK at ship as a savegame** — *"Save user review options as save games."*
-One map, a grid key, saves kept until he says delete; back up the Saves folder first.
+One map, a grid key, saves kept until he says delete or nothing reads them (then archive, delete, digest — delegation_policy §2.2); back up the Saves folder first.
 
 ## Tools
 
@@ -315,7 +315,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
 ./game --why "<your reason>" down|loading|up        🔴 a REBOOT is yours to call, no asking
                                                      (owner 2026-09-02) — bridge free first
-./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
+./bridge [bench|foundry|free]                       his override; bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
                                                      the FULL sweep runs nightly 03:00 (rm-selftests-nightly.timer,
@@ -332,6 +332,10 @@ One window drives the live game at a time. Who holds it is `infrastructure/state
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
 taken; `take --force` always works. ⭐ The owner overrides with `./bridge bench|foundry|free`.
+⭐ **Free bridge + 20 min idle is yours (owner card 2026-10-26 19:06):** a seat MAY take the
+bridge, deploy and restart the game on its own when a watcher shows no other seat holds it AND
+he has not touched the game for 20 minutes — never for a flyer's flight; each act goes in his
+daily digest (`delegation_policy.md` §2.6; watcher BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH).
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens
 unnecessarily and rarely inform"*). Detail: `standing_rulings.md`.

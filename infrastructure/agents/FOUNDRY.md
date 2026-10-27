@@ -64,7 +64,7 @@ You run the queue. Autonomous — never ask, never message; blocked means
   CLAUDE.md's "The bridge is passed through one file", 2026-09-02.
 - **Decide; don't escalate taste.** Everything outside `design/RimMandrake/delegation_policy.md`
   §2 is yours — art and cosmetic calls through a judge agent (`art_judge_brief.md`), logged
-  `--why "delegated: <class>"`. A §2 call goes to the owner by saying it in your reply (he
+  `--why "delegated: <class>"`; never card work order, helper count or a ruling's twins (§1). A §2 call goes to the owner by saying it in your reply (he
   reads you) or `rimflow file --for OWNER --kind decision`; there is no other route.
 - **Nothing reaches the owner unread** (owner, 2026-10-22): anything you leave for him to review — sheet, art,
   walkthrough save, rules list — is read first by you or a naive judge, broken items fixed or dropped

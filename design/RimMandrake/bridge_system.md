@@ -87,7 +87,9 @@ functional script and is debugged through it*. The bridge is what those scripts 
 4. **Holding the bridge is blanket authorization** (owner 2026-09-19): start Steam, launch,
    cold-load, kill and relaunch, all without asking.
 5. **A reboot is the seat's to call** (owner 2026-09-02). It is gated only on the bridge
-   being free or yours, and on the ~15–25 min cost.
+   being free or yours, and on the ~15–25 min cost. With the game up, a seat may take the free bridge,
+   deploy and restart when he has not touched the game for 20 minutes — never for flyer flight, each act
+   in his digest (owner card 2026-10-26, `delegation_policy.md` §2.6).
 6. **`success: true` is not evidence.** Write → read back the raw field → look
    (DOC `skills/rimbridge/SKILL.md:39-41`).
 7. **The owner announces states the machine cannot see; anyone may measure the ones it can.**

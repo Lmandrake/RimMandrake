@@ -2156,3 +2156,40 @@ art_geometric_correction_delegated:
     the defect before and confirms it gone after; judged by a non-maker agent,
     logged delegated, archived for one-command revert, listed in the daily
     digest. Text and procedure: design/RimMandrake/delegation_policy.md §2.3.
+art_marks_newest_wins_delegated:
+  ruled: true
+  src: >
+    Owner card, 2026-10-26 19:06 PDT: "May 'newest mark wins' become a
+    delegated rule, with X moving the picture to the art archive (one-command
+    restore) instead of deleting it, and each act listed in your digest?" ->
+    "Newest mark wins, X archives (Recommended)". Class: carrying out his own
+    sheet marks without re-asking. When his newer mark conflicts with an older
+    keep, the newest mark wins; his X on a picture (kept or in the game) moves
+    it to the art archive with a one-command restore, never a purge. Each act
+    is listed in his daily digest. Text: design/RimMandrake/delegation_policy.md
+    §2.3. Build: ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE.
+bridge_free_idle_restart_delegated:
+  ruled: true
+  src: >
+    Owner card, 2026-10-26 19:06 PDT: "May a seat take the free bridge, deploy
+    and restart the game on its own when a watcher shows no other seat holds
+    it and you haven't touched the game for 20 minutes, never for flyer
+    flight?" -> "Free bridge + 20 min idle (Recommended)". Both conditions
+    must hold: a watcher shows the bridge free (no other seat holds it) AND
+    no owner input to the game for 20 minutes. Never for a flyer's flight.
+    Each take/restart listed in his daily digest. Text:
+    design/RimMandrake/delegation_policy.md §2.6. Build:
+    BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH.
+leftovers_archive_then_delete_delegated:
+  ruled: true
+  src: >
+    Owner card, 2026-10-26 19:06 PDT: "May agents delete our own leftovers
+    when a check proves nothing reads them and everything is pushed, after
+    archiving or bundling them, and list each in your digest?" -> "Archive
+    then delete, in digest (Recommended)". Scope: OUR leftovers only (old dev
+    saves, scratch clones, orphan mandrake mod folders, settings or pictures
+    nothing reads, patches aimed at retired mods). Conditions: a check proves
+    nothing reads it AND everything is pushed; archive or bundle first; each
+    deletion listed in his daily digest. Work not ours stays his. Text:
+    design/RimMandrake/delegation_policy.md §2.2. Build:
+    LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE.

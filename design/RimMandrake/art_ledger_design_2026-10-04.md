@@ -369,6 +369,8 @@ git tag `art-snapshot-2026-10-04`. Sheet snapshots: `infrastructure/state/art/sh
   a compare sheet then `art.py ingest`. Deletes the bytes from the store, appends a `purge` event; every later
   sheet and every backfill skips the sha. Refused for a picture live in a mod; an owner keep on it is released
   in the same act (sheet route) or needs `--release-keep` (CLI). Renders stay in `_artsrc` (artpipe's state).
+  Since owner card 2026-10-26 his ✕ on a kept or live picture archives it (one-command restore) and his newest mark
+  wins, without re-asking: `delegation_policy.md` §2.3, ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE.
 - **Unpurge (2026-10-15, owner only):** `art.py unpurge <sha> --owner-said "…"`. His newer, explicit words
   (*"accept all the art you showed me"* over a sheet that showed a picture he had purged earlier) reverse the
   latest purge: an append-only `unpurge` event carrying his words and `follows: <purge id>`; the purge stays in

@@ -83,8 +83,8 @@ python3 src/RimMandrake/Utils/art/art.py enact Transient/biome_ffar/X_sheet_D.de
     [--hold <subject>]... [--mark-done <row>]... [--no-deploy]
 ```
 
-- Enact = ingest rulings → install picks → queue redraws (his note verbatim as `owner_note`) → purge ✕ (never a
-  protected picture; those are CONFLICTS) → cut rows → deploy touched mods. A job that already carries his note is
+- Enact = ingest rulings → install picks → queue redraws (his note verbatim as `owner_note`) → purge ✕ (a kept or
+  live picture is archived instead, and his newest mark beats an older keep — never re-asked; `delegation_policy.md` §2.3) → cut rows → deploy touched mods. A job that already carries his note is
   reported, never re-filed.
 - Audit afterwards from the sources, not the summary: `art.py status <subject>` per row, artpipe `pending/` for the
   redraws, `git log` for the installs.
