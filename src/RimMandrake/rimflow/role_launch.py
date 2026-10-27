@@ -223,9 +223,11 @@ def validate_role(role):
     kinds = role.get("pending_work", list(PW.KINDS))
     if not (isinstance(kinds, list) and kinds and all(k in PW.KINDS for k in kinds)):
         raise ValueError("pending_work %r is not a non-empty list of %s" % (kinds, ", ".join(PW.KINDS)))
-    days = role.get("claim_window_days", PW.CLAIM_WINDOW_DAYS)
-    if not (_num(days) and days > 0):
-        raise ValueError("claim_window_days %r is not a number > 0" % (days,))
+    if "claim_window_days" in role:
+        raise ValueError("claim_window_days is retired: the Arbiter's queue is the work after its cutoff stamp, with no "
+                         "age limit (ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED); remove the key")
+    if "pre_launch_max_s" in role and not (_num(role["pre_launch_max_s"]) and role["pre_launch_max_s"] > 0):
+        raise ValueError("pre_launch_max_s %r is not a number > 0" % (role["pre_launch_max_s"],))
     per_day = role.get("event_runs_per_day", 1)
     if not isinstance(per_day, int) or isinstance(per_day, bool) or per_day < 0:
         raise ValueError("event_runs_per_day %r is not a whole number >= 0" % (per_day,))
@@ -538,9 +540,14 @@ def roles_by_name(sch):
 
 
 def max_s_of(run, cfg):
-    """A run's wall-time bound: its recorded run_max_s, else the role's, else the default, whichever is first a
-    positive number (a None or 0 from an older schedule never reaches a comparison: review V, V3)."""
-    for v in (run.get("run_max_s"), cfg.get("run_max_s"), ROLE_DEFAULTS["run_max_s"]):
+    """A run's wall-time bound: its recorded run_max_s, else the role's run_max_s + pre_launch_max_s, else the
+    default, whichever is first a positive number (a None or 0 from an older schedule never reaches a comparison:
+    review V, V3). pre_launch_max_s (ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME) is the pre-steps' own budget: the
+    bound counts from launch, so without it the pre-steps would eat the role's run_max_s."""
+    role_max = cfg.get("run_max_s")
+    if _num(role_max) and role_max > 0 and _num(cfg.get("pre_launch_max_s")):
+        role_max += cfg["pre_launch_max_s"]
+    for v in (run.get("run_max_s"), role_max, ROLE_DEFAULTS["run_max_s"]):
         if _num(v) and v > 0:
             return v
     return ROLE_DEFAULTS["run_max_s"]
@@ -937,14 +944,20 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 len(claims), iso(rs["event_cursor"]), claims[0][2], claims[0][1])
         if job["slot"] and cfg.get("slot_when") == "pending_work":
             # state, not a cursor: nothing is consumed, so work a launch did not finish is pending at the next slot
-            # (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK). Unreadable stores: launch, since work may be pending.
+            # (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK). Unreadable stores: launch, since work may be pending. No cutoff
+            # stamp: HOLD with an alarm, since launching would hand the Arbiter the whole pre-enable backlog
+            # (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS).
             try:
                 stores = obs["pending_stores"]() if obs.get("pending_stores") else None
                 if stores is None:
                     raise OSError("no pending_stores reader in obs")
-                pend = PW.pending(lr, stores, now, cfg.get("pending_work") or PW.KINDS,
-                                  cfg.get("claim_window_days", PW.CLAIM_WINDOW_DAYS))
+                pend = PW.pending(lr, stores, now, cfg.get("pending_work") or PW.KINDS)
                 what = PW.summary(pend)
+            except PW.NoCutoff as e:
+                mark(rs, job, "no cutoff")
+                act(do="alarm", kind="role:%s:cutoff" % name, ticket=job["item"], note=True,
+                    why="%s %s not run: %s" % (name, job["trigger"], e))
+                return
             except (OSError, ValueError) as e:
                 pend, what = True, "work stores UNMEASURED (%s), launched since work may be pending" % e
             if not pend:
@@ -1032,7 +1045,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["event_cursor"] = now      # every run reads the events up to its launch (arbiter.md, producer.md)
             rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
-            slot=job["key"], band=bname, seat=role["seat"], run_max_s=cfg["run_max_s"], account=pk.get("account"),
+            slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
                 name, job["trigger"], bname, budget, job["cap"], factor, spent, unit, role["model"],
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),

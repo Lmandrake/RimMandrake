@@ -12,6 +12,8 @@ os.environ["RM_CLOSE_EVIDENCE_DIR"] = os.path.join(T, "evidence")
 os.environ["RM_CLOSE_EVIDENCE_KEY"] = os.path.join(T, "key", "close_evidence.key")
 os.environ["RM_ISOLATED_JOURNAL"] = os.path.join(T, "journal.jsonl")
 os.environ["RM_ISOLATED_DEFS_ROOTS"] = ""
+os.environ["RM_ISOLATED_CARRIED"] = os.path.join(T, "carried.json")         # never the live carried list
+os.environ["RM_ARBITER_CUTOFF"] = os.path.join(T, "arbiter", "cutoff.json")  # never the live stamp
 for k in ("RIMFLOW_SEAT", "AGENT_SEAT", "RIMFLOW_ITEM"):
     os.environ.pop(k, None)
 from rimflow import isolated_evidence as ie        # noqa: E402
@@ -187,6 +189,51 @@ buf = io.StringIO()
 with contextlib.redirect_stderr(buf):
     rc = ie.main(["--now", NOW, "--root", ROOT], events=[], repos=[REPO])
 ok("no ledger: exit 2 UNMEASURED", (rc, "UNMEASURED" in buf.getvalue()), (2, True))
+
+# ---- ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME / ARBITER_DECIDE_BACKLOG_NEVER_DRAINS: --since-cutoff, budget, carry
+rc, out = main("--since-cutoff")
+ok("cutoff: no stamp -> exit 2, nothing planned", (rc, "PLAN" in out), (2, False))
+from rimflow import arbiter_pending as PW  # noqa: E402
+PW.stamp(os.environ["RM_ARBITER_CUTOFF"], "2026-10-27T11:05:30Z", by="SELFTEST", why="test")
+rc, out = main("--since-cutoff", "--json")
+ok("cutoff: only closes at/after the stamp, oldest first (no day window)",
+   (rc, [p["item"] for p in json.loads(out)["plans"]]), (0, ["IT_FAIL", "IT_GHOST", "IT_RUNNER"]))
+
+clock, calls = [0.0], []
+
+
+def fake_run(p, seat, root, timeout=None, **kw):
+    calls.append((p["item"], timeout))
+    clock[0] += 100
+    return {"item": p["item"], "sha": p["full"], "key": ie.plan_key(p), "seat": seat, "runs": [], "records": [],
+            "total_s": 100, "ts": "2026-10-27T12:00:00Z"}
+
+
+real_run, real_clock = ie.run_claim, ie.CLOCK
+ie.run_claim, ie.CLOCK = fake_run, (lambda: clock[0])
+try:
+    n0 = sum(1 for _ in open(os.environ["RM_ISOLATED_JOURNAL"]))
+    rc, out = main("--run", "--again", "--budget-s", "250", "--claim-reserve-s", "100")
+    car = json.load(open(os.environ["RM_ISOLATED_CARRIED"]))
+    ok("budget: claims start oldest first while elapsed + reserve <= budget, each tool bounded by what is left",
+       (rc, calls), (0, [("IT_ONE", 250), ("IT_TWO", 150)]))
+    ok("budget: the rest are CARRIED (carried.json, oldest first), not journaled",
+       ([c["item"] for c in car["carried"]], sum(1 for _ in open(os.environ["RM_ISOLATED_JOURNAL"])) - n0),
+       (["IT_FAIL", "IT_RUNNER"], 2))
+    ok("budget: carried rows carry the full sha and the budget", (car["carried"][0]["sha"], car["budget_s"]),
+       (SHA3, 250))
+    ok("budget: the run says what it carried", "CARRIED" in out and "IT_FAIL" in out, True)
+    del calls[:]
+    rc, out = main("--run", "--again", "--budget-s", "50", "--claim-reserve-s", "180")
+    ok("budget: the oldest claim always runs (never starves behind its own reserve)",
+       ([c[0] for c in calls], len(json.load(open(os.environ["RM_ISOLATED_CARRIED"]))["carried"])), (["IT_ONE"], 3))
+    del calls[:]
+    rc, out = main("--run", "--again")
+    ok("budget: none -> every claim runs, carried.json rewritten empty (never stale); no budget = no claim deadline, RUN_TIMEOUT per tool",
+       (len(calls), json.load(open(os.environ["RM_ISOLATED_CARRIED"]))["carried"], calls[0][1]),
+       (4, [], None))
+finally:
+    ie.run_claim, ie.CLOCK = real_run, real_clock
 
 import shutil  # noqa: E402
 shutil.rmtree(T, ignore_errors=True)

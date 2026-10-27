@@ -598,6 +598,60 @@ ok("AB10 no tmp file left, judge list parses",
    ([f for f in os.listdir(d10) + os.listdir(j10) if f.endswith(".tmp")],
     isinstance(json.load(open(os.path.join(j10, "judge_list.json")))["claims"], list)), ([], True))
 
+# ARBITER_DECIDE_BACKLOG_NEVER_DRAINS (BENCH delegated ruling 2026-10-27): the Arbiter judges claims closed after the
+# cutoff stamp, oldest first, at most --cap a batch (UNRESOLVED re-judges count against it), never one that has a
+# verdict line, never one isolated_evidence carried (it was not run yet: judged next batch with its evidence)
+jr = [{"item": "Q%d" % k, "sha": "%07d" % k, "tier": "T2_NOEVIDENCE", "calibration": False,
+       "closed_at": "2026-10-26T%02d:00:00Z" % (9 - k)} for k in range(6)]          # Q5 oldest ... Q0 newest
+ok("CAP no cap: every T2 claim (unchanged)", len(at.judge_list(jr, "s")), 6)
+ok("CAP cap 3 takes the 3 OLDEST", sorted(x["item"] for x in at.judge_list(jr, "s", cap=3)), ["Q3", "Q4", "Q5"])
+ok("CAP excluded claims (verdict line / carried) are skipped, the next oldest fills in",
+   sorted(x["item"] for x in at.judge_list(jr, "s", cap=3, exclude=[("Q5", "0000005"), ("Q4", "0000004abcdef")])),
+   ["Q1", "Q2", "Q3"])
+ok("CAP unresolved re-judges count against the cap", sorted(x["item"] for x in at.judge_list(jr, "s", cap=3, unresolved=2)),
+   ["Q5"])
+ok("CAP unresolved >= cap: no new claim this batch", at.judge_list(jr, "s", cap=3, unresolved=3), [])
+FILES["docs1234"] = FILES["docs"]
+ce_ = [ev("close", "K0", "2026-10-25T00:00:00Z", sha="docs1234", reason="pre-enable"),
+       ev("close", "K1", "2026-10-26T01:00:00Z", sha="docs1234", reason="done"),
+       ev("close", "K2", "2026-10-26T02:00:00Z", sha="docs1234", reason="done"),
+       ev("close", "K3", "2026-10-26T03:00:00Z", sha="docs1234", reason="done"),
+       ev("close", "K4", "2026-10-26T04:00:00Z", sha="docs1234", reason="done")]
+dc, jc = tempfile.mkdtemp(), tempfile.mkdtemp()
+_cut, _car = os.path.join(dc, "cutoff.json"), os.path.join(dc, "carried.json")
+os.environ["RM_ARBITER_CUTOFF"], os.environ["RM_ISOLATED_CARRIED"] = _cut, _car
+with open(os.path.join(jc, "verdicts.jsonl"), "w") as f:
+    f.write(json.dumps({"item": "K1", "sha": "docs1234", "disposition": "PASS", "ts": "2026-10-26T20:00:00Z"}) + "\n")
+    f.write(json.dumps({"item": "K3", "sha": "docs123", "disposition": "UNRESOLVED", "ts": "2026-10-26T20:00:00Z"}) + "\n")
+
+
+def _cutrun(*extra):
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        return at.main(["--data", dc, "--judge-dir", jc, "--past-audits", pa, "--evidence-dir", j8,
+                        "--now", "2026-10-27T00:00:00Z", "--since-cutoff"] + list(extra), events=with_builder(ce_),
+                       _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists,
+                                "evidence_lookup": lambda sha, item, paths: []})
+
+
+ok("CUT --since-cutoff with no stamp exits 2, nothing written", (_cutrun("--cap", "2"), os.listdir(jc)),
+   (2, ["verdicts.jsonl"]))
+from rimflow import arbiter_pending as PW                                    # noqa: E402
+PW.stamp(_cut, "2026-10-25T12:00:00Z", by="SELFTEST", why="test")
+ok("CUT no carried list from isolated_evidence exits 2 (its pre-step did not run)", _cutrun("--cap", "2"), 2)
+with open(_car, "w") as f:
+    json.dump({"generated": "2026-10-27T00:00:00Z", "carried": [{"item": "K2", "sha": "docs1234"}]}, f)
+ok("CUT runs", _cutrun("--cap", "2"), 0)
+_doc = json.load(open(os.path.join(dc, "tiers.json")))
+ok("CUT since = the cutoff; pre-cutoff K0 and carried K2 are not tiered this batch",
+   (_doc["since"], sorted(r["item"] for r in _doc["rows"])), ("2026-10-25T12:00:00Z", ["K1", "K3", "K4"]))
+ok("CUT judge list: K1 has a verdict, K3 is an UNRESOLVED re-judge (1 of cap 2), so only K4",
+   [x["item"] for x in json.load(open(os.path.join(jc, "judge_list.json")))["claims"]], ["K4"])
+with open(_car, "w") as f:
+    json.dump({"generated": "2026-10-27T00:00:00Z", "carried": []}, f)
+_cutrun("--cap", "2")
+ok("CUT once run, the carried claim is the oldest unjudged and goes first",
+   [x["item"] for x in json.load(open(os.path.join(jc, "judge_list.json")))["claims"]], ["K2"])
+
 # lookup_close_evidence: covering runs plus item-tagged non-PASS runs; an item-tagged PASS elsewhere is dropped
 i, s6, e6 = claim6()
 put(s6, "PASS", ["src/m"])

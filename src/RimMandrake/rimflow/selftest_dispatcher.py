@@ -1511,8 +1511,9 @@ def test_role_done_claims_gate():
 
 
 class BacklogItem(object):
-    def __init__(self, state, owed):
+    def __init__(self, state, owed, built_at=None):
         self.state, self._owed, self.open, self.raised, self.row = state, owed, True, None, None
+        self.built_at = built_at
 
     def owed_levels(self):
         return list(self._owed)
@@ -1523,7 +1524,7 @@ def pwobs(t, events, items=None, stores=None, **kw):
     if callable(stores):
         o["pending_stores"] = stores
     elif stores is not False:
-        st = dict({"verdicts": [], "tiers_history": []}, **(stores or {}))
+        st = dict({"verdicts": [], "tiers_history": [], "cutoff": t - 86400 * 9}, **(stores or {}))
         o["pending_stores"] = lambda: st
     return o
 
@@ -1563,11 +1564,11 @@ def test_role_pending_work_gate():
     la, _ = run(based(), t, [before], stores={"verdicts": [passed]})
     check(not la, "pending_work: work filed BEFORE the pass is not an escape")
     # the verify backlog alone (an L4-only item is his, not pending)
-    items = {"BUILT_L1": BacklogItem("built", ["L1", "L4"])}
+    items = {"BUILT_L1": BacklogItem("built", ["L1", "L4"], lts(t - 3600))}
     la, _ = run(based(), t, [], items=items)
     check(la and "verify backlog (first BUILT_L1)" in la[0]["why"], "pending_work: a verify-backlog item launches")
-    la, _ = run(based(), t, [], items={"ONLY_L4": BacklogItem("validated", ["L4"]),
-                                       "CLOSED": BacklogItem("closed", ["L1"])})
+    la, _ = run(based(), t, [], items={"ONLY_L4": BacklogItem("validated", ["L4"], lts(t - 3600)),
+                                       "CLOSED": BacklogItem("closed", ["L1"], lts(t - 3600))})
     check(not la, "pending_work: L4-only and closed items are not the Arbiter's backlog")
     # a done claim, and a launch that never wrote a verdict: still pending at the next slot (nothing consumed)
     close = dict(BASE_EV, event="close", id="CLAIMED", sha=sha, ts=lts(t - 3600))
@@ -1587,9 +1588,15 @@ def test_role_pending_work_gate():
         la, _ = run(based(), t, [close], stores={"tiers_history": [{"item": "CLAIMED", "sha": sha, "decision": dec}]})
         check(bool(la) == want, "pending_work: tiers_history decision %s %s the claim" % (
             dec, "leaves pending" if want else "acknowledges"))
+    # ARBITER_FIX_CLAIMS_AGE_OUT_UNJUDGED: a claim after the cutoff never ages out; one before it is not his queue
     old = dict(close, ts=lts(t - 86400 * 8))
     la, _ = run(based(), t, [old])
-    check(not la, "pending_work: a close older than claim_window_days (7) is out of the claim window")
+    check(la and "CLAIMED" in la[0]["why"], "pending_work: an unjudged close 8 days old (after the cutoff) is pending")
+    la, _ = run(based(), t + 86400 * 364, [old], stores={"cutoff": t - 86400 * 9})    # 52 weeks: same slot, same DST
+    check(la and "CLAIMED" in la[0]["why"], "pending_work: an unjudged close after the cutoff is pending a year on")
+    pre = dict(close, ts=lts(t - 86400 * 10))
+    la, _ = run(based(), t, [pre])
+    check(not la, "pending_work: a close before the cutoff is the pre-enable backlog, not the Arbiter's queue")
     # blind stores launch (work may be pending), with the reason in the trigger
     def torn():
         raise ValueError("verdicts.jsonl line 3 is not JSON")
@@ -1602,20 +1609,84 @@ def test_role_pending_work_gate():
                            pwobs(t, [], stores={"verdicts": [unres]}), t))
     check(not [x for x in a2 if x["do"] == "role_launch"], "pending_work: kinds narrowed to the backlog ignore UNRESOLVED")
     for bad in ({"pending_work": ["escape"]}, {"pending_work": []}, {"claim_window_days": 0},
+                {"claim_window_days": 7}, {"pre_launch_max_s": 0}, {"pre_launch_max_s": "600"},
                 {"slot_when": "claims"}):
         a2 = role_acts(rdecide([arbiter(**dict({"slot_when": "pending_work"}, **bad))], based(), pwobs(t, []), t))
         check([x.get("kind") for x in a2] == ["role:Arbiter:schedule"], "pending_work: schedule %r refused" % (bad,))
     # the store reader: absent files are empty (never ran), a misspelt disposition is torn
     with tempfile.TemporaryDirectory() as d:
         v, h = os.path.join(d, "verdicts.jsonl"), os.path.join(d, "tiers_history.jsonl")
-        check(RL.PW.read_stores(v, h) == {"verdicts": [], "tiers_history": []}, "read_stores: absent files are empty")
+        c = os.path.join(d, "cutoff.json")
+        check(RL.PW.read_stores(v, h, c) == {"verdicts": [], "tiers_history": [], "cutoff": None},
+              "read_stores: absent files are empty, an absent cutoff is None")
         with open(v, "w") as f:
             f.write(json.dumps(dict(unres, disposition="PASSED")) + "\n")
         try:
-            RL.PW.read_stores(v, h)
+            RL.PW.read_stores(v, h, c)
             check(False, "read_stores: an unknown disposition is refused")
         except ValueError:
             check(True, "read_stores: an unknown disposition is refused")
+
+
+def test_role_arbiter_cutoff():
+    """ARBITER_DECIDE_BACKLOG_NEVER_DRAINS (BENCH delegated ruling 2026-10-27): the Arbiter's queue is the work after
+    the cutoff stamped at enable, oldest first; no stamp holds the slot with an alarm (never a launch over the whole
+    pre-enable backlog). ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME: pre_launch_max_s is its own bound."""
+    t = at_local("11:00")
+    cut = t - 86400 * 2
+
+    def based():
+        st = fresh()
+        st["roles"] = {"Arbiter": {"done": {}, "runs": [], "event_cursor": t - 60, "events_seen": []}}
+        return st
+
+    def acts(role, events, **kw):
+        return role_acts(rdecide([role], based(), pwobs(t, events, **kw), t))
+    arb = arbiter(slot_when="pending_work")
+    c1 = dict(BASE_EV, event="close", id="NEWER", sha="abcdef1234567890", ts=lts(cut + 7200))
+    c2 = dict(BASE_EV, event="close", id="OLDER", sha="1234567abcdef890", ts=lts(cut + 60))
+    a = acts(arb, [c1, c2], stores={"cutoff": None})
+    check(not [x for x in a if x["do"] == "role_launch"]
+          and [x.get("kind") for x in a if x["do"] == "alarm"] == ["role:Arbiter:cutoff"]
+          and any("cutoff" in x.get("why", "") and "stamp" in x.get("why", "") for x in a),
+          "cutoff: no stamp holds the slot with an alarm naming `stamp`, never a launch over the backlog")
+    unres = {"item": "CARRIED", "sha": "abcdef1", "disposition": "UNRESOLVED", "ts": lts(t - 600)}
+    a = acts(arbiter(slot_when="pending_work", pending_work=["unresolved"]), [], stores={"cutoff": None,
+                                                                                         "verdicts": [unres]})
+    check([x for x in a if x["do"] == "role_launch"], "cutoff: kinds that need no cutoff launch without one")
+    a = acts(arb, [c1, c2], stores={"cutoff": cut})
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and "2 done claims (first OLDER)" in la[0]["why"], "cutoff: done claims are listed oldest first")
+    items = {"PRE": BacklogItem("built", ["L1"], lts(cut - 60)), "NONE": BacklogItem("validated", ["L2"])}
+    check(not [x for x in acts(arb, [], items=items, stores={"cutoff": cut}) if x["do"] == "role_launch"],
+          "cutoff: a backlog item built before the cutoff (or with no build time) is not the Arbiter's")
+    items["POST"] = BacklogItem("built", ["L1"], lts(cut + 60))
+    la = [x for x in acts(arb, [], items=items, stores={"cutoff": cut}) if x["do"] == "role_launch"]
+    check(la and "1 verify backlog (first POST)" in la[0]["why"], "cutoff: a backlog item built after it is")
+    # the stamp: written once, never overwritten; torn -> ValueError; read back as epoch
+    with tempfile.TemporaryDirectory() as d:
+        c = os.path.join(d, "arbiter", "cutoff.json")
+        check(RL.PW.read_cutoff(c) is None, "stamp: absent -> None")
+        RL.PW.stamp(c, "2026-10-30T09:00:00Z", by="BENCH", why="advisory enable")
+        check(RL.PW.read_cutoff(c) == RL.PW.epoch("2026-10-30T09:00:00Z"), "stamp: read back")
+        try:
+            RL.PW.stamp(c, "2026-11-30T09:00:00Z", by="BENCH", why="again")
+            check(False, "stamp: a second stamp is refused")
+        except FileExistsError:
+            check(RL.PW.read_cutoff(c) == RL.PW.epoch("2026-10-30T09:00:00Z"), "stamp: a second stamp is refused")
+        with open(c, "w") as f:
+            f.write('{"cutoff": "2026-1')
+        try:
+            RL.PW.read_cutoff(c)
+            check(False, "stamp: a torn file raises ValueError")
+        except ValueError:
+            check(True, "stamp: a torn file raises ValueError")
+    # pre_launch_max_s: its own budget, added to the run's wall bound and recorded on the run
+    arb2 = arbiter(slot_when="pending_work", run_max_s=2700, pre_launch_max_s=1200)
+    la = [x for x in acts(arb2, [c1], stores={"cutoff": cut}) if x["do"] == "role_launch"]
+    check(la and la[0]["run_max_s"] == 3900, "pre_launch_max_s: the launch records run_max_s 2700 + 1200")
+    check(RL.max_s_of({}, arb2) == 3900 and RL.max_s_of({"run_max_s": 3900}, arb2) == 3900
+          and RL.max_s_of({}, arbiter(run_max_s=2700)) == 2700, "pre_launch_max_s: max_s_of sums it, absent = 0")
 
 
 def test_role_plan_failure_events():
@@ -1724,8 +1795,13 @@ def test_role_real_schedule_triggers():
           and a.get("pending_work", list(RL.PW.KINDS)) == list(RL.PW.KINDS),
           "schedule: Arbiter batches at 11:00/17:00 gated on ANY pending work (escapes, unresolved, claims, backlog)")
     check(a.get("pre_launch") == [["python3", "src/RimMandrake/rimflow/isolated_evidence.py", "--run", "--seat",
-                                   "DISPATCHER"], ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py"]],
-          "schedule: the Arbiter's pre_launch runs isolated_evidence.py, then arbiter_tiers.py")
+                                   "DISPATCHER", "--since-cutoff", "--budget-s", "900"],
+                                  ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py", "--since-cutoff", "--cap",
+                                   "6"]],
+          "schedule: the Arbiter's pre_launch runs isolated_evidence.py (900 s budget), then arbiter_tiers.py (cap 6)"
+          ", both from the cutoff")
+    check(a.get("pre_launch_max_s") == 1200 and a.get("run_max_s") == 2700 and "claim_window_days" not in a,
+          "schedule: the Arbiter's pre-step has its own 1200 s bound beside run_max_s 2700; no claim window")
     check(roles["Auditor"].get("pre_launch") == ["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
           "schedule: the Auditor's pre_launch creates/validates audits.jsonl (audits.py ensure)")
     for r in sch["roles"]:
@@ -2775,7 +2851,7 @@ def main():
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
-              test_role_plan_failure_events,
+              test_role_arbiter_cutoff, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,

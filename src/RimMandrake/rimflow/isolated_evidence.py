@@ -28,9 +28,19 @@ Checkout cost, MEASURED 2026-10-27 on the bench clone (37,990 files, 3.67 GB wor
 ext4 (~/.seat-tmp) 12.6-14.7 s + 0.4 s delete; D: (drvfs) 312.4 s + 29.8 s delete. So checkouts go on ext4:
 DEFAULT_ROOT, override with RM_ISOLATED_ROOT or --root. One checkout at a time (flock), deleted after each claim.
 
-Scheduled as the Arbiter's first pre_launch step (`--run --seat DISPATCHER`, before arbiter_tiers.py,
-dispatcher_schedule.json), so it runs only while the Arbiter is enabled. Dry run is the default: it prints the plan
-and runs nothing. `--run` executes.
+Scheduled as the Arbiter's first pre_launch step (`--run --seat DISPATCHER --since-cutoff --budget-s 900`, before
+arbiter_tiers.py, dispatcher_schedule.json), so it runs only while the Arbiter is enabled. Dry run is the default: it
+prints the plan and runs nothing. `--run` executes.
+
+--since-cutoff (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS): the claims are the closes at/after the Arbiter's cutoff stamp
+(arbiter_pending.py), oldest first, with no day window; no stamp -> exit 2. --budget-s N
+(ARBITER_MEASURE_PRELAUNCH_EVIDENCE_TIME): skip-and-carry. The oldest claim always runs; a later one starts only while
+elapsed + --claim-reserve-s (default 180 = the measured worst claim, 171.1 s, rounded up) <= N; each tool's timeout is
+what is left of N (at least 60 s, at most RUN_TIMEOUT). A claim cut by that timeout is journaled like any other (its
+rc is "timeout", not evidence) so it never starves the queue; claims not started are CARRIED: written, oldest first, to
+CARRIED (env RM_ISOLATED_CARRIED), rewritten on every --run (empty when none), and arbiter_tiers --since-cutoff leaves
+them out of that batch. MEASURED 2026-10-27 (1 day of real closes, scratch store): per claim mean 22.3 s, p90 25.6,
+max 171.1; 826 s for one day's 37 runnable claims.
 
     python3 src/RimMandrake/rimflow/isolated_evidence.py [--days 2] [--item ID] [--max N] [--json]      # plan only
     python3 src/RimMandrake/rimflow/isolated_evidence.py --run [--seat DISPATCHER] [--root DIR] [--again]
@@ -59,8 +69,27 @@ DEFAULT_DEFS_ROOTS = (_STEAM + "/common/RimWorld/Data", _STEAM + "/common/RimWor
 RUNNER_SEATS = ("DISPATCHER", "RUNNER")      # no-AI seats; a builder seat's run is never independent of its own work
 MIN_FREE = 12 * 1024 ** 3                    # a checkout is ~3.7 GB; leave room for the tests' own output
 RUN_TIMEOUT = 1800
+MIN_TOOL_TIMEOUT = 60
+CLAIM_RESERVE_S = 180                        # the measured worst claim (171.1 s, validate_patch), rounded up
+CARRIED_ENV = "RM_ISOLATED_CARRIED"
+CLOCK = time.monotonic                       # tests replace it
 SELFTEST_ROOTS = ("src/", ".claude/hooks/", "skills/", "infrastructure/dashboards/hub/", "infrastructure/stevedesktop/")
 _CITE = re.compile(r"[A-Za-z0-9_./\\:-]*selftest[A-Za-z0-9_-]*\.py")
+
+
+def carried_path():
+    return os.environ.get(CARRIED_ENV) or os.path.join(DATA, "carried.json")
+
+
+def write_carried(rows, budget_s, path=None):
+    """Atomic: the list arbiter_tiers --since-cutoff reads is never half-written."""
+    path = path or carried_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = "%s.%d.tmp" % (path, os.getpid())
+    with open(tmp, "w") as f:
+        json.dump({"generated": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+                   "budget_s": budget_s, "carried": rows}, f, indent=1)
+    os.replace(tmp, path)
 
 
 def journal_path():
@@ -269,8 +298,10 @@ def child_env(seat, item):
     return env
 
 
-def run_claim(p, seat, root, runner=subprocess.run, out_dir=None):
-    """Make the checkout, run the plan in it, read back what was recorded, delete the checkout. -> journal row."""
+def run_claim(p, seat, root, runner=subprocess.run, out_dir=None, timeout=None):
+    """Make the checkout, run the plan in it, read back what was recorded, delete the checkout. -> journal row.
+    timeout: the batch budget left (None = RUN_TIMEOUT); each tool gets what is left of it when it starts."""
+    deadline = None if timeout is None else time.time() + timeout
     t0 = time.time()
     co, full, td = ce.make_isolated(p["repo"], p["full"], root=root)
     row = {"item": p["item"], "sha": full, "key": plan_key(p), "seat": seat, "checkout_s": round(time.time() - t0, 1),
@@ -288,8 +319,9 @@ def run_claim(p, seat, root, runner=subprocess.run, out_dir=None):
             cmds.append(("validate_patch", cmd))
         for tool, cmd in cmds:
             t1 = time.time()
+            tmo = RUN_TIMEOUT if deadline is None else int(min(RUN_TIMEOUT, max(MIN_TOOL_TIMEOUT, deadline - t1)))
             try:
-                r = runner(cmd, cwd=co, env=env, capture_output=True, text=True, timeout=RUN_TIMEOUT)
+                r = runner(cmd, cwd=co, env=env, capture_output=True, text=True, timeout=tmo)
                 rc, tail = r.returncode, ((r.stdout or "") + (r.stderr or ""))[-1500:]
             except subprocess.TimeoutExpired:
                 rc, tail = "timeout", ""
@@ -336,6 +368,11 @@ def main(argv=None, events=None, repos=None):
     a.add_argument("--root", default=os.environ.get(ce.ISOLATED_ROOT_ENV) or DEFAULT_ROOT)
     a.add_argument("--again", action="store_true", help="re-run claims the journal already has for the same plan")
     a.add_argument("--now", help="ISO UTC, for --days (tests)")
+    a.add_argument("--since-cutoff", action="store_true",
+                   help="claims closed at/after the Arbiter's cutoff stamp, no day window (exit 2 when unstamped)")
+    a.add_argument("--budget-s", type=float, default=0, help="skip-and-carry wall budget for --run (0 = none)")
+    a.add_argument("--claim-reserve-s", type=float, default=CLAIM_RESERVE_S,
+                   help="a claim after the first starts only while elapsed + this <= the budget")
     a.add_argument("--json", action="store_true")
     a = a.parse_args(argv)
     now = _epoch(a.now) if a.now else time.time()
@@ -349,7 +386,19 @@ def main(argv=None, events=None, repos=None):
     except Exception as ex:  # noqa: BLE001
         print("UNMEASURED: ledger unreadable (%s)" % ex, file=sys.stderr)
         return 2
-    claims = [c for c in done_claims(events, now - 86400 * a.days) if not a.item or c["item"] in a.item]
+    since = now - 86400 * a.days
+    if a.since_cutoff:
+        from rimflow import arbiter_pending as PW
+        try:
+            since = PW.read_cutoff()
+        except ValueError as ex:
+            since, why = None, str(ex)
+        else:
+            why = "no Arbiter cutoff stamp at %s (arbiter_pending.py stamp)" % PW.cutoff_path()
+        if since is None:
+            print("UNMEASURED: %s" % why, file=sys.stderr)
+            return 2
+    claims = [c for c in done_claims(events, since) if not a.item or c["item"] in a.item]
     done = read_journal()
     plans = []
     for c in claims:
@@ -365,8 +414,9 @@ def main(argv=None, events=None, repos=None):
                 p["skip"] = "seat %s built or closed this claim: its run would not be independent" % a.seat
         plans.append(p)
     todo = [p for p in plans if not p.get("skip")]
+    held = []
     if a.max:
-        todo = todo[:a.max]
+        todo, held = todo[:a.max], todo[a.max:]
     if a.json:
         print(json.dumps({"run": a.run, "root": a.root, "plans": plans}, indent=1, default=str))
     else:
@@ -376,7 +426,11 @@ def main(argv=None, events=None, repos=None):
                                             len(p["selftests"]), len(p["validate"]),
                                             ("; owed: " + "; ".join(p["owed"])) if p["owed"] else "")))
         print("%d claim(s), %d to run%s" % (len(plans), len(todo), "" if a.run else " (dry run: pass --run)"))
-    if not a.run or not todo:
+    if not a.run:
+        return 0
+    carried = [{"item": p["item"], "sha": p.get("full") or p["sha"], "close_ts": p.get("close_ts")} for p in held]
+    if not todo:
+        write_carried(carried, a.budget_s)
         return 0
     try:
         with _lock(a.root):
@@ -385,9 +439,16 @@ def main(argv=None, events=None, repos=None):
                 print("UNMEASURED: %.1f GB free under %s, need %.0f" % (free / 1024 ** 3, a.root, MIN_FREE / 1024 ** 3),
                       file=sys.stderr)
                 return 2
-            for p in todo:
+            t0 = CLOCK()
+            for n, p in enumerate(todo):
+                left = (a.budget_s - (CLOCK() - t0)) if a.budget_s else None
+                if left is not None and n and left < a.claim_reserve_s:
+                    carried.append({"item": p["item"], "sha": p.get("full") or p["sha"], "close_ts": p.get("close_ts")})
+                    print("CARRIED  %-48s %s  %.0f s of %.0f left < reserve %.0f: first in line next batch" % (
+                        p["item"][:48], (p.get("full") or p["sha"])[:12], left, a.budget_s, a.claim_reserve_s))
+                    continue
                 try:
-                    row = run_claim(p, a.seat, a.root)
+                    row = run_claim(p, a.seat, a.root, timeout=None if left is None else max(left, 0))
                 except Exception as ex:  # noqa: BLE001
                     row = {"item": p["item"], "sha": p.get("full"), "key": plan_key(p), "seat": a.seat,
                            "error": "%s: %s" % (type(ex).__name__, ex),
@@ -398,6 +459,8 @@ def main(argv=None, events=None, repos=None):
                     ", ".join("%s %s%s" % (r["tool"], r["result"], "" if r["evidence"] else " (not evidence)")
                               for r in row.get("records") or []) or "none",
                     ("  ERROR " + row["error"]) if row.get("error") else ""))
+            carried.sort(key=lambda c: (c["close_ts"] or "", c["item"]))
+            write_carried(carried, a.budget_s)
     except RuntimeError as ex:
         print("UNMEASURED: %s" % ex, file=sys.stderr)
         return 2

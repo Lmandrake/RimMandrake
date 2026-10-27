@@ -17,8 +17,16 @@ not the whole bar.
 11:00 and 17:00, when any work is pending (`arbiter_pending.py`):
 - an escape with no check spec filed yet;
 - a claim whose newest `verdicts.jsonl` line is UNRESOLVED;
-- a close in the last 7 days with no final verdict for its item and sha that the no-AI tiers did not PASS;
-- the verify backlog (L1-L3, GREEN-MIN/FULL).
+- a close at or after your cutoff stamp with no final verdict for its item and sha that the no-AI tiers did not PASS
+  (no age limit: a claim inside the window never ages out);
+- the verify backlog (L1-L3, GREEN-MIN/FULL) of items built at or after the cutoff.
+
+**The cutoff (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS, BENCH delegated ruling 2026-10-27).** You judge only claims closed
+after your enable. `arbiter_pending.py stamp --by <seat> --why <reason>` writes
+`D:\ClaudeWork\rimmandrake\arbiter\cutoff.json` once, at enable; it refuses to overwrite. Without it the slot holds
+and raises `role:Arbiter:cutoff`, rather than judging an undefined window. The pre-enable backlog (826 closes and 489
+verify items on 2026-10-27) is never yours and is never dropped: it goes to the Auditor's risk-ranked sampling and
+`audit_prescreen.py`'s hard flags.
 
 With none of these, the slot is a hold and no run happens. The gate reads state, not a cursor, so a launch consumes
 nothing. A claim leaves your queue only when `verdicts.jsonl` holds a final verdict for its item and sha. An escape
@@ -28,7 +36,9 @@ no longer holds back the enable; the enable is the owner's switch (wave 2). Unti
 claim you leave UNRESOLVED is also noted on its item for that holder.
 The Dispatcher may refuse or stop a run; the claims then wait for the next batch, unjudged and not passed.
 The launch first records each claim's evidence from an isolated checkout at its sha (`isolated_evidence.py`), then
-rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. If
+rebuilds `judge_list.json` and `bounces.json` from the ledger, in the same unit, before you start. A batch holds a
+bounded number of claims, oldest first. A claim not on this batch's list stays queued for a later one; it is never
+dropped. A claim whose evidence was not recorded yet is never on the list. If
 either step cannot measure (a store or key missing, a torn line), you are not started at all: no batch beats a batch
 judged from last time's list.
 

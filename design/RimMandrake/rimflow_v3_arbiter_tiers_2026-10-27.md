@@ -243,7 +243,12 @@ all-claims Arbiter:
 ## 7. Rollout
 
 1. Advisory week. Before each batch, `arbiter_tiers.py` writes `judge_list.json` and `bounces.json` for the
-   Arbiter and `tiers.json` for the Auditor, and the Arbiter judges every claim on the judge list. Gate results and bounces are logged, but the interim GPT reviewer still gates closes (A-1).
+   Arbiter and `tiers.json` for the Auditor, and the Arbiter judges every claim on the judge list. As scheduled
+   (`--since-cutoff --cap 6`, ARBITER_DECIDE_BACKLOG_NEVER_DRAINS), the list holds only claims closed after the
+   Arbiter's cutoff stamp. It takes the oldest unjudged ones first, at most 6 a batch less its UNRESOLVED re-judges.
+   It never includes a claim that already has a verdict line, or one whose isolated evidence was carried. Claims past
+   the cap wait; they do not age out. Inflow ran at about 49 AI claims a day against 12 a day of capacity on
+   2026-10-27, so the queue lag grows until the cap is re-sized from the measured verdict cost. Gate results and bounces are logged, but the interim GPT reviewer still gates closes (A-1).
    The module is not wired into `role_launch.py` yet; that is a Dispatcher change for its owner.
 2. Build missing gates 1-5 as their own items. Each new gate shifts claims from T1/T2 into T0.
 3. Measure (§5). Re-run the sim on the measured values. The Conductor carries the result to the owner. Binding is his

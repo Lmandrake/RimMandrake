@@ -35,6 +35,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 from rimflow import audit_prescreen as ap                                  # noqa: E402
+from rimflow import arbiter_pending as PW                                  # noqa: E402
 import close_evidence as ce                                                # noqa: E402
 
 REPO = ap.REPO
@@ -550,10 +551,17 @@ def mix(rows):
     return out
 
 
-def judge_list(rows, salt):
+def judge_list(rows, salt, cap=None, exclude=(), unresolved=0):
     """The Arbiter's list: item and sha only, every T2 and calibration claim, in keyed-hash order so calibration
-    claims sit among the risky ones with nothing to tell them apart."""
-    pick = [r for r in rows if r["tier"].startswith("T2") or r["calibration"]]
+    claims sit among the risky ones with nothing to tell them apart.
+    cap (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS): at most cap - unresolved claims (its UNRESOLVED re-judges share the
+    batch), the OLDEST closes first so none ages out unjudged; exclude: (item, sha) already judged or carried by
+    isolated_evidence, matched on the shorter sha."""
+    pick = [r for r in rows if (r["tier"].startswith("T2") or r["calibration"])
+            and not any(r["item"] == i and PW.sha_match(r["sha"], s) for i, s in exclude)]
+    if cap is not None:
+        pick.sort(key=lambda r: (r.get("closed_at") or "", r["item"]))
+        pick = pick[:max(int(cap) - unresolved, 0)]
     pick.sort(key=lambda r: _keyed(salt, "order", r["item"], r["sha"]))
     return [{"item": r["item"], "sha": r["sha"]} for r in pick]
 
@@ -679,10 +687,38 @@ def main(argv=None, events=None, _inject=None):
     a.add_argument("--past-audits", help="Auditor DEFECT log (default: rules past_audits_file)")
     a.add_argument("--evidence-dir", help="close_evidence folder (default: close_evidence.evidence_dir())")
     a.add_argument("--ai-refused", action="store_true", help="no AI run this batch: every tier-2 claim is HOLD")
+    a.add_argument("--since-cutoff", action="store_true",
+                   help="closes at/after the Arbiter's cutoff stamp instead of --days (exit 2 when unstamped)")
+    a.add_argument("--cap", type=int, help="judge list: at most this many claims, oldest first (UNRESOLVED count)")
+    a.add_argument("--verdicts", help="the Arbiter's verdicts (default <judge-dir>/verdicts.jsonl)")
+    a.add_argument("--carried", help="isolated_evidence's carried list (default its carried_path())")
     a = a.parse_args(argv)
     rules = ap.load_rules()
     now = calendar.timegm(time.strptime(a.now, "%Y-%m-%dT%H:%M:%SZ")) if a.now else time.time()
     since = now - 86400 * a.days
+    carried, judged, unres = [], [], 0
+    if a.since_cutoff or a.cap is not None:
+        try:
+            if a.since_cutoff:
+                since = PW.read_cutoff()
+                if since is None:
+                    raise ValueError("no Arbiter cutoff stamp at %s (arbiter_pending.py stamp)" % PW.cutoff_path())
+                a.days = max((now - since) / 86400.0, 0)
+                from rimflow import isolated_evidence as ie
+                cpath = a.carried or ie.carried_path()
+                try:
+                    with open(cpath) as fh:
+                        carried = [(c["item"], c["sha"]) for c in json.load(fh)["carried"]]
+                except FileNotFoundError:
+                    raise ValueError("no carried list at %s: isolated_evidence --run did not run first" % cpath)
+                except (KeyError, TypeError) as ex:
+                    raise ValueError("carried list %s torn (%s)" % (cpath, ex))
+            v = PW.read_jsonl(a.verdicts or os.path.join(a.judge_dir, "verdicts.jsonl"), ("item", "sha", "disposition"))
+            judged = [(d["item"], d["sha"]) for d in v]
+            unres = len(PW.unresolved(v))
+        except (OSError, ValueError) as ex:
+            print("UNMEASURED: %s; nothing written" % ex, file=sys.stderr)
+            return 2
     try:
         if events is None:
             from rimflow import model
@@ -719,6 +755,7 @@ def main(argv=None, events=None, _inject=None):
     kw.update({k: v for k, v in (_inject or {}).items() if k != "clean"})
     try:
         rows, cut = classify(events, rules, since, **kw)
+        rows = [r for r in rows if not any(r["item"] == i and PW.sha_match(r["sha"], s) for i, s in carried)]
     except Exception as ex:        # review AC5: an evidence read failing mid-classification is UNMEASURED, not a crash
         print("UNMEASURED: classification could not read its evidence (%s: %s); nothing written"
               % (type(ex).__name__, ex), file=sys.stderr)
@@ -741,7 +778,8 @@ def main(argv=None, events=None, _inject=None):
         with open(os.path.join(a.data, "tiers_history.jsonl"), "a") as f:
             f.write(hist)
         _write_json(os.path.join(a.judge_dir, "judge_list.json"),
-                    {"generated": gen, "claims": [] if a.ai_refused else judge_list(rows, salt)})
+                    {"generated": gen, "claims": [] if a.ai_refused else judge_list(
+                        rows, salt, cap=a.cap, exclude=judged, unresolved=unres)})
         _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "advisory": True,
                                                                  "bounces": bounce_list(rows)})
     print("closes seen: %d  (since %s)  slice cut score: %s  close-evidence records: %d"
