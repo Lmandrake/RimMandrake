@@ -33,8 +33,10 @@ rimflow/dispatcher_schedule.json "measure"):
            from the dispatch clone (its testq/ingest.py) under QHOME/ingest.lock. Only with --file-alarms.
    HAND    status.json (every current point: slot_allocator.py reads it), digest.json and digest.md: per KPI the
    OVER    current value, its mark, the change over 24 h and 7 d, and its open flags; one cheap read for Operations.
-           digest_blind.md: the same minus every token, runway, quota or burn reading (TOKEN_FAMILIES, and any line
-           holding a token_talk term): the only digest the token-blind roles read (review U N2).
+           digest_blind.md: an ALLOW-LIST (BLIND_KEYS: machine health, disk, stalls, flow, production output
+           counts) and only their alarms and flags; everything else is withheld by default, and any line holding a
+           token_talk term is dropped too: the only digest the token-blind roles read (review U N2, review V V1).
+           Account and runway alarms (TOKEN_FAMILIES) are Operations': kept in alarms.json, never filed as items.
 
     python3 src/RimMandrake/Utils/ops_watch.py run [--file-alarms]   one pass (the timer passes --file-alarms)
     python3 src/RimMandrake/Utils/ops_watch.py digest                 print digest.md
@@ -1028,6 +1030,17 @@ def real_filer(todo, conf):
     return res
 
 
+def is_token_key(key):
+    """Is this KPI key a token, runway, quota or burn reading (Operations' alone)?"""
+    return str(key).split(".", 1)[0] in TOKEN_FAMILIES
+
+
+def token_alarm_title(aid):
+    """An Operations-only alarm's title: its tag and family, never a key's account, value or line (review V, V2)."""
+    tag, key = (aid.split(":", 1) + [""])[:2]
+    return "Ops alarm for Operations: %s on %s; the reading is in digest.md" % (tag, key.split(".", 1)[0])
+
+
 def run_alarms(points, rules, now, known_ids, filer):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears."""
     p = ops_dir() / "alarms.json"
@@ -1045,6 +1058,14 @@ def run_alarms(points, rules, now, known_ids, filer):
     for aid in sorted(set(ts) | set(state)):
         crossed = ts.get(aid)          # True crossed / False clear / None UNMEASURED or no reading: hold
         cur = state.get(aid)
+        if cur and is_token_key(aid.split(":", 1)[-1]) and (cur.get("item") or cur.get("state") == "PENDING"):
+            # filed on a seat queue before review V (V2): from now on it is Operations' alone. The old ledger item is
+            # kept as legacy_item (never noted again: a clear note would carry the reading onto a blind-read item)
+            if cur.get("item"):
+                cur["legacy_item"] = cur["item"]
+            cur.update(state="OPEN", item=None, error=None, title=token_alarm_title(aid), **{"for": "Operations"})
+            cur.pop("name", None)
+            log.append({"ts": iso(now), "event": "moved_to_operations", "aid": aid, "legacy_item": cur.get("legacy_item")})
         if cur and cur.get("state") == "PENDING" and cur.get("name") in known_ids:
             # filed by a pass that died before saving its state: the ledger has it, never file it twice
             cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
@@ -1083,17 +1104,18 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur = {"state": "PENDING", "since": iso(now), "tries": 0}
             state[aid] = cur
             log.append({"ts": iso(now), "event": "crossed", "aid": aid, "v": pt.get("v"), "m": pt.get("m")})
+        if is_token_key(key):
+            # an account/runway/burn alarm is Operations' alone: never a ledger item (`rimflow queue` is read by the
+            # token-blind roles), so nothing is filed; Operations' alarm runs read alarms.json and digest.md (V2)
+            cur.update(state="OPEN", item=None, error=None, filed=iso(now), title=token_alarm_title(aid),
+                       **{"for": "Operations"})
+            log.append({"ts": iso(now), "event": "opened_for_operations", "aid": aid})
+            continue
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a.get("name") for a in state.values() if isinstance(a, dict) and a.get("name")}
             cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
-        if key.split(".", 1)[0] in TOKEN_FAMILIES:
-            # the title is listed by `rimflow queue`, which token-blind roles read: no value, no line (review U N2).
-            # Operations reads the reading in digest.md.
-            title = "Ops alarm for Operations: %s crossed its line (%s); the reading is in digest.md" % (
-                key.split(".", 1)[0], pt.get("m"))
-        else:
-            title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
-                                                                pt.get("m"), tg["op"], tg["value"])
+        title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
+                                                            pt.get("m"), tg["op"], tg["value"])
         cur["title"] = title[:160]
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"]})
     if todo and filer:
@@ -1213,35 +1235,73 @@ def digest_md(dg):
 
 
 # The families whose every point is a token, runway, quota or burn reading: Operations' alone (owner 2026-10-27:
-# every other role is token-blind). tokentalk is the drift measure OF token talk: Operations' too.
+# every other role is token-blind). tokentalk is the drift measure OF token talk: Operations' too. Used for the alarm
+# routing (run_alarms); the blind digest does NOT rely on it: that is an allow-list (BLIND_KEYS).
 TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
+
+# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Conductor, Producer) sees exactly these series
+# and nothing else. Machine health (steve, timers, tps), disk, stalls, flow and production output counts. Every key
+# not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
+# (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.
+# Deliberately absent: every accounts.*, codex.*, tokentalk.* key, production.B (the week used), and anything new.
+BLIND_KEYS = frozenset("""
+disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
+disk.scratch_refused_gb disk.scratch_total_gb
+flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
+process.share_24h process.share_7d
+production.A1 production.A2 production.A3 production.A4 production.A5
+production.D1 production.D2 production.D3 production.D4
+production.G1 production.G2 production.G3 production.G4 production.G5 production.G6 production.G7 production.G8
+production.G9
+production.O1 production.O2 production.O3 production.O4
+production.P1 production.P2 production.P3 production.P4
+production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
+steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
+steve.state steve.unowned_stall_min steve.watch_age_min
+testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
+timers.failed_units timers.overdue_timers
+tps.ratio_median tps.stall_max_s tps.stalls
+v3.accepted_per_day v3.failure_signal_share v3.keep_going_per_day
+""".split())
+# the fields of an allowed point a blind role may see: value, mark, unit, the why of a non-MEASURED mark, the 24 h /
+# 7 d change. Never d24/d7 of a withheld key, never the full digest's headline (it names runway).
+BLIND_FIELDS = ("v", "m", "unit", "why", "d24", "d7")
 
 
 def blind_keep(key, p, rx):
-    """May a token-blind role see this point? Not a TOKEN_FAMILIES point, and no token term in its key, unit or why."""
-    if key.split(".", 1)[0] in TOKEN_FAMILIES:
+    """May a token-blind role see this point? Only a BLIND_KEYS key; and, as a second net, none of its key, unit or
+    why holds a token_talk term."""
+    if key not in BLIND_KEYS:
         return False
     p = p if isinstance(p, dict) else {}
     return not rx.search(" ".join(str(x) for x in (key, p.get("unit") or "", p.get("why") or "")))
 
 
 def blind_digest_md(dg, rules):
-    """digest_blind.md: the digest for the token-blind roles (Conductor, Producer; review U N2/F6). Health only: the
-    non-token headline parts, the alarms and flags on non-token keys, and the non-token KPI table. Every line is then
-    checked against the token_talk word list (ops_watch_rules.json): a line holding a term is withheld, so a new
-    collector that talks tokens cannot leak through here. The count withheld is printed; never the lines."""
+    """digest_blind.md: the digest for the token-blind roles (Conductor, Producer; review U N2/F6, review V V1).
+    Built only from allow-listed parts: the BLIND_KEYS points (BLIND_FIELDS of each), a headline computed from them,
+    and the alarms and flags whose key is one of them. Nothing else of the digest is read, so nothing else can leak.
+    Every line is then checked against the token_talk word list as a second net; the count withheld is printed,
+    never the lines."""
     rx = tt_regex(rules)
-    kp = dg["kpis"]
-    keep = {k for k, r in kp.items() if blind_keep(k, r, rx)}
+    kp = {k: {f: (r or {}).get(f) for f in BLIND_FIELDS} for k, r in (dg.get("kpis") or {}).items()
+          if blind_keep(k, r, rx)}
     al = {k: a for k, a in (dg.get("alarms") or {}).items()
-          if not str(k).startswith("_") and (str(k).split(":", 1)[-1] in keep)}
-    fl = [f for f in dg.get("flags") or [] if f.get("key") in keep]
-    hl = [x for x in dg["headline"].split(" | ")[1:-1]]          # drop the runway part and the all-alarm counts
+          if isinstance(a, dict) and ":" in str(k) and str(k).split(":", 1)[1] in kp}
+    fl = [f for f in dg.get("flags") or [] if isinstance(f, dict) and f.get("key") in kp]
+
+    def g(k):
+        r = kp.get(k) or {}
+        return "%s%s" % (fmt(r.get("v")), "" if r.get("m") == "MEASURED" else " (%s)" % (r.get("m") or "absent"))
     opened = [a for a in al.values() if a.get("state") == "OPEN"]
-    hl.append("%d flag(s), %d alarm(s) open, %d pending" % (
-        len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"])))
-    L = ["# Ops watch, health digest %s (no account readings: those are Operations')" % dg["at"], "",
-         " | ".join(hl), ""]
+    hl = ["steve %s, INVALID streak %s, unowned stall %s min" % (
+              g("steve.state"), g("steve.invalid_streak"), g("steve.unowned_stall_min")),
+          "disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB" % (
+              g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb")),
+          "%d flag(s), %d alarm(s) open, %d pending" % (
+              len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"]))]
+    L = ["# Ops watch, health digest %s (an allow-list of health series; account readings are Operations')"
+         % dg.get("at"), "", " | ".join(hl), ""]
     body = []
     if al:
         body.append("## Alarms")
@@ -1252,12 +1312,12 @@ def blind_digest_md(dg, rules):
     if fl:
         body.append("## Open flags")
         for f in fl:
-            body.append("- %s %s [%s] %s (open since %s)" % (f["rule"] + ("/" + f["tag"] if f.get("tag") else ""),
-                                                             f["key"], f["window"], f["detail"][:200],
+            body.append("- %s %s [%s] %s (open since %s)" % (f.get("rule", "?") + ("/" + f["tag"] if f.get("tag") else ""),
+                                                             f["key"], f.get("window"), str(f.get("detail"))[:200],
                                                              f.get("since", "now")))
         body.append("")
     fam = None
-    for k in sorted(keep):
+    for k in sorted(kp):
         r = kp[k]
         f = k.split(".", 1)[0]
         if f != fam:
@@ -1267,11 +1327,8 @@ def blind_digest_md(dg, rules):
             k.split(".", 1)[1], fmt(r["v"]) + (" " + r["unit"] if r.get("unit") and len(r["unit"]) < 40 else ""),
             r["m"] if r["m"] == "MEASURED" else "%s: %s" % (r["m"], (r.get("why") or "")[:90]),
             fmt(r["d24"]), fmt(r["d7"])))
-    withheld = 0
-    for line in L + body:
-        if rx.search(line):
-            withheld += 1
     out = [x for x in L + body if not rx.search(x)]
+    withheld = len(L) + len(body) - len(out)
     if withheld:
         out.append("(%d line(s) withheld: they named an account reading)" % withheld)
     return "\n".join(out) + "\n"

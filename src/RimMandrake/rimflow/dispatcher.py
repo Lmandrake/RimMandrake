@@ -290,7 +290,15 @@ def decide(sch, st, obs, now, apply):
 
     # Runs already launched are supervised FIRST, whatever ends this tick early (PAUSE, a blind `claude agents`, a
     # disabled role): a launched role stays tracked and time-limited no matter what (review round Q 1).
-    role_busy = RL.supervise_roles(sch, st, obs["roles"], now, act) if obs.get("roles") else None
+    role_busy = None
+    if obs.get("roles"):
+        try:
+            role_busy = RL.supervise_roles(sch, st, obs["roles"], now, act)
+        except Exception as e:  # noqa: BLE001 - supervision guards per role; this is the last net (review V, V3)
+            # every role with a run on record counts as busy: nothing is launched over a run nobody could check
+            role_busy = {n for n, rs in (st.get("roles") or {}).items() if isinstance(rs, dict) and rs.get("runs")}
+            act(do="alarm", kind="role:supervise", note=True, why="supervise_roles raised %s: %s; roles with runs on "
+                "record are held as busy this tick" % (type(e).__name__, str(e)[:200]))
     gate = account_gate(sch, st, obs, now, act)
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
@@ -733,6 +741,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     role.get("off_file"), off or "no reason given")) if off is not None
                                 else "role no longer enabled")
                             a["why"] = "%s — NOT LAUNCHED, %s" % (a["why"], res)
+                            if a.get("note_base"):     # the ledger note says what happened, never "launched" (V4)
+                                a["note_text"] = "%s — NOT LAUNCHED, %s" % (a["note_base"], res)
                             # the slot/event stays due: decide gave it up for a launch that did not happen (U, N6)
                             RL.unlaunch(st.setdefault("roles", {}).setdefault(a["role"], {}), a["unit"])
                         else:
@@ -762,6 +772,16 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 raise
                             finally:
                                 if not ok:
+                                    # the note says the true outcome (review V, V4); a retry of the same job that
+                                    # fails again is noted once: the journal and the rate-limited alarm keep the rest
+                                    failed_before = rs.get("launch_failed_key") == a["slot"]
+                                    rs["launch_failed_key"] = a["slot"]
+                                    if a.get("note_base"):
+                                        a["note_text"] = "%s — %s" % (a["note_base"], "LAUNCH FAILED: %s" % out
+                                                                      if run not in runs else "launch outcome UNKNOWN "
+                                                                      "(%s); the run stays tracked" % out)
+                                    if failed_before:
+                                        a["note"] = False
                                     # a failed launch is never silent (review U, N6). systemd-run said no: the slot
                                     # or event is given back so the next tick retries it; a raise leaves the run
                                     # tracked (it may have started) and keeps the mark, so it is not launched twice.
@@ -772,6 +792,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                         why="role %s launch FAILED (unit %s): %s; %s" % (
                                             a["role"], a["unit"], out, "its slot/event stays due and is retried"
                                             if back else "the run stays tracked in case it started")))
+                                else:
+                                    rs.pop("launch_failed_key", None)
                                 do_persist()
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False))

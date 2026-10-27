@@ -1740,8 +1740,16 @@ def test_review_u_group4():
     st["roles"] = {"Conductor": {"done": {}, "runs": [{"unit": "U0", "at": t8 - 4000, "day": RL.day_of(t8),
                                                         "budget": 30000, "mode": "quick", "state": "running",
                                                         "run_max_s": 1800, "scope": "s0", "item": "ROLES_ITEM_X"}]}}
-    acts = rdecide([conductor(), operations(runs_local=["08:00"], economy_pass_local=None)], st,
-                   robs(ops_status(t8, alarms={"A": "not a mapping"})), t8)
+    real_ak = RL.alarm_keys
+
+    def ak_boom(alarms):
+        raise TypeError("an unforeseen alarms shape")
+    RL.alarm_keys = ak_boom   # alarm_keys itself now skips a malformed entry (review V): force the raise
+    try:
+        acts = rdecide([conductor(), operations(runs_local=["08:00"], economy_pass_local=None)], st,
+                       robs(ops_status(t8, alarms={"A": "not a mapping"})), t8)
+    finally:
+        RL.alarm_keys = real_ak
     check(any(x.get("kind") == "role:Operations:schedule" and "raised" in x["why"] for x in acts),
           "N5: a raise while deciding one role -> that role's alarm, the tick goes on")
     check(any(x["do"] == "role_stop" for x in acts), "N5: the over-time run is still stopped")
@@ -1834,6 +1842,175 @@ def test_review_u_group4():
             check(False, "real schedule: %s validates (%s)" % (r.get("name"), e))
 
 
+
+def test_review_v():
+    """Review V: V2 (Operations-only alarms), V3 (run_max_s and supervision), V4 (true launch note), V5-V7."""
+    t8 = at_local("08:00")
+    t12 = at_local("12:00")
+    # V3: run_max_s / slot_late_s must be numbers > 0; None, 0, a string or inf is refused
+    for v in (None, 0, -5, "1800", float("inf")):
+        for k in ("run_max_s", "slot_late_s"):
+            try:
+                RL.validate_role(dict(RL.ROLE_DEFAULTS, **conductor(**{k: v})))
+                check(False, "V3: %s=%r is refused" % (k, v))
+            except ValueError as e:
+                check(k in str(e), "V3: %s=%r is refused" % (k, v))
+    a = role_acts(rdecide([conductor(run_max_s=None), operations(runs_local=["08:00"], economy_pass_local=None,
+                                                                 alarm_runs=False)], fresh(), robs(ops_status(t8)), t8))
+    check(any(x.get("kind") == "role:Conductor:schedule" and "run_max_s" in x["why"] for x in a)
+          and [x["role"] for x in a if x["do"] == "role_launch"] == ["Operations"],
+          "V3: run_max_s null skips that role with an alarm; the other role launches")
+    # a run recorded with run_max_s None (an older launch) falls back to the default bound and is still stopped
+    over = {"unit": "U0", "at": t8 - 4000, "day": RL.day_of(t8), "budget": 30000, "mode": "quick", "state": "running",
+            "run_max_s": None, "scope": "s0", "item": "ROLES_ITEM_X"}
+    st = fresh()
+    st["roles"] = {"Conductor": {"done": {}, "runs": [dict(over)]}, "Operations": {"done": {}, "runs": [dict(over, unit="U1")]}}
+    acts = rdecide([conductor(), operations(runs_local=["07:30"], economy_pass_local=None, alarm_runs=False)], st,
+                   robs(ops_status(t8)), t8)
+    check(sorted(x["unit"] for x in acts if x["do"] == "role_stop") == ["U0", "U1"],
+          "V3: a run with run_max_s None is bounded by the default and stopped, no TypeError")
+    # one role's supervision raising: alarm for it, kept busy, the other role is still supervised
+    real_one = RL._supervise_one
+
+    def one_boom(name, *a):
+        if name == "Conductor":
+            raise TypeError("unorderable run_max_s")
+        return real_one(name, *a)
+    RL._supervise_one = one_boom
+    try:
+        st = fresh()
+        st["roles"] = {"Conductor": {"done": {}, "runs": [dict(over)]},
+                       "Operations": {"done": {}, "runs": [dict(over, unit="U1", run_max_s=1800)]}}
+        acts = rdecide([conductor(), operations(runs_local=["07:30"], economy_pass_local=None, alarm_runs=False)],
+                       st, robs(ops_status(t8)), t8)
+    finally:
+        RL._supervise_one = real_one
+    check(any(x.get("kind") == "role:Conductor:supervise" for x in acts)
+          and [x["unit"] for x in acts if x["do"] == "role_stop"] == ["U1"]
+          and not [x for x in acts if x["do"] == "role_launch" and x["role"] == "Conductor"],
+          "V3: one role's supervision raising alarms that role; the other's over-time run is still stopped")
+    # supervise_roles raising as a whole: the dispatcher alarms and the tick goes on
+    real_sup = RL.supervise_roles
+
+    def sup_boom(*a):
+        raise TypeError("whole supervision")
+    RL.supervise_roles = sup_boom
+    try:
+        acts = rdecide([conductor()], fresh(), robs(ops_status(t8)), t8)
+    finally:
+        RL.supervise_roles = real_sup
+    check(any(x.get("kind") == "role:supervise" for x in acts), "V3: decide() survives supervise_roles raising")
+    # a roles entry that is not a mapping: alarmed and skipped, the others decided
+    a = role_acts(rdecide(["not a role", conductor()], fresh(), robs(ops_status(t8)), t8))
+    check(any(x.get("kind") == "role:schedule" for x in a)
+          and [x["role"] for x in a if x["do"] == "role_launch"] == ["Conductor"],
+          "V3: a non-mapping roles entry is alarmed and skipped; Conductor still launches")
+    # V4: the ledger note records the true outcome of a held or failed launch; a repeated failure is noted once
+    root = os.path.join(TMP, "roles_exec_v")
+    sch = sched(roles=[conductor()], ledger_notes=True)
+    notes = []
+    base_fx = {"note": lambda i, t: (notes.append(t), (True, ""))[1], "publish": lambda n: "p",
+               "lock": lambda: open(os.devnull), "off": lambda p: None, "paused": lambda: None}
+
+    def launch(st, fx_extra, now=t8):
+        acts = [x for x in rdecide([conductor()], st, robs(ops_status(now)), now) if x["do"] == "role_launch"]
+        del notes[:]
+        D.execute(acts, sch, st, root, True, now, dict(base_fx, **fx_extra))
+        return [n for n in notes if "role_launch" in n]
+    ln = launch(fresh(), {"paused": lambda: "owner: away"})
+    check(ln and "NOT LAUNCHED" in ln[0] and "launched, unit" not in ln[0], "V4: a held launch is noted NOT LAUNCHED")
+    st = fresh()
+    ln = launch(st, {"role_launch": lambda *a: (False, "systemd-run exit 1", {})})
+    check(ln and "LAUNCH FAILED: systemd-run exit 1" in ln[0] and "launched, unit" not in ln[0],
+          "V4: a failed launch is noted LAUNCH FAILED")
+    ln = launch(st, {"role_launch": lambda *a: (False, "systemd-run exit 1", {})}, t8 + 120)
+    check(not ln, "V4: the retry that fails again is not noted a second time")
+    ln = launch(st, {"role_launch": lambda *a: (True, "started", {"scope": "s"})}, t8 + 240)
+    check(ln and "launched, unit" in ln[0] and "launch_failed_key" not in st["roles"]["Conductor"],
+          "V4: the launch that then succeeds is noted launched and clears the failure record")
+
+    def boom(*a):
+        raise TimeoutError("MainPID")
+    ln = launch(fresh(), {"role_launch": boom})
+    check(ln and "UNKNOWN" in ln[0] and "launched, unit" not in ln[0], "V4: a launch that raised is noted UNKNOWN")
+    # V2: an Operations-only alarm (no ledger item) triggers one Operations alarm run, keyed alarm:<aid>, once
+    ops = operations(runs_local=["07:30"], economy_pass_local=None)
+    oal = {"RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations", "item": None, "title": "t"}}
+    st = fresh()
+    st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(t12): "launch"}, "runs": [], "alarms_seen": []}}
+    a = role_acts(rdecide([ops], st, robs(ops_status(t12, alarms=oal)), t12))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["ticket"] == "ROLES_ITEM_X"
+          and "alarm:RUNWAY_LOW:codex.runway" in st["roles"]["Operations"]["alarms_seen"],
+          "V2: an Operations-only alarm runs Operations on its own item, seen as alarm:<aid>")
+    st["roles"]["Operations"]["runs"] = []
+    a = role_acts(rdecide([ops], st, robs(ops_status(t12 + 600, alarms=oal)), t12 + 600))
+    check(not [x for x in a if x["do"] == "role_launch"], "V2: the same alarm does not run Operations twice")
+    check(RL.alarm_keys({"A:x": {"state": "OPEN", "item": "IT"}, "B:y": {"state": "OPEN", "for": "Operations"},
+                         "C:z": {"state": "OPEN"}, "D:w": "junk", "E:v": {"state": "PENDING", "for": "Operations"}})
+          == {"IT", "alarm:B:y"} and RL.alarm_keys(["junk"]) == set(),
+          "V2: alarm_keys: item, or alarm:<aid> for Operations; junk and non-OPEN skipped")
+    # V5: a block that was off the plan when a run read it does not trigger later once the item is raised
+    p = producer(after_role=None, runs_local=["11:00"])
+    t11 = at_local("11:00")
+    blk = dict(BASE_EV, event="block", id="X_ITEM", ts=lts(t11 - 1800))
+    st = fresh()
+    st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t11 - 7200, "events_seen": []}}
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t11), lread([BASE_EV, blk], {"X_ITEM": FakeItem()})), t11))
+    check([x["mode"] for x in a if x["do"] == "role_launch"] in (["run"], ["weekly"]), "V5: the 11:00 run launches")
+    st["roles"]["Producer"]["runs"] = []
+    raised = {"X_ITEM": FakeItem(raised="2026-10-28T01:00:00Z")}
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t12), lread([BASE_EV, blk], raised)), t12))
+    check(not [x for x in a if x["do"] == "role_launch"],
+          "V5: a block the 11:00 run already read (off the plan then) does not trigger once the item is raised")
+    blk2 = dict(blk, ts=lts(t11 + 600))
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t12), lread([BASE_EV, blk, blk2], raised)), t12))
+    check([x["mode"] for x in a if x["do"] == "role_launch"] == ["event"], "V5: a new block on it does trigger")
+    # V6: a slot the band blocks reserves nothing: RED (weekly only), not Wednesday, a 01:00 event is not held
+    thu = day_with_weekday(3)
+    t1 = RL.slot_epoch(thu, "01:00") + 60
+    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t1 - 100))
+    led = lread([BASE_EV, fail], {"PLAN_A": FakeItem(raised="x")})
+    for runway, waits in ((0.5, False), (2.0, True)):
+        st = fresh()
+        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t1 - 3600}}
+        a = role_acts(rdecide([producer(after_role=None, daily_token_cap=125000)], st,
+                              lrobs(ops_status(t1, runway=runway), led), t1))
+        got = any("waits" in x.get("why", "") for x in a)
+        check(got == waits and bool([x for x in a if x["do"] == "role_launch"]) != waits,
+              "V6: runway %s: the 09:00 slot %s, so the event %s" % (
+                  runway, "will run" if waits else "is blocked", "waits" if waits else "runs"))
+    # V7: a raise after the slot was consumed gives it back; a raise building the prompt consumes nothing
+    real_re = RL.role_events
+
+    def re_boom(*a, **k):
+        raise RuntimeError("ledger shape")
+    RL.role_events = re_boom
+    try:
+        st = fresh()
+        st["roles"] = {"Producer": {"done": {}, "runs": [], "event_cursor": t11 - 600, "events_seen": []}}
+        a = role_acts(rdecide([p], st, lrobs(ops_status(t11), lread([BASE_EV])), t11))
+    finally:
+        RL.role_events = real_re
+    rs = st["roles"]["Producer"]
+    check(any(x.get("kind") == "role:Producer:schedule" for x in a) and not rs["done"] and "pending_launch" not in rs
+          and not [x for x in a if x["do"] == "role_launch"],
+          "V7: a raise after mark() gives the slot back (it stays due), with an alarm")
+    real_pr = RL.prompt
+
+    def pr_boom(*a):
+        raise KeyError("template")
+    RL.prompt = pr_boom
+    try:
+        st = fresh()
+        a = role_acts(rdecide([conductor()], st, robs(ops_status(t8)), t8))
+    finally:
+        RL.prompt = real_pr
+    rs = st["roles"].get("Conductor") or {}
+    check(any(x.get("kind") == "role:Conductor:schedule" for x in a) and not rs.get("done")
+          and "pending_launch" not in rs, "V7: a raise building the prompt consumes nothing")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
@@ -1843,7 +2020,7 @@ def main():
               test_role_weekday_slots, test_role_done_claims_gate, test_role_plan_failure_events,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
-              test_review_u_lent_unmeasured, test_review_u_group4):
+              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v):
         try:
             t()
         except Exception as e:  # noqa: BLE001

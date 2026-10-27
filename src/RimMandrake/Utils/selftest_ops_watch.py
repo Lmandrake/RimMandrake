@@ -12,6 +12,7 @@ production de-dup, the digest's deltas, and the CLI's install plan writing nothi
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -621,38 +622,89 @@ check("tokentalk: the family is registered and its series is in the run and sile
       "tokentalk" in OW.COLLECTORS and "tokentalk" in OW.ORDER and OW.matches("tokentalk.role.conductor.share", R["run"]["keys"])
       and OW.matches("tokentalk.BENCH.share", list(R["silent"]["per_key"])))
 
-# ---------------------------------------------------------------- digest_blind.md (review U N2/F6)
+# ---------------------------------------------------------------- digest_blind.md: an ALLOW-LIST (review U N2/F6, V V1)
 RX = OW.tt_regex(RULES)
-pts = {"accounts.lukas.runway": M(0.82), "accounts.lukas.week_left_pct": M(40.0), "codex.runway": M(0.5),
-       "tokentalk.role.producer.share": M(12.0), "steve.state": M("ok"), "disk.root_free_gb": M(300.0),
-       "production.G7": dict(M(9.0), unit="tokens per merged commit"),
-       "flow.untriaged_findings": OW.U("collector error: the burn table was unreadable")}
-fl = [{"rule": "target", "tag": "RUNWAY_LOW", "key": "accounts.lukas.runway", "window": "now",
-       "detail": "0.82 < 1 runway"},
+# realistic: every account, codex and tokentalk series the live digest carries, production.B (the week used, phrased
+# with no token word: review V's leak), a flag and an alarm on each, plus a brand-new family nobody named
+SECRET = {"accounts.lukas.runway": 0.8213, "accounts.lukas.week_left_pct": 41.37, "accounts.lukas.hours_to_reset": 77.71,
+          "accounts.system.runway": 0.8117, "accounts.system.week_left_pct": 23.93,
+          "accounts.system.hours_to_reset": 51.29, "codex.runway": 0.6431, "codex.week_used_pct": 61.83,
+          "codex.hours_to_reset": 33.07, "tokentalk.role.producer.share": 12.77, "tokentalk.BENCH.share": 4.391,
+          "production.B": 93.17, "newfam.thing": 5.551}
+pts = {k: M(v) for k, v in SECRET.items()}
+pts["production.B"] = dict(M(93.17), unit="% of the week used (highest account)")
+pts.update({"steve.state": M("ok"), "steve.invalid_streak": M(0), "disk.root_free_gb": M(300.0),
+            "disk.c_free_gb": M(120.0), "production.A1": M(14.0), "production.G7": dict(M(9.0), unit="per merged commit"),
+            "tps.stalls": M(2.0), "flow.untriaged_findings": OW.U("collector error: the burn table was unreadable")})
+fl = [{"rule": "target", "tag": "RUNWAY_LOW", "key": "accounts.lukas.runway", "window": "now", "detail": "0.8213 < 1"},
+      {"rule": "z", "tag": "WEEK_HOT", "key": "production.B", "window": "7d", "detail": "93.17 rising"},
+      {"rule": "z", "tag": "NEW", "key": "newfam.thing", "window": "now", "detail": "5.551"},
       {"rule": "target", "tag": "DISK_TWO_DAYS", "key": "disk.root_free_gb", "window": "now", "detail": "300 < 420"}]
-al = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "since": "x", "item": "OPS_RUNWAY_RESCUE"},
+al = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "since": "x", "for": "Operations", "item": None},
+      "RUNWAY_LOW:codex.runway": {"state": "OPEN", "since": "x", "legacy_item": "OPS_RUNWAY_RESCUE_E2BB"},
       "DISK_LOW:disk.root_free_gb": {"state": "OPEN", "since": "x", "item": "OPS_DISK_DRAIN"}}
 dg = OW.build_digest(pts, {}, fl, al, NOW, 1.0)
 blind = OW.blind_digest_md(dg, RULES)
+full = OW.digest_md(dg)
 hits = [ln for ln in blind.splitlines() if RX.search(ln)]
 check("blind digest: no line holds a token_talk term (ops_watch_rules.json word list)", not hits, hits)
-check("blind digest: no account, codex or tokentalk key, value or alarm",
-      not any(x in blind for x in ("accounts.", "codex", "tokentalk", "0.82", "RUNWAY", "G7")), blind)
+leak = [k for k in SECRET if k in blind or k.split(".", 1)[1] in blind.split()] + \
+       [x for v in SECRET.values() for x in {str(v), OW.fmt(v)} if x in blind]
+check("blind digest (allow-list): no account, codex, tokentalk, production.B or unnamed key, nor any of their values",
+      not leak and "week" not in blind and "OPS_RUNWAY" not in blind and "RUNWAY" not in blind
+      and "Operations" not in blind.split("\n", 1)[1], (leak, blind))
+check("blind digest: production.B's row is gone, production A1 and G7 stay",
+      not any(ln.startswith("B |") for ln in blind.splitlines()) and any(ln.startswith("A1 |") for ln in blind.splitlines())
+      and any(ln.startswith("G7 |") for ln in blind.splitlines()), blind)
 check("blind digest: the full digest DOES carry them (the instrument can see)",
-      RX.search(OW.digest_md(dg)) and "0.82" in OW.digest_md(dg))
-check("blind digest: health stays (steve, disk alarm, disk flag)",
+      all(OW.fmt(v) in full for v in (0.8213, 93.17, 0.6431)) and "% of the week used" in full, full[:300])
+check("blind digest: health stays (steve, disk, stalls, disk alarm, disk flag), counts over allowed keys only",
       "steve ok" in blind and "DISK_LOW:disk.root_free_gb" in blind and "DISK_TWO_DAYS" in blind
-      and "1 flag(s), 1 alarm(s) open" in blind, blind)
+      and "stalls" in blind and "1 flag(s), 1 alarm(s) open" in blind, blind)
+check("blind digest: every allowed key is a real family of ours (no wildcard crept in)",
+      all("." in k and "*" not in k and k.split(".")[0] in ("disk", "flow", "process", "production", "steve", "testing",
+                                                              "timers", "tps", "v3") for k in OW.BLIND_KEYS)
+      and "production.B" not in OW.BLIND_KEYS and not any(OW.is_token_key(k) for k in OW.BLIND_KEYS))
 check("blind digest: run() writes digest_blind.md", (TMP / "ops" / "digest_blind.md").exists())
-title_al = OW.run_alarms({"accounts.lukas.runway": M(0.5)}, RULES, NOW, set(), None)
-tt = [a.get("title") for a in title_al.values() if isinstance(a, dict) and a.get("title")]
-check("alarm title: an account alarm's title (listed by rimflow queue) holds no value and no token term",
-      tt and not any(RX.search(t) or "0.5" in t for t in tt), tt)
+# ---------------------------------------------------------------- V2: account/runway alarms are Operations', never items
+filed = []
+def filer_rec(todo, conf):
+    filed.extend(todo)
+    return {a["name"]: True for a in todo}
+ap = OW.ops_dir() / "alarms.json"
+ap.unlink(missing_ok=True)
+st = OW.run_alarms({"accounts.lukas.runway": M(0.5), "codex.runway": M(0.25), "disk.c_free_gb": M(5.0)},
+                   RULES, NOW, set(), filer_rec)
+ta = {k: a for k, a in st.items() if k.startswith("RUNWAY")}
+check("V2: an account/runway crossing files NO ledger item (the blind roles read `rimflow queue`)",
+      ta and not [t for t in filed if OW.is_token_key(t["aid"].split(":", 1)[1])], filed)
+check("V2: it is kept OPEN for Operations with a number-free title naming no account",
+      all(a.get("state") == "OPEN" and a.get("for") == "Operations" and not a.get("item")
+          and not re.search(r"\d", a.get("title") or "1") and "lukas" not in a["title"] for a in ta.values()), ta)
+check("V2: a non-account alarm (disk) still files for BENCH", any(t["aid"].startswith("DISK") for t in filed), filed)
+ap.write_text(json.dumps({"RUNWAY_LOW:accounts.system.runway": {
+    "state": "OPEN", "since": "x", "item": "OPS_RUNWAY_RESCUE_C01D", "name": "OPS_RUNWAY_RESCUE_C01D",
+    "title": "Ops alarm RUNWAY_LOW: accounts.system.runway = 0.81"}}))
+filed.clear()
+st = OW.run_alarms({"accounts.system.runway": M(0.5)}, RULES, NOW + 900, set(), filer_rec)
+mv = st.get("RUNWAY_LOW:accounts.system.runway") or {}
+check("V2: an alarm filed as an item before the fix moves to Operations (legacy_item kept, never noted again)",
+      mv.get("for") == "Operations" and mv.get("legacy_item") == "OPS_RUNWAY_RESCUE_C01D" and not mv.get("item")
+      and "0.81" not in mv.get("title", "") and not filed, (mv, filed))
+st = OW.run_alarms({"accounts.system.runway": M(5.0)}, RULES, NOW + 1800, set(), filer_rec)
+check("V2: when it clears, no clear note lands on the legacy item", not filed, filed)
+ap.unlink(missing_ok=True)
 live = Path(os.environ.get("RM_OPS_WATCH_LIVE", "/mnt/d/ClaudeWork/rimmandrake/ops_watch")) / "digest.json"
 if live.exists():
-    lb = OW.blind_digest_md(json.loads(live.read_text()), RULES)
-    check("blind digest over the live digest.json: no token term (%d lines)" % len(lb.splitlines()),
-          not [ln for ln in lb.splitlines() if RX.search(ln)] and len(lb.splitlines()) > 5, lb[:400])
+    ld = json.loads(live.read_text())
+    lb = OW.blind_digest_md(ld, RULES)
+    fams = {k.split(".", 1)[0] for k in OW.BLIND_KEYS}
+    bad = sorted({"## " + k.split(".", 1)[0] for k in ld.get("kpis") or {} if k.split(".", 1)[0] not in fams}
+                 & set(lb.splitlines()))
+    check("blind digest over the live digest.json: no token term, no withheld key, no week reading (%d lines)"
+          % len(lb.splitlines()),
+          not [ln for ln in lb.splitlines() if RX.search(ln)] and "week" not in lb and not bad
+          and not any(ln.startswith("B |") for ln in lb.splitlines()) and len(lb.splitlines()) > 5, lb[:400])
 
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

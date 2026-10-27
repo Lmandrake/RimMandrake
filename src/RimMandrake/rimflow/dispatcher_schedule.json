@@ -32,7 +32,7 @@
  ],
  "roles": [
   {"name": "Conductor", "enabled": false, "trigger": "his message; his presence (session); quick checks", "from": "v3.1",
-   "instructions": "src/RimMandrake/rimflow/roles/conductor.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest.md",
+   "instructions": "src/RimMandrake/rimflow/roles/conductor.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest_blind.md",
    "quick_checks_local": ["08:00", "20:00"], "quick_token_cap": 80000, "daily_token_cap": 300000,
    "session_week_pct_cap": 6, "throttle_reads": "ops_watch status.json accounts.<its account>.runway",
    "throttle_bands": {"GREEN": {"runway_ge": 1.5, "session_helpers_max": 3, "quick_cap_x": 1.0, "slots": "all"},
