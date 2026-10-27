@@ -567,7 +567,8 @@ def _queue(inp, state, rules):
     if enter:
         return "PAYDOWN", f"A1 {a1}, D1 {d1} over 3 d"
     if state.get("queue_mode") == "PAYDOWN":
-        leave = (a1 is None or a1 < q["paydown_leave"]["A1_lt"]) and (d1 is None or d1 < q["paydown_leave"]["D1_lt"])
+        # leaving PAYDOWN needs both counts seen under their lines: an unmeasured count holds it
+        leave = (a1 is not None and a1 < q["paydown_leave"]["A1_lt"]) and (d1 is not None and d1 < q["paydown_leave"]["D1_lt"])
         if not leave:
             return "PAYDOWN", f"A1 {a1}, D1 {d1}: not yet under the leave lines"
     return "CLEAR", f"A1 {a1}, D1 {d1}"
@@ -786,8 +787,9 @@ def decide(inp, state, rules, now):
                 total = tk[ov["mode"]]["n"]
                 per = {s: 0 for s in seats}
                 per["BENCH"] = total
-        if ov.get("seats"):
-            per.update({k: int(v) for k, v in ov["seats"].items()})
+        if isinstance(ov.get("seats"), dict) and ov["seats"]:
+            # a seat key we do not place (e.g. "bench") is folded to its seat, never added beside it
+            per.update({str(k).upper(): int(v) for k, v in ov["seats"].items() if str(k).upper() in per})
         elif ov.get("n") is not None:
             per["BENCH"] = int(ov["n"])
         label = f"{label}+OWNER"
@@ -910,7 +912,10 @@ def main(argv=None):
     ov = {"ownerSaid": a.owner_said.strip(), "set_at": iso_local(now), "until": until, "mode": a.mode}
     if a.n is not None:
         if a.seat:
-            ov["seats"] = {a.seat: a.n}
+            if a.seat.upper() not in rules["seats"]:
+                print(f"refused: seat must be one of {rules['seats']}", file=sys.stderr)
+                return 2
+            ov["seats"] = {a.seat.upper(): a.n}
         else:
             ov["n"] = a.n
     d = streams_dir()

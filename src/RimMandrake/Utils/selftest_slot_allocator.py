@@ -431,5 +431,11 @@ r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "total": 6}, week_pct_used=
 check("MEASURED 99% used with no reset time is DARK, not a held CRUISE", r["token_mode"] == "DARK"
       and r["n_total"] <= R["token"]["DARK"]["n"], (r["token_mode"], r["n_total"]))
 
+r = d({"token_mode": "CRUISE", "since": NOW - 5 * H, "queue_mode": "PAYDOWN"}, A1=20, D1=None)
+check("an unmeasured D1 does not clear PAYDOWN", r["queue_mode"] == "PAYDOWN", r["queue_mode"])
+r = d(override=ov(n=None, seats={"bench": 0}))
+check("an override for seat 'bench' zeroes BENCH, never adds a 'bench' seat beside it",
+      r["seats"].get("BENCH") == 0 and "bench" not in r["seats"], r["seats"])
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

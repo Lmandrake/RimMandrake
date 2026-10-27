@@ -13,6 +13,17 @@ DEFAULT_DIRS = [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/
 DIRS = (sys.argv[1:] if __name__ == "__main__" else []) or DEFAULT_DIRS   # argv only when run as a script, never an importer's
 
 
+def _num(v):
+    """A finite number as float, else None (strings, bools, NaN, ints too big for a float)."""
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return None
+    try:
+        f = float(v)
+    except OverflowError:
+        return None
+    return f if math.isfinite(f) else None
+
+
 def readings(dirs=None, newer_than=None):
     """Every rate_limits reading in the rollout files under `dirs`, oldest first, plus the file count.
 
@@ -50,11 +61,11 @@ def readings(dirs=None, newer_than=None):
                     if not isinstance(p, dict) or not isinstance(s, dict):
                         continue
                     ts = r.get("timestamp")
-                    up = p.get("used_percent")
-                    if not ts or not isinstance(up, (int, float)) or isinstance(up, bool) or not math.isfinite(up):
+                    up, sp = _num(p.get("used_percent")), _num(s.get("used_percent"))
+                    if not ts or up is None:
                         continue
-                    recs.append((ts, p.get("used_percent"), p.get("window_minutes"), p.get("resets_at"),
-                                 s.get("used_percent"), s.get("window_minutes"), s.get("resets_at"),
+                    recs.append((ts, up, p.get("window_minutes"), p.get("resets_at"),
+                                 sp, s.get("window_minutes"), s.get("resets_at"),
                                  rl.get("plan_type")))
     recs.sort(key=lambda r: str(r[0]))  # timestamps only: a None field later in a tuple must not be compared
     return recs, nfiles
