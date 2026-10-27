@@ -1,0 +1,2 @@
+Two python.exe bridge processes in parallel (a sampler loop plus a speed.py set_time_speed) share the evidence log D:\ClaudeWork\rimmandrake\scratch\bridge_calls.jsonl: the other process's in-flight mutating call reads as UNKNOWN outcome and rimbridge_client raises IndeterminateError on the next jawa/static_call, killing the sampler mid-window (BENCH r11 T2c, twice). --reconcile a moment later shows 0 pending. Fix in the sampler: catch, sleep 0.5 s, continue; also WSL env vars reach python.exe only via WSLENV.
+home: skills/rimbridge/references/traps.md
