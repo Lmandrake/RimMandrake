@@ -37,6 +37,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 from rimflow import audit_prescreen as ap                                  # noqa: E402
 from rimflow import arbiter_pending as PW                                  # noqa: E402
 import close_evidence as ce                                                # noqa: E402
+import review_identity as RI                                               # noqa: E402
 
 REPO = ap.REPO
 # A claim's sha may live only in the other seat's clone until it is pushed and fetched: look in both.
@@ -79,10 +80,28 @@ def cited_paths(text):
     return [to_posix(m) for m in _PATH_RX.findall(text or "")]
 
 
-def load_clean_hashes(pattern=REVIEW_GLOB):
-    """{(path, sha256): {seats that marked it clean}}, replaying every record in state order (ts, seat, shard,
-    line) as code_review_status does: a later `dirty` at the same content removes the clean mark, a later clean
-    restores it. An unparsable line raises ValueError (it could be the dirty record that matters)."""
+_KEY = object()     # load_clean_hashes(key=_KEY): read the close_evidence key; a missing key -> every review unknown
+
+
+def load_clean_hashes(pattern=REVIEW_GLOB, key=_KEY, find=None):
+    """{(path, sha256): {reviewer identities}}, replaying every record in state order (ts, seat, shard, line) as
+    code_review_status does: a later `dirty` at the same content removes the clean mark, a later clean restores it.
+    An identity is review_identity.identity()'s (kind, who, session): ("unknown", shard seat, None) for a record with
+    no verifiable review block (every record before CODE_REVIEW_WIRE_REVIEWER_SEAT), ("self", recorder seat, bridge
+    session), ("asserted", ...), ("external", "gpt_consult:<job>", None). An unparsable line raises ValueError (it
+    could be the dirty record that matters)."""
+    if key is _KEY:
+        try:
+            key = ce._key()
+        except Exception:
+            key = None
+    if find is None:
+        _rc = {}
+
+        def find(job):
+            if job not in _rc:
+                _rc[job] = RI.find_receipt(job, key=key) if key else None
+            return _rc[job]
     recs = []
     for f in sorted(glob.glob(pattern)):
         with open(f, encoding="utf-8") as fh:
@@ -98,14 +117,21 @@ def load_clean_hashes(pattern=REVIEW_GLOB):
     recs.sort(key=lambda t: t[0])
     out = {}
     for _, d in recs:
-        key = (d.get("path"), d.get("sha256"))
-        if not key[0] or not key[1]:
+        k = (d.get("path"), d.get("sha256"))
+        if not k[0] or not k[1]:
             continue
         if d.get("verdict") == "clean":
-            out.setdefault(key, set()).add(d.get("seat") or "?")
+            out.setdefault(k, set()).add(RI.identity(d, key, find=find))
         elif d.get("verdict") == "dirty":
-            out.pop(key, None)
+            out.pop(k, None)
     return out
+
+
+def _identity(x):
+    """A clean-map element as (kind, who, session); a bare seat string (an injected/legacy map) is reviewer-unknown."""
+    if isinstance(x, (tuple, list)) and len(x) == 3:
+        return tuple(x)
+    return ("unknown", x or "?", None)
 
 
 def _git_status_one(sha, repo):
@@ -200,6 +226,60 @@ def commit_session(sha, repos=REPOS):
     return SESSION_UNREADABLE
 
 
+#: The seat isolated_evidence's runner writes as (isolated_evidence.child_env sets RIMFLOW_SEAT to it). With a builder
+#: the ledger does not name, only this seat's isolated runs can show independence: the inference then only has to
+#: establish that the builder is not the runner, so a wrong guess between two building seats opens no route.
+RUNNER_SEAT = "DISPATCHER"
+
+
+def _seat_sure(r):
+    """The record's seat is the one whoami() read in the writing process, not one a caller supplied."""
+    who = r.get("who") if isinstance(r.get("who"), dict) else {}
+    o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
+    return bool(r.get("seat")) and who.get("seat_from") in SEAT_SOURCES and o.get("who") == "whoami"
+
+
+def session_seat_map(records, key):
+    """{bridge_session: {seats}} from close_evidence lines that verify under `key`, whose seat is whoami-sure and
+    that ran in a SHARED seat clone: what a session did in its own seat. Isolated runs are excluded -- a runner
+    started from inside a seat's session carries that session but writes as RUNNER_SEAT."""
+    out = {}
+    for r in records:
+        try:
+            if not (isinstance(r, dict) and ce.mac_ok(r, key) and _seat_sure(r)):
+                continue
+        except Exception:
+            continue
+        o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
+        sess = (r.get("who") or {}).get("bridge_session")
+        if o.get("tree") == "shared" and isinstance(sess, str) and sess:
+            out.setdefault(sess, set()).add(r["seat"])
+    return out
+
+
+def infer_builder(close, csess, session_seats):
+    """The builder of a claim the ledger names none for (TIERS_FIX_G6_BLIND_WITHOUT_BUILDER), from durable sources:
+    (1) the close event's seat (not OWNER: the owner relays, never builds); (2) the commit's author or trailers --
+    measured unusable: every commit carries one author identity and no seat trailer, and its Claude-Session trailer
+    is the seat window's bridge session, shared by all its helpers; (3) the seats the commit's session ran shared-tree
+    runs as (session_seat_map). -> (seat, {source: [seats]}, why). seat is None, with why, when no source exists or
+    the sources do not name exactly one seat: never a guess."""
+    src = {}
+    cs = close.get("seat")
+    if cs and cs != "OWNER":
+        src["close seat"] = [cs]
+    if csess and csess != SESSION_UNREADABLE and (session_seats or {}).get(csess):
+        src["commit session %s" % csess] = sorted(session_seats[csess])
+    named = {x for v in src.values() for x in v}
+    if not src:
+        return None, src, "no durable source names the builder (no ledger claim, OWNER/no close seat, no record of " \
+                           "the commit's session)"
+    if len(named) != 1:
+        return None, src, "the sources disagree on the builder: %s" % "; ".join(
+            "%s=%s" % (k, ",".join(v)) for k, v in sorted(src.items()))
+    return named.pop(), src, None
+
+
 _HEX_SHA = re.compile(r"[0-9a-fA-F]{7,40}")
 
 
@@ -261,18 +341,35 @@ def lookup_close_evidence(sha, item, paths, folder=None, days=45):
     return hits
 
 
-def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evidence=(), session_of=lambda sha: None):
+def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evidence=(), session_of=lambda sha: None,
+          session_seats=None):
     """Tier-0 gate results for one claim: {gate: PASS|FAIL|OPEN|PARTIAL|NONE|UNMEASURED} plus the evidence each read.
     FAIL is a recorded hard failure; NONE means nothing recorded to read; UNMEASURED means an input could not be read.
     `files`: {path: status} | list | None (sha does not resolve) | GIT_ERROR. `clean`: {(path, sha256): {seats}}.
     `evidence`: close_evidence records already matched to this claim (lookup_close_evidence). `session_of(sha)`: the
     commit's Claude-Session (commit_session), so a run by the session that made the commit is never independent.
-    Independence is UNMEASURED, never PASS, when the ledger names no builder (builder_seats empty)."""
+    `session_seats`: session_seat_map() of the evidence store, a source for infer_builder.
+    When the ledger names no builder (builder_seats empty) G2 independence is UNMEASURED and G6 independence is read
+    against infer_builder(): no single inferred seat -> UNMEASURED; otherwise only RUNNER_SEAT isolated runs count.
+    `clean` values are reviewer identities (load_clean_hashes); G5 independence (review_by_closing_seat_only) reads
+    the reviewer, never the shard seat that recorded the mark."""
     g, ev = {}, {}
     files = _norm_files(files)
     sha = (close.get("sha") or "").strip()
     makers = maker_seats(evs, close)
     builder_known = bool(builder_seats(evs, close))
+    _cs = []
+
+    def commit_sess():                 # one git read, and only when a gate needs it
+        if not _cs:
+            _cs.append(session_of(sha) if sha else None)
+        return _cs[0]
+    inferred = None
+    if not builder_known:
+        inferred, isrc, iwhy = infer_builder(close, commit_sess(), session_seats)
+        ev["G6_builder_inferred"] = {"seat": inferred, "from": isrc}
+        if iwhy:
+            ev["G6_builder_inferred"]["why"] = iwhy
     # G1 build identity: the claim names a commit that resolves
     if not sha or sha.upper() == "HEAD" or files is None:
         g["G1_sha"] = "FAIL"
@@ -333,7 +430,7 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
         if not code:
             g["G5_review"] = "NONE"
         else:
-            dirty, unread, seats = [], [], set()
+            dirty, unread, ids = [], [], set()
             for f in code:
                 h = blob(sha, f)
                 if h is None:
@@ -341,15 +438,29 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
                 elif (f, h) not in clean:
                     dirty.append(f)
                 else:
-                    seats |= set(clean[(f, h)])
+                    ids |= {_identity(x) for x in clean[(f, h)]}
             g["G5_review"] = "UNMEASURED" if unread else ("OPEN" if dirty else "PASS")
             if unread:
                 ev["G5_unreadable"] = unread[:10]
             if dirty:
                 ev["G5_review"] = dirty[:10]
             if g["G5_review"] == "PASS":
-                ev["G5_review_seats"] = sorted(seats)
-                if not (seats - makers - {"?"}):
+                ev["G5_review_seats"] = sorted({w for k, w, _s in ids if k != "external"})
+                ev["G5_reviewers"] = sorted([list(x) for x in ids], key=lambda x: [str(y) for y in x])
+                # review independence (CODE_REVIEW_WIRE_REVIEWER_SEAT): a receipt-verified external review, or a
+                # review whose recorder reviewed it with a whoami-sure seat that neither built nor closed the claim,
+                # from another session than the commit's. Unknown (old) and asserted reviewers never count; nor
+                # does any seat review when the ledger names no builder (an inferred builder only rules out the
+                # runner seat, and no runner reviews code).
+                csess = commit_sess()
+
+                def rev_indep(x):
+                    k, who, sess = x
+                    if k == "external":
+                        return True
+                    return (k == "self" and builder_known and who not in makers
+                            and csess != SESSION_UNREADABLE and not (csess and sess == csess))
+                if not any(rev_indep(x) for x in ids):
                     ev["G5_review_by_closing_seat_only"] = True
     # G6 close evidence (selftests, builds, validators at this sha). FAIL/UNMEASURED: per tool, the latest run covering
     # each path anywhere in the claim's evidence (ce.summarize, by actual coverage -- review AB4). PASS only when every touched, non-deleted path is covered by a passing run of
@@ -376,23 +487,38 @@ def gates(evs, close, files, clean, blob=blob_sha256, exists=os.path.exists, evi
             ev["G6_uncovered"] = uncov[:10]
         eseats = sorted({r.get("seat") or "?" for r in evidence})
         ev["G6_seats"] = eseats       # "?" = the record names no seat ($RIMFLOW_SEAT unset when it ran)
-        csess = session_of(sha) if sha else None
+        csess = commit_sess()
 
         def who_of(r):
             return r.get("who") if isinstance(r.get("who"), dict) else {}
 
-        def seat_sure(r):        # the seat whoami() read in the writing process, not one a caller supplied
-            o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
-            return bool(r.get("seat")) and who_of(r).get("seat_from") in SEAT_SOURCES and o.get("who") == "whoami"
+        seat_sure = _seat_sure
+
         def indep(r):
-            return seat_sure(r) and r["seat"] not in makers and not (csess and who_of(r).get("bridge_session") == csess)
+            if not (seat_sure(r) and r["seat"] not in makers and not (csess and who_of(r).get("bridge_session") == csess)):
+                return False
+            if builder_known:
+                return True
+            # inferred builder: only the runner's isolated runs, and only when the runner is not a maker
+            o = r.get("origin") if isinstance(r.get("origin"), dict) else {}
+            return r["seat"] == RUNNER_SEAT and r["seat"] != inferred and o.get("tree") == "isolated"
         ind_all = need and all(any(indep(r) for r in latest[f]) for f in need)
         unsure = [r for r in full if not seat_sure(r)]
         if not full:
             pass                                       # no passing full run: nothing to be independent
-        elif not builder_known:
+        elif not builder_known and not inferred:
             g["G6_independent"] = "UNMEASURED"
-            ev["G6_independent"] = "the ledger names no builder (no claim/start/implemented before the close)"
+            ev["G6_independent"] = ("the ledger names no builder (no claim/start/implemented before the close) and "
+                                    "none could be inferred: %s" % ev["G6_builder_inferred"].get("why"))
+        elif not builder_known and csess in (None, SESSION_UNREADABLE):
+            g["G6_independent"] = "UNMEASURED"
+            ev["G6_independent"] = ("builder %s only inferred, and the commit's Claude-Session is %s: a run by the "
+                                    "session that made it cannot be ruled out" % (
+                                        inferred, "unreadable" if csess else "absent"))
+        elif not builder_known and not ind_all:
+            g["G6_independent"] = "UNMEASURED"
+            ev["G6_independent"] = ("builder %s only inferred: independence needs %s isolated runs from another "
+                                    "session covering every path" % (inferred, RUNNER_SEAT))
         elif ind_all and csess == SESSION_UNREADABLE:
             g["G6_independent"] = "UNMEASURED"
             ev["G6_independent"] = "the commit's Claude-Session could not be read: a same-session run cannot be ruled out"
@@ -465,7 +591,7 @@ def calib_pick(item, sha, salt):
 
 def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blob_sha256,
              exists=os.path.exists, past_failed=frozenset(), salt="selftest-salt", evidence_lookup=lambda sha, item, paths: [],
-             ai_refused=False, session_of=lambda sha: None, resolve=None):
+             ai_refused=False, session_of=lambda sha: None, resolve=None, session_seats=None):
     """resolve(sha) -> the one full sha the close names (resolve_sha_any; with an injected `git` and no resolve, the
     close's sha is taken as written)."""
     if resolve is None:
@@ -499,7 +625,8 @@ def classify(events, rules, since_epoch, git=git_files_any, clean=None, blob=blo
                 if isinstance(files, dict) and full else [])
         r["gates"], r["gate_evidence"] = gates(evs, close, files, clean, blob=lambda _s, f, _f=full: blob(_f, f),
                                                exists=exists, evidence=evid,
-                                               session_of=lambda _s, _f=full: session_of(_f))
+                                               session_of=lambda _s, _f=full: session_of(_f),
+                                               session_seats=session_seats)
         r["flags"] = r["flags"] + extra_flags(evs, close, r["gate_evidence"])
         r["machine_evidence"] = has_machine_evidence(r["gates"])
         if r["machine_evidence"] and "no_check_evidence" in r["flags"]:
@@ -744,6 +871,7 @@ def main(argv=None, events=None, _inject=None):
             raise ValueError("close-evidence folder %s missing" % efolder)
         ce._key()          # raises when the mac key is missing: no line could be verified -- UNMEASURED, not "none"
         evid = ce.read_all(days=int(a.days) + 31, folder=efolder)
+        session_seats = session_seat_map(evid, ce._key())
         salt = load_salt(a.data)
     except Exception as ex:
         print("UNMEASURED: %s; nothing written" % ex, file=sys.stderr)
@@ -751,7 +879,7 @@ def main(argv=None, events=None, _inject=None):
     kw = dict(clean=clean, past_failed=past_failed, salt=salt,
               evidence_lookup=lambda sha, item, paths: lookup_close_evidence(
                   sha, item, paths, folder=efolder, days=int(a.days) + 31),
-              ai_refused=a.ai_refused, session_of=commit_session)
+              ai_refused=a.ai_refused, session_of=commit_session, session_seats=session_seats)
     kw.update({k: v for k, v in (_inject or {}).items() if k != "clean"})
     try:
         rows, cut = classify(events, rules, since, **kw)

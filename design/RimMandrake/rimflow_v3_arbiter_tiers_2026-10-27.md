@@ -61,6 +61,51 @@ from a seat that is not a maker of the claim (the close seat, or a claim, start,
 the close). A close-evidence record with no seat makes `G6_independent` UNMEASURED. A git error (timeout, failure)
 is not "the sha does not resolve": G1 reads UNMEASURED, not FAIL.
 
+**When the ledger names no builder** (no claim, start, reclaim or implemented event before the close; 34 of 56 closes
+in one measured day), G6 infers one (`infer_builder`, TIERS_FIX_G6_BLIND_WITHOUT_BUILDER). The sources, in order:
+
+1. the close seat (never OWNER);
+2. the commit's author or trailers: **unusable today**. Every commit has the same author email and no seat trailer,
+   so this source names nothing and is skipped;
+3. the session that made the commit: its `Claude-Session` trailer, mapped to the seats that whoami-sure, MAC-checked,
+   shared-tree close-evidence records ran under that bridge session (`session_seat_map`).
+
+If exactly one seat is named across the sources, that seat is the builder (`G6_builder_inferred` records the seat and
+what named it). If sources disagree, or none names a seat, G6_independent is UNMEASURED. Nothing is guessed. An
+inferred builder is weaker than a ledger one, so independence then needs more: every covering passing run must come
+from the runner seat (`RUNNER_SEAT`, DISPATCHER), be an isolated-tree run, and be sure of its own seat. Its session
+must also differ from the commit's, and the commit session must be readable. Otherwise G6_independent is UNMEASURED.
+No route closed in reviews Y to AD is reopened: G6_independent still needs MAC-checked, whoami-sure runs.
+
+The `Claude-Session` trailer names the seat window's bridge session, and all of that window's helpers share it
+(`session_01Np8` is on 857 commits in 30 days). So a run started from inside the builder's window counts as
+same-session even when another agent ran it. That is correct for independence, but a helper cannot be told apart
+from its seat (filed: COMMIT_SESSION_FIX_NAMES_WINDOW_NOT_HELPER).
+
+**Who reviewed** (G5, CODE_REVIEW_WIRE_REVIEWER_SEAT). A `mark-clean` record now carries a `reviewer` and a `recorder`,
+kept apart, plus `review_mac`, an HMAC under the close-evidence key (`src/RimMandrake/Utils/review_identity.py`):
+
+- `recorder` is whoami() of the process that ran mark-clean.
+- `reviewer` is one of:
+  - `self` (the default);
+  - `--reviewer-seat/--reviewer-session/--reviewer-agent`, which is the recorder's word only;
+  - `--gpt-job <id>`. mark-clean refuses unless that gpt_consult job's MAC'd receipt (`consult/receipts.jsonl`,
+    written by `gpt_consult.py` for every job) answered and inlined these exact bytes.
+
+`identity()` reads each clean record as one of four kinds:
+
+- `unknown`: an old record, a bad MAC, or no key;
+- `self`: the seat came from whoami's own sources;
+- `asserted`: named, not proven;
+- `external`: `gpt_consult:<job>`, re-checked against the receipt.
+
+A review counts as independent of the builder in only two cases:
+
+- it is `external`;
+- it is `self` by a seat the ledger names as not a maker, under a session that differs from the commit's.
+
+Old records stay `unknown` and never count.
+
 - **BOUNCE**: G1, G2, G4 or G6 is FAIL. While `verdicts` is `"advisory"` a bounce is a record only: a line in
   `bounces.json` with the failing gate and its evidence, and, when the Arbiter confirms it, a FAIL-module or
   FAIL-check line in `verdicts.jsonl`. Nothing is returned to the builder: no reopen, no spawned work, no message.
@@ -103,8 +148,8 @@ no seat, so no G6 pass is independent yet.
 ## 3. Tier 1: risk rank
 
 `audit_prescreen.score` (rules in `audit_prescreen_rules.json`, unchanged) flags every claim. Flags added here:
-`owner_words_after_close`, `finding_against_item`, `review_by_closing_seat_only` (the only clean review records of
-the touched files were recorded by the closing seat; records carry no reviewer identity) and `git_unreadable`.
+`owner_words_after_close`, `finding_against_item`, `review_by_closing_seat_only` (no clean review record of the touched files has a reviewer independent of the
+builder, as defined in section 2) and `git_unreadable`.
 `no_check_evidence` is dropped when a machine record exists, and `closed_by_maker_only` when an independent G2 or G6
 pass exists.
 
@@ -205,6 +250,29 @@ Limits:
 - Code-review records carry only the recording seat, never the reviewer, so a review cannot be shown independent.
 - G5 accepts reviews made after the close.
 - Closes include OWNER closes and non-code kinds. The live Arbiter would take the same stream.
+
+### After builder inference and reviewer identity (MEASURED, 2026-10-27)
+
+All runs used `--now 2026-10-27T21:56:36Z` and a fixed calibration salt. The evidence and results are in
+`D:\ClaudeWork\rimmandrake\arbiter_prep\measure3\` (`compare1n.txt`, `compare7.txt`).
+
+**One day, 56 closes, production-like store.** Here the DISPATCHER isolated runs carry no bridge session.
+
+- G6_independent UNMEASURED fell from 38 to 27.
+- 11 claims now PASS G6_independent: 3 reach T1_PASS and 8 reach T2_RISK. Before the change all 38 were T2_UNMEASURED.
+- T0_PASS stayed at 0, because those claims are G5 OPEN (unreviewed).
+- 26 of the 27 still unmeasured have touched paths that no isolated run covers (json and md files with no selftest).
+  That is an evidence gap, not an identity gap.
+- AI inflow went from 53 to 52 a day.
+
+**Seven days, 832 closes, the prior store.** There the DISPATCHER runs were made inside the BENCH window, so they
+are same-session and inference changes no G6 result.
+
+- `review_by_closing_seat_only` rose from 132 to 161 of 161 G5 PASS claims: 29 changed. Every existing clean record
+  predates the reviewer block, reads `unknown` and never counts.
+- 95 claims moved from T2_RISK to T1_PASS. This is an artifact. The flag now sits on 152 of 158 ranked claims, so
+  rarity weighs it about 0. A stricter flag lowered scrutiny (filed: ARBITER_RARITY_FIX_UNIVERSAL_GAP_LOWERS_RISK).
+  The 7-day AI count of 787 to 706 is therefore not a real gain.
 
 ### Simulator prediction (ASSUMED; rests on assumptions)
 

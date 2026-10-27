@@ -22,25 +22,42 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONSULT_MODEL = os.environ.get("CODEX_CONSULT_MODEL", "gpt-6.1-sol")
 sys.path.insert(0, str(ROOT / "skills" / "generating-images" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))          # review_identity (job receipts)
 import codex_image  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH)
 
 
-def build_prompt(question, files):
+def build_prompt(question, files, inlined=None):
+    """The prompt text. When `inlined` is a list, each file's (shown path, exact bytes inlined) is appended to it: the
+    job receipt hashes those bytes (review_identity.write_receipt)."""
     parts = [question.strip(), ""]
     if files:
         parts.append("The files below are inlined in full; do not try to open them from disk.")
     for f in files:
         p = Path(f)
         try:
-            text = p.read_text(errors="replace")
+            raw = p.read_bytes()
         except OSError as e:
             sys.exit("cannot read %s: %s" % (f, e))
         try:
             shown = p.resolve().relative_to(ROOT)
         except ValueError:
             shown = p
+        text = raw.decode("utf-8", errors="replace")
+        if inlined is not None:
+            inlined.append((Path(shown).as_posix(), raw))
         parts += ["", "===== FILE: %s =====" % shown, text.rstrip("\n"), "===== END FILE: %s =====" % shown]
     return "\n".join(parts) + "\n"
+
+
+def _receipt(job, model, answered, inlined, rc):
+    """One mac'd receipt per job, so a code-review mark-clean can name this job as its reviewer
+    (code_review_status mark-clean --gpt-job). A receipt that cannot be written never fails the consult."""
+    try:
+        import review_identity
+        review_identity.write_receipt(job, model, answered, inlined, rc=rc)
+        print("[consult] receipt job %s" % job, file=sys.stderr)
+    except Exception as e:                                  # noqa: BLE001 -- the answer matters more than the receipt
+        print("[consult] WARN: no receipt written for %s: %s" % (job, e), file=sys.stderr)
 
 
 def main(argv=None):
@@ -63,7 +80,8 @@ def main(argv=None):
         question = a.question
     else:
         ap.error("give a question or --prompt-file")
-    prompt = build_prompt(question, a.file)
+    inlined = []
+    prompt = build_prompt(question, a.file, inlined)
 
     job = codex_image.CODEX_SCRATCH / ("consult-%s-%d" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid()))
     job.mkdir(parents=True, exist_ok=True)
@@ -93,7 +111,9 @@ def main(argv=None):
                                 timeout=a.timeout).returncode
     except subprocess.TimeoutExpired:
         rc = 124
-    if not answer.is_file() or not answer.read_text().strip():
+    answered = answer.is_file() and bool(answer.read_text().strip())
+    _receipt(job.name, a.model, answered, inlined, rc)
+    if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
             rc, time.time() - started, job, tail), file=sys.stderr)

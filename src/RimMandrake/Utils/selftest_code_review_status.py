@@ -42,6 +42,8 @@ hash):
      only true for the ~917 paths ever entered, not the ~1,402 real files.
  11. git()'s timeout path returns a failed CompletedProcess rather than
      raising — a hung/contended git call must degrade, never hang the caller.
+ 14. mark-clean records the reviewer apart from the recording seat (self /
+     named agent / gpt_consult job checked against its receipt), sealed.
 """
 import contextlib
 import io
@@ -330,6 +332,62 @@ CRS.append_records([{"path": "a.xml", "sha256": None, "verdict": "pruned",
                      "ts": "2099-01-02T00:00:00.000000Z", "seat": "BENCH"}], shard="BENCH")
 eq("a.xml" in CRS.load(), False, "a pruned record removes the path from current state")
 del os.environ["RIMFLOW_SEAT"]
+
+# ---- 14. the reviewer is recorded apart from the recording seat ------------
+# (CODE_REVIEW_WIRE_REVIEWER_SEAT) recorder = whoami() of the mark-clean process, reviewer = self | agent | external
+# gpt_consult job (refused unless its receipt inlined these exact bytes); review_mac seals both to (path, sha256).
+os.environ["RM_CLOSE_EVIDENCE_KEY"] = os.path.join(TMP, "ce.key")
+os.environ["RM_CONSULT_RECEIPTS"] = os.path.join(TMP, "receipts.jsonl")
+import review_identity as RI  # noqa: E402
+_saved_who = {k: os.environ.pop(k, None) for k in ("AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDE_CODE_SESSION_ID",
+                                                    "CLAUDE_CODE_BRIDGE_SESSION_ID", "AI_AGENT")}
+os.environ["RIMFLOW_SEAT"] = "FOUNDRY"
+os.environ["CLAUDE_CODE_BRIDGE_SESSION_ID"] = "session_01Rec"
+write("rev.py", "print('v1')\n")
+sh("git", "add", "rev.py")
+sh("git", "commit", "-q", "-m", "add rev.py")
+_rev_hash = CRS.file_hash("rev.py")
+
+
+def _last_rec(path):
+    return [r for r in CRS.read_records() if r.get("path") == path][-1]
+
+
+eq(run("mark-clean", os.path.join(TMP, "rev.py")), 0, "mark-clean (self review) succeeds")
+_r = _last_rec("rev.py")
+eq(_r.get("reviewer"), {"kind": "self"}, "a plain mark-clean records the recorder as the reviewer")
+eq((_r.get("recorder") or {}).get("seat"), "FOUNDRY", "the recorder is whoami()'s seat")
+eq((_r.get("recorder") or {}).get("bridge_session"), "session_01Rec", "the recorder carries its bridge session")
+eq(RI.identity(_r, RI.ce._key()), ("self", "FOUNDRY", "session_01Rec"), "the self review block verifies")
+eq(run("mark-clean", os.path.join(TMP, "rev.py"), "--reviewer-seat", "CHECK", "--reviewer-session", "session_01C"),
+   0, "mark-clean naming another agent as reviewer succeeds")
+_r = _last_rec("rev.py")
+eq(_r.get("reviewer"), {"kind": "agent", "seat": "CHECK", "session": "session_01C", "agent": None},
+   "a named reviewer is kept apart from the recorder")
+eq(_r.get("seat"), "FOUNDRY", "the shard seat stays the recorder's")
+eq(run("mark-clean", os.path.join(TMP, "rev.py"), "--gpt-job", "consult-none"), 2,
+   "mark-clean --gpt-job with no receipt is refused")
+RI.write_receipt("consult-other", "m", True, [("rev.py", b"print('v0')\n")])
+eq(run("mark-clean", os.path.join(TMP, "rev.py"), "--gpt-job", "consult-other"), 2,
+   "mark-clean --gpt-job whose receipt inlined other bytes is refused")
+eq(run("mark-clean", os.path.join(TMP, "rev.py"), "--gpt-job", "consult-other", "--reviewer-seat", "CHECK"), 2,
+   "--gpt-job and --reviewer-seat together are refused")
+RI.write_receipt("consult-ok", "m9", True, [("rev.py", open(os.path.join(TMP, "rev.py"), "rb").read())])
+eq(run("mark-clean", os.path.join(TMP, "rev.py"), "--gpt-job", "consult-ok"), 0,
+   "mark-clean --gpt-job whose receipt inlined these bytes succeeds")
+_r = _last_rec("rev.py")
+eq(_r.get("reviewer"), {"kind": "external", "tool": "gpt_consult", "job": "consult-ok", "model": "m9"},
+   "an external reviewer names the gpt_consult job and model")
+eq(RI.identity(_r, RI.ce._key()), ("external", "gpt_consult:consult-ok", None), "the external review verifies")
+eq(_r.get("sha256"), _rev_hash, "the record still names the reviewed content")
+eq(run("reopen", os.path.join(TMP, "rev.py"), "--reason", "selftest"), 0, "reopen after a reviewed mark")
+eq("reviewer" in _last_rec("rev.py"), False, "a dirty record carries no reviewer")
+for _k, _v in _saved_who.items():
+    if _v is None:
+        os.environ.pop(_k, None)
+    else:
+        os.environ[_k] = _v
+os.environ.pop("RIMFLOW_SEAT", None)
 
 shutil.rmtree(TMP, ignore_errors=True)
 

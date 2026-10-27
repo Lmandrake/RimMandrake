@@ -18,6 +18,8 @@ yet" — it always was.
 
     python3 src/RimMandrake/Utils/code_review_status.py check <path> [<path> ...]
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
+        [--gpt-job <job> | --reviewer-seat <SEAT> [--reviewer-session <id>] [--reviewer-agent <name>]]
+        records WHO reviewed (default: this process, whoami()) apart from the recording seat; see review_identity.py
     python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
     python3 src/RimMandrake/Utils/code_review_status.py list
     python3 src/RimMandrake/Utils/code_review_status.py list --show-untracked  # + files never entered at all
@@ -226,6 +228,8 @@ def _entry_from(rec):
         e["cleanCount"] = rec["cleanCount"]
     if rec.get("verdict") == "dirty":
         e["status"] = "dirty"
+    else:
+        e.update({k: rec[k] for k in REVIEW_KEYS if k in rec})
     return e
 
 
@@ -256,6 +260,10 @@ def _ts():
     return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(ns // 10**9)) + ".%06dZ" % ((ns % 10**9) // 1000)
 
 
+#: who reviewed a clean mark (review_identity): carried on clean records only, never on dirty/pruned ones
+REVIEW_KEYS = ("reviewer", "recorder", "review_mac")
+
+
 def _record(path, entry, seat, ts):
     if entry is None:
         return {"path": path, "sha256": None, "verdict": "pruned", "ts": ts, "seat": seat}
@@ -265,6 +273,8 @@ def _record(path, entry, seat, ts):
            "sha": entry.get("sha", "unknown"), "date": entry.get("date", "unknown")}
     if "cleanCount" in entry:
         rec["cleanCount"] = entry["cleanCount"]
+    if rec["verdict"] == "clean":
+        rec.update({k: entry[k] for k in REVIEW_KEYS if k in entry})
     return rec
 
 
@@ -548,7 +558,10 @@ def cmd_check(paths):
     return 1 if any_dirty else 0
 
 
-def cmd_mark_clean(path, sha):
+def cmd_mark_clean(path, sha, reviewer=None, gpt_job=None):
+    """reviewer: {"kind": "agent", seat, session, agent} when another agent did the review (the recorder's word);
+    gpt_job: a gpt_consult job id whose receipt must show it answered on exactly these bytes. Neither: the recorder
+    (this process, whoami()) is the reviewer. See review_identity.py."""
     rel = canonical_rel(repo_rel(path))
     if rel.startswith("../") or rel == "..":
         print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
@@ -643,6 +656,21 @@ def cmd_mark_clean(path, sha):
                   "the clean mark must name a commit whose bytes were reviewed.",
                   file=sys.stderr)
             return 2
+    import review_identity as RI
+    if gpt_job:
+        receipt = RI.find_receipt(gpt_job)
+        if not RI.receipt_covers(receipt, rel, current_hash):
+            why = ("no verifiable receipt for that job" if receipt is None else
+                   "the job did not answer" if not receipt.get("answered") else
+                   "the job did not inline these bytes of %s" % rel)
+            print(f"FAIL: --gpt-job {gpt_job}: {why} (receipts: {RI.receipts_path()}). Run gpt_consult on the "
+                  "committed file, then mark it with the job id it prints.", file=sys.stderr)
+            return 2
+        reviewer = {"kind": "external", "tool": "gpt_consult", "job": gpt_job, "model": receipt.get("model")}
+    review = RI.review_block(rel, current_hash, reviewer or {"kind": "self"})
+    if "review_mac" not in review:
+        print("WARN: no close-evidence key: the reviewer is recorded unsealed and reads 'unknown' to the Arbiter",
+              file=sys.stderr)
     # sha/date below are informational display only — the hash is the real
     # clean/dirty mechanism, so a git failure here degrades the printout,
     # never the correctness of what gets recorded.
@@ -659,7 +687,7 @@ def cmd_mark_clean(path, sha):
         # "reviewed and it keeps coming back dirty" signal the health board
         # surfaces — see codebase_health.py's classify().
         clean_count = prior.get("cleanCount", 0) + 1
-        data[rel] = {"hash": current_hash, "sha": sha, "date": date, "cleanCount": clean_count}
+        data[rel] = dict({"hash": current_hash, "sha": sha, "date": date, "cleanCount": clean_count}, **review)
         save(data)
     print(f"CLEAN  {rel}  recorded at {sha} ({date})"
           + (f"  [clean mark #{clean_count}]" if clean_count > 1 else ""))
@@ -977,6 +1005,11 @@ def main():
     p_mark = sub.add_parser("mark-clean", help="record a path as reviewed clean at a commit")
     p_mark.add_argument("path")
     p_mark.add_argument("--sha", default=None, help="defaults to current HEAD")
+    p_mark.add_argument("--gpt-job", help="the review was a gpt_consult job (its id, printed by gpt_consult): refused "
+                                          "unless its receipt shows it answered on exactly these bytes")
+    p_mark.add_argument("--reviewer-seat", help="another agent reviewed it: its seat (recorded as that agent's word)")
+    p_mark.add_argument("--reviewer-session", help="with --reviewer-seat: the reviewing agent's session id")
+    p_mark.add_argument("--reviewer-agent", help="with --reviewer-seat: the reviewing agent's name/id")
 
     p_reopen = sub.add_parser("reopen", help="undo a clean mark - a fix is not a review")
     p_reopen.add_argument("paths", nargs="+")
@@ -1000,7 +1033,15 @@ def main():
             _trigger_health_rebuild()
         sys.exit(rc)
     elif args.cmd == "mark-clean":
-        rc = cmd_mark_clean(args.path, args.sha)
+        if args.gpt_job and (args.reviewer_seat or args.reviewer_session or args.reviewer_agent):
+            print("FAIL: --gpt-job names the reviewer; it cannot be combined with --reviewer-*", file=sys.stderr)
+            sys.exit(2)
+        if (args.reviewer_session or args.reviewer_agent) and not args.reviewer_seat:
+            print("FAIL: --reviewer-session/--reviewer-agent need --reviewer-seat", file=sys.stderr)
+            sys.exit(2)
+        rv = ({"kind": "agent", "seat": args.reviewer_seat.strip().upper(), "session": args.reviewer_session,
+               "agent": args.reviewer_agent} if args.reviewer_seat else None)
+        rc = cmd_mark_clean(args.path, args.sha, reviewer=rv, gpt_job=args.gpt_job)
         if rc == 0:
             _trigger_health_rebuild()
         sys.exit(rc)

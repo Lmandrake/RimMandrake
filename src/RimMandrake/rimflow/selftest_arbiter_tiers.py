@@ -59,8 +59,13 @@ ok("remote host path not local", at.cited_paths("stevedesktop:/home/m/r.html (te
 FILES = {"good": ["src/a.py"], "fail": ["src/b.py"], "nore": ["src/c.py"], "harn": ["src/RimMandrake/rimflow/x.py"],
          "docs": ["design/x.md"], "gerr": at.GIT_ERROR, "del": {"src/a.py": "M", "src/old.py": "D"},
          "unread": {"src/u.py": "M"}, "tested": {"src/m/mod.py": "M"}}
-CLEAN = {("src/a.py", "H_src/a.py"): {"RUNNER"}, ("src/RimMandrake/rimflow/x.py", "H_src/RimMandrake/rimflow/x.py"):
-         {"RUNNER"}}
+def SELF(seat, session=None):
+    """A clean mark whose recorder (a whoami-sure seat) reviewed it (review_identity.identity)."""
+    return {("self", seat, session)}
+
+
+CLEAN = {("src/a.py", "H_src/a.py"): SELF("RUNNER"), ("src/RimMandrake/rimflow/x.py", "H_src/RimMandrake/rimflow/x.py"):
+         SELF("RUNNER")}
 git = lambda sha: FILES.get(sha)
 blob = lambda sha, path: None if path == "src/u.py" else "H_" + path
 exists = lambda p: p.endswith("there.png")
@@ -200,10 +205,11 @@ with open(os.path.join(rv, "A.jsonl"), "w") as f:
                         "seat": "FOUNDRY"}) + "\n")
 lc = at.load_clean_hashes(os.path.join(rv, "*.jsonl"))
 ok("F6 later dirty overrides clean", ("p.py", "h1") in lc, False)
-ok("F6 later clean restores, with reviewer seat", lc.get(("q.py", "h2")), {"FOUNDRY"})
+ok("F6 later clean restores; a record with no review block is reviewer-unknown", lc.get(("q.py", "h2")),
+   {("unknown", "FOUNDRY", None)})
 f6 = [ev("verify", "MAKERREV", "2026-10-26T11:00:00Z", seat="RUNNER", result="pass"),
       ev("close", "MAKERREV", "2026-10-26T12:00:00Z", seat="BENCH", sha="good", reason="verified")]
-T6 = tiers_of(f6, clean={("src/a.py", "H_src/a.py"): {"BENCH"}})[0]["MAKERREV"]
+T6 = tiers_of(f6, clean={("src/a.py", "H_src/a.py"): SELF("BENCH")})[0]["MAKERREV"]
 ok("F6 review only by the closing seat is flagged", "review_by_closing_seat_only" in T6["flags"], True)
 ok("F6 maker-seat review is not a tier-0 pass", T6["tier"] != "T0_PASS", True)
 
@@ -354,10 +360,10 @@ def claim6(files=None, close_seat="BENCH", builder="BENCH"):
     return iid, sha, evs
 
 
-def run6(iid, evs, clean=None, session_of=lambda sha: None):
+def run6(iid, evs, clean=None, session_of=lambda sha: None, **kw):
     files = {p for sha in FILES for p in (FILES[sha] if isinstance(FILES[sha], dict) else ())}
-    cl = {(p, "H_" + p): {"CHECK"} for p in files} if clean is None else clean
-    return tiers_of(evs, builder=None, clean=cl, session_of=session_of,
+    cl = {(p, "H_" + p): SELF("CHECK") for p in files} if clean is None else clean
+    return tiers_of(evs, builder=None, clean=cl, session_of=session_of, **kw,
                     evidence_lookup=lambda sha, item, paths: at.lookup_close_evidence(sha, item, paths,
                                                                                        folder=EVD))[0][iid]
 
@@ -741,7 +747,7 @@ ok("AC2 the same commit in both clones resolves to it",
    at.resolve_sha_any("abcdef1", repos=["/c1", "/c2"], rev=lambda s, r: "c" * 40), "c" * 40)
 ok("AC2 a rev expression is not a sha", at.resolve_sha_any(s6 + "^", repos=["/c1"], rev=lambda s, r: "c" * 40), None)
 _short = [dict(e, sha=s6[:12]) if e.get("event") == "close" else e for e in e6]
-r6 = tiers_of(_short, builder=None, clean={(p, "H_" + p): {"CHECK"} for p in FILES[s6]},
+r6 = tiers_of(_short, builder=None, clean={(p, "H_" + p): SELF("CHECK") for p in FILES[s6]},
               resolve=lambda s: s6 if s6.startswith(s) else None,
               evidence_lookup=lambda sha, item, paths: at.lookup_close_evidence(sha, item, paths, folder=EVD))[0][i]
 ok("AC2 classify resolves a short close sha once and matches evidence on the full sha", g6(r6), ("PASS", "PASS"))
@@ -765,7 +771,7 @@ open(os.path.join(d5, "audits.jsonl"), "w").close()
 try:
     _rc = at.main(["--data", d5, "--judge-dir", d5, "--past-audits", os.path.join(d5, "audits.jsonl"),
                    "--evidence-dir", EVD, "--now", "2026-10-27T12:00:00Z"], events=with_builder(e6),
-                  _inject={"clean": {(p, "H_" + p): {"CHECK"} for p in FILES[s6]}, "git": git, "blob": blob,
+                  _inject={"clean": {(p, "H_" + p): SELF("CHECK") for p in FILES[s6]}, "git": git, "blob": blob,
                            "exists": exists})
     _row = [r for r in json.load(open(os.path.join(d5, "tiers.json")))["rows"] if r["item"] == i] if _rc == 0 else []
     ok("AC5 a non-ASCII mac line does not crash the batch; its claim is not a tier-0 PASS",
@@ -781,6 +787,137 @@ _rewrite(_r, sha=s6[:-1] + ("0" if s6[-1] != "0" else "1"))
 r6 = run6(i, e6)
 ok("AC1 a damaged-sha FAIL leaves the claim UNMEASURED, not T0_PASS", (g6(r6)[0], r6["tier"] == "T0_PASS"),
    ("UNMEASURED", False))
+
+# TIERS_FIX_G6_BLIND_WITHOUT_BUILDER: no claim/start/implemented before the close -> the builder is inferred from the
+# close seat and the seats the commit's session ran shared-tree runs as. Agreeing sources name it; disagreeing or no
+# sources stay UNMEASURED. With an inferred builder only the runner seat's (DISPATCHER) isolated runs, from another
+# session, can show independence.
+MS = "session_01Maker"
+_mk = lambda sha: MS
+EVD = tempfile.mkdtemp()                 # a fresh store: AC1/AC5 above left damaged lines that taint every claim
+os.environ[ce.ENV_DIR] = EVD
+
+
+def dispatch_run(sha, session=None, seat="DISPATCHER"):
+    return put(sha, "PASS", ["src/m/selftest_mod.py"], seat=seat, loads=["src/m/mod.py"], session=session)
+
+
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+r6 = run6(i, e6, session_of=_mk)
+ok("INF close seat is the only source: builder BENCH, a DISPATCHER isolated run is independent",
+   (g6(r6)[1], (r6["gate_evidence"].get("G6_builder_inferred") or {}).get("seat")), ("PASS", "BENCH"))
+ok("INF nothing is left unmeasured: the claim is ranked, not sent to AI as T2_UNMEASURED",
+   (r6["tier"] != "T2_UNMEASURED", r6["unmeasured"]), (True, []))
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+ok("INF close seat and commit session agree: PASS",
+   g6(run6(i, e6, session_of=_mk, session_seats={MS: {"BENCH"}}))[1], "PASS")
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+r6 = run6(i, e6, session_of=_mk, session_seats={MS: {"FOUNDRY"}})
+ok("INF close seat BENCH but the commit's session ran as FOUNDRY: UNMEASURED", g6(r6)[1], "UNMEASURED")
+ok("INF disagreement goes to AI review", r6["tier"], "T2_UNMEASURED")
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+ok("INF the commit's session ran as two seats: UNMEASURED",
+   g6(run6(i, e6, session_of=_mk, session_seats={MS: {"BENCH", "FOUNDRY"}}))[1], "UNMEASURED")
+i, s6, e6 = claim6(close_seat="OWNER", builder=None)
+dispatch_run(s6)
+ok("INF OWNER close and no session record: no source, UNMEASURED", g6(run6(i, e6, session_of=_mk))[1], "UNMEASURED")
+i, s6, e6 = claim6(close_seat="OWNER", builder=None)
+dispatch_run(s6)
+ok("INF OWNER close, commit session ran as BENCH: builder BENCH, DISPATCHER run PASS",
+   g6(run6(i, e6, session_of=_mk, session_seats={MS: {"BENCH"}}))[1], "PASS")
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6, seat="FOUNDRY")
+ok("INF a FOUNDRY run never shows independence of an inferred builder (only the runner seat can)",
+   g6(run6(i, e6, session_of=_mk))[1] == "PASS", False)
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6, seat="BENCH")
+ok("INF the inferred builder's own run is not independent", g6(run6(i, e6, session_of=_mk))[1] == "PASS", False)
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6, session=MS)
+ok("INF a DISPATCHER run inside the commit's session is not independent",
+   g6(run6(i, e6, session_of=_mk))[1] == "PASS", False)
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+ok("INF a commit with no Claude-Session trailer: UNMEASURED", g6(run6(i, e6))[1], "UNMEASURED")
+i, s6, e6 = claim6(builder=None)
+dispatch_run(s6)
+ok("INF an unreadable commit session: UNMEASURED",
+   g6(run6(i, e6, session_of=lambda sha: at.SESSION_UNREADABLE))[1], "UNMEASURED")
+i, s6, e6 = claim6(close_seat="DISPATCHER", builder=None)
+dispatch_run(s6)
+ok("INF a DISPATCHER close: the runner is the builder, never independent",
+   g6(run6(i, e6, session_of=_mk))[1] == "PASS", False)
+i, s6, e6 = claim6(builder="DISPATCHER")
+dispatch_run(s6)
+ok("INF the ledger builder still rules: a DISPATCHER claim's DISPATCHER run FAILs",
+   g6(run6(i, e6, session_of=_mk))[1], "FAIL")
+
+# session_seat_map: only mac-verified, whoami-sure, SHARED-tree lines say which seat a session ran as (an isolated
+# DISPATCHER run inside a seat's session is the runner, not the session's seat).
+_sx = "%040x" % 0x5e55
+_a = put(_sx, "PASS", ["src/m"], seat="BENCH", session="session_01Map", shared=True)
+_b = put(_sx, "PASS", ["src/m"], seat="DISPATCHER", session="session_01Map")
+_c = put(_sx, "PASS", ["src/m"], seat="FOUNDRY", session="session_01Map", shared=True)
+_d = put(_sx, "PASS", ["src/m"], seat="CHECK", session="session_01Other", shared=True)
+_key = ce._key()
+ok("SMAP shared-tree runs map a session to its seats; isolated runs do not",
+   at.session_seat_map([_a, _b, _d], _key), {"session_01Map": {"BENCH"}, "session_01Other": {"CHECK"}})
+ok("SMAP a line with a bad mac is ignored", at.session_seat_map([dict(_c, mac="0" * 64)], _key), {})
+ok("SMAP a seat its writer only asserted is ignored",
+   at.session_seat_map([ce.seal(dict(_c, origin=dict(_c["origin"], who="caller")), _key)], _key), {})
+
+# CODE_REVIEW_WIRE_REVIEWER_SEAT: G5 independence reads the REVIEWER, not the shard's (recording) seat.
+import review_identity as RI                                     # noqa: E402
+rv2 = tempfile.mkdtemp()
+os.environ[RI.RECEIPTS_ENV] = os.path.join(rv2, "receipts.jsonl")
+RI.write_receipt("consult-9", "m", True, [("p.py", b"x")])
+_hx = RI.sha256_bytes(b"x")
+_who = {"seat": "FOUNDRY", "seat_from": "RIMFLOW_SEAT", "bridge_session": "session_01R"}
+with open(os.path.join(rv2, "A.jsonl"), "w") as f:
+    for path, rvw, rec in (("p.py", {"kind": "self"}, _who),
+                           ("s.py", {"kind": "external", "tool": "gpt_consult", "job": "consult-9", "model": "m"}, _who)):
+        d = {"path": path, "sha256": _hx, "verdict": "clean", "ts": "2026-10-26T01:00:00Z", "seat": "BENCH"}
+        d.update(RI.review_block(path, _hx, rvw, recorder=rec, key=_key))
+        f.write(json.dumps(d) + "\n")
+lc2 = at.load_clean_hashes(os.path.join(rv2, "*.jsonl"), key=_key)
+ok("REV a verified self review names the recorder's seat and session, not the shard seat", lc2.get(("p.py", _hx)),
+   {("self", "FOUNDRY", "session_01R")})
+ok("REV a gpt_consult review whose receipt inlined other bytes is only asserted", lc2.get(("s.py", _hx)),
+   {("asserted", "gpt_consult:consult-9", None)})
+ok("REV with no key every record is reviewer-unknown",
+   at.load_clean_hashes(os.path.join(rv2, "*.jsonl"), key=None).get(("p.py", _hx)), {("unknown", "BENCH", None)})
+
+
+def rcso(clean_ids, builder="BENCH", session=None):
+    f = [ev("verify", "REVX", "2026-10-26T11:00:00Z", seat="RUNNER", result="pass"),
+         ev("close", "REVX", "2026-10-26T12:00:00Z", seat="BENCH", sha="good", reason="verified")]
+    r = tiers_of(f, builder=builder, clean={("src/a.py", "H_src/a.py"): clean_ids},
+                 session_of=lambda sha: session)[0]["REVX"]
+    return "review_by_closing_seat_only" in r["flags"]
+
+
+ok("REV an old record (reviewer unknown) by another seat never counts as independent",
+   rcso({("unknown", "FOUNDRY", None)}), True)
+ok("REV a self review by a non-maker seat from another session is independent",
+   rcso({("self", "FOUNDRY", "session_01R")}, session=MS), False)
+ok("REV a self review by the maker's seat is a self-review", rcso({("self", "BENCH", "session_01R")}), True)
+ok("REV a non-maker seat inside the commit's session is the maker's session: not independent",
+   rcso({("self", "FOUNDRY", MS)}, session=MS), True)
+ok("REV an unreadable commit session: no seat review is independent",
+   rcso({("self", "FOUNDRY", "session_01R")}, session=at.SESSION_UNREADABLE), True)
+ok("REV an asserted reviewer never counts", rcso({("asserted", "CHECK", "session_01C")}), True)
+ok("REV a receipt-verified external review is independent", rcso({("external", "gpt_consult:consult-9", None)}),
+   False)
+ok("REV no builder in the ledger: a seat review is not independent", rcso({("self", "FOUNDRY", None)}, builder=None),
+   True)
+ok("REV no builder in the ledger: an external review still is", rcso({("external", "gpt_consult:j", None)},
+                                                                     builder=None), False)
+ok("REV the reviewers are listed", tiers_of(f6, clean={("src/a.py", "H_src/a.py"): {("self", "CHECK", None)}})[0][
+    "MAKERREV"]["gate_evidence"].get("G5_reviewers"), [["self", "CHECK", None]])
 
 print("\n%s" % ("ALL PASS" if not FAILED else "FAILED: %s" % FAILED))
 sys.exit(1 if FAILED else 0)
