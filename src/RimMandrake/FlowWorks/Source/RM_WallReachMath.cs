@@ -402,5 +402,152 @@ namespace RimMandrake.FlowWorks
 			}
 			return true;
 		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES / WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: ramp pairs as the flood's
+		/// join test (null with none). RM_PocketGrid.RampJoinsOf forwards here.</summary>
+		public static Func<int, int, bool> RampJoins(Dictionary<int, int> ramps)
+		{
+			return ramps == null || ramps.Count == 0 ? null
+				: (Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
+		}
+
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F4): one (grid, band, class) labelling's buffers and
+		/// skip rule, as RM_WallReach.Build runs them (Verse-free so the selftest drives the production policy, not a copy).
+		/// THE CONTRACT: <see cref="labels"/> is published by reference; a holder may keep it across ONE later flood (the
+		/// labelling before it is the one whose array the flood overwrites) and must let go before the second. RM_WallReach's
+		/// readers hold it only inside one call, under the owner gate (<see cref="OwnerGate"/>), so none ever holds two.
+		/// Identical inputs (kinds by reference, depth and ramps by content, the same width and height) keep the labels: the
+		/// labelling is a pure function of them.</summary>
+		public sealed class LabelSlot
+		{
+			public Labels labels;
+			public Labels spare;
+			public byte[] builtKinds;
+			public byte[] builtDepth;
+			public Dictionary<int, int> builtRamps;
+			public int builtWidth = -1, builtHeight = -1;
+			public int floods, skips;
+
+			/// <summary>Label (kinds, depth, ramps) for (band, cls) unless the inputs are those of the published labelling.
+			/// True when it flooded.</summary>
+			public bool Rebuild(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height, int band, int cls)
+			{
+				bool flooded;
+				if (labels != null && ReferenceEquals(kinds, builtKinds) && width == builtWidth && height == builtHeight
+					&& SameBytes(depth, builtDepth) && SameRamps(ramps, builtRamps))
+				{
+					skips++;
+					flooded = false;
+				}
+				else
+				{
+					Labels s = spare;
+					spare = null;
+					Labels built = Label(kinds, depth, width, height, band, cls, RampJoins(ramps), s?.label);
+					spare = labels;
+					labels = built;
+					floods++;
+					flooded = true;
+				}
+				builtKinds = kinds;
+				builtDepth = depth;
+				builtRamps = ramps;
+				builtWidth = width;
+				builtHeight = height;
+				return flooded;
+			}
+		}
+
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the map's kinds snapshot, as RM_WallReach.Kinds runs it. The
+		/// published array is never written after it is published (a worker thread reads it: NoteConnectivity); a read whose
+		/// content (and geometry) equals it becomes scratch for the next read, so a labelling built from the published array
+		/// can tell by reference that no kind moved. <see cref="Invalidate"/> (a load finished) makes the next ask re-read.</summary>
+		public sealed class KindsSnapshot
+		{
+			public byte[] published;
+			public long stamp = long.MinValue;
+			public int width = -1, height = -1;
+			private byte[] scratch;
+
+			public bool CurrentFor(long s, int w, int h)
+			{
+				return published != null && stamp == s && width == w && height == h && published.Length == w * h;
+			}
+
+			/// <summary>An array of n to read the map into (the last unchanged read, else a new one). Every square must be
+			/// written before <see cref="Publish"/>.</summary>
+			public byte[] Take(int n)
+			{
+				byte[] a = scratch != null && scratch.Length == n ? scratch : new byte[n];
+				scratch = null;
+				return a;
+			}
+
+			/// <summary>The read becomes the published snapshot when its content or geometry moved; else the old array stays
+			/// published and the read waits as scratch. Returns the published array.</summary>
+			public byte[] Publish(byte[] read, long s, int w, int h)
+			{
+				if (w != width || h != height || !SameBytes(read, published))
+				{
+					published = read;
+				}
+				else
+				{
+					scratch = read;
+				}
+				stamp = s;
+				width = w;
+				height = h;
+				return published;
+			}
+
+			public void Invalidate()
+			{
+				stamp = long.MinValue;
+			}
+		}
+
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: was this built while the game was still loading, and is the game
+		/// now playing? Then it is rebuilt from a fresh read on the first tick or frame in play, whatever its stamp says (the
+		/// pocket grid's RELOAD_POCKETS rule).</summary>
+		public static bool StaleAfterLoad(bool builtMidLoad, bool playing)
+		{
+			return builtMidLoad && playing;
+		}
+
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F1): the pocket and wall-reach caches (labels, their
+		/// spare arrays, the query scratch) have ONE owner at a time. In play that is the main thread; while a save loads or a
+		/// map generates it is the long-event worker (Root_Play queues both doAsynchronously, and region building asks the
+		/// pocket grid), with the main thread only drawing the loading screen. So the rule is "never two at once", not "main
+		/// thread only". A thread entering while another holds the gate is refused (its caller answers as vanilla: no veto, no
+		/// build) and counted; the holder's own nested calls pass.</summary>
+		public sealed class OwnerGate
+		{
+			private int holder;
+			public int refused;
+
+			/// <summary>True: the caller owns the caches until <see cref="Exit"/>(nested). nested: it already held them.</summary>
+			public bool TryEnter(int threadId, out bool nested)
+			{
+				int prev = System.Threading.Interlocked.CompareExchange(ref holder, threadId, 0);
+				nested = prev == threadId;
+				if (prev == 0 || nested)
+				{
+					return true;
+				}
+				System.Threading.Interlocked.Increment(ref refused);
+				return false;
+			}
+
+			public void Exit(bool nested)
+			{
+				if (!nested)
+				{
+					System.Threading.Volatile.Write(ref holder, 0);
+				}
+			}
+
+			public int Holder => System.Threading.Volatile.Read(ref holder);
+		}
 	}
 }

@@ -51,18 +51,16 @@ namespace RimMandrake.FlowWorks
 			public RM_PocketGrid grid;   // the depth view (null: walls only)
 			public int band;             // RM_PocketGridMath.BandFor(k); 0 with no grid
 			public int cls;
-			public RM_WallReachMath.Labels labels;
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling before this one, whose array the next flood overwrites (no
-			// reader holds a labelling across two rebuilds: the query reads e.labels and lets go).
-			public RM_WallReachMath.Labels spareLabels;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES / WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the labelling, its spare array
+			// and the inputs it was built from (RM_WallReachMath.LabelSlot: the buffer contract and skip rule the selftest drives).
+			public readonly RM_WallReachMath.LabelSlot slot = new RM_WallReachMath.LabelSlot();
+			public RM_WallReachMath.Labels labels => slot.labels;
 			public long stamp;
 			public int builtTick;
 			public int lastUsedTick;
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the inputs of the last labelling (kinds by reference: Kinds keeps the
-			// old array when its content did not change), so a rebuild over identical inputs keeps the labels.
-			public byte[] builtKinds;
-			public byte[] builtDepth;
-			public Dictionary<int, int> builtRamps;
+			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F2): built while the game was loading (half-spawned kinds or
+			// depth); rebuilt from a fresh read on the first tick or frame in play, whatever the stamp says.
+			public bool midLoad;
 		}
 
 		private sealed class MapState
@@ -72,9 +70,10 @@ namespace RimMandrake.FlowWorks
 			public int doorPrint;
 			public int doorTick = int.MinValue / 2;
 			public readonly Dictionary<(RM_PocketGrid, int, int), Entry> entries = new Dictionary<(RM_PocketGrid, int, int), Entry>();
-			public byte[] kinds;
-			public long kindsStamp = long.MinValue;
-			public byte[] kindsScratch;   // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: never published; Kinds reads into it
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES / WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the published kinds (never
+			// written after publication; NoteConnectivity reads it on a worker) and the scratch the next read goes into.
+			public readonly RM_WallReachMath.KindsSnapshot kinds = new RM_WallReachMath.KindsSnapshot();
+			public bool builtMidLoad;     // some entry or the kinds were built while loading (Tick's post-load rebuild)
 			public int viewsReused;       // Build took the pocket grid's built view instead of reading the map again
 			public int builds;
 			public int skipped;      // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: builds whose inputs were identical (labels kept)
@@ -139,7 +138,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
-			byte[] kinds = st.kinds;
+			byte[] kinds = st.kinds.published;
 			CellIndices ci = map.cellIndices;
 			lock (st.deltaLock)
 			{
@@ -198,7 +197,7 @@ namespace RimMandrake.FlowWorks
 				overflow = st.deltaOverflow;
 				st.deltaOverflow = false;
 			}
-			byte[] kinds = st.kinds;
+			byte[] kinds = st.kinds.published;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 			PathGrid pg = map.pathing.Normal.pathGrid;
 			if (kinds != null && kinds.Length != map.cellIndices.NumGridCells)
@@ -230,7 +229,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			Interlocked.Increment(ref st.wallGen);
-			byte[] kinds = st.kinds;
+			byte[] kinds = st.kinds.published;
 			if (kinds == null || !c.InBounds(map))
 			{
 				return;
@@ -350,33 +349,23 @@ namespace RimMandrake.FlowWorks
 		/// water. Shared by every (band, class) labelling of one stamp.</summary>
 		private static byte[] Kinds(Map map, MapState st, long stamp)
 		{
-			if (st.kinds != null && st.kindsStamp == stamp && st.kinds.Length == map.cellIndices.NumGridCells)
+			int w = map.Size.x, h = map.Size.z;
+			if (st.kinds.CurrentFor(stamp, w, h))
 			{
-				return st.kinds;
+				return st.kinds.published;
 			}
 			int n = map.cellIndices.NumGridCells;
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: read into the scratch (every square written below); it is published only when
-			// its content moved, else it stays scratch for the next stamp.
-			byte[] kinds = st.kindsScratch != null && st.kindsScratch.Length == n ? st.kindsScratch : new byte[n];
-			st.kindsScratch = null;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: read into the scratch (every square written below); it is published only
+			// when its content (or the map's geometry) moved, else it stays scratch for the next stamp, so a labelling built
+			// from the published array can tell by reference that its walls did not move (LabelSlot's skip).
+			byte[] kinds = st.kinds.Take(n);
 			PathGrid pg = map.pathing.Normal.pathGrid;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 			for (int i = 0; i < n; i++)
 			{
 				kinds[i] = KindAt(map, pg, swim, i);
 			}
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: identical content keeps the old array, so a labelling built from it can
-			// tell by reference that its walls did not move (Build's skip).
-			if (!RM_WallReachMath.SameBytes(kinds, st.kinds))
-			{
-				st.kinds = kinds;
-			}
-			else
-			{
-				st.kindsScratch = kinds;
-			}
-			st.kindsStamp = stamp;
-			return st.kinds;
+			return st.kinds.Publish(kinds, stamp, w, h);
 		}
 
 		/// <summary>The kind of one square (Kinds' rule, and FlushDeltas' judge of a delta).</summary>
@@ -399,6 +388,24 @@ namespace RimMandrake.FlowWorks
 		}
 
 		private static void Build(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views)
+		{
+			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: every caller holds the owner gate (EntryFor under Judge or
+			// RecordPathFailure, Tick); one more check costs nothing and keeps a future caller honest.
+			if (!RM_PocketGrid.EnterOwner(out bool nested))
+			{
+				return;
+			}
+			try
+			{
+				BuildOwned(map, st, e, stamp, views);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void BuildOwned(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views)
 		{
 			var sw = System.Diagnostics.Stopwatch.StartNew();
 			byte[] kinds = Kinds(map, st, stamp);
@@ -430,26 +437,16 @@ namespace RimMandrake.FlowWorks
 				depth = v.depth;
 				ramps = v.ramps;
 			}
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling is a pure function of (kinds, depth, ramps, band, class);
-			// identical inputs keep it (WallReach_content_skip_equals_rebuild), a whole-map flood saved.
-			if (e.labels != null && ReferenceEquals(kinds, e.builtKinds) && RM_WallReachMath.SameBytes(depth, e.builtDepth)
-				&& RM_WallReachMath.SameRamps(ramps, e.builtRamps))
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling is a pure function of (kinds, depth, ramps, band, class, the
+			// map's width and height); identical inputs keep it (LabelSlot.Rebuild: WallReach_content_skip_equals_rebuild,
+			// WallReach_slot_lifecycle), a whole-map flood saved.
+			if (!e.slot.Rebuild(kinds, depth, ramps, map.Size.x, map.Size.z, e.band, e.cls))
 			{
 				st.skipped++;
 			}
-			else
-			{
-				RM_WallReachMath.Labels spare = e.spareLabels;
-				e.spareLabels = null;
-				RM_WallReachMath.Labels built = RM_WallReachMath.Label(kinds, depth, map.Size.x, map.Size.z, e.band, e.cls, RM_PocketGrid.RampJoinsOf(ramps),
-					spare?.label);
-				e.spareLabels = e.labels;
-				e.labels = built;
-			}
-			e.builtKinds = kinds;
-			e.builtDepth = depth;
-			e.builtRamps = ramps;
 			e.stamp = stamp;
+			e.midLoad = Current.ProgramState != ProgramState.Playing;
+			st.builtMidLoad |= e.midLoad;
 			int now = Find.TickManager?.TicksGame ?? 0;
 			e.builtTick = now;
 			st.builds++;
@@ -473,10 +470,22 @@ namespace RimMandrake.FlowWorks
 		/// one left.</summary>
 		public static void PausedFrame(Map map)
 		{
-			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			if (map == null || !On || !states.TryGetValue(map, out MapState st) || !RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
+			try
+			{
+				PausedFrameOwned(map, st);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void PausedFrameOwned(Map map, MapState st)
+		{
 			int now = Find.TickManager?.TicksGame ?? 0;
 			if (now != st.pausedFrameTick)
 			{
@@ -494,10 +503,23 @@ namespace RimMandrake.FlowWorks
 		/// stale ones when due. Never inside a query.</summary>
 		public static void Tick(Map map, bool paused)
 		{
-			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			if (map == null || !On || !states.TryGetValue(map, out MapState st) || !RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
+			try
+			{
+				TickOwned(map, st, paused);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void TickOwned(Map map, MapState st, bool paused)
+		{
+			RM_PocketGrid.ReportRefusals();
 			FlushDeltas(map, st);
 			if (st.entries.Count == 0)
 			{
@@ -507,6 +529,15 @@ namespace RimMandrake.FlowWorks
 			RefreshDoorPrint(map, st, now, paused);
 			long stamp = StampOf(map, st);
 			bool forced = Volatile.Read(ref st.forced) != 0;
+			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F2): a labelling (or the kinds) built while the game was
+			// loading read half-spawned ground; the first tick or frame in play re-reads the kinds and rebuilds those entries,
+			// unthrottled, even though no stamp input moved (RM_PocketGrid's RELOAD_POCKETS rule).
+			bool playing = Current.ProgramState == ProgramState.Playing;
+			if (RM_WallReachMath.StaleAfterLoad(st.builtMidLoad, playing))
+			{
+				st.kinds.Invalidate();
+				st.builtMidLoad = false;
+			}
 			List<(RM_PocketGrid, int, int)> drop = null;
 			Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)> views = null;
 			bool any = false;
@@ -518,7 +549,8 @@ namespace RimMandrake.FlowWorks
 					(drop ?? (drop = new List<(RM_PocketGrid, int, int)>())).Add(kv.Key);
 					continue;
 				}
-				if (RM_WallReachMath.RebuildDue(e.stamp != stamp, forced, paused, now, e.builtTick, RebuildMinTicks))
+				bool reload = RM_WallReachMath.StaleAfterLoad(e.midLoad, playing);
+				if (RM_WallReachMath.RebuildDue(e.stamp != stamp || reload, forced || reload, paused, now, e.builtTick, RebuildMinTicks))
 				{
 					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
 					Build(map, st, e, stamp, views);
@@ -643,7 +675,7 @@ namespace RimMandrake.FlowWorks
 					st.doorTick = now;
 				}
 				// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: deltas not yet judged may have moved a kind the snapshot holds;
-				// a first build here (a query, any thread) takes them as a change, the eager bump's rule, so it never labels
+				// a first build here (a query, on the cache owner: RM_PocketGrid.Owner) takes them as a change, the eager bump's rule, so it never labels
 				// from a stale snapshot. Tick judges them later; one extra rebuild at worst.
 				bool unjudged;
 				lock (st.deltaLock)
@@ -721,7 +753,26 @@ namespace RimMandrake.FlowWorks
 			return Judge(map, start, dest, peMode, tp, walker, true);
 		}
 
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F1): the query reads and may build shared state (the
+		/// entries, goalScratch, edgeScratch, the labels' spare arrays); a caller overlapping the cache owner gets vanilla's
+		/// answer (no veto, the safe direction: the veto only ever turns a yes into a no).</summary>
 		private static bool Judge(Map map, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode, TraverseParms tp, Pawn walker, bool count)
+		{
+			if (!On || map == null || !RM_PocketGrid.EnterOwner(out bool nested))
+			{
+				return false;
+			}
+			try
+			{
+				return JudgeOwned(map, start, dest, peMode, tp, walker, count);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static bool JudgeOwned(Map map, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode, TraverseParms tp, Pawn walker, bool count)
 		{
 			if (!On || map == null || !dest.IsValid || !start.InBounds(map) || !dest.Cell.InBounds(map))
 			{
@@ -796,10 +847,25 @@ namespace RimMandrake.FlowWorks
 		/// CanReach had said yes). Cheap: one veto read plus, for a residual only, one pass over the map's doors.</summary>
 		internal static void RecordPathFailure(Pawn p, LocalTargetInfo dest, PathEndMode peMode)
 		{
-			if (p == null || !p.Spawned || !dest.IsValid)
+			if (p == null || !p.Spawned || !dest.IsValid || !RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
+			try
+			{
+				RecordPathFailureOwned(p, dest, peMode);
+			}
+			finally
+			{
+				// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F3): the suspect doors hold their map; a static list
+				// that kept them past this call rooted a removed map (and its weak-table grids) until the next residual.
+				doorScratch.Clear();
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void RecordPathFailureOwned(Pawn p, LocalTargetInfo dest, PathEndMode peMode)
+		{
 			Fails++;
 			Map map = p.Map;
 			bool canBash = p.CurJob != null && p.CurJob.canBashDoors;
@@ -875,7 +941,8 @@ namespace RimMandrake.FlowWorks
 				+ " lastMs=" + st.lastMs.ToString("0.000") + " maxMs=" + st.maxMs.ToString("0.000")
 				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-")
 				+ " steppedFrames=" + st.steppedFrames + " skipped=" + st.skipped
-				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet + " viewsReused=" + st.viewsReused;
+				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet + " viewsReused=" + st.viewsReused
+				+ " ownerRefused=" + RM_PocketGrid.OwnerRefused;
 		}
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N
@@ -893,6 +960,7 @@ namespace RimMandrake.FlowWorks
 			Queries = Vetoes = Fails = OutOfScope = Stale = Residual = 0;
 			residualByKey.Clear();
 			residualByDoor.Clear();
+			doorScratch.Clear();
 			return "RESET ok=True";
 		}
 

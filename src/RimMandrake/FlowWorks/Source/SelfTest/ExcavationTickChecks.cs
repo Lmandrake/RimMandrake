@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -187,6 +188,7 @@ namespace RimMandrake.FlowWorks.SelfTest
         {
             RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Open, RM_WallReachMath.Wall,
             RM_WallReachMath.Wall, RM_WallReachMath.Door, RM_WallReachMath.PlayerDoor, RM_WallReachMath.Fence, RM_WallReachMath.DeepWater,
+            RM_WallReachMath.HeldDoor, RM_WallReachMath.ShutGate,
         };
 
         private static byte[] RandomKinds(Random r, int n)
@@ -203,31 +205,28 @@ namespace RimMandrake.FlowWorks.SelfTest
             return d;
         }
 
-        /// <summary>One simulated labelling under the new policy: the production rules, minus Verse.</summary>
+        /// <summary>One simulated labelling under the new policy: the production classes (RM_WallReach.Kinds runs the
+        /// KindsSnapshot, RM_WallReach.Build the LabelSlot), driven without Verse.</summary>
         private sealed class Sim
         {
-            public byte[] snapshot;          // MapState.kinds (kept by reference when its content did not change)
+            public readonly RM_WallReachMath.KindsSnapshot kinds = new RM_WallReachMath.KindsSnapshot();
+            public readonly RM_WallReachMath.LabelSlot slot = new RM_WallReachMath.LabelSlot();
             public long gen;                 // wallGen
             public long builtGen = -1;
-            public byte[] builtKinds, builtDepth;
-            public RM_WallReachMath.Labels labels;
-            public int floods, skips, bumps;
+            public int bumps;
+            private long reads;
+            public byte[] snapshot => kinds.published;
+            public byte[] builtDepth => slot.builtDepth;
+            public RM_WallReachMath.Labels labels => slot.labels;
+            public int floods => slot.floods;
+            public int skips => slot.skips;
 
             public void Rebuild(byte[] liveKinds, byte[] depth, int w, int h, int band, int cls)
             {
-                byte[] fresh = (byte[])liveKinds.Clone();
-                if (!RM_WallReachMath.SameBytes(fresh, snapshot)) snapshot = fresh;      // Kinds()
-                if (labels != null && ReferenceEquals(snapshot, builtKinds) && RM_WallReachMath.SameBytes(depth, builtDepth))
-                {
-                    skips++;
-                }
-                else
-                {
-                    labels = RM_WallReachMath.Label(snapshot, depth, w, h, band, cls);
-                    floods++;
-                }
-                builtKinds = snapshot;
-                builtDepth = depth;
+                byte[] read = kinds.Take(liveKinds.Length);   // Kinds(): every square written, then published or kept as scratch
+                Array.Copy(liveKinds, read, liveKinds.Length);
+                byte[] snap = kinds.Publish(read, ++reads, w, h);
+                slot.Rebuild(snap, depth, null, w, h, band, cls);
                 builtGen = gen;
             }
         }
@@ -683,7 +682,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(SameLabels(want, got) && got.surface.Length == got.count && got.size.Length == got.count && got.width == w && got.height == h,
                         $"case {t} ({w}x{h}, k {k}): the pocket labels differ from the reference");
                     if (reuse != null && reuse.Length == n) { Assert(ReferenceEquals(got.label, reuse), $"case {t}: the reused array was not used"); reused++; }
-                    int cls = rng.Next(16);
+                    int cls = rng.Next(RM_WallReachMath.ClassCount);
                     byte[] wd = rng.Next(4) == 0 ? null : depth;
                     reuse = rng.Next(3) == 0 ? null : Garbage(rng.Next(4) == 0 ? n - 1 : n);
                     RM_WallReachMath.Labels wantW = RefWallLabel(kind, wd, w, h, k, cls, joins), gotW = RM_WallReachMath.Label(kind, wd, w, h, k, cls, joins, reuse);
@@ -886,6 +885,176 @@ namespace RimMandrake.FlowWorks.SelfTest
             });
 
             // Per-tick work is bounded: the judge reads at most MaxQueuedDeltas squares; past the cap it is the old eager stale.
+            // ── WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review of the FlowWorks alloc diff, 2026-10-27) ──
+            // The production lifecycle classes (LabelSlot, KindsSnapshot, OwnerGate, StaleAfterLoad) driven directly.
+            Case("WallReach_slot_lifecycle", () =>
+            {
+                int cls = RM_WallReachMath.ClassOf(true, true, false, true, false, false);
+                // 1. A retained labelling survives exactly one later flood; the second reuses its array (holders let go first).
+                var r0 = new Random(4242);
+                int w0 = 17, h0 = 13, n0 = w0 * h0;
+                byte[] k1 = RandomKinds(r0, n0), k2 = RandomKinds(r0, n0), k3 = RandomKinds(r0, n0);
+                var slot0 = new RM_WallReachMath.LabelSlot();
+                slot0.Rebuild(k1, null, null, w0, h0, 0, cls);
+                RM_WallReachMath.Labels held = slot0.labels;
+                int[] heldCopy = (int[])held.label.Clone();
+                Assert(slot0.Rebuild(k2, null, null, w0, h0, 0, cls), "new kinds must flood");
+                Assert(!ReferenceEquals(slot0.labels.label, held.label) && held.label.SequenceEqual(heldCopy)
+                    && SameLabels(held, RM_WallReachMath.Label(k1, null, w0, h0, 0, cls)), "a labelling held across ONE flood changed under its holder");
+                Assert(slot0.Rebuild(k3, null, null, w0, h0, 0, cls), "new kinds must flood (2)");
+                Assert(ReferenceEquals(slot0.labels.label, held.label), "the second flood reuses the spare array (the documented contract; the sanity probe that the reuse is real)");
+                Assert(SameLabels(slot0.labels, RM_WallReachMath.Label(k3, null, w0, h0, 0, cls)), "the reused array labels the new kinds");
+
+                // 2. Alternating changed / unchanged builds (kinds by reference, depth and ramps by content) equal a fresh Label.
+                int floods = 0, skips = 0;
+                for (int seed = 1; seed <= 30; seed++)
+                {
+                    var r = new Random(seed * 104729);
+                    int w = r.Next(5, 28), h = r.Next(5, 28), n = w * h;
+                    var snap = new RM_WallReachMath.KindsSnapshot();
+                    var slot = new RM_WallReachMath.LabelSlot();
+                    byte[] live = RandomKinds(r, n);
+                    byte[] depth = RandomDepth(r, n, r.Next(3) != 0);
+                    Dictionary<int, int> ramps = null;
+                    int band = r.Next(0, 4), c = r.Next(RM_WallReachMath.ClassCount);
+                    var held2 = new List<(RM_WallReachMath.Labels lab, int[] copy, int life)>();
+                    for (int step = 0; step < 80; step++)
+                    {
+                        switch (r.Next(6))
+                        {
+                            case 0: live[r.Next(n)] = KindPool[r.Next(KindPool.Length)]; break;
+                            case 1: depth = (byte[])depth.Clone(); depth[r.Next(n)] = (byte)r.Next(0, 6); break;
+                            case 2: ramps = r.Next(2) == 0 ? null : new Dictionary<int, int> { [r.Next(n)] = r.Next(n), [r.Next(n)] = r.Next(n) }; break;
+                            case 3: depth = (byte[])depth.Clone(); break;   // same content, new array: must not flood
+                            default: break;                                  // nothing moved
+                        }
+                        byte[] read = snap.Take(n);
+                        Array.Copy(live, read, n);
+                        byte[] kinds = snap.Publish(read, step, w, h);
+                        slot.Rebuild(kinds, depth, ramps, w, h, band, c);
+                        var truth = RM_WallReachMath.Label(live, depth, w, h, band, c, RM_WallReachMath.RampJoins(ramps));
+                        Assert(SameLabels(slot.labels, truth), "seed " + seed + " step " + step + ": the slot's labels differ from a fresh Label");
+                        // a holder that took the labels last build still reads them unchanged (one flood later at most)
+                        foreach (var hv in held2)
+                        {
+                            if (hv.life >= slot.floods - 1)
+                                Assert(hv.lab.label.SequenceEqual(hv.copy), "seed " + seed + " step " + step + ": a labelling held across one flood was written");
+                        }
+                        held2.RemoveAll(hv => hv.life < slot.floods - 1);
+                        held2.Add((slot.labels, (int[])slot.labels.label.Clone(), slot.floods));
+                    }
+                    floods += slot.floods;
+                    skips += slot.skips;
+                }
+                Assert(floods > 0 && skips > 0, "both paths must run (floods " + floods + ", skips " + skips + ")");
+
+                // 3. Geometry is identity: the same bytes at 2x3 and 3x2 are two maps.
+                var g = new RM_WallReachMath.LabelSlot();
+                byte[] six = { 0, 1, 0, 0, 1, 0 };
+                g.Rebuild(six, null, null, 2, 3, 0, 0);
+                Assert(g.Rebuild(six, null, null, 3, 2, 0, 0) && g.labels.width == 3 && g.labels.height == 2, "a geometry change with the same bytes must re-flood");
+                Assert(!g.Rebuild(six, null, null, 3, 2, 0, 0), "an identical build must skip (sanity probe)");
+                Console.WriteLine("    [excavation-tick] slot lifecycle: " + floods + " floods, " + skips + " skips, every one equal to a fresh Label");
+            });
+
+            Case("WallReach_kinds_snapshot_never_written", () =>
+            {
+                var r = new Random(77);
+                int w = 21, h = 9, n = w * h;
+                var snap = new RM_WallReachMath.KindsSnapshot();
+                byte[] live = RandomKinds(r, n);
+                var published = new List<(byte[] arr, byte[] copy)>();
+                int kept = 0;
+                for (int step = 0; step < 300; step++)
+                {
+                    if (r.Next(3) == 0) live[r.Next(n)] = KindPool[r.Next(KindPool.Length)];
+                    Assert(!snap.CurrentFor(step, w, h), "a new stamp is never current");
+                    byte[] read = snap.Take(n);
+                    Assert(published.TrueForAll(p => !ReferenceEquals(p.arr, read)), "step " + step + ": a published array was handed out as scratch");
+                    Array.Copy(live, read, n);
+                    byte[] before = snap.published;
+                    byte[] now = snap.Publish(read, step, w, h);
+                    Assert(snap.CurrentFor(step, w, h) && now.SequenceEqual(live), "step " + step + ": the published array is not the read");
+                    if (ReferenceEquals(now, before)) kept++;
+                    else published.Add((now, (byte[])now.Clone()));
+                    foreach (var p in published) Assert(p.arr.SequenceEqual(p.copy), "step " + step + ": a published snapshot was written after publication");
+                }
+                Assert(kept > 50 && published.Count > 20, "both paths must run (kept " + kept + ", published " + published.Count + ")");
+                byte[] last = snap.published;
+                byte[] same = snap.Take(n);
+                Array.Copy(last, same, n);
+                Assert(!ReferenceEquals(snap.Publish(same, 1000, h, w), last), "the same bytes at another width and height must publish anew");
+                snap.Invalidate();
+                Assert(!snap.CurrentFor(1000, h, w), "Invalidate makes the next ask re-read");
+            });
+
+            Case("WallReach_post_load_and_owner_gate", () =>
+            {
+                Assert(RM_WallReachMath.StaleAfterLoad(true, true), "a mid-load build is stale once playing");
+                Assert(!RM_WallReachMath.StaleAfterLoad(true, false), "still loading: keep it until play");
+                Assert(!RM_WallReachMath.StaleAfterLoad(false, true) && !RM_WallReachMath.StaleAfterLoad(false, false), "an in-play build is not stale");
+
+                var gate = new RM_WallReachMath.OwnerGate();
+                Assert(gate.TryEnter(11, out bool n1) && !n1 && gate.Holder == 11, "the first caller owns");
+                Assert(gate.TryEnter(11, out bool n2) && n2, "the owner re-enters (nested)");
+                gate.Exit(n2);
+                Assert(gate.Holder == 11, "a nested exit keeps the owner");
+                Assert(!gate.TryEnter(12, out _) && gate.refused == 1, "a second thread overlapping the owner is refused and counted");
+                gate.Exit(n1);
+                Assert(gate.Holder == 0, "the owner left");
+                Assert(gate.TryEnter(12, out bool n3) && !n3, "after the owner leaves, the next thread owns");
+                gate.Exit(n3);
+
+                // A real second thread, while this one holds the gate.
+                Assert(gate.TryEnter(Environment.CurrentManagedThreadId, out bool n4) && !n4, "this thread owns");
+                bool other = true;
+                var t = new System.Threading.Thread(() => other = gate.TryEnter(Environment.CurrentManagedThreadId, out _));
+                t.Start();
+                t.Join();
+                gate.Exit(n4);
+                Assert(!other && gate.refused == 2, "a real worker thread is refused while the owner holds the caches");
+
+                // Every query class against every kind: the vanilla rules per class bit (ClassOf's inputs), not Passable's own code.
+                int classes = 0;
+                for (int bits = 0; bits < 64; bits++)
+                {
+                    bool byPawn = (bits & 1) != 0, open = (bits & 2) != 0, bash = (bits & 4) != 0, shut = (bits & 8) != 0, fence = (bits & 16) != 0, nonSwim = (bits & 32) != 0;
+                    int c = RM_WallReachMath.ClassOf(byPawn, open, bash, shut, fence, nonSwim);
+                    Assert(c >= 0 && c < RM_WallReachMath.ClassCount, "class out of range");
+                    bool judged = byPawn && !bash;
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.Open, c) && RM_WallReachMath.Passable(RM_WallReachMath.HeldDoor, c), "open ground and a held door pass everyone");
+                    Assert(!RM_WallReachMath.Passable(RM_WallReachMath.Wall, c), "a wall passes nobody");
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.Door, c) == !(judged && !open), "bits " + bits + ": a door");
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.PlayerDoor, c) == !(judged && (!open || shut)), "bits " + bits + ": a player door");
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.ShutGate, c) == !judged, "bits " + bits + ": a shut gate");
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.Fence, c) == !fence, "bits " + bits + ": a fence");
+                    Assert(RM_WallReachMath.Passable(RM_WallReachMath.DeepWater, c) == !nonSwim, "bits " + bits + ": deep water");
+                }
+                for (int c = 0; c < RM_WallReachMath.ClassCount; c++)
+                {
+                    var r = new Random(c + 1);
+                    int w = r.Next(4, 20), h = r.Next(4, 20), n = w * h;
+                    byte[] k = RandomKinds(r, n);
+                    Assert(SameLabels(RefWallLabel(k, null, w, h, 0, c), RM_WallReachMath.Label(k, null, w, h, 0, c)), "class " + c + ": labels differ from the reference");
+                    classes++;
+                }
+                Assert(classes == 32, "all 32 classes labelled");
+
+                string wr = Src("Superdeep", "RM_WallReach.cs");
+                RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.StaleAfterLoad\(st\.builtMidLoad, playing\)\) \{ st\.kinds\.Invalidate\(\); st\.builtMidLoad = false; \}", "Tick re-reads the kinds after a load");
+                RiverSwitchFlipChecks.Has(wr, @"RebuildDue\(e\.stamp != stamp \|\| reload, forced \|\| reload,", "a mid-load labelling is rebuilt unthrottled in play");
+                RiverSwitchFlipChecks.Has(wr, @"e\.midLoad = Current\.ProgramState != ProgramState\.Playing; st\.builtMidLoad \|= e\.midLoad;", "a build records whether it ran mid-load");
+                RiverSwitchFlipChecks.Has(wr, @"doorScratch\.Clear\(\); RM_PocketGrid\.ExitOwner\(nested\); \}", "the suspect doors are let go in a finally");
+                RiverSwitchFlipChecks.Has(wr, @"if \(!On \|\| map == null \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return false; \}", "a query off the owner vetoes nothing");
+                RiverSwitchFlipChecks.Has(wr, @"if \(!RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ BuildOwned\(", "a build runs on the owner");
+                string pg = Src("Superdeep", "RM_PocketGrid.cs");
+                RiverSwitchFlipChecks.Has(pg, @"private void Build\(bool notifyFlips\) \{ if \(!EnterOwner\(out bool nested\)\) \{ return; \}", "a pocket build runs on the owner");
+                RiverSwitchFlipChecks.Has(pg, @"lastW != map\.Size\.x \|\| lastH != map\.Size\.z\)", "BuiltView checks the geometry");
+                string tr = Src("Superdeep", "RM_SuperdeepTrap.cs");
+                RiverSwitchFlipChecks.Has(tr, @"if \(!__result \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ Owned\(start, dest, peMode, traverseParams, ref __result, ___map\);", "the CanReach veto runs on the owner");
+                RiverSwitchFlipChecks.Has(tr, @"if \(!__result \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ Owned\(c, traverseParms, ref __result\);", "the map-edge veto runs on the owner");
+            });
+
             Case("WallReach_delta_judge_bounded", () =>
             {
                 var snap = new byte[RM_WallReachMath.MaxQueuedDeltas * 2];
@@ -956,10 +1125,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                     }
                 }
                 string wr = Src("Superdeep", "RM_WallReach.cs");
-                RiverSwitchFlipChecks.Has(wr, @"if \(e\.labels != null && ReferenceEquals\(kinds, e\.builtKinds\) && RM_WallReachMath\.SameBytes\(depth, e\.builtDepth\) && RM_WallReachMath\.SameRamps\(ramps, e\.builtRamps\)\)",
-                    "Build skips only on identical kinds, depth and ramps");
-                RiverSwitchFlipChecks.Has(wr, @"if \(!RM_WallReachMath\.SameBytes\(kinds, st\.kinds\)\) \{ st\.kinds = kinds; \}", "Kinds keeps the old array when nothing moved");
-                RiverSwitchFlipChecks.Has(wr, @"FlushDeltas\(map, st\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
+                RiverSwitchFlipChecks.Has(wr, @"if \(!e\.slot\.Rebuild\(kinds, depth, ramps, map\.Size\.x, map\.Size\.z, e\.band, e\.cls\)\)",
+                    "Build skips through the LabelSlot (identical kinds, depth, ramps and geometry)");
+                RiverSwitchFlipChecks.Has(wr, @"byte\[\] kinds = st\.kinds\.Take\(n\);", "Kinds reads into the snapshot's scratch");
+                RiverSwitchFlipChecks.Has(wr, @"return st\.kinds\.Publish\(kinds, stamp, w, h\);", "Kinds keeps the old array when nothing moved");
+                RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
                 RiverSwitchFlipChecks.Has(wr, @"FlushDeltas\(map, st\);.{0,140}bool unthrottled = RM_WallReachMath\.PausedUnthrottled", "a paused write moves the stamp before PausedFrame compares it");
                 RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ Interlocked\.Increment\(ref st\.wallGen\); \} Build\(map, st, e, StampOf\(map, st\), null\);", "a first build never labels from an unjudged snapshot");
                 RiverSwitchFlipChecks.Has(wr, @"if \(deltas == null \|\| deltas\.Count == 0\) \{ return; \}", "an empty gather moves nothing");
@@ -1007,7 +1177,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(skips > 0 && floods < oldFloods, "the skip must fire on identical views");
                 Console.WriteLine("    [excavation-tick] pocket grid: band floods old=" + oldFloods + " new=" + floods + " (" + skips + " rebuilds kept)");
                 string pg = Src("Superdeep", "RM_PocketGrid.cs");
-                RiverSwitchFlipChecks.Has(pg, @"bool sameInput = old != null && old\.Length == BandCount && RM_WallReachMath\.SameBytes\(depth, lastDepth\) && RM_WallReachMath\.SameRamps\(rampPairs, lastRamps\);",
+                RiverSwitchFlipChecks.Has(pg, @"bool sameInput = old != null && old\.Length == BandCount && lastW == w && lastH == h && RM_WallReachMath\.SameBytes\(depth, lastDepth\) && RM_WallReachMath\.SameRamps\(rampPairs, lastRamps\);",
                     "PocketGrid.Build skips only on an identical view and ramps");
                 RiverSwitchFlipChecks.Has(pg, @"if \(!sameInput && notifyFlips", "kept bands flip nothing");
             });

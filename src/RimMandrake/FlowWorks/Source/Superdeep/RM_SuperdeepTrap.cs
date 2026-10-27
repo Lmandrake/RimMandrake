@@ -1018,10 +1018,25 @@ namespace RimMandrake.FlowWorks
 		public static void Postfix(IntVec3 start, LocalTargetInfo dest, PathEndMode peMode,
 			TraverseParms traverseParams, ref bool __result, Map ___map)
 		{
-			if (!__result)
+			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F1): the veto reads the pocket and wall-reach caches; a caller
+			// overlapping their owner keeps vanilla's answer (RM_PocketGrid.Owner).
+			if (!__result || !RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
+			try
+			{
+				Owned(start, dest, peMode, traverseParams, ref __result, ___map);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void Owned(IntVec3 start, LocalTargetInfo dest, PathEndMode peMode,
+			TraverseParms traverseParams, ref bool __result, Map ___map)
+		{
 			Pawn p = traverseParams.pawn;
 			// PIT_COVER_FIX_OCCUPANT_STAYS_BELOW: sealed under a lid with no open pit square beside it, nothing but here
 			Pawn under = p ?? RM_Patch_PathFollower_ReachWalker.WalkerAt(___map, start);
@@ -1128,10 +1143,23 @@ namespace RimMandrake.FlowWorks
 		[HarmonyPostfix]
 		public static void Postfix(IntVec3 c, TraverseParms traverseParms, ref bool __result)
 		{
-			if (!__result)
+			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F1): as the CanReach veto, vanilla's answer off-owner.
+			if (!__result || !RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
+			try
+			{
+				Owned(c, traverseParms, ref __result);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static void Owned(IntVec3 c, TraverseParms traverseParms, ref bool __result)
+		{
 			Pawn p = traverseParms.pawn;
 			if (p == null || !p.Spawned)
 			{

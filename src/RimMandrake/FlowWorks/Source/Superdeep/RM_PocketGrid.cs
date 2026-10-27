@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using RimWorld;
 using Verse;
 
@@ -65,6 +66,9 @@ namespace RimMandrake.FlowWorks
 		/// last build's, so the floods were skipped (counted inside Rebuilds too).</summary>
 		public int SkippedRebuilds { get; private set; }
 		private byte[] lastDepth;
+		// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F5): the geometry lastDepth was labelled at; the same bytes at
+		// another width and height are another map shape, never the same input.
+		private int lastW = -1, lastH = -1;
 		private Dictionary<int, int> lastRamps;
 		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the ramp settings lastRamps was read under (BuiltView's guard: the window applies
 		// them, and so the salt, only on close, while RM_PitRamp.Pairs reads them live).
@@ -329,7 +333,7 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			if (bands == null || lastDepth == null || builtMidLoad || eng == null || builtGeneration != eng.ClimbGeneration
 				|| builtSalt != settingsSalt || lastRampsOn != RM_PitRamp.Usable || lastRampSpan != RM_PitRamp.MaxSpan
-				|| lastDepth.Length != map.cellIndices.NumGridCells)
+				|| lastDepth.Length != map.cellIndices.NumGridCells || lastW != map.Size.x || lastH != map.Size.z)
 			{
 				return false;
 			}
@@ -345,11 +349,59 @@ namespace RimMandrake.FlowWorks
 
 		internal static System.Func<int, int, bool> RampJoinsOf(Dictionary<int, int> ramps)
 		{
-			return ramps == null || ramps.Count == 0 ? null
-				: (System.Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
+			return RM_WallReachMath.RampJoins(ramps);
+		}
+
+		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F1): the owner contract for the pocket grids and the
+		/// wall-aware reach cache. Their builds rotate shared scratch (spare label arrays, the kinds and depth scratch, the static
+		/// query scratch), so one thread at a time may build or query them. In play that is the main thread; a save load or map
+		/// generation runs on LongEventHandler's worker while the main thread waits, which is why the rule is "one owner at a
+		/// time" (a CAS on the managed thread id, re-entry allowed) and not "main thread only". A caller that overlaps the owner
+		/// is refused: a build keeps the last labels, a query answers as if the mod were off (no veto). Refusals are only
+		/// counted here (Verse's Log is not for a worker) and reported once per growth from the main-thread tick.</summary>
+		internal static readonly RM_WallReachMath.OwnerGate Owner = new RM_WallReachMath.OwnerGate();
+		private static int refusalsReported;
+
+		internal static int OwnerRefused => Volatile.Read(ref Owner.refused);
+
+		internal static bool EnterOwner(out bool nested)
+		{
+			return Owner.TryEnter(Thread.CurrentThread.ManagedThreadId, out nested);
+		}
+
+		internal static void ExitOwner(bool nested)
+		{
+			Owner.Exit(nested);
+		}
+
+		/// <summary>Called by the owner on the main-thread tick: one warning each time the refusal count has grown.</summary>
+		internal static void ReportRefusals()
+		{
+			int r = OwnerRefused;
+			if (r != refusalsReported)
+			{
+				refusalsReported = r;
+				Log.Warning("[RimMandrake] pocket/wall-reach cache: " + r + " call(s) from a second thread overlapped the cache owner and were refused (answered as vanilla). WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP");
+			}
 		}
 
 		private void Build(bool notifyFlips)
+		{
+			if (!EnterOwner(out bool nested))
+			{
+				return;
+			}
+			try
+			{
+				BuildOwned(notifyFlips);
+			}
+			finally
+			{
+				ExitOwner(nested);
+			}
+		}
+
+		private void BuildOwned(bool notifyFlips)
 		{
 			var whole = System.Diagnostics.Stopwatch.StartNew();
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
@@ -380,7 +432,7 @@ namespace RimMandrake.FlowWorks
 			// move re-flooded every band of every view over the whole map (a 325x325 map: ~106k cells x 5 bands per view). The
 			// labels are a pure function of (view depth, ramp pairs, band), so a view byte-identical to the last build's keeps
 			// its labels (RM_PocketGridMath.Label on the same input gives the same output: PocketGrid_content_skip_equals_rebuild).
-			bool sameInput = old != null && old.Length == BandCount && RM_WallReachMath.SameBytes(depth, lastDepth)
+			bool sameInput = old != null && old.Length == BandCount && lastW == w && lastH == h && RM_WallReachMath.SameBytes(depth, lastDepth)
 				&& RM_WallReachMath.SameRamps(rampPairs, lastRamps);
 			if (sameInput)
 			{
@@ -407,6 +459,8 @@ namespace RimMandrake.FlowWorks
 				spareBands = old;   // read by nobody once fresh is published below; overwritten by the build after next
 			}
 			lastDepth = depth;
+			lastW = w;
+			lastH = h;
 			lastRamps = rampPairs;
 			lastRampsOn = RM_PitRamp.Usable;
 			lastRampSpan = RM_PitRamp.MaxSpan;
