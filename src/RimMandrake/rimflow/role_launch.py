@@ -296,7 +296,8 @@ def supervise_roles(sch, st, obs, now, act):
                             % (name, run["unit"], ustate, tries))
                 continue
             if run.get("scope_unconfirmed"):
-                act(do="alarm", kind="role:%s:scope" % name, ticket=run.get("item"), note=True,
+                act(do="alarm", kind="role:%s:scope_unconfirmed:%s" % (name, run["unit"]), ticket=run.get("item"),
+                    note=True,      # its own kind: role:<name>:scope was raised every tick and rate-limited this away
                     why="%s run %s: unit ended, its claude_bounded scope was never resolved; retired at run_max_s "
                     "UNCONFIRMED (a claude may still run under claude-seat-%s-*)" % (name, run["unit"],
                                                                                    run.get("seat") or "?"))

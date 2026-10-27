@@ -474,6 +474,33 @@ def test_alarm_rate():
     check(noted == ["DISPATCHER_ALARMS_X"], "an alarm is noted once per alarm_every_s, not every tick")
 
 
+def test_review_s():
+    """F1: the UNCONFIRMED retirement alarm is not rate-limited away by the per-tick scope alarm. F3: a stuck
+    index.lock in the publish result raises one `publish:index_lock` alarm."""
+    sch = sched()
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    root = os.path.join(TMP, "reviews")
+    noted = []
+    fx = {"note": lambda i, t: noted.append(t) or (True, ""), "publish": lambda n: None}
+    scope_kind = "role:Arbiter:scope"
+    unc_kind = "role:Arbiter:scope_unconfirmed:u1"
+    acts = [{"do": "alarm", "kind": scope_kind, "why": "never resolved", "note": True},
+            {"do": "alarm", "kind": unc_kind, "why": "UNCONFIRMED", "note": True}]
+    D.execute(acts, sch, st, root, True, 10.0, fx)
+    check(len(noted) == 2, "both the scope alarm and the unconfirmed alarm reach the ledger: %r" % noted)
+    src = open(os.path.join(HERE, "role_launch.py")).read()
+    check('kind="role:%s:scope_unconfirmed:%s"' in src, "role_launch gives the retirement its own kind")
+    noted.clear()
+    class _Lk:
+        def close(self):
+            pass
+    fx2 = dict(fx, lock=lambda: _Lk(), publish=lambda n: "add failed: Unable to create '.git/index.lock': File exists.")
+    sch2 = sched(publish=True)
+    for t in (20.0, 80.0):
+        D.execute([], sch2, st, root, True, t, fx2)
+    check(len(noted) == 1 and "index.lock" in noted[0], "a stuck index.lock raises one rate-limited alarm: %r" % noted)
+
+
 def test_seat_rule():
     base = [{"seat": "BENCH", "event": "file", "id": "SOME_ITEM_DO_IT", "title": "t", "kind": "task", "for": "FOUNDRY",
              "ts": "2026-10-26T00:00:00Z"}]
@@ -1086,7 +1113,7 @@ def test_review_r():
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_seat_rule, test_ringed_next_rechecks_owner,
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r):

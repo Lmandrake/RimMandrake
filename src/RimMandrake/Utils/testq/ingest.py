@@ -236,6 +236,17 @@ def ingest_group(job, res, item, gres, att):
 
 
 def publish(n, shard_rel=SHARD_REL, message=None):
+    """_publish, after clearing a leftover rebase / stale index.lock (clear_leftovers); what it did leads the result."""
+    def git(*a):
+        return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
+    pre = clear_leftovers(git)
+    if pre and pre.startswith("publish stopped"):
+        return pre
+    out = _publish(n, shard_rel, message)
+    return "%s; %s" % (pre, out) if pre else out
+
+
+def _publish(n, shard_rel=SHARD_REL, message=None):
     """Commit `shard_rel` alone, pull --rebase, lint, push. Also the RimFlow v3 Dispatcher's publisher for its
     DISPATCHER shard (rimflow/dispatcher.py passes its own shard and message)."""
     def git(*a):
@@ -267,6 +278,66 @@ def publish(n, shard_rel=SHARD_REL, message=None):
         if p.returncode == 0:
             return "pushed"
     return "push failed (the commit stays local; the next ingest retries): " + p.stderr.strip()[-200:]
+
+
+STALE_LOCK_S = 300
+
+
+def git_procs_in_repo():
+    """pids of live git processes whose cwd is inside REPO (a /proc scan; the lock holder is one of these)."""
+    found = []
+    try:
+        pids = [p for p in os.listdir("/proc") if p.isdigit()]
+    except OSError:
+        return found
+    root = os.path.realpath(REPO)
+    for pid in pids:
+        try:
+            with open("/proc/%s/cmdline" % pid, "rb") as f:
+                argv0 = f.read().split(b"\0")[0].decode("utf-8", "replace")
+            if os.path.basename(argv0) != "git" or int(pid) == os.getpid():
+                continue
+            cwd = os.path.realpath(os.readlink("/proc/%s/cwd" % pid))
+        except (OSError, ValueError):
+            continue
+        if cwd == root or cwd.startswith(root + os.sep):
+            found.append(int(pid))
+    return found
+
+
+def clear_leftovers(git, now=None, procs=git_procs_in_repo):
+    """Before publish touches the index: (1) a rebase a killed publish left half done is aborted, or the next commit
+    lands on a detached HEAD that `rebase --abort` then drops (review S, F2); (2) a stale .git/index.lock (older than
+    STALE_LOCK_S, no live git process in the clone) is removed, one still held by a git process stops the publish
+    (review S, F3). -> None, or a message: "publish stopped: ..." stops, anything else is a log of what was done
+    (callers prefix it to their result)."""
+    gd = git("rev-parse", "--git-dir").stdout.strip()
+    gd = gd if os.path.isabs(gd) else os.path.join(REPO, gd)
+    notes = []
+    lock = os.path.join(gd, "index.lock")
+    if os.path.exists(lock):
+        try:
+            age = (now if now is not None else time.time()) - os.path.getmtime(lock)
+        except OSError:
+            age = 0
+        if age >= STALE_LOCK_S:
+            live = procs()
+            if live:
+                return "publish stopped: index.lock is %d s old and git process(es) %s hold the clone" % (age, live)
+            try:
+                os.remove(lock)
+                notes.append("removed stale index.lock (%d s old, no live git process)" % age)
+            except OSError as e:
+                return "publish stopped: stale index.lock (%d s old) could not be removed: %s" % (age, e)
+        else:
+            return "publish stopped: index.lock present (%d s old, under %d s: another git may be running)" % (
+                age, STALE_LOCK_S)
+    if any(os.path.isdir(os.path.join(gd, d)) for d in ("rebase-merge", "rebase-apply")):
+        r = git("rebase", "--abort")
+        notes.append("aborted a leftover rebase (exit %d)" % r.returncode)
+        if r.returncode != 0:
+            return "publish stopped: leftover rebase could not be aborted: " + (r.stderr or r.stdout).strip()[-200:]
+    return "; ".join(notes) or None
 
 
 def lint_refusal():

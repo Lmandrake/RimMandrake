@@ -98,6 +98,54 @@ def publish_sandbox(conflict, lint=LINT_CLEAN):
     return out, root, disp, sh
 
 
+def leftover_checks():
+    import time
+    """Review S F2/F3: a rebase left half done is aborted and a stale index.lock cleared before publish adds."""
+    import ingest as I
+    d = tempfile.mkdtemp(prefix="rf_left_")
+    try:
+        def sh(*a):
+            return subprocess.run(["git", "-C", d, "-c", "user.email=a@b", "-c", "user.name=t"] + list(a),
+                                  capture_output=True, text=True, timeout=60)
+        sh("init", "-q", "-b", "main")
+        f = os.path.join(d, "f.txt")
+        for br, txt in (("main", "base\n"), ("x", "x\n"), ("main", "m\n")):
+            if br == "x":
+                sh("checkout", "-qb", "x")
+            elif txt == "m\n":
+                sh("checkout", "-q", "main")
+            with open(f, "w") as fh:
+                fh.write(txt)
+            sh("add", "f.txt")
+            sh("commit", "-qm", txt.strip())
+        sh("checkout", "-q", "x")
+        sh("rebase", "main")                       # conflicts: leaves .git/rebase-merge, detached HEAD
+        gdir = os.path.join(d, ".git")
+        check(os.path.isdir(os.path.join(gdir, "rebase-merge")), "setup: an interrupted rebase exists")
+        lock = os.path.join(gdir, "index.lock")
+        open(lock, "w").close()
+        old = I.REPO
+        I.REPO = d
+        try:
+            g = lambda *a: subprocess.run(["git", "-C", d] + list(a), capture_output=True, text=True, timeout=60)
+            young = I.clear_leftovers(g, procs=lambda: [])
+            check(young and young.startswith("publish stopped") and os.path.exists(lock),
+                  "a young index.lock is left alone and stops the publish: %r" % young)
+            later = time.time() + I.STALE_LOCK_S + 60
+            held = I.clear_leftovers(g, now=later, procs=lambda: [4242])
+            check(held.startswith("publish stopped") and "4242" in held and os.path.exists(lock),
+                  "a stale lock with a live git process is NOT deleted: %r" % held)
+            done = I.clear_leftovers(g, now=later, procs=lambda: [])
+            check(not os.path.exists(lock) and "removed stale index.lock" in done, "a stale lock with no git is removed and logged: %r" % done)
+            check("aborted a leftover rebase" in done and not os.path.isdir(os.path.join(gdir, "rebase-merge")),
+                  "the leftover rebase is aborted before add: %r" % done)
+            check(sh("symbolic-ref", "-q", "--short", "HEAD").stdout.strip() == "x", "back on a branch, not detached")
+        finally:
+            I.REPO = old
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def publish_checks():
     out, root, disp, sh = publish_sandbox(conflict=False, lint=LINT_REFUSE)
     try:
@@ -319,6 +367,7 @@ def main():
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     publish_checks()
+    leftover_checks()
     print("\n%d failed" % len(FAILS))
     return 1 if FAILS else 0
 

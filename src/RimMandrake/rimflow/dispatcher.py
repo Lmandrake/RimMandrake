@@ -658,6 +658,20 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 out = "error: %s: %s" % (type(e).__name__, str(e)[:160])
             if out is not None:
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
+            if out and "index.lock" in out:      # a stuck lock silently stops all publishing (review S, F3)
+                key = "publish:index_lock"
+                if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
+                    st["alarms"][key] = now
+                    al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
+                              why="ledger publish: " + out[:240])
+                    item = sch.get("alarm_item")
+                    if item and ledger_ok and time.time() < deadline:
+                        try:
+                            ok, o2 = do_note(item, "dispatcher alarm: " + al["why"])
+                            al["ledger"] = "noted" if ok else "note failed: " + o2
+                        except Exception as e:  # noqa: BLE001
+                            al["ledger"] = "note failed: %s" % str(e)[:160]
+                    journal(root, al)
     finally:
         if lk is not None:
             lk.close()
