@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Codex (ChatGPT-auth) rate-limit history from codex rollout files (C-suite evidence, 2026-10-26).
+
+Every codex rollout-*.jsonl records `rate_limits` events: primary (short window) and secondary
+(weekly) used_percent, window_minutes, resets_at. This prints, per day: number of readings,
+max primary/secondary used %, the distinct secondary reset times seen, and the used % at the
+last reading before each secondary reset (idle quota thrown away at the reset).
+Dirs: ~/.codex/sessions and the Windows user's .codex/sessions (override: args).
+"""
+import collections, datetime as dt, glob, json, os, sys
+
+DIRS = sys.argv[1:] or [os.path.expanduser("~/.codex/sessions"), "/mnt/c/Users/Mandrake/.codex/sessions"]
+
+
+def main():
+    recs = []
+    nfiles = 0
+    for d in DIRS:
+        for f in glob.glob(os.path.join(d, "**", "rollout-*.jsonl"), recursive=True):
+            nfiles += 1
+            try:
+                fh = open(f, encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            with fh:
+                for line in fh:
+                    if '"rate_limits"' not in line:
+                        continue
+                    try:
+                        r = json.loads(line)
+                    except ValueError:
+                        continue
+                    rl = (r.get("payload") or {}).get("rate_limits") or {}
+                    p, s = rl.get("primary") or {}, rl.get("secondary") or {}
+                    ts = r.get("timestamp")
+                    if not ts or p.get("used_percent") is None:
+                        continue
+                    recs.append((ts, p.get("used_percent"), p.get("window_minutes"), p.get("resets_at"),
+                                 s.get("used_percent"), s.get("window_minutes"), s.get("resets_at"),
+                                 rl.get("plan_type")))
+    recs.sort()
+    print(f"files {nfiles}, rate_limit readings {len(recs)}")
+    if not recs:
+        return 0
+    print("plans:", collections.Counter(r[7] for r in recs).most_common(),
+          "primary window min:", collections.Counter(r[2] for r in recs).most_common(3),
+          "secondary window min:", collections.Counter(r[5] for r in recs).most_common(3))
+    day = collections.defaultdict(list)
+    for r in recs:
+        day[r[0][:10]].append(r)
+    print("day(UTC)    n   maxPrim%  maxSec%")
+    for d, rs in sorted(day.items()):
+        print(f"{d} {len(rs):5d} {max(x[1] for x in rs):8.1f} {max((x[4] or 0) for x in rs):8.1f}")
+    # weekly resets: group readings by secondary resets_at (rounded to the hour)
+    def hr(v):
+        if v is None:
+            return None
+        if isinstance(v, (int, float)):
+            return dt.datetime.fromtimestamp(v).strftime("%Y-%m-%d %H:00")
+        return str(v)[:13]
+    wk = collections.OrderedDict()
+    for r in recs:
+        weekly = r[6] if r[5] == 10080 or r[6] is not None else (r[3] if r[2] == 10080 else None)
+        wk.setdefault(hr(weekly), []).append(r)
+    print("weekly window (resets_at local)   readings  first_seen(UTC)       last_seen(UTC)        weekly% at last reading")
+    for k, rs in wk.items():
+        print(f"{str(k):32s} {len(rs):8d}  {rs[0][0][:19]}  {rs[-1][0][:19]}  {rs[-1][4] if rs[-1][5] == 10080 else rs[-1][1]}  max {max((x[4] if x[5] == 10080 else x[1]) or 0 for x in rs)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,2 @@
+C-suite census 10-26: 40% of owner messages drive the machine (card pulls 7.4/d, go-ahead 6.4/d, restart 5.1/d, handoff 4.6/d, wake 4.1/d); 5 card classes are 69-89% rule-predictable (~47 min/wk). Of 21 owner defect reports since 10-12, 12 were findable by an instrument we own. Art judge sends 74% to REGEN; RM_HoseReel regenerated 40 times. Evidence D:\ClaudeWork\rimmandrake\csuite\evidence.md Q7 Q8 Q16
+home: NONE

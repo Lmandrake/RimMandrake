@@ -1,0 +1,2 @@
+C-suite census 10-26: full-list TPS fell from 346 TPS/60 FPS (10-20) to 112-145 TPS/12-14 FPS (10-26/27), recorded but not surfaced in RimPulse; lukas Claude account at 1.26x weekly pace (dry ~35 h before Wed reset) while Codex weekly use peaked at 36%; helper scratch is 240 GB (65 clones); telemetry DB unreadable from WSL; a zsh tool shell hung 3.8 h under BENCH. Evidence D:\ClaudeWork\rimmandrake\csuite\evidence.md Q1 Q4 Q5 Q12
+home: NONE
