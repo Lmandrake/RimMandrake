@@ -494,6 +494,34 @@ check("cap: >= 2 h idle starts a fresh sitting, the old drop is forgotten", r["s
       and r["state"]["sitting"]["start_left"] == 40.0, (r["seats"], r["state"]["sitting"]))
 r = d(old, session_cap_pct=CAP, owner_window_t=None, week_pct_left=10.0)
 check("cap: a dead sitting (idle > 2 h, no new message) caps nothing", r["seats"]["BENCH"] > 0, r["seats"])
+# F9: the stamp survives a burn-account switch / weekly reset (re-based, drop carried)
+def sit2(**kw):
+    s0 = sit()["sitting"]
+    s0.update({"account": "acctA", "carried": 0.0, "last_left": 34.0}, **kw)
+    return {"sitting": s0}
+r = d(sit2(), session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctB", week_pct_left=80.0, week_pct_used=20.0)
+sg = r["state"]["sitting"]
+check("F9: account switch re-bases: 6 spent on A carried, B counted from its own reading, cap reached on the carry",
+      sg["account"] == "acctB" and sg["start_left"] == 80.0 and sg["carried"] == 6.0 and r["seats"]["BENCH"] == 0, (sg, r["seats"]))
+r = d(sit2(carried=2.0, last_left=39.0), session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctB", week_pct_left=80.0, week_pct_used=20.0)
+check("F9: after a switch, a 1-point spend on B plus 3 carried is under the cap, not a meaningless 40-point difference",
+      r["state"]["sitting"]["carried"] == 3.0 and r["seats"]["BENCH"] > 0 and "reached" not in r["why"], (r["state"]["sitting"], r["why"]))
+r = d(sit2(account="acctB", start_left=80.0, carried=3.0, last_left=80.0), session_cap_pct=CAP, owner_window_t=NOW - 600,
+      account="acctB", week_pct_left=76.0, week_pct_used=24.0)
+check("F9: carried 3 + 4 spent on B = 7 >= cap refuses", r["seats"]["BENCH"] == 0, (r["state"]["sitting"], r["why"]))
+r = d(dict(sit2(), bench_n=2), session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctB", source="UNMEASURED",
+      week_pct_left=None, week_pct_used=None)
+check("F9: switch with no measured reading: UNMEASURED hold, stamp not re-based, never unlimited",
+      "session cap UNMEASURED" in r["why"] and r["seats"]["BENCH"] <= 2 and r["state"]["sitting"]["account"] == "acctA",
+      (r["why"], r["state"]["sitting"]))
+r = d(sit2(), session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctA", week_resets_at="2026-11-04T13:00-07:00",
+      week_pct_left=100.0, week_pct_used=0.0)
+sg = r["state"]["sitting"]
+check("F9: weekly reset mid-sitting carries the drop (6) instead of starting a new sitting", sg["carried"] == 6.0
+      and sg["start"] == NOW - 1 * H and r["seats"]["BENCH"] == 0, (sg, r["seats"]))
+r = d({"sitting": dict(sit()["sitting"])}, session_cap_pct=CAP, owner_window_t=NOW - 600, account="acctB", week_pct_left=36.0)
+check("F9: an old unstamped sitting adopts the account without a spurious carry",
+      r["state"]["sitting"]["carried"] == 0.0 or r["state"]["sitting"].get("carried") in (None, 0.0), r["state"]["sitting"])
 r = d(dict(sit(), bench_n=2), session_cap_pct=CAP, owner_window_t=NOW - 600, source="UNMEASURED", week_pct_left=None,
       week_pct_used=None)
 check("cap: unmeasured reading holds BENCH at the last count and says UNMEASURED",

@@ -36,7 +36,8 @@ SESSION CAP (Conductor session mode, `session_week_pct_cap` in rimflow/dispatche
 BENCH sitting is stamped by this allocator, in allocation.json state["sitting"] = {start, start_left, last_active,
 reset_at}. A sitting starts at his first typed message in the BENCH window after >= sitting_idle_h (2 h) with none (the
 newest such message is read each check, so the stamp lands within one 15-min check of it); start_left is the burn
-account's week_pct_left as the allocator reads it then. A new weekly reset starts a new sitting. While the sitting is live
+account's week_pct_left as the allocator reads it then. A change of burn account or a weekly reset mid-sitting re-bases the stamp (stamp carries account, reset_at, carried
+drop, last_left): the drop already spent is banked, never a difference across two meters; unmeasured = hold. While the sitting is live
 (his last BENCH message < 2 h ago) and start_left - week_pct_left >= the cap, BENCH helper allocation is 0 ("session cap
 reached: X% of the week this sitting"). An unmeasured reading never allows more: BENCH holds the last measured BENCH count
 (never above the computed one) and the why says UNMEASURED. His `set --owner-said` word stands over it. The Conductor
@@ -375,18 +376,44 @@ def sitting_step(inp, state, now):
     measured = inp.get("source") == "MEASURED" and isinstance(inp.get("week_pct_left"), (int, float))
     left = inp.get("week_pct_left") if measured else None
     reset = epoch(inp.get("week_resets_at"))
+    acct = inp.get("account")
     if w is not None:
-        if (sit is None or w - (sit.get("last_active") or 0) > SITTING_IDLE_H * HOUR
-                or (reset and sit.get("reset_at") and epoch(sit["reset_at"]) != reset)):
-            sit = {"start": w, "start_left": left, "last_active": w, "reset_at": inp.get("week_resets_at")}
+        if sit is None or w - (sit.get("last_active") or 0) > SITTING_IDLE_H * HOUR:
+            sit = {"start": w, "start_left": left, "last_active": w, "reset_at": inp.get("week_resets_at"),
+                   "account": acct, "carried": 0.0, "last_left": left}
         else:
             sit["last_active"] = max(sit.get("last_active") or 0, w)
     if sit is None:
         return None, False, None, measured
     if sit.get("start_left") is None and left is not None:
         sit["start_left"] = left
+        sit.setdefault("last_left", left)
+    # F9: a different burn account or a new weekly reset mid-sitting makes start_left a reading of another meter.
+    # Re-base: bank the drop already spent on the old meter, start counting from the new one. Only on a measured
+    # reading; until then the drop is unknown (hold), never zero.
+    sit.setdefault("carried", 0.0)
+    old_acct, old_reset = sit.get("account"), epoch(sit.get("reset_at"))
+    changed = bool((acct and old_acct and acct != old_acct) or (reset and old_reset and reset != old_reset))
+    if changed and left is not None:
+        if sit.get("start_left") is not None and sit.get("last_left") is not None and sit.get("carried") is not None:
+            sit["carried"] = float(sit["carried"]) + max(0.0, sit["start_left"] - sit["last_left"])
+        else:
+            sit["carried"] = None  # the old meter's spend was never measured: unknown, held
+        sit["start_left"], sit["account"], sit["reset_at"] = left, acct, inp.get("week_resets_at")
+    elif not changed:
+        if acct and not old_acct:
+            sit["account"] = acct
+        if reset and not old_reset:
+            sit["reset_at"] = inp.get("week_resets_at")
+    if left is not None:
+        sit["last_left"] = left
     live = now - (sit.get("last_active") or 0) <= SITTING_IDLE_H * HOUR
-    drop = None if (left is None or sit.get("start_left") is None) else sit["start_left"] - left
+    if changed and left is None:
+        drop = None
+    elif left is None or sit.get("start_left") is None or sit.get("carried", 0.0) is None:
+        drop = None
+    else:
+        drop = sit.get("carried", 0.0) + sit["start_left"] - left
     return sit, live, drop, measured
 
 
