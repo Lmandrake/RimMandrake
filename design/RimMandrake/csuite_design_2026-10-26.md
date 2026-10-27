@@ -2,7 +2,62 @@
 
 Source brief: `design/RimMandrake/csuite_brief_2026-10-26.md` (owner, verbatim). Evidence: `D:\ClaudeWork\rimmandrake\csuite\evidence.md`, `D:\ClaudeWork\rimmandrake\csuite\frustration_census.md`, `D:\ClaudeWork\rimmandrake\orch_record\friction_census.md`, plus the design docs named per section.
 
-## Summary (S7 — pending)
+## Summary (S7)
+
+**The finding in one line.** The owner is the integrator because nothing above the two seats can **make things happen**.
+- We have instruments: 13 of 19 of his questions already have one.
+- What we lack is a loop that reads them, acts, and checks the act. Examples:
+  - TPS fell from 346 to 112-145, recorded and unseen.
+  - The disk reaper sat in dry-run for 8 days.
+  - The close gate only warns: 98.8% of closes carry no verify level.
+  - Rulings went unapplied (FC cause #3, about 126 messages).
+  - About 31 of his messages a day just drive the machine ("go", "wake", "continue").
+- His failure-signal share is 27.5% and rising: broken-thing reports went from 10.8% to 18.0%.
+
+### What we learned
+1. **Observation is not the gap. Execution is.** Both GPT teardowns killed the watcher designs (Rounds, Board) for exactly this reason: they detect and display, and he stays the dispatcher. The thing every design lacked is an **executor**: an unattended dispatcher that wakes a seat, leases a command, sees it acknowledged or retried, and records the outcome. It does not exist today (S5.2).
+2. **"Closed" is not "accepted".** Acceptance must mean PASS for named scenarios on an identified build, checked by a non-maker. Until then, every backlog number can be gamed by relabelling.
+3. **Our own numbers needed reconciling first.**
+   - Non-pass was 38.9%, not 29%.
+   - T2 had three different populations: 343, 496 and 521.
+   - Net filing was misstated.
+   - Lesson filed: `20261027T031905Z-BENCH-csuite-census-counts-unreconciled`.
+4. **The game-studio kit is not the model.** Claude Code Game Studios (community-built, 49 agents) is "collaborative, not autonomous": it asks the human at every step. Its own test ranked its heaviest process last. We take its *role map* (producer, QA lead, technical director) and reject its ceremony.
+5. **Two weeks buys mostly instruments.** T4 (bugs per unit of exposure) and T5 (glance-answerable status) are unmeasured today. An honest first fortnight shows instruments working and one or two controls piloted, not a transformed project.
+
+### The three proposals side by side (S6)
+
+| | **1. Operations Steward** | **2. Delivery Producer** | **3. Corrective-Action Supervisor** |
+|---|---|---|---|
+| Controls | *that* things get done: execution, stalls, waste | *what* gets done: supported player experiences, scope, admission | *what keeps going wrong*: one recurring failure class at a time |
+| Cadence | twice daily + on every executor exception | weekly plan, daily dispatch | daily bounded audit, max 4 investigations |
+| Retire Foundry? | by repeated randomised active/paused trials against *his* loss tolerance; he decides | same, plus a "Foundry only preps/verifies" arm | only after failures are fixed |
+| "How's it going?" | blockers, enactment, cost | scope, next deliverable, what "finished" means | failure rate, recurrence, what was fixed |
+| Best at | T1 (≤26/day), T3 (≤18 h/wk) | T5 (project-level answer), T2 on focus mods | T6 (≤25%), FC causes #1 and #3 |
+| Weakest at | direction | operations | delivery |
+
+**What all three share** (S6.1):
+- the executor, with a 48 h unattended proof
+- acceptance as evidence
+- a watchdog that makes a broken supervisor look broken
+- **one conversational identity** he talks to on the phone at any hour. It keeps ruling references and enactment receipts, and separates intended, dispatched, done and verified.
+
+### Recommendation
+- **Build the executor, then adopt the Operations Steward behind one conversational identity.** Add the Producer's commitment discipline once enactment is reliable, and keep corrective auditing bounded inside the same identity.
+- **Why:** every failure we measured was a failure to carry out, not a failure to know. Better priorities or sharper criticism cannot wake a sleeping seat.
+- **Do not decide Foundry's fate in the first fortnight.** The randomised trial comes after the executor works.
+
+### Five names for the one he talks to
+
+| Name | Why |
+|---|---|
+| **Reeve** | The medieval officer who ran the estate's daily work and answered to the lord. Short, old and exact: he sets the goals, the Reeve sees them done. |
+| **Seneschal** | The steward who ran the household while the lord was away. That describes every hour he is not at the bench. |
+| **Tiller** | A hand on the tiller: steady, small corrections that keep the course. Fitting in a farming game, too. |
+| **Bosun** | The one who calls the crew to work and keeps the ship running, so the captain never shouts "all hands" again. It replaces his 31 "go"s a day. |
+| **Vigil** | The watch that never sleeps. It holds the dead-man's switch and is honest at 3 a.m. |
+
+All five are free of Star Wars IP, at most three syllables, and say easily into a phone.
 
 ## S1 Research
 
@@ -771,6 +826,169 @@ These are **not** forecasts from the evidence. They are the smallest effect that
 - The leading candidate is now **R0 first, then R1 + R3 behind the Front Desk**, with R2 owning *what* once the checklists exist.
 - The single thing every reviewer agrees is missing, the execution contract, is common infrastructure, not a design.
 
-## S5 GPT teardown, round 2 (pending)
+## S5 GPT teardown, round 2 (of the S4 repair)
 
-## S6 GPT final arbiter (pending)
+Raw answer, 1,160 words: `D:\ClaudeWork\rimmandrake\csuite\gpt_round2.md`.
+
+### S5.1 Its points (condensed)
+
+1. **The execution contract has no executor.**
+   - Seats act only when woken, so "ack within 2 wakes" with zero wakes means silence forever.
+   - Who dispatches, counts wakes, detects expiry, retries and recovers from partial execution?
+   - Logging an undo does not make an operation reversible.
+   - **The missing product now has a specification, not an implementation.**
+2. **"Accepted" is still paperwork.**
+   - A close with a verify level is not a pass on the current artifact for the required scenario.
+   - It needs an evidence schema: result, artifact revision, coverage, verifier identity, invalidation.
+3. **R0 is a fair deployment stage but an unfair control.**
+   - It bundles enforcement, instruments, alerts and an audit.
+   - One week is a transition, not a baseline, and later arms inherit its changes.
+   - Calling R0 falsified when T1 rises punishes the correct exposure of missing evidence.
+4. **The Foundry swap test cannot support retirement.**
+   - Week-to-week confounds: backlog depletion, learning, difficulty, contention on the one game.
+   - Freed quota may not transfer to Bench.
+   - 90% is an arbitrary non-inferiority margin.
+5. **"6 builder-days" is a spreadsheet total.**
+   - The gaps sum to 5.25 d, and G8 has no estimate.
+   - The executor, launcher, phone integration and validation are excluded.
+   - G5 and G8 are unresolved *definitions*, not plumbing.
+6. **The measurements are still wrong in places.**
+   - Lease time × lane is not exposure.
+   - T1's 31/day came from a hand-labelled sample, so a new regex definition needs a fresh baseline.
+   - Owner-found bugs are a late, noisy guard.
+   - Guards need windows and decision rules.
+7. **R1 gives biased instruments authority.**
+   - Steve vs Archmagi omits Archmagi's hand-filed findings.
+   - Codex headroom is uninterpretable with unidentified accounts and moving resets.
+   - The TPS baseline is uncontrolled.
+   - PAYDOWN after 3 growth days ignores *why* the pile grew.
+   - These need bounded experiments before automatic authority.
+8. **The 48 h spec-edit gate is unsupported.**
+   - E-Q11 cannot tell status notes from design changes.
+   - No checklist is supplied.
+   - Falsifying R2 on 2 owner overrides blames him for a bad plan.
+9. **The Inspector's workload is unbounded.**
+   - "Every ruling-linked close" has no ceiling.
+   - Stratification needs inclusion weights.
+   - "Enforcement items made" rewards mechanism count, not recurrence prevented.
+   - Does R3 accept every intervention, or only sample?
+10. **The Front Desk risks being a freshly wrong receptionist.**
+    - Stateless means it rediscovers rulings.
+    - Checking against the pack only checks consistency.
+    - "Why is X slow?" needs investigation.
+    - No follow-up does not mean satisfaction.
+    - **His complaint is failed carry-out, not insufficiently fluent status.**
+11. **The dashboard failure mode remains.**
+    - The dead-man line depends on the brief working.
+    - The visual-form experiment presumes G6, and 14 opens per form is unsupported.
+    - Kill it until the brief represents enacted state.
+12. **Merge functions, stop multiplying identities.**
+    - R0 is the foundation, after repairing acceptance.
+    - R1 becomes a bounded worker *behind a proven executor*.
+    - R3 is a bounded audit of escapes and completed repairs.
+    - R2's prioritisation folds into the same plan and dispatch.
+    - Front Desk is the entry point, with durable conversation and ruling references.
+    - "Still producing obligations faster than the system can honour them."
+
+### S5.2 Fact-check
+
+| # | Verdict | Check |
+|---|---|---|
+| 5 sum | **CORRECT** | 0.5 + 0.5 + 1 + 0.25 + 1 + 0.5 + 1.5 = 5.25 d. G8 is unestimated |
+| 6 T1 baseline | **CORRECT** | evidence.md line 200: "40% of his msgs drive the machine" comes from a hand-labelled n=140 sample. The family rates per day come from a keyword regex (line 213). S4.3 mixed the two |
+| 7 Archmagi | **CORRECT** | evidence.md line 329: "Archmagi local hand-filed findings are not counted — instrument note" |
+| 7 TPS | **CORRECT** | evidence.md line 124: "different saves/maps per session (map size, pawn count not controlled)" |
+| 7 Codex | **CORRECT** | evidence.md line 146: account identity UNMEASURED; 6 reset times in 8 days |
+| 8 E-Q11 | **CORRECT** | evidence.md line 353: "The method can't tell a status or log note from a change to the design." The 48 h gate rested on a number that explicitly cannot carry it. **Gate withdrawn** |
+| 1 executor | **CORRECT in substance** | No unattended wake has been proven (ODR, FF item 5). The existing pieces are the rimflow ledger with leases and `sweep`, the handoff/wake skill (owner-triggered today), and Windows Task Scheduler on Archmagi. None of them dispatches to a sleeping seat on its own |
+| 2-4, 9-12 | **Judgment, accepted** | No factual errors found |
+
+**Round 2 also found no false claims.**
+
+### S5.3 What survives into the arbiter round (Opus, short)
+
+The two rounds converge on one ordering:
+1. **The executor first.** An unattended dispatcher that wakes a seat, leases an item, sees it acknowledged or retried, and records the outcome.
+2. **Acceptance as evidence**, with a schema.
+3. **One supervisor identity** whose back office is a bounded audit.
+4. **Design ideas second.**
+
+Dropped outright:
+- the 48 h gate
+- the visual-form A/B (until the brief shows enacted state)
+- the Foundry 90% rule
+- automatic levers on biased instruments: test-host allocation, Codex scheduling, TPS alarms. Each becomes a bounded experiment first.
+
+## S6 GPT final arbiter
+
+**Inputs and output.**
+- Given: the brief, evidence, FC, this doc through S5, and both raw teardowns.
+- Raw answer, 1,656 words: `D:\ClaudeWork\rimmandrake\csuite\gpt_arbiter.md`. The full text of the three proposals, with their success-test targets, is there. This section condenses it.
+
+### S6.1 Common foundation (all three proposals need it; none works without it)
+
+1. **The executor.**
+   - Windows Task Scheduler launches a single-instance dispatcher every minute.
+   - A durable command queue records id, precedence, lease, acknowledgement, deadline and result.
+   - The dispatcher calls the existing handoff/wake adapter. "Acked" means the seat *claimed* the command.
+   - Wall-clock expiry triggers bounded retry or reassignment.
+   - Interrupted operations are reconciled before replay. Destructive ones need named recovery steps.
+   - **It must pass a 48 h unattended test of wake, retry, duplicate suppression and crash recovery** before anything is delegated to it.
+2. **Acceptance = PASS for the required scenarios on an identified artifact and configuration.** It carries evidence, coverage, a non-maker verifier and dependency invalidation. A verify level alone is not acceptance.
+   - Every completed intervention is checked.
+   - Sampled raw-artifact audits check the checkers.
+3. **An independent watchdog over both the executor and the serving path,** notifying by a separately tested route.
+4. **One conversational identity** with durable dialogue, ruling references and **enactment receipts**.
+   - It distinguishes intended, dispatched, executed and verified.
+   - "Why?" may launch an investigation.
+5. **Measurement definitions M1-M6:**
+   - **M1:** re-baseline T1 with E-Q7's hand-label definition.
+   - **M2:** T2 from reconciled BUILT snapshots, starting at 343.
+   - **M3:** T3 needs input fingerprints, skip decisions and coverage records.
+   - **M4 (T4) and M5 (T5):** UNMEASURED; they must be built.
+   - **M6:** T6 keeps FC's union and denominator, 582/2,114, with an independently labelled new sample.
+   - **Lower message volume or weaker testing never counts as success.**
+
+### S6.2 The three proposals (condensed)
+
+| | **1. Operations Steward** | **2. Delivery Producer** | **3. Corrective-Action Supervisor** |
+|---|---|---|---|
+| Controls | execution and waste | commitments and supported experiences | recurring failures |
+| Mechanism | fresh bounded session twice daily + on executor exceptions; at most 2 interventions per pass, dispatched and checked; host, quota, art and perf levers start as bounded experiments | one durable plan of the next supported player experiences + dependencies; weekly async planning; daily dispatch of the next acceptance-ready package (behaviour, evidence, invalidation defined *before* build); ideas bank; freeze only for an explicit scope with complete evidence + his ruling | repaired enforcement + daily bounded audit; picks **one** recurring owner-visible failure class, owns its repair through the executor, verifies, then watches recurrence; cap of 4 investigations a day, with overflow re-prioritised rather than piled |
+| Retire Foundry? | repeated randomised whole-system blocks (Foundry active / paused); his **absolute** delivery-loss tolerance; no quota-transfer assumption; permanent retirement is his decision | same trial, plus an arm where Foundry does only prep or verification; a saturated acceptance gate supports *reassignment*, not retirement | only after corrections stabilise; failures first investigate task design, tools and contention before blaming the seat |
+| "How is it going?" | "343 BUILT, median 16.4 d; 521 owe verification. Selftests 72.1 h/22 d, removable waste UNMEASURED. Commit 91%, 5 OOM kills. Next: prove unattended continuation. Delivery reliability UNMEASURED." | "FlowWorks/GSS 246 open. FlowWorks 20% of commits; 101 mods touched in 7 d. 16 READY wait a median 17.9 d. No finished state exists. Next: finish one defined experience before widening." | "Failure signals in 582/2,114 messages (27.5%). B rose 10.8% → 18.0%. 12/21 defects potentially detectable. Prevention UNMEASURED. Next: fix ruling-to-enactment." |
+| Visual experiments | command-to-enactment timeline vs a 5-line text control; account runway later. Judged by correct blocker and next-action identification, clarification burden, wrong interventions | dependency map; scenario evidence matrix; text control. Judged by: can he name the next deliverable, its blocker, and what "finished" excludes | ruling → applied → verified receipt; recurrence timeline. Judged by: stale requests gone, ruled material stays ruled |
+| For him | auto-enact delegated rulings with receipts; choices waiting whenever he opens the phone; no "continue" ritual; small labelled art comparisons only for real taste choices | one async commitment card: experience, the taste choice, the cost of deferring; phone ideas captured, not auto-authorised | feedback replayed automatically (no tags); reviews reconciled with prior rulings before he sees them; show only the precise unresolved difference |
+| Fortnight | d1-3 executor + evidence; d4-6 fault injection + unattended test; d7 measurement readiness; d8-14 two reversible controls against the continuing baseline | d1-6 common foundation; d7-9 define one FlowWorks/GSS experience + scenarios; d10-14 one end-to-end package; no Foundry verdict | d1-6 foundation + audit of ruling-linked failures; d7-9 reproduce one recurring class; d10-12 repair + independent verification; d13-14 challenge with past cases |
+| Targets (T1 / T2 / T3 / T4 / T5 / T6) | ≤26/day / no growth / ≤18 h/wk with coverage held / exposure strata exist / 5 status facts right, 4 found in 15 s / ≤25% | ≤28 / focus BUILT cohort −10% by certified acceptance / ≤23 h / every pilot scenario instrumented / 5 scope questions right / ≤25% | ≤28 / no unaudited shrinkage / ≤23 h / exposure + lineage for the chosen class, then 0 repeats / 5 enacted-state answers right / ≤25% and the class's recurrence down |
+| Pros | removes machine-driving directly; little standing context; makes non-execution visible | answers project progress concretely; ties admission to acceptance capacity; ideas grow while scope stays stable | targets failed carry-out directly; limits corrective WIP; tests whether learning prevents recurrence |
+| Cons | the executor is substantial new machinery; direction stays weak; shared measurement errors misdirect control | scenario definition is real work; narrow scope misses integration failures; operations unsupervised | reactive, so it can neglect delivery; sparse, delayed failures weaken conclusions; shares institutional blind spots |
+
+**Arbiter recommendation.** "Adopt **Operations Steward first**, then add the Producer's commitment discipline once execution and evidence stabilise; keep corrective auditing bounded within the same identity."
+- Why: dependable enactment is the prerequisite every earlier design lacked.
+- What still stands against it:
+  - the executor and recovery path are unbuilt
+  - two weeks may establish instruments rather than improvement
+  - scenario coverage can be wrong while every check passes
+
+### S6.2a Fact-check of the arbiter's numbers
+
+Every figure in its sample answers was checked against evidence.md:
+
+| Figure | Line |
+|---|---|
+| 343 BUILT, median 16.4 d; 521 owe verification | 156-158 |
+| 72.1 h / 22 d | 10 |
+| commit 91%, 5 BENCH OOM kills | 22, 410 |
+| 246 open | 11 |
+| FlowWorks 20% of commits (758/3,865); 101 mods touched | 514 |
+| 16 READY, median 17.9 d | 500 |
+| 582/2,114; B 10.8% → 18.0% | FC |
+| 12/21 | E-Q8 |
+
+**All correct. It invented no measurement.** One inconsistency is in *our* census, not in GPT: Q18 says "12 of 97 mods untouched" while line 514 says commits touched 101 mods. The two use different mod universes. It is noted in the lesson filed at S3.
+
+### S6.3 Opus on the arbiter
+- **Agreed.** The arbiter's three proposals are what the five designs collapse to after two teardowns: A+B → Steward, C → Producer, E → Corrective-Action. D is not a design; it is the face of whichever one wins.
+- **Its sequencing matches the evidence.** FC's top causes, the TPS drop, the reaper, the warn-only gate and the ~31 "go/wake/continue" messages a day are all failures of **carry-out**, not of knowing.
+- **One amendment.** The arbiter's Steward checks in twice daily. The owner asked for "at least twice a day if not more". With the executor in place, the Steward also runs on every executor exception, which covers "more" without a standing seat.
