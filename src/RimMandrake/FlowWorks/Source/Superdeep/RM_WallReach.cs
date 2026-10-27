@@ -61,7 +61,30 @@ namespace RimMandrake.FlowWorks
 			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F2): built while the game was loading (half-spawned kinds or
 			// depth); rebuilt from a fresh read on the first tick or frame in play, whatever the stamp says.
 			public bool midLoad;
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c): the stamp's parts this labelling was built at (StampPart*),
+			// so a rebuild can say which part moved
+			public readonly long[] builtParts = new long[StampParts];
 		}
+
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): diagnostic counters read through TimingLine. Nothing reads
+		// them back. The stamp's parts, in StampOf's order:
+		private const int StampClimb = 0, StampSalt = 1, StampWall = 2, StampDoor = 3, StampSwim = 4, StampRamps = 5, StampParts = 6;
+		private static readonly string[] StampPartNames = { "climb", "salt", "wall", "door", "swim", "ramps" };
+		// why a Tick rebuilt an entry: one count per stamp part that moved since the entry's build, plus a post-load redo and a
+		// rebuild with no part moved (forced only, or a first build by a query)
+		private const int CauseReload = StampParts, CauseNoPart = StampParts + 1, RebuildCauses = StampParts + 2;
+		private static readonly string[] RebuildCauseNames = { "climb", "salt", "wall", "door", "swim", "ramps", "reload", "none" };
+		// who moved wallGen
+		private const int WgWalk = 0, WgWalkPocket = 1, WgConnAll = 2, WgConnBreach = 3, WgConnNoSnap = 4, WgDelta = 5, WgBarrier = 6,
+			WgBump = 7, WgUnjudged = 8, WgSources = 9;
+		private static readonly string[] WallGenNames =
+			{ "walk", "walkPocketFlip", "connAll", "connBreach", "connNoSnap", "delta", "barrier", "bump", "unjudged" };
+		// Tick's phases (milliseconds): the delta flush, the door re-read, the stamp, the entry loop outside Build, Build
+		private const int TpFlush = 0, TpDoor = 1, TpStamp = 2, TpLoop = 3, TpBuild = 4, TickPhases = 5;
+		private static readonly string[] TickPhaseNames = { "flush", "door", "stamp", "loop", "build" };
+		/// <summary>Set by RM_PocketGrid's pocket-flip notifications (main thread): NoteWalkability calls inside are counted
+		/// apart, so the cascade pocket rebuild -> RegionDirtyer -> wallGen shows in WallGenNames' walkPocketFlip.</summary>
+		internal static bool pocketFlipNotifying;
 
 		private sealed class MapState
 		{
@@ -78,6 +101,14 @@ namespace RimMandrake.FlowWorks
 			public int builds;
 			public int skipped;      // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: builds whose inputs were identical (labels kept)
 			public int deltaBumps, deltaQuiet;   // connectivity deltas that moved a kind / that did not
+			public readonly long[] partsNow = new long[StampParts];   // StampOf's parts, last computed
+			public readonly int[] rebuildCauses = new int[RebuildCauses];
+			public readonly int[] wallGenBy = new int[WgSources];
+			public int walkQuiet, walkMoved;     // NoteWalkability calls whose square's kind already said that walkability / did not
+			public int flushes, flushCells, flushMaxCells, flushOverflows;
+			public readonly double[] tickPhaseMs = new double[TickPhases];
+			public double maxTickMs;
+			public int ticks;
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: GatherData's deltas, queued (under the lock: Parallel.ForEach worker)
 			// and judged on the map tick against the kinds snapshot (DeltaMovesKinds).
 			public readonly object deltaLock = new object();
@@ -127,6 +158,7 @@ namespace RimMandrake.FlowWorks
 			MapState st = StateOf(map);
 			if (all)
 			{
+				Interlocked.Increment(ref st.wallGenBy[WgConnAll]);
 				Interlocked.Increment(ref st.wallGen);
 				Interlocked.Exchange(ref st.forced, 1);
 				return;
@@ -158,6 +190,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (pg == null || kinds == null)
 			{
+				Interlocked.Increment(ref st.wallGenBy[WgConnNoSnap]);
 				Interlocked.Increment(ref st.wallGen);   // no snapshot to judge against: stale, as before
 				return;
 			}
@@ -170,6 +203,7 @@ namespace RimMandrake.FlowWorks
 				int idx = ci.CellToIndex(deltas[i]);
 				if (idx < kinds.Length && kinds[idx] == RM_WallReachMath.Wall && pg.WalkableFast(idx))
 				{
+					Interlocked.Increment(ref st.wallGenBy[WgConnBreach]);
 					Interlocked.Increment(ref st.wallGen);
 					Interlocked.Exchange(ref st.forced, 1);
 					return;
@@ -197,6 +231,16 @@ namespace RimMandrake.FlowWorks
 				overflow = st.deltaOverflow;
 				st.deltaOverflow = false;
 			}
+			st.flushes++;
+			st.flushCells += work.Count;
+			if (work.Count > st.flushMaxCells)
+			{
+				st.flushMaxCells = work.Count;
+			}
+			if (overflow)
+			{
+				st.flushOverflows++;
+			}
 			byte[] kinds = st.kinds.published;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 			PathGrid pg = map.pathing.Normal.pathGrid;
@@ -206,6 +250,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, i => KindAt(map, pg, swim, i), overflow))
 			{
+				st.wallGenBy[WgDelta]++;
 				Interlocked.Increment(ref st.wallGen);
 				st.deltaBumps++;
 			}
@@ -228,6 +273,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			Interlocked.Increment(ref st.wallGenBy[pocketFlipNotifying ? WgWalkPocket : WgWalk]);
 			Interlocked.Increment(ref st.wallGen);
 			byte[] kinds = st.kinds.published;
 			if (kinds == null || !c.InBounds(map))
@@ -235,6 +281,19 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int idx = map.cellIndices.CellToIndex(c);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c): would a kind-aware bump have stayed quiet? (the snapshot
+			// already holds a wall where the square is now unwalkable, or a walkable kind where it is now walkable)
+			if (idx < kinds.Length)
+			{
+				if ((kinds[idx] == RM_WallReachMath.Wall) == !nowWalkable)
+				{
+					Interlocked.Increment(ref st.walkQuiet);
+				}
+				else
+				{
+					Interlocked.Increment(ref st.walkMoved);
+				}
+			}
 			if (idx < kinds.Length && RM_WallReachMath.WalkabilityBreach(kinds[idx], nowWalkable))
 			{
 				Interlocked.Exchange(ref st.forced, 1);
@@ -249,6 +308,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			Interlocked.Increment(ref st.wallGenBy[WgBarrier]);
 			Interlocked.Increment(ref st.wallGen);
 			if (removed)
 			{
@@ -273,6 +333,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			MapState st = StateOf(map);
+			Interlocked.Increment(ref st.wallGenBy[WgBump]);
 			Interlocked.Increment(ref st.wallGen);
 			Interlocked.Exchange(ref st.forced, 1);
 		}
@@ -285,12 +346,19 @@ namespace RimMandrake.FlowWorks
 		private static long StampOf(Map map, MapState st)
 		{
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			long s = eng == null ? 0 : eng.ClimbGeneration;
-			s = s * 31 + RM_CliffMask.settingsSalt;
-			s = s * 1000003 + Volatile.Read(ref st.wallGen);
-			s = s * 1000003 + st.doorPrint;
-			s = s * 31 + SwimVersion(map);
-			s = s * 2 + (RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0);
+			long[] p = st.partsNow;
+			p[StampClimb] = eng == null ? 0 : eng.ClimbGeneration;
+			p[StampSalt] = RM_CliffMask.settingsSalt;
+			p[StampWall] = Volatile.Read(ref st.wallGen);
+			p[StampDoor] = st.doorPrint;
+			p[StampSwim] = SwimVersion(map);
+			p[StampRamps] = RimMandrakeFlowWorksSettings.pitRampsEnabled ? 1 : 0;
+			long s = p[StampClimb];
+			s = s * 31 + p[StampSalt];
+			s = s * 1000003 + p[StampWall];
+			s = s * 1000003 + p[StampDoor];
+			s = s * 31 + p[StampSwim];
+			s = s * 2 + p[StampRamps];
 			return s;
 		}
 
@@ -445,6 +513,7 @@ namespace RimMandrake.FlowWorks
 				st.skipped++;
 			}
 			e.stamp = stamp;
+			System.Array.Copy(st.partsNow, e.builtParts, StampParts);
 			e.midLoad = Current.ProgramState != ProgramState.Playing;
 			st.builtMidLoad |= e.midLoad;
 			int now = Find.TickManager?.TicksGame ?? 0;
@@ -519,16 +588,22 @@ namespace RimMandrake.FlowWorks
 
 		private static void TickOwned(Map map, MapState st, bool paused)
 		{
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp(), mark = t0;
 			RM_PocketGrid.ReportRefusals();
 			FlushDeltas(map, st);
+			TickLap(st, ref mark, TpFlush);
 			if (st.entries.Count == 0)
 			{
+				TickDone(st, t0);
 				return;
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
 			RefreshDoorPrint(map, st, now, paused);
+			TickLap(st, ref mark, TpDoor);
 			long stamp = StampOf(map, st);
+			TickLap(st, ref mark, TpStamp);
 			bool forced = Volatile.Read(ref st.forced) != 0;
+			double buildMs = 0;
 			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F2): a labelling (or the kinds) built while the game was
 			// loading read half-spawned ground; the first tick or frame in play re-reads the kinds and rebuilds those entries,
 			// unthrottled, even though no stamp input moved (RM_PocketGrid's RELOAD_POCKETS rule).
@@ -553,7 +628,10 @@ namespace RimMandrake.FlowWorks
 				if (RM_WallReachMath.RebuildDue(e.stamp != stamp || reload, forced || reload, paused, now, e.builtTick, RebuildMinTicks))
 				{
 					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
+					CountRebuildCause(st, e, reload);
+					long b0 = System.Diagnostics.Stopwatch.GetTimestamp();
 					Build(map, st, e, stamp, views);
+					buildMs += (System.Diagnostics.Stopwatch.GetTimestamp() - b0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
 					any = true;
 				}
 			}
@@ -567,6 +645,50 @@ namespace RimMandrake.FlowWorks
 			if (any || forced)
 			{
 				Interlocked.Exchange(ref st.forced, 0);
+			}
+			TickLap(st, ref mark, TpLoop);
+			st.tickPhaseMs[TpLoop] -= buildMs;
+			st.tickPhaseMs[TpBuild] += buildMs;
+			TickDone(st, t0);
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: which stamp parts moved since this entry was built (each counted).</summary>
+		private static void CountRebuildCause(MapState st, Entry e, bool reload)
+		{
+			bool anyPart = false;
+			for (int i = 0; i < StampParts; i++)
+			{
+				if (st.partsNow[i] != e.builtParts[i])
+				{
+					st.rebuildCauses[i]++;
+					anyPart = true;
+				}
+			}
+			if (reload)
+			{
+				st.rebuildCauses[CauseReload]++;
+			}
+			else if (!anyPart)
+			{
+				st.rebuildCauses[CauseNoPart]++;
+			}
+		}
+
+		private static void TickLap(MapState st, ref long mark, int phase)
+		{
+			long t = System.Diagnostics.Stopwatch.GetTimestamp();
+			st.tickPhaseMs[phase] += (t - mark) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			mark = t;
+		}
+
+		/// <summary>One Tick's count and the slowest Tick's milliseconds (the phases are totals: tickPhaseMs).</summary>
+		private static void TickDone(MapState st, long t0)
+		{
+			st.ticks++;
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			if (ms > st.maxTickMs)
+			{
+				st.maxTickMs = ms;
 			}
 		}
 
@@ -684,6 +806,7 @@ namespace RimMandrake.FlowWorks
 				}
 				if (unjudged)
 				{
+					st.wallGenBy[WgUnjudged]++;
 					Interlocked.Increment(ref st.wallGen);
 				}
 				Build(map, st, e, StampOf(map, st), null);
@@ -942,7 +1065,32 @@ namespace RimMandrake.FlowWorks
 				+ " meanMs=" + (st.builds > 0 ? (st.totalMs / st.builds).ToString("0.000") : "-")
 				+ " steppedFrames=" + st.steppedFrames + " skipped=" + st.skipped
 				+ " deltaBumps=" + st.deltaBumps + " deltaQuiet=" + st.deltaQuiet + " viewsReused=" + st.viewsReused
-				+ " ownerRefused=" + RM_PocketGrid.OwnerRefused;
+				+ " ownerRefused=" + RM_PocketGrid.OwnerRefused + DiagnosticTail(st);
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): Tick's phase totals, the delta flushes, why
+		/// entries rebuilt, who moved wallGen, and whether the walkability notes would have been quiet under a kind-aware bump.</summary>
+		private static string DiagnosticTail(MapState st)
+		{
+			var sb = new System.Text.StringBuilder();
+			sb.Append(" ticks=").Append(st.ticks).Append(" maxTickMs=").Append(st.maxTickMs.ToString("0.000")).Append(" tickMs=");
+			for (int i = 0; i < TickPhases; i++)
+			{
+				sb.Append(i > 0 ? "," : "").Append(TickPhaseNames[i]).Append(':').Append(st.tickPhaseMs[i].ToString("0.0"));
+			}
+			sb.Append(" flushes=").Append(st.flushes).Append(" flushCells=").Append(st.flushCells).Append(" flushMaxCells=")
+				.Append(st.flushMaxCells).Append(" flushOverflows=").Append(st.flushOverflows).Append(" rebuildCauses=");
+			for (int i = 0; i < RebuildCauses; i++)
+			{
+				sb.Append(i > 0 ? "," : "").Append(RebuildCauseNames[i]).Append(':').Append(st.rebuildCauses[i]);
+			}
+			sb.Append(" wallGenBy=");
+			for (int i = 0; i < WgSources; i++)
+			{
+				sb.Append(i > 0 ? "," : "").Append(WallGenNames[i]).Append(':').Append(Volatile.Read(ref st.wallGenBy[i]));
+			}
+			sb.Append(" walkQuiet=").Append(Volatile.Read(ref st.walkQuiet)).Append(" walkMoved=").Append(Volatile.Read(ref st.walkMoved));
+			return sb.ToString();
 		}
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N

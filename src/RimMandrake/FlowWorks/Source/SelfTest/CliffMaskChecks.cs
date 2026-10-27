@@ -209,7 +209,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string ramp = Src("Superdeep", "RM_PitRamp.cs");
                 Assert(ramp.Contains("RM_CliffMaskMath.RampJoins(") && ramp.Contains("r.Rotation.FacingCell == high"), "a ramp joins the square it faces, uphill");
-                Assert(ramp.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length >= 3, "spawn and despawn move the climb generation");
+                Assert(ramp.Split(new[] { "BumpClimbGeneration(RM_MapComponent_Excavation.Gen" }, StringSplitOptions.None).Length >= 3, "spawn and despawn move the climb generation");
                 Assert(ramp.Contains("RM_LadderUtility.HasLadder(map, loc)") && ramp.Contains("RMFlow_RampMustFaceUphill"), "placement rules (§8.4)");
                 Assert(Src("Superdeep", "RM_CliffMask.cs").Contains("return RM_PitRamp.Joins(map, a, b, aD, bD);"), "the masks and the floor see ramps");
                 string grid = Src("Superdeep", "RM_PocketGrid.cs");
@@ -257,7 +257,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(grid.Contains("LadderLeadsOut("), "a ladder is an exit only where it joins a shallower neighbour");
                 Assert(grid.Contains("RM_CliffMask.settingsSalt++"), "a climb setting re-derives the masks");
                 string ladder = Src("Superdeep", "RM_LadderUtility.cs");
-                Assert(ladder.Contains("BumpClimbGeneration()"), "raising or lowering a ladder re-derives the masks");
+                Assert(ladder.Contains("BumpClimbGeneration(RM_MapComponent_Excavation.Gen"), "raising or lowering a ladder re-derives the masks");
             });
 
             Case("Cliff_mask_lowered_ladder_at_wall_lets_a_person_down_and_out_of_D4", () =>
@@ -283,7 +283,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string body = b < 0 || e < b ? "" : lad.Substring(b, e - b);
                 Assert(body.Contains("override void SpawnSetup") && body.Contains("override void DeSpawn"),
                     "RM_Building_Ladder hooks spawn and despawn");
-                Assert(body.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length - 1 >= 2,
+                Assert(body.Split(new[] { "BumpClimbGeneration(RM_MapComponent_Excavation.Gen" }, StringSplitOptions.None).Length - 1 >= 2,
                     "building or removing a ladder re-derives the cliff masks (Standable, pathCost 0: vanilla sends no cell delta)");
                 // the masks only re-check the generation inside vanilla's incremental update, which runs only on a cell delta (R4 live:
                 // the generation bump alone left P4/P4f/P5n red), so spawn, despawn and the raise/lower toggle each push one
@@ -589,7 +589,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(ramp.Contains("public class RM_Building_PitRamp : Building"), "the ramp is a Building (vanilla pushes its cell delta)");
                 Assert(ramp.Contains("base.SpawnSetup(map, respawningAfterLoad);") && ramp.Contains("base.DeSpawn(mode);"),
                     "the ramp keeps vanilla's spawn and despawn");
-                Assert(ramp.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length - 1 >= 2, "spawn and despawn move the generation");
+                Assert(ramp.Split(new[] { "BumpClimbGeneration(RM_MapComponent_Excavation.Gen" }, StringSplitOptions.None).Length - 1 >= 2, "spawn and despawn move the generation");
                 string mask = Src("Superdeep", "RM_CliffMask.cs");
                 Assert(mask.Contains("long k = eng == null ? 0 : eng.ClimbGeneration;") && mask.Contains("if (KeyFor(eng) != m.key)"),
                     "a moved generation (or a ramp setting) makes the next incremental pass re-derive in full");

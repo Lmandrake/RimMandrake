@@ -275,10 +275,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // moved after the throttle, or the stamp taken anywhere but Build, lets a half-loaded grid stand)
                 RiverSwitchFlipChecks.Has(grid, @"builtMidLoad = Current\.ProgramState != ProgramState\.Playing;",
                     "Build stamps whether it ran mid-load");
-                RiverSwitchFlipChecks.Has(grid, @"if \(builtMidLoad && Current\.ProgramState == ProgramState\.Playing\)\s*\{\s*Build\(notifyFlips\);\s*return;\s*\}\s*if \(builtGeneration == eng\.ClimbGeneration",
+                RiverSwitchFlipChecks.Has(grid, @"if \(builtMidLoad && Current\.ProgramState == ProgramState\.Playing\)\s*\{\s*Build\(notifyFlips, CauseMidLoad\);\s*return;\s*\}\s*if \(builtGeneration == eng\.ClimbGeneration",
                     "a mid-load build is rebuilt before the generation and throttle tests");
                 string eng = Src("RM_MapComponent_Excavation.cs");
-                Assert(eng.Split(new[] { "BumpClimbGeneration()" }, StringSplitOptions.None).Length >= 4,
+                Assert(eng.Split(new[] { "BumpClimbGeneration(Gen" }, StringSplitOptions.None).Length >= 4,
                     "the generation moves on Deepen and FillIn (and is declared)");
                 string rooms = Src("Superdeep", "RM_PitRooms.cs");
                 Assert(rooms.Contains("RM_PocketGrid.IsPersonPocketCell("), "a pit room is a person-band pocket");

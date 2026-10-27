@@ -1,0 +1,2 @@
+Offline allocation benches: on Mono, GC.GetTotalMemory(false) cannot see allocation. A sanity probe that allocated 100 x int[1000] (~400 KB) read a heap delta of 48 B (2026-10-27, /mnt/d/ClaudeWork/rimmandrake/excavation_slice/swimbench/run_mono.txt). Run a known-size allocation probe before trusting any heap-delta number. Measure allocation on CLR (GC.GetAllocatedBytesForCurrentThread) or not at all; Mono timing is still usable.
+home: skill:measuring-large-artifacts

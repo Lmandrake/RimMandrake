@@ -353,7 +353,7 @@ namespace RimMandrake.FlowWorks.Pits
 				RM_MapComponent_SuspensionBridges.DirtyAround(map, c);
 			}
 			map.reachability?.ClearCache();
-			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration(RM_MapComponent_Excavation.GenDrawbridge);
 			Swimming.RM_SwimPathing.Bump(map);
 			RM_PocketGrid.ForceRebuild(map);
 			RepathOver(map, changed);

@@ -374,7 +374,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"swimByKey\[k\] = Swimming\.RM_SwimWater\.FluidSwimmable\(fluidPalette\[k - 1\] \?\? ActiveFluid\);",
                     "the memo is LiquidSwimmableAt's dug rule, key by key");
                 RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[i\], climb\);", "the pocket grid and the cliff masks read the swim surface");
-                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
+                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
                 RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
                 RiverSwitchFlipChecks.Has(ex, @"% SwimRefreshTicks == 11\) \{ RefreshDugSwim\(\); \}", "refreshed on its own timer");
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));

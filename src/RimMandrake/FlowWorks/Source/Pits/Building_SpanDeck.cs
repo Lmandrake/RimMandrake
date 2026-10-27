@@ -89,7 +89,7 @@ namespace RimMandrake.FlowWorks.Pits
 			{
 				return;
 			}
-			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration();
+			RM_SuperdeepTrap.EngineOf(map)?.BumpClimbGeneration(RM_MapComponent_Excavation.GenDeck);
 			if (!loading && c.InBounds(map))
 			{
 				map.pathing?.RecalculatePerceivedPathCostAt(c);

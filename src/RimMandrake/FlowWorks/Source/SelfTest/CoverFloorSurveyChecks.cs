@@ -44,7 +44,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 int at = span.IndexOf("public static void Notify_DeckPathChanged(Map map, IntVec3 c, bool loading)", StringComparison.Ordinal);
                 Assert(at > 0, "the deck change notifier exists");
                 string body = span.Substring(at, Math.Min(900, span.Length - at));
-                Assert(body.Contains("BumpClimbGeneration()"), "the climb generation moves (pocket grid, masks)");
+                Assert(body.Contains("BumpClimbGeneration(RM_MapComponent_Excavation.Gen"), "the climb generation moves (pocket grid, masks)");
                 Assert(body.Contains("map.pathing?.RecalculatePerceivedPathCostAt(c);"), "the square's path cost is re-read");
                 Assert(body.Contains("map.pathFinder?.MapData?.Notify_CellDelta(c);"), "the pathfinder's cell update runs (masks re-check)");
                 Assert(body.Contains("map.reachability?.ClearCache();"), "the reach cache is cleared");

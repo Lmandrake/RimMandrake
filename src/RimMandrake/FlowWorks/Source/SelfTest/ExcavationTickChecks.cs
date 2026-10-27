@@ -1048,7 +1048,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(wr, @"if \(!On \|\| map == null \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return false; \}", "a query off the owner vetoes nothing");
                 RiverSwitchFlipChecks.Has(wr, @"if \(!RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ BuildOwned\(", "a build runs on the owner");
                 string pg = Src("Superdeep", "RM_PocketGrid.cs");
-                RiverSwitchFlipChecks.Has(pg, @"private void Build\(bool notifyFlips\) \{ if \(!EnterOwner\(out bool nested\)\) \{ return; \}", "a pocket build runs on the owner");
+                RiverSwitchFlipChecks.Has(pg, @"private void Build\(bool notifyFlips, int cause\) \{ if \(!EnterOwner\(out bool nested\)\) \{ return; \}", "a pocket build runs on the owner");
                 RiverSwitchFlipChecks.Has(pg, @"lastW != map\.Size\.x \|\| lastH != map\.Size\.z\)", "BuiltView checks the geometry");
                 string tr = Src("Superdeep", "RM_SuperdeepTrap.cs");
                 RiverSwitchFlipChecks.Has(tr, @"if \(!__result \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ Owned\(start, dest, peMode, traverseParams, ref __result, ___map\);", "the CanReach veto runs on the owner");
@@ -1129,11 +1129,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "Build skips through the LabelSlot (identical kinds, depth, ramps and geometry)");
                 RiverSwitchFlipChecks.Has(wr, @"byte\[\] kinds = st\.kinds\.Take\(n\);", "Kinds reads into the snapshot's scratch");
                 RiverSwitchFlipChecks.Has(wr, @"return st\.kinds\.Publish\(kinds, stamp, w, h\);", "Kinds keeps the old array when nothing moved");
-                RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
+                RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); TickLap\(st, ref mark, TpFlush\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
                 RiverSwitchFlipChecks.Has(wr, @"FlushDeltas\(map, st\);.{0,140}bool unthrottled = RM_WallReachMath\.PausedUnthrottled", "a paused write moves the stamp before PausedFrame compares it");
-                RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ Interlocked\.Increment\(ref st\.wallGen\); \} Build\(map, st, e, StampOf\(map, st\), null\);", "a first build never labels from an unjudged snapshot");
+                RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ st\.wallGenBy\[WgUnjudged\]\+\+; Interlocked\.Increment\(ref st\.wallGen\); \} Build\(map, st, e, StampOf\(map, st\), null\);", "a first build never labels from an unjudged snapshot");
                 RiverSwitchFlipChecks.Has(wr, @"if \(deltas == null \|\| deltas\.Count == 0\) \{ return; \}", "an empty gather moves nothing");
-                RiverSwitchFlipChecks.Has(wr, @"kinds\[idx\] == RM_WallReachMath\.Wall && pg\.WalkableFast\(idx\)\) \{ Interlocked\.Increment\(ref st\.wallGen\); Interlocked\.Exchange\(ref st\.forced, 1\);",
+                RiverSwitchFlipChecks.Has(wr, @"kinds\[idx\] == RM_WallReachMath\.Wall && pg\.WalkableFast\(idx\)\) \{ Interlocked\.Increment\(ref st\.wallGenBy\[WgConnBreach\]\); Interlocked\.Increment\(ref st\.wallGen\); Interlocked\.Exchange\(ref st\.forced, 1\);",
                     "a wall breach still forces at once");
             });
 

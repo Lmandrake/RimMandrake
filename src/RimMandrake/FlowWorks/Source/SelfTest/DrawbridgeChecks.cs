@@ -544,7 +544,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string db = Src("Pits", "Drawbridge", "RM_Drawbridges.cs");
                 string notify = Body(db, "public static void NotifyToggled(Map map, List<IntVec3> changed)");
-                foreach (string must in new[] { "RecalculatePerceivedPathCostAt(c)", "reachability?.ClearCache()", "BumpClimbGeneration()",
+                foreach (string must in new[] { "RecalculatePerceivedPathCostAt(c)", "reachability?.ClearCache()", "BumpClimbGeneration(RM_MapComponent_Excavation.Gen",
                     "RM_SwimPathing.Bump(map)", "RM_PocketGrid.ForceRebuild(map)", "RepathOver(map, changed)" })
                 {
                     Assert(notify.Contains(must), "can-fail: a toggle must " + must + " (R8)");

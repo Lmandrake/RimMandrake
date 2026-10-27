@@ -335,7 +335,22 @@ namespace RimMandrake.FlowWorks
 
 		public void BumpClimbGeneration()
 		{
+			BumpClimbGeneration(GenOther);
+		}
+
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c: the pocket grid rebuilt ~7/1000 ticks, the wall-aware labels
+		// ~46/1000, on a quiet scene): who moved the climb generation, counted per source since the component was made, read
+		// through RM_PocketGrid.ProofPocketTiming's GENBUMPS part. Diagnostic only; nothing reads it back.
+		public const int GenOther = 0, GenSwim = 1, GenBedRebuild = 2, GenBedSet = 3, GenRehydrate = 4, GenDig = 5, GenFill = 6,
+			GenRamp = 7, GenDeck = 8, GenLadder = 9, GenDrawbridge = 10;
+		internal static readonly string[] GenSourceNames =
+			{ "other", "swim", "bedRebuild", "bedSet", "rehydrate", "dig", "fill", "ramp", "deck", "ladder", "drawbridge" };
+		internal readonly int[] climbBumps = new int[11];
+
+		public void BumpClimbGeneration(int source)
+		{
 			climbGeneration++;
+			climbBumps[(uint)source < (uint)climbBumps.Length ? source : GenOther]++;
 		}
 
 		/// <summary>The ONE depth the relative climb rule reads (design §8.1, GPT #17): the hollow depth, i.e. the dug depth,
@@ -418,7 +433,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0;
 			}
-			BumpClimbGeneration();
+			BumpClimbGeneration(GenSwim);
 			Swimming.RM_SwimPathing.Bump(map);
 			foreach (int i in changed)
 			{
@@ -636,7 +651,7 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
-			BumpClimbGeneration();
+			BumpClimbGeneration(GenBedRebuild);
 		}
 
 		/// <summary>POND_BED step 2: the one writer of bedGrid, so the count and the climb generation can never drift from it.</summary>
@@ -656,7 +671,7 @@ namespace RimMandrake.FlowWorks
 				bedCellCount--;
 			}
 			bedGrid[i] = v;
-			BumpClimbGeneration();
+			BumpClimbGeneration(GenBedSet);
 		}
 
 		/// <summary>POND_BED step 2 (owner look (b)): the cracked lakebed for this square's bed depth.</summary>
@@ -1105,7 +1120,7 @@ namespace RimMandrake.FlowWorks
 				legacyRehydrationDone = true;
 			}
 			RebuildExcavatedSet();
-			BumpClimbGeneration(); // the pocket grid may have been built by region building before a legacy rehydrate
+			BumpClimbGeneration(GenRehydrate); // the pocket grid may have been built by region building before a legacy rehydrate
 			if (originalTerrain == null)
 			{
 				originalTerrain = new Dictionary<int, TerrainDef>();
@@ -1526,7 +1541,7 @@ namespace RimMandrake.FlowWorks
 			d = next;
 			depthGrid[i] = d;
 			excavatedCells.Add(c);
-			BumpClimbGeneration();
+			BumpClimbGeneration(GenDig);
 			// P14: ONE base write picks the square's picture: its dry floor by depth, or its water's ladder rung when wet
 			// (a wet cell cut deeper is redrawn now rather than at the next pulse, forever with the depth engine off).
 			ApplyFillTerrain(c, FluidAt(c) ?? ActiveFluid);
@@ -1626,7 +1641,7 @@ namespace RimMandrake.FlowWorks
 			depthGrid[i] = newD;
 			fillGrid[i] = (byte)(kept / RM_LevelSolve.U);
 			partGrid[i] = (ushort)(kept % RM_LevelSolve.U);
-			BumpClimbGeneration();
+			BumpClimbGeneration(GenFill);
 			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
 			// grid byte drops and the trap rule stops applying on the next read.
 			// Nobody is in a container, so nobody needs dropping out. PIT_DEPTH_WIDEN: only the fill that crosses back above

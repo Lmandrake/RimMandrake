@@ -88,6 +88,19 @@ namespace RimMandrake.FlowWorks
 		/// <summary>RELOAD_POCKETS: the last build ran while the map was still loading (ProgramState not Playing).</summary>
 		private bool builtMidLoad, firstBuildMidLoad;
 
+		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads a and c): r14 saw a 176 ms Build whose six label floods took at most
+		// 2 ms each, so the time sat in the rest of Build. Each build is split into phases (Ph*: the view read, the ramp pairs, the
+		// floods, the pocket-flip notifications to the region dirtyer); the last build's split, the slowest build's split (with its
+		// flip count and the GC collections that ran inside it) and the totals are read through ProofPocketTiming. Why a build
+		// ran (first query, mid-load redo, climb generation, settings salt) is counted too. Stopwatch timestamps only: no allocation.
+		private const int PhView = 0, PhRamps = 1, PhLabel = 2, PhNotify = 3, Phases = 4;
+		private static readonly string[] PhaseNames = { "view", "ramps", "label", "notify" };
+		private readonly double[] lastPhaseMs = new double[Phases], maxPhaseMs = new double[Phases], totalPhaseMs = new double[Phases];
+		private int lastFlips, maxBuildFlips, totalFlips, maxBuildGcs;
+		private const int CauseFirst = 0, CauseMidLoad = 1, CauseGen = 2, CauseSalt = 3, Causes = 4;
+		private static readonly string[] CauseNames = { "first", "midLoad", "gen", "salt" };
+		private readonly int[] buildCauses = new int[Causes];
+
 		private RM_PocketGrid(Map map, int stride = 0, bool floorView = false)
 		{
 			this.map = map;
@@ -136,7 +149,7 @@ namespace RimMandrake.FlowWorks
 			RM_PocketGrid g = set[s] ?? (set[s] = new RM_PocketGrid(map, s, true));
 			if (g.bands == null)
 			{
-				g.Build(false);
+				g.Build(false, CauseFirst);
 			}
 			return g;
 		}
@@ -153,7 +166,7 @@ namespace RimMandrake.FlowWorks
 			RM_PocketGrid g = set[stride] ?? (set[stride] = new RM_PocketGrid(map, stride));
 			if (g.bands == null)
 			{
-				g.Build(false);
+				g.Build(false, CauseFirst);
 			}
 			return g;
 		}
@@ -167,7 +180,7 @@ namespace RimMandrake.FlowWorks
 			RM_PocketGrid g = grids.GetValue(map, m => new RM_PocketGrid(m));
 			if (g.bands == null)
 			{
-				g.Build(false);
+				g.Build(false, CauseFirst);
 			}
 			return g;
 		}
@@ -266,7 +279,7 @@ namespace RimMandrake.FlowWorks
 			// tick or frame in Playing rebuilds it, whatever the generation says.
 			if (builtMidLoad && Current.ProgramState == ProgramState.Playing)
 			{
-				Build(notifyFlips);
+				Build(notifyFlips, CauseMidLoad);
 				return;
 			}
 			if (builtGeneration == eng.ClimbGeneration && builtSalt == settingsSalt)
@@ -278,7 +291,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			Build(notifyFlips);
+			Build(notifyFlips, builtSalt != settingsSalt ? CauseSalt : CauseGen);
 		}
 
 		/// <summary>The walking depth of every square in this grid's view: EffectiveDepth (decks, the floor view), then the stride
@@ -385,7 +398,7 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private void Build(bool notifyFlips)
+		private void Build(bool notifyFlips, int cause)
 		{
 			if (!EnterOwner(out bool nested))
 			{
@@ -393,6 +406,7 @@ namespace RimMandrake.FlowWorks
 			}
 			try
 			{
+				buildCauses[cause]++;
 				BuildOwned(notifyFlips);
 			}
 			finally
@@ -404,6 +418,8 @@ namespace RimMandrake.FlowWorks
 		private void BuildOwned(bool notifyFlips)
 		{
 			var whole = System.Diagnostics.Stopwatch.StartNew();
+			int gc0 = System.GC.CollectionCount(0);
+			long mark = whole.ElapsedTicks;
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
 			int w = map.Size.x, h = map.Size.z;
 			int n = w * h;
@@ -426,7 +442,9 @@ namespace RimMandrake.FlowWorks
 			{
 				anyDug = depth[i] != 0;
 			}
+			Lap(whole, ref mark, PhView);
 			Dictionary<int, int> rampPairs = RampPairs(depth, anyDug);
+			Lap(whole, ref mark, PhRamps);
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the climb generation moves on every write that MIGHT change the view (a
 			// bed square re-levelled with hollows off, a swim refresh, a ladder over a square already at that depth), and each
 			// move re-flooded every band of every view over the whole map (a 325x325 map: ~106k cells x 5 bands per view). The
@@ -454,6 +472,7 @@ namespace RimMandrake.FlowWorks
 					lastBandMs[k] = band.Elapsed.TotalMilliseconds;
 				}
 			}
+			Lap(whole, ref mark, PhLabel);
 			if (!sameInput)
 			{
 				spareBands = old;   // read by nobody once fresh is published below; overwritten by the build after next
@@ -478,22 +497,57 @@ namespace RimMandrake.FlowWorks
 				firstBuiltTick = builtTick;
 				firstBuildMidLoad = builtMidLoad;
 			}
+			int flips = 0;
 			if (!sameInput && notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
 				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
-				for (int i = 0; i < n; i++)
+				RM_WallReach.pocketFlipNotifying = true;
+				try
 				{
-					if (a.IsPocketCell(i) != b.IsPocketCell(i))
+					for (int i = 0; i < n; i++)
 					{
-						RM_PitRooms.NotifyPitnessChanged(map, map.cellIndices.IndexToCell(i));
+						if (a.IsPocketCell(i) != b.IsPocketCell(i))
+						{
+							flips++;
+							RM_PitRooms.NotifyPitnessChanged(map, map.cellIndices.IndexToCell(i));
+						}
 					}
 				}
+				finally
+				{
+					RM_WallReach.pocketFlipNotifying = false;
+				}
 			}
+			Lap(whole, ref mark, PhNotify);
+			lastFlips = flips;
+			totalFlips += flips;
 			lastBuildMs = whole.Elapsed.TotalMilliseconds;
 			totalBuildMs += lastBuildMs;
 			if (lastBuildMs > maxBuildMs)
 			{
 				maxBuildMs = lastBuildMs;
+				System.Array.Copy(lastPhaseMs, maxPhaseMs, Phases);
+				maxBuildFlips = flips;
+				maxBuildGcs = System.GC.CollectionCount(0) - gc0;
+			}
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: close one Build phase (milliseconds since the last mark).</summary>
+		private void Lap(System.Diagnostics.Stopwatch sw, ref long mark, int phase)
+		{
+			long t = sw.ElapsedTicks;
+			double ms = (t - mark) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			mark = t;
+			lastPhaseMs[phase] = ms;
+			totalPhaseMs[phase] += ms;
+		}
+
+		private static void AppendPhases(System.Text.StringBuilder sb, string key, string[] names, double[] ms)
+		{
+			sb.Append(' ').Append(key).Append('=');
+			for (int i = 0; i < ms.Length; i++)
+			{
+				sb.Append(i > 0 ? "," : "").Append(names[i]).Append(':').Append(ms[i].ToString("0.000"));
 			}
 		}
 
@@ -510,6 +564,15 @@ namespace RimMandrake.FlowWorks
 			for (int k = 1; k < lastBandMs.Length; k++)
 			{
 				sb.Append(k > 1 ? "," : "").Append(lastBandMs[k].ToString("0.000"));
+			}
+			AppendPhases(sb, "phaseLastMs", PhaseNames, lastPhaseMs);
+			AppendPhases(sb, "phaseMaxBuildMs", PhaseNames, maxPhaseMs);
+			AppendPhases(sb, "phaseTotalMs", PhaseNames, totalPhaseMs);
+			sb.Append(" flips=").Append(lastFlips).Append('/').Append(maxBuildFlips).Append('/').Append(totalFlips)
+				.Append(" maxBuildGc0=").Append(maxBuildGcs).Append(" causes=");
+			for (int c = 0; c < Causes; c++)
+			{
+				sb.Append(c > 0 ? "," : "").Append(CauseNames[c]).Append(':').Append(buildCauses[c]);
 			}
 			return sb.ToString();
 		}
@@ -551,6 +614,17 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			parts.Add(RM_WallReach.TimingLine(map));
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c): who moved the climb generation, per source
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng != null)
+			{
+				var gb = new System.Text.StringBuilder("GENBUMPS gen=").Append(eng.ClimbGeneration);
+				for (int i = 0; i < eng.climbBumps.Length; i++)
+				{
+					gb.Append(' ').Append(RM_MapComponent_Excavation.GenSourceNames[i]).Append('=').Append(eng.climbBumps[i]);
+				}
+				parts.Add(gb.ToString());
+			}
 			return string.Join(" | ", parts);
 		}
 

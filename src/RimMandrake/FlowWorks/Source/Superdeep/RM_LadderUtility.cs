@@ -403,7 +403,7 @@ namespace RimMandrake.FlowWorks
 				// Routes and reachability planned against the old state are stale now.
 				parent.Map.reachability.ClearCache();
 				// PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: a lowered ladder is a structural edge in the cliff masks.
-				parent.Map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+				parent.Map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration(RM_MapComponent_Excavation.GenLadder);
 				// The masks re-check the generation only inside vanilla's incremental path update, which runs only on a cell
 				// delta; a ladder toggle changes no vanilla cost, so push one (V2_LADDER_ROWS_DIAGNOSE_STAGE_FRIGHT).
 				parent.Map.pathFinder?.MapData?.Notify_CellDelta(parent.Position);
@@ -533,7 +533,7 @@ namespace RimMandrake.FlowWorks
 				comp.hung = true;
 			}
 			base.SpawnSetup(map, respawningAfterLoad);
-			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration(RM_MapComponent_Excavation.GenLadder);
 			if (!respawningAfterLoad)
 			{
 				// The masks re-check the generation only inside vanilla's incremental path update, which runs only on a cell delta.
@@ -547,7 +547,7 @@ namespace RimMandrake.FlowWorks
 			Map map = Map;
 			IntVec3 pos = Position;
 			base.DeSpawn(mode);
-			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration(RM_MapComponent_Excavation.GenLadder);
 			map?.pathFinder?.MapData?.Notify_CellDelta(pos);
 			map?.reachability.ClearCache();
 		}

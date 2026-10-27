@@ -23,14 +23,14 @@ namespace RimMandrake.FlowWorks
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
-			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			map.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration(RM_MapComponent_Excavation.GenRamp);
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			Map map = Map;
 			base.DeSpawn(mode);
-			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration();
+			map?.GetComponent<RM_MapComponent_Excavation>()?.BumpClimbGeneration(RM_MapComponent_Excavation.GenRamp);
 			map?.reachability.ClearCache();
 		}
 
