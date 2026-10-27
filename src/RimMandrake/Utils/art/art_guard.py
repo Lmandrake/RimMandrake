@@ -129,10 +129,22 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
         if not (ev.get("said") or ev.get("by_card") or ev.get("per_ruling")):
             return "a restore undoes his ✕ - it needs his words, card or standing ruling"
         return None
-    if ev.get("mark") and ev.get("ruling_id") and (ev.get("ts") or "") >= ENFORCE_MARKS_FROM:
-        why = _mark_refusal(ev, idx)                   # an install over an older keep: the pick must be the newest mark
-        if why:
-            return why
+    if ev.get("ruling_id") and (ev.get("ts") or "") >= ENFORCE_MARKS_FROM:
+        # an install over a keep: the pick must be the newest mark. Judged from the RULING's click stamp as well, so an
+        # event that simply omits `mark` cannot slip an older pick past a newer keep (review r11)
+        if not ev.get("mark"):
+            r = next((r for r in idx.rulings if r["id"] == ev["ruling_id"]), None)
+            m = L.mark_of_ruling(r)
+            if m and ev.get("prev"):
+                newer = L.newer_keeps(idx, ev["prev"], m["at"], ignore=L.keeps_same_click_in(idx, r),
+                                      before_ts=ev.get("ts"))
+                if newer:
+                    return (f"a keep of his ({newer[0]['id']}) on the displaced picture is NEWER than the pick "
+                            f"({m['at']}) - the newest mark wins")
+        else:
+            why = _mark_refusal(ev, idx)
+            if why:
+                return why
     if ev.get("ruling_id"):
         r = next((r for r in idx.rulings if r["id"] == ev["ruling_id"]), None)
         if not r:

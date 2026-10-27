@@ -105,6 +105,14 @@ def main():
               "ruling_id": "keep-s0", "ts": L.now(), "mark": L.mark_of_ruling(next(e for e in L.read_events() if e["id"] == "keep-s0")),
               "why": L.MARKS_WHY}
     check(G.check([(path, B, C)], L.read_events() + [forged]) != [], "guard refuses a hand-made older-mark transition over a newer keep")
+    unmarked = {k: v for k, v in forged.items() if k not in ("mark", "why")}
+    check(G.check([(path, B, C)], L.read_events() + [unmarked]) != [],
+          "guard refuses the same older pick when the event simply omits its mark (judged from the ruling's stamp)")
+    odd = {"id": "odd", "type": "ruling", "verdict": "keep", "by": "owner", "trust": "ruled", "at": "not-a-time",
+           "ts": "also-not", "target": {"shas": [B]}}
+    stub = type("Stub", (), {"protected": lambda self, sha: [odd]})()
+    check([k["id"] for k in L.newer_keeps(stub, B, T5)] == ["odd"],
+          "a keep whose time cannot be read counts as NEWER (an unreadable stamp never lets a mark win)")
 
     # 3 his X archives the in-game picture; no purge; restore returns identical bytes
     xs = sheet("sx", T5, [B])
@@ -117,6 +125,9 @@ def main():
     bad = G.check_range(tmp, base, "HEAD")
     check(bad == [], f"guard range check passes for the pick and archive commits {bad[:1]}")
     check(not L.cached_index().protected(B), "the older keep on the archived picture is released")
+    check(B in L.archived_shas() and refused(L.purge, B, owner_said="reject+purge on sheet sy", via=sheet("sy", T5, [B]),
+                                             release_from_sheet=("sheets/sy.json", "RM_Nuna")) is not None
+          and L.store_has(B), "a later sheet ✕ (another stamp) never purges an archived picture")
     check(refused(L.restore, "sx", ) is not None, "restore refuses without his words")
     ar = [e for e in L.archive_events()][-1]
     rr = L.restore(ar["id"][:10], owner_said="put it back")

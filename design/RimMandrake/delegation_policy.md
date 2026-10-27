@@ -82,11 +82,16 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    mark wins; his ✕ on a picture he once kept or that is in the game moves it to the art archive (one-command
    restore) — never a purge — and acts at once. Each act is listed in his daily digest. Ruled words: *"May
    'newest mark wins' become a delegated rule, with X moving the picture to the art archive (one-command
-   restore) instead of deleting it, and each act listed in your digest?"* Tooling: `art.py` retire-to-archive
-   path and a guard exception tied to his mark's timestamp (`ART_MARKS_BUILD_NEWEST_WINS_ARCHIVE`); until it
-   lands, a newest-mark conflict is enacted with `art.py install --by-card "<the card question> → Newest mark
-   wins, X archives (Recommended)"`, and a ✕ waits for the retire path — it is never purged and never re-carded.
-   Any other replacement of kept art is still his.
+   restore) instead of deleting it, and each act listed in your digest?"* Tooling (landed e4aaf37692, reviewed
+   and hardened 2026-10-26): `art.py enact` carries his marks out — a ✕ archives through `art.py archive`, a
+   newer pick installs over an older keep, and each act carries his mark (sheet, row, click time) and
+   `why "delegated: art marks"`; `art.py restore <sha>` puts an archived picture back byte for byte;
+   `art.py marks-digest [--since]` is the digest's data source; the pre-push `art_guard` accepts a change only
+   when the mark it carries is verified in the clone's decisions file and no keep of his is newer than his
+   click. An archived picture is never purged by enact or ingest; only `art.py purge --owner-said` can.
+   Still open: `ENACT_X_FIX_PURGE_OF_KEPT_ART`. Until it closes, enact still purges a ✕ on a picture in a
+   Graphic_Random folder, or one kept only by an older keep of the same row. Treat such a planned purge as a
+   conflict and leave it for him. Any other replacement of kept art is still his.
 4. **Overturning or reinterpreting a standing ruling of his** — CLAUDE.md, `standing_rulings.md`,
    `biome_rulings.md`, a canon entry's `## ruling` (*"The ruling is his, never yours"*, `AGENT_BRIEF.md`), and
    deliberate departures from canon. Applying a ruling to a case it does not name is delegated; changing what
@@ -103,7 +108,10 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    take the free bridge, deploy and restart the game on its own when a watcher shows no other seat holds it and
    you haven't touched the game for 20 minutes, never for flyer flight?"* Watcher and idle probe:
    `BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH`, landed: `rimflow bridge idle`, `bridge take --idle-ok`, `./game --idle-ok`;
-   the events carry `why` `delegated: bridge idle ...` and the probe reading.
+   the events carry `why` `delegated: bridge idle ...` and the probe reading. The flyer refusal is
+   self-declared: the probe refuses `--flyer` and any purpose that names flying, but it cannot know what the
+   seat will actually drive. A seat that will fly anything passes `--flyer`. A probe that cannot tell (no
+   input since boot, a failed call) reads UNMEASURED and refuses.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.
@@ -142,7 +150,8 @@ Once a day, at his first sitting (BENCH) or with the nightly run (FOUNDRY), the 
 since the last digest — item, class, decision, judge verdict file — newest first, art grouped by subject. Built
 from the ledger (`why` starting `delegated:`) and `git log --grep '^Delegated:'`; a zero-line digest is checked
 against a known delegated event before it is reported as zero. Every act under the 2026-10-26 card delegations is
-a digest line: each newest-mark enactment and ✕-archive (§2.3, class `art marks`), each bridge take, deploy and
+a digest line: each newest-mark enactment and ✕-archive (§2.3, class `art marks`; `art.py marks-digest` lists
+them), each bridge take, deploy and
 restart (§2.6, class `bridge idle`), each leftover deleted with its archive or bundle path (§2.2, class
 `leftovers`) — logged `--why "delegated: <class>"` so the digest finds it.
 

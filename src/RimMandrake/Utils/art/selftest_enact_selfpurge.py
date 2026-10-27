@@ -78,8 +78,8 @@ def main():
         R0 = E.enact(F["decisions"], apply=False, no_deploy=True)
         planned = sorted(p["sha"] for p in R0["plan"]["purge"])
         check(planned == sorted([s["bB_n"], s["aB_e"], s["aB_n"]]), "dry run plans the 3 same-row ✕ purges")
-        check(any(a["sha"] == s["oX"] for a in R0["plan"].get("archive", [])) or any(s["oX"][:12] in c and "owner-kept" in c for c in R0["conflicts"]),
-              "a ✕ kept by ANOTHER row is ARCHIVED (newest mark wins) or a CONFLICT (an older ✕ never beats a newer keep)")
+        check(any(a["sha"] == s["oX"] for a in R0["plan"].get("archive", [])),
+              "a ✕ (10-09) on a picture another row kept earlier (10-01) is planned for the ARCHIVE (newest mark wins)")
         check(not any(i["sha"] == s["bB_n"] for i in R0["plan"]["install"]), "the ✕'d facing of the pick is not installed")
 
         R1 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")

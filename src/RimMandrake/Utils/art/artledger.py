@@ -1269,8 +1269,10 @@ def newer_keeps(idx: "Index", sha: str, mark_at: str, *, ignore=(), before_ts: s
             continue
         if before_ts and (k.get("ts") or "") > before_ts:
             continue
-        kt = _when(k.get("at") or k.get("ts"))
-        if m is not None and kt is not None and kt > m:
+        kt = _when(k.get("at"))
+        kt = kt if kt is not None else _when(k.get("ts"))
+        # a keep whose time cannot be read is counted as newer: an unreadable stamp never lets a mark beat a keep
+        if m is None or kt is None or kt > m:
             out.append(k)
     return out
 
@@ -1380,6 +1382,13 @@ def archive_events(idx: "Index | None" = None) -> list[dict]:
     return [e for e in evs if e.get("type") == "live" and e.get("reason") == "archive" and e.get("sha") is None]
 
 
+def archived_shas(idx: "Index | None" = None) -> set:
+    """Pictures an ✕ moved to the art archive that are in no game file now (a restore puts one back live). A sheet ✕
+    never purges these - his card made the archive the end of an ✕ on a once-kept or in-game picture (review r11)."""
+    idx = idx or cached_index()
+    return {e["prev"] for e in archive_events(idx) if e.get("prev")} - {ev.get("sha") for ev in idx.live.values()}
+
+
 def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = None, per_ruling: str | None = None) -> dict:
     """One-command undo of an archive: `ref` is an archive event id (prefix) or the picture's sha (prefix). Writes the
     bytes back to the slot they left (which must be empty), through a `live` event (reason `restore-archive`,
@@ -1405,10 +1414,13 @@ def restore(ref: str, *, owner_said: str | None = None, by_card: str | None = No
         raise Refused(f"{target} is occupied - restore only refills an archived (empty) slot")
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged - it cannot be restored")
+    data = store_get(sha)
+    if sha256_bytes(data) != sha:
+        raise Refused(f"the art store's copy of {sha[:12]} does not hash to its name - not restoring damaged bytes")
     target.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=target.parent, prefix=".art-restore-")
     with os.fdopen(fd, "wb") as fh:
-        fh.write(store_get(sha))
+        fh.write(data)
     os.replace(tmp, target)
     ev = {"type": "live", "mod": mod, "rel": rel, "sha": sha, "prev": None, "reason": "restore-archive",
           "restores": e["id"], "why": MARKS_WHY + " (restored)"}
@@ -1476,7 +1488,8 @@ def purge_authority(owner_said: str | None = None, by_card: str | None = None, p
 
 def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", release_keep=False,
           release_from_sheet: tuple[str, str] | None = None, live_paths: list[str] | None = None,
-          by_card: str | None = None, per_ruling: str | None = None, why: str | None = None) -> dict:
+          by_card: str | None = None, per_ruling: str | None = None, why: str | None = None,
+          archived_ok: bool = False) -> dict:
     """Reject+purge: the owner deletes an erroneous render so it stops polluting option
     space. Removes the bytes from the store and records a `purge` event; every sheet and
     every later registration skips the sha. Refuses a picture that is live in a mod
@@ -1495,6 +1508,11 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         under = f"; he KEPT these bytes as {kept[0]['subject_key']} ({Path(kept[0].get('via') or '').name})" if kept else ""
         raise Refused(f"{sha[:12]} is live at {len(live_paths)} slot(s): {', '.join(live_paths[:4])}"
                       f"{' …' if len(live_paths) > 4 else ''}{under} — install a replacement first")
+    if not archived_ok and sha in archived_shas(idx):
+        # his ✕ on a once-kept or in-game picture archives it, never purges (owner card 2026-10-26 19:06); a later ✕
+        # (another sheet, a re-decided row) must not finish the job - only `art.py purge` on his words does
+        raise Refused(f"{sha[:12]} is in the art archive (his ✕ moved it out of the game) — a sheet ✕ never purges "
+                      f"it; `art.py purge {sha[:12]} --owner-said \"…\"` if he asks")
     prot = idx.protected(sha)
     w = Writer({e["id"] for e in idx.events})
     if release_keep is True:

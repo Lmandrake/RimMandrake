@@ -24,7 +24,10 @@ def check(ok, msg):
 
 
 def reading(sec):
-    return ip.parse("noise\nRMIDLE|%d|123|RimWorldWin64\n" % (sec * 1000))
+    return ip.parse("noise\nRMIDLE|%d|%d|123|RimWorldWin64\n" % (sec * 1000, UPTIME_MS))
+
+
+UPTIME_MS = 5 * 86400 * 1000
 
 
 def main():
@@ -39,8 +42,20 @@ def main():
           "idle 21 min -> allow, why starts 'delegated:', reading recorded")
     ev, ref = gate(None, "BENCH", None, "x", False, ip.unmeasured("boom"))
     check(ref and "UNMEASURED" in ref, "UNMEASURED -> refuse")
-    for bad in ("", "RMIDLE|-1|0|", "RMIDLE|abc|1|x", "RMIDLE|5|1"):
+    for bad in ("", "RMIDLE|-1|9000000|0|", "RMIDLE|abc|9000000|1|x", "RMIDLE|5|1", "RMIDLE|5000|1|RimWorldWin64",
+                "RMIDLE|5000|x|1|RimWorldWin64", "RMIDLE|5000|0|1|RimWorldWin64"):
         check(ip.parse(bad)["state"] == "UNMEASURED", "garbage %r -> UNMEASURED" % bad)
+    # a session nobody ever typed into (session 0 / service / ssh interop) reports an idle as long as the uptime
+    r0 = ip.parse("RMIDLE|%d|%d|0|" % (86400 * 1000, 86400 * 1000 + 30000))
+    check(r0["state"] == "UNMEASURED" and "since boot" in r0["why"], "idle == uptime (no input since boot) -> UNMEASURED")
+    ev, ref = gate(None, "BENCH", None, "x", False, r0)
+    check(ref and "UNMEASURED" in ref, "no-input-since-boot reading refuses the take")
+    check(ip.parse("RMIDLE|1260000|9000000|7|Rim|World")["foreground"] == "Rim|World", "a '|' in the window name stays in it")
+    for words in ("make the bird fly", "test it flies over the base", "watch it take off", "takeoff check",
+                  "it flew?", "has it flown", "the glider", "soaring pass", "aloft test", "Flight test", "FLYER"):
+        check(ip.flight_purpose(words), "flight wording %r refused" % words)
+    for words in ("deploy and restart", "FlowWorks pipe overflow proof", "reload for the vehicle look"):
+        check(not ip.flight_purpose(words), "non-flight purpose %r allowed" % words)
     ev, ref = gate(None, "BENCH", None, "x", True, reading(3600))
     check(ref and "flyer" in ref, "--flyer -> refuse even when idle")
     ev, ref = gate(None, "BENCH", None, "live test flyer flight on the strip", False, reading(3600))
@@ -62,7 +77,7 @@ def main():
 
         def setfake(sec):
             with open(fake, "w") as f:
-                f.write("#!/bin/sh\n" + ("exit 5\n" if sec is None else "echo 'RMIDLE|%d|1|RimWorldWin64'\n" % (sec * 1000)))
+                f.write("#!/bin/sh\n" + ("exit 5\n" if sec is None else "echo 'RMIDLE|%d|%d|1|RimWorldWin64'\n" % (sec * 1000, UPTIME_MS)))
             os.chmod(fake, 0o755)
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),

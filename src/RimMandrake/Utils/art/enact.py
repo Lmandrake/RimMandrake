@@ -1055,6 +1055,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     src = L.src_root()
     done_ev = {(e.get("sheet"), e.get("row"), e.get("note")): e.get("evidence") or "" for e in idx.events
                if e.get("type") == "enact_done"}
+    x_done, x_archived = marked_x(idx), L.archived_shas(idx)     # computed once, not per ✕
     done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "retire": [], "blocked": [], "withdraw": [],
@@ -1700,8 +1701,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             if idx.is_purged(sha):
                 P["purged_already"] += 1
                 continue
-            if (sha, I.ts(v.get("decidedAt") or v.get("at"))) in marked_x(idx):
-                P["archived_already"] += 1        # this very ✕ already archived it: a re-run never purges what it archived
+            if (sha, I.ts(v.get("decidedAt") or v.get("at"))) in x_done or sha in x_archived:
+                # this very ✕ already archived it (a re-run never re-archives what he restored), or any ✕ did and it is
+                # still out of the game: a later ✕ never turns an archive into a purge (review r11)
+                P["archived_already"] += 1
                 continue
             live = idx.live_anywhere(sha)
             kept_all = idx.protected(sha)

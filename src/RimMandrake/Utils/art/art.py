@@ -322,7 +322,7 @@ def cmd_purge(a):
         return 2
     try:
         r = L.purge(full[0], owner_said=a.owner_said, by_card=a.by_card, per_ruling=a.per_ruling, why=a.why,
-                    release_keep=a.release_keep)
+                    release_keep=a.release_keep, archived_ok=True)    # his words/card/ruling, typed for this picture
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
