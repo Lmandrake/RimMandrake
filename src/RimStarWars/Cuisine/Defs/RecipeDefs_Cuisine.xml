@@ -18,7 +18,7 @@
     <label>cook roast on a stick</label>
     <description>Cook raw meat, fish or vegetables over an open fire.</description>
     <jobString>Roasting food on a stick.</jobString>
-    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
@@ -57,7 +57,6 @@
     <products>
       <RSW_RoastOnAStick>1</RSW_RoastOnAStick>
     </products>
-    <workSkill>Cooking</workSkill>
     <displayPriority>95</displayPriority>
     <recipeUsers>
       <li>Campfire</li>
@@ -70,7 +69,7 @@
     <description>Cook raw meat, fish or vegetables over an open fire.</description>
     <jobString>Roasting food on a stick.</jobString>
     <workAmount>760</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
@@ -109,7 +108,6 @@
     <products>
       <RSW_RoastOnAStick>4</RSW_RoastOnAStick>
     </products>
-    <workSkill>Cooking</workSkill>
     <displayPriority>96</displayPriority>
     <recipeUsers>
       <li>Campfire</li>
