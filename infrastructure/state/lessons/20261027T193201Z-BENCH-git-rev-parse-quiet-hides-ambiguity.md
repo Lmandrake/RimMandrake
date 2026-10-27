@@ -1,0 +1,2 @@
+git rev-parse --verify --quiet <prefix>^{commit} on an AMBIGUOUS short sha exits 1 with EMPTY stderr -- indistinguishable from 'no such commit'. arbiter_tiers._rev_one used it, so an ambiguous prefix read as 'not in this clone' and fail-opened (found in review AD F6, fixed a4b5173a19). To tell ambiguity apart, drop --quiet and parse stderr ('ambiguous' vs 'Needed a single revision').
+home: git-efficiency
