@@ -320,10 +320,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(s, @"CordWorld src = LegacyFrame \? World\(\) : World\(LayWorldMaxAge\);", "TakeLayWorld copies a version-valid snapshot up to LayWorldMaxAge old");
                 RiverSwitchFlipChecks.Has(s, @"if \(\(now \+ r\.parent\.thingIDNumber\) % 250 == 0\) TickRecheck\(r, now\);", "the 250-tick recheck is its own profilable method");
                 RiverSwitchFlipChecks.Has(s, @"return BuildWorld\(now\);", "the snapshot rebuild is its own profilable method");
-                // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE: a ladder toggle and the line-crossing switch fire no map event;
-                // World() folds them into the version before it judges the snapshot fresh
-                RiverSwitchFlipChecks.Has(s, @"if \(ladderVerSeen != RM_LadderUtility\.StateVersion \|\| bandsOnSeen != RM_HoseBands\.On\)\s*\{\s*ladderVerSeen = RM_LadderUtility\.StateVersion;\s*bandsOnSeen = RM_HoseBands\.On;\s*MapChanged\(\);\s*\}\s*if \(world != null && HoseLive\.SnapshotFresh\(",
-                    "World() invalidates the snapshot on a ladder raise/lower or the line-crossing switch");
+                // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE: a ladder toggle, the line-crossing switch, the climb generation
+                // and the climb-settings salt fire no map event; World() folds them into the version before it judges freshness
+                RiverSwitchFlipChecks.Has(s, @"int climbGen = RM_SuperdeepTrap\.EngineOf\(map\)\?\.ClimbGeneration \?\? 0;\s*if \(ladderVerSeen != RM_LadderUtility\.StateVersion \|\| bandsOnSeen != RM_HoseBands\.On\s*\|\| climbGenSeen != climbGen \|\| climbSaltSeen != RM_CliffMask\.settingsSalt\)\s*\{\s*ladderVerSeen = RM_LadderUtility\.StateVersion;\s*bandsOnSeen = RM_HoseBands\.On;\s*climbGenSeen = climbGen;\s*climbSaltSeen = RM_CliffMask\.settingsSalt;\s*MapChanged\(\);\s*\}\s*if \(world != null && HoseLive\.SnapshotFresh\(",
+                    "World() invalidates the snapshot on a ladder raise/lower, the line-crossing switch, a climb-generation move or a climb-settings change");
+                RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"bedGrid\[i\] = v;\s*BumpClimbGeneration\(\);", "SetBed (a bed with no path-cost event) moves the climb generation World() reads");
+                RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_PocketGrid.cs")), @"settingsSalt\+\+;\s*RM_CliffMask\.settingsSalt\+\+;", "a climb-settings change moves the salt World() reads");
                 RiverSwitchFlipChecks.Has(RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Superdeep", "RM_LadderUtility.cs")), @"raised = value;\s*RM_LadderUtility\.StateVersion\+\+;", "SetRaised bumps the ladder counter World() reads");
             });
         }

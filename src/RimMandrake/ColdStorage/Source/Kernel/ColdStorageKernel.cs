@@ -559,6 +559,20 @@ namespace RimMandrake.ColdStorage
             return stack < budget ? stack : budget;
         }
 
+        /// <summary>CARBON_PACK_FIX_NUTRITION_READ_AS_PIECES: how many units worth <paramref name="perUnit"/> each fill
+        /// <paramref name="value"/> of a recipe count (ingredient value: nutrition for food), rounded up like vanilla's
+        /// IngredientCount.CountRequiredOfFor; a float hair over a whole unit (5 / 0.05) asks for no extra unit, and a
+        /// value already filled (zero, negative, a float hair above zero) asks for none.</summary>
+        public static int UnitsForValue(float value, float perUnit)
+        {
+            if (value <= 0f || perUnit <= 0f)
+            {
+                return 0;
+            }
+            double units = System.Math.Ceiling(value / (double)perUnit - 0.001);
+            return units <= 0 ? 0 : units >= int.MaxValue ? int.MaxValue : (int)units;
+        }
+
         /// <summary>What an encased item adds to a per-unit stat (market value, mass): the sum over its held stacks of
         /// value per unit times count. Negative values and counts add nothing.</summary>
         public static float StackSum(float[] unitValues, int[] counts)

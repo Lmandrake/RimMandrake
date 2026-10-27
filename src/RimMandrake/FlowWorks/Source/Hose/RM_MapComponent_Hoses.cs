@@ -26,6 +26,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The ladder raise/lower counter and line-crossing switch the version last folded in (World()).</summary>
         private int ladderVerSeen = int.MinValue;
         private bool bandsOnSeen;
+        /// <summary>The map's climb generation and the climb-settings salt the version last folded in (World()).</summary>
+        private int climbGenSeen = int.MinValue, climbSaltSeen = int.MinValue;
         private bool mapEventsHooked;
         private bool drawErrorLogged;
         public static int Relays, LastLayMs, Retracts;
@@ -182,13 +184,21 @@ namespace RimMandrake.FlowWorks.Hose
         {
             HookMapEvents();
             int now = Find.TickManager.TicksGame;
-            // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE (review 2026-10-26): a ladder raised or lowered (SetRaised) and the
-            // line-crossing rules switch change what RM_HoseBands.Apply links and closes, but fire no map event; a lay reuses the
-            // snapshot up to LayWorldMaxAge ticks (and paused, indefinitely), so they bump the version here
-            if (ladderVerSeen != RM_LadderUtility.StateVersion || bandsOnSeen != RM_HoseBands.On)
+            // HOSE_WORLD_SNAPSHOT_FIX_MISSES_LADDER_TOGGLE, HOSE_SNAPSHOT_FIX_MISSES_CLIMB_GENERATION (reviews 2026-10-26):
+            // state RM_HoseBands.Apply reads that fires no map event bumps the version here, since a lay reuses the snapshot
+            // up to LayWorldMaxAge ticks (paused, indefinitely): the line-crossing rules switch (On gates every band and
+            // link); a ladder raised or lowered (SetRaised; belt and braces, HoseBandMath.LadderCarriesHose ignores raised
+            // today); the climb generation (bed and dug depths, covers, ramps, decks, swim lift: SetBed writes a bed with no
+            // path-cost event) and the climb-settings salt (a drained pond's hollow, ramps on/span, portable ladder reach:
+            // RM_PocketGrid.SettingsChanged, no map event at all)
+            int climbGen = RM_SuperdeepTrap.EngineOf(map)?.ClimbGeneration ?? 0;
+            if (ladderVerSeen != RM_LadderUtility.StateVersion || bandsOnSeen != RM_HoseBands.On
+                || climbGenSeen != climbGen || climbSaltSeen != RM_CliffMask.settingsSalt)
             {
                 ladderVerSeen = RM_LadderUtility.StateVersion;
                 bandsOnSeen = RM_HoseBands.On;
+                climbGenSeen = climbGen;
+                climbSaltSeen = RM_CliffMask.settingsSalt;
                 MapChanged();
             }
             if (world != null && HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)) return world;

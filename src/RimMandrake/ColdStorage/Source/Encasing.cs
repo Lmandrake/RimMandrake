@@ -302,16 +302,21 @@ namespace RimMandrake.ColdStorage
                         {
                             // The pawn may have carried whole stacks (more than the recipe counts): the pack takes
                             // exactly the recipe count of each ingredient line, the surplus comes back as products.
-                            int[] budget = recipeDef.ingredients.Select(ic => (int)ic.GetBaseCount()).ToArray();
+                            // CARBON_PACK_FIX_NUTRITION_READ_AS_PIECES: the count is in INGREDIENT VALUE (the
+                            // recipe's IngredientValueGetter: nutrition for food under NutritionOrCount, so "5" of raw meat
+                            // is 100 pieces), converted to units per stack as vanilla's CountRequiredOfFor does.
+                            float[] budget = recipeDef.ingredients.Select(ic => ic.GetBaseCount()).ToArray();
                             foreach (Thing ing in ingredients.ToList())
                             {
                                 if (ing != null && !ing.Destroyed && ing.def.IsIngestible && CompEncased.Of(ing) == null)
                                 {
                                     int line = recipeDef.ingredients.FindIndex(ic => ic.filter.Allows(ing));
-                                    int take = line < 0 ? ing.stackCount : ColdStorageKernel.TakeWithinBudget(ing.stackCount, budget[line]);
+                                    float per = line < 0 ? 1f : recipeDef.IngredientValueGetter.ValuePerUnitOf(ing.def);
+                                    int take = line < 0 ? ing.stackCount
+                                        : ColdStorageKernel.TakeWithinBudget(ing.stackCount, ColdStorageKernel.UnitsForValue(budget[line], per));
                                     if (line >= 0)
                                     {
-                                        budget[line] -= take;
+                                        budget[line] -= take * per;
                                     }
                                     if (take <= 0)
                                     {

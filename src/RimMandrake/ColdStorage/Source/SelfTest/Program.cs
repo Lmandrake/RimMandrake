@@ -501,6 +501,19 @@ namespace RimMandrake.ColdStorage.SelfTest
             for (int i = 0; i < 3; i++) { took[i] = ColdStorageKernel.TakeWithinBudget(stk[i], bud); bud -= took[i]; }
             Check("pack takes 10,8,0 of 10,10,1 for 18", took[0] == 10 && took[1] == 8 && took[2] == 0 && bud == 0);
             Check("no budget takes none", ColdStorageKernel.TakeWithinBudget(5, 0) == 0);
+            // CARBON_PACK_FIX_NUTRITION_READ_AS_PIECES: the count is nutrition, not pieces
+            Check("5 nutrition of raw meat (0.05) is 100 pieces", ColdStorageKernel.UnitsForValue(5f, 0.05f) == 100);
+            Check("18 nutrition of meals (0.9) is 20 meals", ColdStorageKernel.UnitsForValue(18f, 0.9f) == 20);
+            Check("a part unit rounds up (1 nutrition of 0.3: 4)", ColdStorageKernel.UnitsForValue(1f, 0.3f) == 4);
+            float left = 5f - 100 * 0.05f;
+            Check("a filled count (float remainder) asks for none", ColdStorageKernel.UnitsForValue(left, 0.05f) == 0
+                && ColdStorageKernel.UnitsForValue(0f, 0.05f) == 0 && ColdStorageKernel.UnitsForValue(-0.1f, 0.05f) == 0);
+            Check("a count item (value 1) is its count", ColdStorageKernel.UnitsForValue(1f, 1f) == 1);
+            float mb = 5f;
+            int[] mt = new int[3];
+            int[] ms = { 75, 75, 10 };
+            for (int i = 0; i < 3; i++) { mt[i] = ColdStorageKernel.TakeWithinBudget(ms[i], ColdStorageKernel.UnitsForValue(mb, 0.05f)); mb -= mt[i] * 0.05f; }
+            Check("meat pack takes 75,25,0 of 75,75,10 for 5 nutrition", mt[0] == 75 && mt[1] == 25 && mt[2] == 0);
             float[] seq = { 0.01f, 0.5f, 0.049f, 0.05f, 0.9f };
             int k = 0;
             Check("5 % against a fixed sequence: 2 of 5 (0.05 itself is safe)", ColdStorageKernel.ShockedCount(5, 0.05f, () => seq[k++]) == 2);
