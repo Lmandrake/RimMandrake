@@ -16,6 +16,37 @@ Every parameter in the params file is labelled. CALIBRATED ones were fitted to l
 - **It cannot tell us whether v3's roles work.** v2 has no Arbiter, Producer or Auditor. Their effectiveness is a guessed range. Wherever a result follows straight from such a guess, it is marked **(programmed)**: the model can only say how big it would matter, not whether it is true.
 - **The token limits are synthetic.** They are derived from each variant's own v2 burn, so even v2 runs dry about 3-21 h/week. Every result below is also checked at 1.3x quota and with unlimited tokens.
 
+## Counterfactual for v3 against v2: backtest FAILED, so it reports UNMEASURED
+
+Item `SIM_TWIN_BUILD_BOTTLE_GETS_A_PULSE`, folded into `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS` (owner order
+2026-10-27: "We MUST prove that it's superior and at what cost"). Subcommands `backtest` and `counterfactual`: the
+calibrated v2 ensemble (240 members x 2 seeds) is re-run with one real week's owner input. Presence is scaled by his
+active hours over the tag week's. Arrivals per present hour are scaled by his messages per active hour over the tag
+week's. The output is a p5-p95 range of what v2 would have done. `v3_vs_v2.py` uses that range only to take a BETTER
+back, and only while the backtest passes. The backtest needs at least 75% of (week, metric) cells covered.
+
+The backtest ran on 2026-10-27 over the two v2 weeks the calibration never saw (ending 2026-10-12 and 2026-10-19),
+across 7 metrics, 14 cells:
+
+| structure | covered | result |
+|---|---|---|
+| park | 6 of 14 (0.43) | FAIL |
+| pull | 4 of 14 (0.29) | FAIL |
+
+Details: `D:\ClaudeWork\rimmandrake\v3_vs_v2\backtest.json` and `backtest_pull.json`.
+
+- **Covered:** helpers, verify-fail share, and mostly rework share and token use.
+- **Missed by a wide margin:**
+  - Items done: real 267 and 279; the range starts at about 620-900.
+  - Items filed: real 522 and 476; the range starts at about 1,000-1,390.
+  - Owner-wait median: real 6.4 and 7.8 days; the range tops out at 2.3-3.0.
+
+The input scales were near 1: presence 1.10 and 0.78, arrivals 0.94 and 1.04. So his input barely moved between those
+weeks, yet v2's output nearly tripled by the tag week. The ramp came from something the model does not have: ledger
+adoption and seat practice changing week to week. **Consequence:** the counterfactual reports UNMEASURED, and the
+weekly verdict rests on the noise band alone, until a recalibration covers more than one week of v2 and the backtest
+passes. That is owed under `SIM_TWIN_BUILD_BOTTLE_GETS_A_PULSE`.
+
 ## Findings, after GPT's third critique
 
 Confidence: HIGH = same sign in >95% of runs and robust to quota changes. MED = 80-95%, or the sign depends on the regime. LOW = depends on an unmeasured assumption.

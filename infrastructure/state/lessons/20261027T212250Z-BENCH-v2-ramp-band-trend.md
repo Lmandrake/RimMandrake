@@ -1,0 +1,2 @@
+A noise band built from week-to-week spread across v2 weeks is trend, not noise: v2 was ramping (done 267, 279, 773 a week), so that band would call a fourfold drop SAME. For v3 vs v2 the band is a seeded bootstrap of the tag week's 7 daily windows (v3_vs_v2_rules.json band). Even so the bands are wide (done_wk 1.25 on the log scale) because the days are lumpy (5..398 done a day); one reference week is a weak baseline.
+home: design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md

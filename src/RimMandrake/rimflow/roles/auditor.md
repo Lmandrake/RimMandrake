@@ -155,6 +155,14 @@ not replace a carried one, it adds to it.
 - **Adversarial reviews**: run any review of a script the owner has released (`NORTHSTAR_ADVERSARIAL_REVIEW_1` and
   later ones) with a helper that never wrote it.
 - **Digest spot check**: sample the week's delegated digest lines against their sources.
+- **v3 vs v2, the quality half** (owner, 2026-10-27: "We MUST prove that it's superior and at what cost";
+  `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): read `D:\ClaudeWork\rimmandrake\v3_vs_v2\quality_blind.md` (the program
+  writes it Monday 07:05; it carries quality metrics only and passes `blind_view` unchanged, so it is yours to read).
+  Re-check at least three of its primary rows against the ledger yourself (`rimflow_metrics`, the queue, a sample of
+  the closes it counts): same number, same mark, and is an UNMEASURED row really blind and not a zero. Write what you
+  found, row by row, as one note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` starting `V3V2 RECHECK <date>:`.
+  Operations owns the verdict and its cost and carries your note to the owner; you never read `verdict.md` (it has
+  cost in it) and never judge cost.
 - **Status up**: one note on the parent item: picks by reason, yield by reason, defects filed, rules filed and landed,
   repeat classes before and after their rules. Questions go to the Conductor.
 

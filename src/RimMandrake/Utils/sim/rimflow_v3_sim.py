@@ -1262,6 +1262,115 @@ def cmd_one(a):
     print(f"{time.time() - t0:.2f}s")
 
 
+# ---------------------------------------------------------------- counterfactual (v3_vs_v2.py)
+# What would v2 have done in a given real week? The calibrated v2 ensemble, re-run with the week's observed owner
+# input: presence scaled by his active hours against the tag week, arrivals per present hour scaled by his messages per
+# active hour against the tag week. The range is p5-p95 across members x seeds. It is trusted only while a backtest on
+# held-out real v2 weeks (weeks the calibration never saw) covers enough (week, metric) cells; otherwise UNMEASURED.
+CF_SEEDS = 2
+
+
+def cf_inputs(week, ref_week):
+    """-> (presence scale, arrival scale, why) from observed owner messages and active hours, or None if unmeasured"""
+    g = lambda w, k: (w.get(k) or {}).get("v")
+    mo, ho, mr, hr = g(week, "owner_msgs_wk"), g(week, "owner_active_h_wk"), g(ref_week, "owner_msgs_wk"), g(ref_week, "owner_active_h_wk")
+    if not (mo and ho and mr and hr):
+        return None
+    pres = ho / hr
+    arr = (mo / ho) / (mr / hr)
+    return pres, arr, "owner messages %d in %d active h, against the tag week's %d in %d" % (mo, ho, mr, hr)
+
+
+def cf_range(P, members, pres, arr, cmap, pct, seed0=700000):
+    vals = {k: [] for k in cmap}
+    for m in members:
+        th = dict(m["theta"])
+        th["owner_presence_mult"] = th["owner_presence_mult"] * pres
+        th["lam_ext_h"] = th["lam_ext_h"] * arr
+        for sd in range(CF_SEEDS):
+            r = run_v2_member(P, th, seed=seed0 + m["member"] * 7 + sd)
+            for k, (sk, mult) in cmap.items():
+                v = r.get(sk, float("nan"))
+                vals[k].append(v * mult if v == v else float("nan"))
+    out = {}
+    for k, v in vals.items():
+        a = np.array(v, dtype=float)
+        a = a[~np.isnan(a)]
+        out[k] = [float(np.percentile(a, pct[0])), float(np.percentile(a, pct[1]))] if len(a) else None
+    return out
+
+
+def _cf_members(a):
+    return load_members(a.out, max_n=a.members)
+
+
+def cmd_backtest(a):
+    """Held-out real v2 weeks: does the ensemble's p5-p95, fed each week's owner input, contain what v2 really did?"""
+    P = load_params()
+    v2 = json.load(open(a.v2))
+    R = json.load(open(a.rules))
+    cf, H = R["counterfactual"], R["v2_history"]
+    ref_w = v2["weeks"][H["reference_week"]]
+    ms = _cf_members(a)
+    t0 = time.time()
+    cells, weeks = [], {}
+    for day in H["context_weeks"]:
+        w = v2["weeks"][day]
+        inp = cf_inputs(w, ref_w)
+        if inp is None:
+            weeks[day] = {"status": "UNMEASURED", "why": "owner messages or active hours unmeasured"}
+            continue
+        rng = cf_range(P, ms, inp[0], inp[1], cf["metrics"], cf["range_pct"])
+        row = {}
+        for k, r in rng.items():
+            obs = (w.get(k) or {}).get("v")
+            if r is None or obs is None:
+                row[k] = {"observed": obs, "range": r, "inside": None}
+                continue
+            ins = r[0] <= obs <= r[1]
+            row[k] = {"observed": obs, "range": [round(r[0], 4), round(r[1], 4)], "inside": ins}
+            cells.append(ins)
+        weeks[day] = {"presence_scale": round(inp[0], 3), "arrival_scale": round(inp[1], 3), "input": inp[2], "cells": row}
+    cov = float(np.mean(cells)) if cells else None
+    need = cf["backtest_min_coverage"]
+    out = {"structure": STRUCTURE, "members": len(ms), "seeds": CF_SEEDS, "range_pct": cf["range_pct"],
+           "coverage": None if cov is None else round(cov, 3), "cells": len(cells), "need": need,
+           "status": "PASS" if cov is not None and cov >= need else "FAIL",
+           "measured_utc": time.strftime("%Y-%m-%dT%H:%MZ", time.gmtime()), "weeks": weeks,
+           "_why": "held-out weeks are the v2 weeks before the tag week; the calibration targets came from the tag week"}
+    dst = os.path.join(os.path.dirname(os.path.abspath(a.v2)), f"backtest{sfx()}.json")
+    json.dump(out, open(dst, "w"), indent=1)
+    print("backtest", STRUCTURE, out["status"], "coverage", out["coverage"], "of", len(cells), "cells", f"{time.time() - t0:.0f}s", "->", dst)
+    for day, w in weeks.items():
+        for k, c in (w.get("cells") or {}).items():
+            print(" ", day, k, c["observed"], c["range"], c["inside"])
+
+
+def cmd_counterfactual(a):
+    """v3_vs_v2.py hands one real week; write its v2 range, MEASURED only while this structure's backtest passed."""
+    P = load_params()
+    inp = json.load(open(a.input))
+    cf = inp["rules"]
+    bt_p = os.path.join(os.path.dirname(os.path.abspath(a.input)), f"backtest{sfx()}.json")
+    out = {"status": "UNMEASURED", "structure": STRUCTURE}
+    bt = json.load(open(bt_p)) if os.path.exists(bt_p) else None
+    ref_w = inp["v2"].get(inp.get("reference_week", "")) or {}
+    ci = cf_inputs(inp["week"], ref_w)
+    if bt is None:
+        out["why"] = "no backtest on held-out v2 weeks (%s)" % bt_p
+    elif bt["status"] != "PASS":
+        out["why"] = "backtest failed: coverage %s of %d cells, need %s" % (bt["coverage"], bt["cells"], bt["need"])
+    elif ci is None:
+        out["why"] = "the week's owner messages or active hours are unmeasured"
+    else:
+        ms = _cf_members(a)
+        rng = cf_range(P, ms, ci[0], ci[1], cf["metrics"], cf["range_pct"])
+        out = {"status": "MEASURED", "structure": STRUCTURE, "range": {k: r for k, r in rng.items() if r},
+               "input": ci[2], "backtest_coverage": bt["coverage"], "members": len(ms), "seeds": CF_SEEDS}
+    json.dump(out, open(a.dst, "w"), indent=1)
+    print("counterfactual", out["status"], out.get("why", ""))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--out", default=OUT)
@@ -1312,10 +1421,20 @@ def main(argv=None):
     o.add_argument("--weeks", type=int, default=2)
     o.add_argument("--warm", type=int, default=0)
     o.add_argument("--member", type=int)
+    V3D = os.environ.get("RM_V3V2_DIR", "/mnt/d/ClaudeWork/rimmandrake/v3_vs_v2")
+    bt = sub.add_parser("backtest", help="v3_vs_v2: the v2 ensemble against held-out real v2 weeks")
+    bt.add_argument("--v2", default=os.path.join(V3D, "v2_weeks.json"))
+    bt.add_argument("--rules", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "v3_vs_v2_rules.json"))
+    bt.add_argument("--members", type=int, default=240)
+    cfp = sub.add_parser("counterfactual", help="v3_vs_v2: what v2 would have done in one real week")
+    cfp.add_argument("--input", required=True)
+    cfp.add_argument("--dst", required=True)
+    cfp.add_argument("--members", type=int, default=240)
     a = ap.parse_args(argv)
     global STRUCTURE
     STRUCTURE = a.structure
-    {"calibrate": cmd_calibrate, "narrow": cmd_narrow, "mcmc": cmd_mcmc, "validate": cmd_validate, "experiment": cmd_experiment, "report": cmd_report, "one": cmd_one}[a.cmd](a)
+    {"calibrate": cmd_calibrate, "narrow": cmd_narrow, "mcmc": cmd_mcmc, "validate": cmd_validate, "experiment": cmd_experiment, "report": cmd_report, "one": cmd_one,
+     "backtest": cmd_backtest, "counterfactual": cmd_counterfactual}[a.cmd](a)
 
 
 if __name__ == "__main__":

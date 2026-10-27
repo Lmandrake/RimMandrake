@@ -169,5 +169,46 @@ spk, rpk = run("v2", seed=6)
 check("pull structure pulls from the backlog", sum(w.get("pulled_from_backlog", 0) or 0 for w in sp.m) > 0)
 check("park structure never pulls", sum(w.get("pulled_from_backlog", 0) or 0 for w in spk.m) == 0)
 
+# 12 counterfactual for v3_vs_v2.py (SIM_TWIN_BUILD_BOTTLE_GETS_A_PULSE): owner input scales, and the range is
+# UNMEASURED unless this structure's backtest on held-out v2 weeks passed
+pt = lambda v: {"v": v, "mark": "ESTIMATE"}  # noqa: E731
+ref_w = {"owner_msgs_wk": pt(400), "owner_active_h_wk": pt(80)}
+ci = S.cf_inputs({"owner_msgs_wk": pt(200), "owner_active_h_wk": pt(80)}, ref_w)
+check("half the messages in the same hours: arrivals x0.5, presence x1", ci and abs(ci[0] - 1) < 1e-9 and abs(ci[1] - 0.5) < 1e-9, ci)
+ci = S.cf_inputs({"owner_msgs_wk": pt(200), "owner_active_h_wk": pt(40)}, ref_w)
+check("half the messages in half the hours: presence x0.5, arrivals per hour x1", ci and abs(ci[0] - 0.5) < 1e-9 and abs(ci[1] - 1) < 1e-9, ci)
+check("unmeasured owner input: no counterfactual", S.cf_inputs({"owner_msgs_wk": {"v": None}}, ref_w) is None)
+with tempfile.TemporaryDirectory() as d:
+    with open(os.path.join(d, "calib_members.jsonl"), "w") as fh:
+        for i in range(2):
+            fh.write(json.dumps({"member": i, "chain": 0, "theta": mid_theta(), "accepted": True, "worst": 0.5,
+                                 "per": {}, "summary": {}, "quotas": None}) + "\n")
+    cfr = {"range_pct": [5, 95], "backtest_min_coverage": 0.75, "metrics": {"done_wk": ["done_d", 7], "ite_wk": ["ite_week", 1]}}
+    inp = os.path.join(d, "cf_input.json")
+    json.dump({"day": "2026-11-30", "week": {"owner_msgs_wk": pt(300), "owner_active_h_wk": pt(70)},
+               "v2": {"2026-10-26": ref_w}, "reference_week": "2026-10-26", "rules": cfr}, open(inp, "w"))
+    dst = os.path.join(d, "cf.json")
+    ns = type("A", (), {"out": d, "members": 2, "input": inp, "dst": dst})
+    S.cmd_counterfactual(ns)
+    r = json.load(open(dst))
+    check("no backtest: counterfactual UNMEASURED", r["status"] == "UNMEASURED" and "no backtest" in r["why"], r)
+    json.dump({"status": "FAIL", "coverage": 0.4, "cells": 14, "need": 0.75}, open(os.path.join(d, "backtest.json"), "w"))
+    S.cmd_counterfactual(ns)
+    r = json.load(open(dst))
+    check("failed backtest: counterfactual UNMEASURED", r["status"] == "UNMEASURED" and "backtest failed" in r["why"], r)
+    json.dump({"status": "PASS", "coverage": 0.9, "cells": 14, "need": 0.75}, open(os.path.join(d, "backtest.json"), "w"))
+    S.STRUCTURE = "pull"
+    S.cmd_counterfactual(ns)
+    r = json.load(open(dst))
+    check("a backtest of the other structure does not count", r["status"] == "UNMEASURED", r)
+    S.STRUCTURE = "park"
+    S.cmd_counterfactual(ns)
+    r = json.load(open(dst))
+    rg = r.get("range") or {}
+    check("passed backtest: a p5-p95 range per mapped metric", r["status"] == "MEASURED" and set(rg) == {"done_wk", "ite_wk"}
+          and all(lo <= hi for lo, hi in rg.values()), r)
+    S.cmd_counterfactual(ns)
+    check("counterfactual is deterministic", json.load(open(dst)).get("range") == rg)
+
 print(f"\n{'FAIL' if FAILS else 'PASS'}: {len(FAILS)} failure(s)")
 sys.exit(1 if FAILS else 0)

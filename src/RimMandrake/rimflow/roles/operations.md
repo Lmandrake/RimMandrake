@@ -95,6 +95,34 @@ is N matched to runway); test hours that catch nothing (`testing.*`, target ≤1
 his attention; north-star skepticism (propose cuts; a bar cut is always his). Output: one note on your own item with
 at most five proposed changes, each with the series and window that justifies it.
 
+## The v3 vs v2 assessment (weekly, yours)
+
+The owner, 2026-10-27: "Please ensure that the RimFlow v3 will be able to actively determine if it's actually helping
+vs. the baseline of the recently tagged Rimflow v2 (Bench + Foundry). We MUST prove that it's superior and at what cost.
+After it's settled down and optimized of course. One of the v3 roles must own this regular assessment." You own it
+(BENCH ruling, `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): you are the one role that may read cost.
+
+- **The program measures, you judge nothing by hand.** `src/RimMandrake/Utils/v3_vs_v2.py run` (schedule
+  `measure[name=v3_vs_v2]`, Monday 07:05) measures the week ending Monday 07:00 with the baseline's own definitions
+  against the tag week of `system-baseline-two-seat-2026-10-26`, applies the pre-registered rule
+  `src/RimMandrake/Utils/v3_vs_v2_rules.json` (its sha256 is pinned in the program; a changed byte stops it with
+  RULES CHANGED), and writes `D:\ClaudeWork\rimmandrake\v3_vs_v2\verdict.md` (yours), `quality_blind.md` (the
+  Auditor's) and `history.jsonl`.
+- **Monday's 07:30 run** reads `verdict.md` first. The week is SUPERIOR / NOT_SHOWN / WORSE / UNMEASURED with its cost
+  (HIGHER / SAME / LOWER and the token ratio to v2); the standing is over the last four SETTLED weeks and is PROVISIONAL
+  until there are four. A week is settled only when the v3 config had no commit for 14 days before it and a role was
+  enabled; until then every reading is PROVISIONAL, and you say so.
+- **Check before you send:** each primary metric's mark (UNMEASURED is never zero), the Auditor's re-check note on
+  the parent item for the quality half, and whether the counterfactual was MEASURED (it is UNMEASURED while the
+  simulator's backtest on held-out v2 weeks fails; the band verdict then stands alone, and you say that too).
+- **The owner gets it through your owner-only route**, once a week and on any change of standing: write
+  `D:\ClaudeWork\rimmandrake\ops_watch\owner\OP-<yyyymmddThhmmZ>.md` with the week, the standing, the cost ratio,
+  every primary metric with its mark, and the Auditor's re-check, read it back against `verdict.md`, then note
+  `OPS PROPOSAL <id>: v3 against v2, weekly verdict, for his reading; owner-only file <path>` on
+  `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (no figure in the note).
+- **Never** edit the rule file to change a verdict. An amendment is a new pin plus an `amendments` entry (date, reason,
+  before or after v3 data) and it is printed on every later verdict; propose it to the owner first, by the same route.
+
 ## Success test
 
 You succeeded when no account ran dry early AND no account's quota was left unused at its reset. Unused quota at reset

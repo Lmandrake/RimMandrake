@@ -1,0 +1,2 @@
+The v3 sim's calibrated v2 ensemble fails a backtest on held-out real v2 weeks (coverage park 0.429, pull 0.286 of 14 cells; target 0.75): it misses done, filed and owner_resolve_med_d. Owner-input scales were near 1, so the v2 ramp comes from something outside the model, not owner input. Until it is recalibrated, the counterfactual reports UNMEASURED and v3_vs_v2 judges on the band alone.
+home: design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md

@@ -248,6 +248,15 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   test hours that catch nothing; art redraw loops; ceremony on his attention; **north-star skepticism** (Part 1:
   proposes cuts, and enacts check merges only when detection is preserved and the floor stays fully covered; a bar
   cut is always his).
+- **v3 against v2 (weekly, owner order 2026-10-27):** *"Please ensure that the RimFlow v3 will be able to actively
+  determine if it's actually helping vs. the baseline of the recently tagged Rimflow v2 (Bench + Foundry). We MUST prove
+  that it's superior and at what cost. After it's settled down and optimized of course. One of the v3 roles must own
+  this regular assessment."* Operations owns it (the one role that may read cost). The no-AI program
+  `src/RimMandrake/Utils/v3_vs_v2.py` measures each week (Monday 07:00) with the baseline's own definitions against the
+  tag week, under the pre-registered, hash-pinned rule `src/RimMandrake/Utils/v3_vs_v2_rules.json`; settled is
+  checkable (14 days with no v3 config commit and a role enabled), and every verdict before four settled weeks is
+  PROVISIONAL. The Auditor re-checks the quality half token-blind (`quality_blind.md`); the verdict and its cost reach
+  him through Operations' owner-only route (`ops_watch\owner\OP-<stamp>.md`). Item `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`.
 - **Decides alone:** anything already ruled; resource budgets. **Never:** touch the game while he plays; lower a bar.
 - **The Dispatcher measures, Operations analyses.** His words, 2026-10-26: *"I am most eager to have a competent
   agent appearing to check the spend of all the accounts including CODEX, SteveDesktop's operation... monitor the
@@ -528,6 +537,7 @@ Rules of the table:
 | O-12 | windows popping up, focus theft, dialogs left open | BENCH triages (Orphan home 5) | per event | Auditor checks the control works; `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST` | Wed |
 | O-13 | owed v3 instruments (keep-going, failure share, accepted/day) | BENCH (`OPS_KPI_MEASURE_OWED_VTHREE`) | before the trial week | outside GPT read of the baseline | Wed |
 | O-14 | set `slot_rules.json` (tightening) | BENCH | on need | Lukas for any loosening | Wed |
+| O-15 | v3 against v2: read `v3_vs_v2.py`'s weekly verdict and its cost, send it to him by the owner-only route (owner order 2026-10-27) | the program writes it (schedule `measure[v3_vs_v2]`, disabled until a role is enabled); BENCH reads it until Wed | weekly, Monday | Auditor re-checks the quality half (AU-8); the rule is hash-pinned | Wed |
 
 ### Dispatcher (Wed; a program)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
@@ -577,6 +587,7 @@ Rules of the table:
 | AU-5 | spot check the delegated digest | Lukas (overturns lines) | daily | — | Sun |
 | AU-6 | instrument trust (round, zero, alarming counts probed) | whoever counts (rule) | per count | ops_watch silent flags | Sun |
 | AU-7 | read codebase health (`rm-codebase-health`) | BENCH | weekly | — | Sun |
+| AU-8 | re-check the quality half of the v3-against-v2 verdict (`quality_blind.md`) against the ledger, token-blind | BENCH | weekly, Monday | Operations reads the re-check before sending | Sun |
 
 ### Innovator (Sun)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |
