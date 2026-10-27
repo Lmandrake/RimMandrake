@@ -491,7 +491,7 @@ VERBS = {
     # whether to wait or go offline. Optional — a take without one is still a take.
     # `host` (BRIDGE_LOCK_WIDEN_ONE_PER_HOST, 2026-10-25): which machine's game. Absent means Archmagi, so every
     # event written before the widening still reads as the Archmagi bridge it was.
-    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose", "host")},
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose", "host", "idleProbe")},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag

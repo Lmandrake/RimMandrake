@@ -335,7 +335,9 @@ taken; `take --force` always works. ⭐ The owner overrides with `./bridge bench
 ⭐ **Free bridge + 20 min idle is yours (owner card 2026-10-26 19:06):** a seat MAY take the
 bridge, deploy and restart the game on its own when a watcher shows no other seat holds it AND
 he has not touched the game for 20 minutes — never for a flyer's flight; each act goes in his
-daily digest (`delegation_policy.md` §2.6; watcher BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH).
+daily digest (`delegation_policy.md` §2.6). Tooling LANDED: `rimflow bridge idle --for "<what>"` reports TAKEABLE
+or not; `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" down|loading|...` do it
+(probe `rimflow/idle_probe.py`; UNMEASURED refuses; `--flyer` or flight wording refuses; an OWNER hold is never taken).
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens
 unnecessarily and rarely inform"*). Detail: `standing_rulings.md`.

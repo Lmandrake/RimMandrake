@@ -2383,6 +2383,28 @@ def _take_decision(holder, seat, idle, force, purpose):
            model.BRIDGE_STALE_SECONDS // 60))
 
 
+def _idle_gate(holder, seat, holder_idle, purpose, flyer, reading=None):
+    """The delegated take (owner card 2026-10-26 19:06; delegation_policy 2.6): -> (event fields, refusal).
+    Allowed only when the bridge is free / ours / its holder is stale by the existing rule (an OWNER hold
+    never counts as free), the owner's input has been idle >= 20 min, and the purpose is not a flyer's
+    flight. UNMEASURED refuses. The readings go on the event; `why` starts `delegated:` so the daily digest
+    lists it."""
+    from rimflow import idle_probe
+    if holder == "OWNER":
+        return None, "refused: the OWNER holds the bridge; --idle-ok never takes his hold"
+    if holder not in (None, seat) and not (holder_idle is None or holder_idle >= model.BRIDGE_STALE_SECONDS):
+        return None, ("refused: %s holds the bridge and is still working (%d min ago); --idle-ok takes only a "
+                      "free or stale bridge" % (holder, holder_idle // 60))
+    if reading is None:
+        reading = idle_probe.measure()
+    ok, reason = idle_probe.decide(reading, purpose, flyer)
+    if not ok:
+        return None, "refused: " + reason
+    return {"why": "delegated: bridge idle (%s)" % reason,
+            "idleProbe": "state=%s idle_seconds=%s foreground=%s rimworld_foreground=%s" % tuple(
+                reading.get(k) for k in ("state", "idle_seconds", "foreground", "rimworld_foreground"))}, None
+
+
 def _bridge_take(args, seat, w, holder, purpose):
     """`bridge take` — the contended path, and the only one with a race in it."""
     why, refusal = _take_decision(
@@ -2390,7 +2412,17 @@ def _bridge_take(args, seat, w, holder, purpose):
         args.force, purpose)
     if refusal:
         die(refusal)
+    idle_ev = None
+    if getattr(args, "idle_ok", False):
+        if args.force:
+            die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
+        idle_ev, refusal = _idle_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+                                      args.purpose, getattr(args, "flyer", False))
+        if refusal:
+            die(refusal)
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
+    if idle_ev:
+        ev.update(idle_ev)
     if args.purpose:
         ev["purpose"] = args.purpose
     # 🔑 A take that CROSSED SOMEONE goes on the event, not only into the mirror.
@@ -2576,6 +2608,14 @@ def cmd_bridge(args, seat):
         return _bridge_give(args, seat, w, holder)
     if args.action == "release":
         return _bridge_release(seat, w, holder)
+    if args.action == "idle":
+        ev, refusal = _idle_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+                                 args.purpose, args.flyer)
+        if refusal:
+            print("NOT TAKEABLE  " + refusal)
+            return 1
+        print("TAKEABLE  %s\n  probe: %s" % (ev["why"], ev["idleProbe"]))
+        return 0
     return _bridge_take(args, seat, w, holder, purpose)
 
 
@@ -3138,7 +3178,7 @@ def build_parser():
 
     s = add("bridge", "one driver at a time — two windows driving one game is unattributable",
             cmd_bridge)
-    s.add_argument("action", choices=("take", "release", "who", "give"))
+    s.add_argument("action", choices=("take", "release", "who", "give", "idle"))
     s.add_argument("to", nargs="?",
                    help="give only: BENCH | FOUNDRY | free")
     s.add_argument("--for", dest="purpose",
@@ -3147,6 +3187,12 @@ def build_parser():
     s.add_argument("--force", action="store_true",
                    help="take it even though another window holds it and is awake. "
                         "Records that you did.")
+    s.add_argument("--idle-ok", dest="idle_ok", action="store_true",
+                   help="delegated take (owner card 2026-10-26 19:06): succeeds without his word only if the bridge "
+                        "is free/stale AND his input has been idle >= 20 min; logs the probe; never for flyer flight")
+    s.add_argument("--flyer", action="store_true",
+                   help="the purpose is a flyer's flight: --idle-ok refuses (flight needs a human present). "
+                        "`bridge idle` alone reports TAKEABLE or not, taking nothing.")
     s.add_argument("--host", default=None,
                    help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
 

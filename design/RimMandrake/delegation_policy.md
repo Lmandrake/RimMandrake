@@ -102,8 +102,8 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    and never for a flyer's flight. Each take and restart is listed in his daily digest. Ruled words: *"May a seat
    take the free bridge, deploy and restart the game on its own when a watcher shows no other seat holds it and
    you haven't touched the game for 20 minutes, never for flyer flight?"* Watcher and idle probe:
-   `BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH`; until it lands, neither condition can be shown, so the bridge stays
-   his.
+   `BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH`, landed: `rimflow bridge idle`, `bridge take --idle-ok`, `./game --idle-ok`;
+   the events carry `why` `delegated: bridge idle ...` and the probe reading.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.
