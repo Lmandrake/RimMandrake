@@ -174,6 +174,15 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
 - **Conductor off:** `mkdir -p /mnt/d/ClaudeWork/rimmandrake/conductor && printf 'off: <why>\n' > /mnt/d/ClaudeWork/rimmandrake/conductor/CONDUCTOR_OFF`
   (instant, no commit; the dir does not exist yet). Durable form: `"enabled": false` for Conductor in the schedule, publish.
 - **Operations off:** `printf 'off: <why>\n' > $O/OPERATIONS_OFF`. Durable: `"enabled": false`.
+- **Live role runs, before ANY switch below that ends supervision** (dry-run, timer off, roles off; review r2 #2): a dry-run tick
+  supervises only the `dry/` root and a disabled timer supervises nothing, so a live run must be stopped and VERIFIED first.
+  Order: (1) PAUSE (above), so no new launch; (2) `python3 src/RimMandrake/rimflow/dispatcher.py stop-runs` from `$B`
+  (TERM, KILL from 60 s, checks up to 120 s; `--wait`/`--force-after` to change) must print `ALL LIVE ROLE RUNS ENDED (verified)`
+  and exit 0; exit 1 (`NOT ALL ENDED` / `UNMEASURED`) means do the by-hand stop below and re-run it until it does; (3) only then
+  switch. Backstop that needs no Dispatcher at all: every run's unit and its Claude scope carry their own `RuntimeMaxSec`
+  (the role's run_max_s + 600 s; KILL 30 s after the TERM), measured 2026-10-27 through `claude_bounded.sh` (a TERM-ignoring
+  process bounded at 5 s was KILLed at 35.4 s, scope `Result=timeout`). A dry-run tick that still sees live runs alarms
+  `dry:live_runs_unsupervised` in its journal.
 - **A launched run still going:** Claude does NOT run inside the `rm-role-*` unit: `claude_bounded.sh` puts it in its own scope
   `claude-seat-<SEAT>-rm-role-<name>-<epoch>.scope`, so stopping only the `.service` leaves Claude running. Stop both, scope first:
   `systemctl --user list-units 'rm-role-*' 'claude-seat-*-rm-role-*' --no-pager`, then
@@ -184,9 +193,9 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
   that role) until the unit and the scope are both inactive AND that scan finds none; while it cannot tell, it alarms
   `role:<name>:overtime` / `termination UNCONFIRMED` and stops again (KILL from the third try) (review dispatcher-full #1).
 - **Other roles' off files** (not in wave 1; for completeness): `.../arbiter/ARBITER_OFF`, `.../auditor/AUDITOR_OFF`, `.../producer/PRODUCER_OFF`, `.../innovator/INNOVATOR_OFF` under `/mnt/d/ClaudeWork/rimmandrake/`.
-- **Both roles via the schedule:** set the two `"enabled": true` back to `false` in `src/RimMandrake/rimflow/dispatcher_schedule.json`, `./publish -m "Dispatcher wave 1 rollback: roles off" src/RimMandrake/rimflow/dispatcher_schedule.json`, check step 16's command shows False.
-- **Wakes back to dry-run:** `sed -i 's#dispatcher.py tick --apply$#dispatcher.py tick#' ~/.config/systemd/user/rm-dispatcher.service && systemctl --user daemon-reload`; proves
-  `dispatcher.py status` shows `"apply": false` after the next tick. Fully off: `systemctl --user disable --now rm-dispatcher.timer`.
+- **Both roles via the schedule** (a role switched off is still supervised; stop-runs first if its run must end now)**:** set the two `"enabled": true` back to `false` in `src/RimMandrake/rimflow/dispatcher_schedule.json`, `./publish -m "Dispatcher wave 1 rollback: roles off" src/RimMandrake/rimflow/dispatcher_schedule.json`, check step 16's command shows False.
+- **Wakes back to dry-run** (after the live-runs step above printed ALL ENDED)**:** `sed -i 's#dispatcher.py tick --apply$#dispatcher.py tick#' ~/.config/systemd/user/rm-dispatcher.service && systemctl --user daemon-reload`; proves
+  `dispatcher.py status` shows `"apply": false` after the next tick. Fully off (also only after ALL ENDED): `systemctl --user disable --now rm-dispatcher.timer`.
 - **Stop waking just FOUNDRY:** `"wake": false` under `seats.FOUNDRY` in the schedule, publish.
 - **Doorbell:** delete the `hooks` block from `/home/mandrake/rm/foundry/.claude/settings.local.json` (settings: [MANDRAKE] if he asks), then withdraw any waiting ring: `rm -f $S/inbox/FOUNDRY.json $S/armed/FOUNDRY.json`. An armed doorbell dies with its window.
 - **Recover stays off:** never set `recover_dead` true in wave 1.
@@ -219,6 +228,13 @@ else creates that file. Run these from `$B`, in order, and stop at the first fai
 2. **Tiers dry run:** `python3 src/RimMandrake/rimflow/arbiter_tiers.py` must exit 0.
    - Exit 2 is UNMEASURED, and the Arbiter would never start. Read its stderr.
 3. **Pending-work gate (ARBITER_BUILD_LAUNCH_ON_ANY_PENDING_WORK):** `python3 src/RimMandrake/rimflow/arbiter_pending.py`.
-   - It prints the pending kinds and counts that make the next slot launch. A non-empty verify backlog alone launches every slot (§0 of this runbook does not cover it; the backlog was 521 on 2026-10-27).
-4. **Isolated evidence:** the Arbiter's pre_launch runs `isolated_evidence.py --run --seat DISPATCHER` before `arbiter_tiers.py`.
-   - Check that its work root has room and that a claim's checkout finishes inside `run_max_s` (2700 s).
+   - Before step 5 it must print `HOLD: ... no cutoff stamp` and exit 2. That is the proof that an unstamped Arbiter holds, raising `role:Arbiter:cutoff`, and never judges an undefined window.
+   - The pre-enable backlog (826 closes and 489 verify items on 2026-10-27) is not the Arbiter's (ARBITER_DECIDE_BACKLOG_NEVER_DRAINS, BENCH delegated ruling). It goes to the Auditor's risk-ranked sampling and `audit_prescreen.py`'s hard flags. It is never judged in bulk and never dropped.
+4. **Isolated evidence:** the Arbiter's pre_launch runs `isolated_evidence.py --run --seat DISPATCHER --since-cutoff --budget-s 900`, then `arbiter_tiers.py --since-cutoff --cap 6`.
+   - Both steps have their own budget, `pre_launch_max_s` 1200 s, which is added to the Arbiter's 2700 s. The unit's limit is 3900 s.
+   - Evidence that does not fit the 900 s is carried (`D:\ClaudeWork\rimmandrake\isolated_evidence\carried.json`) and runs first next batch.
+   - Measured on 2026-10-27: mean 22.3 s per claim, max 171.1 s. Check that the work root has room.
+5. **Cutoff stamp, last step before the Arbiter's `"enabled": true`:**
+   `python3 src/RimMandrake/rimflow/arbiter_pending.py stamp --by <seat> --why "wave 2 Arbiter advisory enable"`
+   - Stamp once. The command refuses (exit 2) if a stamp already exists. The stamp is never moved; to move it, a human deletes the file and records why.
+   - Then rerun step 3. It must exit 0 and count only work at or after the stamp. `nothing pending` is the expected first answer.

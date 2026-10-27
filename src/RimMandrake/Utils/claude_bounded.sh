@@ -200,6 +200,19 @@ case "${CLAUDE_SCOPE_UNIT:-}" in
   *) SCOPE_NAME="$CLAUDE_SCOPE_UNIT" ;;
 esac
 unset CLAUDE_SCOPE_UNIT
+# The scope's own wall-time bound (seconds), set by the Dispatcher's role launcher so a role run ends even if no
+# Dispatcher tick supervises it again (review r2 #2): systemd stops the scope at RuntimeMaxSec (TERM to its whole
+# cgroup), then KILL after TimeoutStopSec. MEASURED 2026-10-27, systemd 259 on this WSL: a scratch scope with
+# RuntimeMaxSec=5 TimeoutStopSec=3 ended `sleep 40` by TERM at 5.1 s, and a TERM-ignoring child by KILL at 8.1 s.
+# Interactive seats never set it (unbounded in time). Unset before the child starts, like the name.
+SCOPE_TIME=()
+case "${CLAUDE_SCOPE_RUNTIME_MAX:-}" in
+  "") ;;
+  *[!0-9]*) red "!!! claude_bounded: CLAUDE_SCOPE_RUNTIME_MAX '$CLAUDE_SCOPE_RUNTIME_MAX' is not whole seconds — refusing to start unbounded"
+            exit 2 ;;
+  *) SCOPE_TIME=(-p RuntimeMaxSec="$CLAUDE_SCOPE_RUNTIME_MAX" -p TimeoutStopSec=30) ;;
+esac
+unset CLAUDE_SCOPE_RUNTIME_MAX
 trap ':' INT TERM HUP QUIT
 CLAUDE_CODE_TOOL_MEMORY_LIMIT="$TOOL_MEM" systemd-run --user --scope --quiet \
   --slice=claude-seats.slice \
@@ -209,6 +222,7 @@ CLAUDE_CODE_TOOL_MEMORY_LIMIT="$TOOL_MEM" systemd-run --user --scope --quiet \
   -p MemoryAccounting=yes \
   -p OOMPolicy=continue \
   -p Delegate=yes \
+  "${SCOPE_TIME[@]}" \
   -- bash -c "$SEAT_INNER" claude-seat "$CLAUDE_BIN" "$@" 9<&-
 rc=$?
 reset_terminal

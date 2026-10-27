@@ -311,6 +311,21 @@ def decide(sch, st, obs, now, apply):
             if ss.get("ring") and not ss["ring"].get("consumed_at"):
                 act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
+    # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review dispatcher-full
+    # #8), decided BEFORE the agents gate like PAUSE above: a blind `claude agents` must not leave it ringing (review
+    # r2 #6). A ring the doorbell already took stays pending and is verified (one_seat)
+    for seat, cfg in sorted((sch.get("seats") or {}).items()):
+        try:
+            if cfg.get("enabled", True) and cfg.get("wake", True):
+                continue
+            old = (st["seats"].get(seat) or {}).get("ring")
+            if old and not old.get("consumed_at"):
+                act(do="withdraw", seat=seat, ring_id=old["ring_id"], pending=st["seats"][seat].pop("ring"),
+                    why="seat %s %s: its waiting ring is withdrawn" % (
+                        seat, "disabled" if not cfg.get("enabled", True) else "wake off"))
+        except Exception as e:  # noqa: BLE001 - one malformed seat never stops the others
+            act(do="alarm", kind="decide:" + seat, seat=seat, note=True,
+                why="seat %s switch-off withdrawal NOT decided: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
     agents = obs["agents"]
     if agents.get("state") == "MEASURED" and not sessions_ok(agents.get("sessions")):
         # a list of non-objects is not a reading (review dispatcher-full #5): blind, so nothing is done for the seats
@@ -333,16 +348,11 @@ def decide(sch, st, obs, now, apply):
         return owner_cache["r"]
 
     def one_seat(seat, cfg):
-        if not cfg.get("enabled", True) or not cfg.get("wake", True):
-            # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review
-            # dispatcher-full #8); a ring the doorbell already took stays pending (execute's withdraw) and verified
-            old = (st["seats"].get(seat) or {}).get("ring")
-            if old and not old.get("consumed_at"):
-                act(do="withdraw", seat=seat, ring_id=old["ring_id"], pending=st["seats"][seat].pop("ring"),
-                    why="seat %s %s: its waiting ring is withdrawn" % (
-                        seat, "disabled" if not cfg.get("enabled", True) else "wake off"))
-        if not cfg.get("enabled", True):
+        enabled = cfg.get("enabled", True)
+        if not enabled and not (st["seats"].get(seat) or {}).get("ring"):
             return
+        # a disabled seat with a ring in flight (the doorbell took it: the unconsumed ones were withdrawn above)
+        # still has it verified, then does nothing else (review r2 #6)
         ss = st["seats"].setdefault(seat, {})
         sess = find_session(agents["sessions"], cfg)
         status = (sess or {}).get("status") or (sess or {}).get("state")
@@ -381,6 +391,8 @@ def decide(sch, st, obs, now, apply):
                     ss["attempt"] = 0
                 else:
                     ss["attempt"] = pend["attempt"]
+            return
+        if not enabled:
             return
         # ---- recovery in flight: verify it
         rv = ss.get("recover")
@@ -573,18 +585,71 @@ def ring(root, seat, ring_id, msg, session_id=None):
                                  "session_id": session_id})
 
 
-def withdraw(root, seat, ring_id):
+WITHDRAW_OUTCOMES = ("withdrawn", "consumed", "absent", "failed")
+
+
+def withdraw(root, seat, ring_id, consumed=None):
+    """Take ring `ring_id` back out of the seat's inbox. -> {"outcome", "ring_id", "why"[, "consumed_at"]}, the
+    outcome decided by evidence about THIS ring id, never by which call failed (review r2 #4):
+      withdrawn  it is in withdrawn/ now (this call or an earlier one moved it): nothing deliverable;
+      consumed   a doorbell took it (consumed/<seat>-*.json holds this ring id): it WAS delivered, keep verifying;
+      absent     not in the inbox, not consumed, not withdrawn (never written): nothing deliverable;
+      failed     it may still be in the inbox (unreadable inbox, a rename that failed with it still there, or no
+                 evidence either way): deliverable, so the caller keeps it pending, retries and alarms."""
+    consumed = consumed or consumed_ring
     src = doorbell.inbox_path(seat, root)
-    rec = doorbell._read_json(src) or {}
-    if rec.get("ring_id") != ring_id:
-        return "not ours / gone"
-    dst = os.path.join(root, "withdrawn")
-    os.makedirs(dst, exist_ok=True)
+    dst_dir = os.path.join(root, "withdrawn")
+    dst = os.path.join(dst_dir, "%s.json" % ring_id)
+
+    def taken(why):
+        rec = consumed(root, seat, ring_id)
+        if rec:
+            return {"outcome": "consumed", "ring_id": ring_id, "consumed_at": rec.get("consumed_at"),
+                    "why": why + "; the doorbell consumed it"}
+        return None
+
     try:
-        os.rename(src, os.path.join(dst, "%s.json" % ring_id))
-        return "withdrawn"
-    except OSError:
-        return "gone (the doorbell took it)"
+        with open(src, encoding="utf-8") as f:
+            rec = json.load(f)
+        here = isinstance(rec, dict) and rec.get("ring_id") == ring_id
+    except FileNotFoundError:
+        here = False
+    except (OSError, ValueError) as e:
+        return taken("inbox unreadable") or {"outcome": "failed", "ring_id": ring_id,
+                                             "why": "inbox unreadable (%s): it may still be deliverable"
+                                             % type(e).__name__}
+    if not here:
+        if os.path.exists(dst):
+            return {"outcome": "withdrawn", "ring_id": ring_id, "why": "already withdrawn"}
+        return taken("not in the inbox") or {"outcome": "absent", "ring_id": ring_id,
+                                             "why": "not in the inbox, never consumed: nothing to withdraw"}
+    try:
+        os.makedirs(dst_dir, exist_ok=True)
+        os.rename(src, dst)
+        return {"outcome": "withdrawn", "ring_id": ring_id, "why": "moved to withdrawn/"}
+    except OSError as e:
+        got = taken("rename %s" % type(e).__name__)
+        if got:
+            return got
+        try:
+            with open(src, encoding="utf-8") as f:
+                still = (json.load(f) or {}).get("ring_id") == ring_id
+        except FileNotFoundError:
+            still = False
+        except (OSError, ValueError, AttributeError):
+            still = True
+        if not still and os.path.exists(dst):
+            return {"outcome": "withdrawn", "ring_id": ring_id, "why": "withdrawn by a concurrent call"}
+        return {"outcome": "failed", "ring_id": ring_id,
+                "why": "rename %s: %s; %s" % (type(e).__name__, str(e)[:120],
+                                             "still in the inbox" if still else "gone without a consumed record")}
+
+
+def withdraw_reading(res):
+    """A withdraw result as {"outcome", ...}; anything not one of WITHDRAW_OUTCOMES is "unknown" (state untouched)."""
+    if isinstance(res, dict) and res.get("outcome") in WITHDRAW_OUTCOMES:
+        return res
+    return {"outcome": "unknown", "why": str(res)[:160]}
 
 
 def recover(cfg, session_id, msg, runner=subprocess.run):
@@ -738,6 +803,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     try:
         for a in actions:
             res = None
+            started = []      # role_launch: the run record, once it exists (a raise after that may have started it)
             if a["do"] == "alarm":
                 last = st["alarms"].get(a["kind"])
                 if last is not None and now - last < sch.get("alarm_every_s", 6 * 3600):
@@ -763,12 +829,22 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
                             res = "rung"
                     elif a["do"] == "withdraw":
-                        res = do_withdraw(root, a["seat"], a["ring_id"])
-                        if res.startswith("gone") and a.get("pending"):
-                            # the doorbell consumed it between decide and here: it WAS delivered — keep verifying it
-                            # instead of ringing a second time
-                            ss = st["seats"].setdefault(a["seat"], {})
-                            ss["ring"] = dict(a["pending"], consumed_at=now)
+                        w = withdraw_reading(do_withdraw(root, a["seat"], a["ring_id"]))
+                        res = "%s: %s" % (w["outcome"], w.get("why") or "")
+                        ss = st["seats"].setdefault(a["seat"], {})
+                        if a.get("pending") and not ss.get("ring"):
+                            if w["outcome"] == "consumed":
+                                # the doorbell took it between decide and here: it WAS delivered — keep verifying it
+                                # instead of ringing a second time (review r2 #4: evidence by ring id)
+                                ss["ring"] = dict(a["pending"], consumed_at=w.get("consumed_at") or now)
+                            elif w["outcome"] in ("failed", "unknown"):
+                                # it may still wake the seat: kept pending, so the next tick withdraws it again
+                                ss["ring"] = dict(a["pending"])
+                                actions.append(dict(
+                                    do="alarm", kind="withdraw_failed:" + a["seat"], at=iso(now), note=True,
+                                    seat=a["seat"], ticket=a["pending"].get("ticket"),
+                                    why="ring %s to %s NOT withdrawn (%s): kept pending, withdrawn again next tick"
+                                    % (a["ring_id"], a["seat"], w.get("why") or w["outcome"])))
                     elif a["do"] == "recover":
                         cfg = dict(sch["seats"][a["seat"]], seat=a["seat"])
                         ok, out = do_recover(cfg, a["session_id"], a["message"])
@@ -805,6 +881,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        item=a["ticket"], seat=seat,
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None)
                             runs.append(run)
+                            started.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
                             rs = st["roles"][a["role"]]
                             ok, out = False, "launch raised"
@@ -847,9 +924,28 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 do_persist()
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
-                                      marker=a.get("marker"), force=a.get("force", False))
+                                      marker=a.get("marker"), force=a.get("force", False), since=a.get("since"))
                 except Exception as e:  # noqa: BLE001
                     res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                    if a["do"] == "role_launch" and not started:
+                        # raised before any run existed (role gone from the schedule, off/PAUSE read, run_paths):
+                        # nothing can have started, so the reservation is given back and the note says so, never
+                        # "launched" (review r2 #5)
+                        rs = (st.get("roles") or {}).get(a.get("role"))
+                        try:     # the give-back itself must not escape execute and skip the remaining actions
+                            back = isinstance(rs, dict) and RL.unlaunch(rs, a.get("unit"))
+                        except Exception as e2:  # noqa: BLE001
+                            back = False
+                            res += "; give-back raised %s" % type(e2).__name__
+                        a["why"] = "%s — NOT LAUNCHED, %s" % (a.get("why") or "", res)
+                        if a.get("blind"):
+                            a["blind"] = dict(a["blind"], outcome="launch_failed")
+                        actions.append(dict(
+                            do="alarm", kind="role:%s:launch_failed" % a.get("role"), at=iso(now), note=True,
+                            ticket=a.get("ticket"), role=a.get("role"),
+                            why="role %s launch FAILED before its run existed (unit %s): %s; %s" % (
+                                a.get("role"), a.get("unit"), res, "its slot/event stays due and is retried"
+                                if back else "no reservation to give back")))
                 if a.get("note") and sch.get("ledger_notes"):
                     who = (a["do"], a.get("seat") or a.get("role") or "")
                     item, text = route_note(sch, a.get("ticket") or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
@@ -914,6 +1010,21 @@ def paused_now():
         return "paused (PAUSE unreadable)"
 
 
+def role_obs(sch):
+    return {
+        "ops": lambda: RL.read_ops(RL.ops_status_path(sch)),
+        "account": RL.resolve_account,
+        "unit_state": RL.unit_state,
+        "result": RL.read_result,
+        "off": RL.off_switch,
+        "scope": RL.scope_of,
+        "procs": RL.procs_of,
+        "ledger": RL.read_ledger,
+        "pending_stores": RL.PW.read_stores,
+        "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
+    }
+
+
 def default_obs(sch, root):
     seats = sch.get("seats") or {}
     return {
@@ -925,18 +1036,7 @@ def default_obs(sch, root):
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
-        "roles": {
-            "ops": lambda: RL.read_ops(RL.ops_status_path(sch)),
-            "account": RL.resolve_account,
-            "unit_state": RL.unit_state,
-            "result": RL.read_result,
-            "off": RL.off_switch,
-            "scope": RL.scope_of,
-            "procs": RL.procs_of,
-            "ledger": RL.read_ledger,
-            "pending_stores": RL.PW.read_stores,
-            "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
-        },
+        "roles": role_obs(sch),
     }
 
 
@@ -952,6 +1052,118 @@ def unreserve(st):
     return back
 
 
+# ---------------------------------------------------------------- the run registry (review r2 #2)
+# Every save of state.json also writes runs.json: the role runs still `running`, by role. It is what a tick
+# supervises when state.json is unreadable (the runs must not go unwatched while the owner repairs the state), what
+# a dry-run tick reads to say live runs are unsupervised, and what `stop-runs` stops before a rollback.
+
+def runs_path(root):
+    return os.path.join(root, "runs.json")
+
+
+def running_runs(st):
+    return {name: {"runs": [r for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"]}
+            for name, rs in (st.get("roles") or {}).items() if isinstance(rs, dict)}
+
+
+def save(st, root):
+    """state.json, then the registry. The registry write never fails the state save."""
+    S.dump(st, os.path.join(root, "state.json"))
+    try:
+        S.dump({"roles": running_runs(st), "saved_at": time.time()}, runs_path(root))
+    except Exception:  # noqa: BLE001 - the next save retries; state.json above is the authority
+        pass
+
+
+def load_registry(root):
+    """-> {"roles": {...}} or None when absent or unreadable."""
+    reg = doorbell._read_json(runs_path(root))
+    return reg if isinstance(reg, dict) and isinstance(reg.get("roles"), dict) else None
+
+
+def supervise_registry(sch, root, apply, now, obs, fx, why):
+    """state.json is unreadable: nothing is decided (no wakes, no launches), but the runs on the registry are
+    supervised and stopped past run_max_s exactly as a normal tick would (review r2 #2). The registry is written
+    back (stop_tries); state.json is left alone for the owner. -> the actions."""
+    rec = {"at": iso(now), "do": "skip", "why": "state UNREADABLE, no decisions (fix or remove it): %s" % why}
+    reg = load_registry(root)
+    if reg is None:
+        rec["why"] += ("; the run registry %s is unreadable too: live runs are bounded only by their scopes' own "
+                       "RuntimeMaxSec" % runs_path(root))
+        journal(root, rec)
+        return [rec]
+    stub = {"roles": reg["roles"], "alarms": reg.get("alarms") or {}, "seats": {}, "wakes": [], "recovers": []}
+    acts = [rec]
+
+    def act(**kw):
+        kw.setdefault("at", iso(now))
+        acts.append(kw)
+    o = (obs or {}).get("roles") if obs else None
+    RL.supervise_roles(sch, stub, o or role_obs(sch), now, act)
+    rec["why"] += "; supervising %d run(s) from the registry" % sum(
+        len(rs.get("runs") or []) for rs in stub["roles"].values() if isinstance(rs, dict))
+    try:
+        execute(acts, sch, stub, root, apply, now, fx)
+    finally:
+        S.dump({"roles": running_runs(stub), "alarms": stub["alarms"], "saved_at": time.time()}, runs_path(root))
+    return acts
+
+
+def live_runs_alarm(now):
+    """A dry-run tick: the live root's registry still has running runs -> an alarm action (nothing supervises them
+    from here: `dispatcher.py stop-runs` before switching to dry-run, review r2 #2), else None."""
+    reg = load_registry(state_root(True))
+    n = sum(len(rs.get("runs") or []) for rs in (reg or {}).get("roles", {}).values() if isinstance(rs, dict))
+    if not n:
+        return None
+    return {"at": iso(now), "do": "alarm", "kind": "dry:live_runs_unsupervised", "note": False,
+            "why": "dry-run tick: the live state has %d role run(s) still running that NO tick supervises now; "
+                   "they end at their scope's RuntimeMaxSec at the latest. Stop them: dispatcher.py stop-runs" % n}
+
+
+def stop_runs(sch, wait_s=120, force_after_s=60, obs=None, clock=time.time, sleep=time.sleep, stopper=None):
+    """Rollback helper: stop every LIVE role run on record (state.json, else the registry) and VERIFY each ended
+    (unit and scope terminal, marker scan clean: role_launch.ended). TERM first, KILL after force_after_s. Writes
+    no state (the next tick records the runs' ends). -> (all_ended, lines)."""
+    root = state_root(True)
+    try:
+        st = load_state(root)
+        roles = st.get("roles") or {}
+    except StateUnreadable as e:
+        reg = load_registry(root)
+        if reg is None:     # blind: never "all ended" (list the scopes by hand)
+            return False, ["state UNREADABLE (%s) and the run registry %s unreadable: live runs UNMEASURED; list "
+                           "them: systemctl --user list-units 'claude-seat-*-rm-role-*' 'rm-role-*'" % (
+                               e, runs_path(root))]
+        roles = reg.get("roles") or {}
+    runs = [(n, r) for n, rs in sorted(roles.items()) if isinstance(rs, dict)
+            for r in rs.get("runs") or [] if isinstance(r, dict) and r.get("state") == "running"]
+    o = obs or role_obs(sch)
+    stopper = stopper or RL.stop
+    lines, t0, forced = [], clock(), False
+    left = list(runs)
+    while True:
+        still = []
+        for name, r in left:
+            u = o["unit_state"](r["unit"])
+            v = RL.ended(r, u, o) if u in RL.TERMINAL else u
+            if v not in RL.TERMINAL:
+                still.append((name, r, v))
+        for name, r, v in still:
+            force = clock() - t0 >= force_after_s
+            forced = forced or force
+            lines.append("%s %s: %s -> stop%s: %s" % (name, r["unit"], v, " FORCED" if force else "", stopper(
+                r["unit"], r.get("scope"), seat=r.get("seat"), unit_gone=v.startswith("unit "),
+                marker=r.get("marker"), force=force, since=r.get("at"))))
+        left = [(n, r) for n, r, _ in still]
+        if not left or clock() - t0 >= wait_s:
+            break
+        sleep(5)
+    for name, r in runs:
+        lines.append("%s %s: %s" % (name, r["unit"], "STILL RUNNING" if (name, r) in left else "ENDED (verified)"))
+    return not left, lines
+
+
 def tick(sch, apply, obs=None, now=None, fx=None):
     root = state_root(apply)
     os.makedirs(root, exist_ok=True)
@@ -964,17 +1176,26 @@ def tick(sch, apply, obs=None, now=None, fx=None):
         try:
             st = load_state(root)
         except StateUnreadable as e:
-            rec = {"at": iso(now), "do": "skip", "why": "state UNREADABLE, no action (fix or remove it): %s" % e}
-            journal(root, rec)
-            return [rec]
+            return supervise_registry(sch, root, apply, now, obs, fx, e)
         acts = []
-        st_path = os.path.join(root, "state.json")
         deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
             o = obs or default_obs(sch, root)
             acts = decide(sch, st, o, now, apply)
-            execute(acts, sch, st, root, apply, now, fx, persist=lambda: S.dump(st, st_path), deadline=deadline)
+            if not apply:
+                dry = live_runs_alarm(now)
+                if dry:
+                    acts.append(dry)
+            execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline)
+            if apply:
+                # a reservation no executed launch accounted for is given back on a tick that worked too (r2 #5)
+                back = unreserve(st)
+                if back:
+                    rec = {"at": iso(now), "do": "alarm", "kind": "tick:unreserved",
+                           "why": "launches decided but never executed, given back: %s" % ", ".join(back)}
+                    journal(root, rec)
+                    acts.append(rec)
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
             if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
                 st["last_ok_tick"] = iso(now)
@@ -990,7 +1211,7 @@ def tick(sch, apply, obs=None, now=None, fx=None):
         finally:     # the caps and pending rings are in st: save them even when a step raised
             st["last_tick"] = iso(now)        # last ATTEMPT
             st["apply"] = apply
-            S.dump(st, st_path)
+            save(st, root)
     return acts
 
 
@@ -1008,6 +1229,10 @@ def main(argv=None):
     s = sub.add_parser("status")
     s.add_argument("--schedule")
     s.add_argument("--apply", action="store_true", help="show the live state instead of the dry one")
+    sr = sub.add_parser("stop-runs", help="rollback: stop every LIVE role run and verify it ended (exit 0 = all ended)")
+    sr.add_argument("--schedule")
+    sr.add_argument("--wait", type=int, default=120, help="seconds to keep stopping and checking (default 120)")
+    sr.add_argument("--force-after", type=int, default=60, help="KILL from this many seconds on (default 60)")
     pb = sub.add_parser("publish", help="internal: the tick's bounded publish child (publish_bounded)")
     pb.add_argument("n", type=int)
     a = ap.parse_args(argv)
@@ -1021,6 +1246,13 @@ def main(argv=None):
     if a.cmd == "status":
         print(json.dumps(load_state(state_root(a.apply)), indent=1, sort_keys=True))
         return 0
+    if a.cmd == "stop-runs":
+        ok, lines = stop_runs(sch, a.wait, a.force_after)
+        for x in lines:
+            print(x)
+        print("ALL LIVE ROLE RUNS ENDED (verified)" if ok else "NOT ALL ENDED: do not switch to dry-run or disable "
+              "the timer; see design/RimMandrake/rimflow_v3_golive_wave1.md section 7")
+        return 0 if ok else 1
     acts = tick(sch, a.apply)
     for x in acts:
         if a.json:

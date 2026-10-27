@@ -412,10 +412,13 @@ def test_doorbell():
     code, _ = doorbell.wait("FOUNDRY", "sid", root=root, max_wait=0, poll=0.05)
     check(code == 0, "doorbell: gives up at its deadline")
     D.ring(root, "FOUNDRY", "R2", "x")
-    check(D.withdraw(root, "FOUNDRY", "R2") == "withdrawn" and not os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
+    check(D.withdraw(root, "FOUNDRY", "R2")["outcome"] == "withdrawn"
+          and not os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
           "withdraw moves an unconsumed ring away")
     D.ring(root, "FOUNDRY", "R3", "x")
-    check(D.withdraw(root, "FOUNDRY", "R2") == "not ours / gone", "withdraw never takes another ring")
+    check(D.withdraw(root, "FOUNDRY", "R2")["outcome"] == "withdrawn" and D.withdraw(root, "FOUNDRY", "R9")[
+        "outcome"] == "absent" and os.path.exists(doorbell.inbox_path("FOUNDRY", root)),
+        "withdraw never takes another ring (R2 already withdrawn, R9 never written)")
 
 
 def test_end_to_end():
@@ -895,7 +898,8 @@ def test_role_execute_and_dry():
             check(True, "pre_launch %r is refused" % (bad,))
     calls.clear()
     RL.stop("u", "s.scope", runner=fake_run)
-    check(calls == [["systemctl", "--user", "stop", "s.scope"], ["systemctl", "--user", "stop", "u"]],
+    check(calls == [["systemctl", "--user", "stop", "--no-block", "s.scope"],
+                    ["systemctl", "--user", "stop", "--no-block", "u"]],
           "stop: scope first, then the unit, each its own call")
     # execute: a launch records the run; a failed launch records nothing
     sch = sched(roles=[role])
@@ -1021,8 +1025,8 @@ def test_review_q():
         calls.append(argv)
         return subprocess.CompletedProcess(argv, 0, "777\n" if "MainPID" in argv else "", "")
     RL.stop("UQ2", None, runner=pid_then_stop, seat="BENCH")
-    check(calls[-2:] == [["systemctl", "--user", "stop", "claude-seat-BENCH-777.scope"],
-                         ["systemctl", "--user", "stop", "UQ2"]],
+    check(calls[-2:] == [["systemctl", "--user", "stop", "--no-block", "claude-seat-BENCH-777.scope"],
+                         ["systemctl", "--user", "stop", "--no-block", "UQ2"]],
           "Q4 stop with no recorded scope: resolves it from MainPID, stops scope + unit")
     # 5: the off switch and PAUSE are rechecked at execution
     for label, fx in (("off file", dict(base_fx, off=lambda p: "owner: now")),
@@ -2413,7 +2417,7 @@ def test_golive_b1_busy_until_ended():
     st["roles"] = one_run(scope=RL.role_scope("BENCH", "rm-role-operations-1"), marker="rm-role-operations-1")
     left = {"n": 1}
     ro = robs(ops_status(t + 600), unit="inactive")
-    ro["procs"] = lambda m: [4711] * left["n"] if m == "rm-role-operations-1" else []
+    ro["procs"] = lambda m, **k: [4711] * left["n"] if m == "rm-role-operations-1" else []
     a = role_acts(rdecide([operations()], st, ro, t + 600))
     check(st["roles"]["Operations"]["runs"][0]["state"] == "running" and "role_done" not in kinds(a),
           "B1 unit+scope inactive but a marked process lives: still running")
@@ -2425,28 +2429,29 @@ def test_golive_b1_busy_until_ended():
                                   and x["marker"] == "rm-role-operations-1" for x in stops)
           and [x["force"] for x in stops] == [False, False, True],
           "B1 overtime: the exact scope + marker are stopped each tick, KILL from the third stop")
-    ro["procs"] = lambda m: None
+    ro["procs"] = lambda m, **k: None
     a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2400)), t + 2400))
     check(st["roles"]["Operations"]["runs"][0]["state"] == "running", "B1 marker scan UNMEASURED: still running")
     del ro["procs"]
     a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2500)), t + 2500))
     check(st["roles"]["Operations"]["runs"][0]["state"] == "running", "B1 no marker observer at all: still running")
-    ro["procs"] = lambda m: []
+    ro["procs"] = lambda m, **k: []
     a = role_acts(rdecide([operations()], st, robs_with(ro, ops_status(t + 2600)), t + 2600))
     check(st["roles"]["Operations"]["runs"][0]["state"] in ("done", "failed") and "role_done" in kinds(a),
           "B1 unit, scope and marker scan all clear: then the run is finished")
     # stop(): each name its own call; marked survivors get TERM, KILL when forced; scan blind is said
     calls, sigs = [], []
     run_ok = lambda argv, **kw: calls.append(argv) or subprocess.CompletedProcess(argv, 0, "", "")
-    out = RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: [11, 12],
+    out = RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m, **k: [11, 12],
                   kill=lambda pid, sig: sigs.append((pid, sig)))
-    check(calls == [["systemctl", "--user", "stop", "S.scope"]] and sigs == [(11, 15), (12, 15)] and "TERM" in out,
+    check(calls == [["systemctl", "--user", "stop", "--no-block", "S.scope"]] and sigs == [(11, 15), (12, 15)]
+          and "TERM" in out,
           "B1 stop: the exact scope, then TERM to the marked survivors")
     sigs.clear()
-    RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: [11], force=True,
+    RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m, **k: [11], force=True,
             kill=lambda pid, sig: sigs.append((pid, sig)))
     check(sigs == [(11, 9)], "B1 stop forced: KILL")
-    check("UNMEASURED" in RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m: None),
+    check("UNMEASURED" in RL.stop("U", "S.scope", runner=run_ok, unit_gone=True, marker="U", procs=lambda m, **k: None),
           "B1 stop: a blind marker scan is said, not hidden")
     # procs_of: a fake /proc, and the real one with a live marked child
     fp = os.path.join(TMP, "fakeproc")
@@ -2458,13 +2463,14 @@ def test_golive_b1_busy_until_ended():
     check(RL.procs_of("uX", proc=fp) == [101], "B1 procs_of: exact marker match only (uXY is another run)")
     check(RL.procs_of("uX", proc=os.path.join(TMP, "no_such_proc")) is None, "B1 procs_of: /proc unreadable -> None")
     mk = "selftest-marker-%d" % os.getpid()
+    t_run = time.time()      # a run's `at`: this user's older unreadable processes (systemd, sd-pam) predate it
     p = subprocess.Popen(["sleep", "30"], env=dict(os.environ, RM_ROLE_UNIT=mk))
     try:
-        check(RL.procs_of(mk) == [p.pid], "B1 procs_of on the real /proc sees a live marked process")
+        check(RL.procs_of(mk, since=t_run) == [p.pid], "B1 procs_of on the real /proc sees a live marked process")
     finally:
         p.kill()
         p.wait()
-    check(RL.procs_of(mk) == [], "B1 procs_of: none once it is gone")
+    check(RL.procs_of(mk, since=t_run) == [], "B1 procs_of: none once it is gone")
     # execute: the scope and marker are on disk BEFORE systemd-run, and a launcher's own scope cannot replace them
     sch = sched(roles=[conductor()])
     act = {"do": "role_launch", "role": "Conductor", "unit": "UB1", "message": "m", "ticket": "ROLES_ITEM_X",

@@ -574,6 +574,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 act(do="role_stop", role=name, unit=run["unit"], scope=run.get("scope"),
                     unit_gone=ustate.startswith("unit "),     # stop the scope alone: the unit was collected
                     marker=run.get("marker"), force=tries >= 2,     # TERM the run's stray processes, KILL from #3
+                    since=run.get("at"),
                     seat=run.get("seat") or cfg.get("seat"), ticket=run.get("item"), note=tries == 0,
                     why="%s run %s still %s after %d s (run_max_s %d): stop #%d" % (
                         name, run["unit"], ustate, now - run["at"], max_s, tries + 1))
@@ -674,7 +675,7 @@ def ended(run, ustate, obs):
     if sstate not in TERMINAL:
         return "unit %s but scope %s %s" % (ustate, scope, sstate)
     if run.get("marker"):
-        n = obs["procs"](run["marker"]) if obs.get("procs") else None
+        n = obs["procs"](run["marker"], since=run.get("at")) if obs.get("procs") else None
         n = len(n) if isinstance(n, list) else n
         if n is None:
             return "unit %s, scope %s %s, its process check UNMEASURED" % (ustate, scope, sstate)
@@ -1144,26 +1145,86 @@ def role_scope(seat, unit):
     return "claude-seat-%s-%s.scope" % (seat, unit)
 
 
-def procs_of(marker, proc="/proc"):
-    """-> the pids (not ours) whose environment carries RM_ROLE_UNIT=<marker>, or None when /proc cannot be read.
-    A process that exits or is not ours mid-scan is skipped (it cannot be this user's run)."""
+def _started_at(proc, n, btime):
+    """Epoch a /proc process started (stat field 22 / CLK_TCK + boot time), or None when not readable."""
+    try:
+        with open(os.path.join(proc, n, "stat"), "rb") as f:
+            rest = f.read().rsplit(b")", 1)[1].split()
+        return btime + int(rest[19]) / float(os.sysconf("SC_CLK_TCK"))
+    except (OSError, IndexError, ValueError):
+        return None
+
+
+def _boot_time(proc):
+    try:
+        with open(os.path.join(proc, "stat"), "rb") as f:
+            for line in f:
+                if line.startswith(b"btime "):
+                    return int(line.split()[1])
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+SINCE_SLACK_S = 5       # clock-tick rounding and boot-time granularity between a run's `at` and its first process
+
+
+def scan_marked(marker, proc="/proc", uid=None, since=None):
+    """-> (pids carrying RM_ROLE_UNIT=<marker>, None) or (the pids it could see, why the scan is blind).
+    Blind (review r2 #3): /proc unlistable, or a process whose environ cannot be read and that is not POSITIVELY
+    ruled out. Ruled out: it exited mid-scan (entry gone), it belongs to another uid (a run of ours never changes
+    uid), or `since` (the run's start, epoch) is given and it started more than SINCE_SLACK_S before it (the marker
+    is inherited, so every process of a run is younger than the run). Measured 2026-10-27: this user's systemd,
+    (sd-pam) and ssh-agent are same-uid and unreadable (non-dumpable), so without `since` a real scan is blind."""
     want = ("RM_ROLE_UNIT=%s" % marker).encode()
     try:
         names = os.listdir(proc)
-    except OSError:
-        return None
-    me, out = os.getpid(), []
+    except OSError as e:
+        return [], "%s unlistable (%s)" % (proc, type(e).__name__)
+    me, out, blind = os.getpid(), [], None
+    uid = os.getuid() if uid is None else uid
+    btime = _boot_time(proc) if since is not None else None
     for n in names:
         if not n.isdigit() or int(n) == me:
             continue
         try:
             with open(os.path.join(proc, n, "environ"), "rb") as f:
                 env = f.read()
+        except FileNotFoundError:
+            continue                    # exited between listdir and open
         except OSError:
+            try:
+                owner = os.stat(os.path.join(proc, n)).st_uid
+            except FileNotFoundError:
+                continue                # exited
+            except OSError:
+                owner = None            # unknown owner: not ruled out
+            if owner is not None and owner != uid:
+                continue                # another user's process: never one of our runs
+            started = _started_at(proc, n, btime) if btime is not None else None
+            if started is not None and started < since - SINCE_SLACK_S:
+                continue                # older than the run: cannot carry its inherited marker
+            blind = blind or "pid %s (uid %s) environ unreadable" % (n, owner)
             continue
         if want in env.split(b"\0"):
             out.append(int(n))
-    return out
+    return out, blind
+
+
+def procs_of(marker, proc="/proc", uid=None, since=None):
+    """-> the pids (not ours) carrying RM_ROLE_UNIT=<marker>, or None when the scan is blind (scan_marked): a
+    partial scan is never "none" (review r2 #3)."""
+    pids, blind = scan_marked(marker, proc, uid, since)
+    return None if blind else pids
+
+
+SCOPE_GRACE_S = 600     # the scope's own bound sits this far past run_max_s: the Dispatcher's stop comes first
+SCOPE_STOP_S = 30       # TERM -> KILL escalation of that bound (TimeoutStopSec)
+
+
+def scope_bound_s(role):
+    """The independent wall-time bound (s) of a role run's unit and claude scope: its run_max_s + SCOPE_GRACE_S."""
+    return int(max_s_of({}, role or {})) + SCOPE_GRACE_S
 
 
 def launch_argv(role, unit, msg, out, err, claude):
@@ -1185,6 +1246,7 @@ def launch_argv(role, unit, msg, out, err, claude):
         # the pre-steps' words are quoted into the script; the claude argv (the message) stays positional, unquoted
         script = " && ".join(" ".join(shlex.quote(x) for x in st) + " 1>&2" for st in steps)
         cmd = ["/bin/sh", "-c", script + ' && exec "$@"', "role-pre-launch"] + cmd
+    bound = scope_bound_s(role)
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
             "--working-directory", role["clone"],
@@ -1193,6 +1255,11 @@ def launch_argv(role, unit, msg, out, err, claude):
             # inherits: the two things supervise checks before a run counts as ended (review dispatcher-full #1)
             "--setenv", "CLAUDE_SCOPE_UNIT=" + role_scope(role["seat"], unit)[:-len(".scope")],
             "--setenv", "RM_ROLE_UNIT=" + unit,
+            # the run's own wall-time bound, independent of the Dispatcher (review r2 #2): claude_bounded sets it on
+            # the scope (RuntimeMaxSec, TERM, then KILL after SCOPE_STOP_S), and the unit gets the same bound; so a
+            # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)
+            "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
+            "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=%d" % SCOPE_STOP_S,
             "--setenv", "PATH=" + path, "--"] + cmd
 
 
@@ -1247,35 +1314,71 @@ def read_result(run):
         return None
 
 
+def _stop_call(runner, argv, timeout):
+    """One systemctl call, never raising: -> its line for the stop result."""
+    try:
+        r = runner(argv, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+    except Exception as e:  # noqa: BLE001 - a hung or failing systemctl must not skip the other targets (r2 #1)
+        return "%s %s raised %s: %s" % (argv[2], argv[-1], type(e).__name__, str(e)[:80])
+    if r.returncode == 0:
+        return "%s %s ok" % (argv[2], argv[-1])
+    return "%s %s exit %d: %s" % (argv[2], argv[-1], r.returncode,
+                                  ((r.stdout or "") + (r.stderr or "")).strip()[-120:])
+
+
+def _signal_marked(marker, force, procs, kill, since=None):
+    """TERM (KILL when force) every process carrying the run's marker that the scan can see, even when it is partly
+    blind (the next tick's ended() still holds the run busy then); never raises. -> its line."""
+    blind = None
+    try:
+        if procs:
+            pids = procs(marker, since=since)
+        else:
+            pids, blind = scan_marked(marker, since=since)
+    except Exception as e:  # noqa: BLE001
+        return "marker scan raised %s: UNMEASURED" % type(e).__name__
+    if pids is None:
+        return "marker scan UNMEASURED"
+    if blind and not pids:
+        return "marker scan UNMEASURED (%s)" % blind
+    if not pids:
+        return "no process marked %s" % marker
+    sig, sent = (signal.SIGKILL if force else signal.SIGTERM), 0
+    for pid in pids:
+        try:
+            kill(pid, sig)
+            sent += 1
+        except Exception:  # noqa: BLE001 - gone, or not ours: the next tick's scan decides
+            pass
+    return "%s to %d of %d process(es) marked %s%s" % ("KILL" if force else "TERM", sent, len(pids), marker,
+                                                       "; scan partly UNMEASURED (%s)" % blind if blind else "")
+
+
 def stop(unit, scope, runner=subprocess.run, seat=None, unit_gone=False, marker=None, force=False, procs=None,
-         kill=os.kill):
+         kill=os.kill, since=None):
     """The claude process lives in claude_bounded's scope (role_scope, persisted with the run), outside the unit:
-    stopping the unit alone would leave it running. Each name is stopped by its own call (one not loaded any more
-    must not fail the other). Then every process still carrying the run's marker (a claude whose clone's
-    claude_bounded.sh named its scope by PID) is sent TERM, KILL when `force`. A run recorded before scopes were
-    named and with none resolved: resolve it now from the unit's MainPID. Whether the stop took is decided by the
-    next tick (supervise: unit, scope AND marker scan), not here."""
-    if not scope and seat and not unit_gone:
-        scope = scope_of(unit, seat, runner)
-    names = [n for n in (scope, None if unit_gone else unit) if n]
+    stopping the unit alone would leave it running. Every target is tried on its own and none can stop the others
+    (review r2 #1): a systemctl that raises or hangs (its timeout) is one line of the result, never an exit.
+      - force (the third stop on): the marked processes get KILL FIRST (no systemd involved, so a hung systemctl
+        cannot hold it back), then `systemctl kill --signal=SIGKILL` the scope (its whole cgroup), then the stops;
+      - else: `systemctl stop --no-block` the scope, then the unit (queued, never waited on), then TERM the marked.
+    A run recorded before scopes were named and with none resolved: resolve it now from the unit's MainPID. Whether
+    the stop took is decided by the next tick (supervise: unit, scope AND marker scan), not here. Never raises."""
     said = []
+    if not scope and seat and not unit_gone:
+        try:
+            scope = scope_of(unit, seat, runner)
+        except Exception as e:  # noqa: BLE001
+            said.append("scope lookup raised %s" % type(e).__name__)
+    names = [n for n in (scope, None if unit_gone else unit) if n]
+    if marker and force:
+        said.append(_signal_marked(marker, True, procs, kill, since))
+    if force and scope:
+        said.append(_stop_call(runner, ["systemctl", "--user", "kill", "--signal=SIGKILL", scope], 30))
     for n in names:
-        r = runner(["systemctl", "--user", "stop", n], capture_output=True, text=True, timeout=120,
-                   stdin=subprocess.DEVNULL)
-        said.append("stopped %s" % n if r.returncode == 0 else "stop %s exit %d: %s" % (
-            n, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()[-120:]))
-    if marker:
-        pids = (procs or procs_of)(marker)
-        if pids is None:
-            said.append("marker scan UNMEASURED")
-        elif pids:
-            sig = signal.SIGKILL if force else signal.SIGTERM
-            for pid in pids:
-                try:
-                    kill(pid, sig)
-                except OSError:
-                    pass
-            said.append("%s to %d process(es) marked %s" % ("KILL" if force else "TERM", len(pids), marker))
+        said.append(_stop_call(runner, ["systemctl", "--user", "stop", "--no-block", n], 30))
+    if marker and not force:
+        said.append(_signal_marked(marker, False, procs, kill, since))
     return "; ".join(said) or "nothing to stop (no scope, unit gone, no marker)"
 
 
