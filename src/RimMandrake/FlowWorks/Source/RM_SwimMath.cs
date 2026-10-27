@@ -493,4 +493,67 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 	}
+
+	/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: when RM_SwimPathing's deep-water grids must be rebuilt, and
+	/// whether a rebuild may re-read only the squares that moved. r15 measured every swim-version move re-reading all 105,625
+	/// squares (VersionOf 64 ms over 23 moves, about 2.8 ms each), though the dug-swim refresh, the commonest writer, names the
+	/// few squares it changed. Writers that name their squares (<see cref="BumpCells"/>) keep the pending set exact; any
+	/// writer that does not (<see cref="Bump"/>: terrain changes, decks, drawbridges, settings) makes the next build a full
+	/// re-read, as before. Verse-free so SelfTest proves the patched grid equal to a full re-read on every build.</summary>
+	public sealed class RM_SwimGridPlan
+	{
+		private readonly HashSet<int> pending = new HashSet<int>();
+		private readonly List<int> order = new List<int>();
+		private bool exact;   // pending names every square that may have moved since the last build
+
+		/// <summary>Moves with every writer (the stamp RM_WallReach reads; a peek, never a rebuild).</summary>
+		public int Version { get; private set; }
+
+		public int BuiltVersion { get; private set; } = -2;
+
+		public bool Due => BuiltVersion != Version;
+
+		/// <summary>Squares named since the last build (meaningful only while the set is exact).</summary>
+		public int PendingCount => exact ? order.Count : -1;
+
+		/// <summary>A writer that does not say which squares moved: the next build re-reads every square.</summary>
+		public void Bump()
+		{
+			Version++;
+			exact = false;
+			pending.Clear();
+			order.Clear();
+		}
+
+		/// <summary>A writer that names every square it may have moved.</summary>
+		public void BumpCells(IReadOnlyList<int> cells)
+		{
+			Version++;
+			if (!exact)
+			{
+				return;
+			}
+			for (int i = 0; i < cells.Count; i++)
+			{
+				if (pending.Add(cells[i]))
+				{
+					order.Add(cells[i]);
+				}
+			}
+		}
+
+		/// <summary>Marks the grids built at <see cref="Version"/>. Returns the squares to re-read (in the order named), or null
+		/// when every square must be re-read: a writer did not name its squares, more than <paramref name="maxPatch"/> were
+		/// named, the caller refuses a patch (<paramref name="canPatch"/>: no earlier build, a setting moved, a periodic full
+		/// re-read is due), or this is the first build.</summary>
+		public List<int> Take(int maxPatch, bool canPatch)
+		{
+			List<int> patch = exact && canPatch && order.Count <= maxPatch ? new List<int>(order) : null;
+			BuiltVersion = Version;
+			pending.Clear();
+			order.Clear();
+			exact = true;
+			return patch;
+		}
+	}
 }

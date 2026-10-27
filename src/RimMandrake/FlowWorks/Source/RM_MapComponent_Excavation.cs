@@ -434,7 +434,8 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			BumpClimbGeneration(GenSwim);
-			Swimming.RM_SwimPathing.Bump(map);
+			// r15 fix 2: name the squares, so the swim grids re-read only these (not all 105k) when nothing else moved
+			Swimming.RM_SwimPathing.BumpCells(map, changed);
 			foreach (int i in changed)
 			{
 				map.pathing?.RecalculatePerceivedPathCostAt(map.cellIndices.IndexToCell(i));
@@ -3353,12 +3354,56 @@ namespace RimMandrake.FlowWorks
 			}
 			FluidDef held = FluidAt(c) ?? fluid;
 			bool drained = held != null && held.OwnsWetTerrain(cur) && !held.OwnsWetTerrain(want);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 lead 4: r15 timed one ApplyFillTerrain call at 95 ms. Time the
+			// vanilla terrain write alone (DoTerrainChangedEffects' cascade), split by whether the water-body type moved
+			// (Odyssey's WaterBodyTracker flood fill is the suspect), and keep the slowest call's particulars for r16.
+			int gc0 = System.GC.CollectionCount(0);
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			map.terrainGrid.SetTerrain(c, want);
+			NoteTerrainWrite(c, cur, want, System.Diagnostics.Stopwatch.GetTimestamp() - t0, System.GC.CollectionCount(0) - gc0);
 			if (drained)
 			{
 				Machinery.Kits.RM_FluidResidue.NoteDrained(map, c, held);
 			}
 			return true;
+		}
+
+		// r15 lead 4 counters (POCKETTIME's FILLTERRAIN part): every base write ApplyFillTerrain makes, split by water-body move
+		private int fillWrites, fillWritesBody, fillWritesSlow;
+		private double fillWriteMs, fillWriteBodyMs, fillWriteMaxMs;
+		private string fillWriteMaxWhat = "-";
+
+		private void NoteTerrainWrite(IntVec3 c, TerrainDef cur, TerrainDef want, long elapsed, int gcs)
+		{
+			double ms = elapsed * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			bool body = cur?.waterBodyType != want?.waterBodyType;
+			fillWrites++;
+			fillWriteMs += ms;
+			if (body)
+			{
+				fillWritesBody++;
+				fillWriteBodyMs += ms;
+			}
+			if (ms >= 5.0)
+			{
+				fillWritesSlow++;
+			}
+			if (ms > fillWriteMaxMs)
+			{
+				fillWriteMaxMs = ms;
+				fillWriteMaxWhat = c.x + "," + c.z + ":" + (cur?.defName ?? "null") + ">" + (want?.defName ?? "null")
+					+ ":body=" + (cur?.waterBodyType.ToString() ?? "-") + ">" + (want?.waterBodyType.ToString() ?? "-")
+					+ ":swim=" + (Swimming.RM_SwimWater.IsSwimTerrain(cur) ? 1 : 0) + ">" + (Swimming.RM_SwimWater.IsSwimTerrain(want) ? 1 : 0)
+					+ ":gc0=" + gcs + ":tick=" + (Find.TickManager?.TicksGame ?? 0);
+			}
+		}
+
+		/// <summary>"FILLTERRAIN writes=N ms=T bodyWrites=N bodyMs=T slow5ms=N maxMs=M max=x,z:cur>want:body=a>b:swim=0>1:gc0=g:tick=t".</summary>
+		public string FillTerrainTimingLine()
+		{
+			return "FILLTERRAIN writes=" + fillWrites + " ms=" + fillWriteMs.ToString("0.0") + " bodyWrites=" + fillWritesBody
+				+ " bodyMs=" + fillWriteBodyMs.ToString("0.0") + " slow5ms=" + fillWritesSlow + " maxMs=" + fillWriteMaxMs.ToString("0.000")
+				+ " max=" + fillWriteMaxWhat;
 		}
 
 		/// <summary>Take the water picture off a square being filled back in to the surface (its depth already 0): a pre-P14

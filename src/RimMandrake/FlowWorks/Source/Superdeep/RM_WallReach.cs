@@ -104,7 +104,7 @@ namespace RimMandrake.FlowWorks
 			public readonly long[] partsNow = new long[StampParts];   // StampOf's parts, last computed
 			public readonly int[] rebuildCauses = new int[RebuildCauses];
 			public readonly int[] wallGenBy = new int[WgSources];
-			public int walkQuiet, walkMoved;     // NoteWalkability calls whose square's kind already said that walkability / did not
+			public int walkQuiet, walkMoved;     // NoteWalkability calls whose square's kind the snapshot already held (no bump) / that bumped
 			public int flushes, flushCells, flushMaxCells, flushOverflows;
 			public readonly double[] tickPhaseMs = new double[TickPhases];
 			public double maxTickMs;
@@ -273,28 +273,25 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			Interlocked.Increment(ref st.wallGenBy[pocketFlipNotifying ? WgWalkPocket : WgWalk]);
-			Interlocked.Increment(ref st.wallGen);
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r15 fix 1): the generation moves only when the square's kind (KindAt, the
+			// rule Kinds builds with; PathGrid has already written the new cost when RegionDirtyer is told) differs from the
+			// published snapshot. No snapshot, an out-of-range square or no path grid yet: bump, as before.
 			byte[] kinds = st.kinds.published;
-			if (kinds == null || !c.InBounds(map))
+			int idx = c.InBounds(map) ? map.cellIndices.CellToIndex(c) : -1;
+			PathGrid pg = map.pathing?.Normal?.pathGrid;
+			bool moved = kinds == null || idx < 0 || pg == null
+				|| RM_WallReachMath.WalkabilityMovesKind(kinds, idx, KindAt(map, pg, Swimming.RM_SwimWater.On, idx));
+			if (moved)
 			{
-				return;
+				Interlocked.Increment(ref st.wallGenBy[pocketFlipNotifying ? WgWalkPocket : WgWalk]);
+				Interlocked.Increment(ref st.wallGen);
+				Interlocked.Increment(ref st.walkMoved);
 			}
-			int idx = map.cellIndices.CellToIndex(c);
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c): would a kind-aware bump have stayed quiet? (the snapshot
-			// already holds a wall where the square is now unwalkable, or a walkable kind where it is now walkable)
-			if (idx < kinds.Length)
+			else
 			{
-				if ((kinds[idx] == RM_WallReachMath.Wall) == !nowWalkable)
-				{
-					Interlocked.Increment(ref st.walkQuiet);
-				}
-				else
-				{
-					Interlocked.Increment(ref st.walkMoved);
-				}
+				Interlocked.Increment(ref st.walkQuiet);
 			}
-			if (idx < kinds.Length && RM_WallReachMath.WalkabilityBreach(kinds[idx], nowWalkable))
+			if (kinds != null && idx >= 0 && idx < kinds.Length && RM_WallReachMath.WalkabilityBreach(kinds[idx], nowWalkable))
 			{
 				Interlocked.Exchange(ref st.forced, 1);
 			}
@@ -1069,7 +1066,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): Tick's phase totals, the delta flushes, why
-		/// entries rebuilt, who moved wallGen, and whether the walkability notes would have been quiet under a kind-aware bump.</summary>
+		/// entries rebuilt, who moved wallGen, and how many walkability notes were quiet (kind unchanged, no bump: r15 fix 1).</summary>
 		private static string DiagnosticTail(MapState st)
 		{
 			var sb = new System.Text.StringBuilder();

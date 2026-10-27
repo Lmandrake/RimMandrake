@@ -283,6 +283,15 @@ namespace RimMandrake.FlowWorks
 			return lastKind == Wall && nowWalkable;
 		}
 
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r15 fix 1): does a walkability note move the labels' input? The labels
+		/// read kinds[] only, so a note whose square's kind now equals what the published snapshot holds cannot change them
+		/// (live r15: 90,790 of 90,800 wall-generation bumps were the pocket grid's own pit-room notifies, walkability unchanged,
+		/// each one staling every labelling). True: no snapshot, the square is out of its range, or its kind moved.</summary>
+		public static bool WalkabilityMovesKind(byte[] snapshot, int idx, byte kindNow)
+		{
+			return snapshot == null || idx < 0 || idx >= snapshot.Length || snapshot[idx] != kindNow;
+		}
+
 		/// <summary>Bounded logging: the first <paramref name="firstN"/> residuals are logged one by one, then only a summary at
 		/// each power of two (2·firstN, 4·firstN, …), so a looping pawn can never spam the log.</summary>
 		public static bool ShouldLog(int nth, int firstN)

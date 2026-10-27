@@ -263,6 +263,15 @@ namespace RimMandrake.FlowWorks
 			return personPocket && dugDepth > 0 && dugDepth >= minDepthNotches;
 		}
 
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 3: does a square's person-pocket flip move its pit-room
+		/// pitness (RM_PitRooms.IsPitCell)? Relative climb on: only where the dug depth would make a pocket a pit room. Off: the
+		/// rooms read the absolute superdeep rule, which no pocket flip moves. r15 measured 90,790 flips notified in one window
+		/// (105.67 ms of Notify_WalkabilityChanged); a flip this says false re-forms nothing the region code would read.</summary>
+		public static bool PocketFlipMovesPitness(bool relative, int dugDepth, int minDepthNotches)
+		{
+			return relative && PitRoomCell(true, dugDepth, minDepthNotches);
+		}
+
 		// ── the free-fall step price (RM_PitTrapMath.DryStepBaseCost) ───────────────────────────────────────────
 
 		/// <summary>A dry walked step DOWN is priced as a fall (free) when the drop itself is a sheer

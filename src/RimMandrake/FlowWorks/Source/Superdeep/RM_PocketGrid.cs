@@ -97,6 +97,10 @@ namespace RimMandrake.FlowWorks
 		private static readonly string[] PhaseNames = { "view", "ramps", "label", "notify" };
 		private readonly double[] lastPhaseMs = new double[Phases], maxPhaseMs = new double[Phases], totalPhaseMs = new double[Phases];
 		private int lastFlips, maxBuildFlips, totalFlips, maxBuildGcs;
+		// r15 fix 3: flips that moved pitness (the only ones notified), flips that also flipped in the build before (oscillation),
+		// and the flip masks (reused, one per grid)
+		private int lastPitFlips, totalPitFlips, totalReflips;
+		private bool[] lastFlipMask, spareFlipMask;
 		private const int CauseFirst = 0, CauseMidLoad = 1, CauseGen = 2, CauseSalt = 3, Causes = 4;
 		private static readonly string[] CauseNames = { "first", "midLoad", "gen", "salt" };
 		private readonly int[] buildCauses = new int[Causes];
@@ -501,15 +505,33 @@ namespace RimMandrake.FlowWorks
 			if (!sameInput && notifyFlips && stride == 0 && old != null && old[PersonBand] != null && RM_PitRooms.RoomsOn)
 			{
 				RM_PocketGridMath.Labels a = old[PersonBand], b = fresh[PersonBand];
+				// r15 fix 3: notify only the flips that move pitness (RM_PitRooms.IsPitCell); r15 notified all 90,790
+				bool relative = Relative && eng != null;
+				int minRoom = RM_PitRooms.MinRoomNotches;
+				int pit = 0, re = 0;
+				bool[] was = lastFlipMask != null && lastFlipMask.Length == n ? lastFlipMask : null;
+				bool[] mask = spareFlipMask != null && spareFlipMask.Length == n ? spareFlipMask : new bool[n];
 				RM_WallReach.pocketFlipNotifying = true;
 				try
 				{
 					for (int i = 0; i < n; i++)
 					{
-						if (a.IsPocketCell(i) != b.IsPocketCell(i))
+						bool flip = a.IsPocketCell(i) != b.IsPocketCell(i);
+						mask[i] = flip;
+						if (!flip)
 						{
-							flips++;
-							RM_PitRooms.NotifyPitnessChanged(map, map.cellIndices.IndexToCell(i));
+							continue;
+						}
+						flips++;
+						if (was != null && was[i])
+						{
+							re++;   // flipped in the build before too: oscillation, the r15 round 40,000 suspect
+						}
+						IntVec3 c = map.cellIndices.IndexToCell(i);
+						if (relative && RM_RelativeRulesMath.PocketFlipMovesPitness(true, eng.ExcavatedDepthRaw(c), minRoom))
+						{
+							pit++;
+							RM_PitRooms.NotifyPitnessChanged(map, c);
 						}
 					}
 				}
@@ -517,6 +539,11 @@ namespace RimMandrake.FlowWorks
 				{
 					RM_WallReach.pocketFlipNotifying = false;
 				}
+				spareFlipMask = was;
+				lastFlipMask = mask;
+				lastPitFlips = pit;
+				totalPitFlips += pit;
+				totalReflips += re;
 			}
 			Lap(whole, ref mark, PhNotify);
 			lastFlips = flips;
@@ -569,6 +596,7 @@ namespace RimMandrake.FlowWorks
 			AppendPhases(sb, "phaseMaxBuildMs", PhaseNames, maxPhaseMs);
 			AppendPhases(sb, "phaseTotalMs", PhaseNames, totalPhaseMs);
 			sb.Append(" flips=").Append(lastFlips).Append('/').Append(maxBuildFlips).Append('/').Append(totalFlips)
+				.Append(" pitFlips=").Append(lastPitFlips).Append('/').Append(totalPitFlips).Append(" reflips=").Append(totalReflips)
 				.Append(" maxBuildGc0=").Append(maxBuildGcs).Append(" causes=");
 			for (int c = 0; c < Causes; c++)
 			{
@@ -624,7 +652,9 @@ namespace RimMandrake.FlowWorks
 					gb.Append(' ').Append(RM_MapComponent_Excavation.GenSourceNames[i]).Append('=').Append(eng.climbBumps[i]);
 				}
 				parts.Add(gb.ToString());
+				parts.Add(eng.FillTerrainTimingLine());   // r15 lead 4: the terrain-write cascade, for r16
 			}
+			parts.Add(Swimming.RM_SwimPathing.TimingLine());   // r15 fix 2: full re-reads vs patches
 			return string.Join(" | ", parts);
 		}
 

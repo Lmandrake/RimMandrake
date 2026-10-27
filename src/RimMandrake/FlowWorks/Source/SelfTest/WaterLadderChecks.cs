@@ -139,7 +139,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_StockMath.FloodPolicy(true, true) == RM_StockMath.FloodCellPolicy.ViaEngine
                     && RM_StockMath.FloodPolicy(true, false) == RM_StockMath.FloodCellPolicy.HandsOff, "a dug square never gets the temp puddle");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"FluidDef held = FluidAt\(c\) \?\? fluid; bool drained = [^;]*; map\.terrainGrid\.SetTerrain\(c, want\);",
+                RiverSwitchFlipChecks.Has(ex, @"FluidDef held = FluidAt\(c\) \?\? fluid; bool drained = [^;]*; //[^;]*int gc0 = System\.GC\.CollectionCount\(0\); long t0 = System\.Diagnostics\.Stopwatch\.GetTimestamp\(\); map\.terrainGrid\.SetTerrain\(c, want\);",
                     "ApplyFillTerrain is a base write");
                 // every non-water liquid's tiers are base-layer defs with their own water-body type; water's ladder is freshwater
                 var tiers = new HashSet<string>();

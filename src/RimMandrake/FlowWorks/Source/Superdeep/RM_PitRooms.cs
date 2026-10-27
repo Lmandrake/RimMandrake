@@ -148,7 +148,12 @@ namespace RimMandrake.FlowWorks
 
 		// ── re-region triggers ─────────────────────────────────────────────
 
-		private static MethodInfo walkabilityChanged;
+		private delegate void WalkabilityChangedFn(RegionDirtyer dirtyer, IntVec3 c, bool newWalkability);
+
+		// r15 fix 3: an open delegate, not MethodInfo.Invoke (an object[] and two boxes per square). Harmony's patches on the
+		// method still run: they detour the method itself.
+		private static WalkabilityChangedFn walkabilityChanged;
+		private static bool walkabilityLooked;
 
 		/// <summary>A cell crossed into or out of D = 4: its regions (and neighbours') re-form.</summary>
 		public static void NotifyPitnessChanged(Map map, IntVec3 c)
@@ -157,11 +162,13 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			if (walkabilityChanged == null)
+			if (!walkabilityLooked)
 			{
-				walkabilityChanged = AccessTools.Method(typeof(RegionDirtyer), "Notify_WalkabilityChanged");
+				walkabilityLooked = true;
+				MethodInfo m = AccessTools.Method(typeof(RegionDirtyer), "Notify_WalkabilityChanged");
+				walkabilityChanged = m == null ? null : AccessTools.MethodDelegate<WalkabilityChangedFn>(m);
 			}
-			walkabilityChanged?.Invoke(map.regionDirtyer, new object[] { c, c.Walkable(map) });
+			walkabilityChanged?.Invoke(map.regionDirtyer, c, c.Walkable(map));
 		}
 
 		/// <summary>A cut or fill crossed the pit-room depth (a setting other than 0 or 2 m; the 2 m crossing is already notified,

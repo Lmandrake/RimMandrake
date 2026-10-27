@@ -449,7 +449,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Src("Rivers", "RM_MapComponent_RiverCurrent.cs").Contains("Pits.RM_SuspensionWaters.CurrentExempt(map, c)"),
                     "the current never carries anyone on a deck (the fords' exemption)");
                 string swim = Src("Swimming", "RM_Swim.cs");
-                Assert(swim.Contains("if (Pits.RM_SpanUtility.DeckedAt(map, c))") && swim.Contains("&& !Pits.RM_SpanUtility.DeckedAt(map, cell))"),
+                Assert(swim.Contains("if (Pits.RM_SpanUtility.DeckedAt(map, c))") && swim.Contains("return !Pits.RM_SpanUtility.DeckedAt(map, map.cellIndices.IndexToCell(i));"),
                     "a decked square is not a swim square (items lie on it; non-swimmers cross it)");
                 Assert(swim.Contains("(Pits.RM_PitCoverUtility.IsCovered(map, c) && !Pits.RM_SuspensionUnderpass.InFloorBand(p))"),
                     "nobody drowns on a deck over natural water");

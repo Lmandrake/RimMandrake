@@ -374,12 +374,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"swimByKey\[k\] = Swimming\.RM_SwimWater\.FluidSwimmable\(fluidPalette\[k - 1\] \?\? ActiveFluid\);",
                     "the memo is LiquidSwimmableAt's dug rule, key by key");
                 RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[i\], climb\);", "the pocket grid and the cliff masks read the swim surface");
-                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\); Swimming\.RM_SwimPathing\.Bump\(map\);", "a change re-derives the masks, the pocket grid and the swim grids");
+                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\);.{0,160}Swimming\.RM_SwimPathing\.BumpCells\(map, changed\);", "a change re-derives the masks, the pocket grid and the swim grids (naming its squares: r15 fix 2)");
                 RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
                 RiverSwitchFlipChecks.Has(ex, @"% SwimRefreshTicks == 11\) \{ RefreshDugSwim\(\); \}", "refreshed on its own timer");
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
                 Assert(sw.Contains("return ex != null && ex.IsDugSwimCell(c);"), "IsDeepSwimCell counts dug swim squares (deepCell, items, drop pods, non-swimmer reach, swim speed)");
-                Assert(sw.Contains("|| (dugSwim && ex.IsDugSwimCell(cell))"), "the swim offset grids close dug swim squares to non-swimmers");
+                Assert(sw.Contains("&& !(dugSwim && ex.IsDugSwimCell(map.cellIndices.IndexToCell(i))))"), "the swim offset grids close dug swim squares to non-swimmers");
                 Assert(sw.Contains("RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim();"), "the master switch re-derives them");
                 string sc = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStepCost.cs"));
                 RiverSwitchFlipChecks.Has(sc, @"if \(eng\.IsDugSwimCell\(c\)\) \{ baseCostOverride = Swimming\.RM_SwimSettings\.swimPathCost; return; \}",
@@ -542,6 +542,94 @@ namespace RimMandrake.FlowWorks.SelfTest
                 g.Put(2, 1);
                 Assert(g.End(ch) == 0 && g.Count == 1 && !g.TryClimb(9, out _), "shrunk: square 9 is gone, square 2 kept, nothing moved");
             });
+            Case("Swim_grid_patch_equals_full_reread", () =>
+            {
+                // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: RM_SwimPathing re-reads only the squares the dug-swim
+                // refresh named, unless an unnamed writer, a refused patch or a big batch owes a full re-read. Random writers
+                // over a 60x60 deep map (named, named with extra unmoved squares, unnamed), builds at random moments: every build
+                // (patched with For's own rule: copy, flip the moved squares, keep the grid when none moved) equals a full
+                // re-read of the map as it is.
+                const int n = 3600;
+                var rng = new Random(15022);
+                var truth = new bool[n];
+                for (int i = 0; i < n; i++) truth[i] = rng.NextDouble() < 0.15;
+                var plan = new RM_SwimGridPlan();
+                Assert(plan.Due && plan.Version == 0, "a new plan is due at version 0 (VersionOf's 0 for a map with no grids)");
+                bool[] built = null;
+                int deepCount = 0, full = 0, patched = 0, kept = 0, reread = 0, builds = 0;
+                for (int step = 0; step < 4000; step++)
+                {
+                    int r = rng.Next(20);
+                    if (r < 12)
+                    {
+                        var named = new List<int>();
+                        int k = rng.Next(1, 12);
+                        for (int j = 0; j < k; j++)
+                        {
+                            int c = rng.Next(n);
+                            if (rng.Next(3) > 0) truth[c] = !truth[c];   // a third of the named squares did not move
+                            named.Add(c);
+                        }
+                        plan.BumpCells(named);
+                    }
+                    else if (r < 13)
+                    {
+                        truth[rng.Next(n)] ^= true;   // a terrain change: unnamed
+                        plan.Bump();
+                    }
+                    else if (r < 14)
+                    {
+                        var named = new List<int>();
+                        for (int j = 0; j < 400; j++) { int c = rng.Next(n); truth[c] ^= true; named.Add(c); }   // past maxPatch
+                        plan.BumpCells(named);
+                    }
+                    if (rng.Next(3) == 0 && plan.Due)
+                    {
+                        builds++;
+                        List<int> patch = plan.Take(225, built != null && rng.Next(10) > 0);
+                        if (patch == null)
+                        {
+                            full++;
+                            built = (bool[])truth.Clone();
+                            deepCount = 0;
+                            foreach (bool d in built) if (d) deepCount++;
+                        }
+                        else
+                        {
+                            patched++;
+                            reread += patch.Count;
+                            var moved = new List<int>();
+                            foreach (int i in patch) if (truth[i] != built[i]) moved.Add(i);
+                            if (moved.Count == 0) kept++;
+                            else
+                            {
+                                built = (bool[])built.Clone();
+                                foreach (int i in moved) { built[i] = !built[i]; deepCount += built[i] ? 1 : -1; }
+                            }
+                        }
+                        Assert(!plan.Due && plan.PendingCount == 0, "built: nothing pending");
+                        int fresh = 0;
+                        for (int i = 0; i < n; i++)
+                        {
+                            if (built[i] != truth[i]) Assert(false, "step " + step + ": square " + i + " differs from a full re-read");
+                            if (truth[i]) fresh++;
+                        }
+                        Assert(deepCount == fresh, "step " + step + ": deep count " + deepCount + " = full re-read's " + fresh);
+                    }
+                }
+                Console.WriteLine("        " + builds + " builds: " + full + " full re-reads, " + patched + " patches (" + kept
+                    + " kept the grid), " + reread + " squares patched vs " + ((long)patched * n) + " a full re-read each would read");
+                Assert(full > 0 && patched > kept && kept > 0, "every path ran");
+                // the stamp's version read is a peek: VersionOf no longer reaches For, and the refresh names its squares
+                string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
+                RiverSwitchFlipChecks.Has(sw, @"public static int VersionOf\(Map map\)\s*\{\s*if \(map == null\)\s*\{\s*return -1;\s*\}\s*return grids\.TryGetValue\(map, out MapGrids g\) \? g\.plan\.Version : 0;",
+                    "VersionOf peeks the counter (no rebuild)");
+                RiverSwitchFlipChecks.Has(sw, @"List<int> patch = g\.plan\.Take\(", "For asks the plan whether to patch");
+                string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\);.{0,160}Swimming\.RM_SwimPathing\.BumpCells\(map, changed\);",
+                    "the dug-swim refresh names the squares it changed");
+            });
+
             Case("Swim_shallow_drowning_switch_alone", () =>
             {
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));

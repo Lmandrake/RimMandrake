@@ -417,9 +417,114 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string wr = Src("Superdeep", "RM_WallReach.cs");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_WalkabilityChanged""\)\]", "walkability is hooked where PathGrid reports it");
                 RiverSwitchFlipChecks.Has(wr, @"Postfix\(Map ___map, IntVec3 c, bool newWalkability\) \{ RM_WallReach\.NoteWalkability\(___map, c, newWalkability\);", "the hook bumps the stamp");
-                RiverSwitchFlipChecks.Has(wr, @"internal static void NoteWalkability\(Map map, IntVec3 c, bool nowWalkable\) \{.{0,200}Interlocked\.Increment\(ref st\.wallGen\);", "every walkability change stales the labels");
+                RiverSwitchFlipChecks.Has(wr, @"internal static void NoteWalkability\(Map map, IntVec3 c, bool nowWalkable\) \{.{0,700}RM_WallReachMath\.WalkabilityMovesKind\(kinds, idx, KindAt\(map, pg, Swimming\.RM_SwimWater\.On, idx\)\); if \(moved\) \{.{0,140}Interlocked\.Increment\(ref st\.wallGen\);",
+                    "a walkability change that moves the square's kind stales the labels (r15 fix 1: only that one)");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsSpawned""\)\]", "a door or fence spawned is seen");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsDespawned""\)\]", "a door or fence removed is seen");
+            });
+
+            Case("WallReach_kind_aware_walk_bump_never_misses_a_change", () =>
+            {
+                // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 1: NoteWalkability bumps the wall generation only when the
+                // square's kind now differs from the published snapshot. Proof on a random change sequence (real changes,
+                // walkability-unchanged notes like the pocket grid's pit-room notifies, and A->B->A reverts before a rebuild):
+                // whenever the kind-aware generation has NOT moved, the labels built from the snapshot are byte-identical to a
+                // fresh labelling of the map as it is now, so suppressing a bump never hides a change; and every check point's
+                // labels equal those the unconditional rule would hold after its own rebuild.
+                const int w = 48, h = 48, n = w * h;
+                var rng = new Random(15015);
+                byte[] kinds = { O, W, D, PD, HD, SG, F, DW };
+                var truth = new byte[n];
+                for (int i = 0; i < n; i++) truth[i] = rng.NextDouble() < 0.7 ? O : kinds[rng.Next(kinds.Length)];
+                var depth = new byte[n];
+                for (int i = 0; i < n; i++) depth[i] = (byte)(rng.NextDouble() < 0.2 ? rng.Next(1, 5) : 0);
+                byte[] pub = (byte[])truth.Clone();
+                int[] built = (int[])RM_WallReachMath.Label(pub, depth, w, h, Person, Colonist).label.Clone();
+                int genOld = 0, genNew = 0, builtGen = 0, changes = 0, quiet = 0, rebuilds = 0, checks = 0;
+                for (int step = 0; step < 3000; step++)
+                {
+                    int r = rng.Next(10), c = rng.Next(n);
+                    if (r < 3)
+                    {
+                        byte was = truth[c];
+                        do truth[c] = kinds[rng.Next(kinds.Length)]; while (truth[c] == was);
+                        changes++;
+                    }
+                    else if (r < 4)
+                    {
+                        byte was = truth[c];
+                        do truth[c] = kinds[rng.Next(kinds.Length)]; while (truth[c] == was);
+                        genOld++;
+                        if (RM_WallReachMath.WalkabilityMovesKind(pub, c, truth[c])) genNew++;
+                        truth[c] = was;   // reverted before any rebuild
+                    }
+                    else
+                    {
+                        quiet++;   // a note with nothing changed (the pocket grid's pit-room notify)
+                    }
+                    genOld++;
+                    if (RM_WallReachMath.WalkabilityMovesKind(pub, c, truth[c])) genNew++;
+                    if (step % 7 == 0)
+                    {
+                        checks++;
+                        int[] fresh = RM_WallReachMath.Label(truth, depth, w, h, Person, Colonist).label;
+                        if (genNew == builtGen)
+                        {
+                            Assert(RM_WallReachMath.SameBytes(pub, truth), "step " + step + ": generation unmoved, snapshot equals the map");
+                            Assert(built.Length == fresh.Length && System.Linq.Enumerable.SequenceEqual(built, fresh),
+                                "step " + step + ": generation unmoved, labels byte-identical to a fresh labelling");
+                        }
+                        else
+                        {
+                            pub = (byte[])truth.Clone();
+                            built = (int[])RM_WallReachMath.Label(pub, depth, w, h, Person, Colonist).label.Clone();
+                            builtGen = genNew;
+                            rebuilds++;
+                            Assert(System.Linq.Enumerable.SequenceEqual(built, fresh), "step " + step + ": rebuilt labels equal the unconditional rule's");
+                        }
+                    }
+                }
+                Console.WriteLine("        3000 notes (" + changes + " real changes, " + quiet + " quiet, rest reverts): unconditional bumps "
+                    + genOld + ", kind-aware " + genNew + "; " + rebuilds + " rebuilds over " + checks + " checks, 0 missed");
+                Assert(genNew < genOld, "the kind-aware rule bumps less");
+                Assert(genNew >= changes, "every real change bumped at least once");
+                // the r15 cascade: a pocket-grid notify burst over 40,000 squares, walkability unchanged, moves nothing
+                int burst = 0;
+                for (int i = 0; i < n; i++) if (RM_WallReachMath.WalkabilityMovesKind(pub, i, pub[i])) burst++;
+                Assert(burst == 0, "a notify burst over unchanged squares bumps nothing (got " + burst + ")");
+                Assert(RM_WallReachMath.WalkabilityMovesKind(null, 0, O) && RM_WallReachMath.WalkabilityMovesKind(pub, -1, O)
+                    && RM_WallReachMath.WalkabilityMovesKind(pub, n, O), "no snapshot or out of range: bump, as before");
+            });
+
+            Case("PocketGrid_flip_notify_only_where_pitness_moves", () =>
+            {
+                // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 3: the pocket grid's rebuild notifies a person-pocket flip as
+                // a walkability change only so pit-room regions re-form; RM_PitRooms.IsPitCell is
+                // Relative ? PitRoomCell(pocket, dugDepth, min) : IsSuperdeepRaw. Exhaustive: the filter says notify exactly when
+                // the flip moves that answer (Relative off: never; the superdeep answer reads no pocket).
+                int checkedCases = 0, notify = 0;
+                foreach (bool relative in new[] { false, true })
+                    for (int d = -1; d <= 20; d++)
+                        for (int m = 0; m <= 12; m++)
+                            foreach (bool before in new[] { false, true })
+                            {
+                                bool after = !before;
+                                bool superdeep = d >= 4;   // any fixed value: the off rule ignores the pocket
+                                bool pitBefore = relative ? RM_RelativeRulesMath.PitRoomCell(before, d, m) : superdeep;
+                                bool pitAfter = relative ? RM_RelativeRulesMath.PitRoomCell(after, d, m) : superdeep;
+                                bool says = RM_RelativeRulesMath.PocketFlipMovesPitness(relative, d, m);
+                                Assert(says == (pitBefore != pitAfter), "relative=" + relative + " d=" + d + " m=" + m + ": notify iff pitness moved");
+                                checkedCases++;
+                                if (says) notify++;
+                            }
+                Console.WriteLine("        " + checkedCases + " flips judged, " + notify + " notified (each one a pitness move)");
+                string pg = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PocketGrid.cs"));
+                RiverSwitchFlipChecks.Has(pg, @"bool flip = a\.IsPocketCell\(i\) != b\.IsPocketCell\(i\);.{0,500}if \(relative && RM_RelativeRulesMath\.PocketFlipMovesPitness\(true, eng\.ExcavatedDepthRaw\(c\), minRoom\)\) \{ pit\+\+; RM_PitRooms\.NotifyPitnessChanged\(map, c\);",
+                    "the rebuild notifies only the flips that move pitness");
+                RiverSwitchFlipChecks.Has(pg, @"bool relative = Relative && eng != null;", "Relative is the rooms' own switch (IsPitCell's branch)");
+                string pr = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitRooms.cs"));
+                RiverSwitchFlipChecks.Has(pr, @"AccessTools\.MethodDelegate<WalkabilityChangedFn>\(m\)", "an open delegate, not MethodInfo.Invoke");
+                Assert(!pr.Contains("new object[] { c, c.Walkable(map) }"), "no boxed Invoke left");
             });
 
             Case("WallReach_wiring_source_pins", () =>

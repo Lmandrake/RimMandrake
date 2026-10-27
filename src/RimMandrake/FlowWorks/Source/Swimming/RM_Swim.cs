@@ -794,9 +794,11 @@ namespace RimMandrake.FlowWorks.Swimming
 
 		private sealed class MapGrids
 		{
-			public int version = -1;
-			public int builtVersion = -2;
+			// r15 fix 2: the version, and which squares moved since the last build (RM_SwimGridPlan, proven in SelfTest)
+			public readonly RM_SwimGridPlan plan = new RM_SwimGridPlan();
 			public int deepCount;
+			public ushort builtAvoidCost;
+			public int fullTick = int.MinValue;
 			public Grid block;
 			public Grid avoid;
 			public readonly Dictionary<(object, object), Grid> combined = new Dictionary<(object, object), Grid>();
@@ -809,7 +811,17 @@ namespace RimMandrake.FlowWorks.Swimming
 		{
 			if (map != null && grids.TryGetValue(map, out MapGrids g))
 			{
-				g.version++;
+				g.plan.Bump();
+			}
+		}
+
+		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: a writer that names every square (index) it may have
+		/// moved; the next build re-reads only those when nothing else moved since the last build.</summary>
+		public static void BumpCells(Map map, IReadOnlyList<int> cells)
+		{
+			if (map != null && grids.TryGetValue(map, out MapGrids g))
+			{
+				g.plan.BumpCells(cells);
 			}
 		}
 
@@ -817,8 +829,21 @@ namespace RimMandrake.FlowWorks.Swimming
 		{
 			foreach (MapGrids g in grids.Values)
 			{
-				g.version++;
+				g.plan.Bump();
 			}
+		}
+
+		// r15 fix 2 counters (POCKETTIME's SWIMGRID part): full re-reads, patches, squares a patch re-read, patches that
+		// moved no square (grids kept), and the time each kind took
+		public static int FullBuilds, PatchBuilds, PatchCells, PatchKept;
+		public static double FullMs, PatchMs, FullMaxMs, PatchMaxMs;
+
+		/// <summary>"SWIMGRID full=N fullMs=T fullMaxMs=M patch=N patchCells=N kept=N patchMs=T patchMaxMs=M".</summary>
+		public static string TimingLine()
+		{
+			return "SWIMGRID full=" + FullBuilds + " fullMs=" + FullMs.ToString("0.0") + " fullMaxMs=" + FullMaxMs.ToString("0.000")
+				+ " patch=" + PatchBuilds + " patchCells=" + PatchCells + " kept=" + PatchKept + " patchMs=" + PatchMs.ToString("0.0")
+				+ " patchMaxMs=" + PatchMaxMs.ToString("0.000");
 		}
 
 		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: how many squares the non-swimmer block closes (0: no deep water).</summary>
@@ -827,10 +852,28 @@ namespace RimMandrake.FlowWorks.Swimming
 			return map == null ? 0 : For(map).deepCount;
 		}
 
-		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: the swim grids' version (moves with every swim-square change).</summary>
+		/// <summary>REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: the swim grids' version (moves with every swim-square change).
+		/// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: a peek at the maintained counter, never a rebuild (r15: this
+		/// read forced the 105k-square re-read inside RM_WallReach's stamp, 64 ms over 23 moves). A map with no grids yet
+		/// reads 0, the version For starts it at.</summary>
 		public static int VersionOf(Map map)
 		{
-			return map == null ? -1 : For(map).version;
+			if (map == null)
+			{
+				return -1;
+			}
+			return grids.TryGetValue(map, out MapGrids g) ? g.plan.Version : 0;
+		}
+
+		/// <summary>The deep predicate, one square: swim terrain or a dug swim square, not under a suspension deck.</summary>
+		private static bool DeepAt(Map map, RM_MapComponent_Excavation ex, bool dugSwim, int i)
+		{
+			// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug swim squares close to non-swimmers like natural deep water
+			if (!RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(i)) && !(dugSwim && ex.IsDugSwimCell(map.cellIndices.IndexToCell(i))))
+			{
+				return false;
+			}
+			return !Pits.RM_SpanUtility.DeckedAt(map, map.cellIndices.IndexToCell(i));   // a suspension deck over it is ground (SUSPENSION_WATERS)
 		}
 
 		private static void Retire(MapGrids g, Grid grid, int now)
@@ -846,49 +889,27 @@ namespace RimMandrake.FlowWorks.Swimming
 			if (!grids.TryGetValue(map, out MapGrids g))
 			{
 				PruneDeadMaps();
-				g = new MapGrids { version = 0 };
+				g = new MapGrids();
 				grids[map] = g;
 			}
 			int now = Find.TickManager?.TicksGame ?? 0;
-			if (g.builtVersion != g.version)
+			if (g.plan.Due)
 			{
-				g.builtVersion = g.version;
-				Retire(g, g.block, now);
-				Retire(g, g.avoid, now);
-				foreach (Grid cg in g.combined.Values)
+				ushort avoidNow = (ushort)Mathf.Clamp(RM_SwimSettings.animalAvoidCost, 0, RM_SwimMath.Blocked - 1);
+				int cellCount = map.cellIndices.NumGridCells;
+				// r15 fix 2: re-read only the squares the writers named, unless a full re-read is owed (first build, a setting
+				// moved, an unnamed writer, a big batch, or 2500 ticks since the last full re-read: anything moved without a bump
+				// is caught no later than the old rule's next bump would have caught it plus that bound)
+				bool canPatch = g.fullTick != int.MinValue && now >= g.fullTick && now - g.fullTick < RetireAfterTicks
+					&& g.builtAvoidCost == avoidNow && (g.block == null || g.block.cells.Length == cellCount);
+				List<int> patch = g.plan.Take(System.Math.Max(64, cellCount / 16), canPatch);
+				if (patch != null)
 				{
-					Retire(g, cg, now);
+					Patch(map, g, patch, avoidNow, now);
 				}
-				g.combined.Clear();
-				g.block = null;
-				g.avoid = null;
-				int n = map.cellIndices.NumGridCells;
-				var deep = new List<int>();
-				RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
-				bool dugSwim = ex != null && ex.DugSwimCellCount > 0;
-				for (int i = 0; i < n; i++)
+				else
 				{
-					IntVec3 cell = map.cellIndices.IndexToCell(i);
-					// SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER: dug swim squares close to non-swimmers like natural deep water
-					if ((RM_SwimWater.IsSwimTerrain(map.terrainGrid.TerrainAt(cell)) || (dugSwim && ex.IsDugSwimCell(cell)))
-						&& !Pits.RM_SpanUtility.DeckedAt(map, cell))   // a suspension deck over it is ground (SUSPENSION_WATERS)
-					{
-						deep.Add(i);
-					}
-				}
-				g.deepCount = deep.Count;
-				if (deep.Count > 0)
-				{
-					var b = new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
-					var a = new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
-					ushort avoidCost = (ushort)Mathf.Clamp(RM_SwimSettings.animalAvoidCost, 0, RM_SwimMath.Blocked - 1);
-					foreach (int i in deep)
-					{
-						b[i] = RM_SwimMath.Blocked;
-						a[i] = avoidCost;
-					}
-					g.block = new Grid { cells = b };
-					g.avoid = new Grid { cells = a };
+					Full(map, g, avoidNow, now, cellCount);
 				}
 			}
 			for (int i = g.retired.Count - 1; i >= 0; i--)
@@ -900,6 +921,120 @@ namespace RimMandrake.FlowWorks.Swimming
 				}
 			}
 			return g;
+		}
+
+		/// <summary>Every square re-read (the build before r15 fix 2, unchanged).</summary>
+		private static void Full(Map map, MapGrids g, ushort avoidNow, int now, int cellCount)
+		{
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			g.fullTick = now;
+			g.builtAvoidCost = avoidNow;
+			Retire(g, g.block, now);
+			Retire(g, g.avoid, now);
+			foreach (Grid cg in g.combined.Values)
+			{
+				Retire(g, cg, now);
+			}
+			g.combined.Clear();
+			g.block = null;
+			g.avoid = null;
+			int n = cellCount;
+			var deep = new List<int>();
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			bool dugSwim = ex != null && ex.DugSwimCellCount > 0;
+			for (int i = 0; i < n; i++)
+			{
+				if (DeepAt(map, ex, dugSwim, i))
+				{
+					deep.Add(i);
+				}
+			}
+			g.deepCount = deep.Count;
+			if (deep.Count > 0)
+			{
+				var b = new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+				var a = new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+				foreach (int i in deep)
+				{
+					b[i] = RM_SwimMath.Blocked;
+					a[i] = avoidNow;
+				}
+				g.block = new Grid { cells = b };
+				g.avoid = new Grid { cells = a };
+			}
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			FullBuilds++;
+			FullMs += ms;
+			FullMaxMs = System.Math.Max(FullMaxMs, ms);
+		}
+
+		/// <summary>r15 fix 2: rebuild by re-reading only <paramref name="patch"/>'s squares. No square moved: the grids (and
+		/// their combined grids) are kept, same content, same objects. Else copies of the grids are patched and the old ones
+		/// retired, as a full build does (the pathfinder caches by customizer object, so a handed-out grid never changes).
+		/// Same result as the full re-read whenever the named squares are all that moved (RM_SwimGridPlan's proof).</summary>
+		private static void Patch(Map map, MapGrids g, List<int> patch, ushort avoidNow, int now)
+		{
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			bool dugSwim = ex != null && ex.DugSwimCellCount > 0;
+			int n = map.cellIndices.NumGridCells;
+			List<int> moved = null;
+			foreach (int i in patch)
+			{
+				if ((uint)i >= (uint)n)
+				{
+					continue;
+				}
+				bool was = g.block != null && g.block.cells[i] == RM_SwimMath.Blocked;
+				if (DeepAt(map, ex, dugSwim, i) != was)
+				{
+					(moved ?? (moved = new List<int>())).Add(i);
+				}
+			}
+			PatchBuilds++;
+			PatchCells += patch.Count;
+			if (moved != null)
+			{
+				NativeArray<ushort> b = g.block != null ? new NativeArray<ushort>(g.block.cells, Allocator.Persistent)
+					: new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+				NativeArray<ushort> a = g.avoid != null ? new NativeArray<ushort>(g.avoid.cells, Allocator.Persistent)
+					: new NativeArray<ushort>(n, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+				int count = g.deepCount;
+				foreach (int i in moved)
+				{
+					bool deep = b[i] != RM_SwimMath.Blocked;
+					b[i] = deep ? (ushort)RM_SwimMath.Blocked : (ushort)0;
+					a[i] = deep ? avoidNow : (ushort)0;
+					count += deep ? 1 : -1;
+				}
+				Retire(g, g.block, now);
+				Retire(g, g.avoid, now);
+				foreach (Grid cg in g.combined.Values)
+				{
+					Retire(g, cg, now);
+				}
+				g.combined.Clear();
+				g.deepCount = count;
+				if (count > 0)
+				{
+					g.block = new Grid { cells = b };
+					g.avoid = new Grid { cells = a };
+				}
+				else
+				{
+					b.Dispose();   // never handed out
+					a.Dispose();
+					g.block = null;
+					g.avoid = null;
+				}
+			}
+			else
+			{
+				PatchKept++;
+			}
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			PatchMs += ms;
+			PatchMaxMs = System.Math.Max(PatchMaxMs, ms);
 		}
 
 		/// <summary>The offset grid for this pawn's next request, or null (vanilla costs do).</summary>
