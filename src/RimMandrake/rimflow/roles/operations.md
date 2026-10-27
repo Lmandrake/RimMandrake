@@ -48,8 +48,12 @@ Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.j
 A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;
 ops_watch's death is covered by the dead-man timer. Loosening this table is the owner's.
 
-Hard stop: `daily_token_cap` across all runs of the day. When the cap is reached, write one note saying what was left
-undone and stop. The cap is read from the schedule, never raised by you.
+How the caps really bind (code, `role_launch.py`): `claude -p` cannot be stopped at a token budget. A run is
+REFUSED at launch when today's spend plus its budget would pass `daily_token_cap`; its usage is counted after it
+finishes, and a run over its budget raises an alarm after the fact. The one real stop is wall time: a run still going
+after `run_max_s` is stopped by the Dispatcher with an alarm. So: keep your run short, and do not rely on being cut off
+at a token count. If you are stopped, say in your note what was left undone. The caps are read from the schedule, never
+raised by you.
 
 **Off switch:** `enabled: false` on the Operations role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\ops_watch\OPERATIONS_OFF` (anyone may create it; its first line says why). Either one:

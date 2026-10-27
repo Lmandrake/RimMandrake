@@ -11,6 +11,9 @@ A program, not a judgement: pick() applies the schedule's `account_pick` rule to
               "recommend": the work listed under `hold` (role_launch / ring / recover) is HELD and an alarm says
               which account to switch to. Nothing here switches: a switch is `claude-account use` (one account per
               machine, it closes every Claude window, and the machine ships DISARMED) — the owner's or a seat's call.
+  HOLD        the machine is ON a lent account that is off-limits or under `lent_min_draw_pct` and no other
+              account is fit: nothing listed under `hold` is released (never burn an off-limits account). The
+              dispatcher must alarm it (account_gate alarms SWITCH/UNMEASURED today: item filed).
   UNMEASURED  the machine's own account or its reading is unknown: KEEP it and alarm, never guess. A candidate whose
               points are not in `target_min.m` (MEASURED by default) is not a candidate.
 
@@ -89,7 +92,9 @@ def load_lent(rule):
 def pick(rule, status, current, lent_rules, allowance, now):
     """Pure. -> {"state", "account", "to", "hold", "why", "key", "candidates"}."""
     def out(state, why, to=None, cands=()):
-        hold = state == "SWITCH"           # act "recommend" (the only one built): the work waits for the switch
+        # act "recommend" (the only one built): the work waits for the switch. HOLD: the machine is on a lent
+        # account that is off-limits / under its draw line and nothing else is fit: never burn it, wait.
+        hold = state in ("SWITCH", "HOLD")
         key = "%s %s%s" % (state, current or "?", (" -> " + to) if to else "")
         return {"state": state, "account": current, "to": to, "hold": hold, "why": why, "key": key,
                 "candidates": list(cands)}
@@ -157,6 +162,10 @@ def pick(rule, status, current, lent_rules, allowance, now):
 
     pool = sorted(owned, key=order) or sorted(lent_ok, key=order)
     tail = ("; not fit: " + "; ".join(refused)) if refused else ""
+    lent_blocked = current in lent and any(u.startswith("lent account allowance") for u in under)
+    if not pool and lent_blocked:
+        return out("HOLD", "hold: %s is a lent account under its limit (%s) and no other account is fit, so no work "
+                   "is released on it%s" % (here, ", ".join(under), tail))
     if not pool:
         return out("KEEP", "keep %s although under the switch line (%s): no other account is fit%s" % (
             here, ", ".join(under), tail))

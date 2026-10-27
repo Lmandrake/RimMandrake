@@ -590,6 +590,15 @@ c = out["tokentalk.role.conductor.share"]
 check("tokentalk: conductor run results are read, 1 of 6 has token talk", c["m"] == "MEASURED" and abs(c["v"] - 16.7) < 0.05, c)
 check("tokentalk: a run with no result text is UNMEASURED with its reason, Operations' runs are not a series",
       out["tokentalk.role.producer.share"]["m"] == "UNMEASURED" and "tokentalk.role.operations.share" not in out)
+(RR / ("rm-role-auditor-%d.json" % (NOW - 60))).write_text("")                # in flight: skipped, no failure
+dead = RR / ("rm-role-arbiter-%d.json" % (NOW - 3 * DAY))
+dead.write_text("")                                                              # killed run: only the arbiter is bad
+os.utime(dead, (NOW - 3 * DAY, NOW - 3 * DAY))
+os.utime(RR / ("rm-role-auditor-%d.json" % (NOW - 60)), (NOW - 60, NOW - 60))
+texts, bad = OW.tt_texts(NOW, R, {"events": evs})
+check("tokentalk: an empty killed-run file marks only its own role bad, an in-flight one is skipped, the rest stay read",
+      list(k for k in bad if k.startswith("role.")) == ["role.arbiter", "role.producer"] and "role._all" not in bad
+      and len(texts.get("role.conductor", [])) == 6, (bad, list(texts)))
 subprocess.run(["git", "-C", str(GIT), "init", "-q"], check=True)
 for name, msg in (("src/RimMandrake/Mod/a.xml", "tokens spent here"), ("src/RimMandrake/Utils/b.py", "plain"),
                   ("src/RimMandrake/Utils/c.py", "ledger: skip me tokens")):

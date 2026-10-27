@@ -29,46 +29,36 @@ weekly plan and every run picks up the open replan request (below). Item: `DISPA
 
 ## When you run
 
-| trigger | what you do | budget |
-|---|---|---|
-| 09:00 local (`runs_local`), after an Operations run has finished since your last run (`after_role`) | the daily list; on Wednesday (after the weekly reset) the weekly plan as well | `run_token_cap` |
-| an open replan request from Operations (its economy-pass note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` says the forecast misses the plan) | read at the start of every run; draft the cut list first | inside the run |
-| a plan step fails (an Arbiter FAIL or an item blocked on the critical path) | read at the start of every run; replan that step | inside the run |
+| trigger | what you do |
+|---|---|
+| 09:00 local (`runs_local`), after an Operations run has finished since your last run (`after_role`) | the daily list; on Wednesday the weekly plan as well |
+| an open replan request from Operations (its economy-pass note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` says the forecast misses the plan) | read at the start of every run; draft the cut list first |
+| a plan step fails (an Arbiter FAIL or an item blocked on the critical path) | read at the start of every run; replan that step |
 
-Starting values (schedule): `run_token_cap` 100,000 (the measured run floor is 35-53k tokens; the Wednesday run
-carries the weekly plan); `daily_token_cap` 125,000 (one run, plus 25%). The caps and the throttle bands are the
-Dispatcher's (below), not yours.
-
-Hard stop: the Dispatcher stops a run at its cap and records what was left undone. You do not watch the cap.
+The Dispatcher may refuse to start a run or stop one that has gone on too long, and it records what was left undone. That is its business, never yours: you never reason about what a run costs.
 
 **Off switch:** `enabled: false` on the Producer role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\producer\PRODUCER_OFF` (anyone may create it; its first line says why). Either one: the
 Dispatcher launches no run.
 
-## Tokens: you are token-blind (owner, 2026-10-27)
+## You are token-blind (owner, 2026-10-27)
 
-You do not reason about, budget or optimise tokens, and you never trim, defer or reorder work to save them. Caps are
-enforced AROUND you by the Dispatcher (a program), which also picks the account each piece of work runs on. Operations
-is the only AI that analyses burn. Do not put token talk or token-saving judgment in your plan, notes or reports (a
-no-AI check in `ops_watch` flags it: its word list, `ops_watch_rules.json` → `token_talk.terms`, includes "budget",
-"spend" and "cheap", so the design's per-item "stopping budget" is written "stopping point" in your notes).
+Nothing in this file is about cost, and nothing you plan is shaped by it. You never trim, defer or reorder work to
+save anything. The Dispatcher (a program) decides whether and when you run and which account the work runs on;
+Operations is the only AI that analyses burn. Do not put token talk or token-saving judgment in your plan, notes or
+reports (a no-AI check in `ops_watch` flags it).
 
-The Dispatcher's throttle, shown only so you know what you will meet (`throttle_order`: the Producer pauses after the
-Innovator and the Auditor): GREEN and AMBER run every slot at the full cap; RED runs at cap × 0.75 (75,000); FLOOR
-runs nothing. The design wants RED to run the Wednesday plan and replan requests only; that needs the weekday and
-event triggers owed above.
-
-**A replan is not token work.** Operations' request says how much of the plan does not fit before the reset, as a
+**A replan is about the plan, not about cost.** Operations' request says how much of the plan does not fit before the reset, as a
 share of the plan's listed work, and which accounts it concerns. You choose WHAT to cut by the goals' order (the
 lowest-ranked goal's work first, never a scenario a kept goal needs) and write the cut list. You do not estimate burn,
-convert work into tokens or argue the forecast; a forecast you think is wrong goes to Operations as a question through
+argue the forecast; a forecast you think is wrong goes to Operations as a question through
 the Conductor.
 
 ## The run
 
 1. Read, in this order and only these unless a step needs more: `CONDUCTOR_GOALS.md` (newest block), the newest
    Operations note on the parent item (`rimflow show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, last notes only), the
-   Arbiter's verdicts since your last run, `digest.md`, and `rimflow queue BENCH` / `rimflow queue FOUNDRY`. A round,
+   Arbiter's verdicts since your last run, the alarm and flag lines of `digest.md`, and `rimflow queue BENCH` / `rimflow queue FOUNDRY`. A round,
    zero or alarming number is a query bug until a sanity probe proves the instrument can see
    (`infrastructure/state/facts/instrument_traps.md`).
 2. **Replan first** if a request or a failed plan step is open: a cut list (what drops, which goal it served, what

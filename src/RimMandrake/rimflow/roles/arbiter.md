@@ -21,7 +21,7 @@ run as two daily batches over the claims since the last batch. Event launch: `DI
 
 ## Advisory first (the conservative start, chosen 2026-10-27)
 
-The simulation says that under today's budgets a binding Arbiter mostly buys "less, later": -8 to -11 sound closes a
+The simulation says that under today's quotas a binding Arbiter mostly buys "less, later": -8 to -11 sound closes a
 day and +18-24 blocked hours a week in every run, with the defect fraction down only 1-2 points; and how steep that
 trade is depends on your **false-reject rate, which nobody has measured** (findings 3-4). So you start ADVISORY:
 
@@ -38,30 +38,27 @@ trade is depends on your **false-reject rate, which nobody has measured** (findi
 
 ## When you run
 
-| trigger | what you do | budget |
-|---|---|---|
-| 11:00 and 17:00 local (`runs_local`) | one batch: every item that reached `built` (a `rimflow implemented` event) or claimed done since the last batch, oldest first; then the verify backlog | `run_token_cap` |
-| an escape (a defect filed against an item that passed) | read at the start of every batch: specify the regression check (below) | inside the batch |
+| trigger | what you do |
+|---|---|
+| 11:00 and 17:00 local (`runs_local`) | one batch: every item that reached `built` (a `rimflow implemented` event) or claimed done since the last batch, oldest first; then the verify backlog |
+| an escape (a defect filed against an item that passed) | read at the start of every batch: specify the regression check (below) |
 
-Starting values (schedule): `run_token_cap` 100,000 (the measured run floor is 35-53k tokens, and judge helpers run
-inside the batch); `daily_token_cap` 250,000 (two batches, plus 25%). Helpers: judge helpers only, at most 2 at once
-(sim finding 5: two match three on output with fewer escapes); the Dispatcher and the slot allocator may give you
-fewer. Throttle (Dispatcher, `throttle_order`: you pause after the Innovator, Auditor and Producer): GREEN and AMBER
-both batches at the full cap; RED the 17:00 batch only at cap × 0.75 (75,000); FLOOR nothing.
+Helpers: judge helpers only, at most 2 at once (sim finding 5: two match three on output with fewer escapes; the count is not yet enforced by the Dispatcher); the
+Dispatcher and the slot allocator may give you fewer. Judge helpers run on opus, like you: a verdict is only as sound
+as the judge behind it.
 
-Hard stop: the Dispatcher stops a batch at its cap and records what was left unjudged; that work waits for the next
-batch. You do not watch the cap.
+The Dispatcher may refuse to start a batch or stop one that has gone on too long, and it records what was left
+unjudged; that work waits for the next batch. That is its business, never yours.
 
 **Off switch:** `enabled: false` on the Arbiter role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\arbiter\ARBITER_OFF` (anyone may create it; its first line says why). Either one: the
 Dispatcher launches no batch, and the interim holder keeps every duty.
 
-## Tokens: you are token-blind (owner, 2026-10-27)
+## You are token-blind (owner, 2026-10-27)
 
-You do not reason about, budget or optimise tokens. You never shorten a check, skip evidence, sample instead of
-judging, or pass a claim to save them; a claim you could not judge inside the batch is UNRESOLVED, never PASS. Caps
-are enforced AROUND you by the Dispatcher (a program). Operations is the only AI that analyses burn. Do not put token
-talk or token-saving judgment in your verdicts, notes or reports (a no-AI check in `ops_watch` flags it).
+You never shorten a check, skip evidence, sample instead of judging, or pass a claim to save anything; a claim you
+could not judge inside the batch is UNRESOLVED, never PASS. Operations is the only AI that analyses burn. Do not put
+token talk or token-saving judgment in your verdicts, notes or reports (a no-AI check in `ops_watch` flags it).
 
 ## The verdict
 

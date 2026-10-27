@@ -759,7 +759,15 @@ def tt_texts(now, rules, ctx):
             m = re.match(r"rm-role-(.+)-(\d+)\.json$", f.name)
             if not m or m.group(1) not in names or float(m.group(2)) < since:
                 continue
-            d = json.loads(f.read_text(encoding="utf-8"))
+            role = m.group(1)
+            try:
+                raw = f.read_text(encoding="utf-8")
+                d = json.loads(raw)
+            except Exception as e:  # noqa: BLE001 - one unreadable file blinds only its own role
+                if now - f.stat().st_mtime < cfg.get("inflight_s", 7200):
+                    continue            # still running (systemd creates the file empty at launch): skip, not a failure
+                bad["role." + role] = "run %s unreadable: %s" % (f.name, type(e).__name__)
+                continue
             res = d.get("result") if isinstance(d, dict) else None
             if not isinstance(res, str) or not res.strip():
                 bad["role." + m.group(1)] = "run %s has no readable result text" % f.name
