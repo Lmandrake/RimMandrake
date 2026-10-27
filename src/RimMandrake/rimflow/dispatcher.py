@@ -733,6 +733,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     role.get("off_file"), off or "no reason given")) if off is not None
                                 else "role no longer enabled")
                             a["why"] = "%s — NOT LAUNCHED, %s" % (a["why"], res)
+                            # the slot/event stays due: decide gave it up for a launch that did not happen (U, N6)
+                            RL.unlaunch(st.setdefault("roles", {}).setdefault(a["role"], {}), a["unit"])
                         else:
                             # the run is recorded BEFORE systemd-run: a raise after the unit started (a timeout, a
                             # failed MainPID query) must not leave a launched role untracked (review round Q 4)
@@ -744,15 +746,32 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None)
                             runs.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
+                            rs = st["roles"][a["role"]]
+                            ok, out = False, "launch raised"
                             try:
                                 ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
                                 res = ("launched: " if ok else "failed: ") + out
                                 if ok:
                                     run.update(rec or {})
+                                    rs.pop("pending_launch", None)
                                 else:
                                     runs.remove(run)            # systemd-run said no: nothing started
                                     a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                            except Exception as e:  # noqa: BLE001 - the run stays tracked: it may have started
+                                out = "%s: %s" % (type(e).__name__, str(e)[:160])
+                                raise
                             finally:
+                                if not ok:
+                                    # a failed launch is never silent (review U, N6). systemd-run said no: the slot
+                                    # or event is given back so the next tick retries it; a raise leaves the run
+                                    # tracked (it may have started) and keeps the mark, so it is not launched twice.
+                                    back = run not in runs and RL.unlaunch(rs, a["unit"])
+                                    actions.append(dict(
+                                        do="alarm", kind="role:%s:launch_failed" % a["role"], at=iso(now), note=True,
+                                        ticket=a.get("ticket"), role=a["role"],
+                                        why="role %s launch FAILED (unit %s): %s; %s" % (
+                                            a["role"], a["unit"], out, "its slot/event stays due and is retried"
+                                            if back else "the run stays tracked in case it started")))
                                 do_persist()
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False))

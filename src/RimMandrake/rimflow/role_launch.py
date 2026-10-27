@@ -26,7 +26,11 @@ and event runs (RED: "the Wednesday plan and replan requests only", v3 §3).
 
 Ledger events (the same item), read once per tick with model.read() + replay (read_ledger), after a baseline: the
 first MEASURED tick with the role enabled sets `event_cursor`; every launch of the role moves it to the launch time,
-because every run reads the events up to its start.
+because every run reads the events up to its start. "After the cursor" is by identity, not by ts (review U, N4): the
+cursor is this clone's clock and an event's ts is its writer's, so an event written on another clone before a launch
+can be pulled after it. The window reaches EVENT_LOOKBACK_S behind the cursor and `events_seen` (the events a run or
+the baseline already read) drops the ones counted; an event pulled more than EVENT_LOOKBACK_S late is still missed.
+An event run fits beside the day's scheduled runs still to come (their budgets are reserved, N3), else it waits.
   - `slot_when: "done_claims"` (Arbiter): a scheduled slot launches only when a done claim — a `rimflow implemented`
     event (built) or a `rimflow close` — landed after the cursor; else the slot is marked "no done claims" (a hold,
     no alarm). The batches stay at the clock slots: the event is "claims are pending" (arbiter.md).
@@ -93,6 +97,7 @@ WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")      # time.localti
 DONE_CLAIM_VERBS = ("implemented", "close")   # a done claim on the ledger: built (L0 passed) or closed against a sha
 ACTIVE = ("active", "activating", "deactivating", "reloading")
 TERMINAL = ("inactive", "failed")      # the only states that end a run; anything else ("unknown", a failed query) is busy
+EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its writer stamped it still triggers (N4)
 FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
 USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
@@ -170,10 +175,40 @@ def band(role, reading):
         if "week_left_pct_lt" in b and reading["week_left"] < b["week_left_pct_lt"]:
             return name, b
     ranked = sorted(((b["runway_ge"], name, b) for name, b in bands.items() if "runway_ge" in b), reverse=True)
+    if not ranked:
+        raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
     for ge, name, b in ranked:
         if reading["runway"] >= ge:
             return name, b
     return ranked[-1][1], ranked[-1][2]          # below every line: the lowest runway band
+
+
+def _num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
+def validate_role(role):
+    """Raises ValueError naming the first schedule value decide_roles cannot use (review round U, N5): a role with a
+    bad value is skipped with an alarm, never allowed to raise through the whole tick."""
+    bands = role.get("throttle_bands") or {}
+    if not isinstance(bands, dict):
+        raise ValueError("throttle_bands is not a mapping")
+    for name, b in bands.items():
+        if not isinstance(b, dict):
+            raise ValueError("throttle band %s is not a mapping" % name)
+        for k in ("runway_ge", "week_left_pct_lt", "quick_cap_x"):
+            if k in b and not _num(b[k]):
+                raise ValueError("throttle band %s: %s %r is not a number" % (name, k, b[k]))
+    if bands and not any("runway_ge" in b for b in bands.values()):
+        raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
+    per_day = role.get("event_runs_per_day", 1)
+    if not isinstance(per_day, int) or isinstance(per_day, bool) or per_day < 0:
+        raise ValueError("event_runs_per_day %r is not a whole number >= 0" % (per_day,))
+    for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap", "slot_late_s", "run_max_s"):
+        if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
+            raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
+    if not isinstance(role.get("event_runs") or [], list):
+        raise ValueError("event_runs is not a list")
 
 
 def slot_blocked(allowed, job, role, now=None):
@@ -336,6 +371,29 @@ def pending_events(role, lr, since):
         else:
             raise ValueError("event_runs kind %r is not one of plan_step_failure, replan_request, done_claims" % kind)
     return sorted(out)
+
+
+def event_key(ev):
+    """One ledger event's identity in a trigger list: (epoch, id, what) -> "epoch|id|what"."""
+    t, iid, what = ev
+    return "%d|%s|%s" % (int(t), iid, what)
+
+
+def role_events(role, lr, since):
+    """Pure. Everything that can trigger this role after `since`: its event_runs kinds plus, for slot_when, the done
+    claims (deduplicated, oldest first)."""
+    out = set(pending_events(role, lr, since))
+    if role.get("slot_when") == "done_claims":
+        out |= set(done_claims(lr["events"], since))
+    return sorted(out)
+
+
+def unseen(evs, rs):
+    """The events not yet read by a run (or baselined). The cursor is a wall-clock time on THIS clone while an event's
+    ts is its writer's: an event written on another clone before a launch can be ingested after it. So the window
+    reaches EVENT_LOOKBACK_S behind the cursor and an event counts once by identity, not by ts (review round U, N4)."""
+    seen = set(rs.get("events_seen") or [])
+    return [e for e in evs if event_key(e) not in seen]
 
 
 def iso(t):
@@ -582,15 +640,15 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
 
     # a role that runs after another is decided after it, so the one it follows is marked/launched first (R, B)
     roles = sorted(sch.get("roles") or [], key=lambda r: 1 if r.get("after_role") else 0)
-    for role in roles:
+    def one(role):
         name = role.get("name", "?")
         if not role.get("enabled"):
-            continue
+            return
         missing = [k for k in LAUNCH_KEYS if not role.get(k)]
         if missing:
             act(do="alarm", kind="role:" + name, why="role %s is enabled but cannot be launched: no %s in the schedule"
                 % (name, ", ".join(missing)))
-            continue
+            return
         cfg = dict(ROLE_DEFAULTS, **role)
         if cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
@@ -600,6 +658,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs.setdefault("done", {})
         rs.setdefault("runs", [])
         try:
+            validate_role(cfg)
             today = slots(cfg, now)
             if cfg.get("after_role"):
                 slots(dict(ROLE_DEFAULTS, **(by_name.get(cfg["after_role"]) or {})), now)
@@ -608,18 +667,19 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         except ValueError as e:
             act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
                 why="role %s NOT RUN: its schedule entry is unreadable: %s" % (name, e))
-            continue
+            return
         # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
         # failures, replan requests). Blind: this role launches nothing this tick, not even a clock slot.
         lr = None
         if cfg.get("slot_when") or cfg.get("event_runs"):
             lr = ledger()
             if lr["state"] != "MEASURED":
-                continue
+                return
             if "event_cursor" not in rs:
                 # first MEASURED tick with the role enabled: the baseline. Events before it are not run as events;
                 # the role's next scheduled run reads them (its instructions say so).
                 rs["event_cursor"] = now
+                rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
                 act(do="role_hold", role=name, why="%s event triggers: baseline set at %s; ledger events after it "
                     "trigger" % (name, iso(now)))
         # ---- what is due now
@@ -659,11 +719,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "cap": cfg.get("run_token_cap"), "item": item, "trigger": "ops_watch alarm " + item})
         if cfg.get("event_runs"):
             try:
-                pend = pending_events(cfg, lr, rs["event_cursor"])
+                pend = unseen(pending_events(cfg, lr, rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             except ValueError as e:
                 act(do="alarm", kind="role:%s:schedule" % name, ticket=role["ledger_item"], note=True,
                     why="role %s NOT RUN: %s" % (name, e))
-                continue
+                return
             per_day = int(cfg.get("event_runs_per_day", 1))
             used = [k for k in rs["done"] if k.startswith(day_of(now) + " event")]
             if pend and len(used) < per_day:
@@ -679,23 +739,23 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     "next run reads them" % (name, len(pend), per_day))
         rs["done"] = {k: v for k, v in rs["done"].items() if k[:10] >= day_of(now - 2 * 86400)}
         if not due:
-            continue
+            return
         job = due[0]                                      # one launch per role per tick
         off = obs["off"](wsl_path(role.get("off_file") or ""))
         if off is not None:
             mark(rs, job, "off")
             act(do="role_hold", role=name, why="%s %s skipped: off switch %s (%s)" % (
                 name, job["trigger"], role.get("off_file"), off or "no reason given"))
-            continue
+            return
         if name in busy:
-            continue                                      # one run at a time: wait for the running one
+            return                                      # one run at a time: wait for the running one
         if job["slot"] and cfg.get("slot_when") == "done_claims":
-            claims = done_claims(lr["events"], rs["event_cursor"])
+            claims = unseen(done_claims(lr["events"], rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             if not claims:
                 mark(rs, job, "no done claims")
                 act(do="role_hold", role=name, why="%s %s not run: no done claim (implemented/close) since %s" % (
                     name, job["trigger"], iso(rs["event_cursor"])))
-                continue
+                return
             job["trigger"] += ", %d done claim(s) since %s (oldest %s %s)" % (
                 len(claims), iso(rs["event_cursor"]), claims[0][2], claims[0][1])
         wait = after_ready(cfg, rst, busy, job, now, dict(ROLE_DEFAULTS, **(by_name.get(cfg.get("after_role")) or {})))
@@ -704,13 +764,13 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 act(do="role_hold", role=name, why="%s %s waits: runs after a finished %s run; %s" % (
                     name, job["trigger"], cfg["after_role"], wait))
             rs["waiting"] = [job["key"], wait]
-            continue
+            return
         rs.pop("waiting", None)
         r = reading()
         if r["state"] != "MEASURED":
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: %s" % (name, job["trigger"], r["why"]))
-            continue
+            return
         bname, b = band(cfg, r)
         allowed = b.get("slots", "all")
         if slot_blocked(allowed, job, cfg, now):
@@ -718,32 +778,49 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             act(do="role_hold", role=name, why="%s %s not run: band %s runs %s scheduled slots (runway %.2f %s, "
                 "week left %.0f%%)" % (name, job["trigger"], bname, allowed, r["runway"], r["runway_m"],
                                        r["week_left"]))
-            continue
+            return
         factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run", "weekly", "event") else 1.0
         if not job["cap"]:
             act(do="alarm", kind="role:" + name, why="role %s has no token cap for %s" % (name, job["mode"]))
-            continue
+            return
         budget = int(job["cap"] * factor)
         spent = spent_today(rs, now)
         daily = role.get("daily_token_cap")
+        if daily and job["mode"] == "event":
+            # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
+            # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
+            reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
+                          for hh, m, c in today if c and "%s %s" % (day_of(now), hh) not in rs["done"])
+            if reserve and spent + budget + reserve > daily:
+                if rs.get("event_reserve_day") != day_of(now):          # journalled once a day; the event waits
+                    rs["event_reserve_day"] = day_of(now)
+                    act(do="role_hold", role=name, why="%s %s waits: the day's scheduled run(s) still to come keep "
+                        "their share of the daily cap; the event runs once they leave room" % (name, job["trigger"]))
+                return
         if daily and spent + budget > daily:
             mark(rs, job, "daily cap")
             act(do="alarm", kind="role:%s:cap" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget" % (
                     name, job["trigger"], daily, spent, budget))
-            continue
+            return
         go, pk = gate("role_launch") if gate else (True, {})
         if not go:
             if rs.get("account_hold") != job["key"]:     # journal the hold once per job, not every tick
                 act(do="role_hold", role=name, why="%s %s held for the account switch: %s" % (
                     name, job["trigger"], pk.get("why")))
             rs["account_hold"] = job["key"]
-            continue
+            return
         rs.pop("account_hold", None)
+        unit = "rm-role-%s-%d" % (name.lower(), int(now))
+        # what the launch consumes, so execute can give it back if the launch does not happen (review U, N6)
+        rs["pending_launch"] = {"unit": unit, "mode": job["mode"], "key": job["key"],
+                                "done": rs["done"].get(job["key"]), "had_done": job["key"] in rs["done"],
+                                "alarms_seen": rs.get("alarms_seen"), "event_cursor": rs.get("event_cursor"),
+                                "events_seen": rs.get("events_seen")}
         mark(rs, job, "launch")
         if lr is not None:
             rs["event_cursor"] = now      # every run reads the events up to its launch (arbiter.md, producer.md)
-        unit = "rm-role-%s-%d" % (name.lower(), int(now))
+            rs["events_seen"] = [event_key(e) for e in role_events(cfg, lr, now - EVENT_LOOKBACK_S)]
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
             slot=job["key"], band=bname, seat=role["seat"], run_max_s=cfg["run_max_s"], account=pk.get("account"),
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
@@ -753,6 +830,38 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 name, job["trigger"], unit),
             message=prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"], factor, spent, unit))
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
+
+    for role in roles:
+        # one role's bad schedule value (or a malformed reading) skips THAT role with an alarm; the other roles are
+        # still decided and the supervise actions already built still execute (review round U, N5)
+        try:
+            one(role)
+        except Exception as e:  # noqa: BLE001
+            nm = role.get("name", "?") if isinstance(role, dict) else "?"
+            act(do="alarm", kind="role:%s:schedule" % nm, ticket=(role.get("ledger_item") if isinstance(role, dict)
+                                                                 else None), note=True,
+                why="role %s NOT RUN this tick: deciding it raised %s: %s" % (nm, type(e).__name__, str(e)[:200]))
+
+
+def unlaunch(rs, unit):
+    """Give back what decide consumed for the launch of `unit` (slot or alarm mark, event cursor, events seen) when
+    the launch did not happen: a failed systemd-run, or execute's off/PAUSE recheck. -> True if rolled back."""
+    p = rs.get("pending_launch") or {}
+    if p.get("unit") != unit:
+        return False
+    rs.pop("pending_launch", None)
+    if p["mode"] == "alarm":
+        rs["alarms_seen"] = p["alarms_seen"]
+    elif p["had_done"]:
+        rs.setdefault("done", {})[p["key"]] = p["done"]
+    else:
+        rs.setdefault("done", {}).pop(p["key"], None)
+    for k in ("event_cursor", "events_seen"):
+        if p[k] is None:
+            rs.pop(k, None)
+        else:
+            rs[k] = p[k]
+    return True
 
 
 def mark(rs, job, how):
