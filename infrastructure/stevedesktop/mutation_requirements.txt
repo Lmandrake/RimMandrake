@@ -1,0 +1,19 @@
+# Pinned mutation/property-test venv (SteveDesktop ~/mutation/venv; WSL python 3.14.4).
+# Recreate: python3 -m venv ~/mutation/venv && ~/mutation/venv/bin/pip install -r infrastructure/stevedesktop/mutation_requirements.txt
+# pydantic pins match Archmagi user site (2.13.5 / core 2.46.5). mutmut 2.x: mutates files on disk, custom --runner (no pytest).
+annotated-types==0.8.0
+click==8.5.0
+glob2==0.7
+hypothesis==6.170.12
+junit-xml==1.9
+mutmut==2.5.1
+parso==0.8.7
+pony==0.7.20
+pydantic==2.13.5
+pydantic_core==2.46.5
+six==1.17.0
+sortedcontainers==2.4.0
+toml==0.10.2
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+whatthepatch==1.0.7
