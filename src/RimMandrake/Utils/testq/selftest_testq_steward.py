@@ -54,6 +54,7 @@ def main():
         import schema as S
         import testq as T
         import steward as W
+        W.tick_timer_state = lambda: "active"      # the real one asks this machine's systemd
         check(T.QHOME == queue, "the queue is the temp one")
 
         def cli(*a, seat="BENCH"):
@@ -256,6 +257,21 @@ def main():
         ls = W.lane_state(S.parse_ts(job["submitted"]) + 60, ["Mock"])
         check(ls["state"] == "READY" and ls["fault_at"] == S.parse_ts(job["submitted"]) + 300,
               "a ready job is a fault only after 5 min not admitted")
+        # ------------------------------------------------ the tick TIMER stopped (2026-10-28 05:04: an agent stopped
+        # every rm-*/testq-* timer for a cutover and never restarted them; the steward, run by hand, blamed the fill)
+        W.tick_timer_state = lambda: "inactive"
+        ls = W.lane_state(S.parse_ts(job["submitted"]) + 60, ["Mock"])
+        check(ls["state"] == "TICK_STOPPED" and ls["fault_at"] == 0 and ls["at_once"]
+              and "testq-tick.timer" in ls["reason"] and "systemctl --user start" in ls["reason"],
+              "a stopped tick timer outranks READY: TICK_STOPPED, a fault at once, naming the fix: %s" % ls["reason"])
+        os.remove(T.q("pending", job["id"] + ".json"))
+        ls = W.lane_state(base, ["Mock"])
+        check(ls["state"] == "TICK_STOPPED", "an empty queue with a stopped tick is TICK_STOPPED, not IDLE_EMPTY "
+              "'the fill failed?': %s" % ls["state"])
+        check(W.TAG.get("TICK_STOPPED") == "STALLED", "TICK_STOPPED has a pulse tag")
+        W.tick_timer_state = lambda: None          # no systemd here (the dispatch clone, a test box): no verdict
+        check(W.lane_state(base, ["Mock"])["state"] == "IDLE_EMPTY", "an unknown timer state changes nothing")
+        W.tick_timer_state = lambda: "active"
         # ------------------------------------------------ a stopped tick: the watcher
         reset()
         restarts = []

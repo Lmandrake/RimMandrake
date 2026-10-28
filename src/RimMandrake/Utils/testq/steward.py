@@ -26,6 +26,10 @@ What it knows (section 6.1), first match wins:
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
                    queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
   EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault
+  TICK_STOPPED     testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
+                   dispatched, filled, reconciled or ingested; a fault at once (it outranks READY and IDLE_EMPTY,
+                   whose "the fill failed?" was the misdiagnosis of 2026-10-28, when a cutover stopped every
+                   rm-*/testq-* timer at 05:04 and nobody restarted them). An unknown state (no systemd) says nothing.
   STALE_HEARTBEAT  the watcher's: steward.json not written for 5 min
 
 The unowned clock (section 6.1) adds the time between two passes while the state is a fault. Non-fault states freeze
@@ -78,7 +82,7 @@ CLAIM_HOLD_S = 7200                         # a claim without a lease pauses the
 STALE_S = 300                               # the watcher: steward.json older than this
 HARNESS_CAUSES = {"HARNESS", "DEPLOY", "SYNC", "SOURCE_SHA_MISSING", "BLOCKED_SELECTION"}
 TAG = {"UNREACHABLE": "OFFLINE", "QUARANTINE": "QUARANTINE", "PAUSED": "PAUSED", "READY": "STALLED",
-       "BRAKED": "BRAKED", "IDLE_EMPTY": "IDLE", "STALE_HEARTBEAT": "STALLED"}
+       "BRAKED": "BRAKED", "IDLE_EMPTY": "IDLE", "STALE_HEARTBEAT": "STALLED", "TICK_STOPPED": "STALLED"}
 LANE_TASK = "steve:lane"
 
 
@@ -109,6 +113,11 @@ def lane_state(now, mods=None):
     if os.path.exists(path("quarantine.json")):
         qz = T.read_json(path("quarantine.json")) or {}
         return _st("QUARANTINE", "quarantined: %s" % (qz.get("reason") or "quarantine.json exists"), 0, at_once=True)
+    tick = tick_timer_state()
+    if tick in ("inactive", "failed", "deactivating"):
+        return _st("TICK_STOPPED", "testq-tick.timer is %s: nothing is dispatched, filled or ingested; "
+                   "`systemctl --user start testq-tick.timer` (unless a cutover still needs it held: look for "
+                   "~/rm/paused-timers-*.txt)" % tick, 0, at_once=True)
     run = T.steve_running()
     if run:
         return _st("RUNNING", "running %s" % ",".join(r["job"]["id"] for r in run), jobs=[r["job"]["id"] for r in run])
@@ -200,6 +209,17 @@ def failreport(ok, cause=None):
         return True
     except OSError:
         return False
+
+
+def tick_timer_state():
+    """systemctl's word for testq-tick.timer (active, inactive, failed, ...), or None when it cannot be asked."""
+    try:
+        r = subprocess.run(["systemctl", "--user", "is-active", "testq-tick.timer"], capture_output=True, text=True,
+                           timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    word = r.stdout.strip()
+    return word if word in ("active", "inactive", "failed", "activating", "deactivating", "reloading") else None
 
 
 def restart_tick():
