@@ -350,6 +350,23 @@ def main():
     SP.run = real_run
     check("use system" not in calls.read_text() and "arm" in calls.read_text(),
           "a target spent below its reserve while arming is not switched onto")
+    # exhaustion first seen on the re-check (the departing account went blind at <=1%) latches into the done marker
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    (TMP / "live.txt").write_text("system")
+    st = SP.load_state(); st.pop("stopped", None); st.pop("last_poll", None); SP.save_state(st)
+    cur11 = [{"steven": R(60, 132), "system": R(0.5, 24), "lukas": R(30, 48)}]
+    def arm_blinds(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur11[0] = {"steven": R(60, 132), "system": R(0.5, 24, src="ESTIMATE"), "lukas": R(30, 48)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_blinds
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur11[0], poll_fn=lambda: None)
+    SP.run = real_run
+    mk11 = [v for v in SP.read_markers().values() if v.get("to") == "steven"]
+    check("use steven" in calls.read_text() and mk11 and mk11[0].get("phase") == "done" and mk11[0].get("under") is True,
+          "a switch whose re-check finds the departing account exhausted records under=True in its done marker")
     # a stop that lapses while arming (lukas reset meanwhile) is skipped
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

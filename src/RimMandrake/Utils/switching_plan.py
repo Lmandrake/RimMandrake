@@ -568,7 +568,10 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if live2 != live:
             return False
         d2 = decide(meter_fn(), live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
-        return d2["do"] == d["do"] and d2.get("to") == d.get("to")
+        same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
+        if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
+            d["under"] = True
+        return same
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
         write_notice({**d, "do": "soft"}, now)
