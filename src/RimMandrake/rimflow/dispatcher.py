@@ -342,7 +342,12 @@ def decide(sch, st, obs, now, apply, out=None):
             if cfg.get("enabled", True) and cfg.get("wake", True):
                 continue
             old = (st["seats"].get(seat) or {}).get("ring")
-            if old and not old.get("consumed_at"):
+            if old and old.get("consumed_at") and cfg.get("removed"):
+                # delivered, but a removed seat is not verified (no clone to read): dropped, said once
+                st["seats"][seat].pop("ring")
+                act(do="skip", seat=seat, ring_id=old["ring_id"], why="seat %s removed from the schedule: its "
+                    "delivered ring %s is no longer verified" % (seat, old["ring_id"]))
+            elif old and not old.get("consumed_at"):
                 act(do="withdraw", seat=seat, ring_id=old["ring_id"], pending=st["seats"][seat].pop("ring"),
                     why="seat %s %s: its waiting ring is withdrawn" % (
                         seat, "removed from the schedule" if cfg.get("removed") else
@@ -870,7 +875,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         w = withdraw_reading(do_withdraw(root, a["seat"], a["ring_id"]))
                         res = "%s: %s" % (w["outcome"], w.get("why") or "")
                         ss = st["seats"].setdefault(a["seat"], {})
-                        if a.get("pending") and not ss.get("ring"):
+                        if a.get("pending") and not ss.get("ring") and a["seat"] in (sch.get("seats") or {}):
                             if w["outcome"] == "consumed":
                                 # the doorbell took it between decide and here: it WAS delivered — keep verifying it
                                 # instead of ringing a second time (review r2 #4: evidence by ring id)

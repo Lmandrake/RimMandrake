@@ -2910,6 +2910,19 @@ def test_review_night_n1():
     w = [x for x in a if x["do"] == "withdraw"]
     check(w and w[0]["ring_id"] == rid and not st["seats"]["FOUNDRY"].get("ring"),
           "N5 a seat gone from the schedule has its waiting ring withdrawn (%r)" % kinds(a))
+    st = fresh()
+    stall(sched(), st, obs(), t0)
+    st["seats"]["FOUNDRY"]["ring"]["consumed_at"] = t0 + 5
+    a = D.decide(sch6, st, obs(), t0 + sch6["stall_after_s"] + 30, True)
+    check(not st["seats"]["FOUNDRY"].get("ring") and [x for x in a if x["do"] == "skip" and x.get("seat") == "FOUNDRY"],
+          "N5 a removed seat's delivered ring is dropped and said, never pending forever (%r)" % kinds(a))
+    st = fresh()
+    stall(sched(), st, obs(), t0)
+    a = D.decide(sch6, st, obs(), t0 + sch6["stall_after_s"] + 30, True)
+    D.execute(a, sch6, st, os.path.join(TMP, "n5"), True, t0 + 300,
+              {"withdraw": lambda root, seat, rid: {"outcome": "consumed", "ring_id": rid, "consumed_at": t0 + 9},
+               "lock": lambda: None, "publish": lambda n: "p", "note": lambda i, t: (True, "")})
+    check(not st["seats"]["FOUNDRY"].get("ring"), "N5 a removed seat's withdraw that finds it consumed does not re-pend it")
     # N6: the last attempt's withdraw finds the doorbell took it after all: no give-up alarm, no cooldown
     sch7 = sched()
     st = fresh()
