@@ -317,6 +317,55 @@ def t_fill_brake_released_by_proof():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_result_hardening():
+    """A tagged-but-malformed result and a non-object worker line are recorded INVALID / skipped, never a crash."""
+    import testq as T
+    o = T.last_json_object(["[1, 2]"], 0, "[1, 2]")
+    check(isinstance(o, dict) and "not an object" in o.get("error", ""), "a JSON list line becomes an error object: %s" % o)
+    for line in ("null", '"s"', "7", "oops"):
+        check(isinstance(T.last_json_object([line], 0, line), dict), "line %r becomes an object" % line)
+    check(T.last_json_object([], 1, "")["error"].startswith("no JSON"), "no line at all is an error object")
+    jid = "J20261027T120000Z-abcdef"
+    att = jid + ".a1"
+    tmp = tempfile.mkdtemp(prefix="rf_testq_hard_")
+    saved = (T.QHOME, T.remote)
+    try:
+        T.QHOME = tmp
+        T.ensure_dirs()
+        for name, res in (("no outcome", {"schema": S.RESULT_SCHEMA, "job": jid, "attempt": att, "cause": None, "rows": []}),
+                          ("no job", {"schema": S.RESULT_SCHEMA}),
+                          ("rows not list", {"schema": S.RESULT_SCHEMA, "job": jid, "attempt": att, "outcome": "DONE",
+                                             "cause": None, "rows": 3})):
+            job = S.make_job("FlowWorks", {"chains": ["core_offline"]}, "fix", "BENCH", "5403169aab")
+            job["id"] = jid
+            rec = {"job": job, "attempt": att, "attempts": [att]}
+            T.move(jid, "running", "running", rec)
+            T.remote = lambda args, stdin=None, timeout=180, _r=res: (0, {"state": "done", "attempt": att}
+                                                                      if args[0] == "status" else _r)
+            try:
+                T.reconcile(rec)
+                done = T.read_json(T.q("done", jid + ".json")) or {}
+                r = done.get("result") or {}
+                check(r.get("outcome") == "INVALID" and r.get("cause") == "HARNESS" and "testq.result/1" in r.get("note", ""),
+                      "tagged result with %s is recorded INVALID/HARNESS with its reason: %s" % (name, r.get("note")))
+            except Exception as ex:     # noqa: BLE001
+                check(False, "tagged result with %s crashed collect: %s: %s" % (name, type(ex).__name__, ex))
+            for st in ("running", "done"):
+                try:
+                    os.remove(T.q(st, jid + ".json"))
+                except FileNotFoundError:
+                    pass
+        T.remote = lambda args, stdin=None, timeout=180: (0, T.last_json_object(["[1]"], 0, "[1]"))
+        try:
+            T.drain_outbox([jid + ".a9"])
+            check(not os.listdir(T.q("orphans")), "a non-object worker line is skipped by drain_outbox, not dumped")
+        except Exception as ex:     # noqa: BLE001
+            check(False, "drain_outbox crashed on a non-object line: %s: %s" % (type(ex).__name__, ex))
+    finally:
+        T.QHOME, T.remote = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     try:
         t_bad_selection()
@@ -325,6 +374,7 @@ def main():
         t_fill_policy()
         t_fill_drops_unknown_chains()
         t_fill_brake_released_by_proof()
+        t_result_hardening()
     except Exception as ex:     # noqa: BLE001 - reported, the live block still runs
         check(False, "t_fill_policy raised %s: %s" % (type(ex).__name__, ex))
     tmp = tempfile.mkdtemp(prefix="rf_testq_")

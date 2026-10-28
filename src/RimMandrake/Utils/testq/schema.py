@@ -309,6 +309,7 @@ def json_schema():
            "properties": {"chain": {"type": ["string", "null"]}, "row": {"type": "string"},
                           "verdict": {"type": "string", "description": "usually one of " + ", ".join(VERDICTS)},
                           "validity": {}, "freshness": {}, "detail": {"type": "string", "maxLength": DETAIL_CAP}}}
+    names_free = {"type": "array", "items": {"type": "string"}}     # claim-marker ids the Steve worker writes
     result = {
         "type": "object", "required": ["schema", "job", "attempt", "outcome", "cause", "rows"],
         "properties": {
@@ -321,6 +322,7 @@ def json_schema():
             "modcheck_exit": {"type": ["integer", "null"]},
             "artifacts": {"type": "array", "items": {"type": "object", "required": ["name", "path", "sha256", "bytes"]}},
             "started": {"type": "string"}, "finished": {"type": ["string", "null"]}, "note": {"type": "string"},
+            "moot_markers": names_free, "bounced_for_markers": names_free,
         },
         "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
     }

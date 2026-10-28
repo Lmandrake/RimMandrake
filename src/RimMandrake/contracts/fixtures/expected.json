@@ -862,10 +862,10 @@
    "class": "rows_only",
    "where": "GPT design: schema-tag-only check",
    "old": "crash",
-   "new": "crash",
+   "new": "accept",
    "strict": "refuse",
-   "why": "reconcile checks only the schema tag, then reads res['outcome'] (KeyError, old and new: TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
-   "allow": ""
+   "why": "old reconcile checked only the schema tag, then read res['outcome'] (KeyError); now recorded INVALID/HARNESS (TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
+   "allow": "TESTQ_RESULT_TAG_ONLY_NOW_INVALID"
   },
   {
    "class": "invalid_without_cause",
@@ -873,8 +873,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat reads the tag only",
-   "allow": ""
+   "why": "compat reads the tag only; reconcile now replaces it with an INVALID/HARNESS record",
+   "allow": "TESTQ_RESULT_BREAKING_RECORDED_INVALID"
   },
   {
    "class": "extra_field",
@@ -916,10 +916,10 @@
    "class": "not_object",
    "where": "non-object JSON",
    "old": "crash",
-   "new": "crash",
+   "new": "refuse",
    "strict": "refuse",
-   "why": "reconcile: old res.get('schema') and new res.get('error') (the unreadable log) BOTH raise AttributeError on a JSON list -- same decision, filed as TESTQ_HARDEN_RECONCILE_NONDICT_CRASH. drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
-   "allow": ""
+   "why": "reconcile: remote() now turns a non-object line into an error object, so the unreadable branch logs it (was AttributeError; TESTQ_HARDEN_RECONCILE_NONDICT_CRASH). drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
+   "allow": "TESTQ_RECONCILE_NOT_OBJECT"
   }
  ],
  "testq_orphans": [
@@ -947,7 +947,7 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "reconcile checks only the schema tag, then reads res['outcome'] (KeyError, old and new: TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
+   "why": "old reconcile checked only the schema tag, then read res['outcome'] (KeyError); now recorded INVALID/HARNESS (TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
    "allow": ""
   },
   {
@@ -956,7 +956,7 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat reads the tag only",
+   "why": "compat reads the tag only; reconcile now replaces it with an INVALID/HARNESS record",
    "allow": ""
   },
   {
@@ -1001,7 +1001,7 @@
    "old": "crash",
    "new": "refuse",
    "strict": "refuse",
-   "why": "reconcile: old res.get('schema') and new res.get('error') (the unreadable log) BOTH raise AttributeError on a JSON list -- same decision, filed as TESTQ_HARDEN_RECONCILE_NONDICT_CRASH. drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
+   "why": "reconcile: remote() now turns a non-object line into an error object, so the unreadable branch logs it (was AttributeError; TESTQ_HARDEN_RECONCILE_NONDICT_CRASH). drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
    "allow": "TESTQ_ORPHANS_NOT_OBJECT"
   }
  ]

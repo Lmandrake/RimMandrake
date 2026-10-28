@@ -187,6 +187,12 @@
     "attempt": {
      "type": "string"
     },
+    "bounced_for_markers": {
+     "items": {
+      "type": "string"
+     },
+     "type": "array"
+    },
     "cause": {
      "enum": [
       null,
@@ -230,6 +236,12 @@
       "integer",
       "null"
      ]
+    },
+    "moot_markers": {
+     "items": {
+      "type": "string"
+     },
+     "type": "array"
     },
     "note": {
      "type": "string"

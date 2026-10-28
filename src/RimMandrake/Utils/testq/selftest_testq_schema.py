@@ -24,6 +24,9 @@ def refused(fn, *a, **kw):
 
 
 def main():
+    props = S.json_schema()["$defs"]["result"]["properties"]
+    check(all(k in props and props[k]["type"] == "array" for k in ("moot_markers", "bounced_for_markers")),
+          "testq.result/1 declares moot_markers and bounced_for_markers (the Steve worker writes them)")
     j = S.make_job("FlowWorks", {"chains": ["core_offline"]}, "fix", "BENCH", "5403169aab", item="SOME_ITEM_FIX_IT")
     check(S.JOB_ID_RE.match(j["id"]) and j["lane"] == "stevedesktop" and j["canary"], "make_job fills defaults")
     check(S.modcheck_args(j) == ["FlowWorks", "--chains", "core_offline", "--canary", "--validity", "--reuse", "on"],

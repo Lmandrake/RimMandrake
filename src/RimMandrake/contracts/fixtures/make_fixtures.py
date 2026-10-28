@@ -297,29 +297,31 @@ def testq_results():
                     "new": new, "strict": strict, "why": why, "allow": allow})
 
     # expected decisions: (reconcile collect path, drain_outbox orphan path, strict)
-    def both(d, cls, where, rec, orph, strict, why="", raw=None, allow=""):
-        add(d, cls, where, rec[0], rec[1], strict, why, raw)
+    def both(d, cls, where, rec, orph, strict, why="", raw=None, allow="", rec_allow=""):
+        add(d, cls, where, rec[0], rec[1], strict, why, raw, rec_allow)
         out[-1]["orphans"] = {"old": orph[0], "new": orph[1], "allow": allow}
 
     both(r, "valid", "baseline", (A, A), (A, A), A)
     both(dict(r, moot_markers=["c1"], bounced_for_markers=["c1"]), "undeclared_markers",
          "worker writes fields testq_schema.json lacks", (A, A), (A, A), A,
          "declared in the strict model; schema drift filed")
-    both({"schema": "testq.result/1", "rows": []}, "rows_only", "GPT design: schema-tag-only check", (C, C), (A, A),
-         R, "reconcile checks only the schema tag, then reads res['outcome'] (KeyError, old and new: "
-         "TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone")
+    both({"schema": "testq.result/1", "rows": []}, "rows_only", "GPT design: schema-tag-only check", (C, A), (A, A),
+         R, "old reconcile checked only the schema tag, then read res['outcome'] (KeyError); now recorded INVALID/"
+         "HARNESS (TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
+         rec_allow="TESTQ_RESULT_TAG_ONLY_NOW_INVALID")
     both(dict(r, outcome="INVALID"), "invalid_without_cause", "validate_result rule", (A, A), (A, A), R,
-         "compat reads the tag only")
+         "compat reads the tag only; reconcile now replaces it with an INVALID/HARNESS record",
+         rec_allow="TESTQ_RESULT_BREAKING_RECORDED_INVALID")
     both(dict(r, surplus=1), "extra_field", "closed type", (A, A), (A, A), R, "strict is extra=forbid")
     both(dict(r, attempt=r["job"] + ".aanything"), "attempt_malformed", "review contracts #11", (A, A), (A, A), R,
          "the strict attempt rule is <job>.a<n>")
     both(dict(r, schema="testq.result/2"), "unsupported_version", "unsupported version", (R, R), (R, R), R)
     both(None, "torn", "truncated worker line", (R, R), (R, R), R, raw=json.dumps(r)[:50])
-    both(None, "not_object", "non-object JSON", (C, C), (C, R), R,
-         "reconcile: old res.get('schema') and new res.get('error') (the unreadable log) BOTH raise AttributeError on "
-         "a JSON list -- same decision, filed as TESTQ_HARDEN_RECONCILE_NONDICT_CRASH. drain_outbox: "
+    both(None, "not_object", "non-object JSON", (C, R), (C, R), R,
+         "reconcile: remote() now turns a non-object line into an error object, so the unreadable branch logs it "
+         "(was AttributeError; TESTQ_HARDEN_RECONCILE_NONDICT_CRASH). drain_outbox: "
          "DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
-         raw="[null]", allow="TESTQ_ORPHANS_NOT_OBJECT")
+         raw="[null]", allow="TESTQ_ORPHANS_NOT_OBJECT", rec_allow="TESTQ_RECONCILE_NOT_OBJECT")
     return out
 
 

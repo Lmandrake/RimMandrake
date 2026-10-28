@@ -167,12 +167,33 @@ def records(state):
 
 
 def result_problems(res):
-    """Shadow: what schema.validate_result says about a result testq.py is about to use. Logged, never acted on."""
+    """What schema.validate_result says about a result testq.py is about to use (None when it holds)."""
     try:
         S.validate_result(res)
         return None
     except Exception as e:  # noqa: BLE001 - shadow only
         return "%s: %s" % (type(e).__name__, e)
+
+
+def last_json_object(lines, rc, text):
+    """The worker's last stdout line as an object, else an {"error": ...} dict: a line that is JSON but not an object
+    (list, string, null) must not reach res.get() in reconcile()/drain_outbox()."""
+    try:
+        o = json.loads(lines[-1])
+    except (ValueError, IndexError):
+        o = None
+    else:
+        if not isinstance(o, dict):
+            return {"error": "worker line is JSON but not an object (%s, exit %d): %s" % (
+                type(o).__name__, rc, text[-300:])}
+    return o if o is not None else {"error": "no JSON from worker (exit %d): %s" % (rc, text[-300:])}
+
+
+def invalid_result(rec, attempt, reason):
+    """A tagged result that breaks testq.result/1 is recorded, not trusted: INVALID/HARNESS carrying the reason."""
+    return {"schema": S.RESULT_SCHEMA, "job": rec["job"]["id"], "attempt": attempt, "outcome": "INVALID",
+            "cause": "HARNESS", "rows": [], "counts": {}, "started": S.utcnow(), "finished": S.utcnow(),
+            "note": ("result breaks testq.result/1: " + reason)[-300:]}
 
 
 def job_of(rec):
@@ -192,10 +213,7 @@ def remote(args, stdin=None, timeout=180):
     if r.returncode == 255:
         raise SshDown((r.stderr.strip() or "ssh exit 255")[-200:])
     lines = r.stdout.strip().splitlines()
-    try:
-        return r.returncode, json.loads(lines[-1])
-    except (ValueError, IndexError):
-        return r.returncode, {"error": "no JSON from worker (exit %d): %s" % (r.returncode, (r.stdout + r.stderr)[-300:])}
+    return r.returncode, last_json_object(lines, r.returncode, r.stdout + r.stderr)
 
 
 def ssh_reachable():
@@ -262,7 +280,8 @@ def reconcile(rec):
         return
     shadow = result_problems(res)
     if shadow:
-        log("%s: result for %s breaks testq.result/1 (shadow, not acted on): %s" % (jid, latest, shadow))
+        log("%s: result for %s breaks testq.result/1, recorded INVALID/HARNESS: %s" % (jid, latest, shadow))
+        res = invalid_result(rec, latest, shadow)
     if host == ARCHMAGI and not rec.get("cancel") and archmagi_bounce(rec, res):
         return
     if (res["outcome"], res["cause"]) in AUTO_RETRY and rec.get("auto_retries", 0) < 1 and not rec.get("cancel"):
@@ -335,6 +354,9 @@ def drain_outbox(outbox, host=STEVE):
             continue
         rc, res = remote(["result", "--attempt", aid])
         if CC.testq_result_readable(res):
+            bad = result_problems(res)
+            if bad:
+                log("orphan result %s breaks testq.result/1: %s" % (aid, bad))
             S.dump(res, q("orphans", aid + ".json"))
             remote(["ack", "--attempt", aid])
             log("orphan result %s (%s %s) kept in orphans/" % (aid, res.get("outcome"), res.get("cause") or ""))
@@ -599,11 +621,7 @@ def archmagi_worker(args, stdin=None, timeout=180):
     except (OSError, subprocess.TimeoutExpired) as e:
         return 1, {"error": "archmagi worker %s: %s" % (" ".join(args), e)}
     lines = r.stdout.strip().splitlines()
-    try:
-        return r.returncode, json.loads(lines[-1])
-    except (ValueError, IndexError):
-        return r.returncode, {"error": "no JSON from the archmagi worker (exit %d): %s" % (
-            r.returncode, (r.stdout + r.stderr)[-300:])}
+    return r.returncode, last_json_object(lines, r.returncode, r.stdout + r.stderr)
 
 
 def archmagi_bounce(rec, res):
