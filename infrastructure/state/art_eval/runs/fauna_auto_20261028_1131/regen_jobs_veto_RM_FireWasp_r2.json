@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_FireWasp_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp",
+  "prompt": "A creature sprite for RimWorld: the dried, dead husk of a fire wasp, an alien scale-plated scavenging insect the size of a small dog, hanging suspended in the middle of a small cluster of flames and heat-haze. The husk keeps the living animal's standing pose: a long segmented body on six thin jointed legs, a small head with two short antennae, and two broad, wide gliding wings held spread flat. Its whole body is covered in heavy overlapping scales like a pangolin's or a fir cone's, dried, dull and ash-grey with scorched amber-brown edges, several scales cracked or missing, showing the dark hollow beneath, with faint ember-glowing veins running between the plates; the scale surfaces stay intact and unburnt where the flames pass over them. The wings are papery, torn and translucent ash-brown with ragged holes. The colour of the creature comes only from the scales: dull greys and burnt ambers, with no yellow-and-black stripes anywhere. The eyes are dull, sunken and dark; the legs are stiff and slightly curled. Around the husk, low orange-red flame tongues and pale shimmering heat-haze rise in a compact, localized cluster painted as part of the sprite, tightly bound to the insect, with clear transparent space around the whole effect. The insect is rendered at a consistent physical size, its head-to-abdomen body length filling about 60% of the canvas, with leg span, leg thickness and wing size kept in steady proportion. Realistic painterly vanilla RimWorld sprite style, soft painted edges and a clean dark outline in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no cast shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: COMPARE_VETO; prompt_gate: sonnet",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261028_1131",
+  "drawsize": 2.0,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
+ }
+]

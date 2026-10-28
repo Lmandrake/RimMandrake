@@ -355,10 +355,10 @@ def veto_to_regen(rid: str, rec: dict, cmp: dict, st: dict) -> dict:
                                  "owed": "escalate to the owner (round cap) after a compare veto"})
         return v
     jobs = R.regen_jobs([v], rid)
-    jf = run_dir / f"regen_jobs_veto_{rec.get('candidate')}.json"
+    jf = run_dir / f"regen_jobs_veto_{sub}_{rec.get('candidate')}.json"
     jf.write_text(json.dumps(jobs, indent=1))
     filing = R.file_regen_jobs(jf)
-    (run_dir / f"regen_filing_veto_{rec.get('candidate')}.json").write_text(json.dumps(filing, indent=1))
+    (run_dir / f"regen_filing_veto_{sub}_{rec.get('candidate')}.json").write_text(json.dumps(filing, indent=1))
     if not filing.get("ok"):
         st["follow_ups"].append({"at": now_iso(), "subject": sub, "run": rid,
                                  "owed": f"compare-veto REGEN {jobs[0]['id']} not filed ({filing.get('why')}); rows in {jf}"})

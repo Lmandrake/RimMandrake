@@ -1,0 +1,10 @@
+{
+ "ok": true,
+ "rc": 0,
+ "why": "filed",
+ "tail": "filed /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RM_FireWasp_r3_south.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RM_FireWasp_r3_east.json\nfiled /mnt/d/ClaudeWork/rimmandrake/artpipe/pending/arteval_RM_FireWasp_r3_north.json\n\n3 job(s) filed, 0 duplicate(s) refused, 0 row(s) refused by the eligibility gate, 0 row error(s)\n  \u26a0\ufe0f  arteval_RM_FireWasp_r3: no biome_register (and not biome_neutral) \u2014 the subject will render without its biome's light and palette\n",
+ "filed": [
+  "arteval_RM_FireWasp_r3"
+ ],
+ "unfiled": []
+}
