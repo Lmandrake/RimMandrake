@@ -701,6 +701,29 @@ def main():
         check("a clean prompt is left alone", RN.gate_clean_prompt("A hound with grey fur.")[1] == "unchanged")
         check("a prompt nothing can clean is flagged", RN.gate_clean_prompt("Top-down.", neutralize=lambda p: ("Top-down", "x"))[1] == "STILL_REFUSED")
 
+        # --- regen job ids carry the round series, never the candidate (ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG):
+        # judging candidate s2r1 of a series-2 def filed arteval_RM_Surrik__s2r1_r2 instead of arteval_RM_Surrik_s2r2
+        rs2 = {"RM_Surrik": {"series": 2}}
+        clean = dict(rr, regen={"request": {"prompt": "A hound with grey fur, transparent background."}, "findings": []})
+        def jid(**kw):
+            return RN.regen_jobs([dict(clean, **kw)], "j", rs=rs2)[0]["id"]
+        check("series candidate s2r1 judged REGEN round 2 -> arteval_RM_Surrik_s2r2",
+              jid(subject="RM_Surrik", candidate="s2r1", round=2) == "arteval_RM_Surrik_s2r2", jid(subject="RM_Surrik", candidate="s2r1", round=2))
+        check("first pass of a series-2 def -> arteval_RM_Surrik_s2r1",
+              jid(subject="RM_Surrik", candidate=None, round=1) == "arteval_RM_Surrik_s2r1")
+        check("round candidate without a series -> arteval_RM_X_r2", jid(subject="RM_X", candidate="r1", round=2) == "arteval_RM_X_r2")
+        check("a letter candidate keeps its own id", jid(subject="RM_X", candidate="B", round=1) == "arteval_RM_X__B_r1")
+        # a fauna candidate spec (fauna_drive candidates provenance) judged under a run id no counter reads is refused
+        with tempfile.TemporaryDirectory() as tg:
+            tg = Path(tg)
+            try:
+                RN.run([{"subject": "RM_Surrik", "candidate": "s2r1", "provenance": "art-eval regen round s2r1, artpipe jobs x"}],
+                       "judgestall_selftest", rev=object(), test=False, work_root=tg / "jw", state_root=tg / "js")
+                check("fauna candidate under a non-fauna run id refused", False)
+            except SystemExit as e:
+                check("fauna candidate under a non-fauna run id refused",
+                      "fauna_" in str(e) and not (tg / "js" / "judgestall_selftest").exists(), str(e))
+
         # --- file_regens no longer swallows a failed filing (ART_EVAL_HARDEN_FILE_REGENS_SILENT_FAILURE)
         class Done:
             def __init__(self, rc, err=""):

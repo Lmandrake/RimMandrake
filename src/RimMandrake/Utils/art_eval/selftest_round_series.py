@@ -115,6 +115,36 @@ def main():
         p = RS.compose_owner_prompt("dust beetle", "His text, kept exactly; Unusual Case!")
         check("owner text verbatim inside template", "His text, kept exactly; Unusual Case!" in p
               and p.startswith("A single RimWorld creature sprite of the dust beetle") and "transparent" in p)
+
+    # ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG: a fauna candidate judged under a run not named fauna_* (judgestall_*)
+    # was invisible to every counter; an append-only adoption line makes the run count, nothing is edited
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        runs, ad = td / "runs", td / "fauna_run_adoptions.jsonl"
+        for name, dec, cand, at in (("fauna_x_s2r0_00", "ACCEPT", None, "2026-10-27T10:00:00-07:00"),
+                                    ("judgestall_x", "REGEN", "s2r1", "2026-10-28T10:00:00-07:00"),
+                                    ("audit_x", "REGEN", "r1", "2026-10-28T10:00:00-07:00")):
+            (runs / name).mkdir(parents=True)
+            (runs / name / "run.json").write_text(json.dumps({"test": False}))
+            (runs / name / "decisions.jsonl").write_text(json.dumps({"subject": "D", "decision": dec, "candidate": cand,
+                                                                     "at": at}) + "\n")
+        check("unadopted judgestall run is not a fauna run", not RS.is_fauna_run("judgestall_x", ad))
+        check("fauna_* is a fauna run", RS.is_fauna_run("fauna_x_s2r0_00", ad))
+        RS.adopt_run("judgestall_x", {"why": "fauna candidate judged under a misnamed run"}, path=ad, runs_dir=runs)
+        check("adopted run is a fauna run", RS.is_fauna_run("judgestall_x", ad))
+        check("audit run stays out", not RS.is_fauna_run("audit_x", ad))
+        got = [r for r, _ in RS.decisions(runs, adoptions=ad)]
+        check("decisions() yields fauna_* + adopted runs only", sorted(got) == ["fauna_x_s2r0_00", "judgestall_x"])
+        try:
+            RS.adopt_run("judgestall_x", {}, path=ad, runs_dir=runs)
+            check("adoption without a reason refused", False)
+        except ValueError:
+            check("adoption without a reason refused", True)
+        try:
+            RS.adopt_run("nosuch_run", {"why": "x"}, path=ad, runs_dir=runs)
+            check("adopting a run with no decisions refused", False)
+        except ValueError:
+            check("adopting a run with no decisions refused", True)
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

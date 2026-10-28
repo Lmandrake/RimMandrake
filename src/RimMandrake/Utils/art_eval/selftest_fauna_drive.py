@@ -15,8 +15,8 @@ import round_series as RS  # noqa: E402
 FAILS = []
 
 
-def check(name, ok):
-    print(("ok   " if ok else "FAIL ") + name)
+def check(name, ok, detail=None):
+    print(("ok   " if ok else "FAIL ") + name + ("" if ok or detail is None else f"  -> {detail}"))
     if not ok:
         FAILS.append(name)
 
@@ -45,6 +45,33 @@ def main():
             check("latest ignores the newer test ACCEPT", (FD.latest("D", True) or {}).get("decision") == "REGEN")
         finally:
             RS.production_decisions = orig
+
+    # ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG: a candidate judged under an adopted non-fauna run counts; an
+    # unadopted audit run does not; a HOLD_ERROR (transport failure, no verdict) is not "judged"
+    with tempfile.TemporaryDirectory() as td:
+        runs, ad = Path(td) / "runs", Path(td) / "adopt.jsonl"
+        for name, cand, dec, at in (("fauna_t_00", None, "REGEN", "2026-10-27T10:00:00+00:00"),
+                                    ("judgestall_t", "s2r1", "REGEN", "2026-10-28T10:00:00+00:00"),
+                                    ("audit_t", "r1", "ACCEPT", "2026-10-28T11:00:00+00:00")):
+            (runs / name).mkdir(parents=True)
+            (runs / name / "run.json").write_text(json.dumps({"test": False}))
+            (runs / name / "decisions.jsonl").write_text(json.dumps({"subject": "D", "decision": dec, "candidate": cand,
+                                                                     "at": at}) + "\n")
+        ad.write_text(json.dumps({"run": "judgestall_t", "why": "t"}) + "\n")
+        orig, orig_ad = RS.production_decisions, RS.ADOPTIONS
+        RS.production_decisions, RS.ADOPTIONS = (lambda: orig(runs)), ad
+        try:
+            got = sorted(r for r, _ in FD.production())
+            check("production() = fauna_* + adopted, not audit", got == ["fauna_t_00", "judgestall_t"], got)
+            check("latest candidate comes from the adopted run", (FD.latest("D", True) or {}).get("candidate") == "s2r1")
+            check("first pass latest stays the fauna_ run", (FD.latest("D", False) or {}).get("candidate") is None
+                  and (FD.latest("D", False) or {}).get("decision") == "REGEN")
+        finally:
+            RS.production_decisions, RS.ADOPTIONS = orig, orig_ad
+    js = FD.judged_set([("r", {"subject": "D", "candidate": "r1", "decision": "HOLD_ERROR"}),
+                        ("r", {"subject": "E", "candidate": "r1", "decision": "HOLD_INPUT"}),
+                        ("r", {"subject": "F", "candidate": "r2", "decision": "REGEN"})])
+    check("HOLD_ERROR is not judged; other decisions are", js == {("E", "r1"), ("F", "r2")}, js)
 
     # FAUNA_INSTALL_CHECK_RENDER_IS_JUDGED: the render sha must equal the judged source sha
     j = {"south": "a" * 64}

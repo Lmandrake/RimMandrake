@@ -37,6 +37,7 @@ ROOT = HERE.parents[3]
 STATE = ROOT / "infrastructure/state/art_eval"
 RESETS = STATE / "round_resets.jsonl"
 OWNER_PROMPTS = STATE / "owner_prompts.jsonl"
+ADOPTIONS = STATE / "fauna_run_adoptions.jsonl"   # non-fauna_* runs that judged fauna candidates (append-only)
 SHEET_GLOB = "Transient/biome_ffar/owner_escalations_*_sheet_*.decisions.json"
 
 STYLE_HEAD = ("A single RimWorld creature sprite of the {label}, painterly vanilla RimWorld style, realistic, clean "
@@ -118,8 +119,36 @@ def tag(defname: str, n: int, rs: dict | None = None) -> str:
     return f"r{n}" if k == 0 else f"s{k}r{n}"
 
 
-def decisions(runs_dir: Path = STATE / "runs", prefix: str = "fauna_"):
-    for f in sorted(runs_dir.glob(f"{prefix}*/decisions.jsonl")):
+def adopted_runs(path: Path | None = None) -> set:
+    return {r["run"] for r in _jsonl(path or ADOPTIONS) if r.get("run")}
+
+
+def is_fauna_run(run: str, adoptions: Path | None = None) -> bool:
+    """A run whose decisions count toward fauna rounds: named fauna_*, or adopted by an append-only line (a fauna
+    candidate judged under another run id, e.g. judgestall_20261028). audit_*/wholeset_*/owner_* never count."""
+    return run.startswith("fauna_") or run in adopted_runs(adoptions)
+
+
+def adopt_run(run: str, prov: dict, path: Path | None = None, runs_dir: Path = STATE / "runs",
+              now: str | None = None) -> dict:
+    """Count RUN's decisions as fauna rounds from now on. Append-only; never edits a decision log."""
+    if not any(prov.get(k) for k in ("by_card", "owner_said", "per_ruling", "why")):
+        raise ValueError("say why the run is adopted (--owner-said/--by-card/--per-ruling/--why)")
+    if not (runs_dir / run / "decisions.jsonl").is_file():
+        raise ValueError(f"{run}: no decisions.jsonl under {runs_dir}")
+    rec = {"at": now or datetime.now().astimezone().isoformat(timespec="seconds"), "run": run}
+    rec.update({k: v for k, v in prov.items() if v})
+    with (path or ADOPTIONS).open("a") as fh:
+        fh.write(json.dumps(rec) + "\n")
+    return rec
+
+
+def decisions(runs_dir: Path = STATE / "runs", prefix: str = "fauna_", adoptions: Path | None = None):
+    adopted = adopted_runs(adoptions) if prefix == "fauna_" else set()
+    files = set(runs_dir.glob(f"{prefix}*/decisions.jsonl")) | {runs_dir / r / "decisions.jsonl" for r in adopted}
+    for f in sorted(files):
+        if not f.is_file():
+            continue
         for line in f.read_text().splitlines():
             if line.strip():
                 yield f.parent.name, json.loads(line)

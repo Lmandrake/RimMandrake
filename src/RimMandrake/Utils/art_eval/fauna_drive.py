@@ -158,7 +158,7 @@ def cmd_candidates(a):
     made, waiting, readyrounds = [], [], []
     rs = RS.resets()
     recs = list(production())
-    judged = {(r["subject"], r.get("candidate")) for _, r in recs}
+    judged = judged_set(recs)
     nreg = RS.regen_counts(recs, rs)
     for d in a.defs:
         if RS.stopped(d, rs):
@@ -197,8 +197,16 @@ def cmd_candidates(a):
 
 
 def production():
-    """(run, record) for fauna_* runs that are not --test runs; test runs never count rounds or supply an ACCEPT."""
-    return [(run, r) for run, r in RS.production_decisions() if run.startswith("fauna_")]
+    """(run, record) for fauna runs (fauna_* or adopted, RS.is_fauna_run) that are not --test runs; test runs never
+    count rounds or supply an ACCEPT."""
+    adopted = RS.adopted_runs()
+    return [(run, r) for run, r in RS.production_decisions() if run.startswith("fauna_") or run in adopted]
+
+
+def judged_set(recs) -> set:
+    """(subject, candidate) pairs that have a verdict. HOLD_ERROR is a transport failure (429, timeout), not a
+    verdict: the candidate stays owed and the next pass judges it again."""
+    return {(r["subject"], r.get("candidate")) for _, r in recs if r.get("decision") != "HOLD_ERROR"}
 
 
 CAND_RUN = re.compile(r"(^|_)(s\d+_?)?r\d+_")   # …_r1_00, …_s1r1_00 / …_s1_r1_00; not a biome like glass_reef_00
@@ -208,7 +216,9 @@ def latest(defname: str, cand: bool, recs=None):
     """The latest decision record for the subject: candidate runs (…_rN_NN) or first-pass runs (…_NN)."""
     out = None
     for run, r in (production() if recs is None else recs):
-        iscand = bool(CAND_RUN.search(run.split("fauna_", 1)[1]))
+        # an adopted run (judgestall_*) has no fauna_ name to read: its records name their candidate
+        iscand = bool(CAND_RUN.search(run.split("fauna_", 1)[1])) if run.startswith("fauna_") \
+            else bool(r.get("candidate"))
         if iscand != cand or r["subject"] != defname:
             continue
         if out is None or RS._instant(r.get("at")) >= RS._instant(out.get("at")):   # newest by time, not run name

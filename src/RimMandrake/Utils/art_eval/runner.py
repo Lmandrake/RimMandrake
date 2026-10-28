@@ -450,6 +450,13 @@ def history_decisions() -> dict:
 
 def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = False, record: bool = False,
         work_root: Path | None = None, state_root: Path | None = None, file_regens: bool = False) -> list:
+    if not test:
+        import round_series as RS
+        fauna = [s["subject"] for s in specs if str(s.get("provenance", "")).startswith("art-eval regen round")]
+        if fauna and not RS.is_fauna_run(run_id):
+            # judgestall_20261028: a fauna candidate judged under another run id was invisible to every round counter
+            raise SystemExit(f"{', '.join(fauna)}: fauna regen candidates must be judged under a fauna_* run id "
+                             f"(or adopt {run_id} in {RS.ADOPTIONS.name}); refusing {run_id}")
     rev = rev or Reviewers()
     policy, settings = P.load_policy(), P.load_settings()
     work = (work_root or storage_root() / "runs") / run_id
@@ -531,7 +538,7 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
                 cur[k] = max(cur.get(k, 0), rounds.get(k, 0))
             rounds_file.write_text(json.dumps(cur, indent=1, sort_keys=True))
     # a resumed REGEN record may predate a stop: a stopped series files nothing (ARTEVAL_RESUME_FIX_FILES_STOPPED)
-    jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id)
+    jobs = regen_jobs([r for r in recs if test or not RS.stopped(r["subject"], rs)], run_id, rs=rs)
     if jobs:
         (out / "regen_jobs.json").write_text(json.dumps(jobs, indent=1))
         if file_regens and not test:
@@ -615,7 +622,22 @@ def spec_picture_key(spec: dict) -> frozenset | None:
     return RS.picture_key({"source_sha256": {k: C.sha256_file(v) for k, v in fs.items()}})
 
 
-def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
+ROUND_CAND = re.compile(r"^(s\d+)?r\d+$")   # a fauna regen candidate (r2, s2r1), not a pilot letter (A, C)
+
+
+def regen_job_id(r: dict, rs: dict | None = None) -> str:
+    """artpipe job id for a REGEN record. A first pass or a regen-round candidate files the def's NEXT round of its
+    series, arteval_<DEF>_<s?r?> — the name round_series / fauna_drive count and look up; a letter candidate keeps
+    its own key (arteval_<DEF>__B_rN) so two letters never share a job (ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG)."""
+    import round_series as RS
+    n = r.get("round", 1)
+    c = r.get("candidate")
+    if c and not ROUND_CAND.match(str(c)):
+        return f"arteval_{spec_key(r)}_r{n}"
+    return f"arteval_{r['subject']}_{RS.tag(r['subject'], n, rs if rs is not None else RS.resets())}"
+
+
+def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None) -> list:
     """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
     prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done."""
     rows = []
@@ -623,7 +645,7 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None) -> list:
         if r["decision"] != "REGEN":
             continue
         rq = r["regen"]["request"]
-        rows.append({"id": f"arteval_{spec_key(r)}_r{r.get('round', 1)}", "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+        rows.append({"id": regen_job_id(r, rs), "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
                      "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": r.get("canvas_rule") or 1024, "canvas_h": r.get("canvas_rule") or 1024,
                      "facings": [] if r["module"] in ("catch", "ground_cover", "bush", "tree", "special") else ["south", "east", "north"],
                      "style_notes": "art_eval regen round %s; fixes: %s" % (r.get("round"), ", ".join(r["regen"]["findings"])),

@@ -3,7 +3,7 @@
 
     python3 fauna_digest.py <Biome> --roster a,b,c --out Transient/art_fauna_<biome>_2026-10-23.md
 
-Reads infrastructure/state/art_eval/runs/fauna_*/decisions.jsonl (first pass + candidate rounds),
+Reads infrastructure/state/art_eval/runs/fauna_*/decisions.jsonl and adopted runs (first pass + candidate rounds),
 infrastructure/state/art_eval/fauna_installs.jsonl and the head-to-head compare.json files. Paths are printed in the
 owner's Windows spelling.
 """
@@ -31,12 +31,11 @@ def win(p) -> str:
 
 
 def load_runs():
+    import round_series as RS    # fauna_* runs plus adopted ones (fauna_run_adoptions.jsonl)
     recs = []
-    for f in sorted((ROOT / "infrastructure/state/art_eval/runs").glob("fauna_*/decisions.jsonl")):
-        for line in f.read_text().splitlines():
-            r = json.loads(line)
-            r["_run"] = f.parent.name
-            recs.append(r)
+    for run, r in RS.decisions(ROOT / "infrastructure/state/art_eval/runs"):
+        r["_run"] = run
+        recs.append(r)
     return recs
 
 
