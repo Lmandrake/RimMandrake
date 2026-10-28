@@ -1,0 +1,17 @@
+{
+ "at": "2026-10-28T10:56:00-07:00",
+ "item": "ARTEVAL_FILE_REGENS_JOBID_FIX_SERIES_TAG",
+ "withdrawn": [
+  "arteval_RM_Surrik__s2r1_r2_south",
+  "arteval_RM_Surrik__s2r1_r2_east",
+  "arteval_RM_Surrik__s2r1_r2_north"
+ ],
+ "withdrawn_to": "D:\\ClaudeWork\\rimmandrake\\artpipe\\_withdrawn\\arteval_RM_Surrik__s2r1_r2_misnamed_20261028",
+ "refiled": [
+  "arteval_RM_Surrik_s2r2_south",
+  "arteval_RM_Surrik_s2r2_east",
+  "arteval_RM_Surrik_s2r2_north"
+ ],
+ "why": "regen_filing.json records the original filing under the misnamed id (runner bug, fixed 8384933c6b); the rendered jobs were never judged and no counter reads that name, so they were withdrawn and the same prompt refiled under the series id; regen_jobs.json now carries the refiled id",
+ "run_adopted": "infrastructure/state/art_eval/fauna_run_adoptions.jsonl"
+}
