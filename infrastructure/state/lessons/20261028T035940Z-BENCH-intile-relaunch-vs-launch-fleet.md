@@ -1,0 +1,2 @@
+The seat restart relaunches in the SAME tile (seat_loop.sh wraps the profile command and execs the killed record's argv) rather than conductor B3.4's launch_fleet route, because launch_fleet opens a new tab and orphans the old tile; launch_fleet -Seats <SEAT> is only the fallback. The fallback from the systemd-run Dispatcher through WSL interop is UNMEASURED, and a fallback window gets no first prompt. A /clear'd idle window reads 'not quiet' (last record user) and holds.
+home: design/RimMandrake/conductor_briefing.md
