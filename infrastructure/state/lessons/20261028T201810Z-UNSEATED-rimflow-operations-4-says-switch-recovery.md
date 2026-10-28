@@ -1,0 +1,1 @@
+rimflow-operations §4 says switch recovery runs 'from the Mac laptop over Tailscale SSH to Archmagi', but on 2026-10-28 13:20 the Laptop (mt-400028) had no Tailscale app/CLI, no 100.x interface, and neither 'archmagi' nor 'archmagi-wsl' resolved: that recovery path is UNAVAILABLE from this laptop until Tailscale is installed and joined.
