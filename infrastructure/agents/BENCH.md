@@ -62,6 +62,8 @@ state. Pick each open pointer up, close it, or say in your first reply why not �
 measured 2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread,
 and the wake step is the fix.
 
+Every fleet launch of this tile (cold boot via the Start Agent Fleet shortcut, `claude-account use` after an account switch) opens with a first prompt that starts with "wake" and runs these steps, so nobody has to type it (owner, 2026-10-28: "fix the wake ritual to start the agent"). Do them, then report what is open and wait for the owner. The prompt is `WAKE_PROMPT` in `src/RimMandrake/Utils/install_wt_seat_profiles.py`; change it there and re-run the installer with `--only BENCH,FOUNDRY --apply`.
+
 Game-state sentence from him → run `./game --said "<his words>" <state>` on the spot.
 A restart you call yourself → `./game --why "<your reason>" <state>`.
 

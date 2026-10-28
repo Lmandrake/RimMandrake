@@ -125,6 +125,8 @@ Pick each open pointer up, close it, or say in your first reply why not — meas
 2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread, and the wake
 step is the fix.
 
+Every fleet launch of this tile (cold boot via the Start Agent Fleet shortcut, `claude-account use` after an account switch) opens with a first prompt that starts with "wake" and runs these steps, so nobody has to type it (owner, 2026-10-28: "fix the wake ritual to start the agent"). Do them, then pull `next` and work it. The prompt is `WAKE_PROMPT` in `src/RimMandrake/Utils/install_wt_seat_profiles.py`; change it there and re-run the installer with `--only BENCH,FOUNDRY --apply`.
+
 ## A fresh window per ticket (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET)
 
 Owner 2026-10-28: "Yes we must solve foundry context right now." A long-lived window carries

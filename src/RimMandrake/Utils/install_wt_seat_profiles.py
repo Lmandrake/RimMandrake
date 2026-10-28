@@ -62,6 +62,10 @@ USAGE
 =====
     python3 src/RimMandrake/Utils/install_wt_seat_profiles.py            # show the diff, write nothing
     python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply    # back up, then write
+    python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --only BENCH,FOUNDRY --apply   # touch only those tiles
+
+A live profile can drift from this file (2026-10-28: the live Artist tile had no `cd` and a D:\\ startingDirectory),
+and a bare --apply rewrites every tile to match. Use --only to change just the tiles you mean to.
 
 A SINGLE rolling backup (`settings.json.bak`) is written before any change and
 overwritten each run. A malformed settings.json makes Windows Terminal fall back
@@ -141,6 +145,36 @@ DISTRO = "Ubuntu"
 LAUNCH = ("{script} "
           "--dangerously-skip-permissions --name '{label}' --model {model} "
           "--remote-control '{label}'")
+
+# 🔴 THE TWO SEATS LAUNCH WITH A FIRST PROMPT — owner, 2026-10-28 14:13 PDT: "Why did we not start up bench or
+# foundry upon wake? The agents reappered but static. ... Then let's fix the wake ritual to start the agent."
+# Every launch of these tiles (cold boot via the Start Agent Fleet shortcut, `claude-account use` -> launch_fleet.ps1
+# after an account switch, seat_loop.sh's first launch) used to open an idle window that waited for someone to type
+# "wake". The prompt rides AFTER LAUNCH, as Claude Code's positional `[prompt]` (`Usage: claude [options] [command]
+# [prompt]`); `--remote-control` is given its label explicitly, so the prompt is not swallowed as the name — measured
+# 2026-10-28 on 2.1.308 in a pty (`--remote-control 'WAKEPROBE' '<prompt>'` -> "/rc connecting…" AND the prompt ran
+# as the first turn; /mnt/d/ClaudeWork/rimmandrake/wake_fix/probe_pty.txt). LAUNCH itself stays prompt-less:
+# seat_restart.relaunch_argv and the dispatcher's recover argv are compared against it by their selftests.
+# The text sits single-quoted inside `bash -lc "…"` inside a JSON string, so it may use only [A-Za-z0-9 .,:/_-]
+# (selftest_install_wt_seat_profiles.py enforces it). It opens with the word "wake", which fires the handoff skill.
+# HESTIA, EMERGENCY, SERVER and ARTIST get none: they are not seats of this project's queue.
+WAKE_PROMPT = {
+    "BENCH": ("wake. Fresh AGENT BENCH window from a fleet launch, boot or account switch: nobody typed this. "
+              "Do the Start of turn in infrastructure/agents/BENCH.md: python3 src/RimMandrake/Utils/handoff.py "
+              "--wake, then python3 src/RimMandrake/rimflow/cli.py seat ready. Then report in a few lines what is "
+              "open and owed, and wait for the owner."),
+    "FOUNDRY": ("wake. Fresh AGENT FOUNDRY window from a fleet launch, boot or account switch: nobody typed this. "
+                "Do the Start of turn in infrastructure/agents/FOUNDRY.md: python3 src/RimMandrake/Utils/handoff.py "
+                "--wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, then python3 "
+                "src/RimMandrake/rimflow/cli.py next --seat FOUNDRY, and work the item it gives you."),
+}
+# With seat_restart on, seat_loop.sh's FIRST launch follows the fresh-window ritual (FOUNDRY.md, "A fresh window per
+# ticket"): the wake read, then end the turn so the Stop hook arms the doorbell and the Dispatcher hands the ticket.
+# Relaunches after a restart carry seat_restart.PROMPT instead; this is only the tile's first launch.
+RESTART_WAKE_PROMPT = ("wake. Fresh AGENT {seat} window from a fleet launch, boot or account switch: nobody typed "
+                       "this. seat_restart is on: run python3 src/RimMandrake/rimflow/seat_restart.py wake --seat "
+                       "{seat}, then python3 src/RimMandrake/rimflow/cli.py seat ready, read what they print, then "
+                       "end your turn: the Dispatcher hands you your next ticket through the doorbell.")
 
 # The standalone Remote Control server (owner, 2026-09-19: "launched each time
 # independent of any one seat"). `claude remote-control` is a SUBCOMMAND, not a
@@ -283,11 +317,13 @@ def build(seat):
         # Dispatcher kills the window for a fresh-per-ticket restart, relaunches it in THIS tile; any other exit drops
         # to the login shell as before. Only while the schedule key is on and lists the seat.
         inner = (f"cd {home_wsl} && export AGENT_SEAT={seat} && {home_wsl}/src/RimMandrake/Utils/seat_loop.sh {seat} "
-                 f"{LAUNCH.format(script=script, label=label, model=model)}")
+                 f"{LAUNCH.format(script=script, label=label, model=model)} "
+                 f"'{RESTART_WAKE_PROMPT.format(seat=seat)}'")
     else:
         export = "" if home else f"export AGENT_SEAT={seat} && "
+        first = f" '{WAKE_PROMPT[seat]}'" if seat in WAKE_PROMPT else ""
         inner = (f"cd {home_wsl} && {export}"
-                 f"{LAUNCH.format(script=script, label=label, model=model)}; exec $SHELL -l")
+                 f"{LAUNCH.format(script=script, label=label, model=model)}{first}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
         "name": label,
@@ -321,7 +357,14 @@ def main():
                          "is Windows Terminal's own default and what the owner "
                          "settled on after trying 6 and 18. Use 0 to leave the "
                          "font untouched.")
+    ap.add_argument("--only", default="",
+                    help="comma-separated SEATS keys (e.g. BENCH,FOUNDRY): update only those profiles and "
+                         "schemes, leaving every other tile exactly as it is live. Default: all.")
     args = ap.parse_args()
+    only = [x.strip().upper() for x in args.only.split(",") if x.strip()]
+    unknown = [x for x in only if x not in SEATS]
+    if unknown:
+        sys.exit(f"--only names no seat: {', '.join(unknown)} (known: {', '.join(SEATS)})")
 
     if not os.path.exists(args.settings):
         sys.exit(f"settings.json not found: {args.settings}")
@@ -332,7 +375,7 @@ def main():
     schemes = d.setdefault("schemes", [])
 
     added = updated = 0
-    for seat in SEATS:
+    for seat in (only or SEATS):
         profile, scheme = build(seat)
 
         i = next((n for n, p in enumerate(plist)
@@ -372,7 +415,7 @@ def main():
 
     print(f"{'APPLY' if args.apply else 'PLAN'}: {added} profile(s) to add, "
           f"{updated} to update, {removed} retired profile(s) to remove, "
-          f"{len(SEATS)} scheme(s) synced")
+          f"{len(only or SEATS)} scheme(s) synced")
     for seat, (colour, model, why, home, cmd) in SEATS.items():
         label = label_for(seat)
         shown = "none (daemon)" if cmd is not None else model
