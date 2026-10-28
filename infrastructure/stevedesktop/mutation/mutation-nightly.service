@@ -1,0 +1,13 @@
+# One nightly mutation pass: collect finished runs, then mutate only the targets whose module or selftests changed
+# since their own last complete run (run_mutation.py nightly). Exits at once while any mutation unit still runs.
+# The workers it launches are separate transient units in mutation.slice; this oneshot only plans and launches.
+[Unit]
+Description=Mutation testing: collect + launch changed targets (run_mutation.py nightly)
+
+[Service]
+Type=oneshot
+Slice=mutation.slice
+Nice=19
+IOSchedulingClass=idle
+ExecStart=%h/mutation/venv/bin/python %h/mutation/RimMandrake/src/RimMandrake/Utils/mutation/run_mutation.py nightly --workers 6 --slice-quota 600%%
+TimeoutStartSec=1800

@@ -17,6 +17,7 @@ CPUQuota, so the game/testq lane keeps its cores). WSL python only; no worktrees
   run_mutation.py launch [--targets a,b] [--changed] [--workers 6] [--gate-phases load]
   run_mutation.py status --run RUN                # per-shard progress
   run_mutation.py collect --run RUN [--copy-to DIR]   # summary.json + summary.md + survivors per module
+  run_mutation.py nightly [--workers 6]           # the timer: collect finished runs, launch changed targets
 
 The pre-mutation hook (`_gate`) blocks before each mutant while the testq attempt on this host is in one of the
 --gate-phases (default: none; measured 2026-10-27, see the summary's lane section). It never runs inside the timed
@@ -39,7 +40,8 @@ BASE = os.environ.get("MUTATION_BASE", os.path.join(HOME, "mutation"))
 BASE_CLONE = os.path.join(BASE, "RimMandrake")
 VENV_PY = os.path.join(BASE, "venv", "bin", "python")
 TESTQ = os.environ.get("MUTATION_TESTQ_DIR", "/mnt/d/RimTest/testq")
-SPARSE = ["src/RimMandrake/Utils", "src/RimMandrake/rimflow", "infrastructure", "skills/rimworld-modding"]
+SPARSE = ["src/RimMandrake/Utils", "src/RimMandrake/rimflow", "src/RimMandrake/contracts", "infrastructure",
+          "skills/rimworld-modding"]
 PROBE = "\nraise RuntimeError('mutation-reach-probe')\n"
 
 U, R = "src/RimMandrake/Utils/", "src/RimMandrake/rimflow/"
@@ -58,6 +60,9 @@ FLAKY = {
     # a transient sh); the check exercises role_launch, not dispatcher.py. Item SCAN_MARKED_HARDEN_YOUNG_SIBLING_BLINDS.
     "dispatcher": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
 }
+#: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
+BASELINE_S = {"close_evidence": 16.0, "arbiter_tiers": 3.0, "isolated_evidence": 2.0, "dispatcher": 3.4,
+              "v3_vs_v2": 3.5, "delegated_digest": 2.2}
 STATUS = {"ok_killed": "killed", "bad_survived": "survived", "bad_timeout": "timeout",
           "ok_suspicious": "suspicious", "skipped": "skipped", "untested": "untested"}
 
@@ -296,18 +301,36 @@ def changed_targets(since, repo=BASE_CLONE):
     return [n for n, (m, ts) in TARGETS.items() if m in files or files.intersection(ts)]
 
 
+def last_shas(last):
+    """{target: sha it was last COMPLETELY mutated at} from last_run.json. The old one-sha form covers every target."""
+    if not last:
+        return {}
+    if isinstance(last.get("targets"), dict):
+        return {n: v.get("sha") for n, v in last["targets"].items() if v.get("sha")}
+    return {n: last["sha"] for n in TARGETS} if last.get("sha") else {}
+
+
+def due_targets(shas, changed):
+    """Targets to mutate: never completed, or whose module/selftests changed since their own last sha.
+    `changed(since)` -> [target names changed since that sha] (git diff in the base clone)."""
+    out = [n for n in TARGETS if n not in shas]
+    for since in sorted(set(shas.values())):
+        hit = set(changed(since))
+        out += [n for n in TARGETS if shas.get(n) == since and n in hit and n not in out]
+    return [n for n in TARGETS if n in out]
+
+
+def read_last():
+    return json.load(open(last_run_path())) if os.path.exists(last_run_path()) else None
+
+
 def cmd_plan(a):
     if a.all:
         print("\n".join(TARGETS))
         return 0
-    since = a.since
-    if not since and os.path.exists(last_run_path()):
-        since = json.load(open(last_run_path())).get("sha")
-    if not since:
-        print("\n".join(TARGETS))
-        return 0
     sh(["git", "fetch", "-q", "origin", "main"], cwd=BASE_CLONE)
-    print("\n".join(changed_targets(since)))
+    shas = {n: a.since for n in TARGETS} if a.since else last_shas(read_last())
+    print("\n".join(due_targets(shas, changed_targets)))
     return 0
 
 
@@ -322,8 +345,7 @@ def cmd_launch(a):
     sh(["git", "checkout", "-q", "--detach", "origin/main"], cwd=BASE_CLONE)
     sha = sh(["git", "rev-parse", "HEAD"], cwd=BASE_CLONE).strip()
     if a.changed:
-        since = json.load(open(last_run_path())).get("sha") if os.path.exists(last_run_path()) else None
-        names = changed_targets(since) if since else list(TARGETS)
+        names = due_targets(last_shas(read_last()), changed_targets)
     else:
         names = [x for x in a.targets.split(",") if x] if a.targets else list(TARGETS)
     if not names:
@@ -448,14 +470,44 @@ def cmd_collect(a):
             lines.append("- %s: %d (lines %s)" % (f, len(rs), ",".join(str(r["line"]) for r in rs[:12])))
         lines.append("")
     open(os.path.join(out, "summary.md"), "w").write("\n".join(lines))
-    done = all(st.get("state") in ("done", "UNREACHED", "export_failed", "baseline_failed") for st in shard_states(root))
+    states = shard_states(root)
+    done = all(st.get("state") in ("done", "UNREACHED", "export_failed", "baseline_failed") for st in states)
     if done:
-        json.dump({"sha": meta["sha"], "run": meta["run"], "ended": time.time()}, open(last_run_path(), "w"))
+        last = read_last() or {}
+        tg = {n: {"sha": s} for n, s in last_shas(last).items()}
+        for n, m in mods.items():            # only a target whose every shard finished cleanly is up to date
+            if not m.get("failed_shards") and not m["unreached_shards"]:
+                tg[n] = {"sha": meta["sha"], "run": meta["run"], "ended": time.time()}
+        json.dump({"targets": tg}, open(last_run_path(), "w"), indent=1)
+        open(os.path.join(root, "collected"), "w").write(meta["sha"] + "\n")
     if a.copy_to:
         dst = os.path.join(a.copy_to, a.run)
         shutil.copytree(out, dst, dirs_exist_ok=True)
     print(os.path.join(out, "summary.md"), "complete" if done else "PARTIAL")
     return 0
+
+
+def active_units():
+    out = sh(["systemctl", "--user", "list-units", "--plain", "--no-legend", "--state=active", "mutation-*"],
+             check=False)
+    return [ln.split()[0] for ln in out.splitlines() if ln.strip()]
+
+
+def cmd_nightly(a):
+    """The timer's job: skip while any mutation unit still runs; collect every finished, uncollected run (copied to
+    MUTATION_COPY_TO when set); then launch only the targets that changed since their own last complete run."""
+    busy = active_units()
+    if busy:
+        print("busy: %d mutation unit(s) still active (%s); nothing launched" % (len(busy), busy[0]))
+        return 0
+    root = os.path.join(BASE, "shards")
+    for run in sorted(os.listdir(root)) if os.path.isdir(root) else []:
+        d = os.path.join(root, run)
+        if os.path.exists(os.path.join(d, "run.json")) and not os.path.exists(os.path.join(d, "collected")):
+            cmd_collect(argparse.Namespace(run=run, copy_to=os.environ.get("MUTATION_COPY_TO") or None))
+    return cmd_launch(argparse.Namespace(
+        changed=True, targets=None, workers=a.workers, max_shards=a.max_shards, unit_quota=a.unit_quota,
+        slice_quota=a.slice_quota, gate_phases=a.gate_phases, baseline_s=a.baseline_s, run=None))
 
 
 def main(argv=None):
@@ -465,16 +517,18 @@ def main(argv=None):
     p = sp.add_parser("plan")
     p.add_argument("--since")
     p.add_argument("--all", action="store_true")
-    p = sp.add_parser("launch")
-    p.add_argument("--targets")
-    p.add_argument("--changed", action="store_true")
-    p.add_argument("--workers", type=int, default=6)
-    p.add_argument("--max-shards", type=int, default=6)
-    p.add_argument("--unit-quota", default="100%")
-    p.add_argument("--slice-quota", default="600%")
-    p.add_argument("--gate-phases", default="")
-    p.add_argument("--baseline-s", help='JSON {"target": seconds per selftest run}')
-    p.add_argument("--run")
+    for name in ("launch", "nightly"):
+        p = sp.add_parser(name)
+        p.add_argument("--workers", type=int, default=6)
+        p.add_argument("--max-shards", type=int, default=6)
+        p.add_argument("--unit-quota", default="100%")
+        p.add_argument("--slice-quota", default="600%")
+        p.add_argument("--gate-phases", default="")
+        p.add_argument("--baseline-s", default=json.dumps(BASELINE_S), help='JSON {"target": s per selftest run}')
+        if name == "launch":
+            p.add_argument("--targets")
+            p.add_argument("--changed", action="store_true")
+            p.add_argument("--run")
     for name in ("status", "collect"):
         p = sp.add_parser(name)
         p.add_argument("--run", required=True)
@@ -491,7 +545,7 @@ def main(argv=None):
         for n, (m, ts) in TARGETS.items():
             print(n, m, " ".join(ts))
         return 0
-    return {"plan": cmd_plan, "launch": cmd_launch, "status": cmd_status, "collect": cmd_collect,
+    return {"plan": cmd_plan, "launch": cmd_launch, "nightly": cmd_nightly, "status": cmd_status, "collect": cmd_collect,
             "_runtests": cmd_runtests, "_gate": cmd_gate, "_worker": cmd_worker}[a.cmd](a)
 
 

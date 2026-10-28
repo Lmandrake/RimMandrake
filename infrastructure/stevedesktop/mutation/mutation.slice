@@ -1,0 +1,9 @@
+# SteveDesktop user slice for mutation testing (run_mutation.py). Installed by install_mutation.sh.
+# The CPU cap is the real lever: WSL nice does not deprioritise against Windows processes (RimWorld/testq).
+# Every worker unit also carries Nice=19, IOSchedulingClass=idle, its own CPUQuota and MemoryMax=4G.
+[Unit]
+Description=Mutation testing (capped, low priority)
+
+[Slice]
+CPUQuota=600%
+MemoryMax=24G

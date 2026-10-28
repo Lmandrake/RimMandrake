@@ -351,6 +351,20 @@ Claude `/login` (phone). An RDP connection would take the console session that t
 - Git identity: `sh ~/dev/Machinist/tools/install-git-identity.sh`.
 - Claude logins belong to the claude-remote-control account switcher; never edit them by hand.
 
+## Mutation testing (agents, 2026-10-28; owner: "Authorized get those new tests running now at the same time.")
+
+Agents run mutmut on idle CPU here; nothing for you to click. Its own clone `~/mutation/RimMandrake` and pinned
+venv `~/mutation/venv` (`infrastructure/stevedesktop/mutation_requirements.txt`); never `~/rm/runner`. Workers are
+`systemd-run --user` units in `mutation.slice` (Nice 19, idle I/O, CPU cap: 600% = 6 of 18 cores by default).
+Setup: `bash infrastructure/stevedesktop/mutation/install_mutation.sh`. Driver:
+`~/mutation/venv/bin/python ~/mutation/RimMandrake/src/RimMandrake/Utils/mutation/run_mutation.py
+launch|status|collect|nightly` (docstring). Stop everything: `systemctl --user stop 'mutation-*'`.
+The nightly timer is installed **disabled**; enable with
+`systemctl --user enable --now mutation-nightly.timer` (02:30 local; it skips while a run is still going and
+mutates only targets changed since their own last complete run). Results land in `~/mutation/results/<run>/`;
+Archmagi copies them back with
+`rsync -a stevedesktop-wsl:mutation/results/ /mnt/d/ClaudeWork/rimmandrake/mutation/steve/`.
+
 ## Before you leave Monday: checklist
 
 - [ ] Step 1: green SSH READY box seen; the agent confirmed `lan_ssh PASS`

@@ -1,0 +1,14 @@
+# DISABLED by default (install_mutation.sh copies it, never enables it). To turn the nightly pass on:
+#   systemctl --user daemon-reload && systemctl --user enable --now mutation-nightly.timer
+# Off again:  systemctl --user disable --now mutation-nightly.timer
+# Next fire:  systemctl --user list-timers mutation-nightly.timer
+[Unit]
+Description=Nightly mutation pass on changed targets (DISABLED until enabled by hand)
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+RandomizedDelaySec=15m
+Persistent=false
+
+[Install]
+WantedBy=timers.target
