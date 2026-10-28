@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Surrik__s2r1_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single RimWorld creature sprite, a root-mat swimmer called a surrik, in painterly vanilla RimWorld style with a clean dark outline, realistic proportions, on a transparent background. The creature is alone: its body rests directly on a flat, level ground surface, hunkered down low, with the transparent background all around it. The body is a streamlined, heavy bulk covered in smooth matte slate-brown hide with a paler underside. Massive, broad, dense shoulders are the heaviest mass of the body, with thick plated muscle built for shouldering through a mat of tangled roots. A blunt, flat, shovel-shaped wedge of a head sits low and directly on the shoulders with no neck. The head's front is smooth bare hide: a blunt, flat face with an expressionless look, and no snout out in front. The small, wide-set eyes are dark, dull and matte, and sit on the sides of the head. The mouth is one long straight slit running along the top of the blunt head, opening upward, which suits a creature that takes prey from underneath, and it is clearly visible in the front and side views. The forelimbs are short flipper stubs, smooth and clawless. The body tapers back to low haunches and a short tail. In the front view the face looks toward the viewer, with the blunt head, the upward slit mouth and both small eyes visible. In the side view the profile shows the blunt head, the slit mouth along its top, the heavy shoulders and the tapering rear. In the rear view, seen from behind, the back, haunches and tail are shown and the eyes are hidden. Lighting is soft and even, in a muted palette of slate-brown and pale underside tones.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: STYLE_CARTOON, STYLE_EARTHLY, DEPARTURE_MISSING, DESC_MISS",
+  "reference": "",
+  "priority": 40,
+  "source_run": "judgestall_20261028",
+  "drawsize": 1.0,
+  "module": "walker"
+ }
+]
