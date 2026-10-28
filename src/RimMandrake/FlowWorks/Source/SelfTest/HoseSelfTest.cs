@@ -705,9 +705,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             C(System.Text.RegularExpressions.Regex.IsMatch(comp, @"if \(world != null && worldVersion == mapVersion\s+&& \(!LegacyFrame \|\| HoseLive\.SnapshotFresh\(now, worldTick, maxAge, worldVersion, mapVersion\)\)\) return world;"),
               "World() returns a version-valid snapshot at any age outside LegacyFrame");
             foreach (string ev in new[] { "BuildingSpawned += OnBuilding", "BuildingDespawned += OnBuilding", "ThingSpawned += OnThing",
-                                          "TerrainChanged += OnCell", "PathCostRecalculate += OnCell", "CellFogChanged += OnFog", "MapFogged += MapChanged" })
+                                          "TerrainChanged += OnCell", "PathCostRecalculate += OnCell", "CellFogChanged += OnFog", "MapFogged += OnMapFogged" })
                 C(comp.Contains("map.events." + ev), "World() invalidates on " + ev.Split(' ')[0]);
-            C(comp.Contains("private void MapChanged() => mapVersion++;") && comp.Contains("UnhookMapEvents();"), "map changes bump the version; MapRemoved unhooks");
+            C(comp.Contains("private void MapChanged() => mapVersion++;") && comp.Contains("private void OnMapFogged() { splitFogged++; MapChanged(); }") && comp.Contains("UnhookMapEvents();"), "map changes (a fogged map too) bump the version; MapRemoved unhooks");
             // HOSE_TICK_REBUILD_ZERO_ALLOC: a building, tree or changed cell lists its squares for the next read's patch, and
             // bumps the version (a whole rebuild) only past the list's capacity
             C(comp.Contains("if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();"), "a building spawned or despawned (the paused build) always reaches the snapshot (patched, or rebuilt past capacity)");

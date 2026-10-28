@@ -45,7 +45,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// the cells changed since the snapshot was built or patched (a building's footprint, a tree's square, a cell whose
         /// per-cell event read differently); past its capacity the next read rebuilds whole.</summary>
         public static int WorldPatches;
-        private readonly HoseWorldDirty dirty = new HoseWorldDirty(4096);
+        private readonly HoseWorldDirty dirty = new HoseWorldDirty(16384);
         private LiveRule liveRule;
 
         private sealed class Cached
@@ -207,7 +207,7 @@ namespace RimMandrake.FlowWorks.Hose
             // path-cost event) and the climb-settings salt (a drained pond's hollow, ramps on/span, portable ladder reach:
             // RM_PocketGrid.SettingsChanged, no map event at all)
             bool folded = false;
-            int climbGen = RM_SuperdeepTrap.EngineOf(map)?.ClimbGeneration ?? 0;
+            int climbGen = RM_SuperdeepTrap.EngineOf(map)?.ClimbGenerationNoSwim ?? 0;   // swim moves arrive as cells (SwimCellsPublished)
             if (ladderVerSeen != RM_LadderUtility.StateVersion || bandsOnSeen != RM_HoseBands.On
                 || climbGenSeen != climbGen || climbSaltSeen != RM_CliffMask.settingsSalt)
             {
@@ -241,6 +241,7 @@ namespace RimMandrake.FlowWorks.Hose
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             if (liveRule == null) liveRule = new LiveRule(this);
             liveRule.Begin();
+            if (dirty.Count > splitPatchMaxCells) splitPatchMaxCells = dirty.Count;
             HoseWorldPatch.Patch(world, dirty, liveRule);
             dirty.Clear();
             WorldPatches++;
@@ -358,7 +359,7 @@ namespace RimMandrake.FlowWorks.Hose
             map.events.TerrainChanged += OnCell;
             map.events.PathCostRecalculate += OnCell;
             map.events.CellFogChanged += OnFog;
-            map.events.MapFogged += MapChanged;
+            map.events.MapFogged += OnMapFogged;
         }
 
         private void UnhookMapEvents()
@@ -372,7 +373,7 @@ namespace RimMandrake.FlowWorks.Hose
             map.events.TerrainChanged -= OnCell;
             map.events.PathCostRecalculate -= OnCell;
             map.events.CellFogChanged -= OnFog;
-            map.events.MapFogged -= MapChanged;
+            map.events.MapFogged -= OnMapFogged;
         }
 
         /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: a building or tree changes World()'s read of its own squares only (its band
@@ -396,9 +397,24 @@ namespace RimMandrake.FlowWorks.Hose
             dirty.MarkRect(x0, z0, x1, z1);
             if (!dirty.Overflow) return true;
             dirty.Clear();
+            splitOverflows++;
             return false;
         }
         private void OnCell(IntVec3 c) => CellChanged(c);
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: dug squares whose swim state was just published (their climb depth, so their
+        /// band, moved; nothing else did: ClimbCellCount counts the dug and bed squares, not swim). Listed for PatchWorld in
+        /// place of the whole rebuild a climb-generation fold costs (World() folds ClimbGenerationNoSwim).</summary>
+        internal void SwimCellsPublished(List<int> cells)
+        {
+            if (world == null || worldVersion != mapVersion) return;
+            int w = map.Size.x;
+            for (int k = 0; k < cells.Count; k++)
+            {
+                int i = cells[k];
+                if (!MarkDirty(i % w, i / w, i % w, i / w)) { MapChanged(); return; }
+            }
+        }
         private void OnFog(IntVec3 c, bool fogged) => CellChanged(c);
         /// <summary>A per-cell event (path cost, terrain, fog) bumps the version only when the cell now reads differently from the
         /// snapshot (LiveCellSig, World()'s rule for one cell): snow and filth recalculate path costs all the time, and a bump per
@@ -410,6 +426,7 @@ namespace RimMandrake.FlowWorks.Hose
             if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();
         }
         private void MapChanged() => mapVersion++;
+        private void OnMapFogged() { splitFogged++; MapChanged(); }
 
         /// <summary>
         /// CordSig.CellSig(World(), c) read off the LIVE map for one cell, without building the whole-map snapshot: the same
@@ -987,6 +1004,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: whole rebuilds (by cause: no snapshot, a folded global switch, a map event
         /// past the dirty list or a fogged map, or age under LegacyFrame) and patches since the last reset.</summary>
         private int splitBuilds, splitPatches;
+        /// <summary>The "event" rebuilds' causes: a dirty list past capacity, a fogged map; and the most cells one patch rewrote.</summary>
+        private int splitOverflows, splitFogged, splitPatchMaxCells;
         private readonly int[] buildWhy = new int[4];
         private static readonly string[] BuildWhyNames = { "none", "fold", "event", "age" };
         /// <summary>Longest BuildWorld, PatchWorld and TickRecheck since the reset (Stopwatch ticks), and per tick phase
@@ -1042,6 +1061,7 @@ namespace RimMandrake.FlowWorks.Hose
                     c.splitOwnMaxMs = c.splitGcMaxMs = 0;
                     c.splitAllocBytes = c.splitAllocMax = 0;
                     c.splitBuilds = c.splitPatches = 0;
+                    c.splitOverflows = c.splitFogged = c.splitPatchMaxCells = 0;
                     Array.Clear(c.buildWhy, 0, c.buildWhy.Length);
                     c.splitBuildMax = c.splitPatchMax = c.splitRecheckMax = 0;
                     Array.Clear(c.phaseGrow, 0, c.phaseGrow.Length);
@@ -1055,6 +1075,7 @@ namespace RimMandrake.FlowWorks.Hose
                     .Append(" builds=").Append(c.splitBuilds).Append(" patches=").Append(c.splitPatches)
                     .Append(" why=");
                 for (int k = 0; k < c.buildWhy.Length; k++) sb.Append(k == 0 ? "" : ",").Append(BuildWhyNames[k]).Append(':').Append(c.buildWhy[k]);
+                sb.Append(" overflow=").Append(c.splitOverflows).Append(" fogged=").Append(c.splitFogged).Append(" patchMaxCells=").Append(c.splitPatchMaxCells);
                 sb                    .Append(" buildMaxMs=").Append(Ms(c.splitBuildMax).ToString("0.00")).Append(" patchMaxMs=").Append(Ms(c.splitPatchMax).ToString("0.00"))
                     .Append(" recheckMaxMs=").Append(Ms(c.splitRecheckMax).ToString("0.00")).Append(" phase=");
                 for (int k = 0; k < c.phaseGrow.Length; k++)
@@ -1069,6 +1090,11 @@ namespace RimMandrake.FlowWorks.Hose
                 probeSink = new byte[1 << 20];
                 sb.Append(" | threadAlloc=").Append(ThreadAlloc == null ? "absent" : (ThreadAlloc() - b0) + "B")
                     .Append(" heapGrow=").Append(GC.GetTotalMemory(false) - h0).Append("B for 1048576");
+                // and the negative control: 5 ms of this thread allocating nothing must read about 0, or the heap's growth
+                // includes other threads (the bridge, Unity's) and a phase's KB is not the phase's own
+                long h1 = GC.GetTotalMemory(false), sw = System.Diagnostics.Stopwatch.GetTimestamp(), spin = 0;
+                while (Ms(System.Diagnostics.Stopwatch.GetTimestamp() - sw) < 5.0) spin++;
+                sb.Append(" idleGrow=").Append(GC.GetTotalMemory(false) - h1).Append("B in 5ms (").Append(spin > 0 ? "spun" : "none").Append(')');
             }
             sb.Append(" | gc0=").Append(GC.CollectionCount(0));
             return sb.ToString();

@@ -351,6 +351,13 @@ namespace RimMandrake.FlowWorks
 		/// grid (RM_PocketGrid) rebuilds when it moved. Derived, never scribed.</summary>
 		public int ClimbGeneration => climbGeneration;
 
+		private int climbGenerationNoSwim;
+
+		/// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: the climb generation less its swim moves. A swim publish names its squares
+		/// (PublishDugSwim hands them to the hose world, RM_MapComponent_Hoses.SwimCellsPublished, which rewrites just those),
+		/// so a reader that patches by cell folds only this; map1's dry window rebuilt the whole hose world 15 times for them.</summary>
+		public int ClimbGenerationNoSwim => climbGenerationNoSwim;
+
 		public void BumpClimbGeneration()
 		{
 			BumpClimbGeneration(GenOther);
@@ -368,6 +375,10 @@ namespace RimMandrake.FlowWorks
 		public void BumpClimbGeneration(int source)
 		{
 			climbGeneration++;
+			if (source != GenSwim)
+			{
+				climbGenerationNoSwim++;
+			}
 			climbBumps[(uint)source < (uint)climbBumps.Length ? source : GenOther]++;
 		}
 
@@ -515,6 +526,7 @@ namespace RimMandrake.FlowWorks
 			}
 			swimPendingHead = end;
 			swimGenOwed = true;
+			map.GetComponent<Hose.RM_MapComponent_Hoses>()?.SwimCellsPublished(batch);
 			// r15 fix 2: name the squares, so the swim grids re-read only these (not all 105k) when nothing else moved
 			Swimming.RM_SwimPathing.BumpCells(map, batch);
 			foreach (int i in batch)
