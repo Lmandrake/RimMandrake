@@ -1,0 +1,2 @@
+account_failover r5 (fixed d6340c6b62, ba065c52b3): a 'soft line' DARK that is right while there is nowhere to go (before the other account resets) becomes a trap once a fresh account exists - a DARK fleet barely moves the meter, so a switch gated on reaching the floor never fires and the fresh week idles. When the escape condition changes, re-check every throttle that was guarding the old one. Also: any marker deleted on 'status unknown' after a failed switch can strand later recovery (keep pending until the live account is positively known).
+home: NONE
