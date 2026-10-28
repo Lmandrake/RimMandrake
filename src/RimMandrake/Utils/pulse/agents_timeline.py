@@ -53,6 +53,7 @@ BUSY_GAP = 10 * 60            # records further apart than this are not one work
 PX_H = 40                     # chart px per hour at its narrowest (960 px: fills a desk, scrolls inside the chart on a phone)
 ROW_H = 22
 CACHE_S = 30
+CHUNK = 4 << 20
 TESTQ_ROOT = Path(os.environ.get("RM_TESTQ_ROOT", "/mnt/d/ClaudeWork/rimmandrake/testq"))
 SCHEDULE = Path(os.environ.get("RM_DISPATCH_SCHEDULE", str(HERE.parents[1] / "rimflow" / "dispatcher_schedule.json")))
 WINDOWS = (("BENCH", "BENCH", "window"),
@@ -66,6 +67,7 @@ ROLE_WORDS = {"Proof": "a test launch of the role starter", "Conductor": "plans 
 ITEM_RE = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+){2,}\b")
 
 _LOCK = threading.Lock()
+_COLLECT = threading.Lock()   # one collector at a time; a second request waits and reuses its result
 _SCAN: dict = {}             # path -> {"off", "st"}: incremental transcript parse state
 _CACHE: dict = {}            # "page" -> (at, data)
 _LEDGER: dict = {}           # path -> (size, mtime, titles, seat events)
@@ -115,14 +117,16 @@ def _feed(st: dict, d: dict) -> None:
             and not str(d["content"]).lstrip().startswith(("/", "<")):   # slash commands, task notifications
         st["prompts"].append((t, str(d["content"])[:300]))
         del st["prompts"][:-40]
+    m = d.get("message") if isinstance(d.get("message"), dict) else {}
     if kind == "user":
-        txt = _text((d.get("message") or {}).get("content"))
+        txt = _text(m.get("content"))
         if st["first_user"] is None and txt:
             st["first_user"] = txt[:6000]
-        if txt and not txt.startswith(("<", "/")) and not st["prompts"] and not d.get("isMeta"):
+        if txt and not txt.startswith(("<", "/")) and not d.get("isMeta") and not d.get("toolUseResult") \
+                and not (st["prompts"] and st["prompts"][-1][1] == txt[:300]):   # a queued prompt shows up twice
             st["prompts"].append((t, txt[:300]))
+            del st["prompts"][:-40]
     if kind in ("user", "assistant"):
-        m = d.get("message") or {}
         st["last_rec"] = {"type": kind, "message": {"stop_reason": m.get("stop_reason")}}
 
 
@@ -137,20 +141,48 @@ def scan(path: Path) -> dict:
         ent = _SCAN.get(key)
         if ent is None or size < ent["off"]:
             ent = _SCAN[key] = {"off": 0, "st": _new_state()}
-        if size > ent["off"]:
-            with open(path, "rb") as fh:
+        ent["seen"] = time.time()
+        try:
+            fh = open(path, "rb")
+        except OSError:
+            return ent["st"]
+        with fh:
+            while size > ent["off"]:   # bounded chunks: a cold read of a big transcript never holds it whole
                 fh.seek(ent["off"])
-                chunk = fh.read(size - ent["off"])
-            end = chunk.rfind(b"\n") + 1
-            for line in chunk[:end].splitlines():
-                try:
-                    d = json.loads(line)
-                except ValueError:
+                chunk = fh.read(min(CHUNK, size - ent["off"]))
+                if not chunk:
+                    break
+                end = chunk.rfind(b"\n") + 1
+                if end == 0:
+                    if len(chunk) < CHUNK:
+                        break                      # a record still being written: wait for its newline
+                    ent["off"] += len(chunk)       # one record bigger than a chunk: skip it
+                    ent["skip"] = True
                     continue
-                if isinstance(d, dict):
-                    _feed(ent["st"], d)
-            ent["off"] += end
+                body = chunk[:end]
+                if ent.pop("skip", False):
+                    body = body[body.find(b"\n") + 1:]
+                for line in body.splitlines():
+                    try:
+                        d = json.loads(line)
+                    except ValueError:
+                        continue
+                    if isinstance(d, dict):
+                        try:
+                            _feed(ent["st"], d)
+                        except Exception:  # noqa: BLE001 - an odd record is skipped, not the page
+                            pass
+                ent["off"] += end
         return ent["st"]
+
+
+def prune(lo: float) -> None:
+    """Forget transcripts not read for an hour and working stretches older than the window (a daemon runs for weeks)."""
+    with _LOCK:
+        for k in [k for k, ent in _SCAN.items() if time.time() - ent.get("seen", 0) > 3600]:
+            del _SCAN[k]
+        for ent in _SCAN.values():
+            ent["st"]["segs"] = [sg for sg in ent["st"]["segs"] if sg[1] >= lo]
 
 
 def read_registry(sessions_dir: Path) -> tuple[list[dict], str | None]:
@@ -203,7 +235,9 @@ def read_ledger_bits(ledger: list | None) -> tuple[dict, list]:
                                 pass
             except OSError:
                 continue
-            hit = _LEDGER[str(f)] = (stt.st_size, stt.st_mtime) + _bits(rows)
+            ti, ev = _bits(rows)
+            keep = time.time() - 3 * 86400        # only recent claims/starts label a day's bars
+            hit = _LEDGER[str(f)] = (stt.st_size, stt.st_mtime, ti, [x for x in ev if x[2] >= keep])
         titles.update(hit[2])
         evs.extend(hit[3])
     return titles, evs
@@ -241,7 +275,8 @@ def plain_prompt(p: str, n: int = 70) -> str:
 
 def read_role_lines(lo: float) -> tuple[list | None, str | None]:
     try:
-        r = subprocess.run(["journalctl", "--user", "--since", "@%d" % int(lo), "-o", "short-unix", "--no-pager"],
+        r = subprocess.run(["journalctl", "--user", "-u", "rm-role-*", "--since", "@%d" % int(lo), "-o", "short-unix",
+                            "--no-pager"],
                            capture_output=True, text=True, timeout=20)
     except Exception as ex:  # noqa: BLE001
         return None, f"the systemd journal could not be read: {ex}"
@@ -362,95 +397,102 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
     if not proj_why:
         for f in glob.glob(os.path.join(str(projects_dir), "*", "*.jsonl")):
             try:
-                if os.path.getmtime(f) >= lo:
+                if os.path.getmtime(f) >= lo or Path(f).stem in alive_sid:   # a live window's helpers may be newer
                     files.append(Path(f))
             except OSError:
                 pass
+    bad_files = 0
     for f in files:
-        st = scan(f)
-        if st["last"] is None or st["last"] < lo:
-            continue
-        sid = f.stem
-        name = st["title"] or sid_name.get(sid)
-        live = sid in alive_sid
-        a, b = max(lo, st["first"]), (hi if live else st["last"])
-        segs = [[max(lo, x), min(hi, y)] for x, y in st["segs"] if y >= lo]
-        w, role = window_of(name), role_of(name)
-        last_ask = plain_prompt(st["prompts"][-1][1]) if st["prompts"] else ""
-        if w:
-            items = [(t, iid) for (seat, iid, t, _ev) in seat_evs if seat == w and st["first"] - 60 <= t <= b + 60]
-            items.sort()
-            seen, order = set(), []
-            for t, iid in reversed(items):
-                if iid not in seen:
-                    seen.add(iid)
-                    order.append(iid)
-            named = [i for i in order if titles.get(i)]   # an item with no title would show its id: skip it
-            if named:
-                label = short_title(titles[named[0]])
-                if len(order) > 1:
-                    label += f" (+{len(order) - 1} more)"
-            else:
-                label = ("asked: " + last_ask) if last_ask else "nothing asked of it"
-            tip = (f"{name} · session {sid} · {_when(st['first'], now)}–{'now' if live else _when(b, now)}"
-                   + "".join(f" · {iid}: {short_title(titles.get(iid, ''), 60)}" for iid in order[:6])
-                   + (f" · last asked: {last_ask}" if last_ask else ""))
-            win_bars[w].append(_bar("session", a, b, label, tip, live, segs=segs))
-            if live:
-                active.append({"who": f"{w} window", "what": label, "since": a,
-                               "state": "working" if alive_sid[sid].get("status") == "busy" else "open, waiting",
-                               "tip": tip})
-            # helpers
-            for sf in glob.glob(os.path.join(str(f.with_suffix("")), "subagents", "agent-*.jsonl")):
-                sp = Path(sf)
-                try:
-                    mt = sp.stat().st_mtime
-                except OSError:
-                    continue
-                if mt < lo:
-                    continue
-                hs = scan(sp)
-                if hs["last"] is None or hs["last"] < lo:
-                    continue
-                try:
-                    meta = json.loads(sp.with_suffix("").with_suffix(".meta.json").read_text())
-                except (OSError, ValueError):
-                    meta = {}
-                if not meta:
+        try:
+            st = scan(f)
+            if st["last"] is None or st["last"] < lo:
+                continue
+            sid = f.stem
+            name = st["title"] or sid_name.get(sid)
+            live = sid in alive_sid
+            a, b = max(lo, st["first"]), (hi if live else st["last"])
+            segs = [[max(lo, x), min(hi, y)] for x, y in st["segs"] if y >= lo]
+            w, role = window_of(name), role_of(name)
+            last_ask = plain_prompt(st["prompts"][-1][1]) if st["prompts"] else ""
+            if w:
+                items = [(t, iid) for (seat, iid, t, _ev) in seat_evs if seat == w and st["first"] - 60 <= t <= b + 60]
+                items.sort()
+                seen, order = set(), []
+                for t, iid in reversed(items):
+                    if iid not in seen:
+                        seen.add(iid)
+                        order.append(iid)
+                named = [i for i in order if titles.get(i)]   # an item with no title would show its id: skip it
+                if named:
+                    label = short_title(titles[named[0]])
+                    if len(order) > 1:
+                        label += f" (+{len(order) - 1} more)"
+                else:
+                    label = ("asked: " + last_ask) if last_ask else "nothing asked of it"
+                tip = (f"{name} · session {sid} · {_when(st['first'], now)}–{'now' if live else _when(b, now)}"
+                       + "".join(f" · {iid}: {short_title(titles.get(iid, ''), 60)}" for iid in order[:6])
+                       + (f" · last asked: {last_ask}" if last_ask else ""))
+                win_bars[w].append(_bar("session", a, b, label, tip, live, segs=segs))
+                if live:
+                    active.append({"who": f"{w} window", "what": label, "since": a,
+                                   "state": "working" if alive_sid[sid].get("status") == "busy" else "open, waiting",
+                                   "tip": tip})
+                # helpers
+                for sf in glob.glob(os.path.join(str(f.with_suffix("")), "subagents", "agent-*.jsonl")):
+                    sp = Path(sf)
                     try:
-                        meta = json.loads(Path(str(sp)[:-6] + ".meta.json").read_text())
+                        mt = sp.stat().st_mtime
+                    except OSError:
+                        continue
+                    if mt < lo:
+                        continue
+                    hs = scan(sp)
+                    if hs["last"] is None or hs["last"] < lo:
+                        continue
+                    try:
+                        meta = json.loads(sp.with_suffix("").with_suffix(".meta.json").read_text())
                     except (OSError, ValueError):
                         meta = {}
-                ids = [m for m in ITEM_RE.findall(hs["first_user"] or "") if m in titles]
-                iid = ids[0] if ids else None
-                desc = (meta.get("description") or "").strip()
-                hlabel = desc or (short_title(titles[iid]) if iid else "helper (no description written)")
-                running = live and pc.subagent_running(hs["last_rec"], mt, now)
-                hb = hi if running else hs["last"]
-                agent = sp.stem.removeprefix("agent-")
-                htip = (f"helper of {w} · {hlabel} · {_when(hs['first'], now)}–{'now' if running else _when(hb, now)}"
-                        f" ({_dur(hb - hs['first'])}) · agent {agent}" + (f" · {meta.get('agentType')}" if meta.get("agentType") else "")
-                        + (f" · item {iid}: {short_title(titles[iid], 60)}" if iid else ""))
-                win_help[w].append(_bar("helper", max(lo, hs["first"]), hb, hlabel, htip, running))
-                if running:
-                    active.append({"who": f"helper of {w}", "what": hlabel, "since": hs["first"], "state": "working",
-                                   "tip": htip})
-        elif role:
-            role_tx[role[1]] = {"role": role[0], "first": st["first"], "last": st["last"], "ask": last_ask, "sid": sid}
-        else:
-            first = st["first_user"] or (st["prompts"][0][1] if st["prompts"] else "")
-            fresh = now - st["last"] < 5 * 60
-            if STEWARD_PROMPT in (first or "") or any(STEWARD_PROMPT in p for _, p in st["prompts"][:1]):
-                lab = "called in because the SteveDesktop test lane was stuck"
-                auto_bars.append(_bar("auto", a, min(b, hi), lab, f"automatic session {sid} · {f.parent.name} · {lab}"))
-                if fresh:
-                    active.append({"who": "automatic session", "what": lab, "since": a, "state": "working", "tip": sid})
+                    if not meta:
+                        try:
+                            meta = json.loads(Path(str(sp)[:-6] + ".meta.json").read_text())
+                        except (OSError, ValueError):
+                            meta = {}
+                    ids = [m for m in ITEM_RE.findall(hs["first_user"] or "") if m in titles]
+                    iid = ids[0] if ids else None
+                    desc = str(meta.get("description") or "").strip()
+                    hlabel = desc or (short_title(titles[iid]) if iid else "helper (no description written)")
+                    running = live and pc.subagent_running(hs["last_rec"], mt, now)
+                    hb = hi if running else hs["last"]
+                    agent = sp.stem.removeprefix("agent-")
+                    htip = (f"helper of {w} · {hlabel} · {_when(hs['first'], now)}–{'now' if running else _when(hb, now)}"
+                            f" ({_dur(hb - hs['first'])}) · agent {agent}" + (f" · {meta.get('agentType')}" if meta.get("agentType") else "")
+                            + (f" · item {iid}: {short_title(titles[iid], 60)}" if iid else ""))
+                    win_help[w].append(_bar("helper", max(lo, hs["first"]), hb, hlabel, htip, running))
+                    if running:
+                        active.append({"who": f"helper of {w}", "what": hlabel, "since": hs["first"], "state": "working",
+                                       "tip": htip})
+            elif role:
+                role_tx[role[1]] = {"role": role[0], "first": st["first"], "last": st["last"], "ask": last_ask, "sid": sid}
             else:
-                where = f.parent.name.replace("-mnt-d-ClaudeWork-rimmandrake-", "").replace("-home-mandrake-", "~/")
-                lab = (("art judging: " if "art-eval" in where else "") + (plain_prompt(first, 60) if first else "no prompt recorded"))
-                other_bars.append(_bar("auto", a, min(b, hi), lab, f"session {sid} · {name or 'untitled'} · started in {where}"))
-                if fresh:
-                    active.append({"who": "other Claude session", "what": lab, "since": a, "state": "working", "tip": sid})
+                first = st["first_user"] or (st["prompts"][0][1] if st["prompts"] else "")
+                fresh = now - st["last"] < 5 * 60
+                if STEWARD_PROMPT in (first or "") or any(STEWARD_PROMPT in p for _, p in st["prompts"][:1]):
+                    lab = "called in because the SteveDesktop test lane was stuck"
+                    auto_bars.append(_bar("auto", a, min(b, hi), lab, f"automatic session {sid} · {f.parent.name} · {lab}"))
+                    if fresh:
+                        active.append({"who": "automatic session", "what": lab, "since": a, "state": "working", "tip": sid})
+                else:
+                    where = f.parent.name.replace("-mnt-d-ClaudeWork-rimmandrake-", "").replace("-home-mandrake-", "~/")
+                    lab = (("art judging: " if "art-eval" in where else "") + (plain_prompt(first, 60) if first else "no prompt recorded"))
+                    other_bars.append(_bar("auto", a, min(b, hi), lab, f"session {sid} · {name or 'untitled'} · started in {where}"))
+                    if fresh:
+                        active.append({"who": "other Claude session", "what": lab, "since": a, "state": "working", "tip": sid})
+        except Exception:  # noqa: BLE001 - one unreadable or odd transcript must not blank the page
+            bad_files += 1
+    prune(lo)
+    if bad_files:
+        gaps.append(f"{bad_files} transcript{'s' if bad_files != 1 else ''} could not be read")
 
     # roles: journal starts joined to transcripts
     role_bars, conductor_bars = [], []
@@ -459,10 +501,10 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
         m = re.match(r"\s*([\d.]+)\s.*Started (rm-role-[\w.-]+?)\.service", ln)
         if m:
             started[m.group(2)] = float(m.group(1))
-    for unit in set(started) | {u for u in role_tx if role_tx[u]["last"] >= lo}:
+    for unit in set(started) | {u for u in role_tx if role_tx[u]["last"] >= lo} | set(units_active):
         tx = role_tx.get(unit)
         rname = tx["role"] if tx else (unit.split("-")[2].capitalize() if unit.count("-") >= 3 else unit)
-        t0 = started.get(unit) or (tx and tx["first"])
+        t0 = started.get(unit) or (tx and tx["first"]) or lo
         what = ROLE_WORDS.get(rname, "a dispatcher role")
         if unit in units_active:
             b = _bar("role", max(lo, t0), hi, f"{rname} run: {what}", f"{unit} · running now", True)
@@ -484,17 +526,23 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
         for state in ("done", "running", "orphans"):
             dpath = Path(testq_root) / state
             try:
-                ents = [e for e in os.scandir(dpath) if e.name.endswith(".json") and e.stat().st_mtime >= lo - DAY]
-            except OSError:
+                ents = [e for e in os.scandir(dpath) if e.name.endswith(".json")
+                        and (state == "running" or e.stat().st_mtime >= lo - DAY)]
+            except FileNotFoundError:
+                continue
+            except OSError as ex:
+                tq_why = f"the test-run records folder {dpath} could not be read: {ex}"
                 continue
             for e in ents:
                 try:
                     r = json.loads(Path(e.path).read_text())
                 except (OSError, ValueError):
                     continue
+                if not isinstance(r, dict):
+                    continue
                 job = r.get("job") if isinstance(r.get("job"), dict) else {}
                 res = r.get("result") if isinstance(r.get("result"), dict) else {}
-                mod = job.get("mod") or "?"
+                mod = str(job.get("mod") or "?")
                 filler = job.get("requested_by") == "BENCH.filler"
                 why = "queued automatically to keep the machine busy" if filler else f"asked for by {job.get('requested_by') or 'unknown'}"
                 if state == "running" and not res:
@@ -509,7 +557,7 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                 t0, t1 = _ts(res.get("started")), _ts(res.get("finished"))
                 if t0 is None or t1 is None or t1 < lo:
                     continue
-                cnt = res.get("counts") or {}
+                cnt = res.get("counts") if isinstance(res.get("counts"), dict) else {}
                 outcome = ", ".join(f"{v} {k.lower().replace('unmeasured', 'not measured').replace('pass', 'passed').replace('fail', 'failed')}"
                                     for k, v in cnt.items() if v) or (res.get("outcome") or "").lower()
                 lab = f"testing {mod}" + (f": {outcome}" if outcome else "")
@@ -639,6 +687,7 @@ def summary(d: dict) -> str:
 def render(d: dict, base: str = "") -> str:
     from brief import CSS
     e = html.escape
+    base = e(base, quote=True)
     lo, hi, now = d["lo"], d["hi"], d["at"]
     W = round(DAY / 3600 * PX_H)
     out = ["<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
@@ -703,9 +752,15 @@ def render(d: dict, base: str = "") -> str:
         for ri, row in enumerate(rows):
             top = 4 + ri * ROW_H
             row = sorted(row, key=lambda b: b["lo"])
+            nexts, nx = [], W                      # where the next real bar starts, one reverse pass
+            for c in reversed(row):
+                nexts.append(nx)
+                if c["kind"] != "open":
+                    nx = _x(c["lo"], lo)
+            nexts.reverse()
             for bi, b in enumerate(row):
                 x0, x1 = _x(b["lo"], lo), _x(b["hi"], lo)
-                nxt = next((_x(c["lo"], lo) for c in row[bi + 1:] if c["kind"] != "open"), W)
+                nxt = nexts[bi]
                 tip = e(b["tip"])
                 if b["kind"] == "marker":
                     inner.append(f"<div class='b marker' style='left:{_pc(x0)};top:{top}px' data-t='{tip}' title='{tip}'>{e(b['label'])}</div>")
@@ -763,12 +818,13 @@ def render(d: dict, base: str = "") -> str:
 
 def data(now: float | None = None) -> dict:
     now = now if now is not None else time.time()
-    hit = _CACHE.get("page")
-    if hit and now - hit[0] < CACHE_S:
-        return hit[1]
-    d = collect(now)
-    _CACHE["page"] = (now, d)
-    return d
+    with _COLLECT:
+        hit = _CACHE.get("page")
+        if hit and abs(now - hit[0]) < CACHE_S:
+            return hit[1]
+        d = collect(now)
+        _CACHE["page"] = (now, d)
+        return d
 
 
 def page(path: str, now: float | None = None) -> tuple[int, str, bytes]:

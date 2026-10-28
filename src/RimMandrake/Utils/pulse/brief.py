@@ -1035,6 +1035,7 @@ def tailnet_ip() -> str | None:
 
 def streams_line(now: float, base: str = "") -> str:
     """The phone brief line from the Streams panel's latest record (RIMPULSE_STREAMS_BUILD_VS_TIME, §7)."""
+    base = html.escape(base, quote=True)
     try:
         import streams
         r = streams.latest_live(streams.read_series(since=now - 2 * 86400))

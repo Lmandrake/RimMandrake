@@ -202,6 +202,12 @@ check("the chart scrolls inside itself on a phone", "overflow-x:auto" in page an
 check("visible labels say what each helper did", "Fix the river overlay" in vis and "Agent timeline page" in vis)
 check("the gap reason is visible", "PC was off" in vis or "off or restarting" in vis, None)
 
+check("a hostile base prefix cannot break out of an href", "'x" not in A.render(d, base="'x"), None)
+d4 = A.collect(NOW, projects_dir=root / "noproj", sessions_dir=root / "nosess", testq_root=testq, ledger=ledger,
+               role_lines=[], boots=boots, roles_on={}, units_active={"rm-role-steward-9"})
+check("a running role with no journal start still shows as working",
+      any(x["who"] == "Steward run" and x["state"] == "working" for x in d4["active"]), d4["active"])
+
 import brief  # noqa: E402
 A._CACHE.clear()
 code, ctype, body = brief.page("/agents", lambda: {}, Path(tempfile.mkdtemp()))
