@@ -26,7 +26,7 @@ What it knows (section 6.1), first match wins:
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
                    queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
   EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault
-  TICK_STOPPED     testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
+  TICK_STOPPED     (after RUNNING and PAUSED: a job running or an intentional pause is not a fault) testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
                    dispatched, filled, reconciled or ingested; a fault at once (it outranks READY and IDLE_EMPTY,
                    whose "the fill failed?" was the misdiagnosis of 2026-10-28, when a cutover stopped every
                    rm-*/testq-* timer at 05:04 and nobody restarted them). An unknown state (no systemd) says nothing.
@@ -113,11 +113,6 @@ def lane_state(now, mods=None):
     if os.path.exists(path("quarantine.json")):
         qz = T.read_json(path("quarantine.json")) or {}
         return _st("QUARANTINE", "quarantined: %s" % (qz.get("reason") or "quarantine.json exists"), 0, at_once=True)
-    tick = tick_timer_state()
-    if tick in ("inactive", "failed", "deactivating"):
-        return _st("TICK_STOPPED", "testq-tick.timer is %s: nothing is dispatched, filled or ingested; "
-                   "`systemctl --user start testq-tick.timer` (unless a cutover still needs it held: look for "
-                   "~/rm/paused-timers-*.txt)" % tick, 0, at_once=True)
     run = T.steve_running()
     if run:
         return _st("RUNNING", "running %s" % ",".join(r["job"]["id"] for r in run), jobs=[r["job"]["id"] for r in run])
@@ -136,6 +131,11 @@ def lane_state(now, mods=None):
     if os.path.exists(path("fill.stop")):
         return _st("PAUSED", "fill stopped: %s exists" % path("fill.stop"),
                    os.path.getmtime(path("fill.stop")) + MANUAL_PAUSE_S)
+    tick = tick_timer_state()
+    if tick in ("inactive", "failed", "deactivating"):
+        return _st("TICK_STOPPED", "testq-tick.timer is %s: nothing is dispatched, filled or ingested; "
+                   "`systemctl --user start testq-tick.timer` (unless a cutover still needs it held: look for "
+                   "~/rm/paused-timers-*.txt)" % tick, 0, at_once=True)
     ready = [j for j in T.records("pending") if T.ready(j, now)]
     if ready:
         t0 = min(max(S.parse_ts(j["submitted"]), S.parse_ts(j["not_before"]) if j.get("not_before") else 0)
@@ -223,8 +223,11 @@ def tick_timer_state():
 
 
 def restart_tick():
-    r = subprocess.run(["systemctl", "--user", "restart", "testq-tick.timer"], capture_output=True, text=True,
-                       timeout=60)
+    try:
+        r = subprocess.run(["systemctl", "--user", "restart", "testq-tick.timer"], capture_output=True, text=True,
+                           timeout=60)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "failed: %s" % e
     return "exit %d %s" % (r.returncode, r.stderr.strip()[-160:])
 
 
@@ -233,8 +236,11 @@ RUNBOOK = "infrastructure/stevedesktop/RUNBOOK.md"
 
 
 def wake_active():
-    r = subprocess.run(["systemctl", "--user", "is-active", WAKE_UNIT + ".service"], capture_output=True, text=True,
-                       timeout=30)
+    try:
+        r = subprocess.run(["systemctl", "--user", "is-active", WAKE_UNIT + ".service"], capture_output=True,
+                           text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return True                     # cannot tell: do not start a second one
     return r.stdout.strip() in ("active", "activating", "reloading")
 
 
@@ -246,10 +252,13 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
         shlex.quote(exe), shlex.quote(brief_path), shlex.quote(str(budget)),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
         shlex.quote(log_path))
-    r = subprocess.run(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
-                        "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
-                        "--setenv=PATH=%s" % os.environ.get("PATH", ""), "/bin/bash", "-c", cmd],
-                       capture_output=True, text=True, timeout=60)
+    try:
+        r = subprocess.run(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
+                            "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
+                            "--setenv=PATH=%s" % os.environ.get("PATH", ""), "/bin/bash", "-c", cmd],
+                           capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError) as e:
+        return False, "systemd-run failed: %s" % e
     return r.returncode == 0, (r.stdout + r.stderr).strip()[-200:]
 
 
@@ -293,7 +302,7 @@ def maybe_wake(inc, ls, now, src="steward"):
         inc["wake"] = "skipped: a wake session is already running"
         return inc["wake"]
     clone = os.path.expanduser(os.environ.get("TESTQ_WAKE_CLONE", "~/rm/bench"))
-    if not os.path.isdir(os.path.join(clone, ".git")):
+    if not os.path.exists(os.path.join(clone, ".git")):
         inc["wake"] = "skipped: no wake clone at %s" % clone
         return inc["wake"]
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(now))

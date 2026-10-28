@@ -272,6 +272,19 @@ def main():
         W.tick_timer_state = lambda: None          # no systemd here (the dispatch clone, a test box): no verdict
         check(W.lane_state(base, ["Mock"])["state"] == "IDLE_EMPTY", "an unknown timer state changes nothing")
         W.tick_timer_state = lambda: "active"
+        # review r1: RUNNING and an intentional pause both outrank a stopped tick (header: only RUNNING ends an incident)
+        reset()
+        W.tick_timer_state = lambda: "inactive"
+        S.dump({"since": S.utcnow(), "job": None, "outcome": None, "cause": None, "reason": "cutover",
+                "until": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(base + 4 * 3600))}, T.q("paused.json"))
+        ls = W.lane_state(base, ["Mock"])
+        check(ls["state"] == "PAUSED" and ls["fault_at"] != 0, "a future-expiry pause outranks a stopped tick: %s"
+              % ls["state"])
+        os.remove(T.q("paused.json"))
+        running(base)
+        check(W.lane_state(base, ["Mock"])["state"] == "RUNNING", "a running job outranks a stopped tick")
+        reset()
+        W.tick_timer_state = lambda: "active"
         # ------------------------------------------------ a stopped tick: the watcher
         reset()
         restarts = []
