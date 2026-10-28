@@ -319,6 +319,16 @@ def review_r1_checks():
             I.finding_name = real_fn
         fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
         check(len(fn) == 2 and len(set(fn)) == 2, "a salted name that collides again is re-salted: %s" % fn)
+        root = "/srv/clone"                    # review r6: a git run from elsewhere but aimed at this repo holds its lock
+        hit = lambda argv, env, cwd: I.git_targets_repo(argv, env, cwd, root)
+        check(hit(["git", "--git-dir=/srv/clone/.git", "update-index"], {}, "/tmp"), "--git-dir=X from elsewhere is ours")
+        check(hit(["git", "--git-dir", "/srv/clone/.git", "x"], {}, "/tmp"), "--git-dir X (two args) is ours")
+        check(hit(["git", "--work-tree=/srv/clone", "x"], {}, "/tmp"), "--work-tree is ours")
+        check(hit(["git", "x"], {"GIT_DIR": "/srv/clone/.git"}, "/tmp"), "GIT_DIR in the environment is ours")
+        check(hit(["git", "--git-dir=.git", "x"], {}, "/srv/clone"), "a relative --git-dir resolves against its cwd")
+        check(hit(["git", "-C", "/srv/clone", "x"], {}, "/tmp"), "-C into the repo is ours")
+        check(not hit(["git", "--git-dir=/srv/other/.git", "x"], {"GIT_DIR": "/srv/clone2/.git"}, "/tmp"),
+              "another repo (even one sharing a name prefix) is not ours")
         I.rimflow, I.recorded_run, I.shard_path = saved[0], saved[1], saved[2]
         names = {I.finding_name("Mock", r, "job_abcdef") for r in ("foo-bar", "foo_bar", "x" * 50 + "1", "x" * 50 + "2")}
         check(len(names) == 4, "two rows of one job never share a finding name: %s" % sorted(names))

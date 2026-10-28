@@ -320,8 +320,40 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
 STALE_LOCK_S = 300
 
 
+def git_targets_repo(argv, env, cwd, root):
+    """True when a git command line (argv list of str, env dict, its cwd or None) works on the clone at `root`: its cwd,
+    a -C, --git-dir/--work-tree (either spelling) or GIT_DIR/GIT_WORK_TREE resolve to root or inside it. A git run from
+    elsewhere with --git-dir still holds this clone's index.lock, so the cwd alone cannot tell."""
+    def inside(path, base):
+        path = os.path.realpath(os.path.join(base or "/", path))
+        return path == root or path.startswith(root + os.sep)
+    cands, here = [], cwd
+    if cwd:
+        cands.append(cwd)
+    args, k = argv[1:], 0
+    while k < len(args):
+        a = args[k]
+        if a == "-C" and k + 1 < len(args):
+            here = os.path.join(here or "/", args[k + 1])
+            cands.append(here)
+            k += 1
+        elif a in ("--git-dir", "--work-tree") and k + 1 < len(args):
+            cands.append(os.path.join(cwd or "/", args[k + 1]))
+            k += 1
+        elif a.startswith(("--git-dir=", "--work-tree=")):
+            cands.append(os.path.join(cwd or "/", a.split("=", 1)[1]))
+        elif not a.startswith("-"):
+            break                                  # the subcommand: global options end here
+        k += 1
+    for key in ("GIT_DIR", "GIT_WORK_TREE"):
+        if env.get(key):
+            cands.append(os.path.join(cwd or "/", env[key]))
+    return any(inside(c, None) for c in cands)
+
+
 def git_procs_in_repo():
-    """pids of live git processes whose cwd is inside REPO (a /proc scan; the lock holder is one of these)."""
+    """pids of live git processes working on REPO (a /proc scan: cwd, -C, --git-dir/--work-tree, GIT_DIR; the lock
+    holder is one of these)."""
     found = []
     try:
         pids = [p for p in os.listdir("/proc") if p.isdigit()]
@@ -331,13 +363,21 @@ def git_procs_in_repo():
     for pid in pids:
         try:
             with open("/proc/%s/cmdline" % pid, "rb") as f:
-                argv0 = f.read().split(b"\0")[0].decode("utf-8", "replace")
-            if os.path.basename(argv0) != "git" or int(pid) == os.getpid():
+                argv = [x.decode("utf-8", "replace") for x in f.read().split(b"\0") if x]
+            if not argv or os.path.basename(argv[0]) != "git" or int(pid) == os.getpid():
                 continue
-            cwd = os.path.realpath(os.readlink("/proc/%s/cwd" % pid))
         except (OSError, ValueError):
             continue
-        if cwd == root or cwd.startswith(root + os.sep):
+        try:
+            cwd = os.path.realpath(os.readlink("/proc/%s/cwd" % pid))
+        except OSError:
+            cwd = None
+        try:
+            with open("/proc/%s/environ" % pid, "rb") as f:
+                env = dict(x.decode("utf-8", "replace").split("=", 1) for x in f.read().split(b"\0") if b"=" in x)
+        except OSError:
+            env = {}
+        if git_targets_repo(argv, env, cwd, root):
             found.append(int(pid))
     return found
 
