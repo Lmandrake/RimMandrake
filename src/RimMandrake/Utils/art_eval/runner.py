@@ -703,7 +703,15 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | N
         if not r.get("canvas_rule"):
             rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
         if rows[-1]["facings"]:
-            rows[-1]["prompt"], how = gate_clean_prompt(rows[-1]["prompt"], neutralize, hits)
+            keep = (rq.get("keep") or "").strip()
+            base = rows[-1]["prompt"]
+            if keep and keep in base and not (hits or _gate_hits)(keep):
+                # a veto's reason is not facing talk to be neutralised away: clean the rest, put the reason back
+                base = base.replace(keep, "").strip()
+                cleaned, how = gate_clean_prompt(base, neutralize, hits)
+                rows[-1]["prompt"] = (cleaned + " " + keep) if how != "STILL_REFUSED" else base + " " + keep
+            else:
+                rows[-1]["prompt"], how = gate_clean_prompt(base, neutralize, hits)
             if how != "unchanged":
                 rows[-1]["style_notes"] += "; prompt_gate: " + how
     return rows

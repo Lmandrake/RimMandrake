@@ -300,6 +300,19 @@ def compare_veto(cmp) -> str | None:
 MAX_VETO_ROUNDS = 3        # policy.py max_regen_rounds
 
 
+_GATE_REWORD = ((re.compile(r"top[- ]down(?:\s+(?:plan|view|camera))?|overhead(?:\s+(?:plan|view|camera|shot))?", re.I), "seen from above"),
+                (re.compile(r"\b(?:all|three|four)\s+facings\b", re.I), "every facing"))
+
+
+def gate_safe_reason(reason: str) -> str:
+    """The compare's reason in words artpipe's per-facing gate accepts. The reason is the redraw's whole point, and the
+    gate refuses 'overhead' / 'top-down' (FireWasp r3: 'north is an overhead view' was dropped from the north prompt),
+    so the defect is kept and said as 'seen from above' instead of being deleted."""
+    for rx, sub in _GATE_REWORD:
+        reason = rx.sub(sub, reason)
+    return reason
+
+
 def veto_record(rec: dict, cmp: dict, base_prompt: str, nreg: int, max_rounds: int = MAX_VETO_ROUNDS) -> dict:
     """The decision record that replaces an ACCEPT the head-to-head compare refused (ARTEVAL_COMPARE_VETO_FIX_ACCEPT_LIMBO):
     a REGEN of the def's next round whose prompt is the candidate's own prompt plus the compare's reason, or an
@@ -311,11 +324,12 @@ def veto_record(rec: dict, cmp: dict, base_prompt: str, nreg: int, max_rounds: i
         out["reasons"].append(f"still failing after {nreg} regen rounds - one line to the owner")
         out.pop("regen", None)
         return out
-    prompt = (base_prompt.strip() + " " if base_prompt else "") + (
-        "Correct what the previous attempt got wrong, found when it was compared with the installed art: " + reason)
+    fix = ("Correct what the previous attempt got wrong, found when it was compared with the installed art: "
+           + gate_safe_reason(reason))
+    prompt = (base_prompt.strip() + " " if base_prompt else "") + fix
     out.update(decision="REGEN", round=nreg + 1,
                regen={"findings": ["COMPARE_VETO"], "request": {"schema": "rm-art-eval/regen@v1", "subject": rec["subject"],
-                                                              "prompt": prompt, "by": "compare_veto", "reference": "none"}})
+                                                              "prompt": prompt, "by": "compare_veto", "reference": "none", "keep": fix}})
     return out
 
 

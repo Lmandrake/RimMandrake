@@ -281,6 +281,14 @@ def compare_veto():
           "A lean raptor." in pr and "burning log perch" in pr, pr)
     check("veto: finding names the compare", v["regen"]["findings"] == ["COMPARE_VETO"] and any("head-to-head" in x for x in v["reasons"]))
     check("veto: the original record is untouched", acc["decision"] == "ACCEPT")
+    ow = "The north facing is an overhead view of the creature, a top-down plan, not a rear view."
+    import runner as RR0
+    vo = AJ.veto_record(dict(acc, subject="RM_FireWasp"), {"install_b": False, "reason": ow}, "A wasp. Show all facings alike.", nreg=1)
+    rows = RR0.regen_jobs([vo], "run_x", neutralize=lambda p: ("A wasp.", "sonnet"), texpath_of=lambda d: "Things/X")
+    pr = rows[0]["prompt"]
+    check("veto reason naming an overhead view survives the per-facing gate into the filed prompt",
+          rows[0]["facings"] and not RR0._gate_hits(pr) and "Correct what the previous attempt got wrong" in pr
+          and "north facing" in pr and "from above" in pr, pr)
     e = AJ.veto_record(acc, {"install_b": False, "reason": why}, "x", nreg=3)
     check("veto at the round cap escalates, files nothing", e["decision"] == "ESCALATE" and not e.get("regen"), e["decision"])
     with tempfile.TemporaryDirectory() as td:
