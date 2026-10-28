@@ -167,9 +167,8 @@ class TestqArtifact(Open):
 
 
 class TestqResult(Strict):
-    """testq.result/1 as testq_schema.json declares it, plus the two fields the Steve worker writes without declaring
-    them (moot_markers, bounced_for_markers: schema drift, filed). validate_result() is the stdlib check the worker
-    still runs (SteveDesktop has no pydantic yet)."""
+    """testq.result/1 as testq_schema.json declares it, including moot_markers and bounced_for_markers (declared in
+    a6cdd76847). validate_result() is the stdlib check the worker still runs (SteveDesktop has no pydantic yet)."""
     schema_: Literal["testq.result/1"] = Field(alias="schema")
     job: str = Field(pattern=r"^J\d{8}T\d{6}Z-[0-9a-f]{6}$")
     attempt: str
