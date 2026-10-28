@@ -2084,7 +2084,7 @@ namespace RimMandrake.FlowWorks
 		/// so a row compares before/after with exits added back.</summary>
 		public string LedgerReport()
 		{
-			double bodiesU = 0, canalsU = 0, tanksU = 0, hoseU = 0;
+			double bodiesU = 0, canalsU = 0, tanksU = 0, hoseU = 0, sheetU;
 			int limitless = 0;
 			foreach (RM_LiquidBody b in stock.Bodies)
 			{
@@ -2112,10 +2112,13 @@ namespace RimMandrake.FlowWorks
 					hoseU += r.heldUnits;
 				}
 			}
-			double total = bodiesU + canalsU + tanksU + hoseU;
+			// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (LOW9): water the sheet holds is stored water (filling in a canal moves it
+			// there, conserved), so the total counts it
+			sheetU = (Sheet.RM_MapComponent_Sheet.Of(map)?.StandingDl ?? 0) * (RM_Volume.UnitsPerLevel / (double)RM_LevelSolve.U);
+			double total = bodiesU + canalsU + tanksU + hoseU + sheetU;
 			return "L0 ledger (tank units): total=" + total.ToString("F3")
 				+ " bodies(limited)=" + bodiesU.ToString("F3") + " canals=" + canalsU.ToString("F0")
-				+ " tanks=" + tanksU.ToString("F0") + " hoses=" + hoseU.ToString("F0")
+				+ " tanks=" + tanksU.ToString("F0") + " hoses=" + hoseU.ToString("F0") + " sheet=" + sheetU.ToString("F3")
 				+ " | exits: destroyed=" + (overflowDestroyedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " sunk=" + (sinkTransferredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " burned=" + (burnedLevelsTotal * RM_Volume.UnitsPerLevel).ToString("F1")
@@ -2125,6 +2128,8 @@ namespace RimMandrake.FlowWorks
 				+ " | inputs: flowSources=" + (mapControlPouredTotal * RM_Volume.UnitsPerLevel).ToString("F1")
 				+ " fromLimitless(session, exact)=" + limitlessPaidDl * (RM_Volume.UnitsPerLevel / RM_LevelSolve.U)   // review day 2: was never read
 				+ " exits: flowSinks=" + (mapControlDrainedTotal * RM_Volume.UnitsPerLevel).ToString("F1")
+				+ " | rain(session, dL): landed=" + pocketRainLandedDl + " offered=" + pocketRainRunOverDl + " sheetAccepted=" + pocketRainAcceptedDl
+				+ " (inputs: landed + sheetAccepted; the rest of an offer was never added)"
 				+ " | limitless bodies=" + limitless + " (not summed)";
 		}
 
@@ -2771,6 +2776,10 @@ namespace RimMandrake.FlowWorks
 			{
 				ContinuePulse(int.MaxValue);
 			}
+			if (RainPassHoldsPulse())
+			{
+				return;
+			}
 			pulseDueTick = nextPulseTick;
 			nextPulseTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			DoPulse();
@@ -2863,7 +2872,7 @@ namespace RimMandrake.FlowWorks
 			flowKernel.rainNotches = pocketRainNotches;
 			flowKernel.rainFluid = pocketRainFluid;
 			flowKernel.rainCatches = rainCatchesPred ??= idx => !map.roofGrid.Roofed(idx);
-			flowKernel.rainOverflow = rainOverflowCb ??= (idx, dl, fl) =>
+			flowKernel.rainOverflow = rainOverflowCb ??= (idx, dl, fl) => pocketRainAcceptedDl +=
 				Sheet.RM_MapComponent_Sheet.RainOverflowDl(map, map.cellIndices.IndexToCell(idx), dl, fl as FluidDef);
 			pocketRainNotches = 0;
 			flowKernel.BeginPulse(pulseSeeds, pulseCount);
@@ -3256,6 +3265,8 @@ namespace RimMandrake.FlowWorks
 		private System.Predicate<int> rainCatchesPred;
 		private System.Action<int, long, object> rainOverflowCb;
 		private long pocketRainLandedDl, pocketRainRunOverDl, pocketRainPockets;
+		// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (LOW9): of the dL offered over a pocket's lip, what the sheet took (session)
+		private long pocketRainAcceptedDl;
 
 		/// <summary>The quiet ticks before a pulse (no pulse in flight): from <see cref="RM_RainPass.LeadTicks"/> before it is due,
 		/// decide its rain once and land at most <see cref="RM_RainPass.CellsPerTick"/> squares a tick.</summary>
@@ -3283,6 +3294,28 @@ namespace RimMandrake.FlowWorks
 				rainMaxTickMs = System.Math.Max(rainMaxTickMs, ms);
 			}
 		}
+
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED: the 4,000-square slice was no bound at the due tick): the pulse is
+		/// due and no pulse is in flight. The fallback pass (pocket rain off) is decided now if the lead window never ran (the
+		/// first pulse, or a pulse in flight held the window); while more than a slice is owed, a slice lands and the pulse
+		/// waits a tick. Pocket rain decides nothing here: only a pass left from before the switch flipped is landed.</summary>
+		private bool RainPassHoldsPulse()
+		{
+			if (!RimMandrakeFlowWorksSettings.rainPocketApproxEnabled && rainDecidedForPulse != nextPulseTick)
+			{
+				DecideRain(nextPulseTick);
+			}
+			if (landRain == null || !rainPass.HoldsPulse(landRain))
+			{
+				return false;
+			}
+			rainAheadSquares += RM_RainPass.CellsPerTick;
+			rainPulseWaits++;
+			return true;
+		}
+
+		/// <summary>Ticks a due pulse waited for its rain (RainPassHoldsPulse).</summary>
+		private int rainPulseWaits;
 
 		/// <summary>Every square of a decided pass not landed yet, now (the pulse is due, or a save).</summary>
 		private void LandRainOwed()
@@ -3404,7 +3437,7 @@ namespace RimMandrake.FlowWorks
 		public string RainTimingLine()
 		{
 			return "RAIN passes=" + rainPasses + " ahead=" + rainAheadSquares + " whole=" + rainWholeSquares + " maxTickSquares="
-				+ rainMaxTickSquares + " maxTickMs=" + rainMaxTickMs.ToString("0.000") + " owed=" + rainPass.Remaining
+				+ rainMaxTickSquares + " maxTickMs=" + rainMaxTickMs.ToString("0.000") + " owed=" + rainPass.Remaining + " pulseWaits=" + rainPulseWaits
 				+ " pocket=" + (RimMandrakeFlowWorksSettings.rainPocketApproxEnabled ? "on" : "off") + " pockets=" + pocketRainPockets
 				+ " landedDl=" + pocketRainLandedDl + " overflowDl=" + pocketRainRunOverDl;
 		}

@@ -557,6 +557,31 @@ namespace RimMandrake.FlowWorks
 			}
 
 			public int Holder => System.Threading.Volatile.Read(ref holder);
+
+			/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED5): a query that fills a shared per-build cache (the pocket
+			/// grid's cells, width and edge caches) holds the gate for the whole read-or-fill, so a build on another thread can
+			/// neither clear the cache under it nor see it half-written. A caller refused here is counted and answered from its
+			/// state alone (compute(s)), the shared cache untouched.</summary>
+			public T Cached<TS, T>(int threadId, System.Collections.Generic.Dictionary<long, T> cache, long key, TS s, System.Func<TS, T> compute)
+			{
+				if (!TryEnter(threadId, out bool nested))
+				{
+					return compute(s);
+				}
+				try
+				{
+					if (!cache.TryGetValue(key, out T v))
+					{
+						v = compute(s);
+						cache[key] = v;
+					}
+					return v;
+				}
+				finally
+				{
+					Exit(nested);
+				}
+			}
 		}
 	}
 }

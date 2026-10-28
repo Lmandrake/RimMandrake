@@ -163,6 +163,20 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Land at most <paramref name="max"/> squares in order with <paramref name="land"/> (square, notches). Returns
 		/// how many were landed.</summary>
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED): the pulse is due. More owed than one slice: land a slice now and
+		/// the pulse waits a tick (true); otherwise nothing lands here and the pulse lands the rest (at most a slice) itself. So
+		/// no tick lands more than <see cref="CellsPerTick"/> squares, the first pulse with no lead window included. A save still
+		/// lands everything at once (the grids are scribed, never the pass).</summary>
+		public bool HoldsPulse(Action<int, int> land)
+		{
+			if (Remaining <= CellsPerTick)
+			{
+				return false;
+			}
+			Step(CellsPerTick, land);
+			return true;
+		}
+
 		public int Step(int max, Action<int, int> land)
 		{
 			int n = 0;

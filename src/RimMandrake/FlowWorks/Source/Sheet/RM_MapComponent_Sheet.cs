@@ -53,6 +53,9 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		public int WetCells => state?.WetCount ?? 0;
 
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (LOW9): every decilitre standing on the sheet, for the L0 ledger.</summary>
+		public long StandingDl => state?.Standing ?? 0;
+
 		private RM_MapComponent_Excavation Engine => ex ?? (ex = map.GetComponent<RM_MapComponent_Excavation>());
 
 		private static FluidDef Water => RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
@@ -175,9 +178,17 @@ namespace RimMandrake.FlowWorks.Sheet
 				}
 				return;
 			}
+			// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED7): a shut sluice on a pond or natural-water square holds the sheet off it
+			// (displacement and RunIntoBeds already respect it), so the return leg never pours through it.
+			bool shutHere = RM_FlowDoorRules.SealsLiquid(edifice);
 			RM_LiquidBody body = e?.Stock?.IndexedBodyAt(map, c);
 			if (body != null)
 			{
+				if (shutHere)
+				{
+					world.Kinds[idx] = Kind.Blocked;
+					return;
+				}
 				FluidDef bf = body.fluid ?? e.ActiveFluid;
 				world.Kinds[idx] = body.limitless ? Kind.Sink : Kind.Receiver;
 				world.RoomDl[idx] = int.MaxValue / 4; // the return leg decides (World.Credit)
@@ -187,6 +198,11 @@ namespace RimMandrake.FlowWorks.Sheet
 			TerrainDef baseT = map.terrainGrid.BaseTerrainAt(c);
 			if (baseT != null && baseT.IsWater)
 			{
+				if (shutHere)
+				{
+					world.Kinds[idx] = Kind.Blocked;
+					return;
+				}
 				// natural water the stock does not track: it absorbs the sheet like a limitless body (disclosed)
 				world.Kinds[idx] = Kind.Sink;
 				world.BodyFluid[idx] = Key(Water);
@@ -490,19 +506,20 @@ namespace RimMandrake.FlowWorks.Sheet
 
 		/// <summary>Pocket rain (EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE): the decilitres a whole pocket had no room for run over
 		/// its lip at <paramref name="c"/> (an open square of it), one offer for the pocket. The rules of <see cref="RainOverflow"/>.</summary>
-		public static void RainOverflowDl(Map map, IntVec3 c, long dl, FluidDef rain)
+		public static long RainOverflowDl(Map map, IntVec3 c, long dl, FluidDef rain)
 		{
 			if (dl <= 0 || map.roofGrid.Roofed(c))
 			{
-				return;
+				return 0;
 			}
 			RM_MapComponent_Excavation e = map.GetComponent<RM_MapComponent_Excavation>();
 			FluidDef held = e?.FluidAt(c);
 			if (held != null && held != rain)
 			{
-				return;
+				return 0;
 			}
-			Of(map)?.Offer(c, dl, rain, Source.Rain);
+			// LOW9: the dL the sheet took (the ledger tells an offer from an input)
+			return Of(map)?.Offer(c, dl, rain, Source.Rain) ?? 0;
 		}
 
 		/// <summary>The pump hook (D2), part 1: the brimming outlet square of water in a backed-up pump's reach whose canal lip

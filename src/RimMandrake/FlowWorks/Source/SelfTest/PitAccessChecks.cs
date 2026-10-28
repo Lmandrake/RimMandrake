@@ -97,7 +97,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string m = Src("Superdeep", "RM_CliffMask.cs");
                 RiverSwitchFlipChecks.Has(m, @"LoweredLadderAt\(Map map, IntVec3 c\) \{ // [^}]*RM_LadderUtility\.Reaches\(ladder\)", "the masks' structural join gates on reach");
                 string g = Src("Superdeep", "RM_PocketGrid.cs");
-                RiverSwitchFlipChecks.Has(g, @"RM_LadderUtility\.AllLadders\(map, ladderScratch\)", "the pocket grid scans both ladder defs");
+                RiverSwitchFlipChecks.Has(g, @"RM_LadderUtility\.AllLadders\(map, scratch\)", "the pocket grid scans both ladder defs (MED5: owner scratch or its own)");
                 RiverSwitchFlipChecks.Has(g, @"RM_PitAccessMath\.ClimbLimitWithGear\(NaturalClimbLimitOf\(p\), WearsClimbingGear\(p\)", "ClimbLimitOf reads the gear");
                 string pp = Src("Superdeep", "RM_PitPathing.cs");
                 RiverSwitchFlipChecks.Has(pp, @"RM_LadderUtility\.AllLadders\(map, ladderScratch\)", "the prison-door offset closes both ladder defs");

@@ -886,6 +886,215 @@ namespace RimMandrake.FlowWorks.SelfTest
             aw.k.rainOverflow = (i, dl, f) => onOffer(dl);
         }
 
+        /// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL: a 1-row scene, row 1 of a W x 3 grid, each square (depth, notches, part dL,
+        /// fluid or null, roofed, sealed).</summary>
+        private static ArrayWorld RowScene(bool exact, (byte d, byte f, ushort part, Fluid fl, bool roof, bool shut)[] row, out bool[] roof, out List<int> seeds)
+        {
+            int w = row.Length + 2;
+            var aw = new ArrayWorld(w, 3);
+            aw.k.levelExactEnabled = exact;
+            aw.k.part = new ushort[w * 3];
+            aw.k.levelBySurfaceEnabled = true;
+            var r = new bool[w * 3];
+            var shut = new bool[w * 3];
+            seeds = new List<int>();
+            for (int x = 0; x < row.Length; x++)
+            {
+                int i = 1 * w + x + 1;
+                aw.k.depth[i] = row[x].d; aw.k.fill[i] = row[x].f; aw.k.part[i] = row[x].part;
+                aw.cellFluid[i] = row[x].fl; r[i] = row[x].roof; shut[i] = row[x].shut;
+                seeds.Add(i);
+            }
+            aw.k.sealedCell = i => shut[i];
+            roof = r;
+            return aw;
+        }
+
+        private static void RainReviewCases(Action<string, Action> Case)
+        {
+            const ushort U = (ushort)RM_LevelSolve.U;
+            Case("Rain_review_exact_off_never_overfills_or_converts", () =>
+            {
+                // HIGH: exact-level water switched off. A square holding only a part-notch (fill 0) is not dry: the whole-notch
+                // kernel must neither pour a notch on top of it (fill 1 + part on a depth-1 square overfills) nor claim it for
+                // another liquid (the tar became water). The water stays where it is, nothing created or lost.
+                int runs = 0;
+                foreach (bool bySurface in new[] { false, true })
+                    foreach (bool set in new[] { false, true })
+                        foreach (bool creep in new[] { false, true })
+                        {
+                            var aw = RowScene(false, new[] {
+                                ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                                ((byte)1, (byte)0, (ushort)(U / 2), ArrayWorld.Tar, false, false),
+                                ((byte)1, (byte)0, (ushort)(U / 2), ArrayWorld.Water, false, false),
+                                ((byte)2, (byte)1, (ushort)(U / 3), ArrayWorld.Water, false, false),
+                                ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false) }, out _, out var seeds);
+                            aw.k.levelBySurfaceEnabled = bySurface; aw.k.levelSetEnabled = bySurface && set;
+                            aw.k.creepWaterEnabled = creep; aw.k.flowPerPulse = 2;
+                            long Total() { long t = 0; foreach (int i in seeds) t += aw.k.WaterOf(i); return t; }
+                            long before = Total();
+                            int tar = seeds[1];
+                            for (int p = 0; p < 12; p++)
+                            {
+                                aw.Pulse(seeds);
+                                foreach (int i in seeds)
+                                    Assert(aw.k.WaterOf(i) <= aw.k.depth[i] * (long)U, $"surface {bySurface} set {set} creep {creep} pulse {p}: square {i} holds {aw.k.WaterOf(i)} dL over its brim {aw.k.depth[i] * (long)U}");
+                                Assert(ReferenceEquals(aw.cellFluid[tar], ArrayWorld.Tar) && aw.k.WaterOf(tar) == U / 2, $"surface {bySurface} set {set} creep {creep} pulse {p}: the tar part-notch became {aw.k.WaterOf(tar)} dL of {(aw.cellFluid[tar] as Fluid)?.name}");
+                                Assert(Total() == before, $"surface {bySurface} set {set} creep {creep} pulse {p}: water {before} -> {Total()} dL");
+                            }
+                            runs++;
+                        }
+                Assert(runs == 8, "every notch-kernel variant ran");
+            });
+            Case("Rain_review_due_pulse_lands_a_bounded_slice_and_waits", () =>
+            {
+                // MED: the 4,000-square slice was not a bound at the pulse's due tick. The first fallback pulse (no lead window),
+                // or a pass a long pulse in flight kept from starting, landed every owed square in that one tick. Now the due
+                // pulse waits: each tick lands at most a slice (RM_RainPass.HoldsPulse) until the rest fits in the pulse tick.
+                foreach (int squares in new[] { 0, 1, RM_RainPass.CellsPerTick, RM_RainPass.CellsPerTick + 1, 80_000, 104_001 })
+                {
+                    var pass = new RM_RainPass();
+                    pass.Begin(2);
+                    for (int i = 0; i < squares; i++) pass.Add(i);
+                    int landedNow = 0, worst = 0, waits = 0, total = 0;
+                    Action<int, int> land = (i, lv) => landedNow++;
+                    while (pass.HoldsPulse(land))
+                    {
+                        worst = Math.Max(worst, landedNow); total += landedNow; landedNow = 0; waits++;
+                        Assert(waits < 1000, "the wait ends");
+                    }
+                    total += landedNow; worst = Math.Max(worst, landedNow); landedNow = 0;
+                    pass.Step(int.MaxValue, land);   // the pulse tick lands the rest (ApplyRain's LandRainOwed)
+                    worst = Math.Max(worst, landedNow); total += landedNow;
+                    Assert(worst <= RM_RainPass.CellsPerTick, $"{squares} squares: a tick landed {worst}");
+                    Assert(total == squares, $"{squares} squares: landed {total}");
+                    int want = squares <= RM_RainPass.CellsPerTick ? 0 : (squares - 1) / RM_RainPass.CellsPerTick;
+                    Assert(waits == want, $"{squares} squares: waited {waits} ticks, want {want}");
+                }
+                // The Verse-bound call site: the due pulse asks before it starts (after any pulse in flight has ended).
+                string src = System.Text.RegularExpressions.Regex.Replace(RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs"), @"\s+", " ");
+                Assert(System.Text.RegularExpressions.Regex.IsMatch(src, @"ContinuePulse\(int\.MaxValue\); \} if \(RainPassHoldsPulse\(\)\) \{ return; \} pulseDueTick = nextPulseTick;"),
+                    "Tick: the due pulse waits on RainPassHoldsPulse before it starts");
+                Assert(System.Text.RegularExpressions.Regex.IsMatch(src, @"bool RainPassHoldsPulse\(\) \{ if \(!RimMandrakeFlowWorksSettings\.rainPocketApproxEnabled && rainDecidedForPulse != nextPulseTick\) \{ DecideRain\(nextPulseTick\); \}"),
+                    "RainPassHoldsPulse decides the fallback pass for the due pulse (the first pulse has no lead window)");
+            });
+            Case("Rain_review_pocket_rain_stops_at_a_shut_sluice_and_foreign_liquid", () =>
+            {
+                // MED: what a brimming open square cannot hold runs only through squares water can pass: never across a shut
+                // sluice (liquid neither enters nor leaves) or a square of another liquid. The roofed water beyond stays put; the
+                // pocket's surplus runs over the lip instead.
+                foreach (bool exact in new[] { true, false })
+                    foreach (bool tarWall in new[] { false, true })
+                    {
+                        var aw = RowScene(exact, new[] {
+                            ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                            ((byte)1, tarWall ? (byte)1 : (byte)0, (ushort)0, tarWall ? ArrayWorld.Tar : null, true, !tarWall),
+                            ((byte)2, (byte)1, (ushort)0, ArrayWorld.Water, true, false) }, out var roof, out var seeds);
+                        long offered = 0;
+                        ArmPocketRain(aw, roof, dl => offered += dl);
+                        aw.k.rainNotches = 1;
+                        aw.Pulse(seeds);
+                        string tag = $"exact {exact} {(tarWall ? "tar square" : "shut sluice")}";
+                        Assert(aw.k.WaterOf(seeds[2]) == U, $"{tag}: the water beyond took rain: {aw.k.WaterOf(seeds[2])} dL");
+                        Assert(aw.k.WaterOf(seeds[1]) == (tarWall ? U : 0), $"{tag}: the barrier square changed: {aw.k.WaterOf(seeds[1])} dL");
+                        Assert(offered == U && aw.k.rainLandedDl == 0, $"{tag}: offered {offered} dL, landed {aw.k.rainLandedDl}");
+                    }
+            });
+            Case("Rain_review_pocket_rain_fills_dry_and_fractional_room", () =>
+            {
+                // MED: a pocket with room takes its rain. An open brimming square beside a roofed DRY square of the pocket runs
+                // the notch into it; with exact-level water two half-notches of room take one pooled notch. Nothing spills.
+                foreach (bool exact in new[] { true, false })
+                {
+                    var aw = RowScene(exact, new[] {
+                        ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                        ((byte)1, (byte)0, (ushort)0, (Fluid)null, true, false) }, out var roof, out var seeds);
+                    long offered = 0;
+                    ArmPocketRain(aw, roof, dl => offered += dl);
+                    aw.k.rainNotches = 1;
+                    aw.Pulse(seeds);
+                    Assert(offered == 0 && aw.k.rainLandedDl == U, $"exact {exact}: dry room: offered {offered} dL, landed {aw.k.rainLandedDl}");
+                    Assert(aw.k.WaterOf(seeds[0]) + aw.k.WaterOf(seeds[1]) == 2 * U, $"exact {exact}: the pocket holds {aw.k.WaterOf(seeds[0]) + aw.k.WaterOf(seeds[1])} dL");
+                }
+                {
+                    var aw = RowScene(true, new[] {
+                        ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                        ((byte)1, (byte)0, (ushort)(U / 2), ArrayWorld.Water, true, false),
+                        ((byte)1, (byte)0, (ushort)(U - U / 2), ArrayWorld.Water, true, false) }, out var roof, out var seeds);
+                    long offered = 0;
+                    ArmPocketRain(aw, roof, dl => offered += dl);
+                    aw.k.rainNotches = 1;
+                    aw.Pulse(seeds);
+                    Assert(offered == 0 && aw.k.rainLandedDl == U, $"fractional room: offered {offered} dL, landed {aw.k.rainLandedDl}");
+                    long t = 0; foreach (int i in seeds) t += aw.k.WaterOf(i);
+                    Assert(t == 3 * U, $"fractional room: the pocket holds {t} dL, want {3 * U}");
+                }
+            });
+
+            // RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL MED5: a pocket-grid query that fills a shared cache takes the owner gate; a
+            // second thread overlapping the owner is refused, counted, and answered from the labels without touching the cache.
+            Case("Rain_review_pocket_query_caches_take_the_owner_gate", () =>
+            {
+                var gate = new RM_WallReachMath.OwnerGate();
+                var cache = new Dictionary<long, int>();
+                int computed = 0;
+                Func<int, int> f = v => { computed++; return v * 2; };
+                int me = Environment.CurrentManagedThreadId;
+                Assert(gate.Cached(me, cache, 7L, 21, f) == 42 && cache.Count == 1 && gate.Holder == 0, "the owner fills the cache and lets go");
+                Assert(gate.Cached(me, cache, 7L, 99, f) == 42 && computed == 1, "the owner reads the cache back");
+                Assert(gate.TryEnter(me, out bool n0) && !n0, "this thread owns");
+                Assert(gate.Cached(me, cache, 9L, 1, f) == 2 && cache.Count == 2 && gate.Holder == me, "a nested query on the owner fills the cache and keeps the owner");
+                int got = -1;
+                var other = new System.Threading.Thread(() => got = gate.Cached(Environment.CurrentManagedThreadId, cache, 8L, 5, f));
+                other.Start();
+                other.Join();
+                gate.Exit(n0);
+                Assert(got == 10, "a refused query still answers from the labels: " + got);
+                Assert(cache.Count == 2 && !cache.ContainsKey(8L), "a refused query leaves the shared cache alone");
+                Assert(gate.refused == 1, "a refused query is counted: " + gate.refused);
+                string pg = Src("Superdeep", "RM_PocketGrid.cs");
+                RiverSwitchFlipChecks.Has(pg, @"return Owner\.Cached\(Me, cellsCache, Key\(k, component\), \(l, component, 0\), CellsOfFn\);", "CellsOf goes through the gate");
+                RiverSwitchFlipChecks.Has(pg, @"return Owner\.Cached\(Me, wideCache, Key\(k, component, w\), \(l, component, w\), WideFn\);", "WideEverywhere goes through the gate");
+                RiverSwitchFlipChecks.Has(pg, @"return Owner\.Cached\(Me, edgeCache, Key\(k, component\), \(l, component, 0\), EdgeFn\);", "TouchesEdge goes through the gate");
+                RiverSwitchFlipChecks.Has(pg, @"public List<\(int a, int b\)> LadderEdges\(int k, Pawn p\) \{ if \(!EnterOwner\(out bool nested\)\) \{ return LadderEdgesOwned\(k, p, false\); \}", "LadderEdges goes through the gate");
+                RiverSwitchFlipChecks.Has(pg, @"return UsableLadderIn\(k, component, p, owned \? ladderScratch : new List<Thing>\(\)\);", "UsableLadderIn uses the shared scratch only on the owner");
+                RiverSwitchFlipChecks.Has(pg, @"LadderJoins\(p, into, owned \? ladderScratch : new List<Thing>\(\)\);", "LadderJoins uses the shared scratch only on the owner");
+            });
+
+            // RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL MED6: a removed map's swim grids (native arrays) are freed when the map is
+            // disposed, after its pathfinder has completed every job that could read them, not when another map next asks.
+            Case("Rain_review_removed_map_frees_swim_grids", () =>
+            {
+                string sw = Src("Swimming", "RM_Swim.cs");
+                RiverSwitchFlipChecks.Has(sw, @"\[HarmonyPatch\(typeof\(Map\), nameof\(Map\.Dispose\)\)\]", "Map.Dispose is patched");
+                RiverSwitchFlipChecks.Has(sw, @"public static void Postfix\(Map __instance\) \{ RM_SwimPathing\.Forget\(__instance\); \}", "the postfix forgets the map's grids");
+                RiverSwitchFlipChecks.Has(sw, @"public static void Forget\(Map map\) \{ if \(map != null && grids\.TryGetValue\(map, out MapGrids g\)\) \{ Free\(g\); grids\.Remove\(map\); \} \}", "Forget frees and drops the entry");
+                RiverSwitchFlipChecks.Has(sw, @"foreach \(Map m in dead\) \{ Free\(grids\[m\]\); grids\.Remove\(m\); \}", "the lazy prune frees the same way");
+            });
+
+            // RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL MED7: a closed sluice on a pond or natural-water square holds the sheet off it
+            // (displacement and RunIntoBeds already respect it); the return leg never pours through it.
+            Case("Rain_review_sheet_return_respects_a_shut_sluice_on_a_pond", () =>
+            {
+                string sh = Src("Sheet", "RM_MapComponent_Sheet.cs");
+                RiverSwitchFlipChecks.Has(sh, @"bool shutHere = RM_FlowDoorRules\.SealsLiquid\(edifice\); RM_LiquidBody body = e\?\.Stock\?\.IndexedBodyAt\(map, c\); if \(body != null\) \{ if \(shutHere\) \{ world\.Kinds\[idx\] = Kind\.Blocked; return; \}", "a pond square under a shut sluice is Blocked");
+                RiverSwitchFlipChecks.Has(sh, @"if \(baseT != null && baseT\.IsWater\) \{ if \(shutHere\) \{ world\.Kinds\[idx\] = Kind\.Blocked; return; \}", "a natural-water square under a shut sluice is Blocked");
+            });
+
+            // RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL LOW9: the L0 ledger counts the sheet's standing water, and the rain line tells
+            // landed, offered-over-the-lip and sheet-accepted rain apart (an offer is not an input).
+            Case("Rain_review_ledger_counts_sheet_water_and_accepted_rain", () =>
+            {
+                string ex = Src("RM_MapComponent_Excavation.cs");
+                RiverSwitchFlipChecks.Has(ex, @"double total = bodiesU \+ canalsU \+ tanksU \+ hoseU \+ sheetU;", "the total holds the sheet");
+                RiverSwitchFlipChecks.Has(ex, @"sheetU = \(Sheet\.RM_MapComponent_Sheet\.Of\(map\)\?\.StandingDl \?\? 0\) \* \(RM_Volume\.UnitsPerLevel / \(double\)RM_LevelSolve\.U\);", "sheet standing in tank units");
+                RiverSwitchFlipChecks.Has(ex, @"\+ "" \| rain\(session, dL\): landed="" \+ pocketRainLandedDl \+ "" offered="" \+ pocketRainRunOverDl \+ "" sheetAccepted="" \+ pocketRainAcceptedDl", "rain landed/offered/accepted");
+                RiverSwitchFlipChecks.Has(ex, @"flowKernel\.rainOverflow = rainOverflowCb \?\?= \(idx, dl, fl\) => pocketRainAcceptedDl \+= Sheet\.RM_MapComponent_Sheet\.RainOverflowDl\(", "accepted rain is what the sheet took");
+                string sh = Src("Sheet", "RM_MapComponent_Sheet.cs");
+                RiverSwitchFlipChecks.Has(sh, @"public long StandingDl => state\?\.Standing \?\? 0;", "the sheet reports its standing dL");
+            });
+        }
+
         private static void RainCases(Action<string, Action> Case)
         {
             Case("Rain_pocket_equals_exact_pass_unless_brimming", () =>
@@ -1084,6 +1293,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             // step; the old policy flooded every step.
             PulseCases(Case);
             RainCases(Case);
+            RainReviewCases(Case);
             Case("WallReach_delta_policy_equals_full_scan", () =>
             {
                 int cls = RM_WallReachMath.ClassOf(true, true, false, false, false, false);

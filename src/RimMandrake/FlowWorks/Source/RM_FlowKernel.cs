@@ -294,9 +294,11 @@ namespace RimMandrake.FlowWorks
 				return;   // rainArmed: the notches were set before this pulse began (the stamp set is sized for it)
 			}
 			int U = RM_LevelSolve.U;
-			long owed = 0;
-			long landed = 0;
+			long owedDl = 0;     // what brimming open squares water can leave could not hold (dL): it runs into the pocket
+			long stuckDl = 0;    // what a brimming SEALED square could not hold: it cannot run anywhere but over the lip
+			long landed = 0;     // dL
 			int lip = -1;
+			rainBrim.Clear();
 			for (int i = 0; i < cells.Count; i++)
 			{
 				int c = cells[i];
@@ -319,7 +321,15 @@ namespace RimMandrake.FlowWorks
 				int add = room < n ? room : n;
 				if (add < n)
 				{
-					owed += n - add;
+					if (IsSealed(c))
+					{
+						stuckDl += (n - add) * (long)U;
+					}
+					else
+					{
+						owedDl += (n - add) * (long)U;
+						rainBrim.Add(c);
+					}
 					if (lip < 0)
 					{
 						lip = c;
@@ -332,44 +342,85 @@ namespace RimMandrake.FlowWorks
 						world.Claim(c, rainFluid);
 					}
 					fill[c] += (byte)add;
-					landed += add;
+					landed += add * (long)U;
 				}
 			}
-			// The pocket's aggregate: what an open square could not hold runs to the pocket's other squares of the same water
-			// (roofed ones too: the water runs under the roof, as the level solve would carry it), whole notches, index order.
-			for (int i = 0; i < cells.Count && owed > 0; i++)
+			// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL: the pocket's aggregate runs from the brimming squares through the squares
+			// water can pass (cardinal, dug, of this pocket, not sealed, holding rain's own water or dry and able to take it),
+			// nearest first, roofed ones too (the water runs under the roof, as the level solve would carry it). A brimming
+			// square's water stands at the ground, above every dug bed, so no square reached this way is out of its reach. Never
+			// across a shut sluice or another liquid. Exact-level water takes decilitres (two half-notches of room take one
+			// notch); whole-notch water whole notches.
+			if (owedDl > 0)
 			{
-				int c = cells[i];
-				if (!IsExcavated(c))
+				bool exact = ExactPath;
+				rainDomain.Reset(width * height);
+				for (int i = 0; i < cells.Count; i++)
 				{
-					continue;
+					if (IsExcavated(cells[i]))
+					{
+						rainDomain.Set(cells[i], 1);
+					}
 				}
-				long w = WaterOf(c);
-				if (w <= 0 || !SameFluid(world.CellFluid(c), rainFluid))
+				rainQueue.Clear();
+				for (int i = 0; i < rainBrim.Count; i++)
 				{
-					continue;
+					rainDomain.Set(rainBrim[i], 2);
+					rainQueue.Add(rainBrim[i]);
 				}
-				long roomDl = depth[c] * (long)U - w;
-				int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
-				int add = (int)Math.Min(room, owed);
-				if (add > 0)
+				for (int h = 0; h < rainQueue.Count && owedDl > 0; h++)
 				{
-					fill[c] += (byte)add;
-					landed += add;
-					owed -= add;
+					int c = rainQueue[h];
+					long w = WaterOf(c);
+					long roomDl = depth[c] * (long)U - w;
+					long give = exact ? roomDl : roomDl / U * U;
+					if (give > owedDl)
+					{
+						give = exact ? owedDl : owedDl / U * U;
+					}
+					if (give > 0)
+					{
+						if (w == 0)
+						{
+							world.Claim(c, rainFluid);
+						}
+						SetWaterOf(c, w + give);
+						landed += give;
+						owedDl -= give;
+					}
+					for (int d = 0; d < 4; d++)
+					{
+						int nb = Cardinal(c, d);
+						if (nb < 0 || !rainDomain.TryGetValue(nb, out int state) || state != 1 || IsSealed(nb))
+						{
+							continue;
+						}
+						long wn = WaterOf(nb);
+						if (wn > 0 ? !SameFluid(world.CellFluid(nb), rainFluid) : !world.CanClaim(rainFluid))
+						{
+							continue;
+						}
+						rainDomain.Set(nb, 2);
+						rainQueue.Add(nb);
+					}
 				}
 			}
-			if (landed > 0 || owed > 0)
+			long overDl = owedDl + stuckDl;
+			if (landed > 0 || overDl > 0)
 			{
 				rainPockets++;
 			}
-			rainLandedDl += landed * U;
-			if (owed > 0 && lip >= 0)
+			rainLandedDl += landed;
+			if (overDl > 0 && lip >= 0)
 			{
-				rainOverflowDl += owed * U;
-				rainOverflow?.Invoke(lip, owed * U, rainFluid);
+				rainOverflowDl += overDl;
+				rainOverflow?.Invoke(lip, overDl, rainFluid);
 			}
 		}
+
+		private readonly List<int> rainBrim = new List<int>();
+		private readonly List<int> rainQueue = new List<int>();
+		private readonly RM_StampSet rainDomain = new RM_StampSet();
 
 		// per-pulse outputs
 		public float sinkDrained;
@@ -423,10 +474,17 @@ namespace RimMandrake.FlowWorks
 			return idx >= 0 && depth[idx] != 0;
 		}
 
+		/// <summary>A square liquid neither enters nor leaves this pulse: a shut sluice, or (RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL,
+		/// HIGH) with exact-level water OFF a dug square still holding a part-notch. The whole-notch kernel reads fill only, so it
+		/// would see such a square as dry (and claim it for another liquid) or pour a whole notch on top of the part (over the
+		/// brim). Held, its water waits whole and in place until exact-level water is on again; nothing is rounded away.</summary>
 		public bool IsSealed(int idx)
 		{
-			return idx >= 0 && sealedCell != null && sealedCell(idx);
+			return idx >= 0 && ((holdParts && part[idx] != 0 && depth[idx] != 0) || (sealedCell != null && sealedCell(idx)));
 		}
+
+		/// <summary>Set by <see cref="BeginPulse"/>: the whole-notch kernel runs over a part grid (see <see cref="IsSealed"/>).</summary>
+		private bool holdParts;
 
 		public bool IsSource(int idx)
 		{
@@ -548,6 +606,7 @@ namespace RimMandrake.FlowWorks
 		/// the map changed skips a seed filled in or dug since, as the atomic pulse never saw it either way.</summary>
 		public void BeginPulse(IEnumerable<int> seedOrder, long pulseCount)
 		{
+			holdParts = !ExactPath && part != null && part.Length == width * height;
 			sinkDrained = 0f;
 			exactCreditDl = 0;
 			exactDrainDl = 0;

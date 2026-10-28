@@ -835,14 +835,15 @@ namespace RimMandrake.FlowWorks
 			{
 				return new List<int>();
 			}
-			long key = Key(k, component);
-			if (!cellsCache.TryGetValue(key, out List<int> cells))
-			{
-				cells = RM_PocketGridMath.CellsOf(l, component);
-				cellsCache[key] = cells;
-			}
-			return cells;
+			return Owner.Cached(Me, cellsCache, Key(k, component), (l, component, 0), CellsOfFn);
 		}
+
+		// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED5): the three per-build caches are read and filled under the owner gate
+		// (RM_WallReachMath.OwnerGate.Cached); a second thread overlapping the owner is counted and answered from the labels.
+		private static int Me => Thread.CurrentThread.ManagedThreadId;
+		private static readonly Func<(RM_PocketGridMath.Labels l, int c, int w), List<int>> CellsOfFn = s => RM_PocketGridMath.CellsOf(s.l, s.c);
+		private static readonly Func<(RM_PocketGridMath.Labels l, int c, int w), bool> WideFn = s => RM_PocketGridMath.WideEverywhere(s.l, s.c, s.w);
+		private static readonly Func<(RM_PocketGridMath.Labels l, int c, int w), bool> EdgeFn = s => RM_PocketGridMath.TouchesEdge(s.l, s.c);
 
 		/// <summary>W×W over the pocket, every cell (RM_PocketGridMath.WideEverywhere), cached per (band, pocket, W).</summary>
 		public bool WideEverywhere(int k, int component, int w)
@@ -856,13 +857,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			long key = Key(k, component, w);
-			if (!wideCache.TryGetValue(key, out bool wide))
-			{
-				wide = RM_PocketGridMath.WideEverywhere(l, component, w);
-				wideCache[key] = wide;
-			}
-			return wide;
+			return Owner.Cached(Me, wideCache, Key(k, component, w), (l, component, w), WideFn);
 		}
 
 		/// <summary>REACH_VETO_FIX_ONE_END_ENOUGH: the component holds a map-border cell (RM_PocketGridMath.TouchesEdge),
@@ -874,13 +869,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			long key = Key(k, component);
-			if (!edgeCache.TryGetValue(key, out bool edge))
-			{
-				edge = RM_PocketGridMath.TouchesEdge(l, component);
-				edgeCache[key] = edge;
-			}
-			return edge;
+			return Owner.Cached(Me, edgeCache, Key(k, component), (l, component, 0), EdgeFn);
 		}
 
 		/// <summary>Is (x, z) in a W×W square of this pocket's cells (the per-cell width rule, §8.1)?</summary>
@@ -913,8 +902,26 @@ namespace RimMandrake.FlowWorks
 		/// pawnless StartPath reachability check must share).</summary>
 		public bool UsableLadderIn(int k, int component, Pawn p)
 		{
+			bool owned = EnterOwner(out bool nested);
+			try
+			{
+				return UsableLadderIn(k, component, p, owned ? ladderScratch : new List<Thing>());
+			}
+			finally
+			{
+				if (owned)
+				{
+					ExitOwner(nested);
+				}
+			}
+		}
+
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED5): the shared ladder scratch only on the owner; a refused second
+		/// thread lists the ladders into a list of its own.</summary>
+		private bool UsableLadderIn(int k, int component, Pawn p, List<Thing> scratch)
+		{
 			// PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS: both ladder defs (the portable one's reach is LoweredLadderAt/LadderLetsOut's).
-			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			List<Thing> ladders = RM_LadderUtility.AllLadders(map, scratch);
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
@@ -964,6 +971,28 @@ namespace RimMandrake.FlowWorks
 		/// per (band, pawn) for one tick and one grid build: ladders are raised, lowered, set and shot between ticks.</summary>
 		public List<(int a, int b)> LadderEdges(int k, Pawn p)
 		{
+			if (!EnterOwner(out bool nested))
+			{
+				return LadderEdgesOwned(k, p, false);
+			}
+			try
+			{
+				return LadderEdgesOwned(k, p, true);
+			}
+			finally
+			{
+				ExitOwner(nested);
+			}
+		}
+
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED5): owned, the per-tick cache and the ladder scratch are used; a
+		/// refused second thread gets the same edges built into lists of its own, the cache and scratch untouched.</summary>
+		private List<(int a, int b)> LadderEdgesOwned(int k, Pawn p, bool owned)
+		{
+			if (!owned)
+			{
+				return LadderEdgesFrom(k, p, new List<Thing>());
+			}
 			int now = Find.TickManager?.TicksGame ?? 0;
 			if (now != edgeTick || edgeRebuilds != Rebuilds || edgeVersion != RM_LadderUtility.StateVersion || ladderEdgeCache.Count > 512)
 			{
@@ -977,9 +1006,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return edges;
 			}
-			edges = new List<(int a, int b)>();
+			edges = LadderEdgesFrom(k, p, ladderScratch);
+			ladderEdgeCache[key] = edges;
+			return edges;
+		}
+
+		private List<(int a, int b)> LadderEdgesFrom(int k, Pawn p, List<Thing> scratch)
+		{
+			var edges = new List<(int a, int b)>();
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			List<Thing> ladders = RM_LadderUtility.AllLadders(map, scratch);
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;
@@ -1006,7 +1042,6 @@ namespace RimMandrake.FlowWorks
 					edges.Add((a, b));
 				}
 			}
-			ladderEdgeCache[key] = edges;
 			return edges;
 		}
 
@@ -1023,9 +1058,25 @@ namespace RimMandrake.FlowWorks
 		/// theirs. Pairs of cell indices (ladder square, square across).</summary>
 		internal void LadderJoins(Pawn p, List<(int ladder, int other)> into)
 		{
+			bool owned = EnterOwner(out bool nested);
+			try
+			{
+				LadderJoins(p, into, owned ? ladderScratch : new List<Thing>());
+			}
+			finally
+			{
+				if (owned)
+				{
+					ExitOwner(nested);
+				}
+			}
+		}
+
+		private void LadderJoins(Pawn p, List<(int ladder, int other)> into, List<Thing> scratch)
+		{
 			into.Clear();
 			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
-			List<Thing> ladders = RM_LadderUtility.AllLadders(map, ladderScratch);
+			List<Thing> ladders = RM_LadderUtility.AllLadders(map, scratch);
 			for (int i = 0; i < ladders.Count; i++)
 			{
 				IntVec3 c = ladders[i].Position;

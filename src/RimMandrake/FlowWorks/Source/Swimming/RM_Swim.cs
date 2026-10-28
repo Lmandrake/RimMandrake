@@ -1129,19 +1129,48 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 			foreach (Map m in dead)
 			{
-				MapGrids g = grids[m];
-				g.block?.cells.Dispose();
-				g.avoid?.cells.Dispose();
-				foreach (Grid cg in g.combined.Values)
-				{
-					cg.cells.Dispose();
-				}
-				foreach ((Grid grid, int _) in g.retired)
-				{
-					grid.cells.Dispose();
-				}
+				Free(grids[m]);
 				grids.Remove(m);
 			}
+		}
+
+		/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED6): a disposed map's grids are freed now, not when another map
+		/// next asks for grids (PruneDeadMaps stays the backup). Called after Map.Dispose, whose pathFinder.Dispose has
+		/// completed every scheduled job that could still read a handed-out grid.</summary>
+		public static void Forget(Map map)
+		{
+			if (map != null && grids.TryGetValue(map, out MapGrids g))
+			{
+				Free(g);
+				grids.Remove(map);
+			}
+		}
+
+		private static void Free(MapGrids g)
+		{
+			g.block?.cells.Dispose();
+			g.avoid?.cells.Dispose();
+			foreach (Grid cg in g.combined.Values)
+			{
+				cg.cells.Dispose();
+			}
+			foreach ((Grid grid, int _) in g.retired)
+			{
+				grid.cells.Dispose();
+			}
+		}
+	}
+
+	/// <summary>RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL (MED6): a removed (or, leaving to the menu, every) map frees its swim grids
+	/// once disposed. A postfix: Map.Dispose has run pathFinder.Dispose, so no path job still reads them.</summary>
+	[HarmonyPatch(typeof(Map), nameof(Map.Dispose))]
+	[RimMandrake.Shared.PatchFeature("Swimming in deep water")]
+	public static class RM_Patch_Map_Dispose_SwimGrids
+	{
+		[HarmonyPostfix]
+		public static void Postfix(Map __instance)
+		{
+			RM_SwimPathing.Forget(__instance);
 		}
 	}
 
