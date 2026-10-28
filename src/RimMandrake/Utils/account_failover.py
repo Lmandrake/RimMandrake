@@ -7,8 +7,10 @@ switch, `claude-account use lukas` (closes every Claude window on this machine a
 Once only (a marker file), and never after RESET (the system week refills then); from DEADLINE on the switch is
 unconditional while the target reads MEASURED above THRESHOLD. Stage 3: at/after RESET with FROM MEASURED and refilled AND TO MEASURED <= FLOOR (or TO_RESET passed), back to FROM once (own marker), then `slot_allocator clear`; retired.
 Stage 2 (marker present, `claude-account --json status`
-says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset, then `--mode DARK` (every seat 0) once TO
-reads MEASURED at or under THRESHOLD.
+says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset; before RESET, `--mode DARK` (every seat 0)
+at TO MEASURED <= SOFT and a hard stop (fleet-stop, retried until it succeeds) at <= FLOOR. After RESET with FROM
+refilled there is no soft line (stage 3's switch is the stop): a pre-RESET DARK is lifted so TO burns to FLOOR.
+Stage 1 switches only from a live FROM (never a hand-switched third account); an unknown status keeps a pending marker.
 
   account_failover.py check [--dry-run]     one pass (a systemd user timer runs it every 5 min)
 
@@ -135,8 +137,10 @@ def live_account():
     return None
 
 
-def decide2(acc, now, live, st, allow_stop=True):
-    """Stage 2 (live account is TO). -> (action, why); action in None | "burn" | "off". Pure; never switches."""
+def decide2(acc, now, live, st, allow_stop=True, ready3=False):
+    """Stage 2 (live account is TO). -> (action, why); action in None | "burn" | "reburn" | "off" | "stop". Pure.
+    ready3: past RESET with FROM refilled - the stage-3 switch is the stop, so no soft line: burn TO to its floor
+    (review r5: a DARK fleet barely moves TO, it never reaches the floor and FROM's fresh week idles until TO_RESET)."""
     if live != TO:
         return None, "live account is %r, not %s: stage 2 idle" % (live, TO)
     b = acc.get(TO) or {}
@@ -144,10 +148,15 @@ def decide2(acc, now, live, st, allow_stop=True):
         return None, "%s week reset %s passed: stage 2 finished (retire the timer)" % (TO, TO_RESET)
     left = b.get("week_pct_left")
     fresh = b.get("source") == "MEASURED" and not b.get("stale") and isinstance(left, (int, float))
-    if allow_stop and fresh and left <= FLOOR and not st.get("stop"):
+    # stop_failed: arm or fleet-stop failed - workers still burn under the floor, so retry (review r5 GPT)
+    if allow_stop and fresh and left <= FLOOR and (not st.get("stop") or st.get("stop_failed")):
         return "stop", "%s MEASURED at %.1f%% left <= %.1f%% floor: hard stop, wait for the reset" % (TO, left, FLOOR)
     # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
-    if fresh and left <= SOFT and not st.get("off"):
+    if ready3:
+        if st.get("off") and not st.get("stop") and fresh and left > FLOOR:
+            return "reburn", "%s refilled: lift the soft-line DARK, burn %s (%.1f%%) to its %.1f%% floor" % (
+                FROM, TO, left, FLOOR)
+    elif fresh and left <= SOFT and not st.get("off"):
         return "off", "%s MEASURED at %.1f%% left <= %.1f%% soft line: DARK, wait for the reset" % (TO, left, SOFT)
     if not st.get("burn") and not st.get("off"):
         return "burn", "switched to %s: burn it" % TO
@@ -156,7 +165,7 @@ def decide2(acc, now, live, st, allow_stop=True):
     return None, "burning; %s reads %r%%" % (TO, left)
 
 
-def decide3(acc, now, live, done):
+def decide3(acc, now, live, done, stopped=False):
     """Stage 3 (owner 10:07): back to FROM once its week has reset. -> (do_switch, why). Pure; never names another account."""
     if done:
         return False, "stage 3 done: retired"
@@ -172,33 +181,47 @@ def decide3(acc, now, live, done):
         return False, "%s reads %.1f%% left < %.0f%%: its reset has not shown yet" % (FROM, left, REFILLED)
     b = acc.get(TO) or {}
     bl = b.get("week_pct_left")
-    spent = b.get("source") == "MEASURED" and not b.get("stale") and isinstance(bl, (int, float)) and bl <= FLOOR
+    # stopped: the hard stop already fleet-stopped TO at its floor; a later noisy reading above it must not strand the
+    # stopped fleet until TO_RESET (review r5)
+    spent = stopped or (b.get("source") == "MEASURED" and not b.get("stale") and isinstance(bl, (int, float))
+                        and bl <= FLOOR)
     if not spent and now < datetime.fromisoformat(TO_RESET).timestamp():
         return False, "%s still above its %.1f%% floor (reads %r) and its reset %s is ahead: keep burning it" % (TO, FLOOR, bl, TO_RESET)
     return True, "%s week reset: reads %.1f%% left; %s is live and %s" % (
-        FROM, left, TO, "MEASURED at %.1f%% <= floor" % bl if spent else "its reset passed")
+        FROM, left, TO, "hard-stopped at its floor" if stopped else
+        "MEASURED at %.1f%% <= floor" % bl if spent else "its reset passed")
 
 
 NOGO = "nogo"   # stage3 verdict: not switching now, nothing pending - stage 2 carries on with lukas
 
 
-def stage3(acc, live, now, dry):
+def stage3(acc, live, now, dry, st=None):
     try:
         bk = json.load(open(BACK))
     except Exception:  # noqa: BLE001
         bk = None
+    if isinstance(bk, dict) and bk.get("phase") == "done" and bk.get("clear_rc", 0) != 0:
+        # review r5: a failed clear left stage 2's override (DARK until TO_RESET) on FROM's fresh week: retry each pass
+        if dry:
+            log({"do": "stage3_would_retry_clear", "why": "clear_rc %r" % bk.get("clear_rc")})
+            return 0
+        rc4, o4 = run([sys.executable, SLOT, "clear"])
+        write_atomic(BACK, dict(bk, clear_rc=rc4))
+        log({"do": "stage3_retry_clear", "clear": [rc4, o4[-200:]]})
+        return 0 if rc4 == 0 else 2
     if isinstance(bk, dict) and bk.get("phase") == "pending":
-        if live not in (None, TO) or now - float(bk.get("at") or now) <= STALE_PENDING_S:
+        # abandon only when TO is confirmed live: an unknown status may hide a `use` that switched (review r5 GPT r2)
+        if live != TO or now - float(bk.get("at") or now) <= STALE_PENDING_S:
             if live == FROM:  # `use` finished although the pass died before its marker: done
                 if not dry:
-                    write_atomic(BACK, dict(bk, phase="done"))
+                    write_atomic(BACK, dict(bk, phase="done", clear_rc=None))  # clear still owed (review r5 GPT)
             log({"do": "stage3_skip", "why": "pending marker; live is %r" % live})
             return 0
         if not dry:
             os.remove(BACK)
         log({"do": "stage3_abandoned_dropped", "why": "pending marker from %s, live is %r" % (bk.get("at"), live)})
         return 0
-    go, why = decide3(acc, now, live, bk is not None)
+    go, why = decide3(acc, now, live, bk is not None, stopped=bool((st or {}).get("stop")))
     if not go:
         log({"do": "stage3_skip", "why": why})
         return NOGO
@@ -210,14 +233,19 @@ def stage3(acc, live, now, dry):
     rc2, o2 = (run([CA, "use", FROM, "--confirm", MACHINE]) if rc1 == 0 else (None, "not armed"))
     rc3, o3 = run([CA, "disarm"])
     live_after = FROM if rc2 == 0 else (live_account() if rc2 is not None else TO)
+    if live_after is None:  # `use` ran and failed, status unreadable: it may have switched - keep pending (review r5 GPT)
+        log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
+             "live_after": None, "marker": "kept pending: live account unknown"})
+        return 2
     if live_after != FROM:
         os.remove(BACK)  # nothing switched: the next pass may retry
         log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
              "live_after": live_after, "marker": "dropped: the next pass decides again"})
         return 2
-    write_atomic(BACK, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2})
+    write_atomic(BACK, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2, "clear_rc": None})
     # the allocator paces the fresh week on its own: drop stage 2's override
     rc4, o4 = run([sys.executable, SLOT, "clear"])
+    write_atomic(BACK, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2, "clear_rc": rc4})
     log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
          "live_after": live_after, "marker": "kept: stage 3 retired", "clear": [rc4, o4[-200:]]})
     return 0 if rc3 == 0 and rc4 == 0 else 2
@@ -233,7 +261,9 @@ def hard_stop(st, why, now, dry):
     if dry:
         log({"do": "stage2_would_stop", "why": why})
         return 0
-    st["stop"] = now  # before the commands: a half-done stop must never repeat on the next pass
+    # before the commands, and owing a retry until arm + fleet-stop succeed: a pass that dies mid-stop is retried
+    # (fleet-stop on a stopped fleet finds no pids; review r5 GPT round 2)
+    st["stop"] = st["stop_failed"] = now
     write_atomic(STAGE2, st)
     rcs = {}
     if not st.get("off"):
@@ -248,6 +278,11 @@ def hard_stop(st, why, now, dry):
     rcs["arm"] = run([CA, "arm", "--confirm", MACHINE])
     rcs["stop"] = run([CA, "fleet-stop"]) if rcs["arm"][0] == 0 else (None, "not armed")
     rcs["disarm"] = run([CA, "disarm"])
+    if rcs["arm"][0] == 0 and rcs["stop"][0] == 0:
+        st.pop("stop_failed", None)
+    else:
+        st["stop_failed"] = now
+    write_atomic(STAGE2, st)
     log({"do": "stage2_stop", "why": why, "rcs": rcs})
     return 0 if all(v[0] == 0 for v in rcs.values()) else 2
 
@@ -273,10 +308,13 @@ def stage2(acc, dry):
         return 0
     after = now >= datetime.fromisoformat(RESET).timestamp()
     if after:
-        r3 = stage3(acc, live, now, dry)
+        r3 = stage3(acc, live, now, dry, st)
         if r3 != NOGO:
             return r3
-    act, why = decide2(acc, now, live, st, allow_stop=not after)
+    a = acc.get(FROM) or {}
+    ready3 = (after and a.get("source") == "MEASURED" and not a.get("stale")
+              and isinstance(a.get("week_pct_left"), (int, float)) and a["week_pct_left"] >= REFILLED)
+    act, why = decide2(acc, now, live, st, allow_stop=not after, ready3=ready3)
     if act is None:
         log({"do": "stage2_skip", "why": why})
         return 0
@@ -284,14 +322,16 @@ def stage2(acc, dry):
         return hard_stop(st, why, now, dry)
     argv = [sys.executable, SLOT, "set", "--owner-said", OWNER_ORDER]
     # off is DARK (total 0, every seat): `--n 0` zeroed BENCH only and left FOUNDRY's slot burning lukas (review 2026-10-28)
-    argv += ["--n", "16", "--mode", "BURN"] if act == "burn" else ["--mode", "DARK"]
+    argv += ["--n", "16", "--mode", "BURN"] if act in ("burn", "reburn") else ["--mode", "DARK"]
     argv += ["--hours", str(hours_to(TO_RESET, now))]  # always: no --hours lets the allocator pick its own reset
     if dry:
         log({"do": "stage2_would_" + act, "why": why, "argv": argv[2:]})
         return 0
     rc, out = run(argv)
     if rc == 0:
-        st[act] = now
+        st["burn" if act == "reburn" else act] = now
+        if act == "reburn":
+            st.pop("off", None)
         os.makedirs(OUT, exist_ok=True)
         write_atomic(STAGE2, st)
     log({"do": "stage2_" + act, "why": why, "rc": rc, "out": out[-300:]})
@@ -320,7 +360,11 @@ def check(dry):
         log({"do": "would_switch", "why": why})
         return 0
     os.makedirs(OUT, exist_ok=True)
-    if live_account() == TO:  # already switched (by hand): `use` would close every window for nothing (review 2026-10-28)
+    live0 = live_account()
+    if live0 not in (FROM, TO):  # steven by hand, or unreadable: never close someone else's windows (review r5 GPT)
+        log({"do": "skip_switch", "why": "live account is %r, not %s: not switching" % (live0, FROM)})
+        return 0
+    if live0 == TO:  # already switched (by hand): `use` would close every window for nothing (review 2026-10-28)
         with open(MARKER, "w") as f:
             json.dump({"why": "already live on %s" % TO, "at": time.time()}, f)
         log({"do": "skip_switch", "why": "%s is already live: marked, stage 2 takes over" % TO})
@@ -336,7 +380,11 @@ def check(dry):
         rc2, o2 = run([CA, "use", TO, "--confirm", MACHINE])
     rc3, o3 = run([CA, "disarm"])
     live_after = TO if rc2 == 0 else (live_account() if rc2 is not None else FROM)
-    if live_after != TO:
+    if live_after is None:
+        # `use` ran and failed, status unreadable: it may have switched. Keep pending: stage 2 drops it once a live FROM
+        # is seen past STALE_PENDING_S, and a lost marker after RESET would bypass stages 2 and 3 for good (review r5 GPT)
+        marker = "kept pending: live account unknown"
+    elif live_after != TO:
         # `use` never ran, or failed/timed out and TO is not live: nothing switched, the next pass may retry
         # (a kept marker would leave stage 2 idle on the wrong account for good; review night, r2 2026-10-28)
         os.remove(MARKER)

@@ -38,12 +38,13 @@ import tempfile  # noqa: E402
 import types  # noqa: E402
 
 
-def _check_with(arm_rc, arm_takes_s, t0, use_rc=0):
+def _check_with(arm_rc, arm_takes_s, t0, use_rc=0, live_seq=None):
     with tempfile.TemporaryDirectory() as td:
         calls, clock = [], [t0]
         saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
         A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
-        A.live_account = lambda: A.FROM
+        seq = list(live_seq or [A.FROM])
+        A.live_account = lambda: seq.pop(0) if len(seq) > 1 else seq[0]
 
         def fake_run(argv):
             calls.append(argv[1])
@@ -80,6 +81,17 @@ rc, calls, marked = _check_with(0, 1, DL - 3600, use_rc=124)
 ok = "use" in calls and not marked and rc != 0
 fails += not ok
 print("%s  a failed `use` with FROM still live leaves no marker: %r %r %r" % ("ok  " if ok else "FAIL", rc, calls, marked))
+# review r5 (GPT): stage 1 never closes a hand-switched steven: only a live FROM is switched
+rc, calls, marked = _check_with(0, 1, DL - 3600, live_seq=["steven"])
+ok = "use" not in calls and "arm" not in calls and not marked
+fails += not ok
+print("%s  stage 1 with steven live by hand: no arm, no use, no marker: %r %r" % ("ok  " if ok else "FAIL", calls, marked))
+# review r5 (GPT): `use` failed/timed out and the status is unreadable: the switch may have happened - keep the pending
+# marker (stage 2's stale-pending rule drops it once a live FROM is seen), never lose it past 13:00
+rc, calls, marked = _check_with(0, 1, DL - 3600, use_rc=124, live_seq=["system", None])
+ok = "use" in calls and marked and rc != 0
+fails += not ok
+print("%s  a failed `use` with an unreadable status keeps the pending marker: %r %r %r" % ("ok  " if ok else "FAIL", rc, calls, marked))
 # review night r2: a hung or missing claude-account is a failed step (rc != 0), never an exception past the cleanup
 _saved = A.subprocess
 
@@ -135,14 +147,14 @@ for (live, lk, st, want, name) in [("system", L(7), {}, None, "stage2: live is n
     print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
 
 
-def _stage2_check(live, lk, st, dry=False):
+def _stage2_check(live, lk, st, dry=False, rc_for=None):
     with tempfile.TemporaryDirectory() as td:
         saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
         A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
         open(A.MARKER, "w").write("{}")
         _json.dump(st, open(A.STAGE2, "w"))
         calls = []
-        A.run = lambda argv: (calls.append(argv), (0, "set"))[1]
+        A.run = lambda argv: (calls.append(argv), ((rc_for or {}).get(argv[1], 0), "set"))[1]
         A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
             stdout=_json.dumps({"accounts": {"system": M(50), "lukas": lk}})))
         A.time = types.SimpleNamespace(time=lambda: t2)
@@ -461,20 +473,25 @@ fails += not ok
 print("%s  stage3 failed use (lukas still live): marker dropped, retry next pass: %r %r" % ("ok  " if ok else "FAIL", back, rc))
 # use-it-or-lose-it (owner 10:15 intent, delegated): after 13:00 lukas at <=2% MEASURED switches to system;
 # lukas above its floor stays live and keeps burning until its own 16:00 reset
-def _stage3_lk(lk, now_, live="lukas", sysr=None):
+def _stage3_lk(lk, now_, live="lukas", sysr=None, st=None, back=None, clear_rc=0, out=None):
     with tempfile.TemporaryDirectory() as td:
         saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK)
         A.OUT, A.MARKER, A.STAGE2, A.BACK = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json"), os.path.join(td, "back.json")
         _json.dump({"phase": "done"}, open(A.MARKER, "w"))
-        _json.dump({"burn": 1}, open(A.STAGE2, "w"))
+        _json.dump(st if st is not None else {"burn": 1}, open(A.STAGE2, "w"))
+        if back is not None:
+            _json.dump(back, open(A.BACK, "w"))
         calls = []
-        A.run = lambda argv, **k: (calls.append(argv), (0, "ok"))[1]
+        A.run = lambda argv, **k: (calls.append(argv), (clear_rc if "clear" in argv else 0, "ok"))[1]
         A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
             stdout=_json.dumps({"accounts": {"system": sysr or FRESH(), "lukas": lk}})))
         A.time = types.SimpleNamespace(time=lambda: now_)
         A.live_account = lambda: live
         try:
             A.check(False)
+            if out is not None:
+                out["st"] = _json.load(open(A.STAGE2))
+                out["back"] = _json.load(open(A.BACK)) if os.path.exists(A.BACK) else None
             return calls
         finally:
             A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK = saved
@@ -500,10 +517,35 @@ calls = _stage3_lk(L(2), T3, sysr=FRESH(1.0))
 ok = not any(c[0] == A.CA for c in calls) and not any("fleet-stop" in c for c in calls)
 fails += not ok
 print("%s  13:02, lukas 2%% but system not refilled: no switch, no hard stop: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+# review r5: after 13:00 with system refilled the switch is the stop, so the soft line must not DARK lukas: a DARK
+# fleet barely moves lukas, it never reaches the floor and system's fresh week idles until 16:00
 calls = _stage3_lk(L(3.5), T3)
+ok = not any("DARK" in c for c in calls) and not any(c[0] == A.CA for c in calls)
+fails += not ok
+print("%s  13:02, lukas 3.5%%, system refilled: no DARK, keep burning to the floor: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(3.5), T3, sysr=FRESH(1.0))
 ok = any("DARK" in c for c in calls) and not any(c[0] == A.CA for c in calls)
 fails += not ok
-print("%s  13:02, lukas 3.5%%: soft line still warns (DARK), no switch: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+print("%s  13:02, lukas 3.5%%, system NOT refilled: soft line still DARKs: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+o = {}
+calls = _stage3_lk(L(3.5), T3, st={"burn": 1, "off": 1}, out=o)
+ok = (any("BURN" in c for c in calls) and not any("DARK" in c for c in calls) and "off" not in o["st"]
+      and not any(c[0] == A.CA for c in calls))
+fails += not ok
+print("%s  13:02, DARK from before 13:00, lukas 3.5%%, system refilled: BURN again, off dropped: %r %r" % (
+    "ok  " if ok else "FAIL", _names(calls), o.get("st")))
+calls = _stage3_lk(L(3), T3, st={"burn": 1, "off": 1, "stop": 1})
+ok = _names(calls)[:3] == ["arm", "use", "disarm"] and calls[1][2] == "system"
+fails += not ok
+print("%s  13:02, fleet hard-stopped before 13:00, lukas reads 3%%: switch to system (stopped = spent): %r" % (
+    "ok  " if ok else "FAIL", _names(calls)))
+o = {}
+calls = _stage3_lk(L(2), T3, clear_rc=1, out=o)
+calls2 = _stage3_lk(L(2), T3 + 300, live="system", back=o["back"], out=o)
+ok = (o["back"] or {}).get("phase") == "done" and any("clear" in c for c in calls2) and (o["back"] or {}).get("clear_rc") == 0
+fails += not ok
+print("%s  stage3 clear failed: the next pass retries it (no DARK left on system's fresh week): %r %r" % (
+    "ok  " if ok else "FAIL", _names(calls2), o["back"]))
 calls = _stage3_lk(L(50), datetime_ts("2026-10-28T16:01:00-07:00"), sysr=FRESH())
 ok = _names(calls)[:3] == ["arm", "use", "disarm"]
 fails += not ok
@@ -538,5 +580,44 @@ calls, st = _stage2_check("lukas", L(1), {"burn": 1, "off": 1}, dry=True)
 ok = not calls and "stop" not in st
 fails += not ok
 print("%s  stage2 hard stop dry-run: no commands, no marker: %r" % ("ok  " if ok else "FAIL", calls))
+# review r5 (GPT): a hard stop whose arm or fleet-stop failed is retried next pass (workers would burn under the floor)
+calls, st = _stage2_check("lukas", L(1.5), {"burn": 1, "off": 1}, rc_for={"arm": 1})
+calls2, st2 = _stage2_check("lukas", L(1.5), st)
+ok = st.get("stop_failed") and [c[1] for c in calls2 if c[0] == A.CA] == ["arm", "fleet-stop", "disarm"] and not st2.get("stop_failed")
+fails += not ok
+print("%s  stage2 failed hard stop (arm rc 1) is retried, then done: %r %r" % ("ok  " if ok else "FAIL", st, calls2))
+# review r5 (GPT): stage 3 `use` failed and status unreadable -> keep the pending marker
+rc, calls, back = _stage3_run(["lukas", None], T3, use_rc=124)
+ok = back is not None and back.get("phase") == "pending" and rc != 0
+fails += not ok
+print("%s  stage3 failed use with unreadable status keeps pending: %r %r" % ("ok  " if ok else "FAIL", back, rc))
+# review r5 (GPT): a pass that died after `use system` but before its done marker: recovery marks done AND clears
+o = {}
+calls = _stage3_lk(L(2), T3, live="system", back={"phase": "pending", "at": T3 - 60}, out=o)
+calls2 = _stage3_lk(L(2), T3 + 300, live="system", back=o["back"], out=o)
+ok = (o["back"] or {}).get("phase") == "done" and any("clear" in c for c in calls + calls2) and o["back"].get("clear_rc") == 0
+fails += not ok
+print("%s  stage3 pending recovered as done still runs allocator clear: %r %r" % ("ok  " if ok else "FAIL", _names(calls + calls2), o["back"]))
+# review r5 GPT round 2: a stop pass that died mid-commands is retried (stop_failed is written with stop, before them)
+calls, st = _stage2_check("lukas", L(1.5), {"burn": 1, "off": 1}, dry=False, rc_for={"fleet-stop": 1})
+ok = bool(st.get("stop_failed"))
+fails += not ok
+print("%s  stage2 hard stop: retry flag set when fleet-stop fails: %r" % ("ok  " if ok else "FAIL", st))
+_d = {}
+_saved_wa = A.write_atomic
+A.write_atomic = lambda path, obj: (_d.setdefault("first", dict(obj)), _saved_wa(path, obj))
+try:
+    _stage2_check("lukas", L(1.5), {"burn": 1, "off": 1})
+finally:
+    A.write_atomic = _saved_wa
+ok = "stop" in _d.get("first", {}) and "stop_failed" in _d.get("first", {})
+fails += not ok
+print("%s  stage2 hard stop: the marker written before the commands already owes a retry: %r" % ("ok  " if ok else "FAIL", _d))
+# review r5 GPT round 2: an aged stage-3 pending marker with the live account unknown is kept (use may have switched)
+o = {}
+_stage3_lk(L(2), T3 + 3600, live=None, back={"phase": "pending", "at": T3 - 60}, out=o)
+ok = (o["back"] or {}).get("phase") == "pending"
+fails += not ok
+print("%s  stage3 aged pending with live unknown: kept: %r" % ("ok  " if ok else "FAIL", o["back"]))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)
