@@ -423,7 +423,8 @@ def evidence_view(path, hidden=()):
         return None, True
     if root in NAMED_ROOTS and len(segs) == 2 and _file_ok(segs[1], hidden):
         return root + segs[0] + "/" + segs[1], False
-    return root + segs[0] + "/", root in NAMED_ROOTS
+    # the date directory itself (no file part) hides nothing: shown, not counted refused (review night r2)
+    return root + segs[0] + "/", root in NAMED_ROOTS and bool("".join(segs[1:]))
 
 
 def evidence_native(path):

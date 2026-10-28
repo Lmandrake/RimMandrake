@@ -349,6 +349,14 @@ def r5_failed_page():
             and (script or "").startswith(head)), (named, plain, script)
 
 
+def r6_evidence_dir():
+    """Review night r2: an evidence path that IS a date directory hides nothing, so it is not counted refused."""
+    got = [C.evidence_view(p) for p in ("infrastructure/state/delegated/2026-10-27/",
+                                        "infrastructure/state/delegated/2026-10-27")]
+    want = ("infrastructure/state/delegated/2026-10-27/", False)
+    return all(g == want for g in got), got
+
+
 def main():
     for name, fn in [("gate: lit refuses a data word", g_lit_data), ("gate: vocab words carry no digits", g_vocab_digit),
                      ("gate: enum domain must be registered", g_enum_domain),
@@ -361,7 +369,8 @@ def main():
                      ("property: injected accounts and figures never reach a page", prop),
                      ("r5: an account spanning adjacent tokens refuses the page", r5_span),
                      ("r5: blind_view diagnostics never echo input or error text", r5_argparse_echo),
-                     ("r5: the FAILED marker is gated against the registry", r5_failed_page)]:
+                     ("r5: the FAILED marker is gated against the registry", r5_failed_page),
+                     ("r6: a date-directory evidence path is shown, not counted refused", r6_evidence_dir)]:
         check(name, fn)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
