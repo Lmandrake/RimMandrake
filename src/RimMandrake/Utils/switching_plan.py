@@ -247,14 +247,27 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     for n in order:
         if reset_passed(meter.get(n), now):
             why(n, f"{n}'s reset has passed and the reading predates it")
-    # a blind 0% live account never waits on a poll for anything but its target (the owner, 11:2x)
-    why_poll = stale.get(target, []) if blind else [t for v in stale.values() for t in v]
+        r = meter.get(n)
+        if (target is None and n != live and r and not usable(r) and not blind_zero(plan, r, now)
+                and not reset_passed(r, now) and in_window(plan, n, r, now) and n in line
+                and (r.get("week_pct_left") or 0) > line[n]):
+            why(n, f"{n} may have headroom ({r.get('week_pct_left')}%) but reads {r.get('source')}"
+                   f"{' stale' if r.get('stale') else ''}: read it before any stop")
+    # a blind 0% live account never waits on a poll for anything but where it can go (the owner, 11:2x)
+    if blind:
+        why_poll = stale.get(target, []) if target else [t for k, v in stale.items() if k != live for t in v]
+    else:
+        why_poll = [t for v in stale.values() for t in v]
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
     p = left(plan, lr, now)
     # under its line on a post-reset reading: the reading is an upper bound (usage only grows inside a week), so even
     # an old or ESTIMATE figure proves the line is reached
     under = p is not None and live in line and p <= line[live] and not reset_passed(lr, now)
+    # a windowed account (steven) past its window is as spent as one at its line
+    out = (live in order and next_reset(lr, now) is not None and not reset_passed(lr, now)
+           and not in_window(plan, live, lr, now))
+    under = under or out
 
     if target is None:
         st = state.get("stopped") or {}
@@ -264,12 +277,17 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
             return {**base, "do": "soft", "why": f"no account has headroom but {live}'s reading cannot prove its line "
                                                  f"({lr.get('source')}, {p}%): no new helpers, no stop yet"}
         return {**base, "do": "stop", "key": stop_key(live, lr, now),
-                "why": f"no account has headroom (outside windows or at lines); {live} at {p}% <= its line"
+                "why": f"no account has headroom (outside windows or at lines); {live} at {p}% is spent"
+                       + (" (past its window)" if out else "")
                        + (" (blind meter = 0%)" if blind else "")}
 
     if target != live:
         key = switch_key(live, target, meter.get(target))
         m = markers.get(key)
+        if m and m.get("phase") == "failed" and under and (state.get("stopped") or {}).get("account") != live:
+            return {**base, "do": "stop", "key": stop_key(live, lr, now),
+                    "why": f"switch {key} failed and {live} at {p}% is spent: hard stop, the switch is retried "
+                           "from the stopped fleet"}
         if m and m.get("phase") != "failed":
             age = now - (epoch(m.get("at")) or 0)
             if m.get("phase") == "pending" and age < STALE_PENDING_S and under:
@@ -486,19 +504,23 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
             pre = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
-            if pre["do"] in ACTS:
-                write_notice({**pre, "do": "soft"}, now)
-            state["last_poll"] = iso(now)
-            save_state(state)
-            poll_fn()
-            st = switcher_status()
-            live = st.get("live")
-            meter = meter_fn()
-            now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
-            if (OUT / "HOLD").exists():
-                log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
-                return 0
-        d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
+            if pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live:
+                d = pre  # a hard stop it already sees is never deferred behind a slow poll (agents keep burning)
+            else:
+                if pre["do"] in ACTS:
+                    write_notice({**pre, "do": "soft"}, now)
+                state["last_poll"] = iso(now)
+                save_state(state)
+                poll_fn()
+                st = switcher_status()
+                live = st.get("live")
+                meter = meter_fn()
+                now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
+                if (OUT / "HOLD").exists():
+                    log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
+                    return 0
+        if d["do"] != "stop":
+            d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
     if dry or d["do"] in ("passive", "skip", "hold"):

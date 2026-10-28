@@ -104,6 +104,19 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 3 (2026-10-28 12:10)
+    mk = {SP.switch_key("steven", "system", R(70, 100)): {"phase": "failed", "at": SP.iso(NOW - 300)}}
+    sv = {"steven": R(51, 150), "system": R(70, 100), "lukas": R(0, 120)}
+    d = D(sv, "steven", state={"_markers": mk})
+    check(d["do"] == "stop", f"a failed switch with live under its line: hard stop first (got {d['do']})")
+    d = D(sv, "steven", state={"_markers": mk, "stopped": {"account": "steven"}})
+    check(d["do"] == "switch" and d["to"] == "system", f"stopped after a failed switch: retry the switch (got {d['do']})")
+    d = D({"steven": R(80, 110), "system": R(0, 100), "lukas": R(1, 120)}, "steven")
+    check(d["do"] == "stop", f"steven live past his window with no account to go to: stop (got {d['do']})")
+    d = D({**off, "system": R(2, 100), "lukas": R(50, 120, stale=True)}, "system")
+    check(d["do"] == "poll", f"no target but an unread account may have budget: poll before stopping (got {d['do']})")
+    d = D({**off, "system": R(2, 100), "lukas": R(50, 120, stale=True)}, "system", polled=True)
+    check(d["do"] == "stop", f"still unread after the poll: stop (got {d['do']})")
     # GPT review round 2 (2026-10-28 11:58)
     mk = {SP.switch_key("system", "lukas", R(50, 48)): {"phase": "done", "from": "system", "to": "lukas",
                                                         "under": True, "at": SP.iso(NOW - 600)}}
@@ -156,8 +169,9 @@ def main():
     d = D({**off, "system": R(1.5, 100), "lukas": R(1.8, 120)}, "lukas")
     check(d["do"] == "stop", f"no account with budget: pause at the 2% wait floor (got {d['do']})")
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "failed", "at": SP.iso(NOW - 60)}}
-    d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
-    check(d["do"] == "switch", f"a FAILED switch is retried next pass, never held (got {d['do']})")
+    d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system",
+          state={"_markers": mk, "stopped": {"account": "system"}})
+    check(d["do"] == "switch", f"a FAILED switch is retried from the stopped fleet, never held (got {d['do']})")
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "pending", "at": SP.iso(NOW - 600)}}
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
     check(d["do"] == "stop", f"a pending switch that never landed while live is under its line: stop (got {d['do']})")
@@ -282,6 +296,15 @@ def main():
     SP.check(dry=False, now=NOW + 300, meter_fn=lambda: cur[0], poll_fn=poll_hold)
     (TMP / "out" / "HOLD").unlink()
     check("use" not in calls.read_text(), "a HOLD written during the poll stops the pass from acting")
+    # a stop the pass already sees is acted on at once, never deferred behind a slow poll
+    calls.write_text("")
+    (TMP / "live.txt").write_text("steven")
+    st = SP.load_state(); st.pop("last_poll", None); st.pop("stopped", None); SP.save_state(st)
+    polls = []
+    SP.check(dry=False, now=NOW + 360, meter_fn=lambda: {"steven": R(51, 150), "system": R(70, 100, age=7),
+                                                          "lukas": R(0, 120)}, poll_fn=lambda: polls.append(1))
+    check("fleet-stop" in calls.read_text() and not polls, f"a pre-poll stop acts before any poll (polls={polls})")
+    st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
     calls.write_text("")
     rc = SP.check(dry=True, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
