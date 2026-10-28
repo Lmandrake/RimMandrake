@@ -92,7 +92,8 @@ namespace RimMandrake.FlowWorks.Replay
                 var ceil = new List<string>();
                 for (Work w = 0; w < Work.Count; w++)
                 {
-                    long sum = r1.C.WorkSum(w), max = r1.C.WorkMax(w, out _);
+                    // run 2 (no oracle): the oracle labels components itself, which would hide builds from run 1's counts
+                    long sum = r2.C.WorkSum(w), max = r2.C.WorkMax(w, out _);
                     newBaseline.Append(t.Name).Append('.').Append(w).Append(".sum ").Append(sum).Append('\n');
                     newBaseline.Append(t.Name).Append('.').Append(w).Append(".max ").Append(max).Append('\n');
                     if (baseline == null) continue;
@@ -163,11 +164,11 @@ namespace RimMandrake.FlowWorks.Replay
                   .Append(c.BytesSum(s).ToString(inv).PadRight(13)).Append(c.BytesMax(s).ToString(inv).PadRight(11)).Append(c.GcSum(s)).Append('\n');
             }
             sb.Append("  warm HoseWorldPatch.Patch: ").Append(c.PatchCallsWarm).Append(" calls, ").Append(c.PatchBytesWarm).Append(" bytes\n");
-            sb.Append("\nWORK (run 1)  sum / max-per-tick @tick\n");
+            sb.Append("\nWORK (run 2, no oracle)  sum / max-per-tick @tick\n");
             for (Work w = 0; w < Work.Count; w++)
             {
-                long max = r1.C.WorkMax(w, out int at);
-                sb.Append("  ").Append(w.ToString().PadRight(16)).Append(r1.C.WorkSum(w).ToString(inv).PadRight(12)).Append(max).Append(" @").Append(at).Append('\n');
+                long max = r2.C.WorkMax(w, out int at);
+                sb.Append("  ").Append(w.ToString().PadRight(16)).Append(r2.C.WorkSum(w).ToString(inv).PadRight(12)).Append(max).Append(" @").Append(at).Append('\n');
             }
             sb.Append("  moves with no shared component: ").Append(r1.NoCompMoves).Append('\n');
             // the worst ticks over all systems, with the events that landed on them

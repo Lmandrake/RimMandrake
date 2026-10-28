@@ -29,6 +29,7 @@ from selftest_flowworks_stock import _to_windows_path  # noqa: E402
 FAULTS = [
     ("CutNoRoute", "splitjoin", "noflow"),
     ("StaleComps", "setup", "comps"),        # a lay at 600 under the comps settle 500 built, read again by settle 750
+    ("StaleComps", "splitjoin", "comps"),    # the components a move used (checked after every move since the GPT review)
     ("Leak", "cold", "conserve"),
     ("PatchSkip", "rain", "patch"),
     ("Nondet", "cold", "determinism"),

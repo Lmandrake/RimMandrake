@@ -301,6 +301,7 @@ namespace RimMandrake.FlowWorks.Replay
             world = cw;
             worldVersion = version;
             C.End();
+            if (oracle) CheckPatch();   // a reused spare snapshot must come out equal to a fresh Full too (GPT review 2026-10-28)
             return cw;
         }
 
@@ -426,8 +427,9 @@ namespace RimMandrake.FlowWorks.Replay
             ulong h = 1469598103934665603UL;
             foreach (V2 p in lay)
             {
-                h = (h ^ unchecked((ulong)(long)Math.Round(p.X * 1000))) * 1099511628211UL;
-                h = (h ^ unchecked((ulong)(long)Math.Round(p.Z * 1000))) * 1099511628211UL;
+                // exact bits, not rounded: 0.9999 and 1.0001 floor to different cells (GPT review 2026-10-28)
+                h = (h ^ unchecked((ulong)BitConverter.DoubleToInt64Bits(p.X))) * 1099511628211UL;
+                h = (h ^ unchecked((ulong)BitConverter.DoubleToInt64Bits(p.Z))) * 1099511628211UL;
             }
             return h;
         }
@@ -598,6 +600,7 @@ namespace RimMandrake.FlowWorks.Replay
             else Transfer(comps, via, src, dst, units);
             C.Add(Work.CompBuilds, comps.Builds - builds0);
             C.End();
+            if (oracle) CheckComponents(comps);   // the components a move used, not only those Settle used (GPT review 2026-10-28)
         }
 
         private int Transfer(RM_NetComponents comps, RM_NetComponent c, RTank src, RTank dst, int n)
@@ -690,6 +693,8 @@ namespace RimMandrake.FlowWorks.Replay
             for (int i = 0; i < reels.Count; i++) if (reels[i].Laid) { int r = Root(i); size[r] = (size.TryGetValue(r, out int n) ? n : 0) + 1; }
             foreach (RM_NetComponent c in comps.Built)
             {
+                // the replay has ~320 members, far under MaxConductors: a refusal here is a defect, not policy
+                if (c.Refused && c.Size <= RM_NetComponents.MaxConductors) { R.Fail("comps", now, "component " + c.Id + " refused at size " + c.Size); return; }
                 if (c.Refused || c.Links.Count == 0) continue;
                 int root = -1;
                 foreach (RM_NetLink l in c.Links)
@@ -735,8 +740,12 @@ namespace RimMandrake.FlowWorks.Replay
         {
             ulong h = 1469598103934665603UL;
             foreach (RTank t in tanks) h = (h ^ (ulong)(uint)t.Units ^ ((ulong)(t.Liquid == null ? 0 : Array.IndexOf(liquids, t.Liquid) + 1) << 40)) * 1099511628211UL;
-            foreach (RReel r in reels) h = (h ^ (r.Laid ? 1UL : 0UL) ^ (r.HasKey ? 2UL : 0UL) ^ r.GeomHash) * 1099511628211UL;
-            h = (h ^ (ulong)(uint)mapVersion) * 1099511628211UL;
+            foreach (RReel r in reels)
+            {
+                h = (h ^ (r.Laid ? 1UL : 0UL) ^ (r.HasKey ? 2UL : 0UL) ^ (r.LastLayReason != null ? 4UL : 0UL) ^ r.GeomHash) * 1099511628211UL;
+                h = (h ^ r.CorridorHash ^ ((ulong)(uint)r.LayEpoch << 32)) * 1099511628211UL;   // state the next recheck branches on
+            }
+            h = (h ^ (ulong)(uint)mapVersion ^ ((ulong)(uint)revision << 32)) * 1099511628211UL;
             return h;
         }
     }
