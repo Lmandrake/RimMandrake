@@ -104,7 +104,25 @@ def test_others_untouched():
     check(W.LAUNCH.endswith("--remote-control '{label}'"), "LAUNCH itself is unchanged")
 
 
+def test_only_touches_only_named_tiles():
+    import json, subprocess, tempfile
+    d = {"profiles": {"list": [{"guid": W.seat_guid("BUILD"), "name": "old"}, {"guid": "{x}", "name": "Artist"}]},
+         "schemes": [{"name": "Seat BUILD"}]}
+    with tempfile.TemporaryDirectory() as td:
+        f = os.path.join(td, "settings.json")
+        json.dump(d, open(f, "w"))
+        r = subprocess.run([sys.executable, os.path.join(HERE, "install_wt_seat_profiles.py"), "--settings", f,
+                            "--only", "bench", "--apply"], capture_output=True, text=True)
+        out = json.load(open(f))
+    check(r.returncode == 0, f"--only bench --apply runs ({r.stderr[-200:]})")
+    names = [p["name"] for p in out["profiles"]["list"]]
+    check("AGENT BENCH" in names and "AGENT FOUNDRY" not in names, "--only adds just the named tile")
+    check("old" in names, "--only leaves retired profiles alone")
+    check("defaults" not in out["profiles"], "--only leaves the font defaults alone")
+
+
 if __name__ == "__main__":
+    test_only_touches_only_named_tiles()
     test_plain_path_has_first_prompt()
     test_wrapped_path_has_first_prompt()
     test_others_untouched()

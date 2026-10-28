@@ -397,11 +397,11 @@ def main():
     # The retired four-seat profiles and schemes are removed, matched by their
     # stable guids / scheme names so a hand-made profile is never touched.
     removed = 0
-    for g in [seat_guid(seat) for seat in RETIRED] + list(STALE_GUIDS):
+    for g in ([] if only else [seat_guid(seat) for seat in RETIRED] + list(STALE_GUIDS)):
         n0 = len(plist)
         plist[:] = [p for p in plist if p.get("guid") != g]
         removed += n0 - len(plist)
-    for seat in RETIRED:
+    for seat in ([] if only else RETIRED):
         schemes[:] = [s for s in schemes if s.get("name") != f"Seat {seat}"]
 
     # Font size goes in profiles.defaults, NOT in the seat profiles. The owner's
@@ -409,7 +409,7 @@ def main():
     # place that fixes every profile at once — including the Ubuntu and
     # PowerShell tabs they open by hand. Seats then inherit it, so there is a
     # single value to change later instead of six.
-    if args.font_size:
+    if args.font_size and not only:      # --only touches the named tiles and nothing else
         font = profiles.setdefault("defaults", {}).setdefault("font", {})
         font["size"] = args.font_size
 
@@ -417,12 +417,16 @@ def main():
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(only or SEATS)} scheme(s) synced")
     for seat, (colour, model, why, home, cmd) in SEATS.items():
+        if only and seat not in only:
+            continue
         label = label_for(seat)
         shown = "none (daemon)" if cmd is not None else model
         print(f"  {label:<14} {colour}  model {shown:<15} tab+text  {why}")
         if home:
             print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")
-    if args.font_size:
+    if only:
+        print("  font and retired profiles: untouched (--only)")
+    elif args.font_size:
         print(f"  font size: {args.font_size:g} pt -> profiles.defaults, so EVERY "
               f"window, not just the seats")
         if args.font_size != 12:
