@@ -267,8 +267,8 @@ def cmd_install(a):
     import artledger as AL
     base = next(Path(a.specs).glob(f"**/{a.defname}.spec.json"))
     spec = json.loads(base.read_text())
-    verdict = f"infrastructure/state/delegated/2026-10-23/{a.defname}.json"
     cand = latest(a.defname, True)
+    verdict = f"pipeline decision {(cand or {}).get('candidate')} ACCEPT at {(cand or {}).get('at')}"
     first = latest(a.defname, False)
     tg = RS.tag(a.defname, a.round)
     cmpf = R.storage_root() / "fauna_cands" / "cmp" / f"{a.defname}_{tg}" / "compare.json"

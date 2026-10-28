@@ -202,6 +202,208 @@ def scan() -> dict:
     return out
 
 
+TIER = re.compile(r"^(?:RM|RSW|RUT)_")
+CAND_ROUND = re.compile(r"^(?:s\d+)?r(\d+)$")
+FAUNA_INSTALLS = STATE / "fauna_installs.jsonl"
+ART_EVENTS = ROOT / "infrastructure/state/art/events" / f"{SEAT}.jsonl"
+LEDGER = ROOT / "infrastructure/state/ledger/events" / f"{SEAT}.jsonl"
+RIMFLOW = ROOT / "src/RimMandrake/rimflow/cli.py"
+DEPLOY = UTILS / "deploy_custom_mods.py"
+DEPLOY_TIMEOUT = 480
+
+
+def slug(name: str) -> str:
+    """RM_Foo__dessicated_n -> FOO_DESSICATED_N: the SUBJECT part of a rimflow id."""
+    return re.sub(r"_+", "_", re.sub(r"[^A-Za-z0-9]", "_", TIER.sub("", str(name)))).strip("_").upper()
+
+
+def unfiled_rows(run_ids, state: Path | None = None) -> list:
+    """Every REGEN row a run could not file (runner.file_regen_jobs wrote regen_filing.json), one entry per row; a
+    filing that failed without saying which rows (fill_queue died or timed out, or a pre-verification record) is one
+    entry with def None. A REGEN that files nothing must become an item, never just a log line."""
+    out = []
+    for rid in run_ids:
+        d = Path(state or STATE) / "runs" / rid
+        f = d / "regen_filing.json"
+        if not f.is_file():
+            continue
+        fl = json.loads(f.read_text())
+        if fl.get("ok"):
+            continue
+        jf = d / "regen_jobs.json"
+        jobs = {j.get("id"): j for j in (json.loads(jf.read_text()) if jf.is_file() else [])}
+        rows = fl.get("unfiled") or []
+        for jid in rows:
+            out.append({"run": rid, "id": jid, "def": (jobs.get(jid) or {}).get("target_def"), "why": fl.get("why")})
+        if not rows:
+            out.append({"run": rid, "id": None, "def": None, "why": fl.get("why")})
+    return out
+
+
+def unfiled_item_id(u: dict) -> str:
+    return "ARTEVAL_FIX_REGEN_UNFILED_" + slug(u["def"] or u["run"])
+
+
+def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, drv: Path = DRV) -> list:
+    """The commands that install an ACCEPTed candidate through its own installer (art ledger underneath; never a hand
+    copy). fauna: the head-to-head compare fauna_drive install gates on (skipped when already paid for), then
+    fauna_drive install of that round. facing: drv.py install <subject>."""
+    if rec.get("decision") != "ACCEPT":
+        return []
+    if kind == "facing":
+        return [["python3", drv, "install", rec["subject"]]]
+    tag = str(rec.get("candidate") or "")
+    m = CAND_ROUND.match(tag)
+    if not m:
+        return []
+    out = []
+    cmp_dir = Path(cmp_root) / f"{rec['subject']}_{tag}"
+    if not (cmp_dir / "compare.json").is_file():
+        if not spec:
+            return []
+        out.append([sys.executable, HERE / "fauna_compare.py", rec["subject"], "--cand", spec, "--out", cmp_dir])
+    out.append([sys.executable, HERE / "fauna_drive.py", "install", rec["subject"], "--round", m.group(1)])
+    return out
+
+
+def fauna_installed(lines, defname: str, tag: str) -> list:
+    """Repo paths fauna_drive install wrote for <def> <tag>, from its own fauna_installs.jsonl records."""
+    out = []
+    for x in lines:
+        if not str(x).strip():
+            continue
+        r = json.loads(x)
+        if r.get("def") == defname and r.get("tag") == tag:
+            out += [f"src/{f['mod']}/Textures/{f['rel']}" for f in r.get("files", []) if f.get("mod") and f.get("rel")]
+    return list(dict.fromkeys(out))
+
+
+def facing_installed(event_lines, prefix: str) -> list:
+    """Repo paths the art ledger made live under a row's texPath (<prefix>_<facing>.png)."""
+    pat = re.compile(re.escape(prefix) + r"_(south|east|north|west)\.png$")
+    out = []
+    for x in event_lines:
+        if not str(x).strip():
+            continue
+        e = json.loads(x)
+        if e.get("type") == "live" and pat.search(str(e.get("rel", ""))) and str(e.get("rel")).startswith(prefix):
+            out.append(f"{e['mod']}/Textures/{e['rel']}")
+    return list(dict.fromkeys(out))
+
+
+def deploy_target(path: str, folded: dict) -> tuple:
+    """(target key, deploy_custom_mods args) for a repo file: a folded biome deploys through the composite."""
+    parts = Path(path).parts
+    if len(parts) > 2 and parts[0] == "src" and parts[1] == "RimMandrake" and parts[2] in folded:
+        return "compose:biomes", ["--compose", "biomes"]
+    return str(Path(*parts[:3])), ["--mod", parts[2]]
+
+
+def plan_resolver(target: str, folded: dict):
+    """Map a plan drift path (relative to the deployed mod) back to the repo file it comes from, or None."""
+    if target == "compose:biomes":
+        def rs(rel: str):
+            p = Path(rel).parts
+            if len(p) > 2 and p[0] == "Biomes" and p[1] == "_Kits":
+                p = ("Biomes",) + p[2:]
+            if len(p) > 2 and p[0] == "Biomes" and p[1] in folded:
+                return str(Path("src/RimMandrake", p[1], *p[2:]))
+            return None
+        return rs
+    return lambda rel: str(Path(target, rel))
+
+
+DRIFT = re.compile(r"^\s{2,}([+~\-H])\s{2}(\S.*?)(?:\s{3}\(.*)?$")
+
+
+def deploy_verdict(plan_text: str, resolve, dirty) -> tuple:
+    """(apply?, why, repo files) for a deploy plan. Apply only when every drift line is a + or ~ of a .png that
+    resolves to a repo file git has committed (dirty(paths) -> the uncommitted ones), with no '-' (game-only file),
+    no def-guard or refusal. H (held) lines are the tool's own business. An empty plan is the tool dying, not sync."""
+    if not plan_text.strip():
+        return False, "deploy plan printed nothing", []
+    if "DEF GUARD" in plan_text or "! REFUS" in plan_text:
+        return False, "the plan's own guard refuses --apply", []
+    files, bad = [], []
+    for ln in plan_text.splitlines():
+        m = DRIFT.match(ln)
+        if not m or m.group(1) == "H":
+            continue
+        op, rel = m.group(1), m.group(2).strip()
+        if op == "-":
+            bad.append(f"- {rel} (in game, not in repo)")
+            continue
+        src = resolve(rel)
+        if not rel.lower().endswith(".png"):
+            bad.append(f"{op} {rel} (not a texture)")
+        elif not src:
+            bad.append(f"{op} {rel} (no repo source)")
+        else:
+            files.append(src)
+    if bad:
+        return False, "held: " + "; ".join(bad[:6]), files
+    if not files:
+        return False, "in sync (no drift)", []
+    unc = dirty(files)
+    if unc:
+        return False, "held: uncommitted " + ", ".join(unc[:6]), files
+    return True, f"{len(files)} committed texture(s)", files
+
+
+def git_dirty(paths) -> list:
+    r = subprocess.run(["git", "status", "--porcelain", "--", *paths], cwd=ROOT, capture_output=True, text=True,
+                       timeout=120)
+    if r.returncode != 0:
+        return list(paths)
+    return [ln[3:].strip() for ln in r.stdout.splitlines() if ln.strip()]
+
+
+def folded_sources() -> dict:
+    sys.path.insert(0, str(UTILS))
+    import biomes_compose
+    return biomes_compose.folded_sources(ROOT / "src")
+
+
+def file_item(iid: str, title: str, why: str, log: Path, caused_by: str = "ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE") -> str:
+    """File a rimflow item once (an existing id is left alone: the next pass must not refile it)."""
+    if sh([sys.executable, RIMFLOW, "show", iid], ROOT, log, timeout=120) == 0:
+        return f"{iid} (already filed)"
+    rc = sh([sys.executable, RIMFLOW, "file", iid, "--for", SEAT, "--title", title, "--kind", "bug", "--needs", "offline",
+             "--target", "v1", "--caused-by", caused_by, "--why", why], ROOT, log, timeout=120)
+    return iid if rc == 0 else f"{iid} (file failed rc {rc})"
+
+
+def deploy(paths: list, log: Path) -> list:
+    """Plan each deploy target the installed files belong to; --apply only when deploy_verdict says the plan is all
+    committed textures (textures are safe to write while the game runs; DLLs are not and never pass the verdict)."""
+    if not paths:
+        return []
+    fold = folded_sources()
+    out = []
+    targets = {}
+    for p in paths:
+        t, args = deploy_target(p, fold)
+        targets.setdefault(t, args)
+    for t, args in targets.items():
+        plan = SCRATCH / "logs" / f"plan_{slug(t)}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+        with plan.open("w") as fh:
+            try:
+                rc = subprocess.run([sys.executable, DEPLOY, *args], cwd=ROOT, stdout=fh, stderr=subprocess.STDOUT,
+                                    timeout=DEPLOY_TIMEOUT).returncode
+            except subprocess.TimeoutExpired:
+                rc = 124
+        ok, why, files = deploy_verdict(plan.read_text() if rc != 124 else "", plan_resolver(t, fold), git_dirty)
+        row = {"target": t, "plan": str(plan), "verdict": why}
+        if ok:
+            row["apply_rc"] = sh([sys.executable, DEPLOY, *args, "--apply"], ROOT, log, timeout=DEPLOY_TIMEOUT)
+        elif not why.startswith("in sync"):
+            row["item"] = file_item(f"ARTEVAL_INSTALL_DEPLOY_HELD_{slug(t.split('/')[-1].replace('compose:', ''))}",
+                                    f"Installed art not deployed to {t}: {why}"[:200],
+                                    f"auto_judge deploy plan {plan} {why}"[:400], log)
+        out.append(row)
+    return out
+
+
 def sh(cmd, cwd, log: Path, timeout=RUN_TIMEOUT) -> int:
     with log.open("a") as fh:
         fh.write(f"\n$ {' '.join(map(str, cmd))}  ({now_iso()})\n")
@@ -234,6 +436,77 @@ def commit(paths: list, msg: str, log: Path) -> str:
     return f"commit failed (git add rc {a}); paths left uncommitted: {paths}"
 
 
+def find_cand_spec(subject: str, cand: str, specs=()):
+    """The candidate spec a fauna ACCEPT was judged from (fauna_compare needs it): this pass's own list first, then the
+    newest auto_* candidates dir that holds it."""
+    name = f"{subject}_{cand}.spec.json"
+    for x in specs:
+        if Path(x).name == name:
+            return str(x)
+    hits = sorted((DATA / "art_eval/fauna_cands").glob(f"*/{name}"), key=lambda q: q.parent.name)
+    return str(hits[-1]) if hits else None
+
+
+def lines_of(f: Path) -> list:
+    return f.read_text().splitlines() if f.is_file() else []
+
+
+def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
+    """After judging: every REGEN row a run could not file becomes an item; every ACCEPT is installed through its own
+    installer. Returns (repo paths the installs changed - to commit, every installed path - to deploy)."""
+    runs = list(dict.fromkeys(rid for rid, _ in run_recs))
+    seen, items = set(), []
+    for u in unfiled_rows(runs):
+        iid = unfiled_item_id(u)
+        if iid in seen:
+            continue
+        seen.add(iid)
+        what = f"REGEN row {u['id']} ({u['def']})" if u["id"] else f"REGEN filing of run {u['run']}"
+        items.append(file_item(iid, f"{what} was not filed to the artpipe queue: {u['why']}"[:200],
+                               f"auto_judge: runs/{u['run']}/regen_filing.json says {what} is unfiled ({u['why']}); "
+                               f"the next round is owed and nothing will render it", log,
+                               caused_by="ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET"))
+    if items:
+        st["unfiled_items"] = items
+    installs, every = [], []
+    cmp_root = None
+    for rid, r in run_recs:
+        if r.get("decision") != "ACCEPT":
+            continue
+        kind = "facing" if rid.startswith("audit_") else "fauna"
+        if kind == "fauna" and cmp_root is None:
+            sys.path.insert(0, str(HERE))
+            import runner as R
+            cmp_root = R.storage_root() / "fauna_cands" / "cmp"
+        spec = find_cand_spec(r["subject"], r.get("candidate"), specs) if kind == "fauna" else None
+        cmds = install_cmds(r, kind, spec=spec, cmp_root=cmp_root)
+        row = {"subject": r["subject"], "candidate": r.get("candidate"), "run": rid, "rc": []}
+        if not cmds:
+            row["result"] = "no installer command (no candidate spec / unparsable tag)"
+        for c in cmds:
+            rc = sh(c, ROOT if kind == "fauna" else DRV.parent, log, timeout=540)
+            row["rc"].append(rc)
+            if rc != 0:
+                row["result"] = f"{Path(str(c[1])).name} rc {rc} (see log)"
+                break
+        if kind == "fauna":
+            got = fauna_installed(lines_of(FAUNA_INSTALLS), r["subject"], r.get("candidate"))
+        else:
+            sts = json.loads((DRV.parent / "state.json").read_text()) if (DRV.parent / "state.json").is_file() else {}
+            tp = (((sts.get(r["subject"]) or {}).get("row")) or {}).get("target_texpath")
+            got = facing_installed(lines_of(ART_EVENTS), tp) if tp else []
+        row["files"] = got
+        row.setdefault("result", f"installed {len(got)} file(s)" if got else "installer ran, no file recorded")
+        if not got or any(row["rc"]) or not cmds:
+            st["follow_ups"].append({"at": now_iso(), "subject": r["subject"], "run": rid,
+                                     "owed": f"install of ACCEPT {r.get('candidate')}: {row['result']}"})
+        installs.append(row)
+        every += got
+    st["installs"] = installs
+    changed = git_dirty(every) if every else []
+    return changed, every
+
+
 def write_status(st: dict):
     SCRATCH.mkdir(parents=True, exist_ok=True)
     tmp = STATUS.with_suffix(".tmp")
@@ -243,6 +516,8 @@ def write_status(st: dict):
 
 def cmd_run(a) -> int:
     SCRATCH.mkdir(parents=True, exist_ok=True)
+    os.environ.setdefault("RIMFLOW_SEAT", SEAT)      # art.py install and rimflow file both need a seat
+    os.environ.setdefault("ART_SEAT", SEAT)
     lk = open(SCRATCH / "autojudge.lock", "w")
     try:
         fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -317,26 +592,52 @@ def cmd_run(a) -> int:
                 sh([sys.executable, HERE / "runner.py", "run", "--spec", *part, "--run-id", rid, "--record"], HERE, log)
             runs.append(rid); recs += run_records(rid)
             for r in run_records(rid):
-                if r["decision"] in ("ACCEPT", "REGEN", "ESCALATE"):
-                    verb = {"ACCEPT": "install", "REGEN": f"regen {rid}", "ESCALATE": "escalate"}[r["decision"]]
+                if r["decision"] in ("REGEN", "ESCALATE"):
                     st["follow_ups"].append({"at": now_iso(), "subject": r["subject"], "run": rid,
-                                             "owed": f"drv.py {verb} {r['subject']}" if verb != "escalate"
+                                             "owed": f"drv.py regen {rid} {r['subject']}" if r["decision"] == "REGEN"
                                              else "escalate to the owner (round cap)"})
     st["runs"] = runs
+    changed, installed = post_run([(rid, r) for rid in runs for r in run_records(rid)], fauna_specs, log, st)
     st["decisions"] = {f"{r['subject']}:{r.get('candidate')}": r["decision"] for r in recs}
     errs = hold_errors(recs)
     if errs:
         st["backoff_until"] = time.time() + BACKOFF_S
         st["hold_errors"] = errs
     day = datetime.now().date().isoformat()
-    st["commit"] = commit(own_paths(runs, [r for r in recs if r.get("decision") != "HOLD_ERROR"], day),
+    extra = changed + [str(x.relative_to(ROOT)) for x in (ART_EVENTS, FAUNA_INSTALLS, LEDGER)] if changed else \
+        [str(LEDGER.relative_to(ROOT))] if st.get("unfiled_items") else []
+    st["commit"] = commit(own_paths(runs, [r for r in recs if r.get("decision") != "HOLD_ERROR"], day) + extra,
                           f"art_eval auto-judge pass {stamp}: {', '.join(runs)} "
-                          f"({len(recs)} decision(s)) (ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)", log)
+                          f"({len(recs)} decision(s), {len(changed)} installed file(s)) "
+                          f"(ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)", log)
+    if installed:
+        st["deploy"] = deploy(installed, log)
     st["log"] = str(log)
     st["result"] = f"judged {len(recs)}: {st['decisions']}"
     write_status(st)
     print(st["result"])
     return 0
+
+
+def cmd_install(a) -> int:
+    """Install (and deploy) the ACCEPTs of an already-judged run - the same steps a pass runs after judging, for an
+    ACCEPT judged before installs were automated or whose install failed."""
+    os.environ.setdefault("RIMFLOW_SEAT", SEAT)
+    os.environ.setdefault("ART_SEAT", SEAT)
+    log = SCRATCH / "logs" / f"install_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    log.parent.mkdir(parents=True, exist_ok=True)
+    recs = [r for r in run_records(a.run) if not a.subject or r["subject"] in a.subject]
+    st = {"follow_ups": []}
+    changed, installed = post_run([(a.run, r) for r in recs], [], log, st)
+    if changed:
+        st["commit"] = commit(changed + [str(x.relative_to(ROOT)) for x in (ART_EVENTS, FAUNA_INSTALLS)],
+                              f"art_eval install of {a.run} ACCEPT(s) {', '.join(sorted({r['subject'] for r in recs}))}: "
+                              f"{len(changed)} file(s) through the art ledger (ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE)", log)
+    if installed and not a.no_deploy:
+        st["deploy"] = deploy(installed, log)
+    st["log"] = str(log)
+    print(json.dumps(st, indent=1))
+    return 0 if not st["follow_ups"] else 1
 
 
 def main(argv=None) -> int:
@@ -347,7 +648,13 @@ def main(argv=None) -> int:
     r.add_argument("--max-subjects", type=int, default=4)
     r.add_argument("--dry-run", action="store_true")
     sub.add_parser("status")
+    i = sub.add_parser("install", help="install + deploy the ACCEPTs of a judged run")
+    i.add_argument("--run", required=True)
+    i.add_argument("--subject", nargs="*")
+    i.add_argument("--no-deploy", action="store_true")
     a = ap.parse_args(argv)
+    if a.cmd == "install":
+        return cmd_install(a)
     if a.cmd == "scan":
         o = scan()
         g = gate()
