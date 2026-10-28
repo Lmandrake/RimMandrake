@@ -1,0 +1,2 @@
+The artpipe state dir has two env names: state_dir.py reads ARTPIPE_STATE_DIR, but bulk_accept_renders.py (imported by donor_regen_jobs.py) reads ARTPIPE_STATE. A process that sets only one gets the right queue for some tools and the default for others. idle_fill.py and its systemd unit set both; the fix is to have bulk_accept_renders resolve through state_dir.
+home: src/RimMandrake/Utils/artpipe/state_dir.py
