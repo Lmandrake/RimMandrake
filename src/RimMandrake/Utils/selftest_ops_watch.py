@@ -765,5 +765,29 @@ finally:
         else:
             sys.modules[m] = v
 
+# ---------------------------------------------------------------- unclaimed steward incident (owner 2026-10-28)
+import types as _ty
+_M = _ty.SimpleNamespace(epoch=lambda ts: ts, lease_status=lambda it, now: it.lease)
+def _it(iid, state, age_min, lease=None, blocked=False):
+    return _ty.SimpleNamespace(id=iid, state=state, open=state != "done", blocked=blocked, lease=lease,
+                               created_at=NOW - age_min * 60)
+def _w(*its):
+    return _ty.SimpleNamespace(items={i.id: i for i in its})
+_P = "STEVE_LANE_UNSTICK_"
+r = OW.steve_incident_unclaimed(_w(_it(_P + "PAUSED_UNOWNED_C45B", "proposed", 21)), _M, NOW, RULES)
+check("incident: today's 21 min unclaimed case -> 21 MEASURED", r["m"] == "MEASURED" and abs(r["v"] - 21) < 0.1, r)
+_tg = [t for t in RULES["targets"] if t["key"] == "steve.incident_unclaimed_min"][0]
+check("incident: 21 min is over the alarm line and the line is 10", _tg["alarm"] and _tg["value"] == 10 and r["v"] > _tg["value"], _tg)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "doing", 40)), _M, NOW, RULES)
+check("incident: a claimed (doing) incident -> 0", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="live")), _M, NOW, RULES)
+check("incident: a live lease -> 0", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="lapsed")), _M, NOW, RULES)
+check("incident: a lapsed lease is unclaimed again", abs(r["v"] - 40) < 0.1, r)
+r = OW.steve_incident_unclaimed(_w(_it("OTHER_ITEM", "proposed", 90), _it(_P + "B", "done", 90), _it(_P + "C", "built", 90)), _M, NOW, RULES)
+check("incident: other items and closed incidents do not count", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "proposed", 5), _it(_P + "B", "proposed", 30)), _M, NOW, RULES)
+check("incident: the oldest of several counts", abs(r["v"] - 30) < 0.1, r)
+
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

@@ -625,7 +625,30 @@ def c_flow(now, rules, ctx):
            "flow.verify_pass_24h": M(v24, "verify pass events, 24 h (maker or not)")}
     lapsed = sum(1 for it in world.items.values() if it.open and model.lease_status(it, now) == "lapsed")
     out["flow.lapsed_leases"] = M(lapsed, "open items with a lapsed lease")
+    out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules)
     return out
+
+
+def steve_incident_unclaimed(world, model, now, rules):
+    """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
+    rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
+    escalating a stall makes c_steve call it owned; this is the point that says nobody has picked the escalation up
+    (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm)."""
+    pre = (rules.get("steve_incident") or {}).get("prefix", "STEVE_LANE_UNSTICK_")
+    ages, names = [], []
+    for it in world.items.values():
+        if not it.id.startswith(pre) or it.state not in ("proposed", "ready") or it.blocked:
+            continue
+        if model.lease_status(it, now) == "live":
+            continue
+        t = model.epoch(it.created_at)
+        if t is None:
+            return U("incident %s has no readable creation time" % it.id)
+        ages.append(max(0.0, (now - t) / 60.0))
+        names.append(it.id)
+    if not ages:
+        return M(0.0, "min the oldest unclaimed steward incident has waited", why="no unclaimed steward incident")
+    return M(round(max(ages), 1), "min the oldest unclaimed steward incident has waited", first=names[:3])
 
 
 def c_process(now, rules, ctx):

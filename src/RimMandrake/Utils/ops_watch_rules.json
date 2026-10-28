@@ -1,6 +1,7 @@
 {
  "_doc": "Rules for ops_watch.py (the Dispatcher's deterministic measurement arm, V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Keys are glob patterns over point keys (family.name). Only MEASURED points feed the band, run and silent rules; a target names the marks it accepts. A target with alarm true files one rimflow item when the condition is NEW, and re-arms only after it clears.",
  "series_days": 8,
+ "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds", "prefix": "STEVE_LANE_UNSTICK_"},
  "band": {
   "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
   "baseline_days": 7,
@@ -31,6 +32,8 @@
    "why": "owner brief 2026-10-26: Codex runs out before its weekly reset"},
   {"key": "steve.unowned_stall_min", "op": ">", "value": 30, "alarm": true, "tag": "STEVE_STALL", "name": "OPS_STEVE_UNSTICK", "marks": ["MEASURED"],
    "why": "owner brief: Steve lane stalled over 30 min. Counted only where the steward is not already escalating it (a fault with no steward incident, or the steward AND its watcher both silent)"},
+  {"key": "steve.incident_unclaimed_min", "op": ">", "value": 10, "alarm": true, "tag": "STEVE_INCIDENT_UNCLAIMED", "name": "OPS_STEVE_UNSTICK_UNCLAIMED", "marks": ["MEASURED"],
+   "why": "owner 2026-10-28 15:50 PDT: 'Keep SteveDesktop busy. Man I'm tired of saying that.' The lane sat PAUSED 21 min under an open STEVE_LANE_UNSTICK_* item nobody claimed and steve.unowned_stall_min stayed 0 (the steward had escalated). 10 min is the BENCH helper's choice (item OPSWATCH_MONITOR_UNCLAIMED_STEVE_INCIDENTS); tune it here"},
   {"key": "steve.invalid_streak", "op": ">=", "value": 3, "alarm": true, "tag": "STEVE_INVALID", "name": "OPS_STEVE_DIAGNOSE_INVALID", "marks": ["MEASURED"],
    "why": "owner brief: 3 or more INVALID results in a row on the Steve lane"},
   {"key": "disk.root_free_gb", "op": "<", "value": 210, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
