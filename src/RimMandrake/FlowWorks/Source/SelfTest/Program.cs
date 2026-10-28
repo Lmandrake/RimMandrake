@@ -2157,6 +2157,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             LakeFloorChecks.Run(Case);         // LAKE_FLOORS_BUILD_MOUNTAINS_RUN_DEEP: per-lake, per-roughness floors (LakeFloorChecks.cs)
             PocketGridChecks.Run(Case);        // PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP: relative climb, pocket grid (PocketGridChecks.cs)
             WallReachChecks.Run(Case);         // REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE: wall-aware reach labels per class (WallReachChecks.cs)
+            WallReachSliceChecks.Run(Case);    // WALLREACH_RELABEL_TAME_SLICED_BUFFERED: sliced relabel == one-shot, never half-built, no veto uncovered (WallReachSliceChecks.cs)
             ExcavationTickChecks.Run(Case);    // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: delta judge + content skip vs the full scan (ExcavationTickChecks.cs)
             CliffMaskChecks.Run(Case);         // PIT_CLIFF_MASK_BUILD_ASTAR_LEARNS_WALLS: per-band connectivity masks (CliffMaskChecks.cs)
             OutflowChecks.Run(Case);           // liquid networks L7: outflow ends and the Dump drain (OutflowChecks.cs)

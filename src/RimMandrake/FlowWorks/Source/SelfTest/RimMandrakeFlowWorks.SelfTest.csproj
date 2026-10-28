@@ -218,6 +218,7 @@
     <Compile Include="PocketGridChecks.cs" />
     <Compile Include="..\RM_WallReachMath.cs" />
     <Compile Include="WallReachChecks.cs" />
+    <Compile Include="WallReachSliceChecks.cs" />
     <Compile Include="ExcavationTickChecks.cs" />
     <Compile Include="CliffMaskChecks.cs" />
     <Compile Include="OutflowChecks.cs" />

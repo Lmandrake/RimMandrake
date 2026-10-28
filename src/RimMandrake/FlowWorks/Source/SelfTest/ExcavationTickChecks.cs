@@ -1646,8 +1646,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 
                 string wr = Src("Superdeep", "RM_WallReach.cs");
                 RiverSwitchFlipChecks.Has(wr, @"if \(RM_WallReachMath\.StaleAfterLoad\(st\.builtMidLoad, playing\)\) \{ st\.kinds\.Invalidate\(\); st\.builtMidLoad = false; \}", "Tick re-reads the kinds after a load");
-                RiverSwitchFlipChecks.Has(wr, @"RebuildDue\(e\.stamp != stamp \|\| reload, forced \|\| reload,", "a mid-load labelling is rebuilt unthrottled in play");
-                RiverSwitchFlipChecks.Has(wr, @"e\.midLoad = Current\.ProgramState != ProgramState\.Playing; st\.builtMidLoad \|= e\.midLoad;", "a build records whether it ran mid-load");
+                RiverSwitchFlipChecks.Has(wr, @"if \(e\.stamp == stamp && !reload\).{0,900}RebuildDue\(true, forced \|\| reload \|\| !covered,", "a mid-load labelling is rebuilt unthrottled in play (sliced: stale or reload, urgent while uncovered)");
+                RiverSwitchFlipChecks.Has(wr, @"e\.jobMidLoad = Current\.ProgramState != ProgramState\.Playing;", "a build records whether it ran mid-load (at job start)");
+                RiverSwitchFlipChecks.Has(wr, @"e\.midLoad = e\.jobMidLoad; st\.builtMidLoad \|= e\.midLoad;", "the publish carries the job's mid-load flag");
                 RiverSwitchFlipChecks.Has(wr, @"doorScratch\.Clear\(\); RM_PocketGrid\.ExitOwner\(nested\); \}", "the suspect doors are let go in a finally");
                 RiverSwitchFlipChecks.Has(wr, @"if \(!On \|\| map == null \|\| !RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return false; \}", "a query off the owner vetoes nothing");
                 RiverSwitchFlipChecks.Has(wr, @"if \(!RM_PocketGrid\.EnterOwner\(out bool nested\)\) \{ return; \} try \{ BuildOwned\(", "a build runs on the owner");
@@ -1735,9 +1736,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(wr, @"return st\.kinds\.Publish\(kinds, stamp, w, h\);", "Kinds keeps the old array when nothing moved");
                 RiverSwitchFlipChecks.Has(wr, @"RM_PocketGrid\.ReportRefusals\(\); FlushDeltas\(map, st\); TickLap\(st, ref mark, TpFlush\); if \(st\.entries\.Count == 0\)", "Tick judges the deltas first");
                 RiverSwitchFlipChecks.Has(wr, @"FlushDeltas\(map, st\);.{0,140}bool unthrottled = RM_WallReachMath\.PausedUnthrottled", "a paused write moves the stamp before PausedFrame compares it");
-                RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ st\.wallGenBy\[WgUnjudged\]\+\+; Interlocked\.Increment\(ref st\.wallGen\); \} Build\(map, st, e, StampOf\(map, st\), null\);", "a first build never labels from an unjudged snapshot");
+                RiverSwitchFlipChecks.Has(wr, @"if \(unjudged\) \{ st\.wallGenBy\[WgUnjudged\]\+\+; Interlocked\.Increment\(ref st\.wallGen\); \} int gen = Volatile\.Read\(ref st\.unsafeGen\);.{0,80}Build\(map, st, e, StampOf\(map, st\), gen\);", "a first build never labels from an unjudged snapshot");
                 RiverSwitchFlipChecks.Has(wr, @"if \(deltas == null \|\| deltas\.Count == 0\) \{ return; \}", "an empty gather moves nothing");
-                RiverSwitchFlipChecks.Has(wr, @"kinds\[idx\] == RM_WallReachMath\.Wall && pg\.WalkableFast\(idx\)\) \{ Interlocked\.Increment\(ref st\.wallGenBy\[WgConnBreach\]\); Interlocked\.Increment\(ref st\.wallGen\); Interlocked\.Exchange\(ref st\.forced, 1\);",
+                RiverSwitchFlipChecks.Has(wr, @"kinds\[idx\] == RM_WallReachMath\.Wall && pg\.WalkableFast\(idx\)\) \{ Interlocked\.Increment\(ref st\.wallGenBy\[WgConnBreach\]\); Interlocked\.Increment\(ref st\.wallGen\); Interlocked\.Increment\(ref st\.unsafeGen\); Interlocked\.Exchange\(ref st\.forced, 1\);",
                     "a wall breach still forces at once");
             });
 

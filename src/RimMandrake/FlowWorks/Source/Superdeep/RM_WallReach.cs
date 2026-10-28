@@ -45,6 +45,11 @@ namespace RimMandrake.FlowWorks
 		public const int DropUnusedTicks = 2500;
 		public const int LogFirst = 10;
 		private const int MaxKeys = 64;
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: a Tick spends at most about SliceMs relabelling, in chunks of
+		/// SliceUnits (a unit is one square marked, scanned or popped: a labelling costs about 3 units per square), so a relabel
+		/// never blocks a tick. The labels in place keep serving until the new set is whole.</summary>
+		public const double SliceMs = 1.0;
+		public const int SliceUnits = 4096;
 
 		public sealed class Entry
 		{
@@ -64,6 +69,15 @@ namespace RimMandrake.FlowWorks
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 lead c): the stamp's parts this labelling was built at (StampPart*),
 			// so a rebuild can say which part moved
 			public readonly long[] builtParts = new long[StampParts];
+			// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: the unsafe generation (MapState.unsafeGen) read before the inputs of the
+			// published labels; a veto answers from them only while it is still the map's (RM_WallReachMath.Covers)
+			public int coverGen;
+			// the job in flight (slot.job): the generation, stamp, stamp parts and load state its inputs were read at, its time
+			public int jobGen;
+			public long jobStamp;
+			public bool jobMidLoad;
+			public readonly long[] jobParts = new long[StampParts];
+			public double jobMs;
 		}
 
 		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): diagnostic counters read through TimingLine. Nothing reads
@@ -90,6 +104,15 @@ namespace RimMandrake.FlowWorks
 		{
 			public int wallGen;
 			public int forced;
+			// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: moves with every forced (a change that can OPEN a way). A labelling whose
+			// inputs were read before the last move does not cover it: no veto from it until a job begun after it publishes.
+			public int unsafeGen;
+			public Entry active;          // the one entry with a job in flight on this map (null: none)
+			public int[] sliceQueue;      // the job's flood queue (never the per-thread QueueScratch a query's build uses)
+			public readonly List<Entry> due = new List<Entry>();
+			public int jobsBegun, jobsPublished, jobsDropped, covered;
+			public long sliceUnits;
+			public double maxSliceMs;
 			public int doorPrint;
 			public int doorTick = int.MinValue / 2;
 			public readonly Dictionary<(RM_PocketGrid, int, int), Entry> entries = new Dictionary<(RM_PocketGrid, int, int), Entry>();
@@ -160,6 +183,7 @@ namespace RimMandrake.FlowWorks
 			{
 				Interlocked.Increment(ref st.wallGenBy[WgConnAll]);
 				Interlocked.Increment(ref st.wallGen);
+				Interlocked.Increment(ref st.unsafeGen);
 				Interlocked.Exchange(ref st.forced, 1);
 				return;
 			}
@@ -205,6 +229,7 @@ namespace RimMandrake.FlowWorks
 				{
 					Interlocked.Increment(ref st.wallGenBy[WgConnBreach]);
 					Interlocked.Increment(ref st.wallGen);
+					Interlocked.Increment(ref st.unsafeGen);
 					Interlocked.Exchange(ref st.forced, 1);
 					return;
 				}
@@ -299,6 +324,7 @@ namespace RimMandrake.FlowWorks
 			}
 			if (kinds != null && idx >= 0 && idx < kinds.Length && RM_WallReachMath.WalkabilityBreach(kinds[idx], nowWalkable))
 			{
+				Interlocked.Increment(ref st.unsafeGen);
 				Interlocked.Exchange(ref st.forced, 1);
 			}
 		}
@@ -309,6 +335,7 @@ namespace RimMandrake.FlowWorks
 		private static void StaleWhileOff(MapState st)
 		{
 			Interlocked.Increment(ref st.wallGen);
+			Interlocked.Increment(ref st.unsafeGen);
 			Interlocked.Exchange(ref st.forced, 1);
 		}
 
@@ -329,6 +356,7 @@ namespace RimMandrake.FlowWorks
 			Interlocked.Increment(ref st.wallGen);
 			if (removed)
 			{
+				Interlocked.Increment(ref st.unsafeGen);
 				Interlocked.Exchange(ref st.forced, 1);
 			}
 		}
@@ -338,7 +366,9 @@ namespace RimMandrake.FlowWorks
 		{
 			if (map != null)
 			{
-				Interlocked.Exchange(ref StateOf(map).forced, 1);
+				MapState st = StateOf(map);
+				Interlocked.Increment(ref st.unsafeGen);
+				Interlocked.Exchange(ref st.forced, 1);
 			}
 		}
 
@@ -352,6 +382,7 @@ namespace RimMandrake.FlowWorks
 			MapState st = StateOf(map);
 			Interlocked.Increment(ref st.wallGenBy[WgBump]);
 			Interlocked.Increment(ref st.wallGen);
+			Interlocked.Increment(ref st.unsafeGen);
 			Interlocked.Exchange(ref st.forced, 1);
 		}
 
@@ -445,6 +476,7 @@ namespace RimMandrake.FlowWorks
 			if (p != st.doorPrint)
 			{
 				st.doorPrint = p;
+				Interlocked.Increment(ref st.unsafeGen);
 				Interlocked.Exchange(ref st.forced, 1);   // a gate locked or held, a door held open: no throttle
 			}
 		}
@@ -519,17 +551,19 @@ namespace RimMandrake.FlowWorks
 			return swim && Swimming.RM_SwimWater.IsDeepSwimCell(map, map.cellIndices.IndexToCell(i)) ? RM_WallReachMath.DeepWater : RM_WallReachMath.Open;
 		}
 
-		private static void Build(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views)
+		/// <summary>The one whole build left: an entry's first labelling, inside the query that asked for it (a query cannot
+		/// wait for slices). <paramref name="gen"/>: the unsafe generation read before <paramref name="stamp"/>.</summary>
+		private static void Build(Map map, MapState st, Entry e, long stamp, int gen)
 		{
 			// WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: every caller holds the owner gate (EntryFor under Judge or
-			// RecordPathFailure, Tick); one more check costs nothing and keeps a future caller honest.
+			// RecordPathFailure); one more check costs nothing and keeps a future caller honest.
 			if (!RM_PocketGrid.EnterOwner(out bool nested))
 			{
 				return;
 			}
 			try
 			{
-				BuildOwned(map, st, e, stamp, views);
+				BuildOwned(map, st, e, stamp, gen);
 			}
 			finally
 			{
@@ -537,12 +571,39 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private static void BuildOwned(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views)
+		private static void BuildOwned(Map map, MapState st, Entry e, long stamp, int gen)
 		{
 			var sw = System.Diagnostics.Stopwatch.StartNew();
-			byte[] kinds = Kinds(map, st, stamp);
-			byte[] depth = null;
-			Dictionary<int, int> ramps = null;
+			Inputs(map, st, e, stamp, null, out byte[] kinds, out byte[] depth, out Dictionary<int, int> ramps);
+			if (st.active == e)
+			{
+				DropJob(st, e);
+			}
+			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling is a pure function of (kinds, depth, ramps, band, class, the
+			// map's width and height); identical inputs keep it (LabelSlot.Rebuild: WallReach_content_skip_equals_rebuild,
+			// WallReach_slot_lifecycle), a whole-map flood saved.
+			if (!e.slot.Rebuild(kinds, depth, ramps, map.Size.x, map.Size.z, e.band, e.cls))
+			{
+				st.skipped++;
+			}
+			e.jobGen = gen;
+			e.jobStamp = stamp;
+			System.Array.Copy(st.partsNow, e.jobParts, StampParts);
+			e.jobMidLoad = Current.ProgramState != ProgramState.Playing;
+			e.jobMs = sw.Elapsed.TotalMilliseconds;
+			Publish(st, e, Find.TickManager?.TicksGame ?? 0);
+		}
+
+		/// <summary>What a labelling of <paramref name="e"/> reads: the kinds of this stamp, and with a pocket grid its depth and
+		/// ramps (<paramref name="views"/>: shared by the entries of one Tick). None of these arrays is ever written after it is
+		/// handed out (KindsSnapshot.published, the pocket grid's BuiltView, a fresh ViewDepth, a new RampPairs dictionary), so a
+		/// job may hold them across ticks.</summary>
+		private static void Inputs(Map map, MapState st, Entry e, long stamp, Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views,
+			out byte[] kinds, out byte[] depth, out Dictionary<int, int> ramps)
+		{
+			kinds = Kinds(map, st, stamp);
+			depth = null;
+			ramps = null;
 			if (e.grid != null)
 			{
 				if (views == null || !views.TryGetValue(e.grid, out (byte[] depth, Dictionary<int, int> ramps) v))
@@ -569,30 +630,68 @@ namespace RimMandrake.FlowWorks
 				depth = v.depth;
 				ramps = v.ramps;
 			}
-			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the labelling is a pure function of (kinds, depth, ramps, band, class, the
-			// map's width and height); identical inputs keep it (LabelSlot.Rebuild: WallReach_content_skip_equals_rebuild,
-			// WallReach_slot_lifecycle), a whole-map flood saved.
-			if (!e.slot.Rebuild(kinds, depth, ramps, map.Size.x, map.Size.z, e.band, e.cls))
+		}
+
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: read <paramref name="e"/>'s inputs and start its job in the spare
+		/// buffer (the published labels keep serving). False: the inputs are the published labelling's, which is published again
+		/// in place (a skip, no flood) and covers <paramref name="gen"/>.</summary>
+		private static bool BeginJob(Map map, MapState st, Entry e, long stamp, int gen,
+			Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views, int now)
+		{
+			long b0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			Inputs(map, st, e, stamp, views, out byte[] kinds, out byte[] depth, out Dictionary<int, int> ramps);
+			int w = map.Size.x, h = map.Size.z;
+			if (st.sliceQueue == null || st.sliceQueue.Length < w * h)
+			{
+				st.sliceQueue = new int[w * h];
+			}
+			e.jobGen = gen;
+			e.jobStamp = stamp;
+			System.Array.Copy(st.partsNow, e.jobParts, StampParts);
+			e.jobMidLoad = Current.ProgramState != ProgramState.Playing;
+			bool began = e.slot.Begin(kinds, depth, ramps, w, h, e.band, e.cls, st.sliceQueue);
+			e.jobMs = MsSince(b0);
+			if (!began)
 			{
 				st.skipped++;
+				Publish(st, e, now);
+				return false;
 			}
-			e.stamp = stamp;
-			System.Array.Copy(st.partsNow, e.builtParts, StampParts);
-			e.midLoad = Current.ProgramState != ProgramState.Playing;
+			st.jobsBegun++;
+			st.active = e;
+			return true;
+		}
+
+		/// <summary>The labels just finished (or kept by a skip) are the entry's now, with the generation, stamp and parts their
+		/// inputs were read at: one step under the owner gate, so a query sees the old set whole or the new set whole.</summary>
+		private static void Publish(MapState st, Entry e, int now)
+		{
+			e.coverGen = e.jobGen;
+			e.stamp = e.jobStamp;
+			System.Array.Copy(e.jobParts, e.builtParts, StampParts);
+			e.midLoad = e.jobMidLoad;
 			st.builtMidLoad |= e.midLoad;
-			int now = Find.TickManager?.TicksGame ?? 0;
 			e.builtTick = now;
 			st.builds++;
-			st.lastMs = sw.Elapsed.TotalMilliseconds;
+			st.lastMs = e.jobMs;
 			st.totalMs += st.lastMs;
-			if (st.lastMs > st.maxMs)
+			st.maxMs = System.Math.Max(st.maxMs, st.lastMs);
+			st.firstBuiltTick = st.firstBuiltTick == int.MinValue ? now : st.firstBuiltTick;
+		}
+
+		private static void DropJob(MapState st, Entry e)
+		{
+			e.slot.Drop();
+			st.jobsDropped++;
+			if (st.active == e)
 			{
-				st.maxMs = st.lastMs;
+				st.active = null;
 			}
-			if (st.firstBuiltTick == int.MinValue)
-			{
-				st.firstBuiltTick = now;
-			}
+		}
+
+		private static double MsSince(long t0)
+		{
+			return (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
 		}
 
 		/// <summary>From RM_PocketGrid.UpdatePaused (every frame while the game is paused). WALL_REACH_TUNE_REBUILDS_TENFOLD:
@@ -642,7 +741,7 @@ namespace RimMandrake.FlowWorks
 			}
 			try
 			{
-				TickOwned(map, st, paused);
+				TickOwned(map, st, paused, false);
 			}
 			finally
 			{
@@ -650,7 +749,27 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private static void TickOwned(Map map, MapState st, bool paused)
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: an unthrottled Tick that runs every due job to the end (a proof
+		/// reads the result at once; play never calls this).</summary>
+		private static void Drain(Map map)
+		{
+			if (map == null || !On || !states.TryGetValue(map, out MapState st) || !RM_PocketGrid.EnterOwner(out bool nested))
+			{
+				return;
+			}
+			try
+			{
+				TickOwned(map, st, true, true);
+			}
+			finally
+			{
+				RM_PocketGrid.ExitOwner(nested);
+			}
+		}
+
+		private static readonly Comparison<Entry> OldestBuiltFirst = (a, b) => a.builtTick.CompareTo(b.builtTick);
+
+		private static void TickOwned(Map map, MapState st, bool paused, bool drain)
 		{
 			long t0 = System.Diagnostics.Stopwatch.GetTimestamp(), mark = t0;
 			RM_PocketGrid.ReportRefusals();
@@ -664,6 +783,9 @@ namespace RimMandrake.FlowWorks
 			int now = Find.TickManager?.TicksGame ?? 0;
 			RefreshDoorPrint(map, st, now, paused);
 			TickLap(st, ref mark, TpDoor);
+			// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: the unsafe generation is read BEFORE the stamp (and so before every input a
+			// job reads): a change racing in after this read leaves the job's labels uncovered, never covered and stale.
+			int gen = Volatile.Read(ref st.unsafeGen);
 			long stamp = StampOf(map, st);
 			TickLap(st, ref mark, TpStamp);
 			bool forced = Volatile.Read(ref st.forced) != 0;
@@ -678,25 +800,43 @@ namespace RimMandrake.FlowWorks
 				st.builtMidLoad = false;
 			}
 			List<(RM_PocketGrid, int, int)> drop = null;
-			Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)> views = null;
-			bool any = false;
+			List<Entry> due = st.due;
+			due.Clear();
 			foreach (KeyValuePair<(RM_PocketGrid, int, int), Entry> kv in st.entries)
 			{
 				Entry e = kv.Value;
 				if (now - e.lastUsedTick > DropUnusedTicks || now < e.lastUsedTick - DropUnusedTicks)
 				{
 					(drop ?? (drop = new List<(RM_PocketGrid, int, int)>())).Add(kv.Key);
+					if (st.active == e)
+					{
+						DropJob(st, e);
+					}
 					continue;
 				}
 				bool reload = RM_WallReachMath.StaleAfterLoad(e.midLoad, playing);
-				if (RM_WallReachMath.RebuildDue(e.stamp != stamp || reload, forced || reload, paused, now, e.builtTick, RebuildMinTicks))
+				bool covered = RM_WallReachMath.Covers(e.coverGen, gen);
+				if (e.stamp == stamp && !reload)
 				{
-					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
-					CountRebuildCause(st, e, reload);
-					long b0 = System.Diagnostics.Stopwatch.GetTimestamp();
-					Build(map, st, e, stamp, views);
-					buildMs += (System.Diagnostics.Stopwatch.GetTimestamp() - b0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-					any = true;
+					// current: a job for an older stamp is moot, and a forced change that moved no stamp part leaves the labels
+					// right (the rule before slicing: forced with nothing stale rebuilt nothing), so they cover it
+					if (st.active == e)
+					{
+						DropJob(st, e);
+					}
+					if (!covered)
+					{
+						e.coverGen = gen;
+						st.covered++;
+					}
+					continue;
+				}
+				// stale: rebuilt when due; unthrottled while the labels cannot veto (uncovered, forced, or read while loading).
+				// The entry with a job in flight finishes it first (then restarts if still stale): a stream of changes cannot
+				// starve it.
+				if (st.active != e && RM_WallReachMath.RebuildDue(true, forced || reload || !covered, paused, now, e.builtTick, RebuildMinTicks))
+				{
+					due.Add(e);
 				}
 			}
 			if (drop != null)
@@ -706,6 +846,56 @@ namespace RimMandrake.FlowWorks
 					st.entries.Remove(k);
 				}
 			}
+			due.Sort(OldestBuiltFirst);
+			// the slices: the job in flight first, then the due entries oldest-built first, until SliceMs is spent
+			Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)> views = null;
+			long s0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			long limit = drain ? long.MaxValue : s0 + (long)(SliceMs * System.Diagnostics.Stopwatch.Frequency / 1000.0);
+			int next = 0;
+			bool any = false;
+			while (true)
+			{
+				if (st.active == null)
+				{
+					if (next >= due.Count)
+					{
+						break;
+					}
+					Entry d = due[next++];
+					CountRebuildCause(st, d, RM_WallReachMath.StaleAfterLoad(d.midLoad, playing));
+					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
+					any = true;
+					if (!BeginJob(map, st, d, stamp, gen, views, now))
+					{
+						continue;
+					}
+				}
+				else
+				{
+					Entry e = st.active;
+					long c0 = System.Diagnostics.Stopwatch.GetTimestamp();
+					bool done = e.slot.Advance(SliceUnits, out int spent);
+					e.jobMs += MsSince(c0);
+					st.sliceUnits += spent;
+					if (done)
+					{
+						st.active = null;
+						st.jobsPublished++;
+						Publish(st, e, now);
+						if (drain && e.stamp != stamp)
+						{
+							due.Add(e);   // a drain leaves nothing stale
+						}
+					}
+				}
+				if (System.Diagnostics.Stopwatch.GetTimestamp() >= limit)
+				{
+					break;
+				}
+			}
+			double sliceMs = MsSince(s0);
+			buildMs += sliceMs;
+			st.maxSliceMs = System.Math.Max(st.maxSliceMs, sliceMs);
 			if (any || forced)
 			{
 				Interlocked.Exchange(ref st.forced, 0);
@@ -873,7 +1063,8 @@ namespace RimMandrake.FlowWorks
 					st.wallGenBy[WgUnjudged]++;
 					Interlocked.Increment(ref st.wallGen);
 				}
-				Build(map, st, e, StampOf(map, st), null);
+				int gen = Volatile.Read(ref st.unsafeGen);   // before the stamp, as Tick reads it
+				Build(map, st, e, StampOf(map, st), gen);
 				st.entries[key] = e;
 			}
 			e.lastUsedTick = now;
@@ -979,6 +1170,14 @@ namespace RimMandrake.FlowWorks
 			// predate it until Tick rebuilds them (at most a tick, or the next paused frame): answer as vanilla meanwhile. The
 			// rule of this cache: miss a veto for a moment, never invent one.
 			if (Volatile.Read(ref StateOf(map).forced) != 0)
+			{
+				return false;
+			}
+			// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: Tick clears forced once it has begun the rebuilds, which now take some
+			// ticks; until a labelling whose inputs were read after the last change that could open a way is published, the
+			// answer is unknown (vanilla's). Likewise labels read while loading, once in play, until rebuilt.
+			if (!RM_WallReachMath.Covers(e.coverGen, Volatile.Read(ref StateOf(map).unsafeGen))
+				|| RM_WallReachMath.StaleAfterLoad(e.midLoad, Current.ProgramState == ProgramState.Playing))
 			{
 				return false;
 			}
@@ -1161,6 +1360,9 @@ namespace RimMandrake.FlowWorks
 				sb.Append(i > 0 ? "," : "").Append(WallGenNames[i]).Append(':').Append(Volatile.Read(ref st.wallGenBy[i]));
 			}
 			sb.Append(" walkQuiet=").Append(Volatile.Read(ref st.walkQuiet)).Append(" walkMoved=").Append(Volatile.Read(ref st.walkMoved));
+			sb.Append(" jobs=").Append(st.jobsBegun).Append('/').Append(st.jobsPublished).Append('/').Append(st.jobsDropped)
+				.Append(" covered=").Append(st.covered).Append(" sliceUnits=").Append(st.sliceUnits)
+				.Append(" maxSliceMs=").Append(st.maxSliceMs.ToString("0.000")).Append(" inFlight=").Append(st.active != null ? 1 : 0);
 			return sb.ToString();
 		}
 
@@ -1241,7 +1443,7 @@ namespace RimMandrake.FlowWorks
 				return "REFUSED: no current map";
 			}
 			Bump(map);
-			Tick(map, true);
+			Drain(map);
 			return "FORCE builds=" + (states.TryGetValue(map, out MapState st) ? st.builds : 0);
 		}
 

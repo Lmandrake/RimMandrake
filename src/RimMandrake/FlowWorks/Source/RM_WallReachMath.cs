@@ -420,13 +420,164 @@ namespace RimMandrake.FlowWorks
 				: (Func<int, int, bool>)((a, b) => ramps.TryGetValue(a, out int t) && t == b);
 		}
 
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED (design/RimMandrake/hose_wire_algorithms_advisory_2026-10-28.md §4 #8):
+		/// one labelling built a slice at a time, so a whole-map relabel never has to fit in one tick. It is <see cref="Label"/>'s
+		/// flood made resumable: the same passable marking, the same seed order and the same breadth-first order, so a job run to
+		/// the end in any slicing gives the label array Label gives (WallReach_sliced_equals_one_shot drives that over random
+		/// grids, edits and budgets). Its inputs are held by reference and must not be written for the job's life: RM_WallReach
+		/// passes the published kinds (never written after publication), the pocket grid's built depth view (never written after
+		/// a build) and that build's ramp pairs. The label array and the queue are the job's alone until it ends; nothing reads
+		/// the half-built array (<see cref="LabelSlot"/> publishes it only when <see cref="Done"/>).
+		/// One unit of work: one square marked, one seed square scanned, or one square popped and its four neighbours tried.</summary>
+		public sealed class LabelJob
+		{
+			public readonly byte[] kinds;
+			public readonly byte[] depth;
+			public readonly Dictionary<int, int> ramps;
+			public readonly int width, height, band, cls;
+			private readonly Func<int, int, bool> rampJoins;
+			private readonly int[] lab;
+			private readonly int[] queue;
+			private readonly int n;
+			private int phase;   // 0: marking passable squares, 1: flooding, 2: done
+			private int cursor, head, tail, count;
+			/// <summary>Units spent so far (diagnostic; the whole job costs about 3 x width x height).</summary>
+			public long work;
+			public int steps;
+
+			/// <summary><paramref name="reuse"/>: an int[width × height] no reader holds (overwritten whole), else a new one.
+			/// <paramref name="queue"/>: at least width × height, owned by this job until it is done or dropped.</summary>
+			public LabelJob(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height, int band, int cls, int[] reuse,
+				int[] queue)
+			{
+				if (kinds == null || width <= 0 || height <= 0 || kinds.Length < width * height || (depth != null && depth.Length < width * height))
+				{
+					throw new ArgumentException("grids do not match " + width + "x" + height);
+				}
+				n = width * height;
+				if (queue == null || queue.Length < n)
+				{
+					throw new ArgumentException("queue shorter than the map");
+				}
+				this.kinds = kinds;
+				this.depth = depth;
+				this.ramps = ramps;
+				this.width = width;
+				this.height = height;
+				this.band = band;
+				this.cls = cls;
+				rampJoins = RampJoins(ramps);
+				lab = reuse != null && reuse.Length == n ? reuse : new int[n];
+				this.queue = queue;
+			}
+
+			public bool Done => phase == 2;
+
+			/// <summary>The finished labelling (null until <see cref="Done"/>).</summary>
+			public Labels Result => phase == 2 ? new Labels { label = lab, count = count, width = width, height = height, k = band, cls = cls } : null;
+
+			/// <summary>The array this job writes, for a caller dropping it unfinished (it may be reused: no reader ever held it).</summary>
+			public int[] Buffer => lab;
+
+			/// <summary>Do at most <paramref name="budget"/> units (at least one while not done). Returns the units done.</summary>
+			public int Step(int budget)
+			{
+				if (budget < 1)
+				{
+					budget = 1;
+				}
+				steps++;
+				int spent = 0;
+				while (spent < budget && phase != 2)
+				{
+					int room = budget - spent;
+					if (phase == 0)
+					{
+						int end = room >= n - cursor ? n : cursor + room;
+						for (int i = cursor; i < end; i++)
+						{
+							lab[i] = Passable(kinds[i], cls) ? int.MaxValue : -1;   // MaxValue = passable, not yet labelled
+						}
+						spent += end - cursor;
+						cursor = end;
+						if (cursor == n)
+						{
+							phase = 1;
+							cursor = 0;
+							head = tail = 0;
+						}
+						continue;
+					}
+					if (head < tail)
+					{
+						int c = queue[head++];
+						int id = lab[c];
+						int z = c / width, x = c - z * width;
+						int d = depth == null ? 0 : depth[c];
+						for (int dir = 0; dir < 4; dir++)
+						{
+							int ni;
+							switch (dir)
+							{
+								case 0: if (z + 1 >= height) { continue; } ni = c + width; break;
+								case 1: if (x + 1 >= width) { continue; } ni = c + 1; break;
+								case 2: if (z == 0) { continue; } ni = c - width; break;
+								default: if (x == 0) { continue; } ni = c - 1; break;
+							}
+							if (lab[ni] != int.MaxValue)
+							{
+								continue;
+							}
+							if (depth != null && !RM_PitTrapMath.StepAllowed(d, depth[ni], band)
+								&& !(rampJoins != null && (rampJoins(c, ni) || rampJoins(ni, c))))
+							{
+								continue;
+							}
+							lab[ni] = id;
+							queue[tail++] = ni;
+						}
+						spent++;
+						if (head == tail && cursor >= n)
+						{
+							phase = 2;   // the last component is finished and no square is left to scan: done on this unit
+						}
+						continue;
+					}
+					// the component in hand is finished: scan for the next seed, as Label's seed loop does
+					if (cursor >= n)
+					{
+						phase = 2;
+						break;
+					}
+					if (lab[cursor] == int.MaxValue)
+					{
+						head = tail = 0;
+						queue[tail++] = cursor;
+						lab[cursor] = count++;
+					}
+					cursor++;
+					spent++;
+					if (head == tail && cursor >= n)
+					{
+						phase = 2;
+					}
+				}
+				work += spent;
+				return spent;
+			}
+		}
+
 		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP (GPT review F4): one (grid, band, class) labelling's buffers and
 		/// skip rule, as RM_WallReach.Build runs them (Verse-free so the selftest drives the production policy, not a copy).
 		/// THE CONTRACT: <see cref="labels"/> is published by reference; a holder may keep it across ONE later flood (the
 		/// labelling before it is the one whose array the flood overwrites) and must let go before the second. RM_WallReach's
 		/// readers hold it only inside one call, under the owner gate (<see cref="OwnerGate"/>), so none ever holds two.
 		/// Identical inputs (kinds by reference, depth and ramps by content, the same width and height) keep the labels: the
-		/// labelling is a pure function of them.</summary>
+		/// labelling is a pure function of them.
+		/// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: the double buffer. <see cref="Begin"/> starts a <see cref="LabelJob"/> in the
+		/// spare array; <see cref="Advance"/> runs it a slice at a time while <see cref="labels"/> (the last finished labelling)
+		/// keeps serving; the finished job is published in one assignment. A reader therefore sees the old labels whole or the
+		/// new labels whole, never a half-built array. <see cref="Rebuild"/> is Begin plus one unbounded Advance.</summary>
 		public sealed class LabelSlot
 		{
 			public Labels labels;
@@ -435,36 +586,96 @@ namespace RimMandrake.FlowWorks
 			public byte[] builtDepth;
 			public Dictionary<int, int> builtRamps;
 			public int builtWidth = -1, builtHeight = -1;
-			public int floods, skips;
+			public int floods, skips, dropped;
+			/// <summary>The labelling being built (null: none in flight).</summary>
+			public LabelJob job;
+			private int[] spareArray;   // a dropped job's array, reused by the next job
 
-			/// <summary>Label (kinds, depth, ramps) for (band, cls) unless the inputs are those of the published labelling.
-			/// True when it flooded.</summary>
-			public bool Rebuild(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height, int band, int cls)
+			/// <summary>Do (kinds, depth, ramps) equal the inputs of the published labelling?</summary>
+			public bool SameAsPublished(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height)
 			{
-				bool flooded;
-				if (labels != null && ReferenceEquals(kinds, builtKinds) && width == builtWidth && height == builtHeight
-					&& SameBytes(depth, builtDepth) && SameRamps(ramps, builtRamps))
+				return labels != null && ReferenceEquals(kinds, builtKinds) && width == builtWidth && height == builtHeight
+					&& SameBytes(depth, builtDepth) && SameRamps(ramps, builtRamps);
+			}
+
+			/// <summary>Start labelling (kinds, depth, ramps) for (band, cls), dropping any job in flight. False (no job): the
+			/// inputs are the published labelling's, which stays (a skip). <paramref name="queue"/>: the job's own queue
+			/// (≥ width × height), not shared with another job that may still be mid-flood.</summary>
+			public bool Begin(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height, int band, int cls, int[] queue)
+			{
+				Drop();
+				if (SameAsPublished(kinds, depth, ramps, width, height))
 				{
 					skips++;
-					flooded = false;
+					return false;
 				}
-				else
-				{
-					Labels s = spare;
-					spare = null;
-					Labels built = Label(kinds, depth, width, height, band, cls, RampJoins(ramps), s?.label);
-					spare = labels;
-					labels = built;
-					floods++;
-					flooded = true;
-				}
-				builtKinds = kinds;
-				builtDepth = depth;
-				builtRamps = ramps;
-				builtWidth = width;
-				builtHeight = height;
-				return flooded;
+				int[] reuse = spareArray ?? spare?.label;
+				spareArray = null;
+				spare = null;
+				job = new LabelJob(kinds, depth, ramps, width, height, band, cls, reuse, queue);
+				return true;
 			}
+
+			/// <summary>Run the job in flight for at most <paramref name="budget"/> units. True when it finished in this call
+			/// and was published (the labels before it become the spare). <paramref name="spent"/>: units done.</summary>
+			public bool Advance(int budget, out int spent)
+			{
+				spent = 0;
+				if (job == null)
+				{
+					return false;
+				}
+				spent = job.Step(budget);
+				if (!job.Done)
+				{
+					return false;
+				}
+				Labels built = job.Result;
+				builtKinds = job.kinds;
+				builtDepth = job.depth;
+				builtRamps = job.ramps;
+				builtWidth = job.width;
+				builtHeight = job.height;
+				job = null;
+				spare = labels;
+				labels = built;
+				floods++;
+				return true;
+			}
+
+			/// <summary>Drop the job in flight unfinished (its array, never published, is kept for the next job).</summary>
+			public void Drop()
+			{
+				if (job != null)
+				{
+					spareArray = job.Buffer;
+					job = null;
+					dropped++;
+				}
+			}
+
+			/// <summary>Label (kinds, depth, ramps) for (band, cls) at once unless the inputs are those of the published
+			/// labelling. True when it flooded.</summary>
+			public bool Rebuild(byte[] kinds, byte[] depth, Dictionary<int, int> ramps, int width, int height, int band, int cls)
+			{
+				if (!Begin(kinds, depth, ramps, width, height, band, cls, RM_PocketGridMath.QueueScratch(width * height)))
+				{
+					return false;
+				}
+				Advance(int.MaxValue, out _);
+				return true;
+			}
+		}
+
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: may a veto answer from a published labelling? Only when no change
+		/// that can OPEN a way (a breach, a door held open, a gate unlocked, a reload: every place RM_WallReach sets forced also
+		/// moves the unsafe generation) has happened since the inputs of that labelling were read. A labelling begun before
+		/// such a change covers an older generation, so until a job begun after it is published the answer is "unknown", and
+		/// the postfix leaves vanilla's yes alone. Stale in the safe direction (a wall built: labels more connected than the
+		/// map) still serves, as before.</summary>
+		public static bool Covers(int coveredGen, int unsafeGenNow)
+		{
+			return coveredGen == unsafeGenNow;
 		}
 
 		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the map's kinds snapshot, as RM_WallReach.Kinds runs it. The
