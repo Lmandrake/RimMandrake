@@ -285,6 +285,13 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
                        + (" (past its window)" if out else "")
                        + (" (blind meter = 0%)" if blind else "")}
 
+    if target != live and target in stale and under:
+        # spent, and the soonest-expiring account is unconfirmed: a confirmed account beats a stop
+        def fresh(n):
+            a = (meter.get(n) or {}).get("age_min")
+            return a is not None and a <= fr["max_age_min"]
+        conf = {n: elig[n] and n != live and n not in stale and fresh(n) for n in elig}
+        target = pick(meter, plan, now, conf) or target
     if target != live:
         key = switch_key(live, target, meter.get(target))
         m = markers.get(key)
@@ -502,6 +509,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     st = switcher_status()
     live = st.get("live")
     meter = meter_fn()
+    t1 = clock()
+    now += t1 - t0  # a slow status or meter read moves time on too: windows are judged when the pass acts
     d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True)
     pre = None
     if d.get("poll"):
@@ -521,7 +530,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                 st = switcher_status()
                 live = st.get("live")
                 meter = meter_fn()
-                now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
+                now += clock() - t1  # time moved during the poll: windows and resets are judged at the new time
                 if (OUT / "HOLD").exists():
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0

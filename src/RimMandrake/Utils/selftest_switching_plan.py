@@ -104,6 +104,13 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 5 (2026-10-28 11:37)
+    mv = {"steven": R(80, 144), "system": R(60, 12, age=20), "lukas": R(0, 120)}
+    d = D(mv, "lukas", polled=True)
+    check(d["do"] == "switch" and d["to"] == "steven",
+          f"spent, preferred target unconfirmed, a confirmed fallback exists: switch to it, never stop (got {d['do']} {d['to']})")
+    d = D(mv, "system", polled=True)
+    check(d["do"] != "switch" or d["to"] != "steven", f"the fallback is only for a spent live account (got {d['do']} {d['to']})")
     # GPT review round 4 (2026-10-28 11:32)
     d = D({**off, "system": R(2, 24), "lukas": R(100, 160)}, "system", state={"stopped": {"account": "system"}})
     check(d["do"] == "switch" and d["to"] == "lukas",
@@ -286,6 +293,13 @@ def main():
     st = SP.load_state(); st.pop("last_poll", None); SP.save_state(st)
     SP.check(dry=False, now=NOW, meter_fn=lambda: cur[0], poll_fn=poll5)
     check("use steven" not in calls.read_text(), "a 7-min poll that ends past steven's window never switches to him")
+    calls.write_text("")
+    m5c = {"steven": R(55, 120.02), "system": R(40, 100), "lukas": R(98, 120)}
+    def slow_meter():
+        clock[0] += 120  # a slow status/meter read with no poll at all
+        return m5c
+    SP.check(dry=False, now=NOW, meter_fn=slow_meter, poll_fn=lambda: None)
+    check("use steven" not in calls.read_text(), "a slow status read that ends past steven's window never switches to him")
     SP.clock = time.time
     # a second concurrent pass stands down
     import fcntl
