@@ -61,7 +61,7 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 ## 🔴 BENCH owns ALL FlowWorks — owner, 2026-10-23
 
-*"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, FlowWorks liquids; Gimme Some Slack goes with it, owner by card 2026-10-23: *"Yes, take GSS too"*). FOUNDRY does not pick FlowWorks items up: it files a finding `--for BENCH` and moves on, never waits. Lane list (data, enforced by `rimflow file` and `--acceptance`): `infrastructure/state/flowworks_lane.json`.
+*"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, FlowWorks liquids; Gimme Some Slack goes with it, owner by card 2026-10-23: *"Yes, take GSS too"*). FOUNDRY does not pick FlowWorks items up: it files a finding `--for BENCH` and moves on, never waits. Lane list (data, enforced by `rimflow file` and `--acceptance`): `infrastructure/state/flowworks_lane.json`. **Exception (owner by card 2026-10-27, *"Yes, Foundry may take them too"*):** a FlowWorks bug may be handed to a Live Fixer run as Foundry work (`design/RimMandrake/live_fixer_2026-10-28.md`).
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
