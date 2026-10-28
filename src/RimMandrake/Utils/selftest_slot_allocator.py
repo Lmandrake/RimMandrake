@@ -245,6 +245,28 @@ check("a weekly reset forgives the remaining debt", r7["overage"]["owed_h"] == 0
 check("interactive work above N is recorded without any override",
       abs(d({"overage_t": NOW - 0.5 * H}, helpers_running={"BENCH": 7, "FOUNDRY": 1}, owner_window_min=2.0)["overage"]["owed_h"] - 1.0) < 1e-6)
 
+# helper-minutes from span edges: a batch that started and ended between checks is charged; one that ended before the check
+# does not credit the whole interval
+_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}
+_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "FOUNDRY": []}
+r = d(_ov, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans=_sp, owner_window_min=2.0)
+check("overage: 4 helpers that ran 12 min between checks and are gone at the check are charged (3 over x 0.2 h = 0.6)",
+      abs(r["overage"]["accrued_h"] - 0.6) < 1e-6, r["overage"])
+r = d(dict(_ov, overage_h=2.0), helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 5, "FOUNDRY": []},
+      owner_window_min=300.0)
+check("overage: helpers that finished early do not credit the whole interval as unused (allowance 1 idle 0.4 h -> credit 0.4, not 0.5)",
+      abs(r["overage"]["credited_h"] - 0.4) < 1e-6, r["overage"])
+r = d(_ov, helpers_running={"BENCH": 3, "FOUNDRY": 0}, helper_spans=None, owner_window_min=2.0)
+check("overage: no spans measured -> falls back to the snapshot (2 over x 0.5 h = 1.0)", abs(r["overage"]["accrued_h"] - 1.0) < 1e-6, r["overage"])
+check("span_excess_h integrates edges", SA.span_excess_h([[0, 1800], [900, 3600]], 0, 3600, 1) == (0.25, 0.0),
+      SA.span_excess_h([[0, 1800], [900, 3600]], 0, 3600, 1))
+_hs = Path(tempfile.mkdtemp()) / "p" / "s1" / "subagents"
+_hs.mkdir(parents=True)
+(_hs / "agent-a.jsonl").write_text(json.dumps({"timestamp": SA.iso_z(real_now - 600)}) + "\n")
+os.utime(_hs / "agent-a.jsonl", (real_now - 300, real_now - 300))
+_sps = SA.helper_spans([_hs.parent.parent], real_now, H)
+check("helper_spans reads first record .. last write", len(_sps) == 1 and abs(_sps[0][1] - _sps[0][0] - 300) < 2, _sps)
+
 # presence from a main transcript
 mainp = proj / "sess1.jsonl"
 recs = [{"type": "user", "timestamp": SA.iso_z(real_now - 50 * 60), "origin": {"kind": "human"},

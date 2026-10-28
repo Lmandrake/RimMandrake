@@ -222,6 +222,32 @@ def mean_helpers(project_paths, now, window_s):
     return total / window_s
 
 
+def helper_spans(project_paths, now, window_s):
+    """[[start, end], ...] for every subagent whose transcript was written in the last window_s: first record .. last write."""
+    lo, out = now - window_s, []
+    for proj in project_paths:
+        for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
+            try:
+                end = os.path.getmtime(p)
+            except OSError:
+                continue
+            if end < lo:
+                continue
+            out.append([_first_ts(p) or end, end])
+    return out
+
+
+def span_excess_h(spans, lo, hi, allowed):
+    """(helper-h above `allowed`, helper-h below it) integrated over [lo, hi] from the spans' start/stop edges."""
+    cuts = sorted({lo, hi} | {t for a, b in spans for t in (a, b) if lo < t < hi})
+    over = under = 0.0
+    for x, y in zip(cuts, cuts[1:]):
+        n = sum(1 for a, b in spans if a <= x and b >= y)
+        over += max(0, n - allowed) * (y - x)
+        under += max(0, allowed - n) * (y - x)
+    return over / HOUR, under / HOUR
+
+
 def messages_in_window(root, now, window_s):
     """API messages (distinct assistant message ids) written by any Claude session on this machine in the window."""
     lo, ids = now - window_s, set()
@@ -606,6 +632,8 @@ def gather(now=None, rules=None):
                                    f"(meter has {n} readings over {span:.1f} h, too few for a slope)")
     inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win), 2)
     # an unreadable transcript directory is "unavailable" (None), never a measured zero helpers
+    inp["helper_spans"] = {s: (helper_spans([p], now, rules["overage"]["max_accrual_dt_h"] * HOUR)
+                               if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK) else None) for s, p in seat_paths.items()}
     inp["helpers_running"] = {s: (len(running_helpers([p], now, rules)) if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK)
                                   else None) for s, p in seat_paths.items()}
     w = owner_last_window(list(seat_paths.values()), now)
@@ -762,15 +790,23 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
     allowed = state.get("overage_base") if isinstance(state.get("overage_base"), dict) else base
     over = sum(max(0, run[s] - allowed.get(s, 0)) for s in run if run[s] is not None)
     under = sum(max(0, allowed.get(s, 0) - run.get(s, 0)) for s in allowed) if run and not blind else 0
+    # measured helper-hours over the elapsed interval (start/stop edges of every subagent), not one snapshot scaled by dt
+    sp = inp.get("helper_spans")
+    over_h, under_h = over * dt, under * dt
+    if isinstance(sp, dict) and dt > 0 and run and not blind and all(isinstance(sp.get(s), list) for s in run):
+        lo = now - dt * HOUR
+        ms = {s: span_excess_h(sp[s], lo, now, allowed.get(s, 0)) for s in run}
+        over_h = sum(v[0] for v in ms.values())
+        under_h = sum(v[1] for v in ms.values()) + sum(allowed[s] for s in allowed if s not in ms) * dt
     paying = ov is None and presence != "BENCH"
-    owed += over * dt
+    owed += over_h
     credited = 0.0
     if paying and owed > 0:
-        credited = min(owed, under * dt)
+        credited = min(owed, under_h)
         owed -= credited
     owed = round(max(0.0, owed), 4)
-    post = 0.0 if reset_seen else min(owed, post + over * post_dt)
-    rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over * dt, 4),
+    post = 0.0 if reset_seen else min(owed, post + (over_h * post_dt / dt if dt > 0 else 0.0))
+    rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over_h, 4),
            "credited_h": round(credited, 4), "forgiven_h": round(forgiven, 4), "deadline_h": None, "eta_h": None, "plan": ""}
     if owed <= 0:
         return rec
