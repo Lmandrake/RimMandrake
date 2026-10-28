@@ -141,8 +141,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string tr = Src("Superdeep", "RM_SuperdeepTrap.cs");
                 RiverSwitchFlipChecks.Has(tr, @"if \(RM_PitAccessMath\.FallHurts\(RimMandrakeFlowWorksSettings\.fallDamageEnabled, RM_PocketGrid\.FreePitTraveller\(p\),",
                     "the one fall-damage site spares them");
-                Assert(System.Text.RegularExpressions.Regex.Matches(tr, @"!p\.Flying && !\(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)").Count
-                    + System.Text.RegularExpressions.Regex.Matches(tr, @"!p\.Flying\s*&& !\(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)").Count >= 2,
+                // one pattern, counted once: the old sum of a same-line and a \s* pattern counted the same-line detector twice,
+                // so losing the other detector still read 2 (cs_review 2026-10-28)
+                Assert(System.Text.RegularExpressions.Regex.Matches(tr, @"!p\.Flying\s*&& !\(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)").Count >= 2,
                     "both arrival detectors (the tick pass and ResolveArrivalNow) skip them");
                 string pp = Src("Superdeep", "RM_PitPathing.cs");
                 RiverSwitchFlipChecks.Has(pp, @"if \(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)\s*\{\s*eng\.SuperdeepTrap\.NoteHandledArrival\(p, p\.Position\);",
