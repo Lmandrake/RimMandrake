@@ -70,6 +70,11 @@ faults (name -> intended effect):
   break_never_ends    the salt break applies its effects but the pawn stays in RM_Break_DrinkBrine -> T17 FAIL
   no_poisoning        the salt break ends with RM_SaltPoisoning at severity 0 -> T17 FAIL
   base_slow_hemogen   a baseliner's hemogen Ingest takes 3,000 ticks and then hydrates +0.3 -> T28 UNMEASURED
+  start_terrain_off   the save starts with drinkFromTerrain OFF (T10's ON arm must set it, and the final restore put it back OFF)
+  start_lastresort_off the save starts with lastResortDrinking OFF (same, for T16)
+  base_cancel_hemogen a baseliner's hemogen Ingest is accepted, ends after 100 ticks and consumes nothing -> T28 UNMEASURED
+  ice_eaten           the bill consumes the ice and its bucket but makes no product -> T26 FAIL (and must not crash)
+  bucket_unreadable   jawa/list_things refuses RM_Bucket_FreshWater -> T19 UNMEASURED (unread is not 'partly drunk')
   canal_on_reload     the reloaded site holds canal fill water (RM_Fill_Water_Half), a fresh source -> T15R must dry it
   governor_stop_t6    the clock governor stops ONCE mid-advance once a colonist at need 0 is past 0.1 dehydration (live run
                       J20261028T005149Z-1f7ee6: a bystander starved during T6) -> the harness's feed_all must not refill
@@ -140,6 +145,10 @@ class ThirstFakeBridge(object):
         self.unmodelled = set()
         self.log = []
         self.settings = dict(SETTINGS0)
+        if "start_terrain_off" in self.faults:
+            self.settings["drinkFromTerrain"] = False
+        if "start_lastresort_off" in self.faults:
+            self.settings["lastResortDrinking"] = False
         self.marks = {}
         self.reloads = 0
         self.refused_ids = []      # spawned workers the refusal faults hit (review F17: the replacement loop must meet them)
@@ -350,6 +359,8 @@ class ThirstFakeBridge(object):
 
     def t_jawa_list_things(self, defName="", rect=None, limit=100, **kw):
         names = set(defName.split(",")) if defName else None
+        if "bucket_unreadable" in self.faults and names == {"RM_Bucket_FreshWater"} and self.tick > 0 and rect is None:
+            return {"success": False, "message": "refused"}
         r = _rect(rect) if rect else None
         out = [dict(t) for t in self.things.values()
                if (names is None or t["def"] in names) and (r is None or _in(r, t["x"], t["z"]))]
@@ -525,6 +536,8 @@ class ThirstFakeBridge(object):
             dur, ctx["cancel"] = 100, True
         if jobDef == "Ingest" and tgt["def"] == "HemogenPack" and p.xeno != "Sanguophage" and "base_slow_hemogen" in self.faults:
             dur, ctx["slow_hemogen"] = 3000, True
+        if jobDef == "Ingest" and tgt["def"] == "HemogenPack" and p.xeno != "Sanguophage" and "base_cancel_hemogen" in self.faults:
+            dur, ctx["cancel"] = 100, True
         p.job, p.job_t, p.ctx, p.think_now = jobDef, WALK * d + dur, ctx, False
         self.advance(int(waitTicks))
         return {"success": True, "accepted": True, "beforeJobDef": before, "afterJobDef": jobDef}
@@ -907,6 +920,7 @@ class ThirstFakeBridge(object):
                 ice["stackCount"] -= 1
                 if ice["stackCount"] <= 0:
                     del self.things[ice["id"]]
-                self._thing("RM_Bucket_FreshWater", b["x"], b["z"], stuff=b.get("stuff") or "WoodLog")
+                if "ice_eaten" not in self.faults:
+                    self._thing("RM_Bucket_FreshWater", b["x"], b["z"], stuff=b.get("stuff") or "WoodLog")
         if ordered:
             p.think_now = False

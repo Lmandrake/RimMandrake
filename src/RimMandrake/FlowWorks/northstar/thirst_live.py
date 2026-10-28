@@ -702,6 +702,7 @@ def main(argv=None, bridge=None):
         if want("T10") or want("T9"):
             paint("WaterShallow", PX, PZ, 4, 4)
         if want("T10"):
+            sset("drinkFromTerrain", True)     # GPT round 2 #7: the ON arm needs the setting ON whatever the save held
             pe = spawn_colonist(PX + 12, PZ + 1)
             l0 = need(pe, 0.2)
             t_hit, seen = poll_job(pe, ("RM_DrinkFromTerrain",), 900)
@@ -724,7 +725,7 @@ def main(argv=None, bridge=None):
                 o1 = need(pf)
                 oh1 = hediffs(pf)
             finally:
-                sset("drinkFromTerrain", saved["drinkFromTerrain"])
+                sset("drinkFromTerrain", True)     # the final restore puts the saved value back
             bad = []
             if t_hit is None:
                 bad.append("no RM_DrinkFromTerrain within 900 ticks (jobs seen %s)" % seen)
@@ -851,7 +852,11 @@ def main(argv=None, bridge=None):
             purge_drinks()
             pt = spawn_colonist(TX + 1, TZ + 3)
             need(pt, 0.05)
+            h13_0 = hediffs(pt)
             t1, seen1 = poll_job(pt, ("RM_DrinkFromTerrain",), 1000, step=100)
+            # GPT round 2 #1: a drink that starts and ends between two 100-tick samples shows in the NEED and the hediffs
+            lvl1 = need(pt)
+            h13_1 = hediffs(pt)
             need(pt, 0.0)
             t2, seen2 = poll_job(pt, ("RM_DrinkFromTerrain",), 1200, step=60)
             for _ in range(15):          # let the drink finish (walk + drink ~ 400 ticks in T10)
@@ -869,12 +874,18 @@ def main(argv=None, bridge=None):
                 bad.append("with a fresh bottle on the map the desperate pawn chose %s, not the bottle" % seen3)
             if t1 is not None:
                 bad.append("drank toxic water at 0.05 (LastResort is need 0 only)")
+            if lvl1 is None:
+                bad.append("the 0.05 arm's need could not be read (a drink between samples is unseen)")
+            elif lvl1 > 0.05 + 0.02:
+                bad.append("the need rose 0.05 -> %s at 0.05 (a toxic drink between samples)" % lvl1)
+            if h13_1.get("ToxicBuildup", 0.0) > h13_0.get("ToxicBuildup", 0.0):
+                bad.append("ToxicBuildup grew at 0.05 (a toxic drink between samples)")
             if t2 is None:
                 bad.append("at need 0 no RM_DrinkFromTerrain on the toxic strip (jobs %s)" % seen2)
-            elif "ToxicBuildup" not in h:
-                bad.append("drank toxic water but no ToxicBuildup")
+            elif h.get("ToxicBuildup", 0.0) <= h13_1.get("ToxicBuildup", 0.0):
+                bad.append("drank toxic water but ToxicBuildup did not grow")
             row("T13_desperate_toxic_last", "FAIL" if bad else "PASS", "MOD",
-                {"jobsAt005": seen1, "jobsAt0": seen2, "levelAfter": lvl, "hediffs": h, "jobsWithBottle": seen3, "bad": bad})
+                {"jobsAt005": seen1, "levelAt005": lvl1, "jobsAt0": seen2, "levelAfter": lvl, "hediffs": h, "jobsWithBottle": seen3, "bad": bad})
             draft(pt)
         # ================================================================ batch 2 (written later the same walk)
         def mems(pid):
@@ -940,7 +951,9 @@ def main(argv=None, bridge=None):
             # "a baseliner's thirst did not rise" is vacuous unless the baseliner's Ingest order was accepted
             base_ordered = bool(out28.get("base", {}).get("accepted"))
             ended_all = all(out28.get(t_, {}).get("jobEnded") for t_ in ("sang", "base"))
-            if out28.get("xenotype") != "Sanguophage" or None in sgl or None in bsl or not base_ordered or not ended_all:
+            # GPT round 2 #4: an accepted baseliner Ingest that ended without eating the pack leaves thirst unchanged too
+            base_ate = out28.get("base", {}).get("packGone") is True
+            if out28.get("xenotype") != "Sanguophage" or None in sgl or None in bsl or not base_ordered or not ended_all or not base_ate:
                 row("T28_sanguophage_blood", "UNMEASURED", "HARNESS", out28)
             else:
                 if abs((sgl[1] - sgl[0]) - 0.5) > 0.06:
@@ -1002,8 +1015,11 @@ def main(argv=None, bridge=None):
             if "RM_Thought_DrankRough" in mb:
                 bad.append("a bottle drink at home gave RM_Thought_DrankRough")
             # "no rough thought after a bottle drink" is vacuous when no bottle drink happened
-            row("T19_awkward_access", "FAIL" if bad else ("PASS" if bottle_arm_ok else "UNMEASURED"),
-                "MOD" if bad or bottle_arm_ok else "HARNESS",
+            # GPT round 2 #5: an unread bucket is not a surviving one -- the Partly-drunk check never ran
+            bucket_read = live_bk is not None
+            ok19 = bottle_arm_ok and bucket_read
+            row("T19_awkward_access", "FAIL" if bad else ("PASS" if ok19 else "UNMEASURED"),
+                "MOD" if bad or ok19 else "HARNESS",
                 {"bottleOrder": {k: ob.get(k) for k in ("accepted", "afterJobDef", "message")}, "bottleIngest": ing19,
                  "bottleId": bid, "bottleDrunk": bottle_drunk, "bottleLevels": [b0, b1], "bucketId": bkid,
                  "bucketLevels": [k0, k1], "bucketLeft": None if live_bk is None else bkid in live_bk,
@@ -1326,6 +1342,7 @@ def main(argv=None, bridge=None):
             paint("RM_Slime_Liquid", LX, LZ, 2, 2)
             p16 = spawn_colonist(LX, LZ + 3)
             UNDER_TEST.add(p16)
+            sset("lastResortDrinking", True)   # GPT round 2 #7: the ON arm needs the setting ON whatever the save held
             need(p16, 0.0)
             t_on, seen_on = poll_job(p16, ("RM_DrinkFromTerrain",), 900, step=30)
             if t_on is not None:
@@ -1753,7 +1770,7 @@ def main(argv=None, bridge=None):
                     bad.append("no NEW RM_Bucket_FreshWater at the campfire after the bill (jobs %s)" % seen)
                 if not ice1 < ice0:
                     bad.append("the bill used no RM_BlueIce (%s before, %s after)" % (ice0, ice1))
-                elif "Wood" not in str(made[0].get("stuff") or made[0].get("label") or ""):
+                elif made and "Wood" not in str(made[0].get("stuff") or made[0].get("label") or ""):
                     bad.append("the bucket is not wooden: %s" % {k: made[0].get(k) for k in ("stuff", "label")})
                 if errs:
                     bad.append("Player.log errors during the bill: %s" % errs[:2])

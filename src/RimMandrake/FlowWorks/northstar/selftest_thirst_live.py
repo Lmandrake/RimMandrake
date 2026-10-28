@@ -170,12 +170,24 @@ CASES = [
     ("F14 the salt break never ends", "T17", ["break_never_ends"], [("T17", "FAIL")]),
     ("F14 the salt break poisons nothing", "T17", ["no_poisoning"], [("T17", "FAIL")]),
     ("F5 a baseliner's hemogen ingest outlasts the window", "T28", ["base_slow_hemogen"], [("T28", "UNMEASURED")]),
+    # GPT round 2 (THIRST_ROWS_HARDEN_GPT_ROUND2)
+    ("R2#1 T13: the 0.05 pawn drinks toxic water between samples", "T13", ["sneak_005_drink"], [("T13", "FAIL")]),
+    ("R2#3 T26: the bill eats the ice and makes nothing (no crash)", "T26", ["ice_eaten"], [("T26", "FAIL")]),
+    ("R2#4 T28: a baseliner's hemogen ingest is cancelled (pack not consumed)", "T28", ["base_cancel_hemogen"], [("T28", "UNMEASURED")]),
+    ("R2#5 T19: the bucket cannot be read", "T19", ["bucket_unreadable"], [("T19", "UNMEASURED")]),
     ("F2 reload canal water masked the stale mark", "T15R", ["stale_mark", "canal_on_reload"], [("T15R", "FAIL")]),
     ("F2 reload canal water is dried (clean)", "T15R", ["canal_on_reload"], [("T15R", "PASS")]),
     # live J20261028T005149Z-1f7ee6: a governor stop mid-T6 refilled the T6 pawn (T3's row cleared UNDER_TEST)
     ("T6 governor stop must not refill the dehydrating pawn", "T3,T6", ["governor_stop_t6"],
      [("T3", "PASS"), ("T6", "PASS")]),
 ]
+# GPT round 2 #7: a save that starts with the setting OFF must not make the ON arm a false MOD FAIL, and the run must
+# put the saved (OFF) value back at the end
+for lbl, rid, fault, key in (("T10", "T10", "start_terrain_off", "drinkFromTerrain"), ("T16", "T16", "start_lastresort_off", "lastResortDrinking")):
+    code, res, B, _ = run(rid, [fault])
+    expect("R2#7 %s: save starts with %s OFF" % (lbl, key), res, rid, "PASS")
+    check("R2#7 %s: %s restored to the saved OFF" % (lbl, key), B.settings[key] is False, B.settings[key])
+
 def want_exit(res):
     """validation_core.rows_exit: any FAIL -> 1, else any UNMEASURED -> 2, else 0 (review F20: the code is read too)."""
     ss = [r["status"] for r in res["rows"]]
