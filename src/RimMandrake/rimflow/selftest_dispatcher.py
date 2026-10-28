@@ -1809,11 +1809,13 @@ def test_role_real_schedule_triggers():
           "schedule: the Arbiter's pre-step has its own 1200 s bound beside run_max_s 2700; no claim window")
     check(roles["Auditor"].get("pre_launch") == ["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
           "schedule: the Auditor's pre_launch creates/validates audits.jsonl (audits.py ensure)")
+    here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     for r in sch["roles"]:
         if r.get("pre_launch"):
-            RL.launch_argv(dict(r, unit="u"), "u", "m", "/o", "/e", "/opt/bin/claude")   # raises if unusable
+            # the role's registered clone is the live seat's path; the test reads its OWN checkout (hermetic: on a
+            # mutation shard the registered path is absent or is the unmutated base)
+            RL.launch_argv(dict(r, unit="u", clone=here), "u", "m", "/o", "/e", "/opt/bin/claude")   # raises if unusable
             steps = r["pre_launch"] if isinstance(r["pre_launch"][0], list) else [r["pre_launch"]]
-            here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
             check(all(os.path.isfile(os.path.join(here, st[1])) for st in steps),
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
