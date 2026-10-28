@@ -19,9 +19,9 @@
    "why": "a truthy non-string ts compared with a str raised TypeError and crashed the tick; the event is passed over"},
   {"id": "TESTQ_ORPHANS_NOT_OBJECT", "family": "testq_orphans", "input_class": "not_object", "old": "crash", "old_exc": "AttributeError", "new": "refuse", "new_exc": null,
    "why": "res.get on a non-object result crashed drain_outbox; it is now left in the worker outbox, unkept"},
-  {"id": "TESTQ_RESULT_TAG_ONLY_NOW_INVALID", "family": "testq_results", "input_class": "ok", "old": "crash", "old_exc": "KeyError", "new": "accept", "new_exc": null,
+  {"id": "TESTQ_RESULT_TAG_ONLY_NOW_INVALID", "family": "testq_results", "input_class": "tagged_malformed", "old": "crash", "old_exc": "KeyError", "new": "accept", "new_exc": null,
    "why": "a tagged result missing outcome/cause/attempt crashed collect with KeyError; it is now recorded INVALID/HARNESS with the reason (TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR)"},
-  {"id": "TESTQ_RESULT_BREAKING_RECORDED_INVALID", "family": "testq_results", "input_class": "ok", "old": "accept", "old_exc": null, "new": "accept", "new_exc": null,
+  {"id": "TESTQ_RESULT_BREAKING_RECORDED_INVALID", "family": "testq_results", "input_class": "tagged_malformed", "old": "accept", "old_exc": null, "new": "accept", "new_exc": null,
    "why": "a tagged result that breaks testq.result/1 was used as written; it is now replaced by an INVALID/HARNESS record carrying the reason, so the stored digest differs (TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR)"},
   {"id": "TESTQ_RECONCILE_NOT_OBJECT", "family": "testq_results", "input_class": "not_object", "old": "crash", "old_exc": "AttributeError", "new": "refuse", "new_exc": null,
    "why": "a non-object worker line crashed reconcile with AttributeError; remote() now returns an error object and the unreadable branch logs it (TESTQ_HARDEN_RECONCILE_NONDICT_CRASH)"}

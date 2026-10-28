@@ -196,7 +196,27 @@ def input_class(family, raw):
         ts = r.value.get("ts")
         if ts and not isinstance(ts, str):
             return "ts_nonstr"
+    if family in ("testq_results", "testq_orphans") and _tagged_malformed(r.value):
+        return "tagged_malformed"
     return "ok"
+
+
+def _tagged_malformed(res):
+    """A testq result that carries the testq.result/1 tag but breaks testq's own validate_result rule (loaded from
+    Utils/testq/schema.py by path: no sys.path change, nothing new in testq.py)."""
+    import importlib.util
+    if not isinstance(res, dict) or res.get("schema") != "testq.result/1":
+        return False
+    sp = importlib.util.spec_from_file_location(
+        "_testq_schema_for_replay", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                                "Utils", "testq", "schema.py"))
+    m = importlib.util.module_from_spec(sp)
+    sp.loader.exec_module(m)
+    try:
+        m.validate_result(res)
+    except Exception:
+        return True
+    return False
 
 
 def compare(allow, family, cls, o, n):

@@ -388,6 +388,18 @@ def c8(RP, tmp, trees):
     check("C8 equal decisions with different results are a difference",
           RP.compare(allow, "audits", "ok", {"d": "accept", "exc": None, "out": "a"},
                      {"d": "accept", "exc": None, "out": "b"}) == "UNEXPLAINED")
+    ta = {"d": "accept", "exc": None, "out": "a"}
+    tb = {"d": "accept", "exc": None, "out": "b"}
+    check("C8 a well-formed ok testq result whose digest drifts is NOT allowed",
+          RP.compare(allow, "testq_results", "ok", ta, tb) == "UNEXPLAINED")
+    check("C8 a tagged-malformed testq result's digest change is the named allowance",
+          RP.compare(allow, "testq_results", "tagged_malformed", ta, tb) == "TESTQ_RESULT_BREAKING_RECORDED_INVALID")
+    from contracts.fixtures import make_fixtures as FX
+    good = json.loads(FX.load_bytes("testq_results")[0][0])
+    check("C8 input_class: well-formed testq result is ok",
+          RP.input_class("testq_results", json.dumps(good).encode()) == "ok")
+    check("C8 input_class: tagged result breaking testq.result/1 is tagged_malformed",
+          RP.input_class("testq_results", json.dumps(dict(good, outcome="INVALID")).encode()) == "tagged_malformed")
     check("C8 the named allowance matches",
           RP.compare(allow, "close_evidence", "too_deep", o, {"d": "refuse", "exc": None, "out": "x"})
           == "CE_TOO_DEEP")
