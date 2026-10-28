@@ -1,0 +1,1 @@
+A selftest run as a script can falsely PASS under mutation: a mutant that flips the module's if __name__ == '__main__' guard runs main() at import and exits 0 before any assert. End each selftest with an explicit reached-the-end check (exit 1 unless the last line ran). Also mutmut survivor lists truncate long lines: replay mutants by diff, not by printed text.
