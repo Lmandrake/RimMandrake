@@ -14,7 +14,7 @@ Windows directory is the default route"). dotnet.exe is Windows-native: it canno
    layout, into /mnt/d/ClaudeWork/rimmandrake/build/<Mod>/ (D:\\ClaudeWork\\rimmandrake\\build\\<Mod>\\). Layout matters:
    the stamp records the csproj path relative to src/, so the mirror must keep src/ as its root.
    bin/ and obj/ on the Windows side are left alone as a warm incremental cache.
-3. Run C:\\Users\\Mandrake\\.dotnet\\dotnet.exe build there.
+3. Run dotnet.exe (see dotnet_exe(): $WINBUILD_DOTNET, per-user .dotnet, Program Files, PATH) build there.
 4. Copy every DLL and .srchash the build wrote under an Assemblies/ dir back to the same path in
    the clone, and record the source sha in <build root>/<Mod>/BUILD_SOURCE.json.
 
@@ -43,18 +43,35 @@ BUILD_ROOT = os.environ.get("WINBUILD_ROOT", rm_str("build"))
 # flock files live on the LOCAL filesystem (flock on drvfs D: is not reliable) and are shared by every clone and seat
 # of this user (not $TMPDIR, which is per seat)
 LOCK_DIR = os.environ.get("WINBUILD_LOCK_DIR", os.path.expanduser("~/.cache/rm-winbuild/locks"))
-DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
-                     "/mnt/c/Program Files/dotnet/dotnet.exe"]
+# dotnet.exe discovery (no hardcoded Windows user): $WINBUILD_DOTNET, then any /mnt/c/Users/*/.dotnet (the user
+# matching this Linux login first), then Program Files, then PATH. See dotnet_exe().
+DOTNET_USER_GLOB = "/mnt/c/Users/*/.dotnet/dotnet.exe"
+DOTNET_FIXED = ["/mnt/c/Program Files/dotnet/dotnet.exe"]
 RSYNC_EXCLUDES = ["bin/", "obj/", "Textures/", "Sounds/", "*.png", "*.psd", "*.ogg", "*.wav"]
 PATH_TAGS = {"Compile", "None", "Content", "EmbeddedResource", "ProjectReference", "Reference",
              "HintPath", "OutputPath", "BaseOutputPath", "Import"}
 
 
 def dotnet_exe():
-    for c in DOTNET_CANDIDATES:
-        if os.path.exists(c):
+    """Find dotnet.exe. WINBUILD_DOTNET (a /mnt path) wins and, if set but wrong, fails loudly - no fallback."""
+    forced = os.environ.get("WINBUILD_DOTNET", "").strip()
+    if forced:
+        if os.path.isfile(forced):
+            return forced
+        sys.exit("WINBUILD_DOTNET=%r is not a file" % forced)
+    me = os.environ.get("USER", "").lower()
+    users = sorted(glob.glob(DOTNET_USER_GLOB),
+                   key=lambda p: (os.path.basename(os.path.dirname(os.path.dirname(p))).lower() != me, p))
+    cands = users + list(DOTNET_FIXED)
+    for c in cands:
+        if os.path.isfile(c):
             return c
-    sys.exit("dotnet.exe not found (looked at %s)" % ", ".join(DOTNET_CANDIDATES))
+    import shutil
+    w = shutil.which("dotnet.exe")
+    if w:
+        return w
+    sys.exit("dotnet.exe not found; set WINBUILD_DOTNET=/mnt/c/.../dotnet.exe (looked at %s, PATH)" % ", ".join(
+        [DOTNET_USER_GLOB] + list(DOTNET_FIXED)))
 
 
 def on_windows_drive(path):
