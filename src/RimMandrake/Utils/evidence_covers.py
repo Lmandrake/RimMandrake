@@ -255,18 +255,89 @@ def stamped_sources(repo, csproj: str, stamps) -> set:
     return out
 
 
-def declared(rel: str, repo) -> set:
-    """Sources the test at `rel` (relative to its clone `repo`) declares in selftest_cache.DECLS: its csproj and the
-    csproj's compile items, plus an explicit `covers` list. Unknown test -> empty."""
+# --- header declarations -------------------------------------------------------------------------------------------
+# A selftest may declare, in its own source, a file it exercises that the trace cannot see -- a child started as
+# `python -E`/`-I` never loads the tracer (contracts/replay.py runs replay_worker.py that way):
+#     # selftest-covers: src/RimMandrake/contracts/replay_worker.py
+# Comma-separated, repo-relative. Not a DECLS key on purpose: a DECLS entry makes the test CACHEABLE, and a
+# covers-only entry would cache it on an incomplete input key. A header entry counts ONLY when it is an exact,
+# existing in-clone file (no folder, glob, '..', absolute path) AND the code that ran NAMES it (its basename appears
+# in the test source outside header lines, or in a module the run loaded): a declaration of a file nothing in the run
+# refers to is an unbacked claim and is dropped.
+HEADER = "# selftest-covers:"
+
+
+def _read(p: Path):
+    try:
+        return p.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+
+
+def header_entries(src: str):
+    """(declared paths, test source with every header line removed)."""
+    decl, rest = [], []
+    for line in (src or "").splitlines():
+        s = line.strip()
+        if s.startswith(HEADER):
+            decl += [x.strip() for x in s[len(HEADER):].split(",") if x.strip()]
+        else:
+            rest.append(line)
+    return decl, "\n".join(rest)
+
+
+def _exact(repo: Path, c: str) -> bool:
+    if not c or c.startswith(("/", "\\")) or "\\" in c or any(ch in c for ch in "*?[]") or ":" in c:
+        return False
+    parts = c.split("/")
+    if any(p in ("", ".", "..") for p in parts):
+        return False
+    try:
+        root = repo.resolve()
+        f = (repo / c).resolve()
+    except OSError:
+        return False
+    return f.is_file() and root in f.parents and f.relative_to(root).as_posix() == c
+
+
+def header_declared(rel: str, repo, loaded=()) -> set:
+    """Header-declared files of the test at `rel` that are exact, existing and named by the test code or by one of
+    `loaded` (repo-relative sources the run loaded). Unreadable test -> empty."""
+    repo = Path(repo)
+    src = _read(repo / rel)
+    if src is None:
+        return set()
+    decl, code = header_entries(src)
+    out = set()
+    texts = None
+    for c in decl:
+        if c == rel or not _exact(repo, c):
+            continue
+        base = c.rsplit("/", 1)[-1]
+        if base in code:
+            out.add(c)
+            continue
+        if texts is None:
+            texts = [t for t in (_read(repo / s) for s in sorted(loaded) if s != rel) if t]
+        if any(base in t for t in texts):
+            out.add(c)
+    return out
+
+
+def declared(rel: str, repo, loaded=()) -> set:
+    """Sources the test at `rel` (relative to its clone `repo`) declares: in selftest_cache.DECLS its csproj and the
+    csproj's compile items plus an explicit `covers` list; and its `# selftest-covers:` header entries that the code
+    that ran names (header_declared; `loaded` = what the run's trace showed loading). Unknown test -> header only."""
+    repo = Path(repo)
+    out = header_declared(rel, repo, loaded)
     try:
         import selftest_cache as SC
     except Exception:  # noqa: BLE001 -- coverage is optional; never break the run
-        return set()
+        return out
     decl = SC.DECLS.get(rel)
     if not decl:
-        return set()
-    repo = Path(repo)
-    out = set(_csproj_sources(repo, decl["csproj"])) if decl.get("csproj") else set()
+        return out
+    out |= set(_csproj_sources(repo, decl["csproj"])) if decl.get("csproj") else set()
     out |= {c for c in decl.get("covers", []) if (repo / c).is_file()}
     return out
 

@@ -968,7 +968,8 @@ def _note_covers(path, clone, tdir) -> None:
         import close_evidence as ce
         import evidence_covers as EC
         rel = ce._rel(path, clone)
-        _COVERS[str(Path(path).resolve())] = EC.traced(tdir, clone) | EC.declared(rel, clone)
+        loaded = EC.traced(tdir, clone)
+        _COVERS[str(Path(path).resolve())] = loaded | EC.declared(rel, clone, loaded)
     except Exception as exc:  # noqa: BLE001
         print(f"!!! coverage trace unreadable for {path} ({type(exc).__name__}: {exc}); it covers only itself",
               file=sys.stderr)

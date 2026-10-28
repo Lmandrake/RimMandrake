@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# C2/C8 run replay_worker.py as `python -E -P`, which the coverage trace cannot see (evidence_covers.HEADER):
+# selftest-covers: src/RimMandrake/contracts/replay_worker.py
 """selftest_contracts -- the contracts package (CONTRACTS_BUILD_COMMON_READER_FIVE_RECORDS,
 CONTRACTS_REPLAY_HARDEN_OK_WITHOUT_PROOF).
 

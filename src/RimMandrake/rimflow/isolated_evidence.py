@@ -256,7 +256,8 @@ def plan_claim(claim, repos, roots=None):
         return out if rc == 0 else None
     pred = set()
     for t in p["selftests"]:
-        pred |= EC.predict(t, read_at, tree) | EC.declared(t, repo)
+        one = EC.predict(t, read_at, tree)
+        pred |= one | EC.declared(t, repo, one)
     by_pred = sorted(f for f in live if f in pred and f not in run and f not in p["validate"])
     uncovered = [f for f in live if f not in run and f not in p["validate"] and f not in pred]
     p["predicted"], p["uncovered"] = by_pred, uncovered

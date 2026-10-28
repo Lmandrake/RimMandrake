@@ -614,6 +614,51 @@ def review_z(td, store, repo, sha):
     # F9: that line is keyed to the fixture clone, not this repo
     check(new and new[0]["clone"] == os.path.realpath(repo) and new[0]["sha"] == sha4 and new[0]["start"]["sha"] == sha4,
           "F9 a selftest in another clone is recorded under that clone's sha")
+    # COVERS-HEADER: a `# selftest-covers:` line declares a file the trace cannot see (a `python -E` child never loads
+    # the tracer). It counts only for an exact, existing in-clone file that the test's code (header lines excluded) or a
+    # module the run loaded NAMES; never a folder, glob, '..', absolute or missing path, never an unnamed stranger.
+    body = ("import os, subprocess, sys\n"
+            "w = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'worker.py')\n"
+            "subprocess.run([sys.executable, '-E', w], check=True)\nprint('ok')\n")
+    (repo / "src" / "worker.py").write_text("print('w')\n")
+    (repo / "src" / "stranger.py").write_text("S = 1\n")
+    (repo / "src" / "selftest_w.py").write_text(
+        "# selftest-covers: src/worker.py, src/stranger.py, src, src/*.py, ../x.py, /etc/passwd, src/gone.py\n" + body)
+    (repo / "src" / "selftest_w2.py").write_text(body)
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "w")
+    hdr = {}
+    for name in ("selftest_w.py", "selftest_w2.py"):
+        tw = repo / "src" / name
+        os.environ[RS.COVERS_ENV] = "1"
+        try:
+            RS._evidence_start([tw])
+            resw = RS.run_one(tw)
+            before = len(CE.read_all(folder=store))
+            RS._record_evidence([resw], discovered=1)
+        finally:
+            os.environ.pop(RS.COVERS_ENV, None)
+        got = CE.read_all(folder=store)[before:]
+        hdr[name] = (resw[1], got[0] if got else {})
+    (_r2, rw2), (_r, rw) = hdr["selftest_w2.py"], hdr["selftest_w.py"]
+    check(_r == _r2 == "PASS", "COVERS-HEADER both runs PASS: %r %r" % (_r, _r2))
+    check("src/worker.py" not in (rw2.get("covers") or []),
+          "COVERS-HEADER without a header the -E child is invisible to the trace: %r" % (rw2.get("covers"),))
+    check((rw.get("detail") or {}).get("covers_by", {}).get("src/worker.py") == ["src/selftest_w.py"]
+          and CE.covered(rw, ["src/worker.py"]),
+          "COVERS-HEADER the declared, named worker is covered: %r" % (rw.get("covers"),))
+    check(not CE.covered(rw, ["src/stranger.py"]) and "src/stranger.py" not in (rw.get("covers") or []),
+          "COVERS-HEADER a declared file nothing that ran names is not claimed")
+    check(sorted(rw.get("covers") or []) == ["src/selftest_w.py", "src/worker.py"],
+          "COVERS-HEADER folder/glob/../absolute/missing declarations claim nothing: %r" % (rw.get("covers"),))
+    import evidence_covers as EC
+    (repo / "src" / "helper.py").write_text("W = 'worker.py'\n")
+    (repo / "src" / "selftest_h.py").write_text("# selftest-covers: src/worker.py\nimport helper\n")
+    check(EC.header_declared("src/selftest_h.py", repo, {"src/helper.py"}) == {"src/worker.py"}
+          and EC.header_declared("src/selftest_h.py", repo, set()) == set(),
+          "COVERS-HEADER a file named only by a LOADED module counts, and only when that module loaded")
+    for f in ("helper.py", "selftest_h.py"):
+        (repo / "src" / f).unlink()
     RS._OUTER[0] = None
 
     # F6: an unreadable target makes the run UNMEASURED; paths are only the files validated; no --defs = static
