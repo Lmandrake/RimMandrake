@@ -215,6 +215,9 @@ def _num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
+BAND_SLOTS = ("all", "none", "first", "last", "weekly", "quick", "quick_one")   # slot_blocked's policies
+
+
 def validate_role(role):
     """Raises ValueError naming the first schedule value decide_roles cannot use (review round U, N5): a role with a
     bad value is skipped with an alarm, never allowed to raise through the whole tick."""
@@ -227,6 +230,11 @@ def validate_role(role):
         for k in ("runway_ge", "week_left_pct_lt", "quick_cap_x"):
             if k in b and not _num(b[k]):
                 raise ValueError("throttle band %s: %s %r is not a number" % (name, k, b[k]))
+        if "quick_cap_x" in b and b["quick_cap_x"] < 0:      # a negative budget would pass every cap (review r5)
+            raise ValueError("throttle band %s: quick_cap_x %r is negative" % (name, b["quick_cap_x"]))
+        if b.get("slots", "all") not in BAND_SLOTS:          # slot_blocked blocks nothing it does not know (r5)
+            raise ValueError("throttle band %s: slots %r is not one of %s" % (name, b.get("slots"),
+                                                                             ", ".join(BAND_SLOTS)))
     if bands and not any("runway_ge" in b for b in bands.values()):
         raise ValueError("throttle_bands has no band with runway_ge: no band to fall back to")
     if role.get("slot_when") not in (None, "done_claims", "pending_work"):
@@ -1108,7 +1116,13 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                         "their share of the daily cap; the event runs once they leave room" % (name, job["trigger"]))
                 return
         if daily is not None and spent + budget > daily:
-            mark(rs, job, "daily cap")
+            # an event run refused on the cap is not a run (ROLE_LAUNCH_REVIEW_FINISH_ROUND_FIVE): it keeps the day's
+            # event quota and launches once it fits (a raised cap, a band that shrinks its budget); alarmed once
+            sk = skip_event(rs, job, "daily cap")
+            if sk is None:
+                mark(rs, job, "daily cap")
+            elif not sk:
+                return
             act(do="alarm", kind="role:%s:cap" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget" % (
                     name, job["trigger"], daily, spent, budget))

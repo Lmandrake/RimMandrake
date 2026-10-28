@@ -1736,6 +1736,45 @@ def test_role_event_skip_keeps_quota():
           "daily_token_cap 0: refused, not uncapped %r" % a)
 
 
+def test_role_event_cap_refusal_keeps_quota():
+    """ROLE_LAUNCH_REVIEW_FINISH_ROUND_FIVE: an event run REFUSED on daily_token_cap is not a run: it must not use the
+    day's event_runs_per_day, so it launches the same day once it fits (a raised cap, a band that shrinks its
+    budget). The refusal alarms once, not every tick."""
+    t = at_local("13:00")
+    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z")}
+    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
+    st = fresh()
+    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "event_cursor": t - 3600,
+                                "runs": [{"day": RL.day_of(t), "tokens": 200000, "state": "done",
+                                          "at": t - 3600, "unit": "u0", "budget": 100000}]}}
+    p = producer(after_role=None)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread([BASE_EV, fail], items)), t))
+    check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"], "event over the daily cap: refused %r"
+          % a)
+    check(not [k for k in st["roles"]["Producer"]["done"] if " event" in k],
+          "a refused event run does not use the day's event quota %r" % st["roles"]["Producer"]["done"])
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60), lread([BASE_EV, fail], items)), t + 60))
+    check(a == [], "event refused on the cap: alarmed once, not every tick %r" % a)
+    p2 = producer(after_role=None, daily_token_cap=300000)
+    a = role_acts(rdecide([p2], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] == "event", "the cap leaves room the same day: the event runs (quota unused) %r" % a)
+
+
+def test_role_review_r5():
+    """Review r5 (role_launch.py): a negative quick_cap_x (a negative budget passes every cap) and an unknown band
+    `slots` policy (slot_blocked would block nothing) are schedule errors, refused by validate_role."""
+    for bad, word in (({"runway_ge": 0.0, "quick_cap_x": -1}, "quick_cap_x"),
+                      ({"runway_ge": 0.0, "quick_cap_x": 1.0, "slots": "weeky"}, "slots")):
+        try:
+            RL.validate_role(dict(RL.ROLE_DEFAULTS, **producer(throttle_bands={"GREEN": bad})))
+            check(False, "r5: band %r is refused" % bad)
+        except ValueError as e:
+            check(word in str(e), "r5: band %r is refused (%s)" % (bad, e))
+    RL.validate_role(dict(RL.ROLE_DEFAULTS, **producer()))
+    check(True, "r5: the fixture bands (all, weekly, none) still validate")
+
+
 def test_role_review_night_r3():
     """Review night r3 (role_launch.py): a zero quick/economy cap is a cap, not a fall-back; one status.json read per
     tick; after_role chains decided in order; the unit's wall bound adds pre_launch_max_s to the DEFAULT run_max_s."""
@@ -3117,7 +3156,7 @@ def main():
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
-              test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota,
+              test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
               test_role_review_night_r3,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
