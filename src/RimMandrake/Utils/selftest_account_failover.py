@@ -381,5 +381,76 @@ got2, _ = A.decide2({"lukas": L(7)}, datetime_ts("2026-10-28T12:59:30-07:00"), "
 ok = got == "burn" and got2 is None
 fails += not ok
 print("%s  burns at 12:58, stops at 12:59:30: %r %r" % ("ok  " if ok else "FAIL", got, got2))
+# stage 3 (owner 10:07): at/after system's 13:00 reset, once system reads MEASURED+fresh with a refilled week, switch
+# back to system once (own marker), then clear the allocator override; lukas not live -> nothing; retired afterwards
+T3 = datetime_ts(A.RESET) + 120
+FRESH = lambda l=100.0, src="MEASURED", st=False: {"source": src, "week_pct_left": l, "stale": st}  # noqa: E731
+for (acc, now_, live, done, want, name) in [
+        ({"system": FRESH()}, T3, "lukas", False, True, "stage3: refilled system week, lukas live -> switch back"),
+        ({"system": FRESH()}, T3 - 600, "lukas", False, False, "stage3: before 13:00 -> no"),
+        ({"system": FRESH(1.0)}, T3, "lukas", False, False, "stage3: system not refilled yet (pre-reset reading) -> no"),
+        ({"system": FRESH(100, "ESTIMATE")}, T3, "lukas", False, False, "stage3: ESTIMATE -> no"),
+        ({"system": FRESH(100, st=True)}, T3, "lukas", False, False, "stage3: stale -> no"),
+        ({"system": FRESH()}, T3, "steven", False, False, "stage3: someone switched by hand -> no"),
+        ({"system": FRESH()}, T3, "system", False, False, "stage3: system already live -> no"),
+        ({"system": FRESH()}, T3, "lukas", True, False, "stage3: retired after done")]:
+    got, why = A.decide3(acc, now_, live, done)
+    fails += got != want
+    print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
+
+
+def _stage3_run(live_seq, now_, marker=None, arm_rc=0, use_rc=0, clear_rc=0):
+    with tempfile.TemporaryDirectory() as td:
+        saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK)
+        A.OUT, A.MARKER, A.STAGE2, A.BACK = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json"), os.path.join(td, "back.json")
+        _json.dump({"phase": "done"}, open(A.MARKER, "w"))
+        if marker is not None:
+            _json.dump(marker, open(A.BACK, "w"))
+        calls, seq = [], list(live_seq)
+        def _run(argv, **k):
+            calls.append(argv)
+            if argv[0] == A.CA and argv[1] == "arm":
+                return arm_rc, "arm"
+            if argv[0] == A.CA and argv[1] == "use":
+                return use_rc, "use"
+            if argv[0] == A.CA:
+                return 0, "disarm"
+            return clear_rc, "clear"
+        A.run = _run
+        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+            stdout=_json.dumps({"accounts": {"system": FRESH(), "lukas": L(1)}})))
+        A.time = types.SimpleNamespace(time=lambda: now_)
+        A.live_account = lambda: seq.pop(0) if len(seq) > 1 else seq[0]
+        try:
+            rc = A.check(False)
+            back = _json.load(open(A.BACK)) if os.path.exists(A.BACK) else None
+            return rc, calls, back
+        finally:
+            A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK = saved
+
+
+rc, calls, back = _stage3_run(["lukas", "system"], T3)
+names = [(c[1] if c[0] == A.CA else os.path.basename(c[1])) for c in calls]
+ok = (names == ["arm", "use", "disarm", "slot_allocator.py"] and calls[1][2] == "system" and "clear" in calls[3]
+      and back and back.get("phase") == "done" and rc == 0 and not any("steven" in " ".join(c) for c in calls))
+fails += not ok
+print("%s  stage3 runs arm, use system, disarm, allocator clear; marker done: %r %r" % ("ok  " if ok else "FAIL", names, back))
+rc, calls, back = _stage3_run(["system"], T3, marker={"phase": "done"})
+ok = calls == []
+fails += not ok
+print("%s  stage3 retired: a later pass is a no-op: %r" % ("ok  " if ok else "FAIL", calls))
+rc, calls, back = _stage3_run(["steven"], T3)
+ok = calls == [] and back is None
+fails += not ok
+print("%s  stage3 with a hand-switched account does nothing: %r" % ("ok  " if ok else "FAIL", calls))
+rc, calls, back = _stage3_run(["lukas"], T3, use_rc=1)
+ok = back is None and rc != 0
+fails += not ok
+print("%s  stage3 failed use (lukas still live): marker dropped, retry next pass: %r %r" % ("ok  " if ok else "FAIL", back, rc))
+# between 12:59 and 13:00 neither stage acts
+rc, calls, back = _stage3_run(["lukas"], datetime_ts(A.RESET) - 30)
+ok = calls == []
+fails += not ok
+print("%s  12:59:30: stage 2 over, stage 3 not yet: %r" % ("ok  " if ok else "FAIL", calls))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

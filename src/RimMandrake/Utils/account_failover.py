@@ -5,7 +5,8 @@ Owner, 2026-10-27, on incorporating the lukas account: "Yes schedule when they r
 So: when `system` (the account Archmagi burns) reads MEASURED with at most THRESHOLD % of its week left, arm the
 switch, `claude-account use lukas` (closes every Claude window on this machine and relaunches the Fleet), disarm.
 Once only (a marker file), and never after RESET (the system week refills then); from DEADLINE on the switch is
-unconditional while the target reads MEASURED above THRESHOLD. Stage 2 (marker present, `claude-account --json status`
+unconditional while the target reads MEASURED above THRESHOLD. Stage 3: at/after RESET with FROM MEASURED and refilled, back to FROM once (own marker), then `slot_allocator clear`; retired.
+Stage 2 (marker present, `claude-account --json status`
 says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset, then `--mode DARK` (every seat 0) once TO
 reads MEASURED at or under THRESHOLD.
 
@@ -37,6 +38,8 @@ SLOT = os.path.join(HERE, "slot_allocator.py")
 STAGE2 = os.path.join(OUT_DIR := "/mnt/d/ClaudeWork/rimmandrake/account_failover", "stage2.json")
 OUT = OUT_DIR
 MARKER = os.path.join(OUT, "switched.json")
+BACK = os.path.join(OUT, "switched_back.json")   # stage 3's own marker: once only
+REFILLED = 50.0   # FROM reads at least this much week left: its reset has landed
 CA = os.path.expanduser("~/.local/bin/claude-account")
 # a pending marker older than any one pass (arm + use + disarm at 600 s each, plus the reads) is a pass that died
 # between writing it and finishing `use` (review r4 2026-10-28)
@@ -144,6 +147,64 @@ def decide2(acc, now, live, st):
     return None, "burning; %s reads %r%%" % (TO, left)
 
 
+def decide3(acc, now, live, done):
+    """Stage 3 (owner 10:07): back to FROM once its week has reset. -> (do_switch, why). Pure; never names another account."""
+    if done:
+        return False, "stage 3 done: retired"
+    if now < datetime.fromisoformat(RESET).timestamp():
+        return False, "before the %s reset %s" % (FROM, RESET)
+    if live != TO:
+        return False, "live account is %r, not %s: not switching" % (live, TO)
+    a = acc.get(FROM) or {}
+    left = a.get("week_pct_left")
+    if a.get("source") != "MEASURED" or a.get("stale") or not isinstance(left, (int, float)):
+        return False, "%s reading is %s%s: waiting for a fresh one" % (FROM, a.get("source"), " (stale)" if a.get("stale") else "")
+    if left < REFILLED:
+        return False, "%s reads %.1f%% left < %.0f%%: its reset has not shown yet" % (FROM, left, REFILLED)
+    return True, "%s week reset: reads %.1f%% left; %s is live" % (FROM, left, TO)
+
+
+def stage3(acc, live, now, dry):
+    try:
+        bk = json.load(open(BACK))
+    except Exception:  # noqa: BLE001
+        bk = None
+    if isinstance(bk, dict) and bk.get("phase") == "pending":
+        if live not in (None, TO) or now - float(bk.get("at") or now) <= STALE_PENDING_S:
+            if live == FROM:  # `use` finished although the pass died before its marker: done
+                if not dry:
+                    write_atomic(BACK, dict(bk, phase="done"))
+            log({"do": "stage3_skip", "why": "pending marker; live is %r" % live})
+            return 0
+        if not dry:
+            os.remove(BACK)
+        log({"do": "stage3_abandoned_dropped", "why": "pending marker from %s, live is %r" % (bk.get("at"), live)})
+        return 0
+    go, why = decide3(acc, now, live, bk is not None)
+    if not go:
+        log({"do": "stage3_skip", "why": why})
+        return 0
+    if dry:
+        log({"do": "stage3_would_switch_back", "why": why})
+        return 0
+    write_atomic(BACK, {"why": why, "at": now, "phase": "pending"})
+    rc1, o1 = run([CA, "arm", "--confirm", MACHINE])
+    rc2, o2 = (run([CA, "use", FROM, "--confirm", MACHINE]) if rc1 == 0 else (None, "not armed"))
+    rc3, o3 = run([CA, "disarm"])
+    live_after = FROM if rc2 == 0 else (live_account() if rc2 is not None else TO)
+    if live_after != FROM:
+        os.remove(BACK)  # nothing switched: the next pass may retry
+        log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
+             "live_after": live_after, "marker": "dropped: the next pass decides again"})
+        return 2
+    write_atomic(BACK, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2})
+    # the allocator paces the fresh week on its own: drop stage 2's override
+    rc4, o4 = run([sys.executable, SLOT, "clear"])
+    log({"do": "stage3_switch_back", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
+         "live_after": live_after, "marker": "kept: stage 3 retired", "clear": [rc4, o4[-200:]]})
+    return 0 if rc3 == 0 and rc4 == 0 else 2
+
+
 def hours_to(reset, now):
     """-> hours from now to reset, rounded so the window never ends after it."""
     return max(0.001, int((datetime.fromisoformat(reset).timestamp() - now) / 3.6) / 1000)
@@ -168,6 +229,8 @@ def stage2(acc, dry):
             os.remove(MARKER)
         log({"do": "abandoned_switch_dropped", "why": "pending marker from %s, live is %r" % (mk.get("at"), live)})
         return 0
+    if now >= datetime.fromisoformat(RESET).timestamp():
+        return stage3(acc, live, now, dry)
     act, why = decide2(acc, now, live, st)
     if act is None:
         log({"do": "stage2_skip", "why": why})
