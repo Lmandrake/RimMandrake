@@ -2186,6 +2186,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             GptEdge1016Checks.Run(Case);       // GPT edge-case consult fixes 2026-10-16 (GptEdge1016Checks.cs)
             HoseNanShapeChecks.Run(Case);      // HOSE_SETTINGS_FIX_NAN_SHAPE (HoseNanShapeChecks.cs)
             DirtyReview1022Checks.Run(Case);   // DIRTY-file review 2026-10-22 second pass (DirtyReview1022Checks.cs)
+            CsReview1028Checks.Run(Case);      // C# review 2026-10-28: WallReach W1-W4, LiquidNet settle route (CsReview1028Checks.cs)
             MapControlChecks.Run(Case);        // FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS: dev-placed flow source and sink (MapControlChecks.cs)
             FlowDoorFacingChecks.Run(Case);    // SLUICE_GATE_REWIRE_TURNS_LIKE_A_DOOR: sluices and grates span between canal banks (FlowDoorFacingChecks.cs)
             LadderWallChecks.Run(Case);        // PIT_LADDER_REDRAW_HUNG_ON_THE_WALL: the ladder hangs on one wall, slid up holds everyone (LadderWallChecks.cs)

@@ -270,8 +270,13 @@ namespace RimMandrake.FlowWorks
 		/// 2026-10-22 on a reused map: canReach=True found=False; the A* call itself gathered, so the next read agreed).</summary>
 		internal static void NoteWalkability(Map map, IntVec3 c, bool nowWalkable)
 		{
-			if (map == null || !On || !states.TryGetValue(map, out MapState st))
+			if (map == null || !states.TryGetValue(map, out MapState st))
 			{
+				return;
+			}
+			if (!On)
+			{
+				StaleWhileOff(st);
 				return;
 			}
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r15 fix 1): the generation moves only when the square's kind (KindAt, the
@@ -298,12 +303,26 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>cs_review W3 (WALLREACH_VETO_FIX_STALE_FALSE_NO): with the setting off Tick does nothing and a change is not
+		/// judged, but the entries kept from before must not survive a re-enable at their old stamp: move the generation and
+		/// force the rebuild.</summary>
+		private static void StaleWhileOff(MapState st)
+		{
+			Interlocked.Increment(ref st.wallGen);
+			Interlocked.Exchange(ref st.forced, 1);
+		}
+
 		/// <summary>REACH_WINCH_FIX_GHOST_ROAD_RETURNS: a door or a fence (region-affecting, walkability unchanged) spawned or
 		/// despawned: the kinds snapshot is stale at once; a removal opens a way (forced, as a breach).</summary>
 		internal static void NoteBarrier(Map map, Thing t, bool removed)
 		{
-			if (map == null || t == null || !On || !(t is Building_Door || t.def.IsFence) || !states.TryGetValue(map, out MapState st))
+			if (map == null || t == null || !(t is Building_Door || t.def.IsFence) || !states.TryGetValue(map, out MapState st))
 			{
+				return;
+			}
+			if (!On)
+			{
+				StaleWhileOff(st);
 				return;
 			}
 			Interlocked.Increment(ref st.wallGenBy[WgBarrier]);
@@ -386,12 +405,33 @@ namespace RimMandrake.FlowWorks
 			{
 				return RM_WallReachMath.ShutGate;
 			}
-			if (d.HoldOpen)
+			// cs_review W1 (WALLREACH_VETO_FIX_STALE_FALSE_NO): a door propped open by an item passes everyone (vanilla Region.Allows
+			// honours FreePassage). Only the item case: FreePassage alone flips with every pawn walking through (WillCloseSoon),
+			// which would move the door print and force a rebuild every DoorPrintTicks; a pawn in the doorway is a moment.
+			if (d.HoldOpen || (d.FreePassage && ProppedByItem(d)))
 			{
 				return RM_WallReachMath.HeldDoor;
 			}
 			return d.Faction != null && d.Faction == Faction.OfPlayer && !(d is Building_HackableDoor) ? RM_WallReachMath.PlayerDoor
 				: RM_WallReachMath.Door;
+		}
+
+		/// <summary>An item lies in the door's square (it cannot close on it).</summary>
+		private static bool ProppedByItem(Building_Door d)
+		{
+			if (!d.Spawned)
+			{
+				return false;
+			}
+			List<Thing> things = d.Map.thingGrid.ThingsListAtFast(d.Position);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i].def.category == ThingCategory.Item)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		private static void RefreshDoorPrint(Map map, MapState st, int now, bool paused)
@@ -416,6 +456,12 @@ namespace RimMandrake.FlowWorks
 		private static byte[] Kinds(Map map, MapState st, long stamp)
 		{
 			int w = map.Size.x, h = map.Size.z;
+			// cs_review W4: kinds read while loading must not seed an entry first built in play before the first Tick
+			if (RM_WallReachMath.StaleAfterLoad(st.builtMidLoad, Current.ProgramState == ProgramState.Playing))
+			{
+				st.kinds.Invalidate();
+				st.builtMidLoad = false;
+			}
 			if (st.kinds.CurrentFor(stamp, w, h))
 			{
 				return st.kinds.published;
@@ -926,6 +972,13 @@ namespace RimMandrake.FlowWorks
 			}
 			Entry e = EntryFor(map, tp.pawn ?? walker, tp, walker, out RM_PocketGrid g, out int k, out bool depthOn);
 			if (e?.labels == null || e.labels.label.Length != map.cellIndices.NumGridCells)
+			{
+				return false;
+			}
+			// cs_review W2 (WALLREACH_VETO_FIX_STALE_FALSE_NO): a breach, a lock flip or a drawbridge set forced and the labels
+			// predate it until Tick rebuilds them (at most a tick, or the next paused frame): answer as vanilla meanwhile. The
+			// rule of this cache: miss a veto for a moment, never invent one.
+			if (Volatile.Read(ref StateOf(map).forced) != 0)
 			{
 				return false;
 			}

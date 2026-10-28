@@ -388,6 +388,19 @@ namespace RimMandrake.FlowWorks.Machinery
 			return false;
 		}
 
+		/// <summary>cs_review LIQUIDNET_SETTLE_FIX_MOVES_ACROSS_CUT_HOSE: the hose link index is cached for a tick, so a hose cut after
+		/// this tick's first query still sits in the components; a settle or dump must check its route BEFORE it moves liquid
+		/// (CreditRoute's check comes after the move and cannot undo it). A dead route bumps so the next query rebuilds.</summary>
+		private static bool RouteDeadBump(Map map, List<RM_NetLink> route)
+		{
+			if (route == null || route.Count == 0 || RM_LiquidNetKernel.RouteLive(route, RM_HoseLinks.For(map).Live))
+			{
+				return false;
+			}
+			Bump(map);
+			return true;
+		}
+
 		/// <summary>Every liquid tank on <paramref name="origin"/>'s net (its store, rev 2 §3.1): touching tanks first.
 		/// Never includes <paramref name="origin"/> itself.</summary>
 		public static List<Building_LiquidTank> TanksFor(Thing origin)
@@ -786,6 +799,10 @@ namespace RimMandrake.FlowWorks.Machinery
 						Building_LiquidTank src = tanks[si], dst = tanks[di];
 						LiquidDef liquid = src.storedLiquid;
 						List<RM_NetLink> route = comps.RouteIn(c, src, dst);
+						if (RouteDeadBump(map, route))
+						{
+							continue;
+						}
 						// L1 (§4): remove from the source, add to the destination, put back on a refusal; credit only a committed move
 						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => src.CanProvide(k), k => src.TryRemoveLiquid(k), k => src.TryAddLiquid(liquid, k)),
 							RM_TransferLeg.Store(k => dst.CanAccept(liquid, k), k => dst.TryAddLiquid(liquid, k), k => dst.TryRemoveLiquid(k)), out RM_MoveOutcome mv) > 0)
@@ -836,6 +853,11 @@ namespace RimMandrake.FlowWorks.Machinery
 						{
 							continue;
 						}
+						List<RM_NetLink> route = comps.RouteIn(c, tank, port);
+						if (RouteDeadBump(map, route))
+						{
+							continue;
+						}
 						LiquidDef liquid = tank.storedLiquid;
 						FluidDef fluid = liquid.canalFluid;
 						RM_OutletKind kind = RM_LiquidSpill.Outlet(map, ex, end, liquid, fluid, out IntVec3 cell);
@@ -850,7 +872,7 @@ namespace RimMandrake.FlowWorks.Machinery
 								RM_TransferLeg lip = Sheet.RM_MapComponent_Sheet.SpillLeg(map, end, fluid, RM_SheetMath.Source.Gravity);
 								if (RM_LiquidTransfer.Move((int)head, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), lip, out RM_MoveOutcome gm) > 0)
 								{
-									CreditRoute(map, comps.RouteIn(c, tank, port), liquid, gm.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: gravity overflow
+									CreditRoute(map, route, liquid, gm.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: gravity overflow
 									left -= gm.Moved;
 									usedEnds.Add(port);
 									DumpedUnits += gm.Moved;
@@ -866,7 +888,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						RM_TransferLeg outlet = RM_LiquidSpill.OutletLeg(map, ex, kind, cell, liquid, fluid);
 						if (RM_LiquidTransfer.Move(n, RM_TransferLeg.Store(k => tank.CanProvide(k), k => tank.TryRemoveLiquid(k), k => tank.TryAddLiquid(liquid, k)), outlet, out RM_MoveOutcome mv) > 0)
 						{
-							CreditRoute(map, comps.RouteIn(c, tank, port), liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: dump drain
+							CreditRoute(map, route, liquid, mv.Moved, RM_PumpMath.CycleTicks, FillFrom(tank, liquid));   // credit site: dump drain
 							left -= mv.Moved;
 							usedEnds.Add(port);
 							DumpedUnits += mv.Moved;
