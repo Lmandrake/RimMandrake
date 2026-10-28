@@ -358,6 +358,20 @@ def guard_checks():
           is None, "guard: passes a labelled all-digit sha")
 
 
+def review_r2_checks():
+    """Review night r2: a reference at the end of a sentence ("... X.") is still that item; references past the
+    12 shown are counted withheld, like shas past 6."""
+    note = {"event": "note", "seat": "BENCH", "ts": "2026-10-27T06:00:00Z", "text": "See BIOME_DECIDE_TWO_ROUTES."}
+    page = item_page(item(), [note], None)
+    check("BIOME_DECIDE_TWO_ROUTES" in page, "refs: a trailing full stop does not lose the reference")
+    many = ["PIPE_ELBOW_FIX_SEAM_" + c for c in "ABCDEFGHIJKLM"]
+    ids = BL.Identity(frozenset(many) | KNOWN, frozenset(HIDDEN))
+    note = dict(note, text="see " + " ".join(many))
+    pg = BL.project_item(item(), [note], [{"event": "file", "seat": "BENCH", "ts": "x"}], ids, 10, None, RESOLVE)
+    check(pg.fields_withheld >= 1, "refs: the 13th reference (past 12 shown) is counted withheld (%d)"
+          % pg.fields_withheld)
+
+
 def main():
     check(bool(NAMES), "instrument: blind_core.account_names() yields account names to plant (%d)" % len(NAMES))
     base = digest_page([dict(BASE[s], source=s) for s in BL.SOURCES])
@@ -382,6 +396,7 @@ def main():
             check(False, "%s: %s" % (name, str(e).splitlines()[0][:300]))
     closed_checks()
     guard_checks()
+    review_r2_checks()
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

@@ -179,7 +179,8 @@ def _digits_ok(part):
     return False
 
 
-_CLOCK = re.compile(r"(?<=\d{8}T)\d{4,6}(?=Z?(?![0-9]))", re.I)
+# a real clock only (hh 00-23, mm and ss 00-59): T999999 is a figure, not a time (review night r2)
+_CLOCK = re.compile(r"(?<=\d{8}T)([01]\d|2[0-3])[0-5]\d([0-5]\d)?(?=Z?(?![0-9]))", re.I)
 
 
 def unsafe_part(p, has_digits=False):

@@ -595,11 +595,12 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
         text = str(n.get("text") or "")
         rid = []
         for w in _REF_RE.findall(text):
+            w = w.rstrip("._-")              # "see X." names X: sentence punctuation is not the id (review night r2)
             if w != it.id and w not in rid and _id_ok(w, ids):
                 rid.append(w)
         found = list(dict.fromkeys(_SHA_IN.findall(text)))      # distinct candidates per note (the count policy)
         shas = tuple(dict.fromkeys(resolved[m] for m in found if m in resolved))
-        d["fields_withheld"] += sum(m not in resolved for m in found) + max(0, len(shas) - 6)
+        d["fields_withheld"] += sum(m not in resolved for m in found) + max(0, len(shas) - 6) + max(0, len(rid) - 12)
         shas = shas[:6]
         ref = {"refs": tuple(rid[:12]), "shas": shas}
         t = _time(n.get("ts"))

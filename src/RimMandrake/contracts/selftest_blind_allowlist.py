@@ -357,6 +357,14 @@ def r6_evidence_dir():
     return all(g == want for g in got), got
 
 
+def r6_clock_range():
+    """Review night r2: the T-clock exemption is a real clock (hh 00-23, mm/ss 00-59), so a six-digit figure
+    shaped as a clock after a date is not waved through."""
+    bad = C.ident_problem("THREE_20261027T999999_1")
+    good = C.ident_problem("THREE_20261027T235959_1")
+    return bad is not None and good is None, (bad, good)
+
+
 def main():
     for name, fn in [("gate: lit refuses a data word", g_lit_data), ("gate: vocab words carry no digits", g_vocab_digit),
                      ("gate: enum domain must be registered", g_enum_domain),
@@ -370,7 +378,8 @@ def main():
                      ("r5: an account spanning adjacent tokens refuses the page", r5_span),
                      ("r5: blind_view diagnostics never echo input or error text", r5_argparse_echo),
                      ("r5: the FAILED marker is gated against the registry", r5_failed_page),
-                     ("r6: a date-directory evidence path is shown, not counted refused", r6_evidence_dir)]:
+                     ("r6: a date-directory evidence path is shown, not counted refused", r6_evidence_dir),
+                     ("r6: the T-clock exemption checks the clock's ranges", r6_clock_range)]:
         check(name, fn)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
