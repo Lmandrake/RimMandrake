@@ -53,7 +53,7 @@ def main():
                 build_spans.append((os.path.basename(os.path.dirname(cwd)), starts[threading.get_ident()], time.time()))
             return 0
 
-        def copy_back(outs, stage, record):
+        def copy_back(outs, stage, record, staged_in=None):
             t0 = time.time()
             time.sleep(0.15)
             with mu:
@@ -97,7 +97,7 @@ def main_same_stage():
         WB._ce_snapshot = lambda scope=None: None
         WB.source_sha = lambda paths: ("0" * 40, False)
         WB.built_outputs = lambda tree, since: []
-        WB._copy_back = lambda outs, stage, record: None
+        WB._copy_back = lambda outs, stage, record, staged_in=None: None
         starts = {}
 
         def rsync(rels, stage, cwd, excl=()):
@@ -125,7 +125,45 @@ def main_same_stage():
         check(len(spans) == 2 and not overlaps(spans), "two builds of one stage never overlap rsync..build", spans)
 
 
+def main_no_revert():
+    """review night r2: a dll+stamp pair the build did not change (staged in as an input, byte-identical) is never
+    written back: a peer build may have replaced it in the clone meanwhile. A changed pair is copied."""
+    import hashlib
+    h = lambda b: hashlib.sha256(b).hexdigest()  # noqa: E731
+    with tempfile.TemporaryDirectory() as td:
+        stage, clone = os.path.join(td, "stage"), os.path.join(td, "clone")
+        sa, ca = os.path.join(stage, "Assemblies"), os.path.join(clone, "Assemblies")
+        os.makedirs(sa)
+        os.makedirs(ca)
+        files = {"B.dll": b"old B", "B.dll.srchash": b"# dll: oldB", "A.dll": b"new A", "A.dll.srchash": b"# dll: newA"}
+        for n, b in files.items():
+            with open(os.path.join(sa, n), "wb") as f:
+                f.write(b)
+        # staged in: both B files as they are now, A's previous build (since rebuilt)
+        staged_in = {os.path.join(sa, "B.dll"): h(b"old B"), os.path.join(sa, "B.dll.srchash"): h(b"# dll: oldB"),
+                     os.path.join(sa, "A.dll"): h(b"old A")}
+        for n, b in (("B.dll", b"NEWER B"), ("B.dll.srchash", b"# dll: newerB")):
+            with open(os.path.join(ca, n), "wb") as f:
+                f.write(b)
+        saved = WB.ROOT
+        WB.ROOT = clone
+        rec = {"outputs": []}
+        try:
+            WB._copy_back([os.path.join(sa, n) for n in files], stage, rec, staged_in)
+            err = None
+        except Exception as e:  # noqa: BLE001
+            err = repr(e)
+        finally:
+            WB.ROOT = saved
+        rd = lambda n: open(os.path.join(ca, n), "rb").read() if os.path.exists(os.path.join(ca, n)) else None  # noqa: E731
+        check(err is None and rd("B.dll") == b"NEWER B" and rd("B.dll.srchash") == b"# dll: newerB",
+              "an unchanged staged-in pair does not revert a peer's newer copy in the clone", (err, rd("B.dll")))
+        check(err is None and rd("A.dll") == b"new A" and rd("A.dll.srchash") == b"# dll: newA",
+              "a pair the build changed is copied back", (err, rd("A.dll")))
+
+
 if __name__ == "__main__":
     main_same_stage()
+    main_no_revert()
     main()
     sys.exit(1 if FAILS else 0)

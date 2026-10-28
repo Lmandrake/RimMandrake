@@ -217,10 +217,27 @@ def _flock(name):
             fcntl.flock(f, fcntl.LOCK_UN)
 
 
-def _copy_back(outs, stage, record):
-    """Copy every staged output into the clone (each file atomically)."""
+def _sha256(path):
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
+def _copy_back(outs, stage, record, staged_in=None):
+    """Copy every staged output into the clone (each file atomically). A dll+.srchash pair whose every file is still
+    byte-identical to what rsync staged IN (`staged_in`: stage path -> sha256) was an input this build did not change:
+    it is listed but not written, so it cannot revert a newer copy a peer build put in the clone meanwhile (review
+    night r2: rsync stamps staged files with the current mtime, so built_outputs cannot tell them from outputs)."""
+    staged_in = staged_in or {}
+
+    def unchanged(p):
+        dll = p[:-len(".srchash")] if p.endswith(".srchash") else p
+        pair = [q for q in (dll, dll + ".srchash") if q in outs]
+        return all(q in staged_in and os.path.exists(q) and _sha256(q) == staged_in[q] for q in pair)
     for p in sorted(outs):
         rel = os.path.relpath(p, stage)
+        if unchanged(p):
+            record["outputs"].append(rel)
+            continue
         dst = os.path.join(ROOT, rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         # unique tmp per process: two parallel stage builds (the sweep) copy back the SAME shared dll, and a fixed
@@ -282,6 +299,15 @@ def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, co
         return r.returncode, record
     record["staged"] = True
     record["ev_end"] = _ce_snapshot(rels)
+    # what rsync wrote into the stage's dll/stamp files: inputs, unless the build changes them (see _copy_back)
+    staged_in = {}
+    for line in (r.stdout or "").splitlines():
+        if line.startswith(">f") and len(line) > 12 and line[12:].endswith((".dll", ".dll.srchash")):
+            q = os.path.join(stage, line[12:])
+            try:
+                staged_in[q] = _sha256(q)
+            except OSError:
+                pass
     staged_proj = os.path.join(stage, rel_proj)
     sha, dirty = source_sha(dirs + [os.path.join(ROOT, "src", "Directory.Build.targets"), os.path.join(ROOT, "src", "Directory.Build.props")])
     record.update(source_sha=sha, dirty=dirty, clone=ROOT)
@@ -316,7 +342,7 @@ def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, co
     # review night: one copy-back at a time across ALL stages, so two mods' builds of a shared dependency can never
     # leave one build's dll beside the other's .srchash (each file is atomic, the pair was not)
     with _flock("copy-back"):
-        _copy_back(outs, stage, record)
+        _copy_back(outs, stage, record, staged_in)
     record["built_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     with open(os.path.join(stage, "BUILD_SOURCE.json"), "w") as f:
         json.dump(record, f, indent=1)
