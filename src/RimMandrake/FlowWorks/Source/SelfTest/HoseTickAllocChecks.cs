@@ -47,7 +47,44 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(b.Contains("PerimeterInto("), name + " reads the perimeter into scratch");
                 }
                 string byId = Body(src, "private static void ById(List<Thing> things, List<HosePortCandidate> cands)", "internal static int FindCalls;");
-                Assert(byId.Contains("if (things.Count < 2) return;"), "ById sorts (and allocates) only when there is something to order");
+                Assert(byId.Contains("if (things.Count < 2) return;"), "ById sorts only when there is something to order");
+                // HOSE_TICK_REBUILD_ZERO_ALLOC: two candidates beside one reel (a pump by a pipe) allocated an index list, a
+                // closure and two copies per Find; the order is now built in place
+                Assert(!byId.Contains("new List<") && !byId.Contains("=>") && !byId.Contains(".Sort("), "ById allocates to order two or more candidates");
+            });
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: Find / FindAt on a pump runs the one-port-per-side gate, which allocated an id list,
+            // its ToArray copy and (foreach over the IReadOnlyList) a boxed enumerator on every call -- the 60-tick Port() and
+            // free-end refreshes of every pump-coupled reel. The gate reads into scratch and HoseMayTake takes the scratch.
+            Case("HOSEPORTS_PUMPSIDETAKES_NO_PER_CALL_ALLOC", () =>
+            {
+                string src = RiverSwitchFlipChecks.Src(Path.Combine("Hose", "HosePorts.cs"));
+                string gate = Body(src, "private static bool PumpSideTakes(Thing pump, int side, CompHoseReel self)", "/// <summary>The geometric coupling of a free end");
+                Assert(!gate.Contains("new List<"), "PumpSideTakes allocates its id list per call");
+                Assert(!gate.Contains(".ToArray()"), "PumpSideTakes copies its id list per call");
+                Assert(!gate.Contains("foreach"), "PumpSideTakes enumerates the reels through an interface (a boxed enumerator per call)");
+                // the list overload answers as the array one, and allocates nothing warm
+                var ids = new List<int>();
+                var cases = new (int side, int id, int[] others)[]
+                {
+                    (2, 50, new int[0]), (-1, 40, new int[0]), (2, 50, new[] { 40 }), (2, 40, new[] { 50 }), (1, 40, new[] { 40, 60 }), (3, 40, new[] { 60, 39 }),
+                };
+                foreach (var c in cases)
+                {
+                    ids.Clear(); ids.AddRange(c.others);
+                    Assert(RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(c.side, c.id, ids) == RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(c.side, c.id, c.others),
+                        $"HoseMayTake(list) differs from HoseMayTake(array) at side {c.side} id {c.id}");
+                }
+                ids.Clear(); ids.Add(60); ids.Add(70);
+                bool sink = false;
+                for (int i = 0; i < 100; i++) sink ^= RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(2, 40, ids);
+                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                for (int i = 0; i < 1000; i++) sink ^= RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(2, 40 + (i & 1) * 30, ids);
+                long bytes = GC.GetAllocatedBytesForCurrentThread() - b0;
+                Assert(bytes == 0, $"HoseMayTake(list) allocates {bytes} B over 1000 calls");
+                // the instrument can see: a known allocation registers
+                long k0 = GC.GetAllocatedBytesForCurrentThread();
+                var probe = new int[256];
+                Assert(GC.GetAllocatedBytesForCurrentThread() - k0 >= 1024 && probe.Length == 256, "the allocation counter sees a 1 KB array");
             });
             Case("HOSEREELRECT_PERIMETERINTO_EQUALS_PERIMETER", () =>
             {

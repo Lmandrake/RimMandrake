@@ -21,6 +21,27 @@ namespace RimMandrake.FlowWorks.Machinery
             return -1;
         }
 
+        /// <summary><see cref="HoseMayTake(int, int, int[])"/> over a list, without copying it (HOSE_TICK_REBUILD_ZERO_ALLOC: the
+        /// hose port gate reads the other ids into reused scratch).</summary>
+        public static bool HoseMayTake(int side, int hoseId, System.Collections.Generic.List<int> otherHoseIdsOnSide)
+        {
+            if (side < 0)
+            {
+                return false;
+            }
+            if (otherHoseIdsOnSide != null)
+            {
+                for (int i = 0; i < otherHoseIdsOnSide.Count; i++)
+                {
+                    if (otherHoseIdsOnSide[i] != hoseId && otherHoseIdsOnSide[i] < hoseId)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         /// <summary>May the hose <paramref name="hoseId"/> couple at the port on <paramref name="side"/>? Only at a side port
         /// (never a corner), and only if no other hose at that port has a lower id. A pipe beside the port does not take it.</summary>
         public static bool HoseMayTake(int side, int hoseId, int[] otherHoseIdsOnSide)

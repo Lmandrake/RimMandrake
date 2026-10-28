@@ -72,14 +72,23 @@ namespace RimMandrake.FlowWorks.Hose
         /// the order things happen to sit in a cell's list.</summary>
         private static void ById(List<Thing> things, List<HosePortCandidate> cands)
         {
-            if (things.Count < 2) return;   // HOSES_MAP1_DIAGNOSE_TICK_STALLS: nothing to order, nothing allocated
-            var idx = new List<int>();
-            for (int i = 0; i < things.Count; i++) idx.Add(i);
-            idx.Sort((a, b) => things[a].thingIDNumber.CompareTo(things[b].thingIDNumber));
-            var t2 = new List<Thing>(); var c2 = new List<HosePortCandidate>();
-            foreach (int i in idx) { t2.Add(things[i]); c2.Add(cands[i]); }
-            things.Clear(); things.AddRange(t2);
-            cands.Clear(); cands.AddRange(c2);
+            if (things.Count < 2) return;   // HOSES_MAP1_DIAGNOSE_TICK_STALLS: nothing to order
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: insertion sort of both lists in step, in place (a handful of candidates; the
+            // callers never add a thing twice, so ids are distinct and the order equals the old index sort)
+            for (int i = 1; i < things.Count; i++)
+            {
+                Thing t = things[i];
+                HosePortCandidate c = cands[i];
+                int j = i - 1;
+                while (j >= 0 && things[j].thingIDNumber > t.thingIDNumber)
+                {
+                    things[j + 1] = things[j];
+                    cands[j + 1] = cands[j];
+                    j--;
+                }
+                things[j + 1] = t;
+                cands[j + 1] = c;
+            }
         }
 
         /// <summary>Calls to <see cref="Find"/> since load (RM_HoseLinks.ProofTiming reads the delta per Refresh).</summary>
@@ -177,13 +186,16 @@ namespace RimMandrake.FlowWorks.Hose
         {
             Map map = pump.Map;
             if (map == null || side < 0) return false;
-            var others = new List<int>();
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: reused scratch (main thread; RawFind / RawFindAt below never re-enter this gate)
+            List<int> others = sideIds; others.Clear();
             RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
             if (comp != null)
             {
                 CellRect pr = pump.OccupiedRect();
-                foreach (CompHoseReel o in comp.OrderedReels())
+                IReadOnlyList<CompHoseReel> reels = comp.OrderedReels();
+                for (int ri = 0; ri < reels.Count; ri++)
                 {
+                    CompHoseReel o = reels[ri];
                     if (o == null || o == self || o.parent == null || !o.parent.Spawned) continue;
                     // HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: RawFind / RawFindAt only see things on or edge-beside the
                     // body / end, so a reel whose body and end are both 2+ cells from the pump cannot couple to it; skipping
@@ -198,7 +210,7 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             int id = self?.parent != null ? self.parent.thingIDNumber : int.MaxValue;
-            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, id, others.ToArray());
+            return RimMandrake.FlowWorks.Machinery.RM_PumpPortMath.HoseMayTake(side, id, others);
         }
 
         /// <summary>The geometric coupling of a free end, before the pump's one-port-per-side gate.</summary>
@@ -249,5 +261,6 @@ namespace RimMandrake.FlowWorks.Hose
         private static readonly List<Thing> rawThings = new List<Thing>(), atThings = new List<Thing>();
         private static readonly List<HosePortCandidate> rawCands = new List<HosePortCandidate>(), atCands = new List<HosePortCandidate>();
         private static readonly List<Cell> rawPerim = new List<Cell>(), atPerim = new List<Cell>();
+        private static readonly List<int> sideIds = new List<int>();
     }
 }

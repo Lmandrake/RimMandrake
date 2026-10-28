@@ -75,7 +75,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(hp, @"if \(t is RimMandrake\.FlowWorks\.LiquidTypes\.Building_LiquidPump pump && !PumpSideTakes\(pump, ReelSideOn\(pump, r\), r\)\)",
                     "a reel couples to a pump only at a free side port");
                 RiverSwitchFlipChecks.Has(hp, @"&& !PumpSideTakes\(pump, EndSideOn\(pump, end\),", "a hose end couples to a pump only at a free side port");
-                RiverSwitchFlipChecks.Has(hp, @"return RimMandrake\.FlowWorks\.Machinery\.RM_PumpPortMath\.HoseMayTake\(side, id, others\.ToArray\(\)\);",
+                RiverSwitchFlipChecks.Has(hp, @"return RimMandrake\.FlowWorks\.Machinery\.RM_PumpPortMath\.HoseMayTake\(side, id, others\);",
                     "the gate is the selftested rule");
                 Assert(!hp.Contains("HasPipe("), "can-fail: a pipe never blocks a hose port");
                 RiverSwitchFlipChecks.Has(hp, @"if \(bodyNear && RawFind\(o, out _, out _, out _\) == pump", "other hoses are read geometrically (no recursion)");
