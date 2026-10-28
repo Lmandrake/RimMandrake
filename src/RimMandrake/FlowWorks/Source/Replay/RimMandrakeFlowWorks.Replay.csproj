@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    HOSE_PERF_BUILD_OFFLINE_REPLAY_HARNESS: the offline replay perf harness (design/RimMandrake/hose_wire_algorithms_advisory_2026-10-28.md
+    section 5). A trace (a 325x325 map snapshot plus an ordered event stream) is replayed tick by tick against the REAL
+    Verse-free FlowWorks cores, source-linked below exactly as the SelfTest links them (never copied), with per-tick work,
+    allocation and time counters and invariant gates.
+
+    Not the mod build (RimMandrake_FlowWorks.csproj has EnableDefaultCompileItems=false and never names this folder) and not the
+    SelfTest (a pass/fail suite; this runs thousands of ticks and prints a report). Never deployed.
+
+    Run through the wrapper, which stages the clone for the Windows dotnet.exe and applies the gates:
+      python3 src/RimMandrake/Utils/hose_replay.py run (every scenario)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeFlowWorks.Replay</AssemblyName>
+    <RootNamespace>RimMandrake.FlowWorks.Replay</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TieredPGO>false</TieredPGO>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- production cores (Verse-free), compiled in -->
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordMath.cs" Link="Shared\SlackGeometry\CordMath.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordWorld.cs" Link="Shared\SlackGeometry\CordWorld.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordPlanner.cs" Link="Shared\SlackGeometry\CordPlanner.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\CordLayer.cs" Link="Shared\SlackGeometry\CordLayer.cs" />
+    <Compile Include="..\..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
+    <Compile Include="..\Hose\HoseMath.cs" />
+    <Compile Include="..\Hose\HoseSpliceMath.cs" />
+    <Compile Include="..\Hose\HoseMateCache.cs" />
+    <Compile Include="..\Hose\HoseMateEndQueue.cs" />
+    <Compile Include="..\Hose\HoseLayQueue.cs" />
+    <Compile Include="..\Hose\HoseFrameMemo.cs" />
+    <Compile Include="..\Hose\HoseCurveMetrics.cs" />
+    <Compile Include="..\Hose\HoseClothoid.cs" />
+    <Compile Include="..\Hose\HoseBandMath.cs" />
+    <Compile Include="..\Hose\HoseWorldPatch.cs" />
+    <Compile Include="..\Hose\HoseRelay.cs" />
+    <Compile Include="..\Hose\HoseCrossShadows.cs" />
+    <Compile Include="..\Hose\ReelIntakeGeometry.cs" />
+    <Compile Include="..\Hose\HoseStyles.cs" />
+    <Compile Include="..\Machinery\PipeStyles.cs" />
+    <Compile Include="..\Machinery\LiquidJoinRule.cs" />
+    <Compile Include="..\Machinery\TankArtEdges.cs" />
+    <Compile Include="..\Machinery\RM_PumpPortMath.cs" />
+    <Compile Include="..\Hose\HoseCarry.cs" />
+    <Compile Include="..\Hose\HoseLive.cs" />
+    <Compile Include="..\Hose\RM_HoseLegacyMath.cs" />
+    <Compile Include="..\Machinery\RM_LiquidNetKernel.cs" />
+    <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
+    <Compile Include="..\RM_PumpMath.cs" />
+    <Compile Include="..\RM_Volume.cs" />
+    <Compile Include="..\RM_StockMath.cs" />
+    <Compile Include="..\Machinery\RM_LineCrossingMath.cs" />
+    <!-- the replay itself -->
+    <Compile Include="Trace.cs" />
+    <Compile Include="TraceGen.cs" />
+    <Compile Include="ReplayTick.cs" />
+    <Compile Include="Counters.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

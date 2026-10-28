@@ -20,7 +20,8 @@ Route decision (2026-10-28, BENCH helper; cheapest credible route):
   small Verse-free `ReplayTick` with each mirrored line citing its production line. That mirror is the known drift risk;
   the cure is the follow-up that moves the schedule itself into a Verse-free class both the game and the replay compile
   (which recommendation #2 needs anyway).
-- Traces: a versioned JSON-lines format (header, snapshot, events `(tick, phase, seq, kind, args)`). v1 ships a
+- Traces: a versioned text format, first line `RMREPLAY 1` (header, map snapshot rows, reels, tanks, events
+  `(tick, phase, seq, kind, char, args)`; Replay/Trace.cs). v1 ships a
   deterministic GENERATOR for the corpus (325x325, 200 reels, 100 tanks; DRY, SETUP, RAIN, COLD, dirty 16383/16384/16385,
   settings-flip-all, aligned-250 rechecks, split/rejoin). Recording live traces needs a recorder inside the game DLL:
   follow-up item, because RM_MapComponent_Hoses is being live-tuned in the tree today.
@@ -50,3 +51,10 @@ Build:
 
 ## Notes
 Progress: D:\ClaudeWork\rimmandrake\hose_harness\PROGRESS.md
+2026-10-28 11:25 built (steps 1-4): `python3 src/RimMandrake/Utils/hose_replay.py run` stages only the linked sources into
+D:\ClaudeWork\rimmandrake\hose_harness\stage (own lock, not the shared FlowWorks selftest lock; `--head` takes production
+files from git HEAD), builds in ~15 s and replays all 10 scenarios in ~7 s; all gates green, baseline in Replay/baseline.txt.
+selftest_hose_replay.py (25 s): each of the 7 gates goes RED on its injected fault; dirty16385 = 1 overflow + 2 whole
+rebuilds, dirty16384 = none; gen -> --trace round trip gives identical fingerprints. First catch: the patch gate found
+CellSig omits BlockKind (lesson hose-cellsig-omits-blockkind; latent, unreachable in normal play). Step 5 (Mono lane) and
+the live recorder are follow-ups.
