@@ -1,0 +1,1 @@
+Asking GPT 'can a blind role EVER see X?' produces a new adversarial route every round (adjacent words spelling a name, steganography) without converging; state the real threat model in the ask (accidental exposure via ordinary content, error paths, fallbacks) and the review converges (BlindView: 4 NO-GO rounds, then GO).

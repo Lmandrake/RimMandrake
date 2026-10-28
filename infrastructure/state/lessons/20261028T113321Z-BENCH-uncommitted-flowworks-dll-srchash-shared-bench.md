@@ -1,0 +1,1 @@
+An uncommitted FlowWorks DLL/.srchash in the shared bench clone makes the pre-push hook refuse every other helper's ./publish (it wants to rebuild the DLL); a live C# helper must commit source + DLL + .srchash together at every green point (2026-10-28: ~1.5 h of commits stuck).
