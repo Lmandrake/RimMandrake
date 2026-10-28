@@ -431,9 +431,12 @@ def cmd_plan(a):
     return 0
 
 
-def prepare_clone(dst, sha):
+SPARSE_EXTRA = {"delegated_digest": ["src"]}   # its selftest scans the repo's XML for >=500 defNames (blind_core.def_names)
+
+
+def prepare_clone(dst, sha, target=""):
     sh(["git", "clone", "-q", "--local", "--no-checkout", BASE_CLONE, dst])
-    sh(["git", "sparse-checkout", "set"] + SPARSE, cwd=dst)
+    sh(["git", "sparse-checkout", "set"] + SPARSE + SPARSE_EXTRA.get(target, []), cwd=dst)
     sh(["git", "checkout", "-q", sha], cwd=dst)
 
 
@@ -462,7 +465,7 @@ def cmd_launch(a):
         src_lines = open(os.path.join(BASE_CLONE, TARGETS[n][0])).read().split("\n")
         for i, lines in enumerate(split_lines(weights[n], k)):
             d = os.path.join(root, "%s-%d" % (n, i))
-            prepare_clone(d, sha)
+            prepare_clone(d, sha, n)
             with open(os.path.join(d, "shard.patch"), "w") as f:
                 f.write(patch_text(TARGETS[n][0], src_lines, lines))
             shards.append({"dir": d, "target": n, "shard": i, "mutants": sum(weights[n][x] for x in lines),
