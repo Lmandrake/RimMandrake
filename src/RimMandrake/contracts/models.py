@@ -251,8 +251,9 @@ def audits_problems(d):
 # ------------------------------------------------------------------ 4. Arbiter verdicts (rimflow/arbiter_pending.py)
 
 class ArbiterVerdict(Strict):
-    """One line of arbiter/verdicts.jsonl (roles/arbiter.md 'Every advisory verdict goes ...'). Exported as JSON Schema
-    (contracts/schemas/arbiter_verdict.schema.json) for `claude -p --json-schema`."""
+    """One Arbiter verdict: returned in its run's structured output (roles/arbiter.md 'Every advisory verdict is
+    RETURNED'), checked here by role_launch.harvest and appended as one line of arbiter/verdicts.jsonl. Exported as
+    JSON Schema (contracts/schemas/, contracts/export.py) for `claude -p --json-schema`."""
     item: str = Field(min_length=1, description="ledger item id")
     sha: str = Field(pattern=HEX7_40, description="the judged commit, at least 7 hex characters")
     disposition: Literal["PASS", "CONDITIONAL-PASS", "FAIL-module", "FAIL-check", "RESTART-environment",

@@ -79,7 +79,8 @@ run before PAUSE, a blind tick or a disabled role can end the tick (review round
 
 How it launches (proved 2026-10-27, D:\\ClaudeWork\\rimmandrake\\role_launch_2026-10-27\\proof\\RESULT.md): as its OWN
 transient user service, `systemd-run --user --collect --unit rm-role-<name>-<epoch>`, which runs
-`claude_bounded.sh -p <prompt> --model <alias> --output-format json` in the role's clone. The dispatcher tick is a
+`claude_bounded.sh -p <prompt> --model <alias> --output-format json` in the role's clone (a STRUCTURED role, the
+Arbiter, also gets `--json-schema` and its verdicts are appended by the launcher: STRUCTURED, harvest). The dispatcher tick is a
 oneshot unit whose cgroup systemd kills when it exits; a child started there (even setsid) died before
 claude_bounded made its scope, while the transient unit ran on and finished. PATH gets claude's directory: the user
 manager's PATH has no ~/.local/bin. The model is the schedule's alias; claude resolves it from its own settings
@@ -118,6 +119,16 @@ EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its 
 FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
 USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
+# A role whose run returns STRUCTURED output (ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF): its launch gets
+# `--json-schema <schema text>` (claude -p takes the schema itself, not a path: `claude -p --help`), the schema read from
+# the role's clone (contracts/export.py generates it from contracts.models; never hand-edited), and a finished `done`
+# run's result["structured_output"][key] entries are each validated against contracts.models.<model> (pydantic, imported
+# only then: the tick stays stdlib-only) and the valid ones appended to `sink` by dispatcher.execute (role_verdicts).
+# An invalid entry is refused, journaled whole and alarmed; its valid siblings still land (each verdict judges its own
+# claim, and a refused one leaves its claim pending, so the next batch judges it again: refusing the whole batch would
+# only throw away sound verdicts). No structured_output, or one not shaped {key: [...]}: alarm, nothing appended.
+STRUCTURED = {"Arbiter": {"schema": "src/RimMandrake/contracts/schemas/arbiter_batch.schema.json",
+                          "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS}}
 MODEL_VARS = {"opus": "ANTHROPIC_DEFAULT_OPUS_MODEL", "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL",
               "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
 
@@ -608,6 +619,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             # a token-blind role reads its ledger item: its note is a FIXED outcome (blind_note), never the result's
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
+        if run["state"] == "done" and name in STRUCTURED:
+            harvest(name, run, res, act)
         if tok is not None and tok > (run.get("budget") or 0):
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                 why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
@@ -620,6 +633,61 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
                     + (res.get("result") or run.get("err_tail") or "no result file")[:160]))
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+
+
+def harvest(name, run, res, act):
+    """Pure but for act. A done STRUCTURED run's result -> one role_verdicts action carrying its valid entries (the
+    append happens in dispatcher.execute, so a dry run writes nothing), one :verdict_refused alarm journaling every
+    invalid entry whole with its errors, or one :verdicts alarm when structured_output is missing or misshapen.
+    Alarms are noted without blind text: they carry outside text, so route_note sends them to Operations' item."""
+    spec = STRUCTURED[name]
+    key, unit, item = spec["key"], run.get("unit"), run.get("item")
+    so = res.get("structured_output") if isinstance(res, dict) else None
+    entries = so.get(key) if isinstance(so, dict) and set(so) == {key} else None
+    if not isinstance(entries, list):
+        act(do="alarm", kind="role:%s:verdicts" % name, ticket=item, note=True,
+            why="%s run %s finished done without a usable structured_output (%s): nothing appended to %s; its "
+                "claims stay pending" % (name, unit, "absent" if so is None else
+                                         "keys %s, want {%s: [...]}" % (sorted(so) if isinstance(so, dict)
+                                                                       else type(so).__name__, key), spec["sink"]))
+        return
+    try:
+        from contracts import models as CM
+        model = getattr(CM, spec["model"])
+    except Exception as e:  # noqa: BLE001 - no validator: nothing is appended unvalidated
+        act(do="alarm", kind="role:%s:verdicts" % name, ticket=item, note=True,
+            why="%s run %s: contracts.models.%s unavailable (%s: %s): %d entries NOT appended" % (
+                name, unit, spec["model"], type(e).__name__, str(e)[:120], len(entries)))
+        return
+    good, bad = [], []
+    for e in entries:
+        errs = CM.errors(model, e)
+        (bad if errs else good).append((e, errs))
+    if good:
+        act(do="role_verdicts", role=name, unit=unit, path=spec["sink"], rows=[e for e, _ in good],
+            why="%s run %s: %d %s appended to %s" % (name, unit, len(good), key, spec["sink"]))
+    if bad:
+        act(do="alarm", kind="role:%s:verdict_refused" % name, ticket=item, note=True,
+            refused=[e for e, _ in bad],
+            why="%s run %s: %d of %d %s refused by contracts.models.%s, NOT appended (their claims stay pending): %s"
+                % (name, unit, len(bad), len(entries), key, spec["model"], "; ".join(
+                    "%s: %s" % (e.get("item") if isinstance(e, dict) else repr(e)[:40], ", ".join(errs)[:200])
+                    for e, errs in bad)[:600]))
+
+
+def append_verdicts(path, rows):
+    """Append rows, one JSON line each, to path (its directory made), in ONE write of the whole batch with O_APPEND,
+    then fsync: a reader never sees half a batch's line. Raises OSError (dispatcher.execute alarms it)."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    data = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows).encode("utf-8")
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        n = os.write(fd, data)
+        if n != len(data):
+            raise OSError("short write to %s: %d of %d bytes" % (path, n, len(data)))
+        os.fsync(fd)
+    finally:
+        os.close(fd)
 
 
 # ---- notes for a token-blind role's ledger item (review dispatcher-full #2). A blind item gets ONLY a text built
@@ -1240,14 +1308,32 @@ def scope_bound_s(role):
     return int(max_s_of({}, role or {})) + SCOPE_GRACE_S
 
 
+def schema_args(role):
+    """["--json-schema", <compact schema text>] for a STRUCTURED role, read from its clone; [] for every other role.
+    Raises ValueError when the schema cannot be read or is not a JSON object: the launch is refused (execute alarms
+    role:<name>:launch_failed), never a schema-less run whose verdicts would have nowhere to go."""
+    spec = STRUCTURED.get(role.get("name"))
+    if not spec:
+        return []
+    p = os.path.join(role["clone"], spec["schema"])
+    try:
+        with open(p, encoding="utf-8") as f:
+            doc = json.load(f)
+    except (OSError, ValueError) as e:
+        raise ValueError("role %s: json schema %s unreadable: %s" % (role.get("name"), p, e))
+    if not isinstance(doc, dict):
+        raise ValueError("role %s: json schema %s is not a JSON object" % (role.get("name"), p))
+    return ["--json-schema", json.dumps(doc, separators=(",", ":"), sort_keys=True)]
+
+
 def launch_argv(role, unit, msg, out, err, claude):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
     (the Arbiter's arbiter_tiers.py: a batch with no fresh tiers.json would judge blind -- review AA brief AA7)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
-    cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit),
-           "--output-format", "json", "--dangerously-skip-permissions"]
+    cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
+        + schema_args(role) + ["--output-format", "json", "--dangerously-skip-permissions"]
     pre = role.get("pre_launch")
     if pre:
         # one argv, or a list of argvs run in order, each only if the one before exited 0 (the Arbiter:

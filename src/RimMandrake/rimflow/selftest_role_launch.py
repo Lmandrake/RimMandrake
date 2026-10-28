@@ -291,9 +291,134 @@ def test_validate_role():
     check(raises(lambda: RL.validate_role(dict(good(), event_runs="x")), "event_runs is not a list"), "event_runs list")
 
 
+# ---------------------------------------------------------------- Arbiter structured verdicts (ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF)
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+SCHEMA = os.path.join(REPO, "src", "RimMandrake", "contracts", "schemas", "arbiter_batch.schema.json")
+
+
+def verdict(item="ITEM_A", sha="abcdef1", **kw):
+    v = {"item": item, "sha": sha, "disposition": "PASS", "causes": [], "interim": None,
+         "evidence": ["D:\\ClaudeWork\\x\\run.txt"], "ts": "2026-10-28T01:00:00Z"}
+    v.update(kw)
+    return v
+
+
+def finish(name, result):
+    """One done run of role `name` through _supervise_one -> the actions it emitted."""
+    acts = []
+    obs = {"unit_state": lambda u: "inactive", "result": lambda r: result, "procs": lambda *a, **k: []}
+    rs = {"runs": [{"state": "running", "unit": "rm-role-%s-1" % name.lower(), "at": 0, "scope": "S.scope",
+                    "marker": "M", "item": "I", "budget": 10 ** 9, "mode": "run"}]}
+    RL._supervise_one(name, rs, {"run_max_s": 100, "seat": "S"}, obs, 50, lambda **kw: acts.append(kw), set())
+    return acts, rs["runs"][0]
+
+
+def done_result(so=None, has_so=True):
+    r = {"type": "result", "subtype": "success", "is_error": False, "result": "ok",
+         "usage": {k: 1 for k in RL.USAGE_KEYS}, "modelUsage": {"m": {}}}
+    if has_so:
+        r["structured_output"] = so
+    return r
+
+
+def test_arbiter_argv_carries_schema():
+    role = {"name": "Arbiter", "seat": "BENCH", "clone": REPO, "model": "opus", "run_max_s": 1000}
+    a = RL.launch_argv(role, "U", "MSG", "/o", "/e", "/bin/claude")
+    check("--json-schema" in a, "Arbiter argv carries --json-schema")
+    if "--json-schema" in a:
+        import json
+        got = json.loads(a[a.index("--json-schema") + 1])
+        check(got == json.load(open(SCHEMA)), "the flag's value is the committed arbiter_batch schema TEXT")
+        check(a[-3:] == ["--output-format", "json", "--dangerously-skip-permissions"], "tail unchanged %r" % a[-3:])
+    for other in ("r", "Conductor", "Operations", "Auditor"):
+        b = RL.launch_argv(dict(role, name=other), "U", "MSG", "/o", "/e", "/bin/claude")
+        check("--json-schema" not in b, "%s argv carries no --json-schema" % other)
+    check(raises(lambda: RL.launch_argv(dict(role, clone="/nonexistent_clone"), "U", "M", "/o", "/e", "/c/claude"),
+                 "schema"), "an unreadable schema refuses the launch (ValueError), never a schema-less Arbiter run")
+
+
+def test_arbiter_valid_batch_appended():
+    acts, run = finish("Arbiter", done_result({"verdicts": [verdict("A"), verdict("B", disposition="FAIL-module",
+                                                                                   causes=["module"])]}))
+    vs = [a for a in acts if a["do"] == "role_verdicts"]
+    check(run["state"] == "done", "run done")
+    check(len(vs) == 1 and [r["item"] for r in vs[0]["rows"]] == ["A", "B"], "both verdicts handed to append %r" % vs)
+    check(vs and vs[0]["path"] == RL.STRUCTURED["Arbiter"]["sink"] == RL.PW.VERDICTS, "sink is arbiter verdicts.jsonl")
+    check(vs and vs[0]["rows"][1] == verdict("B", disposition="FAIL-module", causes=["module"]), "row is the verdict")
+    check(not [a for a in acts if a["do"] == "alarm"], "no alarm on a clean batch %r" % acts)
+
+
+def test_arbiter_invalid_verdict_refused_siblings_land():
+    bad = verdict("BAD", sha="nothex!")
+    acts, _ = finish("Arbiter", done_result({"verdicts": [verdict("A"), bad, verdict("C")]}))
+    vs = [a for a in acts if a["do"] == "role_verdicts"]
+    check(len(vs) == 1 and [r["item"] for r in vs[0]["rows"]] == ["A", "C"], "valid siblings land %r" % vs)
+    al = [a for a in acts if a["do"] == "alarm" and a["kind"] == "role:Arbiter:verdict_refused"]
+    check(len(al) == 1 and "BAD" in al[0]["why"] and "sha" in al[0]["why"], "refused verdict alarmed, named %r" % al)
+    check(al and al[0].get("note") and not al[0].get("blind"), "alarm noted, never as blind text (outside text)")
+    check(al and al[0].get("refused") == [bad], "the refused verdict is journaled whole")
+    # a verdicts entry that is not even an object, and extra keys: refused too
+    acts, _ = finish("Arbiter", done_result({"verdicts": ["x", dict(verdict("E"), tier="T2")]}))
+    check(not [a for a in acts if a["do"] == "role_verdicts"], "nothing valid -> nothing appended")
+    check(len([a for a in acts if a.get("kind") == "role:Arbiter:verdict_refused"]) == 1, "one alarm for the batch")
+
+
+def test_arbiter_missing_structured_output_alarms():
+    for res, label in ((done_result(has_so=False), "absent"), (done_result(None), "null"),
+                       (done_result({"verdicts": "x"}), "not a list"), (done_result({"v": []}), "no verdicts key"),
+                       (done_result({"verdicts": [verdict()], "extra": 1}), "extra key")):
+        acts, _ = finish("Arbiter", res)
+        check(not [a for a in acts if a["do"] == "role_verdicts"], "%s: nothing appended" % label)
+        al = [a for a in acts if a["do"] == "alarm" and a["kind"] == "role:Arbiter:verdicts"]
+        check(len(al) == 1, "%s: one role:Arbiter:verdicts alarm %r" % (label, [a.get("kind") for a in acts]))
+    acts, _ = finish("Arbiter", done_result({"verdicts": []}))
+    check(not [a for a in acts if a["do"] in ("role_verdicts", "alarm")], "an empty batch: nothing, no alarm")
+    # a failed run is not harvested (its failure is already alarmed; its claims stay pending)
+    r = done_result({"verdicts": [verdict()]})
+    r["is_error"] = True
+    acts, run = finish("Arbiter", r)
+    check(run["state"] == "failed" and not [a for a in acts if a["do"] == "role_verdicts"], "failed run: no append")
+    # another role's structured output is never harvested
+    acts, _ = finish("Conductor", done_result({"verdicts": [verdict()]}))
+    check(not [a for a in acts if a["do"] == "role_verdicts" or "verdict" in a.get("kind", "")], "Conductor: no harvest")
+
+
+def test_append_verdicts_and_execute():
+    import json
+    import tempfile
+    tmp = tempfile.mkdtemp(prefix="selftest_role_launch_verdicts_")
+    p = os.path.join(tmp, "arbiter", "verdicts.jsonl")
+    RL.append_verdicts(p, [verdict("A")])
+    RL.append_verdicts(p, [verdict("B"), verdict("C")])
+    lines = open(p, encoding="utf-8").read().splitlines()
+    check([json.loads(x)["item"] for x in lines] == ["A", "B", "C"], "appended in order, earlier lines kept")
+    st = RL.PW.read_stores(verdicts=p, history=os.path.join(tmp, "none.jsonl"), cutoff=os.path.join(tmp, "nc.json"))
+    check(len(st["verdicts"]) == 3, "arbiter_pending reads the appended lines")
+    os.environ.setdefault("RM_DISPATCHER_STATE", os.path.join(tmp, "state"))
+    os.environ.setdefault("TESTQ_QUEUE", os.path.join(tmp, "testq"))
+    import dispatcher as D
+    sch = {"ledger_notes": False, "publish": False}
+    calls = []
+    for apply in (True, False):
+        calls.clear()
+        acts = [{"do": "role_verdicts", "role": "Arbiter", "path": p, "rows": [verdict("D")], "why": "w"}]
+        D.execute(acts, sch, {"alarms": {}}, tmp, apply, 100.0,
+                  {"verdicts_append": lambda path, rows: calls.append((path, rows)), "lock": lambda: None})
+        check(calls == ([(p, [verdict("D")])] if apply else []), "execute appends only when applied (%s)" % apply)
+
+    def boom(path, rows):
+        raise OSError("disk gone")
+    acts = [{"do": "role_verdicts", "role": "Arbiter", "path": p, "rows": [verdict("D")], "why": "w"}]
+    D.execute(acts, sch, {"alarms": {}}, tmp, True, 100.0, {"verdicts_append": boom, "lock": lambda: None})
+    al = [a for a in acts if a["do"] == "alarm" and a["kind"] == "role:Arbiter:verdicts_append"]
+    check(len(al) == 1 and "disk gone" in al[0]["why"], "a failed append is alarmed %r" % acts)
+
+
 TESTS = (test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
          test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_model_id, test_ops_reading,
-         test_band, test_validate_role)
+         test_band, test_validate_role, test_arbiter_argv_carries_schema, test_arbiter_valid_batch_appended,
+         test_arbiter_invalid_verdict_refused_siblings_land, test_arbiter_missing_structured_output_alarms,
+         test_append_verdicts_and_execute)
 
 
 def main():

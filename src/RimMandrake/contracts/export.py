@@ -10,11 +10,11 @@ Two files:
                                   structured output, because one Arbiter run judges several claims and
                                   --json-schema constrains the ONE final result of a `claude -p` run.
 
-The handoff, when wired (not yet: ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF), is
-    claude_bounded.sh -p <msg> ... --output-format json --json-schema "$(cat arbiter_batch.schema.json)"
-and the launcher, not the model, appends result["structured_output"]["verdicts"] to verdicts.jsonl after
-re-validating each against ArbiterVerdict. Today role_launch.launch_argv passes --output-format json only and the
-Arbiter appends its own lines (roles/arbiter.md); arbiter_pending reads them through contracts.compat.
+The handoff (ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF): role_launch.launch_argv passes the Arbiter
+    claude_bounded.sh -p <msg> ... --json-schema <arbiter_batch.schema.json text> --output-format json
+(`--json-schema` takes the schema itself, not a path), and the launcher, not the model, appends
+result["structured_output"]["verdicts"] to verdicts.jsonl after re-validating each against ArbiterVerdict
+(role_launch.harvest, dispatcher.execute role_verdicts); arbiter_pending reads them through contracts.compat.
 """
 import argparse
 import json

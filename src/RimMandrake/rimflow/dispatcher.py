@@ -824,6 +824,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
         "publish", lambda n: publish_bounded(n, deadline - time.time()))
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
+    do_verdicts = fx.get("verdicts_append", RL.append_verdicts)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
     lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
@@ -958,6 +959,19 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 else:
                                     rs.pop("launch_failed_key", None)
                                 do_persist()
+                    elif a["do"] == "role_verdicts":
+                        # a STRUCTURED role's validated entries (role_launch.harvest); a failed append is alarmed:
+                        # the run is already done, so nothing else would ever carry these verdicts
+                        try:
+                            do_verdicts(a["path"], a["rows"])
+                            res = "appended %d" % len(a["rows"])
+                        except Exception as e:  # noqa: BLE001
+                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            actions.append(dict(
+                                do="alarm", kind="role:%s:verdicts_append" % a.get("role"), at=iso(now), note=True,
+                                ticket=a.get("ticket"), role=a.get("role"), rows=a["rows"],
+                                why="role %s: %d verdict(s) NOT appended to %s: %s; they are in this journal entry "
+                                    "only, their claims stay pending" % (a.get("role"), len(a["rows"]), a["path"], res)))
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
                                       marker=a.get("marker"), force=a.get("force", False), since=a.get("since"))

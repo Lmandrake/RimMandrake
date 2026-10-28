@@ -76,16 +76,21 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
 - While the schedule says `verdicts: "advisory"`, your verdict blocks nothing. The interim holder (the non-maker GPT
   reviewer at the claim, A-1) still gates closes. You record your verdict beside it, never a `rimflow verify` event
   (those are immutable and a fail would block).
-- A bounce is advisory too: it is a line in `bounces.json` and, when you confirm it, a FAIL-module or FAIL-check line
-  in `verdicts.jsonl`. Nothing is sent back to the builder: you do not reopen the item, spawn work for it or message
+- A bounce is advisory too: it is a line in `bounces.json` and, when you confirm it, a FAIL-module or FAIL-check
+  verdict in your structured output. Nothing is sent back to the builder: you do not reopen the item, spawn work for it or message
   its seat about it while `verdicts` is `"advisory"`.
-- Every advisory verdict goes, one JSON line each, to `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`, with these fields:
-  - `item` and `sha` (at least 7 characters);
+- Every advisory verdict is RETURNED, never written: your run's final answer is structured output
+  `{"verdicts": [...]}`, one object per claim judged this batch, in judging order (your launch carries
+  `--json-schema` with `src/RimMandrake/contracts/schemas/arbiter_batch.schema.json`). You do not open
+  `verdicts.jsonl` for writing. The launcher checks each verdict against `contracts.models.ArbiterVerdict` and appends
+  the valid ones to `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`; a verdict it refuses is alarmed and not
+  recorded, so its claim stays pending and comes back next batch. Each verdict has exactly these fields:
+  - `item` and `sha` (7 to 40 lowercase hex characters);
   - `disposition`, exactly one of PASS / CONDITIONAL-PASS / FAIL-module / FAIL-check / RESTART-environment / BAR-defect / UNRESOLVED;
   - `causes` (the tags);
-  - `interim` (the interim reviewer's verdict);
-  - `evidence` (the paths);
-  - `ts` (ISO UTC).
+  - `interim` (the interim reviewer's verdict, null when there was none);
+  - `evidence` (at least one absolute Windows path);
+  - `ts` (ISO UTC, `Z` suffix).
 
   The Dispatcher reads `item`, `sha`, `disposition` and `ts` to decide whether work is pending. A line it cannot read
   makes every slot launch. Code joins each line to how the claim
@@ -95,7 +100,7 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
 - **Binding** needs all of: at least one full week advisory, the false-reject rate measured on at least 30 verdicts
   with its word (MEASURED, never ESTIMATE), and the owner's switch of `verdicts` to `"binding"` (the Conductor carries
   the numbers to him on a card). You do not flip it and you do not argue for it.
-- **Once binding**, you still write the `verdicts.jsonl` line, and the disposition also goes on the ledger as one
+- **Once binding**, you still return the verdict as structured output, and the disposition also goes on the ledger as one
   `rimflow verify <ID> --sha <sha> --result pass|fail|partial --level <L1..L3|GREEN-MIN|GREEN-FULL> --evidence <path>
   --config <what ran> --why "arbiter: <disposition> <cause tags>"`: PASS → `pass`; CONDITIONAL-PASS → `partial`;
   FAIL-module and BAR-defect → `fail`; UNRESOLVED, FAIL-check and RESTART-environment record nothing until they

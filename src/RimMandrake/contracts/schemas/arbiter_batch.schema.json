@@ -2,7 +2,7 @@
  "$defs": {
   "ArbiterVerdict": {
    "additionalProperties": false,
-   "description": "One line of arbiter/verdicts.jsonl (roles/arbiter.md 'Every advisory verdict goes ...'). Exported as JSON Schema\n(contracts/schemas/arbiter_verdict.schema.json) for `claude -p --json-schema`.",
+   "description": "One Arbiter verdict: returned in its run's structured output (roles/arbiter.md 'Every advisory verdict is\nRETURNED'), checked here by role_launch.harvest and appended as one line of arbiter/verdicts.jsonl. Exported as\nJSON Schema (contracts/schemas/, contracts/export.py) for `claude -p --json-schema`.",
    "properties": {
     "causes": {
      "description": "coexisting cause tags beside the disposition",
