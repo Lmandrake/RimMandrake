@@ -988,7 +988,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         job = due[0]                                      # one launch per role per tick
         off = obs["off"](wsl_path(role.get("off_file") or ""))
         if off is not None:
-            mark(rs, job, "off")
+            sk = skip_event(rs, job, "off")
+            if sk is None:
+                mark(rs, job, "off")
+            elif not sk:
+                return
             act(do="role_hold", role=name, why="%s %s skipped: off switch %s (%s)" % (
                 name, job["trigger"], role.get("off_file"), off or "no reason given"))
             return
@@ -1056,7 +1060,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         bname, b = band(cfg, r)
         allowed = b.get("slots", "all")
         if slot_blocked(allowed, job, cfg, now):
-            mark(rs, job, "band " + bname)
+            sk = skip_event(rs, job, "band " + bname)
+            if sk is None:
+                mark(rs, job, "band " + bname)
+            elif not sk:
+                return
             act(do="role_hold", role=name, why="%s %s not run: band %s runs %s scheduled slots (runway %.2f %s, "
                 "week left %.0f%%)" % (name, job["trigger"], bname, allowed, r["runway"], r["runway_m"],
                                        r["week_left"]))
@@ -1067,8 +1075,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         budget = int(job["cap"] * factor)
         spent = spent_today(rs, now)
-        daily = role.get("daily_token_cap")
-        if daily and job["mode"] in ("event", "alarm"):
+        daily = role.get("daily_token_cap")           # 0 is a cap of zero; only absent (None) is no cap
+        if daily is not None and job["mode"] in ("event", "alarm"):
             # (an alarm run reserves too: it may spend only what the day's scheduled runs leave, review X, X1)
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
@@ -1082,7 +1090,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     act(do="role_hold", role=name, why="%s %s waits: the day's scheduled run(s) still to come keep "
                         "their share of the daily cap; the event runs once they leave room" % (name, job["trigger"]))
                 return
-        if daily and spent + budget > daily:
+        if daily is not None and spent + budget > daily:
             mark(rs, job, "daily cap")
             act(do="alarm", kind="role:%s:cap" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget" % (
@@ -1106,6 +1114,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "alarms_seen": rs.get("alarms_seen"), "event_cursor": rs.get("event_cursor"),
                                 "alarm_day": json.loads(json.dumps(rs.get("alarm_day"))),
                                 "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
+        rs.pop("event_skip", None)
         mark(rs, job, "launch")
         if job["mode"] == "alarm":
             rs["alarm_last_run"] = now        # the gap runs from launched alarm runs only, not from passed-over ones
@@ -1194,6 +1203,19 @@ def alarm_reading(alarms):
     if not isinstance(alarms, dict) or "_alarm_state" in alarms:
         return None
     return sorted(alarm_keys(alarms))
+
+
+def skip_event(rs, job, how):
+    """An event run skipped (off switch, band) is not a run: it is NOT marked, so the day's event_runs_per_day stays
+    unused and the event launches once the switch is gone or the band allows it (review night r2). -> None for a
+    non-event job (mark it as before); True when this skip is new (journal it), False when already journalled."""
+    if job["mode"] != "event":
+        return None
+    rec = [job["key"], how]
+    if rs.get("event_skip") == rec:
+        return False
+    rs["event_skip"] = rec
+    return True
 
 
 def mark(rs, job, how):

@@ -1702,6 +1702,40 @@ def test_role_arbiter_cutoff():
           and RL.max_s_of({}, arbiter(run_max_s=2700)) == 2700, "pre_launch_max_s: max_s_of sums it, absent = 0")
 
 
+def test_role_event_skip_keeps_quota():
+    """Review night r2: an event run skipped by the off switch or a band is not a run: it must not use the day's
+    event_runs_per_day, so the event launches once the switch is gone (or the band allows it), the hold journalled
+    once, not every tick. And daily_token_cap 0 is a cap of zero, not no cap."""
+    t = at_local("13:00")
+    items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z")}
+    fail = dict(BASE_EV, event="verify", id="PLAN_A", result="fail", ts=lts(t - 200))
+    st = fresh()
+    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
+    p = producer(after_role=None)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t), lread([BASE_EV, fail], items), off="quiet"), t))
+    check([x["do"] for x in a] == ["role_hold"] and "off switch" in a[0]["why"], "event + off switch: held %r" % a)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60), lread([BASE_EV, fail], items), off="quiet"), t + 60))
+    check(a == [], "event + off switch: the hold is journalled once, not every tick %r" % a)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
+    la = [x for x in a if x["do"] == "role_launch"]
+    check(la and la[0]["mode"] == "event", "off switch removed the same day: the event runs (quota unused) %r" % a)
+    # band FLOOR blocks event runs; when the band lifts the same day, the event runs
+    st = fresh()
+    st["roles"] = {"Producer": {"done": {"%s 09:00" % RL.day_of(t): "launch"}, "runs": [], "event_cursor": t - 3600}}
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t, week_left=5), lread([BASE_EV, fail], items)), t))
+    check(not [x for x in a if x["do"] == "role_launch"] and any("FLOOR" in x.get("why", "") for x in a),
+          "event in FLOOR: not run %r" % a)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 60, week_left=5), lread([BASE_EV, fail], items)), t + 60))
+    check(a == [], "event in FLOOR: the hold is journalled once %r" % a)
+    a = role_acts(rdecide([p], st, lrobs(ops_status(t + 120), lread([BASE_EV, fail], items)), t + 120))
+    check([x for x in a if x["do"] == "role_launch"], "band lifts the same day: the event runs %r" % a)
+    now = at_local("08:00")
+    st = fresh()
+    a = role_acts(rdecide([conductor(daily_token_cap=0)], st, robs(ops_status(now)), now))
+    check([x["do"] for x in a] == ["alarm"] and "daily_token_cap" in a[0]["why"],
+          "daily_token_cap 0: refused, not uncapped %r" % a)
+
+
 def test_role_plan_failure_events():
     t = at_local("13:00")
     items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": FakeItem(row="R3"),
@@ -3056,7 +3090,7 @@ def main():
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
-              test_role_arbiter_cutoff, test_role_plan_failure_events,
+              test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,
