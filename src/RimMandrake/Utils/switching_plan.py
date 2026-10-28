@@ -220,8 +220,12 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         rs = next_reset(meter.get(f) or {}, now) if f in elig and f != live else None
         if m.get("phase") == "done" and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK:
             elig[f] = False
-    target = pick(meter, plan, now, elig)
     lr = meter.get(live) or {}
+    pl = left(plan, lr, now)
+    if ((state.get("stopped") or {}).get("account") == live and live in elig and pl is not None
+            and pl <= line[live] + plan["soft_margin_pct"]):
+        elig[live] = False  # a fleet stopped in its soft zone never restarts there: another account with budget wins
+    target = pick(meter, plan, now, elig)
     blind = blind_zero(plan, lr, now)
     base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None}
 
@@ -499,13 +503,15 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     live = st.get("live")
     meter = meter_fn()
     d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True)
+    pre = None
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
             pre = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
-            if pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live:
-                d = pre  # a hard stop it already sees is never deferred behind a slow poll (agents keep burning)
+            if ((pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live)
+                    or (pre["do"] == "switch" and pre.get("under"))):
+                d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
             else:
                 if pre["do"] in ACTS:
                     write_notice({**pre, "do": "soft"}, now)
@@ -519,7 +525,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                 if (OUT / "HOLD").exists():
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
-        if d["do"] != "stop":
+        if d is not pre:
             d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
@@ -568,7 +574,7 @@ Description=Claude account standard switching plan (switching_plan.py check)
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/python3 {script} check
-TimeoutStartSec=540s
+TimeoutStartSec=2700s
 """
 TIMER = """[Unit]
 Description=Claude account standard switching plan, every 5 min

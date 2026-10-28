@@ -104,6 +104,15 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 4 (2026-10-28 11:32)
+    d = D({**off, "system": R(2, 24), "lukas": R(100, 160)}, "system", state={"stopped": {"account": "system"}})
+    check(d["do"] == "switch" and d["to"] == "lukas",
+          f"hard-stopped in the soft zone and lukas refilled: switch to lukas, never sit stopped (got {d['do']} {d['to']})")
+    d = D({**off, "system": R(2, 24), "lukas": R(1, 160)}, "system", state={"stopped": {"account": "system"}})
+    check(d["do"] == "stopped", f"hard-stopped and nothing else has budget: stay stopped (got {d['do']})")
+    sv = SP.SERVICE
+    tmo = int(sv.split("TimeoutStartSec=")[1].split("s")[0])
+    check(tmo >= 120 + 420 + 120 + 3 * 600, f"the unit outlives a full pass (status, poll, status, arm, use, disarm): {tmo}")
     # GPT review round 3 (2026-10-28 12:10)
     mk = {SP.switch_key("steven", "system", R(70, 100)): {"phase": "failed", "at": SP.iso(NOW - 300)}}
     sv = {"steven": R(51, 150), "system": R(70, 100), "lukas": R(0, 120)}
@@ -304,6 +313,13 @@ def main():
     SP.check(dry=False, now=NOW + 360, meter_fn=lambda: {"steven": R(51, 150), "system": R(70, 100, age=7),
                                                           "lukas": R(0, 120)}, poll_fn=lambda: polls.append(1))
     check("fleet-stop" in calls.read_text() and not polls, f"a pre-poll stop acts before any poll (polls={polls})")
+    calls.write_text("")
+    st = SP.load_state(); st.pop("last_poll", None); st.pop("stopped", None); SP.save_state(st)
+    polls = []
+    SP.check(dry=False, now=NOW + 420, meter_fn=lambda: {"steven": R(52, 150, age=7), "system": R(100, 100),
+                                                          "lukas": R(0, 120)}, poll_fn=lambda: polls.append(1))
+    check("use system" in calls.read_text() and not polls,
+          f"a confirmed switch off a spent account acts before any poll (polls={polls})")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
     calls.write_text("")
     rc = SP.check(dry=True, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
