@@ -370,6 +370,24 @@ def main():
     mk11 = [v for v in SP.read_markers().values() if v.get("to") == "steven"]
     check("use steven" in calls.read_text() and mk11 and mk11[0].get("phase") == "done" and mk11[0].get("under") is True,
           "a switch whose re-check finds the departing account exhausted records under=True in its done marker")
+    # a switch that lapses because the target was spent while arming still brakes: the stop now due runs instead
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    (TMP / "live.txt").write_text("system")
+    st = SP.load_state(); st.pop("stopped", None); st.pop("last_poll", None); SP.save_state(st)
+    cur13 = [{**off, "system": R(0, 24), "lukas": R(3, 48, age=0)}]
+    def arm_spends_last(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur13[0] = {**off, "system": R(0, 24), "lukas": R(2, 48, age=0)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_spends_last
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur13[0], poll_fn=lambda: None)
+    SP.run = real_run
+    check("use lukas" not in calls.read_text() and "fleet-stop" in calls.read_text()
+          and (SP.load_state().get("stopped") or {}).get("account") == "system"
+          and SP.read_json(TMP / "out" / "notice.json", {}).get("state") == "stop",
+          "a switch lapsed by a target spent while arming runs the hard stop now due, not nothing")
     # a stop that lapses while arming (lukas reset meanwhile) is skipped
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

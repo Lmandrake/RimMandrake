@@ -469,13 +469,18 @@ def write_notice(d: dict, now: float) -> None:
 
 def armed_call(st: dict, argv: list, still=None) -> dict:
     """arm if the machine is disarmed, run the switcher verb, disarm again if it was disarmed before. `still()` is
-    asked after a slow arm whether the decision still holds; when it does not, the verb is skipped as 'lapsed'."""
+    asked after a slow arm whether the decision still holds; when it does not, the verb is skipped as 'lapsed'. A
+    `still()` that returns a verb list instead names a brake now due in its place: it runs while the machine is armed."""
     machine = st.get("machine") or ""
     was_armed = bool(st.get("armed"))
     out = {}
     if not was_armed:
         out["arm"] = run([CA, "arm", "--confirm", machine])
-    if (was_armed or out["arm"][0] == 0) and still is not None and not still():
+    ok = still() if (was_armed or out["arm"][0] == 0) and still is not None else True
+    if isinstance(ok, list):
+        out[argv[0]] = (None, f"lapsed: the decision no longer holds after arming; {ok[0]} is due instead")
+        out[ok[0]] = run([CA, *ok])
+    elif not ok:
         out[argv[0]] = (None, "lapsed: the decision no longer holds after arming")
     elif was_armed or out["arm"][0] == 0:
         out[argv[0]] = run([CA, *argv, *(["--confirm", machine] if argv[0] == "use" else [])])
@@ -559,6 +564,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         return 0
     rc = 0
     t2 = clock()
+    brake = {}
 
     def still():
         """A slow arm can close a window, pass a reset or spend a target: re-read the meter and re-decide at the new
@@ -573,6 +579,9 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
             d["under"] = True
+        if not same and d2["do"] == "stop" and d["do"] != "stop" and (state.get("stopped") or {}).get("account") != live:
+            brake.update(d2)  # a brake that became due while we armed is never dropped with the lapsed act
+            return ["fleet-stop"]
         return same
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
@@ -587,6 +596,13 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             save_state(state)
             write_notice({**d, "do": "normal"}, now)
         rec["result"], rc = res, 0 if ok else 1
+        if brake:
+            braked = (res.get("fleet-stop") or (1,))[0] == 0
+            write_notice(brake, now)
+            if braked:
+                state["stopped"] = {"account": live, "key": brake.get("key"), "at": iso(now)}
+                save_state(state)
+            rc = 0 if braked else 1
     elif d["do"] == "stop":
         write_notice(d, now)
         res = armed_call(st, ["fleet-stop"], still)
