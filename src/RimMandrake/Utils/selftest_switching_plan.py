@@ -104,10 +104,30 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 2 (2026-10-28 11:58)
+    mk = {SP.switch_key("system", "lukas", R(50, 48)): {"phase": "done", "from": "system", "to": "lukas",
+                                                        "under": True, "at": SP.iso(NOW - 600)}}
+    d = D({**off, "system": R(1, 24), "lukas": R(50, 48)}, "lukas", state={"_markers": mk})
+    check(d["do"] == "normal", f"an account left at its line is no target again before its reset: no flap (got {d})")
+    d = D({**off, "system": R(1, 24, src="ESTIMATE", age=30), "lukas": R(50, 48)}, "system", state={"_markers": mk})
+    check(d["do"] == "switch" and d["to"] == "lukas",
+          f"back on an empty account after a done switch: switch again, never stop with lukas at 50% (got {d})")
+    d = D({**off, "system": R(2, 24, src="ESTIMATE", age=30), "lukas": R(50, 48)}, "system", polled=True)
+    check(d["do"] == "switch" and d["to"] == "lukas", f"blind after a poll near its line: switch, never hold (got {d})")
+    d = D({**off, "system": R(50, 24, src="ESTIMATE", age=30), "lukas": R(50, 48)}, "system", polled=True)
+    check(d["do"] == "hold", f"blind after a poll far from its line: hold (got {d['do']})")
+    d = D({**off, "system": R(1, 24, age=120), "lukas": R(50, 48)}, "system",
+          state={"stopped": {"account": "system"}}, polled=True)
+    check(d["do"] != "start", f"no fleet-start on an unconfirmed reading (got {d['do']})")
+    d = D({**off, "system": R(0, 100), "lukas": R(3, 120)}, "lukas", state={"stopped": {"account": "lukas"}})
+    check(d["do"] == "stopped", f"no fleet-start into the soft zone (lukas 3%, wait line 2) (got {d['do']})")
+    d = D({"steven": R(90, -0.02), "system": R(1, 24, src="ESTIMATE", age=30), "lukas": R(50, 48)}, "system")
+    check(d["do"] == "switch" and d["to"] == "lukas", f"blind 0% live: an unrelated reset never delays the switch (got {d})")
     # GPT review 2026-10-28 findings, as tests
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "done"}}
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
-    check(d["do"] == "stop", f"a done marker never disables the floor: live under its line stops (got {d['do']})")
+    check(d["do"] == "switch" and d["to"] == "lukas",
+          f"a done marker never disables the floor: live under its line switches again (got {d['do']})")
     d = D({**off, "system": R(0, 100, age=20), "lukas": R(98, 120)}, "system", polled=True)
     check(d["do"] == "switch" and d["to"] == "lukas",
           f"live under its line on an old reading (an upper bound), target fresh: switch, never hold (got {d['do']})")
@@ -251,6 +271,17 @@ def main():
         calls.write_text("")
         rc = SP.check(dry=False, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
         check(rc == 0 and calls.read_text() == "", "a pass that finds another running does nothing")
+    # HOLD created while the poll runs brakes this pass too
+    calls.write_text("")
+    os.environ["FAKE_LIVE"] = "system"
+    cur = [{**off, "system": R(40, 100), "lukas": R(50, 3, age=40)}]
+    def poll_hold():
+        (TMP / "out" / "HOLD").write_text("x")
+        cur[0] = {**off, "system": R(40, 100), "lukas": R(50, 3)}
+    st = SP.load_state(); st.pop("last_poll", None); SP.save_state(st)
+    SP.check(dry=False, now=NOW + 300, meter_fn=lambda: cur[0], poll_fn=poll_hold)
+    (TMP / "out" / "HOLD").unlink()
+    check("use" not in calls.read_text(), "a HOLD written during the poll stops the pass from acting")
     calls.write_text("")
     rc = SP.check(dry=True, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]

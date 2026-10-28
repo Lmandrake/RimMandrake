@@ -215,6 +215,11 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     order, fr = plan["order"], plan["fresh"]
     line, elig = lines(meter, plan, now)
+    for m in markers.values():  # an account we left at its line is no target again before its reset: no flapping
+        f = m.get("from")       # when its meter recovers and re-reads the same last 1%
+        rs = next_reset(meter.get(f) or {}, now) if f in elig and f != live else None
+        if m.get("phase") == "done" and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK:
+            elig[f] = False
     target = pick(meter, plan, now, elig)
     lr = meter.get(live) or {}
     blind = blind_zero(plan, lr, now)
@@ -242,7 +247,8 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     for n in order:
         if reset_passed(meter.get(n), now):
             why(n, f"{n}'s reset has passed and the reading predates it")
-    why_poll = [t for v in stale.values() for t in v]
+    # a blind 0% live account never waits on a poll for anything but its target (the owner, 11:2x)
+    why_poll = stale.get(target, []) if blind else [t for v in stale.values() for t in v]
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
     p = left(plan, lr, now)
@@ -266,11 +272,11 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         m = markers.get(key)
         if m and m.get("phase") != "failed":
             age = now - (epoch(m.get("at")) or 0)
-            if m.get("phase") == "done" or age < STALE_PENDING_S:
-                if under:
-                    return {**base, "do": "stop", "key": stop_key(live, lr, now),
-                            "why": f"transition {key} is {m.get('phase')} yet live is still {live} at {p}% <= its "
-                                   f"{line[live]}% line: stop rather than overshoot"}
+            if m.get("phase") == "pending" and age < STALE_PENDING_S and under:
+                return {**base, "do": "stop", "key": stop_key(live, lr, now),
+                        "why": f"transition {key} is pending yet live is still {live} at {p}% <= its "
+                               f"{line[live]}% line: stop rather than overshoot"}
+            if (m.get("phase") == "done" or age < STALE_PENDING_S) and not under:
                 return {**base, "do": "hold", "to": target, "key": key,
                         "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live} "
                                "(a done switch that reads back as the old account is a human's move: respected)"}
@@ -283,16 +289,20 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
                                                                + "; ".join(stale[target])}
         te, le = expiry(plan, target, meter.get(target), now), expiry(plan, live, meter.get(live), now)
         before = live not in order or le is None or (te is not None and te < le)
-        if not (usable(lr) or under or live not in order or before):
+        near = p is not None and live in line and p - line[live] <= fr["near_pct"]
+        if not (usable(lr) or under or live not in order or before or (polled and near)):
             return {**base, "do": "hold", "to": target, "why": f"{live} reads {lr.get('source')}: no switch away "
                                                                 "from an account the meter cannot see"}
         tr = meter[target]
-        return {**base, "do": "switch", "to": target, "key": key,
+        return {**base, "do": "switch", "to": target, "key": key, "under": under,
                 "why": f"{target} is the soonest-expiring account with headroom ({tr['week_pct_left']}% > "
                        f"{line[target]}%); {live} at {p}%" + (" (blind meter = 0%)" if blind else "")}
 
     # target == live
     if (state.get("stopped") or {}).get("account") == live:
+        if live in stale or p <= line[live] + plan["soft_margin_pct"]:
+            return {**base, "do": "stopped", "why": f"hard-stopped on {live}: no fleet-start on an unconfirmed reading "
+                                                    "or into the soft zone"}
         return {**base, "do": "start", "why": f"{live} has headroom again after the hard stop"}
     if live in stale:
         return {**base, "do": "soft", "why": "reading not fresh near a line after a poll: " + "; ".join(stale[live])}
@@ -481,10 +491,13 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             state["last_poll"] = iso(now)
             save_state(state)
             poll_fn()
-            now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
             st = switcher_status()
             live = st.get("live")
             meter = meter_fn()
+            now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
+            if (OUT / "HOLD").exists():
+                log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
+                return 0
         d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
@@ -493,12 +506,12 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         return 0
     rc = 0
     if d["do"] == "switch":
-        write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"]})
+        write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
         write_notice({**d, "do": "soft"}, now)
         res = armed_call(st, ["use", d["to"]])
         ok = (res.get("use") or (1,))[0] == 0
         write_marker(d["key"], {"phase": "done" if ok else "failed", "at": iso(now), "from": live, "to": d["to"],
-                                "result": res})
+                                "under": d.get("under"), "result": res})
         if ok:
             state.pop("stopped", None)
             save_state(state)
