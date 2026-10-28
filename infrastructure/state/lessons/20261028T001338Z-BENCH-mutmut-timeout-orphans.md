@@ -1,0 +1,2 @@
+mutmut 2.5.1 on Python 3.14: when the OUTER command timeout fires mid-run, mutmut leaves the mutated source file in place and orphaned selftest processes running (one mutant was an infinite loop k=1 in _unique). Always: run mutmut only in a scratch clone, keep a pristine copy via git show HEAD:path, give each mutant its own process-group timeout (setsid + killpg), and restore + git diff --exit-code after every run. Pilot evidence /mnt/d/ClaudeWork/rimmandrake/testing_sim/mutmut/.
+home: skill git-efficiency NONE; design/RimMandrake/testing_investment_sim_2026-10-27.md
