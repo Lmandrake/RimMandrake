@@ -60,7 +60,7 @@ TARGETS = {
                                                 U + "selftest_close_evidence_props.py"]),
     "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py"]),
-    "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py"]),
+    "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py"]),
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
