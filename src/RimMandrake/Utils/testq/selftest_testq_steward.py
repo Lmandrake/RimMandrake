@@ -336,9 +336,10 @@ def main():
         rc, out = cli("claim", "STEVE_COVER_PROBE_ITEM")
         c0 = model.epoch(W.world()[1].items["STEVE_COVER_PROBE_ITEM"].claim_ts)
         cov1 = W.claim_cover("STEVE_COVER_PROBE_ITEM", c0, c0 + 7200)
+        time.sleep(3)
         rc, out = cli("close", "STEVE_COVER_PROBE_ITEM", "--reason", "probe done")
         cov2 = W.claim_cover("STEVE_COVER_PROBE_ITEM", c0, c0 + 7200)
-        check(cov1 > 1000 and 0 < cov2 <= cov1 and W.claim_cover("STEVE_COVER_PROBE_ITEM", c0 + 5000, c0 + 6000) == 0,
+        check(cov1 > 1000 and 1 <= cov2 <= 20 and W.claim_cover("STEVE_COVER_PROBE_ITEM", c0 + 5000, c0 + 6000) == 0,
               "closing the item keeps the cover earned before it (live %d, closed %d): %s" % (cov1, cov2, out[-100:]))
         real_rf = W.rimflow
         W.rimflow = lambda *a: (1, "rimflow: only an open item can be raised")
