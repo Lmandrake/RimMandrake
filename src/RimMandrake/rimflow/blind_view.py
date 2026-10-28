@@ -93,8 +93,26 @@ def show_text(evs, world, iid, last=10, prefix=None):
     return BL.render_item(page)
 
 
+class _Parser(argparse.ArgumentParser):
+    """argparse's own error text quotes the bad value (invalid choice: '<value>'): a blind tool's diagnostics are
+    fixed text only."""
+    def error(self, message):
+        self.exit(2, "blind_view: bad arguments (see --help)\n")
+
+
 def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    """Every failure prints fixed text: an exception's message can quote record text (pydantic's input_value)."""
+    try:
+        return _main(argv)
+    except SystemExit:
+        raise
+    except Exception:  # noqa: BLE001 - nothing of the error reaches a blind reader
+        sys.stderr.write("blind_view: page refused\n")
+        return 2
+
+
+def _main(argv=None):
+    ap = _Parser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     q = sub.add_parser("queue", help="a seat's queue, blind")
     q.add_argument("seat")

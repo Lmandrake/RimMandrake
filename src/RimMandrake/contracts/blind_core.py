@@ -26,7 +26,8 @@ item ids passing the name grammar and the page identity, registered names, numbe
 times and dates in declared formats, and opaque handles. A sha or path is never emitted: it becomes a per-page handle
 E<n>, and the E<n> -> value map rides on the returned Rendered str (.handles) for the caller to store_handles() where
 only Operations reads. page_gate then checks the WHOLE finished page: only PAGE_PUNCT between tokens, every token's
-count within what the emitters put out, no token naming an account, and an unreadable registry refuses the page. A
+count within what the emitters put out, no token and no line (tokens spanning) naming an account, and an unreadable
+registry refuses the page. A
 refused page raises PageRefused: nothing is shown (fails closed).
 """
 import json
@@ -520,7 +521,9 @@ def page_gate(text, allowed):
     if any(n > allowed.get(w, 0) for w, n in toks.items()):
         return "token outside the page allowlist"
     try:
-        if any(account_in(w) for w in toks):
+        # per line, not per token: an account spelled by adjacent allowed tokens ("IN PROGRESS", "delegated
+        # record") is still an account on the page (GPT allowlist round 2026-10-27); account_in squashes separators
+        if any(account_in(w) for w in toks) or any(account_in(line) for line in text.splitlines()):
             return "account_name"
     except RegistryUnavailable:
         return "registry unavailable"

@@ -267,6 +267,88 @@ def baseline_sees():
     return not clean("records zqfoo 123456", "zqfoo", 123456) and clean("records 3", "zqfoo", 123456), "probe"
 
 
+# --------------------------------------------------------------------- GPT allowlist round (2026-10-27) -----
+def _with_accounts(names, fn):
+    with tempfile.TemporaryDirectory() as tmp:
+        reg = Registry(tmp)
+        reg.set(names)
+        old = C.RULE_FILES
+        C.RULE_FILES = (reg.p,)
+        try:
+            return fn(tmp)
+        finally:
+            C.RULE_FILES = old
+
+
+def r5_span():
+    """An account spelled by ADJACENT allowed tokens ("delegated record", "IN PROGRESS") is still an account on the
+    page: the gate checks names across token boundaries, so the page refuses."""
+    def go(_tmp):
+        raw = [{"source": "ledger", "t": T0, "id": "RM_X_ITEM", "why": "delegated: scope", "event": "close",
+                "seat": "BENCH"}]
+        try:
+            pg = BL.render_digest(BL.project_digest("2026-10-27", None, T0 + dt.timedelta(hours=1), raw, STATUS,
+                                                    ids=ids(), resolve=resolver))
+        except Exception:  # noqa: BLE001 - refused: nothing shown
+            return True, "refused"
+        return "delegatedrecord" not in C.squash(pg), pg[:300]
+    return _with_accounts(["delegatedrecord"], go)
+
+
+def r5_argparse_echo():
+    """blind_view's own diagnostics never echo an argument or an exception's text (argparse's invalid-choice
+    message quotes the value; a pydantic error quotes input_value)."""
+    import contextlib
+    import io
+    import blind_view as V
+    err = io.StringIO()
+    codes = []
+    with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+        try:
+            codes.append(V.main(["show", "RM_X_ITEM", "--prefix", "zqlukas 45000 tokens"]))
+        except SystemExit as e:
+            codes.append(e.code)
+        old = V._load
+        V._load = lambda: (_ for _ in ()).throw(ValueError("zqlukas used 45000 tokens"))
+        try:
+            codes.append(V.main(["queue", "BENCH"]))
+        except BaseException as e:  # noqa: BLE001 - an uncaught crash prints its text: a failure
+            codes.append(type(e).__name__)
+        finally:
+            V._load = old
+    e = err.getvalue()
+    return ("zqlukas" not in e and "45000" not in e and all(c not in (0, None) and isinstance(c, int) for c in codes),
+            (codes, e[-300:]))
+
+
+def r5_failed_page():
+    """The FAILED marker is fixed text, but a registry account equal to a word of it ("Conductor") must not print:
+    the marker is gated against the registry (blank when it would name one or the registry is unreadable)."""
+    import delegated_digest as D
+
+    def go(tmp):
+        out = os.path.join(tmp, "out")
+        D.main(["--pre-launch", "--since", "invalid", "--date", "2026-10-27", "--out-dir", out, "--state",
+                os.path.join(tmp, "s.json"), "--errors", os.path.join(tmp, "e.log")], sources=({}, None, None))
+        f = os.path.join(out, "delegated_digest_2026-10-27.FAILED.md")
+        txt = open(f).read() if os.path.exists(f) else None
+        return txt, None
+    named, _ = _with_accounts(["conductor"], go)
+    plain, _ = _with_accounts(["zqnobody"], go)       # the instrument can see: the fixed text does print normally
+    # and as a script (no SRC on sys.path at the failure): the gate's import must still resolve, not blank the marker
+    import subprocess
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run([sys.executable, os.path.join(SRC, "rimflow", "delegated_digest.py"), "--pre-launch", "--since",
+                        "invalid", "--date", "2026-10-27", "--out-dir", os.path.join(tmp, "o"), "--state",
+                        os.path.join(tmp, "s.json"), "--errors", os.path.join(tmp, "e.log")], cwd=tmp,
+                       capture_output=True, timeout=120)
+        f = os.path.join(tmp, "o", "delegated_digest_2026-10-27.FAILED.md")
+        script = open(f).read() if os.path.exists(f) else None
+    head = "# Delegated digest 2026-10-27 NOT BUILT"
+    return (named is not None and "conductor" not in C.squash(named) and (plain or "").startswith(head)
+            and (script or "").startswith(head)), (named, plain, script)
+
+
 def main():
     for name, fn in [("gate: lit refuses a data word", g_lit_data), ("gate: vocab words carry no digits", g_vocab_digit),
                      ("gate: enum domain must be registered", g_enum_domain),
@@ -276,7 +358,10 @@ def main():
                      ("gate: item/name predicates", g_item_name), ("gate: handles opaque and stored", g_handles),
                      ("gate: registry outage fails closed", g_registry_outage),
                      ("probe: the leak predicate can see", baseline_sees),
-                     ("property: injected accounts and figures never reach a page", prop)]:
+                     ("property: injected accounts and figures never reach a page", prop),
+                     ("r5: an account spanning adjacent tokens refuses the page", r5_span),
+                     ("r5: blind_view diagnostics never echo input or error text", r5_argparse_echo),
+                     ("r5: the FAILED marker is gated against the registry", r5_failed_page)]:
         check(name, fn)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0

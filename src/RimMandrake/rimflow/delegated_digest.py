@@ -576,6 +576,21 @@ def parser():
     return ap
 
 
+def _failed_text(date):
+    """FAILED_TEXT, unless a registry account is spelled anywhere in it ("Conductor") or the registry cannot be
+    read: then the marker is blank (its existence still says NOT BUILT). Stdlib only (blind_core); never raises."""
+    text = FAILED_TEXT % date
+    try:
+        if SRC not in sys.path:                      # run as a script the failure may precede the path setup
+            sys.path.insert(0, SRC)
+        from contracts import blind_core as C
+        if any(C.account_in(line) for line in text.splitlines()):
+            return ""
+    except Exception:  # noqa: BLE001 - RegistryUnavailable, an import: fail closed
+        return ""
+    return text
+
+
 def _fail(a):
     """The failure path: stdlib only, fixed text on the page side, the error to Operations' log. Never raises."""
     date = getattr(a, "date", None) or dt.date.today().isoformat()
@@ -597,7 +612,7 @@ def _fail(a):
     try:
         os.makedirs(out_dir, exist_ok=True)
         with open(os.path.join(out_dir, "delegated_digest_%s.FAILED.md" % date), "w", encoding="utf-8") as fh:
-            fh.write(FAILED_TEXT % date)
+            fh.write(_failed_text(date))
     except Exception:  # noqa: BLE001
         pass
     try:
