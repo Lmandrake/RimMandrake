@@ -2589,6 +2589,30 @@ def test_golive_b1_busy_until_ended():
     check('--unit="$SCOPE_NAME"' in src, "B1 claude_bounded: the scope is created under that name")
 
 
+def test_ts_skip_journalled_once():
+    """DISPATCHER_JOURNAL_TAME_REPEAT_TS_SKIPS: one bad-ts ledger line is journalled once, not every tick."""
+    root = os.path.join(TMP, "tsskip_root")
+    sc = os.path.join(TMP, "tsskip_clone")
+    sh = os.path.join(sc, "infrastructure", "state", "ledger", "events", "FOUNDRY.jsonl")
+    os.makedirs(os.path.dirname(sh), exist_ok=True)
+    with open(sh, "w") as f:
+        f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "BAD_ONE", "ts": "yesterday"}) + "\n")
+    st = {}
+    for _ in range(3):      # three ticks: a fresh hook each time, the same state
+        D.seat_events_since(sc, "FOUNDRY", "2000-01-01T00:00:00Z", on_skip=D._skip_journal(root, st))
+    jp = os.path.join(root, "journal.jsonl")
+    n = sum(1 for l in open(jp) if "ledger_ts_skipped" in l and "BAD_ONE" in l)
+    check(n == 1, "the same bad line is journalled once across ticks, got %d" % n)
+    with open(sh, "a") as f:
+        f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "BAD_TWO", "ts": "later"}) + "\n")
+    D.seat_events_since(sc, "FOUNDRY", "2000-01-01T00:00:00Z", on_skip=D._skip_journal(root, st))
+    n = sum(1 for l in open(jp) if "ledger_ts_skipped" in l)
+    check(n == 2, "a new bad line is journalled: %d" % n)
+    for i in range(D.TS_SKIPS_KEEP + 50):
+        D._skip_journal(root, st)({"seat": "S", "id": "E%d" % i, "ts": "x"})
+    check(len(st["ts_skips"]) <= D.TS_SKIPS_KEEP, "the seen set is bounded: %d" % len(st["ts_skips"]))
+
+
 def test_golive_b2_blind_fixed_outcomes():
     """dispatcher-full #2: a blind item gets fixed outcome texts only. Outside text with an account id or a figure in
     words no token list knows (PAUSE/off reasons, launch errors, exception text, result subtypes) never reaches it;
@@ -3017,7 +3041,7 @@ def robs_with(ro, status):
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,

@@ -1148,8 +1148,21 @@ def role_obs(sch):
     }
 
 
-def _skip_journal(root):
+TS_SKIPS_KEEP = 200     # the seen set of journalled bad-ts events is bounded: the oldest are forgotten first
+
+
+def _skip_journal(root, st=None):
+    """on_skip hook: journal each (seat, event id, ts) ONCE. The seen set lives in state["ts_skips"] (key -> epoch),
+    saved with the rest of the state, pruned to TS_SKIPS_KEEP newest. Without st there is no memory (journals every time)."""
     def skip(rec):
+        seen = st.setdefault("ts_skips", {}) if st is not None else None
+        key = "%s|%s|%s" % (rec.get("seat"), rec.get("id"), rec.get("ts"))
+        if seen is not None:
+            if key in seen:
+                return
+            seen[key] = time.time()
+            for k in sorted(seen, key=seen.get)[:max(0, len(seen) - TS_SKIPS_KEEP)]:
+                del seen[k]
         try:
             journal(root, dict(rec, do="ledger_ts_skipped", at=iso(time.time())))
         except OSError:
@@ -1157,14 +1170,14 @@ def _skip_journal(root):
     return skip
 
 
-def default_obs(sch, root):
+def default_obs(sch, root, st=None):
     seats = sch.get("seats") or {}
     return {
         "paused": paused_now(),
         "agents": observe_agents(),
         "owner": owner_reading,
         "peek": lambda seat: peek_ticket(seats[seat]["clone"], seat),
-        "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since, on_skip=_skip_journal(root)),
+        "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since, on_skip=_skip_journal(root, st)),
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
@@ -1351,7 +1364,7 @@ def tick(sch, apply, obs=None, now=None, fx=None):
         deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
-            o = obs or default_obs(sch, root)
+            o = obs or default_obs(sch, root, st)
             decide(sch, st, o, now, apply, out=acts)
             if not apply:
                 dry = live_runs_alarm(now)
