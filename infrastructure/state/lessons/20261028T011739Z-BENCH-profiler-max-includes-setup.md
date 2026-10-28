@@ -1,0 +1,2 @@
+A profiler 'max' is not a steady-state number until you know which window it covers. In r17 the pocket-deluge '134 ms gc0' read as a SetTerrain GC spike, but it was the session's absolute max, taken during setup. The 137.5 ms drain was a stall outside SetTerrain. Before you attribute a spike to GC or to a call site, split the max by phase (setup vs steady) and by sub-call (drainMax split instrumented in 8d0d9f511b). Evidence: D:\ClaudeWork\rimmandrake\excavation_slice\PROGRESS_r17fix.md
+home: live-debugging-proof-harness
