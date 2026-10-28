@@ -327,6 +327,9 @@ def review_r1_checks():
         check(hit(["git", "x"], {"GIT_DIR": "/srv/clone/.git"}, "/tmp"), "GIT_DIR in the environment is ours")
         check(hit(["git", "--git-dir=.git", "x"], {}, "/srv/clone"), "a relative --git-dir resolves against its cwd")
         check(hit(["git", "-C", "/srv/clone", "x"], {}, "/tmp"), "-C into the repo is ours")
+        check(hit(["git", "-c", "user.name=Runner", "-C", "/srv/clone", "commit"], {}, "/tmp"), "-c K=V does not end option parsing")
+        check(hit(["git", "-C", "/srv", "--git-dir=clone/.git", "--work-tree=clone", "commit"], {}, "/tmp"),
+              "a relative --git-dir resolves against the -C before it")
         check(not hit(["git", "--git-dir=/srv/other/.git", "x"], {"GIT_DIR": "/srv/clone2/.git"}, "/tmp"),
               "another repo (even one sharing a name prefix) is not ours")
         I.rimflow, I.recorded_run, I.shard_path = saved[0], saved[1], saved[2]

@@ -338,16 +338,18 @@ def git_targets_repo(argv, env, cwd, root):
             cands.append(here)
             k += 1
         elif a in ("--git-dir", "--work-tree") and k + 1 < len(args):
-            cands.append(os.path.join(cwd or "/", args[k + 1]))
+            cands.append(os.path.join(here or "/", args[k + 1]))   # relative to the -C in force at this point
             k += 1
         elif a.startswith(("--git-dir=", "--work-tree=")):
-            cands.append(os.path.join(cwd or "/", a.split("=", 1)[1]))
+            cands.append(os.path.join(here or "/", a.split("=", 1)[1]))
+        elif a in ("-c", "--namespace", "--super-prefix", "--config-env") and k + 1 < len(args):
+            k += 1                                 # a global option taking a separate value: not the subcommand
         elif not a.startswith("-"):
             break                                  # the subcommand: global options end here
         k += 1
     for key in ("GIT_DIR", "GIT_WORK_TREE"):
         if env.get(key):
-            cands.append(os.path.join(cwd or "/", env[key]))
+            cands.append(os.path.join(cwd or "/", env[key]))   # env paths are relative to the cwd, not to -C
     return any(inside(c, None) for c in cands)
 
 
