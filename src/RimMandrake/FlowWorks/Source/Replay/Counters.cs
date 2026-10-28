@@ -14,7 +14,7 @@ namespace RimMandrake.FlowWorks.Replay
     internal enum Work
     {
         CellsMarked, CellsPatched, Patches, WholeRebuilds, Overflows, Rechecks, CorridorCells, CheckReplans, Retracts, Lays, LayFails,
-        CompRevisions, CompBuilds, CompSize, SettleMoves, UnitsSettled, RouteDead, Transfers, TransferRefused, Count
+        CompRevisions, CompBuilds, CompSize, SettleMoves, UnitsSettled, RouteDead, Transfers, TransferRefused, CorridorSkips, Count
     }
 
     internal sealed class Counters

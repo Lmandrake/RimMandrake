@@ -44,6 +44,7 @@
     <Compile Include="..\Hose\HoseClothoid.cs" />
     <Compile Include="..\Hose\HoseBandMath.cs" />
     <Compile Include="..\Hose\HoseWorldPatch.cs" />
+    <Compile Include="..\Hose\HoseCorridorVersions.cs" />
     <Compile Include="..\Hose\HoseRelay.cs" />
     <Compile Include="..\Hose\HoseCrossShadows.cs" />
     <Compile Include="..\Hose\ReelIntakeGeometry.cs" />

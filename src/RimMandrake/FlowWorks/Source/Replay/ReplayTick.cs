@@ -95,6 +95,7 @@ namespace RimMandrake.FlowWorks.Replay
         public ulong CorridorHash, GeomHash;
         public string LastLayReason;
         public int LayEpoch;
+        public int HashedAt;         // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: corridor version when the live hash last matched (0: never)
         public RM_NetLink Link;
         public override string ToString() => "reel" + T.Id;
     }
@@ -165,6 +166,10 @@ namespace RimMandrake.FlowWorks.Replay
         private readonly ReplayRule rule;
         private readonly CordWorld truth, oracleWorld;
         private readonly HoseWorldDirty dirty = new HoseWorldDirty(DirtyCapacity);
+        // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN step 1: every live cell change bumps its chunk version; a recheck whose corridor
+        // saw no change since its hash last matched skips the hash, except on its phased audit recheck (every AuditEvery-th)
+        private readonly HoseCorridorVersions versions = new HoseCorridorVersions();
+        internal const int AuditEvery = 10;
         private CordWorld world, spare;
         private int mapVersion, worldVersion = -1, spareTick = -1, patchCalls, now;
 
@@ -317,6 +322,8 @@ namespace RimMandrake.FlowWorks.Replay
             var c = new Cell(x, z);
             truth.ClearCell(c);
             ReplayRule.Write(truth, c, ch);
+            versions.Ensure(W, H);
+            versions.Touch(x, z);
             if (world == null || worldVersion != mapVersion) return;
             if (CordSig.CellSig(world, c) != CordSig.CellSig(truth, c) && !MarkDirty(x, z)) MapChanged();
         }
@@ -370,7 +377,7 @@ namespace RimMandrake.FlowWorks.Replay
             C.Add(Work.Rechecks);
             EnsureLay(r);
             bool twice = (fault & Fault.DoubleWork) != 0;
-            if (r.HasKey && (r.Lay == null || CorridorHashLive(r.Lay) != r.CorridorHash | (twice && CorridorHashLive(r.Lay) != r.CorridorHash)))
+            if (r.HasKey && (r.Lay == null || CorridorMoved(r) | (twice && CorridorHashLive(r.Lay) != r.CorridorHash)))
             {
                 CordWorld w = World(LayWorldMaxAge);
                 C.Add(Work.CheckReplans);
@@ -402,12 +409,32 @@ namespace RimMandrake.FlowWorks.Replay
                 r.Lay = lay;
                 r.LastLayReason = null;
                 r.CorridorHash = CorridorHash(lay, w);
+                r.HashedAt = 0;   // a new lay's corridor is re-hashed live on its next recheck
                 r.GeomHash = GeometryHash(lay);
             }
             C.End();
         }
 
         private ulong CorridorHashLive(List<V2> lay) => CorridorHash(lay, truth);
+
+        /// <summary>CorridorHashLive(r.Lay) != r.CorridorHash, skipping the hash when no cell of the hashed rectangle changed since
+        /// the hash last matched (HoseCorridorVersions) and this is not the reel's phased audit recheck.</summary>
+        private bool CorridorMoved(RReel r)
+        {
+            versions.Ensure(W, H);
+            int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
+            foreach (V2 p in r.Lay) { Cell c = p.Floor; x0 = Math.Min(x0, c.X); z0 = Math.Min(z0, c.Z); x1 = Math.Max(x1, c.X); z1 = Math.Max(z1, c.Z); }
+            bool audit = (now / RecheckTicks + r.T.Id) % AuditEvery == 0;
+            if (!audit && r.HashedAt > 0 && !versions.ChangedSince(r.HashedAt, x0 - 2, z0 - 2, x1 + 2, z1 + 2))
+            {
+                C.Add(Work.CorridorSkips);
+                return false;
+            }
+            int at = versions.Now;
+            bool moved = CorridorHashLive(r.Lay) != r.CorridorHash;
+            r.HashedAt = moved ? 0 : at;
+            return moved;
+        }
 
         /// <summary>RM_MapComponent_Hoses.CorridorHash (line ~946): FNV over CellSig of the lay's bounding box padded by 2.</summary>
         private ulong CorridorHash(List<V2> lay, CordWorld sigOf)

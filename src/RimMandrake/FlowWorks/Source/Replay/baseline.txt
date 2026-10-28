@@ -11,7 +11,7 @@ dry.Overflows.sum 0
 dry.Overflows.max 0
 dry.Rechecks.sum 7930
 dry.Rechecks.max 1
-dry.CorridorCells.sum 6120574
+dry.CorridorCells.sum 1795681
 dry.CorridorCells.max 145463
 dry.CheckReplans.sum 361
 dry.CheckReplans.max 1
@@ -37,6 +37,8 @@ dry.Transfers.sum 1240
 dry.Transfers.max 31
 dry.TransferRefused.sum 0
 dry.TransferRefused.max 0
+dry.CorridorSkips.sum 6187
+dry.CorridorSkips.max 1
 setup.CellsMarked.sum 348
 setup.CellsMarked.max 8
 setup.CellsPatched.sum 348
@@ -49,7 +51,7 @@ setup.Overflows.sum 0
 setup.Overflows.max 0
 setup.Rechecks.sum 3949
 setup.Rechecks.max 1
-setup.CorridorCells.sum 3084375
+setup.CorridorCells.sum 832202
 setup.CorridorCells.max 145463
 setup.CheckReplans.sum 99
 setup.CheckReplans.max 1
@@ -75,6 +77,8 @@ setup.Transfers.sum 619
 setup.Transfers.max 31
 setup.TransferRefused.sum 0
 setup.TransferRefused.max 0
+setup.CorridorSkips.sum 3167
+setup.CorridorSkips.max 1
 rain.CellsMarked.sum 240000
 rain.CellsMarked.max 400
 rain.CellsPatched.sum 240000
@@ -87,7 +91,7 @@ rain.Overflows.sum 0
 rain.Overflows.max 0
 rain.Rechecks.sum 2388
 rain.Rechecks.max 1
-rain.CorridorCells.sum 2340717
+rain.CorridorCells.sum 1432491
 rain.CorridorCells.max 145463
 rain.CheckReplans.sum 671
 rain.CheckReplans.max 1
@@ -113,6 +117,8 @@ rain.Transfers.sum 372
 rain.Transfers.max 31
 rain.TransferRefused.sum 0
 rain.TransferRefused.max 0
+rain.CorridorSkips.sum 1260
+rain.CorridorSkips.max 1
 cold.CellsMarked.sum 0
 cold.CellsMarked.max 0
 cold.CellsPatched.sum 0
@@ -125,7 +131,7 @@ cold.Overflows.sum 0
 cold.Overflows.max 0
 cold.Rechecks.sum 800
 cold.Rechecks.max 1
-cold.CorridorCells.sum 722485
+cold.CorridorCells.sum 333545
 cold.CorridorCells.max 145463
 cold.CheckReplans.sum 0
 cold.CheckReplans.max 0
@@ -151,6 +157,8 @@ cold.Transfers.sum 124
 cold.Transfers.max 31
 cold.TransferRefused.sum 0
 cold.TransferRefused.max 0
+cold.CorridorSkips.sum 540
+cold.CorridorSkips.max 1
 dirty16383.CellsMarked.sum 16383
 dirty16383.CellsMarked.max 16383
 dirty16383.CellsPatched.sum 16383
@@ -163,7 +171,7 @@ dirty16383.Overflows.sum 0
 dirty16383.Overflows.max 0
 dirty16383.Rechecks.sum 480
 dirty16383.Rechecks.max 1
-dirty16383.CorridorCells.sum 630939
+dirty16383.CorridorCells.sum 606335
 dirty16383.CorridorCells.max 145463
 dirty16383.CheckReplans.sum 200
 dirty16383.CheckReplans.max 1
@@ -189,6 +197,8 @@ dirty16383.Transfers.sum 93
 dirty16383.Transfers.max 31
 dirty16383.TransferRefused.sum 0
 dirty16383.TransferRefused.max 0
+dirty16383.CorridorSkips.sum 35
+dirty16383.CorridorSkips.max 1
 dirty16384.CellsMarked.sum 16384
 dirty16384.CellsMarked.max 16384
 dirty16384.CellsPatched.sum 16384
@@ -201,7 +211,7 @@ dirty16384.Overflows.sum 0
 dirty16384.Overflows.max 0
 dirty16384.Rechecks.sum 480
 dirty16384.Rechecks.max 1
-dirty16384.CorridorCells.sum 630939
+dirty16384.CorridorCells.sum 606335
 dirty16384.CorridorCells.max 145463
 dirty16384.CheckReplans.sum 200
 dirty16384.CheckReplans.max 1
@@ -227,6 +237,8 @@ dirty16384.Transfers.sum 93
 dirty16384.Transfers.max 31
 dirty16384.TransferRefused.sum 0
 dirty16384.TransferRefused.max 0
+dirty16384.CorridorSkips.sum 35
+dirty16384.CorridorSkips.max 1
 dirty16385.CellsMarked.sum 16385
 dirty16385.CellsMarked.max 16385
 dirty16385.CellsPatched.sum 0
@@ -239,7 +251,7 @@ dirty16385.Overflows.sum 1
 dirty16385.Overflows.max 1
 dirty16385.Rechecks.sum 480
 dirty16385.Rechecks.max 1
-dirty16385.CorridorCells.sum 630939
+dirty16385.CorridorCells.sum 606335
 dirty16385.CorridorCells.max 145463
 dirty16385.CheckReplans.sum 200
 dirty16385.CheckReplans.max 1
@@ -265,6 +277,8 @@ dirty16385.Transfers.sum 93
 dirty16385.Transfers.max 31
 dirty16385.TransferRefused.sum 0
 dirty16385.TransferRefused.max 0
+dirty16385.CorridorSkips.sum 35
+dirty16385.CorridorSkips.max 1
 settings.CellsMarked.sum 0
 settings.CellsMarked.max 0
 settings.CellsPatched.sum 0
@@ -277,7 +291,7 @@ settings.Overflows.sum 0
 settings.Overflows.max 0
 settings.Rechecks.sum 1600
 settings.Rechecks.max 1
-settings.CorridorCells.sum 1444970
+settings.CorridorCells.sum 668225
 settings.CorridorCells.max 145463
 settings.CheckReplans.sum 0
 settings.CheckReplans.max 0
@@ -303,6 +317,8 @@ settings.Transfers.sum 248
 settings.Transfers.max 31
 settings.TransferRefused.sum 0
 settings.TransferRefused.max 0
+settings.CorridorSkips.sum 1080
+settings.CorridorSkips.max 1
 aligned.CellsMarked.sum 983
 aligned.CellsMarked.max 983
 aligned.CellsPatched.sum 983
@@ -315,7 +331,7 @@ aligned.Overflows.sum 0
 aligned.Overflows.max 0
 aligned.Rechecks.sum 594
 aligned.Rechecks.max 200
-aligned.CorridorCells.sum 634731
+aligned.CorridorCells.sum 567651
 aligned.CorridorCells.max 288994
 aligned.CheckReplans.sum 200
 aligned.CheckReplans.max 200
@@ -341,6 +357,8 @@ aligned.Transfers.sum 100
 aligned.Transfers.max 31
 aligned.TransferRefused.sum 0
 aligned.TransferRefused.max 0
+aligned.CorridorSkips.sum 97
+aligned.CorridorSkips.max 97
 splitjoin.CellsMarked.sum 298
 splitjoin.CellsMarked.max 1
 splitjoin.CellsPatched.sum 298
@@ -353,7 +371,7 @@ splitjoin.Overflows.sum 0
 splitjoin.Overflows.max 0
 splitjoin.Rechecks.sum 2375
 splitjoin.Rechecks.max 1
-splitjoin.CorridorCells.sum 2337404
+splitjoin.CorridorCells.sum 1578296
 splitjoin.CorridorCells.max 145463
 splitjoin.CheckReplans.sum 332
 splitjoin.CheckReplans.max 1
@@ -379,3 +397,5 @@ splitjoin.Transfers.sum 850
 splitjoin.Transfers.max 33
 splitjoin.TransferRefused.sum 0
 splitjoin.TransferRefused.max 0
+splitjoin.CorridorSkips.sum 1150
+splitjoin.CorridorSkips.max 1
