@@ -602,6 +602,18 @@ def r4_note_account():
     return t is None and not ok and u is None and base == "dispatcher: Conductor: completed", repr((t, ok, u, base))
 
 
+
+def r5_short_sha_and_hidden_ref():
+    """BLIND_REFS_WIDEN_SHORT_SHA_HIDDEN: a 7-9 char sha the resolver accepts shows; a short unresolved MIXED
+    candidate is counted withheld while an all-digit number or all-letter word of that length is not a sha (not
+    counted); a note naming a hidden known id drops the ref and counts it."""
+    notes = [{"event": "note", "seat": "BENCH", "ts": "2026-10-27T05:00:00Z",
+              "text": "see abcdef0 and 1a2b3c4 and 20261028 and defaced, also BIOME_DECIDE_TWO_ROUTES"}]
+    pi = BL.project_item(item(), notes, [], ids(KNOWN, hidden=("BIOME_DECIDE_TWO_ROUTES",)), resolve=resolver())
+    n = pi.notes[0]
+    return (n.shas == (SHA_A,) and n.refs == () and pi.fields_withheld == 2,
+            repr((n.shas, n.refs, pi.fields_withheld)))
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -636,6 +648,8 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
           ("R1-M an unresolved note sha is counted once per distinct candidate", r1_note_sha_counted),
           ("R2-H a registry account named like a model is still an account; a null map raises",
            r2_registry_model_and_null),
+          ("R5 a 7-9 char resolving sha shows; a hidden id named in a note is counted withheld",
+           r5_short_sha_and_hidden_ref),
           ("R3-H an account in the displayed evidence root drops the path, counted", r3_evidence_root_account)]
 
 
