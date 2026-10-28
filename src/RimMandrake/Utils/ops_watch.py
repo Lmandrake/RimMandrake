@@ -1406,8 +1406,9 @@ def run(now=None, rules=None, filer=None, families=None):
     atomic_json(ops_dir() / "flags.json", {"at": iso(now), "flags": flags})
     atomic_json(ops_dir() / "status.json", {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s,
                                              "points": points, "flags": flags, "alarms": alarms})
-    hist_all = {k: v + ([(now, num(points[k]))] if points.get(k, {}).get("m") == "MEASURED" and num(points[k]) is not None
-                        else []) for k, v in hist.items()}
+    # every key of this pass too, not only those with history: a new key's first sample counts (review night r1)
+    hist_all = {k: hist.get(k, []) + ([(now, num(points[k]))] if points.get(k, {}).get("m") == "MEASURED"
+                                      and num(points[k]) is not None else []) for k in set(hist) | set(points)}
     dg = build_digest(points, hist_all, flags, alarms, now, run_s)
     atomic_json(ops_dir() / "digest.json", dg)
     write_text_atomic(ops_dir() / "digest.md", digest_md(dg))

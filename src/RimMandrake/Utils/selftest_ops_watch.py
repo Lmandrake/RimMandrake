@@ -337,6 +337,8 @@ prod = OW.series_path("production").read_text().splitlines()
 check("run: production with an unchanged source record is not re-appended", len(prod) == 1, len(prod))
 check("run: status.json carries the points for the allocator",
       json.loads((TMP / "ops" / "status.json").read_text())["points"]["disk.d_free_gb"]["v"] == 1000.0)
+check("run: a key's first MEASURED sample counts in the digest's n7 (1, review night r1)",
+      r0["kpis"]["production.P1"]["n7"] == 1, r0["kpis"]["production.P1"])
 check("run: digest d24 for d_free_gb is 0 (1000 a day ago, 1000 now)", k["disk.d_free_gb"]["d24"] == 0.0, k["disk.d_free_gb"])
 check("run: the digest.md exists and leads with the headline",
       (TMP / "ops" / "digest.md").read_text().splitlines()[2].startswith("runway"))
