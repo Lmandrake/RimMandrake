@@ -20,6 +20,12 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The squares a POUR walks before it calls the canal full (a pump asks every cycle; displacement walks the map).</summary>
 		public const int PourWalkCap = 1024;
 
+		/// <summary>Walks capped at this many squares reuse <see cref="seenScratch"/> and <see cref="queueScratch"/>.</summary>
+		public const int ScratchCap = 4096;
+
+		[ThreadStatic] private static HashSet<int> seenScratch;
+		[ThreadStatic] private static Queue<int> queueScratch;
+
 		/// <summary>
 		/// Plan up to <paramref name="dl"/> decilitres from <paramref name="start"/>. <paramref name="creditStart"/>: the start
 		/// square takes water itself (a pour) or only conducts (a fill-in's own square). <paramref name="neighbour"/>(i, dir)
@@ -38,8 +44,15 @@ namespace RimMandrake.FlowWorks
 				return 0;
 			}
 			long remaining = dl;
-			var seen = new HashSet<int> { start };
-			var queue = new Queue<int>();
+			// LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: a capped walk (a pour, a levelling room probe: 2 per link per pump cycle)
+			// reuses one set and queue instead of allocating them per call (live: 2.3 MB per levelling cycle, a GC magnet). An
+			// uncapped walk (displacement over the map) still allocates its own, so no huge set stays alive.
+			bool reuse = cap <= ScratchCap;
+			HashSet<int> seen = reuse ? (seenScratch ?? (seenScratch = new HashSet<int>())) : new HashSet<int>();
+			Queue<int> queue = reuse ? (queueScratch ?? (queueScratch = new Queue<int>())) : new Queue<int>();
+			seen.Clear();
+			queue.Clear();
+			seen.Add(start);
 			queue.Enqueue(start);
 			int walked = 0;
 			while (queue.Count > 0 && remaining > 0 && walked < cap)

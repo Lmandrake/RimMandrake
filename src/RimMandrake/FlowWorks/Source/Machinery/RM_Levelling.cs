@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimMandrake.FlowWorks.Hose;
 using RimMandrake.FlowWorks.LiquidTypes;
 using Verse;
@@ -44,18 +43,123 @@ namespace RimMandrake.FlowWorks.Machinery
 		public static int Cycles, LastLinks, Moves;
 		public static long MovedDl;
 
+		/// <summary>LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: walk dug runs in cell-index space (RM_LevelRunWalk: allocation-free, the
+		/// old walk's exact answer, LevelRunWalkChecks); false = the old IntVec3 walk, kept for the live A/B (ProofTiming "fast=0").</summary>
+		public static bool FastWalk = true;
+
 		private sealed class MapState
 		{
 			public int cursor;
 			/// <summary>The hose index the next cycle starts at: the first one the walk budget turned away, else 0.</summary>
 			public int hoseCursor;
-			/// <summary>Per-square walk marks (the walk id that reached the square) and the body that walk found (-1: none), sized
-			/// to the map once: a walk allocates no per-square set (each end used to fill a HashSet of up to 20000).</summary>
-			public int[] mark, bodyOf;
-			public int walkId, cycleFirstWalk;
+			/// <summary>Per-square walk marks (the walk id that reached the square), the body that walk found (-1: none) and the
+			/// walk queue, sized to the map once: a walk allocates no per-square set (each end used to fill a HashSet of up to 20000).</summary>
+			public readonly RM_LevelRunScratch run = new RM_LevelRunScratch();
 			public readonly List<IntVec3> queue = new List<IntVec3>();
 			public readonly List<int> depths = new List<int>();
 			public readonly Dictionary<object, RM_LevelLinkState> portState = new Dictionary<object, RM_LevelLinkState>();
+			// the cycle's working sets, cleared each cycle instead of allocated (LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE)
+			public readonly List<RM_LevelBody> bodies = new List<RM_LevelBody>();
+			public readonly List<FluidDef> bodyFluid = new List<FluidDef>();
+			public readonly Dictionary<long, int> keyIndex = new Dictionary<long, int>();
+			public readonly List<RM_LevelLink> links = new List<RM_LevelLink>();
+			public readonly List<(End a, End b)> ends = new List<(End a, End b)>();
+			public readonly HashSet<RM_NetComponent> done = new HashSet<RM_NetComponent>();
+			public readonly List<End> resolved = new List<End>();
+			public readonly List<RM_NetPort> ports = new List<RM_NetPort>();
+		}
+
+		// ── LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: the per-cycle profile, read by ProofTiming ──────────────────────────────
+		// Each call is timed whole and in parts (walk = Resolve, the run walks; links = Floor/Take/Room per pair, Room being a
+		// pour probe; plan; moves), with the collection count around it (gc0: a collection landed inside the call) and the heap
+		// read around it and its parts (GC.GetTotalMemory(false): a lower bound, meaningful only in a call with gc0 = 0).
+		private static long accWalk, accLinks, memWalk, memLinks, tPlan, tMoves, accPre, accHl, accComp;
+		// pre = RM_HoseLinks.For + RM_LiquidNet.Components; comp = ComponentOf (a component is built on first use after a bump);
+		// bumps / hl / builds: topology revisions, hose-link rebuilds and component builds during the call
+		private static int bumps0, hoseRebuilds0, lastBuilds, lastMap;
+		private static int lastWalked, lastPorts;
+		private static int pCalls, pGcCalls, pAllocCalls, pFirstLeft = 3;
+		private static double pTotalMs, pMaxMs, pOwnMaxMs, pGcMs, pAllocKBSum, pAllocKBMax;
+		private static long pWalkedSum;
+		private static string pMax = "-", pOwnMax = "-", pFirst = "";
+
+		private static double Ms(long ticks) => ticks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+
+		private static void Note(long t0, int gc0, long mem0)
+		{
+			long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
+			int gcs = System.GC.CollectionCount(0) - gc0;
+			double allocKB = (System.GC.GetTotalMemory(false) - mem0) / 1024.0;
+			double ms = Ms(t1 - t0);
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			string Entry() => ms.ToString("0.00", inv) + "ms(walk " + Ms(accWalk).ToString("0.00", inv) + ",links " + Ms(accLinks).ToString("0.00", inv)
+				+ ",plan " + (tPlan == 0 ? 0 : Ms(tMoves == 0 ? t1 - tPlan : tMoves - tPlan)).ToString("0.00", inv)
+				+ ",moves " + (tMoves == 0 ? 0 : Ms(t1 - tMoves)).ToString("0.00", inv) + "):gc0=" + gcs + ":walked=" + lastWalked
+				+ ":ports=" + lastPorts + ":links=" + LastLinks + ":allocKB=" + (gcs > 0 ? "?" : allocKB.ToString("0", inv))
+				+ "(walk " + (memWalk / 1024.0).ToString("0", inv) + ",links " + (memLinks / 1024.0).ToString("0", inv) + ")"
+				+ ":pre=" + Ms(accPre).ToString("0.00", inv) + "(hl " + Ms(accHl).ToString("0.00", inv) + "):comp=" + Ms(accComp).ToString("0.00", inv)
+				+ ":bumps=" + (RM_LiquidNet.Bumps - bumps0) + ":hl=" + (RM_HoseLinks.Rebuilds - hoseRebuilds0) + ":builds=" + lastBuilds
+				+ ":map=" + lastMap + ":tick=" + (Find.TickManager?.TicksGame ?? 0);
+			pCalls++;
+			pTotalMs += ms;
+			pWalkedSum += lastWalked;
+			if (pFirstLeft > 0)
+			{
+				pFirstLeft--;
+				pFirst += (pFirst.Length > 0 ? " | " : "") + Entry();
+			}
+			if (ms > pMaxMs)
+			{
+				pMaxMs = ms;
+				pMax = Entry();
+			}
+			if (gcs > 0)
+			{
+				pGcCalls++;
+				pGcMs += ms;
+			}
+			else
+			{
+				pAllocCalls++;
+				pAllocKBSum += allocKB;
+				pAllocKBMax = System.Math.Max(pAllocKBMax, allocKB);
+				if (ms > pOwnMaxMs)
+				{
+					pOwnMaxMs = ms;
+					pOwnMax = Entry();
+				}
+			}
+		}
+
+		/// <summary>"LEVELTIME fast=b calls=n meanMs= maxMs= max=[entry] ownMaxMs= ownMax=[entry] gcCalls=n gcMs= walkedMean=
+		/// allocKBMean= allocKBMax= first=[entry | ...]"; an entry is "ms(walk,links,plan,moves):gc0:walked:ports:links:allocKB(walk,links):tick".
+		/// arg: "reset" zeroes the profile (the first-calls list too), "fast=0"/"fast=1" switches the walk.</summary>
+		public static string ProofTiming(string arg)
+		{
+			arg = arg ?? "";
+			if (arg.Contains("fast=0"))
+			{
+				FastWalk = false;
+			}
+			if (arg.Contains("fast=1"))
+			{
+				FastWalk = true;
+			}
+			if (arg.Contains("reset"))
+			{
+				pCalls = pGcCalls = pAllocCalls = 0;
+				pFirstLeft = 3;
+				pTotalMs = pMaxMs = pOwnMaxMs = pGcMs = pAllocKBSum = pAllocKBMax = 0;
+				pWalkedSum = 0;
+				pMax = pOwnMax = "-";
+				pFirst = "";
+			}
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			return "LEVELTIME fast=" + (FastWalk ? 1 : 0) + " calls=" + pCalls + " meanMs=" + (pCalls == 0 ? 0 : pTotalMs / pCalls).ToString("0.000", inv)
+				+ " maxMs=" + pMaxMs.ToString("0.00", inv) + " max=[" + pMax + "] ownMaxMs=" + pOwnMaxMs.ToString("0.00", inv) + " ownMax=[" + pOwnMax
+				+ "] gcCalls=" + pGcCalls + " gcMs=" + pGcMs.ToString("0.0", inv) + " walkedMean=" + (pCalls == 0 ? 0 : pWalkedSum / pCalls)
+				+ " allocKBMean=" + (pAllocCalls == 0 ? 0 : pAllocKBSum / pAllocCalls).ToString("0.0", inv) + " allocKBMax=" + pAllocKBMax.ToString("0", inv)
+				+ " first=[" + pFirst + "]";
 		}
 
 		private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Map, MapState> states =
@@ -98,6 +202,21 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		public static void Tick(Map map)
 		{
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			int gc0 = System.GC.CollectionCount(0);
+			long mem0 = System.GC.GetTotalMemory(false);
+			accWalk = accLinks = memWalk = memLinks = tPlan = tMoves = accPre = accHl = accComp = 0;
+			bumps0 = RM_LiquidNet.Bumps;
+			hoseRebuilds0 = RM_HoseLinks.Rebuilds;
+			lastBuilds = 0;
+			lastMap = map?.Index ?? -1;
+			lastWalked = lastPorts = 0;
+			TickCore(map);
+			Note(t0, gc0, mem0);
+		}
+
+		private static void TickCore(Map map)
+		{
 			// exact-level water only (shipped on): with it off a dug square gives and takes whole notches, and a part-notch take
 			// would strip the notches and report nothing moved
 			if (map == null || !RM_HoseSettings.gravityLevellingEnabled || !RM_HoseSettings.enabled || !RM_MapComponent_Excavation.LevelExact)
@@ -114,7 +233,9 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
+			long tPre = System.Diagnostics.Stopwatch.GetTimestamp();
 			IReadOnlyList<RM_NetLink> hoses = RM_HoseLinks.For(map).All;
+			accHl = System.Diagnostics.Stopwatch.GetTimestamp() - tPre;
 			MapState st = states.GetValue(map, _ => new MapState());
 			st.portState.Clear();
 			if (hoses.Count == 0)
@@ -122,41 +243,47 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			RM_NetComponents comps = RM_LiquidNet.Components(map);
-			var bodies = new List<RM_LevelBody>();
-			var bodyFluid = new List<FluidDef>();
-			var keyIndex = new Dictionary<long, int>();
-			var links = new List<RM_LevelLink>();
-			var ends = new List<(End a, End b)>();
-			var done = new HashSet<RM_NetComponent>();
+			accPre = System.Diagnostics.Stopwatch.GetTimestamp() - tPre;
+			int builds0 = comps.Builds;
+			List<RM_LevelBody> bodies = st.bodies;
+			List<FluidDef> bodyFluid = st.bodyFluid;
+			Dictionary<long, int> keyIndex = st.keyIndex;
+			List<RM_LevelLink> links = st.links;
+			List<(End a, End b)> ends = st.ends;
+			HashSet<RM_NetComponent> done = st.done;
+			bodies.Clear();
+			bodyFluid.Clear();
+			keyIndex.Clear();
+			links.Clear();
+			ends.Clear();
+			done.Clear();
 			int walked = 0;
-			int nCells = map.cellIndices.NumGridCells;
-			if (st.mark == null || st.mark.Length != nCells || st.walkId > int.MaxValue - 1000000)
-			{
-				st.mark = new int[nCells];
-				st.bodyOf = new int[nCells];
-				st.walkId = 0;
-			}
-			st.cycleFirstWalk = st.walkId + 1;
+			st.run.Prepare(map.cellIndices.NumGridCells);
+			st.run.BeginCycle();
+			RM_MapComponent_Excavation.LevelRunGrid grid = ex.LevelRunGridNow();
 			int startAt = st.hoseCursor < hoses.Count ? st.hoseCursor : 0, turnedAway = -1;
 			for (int hi = 0; hi < hoses.Count; hi++)
 			{
 				int hIndex = (startAt + hi) % hoses.Count;
 				RM_NetLink h = hoses[hIndex];
+				long tc = System.Diagnostics.Stopwatch.GetTimestamp();
 				RM_NetComponent c = comps.ComponentOf(h);
-				if (c == null || c.Refused || !done.Add(c) || c.Ports.Count < 2)
+				accComp += System.Diagnostics.Stopwatch.GetTimestamp() - tc;
+				if (c == null || c.Refused || !done.Add(c) || c.Ports.Count < 2 || HasWorkingPump(c))
 				{
 					continue;
 				}
-				if (c.Machines.Any(m => m is Building_LiquidPump p && p.Working))
-				{
-					continue;
-				}
-				var resolved = new List<End>();
-				foreach (RM_NetPort p in c.Ports.Where(q => q.Role != RM_FreeEndRole.Capped && q.Cell is IntVec3 && q.Reel is CompHoseReel)
-					.OrderBy(q => ((CompHoseReel)q.Reel).parent.thingIDNumber).Take(MaxPortsPerComponent))
+				List<End> resolved = st.resolved;
+				resolved.Clear();
+				foreach (RM_NetPort p in OpenEnds(c, st.ports))
 				{
 					bool budgetLeft = walked < WalkBudget;
-					if (Resolve(map, ex, st, (IntVec3)p.Cell, bodies, bodyFluid, keyIndex, ref walked, out End e))
+					long tw = System.Diagnostics.Stopwatch.GetTimestamp(), mw = System.GC.GetTotalMemory(false);
+					bool ok = Resolve(map, ex, st, ref grid, (IntVec3)p.Cell, bodies, bodyFluid, keyIndex, ref walked, out End e);
+					accWalk += System.Diagnostics.Stopwatch.GetTimestamp() - tw;
+					memWalk += System.GC.GetTotalMemory(false) - mw;
+					lastPorts++;
+					if (ok)
 					{
 						e.port = p;
 						e.comp = c;
@@ -167,6 +294,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						turnedAway = hIndex;
 					}
 				}
+				long tl = System.Diagnostics.Stopwatch.GetTimestamp(), ml = System.GC.GetTotalMemory(false);
 				for (int i = 0; i < resolved.Count; i++)
 				{
 					for (int j = i + 1; j < resolved.Count; j++)
@@ -183,7 +311,11 @@ namespace RimMandrake.FlowWorks.Machinery
 						ends.Add((a, b));
 					}
 				}
+				accLinks += System.Diagnostics.Stopwatch.GetTimestamp() - tl;
+				memLinks += System.GC.GetTotalMemory(false) - ml;
 			}
+			lastWalked = walked;
+			lastBuilds = comps.Builds - builds0;
 			st.hoseCursor = turnedAway < 0 ? 0 : turnedAway;
 			LastLinks = links.Count;
 			Cycles++;
@@ -191,10 +323,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return;
 			}
+			tPlan = System.Diagnostics.Stopwatch.GetTimestamp();
 			var state = new RM_LevelLinkState[links.Count];
 			long limitlessNet = 0;
 			List<RM_LevelMove> moves = RM_LevellingMath.Plan(bodies, links, System.Math.Max(1, RM_HoseSettings.LevellingUnitsPerCycle),
 				MaxLinksPerCycle, ref st.cursor, state, ref limitlessNet);
+			tMoves = System.Diagnostics.Stopwatch.GetTimestamp();
 			foreach (RM_LevelMove m in moves)
 			{
 				(End a, End b) = ends[m.Link];
@@ -230,25 +364,66 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					continue;
 				}
-				foreach (End e in new[] { ends[i].a, ends[i].b })
-				{
-					// a hose end in several links shows the one that moved, else the last reason it did not
-					if (!st.portState.TryGetValue(e.port.Reel, out RM_LevelLinkState old) || old != RM_LevelLinkState.Flowing)
-					{
-						st.portState[e.port.Reel] = state[i];
-					}
-				}
+				// a hose end in several links shows the one that moved, else the last reason it did not
+				NoteState(st, ends[i].a, state[i]);
+				NoteState(st, ends[i].b, state[i]);
 			}
 		}
 
-		/// <summary>The end square as a pump finds it (the end, then its 8 neighbours: the first dug or natural liquid square),
-		/// and its body, added to <paramref name="bodies"/> once per key.</summary>
-		private static bool Resolve(Map map, RM_MapComponent_Excavation ex, MapState st, IntVec3 end, List<RM_LevelBody> bodies, List<FluidDef> fluids,
-			Dictionary<long, int> keyIndex, ref int walked, out End e)
+		private static void NoteState(MapState st, End e, RM_LevelLinkState s)
+		{
+			if (!st.portState.TryGetValue(e.port.Reel, out RM_LevelLinkState old) || old != RM_LevelLinkState.Flowing)
+			{
+				st.portState[e.port.Reel] = s;
+			}
+		}
+
+		private static bool HasWorkingPump(RM_NetComponent c)
+		{
+			foreach (object m in c.Machines)
+			{
+				if (m is Building_LiquidPump p && p.Working)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>The component's open hose ends (not Capped, with a cell and a reel), by reel thing id (stable: ends of one reel keep
+		/// their order), at most <see cref="MaxPortsPerComponent"/>: the old Where/OrderBy/Take, into a reused list.</summary>
+		private static List<RM_NetPort> OpenEnds(RM_NetComponent c, List<RM_NetPort> into)
+		{
+			into.Clear();
+			foreach (RM_NetPort q in c.Ports)
+			{
+				if (q.Role == RM_FreeEndRole.Capped || !(q.Cell is IntVec3) || !(q.Reel is CompHoseReel))
+				{
+					continue;
+				}
+				int id = ((CompHoseReel)q.Reel).parent.thingIDNumber, at = into.Count;
+				while (at > 0 && ((CompHoseReel)into[at - 1].Reel).parent.thingIDNumber > id)
+				{
+					at--;
+				}
+				into.Insert(at, q);
+			}
+			if (into.Count > MaxPortsPerComponent)
+			{
+				into.RemoveRange(MaxPortsPerComponent, into.Count - MaxPortsPerComponent);
+			}
+			return into;
+		}
+
+		/// <summary>The end square as a pump finds it (the end, then its 8 neighbours in GenAdj.AdjacentCells order: the first dug or
+		/// natural liquid square), and its body, added to <paramref name="bodies"/> once per key.</summary>
+		private static bool Resolve(Map map, RM_MapComponent_Excavation ex, MapState st, ref RM_MapComponent_Excavation.LevelRunGrid grid, IntVec3 end,
+			List<RM_LevelBody> bodies, List<FluidDef> fluids, Dictionary<long, int> keyIndex, ref int walked, out End e)
 		{
 			e = default;
-			foreach (IntVec3 c in new[] { end }.Concat(GenAdj.CellsAdjacent8Way(new TargetInfo(end, map))))
+			for (int k = -1; k < 8; k++)
 			{
+				IntVec3 c = k < 0 ? end : end + GenAdj.AdjacentCells[k];
 				if (!c.InBounds(map))
 				{
 					continue;
@@ -257,7 +432,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				{
 					e.cell = c;
 					e.dug = true;
-					return DugBody(map, ex, st, c, bodies, fluids, keyIndex, ref walked, out e.body);
+					return DugBody(map, ex, st, ref grid, c, bodies, fluids, keyIndex, ref walked, out e.body);
 				}
 				if (ex.IsSourceCell(c))
 				{
@@ -309,15 +484,19 @@ namespace RimMandrake.FlowWorks.Machinery
 		/// <summary>The 4-way run of dug squares from <paramref name="start"/>: wet squares of its liquid (or, from a dry square,
 		/// dry squares), not across a shut sluice. Two ends in one run share a body: an end on a square a walk reached this cycle
 		/// takes that walk's body without walking (MapState.mark/bodyOf), so a run is walked once per cycle, not once per end.</summary>
-		private static bool DugBody(Map map, RM_MapComponent_Excavation ex, MapState st, IntVec3 start, List<RM_LevelBody> bodies, List<FluidDef> fluids,
-			Dictionary<long, int> keyIndex, ref int walked, out int index)
+		/// <summary>The 4-way run of dug squares from <paramref name="start"/>: wet squares of its liquid (or, from a dry square,
+		/// dry squares), not across a shut sluice. Two ends in one run share a body: an end on a square a walk reached this cycle
+		/// takes that walk's body without walking (MapState.run marks/bodies), so a run is walked once per cycle, not once per end.</summary>
+		private static bool DugBody(Map map, RM_MapComponent_Excavation ex, MapState st, ref RM_MapComponent_Excavation.LevelRunGrid grid, IntVec3 start,
+			List<RM_LevelBody> bodies, List<FluidDef> fluids, Dictionary<long, int> keyIndex, ref int walked, out int index)
 		{
 			index = -1;
+			RM_LevelRunScratch run = st.run;
 			int startIdx = map.cellIndices.CellToIndex(start);
-			if (st.mark[startIdx] >= st.cycleFirstWalk)
+			if (run.Reached(startIdx))
 			{
 				// a run walked this cycle (a capped walk's queued edge included): its body, for nothing
-				index = st.bodyOf[startIdx];
+				index = run.BodyOf[startIdx];
 				return index >= 0;
 			}
 			if (walked >= WalkBudget || RM_FlowDoorRules.SealsLiquid(start.GetEdifice(map)))
@@ -330,8 +509,31 @@ namespace RimMandrake.FlowWorks.Machinery
 			{
 				return false;
 			}
-			int walk = ++st.walkId;
-			st.mark[startIdx] = walk;
+			if (FastWalk)
+			{
+				RM_LevelRun r = RM_LevelRunWalk.Walk(ref grid, map.Size.x, map.Size.z, startIdx, run, MaxRunCells);
+				walked += r.Squares;
+				long key = (1L << 40) + r.Low;
+				if (!keyIndex.TryGetValue(key, out index))
+				{
+					index = -1;
+					if (r.MaxDepth > 0)
+					{
+						index = bodies.Count;
+						keyIndex[key] = index;
+						bodies.Add(new RM_LevelBody { Key = key, Fluid = fluid, Hist = RM_LevelRunWalk.Hist(run, r.MaxDepth), Water = r.Water });
+						fluids.Add(fluid);
+					}
+				}
+				int[] q = run.Queue, bodyOf = run.BodyOf;
+				for (int i = 0; i < r.Reached; i++)
+				{
+					bodyOf[q[i]] = index;
+				}
+				return index >= 0;
+			}
+			int walk = ++run.WalkId;
+			run.Mark[startIdx] = walk;
 			List<IntVec3> queue = st.queue;
 			List<int> depths = st.depths;
 			queue.Clear();
@@ -355,7 +557,7 @@ namespace RimMandrake.FlowWorks.Machinery
 						continue;
 					}
 					int ni = map.cellIndices.CellToIndex(n);
-					if (st.mark[ni] >= st.cycleFirstWalk)
+					if (run.Mark[ni] >= run.CycleFirstWalk)
 					{
 						continue;   // this walk's, or an earlier run's this cycle: runs are disjoint, no square counted twice
 					}
@@ -364,7 +566,7 @@ namespace RimMandrake.FlowWorks.Machinery
 					{
 						continue;
 					}
-					st.mark[ni] = walk;
+					run.Mark[ni] = walk;
 					queue.Add(n);
 				}
 			}
@@ -373,7 +575,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			// every square this walk reached (the processed run and a capped walk's queued edge) answers later ends for nothing
 			foreach (IntVec3 q in queue)
 			{
-				st.bodyOf[map.cellIndices.CellToIndex(q)] = index;
+				run.BodyOf[map.cellIndices.CellToIndex(q)] = index;
 			}
 			return index >= 0;
 		}

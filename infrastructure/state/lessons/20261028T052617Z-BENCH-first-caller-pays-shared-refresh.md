@@ -1,0 +1,2 @@
+A per-tick shared refresh (RM_HoseLinks.For: the hose signature over every reel via IsFed/FeedsInto/RelayIndex) is paid by whichever system asks first in the tick, so a per-system profiler charges it to that system: Levelling's 40 ms rain-B2 max on map0 was 40.1 ms of HoseLinks with zero levelling work (LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE it4). Split shared-refresh time out of every per-system timing before attributing a spike.
+home: design/validation_walks/RimMandrake/FlowWorks.md

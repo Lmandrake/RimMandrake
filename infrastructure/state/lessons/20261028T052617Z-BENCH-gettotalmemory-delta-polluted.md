@@ -1,0 +1,2 @@
+A main-thread GC.GetTotalMemory(false) delta around a call is not that call's allocation in RimWorld/Mono: other threads allocate in between, and Levelling calls that allocate nothing read up to 13 MB (LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE, 2026-10-28). To ask whether a collection landed inside a call, diff GC.CollectionCount(0) (works live; Mono Boehm makes gc0=gc1=gc2); to measure allocation, test offline (the SelfTest's allocation-free cases).
+home: skills/live-debugging-proof-harness

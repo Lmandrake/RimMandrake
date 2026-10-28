@@ -1468,6 +1468,36 @@ namespace RimMandrake.FlowWorks
 			return depthGrid[i] != 0 && (fillGrid[i] > 0 || partGrid[i] > 0);
 		}
 
+		/// <summary>LEVELLING_TICK_DIAGNOSE_DRY_GC_SPIKE: the excavation grids as the levelling run walk reads them, by cell index
+		/// (RM_LevelRunWalk; RM_Levelling.DugBody). Fluid(i) is the def index of FluidAt(i) ?? ActiveFluid (-1: none), read
+		/// through a 256-key table built here once per cycle, so it answers exactly what the old IntVec3 walk compared.</summary>
+		internal struct LevelRunGrid : RM_IRunGrid
+		{
+			internal byte[] depth, fill, fluidKey;
+			internal ushort[] part;
+			internal int[] fluidId;
+			internal EdificeGrid edifices;
+			public bool Dug(int i) => depth[i] != 0;
+			public long Water(int i) => depth[i] == 0 ? 0 : fill[i] * (long)RM_LevelSolve.U + part[i];
+			public int Fluid(int i) => fluidKey == null ? fluidId[0] : fluidId[fluidKey[i]];
+			public bool Seals(int i) => RM_FlowDoorRules.SealsLiquid(edifices[i]);
+			public int Depth(int i) => depth[i];
+		}
+
+		private readonly int[] levelRunFluidIds = new int[256];
+
+		internal LevelRunGrid LevelRunGridNow()
+		{
+			FluidDef active = ActiveFluid;
+			int activeId = active == null ? -1 : active.index;
+			for (int k = 0; k < levelRunFluidIds.Length; k++)
+			{
+				FluidDef f = k == 0 || fluidPalette == null || k > fluidPalette.Count ? null : fluidPalette[k - 1];
+				levelRunFluidIds[k] = f == null ? activeId : f.index;
+			}
+			return new LevelRunGrid { depth = depthGrid, fill = fillGrid, part = partGrid, fluidKey = fluidGrid, fluidId = levelRunFluidIds, edifices = map.edificeGrid };
+		}
+
 		/// <summary>Whole notches of room left below the brim, in decilitres' truth: a part-filled top notch has no room for a
 		/// whole level (every whole-level writer asks this, so none can push a cell past its brim).</summary>
 		private int RoomNotches(int i)
