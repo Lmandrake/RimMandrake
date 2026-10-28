@@ -939,12 +939,22 @@ def main(argv=None, bridge=None):
                 r2 = B.call("jawa/ordered_job", pawnId=pid, jobDef="Ingest", targetAId=hid, count=1, waitTicks=30) or {}
                 # HARNESS: a hemogen pack takes ~480 ticks to ingest (500 read it mid-job). Review 2026-10-27 F5: the
                 # result is READ -- a baseliner still chewing at the end of the budget has not been measured at all
-                ended = wait_job_end(pid, "Ingest", 1500)
+                # T28 FAIL 2026-10-28 (+0.8 not +0.5): keep a (job, level) trace so a double drink is told from a second job
+                trace = []
+                ended = False
+                for _ in range(15):
+                    ticks(100)
+                    trace.append((job(pid), need(pid)))
+                    if trace[-1][0] != "Ingest":
+                        ended = True
+                        break
+                ticks(300)
+                trace.append((job(pid), need(pid)))
                 ticks(60)
                 live = ids_of("HemogenPack")
                 out28[tag] = {"levels": [l0, need(pid)], "accepted": r2.get("accepted"), "after": r2.get("afterJobDef"),
                               "msg": r2.get("message"), "packLeft": count("HemogenPack"), "jobEnded": ended,
-                              "packId": hid, "packGone": None if live is None or not hid else hid not in live}
+                              "trace": trace, "packId": hid, "packGone": None if live is None or not hid else hid not in live}
             bad = []
             sgl = out28.get("sang", {}).get("levels") or [None, None]
             bsl = out28.get("base", {}).get("levels") or [None, None]
