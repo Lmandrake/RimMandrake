@@ -284,6 +284,19 @@ def reconcile(rec):
         res = invalid_result(rec, latest, shadow)
     if host == ARCHMAGI and not rec.get("cancel") and archmagi_bounce(rec, res):
         return
+    if host == STEVE and (res["outcome"], res["cause"]) == ("REFUSED", "GUARD_HELD") and not rec.get("cancel"):
+        # a driver took the game guard between the worker's start check and the attempt's acquire: nothing was measured,
+        # so the job is NOT finished. Ask for a fresh attempt every tick (no retry budget); busy (75) = still held.
+        rc, o = remote(["start", "--retry"], stdin=json.dumps(job))
+        if o.get("attempt") and o["attempt"] != latest:
+            rec.update(attempt=o["attempt"], attempts=rec.get("attempts", []) + [o["attempt"]])
+            move(jid, "running", "running", rec)
+            remote(["ack", "--attempt", latest])
+            log("%s attempt %s REFUSED/GUARD_HELD (late): requeued -> %s" % (jid, latest, o["attempt"]))
+        else:
+            log("%s attempt %s REFUSED/GUARD_HELD (late): guard still held (%s); stays running, asked again next tick" % (
+                jid, latest, o.get("busy_with") or o.get("error") or rc))
+        return
     if (res["outcome"], res["cause"]) in AUTO_RETRY and rec.get("auto_retries", 0) < 1 and not rec.get("cancel"):
         rc, o = remote(["start", "--retry"], stdin=json.dumps(job))
         if o.get("attempt"):

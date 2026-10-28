@@ -580,6 +580,36 @@ def main():
         check(rk["result"]["cause"] == "GAME_DIED" and len(rk["attempts"]) == 2 and not os.path.exists(paused),
               "the second GAME_DIED closes the job without pausing the lane: %s" % rk["result"]["cause"])
 
+        # a driver takes the game guard AFTER the worker's start check, before the attempt acquires it (the race gap):
+        # the attempt ends REFUSED/GUARD_HELD, which measured nothing - the job must stay running and be asked again
+        # every tick, then run to DONE once the guard is free (never finished REFUSED).
+        grab = os.path.join(tmp, "grab.py")
+        open(grab, "w").write("import os, sys\nsys.path.insert(0, %r)\nimport driver_lock as D\n"
+                              "m = os.path.join(%r, 'grabbed')\n"
+                              "if not os.path.exists(m):\n    open(m, 'w').close()\n"
+                              "    D.acquire(os.environ['RIMFLOW_DRIVER_LOCK'], 'BENCH', 'racing driver', "
+                              "{'pid': 4242, 'start': 7.0, 'boot_id': None, 'platform': 'wsl', 'host': 'elsewhere'})\n"
+                              % (os.path.join(REPO, "src", "RimMandrake", "rimflow"), tmp))
+        race = dict(TESTQ_TEST_BEFORE_ACQUIRE="%s %s" % (sys.executable, grab))
+        g = submit("--rows", "r1")["job"]
+        tq("tick", **race)
+        g1 = running_attempt(g)
+        wait_worker(g1)
+        tq("tick", **race)
+        check(state(g) == "running" and running_attempt(g) == g1,
+              "a late REFUSED/GUARD_HELD does not finish the job; it waits while the guard is held: %s" % state(g))
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+        import driver_lock as _DL
+        _DL.release(env["RIMFLOW_DRIVER_LOCK"], "BENCH", {"pid": 4242, "start": 7.0, "boot_id": None,
+                                                           "platform": "wsl", "host": "elsewhere"})
+        tq("tick", **race)
+        g2 = running_attempt(g) if state(g) == "running" else None
+        check(g2 == g + ".a2", "once the guard is free the next tick requeues a fresh attempt: %s" % g2)
+        wait_worker(g2 or "x")
+        tq("tick")
+        rg = json.load(open(os.path.join(queue, "done", g + ".json")))
+        check(rg["result"]["outcome"] == "DONE", "the requeued job finishes DONE: %s" % rg["result"]["outcome"])
+
         # the daily sweep (design: at most one --full per mod per day, overnight): idempotent within a day
         rc, o = tq("sweep", "Mock")
         sj = json.loads(o.strip().splitlines()[-1]).get("job") if rc == 0 and o.strip() else None

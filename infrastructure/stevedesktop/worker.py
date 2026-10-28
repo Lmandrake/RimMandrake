@@ -717,6 +717,8 @@ class Attempt:
         hb.start()
         try:
             import host_guard
+            if os.environ.get("TESTQ_TEST_BEFORE_ACQUIRE"):     # selftest seam: a driver arriving in the race gap
+                subprocess.run(os.environ["TESTQ_TEST_BEFORE_ACQUIRE"], shell=True, check=False)
             with host_guard.held(SEAT, "testq " + self.aid):
                 self.say("guard held; runner %s" % self.res["runner_sha"])
                 ok = self.timed("deploy", self.deploy)
