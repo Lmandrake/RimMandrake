@@ -55,7 +55,9 @@ def decide(acc, now, marker_exists):
     if left > THRESHOLD:
         return False, "%s at %.1f%% left > %.1f%%" % (FROM, left, THRESHOLD)
     bl = b.get("week_pct_left")
-    if isinstance(bl, (int, float)) and bl <= THRESHOLD:
+    # only a live reading of the target can say it is as low: a stale one may predate its own reset (review night)
+    if (isinstance(bl, (int, float)) and bl <= THRESHOLD and not b.get("stale")
+            and b.get("source") in ("MEASURED", "ESTIMATE")):
         return False, "%s also at %.1f%% left: switching gains nothing" % (TO, bl)
     return True, "%s at %.1f%% left <= %.1f%%; %s reads %r" % (FROM, left, THRESHOLD, TO, bl)
 
@@ -79,8 +81,15 @@ def check(dry):
     with open(MARKER, "w") as f:      # before the switch: the switch closes this machine's agents, never twice
         json.dump({"why": why, "at": time.time()}, f)
     rc1, o1 = run([CA, "arm", "--confirm", MACHINE])
-    rc2, o2 = run([CA, "use", TO, "--confirm", MACHINE]) if rc1 == 0 else (None, "not armed")
+    if rc1 != 0:
+        rc2, o2 = None, "not armed"
+    elif time.time() >= datetime.fromisoformat(DEADLINE).timestamp():
+        rc2, o2 = None, "the deadline passed while arming: no switch"  # review night: re-read before `use`
+    else:
+        rc2, o2 = run([CA, "use", TO, "--confirm", MACHINE])
     rc3, o3 = run([CA, "disarm"])
+    if rc2 is None:
+        os.remove(MARKER)  # `use` never ran, nothing switched: the next pass may retry (review night)
     log({"do": "switch", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3]})
     return 0 if rc2 == 0 else 2
 
