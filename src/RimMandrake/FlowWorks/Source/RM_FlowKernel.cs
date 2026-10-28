@@ -299,6 +299,7 @@ namespace RimMandrake.FlowWorks
 			long landed = 0;     // dL
 			int lip = -1;
 			rainBrim.Clear();
+			rainBrimOwe.Clear();
 			for (int i = 0; i < cells.Count; i++)
 			{
 				int c = cells[i];
@@ -317,18 +318,24 @@ namespace RimMandrake.FlowWorks
 					continue;   // rain is water: never on another liquid (step 2b); a dry square that cannot record it stays dry
 				}
 				long roomDl = depth[c] * (long)U - w;
+				long sealedFrac = 0;
 				int room = roomDl <= 0 ? 0 : (int)(roomDl / U);
 				int add = room < n ? room : n;
 				if (add < n)
 				{
 					if (IsSealed(c))
 					{
-						stuckDl += (n - add) * (long)U;
+						// cs_review F3: exact-level water fills a sealed square's part-notch of room too (it cannot run on, so
+						// only what that room cannot hold goes over the lip). Whole-notch water never splits a notch.
+						long frac = ExactPath ? Math.Max(0, roomDl - add * (long)U) : 0;
+						stuckDl += (n - add) * (long)U - frac;
+						sealedFrac = frac;
 					}
 					else
 					{
 						owedDl += (n - add) * (long)U;
 						rainBrim.Add(c);
+						rainBrimOwe.Add((n - add) * (long)U);
 					}
 					if (lip < 0)
 					{
@@ -343,6 +350,11 @@ namespace RimMandrake.FlowWorks
 					}
 					fill[c] += (byte)add;
 					landed += add * (long)U;
+				}
+				if (sealedFrac > 0)
+				{
+					SetWaterOf(c, WaterOf(c) + sealedFrac);   // w > 0 here (a dry square's room is whole notches)
+					landed += sealedFrac;
 				}
 			}
 			// RAIN_REVIEW_FIX_SLUICES_AND_OVERFILL: the pocket's aggregate runs from the brimming squares through the squares
@@ -362,47 +374,73 @@ namespace RimMandrake.FlowWorks
 						rainDomain.Set(cells[i], 1);
 					}
 				}
+				// cs_review F2: each brimming square's surplus runs only through ITS run of passable squares: two runs of the
+				// pocket parted by a shut sluice or another liquid never share one pooled balance. Pass 1 labels the runs
+				// (state 3 + run), pass 2 lays each run's own surplus over its squares in walk order.
 				rainQueue.Clear();
-				for (int i = 0; i < rainBrim.Count; i++)
+				rainRunOwed.Clear();
+				rainRunStart.Clear();
+				for (int j = 0; j < rainBrim.Count; j++)
 				{
-					rainDomain.Set(rainBrim[i], 2);
-					rainQueue.Add(rainBrim[i]);
+					int b = rainBrim[j];
+					rainDomain.TryGetValue(b, out int sb);
+					if (sb >= 3)
+					{
+						rainRunOwed[sb - 3] += rainBrimOwe[j];
+						continue;
+					}
+					int run = rainRunOwed.Count;
+					rainRunOwed.Add(rainBrimOwe[j]);
+					rainRunStart.Add(rainQueue.Count);
+					rainDomain.Set(b, 3 + run);
+					rainQueue.Add(b);
+					for (int h = rainRunStart[run]; h < rainQueue.Count; h++)
+					{
+						int c = rainQueue[h];
+						for (int d = 0; d < 4; d++)
+						{
+							int nb = Cardinal(c, d);
+							if (nb < 0 || !rainDomain.TryGetValue(nb, out int state) || state != 1 || IsSealed(nb))
+							{
+								continue;
+							}
+							long wn = WaterOf(nb);
+							if (wn > 0 ? !SameFluid(world.CellFluid(nb), rainFluid) : !world.CanClaim(rainFluid))
+							{
+								continue;
+							}
+							rainDomain.Set(nb, 3 + run);
+							rainQueue.Add(nb);
+						}
+					}
 				}
-				for (int h = 0; h < rainQueue.Count && owedDl > 0; h++)
+				owedDl = 0;
+				for (int run = 0; run < rainRunOwed.Count; run++)
 				{
-					int c = rainQueue[h];
-					long w = WaterOf(c);
-					long roomDl = depth[c] * (long)U - w;
-					long give = exact ? roomDl : roomDl / U * U;
-					if (give > owedDl)
+					long owed = rainRunOwed[run];
+					int end = run + 1 < rainRunStart.Count ? rainRunStart[run + 1] : rainQueue.Count;
+					for (int h = rainRunStart[run]; h < end && owed > 0; h++)
 					{
-						give = exact ? owedDl : owedDl / U * U;
-					}
-					if (give > 0)
-					{
-						if (w == 0)
+						int c = rainQueue[h];
+						long w = WaterOf(c);
+						long roomDl = depth[c] * (long)U - w;
+						long give = exact ? roomDl : roomDl / U * U;
+						if (give > owed)
 						{
-							world.Claim(c, rainFluid);
+							give = exact ? owed : owed / U * U;
 						}
-						SetWaterOf(c, w + give);
-						landed += give;
-						owedDl -= give;
-					}
-					for (int d = 0; d < 4; d++)
-					{
-						int nb = Cardinal(c, d);
-						if (nb < 0 || !rainDomain.TryGetValue(nb, out int state) || state != 1 || IsSealed(nb))
+						if (give > 0)
 						{
-							continue;
+							if (w == 0)
+							{
+								world.Claim(c, rainFluid);
+							}
+							SetWaterOf(c, w + give);
+							landed += give;
+							owed -= give;
 						}
-						long wn = WaterOf(nb);
-						if (wn > 0 ? !SameFluid(world.CellFluid(nb), rainFluid) : !world.CanClaim(rainFluid))
-						{
-							continue;
-						}
-						rainDomain.Set(nb, 2);
-						rainQueue.Add(nb);
 					}
+					owedDl += owed;
 				}
 			}
 			long overDl = owedDl + stuckDl;
@@ -419,6 +457,9 @@ namespace RimMandrake.FlowWorks
 		}
 
 		private readonly List<int> rainBrim = new List<int>();
+		private readonly List<long> rainBrimOwe = new List<long>();
+		private readonly List<long> rainRunOwed = new List<long>();
+		private readonly List<int> rainRunStart = new List<int>();
 		private readonly List<int> rainQueue = new List<int>();
 		private readonly RM_StampSet rainDomain = new RM_StampSet();
 
@@ -1201,21 +1242,22 @@ namespace RimMandrake.FlowWorks
 				}
 				else
 				{
-					int src = -1;
-					for (int d = 0; d < 4 && src < 0; d++)
+					// cs_review F4: the first source that can feed the square names its liquid; a switched-off liquid's source
+					// or one the square cannot claim no longer hides an enabled source of another liquid beside it.
+					fl = null;
+					for (int d = 0; d < 4 && fl == null; d++)
 					{
 						int nb = Cardinal(c, d);
 						if (nb >= 0 && exComp.Contains(nb) && IsSource(nb) && !IsSealed(nb))
 						{
-							src = nb;
+							object df = world.DonorFluid(nb, true);
+							if (world.CanClaim(df) && lw.LevelBodyOf(nb) != LevelBodyDisabled)
+							{
+								fl = df;
+							}
 						}
 					}
-					if (src < 0)
-					{
-						continue;
-					}
-					fl = world.DonorFluid(src, true);
-					if (!world.CanClaim(fl))
+					if (fl == null)
 					{
 						continue;
 					}

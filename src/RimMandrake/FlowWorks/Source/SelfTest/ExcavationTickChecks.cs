@@ -1068,6 +1068,62 @@ namespace RimMandrake.FlowWorks.SelfTest
                         Assert(offered == U && aw.k.rainLandedDl == 0, $"{tag}: offered {offered} dL, landed {aw.k.rainLandedDl}");
                     }
             });
+            Case("CsReview_pocket_rain_each_run_keeps_its_own_surplus", () =>
+            {
+                // cs_review F2 (red-first): two brimming open squares of one pocket parted by a shut sluice. Each run's surplus
+                // stays in its run: the right one's notch fills the roofed deep square beside it, the left one's (no room on its
+                // side) runs over the lip. Was: one pooled balance, so the left notch crossed the sluice too.
+                foreach (bool exact in new[] { true, false })
+                {
+                    var aw = RowScene(exact, new[] {
+                        ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                        ((byte)1, (byte)0, (ushort)0, (Fluid)null, true, true),
+                        ((byte)1, (byte)1, (ushort)0, ArrayWorld.Water, false, false),
+                        ((byte)2, (byte)0, (ushort)0, (Fluid)null, true, false) }, out var roof, out var seeds);
+                    long offered = 0;
+                    ArmPocketRain(aw, roof, dl => offered += dl);
+                    aw.k.rainNotches = 1;
+                    aw.Pulse(seeds);
+                    long right = aw.k.WaterOf(seeds[2]) + aw.k.WaterOf(seeds[3]);
+                    Assert(right == 2 * U, $"exact {exact}: the right run holds {right} dL, want {2 * U} (its own notch only)");
+                    Assert(aw.k.WaterOf(seeds[0]) == U && aw.k.WaterOf(seeds[1]) == 0, $"exact {exact}: left {aw.k.WaterOf(seeds[0])} dL, sluice {aw.k.WaterOf(seeds[1])} dL");
+                    Assert(offered == U && aw.k.rainLandedDl == U, $"exact {exact}: offered {offered} dL, landed {aw.k.rainLandedDl}");
+                }
+            });
+            Case("CsReview_pocket_rain_sealed_square_takes_its_part_notch", () =>
+            {
+                // cs_review F3 (red-first): exact-level water. A sealed open square holding 1 dL of a 1-notch bed has U-1 dL of
+                // room: it takes that and only 1 dL runs over the lip. Was: room rounded to 0 notches, the whole notch spilled.
+                var aw = RowScene(true, new[] {
+                    ((byte)1, (byte)0, (ushort)1, ArrayWorld.Water, false, true) }, out var roof, out var seeds);
+                long offered = 0;
+                ArmPocketRain(aw, roof, dl => offered += dl);
+                aw.k.rainNotches = 1;
+                aw.Pulse(seeds);
+                Assert(aw.k.WaterOf(seeds[0]) == U, $"the sealed square holds {aw.k.WaterOf(seeds[0])} dL, want {U}");
+                Assert(offered == 1 && aw.k.rainLandedDl == U - 1, $"offered {offered} dL, landed {aw.k.rainLandedDl}");
+            });
+            Case("CsReview_exact_dry_square_skips_a_switched_off_source", () =>
+            {
+                // cs_review F4 (red-first): a dry dug square between a switched-off water source and a limitless tar source.
+                // The tar fills it whichever side is walked first. Was: the first source named the liquid even when switched
+                // off, and the domain then took nothing from it, so the square stayed dry for good.
+                foreach (bool waterNorth in new[] { true, false })
+                {
+                    var aw = new ArrayWorld(3, 3);
+                    aw.k.levelExactEnabled = true; aw.k.levelBySurfaceEnabled = true;
+                    int c = 4, a = waterNorth ? 7 : 5, b = waterNorth ? 5 : 7;
+                    aw.k.depth[c] = 1;
+                    aw.natural[a] = true; aw.terrainFluid[a] = ArrayWorld.Water;
+                    aw.natural[b] = true; aw.terrainFluid[b] = ArrayWorld.Tar;
+                    aw.BodyAt(a);
+                    aw.BodyAt(b, 1f, true);
+                    aw.disabledFluid = ArrayWorld.Water;
+                    for (int p = 0; p < 4; p++) aw.Pulse(new List<int> { c });
+                    Assert(aw.k.WaterOf(c) > 0 && ReferenceEquals(aw.cellFluid[c], ArrayWorld.Tar),
+                        $"water {(waterNorth ? "north" : "east")}: the square holds {aw.k.WaterOf(c)} dL of {(aw.cellFluid[c] as Fluid)?.name}");
+                }
+            });
             Case("Rain_review_pocket_rain_fills_dry_and_fractional_room", () =>
             {
                 // MED: a pocket with room takes its rain. An open brimming square beside a roofed DRY square of the pocket runs
