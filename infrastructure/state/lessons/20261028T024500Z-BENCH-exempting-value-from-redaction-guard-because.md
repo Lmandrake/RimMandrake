@@ -1,0 +1,1 @@
+Exempting a value from a redaction guard because it is proven genuine (a sha the resolver showed is a real commit) does not prove it carries no secret: provenance is not content. Every exemption path (labelled shas, stdlib note routes that skip the page guard) still needs the account check. (GPT r4, BLINDVIEW_HARDEN_SIX_LEAKS_STILL_OPEN)
