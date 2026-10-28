@@ -159,6 +159,11 @@ def c10(CC):
     check("C10 ledger_ts absent", CC.ledger_ts({}) == "")
     check("C10 ledger_ts str", CC.ledger_ts({"ts": "2026-10-27T00:00:00Z"}) == "2026-10-27T00:00:00Z")
     check("C10 truthy non-str unusable", not CC.ledger_event_usable({"ts": 5}))
+    for v in ("yesterday", "2026-99-99T99:99:99Z", "2026-10-27T00:00:00Z\n", "2026-10-27"):
+        check("C10 non-ISO ts %r is passed over (LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF)" % v,
+              not CC.ledger_event_usable({"ts": v}))
+    check("C10 ISO ts usable", CC.ledger_event_usable({"ts": "2026-10-27T00:00:00+02:00"}))
+    check("C10 absent ts usable", CC.ledger_event_usable({}))
     sys.path.insert(0, os.path.join(RM, "rimflow"))
     import dispatcher
     src = open(dispatcher.__file__, encoding="utf-8").read()
@@ -315,7 +320,7 @@ def c4(RP, CM, tmp, trees):
     rng = random.Random(4)
     base = {"ts": "2026-10-27T00:00:00Z", "item": "X_Y_Z", "sha": "abcdef1", "run": "r1", "why_picked": "rank",
             "flags": [], "verdict": "SOUND", "defect_class": None, "evidence": ["D:\\a"]}
-    vals = [None, "", "x", "DEFECT", "UNRESOLVED", "SOUND", "abcdef1\n", "ABCDEF1", 0, 1.5, True, [], ["a"], [1],
+    vals = [None, "", "x", "DEFECT", "UNRESOLVED", "SOUND", "ABCDEF1", 0, 1.5, True, [], ["a"], [1],
             {}, "random", "mandatory"]
     docs = []
     for _ in range(3000):
@@ -344,6 +349,8 @@ def c4(RP, CM, tmp, trees):
     differ = [i for i in range(len(docs)) if old[i] != new[i]]
     for i in differ[:3]:
         print("  C4 differ:", json.dumps(docs[i]), old[i], new[i])
+    nl = dict(base, sha="abcdef1\n")
+    check("C4 sha with trailing newline refused (AUDITS_SHA_HARDEN_TRAILING_NEWLINE_MATCH)", bool(audits.problems(nl)))
     check("C4 audits decision unchanged", not differ, "%d of 3000 differ" % len(differ))
     check("C4 the mutations both pass and fail (instrument sees)", 100 < sum(new) < 2900, sum(new))
 

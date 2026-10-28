@@ -282,6 +282,14 @@ def test_review_fixes():
         f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "X_Y", "ts": p["rung_iso"]}) + "\n")
     check(D.seat_events_since(sc, "FOUNDRY", p["rung_iso"]) == [],
           "an event stamped in the ring's own second is not a hand-off (it may predate the ring)")
+    # LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF: a non-ISO ts string sorted after every cutoff and counted as new
+    with open(sh, "a") as f:
+        f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "BAD_TS", "ts": "yesterday"}) + "\n")
+        f.write(json.dumps({"seat": "FOUNDRY", "event": "claim", "id": "GOOD_TS", "ts": "2999-01-01T00:00:00Z"}) + "\n")
+    skipped = []
+    got = D.seat_events_since(sc, "FOUNDRY", p["rung_iso"], on_skip=skipped.append)
+    check([e["id"] for e in got] == ["GOOD_TS"], "a non-ISO ts is never counted as new: %r" % [e["id"] for e in got])
+    check([x["id"] for x in skipped] == ["BAD_TS"], "the skipped non-ISO ts is reported to the journal hook: %r" % skipped)
     # busy during verification is not stall time; success resets the retry count
     st["seats"]["FOUNDRY"]["ring"]["attempt"] = 2
     st["seats"]["FOUNDRY"]["attempt"] = 1

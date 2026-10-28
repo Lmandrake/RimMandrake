@@ -204,7 +204,7 @@ def _py_pattern(p):
     rx = re.compile(p)
 
     def check(v):
-        if not rx.search(v):        # re.search, as audits.problems() did: `$` also matches before a final newline
+        if not rx.fullmatch(v):     # fullmatch: re.search let `$` match before a final newline ('abcdef1\n' passed)
             raise ValueError("does not match %s" % p)
         return v
     return check
@@ -293,8 +293,7 @@ class AgentSession(Open):
 
 class LedgerEventMin(Open):
     """The fields dispatcher.seat_events_since compares (shadow): seat a string, ts an ISO-8601 string when present.
-    The compat rule (contracts.compat.ledger_event_usable) only asks for a string ts; a non-ISO string sorts as
-    'after any cutoff' there (filed)."""
+    The compat rule (contracts.compat.ledger_event_usable) passes over a non-ISO ts too."""
     seat: Optional[str] = None
     ts: Optional[IsoOffset] = None
     event: Optional[str] = None

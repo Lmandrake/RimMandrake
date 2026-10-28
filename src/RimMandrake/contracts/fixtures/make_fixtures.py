@@ -146,9 +146,10 @@ def audits_lines():
     add(dict(L, defect_class="check"), "sound_with_class", "x-conditionals", R, R, R)
     add(dict(L, waiting_for="/x"), "waiting_on_sound", "x-conditionals", R, R, R)
     add(dict(L, sha="HEAD"), "sha_not_hex", "pattern", R, R, R)
-    add(dict(L, sha="abcdef1\n"), "sha_trailing_newline", "pattern via re.search", A, A, A,
-        "audits.problems used re.search: `$` matches before a final newline, so 'abcdef1\\n' passed; the model keeps "
-        "that (compat). Filed as a finding, not changed here")
+    add(dict(L, sha="abcdef1\n"), "sha_trailing_newline", "pattern via re.search", A, R, R,
+        "DISAGREEMENT (intended): audits.problems used re.search, `$` matches before a final newline, so 'abcdef1\\n' "
+        "passed; the model now uses fullmatch (AUDITS_SHA_HARDEN_TRAILING_NEWLINE_MATCH)",
+        allow="AUDITS_SHA_TRAILING_NEWLINE")
     add(dict(L, item=""), "empty_item", "minLength", R, R, R)
     add(dict(L, flags=[1]), "flag_not_string", "items.type", R, R, R)
     add(dict(L, verdict=True), "verdict_bool", "enum", R, R, R)
@@ -254,9 +255,9 @@ def ledger_event_lines():
             "every cutoff, so the event is passed over, old and new alike; strict wants a string or null")
     add(DEEP, "too_deep", "absurd nesting", C, "skip", R, allow="LEDGER_TOO_DEEP",
         why="DISAGREEMENT (intended): RecursionError escaped `except ValueError` and crashed the tick")
-    add(json.dumps(dict(E, ts="yesterday")), "ts_not_iso", "digest review #8 (invalid ts)", A, A, R,
-        "a non-ISO ts string compares lexicographically ('y' > '2'), so it counts as after any cutoff; strict "
-        "refuses it. Filed, not changed (decision preserved)")
+    add(json.dumps(dict(E, ts="yesterday")), "ts_not_iso", "digest review #8 (invalid ts)", A, "skip", R,
+        "DISAGREEMENT (intended): a non-ISO ts string compared lexicographically ('y' > '2') and counted as after any "
+        "cutoff; it is now passed over (LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF)", allow="LEDGER_TS_NONISO")
     add(json.dumps(E)[:25], "torn", "review AA8 class", "skip", "skip", R)
     add("", "blank", "blank line", "skip", "skip", "skip")
     return out

@@ -321,10 +321,10 @@
    "class": "sha_trailing_newline",
    "where": "pattern via re.search",
    "old": "accept",
-   "new": "accept",
-   "strict": "accept",
-   "why": "audits.problems used re.search: `$` matches before a final newline, so 'abcdef1\\n' passed; the model keeps that (compat). Filed as a finding, not changed here",
-   "allow": ""
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): audits.problems used re.search, `$` matches before a final newline, so 'abcdef1\\n' passed; the model now uses fullmatch (AUDITS_SHA_HARDEN_TRAILING_NEWLINE_MATCH)",
+   "allow": "AUDITS_SHA_TRAILING_NEWLINE"
   },
   {
    "class": "empty_item",
@@ -759,10 +759,10 @@
    "class": "ts_not_iso",
    "where": "digest review #8 (invalid ts)",
    "old": "accept",
-   "new": "accept",
+   "new": "skip",
    "strict": "refuse",
-   "why": "a non-ISO ts string compares lexicographically ('y' > '2'), so it counts as after any cutoff; strict refuses it. Filed, not changed (decision preserved)",
-   "allow": ""
+   "why": "DISAGREEMENT (intended): a non-ISO ts string compared lexicographically ('y' > '2') and counted as after any cutoff; it is now passed over (LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF)",
+   "allow": "LEDGER_TS_NONISO"
   },
   {
    "class": "torn",

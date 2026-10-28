@@ -3,6 +3,8 @@ arbiter_pending/role_launch; the testq tick runs every 60 s). Each reproduces, e
 before contracts existed, so wiring changes no decision. The strict contracts are in contracts.models (pydantic);
 contracts.replay runs both over real stores and lists every disagreement.
 """
+import datetime
+import re
 
 DISPOSITIONS = ("PASS", "CONDITIONAL-PASS", "FAIL-module", "FAIL-check", "RESTART-environment", "BAR-defect",
                 "UNRESOLVED")
@@ -46,8 +48,26 @@ def ledger_ts(ev):
     return ev.get("ts") or ""
 
 
+_ISO_OFFSET = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)")
+
+
+def iso_ts_ok(ts):
+    """True when ts is an ISO-8601 instant with a Z/offset that is a real date and time (the contracts.models.IsoOffset
+    rule, stdlib only). fullmatch: a trailing newline is not ISO."""
+    if not isinstance(ts, str) or not _ISO_OFFSET.fullmatch(ts):
+        return False
+    try:
+        datetime.datetime.fromisoformat(ts)
+    except ValueError:
+        return False
+    return ts[11:13] != "24" and (ts[-1] == "Z" or ts[-2:] < "60")
+
+
 def ledger_event_usable(ev):
-    """dispatcher.seat_events_since: an object whose ts operand (ledger_ts) is a string it can compare. NEW (listed
-    disagreement): before contracts a non-object line or a truthy non-string ts crashed the whole tick
-    (AttributeError / TypeError)."""
-    return isinstance(ev, dict) and isinstance(ledger_ts(ev), str)
+    """dispatcher.seat_events_since: an object whose ts operand (ledger_ts) is "" (no ts: sorts before every cutoff)
+    or an ISO-8601 instant. A non-string ts crashed the tick before contracts; a non-ISO string ('yesterday') sorted
+    after every cutoff and counted as NEW (LEDGER_TS_HARDEN_NONISO_AFTER_CUTOFF): both are now passed over."""
+    if not isinstance(ev, dict):
+        return False
+    ts = ledger_ts(ev)
+    return ts == "" or iso_ts_ok(ts)

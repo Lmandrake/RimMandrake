@@ -43,7 +43,7 @@ WORKER = os.path.join(HERE, "replay_worker.py")
 ALLOWANCES = os.path.join(HERE, "fixtures", "allowances.json")
 if RM not in sys.path:
     sys.path.append(RM)
-from contracts import jsonl as CJ  # noqa: E402
+from contracts import compat as CC, jsonl as CJ  # noqa: E402
 from contracts.fixtures import make_fixtures as FX  # noqa: E402
 
 A, R, S, C = "accept", "refuse", "skip", "crash"
@@ -196,6 +196,12 @@ def input_class(family, raw):
         ts = r.value.get("ts")
         if ts and not isinstance(ts, str):
             return "ts_nonstr"
+        if isinstance(ts, str) and ts and not CC.iso_ts_ok(ts):
+            return "ts_not_iso"
+    if family == "audits":
+        sha = r.value.get("sha")
+        if isinstance(sha, str) and sha.endswith("\n"):
+            return "sha_trailing_newline"
     if family in ("testq_results", "testq_orphans") and _tagged_malformed(r.value):
         return "tagged_malformed"
     return "ok"

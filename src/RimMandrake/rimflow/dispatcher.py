@@ -208,7 +208,7 @@ def parse_peek(out):
     return {}
 
 
-def seat_events_since(clone, seat, since_iso):
+def seat_events_since(clone, seat, since_iso, on_skip=None):
     """Events the seat wrote to its own shard (on disk in its clone, before any push) at or after since_iso."""
     p = os.path.join(clone, "infrastructure", "state", "ledger", "events", "%s.jsonl" % seat)
     out = []
@@ -226,7 +226,11 @@ def seat_events_since(clone, seat, since_iso):
             except UnicodeDecodeError:
                 continue
             r = CJ.decode(line)
-            if not r.ok or not CC.ledger_event_usable(r.value):
+            if not r.ok:
+                continue
+            if not CC.ledger_event_usable(r.value):
+                if on_skip is not None and isinstance(r.value, dict):   # an object with a bad ts: say so, never count it
+                    on_skip({"seat": seat, "id": r.value.get("id"), "ts": repr(r.value.get("ts"))[:80]})
                 continue
             ev = r.value
             if ev.get("seat") == seat and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
@@ -1144,6 +1148,15 @@ def role_obs(sch):
     }
 
 
+def _skip_journal(root):
+    def skip(rec):
+        try:
+            journal(root, dict(rec, do="ledger_ts_skipped", at=iso(time.time())))
+        except OSError:
+            pass
+    return skip
+
+
 def default_obs(sch, root):
     seats = sch.get("seats") or {}
     return {
@@ -1151,7 +1164,7 @@ def default_obs(sch, root):
         "agents": observe_agents(),
         "owner": owner_reading,
         "peek": lambda seat: peek_ticket(seats[seat]["clone"], seat),
-        "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since),
+        "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since, on_skip=_skip_journal(root)),
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
