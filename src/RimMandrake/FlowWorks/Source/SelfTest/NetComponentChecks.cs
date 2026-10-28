@@ -164,6 +164,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "pipes and hoses switches are in the revision key");
                 Assert(RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(5, false, true)
                        && RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(5, true, false)
+                       && RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(5, true, true, false)
                        && RM_LiquidNetKernel.RevisionKey(5, true, true) != RM_LiquidNetKernel.RevisionKey(6, true, true), "the key separates every input");
                 // nothing per tick: the per-origin per-tick walk cache is gone
                 Assert(!net.Contains("RM_NetCache") && !net.Contains("TicksGame, () =>"), "no per-tick walk cache is left in RM_LiquidNet");

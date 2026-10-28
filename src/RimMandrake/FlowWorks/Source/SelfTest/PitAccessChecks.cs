@@ -19,6 +19,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             if (!ok) throw new Exception(msg);
         }
 
+        // the name must sit inside a Section(list, "...", new[] { ... }) literal; the Scribe key string alone is not the list
+        private static bool InSectionList(string src, string name) =>
+            System.Text.RegularExpressions.Regex.IsMatch(src, @"Section\(list, ""[^""]*"", new\[\] \{[^}]*""" + System.Text.RegularExpressions.Regex.Escape(name) + @"""");
         private static string Src(params string[] rel) => RiverSwitchFlipChecks.Src(Path.Combine(rel));
 
         public static void Run(Action<string, Action> Case)
@@ -149,7 +152,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pp, @"if \(RimMandrakeFlowWorksSettings\.pitFreeTravelEnabled && RM_PocketGrid\.FreePitTraveller\(p\)\)\s*\{\s*eng\.SuperdeepTrap\.NoteHandledArrival\(p, p\.Position\);",
                     "a flyer set down in a pit is not a fall");
                 string s = Src("RimMandrakeFlowWorksMod.cs");
-                Assert(s.Contains("Scribe_Values.Look(ref pitFreeTravelEnabled,") && s.Contains("\"pitFreeTravelEnabled\""), "the setting is saved and listed");
+                Assert(s.Contains("Scribe_Values.Look(ref pitFreeTravelEnabled,") && InSectionList(s, "pitFreeTravelEnabled"), "the setting is saved and listed");
             });
             // PIT_RAMP_FIX_WALKER_TAKES_FALL (GPT review FC_pits_superdeep_2.1): a captured walker stepping down a working ramp past
             // its natural climb limit was judged a fall (only ladders and gear were exempt)
@@ -184,7 +187,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                                              "pitJumpLandsSafe", "pitTeleportLandsSafe", "pitRescueLadderEnabled" })
                 {
                     Assert(s.Contains("Scribe_Values.Look(ref " + f + ","), "scribed: " + f);
-                    Assert(s.Contains("\"" + f + "\""), "in the settings section list: " + f);
+                    Assert(InSectionList(s, f), "in the settings section list: " + f);
                 }
                 string k = Src("..", "Languages", "English", "Keyed", "FlowWorks_Keys.xml");
                 foreach (string key in new[] { "RMFlow_LadderPortableReach", "RMFlow_LadderPortableOff", "RMFlow_LadderPortableShort",
@@ -203,6 +206,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string body = a.Substring(pb, a.IndexOf("PlaceBlueprintForBuild", pb, StringComparison.Ordinal) - pb);
                 Assert(body.Contains("if (DebugSettings.godMode)") && body.Contains("GenSpawn.Spawn(built, cell, map, rot"),
                     "god mode spawns the finished ladder before any blueprint is placed");
+                Assert(System.Text.RegularExpressions.Regex.IsMatch(body, @"GenSpawn\.Spawn\(built, cell, map, rot, WipeMode\.Vanish\);\s*return true;"),
+                    "can-fail: the god-mode branch returns after spawning, it never falls through to a blueprint");
                 Assert(a.Contains("case RM_PitAccessMath.RescueLadder.InstallPortable when !DebugSettings.godMode:"),
                     "god mode never queues an install job either");
             });
