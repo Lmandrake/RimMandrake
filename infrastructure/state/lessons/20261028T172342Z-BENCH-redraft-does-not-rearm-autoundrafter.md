@@ -1,0 +1,2 @@
+RimWorld AutoUndrafter undrafts a pawn idle-drafted (job null/Wait_Combat) for 10,000 ticks; Pawn_DraftController.Drafted returns early when the value is unchanged, so drafting an already-drafted pawn does NOT reset the timer. A harness that drafts bystanders out of the way must undraft+draft (no tick between) or they come free mid-row and work. Seen: thirst T23 late brine (live d2e098), fixed c8701ef9c3.
+home: live-debugging-proof-harness
