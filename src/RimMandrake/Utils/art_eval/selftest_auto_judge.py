@@ -149,11 +149,23 @@ def installs_and_unfiled():
         r3 = st / "runs/fauna_auto_z"
         r3.mkdir(parents=True)
         (r3 / "regen_filing.json").write_text(json.dumps({"ok": False, "rc": None, "why": "fill_queue timed out", "unfiled": []}))
-        u = AJ.unfiled_rows(["fauna_auto_x", "fauna_auto_y", "fauna_auto_z", "fauna_auto_none"], state=st)
-        check("unfiled rows: one per unfiled row with its def, plus a filing that failed unverified",
-              [(x["def"], x["id"]) for x in u] == [("RM_FireHawk", "arteval_RM_FireHawk_r2"), (None, None)], u)
+        r4 = st / "runs/fauna_auto_old"          # a pre-verification record: ok false, no unfiled list -> ask the queue
+        r4.mkdir(parents=True)
+        (r4 / "regen_jobs.json").write_text(json.dumps([{"id": "arteval_RM_A_r2", "target_def": "RM_A", "facings": ["south"]},
+                                                       {"id": "arteval_RM_B_r2", "target_def": "RM_B", "facings": ["south"]}]))
+        (r4 / "regen_filing.json").write_text(json.dumps({"ok": False, "rc": 1, "why": "fill_queue exit 1"}))
+        q = st / "queue"
+        (q / "done").mkdir(parents=True)
+        (q / "done/arteval_RM_A_r2_south.json").write_text("{}")
+        u = AJ.unfiled_rows(["fauna_auto_x", "fauna_auto_y", "fauna_auto_z", "fauna_auto_old", "fauna_auto_none"], state=st, queue=q)
+        check("unfiled rows: one per unfiled row with its def; an unverified filing asks the queue; no jobs file -> lost",
+              [(x["def"], x["id"]) for x in u] == [("RM_FireHawk", "arteval_RM_FireHawk_r2"), (None, None),
+                                                   ("RM_B", "arteval_RM_B_r2")], u)
         check("an unfiled row's item is named for its def", AJ.unfiled_item_id(u[0]) == "ARTEVAL_FIX_REGEN_UNFILED_FIREHAWK")
-        check("an unverified filing's item is named for its run", AJ.unfiled_item_id(u[1]) == "ARTEVAL_FIX_REGEN_UNFILED_FAUNA_AUTO_Z")
+        check("a filing with no jobs file is one shared item", AJ.unfiled_item_id(u[1]) == "ARTEVAL_REGEN_FILING_FIX_JOBS_LOST")
+        long_id = AJ.unfiled_item_id({"def": "RM_Somewhat_Very_Long_Defname_2", "run": "r"})
+        check("a long def still names a valid item (<=44 chars, one twist word, no trailing number)",
+              len(long_id) <= 44 and long_id.count("_") == 4 and not long_id[-1].isdigit(), long_id)
 
         # ---- ACCEPT -> the commands that install it (never a hand copy)
         cmp_root = st / "cmp"
@@ -230,6 +242,7 @@ def installs_and_unfiled():
         import runner as RR
         RR.storage_root = lambda: st / "nostore"
         stt = {"follow_ups": []}
+        AJ.ARTPIPE_QUEUE = st / "queue"
         changed, every = AJ.post_run([("fauna_auto_x", {"subject": "RM_FurnaceBeast", "candidate": "r2", "decision": "ACCEPT"}),
                                       ("fauna_auto_x", {"subject": "RM_FireHawk", "candidate": "r1", "decision": "REGEN"})],
                                      [], st / "log", stt)

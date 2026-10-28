@@ -228,6 +228,7 @@ def judged_set(recs) -> set:
     return {(r["subject"], r.get("candidate")) for _, r in recs if r.get("decision") != "HOLD_ERROR"}
 
 
+CAND_TAG = re.compile(r"^(?:s\d+)?r\d+$")        # a candidate's own tag (r2, s2r1); a first pass is None or "live"
 CAND_RUN = re.compile(r"(^|_)(s\d+_?)?r\d+_")   # …_r1_00, …_s1r1_00 / …_s1_r1_00; not a biome like glass_reef_00
 
 
@@ -236,8 +237,9 @@ def latest(defname: str, cand: bool, recs=None):
     out = None
     for run, r in (production() if recs is None else recs):
         # an adopted run (judgestall_*) has no fauna_ name to read: its records name their candidate
-        iscand = bool(CAND_RUN.search(run.split("fauna_", 1)[1])) if run.startswith("fauna_") \
-            else bool(r.get("candidate"))
+        # and an auto-judge run (fauna_auto_<stamp>) judges candidates under a stamp name: its record's tag says so
+        iscand = (bool(CAND_RUN.search(run.split("fauna_", 1)[1])) or bool(CAND_TAG.match(str(r.get("candidate") or ""))))\
+            if run.startswith("fauna_") else bool(r.get("candidate"))
         if iscand != cand or r["subject"] != defname:
             continue
         if out is None or RS._instant(r.get("at")) >= RS._instant(out.get("at")):   # newest by time, not run name

@@ -97,6 +97,12 @@ def main():
         check("empty rewrite falls back", FD.neutral_prompt("A red beast. Seen from the side view.")[1] == "sentence-drop")
     finally:
         FD.R.call_claude = real
+    # an auto-judge run (fauna_auto_<stamp>) has no _rN_ in its name: its records' candidate tag says it is a candidate
+    recs = [("fauna_auto_20261028_1101", {"subject": "D", "candidate": "r2", "decision": "ACCEPT", "at": "2026-10-28T11:04:59-07:00"}),
+            ("fauna_D_r1_00", {"subject": "D", "candidate": "r1", "decision": "REGEN", "at": "2026-10-23T10:15:58-07:00"}),
+            ("fauna_glass_reef_00", {"subject": "D", "candidate": "live", "decision": "REGEN", "at": "2026-10-23T09:43:10-07:00"})]
+    check("latest candidate reads an auto run's candidate tag", (FD.latest("D", True, recs) or {}).get("candidate") == "r2")
+    check("a first-pass 'live' record stays first pass", (FD.latest("D", False, recs) or {}).get("candidate") == "live")
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

@@ -217,7 +217,10 @@ def slug(name: str) -> str:
     return re.sub(r"_+", "_", re.sub(r"[^A-Za-z0-9]", "_", TIER.sub("", str(name)))).strip("_").upper()
 
 
-def unfiled_rows(run_ids, state: Path | None = None) -> list:
+ARTPIPE_QUEUE = ART
+
+
+def unfiled_rows(run_ids, state: Path | None = None, queue: Path | None = None) -> list:
     """Every REGEN row a run could not file (runner.file_regen_jobs wrote regen_filing.json), one entry per row; a
     filing that failed without saying which rows (fill_queue died or timed out, or a pre-verification record) is one
     entry with def None. A REGEN that files nothing must become an item, never just a log line."""
@@ -233,6 +236,12 @@ def unfiled_rows(run_ids, state: Path | None = None) -> list:
         jf = d / "regen_jobs.json"
         jobs = {j.get("id"): j for j in (json.loads(jf.read_text()) if jf.is_file() else [])}
         rows = fl.get("unfiled") or []
+        if not rows and jobs:            # failed without naming rows (fill_queue died, or a pre-verification record)
+            sys.path.insert(0, str(HERE))
+            import runner as R
+            rows = [jid for jid, j in jobs.items() if not R.in_queue(j, Path(queue or ARTPIPE_QUEUE))]
+            if not rows:
+                continue                 # every row reached the queue after all (filed by hand or a later pass)
         for jid in rows:
             out.append({"run": rid, "id": jid, "def": (jobs.get(jid) or {}).get("target_def"), "why": fl.get("why")})
         if not rows:
@@ -241,7 +250,12 @@ def unfiled_rows(run_ids, state: Path | None = None) -> list:
 
 
 def unfiled_item_id(u: dict) -> str:
-    return "ARTEVAL_FIX_REGEN_UNFILED_" + slug(u["def"] or u["run"])
+    """One item per unfiled def (the name rules: <=44 chars, <=7 words, no trailing number); a filing whose jobs file is
+    gone shares one item."""
+    if not u.get("def"):
+        return "ARTEVAL_REGEN_FILING_FIX_JOBS_LOST"
+    word = re.sub(r"\d+$", "", slug(u["def"]).replace("_", ""))
+    return "ARTEVAL_FIX_REGEN_UNFILED_" + word[:44 - 26]
 
 
 def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, drv: Path = DRV) -> list:
