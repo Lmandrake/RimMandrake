@@ -65,7 +65,7 @@ TARGETS = {
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
     "role_launch": (R + "role_launch.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
-                                           R + "selftest_account_pick.py", R + "selftest_role_launch_props.py"]),
+                                           R + "selftest_account_pick.py", R + "selftest_role_launch_props.py", R + "selftest_role_launch.py"]),
 }
 # Checks that flake for reasons outside the mutated module; a run failing ONLY these counts as a pass for that
 # target (otherwise every flake reads as a killed mutant). Each entry names the item that tracks the flake.
