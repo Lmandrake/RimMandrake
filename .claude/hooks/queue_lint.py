@@ -206,9 +206,14 @@ LEDGER_PATH_RE = re.compile(r"[\w./\\-]*ledger/events(?:\.jsonl|/[\w.-]+\.jsonl)
 REDIRECT_RE = re.compile(r">>?\s*['\"]?$")
 # These take the file as an ARGUMENT, so anywhere in the same shell word-run counts.
 # `dd of=` is spelled out because the path attaches to the operand, not the command.
+# A writer word counts only as a COMMAND word: start of the run, after ; & | ( newline,
+# or after a launcher (sudo, xargs, -exec, ...). Never inside a path (`/home/x/rm/bench`)
+# or a hyphenated name (`rm-dispatcher.service`) or as a plain argument (`git add rm`).
+_CMDPOS = (r"(?:^|[;&|(\n]|\b(?:sudo|xargs|exec|env|nohup|time|command|then|do|else)\s|-exec\s)"
+           r"\s*(?:\w+=\S*\s+)*(?:/[\w./-]*/)?")
 ARG_WRITER_RE = re.compile(
-    r"(?:\b(?:tee|cp|mv|rm|install|shred|truncate|ln)\b|\bof=|"
-    r"\bsed\b[^|;&]*?\s-i)[^|;&]*$")
+    _CMDPOS + r"(?:(?:tee|cp|mv|rm|install|shred|truncate|ln)(?![\w./-])|"
+    r"sed(?![\w./-])[^|;&]*?\s-i)[^|;&]*$|\bof=[^|;&]*$")
 # python3 -c "open('…/events.jsonl', 'w')" — the mode sits AFTER the path.
 WRITE_AFTER_RE = re.compile(r"^\s*['\"]?\s*,\s*['\"][wax]")
 
@@ -231,7 +236,7 @@ def ledger_write_target(cmd):
     write it. Blocking on mention is what broke this hook the first time.
     """
     for m in LEDGER_PATH_RE.finditer(cmd):
-        before = cmd[max(0, m.start() - 80):m.start()]
+        before = cmd[:m.start()]
         if REDIRECT_RE.search(before) or ARG_WRITER_RE.search(before):
             return m.group(0)
         if WRITE_AFTER_RE.match(cmd[m.end():m.end() + 12]):
