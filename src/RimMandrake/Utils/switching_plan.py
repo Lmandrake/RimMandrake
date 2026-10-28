@@ -273,9 +273,10 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     # under its line on a post-reset reading: the reading is an upper bound (usage only grows inside a week), so even
     # an old or ESTIMATE figure proves the line is reached
     under = p is not None and live in line and p <= line[live] and not reset_passed(lr, now)
-    # a windowed account (steven) past its window is as spent as one at its line
-    out = (live in order and next_reset(lr, now) is not None and not reset_passed(lr, now)
-           and not in_window(plan, live, lr, now))
+    # a windowed account (steven) past its window is as spent as one at its line; the window is timed from the last
+    # reset the recorded one implies, so it is enforced even when his reading predates that reset
+    w, nr = (plan["accounts"].get(live) or {}).get("window_h_after_reset"), next_reset(lr, now)
+    out = live in order and w is not None and nr is not None and (WEEK - (nr - now)) / 3600 > w
     under = under or out
 
     if target is None:
@@ -549,6 +550,9 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
     if dry or d["do"] in ("passive", "skip", "hold"):
+        pl, ln = d.get("pct_left"), d.get("line")
+        if not dry and d["do"] == "hold" and pl is not None and ln is not None and pl <= ln + plan["soft_margin_pct"]:
+            write_notice({**d, "do": "soft"}, now)  # held near a line: the soft brake still goes out
         log({**rec, "acted": False})
         return 0
     rc = 0

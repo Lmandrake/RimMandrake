@@ -104,6 +104,9 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 10 (2026-10-28 12:00)
+    d = D({"steven": R(70, -49, src="ESTIMATE"), "system": R(0, 100), "lukas": R(0, 120)}, "steven", polled=True)
+    check(d["do"] == "stop", f"steven live 49 h past a reset his reading predates: out of window, stop (got {d['do']})")
     # GPT review round 9 (2026-10-28 11:55)
     d = D({"steven": R(60, 120 + 5 / 60), "system": R(40, 100), "lukas": R(98, 130)}, "system")
     check(d["do"] == "normal", f"steven with 5 min of window left is no switch target (a slow use lands outside) (got {d['do']} {d['to']})")
@@ -376,6 +379,15 @@ def main():
     check("use system" not in calls.read_text() and "arm" in calls.read_text(),
           "a live account changed by a human while arming: no second switch")
     (TMP / "live.txt").write_text("lukas")
+    # a hold on a pending switch near the line still publishes the soft brake
+    (TMP / "out" / "notice.json").unlink(missing_ok=True)
+    cur11 = {**off, "system": R(50, 30), "lukas": R(1, 60)}
+    kk = SP.switch_key("lukas", "system", cur11["system"])
+    SP.write_marker(kk, {"phase": "pending", "at": SP.iso(NOW - 60), "from": "lukas", "to": "system"})
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur11, poll_fn=lambda: None)
+    (TMP / "out" / "markers" / f"{kk}.json").unlink(missing_ok=True)
+    check(SP.read_json(TMP / "out" / "notice.json", {}).get("state") == "soft",
+          "a hold on a pending switch at 1% still publishes the soft brake")
     # HOLD written while arming brakes the act
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
