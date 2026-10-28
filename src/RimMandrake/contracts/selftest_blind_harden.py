@@ -666,6 +666,30 @@ def r7_upper_sha_hidden_unknown_superseded():
     return (n.shas == (SHA_A,) and pi.superseded_withheld and pi.fields_withheld == 3,
             repr((n.shas, pi.superseded_withheld, pi.fields_withheld)))
 
+
+def r8_falsy_paths_bad_time_newest():
+    """Review r8: a populated non-string evidence path (0, False) is dropped and counted; a time that parses but
+    overflows UTC conversion is dropped and counted, never a crash; the instrument check's "newest" comes only from
+    the measured sources."""
+    p, _ = digest([verdict(rel=0), {"source": "leftovers", "t": T0, "kind": "save", "archive": False}])
+    by = {s.source: s for s in p.sources}
+    p0, _ = digest([verdict(rel=None), {"source": "leftovers", "t": T0, "kind": "save", "archive": None}])
+    b0 = {s.source: s for s in p0.sources}
+    ok1 = (by["verdict"].fields_withheld == b0["verdict"].fields_withheld + 1
+           and by["leftovers"].fields_withheld == b0["leftovers"].fields_withheld + 1)
+    notes = [{"event": "note", "seat": "BENCH", "ts": "0001-01-01T00:00:00+01:00", "text": "x"}]
+    pi = BL.project_item(item(), notes, [], ids(KNOWN), resolve=resolver())
+    ok2 = pi.fields_withheld == 1
+    st = dict(STATUS)
+    st["marks"] = {"state": "unmeasured", "fault": "error", "malformed": 0, "newest": T0 + dt.timedelta(days=3)}
+    st["ledger"] = dict(STATUS["ledger"], newest=T0)
+    _, text = digest([], status=st)
+    newer = (T0 + dt.timedelta(days=3)).strftime("%Y-%m-%d")
+    ok3 = newer not in str(text)
+    return ok1 and ok2 and ok3, repr((by["verdict"].fields_withheld, b0["verdict"].fields_withheld,
+                                      by["leftovers"].fields_withheld, b0["leftovers"].fields_withheld,
+                                      pi.fields_withheld, ok3))
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -707,6 +731,8 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
           ("R6 an issued page no caller holds is released", r6_issued_released),
           ("R7 uppercase sha, hidden-not-known ref and withheld superseded_by are counted",
            r7_upper_sha_hidden_unknown_superseded),
+          ("R8 falsy evidence paths and overflowing times are counted; newest only from measured sources",
+           r8_falsy_paths_bad_time_newest),
           ("R3-H an account in the displayed evidence root drops the path, counted", r3_evidence_root_account)]
 
 

@@ -352,7 +352,8 @@ def _record(src, raw, verbs, ids, resolved):
         nonlocal dropped
         ok = []
         for p in paths:
-            shown, refused = C.evidence_view(p, hidden) if p else (None, False)
+            # a populated non-string path (0, False) is refused and counted, never read as absent (review r8)
+            shown, refused = C.evidence_view(p, hidden) if isinstance(p, str) and p else (None, p not in (None, ""))
             if shown and ids is None and not shown.endswith("/"):
                 shown, refused = shown.rsplit("/", 1)[0] + "/", True
             if shown and C.evidence_problem(shown):        # e.g. an account in the displayed root: dropped, counted
@@ -526,7 +527,10 @@ def _time(ts):
         return None
     if d.tzinfo is None:
         return None
-    return d.astimezone(dt.timezone.utc)
+    try:
+        return d.astimezone(dt.timezone.utc)
+    except (OverflowError, ValueError):     # parses, but UTC is out of range (0001-01-01T00:00+01:00): review r8
+        return None
 
 
 def _refused(v, shown=None):
@@ -878,7 +882,7 @@ def render_digest(page):
     if total == 0 and len(blind) == len(page.sources):
         P.lit("No source could be read: this window is UNMEASURED, not empty.\n\n")
     elif total == 0:
-        newest = max((s.newest for s in page.sources if s.newest), default=None)
+        newest = max((s.newest for s in page.sources if s.newest and s.state == "measured"), default=None)
         P.lit("No delegated record in the measured sources; the UNMEASURED ones may hold some. " if blind else
               "No delegated record in the window. ")
         P.lit("Instrument check: the measured sources see ")
