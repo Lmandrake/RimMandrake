@@ -247,6 +247,13 @@ def main():
     pg = SP.pool({"steven": R(22, 2), "system": R(3, 100), "lukas": R(80, 1)}, NOW, PLAN, live="system")
     check(any(x["account"] == "lukas" and x["by_h"] <= 1 and x["spend_pct"] > 70 for x in pg["parts"]),
           f"[R] GPT 2026-10-28: system's 3% cannot outlast lukas's hour, so lukas's 80% is paced for (got {pg['parts']})")
+    # [R] GPT 2026-10-28 final round: lukas is listed at its 1 h deadline, so the pace must also burn the system
+    # budget that the fixed priority spends BEFORE lukas inside that hour; else 90% of lukas expires unspent
+    pb = SP.pool({"steven": R(22, 2), "system": R(90, 100), "lukas": R(100, 1)}, NOW, PLAN, live="system")
+    kept = sum(x["spend_pct"] for x in pb["parts"] if x["account"] == "lukas" and x["by_h"] <= 1)
+    first = sum(x["spend_pct"] for x in pb["parts"] if x["account"] == "system" and x["by_h"] <= 1)
+    check(kept == 0 or (first >= 88 - 0.01 and pb["rate_pct_h"] * 1 >= kept + first - 0.01),
+          f"a listed lower budget is spendable at the pace: the higher budget it waits behind is due first (got {pb})")
     p9 = SP.pool({"steven": R(22, 2), "system": R(40, 168), "lukas": R(40, 167)}, NOW, PLAN)
     sv9 = sorted(x["by_h"] for x in p9["parts"] if x["account"] == "steven")
     check(sv9 == [50.0, 218.0], f"steven's two windows inside the horizon both count (got {sv9})")

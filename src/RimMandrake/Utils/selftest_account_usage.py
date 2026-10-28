@@ -264,6 +264,18 @@ rearm()
 au.remote_live = lambda t: (None, None)
 au.poll(NOW + 240)
 check("warm: refused while a remote's live login is unknown", SW.warmed == [], SW.warmed)
+# [R] GPT 2026-10-28 final round: a remote switches to the target between poll's remote check and the warm (the
+# local lock cannot hold a remote's switcher). The remotes are asked again right before the warm.
+rearm()
+_seen = []
+au.remote_live = lambda t: (_seen.append(t) or ("there", "two" if len(_seen) == 1 else "four"))
+recs = au.poll(NOW + 250)
+check("race: a remote that switched to the target during the poll is seen again before the warm; nothing warmed",
+      SW.warmed == [] and "not warmed" in recs["four"]["why"], (SW.warmed, recs["four"]["why"]))
+rearm()
+au.remote_live = lambda t: ("there", "two")
+au.poll(NOW + 260)
+check("race: the remotes still on other logins at the recheck -> the warm runs", SW.warmed == [("four", "one")], SW.warmed)
 
 # ---- the real switcher still offers what the locked warm uses (loaded, never called)
 real = Path.home() / ".local" / "bin" / "claude-account"

@@ -370,8 +370,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
 def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
     """What the plan will still spend and the burn rate that spends it without losing more than the owner's priority
     gives up: each account's present budget (down to its line) is due at its expiry (next reset; steven's window
-    end), unless higher-priority eligible accounts that outlive it hold more than the pace burns before it expires
-    (then it is lost by his rule and not paced for), and
+    end), unless higher-priority eligible accounts that outlive it hold more than the pace without it burns before
+    it expires (then it is lost by his rule and not paced for; when it is kept, those higher budgets are due by its
+    expiry, since pick() burns them first), and
     its next refill (100 - line) at the refill's own expiry. The rate is the max over deadlines of cumulative spend /
     hours; pct and deadline_h are the binding deadline's. -> {pct, rate_pct_h, deadline_h, total_pct, parts}; rate
     None when no account has a reset time. `live` is unused (kept for the allocator's call)."""
@@ -411,20 +412,33 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
                 rate, bind, dl = cum / h, cum, h
         return parts, cum, rate, bind, dl
 
+    def placed(keep):
+        """Kept present budgets at their deadlines. A higher eligible account that outlives a kept lower one is
+        burned FIRST by pick(), so its budget is due by the lower one's expiry: else the pace would list the lower
+        budget as spendable while it waits behind the higher one and expires ([R] GPT 2026-10-28 final round)."""
+        due = {n: present[n][1] for n in keep}
+        for n in keep:
+            for m in keep:
+                if m != n and elig.get(m) and outranks(plan, m, n) and present[m][1] > present[n][1]:
+                    due[m] = min(due[m], present[n][1])
+        return [(n, present[n][0], due[n]) for n in keep] + refills
+
+    def blockers(n):
+        return [m for m in present if m != n and elig.get(m) and outranks(plan, m, n) and present[m][1] > present[n][1]]
+
     # the owner's priority: a present budget is lost at its expiry (and not paced for) when the higher eligible
-    # accounts that outlive it hold more than the pool's pace burns before it expires; the pace depends on what is
-    # kept, so settle it by a few rounds (start with everything kept: the fastest pace, the fewest losses)
+    # accounts that outlive it hold more than the pool's pace WITHOUT it burns before it expires (judged without
+    # it: pacing for it pulls those higher budgets forward, which would justify any rescue); the pace depends on
+    # what is kept, so settle it by a few rounds (start with everything kept)
     keep = set(present)
     for _ in range(4):
-        rate = pace([(n, *present[n]) for n in keep] + refills)[2]
         new = {n for n, (_sp, e) in present.items()
-               if sum(present[m][0] for m in present if m != n and elig.get(m) and outranks(plan, m, n)
-                      and present[m][1] > e) < rate * (e - now) / 3600 or not any(
-                   elig.get(m) and outranks(plan, m, n) and present[m][1] > e for m in present if m != n)}
+               if not blockers(n) or sum(present[m][0] for m in blockers(n))
+               < pace(placed(keep - {n}))[2] * (e - now) / 3600}
         if new == keep:
             break
         keep = new
-    parts = [(n, *present[n]) for n in keep] + refills
+    parts = placed(keep)
     if not parts:
         return {"pct": None, "rate_pct_h": None, "deadline_h": None, "total_pct": None, "parts": [],
                 "why": "no account has a reset time"}

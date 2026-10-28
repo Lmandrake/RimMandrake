@@ -62,8 +62,16 @@ def priority(ok, off):
     """ACCOUNTPICK_CORRECT_OWNER_PRIORITY: the target is the owner's fixed priority, read from the same file the
     switching plan reads (switching_plan.json `order`), never the soonest reset."""
     import json
+    import shutil
     import tempfile
     d = tempfile.mkdtemp(prefix="st_ap_prio_")
+    try:
+        _priority(ok, off, d, json)
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def _priority(ok, off, d, json):
     plan = os.path.join(d, "plan.json")
     with open(plan, "w") as f:
         json.dump({"order": ["steven", "system", "lukas"]}, f)

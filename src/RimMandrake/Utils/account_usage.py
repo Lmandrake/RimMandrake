@@ -267,12 +267,15 @@ def switcher_module():
     return load_switcher(CLAUDE_ACCOUNT)
 
 
-def warm(name: str, email: str, now: float) -> str:
+def warm(name: str, email: str, now: float, remotes=()) -> str:
     """Refresh a DORMANT login, at most once per WARM_EVERY. The caller has proven no remote has it live; this
     machine is proven HERE, under the switcher's own machine lock (the one `claude-account use` takes): its
     live_account() is read again under that lock and the warm is refused if the target is live (by name or by
     email) or the live login is unknown, so a switch can never land between the check and the refresh. A warm of
-    the live login is a refresh of the live credential: the "auto log out" the owner banned (2026-10-28)."""
+    the live login is a refresh of the live credential: the "auto log out" the owner banned (2026-10-28).
+    `remotes` are asked again right before the lock ([R] GPT 2026-10-28: a remote can switch to the target while
+    the poll probes); a remote's switcher cannot be locked from here, so a switch there inside the seconds between
+    that recheck and the warm is the one race left open."""
     path = DATA_DIR / "warm_state.json"
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(DATA_DIR / ".warm.lock", "a") as lk:  # two polls at once reserve the hour once ([R] GPT 2026-10-28)
@@ -289,6 +292,10 @@ def warm(name: str, email: str, now: float) -> str:
         tmp = path.with_suffix(f".{os.getpid()}.tmp")
         tmp.write_text(json.dumps(st))
         os.replace(tmp, path)
+    for target in remotes:
+        _mach, rn = remote_live(target)
+        if not rn or rn == name:
+            return f"not warmed: at the recheck {target} is {'on this login' if rn == name else 'not answering'}"
     try:
         ca = switcher_module()
         with ca.MachineLock(wait=LOCK_WAIT):
@@ -456,7 +463,7 @@ def poll(now: float | None = None) -> dict:
                 why[name].append(f"vault token on {here} needs a refresh (not warmed: where each login is live "
                                  "is not proven)")
                 continue
-            res = warm(name, reg[name], now)
+            res = warm(name, reg[name], now, cfg.get("remotes") or [])
             exp = vault_token_valid_until(name)
             if not exp or exp < now + VAULT_MARGIN:
                 why[name].append(f"vault token on {here} needs a refresh ({res})")
