@@ -1736,6 +1736,33 @@ def test_role_event_skip_keeps_quota():
           "daily_token_cap 0: refused, not uncapped %r" % a)
 
 
+def test_role_review_night_r3():
+    """Review night r3 (role_launch.py): a zero quick/economy cap is a cap, not a fall-back; one status.json read per
+    tick; after_role chains decided in order; the unit's wall bound adds pre_launch_max_s to the DEFAULT run_max_s."""
+    day = RL.day_of(at_local("08:00"))
+    sl = RL.slots(conductor(quick_token_cap=0, run_token_cap=10000), day)
+    check(sl and all(c == 0 for _, _, c in sl), "quick_token_cap 0: the slots carry cap 0, not run_token_cap %r" % sl)
+    sl = RL.slots(operations(economy_token_cap=0), day)
+    check(sl and sl[0][1] == "economy" and sl[0][2] == 0, "economy_token_cap 0: still the economy slot, cap 0 %r" % sl)
+    now = at_local("19:30")
+    st = fresh()
+    ro = robs(ops_status(now))
+    calls = []
+    first = ro["ops"]
+    ro["ops"] = lambda: calls.append(1) or first()
+    rdecide([operations()], st, ro, now)
+    check(len(calls) == 1, "one status.json read per tick: the alarm keys come from the reading's snapshot (%d)"
+          % len(calls))
+    order = [r["name"] for r in RL.decide_order([{"name": "C", "after_role": "B"}, {"name": "B", "after_role": "A"},
+                                                 {"name": "A"}])]
+    check(order == ["A", "B", "C"], "after_role chain: decided A, B, C %r" % order)
+    order = [r["name"] for r in RL.decide_order([{"name": "X", "after_role": "Y"}, {"name": "Y", "after_role": "X"},
+                                                 {"name": "Z"}])]
+    check(sorted(order) == ["X", "Y", "Z"], "after_role cycle: every role still decided %r" % order)
+    check(RL.scope_bound_s({"pre_launch_max_s": 1200}) == 1800 + 1200 + RL.SCOPE_GRACE_S,
+          "unit bound: default run_max_s + pre_launch_max_s, as decide counts it")
+
+
 def test_role_plan_failure_events():
     t = at_local("13:00")
     items = {"PLAN_A": FakeItem(raised="2026-10-28T01:00:00Z"), "PLAN_ROW": FakeItem(row="R3"),
@@ -3091,6 +3118,7 @@ def main():
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
               test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota,
+              test_role_review_night_r3,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,

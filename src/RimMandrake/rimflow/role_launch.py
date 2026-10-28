@@ -319,18 +319,20 @@ def slots(role, day=None):
     wk = role.get("weekly_plan_weekday")
     if wk and str(wk).title() not in WEEKDAYS:
         raise ValueError("weekly_plan_weekday %r is not one of %s" % (wk, ",".join(WEEKDAYS)))
+    qcap = role.get("quick_token_cap") if role.get("quick_token_cap") is not None else role.get("run_token_cap")
     out = []
     for t in times:
         days, hhmm = parse_slot(t)
         if day is not None and days is not None and weekday(day) not in days:
             continue
-        if hhmm == role.get("economy_pass_local") and role.get("economy_token_cap"):
+        # a cap of 0 is a cap (the launch is then refused), never a fall-back to another cap (review night r3)
+        if hhmm == role.get("economy_pass_local") and role.get("economy_token_cap") is not None:
             out.append((t, "economy", role["economy_token_cap"]))
         elif (day is not None and wk and weekday(day) == WEEKDAYS.index(str(wk).title())
               and not any(m == "weekly" for _, m, _ in out)):          # the day's first run slot only
-            out.append((t, "weekly", role.get("quick_token_cap") or role.get("run_token_cap")))
+            out.append((t, "weekly", qcap))
         else:
-            out.append((t, "quick" if quick else "run", role.get("quick_token_cap") or role.get("run_token_cap")))
+            out.append((t, "quick" if quick else "run", qcap))
     return out
 
 
@@ -554,6 +556,20 @@ def roles_by_name(sch):
     """{name: role} over the schedule's roles entries that are mappings; anything else is skipped here (decide_roles
     alarms it), so one malformed entry cannot raise through the tick (review V, V3)."""
     return {r.get("name"): r for r in sch.get("roles") or [] if isinstance(r, dict)}
+
+
+def decide_order(roles):
+    """Pure. Roles in decide order: each after the role its after_role names (whole chains, not just one level:
+    review night r3), otherwise schedule order. A cycle or a name not in the list ends the chain."""
+    by = {r.get("name"): r for r in roles}
+
+    def depth(r):
+        seen, d = set(), 0
+        while r.get("after_role") in by and r.get("name") not in seen:
+            seen.add(r.get("name"))
+            r, d = by[r["after_role"]], d + 1
+        return d
+    return sorted(roles, key=depth)
 
 
 def max_s_of(run, cfg):
@@ -820,8 +836,10 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     tick_launch = {}      # role -> the unit decide is launching now, until its role_launch action is built (V7)
 
     def reading():
+        # one status.json read per tick: the alarm keys come from the same snapshot the reading judged (review night r3)
         if "r" not in reading_cache:
-            reading_cache["r"] = ops_reading(obs["ops"](), obs["account"](), now,
+            reading_cache["s"] = obs["ops"]()
+            reading_cache["r"] = ops_reading(reading_cache["s"], obs["account"](), now,
                                              sch.get("ops_stale_s", OPS_STALE_S))
         return reading_cache["r"]
 
@@ -848,8 +866,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         act(do="alarm", kind="role:schedule", note=True,
             why="%d roles entr(y/ies) in the schedule are not mappings (%s): skipped; the other roles are decided"
             % (len(bad), ", ".join(type(r).__name__ for r in bad)))
-    roles = sorted((r for r in sch.get("roles") or [] if isinstance(r, dict)),
-                   key=lambda r: 1 if r.get("after_role") else 0)
+    roles = decide_order([r for r in sch.get("roles") or [] if isinstance(r, dict)])
     def one(role):
         name = role.get("name", "?")
         if not role.get("enabled"):
@@ -915,7 +932,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # re-run every open alarm when it reads again (review R, C). No baseline: alarms already open when the
             # role is first enabled run once. One alarm run covers every unseen open alarm, at most one per
             # alarm_run_gap_s.
-            open_items = alarm_reading((obs["ops"]() or {}).get("alarms")) if reading()["state"] == "MEASURED" \
+            open_items = alarm_reading((reading_cache["s"] or {}).get("alarms")) if reading()["state"] == "MEASURED" \
                 else None
             if open_items is None:
                 if not rs.get("alarm_blind"):
@@ -1333,7 +1350,7 @@ SCOPE_STOP_S = 30       # TERM -> KILL escalation of that bound (TimeoutStopSec)
 
 def scope_bound_s(role):
     """The independent wall-time bound (s) of a role run's unit and claude scope: its run_max_s + SCOPE_GRACE_S."""
-    return int(max_s_of({}, role or {})) + SCOPE_GRACE_S
+    return int(max_s_of({}, dict(ROLE_DEFAULTS, **(role or {})))) + SCOPE_GRACE_S
 
 
 def schema_args(role):
