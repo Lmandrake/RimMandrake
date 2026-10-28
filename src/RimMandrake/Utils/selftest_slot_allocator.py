@@ -897,5 +897,38 @@ for args in (["--n", "-1"], ["--n", "2", "--hours", "-3"], ["--n", "2", "--hours
                         capture_output=True, text=True, env=_env)
     check(f"R3: set {' '.join(args)} is refused cleanly", cp.returncode == 2 and "Traceback" not in cp.stderr, (cp.returncode, cp.stderr[-200:]))
 
+# round 3: the burn account is the live login, not the first of several same-instant readings
+def _acc(name, method="live login"):
+    return {"account": name, "machine": "archmagi", "source": "MEASURED", "method": method, "measured_at": "2026-10-28T10:00:00-07:00"}
+_accs = {"lukas": _acc("lukas", "estimate from last poll"), "steven": _acc("steven"), "system": _acc("system")}
+os.environ["RM_SLOT_LIVE_LOGIN"] = "system"
+check("burn account: a tie on measured_at picks the live login (system), not the first key (lukas)",
+      SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi")[0] == "system", SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi"))
+os.environ["RM_SLOT_LIVE_LOGIN"] = ""
+check("burn account: claude-account unreadable -> tie goes to a 'live login' method, not the first key",
+      SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi")[0] == "steven", SA.pick_burn_account(_accs, {"burn_account": "auto"}, "archmagi"))
+os.environ.pop("RM_SLOT_LIVE_LOGIN")
+_fake = tempfile.mkdtemp() + "/ca"
+Path(_fake).write_text("#!/bin/sh\nhead -c 5000 /dev/zero | tr '\\0' ' '\necho '{\"live\": \"system\", \"x\": \"'$(head -c 4000 /dev/zero | tr '\\0' a)'\"}'\n")
+os.chmod(_fake, 0o755)
+os.environ["RM_CLAUDE_ACCOUNT"] = _fake
+check("burn account: a long claude-account answer is parsed whole (no tail truncation)", SA.live_login_name() == "system", SA.live_login_name())
+os.environ["RM_CLAUDE_ACCOUNT"] = "/nonexistent/claude-account"
+check("burn account: missing claude-account -> None, no crash", SA.live_login_name() is None)
+os.environ.pop("RM_CLAUDE_ACCOUNT")
+_ov = {"overage_t": NOW - 0.5 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}
+_sp = {"BENCH": [[NOW - 0.4 * H, NOW - 0.2 * H]] * 4, "FOUNDRY": []}
+# round 3: one seat with unreadable spans no longer disables span integration for the others
+r = d(_ov, helpers_running={"BENCH": 0, "FOUNDRY": 2}, helper_spans={"BENCH": _sp["BENCH"], "FOUNDRY": None}, owner_window_min=2.0)
+check("overage: FOUNDRY spans unreadable -> BENCH still integrated (0.6) + FOUNDRY snapshot (2 x 0.5 = 1.0)",
+      abs(r["overage"]["accrued_h"] - 1.6) < 1e-6, r["overage"])
+# round 3: post-reset debt is what ran after the reset, not a time-share of the interval
+_pr = dict(_ov, reset_at=SA.iso_local(NOW - 0.25 * H))
+r = d(_pr, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.5 * H, NOW - 0.4 * H]] * 4, "FOUNDRY": []}, owner_window_min=2.0, week_resets_at=None)
+check("overage: excess that ran wholly BEFORE the passed reset is not post-reset debt", r["state"].get("overage_post_h", 0) == 0, r["state"])
+r = d(_pr, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.2 * H, NOW - 0.1 * H]] * 4, "FOUNDRY": []}, owner_window_min=2.0, week_resets_at=None)
+check("overage: excess that ran AFTER the passed reset is all post-reset debt (3 x 0.1 = 0.3)",
+      abs(r["state"].get("overage_post_h", 0) - 0.3) < 1e-6, r["state"])
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

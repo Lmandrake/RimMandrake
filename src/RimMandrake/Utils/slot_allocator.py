@@ -56,6 +56,7 @@ import glob
 import json
 import math
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -371,6 +372,20 @@ def machine():
     return AU.machine_name()
 
 
+def live_login_name():
+    """The account this machine is logged into now, from `claude-account --json status` (the whole stdout is parsed);
+    None when the tool is absent, slow, or its answer is not JSON naming a live account."""
+    if "RM_SLOT_LIVE_LOGIN" in os.environ:  # selftest seam
+        return os.environ["RM_SLOT_LIVE_LOGIN"] or None
+    exe = os.environ.get("RM_CLAUDE_ACCOUNT") or os.path.expanduser("~/.local/bin/claude-account")
+    try:
+        out = subprocess.run([exe, "--json", "status"], capture_output=True, text=True, timeout=20).stdout
+        live = json.loads(out).get("live")
+        return live if isinstance(live, str) and live else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def pick_burn_account(accounts, rules, here):
     want = rules.get("burn_account") or "auto"
     if want != "auto":
@@ -378,8 +393,14 @@ def pick_burn_account(accounts, rules, here):
     live = [a for a in accounts.values() if (a.get("machine") or "").lower() == here.lower()
             and a.get("source") == "MEASURED"]
     if live:
-        a = max(live, key=lambda r: epoch(r.get("measured_at")) or 0)
-        return a["account"], f"this machine's ({here}) live login"
+        name = live_login_name()
+        for a in live:
+            if name and a.get("account") == name:
+                return name, f"this machine's ({here}) live login (claude-account says {name})"
+        # claude-account unreadable or names an account not measured here: newest reading, an exact tie is not a
+        # reason to prefer the first key, so a 'live login' method wins it, then the dict order is the last resort
+        a = max(live, key=lambda r: (epoch(r.get("measured_at")) or 0, "live login" in str(r.get("method") or "")))
+        return a["account"], f"this machine's ({here}) newest reading (claude-account live login unavailable)"
     return None, f"no MEASURED reading from this machine ({here})"
 
 
@@ -830,20 +851,28 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
     # measured helper-hours over the elapsed interval (start/stop edges of every subagent), not one snapshot scaled by dt
     sp = inp.get("helper_spans")
     segs = [(dt, over * dt, under * dt)]  # the snapshot is one segment
-    if isinstance(sp, dict) and dt > 0 and run and not blind and all(isinstance(sp.get(s), list) for s in run):
+    post_over = None  # over-allowance helper-h that fell after the persisted reset passed (None -> pro rata)
+    spanned = [s for s in run if isinstance(sp, dict) and isinstance(sp.get(s), list)] if run and not blind else []
+    if spanned and dt > 0:
         lo = now - dt * HOUR
+        # a seat whose spans are unreadable keeps its snapshot count for the whole interval; the others are integrated
+        flat = [s for s in run if s not in spanned]
+        flat_o = sum(max(0, run[s] - allowed.get(s, 0)) for s in flat)
+        flat_u = sum(max(0, allowed.get(s, 0) - run[s]) for s in flat)
         extra = sum(allowed[s] for s in allowed if s not in run)
         # every seat's spans cut the interval differently: integrate on the union of the cuts
-        cuts = sorted({lo, now} | {t for s in run for a, b in sp[s] for t in (a, b) if lo < t < now})
-        segs = []
+        cuts = sorted({lo, now} | {t for s in spanned for a, b in sp[s] for t in (a, b) if lo < t < now})
+        segs, post_over = [], 0.0
         for x, y in zip(cuts, cuts[1:]):
-            o = u = 0.0
-            for s in run:
+            o, u = float(flat_o), float(flat_u)
+            for s in spanned:
                 n = sum(1 for a, b in sp[s] if a <= x and b >= y)
                 o += max(0, n - allowed.get(s, 0))
                 u += max(0, allowed.get(s, 0) - n)
             u += extra
             segs.append(((y - x) / HOUR, o * (y - x) / HOUR, u * (y - x) / HOUR))
+            if prev_reset is not None and y > prev_reset:
+                post_over += o * (y - max(x, prev_reset)) / HOUR
     over_h = sum(g[1] for g in segs)
     under_h = sum(g[2] for g in segs)
     paying_now = ov is None and presence != "BENCH"
@@ -859,7 +888,9 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
             credited += c
             owed -= c
     owed = round(max(0.0, owed), 4)
-    post = 0.0 if reset_seen else min(owed, post + (over_h * post_dt / dt if dt > 0 else 0.0))
+    if post_over is None:
+        post_over = over_h * post_dt / dt if dt > 0 else 0.0
+    post = 0.0 if reset_seen else min(owed, post + post_over)
     rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying_now and owed > 0), "cut": 0, "accrued_h": round(over_h, 4),
            "credited_h": round(credited, 4), "forgiven_h": round(forgiven, 4), "deadline_h": None, "eta_h": None, "plan": ""}
     if owed <= 0:
