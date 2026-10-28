@@ -17,12 +17,50 @@ import art_sheet as A  # noqa: E402
 import artledger as L  # noqa: E402
 
 FAILS = []
+STALE = []
 
 
 def check(cond, msg):
     print(("PASS " if cond else "FAIL ") + msg)
     if not cond:
         FAILS.append(msg)
+
+
+CANDIDATE_ROLES = ("live", "artpipe")   # a graphics-column `kind` that is a real offered picture
+CANDIDATE_LABELS = ("IN GAME", "render ")  # the snapshot's equivalent (it keeps the label, not the kind)
+
+
+def smuggled_reference_columns(cols, refs, shas):
+    """Columns of one row that are the reference texture in disguise. A column is identified by its ROLE metadata
+    (graphics `kind`, or the snapshot label), not by pixel sha: the shipped art (live / "IN GAME") or a render may
+    legitimately be pixel-identical to the reference. A column is smuggled when it shares the reference's sha (or cites
+    its path) WITHOUT carrying a candidate role, or when it cites a reference file path as its source."""
+    bad = []
+    for col in cols:
+        dump = json.dumps({k: v for k, v in col.items() if k not in ("role_checked",)})
+        cites = any(p and p in dump for p in refs)
+        role = col.get("kind")
+        ok_role = role in CANDIDATE_ROLES if role is not None else str(col.get("label", "")).startswith(CANDIDATE_LABELS)
+        if cites or (any(h in dump for h in shas) and not ok_role):
+            bad.append(col)
+    return bad
+
+
+def role_cases():
+    sha = "ab" * 32
+    ref = "src/x/ref_south.png"
+    live = {"kind": "live", "label": "IN GAME \u2014 FlowWorks", "faces": {"single": sha}}
+    check(not smuggled_reference_columns([live], [ref], {sha}), "a reference shown as the labelled IN GAME column (same sha) passes")
+    render = {"kind": "artpipe", "label": "render foo", "faces": {"single": sha}}
+    check(not smuggled_reference_columns([render], [ref], {sha}), "a render pixel-identical to the reference passes")
+    snap = {"label": "IN GAME \u2014 FlowWorks", "single": sha}
+    check(not smuggled_reference_columns([snap], [ref], {sha}), "a snapshot column labelled IN GAME (same sha) passes")
+    mis = {"kind": "reference", "label": "candidate Z", "faces": {"single": sha}}
+    check(len(smuggled_reference_columns([mis], [ref], {sha})) == 1, "a reference image mislabelled as a candidate FAILS")
+    unl = {"faces": {"single": sha}}
+    check(len(smuggled_reference_columns([unl], [ref], {sha})) == 1, "an unlabelled column carrying the reference sha FAILS")
+    cited = {"kind": "artpipe", "label": "render bar", "faces": {"single": "cd" * 32}, "src": ref}
+    check(len(smuggled_reference_columns([cited], [ref], {sha})) == 1, "a candidate sourced from the reference file path FAILS")
 
 
 def synthetic():
@@ -62,9 +100,13 @@ def built_sheets():
                 shas = {hashlib.sha256((L.REPO_ROOT / p).read_bytes()).hexdigest() for p in refs if (L.REPO_ROOT / p).is_file()}
                 for snap in sorted((L.REPO_ROOT / "infrastructure/state/art/sheets").glob(f"{b['slug']}_sheet_*.snapshot.json")):
                     s = json.loads(snap.read_text())
-                    cols = json.dumps((s.get("rows") or {}).get(r["key"], {}).get("columns", {}))
+                    srow = (s.get("rows") or {}).get(r["key"], {})
+                    scols = [{"letter": k, "label": (srow.get("labels") or {}).get(k, ""),
+                              "graphic_of": (srow.get("graphic_of") or {}).get(k), **(v if isinstance(v, dict) else {"v": v})}
+                             for k, v in (srow.get("columns") or {}).items()]
                     n += 1
-                    check(not any(h in cols for h in shas), f"{snap.stem} {r['key']}: no reference texture is a column")
+                    check(not smuggled_reference_columns(scols, refs, shas),
+                          f"{snap.stem} {r['key']}: no reference texture is a column")
                 for html in sorted(A.BIOME_OUT.glob(f"{b['slug']}_sheet_*.html")):
                     if html.stat().st_mtime < cj.stat().st_mtime:
                         # built BEFORE the census last changed (the row may have gained reference_textures after this
@@ -77,16 +119,22 @@ def built_sheets():
                     it = next((i for i in items if i.get("key") == r["key"] or i.get("id") == r["key"]), None)
                     if it is None:
                         continue
-                    gcols = json.dumps(it.get("graphics") or [])
-                    check(not any(h_ in gcols for h_ in shas) and not any(p in gcols for p in refs),
+                    gcols = [c for g in it.get("graphics") or [] for c in g.get("cols") or []]
+                    check(not smuggled_reference_columns(gcols, refs, shas),
                           f"{html.stem} {r['key']}: no reference texture in the row's graphics")
+                    if "refs" not in (it.get("scale") or {}) and (it.get("scale") or {}).get("status") != "none":
+                        # no `refs` key at all = built by a builder from before reference panels existed (a measured-size
+                        # sheet always writes the key). Not a shown/hidden verdict: counted and named, rebuild owed.
+                        STALE.append(f"{html.stem} {r['key']}")
+                        continue
                     check(len((it.get("scale") or {}).get("refs") or []) == len(refs),
                           f"{html.stem} {r['key']}: every reference texture is shown ({len(refs)})")
-    print(f"built-sheet rows with reference_textures checked: {n}")
+    print(f"built-sheet rows with reference_textures checked: {n}; pre-reference-panel HTML rows not judged (rebuild owed): {len(STALE)}")
 
 
 def main():
     synthetic()
+    role_cases()
     built_sheets()
     print(f"{len(FAILS)} failed" if FAILS else "all passed")
     return 1 if FAILS else 0
