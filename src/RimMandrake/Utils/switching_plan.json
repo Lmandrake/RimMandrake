@@ -29,6 +29,8 @@
   "max_age_min": 6,
   "_doc": "[A] (brief 2026-10-28): within near_pct of a line, the engine polls the meter itself rather than trust a reading older than max_age_min."
  },
+ "window_margin_min": 10,
+ "_window_margin_min": "[R] GPT review round 9: a windowed account (steven) is no switch target in the last 10 min of its window, so a slow arm + use never lands after the window closed (live there, it is switched away early).",
  "pool_pacing": true,
  "_pool_pacing": "[C] card 10:20, Pacing: 'Pace the whole pool BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner.' slot_allocator paces on what this plan will still spend (steven down to its leave line inside its window, the others to their floors) over the hours to each deadline.",
  "gate": {

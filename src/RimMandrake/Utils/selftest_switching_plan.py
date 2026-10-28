@@ -104,6 +104,13 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 9 (2026-10-28 11:55)
+    d = D({"steven": R(60, 120 + 5 / 60), "system": R(40, 100), "lukas": R(98, 130)}, "system")
+    check(d["do"] == "normal", f"steven with 5 min of window left is no switch target (a slow use lands outside) (got {d['do']} {d['to']})")
+    d = D({"steven": R(60, 120 + 5 / 60), "system": R(40, 100), "lukas": R(98, 130)}, "steven")
+    check(d["do"] == "switch" and d["to"] == "system", f"live steven in the last minutes of his window switches away (got {d['do']})")
+    d = D({"steven": R(60, 120 + 20 / 60), "system": R(40, 100), "lukas": R(98, 130)}, "system")
+    check(d["do"] == "switch" and d["to"] == "steven", f"steven with 20 min left is still the soonest target (got {d['do']})")
     # GPT review round 8 (2026-10-28 11:50)
     st8 = {"stopped": {"account": "system"}}
     d = D({**off, "system": R(0.5, 100, src="ESTIMATE")}, "system", state=st8)
@@ -240,6 +247,7 @@ def main():
     meter = {**off, "system": R(0, 100), "lukas": R(98, 120)}
     rc = SP.check(dry=False, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
+    seq = [x for x in seq if x != "status"]  # the post-arm re-check reads status too
     check(rc == 0 and seq[-3:] == ["arm", "use", "disarm"], f"switch pass: arm, use, disarm (got {seq})")
     check("use lukas --confirm testbox" in calls.read_text(), "the switch names the target and confirms the machine")
     check(SP.switcher_status().get("live") == "lukas", "after the pass the switcher reads lukas live")
@@ -251,6 +259,7 @@ def main():
     meter2 = {**off, "system": R(0, 100), "lukas": R(1.5, 120)}
     rc = SP.check(dry=False, now=NOW, meter_fn=lambda: meter2, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
+    seq = [x for x in seq if x != "status"]
     check(seq[-3:] == ["arm", "fleet-stop", "disarm"], f"hard stop pass: arm, fleet-stop, disarm (got {seq})")
     n = json.loads((TMP / "out" / "notice.json").read_text())
     check(n.get("state") == "stop", "the notice says stop")
@@ -310,11 +319,11 @@ def main():
     real_run = SP.run
     def slow_arm(argv, *a, **k):
         if argv[1:2] == ["arm"]:
-            clock[0] += 180  # arming took 3 min: steven's window closed meanwhile
+            clock[0] += 900  # arming took 15 min: steven's window closed meanwhile
         return real_run(argv, *a, **k)
     SP.run = slow_arm
     st = SP.load_state(); st.pop("last_poll", None); SP.save_state(st)
-    m6 = {"steven": R(80, 120.03), "system": R(40, 100), "lukas": R(0, 120)}
+    m6 = {"steven": R(80, 120.2), "system": R(40, 100), "lukas": R(0, 120)}
     SP.check(dry=False, now=NOW, meter_fn=lambda: m6, poll_fn=lambda: None)
     SP.run = real_run
     check("use steven" not in calls.read_text() and "arm" in calls.read_text(),
@@ -351,6 +360,22 @@ def main():
     SP.run = real_run
     check("fleet-stop" not in calls.read_text() and "arm" in calls.read_text() and not SP.load_state().get("stopped"),
           "a stop that no longer holds after arming is skipped and leaves no 'stopped' record")
+    # a human switch while arming: the engine does not switch again
+    calls.write_text("")
+    (TMP / "live.txt").write_text("lukas")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    cur10 = {**off, "system": R(50, 100), "lukas": R(60, 120)}
+    def arm_human(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            (TMP / "live.txt").write_text("system")
+        return real_run(argv, *a, **k)
+    SP.run = arm_human
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur10, poll_fn=lambda: None)
+    SP.run = real_run
+    check("use system" not in calls.read_text() and "arm" in calls.read_text(),
+          "a live account changed by a human while arming: no second switch")
+    (TMP / "live.txt").write_text("lukas")
     # HOLD written while arming brakes the act
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

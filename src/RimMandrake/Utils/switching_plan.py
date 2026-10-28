@@ -145,12 +145,14 @@ def left(plan: dict, r, now: float):
     return 0.0 if blind_zero(plan, r, now) else (r or {}).get("week_pct_left")
 
 
-def in_window(plan: dict, name: str, r, now: float) -> bool:
+def in_window(plan: dict, name: str, r, now: float, margin_s: float = 0) -> bool:
+    """Inside the account's window (always, for an account without one). margin_s: with that much of it still left,
+    so a switch that takes minutes never lands after the window closed."""
     w = (plan["accounts"].get(name) or {}).get("window_h_after_reset")
     if w is None:
         return True
     rs = next_reset(r, now)
-    return rs is not None and not reset_passed(r, now) and (rs - now) / 3600 >= 168 - w
+    return rs is not None and not reset_passed(r, now) and (rs - now - margin_s) / 3600 >= 168 - w
 
 
 def expiry(plan: dict, name: str, r, now: float):
@@ -171,7 +173,8 @@ def lines(meter: dict, plan: dict, now: float) -> tuple[dict, dict]:
 
     def ok(n, ln):
         r = meter.get(n)
-        return usable(r) and not reset_passed(r, now) and in_window(plan, n, r, now) and r["week_pct_left"] > ln
+        return (usable(r) and not reset_passed(r, now) and in_window(plan, n, r, now, plan.get("window_margin_min", 0) * 60)
+                and r["week_pct_left"] > ln)
 
     strict = {}
     for n in plan["order"]:
@@ -557,6 +560,9 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if (OUT / "HOLD").exists():  # the owner's brake, set while we armed
             return False
         mk = {k: v for k, v in read_markers().items() if k != d.get("key")}
+        live2 = switcher_status().get("live") or live  # a human may have switched while we armed
+        if live2 != live:
+            return False
         d2 = decide(meter_fn(), live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
         return d2["do"] == d["do"] and d2.get("to") == d.get("to")
     if d["do"] == "switch":
