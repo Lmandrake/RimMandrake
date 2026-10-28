@@ -726,7 +726,7 @@ def _override_live(ov, now):
     return ov
 
 
-def _overage(inp, state, rules, now, base, per, ov, presence, why):
+def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
     """Record helper-hours run above the computed N (base) as owed; once his word has lapsed and he has left, lower `per`
     in place so the debt is repaid before the burn account's reset. Returns the record shown on the Pacing tile."""
     cfg = rules["overage"]
@@ -734,8 +734,11 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
     last = state.get("overage_t")
     dt = 0.0 if last is None else max(0.0, min(now - float(last), cfg["max_accrual_dt_h"] * HOUR)) / HOUR
     forgiven = 0.0
-    prev_reset, new_reset = epoch(state.get("reset_at")), epoch(inp.get("week_resets_at"))
-    reset_seen = prev_reset is not None and prev_reset <= now and new_reset is not None and new_reset > prev_reset
+    # a blind (STALE/UNMEASURED) reading's reset is not evidence of a rollover: decide() does not adopt it either (S16)
+    prev_reset, new_reset = epoch(state.get("reset_at")), (None if blind else epoch(inp.get("week_resets_at")))
+    # the meter names a later week and the persisted reset is due, within the meter's own jitter (S15: 15:59 vs 16:00)
+    reset_seen = (prev_reset is not None and prev_reset <= now + RESET_TOL_S and new_reset is not None
+                  and new_reset > prev_reset and not same_reset(prev_reset, new_reset))
     # the part of `owed` accrued after prev_reset passed while the meter could not yet name the new reset (S14): it is
     # the new week's debt and survives the forgiveness
     post = float(state.get("overage_post_h") or 0.0)
@@ -943,7 +946,7 @@ def decide(inp, state, rules, now):
         if ops_advice["disk"] == "BRAKE":
             why.append("his word stands over the disk brake")
     pre_cut_total = sum(per.values())
-    overage = _overage(inp, state, rules, now, base, per, ov, presence, why)
+    overage = _overage(inp, state, rules, now, base, per, ov, presence, why, blind=blind)
     sess = inp.get("session_pct_used")
     if sess is not None and inp.get("source") != "MEASURED":
         # a stale or estimated 5-hour reading may predate the window's reset: it brakes nothing

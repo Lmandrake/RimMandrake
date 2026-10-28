@@ -806,5 +806,21 @@ check("S14: recovery after a blind reset forgives the 3 + 3.5 old-week h, keeps 
       abs(r2["overage"]["forgiven_h"] - 6.5) < 0.01 and abs(r2["overage"]["owed_h"] - 5.25) < 0.01,
       (r1["overage"], r2["overage"]))
 
+# S15: a reset that lands a little before the persisted time still rolls the debt over (the meter's 15:59 vs 16:00)
+_rs = NOW + 30
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 12.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+       "reset_at": SA.iso_local(_rs)}, week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=168.0,
+      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=2.0)
+check("S15: a measured next-week reset 30 s before the persisted reset forgives the 12 h", r["overage"]["forgiven_h"] == 12.0
+      and r["overage"]["owed_h"] == 0, r["overage"])
+# S16: a STALE reading that names the new week is not a reset: it forgives nothing and does not clear overage_post_h
+_rs = NOW - 0.5 * H
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 4.0, "overage_post_h": 4.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+       "reset_at": SA.iso_local(_rs)}, source="STALE", week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=167.0,
+      helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0)
+check("S16: a STALE next-week reset forgives nothing; owed 4 + 1.75 kept as post-reset debt",
+      r["overage"]["forgiven_h"] == 0 and abs(r["overage"]["owed_h"] - 5.75) < 0.01
+      and abs(r["state"].get("overage_post_h", 0) - 5.75) < 0.01, (r["overage"], r["state"].get("overage_post_h")))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
