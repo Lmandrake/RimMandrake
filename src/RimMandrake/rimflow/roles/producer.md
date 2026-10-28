@@ -68,7 +68,9 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    REQUEST"`, then the same with `--prefix "CUT"`; `--last 0` is all of them, never the newest few), the
    Arbiter's verdicts since your last run, the alarm and flag lines of `digest_blind.md` (never `digest.md`), and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` / `... queue FOUNDRY`
    (never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values; the
-   blind view redacts them and withholds items about accounts). A round,
+   blind view is a closed type that withholds items about accounts and shows a note only as its time, seat and the
+   item ids and shas it names, never its text: `--prefix` finds and counts the requests, their content is not
+   yours to read there). A round,
    zero or alarming number is a query bug until a sanity probe proves the instrument can see
    (`infrastructure/state/facts/instrument_traps.md`).
 2. **Replan first** if a request or a failed plan step is open: a cut list (what drops, which goal it served, what

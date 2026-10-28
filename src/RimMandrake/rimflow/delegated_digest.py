@@ -1,137 +1,87 @@
 #!/usr/bin/env python3
-"""delegated_digest.py — the owner's daily digest of delegated calls, built by a program (delegation_policy.md §5).
+"""delegated_digest.py — the daily digest of delegated calls, built by a program (delegation_policy.md §5).
 
 No AI. Once a day, as the Conductor's pre-step (dispatcher_schedule.json `pre_launch`), this writes
-`Transient/delegated_digest_<YYYY-MM-DD>.md`: every delegated call since the last digest, grouped by class, newest
+`Transient/delegated_digest_<YYYY-MM-DD>.md`: every delegated call not yet in a digest, grouped by class, newest
 first, with counts MEASURED from the records. The Conductor delivers it (conductor.md, scheduled check (d)); it never
-assembles one by hand. Item DELEGATED_DIGEST_FIX_NEVER_WRITTEN.
+assembles one by hand. Items DELEGATED_DIGEST_FIX_NEVER_WRITTEN, DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH.
 
-Sources (each read whole, filtered to the window since < t <= cut):
-  ledger      every event whose `why` starts `delegated:` (rimflow model.read(), all shards). The class is the logged
-              label after `delegated:`; one line per (class, item); events with no item (a `bridge` take, a `game`
-              state the bridge-idle path set, §2.6) are a line each.
-  verdicts    the judge records infrastructure/state/delegated/<date>/*.json (§4); t = the commit that added the file
-              (git), or its mtime while untracked. Art verdicts are grouped by subject.
-  commits     `git log --grep '^Delegated:'` (§5).
-  art marks   artledger.marks_digest(since) (§2.3, class `art marks`).
-  art installs  the art ledger's live events whose `why` starts `delegated:` (other than art marks): art-eval keeps
-              going live, geometric corrections (§2.3).
-  leftovers   D:\\ClaudeWork\\backups\\leftovers\\acts.jsonl (§2.2): one line per deletion with its archive.
+🔴 TOKEN-BLIND BY CONSTRUCTION (owner 2026-10-27: only Operations is token-aware; the Conductor reads this page).
+The page is a contracts.blind.DigestPage, a CLOSED type: each reader below extracts only the RAW_FIELDS of its
+source, contracts.blind.project_digest maps them into closed sets (policy class, decision, mark action, judge family,
+seat) and checked identifiers (item id, subject, sha, evidence path under an allowed root), and render_digest writes
+it from fixed templates behind a page guard that fails closed. No record text reaches the page: titles, notes, `why`
+details, commit subjects and quoted words are never copied. A record whose item is about accounts is withheld and
+counted; an unsafe subject or path is dropped and counted (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF).
 
-🔴 TOKEN-BLIND BY CONSTRUCTION (owner 2026-10-27; the Conductor reads this file). Built from an ALLOW-list of fields,
-never a deny-list: each source names the fields it copies (ALLOWED below) and nothing else of a record is ever
-read into the output — a record's cost, seconds, account or any field added later cannot reach the page. The judge
-is named only by a model FAMILY from a closed set. Every copied string then passes blind_view.redact() (numbers
-near account/token/cap words, unit numbers like 80k / 6% / $0.33, numbers >= 10,000, account-named ids) and
-account names are masked. Items blind_view withholds (about accounts) are counted, never named.
-selftest_delegated_digest.py injects an account id, a token figure and a cost into every source and proves none
-appears.
+Sources (each read whole; the window is decided centrally, below):
+  ledger       events whose `why` starts `delegated:` (rimflow model.read(), all shards); identity seat+ts+tsn+verb+id.
+  verdict      infrastructure/state/delegated/<date>/*.json; t = the commit that added it (git) or its mtime while
+               untracked; identity = the repo path, so a verdict seen untracked is not shown again once committed.
+  commit       every `Delegated: <class> …` line of a commit message, subject or BODY (`git log --format=%B`);
+               identity = sha + line number. A git failure reads UNMEASURED.
+  marks        the art ledger's mark acts (live events under MARKS_WHY incl. ✕ deletes, ban, unban, ban_hit), read as
+               records with an upper bound like every source (never marks_digest's prose); identity = event id.
+  art_install  the art ledger's other `delegated:` live installs; identity = event id (else ts+sha+rel).
+  leftovers    D:\\ClaudeWork\\backups\\leftovers\\acts.jsonl; identity = the line's sha1.
 
-The window: `since` is the previous digest's cut, kept in a state file a program reads (scratch, never the repo):
-D:\\ClaudeWork\\rimmandrake\\delegated_digest\\state.json. No state = since the beginning. One digest per date: if
-today's file exists the run does nothing. A dry run (--dry-run) writes where --out-dir says and never moves the
-state. A digest with zero calls is checked against the instrument first (§5): it says how many delegated events the
-sources see in all time, so a blind instrument is never reported as "nothing delegated".
+The window (review gpt_review_digest_2026-10-27 findings 2, 4-8): state at
+D:\\ClaudeWork\\rimmandrake\\delegated_digest\\state.json (scratch, never the repo) holds, per digest date, its
+floor, cut, completion and the identities each source contributed. A record is on today's page iff its identity is in
+no OTHER complete digest and floor < t <= cut. A source that fails reads UNMEASURED and its records stay unseen, so
+they appear on the next digest that can read it: a failed source never loses its backlog. A malformed record (bad
+JSON, no readable time) is counted per source, never silently skipped. The floor is the state's global floor (a legacy
+`last_cut`, else none) and never advances; --force rebuilds a date with that date's own floor, its own records
+re-included. Completion is the state entry, never the file's existence: the entry is written pending (with the page's
+sha256), then the page, then the entry is marked complete; a pending entry whose page matches its sha256 is
+reconciled to complete on the next run. --dry-run writes elsewhere (never the production directory) and never moves
+the state; only a dry run may take --since.
 
---pre-launch: a pre-step's non-zero exit stops the Conductor (role_launch.launch_argv), and a missing digest must
-not cost the owner his Conductor: in this mode any failure writes `delegated_digest_<date>.FAILED.md` beside the
-digest (the reason only) and exits 0.
+--pre-launch: a pre-step's non-zero exit stops the Conductor (role_launch.launch_argv), and a missing digest must not
+cost the owner his Conductor: in this mode ANY failure (bad arguments, an import, the page guard) writes the fixed
+text `delegated_digest_<date>.FAILED.md` beside the digest and exits 0. The error itself (which may hold record text)
+goes only to D:\\ClaudeWork\\rimmandrake\\delegated_digest\\errors.log, which Operations reads. A successful run
+removes that date's stale FAILED marker. The failure path uses the stdlib only.
 
 Usage:
-  python3 src/RimMandrake/rimflow/delegated_digest.py                  # build today's, advance the state
-  python3 src/RimMandrake/rimflow/delegated_digest.py --dry-run --out-dir /mnt/d/ClaudeWork/.../sample
-  python3 src/RimMandrake/rimflow/delegated_digest.py --since 2026-10-26T00:00:00Z --dry-run --out-dir ...
+  python3 src/RimMandrake/rimflow/delegated_digest.py                  # build today's, record it in the state
+  python3 src/RimMandrake/rimflow/delegated_digest.py --dry-run [--since 2026-10-26T00:00:00Z] [--out-dir DIR]
+  python3 src/RimMandrake/rimflow/delegated_digest.py --force          # rebuild today's with its own floor
 """
 import argparse
 import datetime as dt
 import glob
+import hashlib
 import json
 import os
-import re
 import subprocess
 import sys
+import traceback
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)
 ROOT = os.path.dirname(os.path.dirname(SRC))
-for p in (SRC, HERE):
-    if p not in sys.path:
-        sys.path.insert(0, p)
-import blind_view as B  # noqa: E402
 
 DELEGATED_DIR = os.path.join(ROOT, "infrastructure", "state", "delegated")
 OUT_DIR = os.path.join(ROOT, "Transient")
-STATE = "/mnt/d/ClaudeWork/rimmandrake/delegated_digest/state.json"
+SCRATCH = "/mnt/d/ClaudeWork/rimmandrake/delegated_digest"
+STATE = os.path.join(SCRATCH, "state.json")
+DRY_DIR = os.path.join(SCRATCH, "dry")
+ERRORS = os.path.join(SCRATCH, "errors.log")
 LEFTOVERS = "/mnt/d/ClaudeWork/backups/leftovers/acts.jsonl"
-EPOCH = "1970-01-01T00:00:00Z"
-MAXLEN = 180                     # one decision's text on a line
-
-# the policy's class names (§1 table, §2 delegations); longest first so `art marks` wins over `art`
-POLICY_CLASSES = sorted(["technical", "scope", "design", "art", "cosmetic", "art geometric correction",
-                         "art marks", "bridge idle", "leftovers"], key=len, reverse=True)
-# a judge is named by model family only, from this closed set; anything else reads "judge"
-JUDGE_FAMILIES = ("opus", "sonnet", "haiku", "gpt", "gemini", "nemotron", "human")
-# 🔑 THE ALLOW-LIST. The only fields of each source this program reads into the page.
-ALLOWED = {
-    "ledger": ("ts", "seat", "event", "id", "why", "title", "text", "to", "sha", "state", "ranBy", "purpose",
-               "idleProbe", "reason"),
-    "verdict": ("subject", "item", "class", "decision", "verdict", "overall", "final", "recommended_pick"),
-    "verdict_judge": ("judge_model",),          # keys only, matched against JUDGE_FAMILIES
-    "leftover": ("ts", "kind", "path", "archive"),
-    "commit": ("sha", "ts", "subject"),
-    "art_install": ("type", "ts", "seat", "why", "mod", "rel", "sha"),
-}
+STATE_SCHEMA = "rimflow.delegated-digest-state/2"
 SKIP_VERBS = {"lease", "renew", "release"}    # lease bookkeeping a claim already shows
+SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers")
+FAILED_TEXT = ("# Delegated digest %s NOT BUILT\n\nThe program failed; the error is in Operations' log. The Conductor "
+               "started anyway. The next digest carries every record this one would have.\n")
 
 
-# ------------------------------------------------------------------------------------------------ blind text ----
-def _account_names():
-    return {n for n in B.account_names() if n not in JUDGE_FAMILIES and n not in B.SOFT_NAMES
-            and n not in ("codex",)}
-
-
-# a secret-shaped word (sk-..., key-..., Bearer ...) never reaches the page even if a why carries one
-_KEYLIKE = re.compile(r"(?i)\b(?:sk|pk|rk|key|api[_-]?key|token)[-_][A-Za-z0-9_-]{4,}|\bBearer\s+\S+")
-
-
-def blind(text, hide=(), keep=()):
-    """Every string that reaches the page passes here: redact(), then account names masked."""
-    out = B.redact(str(text or ""), hide, keep)
-    names = _account_names()
-    if names:
-        out = re.sub(r"(?i)(?<![A-Za-z])(%s)(?![a-z])" % "|".join(re.escape(n) for n in sorted(names, key=len,
-                                                                                              reverse=True)),
-                     B.MASK, out)
-    out = _KEYLIKE.sub(B.MASK, out)
-    return re.sub(r"\s+", " ", out).strip()
-
-
-def short(text, n=MAXLEN):
-    return text if len(text) <= n else text[:n - 1].rstrip() + "…"
-
-
-MIRROR = "D:\\Luke\\dev\\RimMandrake"     # the owner's read-only mirror of the repo: a tracked file's native path
-
-
-def native(p):
-    """A path as the owner opens it on Windows."""
-    if not p:
-        return ""
-    m = re.match(r"^/mnt/([a-z])/(.*)$", p)
-    if m:
-        return "%s:\\%s" % (m.group(1).upper(), m.group(2).replace("/", "\\"))
-    if p.startswith("/"):
-        return "\\\\wsl.localhost\\%s%s" % (os.environ.get("WSL_DISTRO_NAME") or "Ubuntu", p.replace("/", "\\"))
-    return p
-
-
-# ------------------------------------------------------------------------------------------------- time ------
 def utc(ts):
     """ISO text -> aware UTC datetime; a naive time is local (leftovers' acts.jsonl). None if unreadable."""
-    if not ts:
+    if not ts or not isinstance(ts, str):
         return None
     try:
-        d = dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+        d = dt.datetime.fromisoformat(ts.replace("Z", "+00:00"))
     except ValueError:
         return None
     if d.tzinfo is None:
@@ -143,87 +93,55 @@ def iso(d):
     return d.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def in_window(t, since, cut):
-    return t is not None and since < t <= cut
+def _h(*parts):
+    return hashlib.sha1("\x1f".join(str(p) for p in parts).encode("utf-8")).hexdigest()
 
 
-# ----------------------------------------------------------------------------------------------- classes -----
-def class_of(why):
-    """`delegated: art facing judge 2026-10-26, table…` -> ('art facing judge', 'art'). The label is what was
-    logged (cut at the first — ; , ( : [ or ' per '); the policy class is the longest policy name it starts with,
-    or None when the label names no policy class."""
-    rest = str(why or "")
-    while rest.lower().startswith("delegated:"):          # "delegated: delegated: art" was logged too
-        rest = rest[len("delegated:"):].strip()
-    label = re.split(r"\s+[—–-]\s+|--|[—–;,(:\[]|\.\s|\s+per\s+|\s+\d{4}-\d{2}-\d{2}", rest,
-                     maxsplit=1)[0].strip().rstrip(".").lower()
-    label = " ".join(label.split()[:5]) or "(no class)"
-    for c in POLICY_CLASSES:
-        if label == c or re.match(re.escape(c) + r"[\s/\-]", label):
-            return label, c
-    return label, None
+def _read(state="measured", fault="none"):
+    """A source read: every record of all time as (identity, t, raw), plus its malformed count."""
+    return {"state": state, "fault": fault, "malformed": 0, "items": []}
 
 
 # ------------------------------------------------------------------------------------------------ sources -----
-def ledger_calls(events, since, cut, hide, keep):
-    """-> (calls, withheld_count). One call per event; grouping happens in render."""
-    out, n_hidden = [], 0
-    for raw in events:
-        ev = {k: raw.get(k) for k in ALLOWED["ledger"] if k in raw}
-        why = str(ev.get("why") or "")
-        if not why.startswith("delegated:") or ev.get("event") in SKIP_VERBS:
+def ledger_read(events):
+    """events: rimflow model.read()'s list, or None when the ledger could not be read (UNMEASURED)."""
+    if events is None:
+        return _read("unmeasured", "unreadable")
+    r = _read()
+    for ev in events:
+        if not isinstance(ev, dict):
+            r["malformed"] += 1
+            continue
+        why = ev.get("why")
+        if not isinstance(why, str) or not why.startswith("delegated:") or ev.get("event") in SKIP_VERBS:
             continue
         t = utc(ev.get("ts"))
-        if not in_window(t, since, cut):
+        if t is None:
+            r["malformed"] += 1
             continue
-        iid = ev.get("id") or ""
-        if iid and (iid in hide or B._account_item_id(iid)):
-            n_hidden += 1
-            continue
-        label, cls = class_of(why)
-        verb = ev.get("event") or "?"
-        if verb == "file":
-            what = "filed: %s" % (ev.get("title") or "")
-        elif verb in ("close", "implemented"):
-            what = "%s at %s" % ("closed" if verb == "close" else "implemented", str(ev.get("sha") or "")[:10])
-        elif verb == "note":
-            what = "note: %s" % (ev.get("text") or "")
-        elif verb in ("needs", "reassign", "retarget"):
-            what = "%s → %s" % (verb, ev.get("to") or "")
-        elif verb == "game":
-            what = "game %s" % (ev.get("state") or "")
-        elif verb == "bridge":
-            what = "bridge %s%s" % (ev.get("state") or "", (" for " + str(ev["purpose"])) if ev.get("purpose") else "")
-            if ev.get("idleProbe"):
-                what += " (probe: %s)" % ev["idleProbe"]
-        elif verb in ("drop", "supersede", "block"):
-            what = "%s%s" % (verb, (": " + str(ev["reason"])) if ev.get("reason") else "")
-        else:
-            what = verb
-        by = ev.get("ranBy") or ev.get("seat") or "?"
-        detail = re.split(r"[—–]", why, maxsplit=1)
-        out.append({"src": "ledger", "t": t, "cls": cls, "label": label, "item": iid, "verb": verb,
-                    "what": blind(what, hide, keep), "why": blind(detail[1] if len(detail) > 1 else "", hide, keep),
-                    "by": blind(by), "evidence": _paths_in(why + " " + str(ev.get("text") or ""))})
-    return out, n_hidden
+        ident = "L" + _h(ev.get("seat"), ev.get("ts"), ev.get("tsn"), ev.get("event"), ev.get("id"))
+        r["items"].append((ident, t, {"source": "ledger", "t": t, "why": why, "id": ev.get("id"),
+                                      "event": ev.get("event"), "seat": ev.get("seat"), "ranBy": ev.get("ranBy"),
+                                      "sha": ev.get("sha")}))
+    return r
 
 
-_PATH_RE = re.compile(r"(infrastructure/state/delegated/[\w./-]+\.json|[A-Z]:\\\\?ClaudeWork\\[^\s,;)\]'\"]+)")
-
-
-def _paths_in(text):
-    return sorted({m.group(1).rstrip(".:") for m in _PATH_RE.finditer(text or "")})
-
-
-def judge_of(rec):
-    jm = rec.get(ALLOWED["verdict_judge"][0])
-    fams = []
-    if isinstance(jm, dict):
-        for k in jm:
-            fam = next((f for f in JUDGE_FAMILIES if str(k).lower().startswith(f)), None)
-            if fam and fam not in fams:
-                fams.append(fam)
-    return "+".join(fams) if fams else "judge"
+def git_added_times(root, rel_dir):
+    """-> ({repo-relative path: aware UTC datetime of the commit that added it}, ok). One git call."""
+    try:
+        p = subprocess.run(["git", "-C", root, "log", "--diff-filter=A", "--name-only", "--format=@%cI", "--",
+                            rel_dir], capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return {}, False
+    if p.returncode != 0:
+        return {}, False
+    out, cur = {}, None
+    for line in p.stdout.splitlines():
+        if line.startswith("@"):
+            cur = utc(line[1:])
+        elif line.strip() and cur is not None:
+            out.setdefault(line.strip(), cur)     # newest first: an add after a delete keeps the newest add
+    return out, True
 
 
 def _decided(rec):
@@ -235,339 +153,364 @@ def _decided(rec):
             for kk in ("decision", "verdict", "pick"):
                 if isinstance(v.get(kk), str):
                     return v[kk]
-    return "(structured verdict: see file)"
+    return None
 
 
-def git_added_times(root, rel_dir):
-    """-> {repo-relative path: aware UTC datetime of the commit that added it}. One git call."""
-    try:
-        r = subprocess.run(["git", "-C", root, "log", "--diff-filter=A", "--name-only", "--format=@%cI", "--",
-                            rel_dir], capture_output=True, text=True, timeout=120)
-    except (OSError, subprocess.SubprocessError):
-        return {}
-    out, cur = {}, None
-    for line in r.stdout.splitlines():
-        if line.startswith("@"):
-            cur = utc(line[1:])
-        elif line.strip() and cur is not None:
-            out.setdefault(line.strip(), cur)     # newest first: an add after a delete keeps the newest add
-    return out
-
-
-def verdict_calls(root, ddir, since, cut, hide, keep, added=None):
+def verdict_read(root=ROOT, ddir=DELEGATED_DIR, added=None):
+    if not os.path.isdir(ddir):
+        return _read("unmeasured", "absent")
     rel_dir = os.path.relpath(ddir, root)
-    added = git_added_times(root, rel_dir) if added is None else added
-    out, n_hidden, unreadable = [], 0, 0
+    r = _read()
+    if added is None:
+        added, ok = git_added_times(root, rel_dir)
+        if not ok:
+            r["fault"] = "git_failed"          # times fall back to mtime; identities (paths) are unaffected
     for f in sorted(glob.glob(os.path.join(ddir, "*", "*.json"))):
-        rel = os.path.relpath(f, root)
+        rel = os.path.relpath(f, root).replace(os.sep, "/")
         t = added.get(rel)
-        if t is None:
-            t = dt.datetime.fromtimestamp(os.path.getmtime(f), dt.timezone.utc)
-        if not in_window(t, since, cut):
-            continue
         try:
-            raw = json.load(open(f, encoding="utf-8"))
+            if t is None:
+                t = dt.datetime.fromtimestamp(os.path.getmtime(f), dt.timezone.utc).replace(microsecond=0)
+            with open(f, encoding="utf-8") as fh:
+                raw = json.load(fh)
         except (OSError, ValueError):
-            unreadable += 1
+            r["malformed"] += 1
             continue
         if not isinstance(raw, dict):
-            unreadable += 1
+            r["malformed"] += 1
             continue
-        rec = {k: raw.get(k) for k in ALLOWED["verdict"] + ALLOWED["verdict_judge"] if k in raw}
-        item = rec.get("item") if isinstance(rec.get("item"), str) else ""
-        if item and (item in hide or B._account_item_id(item)):
-            n_hidden += 1
-            continue
-        is_art = "image_sha256" in raw          # the art-eval pipeline's record shape (key presence only)
-        if is_art:
-            label, pcls = "art", "art"
-        elif isinstance(rec.get("class"), str) and rec["class"].strip():
-            label, pcls = class_of("delegated: " + rec["class"])
-        else:
-            label, pcls = "judge verdict", None
-        subject = rec.get("subject") if isinstance(rec.get("subject"), str) else os.path.basename(f)[:-5]
-        out.append({"src": "verdict", "t": t, "cls": pcls, "label": label, "item": blind(item, hide, keep),
-                    "subject": blind(subject, hide, keep), "art": is_art,
-                    "what": blind(_decided(rec), hide, keep), "by": judge_of(rec), "evidence": [rel]})
-    return out, n_hidden, unreadable
+        jm = raw.get("judge_model")
+        r["items"].append(("V" + rel, t, {
+            "source": "verdict", "t": t, "rel": rel, "item": raw.get("item"),
+            "subject": raw.get("subject") if isinstance(raw.get("subject"), str) else os.path.basename(f)[:-5],
+            "class": raw.get("class") if isinstance(raw.get("class"), str) else None, "decision": _decided(raw),
+            "judge_keys": list(jm) if isinstance(jm, dict) else [], "art": "image_sha256" in raw}))
+    return r
 
 
-def commit_calls(root, since, cut, hide, keep):
-    try:
-        r = subprocess.run(["git", "-C", root, "log", "--grep=^Delegated:", "--format=%H%x1f%cI%x1f%s"],
-                           capture_output=True, text=True, timeout=120)
-    except (OSError, subprocess.SubprocessError):
-        return []
-    out = []
-    for line in r.stdout.splitlines():
-        parts = line.split("\x1f")
-        if len(parts) != 3:
-            continue
-        sha, ts, subj = parts
+def commit_read(root=ROOT, commits=None):
+    """commits: [(sha, iso time, full message)] for the selftest, else git (whose failure reads UNMEASURED)."""
+    if commits is None:
+        try:
+            p = subprocess.run(["git", "-C", root, "log", "--grep=^Delegated:", "--format=%H%x1f%cI%x1f%B%x1e"],
+                               capture_output=True, text=True, timeout=120)
+        except (OSError, subprocess.SubprocessError):
+            return _read("unmeasured", "git_failed")
+        if p.returncode != 0:
+            return _read("unmeasured", "git_failed")
+        commits = []
+        for chunk in p.stdout.split("\x1e"):
+            parts = chunk.strip("\n").split("\x1f")
+            if len(parts) == 3:
+                commits.append(tuple(parts))
+            elif chunk.strip():
+                commits.append(("", "", ""))           # counted malformed below
+    r = _read()
+    for sha, ts, body in commits:
         t = utc(ts)
-        if not in_window(t, since, cut):
+        if t is None or not sha:
+            r["malformed"] += 1
             continue
-        out.append({"src": "commit", "t": t, "cls": None, "label": "commit", "item": "",
-                    "what": blind(subj, hide, keep), "by": "git", "evidence": [sha[:10]]})
-    return out
+        lines = [l for l in str(body).splitlines() if l.startswith("Delegated:")]
+        for n, line in enumerate(lines):
+            r["items"].append(("C%s:%d" % (sha, n), t, {"source": "commit", "t": t, "sha": sha,
+                                                         "class": line[len("Delegated:"):].strip()}))
+    return r
 
 
 def _artledger():
-    sys.path.insert(0, os.path.join(SRC, "Utils", "art"))
+    p = os.path.join(SRC, "Utils", "art")
+    if p not in sys.path:
+        sys.path.insert(0, p)
     import artledger  # noqa: E402
     return artledger
 
 
-def marks_calls(since, hide, keep, lines=None):
-    """art.py marks-digest's lines (already newest first). None from the art ledger = the source is UNMEASURED."""
-    if lines is None:
-        try:
-            lines = _artledger().marks_digest(iso(since))
-        except Exception as e:  # noqa: BLE001 — a broken source is reported, never fatal
-            return None, "%s: %s" % (type(e).__name__, str(e)[:120])
-    return [{"src": "marks", "t": None, "cls": "art marks", "label": "art marks", "item": "",
-             "what": blind(l, hide, keep), "by": "art.py enact", "evidence": []} for l in lines], None
-
-
-def art_install_calls(since, cut, hide, keep, events=None):
-    """Delegated installs in the art ledger (`why` starting `delegated:`, other than `art marks`, which
-    marks_calls lists): an art-eval keep going live, a geometric correction (§2.3). None = UNMEASURED."""
+def art_reads(events=None, marks_why="delegated: art marks"):
+    """-> (marks read, art_install read) from the art ledger's events (one load for both)."""
     if events is None:
         try:
             L = _artledger()
+        except Exception:  # noqa: BLE001 — a broken source is reported, never fatal
+            return _read("unmeasured", "import_failed"), _read("unmeasured", "import_failed")
+        try:
             events, marks_why = L.cached_index().events, L.MARKS_WHY
-        except Exception as e:  # noqa: BLE001
-            return None, "%s: %s" % (type(e).__name__, str(e)[:120])
-    else:
-        marks_why = "delegated: art marks"
-    out = []
-    for raw in events:
-        ev = {k: raw.get(k) for k in ALLOWED["art_install"] if k in raw}
-        why = str(ev.get("why") or "")
-        if ev.get("type") != "live" or not why.startswith("delegated:") or why.startswith(marks_why):
+        except Exception:  # noqa: BLE001
+            return _read("unmeasured", "unreadable"), _read("unmeasured", "unreadable")
+    marks, inst = _read(), _read()
+    for e in events:
+        if not isinstance(e, dict):
+            marks["malformed"] += 1
             continue
-        t = utc(ev.get("ts"))
-        if not in_window(t, since, cut):
+        typ, why = e.get("type"), str(e.get("why") or "")
+        is_mark = typ in ("ban", "unban", "ban_hit") or (typ == "live" and (
+            why.startswith(marks_why) or e.get("reason") == "x-delete"))
+        is_inst = not is_mark and typ == "live" and why.startswith("delegated:")
+        if not (is_mark or is_inst):
             continue
-        label, cls = class_of(why)
-        where = "%s/%s" % (str(ev.get("mod") or "").rsplit("/", 1)[-1], ev.get("rel") or "")
-        out.append({"src": "art_install", "t": t, "cls": cls, "label": label, "item": "",
-                    "subject": blind(where, hide, keep),
-                    "what": "installed %s" % str(ev.get("sha") or "")[:12], "by": blind(ev.get("seat") or "?"),
-                    "evidence": _paths_in(why)})
-    return out, None
+        tgt = marks if is_mark else inst
+        t = utc(e.get("ts"))
+        if t is None:
+            tgt["malformed"] += 1
+            continue
+        ident = "A" + (str(e["id"]) if e.get("id") else _h(e.get("ts"), e.get("sha"), e.get("rel"), typ))
+        if is_mark:
+            tgt["items"].append((ident, t, {"source": "marks", "t": t, "type": typ, "reason": e.get("reason"),
+                                            "id": e.get("id"), "sha": e.get("sha"), "prev": e.get("prev"),
+                                            "rel": e.get("rel")}))
+        else:
+            tgt["items"].append((ident, t, {"source": "art_install", "t": t, "why": why, "seat": e.get("seat"),
+                                            "sha": e.get("sha"), "rel": e.get("rel")}))
+    return marks, inst
 
 
-def leftover_calls(path, since, cut, hide, keep):
+def leftovers_read(path=LEFTOVERS):
     if not os.path.exists(path):
-        return None
-    out = []
-    for line in open(path, encoding="utf-8", errors="replace"):
+        return _read("unmeasured", "absent")
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            lines = fh.read().splitlines()
+    except OSError:
+        return _read("unmeasured", "unreadable")
+    r = _read()
+    for line in lines:
+        if not line.strip():
+            continue
         try:
             raw = json.loads(line)
         except ValueError:
+            raw = None
+        t = utc(raw.get("ts")) if isinstance(raw, dict) else None
+        if t is None:
+            r["malformed"] += 1
             continue
-        rec = {k: raw.get(k) for k in ALLOWED["leftover"] if k in raw}
-        t = utc(rec.get("ts"))
-        if not in_window(t, since, cut):
-            continue
-        out.append({"src": "leftovers", "t": t, "cls": "leftovers", "label": "leftovers", "item": "",
-                    "what": blind("deleted %s %s" % (rec.get("kind") or "?", native(str(rec.get("path") or ""))),
-                                  hide, keep),
-                    "by": "leftovers.py", "evidence": [blind(native(str(rec.get("archive") or "")), hide, keep)]})
+        r["items"].append(("F" + _h(line.strip()), t, {"source": "leftovers", "t": t, "kind": raw.get("kind"),
+                                                       "archive": raw.get("archive")}))
+    return r
+
+
+def gather(events, root=ROOT, ddir=DELEGATED_DIR, leftovers=LEFTOVERS, added=None, commits=None, art_events=None):
+    """Every source read; each injectable for the selftest. events None = the ledger did not read."""
+    marks, inst = art_reads(art_events)
+    return {"ledger": ledger_read(events), "verdict": verdict_read(root, ddir, added),
+            "commit": commit_read(root, commits), "marks": marks, "art_install": inst,
+            "leftovers": leftovers_read(leftovers)}
+
+
+# -------------------------------------------------------------------------------------------------- state -----
+def load_state(path):
+    """-> the v2 state dict. A legacy {last_cut} becomes the global floor. An unreadable file raises: it is never
+    treated as 'no digest yet', which would re-send all time."""
+    if not os.path.exists(path):
+        return {"schema": STATE_SCHEMA, "floor": None, "digests": {}}
+    with open(path, encoding="utf-8") as fh:
+        d = json.load(fh)
+    if not isinstance(d, dict):
+        raise ValueError("state is not an object")
+    if d.get("schema") == STATE_SCHEMA:
+        return d
+    return {"schema": STATE_SCHEMA, "floor": d.get("last_cut"), "digests": {}}
+
+
+def save_state(path, st):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(st, fh, sort_keys=True)
+    os.replace(tmp, path)
+
+
+def seen_elsewhere(st, date):
+    """Identities in every COMPLETE digest other than `date`."""
+    out = set()
+    for d, e in st.get("digests", {}).items():
+        if d != date and e.get("complete"):
+            for ids in (e.get("seen") or {}).values():
+                out.update(ids)
     return out
 
 
-# ------------------------------------------------------------------------------------------------- render -----
-def _hm(t):
-    return t.strftime("%m-%d %H:%MZ") if t else "—"
+def _sha256(path):
+    with open(path, "rb") as fh:
+        return hashlib.sha256(fh.read()).hexdigest()
 
 
-def _ev(paths, root_native):
-    out = []
-    for p in paths:
-        if p.startswith("infrastructure/"):
-            out.append(root_native + "\\" + p.replace("/", "\\"))
-        else:
-            out.append(p)
-    return " · ".join(out)
+def reconcile(st, date, out):
+    """A pending entry whose page exists with the sha256 it recorded is complete (the run died after writing the
+    page). -> True when the state changed."""
+    e = st.get("digests", {}).get(date)
+    if e and not e.get("complete") and e.get("page_sha256") and os.path.exists(out) and \
+            _sha256(out) == e["page_sha256"]:
+        e["complete"] = True
+        return True
+    return False
 
 
-def render(date, since, cut, calls, counts, notes, root_native):
-    """-> markdown. counts: dict of MEASURED numbers; notes: lines about sources (UNMEASURED, withheld)."""
-    groups = {}
-    for c in calls:
-        key = c["cls"] or c["label"]
-        groups.setdefault(key, []).append(c)
-    total = len(calls)
-    head = ["# Delegated calls — digest %s" % date, "",
-            "Every call an agent took without you under delegation_policy.md, from %s to %s (UTC), grouped by "
-            "class, newest first. Built by a program from the records; every count below is measured from them. "
-            "To overturn a line, say so in any words." % ("the beginning" if since.year < 2000 else iso(since),
-                                                         iso(cut)), ""]
-    head.append("**%d delegated call record(s)**: %d ledger event(s), %d judge verdict file(s), %d `Delegated:` "
-                "commit(s), %d art-mark act(s), %d delegated art install(s), %d leftover deletion(s)." % (
-                    total, counts["ledger"], counts["verdict"], counts["commit"], counts["marks"], counts["inst"],
-                    counts["leftovers"]))
-    for n in notes:
-        head.append("- " + n)
-    head.append("")
-    if total == 0:
-        head += ["No delegated call in this window. Instrument check (policy §5): the sources see %d delegated "
-                 "ledger event(s) and %d verdict file(s) in all time, the newest at %s." % (
-                     counts["all_ledger"], counts["all_verdict"], counts["all_newest"] or "—"), ""]
-    order = sorted(groups, key=lambda k: (-len(groups[k]), k))
-    head.append("| class | records | items or subjects named |")
-    head.append("|---|---|---|")
-    body = []
-    for k in order:
-        cs = groups[k]
-        policy = cs[0]["cls"] is not None
-        subj = {c.get("item") or c.get("subject") or "" for c in cs} - {""}
-        head.append("| %s%s | %d | %d |" % (k, "" if policy else " (not a policy class)", len(cs), len(subj)))
-        body += ["", "## %s — %d record(s)%s" % (k, len(cs), "" if policy else
-                                                 " — logged label names no policy class")]
-        body += _group_lines(cs, root_native)
-    return "\n".join(head + body) + "\n"
+# -------------------------------------------------------------------------------------------------- build -----
+def build(date, floor, cut, reads, seen_other=frozenset(), hidden=frozenset()):
+    """-> (page text, {source: [identities on the page]})."""
+    from contracts import blind as BL
+    raw, seen, status = [], {}, {}
+    for s in SOURCES:
+        r = reads.get(s) or _read("unmeasured", "error")
+        status[s] = {"state": r["state"], "fault": r["fault"], "malformed": r["malformed"]}
+        if r["state"] == "measured":
+            status[s]["all_time"] = len(r["items"])
+            if r["items"]:
+                status[s]["newest"] = max(t for _i, t, _r in r["items"])
+        seen[s] = []
+        for ident, t, rec in r["items"]:
+            if ident in seen_other or t > cut or (floor is not None and t <= floor):
+                continue
+            seen[s].append(ident)
+            raw.append(rec)
+    page = BL.project_digest(date, floor, cut, raw, status, hidden)
+    return BL.render_digest(page), seen
 
 
-def _group_lines(cs, root_native):
-    lines = []
-    # ledger events: one line per item; events without an item, one line each
-    by_item, rest, art = {}, [], {}
-    for c in cs:
-        if c["src"] == "ledger" and c["item"]:
-            by_item.setdefault(c["item"], []).append(c)
-        elif c["src"] == "verdict" and c.get("art"):
-            art.setdefault(c["subject"], []).append(c)
-        else:
-            rest.append(c)
-    rows = []
-    for iid, evs in by_item.items():
-        evs.sort(key=lambda c: c["t"], reverse=True)
-        last = evs[0]
-        verbs = ", ".join(e["verb"] for e in reversed(evs))
-        seats = "/".join(sorted({e["by"] for e in evs}))
-        why = next((e["why"] for e in evs if e["why"]), "")
-        ev = sorted({p for e in evs for p in e["evidence"]})
-        txt = "- %s **%s** (%s; %d event(s): %s) — %s%s%s" % (
-            _hm(last["t"]), iid, seats, len(evs), verbs, short(last["what"]),
-            (" · why: " + short(why, 120)) if why else "", (" · evidence: " + _ev(ev, root_native)) if ev else "")
-        rows.append((last["t"], txt))
-    for subj, vs in art.items():
-        vs.sort(key=lambda c: c["t"], reverse=True)
-        tally = {}
-        for v in vs:
-            tally[v["what"]] = tally.get(v["what"], 0) + 1
-        txt = "- %s **%s** (%s; %d verdict(s): %s) — latest %s · evidence: %s" % (
-            _hm(vs[0]["t"]), subj, vs[0]["by"], len(vs), ", ".join("%s×%d" % kv for kv in sorted(tally.items())),
-            vs[0]["what"], _ev(vs[0]["evidence"], root_native) + (" (+%d more)" % (len(vs) - 1) if len(vs) > 1 else ""))
-        rows.append((vs[0]["t"], txt))
-    for c in rest:
-        who = c["by"]
-        lead = ("**%s** " % (c.get("item") or c.get("subject"))) if (c.get("item") or c.get("subject")) else ""
-        txt = "- %s %s(%s) — %s%s%s" % (_hm(c["t"]), lead, who, short(c["what"], 240),
-                                         (" · why: " + short(c.get("why") or "", 120)) if c.get("why") else "",
-                                         (" · evidence: " + _ev(c["evidence"], root_native)) if c["evidence"] else "")
-        rows.append((c["t"], txt))
-    epoch = dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
-    rows.sort(key=lambda r: r[0] or epoch, reverse=True)
-    return [r[1] for r in rows]
-
-
-# --------------------------------------------------------------------------------------------------- build ----
-def load_state(path):
+def _load_ledger():
+    """-> (events, hidden ids); (None, ()) when the ledger does not read (the ledger source is then UNMEASURED)."""
     try:
-        d = json.load(open(path, encoding="utf-8"))
-        return utc(d.get("last_cut")) if isinstance(d, dict) else None
-    except (OSError, ValueError):
+        from rimflow import model
+        events = model.read()
+        world = model.replay(events)
+        import blind_view as BV
+        return events, frozenset(BV.hidden_ids(world))
+    except Exception:  # noqa: BLE001
+        return None, frozenset()
+
+
+def run(a, sources=None):
+    """sources: the selftest's injected (reads, hidden); else every source is read here."""
+    date = a.date or dt.date.today().isoformat()
+    dt.date.fromisoformat(date)
+    out_dir = a.out_dir or (DRY_DIR if a.dry_run else OUT_DIR)
+    out = os.path.join(out_dir, "delegated_digest_%s.md" % date)
+    if a.since and not a.dry_run:
+        raise ValueError("--since moves the window by hand: only a --dry-run may take it")
+    if a.dry_run and os.path.realpath(out_dir) == os.path.realpath(OUT_DIR):
+        raise ValueError("a dry run never writes the production digest directory")
+    for p in (SRC, HERE):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    st = load_state(a.state)
+    if not a.dry_run and reconcile(st, date, out):
+        save_state(a.state, st)
+    entry = st["digests"].get(date)
+    if entry and entry.get("complete") and not a.force and not a.dry_run:
+        print("delegated_digest: the %s digest is complete; one digest per day, nothing done" % date)
+        return 0
+    if a.since:
+        floor = utc(a.since)
+        if floor is None:
+            raise ValueError("--since is not an ISO time")
+    elif entry and a.force:
+        floor = utc(entry.get("floor")) if entry.get("floor") else None
+    else:
+        floor = utc(st.get("floor")) if st.get("floor") else None
+    cut = utc(a.cut) if a.cut else dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+    if cut is None:
+        raise ValueError("--cut is not an ISO time")
+    if sources is None:
+        events, hidden = _load_ledger()
+        reads = gather(events)
+    else:
+        reads, hidden = sources
+    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), hidden)
+    sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    if not a.dry_run:
+        st["digests"][date] = {"floor": iso(floor) if floor else None, "cut": iso(cut), "complete": False,
+                               "page_sha256": sha, "seen": seen,
+                               "sources": {s: reads[s]["state"] if s in reads else "unmeasured" for s in SOURCES}}
+        save_state(a.state, st)                      # 1. pending, with the page's hash
+    os.makedirs(out_dir, exist_ok=True)
+    tmp = out + ".tmp"
+    with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(text)
+    os.replace(tmp, out)                             # 2. the page
+    if not a.dry_run:
+        st["digests"][date]["complete"] = True
+        save_state(a.state, st)                      # 3. complete
+        failed = os.path.join(out_dir, "delegated_digest_%s.FAILED.md" % date)
+        if os.path.exists(failed):
+            os.remove(failed)
+    n = sum(len(v) for v in seen.values())
+    print("delegated_digest: wrote %s (%d record(s))%s" % (out, n, "; DRY RUN, state untouched" if a.dry_run else ""))
+    return 0
+
+
+def parser():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--date", help="digest date YYYY-MM-DD (default: today, local)")
+    ap.add_argument("--since", help="dry run only: an ISO floor instead of the state's")
+    ap.add_argument("--cut", help=argparse.SUPPRESS)          # selftest: a fixed upper bound
+    ap.add_argument("--out-dir", help="default Transient/ (a dry run: %s)" % DRY_DIR)
+    ap.add_argument("--state", default=STATE)
+    ap.add_argument("--errors", default=ERRORS, help=argparse.SUPPRESS)
+    ap.add_argument("--dry-run", action="store_true", help="write the page elsewhere, never touch the state")
+    ap.add_argument("--force", action="store_true", help="rebuild the date's digest with its own floor")
+    ap.add_argument("--pre-launch", action="store_true", help="never exit non-zero (the Conductor's pre-step)")
+    return ap
+
+
+def _fail(a):
+    """The failure path: stdlib only, fixed text on the page side, the error to Operations' log. Never raises."""
+    date = getattr(a, "date", None) or dt.date.today().isoformat()
+    try:
+        dt.date.fromisoformat(date)
+    except (TypeError, ValueError):
+        date = dt.date.today().isoformat()
+    out_dir = getattr(a, "out_dir", None) or OUT_DIR
+    errors = getattr(a, "errors", None) or ERRORS
+    try:
+        os.makedirs(os.path.dirname(errors), exist_ok=True)
+        with open(errors, "a", encoding="utf-8") as fh:
+            fh.write("%s %s\n%s\n" % (iso(dt.datetime.now(dt.timezone.utc)), date, traceback.format_exc()))
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        os.makedirs(out_dir, exist_ok=True)
+        with open(os.path.join(out_dir, "delegated_digest_%s.FAILED.md" % date), "w", encoding="utf-8") as fh:
+            fh.write(FAILED_TEXT % date)
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        print("delegated_digest: FAILED; the Conductor starts anyway (the error is in Operations' log)",
+              file=sys.stderr)
+    except Exception:  # noqa: BLE001
+        pass
+    return 0
+
+
+def _partial(argv):
+    """The paths a bad command line still names (--date, --out-dir, --errors), so a refused argument fails on the
+    page the caller asked for, never on the production page of a test. Never raises."""
+    try:
+        with open(os.devnull, "w") as null:
+            err, sys.stderr = sys.stderr, null
+            try:
+                return parser().parse_known_args(argv)[0]
+            finally:
+                sys.stderr = err
+    except BaseException:  # noqa: BLE001
         return None
 
 
-def build(date, since, cut, events, root=ROOT, ddir=DELEGATED_DIR, leftovers=LEFTOVERS, world=None,
-          added=None, marks_lines=None, art_events=None, commits=True):
-    """-> markdown text. All sources injectable for the selftest."""
-    hide = B.hidden_ids(world) if world is not None else set()
-    keep = B.known_ids(world) if world is not None else set()
-    notes = []
-    led, h1 = ledger_calls(events, since, cut, hide, keep)
-    ver, h2, bad = verdict_calls(root, ddir, since, cut, hide, keep, added)
-    com = commit_calls(root, since, cut, hide, keep) if commits else []
-    marks, merr = marks_calls(since, hide, keep, marks_lines)
-    inst, ierr = art_install_calls(since, cut, hide, keep, art_events)
-    left = leftover_calls(leftovers, since, cut, hide, keep)
-    if h1 + h2:
-        notes.append("%d record(s) about accounts withheld (Operations' alone)." % (h1 + h2))
-    if bad:
-        notes.append("%d verdict file(s) unreadable (not JSON objects), not counted." % bad)
-    if marks is None:
-        notes.append("art marks UNMEASURED: the art ledger did not read (%s)." % blind(merr))
-        marks = []
-    if inst is None:
-        notes.append("art installs UNMEASURED: the art ledger did not read (%s)." % blind(ierr))
-        inst = []
-    if left is None:
-        notes.append("leftovers UNMEASURED: %s is absent." % native(leftovers))
-        left = []
-    calls = led + ver + com + marks + inst + left
-    counts = {"ledger": len(led), "verdict": len(ver), "commit": len(com), "marks": len(marks), "inst": len(inst),
-              "leftovers": len(left), "all_ledger": 0, "all_verdict": 0, "all_newest": ""}
-    if not calls:
-        epoch = utc(EPOCH)
-        far = cut + dt.timedelta(days=36500)
-        al, _ = ledger_calls(events, epoch, far, hide, keep)
-        av, _, _ = verdict_calls(root, ddir, epoch, far, hide, keep, added)
-        counts["all_ledger"], counts["all_verdict"] = len(al), len(av)
-        ts = [c["t"] for c in al + av if c["t"]]
-        counts["all_newest"] = iso(max(ts)) if ts else ""
-    return render(date, since, cut, calls, counts, notes, MIRROR)
-
-
-def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--date", help="digest date YYYY-MM-DD (default: today, local)")
-    ap.add_argument("--since", help="ISO start (default: the state file's last cut, else the beginning)")
-    ap.add_argument("--out-dir", default=OUT_DIR)
-    ap.add_argument("--state", default=STATE)
-    ap.add_argument("--dry-run", action="store_true", help="write the digest, never move the state")
-    ap.add_argument("--force", action="store_true", help="rebuild even if today's digest exists")
-    ap.add_argument("--pre-launch", action="store_true", help="never exit non-zero (the Conductor's pre-step)")
-    a = ap.parse_args(argv)
-    date = a.date or dt.date.today().isoformat()
-    out = os.path.join(a.out_dir, "delegated_digest_%s.md" % date)
+def main(argv=None, sources=None):
+    argv = sys.argv[1:] if argv is None else list(argv)
+    pre = "--pre-launch" in argv
+    a = None
     try:
-        if os.path.exists(out) and not a.force:
-            print("delegated_digest: %s exists; one digest per day, nothing done" % native(out))
-            return 0
-        cut = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
-        since = utc(a.since) if a.since else (load_state(a.state) or utc(EPOCH))
-        if since is None:
-            raise ValueError("--since %r is not an ISO time" % a.since)
-        evs, world = B._load()
-        text = build(date, since, cut, evs, world=world)
-        os.makedirs(a.out_dir, exist_ok=True)
-        tmp = out + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            f.write(text)
-        os.replace(tmp, out)
-        if not a.dry_run:
-            os.makedirs(os.path.dirname(a.state), exist_ok=True)
-            with open(a.state + ".tmp", "w", encoding="utf-8") as f:
-                json.dump({"last_cut": iso(cut), "last_digest": out}, f)
-            os.replace(a.state + ".tmp", a.state)
-        print("delegated_digest: wrote %s (%s)" % (native(out), text.split("\n")[4][:160]))
-        return 0
-    except Exception as e:  # noqa: BLE001
-        if not a.pre_launch:
+        a = parser().parse_args(argv)
+        return run(a, sources)
+    except SystemExit as e:
+        if pre and e.code not in (0, None):
+            return _fail(a if a is not None else _partial(argv))
+        raise
+    except Exception:  # noqa: BLE001
+        if not pre:
             raise
-        try:
-            os.makedirs(a.out_dir, exist_ok=True)
-            with open(os.path.join(a.out_dir, "delegated_digest_%s.FAILED.md" % date), "w", encoding="utf-8") as f:
-                f.write("# Delegated digest %s NOT BUILT\n\n%s\n" % (date, blind("%s: %s" % (type(e).__name__, e))))
-        except OSError:
-            pass
-        print("delegated_digest: FAILED (%s); the Conductor starts anyway" % type(e).__name__, file=sys.stderr)
-        return 0
+        return _fail(a)
 
 
 if __name__ == "__main__":

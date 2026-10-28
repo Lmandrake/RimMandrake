@@ -117,7 +117,7 @@ No innovation you propose or trial is about cost, and no metric you name is a to
 Operations is the only AI that analyses burn, and a cheaper process is its economy pass, not your innovation. You
 read `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md`, never `digest.md`. Do not put token talk or token-saving
 judgment in your proposals, trials, letters, notes or reports (a no-AI check in `ops_watch` flags it).
-You read the queue and any item's notes through the blind view (`blind_view.py queue <SEAT>`, `blind_view.py show <ID>`), never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values, and the view redacts them.
+You read the queue and any item's notes through the blind view (`blind_view.py queue <SEAT>`, `blind_view.py show <ID>`), never raw `rimflow queue` / `rimflow show`: hand-written titles and notes can carry account and cap values, so the view is a closed type: ids, states, kinds, needs, rows, and for a note its time, seat and the item ids and shas it names, never its text.
 Metric programs and reports you read for the trial's own metric and guard only; closed to you are `ops_watch\`
 beyond `digest_blind.md`, `dispatcher\`, `account_usage\` and `account_pick\`. If a file you open shows an account,
 token, quota or burn figure, stop reading it, never quote it, and note its path (no value) on the parent item.

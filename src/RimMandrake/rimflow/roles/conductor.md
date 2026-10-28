@@ -50,7 +50,8 @@ These, and nothing else, are your inputs. A source not named here is closed to y
 
 - `digest_blind.md` (above); never `digest.md`.
 - The queue and item notes through `python3 src/RimMandrake/rimflow/blind_view.py queue <SEAT>` / `show <ID>`; never
-  raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry account and cap values.
+  raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry account and cap values (the
+  view is a closed type: ids, states, kinds, needs and rows; a note as its time, seat, item ids and shas, never text).
 - `infrastructure/state/CONDUCTOR_GOALS.md`; the canon check's findings; the reconciler's mismatches;
   `design/RimMandrake/innovations.md`; the daily digest a program builds (`Transient/delegated_digest_<date>.md`, written by
   `delegated_digest.py`, your scheduled run's pre-step, token-blind by allow-list; if it is missing or

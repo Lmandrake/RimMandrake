@@ -1,0 +1,673 @@
+"""contracts.blind -- BlindView: the CLOSED type every token-blind page is built from (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF).
+
+Owner ruling 2026-10-27: only Operations is token-aware; every other role is token-blind. Free-text redaction (the old
+blind_view.redact) can never be complete, so a blind page carries no free text at all:
+
+  * every model is extra="forbid", strict and frozen;
+  * classes, sources, decisions, actions, outcomes, states, seats and needs are closed sets (Literal);
+  * an identifier (item id, subject, kind, file name) is admitted only by contracts.blind_core: the rimflow id grammar,
+    and no part that is an account name, a token/quota/cap/spend word, a unit figure or a long number;
+  * an evidence path is admitted only under an allowed root (blind_core.EVIDENCE_ROOTS), segment by segment;
+  * a reason is an enum, never prose: titles, notes, block reasons, summaries, commit subjects, `why` details and an
+    unban's quoted words are DROPPED, never redacted.
+
+The projection functions (project_digest, project_queue, project_item, project_note) are the ONLY way to make one: a
+model validated without this module's private context token refuses, and model_construct / model_copy refuse. A value
+that fails its check is never mangled: the record is withheld (an item id) or the field dropped (anything else), and
+both are COUNTED on the page. The renderers take model instances only, write from fixed templates, and run a final
+page guard (page_problem: every word of the page must pass blind_core.ident_problem) that fails closed.
+
+Imports pydantic (~50 ms): never import this from the dispatcher's tick; it uses blind_core's stdlib twins.
+"""
+import datetime as dt
+import re
+from typing import Annotated, Literal, Optional
+
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, model_validator
+
+try:
+    from contracts import blind_core as C
+except ImportError:  # run as a file next to blind_core
+    import blind_core as C  # type: ignore
+
+SCHEMA = "rimflow.blind-digest/1"
+_TOKEN = object()                      # the projection's private key: only this module holds it
+_CTX = {"blind_projection": _TOKEN}
+
+
+class ProjectionOnly(TypeError):
+    """A BlindView model was made outside a projection function."""
+
+
+class _Closed(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, frozen=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _only_by_projection(cls, data, info):
+        if not (info.context and info.context.get("blind_projection") is _TOKEN):
+            raise ValueError("a BlindView is made only by a contracts.blind projection function")
+        return data
+
+    @classmethod
+    def model_construct(cls, *a, **k):  # noqa: D102 - closes the validation bypass
+        raise ProjectionOnly("model_construct bypasses the checks; use a projection function")
+
+    def model_copy(self, *a, **k):  # noqa: D102
+        raise ProjectionOnly("model_copy can set unchecked fields; use a projection function")
+
+
+def _check(fn, *args):
+    def run(v):
+        r = fn(v, *args)
+        if r:
+            raise ValueError("refused: %s" % r)
+        return v
+    return AfterValidator(run)
+
+
+def _utc(v):
+    if v.tzinfo is None or v.utcoffset() != dt.timedelta(0):
+        raise ValueError("refused: a time on a blind page is aware UTC")
+    return v
+
+
+ItemId = Annotated[str, _check(C.item_id_problem)]
+Ident = Annotated[str, _check(C.ident_problem, 120)]
+Short = Annotated[str, _check(C.ident_problem, 40)]
+Evidence = Annotated[str, _check(C.evidence_problem)]
+Sha = Annotated[str, Field(pattern=C.SHA_RE.pattern)]
+Time = Annotated[dt.datetime, AfterValidator(_utc)]
+Date = Annotated[str, Field(pattern=r"^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$")]
+Count = Annotated[int, Field(ge=0)]
+
+Seat = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER"]
+State = Literal["proposed", "ready", "doing", "built", "validated", "done", "dropped", "superseded"]
+Needs = Literal["offline", "deploy", "game-up", "bridge", "harvest", "owner"]
+DigestClass = Literal["technical", "scope", "design", "art", "cosmetic", "art geometric correction", "art marks",
+                      "bridge idle", "leftovers", "unclassified"]
+POLICY_CLASSES = tuple(sorted(DigestClass.__args__[:-1], key=len, reverse=True))   # longest first: `art marks` > `art`
+Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers"]
+SOURCES = Source.__args__
+Decision = Literal["ACCEPT", "REGEN", "ESCALATE", "HOLD_ERROR", "HOLD_INPUT", "REDO", "KEEP", "REJECT", "PASS",
+                   "FAIL", "PICK", "OTHER"]
+Pick = Literal["A", "B", "C", "D", "E", "F", "G", "H"]
+JudgeFamily = Literal["opus", "sonnet", "haiku", "gpt", "gemini", "nemotron", "human"]
+By = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER", "git",
+             "art_enact", "art_pipeline", "leftovers"]
+MarkAction = Literal["archived", "restored", "installed_over_keep", "x_removed", "banned", "unbanned", "ban_hit",
+                     "installed"]
+LeftKind = Literal["save", "setting", "clone", "other"]
+SourceState = Literal["measured", "unmeasured"]
+SourceFault = Literal["none", "absent", "unreadable", "git_failed", "import_failed", "error"]
+SectionTitle = Literal["NEXT", "IN PROGRESS", "BLOCKED", "WAITING ON A WINDOW", "NOT THIS TARGET", "BUILT", "PROPOSED",
+                       "OTHER"]   # a section queue grows later reads OTHER: never silently dropped
+NoteRole = Literal["Conductor", "Arbiter", "Auditor", "Operations", "Producer", "Innovator"]
+NoteMode = Literal["quick", "run", "weekly", "economy", "event", "alarm"]
+NoteOutcome = Literal[tuple(C.NOTE_OUTCOMES)]
+LedgerVerb = Short                     # a rimflow verb; projections map anything outside model.VERBS to "other"
+
+
+# ------------------------------------------------------------------------------------------- digest -------
+class DigestRecord(_Closed):
+    source: Source
+    cls: DigestClass
+    t: Time
+    item: Optional[ItemId] = None
+    subject: Optional[Ident] = None
+    verb: Optional[LedgerVerb] = None
+    decision: Optional[Decision] = None
+    pick: Optional[Pick] = None
+    action: Optional[MarkAction] = None
+    judge: tuple[JudgeFamily, ...] = ()
+    by: Optional[By] = None
+    sha: Optional[Sha] = None
+    event: Optional[Sha] = None
+    kind: Optional[LeftKind] = None
+    evidence: tuple[Evidence, ...] = Field(default=(), max_length=4)
+
+
+class DigestSource(_Closed):
+    source: Source
+    state: SourceState
+    fault: SourceFault
+    records: Count
+    malformed: Count
+    withheld: Count
+    fields_withheld: Count
+    all_time: Optional[Count] = None
+    newest: Optional[Time] = None
+
+
+class DigestPage(_Closed):
+    schema_: Literal["rimflow.blind-digest/1"] = Field(alias="schema")
+    date: Date
+    floor: Optional[Time]
+    cut: Time
+    records: tuple[DigestRecord, ...]
+    sources: tuple[DigestSource, ...]
+
+
+# raw fields a reader may hand the projection, per source (the allow-list: nothing else of a record is looked at)
+RAW_FIELDS = {
+    "ledger": ("t", "why", "id", "event", "seat", "ranBy", "sha"),
+    "verdict": ("t", "rel", "item", "subject", "class", "decision", "judge_keys", "art"),
+    "commit": ("t", "sha", "class"),
+    "marks": ("t", "type", "reason", "id", "sha", "prev", "rel"),
+    "art_install": ("t", "why", "seat", "sha", "rel"),
+    "leftovers": ("t", "kind", "archive"),
+}
+
+
+def class_of(why):
+    """`delegated: art facing judge 2026-10-26, …` -> the policy class it starts with, else "unclassified". Reads the
+    label, never copies it: the page shows only the closed class."""
+    rest = str(why or "").strip()
+    while rest.lower().startswith("delegated:"):
+        rest = rest[len("delegated:"):].strip()
+    label = re.split(r"\s+[—–-]\s+|--|[—–;,(:\[]|\.\s|\s+per\s+|\s+\d{4}-\d{2}-\d{2}", rest,
+                     maxsplit=1)[0].strip().rstrip(".").lower()
+    for c in POLICY_CLASSES:
+        if label == c or re.match(re.escape(c) + r"[\s/\-]", label):
+            return c
+    return "unclassified"
+
+
+def decision_of(v):
+    """A verdict's decision text -> (Decision, Pick|None). Prose and anything unknown -> OTHER (never copied)."""
+    s = str(v or "").strip().upper()
+    if s in Decision.__args__ and s not in ("PICK", "OTHER"):
+        return s, None
+    if s in Pick.__args__:
+        return "PICK", s
+    return "OTHER", None
+
+
+def judges_of(keys):
+    out = []
+    for k in keys or ():
+        fam = next((f for f in JudgeFamily.__args__ if str(k).lower().startswith(f)), None)
+        if fam and fam not in out:
+            out.append(fam)
+    return tuple(out)
+
+
+def _verbs():
+    try:
+        from rimflow import model
+        return frozenset(model.VERBS)
+    except Exception:  # noqa: BLE001 - without the verb list every verb reads "other"
+        return frozenset()
+
+
+def _sha(v, n=12, digest=False):
+    """A git sha as a git tool prints it (7-16 hex, or the full 40), cut to n; digest=True also takes any 7-64 hex
+    (the art ledger's program-written sha256 / event ids). An all-digit value passes only at full length (40, or 64
+    for a digest), and outside the art ledger a 32/64-hex value (a key's shape) never: a figure or a key in a sha
+    field is not shown."""
+    full = str(v or "").strip().lower()
+    if not (C.SHA_RE.match(full) if digest else _GIT_SHA.match(full)):
+        return None
+    if full.isdigit() and len(full) not in (40, 64):
+        return None
+    return full[:n]
+
+
+_GIT_SHA = re.compile(r"^(?:[0-9a-f]{40}|[0-9a-f]{7,16})$")
+
+
+def _by(v):
+    return v if v in By.__args__ else None
+
+
+def _record(src, raw, verbs, hidden=frozenset()):
+    """-> (fields, withheld_record, dropped_fields). Per-field triage: an unsafe item id withholds the record; any
+    other unsafe value drops that field. Values are mapped to closed sets here, never copied as text."""
+    r = {k: raw.get(k) for k in RAW_FIELDS[src] if k in raw}
+    f, dropped = {"source": src, "t": r.get("t")}, 0
+
+    def opt(key, value, problem):
+        nonlocal dropped
+        if value in (None, ""):
+            return
+        if problem(value):
+            dropped += 1
+        else:
+            f[key] = value
+
+    def ev(paths):
+        nonlocal dropped
+        ok = []
+        for p in paths:
+            if p and not C.evidence_problem(p) and len(ok) < 4:
+                ok.append(p)
+            elif p:
+                dropped += 1
+        if ok:
+            f["evidence"] = tuple(ok)
+
+    iid = r.get("id") if src == "ledger" else r.get("item") if src == "verdict" else None
+    if iid not in (None, ""):
+        if not isinstance(iid, str) or iid in hidden or C.item_id_problem(iid):
+            return None, True, 0
+        f["item"] = iid
+    if src == "ledger":
+        f["cls"] = class_of(r.get("why"))
+        verb = r.get("event")
+        f["verb"] = verb if isinstance(verb, str) and verb in verbs else "other"
+        f["by"] = _by(r.get("ranBy")) or _by(r.get("seat"))
+        opt("sha", _sha(r.get("sha")), lambda v: None)
+    elif src == "verdict":
+        art = bool(r.get("art"))
+        f["cls"] = "art" if art else class_of("delegated: " + str(r.get("class") or ""))
+        opt("subject", r.get("subject"), lambda v: not isinstance(v, str) or C.ident_problem(v))
+        f["decision"], pick = decision_of(r.get("decision"))
+        if pick:
+            f["pick"] = pick
+        f["judge"] = judges_of(r.get("judge_keys"))
+        ev([r.get("rel")])
+    elif src == "commit":
+        f["cls"] = class_of("delegated: " + str(r.get("class") or ""))
+        f["by"] = "git"
+        opt("sha", _sha(r.get("sha")), lambda v: None)
+    elif src == "marks":
+        f["cls"] = "art marks"
+        typ, reason = r.get("type"), r.get("reason")
+        f["action"] = {"ban": "banned", "unban": "unbanned", "ban_hit": "ban_hit"}.get(typ) or (
+            {"archive": "archived", "restore-archive": "restored", "x-delete": "x_removed"}.get(reason,
+                                                                                                "installed_over_keep"))
+        f["by"] = "art_pipeline" if typ == "ban_hit" else "art_enact"
+        opt("sha", _sha(r.get("sha") or r.get("prev"), digest=True), lambda v: None)
+        opt("event", _sha(r.get("id"), digest=True), lambda v: None)
+        opt("subject", (str(r.get("rel") or "").rsplit("/", 1)[-1] or None),
+            lambda v: C.ident_problem(v))
+    elif src == "art_install":
+        f["cls"] = class_of(r.get("why"))
+        f["action"] = "installed"
+        f["by"] = _by(r.get("seat"))
+        opt("sha", _sha(r.get("sha"), digest=True), lambda v: None)
+        opt("subject", (str(r.get("rel") or "").rsplit("/", 1)[-1] or None), lambda v: C.ident_problem(v))
+    elif src == "leftovers":
+        f["cls"] = "leftovers"
+        k = r.get("kind")
+        f["kind"] = k if k in LeftKind.__args__ else "other"
+        f["by"] = "leftovers"
+        ev([r.get("archive")])
+    return {k: v for k, v in f.items() if v is not None}, False, dropped
+
+
+def project_digest(date, floor, cut, raw, status, hidden=frozenset()):
+    """THE way to make a DigestPage. raw: [{"source": <Source>, <RAW_FIELDS of it>...}] (readers extract these from
+    the records); status: {source: {"state", "fault", "malformed", "all_time"?, "newest"?}}. Withheld records and
+    dropped fields are counted per source. Raises ValueError only on a programming error (a bad time or source)."""
+    verbs = _verbs()
+    per = {s: {"records": 0, "withheld": 0, "fields_withheld": 0} for s in SOURCES}
+    recs = []
+    for r in raw:
+        src = r.get("source")
+        if src not in per:
+            raise ValueError("unknown source %r" % (src,))
+        fields, held, dropped = _record(src, r, verbs, hidden)
+        if held:
+            per[src]["withheld"] += 1
+            continue
+        per[src]["fields_withheld"] += dropped
+        per[src]["records"] += 1
+        recs.append(fields)
+    recs.sort(key=lambda d: d["t"], reverse=True)
+    sources = []
+    for s in SOURCES:
+        st = status.get(s) or {"state": "unmeasured", "fault": "error", "malformed": 0}
+        d = dict(per[s], source=s, state=st["state"], fault=st["fault"], malformed=st.get("malformed", 0))
+        for k in ("all_time", "newest"):
+            if st.get(k) is not None:
+                d[k] = st[k]
+        sources.append(d)
+    return DigestPage.model_validate({"schema": SCHEMA, "date": date, "floor": floor, "cut": cut,
+                                      "records": tuple(recs), "sources": tuple(sources)}, context=_CTX)
+
+
+# -------------------------------------------------------------------------------------- queue / item ------
+class QueueItem(_Closed):
+    id: ItemId
+    state: State
+    blocked: bool
+    kind: Optional[Short] = None
+    needs: Needs
+    row: Optional[Short] = None
+
+
+class QueueSection(_Closed):
+    title: SectionTitle
+    items: tuple[QueueItem, ...]
+
+
+class BlindQueue(_Closed):
+    seat: Seat
+    withheld: Count
+    fields_withheld: Count
+    sections: tuple[QueueSection, ...]
+
+
+class NoteRef(_Closed):
+    t: Optional[Time] = None
+    seat: Optional[Seat] = None
+    refs: tuple[ItemId, ...] = ()
+    shas: tuple[Sha, ...] = ()
+    prefix_match: bool = False
+
+
+class ItemEvent(_Closed):
+    t: Optional[Time] = None
+    verb: LedgerVerb
+    seat: Optional[Seat] = None
+
+
+class BlindItemPage(_Closed):
+    id: Optional[ItemId] = None
+    withheld: bool = False
+    state: Optional[State] = None
+    blocked: bool = False
+    kind: Optional[Short] = None
+    owner: Optional[Seat] = None
+    needs: Optional[Needs] = None
+    closed_sha: Optional[Sha] = None
+    superseded_by: Optional[ItemId] = None
+    superseded_withheld: bool = False
+    fields_withheld: Count = 0
+    notes_total: Count = 0
+    notes_matching: Optional[Count] = None
+    notes: tuple[NoteRef, ...] = ()
+    events_total: Count = 0
+    events: tuple[ItemEvent, ...] = ()
+
+
+def _section_title(t):
+    t = str(t or "").split(" — ")[0].strip()
+    return t if t in SectionTitle.__args__ else "OTHER"
+
+
+def _time(ts):
+    try:
+        d = dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    if d.tzinfo is None:
+        return None
+    return d.astimezone(dt.timezone.utc)
+
+
+def project_queue(seat, groups, hidden, withheld=()):
+    """groups: [(section title, [rimflow Item])] in the queue's order; hidden: ids withheld (about accounts);
+    withheld: ids of the seat's open withheld items the caller knows of. The page counts the union of those and every
+    row met in groups that is hidden or whose id fails the blind id check (each once). Item titles, block reasons and
+    summaries are never read."""
+    sections, held, dropped = [], set(), 0
+    for title, items in groups:
+        tt = _section_title(title)
+        rows = []
+        for it in items:
+            if it.id in hidden or C.item_id_problem(it.id):
+                held.add(str(it.id))
+                continue
+            row = {"id": it.id, "state": it.state, "blocked": bool(it.blocked), "needs": it.needs}
+            for k, v in (("kind", it.kind), ("row", None if it.row in (None, "") else str(it.row))):
+                if v in (None, ""):
+                    continue
+                if C.ident_problem(str(v), 40):
+                    dropped += 1
+                else:
+                    row[k] = str(v)
+            rows.append(row)
+        if rows and tt:
+            sections.append({"title": tt, "items": tuple(rows)})
+    return BlindQueue.model_validate({"seat": seat, "withheld": len(held | {str(i) for i in withheld}), "fields_withheld": dropped,
+                                      "sections": tuple(sections)}, context=_CTX)
+
+
+_REF_RE = re.compile(r"[A-Za-z][A-Za-z0-9._-]{2,}")
+_SHA_IN = re.compile(r"(?<![\w-])(?:[0-9a-f]{40}|[0-9a-f]{7,16})(?![\w-])")          # git's short or full sha; never a 32/64-hex key
+
+
+def project_item(it, notes, others, hidden, known, last=10, prefix=None):
+    """One item page. notes / others: its ledger events (dicts) in order. A note's TEXT never reaches the page: only
+    its time, seat, the known non-withheld item ids and the shas it names, and whether it starts with `prefix`."""
+    if it.id in hidden or C.item_id_problem(it.id):
+        return BlindItemPage.model_validate({"withheld": True}, context=_CTX)
+    d = {"id": it.id, "state": it.state, "blocked": bool(it.blocked), "needs": it.needs, "fields_withheld": 0}
+    if it.owner in Seat.__args__:
+        d["owner"] = it.owner
+    if it.kind:
+        if C.ident_problem(str(it.kind), 40):
+            d["fields_withheld"] += 1
+        else:
+            d["kind"] = str(it.kind)
+    s = _sha(it.closed_sha, 40)
+    if s:
+        d["closed_sha"] = s
+    if it.superseded_by:
+        if it.superseded_by in hidden or C.item_id_problem(it.superseded_by):
+            d["superseded_withheld"] = True
+        else:
+            d["superseded_by"] = it.superseded_by
+    d["notes_total"] = len(notes)
+    match = [n for n in notes if str(n.get("text") or "").lstrip().startswith(prefix)] if prefix else notes
+    if prefix:
+        d["notes_matching"] = len(match)
+    shown = match[-last:] if last else match
+    refs = []
+    for n in shown:
+        text = str(n.get("text") or "")
+        ids = []
+        for w in _REF_RE.findall(text):
+            if w in known and w not in hidden and w != it.id and w not in ids and not C.item_id_problem(w):
+                ids.append(w)
+        shas = tuple(dict.fromkeys(m for m in _SHA_IN.findall(text) if re.search(r"[a-f]", m)))[:6]
+        ref = {"refs": tuple(ids[:12]), "shas": shas, "prefix_match": bool(prefix)}
+        t = _time(n.get("ts"))
+        if t:
+            ref["t"] = t
+        if n.get("seat") in Seat.__args__:
+            ref["seat"] = n["seat"]
+        refs.append(ref)
+    d["notes"] = tuple(refs)
+    verbs = _verbs()
+    d["events_total"] = len(others)
+    evs = []
+    for e in (others[-last:] if last else others):
+        v = e.get("event")
+        x = {"verb": v if isinstance(v, str) and v in verbs else "other"}
+        t = _time(e.get("ts"))
+        if t:
+            x["t"] = t
+        if e.get("seat") in Seat.__args__:
+            x["seat"] = e["seat"]
+        evs.append(x)
+    d["events"] = tuple(evs)
+    return BlindItemPage.model_validate(d, context=_CTX)
+
+
+# ------------------------------------------------------------------------------------------- note ---------
+class BlindNote(_Closed):
+    role: NoteRole
+    outcome: NoteOutcome
+    mode: Optional[NoteMode] = None
+    unit: Optional[Annotated[str, Field(pattern=r"^rm-role-[a-z]+-[0-9]{1,12}$")]] = None
+
+    @model_validator(mode="after")
+    def _unit_is_role(self):
+        if self.unit and not self.unit.startswith("rm-role-%s-" % self.role.lower()):
+            raise ValueError("refused: the unit names another role")
+        return self
+
+
+def project_note(b):
+    """The dispatcher's blind note as the closed model (its stdlib twin is blind_core.note_text, which the 2-minute
+    tick uses). -> BlindNote, or None when the record is not closed."""
+    if C.note_problem(b):
+        return None
+    return BlindNote.model_validate(dict(b), context=_CTX)
+
+
+def render_note(n):
+    if not isinstance(n, BlindNote):
+        raise ProjectionOnly("render_note takes a BlindNote")
+    return C.note_text(n.model_dump(exclude_none=True))
+
+
+# ------------------------------------------------------------------------------------------ render -------
+def _hm(t):
+    return t.strftime("%m-%d %H:%MZ") if t else "-"
+
+
+def _iso(t):
+    return t.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _ev(p):
+    return "`%s`" % C.evidence_native(p)
+
+
+_SPLIT = re.compile(r"[\s|*()\[\],:;·—→+=#/×'\"!?<>]+")
+
+
+_GUARD_SHA = re.compile(r"^(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{7,40}$")   # a rendered sha (hex, mixed)
+_GUARD_SHA_AT = re.compile(r"\b(sha|git|event) [0-9a-f]{12}\b")                       # a rendered sha, by its label
+_GUARD_GROUPED = re.compile(r"\d,\d{3}(?!\d)")                                    # 45,000: never a count we print
+_GUARD_COUNT = re.compile(r"^[0-9]{1,6}$")                                          # a count the program computed
+
+
+def page_problem(text):
+    """The final guard, independent of the models: every word of a rendered page passes blind_core.ident_problem
+    (backticked evidence paths pass evidence_problem instead). -> None, or the first refused word's closed reason
+    (never the word). A renderer that trips this raises instead of returning a page: it fails closed."""
+    for p in re.findall(r"`([^`]*)`", text):
+        if C.evidence_problem(p):
+            return "evidence path"
+    if _GUARD_GROUPED.search(text):
+        return "word: number"
+    body = re.sub(r"`[^`]*`", " ", text)
+    body = _GUARD_SHA_AT.sub(r"\1", body)   # a sha the renderer printed after its label may be all digits (0.4% of shas)
+    for w in _SPLIT.split(body):
+        w = w.strip(".-")
+        if not w or _GUARD_SHA.match(w) or _GUARD_COUNT.match(w):
+            continue
+        r = C.ident_problem(w, 140)
+        if r:
+            return "word: %s" % r
+    return None
+
+
+def _guard(text):
+    r = page_problem(text)
+    if r:
+        raise ValueError("blind page guard refused the page (%s)" % r)
+    return text
+
+
+_SRC_LABEL = {"ledger": "ledger events", "verdict": "judge verdict files", "commit": "Delegated commits",
+              "marks": "art mark acts", "art_install": "delegated art installs", "leftovers": "leftover deletions"}
+
+
+def _rec_line(r):
+    bits = [_hm(r.t), r.source]
+    if r.item:
+        bits.append("**%s**" % r.item)
+    if r.subject:
+        bits.append(r.subject)
+    if r.verb:
+        bits.append(r.verb)
+    if r.decision:
+        bits.append(r.decision + ((" " + r.pick) if r.pick else ""))
+    if r.action:
+        bits.append(r.action)
+    if r.kind:
+        bits.append(r.kind)
+    if r.judge:
+        bits.append("judge " + "+".join(r.judge))
+    if r.by:
+        bits.append("by " + r.by)
+    if r.sha:
+        bits.append("git " + r.sha[:12] if r.source == "commit" else "sha " + r.sha[:12])
+    if r.event:
+        bits.append("event " + r.event[:12])
+    line = "- " + " ".join(bits)
+    if r.evidence:
+        line += " evidence " + " ".join(_ev(p) for p in r.evidence)
+    return line
+
+
+def render_digest(page):
+    """DigestPage -> markdown, from fixed templates only. Records grouped by class, newest first."""
+    if not isinstance(page, DigestPage):
+        raise ProjectionOnly("render_digest takes a DigestPage")
+    total = len(page.records)
+    out = ["# Delegated calls digest %s" % page.date, "",
+           "Every call an agent took without you under delegation_policy.md from %s to %s UTC, grouped by class, "
+           "newest first. Built by a program from the records; every count is measured. Ids, classes, decisions, "
+           "judges, times and evidence paths only: no record text reaches this page. To overturn a line, say so in "
+           "any words." % ("the beginning" if page.floor is None else _iso(page.floor), _iso(page.cut)), "",
+           "**%d delegated record(s)**" % total, "",
+           "| source | state | records | malformed | withheld | fields withheld | all time |", "|---|---|---|---|---|---|---|"]
+    for s in page.sources:
+        state = ("measured" if s.fault == "none" else "measured, %s" % s.fault) if s.state == "measured" else (
+            "UNMEASURED %s" % s.fault)
+        out.append("| %s | %s | %s | %d | %d | %d | %s |" % (
+            _SRC_LABEL[s.source], state, s.records if s.state == "measured" else "UNMEASURED", s.malformed,
+            s.withheld, s.fields_withheld, "-" if s.all_time is None else s.all_time))
+    out.append("")
+    if total == 0:
+        newest = max((s.newest for s in page.sources if s.newest), default=None)
+        out += ["No delegated record in this window. Instrument check: the measured sources see %d delegated "
+                "record(s) in all time, the newest at %s." % (
+                    sum(s.all_time or 0 for s in page.sources if s.state == "measured"),
+                    _iso(newest) if newest else "-"), ""]
+    groups = {}
+    for r in page.records:
+        groups.setdefault(r.cls, []).append(r)
+    for cls in sorted(groups, key=lambda k: (-len(groups[k]), k)):
+        rs = groups[cls]
+        out += ["## %s %d record(s)%s" % (cls, len(rs), " (no policy class logged)" if cls == "unclassified" else ""),
+                ""]
+        out += [_rec_line(r) for r in rs]
+        out.append("")
+    return _guard("\n".join(out) + "\n")
+
+
+def render_queue(q):
+    if not isinstance(q, BlindQueue):
+        raise ProjectionOnly("render_queue takes a BlindQueue")
+    out = ["# %s queue blind view" % q.seat, "",
+           "Ids, states, kinds, needs and rows only: titles, reasons and summaries never reach this view. %d open "
+           "item(s) withheld, %d field(s) withheld." % (q.withheld, q.fields_withheld), ""]
+    for s in q.sections:
+        out += ["## %s %d" % (s.title, len(s.items)), ""]
+        for i in s.items:
+            out.append("- **%s** state %s%s kind %s needs %s row %s" % (
+                i.id, i.state, " BLOCKED" if i.blocked else "", i.kind or "task", i.needs, i.row or "unassigned"))
+        out.append("")
+    return _guard("\n".join(out) + "\n")
+
+
+def render_item(p):
+    if not isinstance(p, BlindItemPage):
+        raise ProjectionOnly("render_item takes a BlindItemPage")
+    if p.withheld:
+        return _guard("withheld from the blind view: Operations alone\n")
+    out = ["%s state %s%s kind %s owner %s needs %s" % (p.id, p.state, " BLOCKED" if p.blocked else "",
+                                                       p.kind or "task", p.owner or "-", p.needs)]
+    if p.closed_sha:
+        out.append("closed at sha %s" % p.closed_sha[:12])
+    if p.superseded_by or p.superseded_withheld:
+        out.append("superseded by %s" % (p.superseded_by or "a withheld item"))
+    if p.fields_withheld:
+        out.append("%d field(s) withheld" % p.fields_withheld)
+    out.append("notes %d in all%s; shown %d, as the item ids and shas each names, never its text" % (
+        p.notes_total, "" if p.notes_matching is None else ", %d match the prefix" % p.notes_matching, len(p.notes)))
+    for n in p.notes:
+        out.append("- %s %s refs %s %s" % (_iso(n.t) if n.t else "-", n.seat or "-", " ".join(n.refs) or "-",
+                                           " ".join("sha " + s[:12] for s in n.shas) or "no sha"))
+    out.append("other events %d; shown %d as time, verb, seat" % (p.events_total, len(p.events)))
+    for e in p.events:
+        out.append("- %s %s %s" % (_iso(e.t) if e.t else "-", e.verb, e.seat or "-"))
+    return _guard("\n".join(out) + "\n")

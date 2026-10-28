@@ -509,16 +509,18 @@ def counterfactual(day, week, v2, rules, timeout=480):
 
 
 # ---------------------------------------------------------------- output
-def fmt(v):
+def fmt(v, group=True):
+    """group=False for the blind page: a grouped figure (45,000) is refused by contracts.blind.page_problem."""
     if v is None:
         return "-"
     if isinstance(v, float):
-        return ("%.3f" % v) if abs(v) < 10 else "{:,.0f}".format(v)
-    return "{:,}".format(v)
+        return ("%.3f" % v) if abs(v) < 10 else ("{:,.0f}" if group else "{:.0f}").format(v)
+    return ("{:,}" if group else "{}").format(v)
 
 
-# The Auditor's page: quality metrics only, under labels that pass blind_view unchanged (its token-blind words include
-# "week", "wk", "share" and "pct", so the page says "period" and "fraction"); the selftest holds redact(page) == page.
+# The Auditor's page: quality metrics only, under labels that pass the blind type's word rules (contracts.blind_core:
+# "week", "wk", "share" and "pct" are token words, so the page says "period" and "fraction"); the selftest holds
+# contracts.blind.page_problem(page) is None.
 BLIND_LABELS = {"done_wk": "items done", "owner_wait_over_3d": "owner waits open over 3 days",
                 "already_ruled_wk": "owner messages saying already ruled", "rework_share": "rework fraction of items filed",
                 "close_no_level_share": "closes with no verify level, fraction", "verify_backlog": "verify backlog",
@@ -566,10 +568,11 @@ def render(rec, ref, rules, blind=False):
         pj = j["per"][k]
         cls = pj["class"] + (" -> " + pj["class_cf"] if pj.get("class_cf") else "")
         rng = cfr.get(k) if not blind or k in BLIND_KEYS else None
+        g = not blind
         L.append("| %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
-            BLIND_LABELS[k] if blind else k, m["group"], fmt(p.get("v")), p.get("mark", "-"), fmt(r.get("value")),
-            ", ".join(fmt(c) for c in r.get("context") or []) or "-", cls,
-            fmt(pj["bands"]), "-" if not rng else "%s .. %s" % (fmt(rng[0]), fmt(rng[1]))))
+            BLIND_LABELS[k] if blind else k, m["group"], fmt(p.get("v"), g), p.get("mark", "-"), fmt(r.get("value"), g),
+            ", ".join(fmt(c, g) for c in r.get("context") or []) or "-", cls,
+            fmt(pj["bands"], g), "-" if not rng else "%s .. %s" % (fmt(rng[0], g), fmt(rng[1], g))))
     L.append("")
     un = [(k, (rec["week"].get(k) or {}).get("why")) for k in rec["week"]
           if (rec["week"].get(k) or {}).get("mark") == "UNMEASURED" and (not blind or k in BLIND_KEYS)]

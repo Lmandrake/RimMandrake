@@ -19,7 +19,12 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import v3_vs_v2 as V  # noqa: E402
-import blind_view  # noqa: E402  (on the path through v3_vs_v2)
+sys.path.insert(0, os.path.dirname(HERE))
+from contracts import blind_core as BC  # noqa: E402  (the closed blind type's word rules; stdlib)
+
+
+def sensitive_word(w):
+    return any(BC.unsafe_part(p) for p in BC.parts(w))
 
 FAILS = []
 
@@ -262,12 +267,12 @@ rec = {"end": "2026-11-30", "settled": False, "settled_why": "x", "rules": "rule
 blind = V.render(rec, REF, R, blind=True)
 ops = V.render(rec, REF, R)
 words = lambda t: set(re.findall(r"[A-Za-z_][A-Za-z0-9_]*", t))  # noqa: E731
-hits = sorted(x for x in words(blind) if blind_view.sensitive_word(x))
+hits = sorted(x for x in words(blind) if sensitive_word(x))
 check("quality_blind.md has no token-blind word", not hits, hits)
-check("the blind check can see (Operations' page trips it)", any(blind_view.sensitive_word(x) for x in words(ops)))
+check("the blind check can see (Operations' page trips it)", any(sensitive_word(x) for x in words(ops)))
 check("the blind page has no cost metric row", not any(("| %s |" % k) in blind for k in ("ite_wk", "ite_per_done", "helpers_wk", "all_ite_wk", "seat_ite_share", "sub_ite_big_ctx_share")))
-check("blind_view.redact leaves the page unchanged", blind_view.redact(blind) == blind,
-      [l for l, r in zip(blind.splitlines(), blind_view.redact(blind).splitlines()) if l != r][:3])
+from contracts import blind as BL  # noqa: E402
+check("the blind page passes the closed blind type's page guard", BL.page_problem(blind) is None, BL.page_problem(blind))
 check("UNMEASURED is listed with its reason, never as 0", "owner messages: no human-origin message" in blind)
 check("Operations' page says PROVISIONAL when not settled", "PROVISIONAL (not settled)" in ops)
 

@@ -1,19 +1,29 @@
 #!/usr/bin/env python3
-"""selftest_delegated_digest.py — the daily digest of delegated calls (delegated_digest.py, DELEGATED_DIGEST_FIX_NEVER_WRITTEN).
+"""selftest_delegated_digest.py — the daily digest of delegated calls (delegated_digest.py; DELEGATED_DIGEST_FIX_NEVER_WRITTEN,
+DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH; review gpt_review_digest_2026-10-27 findings 1-11).
 
-  blind     an account id, an account name, a token figure, a cap, a cost and an extra field are injected into every
-            source (ledger event, judge verdict, art install, leftovers act, marks line); none reaches the page. The
-            detector is first shown to see each planted value in the RAW records (a clean page means the digest
-            dropped them, not that the detector is blind).
-  counts    the counts are the records in the window, by class and by source; out-of-window and lease events are out
-  window    --dry-run never moves the state; a real run does; a second run the same date does nothing
-  zero      a window with no call says how many the sources see in all time (policy §5), never a bare zero
-  prelaunch a raising build under --pre-launch exits 0 and writes the FAILED note; without it, it raises
-  real      a dry run over the real records completes and its page passes the detector (instrument sanity: >0 ledger
-            delegated events exist in all time)
+  blind      an account id, an account name, a token figure, a cap, a cost, a key-shaped word and quota phrasing are
+             planted in every field of every source (ledger event, judge verdict, Delegated commit, art mark incl. an
+             unban's quoted words, art install, leftovers act); none reaches the page. The detector is first shown to
+             see each planted value in the RAW records (a clean page means the digest dropped them).
+  counts     records per source in the window; lease events, non-delegated events and out-of-window records are out;
+             an item about accounts is withheld and counted
+  malformed  a bad ledger time, a bad verdict file, a bad leftovers line and a bad commit are counted per source
+  body       a `Delegated:` line in a commit BODY is a record, one per line
+  window     consecutive digests never repeat a record; a second run the same date does nothing; a dry run never
+             moves the state
+  fail       a source that fails reads UNMEASURED and its records appear on the next digest that reads it
+  identity   a verdict seen untracked (mtime) is not shown again once committed (a new git time)
+  force      --force rebuilds a date with its own floor and its own records, never another digest's
+  pending    a pending state entry whose page matches its sha256 is reconciled to complete
+  refusals   --since without --dry-run, and a dry run into the production directory, are refused
+  prelaunch  any failure under --pre-launch (bad argument, a raising build) exits 0 and writes the fixed FAILED page;
+             the error goes to the errors log only; a later success removes the FAILED page
+  real       a dry run over the real records completes, passes the detector, and sees >0 records (instrument sanity)
 Writes only under a temp dir.
 """
 import datetime as dt
+import hashlib
 import json
 import os
 import re
@@ -36,13 +46,14 @@ def check(ok, msg):
 
 # planted values: each must never appear on a page
 PLANTS = ["OPS_ACCOUNT_DRAIN_C01D", "steven", "45,000 tokens", "93%", "80k", "$0.34", "cost_usd", "0.3366",
-          "acct-7f3e9", "54321", "LUKAS_93_WEEK_DRAIN", "sk-live-zz9"]
-# an independent detector (no code shared with blind_view): unit numbers, $ figures, big bare numbers
+          "acct-7f3e9", "54321", "LUKAS_93_WEEK_DRAIN", "sk-live-zz9", "weekly quota", "usage limit"]
+# an independent detector (no code shared with contracts.blind): unit numbers, $ figures, big bare numbers
 _UNIT = re.compile(r"(?<![A-Za-z0-9_])\$?\d+(?:[.,]\d+)*\s?(?:[kKM]|%|tokens?)(?![A-Za-z0-9])|\$\s?\d")
 _BIG = re.compile(r"(?<![A-Za-z0-9_\-:./\\])\d{1,3}(?:,\d{3})+(?![\d])|(?<![A-Za-z0-9_\-:./\\])\d{5,}(?![A-Za-z0-9_\-:])")
 
 
 def leaks(text):
+    text = re.sub(r"\b(sha|git|event) [0-9a-f]{12}\b", r"\1", text)   # a labelled sha is not a figure
     found = [p for p in PLANTS if p.lower() in text.lower()]
     found += ["unit:" + m.group() for m in _UNIT.finditer(text)]
     found += ["big:" + m.group() for m in _BIG.finditer(text)]
@@ -50,165 +61,293 @@ def leaks(text):
 
 
 T0 = dt.datetime(2026, 10, 27, 0, 0, tzinfo=dt.timezone.utc)
-SINCE = T0
-CUT = T0 + dt.timedelta(hours=20)
+LEAK = "steven's account 93% of weekly quota, 45,000 tokens, $0.34 at 80k, usage limit, key sk-live-zz9 acct-7f3e9"
 
 
 def ts(h):
     return (T0 + dt.timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-EVENTS = [
-    {"seat": "BENCH", "event": "close", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "sha": "abcdef1234567",
-     "why": "delegated: art geometric correction — seams moved 2px; steven's account 93% of week cap, 45,000 tokens",
-     "ts": ts(3), "account_id": "acct-7f3e9", "cost_usd": 0.3366},
-    {"seat": "BENCH", "event": "note", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "text": "judge KEEP; run cost $0.34 at 80k",
-     "why": "delegated: art geometric correction", "ts": ts(4)},
-    {"seat": "BENCH", "event": "lease", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "why": "delegated: art geometric correction",
-     "ts": ts(4)},
-    {"seat": "FOUNDRY", "event": "close", "id": "OPS_ACCOUNT_DRAIN_C01D", "sha": "1111111", "why": "delegated: scope",
-     "ts": ts(5)},
-    {"seat": "BENCH", "event": "file", "id": "BIOME_DECIDE_TWO_ROUTES", "title": "pick route B over LUKAS_93_WEEK_DRAIN",
-     "why": "delegated: scope", "ts": ts(6), "tokens": 54321},
-    {"seat": "OWNER", "event": "game", "state": "DOWN", "ranBy": "BENCH", "ts": ts(7),
-     "why": "delegated: bridge idle — deploy [owner idle 33 min (need 20)] key sk-live-zz9"},
-    {"seat": "BENCH", "event": "bridge", "state": "taken", "why": "delegated: bridge idle (owner idle 50 min)",
-     "idleProbe": "state=MEASURED idle_seconds=3022", "purpose": "r12", "ts": ts(7)},
-    {"seat": "BENCH", "event": "note", "id": "BIOME_DECIDE_TWO_ROUTES", "text": "x", "why": "delegated: scope",
-     "ts": ts(-30)},                                                   # before the window
-    {"seat": "BENCH", "event": "note", "id": "BIOME_DECIDE_TWO_ROUTES", "text": "x", "why": "not delegated",
-     "ts": ts(8)},
-]
-ART_EVENTS = [
-    {"type": "live", "ts": "2026-10-27T05:00:00-0700", "seat": "FOUNDRY", "mod": "src/RimMandrake/LeaningScrub",
-     "rel": "Things/RM_Shirrel_north.png", "sha": "262180890bc9f3", "cost_usd": 0.3366,
-     "why": "delegated: art infrastructure/state/delegated/2026-10-27/RM_Shirrel.json"},
-    {"type": "live", "ts": "2026-10-27T05:00:00-0700", "why": "delegated: art marks", "mod": "m", "rel": "r"},
-]
-MARKS = ["art marks | installed over an older keep 0123456789ab at M/r.png | mark: sheet s row 3 at 2026-10-27 "
-         "| steven 45,000 tokens"]
+def tm(h):
+    return T0 + dt.timedelta(hours=h)
 
 
-def make_world(tmp, untracked_time):
-    ddir = os.path.join(tmp, "infrastructure", "state", "delegated", "2026-10-27")
-    os.makedirs(ddir)
-    art = {"subject": "RM_Shirrel", "decision": "ACCEPT", "image_sha256": {"a": "b"}, "reasons": ["steven 93%"],
-           "judge_model": {"opus": [{"cost_usd": 0.3366, "account": "acct-7f3e9"}], "steven": [{}]},
-           "tokens_used": 54321}
-    other = {"item": "BIOME_DECIDE_TWO_ROUTES", "class": "design", "verdict": "KEEP route B (cap 80k)",
-             "judge_model": {"gpt": [{}]}, "account": "acct-7f3e9"}
-    hidden = {"item": "OPS_ACCOUNT_DRAIN_C01D", "decision": "x"}
-    for name, rec in (("RM_Shirrel.json", art), ("BIOME.json", other), ("OPS.json", hidden)):
-        p = os.path.join(ddir, name)
-        json.dump(rec, open(p, "w"))
-        os.utime(p, (untracked_time, untracked_time))
-    left = os.path.join(tmp, "acts.jsonl")
-    with open(left, "w") as f:
-        f.write(json.dumps({"ts": ts(9).replace("Z", "+00:00"), "kind": "save", "path": "/mnt/c/x/old.rws",
-                            "size": 28686221, "archive": "/mnt/d/ClaudeWork/backups/leftovers/a.tar.gz",
-                            "verify": "ok", "evidence": ["steven 45,000 tokens"]}) + "\n")
-    return os.path.join(tmp, "infrastructure", "state", "delegated"), left
+def events():
+    return [
+        {"seat": "BENCH", "event": "close", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "sha": "abcdef1234567",
+         "why": "delegated: art geometric correction — " + LEAK, "ts": ts(3), "account_id": "acct-7f3e9",
+         "cost_usd": 0.3366},
+        {"seat": "BENCH", "event": "note", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "text": LEAK,
+         "why": "delegated: art geometric correction", "ts": ts(4)},
+        {"seat": "BENCH", "event": "lease", "id": "PIPE_ELBOW_FIX_SEAM_JOGS", "why": "delegated: art", "ts": ts(4)},
+        {"seat": "FOUNDRY", "event": "close", "id": "OPS_ACCOUNT_DRAIN_C01D", "sha": "1111111", "why": "delegated: scope",
+         "ts": ts(5)},
+        {"seat": "BENCH", "event": "file", "id": "BIOME_DECIDE_TWO_ROUTES", "title": "route B over LUKAS_93_WEEK_DRAIN",
+         "why": "delegated: scope " + LEAK, "ts": ts(6), "tokens": 54321},
+        {"seat": "OWNER", "event": "game", "state": "DOWN", "ranBy": "BENCH", "ts": ts(7),
+         "why": "delegated: bridge idle — deploy [owner idle 33 min (need 20)] key sk-live-zz9"},
+        {"seat": "BENCH", "event": "note", "id": "BIOME_DECIDE_TWO_ROUTES", "text": "x", "why": "not delegated",
+         "ts": ts(8)},
+        {"seat": "BENCH", "event": "note", "id": "steven_54321", "text": "x", "why": "delegated: scope", "ts": ts(9)},
+        {"seat": "BENCH", "event": "note", "id": "X_Y", "why": "delegated: scope", "ts": "not a time"},   # malformed
+        "not an event",                                                                                  # malformed
+    ]
 
 
-def build(tmp, ddir, left, since=SINCE, cut=CUT, events=EVENTS, marks=MARKS, art=ART_EVENTS):
-    return D.build("2026-10-27", since, cut, events, root=tmp, ddir=ddir, leftovers=left, world=None, added={},
-                   marks_lines=marks, art_events=art, commits=False)
+def verdicts(root):
+    ddir = os.path.join(root, "infrastructure", "state", "delegated")
+    os.makedirs(os.path.join(ddir, "2026-10-27"))
+    recs = {"RM_Chittik_n__r1": {"subject": "RM_Chittik_n", "class": "art", "decision": "ACCEPT", "judge_model":
+                                 {"opus": "claude-opus", "gpt": "x"}, "image_sha256": "ab" * 32, "note": LEAK},
+            "RM_Leak_n__r1": {"subject": "steven_93pct", "class": "art " + LEAK, "decision": "keep, " + LEAK,
+                              "judge_model": {"acct-7f3e9": 1}, "item": "LUKAS_93_WEEK_DRAIN"},
+            "RM_Prose_n__r1": {"subject": "RM_Prose_n", "class": "scope", "verdict": {"decision": "the 54321 one"}}}
+    for name, rec in recs.items():
+        with open(os.path.join(ddir, "2026-10-27", name + ".json"), "w") as fh:
+            json.dump(rec, fh)
+    with open(os.path.join(ddir, "2026-10-27", "RM_Bad__r1.json"), "w") as fh:
+        fh.write("{not json")                                                                            # malformed
+    return ddir, recs
+
+
+COMMITS = [("abcdef0123456789abcdef0123456789abcdef01", ts(10),
+            "art: fix seams\n\nDelegated: art geometric correction " + LEAK + "\nDelegated: scope\nother line\n"),
+           ("", "", "")]                                                                                 # malformed
+ART = [{"type": "live", "id": "ev_1", "ts": ts(11), "why": "delegated: art marks", "reason": "archive",
+        "sha": "cd" * 20, "rel": "Mods/X/Textures/a.png", "note": LEAK},
+       {"type": "unban", "id": "ev_2", "ts": ts(11), "said": LEAK, "sha": "ef" * 20},
+       {"type": "live", "id": "ev_3", "ts": ts(12), "why": "delegated: art-eval " + LEAK, "seat": "BENCH",
+        "sha": "12" * 20, "rel": "Mods/X/Textures/steven_93.png"},
+       {"type": "live", "id": "ev_4", "ts": ts(12), "why": "script:x"}]
+
+
+def leftovers(root):
+    p = os.path.join(root, "acts.jsonl")
+    with open(p, "w") as fh:
+        fh.write(json.dumps({"ts": ts(13), "kind": "save", "archive": "/mnt/d/ClaudeWork/backups/leftovers/a.zip",
+                             "why": LEAK}) + "\n")
+        fh.write(json.dumps({"ts": ts(13), "kind": LEAK, "archive": "C:\\Users\\steven\\54321.zip"}) + "\n")
+        fh.write("{broken\n")                                                                            # malformed
+    return p
+
+
+def table(page):
+    out = {}
+    for line in page.splitlines():
+        m = re.match(r"\| ([a-zA-Z ]+) \| ([^|]+) \| ([^|]+) \| (\d+) \| (\d+) \| (\d+) \| ([^|]+) \|$", line)
+        if m:
+            out[m.group(1)] = [c.strip() for c in m.groups()[1:]]
+    return out
+
+
+def lines(page):
+    return [l for l in page.splitlines() if l.startswith("- ")]
+
+
+def args(tmp, date, *extra, cut=None):
+    a = ["--date", date, "--state", os.path.join(tmp, "state.json"), "--out-dir", os.path.join(tmp, "out"),
+         "--errors", os.path.join(tmp, "errors.log")]
+    if cut:
+        a += ["--cut", cut]
+    return a + list(extra)
+
+
+def page_of(tmp, date, sub="out"):
+    with open(os.path.join(tmp, sub, "delegated_digest_%s.md" % date)) as fh:
+        return fh.read()
+
+
+def test_blind_counts_body_malformed():
+    with tempfile.TemporaryDirectory() as tmp:
+        ddir, recs = verdicts(tmp)
+        lp = leftovers(tmp)
+        raw = json.dumps(events()) + json.dumps(recs) + json.dumps(COMMITS) + json.dumps(ART) + open(lp).read()
+        missing = [p for p in PLANTS if p.lower() not in raw.lower()]
+        check(not missing, "instrument: every planted value is in the RAW records (%s)" % missing)
+        check(len(leaks(raw)) >= len(PLANTS), "instrument: the detector sees the raw plants (%d)" % len(leaks(raw)))
+        reads = D.gather(events(), tmp, ddir, lp, added={}, commits=COMMITS, art_events=ART)
+        cut = max(tm(20), dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=1))   # verdict files carry mtime
+        text, seen = D.build("2026-10-27", None, cut, reads, hidden=frozenset({"OPS_ACCOUNT_DRAIN_C01D"}))
+        check(not leaks(text), "blind: no planted value reaches the page: %s" % leaks(text)[:6])
+        tb = table(text)
+        led = tb.get("ledger events")
+        check(led and led[1] == "4" and led[2] == "2", "counts: ledger 4 records in window (lease, non-delegated, "
+              "withheld out), 2 malformed: %s" % led)
+        check(led and led[3] == "2", "counts: the OPS_ item and the steven_ item are withheld (%s)" % led)
+        check("OPS_ACCOUNT" not in text and "BIOME_DECIDE_TWO_ROUTES" in text, "counts: withheld item never named")
+        v = tb.get("judge verdict files")
+        check(v and v[1:4] == ["2", "1", "1"], "malformed: verdict 2 records, 1 bad file, the steven_ subject "
+              "withheld: %s" % v)
+        c = tb.get("Delegated commits")
+        check(c and c[1] == "2" and c[2] == "1", "body: 2 Delegated: lines of one commit body, 1 bad commit: %s" % c)
+        m = tb.get("art mark acts")
+        check(m and m[1] == "2", "marks: archive and unban are mark records (%s)" % m)
+        ai = tb.get("delegated art installs")
+        check(ai and ai[1] == "1", "art installs: the delegated live install only (%s)" % ai)
+        lf = tb.get("leftover deletions")
+        check(lf and lf[1] == "2" and lf[2] == "1", "malformed: leftovers 2 records, 1 bad line: %s" % lf)
+        check("RM_Chittik_n" in text and "ACCEPT" in text and "opus+gpt" in text, "blind: closed fields still show")
+        check("sha 121212121212" in text, "guard: an all-digit sha prints, by its label")
+        check(" OTHER" in text, "blind: a prose decision reads OTHER, never its words")
+        held = sum(int(r[3]) for r in tb.values())
+        check(sum(len(x) for x in seen.values()) == len(lines(text)) + held,
+              "counts: every record in the window is seen (shown + %d withheld): %d vs %d" % (
+                  held, sum(len(x) for x in seen.values()), len(lines(text))))
+
+
+def _reads(evs=None, commit=None, verdict_added=None, tmp=None, ddir=None):
+    return D.gather(evs if evs is not None else [], tmp, ddir or os.path.join(tmp, "none"),
+                    os.path.join(tmp, "none.jsonl"), added=verdict_added or {},
+                    commits=commit if commit is not None else [], art_events=[])
+
+
+def test_window_fail_force_pending():
+    with tempfile.TemporaryDirectory() as tmp:
+        ev1 = [{"seat": "BENCH", "event": "close", "id": "A_ONE", "why": "delegated: scope", "ts": ts(1)}]
+        ev2 = ev1 + [{"seat": "BENCH", "event": "close", "id": "B_TWO", "why": "delegated: scope", "ts": ts(25)}]
+        cm = [("ab" * 20, ts(2), "x\n\nDelegated: scope")]
+        # day 1: the commit source fails
+        r1 = _reads(ev1, tmp=tmp)
+        r1["commit"] = D._read("unmeasured", "git_failed")
+        rc = D.main(args(tmp, "2026-10-27", cut=ts(20)), sources=(r1, frozenset()))
+        p1 = page_of(tmp, "2026-10-27")
+        check(rc == 0 and "A_ONE" in p1 and "UNMEASURED git_failed" in p1, "fail: a failed source reads UNMEASURED")
+        st = json.load(open(os.path.join(tmp, "state.json")))
+        check(st["digests"]["2026-10-27"]["complete"] is True, "window: the state entry is complete after the run")
+        # same date again: nothing done, page untouched
+        rc = D.main(args(tmp, "2026-10-27", cut=ts(21)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        check(page_of(tmp, "2026-10-27") == p1, "window: a second run the same date does nothing")
+        # a dry run never moves the state
+        before = open(os.path.join(tmp, "state.json")).read()
+        D.main(args(tmp, "2026-10-28", "--dry-run", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        check(open(os.path.join(tmp, "state.json")).read() == before, "window: a dry run never moves the state")
+        # day 2: the commit source recovers; its day-1 record appears now, A_ONE never again
+        D.main(args(tmp, "2026-10-28", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        p2 = page_of(tmp, "2026-10-28")
+        check("A_ONE" not in p2 and "B_TWO" in p2, "window: consecutive digests never repeat a record")
+        check("git abababababab" in p2, "fail: the failed source's backlog appears on the next digest that reads it")
+        # force day 1: its own floor, its own records, never day 2's
+        D.main(args(tmp, "2026-10-27", "--force", cut=ts(45)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        p1f = page_of(tmp, "2026-10-27")
+        check("A_ONE" in p1f and "B_TWO" not in p1f and "abababababab" not in p1f,
+              "force: a rebuild keeps its own records and never takes another digest's")
+        st = json.load(open(os.path.join(tmp, "state.json")))
+        check(st["digests"]["2026-10-27"]["floor"] is None, "force: the original floor is kept")
+        # pending: entry written, page written, completion lost -> reconciled, not rebuilt
+        e = st["digests"]["2026-10-28"]
+        e["complete"] = False
+        e["page_sha256"] = hashlib.sha256(open(os.path.join(tmp, "out", "delegated_digest_2026-10-28.md"),
+                                              "rb").read()).hexdigest()
+        json.dump(st, open(os.path.join(tmp, "state.json"), "w"))
+        ev3 = ev2 + [{"seat": "BENCH", "event": "close", "id": "C_THREE", "why": "delegated: scope", "ts": ts(30)}]
+        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), frozenset()))
+        st = json.load(open(os.path.join(tmp, "state.json")))
+        check(st["digests"]["2026-10-28"]["complete"] is True and "C_THREE" not in page_of(tmp, "2026-10-28"),
+              "pending: a page matching its recorded sha256 is reconciled to complete, not rebuilt")
+        # pending with a page that does NOT match: rebuilt
+        st["digests"]["2026-10-28"]["complete"] = False
+        st["digests"]["2026-10-28"]["page_sha256"] = "0" * 64
+        json.dump(st, open(os.path.join(tmp, "state.json"), "w"))
+        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), frozenset()))
+        check("C_THREE" in page_of(tmp, "2026-10-28"), "pending: a page that does not match is rebuilt")
+        # legacy state: last_cut becomes the floor
+        json.dump({"last_cut": ts(26)}, open(os.path.join(tmp, "legacy.json"), "w"))
+        st = D.load_state(os.path.join(tmp, "legacy.json"))
+        check(st["floor"] == ts(26) and st["digests"] == {}, "legacy: last_cut becomes the global floor")
+
+
+def test_identity():
+    with tempfile.TemporaryDirectory() as tmp:
+        ddir, _recs = verdicts(tmp)
+        r1 = D.gather([], tmp, ddir, os.path.join(tmp, "x"), added={}, commits=[], art_events=[])
+        t1 = max(t for _i, t, _r in r1["verdict"]["items"])
+        D.main(args(tmp, "2026-10-27", cut=D.iso(t1 + dt.timedelta(seconds=5))), sources=(r1, frozenset()))
+        check("RM_Chittik_n" in page_of(tmp, "2026-10-27"), "identity: an untracked verdict shows (mtime)")
+        rel = os.path.relpath(os.path.join(ddir, "2026-10-27", "RM_Chittik_n__r1.json"), tmp).replace(os.sep, "/")
+        later = t1 + dt.timedelta(hours=2)
+        r2 = D.gather([], tmp, ddir, os.path.join(tmp, "x"), added={rel: later}, commits=[], art_events=[])
+        D.main(args(tmp, "2026-10-28", cut=D.iso(later + dt.timedelta(hours=1))), sources=(r2, frozenset()))
+        check("RM_Chittik_n" not in page_of(tmp, "2026-10-28"),
+              "identity: once committed (a new git time) it is not shown again")
+
+
+def test_refusals_prelaunch():
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            D.main(args(tmp, "2026-10-27", "--since", ts(0)), sources=({}, frozenset()))
+            ok = False
+        except ValueError:
+            ok = True
+        check(ok, "refusals: --since without --dry-run is refused")
+        try:
+            D.main(["--date", "2026-10-27", "--dry-run", "--out-dir", D.OUT_DIR, "--state",
+                    os.path.join(tmp, "s.json")], sources=({}, frozenset()))
+            ok = False
+        except ValueError:
+            ok = True
+        check(ok, "refusals: a dry run into the production directory is refused")
+        failed = os.path.join(tmp, "out", "delegated_digest_2026-10-27.FAILED.md")
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--since", ts(0)), sources=({}, frozenset()))
+        txt = open(failed).read() if os.path.exists(failed) else ""
+        check(rc == 0 and txt == D.FAILED_TEXT % "2026-10-27", "prelaunch: a refusal exits 0 with the fixed page")
+        err = open(os.path.join(tmp, "errors.log")).read()
+        check("ValueError" in err, "prelaunch: the error goes to the errors log")
+        os.remove(failed)
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--bogus"), sources=({}, frozenset()))
+        check(rc == 0 and os.path.exists(failed), "prelaunch: a bad argument exits 0 with the fixed page")
+        bad = {"ledger": {"state": "measured", "fault": "none", "malformed": 0,
+                          "items": [("L1", tm(1), {"source": "ledger", "t": tm(1), "why": "delegated: scope",
+                                                   "id": "A_B", "event": "close", "seat": "BENCH"})]}}
+        orig = D.build
+
+        def boom(*a, **k):
+            raise RuntimeError("acct-7f3e9 45,000 tokens")
+        D.build = boom
+        try:
+            rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, frozenset()))
+        finally:
+            D.build = orig
+        txt = open(failed).read()
+        check(rc == 0 and not leaks(txt), "prelaunch: a raising build exits 0 and the page holds no error text")
+        st = json.load(open(os.path.join(tmp, "state.json"))) if os.path.exists(os.path.join(tmp, "state.json")) else {}
+        check(not (st.get("digests") or {}).get("2026-10-27", {}).get("complete"), "prelaunch: a failure is not complete")
+        try:
+            D.build = boom
+            D.main(args(tmp, "2026-10-27", cut=ts(2)), sources=(bad, frozenset()))
+            ok = False
+        except RuntimeError:
+            ok = True
+        finally:
+            D.build = orig
+        check(ok, "prelaunch: without --pre-launch the error raises")
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, frozenset()))
+        check(rc == 0 and not os.path.exists(failed) and "A_B" in page_of(tmp, "2026-10-27"),
+              "prelaunch: a later success writes the digest and removes the stale FAILED page")
+
+
+def test_real():
+    with tempfile.TemporaryDirectory() as tmp:
+        rc = D.main(["--dry-run", "--date", "2026-10-27", "--state", os.path.join(tmp, "s.json"), "--out-dir",
+                     os.path.join(tmp, "dry")])
+        p = page_of(tmp, "2026-10-27", "dry")
+        tb = table(p)
+        led = tb.get("ledger events")
+        check(rc == 0 and led and led[0] == "measured" and int(led[5]) > 0,
+              "real: the ledger is measured and sees >0 delegated events in all time (%s)" % led)
+        check(not leaks(p), "real: the real page passes the detector: %s" % leaks(p)[:5])
+        check(not os.path.exists(os.path.join(tmp, "s.json")), "real: a dry run writes no state")
 
 
 def main():
-    with tempfile.TemporaryDirectory() as tmp:
-        mid = (T0 + dt.timedelta(hours=2)).timestamp()
-        ddir, left = make_world(tmp, mid)
-        raw = json.dumps(EVENTS) + json.dumps(ART_EVENTS) + json.dumps(MARKS) + open(left).read() + "".join(
-            open(os.path.join(ddir, "2026-10-27", n)).read() for n in os.listdir(os.path.join(ddir, "2026-10-27")))
-        missing = [p for p in PLANTS if p.lower() not in raw.lower()]
-        check(not missing, "instrument: every planted value is in the RAW records (missing %s)" % missing)
-        check(bool(leaks(raw)), "instrument: the detector finds leaks in the raw records")
-
-        page = build(tmp, ddir, left)
-        lk = leaks(page)
-        check(not lk, "blind: no planted account/token/cost value on the page (found %s)" % lk)
-        check("OPS_ACCOUNT_DRAIN" not in page and "2 record(s) about accounts withheld" in page,
-              "blind: an item about accounts is counted, never named")
-        check("judge_model" not in page and "steven" not in page.lower() and "(opus;" in page,
-              "blind: the judge is a model family from the closed set, nothing else of judge_model")
-
-        # counts: ledger in window = close+note (art geometric correction), file (scope), game+bridge (bridge idle)
-        check("5 ledger event(s), 2 judge verdict file(s), 0 `Delegated:` commit(s), 1 art-mark act(s), "
-              "1 delegated art install(s), 1 leftover deletion(s)" in page,
-              "counts: lease, out-of-window, non-delegated and withheld records are out")
-        check("**10 delegated call record(s)**" in page, "counts: the total is the sum of the sources")
-        check("| art geometric correction | 2 | 1 |" in page and "| bridge idle | 2 | 0 |" in page
-              and "| scope | 1 | 1 |" in page and "| design | 1 | 1 |" in page,
-              "counts: per class records and items, measured")
-        check("seams moved 2px" in page and "game DOWN" in page and "idle_seconds=3022" in page,
-              "content: the decision text and the bridge-idle probe reading pass")
-        check("D:\\ClaudeWork\\backups\\leftovers\\a.tar.gz" in page, "content: a leftover line carries its archive")
-
-        later = build(tmp, ddir, left, since=T0 + dt.timedelta(hours=10), cut=CUT + dt.timedelta(hours=1),
-                      marks=[], art=[])
-        check("**0 delegated call record(s)**" in later and "sources see 6 delegated ledger event(s) and 2 verdict"
-              in later, "zero: an empty window reports what the instrument sees in all time")
-
-        # classes
-        for why, want in (("delegated: delegated: art judgement", ("art judgement", "art")),
-                          ("delegated: art marks", ("art marks", "art marks")),
-                          ("delegated: bridge idle (owner idle 50 min)", ("bridge idle", "bridge idle")),
-                          ("delegated: art-eval/ledger housekeeping", ("art-eval/ledger housekeeping", "art")),
-                          ("delegated: fix", ("fix", None)),
-                          ("delegated: design — per-biome giant", ("design", "design")),
-                          ("delegated: designer call", ("designer call", None))):
-            check(D.class_of(why) == want, "class_of(%r) -> %r" % (why, D.class_of(why)))
-
-        # main(): state, once per date, pre-launch
-        out, st = os.path.join(tmp, "out"), os.path.join(tmp, "st", "state.json")
-        orig_build, orig_load = D.build, D.B._load
-        D.B._load = lambda: (EVENTS, None)
-        D.build = lambda date, since, cut, evs, world=None: orig_build(
-            date, since, cut, EVENTS, root=tmp, ddir=ddir, leftovers=left, world=None, added={}, marks_lines=MARKS,
-            art_events=ART_EVENTS, commits=False)
+    for t in (test_blind_counts_body_malformed, test_window_fail_force_pending, test_identity,
+              test_refusals_prelaunch, test_real):
         try:
-            D.main(["--date", "2026-10-27", "--out-dir", out, "--state", st, "--dry-run"])
-            check(os.path.exists(os.path.join(out, "delegated_digest_2026-10-27.md")) and not os.path.exists(st),
-                  "window: --dry-run writes the page and never moves the state")
-            os.remove(os.path.join(out, "delegated_digest_2026-10-27.md"))
-            D.main(["--date", "2026-10-27", "--out-dir", out, "--state", st])
-            cut1 = D.load_state(st)
-            check(cut1 is not None, "window: a real run records its cut")
-            m1 = os.path.getmtime(os.path.join(out, "delegated_digest_2026-10-27.md"))
-            D.main(["--date", "2026-10-27", "--out-dir", out, "--state", st])
-            check(os.path.getmtime(os.path.join(out, "delegated_digest_2026-10-27.md")) == m1 and D.load_state(st) == cut1,
-                  "window: one digest per date, a second run does nothing")
-
-            def boom(*a, **k):
-                raise RuntimeError("ledger torn near steven 45,000 tokens")
-            D.build = boom
-            rc = D.main(["--date", "2026-10-28", "--out-dir", out, "--state", st, "--pre-launch"])
-            fail = os.path.join(out, "delegated_digest_2026-10-28.FAILED.md")
-            check(rc == 0 and os.path.exists(fail) and not leaks(open(fail).read()),
-                  "prelaunch: a failing build exits 0, writes a blind FAILED note")
-            try:
-                D.main(["--date", "2026-10-29", "--out-dir", out, "--state", st])
-                check(False, "without --pre-launch a failing build raises")
-            except RuntimeError:
-                check(True, "without --pre-launch a failing build raises")
-        finally:
-            D.build, D.B._load = orig_build, orig_load
-
-    # real records, dry run
-    with tempfile.TemporaryDirectory() as tmp:
-        evs, world = D.B._load()
-        n_all = sum(1 for e in evs if str(e.get("why") or "").startswith("delegated:"))
-        check(n_all > 0, "real: the ledger holds delegated events (%d) — the instrument can see" % n_all)
-        cut = dt.datetime.now(dt.timezone.utc)
-        page = D.build("real", cut - dt.timedelta(days=2), cut, evs, world=world)
-        lk = [x for x in leaks(page) if not x.startswith("big:")] + [x for x in leaks(page) if x.startswith("big:")
-                                                                    and not re.fullmatch(r"big:\d{5,}", x)]
-        check(not lk, "real: a 2-day dry run over the real records has no unit/$ figure (found %s)" % lk[:5])
-        m = re.search(r"\*\*(\d+) delegated call record", page)
-        check(bool(m), "real: the page states a measured total (%s)" % (m.group(1) if m else None))
-
-    print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
+            t()
+        except Exception as e:  # noqa: BLE001
+            import traceback
+            traceback.print_exc()
+            check(False, "%s crashed: %s" % (t.__name__, e))
+    print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 
 

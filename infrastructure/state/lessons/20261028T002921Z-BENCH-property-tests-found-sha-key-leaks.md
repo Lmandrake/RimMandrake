@@ -1,0 +1,2 @@
+Hypothesis planting secrets in every field of the closed blind type found four holes the hand-written leak tests missed: a 7-hex fragment of acct-<hex> extracted as a note sha, a 32-hex key shown as a sha or as an uppercased id part, an all-digit sha tripping the guard (a whole-page outage), and 45,000 split at the comma passing the guard. Plant secrets per field by property, not by example.
+home: NONE

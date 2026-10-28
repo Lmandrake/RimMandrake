@@ -76,7 +76,7 @@ for _d in (HERE, TESTQ):
         sys.path.insert(0, _d)
 if os.path.dirname(HERE) not in sys.path:
     sys.path.append(os.path.dirname(HERE))          # src/RimMandrake, for contracts (stdlib-only modules)
-from contracts import compat as CC, jsonl as CJ  # noqa: E402
+from contracts import blind_core as BC, compat as CC, jsonl as CJ  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import account_pick as AP  # noqa: E402
@@ -727,10 +727,12 @@ def route_note(sch, item, text, rx=None, blind_text=None):
     Anything else bound for a blind item (an alarm's `why`, a run's result text, a refusal reason) goes to
     `token_notes_item` (Operations' own item) instead, naming where it was meant to go; with no token_notes_item it is
     not noted (item None: the journal holds it). The word list is no longer the gate: a phrasing it lacks ("usage
-    limit reached") can no longer reach a blind item (it was the gate in review U N2)."""
+    limit reached") can no longer reach a blind item (it was the gate in review U N2). The gate is the closed type:
+    blind_text must be EXACTLY a text contracts.blind_core.note_text renders from a closed record (is_note_text), so
+    a caller that passes any other string as blind_text is refused too (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF)."""
     if item not in blind_items(sch):
         return item, text
-    if blind_text and not (rx or token_rx(sch.get("token_rules"))).search(blind_text):
+    if blind_text and BC.is_note_text(blind_text) and not (rx or token_rx(sch.get("token_rules"))).search(blind_text):
         return item, blind_text
     to = sch.get("token_notes_item")
     return (to, "%s [meant for %s; token values stay off it]" % (text, item)) if to else (None, text)

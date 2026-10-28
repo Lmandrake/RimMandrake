@@ -2640,7 +2640,12 @@ def test_golive_b2_blind_fixed_outcomes():
     check(noted and noted[0][0] == "OPS_OWN_X" and "acct-7781" in noted[0][1],
           "B2 a refused blind note goes to Operations' item, never the shared one")
     src = open(os.path.join(HERE, "role_launch.py")).read() + open(os.path.join(HERE, "dispatcher.py")).read()
-    check("note_text" not in src and "note_base" not in src, "B2 no free-text note_text/note_base path is left")
+    check("def note_text" not in src and "note_base" not in src and "note_text=" not in src,
+          "B2 no free-text note_text/note_base path is left (the closed renderer is contracts.blind_core.note_text)")
+    check(D.route_note(sch, "ROLES_ITEM_X", "x", blind_text="dispatcher: Conductor: acct-7781 4.2M")[0] != "ROLES_ITEM_X",
+          "B2 route_note refuses a blind_text no closed record renders (blind_core.is_note_text)")
+    check(D.route_note(sch, "ROLES_ITEM_X", "x", blind_text=RL.blind_note(good)) == ("ROLES_ITEM_X", RL.blind_note(good)),
+          "B2 route_note takes a closed note")
 
 
 def test_golive_m4_disabled_parent_holds():

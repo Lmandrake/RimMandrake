@@ -626,21 +626,16 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
 # here from closed sets: a known role name, a known mode, a dispatcher unit name, and a fixed outcome. Reasons, error
 # output, exception text, result subtypes and triggers (alarm keys, ledger event text) are outside text that can
 # carry an account id or a figure in words no token list knows: they go to the journal and Operations' item only.
-BLIND_ROLES = ("Conductor", "Arbiter", "Auditor", "Operations", "Producer", "Innovator")
-BLIND_MODES = ("quick", "run", "weekly", "economy", "event", "alarm")
-BLIND_OUTCOMES = {
-    "launched": "launched",
-    "held_pause": "held by PAUSE, not launched",
-    "held_off": "held by its off switch, not launched",
-    "held_disabled": "held, the role is no longer enabled, not launched",
-    "launch_failed": "launch failed, retried",
-    "launch_unknown": "launch outcome unknown, the run stays tracked",
-    "completed": "completed",
-    "failed": "ended without a good result",
-    "after_disabled": "not run, the role it runs after is not enabled",
-    "schedule_unreadable": "not run, its schedule entry is unreadable",
-    "events_unreadable": "not run, its event triggers are unreadable",
-}
+# The closed sets and the renderer live in contracts.blind_core (stdlib only; the 2-minute tick imports it), with a
+# pydantic twin contracts.blind.BlindNote (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF). These names stay for callers.
+_SRC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _SRC not in sys.path:
+    sys.path.append(_SRC)
+from contracts import blind_core as _BC  # noqa: E402
+
+BLIND_ROLES = _BC.NOTE_ROLES
+BLIND_MODES = _BC.NOTE_MODES
+BLIND_OUTCOMES = _BC.NOTE_OUTCOMES
 
 
 def blind(role, outcome, mode=None, unit=None):
@@ -651,16 +646,8 @@ def blind(role, outcome, mode=None, unit=None):
 def blind_note(b):
     """Pure. -> the fixed text for a blind item, or None when ANY field is outside its closed set (the note then goes
     to Operations' item, never to the blind one). "dispatcher: Conductor quick run rm-role-conductor-<epoch>:
-    completed"."""
-    if not isinstance(b, dict) or b.get("role") not in BLIND_ROLES or b.get("outcome") not in BLIND_OUTCOMES:
-        return None
-    mode, unit = b.get("mode"), b.get("unit")
-    if mode is not None and mode not in BLIND_MODES:
-        return None
-    if unit is not None and not re.match(r"rm-role-%s-[0-9]{1,12}\Z" % b["role"].lower(), str(unit)):
-        return None
-    subject = " ".join(x for x in (b["role"], mode, "run" if (mode or unit) else None, unit) if x)
-    return "dispatcher: %s: %s" % (subject, BLIND_OUTCOMES[b["outcome"]])
+    completed". contracts.blind_core.note_text."""
+    return _BC.note_text(b)
 
 
 def ended(run, ustate, obs):
