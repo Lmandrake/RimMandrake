@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RSW_FrogDog__FrogDog_j_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_FrogDog__FrogDog_j_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side and front views): same anatomy, same proportions, same colours and markings, same body mass, same head scale, same limb thickness, and the same size on the canvas. A creature sprite for RimWorld: the frog dog. Frog dogs were a species of reptilians with both frog-like and dog-like features. The creatures hopped and waddled from place to place, with throaty barks and croaks. This At Attin variant is bright, inquisitive, loyal and attentive, kept as a domestic pet. Visible features it must show: the canon frog dog (see canon entry frogdog); a reptilian creature with both frog-like and dog-like features; a squat hopping body. View: rear view, seen from behind. The animal fills the same share of the canvas as in the front view: a broad, squat, heavy body occupying about 450 px of width and 320 px of height. The back of the head and ears sit low between broad rounded shoulders; the back is wide and rounded; the wide rounded haunches are the widest part of the animal, as wide as the front legs in the front view; the thick folded hind legs and big feet are spread wide at the bottom of the canvas; the eyes are hidden. The torso keeps its full width and bulk and the limbs keep their full thickness, matching the accepted side view, with only the body length foreshortened by the viewing angle. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1431",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_Gullipud__Gullipud_Swimming_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Gullipud__Gullipud_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the gullipud, a bulky, loose-skinned, self-inflating amphibian of the Naboo swamps, with a spine it can extend to be harder to swallow. This is the rear view, seen from behind: the back, the broad inflated haunches and the rump face the viewer, and the eyes are hidden. The body is the same squat, wide, fully inflated body as in the front view, turned around: seen from behind, the torso and haunches span the full side-to-side width of the front view's body and stand at the same body height, so the rear view has the same bulk and body volume as the front and side views. The rounded, loose-skinned haunches spread wide at the bottom and the back curves up to the same height as in the other facings. The animal fills the canvas to the same scale as the other facings, centred, whole body visible with nothing cut off. The red dorsal stripe runs as one bare, uninterrupted band down the middle of the back. The hooked spines are scattered over the back and flanks in rows beside the stripe, in the same places as on the side view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1431",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Maxolotl_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Maxolotl_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same pale pink body and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the maxolotl, a large salamander of wet environments with a toothless, strong-jawed mouth and the wet skin of a pool-dwelling animal. Match the reference's rendering exactly: a thick dark outline around the whole silhouette, flat cel shading in a few tones, and the same simplified anatomy. Wet skin is shown as a few flat highlight shapes on matte skin. Three rigid pink gill stalks on each side of the head. The front, rear and side views read as one sprite set drawn by the same hand, with identical outline weight and shading simplicity. Draw the view this job asks for. FRONT VIEW (eyes toward the viewer): a broad, flat, angular, heavy-jawed naturalistic salamander head with small dull matte eyes set wide apart on the sides of the skull, and a straight, firm, closed mouth line. The three pink gill stalks on each side fan out from behind the jaw. Thick, substantial forelegs stand beneath the chest, ending in broad, heavy feet planted on the ground. REAR VIEW (seen from behind and slightly above, at the game's angled camera): the haunches, both hind legs and the tail base face the viewer, the back rises away from the viewer, the head is hidden behind the body, and only the gill tips show past it. Painterly vanilla RimWorld sprite style, realistic, with a clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, STYLE_CARTOON, F_INCONSISTENT, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1431",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.2,
+  "module": "walker"
+ }
+]
