@@ -38,6 +38,7 @@ Imports pydantic (~50 ms): never import this from the dispatcher's tick; it uses
 import datetime as dt
 import hashlib
 import re
+import weakref
 from collections import namedtuple
 from typing import Annotated, Literal, Optional
 
@@ -50,7 +51,7 @@ except ImportError:  # run as a file next to blind_core
 
 SCHEMA = "rimflow.blind-digest/1"
 _TOKEN = object()                      # the projection's private key: only this module holds it
-_ISSUED = {}                           # id(model) -> (model, fingerprint, private snapshot) per issued page
+_ISSUED = {}         # id(model) -> (weakref to the model, fingerprint, private snapshot, Identity) per live page
 
 Identity = namedtuple("Identity", "known hidden")   # ledger ids that exist; ids withheld (about accounts)
 
@@ -99,8 +100,16 @@ def _issue(cls, data, ids=None):
     m = cls.model_validate(data, context={"blind_projection": _TOKEN})
     js = BaseModel.model_dump_json(m, by_alias=True)
     snap = cls.model_validate_json(js, strict=False, context={"blind_projection": _TOKEN})
-    _ISSUED[id(m)] = (m, hashlib.sha256(js.encode("utf-8")).hexdigest(), snap, _identity(ids))
+    k = id(m)
+    _ISSUED[k] = (weakref.ref(m), hashlib.sha256(js.encode("utf-8")).hexdigest(), snap, _identity(ids))
+    weakref.finalize(m, _release, k)       # a page no caller holds leaves the registry (review r6)
     return m
+
+
+def _release(k):
+    e = _ISSUED.get(k)
+    if e is not None and e[0]() is None:   # never a newer page that reused the id
+        del _ISSUED[k]
 
 
 def _issued(m, cls):
@@ -108,7 +117,7 @@ def _issued(m, cls):
     (object.__setattr__, __dict__ edits): a tampered object is an error, never silently rendered as issued."""
     e = _ISSUED.get(id(m))
     try:
-        same = e is not None and e[0] is m and type(m) is cls and _fp(m) == e[1]
+        same = e is not None and e[0]() is m and type(m) is cls and _fp(m) == e[1]
     except Exception:  # noqa: BLE001 - a tampered object that cannot even serialise is refused
         same = False
     if not same:
@@ -369,6 +378,7 @@ def _record(src, raw, verbs, ids, resolved):
         verb = r.get("event")
         f["verb"] = verb if isinstance(verb, str) and verb in verbs else "other"
         f["by"] = _by(r.get("ranBy")) or _by(r.get("seat"))
+        dropped += _refused(r.get("ranBy") or r.get("seat"), f["by"])
         sha(r.get("sha"))
     elif src == "verdict":
         art = bool(r.get("art"))
@@ -391,6 +401,8 @@ def _record(src, raw, verbs, ids, resolved):
         f["cls"] = "art marks"
         typ, reason = r.get("type"), r.get("reason")
         typ, reason = (x if isinstance(x, str) else None for x in (typ, reason))   # a list is unhashable (r4)
+        if typ not in ("ban", "unban", "ban_hit", "live"):
+            return None, True, 0        # an unknown mark is withheld, never read as an install over a keep (r6)
         f["action"] = {"ban": "banned", "unban": "unbanned", "ban_hit": "ban_hit"}.get(typ) or (
             {"archive": "archived", "restore-archive": "restored", "x-delete": "x_removed"}.get(reason,
                                                                                                 "installed_over_keep"))
@@ -400,6 +412,7 @@ def _record(src, raw, verbs, ids, resolved):
         f["cls"] = class_of(r.get("why"))
         f["action"] = "installed"
         f["by"] = _by(r.get("seat"))
+        dropped += _refused(r.get("seat"), f["by"])
         name("subject", stem(r.get("rel")) or None)
     elif src == "leftovers":
         f["cls"] = "leftovers"
@@ -516,6 +529,11 @@ def _time(ts):
     return d.astimezone(dt.timezone.utc)
 
 
+def _refused(v, shown=None):
+    """1 when a POPULATED field was refused (shown is None), else 0: a dropped field is counted (module docstring)."""
+    return int(v not in (None, "") and shown is None)
+
+
 def _id_ok(iid, ids):
     ids = _identity(ids)
     return (ids is not None and isinstance(iid, str) and iid in ids.known and iid not in ids.hidden
@@ -580,6 +598,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
     d = {"id": it.id, "state": it.state, "blocked": bool(it.blocked), "needs": it.needs, "fields_withheld": 0}
     if it.owner in Seat.__args__:
         d["owner"] = it.owner
+    d["fields_withheld"] += _refused(it.owner, d.get("owner"))
     if it.kind:
         d["kind"] = _kind(it.kind)
     d["notes_total"] = len(notes)
@@ -623,6 +642,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
             ref["t"] = t
         if n.get("seat") in Seat.__args__:
             ref["seat"] = n["seat"]
+        d["fields_withheld"] += _refused(n.get("ts"), t) + _refused(n.get("seat"), ref.get("seat"))
         refs.append(ref)
     d["notes"] = tuple(refs)
     verbs = _verbs()
@@ -636,6 +656,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
             x["t"] = t
         if e.get("seat") in Seat.__args__:
             x["seat"] = e["seat"]
+        d["fields_withheld"] += _refused(e.get("ts"), t) + _refused(e.get("seat"), x.get("seat"))
         evs.append(x)
     d["events"] = tuple(evs)
     return _issue(BlindItemPage, d, ids)

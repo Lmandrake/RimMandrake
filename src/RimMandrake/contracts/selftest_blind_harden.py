@@ -614,6 +614,46 @@ def r5_short_sha_and_hidden_ref():
     return (n.shas == (SHA_A,) and n.refs == () and pi.fields_withheld == 2,
             repr((n.shas, n.refs, pi.fields_withheld)))
 
+
+def r6_dropped_meta_counted():
+    """Review r6: a populated owner, seat or time that is refused is dropped AND counted (the module's contract), on
+    the item page and in the digest; an unknown mark type is withheld, never reported as an install over a keep."""
+    notes = [{"event": "note", "seat": "NOBODY", "ts": "yesterday", "text": "x"}]
+    others = [{"event": "claim", "seat": "NOBODY", "ts": "not a time"}]
+    pi = BL.project_item(item(owner="NOBODY"), notes, others, ids(KNOWN), resolve=resolver())
+    ok_pi = pi.fields_withheld == 5
+    clean = BL.project_item(item(), [{"event": "note", "seat": "BENCH", "ts": "2026-10-27T05:00:00Z", "text": "x"}],
+                            [{"event": "claim"}], ids(KNOWN), resolve=resolver())
+    raw = [{"source": "ledger", "t": T0, "why": "delegated: scope", "id": "PIPE_ELBOW_FIX_SEAM_JOGS",
+            "event": "close", "seat": "NOBODY"},
+           {"source": "art_install", "t": T0, "why": "delegated: art", "seat": "NOBODY", "rel": "b/RM_Chittik_n.png"},
+           {"source": "marks", "t": T0, "type": "weird", "reason": None, "rel": "a/RM_Chittik_n.png"}]
+    p, _ = digest(raw)
+    base, _ = digest([dict(r, seat="BENCH") if r["source"] != "marks" else r for r in raw[:2]])
+    by = {s.source: s for s in p.sources}
+    b0 = {s.source: s for s in base.sources}
+    acts = [getattr(r, "action", None) for r in p.records]
+    ok_dg = (by["ledger"].fields_withheld == b0["ledger"].fields_withheld + 1
+             and by["art_install"].fields_withheld == b0["art_install"].fields_withheld + 1
+             and by["marks"].withheld == 1 and "installed_over_keep" not in acts)
+    return ok_pi and clean.fields_withheld == 0 and ok_dg, repr((pi.fields_withheld, clean.fields_withheld,
+                                                                 by["ledger"].fields_withheld,
+                                                                 by["art_install"].fields_withheld,
+                                                                 b0["art_install"].fields_withheld,
+                                                                 by["marks"].withheld, acts))
+
+
+def r6_issued_released():
+    """Review r6: an issued page no caller holds is released (the registry does not keep every page forever)."""
+    import gc
+    n0 = len(BL._ISSUED)
+    for _ in range(50):
+        BL.project_item(item(), [], [], ids(KNOWN), resolve=resolver())
+    gc.collect()
+    kept = BL.project_item(item(), [], [], ids(KNOWN), resolve=resolver())
+    BL.render_item(kept)
+    return len(BL._ISSUED) <= n0 + 1, repr((n0, len(BL._ISSUED)))
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -650,6 +690,9 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
            r2_registry_model_and_null),
           ("R5 a 7-9 char resolving sha shows; a hidden id named in a note is counted withheld",
            r5_short_sha_and_hidden_ref),
+          ("R6 a refused populated owner/seat/time is counted; an unknown mark type is withheld",
+           r6_dropped_meta_counted),
+          ("R6 an issued page no caller holds is released", r6_issued_released),
           ("R3-H an account in the displayed evidence root drops the path, counted", r3_evidence_root_account)]
 
 
