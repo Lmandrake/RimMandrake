@@ -1,0 +1,38 @@
+{
+ "schema": 1,
+ "_doc": "The standard switching plan (ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING), read by switching_plan.py and slot_allocator.py. Rules are data; each carries its provenance: [O] owner's words, [C] his question-card pick, [D] delegated (ours, under design/RimMandrake/delegation_policy.md), [A] agent proposal he has not ruled. Account names are the switcher's non-secret registry labels (~/.claude-accounts/accounts.tsv); reset times are NEVER written here: they are read from account_usage.py every pass.",
+ "_owner": "[O] 2026-10-28 10:15 PDT: 'Use up both lukas.mandrake and mandrake.system of course down to ~2% for safety. Make sure not to overshoot and get stuck even if there is a surprise long-running subagent. then go idle until 1pm when you switch over to system.mandrake. Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%. That's our first \"standard switching plan.\"'",
+ "order": ["steven", "system", "lukas"],
+ "_order": "[O] the order of the 10:15 plan: steven from his reset, then system, then lukas. The engine burns the FIRST account in this list that has headroom above its line; a weekly reset that gives an earlier account headroom pulls the machine back to it (system at its reset, then steven at his).",
+ "accounts": {
+  "steven": {
+   "leave_pct_left": 52,
+   "_leave_pct_left": "[C] 2026-10-28 10:20 card, Steven: 'Leave at 52% left' (his 10:15 words: 'use it until 50%'; the 2 points are the overshoot margin).",
+   "window_h_after_reset": 48,
+   "_window_h_after_reset": "[O] 2026-10-27 'Dispatcher can use Steve up to 50% after a fresh reset only'; the 48 h reading of 'fresh' is [A] (slot_rules.json lent_accounts.steven.prefer_start_of_week_h). Outside this window the engine never switches to steven and switches off him if live."
+  },
+  "system": {},
+  "lukas": {}
+ },
+ "floors": {
+  "switch_away_pct_left": 1,
+  "wait_pct_left": 2,
+  "_doc": "[D] delegated: ops threshold (card 10:20, Floor: '[No preference]'). 1% on an account we switch away from at once (the switch itself kills every helper, so no tail can overshoot); 2% on the account we idle on until a reset (a hard stop, with one more point of margin for the poll gap)."
+ },
+ "soft_margin_pct": 2,
+ "_soft_margin_pct": "[C] card 10:20, Overshoot: 'Soft line, then hard stop'. At line + 2%: the allocator gives every seat 0 new helpers and the notice tells running ones to publish and finish.",
+ "switch_lead_min": 20,
+ "_switch_lead_min": "[A] a switch that a reset will cause (system at its reset, steven at his) raises the same soft notice this many minutes before the reset, so work is published before the windows close.",
+ "fresh": {
+  "near_pct": 3,
+  "max_age_min": 6,
+  "_doc": "[A] (brief 2026-10-28): within near_pct of a line, the engine polls the meter itself rather than trust a reading older than max_age_min."
+ },
+ "pool_pacing": true,
+ "_pool_pacing": "[C] card 10:20, Pacing: 'Pace the whole pool BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner.' slot_allocator paces on what this plan will still spend (steven down to its leave line inside its window, the others to their floors) over the hours to each deadline.",
+ "gate": {
+  "marker": "/mnt/d/ClaudeWork/rimmandrake/account_failover/switched_back.json",
+  "phase": "done",
+  "_doc": "Cutover 2026-10-28: account_failover.py owns the machine until its stage 3 (back to system after the 13:00 reset) writes this marker with phase done. The engine stays passive until then; once seen it is remembered in the engine's own state, so retiring account_failover later does not re-gate it."
+ }
+}
