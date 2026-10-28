@@ -29,6 +29,8 @@ if os.path.dirname(HERE) not in sys.path:
 
 from contracts import blind_core as C  # noqa: E402  (stdlib only)
 
+_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))    # the clone: the sha resolver's repo
+
 # an item whose kind has one of these parts is about accounts: withheld whole. Kept narrow on purpose: CAP, BURN,
 # RUNWAY and BUDGET are ordinary game words in an ID (a wildlife cap, Burn weather, RM_RunwayBloom), and withholding
 # hides real work from the Conductor; a kind is a classification, so there they do mean accounts.
@@ -66,19 +68,22 @@ def queue_text(world, seat, target="v1", ctx=None):
     ranked, sections = render.view_sections(world, seat, target, ctx)
     groups = [("NEXT", ranked)] + [(t, items) for t, items, _n, _x in sections]
     n_hidden = {i.id for i in world.items.values() if i.owner == seat and i.open and i.id in hide}
-    return BL.render_queue(BL.project_queue(seat, groups, frozenset(hide), n_hidden))
+    ids = BL.Identity(known=frozenset(known_ids(world)), hidden=frozenset(hide))
+    return BL.render_queue(BL.project_queue(seat, groups, ids, n_hidden))
 
 
 def show_text(evs, world, iid, last=10, prefix=None):
-    """-> one item as a contracts.blind.BlindItemPage: its fields and its last `last` notes (only those starting
-    `prefix`, if given) as references, never their text. A withheld item prints only that it is withheld."""
+    """-> one item as a contracts.blind.BlindItemPage: its fields and its last `last` notes (only those in the closed
+    category `prefix`, one of contracts.blind.NOTE_CATEGORIES, if given) as references, never their text; a sha shows
+    only when it resolves to a commit of this repo. A withheld item prints only that it is withheld."""
     from contracts import blind as BL
     it = world.items.get(iid)
     if it is None or C.item_id_problem(iid) == "grammar":
         return "no such item\n"
     notes = [evs[i] for i in it.history if evs[i].get("event") == "note"]
     others = [evs[i] for i in it.history if evs[i].get("event") != "note"]
-    page = BL.project_item(it, notes, others, frozenset(hidden_ids(world)), frozenset(known_ids(world)), last, prefix)
+    ids = BL.Identity(known=frozenset(known_ids(world)), hidden=frozenset(hidden_ids(world)))
+    page = BL.project_item(it, notes, others, ids, last, category=prefix, resolve=C.git_resolver(_ROOT))
     return BL.render_item(page)
 
 
@@ -90,7 +95,8 @@ def main(argv=None):
     s = sub.add_parser("show", help="one item's fields and note references, blind")
     s.add_argument("id")
     s.add_argument("--last", type=int, default=10, help="notes to list (0 = all; default 10)")
-    s.add_argument("--prefix", help="only notes whose text starts with this (e.g. 'REPLAN REQUEST')")
+    s.add_argument("--prefix", choices=("REPLAN REQUEST", "CUT LIST", "CUT DECISION", "CUT APPLIED", "CUT"),
+                   help="only notes of this closed category (a free-text prefix would be a count oracle)")
     a = ap.parse_args(argv)
     evs, world = _load()
     if a.cmd == "queue":

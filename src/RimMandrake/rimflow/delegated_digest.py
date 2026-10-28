@@ -50,10 +50,10 @@ Usage:
 """
 import argparse
 import datetime as dt
-import glob
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import traceback
@@ -156,6 +156,21 @@ def _decided(rec):
     return None
 
 
+def _list_json(ddir):
+    """-> sorted <ddir>/<sub>/*.json paths, or None when any directory cannot be listed. glob swallows listing errors
+    (an unlistable directory reads as empty); os.scandir raises them, so a blind spot is never a measured zero."""
+    out = []
+    try:
+        with os.scandir(ddir) as it:
+            subs = sorted(e.path for e in it if e.is_dir(follow_symlinks=False))
+        for d in subs:
+            with os.scandir(d) as it:
+                out += [e.path for e in it if e.name.endswith(".json") and e.is_file(follow_symlinks=False)]
+    except OSError:
+        return None
+    return sorted(out)
+
+
 def verdict_read(root=ROOT, ddir=DELEGATED_DIR, added=None):
     if not os.path.isdir(ddir):
         return _read("unmeasured", "absent")
@@ -165,7 +180,10 @@ def verdict_read(root=ROOT, ddir=DELEGATED_DIR, added=None):
         added, ok = git_added_times(root, rel_dir)
         if not ok:
             r["fault"] = "git_failed"          # times fall back to mtime; identities (paths) are unaffected
-    for f in sorted(glob.glob(os.path.join(ddir, "*", "*.json"))):
+    files = _list_json(ddir)
+    if files is None:                          # a directory that cannot be listed is UNMEASURED, never zero records
+        return _read("unmeasured", "unreadable")
+    for f in files:
         rel = os.path.relpath(f, root).replace(os.sep, "/")
         t = added.get(rel)
         try:
@@ -307,9 +325,59 @@ def load_state(path):
         d = json.load(fh)
     if not isinstance(d, dict):
         raise ValueError("state is not an object")
-    if d.get("schema") == STATE_SCHEMA:
-        return d
-    return {"schema": STATE_SCHEMA, "floor": d.get("last_cut"), "digests": {}}
+    if set(d) == {"last_cut"}:                       # the one legacy shape: a valid ISO cut, nothing else
+        if not isinstance(d["last_cut"], str) or utc(d["last_cut"]) is None:
+            raise ValueError("legacy state: last_cut is not an ISO time")
+        return {"schema": STATE_SCHEMA, "floor": d["last_cut"], "digests": {}}
+    if d.get("schema") != STATE_SCHEMA:
+        raise ValueError("state schema %r is not %s" % (str(d.get("schema"))[:40], STATE_SCHEMA))
+    _check_time(d.get("floor"), "floor", True)
+    if not isinstance(d.get("digests"), dict):
+        raise ValueError("state digests is not an object")
+    for date, e in d["digests"].items():
+        _check_entry(date, e)
+    return d
+
+
+ENTRY_REQUIRED = ("floor", "cut", "complete", "page_sha256", "seen", "sources")
+ENTRY_OPTIONAL = ("out",)                # an entry written before `out` existed is checked at today's path only
+SOURCE_STATES = ("measured", "unmeasured")
+
+
+def _check_entry(date, e):
+    """Every field of one digest entry, completely: a damaged entry raises, never half-loads (r1 MED: an unhashable
+    seen element, a missing sources map that silently disabled the rebuild-loss check)."""
+    dt.date.fromisoformat(date)
+    if not isinstance(e, dict):
+        raise ValueError("state entry %s is not an object" % date)
+    missing = [k for k in ENTRY_REQUIRED if k not in e]
+    extra = [k for k in e if k not in ENTRY_REQUIRED + ENTRY_OPTIONAL]
+    if missing or extra:
+        raise ValueError("state entry %s: missing %s, unknown %s" % (date, missing, extra))
+    if not isinstance(e["complete"], bool):
+        raise ValueError("state entry %s: complete is not a bool" % date)
+    _check_time(e["floor"], "floor of %s" % date, True)
+    _check_time(e["cut"], "cut of %s" % date, False)
+    if not (isinstance(e["page_sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", e["page_sha256"])):
+        raise ValueError("state entry %s: page_sha256 is not 64 hex" % date)
+    if "out" in e and not (isinstance(e["out"], str) and os.path.isabs(e["out"]) and e["out"].endswith(".md")):
+        raise ValueError("state entry %s: out is not an absolute .md path" % date)
+    src = e["sources"]
+    if not (isinstance(src, dict) and set(src) == set(SOURCES) and all(v in SOURCE_STATES for v in src.values())):
+        raise ValueError("state entry %s: sources must map every source to %s" % (date, "/".join(SOURCE_STATES)))
+    seen = e["seen"]
+    if not isinstance(seen, dict) or any(k not in SOURCES for k in seen):
+        raise ValueError("state entry %s: seen is not a map of sources" % date)
+    for ids in seen.values():
+        if not isinstance(ids, list) or not all(isinstance(i, str) and i for i in ids):
+            raise ValueError("state entry %s: seen holds a non-string identity" % date)
+
+
+def _check_time(v, what, nullable):
+    if v is None and nullable:
+        return
+    if not isinstance(v, str) or utc(v) is None:
+        raise ValueError("state %s is not an ISO time" % what)
 
 
 def save_state(path, st):
@@ -335,19 +403,30 @@ def _sha256(path):
         return hashlib.sha256(fh.read()).hexdigest()
 
 
+def _page_ok(path, sha):
+    try:
+        return bool(sha) and os.path.isfile(path) and _sha256(path) == sha
+    except OSError:
+        return False
+
+
 def reconcile(st, date, out):
-    """A pending entry whose page exists with the sha256 it recorded is complete (the run died after writing the
-    page). -> True when the state changed."""
-    e = st.get("digests", {}).get(date)
-    if e and not e.get("complete") and e.get("page_sha256") and os.path.exists(out) and \
-            _sha256(out) == e["page_sha256"]:
-        e["complete"] = True
-        return True
-    return False
+    """Every pending entry whose page exists with the sha256 it recorded is complete (a run died after writing the
+    page). Each entry carries its page's path (`out`); an older entry without one is checked at `out` only when it
+    is `date`'s. -> True when the state changed."""
+    changed = False
+    for d, e in st.get("digests", {}).items():
+        if e.get("complete"):
+            continue
+        path = e.get("out") or (out if d == date else None)
+        if path and _page_ok(path, e.get("page_sha256")):
+            e["complete"] = True
+            changed = True
+    return changed
 
 
 # -------------------------------------------------------------------------------------------------- build -----
-def build(date, floor, cut, reads, seen_other=frozenset(), hidden=frozenset()):
+def build(date, floor, cut, reads, seen_other=frozenset(), ids=None, resolve=None):
     """-> (page text, {source: [identities on the page]})."""
     from contracts import blind as BL
     raw, seen, status = [], {}, {}
@@ -364,31 +443,43 @@ def build(date, floor, cut, reads, seen_other=frozenset(), hidden=frozenset()):
                 continue
             seen[s].append(ident)
             raw.append(rec)
-    page = BL.project_digest(date, floor, cut, raw, status, hidden)
+    page = BL.project_digest(date, floor, cut, raw, status, ids, resolve)
     return BL.render_digest(page), seen
 
 
 def _load_ledger():
-    """-> (events, hidden ids); (None, ()) when the ledger does not read (the ledger source is then UNMEASURED)."""
+    """-> (events, blind.Identity); (None, None) when the ledger or its identity does not read: the ledger source
+    is then UNMEASURED and every identity-bearing record is withheld (fail closed, never 'nothing hidden')."""
     try:
         from rimflow import model
         events = model.read()
         world = model.replay(events)
         import blind_view as BV
-        return events, frozenset(BV.hidden_ids(world))
+        from contracts import blind as BL
+        return events, BL.Identity(frozenset(BV.known_ids(world)), frozenset(BV.hidden_ids(world)))
     except Exception:  # noqa: BLE001
-        return None, frozenset()
+        return None, None
+
+
+def _dest(a):
+    """-> the page directory for this run, shared by the success and the failure path: a dry run never resolves to
+    the production directory."""
+    dry = bool(getattr(a, "dry_run", False))
+    out_dir = getattr(a, "out_dir", None) or (DRY_DIR if dry else OUT_DIR)
+    if dry and os.path.realpath(out_dir) == os.path.realpath(OUT_DIR):
+        return DRY_DIR, True
+    return out_dir, False
 
 
 def run(a, sources=None):
-    """sources: the selftest's injected (reads, hidden); else every source is read here."""
+    """sources: the selftest's injected (reads, Identity, resolver); else every source is read here."""
     date = a.date or dt.date.today().isoformat()
     dt.date.fromisoformat(date)
-    out_dir = a.out_dir or (DRY_DIR if a.dry_run else OUT_DIR)
+    out_dir, refused = _dest(a)
     out = os.path.join(out_dir, "delegated_digest_%s.md" % date)
     if a.since and not a.dry_run:
         raise ValueError("--since moves the window by hand: only a --dry-run may take it")
-    if a.dry_run and os.path.realpath(out_dir) == os.path.realpath(OUT_DIR):
+    if refused:
         raise ValueError("a dry run never writes the production digest directory")
     for p in (SRC, HERE):
         if p not in sys.path:
@@ -398,13 +489,20 @@ def run(a, sources=None):
         save_state(a.state, st)
     entry = st["digests"].get(date)
     if entry and entry.get("complete") and not a.force and not a.dry_run:
-        print("delegated_digest: the %s digest is complete; one digest per day, nothing done" % date)
-        return 0
+        failed = os.path.join(out_dir, "delegated_digest_%s.FAILED.md" % date)
+        if _page_ok(entry.get("out") or out, entry.get("page_sha256")):
+            if os.path.exists(failed):
+                os.remove(failed)
+            print("delegated_digest: the %s digest is complete; one digest per day, nothing done" % date)
+            return 0
+        print("delegated_digest: the %s digest is recorded complete but its page is missing or changed; "
+              "rebuilding it" % date)
+    rebuild = bool(entry) and (a.force or entry.get("complete"))
     if a.since:
         floor = utc(a.since)
         if floor is None:
             raise ValueError("--since is not an ISO time")
-    elif entry and a.force:
+    elif rebuild:
         floor = utc(entry.get("floor")) if entry.get("floor") else None
     else:
         floor = utc(st.get("floor")) if st.get("floor") else None
@@ -412,15 +510,26 @@ def run(a, sources=None):
     if cut is None:
         raise ValueError("--cut is not an ISO time")
     if sources is None:
-        events, hidden = _load_ledger()
+        events, ids = _load_ledger()
         reads = gather(events)
+        from contracts import blind_core as C
+        resolve = C.git_resolver(ROOT)
+    elif len(sources) == 2:                          # (reads, Identity): no resolver, so every sha is withheld
+        (reads, ids), resolve = sources, None
     else:
-        reads, hidden = sources
-    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), hidden)
+        reads, ids, resolve = sources
+    states = {s: reads[s]["state"] if s in reads else "unmeasured" for s in SOURCES}
+    if rebuild and not a.dry_run:
+        lost = [s for s, was in (entry.get("sources") or {}).items()
+                if was == "measured" and states.get(s) != "measured"]
+        if lost:
+            raise RuntimeError("refusing to rebuild the %s digest: %s read before and is UNMEASURED now, so its "
+                               "records would leave the page and its identities the state" % (date, ", ".join(lost)))
+    text, seen = build(date, floor, cut, reads, seen_elsewhere(st, date), ids, resolve)
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     if not a.dry_run:
         st["digests"][date] = {"floor": iso(floor) if floor else None, "cut": iso(cut), "complete": False,
-                               "page_sha256": sha, "seen": seen,
+                               "page_sha256": sha, "seen": seen, "out": os.path.abspath(out),
                                "sources": {s: reads[s]["state"] if s in reads else "unmeasured" for s in SOURCES}}
         save_state(a.state, st)                      # 1. pending, with the page's hash
     os.makedirs(out_dir, exist_ok=True)
@@ -460,8 +569,11 @@ def _fail(a):
         dt.date.fromisoformat(date)
     except (TypeError, ValueError):
         date = dt.date.today().isoformat()
-    out_dir = getattr(a, "out_dir", None) or OUT_DIR
-    errors = getattr(a, "errors", None) or ERRORS
+    try:
+        out_dir = _dest(a)[0]
+    except Exception:  # noqa: BLE001
+        out_dir = DRY_DIR
+    errors = _errors_path(a, out_dir)
     try:
         os.makedirs(os.path.dirname(errors), exist_ok=True)
         with open(errors, "a", encoding="utf-8") as fh:
@@ -480,6 +592,25 @@ def _fail(a):
     except Exception:  # noqa: BLE001
         pass
     return 0
+
+
+def _errors_path(a, out_dir):
+    """--errors, unless it could land where a blind role reads (a .md file, the page directory, the production or
+    the dry-run digest directory): then Operations' fixed log. Never raises."""
+    try:
+        e = getattr(a, "errors", None)
+        if not e:
+            return ERRORS
+        real = os.path.realpath(e)
+        if real.lower().endswith((".md", ".markdown", ".html", ".txt")):
+            return ERRORS
+        for d in (out_dir, OUT_DIR, DRY_DIR):
+            r = os.path.realpath(d)
+            if real == r or real.startswith(r.rstrip(os.sep) + os.sep):
+                return ERRORS
+        return e
+    except Exception:  # noqa: BLE001
+        return ERRORS
 
 
 def _partial(argv):

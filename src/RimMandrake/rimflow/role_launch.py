@@ -645,8 +645,8 @@ def blind(role, outcome, mode=None, unit=None):
 
 def blind_note(b):
     """Pure. -> the fixed text for a blind item, or None when ANY field is outside its closed set (the note then goes
-    to Operations' item, never to the blind one). "dispatcher: Conductor quick run rm-role-conductor-<epoch>:
-    completed". contracts.blind_core.note_text."""
+    to Operations' item, never to the blind one). "dispatcher: Conductor quick run: completed" (the unit name is
+    never in the text: its digits are a payload a blind page must not carry). contracts.blind_core.note_text."""
     return _BC.note_text(b)
 
 

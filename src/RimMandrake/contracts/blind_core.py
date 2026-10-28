@@ -30,40 +30,110 @@ MASK = "[…]"
 
 # ---- account and model names (the same sources blind_view always read; never hard-coded beyond the built-in set)
 ACCOUNT_NAMES = frozenset({"lukas", "steven", "system", "codex", "sonnet", "opus", "haiku"})
-_names_cache = []
+RULE_FILES = (os.path.join(SRC, "Utils", "slot_rules.json"), os.path.join(SRC, "Utils", "ops_watch_rules.json"))
+_names_cache = {}
+
+
+class RegistryUnavailable(RuntimeError):
+    """An account rule file could not be read: no blind page may be built (the name set would be incomplete)."""
+
+
+def _stamp():
+    out = []
+    for fn in RULE_FILES:
+        try:
+            st = os.stat(fn)
+        except OSError as e:
+            raise RegistryUnavailable("account rules unreadable: %s" % os.path.basename(fn)) from e
+        out.append((fn, st.st_mtime_ns, st.st_size))
+    return tuple(out)
+
+
+def _registry():
+    """Lower-case account and model names: ACCOUNT_NAMES plus every key of RULE_FILES' `lent_accounts` / `accounts`.
+    Re-read whenever a rule file changes (path, mtime, size); a missing or unreadable file RAISES RegistryUnavailable:
+    an incomplete name set never builds a page (fail closed)."""
+    stamp = _stamp()
+    if stamp not in _names_cache:
+        names, keys = set(ACCOUNT_NAMES), set()
+        for fn in RULE_FILES:
+            try:
+                with open(fn, encoding="utf-8") as f:
+                    d = json.load(f)
+            except (OSError, ValueError) as e:
+                raise RegistryUnavailable("account rules unreadable: %s" % os.path.basename(fn)) from e
+            if not isinstance(d, dict):
+                raise RegistryUnavailable("account rules malformed: %s" % os.path.basename(fn))
+            for k in ("lent_accounts", "accounts"):
+                if k not in d:
+                    continue
+                v = d[k]
+                if not isinstance(v, dict):          # null, a list, a string: malformed, never "no accounts"
+                    raise RegistryUnavailable("account rules malformed: %s %s" % (os.path.basename(fn), k))
+                for n in v:              # EVERY key, canonicalised (jane.smith, a-my): no grammar filters a name out
+                    if not squash(n):
+                        raise RegistryUnavailable("account rules malformed: %s %s key" % (os.path.basename(fn), k))
+                    names.add(squash(n))
+                    keys.add(squash(n))
+        _names_cache.clear()
+        _names_cache[stamp] = (frozenset(names), frozenset((set(ACCOUNT_NAMES) - MODEL_NAMES) | keys))
+    return _names_cache[stamp]
 
 
 def account_names():
-    """Lower-case account and model names: ACCOUNT_NAMES plus every key of Utils/slot_rules.json and
-    Utils/ops_watch_rules.json `lent_accounts` / `accounts`. Unreadable files add nothing (the built-in set stays)."""
-    if not _names_cache:
-        names = set(ACCOUNT_NAMES)
-        utils = os.path.join(SRC, "Utils")
-        for fn in ("slot_rules.json", "ops_watch_rules.json"):
-            try:
-                with open(os.path.join(utils, fn), encoding="utf-8") as f:
-                    d = json.load(f)
-            except (OSError, ValueError):
-                continue
-            if not isinstance(d, dict):
-                continue
-            for k in ("lent_accounts", "accounts"):
-                if isinstance(d.get(k), dict):
-                    names |= {str(n).lower() for n in d[k]
-                              if re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{2,}", str(n)) and not str(n).startswith("_")}
-        _names_cache.append(frozenset(names))
-    return _names_cache[0]
+    """-> every lower-case account and model name (see _registry)."""
+    return _registry()[0]
 
 
-# STRONG parts make an identifier unsafe on their own; matched as a PREFIX of the part ("tokens", "quotas")
-STRONG_PREFIXES = ("account", "token", "quota", "spend", "spent", "usage", "pct", "percent", "throttl", "thrift", "headroom", "allowance", "secret", "bearer", "apikey", "credential", "passw",
-                   "billing", "invoice")
-STRONG_PARTS = frozenset({"acct", "tok", "toks", "kt", "sk", "pk", "rk", "usd", "eur", "gbp",
-                          "dollar", "dollars", "cents"})
+def account_keys():
+    """-> the names matched AS ACCOUNTS: the built-in account names that are not model names, plus EVERY registry
+    key -- a registry key is never exempted for colliding with a model name (an account called opus is an
+    account; r2 HIGH). Model names alone stay legal in closed fields (judges opus+gpt)."""
+    return _registry()[1]
+
+
+def squash(s):
+    """The canonical form an account name is matched in: lower case, letters and digits only (sTeVeN, Jane-Smith,
+    JANE_SMITH all -> one form)."""
+    return re.sub(r"[^a-z0-9]", "", str(s).lower())
+
+
+def account_in(s):
+    """Does `s` name an account (not a model name), whatever its case and separators? A name of 4+ characters
+    matches anywhere in the squashed form (Jane_Smith, jane.smith, JANESMITHreport); a shorter one matches a run of
+    consecutive parts joined (amy, a_m_y, AMy, x_Amy) -- never inside a longer word (dreamy)."""
+    q = squash(s)
+    names = list(account_keys())
+    if any(len(n) >= 4 and n in q for n in names):
+        return True
+    short = {n for n in names if n and len(n) < 4}
+    if not short:
+        return False
+    ps = parts(s)
+    for i in range(len(ps)):
+        j = ""
+        for p in ps[i:]:
+            j += p
+            if len(j) > 3:
+                break
+            if j in short:
+                return True
+    return False
+
+
+# STRONG parts make an identifier unsafe on their own; matched as EXACT forms (BLINDVIEW_FIX_TOKEN_WORD_FALSE_WITHHOLDS:
+# a prefix match withheld ACCOUNTED, SPENT, HEADROOM in their game senses). account_item_id still withholds any id
+# with an ACCOUNT/TOKEN/QUOTA/SPEND part, and headroom/spent are soft (refused beside a digit).
+STRONG_PARTS = frozenset({
+    "account", "accounts", "acct", "accts", "token", "tokens", "tok", "toks", "kt", "quota", "quotas", "spend",
+    "spends", "spending", "usage", "usages", "pct", "percent", "percents", "percentage", "thrift", "allowance",
+    "allowances", "secret", "secrets", "bearer", "billing", "invoice", "invoices", "sk", "pk", "rk", "usd", "eur",
+    "gbp", "dollar", "dollars", "cents"})
+STRONG_PREFIXES = ("throttl", "passw", "apikey", "credential")
 # SOFT parts are ordinary project words too (a wildlife cap, Burn weather, a frame budget, RM_RunwayBloom, this week's
 # plan): unsafe only in an identifier that also carries a digit part, where they could state a figure.
 SOFT_PREFIXES = ("week", "limit", "budget", "runway", "burn", "price", "cheap", "remaining", "economy", "economi",
-                 "ratelimit")
+                 "ratelimit", "headroom", "spent")
 SOFT_PARTS = frozenset({"cap", "caps", "capped", "capping", "capx", "wk", "wkly", "pace", "cost", "costs", "bill",
                         "bills", "rate", "share", "used", "left", "system", "key", "keys"})
 # model names: soft (a judge family is a closed-set value on its own); every other account name is strong
@@ -103,7 +173,7 @@ _CLOCK = re.compile(r"(?<=\d{8}T)\d{4,6}(?=Z?(?![0-9]))", re.I)
 
 def unsafe_part(p, has_digits=False):
     """-> the reason a part is unsafe, or None. has_digits: the identifier also has a 2+ digit part (soft words count)."""
-    if p in account_names() and p not in MODEL_NAMES:
+    if p in account_keys():
         return "account_name"
     if p in STRONG_PARTS or p.startswith(STRONG_PREFIXES):
         return "sensitive_word"
@@ -134,13 +204,109 @@ def ident_problem(s, max_len=120):
     for run in re.split(r"[^A-Za-z0-9]+", t):
         if key_shaped(run):
             return "key_shape"
+    if account_in(s):
+        return "account_name"
     ps = parts(t)
-    digits = any(re.match(r"\d\d", p) for p in ps)       # a 1-digit sequence suffix (THREE_WORDS_1) states nothing
+    # soft words refuse beside ANY digit part, except one trailing single digit (a sequence suffix, THREE_WORDS_1)
+    digits = any(p[:1].isdigit() for p in (ps[:-1] if ps and re.fullmatch(r"\d", ps[-1]) else ps))
     for p in ps:
         r = unsafe_part(p, digits)
         if r:
             return r
     return None
+
+
+NAME_MAX_PARTS = 12
+
+
+def name_problem(s, max_len=64):
+    """-> None for a NAME a blind page may show (a verdict subject, an evidence file's stem): the strict grammar --
+    letters, digits, _ and - only; at most NAME_MAX_PARTS parts; every part letters only (<= 16) or a short number
+    (<= 2 digits, at most one letter after: r2, 1b); at most 3 digits in all -- and then every ident_problem rule,
+    with soft words refused beside ANY digit. A figure (9500, 1.5, 45000), a long run (a key) or a dotted value never
+    passes; a name that fails is dropped and counted, never shown."""
+    if not isinstance(s, str) or not s:
+        return "empty"
+    if len(s) > max_len:
+        return "too_long"
+    if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", s):
+        return "grammar"
+    ps = parts(s)
+    if len(ps) > NAME_MAX_PARTS:
+        return "too_many_parts"
+    for p in ps:
+        if not (re.fullmatch(r"[a-z]{1,16}", p) or re.fullmatch(r"\d{1,2}[a-z]?", p)):
+            return "name_part"
+    if sum(c.isdigit() for c in s) > 3:
+        return "number"
+    if account_in(s):
+        return "account_name"
+    digits = any(p[:1].isdigit() for p in ps)
+    for p in ps:
+        r = unsafe_part(p, digits)
+        if r:
+            return r
+    return None
+
+
+# ---- the NAME registry: a subject or evidence file stem is never copied from its source. What shows is a defName
+# (RM_/RSW_/RUT_) declared in the repo's own XML, or a ledger id the caller knows -- issued by a trusted registry, so
+# a source-provided word (swordfish, cost_nine) has nowhere to go (gpt_review_blind_harden_r1 HIGH 1).
+DEF_ROOT = os.path.dirname(SRC)          # the repo's src/: every mod's Defs live under it
+DEF_MIN = 500                            # fewer defNames than this = the scan could not see the repo: fail closed
+_DEFNAME_RE = re.compile(rb"<defName>\s*((?:RM|RSW|RUT)_[A-Za-z0-9_]{1,80})\s*</defName>")
+_defs_cache = []
+
+
+def def_names():
+    """-> frozenset of every RM_/RSW_/RUT_ defName in DEF_ROOT's XML, read once per process. An unreadable tree or a
+    count under DEF_MIN RAISES RegistryUnavailable: a page is never built against a registry that could not see."""
+    if not _defs_cache:
+        names = set()
+
+        def fail(e):
+            raise RegistryUnavailable("def registry unreadable: %s" % type(e).__name__) from e
+
+        for dp, _dns, fns in os.walk(DEF_ROOT, onerror=fail):
+            for fn in fns:
+                if fn.endswith(".xml"):
+                    try:
+                        with open(os.path.join(dp, fn), "rb") as f:
+                            names.update(m.decode("ascii") for m in _DEFNAME_RE.findall(f.read()))
+                    except OSError as e:
+                        fail(e)
+        if len(names) < DEF_MIN:
+            raise RegistryUnavailable("def registry saw %d defNames (< %d)" % (len(names), DEF_MIN))
+        _defs_cache.append(frozenset(names))
+    return _defs_cache[0]
+
+
+# a stem's suffix after its registered root and "__": closed shapes only (round r2, stage s1r2, variant b, live)
+STEM_SUFFIX_RE = re.compile(r"(?:[rRsSvV]\d{1,2}){1,2}[a-d]?|[A-Da-d]|live")
+
+
+def registered_name(s, known=()):
+    """-> (the registered root a page may show, or None; whether anything was dropped). The root is the longest
+    leading run of `s`'s underscore parts that is a def_names() defName or a `known` ledger id (and passes
+    name_problem). `RM_Chittik_n` -> (RM_Chittik, True); `RM_Fountain` -> (RM_Fountain, False); `swordfish`,
+    `cost_nine` -> (None, True)."""
+    if not isinstance(s, str) or not s or len(s) > 120 or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", s):
+        return None, True
+    reg = def_names()
+    ps = s.split("_")
+    for k in range(len(ps), 0, -1):
+        cand = "_".join(ps[:k]).rstrip("_")
+        if cand and (cand in reg or cand in known) and not name_problem(cand):
+            return cand, cand != s
+    return None, True
+
+
+def stem_ok(stem):
+    """Is an evidence file's stem showable: a registered defName alone, or one + "__" + a STEM_SUFFIX_RE suffix?"""
+    root, trimmed = registered_name(stem)
+    if root is None:
+        return False
+    return not trimmed or (stem.startswith(root + "__") and bool(STEM_SUFFIX_RE.fullmatch(stem[len(root) + 2:])))
 
 
 def safe_ident(s, max_len=120):
@@ -188,34 +354,70 @@ EVIDENCE_ROOTS = {
 }
 
 
-def evidence_problem(path):
-    """-> None for an evidence path a blind page may show: under one EVIDENCE_ROOTS root, 1..6 segments after it,
-    each a safe identifier (dates and plain file names pass; an account name, a figure or a key-shaped word fails)."""
-    if not isinstance(path, str) or not path:
-        return "empty"
-    p = path.replace("\\", "/")
+EVIDENCE_EXTS = ("json", "md", "png", "txt", "jsonl")
+NAMED_ROOTS = ("infrastructure/state/delegated/", "/mnt/d/Luke/dev/RimMandrake/infrastructure/state/delegated/")
+_DATE = re.compile(r"20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])")
+
+
+def _posix(path):
+    p = str(path).replace("\\", "/")
     m = re.match(r"^([A-Za-z]):/", p)
     if m:
         p = "/mnt/%s/%s" % (m.group(1).lower(), p[3:])
+    return p
+
+
+def _file_ok(seg, hidden=()):
+    stem, dot, ext = seg.rpartition(".")
+    if not dot or ext not in EVIDENCE_EXTS or name_problem(stem) or not stem_ok(stem):
+        return False
+    q = squash(stem)
+    return not any(squash(h) and squash(h) in q for h in hidden)
+
+
+def evidence_problem(path):
+    """-> None for an evidence path a blind page may show: under one EVIDENCE_ROOTS root, then a date directory
+    (YYYY-MM-DD), then at most one file whose stem passes name_problem with an EVIDENCE_EXTS extension (only under
+    the delegated roots: a leftovers path shows its date directory alone). A path ending in / is the directory."""
+    if not isinstance(path, str) or not path:
+        return "empty"
+    p = _posix(path)
     root = next((r for r in EVIDENCE_ROOTS if p.startswith(r)), None)
     if root is None:
         return "root"
     segs = p[len(root):].split("/")
-    if not 1 <= len(segs) <= 6 or any(s in ("", ".", "..") for s in segs):
+    if len(segs) == 2 and segs[1] == "":
+        segs = segs[:1]
+    if not 1 <= len(segs) <= 2 or not _DATE.fullmatch(segs[0]):
         return "segments"
-    for s in segs:
-        r = ident_problem(s, 100)
-        if r:
-            return r
+    if len(segs) == 2 and (root not in NAMED_ROOTS or not _file_ok(segs[1])):
+        return "file_name"
+    if account_in(evidence_native(path)) or account_in(p):   # the path AS DISPLAYED, root included (r3 HIGH)
+        return "account_name"
     return None
+
+
+def evidence_view(path, hidden=()):
+    """A stored evidence path -> (the path the page may show, or None; whether a value was REFUSED). The date
+    directory shows whenever the path has one; the file name only under the delegated roots, and only when its stem
+    passes name_problem and names no hidden id (a leftovers archive name is never shown: by design, not counted)."""
+    if not isinstance(path, str) or not path:
+        return None, False
+    p = _posix(path)
+    root = next((r for r in EVIDENCE_ROOTS if p.startswith(r)), None)
+    if root is None:
+        return None, True
+    segs = p[len(root):].split("/")
+    if not _DATE.fullmatch(segs[0]):
+        return None, True
+    if root in NAMED_ROOTS and len(segs) == 2 and _file_ok(segs[1], hidden):
+        return root + segs[0] + "/" + segs[1], False
+    return root + segs[0] + "/", root in NAMED_ROOTS
 
 
 def evidence_native(path):
     """A checked evidence path as the owner opens it on Windows."""
-    p = path.replace("\\", "/")
-    m = re.match(r"^([A-Za-z]):/", p)
-    if m:
-        p = "/mnt/%s/%s" % (m.group(1).lower(), p[3:])
+    p = _posix(path)
     for r, nat in EVIDENCE_ROOTS.items():
         if p.startswith(r):
             return nat + p[len(r):].replace("/", "\\")
@@ -223,6 +425,35 @@ def evidence_native(path):
 
 
 SHA_RE = re.compile(r"^[0-9a-f]{7,64}$")
+CAND_RE = re.compile(r"^[0-9a-f]{7,40}$")
+
+
+def git_resolver(root):
+    """-> resolve(candidates) -> {candidate: full 40-hex commit sha} for each candidate naming exactly one commit of
+    the repo at `root` (git cat-file --batch-check <c>^{commit}). A sha a blind page shows is ALWAYS one this
+    returned: hex shape is never proof. Git unavailable -> {} (every sha refused, never shown)."""
+    import subprocess
+
+    def resolve(cands):
+        cs = [c for c in dict.fromkeys(str(c).lower() for c in cands) if CAND_RE.match(c)]
+        if not cs:
+            return {}
+        try:
+            p = subprocess.run(["git", "-C", root, "cat-file", "--batch-check"],
+                               input="".join("%s^{commit}\n" % c for c in cs), capture_output=True, text=True,
+                               timeout=60)
+        except (OSError, subprocess.SubprocessError):
+            return {}
+        lines = p.stdout.splitlines()
+        if p.returncode != 0 or len(lines) != len(cs):
+            return {}
+        out = {}
+        for c, line in zip(cs, lines):
+            w = line.split()
+            if len(w) >= 2 and w[1] == "commit" and re.fullmatch(r"[0-9a-f]{40}", w[0]) and w[0].startswith(c):
+                out[c] = w[0]
+        return out
+    return resolve
 
 
 # ---- the dispatcher's notes for a token-blind role's ledger item (review dispatcher-full #2). One closed record:
@@ -263,12 +494,12 @@ def note_problem(b):
 
 def note_text(b):
     """Pure. -> the fixed text for a blind item, or None when the record is not closed (the note then goes to
-    Operations' item, never to the blind one). "dispatcher: Conductor quick run rm-role-conductor-<epoch>:
-    completed"."""
+    Operations' item, never to the blind one). "dispatcher: Conductor quick run: completed". The unit is checked
+    but NEVER rendered: an epoch is a free 12-digit payload (review blind 2026-10-27 #6)."""
     if note_problem(b):
         return None
-    mode, unit = b.get("mode"), b.get("unit")
-    subject = " ".join(x for x in (b["role"], mode, "run" if (mode or unit) else None, unit) if x)
+    mode = b.get("mode")
+    subject = " ".join(x for x in (b["role"], mode, "run" if (mode or b.get("unit")) else None) if x)
     return "dispatcher: %s: %s" % (subject, NOTE_OUTCOMES[b["outcome"]])
 
 
@@ -282,9 +513,8 @@ def is_note_text(text):
         if not text.endswith(": " + words):
             continue
         toks = text[len("dispatcher: "):-len(words) - 2].split(" ")
-        units = (None, toks[-1]) if toks and toks[-1].startswith("rm-role-") else (None,)
         for mode in (None,) + NOTE_MODES:
-            for unit in units:
+            for unit in (None, "rm-role-%s-1" % toks[0].lower()):
                 b = {"role": toks[0], "outcome": out}
                 if mode:
                     b["mode"] = mode

@@ -914,7 +914,7 @@ def test_role_execute_and_dry():
     run = st["roles"]["Conductor"]["runs"][0]
     check(run["state"] == "running" and run["budget"] == 30000 and run["scope"] == "claude-seat-BENCH-U1.scope"
           and run["marker"] == "U1", "execute: the run is recorded with the scope and marker named at creation")
-    check(noted and noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run rm-role-conductor-1: launched"),
+    check(noted and noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run: launched"),
           "execute: the launch is noted on the ledger, the fixed outcome")
     st = fresh()
     fx["role_launch"] = lambda *a: (False, "systemd-run exit 1", {})
@@ -1944,8 +1944,7 @@ def test_review_u_notes():
                {"do": "role_done", "role": "Conductor", "ticket": "ROLES_ITEM_X", "note": True,
                 "why": "x", "blind": RL.blind("Conductor", "completed", "quick", "30000 tokens")}],
               sch, fresh(), root, True, 100.0, fx)
-    check(noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run rm-role-conductor-7: ended without a good "
-                                      "result"),
+    check(noted[0] == ("ROLES_ITEM_X", "dispatcher: Conductor quick run: ended without a good result"),
           "r2 #1: the fixed blind note, and only it, lands on the shared item")
     check(noted[1][0] == "OPS_OWN_X" and "usage limit" in noted[1][1] and "[meant for ROLES_ITEM_X" in noted[1][1],
           "r2 #1: free text the word list misses ('usage limit reached') goes to Operations' item")
@@ -2628,7 +2627,7 @@ def test_golive_b2_blind_fixed_outcomes():
               "B2 subtype %r: blind notes are fixed (%r)" % (sub, notes))
     # closed sets: any field outside them -> None, and execute diverts that note to Operations' item
     good = RL.blind("Conductor", "completed", "quick", "rm-role-conductor-9")
-    check(RL.blind_note(good) == "dispatcher: Conductor quick run rm-role-conductor-9: completed", "B2 a good note")
+    check(RL.blind_note(good) == "dispatcher: Conductor quick run: completed", "B2 a good note")
     for bad in (dict(good, role="acct-7781"), dict(good, mode="acct-7781"), dict(good, outcome="acct-7781 at 42%"),
                 dict(good, unit="rm-role-conductor-9 acct-7781"), dict(good, unit="rm-role-arbiter-9"),
                 dict(good, outcome="subtype"), "Conductor completed", None):

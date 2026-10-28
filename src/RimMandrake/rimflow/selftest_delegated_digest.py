@@ -64,6 +64,22 @@ T0 = dt.datetime(2026, 10, 27, 0, 0, tzinfo=dt.timezone.utc)
 LEAK = "steven's account 93% of weekly quota, 45,000 tokens, $0.34 at 80k, usage limit, key sk-live-zz9 acct-7f3e9"
 
 
+FULLS = ("abcdef1234567" + "8" * 27, "abcdef0123456789abcdef0123456789abcdef01", "ab" * 20)   # the commits git knows
+
+
+def RESOLVE(cands):
+    return {c: f for c in cands for f in FULLS if f.startswith(c)}
+
+
+def _ids(hidden=()):
+    from contracts import blind as BL
+    return BL.Identity(frozenset({"PIPE_ELBOW_FIX_SEAM_JOGS", "BIOME_DECIDE_TWO_ROUTES", "A_ONE", "B_TWO", "C_THREE",
+                                  "A_B"}), frozenset(hidden))
+
+
+IDS = None   # set in main(), after the import path is in place
+
+
 def ts(h):
     return (T0 + dt.timedelta(hours=h)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -167,7 +183,8 @@ def test_blind_counts_body_malformed():
         check(len(leaks(raw)) >= len(PLANTS), "instrument: the detector sees the raw plants (%d)" % len(leaks(raw)))
         reads = D.gather(events(), tmp, ddir, lp, added={}, commits=COMMITS, art_events=ART)
         cut = max(tm(20), dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=1))   # verdict files carry mtime
-        text, seen = D.build("2026-10-27", None, cut, reads, hidden=frozenset({"OPS_ACCOUNT_DRAIN_C01D"}))
+        text, seen = D.build("2026-10-27", None, cut, reads, ids=_ids({"OPS_ACCOUNT_DRAIN_C01D"}),
+                             resolve=RESOLVE)
         check(not leaks(text), "blind: no planted value reaches the page: %s" % leaks(text)[:6])
         tb = table(text)
         led = tb.get("ledger events")
@@ -186,8 +203,10 @@ def test_blind_counts_body_malformed():
         check(ai and ai[1] == "1", "art installs: the delegated live install only (%s)" % ai)
         lf = tb.get("leftover deletions")
         check(lf and lf[1] == "2" and lf[2] == "1", "malformed: leftovers 2 records, 1 bad line: %s" % lf)
-        check("RM_Chittik_n" in text and "ACCEPT" in text and "opus+gpt" in text, "blind: closed fields still show")
-        check("sha 121212121212" in text, "guard: an all-digit sha prints, by its label")
+        check("RM_Chittik" in text and "ACCEPT" in text and "opus+gpt" in text, "blind: closed fields still show")
+        check("sha abcdef123456" in text and "git abcdef012345" in text,
+              "sha: a ledger and a commit sha git resolves print, by their label")
+        check("111111" not in text, "sha: a sha git does not know never prints")
         check(" OTHER" in text, "blind: a prose decision reads OTHER, never its words")
         held = sum(int(r[3]) for r in tb.values())
         check(sum(len(x) for x in seen.values()) == len(lines(text)) + held,
@@ -209,25 +228,25 @@ def test_window_fail_force_pending():
         # day 1: the commit source fails
         r1 = _reads(ev1, tmp=tmp)
         r1["commit"] = D._read("unmeasured", "git_failed")
-        rc = D.main(args(tmp, "2026-10-27", cut=ts(20)), sources=(r1, frozenset()))
+        rc = D.main(args(tmp, "2026-10-27", cut=ts(20)), sources=(r1, IDS, RESOLVE))
         p1 = page_of(tmp, "2026-10-27")
         check(rc == 0 and "A_ONE" in p1 and "UNMEASURED git_failed" in p1, "fail: a failed source reads UNMEASURED")
         st = json.load(open(os.path.join(tmp, "state.json")))
         check(st["digests"]["2026-10-27"]["complete"] is True, "window: the state entry is complete after the run")
         # same date again: nothing done, page untouched
-        rc = D.main(args(tmp, "2026-10-27", cut=ts(21)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        rc = D.main(args(tmp, "2026-10-27", cut=ts(21)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         check(page_of(tmp, "2026-10-27") == p1, "window: a second run the same date does nothing")
         # a dry run never moves the state
         before = open(os.path.join(tmp, "state.json")).read()
-        D.main(args(tmp, "2026-10-28", "--dry-run", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        D.main(args(tmp, "2026-10-28", "--dry-run", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         check(open(os.path.join(tmp, "state.json")).read() == before, "window: a dry run never moves the state")
         # day 2: the commit source recovers; its day-1 record appears now, A_ONE never again
-        D.main(args(tmp, "2026-10-28", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        D.main(args(tmp, "2026-10-28", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         p2 = page_of(tmp, "2026-10-28")
         check("A_ONE" not in p2 and "B_TWO" in p2, "window: consecutive digests never repeat a record")
         check("git abababababab" in p2, "fail: the failed source's backlog appears on the next digest that reads it")
         # force day 1: its own floor, its own records, never day 2's
-        D.main(args(tmp, "2026-10-27", "--force", cut=ts(45)), sources=(_reads(ev2, cm, tmp=tmp), frozenset()))
+        D.main(args(tmp, "2026-10-27", "--force", cut=ts(45)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         p1f = page_of(tmp, "2026-10-27")
         check("A_ONE" in p1f and "B_TWO" not in p1f and "abababababab" not in p1f,
               "force: a rebuild keeps its own records and never takes another digest's")
@@ -240,7 +259,7 @@ def test_window_fail_force_pending():
                                               "rb").read()).hexdigest()
         json.dump(st, open(os.path.join(tmp, "state.json"), "w"))
         ev3 = ev2 + [{"seat": "BENCH", "event": "close", "id": "C_THREE", "why": "delegated: scope", "ts": ts(30)}]
-        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), frozenset()))
+        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), IDS, RESOLVE))
         st = json.load(open(os.path.join(tmp, "state.json")))
         check(st["digests"]["2026-10-28"]["complete"] is True and "C_THREE" not in page_of(tmp, "2026-10-28"),
               "pending: a page matching its recorded sha256 is reconciled to complete, not rebuilt")
@@ -248,7 +267,7 @@ def test_window_fail_force_pending():
         st["digests"]["2026-10-28"]["complete"] = False
         st["digests"]["2026-10-28"]["page_sha256"] = "0" * 64
         json.dump(st, open(os.path.join(tmp, "state.json"), "w"))
-        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), frozenset()))
+        D.main(args(tmp, "2026-10-28", cut=ts(46)), sources=(_reads(ev3, cm, tmp=tmp), IDS, RESOLVE))
         check("C_THREE" in page_of(tmp, "2026-10-28"), "pending: a page that does not match is rebuilt")
         # legacy state: last_cut becomes the floor
         json.dump({"last_cut": ts(26)}, open(os.path.join(tmp, "legacy.json"), "w"))
@@ -261,12 +280,12 @@ def test_identity():
         ddir, _recs = verdicts(tmp)
         r1 = D.gather([], tmp, ddir, os.path.join(tmp, "x"), added={}, commits=[], art_events=[])
         t1 = max(t for _i, t, _r in r1["verdict"]["items"])
-        D.main(args(tmp, "2026-10-27", cut=D.iso(t1 + dt.timedelta(seconds=5))), sources=(r1, frozenset()))
-        check("RM_Chittik_n" in page_of(tmp, "2026-10-27"), "identity: an untracked verdict shows (mtime)")
+        D.main(args(tmp, "2026-10-27", cut=D.iso(t1 + dt.timedelta(seconds=5))), sources=(r1, IDS, RESOLVE))
+        check("RM_Chittik" in page_of(tmp, "2026-10-27"), "identity: an untracked verdict shows (mtime)")
         rel = os.path.relpath(os.path.join(ddir, "2026-10-27", "RM_Chittik_n__r1.json"), tmp).replace(os.sep, "/")
         later = t1 + dt.timedelta(hours=2)
         r2 = D.gather([], tmp, ddir, os.path.join(tmp, "x"), added={rel: later}, commits=[], art_events=[])
-        D.main(args(tmp, "2026-10-28", cut=D.iso(later + dt.timedelta(hours=1))), sources=(r2, frozenset()))
+        D.main(args(tmp, "2026-10-28", cut=D.iso(later + dt.timedelta(hours=1))), sources=(r2, IDS, RESOLVE))
         check("RM_Chittik_n" not in page_of(tmp, "2026-10-28"),
               "identity: once committed (a new git time) it is not shown again")
 
@@ -274,26 +293,26 @@ def test_identity():
 def test_refusals_prelaunch():
     with tempfile.TemporaryDirectory() as tmp:
         try:
-            D.main(args(tmp, "2026-10-27", "--since", ts(0)), sources=({}, frozenset()))
+            D.main(args(tmp, "2026-10-27", "--since", ts(0)), sources=({}, IDS, RESOLVE))
             ok = False
         except ValueError:
             ok = True
         check(ok, "refusals: --since without --dry-run is refused")
         try:
             D.main(["--date", "2026-10-27", "--dry-run", "--out-dir", D.OUT_DIR, "--state",
-                    os.path.join(tmp, "s.json")], sources=({}, frozenset()))
+                    os.path.join(tmp, "s.json")], sources=({}, IDS, RESOLVE))
             ok = False
         except ValueError:
             ok = True
         check(ok, "refusals: a dry run into the production directory is refused")
         failed = os.path.join(tmp, "out", "delegated_digest_2026-10-27.FAILED.md")
-        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--since", ts(0)), sources=({}, frozenset()))
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--since", ts(0)), sources=({}, IDS, RESOLVE))
         txt = open(failed).read() if os.path.exists(failed) else ""
         check(rc == 0 and txt == D.FAILED_TEXT % "2026-10-27", "prelaunch: a refusal exits 0 with the fixed page")
         err = open(os.path.join(tmp, "errors.log")).read()
         check("ValueError" in err, "prelaunch: the error goes to the errors log")
         os.remove(failed)
-        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--bogus"), sources=({}, frozenset()))
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", "--bogus"), sources=({}, IDS, RESOLVE))
         check(rc == 0 and os.path.exists(failed), "prelaunch: a bad argument exits 0 with the fixed page")
         bad = {"ledger": {"state": "measured", "fault": "none", "malformed": 0,
                           "items": [("L1", tm(1), {"source": "ledger", "t": tm(1), "why": "delegated: scope",
@@ -304,7 +323,7 @@ def test_refusals_prelaunch():
             raise RuntimeError("acct-7f3e9 45,000 tokens")
         D.build = boom
         try:
-            rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, frozenset()))
+            rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, IDS, RESOLVE))
         finally:
             D.build = orig
         txt = open(failed).read()
@@ -313,14 +332,14 @@ def test_refusals_prelaunch():
         check(not (st.get("digests") or {}).get("2026-10-27", {}).get("complete"), "prelaunch: a failure is not complete")
         try:
             D.build = boom
-            D.main(args(tmp, "2026-10-27", cut=ts(2)), sources=(bad, frozenset()))
+            D.main(args(tmp, "2026-10-27", cut=ts(2)), sources=(bad, IDS, RESOLVE))
             ok = False
         except RuntimeError:
             ok = True
         finally:
             D.build = orig
         check(ok, "prelaunch: without --pre-launch the error raises")
-        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, frozenset()))
+        rc = D.main(args(tmp, "2026-10-27", "--pre-launch", cut=ts(2)), sources=(bad, IDS, RESOLVE))
         check(rc == 0 and not os.path.exists(failed) and "A_B" in page_of(tmp, "2026-10-27"),
               "prelaunch: a later success writes the digest and removes the stale FAILED page")
 
@@ -339,6 +358,8 @@ def test_real():
 
 
 def main():
+    global IDS
+    IDS = _ids()
     for t in (test_blind_counts_body_malformed, test_window_fail_force_pending, test_identity,
               test_refusals_prelaunch, test_real):
         try:

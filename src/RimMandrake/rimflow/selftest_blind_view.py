@@ -86,9 +86,9 @@ def test_phrasings():
            for n, t in enumerate(PHRASES)] + [{"event": "claim", "ts": "2026-10-27T11:00:00Z", "seat": "BENCH"}]
     it = _Full("SAFE_ITEM_TWO", "\n".join(PHRASES), hist=range(len(evs)))
     hold = _Full("OPS_RUNWAY_RESCUE_LUKAS", "lukas 7 left")
-    q = BL.render_queue(BL.project_queue("BENCH", [("NEXT", [it, hold])], frozenset({hold.id})))
-    page = BL.render_item(BL.project_item(it, evs[:-1], evs[-1:], frozenset({hold.id}), frozenset({"SAFE_ITEM_ONE"}),
-                                          last=0, prefix="REPLAN REQUEST"))
+    ids = BL.Identity(frozenset({"SAFE_ITEM_ONE", it.id}), frozenset({hold.id}))
+    q = BL.render_queue(BL.project_queue("BENCH", [("NEXT", [it, hold])], ids))
+    page = BL.render_item(BL.project_item(it, evs[:-1], evs[-1:], ids, last=0, category="REPLAN REQUEST"))
     for name, text in (("queue", q), ("show", page)):
         bad = [w for t in PHRASES for w in re.findall(r"[A-Za-z]{4,}|\d+(?:[.,]\d+)?", t)
                if re.search(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(w), text)
@@ -98,7 +98,7 @@ def test_phrasings():
                                                                                               leaks(text)[:3]))
     check("SAFE_ITEM_ONE" in page and "OPS_RUNWAY" not in page + q, "phrasings: a known id is referenced, "
           "a withheld one never named")
-    check("1 match the prefix" in page, "phrasings: --prefix counts the REPLAN note")
+    check("1 in category REPLAN REQUEST" in page, "phrasings: --prefix counts the REPLAN note (a closed category)")
     check("1 open item(s) withheld" in q, "phrasings: the queue counts the withheld item")
 
 
