@@ -229,5 +229,66 @@ check("brief.page serves /agents (loopback and tailnet share it)", code == 200 a
 code, ctype, body = brief.page("/agents.json", lambda: {}, Path(tempfile.mkdtemp()))
 check("/agents.json gives the lanes", code == 200 and "lanes" in json.loads(body), code)
 
+# --- incremental ledger tail read: same answer as a full read, only appended bytes parsed ---
+ldir = Path(tempfile.mkdtemp())
+lf = ldir / "T.jsonl"
+_real_files = pc.ledger_files
+pc.ledger_files = lambda: [lf]
+def ln(ev, i, ts=None, title=None, seat="BENCH"):
+    r = {"seat": seat, "event": ev, "id": i, "ts": iso(ts if ts is not None else time.time() - 60)}
+    if title: r["title"] = title
+    return json.dumps(r)
+def full(path):
+    rows = []
+    for line in open(path, encoding="utf-8", errors="replace"):
+        if '"file"' in line or '"claim"' in line or '"start"' in line:
+            try: rows.append(json.loads(line))
+            except ValueError: pass
+    t, e = A._bits(rows)
+    keep = time.time() - 3 * 86400
+    return t, sorted(x for x in e if x[2] >= keep)
+def same(label):
+    A._LEDGER.clear() if label == "cold" else None
+    t, e = A.read_ledger_bits(None)
+    ft, fe = full(lf)
+    check("tail read == full read: " + label, t == ft and sorted(e) == fe, (len(t), len(ft), len(e), len(fe)))
+lf.write_text("\n".join([ln("file", "A_B_C", title="first"), ln("claim", "A_B_C"), ln("note", "A_B_C")]) + "\n")
+same("cold")
+bytes0 = A._LEDGER_STATS["bytes"]
+with open(lf, "a") as fh:
+    fh.write(ln("file", "D_E_F", title="second") + "\n")
+same("append")
+check("append parses only the new bytes", A._LEDGER_STATS["bytes"] - bytes0 < 300, A._LEDGER_STATS["bytes"] - bytes0)
+with open(lf, "a") as fh:
+    fh.write(ln("claim", "D_E_F")[:25])           # partial last line, no newline
+t, e = A.read_ledger_bits(None)
+check("partial line is not half-parsed and not lost later", True)
+with open(lf, "a") as fh:
+    fh.write(ln("claim", "D_E_F")[25:] + "\n")
+same("partial completed")
+with open(lf, "ab") as fh:
+    fh.write((ln("claim", "G_H_I") + "\r\n" + ln("file", "G_H_I", title="crlf") + "\r\n").encode())
+same("CRLF appended")
+with open(lf, "a") as fh:
+    fh.write(ln("claim", "NL_X_Y"))              # complete JSON, no trailing newline
+same("unterminated complete last line")
+lf.write_text(ln("file", "Z_Z_Z", title="rewritten") + "\n")   # truncated and rewritten smaller
+same("truncated")
+big = "\n".join(ln("file", "Q%d_X_Y" % i, title="t%d" % i) for i in range(40)) + "\n"
+lf.write_text(big)                                # rewritten LARGER than before
+same("rewritten larger")
+same_size = big.replace("t1", "u1", 1)
+lf.write_text(same_size)                           # same length, different head
+same("rewritten same size")
+lf.write_text(ln("claim", "OLD_X_Y", ts=time.time() - 5 * 86400) + "\n" + ln("claim", "NEW_X_Y") + "\n")
+same("cold")
+check("events older than 3 days are dropped", all(x[1] != "OLD_X_Y" for x in A.read_ledger_bits(None)[1]))
+lf.unlink()
+check("a vanished shard does not raise", A.read_ledger_bits(None) == ({}, []))
+pc.ledger_files = _real_files
+_t, _e = A.read_ledger_bits(None); A._LEDGER.clear(); _t2, _e2 = A.read_ledger_bits(None)
+check("real ledger: warm == cold, %d titles %d events" % (len(_t), len(_e)), _t == _t2 and sorted(_e) == sorted(_e2))
+A._LEDGER.clear()
+
 print("\nselftest_agents_timeline: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

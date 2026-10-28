@@ -70,7 +70,9 @@ _LOCK = threading.Lock()
 _COLLECT = threading.Lock()   # one collector at a time; a second request waits and reuses its result
 _SCAN: dict = {}             # path -> {"off", "st"}: incremental transcript parse state
 _CACHE: dict = {}            # "page" -> (at, data)
-_LEDGER: dict = {}           # path -> (size, mtime, titles, seat events)
+_LEDGER: dict = {}           # path -> {off, tail, titles, evs}: the shard parsed up to byte `off`
+_LEDGER_STATS = {"bytes": 0, "full": 0}   # bytes parsed / full re-reads (the selftest proves the tail read)
+_TAIL_CHECK = 64             # bytes before `off` compared to spot a rewritten shard
 
 
 # ---------------------------------------------------------------------------------------------- reading
@@ -208,6 +210,66 @@ def role_of(name: str | None) -> tuple[str, str] | None:
     return (m.group(1), m.group(2)) if m else None
 
 
+def _rows(chunk: bytes) -> list:
+    rows = []
+    for line in chunk.decode("utf-8", errors="replace").splitlines():
+        if '"file"' in line or '"claim"' in line or '"start"' in line:
+            try:
+                rows.append(json.loads(line))
+            except ValueError:
+                pass
+    return rows
+
+
+def _read_shard(f):
+    """(titles, events) of one shard. Only bytes appended since the last call are parsed; a shard that shrank
+    or whose already-read tail changed is re-read whole. A last line without its newline is parsed for this
+    answer but left unconsumed, so it is read again once finished."""
+    key = str(f)
+    st = _LEDGER.get(key)
+    try:
+        with open(f, "rb") as fh:
+            fs = os.fstat(fh.fileno())
+            size = fs.st_size
+            if st and (size < st["off"] or (size == st["size"] and fs.st_mtime != st["mtime"])
+                       or (st["off"] and not _tail_ok(fh, st))):
+                st = None
+            if st is None:
+                st = {"off": 0, "tail": b"", "head": b"", "size": 0, "mtime": 0.0, "titles": {}, "evs": []}
+                _LEDGER_STATS["full"] += 1
+            fh.seek(st["off"])
+            data = fh.read(max(0, size - st["off"]))
+    except OSError:
+        _LEDGER.pop(key, None)
+        return None
+    _LEDGER_STATS["bytes"] += len(data)
+    cut = data.rfind(b"\n") + 1
+    if cut:
+        ti, ev = _bits(_rows(data[:cut]))
+        st["titles"].update(ti)
+        keep = time.time() - 3 * 86400
+        st["evs"] = [x for x in st["evs"] + ev if x[2] >= keep]
+        st["tail"] = (st["tail"] + data[:cut])[-_TAIL_CHECK:]
+        st["head"] = st["head"] or data[:cut][:_TAIL_CHECK]
+        st["off"] += cut
+    st["size"], st["mtime"] = size, fs.st_mtime
+    _LEDGER[key] = st
+    if cut < len(data):                                    # unterminated last line: peek, do not consume
+        ti, ev = _bits(_rows(data[cut:]))
+        if ti or ev:
+            return {**st["titles"], **ti}, st["evs"] + ev
+    return st["titles"], st["evs"]
+
+
+def _tail_ok(fh, st) -> bool:
+    n = len(st["tail"])
+    fh.seek(0)
+    if fh.read(len(st["head"])) != st["head"]:
+        return False
+    fh.seek(st["off"] - n)
+    return fh.read(n) == st["tail"]
+
+
 def read_ledger_bits(ledger: list | None) -> tuple[dict, list]:
     """(item id -> title, [(seat, id, t, event)]) from a given event list, or from the clones' shards (cached)."""
     if ledger is not None:
@@ -217,29 +279,13 @@ def read_ledger_bits(ledger: list | None) -> tuple[dict, list]:
         files = pc.ledger_files()
     except Exception:  # noqa: BLE001
         files = []
+    keep = time.time() - 3 * 86400            # only recent claims/starts label a day's bars
     for f in files:
-        try:
-            stt = f.stat()
-        except OSError:
+        got = _read_shard(f)
+        if got is None:
             continue
-        hit = _LEDGER.get(str(f))
-        if not hit or hit[0] != stt.st_size or hit[1] != stt.st_mtime:
-            rows = []
-            try:
-                with open(f, encoding="utf-8", errors="replace") as fh:
-                    for line in fh:
-                        if '"file"' in line or '"claim"' in line or '"start"' in line:
-                            try:
-                                rows.append(json.loads(line))
-                            except ValueError:
-                                pass
-            except OSError:
-                continue
-            ti, ev = _bits(rows)
-            keep = time.time() - 3 * 86400        # only recent claims/starts label a day's bars
-            hit = _LEDGER[str(f)] = (stt.st_size, stt.st_mtime, ti, [x for x in ev if x[2] >= keep])
-        titles.update(hit[2])
-        evs.extend(hit[3])
+        titles.update(got[0])
+        evs.extend(x for x in got[1] if x[2] >= keep)
     return titles, evs
 
 
