@@ -1026,7 +1026,39 @@ def g_counts_as_evidence(td):
     check(CE.counts_as_evidence({**rec, "detail": {"x": 1}}, None), "counts_as_evidence: key=None does not check the mac")
 
 
+def real_store_snapshot(d):
+    """(file, size) of every jsonl in the store dir d: the guard that no selftest writes the REAL close_evidence store
+    (EVIDENCE_SELFTEST_FIX_WRITES_REAL_STORE: a payload without evidence_dir made the record CLI child write there)."""
+    d = Path(d)
+    return sorted((f.name, f.stat().st_size) for f in d.glob("*.jsonl")) if d.is_dir() else []
+
+
+def g_real_store_guard(td):
+    """The guard sees a record CLI child that forgot evidence_dir (the old g_record_cli bug), and sees nothing otherwise."""
+    repo, sha = make_repo(td, "rg")
+    fake_real = Path(td) / "fake_real"
+    fake_real.mkdir()
+    before = real_store_snapshot(fake_real)
+    env = dict(os.environ, **{CE.ENV_DIR: str(fake_real)})
+    env["RM_SELFTEST_NESTED"] = "1"
+    payload = {"tool": "modcheck", "result": "PASS", "paths": [str(repo / "src" / "a.py")], "clone": str(repo), "detail": {"k": 1},
+               "item": "ITEM", "start": {"sha": sha, "dirty": False, "dirty_n": 0}, "who": {"seat": "BENCH", "seat_from": "RIMFLOW_SEAT"}}
+    check(real_store_snapshot(fake_real) == before, "real-store guard: nothing written -> snapshot unchanged")
+    with_dir = dict(payload, evidence_dir=str(Path(td) / "elsewhere"))
+    p = subprocess.run([sys.executable, str(HERE / "close_evidence.py"), "record"], input=json.dumps(with_dir), capture_output=True, text=True, env=env, timeout=120)
+    check(p.returncode == 0 and real_store_snapshot(fake_real) == before, "real-store guard: a payload with evidence_dir leaves the watched store alone: %r" % p.stderr[-150:])
+    p = subprocess.run([sys.executable, str(HERE / "close_evidence.py"), "record"], input=json.dumps(payload), capture_output=True, text=True, env=env, timeout=120)
+    check(p.returncode == 0 and real_store_snapshot(fake_real) != before, "real-store guard: a child that writes the watched store is detected: %r" % p.stderr[-150:])
+
+
 def main():
+    saved_env = os.environ.pop(CE.ENV_DIR, None)
+    try:
+        real_dir = CE.evidence_dir()
+    finally:
+        if saved_env is not None:
+            os.environ[CE.ENV_DIR] = saved_env
+    real_before = real_store_snapshot(real_dir)
     with tempfile.TemporaryDirectory() as td:
         os.environ[CE.ENV_DIR] = str(Path(td) / "evidence")
         os.environ[CE.KEY_ENV] = str(Path(td) / "close_evidence.key")
@@ -1035,7 +1067,7 @@ def main():
         for g in (g_pure, g_top_level, g_cover_entries, g_summary_order, g_schema_counts, g_route, g_whoami_seats):
             g()
         for g in (g_publish_key_append, g_tree_state, g_build_record, g_counts_as_evidence, g_record_and_store, g_ship_to_wsl,
-                  g_lookup, g_make_isolated, g_isolated_cli, g_cli, g_record_cli):
+                  g_lookup, g_make_isolated, g_isolated_cli, g_cli, g_record_cli, g_real_store_guard):
             os.environ[CE.ENV_DIR] = str(Path(td) / ("ev_" + g.__name__))
             os.environ[CE.KEY_ENV] = str(Path(td) / "close_evidence.key")
             if g is g_lookup:
@@ -1043,6 +1075,7 @@ def main():
                     g(td)
             else:
                 g(td)
+    check(real_store_snapshot(real_dir) == real_before, "no selftest in this file wrote the REAL close_evidence store (%s)" % real_dir)
     print("\n%s" % ("FAILED: %d" % len(FAILS) if FAILS else "all ok"))
     return 1 if FAILS else 0
 
