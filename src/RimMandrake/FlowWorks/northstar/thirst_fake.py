@@ -36,8 +36,38 @@ faults (name -> intended effect):
   draft_refused       set_draft answers success=False and drafts nobody -> T3/T6 UNMEASURED HARNESS (not a vacuous PASS)
   zones_refused       map_zones answers success=False -> T24 UNMEASURED HARNESS
   snow_refused        set_weather_buildup answers success=False -> T25 UNMEASURED HARNESS
-  stray_fresh_bucket  an undrafted colonist refills a leftover empty bucket while T20 runs (job 832567): a second fresh
-                      bucket lands beside every one T20 spawns (the refill already made) -> T20 must still PASS
+  stray_fresh_bucket  a leftover empty bucket lies off the plot, and an UNDRAFTED hauler refills any empty/dirty bucket it
+                      can reach from an unstaged source (job 832567) -> T20's cleanup + drafting keep it out: still PASS
+ THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES (GPT review 2026-10-27): each fault below is a route by which the OLD row read PASS
+ without observing its claim; the selftest proves the old row PASSes on it and the hardened row does not.
+  leftover_bottle     a fresh bottle lies off every plot from the start (a source no row staged)
+  leftover_bottle_x2  two such bottles (one for each of T9's two muffalo)
+  no_animal_terrain   animals never drink terrain; a thirsty animal ingests any ground bottle instead -> T9/T14 FAIL
+  no_far_bottle       a thirsty colonist ignores a bottle more than 20 cells off -> T12 FAIL (fetch never happens)
+  packer              a thirsty colonist that finds no drink packs a ground fresh bottle into its inventory instead
+  single_use_bucket   one container drink empties the bucket -> T19 FAIL
+  ingest_cancelled    an ordered bottle Ingest ends after 100 ticks without consuming anything -> T19 UNMEASURED
+  last_drink_empty    the 10th drink of a bucket dirties it but hydrates nothing (capacity 9) -> T20 FAIL
+  no_pour             a Fill-mode brine fill brings buckets but never raises the tank -> T23 FAIL
+  store_fill_settle   a Store tank still orders brine fills for the first 450 ticks after the switch (they land inside
+                      the settle the old row cleared blind) -> T23 FAIL
+  old_brine_offplot   a brine bucket lies off the plot from the start
+  carry_snow          snow never melts; the worker hauls the gathered bucket off the ground and an unrelated fresh bucket
+                      lands elsewhere 4,000 ticks later -> T25 FAIL
+  no_bucket_fill      a hauler never fills an empty bucket from water -> T25's pond arm FAIL
+  no_bill             the campfire bill never runs -> T26 FAIL
+  leftover_wood_snow  when a bill is added, a wooden snow bucket an earlier row left lies off the plot, 1,000 ticks from
+                      melting
+  packed_stock        the three starting colonists carry 7+7+6 filled bottles packed (no deficit) -> T29 measured after the purge
+  one_trip            the bottle stock fills the whole deficit in one trip (no 10-bottle batches) -> T29 FAIL
+  gear_refused        jawa/pawn_gear answers success=False -> T29 UNMEASURED (the packs cannot be emptied)
+  sneak_off_drink     with drinkFromTerrain or lastResortDrinking OFF the pawn still drinks terrain, done inside 20 ticks
+                      (between two job samples) -> T10/T16 FAIL
+  sneak_005_drink     a pawn at need 0.05 drinks slime (last resort at <= 0.06), done inside 20 ticks -> T15 FAIL
+  break_never_ends    the salt break applies its effects but the pawn stays in RM_Break_DrinkBrine -> T17 FAIL
+  no_poisoning        the salt break ends with RM_SaltPoisoning at severity 0 -> T17 FAIL
+  base_slow_hemogen   a baseliner's hemogen Ingest takes 3,000 ticks and then hydrates +0.3 -> T28 UNMEASURED
+  canal_on_reload     the reloaded site holds canal fill water (RM_Fill_Water_Half), a fresh source -> T15R must dry it
 Unmodelled tools answer success=False and are listed in `unmodelled` (a clean run must leave it empty).
 """
 import re
@@ -54,8 +84,9 @@ SLIME = {"RM_SlimeRedShallow": "RM_ContagionTouched", "RM_SlimeGreenShallow": "R
          "RM_SlimeWhiteShallow": "RM_SporeFlesh", "RM_SlimeYellowShallow": "RM_SlimeNausea", "RM_Slime_Liquid": "RM_Slimification"}
 SLIME_SEV = {"RM_ContagionTouched": 1.0, "RM_Slimification": 0.3, "RM_SporeFlesh": 0.01, "RM_SlimeNausea": 0.2}
 BIOMES_ONLY_HEDIFFS = ("RM_ContagionTouched", "RM_Slimification", "RM_SporeFlesh")
-WET = FRESH + SALT + BRINE + TOXIC + tuple(SLIME) + ("RM_Fill_Water_Trace", "RM_Fill_Water_Half", "RM_Fill_Water_Brim",
-                                                    "RM_Fill_Water_Superdeep")
+FILLW = ("RM_Fill_Water_Trace", "RM_Fill_Water_Half", "RM_Fill_Water_Brim", "RM_Fill_Water_Superdeep")
+DRINKABLE = FRESH + FILLW          # canal fill water is fresh to thirst (review F19: the fake must offer it as the mod does)
+WET = FRESH + SALT + BRINE + TOXIC + tuple(SLIME) + FILLW
 NATIVE = ("Dromedary",)
 ANIMALS = ("Muffalo", "Dromedary", "Gazelle", "Iguana", "Hare", "Rat", "Elephant", "Rhinoceros", "Ostrich", "Emu", "Squirrel",
            "Deer", "Boar", "Alpaca", "Megasloth", "Tortoise", "Cobra", "Raccoon", "Fox_Fennec")
@@ -83,6 +114,7 @@ class Pawn(object):
         self.drafted, self.job, self.job_t, self.ctx = False, None, 0, {}
         self.refuse, self.prio = set(), {}
         self.xeno, self.break_t, self.think_now = None, 0, True
+        self.inv, self.carry, self.stuck_break = [], None, False      # packed things / a carried thing: off the ground
 
     @property
     def human(self):
@@ -99,6 +131,9 @@ class ThirstFakeBridge(object):
         self.settings = dict(SETTINGS0)
         self.marks = {}
         self.reloads = 0
+        self.refused_ids = []      # spawned workers the refusal faults hit (review F17: the replacement loop must meet them)
+        self.stray_refills = 0
+        self.stray_fresh_at = None
         self._reset()
 
     # ----------------------------------------------------------- world
@@ -110,9 +145,23 @@ class ThirstFakeBridge(object):
         for c in _cells((60, 60, 6, 2)):         # a river the driver's first act must dry
             self.terrain[c] = "WaterShallow"
         for i in range(3):
-            self._new_pawn("Colonist", "colony", 20 + i, 16)
+            p = self._new_pawn("Colonist", "colony", 20 + i, 16, spawned=False)
+            if "packed_stock" in self.faults:
+                p.inv.append({"id": "P%d" % i, "def": "RM_Bottle_FreshWater", "stackCount": (7, 7, 6)[i]})
         if "site_blocked" in self.faults:
             self._thing("Rock_Granite", 155, 135)
+        # seeded leftovers OFF every plot (x < 20): sources no row staged
+        if "leftover_bottle" in self.faults or "leftover_bottle_x2" in self.faults:
+            self._thing("RM_Bottle_FreshWater", 10, 10)
+        if "leftover_bottle_x2" in self.faults:
+            self._thing("RM_Bottle_FreshWater", 11, 10)
+        if "stray_fresh_bucket" in self.faults:
+            self._thing("RM_BucketEmpty", 14, 10)
+        if "old_brine_offplot" in self.faults:
+            self._thing("RM_Bucket_Brine", 16, 10)
+        if "canal_on_reload" in self.faults and self.reloads:
+            for c in _cells((130, 135, 3, 2)):       # beside T15R's spot (X0+20, Z0+20 = 135,135)
+                self.terrain[c] = "RM_Fill_Water_Half"
 
     def reload(self):
         """test_site_saves.load_site: the save restarts the clock and the thing-ID counter."""
@@ -122,14 +171,16 @@ class ThirstFakeBridge(object):
         self._reset()
         return {"verified": True, "site": "calm"}
 
-    def _new_pawn(self, kind, faction, x, z):
+    def _new_pawn(self, kind, faction, x, z, spawned=True):
         self.nid += 1
         p = Pawn("Human%d" % self.nid if kind == "Colonist" else "%s%d" % (kind, self.nid), self.nid, kind, faction, x, z)
         p.drafted = False
         if kind == "Colonist":
-            if "refuse_all" in self.faults or ("refuse_first_2" in self.faults and self.refused_n < 2):
+            # review F17: the refusals land on SPAWNED colonists (the workers a row tries), never the starting three
+            if spawned and ("refuse_all" in self.faults or ("refuse_first_2" in self.faults and self.refused_n < 2)):
                 p.refuse = {"Firefighter", "Hauling", "Cooking"}
                 self.refused_n += 1
+                self.refused_ids.append(p.id)
             if "dubs_need" in self.faults:
                 p.dubs = True
         self.pawns[p.id] = p
@@ -269,8 +320,6 @@ class ThirstFakeBridge(object):
         return {"success": True, "pawns": [out]}
 
     def t_rimworld_spawn_thing(self, defName="", x=0, z=0, stackCount=1, **kw):
-        if "stray_fresh_bucket" in self.faults and defName == "RM_Bucket_FreshWater":
-            self._thing("RM_Bucket_FreshWater", int(x) - 3, int(z))   # older id: list_things answers it first
         t = self._thing(defName, int(x), int(z), int(stackCount))
         return {"success": True, "thingId": "Thing_" + t["id"]}
 
@@ -329,6 +378,8 @@ class ThirstFakeBridge(object):
 
     def t_jawa_bill_add(self, giverId="", recipe="", **kw):
         self.bills[giverId] = recipe
+        if "leftover_wood_snow" in self.faults:
+            self._thing("RM_BucketSnow", 12, 10, stuff="WoodLog", warm=4000)
         return {"success": True}
 
     def t_jawa_set_weather_buildup(self, kind="snow", mode="set", rect="", depth=0.0, **kw):
@@ -389,6 +440,10 @@ class ThirstFakeBridge(object):
         if p is None or "draft_refused" in self.faults:
             return {"success": False, "message": "MOCK refusal (unknown pawn or draft_refused)"}
         if p:
+            if drafted and p.carry is not None:        # a drafted pawn drops what it carries, on its own cell
+                p.carry.update(x=p.x, z=p.z)
+                self.things[p.carry["id"]] = p.carry
+                p.carry = None
             p.drafted = bool(drafted)
             p.job, p.job_t = (None, 0) if drafted else (p.job, p.job_t)
             p.think_now = True
@@ -416,8 +471,8 @@ class ThirstFakeBridge(object):
     def t_jawa_pawn_mental(self, pawn="", action="list", **kw):
         p = self._p(pawn)
         if action == "end" and p:
-            p.break_t = 0
-        return {"success": True, "state": "RM_Break_DrinkBrine" if p and p.break_t > 0 else "none"}
+            p.break_t, p.stuck_break = 0, False
+        return {"success": True, "state": "RM_Break_DrinkBrine" if p and (p.break_t > 0 or p.stuck_break) else "none"}
 
     def t_jawa_pawn_force_mental_break(self, pawn="", breakDef="", **kw):
         p = self._p(pawn)
@@ -439,7 +494,12 @@ class ThirstFakeBridge(object):
                "RM_EmptyIntoTankJob": 150}.get(jobDef, 200)
         if jobDef == "Ingest" and "ingest_never_ends" in self.faults:
             dur = 10 ** 9
-        p.job, p.job_t, p.ctx, p.think_now = jobDef, WALK * d + dur, {"a": targetAId, "b": targetBId, "ordered": True}, False
+        ctx = {"a": targetAId, "b": targetBId, "ordered": True}
+        if jobDef == "Ingest" and "ingest_cancelled" in self.faults:
+            dur, ctx["cancel"] = 100, True
+        if jobDef == "Ingest" and tgt["def"] == "HemogenPack" and p.xeno != "Sanguophage" and "base_slow_hemogen" in self.faults:
+            dur, ctx["slow_hemogen"] = 3000, True
+        p.job, p.job_t, p.ctx, p.think_now = jobDef, WALK * d + dur, ctx, False
         self.advance(int(waitTicks))
         return {"success": True, "accepted": True, "beforeJobDef": before, "afterJobDef": jobDef}
 
@@ -450,16 +510,33 @@ class ThirstFakeBridge(object):
             t = self._tank_at(x, z)
             if t is None:
                 return {"success": False, "result": "no tank at %s" % xz}
+            if mode == "Store" and t.get("mode") != "Store":
+                t["store_t"] = self.tick
             t.update(mode=mode, liquid=liquid, units=int(units))
             return {"success": True, "result": "tank %s %s %s" % (mode, liquid, units)}
         if method == "NativeHere":
             p = self._p(args)
             return {"success": True, "result": str(bool(p and p.kind in NATIVE))}
-        if method == "Have":
-            return {"success": True, "result": str(sum(t["stackCount"] for t in self.of("RM_Bottle_FreshWater")))}
+        if method == "Have":     # RM_BottleStock.Have: ground + packed
+            return {"success": True, "result": str(self._stock())}
         if method == "Warning":
             self.log.append(args)
         return {"success": True, "result": ""}
+
+    def _stock(self):
+        return (sum(t["stackCount"] for t in self.of("RM_Bottle_FreshWater")) +
+                sum(t["stackCount"] for p in self.pawns.values() for t in p.inv if t["def"] == "RM_Bottle_FreshWater"))
+
+    def t_jawa_pawn_gear(self, pawn="", action="", clearWhat="all", **kw):
+        p = self._p(pawn)
+        if p is None or "gear_refused" in self.faults:
+            return {"success": False, "error": "MOCK refusal (unknown pawn or gear_refused)"}
+        if action != "clear":
+            self.unmodelled.add("jawa/pawn_gear:" + str(action))
+            return {"success": False, "error": "MOCK: only action=clear is modelled"}
+        if clearWhat in ("inventory", "all"):
+            p.inv = []
+        return {"success": True, "action": "clear"}
 
     # ----------------------------------------------------------- the simulation
     def advance(self, n):
@@ -473,7 +550,10 @@ class ThirstFakeBridge(object):
                 self._pawn(p, dt)
 
     def _world(self, dt):
-        if "no_melt" in self.faults:
+        if self.stray_fresh_at is not None and self.tick >= self.stray_fresh_at:
+            self.stray_fresh_at = None
+            self._thing("RM_Bucket_FreshWater", 5, 5)        # carry_snow: an unrelated fresh bucket, far from any plot
+        if "no_melt" in self.faults or "carry_snow" in self.faults:
             return
         for t in self.of("RM_BucketSnow"):
             t["warm"] = t.get("warm", 0) + dt
@@ -493,10 +573,13 @@ class ThirstFakeBridge(object):
             p.break_t -= dt
             if p.break_t <= 0:
                 p.need = 1.0
-                p.hed["RM_SaltPoisoning"] = p.hed.get("RM_SaltPoisoning", 0.0) + 0.5
+                p.hed["RM_SaltPoisoning"] = 0.0 if "no_poisoning" in self.faults else p.hed.get("RM_SaltPoisoning", 0.0) + 0.5
                 p.mem.append("RM_Thought_SaltRelief")
                 p.job = None
                 p.think_now = True
+                p.stuck_break = "break_never_ends" in self.faults
+            return
+        if p.stuck_break:
             return
         if p.drafted and not p.ctx.get("ordered"):
             return
@@ -530,6 +613,10 @@ class ThirstFakeBridge(object):
             return
         if not thirsty and self._think_work(p):
             return
+        if thirsty and "packer" in self.faults and self.of("RM_Bottle_FreshWater"):
+            t = self.of("RM_Bottle_FreshWater")[0]
+            self._start(p, "RM_PackBottle", 200, {"a": t["id"]}, (t["x"], t["z"]))
+            return
         if thirsty:
             self.marks[p.num] = self.tick + 600       # the terrain search failed: marked
             return self._wander(p)                    # a failed drink search leaves the long GotoWander (poll_job's stop_job)
@@ -538,6 +625,8 @@ class ThirstFakeBridge(object):
     def _think_drink(self, p, desperate):
         s = self.settings
         fresh = [t for t in self.of("RM_Bottle_FreshWater") + self.of("RM_Bottle_IcyWater")]
+        if "no_far_bottle" in self.faults:
+            fresh = [t for t in fresh if abs(t["x"] - p.x) + abs(t["z"] - p.z) <= 20]
         if fresh:
             t = min(fresh, key=lambda t: abs(t["x"] - p.x) + abs(t["z"] - p.z))
             dur = 500 + (900 if "ingest_slow" in self.faults else 0)
@@ -555,8 +644,20 @@ class ThirstFakeBridge(object):
             return True
         if self.marks.get(p.num, -1) > self.tick:
             return False
+        # sneak_off_drink: a refused setting drinks anyway, done inside 20 ticks (no walk) -- between two job samples
+        if "sneak_off_drink" in self.faults and (not s["drinkFromTerrain"] or (desperate and not s["lastResortDrinking"])):
+            c = self._nearest(p, self.terr(DRINKABLE + TOXIC + tuple(SLIME)))
+            if c:
+                kind = "fresh" if self.terrain[c] in DRINKABLE else ("toxic" if self.terrain[c] in TOXIC else "slime")
+                self._start(p, "RM_DrinkFromTerrain", 20, {"cell": c, "kind": kind})
+                return True
+        if "sneak_005_drink" in self.faults and not desperate and p.need <= 0.06 and s["lastResortDrinking"]:
+            c = self._nearest(p, self.terr(TOXIC + tuple(SLIME)))
+            if c:
+                self._start(p, "RM_DrinkFromTerrain", 20, {"cell": c, "kind": "toxic" if self.terrain[c] in TOXIC else "slime"})
+                return True
         if "no_terrain_drink" not in self.faults and (s["drinkFromTerrain"] or "terrain_when_off" in self.faults):
-            c = self._nearest(p, self.terr(FRESH))
+            c = self._nearest(p, self.terr(DRINKABLE))
             if c:
                 self._start(p, "RM_DrinkFromTerrain", 200, {"cell": c, "kind": "fresh"}, c)
                 return True
@@ -576,7 +677,13 @@ class ThirstFakeBridge(object):
     def _think_animal(self, p):
         if not (self.settings["animalsGetThirst"] and p.need < 0.3):
             return self._wander(p, 300)
-        c = self._nearest(p, self.terr(FRESH))
+        if "no_animal_terrain" in self.faults:
+            bt = self.of("RM_Bottle_FreshWater")
+            if bt:
+                t = min(bt, key=lambda t: abs(t["x"] - p.x) + abs(t["z"] - p.z))
+                return self._start(p, "Ingest", 300, {"a": t["id"]})      # no walk modelled: inside any row's window
+            return self._wander(p, 300)
+        c = self._nearest(p, self.terr(DRINKABLE))
         kind = "fresh"
         if c is None and p.kind in NATIVE:
             c, kind = self._nearest(p, self.terr(SALT)), "salt"
@@ -586,8 +693,8 @@ class ThirstFakeBridge(object):
 
     def _water_for_fill(self, p):
         if "fill_salt" in self.faults:
-            return self._nearest(p, self.terr(FRESH + SALT))
-        return self._nearest(p, self.terr(FRESH))
+            return self._nearest(p, self.terr(DRINKABLE + SALT))
+        return self._nearest(p, self.terr(DRINKABLE))
 
     def _think_work(self, p):
         pr = p.prio
@@ -602,29 +709,37 @@ class ThirstFakeBridge(object):
         if haul:
             # a Fill-mode tank holding brine orders brine buckets; a Store tank must not (store_still_fills breaks that)
             for tid, tk in self.tanks.items():
-                if tk["liquid"] == "RM_Liquid_Brine" and (tk["mode"] == "Fill" or "store_still_fills" in self.faults):
+                settle = "store_fill_settle" in self.faults and tk["mode"] == "Store" and self.tick < tk.get("store_t", -10 ** 9) + 450
+                if tk["liquid"] == "RM_Liquid_Brine" and (tk["mode"] == "Fill" or "store_still_fills" in self.faults or settle):
                     emp = self.of("RM_BucketEmpty")
                     brine = self._nearest(p, self.terr(BRINE))
                     if emp and brine:
                         self._start(p, "RM_FillBottleJob", 300, {"empty": emp[0]["id"], "tank": tid, "brine": True}, brine)
                         return True
             water = self._water_for_fill(p)
-            stock = sum(t["stackCount"] for t in self.of("RM_Bottle_FreshWater"))
+            stock = self._stock()           # RM_BottleStock.Have: ground + packed (packed bottles count, by ruling)
             target = int(self.settings["filledBottlesPerColonist"]) * len([q for q in self.pawns.values() if q.human])
             emp_b = self.of("RM_BottleEmpty")
             if water and emp_b and stock < target + (12 if "stock_overfill" in self.faults else 0):
-                k = min(10, target - stock + (12 if "stock_overfill" in self.faults else 0), sum(t["stackCount"] for t in emp_b))
+                k = min(10 if "one_trip" not in self.faults else 10 ** 6,
+                        target - stock + (12 if "stock_overfill" in self.faults else 0), sum(t["stackCount"] for t in emp_b))
                 self._start(p, "RM_FillBottleJob", 300, {"bottles": max(1, k), "salt": water in self.terr(SALT)}, water)
                 return True
             emp_k = self.of("RM_BucketEmpty")
-            if water and emp_k:
-                self._start(p, "RM_FillBottleJob", 300, {"bucket": emp_k[0]["id"], "salt": water in self.terr(SALT)}, water)
+            if "carry_snow" in self.faults and p.carry is None and self.of("RM_BucketSnow"):
+                t = self.of("RM_BucketSnow")[0]
+                self._start(p, "RM_HaulSnow", 300, {"a": t["id"]}, (t["x"], t["z"]))
+                return True
+            # stray_fresh_bucket (job 832567): an undrafted hauler refills dirty buckets too, from any source it can reach
+            refill = emp_k + (self.of("RM_BucketDirty") if "stray_fresh_bucket" in self.faults else [])
+            if water and refill and "no_bucket_fill" not in self.faults:
+                self._start(p, "RM_FillBottleJob", 300, {"bucket": refill[0]["id"], "salt": water in self.terr(SALT)}, water)
                 return True
             if self.settings["snowGathering"] and self.snow and emp_k and not self.terr(FRESH):
                 c = self._nearest(p, list(self.snow))
                 self._start(p, "RM_GatherSnow", 200, {"bucket": emp_k[0]["id"], "cell": c}, c)
                 return True
-        if pr.get("Cooking", 3) > 0 and "Cooking" not in p.refuse:
+        if pr.get("Cooking", 3) > 0 and "Cooking" not in p.refuse and "no_bill" not in self.faults:
             for fid, recipe in self.bills.items():
                 ice = self.of("RM_BlueIce")
                 emp = self.of("RM_BucketEmpty")
@@ -643,11 +758,13 @@ class ThirstFakeBridge(object):
         p.ctx = {}
         ordered = c.get("ordered")
         if job == "Ingest":
+            if c.get("cancel"):
+                return                                       # ingest_cancelled: ended, nothing consumed
             t = self.things.pop(c.get("a"), None)
             if t is None:
                 return
             if t["def"] == "HemogenPack":
-                p.need = min(1.0, p.need + (0.5 if p.xeno == "Sanguophage" else 0.0))
+                p.need = min(1.0, p.need + (0.5 if p.xeno == "Sanguophage" else (0.3 if c.get("slow_hemogen") else 0.0)))
             elif t["def"] == "RM_Bottle_SaltWater":
                 p.need = min(1.0, p.need + (0.6 if "salt_ratio" in self.faults else 0.42))
                 self._hurt(p, "RM_SaltPoisoning", 0.25)
@@ -661,10 +778,12 @@ class ThirstFakeBridge(object):
             if t is None:
                 return
             t["liters"] = t.get("liters", 15.0) - 1.5
-            p.need = min(1.0, p.need + 0.15)
+            t["drinks"] = t.get("drinks", 0) + 1
+            if not ("last_drink_empty" in self.faults and t["drinks"] >= 10):
+                p.need = min(1.0, p.need + 0.15)
             if self.settings["roughDrinkPenalty"]:
                 p.mem.append("RM_Thought_DrankRough")
-            if t["liters"] <= 0.01:
+            if t["liters"] <= 0.01 or "single_use_bucket" in self.faults:
                 del self.things[t["id"]]
                 self._thing("RM_BucketDirty", t["x"], t["z"])
         elif job == "RM_DrinkWaterItem":
@@ -703,7 +822,7 @@ class ThirstFakeBridge(object):
                     self._thing("RM_Bucket_Brine", p.x, p.z)
                     self._thing("RM_BucketEmpty", p.x + 3, p.z)   # the next empty stays for a second trip
                     tk = self.tanks.get(c["tank"])
-                    if tk and tk["mode"] == "Fill":
+                    if tk and tk["mode"] == "Fill" and "no_pour" not in self.faults:
                         tk["units"] += 100
             elif c.get("bottles"):
                 left = c["bottles"]
@@ -720,11 +839,22 @@ class ThirstFakeBridge(object):
                 t = self.things.pop(c["bucket"], None)
                 if t:
                     self._thing("RM_Bucket_FreshWater", t["x"], t["z"])
+                    if "stray_fresh_bucket" in self.faults:
+                        self.stray_refills += 1
         elif job == "RM_GatherSnow":
             t = self.things.pop(c.get("bucket"), None)
             if t:
                 x, z = c["cell"]
                 self._thing("RM_BucketSnow", x, z, stuff=t.get("stuff"))
+        elif job == "RM_PackBottle":
+            t = self.things.pop(c.get("a"), None)
+            if t:
+                p.inv.append(t)
+        elif job == "RM_HaulSnow":
+            t = self.things.pop(c.get("a"), None)
+            if t:
+                p.carry = t
+                self.stray_fresh_at = self.tick + 4000
         elif job == "RM_DouseFireWithBucket":
             bk = self.things.pop(c.get("a"), None)
             f = self.things.get(c.get("fire"))

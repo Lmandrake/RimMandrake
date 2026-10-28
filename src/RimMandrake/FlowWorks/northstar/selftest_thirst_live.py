@@ -123,7 +123,10 @@ CASES = [
     ("nobody douses", "T24", ["no_fire_job"], [("T24", "FAIL")]),
     ("douse puts out one fire", "T24", ["douse_single"], [("T24", "FAIL")]),
     ("fires do not take", "T24", ["no_fuel"], [("T24", "UNMEASURED")]),
-    ("refused pawns are replaced", "T24,T23,T25", ["refuse_first_2"], [("T24", "PASS"), ("T23", "PASS"), ("T25", "PASS")]),
+    # review 2026-10-27 F17: each refusal row alone, so each one meets its own refused workers
+    ("refused pawns are replaced (T24)", "T24", ["refuse_first_2"], [("T24", "PASS")]),
+    ("refused pawns are replaced (T23)", "T23", ["refuse_first_2"], [("T23", "PASS")]),
+    ("refused pawns are replaced (T25)", "T25", ["refuse_first_2"], [("T25", "PASS")]),
     ("store tank still fills", "T23", ["store_still_fills"], [("T23", "FAIL")]),
     ("in-flight pour is drained", "T23", ["inflight_pour"], [("T23", "PASS")]),
     ("snow never melts", "T25", ["no_melt"], [("T25", "FAIL")]),
@@ -138,18 +141,64 @@ CASES = [
     ("snow not laid", "T25", ["snow_refused"], [("T25", "UNMEASURED")]),
     # job 832567 (2026-10-27): a refilled leftover bucket took drinks 11-14 and was read as the part-drunk one
     ("a stray fresh bucket is not the row's bucket", "T20", ["stray_fresh_bucket"], [("T20", "PASS")]),
+    # THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES (GPT review 2026-10-27): every case below is a route the OLD row read as PASS
+    # (before/after evidence: D:\ClaudeWork\rimmandrake\thirst_t20\harden_evidence\batch_out.txt); the hardened row must not
+    ("F3 leftover bottles, animals ingest them", "T9", ["leftover_bottle_x2", "no_animal_terrain"], [("T9", "FAIL")]),
+    ("F3 leftover bottle, native animal ingests it", "T14", ["leftover_bottle", "no_animal_terrain"], [("T14", "FAIL")]),
+    ("F4 far bottle packed, never drunk", "T12", ["no_far_bottle", "packer"], [("T12", "FAIL")]),
+    ("F6 one drink uses the bucket up", "T19", ["single_use_bucket"], [("T19", "FAIL")]),
+    ("F6 bottle ingest cancelled", "T19", ["ingest_cancelled"], [("T19", "UNMEASURED")]),
+    ("F7 the 10th drink hydrates nothing", "T20", ["last_drink_empty"], [("T20", "FAIL")]),
+    ("F1 a Fill tank never receives the pour", "T23", ["no_pour"], [("T23", "FAIL")]),
+    ("F8 Store still fills inside the settle", "T23", ["store_fill_settle"], [("T23", "FAIL")]),
+    ("F8 an old brine bucket off the plot is not the row's", "T23", ["old_brine_offplot"], [("T23", "PASS")]),
+    ("F9 snow carried off, an unrelated fresh bucket lands", "T25", ["carry_snow"], [("T25", "FAIL")]),
+    ("F10 the pond arm fills nothing", "T25", ["no_bucket_fill"], [("T25", "FAIL")]),
+    ("F11 no bill, an old wooden snow bucket melts", "T26", ["no_bill", "leftover_wood_snow"], [("T26", "FAIL")]),
+    ("F12 packed starting stock is cleared and measured", "T29", ["packed_stock"], [("T29", "PASS")]),
+    ("F12 packed stock hid a one-trip fill", "T29", ["packed_stock", "one_trip"], [("T29", "FAIL")]),
+    ("F12 inventories cannot be cleared", "T29", ["gear_refused"], [("T29", "UNMEASURED")]),
+    ("F13 OFF arm drinks between samples (T10)", "T10", ["sneak_off_drink"], [("T10", "FAIL")]),
+    ("F13 OFF arm drinks between samples (T16)", "T16", ["sneak_off_drink"], [("T16", "FAIL")]),
+    ("F13 the 0.05 pawn drinks between samples", "T15", ["sneak_005_drink"], [("T15", "FAIL")]),
+    ("F14 the salt break never ends", "T17", ["break_never_ends"], [("T17", "FAIL")]),
+    ("F14 the salt break poisons nothing", "T17", ["no_poisoning"], [("T17", "FAIL")]),
+    ("F5 a baseliner's hemogen ingest outlasts the window", "T28", ["base_slow_hemogen"], [("T28", "UNMEASURED")]),
+    ("F2 reload canal water masked the stale mark", "T15R", ["stale_mark", "canal_on_reload"], [("T15R", "FAIL")]),
+    ("F2 reload canal water is dried (clean)", "T15R", ["canal_on_reload"], [("T15R", "PASS")]),
 ]
+def want_exit(res):
+    """validation_core.rows_exit: any FAIL -> 1, else any UNMEASURED -> 2, else 0 (review F20: the code is read too)."""
+    ss = [r["status"] for r in res["rows"]]
+    return 1 if "FAIL" in ss else (2 if "UNMEASURED" in ss else 0)
+
+
+def settings_back(B):
+    return all(str(B.settings[k]).lower() == str(thirst_fake.SETTINGS0[k]).lower() for k in thirst_fake.SETTINGS0)
+
+
 for label, only, faults, wants in CASES:
     code, res, B, _ = run(only, faults)
     for rid, status in wants:
         expect(label, res, rid, status)
+    check("%s: exit code %s follows the rows" % (label, code), res["rows"] and code == want_exit(res), (code, want_exit(res)))
+    check("%s: settings restored" % label, settings_back(B), B.settings)
     if label == "in-flight pour is drained":
         check("in-flight pour: the late stop and its landing really happened", getattr(B, "late_stops", 0) >= 1 and getattr(B, "late_drops", 0) >= 1,
               (getattr(B, "late_stops", 0), getattr(B, "late_drops", 0)))
         det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T23"))
-        check("in-flight pour: the late bucket was cleared before the Store baseline", det.get("droppedAtSwitch") == 0, det.get("droppedAtSwitch"))
-    if label == "refused pawns are replaced":
-        check("refused pawns: two colonists were refused and replaced", B.refused_n >= 2, B.refused_n)
+        # review F8: the one fill in flight at the switch is allowed (and only it); its landing is not a Store order
+        check("in-flight pour: one fill was in flight at the switch and only it landed in the settle",
+              det.get("inFlightAllowance") == 1 and len(det.get("landedInSettle") or []) == 1,
+              (det.get("inFlightAllowance"), det.get("landedInSettle")))
+    if label.startswith("refused pawns are replaced"):
+        # review F17: the refusals land on the row's spawned workers; each was drafted out of the way and replaced
+        check("%s: two spawned workers were refused" % label, len(B.refused_ids) >= 2, B.refused_ids)
+        check("%s: every refused worker was drafted" % label, all(B.pawns[i].drafted for i in B.refused_ids if i in B.pawns),
+              [(i, B.pawns[i].drafted) for i in B.refused_ids if i in B.pawns])
+    if label == "F12 packed starting stock is cleared and measured":
+        det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T29"))
+        check("F12: the stock was measured from empty packs", det.get("stockBefore") == 0, det.get("stockBefore"))
     if label == "snow never melts":
         det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T25"))
         check("snow never melts: the row followed the bucket for the whole 7,000", det.get("meltTicks") is None and len(det.get("meltTrace") or []) == 14, det.get("meltTrace"))
@@ -178,6 +227,34 @@ code, res, B, _ = run("T7", log=bad_log)
 expect("exception naming RM_Thirst", res, "T7", "FAIL")
 code, res, B, _ = run("T7", log=os.path.join(TMP, "missing.log"))
 expect("no log given", res, "T7", "UNMEASURED")
+# review F15: the exception headline names no mod; its stack frames do (the old line test read this as clean)
+ml_log = os.path.join(TMP, "multiline.log")
+with open(ml_log, "w") as f:
+    f.write("[FlowWorks] thirst provider: Own (x)\nNullReferenceException: Object reference not set to an instance of an object\n"
+            "  at RimMandrake.FlowWorks.Thirst.RM_Thirst.NeedInterval () [0x00012] in <abc>:0\n"
+            "  at Verse.Pawn.Tick () [0x00000] in <def>:0\n")
+code, res, B, _ = run("T7", log=ml_log)
+expect("multiline exception whose frames name RM_Thirst", res, "T7", "FAIL")
+ok_log = os.path.join(TMP, "unrelated.log")
+with open(ok_log, "w") as f:
+    f.write("[FlowWorks] thirst provider: Own (x)\nNullReferenceException: Object reference not set\n"
+            "  at SomeOtherMod.Thing.Tick () [0x0] in <a>:0\nRM_Thirst need ticked fine\n")
+code, res, B, _ = run("T7", log=ok_log)
+expect("an unrelated exception followed by a plain RM_Thirst line", res, "T7", "PASS")
+
+# ---- review F16: row() discards the pawns under test, so the next row drafts them as bystanders
+_row_src = open(os.path.join(HERE, "thirst_live.py"), encoding="utf-8").read()
+_row_src = _row_src[_row_src.find("    def row(rid, st, cls, det):"):]
+check("F16: row() clears UNDER_TEST before it records", "UNDER_TEST.clear()" in _row_src[:_row_src.find("\n    def ", 10)])
+
+# ---- review F18: the stray refill really fires when its conditions hold (undrafted, not thirsty, water, an empty bucket)
+_B = thirst_fake.ThirstFakeBridge(faults=["stray_fresh_bucket"])
+_B.call("jawa/set_terrain_batch", ops="WaterShallow:30,30,2,2")
+for _p in _B.pawns.values():
+    _p.need, _p.prio = 0.9, {"Hauling": 1}
+_B.ticks(3000)
+check("F18: an undrafted hauler refilled the stray bucket", _B.stray_refills >= 1 and _B.of("RM_Bucket_FreshWater"),
+      (_B.stray_refills, [t["def"] for t in _B.things.values()]))
 
 # ---- THIRST_FIX_SALT_DRUNK_ROUTINELY / THIRST_FIX_DESPERATE_SKIPS_BOTTLE: the freshwater depth ladder is potable and dried
 import re  # noqa: E402
