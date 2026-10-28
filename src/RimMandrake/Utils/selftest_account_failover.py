@@ -272,5 +272,104 @@ end = calls[0][1] + float(calls[0][0][calls[0][0].index("--hours") + 1]) * 3600 
 ok = end is not None and abs(end - TR) <= 20
 fails += not ok
 print("%s  stage2 --hours ends at lukas's reset after a slow status call: %r vs %r" % ("ok  " if ok else "FAIL", end, TR))
+# review r4 2026-10-28 (GPT cold read + systemd sequence read)
+# a marker written before the switch whose pass died before `use` finished (phase pending, older than any pass) with
+# FROM still live is an attempt, not a switch: stage 2 drops it so the next pass retries, instead of idling for good
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
+    A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+    A.run = lambda argv: (0, "x")
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": L(7)}})))
+    A.time = types.SimpleNamespace(time=lambda: t2)
+    A.live_account = lambda: "system"
+    try:
+        _json.dump({"phase": "pending", "at": t2 - 3600}, open(A.MARKER, "w"))
+        A.check(True)
+        kept_dry = os.path.exists(A.MARKER)
+        A.check(False)
+        dropped = not os.path.exists(A.MARKER)
+        _json.dump({"phase": "pending", "at": t2 - 60}, open(A.MARKER, "w"))
+        A.check(False)
+        kept_young = os.path.exists(A.MARKER)
+        _json.dump({"phase": "done", "at": t2 - 3600}, open(A.MARKER, "w"))
+        A.check(False)
+        kept_done = os.path.exists(A.MARKER)
+        recs = [_json.loads(x) for x in open(os.path.join(td, "log.jsonl"))]
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account = saved
+ok = kept_dry and dropped and kept_young and kept_done
+fails += not ok
+print("%s  a stale pending marker with FROM live is dropped (not dry, not young, not done): %r %r %r %r"
+      % ("ok  " if ok else "FAIL", kept_dry, dropped, kept_young, kept_done))
+# dry-run records are marked: a hand dry-run must not read as a timer pass in the shared log
+ok = recs[0].get("dry") is True and not recs[1].get("dry")
+fails += not ok
+print("%s  dry-run log records carry dry=true: %r" % ("ok  " if ok else "FAIL", [r.get("dry") for r in recs[:2]]))
+# a clean switch completes its marker (phase done)
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
+    A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+    seen = []
+    A.live_account = lambda: "system"
+
+    def _run(argv):
+        if argv[1] == "use":
+            seen.append(_json.load(open(A.MARKER)).get("phase"))
+        return (1 if argv[1] == "disarm" else 0), argv[1]
+    A.run = _run
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+    A.time = types.SimpleNamespace(time=lambda: DL - 3600)
+    try:
+        rc = A.check(False)
+        phase = _json.load(open(A.MARKER)).get("phase")
+        rec = [_json.loads(x) for x in open(os.path.join(td, "log.jsonl"))][-1]
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account = saved
+ok = seen == ["pending"] and phase == "done" and rc != 0 and "marker" in rec
+fails += not ok
+print("%s  marker pending during `use`, done after; a failed disarm is a nonzero exit; log says marker: %r %r %r %r"
+      % ("ok  " if ok else "FAIL", seen, phase, rc, rec.get("marker")))
+# after DARK the log must not say "burning"; the deadline reason names the target's reading, not FROM's
+_, why = A.decide2({"lukas": L(1)}, t2, "lukas", {"burn": 1, "off": 1})
+ok = "burning" not in why and "DARK" in why
+fails += not ok
+print("%s  after off the stage-2 reason says DARK, not burning: %s" % ("ok  " if ok else "FAIL", why))
+_, why = A.decide({"system": M(1), "lukas": M(50)}, dl, False)
+ok = "system above" not in why
+fails += not ok
+print("%s  deadline reason does not claim FROM is above the threshold: %s" % ("ok  " if ok else "FAIL", why))
+# stage2.json is replaced atomically: a write that dies midway keeps the previous state (an off never reverts to burn)
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.json)
+    A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+    open(A.MARKER, "w").write("{}")
+    _json.dump({"burn": 1}, open(A.STAGE2, "w"))
+    A.run = lambda argv: (0, "set")
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+        stdout=_json.dumps({"accounts": {"system": M(50), "lukas": L(1)}})))
+    A.time = types.SimpleNamespace(time=lambda: t2)
+    A.live_account = lambda: "lukas"
+
+    def _dump(obj, f, *a, **k):
+        f.write("{")
+        raise OSError("disk")
+    A.json = types.SimpleNamespace(dump=_dump, load=_json.load, loads=_json.loads, dumps=_json.dumps,
+                                   JSONDecoder=_json.JSONDecoder)
+    try:
+        try:
+            A.check(False)
+        except OSError:
+            pass
+        A.json = _json
+        prev = _json.load(open(A.STAGE2))
+    except ValueError:
+        prev = None
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.json = saved
+ok = prev == {"burn": 1}
+fails += not ok
+print("%s  a stage2.json write that dies keeps the previous state: %r" % ("ok  " if ok else "FAIL", prev))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

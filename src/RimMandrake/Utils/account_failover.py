@@ -36,11 +36,26 @@ STAGE2 = os.path.join(OUT_DIR := "/mnt/d/ClaudeWork/rimmandrake/account_failover
 OUT = OUT_DIR
 MARKER = os.path.join(OUT, "switched.json")
 CA = os.path.expanduser("~/.local/bin/claude-account")
+# a pending marker older than any one pass (arm + use + disarm at 600 s each, plus the reads) is a pass that died
+# between writing it and finishing `use` (review r4 2026-10-28)
+STALE_PENDING_S = 2400
+DRY = False  # set by check(): dry-run records say so in the shared log
+
+
+def write_atomic(path, obj):
+    """json to path via a temp file and os.replace: a pass that dies mid-write leaves the previous state."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(obj, f)
+    os.replace(tmp, path)
 
 
 def log(rec):
     os.makedirs(OUT, exist_ok=True)
     rec["at"] = datetime.now().astimezone().isoformat(timespec="seconds")
+    if DRY:
+        rec["dry"] = True  # a hand dry-run must not read as a timer pass (review r4)
     with open(os.path.join(OUT, "log.jsonl"), "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, sort_keys=True) + "\n")
     print(json.dumps(rec, sort_keys=True))
@@ -72,7 +87,8 @@ def decide(acc, now, marker_exists):
             return False, "deadline, but %s reading is %s: never switch on a guess" % (TO, b.get("source"))
         if bl <= THRESHOLD:
             return False, "deadline, but %s is at %.1f%% left: nothing to gain" % (TO, bl)
-        return True, "deadline reached with %s above %.1f%%; %s reads %r" % (FROM, THRESHOLD, TO, bl)
+        return True, "deadline %s reached (%s reads %r); %s reads %r > %.1f%%" % (
+            DEADLINE, FROM, a.get("week_pct_left"), TO, bl, THRESHOLD)
     if a.get("source") != "MEASURED" or a.get("stale"):
         return False, "%s reading is %s%s: never switch on a guess" % (FROM, a.get("source"),
                                                                      " (stale)" if a.get("stale") else "")
@@ -121,6 +137,8 @@ def decide2(acc, now, live, st):
         return "off", "%s MEASURED at %.1f%% left <= %.1f%%: wait for the reset" % (TO, left, THRESHOLD)
     if not st.get("burn") and not st.get("off"):
         return "burn", "switched to %s: burn it" % TO
+    if st.get("off"):
+        return None, "DARK; waiting for the %s reset; %s reads %r%%" % (TO_RESET, TO, left)
     return None, "burning; %s reads %r%%" % (TO, left)
 
 
@@ -136,6 +154,18 @@ def stage2(acc, dry):
         st = {}
     live = live_account()
     now = time.time()  # after the status call: a slow one must not push the window past TO_RESET (review r3)
+    try:
+        mk = json.load(open(MARKER))
+    except Exception:  # noqa: BLE001
+        mk = {}
+    if (isinstance(mk, dict) and mk.get("phase") == "pending" and live not in (None, TO)
+            and now - float(mk.get("at") or now) > STALE_PENDING_S):
+        # the pass that wrote it died before `use` finished and TO is not live: an attempt, not a switch; drop it so the
+        # next pass decides again (review r4: otherwise stage 2 idles on the wrong account for good)
+        if not dry:
+            os.remove(MARKER)
+        log({"do": "abandoned_switch_dropped", "why": "pending marker from %s, live is %r" % (mk.get("at"), live)})
+        return 0
     act, why = decide2(acc, now, live, st)
     if act is None:
         log({"do": "stage2_skip", "why": why})
@@ -151,12 +181,14 @@ def stage2(acc, dry):
     if rc == 0:
         st[act] = now
         os.makedirs(OUT, exist_ok=True)
-        json.dump(st, open(STAGE2, "w"))
+        write_atomic(STAGE2, st)
     log({"do": "stage2_" + act, "why": why, "rc": rc, "out": out[-300:]})
     return 0 if rc == 0 else 2
 
 
 def check(dry):
+    global DRY
+    DRY = dry
     try:  # a hung meter is a logged skip, never a traceback that kills the pass (review 2026-10-28)
         r = subprocess.run([sys.executable, os.path.join(HERE, "account_usage.py"), "now", "--json"],
                            capture_output=True, text=True, timeout=120)
@@ -181,8 +213,8 @@ def check(dry):
             json.dump({"why": "already live on %s" % TO, "at": time.time()}, f)
         log({"do": "skip_switch", "why": "%s is already live: marked, stage 2 takes over" % TO})
         return 0
-    with open(MARKER, "w") as f:      # before the switch: the switch closes this machine's agents, never twice
-        json.dump({"why": why, "at": time.time()}, f)
+    # before the switch, phase pending: if this pass dies before `use` finishes, stage 2 can tell an attempt from a switch
+    write_atomic(MARKER, {"why": why, "at": time.time(), "phase": "pending"})
     rc1, o1 = run([CA, "arm", "--confirm", MACHINE])
     if rc1 != 0:
         rc2, o2 = None, "not armed"
@@ -191,12 +223,19 @@ def check(dry):
     else:
         rc2, o2 = run([CA, "use", TO, "--confirm", MACHINE])
     rc3, o3 = run([CA, "disarm"])
-    if rc2 is None or (rc2 != 0 and live_account() != TO):
+    live_after = TO if rc2 == 0 else (live_account() if rc2 is not None else FROM)
+    if live_after != TO:
         # `use` never ran, or failed/timed out and TO is not live: nothing switched, the next pass may retry
         # (a kept marker would leave stage 2 idle on the wrong account for good; review night, r2 2026-10-28)
         os.remove(MARKER)
-    log({"do": "switch", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3]})
-    return 0 if rc2 == 0 else 2
+        marker = "dropped: the next pass decides again"
+    else:
+        write_atomic(MARKER, {"why": why, "at": time.time(), "phase": "done", "use_rc": rc2})
+        marker = "kept: stage 2 takes over"
+    log({"do": "switch", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3],
+         "live_after": live_after, "marker": marker})
+    # a failed disarm leaves the machine armed: nonzero so the journal shows it (review r4)
+    return 0 if rc2 == 0 and rc3 == 0 else 2
 
 
 if __name__ == "__main__":
