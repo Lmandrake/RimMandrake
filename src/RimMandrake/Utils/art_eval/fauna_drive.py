@@ -153,7 +153,7 @@ def cmd_rows(a):
             sys.exit(1)
 
 
-ART = Path("/mnt/d/ClaudeWork/rimmandrake/artpipe")
+ART = R.artpipe_queue()   # honours ARTPIPE_STATE_DIR like auto_judge.ART and runner.in_queue
 
 
 def job_png(job: str):
@@ -320,25 +320,29 @@ def cmd_install(a):
         print(refusal)
         return 3
     judged = (cand.get("source_sha256") or {})
-    for fl in files:
-        src = job_png(f"arteval_{a.defname}_{tg}_{fl['face']}")
-        if src and not render_is_judged(judged, fl["face"], AL.sha256_file(src)):
-            print(f"{a.defname}: {fl['face']} render {AL.sha256_file(src)[:12]} is not the picture judged "
-                  f"({str(judged.get(fl['face']))[:12]}) - re-rendered after judging, not installed")
-            return 3
     dest = ROOT / "Transient" / "fauna_regen" / a.defname
     dest.mkdir(parents=True, exist_ok=True)
-    rc = 0
-    done = []
+    # copy FIRST, then judge the copy: hashing the queue file and copying it later lets a re-render slip in between
+    # and installs a picture nobody judged. A missing render installs nothing (a partial set mixes two creatures).
+    locals_ = {}
     for fl in files:
         f = fl["face"]
         src = job_png(f"arteval_{a.defname}_{tg}_{f}")
         if not src:
-            print(f"SKIP {f}: no render")
-            rc = 1
-            continue
-        local = dest / f"{tg}_{f}.png"
-        shutil.copy(src, local)
+            print(f"{a.defname}: {f} has no render - nothing installed (a partial set would mix two pictures)")
+            return 1
+        locals_[f] = dest / f"{tg}_{f}.png"
+        shutil.copy(src, locals_[f])
+        got = AL.sha256_file(locals_[f])
+        if not render_is_judged(judged, f, got):
+            print(f"{a.defname}: {f} render {got[:12]} is not the picture judged "
+                  f"({str(judged.get(f))[:12]}) - re-rendered after judging, not installed")
+            return 3
+    rc = 0
+    done = []
+    for fl in files:
+        f = fl["face"]
+        local = locals_[f]
         cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/art/art.py"), "install", fl["mod"], fl["rel"],
                "--file", str(local.relative_to(ROOT))]
         cmd += install_provenance(fl["kept"], verdict)

@@ -299,7 +299,7 @@ def compare_veto():
         (run / "decisions.jsonl").write_text(json.dumps(dict(acc, decision="REGEN", candidate=None, round=1, image_sha256={"south": "0"})) + "\n"
                                              + json.dumps(dict(acc, decision="REGEN", candidate="r1", round=2, image_sha256={"south": "a"})) + "\n"
                                              + json.dumps(dict(acc, image_sha256={"south": "b"})) + "\n")
-        (run / "regen_jobs.json").write_text(json.dumps([{"id": "arteval_RM_FireHawk_r2", "prompt": "A lean raptor. Painterly."}]))
+        (run / "regen_jobs.json").write_text(json.dumps([{"id": "arteval_RM_FireHawk_r2", "prompt": "A lean raptor. Painterly."}, {"id": "arteval_RM_FireHawk__x_s1r2", "prompt": "WRONG VARIANT"}]))
         filed = []
         import runner as RR
         saved = (AJ.STATE, RR.file_regen_jobs)
@@ -311,7 +311,7 @@ def compare_veto():
             rows = [json.loads(x) for x in (run / "decisions.jsonl").read_text().splitlines()]
             check("veto_to_regen appends the REGEN record to the run's decisions", rows[-1]["decision"] == "REGEN" and rows[-1]["candidate"] == "r2" and len(rows) == 4, rows[-1])
             check("veto_to_regen files the next round to the queue with the reason in its prompt",
-                  len(filed) == 1 and filed[0][0]["id"] == "arteval_RM_FireHawk_r3" and "burning log perch" in filed[0][0]["prompt"], filed)
+                  len(filed) == 1 and filed[0][0]["id"] == "arteval_RM_FireHawk_r3" and "burning log perch" in filed[0][0]["prompt"] and "WRONG VARIANT" not in filed[0][0]["prompt"], filed)
             check("a vetoed ACCEPT is not vetoed twice", AJ.already_vetoed(AJ.run_records("fauna_auto_q"), acc))
         finally:
             AJ.STATE, RR.file_regen_jobs = saved

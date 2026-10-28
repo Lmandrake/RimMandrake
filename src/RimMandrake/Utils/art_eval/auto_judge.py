@@ -355,7 +355,7 @@ def veto_to_regen(rid: str, rec: dict, cmp: dict, st: dict) -> dict:
     for f in sorted((STATE / "runs").glob("*/regen_jobs.json")):
         try:
             for j in json.loads(f.read_text()):
-                if j.get("id", "").startswith(f"arteval_{sub}_") and j["id"].endswith(str(rec.get("candidate"))):
+                if j.get("id") == f"arteval_{sub}_{rec.get('candidate')}":   # exact: a '_<variant>_s1r2' id also ends with 'r2'
                     base = j.get("prompt") or base
         except (OSError, ValueError):
             pass
