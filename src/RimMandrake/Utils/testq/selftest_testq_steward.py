@@ -182,7 +182,10 @@ def main():
         check(a == b, "while the lease is live the clock does not move (%d -> %d)" % (a, b))
         c1 = step(exp + 10)["incident"]["unowned_s"]
         c = step(exp + 610)["incident"]["unowned_s"]
-        check(c1 > b and c == c1 + 600, "the lease lapsed: the clock resumes (%d -> %d -> %d)" % (b, c1, c))
+        check(c1 == b + 10 and c == c1 + 600, "the lease lapsed: only the time after expiry is charged (%d -> %d -> %d)"
+              % (b, c1, c))
+        check(W.claim_cover(item, exp - 100, exp + 100) == 100 and W.claim_cover(item, exp + 5, exp + 50) == 0
+              and W.claim_cover(item, exp - 50, exp - 10) == 40, "claim_cover counts only the seconds under the lease")
 
         inc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
         check(W.maybe_wake(dict(inc), {"reason": "r"}, exp + 700).startswith("skipped: cooldown") and len(wakes) == 1,
@@ -311,6 +314,40 @@ def main():
         j = [json.loads(x) for x in open(T.q("steward.jsonl"))]
         check(any(e["event"] == "restart" for e in j) and any(e["event"] == "state" for e in j),
               "steward.jsonl holds state changes and the restart")
+        # ------------------------------------------------ review r2: watcher recovery, refused raise, lock, dup
+        reset()
+        S.dump({"epoch": base + 1000, "incident": {"state": "BRAKED", "level": 1, "unowned_s": 700, "item": item},
+                "state": "BRAKED", "fault": True}, T.q("steward.json"))
+        S.dump({"first_seen": base, "incident": {"state": "STALE_HEARTBEAT", "level": 0, "unowned_s": 400,
+                                                 "item": None}}, T.q("steward_watch.json"))
+        W.failreport(False, "BRAKED: x")
+        n = len(pulses())
+        W.watch_pass(now=base + 1010)
+        check(pulses()[-1]["status"] == "failed" and len(pulses()) == n,
+              "the heartbeat is fresh but the steward still holds a fault incident: the watcher does not clear the row")
+        real_rf = W.rimflow
+        W.rimflow = lambda *a: (1, "rimflow: only an open item can be raised")
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 2000, "level": 1, "item": item, "owner_item": None}
+        W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, item)
+        check(inc["level"] == 1 and inc.get("error"), "a refused raise is not recorded as level 2")
+        W.rimflow = real_rf
+        reset()
+        fd = W.lock_open()
+        try:
+            W.LOCK_WAIT_S = 0.3
+            check(W.steward_pass(now=base + 20000, mods=["Mock"]) is None, "a concurrent pass is refused by the lock")
+        finally:
+            fd.close()
+        W.LOCK_WAIT_S = 30
+        # a spawn that landed but whose incident never reached disk: the next pass finds the open item, no duplicate
+        filler("INVALID", "HANG", base), filler("INVALID", "HANG", base)
+        step(base + 30000)
+        step(base + 30700)
+        n1 = len(events("spawn"))
+        os.remove(T.q("steward.json"))
+        step(base + 31000)
+        step(base + 31700)
+        check(len(events("spawn")) == n1, "a lost steward.json does not mint a second item while one is open")
         # ------------------------------------------------ units
         units = T.UNITS["testq-tick.service"]
         order = [units.find(x) for x in ("testq.py tick", "testq.py fill", "testq.py steward", "ingest.py")]

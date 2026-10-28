@@ -59,6 +59,7 @@ QHOME/wake/<stamp>.log.
 Files (QHOME): steward.json {ts, epoch, state, fault, reason, jobs, incident, last_item} every pass; steward.jsonl one
 line per state change or escalation; steward_watch.json the watcher's own state.
 """
+import fcntl
 import json
 import os
 import secrets
@@ -79,6 +80,7 @@ L1_S, L2_S, L3_S = 600, 1800, 7200          # section 6.4: T+10, T+30, T+120 min
 READY_GRACE_S = 300
 MANUAL_PAUSE_S = 3600                       # section 6.1: "a pause with neither escalates at 60 min"
 CLAIM_HOLD_S = 7200                         # a claim without a lease pauses the clock this long
+LOCK_WAIT_S = 30                            # a pass waits this long for the other pass, then skips
 STALE_S = 300                               # the watcher: steward.json older than this
 HARNESS_CAUSES = {"HARNESS", "DEPLOY", "SYNC", "SOURCE_SHA_MISSING", "BLOCKED_SELECTION"}
 TAG = {"UNREACHABLE": "OFFLINE", "QUARANTINE": "QUARANTINE", "PAUSED": "PAUSED", "READY": "STALLED",
@@ -350,6 +352,52 @@ def claim_holds(item_id, now, w=None):
     return False
 
 
+def claim_cover(item_id, a, b, w=None):
+    """Seconds of [A, B] that a claim on ITEM covered: from the claim to the lease's own expiry (a released or
+    lapsed lease stops covering at its stamp), or 2 h from a lease-less claim."""
+    if not item_id or b <= a:
+        return 0
+    model, wd = w or world()
+    it = wd.items.get(item_id)
+    if not it or not it.open or not it.claim_ts or it.owner in (None, "RUNNER"):
+        return 0
+    start = model.epoch(it.claim_ts)
+    if start is None:
+        return 0
+    ls = getattr(it, "lease", None)
+    if ls:
+        end = model.epoch(ls.get("expires"))
+        if ls.get("released") or end is None:
+            return 0
+    else:
+        end = start + CLAIM_HOLD_S
+    return int(max(0, min(b, end) - max(a, start)))
+
+
+def lock_open():
+    """The one lock around every state-changing pass (steward and watcher): -> an open file, or None if the other
+    pass still holds it after LOCK_WAIT_S."""
+    f = open(path("steward.lock"), "a")
+    t0 = time.time()
+    while True:
+        try:
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return f
+        except OSError:
+            if time.time() - t0 >= LOCK_WAIT_S:
+                f.close()
+                return None
+            time.sleep(0.1)
+
+
+def open_lane_item(w):
+    """An open escalation item of ours whose name says so: survives a lost steward.json (spawn landed, dump did not)."""
+    for k, it in sorted(w[1].items.items()):
+        if k.startswith("STEVE_LANE_UNSTICK_") and "_UNOWNED_" in k and it.open:
+            return k
+    return None
+
+
 def item_open(item_id, w):
     it = w[1].items.get(item_id) if item_id else None
     return bool(it and it.open)
@@ -381,6 +429,8 @@ def escalate(inc, ls, now, last_item, src="steward"):
     what = "%s: %s%s" % (inc["state"], ls["reason"][:200], (" (jobs %s)" % ",".join(map(str, ls["jobs"])))
                          if ls.get("jobs") else "")
     if inc["level"] < 1:
+        if not item_open(last_item, w):
+            last_item = open_lane_item(w)
         if item_open(last_item, w):
             rc, out = rimflow("note", last_item, "--text", "%s: SteveDesktop lane %s again since %s, %d min unowned"
                               % (src, what, inc["since"], u // 60))
@@ -399,8 +449,11 @@ def escalate(inc, ls, now, last_item, src="steward"):
     if inc["level"] < 2 and u >= L2_S:
         rc, out = rimflow("raise", inc["item"], "--reason", "%s: lane unowned %d min (%s)" % (src, u // 60,
                                                                                                inc["state"]))
-        if rc != 0 and "only an open item" not in out:
+        if rc != 0:
             inc["error"] = out[-200:]
+            if not item_open(inc["item"], world()):     # closed under us: the next pass opens (or reuses) one
+                inc.update(level=0, item=None)
+                return None
             return inc["item"]
         inc.update(level=2, error=None)
         jlog({"ts": iso(now), "event": "escalate", "level": 2, "item": inc["item"], "by": src})
@@ -420,8 +473,18 @@ def escalate(inc, ls, now, last_item, src="steward"):
 
 
 def steward_pass(now=None, mods=None):
-    """One pass -> the steward.json record it wrote."""
+    """One pass -> the steward.json record it wrote (None if another pass held the lock)."""
     T.ensure_dirs()
+    lk = lock_open()
+    if lk is None:
+        return None
+    try:
+        return _steward_pass(now, mods)
+    finally:
+        lk.close()
+
+
+def _steward_pass(now, mods):
     now = time.time() if now is None else now
     prev = T.read_json(path("steward.json")) or {}
     ls = lane_state(now, mods)
@@ -442,8 +505,8 @@ def steward_pass(now=None, mods=None):
                    "owner_item": None}
             dt = 0.0
         inc["state"] = ls["state"]
-        if prev.get("fault") and not (inc.get("item") and claim_holds(inc["item"], now)):
-            inc["unowned_s"] = int(inc["unowned_s"] + dt)
+        if prev.get("fault"):
+            inc["unowned_s"] = int(inc["unowned_s"] + dt - claim_cover(inc.get("item"), now - dt, now))
         if ls["at_once"]:
             inc["unowned_s"] = max(inc["unowned_s"], L1_S)
         item = escalate(inc, ls, now, last_item)
@@ -463,8 +526,18 @@ def steward_pass(now=None, mods=None):
 
 def watch_pass(now=None):
     """steward.json older than STALE_S -> STALE_HEARTBEAT: restart the tick timer once, then escalate on the
-    stale age (the steward's own ladder cannot run while it is the thing that stopped)."""
+    stale age (the steward's own ladder cannot run while it is the thing that stopped). None if locked out."""
     T.ensure_dirs()
+    lk = lock_open()
+    if lk is None:
+        return None
+    try:
+        return _watch_pass(now)
+    finally:
+        lk.close()
+
+
+def _watch_pass(now):
     now = time.time() if now is None else now
     wst = T.read_json(path("steward_watch.json")) or {"first_seen": now}
     sj = T.read_json(path("steward.json"))
@@ -473,7 +546,8 @@ def watch_pass(now=None):
     inc = wst.get("incident")
     if age <= STALE_S:
         if inc:
-            failreport(True)
+            if not (sj or {}).get("incident"):      # the steward's own incident keeps the shared row failed
+                failreport(True)
             if inc.get("item"):
                 rimflow("note", inc["item"], "--text", "steward-watch: the steward is writing again (stale %d min)"
                         % (inc["unowned_s"] // 60))
@@ -487,7 +561,9 @@ def watch_pass(now=None):
                    "owner_item": None, "restarted": None}
             jlog({"ts": iso(now), "event": "state", "state": "STALE_HEARTBEAT", "fault": True, "reason": reason,
                   "by": "watch"})
-        inc["unowned_s"] = int(age)
+        prev_t = wst.get("epoch") or now
+        inc["covered_s"] = inc.get("covered_s", 0) + claim_cover(inc.get("item"), prev_t, now)
+        inc["unowned_s"] = int(age - inc["covered_s"])
         if not inc.get("restarted"):
             inc["restarted"] = "%s %s" % (iso(now), restart_tick())
             jlog({"ts": iso(now), "event": "restart", "by": "watch", "result": inc["restarted"]})
@@ -506,6 +582,9 @@ def watch_pass(now=None):
 
 def cmd_steward(_a):
     rec = steward_pass()
+    if rec is None:
+        print("steward: another pass holds the lock; skipped")
+        return 0
     inc = rec.get("incident") or {}
     print("steward: %s%s: %s%s" % (rec["state"], " (fault)" if rec["fault"] else "", rec["reason"][:160],
                                    "; incident since %s, %d min unowned, level %d%s" % (
@@ -516,6 +595,9 @@ def cmd_steward(_a):
 
 def cmd_watch(_a):
     w = watch_pass()
+    if w is None:
+        print("steward-watch: another pass holds the lock; skipped")
+        return 0
     inc = w.get("incident")
     print("steward-watch: steward.json age %d s%s" % (w["age_s"], "; STALE, level %d" % inc["level"] if inc else ""))
     return 0
