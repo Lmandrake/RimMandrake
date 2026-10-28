@@ -690,6 +690,17 @@ def r8_falsy_paths_bad_time_newest():
                                       by["leftovers"].fields_withheld, b0["leftovers"].fields_withheld,
                                       pi.fields_withheld, ok3))
 
+def r9_falsy_mark_install_path():
+    """Review r9: a populated falsy non-string mark / art_install path (0, False) is counted, never read as absent."""
+    def fw(rec):
+        q, _ = digest([rec])
+        return {s.source: s for s in q.sources}[rec["source"]].fields_withheld
+    m = {"source": "marks", "t": T0, "type": "live", "reason": "archive"}
+    a = {"source": "art_install", "t": T0, "why": "x", "seat": "BENCH"}
+    r = (fw(dict(m, rel=0)) - fw(dict(m, rel=None)), fw(dict(a, rel=False)) - fw(dict(a, rel=None)))
+    return r == (1, 1), repr(r)
+
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -733,6 +744,7 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
            r7_upper_sha_hidden_unknown_superseded),
           ("R8 falsy evidence paths and overflowing times are counted; newest only from measured sources",
            r8_falsy_paths_bad_time_newest),
+          ("R9 a falsy mark / art_install path is counted", r9_falsy_mark_install_path),
           ("R3-H an account in the displayed evidence root drops the path, counted", r3_evidence_root_account)]
 
 

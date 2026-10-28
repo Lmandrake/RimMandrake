@@ -365,6 +365,8 @@ def _record(src, raw, verbs, ids, resolved):
             f["evidence"] = tuple(ok)
 
     def stem(rel):
+        if rel is not None and not isinstance(rel, str):
+            return rel                  # a populated non-string path (0, False) reaches name(), which refuses and counts it (r9)
         b = str(rel or "").replace("\\", "/").rsplit("/", 1)[-1]
         return b.rsplit(".", 1)[0] if "." in b else b
 
@@ -408,13 +410,13 @@ def _record(src, raw, verbs, ids, resolved):
             {"archive": "archived", "restore-archive": "restored", "x-delete": "x_removed"}.get(reason,
                                                                                                 "installed_over_keep"))
         f["by"] = "art_pipeline" if typ == "ban_hit" else "art_enact"
-        name("subject", stem(r.get("rel")) or None)
+        name("subject", stem(r.get("rel")))
     elif src == "art_install":
         f["cls"] = class_of(r.get("why"))
         f["action"] = "installed"
         f["by"] = _by(r.get("seat"))
         dropped += _refused(r.get("seat"), f["by"])
-        name("subject", stem(r.get("rel")) or None)
+        name("subject", stem(r.get("rel")))
     elif src == "leftovers":
         f["cls"] = "leftovers"
         k = r.get("kind")
