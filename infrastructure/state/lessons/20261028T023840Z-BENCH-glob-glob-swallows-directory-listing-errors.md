@@ -1,0 +1,1 @@
+glob.glob swallows directory-listing errors: an unreadable directory reads as zero files. When an empty result would be reported as a measured zero, enumerate with os.scandir (which raises) and report UNMEASURED on OSError. (delegated_digest.verdict_read)

@@ -1,0 +1,1 @@
+gpt_consult.py inlining 6 large files (~150k chars) timed out at 520 s at default effort; 4 files (~90-120k chars) with --effort medium answered in 114-142 s. Trim the inlined set and lower effort before raising the timeout.
