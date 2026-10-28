@@ -39,6 +39,60 @@ class K:
 '''
 
 
+def alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    # a zombie still answers kill(0); read its state
+    try:
+        return open("/proc/%d/stat" % pid).read().split(")")[-1].split()[0] != "Z"
+    except OSError:
+        return False
+
+
+def guard_checks():
+    """The testing-sim pilot MEASURED mutmut 2.5.1 leaving mutated source and live test processes behind an outer
+    timeout: a timeout must kill the whole group, a SIGKILLed runner's group must be reapable, and a mutated
+    module must be detected and restored from HEAD."""
+    import subprocess
+    with tempfile.TemporaryDirectory() as td:
+        pidf = os.path.join(td, "grandchild.pid")
+        t = time.time()
+        rc, _ = M.run_group(["sh", "-c", "sleep 60 & echo $! > %s; wait" % pidf], 1.0,
+                            stdout=subprocess.DEVNULL)
+        gc = int(open(pidf).read())
+        time.sleep(0.2)
+        check(rc is None and time.time() - t < 10, "run_group: a timeout returns None promptly")
+        check(not alive(gc), "run_group: a timeout kills the grandchild too (the whole group)")
+
+        pg = os.path.join(td, ".mut-pgid")
+        p = subprocess.Popen(["sh", "-c", "sleep 60 & echo $! > %s; wait" % pidf], start_new_session=True)
+        open(pg, "w").write(str(p.pid))
+        for _ in range(50):
+            if os.path.exists(pidf) and open(pidf).read().strip():
+                break
+            time.sleep(0.05)
+        gc = int(open(pidf).read())
+        check(M.reap_stale(pg) and not os.path.exists(pg), "reap_stale: kills a recorded group and clears the file")
+        p.wait()
+        time.sleep(0.2)
+        check(not alive(gc), "reap_stale: the recorded group's grandchild is gone")
+        check(not M.reap_stale(pg), "reap_stale: no file -> nothing to reap")
+
+        rep = os.path.join(td, "repo")
+        os.makedirs(rep)
+        git = ["git", "-C", rep, "-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false"]
+        subprocess.run(["git", "init", "-q", rep], check=True)
+        open(os.path.join(rep, "m.py"), "w").write("X = 1\n")
+        subprocess.run(git + ["add", "m.py"], check=True)
+        subprocess.run(git + ["commit", "-q", "-m", "m"], check=True)
+        check(M.source_guard("m.py", rep) == "clean", "source_guard: untouched module -> clean")
+        open(os.path.join(rep, "m.py"), "w").write("X = 2\n")
+        check(M.source_guard("m.py", rep) == "restored", "source_guard: a leftover mutant is restored from HEAD")
+        check(open(os.path.join(rep, "m.py")).read() == "X = 1\n", "source_guard: restored bytes are HEAD's")
+
+
 def main():
     sp = M.func_spans(SRC)
     check(M.func_of(sp, 8) == "outer.inner", "func_of: a line in a nested def names the innermost (%s)"
@@ -106,6 +160,7 @@ def main():
     check(sorted(calls) == ["s1", "s2"], "due_targets: one git diff per distinct sha")
     check(M.due_targets({n: "s2" for n in names}, changed) == [], "due_targets: nothing changed -> nothing due")
 
+    guard_checks()
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

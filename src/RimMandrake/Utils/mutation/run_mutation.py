@@ -22,12 +22,20 @@ CPUQuota, so the game/testq lane keeps its cores). WSL python only; no worktrees
 The pre-mutation hook (`_gate`) blocks before each mutant while the testq attempt on this host is in one of the
 --gate-phases (default: none; measured 2026-10-27, see the summary's lane section). It never runs inside the timed
 test window, so a gate wait cannot turn into a false timeout.
+
+Timeouts (MEASURED by the testing-sim pilot, 2026-10-27): mutmut 2.5.1 killed by an outer timeout leaves the MUTATED
+source on disk and its test processes running. So every child here runs in its own process group and a timeout
+kills the whole group (run_group); the runner's selftest child also dies with the runner (PR_SET_PDEATHSIG) and a
+runner reaps any group its predecessor left (.mut-pgid); and a worker checks `git diff` on the module before the
+probe and after mutmut, restoring it from HEAD (source_guard) -- a shard whose source would not restore is
+SOURCE_DIRTY and is not counted.
 """
 import argparse
 import ast
 import json
 import os
 import shutil
+import signal
 import sqlite3
 import subprocess
 import sys
@@ -42,6 +50,7 @@ VENV_PY = os.path.join(BASE, "venv", "bin", "python")
 TESTQ = os.environ.get("MUTATION_TESTQ_DIR", "/mnt/d/RimTest/testq")
 SPARSE = ["src/RimMandrake/Utils", "src/RimMandrake/rimflow", "src/RimMandrake/contracts", "infrastructure",
           "skills/rimworld-modding"]
+PGID_FILE = ".mut-pgid"
 PROBE = "\nraise RuntimeError('mutation-reach-probe')\n"
 
 U, R = "src/RimMandrake/Utils/", "src/RimMandrake/rimflow/"
@@ -72,6 +81,68 @@ def sh(argv, cwd=None, check=True, timeout=600):
     if check and p.returncode != 0:
         raise SystemExit("FAILED %s: %s" % (" ".join(argv), (p.stderr or p.stdout)[-600:]))
     return p.stdout
+
+
+def _pdeathsig():
+    """preexec_fn: the child gets SIGKILL if its parent (the runner) dies first -- mutmut SIGKILLs a runner that
+    exceeds mutmut's own timeout, which would otherwise orphan the selftest."""
+    try:
+        import ctypes
+        ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, signal.SIGKILL)   # 1 = PR_SET_PDEATHSIG
+    except Exception:  # noqa: BLE001 - not Linux/glibc: the pgid reaper still covers it
+        pass
+
+
+def kill_group(pgid):
+    """SIGKILL a whole process group; True if it existed."""
+    try:
+        os.killpg(pgid, signal.SIGKILL)
+        return True
+    except (ProcessLookupError, PermissionError):
+        return False
+
+
+def run_group(argv, timeout, pgid_file=None, **kw):
+    """subprocess.run in a NEW process group; on timeout kill the whole group (not just the leader) and return
+    (None, output). The group id is written to pgid_file while it runs so a later caller can reap it."""
+    p = subprocess.Popen(argv, start_new_session=True, preexec_fn=_pdeathsig, **kw)
+    if pgid_file:
+        with open(pgid_file, "w") as f:
+            f.write(str(p.pid))
+    try:
+        out, _ = p.communicate(timeout=timeout)
+        return p.returncode, out
+    except subprocess.TimeoutExpired:
+        kill_group(p.pid)
+        out, _ = p.communicate()
+        return None, out
+    finally:
+        kill_group(p.pid)          # stragglers the leader left behind even on a normal exit
+        if pgid_file and os.path.exists(pgid_file):
+            os.remove(pgid_file)
+
+
+def reap_stale(pgid_file):
+    """Kill the group a previous runner recorded and never cleared (it was SIGKILLed mid-test)."""
+    try:
+        pgid = int(open(pgid_file).read().strip())
+    except (OSError, ValueError):
+        return False
+    os.remove(pgid_file)
+    return kill_group(pgid)
+
+
+def source_guard(relpath, cwd="."):
+    """'clean' if relpath matches HEAD; else restore it from HEAD and return 'restored', or 'dirty' if it still
+    differs. Never `git checkout --`: the bytes come from `git show HEAD:path`."""
+    def same():
+        return subprocess.run(["git", "diff", "--quiet", "HEAD", "--", relpath], cwd=cwd).returncode == 0
+    if same():
+        return "clean"
+    head = subprocess.run(["git", "show", "HEAD:" + relpath], cwd=cwd, capture_output=True, check=True).stdout
+    with open(os.path.join(cwd, relpath), "wb") as f:
+        f.write(head)
+    return "restored" if same() else "dirty"
 
 
 def results_dir():
@@ -185,12 +256,15 @@ def mutant_lines(path):
 def cmd_runtests(a):
     _mod, tests = TARGETS[a.target]
     env = test_env()
+    reap_stale(PGID_FILE)
     for t in tests:
         if not os.path.exists(t):
             continue
-        p = subprocess.run([sys.executable, t], env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                           timeout=a.timeout, text=True, errors="replace")
-        if p.returncode != 0 and not only_flaky(p.stdout, FLAKY.get(a.target, ())):
+        rc, out = run_group([sys.executable, t], a.timeout, pgid_file=PGID_FILE, env=env, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT, text=True, errors="replace")
+        if rc is None:
+            return 1               # our own timeout: the group is dead; mutmut normally times out first
+        if rc != 0 and not only_flaky(out, FLAKY.get(a.target, ())):
             return 1
     return 0
 
@@ -225,7 +299,8 @@ def reach_probe(target):
     try:
         with open(mod, "w") as f:
             f.write(orig + PROBE)
-        rc = subprocess.run(runner_cmd(target).split(), env=test_env()).returncode
+        rc, _ = run_group(runner_cmd(target).split(), 900, env=test_env())
+        rc = 1 if rc is None else rc
     finally:
         with open(mod, "w") as f:
             f.write(orig)
@@ -256,6 +331,12 @@ def cmd_worker(a):
         os.chdir(d)
         st = {"target": job["target"], "shard": job["shard"], "started": time.time(), "state": "probe"}
         json.dump(st, open("shard_state.json", "w"))
+        mod = TARGETS[job["target"]][0]
+        st["source_before"] = source_guard(mod)
+        if st["source_before"] == "dirty":
+            st.update(state="SOURCE_DIRTY", ended=time.time())
+            json.dump(st, open("shard_state.json", "w"))
+            continue
         reached, probe_s = reach_probe(job["target"])
         st.update(reach_probe_failed_runner=reached, probe_s=probe_s)
         if not reached:
@@ -273,8 +354,16 @@ def cmd_worker(a):
                                                                     job["gate_phases"])]
         os.makedirs(".mut-tests", exist_ok=True)
         with open("mutmut_run.log", "w") as log:
-            rc = subprocess.run(argv, stdout=log, stderr=subprocess.STDOUT, env=test_env()).returncode
-        st.update(mutmut_rc=rc, state="exporting")
+            rc, _ = run_group(argv, job.get("shard_timeout_s"), stdout=log, stderr=subprocess.STDOUT, env=test_env())
+        reap_stale(PGID_FILE)
+        st.update(mutmut_rc=rc, state="exporting", source_after=source_guard(mod))
+        if st["source_after"] == "dirty":     # a mutant would leak into every later run: count nothing
+            st.update(state="SOURCE_DIRTY", ended=time.time())
+            json.dump(st, open("shard_state.json", "w"))
+            continue
+        if rc is None:                         # killed at the shard budget: what mutmut recorded still counts
+            st["shard_timed_out"] = True
+            rc = 0
         if rc & 1 and "Checking mutants" not in open("mutmut_run.log", errors="replace").read():
             st.update(state="baseline_failed", ended=time.time())
             json.dump(st, open("shard_state.json", "w"))
@@ -370,7 +459,7 @@ def cmd_launch(a):
                 f.write(patch_text(TARGETS[n][0], src_lines, lines))
             shards.append({"dir": d, "target": n, "shard": i, "mutants": sum(weights[n][x] for x in lines),
                            "cost": sum(weights[n][x] for x in lines) * float(base_s.get(n, 3.0)),
-                           "gate_phases": a.gate_phases})
+                           "gate_phases": a.gate_phases, "shard_timeout_s": a.shard_timeout_h * 3600})
     bins = plan_costs([(s["dir"], s["cost"]) for s in shards], a.workers)
     by_dir = {s["dir"]: s for s in shards}
     sh(["systemctl", "--user", "set-property", "--runtime", "mutation.slice", "CPUQuota=%s" % a.slice_quota],
@@ -429,7 +518,7 @@ def summarize(root):
         m["shards"] += 1
         if st.get("state") == "UNREACHED":
             m["unreached_shards"] += 1
-        if st.get("state") in ("baseline_failed", "export_failed"):
+        if st.get("state") in ("baseline_failed", "export_failed", "SOURCE_DIRTY"):
             m.setdefault("failed_shards", []).append(st["dir"])
         if st.get("ended") and st.get("started"):
             m["cpu_wall_s"] += st["ended"] - st["started"]
@@ -524,6 +613,8 @@ def main(argv=None):
         p.add_argument("--unit-quota", default="100%")
         p.add_argument("--slice-quota", default="600%")
         p.add_argument("--gate-phases", default="")
+        p.add_argument("--shard-timeout-h", type=float, default=10.0,
+                       help="kill a shard's whole mutmut process group after this long; its recorded results count")
         p.add_argument("--baseline-s", default=json.dumps(BASELINE_S), help='JSON {"target": s per selftest run}')
         if name == "launch":
             p.add_argument("--targets")
