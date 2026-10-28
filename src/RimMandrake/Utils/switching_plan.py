@@ -295,6 +295,8 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     if target != live:
         key = switch_key(live, target, meter.get(target))
         m = markers.get(key)
+        if m and m.get("phase") == "lapsed":  # skipped after a slow arm: as if never tried
+            m = None
         if m and m.get("phase") == "failed" and under and (state.get("stopped") or {}).get("account") != live:
             return {**base, "do": "stop", "key": stop_key(live, lr, now),
                     "why": f"switch {key} failed and {live} at {p}% is spent: hard stop, the switch is retried "
@@ -457,14 +459,17 @@ def write_notice(d: dict, now: float) -> None:
                                        "why": d.get("why")})
 
 
-def armed_call(st: dict, argv: list) -> dict:
-    """arm if the machine is disarmed, run the switcher verb, disarm again if it was disarmed before."""
+def armed_call(st: dict, argv: list, still=None) -> dict:
+    """arm if the machine is disarmed, run the switcher verb, disarm again if it was disarmed before. `still()` is
+    asked after a slow arm whether the decision still holds; when it does not, the verb is skipped as 'lapsed'."""
     machine = st.get("machine") or ""
     was_armed = bool(st.get("armed"))
     out = {}
     if not was_armed:
         out["arm"] = run([CA, "arm", "--confirm", machine])
-    if was_armed or out["arm"][0] == 0:
+    if (was_armed or out["arm"][0] == 0) and still is not None and not still():
+        out[argv[0]] = (None, "lapsed: the decision no longer holds after arming")
+    elif was_armed or out["arm"][0] == 0:
         out[argv[0]] = run([CA, *argv, *(["--confirm", machine] if argv[0] == "use" else [])])
     else:
         out[argv[0]] = (None, "not armed")
@@ -545,9 +550,16 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
         write_notice({**d, "do": "soft"}, now)
-        res = armed_call(st, ["use", d["to"]])
+        t2 = clock()
+
+        def still():  # a slow arm can close a window: re-decide at the new time, without our own pending marker
+            mk = {k: v for k, v in read_markers().items() if k != d["key"]}
+            d2 = decide(meter, live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
+            return d2["do"] == "switch" and d2.get("to") == d["to"]
+        res = armed_call(st, ["use", d["to"]], still)
         ok = (res.get("use") or (1,))[0] == 0
-        write_marker(d["key"], {"phase": "done" if ok else "failed", "at": iso(now), "from": live, "to": d["to"],
+        lapsed = (res.get("use") or (1,))[0] is None and "lapsed" in str(res.get("use"))
+        write_marker(d["key"], {"phase": "done" if ok else "lapsed" if lapsed else "failed", "at": iso(now), "from": live, "to": d["to"],
                                 "under": d.get("under"), "result": res})
         if ok:
             state.pop("stopped", None)

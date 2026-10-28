@@ -300,6 +300,21 @@ def main():
         return m5c
     SP.check(dry=False, now=NOW, meter_fn=slow_meter, poll_fn=lambda: None)
     check("use steven" not in calls.read_text(), "a slow status read that ends past steven's window never switches to him")
+    calls.write_text("")
+    real_run = SP.run
+    def slow_arm(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            clock[0] += 180  # arming took 3 min: steven's window closed meanwhile
+        return real_run(argv, *a, **k)
+    SP.run = slow_arm
+    st = SP.load_state(); st.pop("last_poll", None); SP.save_state(st)
+    m6 = {"steven": R(80, 120.03), "system": R(40, 100), "lukas": R(0, 120)}
+    SP.check(dry=False, now=NOW, meter_fn=lambda: m6, poll_fn=lambda: None)
+    SP.run = real_run
+    check("use steven" not in calls.read_text() and "arm" in calls.read_text(),
+          "a decision that lapses while arming (steven's window closed) is skipped, not executed")
+    mk6 = SP.read_markers()
+    check(any(v.get("phase") == "lapsed" for v in mk6.values()), "the skipped switch is marked lapsed, not failed")
     SP.clock = time.time
     # a second concurrent pass stands down
     import fcntl
