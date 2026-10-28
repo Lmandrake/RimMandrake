@@ -735,6 +735,9 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
     dt = 0.0 if last is None else max(0.0, min(now - float(last), cfg["max_accrual_dt_h"] * HOUR)) / HOUR
     forgiven = 0.0
     prev_reset, new_reset = epoch(state.get("reset_at")), epoch(inp.get("week_resets_at"))
+    if (last is not None and prev_reset is not None and float(last) < prev_reset <= now
+            and new_reset is not None and new_reset > prev_reset):
+        dt = min(dt, (now - prev_reset) / HOUR)  # the old week's part is the old week's debt, forgiven below (S13)
     if owed > 0 and prev_reset is not None and prev_reset <= now and new_reset is not None and new_reset > prev_reset:
         forgiven, owed = owed, 0.0
         why.append(f"weekly reset: {forgiven:.1f} helper-h of overage forgiven")

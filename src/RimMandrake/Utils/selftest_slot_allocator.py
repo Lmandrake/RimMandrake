@@ -784,5 +784,13 @@ with tempfile.TemporaryDirectory() as _td:
     check("S12: set without --hours lasts until the current burn account's reset", rc == 0
           and SA.epoch(ovr["until"]) == SA.epoch(b_reset), (rc, ovr.get("until"), b_reset))
 
+# S13: across a weekly reset only the new week's part of the interval is charged (the old week's debt is forgiven)
+_rs = NOW - 60
+r = d({"overage_t": NOW - 0.25 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+       "reset_at": SA.iso_local(_rs)}, week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=168.0,
+      week_pct_left=100.0, week_pct_used=0.0, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0)
+check("S13: a 15-min interval straddling the reset by 1 min charges 7 x 1/60 h, and forgives the 3",
+      abs(r["overage"]["accrued_h"] - 7 / 60) < 0.01 and r["overage"]["forgiven_h"] == 3.0, r["overage"])
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
