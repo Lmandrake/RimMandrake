@@ -583,6 +583,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         # a brake that became due while we armed is never dropped with the lapsed act: a stop now due, or a spent live
         # account whose switch target changed, stops the fleet now (the next pass switches from the stopped fleet)
         due = d2["do"] == "stop" or (d2["do"] == "switch" and d2.get("under"))
+        if d["do"] == "stop" and due:
+            return True  # live is still spent: the stop holds even if a switch target appeared meanwhile
         if not same and due and d["do"] != "stop" and (state.get("stopped") or {}).get("account") != live:
             brake.update({**d2, "do": "stop", "key": d2["key"] if d2["do"] == "stop" else stop_key(live, m2.get(live) or {}, n2)})
             return ["fleet-stop"]
@@ -600,6 +602,14 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             save_state(state)
             write_notice({**d, "do": "normal"}, now)
         rec["result"], rc = res, 0 if ok else 1
+        if not ok and not lapsed and d.get("under") and (state.get("stopped") or {}).get("account") != live:
+            # a failed switch off a spent account never leaves it burning: stop now, retry the switch from the stop
+            res2 = armed_call(switcher_status() or st, ["fleet-stop"])
+            rec["brake"] = res2
+            if (res2.get("fleet-stop") or (1,))[0] == 0:
+                brake.update({**d, "do": "stop", "key": stop_key(live, meter.get(live) or {}, now),
+                              "why": f"switch {d['key']} failed and {live} is spent: hard stop"})
+                res = {**res, "fleet-stop": res2["fleet-stop"]}
         if brake:
             braked = (res.get("fleet-stop") or (1,))[0] == 0
             write_notice(brake, now)

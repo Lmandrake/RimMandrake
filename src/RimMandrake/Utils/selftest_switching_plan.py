@@ -406,7 +406,37 @@ def main():
     check(d14.get("to") == "lukas" and "use " not in calls.read_text() and "fleet-stop" in calls.read_text()
           and (SP.load_state().get("stopped") or {}).get("account") == "system",
           f"a spent account whose switch target changed while arming is stopped (first target {d14.get('to')})")
+    # a failed switch off a spent account stops the fleet in the same pass
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    (TMP / "live.txt").write_text("system")
+    st = SP.load_state(); st.pop("stopped", None); st.pop("last_poll", None); SP.save_state(st)
+    m15 = {**off, "system": R(0, 100), "lukas": R(50, 120, age=0)}
+    os.environ["FAKE_FAIL"] = "use"
+    SP.check(dry=False, now=NOW, meter_fn=lambda: m15, poll_fn=lambda: None)
+    os.environ.pop("FAKE_FAIL")
+    check("fleet-stop" in calls.read_text() and (SP.load_state().get("stopped") or {}).get("account") == "system",
+          "a failed switch off a spent account stops the fleet in the same pass")
+    # a stop whose re-check finds a switch target (live still spent) still stops
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
+    cur15 = [{**off, "system": R(0, 100), "lukas": R(0, 120)}]
+    def arm_finds(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur15[0] = {**off, "system": R(0, 100), "lukas": R(50, 120, age=0)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_finds
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur15[0], poll_fn=lambda: None)
+    SP.run = real_run
+    check("fleet-stop" in calls.read_text() and (SP.load_state().get("stopped") or {}).get("account") == "system",
+          "a stop on a spent account holds when a switch target appears while arming")
     # a stop that lapses while arming (lukas reset meanwhile) is skipped
+    (TMP / "live.txt").write_text("lukas")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
     cur8 = [{**off, "system": R(0, 100), "lukas": R(2, 120)}]
