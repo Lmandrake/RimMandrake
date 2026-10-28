@@ -714,5 +714,44 @@ check("S8: a message inside the idle gap keeps the sitting (drop 7, start unchan
 sg, _, drop, _ = SA.sitting_step(dict(i8, owner_window_ts=[T0 + 2.0 * H + 60]), st8, T0 + 2.0 * H + 120)
 check("S8 control: a real 2 h gap still starts a new sitting", sg["start"] == T0 + 2.0 * H + 60 and drop == 0.0, (drop, sg))
 
+# S9: the token dial's hysteresis belongs to one burn account: a switch starts the new account's dial fresh
+r = d(dict(ao, account="acctA"), account="acctB", week_pct_left=30.0)
+check("S9: ALMOST_OUT on acctA does not hold acctB (P 0.88) at one helper", r["token_mode"] == "CRUISE"
+      and r["state"].get("account") == "acctB", (r["token_mode"], r["state"].get("account")))
+r = d(dict(ao, account="acctA"), account="acctA", week_pct_left=30.0)
+check("S9 control: the same account keeps ALMOST_OUT's hold", r["token_mode"] == "ALMOST_OUT", r["token_mode"])
+# S10: a writer computes AND publishes under the one lock, so two writers cannot both build on the same old state
+import fcntl  # noqa: E402
+with tempfile.TemporaryDirectory() as _td:
+    os.environ["RM_STREAMS_DIR"] = _td
+    _cmp, seen = SA.compute, []
+
+    def _probe_compute(*a, **k):
+        with open(Path(_td) / "allocation.json.lock", "a") as lk:
+            try:
+                fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                fcntl.flock(lk, fcntl.LOCK_UN)
+                seen.append("unlocked")
+            except BlockingIOError:
+                seen.append("locked")
+        return {"t": NOW + len(seen), "at": "x", "mode": "CRUISE", "n": 1, "seats": {"BENCH": 1}, "why": "w",
+                "n_total": 1, "token_mode": "CRUISE", "queue_mode": "CLEAR", "presence": "-", "inputs": {}}
+    SA.compute = _probe_compute
+    try:
+        err = None
+        try:
+            SA.publish(NOW)
+            SA.main(["now", "--write", "--json"])
+        except Exception as e:  # noqa: BLE001
+            err = e
+    finally:
+        SA.compute = _cmp
+        if _sd_old is None:
+            os.environ.pop("RM_STREAMS_DIR", None)
+        else:
+            os.environ["RM_STREAMS_DIR"] = _sd_old
+    check("S10: publish() and `now --write` compute while holding the allocation lock", err is None
+          and seen == ["locked", "locked"], (err, seen))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

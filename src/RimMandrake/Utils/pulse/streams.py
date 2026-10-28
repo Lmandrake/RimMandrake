@@ -581,9 +581,7 @@ def pacing(now, write=True):
     try:
         import slot_allocator as SA
         rules = SA.load_rules()
-        dec = SA.compute(now, rules)
-        if write:
-            SA.write(dec)
+        dec = SA.publish(now, rules) if write else SA.compute(now, rules)  # compute+write under one lock
         inp = dec.get("inputs") or {}
         accs = []
         for name, a in sorted(((SA.meter_now(now) or {}).get("accounts") or {}).items()):

@@ -50,6 +50,7 @@ pulse/streams.py collect (rm-pulse-streams.timer); the spawn hook is .claude/hoo
 from __future__ import annotations
 
 import argparse
+import contextlib
 import fcntl
 import glob
 import json
@@ -643,7 +644,9 @@ def _token(inp, state, rules, now, P):
     h, used = inp.get("hours_to_week_reset"), inp.get("week_pct_used")
     reset_changed = bool(state.get("reset_at") and inp.get("week_resets_at")
                          and not same_reset(epoch(state["reset_at"]), epoch(inp["week_resets_at"])))  # jitter: same reset
-    if reset_changed:
+    # the dial's hysteresis belongs to one burn account: another account's meter starts it fresh (review night S9)
+    acct_changed = bool(state.get("account") and inp.get("account") and state["account"] != inp["account"])
+    if reset_changed or acct_changed:
         prev, pending = None, None
     if used is not None and used >= tk["DARK"]["enter_pct_used_ge"]:
         return "DARK", None, since if prev == "DARK" else now
@@ -959,6 +962,7 @@ def decide(inp, state, rules, now):
     new_state = {"token_mode": mode, "since": since, "pending": pending, "queue_mode": queue_mode,
                  # a blind reading's reset_at is not adopted: the reset it names was never applied to the dial
                  "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
+                 "account": (None if blind else inp.get("account")) or state.get("account"),
                  "overage_h": overage["owed_h"],
                  "overage_t": now, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
@@ -1011,15 +1015,35 @@ def compute(now=None, rules=None, seat="BENCH"):
 def write(dec):
     """Publish dec as allocation.json unless a decision computed later is already there (the 15-min tick and a
     manual `now --write` may overlap: the slower one gathered the older reading). False when skipped."""
+    with _alloc_lock():
+        return _write_locked(dec)
+
+
+@contextlib.contextmanager
+def _alloc_lock():
     d = streams_dir()
     d.mkdir(parents=True, exist_ok=True)
     with open(d / "allocation.json.lock", "a") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
-        cur = read_json(d / "allocation.json") or {}
-        if isinstance(cur.get("t"), (int, float)) and isinstance(dec.get("t"), (int, float)) and cur["t"] > dec["t"]:
-            return False
-        write_atomic(d / "allocation.json", json.dumps(dec, indent=1, sort_keys=True, default=str))
+        yield
+
+
+def _write_locked(dec):
+    d = streams_dir()
+    cur = read_json(d / "allocation.json") or {}
+    if isinstance(cur.get("t"), (int, float)) and isinstance(dec.get("t"), (int, float)) and cur["t"] > dec["t"]:
+        return False
+    write_atomic(d / "allocation.json", json.dumps(dec, indent=1, sort_keys=True, default=str))
     return True
+
+
+def publish(now=None, rules=None, seat="BENCH"):
+    """Compute from the published state and publish, all under the allocation lock: two writers (the 15-min tick,
+    a manual `now --write`) never both build on the same old state (review night S10)."""
+    with _alloc_lock():
+        dec = compute(now, rules, seat)
+        _write_locked(dec)
+    return dec
 
 
 def write_atomic(path, text):
@@ -1041,9 +1065,7 @@ def write_atomic(path, text):
 
 
 def write_now(now=None):
-    dec = compute(now)
-    write(dec)
-    return dec
+    return publish(now)
 
 
 def main(argv=None):
@@ -1077,9 +1099,7 @@ def main(argv=None):
         print(why, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 2
     if a.cmd == "now":
-        dec = compute(seat=a.seat)
-        if a.write:
-            write(dec)
+        dec = publish(seat=a.seat) if a.write else compute(seat=a.seat)
         print(json.dumps(dec, indent=1, sort_keys=True, default=str) if a.json else line(dec))
         return 0
     if a.cmd == "clear":
