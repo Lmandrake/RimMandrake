@@ -654,6 +654,18 @@ def r6_issued_released():
     BL.render_item(kept)
     return len(BL._ISSUED) <= n0 + 1, repr((n0, len(BL._ISSUED)))
 
+
+def r7_upper_sha_hidden_unknown_superseded():
+    """Review r7: an uppercase sha candidate resolves (and counts when it does not); a hidden id the ledger does not
+    list as known is still counted when a note names it; a withheld superseded_by is counted."""
+    notes = [{"event": "note", "seat": "BENCH", "ts": "2026-10-27T05:00:00Z",
+              "text": "see ABCDEF0123 and FFFF00EEEE, also SECRET_ACCOUNT_ITEM"}]
+    pi = BL.project_item(item(superseded_by="SECRET_ACCOUNT_ITEM"), notes, [],
+                         ids(KNOWN, hidden=("SECRET_ACCOUNT_ITEM",)), resolve=resolver())
+    n = pi.notes[0]
+    return (n.shas == (SHA_A,) and pi.superseded_withheld and pi.fields_withheld == 3,
+            repr((n.shas, pi.superseded_withheld, pi.fields_withheld)))
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -693,6 +705,8 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
           ("R6 a refused populated owner/seat/time is counted; an unknown mark type is withheld",
            r6_dropped_meta_counted),
           ("R6 an issued page no caller holds is released", r6_issued_released),
+          ("R7 uppercase sha, hidden-not-known ref and withheld superseded_by are counted",
+           r7_upper_sha_hidden_unknown_superseded),
           ("R3-H an account in the displayed evidence root drops the path, counted", r3_evidence_root_account)]
 
 

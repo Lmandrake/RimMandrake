@@ -569,8 +569,8 @@ def project_queue(seat, groups, ids, withheld=()):
 
 
 _REF_RE = re.compile(r"(?<![A-Za-z0-9._-])[A-Za-z][A-Za-z0-9._-]{2,}")   # whole tokens only: 0X is not X (r3)
-_SHA_IN = re.compile(r"(?<![\w-])[0-9a-f]{7,40}(?![\w-])")    # a candidate only: shown ONLY when it resolves to a commit
-#                                     (7: git's short sha, as C.CAND_RE; BLIND_REFS_WIDEN_SHORT_SHA_HIDDEN)
+_SHA_IN = re.compile(r"(?i)(?<![\w-])[0-9a-f]{7,40}(?![\w-])")  # a candidate only: shown ONLY when it resolves to a commit
+#        (7: git's short sha, as C.CAND_RE; BLIND_REFS_WIDEN_SHORT_SHA_HIDDEN; any case, lowered: review r7)
 
 
 def _sha_like(m):
@@ -606,7 +606,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
     if category:
         d["category"], d["notes_matching"] = category, len(match)
     shown = match[-last:] if last else match
-    cands = [it.closed_sha] + [m for n in shown for m in _SHA_IN.findall(str(n.get("text") or ""))]
+    cands = [it.closed_sha] + [m.lower() for n in shown for m in _SHA_IN.findall(str(n.get("text") or ""))]
     resolved = _resolve(resolve, cands)
     if it.closed_sha:
         full = resolved.get(str(it.closed_sha).strip().lower())
@@ -619,6 +619,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
             d["superseded_by"] = it.superseded_by
         else:
             d["superseded_withheld"] = True
+            d["fields_withheld"] += 1
     refs = []
     for n in shown:
         text = str(n.get("text") or "")
@@ -629,9 +630,9 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
                 continue
             if _id_ok(w, ids):
                 rid.append(w)
-            elif ids is not None and w in ids.known:
+            elif ids is not None and (w in ids.known or w in ids.hidden):
                 hid.add(w)                   # a known id withheld (hidden): dropped and counted, never named
-        found = list(dict.fromkeys(_SHA_IN.findall(text)))      # distinct candidates per note (the count policy)
+        found = list(dict.fromkeys(m.lower() for m in _SHA_IN.findall(text)))      # distinct candidates per note (the count policy)
         shas = tuple(dict.fromkeys(resolved[m] for m in found if m in resolved))
         d["fields_withheld"] += (sum(m not in resolved and _sha_like(m) for m in found) + max(0, len(shas) - 6)
                                  + max(0, len(rid) - 12) + len(hid))
