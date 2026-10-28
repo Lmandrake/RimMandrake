@@ -30,8 +30,14 @@ allowance is at least `lent_min_draw_pct`; a lent account the machine is ON is s
 allowance falls under that line. The lent rules unreadable (or the allocator not importable) -> no account can be
 told lent from owned, so no switch is recommended at all (fail closed) and that is alarmed.
 
-Ranking among fit candidates (`rank`): "soonest_reset" (use-it-or-lose-it: the week that ends first) or
-"most_runway". Names no account, host or model: labels come from the reading, rules from data.
+Ranking among fit candidates: the OWNER'S FIXED PRIORITY, read from the file the switching plan reads (`order` in
+src/RimMandrake/Utils/switching_plan.json, or the rule's `priority_plan`): one source of truth (item
+ACCOUNTPICK_CORRECT_OWNER_PRIORITY; the owner's words of 2026-10-28 10:15 are quoted in that file's `_owner`). A lent
+account in that order is ranked by it too: its lent allowance (his window after a reset, his cap, the floor) already decides whether it is fit
+at all, and inside it the owner put it first. Accounts outside the order come after it, owned before lent, by the
+schedule's `rank`: "soonest_reset" (the week that ends first) or "most_runway". The plan unreadable -> no switch is
+recommended (UNMEASURED, alarmed: fail closed, never a guessed order). Names no account, host or model: labels come
+from the reading, rules from data.
 """
 import json
 import os
@@ -44,6 +50,7 @@ import role_launch as RL  # noqa: E402
 
 HOLDABLE = ("role_launch", "ring", "recover")
 RANKS = ("soonest_reset", "most_runway")
+PRIORITY_PLAN = "src/RimMandrake/Utils/switching_plan.json"  # the switching plan's own rules: its `order` is the priority
 
 
 def labels_in(status):
@@ -91,6 +98,23 @@ def load_lent(rule):
     except Exception:  # noqa: BLE001 - any import failure means the rule cannot be applied: fail closed
         fn = None
     return rules, fn
+
+
+def load_priority(rule):
+    """The owner's account priority: `order` of the switching plan (rule `priority_plan`, default PRIORITY_PLAN).
+    -> list of labels, or None when unreadable or not a non-empty list of distinct strings."""
+    path = RL.wsl_path((rule or {}).get("priority_plan") or PRIORITY_PLAN)
+    if not os.path.isabs(path):
+        path = os.path.join(REPO, path)
+    try:
+        with open(path, encoding="utf-8") as f:
+            order = json.load(f).get("order")
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    if (not isinstance(order, list) or not order or not all(isinstance(x, str) and x for x in order)
+            or len(set(order)) != len(order)):
+        return None
+    return order
 
 
 def lent_set(lent_rules, known_lent=None):
@@ -175,12 +199,22 @@ def pick(rule, status, current, lent_rules, allowance, now, known_lent=None):
     if rank not in RANKS:
         return out("UNMEASURED", "keep %s: rank %r is not one of %s" % (current, rank, ", ".join(RANKS)))
 
-    def order(c):
-        if rank == "most_runway":
-            return (-c["runway"], c["account"])
-        return (c["hours_to_reset"] if c["hours_to_reset"] is not None else float("inf"), c["account"])
+    prio = load_priority(rule)
+    if prio is None and (owned or lent_ok):
+        return out("UNMEASURED", "keep %s although under the switch line (%s): the owner's account priority (%s "
+                   "`order`) is unreadable, so no switch is recommended" % (
+                       here, ", ".join(under), rule.get("priority_plan") or PRIORITY_PLAN))
+    prio = prio or []
 
-    pool = sorted(owned, key=order) or sorted(lent_ok, key=order)
+    def order(c):
+        a = c["account"]
+        if a in prio:  # the owner's order decides, lent or owned
+            return (prio.index(a), 0, 0.0, a)
+        tie = -c["runway"] if rank == "most_runway" else (
+            c["hours_to_reset"] if c["hours_to_reset"] is not None else float("inf"))
+        return (len(prio), 1 if "lent_allowance_pct" in c else 0, tie, a)
+
+    pool = sorted(owned + lent_ok, key=order)
     tail = ("; not fit: " + "; ".join(refused)) if refused else ""
     lent_blocked = current in lent and any(u.startswith("lent account allowance") for u in under)
     if not pool and lent_blocked:
@@ -190,11 +224,12 @@ def pick(rule, status, current, lent_rules, allowance, now, known_lent=None):
         return out("KEEP", "keep %s although under the switch line (%s): no other account is fit%s" % (
             here, ", ".join(under), tail))
     best = pool[0]
-    return out("SWITCH", "switch from %s (%s) to %s: runway %.2f, week left %.0f%%%s%s, by rank %s%s" % (
+    return out("SWITCH", "switch from %s (%s) to %s: runway %.2f, week left %.0f%%%s%s, by %s%s" % (
         here, ", ".join(under), best["account"], best["runway"], best["week_left"],
         (", resets in %.0f h" % best["hours_to_reset"]) if best["hours_to_reset"] is not None else "",
         (", lent: may draw %.0f%%" % best["lent_allowance_pct"]) if "lent_allowance_pct" in best else "",
-        rank, tail), to=best["account"], cands=pool)
+        "the owner's priority (%s)" % " > ".join(prio) if best["account"] in prio else "rank " + rank, tail),
+        to=best["account"], cands=pool)
 
 
 def validate(rule):

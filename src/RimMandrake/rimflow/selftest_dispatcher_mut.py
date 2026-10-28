@@ -78,8 +78,9 @@ def test_gate_lent_rule_steven():
     # the real rules file: the same numbers
     real = json.load(open(os.path.join(os.path.dirname(HERE), "Utils", "slot_rules.json")))
     pols = list(real["lent_accounts"].values())
-    check(len(pols) == 1 and pols[0]["max_used_by_us_pct"] == 50 and pols[0]["prefer_start_of_week_h"] == 48
-          and pols[0]["floor_pct_left"] == 10, "slot_rules.json lent policy: 50%% / first 48 h / 10%% floor")
+    check(len(pols) == 1 and pols[0]["max_used_by_us_pct"] == 48 and pols[0]["prefer_start_of_week_h"] == 48
+          and pols[0]["floor_pct_left"] == 10,
+          "slot_rules.json lent policy: 48%% used (card 2026-10-28 10:20: leave at 52%% left) / first 48 h / 10%% floor")
     name = list(real["lent_accounts"])[0]
     after = RL.slot_epoch(T.DAY0, "12:00") + 30 * 86400      # long after off_limits_through
     for h, left, want in ((150, 80, True), (120, 90, True), (119, 90, False), (150, 40, False), (150, 55, False)):

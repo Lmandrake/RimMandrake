@@ -151,6 +151,24 @@ def runway(left_pct, rate_pct_h, hours_to_reset):
     return round(min(10.0, (left_pct / rate_pct_h) / hours_to_reset), 2)
 
 
+FRESH_WEEK_H = 6.0  # a week younger than this has its age floored here when its average burn is the rate
+
+
+def week_avg_rate(used_pct, hours_to_reset, week_h=168.0):
+    """The week's average burn (% per h) and how it was got. A FRESH week (under FRESH_WEEK_H old) counts as
+    FRESH_WEEK_H old: its own average over a few minutes is noise (1% in 10 min reads as a 0.1 runway), while
+    reading it UNMEASURED made a just-reset, full account an alarm every tick (OPSWATCH_SILENCE_FRESH_WEEK_RUNWAY).
+    The floor can understate the rate only inside those first hours, by at most FRESH_WEEK_H / age; a heavy early
+    burn still reads low (30% in 3 h -> 5%/h). -> (rate | None, how | None)."""
+    if used_pct is None or hours_to_reset is None:
+        return None, None
+    elapsed = week_h - hours_to_reset
+    if elapsed >= FRESH_WEEK_H:
+        return used_pct / elapsed, "the week's average burn (%.0f%% over %.0f h)" % (used_pct, elapsed)
+    return used_pct / FRESH_WEEK_H, "a fresh week's burn (%.0f%% in its first %.1f h, counted over %.0f h)" % (
+        used_pct, max(0.0, elapsed), FRESH_WEEK_H)
+
+
 # ================================================================================================== collectors
 def c_accounts(now, rules, ctx):
     import account_usage as AU
@@ -180,14 +198,11 @@ def c_accounts(now, rules, ctx):
             r, n, span = SA.slope(name, a.get("week_resets_at"), now, fit)
             if r is not None:
                 rate, how = r, "meter slope, %d readings over %.1f h" % (n, span)
-        if rate is None and h is not None and a.get("week_pct_used") is not None:
-            elapsed = 168.0 - h
-            if elapsed >= 6:
-                rate, how = a["week_pct_used"] / elapsed, "the week's average burn (%.0f%% over %.0f h)" % (
-                    a["week_pct_used"], elapsed)
+        if rate is None:
+            rate, how = week_avg_rate(a.get("week_pct_used"), h)
         rw = runway(left, rate, h)
         if rw is None:
-            out[k + "runway"] = U("no burn rate: the week is under 6 h old and the meter has no slope")
+            out[k + "runway"] = U("no burn rate: no week figure or reset time, and the meter has no slope")
         elif rate is None:      # spent before any rate exists: 0 is as certain as the reading
             out[k + "runway"] = (M(0.0, "x the time to reset", why="quota spent") if src == "MEASURED" else
                                  E(0.0, "quota spent per an ESTIMATE reading", "x the time to reset"))
@@ -245,12 +260,11 @@ def c_codex(now, rules, ctx):
     if len(same) >= 2 and (same[-1][0] - same[0][0]) / HOUR >= cr["slope_min_span_h"]:
         rate = max(0.0, (same[-1][1] - same[0][1]) / ((same[-1][0] - same[0][0]) / HOUR))
         how = "readings over the last %d h" % cr["slope_window_h"]
-    elapsed = 168.0 - h
-    if rate is None and elapsed >= 6:
-        rate, how = used / elapsed, "the week's average burn (%.0f%% over %.0f h)" % (used, elapsed)
+    if rate is None:
+        rate, how = week_avg_rate(used, h)
     rw = runway(100.0 - used, rate, h)
     if rw is None:
-        out["codex.runway"] = U("no burn rate: the week is under 6 h old")
+        out["codex.runway"] = U("no burn rate")
     elif rate is None:
         out["codex.runway"] = (M(0.0, "x the time to reset", why="quota spent")
                                if out["codex.week_used_pct"]["m"] == "MEASURED" else

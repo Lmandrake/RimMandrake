@@ -720,5 +720,50 @@ if live.exists():
           not [ln for ln in lb.splitlines() if RX.search(ln)] and "week" not in lb and not bad
           and not any(ln.startswith("B |") for ln in lb.splitlines()) and len(lb.splitlines()) > 5, lb[:400])
 
+# ---------------------------------------------------------------- OPSWATCH_SILENCE_FRESH_WEEK_RUNWAY
+# a week under 6 h old has no slope yet; it used to read UNMEASURED and the live dispatcher alarmed account:unmeasured
+# every tick. Its runway is now an ESTIMATE from the week's burn with its age floored at FRESH_WEEK_H.
+import types  # noqa: E402
+_saved = {m: sys.modules.get(m) for m in ("account_usage", "slot_allocator")}
+
+
+def _fake_accounts(accts):
+    sys.modules["account_usage"] = types.SimpleNamespace(read_now=lambda now: {"accounts": accts})
+    sys.modules["slot_allocator"] = types.SimpleNamespace(slope=lambda *a: (None, 0, 0.0))
+
+
+def _acct(used, h, src="MEASURED"):
+    return {"source": src, "stale": False, "week_pct_left": 100.0 - used, "week_pct_used": used,
+            "hours_to_week_reset": h, "week_resets_at": "2026-11-04T13:00:00-08:00", "measured_at": "x"}
+
+
+try:
+    _fake_accounts({"fresh": _acct(1.0, 167.0), "zero": _acct(0.0, 167.5), "hot": _acct(30.0, 165.0),
+                    "old": _acct(50.0, 68.0), "unk": {"source": "UNMEASURED", "why": "nothing"}})
+    out = OW.c_accounts(NOW, RULES, {})
+    fr = out["accounts.fresh.runway"]
+    check("fresh week: runway is an ESTIMATE, not UNMEASURED", fr["m"] == "ESTIMATE" and fr["v"] is not None, fr)
+    check("fresh week: 1%% used in its first hour reads ample (>= 1), so no alarm", (fr["v"] or 0) >= 1.0, fr)
+    check("fresh week: the why says the week is fresh", "fresh" in fr.get("why", ""), fr)
+    check("fresh week: nothing used reads the cap (not being spent)", out["accounts.zero.runway"]["v"] == 10.0,
+          out["accounts.zero.runway"])
+    hot = out["accounts.hot.runway"]
+    check("fresh week: a heavy burn (30%% in 3 h) still reads under 1 (it still flags)",
+          hot["m"] == "ESTIMATE" and hot["v"] is not None and hot["v"] < 1.0, hot)
+    old = out["accounts.old.runway"]
+    check("older week: the plain week average is unchanged (50%% over 100 h, 68 h left -> 1.47)",
+          old["m"] == "ESTIMATE" and old["v"] == 1.47 and "fresh" not in old.get("why", ""), old)
+    check("an UNMEASURED reading still reads UNMEASURED", out["accounts.unk.runway"]["m"] == "UNMEASURED")
+    r, how = OW.week_avg_rate(3.0, 167.0)
+    check("week_avg_rate: under the floor the age counts as FRESH_WEEK_H", r == 3.0 / OW.FRESH_WEEK_H and "fresh" in how,
+          (r, how))
+    check("week_avg_rate: no figure -> None", OW.week_avg_rate(None, 100.0) == (None, None))
+finally:
+    for m, v in _saved.items():
+        if v is None:
+            sys.modules.pop(m, None)
+        else:
+            sys.modules[m] = v
+
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
