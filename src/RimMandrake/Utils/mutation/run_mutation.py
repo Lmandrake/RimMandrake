@@ -38,6 +38,7 @@ import shutil
 import signal
 import sqlite3
 import subprocess
+import tempfile
 import sys
 import time
 
@@ -269,8 +270,14 @@ def cmd_runtests(a):
     for t in tests:
         if not os.path.exists(t):
             continue
-        rc, out = run_group([sys.executable, t], a.timeout, pgid_file=PGID_FILE, env=env, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT, text=True, errors="replace")
+        # private TMPDIR per selftest run, removed after: selftests leak mkdtemp dirs, and thousands of mutants
+        # exhausted the /tmp tmpfs inodes on SteveDesktop (2026-10-28), killing the Claude runner (ENOSPC)
+        tmpd = tempfile.mkdtemp(prefix="mutrun_")
+        try:
+            rc, out = run_group([sys.executable, t], a.timeout, pgid_file=PGID_FILE, env=dict(env, TMPDIR=tmpd),
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, errors="replace")
+        finally:
+            shutil.rmtree(tmpd, ignore_errors=True)
         if rc is None:
             return 1               # our own timeout: the group is dead; mutmut normally times out first
         if rc != 0 and not only_flaky(out, FLAKY.get(a.target, ())):
