@@ -4,9 +4,10 @@ burns, read every pass from the meter (account_usage.py) and the rules in switch
 code: reset times come from the meter each week.
 
 Each pass:
-  target = use it or lose it: of the accounts that are MEASURED, fresh, inside their window (steven: the first 48 h
-           after his reset) and above their line (steven: leave_pct_left; others: the switch-away floor, 0%, while
-           another account can take over, else the wait floor, 2%), the one whose budget expires soonest.
+  target = the owner's fixed priority (10:15: steven after his reset to 50%, then system, then lukas): the first
+           account in plan order that is MEASURED, fresh, inside its window (steven: the first 48 h after his
+           reset) and above its line (steven: leave_pct_left; others: the switch-away floor, 0%, while another
+           account can take over, else the wait floor, 2%). A lower account's budget that expires first is lost.
   target != live  -> arm, `claude-account use <target>`, disarm (once per transition and target week: a marker)
   target == live  -> normal, or SOFT at line + soft_margin (allocator gives 0 new helpers; seats publish and finish),
                      or SOFT when an earlier account's reset (which will pull the machine to it) is near
@@ -17,11 +18,12 @@ itself first and never acts on the old figure. Blind meter = 0%: once an account
 floors.blind_zero_pct, a blind reading of it (ESTIMATE, stale) counts as 0% at once: an exhausted account often cannot
 be read at all, and the engine never sits waiting on a meter that cannot see it.
 
-Gate: passive until account_failover.py's stage 3 marker reads done (the cutover of 2026-10-28); remembered after.
-A file HOLD in the output dir makes every pass passive (the owner's or an agent's brake).
+Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
+gate (the account_failover cutover gate was removed 2026-10-28: that script is retired and never wrote its marker).
 
     switching_plan.py check [--dry-run]   one pass (the timer runs this every 5 min)
-    switching_plan.py status              what the next pass would do, the pool and the notice; acts on nothing
+    switching_plan.py status [--rate R]   what the next pass would do, the pool, the notice and the week ahead
+                                          (simulate() at R %/h, default the pool's pace); acts on nothing
     switching_plan.py install [--deploy D] the durable systemd user timer account-plan.timer
 
 Env seams (selftests): RM_SWITCH_PLAN (plan json), RM_SWITCH_PLAN_DIR (output dir), RM_CLAUDE_ACCOUNT (switcher).
@@ -190,10 +192,14 @@ def lines(meter: dict, plan: dict, now: float) -> tuple[dict, dict]:
 
 
 def pick(meter: dict, plan: dict, now: float, elig: dict):
-    """Use it or lose it (coordinator 2026-10-28 10:58): the eligible account whose budget expires soonest; ties go
-    to plan order."""
-    c = [(expiry(plan, n, meter.get(n), now) or float("inf"), i, n) for i, n in enumerate(plan["order"]) if elig[n]]
-    return min(c)[2] if c else None
+    """The owner's fixed priority (2026-10-28 10:15): the first eligible account in plan order."""
+    return next((n for n in plan["order"] if elig.get(n)), None)
+
+
+def outranks(plan: dict, a, b) -> bool:
+    """a comes before b in the owner's priority (an account outside the plan ranks last)."""
+    o = plan["order"]
+    return a in o and (b not in o or o.index(a) < o.index(b))
 
 
 def switch_key(frm: str, to: str, target_rec: dict) -> str:
@@ -208,12 +214,9 @@ def stop_key(name: str, rec: dict, now: float) -> str:
 
 
 # ------------------------------------------------------------------ the decision (pure)
-def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, gate_seen=None,
-           polled: bool = False) -> dict:
-    """-> {do: passive|skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll}"""
-    gate = state.get("gate_passed") if gate_seen is None else (gate_seen or state.get("gate_passed"))
-    if not gate:
-        return {"do": "passive", "why": "gate: account_failover stage 3 not done; it still owns the machine"}
+def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False) -> dict:
+    """-> {do: skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll}
+    (the HOLD brake is the caller's: check() and status())"""
     if not live:
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     order, fr = plan["order"], plan["fresh"]
@@ -294,7 +297,7 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
                        + (" (blind meter = 0%)" if blind else "")}
 
     if target != live and target in stale and under:
-        # spent, and the soonest-expiring account is unconfirmed: a confirmed account beats a stop
+        # spent, and the highest-priority account is unconfirmed: a confirmed account beats a stop
         def fresh(n):
             a = (meter.get(n) or {}).get("age_min")
             return a is not None and a <= fr["max_age_min"]
@@ -326,15 +329,14 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
                                + "; ".join(stale[target])}
             return {**base, "do": "soft", "to": target, "why": "switch pending, target not confirmed after a poll: "
                                                                + "; ".join(stale[target])}
-        te, le = expiry(plan, target, meter.get(target), now), expiry(plan, live, meter.get(live), now)
-        before = live not in order or le is None or (te is not None and te < le)
+        before = outranks(plan, target, live)  # the switch is the target's pull (a reset), not live's reading
         near = p is not None and live in line and p - line[live] <= fr["near_pct"]
         if not (usable(lr) or under or live not in order or before or (polled and near)):
             return {**base, "do": "hold", "to": target, "why": f"{live} reads {lr.get('source')}: no switch away "
                                                                 "from an account the meter cannot see"}
         tr = meter[target]
         return {**base, "do": "switch", "to": target, "key": key, "under": under,
-                "why": f"{target} is the soonest-expiring account with headroom ({tr['week_pct_left']}% > "
+                "why": f"{target} is the highest-priority account with headroom ({tr['week_pct_left']}% > "
                        f"{line[target]}%); {live} at {p}%" + (" (blind meter = 0%)" if blind else "")}
 
     # target == live
@@ -366,18 +368,21 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
 
 # ------------------------------------------------------------------ the pool (pure; slot_allocator paces on it)
 def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
-    """What the plan will still spend and the burn rate that spends it without losing any of it. Use it or lose it:
-    each account's present budget (down to its line) is due at its expiry (next reset; steven's window end), and its
-    next refill (100 - line) at the refill's own expiry. The rate is the max over deadlines of cumulative spend /
+    """What the plan will still spend and the burn rate that spends it without losing more than the owner's priority
+    gives up: each account's present budget (down to its line) is due at its expiry (next reset; steven's window
+    end), unless higher-priority eligible accounts that outlive it hold more than the pace burns before it expires
+    (then it is lost by his rule and not paced for), and
+    its next refill (100 - line) at the refill's own expiry. The rate is the max over deadlines of cumulative spend /
     hours; pct and deadline_h are the binding deadline's. -> {pct, rate_pct_h, deadline_h, total_pct, parts}; rate
     None when no account has a reset time. `live` is unused (kept for the allocator's call)."""
     fl = plan["floors"]
     plain = [n for n in plan["order"] if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
     exp = {n: expiry(plan, n, meter.get(n), now) for n in plan["order"]}
+    _ln, elig = lines(meter, plan, now)
     last = max((n for n in plain if exp[n] is not None), key=lambda n: exp[n], default=None)
     horizon = max((exp[n] for n in plain if exp[n] is not None), default=None)
     horizon = None if horizon is None else horizon + WEEK  # every account's refills up to one week past the last expiry
-    parts = []
+    present, refills = {}, []
     for n in plan["order"]:
         r = meter.get(n) or {}
         cfg = plan["accounts"].get(n) or {}
@@ -390,24 +395,98 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
         leave = cfg.get("leave_pct_left")
         ln = leave if leave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
         if e > now and (cfg.get("window_h_after_reset") is None or in_window(plan, n, r, now)):
-            parts.append((n, max(0.0, (p if p is not None else 0.0) - ln), e))
+            present[n] = (max(0.0, (p if p is not None else 0.0) - ln), e)
         k = 1
         while k == 1 or (horizon is not None and e + k * WEEK <= horizon):
-            parts.append((n, 100.0 - ln, e + k * WEEK))
+            refills.append((n, 100.0 - ln, e + k * WEEK))
             k += 1
+
+    def pace(parts):
+        parts = sorted(parts, key=lambda t: t[2])
+        cum, rate, bind, dl = 0.0, 0.0, 0.0, None
+        for _n, sp, d in parts:
+            cum += sp
+            h = (d - now) / 3600
+            if h > 0 and (dl is None or cum / h > rate):
+                rate, bind, dl = cum / h, cum, h
+        return parts, cum, rate, bind, dl
+
+    # the owner's priority: a present budget is lost at its expiry (and not paced for) when the higher eligible
+    # accounts that outlive it hold more than the pool's pace burns before it expires; the pace depends on what is
+    # kept, so settle it by a few rounds (start with everything kept: the fastest pace, the fewest losses)
+    keep = set(present)
+    for _ in range(4):
+        rate = pace([(n, *present[n]) for n in keep] + refills)[2]
+        new = {n for n, (_sp, e) in present.items()
+               if sum(present[m][0] for m in present if m != n and elig.get(m) and outranks(plan, m, n)
+                      and present[m][1] > e) < rate * (e - now) / 3600 or not any(
+                   elig.get(m) and outranks(plan, m, n) and present[m][1] > e for m in present if m != n)}
+        if new == keep:
+            break
+        keep = new
+    parts = [(n, *present[n]) for n in keep] + refills
     if not parts:
         return {"pct": None, "rate_pct_h": None, "deadline_h": None, "total_pct": None, "parts": [],
                 "why": "no account has a reset time"}
-    parts.sort(key=lambda t: t[2])
-    cum, rate, bind, dl = 0.0, 0.0, 0.0, None
-    for _n, sp, d in parts:
-        cum += sp
-        h = (d - now) / 3600
-        if h > 0 and (dl is None or cum / h > rate):
-            rate, bind, dl = cum / h, cum, h
+    parts, cum, rate, bind, dl = pace(parts)
     return {"pct": round(bind, 2), "rate_pct_h": round(rate, 4), "deadline_h": round(dl, 2) if dl else None,
             "total_pct": round(cum, 2),
             "parts": [{"account": n, "spend_pct": round(sp, 2), "by_h": round((d - now) / 3600, 2)} for n, sp, d in parts]}
+
+
+# ------------------------------------------------------------------ the week ahead (pure; status prints it)
+def simulate(meter: dict, now: float, plan: dict, live, rate_pct_h: float, hours: float = 168,
+             step_min: float = 1) -> list:
+    """The engine's own lines() + pick() run forward from the meter: every account refills to 100% at its reset
+    (the meter's reset time, rolled by whole weeks: resets are fixed instants, so a DST change never moves them) and
+    the target burns at rate_pct_h down to its line. Ignores polls, soft notices and stops (timing only). -> events
+    [{kind: target|reset, at, target|account, pct: {name: %}}]; the first is the target at `now`."""
+    pct, rs = {}, {}
+    for n in plan["order"]:
+        r = meter.get(n) or {}
+        rs[n] = next_reset(r, now)
+        pct[n] = 100.0 if reset_passed(r, now) else left(plan, r, now)
+    ev, cur, t, end = [], object(), now, now + hours * 3600
+
+    def snap():
+        return {n: None if v is None else round(v, 1) for n, v in pct.items()}
+    while t <= end:
+        for n in plan["order"]:
+            if rs[n] is not None and rs[n] <= t:
+                pct[n], rs[n] = 100.0, rs[n] + WEEK
+                ev.append({"kind": "reset", "at": t, "account": n, "pct": snap()})
+        sm = {n: ({"source": "MEASURED", "stale": False, "week_pct_left": pct[n], "age_min": 0,
+                   "week_resets_at": iso(rs[n]) if rs[n] else None,
+                   "hours_to_week_reset": (rs[n] - t) / 3600 if rs[n] else None}
+                  if pct[n] is not None else {"source": "UNMEASURED", "week_pct_left": None})
+              for n in plan["order"]}
+        ln, el = lines(sm, plan, t)
+        tgt = pick(sm, plan, t, el)
+        if tgt != cur:
+            ev.append({"kind": "target", "at": t, "target": tgt, "pct": snap()})
+            cur = tgt
+        dt = step_min * 60
+        if tgt is not None:
+            pct[tgt] = max(ln[tgt], pct[tgt] - rate_pct_h * dt / 3600)
+        t += dt
+    return ev
+
+
+def week_lines(ev: list, plan: dict) -> list:
+    out = []
+    for e in ev:
+        when = datetime.fromtimestamp(e["at"], timezone.utc).astimezone().strftime("%a %Y-%m-%d %H:%M %Z")
+        pc = ", ".join(f"{n} {'?' if v is None else v}%" for n, v in e["pct"].items())
+        if e["kind"] == "reset":
+            out.append(f"{when}  reset   {e['account']} refills to 100%  [{pc}]")
+        elif e["target"] is None:
+            out.append(f"{when}  IDLE    no account above its line: hard stop until a reset  [{pc}]")
+        else:
+            a = plan["accounts"].get(e["target"]) or {}
+            to = a.get("leave_pct_left")
+            out.append(f"{when}  target  {e['target']}" + (f" (to {to}% left, inside its window)" if to is not None else "")
+                       + f"  [{pc}]")
+    return out
 
 
 # ------------------------------------------------------------------ the world (impure)
@@ -448,12 +527,6 @@ def meter_now() -> dict:
 def meter_poll() -> None:
     rc, out = run([sys.executable, str(HERE / "account_usage.py"), "poll"], timeout=420)
     log({"do": "meter_poll", "rc": rc, "out": out[-300:]})
-
-
-def gate_marker_done(plan: dict) -> bool:
-    g = plan.get("gate") or {}
-    m = read_json(Path(g.get("marker", "/nonexistent")), None)
-    return isinstance(m, dict) and m.get("phase") == g.get("phase", "done")
 
 
 def write_notice(d: dict, now: float) -> None:
@@ -516,26 +589,18 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     if (OUT / "HOLD").exists():
         log({"do": "passive", "why": f"{OUT / 'HOLD'} present"})
         return 0
-    gate_seen = bool(state.get("gate_passed")) or gate_marker_done(plan)
-    if gate_seen and not state.get("gate_passed") and not dry:
-        state["gate_passed"] = iso(now)
-        save_state(state)
-        log({"do": "gate_passed", "why": "account_failover stage 3 done: this engine owns the switching now"})
-    if not gate_seen:
-        log({"do": "passive", "why": "gate: account_failover stage 3 not done"})
-        return 0
     st = switcher_status()
     live = st.get("live")
     meter = meter_fn()
     t1 = clock()
     now += t1 - t0  # a slow status or meter read moves time on too: windows are judged when the pass acts
-    d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True)
+    d = decide(meter, live, now, plan, state, read_markers())
     pre = None
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
-            pre = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
+            pre = decide(meter, live, now, plan, state, read_markers(), polled=True)
             if ((pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live)
                     or (pre["do"] == "switch" and pre.get("under"))):
                 d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
@@ -553,7 +618,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
         if d is not pre:
-            d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
+            d = decide(meter, live, now, plan, state, read_markers(), polled=True)
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
            "line": d.get("line")}
     if dry or d["do"] in ("passive", "skip", "hold"):
@@ -576,7 +641,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if live2 != live:
             return False
         m2, n2 = meter_fn(), now + clock() - t2
-        d2 = decide(m2, live, n2, plan, state, mk, gate_seen=True, polled=True)
+        d2 = decide(m2, live, n2, plan, state, mk, polled=True)
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
             d["under"] = True
@@ -673,15 +738,24 @@ def install(deploy: str) -> str:
     return f"{UNIT}.timer -> {script}"
 
 
-def status() -> int:
+def status(rate=None) -> int:
     plan, state, now = load_plan(), load_state(), time.time()
     meter = meter_now()
     live = switcher_status().get("live")
-    gate = bool(state.get("gate_passed")) or gate_marker_done(plan)
-    d = decide(meter, live, now, plan, state, read_markers(), gate_seen=gate, polled=True)
-    print(json.dumps({"live": live, "gate": gate, "next_pass": d, "pool": pool(meter, now, plan, live),
-                      "notice": read_json(OUT / "notice.json"), "stopped": state.get("stopped"),
-                      "hold": (OUT / "HOLD").exists()}, indent=1, sort_keys=True))
+    hold = (OUT / "HOLD").exists()
+    d = decide(meter, live, now, plan, state, read_markers(), polled=True)
+    pl = pool(meter, now, plan, live)
+    rate = rate if rate is not None else pl.get("rate_pct_h")
+    print(json.dumps({"live": live, "hold": hold, "next_pass": {"do": "passive", "why": f"{OUT / 'HOLD'} present",
+                                                                "would_do": d} if hold else d,
+                      "pool": pl, "notice": read_json(OUT / "notice.json"), "stopped": state.get("stopped")},
+                     indent=1, sort_keys=True))
+    print(f"\nThe week ahead at {rate} %/h (the engine's own pick run forward on the meter's reset times; "
+          f"polls, soft notices and stops not modelled){' -- HOLD present: no pass acts until it is removed' if hold else ''}:")
+    if rate:
+        print("\n".join(week_lines(simulate(meter, now, plan, live, rate), plan)))
+    else:
+        print("no burn rate: pass --rate")
     return 0
 
 
@@ -690,7 +764,8 @@ def main(argv=None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("check")
     p.add_argument("--dry-run", action="store_true")
-    sub.add_parser("status")
+    p = sub.add_parser("status")
+    p.add_argument("--rate", type=float, default=None, help="burn %%/h for the week ahead (default: the pool's pace)")
     p = sub.add_parser("install")
     p.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
     a = ap.parse_args(argv)
@@ -699,7 +774,7 @@ def main(argv=None) -> int:
     if a.cmd == "install":
         print(install(a.deploy))
         return 0
-    return status()
+    return status(a.rate)
 
 
 if __name__ == "__main__":

@@ -732,14 +732,14 @@ def _plan_notice_live(pn, now):
 
 
 def plan_inputs(meter, live, now):
-    """-> {pool, plan_notice} from the standard switching plan (switching_plan.py), both None until its engine has
-    passed its gate (account_failover owns pacing until then) or when the plan is unreadable."""
+    """-> {pool, plan_notice} from the standard switching plan (switching_plan.py), both None while its HOLD file
+    is present (the engine is paused: the allocator paces as before) or when the plan is unreadable. A notice older
+    than PLAN_NOTICE_FRESH_S (the engine's timer stopped) is ignored by _plan_notice_live."""
     out = {"pool": None, "plan_notice": None}
     try:
         import switching_plan as SP
         d = Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.OUT)
-        st = read_json(d / "state.json")
-        if not (isinstance(st, dict) and st.get("gate_passed")):
+        if (d / "HOLD").exists():
             return out
         plan = SP.load_plan()
         if plan.get("pool_pacing"):

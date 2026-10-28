@@ -45,8 +45,11 @@ def D(meter, live, state=None, gate=True, plan=PLAN, polled=False):
 
 
 def main():
-    out = SP.decide({}, "system", NOW, PLAN, {}, markers={}, gate_seen=False)
-    check(out["do"] == "passive", "gate unseen: passive (account_failover still owns the machine)")
+    # the gate is the HOLD file only (2026-10-28: account_failover retired, its marker never written)
+    check("gate" not in PLAN and "gate_marker_done" not in dir(SP),
+          "no account_failover gate in the plan or the engine: HOLD is the only brake")
+    out = SP.decide({"system": R(50, 100), "lukas": R(98, 120)}, "system", NOW, PLAN, {}, markers={})
+    check(out["do"] != "passive", f"a fresh state (no gate_passed) is not passive (got {out['do']})")
     off = {"steven": R(90, 100)}  # steven 68 h after his reset: outside the 48 h window
     d = D({**off, "system": R(50, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "normal" and d.get("to") is None, "system live with headroom, steven out of window: normal")
@@ -80,8 +83,8 @@ def main():
     check(d["do"] == "start", "hard-stopped on lukas, lukas's own reset: fleet-start, no switch")
     d = D({**off, "system": R(None, -0.1), "lukas": R(1.9, 120)}, "lukas")
     check(d.get("poll") and d["do"] != "stop", "system's reset just passed (no post-reset reading): poll before acting")
-    mk = {SP.switch_key("system", "lukas", R(98, 3)): {"phase": "done"}}
-    d = D({**off, "system": R(40, 100), "lukas": R(98, 3)}, "system", state={"_markers": mk})
+    mk = {SP.switch_key("lukas", "system", R(40, 100)): {"phase": "done"}}
+    d = D({**off, "system": R(40, 100), "lukas": R(98, 120)}, "lukas", state={"_markers": mk})
     check(d["do"] == "hold", "a transition already done this week is never repeated (a human moved back)")
     # owner 2026-10-28 11:2x (relayed): switch away at 0%, wait on 2%; blind meter = 0%
     check(PLAN["floors"]["switch_away_pct_left"] == 0 and PLAN["floors"]["wait_pct_left"] == 2
@@ -126,7 +129,8 @@ def main():
     check(d["do"] == "switch" and d["to"] == "steven",
           f"spent, preferred target unconfirmed, a confirmed fallback exists: switch to it, never stop (got {d['do']} {d['to']})")
     d = D(mv, "system", polled=True)
-    check(d["do"] != "switch" or d["to"] != "steven", f"the fallback is only for a spent live account (got {d['do']} {d['to']})")
+    check(d["do"] == "switch" and d["to"] == "steven",
+          f"steven in his window outranks a live system with budget: switch to him (got {d['do']} {d['to']})")
     # GPT review round 4 (2026-10-28 11:32)
     d = D({**off, "system": R(2, 24), "lukas": R(100, 160)}, "system", state={"stopped": {"account": "system"}})
     check(d["do"] == "switch" and d["to"] == "lukas",
@@ -186,21 +190,34 @@ def main():
     check(d["do"] == "poll", f"live's own reset just passed: poll before acting (got {d['do']})")
     d = D({**off, "system": R(1.9, -0.01), "lukas": R(0.5, 120)}, "system", polled=True)
     check(d["do"] not in ("stop", "switch"), f"a pre-reset reading of live never stops it (got {d['do']})")
-    d = D({**off, "system": R(40, 100), "lukas": R(50, 3, age=40)}, "system")
+    d = D({**off, "system": R(40, 100, age=40), "lukas": R(50, 120)}, "lukas")
     check(d["do"] == "poll", f"a 40-min-old reading of the target: poll before switching (got {d['do']})")
-    d = D({**off, "system": R(40, 100), "lukas": R(50, 3, age=40)}, "system", polled=True)
+    d = D({**off, "system": R(40, 100, age=40), "lukas": R(50, 120)}, "lukas", polled=True)
     check(d["do"] != "switch", f"no switch onto a target read 40 min ago, even after a poll (got {d['do']})")
-    # use it or lose it: the soonest-expiring account with budget burns first (coordinator 2026-10-28 10:58)
+    # the owner's fixed priority (10:15): steven (in his window, to 52%) > system > lukas; never soonest-expiry
+    check(PLAN["order"] == ["steven", "system", "lukas"], f"priority order steven > system > lukas (got {PLAN['order']})")
+    check("[R]" not in PLAN["_order"] and "10:15" in PLAN["_order"] and "soonest" not in PLAN["_order"],
+          "the _order provenance cites the owner's 10:15 words; the superseded [R] rule is deleted")
     d = D({**off, "system": R(100, 167.9), "lukas": R(40, 3)}, "lukas")
-    check(d["do"] == "normal", f"system just reset, lukas 40% expires in 3 h: stay on lukas (got {d['do']} {d.get('to')})")
+    check(d["do"] == "switch" and d["to"] == "system",
+          f"system's reset with lukas still at 40%: switch to system (the 2026-10-28 13:00 incident) (got {d['do']} {d.get('to')})")
     d = D({**off, "system": R(0, 0.2), "lukas": R(40, 3)}, "lukas")
-    check(d["do"] == "normal", f"system's reset in 12 min will not pull the machine off lukas: no soft (got {d['do']})")
+    check(d["do"] == "soft" and "system" in d["why"],
+          f"system's reset in 12 min will pull the machine off lukas: soft notice (got {d['do']})")
     d = D({"steven": R(100, 167.9), "system": R(100, 165), "lukas": R(30, 1.2)}, "lukas")
-    check(d["do"] == "normal", f"steven just reset but lukas expires in 1.2 h: lukas first (got {d['do']} {d.get('to')})")
+    check(d["do"] == "switch" and d["to"] == "steven", f"steven's reset: steven outranks lukas expiring sooner (got {d})")
+    d = D({"steven": R(100, 167.9), "system": R(60, 140), "lukas": R(30, 100)}, "system")
+    check(d["do"] == "switch" and d["to"] == "steven", f"steven's reset: switch off system to steven (got {d})")
+    d = D({"steven": R(51.9, 150), "system": R(40, 100), "lukas": R(98, 5)}, "steven")
+    check(d["do"] == "switch" and d["to"] == "system",
+          f"steven at his line: system next, even though lukas expires sooner (got {d['do']} {d.get('to')})")
+    d = D({**off, "system": R(30, 100), "lukas": R(98, 5)}, "system")
+    check(d["do"] == "normal", f"system with budget stays live even though lukas expires in 5 h (got {d['do']} {d.get('to')})")
     d = D({"steven": R(100, 167), "system": R(98, 165), "lukas": R(0, 0.5)}, "lukas")
-    check(d["do"] == "switch" and d["to"] == "steven", f"lukas spent: steven's window expires before system (got {d})")
+    check(d["do"] == "switch" and d["to"] == "steven", f"lukas spent, steven in his window: steven (got {d})")
     d = D({**off, "system": R(100, 165), "lukas": R(1.5, 3)}, "lukas")
-    check(d["do"] == "soft", f"lukas at 1.5% with system to switch to: its line is 0 (soft, not stop) (got {d['do']})")
+    check(d["do"] == "switch" and d["to"] == "system",
+          f"lukas at 1.5% with system refilled: system outranks it, switch (got {d['do']})")
     d = D({**off, "system": R(1.5, 100), "lukas": R(1.8, 120)}, "lukas")
     check(d["do"] == "stop", f"no account with budget: pause at the 2% wait floor (got {d['do']})")
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "failed", "at": SP.iso(NOW - 60)}}
@@ -225,14 +242,31 @@ def main():
     check(abs(p["rate_pct_h"] - 4.0) < 0.01 and abs(p["deadline_h"] - 2) < 0.01,
           f"steven's 8% must go in the 2 h left of his window: 4%/h binds (got {p['rate_pct_h']})")
     p = SP.pool({"steven": R(22, 2), "system": R(100, 168), "lukas": R(6, 3)}, NOW, PLAN, live="system")
-    check(abs(p["rate_pct_h"] - 2.0) < 0.01 and abs(p["deadline_h"] - 3) < 0.01,
-          f"lukas's 6% expiring in 3 h binds at 2%/h (got {p['rate_pct_h']} by {p['deadline_h']})")
+    check(not any(x["account"] == "lukas" and x["by_h"] <= 3 for x in p["parts"]),
+          f"lukas's 6% expiring in 3 h behind a higher-priority system with budget is not paced for (got {p['parts']})")
+    pg = SP.pool({"steven": R(22, 2), "system": R(3, 100), "lukas": R(80, 1)}, NOW, PLAN, live="system")
+    check(any(x["account"] == "lukas" and x["by_h"] <= 1 and x["spend_pct"] > 70 for x in pg["parts"]),
+          f"[R] GPT 2026-10-28: system's 3% cannot outlast lukas's hour, so lukas's 80% is paced for (got {pg['parts']})")
     p9 = SP.pool({"steven": R(22, 2), "system": R(40, 168), "lukas": R(40, 167)}, NOW, PLAN)
     sv9 = sorted(x["by_h"] for x in p9["parts"] if x["account"] == "steven")
     check(sv9 == [50.0, 218.0], f"steven's two windows inside the horizon both count (got {sv9})")
     sv = [x for x in p["parts"] if x["account"] == "steven"]
     check(len(sv) == 2 and abs(sv[0]["spend_pct"] - 48) < 0.01 and abs(sv[0]["by_h"] - 50) < 0.01,
           f"steven's coming window counts: 48% by 50 h (got {sv})")
+
+    # the week ahead (status): the engine's own pick, run forward on the meter's reset times at a burn rate
+    wk = {"steven": R(100, 167.75), "system": R(99, 164.7), "lukas": R(7, 0.73)}
+    seq = SP.simulate(wk, NOW, PLAN, "lukas", 1.0)
+    tg = [e["target"] for e in seq if e.get("kind") == "target"]
+    check(tg[:4] == ["steven", "system", "lukas", "system"],
+          f"the week at 1%/h: steven to 52%, system to 0, lukas, then system at its reset (got {tg})")
+    sys_reset = [e for e in seq if e.get("kind") == "target" and e["target"] == "system"][1]
+    check(abs((sys_reset["at"] - NOW) / 3600 - 164.7) < 0.1,
+          f"system takes over at its own reset with lukas still above its floor (got {(sys_reset['at'] - NOW) / 3600:.2f} h)")
+    seq = SP.simulate(wk, NOW, PLAN, "lukas", 3.0)
+    tg = [e["target"] for e in seq if e.get("kind") == "target"]
+    check(None in tg and tg[:3] == ["steven", "system", "lukas"],
+          f"at 3%/h every budget runs out before a reset: idle on the 2% wait floor (got {tg})")
 
     # one pass end to end, fake claude-account
     fake = TMP / "claude-account"
@@ -249,7 +283,12 @@ def main():
     os.environ["FAKE_LIVE_FILE"] = str(TMP / "live.txt")
     SP.CA = str(fake)
     (TMP / "out").mkdir(exist_ok=True)
-    SP.save_state({"gate_passed": True})
+    SP.save_state({})  # no gate: a fresh state acts
+    (TMP / "out" / "HOLD").write_text("owner's pause")
+    rc = SP.check(dry=False, now=NOW, meter_fn=lambda: {**off, "system": R(0, 100), "lukas": R(98, 120)},
+                  poll_fn=lambda: None)
+    check(rc == 0 and not calls.exists(), "HOLD present at the start of a pass: passive, the switcher is never called")
+    (TMP / "out" / "HOLD").unlink()
     meter = {**off, "system": R(0, 100), "lukas": R(98, 120)}
     rc = SP.check(dry=False, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
@@ -394,10 +433,10 @@ def main():
         (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
     (TMP / "live.txt").write_text("system")
     st = SP.load_state(); st.pop("stopped", None); st.pop("last_poll", None); SP.save_state(st)
-    cur14 = [{"steven": R(80, 140, age=0), "system": R(0, 100), "lukas": R(80, 0.01, age=0)}]
+    cur14 = [{"steven": R(80, 0.01, age=0), "system": R(0, 100), "lukas": R(80, 120, age=0)}]
     def arm_retargets(argv, *a, **k):
-        if argv[1:2] == ["arm"]:
-            cur14[0] = {"steven": R(80, 140, age=0), "system": R(0, 100), "lukas": R(100, 168, age=0)}
+        if argv[1:2] == ["arm"]:  # steven resets while we arm: he outranks lukas
+            cur14[0] = {"steven": R(100, 168, age=0), "system": R(0, 100), "lukas": R(80, 120, age=0)}
         return real_run(argv, *a, **k)
     SP.run = arm_retargets
     d14 = D(cur14[0], "system")
@@ -503,10 +542,11 @@ def main():
     # HOLD created while the poll runs brakes this pass too
     calls.write_text("")
     os.environ["FAKE_LIVE"] = "system"
-    cur = [{**off, "system": R(40, 100), "lukas": R(50, 3, age=40)}]
+    (TMP / "live.txt").write_text("lukas")
+    cur = [{**off, "system": R(40, 100, age=40), "lukas": R(50, 120)}]
     def poll_hold():
         (TMP / "out" / "HOLD").write_text("x")
-        cur[0] = {**off, "system": R(40, 100), "lukas": R(50, 3)}
+        cur[0] = {**off, "system": R(40, 100), "lukas": R(50, 120)}
     st = SP.load_state(); st.pop("last_poll", None); SP.save_state(st)
     SP.check(dry=False, now=NOW + 300, meter_fn=lambda: cur[0], poll_fn=poll_hold)
     (TMP / "out" / "HOLD").unlink()

@@ -2,8 +2,12 @@
  "schema": 1,
  "_doc": "The standard switching plan (ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING), read by switching_plan.py and slot_allocator.py. Rules are data; each carries its provenance: [O] owner's words, [C] his question-card pick, [D] delegated (ours, under design/RimMandrake/delegation_policy.md), [A] agent proposal he has not ruled. Account names are the switcher's non-secret registry labels (~/.claude-accounts/accounts.tsv); reset times are NEVER written here: they are read from account_usage.py every pass.",
  "_owner": "[O] 2026-10-28 10:15 PDT: 'Use up both lukas.mandrake and mandrake.system of course down to ~2% for safety. Make sure not to overshoot and get stuck even if there is a surprise long-running subagent. then go idle until 1pm when you switch over to system.mandrake. Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%. That's our first \"standard switching plan.\"'",
- "order": ["steven", "system", "lukas"],
- "_order": "[R] coordinator 2026-10-28 10:58 (relayed rule change, superseding the fixed order of the 10:15 words): 'burn the account whose reset comes soonest among those still above their floor (use it or lose it), not a fixed order ... if lukas is still above 2% at 13:00, stay on lukas (it expires at 16:00) ... The pause-at-floor-until-a-reset step only applies when no account has budget left ... Order those by expiry too: at 14:45, lukas's leftover (expires 16:00) is spent before Steven's half'. The engine burns the eligible account whose budget EXPIRES soonest: a plain account's at its next weekly reset; steven's at the end of his window (his reset + window_h_after_reset), since that is when his half is lost to us ([A]: by his weekly reset system would outrank him, against the 10:15 order). This list only breaks ties.",
+ "order": [
+  "steven",
+  "system",
+  "lukas"
+ ],
+ "_order": "[O] 2026-10-28 10:15 (see _owner): 'Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%.' A fixed priority: the engine burns the FIRST account in this list that is eligible (measured, fresh, inside its window, above its line). steven is eligible only inside his window after his reset, down to leave_pct_left. When system resets, the machine goes to system even if lukas still has budget; a lower account's budget that expires first is given up (the owner 2026-10-28, on being left on lukas at 13:00: 'awkward').",
  "accounts": {
   "steven": {
    "leave_pct_left": 52,
@@ -32,10 +36,5 @@
  "window_margin_min": 10,
  "_window_margin_min": "[R] GPT review round 9: a windowed account (steven) is no switch target in the last 10 min of its window, so a slow arm + use never lands after the window closed (live there, it is switched away early).",
  "pool_pacing": true,
- "_pool_pacing": "[C] card 10:20, Pacing: 'Pace the whole pool BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner.' slot_allocator paces on what this plan will still spend (steven down to its leave line inside its window, the others to their floors) over the hours to each deadline.",
- "gate": {
-  "marker": "/mnt/d/ClaudeWork/rimmandrake/account_failover/switched_back.json",
-  "phase": "done",
-  "_doc": "Cutover 2026-10-28: account_failover.py owns the machine until its stage 3 (back to system after the 13:00 reset) writes this marker with phase done. The engine stays passive until then; once seen it is remembered in the engine's own state, so retiring account_failover later does not re-gate it."
- }
+ "_pool_pacing": "[C] card 10:20, Pacing: 'Pace the whole pool BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner.' slot_allocator paces on what this plan will still spend (steven down to its leave line inside its window, the others to their floors) over the hours to each deadline."
 }

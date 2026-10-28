@@ -18,6 +18,7 @@ os.environ["RM_ACCOUNT_USAGE_DIR"] = str(ROOT / "data")
 os.environ["RM_ACCOUNT_USAGE_CONF"] = str(ROOT / "conf.json")
 os.environ["RM_LIVE_CLAUDE_JSON"] = str(ROOT / "live.claude.json")
 os.environ["RM_PULSE_STATE"] = str(ROOT / "pulse")
+os.environ["RM_CLAUDE_ACCOUNT"] = str(ROOT / "no-such-claude-account")  # a test never reaches the real switcher
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import account_usage as au  # noqa: E402
 
@@ -85,6 +86,24 @@ def fake_local(config_dir, email, now):
 
 au.probe_local = fake_local
 au.remote_live = lambda t: ("there", "two")
+sw_calls = []
+SW = {"live": "one", "renew": False}
+
+
+def fake_switcher(args, timeout=60):
+    """claude-account stand-in: status names the live label; warm renews 'four' only when SW['renew']."""
+    sw_calls.append(tuple(args))
+    if args[:1] == ["status"]:
+        return 0, json.dumps({"machine": "here", "live": SW["live"]})
+    if args[:1] == ["warm"]:
+        a = args[1]
+        if SW["renew"]:
+            (acc / a / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 8 * 3600) * 1000}}))
+        return 0, json.dumps({"ok": SW["renew"], "results": {a: {"result": "renewed" if SW["renew"] else "failed-auth"}}})
+    return 2, ""
+
+
+au.switcher = fake_switcher
 au.probe_remote = lambda t, e, n: (calls.append(("remote", t, e)) or (dict(FIG), ""))
 recs = au.poll(NOW)
 check("poll: live here measured with the default config", recs["one"]["source"] == "MEASURED"
@@ -98,6 +117,11 @@ check("poll: vault token needing a refresh is never run", not any(c[1] == str(ac
 check("poll: nothing to carry reads UNMEASURED with null figures", recs["four"]["source"] == "UNMEASURED"
       and recs["four"]["week_pct_used"] is None and "refresh" in recs["four"]["why"], recs["four"])
 check("poll: every record has the contract keys", all(set(au.RECORD_KEYS) == set(r) for r in recs.values()))
+warms = [c for c in sw_calls if c[0] == "warm"]
+check("warm: an expired dormant login is warmed once, by name", warms == [("warm", "four", "--json")], sw_calls)
+check("warm: a failed warm is in the why", "warm" in recs["four"]["why"] and "failed" in recs["four"]["why"], recs["four"])
+check("warm: the live login and a remote's live login are never warmed",
+      not any(c[0] == "warm" and c[1] in ("one", "two") for c in sw_calls), sw_calls)
 
 # ---- RimPulse reading: fresh = MEASURED, old = carry basis
 pulse = ROOT / "pulse"
@@ -108,6 +132,9 @@ pulse_doc = {"accounts": {"four": {"measured_at": NOW - 300, "week": {"pct": 69.
 recs = au.poll(NOW + 60)
 check("pulse: a fresh endpoint reading is MEASURED with its own time", recs["four"]["source"] == "MEASURED"
       and recs["four"]["measured_at"] == au.iso(NOW - 300) and recs["four"]["week_pct_used"] == 69.0, recs["four"])
+
+check("warm: at most one warm per account per hour (none 1 min later)",
+      [c for c in sw_calls if c[0] == "warm"] == [("warm", "four", "--json")], sw_calls)
 
 # ---- carry: everything fails 4 h later (past the 16:10 session reset)
 au.probe_local = lambda *a: (None, "boom")
@@ -121,6 +148,7 @@ r2 = au.poll(NOW + 5 * 3600)["three"]
 check("carry: an estimate of an estimate keeps the original basis", r2["measured_at"] == au.iso(NOW + 60), r2)
 r3 = au.poll(NOW + 3 * 86400)["three"]
 check("carry: after the week resets it is UNMEASURED, not the old percent", r3["source"] == "UNMEASURED", r3)
+
 
 # ---- file contract + reader
 lines = (ROOT / "data" / "series.jsonl").read_text().splitlines()
@@ -136,6 +164,32 @@ d = st["accounts"]["one"]
 check("reader: a passed session reset reads unknown, not the old percent",
       d["session_pct_left"] is None and d["hours_to_session_reset"] is None, d)
 check("reader: --json CLI round-trips", au.main(["now", "--json"]) == 0)
+
+# ---- warm that renews: the dormant login is then read
+au.probe_local = fake_local
+au.probe_remote = lambda t, e, n: (dict(FIG), "")
+(acc / "four" / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 60) * 1000}}))
+(ROOT / "data" / "warm_state.json").unlink()
+SW["renew"] = True
+calls.clear()
+sw_calls.clear()
+recs = au.poll(NOW + 120)
+check("warm: a renewed login is probed and MEASURED", recs["four"]["source"] == "MEASURED"
+      and ("local", str(acc / "four"), "d@x.test") in calls, (recs["four"], calls))
+# the switcher disagrees about which login is live: no warm at all
+(acc / "four" / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 60) * 1000}}))
+(ROOT / "data" / "warm_state.json").unlink()
+SW["live"] = "four"
+sw_calls.clear()
+recs = au.poll(NOW + 180)
+check("warm: refused when the switcher names another live login", not any(c[0] == "warm" for c in sw_calls)
+      and "dormant" not in recs["four"]["method"], (sw_calls, recs["four"]))
+# a remote that does not answer: we cannot know where each login is live, so no warm
+SW["live"] = "one"
+au.remote_live = lambda t: (None, None)
+sw_calls.clear()
+au.poll(NOW + 240)
+check("warm: refused while a remote's live login is unknown", not any(c[0] == "warm" for c in sw_calls), sw_calls)
 
 # ---- no secret, host or account literal in the module
 src = Path(au.__file__).read_text()

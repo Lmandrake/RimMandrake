@@ -964,13 +964,14 @@ _m = {"system": {"source": "MEASURED", "week_pct_left": 50.0, "week_resets_at": 
                  "hours_to_week_reset": 100.0, "stale": False, "age_min": 1.0},
       "lukas": {"source": "MEASURED", "week_pct_left": 98.0, "week_resets_at": SA.iso_local(NOW + 120 * H),
                 "hours_to_week_reset": 120.0, "stale": False, "age_min": 1.0}}
-pi = SA.plan_inputs(_m, "system", NOW)
-check("plan inputs: engine gate not passed -> no pool, no notice (account_failover still paces)",
-      pi.get("pool") is None and pi.get("plan_notice") is None, pi)
-(_pd / "state.json").write_text(json.dumps({"gate_passed": "2026-10-28T13:05:00-07:00"}))
+(_pd / "HOLD").write_text("owner's pause")
 (_pd / "notice.json").write_text(json.dumps(_soft))
 pi = SA.plan_inputs(_m, "system", NOW)
-check("plan inputs: gate passed -> the pool (50 + 96, binding at lukas's reset, 120 h) and the notice",
+check("plan inputs: the engine's HOLD file -> no pool, no notice (the allocator paces as before)",
+      pi.get("pool") is None and pi.get("plan_notice") is None, pi)
+(_pd / "HOLD").unlink()
+pi = SA.plan_inputs(_m, "system", NOW)
+check("plan inputs: no HOLD (no state.json, no gate) -> the pool (50 + 96, binding at lukas's reset, 120 h) and the notice",
       pi.get("pool") and abs(pi["pool"]["pct"] - 146) < 0.01 and abs(pi["pool"]["deadline_h"] - 120) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
 os.environ.pop("RM_SWITCH_PLAN_DIR")
 

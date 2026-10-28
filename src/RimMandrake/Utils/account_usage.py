@@ -18,6 +18,10 @@ Where each account is read, in order (the first that answers wins):
   3. vault here    - a dormant login's own config dir, ONLY while its access token is valid for 15 more
                      minutes, so the probe never refreshes (a refresh rotates the credential under the
                      account switcher, `claude-account`). Held under the switcher's own machine lock.
+                     A token that does need one is handed to `claude-account warm <name>` (the switcher's own
+                     refresh, one short model call), at most once an hour per account, and only when the
+                     switcher agrees which login is live here and every remote answered: a login live
+                     anywhere is never warmed. Then the token is read again.
   3b. RimPulse     - pulse/usage.py's last reading of the plan's usage endpoint (the same figures /usage
                      shows, read with the stored token, never refreshed), if under 20 minutes old.
   4. ESTIMATE      - none answered: the last MEASURED reading carried forward while its window has not
@@ -62,6 +66,8 @@ ACCOUNTS_DIR = Path(os.environ.get("RM_ACCOUNTS_DIR", Path.home() / ".claude-acc
 DATA_DIR = Path(os.environ.get("RM_ACCOUNT_USAGE_DIR", "/mnt/d/ClaudeWork/rimmandrake/account_usage"))
 LIVE_JSON = Path(os.environ.get("RM_LIVE_CLAUDE_JSON", Path.home() / ".claude.json"))
 CLAUDE = os.environ.get("RM_CLAUDE_BIN") or str(Path.home() / ".local" / "bin" / "claude")
+CLAUDE_ACCOUNT = os.environ.get("RM_CLAUDE_ACCOUNT") or str(Path.home() / ".local" / "bin" / "claude-account")
+WARM_EVERY = 60 * 60        # at most one switcher warm per dormant account per hour (each costs one model call)
 PULSE_USAGE = Path(os.environ.get("RM_PULSE_STATE", Path.home() / ".local/state/rm-dashboard")) / "usage.json"
 PULSE_FRESH = 20 * 60       # RimPulse's own endpoint reading counts as a measurement of now for this long
 VAULT_MARGIN = 15 * 60      # a vault token must stay valid this long, so the probe never triggers a refresh
@@ -237,6 +243,45 @@ def probe_local(config_dir: str | None, want_email: str, now: float) -> tuple[di
     return _reading(auth, use, want_email, now)
 
 
+def switcher(args: list, timeout: int = 60) -> tuple[int, str]:
+    """Run the local account switcher (claude-account) with a clean environment."""
+    return _run([CLAUDE_ACCOUNT, *args], _env(None), timeout)
+
+
+def switcher_live() -> str | None:
+    """The label the switcher itself calls live on this machine (non-secret), or None."""
+    rc, out = switcher(["status", "--json"], 40)
+    try:
+        return json.loads(out).get("live") if rc == 0 else None
+    except ValueError:
+        return None
+
+
+def warm(name: str, now: float) -> str:
+    """Refresh a DORMANT login through the switcher, at most once per WARM_EVERY. The caller proves it is not
+    live anywhere. Runs outside our Lock: the switcher takes the same machine lock itself."""
+    path = DATA_DIR / "warm_state.json"
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(DATA_DIR / ".warm.lock", "a") as lk:  # two polls at once reserve the hour once ([R] GPT 2026-10-28)
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        try:
+            st = json.loads(path.read_text())
+        except (OSError, ValueError):
+            st = {}
+        last = float(st.get(name) or 0)
+        if now - last < WARM_EVERY:
+            return f"warm tried {int((now - last) // 60)} min ago"
+        st[name] = now
+        tmp = path.with_suffix(f".{os.getpid()}.tmp")
+        tmp.write_text(json.dumps(st))
+        os.replace(tmp, path)
+    rc, out = switcher(["warm", name, "--json"], 240)
+    try:
+        return "warm " + str(json.loads(out)["results"][name]["result"])
+    except (ValueError, KeyError, TypeError):
+        return f"warm exited {rc}"
+
+
 SEP = "=====ACCOUNT_USAGE_SEP====="
 
 
@@ -353,20 +398,23 @@ def poll(now: float | None = None) -> dict:
         else:
             why[n].append(f"live on {here}: {w}")
     # 2. live on a remote
+    remote_ok, live_remote = True, set()
     for target in cfg.get("remotes") or []:
         mach, rn = remote_live(target)
         if not rn:
+            remote_ok = False
             for k in why:
                 if k not in got:
                     why[k].append("a remote did not answer its status")
             continue
+        live_remote.add(rn)
         if rn in reg and rn not in got:
             fig, w = probe_remote(target, reg[rn], now)
             if fig:
                 got[rn] = record(rn, now, "MEASURED", "claude /usage, live login", mach, fig, iso(now))
             else:
                 why[rn].append(f"live on {mach}: {w}")
-    # 3. dormant logins here, while their token needs no refresh
+    # 3. dormant logins here, while their token needs no refresh (warmed by the switcher when it does)
     live_here = n
     for name in reg:
         if name in got or name == live_here:
@@ -376,8 +424,18 @@ def poll(now: float | None = None) -> dict:
             why[name].append(f"no vault login on {here}")
             continue
         if exp < now + VAULT_MARGIN:
-            why[name].append(f"vault token on {here} needs a refresh (not done here)")
-            continue
+            # asked again right before each warm, to keep a switch landing in between to a narrow window (the
+            # switcher's warm only re-checks under its lock that the name is not live WITH Claude running)
+            if not (live_here and remote_ok and name not in live_remote and switcher_live() == live_here
+                    and by_email.get(live_email() or "") == live_here):
+                why[name].append(f"vault token on {here} needs a refresh (not warmed: where each login is live "
+                                 "is not proven)")
+                continue
+            res = warm(name, now)
+            exp = vault_token_valid_until(name)
+            if not exp or exp < now + VAULT_MARGIN:
+                why[name].append(f"vault token on {here} needs a refresh ({res})")
+                continue
         try:
             with Lock():
                 fig, w = probe_local(str(ACCOUNTS_DIR / name), reg[name], now)
