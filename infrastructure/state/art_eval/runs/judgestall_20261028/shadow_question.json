@@ -1,0 +1,44 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Surrik": {
+   "prefill": "keep",
+   "why": "PIPELINE: REGEN (regen round 2) \u00b7 Opus REALLY_BAD: DEPARTURE_MISSING, DESC_MISS, STYLE_CARTOON, STYLE_EARTHLY",
+   "context": "judged candidate s2r1 (image sha 21034afc55); STYLE_CARTOON: Glossy round eyes, a black button nose and an upturned smiling mouth give a cute plush-seal face.; STYLE_EARTHLY: It reads at once as an Earth seal: whiskered muzzle pads, a dog-like black nose and a seal head on a seal body.; DEPARTURE_MISSING: Departure 4 is absent: the mouth is a curved smile under a nose, not a slit opening upward."
+  },
+  "RM_Fuzzviper": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT (regen round 2) \u00b7 Opus WEAK: FOOTPRINT, LUMP \u00b7 GPT strong_accept",
+   "context": "judged candidate r3 (image sha e43d3af9af); FOOTPRINT: The north bundle sits low and to the right of the canvas centre (centre roughly at x\u22480.53\u20130.55, bottom at \u22480.9 of the frame), and it is much; LUMP: The end-on cone of fibres has no visible spine curve or tail tip separate from the body mass, so at small zoom it could read as a haystack-l"
+  },
+  "RM_Sytheclaw": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: REGEN (regen round 3) \u00b7 Opus WEAK: F_INCONSISTENT, F_SIZE_JUMP, OWNER_NOTE_IGNORED \u00b7 GPT regen, unsettled K1",
+   "context": "judged candidate r3 (image sha 4fde3a75cb); F_INCONSISTENT: North shows two long, straight serrated blades sticking out horizontally from the shoulders. The accepted east shows forelegs ending in hook; OWNER_NOTE_IGNORED: North's plates are pale, even tan, with a thin outline. The east's plates are rough, rust-orange and grey, with red sinew and a heavy dark o; F_SIZE_JUMP: The north body is narrower and slighter than the south's bulk; its apparent width comes mostly from the thin blades."
+  }
+ }
+}

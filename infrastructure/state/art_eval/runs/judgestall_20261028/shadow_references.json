@@ -1,0 +1,18 @@
+{
+ "RM_Surrik": [
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_s2r1_south/arteval_RM_Surrik_s2r1_south.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_s2r1_east/arteval_RM_Surrik_s2r1_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/artpipe/_artsrc/arteval_RM_Surrik_s2r1_north/arteval_RM_Surrik_s2r1_north.png"
+ ],
+ "RM_Fuzzviper": [
+  "/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Fuzzviper_n/north.png"
+ ],
+ "RM_Sytheclaw": [
+  "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_south.png",
+  "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Dessicated_Sytheclaw_east.png",
+  "/mnt/d/ClaudeWork/rimmandrake/facing_backlog_20261026/batch/norm/r3/RM_Sytheclaw__dessicated_n/north.png",
+  "infrastructure/state/art_eval/runs/judgestall_20261028/kept/kept_Dessicated_Sytheclaw_north_a6eeb834dc78.png"
+ ]
+}
