@@ -35,6 +35,7 @@ FAULTS = [
     ("Nondet", "cold", "determinism"),
     ("Alloc", "rain", "alloc"),
     ("DoubleWork", "aligned", "ceiling"),
+    ("MissTouch", "dry", "stale"),         # HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: a skipped corridor that changed
 ]
 
 FAILS = []
@@ -122,7 +123,8 @@ def main():
     rc_n, out_n, _, _ = hose_replay.run_replay(["run", "--scenario", "rain", "--no-oracle"], out_dir=os.path.join(root, "nooracle"),
                                                no_build=True)
     _, g = gates(out_n, "rain")
-    check(g.get("patch") == "skip" and g.get("comps") == "skip", "--no-oracle reads patch and comps as skip, not green (%s)" % g)
+    check(g.get("patch") == "skip" and g.get("comps") == "skip" and g.get("stale") == "skip",
+          "--no-oracle reads patch, comps and stale as skip, not green (%s)" % g)
     return finish(root)
 
 

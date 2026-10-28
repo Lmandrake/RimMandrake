@@ -80,6 +80,7 @@ namespace RimMandrake.FlowWorks.Replay
                     ["noflow"] = r1.C.WorkSum(Work.Transfers) > 0 ? null : "skip (0 committed moves)",
                     ["patch"] = !oracle ? "skip (--no-oracle)" : r1.PatchChecks > 0 ? null : "skip (0 patch checks)",
                     ["comps"] = !oracle ? "skip (--no-oracle)" : r1.CompChecks > 0 ? null : "skip (0 component checks)",
+                    ["stale"] = !oracle ? "skip (--no-oracle)" : r1.StaleChecks > 0 ? null : "skip (0 skipped corridors)",
                 };
                 foreach (var kv in seen)
                     gates[kv.Key] = r1.GateFails.TryGetValue(kv.Key, out int n) ? "RED x" + n : kv.Value ?? "green";

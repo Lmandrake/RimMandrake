@@ -33,6 +33,7 @@ namespace RimMandrake.FlowWorks.Replay
         Nondet = 8,         // the settle budget reads a process-wide counter, so run 2 differs from run 1                   -> determinism
         Alloc = 16,         // the cell rule allocates per cell                                                              -> alloc
         StaleComps = 32,    // a (re)lay does not bump the topology revision: the cached components miss the new link        -> comps
+        MissTouch = 128,    // a live cell change does not bump its corridor version: a recheck skips a corridor that changed  -> stale
         DoubleWork = 64,    // every recheck hashes its corridor and checks its replan twice                                 -> ceiling
     }
 
@@ -140,7 +141,7 @@ namespace RimMandrake.FlowWorks.Replay
         public ulong[] Fingerprints;
         public readonly List<string> Failures = new List<string>();
         public readonly Dictionary<string, int> GateFails = new Dictionary<string, int>();
-        public int OracleChecks, PatchChecks, CompChecks, NoCompMoves;
+        public int OracleChecks, PatchChecks, CompChecks, NoCompMoves, StaleChecks;
         /// <summary>Trace events never applied: a tick outside 0..Ticks-1 or a phase other than 0..2 (a blind replay otherwise).</summary>
         public int DroppedEvents;
 
@@ -323,7 +324,7 @@ namespace RimMandrake.FlowWorks.Replay
             truth.ClearCell(c);
             ReplayRule.Write(truth, c, ch);
             versions.Ensure(W, H);
-            versions.Touch(x, z);
+            if ((fault & Fault.MissTouch) == 0) versions.Touch(x, z);
             if (world == null || worldVersion != mapVersion) return;
             if (CordSig.CellSig(world, c) != CordSig.CellSig(truth, c) && !MarkDirty(x, z)) MapChanged();
         }
@@ -428,6 +429,17 @@ namespace RimMandrake.FlowWorks.Replay
             if (!audit && r.HashedAt > 0 && !versions.ChangedSince(r.HashedAt, x0 - 2, z0 - 2, x1 + 2, z1 + 2))
             {
                 C.Add(Work.CorridorSkips);
+                // oracle (not booked in the op counts): a skipped corridor must hash equal to its stored hash, else the version
+                // grid missed a change and the hose stays laid across it
+                if (oracle)
+                {
+                    R.StaleChecks++;
+                    ulong h = 1469598103934665603UL;
+                    for (int z = z0 - 2; z <= z1 + 2; z++)
+                        for (int x = x0 - 2; x <= x1 + 2; x++)
+                            h = (h ^ CordSig.CellSig(truth, new Cell(x, z))) * 1099511628211UL;
+                    if (h != r.CorridorHash) R.Fail("stale", now, r + " skipped its corridor hash but the corridor changed");
+                }
                 return false;
             }
             int at = versions.Now;
