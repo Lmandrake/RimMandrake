@@ -56,6 +56,7 @@ see them**; fix one in its own repo and push there — a queue item here never r
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
+| `rimflow-operations` | Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time… |
 | `rimworld-art-evaluation` | Automated evaluation of RimMandrake game art — creatures (walkers, swimmers, flyers, catch items), plants, and machines with… |
 | `rimworld-canon-references` | Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |

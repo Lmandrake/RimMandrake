@@ -6,12 +6,13 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **491 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1179 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
 | doc | title | status |
 |---|---|---|
+| `2026-10-25-rimflow-block-release.md` | RimFlow: typed `block --on --until` and the block frontier (RIM-1 design pass, 2026-10-25) | — |
 | `CANON_STORAGE_ARCHITECTURE_options.md` | How should we store the canon? — options, tradeoffs, and a recommendation | — |
 | `CHRONICLE_EVENT_SPINE.md` | RimChronicle event spine — one-page spec (CHRONICLE_EVENT_SPINE_1) | — |
 | `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask |
@@ -19,7 +20,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `MOVING_DUNES_DESIGN.md` | MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps | — |
 | `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live as the grammar |
 | `RIMPROPERTY_ANIMAL_THEFT_SPEC.md` | RimProperty animal theft — RIMPROPERTY_ANIMAL_THEFT_1 | — |
-| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? ruled and built, 2026-09-24 — forks f1-f10's recommendations stand (owner card, 2026-09-24 |
+| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? ruled and built, 2026-09-24 — forks f1-f10 ruled 2026-10-09 by question card, every recommendation accepted (§7) |
 | `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
 | `mondayreviewitems.md` | mondayreviewitems — design questions waiting on the owner | — |
 
@@ -31,6 +32,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `anomaly_exception_access_spec.md` | Anomaly exception access — the Memory-Core revelation (buildable spec) | — |
 | `antiquities_design.md` | ANTIQUITIES — the tree you dig up one urn at a time | ? ruled (owner, 2026-09-04, by card) and revised same day by the
      owner's comment pass, ingested throughout |
+| `biome_rites_pass_2026-10-01.md` | Biome rites pass: what each finished biome teaches the Salvation (2026-10-01) | — |
 | `build_plan.md` | build_plan.md — the execution strategy (how we actually build this) |  |
 | `canon_reintegration_plan.md` | Canon reintegration — the plan | ? planning doc for owner review (bench/fable canon-reintegration
      pass, 2026-09-04, on the owner's instruction |
@@ -68,6 +70,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `graffiti_spec.md` | Graffiti — the clan that writes on the world | ? draft — bench full design for owner ruling, 2026-08-31. item |
 | `ideoligion_precept_removals.md` | Removing ThroneSpeech, AnimaTreeLinking, TreeConnection from The Salvation | — |
 | `kyber_trade_plot_spec.md` | The kyber trade — heat, Hutts, the alleged Jedi, and the smuggle | — |
+| `nine_faults_permanent_rite_2026-10-01.md` | Nine Faults — the first permanent-choice rite (design exploration, 2026-10-01) | — |
 | `ownership_settlement_spec.md` | Ownership, theft and settlement interaction — the ruled design | ? ruled design spec — owner brainstorming sitting 2026-08-31 ("superb! ...
      this is amazing! (two mods)"). research input |
 | `parked_mod_concepts.md` | parked_mod_concepts.md — mod ideas worth building later | ☁ aspirational |
@@ -81,6 +84,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      third layer of the research-normalization stack |
 | `salvation_engine_build_spec.md` | The Salvation Engine — build spec | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
 | `salvation_engine_review.md` | The Nine, Reviewed — BENCH critical assessment of the pantheon + matrix |  |
+| `salvation_rites_2026-10-01.md` | Salvation rites: where they live, every rite, and how a biome teaches one (2026-10-01) | — |
+| `salvation_rites_unification_audit_2026-10-02.md` | Salvation rites — unification audit and build plan (2026-10-02) | — |
+| `story_sitting_cards_2026-10-10.md` | Campaign story sitting — card deck for the morning (2026-10-10) |  |
 | `sw_ownership_survey.md` | Star Wars mod ownership survey — measured facts only | — |
 | `text_lore_load_report.md` | The Text Lore Load — complete inventory and estimate (2026-09-11) | — |
 | `tibanna_embargo_plot_spec.md` | The tibanna embargo — the Empire's quietest weapon, and the clock it winds | — |
@@ -141,6 +147,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `CAMPAIGN_ARC_GATHER.md` | CAMPAIGN ARC — the gather (Phase A of CAMPAIGN_STORY_SITTING_1) |  |
+| `fever_wood_tenant_digest_2026-10-10.md` | The Fever Wood's Tenant: what is now written (digest, 2026-10-10) | — |
 
 ### `design/Jawa/droids/`
 
@@ -208,6 +215,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `droid_mass_production_quest_chain_2026-10-02.md` | The Unfinished Line — the Hive/Enclaves droid-production quest chain (design proposal, 2026-10-02) | — |
+| `empire_escalation_ladder_design_2026-10-02.md` | Empire escalation ladder — design (EMPIRE_ESCALATION_LADDER_1) | — |
 | `fire_ecology_deep_design.md` | The Pyrelands, made mechanical — fire as a place to be, not a place to flee | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `god_modes_deep_design.md` | Reign-Modes — when a god stops sending letters and starts rewriting the world | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
 | `high_cuisine_deep_design.md` | High cuisine, deep design — meals are statements | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
@@ -304,6 +313,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      sea_beasts_def_spec.md §4 routes a–c (route b, pathfinding.framework, is dead |
 | `ashfall_research_base.md` | The Ashfall Research Base — the Contagion's dungeon |  |
 | `beast_normalization_spec.md` | Beast Normalization — size, mass, casual lethality, temperature, products | ? draft — bench synthesis of the three-arm beast fan-out, 2026-08-31. owner's law |
+| `big_repaint_plan_2026-10-21.md` | The big repaint: plan, 2026-10-21 | — |
 | `biome_flora_rosters.md` | Ash'karr's flora — what grows where, and why | — |
 | `biome_name_candidates_2026-09-26.md` | Biome name candidates — 2026-09-26 | — |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |
@@ -359,10 +369,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `mechanoid_biome_presence_draft.md` | Mechanoid & ancient-danger presence per biome — RULED | — |
 | `mindstone_arc_legends.md` | Mindstone arc — legends entries (owner sitting, 2026-09-11) | — |
 | `mod_retirement_audit.md` | Mod retirement audit — what the seven low-survival mods ACTUALLY ship | — |
+| `mountain_system_2026-10-20.md` | Ash'karr's mountain system: why the ranges read as arbitrary, and the edit that fixes them |  |
 | `mutation_modifiers_survey.md` | Mutation modifiers survey — `MUTATION_MODIFIERS_SURVEY_1` | — |
 | `named_places_draft.md` | NAMED PLACES — draft set for the owner to veto | ? superseded |
 | `orbital_towers_and_the_sky_ladder.md` | Orbital towers and the sky ladder — the Empire's way down |  |
+| `parity_causes_2026-10-20.md` | World parity: root causes and fix plans for U1, U2, U4 (2026-10-20) | — |
 | `pawnkind_roster.md` | The pawn-kind roster — 48 kinds, and what each one carries |  |
+| `planet_state_2026-10-20.md` | State of the planet, end of 2026-10-20 (read this cold) | — |
+| `propane_lands_name_candidates_2026-10-03.md` | Propane lands: name candidates and land description — 2026-10-03 | — |
 | `rakatan_legacy_index.md` | Rakatan engineered-legacy index | — |
 | `restraining_bolt_doctrine.md` | The restraint bolt — making the campaign's moral problem cost something | → superseded `restraining_bolt_technical.md` |
 | `restraining_bolt_technical.md` | Restraining bolts — the technical spec |  |
@@ -412,8 +426,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `water_doctrine.md` | Water doctrine — the master resource, finally decided |  |
 | `water_taxonomy.md` | The waters of Ash'karr — taxonomy wrapper | — |
 | `what_the_machines_are.md` | What the machines are |  |
+| `world_faces_own_art_2026-10-23.md` | Our own world faces: how WME does it, what made September pretty, three looks to choose from (2026-10-23) | — |
+| `world_look_program_2026-10-24.md` | The world-map look program (2026-10-24) | — |
+| `world_paths_readable_2026-10-20.md` | Readable roads and rivers on the world map (2026-10-20) | — |
 | `worldgen_interactive_build_concepts.md` | worldgen_interactive_build_concepts.md — new content the world painting asks for |  |
 | `worldgen_interactive_def.md` | worldgen_interactive_def.md — the working definition of the world we are painting | ⚠ do not quote its numbers |
+| `worldmap_in_game_audit_2026-10-20.md` | World map, in-game audit (2026-10-20) | — |
+| `worldmap_mods_study_2026-10-20.md` | World-map graphics mods: what they do and how (study, 2026-10-20) | — |
 
 ### `design/Jawa/worldbuilding/biomes/`
 
@@ -425,19 +444,26 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `_freeze_review_2026-09-07.md` | The Biome Freeze Review — BIOME_FREEZE_FABLE_REVIEW_1 | — |
 | `_freeze_rulings_2026-09-07.md` | Freeze-review card rulings — owner, 2026-09-07 | — |
 | `_openers_prep.md` | Biome opener prep — measured tables for the remaining sheets | — |
+| `abyss.md` | The Abyss — definition sheet | — |
+| `abyss_cast_bible_2026-10-01.md` | The Abyss — bedazzle cast bible (movement 4: ticket-out) | ? cast bible — ticket-out under blackcrags_bedazzle_sitting_1 movement 4 (commission waits for the owner) |
+| `abyss_free_cryptid_2026-10-01.md` | The Abyss's free-tier cryptid: the Nhaleth (2026-10-01) | — |
 | `arid_shrubland.md` | The Arid Shrubland — definition sheet | — |
 | `assailant_weapon_remnants.md` | The Assailant weapon remnants — the triptych's third panel (not a biome) | — |
-| `blackcrags_bedazzle_review_2026-09-30.md` | Black Crags (was the Forsaken Crags): bedazzle review, movements 1 and 2 | — |
+| `blackcrags_bedazzle_review_2026-09-30.md` | The Abyss (asked as Black Crags; was the Forsaken Crags): bedazzle review, movements 1 and 2 | — |
 | `bluedesert_bedazzle_cast_2026-09-28.md` | Blue Desert bedazzle cast — the four new natives + art commission | ? cast bible — commissioned under bluedesert_bedazzle_sitting_1 movement 4 |
 | `bluedesert_bedazzle_review_2026-09-28.md` | Blue Desert — bedazzle review (movement 1 + movement 2 prep) | — |
 | `bluedesert_carbon_garden_2026-09-30.md` | The Carbon Garden — hydrocarbon flora vetting (Blue Desert) | — |
+| `bluedesert_flora_expansion_pitch_2026-10-02.md` | Blue Desert — flora expansion pitch (2026-10-02) | ? pitch — design only, nothing filed, nothing built |
 | `cauldron.md` | The Cauldron (formerly the Poison Forest) — biome definition sheet | — |
 | `cauldron_bedazzle_cast_2026-09-28.md` | The Cauldron — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under cauldron_bedazzle_sitting_1 movement 4 |
 | `cauldron_bedazzle_review_2026-09-28.md` | The Cauldron (shipping as Poison Forest) — bedazzle review, 2026-09-28 | — |
+| `cauldron_enrichment_audio_visuals_spec_2026-10-02.md` | Cauldron enrichment — audio & visuals spec (2026-10-02) | — |
+| `cauldron_flora_expansion_pitch_2026-10-02.md` | The Cauldron — flora expansion pitch (2026-10-02) | — |
 | `caverns_replacement_scoping.md` | Caverns replacement scoping — CAVERNS_REPLACEMENT_SCOPING_1 | — |
 | `contagion_grotesque_cast_2026-09-27.md` | The Contagion — grotesque cast bible (full RM_ development) | — |
 | `contagion_grown_limbs_2026-09-30.md` | The Contagion's five grown limbs — owner review sheet (2026-09-30) | — |
 | `cracked_lands_bedazzle_cast_2026-09-28.md` | The Cracked Lands — bedazzle cast bible (movement 4: commission) | — |
+| `cracked_lands_flora_expansion_pitch_2026-10-02.md` | The Cracked Lands — flora expansion pitch (2026-10-02) | — |
 | `deep_desert.md` | The Deep Desert — definition sheet | — |
 | `desert.md` | The Desert — definition sheet | — |
 | `dune_sea.md` | The Dune Sea — definition sheet (a REGION of the Stillsand) | — |
@@ -448,37 +474,57 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `fever_wood_flora_roster_2026-09-23.md` | The Fever Wood flora roster — 18 invented plants, 2026-09-23 | — |
 | `fever_wood_rm_cast_proposal_2026-09-24.md` | Fever Wood — RM_ invented cast proposal (2026-09-24) | — |
 | `fever_wood_syllable_variety_pass_2026-09-24.md` | Fever Wood syllable-variety pass — 2026-09-24 | — |
+| `feverwood_bedazzle_review_2026-10-02.md` | The Fever Wood: bedazzle review (grandfathered sitting, turn 1 ruled) | — |
 | `floodedcanyon_bedazzle_review_2026-09-28.md` | The Cracked Lands (RM_FloodedCanyon) — bedazzle review (movement 1 + movement 2 prep) | — |
 | `forge_bedazzle_cast_2026-09-29.md` | The Forge — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under forge_bedazzle_sitting_1 movement 4 |
 | `forge_bedazzle_review_2026-09-28.md` | The Forge — bedazzle review (movements 1–2), 2026-09-28 | — |
-| `abyss.md` | The Abyss — definition sheet | — |
+| `gelatinousslime_bedazzle_review_2026-10-02.md` | The Gelatinous Slime: bedazzle review (grandfathered sitting, turn 1 ruled and ticketed) | — |
+| `grandfathered_bedazzle_scores_2026-10-01.md` | Grandfathered biomes scored against the Baroque bar (2026-10-01) | — |
+| `greatbole_atmosphere_crossovers_design_2026-10-02.md` | Greatbole atmosphere and crossovers — design (GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1) | — |
+| `greentide_bedazzle_review_2026-10-02.md` | Greentide: bedazzle review (grandfathered sitting, turn 1 drafted) | — |
 | `greentide_risk_reward_2026-09-22.md` | The Greentide as an exchange — audit, progression, and new reward categories | — |
+| `greentide_terror_replacement_design_2026-10-02.md` | GREENTIDE_TERROR_REPLACEMENT_1: the Vurrak, design (BENCH, 2026-10-02) | — |
+| `greentide_terror_replacement_gpt_consult_2026-10-02.md` | — | — |
 | `greentide_tree_roster_2026-09-22.md` | Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22 | — |
 | `grey_deep_pool_sentinel_2026-09-27.md` | The Grey Deep pool sentinel — the orruhmu (2026-09-27) | — |
 | `grey_deep_sitting_agenda_2026-09-27.md` | The Grey Deep — sitting agenda, 2026-09-27 | — |
 | `lantern_deeps_flora_names.md` | Lantern Deeps — flora names (second proposal) | — |
+| `lanterndeeps_bedazzle_review_2026-10-01.md` | Lantern Deeps: bedazzle review (grandfathered sitting, turn 1 ruled, ticketed) | — |
 | `leaningscrub_bedazzle_cast_2026-09-29.md` | Leaning Scrub — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under leaningscrub_bedazzle_sitting_1 movement 4 |
 | `leaningscrub_bedazzle_review_2026-09-29.md` | Leaning Scrub — bedazzle review (movements 1–2), 2026-09-29 | — |
+| `leaningscrub_sweetline_guardian_activation_2026-10-02.md` | Moved | — |
+| `leaningscrub_sweetline_name_register_2026-10-03.md` | Sweetline tree name register — the Leaning Scrub (DRAFT 2026-10-03) | — |
+| `leaningscrub_venomvine_forms_pitch_2026-10-03.md` | Leaning Scrub — further venomvine forms, a pitch for the owner (2026-10-03) | — |
 | `long_shade_bedazzle_2026-09-27.md` | The Long Shade — bedazzle to full-mod status (2026-09-27) | — |
 | `longshade_bedazzle_cast_2026-09-29.md` | Long Shade — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under longshade_bedazzle_sitting_1 movement 4 |
 | `longshade_bedazzle_review_2026-09-29.md` | Long Shade — bedazzle review (movements 1–2), 2026-09-29 | — |
 | `longshade_shade_ideation_2026-09-29.md` | The Long Shade — what's in the shade (volley turn 3 ideation, 2026-09-29) | — |
+| `miasma_bedazzle_review_2026-10-02.md` | The Miasma: bedazzle review (grandfathered sitting, turn 1 ruled) | — |
 | `miasma_fauna_roster_2026-09-23.md` | The Miasma fauna roster — the arthropod floor, the composters, and what the stranded actually are, 2026-09-23 | — |
 | `miasma_flora_roster_2026-09-23.md` | The Miasma flora roster — 19 invented plants, 2026-09-23 | — |
-| `sleeping_ice.md` | The Nightside Ice — biome definition sheet | — |
-| `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — The Abyss, Nightside Ice, the Contagion, the Slime | — |
+| `nightside_ice_roster_draft_2026-10-05.md` | Nightside Ice: the strange life (roster draft, 2026-10-05) | — |
+| `nightsideice_bedazzle_review_2026-10-01.md` | Nightside Ice: bedazzle review (grandfathered sitting, movements 1-2) | — |
+| `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — Abyss, Nightside Ice, the Contagion, the Slime | — |
 | `noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md` | Non-canon beast names — Poison Forest, Miasma, Desert, Scarlands, the Rot, Dune Sea, Wasteland, Cracked Lands | — |
 | `noncanon_beast_names_propane_arid_forge_pyre_fever_greentide_rust_lantern_blue.md` | Non-canon beast names — Propane Lakes, Arid Shrubland, the Forge, the Pyrelands, Fever Wood, Greentide, Rust Cathedral, Lantern Deeps, Blue Desert | — |
+| `pyrelands_bedazzle_review_2026-10-01.md` | Pyrelands: bedazzle review (grandfathered sitting, turn 1 ruled, ticketed) | — |
+| `rot_bedazzle_review_2026-10-02.md` | The Rot: bedazzle review (grandfathered sitting, turn 1 drafted) | — |
 | `rot_flora_fauna_names.md` | The Rot — flora and fauna names and regen briefs | — |
+| `rot_new_marks_redo_2026-10-02.md` | The Rot: the three open marks, pitched again (2026-10-02) | — |
 | `rot_rm_cast_proposal_2026-09-24.md` | The Rot — RM_TheRot franchise-free cast proposal (2026-09-24) | — |
+| `rustcathedral_bedazzle_review_2026-10-02.md` | The Rust Cathedral: bedazzle review (grandfathered sitting, turn 1 drafted) | — |
+| `rustcathedral_mining_droid_hooks_2026-10-02.md` | The Rust Cathedral's giant: five plot hooks for the mining droid (pitch, 2026-10-02) | — |
+| `sleeping_ice.md` | The Nightside Ice — biome definition sheet | — |
 | `stillsand_bedazzle_2026-09-27.md` | The Stillsand — bedazzle to full-mod status (proposal, 2026-09-27) | — |
 | `stillsand_bedazzle_cast_2026-09-30.md` | The Stillsand — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under stillsand_bedazzle_sitting_1 movement 4 |
 | `stillsand_bedazzle_review_2026-09-29.md` | The Stillsand — bedazzle review (movements 1–2), 2026-09-29 | — |
 | `stillsand_roster_fillout_2026-09-27.md` | Stillsand roster fill-out — 2026-09-27 | — |
 | `stillsand_turn3_development_2026-09-30.md` | The Stillsand — volley turn 3: developing what the owner ruled | — |
+| `sump_bedazzle_review_2026-10-01.md` | The Sump: bedazzle review (grandfathered sitting, turns 1 and 2 ruled; the tar rites ruled) | — |
 | `sump_fauna_roster_2026-09-24.md` | The Sump — invented fauna roster | — |
 | `sump_flora_roster_2026-09-24.md` | The Sump — invented flora roster | — |
-| `sweetline_guardian_spec.md` | Sweetline guardian — generic guardian species spec | — |
+| `sump_noothelm_b_plant_2026-10-10.md` | Sump plant from "noothelm B" art — SUMP_NOOTHELM_B_PLANT_1 (2026-10-10) | — |
+| `sweetline_guardian_spec.md` | The sweetline tree, its wool and its bark-wardens: the ruled spec | — |
 | `terminal_seas_cast_proposal_2026-09-25.md` | Terminal seas cast proposal — 2026-09-25 | — |
 | `terminator_sea.md` | The Terminator Sea — biome definition sheet | — |
 | `the_blue_desert.md` | The Blue Desert — definition sheet | — |
@@ -494,6 +540,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `the_grey_deep_flora_pass_2026-09-27.md` | The Grey Deep — underwater flora pass (2026-09-27) | — |
 | `the_lantern_deeps.md` | The Lantern Deeps — injection-layer definition sheet | — |
 | `the_miasma.md` | The Miasma — definition sheet | — |
+| `the_propane_lake_floor_sitting_agenda_2026-10-02.md` | The Chill (the Propane Lake) — floor-pass sitting agenda (draft, 2026-10-02) | — |
 | `the_propane_lake_flora_pass_2026-09-27.md` | The Chill (ex-Propane Lake) — underwater flora design pass (2026-09-27) | — |
 | `the_propane_lakes.md` | The Propane Lakes — definition sheet | — |
 | `the_pyrelands.md` | The Pyrelands — definition sheet | — |
@@ -501,6 +548,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `the_rust_cathedral.md` | The Rust Cathedral — definition sheet | — |
 | `the_rust_cathedral_SCALD_HISTORY_amendment_draft.md` | DRAFT amendment for owner ratification (RUST_CATHEDRAL_SCALD_HISTORY_1) — freeze rule: adds history/detail, changes no standing ruling. | — |
 | `the_scald.md` | The Scald — definition sheet | — |
+| `the_scald_floor_gpt_consult_2026-10-02.md` | The Scald floor: GPT consult, five ideas (2026-10-02) | — |
+| `the_scald_floor_sitting_agenda_2026-10-02.md` | The Scald — floor-pass sitting agenda (draft, 2026-10-02) | — |
+| `the_scald_margin_bath_rite_2026-10-03.md` | The Margin Bath: a found rite for the Scald (SCALD_BATHING_RITE_1, 2026-10-03) | — |
 | `the_scald_underwater_flora_pass_2026-09-27.md` | The Scald — underwater flora design pass (2026-09-27) | — |
 | `the_scarlands.md` | The Scarlands — definition sheet | — |
 | `the_slime.md` | The Slime — definition sheet | — |
@@ -518,8 +568,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `warscar_bedazzle_cast_2026-09-30.md` | Warscar — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under warscar_bedazzle_sitting_1 movement 4 |
 | `warscar_bedazzle_review_2026-09-30.md` | Warscar — bedazzle sitting, movements 1–2 + volley turn 1 (2026-09-30) | — |
 | `warscar_turn3_development_2026-09-30.md` | Warscar — volley turn 3: developing what the owner ruled | — |
-| `wastes.md` | The Wasteland — definition sheet | — |
 | `wasteland_survivor_cast_2026-09-28.md` | The Wasteland survivor cast — full RM_ replacement bible | — |
+| `wastes.md` | The Wasteland — definition sheet | — |
+| `webwork_bedazzle_review_2026-10-02.md` | Webwork: bedazzle review (grandfathered sitting, turn 1 ruled) | — |
 | `webwork_egg_blackmarket_2026-09-24.md` | The Webwork egg black market and the assassination quests (design draft) | — |
 | `webwork_fauna_roster_2026-09-23.md` | The Webwork — invented fauna roster (resident cast besides the Ollathrix) | — |
 | `webwork_flora_roster_2026-09-23.md` | The Webwork — invented flora roster | — |
@@ -529,6 +580,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `weeping_stones_flora_roster_2026-09-24.md` | The Weeping Stones — flora roster | — |
 | `weeping_stones_shine_options_2026-09-24.md` | Weeping Stones — "Make It Shine" Option Portfolio (2026-09-24) | — |
 | `weeping_stones_stocked_pool_2026-09-24.md` | Weeping Stones — The Stocked Pool: pool-fish bestiary, husbandry loop, cuisine hooks | — |
+| `weepingstones_bedazzle_review_2026-10-02.md` | The Weeping Stones: bedazzle review (grandfathered sitting, turn 1 drafted) | — |
 | `wreck_fields.md` | The Wreck Fields — biome definition sheet | — |
 
 ### `design/Jawa/worldbuilding/biomes/kits/`
@@ -677,77 +729,589 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `Custom_World.md` | Custom_World.md — How to Build a Crafted RimWorld (living playbook) |  |
+| `GIT_WORKFLOW.md` | Git workflow — the operating doc (2026-10-02) | — |
 | `Jev_Opportunities.md` | Jev opportunities — where a cheap typed-judgment model changes this project | — |
 | `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_liquid_types_mod.md` | One Liquid System, Many Liquids — LIQUID_TYPES_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item |
+| `alpha_biomes_retirement_2026-10-16.md` | Alpha Biomes retirement plan, 2026-10-16 (FOUNDRY helper) | — |
 | `ancient_machines_design.md` | ANCIENT MACHINES — the grade ladder, and the two layers above it | ? design, filed 2026-09-15 from the bench session recorded in
      infrastructure/state/items/rakatan_archotech_machines_1.md, and reconciled
      against that item's later rulings the same day (revised ratios, the 1.0
      donor rung, the withdrawal of "exceeds modern", the layer-1 assembly, the
      ninefold impulse api). that item is the authority on what the owner said
      and ruled |
+| `art_judge_brief.md` | Art judge brief — the written constraints an art-judging agent applies | — |
+| `art_ledger_design_2026-10-04.md` | Art ledger — one source of truth for every texture (design, 2026-10-04) | — |
 | `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | — |
+| `art_resolution_rootcause_2026-10-04.md` | Art resolution root cause — diagnosis (2026-10-04) | — |
 | `art_review_facts_spec.md` | Art review FACTS — the automatic sprite review ruleset | — |
+| `art_sheet_freshness_design_2026-10-14.md` | Art sheet freshness — fresh or refuse (2026-10-14) | — |
+| `art_sheet_speedup_2026-10-19.md` | Art review sheets: why a sheet takes hours, and the options to make it take minutes (2026-10-19) | — |
 | `artpipe_console_design_2026-09-26.md` | artpipe daemon console — design (2026-09-26) | — |
 | `artpipe_console_questions_2026-09-26.md` | artpipe daemon console — clarifying questions before a design (2026-09-26) | — |
+| `atmospheric_base_god_patterns_2026-10-24.md` | AtmosphericBase: god patterns (2026-10-24) | — |
 | `atmospheric_base_hook_ecosystem.md` | AtmosphericBase — the hook ecosystem | — |
 | `atmospheric_base_mod_definition.md` | AtmosphericBase — mod definition | — |
+| `atmospheric_base_proof_plan_2026-10-23.md` | AtmosphericBase proof plan (2026-10-23) | — |
+| `atmospheric_base_review_package_2026-10-24.gpt_review.md` | — | — |
+| `atmospheric_base_review_package_2026-10-24.md` | AtmosphericBase: review package (2026-10-24) | — |
 | `atmospheric_base_scheme_catalog.md` | AtmosphericBase — scheme catalog, DRAFT | — |
+| `aurora_research_2026-10-20.md` | Aurora research for Auroral Umbra (RUT_Umbra) | — |
+| `automated_art_evaluation_design_2026-10-23.md` | Automated RimWorld art evaluation — design (2026-10-23) | — |
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
+| `baseline_two_seat_system_2026-10-26.md` | Baseline: the two-seat operating system, tagged 2026-10-26 | — |
 | `bazaar_trade_window_design.md` | The Bazaar — the scavenger trade window | — |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
+| `beskar_armorer_quest_design_2026-10-09.md` | Beskar armorer quest: the decided design (2026-10-09) | — |
+| `big_creatures_walls_and_slots_2026-10-18.md` | Big creatures against slots, thin walls and roofs (DESIGN PASS, 2026-10-18) | — |
+| `biome_bars_sitting_2026-10-20.md` | Biome north-star sitting: Leaning Scrub, Cauldron, Contagion (prepared 2026-10-20) | — |
+| `biome_experiences_2026-10-20.md` | The experience, in the owner's words: Baroque Biomes (2026-10-20) | — |
+| `biome_map_makers_design_2026-10-10.md` | Per-biome map-makers + landform mutators — design draft (2026-10-10) | — |
 | `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake.Biomes mod, one section per biome | — |
 | `biome_mod_unification_spec.md` | Biome mod unification — execution spec (BIOME_MOD_UNIFICATION_1) | — |
+| `biome_owner_cards_2026-10-22.md` | Owner question cards: retirement, leaning-scrub art, shell part, dead patches (2026-10-22) | — |
+| `biome_review_save_standard.md` | Standard biome review savegame — specification | — |
+| `biome_rulings.md` | Biome, roster and naming-tier rulings — owner's words | — |
+| `biome_sprint_kickoff_2026-10-15.md` | Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub + ExplosiveGrowth (BENCH, 2026-10-15) | — |
+| `biome_texture_regeneration_audit_2026-10-18.md` | Biome texture regeneration audit, 2026-10-18 | — |
+| `bridge_debugging_system.md` | Bridge debugging, observability, testing and process | — |
 | `bridge_library_design.md` | rimdrive — the reusable Python bridge library (design) | — |
+| `bridge_system.md` | The RimMandrake live-game bridge — architecture, control and intention | — |
+| `bridge_validation_observatory.md` | Bridge Validation Observatory — design | — |
+| `building_camera_perspective_2026-10-14.md` | The building camera — measured from shipped art (2026-10-14) | — |
+| `buildup_prevention_design_2026-10-18.md` | Buildup prevention — design pass, 2026-10-18 | — |
+| `canal_cover_design_2026-10-17.md` | Canal cover: a shallow canal as a wet foxhole (design, 2026-10-17) | — |
+| `canal_overflow_flooding_2026-10-21.md` | Canal overflow: spilling out onto the world — design pass, 2026-10-21 | — |
+| `canon_materials_design_2026-10-09.md` | CANON_MATERIALS_DESIGN_1 — canon Star Wars materials: what they are for and where they come from | — |
+| `canon_materials_gpt_consult_2026-10-09.md` | GPT consult (gpt-6.1-sol, high) on canon_materials_design_2026-10-09.md — 2026-10-09, verbatim answer | — |
+| `canon_metal_fabrication_2026-10-09.md` | Canon metal fabrication — what the factory ship can forge (2026-10-09) | — |
+| `canopy_zoom_investigation_2026-10-18.md` | Canopy zoom — feasibility investigation (2026-10-18) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
+| `compaction_retention_test_2026-10-26.md` | Compaction retention test — 2026-10-26 | — |
+| `companion_handshake.md` | Companion handshake, campaign/test profiles and stale-target guards | — |
+| `conductor_briefing_2026-10-28.md` | Conductor Briefing and the goodbye lifecycle | — |
+| `convenience_replacements.md` | Convenience/automation mods: what we keep by building it ourselves | — |
+| `csuite_brief_2026-10-26.md` | The integrator layer — the owner's brief, verbatim (2026-10-26, ~19:40 PDT) | — |
+| `csuite_design_2026-10-26.md` | The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26) | — |
+| `debug_process.md` | How we debug — debug through the script, leave the harness behind | — |
+| `debug_process_proposal.md` | — | — |
 | `deepfire_luminous_pigment_spec.md` | Deepfire — luminous pigment mod (`LuminousPigment`) — design spec | — |
+| `delegation_candidates_2026-10-26.md` | Delegation candidates: the classes to consider after art geometric correction (2026-10-26) | — |
+| `delegation_policy.md` | Delegation policy — agents decide nearly everything, art included | — |
+| `deploy_plan_2026-10-22.md` | Deploy plan, 2026-10-22 (dry run only, nothing applied) | — |
+| `derelict_structures_lessons_2026-10-19.md` | Derelict temple, biolab and archonexus: what the donor teaches before we drop it | — |
+| `donor_art_census_2026-10-18.md` | Donor art census and donor-mod retirement, 2026-10-18 | — |
+| `donor_pack_port_plan_2026-10-14.md` | Plan: convert the Star Wars Animal Collection pack to our own defs | — |
+| `donor_pack_port_tracker.md` | Donor pack port tracker: mlie.starwarsanimalcollection (160 species) | — |
+| `donor_retirement_plan_2026-10-02.md` | Donor retirement — ordering plan (2026-10-02) | — |
+| `donor_save_residue_2026-10-19.md` | Donor retirement: save residue and morning deploy plan, 2026-10-19 | — |
 | `droid_oracle_voice_design.md` | Droid moments through the Oracle — Narrator letters, four consumers, live | ? ruled, live — droid_oracle_voice_design_1. fable pass 2026-09-08 |
+| `event_quest_wisdom.md` | Event and quest wisdom: what the crew/event mods teach before they retire | — |
+| `event_trace_props_library_design_2026-10-03.md` | Event trace props library — design (2026-10-03) | — |
+| `exotic_materials_census_2026-10-09.md` | Exotic materials census — 2026-10-09 | — |
+| `explosive_growth_bench_design_pass_2026-10-16.md` | Explosive growth: BENCH design pass on the consensus model (2026-10-16) | — |
+| `explosive_growth_consensus_2026-10-16.md` | Explosive growth: the consensus model (2026-10-16) | — |
+| `explosive_growth_deep_dive_2026-10-16.md` | Explosive growth: a deep dive (2026-10-16) | — |
+| `explosive_growth_gpt_review_2026-10-16.md` | — | — |
+| `explosive_growth_ruled_spec_2026-10-16.md` | Explosive growth: the ruled spec (2026-10-16) | — |
+| `explosive_growth_rulings_2026-10-16.md` | Explosive growth: owner rulings from the design-pass review (2026-10-16) | — |
+| `explosive_knockback_design_2026-10-06.md` | Explosive Knockback — design pass (2026-10-06) | — |
+| `explosive_knockback_gpt_eval_2026-10-06.md` | — | — |
 | `exposure_gear_matrix_spec.md` | Exposure gear matrix — design spec | — |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
+| `factions_unwanted_and_lingering_2026-10-20.md` | Unwanted and lingering factions: how a faction hangs around, and how we stop it (2026-10-20) | — |
+| `fire_and_forget_rimflow_2026-10-26.md` | Fire-and-forget RimFlow — second GPT perspective (2026-10-26) | — |
+| `flier_authoring_architecture_2026-10-21.md` | Flier authoring architecture (2026-10-21) | — |
+| `flier_frame_registration_audit_2026-10-20.md` | Flier flip-book registration audit - 2026-10-20 | — |
+| `flowworks_bars_answers_2026-10-20.md` | FlowWorks bars sitting by question card, 2026-10-20 (owner picks) | — |
+| `flowworks_bars_sitting_2026-10-18.md` | FlowWorks north-star sitting — one page (prepared 2026-10-18) | — |
+| `flowworks_bridges_design_2026-10-17.md` | FlowWorks bridges: span anything (DESIGN, 2026-10-17) | — |
+| `flowworks_composite_review_scenarios_2026-10-21.md` | FlowWorks composite review scenarios — DESIGN ONLY (2026-10-21) | — |
+| `flowworks_drawbridge_design_2026-10-20.md` | FlowWorks drawbridges (RULED DESIGN, 2026-10-20) | — |
+| `flowworks_drawbridge_pipes_gpt_review_2026-10-20.gpt_read.md` | GPT skeptical review: drawbridge + pipes-across-pits (2026-10-20) | — |
+| `flowworks_elevation_feasibility_2026-10-17.gpt_read.md` | — | — |
+| `flowworks_elevation_feasibility_2026-10-17.md` | Free per-cell elevation: engine feasibility and cost (helper A, double review, 2026-10-17) | — |
+| `flowworks_elevation_play_2026-10-17.gpt_read.md` | Outside read (GPT) for flowworks_elevation_play_2026-10-17.md — verbatim, evidence not authority | — |
+| `flowworks_elevation_play_2026-10-17.md` | Deeper digging: play, rules and coherence (PROPOSAL, 2026-10-17) | — |
+| `flowworks_finish_board_2026-10-18.md` | FlowWorks finish board (BENCH, written 2026-10-18) | — |
+| `flowworks_hose_geometry_g2_2026-10-23.md` | FlowWorks hoses: geometry as physics (C0 / G1 / G2, bend limit, length) — 2026-10-23 | — |
+| `flowworks_level_surface_2026-10-17.gpt_read.md` | — | — |
+| `flowworks_level_surface_2026-10-17.md` | A level water surface: ruling audit and design (PROPOSAL, 2026-10-17) | — |
+| `flowworks_line_widths_2026-10-20.md` | FlowWorks line widths: the spec (owner, by question card, 2026-10-20 21:38 PDT) | — |
 | `flowworks_liquid_matrix.md` | FlowWorks Liquid Matrix — the six faces × the liquid registry | — |
+| `flowworks_live_pass2_2026-10-19.md` | FlowWorks live pass 2: re-run only what changed (BENCH helper, 2026-10-19) | — |
+| `flowworks_live_session_plan_2026-10-18.md` | FlowWorks: one live session discharges every owed row (BENCH, 2026-10-18) | — |
+| `flowworks_map_controls_design_2026-10-16.md` | FlowWorks map controls: what else beside Source and Sink (design pass, 2026-10-16) |  |
 | `flowworks_mod_definition.md` | FlowWorks — mod definition | — |
+| `flowworks_modern_art_brief.md` | FlowWorks "Modern" art — what modern means, per building (2026-10-22) | — |
+| `flowworks_modern_style_2026-10-23.md` | FlowWorks + Gimme Some Slack "Modern" look — style guide (2026-10-23) | — |
+| `flowworks_natural_water_engine_2026-10-17.gpt_read.md` | — | — |
+| `flowworks_natural_water_engine_2026-10-17.md` | Natural water and our water: one kind or two? Engine and vanilla feasibility (RULED 2026-10-17) | — |
+| `flowworks_natural_water_play_2026-10-17.gpt_read.md` | GPT independent read: natural water, play lens (2026-10-17) | — |
+| `flowworks_natural_water_play_2026-10-17.md` | Natural water as our own water: play, world coherence and rules (RULED 2026-10-17) | — |
+| `flowworks_northstar_gpt_2026-10-02.md` | GPT recommendation: FlowWorks northstar v2 (2026-10-02) | — |
+| `flowworks_northstar_interrogation_2026-10-02.md` | FlowWorks north-star interrogation (2026-10-02) | — |
+| `flowworks_northstar_script_plan_2026-10-02.md` | FlowWorks functional script v2: plan (2026-10-02) | — |
+| `flowworks_offline_kernel_B.md` | FlowWorks offline liquid kernel — Approach B (2026-10-06) | — |
+| `flowworks_offline_status_2026-10-22.md` | FlowWorks offline status 2026-10-22 | — |
+| `flowworks_one_rebuild_plan_2026-10-17.md` | FlowWorks depth: the one big rebuild (PLAN, 2026-10-17) | — |
+| `flowworks_owner_questions_2026-10-22.md` | FlowWorks owner questions, 2026-10-22 (review helper) | — |
+| `flowworks_pipes_across_pits_design_2026-10-20.md` | FlowWorks: pipes, hoses, cords and conduit across pits (RULED DESIGN, 2026-10-20) | — |
+| `flowworks_pits_unified_model_2026-10-02.md` | FlowWorks + Pits — one model (2026-10-02) | — |
+| `flowworks_player_missions_C.md` | FlowWorks player missions — Approach C ("AI plays the mod"), built 2026-10-06 | — |
+| `flowworks_playtest_automation_2026-10-06.md` | FlowWorks playtest automation — three GPT reviews, merged (2026-10-06) | — |
+| `flowworks_playtest_campaign_2026-10-06.md` | FlowWorks playtest campaign — running log (from 2026-10-06) | — |
+| `flowworks_playtest_runner_A.md` | FlowWorks playtest runner — Approach A (in-game scenario runner) | — |
+| `flowworks_quarry_sluice_panning_design_2026-10-03.md` | FlowWorks quarry digging, sluice mining, gold panning — design pass (2026-10-03) | — |
+| `flowworks_remaining_2026-10-05.md` | FlowWorks — what is still missing (inventory, 2026-10-05) | — |
+| `flowworks_session_runbook_2026-10-18.md` | FlowWorks + HugeThings live session: one ordered runbook (BENCH, 2026-10-18) | — |
+| `flowworks_settings_audit_2026-10-18.md` | FlowWorks Mod Settings audit (F2, 2026-10-18) | — |
+| `flowworks_shows_wiring_2026-10-01.md` | FlowWorks `shows=` wiring — 2026-10-01 | — |
+| `flowworks_ticket_consolidation_2026-10-17.md` | FlowWorks ticket consolidation (2026-10-17) | — |
+| `flowworks_unified_depth_2026-10-17.md` | One ruler for all water: the unified depth spec (RULED 2026-10-17) | — |
+| `flowworks_walkthrough_2026-10-23.md` | FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23) | — |
+| `fluff_cuts_2026-10-23.md` | Fluff cuts, 2026-10-23: the veto digest | — |
+| `focused_testing_plan_2026-10-25.md` | Focused testing plan — 2026-10-25 | — |
+| `forge_slowground_concepts_2026-10-20.md` | The Forge's new slow-ground creature: three concepts, 2026-10-20 | — |
+| `fountain_sculptures_v2_2026-10-23.md` | Fountain sculptures — v2 brainstorm (2026-10-23) | — |
+| `four_biomes_readiness_2026-10-19.md` | Four biomes readiness: Pyrelands, Leaning Scrub, Cauldron, Contagion (2026-10-19, offline) | — |
+| `fulgurite_lightning_design_pass_2026-10-15.md` | Fulgurite and the lightning breaker: a design pass (2026-10-15) | — |
+| `game_health_record.md` | The game-health record: metrics beyond TPS | — |
+| `giant_footprint_design_2026-10-07.md` | Huge Things — ground footprints for huge plants, hitboxes for huge pawns (2026-10-07) | — |
+| `gimmesomeslack_verification_consolidation_2026-10-05.md` | GimmeSomeSlack (ex-MessyConduit) — verification consolidation, 2026-10-05 | — |
+| `git_archive_triage_2026-10-02.md` | Git archive triage — 2026-10-02 | — |
+| `git_experiments_2026-10-01.md` | Git workflow experiments 2026-10-01 | — |
+| `git_leftovers_triage_2026-10-02.md` | Shared-tree leftovers triage — 2026-10-02 | — |
+| `git_migration_baseline_2026-10-02.md` | Git migration baseline and Windows-path audit — 2026-10-02 | — |
+| `git_migration_drain_2026-10-02.md` | Git migration drain — Phase 6 part A (2026-10-02) | — |
+| `git_migration_freeze_2026-10-02.md` | Git migration freeze — Phase 6 part B (2026-10-02) | — |
+| `git_migration_launchers_2026-10-02.md` | Launcher migration to ext4 seat clones — 2026-10-02 | — |
+| `git_migration_phase4_2026-10-02.md` | Git migration Phase 4 — implementation record (2026-10-02) | — |
+| `git_migration_phase5_2026-10-02.md` | Git migration — Phase 5 (2026-10-02) | — |
+| `git_migration_phase5_artpipe_2026-10-02.md` | Git migration Phase 5 — artpipe state out of the repo (2026-10-02) | — |
+| `git_migration_phase7_2026-10-02.md` | Phase 7 — production subagent worktree pool (2026-10-02) | — |
+| `git_migration_phase8_2026-10-02.md` | Git migration phase 8 (docs) 2026-10-02 | — |
+| `git_migration_publish_build_2026-10-02.md` | Git migration — publish wrapper, build route, mirror, codex staging (2026-10-02) | — |
+| `git_plan_gpt_review_2026-10-02.md` | — | — |
+| `git_plan_literature_check_2026-10-02.md` | Git plan literature check (2026-10-02) | — |
+| `git_research_2026-10-01.md` | Git workflow research, 2026-10-01 | — |
+| `git_windows_tool_probe_2026-10-01.md` | Windows binaries run from an ext4 (WSL) directory — probe, 2026-10-01 | — |
+| `git_workflow_fix_2026-10-01.md` | Git workflow fix — 2026-10-01 | — |
+| `git_workflow_plan_2026-10-01.md` | RimMandrake git workflow — integrated plan (2026-10-01) | — |
+| `git_workflow_review_gpt61_2026-10-01.md` | RimMandrake git workflow review — 2026-10-01 | — |
+| `git_x1_worktree_pool_2026-10-01.md` | X1: WorktreeCreate/WorktreeRemove pool hook experiment (2026-10-01) | — |
+| `git_x2_history_replay_2026-10-01.md` | Git X2 history replay (2026-10-01) | — |
+| `glow_consumers_2026-10-20.md` | Who reads the sky glow — consequences of "Light follows the sun" (2026-10-20) | — |
+| `gpt_review_findings_2026-10-22.md` | GPT deep-review findings, 2026-10-22 (FOUNDRY helper) | — |
+| `gpt_review_plan_2026-10-22.md` | GPT deep-review round, 2026-10-22 (FOUNDRY helper) | — |
+| `gss_flowworks_rulings_2026-10-11.md` | GimmeSomeSlack + FlowWorks — owner rulings, 2026-10-11 (by question card, BENCH) | — |
+| `gss_gpt_source_read_2026-10-06.md` | Gimme Some Slack: GPT source read, checked against the code (2026-10-06) | — |
+| `gss_gpt_source_read_A_2026-10-06.md` | — | — |
+| `gss_gpt_source_read_B_2026-10-06.md` | — | — |
+| `gss_gpt_source_read_prompt_2026-10-06.md` | GPT source read of Gimme Some Slack - prompt (2026-10-06) | — |
+| `gss_looks_prereview.md` | Gimme Some Slack: looks pre-review recipe (2026-10-06) | — |
+| `gss_offline_fuzz_B.md` | Gimme Some Slack offline fuzz - Approach B (2026-10-06) | — |
+| `gss_ship_path_2026-10-22.md` | GimmeSomeSlack ship path — 2026-10-22 (FOUNDRY helper, offline) | — |
+| `hose_carry_design_2026-10-04.md` | Hose carry design — colonist-deployed flexible hose (FLOWWORKS_HOSE_DEPLOY_DRAG_1) | — |
+| `hose_port_to_flowworks_design_2026-10-10.md` | Hose port: GimmeSomeSlack → FlowWorks — design (2026-10-10) | — |
+| `hose_port_to_flowworks_design_FINAL_2026-10-10.md` | Hose port: GimmeSomeSlack → FlowWorks — FINAL design (2026-10-10) | — |
+| `hose_port_to_flowworks_design_v2_2026-10-10.md` | Hose port: GimmeSomeSlack → FlowWorks — design v2 (2026-10-10) | — |
+| `hose_port_to_flowworks_review_2026-10-10.md` | Review — hose port to FlowWorks design (2026-10-10) | — |
+| `hose_wire_algorithms_advisory_2026-10-28.md` | Hose and wire algorithms: advisory report (2026-10-28) | — |
+| `huge_footprints_perf.md` | HugeFootprints performance: the code, the 70 ms/tick issue, the fix, and alternatives | — |
+| `innovations.md` | Innovations: the list | — |
+| `jawa_scavenge_system_design_2026-10-03.md` | Jawa scavenging system: synthesis design (DRAFT for owner decisions) | — |
+| `jawa_scavenge_system_pitch_2026-10-03.md` | Jawa scavenging system: inventory and pitch (DRAFT, for owner cards) | — |
+| `kinetic_blast_weapons_design_2026-10-06.md` | Kinetic blast weapons — design (KINETIC_BLAST_WEAPONS_1) | — |
+| `kinetic_blast_weapons_gpt_eval_2026-10-06.md` | — | — |
+| `kit_art_designs_2026-10-16.md` | Biome-sprint kit art: guessed designs, 2026-10-16 (FOUNDRY helper) | — |
+| `ladder_climbers_2026-10-23.md` | Ladder climbers — census (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner Q1 2026-10-23) | — |
+| `ladder_parity_2026-10-23.md` | Ladder parity — design (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED) | — |
+| `light_ledger_design.md` | Light ledger — one radius per light, composed from every effect | — |
+| `liquid_connections_visuals_2026-10-16.md` | Liquid connections: pump, hose and joins (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY) | — |
+| `liquid_containers_four_styles_2026-10-16.md` | Liquid containers in the four styles | — |
+| `liquid_litres_2026-10-16.md` | Liquids count in litres — LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16) | — |
+| `liquid_network_semantics_design_2026-10-11.md` | FlowWorks liquid networks: what flows where, and who decides (2026-10-11) | — |
 | `liquids_framework_design.md` | Liquids Framework — one substance, many faces | — |
+| `live_fixer_2026-10-28.md` | Live Fixer: one seat, one ticket, one rig, no shuttle (proposal, 2026-10-28) | — |
+| `live_test_hang_runbook.md` | Live-test hang runbook | — |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
 | `llm_voice_preauthoring.md` | llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue) |  |
+| `machine_dig_2026-10-21.md` | Machine dig: colonists 2 m, machines deeper (2026-10-21) | — |
 | `map_authoring_decision.md` | Map authoring: RimBridge vs save-editing — the decision |  |
+| `map_awareness.md` | Map awareness: who is on this map, and what do we actually know about why | — |
 | `map_content_injection_research.md` | Map content injection — the research path |  |
 | `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
 | `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
+| `memory_clones_drives_2026-10-08.md` | Memory, clones, drives and configuration — audit and redesign (2026-10-08) | — |
+| `messy_conduit_design_2026-10-02.md` | Messy Conduit — design pass (2026-10-02) | — |
+| `messy_conduit_phase2_design_2026-10-02.md` | Messy Conduit — Phase 2 design (1b polish, aerial lines, flexible hoses, Northstar fast-track) | — |
+| `messyconduit_review_round2_owner_notes_2026-10-04.md` | MessyConduit (Gimme Some Slack) — owner review notes, round 2, 2026-10-04 | — |
+| `messyconduit_style_per_build_design.md` | Messy Conduit: choosing the art style when you build | — |
+| `messyconduit_test_extension_2026-10-04.md` | MessyConduit test extension: consult and proposal (2026-10-04) | — |
+| `mineral_abundance_registry_design_2026-10-03.md` | Mineral abundance registry — design (2026-10-03) | — |
+| `mineral_abundance_registry_gpt_consult_2026-10-03.md` | GPT consult, mineral abundance registry (2026-10-03) | — |
 | `minerals_census_2026-09-25.md` | Materials census: ores, gems, exotics — for the Scald sea floor decision | — |
+| `minerals_where_they_belong_design_2026-10-02.md` | MINERALS_WHERE_THEY_BELONG_1 — design (2026-10-02, BENCH design helper, DRAFT for the owner to rule on) | — |
+| `mines_mod_assessment_20261011.md` | Mines 2.0 (`Cain.Mineshaft`) assessment, 2026-10-11 | — |
+| `mod_completion_pilot_2026-10-26.md` | Mod completion pilot -- 2026-10-26 (MOD_COMPLETION_MEASURE_HOW_DONE_IS_DONE) | — |
+| `mod_deepdive_art_rule.md` | Deep dive: how far does "no donor art kept" reach? (mod audit card C17) | — |
+| `mod_deepdive_faces.md` | Deep dive: the facial-animation mods, and what a takeover would take | — |
+| `mod_deepdive_industry.md` | Mod deep dive: industry and salvage (VFE Factory, Better Cremation, Bones) | — |
+| `mod_deepdive_offtone.md` | Off-tone mods: deep dive before the cut | — |
+| `mod_deepdive_oldwhy_removal.md` | Removal consequence analysis: the five C15 "old why" mods | — |
+| `mod_deepdive_yayo.md` | Yayo's Combat 3 — deep dive (what it gives beyond normalisation) | — |
+| `mod_deepdive_yayo_full.md` | Yayo's Combat 3 — the full engine analysis | — |
 | `mod_validation_runner_spec.md` | modcheck — scripted mod-functionality validation (pre-playtest) | — |
+| `monitoring_concepts_2026-10-25.md` | RimMandrake monitoring concepts (2026-10-25) | — |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
 | `narrative_dictionary_design.md` | Narrative Dictionary — design spec | ? approved-design, pilot not built |
 | `narrative_dictionary_pilot_plan.md` | Narrative Dictionary Pilot (Batch 1) — Implementation Plan | — |
+| `natural_bodies_as_canals_design_2026-10-11.md` | Natural bodies of water as filled canals — feasibility, gotchas, conservation tests (2026-10-11) | — |
+| `natural_bodies_as_canals_gpt_review_2026-10-11.md` | — | — |
+| `next_bridge_runbook_2026-10-22.md` | Next bridge sitting: one runbook (written 2026-10-22, offline) | — |
+| `next_sprint_plan_2026-10-15.md` | Next sprint — replicate the ratchet across more biomes (BENCH, 2026-10-15) | — |
 | `nine_voices_cast_bible.md` | The Nine Voices — cast bible for the thing in the walls | ? cast bible — nine_voices_cast_bible_1, bench 2026-08-31, green-lit by the owner.
      supersedes llm_voice_preauthoring.md part a (the single cradle-mind persona), which r-w6
      invalidated. part b (dynamic jawaese) of that doc is untouched and still live.
      sources |
 | `nine_voices_v1_lines.md` | The Nine Voices — v1 line corpus (BLESSED by the owner, 2026-09-11) | — |
 | `north_star_validation_spec.md` | North stars — binding a mod's intended EXPERIENCE to its validation run | — |
+| `northstar_coverage_audit_2026-10-03.md` | North-star coverage audit — 2026-10-03 (NORTHSTAR_COVERAGE_AUDIT_1) | — |
+| `northstar_densification_lessons.md` | Northstar densification — lessons from GimmeSomeSlack (2026-10-05) | — |
+| `northstar_helpers_gpt_review.md` | 1. What the plan gets wrong or misses | — |
+| `northstar_helpers_plan.md` | Northstar situational helpers — plan (not built) | — |
+| `northstar_human_review.md` | Northstar: the "for the human" review map | — |
+| `northstar_live_queue_2026-10-01.md` | Northstar live job queue — 2026-10-01 | — |
+| `northstar_pilot_scoping_2026-10-02.md` | Northstar pilot scoping (2026-10-02, read-only) | — |
+| `northstar_review_2026-10-06.md` | Northstar review — 2026-10-06 (BENCH + GPT) | — |
+| `northstar_time_ledger_2026-10-01.md` | Northstar live pass 2026-10-01: time ledger | — |
 | `oasis_maker_machines_spec.md` | Oasis-Maker Machines — spec (OASIS_MAKER_MACHINES_1) | — |
+| `objstore_trial_2026-10-08.md` | Shared object store — trial with telemetry (2026-10-08) | — |
 | `ollama.md` | ollama.md — installing Ollama on Windows |  |
+| `operating_modes_2026-10-26.md` | Operating modes: how many helpers, on what, under which review gates (2026-10-26) | — |
+| `orchestration_design_record_2026-10-26.md` | Orchestration design record, 2026-10-26 | — |
+| `orchestration_review_2026-10-26.md` | Orchestration designs: GPT's skeptical review, checked against our numbers (2026-10-26) | — |
+| `owner_cards_2026-10-27.md` | Cards for your next session (drafted 2026-10-26 for 2026-10-27) | — |
+| `owner_walk_gss_flowworks_2026-10-11.md` | Owner walk: Gimme Some Slack + FlowWorks: scenes to stage (2026-10-11) | — |
+| `perpetual_orchestrator_context_2026-10-26.md` | Perpetual orchestrator context: grow-until-compaction vs handoff-and-restart | — |
+| `phase0_p6_save_rewrite_icons_NOTE.md` | Phase 0 P6 second pass: ideo-icon refs in the donor-free save (2026-10-16) | — |
+| `phase0_save_mutators_restore_NOTE.md` | Donor tile mutators stripped from the donor-free save — where to put them back | — |
+| `pit_exposure_to_the_elements_2026-10-11.md` | Pit: "exposed to the elements" on vanilla's own temperature path — design pass, 2026-10-11 | — |
+| `pit_solvent_options_20261011.md` | Slime pit solvent: what is "the Rot's finest"? Options, 2026-10-11 | — |
 | `pit_superdeep_collapse_spec.md` | Pit → Superdeep collapse — design spec | — |
+| `pit_travel_jumpers_floaters_2026-10-20.md` | Pit travel: which creatures jump or float (tagged from lore, 2026-10-20) | — |
+| `plant_draw_layers_2026-10-14.md` | Plant draw layers: ground cover under everything (2026-10-14) | — |
+| `player_truth_testing_pilot_2026-10-26.md` | Player-truth testing pilot (FlowWorks: pits, ladders, pipes, hoses, levelling) | — |
+| `pond_depth_design_2026-10-16.md` | Ponds shallow out before they turn to mud: design (2026-10-16) | — |
+| `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |
+| `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | — |
+| `ratchet_workflow_and_token_burst_design_2026-10-11.md` | The ratchet workflow and the token burst to Wed 16:00 | — |
 | `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
+| `relative_depth_climb_design_2026-10-12.md` | Relative depth and climbing out — design pass (2026-10-12) | — |
+| `relative_depth_climb_gpt_review_2026-10-12.md` | GPT review — relative depth and climbing out (2026-10-12) | — |
+| `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
+| `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
+| `retired_mutators_port_2026-10-19.md` | Retired-donor world-tile mutators and landmarks: ported to our own defs, 2026-10-19 | — |
+| `retirement_register_wave4_2026-10-20.md` | Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back | — |
+| `rich_screenshot_art_prereview.md` | Rich-screenshot art pre-review — the contact board (2026-10-06) | — |
 | `rimbridge.md` | rimbridge.md — living context on RimBridgeServer (live game modification) |  |
+| `rimflow_gpt_review_2026-10-07.md` | — | — |
+| `rimflow_system_and_stuck_state_2026-10-07.md` | rimflow: the work-item system, and why items get stuck (2026-10-07) | — |
+| `rimflow_v3_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
+| `rimflow_v3_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
+| `rimflow_v3_field_evidence_2026-10-27.md` | RimFlow v3 against what others actually ended up using (2026-10-27) | — |
+| `rimflow_v3_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
+| `rimflow_v3_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
+| `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
+| `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
+| `rimpulse_gpt_review_2026-10-22.md` | RimPulse — GPT review (2026-10-22) | — |
+| `rimpulse_intent_2026-10-22.md` | RimPulse — intention, success criteria, architecture and honest state (2026-10-22) | — |
+| `rimpulse_make_it_great_2026-10-25.md` | RimPulse, make it great: the owner surface for a two-machine, many-agent operation (2026-10-25) | — |
+| `rimpulse_redesign_2026-10-23.gpt_review.md` | — | — |
+| `rimpulse_redesign_2026-10-23.md` | RimPulse redesign: what it shows, what you need from it, three better ways (2026-10-23) | — |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
+| `rimworld_new_version_research_2026-10-20.md` | RimWorld new version research (2026-10-20) | — |
+| `river_works_mod_design_2026-10-03.md` | River Works — whole-mod design (SURFACE_RIVER_WEIRS_1), 2026-10-03 | — |
+| `rot_northstar_bars_draft_2026-10-22.md` | The Rot: four north-star bars, drafted for the owner | — |
+| `rot_open_questions_2026-10-22.md` | The Rot: open questions for the owner, 2026-10-22 | — |
+| `rot_warm_mat_portable_2026-10-22.md` | The Rot's warm mat, portable — design spec (2026-10-22) | — |
+| `salvage_wreckage_everywhere_design_2026-10-02.md` | SALVAGE_WRECKAGE_EVERYWHERE_1: design (placement, repair and salvage ruled 2026-10-03) | — |
 | `save_authoring_pipeline.md` | Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign | ⛔ dead |
 | `scald_steam_and_hazards_spec.md` | The Scald — steam weather and boiling-water hazards (design spec) | — |
+| `scurrier_male_commission_2026-10-14.md` | Scurrier male art commission (2026-10-14) | — |
 | `sea_dive_maps_spec.md` | Sea dive maps — design spec | — |
 | `sea_shore_mutator_spec.md` | Sea shore tile mutator — design spec | — |
+| `second_workstation_study_2026-10-24.md` | Second Windows workstation: would it pay? (study, 2026-10-24) | — |
+| `ship_cargo_hoist_design_2026-10-01.md` | Ship cargo hoist — universal vertical cargo device (design, 2026-10-01) | — |
+| `shovels_v1_2026-10-25.md` | Shovels v1 — no digging bare-handed (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED) | — |
+| `single_primary_design_2026-10-26.md` | One primary: a seat for you, an engine for the queue (2026-10-26) | — |
+| `sith_line_design.md` | Sith line — redesign of the Sanguophage xenotype | — |
+| `solar_mirrors_mod_design_2026-10-04.md` | Solar Mirrors — full design pass (SOLAR_MIRRORS_MOD_DESIGN_1) | — |
+| `sound_sourcing_options_2026-10-02.md` | Sound sourcing options (SOUND_SOURCING_ROUTE_1) — 2026-10-02 | — |
+| `special_mechanics_review_2026-10-22.md` | Special mechanics, rites and items: review inventory (2026-10-22) | — |
+| `sprinklers_design_2026-10-16.md` | Sprinklers: native pipe heads + VFE automation (SPRINKLERS_DESIGN_PIPES_THEN_PANACHE, 2026-10-16) | — |
+| `sprint_art_commissions_2026-10-16.md` | Sprint art commissions, 2026-10-16 (FOUNDRY helper) | — |
+| `standing_rulings.md` | Standing owner rulings and process detail — full text | — |
+| `starwars_junk_reskin_2026-10-03.md` | Star Wars junk reskin — vanilla ancient junk, many variants (2026-10-03) | — |
 | `statue_expansion_assessment.md` | Statue Art Expansion — Assessment (STATUE_ART_EXPANSION_1) | — |
 | `statue_mods_spec.md` | Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_) | — |
+| `stevedesktop_bringup_plan_2026-10-24.md` | SteveDesktop: second test machine, bring-up plan (2026-10-24) | — |
+| `sun_and_shade_modularity_2026-10-19.md` | Sun & Shade: standalone mod or part of Baroque Biomes? Design pass, 2026-10-19 | — |
+| `surface_river_weirs_design_2026-10-02.md` | Surface river weirs — design (SURFACE_RIVER_WEIRS_1), 2026-10-02 | — |
+| `suspension_bridge_construction_design_2026-10-18.md` | Suspension bridge: how it is built (DESIGN, 2026-10-18) | — |
+| `tail_mods_art_retirement_2026-10-18.md` | Tail donor mods: art-bearing retirement census, 2026-10-18 | — |
+| `tentacle_twitch_design_2026-10-15.md` | Twitching tentacles: greater bulloo and zhool (2026-10-15) | — |
+| `test_orchestration_two_machines_2026-10-25.md` | Test orchestration on two machines: combined plan (2026-10-25) | — |
+| `test_site_saves_2026-10-15.md` | Clean saved test maps — design (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, 2026-10-15) | — |
+| `testing_investment_sim_2026-10-27.md` | Where more testing would pay, and which kinds (2026-10-27) | — |
+| `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, compatible with Dubs Bad Hygiene Lite (design, 2026-10-16) | — |
+| `thirst_fluids_design_2026-10-17.md` | Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17) | — |
+| `ticket_naming_2026-10-10.md` | Ticket naming: SUBJECT_INTENT_TWIST (2026-10-10) | — |
+| `tps_record.md` | The TPS record — TPS is measured all the time | — |
+| `tree_burst_design_2026-10-17.md` | Tree burst: water moves a giant only a bit along its life (2026-10-17) | — |
+| `tree_shade_model_2026-10-19.md` | Tree shade model for Direct Sun: design pass, 2026-10-19 | — |
+| `tree_size_proposal_2026-10-18.md` | Tree size: how big our trees should be (2026-10-18) | — |
+| `unified_direct_sun_heat_2026-10-19.md` | One Direct Sun, planet-wide: design pass, 2026-10-19 | — |
+| `utinni_discovery_achievements_design_2026-10-02.md` | Utinni discovery achievements — design pass (2026-10-02) | — |
+| `utinni_discovery_achievements_gpt_consult_2026-10-02.md` | — | — |
+| `v2_nine_rituals.md` | v2: the rituals of the Nine found in the Baroque Biomes | — |
+| `vee_port_plan_2026-10-22.md` | VEE world layers: port plan (2026-10-22) | — |
+| `venomvine_design_2026-10-16.md` | Venomvine: the Leaning Scrub grows teeth (design, 2026-10-16) | — |
+| `watcher_creatures_kit_design_2026-10-02.md` | Watcher creatures kit — design (WATCHER_CREATURES_MOD_1) | — |
+| `watcher_creatures_pitch.md` | Watcher creatures — the full pitch (WATCHER_CREATURES_MOD_1) | — |
 | `watchers_mod_pitch_2026-09-30.md` | Watchers: a cross-biome mod of shy creatures (pitch, 2026-09-30) | — |
+| `wave4_sheet_gap_2026-10-22.md` | Wave 4 vs the owner's retirement sheet: the 11-mod gap (2026-10-22) | — |
+| `weather_sensing_descope_2026-10-19.md` | Weather sensing descope — inventory and options (2026-10-19) | — |
+| `webwork_spider_siege_2026-10-22.md` | The Webwork siege: the ollathrix come to you and spin (design spec, 2026-10-22) | — |
+| `webworks_open_questions_2026-10-22.md` | The Webwork: open questions for the owner (2026-10-22) | — |
+| `weir_review_2026-10-23.md` | Weir review — 2026-10-23 | — |
+| `work_allocation_framework_2026-10-26.md` | Work allocation: where Archmagi, SteveDesktop and the agents should spend their time (2026-10-26) | — |
+| `world_physics_audit_2026-10-20.md` | World physics audit — tidal lock, sun per tile, temperatures, Rings (2026-10-20) | — |
+| `world_remake_reinstate_list.md` | World remake: the mods to reinstate, and how | — |
+
+### `design/RimMandrake/art_sheet_speedup_2026-10-19_evidence/`
+
+| doc | title | status |
+|---|---|---|
+| `gpt_answer.md` | — | — |
+| `gpt_brief.md` | Review: make the RimMandrake art-review-sheet procedure MUCH faster and more reliable | — |
+
+### `design/RimMandrake/gpt_consults/`
+
+| doc | title | status |
+|---|---|---|
+| `Cauldron_edge_cases_2026-10-16.md` | Cauldron edge cases - graded GPT bug hunt | — |
+| `Contagion_edge_cases_2026-10-16.md` | Contagion edge-case hunt, graded (2026-10-16) | — |
+| `ExplosiveGrowth_edge_cases_2026-10-16.md` | ExplosiveGrowth edge cases: GPT bug-hunt, graded against the code | — |
+| `FlowWorks_edge_cases_2026-10-16.md` | FlowWorks edge-case hunt, graded (2026-10-16) | — |
+| `LeaningScrub_edge_cases_2026-10-16.md` | LeaningScrub edge-case consult, graded against the code | — |
+
+### `design/RimMandrake/gpt_consults/raw/`
+
+| doc | title | status |
+|---|---|---|
+| `Cauldron_A_2026-10-16.md` | — | — |
+| `Cauldron_B_2026-10-16.md` | — | — |
+| `Contagion_A_2026-10-16.md` | — | — |
+| `Contagion_B_2026-10-16.md` | — | — |
+| `ExplosiveGrowth_A_2026-10-16.md` | — | — |
+| `ExplosiveGrowth_B_2026-10-16.md` | — | — |
+| `FlowWorks_1core_2026-10-16.md` | — | — |
+| `FlowWorks_2hose_2026-10-16.md` | — | — |
+| `FlowWorks_3pits_2026-10-16.md` | — | — |
+| `FlowWorks_4liquids_2026-10-16.md` | — | — |
+| `FlowWorks_4machinery_2026-10-16.md` | — | — |
+| `FlowWorks_5rivers_2026-10-16.md` | — | — |
+| `LeaningScrub_A_2026-10-16.md` | — | — |
+| `LeaningScrub_B_2026-10-16.md` | — | — |
+| `LeaningScrub_C_2026-10-16.md` | — | — |
+
+### `design/RimMandrake/gpt_reviews/`
+
+| doc | title | status |
+|---|---|---|
+| `CreatureBehaviors.md` | — | — |
+| `DESIGN_PASS_2026-10-08.md` | GPT top-ten review — design pass over Parts 2–4 (2026-10-08) | — |
+| `DivingInteraction.md` | — | — |
+| `EnvironmentalHazards.md` | — | — |
+| `FeverWood.md` | — | — |
+| `FlowWorks.md` | — | — |
+| `GimmeSomeSlack.md` | — | — |
+| `LuminousPigment.md` | — | — |
+| `PROMPT.md` | — | — |
+| `Scarlands.md` | — | — |
+| `Stillsand.md` | — | — |
+| `TerminalBiomes.md` | — | — |
+| `VERDICTS.md` | GPT top-ten review — verdicts (GPT_FULL_REVIEW_TOP10_1) | — |
+
+### `design/RimMandrake/hose_port_gpt_review_2026-10-10/`
+
+| doc | title | status |
+|---|---|---|
+| `gpt_C1_flow_and_hose.md` | — | — |
+| `gpt_C2_settings_save_deps_tests.md` | — | — |
+| `gpt_C3_flowworks_root_source.md` | — | — |
+| `gpt_C4_flowworks_subsystems_defs.md` | — | — |
+| `gpt_C5_harness.md` | — | — |
+| `gpt_C5b_northstar_rerun.md` | — | — |
+| `prompt_C1_flow_and_hose.md` | — | — |
+| `prompt_C2_settings_save_deps_tests.md` | — | — |
+| `prompt_C3_flowworks_root_source.md` | — | — |
+| `prompt_C4_flowworks_subsystems_defs.md` | — | — |
+| `prompt_C5_harness.md` | — | — |
+| `prompt_C5b_northstar_rerun.md` | — | — |
+| `prompt_common.md` | — | — |
+
+### `design/RimMandrake/liquid_network_semantics_gpt_2026-10-11/`
+
+| doc | title | status |
+|---|---|---|
+| `gpt_answer.md` | — | — |
+| `prompt.md` | — | — |
+
+### `design/RimMandrake/mod_audit/`
+
+| doc | title | status |
+|---|---|---|
+| `ACTIONS_NOW.md` | Mod audit: actions that need no owner decision | — |
+| `FACTS_REGEN_DELTA.md` | Facts regeneration delta (2026-10-10) | — |
+| `GPT_PACKAGE.md` | Mod audit: the whole picture, for a GPT review | — |
+| `GPT_REVIEW_DISPOSITION.md` | GPT review disposition (2026-10-10) | — |
+| `OWNER_CARDS.md` | Mod audit: decisions for the owner | — |
+| `OWNER_RULINGS.md` | Owner rulings on the mod audit cards | — |
+| `RETIREMENT_WAVE_1.md` | RETIREMENT WAVE 1: the authoritative definition | — |
+| `RETIREMENT_WAVE_1_RUN_SHEET.md` | RETIREMENT WAVE 1: run sheet for the bridge session | — |
+| `RUBRIC.md` | Mod audit rubric | — |
+| `SCENARIO_BRIEF.md` | Scenario brief for the mod audit | — |
+| `dead_entries_2026-10-16.md` | Dead and redundant mod-list entries, 2026-10-16 | — |
+
+### `design/RimMandrake/mod_audit/checks/`
+
+| doc | title | status |
+|---|---|---|
+| `check_group_1.md` | Mod audit check, group 1 (batches 01-04, 152 mods) | — |
+| `check_group_2.md` | Mod audit check, group 2 (batches 05-09) | — |
+| `check_group_3.md` | Mod audit check, group 3 (batches 10-13) | — |
+| `check_group_4.md` | Mod audit check, group 4 (batches 14-16) | — |
+
+### `design/RimMandrake/mod_audit/records/`
+
+| doc | title | status |
+|---|---|---|
+| `batch_01.md` | Mod audit batch 01: frameworks_libraries (29 mods) | — |
+| `batch_02.md` | Mod audit record: batch 02 (code_tweaks_qol_ui_1) | — |
+| `batch_03.md` | Mod audit record: batch 03 (code_tweaks_qol_ui_2) | — |
+| `batch_04.md` | Mod audit record: batch 04 (code_tweaks_qol_ui_3, 41 mods) | — |
+| `batch_05.md` | Mod audit batch 05 (code_tweaks_qol_ui_4): 40 mods | — |
+| `batch_06.md` | Mod audit batch 06 (star_wars_donors) | — |
+| `batch_07.md` | Mod audit batch 07: vanilla_expanded | — |
+| `batch_08.md` | Mod audit: batch 08 (biomes_world), 14 mods | — |
+| `batch_09.md` | Mod audit record: batch 09 (creatures_animals) | — |
+| `batch_10.md` | Mod audit record: batch 10 (factions_pawns) | — |
+| `batch_11.md` | Mod audit batch 11: weapons_apparel | — |
+| `batch_12.md` | Mod audit records: batch 12 (buildings_production) | — |
+| `batch_13.md` | Mod audit record: batch 13 (misc_content_1) | — |
+| `batch_14.md` | Mod audit record: batch 14 (misc_content_2) | — |
+| `batch_15.md` | Batch 15: ours_rm (41 mods) | — |
+| `batch_16.md` | Mod audit record: batch 16 (ours_rsw_rut) | — |
+
+### `design/RimMandrake/narrative_dictionary_pilot/`
+
+| doc | title | status |
+|---|---|---|
+| `GAPS.md` | GAPS — what the narrative dictionary could not express (batch 1) | — |
+| `answer_key.md` | Answer key — DO NOT give this to the reviewer | — |
+| `blind_answers_2026-10-03.md` | Blind answers | — |
+| `dressings.md` | Room dressings — batch 1 | — |
+| `reviewer_packet.md` | Reviewer packet — four rooms | — |
+| `vignettes.md` | Vignettes — batch 1 | — |
 
 ### `design/RimMandrake/northstar_trials/`
 
 | doc | title | status |
 |---|---|---|
+| `FlowWorks_runsheet.md` | FlowWorks north-star run-sheet (generated by runsheet.py) | — |
 | `FlowWorks_trial_plan.md` | FlowWorks north-star trial plan | — |
+| `Graffiti_trial_plan.md` | Graffiti north-star trial plan — the pipeline pilot | — |
 | `Pyrelands_trial_plan.md` | Pyrelands — north-star trial plan (the biome template) | — |
+
+### `design/RimMandrake/ratchet_evidence_2026-10-11/`
+
+| doc | title | status |
+|---|---|---|
+| `ev_art_review.md` | Evidence: art review sheet failures, 2026-10-11 (read-only trace) | — |
+| `ev_biomes.md` | Biome-mod evidence table (2026-10-11, read-only) | — |
+| `ev_existing_designs.md` | Census of existing process designs (read-only, 2026-10-11, /home/mandrake/rm/bench) | — |
+| `ev_git.md` | Evidence: git / parallelism failure modes (measured 2026-10-11/12, read-only) | — |
+| `ev_git_ledger.md` | Evidence: git + ledger, 2026-09-11..2026-10-11 (repo /home/mandrake/rm/bench) | — |
+| `ev_lodestar.md` | Lodestar evidence (read-only, 2026-10-11) | — |
+| `ev_review_validation.md` | Evidence: owner review load, validation runs, RimPulse (measured 2026-10-11, bench clone) | — |
+| `ev_slowloops.md` | Slow-loop evidence (RimMandrake bench, measured 2026-10-11) | — |
+| `gpt_review.md` | — | — |
+
+### `design/RimMandrake/review_findings_2026-10-22/`
+
+| doc | title | status |
+|---|---|---|
+| `dead_patches.md` | Dead patches found by review R (left DIRTY; decision owed) | — |
+| `flowworks_gpt_review.md` | FlowWorks GPT review, 2026-10-22 | — |
+| `ruled_values_questions.md` | Open question from review R (ruled values), 2026-10-22 | — |
+| `shell_bodypart_blast_radius.md` | BodyPartDef `Shell` blast radius (2026-10-22, run S) | — |
+
+### `design/RimMandrake/test_control/`
+
+| doc | title | status |
+|---|---|---|
+| `monitor_governor_build.md` | Test-state monitor + run governor — first build (GPT §5) | — |
+| `test_control_gpt_prompt_20261013.md` | Task: what should a live-game test harness WATCH, and what else should it INSTALL, so test runs stay controlled? | — |
+| `test_control_review_gpt_20261013.md` | — | — |
+
+### `design/RimMandrake/thirst_fluids_3x3_2026-10-17/`
+
+| doc | title | status |
+|---|---|---|
+| `02-review.md` | Thirst and fluids, pass 2: naive review of the pass-1 design (2026-10-17) | — |
+| `02a-blind-solutions.md` | Thirst and fluids, pass 2a: blind solutions (naive reviewer, 2026-10-17) | — |
+| `03-gpt.md` | — | — |
+| `03a-gpt-blind.md` | — | — |
+| `04-merged.md` | Thirst and fluids: merged 3x3 result (2026-10-17) | — |
+| `status.md` | 3x3 run status — thirst and fluids (2026-10-17) | — |
+
+### `design/RimMandrake/vv_methods/`
+
+| doc | title | status |
+|---|---|---|
+| `STAGE1_report_2026-10-16.md` | V&V methods, stage 1: what we already do, and nine methods we don't (2026-10-16) | — |
+| `STAGE2_adversarial_review_2026-10-16.md` | V&V methods, stage 2: an adversarial review of stage 1 (2026-10-16) | — |
+| `STAGE3_gpt_skeptical_review_2026-10-16.md` | V&V methods, stage 3: GPT additions, skeptical review, minimum stack, graded (2026-10-16) | — |
+| `pilot1_shipped_matrix_2026-10-16.md` | V&V pilot 1: the shipped-configuration matrix, with honest counts (2026-10-16) | — |
+| `water_scenes_for_approval_2026-10-16.md` | Six water scenes for your approval (about 10 minutes) | — |
+
+### `design/RimMandrake/world_remake_2026-10-19/`
+
+| doc | title | status |
+|---|---|---|
+| `01_mod_inventory.md` | World remake 01: what every mod in the live list is to us (2026-10-19) | — |
+| `02_world_pipeline.md` | 02 — How the world and the start save are made, and what an early remake would take | — |
+| `03_ticket_impact.md` | World remake proposal: impact on the open queue (2026-10-19) | — |
+| `04_scope_cuts.md` | 04 — Scope cuts: what to stop building so v1 can ship (2026-10-19) | — |
+| `05_drop_closure.md` | World remake 05: dependency closure of the 124 "simply drop" mods (2026-10-19) | — |
+| `06_remake_runbook.md` | 06 — World remake runbook: gates, rehearsal, start save, rollback (2026-10-19) | — |
+| `07_deeper_drops.md` | World remake 07: deeper drops and a four-profile mod structure (2026-10-19) | — |
+| `08_wave2_prep.md` | World remake 08: Retirement Wave 2, prepared offline (2026-10-19) | — |
+| `09_second_look.md` | 09 Second look: what is KEPT (DEV and TEST) and the 12 HOLDs | — |
+| `10_minerals_framework.md` | 10 — MineralsFramework retirement (`MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE`) | — |
+| `11_ruled_keepcut.md` | World remake 11: the keep/cut ruling applied (2026-10-20) | — |
+| `12_rocks_design.md` | 12 — Rocks: a design pass, and the question cards (2026-10-19, FOUNDRY design helper) | — |
+| `13_owner_rulings_2026-10-19.md` | Owner rulings by question card, 2026-10-19 evening (FOUNDRY records; his words are the answers) | — |
+| `14_wave3_prep.md` | World remake 14: Retirement Wave 3, prepared offline (2026-10-20) | — |
+| `15_conductor_plan.md` | 15 — Unattended conductor for the development-world remake (runbook S0–S15), 2026-10-20 | — |
+| `PLAN.md` | Remaking the world, free of the unwanted mods — plan and three options (2026-10-19) | — |
 
 ### `design/RimStarWars/`
 
@@ -755,8 +1319,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `aquatic_water_breathing_design.md` | Water-breathing for the aquatic xenotypes — design brief | — |
 | `brain_worm_spec.md` | Geonosian brain worms — research + def plan (design spec) | — |
+| `cold_storage_line_2026-10-26.md` | Cold storage line: our own Star Wars preservation devices (replaces RimFridge) | — |
+| `face_art_reassessment_2026-10-21.md` | Face art re-assessment — every head, aligned, tinted and dressed (2026-10-21) | — |
 | `gizka_ship_pest_draft.md` | Gizka ship-pest — design draft (parts 3–6) | — |
+| `head_envelope_2026-10-20.md` | Painted-head envelope — measurements, rules and the Tabula Rasa findings (2026-10-20) | — |
+| `head_parts_painted_vs_attached_2026-10-20.md` | Head parts: painted into the head art, or attached by gene? — design pass 2026-10-20 | — |
 | `star_wars_canon_names.md` | Star Wars canon name reference |  |
+| `taozin_split_proposal_2026-10-17.md` | Taozin split — proposal (2026-10-17; BUILT 2026-10-17, see "Built" below) | — |
 
 ### `design/RimStarWars/canon_references/`
 
@@ -779,6 +1348,18 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `description.md` | Acklay | — |
+
+### `design/RimStarWars/canon_references/aiwha/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Aiwha | — |
+
+### `design/RimStarWars/canon_references/akk/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Akk dog | — |
 
 ### `design/RimStarWars/canon_references/anooba/`
 
@@ -810,6 +1391,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Bantha | — |
 
+### `design/RimStarWars/canon_references/behemoth/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith war behemoth | — |
+
 ### `design/RimStarWars/canon_references/beldon/`
 
 | doc | title | status |
@@ -822,11 +1409,41 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Bith | — |
 
+### `design/RimStarWars/canon_references/blarth/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Blarth | — |
+
+### `design/RimStarWars/canon_references/blixus/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Blixus | — |
+
+### `design/RimStarWars/canon_references/bloddle/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bloddle (plant) | — |
+
 ### `design/RimStarWars/canon_references/blurrg/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Blurrg | — |
+
+### `design/RimStarWars/canon_references/boarwolf/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Boar-wolf | — |
+
+### `design/RimStarWars/canon_references/bogwing/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bogwing | — |
 
 ### `design/RimStarWars/canon_references/bolotaur/`
 
@@ -846,11 +1463,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Borcatu | — |
 
+### `design/RimStarWars/canon_references/bordok/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bordok | — |
+
 ### `design/RimStarWars/canon_references/bothan/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Bothan | — |
+
+### `design/RimStarWars/canon_references/brainworm/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Brain worm | — |
+
+### `design/RimStarWars/canon_references/brezak/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Brezak | — |
+
+### `design/RimStarWars/canon_references/bursa/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Bursa | — |
 
 ### `design/RimStarWars/canon_references/cancell/`
 
@@ -888,11 +1529,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Chagrian | — |
 
+### `design/RimStarWars/canon_references/chak_root/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Chak-root (plant) | — |
+
 ### `design/RimStarWars/canon_references/chiss/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Chiss | — |
+
+### `design/RimStarWars/canon_references/chrysaliderancor/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Chrysalide | — |
 
 ### `design/RimStarWars/canon_references/clodhopper/`
 
@@ -900,11 +1553,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Clodhopper | — |
 
+### `design/RimStarWars/canon_references/coloclawfish/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Colo claw fish | — |
+
 ### `design/RimStarWars/canon_references/convor/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Convor | — |
+
+### `design/RimStarWars/canon_references/corellianhound/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Corellian hound | — |
 
 ### `design/RimStarWars/canon_references/corinathoth/`
 
@@ -942,6 +1607,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Devaronian | — |
 
+### `design/RimStarWars/canon_references/devourer/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Devourer | — |
+
 ### `design/RimStarWars/canon_references/dewback/`
 
 | doc | title | status |
@@ -959,6 +1630,18 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `description.md` | Dragonsnake | — |
+
+### `design/RimStarWars/canon_references/dragonsnake_albino/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Dragonsnake_albino | — |
+
+### `design/RimStarWars/canon_references/drexl/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Drexl | — |
 
 ### `design/RimStarWars/canon_references/droid_aq/`
 
@@ -1110,6 +1793,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Echani | — |
 
+### `design/RimStarWars/canon_references/energyspider/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Spice spider | — |
+
 ### `design/RimStarWars/canon_references/eopie/`
 
 | doc | title | status |
@@ -1122,11 +1811,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Ewok | — |
 
+### `design/RimStarWars/canon_references/faascalefish/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Faa | — |
+
 ### `design/RimStarWars/canon_references/falleen/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Falleen | — |
+
+### `design/RimStarWars/canon_references/falumpaset/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Falumpaset | — |
 
 ### `design/RimStarWars/canon_references/fambaa/`
 
@@ -1146,6 +1847,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Feeorin | — |
 
+### `design/RimStarWars/canon_references/frogdog/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Frog-dog | — |
+
 ### `design/RimStarWars/canon_references/gamorrean/`
 
 | doc | title | status |
@@ -1157,6 +1864,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `description.md` | Gand | — |
+
+### `design/RimStarWars/canon_references/gelagrub/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gelagrub | — |
 
 ### `design/RimStarWars/canon_references/geonosian/`
 
@@ -1170,11 +1883,61 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Gizka | — |
 
+### `design/RimStarWars/canon_references/gorg/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gorg | — |
+
+### `design/RimStarWars/canon_references/gornt/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gornt | — |
+
+### `design/RimStarWars/canon_references/gpt_review/`
+
+| doc | title | status |
+|---|---|---|
+| `MUSTSHOW_PROPOSALS.md` | Proposed Must show / Engine limits edits (for the owner) | — |
+| `PROMPT.md` | — | — |
+| `VERIFICATION_LOG.md` | GPT fauna/flora review - verification log (CANON_FAUNA_FLORA_GPT_REVIEW_1) | — |
+| `batch_01.md` | — | — |
+| `batch_02.md` | — | — |
+| `batch_03.md` | — | — |
+| `batch_04.md` | — | — |
+| `batch_05.md` | — | — |
+| `batch_06.md` | — | — |
+| `batch_07.md` | — | — |
+| `batch_08.md` | — | — |
+| `batch_09.md` | — | — |
+| `batch_10.md` | — | — |
+| `batch_11.md` | — | — |
+| `batch_12.md` | — | — |
+
+### `design/RimStarWars/canon_references/graniteslug/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Granite slug | — |
+
 ### `design/RimStarWars/canon_references/grank/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Grank | — |
+
+### `design/RimStarWars/canon_references/grazer/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Grazer (feral / wild grazer) | — |
+
+### `design/RimStarWars/canon_references/grazerdomestic/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Grazer (domestic) | — |
 
 ### `design/RimStarWars/canon_references/greaterkraytdragon/`
 
@@ -1182,11 +1945,41 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Greater Krayt Dragon | — |
 
+### `design/RimStarWars/canon_references/gualaar/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gualaar | — |
+
+### `design/RimStarWars/canon_references/gullipud/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gullipud | — |
+
+### `design/RimStarWars/canon_references/gundark/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gundark | — |
+
 ### `design/RimStarWars/canon_references/gungan/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Gungan | — |
+
+### `design/RimStarWars/canon_references/gutkurr/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Gutkurr | — |
+
+### `design/RimStarWars/canon_references/harvesterbeetle/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Harvester beetle | — |
 
 ### `design/RimStarWars/canon_references/hawkbat/`
 
@@ -1206,11 +1999,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Horax | — |
 
+### `design/RimStarWars/canon_references/hrumph/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Hrumph | — |
+
+### `design/RimStarWars/canon_references/hssiss/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Hssiss | — |
+
+### `design/RimStarWars/canon_references/hubba_gourd/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Hubba gourd (plant) | — |
+
 ### `design/RimStarWars/canon_references/hutt/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Hutt | — |
+
+### `design/RimStarWars/canon_references/igitz/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Igitz | — |
 
 ### `design/RimStarWars/canon_references/iktotchi/`
 
@@ -1230,11 +2047,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Iriaz | — |
 
+### `design/RimStarWars/canon_references/iridonianreek/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Reek | — |
+
 ### `design/RimStarWars/canon_references/ithorian/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Ithorian | — |
+
+### `design/RimStarWars/canon_references/ithorianreek/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ithorian reek | — |
+
+### `design/RimStarWars/canon_references/jakobeast/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jakobeast | — |
+
+### `design/RimStarWars/canon_references/jamel/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jamel | — |
 
 ### `design/RimStarWars/canon_references/jawa/`
 
@@ -1248,6 +2089,24 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Jerba | — |
 
+### `design/RimStarWars/canon_references/jimvu/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jimvu | — |
+
+### `design/RimStarWars/canon_references/junglerancor/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Jungle rancor | — |
+
+### `design/RimStarWars/canon_references/kaadu/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kaadu | — |
+
 ### `design/RimStarWars/canon_references/kaleesh/`
 
 | doc | title | status |
@@ -1260,11 +2119,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Kaminoan | — |
 
+### `design/RimStarWars/canon_references/katarn/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Katarn | — |
+
 ### `design/RimStarWars/canon_references/kel_dor/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Kel Dor | — |
+
+### `design/RimStarWars/canon_references/kelldragon/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kell dragon | — |
 
 ### `design/RimStarWars/canon_references/kinrath/`
 
@@ -1278,11 +2149,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Klatooinian | — |
 
+### `design/RimStarWars/canon_references/klorslug/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | K'lor'slug | — |
+
+### `design/RimStarWars/canon_references/kowakianmonkeylizard/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kowakian monkey-lizard | — |
+
+### `design/RimStarWars/canon_references/kraytdragon/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Krayt dragon | — |
+
 ### `design/RimStarWars/canon_references/kreetle/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Kreetle | — |
+
+### `design/RimStarWars/canon_references/krykna/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Krykna | — |
 
 ### `design/RimStarWars/canon_references/kubaz/`
 
@@ -1290,17 +2185,125 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Kubaz | — |
 
+### `design/RimStarWars/canon_references/kwazelmaw/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kwazel Maw | — |
+
+### `design/RimStarWars/canon_references/kwi/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kwi | — |
+
+### `design/RimStarWars/canon_references/kybuck/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Kybuck | — |
+
+### `design/RimStarWars/canon_references/laascalefish/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Laa | — |
+
 ### `design/RimStarWars/canon_references/lasat/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Lasat | — |
 
+### `design/RimStarWars/canon_references/lavaflea/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Lava flea | — |
+
+### `design/RimStarWars/canon_references/leaftail/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Leaf-tail | — |
+
+### `design/RimStarWars/canon_references/longtailgorg/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Longtail gorg (gorg, long-tailed variety) | — |
+
+### `design/RimStarWars/canon_references/lothcat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Loth-cat | — |
+
+### `design/RimStarWars/canon_references/lothwolf/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Loth-wolf | — |
+
+### `design/RimStarWars/canon_references/lylek/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Lylek | — |
+
+### `design/RimStarWars/canon_references/maalraas/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Maalraas | — |
+
+### `design/RimStarWars/canon_references/manka/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Manka cat | — |
+
+### `design/RimStarWars/canon_references/marshhaunt/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Marsh haunt | — |
+
 ### `design/RimStarWars/canon_references/massassi/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Sith Massassi (Pureblood) | — |
+
+### `design/RimStarWars/canon_references/massiff/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Massiff | — |
+
+### `design/RimStarWars/canon_references/mastiffphalone/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mastiff phalone | — |
+
+### `design/RimStarWars/canon_references/mastmot/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mastmot | — |
+
+### `design/RimStarWars/canon_references/mawvorr/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mawvorr | — |
+
+### `design/RimStarWars/canon_references/meescalefish/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mee | — |
 
 ### `design/RimStarWars/canon_references/mimbanese/`
 
@@ -1320,6 +2323,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Mon Calamari | — |
 
+### `design/RimStarWars/canon_references/mott/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mott | — |
+
 ### `design/RimStarWars/canon_references/mudhorn/`
 
 | doc | title | status |
@@ -1332,17 +2341,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Muun | — |
 
+### `design/RimStarWars/canon_references/mynock/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Mynock | — |
+
 ### `design/RimStarWars/canon_references/nagai/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Nagai | — |
 
+### `design/RimStarWars/canon_references/narglatch/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Narglatch | — |
+
 ### `design/RimStarWars/canon_references/nautolan/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Nautolan | — |
+
+### `design/RimStarWars/canon_references/neebray/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Neebray | — |
 
 ### `design/RimStarWars/canon_references/neimoidian/`
 
@@ -1356,6 +2383,18 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Nelvaanian | — |
 
+### `design/RimStarWars/canon_references/nerf/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nerf | — |
+
+### `design/RimStarWars/canon_references/nexu/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nexu | — |
+
 ### `design/RimStarWars/canon_references/nikto/`
 
 | doc | title | status |
@@ -1368,11 +2407,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Nuna | — |
 
+### `design/RimStarWars/canon_references/nysillin/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Nysillin (plant) | — |
+
 ### `design/RimStarWars/canon_references/ollopom/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Ollopom | — |
+
+### `design/RimStarWars/canon_references/opeeseakiller/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Opee sea killer | — |
 
 ### `design/RimStarWars/canon_references/orray/`
 
@@ -1386,6 +2437,18 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Ortolan | — |
 
+### `design/RimStarWars/canon_references/paintedspat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Painted spat | — |
+
+### `design/RimStarWars/canon_references/paleyobshrimp/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Yobshrimp | — |
+
 ### `design/RimStarWars/canon_references/pantoran/`
 
 | doc | title | status |
@@ -1398,17 +2461,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | PekoPeko | — |
 
+### `design/RimStarWars/canon_references/pikobis/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Pikobi | — |
+
 ### `design/RimStarWars/canon_references/porg/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Porg | — |
 
+### `design/RimStarWars/canon_references/pufferpig/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Puffer pig | — |
+
 ### `design/RimStarWars/canon_references/pyke/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Pyke | — |
+
+### `design/RimStarWars/canon_references/qormot/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Qormot | — |
 
 ### `design/RimStarWars/canon_references/quarren/`
 
@@ -1422,11 +2503,41 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Rakata | — |
 
+### `design/RimStarWars/canon_references/rancor/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Rancor | — |
+
+### `design/RimStarWars/canon_references/raxshir/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Raxshir | — |
+
+### `design/RimStarWars/canon_references/reek/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Reek | — |
+
+### `design/RimStarWars/canon_references/rikknit/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Rikknit | — |
+
 ### `design/RimStarWars/canon_references/rodian/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Rodian | — |
+
+### `design/RimStarWars/canon_references/roggwart/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Roggwart | — |
 
 ### `design/RimStarWars/canon_references/ronto/`
 
@@ -1434,17 +2545,65 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Ronto | — |
 
+### `design/RimStarWars/canon_references/runyip/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Runyip | — |
+
+### `design/RimStarWars/canon_references/rycrit/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Rycrit | — |
+
+### `design/RimStarWars/canon_references/sandoaquamonster/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sando aqua monster | — |
+
+### `design/RimStarWars/canon_references/scurrier/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Scurrier | — |
+
 ### `design/RimStarWars/canon_references/selkath/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Selkath | — |
 
+### `design/RimStarWars/canon_references/shaaks/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Shaak | — |
+
 ### `design/RimStarWars/canon_references/shiro/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Shiro | — |
+
+### `design/RimStarWars/canon_references/shirotrap/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Shiro-trap | — |
+
+### `design/RimStarWars/canon_references/shyrack/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Shyrack | — |
+
+### `design/RimStarWars/canon_references/silooth/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Silooth | — |
 
 ### `design/RimStarWars/canon_references/sith_pureblood/`
 
@@ -1458,11 +2617,53 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Sith Zuguruk (Pureblood) — and the shared anatomy of the Sith species | — |
 
+### `design/RimStarWars/canon_references/sith_wyrm/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith wyrm (war wyrm) | — |
+
+### `design/RimStarWars/canon_references/skalders/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Skalder | — |
+
+### `design/RimStarWars/canon_references/sketto/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sketto | — |
+
 ### `design/RimStarWars/canon_references/snivvian/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Snivvian | — |
+
+### `design/RimStarWars/canon_references/snoruuk/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Snoruuk | — |
+
+### `design/RimStarWars/canon_references/squall/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Squall (species) | — |
+
+### `design/RimStarWars/canon_references/stintaril/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Stintaril | — |
+
+### `design/RimStarWars/canon_references/strill/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Strill | — |
 
 ### `design/RimStarWars/canon_references/sullustan/`
 
@@ -1470,11 +2671,59 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Sullustan | — |
 
+### `design/RimStarWars/canon_references/tach/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tach | — |
+
+### `design/RimStarWars/canon_references/taozin/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Taozin (adult) | — |
+
+### `design/RimStarWars/canon_references/taozin_grub/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Taozin grub | — |
+
 ### `design/RimStarWars/canon_references/taung/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Taung | — |
+
+### `design/RimStarWars/canon_references/tauntaun/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tauntaun | — |
+
+### `design/RimStarWars/canon_references/teemuss/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tee-muss | — |
+
+### `design/RimStarWars/canon_references/tetnisscrab/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Trash crab | — |
+
+### `design/RimStarWars/canon_references/thranta/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Thranta | — |
+
+### `design/RimStarWars/canon_references/tibidee/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tibidee | — |
 
 ### `design/RimStarWars/canon_references/togorian/`
 
@@ -1488,11 +2737,41 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Togruta | — |
 
+### `design/RimStarWars/canon_references/tooke/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tooke | — |
+
+### `design/RimStarWars/canon_references/tooke_trap_plant/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tooke-trap plant | — |
+
+### `design/RimStarWars/canon_references/torton/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Torton | — |
+
 ### `design/RimStarWars/canon_references/trandoshan/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Trandoshan | — |
+
+### `design/RimStarWars/canon_references/tukata/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tuk'ata | — |
+
+### `design/RimStarWars/canon_references/tuskcat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Tusk-cat | — |
 
 ### `design/RimStarWars/canon_references/tusken_raider/`
 
@@ -1518,6 +2797,42 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Umbaran | — |
 
+### `design/RimStarWars/canon_references/urusai/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Urusai | — |
+
+### `design/RimStarWars/canon_references/uvak/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Uvak | — |
+
+### `design/RimStarWars/canon_references/vaapad/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Vaapad | — |
+
+### `design/RimStarWars/canon_references/varactyl/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Varactyl | — |
+
+### `design/RimStarWars/canon_references/veermok/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Veermok | — |
+
+### `design/RimStarWars/canon_references/voorpak/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Voorpak | — |
+
 ### `design/RimStarWars/canon_references/vornskyr/`
 
 | doc | title | status |
@@ -1536,6 +2851,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Wampa | — |
 
+### `design/RimStarWars/canon_references/warbird/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Sith warbird | — |
+
 ### `design/RimStarWars/canon_references/weequay/`
 
 | doc | title | status |
@@ -1548,11 +2869,35 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Whisperbird | — |
 
+### `design/RimStarWars/canon_references/womprat/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Womp rat | — |
+
 ### `design/RimStarWars/canon_references/wookiee/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Wookiee | — |
+
+### `design/RimStarWars/canon_references/woolamander/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Woolamander | — |
+
+### `design/RimStarWars/canon_references/worrt/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Worrt | — |
+
+### `design/RimStarWars/canon_references/wraid/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Wraid | — |
 
 ### `design/RimStarWars/canon_references/wyyyschokk/`
 
@@ -1560,11 +2905,23 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `description.md` | Wyyyschokk | — |
 
+### `design/RimStarWars/canon_references/yobshrimp/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Yobshrimp | — |
+
 ### `design/RimStarWars/canon_references/yoda_species/`
 
 | doc | title | status |
 |---|---|---|
 | `description.md` | Yoda's species ("Yoder") | — |
+
+### `design/RimStarWars/canon_references/ysalamir/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Ysalamiri | — |
 
 ### `design/RimStarWars/canon_references/zabrak/`
 
@@ -1614,32 +2971,81 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `AcousticScanner.md` | RimMandrake: Acoustic Scanner — validation walk | — |
 | `Aftermath.md` | RimMandrake: Aftermath — validation walk | — |
+| `AssailantSalvage.md` | RimUtinni: Assailant Salvage — validation walk | — |
 | `AtmosphericBase.md` | RimMandrake: AtmosphericBase — validation walk | — |
+| `BlueDesert.md` | RimMandrake: Blue Desert — validation walk | — |
+| `Cauldron.md` | RimMandrake: The Cauldron — validation walk | — |
+| `Contagion.md` | RimMandrake: The Contagion — validation walk | — |
+| `CrackedLands.md` | RimMandrake: Cracked Lands — validation walk | — |
+| `CreatureBehaviors.md` | CreatureBehaviors — validation walk | — |
 | `DesertVehicleReskin.md` | Desert Vehicle Reskin — Alpha Vehicles Neolithic — validation walk | — |
+| `DivingInteraction.md` | RimMandrake: Deep Diving — validation walk | — |
+| `EnvironmentalHazards.md` | RimMandrake: Environmental Hazards Kit — validation walk | — |
+| `ExplosiveGrowth.md` | RimMandrake: Explosive Plant Growth — validation walk | — |
+| `ExplosiveKnockback.md` | RimMandrake: Explosive Knockback — validation walk | — |
+| `FeverWood.md` | RimMandrake: Fever Wood — validation walk | — |
 | `FlowWorks.md` | RimMandrake FlowWorks — validation walk | — |
+| `FlowWorksRivers.md` | FlowWorks Rivers (River Works) — validation walk | — |
+| `GelatinousSlime.md` | RimMandrake: The Gelatinous Slime — validation walk | — |
+| `GimmeSomeSlack.md` | GimmeSomeSlack (was MessyConduit) — validation walk | — |
 | `Graffiti.md` | RimMandrake: Graffiti Framework — validation walk | — |
 | `GravshipAstronautFix.md` | Missing North Facings — Vanilla Gravship Expanded — validation walk | — |
+| `GravshipLanding.md` | RimMandrake: Gravship Landing Reveal — validation walk | — |
+| `Greentide.md` | RimMandrake: Greentide — validation walk | — |
+| `HostileFlora.md` | RimMandrake: Hostile Flora — validation walk | — |
+| `HugeThings.md` | RimMandrake: Huge Things — validation walk | — |
 | `Inhabited.md` | Inhabited (local) — validation walk | — |
+| `KeelHoist.md` | KeelHoist — validation walk | — |
+| `KineticArms.md` | RimMandrake: Kinetic Arms — validation walk | — |
+| `LeaningScrub.md` | RimMandrake: Leaning Scrub — validation walk | — |
 | `LoadTracer.md` | Load Tracer (local) — validation walk | — |
+| `LongShade.md` | RimMandrake: Long Shade — validation walk | — |
+| `LoreStages.md` | RimMandrake: Lore Stages — validation walk | — |
+| `LuminousPigment.md` | RimMandrake: Luminous Pigment (Deepfire) — validation walk | — |
 | `MandrakePatches.md` | RimMandrake Patches — validation walk | — |
+| `Miasma.md` | RimMandrake: Miasma — validation walk | — |
+| `MineShaft.md` | RimMandrake: Mine Shaft — validation walk | — |
+| `Minerals.md` | RimMandrake: Minerals — validation walk | — |
+| `MovingDunes.md` | RimMandrake: Moving Dunes — validation walk | — |
+| `OasisMaker.md` | RimMandrake: Oasis Maker — validation walk | — |
 | `Oracle.md` | RimMandrake: Oracle — validation walk | — |
 | `PhytokinBarkHeadFix.md` | Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk | — |
 | `PlanetPresetPrime.md` | Planet Preset Prime (local) — validation walk | — |
 | `Property.md` | Property — validation walk | — |
+| `ProximityHatch.md` | RimMandrake: Proximity Hatch — validation walk | — |
 | `Pyrelands.md` | Pyrelands — validation walk | — |
+| `Pyrinth.md` | RimMandrake: Pyrinth — validation walk | — |
 | `RaidRedesigner.md` | RaidRedesigner — validation walk | — |
 | `ResearchKitEastFix.md` | ResearchKitEastFix — validation walk | — |
 | `RimDefDump.md` | RimDefDump — validation walk | — |
+| `RustCathedral.md` | RimMandrake: the Rust Cathedral — validation walk | — |
 | `RustChrome.md` | RustChrome — validation walk | — |
 | `SacredGraffiti.md` | SacredGraffiti — validation walk | — |
 | `SalvageClaim.md` | SalvageClaim — validation walk | — |
 | `SauridFrillFix.md` | SauridFrillFix — validation walk | — |
+| `Scarlands.md` | RimMandrake: Warscar (Scarlands) — validation walk | — |
+| `ShipVermin.md` | RimMandrake: Ship Vermin — validation walk | — |
+| `SleepingIce.md` | RimMandrake: Nightside Ice — validation walk | — |
+| `SolarMirrors.md` | RimMandrake: Solar Mirrors — validation walk | — |
+| `Stillsand.md` | RimMandrake: Stillsand — validation walk | — |
 | `StrandedQuest.md` | StrandedQuest — validation walk | — |
 | `StructureInjections.md` | StructureInjections — validation walk | — |
+| `TerminalBiomes.md` | RimMandrake: Terminal Biomes — validation walk | — |
+| `TheBazaar.md` | RimMandrake: The Bazaar — validation walk | — |
+| `TheForge.md` | RimMandrake: The Forge — validation walk | — |
+| `TheRot.md` | RimMandrake: The Rot — validation walk | — |
+| `TheSump.md` | RimMandrake: the Sump — validation walk | — |
 | `TheftHauler.md` | TheftHauler — validation walk | — |
 | `ToolBeltFix.md` | ToolBeltFix — validation walk | — |
+| `Traces.md` | Traces — validation walk | — |
 | `Visibility.md` | Visibility — validation walk | — |
+| `Warcasket.md` | RimMandrake: Warcasket — validation walk | — |
+| `Wastes.md` | RimMandrake: Wasteland — validation walk | — |
+| `Webwork.md` | RimMandrake: Webwork — validation walk | — |
+| `WeepingStones.md` | RimMandrake: Weeping Stones — validation walk | — |
+| `Wreckage.md` | Wreckage — validation walk | — |
 | `WreckedMachines.md` | WreckedMachines — validation walk | — |
 
 ### `design/validation_walks/RimStarWars/`
@@ -1647,13 +3053,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `Armoury.md` | Armoury — validation walk | — |
+| `Bacta.md` | RimStarWars: Bacta — validation walk | — |
 | `BeastLairs.md` | BeastLairs — validation walk | — |
 | `BeastNorm.md` | BeastNorm — validation walk | — |
 | `BlastDoorFrameAsyncFix.md` | BlastDoorFrameAsyncFix — validation walk | — |
+| `BrainWorms.md` | RimStarWars: Geonosian Brain Worms — validation walk | — |
 | `CereanManeFix.md` | CereanManeFix — validation walk | — |
 | `Cuisine.md` | Cuisine — validation walk | — |
 | `Droidworks.md` | Droidworks — validation walk | — |
 | `FireEcology.md` | Fire Ecology — validation walk | — |
+| `GizkaStowaway.md` | RimStarWars: Gizka Stowaway — validation walk | — |
+| `GraffitiImperial.md` | RimStarWars: Imperial Graffiti — validation walk | — |
 | `HelixTellurox.md` | Helix Tellurox — validation walk | — |
 | `JawaIkee.md` | JawaIkee — validation walk | — |
 | `JawaIonWeapons.md` | JawaIonWeapons — validation walk | — |
@@ -1663,11 +3073,15 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Livestock.md` | Livestock — validation walk | — |
 | `MSEDroidFix.md` | MSEDroidFix — validation walk | — |
 | `SWBestiary.md` | SWBestiary — validation walk | — |
+| `Sarlacc.md` | RimStarWars: Sarlacc — validation walk | — |
 | `SeaBeasts.md` | SeaBeasts — validation walk | — |
 | `SeasWaterline.md` | SeasWaterline — validation walk | — |
+| `Shokk.md` | RimStarWars: Shokk — validation walk | — |
+| `SithLine.md` | RimStarWars: Sith Line — validation walk | — |
 | `StarWarsPatches.md` | StarWarsPatches — validation walk | — |
 | `StarWarsRaces.md` | StarWarsRaces — validation walk | — |
 | `StructureInjectionsSW.md` | StructureInjectionsSW — validation walk | — |
+| `TrophyCraft.md` | RimStarWars: Trophy Craft — validation walk | — |
 | `WeatherSuite.md` | WeatherSuite — validation walk | — |
 
 ### `design/validation_walks/RimUtinni/`
@@ -1676,27 +3090,38 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `AftermathRites.md` | AftermathRites — validation walk | — |
 | `Antiquities.md` | Antiquities — validation walk | — |
-| `AshkarrFlora.md` | AshkarrFlora — validation walk | — |
 | `AshkarrInhabited.md` | AshkarrInhabited — validation walk | — |
 | `AshkarrLandmarkArt.md` | AshkarrLandmarkArt — validation walk | — |
 | `AshkarrWeatherSuite.md` | AshkarrWeatherSuite — validation walk | — |
+| `Atlas.md` | Atlas — validation walk | — |
 | `BirthHatchDemo.md` | BirthHatchDemo — validation walk | — |
 | `DesertFixtures.md` | DesertFixtures — validation walk | — |
 | `Doctrine.md` | Doctrine — validation walk | — |
+| `DroidRepairJobs.md` | RimUtinni: Droid Repair Jobs — validation walk | — |
+| `EggReckoning.md` | RimUtinni: The Reckoning (EggReckoning) — validation walk | — |
 | `EmpirePursuit.md` | EmpirePursuit — validation walk | — |
 | `FactionSlate.md` | FactionSlate — validation walk | — |
+| `FallLineArrivals.md` | FallLineArrivals — validation walk | — |
 | `LanternDeeps.md` | LanternDeeps — validation walk | — |
 | `LongHunger.md` | LongHunger — validation walk | — |
 | `MenuShell.md` | MenuShell — validation walk | — |
 | `PawnFlavor.md` | PawnFlavor — validation walk | — |
-| `PlantGrowth.md` | PlantGrowth — validation walk | — |
 | `ResearchRetag.md` | ResearchRetag — validation walk | — |
 | `RestrainingBolts.md` | RestrainingBolts — validation walk | — |
 | `Rites.md` | Rites — validation walk | — |
 | `RiverSteam.md` | RiverSteam — validation walk | — |
 | `ShipMemory.md` | ShipMemory — validation walk | — |
 | `StructureInjectionsRUT.md` | StructureInjectionsRUT — validation walk | — |
+| `UnfinishedLine.md` | UnfinishedLine — validation walk | — |
 | `UtinniPatches.md` | UtinniPatches — validation walk | — |
 | `UtinniShell.md` | UtinniShell — validation walk | — |
+| `UtinniStatues.md` | UtinniStatues — validation walk | — |
 | `VaultDungeons.md` | VaultDungeons — validation walk | — |
+| `WasteRun.md` | RimMandrake: Utinni - Waste Run - validation walk | — |
+
+### `design/validation_walks/_drafts/`
+
+| doc | title | status |
+|---|---|---|
+| `must_show_drafts_2026-10-18.md` | Draft must-show lines for validation walks without them — 2026-10-18 | — |
 <!-- doc_roster:END -->
