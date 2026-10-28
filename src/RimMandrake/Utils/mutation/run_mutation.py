@@ -59,7 +59,9 @@ TARGETS = {
     # the property test is ~1.3 s and drives _top_level/lookup/summarize hard (run 20261027a ran without it)
     "close_evidence": (U + "close_evidence.py", [U + "selftest_close_evidence.py",
                                                 U + "selftest_close_evidence_props.py",
-                                                U + "selftest_close_evidence_mut.py"]),
+                                                U + "selftest_close_evidence_mut.py",
+                                                U + "selftest_close_evidence_chain.py",
+                                                U + "selftest_close_evidence_blast.py"]),
     "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py"]),
