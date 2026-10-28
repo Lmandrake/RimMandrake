@@ -370,6 +370,9 @@ def review_r2_checks():
     pg = BL.project_item(item(), [note], [{"event": "file", "seat": "BENCH", "ts": "x"}], ids, 10, None, RESOLVE)
     check(pg.fields_withheld >= 1, "refs: the 13th reference (past 12 shown) is counted withheld (%d)"
           % pg.fields_withheld)
+    note = dict(note, text="see 0BIOME_DECIDE_TWO_ROUTES")
+    check("BIOME_DECIDE_TWO_ROUTES" not in item_page(item(), [note], None),
+          "refs: an id inside a larger token (0X) is not a reference (review r3)")
 
 
 def main():

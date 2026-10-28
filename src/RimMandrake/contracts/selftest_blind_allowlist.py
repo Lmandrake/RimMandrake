@@ -365,6 +365,18 @@ def r6_clock_range():
     return bad is not None and good is None, (bad, good)
 
 
+def r7_note_unhashable():
+    """Review night r3: a malformed note record (a list where a word should be) is refused, not a TypeError."""
+    got = []
+    for b in ({"role": "Conductor", "outcome": []}, {"role": [], "outcome": "completed"},
+              {"role": "Conductor", "outcome": "completed", "mode": {}}):
+        try:
+            got.append(C.note_problem(b))
+        except TypeError as e:
+            got.append("raised %s" % type(e).__name__)
+    return all(g in ("role", "outcome", "mode") for g in got), got
+
+
 def main():
     for name, fn in [("gate: lit refuses a data word", g_lit_data), ("gate: vocab words carry no digits", g_vocab_digit),
                      ("gate: enum domain must be registered", g_enum_domain),
@@ -379,7 +391,8 @@ def main():
                      ("r5: blind_view diagnostics never echo input or error text", r5_argparse_echo),
                      ("r5: the FAILED marker is gated against the registry", r5_failed_page),
                      ("r6: a date-directory evidence path is shown, not counted refused", r6_evidence_dir),
-                     ("r6: the T-clock exemption checks the clock's ranges", r6_clock_range)]:
+                     ("r6: the T-clock exemption checks the clock's ranges", r6_clock_range),
+                     ("r7: a malformed note record is refused, not raised", r7_note_unhashable)]:
         check(name, fn)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0

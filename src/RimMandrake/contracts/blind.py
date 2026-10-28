@@ -547,7 +547,7 @@ def project_queue(seat, groups, ids, withheld=()):
                                "fields_withheld": dropped, "sections": tuple(sections)}, ids)
 
 
-_REF_RE = re.compile(r"[A-Za-z][A-Za-z0-9._-]{2,}")
+_REF_RE = re.compile(r"(?<![A-Za-z0-9._-])[A-Za-z][A-Za-z0-9._-]{2,}")   # whole tokens only: 0X is not X (r3)
 _SHA_IN = re.compile(r"(?<![\w-])[0-9a-f]{10,40}(?![\w-])")   # a candidate only: shown ONLY when it resolves to a commit
 
 

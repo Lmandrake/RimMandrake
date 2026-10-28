@@ -647,12 +647,12 @@ def note_problem(b):
     """-> None when `b` is a closed note record {role, outcome, mode?, unit?}, else a closed reason."""
     if not isinstance(b, dict) or set(b) - {"role", "outcome", "mode", "unit"}:
         return "shape"
-    if b.get("role") not in NOTE_ROLES:
+    if not isinstance(b.get("role"), str) or b["role"] not in NOTE_ROLES:
         return "role"
-    if b.get("outcome") not in NOTE_OUTCOMES:
+    if not isinstance(b.get("outcome"), str) or b["outcome"] not in NOTE_OUTCOMES:   # a list is unhashable (r3)
         return "outcome"
     mode, unit = b.get("mode"), b.get("unit")
-    if mode is not None and mode not in NOTE_MODES:
+    if mode is not None and (not isinstance(mode, str) or mode not in NOTE_MODES):
         return "mode"
     if unit is not None and not re.match(r"rm-role-%s-[0-9]{1,12}\Z" % b["role"].lower(), str(unit)):
         return "unit"
