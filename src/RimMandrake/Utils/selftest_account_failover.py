@@ -73,5 +73,24 @@ rc, calls, marked = _check_with(0, 1, DL - 3600)
 ok = calls == ["arm", "use", "disarm"] and marked and rc == 0
 fails += not ok
 print("%s  control: a clean switch arms, uses, disarms and marks: %r %r" % ("ok  " if ok else "FAIL", calls, marked))
+# review night r2: a hung or missing claude-account is a failed step (rc != 0), never an exception past the cleanup
+_saved = A.subprocess
+
+
+def _raise(*a, **k):
+    raise _saved.TimeoutExpired(a[0] if a else "x", 600)
+
+
+A.subprocess = types.SimpleNamespace(run=_raise, TimeoutExpired=_saved.TimeoutExpired)
+try:
+    try:
+        rc_t, out_t = A.run(["claude-account", "arm"])
+        ok = rc_t not in (0, None) and "timed out" in out_t
+    except Exception as e:  # noqa: BLE001
+        ok, rc_t, out_t = False, None, repr(e)
+finally:
+    A.subprocess = _saved
+fails += not ok
+print("%s  run(): a timeout is a nonzero rc, not an exception: %r %r" % ("ok  " if ok else "FAIL", rc_t, out_t[-60:]))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

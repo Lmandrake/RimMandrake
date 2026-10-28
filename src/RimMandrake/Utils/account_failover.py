@@ -35,7 +35,13 @@ def log(rec):
 
 
 def run(argv):
-    r = subprocess.run(argv, capture_output=True, text=True, timeout=600)
+    # a hang or a missing binary is a failed step, not an exception past check()'s marker cleanup (review night)
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        return 124, "%s timed out after 600 s" % argv[1:2]
+    except OSError as e:
+        return 127, "%s could not run: %s" % (argv[:1], e)
     return r.returncode, (r.stdout + r.stderr)[-2000:]
 
 
