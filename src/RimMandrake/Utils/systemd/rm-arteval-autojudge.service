@@ -1,0 +1,25 @@
+# Art-eval auto-judge — ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE (src/RimMandrake/Utils/art_eval/auto_judge.py).
+# Judges finished art-eval renders nobody judged: fauna regen rounds (fauna_drive candidates --auto -> runner.py run
+# --record --file-regens) and facing-audit rows (drv.py spec -> runner.py run --record), at most 4 subjects a pass.
+# Uses Claude, so it does nothing in allocator DARK or while BENCH runs its N helpers (the Agent spawn hook's
+# allowed_n), probes quota first and backs off 1 h on a failed probe or a HOLD_ERROR. Commits only its own paths,
+# never pushes. Status: /mnt/d/ClaudeWork/rimmandrake/arteval_autojudge/status.json (`auto_judge.py status`).
+# Install:  cp src/RimMandrake/Utils/systemd/rm-arteval-autojudge.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-arteval-autojudge.timer
+# Remove:   systemctl --user disable --now rm-arteval-autojudge.timer
+#           rm ~/.config/systemd/user/rm-arteval-autojudge.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake art-eval auto-judge pass (auto_judge.py run)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/bench
+Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
+Environment=ARTPIPE_STATE=/mnt/d/ClaudeWork/rimmandrake/artpipe
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/art_eval/auto_judge.py run'
+Nice=10
+IOSchedulingClass=idle
+MemoryMax=4G
+TimeoutStartSec=55min
