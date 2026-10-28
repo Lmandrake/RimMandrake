@@ -1,0 +1,2 @@
+On RimWorld's Mono (Boehm GC) a burst of allocation can stall a tick 10+ ms with GC.CollectionCount(0) unchanged: map1's HoseRelayIndex ctor (~82 KB, ~1600 small Lists + a growing Dictionary) took 13.4 ms on a 'no-GC' tick, typically 0.8 ms. A tick splitter that files only CollectionCount-bumped ticks as GC will blame the code; time the allocating block separately and make the hot rebuild allocation-free (measure with GC.GetAllocatedBytesForCurrentThread in the net8 SelfTest).
+home: live-debugging-proof-harness

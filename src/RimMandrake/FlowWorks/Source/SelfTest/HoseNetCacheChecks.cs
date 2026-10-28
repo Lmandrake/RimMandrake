@@ -242,6 +242,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             Check(same && sawLoop && sawChain, "relay index == the per-query RelayOf/Loops/FeedersOf on 24 layouts (n=20, 60; chains and loops present)");
 
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: ONE index rebuilt in place through layouts that grow, shrink and change debug flags
+            // answers exactly what a new index answers; once grown, a rebuild allocates nothing (map1: 13.4 ms allocation stall)
+            {
+                bool rebuiltSame = true;
+                var reused = new HoseRelayIndex(new List<HoseReelRect>(), new List<Cell?>(), null);
+                foreach (int n in new[] { 20, 60, 20, 60, 5 })
+                    for (int seed = 1; seed <= 4; seed++)
+                    {
+                        Layout(n, seed, out List<HoseReelRect> rects, out List<Cell?> far);
+                        var flags = new bool[n];
+                        for (int i = 0; i < n; i++) flags[i] = (i * 7 + seed) % 5 == 0;
+                        var fresh = new HoseRelayIndex(rects, far, flags);
+                        reused.Rebuild(rects, far, flags);
+                        if (reused.Count != n || reused.AnyDebug != fresh.AnyDebug) rebuiltSame = false;
+                        for (int r = 0; r < n; r++)
+                        {
+                            if (reused.Next(r) != fresh.Next(r) || reused.OnLoop(r) != fresh.OnLoop(r)
+                                || !reused.Feeders(r).SequenceEqual(fresh.Feeders(r))
+                                || reused.FedByDebug(r, i => true) != fresh.FedByDebug(r, i => true)) rebuiltSame = false;
+                            if (far[r].HasValue && reused.RelayAt(far[r].Value, r) != fresh.RelayAt(far[r].Value, r)) rebuiltSame = false;
+                        }
+                    }
+                Check(rebuiltSame, "relay index rebuilt in place == a new index on 20 layouts (n 20/60/20/60/5, debug flags varied)");
+                Layout(60, 3, out List<HoseReelRect> ar, out List<Cell?> af);
+                var steady = new HoseRelayIndex(ar, af, null);
+                steady.Rebuild(ar, af, null);
+                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                for (int k = 0; k < 50; k++) steady.Rebuild(ar, af, null);
+                long perRebuild = (GC.GetAllocatedBytesForCurrentThread() - b0) / 50;
+                long b1 = GC.GetAllocatedBytesForCurrentThread();
+                for (int k = 0; k < 50; k++) new HoseRelayIndex(ar, af, null);
+                long perNew = (GC.GetAllocatedBytesForCurrentThread() - b1) / 50;
+                Console.WriteLine("  relay index n=60: " + perRebuild + " B per in-place rebuild, " + perNew + " B per new index");
+                Check(perRebuild == 0, "relay index n=60: a rebuild in place allocates 0 bytes (" + perRebuild + ")");
+                Check(perNew > 10000, "can-fail: a new index allocates (" + perNew + " B) -- the counter sees it");
+            }
+
             // work: one rebuild enumerates each reel's intake cells ONCE (O(reels)); the old per-reel RelayOf + Loops shape is
             // O(n^2) and more. Counted on the real HoseRelay.IntakeCells, so a regression to per-query scans turns this red.
             foreach (int n in new[] { 20, 60 })

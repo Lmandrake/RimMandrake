@@ -558,10 +558,26 @@ namespace RimMandrake.FlowWorks.Hose
         // by drawing, Loops, FeedersOf, the debug flow provider and RM_HoseLinks. It is rebuilt only when the topology
         // signature (each reel's id, footprint, laid end and debug flag) changes, so an end laid mid-tick is seen at once.
         private HoseRelayIndex relayIndex;
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: the two indexes RelayIndex() rebuilds in place by turns (a caller still
+        /// holding the previous one is not rewritten under it) and the rebuild's input lists, all reused.</summary>
+        private readonly HoseRelayIndex[] relayBuf = new HoseRelayIndex[2];
+        private int relayBufNext;
+        private readonly List<HoseReelRect> relayRects = new List<HoseReelRect>();
+        private readonly List<Cell?> relayFar = new List<Cell?>();
+        private readonly List<bool> relayDbg = new List<bool>();
+        private static readonly Comparison<CompHoseReel> ByThingId = (a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber);
         private readonly List<CompHoseReel> relayOrder = new List<CompHoseReel>();
         private readonly Dictionary<CompHoseReel, int> relayPos = new Dictionary<CompHoseReel, int>();
         private ulong relaySig;
         private int relayVerSeen = -1, relayCheckTick = -1;
+        /// <summary>ProofTickSplit: relay-index rebuilds since the reset, the longest rebuild and the longest signature-only check.</summary>
+        private int splitRelayBuilds;
+        private long relayBuildMax, relaySigMax;
+        /// <summary>The rebuild's two parts on builds no collection landed in: signature + reel walk (prep), HoseRelayIndex (ctor).</summary>
+        private long relayPrepMax, relayCtorMax;
+        private int tickRelayBuilds, worstRelayBuilds;
+        /// <summary>LayLater's longest call no collection landed in (ask + apply a landed lay + start the next job).</summary>
+        private long layLaterMax;
         /// <summary>Bumped by every writer of a reel's laid end, footprint registration or debug flag (review S1).</summary>
         public static int RelayVersion;
         /// <summary>State read: relay-index rebuilds this session (perf row).</summary>
@@ -595,15 +611,25 @@ namespace RimMandrake.FlowWorks.Hose
             if (relayIndex != null && relayVerSeen == RelayVersion && relayCheckTick == now) return relayIndex;
             relayVerSeen = RelayVersion;
             relayCheckTick = now;
+            long rt0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            int rg0 = GC.CollectionCount(0);
             ulong sig = RelaySignature();
-            if (relayIndex != null && sig == relaySig) return relayIndex;
+            if (relayIndex != null && sig == relaySig)
+            {
+                rt0 = System.Diagnostics.Stopwatch.GetTimestamp() - rt0;
+                if (rt0 > relaySigMax) relaySigMax = rt0;
+                return relayIndex;
+            }
             relayOrder.Clear();
             relayOrder.AddRange(reels);
-            relayOrder.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
+            relayOrder.Sort(ByThingId);
             relayPos.Clear();
-            var rects = new List<HoseReelRect>(relayOrder.Count);
-            var far = new List<Cell?>(relayOrder.Count);
-            var dbg = new List<bool>(relayOrder.Count);
+            List<HoseReelRect> rects = relayRects;
+            List<Cell?> far = relayFar;
+            List<bool> dbg = relayDbg;
+            rects.Clear();
+            far.Clear();
+            dbg.Clear();
             for (int i = 0; i < relayOrder.Count; i++)
             {
                 CompHoseReel r = relayOrder[i];
@@ -612,9 +638,23 @@ namespace RimMandrake.FlowWorks.Hose
                 far.Add(r.laid && r.far.IsValid ? new Cell(r.far.x, r.far.z) : (Cell?)null);
                 dbg.Add(r.debugFlowing);
             }
-            relayIndex = new HoseRelayIndex(rects, far, dbg);
+            long rt1 = System.Diagnostics.Stopwatch.GetTimestamp();
+            HoseRelayIndex idx = relayBuf[relayBufNext];
+            if (idx == null) relayBuf[relayBufNext] = idx = new HoseRelayIndex(rects, far, dbg);
+            else idx.Rebuild(rects, far, dbg);
+            relayBufNext ^= 1;
+            relayIndex = idx;
             relaySig = sig;
             RelayIndexBuilds++;
+            splitRelayBuilds++;
+            tickRelayBuilds++;
+            long rt2 = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (rt2 - rt0 > relayBuildMax) relayBuildMax = rt2 - rt0;
+            if (GC.CollectionCount(0) == rg0)
+            {
+                if (rt1 - rt0 > relayPrepMax) relayPrepMax = rt1 - rt0;
+                if (rt2 - rt1 > relayCtorMax) relayCtorMax = rt2 - rt1;
+            }
             return relayIndex;
         }
 
@@ -789,6 +829,8 @@ namespace RimMandrake.FlowWorks.Hose
             layQueue.BeginFrame(Time.frameCount);
             int id = r.parent.thingIDNumber;
             Func<HoseLayQueue.Work> prepare = () => PrepareLay(r, end, inward, portAt, portAxis);
+            long la0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            int lg0 = GC.CollectionCount(0);
             HoseLayQueue.Job job = layQueue.Ask(id, key, r.layEpoch, prepare);
             if (job != null)
             {
@@ -803,6 +845,8 @@ namespace RimMandrake.FlowWorks.Hose
                     GiveBackLayWorld(job.work.World);
                 }
             }
+            la0 = System.Diagnostics.Stopwatch.GetTimestamp() - la0;
+            if (GC.CollectionCount(0) == lg0 && la0 > layLaterMax) layLaterMax = la0;
             if (!layFaultLogged && layQueue.LastFault != null)
             {
                 layFaultLogged = true;
@@ -976,6 +1020,10 @@ namespace RimMandrake.FlowWorks.Hose
             // world in whichever allocation crosses its threshold), and what the tick allocated when no collection hid it
             int g0 = GC.CollectionCount(0);
             long m0 = GC.GetTotalMemory(false);
+            Array.Clear(tickPh, 0, tickPh.Length);
+            Array.Clear(recTick, 0, recTick.Length);
+            tickRechecks = 0;
+            tickRelayBuilds = 0;
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             TickBody();
             double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
@@ -988,7 +1036,16 @@ namespace RimMandrake.FlowWorks.Hose
             else
             {
                 splitTicks++;
-                if (ms > splitOwnMaxMs) splitOwnMaxMs = ms;
+                if (ms > 5) splitOver[ms > 20 ? 2 : ms > 10 ? 1 : 0]++;
+                if (ms > splitOwnMaxMs)
+                {
+                    splitOwnMaxMs = ms;
+                    Array.Copy(tickPh, worstPh, tickPh.Length);
+                    Array.Copy(recTick, worstRec, recTick.Length);
+                    worstRechecks = tickRechecks;
+                    worstRelayBuilds = tickRelayBuilds;
+                    worstAt = Find.TickManager.TicksGame;
+                }
                 if (bytes > 0)
                 {
                     splitAllocTicks++;
@@ -999,6 +1056,8 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         private int splitTicks, splitGcTicks, splitAllocTicks;
+        /// <summary>Own (no collection) ticks over 5, 10 and 20 ms since the reset: (5,10], (10,20], over 20.</summary>
+        private readonly int[] splitOver = new int[3];
         private double splitOwnMaxMs, splitGcMaxMs;
         private long splitAllocBytes, splitAllocMax;
         /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: whole rebuilds (by cause: no snapshot, a folded global switch, a map event
@@ -1012,22 +1071,41 @@ namespace RimMandrake.FlowWorks.Hose
         /// (PhaseNames) the collections that landed in it and its heap growth on the others (GetTotalMemory: Mono's
         /// GC.GetAllocatedBytesForCurrentThread reads a 1 MB array as 0 B, so it cannot say what a phase allocated).</summary>
         private long splitBuildMax, splitPatchMax, splitRecheckMax;
-        private readonly long[] phaseGrow = new long[5];
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC live loop 2: per tick phase (PhaseNames), the collections that landed in it, its
+        /// longest single call (Stopwatch ticks) and its share of the worst own tick (worstPh: the phases' time in the tick
+        /// that set ownMaxMs). Heap growth per phase is gone: GetTotalMemory counts every thread's allocations (allocprobe's
+        /// idleGrow control read 8.6 MB in a 5 ms spin), so it could not say what a phase allocated.</summary>
         private readonly int[] phaseGc = new int[5];
+        private readonly long[] phaseMax = new long[5], tickPh = new long[5], worstPh = new long[5];
         private static readonly string[] PhaseNames = { "watch", "pre", "signal", "sm", "recheck" };
         private long phaseMark;
         private int phaseGcMark;
         private void Phase(int k)
         {
-            long a = GC.GetTotalMemory(false);
+            long a = System.Diagnostics.Stopwatch.GetTimestamp();
             int g = GC.CollectionCount(0);
             if (k >= 0)
             {
                 if (g != phaseGcMark) phaseGc[k]++;
-                else if (a > phaseMark) phaseGrow[k] += a - phaseMark;
+                long d = a - phaseMark;
+                tickPh[k] += d;
+                if (d > phaseMax[k]) phaseMax[k] = d;
             }
             phaseMark = a;
             phaseGcMark = g;
+        }
+        /// <summary>TickRecheckBody's parts (RecheckNames): longest single part, and their time in the worst own tick.</summary>
+        private readonly long[] recMax = new long[6], recTick = new long[6], worstRec = new long[6];
+        private static readonly string[] RecheckNames = { "ensureLay", "hash", "world", "trail", "replan", "retract" };
+        private long recMark;
+        private int tickRechecks, worstRechecks, worstAt;
+        private void RecPart(int k)
+        {
+            long a = System.Diagnostics.Stopwatch.GetTimestamp();
+            long d = a - recMark;
+            recTick[k] += d;
+            if (d > recMax[k]) recMax[k] = d;
+            recMark = a;
         }
         private static double Ms(long sw) => sw * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
 
@@ -1064,8 +1142,18 @@ namespace RimMandrake.FlowWorks.Hose
                     c.splitOverflows = c.splitFogged = c.splitPatchMaxCells = 0;
                     Array.Clear(c.buildWhy, 0, c.buildWhy.Length);
                     c.splitBuildMax = c.splitPatchMax = c.splitRecheckMax = 0;
-                    Array.Clear(c.phaseGrow, 0, c.phaseGrow.Length);
                     Array.Clear(c.phaseGc, 0, c.phaseGc.Length);
+                    Array.Clear(c.phaseMax, 0, c.phaseMax.Length);
+                    Array.Clear(c.worstPh, 0, c.worstPh.Length);
+                    Array.Clear(c.recMax, 0, c.recMax.Length);
+                    Array.Clear(c.worstRec, 0, c.worstRec.Length);
+                    c.worstRechecks = c.worstAt = 0;
+                    c.splitRelayBuilds = 0;
+                    c.relayBuildMax = c.relaySigMax = c.relayPrepMax = c.relayCtorMax = 0;
+                    c.worstRelayBuilds = 0;
+                    c.layLaterMax = 0;
+                    Array.Clear(c.splitOver, 0, c.splitOver.Length);
+                    c.relayBuildMax = c.relaySigMax = 0;
                     continue;
                 }
                 sb.Append(" | map ").Append(m.Index).Append(" reels=").Append(c.reels.Count).Append(" ticks=").Append(c.splitTicks)
@@ -1078,8 +1166,19 @@ namespace RimMandrake.FlowWorks.Hose
                 sb.Append(" overflow=").Append(c.splitOverflows).Append(" fogged=").Append(c.splitFogged).Append(" patchMaxCells=").Append(c.splitPatchMaxCells);
                 sb                    .Append(" buildMaxMs=").Append(Ms(c.splitBuildMax).ToString("0.00")).Append(" patchMaxMs=").Append(Ms(c.splitPatchMax).ToString("0.00"))
                     .Append(" recheckMaxMs=").Append(Ms(c.splitRecheckMax).ToString("0.00")).Append(" phase=");
-                for (int k = 0; k < c.phaseGrow.Length; k++)
-                    sb.Append(k == 0 ? "" : ",").Append(PhaseNames[k]).Append(':').Append(c.phaseGrow[k] / 1024).Append("KB/").Append(c.phaseGc[k]).Append("gc");
+                // per phase: longest single call ms / its ms in the worst own tick / collections landed in it
+                for (int k = 0; k < c.phaseMax.Length; k++)
+                    sb.Append(k == 0 ? "" : ",").Append(PhaseNames[k]).Append(':').Append(Ms(c.phaseMax[k]).ToString("0.00")).Append('/')
+                        .Append(Ms(c.worstPh[k]).ToString("0.00")).Append('/').Append(c.phaseGc[k]).Append("gc");
+                sb.Append(" relayBuilds=").Append(c.splitRelayBuilds).Append(" relayBuildMaxMs=").Append(Ms(c.relayBuildMax).ToString("0.00"))
+                    .Append(" relaySigMaxMs=").Append(Ms(c.relaySigMax).ToString("0.00"))
+                    .Append(" relayNoGcPrepMs=").Append(Ms(c.relayPrepMax).ToString("0.00")).Append(" relayNoGcCtorMs=").Append(Ms(c.relayCtorMax).ToString("0.00"))
+                    .Append(" worstRelayBuilds=").Append(c.worstRelayBuilds).Append(" layLaterNoGcMs=").Append(Ms(c.layLaterMax).ToString("0.00"))
+                    .Append(" over5/10/20=").Append(c.splitOver[0]).Append('/').Append(c.splitOver[1]).Append('/').Append(c.splitOver[2]);
+                sb.Append(" worstAt=").Append(c.worstAt).Append(" worstRechecks=").Append(c.worstRechecks).Append(" recheck=");
+                for (int k = 0; k < c.recMax.Length; k++)
+                    sb.Append(k == 0 ? "" : ",").Append(RecheckNames[k]).Append(':').Append(Ms(c.recMax[k]).ToString("0.00")).Append('/')
+                        .Append(Ms(c.worstRec[k]).ToString("0.00"));
             }
             if (arg == "allocprobe")
             {
@@ -1200,6 +1299,8 @@ namespace RimMandrake.FlowWorks.Hose
         private void TickRecheck(CompHoseReel r, int now)
         {
             long rt = System.Diagnostics.Stopwatch.GetTimestamp();
+            recMark = rt;
+            tickRechecks++;
             try { TickRecheckBody(r, now); }
             finally
             {
@@ -1221,9 +1322,12 @@ namespace RimMandrake.FlowWorks.Hose
             // HOSE_LAY_FIX_SYNC_RELAY_IN_DRAW: a changed key is laid off the tick (HoseLayQueue); the check below reads the
             // last landed lay until then
             EnsureLay(r, true);
+            RecPart(0);
             // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
             // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
-            if (RM_HoseSettings.enabled && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash))
+            bool cut = RM_HoseSettings.enabled && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash);
+            RecPart(1);
+            if (cut)
             {
                 // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
                 // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
@@ -1231,7 +1335,10 @@ namespace RimMandrake.FlowWorks.Hose
                 // reads the lays' version-valid snapshot (World(LayWorldMaxAge): the same map events, ladder counter, climb
                 // generation and settings salt invalidate it), not a fresh rebuild on every tick a recheck needs a world
                 CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);
-                if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(w)))
+                RecPart(2);
+                bool trailCut = r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(w));
+                RecPart(3);
+                if (trailCut)
                 {
                     r.trail.Clear();
                     r.layKey = null;
@@ -1239,13 +1346,14 @@ namespace RimMandrake.FlowWorks.Hose
                     return;
                 }
                 string why = HoseMath.CheckReplan(w, r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
+                RecPart(4);
                 if (why != null)
                 {
                     // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
                     // already Stored, as ruled), not vanishing in one frame
                     if (r.lay != null && r.lay.Flat.Count >= 2)
                         ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
-                    r.Retract(why); Retracts++; return;
+                    r.Retract(why); Retracts++; RecPart(5); return;
                 }
                 r.layKey = null;
                 r.layEpoch++;   // a lay started on the world before the obstacle is dropped, not applied

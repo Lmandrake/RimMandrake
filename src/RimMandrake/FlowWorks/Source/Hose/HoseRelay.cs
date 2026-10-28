@@ -26,11 +26,22 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>The relay's intake cells, in side order E, N, W, S and along each side.</summary>
         internal static List<Cell> IntakeCells(HoseReelRect relay)
         {
-            IntakeCellCalls++;
             var o = new List<Cell>();
-            foreach (Cell s in HosePortRule.SideOrder)
-                foreach (Cell e in relay.EdgeCells(s)) o.Add(e + s);
+            IntakeCellsInto(relay, o);
             return o;
+        }
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: <see cref="IntakeCells"/> into a list the caller reuses (same cells, same order:
+        /// each side in SideOrder, its edge ascending, stepped out), so a relay-index rebuild allocates nothing per reel.</summary>
+        internal static void IntakeCellsInto(HoseReelRect relay, List<Cell> o)
+        {
+            IntakeCellCalls++;
+            o.Clear();
+            foreach (Cell s in HosePortRule.SideOrder)
+            {
+                if (s.X != 0) { int x = s.X > 0 ? relay.X0 + relay.W - 1 : relay.X0; for (int z = relay.Z0; z < relay.Z0 + relay.H; z++) o.Add(new Cell(x + s.X, z)); }
+                else { int z = s.Z > 0 ? relay.Z0 + relay.H - 1 : relay.Z0; for (int x = relay.X0; x < relay.X0 + relay.W; x++) o.Add(new Cell(x, z + s.Z)); }
+            }
         }
 
         internal static bool IsIntakeOf(HoseReelRect relay, Cell c) => IntakeCells(relay).Contains(c);
@@ -191,32 +202,59 @@ namespace RimMandrake.FlowWorks.Hose
     /// </summary>
     public sealed class HoseRelayIndex
     {
-        public readonly int Count;
-        private readonly int[] next;
-        private readonly bool[] onCycle;
-        private readonly bool[] debug;
-        private readonly List<int>[] feeders;
+        public int Count { get; private set; }
+        private int[] next = new int[0];
+        private bool[] onCycle = new bool[0];
+        private bool[] debug = new bool[0];
+        private List<int>[] feeders = new List<int>[0];
+        private byte[] state = new byte[0];
+        private readonly List<int> path = new List<int>();
         private readonly Dictionary<Cell, List<int>> intake = new Dictionary<Cell, List<int>>();
+        private readonly Stack<List<int>> spare = new Stack<List<int>>();
+        private readonly List<Cell> cells = new List<Cell>();
         private static readonly List<int> NoFeeders = new List<int>();
 
         /// <summary>True when any reel carries the debug-flow flag; with none the debug provider has nothing to say.</summary>
-        public readonly bool AnyDebug;
+        public bool AnyDebug { get; private set; }
 
         /// <summary>Work counter: feeder steps the debug provider walked (review S1: an idle map walks none).</summary>
         public static long DebugWalkSteps;
 
-        internal HoseRelayIndex(IList<HoseReelRect> rects, IList<Cell?> laidFar, IList<bool> debugFlag)
+        internal HoseRelayIndex(IList<HoseReelRect> rects, IList<Cell?> laidFar, IList<bool> debugFlag) => Rebuild(rects, laidFar, debugFlag);
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC (live loop 2026-10-28: on map1's 200 reels one rebuild took 13.4 ms with no
+        /// collection counted, typically 0.8 ms; the new dictionary, its resizes and ~1600 intake lists were all garbage):
+        /// the index rebuilt in place, its arrays, dictionary and lists reused, so a rebuild of the same reel count allocates
+        /// nothing. Same result as a new index. The owner (RM_MapComponent_Hoses) keeps two and alternates, so an index a
+        /// caller still holds is never rewritten under it by the next rebuild.</summary>
+        internal void Rebuild(IList<HoseReelRect> rects, IList<Cell?> laidFar, IList<bool> debugFlag)
         {
+            for (int i = 0; i < feeders.Length; i++)
+                if (feeders[i] != null) { feeders[i].Clear(); spare.Push(feeders[i]); feeders[i] = null; }
+            foreach (List<int> l in intake.Values) { l.Clear(); spare.Push(l); }
+            intake.Clear();
             Count = rects.Count;
-            next = new int[Count];
-            onCycle = new bool[Count];
-            debug = new bool[Count];
-            feeders = new List<int>[Count];
+            AnyDebug = false;
+            if (next.Length < Count)
+            {
+                int cap = Math.Max(Count, next.Length * 2);
+                next = new int[cap];
+                onCycle = new bool[cap];
+                debug = new bool[cap];
+                feeders = new List<int>[cap];
+                state = new byte[cap];
+            }
+            else
+            {
+                Array.Clear(onCycle, 0, Count);
+                Array.Clear(state, 0, Count);
+            }
             for (int i = 0; i < Count; i++)
             {
-                foreach (Cell c in HoseRelay.IntakeCells(rects[i]))
+                HoseRelay.IntakeCellsInto(rects[i], cells);
+                foreach (Cell c in cells)
                 {
-                    if (!intake.TryGetValue(c, out List<int> l)) intake[c] = l = new List<int>(1);
+                    if (!intake.TryGetValue(c, out List<int> l)) intake[c] = l = spare.Count > 0 ? spare.Pop() : new List<int>(1);
                     if (l.Count == 0 || l[l.Count - 1] != i) l.Add(i);
                 }
                 debug[i] = debugFlag != null && debugFlag[i];
@@ -224,8 +262,6 @@ namespace RimMandrake.FlowWorks.Hose
             }
             for (int i = 0; i < Count; i++) next[i] = laidFar[i].HasValue ? RelayAt(laidFar[i].Value, i) : -1;
             // cycle marking on the functional graph: 0 unvisited, 1 on the current path, 2 finished
-            var state = new byte[Count];
-            var path = new List<int>();
             for (int s = 0; s < Count; s++)
             {
                 if (state[s] != 0) continue;
@@ -240,7 +276,7 @@ namespace RimMandrake.FlowWorks.Hose
             {
                 int r = next[j];
                 if (r < 0 || onCycle[j]) continue;
-                if (feeders[r] == null) feeders[r] = new List<int>();
+                if (feeders[r] == null) feeders[r] = spare.Count > 0 ? spare.Pop() : new List<int>();
                 feeders[r].Add(j);
             }
         }

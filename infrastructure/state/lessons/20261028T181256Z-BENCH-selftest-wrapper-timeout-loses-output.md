@@ -1,0 +1,2 @@
+selftest_flowworks_stock.py captures dotnet run output and prints it only at the end, so an outer timeout (540 s) kills it with NO test output (looks like a hang). For a quick loop run the staged exe directly with output to a file: D:\ClaudeWork\rimmandrake\build\selftest_RimMandrakeFlowWorks.SelfTest_<hash>\...\bin\Release\net8.0\RimMandrakeFlowWorks.SelfTest.exe --only 'Hose*' (Hose* took ~2 min direct).
+home: NONE
