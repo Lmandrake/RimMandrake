@@ -39,7 +39,15 @@ def sessions_ok(data):
     return isinstance(data, list) and all(isinstance(x, dict) for x in data)
 
 
+def ledger_ts(ev):
+    """THE comparison operand of dispatcher.seat_events_since: `ev.get("ts") or ""`. Shared, so the guard below
+    validates exactly the value the consumer compares (review contracts #9): a falsey ts (null, 0, false, [], {})
+    becomes "" in both places and sorts before every cutoff; a truthy non-string ts is refused."""
+    return ev.get("ts") or ""
+
+
 def ledger_event_usable(ev):
-    """dispatcher.seat_events_since: an object whose seat/ts it can compare. NEW (listed disagreement): before
-    contracts a non-object line or a non-string ts crashed the whole tick (AttributeError / TypeError)."""
-    return isinstance(ev, dict) and isinstance(ev.get("ts") or "", str)
+    """dispatcher.seat_events_since: an object whose ts operand (ledger_ts) is a string it can compare. NEW (listed
+    disagreement): before contracts a non-object line or a truthy non-string ts crashed the whole tick
+    (AttributeError / TypeError)."""
+    return isinstance(ev, dict) and isinstance(ledger_ts(ev), str)

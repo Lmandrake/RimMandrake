@@ -1,0 +1,23 @@
+{
+ "_doc": "Every old/new reader difference contracts.replay may accept, and nothing else. A difference matches an entry only when family, input_class, old, old_exc, new and new_exc are ALL equal (input_class is computed by replay.input_class from the bytes; new_exc null = the new reader did not raise). Any other difference -- including a digest difference under equal decisions -- fails the replay (GPT review contracts #1, #4).",
+ "allow": [
+  {"id": "CE_TOO_DEEP", "family": "close_evidence", "input_class": "too_deep", "old": "crash", "old_exc": "RecursionError", "new": "refuse", "new_exc": null,
+   "why": "json.loads raised RecursionError out of read_all; the line is now counted as unreadable (bad_out), like any other"},
+  {"id": "AUDITS_TOO_DEEP", "family": "audits", "input_class": "too_deep", "old": "crash", "old_exc": "RecursionError", "new": "refuse", "new_exc": null,
+   "why": "RecursionError escaped audits.parse; now 'line N is not JSON' (ValueError, the reader's refusal)"},
+  {"id": "VERDICTS_TOO_DEEP", "family": "verdicts", "input_class": "too_deep", "old": "crash", "old_exc": "RecursionError", "new": "refuse", "new_exc": null,
+   "why": "RecursionError escaped arbiter_pending.read_jsonl; now its ValueError 'is not JSON' (the torn-store refusal)"},
+  {"id": "TIERS_TOO_DEEP", "family": "tiers_history", "input_class": "too_deep", "old": "crash", "old_exc": "RecursionError", "new": "refuse", "new_exc": null,
+   "why": "same reader as VERDICTS_TOO_DEEP"},
+  {"id": "LEDGER_TOO_DEEP", "family": "ledger_events", "input_class": "too_deep", "old": "crash", "old_exc": "RecursionError", "new": "skip", "new_exc": null,
+   "why": "RecursionError escaped `except ValueError` and crashed the dispatcher tick; the line is passed over like any unreadable ledger line (the ledger is not this reader's to refuse)"},
+  {"id": "LEDGER_NOT_UTF8", "family": "ledger_events", "input_class": "not_utf8", "old": "crash", "old_exc": "UnicodeDecodeError", "new": "skip", "new_exc": null,
+   "why": "the shard was opened strict UTF-8: one bad byte crashed the tick; now read with errors=replace and that line is passed over"},
+  {"id": "LEDGER_NOT_OBJECT", "family": "ledger_events", "input_class": "not_object", "old": "crash", "old_exc": "AttributeError", "new": "skip", "new_exc": null,
+   "why": "ev.get on a non-object crashed the tick; the line is passed over"},
+  {"id": "LEDGER_TS_TRUTHY_NONSTRING", "family": "ledger_events", "input_class": "ts_nonstr", "old": "crash", "old_exc": "TypeError", "new": "skip", "new_exc": null,
+   "why": "a truthy non-string ts compared with a str raised TypeError and crashed the tick; the event is passed over"},
+  {"id": "TESTQ_ORPHANS_NOT_OBJECT", "family": "testq_orphans", "input_class": "not_object", "old": "crash", "old_exc": "AttributeError", "new": "refuse", "new_exc": null,
+   "why": "res.get on a non-object result crashed drain_outbox; it is now left in the worker outbox, unkept"}
+ ]
+}

@@ -11,14 +11,37 @@ Two levels per record, on purpose:
 Models never mutate or re-serialise the raw dict: close_evidence's mac is over the dict as written.
 Import cost: pydantic ~50 ms (measured 2026-10-27, WSL python 3.14). Never import this from a hook.
 """
+import datetime
 import re
 from typing import Annotated, Any, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 HEX7_40 = r"^[0-9a-f]{7,40}$"
 ISO_UTC_Z = r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?Z$"
 ISO_OFFSET = r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)$"
+#: an absolute Windows path: a drive root (D:\...) or a UNC share (\\host\share\...)
+WIN_ABS = r"^(?:[A-Za-z]:\\|\\\\[^\\/]+\\)"
+
+
+def _real_instant(v):
+    """The lexical pattern lets 2026-99-99T99:99:99Z through (review contracts #12): the string must also be a real
+    calendar date, clock time and offset. Returned unchanged (never re-serialised)."""
+    try:
+        datetime.datetime.fromisoformat(v)
+    except ValueError as e:
+        raise ValueError("not a real date/time: %s" % e) from None
+    if v[11:13] == "24":            # fromisoformat (3.11+) reads 24:00:00 as the next midnight; ISO-8601-1:2019 drops it
+        raise ValueError("not a real date/time: hour 24")
+    if len(v) > 6 and v[-6] in "+-" and v[-3] == ":" and not v[-2:] < "60":   # fromisoformat lets +05:99 through
+        raise ValueError("not a real date/time: offset minutes %s" % v[-2:])
+    return v
+
+
+#: ISO strings that are also real instants. The pattern stays in the exported JSON Schema; the calendar check is the
+#: Python side (JSON Schema has no calendar).
+IsoZ = Annotated[str, Field(pattern=ISO_UTC_Z), AfterValidator(_real_instant)]
+IsoOffset = Annotated[str, Field(pattern=ISO_OFFSET), AfterValidator(_real_instant)]
 
 
 class Strict(BaseModel):
@@ -62,7 +85,7 @@ class CloseEvidenceV4(Strict):
     """One line close_evidence.record() writes (build_record + seal). `evidence_shaped` is the shape half of
     counts_as_evidence (schema_problems() == []); the mac and the start/end agreement stay in close_evidence."""
     v: Literal[4]
-    ts: str = Field(pattern=ISO_OFFSET)
+    ts: IsoOffset
     nonce: Optional[Annotated[str, Field(pattern=r"^[0-9a-f]{32}$")]] = None
     tool: str = Field(min_length=1)
     clone: Optional[str]
@@ -99,7 +122,16 @@ class CloseEvidenceV4(Strict):
 
 class CloseEvidenceLegacy(Open):
     """v1/v2/v3 and v-less lines: readable, never evidence (close_evidence V=4 rule). The adapter only names them."""
-    v: Optional[Literal[1, 2, 3]] = None
+    v: Optional[int] = None
+
+    @field_validator("v", mode="before")
+    @classmethod
+    def _legacy_version(cls, v):
+        # runs only when the key is PRESENT (an absent v is the v-less legacy form): an explicit null, a bool, a float
+        # that equals 1/2/3 (Literal matches by equality) or any other int is not a legacy version (review #10)
+        if type(v) is not int or v not in (1, 2, 3):
+            raise ValueError("a present legacy v must be the integer 1, 2 or 3, not %r" % (v,))
+        return v
 
 
 def close_evidence_kind(d):
@@ -160,8 +192,8 @@ class TestqResult(Strict):
 
     @model_validator(mode="after")
     def _rules(self):
-        if not self.attempt.startswith(self.job + ".a"):
-            raise ValueError("attempt must be <job>.a<n>")
+        if not re.fullmatch(re.escape(self.job) + r"\.a[1-9][0-9]{0,5}", self.attempt):
+            raise ValueError("attempt must be <job>.a<n>, n a positive ASCII integer")
         if self.outcome != "DONE" and not self.cause:
             raise ValueError("a non-DONE outcome needs a cause")
         return self
@@ -228,13 +260,14 @@ class ArbiterVerdict(Strict):
     causes: list[Literal["module", "check", "environment", "bar"]] = Field(
         description="coexisting cause tags beside the disposition")
     interim: Optional[str] = Field(description="the interim reviewer's verdict, null when there was none")
-    evidence: list[str] = Field(min_length=1, description="absolute Windows paths of the evidence")
-    ts: str = Field(pattern=ISO_UTC_Z, description="UTC ISO-8601, Z suffix")
+    evidence: list[Annotated[str, Field(min_length=1, pattern=WIN_ABS)]] = Field(
+        min_length=1, description="absolute Windows paths of the evidence")
+    ts: IsoZ = Field(description="UTC ISO-8601, Z suffix")
 
 
 class TiersHistoryRow(Strict):
     """One line of arbiter_tiers' tiers_history.jsonl."""
-    generated: str = Field(pattern=ISO_UTC_Z)
+    generated: IsoZ
     item: str = Field(min_length=1)
     sha: str = Field(pattern=HEX7_40)
     tier: Literal["T0_BOUNCE", "T0_PASS", "T1_PASS", "T2_NOEVIDENCE", "T2_RISK", "T2_UNMEASURED"]
@@ -263,7 +296,7 @@ class LedgerEventMin(Open):
     The compat rule (contracts.compat.ledger_event_usable) only asks for a string ts; a non-ISO string sorts as
     'after any cutoff' there (filed)."""
     seat: Optional[str] = None
-    ts: Optional[Annotated[str, Field(pattern=ISO_OFFSET)]] = None
+    ts: Optional[IsoOffset] = None
     event: Optional[str] = None
 
 

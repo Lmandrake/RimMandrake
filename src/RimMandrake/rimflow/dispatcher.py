@@ -214,14 +214,22 @@ def seat_events_since(clone, seat, since_iso):
     try:
         # contracts.jsonl: a line that is not a JSON object, has a non-string ts, or holds bytes that are not UTF-8 is
         # skipped; before contracts each of those three crashed the whole tick (AttributeError/TypeError/UnicodeError).
-        with open(p, encoding="utf-8", errors="replace") as f:
-            for line in f:
-                r = CJ.decode(line)
-                if not r.ok or not CC.ledger_event_usable(r.value):
-                    continue
-                ev = r.value
-                if ev.get("seat") == seat and (ev.get("ts") or "") > since_iso:   # strictly after the ring's second
-                    out.append(ev)
+        # Bytes, split the way text mode splits (universal newlines), each line decoded strictly: a damaged line is
+        # skipped whole -- decoding with replacement instead ACCEPTED an event whose id or seat held U+FFFD (contracts
+        # commissioning 2026-10-28, 918 of 100000).
+        with open(p, "rb") as f:
+            data = f.read()
+        for raw in data.replace(b"\r\n", b"\n").replace(b"\r", b"\n").split(b"\n"):
+            try:
+                line = raw.decode("utf-8")
+            except UnicodeDecodeError:
+                continue
+            r = CJ.decode(line)
+            if not r.ok or not CC.ledger_event_usable(r.value):
+                continue
+            ev = r.value
+            if ev.get("seat") == seat and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
+                out.append(ev)
     except OSError:
         pass
     return out

@@ -6,7 +6,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "valid_v4_fail",
@@ -14,7 +15,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "torn_line",
@@ -22,7 +24,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "damaged_sha",
@@ -30,7 +33,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "valid JSON and well-shaped: only close_evidence.mac_ok can refuse it (it does: lookup -> UNMEASURED)"
+   "why": "valid JSON and well-shaped: only close_evidence.mac_ok can refuse it (it does: lookup -> UNMEASURED)",
+   "allow": ""
   },
   {
    "class": "same_second_replay",
@@ -38,7 +42,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "an exact duplicate decodes fine; lookup's seen_macs dedupe drops it (nonce makes real repeats distinct)"
+   "why": "an exact duplicate decodes fine; lookup's seen_macs dedupe drops it (nonce makes real repeats distinct)",
+   "allow": ""
   },
   {
    "class": "non_ascii_mac",
@@ -46,15 +51,17 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "the reader accepts the JSON; mac_ok refuses it (AC5); strict refuses mac not 64 hex"
+   "why": "the reader accepts the JSON; mac_ok refuses it (AC5); strict refuses mac not 64 hex",
+   "allow": ""
   },
   {
    "class": "duplicate_key",
    "where": "review AB6 (duplicate top-level key)",
    "old": "accept",
    "new": "accept",
-   "strict": "accept",
-   "why": "json.loads keeps the last value; strict-JSON notes dup_key; lookup's _top_level treats it as ambiguous"
+   "strict": "refuse",
+   "why": "json.loads keeps the last value; strict JSON refuses dup_key; lookup's _top_level treats it as ambiguous",
+   "allow": ""
   },
   {
    "class": "replacement_char",
@@ -62,7 +69,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "decodes; strict-JSON notes replacement_char; mac fails"
+   "why": "decodes; strict-JSON notes replacement_char; mac fails",
+   "allow": ""
   },
   {
    "class": "legacy_v1",
@@ -70,7 +78,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "strict reads it as CloseEvidenceLegacy: never evidence"
+   "why": "strict reads it as CloseEvidenceLegacy: never evidence",
+   "allow": ""
   },
   {
    "class": "legacy_v2",
@@ -78,7 +87,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "legacy"
+   "why": "legacy",
+   "allow": ""
   },
   {
    "class": "legacy_v3",
@@ -86,7 +96,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "legacy"
+   "why": "legacy",
+   "allow": ""
   },
   {
    "class": "legacy_vless",
@@ -94,7 +105,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "legacy"
+   "why": "legacy",
+   "allow": ""
   },
   {
    "class": "unsupported_version_float",
@@ -102,7 +114,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "schema_problems: 4.0 == 4 so it looks v4; strict refuses a float version"
+   "why": "schema_problems: 4.0 == 4 so it looks v4; strict refuses a float version",
+   "allow": ""
   },
   {
    "class": "unsupported_version_5",
@@ -110,7 +123,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "strict: v5 is neither v4 nor legacy"
+   "why": "strict: v5 is neither v4 nor legacy",
+   "allow": ""
   },
   {
    "class": "not_object_list",
@@ -118,7 +132,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "not_object_null",
@@ -126,7 +141,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "not_object_string",
@@ -134,15 +150,71 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "nonfinite",
    "where": "NaN in a record",
    "old": "accept",
    "new": "accept",
-   "strict": "accept",
-   "why": "Python json accepts NaN; strict-JSON notes nonfinite (no other JSON reader would parse the line)"
+   "strict": "refuse",
+   "why": "Python json accepts NaN; strict JSON refuses nonfinite (no other JSON reader would parse the line)",
+   "allow": ""
+  },
+  {
+   "class": "nonfinite_overflow",
+   "where": "review contracts #6",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "1e999 overflows to inf through parse_float, not parse_constant; strict JSON refuses it",
+   "allow": ""
+  },
+  {
+   "class": "not_utf8_in_string",
+   "where": "review contracts #7 (a raw 0xff inside a string)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the file is read with replacement, so the reader accepts; strict refuses the bytes as not_utf8",
+   "allow": ""
+  },
+  {
+   "class": "version_bool",
+   "where": "version confusion",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "a bool v is neither v4 nor a legacy integer version",
+   "allow": ""
+  },
+  {
+   "class": "legacy_version_float",
+   "where": "review contracts #10",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "Literal[1,2,3] matched 1.0 by equality",
+   "allow": ""
+  },
+  {
+   "class": "legacy_version_null",
+   "where": "review contracts #10",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "an explicit null is not the v-less legacy form",
+   "allow": ""
+  },
+  {
+   "class": "impossible_ts",
+   "where": "review contracts #12",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the ISO pattern matched an impossible date",
+   "allow": ""
   },
   {
    "class": "bom",
@@ -150,7 +222,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": "json.loads refuses a str starting with a BOM"
+   "why": "json.loads refuses a str starting with a BOM",
+   "allow": ""
   },
   {
    "class": "too_deep",
@@ -158,7 +231,8 @@
    "old": "crash",
    "new": "refuse",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): json.loads raises RecursionError, which read_all did not catch -> the caller crashed; contracts.jsonl refuses the line as too_deep and counts it like any unreadable line"
+   "why": "DISAGREEMENT (intended): json.loads raises RecursionError, which read_all did not catch -> the caller crashed; contracts.jsonl refuses the line as too_deep and counts it like any unreadable line",
+   "allow": "CE_TOO_DEEP"
   },
   {
    "class": "sha_wrong_type",
@@ -166,7 +240,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "schema_problems checks presence, not types; strict refuses an int sha"
+   "why": "schema_problems checks presence, not types; strict refuses an int sha",
+   "allow": ""
   },
   {
    "class": "blank",
@@ -174,7 +249,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "skip",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "whitespace",
@@ -182,7 +258,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "skip",
-   "why": ""
+   "why": "",
+   "allow": ""
   }
  ],
  "audits": [
@@ -192,7 +269,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "extra_field",
@@ -200,7 +278,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "defect_without_class",
@@ -208,7 +287,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "sound_with_class",
@@ -216,7 +296,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "waiting_on_sound",
@@ -224,7 +305,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "sha_not_hex",
@@ -232,7 +314,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "sha_trailing_newline",
@@ -240,7 +323,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "audits.problems used re.search: `$` matches before a final newline, so 'abcdef1\\n' passed; the model keeps that (compat). Filed as a finding, not changed here"
+   "why": "audits.problems used re.search: `$` matches before a final newline, so 'abcdef1\\n' passed; the model keeps that (compat). Filed as a finding, not changed here",
+   "allow": ""
   },
   {
    "class": "empty_item",
@@ -248,7 +332,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "flag_not_string",
@@ -256,7 +341,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "verdict_bool",
@@ -264,7 +350,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "torn",
@@ -272,7 +359,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "null_list",
@@ -280,15 +368,17 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "dup_key",
    "where": "review AB6 class",
    "old": "accept",
    "new": "accept",
-   "strict": "accept",
-   "why": "json.loads keeps the last value; strict-JSON notes dup_key"
+   "strict": "refuse",
+   "why": "json.loads keeps the last value; strict JSON refuses dup_key",
+   "allow": ""
   },
   {
    "class": "too_deep",
@@ -296,7 +386,8 @@
    "old": "crash",
    "new": "refuse",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): RecursionError used to escape parse(); now 'line N is not JSON'"
+   "why": "DISAGREEMENT (intended): RecursionError used to escape parse(); now 'line N is not JSON'",
+   "allow": "AUDITS_TOO_DEEP"
   },
   {
    "class": "blank",
@@ -304,7 +395,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "skip",
-   "why": ""
+   "why": "",
+   "allow": ""
   }
  ],
  "verdicts": [
@@ -314,7 +406,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "valid_fail_tagged",
@@ -322,7 +415,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "misspelt_disposition",
@@ -330,7 +424,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "empty_item",
@@ -338,7 +433,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "sha_head",
@@ -346,7 +442,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat only needs a truthy sha; strict needs 7-40 hex: 'HEAD' cannot be joined to a commit"
+   "why": "compat only needs a truthy sha; strict needs 7-40 hex: 'HEAD' cannot be joined to a commit",
+   "allow": ""
   },
   {
    "class": "missing_causes",
@@ -354,7 +451,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat reads item/sha/disposition only; strict needs every arbiter.md field"
+   "why": "compat reads item/sha/disposition only; strict needs every arbiter.md field",
+   "allow": ""
   },
   {
    "class": "sha_int",
@@ -362,7 +460,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "truthy int passes compat; strict refuses"
+   "why": "truthy int passes compat; strict refuses",
+   "allow": ""
   },
   {
    "class": "bad_ts",
@@ -370,7 +469,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat ignores ts; strict needs ISO UTC Z"
+   "why": "compat ignores ts; strict needs ISO UTC Z",
+   "allow": ""
   },
   {
    "class": "extra_field",
@@ -378,7 +478,44 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "strict is extra=forbid"
+   "why": "strict is extra=forbid",
+   "allow": ""
+  },
+  {
+   "class": "evidence_empty_path",
+   "where": "review contracts #13",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "an empty evidence path",
+   "allow": ""
+  },
+  {
+   "class": "evidence_relative",
+   "where": "review contracts #13",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "evidence must be absolute Windows paths",
+   "allow": ""
+  },
+  {
+   "class": "impossible_ts",
+   "where": "review contracts #12",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the ISO pattern matched an impossible date",
+   "allow": ""
+  },
+  {
+   "class": "dup_disposition",
+   "where": "review contracts #5",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "json.loads keeps the LAST disposition (PASS); strict JSON refuses the duplicate key before the model",
+   "allow": ""
   },
   {
    "class": "null_list",
@@ -386,7 +523,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "torn",
@@ -394,7 +532,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "too_deep",
@@ -402,7 +541,109 @@
    "old": "crash",
    "new": "refuse",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')"
+   "why": "DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')",
+   "allow": "VERDICTS_TOO_DEEP"
+  },
+  {
+   "class": "blank",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": "",
+   "allow": ""
+  }
+ ],
+ "tiers_history": [
+  {
+   "class": "valid",
+   "where": "arbiter_tiers fields",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "sha_head",
+   "where": "TIERS_HISTORY_FIX_SYMBOLIC_HEAD_SHA (4 real rows)",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat needs a truthy sha; strict needs hex",
+   "allow": ""
+  },
+  {
+   "class": "empty_decision",
+   "where": "read_jsonl truthy rule",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "missing_generated",
+   "where": "strict field",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat reads item/sha/decision only",
+   "allow": ""
+  },
+  {
+   "class": "impossible_ts",
+   "where": "review contracts #12",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the ISO pattern matched an impossible date",
+   "allow": ""
+  },
+  {
+   "class": "unknown_tier",
+   "where": "closed enum",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat ignores tier",
+   "allow": ""
+  },
+  {
+   "class": "null_list",
+   "where": "non-object JSON",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "torn",
+   "where": "review AA8 class",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "too_deep",
+   "where": "absurd nesting",
+   "old": "crash",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): RecursionError used to escape read_jsonl (a crash, not 'unreadable')",
+   "allow": "TIERS_TOO_DEEP"
+  },
+  {
+   "class": "blank",
+   "where": "blank line",
+   "old": "skip",
+   "new": "skip",
+   "strict": "skip",
+   "why": "",
+   "allow": ""
   }
  ],
  "ledger_events": [
@@ -412,7 +653,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "other_seat",
@@ -420,7 +662,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "before_cutoff",
@@ -428,7 +671,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "not_utf8",
@@ -436,7 +680,8 @@
    "old": "crash",
    "new": "skip",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): the shard was opened strict UTF-8; one bad byte raised UnicodeDecodeError out of the read loop and crashed the tick. Now read with errors=replace and the line is passed over. The fixture line is written as raw bytes 0xff 0xfe (see main)"
+   "why": "DISAGREEMENT (intended): the shard was opened strict UTF-8; one bad byte raised UnicodeDecodeError out of the read loop and crashed the tick. Now read with errors=replace and the line is passed over. The fixture line is written as raw bytes 0xff 0xfe (see main)",
+   "allow": "LEDGER_NOT_UTF8"
   },
   {
    "class": "not_object",
@@ -444,7 +689,8 @@
    "old": "crash",
    "new": "skip",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): ev.get on a list raised AttributeError and crashed the dispatcher tick"
+   "why": "DISAGREEMENT (intended): ev.get on a list raised AttributeError and crashed the dispatcher tick",
+   "allow": "LEDGER_NOT_OBJECT"
   },
   {
    "class": "ts_int",
@@ -452,7 +698,62 @@
    "old": "crash",
    "new": "skip",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): 5 > str raised TypeError and crashed the tick"
+   "why": "DISAGREEMENT (intended): 5 > str raised TypeError and crashed the tick",
+   "allow": "LEDGER_TS_TRUTHY_NONSTRING"
+  },
+  {
+   "class": "ts_falsey_null",
+   "where": "review contracts #9 (falsey ts)",
+   "old": "skip",
+   "new": "skip",
+   "strict": "accept",
+   "why": "`ts or ''` is the operand in BOTH the guard and the comparison (compat.ledger_ts): '' sorts before every cutoff, so the event is passed over, old and new alike; strict wants a string or null",
+   "allow": ""
+  },
+  {
+   "class": "ts_falsey_zero",
+   "where": "review contracts #9 (falsey ts)",
+   "old": "skip",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "`ts or ''` is the operand in BOTH the guard and the comparison (compat.ledger_ts): '' sorts before every cutoff, so the event is passed over, old and new alike; strict wants a string or null",
+   "allow": ""
+  },
+  {
+   "class": "ts_falsey_false",
+   "where": "review contracts #9 (falsey ts)",
+   "old": "skip",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "`ts or ''` is the operand in BOTH the guard and the comparison (compat.ledger_ts): '' sorts before every cutoff, so the event is passed over, old and new alike; strict wants a string or null",
+   "allow": ""
+  },
+  {
+   "class": "ts_falsey_empty_list",
+   "where": "review contracts #9 (falsey ts)",
+   "old": "skip",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "`ts or ''` is the operand in BOTH the guard and the comparison (compat.ledger_ts): '' sorts before every cutoff, so the event is passed over, old and new alike; strict wants a string or null",
+   "allow": ""
+  },
+  {
+   "class": "ts_falsey_empty_object",
+   "where": "review contracts #9 (falsey ts)",
+   "old": "skip",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "`ts or ''` is the operand in BOTH the guard and the comparison (compat.ledger_ts): '' sorts before every cutoff, so the event is passed over, old and new alike; strict wants a string or null",
+   "allow": ""
+  },
+  {
+   "class": "too_deep",
+   "where": "absurd nesting",
+   "old": "crash",
+   "new": "skip",
+   "strict": "refuse",
+   "why": "DISAGREEMENT (intended): RecursionError escaped `except ValueError` and crashed the tick",
+   "allow": "LEDGER_TOO_DEEP"
   },
   {
    "class": "ts_not_iso",
@@ -460,7 +761,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "a non-ISO ts string compares lexicographically ('y' > '2'), so it counts as after any cutoff; strict refuses it. Filed, not changed (decision preserved)"
+   "why": "a non-ISO ts string compares lexicographically ('y' > '2'), so it counts as after any cutoff; strict refuses it. Filed, not changed (decision preserved)",
+   "allow": ""
   },
   {
    "class": "torn",
@@ -468,7 +770,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "blank",
@@ -476,7 +779,8 @@
    "old": "skip",
    "new": "skip",
    "strict": "skip",
-   "why": ""
+   "why": "",
+   "allow": ""
   }
  ],
  "sessions": [
@@ -486,7 +790,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "empty",
@@ -494,7 +799,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "null_entry",
@@ -502,7 +808,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "not_list",
@@ -510,7 +817,8 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "status_int",
@@ -518,7 +826,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "strict: status must be a string"
+   "why": "strict: status must be a string",
+   "allow": ""
   },
   {
    "class": "unnamed",
@@ -526,7 +835,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   }
  ],
  "testq_results": [
@@ -536,7 +846,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "undeclared_markers",
@@ -544,15 +855,17 @@
    "old": "accept",
    "new": "accept",
    "strict": "accept",
-   "why": "declared in the strict model; schema drift filed"
+   "why": "declared in the strict model; schema drift filed",
+   "allow": ""
   },
   {
    "class": "rows_only",
    "where": "GPT design: schema-tag-only check",
-   "old": "accept",
-   "new": "accept",
+   "old": "crash",
+   "new": "crash",
    "strict": "refuse",
-   "why": "testq.py checks only the schema tag, then reads res['outcome'] (KeyError); strict and validate_result refuse; testq.py now logs the shadow refusal"
+   "why": "reconcile checks only the schema tag, then reads res['outcome'] (KeyError, old and new: TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
+   "allow": ""
   },
   {
    "class": "invalid_without_cause",
@@ -560,7 +873,8 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "compat reads the tag only"
+   "why": "compat reads the tag only",
+   "allow": ""
   },
   {
    "class": "extra_field",
@@ -568,7 +882,17 @@
    "old": "accept",
    "new": "accept",
    "strict": "refuse",
-   "why": "strict is extra=forbid"
+   "why": "strict is extra=forbid",
+   "allow": ""
+  },
+  {
+   "class": "attempt_malformed",
+   "where": "review contracts #11",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the strict attempt rule is <job>.a<n>",
+   "allow": ""
   },
   {
    "class": "unsupported_version",
@@ -576,15 +900,100 @@
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
   },
   {
    "class": "torn",
-   "where": "truncated file",
+   "where": "truncated worker line",
    "old": "refuse",
    "new": "refuse",
    "strict": "refuse",
-   "why": ""
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "not_object",
+   "where": "non-object JSON",
+   "old": "crash",
+   "new": "crash",
+   "strict": "refuse",
+   "why": "reconcile: old res.get('schema') and new res.get('error') (the unreadable log) BOTH raise AttributeError on a JSON list -- same decision, filed as TESTQ_HARDEN_RECONCILE_NONDICT_CRASH. drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
+   "allow": ""
+  }
+ ],
+ "testq_orphans": [
+  {
+   "class": "valid",
+   "where": "baseline",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "undeclared_markers",
+   "where": "worker writes fields testq_schema.json lacks",
+   "old": "accept",
+   "new": "accept",
+   "strict": "accept",
+   "why": "declared in the strict model; schema drift filed",
+   "allow": ""
+  },
+  {
+   "class": "rows_only",
+   "where": "GPT design: schema-tag-only check",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "reconcile checks only the schema tag, then reads res['outcome'] (KeyError, old and new: TESTQ_OUTCOME_HARDEN_TAG_ONLY_KEYERROR); drain_outbox keeps it in orphans/ on the tag alone",
+   "allow": ""
+  },
+  {
+   "class": "invalid_without_cause",
+   "where": "validate_result rule",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "compat reads the tag only",
+   "allow": ""
+  },
+  {
+   "class": "extra_field",
+   "where": "closed type",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "strict is extra=forbid",
+   "allow": ""
+  },
+  {
+   "class": "attempt_malformed",
+   "where": "review contracts #11",
+   "old": "accept",
+   "new": "accept",
+   "strict": "refuse",
+   "why": "the strict attempt rule is <job>.a<n>",
+   "allow": ""
+  },
+  {
+   "class": "unsupported_version",
+   "where": "unsupported version",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "",
+   "allow": ""
+  },
+  {
+   "class": "torn",
+   "where": "truncated worker line",
+   "old": "refuse",
+   "new": "refuse",
+   "strict": "refuse",
+   "why": "",
+   "allow": ""
   },
   {
    "class": "not_object",
@@ -592,7 +1001,8 @@
    "old": "crash",
    "new": "refuse",
    "strict": "refuse",
-   "why": "DISAGREEMENT (intended): testq.py at base did res.get('schema') on whatever read_json returned; a JSON list in done/ raised AttributeError and stopped collect/orphans. compat.testq_result_readable refuses it"
+   "why": "reconcile: old res.get('schema') and new res.get('error') (the unreadable log) BOTH raise AttributeError on a JSON list -- same decision, filed as TESTQ_HARDEN_RECONCILE_NONDICT_CRASH. drain_outbox: DISAGREEMENT (intended): old crashed, new leaves it in the worker outbox unkept",
+   "allow": "TESTQ_ORPHANS_NOT_OBJECT"
   }
  ]
 }

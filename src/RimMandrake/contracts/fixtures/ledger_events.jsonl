@@ -4,6 +4,12 @@
 ÿþ not utf-8
 [1]
 {"ts": 5, "seat": "BENCH", "event": "note", "id": "X"}
+{"ts": null, "seat": "BENCH", "event": "note", "id": "X"}
+{"ts": 0, "seat": "BENCH", "event": "note", "id": "X"}
+{"ts": false, "seat": "BENCH", "event": "note", "id": "X"}
+{"ts": [], "seat": "BENCH", "event": "note", "id": "X"}
+{"ts": {}, "seat": "BENCH", "event": "note", "id": "X"}
+#DEEP#
 {"ts": "yesterday", "seat": "BENCH", "event": "note", "id": "X"}
 {"ts": "2026-10-27T12:00:
 

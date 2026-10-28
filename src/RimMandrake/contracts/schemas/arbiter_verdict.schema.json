@@ -32,6 +32,8 @@
   "evidence": {
    "description": "absolute Windows paths of the evidence",
    "items": {
+    "minLength": 1,
+    "pattern": "^(?:[A-Za-z]:\\\\|\\\\\\\\[^\\\\/]+\\\\)",
     "type": "string"
    },
    "minItems": 1,
