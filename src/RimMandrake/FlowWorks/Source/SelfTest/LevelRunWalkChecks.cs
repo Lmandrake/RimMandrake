@@ -125,9 +125,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                             Assert(run.Water == water, $"{tag}: water {run.Water} vs old {water}");
                             Assert(run.Low == low, $"{tag}: low {run.Low} vs old {low}");
                             Assert(run.MaxDepth == maxDepth, $"{tag}: maxDepth {run.MaxDepth} vs old {maxDepth}");
-                            var reachedSet = new HashSet<int>(reached);
+                            // the queue IS the old walk's, square for square in order (N, E, S, W): a set test let a duplicate
+                            // stand in for a missing square, or a reordered walk pass (cs_review 2026-10-28)
                             for (int i = 0; i < reached.Count; i++)
-                                Assert(reachedSet.Contains(scratch.Queue[i]), $"{tag}: queued square {scratch.Queue[i]} the old walk never reached");
+                                Assert(scratch.Queue[i] == reached[i], $"{tag}: queue[{i}] {scratch.Queue[i]} vs old {reached[i]}");
                             var depths = new List<int>();
                             foreach (int c in processed) depths.Add(g.Depth(c));
                             int[] oldHist = OldHist(depths, maxDepth);
