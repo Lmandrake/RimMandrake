@@ -152,6 +152,9 @@ CASES = [
     ("F1 a Fill tank never receives the pour", "T23", ["no_pour"], [("T23", "FAIL")]),
     ("F8 Store still fills inside the settle", "T23", ["store_fill_settle"], [("T23", "FAIL")]),
     ("F8 an old brine bucket off the plot is not the row's", "T23", ["old_brine_offplot"], [("T23", "PASS")]),
+    # live J20261028T014816Z-d2e098 (THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE): a bystander drafted ~10,000 ticks earlier
+    # is freed by the AutoUndrafter mid-T23 (a re-draft re-arms nothing), fills brine and lands it in the settle
+    ("auto-undraft must not free a bystander mid-T23", "T23", ["auto_undraft"], [("T23", "PASS")]),
     ("F9 snow carried off, an unrelated fresh bucket lands", "T25", ["carry_snow"], [("T25", "FAIL")]),
     ("F10 the pond arm fills nothing", "T25", ["no_bucket_fill"], [("T25", "FAIL")]),
     ("F11 no bill, an old wooden snow bucket melts", "T26", ["no_bill", "leftover_wood_snow"], [("T26", "FAIL")]),
@@ -194,6 +197,11 @@ for label, only, faults, wants in CASES:
         check("in-flight pour: one fill was in flight at the switch and only it landed in the settle",
               det.get("inFlightAllowance") == 1 and len(det.get("landedInSettle") or []) == 1,
               (det.get("inFlightAllowance"), det.get("landedInSettle")))
+    if label.startswith("auto-undraft"):
+        det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T23"))
+        check("auto-undraft: the driver re-armed the drafts and no bystander came free",
+              res.get("draftRearms", 0) >= 1 and getattr(B, "auto_undrafts", None) == 0 and not det.get("othersInSettle"),
+              (res.get("draftRearms"), getattr(B, "auto_undrafts", None), det.get("othersInSettle")))
     if label.startswith("T6 governor stop"):
         check("T6 governor stop: the stop really fired mid-T6", getattr(B, "_gov_fired", False) and res.get("governorStops"),
               res.get("governorStops"))

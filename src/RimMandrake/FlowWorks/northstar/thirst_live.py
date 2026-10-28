@@ -238,6 +238,15 @@ def main(argv=None, bridge=None):
         return g.get("ticksGame") or (g.get("state") or {}).get("tick")
 
     UNDER_TEST = set()
+    # THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE (live J20261028T014816Z-d2e098): vanilla AutoUndrafter undrafts a pawn that
+    # has stood drafted and idle (Wait_Combat) for 10,000 ticks, and Pawn_DraftController.Drafted returns early when the
+    # value is unchanged -- so drafting an already-drafted bystander re-arms NOTHING. A bystander drafted ~10,000 ticks
+    # earlier came free mid-T23, filled brine for the Fill tank and landed a bucket in the settle. The driver now owns
+    # the timer: DRAFT_AT is the tick each pawn's undraft clock was last armed by us; ticks() re-arms an idle drafted
+    # pawn (undraft + draft, no tick between) before a chunk would carry it past AUTO_UNDRAFT - REARM_MARGIN.
+    AUTO_UNDRAFT, REARM_MARGIN = 10000, 1000
+    DRAFT_AT = {}
+    CLOCK = [0]
 
     def feed_all():
         """Long advances: the clock governor stops on any starving colonist (the drafted bystanders never eat)."""
@@ -253,11 +262,15 @@ def main(argv=None, bridge=None):
 
     def ticks(n):
         t0 = tg()
+        if t0 is not None:
+            CLOCK[0] = t0
         left = n
         while left > 0:
             k = min(1500, left)
+            rearm_due(k)
             try:
                 B.ticks(k)
+                CLOCK[0] += k
             except Exception as ex:  # noqa: BLE001 - clockgate.GovernorStop: a bystander starving / breaking stops the clock
                 if "GovernorStop" not in type(ex).__name__:
                     raise
@@ -268,11 +281,15 @@ def main(argv=None, bridge=None):
                 # review 2026-10-17: retrying the whole chunk overshot n by the stop's partial advance (T3 reads a rate
                 # over exactly n ticks); what is left is measured off the clock instead
                 now = tg()
+                if now is not None:
+                    CLOCK[0] = now
                 if t0 is not None and now is not None:
                     left = n - (now - t0)
                 continue
             left -= k
         t1 = tg()
+        if t1 is not None:
+            CLOCK[0] = t1
         if t0 is not None and t1 is not None and t1 - t0 < n:
             B.ticks(n - (t1 - t0))
 
@@ -372,9 +389,43 @@ def main(argv=None, bridge=None):
         refusal is recorded in res['draftRefused'] and returned; rows that REQUIRE the draft read it (T3, T6)."""
         r = B.call("jawa/set_draft", pawnId=pid, drafted=on) or {}
         ok_ = r.get("success") is True and r.get("drafted") in (None, on)
+        if ok_ and on and r.get("wasDrafted") is not False:
+            # already drafted (or the bridge did not say): its undraft clock is unknown -- re-arm it (see DRAFT_AT)
+            ok_ = rearm(pid)
         if not ok_:
             res.setdefault("draftRefused", []).append({"pawn": pid, "wanted": on, "reply": str(r)[:160]})
+        elif on:
+            DRAFT_AT[pid] = CLOCK[0]
+        else:
+            DRAFT_AT.pop(pid, None)
         return ok_
+
+    def rearm(pid):
+        """Undraft then draft, no tick between: Notify_Drafted restarts the AutoUndrafter clock."""
+        r0 = B.call("jawa/set_draft", pawnId=pid, drafted=False) or {}
+        r1 = B.call("jawa/set_draft", pawnId=pid, drafted=True) or {}
+        ok_ = r0.get("success") is True and r1.get("success") is True and r1.get("drafted") in (None, True)
+        if ok_:
+            res["draftRearms"] = res.get("draftRearms", 0) + 1
+            DRAFT_AT[pid] = CLOCK[0]
+        return ok_
+
+    def rearm_due(k):
+        """Before a k-tick chunk: every pawn we drafted whose clock would pass AUTO_UNDRAFT - REARM_MARGIN in it. A pawn
+        on a real job (an ordered drink, a carry) is re-armed by the game itself; only an idle one is re-armed here."""
+        due = [pid for pid, t in DRAFT_AT.items() if CLOCK[0] + k - t >= AUTO_UNDRAFT - REARM_MARGIN]
+        if not due:
+            return
+        jobs = {}
+        for c in colonists():
+            jobs[re.sub(r"^Thing_", "", str(c.get("pawnId")))] = c.get("job")
+        for pid in due:
+            if pid not in jobs:
+                DRAFT_AT.pop(pid, None)          # gone from the map (dead, despawned): nothing to keep drafted
+            elif jobs[pid] in (None, "Wait_Combat"):
+                rearm(pid)
+            else:
+                DRAFT_AT[pid] = CLOCK[0]
 
     def poll_job(pid, jobs, budget, step=60):
         # HARNESS (walk 2026-10-17, T13): a job giver is consulted only when the current job ENDS; a colonist mid-way
@@ -1454,14 +1505,18 @@ def main(argv=None, bridge=None):
             # is COUNTED against the in-flight allowance instead of being cleared blind.
             # live J20261028T005149Z-1f7ee6: one brine bucket landed here with GotoWander at the switch -- the settle's
             # jobs are now recorded so the finding says whether a fill STARTED after the Store order (diagnostic only)
-            settle_jobs = []
+            # live J20261028T014816Z-d2e098: the settle bucket came from ANOTHER colonist (a bystander the AutoUndrafter
+            # freed, see DRAFT_AT) -- every other colonist's non-idle jobs in the settle are recorded too (diagnostic)
+            settle_jobs, others_jobs = [], {}
 
             def settle(n):
                 for _ in range(n // 30):
                     ticks(30)
-                    jj = job(p23)
-                    if jj and (not settle_jobs or settle_jobs[-1] != jj):
-                        settle_jobs.append(jj)
+                    for c in colonists():
+                        cid, jj = re.sub(r"^Thing_", "", str(c.get("pawnId"))), c.get("job")
+                        seq = settle_jobs if cid == p23 else others_jobs.setdefault(cid, [])
+                        if jj and jj != "Wait_Combat" and (not seq or seq[-1] != jj):
+                            seq.append(jj)
             settle(300)
             for _ in range(20):
                 if job(p23) not in ("RM_FillBottleJob", "RM_EmptyIntoTankJob"):
@@ -1495,6 +1550,7 @@ def main(argv=None, bridge=None):
             bad = []
             det23 = {"tank": tank_r, "units": [u0, u1], "brineBucketsMade": made, "jobsFill": seen, "jobAtSwitch": j_sw,
                      "inFlightAllowance": allow, "landedInSettle": settle_new, "settleJobs": settle_jobs,
+                     "othersInSettle": {k: v for k, v in others_jobs.items() if v}, "draftRearms": res.get("draftRearms", 0),
                      "emptiesForWindow": empties2,
                      "jobsStore": seen2, "brineBucketsAfterStore": made2, "brineAt": where2, "storeTankUnits": u2}
             if u0 is None or u1 is None or settle_new is None or made2 is None or empties2 < 1:

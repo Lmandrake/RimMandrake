@@ -52,6 +52,9 @@ faults (name -> intended effect):
   store_fill_settle   a Store tank still orders brine fills for the first 450 ticks after the switch (they land inside
                       the settle the old row cleared blind) -> T23 FAIL
   old_brine_offplot   a brine bucket lies off the plot from the start
+  auto_undraft        vanilla AutoUndrafter (RimWorld/AutoUndrafter.cs): the starting three were drafted long ago (site
+                      prep); a drafted pawn idle 10,000 ticks is undrafted, and set_draft on an already-drafted pawn
+                      changes nothing (Pawn_DraftController.Drafted returns early), so a re-draft does not re-arm it
   carry_snow          snow never melts; the worker hauls the gathered bucket off the ground and an unrelated fresh bucket
                       lands elsewhere 4,000 ticks later -> T25 FAIL
   no_bucket_fill      a hauler never fills an empty bucket from water -> T25's pond arm FAIL
@@ -119,6 +122,7 @@ class Pawn(object):
         self.id, self.num, self.kind, self.faction, self.x, self.z = pid, num, kind, faction, x, z
         self.need, self.hed, self.mem = 0.9, {}, []
         self.drafted, self.job, self.job_t, self.ctx = False, None, 0, {}
+        self.draft_t = 0                      # AutoUndrafter.lastNonWaitingTick
         self.refuse, self.prio = set(), {}
         self.xeno, self.break_t, self.think_now = None, 0, True
         self.inv, self.carry, self.stuck_break = [], None, False      # packed things / a carried thing: off the ground
@@ -149,10 +153,14 @@ class ThirstFakeBridge(object):
         self.terrain, self.things, self.pawns = {}, {}, {}
         self.snow, self.grass, self.tanks, self.bills = {}, set(), {}, {}
         self.refused_n = 0
+        self.auto_undrafts = 0                  # auto_undraft: pawns the AutoUndrafter freed
         for c in _cells((60, 60, 6, 2)):         # a river the driver's first act must dry
             self.terrain[c] = "WaterShallow"
         for i in range(3):
             p = self._new_pawn("Colonist", "colony", 20 + i, 16, spawned=False)
+            if "auto_undraft" in self.faults:
+                p.drafted, p.draft_t = True, -9750       # site prep drafted them ~9,750 ticks before the row
+                p.x, p.z = 232 + i, 136                    # live: the bystanders stand on site3, a few cells from T23's plot
             if "packed_stock" in self.faults:
                 p.inv.append({"id": "P%d" % i, "def": "RM_Bottle_FreshWater", "stackCount": (7, 7, 6)[i]})
         if "site_blocked" in self.faults:
@@ -455,9 +463,16 @@ class ThirstFakeBridge(object):
                 p.carry.update(x=p.x, z=p.z)
                 self.things[p.carry["id"]] = p.carry
                 p.carry = None
+            was = p.drafted
+            if "auto_undraft" in self.faults and was == bool(drafted):
+                # Pawn_DraftController.Drafted: `if (value == draftedInt) return;` -- Notify_Drafted is not called
+                return {"success": True, "drafted": was, "wasDrafted": was, "changed": False}
             p.drafted = bool(drafted)
+            if p.drafted:
+                p.draft_t = self.tick                  # AutoUndrafter.Notify_Drafted
             p.job, p.job_t = (None, 0) if drafted else (p.job, p.job_t)
             p.think_now = True
+            return {"success": True, "drafted": bool(drafted), "wasDrafted": was, "changed": was != p.drafted}
         return {"success": True, "drafted": bool(drafted)}
 
     def t_jawa_stop_job(self, pawnId="", **kw):
@@ -558,6 +573,12 @@ class ThirstFakeBridge(object):
             left -= dt
             self._world(dt)
             for p in list(self.pawns.values()):
+                if "auto_undraft" in self.faults and p.human and p.drafted:
+                    if p.job is not None:              # any job but Wait_Combat re-arms (AutoUndraftTickInterval)
+                        p.draft_t = self.tick
+                    elif self.tick - p.draft_t >= 10000:
+                        p.drafted, p.think_now = False, True
+                        self.auto_undrafts += 1
                 self._pawn(p, dt)
 
     def _world(self, dt):
@@ -722,7 +743,8 @@ class ThirstFakeBridge(object):
             for tid, tk in self.tanks.items():
                 settle = "store_fill_settle" in self.faults and tk["mode"] == "Store" and self.tick < tk.get("store_t", -10 ** 9) + 450
                 if tk["liquid"] == "RM_Liquid_Brine" and (tk["mode"] == "Fill" or "store_still_fills" in self.faults or settle):
-                    emp = self.of("RM_BucketEmpty")
+                    held = set(q.ctx.get("empty") for q in self.pawns.values() if q is not p and q.job)
+                    emp = [t for t in self.of("RM_BucketEmpty") if t["id"] not in held]   # one reservation per bucket
                     brine = self._nearest(p, self.terr(BRINE))
                     if emp and brine:
                         self._start(p, "RM_FillBottleJob", 300, {"empty": emp[0]["id"], "tank": tid, "brine": True}, brine)
