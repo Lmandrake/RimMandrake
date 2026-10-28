@@ -1209,7 +1209,7 @@ def test_review_r():
 # ---------------------------------------------------------------- account first (DISPATCHER_BUILD_PICK_ACCOUNT_FIRST)
 import account_pick as AP  # noqa: E402
 
-LENT_RULES = {"lent_accounts": {"lent": {"max_used_by_us_pct": 50, "floor_pct_left": 10, "end_window_h": 24,
+LENT_RULES = {"lent_accounts": {"lent": {"max_used_by_us_pct": 50, "floor_pct_left": 10,
                                          "prefer_start_of_week_h": 48}}}
 PICK_RULE = {"enabled": True, "act": "recommend", "hold": ["role_launch", "ring", "recover"],
              "switch_when": {"runway_lt": 0.8, "week_left_pct_lt": 10},
@@ -1267,24 +1267,29 @@ def test_account_pick_rule():
     check(pk(three, lent=None)["state"] == "UNMEASURED" and pk(three, lent=None)["hold"],
           "pick: lent rules unreadable, no lent set ever read -> no switch, HELD (fail closed, review U N1)")
     check(pk(three, allowance=None)["state"] == "UNMEASURED", "pick: allocator not importable -> no switch")
-    # lent accounts: data rule (<= 50% of his week used early, never under the 10% floor near reset)
+    # lent accounts: data rule (<= 50% of his week used, only right after his reset, never under the 10% floor)
     p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 5, "MEASURED"), "b": (3.0, 60, 100, "MEASURED")})
     check(p["to"] == "b", "pick: an owned account goes before a lent one, even one resetting sooner")
-    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 100, "MEASURED")})
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 150, "MEASURED")})
     check(p["to"] == "lent" and "may draw 30%" in p["why"], "pick: only the lent one fit, 20% used -> may draw 30% "
           "(to 50%)")
-    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 45, 100, "MEASURED")})
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 45, 150, "MEASURED")})
     check(p["state"] == "KEEP" and "lent, allowance 0%" in p["why"], "pick: lent account 55% used early in his week "
           "-> refused (50% rule)")
     p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 40, 10, "MEASURED")})
-    check(p["to"] == "lent", "pick: near his reset, 40% left -> may draw toward the 10% floor")
+    check(p["state"] == "KEEP" and "lent, allowance 0%" in p["why"], "pick: 10 h before his reset, 40% left -> "
+          "refused (owner 2026-10-27: fresh reset only; the end-of-week drawdown is withdrawn)")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 150, "MEASURED")})
+    check(p["to"] == "lent" and "may draw 30%" in p["why"], "pick: 18 h after his reset, 20% used -> may draw 30%")
+    p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 80, 108, "MEASURED")})
+    check(p["state"] == "KEEP", "pick: 60 h after his reset, 20% used -> refused (outside the fresh-reset window)")
     p = pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 15, 10, "MEASURED")})
-    check(p["state"] == "KEEP", "pick: near his reset, 15% left -> 5% to the floor < 10% minimum: refused")
+    check(p["state"] == "KEEP", "pick: near his reset, 15% left -> refused")
     off = {"lent_accounts": {"lent": dict(LENT_RULES["lent_accounts"]["lent"],
                                           off_limits_through="2099-01-01T00:00:00-07:00")}}
-    check(pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 90, 100, "MEASURED")}, lent=off)["state"] == "KEEP",
+    check(pk({"a": (0.3, 30, 50, "MEASURED"), "lent": (5.0, 90, 150, "MEASURED")}, lent=off)["state"] == "KEEP",
           "pick: lent account off-limits -> never a target")
-    p = pk({"lent": (5.0, 45, 100, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")}, cur="lent")
+    p = pk({"lent": (5.0, 45, 150, "MEASURED"), "b": (3.0, 60, 20, "MEASURED")}, cur="lent")
     check(p["to"] == "b" and "lent account allowance" in p["why"], "pick: ON a lent account past its allowance -> "
           "switch to an owned one")
     check(AP.validate(PICK_RULE) == [], "rule: the test rule validates")

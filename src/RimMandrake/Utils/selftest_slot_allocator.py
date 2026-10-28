@@ -152,21 +152,24 @@ check("this week any draw on steven is refused, even 1%", not ok and "off-limits
 R2 = json.loads(json.dumps(R))
 R2["lent_accounts"]["steven"]["off_limits_through"] = None
 cp = lambda left, h, draw: SA.check_plan(stv(left, h), draw, R2, NOW)[0]  # noqa: E731
-check("next week, start of week (80% left): up to 30% more is allowed (50% used cap)", cp(80, 150, 30) and not cp(80, 150, 31))
-check("mid-week at 55% left: only 5% more (45% already used)", cp(55, 60, 5) and not cp(55, 60, 10))
-check("mid-week at 31% left (69% used): nothing", not cp(31, 60, 1))
-check("near his reset (10 h): down to the 10% floor, never below", cp(31, 10, 21) and not cp(31, 10, 22))
-check("near his reset at 8% left: nothing", not cp(8, 10, 1))
+check("fresh reset (150 h to go), 80% left: up to 30% more is allowed (50% used cap)", cp(80, 150, 30) and not cp(80, 150, 31))
+check("10 h after reset with 20% used: allowed up to 50% used", cp(80, 158, 30) and not cp(80, 158, 31))
+check("edge: exactly 48 h after reset still in the window, just past it is 0", cp(80, 120, 30) and not cp(80, 119.9, 1))
+check("60 h after reset (108 h to go), 20% used: 0", not cp(80, 108, 1))
+check("30 h before reset, 20% used: 0 (end-of-week drawdown withdrawn)", not cp(80, 30, 1))
+check("near his reset (10 h), 31% left: 0, not down to the floor", not cp(31, 10, 1))
+check("fresh reset at 55% left: only 5% more (45% already used)", cp(55, 150, 5) and not cp(55, 150, 10))
+check("fresh reset at 31% left (69% used): nothing", not cp(31, 150, 1))
 bad = []
 for left in range(0, 101, 3):
-    for h in (1, 10, 23, 24, 25, 60, 120, 167):
+    for h in (1, 10, 23, 24, 25, 60, 119, 120, 150, 167):
         for draw in range(1, 101, 2):
-            if cp(left, h, draw) and (left - draw < 10 or (h > 24 and (100 - left) + draw > 50)):
+            if cp(left, h, draw) and (left - draw < 10 or h < 120 or (100 - left) + draw > 50):
                 bad.append((left, h, draw))
-check("no accepted plan takes steven under 10% or over 50% used outside the end window (sweep)", not bad, bad[:5])
+check("no accepted plan takes steven under 10%, over 50% used, or outside the 48 h after reset (sweep)", not bad, bad[:5])
 r = SA.decide(inp(spare=[stv(80.0, 150.0)]), {}, R2, NOW)
 check("a lent account is recommended only when the rule allows, naming the share", "steven may lend 30%" in r["why"]
-      and "preferred" in r["why"] and "never automatic" in r["why"], r["why"])
+      and "fresh reset" in r["why"] and "never automatic" in r["why"], r["why"])
 r = d(spare=[{"account": "lukas", "pct_left": 7.0, "pct_used": 93.0, "hours_to_reset": 51.0},
              {"account": "other", "pct_left": 40.0, "pct_used": 60.0, "hours_to_reset": 51.0}])
 check("an owned spare is named over 10% left only", "other has 40% unused" in r["why"] and "lukas" not in r["why"], r["why"])

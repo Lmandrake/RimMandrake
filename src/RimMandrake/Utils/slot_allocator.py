@@ -754,8 +754,9 @@ def _lent_view(sp):
 
 def lent_allowance(sp, rules, now):
     """(max % of his week we may still draw now, why) for an account under lent_accounts, or (None, '') if none.
-    The owner's rule for a lent account: never under the floor; outside the end window at most max_used_by_us_pct of
-    the week used (all of it counted as ours); off-limits through off_limits_through."""
+    The owner's rule for a lent account (2026-10-27): only in the first prefer_start_of_week_h after his weekly reset,
+    at most max_used_by_us_pct of the week used (all of it counted as ours), never under the floor; 0 otherwise;
+    off-limits through off_limits_through."""
     pol = (rules.get("lent_accounts") or {}).get(sp.get("account"))
     if not pol:
         return None, ""
@@ -767,11 +768,12 @@ def lent_allowance(sp, rules, now):
     if off is not None and now < off:
         return 0.0, f"{name}: off-limits until {pol['off_limits_through']} (his rule: this week's share is already used)"
     by_floor = left - pol["floor_pct_left"]
-    if h <= pol["end_window_h"]:
-        cap, where = by_floor, f"last {pol['end_window_h']} h before his reset: down to the {pol['floor_pct_left']}% floor"
-    else:
-        cap = min(by_floor, pol["max_used_by_us_pct"] - used)
-        where = f"up to {pol['max_used_by_us_pct']}% of his week used (counting all {used:.0f}% as ours), floor {pol['floor_pct_left']}%"
+    if h < 168 - pol["prefer_start_of_week_h"]:
+        return 0.0, (f"{name}: {h:.0f} h to his reset, outside the {pol['prefer_start_of_week_h']} h after it "
+                     "(owner 2026-10-27: his account only right after a fresh reset)")
+    cap = min(by_floor, pol["max_used_by_us_pct"] - used)
+    where = (f"fresh reset (first {pol['prefer_start_of_week_h']} h): up to {pol['max_used_by_us_pct']}% of his week used "
+             f"(counting all {used:.0f}% as ours), floor {pol['floor_pct_left']}%")
     return max(0.0, cap), f"{name}: {where}"
 
 
@@ -795,8 +797,7 @@ def spare_line(sp, rules, now):
             return None
         pol = rules["lent_accounts"][sp["account"]]
         h = sp.get("hours_to_reset")
-        early = h is not None and h >= 168 - pol["prefer_start_of_week_h"]
-        return f"spare: {sp['account']} may lend {cap:.0f}% of his week" + (" (start of his week: preferred)" if early else "") + \
+        return f"spare: {sp['account']} may lend {cap:.0f}% of his week (fresh reset)" + \
             f" [{why}]" + tail
     if sp["pct_left"] >= rules["spare"]["min_pct_left"]:
         return f"spare: {sp['account']} has {sp['pct_left']:.0f}% unused" + tail

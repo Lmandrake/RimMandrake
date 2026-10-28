@@ -22,7 +22,7 @@ A program, not a judgement: pick() applies the schedule's `account_pick` rule to
               (fail closed). An unresolved machine account keeps (never guess).
 
 Lent accounts (the owner's rule for an account that belongs to someone else: at most max_used_by_us_pct of his week
-early on, never under floor_pct_left near his reset, off-limits through a date) are DATA in `lent_rules`
+only in the first prefer_start_of_week_h after his reset, never under floor_pct_left, off-limits through a date) are DATA in `lent_rules`
 (slot_rules.json `lent_accounts`, the one copy the slot allocator reads too) and are judged by the allocator's own
 slot_allocator.lent_allowance, never a second copy of the rule. A lent account is a candidate only when no owned
 account is (standing_rulings.md §Account and capacity budget: lent only after the owned ones are depleted) and its

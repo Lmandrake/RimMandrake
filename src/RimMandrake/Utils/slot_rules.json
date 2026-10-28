@@ -41,15 +41,13 @@
   "spare": {"min_pct_left": 10, "_doc": "an account the seats do not burn, with no entry under lent_accounts, is named as a recommendation when it has this much left. Never switched automatically."},
   "lent_accounts": {
     "steven": {
-      "_owner": "[O] 2026-10-26 ~13:10 PDT, relayed by BENCH: 'Steven uses his for other things. As we get near his reset you may consider drawing it down towards 10%, but never beyond that. We don't ever want to crowd him out. Before that, it is acceptable to use up to 50% of his account. This is done preferentially at the beginning of the week, so that we can monitor it more easily and then leave it alone. That has already happened this week, so we should simply leave Steve's account alone for now.'",
+      "_owner": "[O] 2026-10-27, owner ruling (ledger note on LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE, 7a3e09b63f): 'Dispatcher can use Steve up to 50% after a fresh reset only.' (narrows his 2026-10-26 rule: 'Steven uses his for other things ... We don't ever want to crowd him out.')",
       "max_used_by_us_pct": 50,
-      "_max_used_by_us_pct": "[O] outside the end-of-week window we may use at most 50% of his week. The meter cannot tell his use from ours, so the allocator counts ALL of the week used as ours (the side that never crowds him out).",
+      "_max_used_by_us_pct": "[O] 'up to 50%': at most 50% of his week used, all of it counted as ours (the meter cannot tell his use from ours; the side that never crowds him out).",
       "prefer_start_of_week_h": 48,
-      "_prefer_start_of_week_h": "[O] 'preferentially at the beginning of the week'; the 48 h is [A]: the recommendation says 'start of his week' inside it, and plain 'allowed' after it.",
-      "end_window_h": 24,
-      "_end_window_h": "[A] what 'near his reset' means: the last 24 h before his weekly reset. Inside it we may draw toward the floor.",
+      "_prefer_start_of_week_h": "[O] 'after a fresh reset only'; the 48 h is [A] (the agent's reading of 'fresh reset'): we may draw only while at most 48 h have passed since his weekly reset (hours_to_reset >= 168-48); outside it the cap is 0. A hard limit.",
       "floor_pct_left": 10,
-      "_floor_pct_left": "[O] 'never beyond that': no plan may leave him under 10% of his week, ever.",
+      "_floor_pct_left": "[A] safety floor: no plan may leave him under 10% of his week, ever.",
       "off_limits_through": "2026-10-28T15:00:00-07:00",
       "_off_limits_through": "[O] 'That has already happened this week, so we should simply leave Steve's account alone for now': off-limits until his weekly reset (account_usage week_resets_at 2026-10-28 15:00 PDT, read 2026-10-26 13:02). Set the next one only on his word."
     }
