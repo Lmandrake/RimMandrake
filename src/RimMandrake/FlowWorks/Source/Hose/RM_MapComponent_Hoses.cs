@@ -946,11 +946,13 @@ namespace RimMandrake.FlowWorks.Hose
         }
         private readonly Dictionary<CompHoseReel, HoseEndKind> placedKind = new Dictionary<CompHoseReel, HoseEndKind>();
 
-        /// <summary>The reel's free end (design section 7), re-read at most every 60 ticks or when the end moved.</summary>
+        /// <summary>The reel's free end (design section 7), re-read at most every 60 ticks or when the end moved. The 60-tick
+        /// window is phased by the reel's id (HoseLive.PhasedFresh): RM_HoseLinks reads every reel's end each tick, and unphased
+        /// stamps all expired on one tick (HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE).</summary>
         public HoseFreeEnd FreeEndOf(CompHoseReel r)
         {
             int now = Find.TickManager?.TicksGame ?? 0;
-            if (ends.TryGetValue(r, out var kv) && now - kv.Key < 60 && kv.Value.Cell == (r.laid ? r.far : IntVec3.Invalid)) return kv.Value;
+            if (ends.TryGetValue(r, out var kv) && HoseLive.PhasedFresh(now, kv.Key, 60, r.parent.thingIDNumber) && kv.Value.Cell == (r.laid ? r.far : IntVec3.Invalid)) return kv.Value;
             HoseFreeEnd e = HoseEnds.Read(r);
             ends[r] = new KeyValuePair<int, HoseFreeEnd>(now, e);
             return e;

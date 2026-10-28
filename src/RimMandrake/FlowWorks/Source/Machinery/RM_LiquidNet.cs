@@ -1054,6 +1054,12 @@ namespace RimMandrake.FlowWorks.Machinery
 			return inlet != null && far != null && Spawned(inlet) && Spawned(far) && !Equals(inlet, far);
 		}
 
+		// HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: the Refresh profile ProofTiming reads (main thread only)
+		private static int pCalls, pGcCalls;
+		private static double pTotalMs, pMaxMs, pGcMs;
+		private static long pFindsSum, pReadsSum;
+		private static string pMax = "-";
+
 		private void Refresh()
 		{
 			int now = Find.TickManager?.TicksGame ?? 0;
@@ -1062,6 +1068,51 @@ namespace RimMandrake.FlowWorks.Machinery
 				return;
 			}
 			checkedTick = now;
+			int finds0 = RimMandrake.FlowWorks.Hose.HosePorts.FindCalls, reads0 = RimMandrake.FlowWorks.Hose.HoseEnds.ReadCalls;
+			int gc0 = System.GC.CollectionCount(0);
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			int reels = RefreshCore(now);
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			int finds = RimMandrake.FlowWorks.Hose.HosePorts.FindCalls - finds0, reads = RimMandrake.FlowWorks.Hose.HoseEnds.ReadCalls - reads0;
+			int gc = System.GC.CollectionCount(0) - gc0;
+			pCalls++;
+			pTotalMs += ms;
+			pFindsSum += finds;
+			pReadsSum += reads;
+			if (gc > 0)
+			{
+				pGcCalls++;
+				pGcMs += ms;
+			}
+			if (ms > pMaxMs)
+			{
+				System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+				pMaxMs = ms;
+				pMax = ms.ToString("0.00", inv) + ":map" + map.Index + ":reels" + reels + ":finds" + finds + ":reads" + reads + ":gc" + gc + ":t" + now;
+			}
+		}
+
+		/// <summary>"HLTIME calls=n meanMs= maxMs= max=[ms:mapN:reelsN:findsN:readsN:gcN:tN] gcCalls=n gcMs= findsMean= readsMean="
+		/// over every map's Refresh since the last "reset" (HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE).</summary>
+		public static string ProofTiming(string arg)
+		{
+			if ((arg ?? "").Contains("reset"))
+			{
+				pCalls = pGcCalls = 0;
+				pTotalMs = pMaxMs = pGcMs = 0;
+				pFindsSum = pReadsSum = 0;
+				pMax = "-";
+			}
+			System.Globalization.CultureInfo inv = System.Globalization.CultureInfo.InvariantCulture;
+			return "HLTIME calls=" + pCalls + " meanMs=" + (pCalls == 0 ? 0 : pTotalMs / pCalls).ToString("0.000", inv) + " maxMs=" + pMaxMs.ToString("0.00", inv)
+				+ " max=[" + pMax + "] gcCalls=" + pGcCalls + " gcMs=" + pGcMs.ToString("0.0", inv)
+				+ " findsMean=" + (pCalls == 0 ? 0 : (double)pFindsSum / pCalls).ToString("0.00", inv)
+				+ " readsMean=" + (pCalls == 0 ? 0 : (double)pReadsSum / pCalls).ToString("0.00", inv);
+		}
+
+		/// <summary>The Refresh body; returns the number of reels walked.</summary>
+		private int RefreshCore(int now)
+		{
 			RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
 			ulong h = RM_LiquidNetKernel.SigSeed ^ (RM_HoseSettings.enabled ? 1UL : 0UL);
 			// a copy: IsFed / FeedsInto may rebuild the relay index (and its order list) mid-loop
@@ -1078,7 +1129,7 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 			if (built && h == sig)
 			{
-				return;
+				return reels?.Count ?? 0;
 			}
 			sig = h;
 			built = true;
@@ -1100,6 +1151,7 @@ namespace RimMandrake.FlowWorks.Machinery
 				}
 			}
 			RM_LiquidNet.Bump(map);
+			return reels?.Count ?? 0;
 		}
 
 		private void Add(object v, RM_NetLink l)

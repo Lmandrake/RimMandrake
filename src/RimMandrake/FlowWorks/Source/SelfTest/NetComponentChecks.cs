@@ -156,7 +156,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(net, @"return RM_HoseSettings\.enabled && r\?\.parent != null && r\.parent\.Spawned && r\.carry == HoseCarryState\.Laid && r\.lay != null;",
                     "eligibility (carry state, lay) is read by the signature");
                 RiverSwitchFlipChecks.Has(net, @"h = RM_LiquidNetKernel\.SigStep\(h, r\.parent\.thingIDNumber, IdOf\(inlet\), IdOf\(far\)\);", "each live reel's inlet and far identity are in the signature");
-                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return; \} sig = h;.*?RM_LiquidNet\.Bump\(map\); \}", "a changed signature rebuilds the links and bumps");
+                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return reels\?\.Count \?\? 0; \} sig = h;.*?RM_LiquidNet\.Bump\(map\); return reels\?\.Count \?\? 0; \}", "a changed signature rebuilds the links and bumps");
                 RiverSwitchFlipChecks.Has(net, @"far = new RM_NetPort \{ Reel = r, Cell = r\.far, Role = role \};", "a free end with a role is a port (its role is in IdOf)");
                 RiverSwitchFlipChecks.Has(net, @"return \(\(long\)\(p\.Cell is IntVec3 pc \? pc\.x \* 7919 \+ pc\.z : 0\) << 8\) \^ \(long\)p\.Role", "the port identity includes its role");
                 // a settings change: the two switches are part of the revision key

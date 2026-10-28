@@ -78,7 +78,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(hp, @"return RimMandrake\.FlowWorks\.Machinery\.RM_PumpPortMath\.HoseMayTake\(side, id, others\.ToArray\(\)\);",
                     "the gate is the selftested rule");
                 Assert(!hp.Contains("HasPipe("), "can-fail: a pipe never blocks a hose port");
-                RiverSwitchFlipChecks.Has(hp, @"if \(RawFind\(o, out _, out _, out _\) == pump", "other hoses are read geometrically (no recursion)");
+                RiverSwitchFlipChecks.Has(hp, @"if \(bodyNear && RawFind\(o, out _, out _, out _\) == pump", "other hoses are read geometrically (no recursion)");
             });
             Case("Pump_lake_to_canal_with_no_tank", () =>
             {

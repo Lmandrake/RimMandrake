@@ -81,9 +81,13 @@ namespace RimMandrake.FlowWorks.Hose
             cands.Clear(); cands.AddRange(c2);
         }
 
+        /// <summary>Calls to <see cref="Find"/> since load (RM_HoseLinks.ProofTiming reads the delta per Refresh).</summary>
+        internal static int FindCalls;
+
         /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
         internal static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
         {
+            FindCalls++;
             Thing t = RawFind(r, out side, out contact, out kind);
             if (t is RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump pump && !PumpSideTakes(pump, ReelSideOn(pump, r), r))
             {
@@ -172,11 +176,19 @@ namespace RimMandrake.FlowWorks.Hose
             RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
             if (comp != null)
             {
+                CellRect pr = pump.OccupiedRect();
                 foreach (CompHoseReel o in comp.OrderedReels())
                 {
                     if (o == null || o == self || o.parent == null || !o.parent.Spawned) continue;
-                    if (RawFind(o, out _, out _, out _) == pump && ReelSideOn(pump, o) == side) others.Add(o.parent.thingIDNumber);
-                    else if (o.laid && o.far.IsValid && comp.RelayOf(o) == null && RawFindAt(map, o.far, o.parent, out _, out _) == pump && EndSideOn(pump, o.far) == side)
+                    // HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: RawFind / RawFindAt only see things on or edge-beside the
+                    // body / end, so a reel whose body and end are both 2+ cells from the pump cannot couple to it; skipping
+                    // it spares a perimeter scan (two allocated lists) per reel per pump Find (HoseLive.RectsNear, an exact superset)
+                    HoseReelRect orr = o.Rect;
+                    bool bodyNear = HoseLive.RectsNear(pr.minX, pr.minZ, pr.Width, pr.Height, orr.X0, orr.Z0, orr.W, orr.H, 1);
+                    bool endNear = o.laid && o.far.IsValid && HoseLive.RectsNear(pr.minX, pr.minZ, pr.Width, pr.Height, o.far.x, o.far.z, 1, 1, 1);
+                    if (!bodyNear && !endNear) continue;
+                    if (bodyNear && RawFind(o, out _, out _, out _) == pump && ReelSideOn(pump, o) == side) others.Add(o.parent.thingIDNumber);
+                    else if (endNear && comp.RelayOf(o) == null && RawFindAt(map, o.far, o.parent, out _, out _) == pump && EndSideOn(pump, o.far) == side)
                         others.Add(o.parent.thingIDNumber);
                 }
             }

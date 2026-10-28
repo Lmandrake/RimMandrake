@@ -35,9 +35,13 @@ namespace RimMandrake.FlowWorks.Hose
 
     public static class HoseEnds
     {
+        /// <summary>Calls to <see cref="Read"/> since load (RM_HoseLinks.ProofTiming reads the delta per Refresh).</summary>
+        internal static int ReadCalls;
+
         /// <summary>The free end of r, read now (the map component caches it for 60 ticks: <see cref="FreeEnd"/>).</summary>
         public static HoseFreeEnd Read(CompHoseReel r)
         {
+            ReadCalls++;
             var e = new HoseFreeEnd { Cell = IntVec3.Invalid, Kind = HoseEndKind.None };
             Map map = r?.parent?.Map;
             if (map == null || !r.laid || !r.far.IsValid) return e;

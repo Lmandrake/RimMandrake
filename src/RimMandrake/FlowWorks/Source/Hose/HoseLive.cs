@@ -28,6 +28,25 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool CacheFresh(int now, int lastTick, int interval) =>
             lastTick != int.MinValue && (long)now - lastTick >= 0 && (long)now - lastTick < interval;
 
+        /// <summary>HOSELINKS_REFRESH_DIAGNOSE_MAP0_TICK_SPIKE: <see cref="CacheFresh"/> with a per-reel phase. A cache read at
+        /// <paramref name="lastTick"/> goes stale at the next tick t where (t + phase) is a multiple of
+        /// <paramref name="interval"/> (and never later than CacheFresh says). RM_HoseLinks reads every reel's port and free
+        /// end in one tick, so plain 60-tick caches all expired on the SAME tick and one Refresh paid every HosePorts.Find
+        /// and HoseEnds.Read at once (40-60 ms on the home map in rain); phased by thing id, about 1/interval of them expire
+        /// per tick.</summary>
+        public static bool PhasedFresh(int now, int lastTick, int interval, int phase) =>
+            CacheFresh(now, lastTick, interval) && interval > 0
+            && FloorDiv((long)now + Mod(phase, interval), interval) == FloorDiv((long)lastTick + Mod(phase, interval), interval);
+
+        /// <summary>Are rect A (x0,z0,w,h) and rect B within <paramref name="gap"/> cells of each other (Chebyshev: B grown by
+        /// gap on every side overlaps A)? HosePorts.PumpSideTakes uses it with gap 1 as an exact superset of "a reel body
+        /// or free end at B could couple to the pump at A" before paying RawFind's perimeter scan.</summary>
+        public static bool RectsNear(int ax, int az, int aw, int ah, int bx, int bz, int bw, int bh, int gap) =>
+            ax < (long)bx + bw + gap && (long)bx - gap < (long)ax + aw && az < (long)bz + bh + gap && (long)bz - gap < (long)az + ah;
+
+        private static long Mod(int a, int m) => ((a % (long)m) + m) % m;
+        private static long FloorDiv(long a, long m) => a >= 0 ? a / m : -((-a + m - 1) / m);
+
         /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: may the hose CordWorld built at <paramref name="builtTick"/> from
         /// map version <paramref name="builtVersion"/> answer at <paramref name="now"/>? Only while no map change (building or tree
         /// spawned/despawned, terrain, path cost or fog changed: RM_MapComponent_Hoses.MapChanged) has bumped the version since, AND
