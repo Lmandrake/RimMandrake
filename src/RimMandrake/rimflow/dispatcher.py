@@ -335,7 +335,9 @@ def decide(sch, st, obs, now, apply, out=None):
     # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review dispatcher-full
     # #8), decided BEFORE the agents gate like PAUSE above: a blind `claude agents` must not leave it ringing (review
     # r2 #6). A ring the doorbell already took stays pending and is verified (one_seat)
-    for seat, cfg in sorted((sch.get("seats") or {}).items()):
+    # a seat removed from the schedule counts as switched off: its waiting ring is withdrawn too (night review N5)
+    gone = {s: {"enabled": False, "removed": True} for s in st["seats"] if s not in (sch.get("seats") or {})}
+    for seat, cfg in sorted(dict(gone, **(sch.get("seats") or {})).items()):
         try:
             if cfg.get("enabled", True) and cfg.get("wake", True):
                 continue
@@ -343,7 +345,8 @@ def decide(sch, st, obs, now, apply, out=None):
             if old and not old.get("consumed_at"):
                 act(do="withdraw", seat=seat, ring_id=old["ring_id"], pending=st["seats"][seat].pop("ring"),
                     why="seat %s %s: its waiting ring is withdrawn" % (
-                        seat, "disabled" if not cfg.get("enabled", True) else "wake off"))
+                        seat, "removed from the schedule" if cfg.get("removed") else
+                        "disabled" if not cfg.get("enabled", True) else "wake off"))
         except Exception as e:  # noqa: BLE001 - one malformed seat never stops the others
             act(do="alarm", kind="decide:" + seat, seat=seat, note=True,
                 why="seat %s switch-off withdrawal NOT decided: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
@@ -872,6 +875,14 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 # the doorbell took it between decide and here: it WAS delivered — keep verifying it
                                 # instead of ringing a second time (review r2 #4: evidence by ring id)
                                 ss["ring"] = dict(a["pending"], consumed_at=w.get("consumed_at") or now)
+                                # a give-up decided on this same ring is false: delivered after all (night review N6)
+                                for g in actions:
+                                    if g.get("do") == "alarm" and g.get("kind") == "undelivered:" + a["seat"] \
+                                            and "result" not in g:
+                                        g.update(do="skip", note=False, why="give-up withdrawn: ring %s was consumed "
+                                                 "after all (%s)" % (a["ring_id"], g.get("why")))
+                                        if ss.get("cooldown_until") == now + sch["cooldown_s"]:
+                                            ss.pop("cooldown_until")
                             elif w["outcome"] in ("failed", "unknown"):
                                 # it may still wake the seat: kept pending, so the next tick withdraws it again
                                 ss["ring"] = dict(a["pending"])

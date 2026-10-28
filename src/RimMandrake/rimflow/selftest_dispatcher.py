@@ -2900,6 +2900,37 @@ def test_review_night_n1():
             os.environ.pop("RM_DISPATCHER_STATE", None)
         else:
             os.environ["RM_DISPATCHER_STATE"] = old
+    # N5: a seat REMOVED from the schedule with an unconsumed ring in its inbox has that ring withdrawn
+    sch6 = sched()
+    st = fresh()
+    stall(sch6, st, obs(), t0)
+    rid = st["seats"]["FOUNDRY"]["ring"]["ring_id"]
+    del sch6["seats"]["FOUNDRY"]
+    a = D.decide(sch6, st, obs(), t0 + sch6["stall_after_s"] + 30, True)
+    w = [x for x in a if x["do"] == "withdraw"]
+    check(w and w[0]["ring_id"] == rid and not st["seats"]["FOUNDRY"].get("ring"),
+          "N5 a seat gone from the schedule has its waiting ring withdrawn (%r)" % kinds(a))
+    # N6: the last attempt's withdraw finds the doorbell took it after all: no give-up alarm, no cooldown
+    sch7 = sched()
+    st = fresh()
+    now = 1000.0
+    D.decide(sch7, st, obs(), now, True)
+    last = []
+    for _ in range(40):
+        now += 60
+        last = D.decide(sch7, st, obs(), now, True)
+        if [x for x in last if x["do"] == "alarm" and x.get("kind") == "undelivered:FOUNDRY"]:
+            break
+    check([x for x in last if x["do"] == "withdraw"], "N6 probe: the give-up tick withdraws and alarms")
+    noted = []
+    D.execute(last, sch7, st, os.path.join(TMP, "n6"), True, now,
+              {"withdraw": lambda root, seat, rid: {"outcome": "consumed", "ring_id": rid, "consumed_at": now - 1},
+               "lock": lambda: None, "publish": lambda n: "p", "note": lambda i, t: (noted.append(t), (True, ""))[1]})
+    al = [x for x in last if x.get("kind") == "undelivered:FOUNDRY"][0]
+    check(st["seats"]["FOUNDRY"].get("ring") and not st["seats"]["FOUNDRY"].get("cooldown_until")
+          and "never consumed" not in (al.get("result") or "") and not al.get("note"),
+          "N6 a give-up whose ring was consumed after all is not alarmed and starts no cooldown (%r, %r)"
+          % (al.get("result"), st["seats"]["FOUNDRY"].get("cooldown_until")))
     # N4: the publish index.lock alarm goes through route_note like every other note (never raw onto a blind item)
     sch5 = sched(roles=[{"name": "Arbiter", "enabled": False, "ledger_item": "BLIND_ITEM_X"}],
                  alarm_item="BLIND_ITEM_X", token_notes_item="OPS_ITEM_X")
