@@ -792,5 +792,19 @@ r = d({"overage_t": NOW - 0.25 * H, "overage_h": 3.0, "overage_base": {"BENCH": 
 check("S13: a 15-min interval straddling the reset by 1 min charges 7 x 1/60 h, and forgives the 3",
       abs(r["overage"]["accrued_h"] - 7 / 60) < 0.01 and r["overage"]["forgiven_h"] == 3.0, r["overage"])
 
+# S14: debt run up after the reset while the meter was blind survives the meter's recovery; only old-week debt is forgiven
+_rs = NOW - 0.5 * H
+r1 = SA.decide(inp(source="UNMEASURED", week_resets_at=None, week_pct_left=None, week_pct_used=None,
+                   hours_to_week_reset=None, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0),
+               {"overage_t": NOW - 1 * H, "overage_h": 3.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0},
+                "reset_at": SA.iso_local(_rs)}, R, NOW)
+r1["state"]["overage_base"] = {"BENCH": 1, "FOUNDRY": 0}
+r2 = SA.decide(inp(week_resets_at=SA.iso_local(_rs + 168 * H), hours_to_week_reset=167.0, week_pct_left=99.0,
+                   week_pct_used=1.0, helpers_running={"BENCH": 8, "FOUNDRY": 0}, owner_window_min=2.0),
+               r1["state"], R, NOW + 0.25 * H)
+check("S14: recovery after a blind reset forgives the 3 + 3.5 old-week h, keeps the 3.5 post-reset h, adds 1.75",
+      abs(r2["overage"]["forgiven_h"] - 6.5) < 0.01 and abs(r2["overage"]["owed_h"] - 5.25) < 0.01,
+      (r1["overage"], r2["overage"]))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

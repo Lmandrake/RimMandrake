@@ -735,12 +735,20 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
     dt = 0.0 if last is None else max(0.0, min(now - float(last), cfg["max_accrual_dt_h"] * HOUR)) / HOUR
     forgiven = 0.0
     prev_reset, new_reset = epoch(state.get("reset_at")), epoch(inp.get("week_resets_at"))
-    if (last is not None and prev_reset is not None and float(last) < prev_reset <= now
-            and new_reset is not None and new_reset > prev_reset):
-        dt = min(dt, (now - prev_reset) / HOUR)  # the old week's part is the old week's debt, forgiven below (S13)
-    if owed > 0 and prev_reset is not None and prev_reset <= now and new_reset is not None and new_reset > prev_reset:
-        forgiven, owed = owed, 0.0
-        why.append(f"weekly reset: {forgiven:.1f} helper-h of overage forgiven")
+    reset_seen = prev_reset is not None and prev_reset <= now and new_reset is not None and new_reset > prev_reset
+    # the part of `owed` accrued after prev_reset passed while the meter could not yet name the new reset (S14): it is
+    # the new week's debt and survives the forgiveness
+    post = float(state.get("overage_post_h") or 0.0)
+    post_dt = 0.0
+    if last is not None and prev_reset is not None and prev_reset <= now:
+        post_dt = min(dt, max(0.0, now - max(float(last), prev_reset)) / HOUR)
+    if reset_seen and last is not None and float(last) < prev_reset:
+        dt = post_dt  # the old week's part is the old week's debt, forgiven below (S13)
+    if owed > 0 and reset_seen:
+        keep = min(owed, post)
+        forgiven, owed = owed - keep, keep
+        if forgiven > 0:
+            why.append(f"weekly reset: {forgiven:.1f} helper-h of overage forgiven")
     run = inp.get("helpers_running")
     run = run if isinstance(run, dict) else {}
     blind = sorted(s for s, v in run.items() if v is None)
@@ -758,7 +766,8 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
         credited = min(owed, under * dt)
         owed -= credited
     owed = round(max(0.0, owed), 4)
-    rec = {"owed_h": owed, "paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over * dt, 4),
+    post = 0.0 if reset_seen else min(owed, post + over * post_dt)
+    rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over * dt, 4),
            "credited_h": round(credited, 4), "forgiven_h": round(forgiven, 4), "deadline_h": None, "eta_h": None, "plan": ""}
     if owed <= 0:
         return rec
@@ -969,7 +978,7 @@ def decide(inp, state, rules, now):
                  # a blind reading's reset_at is not adopted: the reset it names was never applied to the dial
                  "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
                  "account": (None if blind else inp.get("account")) or state.get("account"),
-                 "overage_h": overage["owed_h"],
+                 "overage_h": overage["owed_h"], "overage_post_h": overage.get("post_reset_h", 0.0),
                  "overage_t": now, "overage_base": base, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
                  "total": pre_cut_total
