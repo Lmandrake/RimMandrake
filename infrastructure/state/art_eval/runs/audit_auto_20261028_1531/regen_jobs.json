@@ -1,0 +1,90 @@
+[
+ {
+  "id": "arteval_RSW_Varactyl__Varactyl_f_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Varactyl__Varactyl_f_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same low sprawling stance, same massive build and same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the varactyl. A giant reptavian herbivore from Utapau, with a beaked head, feathered mane and long, powerful tail. Fine gripping structures on its feet let it climb steep rock faces, even while carrying a rider. Visible features it must show: the canon Utapau varactyl; a beaked head and a feathered mane; a long powerful tail and gripping feet. The rear view shows the back, the haunches and the tail base, with the head turned away and the eyes hidden. The rear view has the same width and body mass as the front view: broad haunches spanning the body, heavy thick thighs, thick shins and stout forelimbs, exactly as thick as in the east view. The broad feathered mane flares wide across the neck and shoulders, as full as in the east view. The pose matches the east view's low sprawl: the pelvis is lowered close to the ground, the hind legs are deeply bent with the knees projecting visibly out to both sides, and the forelimb elbows bend out wide. The broadly spaced climbing feet are large and massive, each with thick splayed toes and fine gripping pads, planted well outside the body line, so the stance reads wide, low and heavy. The tail base is thick and powerful. The animal fills the canvas at the same scale as the east view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1531",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Drazzik_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Drazzik_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same pale colour, same markings, same spiked dorsal ridge and scale pattern, same knobbed club tail, same four clawed sprawled legs, same proportions, same size on the canvas, now seen from the rear view, seen from behind. A creature sprite for RimWorld: the drazzik, a pale, patient, flat-bodied ambusher that lies low to the ground and strikes with a hidden jaw at the front of its body. The rear view shows the back, tail and haunches: the spiked dorsal ridge runs from the shoulders toward the viewer and narrows into the raised tail, ending in the knobbed club in the centre foreground. The hind legs are splayed to the left and right with the hind feet and claws visible at the lower left and lower right. The low, broad, flat pale body is symmetrical about the centre line, and the head and the strike jaw are hidden on the far side of the body. The whole animal sits inside the canvas with margin on every side, and its lower edge is the drawn underside, haunches and feet, closed by a dark outline. Rendering matches the reference east view: realistic painterly vanilla RimWorld style, crisp painted scales, defined shading, and a clean dark outline around the whole silhouette. Exactly ONE creature, centred. Fully transparent background: no painted sand, no ground texture, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, STYLE_OFF, OWNER_NOTE_IGNORED, LUMP, STYLE_CARTOON, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1531",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Heemin_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Heemin_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy fin for fin, same proportions, same near-transparent body, same faint aurora green and violet colours, same size on the canvas, now seen in the front view, with the eyes toward the viewer. A creature sprite for RimWorld: the heemin. A near-transparent palm-length sliver swimming the top layer of the Chill, aurora green and violet refracting faintly through it, visible mostly as a distortion rather than a shape. The camera is RimWorld's elevated three-quarter game angle, looking slightly down at the fish from above and in front. The fish faces the viewer squarely and is perfectly symmetric about a vertical centre line. The translucent head is nearest the viewer, centred and low on the canvas, with its two eyes as a level pair, one on each side. The tall sail-like dorsal fin stands straight up from the top of the body. The tall ventral fin hangs straight down from the underside. Both are seen end-on as thin vertical blades on the centre line. The two small pectoral fins spread as an equal mirrored pair, one on the left and one on the right, at the same height and the same length. The sliver body is foreshortened and recedes straight back behind the head, in line with the viewer, and the deeply forked two-lobed caudal fin shows small and centred behind and above the head. Faint aurora green and violet refract through the translucent body and fins. Soft edges with no strong outline, in a deeper shade of the local colour. Realistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT, F_SOUTH_NOT_FRONT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1531",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 0.45,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Vaulisk_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vaulisk_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the rear. A creature sprite for RimWorld: the vaulisk. The Twilight's one liar: it hangs a false gold bladder, steady and never breathing, and waits in the dark between the shafts for something to mistake it for a lamp, then strikes fast out of the disguise. Visible features it must show: a false gold bladder-lamp hanging steady on its stalk; a dark body made for hiding; a fast-strike ambush mouth (on this view the mouth is out of sight on the far side of the body). Rear view, seen from behind: the viewer sees the back of the carapace, the haunches and the legs, with the eyes hidden. Scale is identical to the accepted front and side views: the carapace seen from behind is as wide as the carapace in the accepted front view, spanning the same share of the canvas width, and the leg span is just as broad, so the body fills the canvas to the same extent as it does in them. The lure stalk rises from the middle of the back, stands as tall as in the accepted views, and arches forward away from the viewer. The gold orb is a round globe whose diameter matches the orb in the accepted side view exactly, the same fraction of the carapace width, full-sized and glowing at the same brightness. It hangs just beyond the carapace peak at the end of the stalk's arch, near the centre line of the body, partly behind the stalk's arch. The outline is a firm, clean, dark line of the same weight as the accepted views, all round the silhouette. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1531",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "swimmer"
+ }
+]

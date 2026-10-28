@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 39.8,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.34487219999999996
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 14.3,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1182127
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Drazzik_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said really_bad); blocking ['F_INCONSISTENT', 'STYLE_OFF', 'OWNER_NOTE_IGNORED', 'LUMP', 'STYLE_CARTOON', 'X_CROP']; polish []",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "0ce9743ba6b9c2f3dbdc02f22f85a6420d142a463f0ca4d339648a53be1d15f2",
+  "east.png": "69006aeeee3553e8236d5287f95cdbdc3dcfb7157d0ba99daa7a1fca305fae95",
+  "north.png": "9cea4314217150878f84fe1aa4ca7d10e38f1743c63358d9fd24c5e09721b468",
+  "scale.png": "a094a67400d5d1a50f705672695e9ebd9060ea610c0a0d2a8208f69b5b8b8dcb",
+  "facings.png": "8c6eb046ab0352bb0f1787487d580f0de5cb2a27fce4ef9c284c0b7ae8e48923"
+ }
+}
