@@ -192,7 +192,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(lx - stub) < 1e-6 && Math.Abs(lz + stub) < 1e-6, "Scrapper lone flange: LoneStubScrapperPx east and south");
                 RM_PipeSeatMath.Seat(3, "Scrapper", out float sx3, out _);
                 RM_PipeSeatMath.Seat(3, "Modern", out float mx3, out _);
-                Assert(Math.Abs(sx3 * Math.Sqrt(2) - 0.2071) < 1e-3 && Math.Abs(mx3 * Math.Sqrt(2) - 0.2761) < 1e-3, "measured diagonal seats");
+                Assert(Math.Abs(sx3 * Math.Sqrt(2) - 0.2071) < 1e-3 && Math.Abs(mx3 * Math.Sqrt(2) - 0.2517) < 1e-3, "measured diagonal seats");
                 RM_PipeSeatMath.Seat(3, "Rusty", out float ux, out float uz);
                 Assert(ux == 0f && uz == 0f && !RM_PipeSeatMath.ElbowArc(null, out _, out _), "can-fail: an unknown look is never guessed");
                 Assert(RM_PipeSeatMath.IsElbow(3) && RM_PipeSeatMath.IsElbow(12) && !RM_PipeSeatMath.IsElbow(5) && !RM_PipeSeatMath.IsElbow(7), "elbow masks");

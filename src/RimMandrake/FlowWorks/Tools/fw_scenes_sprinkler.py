@@ -44,7 +44,7 @@ CANDIDATE = {"dir": None, "offset_z": None}    # set by --candidate / --offset-z
 
 def elbow_arc(look):
     """RM_PipeSeatMath.ElbowArc: (k, r) in cells, None for an unknown look."""
-    return {"Scrapper": (0.5, 0.5)}.get(look, (2 / 3, 2 / 3) if look in ("Industrial", "Modern", "Futuristic") else None)
+    return {"Scrapper": (0.5, 0.5)}.get(look, (0.6494, 2 / 3) if look in ("Industrial", "Modern", "Futuristic") else None)
 
 
 LONE_STUB_SCRAPPER_PX, SHOWN_CELL_PX = 0.0, 132.0     # RM_PipeSeatMath.LoneStubScrapperPx / ShownCellPx

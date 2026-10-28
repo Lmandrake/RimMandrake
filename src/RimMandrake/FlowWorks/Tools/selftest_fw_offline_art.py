@@ -251,6 +251,18 @@ def modern_blue():
     want(head < 0.002, "modern blue: %s installed (top-down, cut from the Modern pump) has no saturated red (%.4f < 0.002)"
          % (wb.SPRINKLER, head))
     reels = {fr.REL % n: n for n in fr.MASKS}
+
+    def redrawn(rel, shape):
+        # The Modern pipe atlas' end-cap cells (masks 1, 4) were redrawn on the pipe (55d9dbf74b, owner: "Fix the caps") and its
+        # four elbow cells (3, 6, 9, 12) translated (d411a48d0f, owner card 2026-10-26 18:46). Geometry only, no colour change: those
+        # six cells are exempt from byte equality with the red original; the other ten, and every other piece, stay byte for byte.
+        m = np.zeros(shape[:2], bool)
+        if rel.endswith("Pipe/Modern/UniversalPipe_Atlas.png"):
+            t = shape[0] // 4
+            for k in (1, 3, 4, 6, 9, 12):
+                m[(3 - k // 4) * t:(4 - k // 4) * t, k % 4 * t:(k % 4 + 1) * t] = True
+        return m
+
     for rel, red, path in pairs:
         live = Image.open(path).convert("RGBA")
         a, b = np.asarray(red), np.asarray(live)
@@ -269,11 +281,13 @@ def modern_blue():
             want(np.array_equal(np.asarray(fr.build(name)), b), "modern reel: %s installed == firehose_reel.build" % rel)
         else:
             before, after = wb.saturated_red_share(red), wb.saturated_red_share(live)
-            want(np.array_equal(np.asarray(made), b), "modern blue: %s installed == recolour(red original)" % rel)
+            ex = ~redrawn(rel, b.shape)
+            want(np.array_equal(np.asarray(made)[ex], b[ex]), "modern blue: %s installed == recolour(red original)" % rel)
         want(before > 0.3, "modern blue: %s red original is saturated red (%.3f > 0.3): the check can fail" % (rel, before))
         want(after < 0.002, "modern blue: %s installed has no saturated red%s (%.4f < 0.002)"
              % (rel, " outside the drum hose" if name else "", after))
-        want(a.shape == b.shape and np.array_equal(a[..., 3], b[..., 3]),
+        ex = ~redrawn(rel, b.shape)
+        want(a.shape == b.shape and np.array_equal(a[..., 3][ex], b[..., 3][ex]),
              "modern blue: %s alpha == red original's byte for byte (fits unchanged)" % rel)
 
 
