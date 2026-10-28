@@ -1597,7 +1597,7 @@ EXTENSION_TOGGLES_OWED = ["fallDamageEnabled", "liquidCorrosionEnabled",
                           "thirstHeatScaling"]
 # Every bool switch the C# settings sections expose (northstar/settings_registry.py) is either on the toggle floor above
 # or named here. These were never on it (a gap older than the hose port, listed so it cannot grow unseen).
-TOGGLES_NOT_ON_FLOOR = ["blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDeathEnabled", "pitGuardrailEnabled", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",
+TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitStuckAlertEnabled", "fallDeathEnabled", "pitGuardrailEnabled", "excavationLoadRepairEnabled", "excavationWallMaterialEnabled",
                         "ladderRaiseLowerEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled",
                         "liquidBubblesEnabled", "liquidLooksEnabled", "liquidSeeThroughEnabled", "liquidSurfaceMotionEnabled",
                         "liquidWakesEnabled", "networkSeamsMoveEnabled", "pitHidesShadowEnabled", "pitLipOcclusionEnabled",

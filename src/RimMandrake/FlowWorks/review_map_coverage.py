@@ -76,7 +76,7 @@ FEATURES = [
     ("set", r"^(refillEnabled|refillWaitsForOccupants|refillRateMultiplier)$", "Refill, and waiting for occupants",
      "pond_occupied"),
     ("set", r"^pondReturnLegEnabled$", "Filled-in water returns to its pond", "pond_return"),
-    ("set", r"^(rainFillsExcavationsEnabled|rainFillPerPulse)$", "Rain fills open trenches", "flow_rain"),
+    ("set", r"^(rainFillsExcavationsEnabled|rainFillPerPulse|rainPocketApproxEnabled)$", "Rain fills open trenches", "flow_rain"),
     ("set", r"^edgeSinksEnabled$", "Map-edge sinks", "flow_drains"),
     ("def", r"^ThingDef/RM_FluidCanalFlood$", "Floods released into canals (canyon flood, belch)", "flow_canyon"),
     ("set", r"^(excavationLoadRepairEnabled|legacyFillFallbackEnabled|legacyFloodViaEngineEnabled)$",

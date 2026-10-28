@@ -57,7 +57,7 @@ SETTINGS = {
         "pondDepthEnabled": True, "pondMudDays": 2.0, "pondStageWritesPerPulse": 400.0, "pondHeadRuleEnabled": True,   # POND_DEPTH_BUILD_SHALLOWS_BEFORE_MUD
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
         "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
-        "rainFillPerPulse": 0.1,
+        "rainFillPerPulse": 0.1, "rainPocketApproxEnabled": True,   # RAIN_POCKET_APPROX
         "recedeKeepsLastCell": True, "recedeSparesOutflow": True,   # 2026-10-09 recession passes
         "legacyFillFallbackEnabled": True, "legacyFloodViaEngineEnabled": True, "pumpFedSpreadEnabled": True,
         "networkSeamsMoveEnabled": True, "maxNetworkCells": 6000.0,   # FLOW_ORDER_EXTERNAL_INPUT_1 part 2
