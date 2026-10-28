@@ -1379,6 +1379,28 @@ def _locked(fn):
     return wrap
 
 
+LAST_MEASURED_RETIRE_DAYS = 365     # a key unmeasured this long is retired from last_measured.json (never "gone" forever)
+
+
+def carry_last_measured(lastm, saved, points, now):
+    """-> (lastm for andon, saved for disk). `lastm` is read from the loaded series (series_days), so a key
+    UNMEASURED longer than that loses its last MEASURED and its 'silent' flag. `saved` (last_measured.json) outlives the
+    series: it fills the gap for keys this pass still reports (a key not reported stays the 'gone' rule's, from the
+    series only, so a retired key is not 'gone' forever) and drops keys older than LAST_MEASURED_RETIRE_DAYS."""
+    saved = {k: t for k, t in (saved or {}).items() if isinstance(t, (int, float)) and math.isfinite(t)}
+    merged = dict(lastm)
+    for k in points:
+        if k not in merged and k in saved:
+            merged[k] = saved[k]
+    keep = dict(saved)
+    keep.update(lastm)
+    for k, p in points.items():
+        if isinstance(p, dict) and p.get("m") == "MEASURED" and num(p) is not None:
+            keep[k] = now
+    keep = {k: t for k, t in keep.items() if now - t <= LAST_MEASURED_RETIRE_DAYS * DAY}
+    return merged, keep
+
+
 @_locked
 def run(now=None, rules=None, filer=None, families=None):
     now = now or time.time()
@@ -1414,7 +1436,10 @@ def run(now=None, rules=None, filer=None, families=None):
         hist.update(h)
         for k, hs in h.items():
             lastm[k] = hs[-1][0]
+    lastm, saved_lm = carry_last_measured(lastm, (read_json(ops_dir() / "last_measured.json") or {}).get("t"),
+                                          points, now)
     flags = andon(points, hist, lastm, rules, now)
+    atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
     old_flags = {flag_id(f): f for f in (read_json(ops_dir() / "flags.json") or {}).get("flags", [])}
     for f in flags:
         f["since"] = (old_flags.get(flag_id(f)) or {}).get("since") or iso(now)

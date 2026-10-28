@@ -1324,6 +1324,8 @@ def _boot_time(proc):
     return None
 
 
+SCAN_RETRIES = 3          # re-reads of an unreadable environ before the scan is called blind
+SCAN_RETRY_S = 0.05
 SINCE_SLACK_S = 5       # clock-tick rounding and boot-time granularity between a run's `at` and its first process
 
 
@@ -1339,33 +1341,43 @@ def scan_marked(marker, proc="/proc", uid=None, since=None):
         names = os.listdir(proc)
     except OSError as e:
         return [], "%s unlistable (%s)" % (proc, type(e).__name__)
-    me, out, blind = os.getpid(), [], None
+    me, out = os.getpid(), []
     uid = os.getuid() if uid is None else uid
     btime = _boot_time(proc) if since is not None else None
-    for n in names:
-        if not n.isdigit() or int(n) == me:
-            continue
-        try:
-            with open(os.path.join(proc, n, "environ"), "rb") as f:
-                env = f.read()
-        except FileNotFoundError:
-            continue                    # exited between listdir and open
-        except OSError:
+    todo = [n for n in names if n.isdigit() and int(n) != me]
+    why = {}
+    for attempt in range(SCAN_RETRIES + 1):
+        if attempt:
+            time.sleep(SCAN_RETRY_S)        # a process mid-exec (or just forked) is unreadable for a moment; a
+        why = {}                            # non-dumpable one stays so, and only that one makes the scan blind
+        again = []
+        for n in todo:
             try:
-                owner = os.stat(os.path.join(proc, n)).st_uid
+                with open(os.path.join(proc, n, "environ"), "rb") as f:
+                    env = f.read()
             except FileNotFoundError:
-                continue                # exited
+                continue                    # exited between listdir and open
             except OSError:
-                owner = None            # unknown owner: not ruled out
-            if owner is not None and owner != uid:
-                continue                # another user's process: never one of our runs
-            started = _started_at(proc, n, btime) if btime is not None else None
-            if started is not None and started < since - SINCE_SLACK_S:
-                continue                # older than the run: cannot carry its inherited marker
-            blind = blind or "pid %s (uid %s) environ unreadable" % (n, owner)
-            continue
-        if want in env.split(b"\0"):
-            out.append(int(n))
+                try:
+                    owner = os.stat(os.path.join(proc, n)).st_uid
+                except FileNotFoundError:
+                    continue                # exited
+                except OSError:
+                    owner = None            # unknown owner: not ruled out
+                if owner is not None and owner != uid:
+                    continue                # another user's process: never one of our runs
+                started = _started_at(proc, n, btime) if btime is not None else None
+                if started is not None and started < since - SINCE_SLACK_S:
+                    continue                # older than the run: cannot carry its inherited marker
+                why[n] = "pid %s (uid %s) environ unreadable" % (n, owner)
+                again.append(n)
+                continue
+            if want in env.split(b"\0"):
+                out.append(int(n))
+        todo = again
+        if not todo:
+            break
+    blind = why[sorted(why, key=int)[0]] if why else None
     return out, blind
 
 

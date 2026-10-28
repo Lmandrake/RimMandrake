@@ -2673,6 +2673,35 @@ def test_golive_b1_busy_until_ended():
     os.makedirs(os.path.join(fp, "103"), exist_ok=True)       # no environ: skipped, not a failure
     check(RL.procs_of("uX", proc=fp) == [101], "B1 procs_of: exact marker match only (uXY is another run)")
     check(RL.procs_of("uX", proc=os.path.join(TMP, "no_such_proc")) is None, "B1 procs_of: /proc unreadable -> None")
+    # a process mid-exec is unreadable for a moment (the live flake: young siblings under parallel load); a
+    # non-dumpable one stays so. A fake /proc with a 000 environ made readable after 60 ms:
+    import threading
+    tp = os.path.join(TMP, "transientproc")
+    for pid in ("201", "202"):
+        os.makedirs(os.path.join(tp, pid), exist_ok=True)
+    for pid, env in (("201", b"RM_ROLE_UNIT=uT\0"), ("202", b"RM_ROLE_UNIT=uOther\0")):
+        with open(os.path.join(tp, pid, "environ"), "wb") as f:
+            f.write(env)
+    if os.getuid() != 0:
+        e201 = os.path.join(tp, "201", "environ")
+        os.chmod(e201, 0)
+        thr = threading.Timer(0.06, os.chmod, (e201, 0o644))
+        thr.start()
+        check(RL.procs_of("uT", proc=tp) == [201], "B1 procs_of: a transiently unreadable environ is re-read, not blind")
+        thr.join()
+        os.chmod(e201, 0)
+        check(RL.procs_of("uT", proc=tp) is None, "B1 procs_of: a persistently unreadable environ stays blind")
+        os.chmod(e201, 0o644)
+        _r = RL.SCAN_RETRIES
+        RL.SCAN_RETRIES = 0                     # control: without the re-read the transient case is blind (the old code)
+        try:
+            os.chmod(e201, 0)
+            thr = threading.Timer(0.06, os.chmod, (e201, 0o644))
+            thr.start()
+            check(RL.procs_of("uT", proc=tp) is None, "B1 procs_of control: no retries -> blind on a transient")
+            thr.join()
+        finally:
+            RL.SCAN_RETRIES = _r
     mk = "selftest-marker-%d" % os.getpid()
     t_run = time.time()      # a run's `at`: this user's older unreadable processes (systemd, sd-pam) predate it
     p = subprocess.Popen(["sleep", "30"], env=dict(os.environ, RM_ROLE_UNIT=mk))

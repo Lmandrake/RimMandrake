@@ -381,6 +381,18 @@ check("history: a null point is skipped", OW.history(recs) == {"zz.b": [(NOW, 1.
 fl = OW.andon({}, {}, {"disk.d_free_gb": NOW - 5 * H}, rules(targets=[]), NOW)
 check("silent: a key its collector stopped reporting still goes silent",
       any(f["rule"] == "silent" and f["key"] == "disk.d_free_gb" for f in fl), fl)
+# a key UNMEASURED longer than series_days keeps its silent flag (last_measured.json outlives the series)
+_pts = {"steve.state": {"m": "UNMEASURED", "why": "x"}, "disk.d_free_gb": {"v": 5.0, "m": "MEASURED"}}
+_lm, _sv = OW.carry_last_measured({}, {"steve.state": NOW - 40 * 24 * H, "old.key": NOW - 400 * 24 * H}, _pts, NOW)
+check("silent outlives series: the saved last MEASURED fills a key the loaded history lost",
+      _lm.get("steve.state") == NOW - 40 * 24 * H, _lm)
+check("silent outlives series: a measured key is stamped now; a key past the retire horizon is dropped",
+      _sv.get("disk.d_free_gb") == NOW and "old.key" not in _sv and "steve.state" in _sv, _sv)
+check("silent outlives series: a retired key not reported is not handed to the 'gone' rule",
+      "old.key" not in _lm and "gone.key" not in OW.carry_last_measured({}, {"gone.key": NOW - H}, {}, NOW)[0])
+fl = OW.andon(_pts, {}, _lm, rules(targets=[]), NOW)
+check("silent outlives series: the flag fires for a key blind past the series window",
+      any(f["rule"] == "silent" and f["key"] == "steve.state" for f in fl), fl)
 os.environ["RM_OPS_DISKS"] = "d=/mnt/zz_ops_watch_not_mounted"
 s = OW.c_disk(NOW, RULES, {})
 check("disk: a /mnt drive that is not a mount point is UNMEASURED (df would read the parent volume)",
