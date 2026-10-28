@@ -373,6 +373,13 @@ def review_r2_checks():
     note = dict(note, text="see 0BIOME_DECIDE_TWO_ROUTES")
     check("BIOME_DECIDE_TWO_ROUTES" not in item_page(item(), [note], None),
           "refs: an id inside a larger token (0X) is not a reference (review r3)")
+    for src, bad in (("verdict", {"judge_keys": 1}), ("marks", {"type": ["ban"]}), ("marks", {"reason": ["x"]})):
+        try:
+            digest_page([dict(BASE[src], source=src, **bad)])
+            got = "ok"
+        except TypeError as e:
+            got = "raised %s" % type(e).__name__
+        check(got == "ok", "digest: a malformed %s field %s renders, not raises (review r4): %s" % (src, sorted(bad), got))
 
 
 def main():

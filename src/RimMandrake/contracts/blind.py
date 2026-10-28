@@ -255,7 +255,9 @@ def decision_of(v):
 
 def judges_of(keys):
     out = []
-    for k in keys or ():
+    if not isinstance(keys, (list, tuple, set, frozenset)):   # a malformed record names no judge (review r4)
+        keys = ()
+    for k in keys:
         fam = next((f for f in JudgeFamily.__args__ if str(k).lower().startswith(f)), None)
         if fam and fam not in out:
             out.append(fam)
@@ -388,6 +390,7 @@ def _record(src, raw, verbs, ids, resolved):
     elif src == "marks":
         f["cls"] = "art marks"
         typ, reason = r.get("type"), r.get("reason")
+        typ, reason = (x if isinstance(x, str) else None for x in (typ, reason))   # a list is unhashable (r4)
         f["action"] = {"ban": "banned", "unban": "unbanned", "ban_hit": "ban_hit"}.get(typ) or (
             {"archive": "archived", "restore-archive": "restored", "x-delete": "x_removed"}.get(reason,
                                                                                                 "installed_over_keep"))
