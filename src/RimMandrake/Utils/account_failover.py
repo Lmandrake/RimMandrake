@@ -5,7 +5,7 @@ Owner, 2026-10-27, on incorporating the lukas account: "Yes schedule when they r
 So: when `system` (the account Archmagi burns) reads MEASURED with at most THRESHOLD % of its week left, arm the
 switch, `claude-account use lukas` (closes every Claude window on this machine and relaunches the Fleet), disarm.
 Once only (a marker file), and never after RESET (the system week refills then); from DEADLINE on the switch is
-unconditional while the target reads MEASURED above THRESHOLD. Stage 3: at/after RESET with FROM MEASURED and refilled, back to FROM once (own marker), then `slot_allocator clear`; retired.
+unconditional while the target reads MEASURED above THRESHOLD. Stage 3: at/after RESET with FROM MEASURED and refilled AND TO MEASURED <= FLOOR (or TO_RESET passed), back to FROM once (own marker), then `slot_allocator clear`; retired.
 Stage 2 (marker present, `claude-account --json status`
 says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset, then `--mode DARK` (every seat 0) once TO
 reads MEASURED at or under THRESHOLD.
@@ -33,9 +33,12 @@ RESET = "2026-10-28T13:00:00-07:00"         # the system week resets and refills
 # lukas's week resets and refills (meter, 2026-10-28 09:41: week_resets_at 2026-10-28T16:00-07:00). Stage 2 acts only
 # before it, and every --hours window ends at it: after it the meter names NEXT week's reset (a 168 h BURN) and a
 # reading polled before it is pre-refill (a wrong DARK) (review r3 2026-10-28)
-# Owner 10:07: "Doesn't mandrake.system reset before that?" - yes, 13:00 (measured), so "the reset" of his order is the
-# FROM week's: stage 2 burns until 12:59 and every --hours window ends at 13:00; lukas's own 16:00 reset no longer bounds it.
-TO_RESET = RESET
+# (Owner 10:07 had ended stage 2 at system's 13:00; superseded by the use-it-or-lose-it ruling below.)
+# Owner 10:15 intent ("Use up both lukas and system down to ~2%"), delegated ruling use-it-or-lose-it: burn the account whose
+# reset comes soonest among those above their floor. So lukas's own 16:00 reset bounds stage 2 again (BURN to 15:59), and
+# stage 3 (back to system) fires at 13:00 or later only when lukas MEASURED <= FLOOR or its 16:00 has passed. Before
+# 13:00 there is nowhere to go, so the soft line / hard stop apply; after it lukas at the floor goes to system instead.
+TO_RESET = "2026-10-28T16:00:00-07:00"
 OWNER_ORDER = ("Ok, wake up! We have tokens to burn! Use up this account, then switch to the other account and use it "
                "up to 2% to, then wait for the reset to hit.")
 SLOT = os.path.join(HERE, "slot_allocator.py")
@@ -132,7 +135,7 @@ def live_account():
     return None
 
 
-def decide2(acc, now, live, st):
+def decide2(acc, now, live, st, allow_stop=True):
     """Stage 2 (live account is TO). -> (action, why); action in None | "burn" | "off". Pure; never switches."""
     if live != TO:
         return None, "live account is %r, not %s: stage 2 idle" % (live, TO)
@@ -141,7 +144,7 @@ def decide2(acc, now, live, st):
         return None, "%s week reset %s passed: stage 2 finished (retire the timer)" % (TO, TO_RESET)
     left = b.get("week_pct_left")
     fresh = b.get("source") == "MEASURED" and not b.get("stale") and isinstance(left, (int, float))
-    if fresh and left <= FLOOR and not st.get("stop"):
+    if allow_stop and fresh and left <= FLOOR and not st.get("stop"):
         return "stop", "%s MEASURED at %.1f%% left <= %.1f%% floor: hard stop, wait for the reset" % (TO, left, FLOOR)
     # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
     if fresh and left <= SOFT and not st.get("off"):
@@ -167,7 +170,16 @@ def decide3(acc, now, live, done):
         return False, "%s reading is %s%s: waiting for a fresh one" % (FROM, a.get("source"), " (stale)" if a.get("stale") else "")
     if left < REFILLED:
         return False, "%s reads %.1f%% left < %.0f%%: its reset has not shown yet" % (FROM, left, REFILLED)
-    return True, "%s week reset: reads %.1f%% left; %s is live" % (FROM, left, TO)
+    b = acc.get(TO) or {}
+    bl = b.get("week_pct_left")
+    spent = b.get("source") == "MEASURED" and not b.get("stale") and isinstance(bl, (int, float)) and bl <= FLOOR
+    if not spent and now < datetime.fromisoformat(TO_RESET).timestamp():
+        return False, "%s still above its %.1f%% floor (reads %r) and its reset %s is ahead: keep burning it" % (TO, FLOOR, bl, TO_RESET)
+    return True, "%s week reset: reads %.1f%% left; %s is live and %s" % (
+        FROM, left, TO, "MEASURED at %.1f%% <= floor" % bl if spent else "its reset passed")
+
+
+NOGO = "nogo"   # stage3 verdict: not switching now, nothing pending - stage 2 carries on with lukas
 
 
 def stage3(acc, live, now, dry):
@@ -189,7 +201,7 @@ def stage3(acc, live, now, dry):
     go, why = decide3(acc, now, live, bk is not None)
     if not go:
         log({"do": "stage3_skip", "why": why})
-        return 0
+        return NOGO
     if dry:
         log({"do": "stage3_would_switch_back", "why": why})
         return 0
@@ -259,9 +271,12 @@ def stage2(acc, dry):
             os.remove(MARKER)
         log({"do": "abandoned_switch_dropped", "why": "pending marker from %s, live is %r" % (mk.get("at"), live)})
         return 0
-    if now >= datetime.fromisoformat(RESET).timestamp():
-        return stage3(acc, live, now, dry)
-    act, why = decide2(acc, now, live, st)
+    after = now >= datetime.fromisoformat(RESET).timestamp()
+    if after:
+        r3 = stage3(acc, live, now, dry)
+        if r3 != NOGO:
+            return r3
+    act, why = decide2(acc, now, live, st, allow_stop=not after)
     if act is None:
         log({"do": "stage2_skip", "why": why})
         return 0

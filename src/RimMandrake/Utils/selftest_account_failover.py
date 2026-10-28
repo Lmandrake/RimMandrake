@@ -378,15 +378,20 @@ ok = prev == {"burn": 1}
 fails += not ok
 print("%s  a stage2.json write that dies keeps the previous state: %r" % ("ok  " if ok else "FAIL", prev))
 # owner 10:07: stage 2 ends at SYSTEM's 13:00 reset, not lukas's 16:00
-ok = A.TO_RESET == "2026-10-28T13:00:00-07:00"
+ok = A.TO_RESET == "2026-10-28T16:00:00-07:00" and A.RESET == "2026-10-28T13:00:00-07:00"
 fails += not ok
-print("%s  stage 2 bound is 13:00: %r" % ("ok  " if ok else "FAIL", A.TO_RESET))
+print("%s  use-it-or-lose-it: lukas bound is 16:00, system's reset 13:00: %r" % ("ok  " if ok else "FAIL", A.TO_RESET))
 t_1259 = datetime_ts("2026-10-28T12:58:00-07:00")
 got, _ = A.decide2({"lukas": L(7)}, t_1259, "lukas", {})
 got2, _ = A.decide2({"lukas": L(7)}, datetime_ts("2026-10-28T12:59:30-07:00"), "lukas", {})
-ok = got == "burn" and got2 is None
+ok = got == "burn" and got2 == "burn"
 fails += not ok
-print("%s  burns at 12:58, stops at 12:59:30: %r %r" % ("ok  " if ok else "FAIL", got, got2))
+print("%s  burns at 12:58 and 12:59:30 (override runs to 15:59): %r %r" % ("ok  " if ok else "FAIL", got, got2))
+got3, _ = A.decide2({"lukas": L(7)}, datetime_ts("2026-10-28T15:58:00-07:00"), "lukas", {})
+got4, _ = A.decide2({"lukas": L(7)}, datetime_ts("2026-10-28T15:59:30-07:00"), "lukas", {})
+ok = got3 == "burn" and got4 is None
+fails += not ok
+print("%s  burn still on at 15:58, over at 15:59:30: %r %r" % ("ok  " if ok else "FAIL", got3, got4))
 # stage 3 (owner 10:07): at/after system's 13:00 reset, once system reads MEASURED+fresh with a refilled week, switch
 # back to system once (own marker), then clear the allocator override; lukas not live -> nothing; retired afterwards
 T3 = datetime_ts(A.RESET) + 120
@@ -400,6 +405,7 @@ for (acc, now_, live, done, want, name) in [
         ({"system": FRESH()}, T3, "steven", False, False, "stage3: someone switched by hand -> no"),
         ({"system": FRESH()}, T3, "system", False, False, "stage3: system already live -> no"),
         ({"system": FRESH()}, T3, "lukas", True, False, "stage3: retired after done")]:
+    acc = dict(acc, lukas=L(1))
     got, why = A.decide3(acc, now_, live, done)
     fails += got != want
     print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
@@ -453,11 +459,65 @@ rc, calls, back = _stage3_run(["lukas"], T3, use_rc=1)
 ok = back is None and rc != 0
 fails += not ok
 print("%s  stage3 failed use (lukas still live): marker dropped, retry next pass: %r %r" % ("ok  " if ok else "FAIL", back, rc))
-# between 12:59 and 13:00 neither stage acts
-rc, calls, back = _stage3_run(["lukas"], datetime_ts(A.RESET) - 30)
-ok = calls == []
+# use-it-or-lose-it (owner 10:15 intent, delegated): after 13:00 lukas at <=2% MEASURED switches to system;
+# lukas above its floor stays live and keeps burning until its own 16:00 reset
+def _stage3_lk(lk, now_, live="lukas", sysr=None):
+    with tempfile.TemporaryDirectory() as td:
+        saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK)
+        A.OUT, A.MARKER, A.STAGE2, A.BACK = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json"), os.path.join(td, "back.json")
+        _json.dump({"phase": "done"}, open(A.MARKER, "w"))
+        _json.dump({"burn": 1}, open(A.STAGE2, "w"))
+        calls = []
+        A.run = lambda argv, **k: (calls.append(argv), (0, "ok"))[1]
+        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+            stdout=_json.dumps({"accounts": {"system": sysr or FRESH(), "lukas": lk}})))
+        A.time = types.SimpleNamespace(time=lambda: now_)
+        A.live_account = lambda: live
+        try:
+            A.check(False)
+            return calls
+        finally:
+            A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account, A.BACK = saved
+
+
+def _names(calls):
+    return [(c[1] if c[0] == A.CA else os.path.basename(c[1])) for c in calls]
+
+
+calls = _stage3_lk(L(7), T3)
+ok = _names(calls) == [] or not any(c[0] == A.CA for c in calls)
 fails += not ok
-print("%s  12:59:30: stage 2 over, stage 3 not yet: %r" % ("ok  " if ok else "FAIL", calls))
+print("%s  13:02, lukas 7%%, system fresh: no switch, lukas keeps burning: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(2), T3)
+ok = _names(calls)[:3] == ["arm", "use", "disarm"] and calls[1][2] == "system" and "fleet-stop" not in _names(calls)
+fails += not ok
+print("%s  13:02, lukas MEASURED 2%%: straight to system, no fleet-stop: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(2, "ESTIMATE"), T3)
+ok = not any(c[0] == A.CA for c in calls)
+fails += not ok
+print("%s  13:02, lukas ESTIMATE 2%%: no switch: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(2), T3, sysr=FRESH(1.0))
+ok = not any(c[0] == A.CA for c in calls) and not any("fleet-stop" in c for c in calls)
+fails += not ok
+print("%s  13:02, lukas 2%% but system not refilled: no switch, no hard stop: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(3.5), T3)
+ok = any("DARK" in c for c in calls) and not any(c[0] == A.CA for c in calls)
+fails += not ok
+print("%s  13:02, lukas 3.5%%: soft line still warns (DARK), no switch: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+calls = _stage3_lk(L(50), datetime_ts("2026-10-28T16:01:00-07:00"), sysr=FRESH())
+ok = _names(calls)[:3] == ["arm", "use", "disarm"]
+fails += not ok
+print("%s  16:01, lukas reset passed: switch to system: %r" % ("ok  " if ok else "FAIL", _names(calls)))
+got, why = A.decide3({"system": FRESH(), "lukas": L(7)}, T3, "lukas", False)
+got2, _ = A.decide3({"system": FRESH(), "lukas": L(2)}, T3, "lukas", False)
+ok = not got and got2
+fails += not ok
+print("%s  decide3 needs lukas at floor or past 16:00: %s" % ("ok  " if ok else "FAIL", why))
+# before 13:00 the hard stop and soft line still apply
+calls, st = _stage2_check("lukas", L(2), {"burn": 1, "off": 1})
+ok = any(c[0] == A.CA and c[1] == "fleet-stop" for c in calls)
+fails += not ok
+print("%s  12:55, lukas 2%%: hard stop (nowhere to go): %r" % ("ok  " if ok else "FAIL", _names(calls)))
 # owner 10:20 card: hard stop at the floor = DARK (if not yet), then arm, fleet-stop, disarm, once; logged
 calls, st = _stage2_check("lukas", L(2), {"burn": 1, "off": 1})
 ca = [c[1:] for c in calls if c[0] == A.CA]
