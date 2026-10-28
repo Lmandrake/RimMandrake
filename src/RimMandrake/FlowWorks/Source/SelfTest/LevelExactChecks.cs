@@ -49,9 +49,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var cells = Enumerable.Range(0, w.w * w.h).Where(i => w.k.depth[i] > 0).ToList();
 			var list = RM_SurfaceGap.Measure(cells, i => w.k.depth[i], i => w.k.WaterOf(i), i => w.cellFluid[i],
 				(i, d) => w.k.Cardinal(i, d),
-				i => !w.k.IsSource(i) ? -1 : w.LevelBodyOf(i) < 0 ? -2 : w.LevelBodyOf(i),
+				i => !w.k.IsSource(i) || w.LevelBodyOf(i) == RM_FlowKernel.LevelBodyDisabled ? -1 : w.LevelBodyOf(i) < 0 ? -2 : w.LevelBodyOf(i),
 				b => RM_LevelSolve.PondSurfaceHeight(w.BodyHistogram(b), w.BodyStockDl(b)),
-				i => w.BedAt(i));
+				i => w.BedAt(i), w.k.IsSealed, i => w.DonorFluid(i, true));
 			bodies = list.Count;
 			return list.Count == 0 ? 0.0 : list[0].gapM;
 		}
@@ -264,6 +264,139 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(list.Count == 1 && list[0].squares == 2 && list[0].firstCell == 0 && Math.Abs(list[0].gapM - 0.019) < 1e-9,
 					"two arms of one pond read one body of 1.9 cm: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
 			});
+
+			// SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: a body is what the solve levels together (twin: selftest_level_water.py
+			// t_surface_gap_parity); the randomized C#-vs-Python check is selftest_flowworks_kernel_oracle.py mode "gaps".
+			Case("Exact_surface_gap_tied_bodies_list_in_first_cell_order", () =>
+			{
+				// 40 one-square bodies, all gap 0 (List.Sort is an introsort past 16 items: unstable without a tiebreak)
+				int n = 80;
+				var list = RM_SurfaceGap.Measure(Enumerable.Range(0, n), i => i % 2 == 0 ? 2 : 0, i => i % 2 == 0 ? RM_LevelSolve.U : 0,
+					i => ArrayWorld.Water, (i, d) => d == 1 ? (i + 1 < n ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => -1, p => 0.0, i => 4);
+				bool ordered = list.Count == n / 2;
+				for (int k = 1; k < list.Count && ordered; k++) ordered = list[k - 1].firstCell < list[k].firstCell;
+				Assert(ordered, "tied bodies list in first-cell order (the Python twin's): "
+					+ string.Join(",", list.Take(24).Select(b => b.firstCell)));
+			});
+
+			Case("Exact_surface_gap_oil_arm_is_not_one_body_with_a_water_pond", () =>
+			{
+				// a water pond never feeds an oil arm (ExactTouchSource FluidsCompatible): 0.95 cm (water arm + pond) and 0, not 1.9
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 2 * u - 190 };
+				object[] fluid = { ArrayWorld.Water, null, new object() };
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2 }, i => depth[i], i => water[i], i => fluid[i],
+					(i, d) => d == 1 ? (i < 2 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 ? 0 : -1, p => -2.0 * u, i => 4, null, i => ArrayWorld.Water);
+				var gaps = list.Select(b => Math.Round(b.gapM, 9)).OrderBy(g => g).ToList();
+				Assert(list.Count == 2 && gaps[0] == 0.0 && gaps[1] == 0.0095,
+					"an oil arm and a water arm of one water pond: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
+
+			Case("Exact_surface_gap_shut_sluice_on_a_shore_square_cuts_the_arm_off", () =>
+			{
+				// row A | pond | pond (SHUT) | B: B reaches the pond only through the sealed shore square -> two bodies
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 0, 2 * u - 190 };
+				Func<int, bool> shut = i => i == 2;
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2, 3 }, i => depth[i], i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 || i == 2 ? 0 : -1, p => -2.0 * u, i => 4, shut);
+				var gaps = list.Select(b => Math.Round(b.gapM, 9)).OrderBy(g => g).ToList();
+				Assert(list.Count == 2 && gaps[0] == 0.0 && gaps[1] == 0.0095,
+					"a shut shore square: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+				// control: open, one body of 1.9 cm
+				list = RM_SurfaceGap.Measure(new[] { 0, 1, 2, 3 }, i => depth[i], i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 || i == 2 ? 0 : -1, p => -2.0 * u, i => 4, i => false);
+				Assert(list.Count == 1 && Math.Abs(list[0].gapM - 0.019) < 1e-9, "control, open: " + list.Count);
+			});
+
+			Case("Exact_surface_gap_cells_are_the_domain_not_seeds", () =>
+			{
+				// a 4-square run whose last two squares stand 0.5 m lower; measured over the first two only (a scene rect), the
+				// run does not leak out of it: one body of 2 squares, gap 0 (the Python twin's cells are the whole domain)
+				long u = RM_LevelSolve.U;
+				long[] water = { 2 * u, 2 * u, u, u };
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1 }, i => 4, i => water[i], i => ArrayWorld.Water,
+					(i, d) => d == 1 ? (i < 3 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => -1, p => 0.0, i => 4);
+				Assert(list.Count == 1 && list[0].squares == 2 && list[0].gapM == 0.0,
+					"measured over squares 0,1 of 0..3: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
+		}
+
+		/// <summary>SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: RM_SurfaceGap.Measure over scenes level_water.surface_gaps also reads
+		/// (selftest_flowworks_kernel_oracle.py mode "gaps"). One scene per line, space-separated:
+		/// <c>w h nCells [idx D W f]* nSrc [idx body bed f]* nPonds [body surface]* nSealed [idx]* nDomain [idx]*</c>; f 0 = no
+		/// fluid, 1 water, 2 oil; body -2 = limitless; surface in dL per square (round-trip double). Prints one line per scene,
+		/// "squares:gap:min:max" per body in Measure's order, ';'-joined, doubles round-trip; "-" when no body.</summary>
+		public static int SurfaceGapScenes(System.IO.TextReader reader, System.IO.TextWriter output)
+		{
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			object[] fluids = { null, ArrayWorld.Water, new object() };
+			string line;
+			while ((line = reader.ReadLine()) != null)
+			{
+				if (line.Trim().Length == 0)
+				{
+					continue;
+				}
+				string[] t = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+				int k = 0;
+				int Next() => int.Parse(t[k++], inv);
+				int w = Next(), h = Next();
+				var depth = new int[w * h];
+				var water = new long[w * h];
+				var fl = new object[w * h];
+				var srcBody = Enumerable.Repeat(-1, w * h).ToArray();
+				var bed = new int[w * h];
+				var srcFl = new object[w * h];
+				for (int n = Next(); n > 0; n--)
+				{
+					int i = Next();
+					depth[i] = Next();
+					water[i] = long.Parse(t[k++], inv);
+					fl[i] = fluids[Next()];
+				}
+				for (int n = Next(); n > 0; n--)
+				{
+					int i = Next();
+					srcBody[i] = Next();
+					bed[i] = Next();
+					srcFl[i] = fluids[Next()];
+				}
+				var surf = new Dictionary<int, double>();
+				for (int n = Next(); n > 0; n--)
+				{
+					int b = Next();
+					surf[b] = double.Parse(t[k++], inv);
+				}
+				var sealedSet = new HashSet<int>();
+				for (int n = Next(); n > 0; n--)
+				{
+					sealedSet.Add(Next());
+				}
+				var domain = new List<int>();
+				for (int n = Next(); n > 0; n--)
+				{
+					domain.Add(Next());
+				}
+				var list = RM_SurfaceGap.Measure(domain, i => depth[i], i => water[i], i => fl[i],
+					(i, d) =>
+					{
+						int x = i % w + (d == 1 ? 1 : d == 3 ? -1 : 0), z = i / w + (d == 0 ? 1 : d == 2 ? -1 : 0);
+						return x < 0 || z < 0 || x >= w || z >= h ? -1 : z * w + x;
+					},
+					i => srcBody[i], b => surf[b], i => bed[i], i => sealedSet.Contains(i), i => srcFl[i]);
+				// "-" for a scene with no body: a blank line would be dropped by the reader and shift every later answer.
+				output.WriteLine(list.Count == 0 ? "-" : string.Join(";", list.Select(b => b.squares + ":" + b.gapM.ToString("R", inv) + ":"
+					+ b.minM.ToString("R", inv) + ":" + b.maxM.ToString("R", inv))));
+			}
+			return 0;
 		}
 
 		/// <summary>Random scenes at the shipped flags: ledger, bounds and conservation to the dL every pulse; a body at rest stands

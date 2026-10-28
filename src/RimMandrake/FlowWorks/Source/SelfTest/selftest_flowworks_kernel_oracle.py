@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(MOD, "northstar"))
 sys.path.insert(0, os.path.join(os.path.dirname(MOD), "Utils"))
 
 import validation_v2 as v  # noqa: E402
+import level_water as lw  # noqa: E402
 import selftest_flowworks_stock as stock_wrapper  # noqa: E402  (dotnet discovery + path conversion)
 
 
@@ -178,6 +179,88 @@ def encode(sc):
     return " ".join(map(str, out))
 
 
+# ── SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: RM_SurfaceGap.Measure against level_water.surface_gaps ──
+
+GAP_FLUIDS = (None, "w", "m")      # encoded 0, 1, 2 (C#: null, ArrayWorld.Water, an oil object)
+
+
+def gaps_scene(seed):
+    """Dug squares of either fluid (or none), ponds of 1-4 shore squares, limitless sources, shut sluices on squares and
+    sources, sources of either fluid or none; a third of the scenes measured over a rect, a fifth a field of level
+    one-square bodies (ties past List.Sort's 16-item insertion sort)."""
+    rng = random.Random(41000 + seed)
+    w, h = 8, 6
+    cells, srcs, lim = {}, {}, []
+    sq = [(x, z) for x in range(w) for z in range(h)]
+    if rng.random() < 0.2:
+        for (x, z) in sq:
+            if (x + z) % 2 == 0:
+                cells[(x, z)] = (2, rng.choice([lw.U, lw.U, lw.U, 2 * lw.U]), "w")
+    else:
+        nb = rng.randint(0, 3)
+        beds_of = {b: [rng.choice([1, 2, 3, 4]) for _ in range(rng.randint(1, 4))] for b in range(nb)}
+        srcs = {b: {} for b in beds_of}
+        rng.shuffle(sq)
+        for c in sq:
+            r = rng.random()
+            if r < 0.55:
+                D = rng.randint(1, 4)
+                cells[c] = (D, rng.choice([0, rng.randint(0, D * lw.U), D * lw.U, D * lw.U - 190]), rng.choice(["w"] * 8 + ["m", None]))
+            elif r < 0.8 and beds_of:
+                b = rng.choice(list(beds_of))
+                if len(srcs[b]) < len(beds_of[b]):
+                    srcs[b][c] = beds_of[b][len(srcs[b])]
+            elif r < 0.85:
+                lim.append(c)
+    ponds = {b: (lw.histogram(list(ss.values())), rng.randint(0, sum(ss.values()) * lw.U), ss) for b, ss in srcs.items() if ss}
+    sealed = {c for c in list(cells) + lim + [s for ss in srcs.values() for s in ss] if rng.random() < 0.08}
+    sf = {s: rng.choice(["w", "w", "m", None]) for ss in srcs.values() for s in ss}
+    sf.update({s: rng.choice(["w", "m", None]) for s in lim})
+    domain = sorted(cells)
+    if rng.random() < 0.33:
+        x0, z0 = rng.randint(0, w - 1), rng.randint(0, h - 1)
+        x1, z1 = rng.randint(x0, w - 1), rng.randint(z0, h - 1)
+        domain = [c for c in domain if x0 <= c[0] <= x1 and z0 <= c[1] <= z1]
+    return w, h, cells, ponds, lim, sealed, sf, domain
+
+
+def encode_gaps(sc):
+    w, h, cells, ponds, lim, sealed, sf, domain = sc
+    idx = lambda c: c[1] * w + c[0]          # noqa: E731
+    fcode = lambda f: GAP_FLUIDS.index(f)    # noqa: E731
+    out = [w, h, len(cells)]
+    for c, (D, W, f) in cells.items():
+        out += [idx(c), D, W, fcode(f)]
+    src = [(s, b, bed) for b, (_, _, ss) in ponds.items() for s, bed in ss.items()] + [(s, -2, 0) for s in lim]
+    out.append(len(src))
+    for s, b, bed in src:
+        out += [idx(s), b, bed, fcode(sf.get(s))]
+    out.append(len(ponds))
+    for b, (H, dl, _) in ponds.items():
+        out += [b, repr(float(lw.pond_surface_height(H, dl)))]
+    out.append(len(sealed))
+    out += [idx(c) for c in sorted(sealed)]
+    out.append(len(domain))
+    out += [idx(c) for c in domain]
+    return " ".join(map(str, out))
+
+
+def oracle_surface_gaps(sc):
+    w, h, cells, ponds, lim, sealed, sf, domain = sc
+    return lw.surface_gaps({c: cells[c] for c in domain}, ponds, lim, sealed=sealed, src_fluid=sf)
+
+
+def gaps_agree(got_line, want):
+    """Same bodies in the same order (the tie order too); squares exact, metres to 1e-12."""
+    got = [] if got_line.strip() == "-" else [b.split(":") for b in got_line.split(";")]
+    if len(got) != len(want):
+        return False
+    for g, (gap, n, lo, hi) in zip(got, want):
+        if int(g[0]) != n or any(abs(float(a) - b) > 1e-12 for a, b in zip(g[1:], (gap, lo, hi))):
+            return False
+    return True
+
+
 def norm(s):
     return " ".join(s.split())
 
@@ -191,6 +274,7 @@ def main():
     ponds = [pond_scene(s) for s in range(n)]
     opsc = [ops_scene(s) for s in range(n)]
     bodysc = [bodies_scene(s) for s in range(n)]
+    gapsc = [gaps_scene(s) for s in range(n)]
     # An ext4 clone cannot hand dotnet.exe its own path (\home\... is invalid): stage it on D: (selftest_winstage), and keep
     # the scene files and the dll inside the stage, where a /mnt/d path converts.
     from selftest_winstage import windows_project_path, stage_name_for
@@ -222,24 +306,28 @@ def main():
         # (LevelOps over the production RM_LevelPour against level_water.pour / fill_in), each event's dL in the line.
         # "bodies" (FISH_ROLL_MEND_PONDS_BORN_BARREN, trap c): the vanilla water-body tracker port with the production split mend
         # (SelfTest/WaterBodyMendChecks.cs over RM_WaterBodyMath.cs) against union-find pieces, body sizes after every toggle.
-        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies")
-        known = ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies")
+        # "gaps" (SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED): RM_SurfaceGap.Measure (LevelExactChecks.SurfaceGapScenes) against
+        # level_water.surface_gaps on random scenes with mixed fluids, shut sluices, rects and fields of tied bodies.
+        modes = sys.argv[2].split(",") if len(sys.argv) > 2 else ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies", "gaps")
+        known = ("depth", "surface", "levelset", "shipped", "pond", "exact", "exactpond", "exactops", "bodies", "gaps")
         if n < 1 or [m for m in modes if m not in known]:
             sys.exit("N must be >= 1 and every mode one of %s (a typo ran an unlabelled engine; N=0 compared nothing)" % ",".join(known))
         for mode in modes:
-            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else bodysc if mode == "bodies" else plain
-            enc = encode_bodies if mode == "bodies" else encode
+            scenes = ponds if mode in ("pond", "exactpond") else opsc if mode == "exactops" else bodysc if mode == "bodies" else gapsc if mode == "gaps" else plain
+            enc = encode_bodies if mode == "bodies" else encode_gaps if mode == "gaps" else encode
             os.makedirs(os.path.join(stage_dir, "bin"), exist_ok=True)
             scene_file = os.path.join(stage_dir, "bin", "oracle_scenes_%s.txt" % mode)   # in the stage, never the clone
             with open(scene_file, "w") as f:
                 f.write("\n".join(enc(sc) for sc in scenes) + "\n")
             t0 = time.time()
             exact = mode in ("exact", "exactpond", "exactops")
-            want = [oracle_bodies(sc) for sc in scenes] if mode == "bodies" else [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
+            want = [oracle_bodies(sc) for sc in scenes] if mode == "bodies" else [oracle_surface_gaps(sc) for sc in scenes] if mode == "gaps" else [oracle(sc, mode != "depth", mode in ("levelset", "shipped", "pond"), mode in ("shipped", "pond"),
                            mode == "pond", exact) for sc in scenes]
             t1 = time.time()
             cs_mode = "exact" if exact else mode
             args = [dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)] + ([cs_mode] if mode != "depth" else [])
+            if mode == "gaps":
+                args = [dotnet, dll, "--surface-gaps", stock_wrapper._to_windows_path(scene_file)]
             res = subprocess.run(args, capture_output=True, text=True, timeout=300)
             t2 = time.time()
             if res.returncode != 0:
@@ -248,8 +336,12 @@ def main():
             got = [ln for ln in res.stdout.replace("\r", "").split("\n") if ln.strip()]
             if len(got) != n:
                 sys.exit("kernel answered %d scenes of %d (%s)" % (len(got), n, mode))
-            bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
-            pulses = sum(len(sc[3]) for sc in scenes) if mode == "bodies" else sum(sc[2] for sc in scenes)
+            if mode == "gaps":
+                bad = [i for i in range(n) if not gaps_agree(got[i], want[i])]
+            else:
+                bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
+            pulses = (sum(len(sc[3]) for sc in scenes) if mode == "bodies" else 0 if mode == "gaps"
+                      else sum(sc[2] for sc in scenes))
             print("[%s] %d scenes, %d pulses: oracle %.2f s, kernel %.2f s" % (mode, n, pulses, t1 - t0, t2 - t1))
             for i in bad[:5]:
                 print("DISAGREE [%s] seed %d: %s\n  oracle %s\n  kernel %s" % (mode, i, enc(scenes[i]), want[i][:300], got[i][:300]))

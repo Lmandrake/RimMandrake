@@ -539,16 +539,22 @@ namespace RimMandrake.FlowWorks
 			public int firstCell;
 		}
 
-		/// <summary>Over the cells <paramref name="cells"/> (any order). <paramref name="depthOf"/>, <paramref name="waterOf"/> and
+		/// <summary>Over the cells <paramref name="cells"/> (any order): they are the whole domain, a run never leaves them (a
+		/// scene rect clips, as the Python twin). <paramref name="depthOf"/>, <paramref name="waterOf"/> and
 		/// <paramref name="fluidOf"/> read a dug cell; <paramref name="cardinal"/> gives neighbour d (0..3) or -1;
 		/// <paramref name="pondOf"/> names the pond behind a source cell (-1 none, -2 limitless); <paramref name="pondSurface"/>
-		/// gives a pond's surface height in dL-per-square; <paramref name="bedOf"/> a source cell's bed notches.</summary>
+		/// gives a pond's surface height in dL-per-square; <paramref name="bedOf"/> a source cell's bed notches. As the solve
+		/// (RM_FlowKernel.ExactTouchSource) a body never passes a shut sluice: a <paramref name="sealedCell"/> square, dug or
+		/// source, is skipped; and a run joins a source only when <paramref name="sourceFluidOf"/> (its DonorFluid) is
+		/// compatible with the run's fluid (RM_StockMath.FluidsCompatible; null = compatible). Ties in gap list in first-cell
+		/// order (SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED).</summary>
 		public static List<Body> Measure(IEnumerable<int> cells, Func<int, int> depthOf, Func<int, long> waterOf,
 			Func<int, object> fluidOf, Func<int, int, int> cardinal, Func<int, int> pondOf, Func<int, double> pondSurface,
-			Func<int, int> bedOf, Func<int, bool> sealedCell = null)
+			Func<int, int> bedOf, Func<int, bool> sealedCell = null, Func<int, object> sourceFluidOf = null)
 		{
 			var sorted = new List<int>(cells);
 			sorted.Sort();
+			var domain = new HashSet<int>(sorted);
 			var seen = new HashSet<int>();
 			var run = new List<int>();
 			var touched = new SortedSet<int>();
@@ -590,12 +596,17 @@ namespace RimMandrake.FlowWorks
 						}
 						if (depthOf(nb) > 0)
 						{
-							if (!seen.Contains(nb) && waterOf(nb) > 0 && ReferenceEquals(fluidOf(nb), fl)
+							if (domain.Contains(nb) && !seen.Contains(nb) && waterOf(nb) > 0 && ReferenceEquals(fluidOf(nb), fl)
 								&& (sealedCell == null || !sealedCell(nb)))
 							{
 								seen.Add(nb);
 								run.Add(nb);
 							}
+							continue;
+						}
+						if ((sealedCell != null && sealedCell(nb))
+							|| (sourceFluidOf != null && !RM_StockMath.FluidsCompatible(true, fl, sourceFluidOf(nb))))
+						{
 							continue;
 						}
 						int p = pondOf(nb);
@@ -678,7 +689,7 @@ namespace RimMandrake.FlowWorks
 				body.maxM = bodyHi[bi] * RM_LevelSolve.MetresPerUnit;
 				outList[bi] = body;
 			}
-			outList.Sort((a, b) => b.gapM.CompareTo(a.gapM));
+			outList.Sort((a, b) => b.gapM != a.gapM ? b.gapM.CompareTo(a.gapM) : a.firstCell.CompareTo(b.firstCell));
 			return outList;
 		}
 

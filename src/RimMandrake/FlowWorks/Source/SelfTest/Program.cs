@@ -224,6 +224,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine(HoseCurveChecks.SolverCost() + $", fuzz wall {clock.Elapsed.TotalSeconds:F2} s");
                 return fails == 0 ? 0 : 1;
             }
+            // SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: RM_SurfaceGap.Measure over a scene file, against level_water.surface_gaps
+            // (selftest_flowworks_kernel_oracle.py mode "gaps"). A file, not stdin (the WSL pipe hang below).
+            if (args.Length > 1 && args[0] == "--surface-gaps")
+            {
+                using (var reader = new System.IO.StreamReader(args[1]))
+                {
+                    return LevelExactChecks.SurfaceGapScenes(reader, Console.Out);
+                }
+            }
+
             if (args.Length > 0 && args[0] == "--oracle-scenes")
             {
                 // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).

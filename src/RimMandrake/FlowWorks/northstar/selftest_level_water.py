@@ -145,15 +145,20 @@ def t_solve_basics():
 
 # ───────────────── SURFACEGAP_MERGE_ARMS_THROUGH_POND: one body through a joined pond ─────────────────
 
-def _gaps_reference(cells, ponds, limitless):
-    """Brute-force twin of lw.surface_gaps: nodes are wet squares and ponds, edges the 4-way same-fluid wet adjacency and
-    every JOINED square-to-pond link; a body is a component holding a wet square, its surfaces those of its squares, its
-    ponds, and 0 if a square of it touches a limitless source."""
+def _gaps_reference(cells, ponds, limitless, sealed=(), src_fluid=None):
+    """Brute-force twin of lw.surface_gaps: nodes are wet unsealed squares and ponds, edges the 4-way same-fluid wet
+    adjacency and every JOINED square-to-pond link through an unsealed source of a compatible fluid; a body is a component
+    holding a wet square, its surfaces those of its squares, its ponds, and 0 if a square of it touches a limitless source
+    (unsealed, compatible fluid)."""
+    sealed, src_fluid = set(sealed), src_fluid or {}
+
+    def joins(fl, s):
+        return s not in sealed and (fl is None or src_fluid.get(s) is None or src_fluid[s] == fl)
     pond_of = {s: bid for bid, (_, _, srcs) in ponds.items() for s in srcs}
     psurf = {bid: lw.pond_surface_height(h, dl) for bid, (h, dl, _) in ponds.items()}
     lim = set(limitless)
     adj, touches_lim = {}, set()
-    wet = [c for c in cells if cells[c][1] > 0]
+    wet = [c for c in cells if cells[c][1] > 0 and c not in sealed]
     for c in wet:
         adj.setdefault(("c", c), set())
     for c in wet:
@@ -161,14 +166,16 @@ def _gaps_reference(cells, ponds, limitless):
         for dx, dz in lw.CARDINAL:
             n = (c[0] + dx, c[1] + dz)
             if n in cells:
-                if cells[n][1] > 0 and cells[n][2] == fl:
+                if cells[n][1] > 0 and cells[n][2] == fl and n not in sealed:
                     adj[("c", c)].add(("c", n))
             elif n in pond_of:
+                if not joins(fl, n):
+                    continue
                 b = pond_of[n]
                 if max(W - D * U, psurf[b]) > -min(D, ponds[b][2][n]) * U:
                     adj[("c", c)].add(("p", b))
                     adj.setdefault(("p", b), set()).add(("c", c))
-            elif n in lim:
+            elif n in lim and joins(fl, n):
                 touches_lim.add(c)
     seen, out = set(), []
     for c in wet:
@@ -237,12 +244,63 @@ def t_surface_gap_merge(n=3000):
         for b, ss in srcs.items():
             if ss:
                 ponds[b] = (lw.histogram(list(ss.values())), rng.randint(0, sum(ss.values()) * U), ss)
-        ref, got = _norm_gaps(_gaps_reference(cells, ponds, lim)), _norm_gaps(lw.surface_gaps(cells, ponds, lim))
+        # SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: shut sluices on squares and sources; sources of either fluid or none
+        sealed = {c for c in sq if rng.random() < 0.1}
+        sf = {s: rng.choice(["w", "w", "m", None]) for ss in srcs.values() for s in ss}
+        sf.update({s: rng.choice(["w", "m", None]) for s in lim})
+        ref = _norm_gaps(_gaps_reference(cells, ponds, lim, sealed, sf))
+        got = _norm_gaps(lw.surface_gaps(cells, ponds, lim, sealed=sealed, src_fluid=sf))
         if ref != got:
             check("surface gap: matches the brute-force body graph on %d random scenes" % n, False,
                   "scene %d: %s vs reference %s" % (i, got, ref))
             return
     check("surface gap: matches the brute-force body graph on %d random scenes" % n, True)
+
+
+# ──────── SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED: a body is what the solve levels together (fluid, sluices) ────────
+
+def _gaps_or_error(*a, **k):
+    try:
+        return lw.surface_gaps(*a, **k)
+    except TypeError as e:          # red-first: the parameter did not exist
+        return "TypeError %s" % e
+
+
+def t_surface_gap_parity():
+    # fluid: a pond is water (its DonorFluid); an oil arm below it is never fed by it (_domain.touch_source, the C#
+    # ExactTouchSource FluidsCompatible), so it is NOT one body with the pond: two bodies, the water arm's 0.95 cm and 0
+    pond = {0: (lw.histogram([4]), 2 * U, {(1, 0): 4})}
+    arms = {(0, 0): (4, 2 * U + 190, "w"), (2, 0): (4, 2 * U - 190, "m")}
+    g = _gaps_or_error(arms, pond, src_fluid={(1, 0): "w"})
+    check("surface gap: an oil arm beside a water pond is not one body with it (0.95 cm and 0, not 1.9 cm)",
+          isinstance(g, list) and sorted((round(x[0], 9), x[1]) for x in g) == [(0.0, 1), (0.0095, 1)], str(g))
+    # sealed source: the arm below joins the pond only through a shut sluice on its shore square -> its own body
+    pond2 = {0: (lw.histogram([4, 4]), 4 * U, {(1, 0): 4, (3, 0): 4})}
+    arms2 = {(0, 0): (4, 2 * U + 190, "w"), (4, 0): (4, 2 * U - 190, "w")}
+    g = _gaps_or_error(arms2, pond2, sealed={(3, 0)})
+    check("surface gap: a shut sluice on a pond's shore square cuts the arm behind it off the pond",
+          isinstance(g, list) and sorted((round(x[0], 9), x[1]) for x in g) == [(0.0, 1), (0.0095, 1)], str(g))
+    g = _gaps_or_error(arms2, pond2)
+    check("surface gap control: the same sluice open reads one body of 1.9 cm",
+          isinstance(g, list) and len(g) == 1 and abs(g[0][0] - 0.019) < 1e-9, str(g))
+    # sealed limitless source: no surface 0 joins
+    g = _gaps_or_error({(0, 0): (4, U, "w")}, None, [(1, 0)], sealed={(1, 0)})
+    check("surface gap: a shut sluice on a limitless source square adds no surface 0",
+          isinstance(g, list) and len(g) == 1 and g[0][0] == 0, str(g))
+    # oracle_gaps reads the oracle's sluices: lake | SHUT gate (wet) | 3 canal squares 0.5 m below ground
+    o = oracle(10, 3, {(0, 1): 0, (1, 1): 0}, {0: {"limitless": True, "stock": 0.0}})
+    canal = row(2, 1, 4)
+    for c in canal:
+        o.dig(c, 2)
+        o.W[c] = U
+    o.sealed = {canal[0]}
+    g = lw.oracle_gaps(o)
+    check("oracle_gaps: a shut gate between a lake and a canal keeps the canal its own level body (3 squares, gap 0)",
+          len(g) == 1 and g[0][1] == 3 and g[0][0] == 0, str(g))
+    o.sealed = set()
+    g = lw.oracle_gaps(o)
+    check("oracle_gaps control: the gate open reads the canal 0.5 m below the lake (4 squares)",
+          len(g) == 1 and g[0][1] == 4 and abs(g[0][0] - 0.5) < 1e-9, str(g))
 
 
 # ───────────────────────────── the scenes, redrawn for level water ─────────────────────────────
@@ -509,6 +567,7 @@ def main():
     print("U = %d dL per notch per square (read from RM_Volume.cs)" % U)
     t_solve_basics()
     t_surface_gap_merge()
+    t_surface_gap_parity()
     s1()
     s2()
     s4()

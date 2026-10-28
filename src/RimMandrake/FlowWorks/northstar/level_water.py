@@ -544,14 +544,17 @@ def _solve_domain(o, cells, ponds, limitless_mouths, mouth_edges, fl, pond_befor
 
 # ───────────────────────────── the per-body surface-gap diagnostic ─────────────────────────────
 
-def surface_gaps(cells, ponds=None, limitless=()):
+def surface_gaps(cells, ponds=None, limitless=(), sealed=(), src_fluid=None):
     """cells: {(x, z): (D, W, fluid)} for dug squares; ponds: {bid: (H, dl, {source square: bed})}; limitless: source
     squares of limitless bodies. A body is a 4-way run of wet squares of one fluid plus every limitless source a wet
     square of it touches and every pond JOINED to it below the surface: through a square's link to a pond shore square
     of bed b, which reaches min(D, b) notches down, so the pond joins only when its surface or the square's stands above
     that link's floor (a pond drawn down below a shallow shore is a separate body). Runs joined to the SAME pond are one
     body (SURFACEGAP_MERGE_ARMS_THROUGH_POND: two arms of one pond, one above and one below it, are one gap, not two
-    half-gaps), transitively through chains of runs and ponds. Returns [(gap_m, n_squares, min_surface_m, max_surface_m)] per body, largest gap first:
+    half-gaps), transitively through chains of runs and ponds. As the solve (_domain; RM_FlowKernel.ExactTouchSource) a body
+    never passes a shut sluice: `sealed` squares (dug or source) are skipped, and a run joins a source only when their
+    fluids are compatible (src_fluid: {source square: fluid}; None on either side is compatible). `cells` is the whole
+    domain: a run never leaves it (SURFACEGAP_PARITY_FIX_TIES_ARE_UNSORTED). Returns [(gap_m, n_squares, min_surface_m, max_surface_m)] per body, largest gap first:
     the instrument RM_NorthstarProofs.ProofLevelSurface reports live and level_surface_bar.py judges (< 1 cm)."""
     ponds = ponds or {}
     pond_of = {}
@@ -560,10 +563,16 @@ def surface_gaps(cells, ponds=None, limitless=()):
             pond_of[s] = bid
     psurf = {bid: pond_surface_height(h, dl) for bid, (h, dl, _) in ponds.items()}
     lim = set(limitless)
+    sealed = set(sealed)
+    src_fluid = src_fluid or {}
+
+    def joins(fl, s):
+        sf = src_fluid.get(s)
+        return s not in sealed and (fl is None or sf is None or sf == fl)
     seen, runs = set(), []
     for c in sorted(cells, key=lambda c: (c[1], c[0])):
         D, W, fl = cells[c]
-        if c in seen or W <= 0:
+        if c in seen or W <= 0 or c in sealed:
             continue
         run, i = [c], 0
         seen.add(c)
@@ -576,9 +585,11 @@ def surface_gaps(cells, ponds=None, limitless=()):
             for dx, dz in CARDINAL:
                 n = (a[0] + dx, a[1] + dz)
                 if n in cells:
-                    if n not in seen and cells[n][1] > 0 and cells[n][2] == fl:
+                    if n not in seen and cells[n][1] > 0 and cells[n][2] == fl and n not in sealed:
                         seen.add(n)
                         run.append(n)
+                elif not joins(fl, n):
+                    continue
                 elif n in pond_of:
                     bid = pond_of[n]
                     link = -min(cells[a][0], ponds[bid][2][n]) * U
@@ -620,16 +631,17 @@ def surface_gaps(cells, ponds=None, limitless=()):
 
 
 def oracle_gaps(o):
-    """surface_gaps over a PulseOracle in exact mode."""
+    """surface_gaps over a PulseOracle in exact mode: its shut sluices (o.sealed) and its sources, all water (DonorFluid)."""
     cells = {c: (o.D[c], o.W[c], _fluid(o, c)) for c in o.D if o.exc(c)}
-    ponds, lim = {}, []
+    ponds, lim, src_fluid = {}, [], {}
     for bid, b in o.bodies.items():
         srcs = [s for s, i in o.src.items() if i == bid and o.is_source(s)]
+        src_fluid.update((s, WATER) for s in srcs)
         if b["limitless"] or not o.budget:
             lim += srcs
         else:
             ponds[bid] = (pond_hist(o, bid), pond_dl(o, bid), {s: o.beds.get(s, 4) for s in srcs})
-    return surface_gaps(cells, ponds, lim)
+    return surface_gaps(cells, ponds, lim, getattr(o, "sealed", ()), src_fluid)
 
 
 # ───────────── pours and fill-ins in decilitres (PUMP_CANAL_FEED / HOSE_LEFTOVER / CANAL_FILLIN fixes) ─────────────

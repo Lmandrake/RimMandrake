@@ -3341,8 +3341,9 @@ namespace RimMandrake.FlowWorks
 				{
 					return -1;
 				}
-				int b = stock.LevelBodyOf(map, n, this);
-				return b < 0 ? -2 : b;
+				// the kernel's own read: a switched-off liquid's source is no node (ExactTouchSource), never a limitless mouth
+				int b = ((RM_ILevelWorld)this).LevelBodyOf(i);
+				return b == RM_FlowKernel.LevelBodyDisabled ? -1 : b < 0 ? -2 : b;
 			};
 			System.Func<int, double> surf = b =>
 			{
@@ -3352,7 +3353,7 @@ namespace RimMandrake.FlowWorks
 			};
 			return RM_SurfaceGap.Measure(cells, i => depthGrid[i], WaterDl, i => FluidAt(map.cellIndices.IndexToCell(i)),
 				cardinal, pondOf, surf, i => BedLevelsAt(map.cellIndices.IndexToCell(i)),
-				i => RM_FlowDoorRules.SealsLiquid(map.edificeGrid[i]));
+				i => RM_FlowDoorRules.SealsLiquid(map.edificeGrid[i]), i => DonorFluid(map.cellIndices.IndexToCell(i), true));
 		}
 
 
