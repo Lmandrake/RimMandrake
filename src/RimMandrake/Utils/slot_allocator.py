@@ -743,8 +743,11 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why):
     blind = sorted(s for s, v in run.items() if v is None)
     if blind:
         why.append(f"helper count unavailable for {', '.join(blind)}: no overage credited this check")
-    over = sum(max(0, run[s] - base.get(s, 0)) for s in run if run[s] is not None)
-    under = sum(max(0, base.get(s, 0) - run.get(s, 0)) for s in base) if run and not blind else 0
+    # the elapsed interval ran under the allowance published at its start, not the one computed now (review night
+    # S11: a mode drop must not charge helpers that complied with the previous N)
+    allowed = state.get("overage_base") if isinstance(state.get("overage_base"), dict) else base
+    over = sum(max(0, run[s] - allowed.get(s, 0)) for s in run if run[s] is not None)
+    under = sum(max(0, allowed.get(s, 0) - run.get(s, 0)) for s in allowed) if run and not blind else 0
     paying = ov is None and presence != "BENCH"
     owed += over * dt
     credited = 0.0
@@ -964,7 +967,7 @@ def decide(inp, state, rules, now):
                  "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
                  "account": (None if blind else inp.get("account")) or state.get("account"),
                  "overage_h": overage["owed_h"],
-                 "overage_t": now, "sitting": sit,
+                 "overage_t": now, "overage_base": base, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
                  "total": pre_cut_total
                  if not (sess is not None and sess > tk["session_brake_pct_used_gt"]) else total}
@@ -990,7 +993,7 @@ def override_until(hours, persisted_reset, meter_reset, now):
     No reset known is an error, never a silent 24 h."""
     if hours:
         return iso_local(now + hours * HOUR), None
-    for r in (persisted_reset, meter_reset):
+    for r in (meter_reset, persisted_reset):  # the meter names the CURRENT burn account's reset (review night S12)
         if r and (epoch(r) or 0) > now:
             return r, None
     return None, "the burn account's weekly reset is unavailable (no allocation record, meter gave none): pass --hours"
@@ -1125,10 +1128,11 @@ def main(argv=None):
     if a.hours:
         until = iso_local(now + a.hours * HOUR)
     else:
-        cur = ((read_json(streams_dir() / "allocation.json") or {}).get("state") or {}).get("reset_at")
-        mr = None
-        if not (cur and (epoch(cur) or 0) > now):
-            mr = gather(now, rules).get("week_resets_at")
+        pst = (read_json(streams_dir() / "allocation.json") or {}).get("state") or {}
+        g = gather(now, rules)
+        mr = g.get("week_resets_at") if g.get("source") in ("MEASURED", "ESTIMATE") else None
+        # the persisted reset is the fallback, and only for the account it was persisted for
+        cur = pst.get("reset_at") if (not g.get("account") or pst.get("account") in (None, g.get("account"))) else None
         until, err = override_until(None, cur, mr, now)
         if err:
             print("refused: " + err, file=sys.stderr)

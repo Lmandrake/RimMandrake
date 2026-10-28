@@ -753,5 +753,36 @@ with tempfile.TemporaryDirectory() as _td:
     check("S10: publish() and `now --write` compute while holding the allocation lock", err is None
           and seen == ["locked", "locked"], (err, seen))
 
+# S11: helpers that ran within the allowance in force over the elapsed interval owe nothing when the new base drops
+r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 5, "FOUNDRY": 1}, "token_mode": "ALMOST_OUT",
+       "since": NOW - 5 * H, "reset_at": "2026-10-28T13:00-07:00"},
+      week_pct_left=10.0, week_pct_used=90.0, helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=2.0)
+check("S11: a drop of the base to ALMOST_OUT charges no overage for the interval run under BENCH 5 / FOUNDRY 1",
+      r["overage"]["accrued_h"] == 0 and isinstance(r["state"].get("overage_base"), dict)
+      and r["state"]["overage_base"].get("BENCH", 0) <= 1, (r["overage"], r["state"].get("overage_base")))
+r = d({"overage_t": NOW - 0.25 * H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}}, helpers_running={"BENCH": 5, "FOUNDRY": 1},
+      owner_window_min=2.0)
+check("S11 control: above the interval's allowance is charged (5 helper over 1/0 x 0.25 h = 1.25)",
+      abs(r["overage"]["accrued_h"] - 1.25) < 1e-6, r["overage"])
+# S12: `set` until the reset takes the CURRENT burn account's reset, not the one persisted for the account before
+with tempfile.TemporaryDirectory() as _td:
+    os.environ["RM_STREAMS_DIR"] = _td
+    _t = time.time()
+    a_reset, b_reset = SA.iso_local(_t + 2 * H), SA.iso_local(_t + 100 * H)
+    (Path(_td) / "allocation.json").write_text(json.dumps({"t": _t - 60, "state": {"reset_at": a_reset, "account": "acctA"}}))
+    _g = SA.gather
+    SA.gather = lambda now, rules=None: {"account": "acctB", "source": "MEASURED", "week_resets_at": b_reset}
+    try:
+        rc = SA.main(["set", "--n", "4", "--owner-said", "four until reset"])
+        ovr = json.loads((Path(_td) / "slot_override.json").read_text(encoding="utf-8"))
+    finally:
+        SA.gather = _g
+        if _sd_old is None:
+            os.environ.pop("RM_STREAMS_DIR", None)
+        else:
+            os.environ["RM_STREAMS_DIR"] = _sd_old
+    check("S12: set without --hours lasts until the current burn account's reset", rc == 0
+          and SA.epoch(ovr["until"]) == SA.epoch(b_reset), (rc, ovr.get("until"), b_reset))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
