@@ -385,9 +385,17 @@ def ledger_reading(read):
 
 
 def _after(events, since):
+    """(epoch, ev) for the events after `since`. The epoch is the event's `ts` second plus the microseconds of its
+    `tsn`: two events on one item in the same second stay two (ROLE_EVENT_KEY_WIDEN_SAME_SECOND_TWINS); int(epoch)
+    is still the ts second, which the int-second keys of a seen list written before the widening match."""
     for ev in events:
         t = utc_epoch(ev.get("ts"))
-        if t is not None and t > since:
+        if t is None:
+            continue
+        tsn = ev.get("tsn")
+        if isinstance(tsn, int) and not isinstance(tsn, bool) and tsn > 0:
+            t += (tsn % 10 ** 9 // 1000) / 1e6
+        if t > since:
             yield t, ev
 
 
@@ -450,7 +458,14 @@ def pending_events(role, lr, since, world_filter=True):
 
 
 def event_key(ev):
-    """One ledger event's identity in a trigger list: (epoch, id, what) -> "epoch|id|what"."""
+    """One ledger event's identity in a trigger list: (epoch, id, what) -> "S.UUUUUU|id|what", the epoch always to the
+    microsecond (.000000 for an event with no tsn), so a list event_key wrote is never mistaken for a pre-widening one."""
+    t, iid, what = ev
+    return "%d.%06d|%s|%s" % (int(t), int(round((t - int(t)) * 1e6)), iid, what)
+
+
+def legacy_key(ev):
+    """The int-second key event_key wrote before the widening."""
     t, iid, what = ev
     return "%d|%s|%s" % (int(t), iid, what)
 
@@ -470,7 +485,10 @@ def unseen(evs, rs):
     ts is its writer's: an event written on another clone before a launch can be ingested after it. So the window
     reaches EVENT_LOOKBACK_S behind the cursor and an event counts once by identity, not by ts (review round U, N4)."""
     seen = set(rs.get("events_seen") or [])
-    return [e for e in evs if event_key(e) not in seen]
+    # a list with no microsecond key was written before the widening: its int-second keys still cover the events
+    # they named, so a deploy re-fires nothing; the next run rewrites it widened
+    old = not any("." in k.split("|", 1)[0] for k in seen)
+    return [e for e in evs if event_key(e) not in seen and not (old and legacy_key(e) in seen)]
 
 
 def iso(t):

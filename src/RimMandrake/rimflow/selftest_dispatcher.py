@@ -1761,6 +1761,27 @@ def test_role_event_cap_refusal_keeps_quota():
     check(la and la[0]["mode"] == "event", "the cap leaves room the same day: the event runs (quota unused) %r" % a)
 
 
+def test_role_event_key_same_second_twins():
+    """ROLE_EVENT_KEY_WIDEN_SAME_SECOND_TWINS: two replan notes on one item in the same second are two events (their
+    tsn differ), so a run that read the first does not swallow the second; a seen list written before the widening
+    (int-second keys) still covers the events it named, so a deploy re-fires nothing."""
+    ts, base = "2026-10-28T01:00:00Z", 1793174400 * 10 ** 9
+    a = {"event": "note", "id": "PROD_ITEM", "text": "REPLAN REQUEST one", "ts": ts, "tsn": base + 100000000}
+    b = dict(a, text="REPLAN REQUEST two", tsn=base + 700000000)
+    ea = RL.replan_requests([a], 0, "PROD_ITEM", "REPLAN REQUEST")
+    eb = RL.replan_requests([a, b], 0, "PROD_ITEM", "REPLAN REQUEST")
+    rs = {"events_seen": [RL.event_key(e) for e in ea]}
+    check(len(eb) == 2 and len(RL.unseen(eb, rs)) == 1,
+          "a same-second twin note is a second event, unseen after a run read the first: %s %s" % (eb, rs))
+    legacy = {"events_seen": ["%d|PROD_ITEM|replan request" % RL.utc_epoch(ts)]}
+    check(RL.unseen(eb, legacy) == [], "an int-second seen list from before the widening still covers its events")
+    check(all(int(e[0]) == RL.utc_epoch(ts) for e in eb), "an event's whole second is still its ts")
+    z = RL.replan_requests([dict(a, tsn=base)], 0, "PROD_ITEM", "REPLAN REQUEST")
+    zs = {"events_seen": [RL.event_key(e) for e in z]}
+    check(len(RL.unseen(eb, zs)) == 2, "a new list whose only event fell on .000000 is not read as a legacy list: %s"
+          % zs)
+
+
 def test_role_review_r5():
     """Review r5 (role_launch.py): a negative quick_cap_x (a negative budget passes every cap) and an unknown band
     `slots` policy (slot_blocked would block nothing) are schedule errors, refused by validate_role."""
@@ -3157,6 +3178,7 @@ def main():
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
               test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
+              test_role_event_key_same_second_twins,
               test_role_review_night_r3,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
