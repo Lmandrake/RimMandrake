@@ -533,6 +533,60 @@ def r3_evidence_root_account():
     return prob == "account_name" and not shown and counted >= 1 and base is None, (prob, shown, counted, base)
 
 
+class _Registry:
+    """A temporary account registry for one check (restores RULE_FILES on exit)."""
+    def __init__(self, accounts):
+        self.accounts = accounts
+
+    def __enter__(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        p = os.path.join(self.tmp.name, "slot_rules.json")
+        with open(p, "w") as f:
+            json.dump({"accounts": self.accounts}, f)
+        self.old, C.RULE_FILES = C.RULE_FILES, (p,)
+        return self
+
+    def __exit__(self, *a):
+        C.RULE_FILES = self.old
+        self.tmp.cleanup()
+
+
+def r4_sha_account():
+    """GPT r4 H1: a resolved sha whose shown prefix is a registry account key never shows; the drop is counted;
+    the final guard refuses a labelled sha that names an account."""
+    with _Registry({SHA_A[:12]: {}}):
+        try:
+            pg, page = digest([{"source": "commit", "t": T0, "sha": SHA_A, "class": "scope"}])
+            shown = SHA_A[:12] in page
+            counted = sum(s.fields_withheld for s in pg.sources) if hasattr(pg, "sources") else pg.fields_withheld
+        except Exception:  # noqa: BLE001 - refusing the page is also a pass
+            shown, counted = False, 1
+        guard = BL.page_problem("git %s" % SHA_A[:12])
+    _p, base = digest([{"source": "commit", "t": T0, "sha": SHA_A, "class": "scope"}])
+    return (not shown and counted >= 1 and guard is not None and SHA_A[:12] in base), repr((shown, counted, guard))
+
+
+def r4_note_account():
+    """GPT r4 H2: a stdlib note whose text names a registry account renders nothing, and is_note_text refuses it;
+    an unavailable registry fails closed."""
+    b = {"role": "Conductor", "outcome": "completed"}
+    with _Registry({"conductor": {}}):
+        t, ok = C.note_text(b), C.is_note_text("dispatcher: Conductor: completed")
+    with tempfile.TemporaryDirectory() as tmp:
+        p = os.path.join(tmp, "slot_rules.json")
+        with open(p, "w") as f:
+            f.write("{not json")
+        old, C.RULE_FILES = C.RULE_FILES, (p,)
+        try:
+            u = C.note_text(b)
+        except C.RegistryUnavailable:
+            u = None
+        finally:
+            C.RULE_FILES = old
+    base = C.note_text(b)
+    return t is None and not ok and u is None and base == "dispatcher: Conductor: completed", repr((t, ok, u, base))
+
+
 CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar", f1_names),
           ("F1 queue kind is a closed enum and row a 1-2 digit number", f1_queue_kind_row),
           ("F1 digest subject and evidence file name pass the strict grammar or drop", f1_digest_subject_path),
@@ -557,6 +611,8 @@ CHECKS = [("F1 a figure or key in a name is refused by the strict name grammar",
           ("F15 a commit line's pick reaches the closed fields", f15_pick),
           ("F17 a refused sha is counted as a withheld field", f17_counted),
           ("R1-H1 a subject or file stem shows only as a registered defName or known id", r1_registry_names),
+          ("R4-H1 a resolved sha naming an account never shows; the guard refuses it", r4_sha_account),
+          ("R4-H2 a stdlib note naming an account renders nothing; is_note_text refuses it", r4_note_account),
           ("R1-H2 short, split and dotted account names are refused; a malformed registry raises",
            r1_short_dotted_accounts),
           ("R1-H3 a shadowed model_dump_json plus a __dict__ edit never renders", r1_shadowed_dump),

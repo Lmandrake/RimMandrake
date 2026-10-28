@@ -500,7 +500,13 @@ def note_text(b):
         return None
     mode = b.get("mode")
     subject = " ".join(x for x in (b["role"], mode, "run" if (mode or b.get("unit")) else None) if x)
-    return "dispatcher: %s: %s" % (subject, NOTE_OUTCOMES[b["outcome"]])
+    text = "dispatcher: %s: %s" % (subject, NOTE_OUTCOMES[b["outcome"]])
+    try:            # the stdlib route gets no page guard, so it checks accounts itself and fails closed (GPT r4 H2)
+        if account_in(text):
+            return None
+    except RegistryUnavailable:
+        return None
+    return text
 
 
 def is_note_text(text):

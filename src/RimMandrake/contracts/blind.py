@@ -274,8 +274,10 @@ def _resolve(resolve, cands):
         got = resolve(cs) or {}
     except Exception:  # noqa: BLE001 - an unavailable resolver refuses every sha
         return {}
+    # a commit that resolves proves provenance, not that its shown prefix names no account (GPT r4 H1): such a sha
+    # is treated as unresolved, so the caller drops and counts it
     return {c: f for c, f in got.items() if c in cs and isinstance(f, str) and re.fullmatch(r"[0-9a-f]{40}", f)
-            and f.startswith(c)}
+            and f.startswith(c) and not C.account_in(f[:12]) and not C.account_in(f) and not C.account_in(c)}
 
 
 _PICK_IN = re.compile(r"\b(?i:route|option|pick|choice|chose|choose|chosen)\s+([A-H])\b")
@@ -676,10 +678,14 @@ def page_problem(text):
     if _GUARD_GROUPED.search(text):
         return "word: number"
     body = re.sub(r"`[^`]*`", " ", text)
+    if any(C.account_in(m.group(0).split(" ")[1]) for m in _GUARD_SHA_AT.finditer(body)):
+        return "word: account_name"        # a labelled sha is exempt from the word grammar, never from accounts (r4 H1)
     body = _GUARD_SHA_AT.sub(r"\1", body)   # a sha the renderer printed after its label may be all digits (0.4% of shas)
     for w in _SPLIT.split(body):
         w = w.strip(".-")
         if not w or _GUARD_SHA.match(w) or _GUARD_COUNT.match(w):
+            if w and C.account_in(w):
+                return "word: account_name"
             continue
         r = C.ident_problem(w, 140)
         if r:
