@@ -619,5 +619,25 @@ _stage3_lk(L(2), T3 + 3600, live=None, back={"phase": "pending", "at": T3 - 60},
 ok = (o["back"] or {}).get("phase") == "pending"
 fails += not ok
 print("%s  stage3 aged pending with live unknown: kept: %r" % ("ok  " if ok else "FAIL", o["back"]))
+# review r5 GPT round 3: a pending stage-1 marker is promoted to done once TO is seen live, so a later stage-3 clear
+# retry is never mistaken for an abandoned stage-1 attempt and deleted
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
+    A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+    _json.dump({"phase": "pending", "at": t2 - 60}, open(A.MARKER, "w"))
+    _json.dump({"burn": 1}, open(A.STAGE2, "w"))
+    A.run = lambda argv, **k: (0, "ok")
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": L(7)}})))
+    A.time = types.SimpleNamespace(time=lambda: t2)
+    A.live_account = lambda: "lukas"
+    try:
+        A.check(False)
+        mk = _json.load(open(A.MARKER))
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account = saved
+ok = mk.get("phase") == "done"
+fails += not ok
+print("%s  stage 1 pending marker promoted to done when lukas is seen live: %r" % ("ok  " if ok else "FAIL", mk))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

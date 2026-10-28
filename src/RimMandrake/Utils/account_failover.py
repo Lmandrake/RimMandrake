@@ -306,6 +306,10 @@ def stage2(acc, dry):
             os.remove(MARKER)
         log({"do": "abandoned_switch_dropped", "why": "pending marker from %s, live is %r" % (mk.get("at"), live)})
         return 0
+    if isinstance(mk, dict) and mk.get("phase") == "pending" and live == TO and not dry:
+        # TO seen live: the stage-1 switch happened. Promote it, so a later stage-3 pass (live FROM, clear owed) is never
+        # mistaken for an abandoned attempt and its marker deleted (review r5 GPT round 3)
+        write_atomic(MARKER, dict(mk, phase="done"))
     after = now >= datetime.fromisoformat(RESET).timestamp()
     if after:
         r3 = stage3(acc, live, now, dry, st)
