@@ -107,14 +107,16 @@ def filed(name, run):
     return False
 
 
-def finding_name(mod, row, job_id, salt=False):
+def finding_name(mod, row, job_id, salt=False, chain=None):
     """MOD_ROW_FAILS_JOBHEX6. When folding the row to A-Z0-9_ loses anything (a cut at 44, `foo-bar` vs `foo_bar`),
-    6 hex of the raw mod/row keep two rows of one job from sharing a name (one would pass for the other's finding)."""
+    6 hex of the raw mod/row keep two rows of one job from sharing a name (one would pass for the other's finding).
+    `chain` (given only when one row id FAILs in two chains) joins the hashed text, so those two differ as well."""
     raw = "%s_%s" % (mod, row)
     full = re.sub(r"[^A-Z0-9]+", "_", raw.upper()).strip("_")
     base = full[:44]
     if salt or base != raw.upper():
-        base = "%s_%s" % (base[:37].rstrip("_"), hashlib.sha1(raw.encode("utf-8")).hexdigest()[:6].upper())
+        key = raw if chain is None else "%s\0%s" % (raw, chain)
+        base = "%s_%s" % (base[:37].rstrip("_"), hashlib.sha1(key.encode("utf-8")).hexdigest()[:6].upper())
     return "%s_FAILS_%s" % (base, job_id[-6:].upper())
 
 
@@ -247,7 +249,9 @@ def ingest_group(job, res, item, gres, att):
     plain = [finding_name(job["mod"], row["row"], job["id"]) for row in fails]
     for row, name in zip(fails, plain):
         if plain.count(name) > 1:              # rows only case apart (foo / FOO): each gets its own hash
-            name = finding_name(job["mod"], row["row"], job["id"], salt=True)
+            twin = sum(1 for r in fails if r["row"] == row["row"]) > 1    # one row id in two chains: chain joins it
+            name = finding_name(job["mod"], row["row"], job["id"], salt=True,
+                                chain=str(row.get("chain")) if twin else None)
         if filed(name, run):                   # filed by an ingest that died before marking the record
             found.append(name)
             continue

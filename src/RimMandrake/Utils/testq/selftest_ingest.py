@@ -302,6 +302,12 @@ def review_r1_checks():
         I.ingest_group(cr["job"], cr["result"], "B_CASE", cr["result"], cr["result"]["attempt"])
         fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
         check(len(fn) == 2 and len(set(fn)) == 2, "rows only case apart get two findings, two names: %s" % fn)
+        del calls[:]                           # review ing_r4: one row id FAILing in two chains is two findings
+        cr = done_rec("B_CASE", rows=(("r1", "FAIL"), ("r1", "FAIL")))
+        cr["result"]["rows"][1]["chain"] = "c2"
+        I.ingest_group(cr["job"], cr["result"], "B_CASE", cr["result"], cr["result"]["attempt"])
+        fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
+        check(len(fn) == 2 and len(set(fn)) == 2, "one row id failing in two chains gets two findings: %s" % fn)
         I.rimflow, I.recorded_run, I.shard_path = saved[0], saved[1], saved[2]
         names = {I.finding_name("Mock", r, "job_abcdef") for r in ("foo-bar", "foo_bar", "x" * 50 + "1", "x" * 50 + "2")}
         check(len(names) == 4, "two rows of one job never share a finding name: %s" % sorted(names))
