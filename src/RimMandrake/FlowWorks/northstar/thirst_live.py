@@ -408,6 +408,10 @@ def main(argv=None, bridge=None):
         if ok_:
             res["draftRearms"] = res.get("draftRearms", 0) + 1
             DRAFT_AT[pid] = CLOCK[0]
+        else:
+            # GPT review 2026-10-28: a half-done rearm leaves the pawn UNDRAFTED; say so (rows that need the draft read it)
+            res.setdefault("draftRefused", []).append({"pawn": pid, "wanted": "rearm", "reply": (str(r0) + str(r1))[:160]})
+            DRAFT_AT.pop(pid, None)
         return ok_
 
     def rearm_due(k):

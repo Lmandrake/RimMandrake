@@ -155,6 +155,9 @@ CASES = [
     # live J20261028T014816Z-d2e098 (THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE): a bystander drafted ~10,000 ticks earlier
     # is freed by the AutoUndrafter mid-T23 (a re-draft re-arms nothing), fills brine and lands it in the settle
     ("auto-undraft must not free a bystander mid-T23", "T23", ["auto_undraft"], [("T23", "PASS")]),
+    # GPT review 2026-10-28: the T23-only case ends before the first timer deadline; this long run crosses several
+    ("auto-undraft long run: periodic re-arm keeps every draft", "T3,T6,T9,T10,T12", ["auto_undraft"],
+     [("T3", "PASS"), ("T6", "PASS"), ("T12", "PASS")]),
     ("F9 snow carried off, an unrelated fresh bucket lands", "T25", ["carry_snow"], [("T25", "FAIL")]),
     ("F10 the pond arm fills nothing", "T25", ["no_bucket_fill"], [("T25", "FAIL")]),
     ("F11 no bill, an old wooden snow bucket melts", "T26", ["no_bill", "leftover_wood_snow"], [("T26", "FAIL")]),
@@ -197,7 +200,10 @@ for label, only, faults, wants in CASES:
         check("in-flight pour: one fill was in flight at the switch and only it landed in the settle",
               det.get("inFlightAllowance") == 1 and len(det.get("landedInSettle") or []) == 1,
               (det.get("inFlightAllowance"), det.get("landedInSettle")))
-    if label.startswith("auto-undraft"):
+    if label.startswith("auto-undraft long run"):
+        check("auto-undraft long run: nobody was freed and the periodic re-arm fired",
+              getattr(B, "auto_undrafts", None) == 0 and res.get("draftRearms", 0) > 12, (getattr(B, "auto_undrafts", None), res.get("draftRearms")))
+    elif label.startswith("auto-undraft"):
         det = next(r["detail"] for r in res["rows"] if r["id"].startswith("T23"))
         check("auto-undraft: the driver re-armed the drafts and no bystander came free",
               res.get("draftRearms", 0) >= 1 and getattr(B, "auto_undrafts", None) == 0 and not det.get("othersInSettle"),
