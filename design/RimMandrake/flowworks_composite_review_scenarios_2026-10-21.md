@@ -799,6 +799,8 @@ of `design/validation_walks/RimMandrake/FlowWorks.md`. Re-derive it, never hand-
 | `land_liquids_3` | V+ (art wall) |
 | `many_waters` | V+ (art wall) |
 | `land_deepsand` | C1 |
+| `hold_ladder_steel` | V (review-map station only: C12 stages the wooden rail and portable ladders, no composite stages RM_LadderSteel) |
+| `ice_melter` | V (review-map station only: no composite stages RM_IceMelter or crushed ice) |
 | `land_shores` | L (lake map, `lake_floor_stage.py`: shores need a generated map, not a staged one) |
 | `land_swale` | C1 |
 | `land_panning` | C11 |

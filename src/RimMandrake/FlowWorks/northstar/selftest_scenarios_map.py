@@ -139,7 +139,10 @@ def main():
     import review_map_rivers as RV
     ex = set().union(*[set(s["exercises"]) for s in SC.ALL])
     stations = set(RVM.SETUPS) | {"river_ford", "river_works_looks"} | {s["id"] for s in RV.STATIONS}
-    homes = {"land_liquids", "land_liquids_2", "land_liquids_3", "many_waters", "land_shores", "land_settings"}
+    homes = {"land_liquids", "land_liquids_2", "land_liquids_3", "many_waters", "land_shores", "land_settings",
+             # review-map-only stations (97397b0071): no composite scenario stages these defs yet; each is shown as its
+             # own review-map station (hold_ladder_steel: a 5x5 pit with two steel ladders; ice_melter: bench + crushed ice)
+             "hold_ladder_steel", "ice_melter"}
     check("every old station lands in a scenario or its stated home (design §4.1)", stations - ex <= homes,
           sorted(stations - ex - homes))
     design = open(os.path.join(M.REPO, "design", "RimMandrake", "flowworks_composite_review_scenarios_2026-10-21.md"),
