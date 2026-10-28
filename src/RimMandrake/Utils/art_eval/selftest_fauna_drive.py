@@ -86,6 +86,17 @@ def main():
     check("row with install_to is left alone", "target_texpath" not in FD.bind_texpath({"target_def": "RM_Fly", "install_to": "a.png"}, tp))
     check("unresolvable def stays unbound (fill_queue refuses loudly)", "target_texpath" not in FD.bind_texpath({"target_def": "RM_None"}, tp))
     check("real flyer resolves its adult body", FD.bind_texpath({"target_def": "RM_FireHawk"}).get("target_texpath", "").endswith("/FireHawk/FireHawk"))
+    # a failed Sonnet rewrite (session limit) must never become the prompt: Flamefang/Ashwallow/Sytheclaw r2 were
+    # rendered from "You've hit your session limit ..." (ARTEVAL_REGEN_PROMPT_FIX_LIMIT_TEXT)
+    real = FD.R.call_claude
+    try:
+        FD.R.call_claude = lambda *a, **k: ("You've hit your session limit · resets 1:10pm", {"error": "limit"})
+        p, by = FD.neutral_prompt("A red beast. Seen from the side view. Transparent background.")
+        check("rewrite error falls back to sentence-drop", by == "sentence-drop" and "session limit" not in p and "red beast" in p)
+        FD.R.call_claude = lambda *a, **k: ("", {"error": "timeout"})
+        check("empty rewrite falls back", FD.neutral_prompt("A red beast. Seen from the side view.")[1] == "sentence-drop")
+    finally:
+        FD.R.call_claude = real
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

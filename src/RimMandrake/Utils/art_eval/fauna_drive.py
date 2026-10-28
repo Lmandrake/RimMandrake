@@ -63,7 +63,8 @@ def neutral_prompt(prompt: str) -> tuple[str, str]:
            "keep the painterly realistic style and transparent background sentence, one paragraph. Return only the "
            "new prompt.\n\n" + prompt)
     text, meta = R.call_claude(ask, R.storage_root(), "sonnet", timeout=200, tools="")
-    text = text.strip().strip('"')
+    # a failed call's text is the CLI's error ("You've hit your session limit ..."), never a prompt
+    text = "" if meta.get("error") else text.strip().strip('"')
     if text and not VIEWWORDS.search(text):
         return text, "sonnet"
     sents = re.split(r"(?<=[.!?])\s+", prompt)

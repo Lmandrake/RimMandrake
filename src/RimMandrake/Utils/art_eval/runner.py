@@ -97,7 +97,13 @@ def call_claude(prompt: str, cwd: Path, rung: str = "opus", timeout: int = 420, 
     meta["models_reported"] = sorted((env.get("modelUsage") or {}).keys())
     meta["cost_usd"] = env.get("total_cost_usd")
     if env.get("is_error"):
+        # the result of a failed call is the CLI's error text ("You've hit your session limit ..."): never hand it on
+        # as a reply, a caller that forgets meta["error"] would use it as a prompt (ARTEVAL_REGEN_PROMPT_FIX_LIMIT_TEXT)
         meta["error"] = str(env.get("result"))[:500]
+        return "", meta
+    if r.returncode != 0:
+        meta["error"] = (str(env.get("result") or "") + (r.stderr or "") or f"exit {r.returncode}")[-500:]
+        return "", meta
     return env.get("result") or "", meta
 
 
