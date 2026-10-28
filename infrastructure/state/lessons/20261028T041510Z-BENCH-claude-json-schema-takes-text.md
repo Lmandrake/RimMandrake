@@ -1,0 +1,2 @@
+claude -p --json-schema takes the schema TEXT, not a file path (claude -p --help; measured 2026-10-28 with haiku). With --output-format json the validated object is the top-level key structured_output (result also holds it as a string). The Arbiter's /pattern/anyOf schema is accepted. Evidence D:\ClaudeWork\rimmandrake\arbiter_schema\probe.json, probe2.json.
+home: skills/claude-api or src/RimMandrake/contracts/export.py docstring
