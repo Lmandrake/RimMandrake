@@ -5,3 +5,5 @@ Update (rerun on origin/main 6c0a3a6435 + liquidnet shrink, D:\ClaudeWork\rimman
 source pins on files the liquidnet change does not touch: the 2 above, plus HoseBand_P5_newly_dug_square_replans_or_retracts_once
 ("the 250-tick corridor branch is not the re-plan-or-retract") and hose suite "map changes (a fogged map too) bump the version;
 MapRemoved unhooks" (HoseCorridorVersions.cs reshaped upstream).
+
+Update (net_review at 36e38675a5, D:\ClaudeWork\rimmandrake\net_review\cs_full.txt): back to 2 red, the original two (GptA_hoses_off_never_retract_on_obstacles, A3 recycled world); d7abb66e1c re-pinned others but these two still miss after 74fe2f4c6e.
