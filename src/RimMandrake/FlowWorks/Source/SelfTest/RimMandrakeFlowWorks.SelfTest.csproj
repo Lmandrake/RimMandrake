@@ -200,6 +200,7 @@
     <Compile Include="..\Machinery\RM_LiquidTransfer.cs" />
     <Compile Include="TransferChecks.cs" />
     <Compile Include="NetComponentChecks.cs" />
+    <Compile Include="NetIncrementalChecks.cs" />
     <Compile Include="PlanChecks.cs" />
     <Compile Include="SettleChecks.cs" />
     <Compile Include="LevellingChecks.cs" />

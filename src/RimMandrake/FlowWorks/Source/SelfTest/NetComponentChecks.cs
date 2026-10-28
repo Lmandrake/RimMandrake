@@ -147,16 +147,19 @@ namespace RimMandrake.FlowWorks.SelfTest
             {
                 string net = RiverSwitchFlipChecks.Src(Path.Combine("Machinery", "RM_LiquidNet.cs"));
                 // spawn / despawn of a pipe, tank or machine (one patch on Building, cached per def)
-                RiverSwitchFlipChecks.Has(net, @"\[HarmonyLib\.HarmonyPatch\(typeof\(Building\), nameof\(Building\.SpawnSetup\)\)\][^{]*\{ public static void Postfix\(Building __instance, Map map\) \{ if \(RM_LiquidNet\.ChangesTopology\(__instance\)\) \{ RM_LiquidNet\.Bump\(map\);",
-                    "a building spawn with a hydraulic role bumps");
-                RiverSwitchFlipChecks.Has(net, @"\[HarmonyLib\.HarmonyPatch\(typeof\(Building\), nameof\(Building\.DeSpawn\)\)\][^{]*\{ public static void Prefix\(Building __instance, out Map __state\) \{ __state = __instance\.Map; \} public static void Postfix\(Building __instance, Map __state\) \{ if \(RM_LiquidNet\.ChangesTopology\(__instance\)\) \{ RM_LiquidNet\.Bump\(__state\);",
-                    "a despawn bumps the map it left");
+                RiverSwitchFlipChecks.Has(net, @"\[HarmonyLib\.HarmonyPatch\(typeof\(Building\), nameof\(Building\.SpawnSetup\)\)\][^{]*\{ public static void Postfix\(Building __instance, Map map\) \{ if \(RM_LiquidNet\.ChangesTopology\(__instance\)\) \{ RM_LiquidNet\.BumpAt\(map, __instance, __instance\.OccupiedRect\(\)\);",
+                    "a building spawn with a hydraulic role bumps (locally: LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED)");
+                RiverSwitchFlipChecks.Has(net, @"\[HarmonyLib\.HarmonyPatch\(typeof\(Building\), nameof\(Building\.DeSpawn\)\)\][^{]*\{ public static void Prefix\(Building __instance, out KeyValuePair<Map, CellRect> __state\) \{ __state = new KeyValuePair<Map, CellRect>\(__instance\.Map, __instance\.OccupiedRect\(\)\); \} public static void Postfix\(Building __instance, KeyValuePair<Map, CellRect> __state\) \{ if \(RM_LiquidNet\.ChangesTopology\(__instance\) \|\| RM_LiquidNet\.IsOutsideOrigin\(__state\.Key, __instance\)\) \{ RM_LiquidNet\.BumpAt\(__state\.Key, __instance, __state\.Value\);",
+                    "a despawn bumps the map it left, at the rect it left (read before the despawn)");
                 RiverSwitchFlipChecks.Has(net, @"topoDefs\[t\.def\] = b = RoleOfKind\(t\) != RM_NetRole\.None;", "pipes, tanks and machines (any hydraulic role) count");
                 // a reel state, port, coupling or free-end role change: the link signature (backstop) bumps
                 RiverSwitchFlipChecks.Has(net, @"return RM_HoseSettings\.enabled && r\?\.parent != null && r\.parent\.Spawned && r\.carry == HoseCarryState\.Laid && r\.lay != null;",
                     "eligibility (carry state, lay) is read by the signature");
                 RiverSwitchFlipChecks.Has(net, @"h = RM_LiquidNetKernel\.SigStep\(h, r\.parent\.thingIDNumber, IdOf\(inlet\), IdOf\(far\)\);", "each live reel's inlet and far identity are in the signature");
-                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return reels\?\.Count \?\? 0; \} sig = h;.*?RM_LiquidNet\.Bump\(map\); return reels\?\.Count \?\? 0; \}", "a changed signature rebuilds the links and bumps");
+                RiverSwitchFlipChecks.Has(net, @"if \(built && h == sig\) \{ return reels\?\.Count \?\? 0; \} sig = h; bool first = !built;.*?RM_NetLinkDiff\.Relink\(all, ends, first \? null : RM_LiquidNet\.LinkDelta\(map\), v => v is Thing\);.*?if \(first\) \{ RM_LiquidNet\.Bump\(map\); \} else \{ RM_LiquidNet\.BumpLinks\(map\); \} return reels\?\.Count \?\? 0; \}",
+                    "a changed signature relinks (recording the changed links in the net's delta) and bumps; a first build bumps fully");
+                RiverSwitchFlipChecks.Has(net, @"public static void Bump\(Map map\) \{.*?s\.revision\+\+; s\.outsideOrigins\.Clear\(\); s\.pending\.Full = true;", "an unspecified Bump rebuilds everything");
+                RiverSwitchFlipChecks.Has(net, @"bool local = last != null && !d\.Full && bits == lastBits && g\.SpanEdges\.SameAs\(lastEdges\);", "a revision keeps components only under the same switches and span edges");
                 RiverSwitchFlipChecks.Has(net, @"far = new RM_NetPort \{ Reel = r, Cell = r\.far, Role = role \};", "a free end with a role is a port (its role is in IdOf)");
                 RiverSwitchFlipChecks.Has(net, @"return \(\(long\)\(p\.Cell is IntVec3 pc \? pc\.x \* 7919 \+ pc\.z : 0\) << 8\) \^ \(long\)p\.Role", "the port identity includes its role");
                 // a settings change: the two switches are part of the revision key

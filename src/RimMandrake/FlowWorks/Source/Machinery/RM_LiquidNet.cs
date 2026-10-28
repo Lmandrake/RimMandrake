@@ -147,7 +147,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		}
 
 		// ---------------------------------------------------------------- the graph the kernel reads
-		internal sealed class MapGraph : IRM_NetGraph
+		internal sealed class MapGraph : IRM_NetGraph, IRM_NetNodeOrder
 		{
 			private readonly Map map;
 			private readonly RM_HoseLinks links;
@@ -178,6 +178,36 @@ namespace RimMandrake.FlowWorks.Machinery
 			}
 
 			public int Order(object v) => v is Thing t ? t.thingIDNumber : 0;
+
+			/// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: a component's tree hangs from its least node (cells by index, then relays
+			/// by thing id, then links by reel thing id), so routes never depend on which member asked first; a kept component and a
+			/// fresh build agree, and a reload rebuilds the same routes.</summary>
+			public int CompareNodes(object a, object b)
+			{
+				int ra = Rank(a), rb = Rank(b);
+				if (ra != rb)
+				{
+					return ra.CompareTo(rb);
+				}
+				if (a is IntVec3 ca && b is IntVec3 cb)
+				{
+					return map.cellIndices.CellToIndex(ca).CompareTo(map.cellIndices.CellToIndex(cb));
+				}
+				if (a is CompHoseReel xa && b is CompHoseReel xb)
+				{
+					return xa.parent.thingIDNumber.CompareTo(xb.parent.thingIDNumber);
+				}
+				if (a is RM_NetLink la && b is RM_NetLink lb)
+				{
+					int c = ReelId(la).CompareTo(ReelId(lb));
+					return c != 0 ? c : la.Id.CompareTo(lb.Id);
+				}
+				return 0;
+			}
+
+			private static int Rank(object v) => v is IntVec3 ? 0 : v is CompHoseReel ? 1 : v is RM_NetLink ? 2 : 3;
+
+			private static int ReelId(RM_NetLink l) => l.Reel is CompHoseReel r && r.parent != null ? r.parent.thingIDNumber : int.MaxValue;
 
 			private IEnumerable<object> ThingsIn(IEnumerable<IntVec3> cells, object exclude, RM_NetRole role)
 			{
@@ -280,7 +310,49 @@ namespace RimMandrake.FlowWorks.Machinery
 			public readonly RM_NetTopologyCache cache = new RM_NetTopologyCache();
 			/// <summary>Outside consumers (kind None: no spawn/despawn bump of their own) whose store this revision cached.</summary>
 			public readonly HashSet<Thing> outsideOrigins = new HashSet<Thing>();
+			/// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: the last components built, what they were built under, and what changed
+			/// since (local bumps add to it; Bump makes it Full). The next revision keeps every component the change did not touch.</summary>
+			public RM_NetComponents last;
+			public long lastBits = -1;
+			public RM_PipeSpanEdges lastEdges;
+			public RM_NetDelta pending = NewDelta();
+
+			public RM_NetComponents Next(MapGraph g, long bits)
+			{
+				RM_NetDelta d = pending;
+				pending = NewDelta();
+				// span edges are rebuilt per revision; a pipe beside a pole can change them without a span change: rebuild all then
+				bool local = last != null && !d.Full && bits == lastBits && g.SpanEdges.SameAs(lastEdges);
+				last = local ? new RM_NetComponents(g, RM_NetComponents.MaxConductors, last, d) : new RM_NetComponents(g);
+				lastBits = bits;
+				lastEdges = g.SpanEdges;
+				if (local)
+				{
+					LocalRebuilds++;
+					KeptComponents += last.Kept;
+				}
+				return last;
+			}
 		}
+
+		private static RM_NetDelta NewDelta() => new RM_NetDelta { MemberCells = MemberCells };
+
+		/// <summary>A member's dirty area: its rect grown by one (what it touches and what touches it).</summary>
+		private static IEnumerable<object> MemberCells(object m)
+		{
+			return m is Thing t ? Cells(t.OccupiedRect()) : Enumerable.Empty<object>();
+		}
+
+		private static IEnumerable<object> Cells(CellRect rect)
+		{
+			foreach (IntVec3 c in rect.ExpandedBy(1))
+			{
+				yield return c;
+			}
+		}
+
+		/// <summary>State read: revisions built from the last one (only touched components rebuilt) and components so kept.</summary>
+		public static int LocalRebuilds, KeptComponents;
 
 		private static readonly Dictionary<Map, NetState> states = new Dictionary<Map, NetState>();
 
@@ -308,8 +380,32 @@ namespace RimMandrake.FlowWorks.Machinery
 			NetState s = StateOf(map);
 			s.revision++;
 			s.outsideOrigins.Clear();
+			s.pending.Full = true;
 			Bumps++;
 		}
+
+		/// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: <paramref name="t"/> changed in <paramref name="rect"/> (spawned, despawned,
+		/// changed hands): a new revision that rebuilds only the components within one cell of it, or holding it.</summary>
+		public static void BumpAt(Map map, Thing t, CellRect rect)
+		{
+			if (map == null)
+			{
+				return;
+			}
+			NetState s = StateOf(map);
+			s.revision++;
+			s.pending.Thing(t, Cells(rect));
+			Bumps++;
+		}
+
+		/// <summary>The hose links changed; RM_HoseLinks recorded which in LinkDelta: a new revision rebuilding only those.</summary>
+		internal static void BumpLinks(Map map)
+		{
+			StateOf(map).revision++;
+			Bumps++;
+		}
+
+		internal static RM_NetDelta LinkDelta(Map map) => StateOf(map).pending;
 
 		/// <summary>REVIEW 2026-10-22: an outside consumer (a glow tank) is no topology member, so its despawn never bumped and
 		/// its cached touch store outlived a move: reinstalled elsewhere it still drew from the tanks it used to touch. Its
@@ -330,9 +426,11 @@ namespace RimMandrake.FlowWorks.Machinery
 				// PIPE_POLES phase 5: switching pipe poles on or off adds or removes every span edge: a new revision
 				s.polesOn = RM_MachinerySettings.pipePolesEnabled;
 				s.revision++;
+				s.pending.Full = true;
 			}
 			long key = RM_LiquidNetKernel.RevisionKey(s.revision, RM_MachinerySettings.universalPipesEnabled, RM_HoseSettings.enabled, RM_MachinerySettings.liquidTheftEnabled);
-			return s.cache.Get(key, () => new RM_NetComponents(new MapGraph(map, links)));
+			long bits = (RM_MachinerySettings.universalPipesEnabled ? 1 : 0) | (RM_HoseSettings.enabled ? 2 : 0) | (RM_MachinerySettings.liquidTheftEnabled ? 4 : 0);
+			return s.cache.Get(key, () => s.Next(new MapGraph(map, links), bits));
 		}
 
 		/// <summary>Defs whose things change the topology when they spawn or despawn (pipes, tanks, machines), by def.</summary>
@@ -1154,25 +1252,39 @@ namespace RimMandrake.FlowWorks.Machinery
 				return reels?.Count ?? 0;
 			}
 			sig = h;
+			bool first = !built;
 			built = true;
 			Rebuilds++;
-			all.Clear();
-			at.Clear();
+			var ends = new List<KeyValuePair<object, KeyValuePair<object, object>>>();
 			if (reels != null)
 			{
 				foreach (CompHoseReel r in reels)
 				{
-					if (!Ends(comp, r, out object inlet, out object far))
+					if (Ends(comp, r, out object inlet, out object far))
 					{
-						continue;
+						ends.Add(new KeyValuePair<object, KeyValuePair<object, object>>(r, new KeyValuePair<object, object>(inlet, far)));
 					}
-					var l = new RM_NetLink { Id = all.Count, A = inlet, B = far, Reel = r };
-					all.Add(l);
-					Add(inlet, l);
-					Add(far, l);
 				}
 			}
-			RM_LiquidNet.Bump(map);
+			// LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: an unchanged reel keeps its link object and the net's delta records the rest, so
+			// only the components a changed hose touches rebuild. A first build (no old list to diff) rebuilds everything.
+			List<RM_NetLink> next = RM_NetLinkDiff.Relink(all, ends, first ? null : RM_LiquidNet.LinkDelta(map), v => v is Thing);
+			all.Clear();
+			at.Clear();
+			foreach (RM_NetLink l in next)
+			{
+				all.Add(l);
+				Add(l.A, l);
+				Add(l.B, l);
+			}
+			if (first)
+			{
+				RM_LiquidNet.Bump(map);
+			}
+			else
+			{
+				RM_LiquidNet.BumpLinks(map);
+			}
 			return reels?.Count ?? 0;
 		}
 
@@ -1230,7 +1342,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			if (RM_LiquidNet.ChangesTopology(__instance))
 			{
-				RM_LiquidNet.Bump(map);
+				RM_LiquidNet.BumpAt(map, __instance, __instance.OccupiedRect());
 			}
 		}
 	}
@@ -1244,7 +1356,7 @@ namespace RimMandrake.FlowWorks.Machinery
 		{
 			if (__instance is Building && __instance.Spawned && RM_LiquidNet.ChangesTopology(__instance))
 			{
-				RM_LiquidNet.Bump(__instance.Map);
+				RM_LiquidNet.BumpAt(__instance.Map, __instance, __instance.OccupiedRect());
 			}
 		}
 	}
@@ -1253,20 +1365,16 @@ namespace RimMandrake.FlowWorks.Machinery
 	[RimMandrake.Shared.PatchFeature("Universal pipes", typeof(RM_MachinerySettings), "universalPipesEnabled")]
 	public static class RM_Patch_NetTopologyDespawn
 	{
-		public static void Prefix(Building __instance, out Map __state)
+		public static void Prefix(Building __instance, out KeyValuePair<Map, CellRect> __state)
 		{
-			__state = __instance.Map;
+			__state = new KeyValuePair<Map, CellRect>(__instance.Map, __instance.OccupiedRect());
 		}
 
-		public static void Postfix(Building __instance, Map __state)
+		public static void Postfix(Building __instance, KeyValuePair<Map, CellRect> __state)
 		{
-			if (RM_LiquidNet.ChangesTopology(__instance))
+			if (RM_LiquidNet.ChangesTopology(__instance) || RM_LiquidNet.IsOutsideOrigin(__state.Key, __instance))
 			{
-				RM_LiquidNet.Bump(__state);
-			}
-			else if (RM_LiquidNet.IsOutsideOrigin(__state, __instance))
-			{
-				RM_LiquidNet.Bump(__state);
+				RM_LiquidNet.BumpAt(__state.Key, __instance, __state.Value);
 			}
 		}
 	}

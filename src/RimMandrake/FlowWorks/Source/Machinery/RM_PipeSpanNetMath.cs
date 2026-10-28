@@ -40,6 +40,17 @@ namespace RimMandrake.FlowWorks.Machinery
 
         public bool Joins(object a, object b) => At(a).Contains(b);
 
+        /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: the same edges added in the same order (so every cell lists the same
+        /// extra neighbours in the same order). A revision may keep old components only while this holds.</summary>
+        public bool SameAs(RM_PipeSpanEdges o)
+        {
+            if (ReferenceEquals(this, o)) return true;
+            if (o == null || o.pairs.Count != pairs.Count) return false;
+            for (int i = 0; i < pairs.Count; i++)
+                if (!Equals(pairs[i].Key, o.pairs[i].Key) || !Equals(pairs[i].Value, o.pairs[i].Value)) return false;
+            return true;
+        }
+
         private bool Seen(object a, object b)
         {
             for (int i = 0; i < pairs.Count; i++)

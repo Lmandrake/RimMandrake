@@ -149,10 +149,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // can-fail: a hose on c2's square is not broken, so the net stays whole
                 var hs = new List<T> { new T { Id = "c2", Kind = LineKind.Hose } };
                 Assert(Commit(hs, true, 0, 1).Count == 0 && Store(new[] { "c1", "c2", "c3" }).Count == 2, "sanity: an unbroken run must stay one net");
-                // production: the destroy despawns the pipe, and a pipe despawn bumps the net revision
+                // production: the destroy despawns the pipe, and a pipe despawn bumps the net revision (at the pipe's rect, which
+                // rebuilds the components within a cell of it: LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED)
                 string net = Src("Machinery", "RM_LiquidNet.cs");
                 string desp = Body(net, "public static class RM_Patch_NetTopologyDespawn");
-                Assert(net.Contains("[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.DeSpawn))]") && desp.Contains("RM_LiquidNet.Bump(__state)"),
+                Assert(net.Contains("[HarmonyLib.HarmonyPatch(typeof(Building), nameof(Building.DeSpawn))]") && desp.Contains("RM_LiquidNet.BumpAt(__state.Key, __instance, __state.Value)"),
                     "a pipe's despawn no longer bumps the liquid net revision, so a dig break would not split the net");
             });
         }

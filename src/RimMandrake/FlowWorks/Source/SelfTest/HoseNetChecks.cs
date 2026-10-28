@@ -17,8 +17,21 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static void Check(bool ok, string msg) => Program.Check(ok, "hosenet: " + msg);
 
         /// <summary>A fake map: roles by name prefix, pipe adjacency, what touches what, and hose links.</summary>
-        internal sealed class G : IRM_NetGraph
+        internal sealed class G : IRM_NetGraph, IRM_NetNodeOrder
         {
+            /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: canonical trees (names ordinal, then links by reel and id).</summary>
+            public int CompareNodes(object a, object b)
+            {
+                int ra = a is RM_NetLink ? 1 : 0, rb = b is RM_NetLink ? 1 : 0;
+                if (ra != rb) return ra.CompareTo(rb);
+                if (a is RM_NetLink la && b is RM_NetLink lb)
+                {
+                    int c = string.CompareOrdinal(la.Reel?.ToString(), lb.Reel?.ToString());
+                    return c != 0 ? c : la.Id.CompareTo(lb.Id);
+                }
+                return string.CompareOrdinal(a?.ToString(), b?.ToString());
+            }
+
             public bool Pipes = true;
             public readonly Dictionary<string, List<string>> Touch = new Dictionary<string, List<string>>();   // origin -> tanks (8-way)
             public readonly Dictionary<string, List<string>> PipeOf = new Dictionary<string, List<string>>();  // origin -> pipe cells

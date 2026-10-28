@@ -73,6 +73,106 @@ namespace RimMandrake.FlowWorks.Machinery
         int Order(object member);
     }
 
+    /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: an optional total order over conductors (pipe cells, relays, links). A graph
+    /// that has one gets canonical trees: every component hangs from its least conductor, so the tree and every route read
+    /// from it never depend on which member asked first (a reload, or a revision that kept some components, builds the same).</summary>
+    public interface IRM_NetNodeOrder
+    {
+        int CompareNodes(object a, object b);
+    }
+
+    /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: what changed since the last built revision, so the next one rebuilds only the
+    /// components the change touched. Full: nothing is known (an unannounced change, a settings switch): rebuild everything.
+    /// Touched: conductors and things whose role, place or edges changed -- the changed thing, every cell it reads or is read
+    /// from (its rect grown by one), a link that went or came, and that link's conductor ends. Members: things whose own seeds
+    /// changed (a member end of a link that went or came): their cached components and store are dropped, nothing else.</summary>
+    public sealed class RM_NetDelta
+    {
+        public bool Full;
+        public readonly HashSet<object> Touched = new HashSet<object>();
+        public readonly HashSet<object> Members = new HashSet<object>();
+        /// <summary>The cells a member reads (its pipe cells and touching tanks: its rect grown by one). Null: members are
+        /// dirty only when Touched or Members name them.</summary>
+        public Func<object, IEnumerable<object>> MemberCells;
+
+        public bool Empty => !Full && Touched.Count == 0 && Members.Count == 0;
+
+        public void Clear()
+        {
+            Full = false;
+            Touched.Clear();
+            Members.Clear();
+        }
+
+        /// <summary>A thing spawned, despawned or changed hands: it, and the cells it reads or is read from.</summary>
+        public void Thing(object thing, IEnumerable<object> cells)
+        {
+            if (thing != null) Touched.Add(thing);
+            if (cells != null) foreach (object c in cells) Touched.Add(c);
+        }
+
+        /// <summary>A link went or came: it, its conductor ends (Touched) and its member ends (Members). A port end needs
+        /// nothing more (it attaches only through this link).</summary>
+        public void Link(RM_NetLink l, Func<object, bool> isMember)
+        {
+            if (l == null) return;
+            Touched.Add(l);
+            foreach (object end in new[] { l.A, l.B })
+            {
+                if (end == null || end is RM_NetPort) continue;
+                if (isMember != null && isMember(end)) Members.Add(end);
+                else Touched.Add(end);
+            }
+        }
+
+        public bool MemberDirty(object m)
+        {
+            if (m == null) return true;
+            if (Touched.Contains(m) || Members.Contains(m)) return true;
+            if (MemberCells != null) foreach (object c in MemberCells(m)) if (Touched.Contains(c)) return true;
+            return false;
+        }
+    }
+
+    /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: the hose-link list of a new link revision, reusing every link whose reel and
+    /// ends are unchanged (a free-end port must also keep its role and cell), so components that hold it can be kept. Every
+    /// link that went or came is recorded in the delta.</summary>
+    public static class RM_NetLinkDiff
+    {
+        public static bool SameEnd(object a, object b)
+        {
+            if (!Equals(a, b)) return false;
+            if (a is RM_NetPort pa) return b is RM_NetPort pb && pa.Role == pb.Role && Equals(pa.Cell, pb.Cell);
+            return true;
+        }
+
+        /// <summary>now: (reel, a, b) per live link in order. Returns the new list (Id = index); old links not reused and new
+        /// links go into <paramref name="delta"/> (null: nothing recorded).</summary>
+        public static List<RM_NetLink> Relink(IList<RM_NetLink> old, IEnumerable<KeyValuePair<object, KeyValuePair<object, object>>> now,
+                                              RM_NetDelta delta, Func<object, bool> isMember)
+        {
+            var byReel = new Dictionary<object, RM_NetLink>();
+            if (old != null) foreach (RM_NetLink l in old) if (l?.Reel != null && !byReel.ContainsKey(l.Reel)) byReel[l.Reel] = l;
+            var res = new List<RM_NetLink>();
+            var used = new HashSet<RM_NetLink>();
+            foreach (KeyValuePair<object, KeyValuePair<object, object>> e in now)
+            {
+                object reel = e.Key, a = e.Value.Key, b = e.Value.Value;
+                RM_NetLink l = reel != null && byReel.TryGetValue(reel, out RM_NetLink o) && !used.Contains(o) && SameEnd(o.A, a) && SameEnd(o.B, b) ? o : null;
+                if (l == null)
+                {
+                    l = new RM_NetLink { A = a, B = b, Reel = reel };
+                    delta?.Link(l, isMember);
+                }
+                used.Add(l);
+                l.Id = res.Count;
+                res.Add(l);
+            }
+            if (old != null) foreach (RM_NetLink l in old) if (l != null && !used.Contains(l)) delta?.Link(l, isMember);
+            return res;
+        }
+    }
+
     /// <summary>A member's store: the tanks, the hose route to each, and whether a component it touches was refused.</summary>
     public sealed class RM_NetResult
     {
@@ -108,7 +208,9 @@ namespace RimMandrake.FlowWorks.Machinery
 
     /// <summary>
     /// The components of one topology revision, built lazily: a component is labelled the first time anything asks for a
-    /// conductor in it. A new revision is a new instance (RM_NetTopologyCache); nothing in it is ever patched in place.
+    /// conductor in it. A new revision is a new instance; nothing in it is ever patched in place. A revision made from the last
+    /// one and an <see cref="RM_NetDelta"/> shares the last one's untouched components (LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED):
+    /// with canonical trees (<see cref="IRM_NetNodeOrder"/>) it answers every query exactly as a fresh rebuild would.
     /// </summary>
     public sealed class RM_NetComponents
     {
@@ -121,14 +223,58 @@ namespace RimMandrake.FlowWorks.Machinery
         private readonly Dictionary<object, RM_NetResult> stores = new Dictionary<object, RM_NetResult>();
         private readonly List<RM_NetComponent> all = new List<RM_NetComponent>();
         private readonly int cap;
+        private readonly IRM_NetNodeOrder order;
+        private int nextId;
 
         /// <summary>State read: components built (BFS runs) in this revision.</summary>
         public int Builds;
+
+        /// <summary>State read: components this revision took over unbuilt from the last one.</summary>
+        public int Kept;
 
         public RM_NetComponents(IRM_NetGraph g, int cap = MaxConductors)
         {
             this.g = g;
             this.cap = cap;
+            order = g as IRM_NetNodeOrder;
+        }
+
+        /// <summary>LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: the next revision after <paramref name="prev"/>, given what changed. Keeps
+        /// every component of prev that is not refused and that the delta does not touch (no conductor, link end, attached
+        /// member or port of it is Touched), and the components and store of every member the delta leaves clean whose
+        /// components were all kept. Everything else is rebuilt lazily, as in a fresh revision. A full delta keeps nothing.</summary>
+        public RM_NetComponents(IRM_NetGraph g, int cap, RM_NetComponents prev, RM_NetDelta delta) : this(g, cap)
+        {
+            if (prev == null || delta == null || delta.Full || prev.cap != cap || (prev.order == null) != (order == null)) return;
+            nextId = prev.nextId;
+            var kept = new HashSet<RM_NetComponent>();
+            foreach (RM_NetComponent c in prev.all)
+            {
+                if (c.Refused || Touches(c, delta)) continue;
+                kept.Add(c);
+                all.Add(c);
+                for (int i = 0; i < c.Nodes.Count; i++) nodeOf[c.Nodes[i]] = new KeyValuePair<RM_NetComponent, int>(c, i);
+                Kept++;
+            }
+            foreach (KeyValuePair<object, List<RM_NetComponent>> kv in prev.compsOf)
+            {
+                if (!kv.Value.TrueForAll(kept.Contains) || delta.MemberDirty(kv.Key)) continue;
+                compsOf[kv.Key] = kv.Value;
+                if (prev.stores.TryGetValue(kv.Key, out RM_NetResult r)) stores[kv.Key] = r;
+            }
+        }
+
+        private static bool Touches(RM_NetComponent c, RM_NetDelta d)
+        {
+            HashSet<object> t = d.Touched;
+            if (t.Count == 0) return false;
+            foreach (object v in c.Nodes)
+            {
+                if (t.Contains(v)) return true;
+                if (v is RM_NetLink l && ((l.A != null && t.Contains(l.A)) || (l.B != null && t.Contains(l.B)))) return true;
+            }
+            foreach (object m in c.Attach.Keys) if (t.Contains(m)) return true;
+            return false;
         }
 
         public IReadOnlyList<RM_NetComponent> Built => all;
@@ -178,11 +324,19 @@ namespace RimMandrake.FlowWorks.Machinery
             return false;
         }
 
+        /// <summary>What pass 1 saw at a node, in order, so pass 2 can replay it from the canonical root.</summary>
+        private struct Step
+        {
+            public byte Kind;     // 0 tank, 1 machine, 2 port, 3 visit
+            public object Obj;
+        }
+
         private RM_NetComponent Build(object start)
         {
             Builds++;
-            var comp = new RM_NetComponent { Id = all.Count };
+            var comp = new RM_NetComponent { Id = nextId++ };
             all.Add(comp);
+            List<List<Step>> steps = order != null ? new List<List<Step>>() : null;
             var q = new Queue<int>();
             Label(comp, start, -1, q);
             while (q.Count > 0)
@@ -190,20 +344,26 @@ namespace RimMandrake.FlowWorks.Machinery
                 int i = q.Dequeue();
                 object v = comp.Nodes[i];
                 if (comp.Size > cap) { comp.Refused = true; break; }
+                List<Step> st = null;
+                if (steps != null)
+                {
+                    while (steps.Count <= i) steps.Add(null);
+                    steps[i] = st = new List<Step>();
+                }
                 if (v is RM_NetLink l)
                 {
                     comp.Links.Add(l);
                     foreach (object end in new[] { l.A, l.B })
                     {
                         if (end == null) continue;
-                        if (end is RM_NetPort port) { AttachPort(comp, port, i); continue; }
+                        if (end is RM_NetPort port) { AttachPort(comp, port, i); st?.Add(new Step { Kind = 2, Obj = port }); continue; }
                         switch (g.RoleOf(end))
                         {
-                            case RM_NetRole.Tank: AttachMember(comp, end, i, comp.Tanks); break;
-                            case RM_NetRole.Machine: AttachMember(comp, end, i, comp.Machines); break;
+                            case RM_NetRole.Tank: AttachMember(comp, end, i, comp.Tanks); st?.Add(new Step { Kind = 0, Obj = end }); break;
+                            case RM_NetRole.Machine: AttachMember(comp, end, i, comp.Machines); st?.Add(new Step { Kind = 1, Obj = end }); break;
                             case RM_NetRole.Pipe:
                             case RM_NetRole.Relay:
-                                if (Conducts(end)) Visit(comp, end, i, q);
+                                if (Conducts(end)) { Visit(comp, end, i, q); st?.Add(new Step { Kind = 3, Obj = end }); }
                                 break;
                         }
                     }
@@ -211,14 +371,66 @@ namespace RimMandrake.FlowWorks.Machinery
                 }
                 if (g.RoleOf(v) == RM_NetRole.Pipe)
                 {
-                    foreach (object t in g.PipeTanks(v)) AttachMember(comp, t, i, comp.Tanks);
-                    foreach (object m in g.PipeMachines(v)) AttachMember(comp, m, i, comp.Machines);
-                    foreach (object n in g.PipeNeighbours(v)) Visit(comp, n, i, q);
+                    foreach (object t in g.PipeTanks(v)) { AttachMember(comp, t, i, comp.Tanks); st?.Add(new Step { Kind = 0, Obj = t }); }
+                    foreach (object m in g.PipeMachines(v)) { AttachMember(comp, m, i, comp.Machines); st?.Add(new Step { Kind = 1, Obj = m }); }
+                    foreach (object n in g.PipeNeighbours(v)) { Visit(comp, n, i, q); st?.Add(new Step { Kind = 3, Obj = n }); }
                 }
-                foreach (RM_NetLink l2 in g.LinksAt(v)) Visit(comp, l2, i, q);
+                foreach (RM_NetLink l2 in g.LinksAt(v)) { Visit(comp, l2, i, q); st?.Add(new Step { Kind = 3, Obj = l2 }); }
             }
             if (comp.Size > cap) comp.Refused = true;
+            if (!comp.Refused && steps != null) Reroot(comp, steps);
             return comp;
+        }
+
+        /// <summary>Pass 2: the same component as a BFS from its least conductor, replaying pass 1's steps (no graph reads), so
+        /// the tree, the attachment order and every route are what a build started there would give.</summary>
+        private void Reroot(RM_NetComponent comp, List<List<Step>> steps)
+        {
+            int n = comp.Nodes.Count;
+            int root = 0;
+            for (int i = 1; i < n; i++) if (order.CompareNodes(comp.Nodes[i], comp.Nodes[root]) < 0) root = i;
+            if (root == 0) return;   // pass 1 already ran from the canonical root
+            object[] oldNodes = comp.Nodes.ToArray();
+            var oldIndex = new Dictionary<object, int>(n);
+            for (int i = 0; i < n; i++) oldIndex[oldNodes[i]] = i;
+            comp.Nodes.Clear();
+            comp.Parent.Clear();
+            comp.Depth.Clear();
+            comp.Tanks.Clear();
+            comp.Machines.Clear();
+            comp.Ports.Clear();
+            comp.Links.Clear();
+            comp.Attach.Clear();
+            comp.Size = 0;
+            var labelled = new bool[n];
+            var oldOf = new List<int>(n);
+            var q = new Queue<int>();
+            labelled[root] = true;
+            oldOf.Add(root);
+            Label(comp, oldNodes[root], -1, q);
+            while (q.Count > 0)
+            {
+                int i = q.Dequeue();
+                object v = comp.Nodes[i];
+                if (v is RM_NetLink l) comp.Links.Add(l);
+                foreach (Step s in steps[oldOf[i]])
+                {
+                    switch (s.Kind)
+                    {
+                        case 0: AttachMember(comp, s.Obj, i, comp.Tanks); break;
+                        case 1: AttachMember(comp, s.Obj, i, comp.Machines); break;
+                        case 2: AttachPort(comp, (RM_NetPort)s.Obj, i); break;
+                        default:
+                            if (s.Obj != null && oldIndex.TryGetValue(s.Obj, out int t) && !labelled[t])
+                            {
+                                labelled[t] = true;
+                                oldOf.Add(t);
+                                Label(comp, s.Obj, i, q);
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         private void Visit(RM_NetComponent comp, object v, int parent, Queue<int> q)

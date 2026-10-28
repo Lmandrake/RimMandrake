@@ -2145,6 +2145,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             PipeStraightVariantChecks.Run(Case);   // SCRAPPER_PIPE_REDRAW_ASKED_TWICE_NOW: straight-run variants by cell hash
             TransferChecks.Run(Case);          // liquid networks L1: the one transfer service (TransferChecks.cs)
             NetComponentChecks.Run(Case);      // liquid networks L2: components per topology revision (NetComponentChecks.cs)
+            NetIncrementalChecks.Run(Case);    // LIQUIDNET_REBUILD_SHRINK_TO_AFFECTED: canonical tree roots, affected-only rebuild, incremental == fresh (NetIncrementalChecks.cs)
             PlanChecks.Run(Case);              // liquid networks L3: fill/draw plans, split levels, consumer rotation (PlanChecks.cs)
             SettleChecks.Run(Case);            // liquid networks L4: tank jobs and the settle (SettleChecks.cs)
             LevellingChecks.Run(Case);         // PIPE_LEVELLING_BUILD_WATER_FINDS_ITS_LEVEL: passive gravity levelling (LevellingChecks.cs)
