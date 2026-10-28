@@ -341,6 +341,14 @@ def main():
         cov2 = W.claim_cover("STEVE_COVER_PROBE_ITEM", c0, c0 + 7200)
         check(cov1 > 1000 and 1 <= cov2 <= 20 and W.claim_cover("STEVE_COVER_PROBE_ITEM", c0 + 5000, c0 + 6000) == 0,
               "closing the item keeps the cover earned before it (live %d, closed %d): %s" % (cov1, cov2, out[-100:]))
+        rc, out = cli("file", "STEVE_CLOSED_UNDER_ITEM", "--for", "BENCH", "--title", "closed under")
+        rc, out = cli("close", "STEVE_CLOSED_UNDER_ITEM", "--reason", "x")
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": "STEVE_CLOSED_UNDER_ITEM",
+               "owner_item": None}
+        sp_n = len(events("spawn"))
+        W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
+        check(inc["item"] != "STEVE_CLOSED_UNDER_ITEM" and inc["level"] >= 1 and W.item_open(inc["item"], W.world()),
+              "an item closed at level 1 under a continuing fault is replaced: %s" % inc)
         real_rf = W.rimflow
         W.rimflow = lambda *a: (1, "rimflow: only an open item can be raised")
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 2000, "level": 1, "item": item, "owner_item": None}

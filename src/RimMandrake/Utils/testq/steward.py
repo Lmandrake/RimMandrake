@@ -459,6 +459,8 @@ def escalate(inc, ls, now, last_item, src="steward"):
     tag = TAG.get(inc["state"], "STALLED")
     what = "%s: %s%s" % (inc["state"], ls["reason"][:200], (" (jobs %s)" % ",".join(map(str, ls["jobs"])))
                          if ls.get("jobs") else "")
+    if 1 <= inc["level"] < 3 and not item_open(inc.get("item"), w):
+        inc.update(level=0, item=None)              # closed under a continuing fault: open (or reuse) another
     if inc["level"] < 1:
         if not item_open(last_item, w):
             last_item = open_lane_item(w)
