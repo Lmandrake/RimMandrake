@@ -79,6 +79,7 @@ if os.path.dirname(HERE) not in sys.path:
 from contracts import blind_core as BC, compat as CC, jsonl as CJ  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
+import seat_restart as SR  # noqa: E402
 import account_pick as AP  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
 
@@ -365,6 +366,12 @@ def decide(sch, st, obs, now, apply):
             owner_cache["r"] = obs["owner"]()
         return owner_cache["r"]
 
+    if obs.get("seat_restart"):        # seat_restart.py: a fresh window per ticket (off unless seat_restart.enabled)
+        try:
+            SR.decide(sch, st, dict(obs, owner=owner), now, apply, act)
+        except Exception as e:  # noqa: BLE001
+            act(do="alarm", kind="restart:decide", note=True,
+                why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)[:200]))
     def one_seat(seat, cfg):
         enabled = cfg.get("enabled", True)
         if not enabled and not (st["seats"].get(seat) or {}).get("ring"):
@@ -411,6 +418,8 @@ def decide(sch, st, obs, now, apply):
                     ss["attempt"] = pend["attempt"]
             return
         if not enabled:
+            return
+        if SR.in_flight(st, seat, sch):     # seat_restart owns this window until its restart ends: no ring, no recover
             return
         # ---- recovery in flight: verify it
         rv = ss.get("recover")
@@ -831,7 +840,14 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     res = "repeat alarm (rate-limited)"
                 else:
                     st["alarms"][a["kind"]] = now
-            if apply:
+            if a["do"] in SR.DOES:
+                try:
+                    res = SR.execute(a, sch, st, apply, now, fx.get("seat_restart"))
+                except Exception as e:  # noqa: BLE001 - the state save must still run
+                    res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
+                    rs = (st.get("seat_restart") or {}).get(a.get("seat")) or {}
+                    rs["alarm_pending"] = "seat restart %s of %s raised: %s" % (a["do"], a.get("seat"), res)
+            elif apply:
                 try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
                     if a["do"] == "ring":
                         # PAUSE again, now: decide() read it before the ingest.lock wait (review dispatcher-full #8)
@@ -1057,6 +1073,7 @@ def default_obs(sch, root):
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
         "roles": role_obs(sch),
+        "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
     }
 
 

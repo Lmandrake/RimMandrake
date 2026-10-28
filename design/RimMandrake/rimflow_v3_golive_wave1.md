@@ -238,3 +238,46 @@ else creates that file. Run these from `$B`, in order, and stop at the first fai
    `python3 src/RimMandrake/rimflow/arbiter_pending.py stamp --by <seat> --why "wave 2 Arbiter advisory enable"`
    - Stamp once. The command refuses (exit 2) if a stamp already exists. The stamp is never moved; to move it, a human deletes the file and records why.
    - Then rerun step 3. It must exit 0 and count only work at or after the stamp. `nothing pending` is the expected first answer.
+
+## 10. Seat restart: enable steps (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET; built 2026-10-28, shipped DISABLED)
+
+What it is: a fresh FOUNDRY window per ticket.
+- The seat's close-out (`infrastructure/agents/FOUNDRY.md`, "A fresh window per ticket") runs `seat_restart.py request`.
+- The Dispatcher holds the request through 120 s of grace, then kills that one pid. It holds instead while any of these is true:
+  - a helper is alive;
+  - the bridge or driver lock is FOUNDRY's;
+  - FOUNDRY's last game event is transitional;
+  - PAUSE is on;
+  - a ring or a recovery is in flight;
+  - the owner touched the machine in the last 120 s (20 min for a backstop), or his idle clock is UNMEASURED.
+  New input cancels it. Right before the kill it re-reads the session file (status must say `idle`), the transcript, the helpers, the bridge, the owner's idle clock and PAUSE. It signals through a pidfd pinned to the pid, only if that process's /proc start time is the one Claude Code registered for the session (`procStart` in `sessions/<pid>.json`, checked again when the restart is asked for), and confirms the death; a window that survives SIGKILL is never relaunched beside.
+- The tile relaunches itself through `seat_loop.sh`, using the profile's own LAUNCH line (`--remote-control 'AGENT FOUNDRY'`) plus a first prompt.
+- The restart is verified when the doorbell re-arms for the new session. Each step lands in `$S/journal.jsonl` (`do` = `restart_*`).
+- Code: `src/RimMandrake/rimflow/seat_restart.py`, `src/RimMandrake/Utils/seat_loop.sh`; schedule key `seat_restart`.
+- Selftest: `src/RimMandrake/rimflow/selftest_seat_restart.py`.
+
+Prerequisites:
+- Steps 8-9 are done: FOUNDRY's doorbell arms. A restart is only verified by a re-arm.
+- The wakes are live (step 4), so the fresh window receives its ticket.
+
+1. **[MANDRAKE confirms, WRITES]** In `src/RimMandrake/rimflow/dispatcher_schedule.json` set `"seat_restart": {"enabled": true, ...}`. Commit and `./publish`, then pull in both clones.
+2. **Dry first.** Leave the timer dry for one ticket. When FOUNDRY closes a ticket, the request is taken and held; `restart_kill` is journalled as `DRY: would SIGTERM`. Check with `grep restart_ $S/dry/journal.jsonl | tail -n 5 | cut -c1-240`. Nothing is killed.
+3. **[MANDRAKE confirms]** Re-install the WT profiles so the FOUNDRY tile runs `seat_loop.sh`: `python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply`. While the key is off the profile line is unchanged, so this step must come after step 1. `restart_seats()` reads the key.
+4. **[MANDRAKE: his window]** Close and reopen the FOUNDRY tile once, so it runs under `seat_loop.sh`. Until then a kill has no in-tile relaunch. The Dispatcher then falls back to `launch_fleet.ps1 -Seats FOUNDRY`, which opens a NEW tab and leaves the old one at a shell. That fallback from the systemd timer (WSL interop) is UNMEASURED.
+5. Run the timer with `--apply` (already the case from step 4 of this runbook). Watch the first live restart:
+   - `restart_request` → `restart_kill` (result `killed pid … (SIGTERM)`) → `restart_relaunched` (`in-tile`) → `restart_verified`;
+   - the phone lists `AGENT FOUNDRY` again;
+   - `cat $S/armed/FOUNDRY.json` shows the NEW session_id.
+6. **Rollback:** set `"enabled": false`. A pending restart is released at once (`config()` returns nothing). A restart claimed or killed in the last 17 min stays fenced from the Dispatcher's ring and recover, so a recovery cannot race its in-tile relaunch. A killed window that did not come back is relaunched with `wt.exe -w new -p "AGENT FOUNDRY"`.
+
+Known limits (lessons filed 2026-10-28):
+- The backstop (context ≥ 110k tokens, idle 30 min, no helper) only starts when the last turn ended normally. A window that was `/clear`ed and never ran a turn reads "not quiet", fails after 3 ticks and alarms; it is never killed.
+- A fallback-launched window has no first prompt, so it arms only after its first turn.
+- Owner presence is the machine's last-input clock. A draft typed on the phone over Remote Control is invisible to it until sent.
+- A background Bash job of the window (`run_in_background`) is invisible: the close-out rule in FOUNDRY.md forbids one.
+- Between the kill-time re-read and the signal there is no barrier (a few milliseconds: a /proc read, the killed-record write and the pidfd open): input landing exactly there is lost with the window.
+- A second request written in the instant between the Dispatcher's read and its take of the first is taken unread: that ticket's restart simply does not happen (nothing is killed); the backstop or the next ticket's request covers it.
+- A relaunch whose claimant (tile or fallback) dies or stalls before launching is not retried: it fails after 2 min with an alarm, and the owner relaunches the tile. A tile cannot claim after that deadline; a claimant stalled past it could still launch late (the Dispatcher's own recovery waits 10 min of a dead seat, so a double window needs a stall that long).
+- The transcript is read from its last 4 MB; the game hold uses FOUNDRY's last `game` event within 1 h and is not re-read at the kill.
+- GPT review of the build: `D:\ClaudeWork\rimmandrake\foundry_fresh\gpt\review.md` (7 HIGH, all fixed red-first); confirmation rounds `review2.md` to `review8.md` in the same folder.
+- CONDUCTOR uses the same mechanism (conductor_briefing Part B): add `"CONDUCTOR": {...}` under `seat_restart.seats` once its seat and tile exist.

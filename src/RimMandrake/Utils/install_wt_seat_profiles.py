@@ -246,6 +246,20 @@ def label_for(seat):
     return seat if home else f"AGENT {seat}"
 
 
+def restart_seats(path=None):
+    """Seats whose tile relaunches itself after a seat restart: dispatcher_schedule.json seat_restart, only when
+    enabled. Unreadable -> none (the plain launch line, as before)."""
+    path = path or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow", "dispatcher_schedule.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            sr = json.load(f).get("seat_restart") or {}
+    except (OSError, ValueError):
+        return set()
+    if sr.get("enabled") is not True:
+        return set()
+    return {k for k, v in (sr.get("seats") or {}).items() if isinstance(v, dict) and v.get("enabled") is not False}
+
+
 def build(seat):
     colour, model, _, home, cmd = SEATS[seat]
     home_wsl, home_win = home if home else SEAT_CLONES[seat]
@@ -264,6 +278,12 @@ def build(seat):
         # A daemon's console, not a session. `exec $SHELL -l` keeps the tab
         # alive when the daemon exits, same as the seat tabs.
         inner = f"cd {home_wsl} && {cmd.format(label=label)}; exec $SHELL -l"
+    elif seat in restart_seats():
+        # seat_restart (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET): seat_loop.sh runs the same LAUNCH line and, when the
+        # Dispatcher kills the window for a fresh-per-ticket restart, relaunches it in THIS tile; any other exit drops
+        # to the login shell as before. Only while the schedule key is on and lists the seat.
+        inner = (f"cd {home_wsl} && export AGENT_SEAT={seat} && {home_wsl}/src/RimMandrake/Utils/seat_loop.sh {seat} "
+                 f"{LAUNCH.format(script=script, label=label, model=model)}")
     else:
         export = "" if home else f"export AGENT_SEAT={seat} && "
         inner = (f"cd {home_wsl} && {export}"

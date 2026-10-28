@@ -24,6 +24,11 @@
             "clone": "/home/mandrake/rm/bench", "model": "opus",
             "_why": "BENCH is the owner's workshop window (the Conductor's session mode): watched, never woken or resumed by a program"}
  },
+ "seat_restart": {"enabled": false,
+  "_doc": "FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET (owner 2026-10-28: \"Yes we must solve foundry context right now.\"): a fresh window per ticket. The seat's close-out writes a restart request (seat_restart.py request); the Dispatcher holds it through a grace, while any helper is alive, while the bridge, driver lock or a game action is the seat's, and on any new input, then SIGTERMs that one pid; the tile relaunches itself (seat_loop.sh -> seat_restart.py intile) with the WT profile's own LAUNCH line (--remote-control, --name) plus a first prompt that runs `seat_restart.py wake`; verified once the doorbell re-arms. Every step journalled; failures alarm. Off until the enable steps in design/RimMandrake/rimflow_v3_golive_wave1.md (Seat restart) are done. Keys per seat override seat_restart.DEFAULTS.",
+  "seats": {
+   "FOUNDRY": {"backstop": true, "backstop_ctx_tokens": 110000, "backstop_idle_s": 1800, "grace_s": 120}
+  }},
  "measure": [
   {"name": "ops_watch", "enabled": true, "every_s": 900, "unit": "rm-ops-watch.timer",
    "run": "python3 src/RimMandrake/Utils/ops_watch.py run --file-alarms",

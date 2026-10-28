@@ -125,6 +125,36 @@ Pick each open pointer up, close it, or say in your first reply why not — meas
 2026-09-17 (`Transient/handoff_audit/`), 60% of pointers died unread, and the wake
 step is the fix.
 
+## A fresh window per ticket (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET)
+
+Owner 2026-10-28: "Yes we must solve foundry context right now." A long-lived window carries
+every ticket's context into the next, so the Dispatcher restarts this window between tickets:
+the same window, relaunched fresh with Remote Control on. It never uses `claude -p`, `--resume` or `/login`.
+It does nothing until `seat_restart.enabled` is on in `dispatcher_schedule.json`; until then
+`request` only writes your note and says so.
+
+**Close-out**: do it when the ticket's unit of work has ended AND no helper of yours is alive AND no background
+command of yours is still running (`run_in_background`: the restart cannot see one, so the kill would cut it off).
+Do all four steps in one turn, then end the turn:
+
+1. Ledger check: the ticket is closed/noted against its real sha; your shard is committed and published.
+2. File every open promise as an item (`rimflow file` / `note`), so none lives only in this window.
+3. Write the note and the request in one command:
+   `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.
+   The note is appended to your seat log. The request is refused (exit 3) while a helper is alive.
+4. End the turn. **Any new input in the next 2 minutes cancels the restart.** It is also held, never forced,
+   in any of these cases:
+   - a helper is alive;
+   - you hold the bridge or the driver lock;
+   - your last game event is a deploy, load or shutdown;
+   - PAUSE is on;
+   - the owner touched the machine in the last 2 minutes.
+
+**First turn of a fresh window** (its first prompt says so):
+`python3 src/RimMandrake/rimflow/seat_restart.py wake --seat FOUNDRY`. It prints the seat log
+tail, the restart that made you, and the `handoff.py --wake` pointers. Read them, then end the turn.
+Ending the turn arms the doorbell, and the Dispatcher hands you the next ticket through it.
+
 ## Model
 
 `Agent_Policy.md` is the ladder and the only place it is written — your model,
