@@ -432,8 +432,10 @@ def main(argv=None):
         if a.dry_run:
             print("in place: %s" % win(csproj))
             return 0
-        start = _ce_snapshot()
-        rc = run_dotnet(win(csproj), os.path.dirname(csproj), a.configuration, extra)
+        # one in-place build per clone at a time: they share obj/, bin/ and Assemblies/ in this tree (review night r4)
+        with _flock("inplace-%s" % hashlib.sha1(os.path.realpath(ROOT).encode()).hexdigest()[:10]):
+            start = _ce_snapshot()
+            rc = run_dotnet(win(csproj), os.path.dirname(csproj), a.configuration, extra)
         pulse_report(csproj, rc)
         evidence_report(csproj, rc, a.configuration, start=start)
         return rc

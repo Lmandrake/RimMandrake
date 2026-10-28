@@ -170,7 +170,43 @@ def main_no_revert():
               "a pair the build changed is copied back", (err, rd("A.dll")))
 
 
+def main_inplace():
+    """review night r4: a clone on a Windows drive builds in place (no stage), so two in-place builds share obj/, bin/
+    and Assemblies/ in that tree; they must not overlap."""
+    with tempfile.TemporaryDirectory() as td:
+        spans, mu = [], threading.Lock()
+        saved = {k: getattr(WB, k, None) for k in ("LOCK_DIR", "on_windows_drive", "find_csproj", "win", "_ce_snapshot",
+                                                   "run_dotnet", "pulse_report", "evidence_report")}
+        WB.LOCK_DIR = os.path.join(td, "locks")
+        WB.on_windows_drive = lambda p: True
+        WB.find_csproj = lambda t: os.path.join(WB.ROOT, "src", "RimMandrake", t, "Source", "%s.csproj" % t)
+        WB.win = lambda p: p
+        WB._ce_snapshot = lambda scope=None: None
+        WB.pulse_report = lambda *a, **k: None
+        WB.evidence_report = lambda *a, **k: None
+
+        def dotnet(csproj_win, cwd, config, extra):
+            t0 = time.time()
+            time.sleep(0.2)
+            with mu:
+                spans.append((t0, time.time()))
+            return 0
+        WB.run_dotnet = dotnet
+        try:
+            ts = [threading.Thread(target=WB.main, args=([m],)) for m in ("ModA", "ModB")]
+            for t in ts:
+                t.start()
+            for t in ts:
+                t.join(30)
+        finally:
+            for k, v in saved.items():
+                if v is not None:
+                    setattr(WB, k, v)
+        check(len(spans) == 2 and not overlaps(spans), "two in-place builds in one clone never overlap (r4)", spans)
+
+
 if __name__ == "__main__":
+    main_inplace()
     main_same_stage()
     main_no_revert()
     main()
