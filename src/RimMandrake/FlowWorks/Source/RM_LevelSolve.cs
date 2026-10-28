@@ -42,8 +42,16 @@ namespace RimMandrake.FlowWorks
 		private long[][] suffix = new long[16][];
 		private long[] water = new long[16];
 		private long[] result = new long[16];
-		private List<int>[] adj = new List<int>[16];
-		private List<int>[] adjCap = new List<int>[16];
+		// STEPPULSE_SHRINK_STEADY_SLICE_COST: edges kept flat and laid out per node (CSR) once a solve, instead of two List<int>
+		// per node: the band walks below were most of the exact pulse's cost. A piece's members, numbering and children never
+		// depended on neighbour order (pieces are numbered by their lowest node), so the result is the same to the dL.
+		private int edgeCount;
+		private int[] edgeA = new int[16];
+		private int[] edgeB = new int[16];
+		private int[] edgeCap = new int[16];
+		private int[] adjStart = new int[17];
+		private int[] adjNode = new int[32];
+		private int[] adjEdgeCap = new int[32];
 
 		private sealed class Piece
 		{
@@ -65,6 +73,7 @@ namespace RimMandrake.FlowWorks
 		public void Clear()
 		{
 			n = 0;
+			edgeCount = 0;
 		}
 
 		private void Grow()
@@ -76,8 +85,6 @@ namespace RimMandrake.FlowWorks
 			Array.Resize(ref suffix, cap);
 			Array.Resize(ref water, cap);
 			Array.Resize(ref result, cap);
-			Array.Resize(ref adj, cap);
-			Array.Resize(ref adjCap, cap);
 			Array.Resize(ref prevPiece, cap);
 			Array.Resize(ref curPiece, cap);
 		}
@@ -94,13 +101,6 @@ namespace RimMandrake.FlowWorks
 			hist[i] = h;
 			water[i] = w;
 			result[i] = 0;
-			if (adj[i] == null)
-			{
-				adj[i] = new List<int>();
-				adjCap[i] = new List<int>();
-			}
-			adj[i].Clear();
-			adjCap[i].Clear();
 			if (pond)
 			{
 				long[] s = suffix[i];
@@ -133,10 +133,57 @@ namespace RimMandrake.FlowWorks
 
 		public void AddEdge(int a, int b, int cap)
 		{
-			adj[a].Add(b);
-			adjCap[a].Add(cap);
-			adj[b].Add(a);
-			adjCap[b].Add(cap);
+			if (edgeCount == edgeA.Length)
+			{
+				int grown = edgeA.Length * 2;
+				Array.Resize(ref edgeA, grown);
+				Array.Resize(ref edgeB, grown);
+				Array.Resize(ref edgeCap, grown);
+			}
+			edgeA[edgeCount] = a;
+			edgeB[edgeCount] = b;
+			edgeCap[edgeCount] = cap;
+			edgeCount++;
+		}
+
+		/// <summary>Lays the edges out per node: node a's neighbours are adjNode[adjStart[a] .. adjStart[a+1]).</summary>
+		private void BuildAdjacency()
+		{
+			if (adjStart.Length < n + 1)
+			{
+				adjStart = new int[Math.Max(n + 1, adjStart.Length * 2)];
+			}
+			if (adjNode.Length < 2 * edgeCount)
+			{
+				int len = Math.Max(2 * edgeCount, adjNode.Length * 2);
+				adjNode = new int[len];
+				adjEdgeCap = new int[len];
+			}
+			Array.Clear(adjStart, 0, n + 1);
+			for (int e = 0; e < edgeCount; e++)
+			{
+				adjStart[edgeA[e] + 1]++;
+				adjStart[edgeB[e] + 1]++;
+			}
+			for (int i = 0; i < n; i++)
+			{
+				adjStart[i + 1] += adjStart[i];
+			}
+			// curPiece as the fill cursor (Solve resets it before reading it)
+			for (int i = 0; i < n; i++)
+			{
+				curPiece[i] = adjStart[i];
+			}
+			for (int e = 0; e < edgeCount; e++)
+			{
+				int a = edgeA[e], b = edgeB[e], c = edgeCap[e];
+				int ia = curPiece[a]++;
+				adjNode[ia] = b;
+				adjEdgeCap[ia] = c;
+				int ib = curPiece[b]++;
+				adjNode[ib] = a;
+				adjEdgeCap[ib] = c;
+			}
 		}
 
 		public long WaterOf(int i) => water[i];
@@ -183,9 +230,59 @@ namespace RimMandrake.FlowWorks
 				maxBand = Math.Max(maxBand, MaxBand(i));
 				result[i] = 0;
 			}
+			BuildAdjacency();
+			// STEPPULSE_SHRINK_STEADY_SLICE_COST: a band whose pieces are the band above's (the same nodes reach it and no edge
+			// stops at the band above) copies them instead of walking again: same members, same numbering (by lowest node),
+			// same parent links, so the same result. A dug run of even depth walks once instead of once a notch.
+			if (capStops.Length < maxBand + 1)
+			{
+				capStops = new bool[maxBand + 1];
+			}
+			Array.Clear(capStops, 0, maxBand + 1);
+			for (int e = 0; e < edgeCount; e++)
+			{
+				int c = edgeCap[e];
+				if (c >= 0 && c <= maxBand)
+				{
+					capStops[c] = true;
+				}
+			}
 			pieceCount = 0;
+			int prevFirst = 0, prevCount = 0;
 			for (int band = 1; band <= maxBand; band++)
 			{
+				int first = pieceCount;
+				if (band > 1 && !capStops[band - 1] && SameNodesAsAbove(band))
+				{
+					for (int j = 0; j < prevCount; j++)
+					{
+						int k = pieceCount;
+						Piece above = pieces[prevFirst + j];
+						Piece p = NewPiece(band);
+						above.children.Add(k);
+						p.members.AddRange(above.members);
+					}
+					for (int a = 0; a < n; a++)
+					{
+						int pk = prevPiece[a];
+						if (pk < 0)
+						{
+							curPiece[a] = -1;
+							continue;
+						}
+						int k = pk - prevFirst + first;
+						curPiece[a] = k;
+						Piece p = pieces[k];
+						long cb = CapBelow(a, band);
+						p.water += Math.Min(water[a], cb);
+						p.cap += cb;
+					}
+					int[] sw = prevPiece;
+					prevPiece = curPiece;
+					curPiece = sw;
+					prevFirst = first;
+					continue;
+				}
 				for (int i = 0; i < n; i++)
 				{
 					curPiece[i] = -1;
@@ -204,12 +301,11 @@ namespace RimMandrake.FlowWorks
 					for (int head = 0; head < bfs.Count; head++)
 					{
 						int a = bfs[head];
-						List<int> nb = adj[a];
-						List<int> nc = adjCap[a];
-						for (int e = 0; e < nb.Count; e++)
+						int end = adjStart[a + 1];
+						for (int e = adjStart[a]; e < end; e++)
 						{
-							int b = nb[e];
-							if (nc[e] >= band && curPiece[b] < 0 && Weight(b, band) > 0)
+							int b = adjNode[e];
+							if (adjEdgeCap[e] >= band && curPiece[b] < 0 && Weight(b, band) > 0)
 							{
 								curPiece[b] = k;
 								bfs.Add(b);
@@ -236,6 +332,8 @@ namespace RimMandrake.FlowWorks
 					p.water += Math.Min(water[a], cb);
 					p.cap += cb;
 				}
+				prevFirst = first;
+				prevCount = pieceCount - first;
 				int[] t = prevPiece;
 				prevPiece = curPiece;
 				curPiece = t;
@@ -257,6 +355,21 @@ namespace RimMandrake.FlowWorks
 				after += result[i];
 			}
 			return before == after;
+		}
+
+		private bool[] capStops = new bool[16];
+
+		/// <summary>True if exactly the nodes in a piece of the band above reach <paramref name="band"/>.</summary>
+		private bool SameNodesAsAbove(int band)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				if ((Weight(i, band) > 0) != (prevPiece[i] >= 0))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		private Piece NewPiece(int band)
@@ -299,16 +412,21 @@ namespace RimMandrake.FlowWorks
 			{
 				wt += Weight(p.members[m], band);
 			}
+			// a square weighs 1: its share is free / wt, divided once (STEPPULSE_SHRINK_STEADY_SLICE_COST: two 64-bit divides a
+			// member were most of a big piece's lay)
+			long perOne = free / wt;
 			long laid = 0;
 			for (int m = 0; m < p.members.Count; m++)
 			{
-				laid += free * Weight(p.members[m], band) / wt;
+				long w1 = Weight(p.members[m], band);
+				laid += w1 == 1 ? perOne : free * w1 / wt;
 			}
 			long left = free - laid;
 			for (int m = 0; m < p.members.Count; m++)
 			{
 				int a = p.members[m];
-				long share = free * Weight(a, band) / wt + (m < left ? 1 : 0);
+				long w1 = Weight(a, band);
+				long share = (w1 == 1 ? perOne : free * w1 / wt) + (m < left ? 1 : 0);
 				result[a] = CapBelow(a, band + 1) + share;
 			}
 		}

@@ -413,6 +413,74 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Console.WriteLine($"    150 exact scenes x 25 pulses equal: {rotated} with rotated networks, {pondless} pondless, {ponded} with ponds");
                 Assert(rotated > 10 && pondless > 10 && ponded > 10, "the scenes do not exercise both shortcuts (sanity probe)");
             });
+            Case("StepPulse_shrink_end_state_pinned", () =>
+            {
+                // STEPPULSE_SHRINK_STEADY_SLICE_COST: the faster kernel (linear index sort, flat solver edges, a band that copies the
+                // band above, one divide a lay) must end every scene byte-identical to the kernel before it. The digests were taken
+                // from that kernel (f9416b0d72 / 8d0d9f511b sources) on these very scenes; a change in any dL, fluid, body stock or
+                // ledger line changes them.
+                var sha = System.Security.Cryptography.SHA256.Create();
+                string Digest(System.Text.StringBuilder sb) =>
+                    BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(sb.ToString()))).Replace("-", "").Substring(0, 16);
+                var scenes = new System.Text.StringBuilder();
+                for (int seed = 0; seed < 120; seed++)
+                {
+                    bool exact = seed % 4 != 3;
+                    var (aw, seeds) = PulseScene(seed, exact);
+                    for (int p = 0; p < 20; p++)
+                    {
+                        aw.Pulse(seeds);
+                        scenes.Append(PulseSnap(aw)).Append('#');
+                    }
+                }
+                var r = new Random(4242);
+                var solves = new System.Text.StringBuilder();
+                var solve = new RM_LevelSolve();
+                int solved = 0;
+                for (int t = 0; t < 3000; t++)
+                {
+                    solve.Clear();
+                    int cells = r.Next(1, 40), ponds = r.Next(3) == 0 ? r.Next(1, 3) : 0;
+                    bool even = r.Next(3) == 0;   // a run of one depth: the band copy's case
+                    int evenDepth = r.Next(1, 7);
+                    var depthOf = new int[cells];
+                    for (int i = 0; i < cells; i++)
+                    {
+                        depthOf[i] = even ? evenDepth : r.Next(1, 7);
+                        solve.AddCell(depthOf[i], r.Next(3) == 0 ? 0 : r.Next(0, depthOf[i] * RM_LevelSolve.U + 1));
+                    }
+                    for (int k = 0; k < ponds; k++)
+                    {
+                        int bed = r.Next(1, 6);
+                        var h = new int[bed + 1];
+                        int sq = r.Next(1, 30);
+                        h[0] = sq;
+                        for (int l = 1; l <= bed; l++) { sq = Math.Max(1, sq - r.Next(0, 6)); h[l] = sq; }
+                        solve.AddPond(h, r.Next(0, (int)Math.Min(int.MaxValue, RM_LevelSolve.PondCapacity(h) + 1)));
+                    }
+                    int nodes = cells + ponds;
+                    for (int i = 1; i < cells; i++)
+                    {
+                        int j = r.Next(2) == 0 ? i - 1 : r.Next(0, i);
+                        solve.AddEdge(i, j, even && r.Next(4) != 0 ? evenDepth : Math.Min(depthOf[i], depthOf[j]) - (r.Next(5) == 0 ? 1 : 0));
+                    }
+                    for (int k = 0; k < ponds; k++)
+                    {
+                        int c = r.Next(0, cells);
+                        solve.AddEdge(c, cells + k, Math.Min(depthOf[c], r.Next(1, 6)));
+                    }
+                    bool ok = solve.Solve();
+                    if (ok) solved++;
+                    solves.Append(ok ? 'y' : 'n');
+                    for (int i = 0; ok && i < nodes; i++) solves.Append(solve.ResultOf(i)).Append(',');
+                    solves.Append('#');
+                }
+                string ds = Digest(scenes), dv = Digest(solves);
+                Console.WriteLine($"    end-state digests: scenes {ds}, solves {dv} ({scenes.Length} + {solves.Length} chars)");
+                Assert(ds == "4F4C67DF05591EC5", $"the pulse scenes no longer end where the kernel before ended them (digest {ds})");
+                Assert(solved == 3000, $"only {solved} of 3000 random solves conserved (sanity probe)");
+                Assert(dv == "3715D3FBB88120C5", $"the level solves no longer give what the solver before gave (digest {dv})");
+            });
             Case("ExcavationTick_grid_walk_equals_generic", () =>
             {
                 var r = new Random(7);

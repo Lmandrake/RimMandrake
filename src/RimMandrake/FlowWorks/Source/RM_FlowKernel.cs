@@ -623,7 +623,7 @@ namespace RimMandrake.FlowWorks
 			visited.Reset(width * height);
 			pulseSeedOrder.Clear();
 			pulseSeedOrder.AddRange(seedOrder);
-			pulseSeedOrder.Sort();
+			SortCells(pulseSeedOrder);
 			pulseSeedExcavated.Clear();
 			for (int i = 0; i < pulseSeedOrder.Count; i++)
 			{
@@ -800,7 +800,7 @@ namespace RimMandrake.FlowWorks
 					visited.Remove(component[i]);
 				}
 			}
-			networkExcavated.Sort();
+			SortCells(networkExcavated);
 			int n = networkExcavated.Count;
 			// One flow order for the WHOLE network, walked once from all its supplying sources, inputs and sinks: a
 			// partition away from the source would otherwise see every key equal and never spread (part 1's defect),
@@ -1040,6 +1040,62 @@ namespace RimMandrake.FlowWorks
 		private readonly RM_StampSet exIndex = new RM_StampSet();
 		/// <summary>EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: the partition's membership (was componentSet here).</summary>
 		private readonly RM_StampSet exComp = new RM_StampSet();
+		private readonly RM_StampSet sortMark = new RM_StampSet();
+
+		/// <summary>STEPPULSE_SHRINK_STEADY_SLICE_COST: sorts grid indices ascending. Distinct in-grid indices over a span not much
+		/// wider than their count (a partition, a network, a domain: rows of one dig) are marked and read back in index order,
+		/// which is linear where List.Sort is n log n; anything else (a duplicate, an index off the grid, a sparse span) falls
+		/// back to List.Sort. Either way the list ends the same ascending list.</summary>
+		private void SortCells(List<int> cells)
+		{
+			int count = cells.Count;
+			if (count < 64)
+			{
+				cells.Sort();
+				return;
+			}
+			int size = width * height;
+			int min = int.MaxValue, max = -1;
+			for (int i = 0; i < count; i++)
+			{
+				int c = cells[i];
+				if (c < 0 || c >= size)
+				{
+					cells.Sort();
+					return;
+				}
+				if (c < min)
+				{
+					min = c;
+				}
+				if (c > max)
+				{
+					max = c;
+				}
+			}
+			if ((long)(max - min) > 16L * count)
+			{
+				cells.Sort();
+				return;
+			}
+			sortMark.Reset(size);
+			for (int i = 0; i < count; i++)
+			{
+				if (!sortMark.Add(cells[i]))
+				{
+					cells.Sort();   // a duplicate: the scan would drop it
+					return;
+				}
+			}
+			cells.Clear();
+			for (int c = min; c <= max; c++)
+			{
+				if (sortMark.Contains(c))
+				{
+					cells.Add(c);
+				}
+			}
+		}
 		private readonly Dictionary<int, HashSet<int>> exMouths = new Dictionary<int, HashSet<int>>();
 		private readonly List<int> exSrcScratch = new List<int>();
 		private long[] exOld = new long[16];
@@ -1067,7 +1123,7 @@ namespace RimMandrake.FlowWorks
 					exDug.Add(component[i]);
 				}
 			}
-			exDug.Sort();
+			SortCells(exDug);
 			PocketRain(exDug);   // pocket rain: before "before", so the ledger reads it as input, never a leak
 			long before = 0;
 			for (int i = 0; i < exDug.Count; i++)
@@ -1353,7 +1409,7 @@ namespace RimMandrake.FlowWorks
 			}
 			else
 			{
-				exCells.Sort();
+				SortCells(exCells);
 			}
 			exPonds.Sort();
 			ExactSolveDomain(lw, fl);
