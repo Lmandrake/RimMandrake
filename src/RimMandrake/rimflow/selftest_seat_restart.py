@@ -414,7 +414,7 @@ def test_wt_profile_wrap_only_when_enabled():
         wrapped = W.build("FOUNDRY")[0]["commandline"]
     finally:
         W.restart_seats = real
-    check("seat_loop.sh" not in plain and plain.endswith('exec $SHELL -l"'), "WT: off -> the launch line is unchanged")
+    check("seat_loop.sh" not in plain and plain.endswith('exec $SHELL -l"') and "-eq 143 ] && exit 0" in plain, "WT: off -> the launch line is unchanged")
     check("seat_loop.sh FOUNDRY " in wrapped and "--remote-control 'AGENT FOUNDRY'" in wrapped,
           "WT: on -> seat_loop.sh wraps the same LAUNCH line (%s)" % wrapped[-160:])
 

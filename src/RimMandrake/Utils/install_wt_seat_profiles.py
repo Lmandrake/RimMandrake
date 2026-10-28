@@ -294,6 +294,13 @@ def restart_seats(path=None):
     return {k for k, v in (sr.get("seats") or {}).items() if isinstance(v, dict) and v.get("enabled") is not False}
 
 
+# FLEET_RELAUNCH_FIX_ELEVEN_GHOST_TABS: `claude-account use` / fleet-stop SIGTERMs every Claude, and Claude exits 143
+# (MEASURED 2026-10-28, pty + SIGTERM). claude_bounded.sh passes that status through, so a seat ended by the fleet stop
+# CLOSES its tab (exit 0; WT closeOnExit=graceful keeps only non-zero exits). A human quit (0), a crash (1) and an OOM
+# kill (137) still drop to a login shell so the output stays readable.
+SHELL_TAIL = "; [ $? -eq 143 ] && exit 0; exec $SHELL -l"
+
+
 def build(seat):
     colour, model, _, home, cmd = SEATS[seat]
     home_wsl, home_win = home if home else SEAT_CLONES[seat]
@@ -323,7 +330,7 @@ def build(seat):
         export = "" if home else f"export AGENT_SEAT={seat} && "
         first = f" '{WAKE_PROMPT[seat]}'" if seat in WAKE_PROMPT else ""
         inner = (f"cd {home_wsl} && {export}"
-                 f"{LAUNCH.format(script=script, label=label, model=model)}{first}; exec $SHELL -l")
+                 f"{LAUNCH.format(script=script, label=label, model=model)}{first}{SHELL_TAIL}")
     profile = {
         "guid": seat_guid(seat),
         "name": label,

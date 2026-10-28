@@ -37,9 +37,9 @@ def inner_of(commandline):
 
 def launch_argv(inner, wrapped):
     """The claude_bounded.sh argv bash will see, from the `cd … && export … && <launch>` inner string."""
+    if inner.endswith(W.SHELL_TAIL):
+        inner = inner[:-len(W.SHELL_TAIL)]
     tail = inner.split(" && ")[-1]
-    if not wrapped:
-        tail = tail.rsplit("; exec $SHELL -l", 1)[0]
     argv = shlex.split(tail)
     if wrapped:
         argv = argv[2:]            # seat_loop.sh SEAT
@@ -62,7 +62,7 @@ def test_plain_path_has_first_prompt():
     for seat in ("BENCH", "FOUNDRY"):
         cl = build_with((), seat)
         inner = inner_of(cl)
-        check(inner is not None and inner.endswith("; exec $SHELL -l"), f"{seat} plain: still drops to a login shell")
+        check(inner is not None and inner.endswith(W.SHELL_TAIL), f"{seat} plain: still drops to a login shell")
         argv = launch_argv(inner, wrapped=False)
         rc = argv.index("--remote-control")
         check(argv[rc + 1] == f"AGENT {seat}", f"{seat} plain: --remote-control keeps its explicit label")
@@ -121,9 +121,24 @@ def test_only_touches_only_named_tiles():
     check("defaults" not in out["profiles"], "--only leaves the font defaults alone")
 
 
+def test_tab_closes_only_when_fleet_stopped():
+    """Run the real tile tail under bash with a stub launcher: 143 (fleet SIGTERM) closes the tab, any other status
+    leaves a login shell (stubbed to print MARK so we can see it was reached)."""
+    import subprocess, tempfile
+    d = tempfile.mkdtemp()
+    sh = os.path.join(d, "fakeshell"); open(sh, "w").write("#!/bin/sh\necho SHELL-REACHED\nexit 0\n"); os.chmod(sh, 0o755)
+    for status, closes in ((143, True), (0, False), (1, False), (137, False), (130, False)):
+        r = subprocess.run(["bash", "-c", f"(exit {status}){W.SHELL_TAIL}"], env=dict(os.environ, SHELL=sh),
+                           capture_output=True, text=True, timeout=20)
+        check(("SHELL-REACHED" not in r.stdout) == closes, f"status {status}: tab {'closes' if closes else 'keeps a shell'}")
+        if closes:
+            check(r.returncode == 0, "fleet-stop close exits 0 so WT closeOnExit=graceful really closes the tab")
+
+
 if __name__ == "__main__":
     test_only_touches_only_named_tiles()
     test_plain_path_has_first_prompt()
+    test_tab_closes_only_when_fleet_stopped()
     test_wrapped_path_has_first_prompt()
     test_others_untouched()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
