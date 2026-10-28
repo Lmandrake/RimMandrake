@@ -1,0 +1,1 @@
+SteveDesktop WSL disk full (ENOSPC on the volume holding /tmp/claude-1001) silently stops every Claude Bash call and every subagent on that machine: nothing runs, not even df. 2026-10-28; cleared externally (now 4% used). Check df -h / /tmp first when agents there seem dead.
