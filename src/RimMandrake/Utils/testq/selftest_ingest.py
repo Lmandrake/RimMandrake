@@ -308,6 +308,17 @@ def review_r1_checks():
         I.ingest_group(cr["job"], cr["result"], "B_CASE", cr["result"], cr["result"]["attempt"])
         fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
         check(len(fn) == 2 and len(set(fn)) == 2, "one row id failing in two chains gets two findings: %s" % fn)
+        del calls[:]                           # review r5: a disambiguated name may itself collide -> still distinct
+        real_fn = I.finding_name
+        I.finding_name = lambda mod, row, jid, salt=False, chain=None: (
+            "SAME_FAILS_X" if (not salt or "#" not in str(chain)) and row.lower() != "bar" else real_fn(mod, row, jid, salt, chain))
+        try:
+            cr = done_rec("B_CASE", rows=(("foo", "FAIL"), ("FOO", "FAIL")))
+            I.ingest_group(cr["job"], cr["result"], "B_CASE", cr["result"], cr["result"]["attempt"])
+        finally:
+            I.finding_name = real_fn
+        fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
+        check(len(fn) == 2 and len(set(fn)) == 2, "a salted name that collides again is re-salted: %s" % fn)
         I.rimflow, I.recorded_run, I.shard_path = saved[0], saved[1], saved[2]
         names = {I.finding_name("Mock", r, "job_abcdef") for r in ("foo-bar", "foo_bar", "x" * 50 + "1", "x" * 50 + "2")}
         check(len(names) == 4, "two rows of one job never share a finding name: %s" % sorted(names))
@@ -335,6 +346,11 @@ def review_r1_checks():
         I.main()
         check(order[:1] == ["clear"] and "ingest" not in order,
               "a leftover rebase is cleared before ingesting, and while it stays nothing is ingested: %s" % order)
+        order.clear()
+        os.environ["TESTQ_INGEST_PUSH"] = "0"      # review r5: publication off must not ingest into a rebase tree either
+        I.main()
+        check("ingest" not in order and "clear" not in order,
+              "with publication off a rebase in progress still stops ingestion (and nothing is cleared): %s" % order)
     finally:
         (I.rimflow, I.recorded_run, I.shard_path, I.CLI, I.clear_leftovers, I.ingest_one, I.T.QHOME, I.publish,
          I.unpublished, I.REPO) = saved[:10]

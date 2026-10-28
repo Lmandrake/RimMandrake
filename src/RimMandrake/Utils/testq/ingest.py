@@ -247,11 +247,18 @@ def ingest_group(job, res, item, gres, att):
     found = []
     fails = [row for row in gres.get("rows") or [] if row["verdict"] == "FAIL"]
     plain = [finding_name(job["mod"], row["row"], job["id"]) for row in fails]
+    taken = set()
     for row, name in zip(fails, plain):
         if plain.count(name) > 1:              # rows only case apart (foo / FOO): each gets its own hash
             twin = sum(1 for r in fails if r["row"] == row["row"]) > 1    # one row id in two chains: chain joins it
+            chain = str(row.get("chain")) if twin else None
+            name = finding_name(job["mod"], row["row"], job["id"], salt=True, chain=chain)
+        k = 0
+        while name in taken:                   # a salted name can hit another row's name: re-salt until distinct
+            k += 1
             name = finding_name(job["mod"], row["row"], job["id"], salt=True,
-                                chain=str(row.get("chain")) if twin else None)
+                                chain="%s#%d" % (row.get("chain"), k))
+        taken.add(name)
         if filed(name, run):                   # filed by an ingest that died before marking the record
             found.append(name)
             continue
@@ -399,13 +406,13 @@ def unpublished(shard_rel=SHARD_REL):
         not in ("", "0")
 
 
-def rebase_left():
+def rebase_left(clear=True):
     """A publish killed mid-rebase leaves the shard in the rebase's tree; lines ingested into it would be thrown away by
     the `rebase --abort` publish runs, with their records already marked. So leftovers are cleared BEFORE ingesting,
     and while a rebase is still there nothing is ingested (-> True)."""
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
-    pre = clear_leftovers(git)
+    pre = clear_leftovers(git) if clear else None     # publication off: look, never touch
     if pre:
         T.log("ingest pre-clear: %s" % pre)
     gd = git("rev-parse", "--git-dir").stdout.strip()
@@ -425,7 +432,7 @@ def main():
             print("ingest already running")
             return 0
         push = os.environ.get("TESTQ_INGEST_PUSH", "1") != "0"
-        if push and rebase_left():
+        if rebase_left(clear=push):
             return 0
         n = 0
         for path in sorted(os.listdir(T.q("done"))):
