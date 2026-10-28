@@ -104,6 +104,12 @@ def main():
     pb = SP.pool({**off, "system": R(0.8, 100, src="ESTIMATE"), "lukas": R(50, 120)}, NOW, PLAN)
     check([x["spend_pct"] for x in pb["parts"] if x["account"] == "system"][0] == 0,
           f"the pool spends nothing more of a blind 0% account (got {pb['parts']})")
+    # GPT review round 8 (2026-10-28 11:50)
+    st8 = {"stopped": {"account": "system"}}
+    d = D({**off, "system": R(0.5, 100, src="ESTIMATE")}, "system", state=st8)
+    check(d["do"] == "poll", f"stopped with lukas unread (no record): poll for it (got {d['do']})")
+    d = D({**off, "system": R(0.5, 100, src="ESTIMATE"), "lukas": R(None, 120, src="UNMEASURED")}, "system", state=st8)
+    check(d["do"] == "poll", f"stopped with lukas at an unknown %: poll for it (got {d['do']})")
     # GPT review round 5 (2026-10-28 11:37)
     mv = {"steven": R(80, 144), "system": R(60, 12, age=20), "lukas": R(0, 120)}
     d = D(mv, "lukas", polled=True)
@@ -345,6 +351,20 @@ def main():
     SP.run = real_run
     check("fleet-stop" not in calls.read_text() and "arm" in calls.read_text() and not SP.load_state().get("stopped"),
           "a stop that no longer holds after arming is skipped and leaves no 'stopped' record")
+    # HOLD written while arming brakes the act
+    calls.write_text("")
+    st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
+    cur9 = {**off, "system": R(0, 100), "lukas": R(2, 120)}
+    def arm_hold(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            (TMP / "out" / "HOLD").write_text("x")
+        return real_run(argv, *a, **k)
+    SP.run = arm_hold
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur9, poll_fn=lambda: None)
+    SP.run = real_run
+    (TMP / "out" / "HOLD").unlink(missing_ok=True)
+    check("fleet-stop" not in calls.read_text() and "arm" in calls.read_text(),
+          "HOLD written while arming brakes the act")
     if live_before is None:
         lf.unlink(missing_ok=True)
     else:

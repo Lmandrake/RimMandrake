@@ -252,7 +252,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         if reset_passed(meter.get(n), now):
             why(n, f"{n}'s reset has passed and the reading predates it")
         r = meter.get(n)
-        if (target is None and n != live and r and not usable(r) and not blind_zero(plan, r, now)
+        if target is None and n != live and (not r or r.get("week_pct_left") is None):
+            why(n, f"{n} has no reading: read it before any stop")
+        elif (target is None and n != live and r and not usable(r) and not blind_zero(plan, r, now)
                 and not reset_passed(r, now) and in_window(plan, n, r, now) and n in line
                 and (r.get("week_pct_left") or 0) > line[n]):
             why(n, f"{n} may have headroom ({r.get('week_pct_left')}%) but reads {r.get('source')}"
@@ -552,6 +554,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     def still():
         """A slow arm can close a window, pass a reset or spend a target: re-read the meter and re-decide at the new
         time (without this pass's own pending marker); the act goes ahead only if the same act is still due."""
+        if (OUT / "HOLD").exists():  # the owner's brake, set while we armed
+            return False
         mk = {k: v for k, v in read_markers().items() if k != d.get("key")}
         d2 = decide(meter_fn(), live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
         return d2["do"] == d["do"] and d2.get("to") == d.get("to")
