@@ -44,6 +44,9 @@ with open(KEYFILE, "w") as fh:
     fh.write("k" * 64)
 os.environ[CE.KEY_ENV] = KEYFILE
 KEY = CE._key()
+# These properties are about reading unchained sealed lines written straight into today's file; on/after the cutover
+# each would be a chain TAMPER (pinned in selftest_close_evidence_chain.py), so pin today before it.
+CE.CHAIN_CUTOVER = "9999-12-31"
 
 
 def check(cond, msg):

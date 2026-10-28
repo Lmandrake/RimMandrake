@@ -250,7 +250,9 @@ def ad5(root, store):
     with open(day, "a") as f:
         f.write(lines[-2] + "\n")          # a replay of the PASS line: still deduped (review AC3)
     got = CE.lookup(sha=sha, tool="selftest")
-    check([r["result"] for r in got] == ["FAIL", "PASS", "FAIL"], "AD5 a replayed line is still deduped by its mac")
+    check([r["result"] for r in got] == ["FAIL", "PASS", "FAIL", "UNMEASURED"] and "tamper" in got[-1]["detail"],
+          "AD5 a replayed line is still deduped by its mac, and breaks the chain: a TAMPER marker (%r)"
+          % [r["result"] for r in got])
 
 
 # ---------------------------------------------------------------------------------------------------- AD6

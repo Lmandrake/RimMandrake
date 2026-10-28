@@ -30,6 +30,18 @@ sys.path.insert(0, str(HERE))
 import close_evidence as CE  # noqa: E402
 
 
+class chain_blind:
+    """These checks hand-write, rewrite or replay lines to pin lookup's PER-LINE rules; every such edit is also a
+    chain TAMPER now (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED), whose marker would mask what they pin. The chain
+    is pinned by selftest_close_evidence_chain.py; here it is switched off."""
+    def __enter__(self):
+        self.real = CE.chain_problems
+        CE.chain_problems = lambda *a, **k: []
+
+    def __exit__(self, *exc):
+        CE.chain_problems = self.real
+
+
 FAILS: list = []
 
 
@@ -1025,7 +1037,11 @@ def main():
                   g_lookup, g_make_isolated, g_isolated_cli, g_cli, g_record_cli):
             os.environ[CE.ENV_DIR] = str(Path(td) / ("ev_" + g.__name__))
             os.environ[CE.KEY_ENV] = str(Path(td) / "close_evidence.key")
-            g(td)
+            if g is g_lookup:
+                with chain_blind():
+                    g(td)
+            else:
+                g(td)
     print("\n%s" % ("FAILED: %d" % len(FAILS) if FAILS else "all ok"))
     return 1 if FAILS else 0
 

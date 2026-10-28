@@ -51,6 +51,23 @@ dict, a copied line with one field edited, a start state typed in by a caller. T
 code running as this user can read the key, import this module and call its internals, or set RIMFLOW_SEAT to any
 seat. Treat a line as "written by record() in a process that ran git itself", never as proof of who ran it.
 
+THE CHAIN (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED). Threat model: accidental or careless edits by our own
+agents -- an agent "fixing" a record by hand (stripping its seals, editing it, deleting it) -- not a determined attacker
+holding the key. Before it, a line with both seals stripped read as a pre-seal legacy line, so re-pointing its sha (or
+deleting the line) made a FAIL vanish without a trace. Now every line carries `prev` (sha256 of the previous RAW line in
+its day file, "" for the first) under its mac, computed under the append lock (_append_chained), and the day file has a
+sealed `<day>.jsonl.head` {size, last, broken} rewritten under the same lock. chain_problems() reads a day as TAMPER
+when a chained line's prev does not match the line before it (a line deleted, edited or stripped), when the head is
+missing, unsealed, or names bytes the file no longer holds (the last line deleted or edited), when the head carries a
+tamper an appender saw (sticky: a later append never heals it), or -- on/after CHAIN_CUTOVER -- when any line is
+unsealed or unchained; before the cutover a line with NO seal after a chained one is a tamper too. A tamper is not
+attributable to a sha, so lookup(sha=) adds its UNMEASURED close_evidence marker (detail.tamper) for EVERY sha while
+the day is in its window. Out of scope: deleting a whole day file together with its head, and anything done with the
+key. A head lagging behind chained lines (a crash between line and head) is clean; so is a file with no head whose only
+chained line is its last (the first head never written), and a day file deleted while its head remains is a tamper.
+Residual (two files cannot commit atomically): after such a crash, and until the next append re-seals the head, the
+lines beyond the head have no anchor, so deleting or stripping exactly that unanchored tail goes unseen.
+
 Reads hold a SHARED flock on `<day>.jsonl.lock` (review AA1): on drvfs a reader racing appenders made 1-3 of 960
 lines vanish with no unreadable fragment left behind; with the shared lock, 960/960.
 
@@ -99,6 +116,12 @@ DIRTY_KEEP = 20
 ALL = "*"                      # a covers entry that covers every path (an unreadable-line marker)
 _ROOT_CACHE: list = []
 _SHA_RE = re.compile(r"\b[0-9a-f]{40}\b")
+#: Chain cutover (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED, recorded ONCE on 2026-10-28; never move it later):
+#: a day file dated on/after it must be chained from its first line -- an unsealed or unchained line there is a TAMPER.
+#: Earlier files are grandfathered: lines written before the fix (and by a clone still on the old code) are accepted,
+#: only the chained lines in them are checked. Two days' grace so every clone (foundry, laptop) syncs first.
+CHAIN_CUTOVER = "2026-10-30"
+HEAD_SUFFIX = ".head"          # `<day>.jsonl.head`: the sealed byte size + last-line hash of the day file
 
 
 # ------------------------------------------------------------------ paths and git
@@ -508,6 +531,192 @@ def _append(path: Path, data: bytes) -> None:
             os.close(lfd)
 
 
+# ------------------------------------------------------------------ chain (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED)
+
+def _split_lines(content: bytes) -> list:
+    """The raw lines of a day file, each with its b"\\n" (a final fragment without one is kept as it is)."""
+    parts = content.split(b"\n")
+    return [x + b"\n" for x in parts[:-1]] + ([parts[-1]] if parts[-1] else [])
+
+
+def _line_hash(raw: bytes) -> str:
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _head_mac(day, size, last, broken, start, key) -> str:
+    return hmac.new(key, json.dumps(["head", day, size, last, broken, start]).encode(), hashlib.sha256).hexdigest()
+
+
+def _parse_head(day, head_raw, key):
+    """The verified head dict {size, last, broken, start}; None when absent; "bad" when unsealed or damaged."""
+    if head_raw is None:
+        return None
+    try:
+        h = json.loads(head_raw.decode("utf-8"))
+        size, last, broken, start, m = h["size"], h["last"], h.get("broken") or [], h["start"], h["mac"]
+        good = (all(isinstance(x, int) and not isinstance(x, bool) and x >= 0 for x in (size, start))
+                and isinstance(last, str) and isinstance(broken, list) and isinstance(m, str)
+                and bool(_MAC_RX.fullmatch(m)) and hmac.compare_digest(m, _head_mac(day, size, last, broken, start,
+                                                                                    key)))
+    except (ValueError, KeyError, TypeError, AttributeError):
+        good = False
+    return {"size": size, "last": last, "broken": broken, "start": start} if good else "bad"
+
+
+def _decode_line(raw: bytes):
+    r = _CJ.decode(raw.decode("utf-8", errors="replace"))
+    return r.value if r.ok else None
+
+
+def _post_cutover(day) -> bool:
+    return str(day) >= CHAIN_CUTOVER
+
+
+def _first_line_crash(day, lines, key) -> bool:
+    """No head, and the file reads as a writer that died before writing its FIRST head (not a tamper): the only chained
+    line is the last one and chains to the line before it (pre-cutover, old unchained lines may precede it), or a
+    post-cutover day holds a single line torn mid-write."""
+    if not lines:
+        return False
+    rec = _decode_line(lines[-1])
+    if not isinstance(rec, dict):
+        return len(lines) == 1 and b'"mac"' not in lines[0]          # the day's first append, torn by a crash
+    want = _line_hash(lines[-2]) if len(lines) > 1 else ""
+    if rec.get("prev") != want or not mac_ok(rec, key):
+        return False
+    if len(lines) == 1:
+        return True
+    if _post_cutover(day):
+        return False                       # earlier lines on a chained day were appended under a head
+    for x in lines[:-1]:
+        r = _decode_line(x)
+        if isinstance(r, dict) and "prev" in r:
+            return False                   # an earlier chained line: a head was written then
+    return True
+
+
+def _head_problems(day, lines, head_raw, key, chained) -> list:
+    """What is wrong with the day's sealed head against the file's raw `lines` (`chained`: the file holds a chained
+    line). The appender carries these forward into the next head (sticky), so an append never heals a tamper."""
+    h = _parse_head(day, head_raw, key)
+    if h is None:
+        if lines and (chained or _post_cutover(day)) and not _first_line_crash(day, lines, key):
+            return ["%s: head missing (the day file was rewritten, or its head deleted)" % day]
+        return []
+    if h == "bad":
+        return ["%s: head unsealed or damaged" % day]
+    size, last = h["size"], h["last"]
+    probs = [str(b) for b in h["broken"]]
+    total = sum(len(x) for x in lines)
+    if size > total:
+        return probs + ["%s: %d sealed bytes, %d present (line(s) deleted)" % (day, size, total)]
+    if size:
+        off, end = 0, None
+        for x in lines:
+            off += len(x)
+            if off == size:
+                end = x
+                break
+            if off > size:
+                break
+        if end is None or _line_hash(end) != last:
+            probs.append("%s: the last sealed line was edited, stripped or deleted" % day)
+    return probs
+
+
+def chain_problems(day, lines, head_raw, key) -> list:
+    """Why day `day`'s file (raw `lines`, `_split_lines`) and head bytes (None when absent) read as TAMPERED; [] when
+    clean. Unreadable lines are not judged here (lookup's UNMEASURED marker already covers them), but their raw bytes
+    are what the next line's prev chains to."""
+    probs, chained, post = [], False, _post_cutover(day)
+    h = _parse_head(day, head_raw, key)
+    begin = h["start"] if isinstance(h, dict) else None       # byte offset where the chain began (sealed)
+    off = 0
+    for i, raw in enumerate(lines):
+        at, off = off, off + len(raw)
+        rec = _decode_line(raw)
+        if not isinstance(rec, dict):
+            continue
+        if begin is not None and at >= begin:
+            chained = True
+        sealed = "mac" in rec or "route" in rec
+        if "prev" not in rec or not ("mac" in rec and "route" in rec):
+            if post:
+                probs.append("%s line %d: unsealed or unchained line on/after the cutover %s" % (day, i + 1,
+                                                                                               CHAIN_CUTOVER))
+            elif chained and not sealed:
+                probs.append("%s line %d: a line with its seals stripped after the chain began" % (day, i + 1))
+            continue
+        if not mac_ok(rec, key):
+            continue                 # its own edit shows in the next line's prev, or in the head when it is last
+        chained = True
+        want = _line_hash(lines[i - 1]) if i else ""
+        if rec.get("prev") != want:
+            probs.append("%s line %d: the line before it was deleted, edited or stripped" % (day, i + 1))
+    return probs + _head_problems(day, lines, head_raw, key, chained)
+
+
+def _head_path(f) -> Path:
+    return Path(str(f) + HEAD_SUFFIX)
+
+
+def _write_head(f, day, size, last, broken, start, key) -> None:
+    """Atomic: a unique tmp file then os.replace (a reader never sees half a head). `start`: the byte offset of the
+    day's first chained line, kept for the life of the file (a stripped FIRST chained line is a tamper too)."""
+    hp = _head_path(f)
+    body = {"size": size, "last": last, "broken": broken, "start": start,
+            "mac": _head_mac(day, size, last, broken, start, key)}
+    tmp = hp.parent / (".%s.%d.%s.tmp" % (hp.name, os.getpid(), secrets.token_hex(6)))
+    tmp.write_text(json.dumps(body, sort_keys=True), encoding="utf-8")
+    os.replace(str(tmp), str(hp))
+
+
+def _append_chained(path: Path, rec: dict, key: bytes) -> dict:
+    """Seal `rec` with `prev` = hash of the file's last raw line and append it, then rewrite the sealed head -- all
+    under the exclusive flock every appender takes, so concurrent writers chain in turn and never see a half state.
+    A tamper the current head already shows (or a missing head) is carried into the new head's `broken` (sticky)."""
+    import fcntl
+    path = Path(path)
+    day = path.name[:10]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    lfd = os.open(str(path) + ".lock", os.O_WRONLY | os.O_CREAT, 0o644)
+    try:
+        fcntl.flock(lfd, fcntl.LOCK_EX)
+        content = path.read_bytes() if path.is_file() else b""
+        lines = _split_lines(content)
+        hp = _head_path(path)
+        head_raw = hp.read_bytes() if hp.is_file() else None
+        chained = head_raw is not None or any(
+            isinstance(r, dict) and "prev" in r and mac_ok(r, key) for r in map(_decode_line, lines))
+        broken = _head_problems(day, lines, head_raw, key, chained)
+        lead = b"\n" if content and not content.endswith(b"\n") else b""    # a torn fragment ends at its own line
+        if lead:
+            lines[-1] += lead
+        rec = dict(rec)
+        rec["prev"] = _line_hash(lines[-1]) if lines else ""
+        rec = seal(rec, key)
+        data = lead + (json.dumps(rec, sort_keys=True, default=str) + "\n").encode("utf-8")
+        fd = os.open(str(path), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+        try:
+            view = memoryview(data)
+            while view:
+                n = os.write(fd, view)
+                if n <= 0:
+                    raise OSError("short write (%d of %d bytes left)" % (n, len(view)))
+                view = view[n:]
+        finally:
+            os.close(fd)
+        h = _parse_head(day, head_raw, key)
+        start = h["start"] if isinstance(h, dict) else len(content) + len(lead)
+        _write_head(path, day, len(content) + len(data), _line_hash(data[len(lead):]), broken, start, key)
+        return rec
+    finally:
+        try:
+            fcntl.flock(lfd, fcntl.LOCK_UN)
+        finally:
+            os.close(lfd)
+
+
 def _ship_to_wsl(payload: dict) -> dict | None:
     """Windows python: the WSL side records (its store, its git, its flock)."""
     if os.environ.get(ENV_DIR):
@@ -539,11 +748,10 @@ def record(tool, result, paths, clone=None, detail=None, item=None, force=False,
                                  "start": start, "end": end, "scope": scope,
                                  "covers": [str(c) for c in covers] if covers is not None else None,
                                  "live_only": live_only, "variant": variant})
-        rec = seal(build_record(tool, result, paths, clone, detail, item, start=start, end=end, scope=scope,
-                                covers=covers, live_only=live_only, variant=variant))
-        line = (json.dumps(rec, sort_keys=True, default=str) + "\n").encode("utf-8")
-        _append(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]), line)
-        return rec
+        key = _key(create=True)
+        rec = build_record(tool, result, paths, clone, detail, item, start=start, end=end, scope=scope,
+                           covers=covers, live_only=live_only, variant=variant)
+        return _append_chained(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]), rec, key)
     except Exception as exc:  # noqa: BLE001 -- evidence is a side channel; the tool's own verdict stands
         print("!!! CLOSE-EVIDENCE WRITE FAILED (%s, tool=%s): %s: %s -- the tool's result is unaffected, but no "
               "gate will see this run" % (__file__, tool, type(exc).__name__, exc), file=sys.stderr, flush=True)
@@ -560,6 +768,11 @@ def _days(n, today=None):
 def _read_locked(f: Path) -> list:
     """The day file's lines, read under a SHARED flock on `<file>.lock` (review AA1): appenders hold it exclusively,
     so a read never overlaps an append. On drvfs an unlocked reader made appends vanish without a trace."""
+    return [x.decode("utf-8", errors="replace") for x in _read_locked_raw(f)[0]]
+
+
+def _read_locked_raw(f: Path) -> tuple:
+    """(raw lines, head bytes or None) of a day file, both read under the SHARED flock (_read_locked)."""
     import fcntl
     lock = str(f) + ".lock"
     try:
@@ -568,8 +781,9 @@ def _read_locked(f: Path) -> list:
         lfd = os.open(lock, os.O_RDONLY)
     try:
         fcntl.flock(lfd, fcntl.LOCK_SH)
-        with f.open(encoding="utf-8", errors="replace") as fh:
-            return fh.readlines()
+        lines = _split_lines(f.read_bytes())
+        hp = _head_path(f)
+        return lines, (hp.read_bytes() if hp.is_file() else None)
     finally:
         try:
             fcntl.flock(lfd, fcntl.LOCK_UN)
@@ -592,16 +806,24 @@ def _contracts_jsonl():
 _CJ = _contracts_jsonl()
 
 
-def read_all(days=30, folder=None, bad_out=None):
+def read_all(days=30, folder=None, bad_out=None, tamper_out=None, key=None):
     """Every record in the last `days` day files, oldest first. Unreadable lines are skipped, counted on stderr and,
-    when `bad_out` (a list) is given, appended to it as (day, fragment) so a caller can refuse to call the day clean."""
+    when `bad_out` (a list) is given, appended to it as (day, fragment) so a caller can refuse to call the day clean.
+    `tamper_out` (a list): each day's chain_problems() are appended to it (under `key`, default the mac key)."""
     folder = Path(folder) if folder else evidence_dir()
     out, bad = [], 0
+    if tamper_out is not None and key is None:
+        key = _key()
     for day in sorted(_days(days)):
         f = folder / ("%s.jsonl" % day)
         if not f.is_file():
+            if tamper_out is not None and _head_path(f).is_file():
+                tamper_out.append("%s: day file deleted, its sealed head remains" % day)
             continue
-        for ln in _read_locked(f):
+        raw, head = _read_locked_raw(f)
+        if tamper_out is not None:
+            tamper_out.extend(chain_problems(day, raw, head, key))
+        for ln in (x.decode("utf-8", errors="replace") for x in raw):
             r = _CJ.decode(ln)                  # contracts.jsonl: the one line policy (json.loads + object, never raises)
             if r.ok:
                 out.append(r.value)
@@ -730,14 +952,18 @@ def uncovered(records, paths) -> list:
     return [p for p in paths if not any(covered(r, [p]) for r in records)]
 
 
-def _bad_marker(sha, frags, unverifiable=0) -> dict:
+def _bad_marker(sha, frags, unverifiable=0, tamper=None) -> dict:
     """An UNMEASURED record standing for unreadable or unverifiable line(s) that may have held a run at `sha` (F1,
-    review AB5: a lost or damaged FAIL must never leave an older PASS standing)."""
-    return {"v": V, "ts": "", "tool": "close_evidence", "clone": None, "sha": sha, "dirty": False, "dirty_n": 0,
+    review AB5: a lost or damaged FAIL must never leave an older PASS standing), and for a TAMPERED day (`tamper`:
+    chain_problems(); a stripped or deleted line could have been any sha's FAIL)."""
+    m = {"v": V, "ts": "", "tool": "close_evidence", "clone": None, "sha": sha, "dirty": False, "dirty_n": 0,
             "dirty_paths": [], "start": {"sha": sha, "dirty": False, "dirty_n": 0}, "paths": [ALL], "covers": [ALL],
             "result": "UNMEASURED", "item": None, "seat": None, "live_only": False, "variant": None,
             "detail": {"unreadable_lines": len(frags) - unverifiable, "unverifiable_lines": unverifiable,
                        "days": sorted({d for d, _ in frags})}}
+    if tamper:
+        m["detail"]["tamper"] = list(tamper)
+    return m
 
 
 def _top_level(text, key):
@@ -783,8 +1009,9 @@ _SHA_FULL = re.compile(r"[0-9a-f]{40}")
 
 def _legacy(r) -> bool:
     """An unsealed line (pre-seal v1/v2, or hand-written: no mac and no route). It never was evidence, so its plain
-    sha may route it; stripping both seals off a sealed line is the same act as deleting it, which no reader of an
-    append-only file can detect. A line that carries either seal and fails is routed only by a route that verifies."""
+    sha may route it. Stripping both seals off a chained line, or deleting it, is caught by the chain instead
+    (chain_problems: a TAMPER marker for every sha). A line that carries either seal and fails is routed only by a
+    route that verifies."""
     return "mac" not in r and "route" not in r
 
 
@@ -818,7 +1045,8 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
     bad: list = []
     hits, unver = [], []
     seen_macs = set()
-    for r in read_all(days, folder, bad_out=bad):
+    tamper: list = []
+    for r in read_all(days, folder, bad_out=bad, tamper_out=tamper, key=key):
         if not mac_ok(r, key):                        # review AB5: unverifiable is UNMEASURED, never absent
             rs, rt = r.get("sha"), r.get("tool")
             if not sha:
@@ -853,8 +1081,11 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
         def maybe_ours(ln):                   # a torn line: only a sealed route recoverable from it may exclude it
             return _routed(_top_level(ln, "sha"), _top_level(ln, "tool"), _top_level(ln, "route"), key, sha, tool)
         frags = [(d, ln) for d, ln in bad if maybe_ours(ln)] + unver
-        if frags:
-            hits.append(_bad_marker(sha, frags, unverifiable=len(unver)))
+        if tamper:
+            print("!!! close_evidence: TAMPER in the evidence store (%s) -- every sha reads UNMEASURED until the day "
+                  "leaves the window: %s" % (folder or evidence_dir(), "; ".join(tamper[:5])), file=sys.stderr)
+        if frags or tamper:
+            hits.append(_bad_marker(sha, frags, unverifiable=len(unver), tamper=tamper))
     return hits
 
 
@@ -914,11 +1145,10 @@ def _record_cli() -> int:
     try:
         who = dict(p["who"]) if isinstance(p.get("who"), dict) else {}
         who["seat_from"] = "shipped:%s" % who.get("seat_from")      # asserted by the caller, never verified here
-        rec = seal(build_record(p["tool"], p["result"], p.get("paths"), p.get("clone"), p.get("detail"), p.get("item"),
-                                start=p.get("start"), end=None, scope=p.get("scope"), covers=p.get("covers"),
-                                live_only=p.get("live_only", False), variant=p.get("variant"), who=who, via="cli"))
-        _append(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]),
-                (json.dumps(rec, sort_keys=True, default=str) + "\n").encode("utf-8"))
+        rec = build_record(p["tool"], p["result"], p.get("paths"), p.get("clone"), p.get("detail"), p.get("item"),
+                           start=p.get("start"), end=None, scope=p.get("scope"), covers=p.get("covers"),
+                           live_only=p.get("live_only", False), variant=p.get("variant"), who=who, via="cli")
+        rec = _append_chained(evidence_dir() / ("%s.jsonl" % rec["ts"][:10]), rec, _key(create=True))
     except Exception as exc:  # noqa: BLE001
         print("record failed: %s: %s" % (type(exc).__name__, exc), file=sys.stderr)
         return 1

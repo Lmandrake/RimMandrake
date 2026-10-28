@@ -32,6 +32,18 @@ REPO = HERE.parents[2]
 sys.path.insert(0, str(HERE))
 import close_evidence as CE  # noqa: E402
 
+
+class chain_blind:
+    """These checks hand-write, rewrite or replay lines to pin lookup's PER-LINE rules; every such edit is also a
+    chain TAMPER now (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED), whose marker would mask what they pin. The chain
+    is pinned by selftest_close_evidence_chain.py; here it is switched off."""
+    def __enter__(self):
+        self.real = CE.chain_problems
+        CE.chain_problems = lambda *a, **k: []
+
+    def __exit__(self, *exc):
+        CE.chain_problems = self.real
+
 FAILS = []
 
 
@@ -155,7 +167,7 @@ def main():
         # every line on disk is one JSON object with the fixed fields
         lines = [json.loads(ln) for f in store.glob("*.jsonl") for ln in f.read_text().splitlines()]
         want = {"v", "ts", "tool", "clone", "sha", "dirty", "dirty_n", "dirty_paths", "start", "paths", "covers",
-                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "nonce", "route", "mac"}
+                "result", "item", "seat", "who", "origin", "live_only", "variant", "detail", "nonce", "route", "mac", "prev"}
         check(lines and all(set(l) == want for l in lines), "%d lines, each with exactly the schema fields" % len(lines))
 
         # validate_patch end to end: a run on a file in the fixture clone writes one validate_patch line
@@ -215,8 +227,9 @@ def main():
               "F3 lookup hides modcheck unless include_live")
 
         review_z(td, store, repo, sha2)
-        review_aa(Path(td) / "aa")
-        review_ab(Path(td) / "ab")
+        with chain_blind():
+            review_aa(Path(td) / "aa")
+            review_ab(Path(td) / "ab")
 
     print("RESULT: %s (%d failure(s))" % ("PASS" if not FAILS else "FAIL", len(FAILS)))
     return 1 if FAILS else 0

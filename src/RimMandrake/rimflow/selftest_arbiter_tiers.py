@@ -11,6 +11,10 @@ EVD = tempfile.mkdtemp()                                   # the close_evidence 
 os.environ[ce.ENV_DIR] = EVD                               # the live store is never read or written here
 os.environ[ce.KEY_ENV] = os.path.join(tempfile.mkdtemp(), "close_evidence.key")
 ce._key(create=True)
+# The fixtures below forge, replay and hand-append lines into TODAY's file to test the arbiter's reading of them; on/after
+# ce.CHAIN_CUTOVER every such line is a chain TAMPER that poisons every later lookup. Pin today before the cutover so
+# these checks keep testing what they name; the chain itself is pinned in Utils/selftest_close_evidence_chain.py.
+ce.CHAIN_CUTOVER = "9999-12-31"
 
 
 def ok(name, got, want):
