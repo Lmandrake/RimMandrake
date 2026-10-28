@@ -176,9 +176,13 @@ def installs_and_unfiled():
               len(flat) == 2 and "fauna_compare.py RM_FurnaceBeast --cand /s/RM_FurnaceBeast_r2.spec.json --out " + str(cmp_root / "RM_FurnaceBeast_r2") in flat[0]
               and flat[1].endswith("fauna_drive.py install RM_FurnaceBeast --round 2"), flat)
         (cmp_root / "RM_FurnaceBeast_r2").mkdir(parents=True)
-        (cmp_root / "RM_FurnaceBeast_r2/compare.json").write_text("{}")
+        (cmp_root / "RM_FurnaceBeast_r2/compare.json").write_text(json.dumps({"winner": "B", "install_b": True}))
         check("an existing compare is not paid for twice",
               len(AJ.install_cmds(acc, "fauna", spec="/s/x.json", cmp_root=cmp_root)) == 1)
+        (cmp_root / "RM_FireWasp_r2").mkdir(parents=True)
+        (cmp_root / "RM_FireWasp_r2/compare.json").write_text(json.dumps({"error": "reply JSON does not parse"}))
+        check("a compare that errored is paid for again (an error is no verdict)",
+              len(AJ.install_cmds(dict(acc, subject="RM_FireWasp"), "fauna", spec="/s/x.json", cmp_root=cmp_root)) == 2)
         check("series tag s2r1 installs round 1", AJ.install_cmds(dict(acc, candidate="s2r1"), "fauna", spec="/s/x.json",
                                                                   cmp_root=cmp_root)[-1][-1] == "1")
         check("a REGEN installs nothing", AJ.install_cmds(dict(acc, decision="REGEN"), "fauna", spec="/s/x", cmp_root=cmp_root) == [])

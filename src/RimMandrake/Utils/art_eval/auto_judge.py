@@ -258,6 +258,15 @@ def unfiled_item_id(u: dict) -> str:
     return "ARTEVAL_FIX_REGEN_UNFILED_" + word[:44 - 26]
 
 
+def compare_done(f: Path) -> bool:
+    """A head-to-head verdict exists (an errored or unreadable compare is no verdict: it is run again)."""
+    try:
+        d = json.loads(f.read_text())
+    except (OSError, ValueError):
+        return False
+    return isinstance(d, dict) and not d.get("error") and "install_b" in d
+
+
 def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, drv: Path = DRV) -> list:
     """The commands that install an ACCEPTed candidate through its own installer (art ledger underneath; never a hand
     copy). fauna: the head-to-head compare fauna_drive install gates on (skipped when already paid for), then
@@ -272,7 +281,7 @@ def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, 
         return []
     out = []
     cmp_dir = Path(cmp_root) / f"{rec['subject']}_{tag}"
-    if not (cmp_dir / "compare.json").is_file():
+    if not compare_done(cmp_dir / "compare.json"):
         if not spec:
             return []
         out.append([sys.executable, HERE / "fauna_compare.py", rec["subject"], "--cand", spec, "--out", cmp_dir])
