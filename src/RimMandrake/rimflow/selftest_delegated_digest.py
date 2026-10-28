@@ -52,6 +52,19 @@ _UNIT = re.compile(r"(?<![A-Za-z0-9_])\$?\d+(?:[.,]\d+)*\s?(?:[kKM]|%|tokens?)(?
 _BIG = re.compile(r"(?<![A-Za-z0-9_\-:./\\])\d{1,3}(?:,\d{3})+(?![\d])|(?<![A-Za-z0-9_\-:./\\])\d{5,}(?![A-Za-z0-9_\-:])")
 
 
+def handled(text, handles, label, prefix):
+    """The page shows `<label> E<n>` and the handle map sends that handle to a value starting with prefix."""
+    return any(handles.get(h, {}).get("value", "").startswith(prefix)
+               for h in re.findall(r"\b%s (E\d+)\b" % label, text))
+
+
+def stored_handles(tmp, text):
+    """The handle map run() stored for a page (state dir/handles/<sha256[:16]>.json), {} when none."""
+    import hashlib
+    p = os.path.join(tmp, "handles", hashlib.sha256(text.encode("utf-8")).hexdigest()[:16] + ".json")
+    return json.load(open(p))["handles"] if os.path.exists(p) else {}
+
+
 def leaks(text):
     text = re.sub(r"\b(sha|git|event) [0-9a-f]{12}\b", r"\1", text)   # a labelled sha is not a figure
     found = [p for p in PLANTS if p.lower() in text.lower()]
@@ -204,9 +217,11 @@ def test_blind_counts_body_malformed():
         lf = tb.get("leftover deletions")
         check(lf and lf[1] == "2" and lf[2] == "1", "malformed: leftovers 2 records, 1 bad line: %s" % lf)
         check("RM_Chittik" in text and "ACCEPT" in text and "opus+gpt" in text, "blind: closed fields still show")
-        check("sha abcdef123456" in text and "git abcdef012345" in text,
-              "sha: a ledger and a commit sha git resolves print, by their label")
-        check("111111" not in text, "sha: a sha git does not know never prints")
+        check(handled(text, text.handles, "sha", "abcdef123456") and handled(text, text.handles, "git", "abcdef012345")
+              and "abcdef123456" not in text and "abcdef012345" not in text,
+              "sha: a ledger and a commit sha git resolves show as a handle by their label, never raw")
+        check("111111" not in text and not any(h["value"].startswith("111111") for h in text.handles.values()),
+              "sha: a sha git does not know never prints, nor gets a handle")
         check(" OTHER" in text, "blind: a prose decision reads OTHER, never its words")
         held = sum(int(r[3]) for r in tb.values())
         check(sum(len(x) for x in seen.values()) == len(lines(text)) + held,
@@ -244,7 +259,8 @@ def test_window_fail_force_pending():
         D.main(args(tmp, "2026-10-28", cut=ts(44)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         p2 = page_of(tmp, "2026-10-28")
         check("A_ONE" not in p2 and "B_TWO" in p2, "window: consecutive digests never repeat a record")
-        check("git abababababab" in p2, "fail: the failed source's backlog appears on the next digest that reads it")
+        check(handled(p2, stored_handles(tmp, p2), "git", "abababababab") and "abababababab" not in p2,
+              "fail: the failed source's backlog appears on the next digest that reads it (as a handle)")
         # force day 1: its own floor, its own records, never day 2's
         D.main(args(tmp, "2026-10-27", "--force", cut=ts(45)), sources=(_reads(ev2, cm, tmp=tmp), IDS, RESOLVE))
         p1f = page_of(tmp, "2026-10-27")

@@ -361,8 +361,11 @@ def guard_checks():
 def main():
     check(bool(NAMES), "instrument: blind_core.account_names() yields account names to plant (%d)" % len(NAMES))
     base = digest_page([dict(BASE[s], source=s) for s in BL.SOURCES])
-    check(all(x in base for x in ("PIPE_ELBOW_FIX_SEAM_JOGS", "RM_Chittik", "sha abcdef123456", "git abababababab",
-                                  "marks RM_Bloodlurk archived", "art_install RM_Tikkit installed")),
+    vals = [h["value"] for h in getattr(base, "handles", {}).values()]   # shas ride in the handle map, never raw
+    check(all(x in base for x in ("PIPE_ELBOW_FIX_SEAM_JOGS", "RM_Chittik", "sha E", "git E",
+                                  "marks RM_Bloodlurk archived", "art_install RM_Tikkit installed"))
+          and any(v.startswith("abcdef123456") for v in vals) and any(v.startswith("abababababab") for v in vals)
+          and "abcdef123456" not in base and "abababababab" not in base,
           "instrument: the clean base records render their closed fields (the planted fields are visible slots)")
     for name, prop in (("digest: a secret in any field of any source", prop_digest),
                        ("queue: a secret in any item field", prop_queue),

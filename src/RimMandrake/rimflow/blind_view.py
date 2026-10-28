@@ -8,9 +8,12 @@ the queue and an item through this view, never through raw `rimflow queue` / `ri
 
 A CLOSED type, not redaction (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF): the page is a contracts.blind.BlindQueue or
 BlindItemPage, built only by contracts.blind.project_queue / project_item and written by render_queue /
-render_item behind a page guard that fails closed. Free text is never shown at all: an item is its id, state, kind,
-needs, row, owner and BLOCKED flag; a note is its time, its seat, the known item ids and the shas it names, and
-whether it starts with --prefix. (The old word-list redactor is gone: a phrasing nobody had thought of got through.)
+render_item through the allowlist Page (contracts.blind_core.Page): every token on the page is a template word, a
+code-defined enum label, a ledger item id, a registered seat name or a number of a declared measure, and a final
+whole-page gate refuses the page otherwise (fails closed). Free text is never shown at all: an item is its id, state,
+kind, needs, row, owner and BLOCKED flag; a note is its time, its seat, the known item ids, a handle E<n> for each sha
+it names, and whether it starts with --prefix. Shas never print raw: the E<n> -> sha map is stored under
+HANDLES_DIR (Operations' scratch), keyed by the page's sha256. (The old word-list redactor is gone: a phrasing nobody had thought of got through.)
 An item about accounts by its id or kind (withheld()) is withheld whole: the queue counts it and names nothing, and
 `show` prints only that it is withheld.
 
@@ -28,6 +31,9 @@ if os.path.dirname(HERE) not in sys.path:
     sys.path.insert(0, os.path.dirname(HERE))
 
 from contracts import blind_core as C  # noqa: E402  (stdlib only)
+
+# Where a page's handle map (E<n> -> sha / evidence path) is kept: Operations' scratch, not the page.
+HANDLES_DIR = os.environ.get("RIMFLOW_BLIND_HANDLES", "/mnt/d/ClaudeWork/rimmandrake/ops_watch/blind_handles")
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))    # the clone: the sha resolver's repo
 
@@ -99,10 +105,14 @@ def main(argv=None):
                    help="only notes of this closed category (a free-text prefix would be a count oracle)")
     a = ap.parse_args(argv)
     evs, world = _load()
-    if a.cmd == "queue":
-        sys.stdout.write(queue_text(world, a.seat.upper()))
-    else:
-        sys.stdout.write(show_text(evs, world, a.id, a.last, a.prefix))
+    text = queue_text(world, a.seat.upper()) if a.cmd == "queue" else show_text(evs, world, a.id, a.last, a.prefix)
+    handles = getattr(text, "handles", {})
+    if handles:                                      # the map goes to Operations' scratch, never to stdout
+        try:
+            C.store_handles(text, handles, HANDLES_DIR)
+        except OSError:
+            sys.stderr.write("blind_view: handle map not stored\n")
+    sys.stdout.write(text)
     return 0
 
 

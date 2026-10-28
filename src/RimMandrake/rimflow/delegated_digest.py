@@ -10,8 +10,10 @@ assembles one by hand. Items DELEGATED_DIGEST_FIX_NEVER_WRITTEN, DIGEST_BLIND_HA
 The page is a contracts.blind.DigestPage, a CLOSED type: each reader below extracts only the RAW_FIELDS of its
 source, contracts.blind.project_digest maps them into closed sets (policy class, decision, mark action, judge family,
 seat) and checked identifiers (item id, subject, sha, evidence path under an allowed root), and render_digest writes
-it from fixed templates behind a page guard that fails closed. No record text reaches the page: titles, notes, `why`
-details, commit subjects and quoted words are never copied. A record whose item is about accounts is withheld and
+it through the allowlist Page (contracts.blind_core.Page) behind a whole-page gate that fails closed. No record text
+reaches the page: titles, notes, `why` details, commit subjects and quoted words are never copied; a sha or evidence
+path shows only as an opaque handle E<n>, whose map is written to <state dir>/handles/<page sha256[:16]>.json for
+Operations (and the owner), never beside the page. A record whose item is about accounts is withheld and
 counted; an unsafe subject or path is dropped and counted (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF).
 
 Sources (each read whole; the window is decided centrally, below):
@@ -471,6 +473,14 @@ def _dest(a):
     return out_dir, False
 
 
+def handles_dir(a, out_dir):
+    """Where a digest's handle map goes: <state dir>/handles (Operations' scratch, beside errors.log); a dry run's
+    under its own out dir (never the production scratch)."""
+    if getattr(a, "dry_run", False):
+        return os.path.join(out_dir, "handles")
+    return os.path.join(os.path.dirname(os.path.abspath(a.state)), "handles")
+
+
 def run(a, sources=None):
     """sources: the selftest's injected (reads, Identity, resolver); else every source is read here."""
     date = a.date or dt.date.today().isoformat()
@@ -533,6 +543,10 @@ def run(a, sources=None):
                                "sources": {s: reads[s]["state"] if s in reads else "unmeasured" for s in SOURCES}}
         save_state(a.state, st)                      # 1. pending, with the page's hash
     os.makedirs(out_dir, exist_ok=True)
+    from contracts import blind_core as C
+    # the page shows each sha and evidence path only as a handle E<n>; the map goes where Operations reads it (the
+    # state's directory, never the page's), keyed by the page's sha256, BEFORE the page exists
+    C.store_handles(text, getattr(text, "handles", {}), handles_dir(a, out_dir))
     tmp = out + ".tmp"
     with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)

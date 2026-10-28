@@ -18,6 +18,16 @@ never mangled. Soft words (week, pct, share...) refuse only beside a 2+ digit pa
 the defence: no page field takes free text, so a phrasing nobody listed has nowhere to go (selftest_blind_contract's
 properties plant secrets in every field). The dispatcher's blind notes are note_text / is_note_text over the closed
 NOTE_ROLES / NOTE_MODES / NOTE_OUTCOMES.
+
+The renderer is an ALLOWLIST, not a filter (BLINDVIEW_HARDEN_SIX_LEAKS_STILL_OPEN: four review rounds each found a
+new kind of route through per-field deny checks). Every page is written through a Page, whose typed emitters accept
+only: template words (code constants, no digits), labels of code-defined enum domains registered by identity, ledger
+item ids passing the name grammar and the page identity, registered names, numbers of a declared measure (MEASURES),
+times and dates in declared formats, and opaque handles. A sha or path is never emitted: it becomes a per-page handle
+E<n>, and the E<n> -> value map rides on the returned Rendered str (.handles) for the caller to store_handles() where
+only Operations reads. page_gate then checks the WHOLE finished page: only PAGE_PUNCT between tokens, every token's
+count within what the emitters put out, no token naming an account, and an unreadable registry refuses the page. A
+refused page raises PageRefused: nothing is shown (fails closed).
 """
 import json
 import os
@@ -456,6 +466,156 @@ def git_resolver(root):
     return resolve
 
 
+# ---- the ALLOWLIST renderer (BLINDVIEW_HARDEN_SIX_LEAKS_STILL_OPEN). Four review rounds each found a new KIND of
+# route past "check each field against the account/figure denylist" (a path holding a name, a sha prefix equal to an
+# account key, a note never checked...). So a blind page is no longer checked-then-allowed: it is WRITTEN only
+# through a Page, whose emitters accept nothing but closed sets, and a value no emitter accepts cannot be rendered:
+#   lit     template text: every word in the caller's declared vocabulary (code constants, no digits)
+#   enum    a label of a domain the caller registered (Literal args, fixed label tables)
+#   item    an id the page's identity accepts (rimflow grammar, in the ledger, not hidden)
+#   name    a registered name (a repo defName or a known ledger id) the page's identity accepts
+#   num     a non-negative int of a declared MEASURE (a count the program computed)
+#   time    an aware-UTC datetime in a declared format; date a YYYY-MM-DD string
+#   handle  a sha or a path, NEVER shown: it becomes E1, E2 ... (first appearance, one per distinct value); the
+#           mapping rides on the Rendered result and is stored by the caller where Operations reads it (store_handles)
+# Then text() runs the whole-page gate, which fails CLOSED: every character outside a token is declared punctuation,
+# every token occurs no more often than the emitters emitted it (a token two emissions run together, or text added
+# after the fact, is outside the allowlist), and, as a second layer only, no token names an account (registry
+# unreadable: refused).
+import datetime as _dt
+from collections import Counter as _Counter
+
+_TOK = re.compile(r"[A-Za-z0-9_]+")
+PAGE_PUNCT = frozenset(" \n`*|()[],;:.-+#/=?!")
+COUNT_MAX = 10 ** 6
+MEASURES = frozenset({
+    "records", "malformed", "withheld", "fields_withheld", "all_time", "class_records", "section_items", "row",
+    "notes_total", "notes_matching", "notes_shown", "events_total", "events_shown"})
+TIME_FORMATS = {"iso": "%Y-%m-%dT%H:%M:%SZ", "hm": "%m-%d %H:%MZ"}
+HANDLE_KINDS = ("sha", "path")
+_DATE_RE = re.compile(r"20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])")
+
+
+class PageRefused(ValueError):
+    """A value outside the page's closed sets reached an emitter, or the finished page failed the gate."""
+
+
+class Rendered(str):
+    """A finished blind page (a str) with .handles = {"E1": {"kind": "sha"|"path", "value": ...}}: the mapping a
+    blind reader never sees; the caller stores it with store_handles."""
+    def __new__(cls, text, handles):
+        o = str.__new__(cls, text)
+        o.handles = dict(handles)
+        return o
+
+
+def page_gate(text, allowed):
+    """-> None, or the closed reason the finished page is refused. allowed: Counter of the tokens the emitters put
+    out. Independent of how the page was built: a renderer bug that formats a raw value fails here."""
+    if not isinstance(text, str):
+        return "type"
+    if any(ch not in PAGE_PUNCT for ch in _TOK.sub("", text)):
+        return "character"
+    toks = _Counter(_TOK.findall(text))
+    if any(n > allowed.get(w, 0) for w, n in toks.items()):
+        return "token outside the page allowlist"
+    try:
+        if any(account_in(w) for w in toks):
+            return "account_name"
+    except RegistryUnavailable:
+        return "registry unavailable"
+    return None
+
+
+class Page:
+    """One blind page being written. vocab: the template words (frozenset, code constants); enums: the registered
+    domains (tuples, matched by identity); item_ok / name_ok: the page identity's predicates (None: refuse all)."""
+
+    def __init__(self, vocab, enums=(), item_ok=None, name_ok=None):
+        self._vocab, self._enums = frozenset(vocab), tuple(enums)
+        if any(c.isdigit() for w in self._vocab for c in w):
+            raise PageRefused("a template word carries no digit")
+        self._item_ok, self._name_ok = item_ok, name_ok
+        self._parts, self._allowed = [], _Counter()
+        self.handles, self._handle_of = {}, {}
+
+    def _emit(self, s):
+        self._parts.append(s)
+        self._allowed.update(_TOK.findall(s))
+
+    def lit(self, s):
+        if type(s) is not str or any(w not in self._vocab for w in _TOK.findall(s)) or any(
+                ch not in PAGE_PUNCT for ch in _TOK.sub("", s)):
+            raise PageRefused("template text outside the vocabulary")
+        self._emit(s)
+
+    def enum(self, v, domain):
+        if not any(domain is d for d in self._enums) or type(v) is not str or v not in domain:
+            raise PageRefused("value outside its registered domain")
+        self._emit(v)
+
+    def item(self, iid):
+        if type(iid) is not str or self._item_ok is None or not self._item_ok(iid):
+            raise PageRefused("item id outside the page identity")
+        self._emit(iid)
+
+    def name(self, n):
+        if type(n) is not str or self._name_ok is None or not self._name_ok(n):
+            raise PageRefused("name outside the registry")
+        self._emit(n)
+
+    def num(self, n, measure):
+        if measure not in MEASURES or type(n) is not int or not 0 <= n <= COUNT_MAX:
+            raise PageRefused("number outside the declared measures")
+        self._emit(str(n))
+
+    def time(self, t, fmt):
+        if (type(t) is not _dt.datetime or fmt not in TIME_FORMATS or t.tzinfo is None
+                or t.utcoffset() != _dt.timedelta(0)):
+            raise PageRefused("time outside the declared formats")
+        self._emit(t.strftime(TIME_FORMATS[fmt]))
+
+    def date(self, s):
+        if type(s) is not str or not _DATE_RE.fullmatch(s):
+            raise PageRefused("date")
+        self._emit(s)
+
+    def handle(self, kind, value):
+        """A sha or a path -> its opaque handle E<n> on this page; the value itself is never emitted."""
+        if kind not in HANDLE_KINDS or type(value) is not str or not value:
+            raise PageRefused("handle")
+        h = self._handle_of.get((kind, value))
+        if h is None:
+            h = "E%d" % (len(self.handles) + 1)
+            self._handle_of[(kind, value)] = h
+            self.handles[h] = {"kind": kind, "value": value}
+        self._emit(h)
+        return h
+
+    def text(self):
+        t = "".join(self._parts)
+        r = page_gate(t, self._allowed)
+        if r:
+            raise PageRefused("blind page gate refused the page (%s)" % r)
+        return Rendered(t, self.handles)
+
+
+def store_handles(text, handles, directory):
+    """Write a page's handle map to <directory>/<sha256(page)[:16]>.json (atomic) for Operations / the owner, never
+    beside the page a blind role reads. -> the path, or None when the page has no handle."""
+    if not handles:
+        return None
+    import hashlib
+    sha = hashlib.sha256(str(text).encode("utf-8")).hexdigest()
+    os.makedirs(directory, exist_ok=True)
+    path = os.path.join(directory, sha[:16] + ".json")
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump({"page_sha256": sha, "handles": handles}, f, indent=1, sort_keys=True)
+    os.replace(tmp, path)
+    return path
+
+
 # ---- the dispatcher's notes for a token-blind role's ledger item (review dispatcher-full #2). One closed record:
 # a known role, a known mode, a dispatcher unit name and a FIXED outcome. role_launch.blind_note and
 # dispatcher.route_note both use these; contracts.blind.BlindNote is the same record as a Pydantic model.
@@ -474,6 +634,8 @@ NOTE_OUTCOMES = {
     "schedule_unreadable": "not run, its schedule entry is unreadable",
     "events_unreadable": "not run, its event triggers are unreadable",
 }
+NOTE_OUTCOME_TEXTS = tuple(NOTE_OUTCOMES.values())
+NOTE_VOCAB = frozenset({"dispatcher", "run"})
 
 
 def note_problem(b):
@@ -499,14 +661,22 @@ def note_text(b):
     if note_problem(b):
         return None
     mode = b.get("mode")
-    subject = " ".join(x for x in (b["role"], mode, "run" if (mode or b.get("unit")) else None) if x)
-    text = "dispatcher: %s: %s" % (subject, NOTE_OUTCOMES[b["outcome"]])
-    try:            # the stdlib route gets no page guard, so it checks accounts itself and fails closed (GPT r4 H2)
-        if account_in(text):
-            return None
-    except RegistryUnavailable:
+    # written through the allowlist Page: its gate also refuses a token naming an account and an unreadable
+    # registry (GPT r4 H2), so the stdlib route fails closed exactly like a rendered page
+    p = Page(NOTE_VOCAB, (NOTE_ROLES, NOTE_MODES, NOTE_OUTCOME_TEXTS))
+    try:
+        p.lit("dispatcher: ")
+        p.enum(b["role"], NOTE_ROLES)
+        if mode:
+            p.lit(" ")
+            p.enum(mode, NOTE_MODES)
+        if mode or b.get("unit"):
+            p.lit(" run")
+        p.lit(": ")
+        p.enum(NOTE_OUTCOMES[b["outcome"]], NOTE_OUTCOME_TEXTS)
+        return str(p.text())
+    except PageRefused:
         return None
-    return text
 
 
 def is_note_text(text):

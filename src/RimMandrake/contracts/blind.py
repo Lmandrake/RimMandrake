@@ -22,11 +22,16 @@ Hidden by SOURCE, not by word list (review blind 2026-10-27):
     Identity None (the ledger did not read) withholds every record that names an item and drops every name;
   * a kind is a closed enum, a row a 1-2 digit number; a subject or file name passes blind_core.name_problem (no
     figure, no key, no account) and names no hidden id;
-  * every sha shown is one the injected resolver (blind_core.git_resolver) proved is a commit; no resolver, no sha;
+  * every sha handled is one the injected resolver (blind_core.git_resolver) proved is a commit; no resolver, no sha;
     art-ledger digests and event ids are never shown;
   * a note filter is a closed category (NOTE_CATEGORIES), never free text;
   * the dispatcher's note never carries the unit name.
-The renderers write from fixed templates and run a final page guard (page_problem) that fails closed.
+The renderers write ONLY through blind_core.Page (the allowlist renderer): template words (TEMPLATE_VOCAB, exactly
+the words of this module's .lit() calls), labels of the registered Literal / SRC_LABELS / verb domains, ledger ids
+the page Identity admits, registered names, numbers of declared measures and formatted times. A sha or evidence path
+never prints: it is an opaque handle E<n> whose map rides on the returned Rendered str (.handles) for the caller to
+store where only Operations reads. Page.text() gates the whole page (every token emitted, no account, registry
+readable) and the old word guard (page_problem) runs after it as a second layer; either refusal fails closed.
 
 Imports pydantic (~50 ms): never import this from the dispatcher's tick; it uses blind_core's stdlib twins.
 """
@@ -87,19 +92,19 @@ def _fp(m):
     return hashlib.sha256(BaseModel.model_dump_json(m, by_alias=True).encode("utf-8")).hexdigest()
 
 
-def _issue(cls, data):
+def _issue(cls, data, ids=None):
     """Validate the projection's data and keep a PRIVATE snapshot, re-validated from its JSON (fresh nested objects,
     nothing shared with the model handed out). Renderers render the snapshot, never the caller's object, so no
     mutation, shadowed method or swapped nested model of the handed-out object can reach a page."""
     m = cls.model_validate(data, context={"blind_projection": _TOKEN})
     js = BaseModel.model_dump_json(m, by_alias=True)
     snap = cls.model_validate_json(js, strict=False, context={"blind_projection": _TOKEN})
-    _ISSUED[id(m)] = (m, hashlib.sha256(js.encode("utf-8")).hexdigest(), snap)
+    _ISSUED[id(m)] = (m, hashlib.sha256(js.encode("utf-8")).hexdigest(), snap, _identity(ids))
     return m
 
 
 def _issued(m, cls):
-    """-> the private snapshot of an issued page. Refuses anything a projection did not issue, or that changed since
+    """-> (the private snapshot of an issued page, the Identity it was projected with). Refuses anything a projection did not issue, or that changed since
     (object.__setattr__, __dict__ edits): a tampered object is an error, never silently rendered as issued."""
     e = _ISSUED.get(id(m))
     try:
@@ -108,7 +113,7 @@ def _issued(m, cls):
         same = False
     if not same:
         raise ProjectionOnly("%s renders only a %s a projection issued, unchanged" % (cls.__name__, cls.__name__))
-    return e[2]
+    return e[2], e[3]
 
 
 def _check(fn, *args):
@@ -435,7 +440,7 @@ def project_digest(date, floor, cut, raw, status, ids=None, resolve=None):
                 d[k] = st[k]
         sources.append(d)
     return _issue(DigestPage, {"schema": SCHEMA, "date": date, "floor": floor, "cut": cut, "records": tuple(recs),
-                               "sources": tuple(sources)})
+                               "sources": tuple(sources)}, ids)
 
 
 # -------------------------------------------------------------------------------------- queue / item ------
@@ -539,7 +544,7 @@ def project_queue(seat, groups, ids, withheld=()):
         if rows and tt:
             sections.append({"title": tt, "items": tuple(rows)})
     return _issue(BlindQueue, {"seat": seat, "withheld": len(held | {str(i) for i in withheld}),
-                               "fields_withheld": dropped, "sections": tuple(sections)})
+                               "fields_withheld": dropped, "sections": tuple(sections)}, ids)
 
 
 _REF_RE = re.compile(r"[A-Za-z][A-Za-z0-9._-]{2,}")
@@ -617,7 +622,7 @@ def project_item(it, notes, others, ids, last=10, category=None, resolve=None):
             x["seat"] = e["seat"]
         evs.append(x)
     d["events"] = tuple(evs)
-    return _issue(BlindItemPage, d)
+    return _issue(BlindItemPage, d, ids)
 
 
 # ------------------------------------------------------------------------------------------- note ---------
@@ -639,24 +644,14 @@ def project_note(b):
 
 
 def render_note(n):
-    n = _issued(n, BlindNote)
+    n, _ids = _issued(n, BlindNote)
     b = {k: v for k, v in (("role", n.role), ("outcome", n.outcome), ("mode", n.mode)) if v is not None}
     if n.run:
         b["unit"] = "rm-role-%s-1" % n.role.lower()      # note_text never renders the unit; it only says "run"
-    return _guard(C.note_text(b))
-
-
-# ------------------------------------------------------------------------------------------ render -------
-def _hm(t):
-    return t.strftime("%m-%d %H:%MZ") if t else "-"
-
-
-def _iso(t):
-    return t.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def _ev(p):
-    return "`%s`" % C.evidence_native(p)
+    t = C.note_text(b)                                   # written through blind_core.Page: gated, fails closed
+    if t is None:
+        raise ValueError("blind page guard refused the note")
+    return _guard(t)
 
 
 _SPLIT = re.compile(r"[\s|*()\[\],:;·—→+=#/×'\"!?<>]+")
@@ -700,111 +695,307 @@ def _guard(text):
     return text
 
 
-_SRC_LABEL = {"ledger": "ledger events", "verdict": "judge verdict files", "commit": "Delegated commits",
-              "marks": "art mark acts", "art_install": "delegated art installs", "leftovers": "leftover deletions"}
+# ------------------------------------------------------------------------------------------ render -------
+# Every renderer writes through blind_core.Page (the allowlist renderer): template words from TEMPLATE_VOCAB only,
+# labels from the registered domains only, ids and names through the page's Identity, numbers of a declared measure,
+# and a sha or path as an opaque handle E<n>, never raw. A value no emitter accepts cannot reach a page; the finished
+# page then passes Page.text()'s whole-page gate and, as a second, older layer, page_problem.
+TEMPLATE_VOCAB = frozenset("""
+a agent all alone an and any as at be beginning blind BLOCKED Built by call calls category check class classes
+closed commit could count counted decisions delegated Delegated delegation_policy digest E each empty events every
+Every evidence field fields file first from git grouped handle handles hold ids Ids in Instrument is it item its
+judge judges kind kinds line logged malformed may md measured names needs never newest no No not notes number ones
+only open Operations or other overturn owner page path policy program queue reach reaches read reasons record
+records refs resolves row rows s say seat see sha shown so some source sources state states summaries superseded
+text the this time times titles to To took unassigned under UNMEASURED UTC verb view window withheld without words
+you
+""".split())
+SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
+              "leftover deletions")
+_SRC_LABEL = dict(zip(SOURCES, SRC_LABELS))
+_VERB_DOMAIN = []
 
 
-def _rec_line(r):
-    bits = [_hm(r.t), r.source]
+def _verb_domain():
+    if not _VERB_DOMAIN:
+        _VERB_DOMAIN.append(tuple(sorted(_verbs() | {"other"})))
+    return _VERB_DOMAIN[0]
+
+
+def _page(ids):
+    """A Page for one blind render: the registered domains, and the Identity the projection used (None: no item id
+    and no name can be written)."""
+    enums = (Source.__args__, DigestClass.__args__, Decision.__args__, Pick.__args__, MarkAction.__args__,
+             JudgeFamily.__args__, By.__args__, LeftKind.__args__, SourceFault.__args__, Seat.__args__,
+             State.__args__, Needs.__args__, Kind.__args__, SectionTitle.__args__, NoteCategory.__args__, SRC_LABELS,
+             _verb_domain())
+    if ids is None:
+        return C.Page(TEMPLATE_VOCAB, enums)
+    return C.Page(TEMPLATE_VOCAB, enums, item_ok=lambda i: _id_ok(i, ids),
+                  name_ok=lambda n: C.registered_name(n, ids.known) == (n, False) and not _names_hidden(n, ids.hidden))
+
+
+def _rec_line(P, r):
+    P.lit("- ")
+    P.time(r.t, "hm")
+    P.lit(" ")
+    P.enum(r.source, Source.__args__)
     if r.item:
-        bits.append("**%s**" % r.item)
+        P.lit(" **")
+        P.item(r.item)
+        P.lit("**")
     if r.subject:
-        bits.append(r.subject)
+        P.lit(" ")
+        P.name(r.subject)
     if r.verb:
-        bits.append(r.verb)
+        P.lit(" ")
+        P.enum(r.verb, _verb_domain())
     if r.decision:
-        bits.append(r.decision + ((" " + r.pick) if r.pick else ""))
+        P.lit(" ")
+        P.enum(r.decision, Decision.__args__)
+        if r.pick:
+            P.lit(" ")
+            P.enum(r.pick, Pick.__args__)
     if r.action:
-        bits.append(r.action)
+        P.lit(" ")
+        P.enum(r.action, MarkAction.__args__)
     if r.kind:
-        bits.append(r.kind)
+        P.lit(" ")
+        P.enum(r.kind, LeftKind.__args__)
     if r.judge:
-        bits.append("judge " + "+".join(r.judge))
+        P.lit(" judge ")
+        for k, j in enumerate(r.judge):
+            if k:
+                P.lit("+")
+            P.enum(j, JudgeFamily.__args__)
     if r.by:
-        bits.append("by " + r.by)
+        P.lit(" by ")
+        P.enum(r.by, By.__args__)
     if r.sha:
-        bits.append("git " + r.sha[:12] if r.source == "commit" else "sha " + r.sha[:12])
-    line = "- " + " ".join(bits)
+        P.lit(" git " if r.source == "commit" else " sha ")
+        P.handle("sha", r.sha)
     if r.evidence:
-        line += " evidence " + " ".join(_ev(p) for p in r.evidence)
-    return line
+        P.lit(" evidence")
+        for p in r.evidence:
+            P.lit(" ")
+            P.handle("path", C.evidence_native(p))
+    P.lit("\n")
 
 
 def render_digest(page):
-    """DigestPage -> markdown, from fixed templates only. Records grouped by class, newest first."""
-    page = _issued(page, DigestPage)
+    """DigestPage -> markdown (a blind_core.Rendered: .handles maps each E<n> to its sha or path), written through
+    the allowlist Page. Records grouped by class, newest first."""
+    page, ids = _issued(page, DigestPage)
+    P = _page(ids)
     total = len(page.records)
-    blind = [_SRC_LABEL[s.source] for s in page.sources if s.state != "measured"]
-    out = ["# Delegated calls digest %s" % page.date, "",
-           "Every call an agent took without you under delegation_policy.md from %s to %s UTC, grouped by class, "
-           "newest first. Built by a program from the records; every count is measured. Ids, classes, decisions, "
-           "judges, times and evidence paths only: no record text reaches this page. To overturn a line, say so in "
-           "any words." % ("the beginning" if page.floor is None else _iso(page.floor), _iso(page.cut)), "",
-           ("**%d delegated record(s)**" % total) if not blind else (
-               "**%d delegated record(s) from the measured sources; UNMEASURED, so not counted: %s**" % (
-                   total, ", ".join(blind))), "",
-           "| source | state | records | malformed | withheld | fields withheld | all time |", "|---|---|---|---|---|---|---|"]
+    blind = [s for s in page.sources if s.state != "measured"]
+    P.lit("# Delegated calls digest ")
+    P.date(page.date)
+    P.lit("\n\nEvery call an agent took without you under delegation_policy.md from ")
+    if page.floor is None:
+        P.lit("the beginning")
+    else:
+        P.time(page.floor, "iso")
+    P.lit(" to ")
+    P.time(page.cut, "iso")
+    P.lit(" UTC, grouped by class, newest first. Built by a program from the records; every count is measured. Ids, "
+          "classes, decisions, judges, times and evidence handles only: no record text, sha or path reaches this "
+          "page; a handle (E and a number) names a commit or a file, and Operations alone resolves it. To overturn a "
+          "line, say so in any words.\n\n**")
+    P.num(total, "records")
+    P.lit(" delegated record(s)")
+    if blind:
+        P.lit(" from the measured sources; UNMEASURED, so not counted: ")
+        for k, s in enumerate(blind):
+            if k:
+                P.lit(", ")
+            P.enum(_SRC_LABEL[s.source], SRC_LABELS)
+    P.lit("**\n\n| source | state | records | malformed | withheld | fields withheld | all time |\n"
+          "|---|---|---|---|---|---|---|\n")
     for s in page.sources:
-        state = ("measured" if s.fault == "none" else "measured, %s" % s.fault) if s.state == "measured" else (
-            "UNMEASURED %s" % s.fault)
-        out.append("| %s | %s | %s | %d | %d | %d | %s |" % (
-            _SRC_LABEL[s.source], state, s.records if s.state == "measured" else "UNMEASURED", s.malformed,
-            s.withheld, s.fields_withheld, "-" if s.all_time is None else s.all_time))
-    out.append("")
+        P.lit("| ")
+        P.enum(_SRC_LABEL[s.source], SRC_LABELS)
+        P.lit(" | ")
+        if s.state == "measured":
+            P.lit("measured")
+            if s.fault != "none":
+                P.lit(", ")
+                P.enum(s.fault, SourceFault.__args__)
+            P.lit(" | ")
+            P.num(s.records, "records")
+        else:
+            P.lit("UNMEASURED ")
+            P.enum(s.fault, SourceFault.__args__)
+            P.lit(" | UNMEASURED")
+        for v, m in ((s.malformed, "malformed"), (s.withheld, "withheld"), (s.fields_withheld, "fields_withheld")):
+            P.lit(" | ")
+            P.num(v, m)
+        P.lit(" | ")
+        if s.all_time is None:
+            P.lit("-")
+        else:
+            P.num(s.all_time, "all_time")
+        P.lit(" |\n")
+    P.lit("\n")
     if total == 0 and len(blind) == len(page.sources):
-        out += ["No source could be read: this window is UNMEASURED, not empty.", ""]
+        P.lit("No source could be read: this window is UNMEASURED, not empty.\n\n")
     elif total == 0:
         newest = max((s.newest for s in page.sources if s.newest), default=None)
-        out += ["No delegated record in the %s. Instrument check: the measured sources see %d delegated "
-                "record(s) in all time, the newest at %s." % (
-                    "measured sources; the UNMEASURED ones may hold some" if blind else "window",
-                    sum(s.all_time or 0 for s in page.sources if s.state == "measured"),
-                    _iso(newest) if newest else "-"), ""]
+        P.lit("No delegated record in the measured sources; the UNMEASURED ones may hold some. " if blind else
+              "No delegated record in the window. ")
+        P.lit("Instrument check: the measured sources see ")
+        P.num(sum(s.all_time or 0 for s in page.sources if s.state == "measured"), "all_time")
+        P.lit(" delegated record(s) in all time, the newest at ")
+        if newest:
+            P.time(newest, "iso")
+        else:
+            P.lit("-")
+        P.lit(".\n\n")
     groups = {}
     for r in page.records:
         groups.setdefault(r.cls, []).append(r)
     for cls in sorted(groups, key=lambda k: (-len(groups[k]), k)):
         rs = groups[cls]
-        out += ["## %s %d record(s)%s" % (cls, len(rs), " (no policy class logged)" if cls == "unclassified" else ""),
-                ""]
-        out += [_rec_line(r) for r in rs]
-        out.append("")
-    return _guard("\n".join(out) + "\n")
+        P.lit("## ")
+        P.enum(cls, DigestClass.__args__)
+        P.lit(" ")
+        P.num(len(rs), "class_records")
+        P.lit(" record(s)")
+        if cls == "unclassified":
+            P.lit(" (no policy class logged)")
+        P.lit("\n\n")
+        for r in rs:
+            _rec_line(P, r)
+        P.lit("\n")
+    return _guard(P.text())
 
 
 def render_queue(q):
-    q = _issued(q, BlindQueue)
-    out = ["# %s queue blind view" % q.seat, "",
-           "Ids, states, kinds, needs and rows only: titles, reasons and summaries never reach this view. %d open "
-           "item(s) withheld, %d field(s) withheld." % (q.withheld, q.fields_withheld), ""]
+    q, ids = _issued(q, BlindQueue)
+    P = _page(ids)
+    P.lit("# ")
+    P.enum(q.seat, Seat.__args__)
+    P.lit(" queue blind view\n\nIds, states, kinds, needs and rows only: titles, reasons and summaries never reach "
+          "this view. ")
+    P.num(q.withheld, "withheld")
+    P.lit(" open item(s) withheld, ")
+    P.num(q.fields_withheld, "fields_withheld")
+    P.lit(" field(s) withheld.\n\n")
     for s in q.sections:
-        out += ["## %s %d" % (s.title, len(s.items)), ""]
+        P.lit("## ")
+        P.enum(s.title, SectionTitle.__args__)
+        P.lit(" ")
+        P.num(len(s.items), "section_items")
+        P.lit("\n\n")
         for i in s.items:
-            out.append("- **%s** state %s%s kind %s needs %s row %s" % (
-                i.id, i.state, " BLOCKED" if i.blocked else "", i.kind or "task", i.needs, i.row or "unassigned"))
-        out.append("")
-    return _guard("\n".join(out) + "\n")
+            P.lit("- **")
+            P.item(i.id)
+            P.lit("** state ")
+            P.enum(i.state, State.__args__)
+            if i.blocked:
+                P.lit(" BLOCKED")
+            P.lit(" kind ")
+            P.enum(i.kind or "task", Kind.__args__)
+            P.lit(" needs ")
+            P.enum(i.needs, Needs.__args__)
+            P.lit(" row ")
+            if i.row:
+                P.num(int(i.row), "row")
+            else:
+                P.lit("unassigned")
+            P.lit("\n")
+        P.lit("\n")
+    return _guard(P.text())
 
 
 def render_item(p):
-    p = _issued(p, BlindItemPage)
+    p, ids = _issued(p, BlindItemPage)
+    P = _page(ids)
     if p.withheld:
-        return _guard("withheld from the blind view: Operations alone\n")
-    out = ["%s state %s%s kind %s owner %s needs %s" % (p.id, p.state, " BLOCKED" if p.blocked else "",
-                                                       p.kind or "task", p.owner or "-", p.needs)]
+        P.lit("withheld from the blind view: Operations alone\n")
+        return _guard(P.text())
+    P.item(p.id)
+    P.lit(" state ")
+    P.enum(p.state, State.__args__)
+    if p.blocked:
+        P.lit(" BLOCKED")
+    P.lit(" kind ")
+    P.enum(p.kind or "task", Kind.__args__)
+    P.lit(" owner ")
+    if p.owner:
+        P.enum(p.owner, Seat.__args__)
+    else:
+        P.lit("-")
+    P.lit(" needs ")
+    P.enum(p.needs, Needs.__args__)
+    P.lit("\n")
     if p.closed_sha:
-        out.append("closed at sha %s" % p.closed_sha[:12])
+        P.lit("closed at sha ")
+        P.handle("sha", p.closed_sha)
+        P.lit("\n")
     if p.superseded_by or p.superseded_withheld:
-        out.append("superseded by %s" % (p.superseded_by or "a withheld item"))
+        P.lit("superseded by ")
+        if p.superseded_by:
+            P.item(p.superseded_by)
+        else:
+            P.lit("a withheld item")
+        P.lit("\n")
     if p.fields_withheld:
-        out.append("%d field(s) withheld" % p.fields_withheld)
-    out.append("notes %d in all%s; shown %d, as the item ids and shas each names, never its text" % (
-        p.notes_total, "" if p.notes_matching is None else ", %d in category %s" % (p.notes_matching, p.category),
-        len(p.notes)))
+        P.num(p.fields_withheld, "fields_withheld")
+        P.lit(" field(s) withheld\n")
+    P.lit("notes ")
+    P.num(p.notes_total, "notes_total")
+    P.lit(" in all")
+    if p.notes_matching is not None:
+        P.lit(", ")
+        P.num(p.notes_matching, "notes_matching")
+        P.lit(" in category ")
+        P.enum(p.category, NoteCategory.__args__)
+    P.lit("; shown ")
+    P.num(len(p.notes), "notes_shown")
+    P.lit(", as the item ids and commit handles each names, never its text\n")
     for n in p.notes:
-        out.append("- %s %s refs %s %s" % (_iso(n.t) if n.t else "-", n.seat or "-", " ".join(n.refs) or "-",
-                                           " ".join("sha " + s[:12] for s in n.shas) or "no sha"))
-    out.append("other events %d; shown %d as time, verb, seat" % (p.events_total, len(p.events)))
+        P.lit("- ")
+        if n.t:
+            P.time(n.t, "iso")
+        else:
+            P.lit("-")
+        P.lit(" ")
+        if n.seat:
+            P.enum(n.seat, Seat.__args__)
+        else:
+            P.lit("-")
+        P.lit(" refs ")
+        for k, r in enumerate(n.refs):
+            if k:
+                P.lit(" ")
+            P.item(r)
+        if not n.refs:
+            P.lit("-")
+        P.lit(" ")
+        for k, s in enumerate(n.shas):
+            P.lit(" sha " if k else "sha ")
+            P.handle("sha", s)
+        if not n.shas:
+            P.lit("no sha")
+        P.lit("\n")
+    P.lit("other events ")
+    P.num(p.events_total, "events_total")
+    P.lit("; shown ")
+    P.num(len(p.events), "events_shown")
+    P.lit(" as time, verb, seat\n")
     for e in p.events:
-        out.append("- %s %s %s" % (_iso(e.t) if e.t else "-", e.verb, e.seat or "-"))
-    return _guard("\n".join(out) + "\n")
+        P.lit("- ")
+        if e.t:
+            P.time(e.t, "iso")
+        else:
+            P.lit("-")
+        P.lit(" ")
+        P.enum(e.verb, _verb_domain())
+        P.lit(" ")
+        if e.seat:
+            P.enum(e.seat, Seat.__args__)
+        else:
+            P.lit("-")
+        P.lit("\n")
+    return _guard(P.text())

@@ -25,6 +25,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 import sys
 import tempfile
 import types
@@ -59,6 +60,13 @@ def resolver(known_full=(SHA_A,)):
                 out[c] = hit[0]
         return out
     return res
+
+
+def handled(page, label, prefix):
+    """The page shows `<label> E<n>` and that handle maps (in the page's handle map, never on the page) to a value
+    starting with prefix."""
+    hs = re.findall(r"\b%s (E\d+)\b" % label, page)
+    return any(page.handles.get(h, {}).get("value", "").startswith(prefix) for h in hs)
 
 
 def ids(known=(), hidden=()):
@@ -148,7 +156,9 @@ def f3_note_sha():
     notes = [{"event": "note", "seat": "BENCH", "ts": "2026-10-27T05:00:00Z",
               "text": "key ab12cd34ef56ab78 and real abcdef0123 and 1234567890123456789012345678901234567890"}]
     page = BL.render_item(BL.project_item(item(), notes, [], ids(KNOWN), resolve=resolver()))
-    return "ab12cd34ef56" not in page and "123456789012" not in page and "sha abcdef012345" in page, page
+    # allowlist renderer: a resolved sha shows as its handle, never raw; the handle map (Operations') holds it
+    return ("ab12cd34ef56" not in page and "123456789012" not in page and "abcdef0123" not in page
+            and handled(page, "sha", "abcdef012345")), page
 
 
 def f3_digest_shas():
@@ -159,12 +169,13 @@ def f3_digest_shas():
            {"source": "commit", "t": T0, "sha": SHA_A, "class": "scope"}]
     _p, page = digest(raw)
     return ("111111111111" not in page and "cdcdcdcdcdcd" not in page and "ab12ab12" not in page
-            and "git abcdef012345" in page), page
+            and "abcdef012345" not in page and handled(page, "git", "abcdef012345")
+            and not any(h["value"][:12] in ("111111111111", "cdcdcdcdcdcd") for h in page.handles.values())), page
 
 
 def f3_no_resolver():
     _p, page = digest([{"source": "commit", "t": T0, "sha": SHA_A, "class": "scope"}], resolve=None)
-    return "abcdef012345" not in page, page
+    return "abcdef012345" not in page and not page.handles, page
 
 
 # ---------------------------------------------------------------------------------------------- F4 ------
@@ -397,8 +408,10 @@ def r1_registry_names():
                                                       "RM_Chittik__cost_nine.json"),
           verdict(subject="RM_Chittik_n", rel="infrastructure/state/delegated/2026-10-27/RM_Chittik__r2.json")]
     _p, page = digest(vs)
+    vals = " ".join(h["value"] for h in page.handles.values())      # the path now rides in the handle map only
     return ("cost" not in page and "nine" not in page and "swordfish" not in page and "RM_Chittik_n" not in page
-            and "RM_Chittik__r2.json" in page and "RM_Chittik" in page), page
+            and "RM_Chittik__r2" not in page and "RM_Chittik__r2.json" in vals and "cost" not in vals
+            and "swordfish" not in vals and "RM_Chittik" in page), page
 
 
 def r1_short_dotted_accounts():
@@ -563,7 +576,9 @@ def r4_sha_account():
             shown, counted = False, 1
         guard = BL.page_problem("git %s" % SHA_A[:12])
     _p, base = digest([{"source": "commit", "t": T0, "sha": SHA_A, "class": "scope"}])
-    return (not shown and counted >= 1 and guard is not None and SHA_A[:12] in base), repr((shown, counted, guard))
+    # base (real registry): the commit shows as a handle, its sha never raw (allowlist renderer)
+    return (not shown and counted >= 1 and guard is not None and SHA_A[:12] not in base
+            and handled(base, "git", SHA_A[:12])), repr((shown, counted, guard))
 
 
 def r4_note_account():
