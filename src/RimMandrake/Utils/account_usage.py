@@ -18,10 +18,11 @@ Where each account is read, in order (the first that answers wins):
   3. vault here    - a dormant login's own config dir, ONLY while its access token is valid for 15 more
                      minutes, so the probe never refreshes (a refresh rotates the credential under the
                      account switcher, `claude-account`). Held under the switcher's own machine lock.
-                     A token that does need one is handed to `claude-account warm <name>` (the switcher's own
-                     refresh, one short model call), at most once an hour per account, and only when the
-                     switcher agrees which login is live here and every remote answered: a login live
-                     anywhere is never warmed. Then the token is read again.
+                     A token that does need one is refreshed with the switcher's own warm_one (one short model
+                     call), at most once an hour per account, only when every remote answered and none has it
+                     live, and only under the switcher's machine lock after its live_account() is read again
+                     there: no switch can land between that check and the refresh, so the live login is never
+                     warmed (a refresh of the live credential is an "auto log out"). Then the token is read again.
   3b. RimPulse     - pulse/usage.py's last reading of the plan's usage endpoint (the same figures /usage
                      shows, read with the stored token, never refreshed), if under 20 minutes old.
   4. ESTIMATE      - none answered: the last MEASURED reading carried forward while its window has not
@@ -243,43 +244,68 @@ def probe_local(config_dir: str | None, want_email: str, now: float) -> tuple[di
     return _reading(auth, use, want_email, now)
 
 
-def switcher(args: list, timeout: int = 60) -> tuple[int, str]:
-    """Run the local account switcher (claude-account) with a clean environment."""
-    return _run([CLAUDE_ACCOUNT, *args], _env(None), timeout)
+clock = time.time  # a seam: the warm reservation is stamped with the time it is made, not the poll's start
 
 
-def switcher_live() -> str | None:
-    """The label the switcher itself calls live on this machine (non-secret), or None."""
-    rc, out = switcher(["status", "--json"], 40)
-    try:
-        return json.loads(out).get("live") if rc == 0 else None
-    except ValueError:
-        return None
+_SWITCHER = {}
 
 
-def warm(name: str, now: float) -> str:
-    """Refresh a DORMANT login through the switcher, at most once per WARM_EVERY. The caller proves it is not
-    live anywhere. Runs outside our Lock: the switcher takes the same machine lock itself."""
+def load_switcher(path: str):
+    """The account switcher (claude-account, a Python script) loaded as a module, so the warm can run under ITS
+    machine lock and ask IT which login is live. Loading runs only its definitions (its main is guarded)."""
+    if path not in _SWITCHER:
+        import importlib.machinery
+        import importlib.util
+        loader = importlib.machinery.SourceFileLoader("claude_account_switcher", path)
+        mod = importlib.util.module_from_spec(importlib.util.spec_from_loader(loader.name, loader))
+        loader.exec_module(mod)
+        _SWITCHER[path] = mod
+    return _SWITCHER[path]
+
+
+def switcher_module():
+    return load_switcher(CLAUDE_ACCOUNT)
+
+
+def warm(name: str, email: str, now: float) -> str:
+    """Refresh a DORMANT login, at most once per WARM_EVERY. The caller has proven no remote has it live; this
+    machine is proven HERE, under the switcher's own machine lock (the one `claude-account use` takes): its
+    live_account() is read again under that lock and the warm is refused if the target is live (by name or by
+    email) or the live login is unknown, so a switch can never land between the check and the refresh. A warm of
+    the live login is a refresh of the live credential: the "auto log out" the owner banned (2026-10-28)."""
     path = DATA_DIR / "warm_state.json"
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(DATA_DIR / ".warm.lock", "a") as lk:  # two polls at once reserve the hour once ([R] GPT 2026-10-28)
         fcntl.flock(lk, fcntl.LOCK_EX)
+        t = max(now, clock())
         try:
             st = json.loads(path.read_text())
         except (OSError, ValueError):
             st = {}
         last = float(st.get(name) or 0)
-        if now - last < WARM_EVERY:
-            return f"warm tried {int((now - last) // 60)} min ago"
-        st[name] = now
+        if 0 <= t - last < WARM_EVERY:
+            return f"warm tried {int((t - last) // 60)} min ago"
+        st[name] = t
         tmp = path.with_suffix(f".{os.getpid()}.tmp")
         tmp.write_text(json.dumps(st))
         os.replace(tmp, path)
-    rc, out = switcher(["warm", name, "--json"], 240)
     try:
-        return "warm " + str(json.loads(out)["results"][name]["result"])
-    except (ValueError, KeyError, TypeError):
-        return f"warm exited {rc}"
+        ca = switcher_module()
+        with ca.MachineLock(wait=LOCK_WAIT):
+            live, live_mail = ca.live_account()
+            if not live or live == name or (live_mail or "").lower() == email:
+                return (f"not warmed: under the switcher's lock the live login here is "
+                        f"{'this account' if live == name or (live_mail or '').lower() == email else 'unknown'}")
+            if ca.where(name) != "vault":
+                return "not warmed: no vault login under the switcher's lock"
+            health = ca.read_json(ca.HEALTH, {}) or {}
+            res = ca.warm_one(name, health)
+            ca.write_json_atomic(ca.HEALTH, health)
+        result = str((res or {}).get("result"))
+        ca.log_event(op="warm", results={name: result}, by="account_usage")
+        return "warm " + result
+    except Exception as e:  # noqa: BLE001 - a switcher that cannot be loaded, is busy or fails: no warm, poll goes on
+        return f"not warmed: {type(e).__name__}: {str(e)[:120]}"
 
 
 SEP = "=====ACCOUNT_USAGE_SEP====="
@@ -424,14 +450,13 @@ def poll(now: float | None = None) -> dict:
             why[name].append(f"no vault login on {here}")
             continue
         if exp < now + VAULT_MARGIN:
-            # asked again right before each warm, to keep a switch landing in between to a narrow window (the
-            # switcher's warm only re-checks under its lock that the name is not live WITH Claude running)
-            if not (live_here and remote_ok and name not in live_remote and switcher_live() == live_here
-                    and by_email.get(live_email() or "") == live_here):
+            # remotes cannot be locked from here: a warm needs every remote to have answered and none to hold this
+            # login live. Here, warm() re-reads the live login under the switcher's own lock.
+            if not (remote_ok and name not in live_remote):
                 why[name].append(f"vault token on {here} needs a refresh (not warmed: where each login is live "
                                  "is not proven)")
                 continue
-            res = warm(name, now)
+            res = warm(name, reg[name], now)
             exp = vault_token_valid_until(name)
             if not exp or exp < now + VAULT_MARGIN:
                 why[name].append(f"vault token on {here} needs a refresh ({res})")

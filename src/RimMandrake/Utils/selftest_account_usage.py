@@ -86,24 +86,68 @@ def fake_local(config_dir, email, now):
 
 au.probe_local = fake_local
 au.remote_live = lambda t: ("there", "two")
-sw_calls = []
-SW = {"live": "one", "renew": False}
+class FakeSwitcher:
+    """claude-account loaded as a module: its MachineLock, live_account, where, warm_one, health file. live_account
+    and warm_one assert they run under the lock; `switch_on_lock` lands a switch the instant the lock is taken (the
+    race: a switch between poll's checks and the warm). warm_one renews 'four' only when `renew`."""
 
+    class Refused(Exception):
+        pass
 
-def fake_switcher(args, timeout=60):
-    """claude-account stand-in: status names the live label; warm renews 'four' only when SW['renew']."""
-    sw_calls.append(tuple(args))
-    if args[:1] == ["status"]:
-        return 0, json.dumps({"machine": "here", "live": SW["live"]})
-    if args[:1] == ["warm"]:
-        a = args[1]
-        if SW["renew"]:
+    def __init__(self):
+        self.HEALTH = str(ROOT / "health.json")
+        self.live, self.renew, self.busy, self.switch_on_lock = ("one", "a@x.test"), False, False, None
+        self.locked, self.warmed, self.events = False, [], []
+
+    def MachineLock(self, wait=True):
+        sw = self
+
+        class _L:
+            def __enter__(self):
+                if sw.busy:
+                    raise sw.Refused("another claude-account operation is running on this machine")
+                if sw.switch_on_lock:
+                    sw.live = sw.switch_on_lock
+                sw.locked = True
+                return self
+
+            def __exit__(self, *a):
+                sw.locked = False
+        return _L()
+
+    def live_account(self):
+        assert self.locked, "live_account read outside the switcher lock"
+        return self.live
+
+    def where(self, a):
+        assert self.locked, "where read outside the switcher lock"
+        return "live" if a == self.live[0] else "vault" if (acc / a / ".credentials.json").exists() else None
+
+    def read_json(self, p, d=None):
+        try:
+            return json.loads(Path(p).read_text())
+        except (OSError, ValueError):
+            return d
+
+    def write_json_atomic(self, p, d, mode=0o600):
+        assert self.locked
+        Path(p).write_text(json.dumps(d))
+
+    def warm_one(self, a, health):
+        assert self.locked, "warm_one outside the switcher lock"
+        self.warmed.append((a, self.live[0]))
+        if self.renew:
             (acc / a / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 8 * 3600) * 1000}}))
-        return 0, json.dumps({"ok": SW["renew"], "results": {a: {"result": "renewed" if SW["renew"] else "failed-auth"}}})
-    return 2, ""
+        health.setdefault(a, {})["warm"] = {"result": "renewed" if self.renew else "failed-auth"}
+        return health[a]["warm"]
+
+    def log_event(self, **kw):
+        self.events.append(kw)
 
 
-au.switcher = fake_switcher
+SW = FakeSwitcher()
+au.switcher_module = lambda: SW
+au.clock = lambda: 0.0  # reservation time = the poll's own (fixture) time
 au.probe_remote = lambda t, e, n: (calls.append(("remote", t, e)) or (dict(FIG), ""))
 recs = au.poll(NOW)
 check("poll: live here measured with the default config", recs["one"]["source"] == "MEASURED"
@@ -117,11 +161,10 @@ check("poll: vault token needing a refresh is never run", not any(c[1] == str(ac
 check("poll: nothing to carry reads UNMEASURED with null figures", recs["four"]["source"] == "UNMEASURED"
       and recs["four"]["week_pct_used"] is None and "refresh" in recs["four"]["why"], recs["four"])
 check("poll: every record has the contract keys", all(set(au.RECORD_KEYS) == set(r) for r in recs.values()))
-warms = [c for c in sw_calls if c[0] == "warm"]
-check("warm: an expired dormant login is warmed once, by name", warms == [("warm", "four", "--json")], sw_calls)
+check("warm: an expired dormant login is warmed once, under the switcher's lock", SW.warmed == [("four", "one")], SW.warmed)
 check("warm: a failed warm is in the why", "warm" in recs["four"]["why"] and "failed" in recs["four"]["why"], recs["four"])
 check("warm: the live login and a remote's live login are never warmed",
-      not any(c[0] == "warm" and c[1] in ("one", "two") for c in sw_calls), sw_calls)
+      not any(a in ("one", "two") for a, _ in SW.warmed), SW.warmed)
 
 # ---- RimPulse reading: fresh = MEASURED, old = carry basis
 pulse = ROOT / "pulse"
@@ -133,8 +176,7 @@ recs = au.poll(NOW + 60)
 check("pulse: a fresh endpoint reading is MEASURED with its own time", recs["four"]["source"] == "MEASURED"
       and recs["four"]["measured_at"] == au.iso(NOW - 300) and recs["four"]["week_pct_used"] == 69.0, recs["four"])
 
-check("warm: at most one warm per account per hour (none 1 min later)",
-      [c for c in sw_calls if c[0] == "warm"] == [("warm", "four", "--json")], sw_calls)
+check("warm: at most one warm per account per hour (none 1 min later)", SW.warmed == [("four", "one")], SW.warmed)
 
 # ---- carry: everything fails 4 h later (past the 16:10 session reset)
 au.probe_local = lambda *a: (None, "boom")
@@ -170,29 +212,72 @@ au.probe_local = fake_local
 au.probe_remote = lambda t, e, n: (dict(FIG), "")
 (acc / "four" / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 60) * 1000}}))
 (ROOT / "data" / "warm_state.json").unlink()
-SW["renew"] = True
+SW.renew = True
 calls.clear()
-sw_calls.clear()
+SW.warmed.clear()
 recs = au.poll(NOW + 120)
 check("warm: a renewed login is probed and MEASURED", recs["four"]["source"] == "MEASURED"
       and ("local", str(acc / "four"), "d@x.test") in calls, (recs["four"], calls))
-# the switcher disagrees about which login is live: no warm at all
-(acc / "four" / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 60) * 1000}}))
-(ROOT / "data" / "warm_state.json").unlink()
-SW["live"] = "four"
-sw_calls.clear()
+
+
+def rearm():
+    (acc / "four" / ".credentials.json").write_text(json.dumps({"claudeAiOauth": {"expiresAt": (NOW + 60) * 1000}}))
+    (ROOT / "data" / "warm_state.json").unlink(missing_ok=True)
+    SW.warmed.clear()
+    calls.clear()
+
+
+# THE RACE (lesson 2026-10-28): a switch to 'four' lands after poll's checks, before the warm. Under the lock the
+# switcher's own live_account says four is live: the warm must not run (it would refresh the LIVE login).
+rearm()
+SW.switch_on_lock = ("four", "d@x.test")
 recs = au.poll(NOW + 180)
-check("warm: refused when the switcher names another live login", not any(c[0] == "warm" for c in sw_calls)
-      and "dormant" not in recs["four"]["method"], (sw_calls, recs["four"]))
+check("race: a switch landing before the warm is seen under the switcher's lock; nothing warmed",
+      SW.warmed == [] and "dormant" not in recs["four"]["method"], (SW.warmed, recs["four"]))
+check("race: the refusal is in the why", "not warmed" in recs["four"]["why"], recs["four"]["why"])
+SW.switch_on_lock, SW.live = None, ("one", "a@x.test")
+# the live login's email is the target's even though the registry name lookup failed: still refused
+rearm()
+SW.live = (None, "d@x.test")
+au.poll(NOW + 200)
+check("race: a live login with the target's email (unregistered name) is never warmed", SW.warmed == [], SW.warmed)
+# no live login known under the lock: where each login is live is not proven, so no warm
+rearm()
+SW.live = (None, None)
+au.poll(NOW + 210)
+check("race: an unknown live login under the lock refuses the warm", SW.warmed == [], SW.warmed)
+SW.live = ("one", "a@x.test")
+# the switcher is busy (a switch in progress): no warm, and the poll still finishes
+rearm()
+SW.busy = True
+recs = au.poll(NOW + 220)
+check("lock: a busy switcher lock skips the warm and the poll completes", SW.warmed == [] and "four" in recs, SW.warmed)
+SW.busy = False
+# the switcher cannot be loaded: no warm, no crash
+rearm()
+au.switcher_module = lambda: (_ for _ in ()).throw(ImportError("gone"))
+recs = au.poll(NOW + 230)
+check("lock: an unloadable switcher means no warm", SW.warmed == [] and "not warmed" in recs["four"]["why"], recs["four"])
+au.switcher_module = lambda: SW
 # a remote that does not answer: we cannot know where each login is live, so no warm
-SW["live"] = "one"
+rearm()
 au.remote_live = lambda t: (None, None)
-sw_calls.clear()
 au.poll(NOW + 240)
-check("warm: refused while a remote's live login is unknown", not any(c[0] == "warm" for c in sw_calls), sw_calls)
+check("warm: refused while a remote's live login is unknown", SW.warmed == [], SW.warmed)
+
+# ---- the real switcher still offers what the locked warm uses (loaded, never called)
+real = Path.home() / ".local" / "bin" / "claude-account"
+if real.exists():
+    mod = au.load_switcher(str(real))
+    need = ("MachineLock", "live_account", "where", "warm_one", "read_json", "write_json_atomic", "HEALTH", "log_event")
+    check("switcher API: the real claude-account has every name the locked warm uses",
+          all(hasattr(mod, k) for k in need), [k for k in need if not hasattr(mod, k)])
+else:
+    print("SKIP switcher API: no claude-account on this machine")
 
 # ---- no secret, host or account literal in the module
 src = Path(au.__file__).read_text()
+check("hygiene: the switcher is never run as a subprocess (its lock cannot be held across one)", "[CLAUDE_ACCOUNT" not in src)
 check("hygiene: no email, host or token literal", "@gmail" not in src and "100.115" not in src
       and "accessToken" not in src and "refreshToken" not in src)
 
