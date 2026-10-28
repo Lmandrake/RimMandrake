@@ -23,7 +23,7 @@ for acc, want, name in CASES:
 got, _ = A.decide({"system": M(1)}, now, True)
 fails += got
 print("%s  marker present: never twice" % ("ok  " if not got else "FAIL"))
-got, _ = A.decide({"system": M(1)}, time.mktime(time.strptime("2026-10-29", "%Y-%m-%d")), False)
+got, _ = A.decide({"system": M(1), "lukas": M(50)}, time.mktime(time.strptime("2026-10-29", "%Y-%m-%d")), False)
 fails += got
 print("%s  past the deadline: no switch" % ("ok  " if not got else "FAIL"))
 # review night: a stale low reading of the target does not block the switch
@@ -240,5 +240,37 @@ with tempfile.TemporaryDirectory() as td:
         A.OUT, A.MARKER, A.subprocess, A.time = saved
 fails += not ok
 print("%s  a failed account_usage (rc 1) is not trusted: %r" % ("ok  " if ok else "FAIL", rc_f))
+# review r3 2026-10-28 (GPT cold read): stage 2 is bounded by lukas's reset today, never by the meter's next one
+TR = datetime_ts(A.TO_RESET)
+NXT = {"source": "MEASURED", "week_pct_left": 100.0, "stale": False, "week_resets_at": "2026-11-04T16:00-08:00"}
+got, why = A.decide2({"lukas": NXT}, TR + 60, "lukas", {})
+fails += got is not None
+print("%s  stage2 after lukas's reset: never a burn on the new week: %r %s" % ("ok  " if got is None else "FAIL", got, why))
+got, why = A.decide2({"lukas": L(2)}, TR + 30, "lukas", {"burn": 1})
+fails += got is not None
+print("%s  stage2 after lukas's reset: a pre-reset 2%% reading never turns it off: %r" % ("ok  " if got is None else "FAIL", got))
+# the --hours window ends at lukas's reset even when the status call is slow (now is read after it)
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
+    A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+    open(A.MARKER, "w").write("{}")
+    clock, calls = [t2], []
+    A.run = lambda argv: (calls.append((argv, clock[0])), (0, "set"))[1]
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
+        stdout=_json.dumps({"accounts": {"system": M(50), "lukas": L(7)}})))
+    A.time = types.SimpleNamespace(time=lambda: clock[0])
+
+    def _slow_live():
+        clock[0] += 90
+        return "lukas"
+    A.live_account = _slow_live
+    try:
+        A.check(False)
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account = saved
+end = calls[0][1] + float(calls[0][0][calls[0][0].index("--hours") + 1]) * 3600 if calls and "--hours" in calls[0][0] else None
+ok = end is not None and abs(end - TR) <= 20
+fails += not ok
+print("%s  stage2 --hours ends at lukas's reset after a slow status call: %r vs %r" % ("ok  " if ok else "FAIL", end, TR))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

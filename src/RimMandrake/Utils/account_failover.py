@@ -25,6 +25,10 @@ FROM, TO, MACHINE = "system", "lukas", "archmagi"
 THRESHOLD = 2.0
 DEADLINE = "2026-10-28T12:45:00-07:00"      # from here the switch is unconditional (target live): system's unused week expires
 RESET = "2026-10-28T13:00:00-07:00"         # the system week resets and refills: no switch after this
+# lukas's week resets and refills (meter, 2026-10-28 09:41: week_resets_at 2026-10-28T16:00-07:00). Stage 2 acts only
+# before it, and every --hours window ends at it: after it the meter names NEXT week's reset (a 168 h BURN) and a
+# reading polled before it is pre-refill (a wrong DARK) (review r3 2026-10-28)
+TO_RESET = "2026-10-28T16:00:00-07:00"
 OWNER_ORDER = ("Ok, wake up! We have tokens to burn! Use up this account, then switch to the other account and use it "
                "up to 2% to, then wait for the reset to hit.")
 SLOT = os.path.join(HERE, "slot_allocator.py")
@@ -108,13 +112,8 @@ def decide2(acc, now, live, st):
     if live != TO:
         return None, "live account is %r, not %s: stage 2 idle" % (live, TO)
     b = acc.get(TO) or {}
-    reset = b.get("week_resets_at")
-    try:  # a malformed stamp must not disable the off decision below (review r2 2026-10-28)
-        past = bool(reset) and now >= datetime.fromisoformat(reset).timestamp() + 600
-    except Exception:  # noqa: BLE001
-        past = False
-    if past and st.get("off"):
-        return None, "%s week reset passed: stage 2 finished (retire the timer)" % TO
+    if now >= datetime.fromisoformat(TO_RESET).timestamp() - 60:
+        return None, "%s week reset %s passed: stage 2 finished (retire the timer)" % (TO, TO_RESET)
     left = b.get("week_pct_left")
     # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
     if (not st.get("off") and b.get("source") == "MEASURED" and not b.get("stale")
@@ -126,11 +125,8 @@ def decide2(acc, now, live, st):
 
 
 def hours_to(reset, now):
-    try:
-        h = (datetime.fromisoformat(reset).timestamp() - now) / 3600
-    except Exception:  # noqa: BLE001
-        return None
-    return round(h, 2) if h > 0.05 else None
+    """-> hours from now to reset, rounded so the window never ends after it."""
+    return max(0.001, int((datetime.fromisoformat(reset).timestamp() - now) / 3.6) / 1000)
 
 
 def stage2(acc, dry):
@@ -138,17 +134,16 @@ def stage2(acc, dry):
         st = json.load(open(STAGE2))
     except Exception:  # noqa: BLE001
         st = {}
-    now = time.time()
-    act, why = decide2(acc, now, live_account(), st)
+    live = live_account()
+    now = time.time()  # after the status call: a slow one must not push the window past TO_RESET (review r3)
+    act, why = decide2(acc, now, live, st)
     if act is None:
         log({"do": "stage2_skip", "why": why})
         return 0
-    hrs = hours_to((acc.get(TO) or {}).get("week_resets_at"), now)
     argv = [sys.executable, SLOT, "set", "--owner-said", OWNER_ORDER]
     # off is DARK (total 0, every seat): `--n 0` zeroed BENCH only and left FOUNDRY's slot burning lukas (review 2026-10-28)
     argv += ["--n", "16", "--mode", "BURN"] if act == "burn" else ["--mode", "DARK"]
-    if hrs:
-        argv += ["--hours", str(hrs)]
+    argv += ["--hours", str(hours_to(TO_RESET, now))]  # always: no --hours lets the allocator pick its own reset
     if dry:
         log({"do": "stage2_would_" + act, "why": why, "argv": argv[2:]})
         return 0
