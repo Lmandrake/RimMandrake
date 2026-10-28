@@ -1,0 +1,73 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 42.9,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.36902940000000006
+   }
+  ],
+  "gpt": [
+   {
+    "model_reported": "gpt-6.1-sol",
+    "seconds": 19.1
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 11.7,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1206187
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Blarth__Blarth_Swimming_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band WEAK (model said good); blocking ['F_SIZE_JUMP']; polish ['LEGIB_32']",
+  "gpt regen: unsettled ['K1'], own blocking ['F_SIZE_JUMP']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "c3fe7384b6e41d980134a1d95aad22eff429b56dc1145a847924b9214b92ce9e",
+  "east.png": "e8c77520ee10de8b964ed1406e4e55c9a23a0c46335655fa1f29cfd493c6f101",
+  "north.png": "5b9182597bfb04d63d5f64ab8cb3c1a3b61f19e2bba404c1f28d89a089f8656b",
+  "scale.png": "6c3e03e57149ba557544ed6cc371ae44bb3546765671c2ecab3533a016ffe063",
+  "facings.png": "ab0993506380d275b503c467dfc576e69f60af12ee5eaef8940dace7ac68bbb9"
+ }
+}

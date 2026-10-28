@@ -1,0 +1,88 @@
+[
+ {
+  "id": "arteval_RM_Siezer_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Siezer_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the siezer. A mud-whale of the Miasma's channels: a short, tapering body driven by four broad flippers, carrying a head fully half its own size. Most of that head is jaw, with ranks of overlapping teeth on a heavy hinge. It hauls itself through the silt half-submerged, a long mud-grey ridge with two small eyes. Visible features: a short tapering body driven by four broad flippers; a head fully half its body size, mostly jaw; a mud-grey ridge of a back. In this view the animal is seen from behind (rear view). The animal fills the same width of the canvas as it does in the accepted front view: the four broad flippers spread wide to either side of the centreline, so the span from flipper tip to flipper tip is as wide as the front view's flipper span, and the creature appears at the same size on the canvas as in the front view. The mud-grey ridge of the back runs down the centre. At the far end, behind and above the shoulders, the massive head shows as a broad domed skull mass at the same anatomical scale as in the accepted front and side views: clearly wider than the shoulders, as wide across as the head in the accepted front view, and about as massive as the whole torso, so the animal reads as big-headed even from behind. The flippers are as large and broad as the flippers in the front view. The rear view shortens the body along the line of sight, which keeps the projected height in step with the other views while the width stays full. The jaw and eyes are hidden on the far side of this domed skull. The tail sits at the bottom of the canvas: a narrow, muscular peduncle that widens into a broad two-lobed fluke, one lobe to each side of the centreline, the same broadened terminal paddle seen in the side view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1301",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.75,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_CrimsonOpee_ns_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_CrimsonOpee_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same rust-red barnacled colours and markings, same size on the canvas, now seen from behind. A creature sprite for RimWorld: the crimson opee. A warm-shallows morph of the opee, barnacled and rust-red, that hunts with its tongue already out as a lure. It is a crustacean-fish hybrid with a segmented back and a tail made of a short narrow armored tail base ending in a separate broad fan of thin ray-supported fin lobes, the opee sea-killer form. Its lure set is exactly the accepted east view's: the same number of stalks, the same attachment points and the same lengths, including the two long filament-bearing side lures that arch out past the flanks of the body. The body is broad, with the flanks as wide as in the accepted east view. Rear view (north), seen from behind at the game camera angle, a low near-horizontal viewpoint looking straight at the animal's back end: the rounded haunches and the tail base are the nearest forms and fill the lower half of the sprite. The tail is short in this view because its length points toward the camera. It reads as a narrow base followed by the broad ray-finned fan, the same fan seen on the east view, opening wide at the bottom of the sprite as the widest part, with the thin fin rays clearly visible. Directly above the haunches the segmented back plates are strongly foreshortened into a short stepped stack of 3 to 4 overlapping arcs, each partly covering the one behind, rising away from the viewer. The head end is hidden behind the body mass. The legs hang downward under the body: the rear pair stands close together beneath the haunches, the far pair is partly hidden behind them, and the feet sit on the ground line at the bottom of the sprite. Only the lure tips and the two long side lures show, arching up and out past the flanks from behind the body. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1301",
+  "drawsize": 2.48,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Blarth__Blarth_Swimming_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blarth__Blarth_Swimming_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (the accepted east view): same stout rotund barrel body, same proportions, same hide colours, same scattered ring-shaped dimples and pores, same thick-rooted tail, and the same body size on the canvas. A creature sprite for RimWorld: the blarth, a medium-sized amphibious predator of Naboo, kept by the Gungans as an amiable household pet and watch animal. Show it in rear view, seen from behind at the game camera's angle, the animal facing away from the viewer. In this view the rear surface faces the viewer. The torso is as wide and bulky as the east body: the haunches span the full body width of the east view, about 320 px across at the shared scale, a huge rotund barrel with wide rounded haunches and a smoothly arched back that fills the frame. The back is a smooth, unbroken hide surface carrying only the scattered ring-shaped dimples and pores of the east view, in the same pattern and density, in the same hide colour. The stubby hind legs are as thick and stubby as in the east view, set wide apart under the broad haunches, with the hind feet at the bottom. The thick tail root sits between the haunches, as thick as in the east view, and the tail tapers gradually as it trails down and slightly away from the tail base behind the rump, foreshortened, adding length below the body while the torso keeps its full east-view bulk. The head is turned away and hidden behind the bulk of the body, with the toothy reptilian snout pointing away from the viewer and the eyes hidden. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1301",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.0,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RSW_Blixus_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_Blixus",
+  "prompt": "A creature sprite for RimWorld: the blixus. Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were known to be deadly in the swamps and lagoons they inhabit. They were known to periodically shed their exoskeleton if broken or damaged which could be harvested for useful chitin. It is believed many were accidently transplanted to various worlds as exotic display animals or pets that grew too large to contain. Visible features it must show: the canon Sljee blixus (see canon entry blixus); half-shelled crustapod, with a grey chitin shell covering only part of the body and soft flesh showing on the rest; exactly five long feeler tentacles, each continuous from its root at the body to its tip and each ending in one rounded sucker pad, so five tentacles and five sucker pads in total. The east profile shows the same five tentacles as the south and north views, the near-side tentacles overlapping the far-side ones so that five tips can be counted. The north view shows the creature from behind, with the upright central tentacle flanked by clean, open, empty transparent gaps. Keep the palette, body plan and shell coverage of the previous render unchanged. Realistic painterly vanilla RimWorld sprite style, with a clean dark outline in a deeper shade of the local colour. Colour stays inside the creature: the flesh is one muted pinkish-tan with a darker tan outline, the chitin is grey with a dark grey outline, and every tentacle, spike and sucker pad ends in the outline shade of its own local colour. Every tentacle edge is one clean silhouette line, the outermost pixel row being that deep outline colour, stepping through a single thin antialiased pixel to fully transparent, so each tentacle meets the background with no separate coloured fringe. The spaces between tentacles, between spikes and around the body are completely empty, fully transparent and uniform, holding only the creature's own pixels. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background, uniform around the creature and between the tentacles: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, ALPHA_HALO",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1301",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 6.0,
+  "module": "swimmer",
+  "target_texpath": "swanimals/Blixus/Blixus"
+ }
+]
