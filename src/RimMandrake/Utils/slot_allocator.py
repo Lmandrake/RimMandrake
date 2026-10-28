@@ -765,7 +765,7 @@ def lent_allowance(sp, rules, now):
         return None, ""
     used, left, h, _ = _lent_view(sp)
     name = sp["account"]
-    if left is None or used is None or h is None:
+    if left is None or used is None or h is None or sp.get("source", "MEASURED") not in ("MEASURED", "ESTIMATE"):
         return 0.0, f"{name}: lent account unmeasured, left alone"
     off = epoch(pol.get("off_limits_through"))
     if off is not None and now < off:
@@ -976,13 +976,19 @@ def compute(now=None, rules=None, seat="BENCH"):
 def write(dec):
     d = streams_dir()
     d.mkdir(parents=True, exist_ok=True)
-    # one temp file per writer: the scheduled tick and a manual `now --write` may overlap; a shared temp name let
-    # one publish the other's decision and the other crash on a vanished file
-    fd, tmp = tempfile.mkstemp(prefix="allocation.json.", suffix=".tmp", dir=d)
+    write_atomic(d / "allocation.json", json.dumps(dec, indent=1, sort_keys=True, default=str))
+
+
+def write_atomic(path, text):
+    """Publish text at path by replace: a reader never sees it empty or half-written. One temp file per writer:
+    the scheduled tick and a manual `now --write` may overlap; a shared temp name let one publish the other's
+    decision and the other crash on a vanished file."""
+    path = Path(path)
+    fd, tmp = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=path.parent)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
-            f.write(json.dumps(dec, indent=1, sort_keys=True, default=str))
-        os.replace(tmp, d / "allocation.json")
+            f.write(text)
+        os.replace(tmp, path)
     except BaseException:
         try:
             os.unlink(tmp)
@@ -1022,7 +1028,8 @@ def main(argv=None):
             print(f"refused: no meter reading for {a.account}", file=sys.stderr)
             return 2
         sp = {"account": a.account, "pct_left": acc.get("week_pct_left"), "pct_used": acc.get("week_pct_used"),
-              "hours_to_reset": acc.get("hours_to_week_reset"), "resets_at": acc.get("week_resets_at")}
+              "hours_to_reset": acc.get("hours_to_week_reset"), "resets_at": acc.get("week_resets_at"),
+              "source": acc.get("source")}
         ok, why = check_plan(sp, a.draw, load_rules(), now)
         print(why, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 2
@@ -1074,7 +1081,7 @@ def main(argv=None):
             ov["n"] = a.n
     d = streams_dir()
     d.mkdir(parents=True, exist_ok=True)
-    (d / "slot_override.json").write_text(json.dumps(ov, indent=1), encoding="utf-8")
+    write_atomic(d / "slot_override.json", json.dumps(ov, indent=1))  # a collector never reads it half-written
     print(f"set: his word holds until {until}: {json.dumps(ov)}")
     return 0
 

@@ -611,10 +611,43 @@ with tempfile.TemporaryDirectory() as _td:
     left_over = sorted(p.name for p in Path(_td).iterdir() if p.name != "allocation.json")
     check("S3: an interleaved second writer neither crashes the first nor publishes in its name",
           err is None and got == {"who": "first"} and not left_over, (err, got, left_over))
+    # O1: `set` publishes his override by replace, never truncate-then-write (a collector reading mid-write saw
+    # no override and published an allocation without his word)
+    _replaced = []
+
+    def _rec_replace(src, dst):
+        _replaced.append(Path(dst).name)
+        return _real_replace(src, dst)
+    SA.os.replace = _rec_replace
+    try:
+        rc = SA.main(["set", "--n", "0", "--seat", "BENCH", "--owner-said", "bench off", "--hours", "2"])
+    finally:
+        SA.os.replace = _real_replace
+    ov_now = json.loads((Path(_td) / "slot_override.json").read_text(encoding="utf-8"))
+    left_over = sorted(p.name for p in Path(_td).iterdir() if p.name not in ("allocation.json", "slot_override.json"))
+    check("O1: set writes slot_override.json by atomic replace, leaving no temp file",
+          rc == 0 and "slot_override.json" in _replaced and ov_now["seats"] == {"BENCH": 0} and not left_over,
+          (rc, _replaced, ov_now, left_over))
 if _sd_old is None:
     os.environ.pop("RM_STREAMS_DIR", None)
 else:
     os.environ["RM_STREAMS_DIR"] = _sd_old
+# P1: a plan against a STALE/UNMEASURED reading is refused, never approved from an unusable number
+for _src in ("STALE", "UNMEASURED"):
+    ok, why = SA.check_plan(dict(stv(80.0, 150.0), source=_src), 10.0, R2, NOW)
+    check(f"P1: check_plan refuses a {_src} reading of a lent account", not ok and "unmeasured" in why, why)
+ok, why = SA.check_plan(stv(80.0, 150.0), 10.0, R2, NOW)
+check("P1 control: the same ESTIMATE reading is allowed", ok, why)
+_mn, _lr = SA.meter_now, SA.load_rules
+SA.meter_now = lambda now: {"accounts": {"steven": {"week_pct_left": 80.0, "week_pct_used": 20.0,
+                                                    "hours_to_week_reset": 150.0, "source": "STALE",
+                                                    "week_resets_at": SA.iso_local(NOW + 150 * H)}}}
+SA.load_rules = lambda: R2
+try:
+    rc = SA.main(["plan", "--account", "steven", "--draw", "10"])
+finally:
+    SA.meter_now, SA.load_rules = _mn, _lr
+check("P1: the plan CLI passes the reading's source on (a STALE meter is refused, rc 2)", rc == 2, rc)
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
