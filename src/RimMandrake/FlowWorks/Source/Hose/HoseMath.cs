@@ -2827,6 +2827,20 @@ namespace RimMandrake.FlowWorks.Hose
                 foreach (Cell e in EdgeCells(s)) l.Add(e + s);
             return l;
         }
+
+        /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS: <see cref="Perimeter"/> written into <paramref name="l"/> (cleared first), same
+        /// cells in the same order, without the per-call lists (the hose tick reads it ~4 times a tick on a busy map).</summary>
+        internal void PerimeterInto(List<Cell> l)
+        {
+            l.Clear();
+            Cell[] order = HosePortRule.SideOrder;
+            for (int si = 0; si < order.Length; si++)
+            {
+                Cell s = order[si];
+                if (s.X != 0) { int x = s.X > 0 ? X0 + W - 1 : X0; for (int z = Z0; z < Z0 + H; z++) l.Add(new Cell(x, z) + s); }
+                else { int z = s.Z > 0 ? Z0 + H - 1 : Z0; for (int x = X0; x < X0 + W; x++) l.Add(new Cell(x, z) + s); }
+            }
+        }
     }
 
     public struct HosePortCandidate

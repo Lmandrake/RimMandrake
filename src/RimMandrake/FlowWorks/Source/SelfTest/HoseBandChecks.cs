@@ -260,8 +260,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(HoseBandMath.Band(false, PitBand) == 0 && HoseBandMath.Band(true, PitBand) == PitBand, "the band ignores the rules switch");
                 string ports = Body(Src("Hose", "HosePorts.cs"), "private static Thing RawFindAt(");
                 int gate = ports.IndexOf("HoseBandMath.EndReaches(endBand, RM_HoseBands.BandAt(map, c))", StringComparison.Ordinal);
-                Assert(gate > 0 && gate > ports.IndexOf("foreach (Cell pc in rect.Perimeter())", StringComparison.Ordinal)
-                    && gate < ports.IndexOf("Classify(t)", ports.IndexOf("foreach (Cell pc", StringComparison.Ordinal), StringComparison.Ordinal),
+                Assert(gate > 0 && gate > ports.IndexOf("Cell pc = perim[pi];", StringComparison.Ordinal)
+                    && gate < ports.IndexOf("Classify(t)", ports.IndexOf("Cell pc = perim[pi];", StringComparison.Ordinal), StringComparison.Ordinal),
                     "HosePorts.RawFindAt does not gate each beside-the-end port by band before it classifies it");
                 string water = Body(Src("Hose", "HoseEnds.cs"), "public static TerrainDef WaterAt(");
                 Assert(water.Contains("HoseBandMath.EndReaches(band, RM_HoseBands.BandAt(map, n))"), "HoseEnds.WaterAt touches water across a sheer wall");
@@ -333,7 +333,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // production wiring: the snapshot and the live per-cell read close the same squares
                 string bands = Src("Hose", "RM_HoseBands.cs");
                 string apply = Body(bands, "internal static void Apply(");
-                Assert(apply.Contains("HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c))") && apply.Contains("w.SetBlocked(new Cell(x, z), BlockKind.Wall)"),
+                // HOSES_MAP1_DIAGNOSE_TICK_STALLS: Apply reads a decked square (a cover is a deck, DeckAt) through DeckedCell, the
+                // table rule; a deckless square cannot be a cover (HoseBandsApplyChecks holds the deckless shortcut)
+                Assert(apply.Contains("Pits.RM_SpanUtility.DeckAt(map, c) != null) DeckedCell(map, eng, c, out closed, out step)")
+                    && apply.Contains("if (closed) w.SetBlocked(new Cell(x, z), BlockKind.Wall)")
+                    && Body(bands, "private static void DeckedCell(").Contains("HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c))"),
                     "World() (RM_HoseBands.Apply) does not close a pit cover");
                 Assert(Body(bands, "public static bool Closed(").Contains("HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c))"), "RM_HoseBands.Closed is not the table rule");
                 string live = Body(Src("Hose", "RM_MapComponent_Hoses.cs"), "internal ulong LiveCellSig(");

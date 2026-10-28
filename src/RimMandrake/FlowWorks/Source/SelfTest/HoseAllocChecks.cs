@@ -161,8 +161,15 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("A2 source: a levelling cycle walks each dug run once and resumes at the hose its budget turned away", () =>
             {
                 string src = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Machinery", "RM_Levelling.cs"));
-                RiverSwitchFlipChecks.Has(src, @"if \(st\.mark\[startIdx\] >= st\.cycleFirstWalk\)\s*\{[^}]*index = st\.bodyOf\[startIdx\];", "an end in a run walked this cycle takes its body without walking");
-                RiverSwitchFlipChecks.Has(src, @"st\.cycleFirstWalk = st\.walkId \+ 1;", "a new cycle forgets the last cycle's walks");
+                // SELFTEST_A2_SOURCE_FIX_STALE_PATTERN: d802da77e8 moved the walk-once marks into RM_LevelRunScratch
+                // (RM_LevelRunWalk.cs); the guard is the same rule, re-anchored there, and must still come before the budget
+                RiverSwitchFlipChecks.Has(src, @"if \(run\.Reached\(startIdx\)\)\s*\{[^}]*index = run\.BodyOf\[startIdx\];", "an end in a run walked this cycle takes its body without walking");
+                int reached = src.IndexOf("if (run.Reached(startIdx))", StringComparison.Ordinal), budget = src.IndexOf("if (walked >= WalkBudget ||", StringComparison.Ordinal);
+                Assert(reached >= 0 && budget > reached, "a run walked this cycle is answered before the walk budget can turn its end away");
+                RiverSwitchFlipChecks.Has(src, @"st\.run\.BeginCycle\(\);", "each cycle opens a new walk generation");
+                string walk = RiverSwitchFlipChecks.Src("RM_LevelRunWalk.cs");
+                RiverSwitchFlipChecks.Has(walk, @"public void BeginCycle\(\)\s*\{\s*CycleFirstWalk = WalkId \+ 1;\s*\}", "a new cycle forgets the last cycle's walks");
+                RiverSwitchFlipChecks.Has(walk, @"public bool Reached\(int i\) => Mark\[i\] >= CycleFirstWalk;", "reached = marked by a walk of this cycle");
                 RiverSwitchFlipChecks.Has(src, @"int hIndex = \(startAt \+ hi\) % hoses\.Count;", "the cycle starts at the cursor");
                 RiverSwitchFlipChecks.Has(src, @"st\.hoseCursor = turnedAway < 0 \? 0 : turnedAway;", "the cursor is the first hose the budget turned away");
                 var m = System.Text.RegularExpressions.Regex.Match(src, @"public const int WalkBudget = (\d+);");

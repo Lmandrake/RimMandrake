@@ -280,6 +280,23 @@ namespace RimMandrake.FlowWorks.Swimming
 			return t.index < swimTerrain.Length && swimTerrain[t.index];
 		}
 
+		/// <summary>WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL: <see cref="IsDeepSwimCell"/> by cell index for a whole-map pass, the engine
+		/// looked up once by the caller (<paramref name="ex"/>). The same verdict (not decked AND (swim terrain OR dug swim)), but the
+		/// deck's thing-list scan runs only on a square that would otherwise swim, not on every square of the map.</summary>
+		public static bool IsDeepSwimIndex(Map map, RM_MapComponent_Excavation ex, int i)
+		{
+			if (!On || map == null || i < 0 || i >= map.cellIndices.NumGridCells)
+			{
+				return false;
+			}
+			if (!IsSwimTerrain(map.terrainGrid.TerrainAt(i)) && !(ex != null && ex.IsDugSwimIndex(i)))
+			{
+				return false;
+			}
+			return !Pits.RM_SpanUtility.DeckedAt(map, map.cellIndices.IndexToCell(i));
+		}
+		// end IsDeepSwimIndex
+
 		/// <summary>A square that is swum: natural deep water, or (SWIM_DUG_RESERVOIR_FIX_PAWNS_CANT_ENTER) a dug square holding
 		/// swimmable water 2 m or deeper (RM_MapComponent_Excavation.IsDugSwimCell).</summary>
 		public static bool IsDeepSwimCell(Map map, IntVec3 c)

@@ -244,11 +244,12 @@ namespace RimMandrake.FlowWorks
 			byte[] kinds = st.kinds.published;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
 			PathGrid pg = map.pathing.Normal.pathGrid;
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
 			if (kinds != null && kinds.Length != map.cellIndices.NumGridCells)
 			{
 				kinds = null;
 			}
-			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, i => KindAt(map, pg, swim, i), overflow))
+			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, i => KindAt(map, pg, swim, ex, i), overflow))
 			{
 				st.wallGenBy[WgDelta]++;
 				Interlocked.Increment(ref st.wallGen);
@@ -280,7 +281,7 @@ namespace RimMandrake.FlowWorks
 			int idx = c.InBounds(map) ? map.cellIndices.CellToIndex(c) : -1;
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
 			bool moved = kinds == null || idx < 0 || pg == null
-				|| RM_WallReachMath.WalkabilityMovesKind(kinds, idx, KindAt(map, pg, Swimming.RM_SwimWater.On, idx));
+				|| RM_WallReachMath.WalkabilityMovesKind(kinds, idx, KindAt(map, pg, Swimming.RM_SwimWater.On, RM_SuperdeepTrap.EngineOf(map), idx));
 			if (moved)
 			{
 				Interlocked.Increment(ref st.wallGenBy[pocketFlipNotifying ? WgWalkPocket : WgWalk]);
@@ -426,15 +427,35 @@ namespace RimMandrake.FlowWorks
 			byte[] kinds = st.kinds.Take(n);
 			PathGrid pg = map.pathing.Normal.pathGrid;
 			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
+			// WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL: the engine once, not per square (RM_SwimWater.IsDeepSwimIndex)
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
 			for (int i = 0; i < n; i++)
 			{
-				kinds[i] = KindAt(map, pg, swim, i);
+				kinds[i] = KindAt(map, pg, swim, ex, i);
 			}
 			return st.kinds.Publish(kinds, stamp, w, h);
 		}
 
 		/// <summary>The kind of one square (Kinds' rule, and FlushDeltas' judge of a delta).</summary>
-		private static byte KindAt(Map map, PathGrid pg, bool swim, int i)
+		private static byte KindAt(Map map, PathGrid pg, bool swim, RM_MapComponent_Excavation ex, int i)
+		{
+			Building ed = map.edificeGrid[i];
+			if (ed is Building_Door d)
+			{
+				return KindOfDoor(d);
+			}
+			if (ed != null && ed.def.IsFence)
+			{
+				return RM_WallReachMath.Fence;
+			}
+			if (!pg.WalkableFast(i))
+			{
+				return RM_WallReachMath.Wall;
+			}
+			return swim && Swimming.RM_SwimWater.IsDeepSwimIndex(map, ex, i) ? RM_WallReachMath.DeepWater : RM_WallReachMath.Open;
+		}
+
+		private static byte KindAtLegacy(Map map, PathGrid pg, bool swim, int i)
 		{
 			Building ed = map.edificeGrid[i];
 			if (ed is Building_Door d)
@@ -1092,6 +1113,54 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>"" -> "WALLREACH on=b entries=N builds=N … queries=N vetoes=N | RESIDUAL fails=N outOfScope=N stale=N
 		/// residual=N byKey=[faction/race/cCLS:n,…] byDoor=[x,z:n,…]" for the current map.</summary>
+		/// <summary>WALLREACH_BUILD_DIAGNOSE_RAIN_TAIL live probe: every square of map <paramref name="arg"/> (index; default the
+		/// current map) by the old rule and the new, the differences counted, and both whole-map passes timed.</summary>
+		public static string ProofKinds(string arg)
+		{
+			Map map = int.TryParse(arg, out int mi) && mi >= 0 && mi < Find.Maps.Count ? Find.Maps[mi] : Find.CurrentMap;
+			if (map == null)
+			{
+				return "KINDS no map";
+			}
+			PathGrid pg = map.pathing.Normal.pathGrid;
+			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
+			int n = map.cellIndices.NumGridCells, diffs = 0, first = -1, deep = 0;
+			var a = new byte[n];
+			var b = new byte[n];
+			var sw = System.Diagnostics.Stopwatch.StartNew();
+			for (int i = 0; i < n; i++)
+			{
+				a[i] = KindAtLegacy(map, pg, swim, i);
+			}
+			double legacyMs = sw.Elapsed.TotalMilliseconds;
+			sw.Restart();
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			for (int i = 0; i < n; i++)
+			{
+				b[i] = KindAt(map, pg, swim, ex, i);
+			}
+			double fastMs = sw.Elapsed.TotalMilliseconds;
+			for (int i = 0; i < n; i++)
+			{
+				if (b[i] == RM_WallReachMath.DeepWater)
+				{
+					deep++;
+				}
+				if (a[i] != b[i])
+				{
+					diffs++;
+					if (first < 0)
+					{
+						first = i;
+					}
+				}
+			}
+			return "KINDS map=" + map.Index + " swim=" + swim + " cells=" + n + " deep=" + deep + " diffs=" + diffs
+				+ (first >= 0 ? " first=" + map.cellIndices.IndexToCell(first) + " legacy=" + a[first] + " fast=" + b[first] : "")
+				+ " legacyMs=" + legacyMs.ToString("0.00") + " fastMs=" + fastMs.ToString("0.00");
+		}
+		// end ProofKinds
+
 		public static string ProofReach(string arg)
 		{
 			Map map = Find.CurrentMap;

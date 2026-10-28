@@ -417,7 +417,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 string wr = Src("Superdeep", "RM_WallReach.cs");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_WalkabilityChanged""\)\]", "walkability is hooked where PathGrid reports it");
                 RiverSwitchFlipChecks.Has(wr, @"Postfix\(Map ___map, IntVec3 c, bool newWalkability\) \{ RM_WallReach\.NoteWalkability\(___map, c, newWalkability\);", "the hook bumps the stamp");
-                RiverSwitchFlipChecks.Has(wr, @"internal static void NoteWalkability\(Map map, IntVec3 c, bool nowWalkable\) \{.{0,700}RM_WallReachMath\.WalkabilityMovesKind\(kinds, idx, KindAt\(map, pg, Swimming\.RM_SwimWater\.On, idx\)\); if \(moved\) \{.{0,140}Interlocked\.Increment\(ref st\.wallGen\);",
+                RiverSwitchFlipChecks.Has(wr, @"internal static void NoteWalkability\(Map map, IntVec3 c, bool nowWalkable\) \{.{0,700}RM_WallReachMath\.WalkabilityMovesKind\(kinds, idx, KindAt\(map, pg, Swimming\.RM_SwimWater\.On, RM_SuperdeepTrap\.EngineOf\(map\), idx\)\); if \(moved\) \{.{0,140}Interlocked\.Increment\(ref st\.wallGen\);",
                     "a walkability change that moves the square's kind stales the labels (r15 fix 1: only that one)");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsSpawned""\)\]", "a door or fence spawned is seen");
                 RiverSwitchFlipChecks.Has(wr, @"\[HarmonyPatch\(typeof\(RegionDirtyer\), ""Notify_ThingAffectingRegionsDespawned""\)\]", "a door or fence removed is seen");

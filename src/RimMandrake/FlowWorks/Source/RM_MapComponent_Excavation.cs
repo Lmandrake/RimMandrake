@@ -404,6 +404,12 @@ namespace RimMandrake.FlowWorks
 			return swimSet.SwimCount > 0 && c.InBounds(map) && swimSet.IsSwim(map.cellIndices.CellToIndex(c));
 		}
 
+		/// <summary><see cref="IsDugSwimCell"/> by cell index (the caller has checked the bounds).</summary>
+		public bool IsDugSwimIndex(int i)
+		{
+			return swimSet.SwimCount > 0 && swimSet.IsSwim(i);
+		}
+
 		public int DugSwimCellCount => swimSet.SwimCount;
 
 		/// <summary>DUGSWIM_TAME_RAIN_FLIP_BURST (live r17: one refresh took 44-55 ms in rain, the path-cost re-read and swim-grid

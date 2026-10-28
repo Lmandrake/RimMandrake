@@ -841,6 +841,64 @@ namespace RimMandrake.FlowWorks.Hose
         // ------------------------------------------------------------------ tick: the state machines
         public override void MapComponentTick()
         {
+            // HOSES_MAP1_DIAGNOSE_TICK_STALLS: own work vs a full-GC pause that landed in this tick (Mono's collector stops the
+            // world in whichever allocation crosses its threshold), and what the tick allocated when no collection hid it
+            int g0 = GC.CollectionCount(0);
+            long m0 = GC.GetTotalMemory(false);
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            TickBody();
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            long bytes = GC.GetTotalMemory(false) - m0;
+            if (GC.CollectionCount(0) != g0)
+            {
+                splitGcTicks++;
+                if (ms > splitGcMaxMs) splitGcMaxMs = ms;
+            }
+            else
+            {
+                splitTicks++;
+                if (ms > splitOwnMaxMs) splitOwnMaxMs = ms;
+                if (bytes > 0)
+                {
+                    splitAllocTicks++;
+                    splitAllocBytes += bytes;
+                    if (bytes > splitAllocMax) splitAllocMax = bytes;
+                }
+            }
+        }
+
+        private int splitTicks, splitGcTicks, splitAllocTicks;
+        private double splitOwnMaxMs, splitGcMaxMs;
+        private long splitAllocBytes, splitAllocMax;
+
+        /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS live probe: per map, the hose tick's max own milliseconds (ticks no collection
+        /// landed in), its max on ticks a collection landed in, and the heap growth it caused on the others (GetTotalMemory is
+        /// block-granular: a sum over many ticks, not a per-call size). arg "reset" zeroes them.</summary>
+        public static string ProofTickSplit(string arg)
+        {
+            var sb = new System.Text.StringBuilder("HOSESPLIT");
+            foreach (Map m in Find.Maps)
+            {
+                RM_MapComponent_Hoses c = m.GetComponent<RM_MapComponent_Hoses>();
+                if (c == null) continue;
+                if (arg == "reset")
+                {
+                    c.splitTicks = c.splitGcTicks = c.splitAllocTicks = 0;
+                    c.splitOwnMaxMs = c.splitGcMaxMs = 0;
+                    c.splitAllocBytes = c.splitAllocMax = 0;
+                    continue;
+                }
+                sb.Append(" | map ").Append(m.Index).Append(" reels=").Append(c.reels.Count).Append(" ticks=").Append(c.splitTicks)
+                    .Append(" ownMaxMs=").Append(c.splitOwnMaxMs.ToString("0.00")).Append(" gcTicks=").Append(c.splitGcTicks)
+                    .Append(" gcMaxMs=").Append(c.splitGcMaxMs.ToString("0.0")).Append(" allocTicks=").Append(c.splitAllocTicks)
+                    .Append(" allocKB=").Append(c.splitAllocBytes / 1024).Append(" allocMaxKB=").Append(c.splitAllocMax / 1024);
+            }
+            sb.Append(" | gc0=").Append(GC.CollectionCount(0));
+            return sb.ToString();
+        }
+
+        private void TickBody()
+        {
             if (!RM_HoseEssentials.SaveSkipPatched) return;
             int now = Find.TickManager.TicksGame;
             HoseTuning t = RM_HoseSettings.Tuning();

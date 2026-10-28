@@ -38,5 +38,11 @@ namespace RimMandrake.FlowWorks.Hose
         public static bool SurfaceClosed(bool rulesOn, RimMandrake.FlowWorks.Machinery.LineSurface s) =>
             rulesOn && RimMandrake.FlowWorks.Machinery.RM_LineCrossingMath.Verdict(RimMandrake.FlowWorks.Machinery.LineKind.Hose, s)
                 == RimMandrake.FlowWorks.Machinery.CrossingVerdict.Refused;
+
+        /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS: SurfaceClosed (rules on) for a dug or bed square with no deck on it, i.e. of
+        /// RM_LineCrossingMath.Classify(excavated, None), so RM_HoseBands.Apply answers the common deckless cell without
+        /// RM_LineCrossing.SurfaceAt's component walk and second thing-list scan.</summary>
+        public static bool DecklessClosed(bool excavated) =>
+            SurfaceClosed(true, RimMandrake.FlowWorks.Machinery.RM_LineCrossingMath.Classify(excavated, RimMandrake.FlowWorks.Machinery.DeckOnSquare.None));
     }
 }

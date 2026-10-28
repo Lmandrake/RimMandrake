@@ -123,8 +123,59 @@ namespace RimMandrake.FlowWorks.Hose
         }
 
         /// <summary>Writes bands and links into a fresh hose world (World()). Only dug squares and their neighbours can differ
-        /// from band 0, so a map with nothing dug costs one check.</summary>
+        /// from band 0, so a map with nothing dug costs one check. HOSES_MAP1_DIAGNOSE_TICK_STALLS: this runs on every
+        /// whole-map rebuild (any building spawned or despawned, e.g. a growing huge tree's trunk blocker), so it allocates
+        /// nothing and reads each cell once: one climb depth, and for a dug cell one deck lookup; a deckless cell's verdict
+        /// is HoseBandMath.DecklessClosed and its step depth is its climb depth (StepDepthAt with no cover). A decked cell
+        /// takes the full rule (DeckedCell). The second pass walks the band grid instead of a list of dug squares.
+        /// ApplyLegacy is the rule this must equal (ProofOracle).</summary>
         internal static void Apply(Map map, CordWorld w)
+        {
+            if (!On || map == null) return;
+            RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+            if (eng == null || eng.ClimbCellCount == 0) return;
+            int W = map.Size.x, H = map.Size.z;
+            bool closedDug = HoseBandMath.DecklessClosed(true), closedBed = HoseBandMath.DecklessClosed(false);
+            for (int z = 0; z < H; z++)
+                for (int x = 0; x < W; x++)
+                {
+                    var c = new IntVec3(x, 0, z);
+                    int d = eng.ClimbDepthAt(c);
+                    if (d == 0) continue;   // StepDepthAt reads 0 too: band 0, and not closed (that needs depth > 0)
+                    bool closed;
+                    int step;
+                    if (d > 0 && Pits.RM_SpanUtility.DeckAt(map, c) != null) DeckedCell(map, eng, c, out closed, out step);
+                    else
+                    {
+                        closed = d > 0 && (closedDug == closedBed ? closedDug : eng.IsExcavated(c) ? closedDug : closedBed);
+                        step = d;
+                    }
+                    // phase 7: an intact pit cover carries no hose (P2 answer 3), so it is closed like a wall
+                    if (closed) w.SetBlocked(new Cell(x, z), BlockKind.Wall);
+                    int b = HoseBandMath.Band(true, step);
+                    if (b != 0) w.SetBand(new Cell(x, z), b);
+                }
+            if (!w.HasBands) return;
+            for (int z = 0; z < H; z++)
+                for (int x = 0; x < W; x++)
+                {
+                    int b = w.BandAt(new Cell(x, z));
+                    if (b == 0) continue;
+                    var c = new IntVec3(x, 0, z);
+                    for (int r = 0; r < 4; r++)
+                    {
+                        var n = new IntVec3(x + CordWorld.CardX[r], 0, z + CordWorld.CardZ[r]);
+                        if (!n.InBounds(map)) continue;
+                        int nb = w.BandAt(new Cell(n.x, n.z));
+                        if (nb != b && Linked(map, c, n, b, nb)) w.LinkBands(new Cell(x, z), new Cell(n.x, n.z));
+                    }
+                }
+        }
+
+        /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS: the pre-fix Apply, kept unchanged as the oracle ProofOracle compares Apply
+        /// against (per cell: SurfaceAt's component walk and thing scan, StepDepthAt's second depth read and thing scan, and a
+        /// List of every dug square). Not called by the game.</summary>
+        internal static void ApplyLegacy(Map map, CordWorld w)
         {
             if (!On || map == null) return;
             RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
@@ -155,5 +206,55 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
         }
+
+        /// <summary>Apply's rule for a cell with an intact deck on it (rare): exactly ApplyLegacy's reads.</summary>
+        private static void DeckedCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, out bool closed, out int step)
+        {
+            closed = eng.ClimbDepthAt(c) > 0 && HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c));
+            step = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+        }
+
+        /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS live oracle (jawa/static_call, arg = map index): Apply and ApplyLegacy each
+        /// write a fresh world of map arg; every cell must read the same (CordSig.CellSig and BlockAt). Also reports both
+        /// rules' wall time and the heap growth of Apply. Allocates two worlds: a probe, never called by the game.</summary>
+        public static string ProofOracle(string arg)
+        {
+            int mi = 0;
+            int.TryParse(arg, out mi);
+            if (Find.Maps == null || mi < 0 || mi >= Find.Maps.Count) return "no map " + arg;
+            Map map = Find.Maps[mi];
+            int W = map.Size.x, H = map.Size.z;
+            var legacy = new CordWorld(W, H);
+            var fast = new CordWorld(W, H);
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            ApplyLegacy(map, legacy);
+            long t1 = System.Diagnostics.Stopwatch.GetTimestamp();
+            fast.SetBand(new Cell(0, 0), 1);   // take the band grid now, so the heap delta below is Apply's own garbage
+            fast.Reset();
+            long heap0 = System.GC.GetTotalMemory(false);
+            int gc0 = System.GC.CollectionCount(0);
+            long t2 = System.Diagnostics.Stopwatch.GetTimestamp();
+            Apply(map, fast);
+            long t3 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long heap = System.GC.GetTotalMemory(false) - heap0;
+            int gcs = System.GC.CollectionCount(0) - gc0;
+            int diffs = 0, banded = 0, walls = 0;
+            string first = "";
+            for (int z = 0; z < H; z++)
+                for (int x = 0; x < W; x++)
+                {
+                    var cell = new Cell(x, z);
+                    if (fast.BandAt(cell) != 0) banded++;
+                    if (fast.BlockAt(cell) == BlockKind.Wall) walls++;
+                    if (CordSig.CellSig(legacy, cell) == CordSig.CellSig(fast, cell) && legacy.BlockAt(cell) == fast.BlockAt(cell)) continue;
+                    if (diffs++ == 0)
+                        first = " first=(" + x + "," + z + ") legacy band " + legacy.BandAt(cell) + " mask " + legacy.LinkMask(cell) + " block " + legacy.BlockAt(cell)
+                            + " fast band " + fast.BandAt(cell) + " mask " + fast.LinkMask(cell) + " block " + fast.BlockAt(cell);
+                }
+            double f = 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            return "map " + mi + " cells=" + (W * H) + " banded=" + banded + " walls=" + walls + " diffs=" + diffs
+                + " legacyMs=" + ((t1 - t0) * f).ToString("0.00") + " fastMs=" + ((t3 - t2) * f).ToString("0.00")
+                + " fastHeapBytes=" + heap + " fastGcs=" + gcs + first;
+        } // end ProofOracle
     }
 }

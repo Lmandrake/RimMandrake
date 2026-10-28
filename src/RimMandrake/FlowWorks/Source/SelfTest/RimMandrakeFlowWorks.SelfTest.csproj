@@ -205,6 +205,8 @@
     <Compile Include="..\RM_LevelRunWalk.cs" />
     <Compile Include="LevelRunWalkChecks.cs" />
     <Compile Include="HoseCacheChecks.cs" />
+    <Compile Include="HoseBandsApplyChecks.cs" />
+    <Compile Include="HoseTickAllocChecks.cs" />
     <Compile Include="PumpChecks.cs" />
     <Compile Include="VolumeChecks.cs" />
     <Compile Include="RewireChecks.cs" />

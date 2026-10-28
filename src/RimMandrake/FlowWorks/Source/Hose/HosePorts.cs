@@ -72,6 +72,7 @@ namespace RimMandrake.FlowWorks.Hose
         /// the order things happen to sit in a cell's list.</summary>
         private static void ById(List<Thing> things, List<HosePortCandidate> cands)
         {
+            if (things.Count < 2) return;   // HOSES_MAP1_DIAGNOSE_TICK_STALLS: nothing to order, nothing allocated
             var idx = new List<int>();
             for (int i = 0; i < things.Count; i++) idx.Add(i);
             idx.Sort((a, b) => things[a].thingIDNumber.CompareTo(things[b].thingIDNumber));
@@ -105,10 +106,14 @@ namespace RimMandrake.FlowWorks.Hose
             Map map = r.parent.Map;
             if (map == null) return null;
             HoseReelRect rect = r.Rect;
-            var things = new List<Thing>();
-            var cands = new List<HosePortCandidate>();
-            foreach (Cell pc in rect.Perimeter())
+            // HOSES_MAP1_DIAGNOSE_TICK_STALLS: reused scratch (main thread; nothing below re-enters RawFind), not three lists a call
+            List<Thing> things = rawThings; things.Clear();
+            List<HosePortCandidate> cands = rawCands; cands.Clear();
+            List<Cell> perim = rawPerim;
+            rect.PerimeterInto(perim);
+            for (int pi = 0; pi < perim.Count; pi++)
             {
+                Cell pc = perim[pi];
                 var c = new IntVec3(pc.X, 0, pc.Z);
                 if (!c.InBounds(map)) continue;
                 List<Thing> l = c.GetThingList(map);
@@ -203,8 +208,9 @@ namespace RimMandrake.FlowWorks.Hose
             kind = HosePortKind.None;
             if (map == null || !end.InBounds(map)) return null;
             var rect = new HoseReelRect(end.x, end.z, 1, 1);
-            var things = new List<Thing>();
-            var cands = new List<HosePortCandidate>();
+            // HOSES_MAP1_DIAGNOSE_TICK_STALLS: reused scratch (HoseEnds.Read calls this every few ticks per free end)
+            List<Thing> things = atThings; things.Clear();
+            List<HosePortCandidate> cands = atCands; cands.Clear();
             Thing on = null;
             foreach (Thing t in end.GetThingList(map))
                 if (t != exclude && Classify(t) != HosePortKind.None && (on == null || t.thingIDNumber < on.thingIDNumber)) on = t;
@@ -212,8 +218,11 @@ namespace RimMandrake.FlowWorks.Hose
             // PIPE_POLES phase 6 (design §P5): endpoint reach is by band; a port beside the end on another band (a pump on the
             // lip over a hose end on the pit floor) is not beside it at all
             int endBand = RM_HoseBands.BandAt(map, end);
-            foreach (Cell pc in rect.Perimeter())
+            List<Cell> perim = atPerim;
+            rect.PerimeterInto(perim);
+            for (int pi = 0; pi < perim.Count; pi++)
             {
+                Cell pc = perim[pi];
                 var c = new IntVec3(pc.X, 0, pc.Z);
                 if (!c.InBounds(map)) continue;
                 if (!HoseBandMath.EndReaches(endBand, RM_HoseBands.BandAt(map, c))) continue;
@@ -235,5 +244,10 @@ namespace RimMandrake.FlowWorks.Hose
             kind = cands[pick].Kind;
             return things[pick];
         }
+        // end RawFindAt
+
+        private static readonly List<Thing> rawThings = new List<Thing>(), atThings = new List<Thing>();
+        private static readonly List<HosePortCandidate> rawCands = new List<HosePortCandidate>(), atCands = new List<HosePortCandidate>();
+        private static readonly List<Cell> rawPerim = new List<Cell>(), atPerim = new List<Cell>();
     }
 }
