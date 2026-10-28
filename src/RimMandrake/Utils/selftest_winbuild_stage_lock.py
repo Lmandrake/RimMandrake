@@ -42,26 +42,32 @@ def main():
         WB.built_outputs = lambda tree, since: [os.path.join(tree, "Assemblies", "X.dll")]
         starts = {}
 
+        rsync_spans = []
+
         def rsync(rels, stage, cwd, excl=()):
-            starts[threading.get_ident()] = time.time()
+            starts[threading.get_ident()] = t0 = time.time()
             time.sleep(0.15)
+            with mu:
+                rsync_spans.append((t0, time.time()))
             return types.SimpleNamespace(returncode=0, stdout="")
 
         def dotnet(csproj_win, cwd, config, extra):
-            time.sleep(0.15)
+            time.sleep(0.05)
             with mu:
                 build_spans.append((os.path.basename(os.path.dirname(cwd)), starts[threading.get_ident()], time.time()))
             return 0
 
         def copy_back(outs, stage, record, staged_in=None):
             t0 = time.time()
-            time.sleep(0.15)
+            time.sleep(0.4)
             with mu:
                 copy_spans.append((t0, time.time()))
         WB.rsync_stage, WB.run_dotnet, WB._copy_back = rsync, dotnet, copy_back
         proj = lambda m: os.path.join(WB.ROOT, "src", "RimMandrake", m, "Source", "%s.csproj" % m)  # noqa: E731
 
         def go(m):
+            if m == "ModB":
+                time.sleep(0.3)       # its rsync lands inside ModA's first copy-back unless the lock orders them
             try:
                 rc, _ = WB.stage_build(proj(m))
                 if rc:
@@ -80,6 +86,8 @@ def main():
                     setattr(WB, k, v)
         check(not errs, "three stubbed builds ran", errs)
         check(len(copy_spans) == 3 and not overlaps(copy_spans), "copy-backs never overlap across stages", copy_spans)
+        mixed = [(a, b) for a in rsync_spans for b in copy_spans if a[0] < b[1] and b[0] < a[1]]
+        check(len(rsync_spans) == 3 and not mixed, "no stage rsync reads while another build copies back (r3)", mixed)
     print("\n%s" % ("FAILED %d" % len(FAILS) if FAILS else "all passed"))
     return FAILS
 
