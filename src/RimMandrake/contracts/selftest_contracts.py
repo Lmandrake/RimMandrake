@@ -164,6 +164,13 @@ def c10(CC):
               not CC.ledger_event_usable({"ts": v}))
     check("C10 ISO ts usable", CC.ledger_event_usable({"ts": "2026-10-27T00:00:00+02:00"}))
     check("C10 absent ts usable", CC.ledger_event_usable({}))
+    # review night: an offset ts is usable, so it must compare as the instant it names, not as text
+    check("C10 offset ts compares as UTC (+02:00 at 12:00 is before 11:00Z)",
+          not CC.ledger_ts({"ts": "2026-10-27T12:00:00+02:00"}) > "2026-10-27T11:00:00Z")
+    check("C10 offset ts after the cutoff in UTC counts",
+          CC.ledger_ts({"ts": "2026-10-27T05:00:00-07:00"}) > "2026-10-27T11:00:00Z")
+    check("C10 fractional ts is its whole second (same-second rule)",
+          CC.ledger_ts({"ts": "2026-10-27T12:00:01.500Z"}) == "2026-10-27T12:00:01Z")
     sys.path.insert(0, os.path.join(RM, "rimflow"))
     import dispatcher
     src = open(dispatcher.__file__, encoding="utf-8").read()

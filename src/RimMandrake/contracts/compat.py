@@ -44,8 +44,15 @@ def sessions_ok(data):
 def ledger_ts(ev):
     """THE comparison operand of dispatcher.seat_events_since: `ev.get("ts") or ""`. Shared, so the guard below
     validates exactly the value the consumer compares (review contracts #9): a falsey ts (null, 0, false, [], {})
-    becomes "" in both places and sorts before every cutoff; a truthy non-string ts is refused."""
-    return ev.get("ts") or ""
+    becomes "" in both places and sorts before every cutoff; a truthy non-string ts is refused.
+    A valid ISO instant is returned as UTC whole seconds "YYYY-MM-DDTHH:MM:SSZ" (review night): the guard accepts an
+    offset or a fraction, and as raw text "12:00:00+02:00" sorted after "11:00:00Z" and "12:00:01.5Z" before
+    "12:00:01Z". Anything else is returned unchanged for the guard to refuse."""
+    ts = ev.get("ts") or ""
+    if isinstance(ts, str) and iso_ts_ok(ts):
+        dt = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        return dt.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return ts
 
 
 _ISO_OFFSET = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)")
