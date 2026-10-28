@@ -745,6 +745,20 @@ def _presence(inp, rules):
         (f", last card {c:.0f} min ago" if c is not None else "")
 
 
+def _num(v, default):
+    try:
+        v = float(v)
+    except (TypeError, ValueError):
+        return default
+    return v if math.isfinite(v) else default
+
+
+def _count(v, default):
+    """A non-negative whole seat count from a hand-editable file, else `default`."""
+    n = _num(v, None)
+    return default if n is None else max(0, int(n))
+
+
 def _override_live(ov, now):
     if not isinstance(ov, dict) or not ov.get("ownerSaid"):
         return None
@@ -974,15 +988,24 @@ def decide(inp, state, rules, now):
                 per = split_total(total, seats, share)
         if isinstance(ov.get("seats"), dict) and ov["seats"]:
             # a seat key we do not place (e.g. "bench") is folded to its seat, never added beside it
-            per.update({str(k).upper(): int(v) for k, v in ov["seats"].items() if str(k).upper() in per})
+            per.update({str(k).upper(): _count(v, per.get(str(k).upper(), 0)) for k, v in ov["seats"].items()
+                        if str(k).upper() in per})
         elif ov.get("n") is not None:
-            per["BENCH"] = int(ov["n"])
+            per["BENCH"] = _count(ov["n"], per["BENCH"])
         label = f"{label}+OWNER"
         why.insert(0, f"his word: \"{ov['ownerSaid']}\"" + (f" until {ov['until']}" if ov.get("until") else ""))
         if ops_advice["disk"] == "BRAKE":
             why.append("his word stands over the disk brake")
     pre_cut_total = sum(per.values())
-    overage = _overage(inp, state, rules, now, base, per, ov, presence, why, blind=blind)
+    per_before = dict(per)
+    try:
+        overage = _overage(inp, state, rules, now, base, per, ov, presence, why, blind=blind)
+    except Exception as e:  # noqa: BLE001  accounting garbage must never stop the (owner's) N being published
+        per.clear()
+        per.update(per_before)
+        why.append(f"overage accounting failed ({type(e).__name__}: {e}): no charge, no payback this check")
+        overage = {"owed_h": 0.0, "post_reset_h": 0.0, "paying": False, "cut": 0, "accrued_h": 0.0, "credited_h": 0.0,
+                   "forgiven_h": 0.0, "deadline_h": None, "eta_h": None, "plan": ""}
     sess = inp.get("session_pct_used")
     if sess is not None and inp.get("source") != "MEASURED":
         # a stale or estimated 5-hour reading may predate the window's reset: it brakes nothing
@@ -1018,7 +1041,7 @@ def decide(inp, state, rules, now):
                  "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
                  "account": (None if blind else inp.get("account")) or state.get("account"),
                  "overage_h": overage["owed_h"], "overage_post_h": overage.get("post_reset_h", 0.0),
-                 "overage_t": now, "overage_base": base, "sitting": sit,
+                 "overage_t": max(now, _num(state.get("overage_t"), now)), "overage_base": base, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
                  "total": pre_cut_total
                  if not (sess is not None and sess > tk["session_brake_pct_used_gt"]) else total}
@@ -1176,6 +1199,12 @@ def main(argv=None):
         print(f"refused: mode must be one of {sorted(k for k in rules['token'] if k.isupper())}", file=sys.stderr)
         return 2
     now = time.time()
+    if a.n is not None and a.n < 0:
+        print("refused: --n must be 0 or more", file=sys.stderr)
+        return 2
+    if a.hours is not None and not (math.isfinite(a.hours) and a.hours >= 0):
+        print("refused: --hours must be a finite number of hours, 0 or more", file=sys.stderr)
+        return 2
     if a.hours:
         until = iso_local(now + a.hours * HOUR)
     else:

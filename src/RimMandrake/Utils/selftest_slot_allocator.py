@@ -844,5 +844,29 @@ check("S16: a STALE next-week reset forgives nothing; owed 4 + 1.75 kept as post
       r["overage"]["forgiven_h"] == 0 and abs(r["overage"]["owed_h"] - 5.75) < 0.01
       and abs(r["state"].get("overage_post_h", 0) - 5.75) < 0.01, (r["overage"], r["state"].get("overage_post_h")))
 
+# R1: accounting garbage must never stop the owner's N being published (a crash leaves seats on a stale allocation)
+_ov = {"ownerSaid": "burn", "until": SA.iso_local(NOW + H), "n": 16}
+try:
+    r = SA.decide(inp(override=_ov, helpers_running={"BENCH": 2, "FOUNDRY": 0}, helper_spans={"BENCH": [[0]], "FOUNDRY": []}),
+                  {"overage_t": NOW - 0.25 * H, "overage_h": "bad", "overage_base": {"BENCH": "x", "FOUNDRY": 0}}, R, NOW)
+    check("R1: bad overage state / malformed span still publishes his N 16", r["seats"]["BENCH"] == 16, r["seats"])
+except Exception as e:  # noqa: BLE001
+    check("R1: bad overage state / malformed span still publishes his N 16", False, repr(e))
+try:
+    r = SA.decide(inp(override={"ownerSaid": "burn", "n": "lots"}), {}, R, NOW)
+    check("R1b: a non-numeric override n does not crash decide", True)
+except Exception as e:  # noqa: BLE001
+    check("R1b: a non-numeric override n does not crash decide", False, repr(e))
+# R2: a clock that stepped back must not re-charge the same interval next check
+r = d({"overage_t": NOW + 0.25 * H, "overage_h": 1.0, "overage_base": {"BENCH": 1, "FOUNDRY": 0}},
+      helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=2.0)
+check("R2: overage_t never moves backward", r["state"]["overage_t"] >= NOW + 0.25 * H, r["state"]["overage_t"])
+# R3: set refuses a negative n and a non-finite or negative --hours
+_env = dict(os.environ, RM_STREAMS_DIR=tempfile.mkdtemp())
+for args in (["--n", "-1"], ["--n", "2", "--hours", "-3"], ["--n", "2", "--hours", "nan"], ["--n", "2", "--hours", "inf"]):
+    cp = subprocess.run([sys.executable, str(HERE / "slot_allocator.py"), "set", "--owner-said", "x", *args],
+                        capture_output=True, text=True, env=_env)
+    check(f"R3: set {' '.join(args)} is refused cleanly", cp.returncode == 2 and "Traceback" not in cp.stderr, (cp.returncode, cp.stderr[-200:]))
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)
