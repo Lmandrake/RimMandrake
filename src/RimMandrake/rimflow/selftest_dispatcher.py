@@ -2881,11 +2881,33 @@ def test_review_night_n1():
         check(not ss.get("ring") and not st["wakes"] and ss.get("idle_since") == t0,
               "N3 a tick killed inside decide gives back the ring it had decided (ring=%r wakes=%r)"
               % (ss.get("ring"), st["wakes"]))
+        # ... and killed before a decided WITHDRAW ran: the ring may still be in the inbox, so it stays pending
+        shutil.rmtree(os.path.join(TMP, "n3state"), ignore_errors=True)
+        D.tick(sch3, True, obs=obs(), now=t0, fx=dict(fx, lock=lambda: None))
+        D.tick(sch3, True, obs=obs(), now=t0 + sch3["stall_after_s"], fx=dict(fx, lock=lambda: None))
+        rid = (D.load_state(D.state_root(True))["seats"]["FOUNDRY"].get("ring") or {}).get("ring_id")
+        try:
+            D.tick(sch3, True, obs=obs(), now=t0 + sch3["stall_after_s"] + sch3["verify_s"], fx=fx)
+            check(False, "N3 probe: the tick killed before its withdraw raised")
+        except SystemExit:
+            pass
+        st = D.load_state(D.state_root(True))
+        check(rid and (st["seats"]["FOUNDRY"].get("ring") or {}).get("ring_id") == rid,
+              "N3 a tick killed before its withdraw ran keeps the ring pending (%r -> %r)"
+              % (rid, st["seats"]["FOUNDRY"].get("ring")))
     finally:
         if old is None:
             os.environ.pop("RM_DISPATCHER_STATE", None)
         else:
             os.environ["RM_DISPATCHER_STATE"] = old
+    # N4: the publish index.lock alarm goes through route_note like every other note (never raw onto a blind item)
+    sch5 = sched(roles=[{"name": "Arbiter", "enabled": False, "ledger_item": "BLIND_ITEM_X"}],
+                 alarm_item="BLIND_ITEM_X", token_notes_item="OPS_ITEM_X")
+    noted = []
+    D.execute([], sch5, fresh(), os.path.join(TMP, "n4"), True, t0,
+              {"lock": lambda: object.__new__(type("L", (), {"close": lambda self: None})),
+               "publish": lambda n: "fatal: index.lock exists", "note": lambda i, t: (noted.append(i), (True, ""))[1]})
+    check(noted == ["OPS_ITEM_X"], "N4 the publish index.lock alarm is diverted off a blind alarm_item (%r)" % noted)
 
 
 def test_golive_m6_weekday_slot_keys():

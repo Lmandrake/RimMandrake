@@ -1039,10 +1039,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     st["alarms"][key] = now
                     al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
                               why="ledger publish: " + out[:240])
-                    item = sch.get("alarm_item")
+                    # routed like every other note: never raw onto a token-blind item (night review N4)
+                    item, text = route_note(sch, sch.get("alarm_item"), "dispatcher alarm: " + al["why"])
                     if item and ledger_ok and time.time() < deadline:
                         try:
-                            ok, o2 = do_note(item, "dispatcher alarm: " + al["why"])
+                            ok, o2 = do_note(item, text)
                             al["ledger"] = "noted" if ok else "note failed: " + o2
                         except Exception as e:  # noqa: BLE001
                             al["ledger"] = "note failed: %s" % str(e)[:160]
@@ -1073,9 +1074,16 @@ def unrecover(st, a, now):
 
 
 def unreleased(st, acts, now):
-    """A tick that raised: give back every ring and recover decided but never released. -> their seats."""
+    """A tick that raised: give back every ring and recover decided but never released, and put back as pending every
+    ring whose decided withdraw never ran (it may still be in the inbox: the next tick withdraws it). -> what."""
     back = []
     for a in acts or []:
+        if a.get("do") == "withdraw" and a.get("pending") and "result" not in a:
+            ss = st["seats"].setdefault(a["seat"], {})
+            if not ss.get("ring"):
+                ss["ring"] = dict(a["pending"])
+                back.append("withdraw %s" % a["seat"])
+            continue
         if a.get("do") in ("ring", "recover") and not a.get("released") and "result" not in a:
             (unring if a["do"] == "ring" else unrecover)(st, a, now)
             back.append("%s %s" % (a["do"], a["seat"]))
@@ -1337,9 +1345,9 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             # reached systemd-run is in `runs` and keeps its mark). Journalled: a raised tick is never silent
             # (review dispatcher-full #5)
             back = unreserve(st)
-            rings = unreleased(st, acts, now)
+            rings = unreleased(st, acts, now)    # rings/recovers given back, withdraws kept pending
             journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised",
-                           "why": "tick raised %s: %s; launches given back: %s; rings/recovers given back: %s" % (
+                           "why": "tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
                                type(e).__name__, str(e)[:200], ", ".join(back) or "none", ", ".join(rings) or "none")})
             raise
         finally:     # the caps and pending rings are in st: save them even when a step raised
