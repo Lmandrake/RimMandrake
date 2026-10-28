@@ -139,7 +139,36 @@ def gate_checks():
         g("commit", "-qam", "logic")
         age = M.logic_age_days("m.py", td)
         check(age is not None and age < 0.1, "logic_age_days: a logic commit resets it to ~0 (%s)" % age)
+        # an unparseable file has no logic signature: two different broken versions must read as a change, not as equal
+        open(p, "w").write("def (:\n")
+        g("commit", "-qam", "broken one", env={"GIT_COMMITTER_DATE": old + " +0000", "GIT_AUTHOR_DATE": old + " +0000"})
+        open(p, "w").write("def (:\n  x\n")
+        g("commit", "-qam", "broken two")
+        age = M.logic_age_days("m.py", td)
+        check(age is not None and age < 0.1, "logic_age_days: an edit between two unparseable versions is a change (%s)" % age)
         check(M.logic_age_days("nope.py", td) is None, "logic_age_days: an untracked path -> None (UNMEASURED)")
+
+    # policy(): refuses values that would let the gate pass by accident; a path outside rimflow/ still loads
+    import json as _j
+    with tempfile.TemporaryDirectory() as td:
+        def pol_with(**over):
+            d = _j.load(open(M.POLICY_JSON))
+            for k, v in over.items():
+                d["params"]["mutation." + k]["value"] = v
+            q = os.path.join(td, "p.json")
+            _j.dump(d, open(q, "w"))
+            return q
+        check(M.policy(pol_with())["stable_days"] == 3, "policy: loads from a path outside rimflow/")
+        for label, over in (("NaN stable days", {"full_min_stable_days": float("nan")}),
+                            ("negative stable days", {"full_min_stable_days": -1}),
+                            ("non-bool review flag", {"full_requires_review_clean": "false"}),
+                            ("unknown evolving scope", {"evolving_scope": "sometimes"})):
+            try:
+                M.policy(pol_with(**over))
+                check(False, "policy: %s is refused" % label)
+            except Exception:
+                check(True, "policy: %s is refused" % label)
+        check(M.policy(pol_with(evolving_scope="none"))["evolving"] == "none", "policy: evolving_scope is read")
 
     # changed-functions scope
     src = SRC.split("\n")
@@ -182,6 +211,9 @@ def gate_checks():
         check(rc == 0, "cmd_launch: nightly/--changed with every due target blocked launches nothing, exit 0")
         ns.changed, ns.targets, ns.scope = False, "dispatcher", "changed-functions"
         check(M.cmd_launch(ns) == 2, "cmd_launch: --scope changed-functions without --since is refused")
+        ns.since = "abc"
+        M.policy = lambda path=None: {"stable_days": 3.0, "need_clean": True, "bar": 0.85, "evolving": "none"}
+        check(M.cmd_launch(ns) == 2, "cmd_launch: evolving_scope none refuses a scoped run")
     finally:
         M.sh, M.gate_full, M.mutant_lines = real
         import importlib

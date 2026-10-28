@@ -267,16 +267,25 @@ POLICY_JSON = os.path.join(REPO, "src", "RimMandrake", "rimflow", "testing_polic
 
 
 def policy(path=None):
-    """{stable_days, need_clean, bar} from testing_policy.json. Raises on a missing/malformed file (fail closed)."""
-    sys.path.insert(0, os.path.dirname(path or POLICY_JSON))
+    """{stable_days, need_clean, bar, evolving} from testing_policy.json. Raises on a missing/malformed file or a value
+    that could let the gate pass by accident (NaN, negative, non-bool) -- fail closed."""
+    sys.path.insert(0, os.path.dirname(POLICY_JSON))
     try:
         import testing_policy as TP
     finally:
         sys.path.pop(0)
     pol = TP.load_policy(path or POLICY_JSON)
-    return {"stable_days": float(TP.param("mutation.full_min_stable_days", pol)),
-            "need_clean": bool(TP.param("mutation.full_requires_review_clean", pol)),
-            "bar": float(TP.param("mutation.score_bar", pol))}
+    days = float(TP.param("mutation.full_min_stable_days", pol))
+    need = TP.param("mutation.full_requires_review_clean", pol)
+    evolving = TP.param("mutation.evolving_scope", pol)
+    if not (days == days and 0 <= days < float("inf")):
+        raise ValueError("mutation.full_min_stable_days must be a finite number >= 0, got %r" % days)
+    if not isinstance(need, bool):
+        raise ValueError("mutation.full_requires_review_clean must be true/false, got %r" % (need,))
+    if evolving not in ("none", "changed_functions"):
+        raise ValueError("mutation.evolving_scope must be none|changed_functions, got %r" % (evolving,))
+    return {"stable_days": days, "need_clean": need, "bar": float(TP.param("mutation.score_bar", pol)),
+            "evolving": evolving}
 
 
 def logic_sig(source):
@@ -312,7 +321,8 @@ def logic_age_days(relpath, repo, now=None, max_commits=40):
     if not commits:
         return None
     for h, ct in commits:
-        if logic_sig(_git_show(repo, "%s:%s" % (h, relpath))) != logic_sig(_git_show(repo, "%s^:%s" % (h, relpath))):
+        new, old = (logic_sig(_git_show(repo, "%s:%s" % (h, relpath))), logic_sig(_git_show(repo, "%s^:%s" % (h, relpath))))
+        if new is None or old is None or new != old:     # an unparseable side has no signature: never "equal"
             return (now - int(ct)) / 86400.0
     return (now - int(commits[-1][1])) / 86400.0
 
@@ -639,6 +649,9 @@ def cmd_launch(a):
     elif not since:
         print("--scope changed-functions needs --since SHA")
         return 2
+    elif policy()["evolving"] == "none":
+        print("testing_policy.json mutation.evolving_scope is none: evolving code gets no mutation run")
+        return 2
     base_s = json.loads(a.baseline_s) if a.baseline_s else {}
     # shard each target in proportion to its cost (mutants x baseline seconds)
     weights = {n: mutant_lines(os.path.join(BASE_CLONE, TARGETS[n][0])) for n in names}
@@ -677,9 +690,12 @@ def cmd_launch(a):
     meta = {"run": run, "sha": sha, "targets": names, "workers": len(bins), "slice_cpu_quota": a.slice_quota,
             "unit_cpu_quota": a.unit_quota, "gate_phases": a.gate_phases, "started": time.time(), "units": [],
             "scope": scope, "since": since if scope != "full" else None, "override": override}
-    if override:
+    if override:                    # durable before any unit starts: a failed write aborts the launch, never a silent override
+        os.makedirs(results_dir(), exist_ok=True)
         with open(os.path.join(results_dir(), "overrides.jsonl"), "a") as f:
             f.write(json.dumps(dict(override, run=run, sha=sha, targets=names)) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
     for i, b in enumerate(bins):
         jf = os.path.join(root, "worker-%d.json" % i)
         json.dump([by_dir[x] for x in b], open(jf, "w"), indent=1)

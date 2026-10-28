@@ -137,6 +137,8 @@ it captured.** Check currency by fingerprint, never timestamp; the frozen `offic
 dump is the design target and only the owner re-freezes it. The silent-failure traps
 (patches, deploys, defName guessing) are CLAUDE.md's "Facts you cannot guess".
 
+Which kind of testing to run, and when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and `src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only use appropriate kinds of testing when/where it will help us.").
+
 ## How we debug — owner, 2026-10-01
 
 `design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script

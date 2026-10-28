@@ -232,6 +232,7 @@ after the gate passes. Use a scoped run (`--scope changed-functions --since SHA`
 - `--changed` and `nightly` skip blocked targets, and each target becomes due once it is stable.
 - `--override-why "<reason>"` runs it anyway. The reason is recorded in `run.json` and `overrides.jsonl`.
 - The gate is checked at launch only, so a run already in flight is untouched.
+- The gate fails closed: no git history, an unreadable review status, or a malformed policy value (NaN, negative days, non-bool flag) blocks or aborts; it never allows. `mutation.evolving_scope` = `none` refuses scoped runs too.
 
 **Scoped runs.** `--scope changed-functions --since SHA` keeps only the mutants inside the functions that the
 diff touched. The collected summary is headed SCOPED, and it never marks the target complete in
