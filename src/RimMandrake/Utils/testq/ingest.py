@@ -24,6 +24,7 @@ pull --rebase that fails is aborted and stops that publication with the commit k
 any later ingest publishes RUNNER lines left uncommitted or commits left unpushed, even with nothing new to ingest.
 """
 import fcntl
+import hashlib
 import json
 import os
 import re
@@ -74,18 +75,46 @@ def recorded_run(item, attempt):
                 return None
     except OSError:
         return None
-    code = ("import os, sys; sys.path.insert(0, %r); import model\n"
+    # the attempt must stand whole in the evidence: JOB.a1 is not JOB.a10
+    pat = re.escape(attempt) + r"(?![\w.])"
+    code = ("import os, re, sys; sys.path.insert(0, %r); import model\n"
             "model.EVENTS = os.environ.get('RIMFLOW_LEDGER') or model.EVENTS\n"
             "it = model.replay(model.read()).items.get(%r)\n"
-            "print(next((r.name for r in (it.runs if it else []) if %r in (r.evidence or '')), ''))"
-            % (os.path.dirname(CLI), item, attempt))
+            "print(next((r.name for r in (it.runs if it else []) if re.search(%r, r.evidence or '')), ''))"
+            % (os.path.dirname(CLI), item, pat))
     r = subprocess.run([sys.executable, "-c", code], env=dict(os.environ, CLAUDE_PROJECT_DIR=REPO),
                        capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:     # a failed lookup is not "no run": verifying anyway would record the attempt twice
+        raise RuntimeError("replay for %s failed (exit %d): %s" % (item, r.returncode, (r.stderr or "").strip()[-160:]))
     return r.stdout.strip() or None
 
 
-def finding_name(mod, row, job_id):
-    base = re.sub(r"[^A-Z0-9]+", "_", ("%s_%s" % (mod, row)).upper()).strip("_")[:44]
+def filed(name, run):
+    """True when the shard already holds finding NAME from RUN (an ingest that died before marking its record). Only
+    the same run counts: a name is not unique, and another item's finding must never pass for this one's."""
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            for line in f:
+                if '"%s"' % name in line:
+                    try:
+                        e = json.loads(line)
+                    except ValueError:
+                        continue
+                    if e.get("event") == "finding" and e.get("name") == name and e.get("from") == run:
+                        return True
+    except OSError:
+        pass
+    return False
+
+
+def finding_name(mod, row, job_id, salt=False):
+    """MOD_ROW_FAILS_JOBHEX6. When folding the row to A-Z0-9_ loses anything (a cut at 44, `foo-bar` vs `foo_bar`),
+    6 hex of the raw mod/row keep two rows of one job from sharing a name (one would pass for the other's finding)."""
+    raw = "%s_%s" % (mod, row)
+    full = re.sub(r"[^A-Z0-9]+", "_", raw.upper()).strip("_")
+    base = full[:44]
+    if salt or base != raw.upper():
+        base = "%s_%s" % (base[:37].rstrip("_"), hashlib.sha1(raw.encode("utf-8")).hexdigest()[:6].upper())
     return "%s_FAILS_%s" % (base, job_id[-6:].upper())
 
 
@@ -111,16 +140,12 @@ def lane_finding(job, res):
         if rc != 0 or not m:
             return "lane run not recorded: " + out[-160:]
         run = m.group(1)
-    try:
-        with open(shard_path(), encoding="utf-8") as f:
-            if '"%s"' % name in f.read():
-                return name
-    except OSError:
-        pass
+    if filed(name, run):
+        return name
     rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "high",
                       "--why", "SteveDesktop lane paused: %s (testq %s: %s); it admits nothing until "
                       "`testq.py resume --reason`" % (T.PAUSE_ON[key], att, (res.get("note") or "")[:160]))
-    return name if rc == 0 else "%s: %s" % (name, out[-160:])
+    return name if rc == 0 else "lane finding not recorded: %s: %s" % (name, out[-160:])
 
 
 def note_once(item, needle, text):
@@ -143,7 +168,7 @@ def ingest_one(rec):
     job, res = rec["job"], rec["result"]
     item, att = job.get("item"), res["attempt"]
     lane = lane_finding(job, res)
-    if lane and lane.startswith("lane run not recorded"):  # e.g. the host item not yet on origin: retried like a verify
+    if lane and lane.startswith("lane "):  # run or finding not recorded (host item not on origin yet): retried
         return {"error": lane}
     if not item and not job.get("row_items") and not os.environ.get("TESTQ_HOST_ITEM"):
         return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
@@ -191,12 +216,15 @@ def ingest_done(job, res, item):
         groups[item] = []                      # unchanged: a job for an item with no rows still gets its verdict
     if not groups:
         return {"skipped": "no row maps to an item"}
-    out = {}
-    for it, rows in sorted(groups.items()):
+    out, errs = {}, []
+    for it, rows in sorted(groups.items()):     # every group is tried: one item not on origin yet blocks no other
         r = ingest_group(job, res, it, dict(res, rows=rows, counts=T.S.count_verdicts(rows)), att)
         if "error" in r:
-            return r
-        out[it] = r
+            errs.append("%s: %s" % (it, r["error"]) if len(groups) > 1 else r["error"])
+        else:
+            out[it] = r
+    if errs:                                    # retried; the groups recorded here are reused (recorded_run)
+        return dict({"error": " | ".join(errs)}, **({"groups": out} if out else {}))
     if len(out) == 1:
         return next(iter(out.values()))
     return {"groups": out, "result": ",".join("%s=%s" % (i, o["result"]) for i, o in out.items())}
@@ -215,23 +243,21 @@ def ingest_group(job, res, item, gres, att):
             return {"error": out[-300:]}
         run = m.group(1)
     found = []
-    try:
-        with open(shard_path(), encoding="utf-8") as f:
-            shard = f.read()
-    except OSError:
-        shard = ""
-    for row in gres.get("rows") or []:
-        if row["verdict"] != "FAIL":
-            continue
-        name = finding_name(job["mod"], row["row"], job["id"])
-        if '"%s"' % name in shard:             # filed by an ingest that died before marking the record
+    fails = [row for row in gres.get("rows") or [] if row["verdict"] == "FAIL"]
+    plain = [finding_name(job["mod"], row["row"], job["id"]) for row in fails]
+    for row, name in zip(fails, plain):
+        if plain.count(name) > 1:              # rows only case apart (foo / FOO): each gets its own hash
+            name = finding_name(job["mod"], row["row"], job["id"], salt=True)
+        if filed(name, run):                   # filed by an ingest that died before marking the record
             found.append(name)
             continue
         rc, out = rimflow("finding", "--from", run, "--name", name, "--type", "UNTRIAGED", "--severity", "medium",
                           "--why", "%s/%s FAIL on %s: %s" % (row.get("chain"), row["row"],
                                                            "SteveDesktop" if host == "stevedesktop" else host,
                                                            (row.get("detail") or "")[:160]))
-        found.append(name if rc == 0 else "%s: %s" % (name, out[-120:]))
+        if rc != 0:     # retried: the run is reused, findings already filed are found in the shard
+            return {"error": "finding %s not recorded: %s" % (name, out[-120:])}
+        found.append(name)
     return {"run": run, "result": verdict(gres), "findings": found}
 
 
@@ -369,6 +395,23 @@ def unpublished(shard_rel=SHARD_REL):
         not in ("", "0")
 
 
+def rebase_left():
+    """A publish killed mid-rebase leaves the shard in the rebase's tree; lines ingested into it would be thrown away by
+    the `rebase --abort` publish runs, with their records already marked. So leftovers are cleared BEFORE ingesting,
+    and while a rebase is still there nothing is ingested (-> True)."""
+    def git(*a):
+        return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
+    pre = clear_leftovers(git)
+    if pre:
+        T.log("ingest pre-clear: %s" % pre)
+    gd = git("rev-parse", "--git-dir").stdout.strip()
+    gd = gd if os.path.isabs(gd) else os.path.join(REPO, gd)
+    if any(os.path.isdir(os.path.join(gd, d)) for d in ("rebase-merge", "rebase-apply")):
+        T.log("ingest skipped: a rebase is still in progress in %s" % REPO)
+        return True
+    return False
+
+
 def main():
     T.ensure_dirs()
     with open(T.q("ingest.lock"), "w") as lk:
@@ -376,6 +419,9 @@ def main():
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             print("ingest already running")
+            return 0
+        push = os.environ.get("TESTQ_INGEST_PUSH", "1") != "0"
+        if push and rebase_left():
             return 0
         n = 0
         for path in sorted(os.listdir(T.q("done"))):
@@ -401,7 +447,7 @@ def main():
             T.S.dump(rec, T.q("done", path))
             T.log("ingest %s -> %s" % (rec["job"]["id"], json.dumps(out)[:300]))
             n += 1
-        if os.environ.get("TESTQ_INGEST_PUSH", "1") != "0" and (n or unpublished()):
+        if push and (n or unpublished()):
             T.log("ingest git: %s" % publish(n))
     return 0
 

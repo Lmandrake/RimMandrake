@@ -236,8 +236,112 @@ def crash_checks():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def review_r1_checks():
+    """Full-file review r1 (consult-20261028-003834-4019862) r2 (consult-20261028-005025-4040039), r3 (consult-20261028-005356-4044166): a finding rimflow refused is retried, never marked done
+    without it (row and lane finding); one item not on origin yet blocks no other item's verdict; a replay that fails
+    is not "no run recorded" (that verified the attempt twice); two rows of one job never share a finding name; a rebase
+    left by a killed publish is cleared BEFORE ingesting (its abort threw away the lines ingested into it)."""
+    import ingest as I
+    tmp = tempfile.mkdtemp(prefix="rf_ingest_r1_")
+    saved = (I.rimflow, I.recorded_run, I.shard_path, I.CLI, I.clear_leftovers, I.ingest_one, I.T.QHOME, I.publish,
+             I.unpublished, I.REPO, os.environ.get("TESTQ_INGEST_PUSH"))
+    calls = []
+
+    def fake_rimflow(*a):
+        calls.append(a)
+        if a[0] == "verify":
+            return (1, "refused: no item") if a[1].startswith("A_") else (0, "%s/run-1@x recorded" % a[1])
+        return (1, "finding refused") if a[0] == "finding" else (0, "ok")
+    try:
+        I.rimflow, I.recorded_run = fake_rimflow, lambda item, att: None
+        I.shard_path = lambda: os.path.join(tmp, "none.jsonl")
+        rec = done_rec(ITEM)
+        try:
+            r = I.ingest_group(rec["job"], rec["result"], ITEM, rec["result"], rec["result"]["attempt"])
+        except Exception as ex:     # noqa: BLE001
+            r = {"raised": repr(ex)}
+        check("error" in r, "a FAIL row's finding that rimflow refuses is an error (retried), not done: %s" % r)
+        can = done_rec(None, "INVALID", "CANARY")
+        try:
+            r = I.ingest_one(can)
+        except Exception as ex:     # noqa: BLE001
+            r = {"raised": repr(ex)}
+        check("error" in r, "a lane finding that rimflow refuses is an error (retried), not done: %s" % r)
+        del calls[:]
+        many = done_rec(None, rows=(("m1", "PASS"), ("m2", "PASS")), row_items={"m1": "A_FIRST", "m2": "B_SECOND"})
+        try:
+            r = I.ingest_one(many)
+        except Exception as ex:     # noqa: BLE001
+            r = {"raised": repr(ex)}
+        vs = [c[1] for c in calls if c[0] == "verify"]
+        check("error" in r and vs == ["A_FIRST", "B_SECOND"],
+              "an item not on origin yet does not stop the next item's verify: verifies %s, %s" % (vs, r))
+        I.rimflow, I.recorded_run = saved[0], saved[1]
+        fake = os.path.join(tmp, "cli")
+        os.makedirs(fake)
+        open(os.path.join(fake, "model.py"), "w").write("raise SystemExit('replay broke')\n")
+        open(os.path.join(tmp, "shard.jsonl"), "w").write('{"evidence": "ATT.a1"}\n')
+        I.CLI, I.shard_path = os.path.join(fake, "cli.py"), lambda: os.path.join(tmp, "shard.jsonl")
+        try:
+            got = "returned %r" % (I.recorded_run("SOME_ITEM", "ATT.a1"),)
+        except Exception as ex:     # noqa: BLE001
+            got = "raised " + type(ex).__name__
+        check(got.startswith("raised"), "a replay that fails is not 'no run recorded': %s" % got)
+        open(os.path.join(fake, "model.py"), "w").write(
+            "import types\nEVENTS = None\ndef read():\n    return []\n"
+            "def replay(_):\n    run = types.SimpleNamespace(name='R10', evidence='h:/x.html (testq ATT.a10)')\n"
+            "    return types.SimpleNamespace(items={'SOME_ITEM': types.SimpleNamespace(runs=[run])})\n")
+        open(os.path.join(tmp, "shard.jsonl"), "w").write('{"evidence": "h:/x.html (testq ATT.a10)"}\n')
+        got = (I.recorded_run("SOME_ITEM", "ATT.a1"), I.recorded_run("SOME_ITEM", "ATT.a10"))
+        check(got == (None, "R10"), "attempt a1 does not reuse attempt a10's run: %s" % (got,))
+        I.CLI, I.shard_path = saved[3], saved[2]
+        I.rimflow = lambda *a: calls.append(a) or (0, "B_CASE/run-1@x recorded" if a[0] == "verify" else "ok")
+        I.recorded_run, I.shard_path = (lambda item, att: None), (lambda: os.path.join(tmp, "none.jsonl"))
+        del calls[:]
+        cr = done_rec("B_CASE", rows=(("foo", "FAIL"), ("FOO", "FAIL")))
+        I.ingest_group(cr["job"], cr["result"], "B_CASE", cr["result"], cr["result"]["attempt"])
+        fn = [c[c.index("--name") + 1] for c in calls if c[0] == "finding"]
+        check(len(fn) == 2 and len(set(fn)) == 2, "rows only case apart get two findings, two names: %s" % fn)
+        I.rimflow, I.recorded_run, I.shard_path = saved[0], saved[1], saved[2]
+        names = {I.finding_name("Mock", r, "job_abcdef") for r in ("foo-bar", "foo_bar", "x" * 50 + "1", "x" * 50 + "2")}
+        check(len(names) == 4, "two rows of one job never share a finding name: %s" % sorted(names))
+        check(I.finding_name("Mock", "r2", "job_abcdef") == "MOCK_R2_FAILS_ABCDEF", "a plain row keeps its old name")
+        names = {I.finding_name("Mock", "x" * 50 + r, "job_abcdef") for r in ("270", "554")}
+        check(len(names) == 2, "rows whose 4-hex suffixes collide get distinct names: %s" % sorted(names))
+        open(os.path.join(tmp, "own.jsonl"), "w").write(json.dumps(
+            {"event": "finding", "name": "MOCK_R2_FAILS_ABCDEF", "from": "OTHER_ITEM/run-1@x"}) + "\n")
+        I.shard_path = lambda: os.path.join(tmp, "own.jsonl")
+        check(not I.filed("MOCK_R2_FAILS_ABCDEF", "SOME_ITEM/run-1@x") and
+              I.filed("MOCK_R2_FAILS_ABCDEF", "OTHER_ITEM/run-1@x"),
+              "a finding of the same name from another item's run does not pass for this run's")
+        I.shard_path = saved[2]
+        order = []
+        os.makedirs(os.path.join(tmp, "q", "done"))
+        S.dump(done_rec(ITEM), os.path.join(tmp, "q", "done", "x.json"))
+        repo = os.path.join(tmp, "repo")
+        subprocess.run(["git", "init", "-q", repo], check=True, timeout=60)
+        os.makedirs(os.path.join(repo, ".git", "rebase-merge"))
+        I.REPO, I.T.QHOME = repo, os.path.join(tmp, "q")
+        I.clear_leftovers = lambda git, *a, **k: order.append("clear") or "publish stopped: leftover rebase stuck"
+        I.ingest_one = lambda rec: order.append("ingest") or {"skipped": "t"}
+        I.publish, I.unpublished = (lambda n, *a, **k: order.append("publish") or "pushed"), (lambda *a: False)
+        os.environ["TESTQ_INGEST_PUSH"] = "1"
+        I.main()
+        check(order[:1] == ["clear"] and "ingest" not in order,
+              "a leftover rebase is cleared before ingesting, and while it stays nothing is ingested: %s" % order)
+    finally:
+        (I.rimflow, I.recorded_run, I.shard_path, I.CLI, I.clear_leftovers, I.ingest_one, I.T.QHOME, I.publish,
+         I.unpublished, I.REPO) = saved[:10]
+        if saved[10] is None:
+            os.environ.pop("TESTQ_INGEST_PUSH", None)
+        else:
+            os.environ["TESTQ_INGEST_PUSH"] = saved[10]
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     crash_checks()
+    review_r1_checks()
     tmp = tempfile.mkdtemp(prefix="rf_ingest_")
     try:
         queue, items = os.path.join(tmp, "queue"), os.path.join(tmp, "items")
