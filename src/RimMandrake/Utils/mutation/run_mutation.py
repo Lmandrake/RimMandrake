@@ -63,7 +63,7 @@ TARGETS = {
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py"]),
-    "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py"]),
+    "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
     "role_launch": (R + "role_launch.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
                                            R + "selftest_account_pick.py", R + "selftest_role_launch_props.py", R + "selftest_role_launch.py"]),
