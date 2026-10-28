@@ -61,6 +61,9 @@ TARGETS = {
     "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py"]),
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py"]),
+    # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
+    "role_launch": (R + "role_launch.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
+                                           R + "selftest_account_pick.py", R + "selftest_role_launch_props.py"]),
 }
 # Checks that flake for reasons outside the mutated module; a run failing ONLY these counts as a pass for that
 # target (otherwise every flake reads as a killed mutant). Each entry names the item that tracks the flake.
@@ -68,10 +71,12 @@ FLAKY = {
     # role_launch.scan_marked goes blind on any young same-uid non-dumpable process (a fresh tailscale-ssh session,
     # a transient sh); the check exercises role_launch, not dispatcher.py. Item SCAN_MARKED_HARDEN_YOUNG_SIBLING_BLINDS.
     "dispatcher": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
+    # the same flake, tolerated for role_launch too: a mutant that breaks ONLY those two B1 checks reads as survived
+    "role_launch": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
 }
 #: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
 BASELINE_S = {"close_evidence": 16.0, "arbiter_tiers": 3.0, "isolated_evidence": 2.0, "dispatcher": 3.4,
-              "v3_vs_v2": 3.5, "delegated_digest": 2.2}
+              "v3_vs_v2": 3.5, "delegated_digest": 2.2, "role_launch": 5.0}
 STATUS = {"ok_killed": "killed", "bad_survived": "survived", "bad_timeout": "timeout",
           "ok_suspicious": "suspicious", "skipped": "skipped", "untested": "untested"}
 
