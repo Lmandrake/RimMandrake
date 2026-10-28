@@ -1,0 +1,59 @@
+[
+ {
+  "id": "arteval_RM_Huldu_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Huldu_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view, with the accepted south view as the guide for body width): same anatomy, same proportions, same warm brown fur, same cream belly colour, same markings, same size on the canvas, seen from behind. A creature sprite for RimWorld: the huldu, a long, sleek water-hunter built like an otter, shown in rear view, seen from behind, so the back, the haunches and the horizontal fluke face the viewer and the eyes and face are hidden. Its dense, oiled, luxurious coat is warm brown fur covering the whole back, shoulders and haunches, with a deep shifting sheen as if just shed of water, exactly as in the accepted east sprite; a touch of the cream belly colour shows only at the flanks. The body is bulky and full: the shoulders and hips are as broad as in the upright south view, a rounded back and full haunches that fill the same width on the canvas, at the same overall height as the east sprite. Two short brown gripping arms with clever hands sit high on the chest and show at the sides of the shoulders. Below the haunches, the broad horizontal brown whale-like fluke is spread flat at the base as the tail. It hunts underwater, drives prey against rock with sweeps of the fluke, and can drag itself onto land on its arms and hop off the fluke. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, OWNER_NOTE_IGNORED, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1631",
+  "drawsize": 0.8,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Murrin_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Murrin_ns",
+  "prompt": "Draw the SAME individual fish as the attached reference image, keeping its palette, colours, ring-within-ring body markings, comb-fin and barbels, size on the canvas and painterly style, with ONE revision to the body: the keel. A creature sprite for RimWorld: the murrin, a hand-length pool fish with one tall dorsal comb-fin. The body is deep and laterally compressed, the depth from back to belly about 60% of the body length, with a high arched back beneath the comb-fin. The belly falls away into a thin, sharp, blade-like keel, a distinct projecting ridge with a darker edge along the whole underside. In the east side view the lower outline ends in this blade-like keel as a sharp lower edge, not a rounded cream belly. In the front view, eyes toward the viewer, the deep body narrows downward to a thin blade-edged keel beneath the barbels. In the rear view, seen from behind, the keel shows as a narrow sharp ridge down the underside. The single tall comb-like dorsal fin runs along the back and rises high, its edge divided into separate comb teeth rather than one smooth sail. The ring-within-ring markings are painted on the body skin as concentric bands, identical across every view. The whole fish is one clean silhouette on transparent alpha with crisp painted edges, and the space around the comb-fin and body is empty transparent. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water fill, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: ALPHA_HALO, DEPARTURE_MISSING, ALPHA_HALO, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1631",
+  "drawsize": 0.7,
+  "module": "swimmer"
+ },
+ {
+  "id": "arteval_RM_Skarrin_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Skarrin_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same silver colour and sheen, same body bulk, same fin count and fin length, seen from behind. A creature sprite for RimWorld: the skarrin, a forearm-long, knife-slender silver eel with a row of thin, sharp fins along its body that flex out stiff into cutting blades. The view is the rear view, seen from behind at eye level, as a counterpart to the south front view: the tapering tail curves toward the viewer at the bottom of the canvas, and the silver body rises from it, receding upward and away in foreshortening, with the head end hidden behind the far curve of the body, so the back and tail are what the viewer sees. The long, sharp fin blades flex out stiff to both sides of the body, swept and splayed at the same angles as in the south view, as long as in the side view. The eel is drawn tall and large, its silver body and swept fins filling about 200 px of the 256 px canvas height, from low in the canvas to near the top, the same scale and canvas footprint as the south view. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_TOPDOWN, OWNER_NOTE_IGNORED",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1631",
+  "drawsize": 0.85,
+  "module": "swimmer"
+ }
+]
