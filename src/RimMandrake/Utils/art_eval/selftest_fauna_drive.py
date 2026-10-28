@@ -79,6 +79,13 @@ def main():
     check("re-rendered (different) sha refused", not FD.render_is_judged(j, "south", "b" * 64))
     check("record without that facing's sha refused", not FD.render_is_judged(j, "east", "a" * 64))
     check("record with no shas refused", not FD.render_is_judged(None, "south", "a" * 64))
+    # ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET: a flyer's regen row must name its body texPath or fill_queue refuses it
+    tp = lambda d: {"RM_Fly": "Things/Pawn/Animal/Fly/Fly"}.get(d)
+    check("row with no target gets the body texPath", FD.bind_texpath({"target_def": "RM_Fly"}, tp).get("target_texpath") == "Things/Pawn/Animal/Fly/Fly")
+    check("row's own texPath is kept", FD.bind_texpath({"target_def": "RM_Fly", "target_texpath": "X/Y"}, tp)["target_texpath"] == "X/Y")
+    check("row with install_to is left alone", "target_texpath" not in FD.bind_texpath({"target_def": "RM_Fly", "install_to": "a.png"}, tp))
+    check("unresolvable def stays unbound (fill_queue refuses loudly)", "target_texpath" not in FD.bind_texpath({"target_def": "RM_None"}, tp))
+    check("real flyer resolves its adult body", FD.bind_texpath({"target_def": "RM_FireHawk"}).get("target_texpath", "").endswith("/FireHawk/FireHawk"))
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

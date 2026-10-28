@@ -728,14 +728,54 @@ def main():
         class Done:
             def __init__(self, rc, err=""):
                 self.returncode, self.stdout, self.stderr = rc, "", err
-        check("filing ok on exit 0", RN.file_regen_jobs(Path("x.json"), runner=lambda *a, **k: Done(0))["ok"] is True)
-        bad = RN.file_regen_jobs(Path("x.json"), runner=lambda *a, **k: Done(1, "REFUSED duplicate: arteval_x_r1"))
+        x0 = Path(tempfile.mkdtemp()) / "x.json"
+        x0.write_text("[]")
+        check("filing ok on exit 0", RN.file_regen_jobs(x0, runner=lambda *a, **k: Done(0))["ok"] is True)
+        check("unreadable rows -> filing UNMEASURED, not ok", RN.file_regen_jobs(Path("/nonexistent/x.json"), runner=lambda *a, **k: Done(0))["ok"] is False)
+        bad = RN.file_regen_jobs(x0, runner=lambda *a, **k: Done(1, "REFUSED duplicate: arteval_x_r1"))
         check("filing failure is reported with the exit code and output", bad["ok"] is False and bad["rc"] == 1 and "duplicate" in bad["tail"], bad)
 
         def boom(*a, **k):
             import subprocess as sp
             raise sp.TimeoutExpired("fill_queue", 120)
         check("filing timeout is reported", RN.file_regen_jobs(Path("x.json"), runner=boom)["ok"] is False)
+
+        # --- a REGEN row names the texPath it redraws (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET): fill_queue infers one
+        # only when the def draws exactly one texPath, so flyer RM_FireHawk (body + _Flying_ frames) was refused
+        # REFUSED_UNCONFIRMED, and fill_queue's exit 1 also covered the rows it DID file
+        fh = dict(clean, subject="RM_FireHawk", candidate="r1", round=2, module="flyer")
+        row = RN.regen_jobs([fh], "fauna_t")[0]
+        check("flyer regen row names its adult body texPath (repo defs)",
+              row.get("target_texpath") == "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk", row.get("target_texpath"))
+        row = RN.regen_jobs([fh], "fauna_t", texpath_of=lambda d: "Mod/X/Body")[0]
+        check("regen row texPath comes from the resolver", row.get("target_texpath") == "Mod/X/Body", row.get("target_texpath"))
+        row = RN.regen_jobs([dict(fh, target_texpath="Mod/Y/Rec")], "fauna_t", texpath_of=lambda d: "Mod/X/Body")[0]
+        check("the judged record's texPath wins over the resolver", row.get("target_texpath") == "Mod/Y/Rec", row)
+        row = RN.regen_jobs([fh], "fauna_t", texpath_of=lambda d: None)[0]
+        check("an unresolvable texPath leaves the row unbound (no guessed path)", "target_texpath" not in row, row)
+        with tempfile.TemporaryDirectory() as tq:
+            tq = Path(tq)
+            for d in ("pending", "active", "done", "failed"):
+                (tq / d).mkdir()
+            for f, d in (("south", "pending"), ("east", "done"), ("north", "pending")):
+                (tq / d / f"arteval_RM_A_r2_{f}.json").write_text("{}")
+            (tq / "done/arteval_RM_C.json").write_text("{}")
+            jf = tq / "rows.json"
+            jf.write_text(json.dumps([{"id": "arteval_RM_A_r2", "target_def": "RM_A", "facings": ["south", "east", "north"]},
+                                      {"id": "arteval_RM_B_r2", "target_def": "RM_B", "facings": ["south", "east", "north"]},
+                                      {"id": "arteval_RM_C", "target_def": "RM_C", "facings": []}]))
+            f0 = RN.file_regen_jobs(jf, runner=lambda *a, **k: Done(0), queue=tq)
+            check("exit 0 with a row missing from the queue is NOT ok", f0["ok"] is False and f0["unfiled"] == ["arteval_RM_B_r2"], f0)
+            f1 = RN.file_regen_jobs(jf, runner=lambda *a, **k: Done(1, "REFUSED ineligible: arteval_RM_B_r2"), queue=tq)
+            check("exit 1 names the refused row, not the filed ones", f1["unfiled"] == ["arteval_RM_B_r2"]
+                  and f1["filed"] == ["arteval_RM_A_r2", "arteval_RM_C"], f1)
+            (tq / "active/arteval_RM_B_r2_east.json").write_text("{}")
+            check("a row with one facing queued is still unfiled", RN.file_regen_jobs(jf, runner=lambda *a, **k: Done(0), queue=tq)["unfiled"] == ["arteval_RM_B_r2"])
+            for f in ("south", "north"):
+                (tq / "pending" / f"arteval_RM_B_r2_{f}.json").write_text("{}")
+            f2 = RN.file_regen_jobs(jf, runner=lambda *a, **k: Done(1, "duplicate"), queue=tq)
+            check("every row in the queue (pending/active/done) -> ok even on a duplicate exit 1",
+                  f2["ok"] is True and f2["unfiled"] == [], f2)
     except ImportError as e:
         check("runner importable (candidates)", False, str(e))
 

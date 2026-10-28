@@ -306,7 +306,8 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
            "module": card.get("module"), "at": now(), "card_sha": card["card_sha"],
            "image_sha256": card["image_sha256"], "source_sha256": card.get("source_sha256", {}),
            "source_files": {k: str(f) for k, f in C.source_files(spec).items()},
-           "artpipe_job": spec.get("artpipe_job"), "gates": card["gates"], "prompt_versions": prompt_versions(spec["template"]),
+           "artpipe_job": spec.get("artpipe_job"), "gates": card["gates"],
+           **({"target_texpath": spec["target_texpath"]} if spec.get("target_texpath") else {}), "prompt_versions": prompt_versions(spec["template"]),
            "models": {}, "opus": None, "gpt": None, "regen": None, "reasons": []}
     draw = (card.get("size") or {}).get("drawSize")
     if P.canvas_rule(draw):   # regen_jobs draws at the shipping canvas, never a fixed 1024
@@ -553,17 +554,44 @@ def run(specs: list, run_id: str, rev: Reviewers | None = None, test: bool = Fal
     return recs
 
 
-def file_regen_jobs(jobs_file: Path, runner=subprocess.run) -> dict:
-    """File regen_jobs.json with fill_queue.py. fill_queue exits 1 on a duplicate id or a row error, 2 on no input:
-    anything but 0 means some regens were not filed, so it is returned (and written beside the run), never dropped."""
+QUEUE_DIRS = ("pending", "active", "done", "failed")
+
+
+def artpipe_queue() -> Path:
+    return Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/ClaudeWork/rimmandrake/artpipe")
+
+
+def in_queue(row: dict, queue: Path) -> bool:
+    """Has fill_queue written this row's jobs (<id>_<facing>.json per facing, or <id>.json)? Any queue state counts:
+    the round is filed whether it waits, draws, finished or failed."""
+    names = [f"{row['id']}_{f}.json" for f in (row.get("facings") or [])] or [f"{row['id']}.json"]
+    return all(any((queue / d / n).is_file() for d in QUEUE_DIRS) for n in names)
+
+
+def file_regen_jobs(jobs_file: Path, runner=subprocess.run, queue: Path | None = None) -> dict:
+    """File regen_jobs.json with fill_queue.py, then CHECK THE QUEUE row by row. fill_queue's exit code cannot say which
+    rows were filed (exit 1 = a duplicate id or ANY refused row, the others filed): `filed` / `unfiled` name them, and
+    ok is true only when every row's jobs are in the queue. Returned and written beside the run, never dropped; the
+    auto-judge pass files a rimflow item per unfiled def (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET)."""
     cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/artpipe/fill_queue.py"), "--input", str(jobs_file)]
     try:
         r = runner(cmd, check=False, timeout=120, capture_output=True, text=True)
+        rc = r.returncode
+        tail = ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))[-800:]
+        why = f"fill_queue exit {rc}" if rc else "filed"
     except subprocess.TimeoutExpired:
-        return {"ok": False, "rc": None, "why": "fill_queue timed out after 120s", "tail": ""}
-    tail = ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or ""))[-800:]
-    return {"ok": r.returncode == 0, "rc": r.returncode, "why": f"fill_queue exit {r.returncode}" if r.returncode else "filed",
-            "tail": tail}
+        rc, tail, why = None, "", "fill_queue timed out after 120s"
+    try:
+        rows = json.loads(Path(jobs_file).read_text())
+    except (OSError, ValueError):
+        return {"ok": False, "rc": rc, "why": why + "; rows unreadable: filing UNMEASURED", "tail": tail,
+                "filed": [], "unfiled": []}
+    q = queue or artpipe_queue()
+    filed = [x["id"] for x in rows if in_queue(x, q)]
+    unfiled = [x["id"] for x in rows if x["id"] not in filed]
+    if unfiled:
+        why += f"; {len(unfiled)} row(s) not in the queue: {', '.join(unfiled)}"
+    return {"ok": not unfiled and rc is not None and (rc == 0 or bool(rows)), "rc": rc, "why": why, "tail": tail, "filed": filed, "unfiled": unfiled}
 
 
 def _gate_hits(prompt: str) -> list:
@@ -637,14 +665,23 @@ def regen_job_id(r: dict, rs: dict | None = None) -> str:
     return f"arteval_{r['subject']}_{RS.tag(r['subject'], n, rs if rs is not None else RS.resets())}"
 
 
-def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None) -> list:
+def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | None = None, texpath_of=None) -> list:
     """fill_queue.py rows (JSON art list) for every REGEN — filed only with --file-regens. A row with facings gets a
-    prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done."""
+    prompt the filing gate accepts (gate_clean_prompt); the row's style_notes say what was done.
+    Every row names the texPath it redraws (the judged record's, else TEXPATH_OF(def), default the def's adult body
+    texPath from the repo defs): fill_queue infers one only for a def that draws exactly one, and refused flyers
+    (body + flight frames) as REFUSED_UNCONFIRMED (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET). An unresolvable def gets
+    no guessed path: its row is refused at filing and file_regen_jobs reports it unfiled."""
+    if texpath_of is None:
+        def texpath_of(d):
+            import fauna_spec as FS
+            return FS.body_texpath(d)
     rows = []
     for r in recs:
         if r["decision"] != "REGEN":
             continue
         rq = r["regen"]["request"]
+        tp = r.get("target_texpath") or texpath_of(r["subject"])
         rows.append({"id": regen_job_id(r, rs), "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
                      "target_def": r["subject"], "prompt": rq["prompt"], "canvas_w": r.get("canvas_rule") or 1024, "canvas_h": r.get("canvas_rule") or 1024,
                      "facings": [] if r["module"] in ("catch", "ground_cover", "bush", "tree", "special") else ["south", "east", "north"],
@@ -655,7 +692,8 @@ def regen_jobs(recs: list, run_id: str, neutralize=None, hits=None, rs: dict | N
                                             "revert record in the run's decisions.jsonl" % r["install_by_card"]}
                        if r.get("replaces_kept") else {})
                     | ({"drawsize": r["drawsize"]} if r.get("drawsize") else {})
-                    | ({"module": r["module"]} if r.get("module") else {}))
+                    | ({"module": r["module"]} if r.get("module") else {})
+                    | ({"target_texpath": tp} if tp else {}))
         if not r.get("canvas_rule"):
             rows[-1]["style_notes"] += "; canvas 1024: the spec has no drawSize"
         if rows[-1]["facings"]:

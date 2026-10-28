@@ -71,6 +71,19 @@ def neutral_prompt(prompt: str) -> tuple[str, str]:
     return " ".join(kept), "sentence-drop"
 
 
+def bind_texpath(r: dict, texpath_of=None) -> dict:
+    """A flyer's def has a body texPath AND flying frames, so fill_queue cannot infer one and refuses the row
+    (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET): name the adult body texPath unless the row already names a target."""
+    if not r.get("target_texpath") and not r.get("install_to"):
+        if texpath_of is None:
+            import fauna_spec as FS
+            texpath_of = FS.body_texpath
+        tp = texpath_of(r["target_def"])
+        if tp:
+            r["target_texpath"] = tp
+    return r
+
+
 def cmd_rows(a):
     rows = []
     for rid in a.runs:
@@ -114,6 +127,7 @@ def cmd_rows(a):
             r["prompt"], r["_prompt_by"] = neutral_prompt(r["prompt"])
         r["canvas_w"] = r["canvas_h"] = canvas_for(d)
         r["drawsize"] = d
+        bind_texpath(r)
         r["biome_neutral"] = True     # source_run stays: it is fill_queue's art-eval redraw marker (gate_row)
         return r
 
@@ -130,8 +144,12 @@ def cmd_rows(a):
     Path(a.out).write_text(json.dumps(rows, indent=1))
     print(f"{len(rows)} rows -> {a.out}")
     if a.file:
-        subprocess.run([sys.executable, str(ROOT / "src/RimMandrake/Utils/artpipe/fill_queue.py"), "--input", a.out],
-                       check=False, timeout=300)
+        f = R.file_regen_jobs(Path(a.out))
+        print(f"filing: {f['why']}; filed {len(f.get('filed', []))}, UNFILED {f.get('unfiled', [])}")
+        if f.get("tail"):
+            print(f["tail"])
+        if not f["ok"]:
+            sys.exit(1)
 
 
 ART = Path("/mnt/d/ClaudeWork/rimmandrake/artpipe")

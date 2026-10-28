@@ -99,15 +99,11 @@ def brief_body_plan(defname: str):
     return json.loads(bf.read_text()).get("body_plan") if bf.is_file() else None
 
 
-def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledger_kept_install) -> dict:
-    if defname not in things:
-        raise SystemExit(f"fauna_spec: no ThingDef {defname!r} under {SRC}")
-    f, d = things[defname]
-    label = d.findtext("label")
-    desc = " ".join((d.findtext("description") or "").split())
+def adult_body(defname: str, kinds) -> tuple:
+    """(texPaths, drawSizes, graphicClasses, (kind, holder) owners, adult index) over every PawnKindDef lifeStage
+    bodyGraphicData of DEFNAME's race; adult = the largest drawSize. adult is None when the race has none."""
     paths, draws, classes, owners = [], [], [], []
     for _, k in kinds.get(defname, []):
-        # parent-first walk: the same bodyGraphicData set as k.iter("bodyGraphicData"), plus the lifeStage that holds it
         for parent in k.iter():
             for bg in parent.findall("bodyGraphicData"):
                 owners.append((k, parent))
@@ -115,10 +111,39 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
                 classes.append((bg.findtext("graphicClass") or "Graphic_Multi").strip())
                 ds = (bg.findtext("drawSize") or "1").replace("(", "").replace(")", "").split(",")
                 draws.append(float(ds[0]))
-    if not draws:
+    adult = max(range(len(draws)), key=lambda i: draws[i]) if draws else None
+    return paths, draws, classes, owners, adult
+
+
+_KINDS = None
+
+
+def body_texpath(defname: str, kinds=None):
+    """The texPath a regen of DEFNAME redraws: its adult body (the picture the spec judged), never a flight-frame prefix
+    or a second graphic. fill_queue only infers a texPath when the def draws exactly one, so a flyer (body +
+    <texPath>_Flying_ frames) filed with no target_texpath was refused REFUSED_UNCONFIRMED
+    (ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET). None when the race has no lifeStage bodyGraphicData."""
+    global _KINDS
+    if kinds is None:
+        if _KINDS is None:
+            _KINDS = index_defs()[1]
+        kinds = _KINDS
+    paths, _, _, _, adult = adult_body(defname, kinds)
+    tp = paths[adult] if adult is not None else None
+    return tp.strip() if tp and tp.strip() else None
+
+
+def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledger_kept_install) -> dict:
+    if defname not in things:
+        raise SystemExit(f"fauna_spec: no ThingDef {defname!r} under {SRC}")
+    f, d = things[defname]
+    label = d.findtext("label")
+    desc = " ".join((d.findtext("description") or "").split())
+    # parent-first walk: the same bodyGraphicData set as k.iter("bodyGraphicData"), plus the lifeStage that holds it
+    paths, draws, classes, owners, adult = adult_body(defname, kinds)
+    if adult is None:
         raise SystemExit(f"fauna_spec: {defname} has no PawnKindDef lifeStage bodyGraphicData (race={defname}); "
                          f"nothing to judge")
-    adult = max(range(len(draws)), key=lambda i: draws[i])
     tp = paths[adult]
     text = ET.tostring(d, encoding="unicode")
     # the frame prefix lives on the PawnKindDef (top level or the lifeStage), never on the ThingDef
@@ -150,7 +175,7 @@ def build_spec(defname: str, things, kinds, tex, outdir: Path, kept_lookup=ledge
             "candidate": "live", "provenance": f"live installed art, texPath {tp} ({mod_of(shown or f)}), graphicClass {gclass}",
             "description": desc, "tier": defname.split("_")[0] + "_", "invented": True,
             "size": {"drawSize": [draws[adult], draws[adult]]}, "source": f.replace(str(SRC) + "/", ""),
-            "owner_kept": False}
+            "owner_kept": False, "target_texpath": tp}
     # true-scale panel beside the vanilla human
     import scale_panel as SP
     outdir.mkdir(parents=True, exist_ok=True)
