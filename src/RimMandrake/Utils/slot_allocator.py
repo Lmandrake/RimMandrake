@@ -222,10 +222,11 @@ def mean_helpers(project_paths, now, window_s):
     return total / window_s
 
 
-def helper_spans(project_paths, now, window_s, gap_s=600.0):
+def helper_spans(project_paths, now, window_s, gap_s=600.0, rules=None):
     """[[start, end], ...]: when each subagent was actually writing in the last window_s. A transcript is cut into runs
     at every silence longer than gap_s (a resumed transcript's idle gap is not running time); the last run ends at the
-    last write when that is within gap_s of its last record."""
+    last write when that is within gap_s of its last record; a helper running right now (rules given) runs to `now`,
+    so the tail between its last write and this check is not lost to the next interval."""
     lo, out = now - window_s, []
     for proj in project_paths:
         for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
@@ -247,6 +248,8 @@ def helper_spans(project_paths, now, window_s, gap_s=600.0):
                     runs[-1][1] = t
             if 0 <= end - runs[-1][1] <= gap_s:
                 runs[-1][1] = end
+                if rules is not None and helper_state(p, now, rules)[0]:
+                    runs[-1][1] = max(end, now)
             out.extend(r for r in runs if r[1] >= lo)
     return out
 
@@ -652,7 +655,7 @@ def gather(now=None, rules=None):
     inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win), 2)
     # an unreadable transcript directory is "unavailable" (None), never a measured zero helpers
     inp["helper_spans"] = {s: (helper_spans([p], now, rules["overage"]["max_accrual_dt_h"] * HOUR,
-                                           rules["helpers"]["live_window_s"])
+                                           rules["helpers"]["live_window_s"], rules)
                                if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK) else None) for s, p in seat_paths.items()}
     inp["helpers_running"] = {s: (len(running_helpers([p], now, rules)) if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK)
                                   else None) for s, p in seat_paths.items()}
@@ -1040,8 +1043,9 @@ def decide(inp, state, rules, now):
     except Exception as e:  # noqa: BLE001  accounting garbage must never stop the (owner's) N being published
         per.clear()
         per.update(per_before)
-        why.append(f"overage accounting failed ({type(e).__name__}: {e}): no charge, no payback this check")
-        overage = {"owed_h": 0.0, "post_reset_h": 0.0, "paying": False, "cut": 0, "accrued_h": 0.0, "credited_h": 0.0,
+        why.append(f"overage accounting failed ({type(e).__name__}: {e}): debt carried unchanged, no charge, no payback this check")
+        overage = {"owed_h": max(0.0, _num(state.get("overage_h"), 0.0)),
+                   "post_reset_h": max(0.0, _num(state.get("overage_post_h"), 0.0)), "paying": False, "cut": 0, "accrued_h": 0.0, "credited_h": 0.0,
                    "forgiven_h": 0.0, "deadline_h": None, "eta_h": None, "plan": ""}
     sess = inp.get("session_pct_used")
     if sess is not None and inp.get("source") != "MEASURED":

@@ -275,6 +275,12 @@ os.utime(_g / "agent-g.jsonl", (real_now - 200, real_now - 200))
 _gs = sorted(SA.helper_spans([_g.parent.parent], real_now, H, 600))
 check("R3 helper_spans: a 2600 s idle gap splits a resumed transcript into two runs",
       len(_gs) == 2 and abs(_gs[0][1] - _gs[0][0] - 100) < 2 and abs(_gs[1][1] - _gs[1][0] - 100) < 2, _gs)
+_gs2 = SA.helper_spans([_g.parent.parent], real_now, H, 600, R)
+check("R3 helper_spans: a helper whose last record is not a clean end runs to now (tail kept for the next check)",
+      len(_gs2) == 2 and abs(_gs2[1][1] - real_now) < 2, _gs2)
+r = d({"overage_t": NOW - H, "overage_h": 5.0}, helpers_running={"BENCH": 1, "FOUNDRY": 0}, helper_spans={"BENCH": [[0]], "FOUNDRY": []})
+check("R3 overage: a failing accounting step carries the persisted debt, never forgives it",
+      r["overage"]["owed_h"] == 5.0 and r["state"]["overage_h"] == 5.0, r["overage"])
 # R3: idle earlier in the interval is not credited against excess later
 _st = {"overage_t": NOW - H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}, "overage_h": 0.0}
 r = d(_st, helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
