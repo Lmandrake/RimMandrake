@@ -37,7 +37,7 @@ import tempfile  # noqa: E402
 import types  # noqa: E402
 
 
-def _check_with(arm_rc, arm_takes_s, t0):
+def _check_with(arm_rc, arm_takes_s, t0, use_rc=0):
     with tempfile.TemporaryDirectory() as td:
         calls, clock = [], [t0]
         saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
@@ -49,9 +49,9 @@ def _check_with(arm_rc, arm_takes_s, t0):
             if argv[1] == "arm":
                 clock[0] += arm_takes_s
                 return arm_rc, "arm"
-            return 0, argv[1]
+            return (use_rc if argv[1] == "use" else 0), argv[1]
         A.run = fake_run
-        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
+        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
             stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
         A.time = types.SimpleNamespace(time=lambda: clock[0])
         try:
@@ -74,6 +74,11 @@ rc, calls, marked = _check_with(0, 1, DL - 3600)
 ok = calls == ["arm", "use", "disarm"] and marked and rc == 0
 fails += not ok
 print("%s  control: a clean switch arms, uses, disarms and marks: %r %r" % ("ok  " if ok else "FAIL", calls, marked))
+# review r2 2026-10-28: `use` failed/timed out and the live account is still FROM -> drop the marker so the next pass retries
+rc, calls, marked = _check_with(0, 1, DL - 3600, use_rc=124)
+ok = "use" in calls and not marked and rc != 0
+fails += not ok
+print("%s  a failed `use` with FROM still live leaves no marker: %r %r %r" % ("ok  " if ok else "FAIL", rc, calls, marked))
 # review night r2: a hung or missing claude-account is a failed step (rc != 0), never an exception past the cleanup
 _saved = A.subprocess
 
@@ -132,7 +137,7 @@ def _stage2_check(live, lk, st, dry=False):
         _json.dump(st, open(A.STAGE2, "w"))
         calls = []
         A.run = lambda argv: (calls.append(argv), (0, "set"))[1]
-        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
+        A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
             stdout=_json.dumps({"accounts": {"system": M(50), "lukas": lk}})))
         A.time = types.SimpleNamespace(time=lambda: t2)
         A.live_account = lambda: live
@@ -189,7 +194,7 @@ with tempfile.TemporaryDirectory() as td:
     saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.live_account)
     A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
     A.run = lambda argv: (calls.append(argv[1]), (0, ""))[1]
-    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
         stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
     A.time = types.SimpleNamespace(time=lambda: DL - 3600)
     A.live_account = lambda: "lukas"
@@ -204,5 +209,36 @@ calls, st = _stage2_check("lukas", L(7), {}, dry=True)
 ok = calls == [] and st == {}
 fails += not ok
 print("%s  stage2 dry-run changes nothing" % ("ok  " if ok else "FAIL"))
+# review r2 2026-10-28: a lukas already spent at the first stage-2 pass goes straight to DARK; a malformed reset stamp
+# must not disable it; a status with text around the JSON still parses; a failed poller's output is not trusted
+got, _ = A.decide2({"lukas": L(1)}, t2, "lukas", {})
+fails += got != "off"
+print("%s  stage2: first pass with lukas already spent -> off, not burn: %r" % ("ok  " if got == "off" else "FAIL", got))
+bad = dict(L(1), week_resets_at="garbage")
+got, _ = A.decide2({"lukas": bad}, t2, "lukas", {"burn": 1})
+fails += got != "off"
+print("%s  stage2: malformed reset stamp does not block off: %r" % ("ok  " if got == "off" else "FAIL", got))
+_noisy = "warning {x}\n" + _json.dumps({"live": "lukas"}) + "\ntrailing note\n"
+A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0, stdout=_noisy, stderr=""),
+                                     TimeoutExpired=_saved.TimeoutExpired)
+try:
+    got = A.live_account()
+finally:
+    A.subprocess = _saved
+fails += got != "lukas"
+print("%s  live_account tolerates text around the JSON: %r" % ("ok  " if got == "lukas" else "FAIL", got))
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.subprocess, A.time)
+    A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
+        returncode=1, stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+    A.time = types.SimpleNamespace(time=lambda: DL - 3600)
+    try:
+        rc_f = A.check(False)
+        ok = rc_f != 0 and not os.path.exists(A.MARKER)
+    finally:
+        A.OUT, A.MARKER, A.subprocess, A.time = saved
+fails += not ok
+print("%s  a failed account_usage (rc 1) is not trusted: %r" % ("ok  " if ok else "FAIL", rc_f))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

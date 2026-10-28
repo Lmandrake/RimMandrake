@@ -89,10 +89,18 @@ def live_account():
     """-> the live account name from `claude-account --json status`, or None."""
     # the real status is ~2030 chars: the old 2000-char tail cut its opening brace -> None -> stage 2 never fired
     rc, out = run([CA, "--json", "status"], full=True, timeout=120)
-    try:
-        return json.loads(out[out.index("{"):]).get("live") if rc == 0 else None
-    except Exception:  # noqa: BLE001
+    if rc != 0:
         return None
+    dec, i = json.JSONDecoder(), out.find("{")
+    while i >= 0:  # text before or after the JSON (a warning, a trailing note) must not hide the status
+        try:
+            obj, _ = dec.raw_decode(out[i:])
+            if isinstance(obj, dict) and "live" in obj:
+                return obj["live"]
+        except ValueError:
+            pass
+        i = out.find("{", i + 1)
+    return None
 
 
 def decide2(acc, now, live, st):
@@ -101,13 +109,18 @@ def decide2(acc, now, live, st):
         return None, "live account is %r, not %s: stage 2 idle" % (live, TO)
     b = acc.get(TO) or {}
     reset = b.get("week_resets_at")
-    if reset and now >= datetime.fromisoformat(reset).timestamp() + 600 and st.get("off"):
+    try:  # a malformed stamp must not disable the off decision below (review r2 2026-10-28)
+        past = bool(reset) and now >= datetime.fromisoformat(reset).timestamp() + 600
+    except Exception:  # noqa: BLE001
+        past = False
+    if past and st.get("off"):
         return None, "%s week reset passed: stage 2 finished (retire the timer)" % TO
     left = b.get("week_pct_left")
-    if (st.get("burn") and not st.get("off") and b.get("source") == "MEASURED" and not b.get("stale")
+    # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
+    if (not st.get("off") and b.get("source") == "MEASURED" and not b.get("stale")
             and isinstance(left, (int, float)) and left <= THRESHOLD):
         return "off", "%s MEASURED at %.1f%% left <= %.1f%%: wait for the reset" % (TO, left, THRESHOLD)
-    if not st.get("burn"):
+    if not st.get("burn") and not st.get("off"):
         return "burn", "switched to %s: burn it" % TO
     return None, "burning; %s reads %r%%" % (TO, left)
 
@@ -152,6 +165,8 @@ def check(dry):
     try:  # a hung meter is a logged skip, never a traceback that kills the pass (review 2026-10-28)
         r = subprocess.run([sys.executable, os.path.join(HERE, "account_usage.py"), "now", "--json"],
                            capture_output=True, text=True, timeout=120)
+        if r.returncode != 0:
+            raise RuntimeError("exit %s" % r.returncode)
         acc = json.loads(r.stdout).get("accounts") or {}
     except Exception as e:  # noqa: BLE001 - an unreadable meter is a no-switch, logged
         log({"do": "skip", "why": "account_usage unreadable: %s" % e})
@@ -181,8 +196,10 @@ def check(dry):
     else:
         rc2, o2 = run([CA, "use", TO, "--confirm", MACHINE])
     rc3, o3 = run([CA, "disarm"])
-    if rc2 is None:
-        os.remove(MARKER)  # `use` never ran, nothing switched: the next pass may retry (review night)
+    if rc2 is None or (rc2 != 0 and live_account() != TO):
+        # `use` never ran, or failed/timed out and TO is not live: nothing switched, the next pass may retry
+        # (a kept marker would leave stage 2 idle on the wrong account for good; review night, r2 2026-10-28)
+        os.remove(MARKER)
     log({"do": "switch", "why": why, "arm": [rc1, o1], "use": [rc2, o2], "disarm": [rc3, o3]})
     return 0 if rc2 == 0 else 2
 
