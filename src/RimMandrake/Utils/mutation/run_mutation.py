@@ -34,6 +34,7 @@ import argparse
 import ast
 import json
 import os
+import re
 import shutil
 import signal
 import sqlite3
@@ -61,10 +62,13 @@ TARGETS = {
                                                 U + "selftest_close_evidence_props.py",
                                                 U + "selftest_close_evidence_mut.py",
                                                 U + "selftest_close_evidence_chain.py",
-                                                U + "selftest_close_evidence_blast.py"]),
-    "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py"]),
+                                                U + "selftest_close_evidence_blast.py",
+                                                U + "selftest_evidence_harden_ad.py"]),
+    "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py", U + "selftest_evidence_harden_ad.py",
+                                         R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
-    "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py"]),
+    "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py",
+                                         R + "selftest_role_launch.py", R + "selftest_seat_restart.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py", U + "selftest_v3_vs_v2_mut.py"]),
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
@@ -72,6 +76,9 @@ TARGETS = {
                                            R + "selftest_account_pick.py", R + "selftest_role_launch_props.py", R + "selftest_role_launch.py",
                                            R + "selftest_role_launch_decide_mut.py"]),
 }
+# Selftests that import a target module but are deliberately NOT in its list ({target: {relpath: why}}); audit_targets
+# reports every other importing selftest missing from TARGETS.
+TARGET_EXCLUDE = {}
 # Checks that flake for reasons outside the mutated module; a run failing ONLY these counts as a pass for that
 # target (otherwise every flake reads as a killed mutant). Each entry names the item that tracks the flake.
 FLAKY = {
@@ -249,6 +256,155 @@ def gate_blocked(testq_dir, phases):
         return st.get("phase") in phases
     except (OSError, ValueError):
         return False
+
+
+# --- the full-run gate (owner-approved mutation rule, 2026-10-28; TESTING_POLICY_DESIGN_RIGHT_TOOL_RIGHT_TIME) -------
+# A FULL run only once the module is review-CLEAN and its logic unchanged for mutation.full_min_stable_days
+# (src/RimMandrake/rimflow/testing_policy.json); evolving code gets at most --scope changed-functions; the 85% bar
+# applies to full runs only. Checked at launch only, so a run already in flight is never touched.
+
+POLICY_JSON = os.path.join(REPO, "src", "RimMandrake", "rimflow", "testing_policy.json")
+
+
+def policy(path=None):
+    """{stable_days, need_clean, bar} from testing_policy.json. Raises on a missing/malformed file (fail closed)."""
+    sys.path.insert(0, os.path.dirname(path or POLICY_JSON))
+    try:
+        import testing_policy as TP
+    finally:
+        sys.path.pop(0)
+    pol = TP.load_policy(path or POLICY_JSON)
+    return {"stable_days": float(TP.param("mutation.full_min_stable_days", pol)),
+            "need_clean": bool(TP.param("mutation.full_requires_review_clean", pol)),
+            "bar": float(TP.param("mutation.score_bar", pol))}
+
+
+def logic_sig(source):
+    """The module's logic as an AST dump with docstrings dropped (comments never reach the AST). None when the
+    source is missing or does not parse."""
+    if source is None:
+        return None
+    try:
+        tree = ast.parse(source)
+    except (SyntaxError, ValueError):
+        return None
+    for node in ast.walk(tree):
+        body = getattr(node, "body", None)
+        if (isinstance(body, list) and body and isinstance(body[0], ast.Expr)
+                and isinstance(body[0].value, ast.Constant) and isinstance(body[0].value.value, str)):
+            node.body = body[1:] or [ast.Pass()]
+    return ast.dump(tree)
+
+
+def _git_show(repo, spec):
+    p = subprocess.run(["git", "show", spec], cwd=repo, capture_output=True, text=True, timeout=60)
+    return p.stdout if p.returncode == 0 else None
+
+
+def logic_age_days(relpath, repo, now=None, max_commits=40):
+    """Days since the newest commit that changed `relpath`'s logic (not only docstrings/comments). A file whose
+    last `max_commits` commits were all cosmetic answers the oldest of them (a lower bound). None when git has no
+    history for it (UNMEASURED: the gate then blocks)."""
+    now = time.time() if now is None else now
+    p = subprocess.run(["git", "log", "-n", str(max_commits), "--format=%H %ct", "--", relpath], cwd=repo,
+                       capture_output=True, text=True, timeout=60)
+    commits = [ln.split() for ln in p.stdout.splitlines() if ln.strip()] if p.returncode == 0 else []
+    if not commits:
+        return None
+    for h, ct in commits:
+        if logic_sig(_git_show(repo, "%s:%s" % (h, relpath))) != logic_sig(_git_show(repo, "%s^:%s" % (h, relpath))):
+            return (now - int(ct)) / 86400.0
+    return (now - int(commits[-1][1])) / 86400.0
+
+
+def review_clean(relpath, repo):
+    """True only when code_review_status.py (the repo's own copy) answers CLEAN for the file; any failure is False."""
+    tool = os.path.join(repo, "src", "RimMandrake", "Utils", "code_review_status.py")
+    try:
+        p = subprocess.run([sys.executable, tool, "check", relpath], cwd=repo, capture_output=True, text=True,
+                           timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return p.returncode == 0 and p.stdout.startswith("CLEAN")
+
+
+def full_run_blockers(names, ages, clean, stable_days, need_clean):
+    """{target: [reasons]} for every target a FULL run must not touch. Pure."""
+    out = {}
+    for n in names:
+        r = []
+        age = ages.get(n)
+        if age is None:
+            r.append("logic age UNMEASURED (no git history for the module)")
+        elif age < stable_days:
+            r.append("logic changed %.1f d ago (< %g d stable)" % (age, stable_days))
+        if need_clean and not clean.get(n):
+            r.append("module not review-CLEAN (code_review_status.py check)")
+        if r:
+            out[n] = r
+    return out
+
+
+def gate_full(names, repo):
+    pol = policy()
+    ages = {n: logic_age_days(TARGETS[n][0], repo) for n in names}
+    clean = {n: review_clean(TARGETS[n][0], repo) for n in names} if pol["need_clean"] else {}
+    return full_run_blockers(names, ages, clean, pol["stable_days"], pol["need_clean"])
+
+
+def apply_gate(names, blockers, changed, override_why):
+    """-> (names to launch, names skipped, refuse). An explicit full run that names a blocked target is refused
+    whole (the caller asked for exactly those); --changed/nightly launches the eligible ones and skips the rest; a
+    non-blank --override-why runs everything (the caller records it)."""
+    if not blockers or (override_why or "").strip():
+        return list(names), [], False
+    if changed:
+        return [n for n in names if n not in blockers], [n for n in names if n in blockers], False
+    return [], [n for n in names if n in blockers], True
+
+
+def changed_funcs(diff_text, spans):
+    """Function qualnames (func_of) touched by a `git diff -U0` of the module: each hunk's new-side lines, or the
+    line a pure deletion sits at."""
+    out = set()
+    for m in re.finditer(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@", diff_text, re.M):
+        start, count = int(m.group(1)), int(m.group(2) if m.group(2) is not None else 1)
+        for ln in (range(start, start + count) if count else [max(1, start)]):
+            out.add(func_of(spans, ln))
+    return out
+
+
+def scope_weights(weights, spans, funcs):
+    """{line: mutants} restricted to lines inside the changed functions."""
+    return {ln: c for ln, c in weights.items() if func_of(spans, ln) in funcs}
+
+
+def _imports(text, mod):
+    return re.search(r"^\s*(?:import\s+(?:[\w.]+\.)?%s\b|from\s+(?:[\w.]+\.)?%s\s+import\b|from\s+[\w.]+\s+import\s+"
+                     r"(?:\(?[\w\s,]*\b)%s\b)" % (mod, mod, mod), text, re.M) is not None
+
+
+def audit_targets(root):
+    """{target: [selftest relpaths that import the target module directly but are missing from its TARGETS list]}.
+    A low score can be a wiring bug, not weak tests (close_evidence read 73.5% until chain/_blast were wired in)."""
+    found = {}
+    for top in ("src/RimMandrake/Utils", "src/RimMandrake/rimflow"):
+        for dp, _dn, fns in os.walk(os.path.join(root, top)):
+            for fn in fns:
+                if fn.startswith("selftest_") and fn.endswith(".py"):
+                    p = os.path.join(dp, fn)
+                    try:
+                        found[os.path.relpath(p, root).replace(os.sep, "/")] = open(p, encoding="utf-8").read()
+                    except (OSError, UnicodeDecodeError):
+                        continue
+    gaps = {}
+    for n, (mod, tests) in TARGETS.items():
+        name = os.path.splitext(os.path.basename(mod))[0]
+        miss = sorted(r for r, t in found.items() if r not in tests and r not in TARGET_EXCLUDE.get(n, {})
+                      and _imports(t, name))
+        if miss:
+            gaps[n] = miss
+    return gaps
 
 
 # --- mutant inventory ----------------------------------------------------------------------------------------------
@@ -461,12 +617,45 @@ def cmd_launch(a):
     if not names:
         print("nothing changed since the last run")
         return 0
+    scope = getattr(a, "scope", "full") or "full"
+    since = getattr(a, "since", None)
+    override_why = getattr(a, "override_why", None)
+    override = None
+    if scope == "full":
+        blockers = gate_full(names, BASE_CLONE)
+        names, skipped, refuse = apply_gate(names, blockers, bool(a.changed), override_why)
+        for n in skipped:
+            print("%s full run of %s: %s" % ("REFUSED" if refuse else "skipped", n, "; ".join(blockers[n])))
+        if refuse:
+            print("A FULL mutation run needs the module review-CLEAN and its logic stable "
+                  "(src/RimMandrake/rimflow/testing_policy.json). Evolving code: --scope changed-functions --since SHA. "
+                  "To run anyway: --override-why \"<reason>\" (recorded in run.json and overrides.jsonl).")
+            return 2
+        if blockers and (override_why or "").strip():
+            override = {"why": override_why.strip(), "blockers": blockers, "ts": time.time()}
+        if not names:
+            print("no target is eligible for a full run")
+            return 0
+    elif not since:
+        print("--scope changed-functions needs --since SHA")
+        return 2
     base_s = json.loads(a.baseline_s) if a.baseline_s else {}
+    # shard each target in proportion to its cost (mutants x baseline seconds)
+    weights = {n: mutant_lines(os.path.join(BASE_CLONE, TARGETS[n][0])) for n in names}
+    if scope != "full":
+        for n in list(names):
+            src = open(os.path.join(BASE_CLONE, TARGETS[n][0])).read()
+            diff = sh(["git", "diff", "-U0", since, "HEAD", "--", TARGETS[n][0]], cwd=BASE_CLONE)
+            spans = func_spans(src)
+            weights[n] = scope_weights(weights[n], spans, changed_funcs(diff, spans))
+            if not weights[n]:
+                print("%s: no mutants in functions changed since %s" % (n, since))
+                names.remove(n)
+        if not names:
+            return 0
     run = a.run or time.strftime("%Y%m%dT%H%M%S")
     root = os.path.join(BASE, "shards", run)
     os.makedirs(root)
-    # shard each target in proportion to its cost (mutants x baseline seconds)
-    weights = {n: mutant_lines(os.path.join(BASE_CLONE, TARGETS[n][0])) for n in names}
     cost = {n: sum(weights[n].values()) * float(base_s.get(n, 3.0)) for n in names}
     unit = sum(cost.values()) / max(1, a.workers)
     shards = []
@@ -486,7 +675,11 @@ def cmd_launch(a):
     sh(["systemctl", "--user", "set-property", "--runtime", "mutation.slice", "CPUQuota=%s" % a.slice_quota],
        check=False)
     meta = {"run": run, "sha": sha, "targets": names, "workers": len(bins), "slice_cpu_quota": a.slice_quota,
-            "unit_cpu_quota": a.unit_quota, "gate_phases": a.gate_phases, "started": time.time(), "units": []}
+            "unit_cpu_quota": a.unit_quota, "gate_phases": a.gate_phases, "started": time.time(), "units": [],
+            "scope": scope, "since": since if scope != "full" else None, "override": override}
+    if override:
+        with open(os.path.join(results_dir(), "overrides.jsonl"), "a") as f:
+            f.write(json.dumps(dict(override, run=run, sha=sha, targets=names)) + "\n")
     for i, b in enumerate(bins):
         jf = os.path.join(root, "worker-%d.json" % i)
         json.dump([by_dir[x] for x in b], open(jf, "w"), indent=1)
@@ -563,7 +756,10 @@ def cmd_collect(a):
     out = os.path.join(results_dir(), a.run)
     os.makedirs(out, exist_ok=True)
     json.dump({"meta": meta, "modules": mods}, open(os.path.join(out, "summary.json"), "w"), indent=1)
-    lines = ["# Mutation run %s @ %s" % (meta["run"], meta["sha"][:10]), "",
+    scoped = meta.get("scope", "full") != "full"
+    lines = ["# Mutation run %s @ %s" % (meta["run"], meta["sha"][:10]), ""] + (
+        ["SCOPED to functions changed since %s: the 85%% bar applies to full runs only." % meta.get("since"), ""]
+        if scoped else []) + [
              "| module | mutants | killed | survived | timeout | suspicious | score | shard wall s | unreached |",
              "|---|---|---|---|---|---|---|---|---|"]
     for n, m in sorted(mods.items()):
@@ -582,7 +778,9 @@ def cmd_collect(a):
     open(os.path.join(out, "summary.md"), "w").write("\n".join(lines))
     states = shard_states(root)
     done = all(st.get("state") in ("done", "UNREACHED", "export_failed", "baseline_failed") for st in states)
-    if done:
+    if done and scoped:
+        open(os.path.join(root, "collected"), "w").write(meta["sha"] + "\n")
+    elif done:
         last = read_last() or {}
         tg = {n: {"sha": s} for n, s in last_shas(last).items()}
         for n, m in mods.items():            # only a target whose every shard finished cleanly is up to date
@@ -616,7 +814,7 @@ def cmd_nightly(a):
         if os.path.exists(os.path.join(d, "run.json")) and not os.path.exists(os.path.join(d, "collected")):
             cmd_collect(argparse.Namespace(run=run, copy_to=os.environ.get("MUTATION_COPY_TO") or None))
     return cmd_launch(argparse.Namespace(
-        changed=True, targets=None, workers=a.workers, max_shards=a.max_shards, unit_quota=a.unit_quota,
+        changed=True, targets=None, scope="full", since=None, override_why=None, workers=a.workers, max_shards=a.max_shards, unit_quota=a.unit_quota,
         slice_quota=a.slice_quota, gate_phases=a.gate_phases, baseline_s=a.baseline_s, run=None))
 
 
@@ -641,6 +839,11 @@ def main(argv=None):
             p.add_argument("--targets")
             p.add_argument("--changed", action="store_true")
             p.add_argument("--run")
+            p.add_argument("--scope", choices=("full", "changed-functions"), default="full",
+                           help="full (gated: review-CLEAN + logic stable, testing_policy.json) or changed-functions "
+                                "(evolving code: only mutants inside functions changed since --since; no gate)")
+            p.add_argument("--since", help="base sha for --scope changed-functions")
+            p.add_argument("--override-why", help="run a FULL run the gate refuses; the reason is recorded")
     for name in ("status", "collect"):
         p = sp.add_parser(name)
         p.add_argument("--run", required=True)
@@ -656,6 +859,8 @@ def main(argv=None):
     if a.cmd == "targets":
         for n, (m, ts) in TARGETS.items():
             print(n, m, " ".join(ts))
+        for n, miss in audit_targets(REPO).items():
+            print("GAP %s: importing selftests not in TARGETS: %s" % (n, " ".join(miss)))
         return 0
     return {"plan": cmd_plan, "launch": cmd_launch, "nightly": cmd_nightly, "status": cmd_status, "collect": cmd_collect,
             "_runtests": cmd_runtests, "_gate": cmd_gate, "_worker": cmd_worker}[a.cmd](a)

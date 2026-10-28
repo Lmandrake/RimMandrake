@@ -1,0 +1,179 @@
+{
+ "_doc": "RimFlow v3 testing policy tunables (design/RimMandrake/testing_policy_2026-10-28.md; item TESTING_POLICY_DESIGN_RIGHT_TOOL_RIGHT_TIME). Read by src/RimMandrake/rimflow/testing_policy.py (load_policy / param); enforced today only by src/RimMandrake/Utils/mutation/run_mutation.py's full-run gate. The v3 autotuner may change `value` of a param whose provenance is D or A, writing provenance A and a `why` naming the signal it read; O and C params change only on the owner's word. Each param: value, unit, why, provenance, signal (what measurement should move it, and which way).",
+ "_provenance": {
+  "O": "owner's own words (quoted in the policy doc)",
+  "C": "owner ruling by card",
+  "D": "current code default nobody has ruled on",
+  "A": "agent proposal from measurement (this doc or the autotuner)"
+ },
+ "params": {
+  "mutation.scope": {
+   "value": ["dispatcher", "close_evidence", "account_plan", "gates", "graders"],
+   "unit": "risk classes",
+   "why": "mutation testing only on decision/evidence machinery, where a silently-passing test lets a wrong decision through",
+   "provenance": "O",
+   "signal": "owner only; a new decision-bearing module joins a class, it does not widen the list"
+  },
+  "mutation.full_min_stable_days": {
+   "value": 3,
+   "unit": "days since the target module's last logic commit",
+   "why": "a FULL run only after the file's logic is unchanged >= 3 days; 10-27..10-28 every target was re-mutated 2-3x while it changed (dispatcher 2071->2283->2321 mutants), 32.3 CPU-h in 2 days",
+   "provenance": "O",
+   "signal": "owner only (approved rule); the autotuner may report survivors-invalidated-by-later-edits as evidence"
+  },
+  "mutation.full_requires_review_clean": {
+   "value": true,
+   "unit": "bool",
+   "why": "a FULL run only after the file is code_review_status CLEAN",
+   "provenance": "O",
+   "signal": "owner only"
+  },
+  "mutation.score_bar": {
+   "value": 0.85,
+   "unit": "killed / (mutants - timeouts counted as killed per mutmut)",
+   "why": "the 85% bar applies to FULL runs only; every survivor triaged (test / equivalent+reason / not-worth-it+reason); equivalent mutants make 100% impossible",
+   "provenance": "O",
+   "signal": "owner only"
+  },
+  "mutation.evolving_scope": {
+   "value": "changed_functions",
+   "unit": "enum: none | changed_functions",
+   "why": "evolving code gets at most a run scoped to changed functions; no score-chasing tests on code in flux",
+   "provenance": "O",
+   "signal": "owner only"
+  },
+  "mutation.max_full_runs_per_target_per_week": {
+   "value": 1,
+   "unit": "full runs / target / 7 days",
+   "why": "a stable target does not change, so a second full run in a week buys nothing new unless the selftest set changed",
+   "provenance": "A",
+   "signal": "raise if a second run in the week finds survivors the first did not (it should not); lower never"
+  },
+  "mutation.workers": {
+   "value": 6,
+   "unit": "systemd worker units on SteveDesktop",
+   "why": "run_mutation.py default; during runs testq cold reload went +12..+21 s on 81 s (n=2) and WSL python +34..39%",
+   "provenance": "D",
+   "signal": "lower if testq phase_s.load during mutation exceeds pre-mutation by >25% over n>=5 jobs; raise if the slice sits idle"
+  },
+  "mutation.shard_timeout_h": {
+   "value": 10.0,
+   "unit": "hours",
+   "why": "run_mutation.py default; a killed shard's recorded results still count",
+   "provenance": "D",
+   "signal": "lower if no shard in 10 runs exceeded half of it"
+  },
+  "selftest.per_commit": {
+   "value": "only_changed",
+   "unit": "enum: only_changed | full",
+   "why": "\"Targeted per commit, full once nightly\"",
+   "provenance": "C",
+   "signal": "owner only"
+  },
+  "selftest.nightly_full_hour_local": {
+   "value": 3,
+   "unit": "hour of day, America/Los_Angeles",
+   "why": "rm-selftests-nightly.timer (owner by card 2026-10-14)",
+   "provenance": "C",
+   "signal": "owner only"
+  },
+  "selftest.per_test_timeout_s": {
+   "value": 240,
+   "unit": "seconds (a `# selftest-timeout: N` tag overrides per file)",
+   "why": "run_selftests.py PER_TEST_TIMEOUT_S; 4 tests at ~600 s are 41% of the 5,818 test-seconds of the 2026-10-28 sweep",
+   "provenance": "D",
+   "signal": "a test over 120 s for 3 nights is a split/move-to-tier candidate, not a timeout raise"
+  },
+  "selftest.slow_test_flag_s": {
+   "value": 120,
+   "unit": "seconds per test",
+   "why": "25 of 742 tests ran > 30 s and the top 20 are 64% of sweep test-seconds",
+   "provenance": "A",
+   "signal": "lower when the nightly wall exceeds 20 min; raise when it is under 10 min"
+  },
+  "selftest.known_red_after_nights": {
+   "value": 3,
+   "unit": "consecutive red nights",
+   "why": "the nightly sweep was RED 14 of 14 nights (2026-10-15..28); 14 tests red >= 5 nights, selftest_handoff red 14/14, so RED carries no news. A test red this many nights must hold an open item and be listed as known-red, so a new red stands out",
+   "provenance": "A",
+   "signal": "lower if new reds are missed among known ones; raise never above 7"
+  },
+  "selftest.red_first_for_bug_fixes": {
+   "value": true,
+   "unit": "bool",
+   "why": "a fix's test must fail on the unfixed code first, or it may test nothing",
+   "provenance": "A",
+   "signal": "owner may relax per area; keep while red-first tests keep catching harness bugs"
+  },
+  "code_review.full_review_quiet_hours": {
+   "value": 12,
+   "unit": "hours since the file's last edit before a full-file review is spent",
+   "why": "since 2026-10-14, 7,057 clean marks over 4,158 paths; 1,246 paths re-reviewed >= 2x and 326 >= 4x (Program.cs 28x). A review of a file still being edited is spent again within the day. Not a rule against reviewing: CLEAN is still required before mark-clean and before diff-scoped review",
+   "provenance": "A",
+   "signal": "raise if paths with cleanCount >= 4 in 14 days stay above 5% of cleaned paths; lower if review backlog blocks commits"
+  },
+  "gpt_review.max_rounds_before_conditional_pass": {
+   "value": 3,
+   "unit": "rounds whose only findings are weak/partial, already through fix rounds",
+   "why": "\"Hours producing no issues, or only partial/weak issues that have had multiple rounds of attempting to fix them already, produce a conditional pass... and that's ok.\" (owner 2026-10-25, by card); rounds-until-zero stops there",
+   "provenance": "C",
+   "signal": "owner only for the rule; the count is A-tunable: raise if a round after the 3rd found a HIGH in >1 of the last 10 designs"
+  },
+  "art_eval.regen_rounds_before_escalate": {
+   "value": 3,
+   "unit": "regeneration rounds",
+   "why": "rimworld-art-evaluation pipeline: 3 rounds, then escalate",
+   "provenance": "D",
+   "signal": "lower if round 3 succeeds <10% of the time"
+  },
+  "testq.fill_hours": {
+   "value": 20,
+   "unit": "lane hours per local day for filler guard jobs (TESTQ_FILL_HOURS)",
+   "why": "2026-10-26..28: 247 guard jobs (236 filler) used 27.8 of 44.6 lane-hours and yielded 2 findings (0.07/lane-h) vs fix 2.2/lane-h, sweep 3.5/lane-h",
+   "provenance": "D",
+   "signal": "lower while guard findings/lane-h < 0.25 over 7 days; filler is cheap only when nothing else waits for the lane"
+  },
+  "testq.fill_cap": {
+   "value": 200,
+   "unit": "filler jobs per local day (TESTQ_FILL_CAP)",
+   "why": "testq.py backstop",
+   "provenance": "D",
+   "signal": "follows testq.fill_hours"
+  },
+  "testq.sweep_hour_local": {
+   "value": "01:30",
+   "unit": "local time, nightly modcheck sweep per TESTQ_SWEEP_MODS",
+   "why": "testq-sweep.timer; 9 sweeps yielded 17 findings in 4.8 lane-h (best yield per lane-hour measured)",
+   "provenance": "D",
+   "signal": "keep while findings/sweep >= 1; drop to every 2nd night if 5 sweeps in a row find nothing new"
+  },
+  "live.cold_load_full_list_min": {
+   "value": 15,
+   "unit": "minutes (MEASURED 2026-09-07); minimal 13-mod list 22 s; quicktest map ~90 s",
+   "why": "a cold load is the most expensive test we run; batch it, never 'restart and see'",
+   "provenance": "D",
+   "signal": "re-measure, do not tune"
+  },
+  "live.flyer_flight_without_owner": {
+   "value": false,
+   "unit": "bool",
+   "why": "\"do not do live testing of flyers without a human present. It doesn't work.\"",
+   "provenance": "O",
+   "signal": "owner only"
+  },
+  "ops.deadman_period_min": {
+   "value": 10,
+   "unit": "minutes (rm-deadman.timer)",
+   "why": "outside dead-man for the Dispatcher and ops_watch; no AI, near-zero cost",
+   "provenance": "D",
+   "signal": "lower only if a dispatcher stall went unnoticed longer than 2 periods"
+  },
+  "ops.ops_watch_period_min": {
+   "value": 15,
+   "unit": "minutes (rm-ops-watch.timer)",
+   "why": "deterministic measurement arm for Operations; no AI",
+   "provenance": "D",
+   "signal": "raise if its alarms are mostly repeats of an open item"
+  }
+ }
+}

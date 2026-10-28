@@ -93,6 +93,111 @@ def guard_checks():
         check(open(os.path.join(rep, "m.py")).read() == "X = 1\n", "source_guard: restored bytes are HEAD's")
 
 
+def gate_checks():
+    """The approved mutation rule (TESTING_POLICY_DESIGN_RIGHT_TOOL_RIGHT_TIME): a FULL run needs the module's logic
+    unchanged for mutation.full_min_stable_days and the module review-CLEAN; evolving code gets a changed-functions
+    run at most; the TARGETS map must hold every selftest that imports the module."""
+    import subprocess
+    pol = M.policy()
+    check(pol["stable_days"] == 3 and pol["need_clean"] is True, "policy: read from testing_policy.json (%s)" % pol)
+
+    # logic signature: docstrings and comments are not logic, a changed expression is
+    a = 'def f(x):\n    """doc"""\n    return x + 1\n'
+    check(M.logic_sig(a) == M.logic_sig('def f(x):\n    """other doc"""\n    # note\n    return x + 1\n'),
+          "logic_sig: a docstring/comment edit is not a logic change")
+    check(M.logic_sig(a) != M.logic_sig('def f(x):\n    """doc"""\n    return x + 2\n'),
+          "logic_sig: a changed constant is a logic change")
+    check(M.logic_sig(None) is None and M.logic_sig("def (:\n") is None, "logic_sig: missing/unparsable -> None")
+
+    # the pure gate
+    b = M.full_run_blockers(["a", "b", "c", "d"], {"a": 5.0, "b": 0.5, "c": None, "d": 9.0},
+                            {"a": True, "b": True, "c": True, "d": False}, 3, True)
+    check("a" not in b, "gate: stable 5 d + CLEAN -> allowed")
+    check(any("changed" in r for r in b.get("b", [])), "gate: logic changed 0.5 d ago -> blocked (%s)" % b.get("b"))
+    check(any("UNMEASURED" in r for r in b.get("c", [])), "gate: unknown logic age -> blocked, never allowed")
+    check(any("CLEAN" in r for r in b.get("d", [])), "gate: not review-CLEAN -> blocked")
+    check(M.full_run_blockers(["d"], {"d": 9.0}, {"d": False}, 3, False) == {}, "gate: need_clean off -> CLEAN ignored")
+
+    # logic age from a real git history: a docstring-only commit does not reset the clock
+    with tempfile.TemporaryDirectory() as td:
+        def g(*args, env=None):
+            return subprocess.run(["git"] + list(args), cwd=td, check=True, capture_output=True, text=True,
+                                  env=dict(os.environ, **(env or {}))).stdout
+        g("init", "-q")
+        g("config", "user.email", "t@t")
+        g("config", "user.name", "t")
+        p = os.path.join(td, "m.py")
+        old = str(int(time.time()) - 10 * 86400)
+        open(p, "w").write(a)
+        g("add", "m.py")
+        g("commit", "-q", "-m", "one", env={"GIT_COMMITTER_DATE": old + " +0000", "GIT_AUTHOR_DATE": old + " +0000"})
+        open(p, "w").write(a.replace("doc", "better doc"))
+        g("commit", "-qam", "doc only")
+        age = M.logic_age_days("m.py", td)
+        check(age is not None and age > 9.5, "logic_age_days: a docstring-only commit keeps the 10-day age (%s)" % age)
+        open(p, "w").write(a.replace("x + 1", "x + 3"))
+        g("commit", "-qam", "logic")
+        age = M.logic_age_days("m.py", td)
+        check(age is not None and age < 0.1, "logic_age_days: a logic commit resets it to ~0 (%s)" % age)
+        check(M.logic_age_days("nope.py", td) is None, "logic_age_days: an untracked path -> None (UNMEASURED)")
+
+    # changed-functions scope
+    src = SRC.split("\n")
+    spans = M.func_spans(SRC)
+    diff = "@@ -8,1 +8,1 @@\n-        return b\n+        return b + 1\n@@ -14,0 +15,1 @@\n+        return 2\n"
+    fn = M.changed_funcs(diff, spans)
+    check(fn == {"outer.inner", "K.m"}, "changed_funcs: hunks map to their innermost functions (%s)" % sorted(fn))
+    w = {8: 3, 9: 2, 15: 4, 3: 1}
+    check(M.scope_weights(w, spans, fn) == {8: 3, 15: 4}, "scope_weights: keeps only mutants inside changed functions")
+    check(M.changed_funcs("", spans) == set(), "changed_funcs: no diff -> nothing in scope")
+    _ = src
+
+    # launch refuses a blocked explicit full run unless --override-why; --changed skips blocked targets
+    ok, skip, refuse = M.apply_gate(["a", "b"], {"b": ["logic changed 0.5 d ago"]}, changed=False, override_why=None)
+    check(refuse and ok == [], "apply_gate: an explicit full run with a blocked target is refused outright")
+    ok, skip, refuse = M.apply_gate(["a", "b"], {"b": ["x"]}, changed=True, override_why=None)
+    check(not refuse and ok == ["a"] and skip == ["b"], "apply_gate: --changed/nightly launches only eligible targets")
+    ok, skip, refuse = M.apply_gate(["a", "b"], {"b": ["x"]}, changed=False, override_why="owner asked for a baseline")
+    check(not refuse and ok == ["a", "b"], "apply_gate: --override-why lets the blocked target run")
+    ok, skip, refuse = M.apply_gate(["a", "b"], {"b": ["x"]}, changed=False, override_why="  ")
+    check(refuse, "apply_gate: a blank --override-why is no override")
+
+    # cmd_launch end to end with git and the gate stubbed: a refused full run creates nothing and exits 2
+    import argparse
+    calls = []
+    real = (M.sh, M.gate_full, M.mutant_lines)
+    try:
+        M.sh = lambda argv, cwd=None, check=True, timeout=600: calls.append(argv) or "deadbeef\n"
+        M.gate_full = lambda names, repo: {"dispatcher": ["logic changed 0.2 d ago (< 3 d stable)"]}
+        M.mutant_lines = lambda path: (_ for _ in ()).throw(AssertionError("sharding reached"))
+        ns = argparse.Namespace(changed=False, targets="dispatcher", scope="full", since=None, override_why=None,
+                                workers=1, max_shards=1, unit_quota="1%", slice_quota="1%", gate_phases="",
+                                baseline_s="{}", run="t", shard_timeout_h=1.0)
+        rc = M.cmd_launch(ns)
+        check(rc == 2 and not any(c[:1] == ["systemd-run"] for c in calls),
+              "cmd_launch: a blocked explicit full run exits 2 before any shard or unit (rc=%s)" % rc)
+        ns.changed, ns.targets = True, None
+        M.due_targets = (lambda real_due: (lambda shas, changed: ["dispatcher"]))(M.due_targets)
+        rc = M.cmd_launch(ns)
+        check(rc == 0, "cmd_launch: nightly/--changed with every due target blocked launches nothing, exit 0")
+        ns.changed, ns.targets, ns.scope = False, "dispatcher", "changed-functions"
+        check(M.cmd_launch(ns) == 2, "cmd_launch: --scope changed-functions without --since is refused")
+    finally:
+        M.sh, M.gate_full, M.mutant_lines = real
+        import importlib
+        importlib.reload(M)
+
+    # TARGETS completeness: every selftest that imports a target module directly is in its list
+    gaps = M.audit_targets(M.REPO)
+    check(gaps == {}, "audit_targets: no selftest that imports a target module is missing from TARGETS (%s)" % gaps)
+    with tempfile.TemporaryDirectory() as td:
+        d = os.path.join(td, "src", "RimMandrake", "rimflow")
+        os.makedirs(d)
+        open(os.path.join(d, "selftest_extra.py"), "w").write("import os\nimport dispatcher as D\n")
+        check("src/RimMandrake/rimflow/selftest_extra.py" in M.audit_targets(td).get("dispatcher", []),
+              "audit_targets: sanity probe - a planted importing selftest is reported")
+
+
 def main():
     sp = M.func_spans(SRC)
     check(M.func_of(sp, 8) == "outer.inner", "func_of: a line in a nested def names the innermost (%s)"
@@ -161,6 +266,7 @@ def main():
     check(M.due_targets({n: "s2" for n in names}, changed) == [], "due_targets: nothing changed -> nothing due")
 
     guard_checks()
+    gate_checks()
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 
