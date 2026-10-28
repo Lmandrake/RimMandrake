@@ -11,6 +11,8 @@ says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset; befo
 at TO MEASURED <= SOFT and a hard stop (fleet-stop, retried until it succeeds) at <= FLOOR. After RESET with FROM
 refilled there is no soft line (stage 3's switch is the stop): a pre-RESET DARK is lifted so TO burns to FLOOR.
 Stage 1 switches only from a live FROM (never a hand-switched third account); an unknown status keeps a pending marker.
+Owner 11:2x: stage 1 and the post-13:00 stage 3 switch at 0% (THRESHOLD, S3_FLOOR); the pre-13:00 hard stop stays at FLOOR.
+Blind-meter guard: a last good FROM or TO reading <= BLIND (1%) then ESTIMATE, stale or unreadable counts as 0%.
 
   account_failover.py check [--dry-run]     one pass (a systemd user timer runs it every 5 min)
 
@@ -27,7 +29,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FROM, TO, MACHINE = "system", "lukas", "archmagi"
 # Owner 2026-10-28 10:20 PDT card: the floor is ours ("1% if we leave it, 2% if we wait on it"). We leave system (stage 1
 # at <=1.0%) and WAIT on lukas until 13:00 (floor 2.0%, soft line 4.0%: "Soft line, then hard stop").
-THRESHOLD = 1.0   # stage 1: system -> lukas at or under this much of system's week left
+THRESHOLD = 0.0   # stage 1: system -> lukas at or under this much of system's week left (owner 11:2x: let it hit 0%)
+BLIND = 1.0       # a last good FROM/TO reading at or under this, then a blind or stale meter or a limit error = 0% (owner 11:2x)
+S3_FLOOR = 0.0    # stage 3: lukas at or under this -> back to system (the pre-13:00 hard stop stays at FLOOR)
 FLOOR = 2.0       # stage 2: lukas at or under this -> hard stop (fleet-stop); also "lukas is spent" for stage 1
 SOFT = FLOOR + 2  # stage 2: lukas at or under this -> allocator DARK (no new helpers)
 DEADLINE = "2026-10-28T12:45:00-07:00"      # from here the switch is unconditional (target live): system's unused week expires
@@ -87,7 +91,17 @@ def run(argv, full=False, timeout=600):
     return r.returncode, r.stdout if full else (r.stdout + r.stderr)[-2000:]
 
 
-def decide(acc, now, marker_exists):
+def blind_zero(a, last=None):
+    """True when FROM's meter cannot be read now but its last good figure was <= BLIND: usage only rises inside a
+    window, so a blind meter or a limit error there is 0% (owner 11:2x). a = account_usage record; last = the
+    failover's own memory {\"left\": x} of the last fresh MEASURED reading."""
+    left = a.get("week_pct_left")
+    if isinstance(left, (int, float)) and a.get("source") in ("MEASURED", "ESTIMATE"):
+        return left <= BLIND and (a.get("source") == "ESTIMATE" or bool(a.get("stale")))
+    return isinstance(last, dict) and isinstance(last.get("left"), (int, float)) and last["left"] <= BLIND
+
+
+def decide(acc, now, marker_exists, last=None):
     """-> (do_switch, why). Pure: acc is account_usage's {name: record}."""
     if marker_exists:
         return False, "already switched once (marker present)"
@@ -103,7 +117,15 @@ def decide(acc, now, marker_exists):
             return False, "deadline, but %s is at %.1f%% left: nothing to gain" % (TO, bl)
         return True, "deadline %s reached (%s reads %r); %s reads %r > %.1f%%" % (
             DEADLINE, FROM, a.get("week_pct_left"), TO, bl, FLOOR)
-    if a.get("source") != "MEASURED" or a.get("stale"):
+    blind = a.get("source") != "MEASURED" or a.get("stale")
+    if blind and blind_zero(a, last):
+        bl0 = b.get("week_pct_left")
+        if (isinstance(bl0, (int, float)) and bl0 <= FLOOR and not b.get("stale")
+                and b.get("source") in ("MEASURED", "ESTIMATE")):
+            return False, "%s also at %.1f%% left: switching gains nothing" % (TO, bl0)
+        return True, "%s meter blind (%s%s) after a last good reading <= %.1f%%: treated as 0%%" % (
+            FROM, a.get("source"), ", stale" if a.get("stale") else "", BLIND)
+    if blind:
         return False, "%s reading is %s%s: never switch on a guess" % (FROM, a.get("source"),
                                                                      " (stale)" if a.get("stale") else "")
     left = a.get("week_pct_left")
@@ -153,9 +175,9 @@ def decide2(acc, now, live, st, allow_stop=True, ready3=False):
         return "stop", "%s MEASURED at %.1f%% left <= %.1f%% floor: hard stop, wait for the reset" % (TO, left, FLOOR)
     # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
     if ready3:
-        if st.get("off") and not st.get("stop") and fresh and left > FLOOR:
+        if st.get("off") and not st.get("stop") and fresh and left > S3_FLOOR:
             return "reburn", "%s refilled: lift the soft-line DARK, burn %s (%.1f%%) to its %.1f%% floor" % (
-                FROM, TO, left, FLOOR)
+                FROM, TO, left, S3_FLOOR)
     elif fresh and left <= SOFT and not st.get("off"):
         return "off", "%s MEASURED at %.1f%% left <= %.1f%% soft line: DARK, wait for the reset" % (TO, left, SOFT)
     if not st.get("burn") and not st.get("off"):
@@ -184,7 +206,7 @@ def decide3(acc, now, live, done, stopped=False):
     # stopped: the hard stop already fleet-stopped TO at its floor; a later noisy reading above it must not strand the
     # stopped fleet until TO_RESET (review r5)
     spent = stopped or (b.get("source") == "MEASURED" and not b.get("stale") and isinstance(bl, (int, float))
-                        and bl <= FLOOR)
+                        and bl <= S3_FLOOR) or blind_zero(b)
     if not spent and now < datetime.fromisoformat(TO_RESET).timestamp():
         return False, "%s still above its %.1f%% floor (reads %r) and its reset %s is ahead: keep burning it" % (TO, FLOOR, bl, TO_RESET)
     return True, "%s week reset: reads %.1f%% left; %s is live and %s" % (
@@ -356,7 +378,17 @@ def check(dry):
         return 1
     if os.path.exists(MARKER):
         return stage2(acc, dry)
-    go, why = decide(acc, time.time(), False)
+    lastp, a0 = os.path.join(OUT, "from_last.json"), acc.get(FROM) or {}
+    if a0.get("source") == "MEASURED" and not a0.get("stale") and isinstance(a0.get("week_pct_left"), (int, float)):
+        if not dry:
+            write_atomic(lastp, {"left": a0["week_pct_left"], "at": time.time()})
+        last = None
+    else:
+        try:
+            last = json.load(open(lastp))
+        except Exception:  # noqa: BLE001
+            last = None
+    go, why = decide(acc, time.time(), False, last)
     if not go:
         log({"do": "skip", "why": why})
         return 0

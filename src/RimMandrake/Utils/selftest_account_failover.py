@@ -9,26 +9,39 @@ import account_failover as A  # noqa: E402
 M = lambda l, src="MEASURED", st=False: {"source": src, "week_pct_left": l, "stale": st}  # noqa: E731
 now = time.mktime(time.strptime("2026-10-28 10:00", "%Y-%m-%d %H:%M"))  # fixed: before the deadline
 CASES = [({"system": M(16), "lukas": M(7, "ESTIMATE")}, False, "above threshold"),
-         ({"system": M(1), "lukas": M(7, "ESTIMATE")}, True, "at threshold (1.0 today)"),
+         ({"system": M(0), "lukas": M(7, "ESTIMATE")}, True, "at threshold (0.0 today)"),
+         ({"system": M(1), "lukas": M(7, "ESTIMATE")}, False, "1% MEASURED is above the 0% threshold"),
          ({"system": M(2), "lukas": M(7, "ESTIMATE")}, False, "2% is above the 1% floor"),
          ({"system": M(1.5, "ESTIMATE")}, False, "an ESTIMATE never switches"),
-         ({"system": M(1, st=True)}, False, "a stale reading never switches"),
-         ({"system": M(1), "lukas": M(2)}, False, "target as low (<=2% floor): no gain"),
+         ({"system": M(3, st=True)}, False, "a stale reading never switches"),
+         ({"system": M(0), "lukas": M(2)}, False, "target as low (<=2% floor): no gain"),
          ({"system": M(None)}, False, "unreadable")]
+BL = [({"system": M(0.5, "ESTIMATE"), "lukas": M(7)}, None, True, "ESTIMATE at 0.5 -> 0"),
+      ({"system": M(1, "ESTIMATE"), "lukas": M(7)}, None, True, "ESTIMATE at 1.0 -> 0"),
+      ({"system": M(1.5, "ESTIMATE"), "lukas": M(7)}, None, False, "ESTIMATE at 1.5 waits"),
+      ({"system": M(0.5, st=True), "lukas": M(7)}, None, True, "stale at 0.5 -> 0"),
+      ({"system": M(None, "UNMEASURED"), "lukas": M(7)}, {"left": 0.4}, True, "UNMEASURED after last good 0.4"),
+      ({"system": M(None, "UNMEASURED"), "lukas": M(7)}, {"left": 3.0}, False, "UNMEASURED after last good 3.0 waits"),
+      ({"system": M(None, "UNMEASURED"), "lukas": M(7)}, None, False, "UNMEASURED with no memory waits"),
+      ({"system": M(None, "UNMEASURED"), "lukas": M(1)}, {"left": 0.4}, False, "blind but lukas also spent")]
 fails = 0
+for acc, last, want, name in BL:
+    got, why = A.decide(acc, now, False, last)
+    fails += got != want
+    print("%s  blind guard: %s: %s" % ("ok  " if got == want else "FAIL", name, why))
 for acc, want, name in CASES:
     got, why = A.decide(acc, now, False)
     ok = got == want
     fails += not ok
     print("%s  %s: %s" % ("ok  " if ok else "FAIL", name, why))
-got, _ = A.decide({"system": M(1)}, now, True)
+got, _ = A.decide({"system": M(0)}, now, True)
 fails += got
 print("%s  marker present: never twice" % ("ok  " if not got else "FAIL"))
-got, _ = A.decide({"system": M(1), "lukas": M(50)}, time.mktime(time.strptime("2026-10-29", "%Y-%m-%d")), False)
+got, _ = A.decide({"system": M(0), "lukas": M(50)}, time.mktime(time.strptime("2026-10-29", "%Y-%m-%d")), False)
 fails += got
 print("%s  past the deadline: no switch" % ("ok  " if not got else "FAIL"))
 # review night: a stale low reading of the target does not block the switch
-got, _ = A.decide({"system": M(1), "lukas": M(1, st=True)}, now, False)
+got, _ = A.decide({"system": M(0), "lukas": M(1, st=True)}, now, False)
 fails += not got
 print("%s  a stale low target reading does not block" % ("ok  " if got else "FAIL"))
 # review night: check() - a failed arm leaves no marker (nothing switched, the next pass retries); the deadline is
@@ -54,7 +67,7 @@ def _check_with(arm_rc, arm_takes_s, t0, use_rc=0, live_seq=None):
             return (use_rc if argv[1] == "use" else 0), argv[1]
         A.run = fake_run
         A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-            stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+            stdout=_json.dumps({"accounts": {"system": M(0), "lukas": M(50)}})))
         A.time = types.SimpleNamespace(time=lambda: clock[0])
         try:
             rc = A.check(False)
@@ -213,7 +226,7 @@ with tempfile.TemporaryDirectory() as td:
     A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
     A.run = lambda argv: (calls.append(argv[1]), (0, ""))[1]
     A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+        stdout=_json.dumps({"accounts": {"system": M(0), "lukas": M(50)}})))
     A.time = types.SimpleNamespace(time=lambda: DL - 3600)
     A.live_account = lambda: "lukas"
     try:
@@ -249,7 +262,7 @@ with tempfile.TemporaryDirectory() as td:
     saved = (A.OUT, A.MARKER, A.subprocess, A.time)
     A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
     A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
-        returncode=1, stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+        returncode=1, stdout=_json.dumps({"accounts": {"system": M(0), "lukas": M(50)}})))
     A.time = types.SimpleNamespace(time=lambda: DL - 3600)
     try:
         rc_f = A.check(False)
@@ -298,7 +311,7 @@ with tempfile.TemporaryDirectory() as td:
     A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
     A.run = lambda argv: (0, "x")
     A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": L(7)}})))
+        stdout=_json.dumps({"accounts": {"system": M(0), "lukas": L(7)}})))
     A.time = types.SimpleNamespace(time=lambda: t2)
     A.live_account = lambda: "system"
     try:
@@ -337,7 +350,7 @@ with tempfile.TemporaryDirectory() as td:
         return (1 if argv[1] == "disarm" else 0), argv[1]
     A.run = _run
     A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+        stdout=_json.dumps({"accounts": {"system": M(0), "lukas": M(50)}})))
     A.time = types.SimpleNamespace(time=lambda: DL - 3600)
     try:
         rc = A.check(False)
@@ -354,7 +367,7 @@ _, why = A.decide2({"lukas": L(1)}, t2, "lukas", {"burn": 1, "off": 1, "stop": 1
 ok = "burning" not in why and "DARK" in why
 fails += not ok
 print("%s  after off the stage-2 reason says DARK, not burning: %s" % ("ok  " if ok else "FAIL", why))
-_, why = A.decide({"system": M(1), "lukas": M(50)}, dl, False)
+_, why = A.decide({"system": M(0), "lukas": M(50)}, dl, False)
 ok = "system above" not in why
 fails += not ok
 print("%s  deadline reason does not claim FROM is above the threshold: %s" % ("ok  " if ok else "FAIL", why))
@@ -417,7 +430,7 @@ for (acc, now_, live, done, want, name) in [
         ({"system": FRESH()}, T3, "steven", False, False, "stage3: someone switched by hand -> no"),
         ({"system": FRESH()}, T3, "system", False, False, "stage3: system already live -> no"),
         ({"system": FRESH()}, T3, "lukas", True, False, "stage3: retired after done")]:
-    acc = dict(acc, lukas=L(1))
+    acc = dict(acc, lukas=L(0))
     got, why = A.decide3(acc, now_, live, done)
     fails += got != want
     print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
@@ -442,7 +455,7 @@ def _stage3_run(live_seq, now_, marker=None, arm_rc=0, use_rc=0, clear_rc=0):
             return clear_rc, "clear"
         A.run = _run
         A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-            stdout=_json.dumps({"accounts": {"system": FRESH(), "lukas": L(1)}})))
+            stdout=_json.dumps({"accounts": {"system": FRESH(), "lukas": L(0)}})))
         A.time = types.SimpleNamespace(time=lambda: now_)
         A.live_account = lambda: seq.pop(0) if len(seq) > 1 else seq[0]
         try:
@@ -505,7 +518,7 @@ calls = _stage3_lk(L(7), T3)
 ok = _names(calls) == [] or not any(c[0] == A.CA for c in calls)
 fails += not ok
 print("%s  13:02, lukas 7%%, system fresh: no switch, lukas keeps burning: %r" % ("ok  " if ok else "FAIL", _names(calls)))
-calls = _stage3_lk(L(2), T3)
+calls = _stage3_lk(L(0), T3)
 ok = _names(calls)[:3] == ["arm", "use", "disarm"] and calls[1][2] == "system" and "fleet-stop" not in _names(calls)
 fails += not ok
 print("%s  13:02, lukas MEASURED 2%%: straight to system, no fleet-stop: %r" % ("ok  " if ok else "FAIL", _names(calls)))
@@ -513,7 +526,7 @@ calls = _stage3_lk(L(2, "ESTIMATE"), T3)
 ok = not any(c[0] == A.CA for c in calls)
 fails += not ok
 print("%s  13:02, lukas ESTIMATE 2%%: no switch: %r" % ("ok  " if ok else "FAIL", _names(calls)))
-calls = _stage3_lk(L(2), T3, sysr=FRESH(1.0))
+calls = _stage3_lk(L(0), T3, sysr=FRESH(1.0))
 ok = not any(c[0] == A.CA for c in calls) and not any("fleet-stop" in c for c in calls)
 fails += not ok
 print("%s  13:02, lukas 2%% but system not refilled: no switch, no hard stop: %r" % ("ok  " if ok else "FAIL", _names(calls)))
@@ -540,8 +553,8 @@ fails += not ok
 print("%s  13:02, fleet hard-stopped before 13:00, lukas reads 3%%: switch to system (stopped = spent): %r" % (
     "ok  " if ok else "FAIL", _names(calls)))
 o = {}
-calls = _stage3_lk(L(2), T3, clear_rc=1, out=o)
-calls2 = _stage3_lk(L(2), T3 + 300, live="system", back=o["back"], out=o)
+calls = _stage3_lk(L(0), T3, clear_rc=1, out=o)
+calls2 = _stage3_lk(L(0), T3 + 300, live="system", back=o["back"], out=o)
 ok = (o["back"] or {}).get("phase") == "done" and any("clear" in c for c in calls2) and (o["back"] or {}).get("clear_rc") == 0
 fails += not ok
 print("%s  stage3 clear failed: the next pass retries it (no DARK left on system's fresh week): %r %r" % (
@@ -551,7 +564,7 @@ ok = _names(calls)[:3] == ["arm", "use", "disarm"]
 fails += not ok
 print("%s  16:01, lukas reset passed: switch to system: %r" % ("ok  " if ok else "FAIL", _names(calls)))
 got, why = A.decide3({"system": FRESH(), "lukas": L(7)}, T3, "lukas", False)
-got2, _ = A.decide3({"system": FRESH(), "lukas": L(2)}, T3, "lukas", False)
+got2, _ = A.decide3({"system": FRESH(), "lukas": L(0)}, T3, "lukas", False)
 ok = not got and got2
 fails += not ok
 print("%s  decide3 needs lukas at floor or past 16:00: %s" % ("ok  " if ok else "FAIL", why))
@@ -593,8 +606,8 @@ fails += not ok
 print("%s  stage3 failed use with unreadable status keeps pending: %r %r" % ("ok  " if ok else "FAIL", back, rc))
 # review r5 (GPT): a pass that died after `use system` but before its done marker: recovery marks done AND clears
 o = {}
-calls = _stage3_lk(L(2), T3, live="system", back={"phase": "pending", "at": T3 - 60}, out=o)
-calls2 = _stage3_lk(L(2), T3 + 300, live="system", back=o["back"], out=o)
+calls = _stage3_lk(L(0), T3, live="system", back={"phase": "pending", "at": T3 - 60}, out=o)
+calls2 = _stage3_lk(L(0), T3 + 300, live="system", back=o["back"], out=o)
 ok = (o["back"] or {}).get("phase") == "done" and any("clear" in c for c in calls + calls2) and o["back"].get("clear_rc") == 0
 fails += not ok
 print("%s  stage3 pending recovered as done still runs allocator clear: %r %r" % ("ok  " if ok else "FAIL", _names(calls + calls2), o["back"]))
@@ -615,7 +628,7 @@ fails += not ok
 print("%s  stage2 hard stop: the marker written before the commands already owes a retry: %r" % ("ok  " if ok else "FAIL", _d))
 # review r5 GPT round 2: an aged stage-3 pending marker with the live account unknown is kept (use may have switched)
 o = {}
-_stage3_lk(L(2), T3 + 3600, live=None, back={"phase": "pending", "at": T3 - 60}, out=o)
+_stage3_lk(L(0), T3 + 3600, live=None, back={"phase": "pending", "at": T3 - 60}, out=o)
 ok = (o["back"] or {}).get("phase") == "pending"
 fails += not ok
 print("%s  stage3 aged pending with live unknown: kept: %r" % ("ok  " if ok else "FAIL", o["back"]))
@@ -628,7 +641,7 @@ with tempfile.TemporaryDirectory() as td:
     _json.dump({"burn": 1}, open(A.STAGE2, "w"))
     A.run = lambda argv, **k: (0, "ok")
     A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0,
-        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": L(7)}})))
+        stdout=_json.dumps({"accounts": {"system": M(0), "lukas": L(7)}})))
     A.time = types.SimpleNamespace(time=lambda: t2)
     A.live_account = lambda: "lukas"
     try:
@@ -639,5 +652,14 @@ with tempfile.TemporaryDirectory() as td:
 ok = mk.get("phase") == "done"
 fails += not ok
 print("%s  stage 1 pending marker promoted to done when lukas is seen live: %r" % ("ok  " if ok else "FAIL", mk))
+# owner 11:2x: stage 3 / stage 2 at 0% (not 2%), blind lukas <=1% counts as spent
+g1, _ = A.decide3({"system": FRESH(), "lukas": L(1)}, T3, "lukas", False)
+g2, _ = A.decide3({"system": FRESH(), "lukas": L(0.5, "ESTIMATE")}, T3, "lukas", False)
+g3, _ = A.decide3({"system": FRESH(), "lukas": L(0.5, st=True)}, T3, "lukas", False)
+a1, _ = A.decide2({"lukas": L(1.0)}, T3, "lukas", {"burn": 1, "off": 1}, allow_stop=False, ready3=True)
+a2, _ = A.decide2({"lukas": L(0.0)}, T3, "lukas", {"burn": 1, "off": 1}, allow_stop=False, ready3=True)
+ok = (not g1) and g2 and g3 and a1 == "reburn" and a2 != "reburn"
+fails += not ok
+print("%s  0%% stage 3: lukas 1.0 keeps burning (reburn), 0 or blind <=1 switches: %r" % ("ok  " if ok else "FAIL", (g1, g2, g3, a1, a2)))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)
