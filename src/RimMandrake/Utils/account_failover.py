@@ -4,7 +4,10 @@
 Owner, 2026-10-27, on incorporating the lukas account: "Yes schedule when they reach 2%."
 So: when `system` (the account Archmagi burns) reads MEASURED with at most THRESHOLD % of its week left, arm the
 switch, `claude-account use lukas` (closes every Claude window on this machine and relaunches the Fleet), disarm.
-Once only (a marker file), and never after DEADLINE (the system week resets then and refills it).
+Once only (a marker file), and never after RESET (the system week refills then); from DEADLINE on the switch is
+unconditional while the target reads MEASURED above THRESHOLD. Stage 2 (marker present, `claude-account --json status`
+says TO is live): slot_allocator `set --mode BURN --n 16` until TO's reset, then `--mode DARK` (every seat 0) once TO
+reads MEASURED at or under THRESHOLD.
 
   account_failover.py check [--dry-run]     one pass (a systemd user timer runs it every 5 min)
 
@@ -39,15 +42,16 @@ def log(rec):
     print(json.dumps(rec, sort_keys=True))
 
 
-def run(argv):
-    # a hang or a missing binary is a failed step, not an exception past check()'s marker cleanup (review night)
+def run(argv, full=False, timeout=600):
+    # a hang or a missing binary is a failed step, not an exception past check()'s marker cleanup (review night).
+    # full=True -> (rc, stdout) whole: a parser must never see the 2000-char log tail (review 2026-10-28)
     try:
-        r = subprocess.run(argv, capture_output=True, text=True, timeout=600)
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
-        return 124, "%s timed out after 600 s" % argv[1:2]
+        return 124, "%s timed out after %d s" % (argv[1:2], timeout)
     except OSError as e:
         return 127, "%s could not run: %s" % (argv[:1], e)
-    return r.returncode, (r.stdout + r.stderr)[-2000:]
+    return r.returncode, r.stdout if full else (r.stdout + r.stderr)[-2000:]
 
 
 def decide(acc, now, marker_exists):
@@ -83,7 +87,8 @@ def decide(acc, now, marker_exists):
 
 def live_account():
     """-> the live account name from `claude-account --json status`, or None."""
-    rc, out = run([CA, "--json", "status"])
+    # the real status is ~2030 chars: the old 2000-char tail cut its opening brace -> None -> stage 2 never fired
+    rc, out = run([CA, "--json", "status"], full=True, timeout=120)
     try:
         return json.loads(out[out.index("{"):]).get("live") if rc == 0 else None
     except Exception:  # noqa: BLE001
@@ -125,11 +130,10 @@ def stage2(acc, dry):
     if act is None:
         log({"do": "stage2_skip", "why": why})
         return 0
-    n, mode = (16, "BURN") if act == "burn" else (0, None)
     hrs = hours_to((acc.get(TO) or {}).get("week_resets_at"), now)
-    argv = [sys.executable, SLOT, "set", "--n", str(n), "--owner-said", OWNER_ORDER]
-    if mode:
-        argv += ["--mode", mode]
+    argv = [sys.executable, SLOT, "set", "--owner-said", OWNER_ORDER]
+    # off is DARK (total 0, every seat): `--n 0` zeroed BENCH only and left FOUNDRY's slot burning lukas (review 2026-10-28)
+    argv += ["--n", "16", "--mode", "BURN"] if act == "burn" else ["--mode", "DARK"]
     if hrs:
         argv += ["--hours", str(hrs)]
     if dry:
@@ -145,9 +149,9 @@ def stage2(acc, dry):
 
 
 def check(dry):
-    r = subprocess.run([sys.executable, os.path.join(HERE, "account_usage.py"), "now", "--json"],
-                       capture_output=True, text=True, timeout=120)
-    try:
+    try:  # a hung meter is a logged skip, never a traceback that kills the pass (review 2026-10-28)
+        r = subprocess.run([sys.executable, os.path.join(HERE, "account_usage.py"), "now", "--json"],
+                           capture_output=True, text=True, timeout=120)
         acc = json.loads(r.stdout).get("accounts") or {}
     except Exception as e:  # noqa: BLE001 - an unreadable meter is a no-switch, logged
         log({"do": "skip", "why": "account_usage unreadable: %s" % e})
@@ -162,6 +166,11 @@ def check(dry):
         log({"do": "would_switch", "why": why})
         return 0
     os.makedirs(OUT, exist_ok=True)
+    if live_account() == TO:  # already switched (by hand): `use` would close every window for nothing (review 2026-10-28)
+        with open(MARKER, "w") as f:
+            json.dump({"why": "already live on %s" % TO, "at": time.time()}, f)
+        log({"do": "skip_switch", "why": "%s is already live: marked, stage 2 takes over" % TO})
+        return 0
     with open(MARKER, "w") as f:      # before the switch: the switch closes this machine's agents, never twice
         json.dump({"why": why, "at": time.time()}, f)
     rc1, o1 = run([CA, "arm", "--confirm", MACHINE])

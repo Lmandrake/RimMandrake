@@ -40,8 +40,9 @@ import types  # noqa: E402
 def _check_with(arm_rc, arm_takes_s, t0):
     with tempfile.TemporaryDirectory() as td:
         calls, clock = [], [t0]
-        saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2)
+        saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account)
         A.OUT, A.MARKER, A.STAGE2 = td, os.path.join(td, "switched.json"), os.path.join(td, "stage2.json")
+        A.live_account = lambda: A.FROM
 
         def fake_run(argv):
             calls.append(argv[1])
@@ -57,7 +58,7 @@ def _check_with(arm_rc, arm_takes_s, t0):
             rc = A.check(False)
             return rc, calls, os.path.exists(A.MARKER)
         finally:
-            A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2 = saved
+            A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.STAGE2, A.live_account = saved
 
 
 DL = A.datetime.fromisoformat(A.RESET).timestamp()
@@ -143,15 +144,62 @@ def _stage2_check(live, lk, st, dry=False):
 
 
 calls, st = _stage2_check("lukas", L(7), {})
-ok = (len(calls) == 1 and "slot_allocator.py" in calls[0][1] and calls[0][3:5] == ["--n", "16"] and "BURN" in calls[0]
+ok = (len(calls) == 1 and "slot_allocator.py" in calls[0][1] and calls[0][calls[0].index("--n") + 1] == "16" and "BURN" in calls[0]
       and "--hours" in calls[0] and calls[0][calls[0].index("--owner-said") + 1] == A.OWNER_ORDER and "burn" in st
       and not any(c[0] == A.CA for c in calls))
 fails += not ok
 print("%s  stage2 burn: allocator set --n 16 BURN with his words, no account command: %r" % ("ok  " if ok else "FAIL", calls))
 calls, st = _stage2_check("lukas", L(2), {"burn": 1})
-ok = len(calls) == 1 and calls[0][3:5] == ["--n", "0"] and "off" in st and not any(c[0] == A.CA for c in calls)
+# review 2026-10-28: `--n 0` zeroes BENCH only and leaves FOUNDRY's split slot burning lukas under 2% (allocator probe:
+# seats BENCH 0 / FOUNDRY 1); --mode DARK with no --n is total 0 across every seat
+ok = (len(calls) == 1 and "--n" not in calls[0] and calls[0][calls[0].index("--mode") + 1] == "DARK"
+      and "off" in st and not any(c[0] == A.CA for c in calls))
 fails += not ok
-print("%s  stage2 off: set --n 0, recorded: %r" % ("ok  " if ok else "FAIL", calls))
+print("%s  stage2 off: set --mode DARK (every seat 0), recorded: %r" % ("ok  " if ok else "FAIL", calls))
+# review 2026-10-28: the real `claude-account --json status` is ~2030 chars; run() keeps the last 2000, which cut the
+# opening brace, so live_account() returned None and stage 2 never fired
+_REAL = _json.dumps({"ok": True, "machine": "archmagi", "live": "lukas", "pad": "x" * 2500,
+                     "accounts": [{"name": "lukas", "last_warm": {"ts": "t"}}]}, indent=2)
+_saved = A.subprocess
+A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(returncode=0, stdout=_REAL, stderr="warn\n"),
+                                     TimeoutExpired=_saved.TimeoutExpired)
+try:
+    got = A.live_account()
+finally:
+    A.subprocess = _saved
+fails += got != "lukas"
+print("%s  live_account parses a status longer than 2000 chars: %r" % ("ok  " if got == "lukas" else "FAIL", got))
+# review 2026-10-28: a hung account_usage is a logged skip, not a traceback that kills the pass
+with tempfile.TemporaryDirectory() as td:
+    saved = (A.OUT, A.MARKER, A.subprocess)
+    A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
+    A.subprocess = types.SimpleNamespace(run=_raise, TimeoutExpired=_saved.TimeoutExpired)
+    try:
+        rc_u = A.check(False)
+        ok = rc_u != 0 and "account_usage" in open(os.path.join(td, "log.jsonl")).read()
+    except Exception as e:  # noqa: BLE001
+        ok, rc_u = False, repr(e)
+    finally:
+        A.OUT, A.MARKER, A.subprocess = saved
+fails += not ok
+print("%s  a hung account_usage is a logged skip: %r" % ("ok  " if ok else "FAIL", rc_u))
+# review 2026-10-28: already live on the target (switched by hand) -> mark, never `use` again (it closes every window)
+with tempfile.TemporaryDirectory() as td:
+    calls = []
+    saved = (A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.live_account)
+    A.OUT, A.MARKER = td, os.path.join(td, "switched.json")
+    A.run = lambda argv: (calls.append(argv[1]), (0, ""))[1]
+    A.subprocess = types.SimpleNamespace(run=lambda *a, **k: types.SimpleNamespace(
+        stdout=_json.dumps({"accounts": {"system": M(1), "lukas": M(50)}})))
+    A.time = types.SimpleNamespace(time=lambda: DL - 3600)
+    A.live_account = lambda: "lukas"
+    try:
+        A.check(False)
+        ok, marked = "use" not in calls and "arm" not in calls, os.path.exists(A.MARKER)
+    finally:
+        A.OUT, A.MARKER, A.run, A.subprocess, A.time, A.live_account = saved
+fails += not (ok and marked)
+print("%s  already live on %s: marked, no switch: %r %r" % ("ok  " if ok and marked else "FAIL", A.TO, calls, marked))
 calls, st = _stage2_check("lukas", L(7), {}, dry=True)
 ok = calls == [] and st == {}
 fails += not ok

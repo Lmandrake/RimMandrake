@@ -1,0 +1,2 @@
+A helper that tails command output for logging ((stdout+stderr)[-2000:]) must never feed a parser: account_failover.live_account parsed the tail of the 2026-char 'claude-account --json status', lost the opening brace, returned None always, so stage 2 (lukas burn/DARK) could never fire. Selftests stubbed live_account and never saw it; only running the real call caught it. Probe the real command once in review.
+home: NONE
