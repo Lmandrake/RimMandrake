@@ -250,6 +250,12 @@ def validate_role(role):
         # 0 would stop every run at once (review V, V3)
         if not (_num(role.get(k)) and role[k] > 0):
             raise ValueError("%s %r is not a number > 0" % (k, role.get(k)))
+    # decide_roles reads only TODAY's slots: a late window past local midnight would drop the slot silently after
+    # midnight (neither launched nor journaled missed). Refuse it loudly (review night).
+    for t in role.get("quick_checks_local") or role.get("runs_local") or []:
+        h, m = parse_slot(t)[1].split(":")
+        if (int(h) * 60 + int(m)) * 60 + role["slot_late_s"] >= 86400:
+            raise ValueError("slot %r + slot_late_s %r crosses local midnight" % (t, role["slot_late_s"]))
     if not isinstance(role.get("event_runs") or [], list):
         raise ValueError("event_runs is not a list")
 

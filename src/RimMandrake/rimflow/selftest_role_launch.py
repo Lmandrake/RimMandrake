@@ -254,6 +254,11 @@ def good():
 
 def test_validate_role():
     RL.validate_role(good())
+    # review night: a slot whose late window crosses local midnight is refused loudly (decide_roles reads only today's
+    # slots, so after midnight yesterday's 23:59 slot would be neither launched nor journaled missed)
+    check(raises(lambda: RL.validate_role(dict(good(), slot_late_s=3600, runs_local=["23:30"])), "midnight"),
+          "a late window past midnight is refused")
+    RL.validate_role(dict(good(), slot_late_s=3600, runs_local=["20:00"]))
     check(raises(lambda: RL.validate_role(dict(good(), throttle_bands=[1])), "mapping"), "bands must be a mapping")
     check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={"A": 1})), "throttle band A is not a mapping"), "band mapping")
     check(raises(lambda: RL.validate_role(dict(good(), throttle_bands={"A": {"runway_ge": "x"}})), "not a number"), "band number")
