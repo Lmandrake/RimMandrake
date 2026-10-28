@@ -116,7 +116,7 @@ print("%s  after the system reset: no switch" % ("ok  " if not got else "FAIL"))
 # stage 2: never switches; burn once, then off at MEASURED <=2%, once
 LR = "2026-10-28T16:00:00-07:00"
 L = lambda l, src="MEASURED", st=False: {"source": src, "week_pct_left": l, "stale": st, "week_resets_at": LR}  # noqa: E731
-t2 = datetime_ts(A.DEADLINE) + 3600
+t2 = datetime_ts(A.DEADLINE) + 600  # 12:55, inside stage 2
 for (live, lk, st, want, name) in [("system", L(7), {}, None, "stage2: live is not lukas -> idle"),
                                    ("lukas", L(7), {}, "burn", "stage2: first pass burns"),
                                    ("lukas", L(5), {"burn": 1}, None, "stage2: burning, above 2%: nothing"),
@@ -371,5 +371,15 @@ with tempfile.TemporaryDirectory() as td:
 ok = prev == {"burn": 1}
 fails += not ok
 print("%s  a stage2.json write that dies keeps the previous state: %r" % ("ok  " if ok else "FAIL", prev))
+# owner 10:07: stage 2 ends at SYSTEM's 13:00 reset, not lukas's 16:00
+ok = A.TO_RESET == "2026-10-28T13:00:00-07:00"
+fails += not ok
+print("%s  stage 2 bound is 13:00: %r" % ("ok  " if ok else "FAIL", A.TO_RESET))
+t_1259 = datetime_ts("2026-10-28T12:58:00-07:00")
+got, _ = A.decide2({"lukas": L(7)}, t_1259, "lukas", {})
+got2, _ = A.decide2({"lukas": L(7)}, datetime_ts("2026-10-28T12:59:30-07:00"), "lukas", {})
+ok = got == "burn" and got2 is None
+fails += not ok
+print("%s  burns at 12:58, stops at 12:59:30: %r %r" % ("ok  " if ok else "FAIL", got, got2))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

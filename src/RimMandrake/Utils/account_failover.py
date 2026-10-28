@@ -28,7 +28,9 @@ RESET = "2026-10-28T13:00:00-07:00"         # the system week resets and refills
 # lukas's week resets and refills (meter, 2026-10-28 09:41: week_resets_at 2026-10-28T16:00-07:00). Stage 2 acts only
 # before it, and every --hours window ends at it: after it the meter names NEXT week's reset (a 168 h BURN) and a
 # reading polled before it is pre-refill (a wrong DARK) (review r3 2026-10-28)
-TO_RESET = "2026-10-28T16:00:00-07:00"
+# Owner 10:07: "Doesn't mandrake.system reset before that?" - yes, 13:00 (measured), so "the reset" of his order is the
+# FROM week's: stage 2 burns until 12:59 and every --hours window ends at 13:00; lukas's own 16:00 reset no longer bounds it.
+TO_RESET = RESET
 OWNER_ORDER = ("Ok, wake up! We have tokens to burn! Use up this account, then switch to the other account and use it "
                "up to 2% to, then wait for the reset to hit.")
 SLOT = os.path.join(HERE, "slot_allocator.py")
