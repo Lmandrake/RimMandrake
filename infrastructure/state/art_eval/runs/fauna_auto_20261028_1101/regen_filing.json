@@ -1,0 +1,6 @@
+{
+ "ok": false,
+ "rc": 1,
+ "why": "fill_queue exit 1",
+ "tail": " its biome's light and palette\n  \u26a0\ufe0f  arteval_RM_FireWasp_r2: no biome_register (and not biome_neutral) \u2014 the subject will render without its biome's light and palette\n  \u26a0\ufe0f  arteval_RM_Flamefang_r3: no biome_register (and not biome_neutral) \u2014 the subject will render without its biome's light and palette\nREFUSED ineligible: arteval_RM_FireHawk_r2: REFUSED_UNCONFIRMED \u2014 arteval_RM_FireHawk_r2_south: row names no install_to and no target_texpath (source_run fauna_auto_20261028_1101 exempts only REGEN/KEPT art, never REFUSED_UNCONFIRMED: fail closed)\nREFUSED ineligible: arteval_RM_FireWasp_r2: REFUSED_UNCONFIRMED \u2014 arteval_RM_FireWasp_r2_south: row names no install_to and no target_texpath (source_run fauna_auto_20261028_1101 exempts only REGEN/KEPT art, never REFUSED_UNCONFIRMED: fail closed)\n"
+}

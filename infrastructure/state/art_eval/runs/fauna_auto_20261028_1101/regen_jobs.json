@@ -1,0 +1,59 @@
+[
+ {
+  "id": "arteval_RM_FireHawk_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireHawk",
+  "prompt": "A single sprite of the fire-hawk, a lean, gaunt raptor of the Pyrelands, in painterly vanilla RimWorld style, realistic, soft shading, fine clean dark outline, transparent background. Its body is covered in ash-grey plumage that reads as ash or soot, with narrow shoulders, long legs, a slim crest and a long trailing plumed tail tipped with ember-orange, thinner than a stocky Earth hawk. Ember markings along the wing edges, crest and tail glow like live embers, with bright yellow-orange cores fading to deep red at the edges and a faint inner light against the ash-grey. Its eyes are bright and alert, and its beak is hooked. In its talons the bird grips a short charred twig carrying a small live flame and a glowing ember tip, large enough to stay visible at 32 px. The twig is held crosswise under the feet, perpendicular to the body axis, and keeps the same orientation relative to the talons in every view, with its burning end fixed to the bird's own left side. Front view, eyes toward the viewer: the twig lies left-right across the feet with the burning end on the viewer's right. Rear view, seen from behind, showing the back, tail and haunches with the eyes hidden: the same twig crosswise under the feet with the burning end on the viewer's left. Side view: the twig is foreshortened to a short stub crossing beneath the feet, its burning end pointing toward the camera side and glowing at the near foot. It has one consistent build, one height and one body width, with a narrow back, folded wings, and a long orange-tipped tail trailing down behind it, all in the same fine-outline painterly finish. Its wings are held clear of the body outline, its lean body, head and long plumed tail stay in one steady posture, and the burning twig stays gripped in its talons.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261028_1101",
+  "drawsize": 1.1,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RM_FireWasp_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp",
+  "prompt": "A single alien flying insect, the fire wasp, painted in the vanilla RimWorld sprite style: painterly, realistic, with a clean dark outline, on a fully transparent background. It is a slow, drifting glider that lives inside the heat. It has a blunt shielded head with dark compound eyes, short antennae, a broad heavy rounded thorax, and a stout tapering abdomen joined to the thorax without a narrow waist, with six jointed legs tucked under the body. The head, thorax, abdomen and legs are covered in overlapping heavy scales, like shingled armour plates, matte and ash-toned, each scale edged with a clean dark outline. The scale plating sets the whole colour and pattern: soot-grey and ember-bronze scales in a mottled, scalloped pattern, one uniform palette across the whole body. The scales look clean, intact and untouched by fire, with a faint ember-orange glow only in the seams between plates. Two pairs of broad, wide-chord membranous wings with dark veining are held spread wide for gliding on rising hot air. The wasp hangs suspended inside a few localized tongues of orange-red flame and a visible ripple of heat shimmer rising around and beneath it, painted in the same painterly style, the flames and shimmer kept close to the body and fading into fully transparent space around the effect; the scale plating stays clean and unburnt where the flames lick around it, its soot-grey and ember-bronze colour distinct from the flame colour. The insect is drawn from the game's elevated oblique camera, as a creature hovering in the world with visible body depth and foreshortening. Front view: eyes toward the viewer, head and thorax nearest, abdomen receding behind. Side view: the full profile of head, thorax and abdomen, wings spread above. Rear view, seen from behind: the scaled abdomen tip is large and nearest the viewer in the foreground, the thorax and wing bases sit behind and above it, the head is mostly hidden beyond the thorax with the eyes out of sight, and the two wing pairs spread out to the left and right sides, foreshortened along the body length. The body, scale pattern, palette, proportions and rendering stay exactly the same in every view; only the view changes. The silhouette reads as an armoured drifting glider, clearly unlike a hornet. Centred in the square canvas for a 2.0 by 2.0 draw size, with a transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_TOPDOWN, DEPARTURE_MISSING, F_TOPDOWN, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261028_1101",
+  "drawsize": 2.0,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RM_Flamefang_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Flamefang",
+  "prompt": "RimWorld sprite of the flamefang, a serpent of the burning grass, in painterly vanilla RimWorld style, realistic, clean dark outline, transparent background. Body plan: a legless serpent, a long limbless snake body with no feet, no claws and no shoulders, wound into a tight low spiral coil of stacked loops. The coil sits half-buried in grey ash and smouldering black roots, the lower loops sunk into the ash, so it blends into a smouldering root-mat. Scales: charred ash-grey and black plates, each split by fine cracks like burnt, fire-baked earth, with ember-orange glow showing in the cracks as if fire still burns under the skin. Head: a wedge-shaped serpent head with a heavy brow, raised from the coil. Fangs: one identical pair of oversized, long curved fangs, the same length on every facing, the tips glowing ember-orange as if red-hot and fading to bone-ivory at the base. Facings: south view, the head rises from the centre of the coil facing the viewer, eyes and both fangs toward the camera. East view, the coil is seen from the side as stacked loops, the head in profile at the front with the same pair of long ember-tipped fangs, one in front of the other, both full length. North view, rear view seen from behind: the stacked loops of the coil and the tail tip, head and eyes hidden behind the coil. Reference: none; build the body from this description.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DESC_MISS, DEPARTURE_MISSING, DEPARTURE_MISSING, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261028_1101",
+  "drawsize": 2.5,
+  "module": "walker"
+ }
+]
