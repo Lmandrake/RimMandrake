@@ -920,6 +920,19 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         if name in busy:
             return                                      # one run at a time: wait for the running one
+        if cfg.get("window_name") and obs.get("window_live"):
+            # a standing window of this role (Conductor: the Remote Control window, conductor.md) writes the findings
+            # itself: no headless `claude -p` beside it. Held, not marked: the slot waits (missed after slot_late_s).
+            # Unreadable holds too. Journaled once per slot, not every tick.
+            live, why = obs["window_live"](cfg["window_name"])
+            if live is not False:
+                if rs.get("window_hold") != job["key"]:
+                    rs["window_hold"] = job["key"]
+                    act(do="role_hold", role=name, why="%s %s not launched: %s (%s)" % (
+                        name, job["trigger"], "conductor window live" if live else "window UNMEASURED",
+                        "%s; the window does the check" % why if live else why))
+                return
+            rs.pop("window_hold", None)
         if job["slot"] and cfg.get("slot_when") == "done_claims":
             claims = unseen(done_claims(lr["events"], rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             if not claims:

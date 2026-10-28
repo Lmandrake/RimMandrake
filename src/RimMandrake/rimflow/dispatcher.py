@@ -1046,6 +1046,16 @@ def paused_now():
         return "paused (PAUSE unreadable)"
 
 
+def window_live(name):
+    """Is a standing window by this name running? -> (True|False|None, why). The seat detector the Dispatcher already
+    uses (`claude agents --json`, matched by session name, find_session): no second one. None = unreadable."""
+    ag = observe_agents()
+    if ag.get("state") != "MEASURED":
+        return None, ag.get("why", "claude agents unreadable")
+    s = find_session(ag["sessions"], {"session_name": name})
+    return (True, "session %s is %s" % (s.get("sessionId", "?"), s.get("status", "?"))) if s else (False, "")
+
+
 def role_obs(sch):
     return {
         "ops": lambda: RL.read_ops(RL.ops_status_path(sch)),
@@ -1058,6 +1068,7 @@ def role_obs(sch):
         "ledger": RL.read_ledger,
         "pending_stores": RL.PW.read_stores,
         "lent": lambda: AP.load_lent(sch.get("account_pick") or {}),
+        "window_live": window_live,
     }
 
 
