@@ -115,6 +115,28 @@ namespace RimMandrake.Shared.Slack
             bandLinks.Add(LinkKey(b, a));
         }
         public bool BandLinked(Cell a, Cell b) => bandLinks != null && InBounds(a) && InBounds(b) && bandLinks.Contains(LinkKey(a, b));
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: LinkBands undone (both directions); nothing linked is a no-op.</summary>
+        public void UnlinkBands(Cell a, Cell b)
+        {
+            if (bandLinks == null || !InBounds(a) || !InBounds(b)) return;
+            bandLinks.Remove(LinkKey(a, b));
+            bandLinks.Remove(LinkKey(b, a));
+        }
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC (HoseWorldPatch): one cell back to a new world's state (walkable, no door, no
+        /// extra cost, band 0, not buried, no conduit) so the hose world's per-cell rule can be written over it again. Its
+        /// band links stay: the patch re-judges every pair it touches (UnlinkBands).</summary>
+        public void ClearCell(Cell c)
+        {
+            if (!InBounds(c)) return;
+            int i = Idx(c);
+            conduit[i] = false;
+            block[i] = 0;
+            door[i] = false;
+            extraCost[i] = 0f;
+            forcedBuried[i] = false;
+            if (band != null) band[i] = 0;
+        }
 
         /// <summary>The four cardinal links of c as a bit mask (N, E, S, W = bits 0..3): part of the corridor signature, so
         /// building or removing a ramp beside a route re-plans it.</summary>

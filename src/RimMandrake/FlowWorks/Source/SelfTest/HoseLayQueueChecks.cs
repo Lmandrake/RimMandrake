@@ -214,7 +214,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(draw > 0 && src.IndexOf("HoseLay lay = EnsureLay(r, true);", draw, StringComparison.Ordinal) > draw, "DrawAll asks EnsureLay(r, true)");
                 Assert(src.IndexOf("HoseLay lay = EnsureLay(r);", draw, StringComparison.Ordinal) < 0, "no synchronous EnsureLay(r) left in DrawAll");
                 Assert(src.Contains("% 250 == 0) TickRecheck(r, now);"), "the 250-tick check runs TickRecheck");
-                int rc = src.IndexOf("private void TickRecheck(", StringComparison.Ordinal);
+                int rc = src.IndexOf("private void TickRecheckBody(", StringComparison.Ordinal);
                 Assert(rc > 0 && src.IndexOf("EnsureLay(r, true);", rc, StringComparison.Ordinal) > rc, "the 250-tick check asks deferred");
                 Assert(src.Contains("if (deferred && !LegacyFrame) return LayLater("), "deferred only off FrameLegacy");
                 Assert(src.Contains("return HoseLayQueue.LayFromOn(World(), r.Rect, Start(r), outward, end, inward, route, sp, r.Seed);"), "LayFrom's body is LayFromOn");

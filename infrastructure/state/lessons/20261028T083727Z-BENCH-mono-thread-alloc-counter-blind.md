@@ -1,0 +1,2 @@
+RimWorld's Mono (1.6, Boehm) binds GC.GetAllocatedBytesForCurrentThread by reflection but it is BLIND: it reads 0 B across a fresh 1 MB byte[] (ProofTickSplit allocprobe, 2026-10-28, /mnt/d/ClaudeWork/rimmandrake/hose_zero_alloc/run/c1_probe.txt). Any per-thread alloc number from it in game is a zero from a blind instrument, not zero allocation. Prove zero-alloc offline on CoreCLR (exact there) and in game count GC landings in the code's ticks.
+home: skill:live-debugging-proof-harness

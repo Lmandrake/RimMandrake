@@ -291,11 +291,13 @@ namespace RimMandrake.FlowWorks.SelfTest
                 // production wiring: World() writes bands, the live per-cell read folds band + links, the tick's corridor branch
                 // is the one that re-plans (layKey cleared) or retracts (CheckReplan -> Retract)
                 string comp = Src("Hose", "RM_MapComponent_Hoses.cs");
-                Assert(Body(comp, "private CordWorld BuildWorld(").Contains("RM_HoseBands.Apply(map, cw)"), "World() does not read depth");
+                Assert(Body(comp, "private CordWorld BuildWorld(").Contains("FillWorld(cw)") && Body(comp, "private void FillWorld(").Contains("RM_HoseBands.Apply(map, cw)"), "World() does not read depth");
+                // HOSE_TICK_REBUILD_ZERO_ALLOC: a patched cell reads depth by the same per-cell rule (ApplyCell)
+                Assert(comp.Contains("if (active) RM_HoseBands.ApplyCell(comp.map, eng, w, c);"), "a patched cell does not read depth");
                 string live = Body(comp, "internal ulong LiveCellSig(");
                 Assert(live.Contains("RM_HoseBands.BandAt(map, c)") && live.Contains("RM_HoseBands.LinkMask(map, c, band)"), "LiveCellSig ignores band or links");
                 Assert(comp.Contains("CordSig.Of(walkable, door, extra, band, linkMask)"), "SigOf is not the shared CordSig.Of formula");
-                string tick = Body(comp, "private void TickRecheck(");  // the 250-tick block, its own profilable method since round 9
+                string tick = Body(comp, "private void TickRecheckBody(");  // the 250-tick block (TickRecheck, its own profilable method since round 9, times it)
                 Assert(tick.Contains("CorridorHashLive(r.lay) != r.corridorHash") && tick.Contains("HoseMath.CheckReplan(w, r.Rect") && tick.Contains("CordWorld w = LegacyFrame ? World() : World(LayWorldMaxAge);") && tick.Contains("r.Retract(why)"),
                     "the 250-tick corridor branch is not the re-plan-or-retract");
                 Assert(Body(Src("Hose", "CompHoseReel.cs"), "internal bool TrailWalkable(").Contains("w.StepAllowed(prev.Value, k)"),

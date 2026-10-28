@@ -700,13 +700,20 @@ namespace RimMandrake.FlowWorks.SelfTest
             string comp = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
             C(comp.Contains("HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)") && comp.Contains("worldVersion = version;"),
               "World() uses the versioned cache rule");
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: patched by events, a version-valid snapshot is current at any age; the age bound
+            // is LegacyFrame's only
+            C(System.Text.RegularExpressions.Regex.IsMatch(comp, @"if \(world != null && worldVersion == mapVersion\s+&& \(!LegacyFrame \|\| HoseLive\.SnapshotFresh\(now, worldTick, maxAge, worldVersion, mapVersion\)\)\) return world;"),
+              "World() returns a version-valid snapshot at any age outside LegacyFrame");
             foreach (string ev in new[] { "BuildingSpawned += OnBuilding", "BuildingDespawned += OnBuilding", "ThingSpawned += OnThing",
                                           "TerrainChanged += OnCell", "PathCostRecalculate += OnCell", "CellFogChanged += OnFog", "MapFogged += MapChanged" })
                 C(comp.Contains("map.events." + ev), "World() invalidates on " + ev.Split(' ')[0]);
             C(comp.Contains("private void MapChanged() => mapVersion++;") && comp.Contains("UnhookMapEvents();"), "map changes bump the version; MapRemoved unhooks");
-            C(comp.Contains("private void OnBuilding(Building b) => MapChanged();"), "a building spawned or despawned (the paused build) always bumps the version");
-            C(comp.Contains("if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MapChanged();"),
-              "a per-cell event bumps only when the cell reads differently from the snapshot (snow/filth path-cost churn does not rebuild per tick)");
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: a building, tree or changed cell lists its squares for the next read's patch, and
+            // bumps the version (a whole rebuild) only past the list's capacity
+            C(comp.Contains("if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();"), "a building spawned or despawned (the paused build) always reaches the snapshot (patched, or rebuilt past capacity)");
+            C(comp.Contains("if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();"),
+              "a per-cell event reaches the snapshot only when the cell reads differently from it (snow/filth path-cost churn does not rebuild per tick)");
+            C(comp.Contains("if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(now);"), "World() patches the listed cells before it judges freshness");
         }
 
         private static void PortEnds()

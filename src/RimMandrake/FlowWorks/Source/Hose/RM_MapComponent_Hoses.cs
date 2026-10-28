@@ -26,6 +26,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>BuildWorld's time on every map, Stopwatch ticks (HoseTickWatch's per-tick delta).</summary>
         internal static long BuildWorldStopwatchTicks;
         private int worldTick = -1;
+        /// <summary>The tick of the last whole build (worldTick also moves on a patch): ProofPatch's snapshot age.</summary>
+        private int worldBuiltAt = -1;
         /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: bumped by every map change the snapshot reads (MapChanged), and
         /// the value the snapshot was built from; World() rebuilds when they differ, paused or not.</summary>
         private int mapVersion, worldVersion = -1;
@@ -39,6 +41,12 @@ namespace RimMandrake.FlowWorks.Hose
         public static int Relays, LastLayMs, Retracts;
         /// <summary>Whole-map CordWorld snapshots built (World()), and corridor checks answered from the live map instead.</summary>
         public static int WorldBuilds, LiveCorridorChecks;
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: snapshots brought up to date cell by cell (PatchWorld) instead of rebuilt, and
+        /// the cells changed since the snapshot was built or patched (a building's footprint, a tree's square, a cell whose
+        /// per-cell event read differently); past its capacity the next read rebuilds whole.</summary>
+        public static int WorldPatches;
+        private readonly HoseWorldDirty dirty = new HoseWorldDirty(4096);
+        private LiveRule liveRule;
 
         private sealed class Cached
         {
@@ -185,7 +193,8 @@ namespace RimMandrake.FlowWorks.Hose
         /// <summary>A hose's CordWorld: walls, rock, impassable buildings and fog block it; WATER does not (a hose
         /// floats, design 3.5: walkable at extra cost 3); trees cost a little; a reel or pump (walk-over) costs
         /// HoseMath.BuildingCrossCost so the hose goes round it (HOSE_PATHING_REPAIR_SCENIC_ROUTE_PLEASE), and so does any other
-        /// walk-over building drawn above the hose (CostsAsBuilding, HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK). Cached for the tick it was taken.</summary>
+        /// walk-over building drawn above the hose (CostsAsBuilding, HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK). Kept current by map events
+        /// (patched cells) and the version (rebuilt whole); maxAge bounds its age under LegacyFrame only.</summary>
         internal CordWorld World(int maxAge = 0)
         {
             HookMapEvents();
@@ -197,6 +206,7 @@ namespace RimMandrake.FlowWorks.Hose
             // today); the climb generation (bed and dug depths, covers, ramps, decks, swim lift: SetBed writes a bed with no
             // path-cost event) and the climb-settings salt (a drained pond's hollow, ramps on/span, portable ladder reach:
             // RM_PocketGrid.SettingsChanged, no map event at all)
+            bool folded = false;
             int climbGen = RM_SuperdeepTrap.EngineOf(map)?.ClimbGeneration ?? 0;
             if (ladderVerSeen != RM_LadderUtility.StateVersion || bandsOnSeen != RM_HoseBands.On
                 || climbGenSeen != climbGen || climbSaltSeen != RM_CliffMask.settingsSalt)
@@ -206,9 +216,86 @@ namespace RimMandrake.FlowWorks.Hose
                 climbGenSeen = climbGen;
                 climbSaltSeen = RM_CliffMask.settingsSalt;
                 MapChanged();
+                folded = true;
             }
-            if (world != null && HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion)) return world;
+            if (world != null && worldVersion == mapVersion && dirty.Count > 0) PatchWorld(now);
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: every change World() reads is an event (patched) or a version bump (rebuilt), so a
+            // version-valid snapshot reads as the map now at any age (ProofPatch holds a long-lived one to a fresh read live);
+            // the age bound (maxAge: 0 = this tick only) survives only under LegacyFrame. It rebuilt the 325x325 map1 world
+            // ~33 times a dry window at 13 ms each, for nothing.
+            if (world != null && worldVersion == mapVersion
+                && (!LegacyFrame || HoseLive.SnapshotFresh(now, worldTick, maxAge, worldVersion, mapVersion))) return world;
+            buildWhy[world == null ? 0 : folded ? 1 : worldVersion != mapVersion ? 2 : 3]++;
             return BuildWorld(now);
+        }
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC (HOSES_MAP1_DIAGNOSE_TICK_STALLS: on map1 every huge tree's trunk blocker spawned
+        /// or despawned rebuilt the whole snapshot, 388 rebuilds a window): the changed cells are rewritten in place by
+        /// World()'s own per-cell rule (WriteCell) and their band links judged again (HoseWorldPatch, held equal to a whole
+        /// build by HoseWorldPatchChecks offline and ProofPatch live). Patched, it reads as a whole build of the map now, so it
+        /// counts as taken now (worldTick): TickRecheck's World(LayWorldMaxAge) after a blocker cut a corridor is then a patch,
+        /// not a whole rebuild of an over-age snapshot. A new serial makes the lay pool copy it again.</summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private void PatchWorld(int now)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (liveRule == null) liveRule = new LiveRule(this);
+            liveRule.Begin();
+            HoseWorldPatch.Patch(world, dirty, liveRule);
+            dirty.Clear();
+            WorldPatches++;
+            splitPatches++;
+            worldSerial++;
+            worldTick = now;
+            long dt = System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            BuildWorldStopwatchTicks += dt;
+            if (dt > splitPatchMax) splitPatchMax = dt;
+        }
+
+        /// <summary>World()'s rule for one cell of the live map, for HoseWorldPatch (BuildWorld's loop body, its tree pass
+        /// and RM_HoseBands.ApplyCell).</summary>
+        private sealed class LiveRule : IHoseCellRule
+        {
+            private readonly RM_MapComponent_Hoses comp;
+            private RM_MapComponent_Excavation eng;
+            private bool active;
+            public LiveRule(RM_MapComponent_Hoses comp) { this.comp = comp; }
+            public void Begin()
+            {
+                eng = RM_SuperdeepTrap.EngineOf(comp.map);
+                active = RM_HoseBands.On && eng != null && eng.ClimbCellCount != 0;
+            }
+            public bool BandsActive => active;
+            public void WriteCell(CordWorld w, Cell cell)
+            {
+                var c = new IntVec3(cell.X, 0, cell.Z);
+                comp.WriteBaseCell(w, comp.map.cellIndices.CellToIndex(c), c, cell);
+                if (comp.TreeAt(c)) w.SetExtraCost(cell, 1.5f);
+                if (active) RM_HoseBands.ApplyCell(comp.map, eng, w, c);
+            }
+            public bool Linked(Cell a, Cell b, int ba, int bb) =>
+                RM_HoseBands.Linked(comp.map, new IntVec3(a.X, 0, a.Z), new IntVec3(b.X, 0, b.Z), ba, bb);
+        }
+
+        /// <summary>BuildWorld's base rule for one cell (fog, door, walkable, free water, a reel, else blocked).</summary>
+        private void WriteBaseCell(CordWorld cw, int idx, IntVec3 c, Cell cell)
+        {
+            if (map.fogGrid.IsFogged(idx)) { cw.SetBlocked(cell, BlockKind.Rock); return; }
+            Building ed = map.edificeGrid[idx];
+            if (ed is Building_Door) cw.SetDoor(cell);
+            TerrainDef t = map.terrainGrid.TerrainAt(idx);
+            if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { if (CostsAsBuilding(ed)) cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); return; }
+            if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) { cw.SetExtraCost(cell, 3f); return; }
+            if (ed != null && CompHoseReelOf(ed) != null) { cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); return; }
+            cw.SetBlocked(cell, ed != null && ed.def.building != null && ed.def.building.isNaturalRock ? BlockKind.Rock : BlockKind.Wall);
+        }
+
+        private bool TreeAt(IntVec3 c)
+        {
+            List<Thing> l = c.GetThingList(map);
+            for (int i = 0; i < l.Count; i++)
+                if (l[i] is Plant p && p.def.plant != null && p.def.plant.IsTree) return true;
+            return false;
         }
 
         /// <summary>World()'s whole-map rebuild (its own method so a profile names it: HOSE_TICK_FIX_SPIKES_AT_SUPERFAST).</summary>
@@ -229,28 +316,32 @@ namespace RimMandrake.FlowWorks.Hose
             if (cw != null && cw.Width == w && cw.Height == h && (spareTick != now || spareFrame != Time.frameCount)) cw.Reset();
             else cw = new CordWorld(w, h);
             if (world != null) { worldSpare = world; spareTick = now; spareFrame = Time.frameCount; }
+            FillWorld(cw);
+            dirty.Clear();   // the whole map is read now: nothing is left to patch
+            splitBuilds++;
+            world = cw;
+            worldTick = now;
+            worldBuiltAt = now;
+            worldVersion = version;
+            long bdt = System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            BuildWorldStopwatchTicks += bdt;
+            if (bdt > splitBuildMax) splitBuildMax = bdt;
+            return cw;
+        }
+
+        /// <summary>BuildWorld's whole-map read into a cleared world (also ProofPatch's reference).</summary>
+        private void FillWorld(CordWorld cw)
+        {
             CellIndices ci = map.cellIndices;
-            for (int idx = 0; idx < w * h; idx++)
+            int n = map.Size.x * map.Size.z;
+            for (int idx = 0; idx < n; idx++)
             {
                 IntVec3 c = ci.IndexToCell(idx);
-                var cell = new Cell(c.x, c.z);
-                if (map.fogGrid.IsFogged(idx)) { cw.SetBlocked(cell, BlockKind.Rock); continue; }
-                Building ed = map.edificeGrid[idx];
-                if (ed is Building_Door) cw.SetDoor(cell);
-                TerrainDef t = map.terrainGrid.TerrainAt(idx);
-                if (map.pathing.Normal.pathGrid.WalkableFast(idx)) { if (CostsAsBuilding(ed)) cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); continue; }
-                if (ed == null && t != null && t.IsWater && !HasImpassableThing(c)) { cw.SetExtraCost(cell, 3f); continue; }
-                if (ed != null && CompHoseReelOf(ed) != null) { cw.SetExtraCost(cell, HoseMath.BuildingCrossCost); continue; }
-                cw.SetBlocked(cell, ed != null && ed.def.building != null && ed.def.building.isNaturalRock ? BlockKind.Rock : BlockKind.Wall);
+                WriteBaseCell(cw, idx, c, new Cell(c.x, c.z));
             }
             foreach (Plant p in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
                 if (p.def.plant != null && p.def.plant.IsTree) cw.SetExtraCost(new Cell(p.Position.x, p.Position.z), 1.5f);
             RM_HoseBands.Apply(map, cw);   // PIPE_POLES phase 6: depth bands, ramp/ladder links (design §P5)
-            world = cw;
-            worldTick = now;
-            worldVersion = version;
-            BuildWorldStopwatchTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
-            return cw;
         }
 
         /// <summary>HOSE_WORLD_SNAPSHOT_FIX_STALE_WHILE_PAUSED: subscribe once to the map events that change what World() reads
@@ -284,8 +375,29 @@ namespace RimMandrake.FlowWorks.Hose
             map.events.MapFogged -= MapChanged;
         }
 
-        private void OnBuilding(Building b) => MapChanged();
-        private void OnThing(Thing t) { if (t is Plant p && p.def.plant != null && p.def.plant.IsTree) MapChanged(); }
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: a building or tree changes World()'s read of its own squares only (its band
+        /// links are judged again with them), so they are patched at the next read, not rebuilt whole. What a building can
+        /// change beyond its squares (a ramp, ladder, cover or deck: the climb generation) still rebuilds whole (World()).</summary>
+        private void OnBuilding(Building b)
+        {
+            CellRect r = b.OccupiedRect();
+            if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();
+        }
+        private void OnThing(Thing t)
+        {
+            if (t is Plant p && p.def.plant != null && p.def.plant.IsTree && !MarkDirty(t.Position.x, t.Position.z, t.Position.x, t.Position.z)) MapChanged();
+        }
+        /// <summary>Lists the rectangle's cells for PatchWorld; false (whole rebuild) past the list's capacity. With no current
+        /// snapshot nothing is listed: the next read rebuilds whole anyway.</summary>
+        private bool MarkDirty(int x0, int z0, int x1, int z1)
+        {
+            if (world == null || worldVersion != mapVersion) return true;
+            dirty.Ensure(world.Width, world.Height);
+            dirty.MarkRect(x0, z0, x1, z1);
+            if (!dirty.Overflow) return true;
+            dirty.Clear();
+            return false;
+        }
         private void OnCell(IntVec3 c) => CellChanged(c);
         private void OnFog(IntVec3 c, bool fogged) => CellChanged(c);
         /// <summary>A per-cell event (path cost, terrain, fog) bumps the version only when the cell now reads differently from the
@@ -295,7 +407,7 @@ namespace RimMandrake.FlowWorks.Hose
         {
             if (world == null || worldVersion != mapVersion) return;   // already rebuilding on the next read
             var cell = new Cell(c.x, c.z);
-            if (CordSig.CellSig(world, cell) != LiveCellSig(cell)) MapChanged();
+            if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();
         }
         private void MapChanged() => mapVersion++;
 
@@ -349,10 +461,12 @@ namespace RimMandrake.FlowWorks.Hose
             CordSig.Of(walkable, door, extra, band, linkMask);
 
         /// <summary>CorridorHash over the live map (LiveCellSig), equal to CorridorHash(World(), lay) while nothing changed.</summary>
+        private Func<Cell, ulong> liveSigFn;
         internal ulong CorridorHashLive(HoseLay lay)
         {
             LiveCorridorChecks++;
-            return CorridorHash(lay, LiveCellSig);
+            // HOSE_TICK_REBUILD_ZERO_ALLOC: one delegate per map component, not a new one per 250-tick check
+            return CorridorHash(lay, liveSigFn ?? (liveSigFn = LiveCellSig));
         }
 
         private bool HasImpassableThing(IntVec3 c)
@@ -870,6 +984,47 @@ namespace RimMandrake.FlowWorks.Hose
         private int splitTicks, splitGcTicks, splitAllocTicks;
         private double splitOwnMaxMs, splitGcMaxMs;
         private long splitAllocBytes, splitAllocMax;
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: whole rebuilds (by cause: no snapshot, a folded global switch, a map event
+        /// past the dirty list or a fogged map, or age under LegacyFrame) and patches since the last reset.</summary>
+        private int splitBuilds, splitPatches;
+        private readonly int[] buildWhy = new int[4];
+        private static readonly string[] BuildWhyNames = { "none", "fold", "event", "age" };
+        /// <summary>Longest BuildWorld, PatchWorld and TickRecheck since the reset (Stopwatch ticks), and per tick phase
+        /// (PhaseNames) the collections that landed in it and its heap growth on the others (GetTotalMemory: Mono's
+        /// GC.GetAllocatedBytesForCurrentThread reads a 1 MB array as 0 B, so it cannot say what a phase allocated).</summary>
+        private long splitBuildMax, splitPatchMax, splitRecheckMax;
+        private readonly long[] phaseGrow = new long[5];
+        private readonly int[] phaseGc = new int[5];
+        private static readonly string[] PhaseNames = { "watch", "pre", "signal", "sm", "recheck" };
+        private long phaseMark;
+        private int phaseGcMark;
+        private void Phase(int k)
+        {
+            long a = GC.GetTotalMemory(false);
+            int g = GC.CollectionCount(0);
+            if (k >= 0)
+            {
+                if (g != phaseGcMark) phaseGc[k]++;
+                else if (a > phaseMark) phaseGrow[k] += a - phaseMark;
+            }
+            phaseMark = a;
+            phaseGcMark = g;
+        }
+        private static double Ms(long sw) => sw * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+
+        /// <summary>GC.GetAllocatedBytesForCurrentThread when the running mscorlib has it (bound by reflection: the reference
+        /// assemblies the mod builds against may lack it), else null. ProofTickSplit "allocprobe" asks whether it is live (a
+        /// 1 MB array must read as about 1 MB): under RimWorld's Mono it reads 0, blind; it is kept only for that probe.</summary>
+        private static readonly Func<long> ThreadAlloc = BindThreadAlloc();
+        private static Func<long> BindThreadAlloc()
+        {
+            try
+            {
+                System.Reflection.MethodInfo mi = typeof(GC).GetMethod("GetAllocatedBytesForCurrentThread", System.Type.EmptyTypes);
+                return mi == null ? null : (Func<long>)Delegate.CreateDelegate(typeof(Func<long>), mi);
+            }
+            catch (Exception) { return null; }
+        }
 
         /// <summary>HOSES_MAP1_DIAGNOSE_TICK_STALLS live probe: per map, the hose tick's max own milliseconds (ticks no collection
         /// landed in), its max on ticks a collection landed in, and the heap growth it caused on the others (GetTotalMemory is
@@ -886,14 +1041,76 @@ namespace RimMandrake.FlowWorks.Hose
                     c.splitTicks = c.splitGcTicks = c.splitAllocTicks = 0;
                     c.splitOwnMaxMs = c.splitGcMaxMs = 0;
                     c.splitAllocBytes = c.splitAllocMax = 0;
+                    c.splitBuilds = c.splitPatches = 0;
+                    Array.Clear(c.buildWhy, 0, c.buildWhy.Length);
+                    c.splitBuildMax = c.splitPatchMax = c.splitRecheckMax = 0;
+                    Array.Clear(c.phaseGrow, 0, c.phaseGrow.Length);
+                    Array.Clear(c.phaseGc, 0, c.phaseGc.Length);
                     continue;
                 }
                 sb.Append(" | map ").Append(m.Index).Append(" reels=").Append(c.reels.Count).Append(" ticks=").Append(c.splitTicks)
                     .Append(" ownMaxMs=").Append(c.splitOwnMaxMs.ToString("0.00")).Append(" gcTicks=").Append(c.splitGcTicks)
                     .Append(" gcMaxMs=").Append(c.splitGcMaxMs.ToString("0.0")).Append(" allocTicks=").Append(c.splitAllocTicks)
-                    .Append(" allocKB=").Append(c.splitAllocBytes / 1024).Append(" allocMaxKB=").Append(c.splitAllocMax / 1024);
+                    .Append(" allocKB=").Append(c.splitAllocBytes / 1024).Append(" allocMaxKB=").Append(c.splitAllocMax / 1024)
+                    .Append(" builds=").Append(c.splitBuilds).Append(" patches=").Append(c.splitPatches)
+                    .Append(" why=");
+                for (int k = 0; k < c.buildWhy.Length; k++) sb.Append(k == 0 ? "" : ",").Append(BuildWhyNames[k]).Append(':').Append(c.buildWhy[k]);
+                sb                    .Append(" buildMaxMs=").Append(Ms(c.splitBuildMax).ToString("0.00")).Append(" patchMaxMs=").Append(Ms(c.splitPatchMax).ToString("0.00"))
+                    .Append(" recheckMaxMs=").Append(Ms(c.splitRecheckMax).ToString("0.00")).Append(" phase=");
+                for (int k = 0; k < c.phaseGrow.Length; k++)
+                    sb.Append(k == 0 ? "" : ",").Append(PhaseNames[k]).Append(':').Append(c.phaseGrow[k] / 1024).Append("KB/").Append(c.phaseGc[k]).Append("gc");
+            }
+            if (arg == "allocprobe")
+            {
+                // the instruments' sanity probe: a 1 MB array must read as about 1 MB, or the counter is blind here (Mono's
+                // per-thread counter reads 0: run/c1_probe.txt, 2026-10-28)
+                long h0 = GC.GetTotalMemory(false);
+                long b0 = ThreadAlloc != null ? ThreadAlloc() : 0;
+                probeSink = new byte[1 << 20];
+                sb.Append(" | threadAlloc=").Append(ThreadAlloc == null ? "absent" : (ThreadAlloc() - b0) + "B")
+                    .Append(" heapGrow=").Append(GC.GetTotalMemory(false) - h0).Append("B for 1048576");
             }
             sb.Append(" | gc0=").Append(GC.CollectionCount(0));
+            return sb.ToString();
+        }
+
+        private static byte[] probeSink;
+
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC live oracle (jawa/static_call): per map, the current snapshot (patched up to
+        /// date, as World() hands it out) against a whole-map read of the live map now (FillWorld), cell by cell (CellSig,
+        /// BlockAt) and step by step (StepAllowed to the 8 neighbours). diffs=0 is the pass. Allocates a world: a probe only.</summary>
+        public static string ProofPatch(string arg)
+        {
+            var sb = new System.Text.StringBuilder("HOSEPATCH");
+            foreach (Map m in Find.Maps)
+            {
+                RM_MapComponent_Hoses c = m.GetComponent<RM_MapComponent_Hoses>();
+                if (c == null) continue;
+                int builds0 = WorldBuilds;
+                CordWorld cur = c.World(int.MaxValue / 2);
+                bool rebuilt = WorldBuilds != builds0;
+                var fresh = new CordWorld(cur.Width, cur.Height);
+                c.FillWorld(fresh);
+                int diffs = 0;
+                string first = null;
+                for (int z = 0; z < cur.Height; z++)
+                    for (int x = 0; x < cur.Width; x++)
+                    {
+                        var cell = new Cell(x, z);
+                        bool bad = CordSig.CellSig(cur, cell) != CordSig.CellSig(fresh, cell) || cur.BlockAt(cell) != fresh.BlockAt(cell);
+                        for (int dz = -1; dz <= 1 && !bad; dz++)
+                            for (int dx = -1; dx <= 1 && !bad; dx++)
+                                bad = cur.StepAllowed(cell, new Cell(x + dx, z + dz)) != fresh.StepAllowed(cell, new Cell(x + dx, z + dz));
+                        if (!bad) continue;
+                        diffs++;
+                        if (first == null)
+                            first = x + "," + z + " cur=" + cur.BlockAt(cell) + "/" + cur.ExtraCost(cell) + "/b" + cur.BandAt(cell) + "/l" + cur.LinkMask(cell)
+                                + " fresh=" + fresh.BlockAt(cell) + "/" + fresh.ExtraCost(cell) + "/b" + fresh.BandAt(cell) + "/l" + fresh.LinkMask(cell);
+                    }
+                sb.Append(" | map ").Append(m.Index).Append(" diffs=").Append(diffs).Append(" rebuiltNow=").Append(rebuilt)
+                    .Append(" builtAgo=").Append(Find.TickManager.TicksGame - c.worldBuiltAt).Append(" patchesTotal=").Append(WorldPatches).Append(" buildsTotal=").Append(WorldBuilds);
+                if (first != null) sb.Append(" first=").Append(first);
+            }
             return sb.ToString();
         }
 
@@ -915,7 +1132,9 @@ namespace RimMandrake.FlowWorks.Hose
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
+                Phase(-1);
                 Watch(r, now);
+                Phase(0);
                 // S2, design section 5 b: a carried / wound hose's holder is re-checked every 30 ticks (the RopingTick
                 // pattern) so an end is never held by a pawn that stopped holding it
                 if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
@@ -927,8 +1146,10 @@ namespace RimMandrake.FlowWorks.Hose
                     && RimMandrake.FlowWorks.Machinery.RM_HoseHold.ShouldDrain(r.heldUnits, RM_HoseSettings.hoseHoldsLiquid, RimMandrake.FlowWorks.Machinery.RM_HoseLinks.Eligible(r),
                         RimMandrake.FlowWorks.Machinery.RM_LiquidNetKernel.Flowing(r.flowUntil, now)))
                     RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainHeld(r, map, RimMandrake.FlowWorks.Machinery.RM_LiquidSpill.DrainCell(r, map));
+                Phase(1);
                 if (!r.laid) continue;
                 bool sig = HoseFlow.Signal(r, now, out r.lastProvider);
+                Phase(2);
                 r.lastSignal = sig;
                 HoseVis before = r.sm.State;
                 r.sm.Update(now, sig, t);
@@ -942,6 +1163,7 @@ namespace RimMandrake.FlowWorks.Hose
                 // HOSE_TICK_FIX_SPIKES_AT_SUPERFAST (round 8 T2c: one hose MapComponentTick took 183 ms, no child scope to say
                 // where): the 250-tick re-check is its own method, as are World()'s rebuild (BuildWorld) and the lay's world
                 // copy (TakeLayWorld), so a profile names them
+                Phase(3);
                 if ((now + r.parent.thingIDNumber) % 250 == 0) TickRecheck(r, now);
             }
         }
@@ -950,6 +1172,19 @@ namespace RimMandrake.FlowWorks.Hose
         /// winds it in.</summary>
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
         private void TickRecheck(CompHoseReel r, int now)
+        {
+            long rt = System.Diagnostics.Stopwatch.GetTimestamp();
+            try { TickRecheckBody(r, now); }
+            finally
+            {
+                rt = System.Diagnostics.Stopwatch.GetTimestamp() - rt;
+                if (rt > splitRecheckMax) splitRecheckMax = rt;
+                Phase(4);
+            }
+        }
+
+        /// <summary>TickRecheck's work (TickRecheck times it for ProofTickSplit and books its heap growth to "recheck").</summary>
+        private void TickRecheckBody(CompHoseReel r, int now)
         {
             // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
             // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.

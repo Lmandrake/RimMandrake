@@ -451,7 +451,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             // the live hose world (Verse-bound, not compiled here): World() and LiveCellSig must cost a reel/pump (and, since
             // HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK, any walk-over building drawn above the hose) the same
             string mc = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Hose", "RM_MapComponent_Hoses.cs"));
-            Check(System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) cw\.SetExtraCost\(cell, HoseMath\.BuildingCrossCost\); continue; \}")
+            Check(System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) cw\.SetExtraCost\(cell, HoseMath\.BuildingCrossCost\); return; \}")
                   && System.Text.RegularExpressions.Regex.IsMatch(mc, @"WalkableFast\(idx\)\) \{ if \(CostsAsBuilding\(ed\)\) extra = HoseMath\.BuildingCrossCost; \}")
                   && System.Text.RegularExpressions.Regex.IsMatch(mc, @"CostsAsBuilding\(Building ed\) =>\s+ed != null && \(IsRig\(ed\) \|\| DrawsOverHose\(ed\)\)")
                   && System.Text.RegularExpressions.Regex.IsMatch(mc, @"IsRig\(Building ed\) =>\s+ed != null && \(CompHoseReelOf\(ed\) != null \|\| ed is [\w.]*Building_LiquidPump\)"),

@@ -207,6 +207,16 @@ namespace RimMandrake.FlowWorks.Hose
             }
         }
 
+        /// <summary>HOSE_TICK_REBUILD_ZERO_ALLOC: ApplyLegacy's first pass for one cell of a world being patched (HoseWorldPatch;
+        /// the caller has checked On and a non-empty climb grid, and judges the links itself).</summary>
+        internal static void ApplyCell(Map map, RM_MapComponent_Excavation eng, CordWorld w, IntVec3 c)
+        {
+            if (eng.ClimbDepthAt(c) > 0 && HoseBandMath.SurfaceClosed(true, RM_LineCrossing.SurfaceAt(map, c)))
+                w.SetBlocked(new Cell(c.x, c.z), BlockKind.Wall);
+            int b = HoseBandMath.Band(true, RM_SuperdeepTrap.StepDepthAt(map, eng, c));
+            if (b != 0) w.SetBand(new Cell(c.x, c.z), b);
+        }
+
         /// <summary>Apply's rule for a cell with an intact deck on it (rare): exactly ApplyLegacy's reads.</summary>
         private static void DeckedCell(Map map, RM_MapComponent_Excavation eng, IntVec3 c, out bool closed, out int step)
         {

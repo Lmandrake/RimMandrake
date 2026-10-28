@@ -102,6 +102,7 @@
     <Compile Include="Hose\HoseCurveMetrics.cs" />
     <Compile Include="Hose\HoseClothoid.cs" />
     <Compile Include="Hose\HoseBandMath.cs" />
+    <Compile Include="Hose\HoseWorldPatch.cs" />
     <Compile Include="Hose\RM_HoseBands.cs" />
     <Compile Include="Hose\HoseRelay.cs" />
     <Compile Include="Hose\HoseCrossShadows.cs" />
