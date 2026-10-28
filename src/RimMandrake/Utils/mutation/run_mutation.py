@@ -55,7 +55,9 @@ PROBE = "\nraise RuntimeError('mutation-reach-probe')\n"
 
 U, R = "src/RimMandrake/Utils/", "src/RimMandrake/rimflow/"
 TARGETS = {
-    "close_evidence": (U + "close_evidence.py", [U + "selftest_close_evidence.py"]),
+    # the property test is ~1.3 s and drives _top_level/lookup/summarize hard (run 20261027a ran without it)
+    "close_evidence": (U + "close_evidence.py", [U + "selftest_close_evidence.py",
+                                                U + "selftest_close_evidence_props.py"]),
     "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py"]),
     "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py"]),
@@ -75,7 +77,7 @@ FLAKY = {
     "role_launch": ("B1 procs_of on the real /proc sees a live marked process", "B1 procs_of: none once it is gone"),
 }
 #: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
-BASELINE_S = {"close_evidence": 16.0, "arbiter_tiers": 3.0, "isolated_evidence": 2.0, "dispatcher": 3.4,
+BASELINE_S = {"close_evidence": 17.5, "arbiter_tiers": 3.0, "isolated_evidence": 2.0, "dispatcher": 3.4,
               "v3_vs_v2": 3.5, "delegated_digest": 2.2, "role_launch": 5.0}
 STATUS = {"ok_killed": "killed", "bad_survived": "survived", "bad_timeout": "timeout",
           "ok_suspicious": "suspicious", "skipped": "skipped", "untested": "untested"}
