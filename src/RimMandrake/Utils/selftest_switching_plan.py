@@ -388,6 +388,24 @@ def main():
           and (SP.load_state().get("stopped") or {}).get("account") == "system"
           and SP.read_json(TMP / "out" / "notice.json", {}).get("state") == "stop",
           "a switch lapsed by a target spent while arming runs the hard stop now due, not nothing")
+    # a spent live account whose switch target changed while arming is stopped, not left burning
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    (TMP / "live.txt").write_text("system")
+    st = SP.load_state(); st.pop("stopped", None); st.pop("last_poll", None); SP.save_state(st)
+    cur14 = [{"steven": R(80, 140, age=0), "system": R(0, 100), "lukas": R(80, 0.01, age=0)}]
+    def arm_retargets(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur14[0] = {"steven": R(80, 140, age=0), "system": R(0, 100), "lukas": R(100, 168, age=0)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_retargets
+    d14 = D(cur14[0], "system")
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur14[0], poll_fn=lambda: None)
+    SP.run = real_run
+    check(d14.get("to") == "lukas" and "use " not in calls.read_text() and "fleet-stop" in calls.read_text()
+          and (SP.load_state().get("stopped") or {}).get("account") == "system",
+          f"a spent account whose switch target changed while arming is stopped (first target {d14.get('to')})")
     # a stop that lapses while arming (lukas reset meanwhile) is skipped
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

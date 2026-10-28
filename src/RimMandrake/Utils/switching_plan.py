@@ -575,12 +575,16 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         live2 = switcher_status().get("live") or live  # a human may have switched while we armed
         if live2 != live:
             return False
-        d2 = decide(meter_fn(), live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
+        m2, n2 = meter_fn(), now + clock() - t2
+        d2 = decide(m2, live, n2, plan, state, mk, gate_seen=True, polled=True)
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
             d["under"] = True
-        if not same and d2["do"] == "stop" and d["do"] != "stop" and (state.get("stopped") or {}).get("account") != live:
-            brake.update(d2)  # a brake that became due while we armed is never dropped with the lapsed act
+        # a brake that became due while we armed is never dropped with the lapsed act: a stop now due, or a spent live
+        # account whose switch target changed, stops the fleet now (the next pass switches from the stopped fleet)
+        due = d2["do"] == "stop" or (d2["do"] == "switch" and d2.get("under"))
+        if not same and due and d["do"] != "stop" and (state.get("stopped") or {}).get("account") != live:
+            brake.update({**d2, "do": "stop", "key": d2["key"] if d2["do"] == "stop" else stop_key(live, m2.get(live) or {}, n2)})
             return ["fleet-stop"]
         return same
     if d["do"] == "switch":
