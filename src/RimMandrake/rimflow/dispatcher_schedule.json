@@ -40,7 +40,7 @@
    "_why": "owner 2026-10-27: \"We MUST prove that it's superior and at what cost. After it's settled down and optimized of course. One of the v3 roles must own this regular assessment.\" A program measures the week ending Monday 07:00 against the tagged v2 under the pre-registered, hash-pinned rule (V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS); Operations reads verdict.md at its 07:30 economy pass and owns the assessment; the Auditor re-checks quality_blind.md. Disabled until the v3 roles are enabled (no timer unit exists yet; the unit name is reserved)"}
  ],
  "roles": [
-  {"name": "Conductor", "enabled": false, "trigger": "his message; his presence (session); quick checks", "from": "v3.1",
+  {"name": "Conductor", "enabled": true, "trigger": "his message; his presence (session); quick checks", "from": "v3.1",
    "instructions": "src/RimMandrake/rimflow/roles/conductor.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest_blind.md",
    "quick_checks_local": ["08:00", "20:00"], "quick_token_cap": 80000, "daily_token_cap": 300000,
    "session_week_pct_cap": 6, "throttle_reads": "ops_watch status.json accounts.<its account>.runway",
@@ -86,7 +86,7 @@
    "off_file": "D:\\ClaudeWork\\rimmandrake\\auditor\\AUDITOR_OFF", "slot_late_s": 3600, "run_max_s": 2700,
    "_caps_why": "measured run floor 35-53k tokens; a run drives re-check helpers, so 100,000 like the Arbiter; daily 125,000 = one run x 1.25; RED 75,000, never below 60,000",
    "_why": "RIMFLOW_AUDITOR_RETHINK_DAILY_CAP (sim finding 8): no count cap on investigations; coverage comes from the no-AI pre-screen of every close (AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI, owed before enabling) and value from repeat-error rules, so the role is NOT paused in RED (the old throttle_order paused it second and left ~4 audits a week); FLOOR stops it like every role. 13:00 = after the Arbiter's 11:00 batch. weekly_plan_weekday Mon: role_launch.py marks Monday's run mode weekly = the weekly pass (lessons to skills, pre-screen weights, codebase health, adversarial reviews). Token-blind: reads digest_blind.md. helpers_max 2 re-checkers (sim finding 5's judge count), read by the instructions, not by role_launch.py. seat/clone/model are the builder's defaults of 2026-10-27: confirm before enabling."},
-  {"name": "Operations", "enabled": false, "trigger": "2x/day + alarms", "from": "v3.2",
+  {"name": "Operations", "enabled": true, "trigger": "2x/day + alarms", "from": "v3.2",
    "token_aware": true, "_token_aware_why": "the only AI that analyses burn (owner 2026-10-27): only its launch message carries the band, runway, budget and caps; every other role is token-blind and is told none of it (review T, F1)",
    "instructions": "src/RimMandrake/rimflow/roles/operations.md", "reads": "D:\\ClaudeWork\\rimmandrake\\ops_watch\\digest.md",
    "runs_local": ["07:30", "19:30"], "on_alarm": "OPS_* items spawned from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
