@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using HarmonyLib;
+using RimMandrake.Shared;
 using Verse;
 
 namespace RimMandrake.FlowWorks.Hose
@@ -11,6 +12,7 @@ namespace RimMandrake.FlowWorks.Hose
     /// time, lays started -- so a round names the spike instead of guessing. Two timestamps per tick; read and reset
     /// through jawa/static_call RimMandrake.FlowWorks.Hose.HoseTickWatch.Read("1") ("0" reads without resetting).</summary>
     [HarmonyPatch(typeof(TickManager), nameof(TickManager.DoSingleTick))]
+    [PatchFeature("Flexible hoses: worst-tick watch", typeof(RM_HoseSettings), "enabled")]
     public static class HoseTickWatch
     {
         private static long t0, hose0, builds0, buildTicks0, lays0;
@@ -53,6 +55,7 @@ namespace RimMandrake.FlowWorks.Hose
 
         /// <summary>The hose map component's MapComponentTick time, Stopwatch ticks (its own Harmony pair below).</summary>
         [HarmonyPatch(typeof(RM_MapComponent_Hoses), nameof(RM_MapComponent_Hoses.MapComponentTick))]
+        [PatchFeature("Flexible hoses: worst-tick watch", typeof(RM_HoseSettings), "enabled")]
         public static class HoseShare
         {
             private static long s0;

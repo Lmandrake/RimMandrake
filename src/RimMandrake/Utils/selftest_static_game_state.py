@@ -53,6 +53,8 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs::Default": "the carry state machine's constant transition table (tuple key of enums)",
     "src/RimMandrake/FlowWorks/Source/Hose/HoseRelay.cs::NoFeeders": "a shared empty readonly sentinel",
     "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs::NoJoints": "a shared empty readonly sentinel",
+    "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs::RibbonTr": "mesh-building scratch list (triangle indices), cleared at the start of every build; holds no game ids across builds",
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseTickWatch.cs::worstTick": "diagnostic only: the tick number of the worst frame since the last Read; reset by Read, never gates behaviour",
     "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs::shadowPool": "Material pool keyed by a colour/alpha hash, not game ids",
     "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs::searchCacheTick": "with searchCache: the cache is cleared whenever the tick differs from searchCacheTick, so a reload (a different tick) rebuilds it before any read",
     "src/RimMandrake/FlowWorks/Source/RM_LiquidFire.cs::shoveScratch": "per-call scratch list, cleared at the start and again at the end of the one method that fills it, so it never holds a Pawn past the call",

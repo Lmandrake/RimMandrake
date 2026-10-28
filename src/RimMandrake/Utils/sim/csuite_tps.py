@@ -22,9 +22,10 @@ Why: the 2026-10-26 BENCH bisect found the "full-list TPS drop" was a 2-map RM_P
 Only samples with dTicks>0 (game actually ticking) count for TPS.
 """
 import argparse, collections, glob, json, os, statistics as st, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from game_paths import LOCALLOW
 
-D = os.environ.get("JB_TPS", "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                   "RimWorld by Ludeon Studios/JawaBench/tps")
+D = os.environ.get("JB_TPS", os.path.join(str(LOCALLOW), "JawaBench", "tps"))
 
 KEY_FIELDS = ("save", "mapCount", "maps", "pawns", "mods")
 

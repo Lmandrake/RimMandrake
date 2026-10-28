@@ -444,8 +444,8 @@ def d2_case(fresh):
     return [r["status"] for r in P.rows if r["id"] == "D2_fresh_builder_same"]
 
 
-check("10 D2: clean fresh build PASSes", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 0}) == ["PASS"])
-check("10 control: an extra stale edge FAILs D2", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 1}) == ["FAIL"])
+check("10 D2: clean fresh build PASSes", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 0, "success": True}) == ["PASS"])
+check("10 control: an extra stale edge FAILs D2", d2_case({"edges": 1, "same": 1, "different": 0, "missing": 0, "extra": 1, "success": True}) == ["FAIL"])
 check("10 control: an empty fresh read FAILs D2", d2_case({}) == ["FAIL"])
 
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))

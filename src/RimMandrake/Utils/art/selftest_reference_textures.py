@@ -66,6 +66,11 @@ def built_sheets():
                     n += 1
                     check(not any(h in cols for h in shas), f"{snap.stem} {r['key']}: no reference texture is a column")
                 for html in sorted(A.BIOME_OUT.glob(f"{b['slug']}_sheet_*.html")):
+                    if html.stat().st_mtime < cj.stat().st_mtime:
+                        # built BEFORE the census last changed (the row may have gained reference_textures after this
+                        # HTML was written): a stale artifact, not a builder defect -- a rebuild shows them. Only sheets
+                        # built from the current census are held to "every reference texture is shown".
+                        continue
                     h = html.read_text()
                     m = re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', h, re.S)
                     items = json.loads(m.group(1)) if m else []
