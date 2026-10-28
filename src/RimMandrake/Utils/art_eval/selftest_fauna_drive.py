@@ -86,6 +86,15 @@ def main():
     check("row with install_to is left alone", "target_texpath" not in FD.bind_texpath({"target_def": "RM_Fly", "install_to": "a.png"}, tp))
     check("unresolvable def stays unbound (fill_queue refuses loudly)", "target_texpath" not in FD.bind_texpath({"target_def": "RM_None"}, tp))
     check("real flyer resolves its adult body", FD.bind_texpath({"target_def": "RM_FireHawk"}).get("target_texpath", "").endswith("/FireHawk/FireHawk"))
+    # FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT: an ACCEPTed art-eval redraw of kept art is installable whatever the
+    # first-pass band (owner card 2026-10-23 06:42, shown to him after with a revert); only a keep he made AFTER the
+    # first pass is his newer word
+    check("kept art, WEAK first pass: gate lets the ACCEPT through", FD.kept_refusal("RM_X", [], {"at": "t"}) is None)
+    check("a keep newer than the first pass still blocks", "newer word" in (FD.kept_refusal("RM_X", [{"id": "k1"}], {"at": "t"}) or ""))
+    kw = FD.install_provenance(True, "v")
+    check("kept install carries the card and a delegated digest why", "--by-card" in kw and any(str(x).startswith("delegated: art-eval redraw of kept art") for x in kw))
+    uw = FD.install_provenance(False, "v")
+    check("unkept install keeps its delegated why", any(str(x).startswith("delegated:") for x in uw) and "--by-card" not in uw)
     # a failed Sonnet rewrite (session limit) must never become the prompt: Flamefang/Ashwallow/Sytheclaw r2 were
     # rendered from "You've hit your session limit ..." (ARTEVAL_REGEN_PROMPT_FIX_LIMIT_TEXT)
     real = FD.R.call_claude

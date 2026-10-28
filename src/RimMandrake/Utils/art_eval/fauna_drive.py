@@ -253,13 +253,32 @@ def render_is_judged(judged_shas: dict, face: str, sha: str) -> bool:
     return bool(want) and want == sha
 
 
+def kept_refusal(defname, newer, first):
+    """Why an ACCEPTed redraw of owner-KEPT art must not be installed, or None. FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT
+    (BENCH ruling on the owner's card 2026-10-23 06:42, "art-eval pipeline's redraws of kept art, shown to him after
+    with a revert"): the first-pass band no longer matters - an ACCEPT that also won the head-to-head is installable.
+    Only a keep he made AFTER the first-pass judgement is his newer word."""
+    if newer:
+        return (f"{defname}: owner keep(s) {sorted({k['id'] for k in newer})} made after the first-pass judgement "
+                f"({first and first.get('at')}) - his newer word, not replaced")
+    return None
+
+
+def install_provenance(kept, verdict):
+    """art.py install provenance args. Kept art: the owner's card plus a `delegated:` why so the daily digest of
+    delegated calls lists the replacement (delegated_digest.py reads live events whose why starts `delegated:`)."""
+    if kept:
+        return ["--by-card", P_KEPT_CARD, "--why", f"delegated: art-eval redraw of kept art ({verdict}); shown to the owner after, revert logged"]
+    return ["--reason", "script:src/RimMandrake/Utils/art_eval/fauna_drive.py",
+            "--why", f"delegated: art {verdict} (pipeline ACCEPT + head-to-head B)"]
+
+
 def cmd_install(a):
     """Install an ACCEPTed candidate's three facings over the installed art through the art ledger (art.py install).
 
     Gates (all must hold): the candidate's pipeline decision is ACCEPT; the head-to-head compare says B; and when any
-    installed file is owner-KEPT the first pass must have been REALLY_BAD (the owner's card 2026-10-23 06:42 says "kept
-    art JUDGED REALLY BAD ... redraw on its own, show me after") and no keep may be newer than that judgement (he
-    looked again and kept it: his newer word) — then the install carries that card and the revert (old kept sha) is
+    installed file is owner-KEPT no keep may be newer than the first-pass judgement (he looked again and kept it: his
+    newer word); the first-pass band no longer matters (kept_refusal, FURNACEBEAST_ART_INSTALL_OWNER_KEPT_IT) — then the install carries that card and the revert (old kept sha) is
     logged in infrastructure/state/art_eval/fauna_installs.jsonl. A stopped series installs nothing."""
     import shutil
     if RS.stopped(a.defname):
@@ -296,14 +315,9 @@ def cmd_install(a):
             newer += RS.keeps_after(keeps, (first or {}).get("at"))
             mod_rel, rel = old.split("/src/", 1)[1].split("/Textures/", 1)
             files.append({"face": f, "mod": mod_rel, "rel": rel, "old_sha": sha, "kept": k})
-    band = ((first or {}).get("opus") or {}).get("band")
-    if anykept and band != "REALLY_BAD":
-        print(f"{a.defname}: owner-kept art, first pass band {band} (not REALLY_BAD) - flagged, not replaced")
-        return 3
-    if newer:
-        # the kept-art card covers the keep the REALLY_BAD judgement saw; a keep he made after it is his newer word
-        print(f"{a.defname}: owner keep(s) {sorted({k['id'] for k in newer})} made after the first-pass judgement "
-              f"({first and first.get('at')}) - his newer word, not replaced")
+    refusal = kept_refusal(a.defname, newer, first)
+    if refusal:
+        print(refusal)
         return 3
     judged = (cand.get("source_sha256") or {})
     for fl in files:
@@ -327,9 +341,7 @@ def cmd_install(a):
         shutil.copy(src, local)
         cmd = [sys.executable, str(ROOT / "src/RimMandrake/Utils/art/art.py"), "install", fl["mod"], fl["rel"],
                "--file", str(local.relative_to(ROOT))]
-        cmd += (["--by-card", P_KEPT_CARD] if fl["kept"] else
-                ["--reason", "script:src/RimMandrake/Utils/art_eval/fauna_drive.py",
-                 "--why", f"delegated: art {verdict} (pipeline ACCEPT + head-to-head B)"])
+        cmd += install_provenance(fl["kept"], verdict)
         if a.dry_run:
             cmd.append("--dry-run")
         r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)

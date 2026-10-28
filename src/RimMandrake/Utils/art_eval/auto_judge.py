@@ -289,6 +289,82 @@ def install_cmds(rec: dict, kind: str, spec=None, cmp_root: Path | None = None, 
     return out
 
 
+def compare_veto(cmp) -> str | None:
+    """The head-to-head compare's reason when it refuses to install the candidate (install_b false), else None. An
+    errored or missing compare is no verdict (compare_done): it vetoes nothing, it is run again."""
+    if not isinstance(cmp, dict) or cmp.get("error") or cmp.get("install_b") is not False:
+        return None
+    return str(cmp.get("reason") or "the head-to-head compare refused the candidate (no reason given)")
+
+
+MAX_VETO_ROUNDS = 3        # policy.py max_regen_rounds
+
+
+def veto_record(rec: dict, cmp: dict, base_prompt: str, nreg: int, max_rounds: int = MAX_VETO_ROUNDS) -> dict:
+    """The decision record that replaces an ACCEPT the head-to-head compare refused (ARTEVAL_COMPARE_VETO_FIX_ACCEPT_LIMBO):
+    a REGEN of the def's next round whose prompt is the candidate's own prompt plus the compare's reason, or an
+    ESCALATE at the round cap. `nreg` = REGEN rounds the def's series already has."""
+    reason = compare_veto(cmp) or "head-to-head compare refused the candidate"
+    out = dict(rec, at=now_iso(), reasons=list(rec.get("reasons") or []) + [f"head-to-head compare refused the ACCEPT: {reason}"])
+    if nreg + 1 > max_rounds:
+        out.update(decision="ESCALATE", round=nreg)
+        out["reasons"].append(f"still failing after {nreg} regen rounds - one line to the owner")
+        out.pop("regen", None)
+        return out
+    prompt = (base_prompt.strip() + " " if base_prompt else "") + (
+        "Correct what the previous attempt got wrong, found when it was compared with the installed art: " + reason)
+    out.update(decision="REGEN", round=nreg + 1,
+               regen={"findings": ["COMPARE_VETO"], "request": {"schema": "rm-art-eval/regen@v1", "subject": rec["subject"],
+                                                              "prompt": prompt, "by": "compare_veto", "reference": "none"}})
+    return out
+
+
+def already_vetoed(run_recs: list, rec: dict) -> bool:
+    """A later REGEN/ESCALATE of the same subject+candidate already replaced this ACCEPT in the run."""
+    seen = False
+    for r in run_recs:
+        if r.get("subject") == rec.get("subject") and r.get("candidate") == rec.get("candidate"):
+            if r.get("decision") == "ACCEPT" and r.get("at") == rec.get("at"):
+                seen = True
+            elif seen and r.get("decision") in ("REGEN", "ESCALATE"):
+                return True
+    return False
+
+
+def veto_to_regen(rid: str, rec: dict, cmp: dict, st: dict) -> dict:
+    """Turn the vetoed ACCEPT into its REGEN: append the record to the run's decisions (the next round counts it and
+    fauna_drive reads it as the newest decision), file the next round with the compare's reason in the prompt, and
+    make anything unfiled an item. Returns the new record."""
+    import runner as R
+    sub = rec["subject"]
+    base = ""
+    for f in sorted((STATE / "runs").glob("*/regen_jobs.json")):
+        try:
+            for j in json.loads(f.read_text()):
+                if j.get("id", "").startswith(f"arteval_{sub}_") and j["id"].endswith(str(rec.get("candidate"))):
+                    base = j.get("prompt") or base
+        except (OSError, ValueError):
+            pass
+    nreg = RS.regen_counts(RS.production_decisions(STATE / "runs")).get(sub, 0)
+    v = veto_record(rec, cmp, base, nreg)
+    run_dir = STATE / "runs" / rid
+    with (run_dir / "decisions.jsonl").open("a") as fh:
+        fh.write(json.dumps(v) + "\n")
+    if v["decision"] != "REGEN":
+        st["follow_ups"].append({"at": now_iso(), "subject": sub, "run": rid,
+                                 "owed": "escalate to the owner (round cap) after a compare veto"})
+        return v
+    jobs = R.regen_jobs([v], rid)
+    jf = run_dir / f"regen_jobs_veto_{rec.get('candidate')}.json"
+    jf.write_text(json.dumps(jobs, indent=1))
+    filing = R.file_regen_jobs(jf)
+    (run_dir / f"regen_filing_veto_{rec.get('candidate')}.json").write_text(json.dumps(filing, indent=1))
+    if not filing.get("ok"):
+        st["follow_ups"].append({"at": now_iso(), "subject": sub, "run": rid,
+                                 "owed": f"compare-veto REGEN {jobs[0]['id']} not filed ({filing.get('why')}); rows in {jf}"})
+    return v
+
+
 def fauna_installed(lines, defname: str, tag: str) -> list:
     """Repo paths fauna_drive install wrote for <def> <tag>, from its own fauna_installs.jsonl records."""
     out = []
@@ -504,9 +580,23 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
         spec = find_cand_spec(r["subject"], r.get("candidate"), specs) if kind == "fauna" else None
         cmds = install_cmds(r, kind, spec=spec, cmp_root=cmp_root)
         row = {"subject": r["subject"], "candidate": r.get("candidate"), "run": rid, "rc": []}
+        if kind == "fauna" and already_vetoed(run_records(rid), r):
+            continue
         if not cmds:
             row["result"] = "no installer command (no candidate spec / unparsable tag)"
+        vetoed = False
         for c in cmds:
+            if kind == "fauna" and Path(str(c[1])).name == "fauna_drive.py":
+                cj = Path(cmp_root) / f"{r['subject']}_{r.get('candidate')}" / "compare.json"
+                try:
+                    reason = compare_veto(json.loads(cj.read_text()))
+                except (OSError, ValueError):
+                    reason = None
+                if reason:        # the compare refused it: a REGEN carrying the reason, never limbo
+                    v = veto_to_regen(rid, r, json.loads(cj.read_text()), st)
+                    row["result"] = f"compare refused the ACCEPT -> {v['decision']} ({reason[:120]})"
+                    vetoed = True
+                    break
             rc = sh(c, ROOT if kind == "fauna" else DRV.parent, log, timeout=540)
             row["rc"].append(rc)
             if rc != 0:
@@ -520,6 +610,9 @@ def post_run(run_recs, specs, log: Path, st: dict) -> tuple:
             got = facing_installed(lines_of(ART_EVENTS), tp) if tp else []
         row["files"] = got
         row.setdefault("result", f"installed {len(got)} file(s)" if got else "installer ran, no file recorded")
+        if vetoed:
+            installs.append(row)
+            continue
         if not got or any(row["rc"]) or not cmds:
             st["follow_ups"].append({"at": now_iso(), "subject": r["subject"], "run": rid,
                                      "owed": f"install of ACCEPT {r.get('candidate')}: {row['result']}"})

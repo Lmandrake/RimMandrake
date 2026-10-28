@@ -119,6 +119,7 @@ def main():
         check("inside the backoff: nothing runs", calls == [] and "backing off" in
               json.loads(AJ.STATUS.read_text())["result"], calls)
     installs_and_unfiled()
+    compare_veto()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 
@@ -261,6 +262,51 @@ def installs_and_unfiled():
         AJ.sh, AJ.STATE, AJ.FAUNA_INSTALLS, AJ.git_dirty, AJ.DATA = saved
         ok, why, _ = AJ.deploy_verdict("", rs, lambda ps: [])
         check("an empty plan (the tool died) is not 'in sync'", not ok and "in sync" not in why, why)
+
+
+def compare_veto():
+    """ARTEVAL_COMPARE_VETO_FIX_ACCEPT_LIMBO: an ACCEPT the head-to-head refuses becomes a REGEN carrying the compare's
+    reason, never limbo (FireHawk r2: burning-log perch in every facing; FireWasp r2: north an overhead view)."""
+    why = "B is better but every facing has a burning log perch baked in as a ground prop, a hard defect."
+    check("install_b false is a veto with its reason", AJ.compare_veto({"winner": "B", "install_b": False, "reason": why}) == why)
+    check("install_b true is no veto", AJ.compare_veto({"winner": "B", "install_b": True, "reason": "x"}) is None)
+    check("an errored compare is no verdict, no veto", AJ.compare_veto({"error": "reply JSON does not parse"}) is None)
+    check("no compare is no veto", AJ.compare_veto(None) is None)
+    acc = {"subject": "RM_FireHawk", "candidate": "r2", "decision": "ACCEPT", "module": "walker", "reasons": ["gpt strong_accept"],
+           "round": 1, "canvas_rule": 512}
+    v = AJ.veto_record(acc, {"install_b": False, "reason": why}, "A lean raptor. Painterly.", nreg=1)
+    check("veto: ACCEPT becomes REGEN of the next round", v["decision"] == "REGEN" and v["round"] == 2 and v["candidate"] == "r2", v.get("round"))
+    pr = v["regen"]["request"]["prompt"]
+    check("veto: next prompt keeps the base prompt and carries the compare's reason",
+          "A lean raptor." in pr and "burning log perch" in pr, pr)
+    check("veto: finding names the compare", v["regen"]["findings"] == ["COMPARE_VETO"] and any("head-to-head" in x for x in v["reasons"]))
+    check("veto: the original record is untouched", acc["decision"] == "ACCEPT")
+    e = AJ.veto_record(acc, {"install_b": False, "reason": why}, "x", nreg=3)
+    check("veto at the round cap escalates, files nothing", e["decision"] == "ESCALATE" and not e.get("regen"), e["decision"])
+    with tempfile.TemporaryDirectory() as td:
+        st = Path(td)
+        run = st / "runs/fauna_auto_q"
+        run.mkdir(parents=True)
+        (run / "run.json").write_text(json.dumps({"test": False}))
+        (run / "decisions.jsonl").write_text(json.dumps(dict(acc, decision="REGEN", candidate=None, round=1, image_sha256={"south": "0"})) + "\n"
+                                             + json.dumps(dict(acc, decision="REGEN", candidate="r1", round=2, image_sha256={"south": "a"})) + "\n"
+                                             + json.dumps(dict(acc, image_sha256={"south": "b"})) + "\n")
+        (run / "regen_jobs.json").write_text(json.dumps([{"id": "arteval_RM_FireHawk_r2", "prompt": "A lean raptor. Painterly."}]))
+        filed = []
+        import runner as RR
+        saved = (AJ.STATE, RR.file_regen_jobs)
+        AJ.STATE = st
+        RR.file_regen_jobs = lambda f, **k: (filed.append(json.loads(Path(f).read_text())) or {"ok": True, "unfiled": []})
+        stt = {"follow_ups": []}
+        try:
+            out = AJ.veto_to_regen("fauna_auto_q", acc, {"install_b": False, "reason": why}, stt)
+            rows = [json.loads(x) for x in (run / "decisions.jsonl").read_text().splitlines()]
+            check("veto_to_regen appends the REGEN record to the run's decisions", rows[-1]["decision"] == "REGEN" and rows[-1]["candidate"] == "r2" and len(rows) == 4, rows[-1])
+            check("veto_to_regen files the next round to the queue with the reason in its prompt",
+                  len(filed) == 1 and filed[0][0]["id"] == "arteval_RM_FireHawk_r3" and "burning log perch" in filed[0][0]["prompt"], filed)
+            check("a vetoed ACCEPT is not vetoed twice", AJ.already_vetoed(AJ.run_records("fauna_auto_q"), acc))
+        finally:
+            AJ.STATE, RR.file_regen_jobs = saved
 
 
 if __name__ == "__main__":
