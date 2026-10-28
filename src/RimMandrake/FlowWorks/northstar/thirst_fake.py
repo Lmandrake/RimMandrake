@@ -68,6 +68,9 @@ faults (name -> intended effect):
   no_poisoning        the salt break ends with RM_SaltPoisoning at severity 0 -> T17 FAIL
   base_slow_hemogen   a baseliner's hemogen Ingest takes 3,000 ticks and then hydrates +0.3 -> T28 UNMEASURED
   canal_on_reload     the reloaded site holds canal fill water (RM_Fill_Water_Half), a fresh source -> T15R must dry it
+  governor_stop_t6    the clock governor stops ONCE mid-advance once a colonist at need 0 is past 0.1 dehydration (live run
+                      J20261028T005149Z-1f7ee6: a bystander starved during T6) -> the harness's feed_all must not refill
+                      the T6 pawn, or its dehydration reads ~0.12 instead of 0.30 (T6 false FAIL)
 Unmodelled tools answer success=False and are listed in `unmodelled` (a clean run must leave it empty).
 """
 import re
@@ -105,6 +108,10 @@ def _rect(s):
 
 def _in(rect, x, z):
     return rect[0] <= x < rect[0] + rect[2] and rect[1] <= z < rect[1] + rect[3]
+
+
+class GovernorStop(Exception):
+    """Named like clockgate.GovernorStop: the harness matches the type name."""
 
 
 class Pawn(object):
@@ -222,6 +229,10 @@ class ThirstFakeBridge(object):
 
     def ticks(self, n):
         self.advance(int(n))
+        if "governor_stop_t6" in self.faults and not getattr(self, "_gov_fired", False) and any(
+                p.human and p.need <= 0.0 and p.hed.get("RM_Dehydration", 0.0) > 0.1 for p in self.pawns.values()):
+            self._gov_fired = True
+            raise GovernorStop("safe_advance stopped after %d of %d tick(s): starving: food category Starving" % (n, n))
         return {"success": True, "advanced": int(n)}
 
     def tank_units(self, x, z):

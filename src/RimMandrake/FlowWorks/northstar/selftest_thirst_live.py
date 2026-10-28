@@ -166,6 +166,9 @@ CASES = [
     ("F5 a baseliner's hemogen ingest outlasts the window", "T28", ["base_slow_hemogen"], [("T28", "UNMEASURED")]),
     ("F2 reload canal water masked the stale mark", "T15R", ["stale_mark", "canal_on_reload"], [("T15R", "FAIL")]),
     ("F2 reload canal water is dried (clean)", "T15R", ["canal_on_reload"], [("T15R", "PASS")]),
+    # live J20261028T005149Z-1f7ee6: a governor stop mid-T6 refilled the T6 pawn (T3's row cleared UNDER_TEST)
+    ("T6 governor stop must not refill the dehydrating pawn", "T3,T6", ["governor_stop_t6"],
+     [("T3", "PASS"), ("T6", "PASS")]),
 ]
 def want_exit(res):
     """validation_core.rows_exit: any FAIL -> 1, else any UNMEASURED -> 2, else 0 (review F20: the code is read too)."""
@@ -191,6 +194,9 @@ for label, only, faults, wants in CASES:
         check("in-flight pour: one fill was in flight at the switch and only it landed in the settle",
               det.get("inFlightAllowance") == 1 and len(det.get("landedInSettle") or []) == 1,
               (det.get("inFlightAllowance"), det.get("landedInSettle")))
+    if label.startswith("T6 governor stop"):
+        check("T6 governor stop: the stop really fired mid-T6", getattr(B, "_gov_fired", False) and res.get("governorStops"),
+              res.get("governorStops"))
     if label.startswith("refused pawns are replaced"):
         # review F17: the refusals land on the row's spawned workers; each was drafted out of the way and replaced
         check("%s: two spawned workers were refused" % label, len(B.refused_ids) >= 2, B.refused_ids)

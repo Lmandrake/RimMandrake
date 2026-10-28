@@ -26,7 +26,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
                                      then ingest.py (results -> RUNNER ledger events, committed from that clone).
-                                     The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow},
+                                     The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow,contracts},
                                      infrastructure/state, AND src/RimMandrake/Utils/modcheck plus each filled mod's
                                      source (src/RimMandrake/FlowWorks): without them preview, bad_selection and the
                                      filler's gap order (gaps.py) are blind and say so ("blind: ...").

@@ -578,6 +578,9 @@ def main(argv=None, bridge=None):
                         {"before": a0, "after": a1, "drop": round(drop, 4), "expect": exp, "heatScaling": False,
                          "ticks": 15000})
             if want("T6"):
+                # live J20261028T005149Z-1f7ee6: T3's row() cleared UNDER_TEST (F16), so a governor stop mid-T6 ran
+                # feed_all over pc and refilled its thirst -> RM_Dehydration 0.12, a harness false FAIL. pc is under test again.
+                UNDER_TEST.add(pc)
                 for _ in range(3):
                     need(pc, 0.0)
                     ticks(15000)
@@ -1449,12 +1452,22 @@ def main(argv=None, bridge=None):
             # switch can finish its carry well after it (no job sampled, one brine bucket at the shore). The settle waits
             # until the pawn is off every fill/pour job, then 600 more ticks -- and every brine bucket that lands in it
             # is COUNTED against the in-flight allowance instead of being cleared blind.
-            ticks(300)
+            # live J20261028T005149Z-1f7ee6: one brine bucket landed here with GotoWander at the switch -- the settle's
+            # jobs are now recorded so the finding says whether a fill STARTED after the Store order (diagnostic only)
+            settle_jobs = []
+
+            def settle(n):
+                for _ in range(n // 30):
+                    ticks(30)
+                    jj = job(p23)
+                    if jj and (not settle_jobs or settle_jobs[-1] != jj):
+                        settle_jobs.append(jj)
+            settle(300)
             for _ in range(20):
                 if job(p23) not in ("RM_FillBottleJob", "RM_EmptyIntoTankJob"):
                     break
-                ticks(60)
-            ticks(600)
+                settle(60)
+            settle(600)
             set23 = ids_of("RM_Bucket_Brine")
             settle_new = None if set23 is None else sorted(set(set23) - known)
             # clear only what is known: the row's brine buckets (by cell, each one read above), never a blind sweep
@@ -1481,7 +1494,8 @@ def main(argv=None, bridge=None):
             u2 = tank_units(TX, TZ)
             bad = []
             det23 = {"tank": tank_r, "units": [u0, u1], "brineBucketsMade": made, "jobsFill": seen, "jobAtSwitch": j_sw,
-                     "inFlightAllowance": allow, "landedInSettle": settle_new, "emptiesForWindow": empties2,
+                     "inFlightAllowance": allow, "landedInSettle": settle_new, "settleJobs": settle_jobs,
+                     "emptiesForWindow": empties2,
                      "jobsStore": seen2, "brineBucketsAfterStore": made2, "brineAt": where2, "storeTankUnits": u2}
             if u0 is None or u1 is None or settle_new is None or made2 is None or empties2 < 1:
                 row("T23_fill_tank_is_the_order", "UNMEASURED", "HARNESS",
