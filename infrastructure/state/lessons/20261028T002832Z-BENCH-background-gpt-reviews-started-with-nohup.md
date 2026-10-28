@@ -1,0 +1,1 @@
+Background GPT reviews started with nohup & are invisible to the harness: always pair each with a run_in_background waitfor on its --out file, or results sit unread (two sat ~50 min on 2026-10-27). And in zsh an unquoted $args holding several '-f path' pairs is ONE word: gpt_consult rejected it and the review never ran; build -f args explicitly or use an array.
