@@ -483,9 +483,6 @@ namespace RimMandrake.FlowWorks.Machinery
 
 		/// <summary>The 4-way run of dug squares from <paramref name="start"/>: wet squares of its liquid (or, from a dry square,
 		/// dry squares), not across a shut sluice. Two ends in one run share a body: an end on a square a walk reached this cycle
-		/// takes that walk's body without walking (MapState.mark/bodyOf), so a run is walked once per cycle, not once per end.</summary>
-		/// <summary>The 4-way run of dug squares from <paramref name="start"/>: wet squares of its liquid (or, from a dry square,
-		/// dry squares), not across a shut sluice. Two ends in one run share a body: an end on a square a walk reached this cycle
 		/// takes that walk's body without walking (MapState.run marks/bodies), so a run is walked once per cycle, not once per end.</summary>
 		private static bool DugBody(Map map, RM_MapComponent_Excavation ex, MapState st, ref RM_MapComponent_Excavation.LevelRunGrid grid, IntVec3 start,
 			List<RM_LevelBody> bodies, List<FluidDef> fluids, Dictionary<long, int> keyIndex, ref int walked, out int index)
