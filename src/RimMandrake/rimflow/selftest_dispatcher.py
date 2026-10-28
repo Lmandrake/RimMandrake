@@ -673,8 +673,9 @@ def test_role_reading_and_band():
         check(RL.band(c, {"runway": rw, "week_left": wl})[0] == want, "band: runway %s week_left %s -> %s" % (rw, wl, want))
     check(RL.band(operations(), {"runway": 0.1, "week_left": 5})[0] == "NONE", "band: a role with no bands -> NONE x1")
     check(RL.run_tokens({"usage": {"input_tokens": 2, "cache_creation_input_tokens": 24009,
-                                   "cache_read_input_tokens": 11227, "output_tokens": 4}}) == 35242,
-          "run tokens: all four usage fields (the proof's trivial haiku run: 35242)")
+                                   "cache_read_input_tokens": 11227, "output_tokens": 4}}) == 49163,
+          "run tokens: all four usage fields, price-weighted (the proof's trivial haiku run: 35242 raw, 49163 weighted: "
+          "no TTL split -> the 1h write rate)")
     check(RL.wsl_path("D:\\ClaudeWork\\x\\OFF") == "/mnt/d/ClaudeWork/x/OFF", "off_file: Windows path -> /mnt/d")
 
 
@@ -754,11 +755,14 @@ def test_role_economy_and_alarms():
     a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="inactive", result=res), t))
     ds = [x["do"] for x in a]
     check(ds == ["role_done", "role_launch"], "run finished -> role_done (noted), then the new alarm runs: %s" % ds)
-    check("150 tokens" in a[0]["why"] and "m-x" in a[0]["why"], "role_done records tokens and the model used")
+    check("350 weighted tokens" in a[0]["why"] and "raw 150" in a[0]["why"] and "m-x" in a[0]["why"],
+          "role_done records weighted and raw tokens and the model used")
     check(a[1]["ticket"] == "OPS_NEW_ONE" and a[1]["budget"] == 60000, "alarm run: noted on the alarm item, run cap")
     check(st["roles"]["Operations"]["alarms_seen"] == ["OPS_NEW_ONE", "OPS_OLD_ONE"]
           and "OPS_OLD_ONE" in a[1]["why"], "W1: one alarm run covers every unseen open alarm, the one open at enable too")
-    check(st["roles"]["Operations"]["runs"][0]["tokens"] == 150, "spend recorded on the run")
+    check(st["roles"]["Operations"]["runs"][0]["tokens"] == 350 and st["roles"]["Operations"]["runs"][0]["raw_tokens"] == 150
+          and st["roles"]["Operations"]["runs"][0]["token_unit"] == RL.TOKEN_UNIT,
+          "spend recorded on the run (100 in + 50 out x5 = 350 weighted; raw 150)")
     st["roles"]["Operations"]["runs"] = [{"unit": "u2", "at": t, "day": RL.day_of(t), "budget": 1000,
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running",
                                           "scope": "s.scope"}]
@@ -781,15 +785,16 @@ def test_role_real_schedule_caps_and_ops_bands():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
     c, o = roles["Conductor"], roles["Operations"]
-    check(c["quick_token_cap"] == 80000 and c["daily_token_cap"] == 300000 and c["session_week_pct_cap"] == 6,
-          "schedule: Conductor caps 80,000 / 300,000 / 6%")
-    check(o["run_token_cap"] == 80000
+    check(c["quick_token_cap"] == 450000 and c["daily_token_cap"] == 1350000 and c["session_week_pct_cap"] == 6,
+          "schedule: Conductor caps 450,000 / 1,350,000 / 6%")
+    check(o["run_token_cap"] == 450000
           and o["daily_token_cap"] >= o["economy_token_cap"] + o["run_token_cap"] * 2,
           "schedule: Operations daily cap fits economy + evening + one alarm run")
     for r, cap in ((c, c["quick_token_cap"]), (o, o["run_token_cap"])):
         for bn, b in r["throttle_bands"].items():
-            check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 60000,
-                  "%s band %s: launches nothing or stays >= 60,000" % (r["name"], bn))
+            check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 285538,
+                  "%s band %s: launches nothing or stays >= 285,538 (the measured Operations run, weighted)"
+                  % (r["name"], bn))
     base = at_local("07:30")
     ev = at_local("19:30")
 
@@ -801,13 +806,13 @@ def test_role_real_schedule_caps_and_ops_bands():
                                           clone=os.path.join(TMP, "clone"))], st,
                                      robs(ops_status(now, **kw)), now))
     st, a = run(base, runway=2.0)
-    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 100000, "Ops GREEN 07:30: economy pass")
+    check(a and a[0]["mode"] == "economy" and a[0]["budget"] == 550000, "Ops GREEN 07:30: economy pass")
     st, a = run(base, runway=1.2)
     check([x["do"] for x in a] == ["role_hold"] and "band AMBER" in a[0]["why"], "Ops AMBER 07:30: no economy pass")
     st, a = run(ev, runway=1.2)
-    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 80000, "Ops AMBER 19:30: quick run, 80,000")
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 450000, "Ops AMBER 19:30: quick run, 450,000")
     st, a = run(ev, runway=0.5)
-    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 60000, "Ops RED 19:30: the one quick run, 60,000")
+    check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 337500, "Ops RED 19:30: the one quick run, 337,500")
     st, a = run(base, runway=0.5)
     check([x["do"] for x in a] == ["role_hold"], "Ops RED 07:30: economy pass held")
     st, a = run(ev, week_left=5)
@@ -1089,8 +1094,8 @@ def test_review_q():
                                                         "slot": "%s 19:30" % RL.day_of(c20)}]},
                    "Conductor": {"done": {"%s 08:00" % RL.day_of(c20): "x"}, "runs": []}}
     a = role_acts(rdecide([rc, ro], st, robs(ops_status(c20, runway=1.2)), c20))
-    check([(x["role"], x["budget"]) for x in a if x["do"] == "role_launch" and x["role"] == "Conductor"] == [("Conductor", 60000)],
-          "Q7 Conductor AMBER 20:00, after the 19:30 Operations run: launches at 60,000")
+    check([(x["role"], x["budget"]) for x in a if x["do"] == "role_launch" and x["role"] == "Conductor"] == [("Conductor", 337500)],
+          "Q7 Conductor AMBER 20:00, after the 19:30 Operations run: launches at 337,500 (450,000 x 0.75)")
     # 8: missing / malformed usage is UNMEASURED, failed, counted at its budget
     for bad in ({}, {"input_tokens": "abc"}, dict(usage(), output_tokens=True), dict(usage(), output_tokens=-1),
                 dict(usage(), output_tokens=float("nan"))):
@@ -1951,7 +1956,7 @@ def test_role_real_schedule_triggers():
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
           and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
-    check(p["daily_token_cap"] == 125000, "schedule: Producer daily cap 125,000 (one 100k run + 25%)")
+    check(p["daily_token_cap"] == 625000, "schedule: Producer daily cap 625,000 (one 500k run + 25%)")
     for r in sch["roles"]:
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
             RL.parse_slot(t)
@@ -2546,7 +2551,7 @@ def test_review_x_alarm_flap():
     check(modes.count("alarm") <= 1 and "economy" in modes and "run" in modes and not refused,
           "X1: real caps, flapping alarm: both scheduled runs launch, at most one alarm run, no cap REFUSED: %s %s"
           % (modes, refused[:1]))
-    roomy = dict(base, daily_token_cap=1000000)
+    roomy = dict(base, daily_token_cap=base["daily_token_cap"] * 3)
     got, refused, rs = day(roomy, keys)
     modes = [m for m, _ in got]
     check(modes.count("alarm") == 1 and len(got) == 3 and rs["alarm_day"]["keys"][

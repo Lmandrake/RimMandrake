@@ -35,8 +35,12 @@ burning tokens gathering it all up for every question considered."
 | an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
 | 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (its running check too: the 19:30 check covers the day) | `economy_token_cap` |
 
-Starting values (schedule): `run_token_cap` 80,000 (the measured run floor is 35-53k tokens); `economy_token_cap` 100,000;
-`daily_token_cap` 300,000: the 07:30 economy run, the 19:30 run and one alarm run a day, with headroom; scheduled runs are reserved first.
+Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
+or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
+2026-10-28, basis in its `_caps_why`): `run_token_cap` 450,000 (your first real run, an alarm run of 15 turns, weighed
+285,538; it counted 1,121,450 raw); `economy_token_cap` 550,000; `daily_token_cap` 1,650,000: the 07:30 economy run,
+the 19:30 run and one alarm run a day, with headroom; scheduled runs are reserved first. The run record keeps
+`raw_tokens` beside `tokens` for comparison.
 
 ## Throttle (same runway bands as the Conductor)
 
@@ -46,7 +50,7 @@ Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.j
 |---|---|---|
 | GREEN | runway ≥ 1.5 | everything: the 07:30 run (running check + economy pass), the 19:30 check, alarm runs |
 | AMBER | 1.0 ≤ runway < 1.5 | quick runs only: the 19:30 running check and alarm runs; no 07:30 run |
-| RED | runway < 1.0 | one quick run a day (the 19:30 running check, cap × 0.75 = 60,000); no 07:30 run, no alarm runs |
+| RED | runway < 1.0 | one quick run a day (the 19:30 running check, cap × 0.75 = 337,500); no 07:30 run, no alarm runs |
 | FLOOR | `week_left_pct` < 10 | nothing |
 
 A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;

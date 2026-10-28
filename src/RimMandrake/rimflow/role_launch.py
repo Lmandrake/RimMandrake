@@ -68,7 +68,9 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      missed. The launch records the account it runs on.
 
 Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields (input, cache_creation,
-cache_read, output): the conservative reading. A run over its budget is an ALARM after the fact: `claude -p` has no
+cache_read, output), each weighted by its price class (TOKEN_WEIGHTS, run_tokens: input-equivalent tokens, so a cap
+measures cost, not context re-reads; ROLE_CAPS_REMEASURE_ON_REAL_RUNS). Every cap, budget, daily spend and overbudget
+alarm here is in these units; the raw sum is kept beside it on the run as `raw_tokens`. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop and nothing here stops a run at its budget: the budget is checked on its result. Only a `token_aware` role
 (Operations) is told its band and budget in its launch message; every other role is token-blind and is told
 neither (owner 2026-10-27; review T, F1/F2). A run still going after
@@ -100,6 +102,7 @@ import signal
 import subprocess
 import sys
 import time
+from fractions import Fraction
 
 try:
     import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
@@ -118,6 +121,14 @@ TERMINAL = ("inactive", "failed")      # the only states that end a run; anythin
 EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its writer stamped it still triggers (N4)
 FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
 USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
+# The ONE token measure for role caps (ROLE_CAPS_REMEASURE_ON_REAL_RUNS, BENCH 2026-10-28 [A]): each usage field
+# weighted by its price relative to an uncached input token (Anthropic's price classes: a cache write costs 1.25x for
+# the 5-minute TTL and 2x for the 1-hour TTL, a cache read 0.1x, an output token 5x). Checked against the two proof
+# records whose total_cost_usd is known (selftest_role_tokens W4). A raw count weighed the first real Operations run
+# (15 turns, 1.04M of its 1.12M tokens cache reads) at 1,121,450; this measure weighs it at 285,538.
+TOKEN_UNIT = "weighted_v1"             # stamped on each finished run: the unit of its `tokens`
+TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), "cache_write_1h": Fraction(2),
+                 "cache_read_input_tokens": Fraction(1, 10), "output_tokens": Fraction(5)}
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
 # A role whose run returns STRUCTURED output (ARBITER_VERDICT_WIRE_JSON_SCHEMA_HANDOFF): its launch gets
 # `--json-schema <schema text>` (claude -p takes the schema itself, not a path: `claude -p --help`), the schema read from
@@ -510,17 +521,45 @@ def read_ledger():
     return {"events": events, "world": mod.replay(events=events)}
 
 
-def run_tokens(result):
-    """Pure. usage of a `claude -p --output-format json` result -> total tokens (all four fields) or None
-    (UNMEASURED) when the usage block or any field is missing, not a whole non-negative number, or a bool: an absent
-    field is unknown spend, never zero (review Q 8). The run is then failed and its spend counted at its budget."""
+def _usage_vals(result):
+    """-> the usage dict and its four fields, or (None, None) when any is missing, not a whole non-negative number, or
+    a bool: an absent field is unknown spend, never zero (review Q 8)."""
     u = result.get("usage") if isinstance(result, dict) else None
     if not isinstance(u, dict):
-        return None
+        return None, None
     vals = [u.get(k) for k in USAGE_KEYS]
     if not all(finite(v) and v >= 0 and float(v).is_integer() for v in vals):
+        return None, None
+    return u, dict(zip(USAGE_KEYS, (int(v) for v in vals)))
+
+
+def raw_tokens(result):
+    """Pure. The unweighted sum of the four usage fields (kept on the run for the record), or None (UNMEASURED)."""
+    u, v = _usage_vals(result)
+    return None if v is None else sum(v.values())
+
+
+def run_tokens(result):
+    """Pure. usage of a `claude -p --output-format json` result -> its cost in input-equivalent tokens (TOKEN_WEIGHTS),
+    rounded up, or None (UNMEASURED) as _usage_vals. Cache writes are split by TTL from usage.cache_creation when its
+    two parts are whole non-negative numbers adding up to cache_creation_input_tokens; otherwise every write is
+    weighed at the dearer 1h rate (never a guess in the cheap direction). The run is failed and its spend counted at
+    its budget when UNMEASURED."""
+    u, v = _usage_vals(result)
+    if v is None:
         return None
-    return int(sum(vals))
+    cw = v["cache_creation_input_tokens"]
+    w5, w1 = 0, cw
+    split = u.get("cache_creation")
+    if isinstance(split, dict):
+        a, b = split.get("ephemeral_5m_input_tokens"), split.get("ephemeral_1h_input_tokens")
+        if (all(finite(x) and x >= 0 and float(x).is_integer() for x in (a, b))
+                and int(a) + int(b) == cw):
+            w5, w1 = int(a), int(b)
+    W = TOKEN_WEIGHTS
+    tot = (v["input_tokens"] * W["input_tokens"] + w5 * W["cache_write_5m"] + w1 * W["cache_write_1h"]
+           + v["cache_read_input_tokens"] * W["cache_read_input_tokens"] + v["output_tokens"] * W["output_tokens"])
+    return int(math.ceil(tot))
 
 
 def spent_today(rs, now):
@@ -546,8 +585,9 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
                       reading["at"]),
-                  "Token budget for this run: %d tokens (cap %d x %.1f); daily cap %d, %d already used today. The "
-                  "Dispatcher checks it after the run; it does not stop you at it." % (
+                  "Token budget for this run: %d weighted tokens (cap %d x %.1f); daily cap %d, %d already used today. "
+                  "Weighted = input-equivalent: a cache read counts 0.1, a cache write 1.25 (5m) or 2 (1h), an "
+                  "output token 5. The Dispatcher checks it after the run; it does not stop you at it." % (
                       budget, cap, factor, role.get("daily_token_cap") or 0, spent)]
     lines.append("You work as seat %s in %s. Never take the bridge, restart the game or deploy." % (
         role["seat"], role["clone"]))
@@ -654,16 +694,19 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             continue
         res = obs["result"](run)
         tok = run_tokens(res)
-        run["tokens"] = tok
+        run["tokens"] = tok                     # input-equivalent (TOKEN_WEIGHTS): what caps and spend read
+        run["raw_tokens"] = raw_tokens(res)     # the unweighted sum, for the record only
+        run["token_unit"] = TOKEN_UNIT          # a run without it predates the weighting (its tokens are raw)
         run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or tok is None) else "done"
         res = res if isinstance(res, dict) else {}
         models = sorted(res.get("modelUsage") or {})
         act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
-            why="%s %s run %s %s%s: %s tokens of a %d budget, model %s, %s" % (
+            why="%s %s run %s %s%s: %s weighted tokens of a %d budget (raw %s), model %s, %s" % (
                 name, run.get("mode"), run["unit"], run["state"],
                 " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
                 tok if tok is not None else "UNMEASURED (counted at its budget)",
-                run.get("budget") or 0, ",".join(models) or "?", res.get("subtype") or "no result"),
+                run.get("budget") or 0, run["raw_tokens"] if run["raw_tokens"] is not None else "?",
+                ",".join(models) or "?", res.get("subtype") or "no result"),
             # a token-blind role reads its ledger item: its note is a FIXED outcome (blind_note), never the result's
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
@@ -671,7 +714,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             harvest(name, run, res, act)
         if tok is not None and tok > (run.get("budget") or 0):
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
-                why="%s run %s used %d tokens, budget %d" % (name, run["unit"], tok, run.get("budget") or 0))
+                why="%s run %s used %d weighted tokens (raw %s), budget %d" % (
+                    name, run["unit"], tok, run["raw_tokens"], run.get("budget") or 0))
         if run["state"] == "failed":
             act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True,
                 # a blind role's item gets the fixed line only: the result text is outside text (a usage-limit

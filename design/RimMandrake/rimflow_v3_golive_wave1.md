@@ -157,9 +157,9 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
   `python3 src/RimMandrake/Utils/deadman_check.py run`. Healthy: no `unwakeable:*`, no `role:*:scope|supervise`, no account-pick SWITCH/HOLD/UNMEASURED alarm,
   deadman says `all arms alive`. The pre-existing `RUNWAY_LOW:codex.runway` is not new.
 - **First Operations run's output.** `ls -t $S/roles | head -4`; `python3 -c "import json,glob,os;f=sorted(glob.glob('$S/roles/rm-role-operations-*.json'))[-1];d=json.load(open(f));print(f,d.get('subtype'),d.get('is_error'),d.get('usage'));print((d.get('result') or '')[:1500])"`;
-  the matching `.err` is empty or short (`wc -c`). Healthy: `subtype` `success`, `is_error` false, total tokens (all four usage fields) under `run_token_cap` 80,000
-  (economy pass 07:30: `economy_token_cap` 100,000; ceiling `daily_token_cap` 300,000), the result reads `$O/digest.md` and does not re-gather, and
-  it files OPS_* items or says nothing to do. Measured floor is 35-53k per run, so a run under 20k or over cap is suspect.
+  the matching `.err` is empty or short (`wc -c`). Healthy: `subtype` `success`, `is_error` false, weighted tokens (role_launch.run_tokens: cache read 0.1, cache write 1.25/2, output 5) under `run_token_cap` 450,000
+  (economy pass 07:30: `economy_token_cap` 550,000; ceiling `daily_token_cap` 1,650,000; 2026-10-28, ROLE_CAPS_REMEASURE_ON_REAL_RUNS), the result reads `$O/digest.md` and does not re-gather, and
+  it files OPS_* items or says nothing to do. The first real Operations run (15 turns) weighed 285,538, so a run under 20k or over cap is suspect.
 - **Token-talk series (the blind roles stay blind).** `tail -n1 $O/series/tokentalk.jsonl | python3 -c "import json,sys;d=json.loads(sys.stdin.read());[print(k,v['m'],v['v']) for k,v in d['points'].items()]"`.
   Baseline 2026-10-27: BENCH 3.0 %, FOUNDRY 1.2 %; `tokentalk.role.conductor.share` UNMEASURED until 5 reports exist. Healthy: it stays UNMEASURED or low in the first hour; any
   Conductor value above the 3.0 % BENCH baseline once measured, or an `ops_watch` flag on a tokentalk point, means the Conductor is token-talking: file it and switch it off.

@@ -65,7 +65,8 @@ def test_wiring():
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     cond = [r for r in sch["roles"] if r.get("name") == "Conductor"][0]
     check(cond.get("window_name") == NAME, "the shipped Conductor role names its window")
-    check(cond.get("enabled") is False and sch["seat_restart"]["enabled"] is False, "nothing enabled by this change")
+    # the Conductor was enabled later, on purpose (1fd2bcd2cf, Dispatcher wave 1); this change enabled nothing else
+    check(sch["seat_restart"]["enabled"] is False, "nothing enabled by this change (seat_restart stays off)")
 
 
 def main():
