@@ -50,6 +50,9 @@ namespace RimMandrake.FlowWorks
 		/// never blocks a tick. The labels in place keep serving until the new set is whole.</summary>
 		public const double SliceMs = 1.0;
 		public const int SliceUnits = 4096;
+		/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: squares a job's kinds read takes per chunk (one KindAt each:
+		/// about 60 ns live, so a chunk is about 0.12 ms and the read of a 250 × 250 map spreads over about four slices).</summary>
+		public const int ReadUnits = 2048;
 
 		public sealed class Entry
 		{
@@ -78,6 +81,9 @@ namespace RimMandrake.FlowWorks
 			public bool jobMidLoad;
 			public readonly long[] jobParts = new long[StampParts];
 			public double jobMs;
+			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: the job is still reading the kinds (MapState.kinds' read in flight);
+			// its flood begins when the read publishes
+			public bool jobReading;
 		}
 
 		// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES (r14 leads b and c): diagnostic counters read through TimingLine. Nothing reads
@@ -102,6 +108,13 @@ namespace RimMandrake.FlowWorks
 
 		private sealed class MapState
 		{
+			public MapState()
+			{
+				// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a replaced kinds array is read into again only when no labelling
+				// holds it (built from it, or flooding from it)
+				kinds.inUse = a => HeldByEntry(this, a);
+			}
+
 			public int wallGen;
 			public int forced;
 			// WALLREACH_RELABEL_TAME_SLICED_BUFFERED: moves with every forced (a change that can OPEN a way). A labelling whose
@@ -119,6 +132,10 @@ namespace RimMandrake.FlowWorks
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES / WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the published kinds (never
 			// written after publication; NoteConnectivity reads it on a worker) and the scratch the next read goes into.
 			public readonly RM_WallReachMath.KindsSnapshot kinds = new RM_WallReachMath.KindsSnapshot();
+			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: the pocket grids' views the entries of one Tick share (cleared per Tick)
+			public readonly Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views =
+				new Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)>();
+			public int readsPartsDropped;   // reads dropped because a stamp part other than the walls moved under them
 			public bool builtMidLoad;     // some entry or the kinds were built while loading (Tick's post-load rebuild)
 			public int viewsReused;       // Build took the pocket grid's built view instead of reading the map again
 			public int builds;
@@ -162,6 +179,66 @@ namespace RimMandrake.FlowWorks
 		private static MapState StateOf(Map map)
 		{
 			return states.GetValue(map, _ => new MapState());
+		}
+
+		/// <summary>Does some entry's labelling hold <paramref name="a"/> (built from it, or a job flooding from it)?</summary>
+		private static bool HeldByEntry(MapState st, byte[] a)
+		{
+			foreach (Entry e in st.entries.Values)
+			{
+				if (ReferenceEquals(e.slot.builtKinds, a) || (e.slot.job != null && ReferenceEquals(e.slot.job.kinds, a)))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: one KindAt delegate for the main thread (a flush, a read step), set up by
+		// KindFn and let go by KindFnDone, instead of a closure per call
+		private static Map kindMap;
+		private static PathGrid kindPg;
+		private static bool kindSwim;
+		private static RM_MapComponent_Excavation kindEx;
+		private static readonly Func<int, byte> KindAtFn = i => KindAt(kindMap, kindPg, kindSwim, kindEx, i);
+
+		/// <summary>KindAt for <paramref name="map"/> as Kinds reads it (main thread; KindFnDone lets the map go).</summary>
+		private static Func<int, byte> KindFn(Map map)
+		{
+			kindMap = map;
+			kindPg = map.pathing.Normal.pathGrid;
+			kindSwim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
+			kindEx = RM_SuperdeepTrap.EngineOf(map);
+			return KindAtFn;
+		}
+
+		private static void KindFnDone()
+		{
+			kindMap = null;
+			kindPg = null;
+			kindEx = null;
+		}
+
+		/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a square that may have changed while the kinds are being read
+		/// is queued with the connectivity deltas, so the next flush reads it again if the read already passed it (a change and
+		/// its undo judged quiet against the published snapshot would otherwise leave the read holding the middle state).</summary>
+		private static void QueueTouch(MapState st, int idx)
+		{
+			if (idx < 0 || !st.kinds.Reading)
+			{
+				return;
+			}
+			lock (st.deltaLock)
+			{
+				if (st.pendingDeltas.Count >= RM_WallReachMath.MaxQueuedDeltas)
+				{
+					st.deltaOverflow = true;
+				}
+				else if (!st.deltaOverflow)
+				{
+					st.pendingDeltas.Add(idx);
+				}
+			}
 		}
 
 		// ── invalidation ────────────────────────────────────────────────────────────
@@ -267,14 +344,28 @@ namespace RimMandrake.FlowWorks
 				st.flushOverflows++;
 			}
 			byte[] kinds = st.kinds.published;
-			bool swim = Swimming.RM_SwimWater.On && Swimming.RM_SwimPathing.DeepCount(map) > 0;
-			PathGrid pg = map.pathing.Normal.pathGrid;
-			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			Func<int, byte> kindAt = KindFn(map);
 			if (kinds != null && kinds.Length != map.cellIndices.NumGridCells)
 			{
 				kinds = null;
 			}
-			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, i => KindAt(map, pg, swim, ex, i), overflow))
+			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a read in flight reads again every square it passed that a delta names;
+			// lost deltas (an overflow) restart it
+			if (st.kinds.Reading)
+			{
+				if (overflow)
+				{
+					st.kinds.RestartRead();
+				}
+				else
+				{
+					for (int i = 0; i < work.Count; i++)
+					{
+						st.kinds.Touch(work[i], kindAt);
+					}
+				}
+			}
+			if (RM_WallReachMath.DeltaMovesKinds(kinds, work, kindAt, overflow))
 			{
 				st.wallGenBy[WgDelta]++;
 				Interlocked.Increment(ref st.wallGen);
@@ -284,6 +375,7 @@ namespace RimMandrake.FlowWorks
 			{
 				st.deltaQuiet++;
 			}
+			KindFnDone();
 			work.Clear();
 		}
 
@@ -309,6 +401,7 @@ namespace RimMandrake.FlowWorks
 			// published snapshot. No snapshot, an out-of-range square or no path grid yet: bump, as before.
 			byte[] kinds = st.kinds.published;
 			int idx = c.InBounds(map) ? map.cellIndices.CellToIndex(c) : -1;
+			QueueTouch(st, idx);
 			PathGrid pg = map.pathing?.Normal?.pathGrid;
 			bool moved = kinds == null || idx < 0 || pg == null
 				|| RM_WallReachMath.WalkabilityMovesKind(kinds, idx, KindAt(map, pg, Swimming.RM_SwimWater.On, RM_SuperdeepTrap.EngineOf(map), idx));
@@ -354,6 +447,18 @@ namespace RimMandrake.FlowWorks
 			}
 			Interlocked.Increment(ref st.wallGenBy[WgBarrier]);
 			Interlocked.Increment(ref st.wallGen);
+			if (st.kinds.Reading)
+			{
+				CellRect r = t.OccupiedRect();
+				for (int z = r.minZ; z <= r.maxZ; z++)
+				{
+					for (int x = r.minX; x <= r.maxX; x++)
+					{
+						IntVec3 c = new IntVec3(x, 0, z);
+						QueueTouch(st, c.InBounds(map) ? map.cellIndices.CellToIndex(c) : -1);
+					}
+				}
+			}
 			if (removed)
 			{
 				Interlocked.Increment(ref st.unsafeGen);
@@ -498,6 +603,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return st.kinds.published;
 			}
+			// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a whole read here (a query's first build) supersedes a sliced read
+			AbortActiveRead(st);
 			int n = map.cellIndices.NumGridCells;
 			// EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES: read into the scratch (every square written below); it is published only
 			// when its content (or the map's geometry) moved, else it stays scratch for the next stamp, so a labelling built
@@ -632,14 +739,17 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: read <paramref name="e"/>'s inputs and start its job in the spare
-		/// buffer (the published labels keep serving). False: the inputs are the published labelling's, which is published again
-		/// in place (a skip, no flood) and covers <paramref name="gen"/>.</summary>
+		/// <summary>WALLREACH_RELABEL_TAME_SLICED_BUFFERED: start <paramref name="e"/>'s job (the published labels keep serving)
+		/// at <paramref name="gen"/> and <paramref name="stamp"/>. WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: no map is read
+		/// here. Kinds current for the stamp: the flood begins at once (StartFlood). Else the map's kinds are read a slice at a
+		/// time (KindsSnapshot.BeginRead; TickOwned steps it, FlushDeltas touches the squares changed behind it) and the flood
+		/// begins when the read publishes. A change during the read that can open a way moves the unsafe generation past
+		/// <paramref name="gen"/> (the labels will not veto); one judged quiet against the published snapshot is read again by
+		/// its touch. False: no job in flight (a skip, published in place).</summary>
 		private static bool BeginJob(Map map, MapState st, Entry e, long stamp, int gen,
 			Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views, int now)
 		{
 			long b0 = System.Diagnostics.Stopwatch.GetTimestamp();
-			Inputs(map, st, e, stamp, views, out byte[] kinds, out byte[] depth, out Dictionary<int, int> ramps);
 			int w = map.Size.x, h = map.Size.z;
 			if (st.sliceQueue == null || st.sliceQueue.Length < w * h)
 			{
@@ -649,17 +759,67 @@ namespace RimMandrake.FlowWorks
 			e.jobStamp = stamp;
 			System.Array.Copy(st.partsNow, e.jobParts, StampParts);
 			e.jobMidLoad = Current.ProgramState != ProgramState.Playing;
-			bool began = e.slot.Begin(kinds, depth, ramps, w, h, e.band, e.cls, st.sliceQueue);
+			e.jobMs = 0;
+			if (!st.kinds.CurrentFor(stamp, w, h))
+			{
+				st.kinds.BeginRead(stamp, w, h);
+				e.jobReading = true;
+				e.jobMs = MsSince(b0);
+				st.active = e;
+				return true;
+			}
 			e.jobMs = MsSince(b0);
+			return StartFlood(map, st, e, views, now);
+		}
+
+		/// <summary>The kinds of <paramref name="e"/>'s stamp are published: read its depth and ramps and begin the flood in the
+		/// spare buffer. False: the inputs are the published labelling's, which is published again in place (a skip, no flood)
+		/// and covers the job's generation.</summary>
+		private static bool StartFlood(Map map, MapState st, Entry e,
+			Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views, int now)
+		{
+			long b0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			Inputs(map, st, e, e.jobStamp, views, out byte[] kinds, out byte[] depth, out Dictionary<int, int> ramps);
+			bool began = e.slot.Begin(kinds, depth, ramps, map.Size.x, map.Size.z, e.band, e.cls, st.sliceQueue);
+			e.jobMs += MsSince(b0);
 			if (!began)
 			{
 				st.skipped++;
+				if (st.active == e)
+				{
+					st.active = null;
+				}
 				Publish(st, e, now);
 				return false;
 			}
 			st.jobsBegun++;
 			st.active = e;
 			return true;
+		}
+
+		/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: did a stamp part other than the walls move since the read of
+		/// <paramref name="e"/>'s job began? Those changes (climb, salt, doors, swim water, ramps) name no square, so the read
+		/// cannot touch them: it is dropped and begun again.</summary>
+		private static bool ReadPartsMoved(MapState st, Entry e)
+		{
+			for (int i = 0; i < StampParts; i++)
+			{
+				if (i != StampWall && e.jobParts[i] != st.partsNow[i])
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>Drop the sliced kinds read in flight, and the job waiting on it.</summary>
+		private static void AbortActiveRead(MapState st)
+		{
+			if (st.active != null && st.active.jobReading)
+			{
+				DropJob(st, st.active);
+			}
+			st.kinds.AbortRead();
 		}
 
 		/// <summary>The labels just finished (or kept by a skip) are the entry's now, with the generation, stamp and parts their
@@ -681,6 +841,11 @@ namespace RimMandrake.FlowWorks
 
 		private static void DropJob(MapState st, Entry e)
 		{
+			if (e.jobReading)
+			{
+				e.jobReading = false;
+				st.kinds.AbortRead();
+			}
 			e.slot.Drop();
 			st.jobsDropped++;
 			if (st.active == e)
@@ -848,7 +1013,8 @@ namespace RimMandrake.FlowWorks
 			}
 			due.Sort(OldestBuiltFirst);
 			// the slices: the job in flight first, then the due entries oldest-built first, until SliceMs is spent
-			Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)> views = null;
+			Dictionary<RM_PocketGrid, (byte[] depth, Dictionary<int, int> ramps)> views = st.views;
+			views.Clear();
 			long s0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			long limit = drain ? long.MaxValue : s0 + (long)(SliceMs * System.Diagnostics.Stopwatch.Frequency / 1000.0);
 			int next = 0;
@@ -863,11 +1029,37 @@ namespace RimMandrake.FlowWorks
 					}
 					Entry d = due[next++];
 					CountRebuildCause(st, d, RM_WallReachMath.StaleAfterLoad(d.midLoad, playing));
-					views = views ?? new Dictionary<RM_PocketGrid, (byte[], Dictionary<int, int>)>();
 					any = true;
 					if (!BeginJob(map, st, d, stamp, gen, views, now))
 					{
 						continue;
+					}
+				}
+				else if (st.active.jobReading)
+				{
+					// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: the job's kinds read, a chunk at a time inside the slice
+					Entry e = st.active;
+					// a read lost (Invalidate after a load: begun while loading) or whose square-less stamp parts moved
+					if (!st.kinds.Reading || ReadPartsMoved(st, e))
+					{
+						DropJob(st, e);
+						st.readsPartsDropped++;
+						if (drain)
+						{
+							due.Add(e);
+						}
+					}
+					else
+					{
+						long c0 = System.Diagnostics.Stopwatch.GetTimestamp();
+						bool done = st.kinds.ReadStep(ReadUnits, KindFn(map), out int read);
+						KindFnDone();
+						e.jobMs += MsSince(c0);
+						if (done)
+						{
+							e.jobReading = false;
+							StartFlood(map, st, e, views, now);
+						}
 					}
 				}
 				else
@@ -1362,7 +1554,10 @@ namespace RimMandrake.FlowWorks
 			sb.Append(" walkQuiet=").Append(Volatile.Read(ref st.walkQuiet)).Append(" walkMoved=").Append(Volatile.Read(ref st.walkMoved));
 			sb.Append(" jobs=").Append(st.jobsBegun).Append('/').Append(st.jobsPublished).Append('/').Append(st.jobsDropped)
 				.Append(" covered=").Append(st.covered).Append(" sliceUnits=").Append(st.sliceUnits)
-				.Append(" maxSliceMs=").Append(st.maxSliceMs.ToString("0.000")).Append(" inFlight=").Append(st.active != null ? 1 : 0);
+				.Append(" maxSliceMs=").Append(st.maxSliceMs.ToString("0.000")).Append(" inFlight=").Append(st.active != null ? 1 : 0)
+				.Append(" reads=").Append(st.kinds.readsBegun).Append('/').Append(st.kinds.readsDone).Append('/')
+				.Append(st.kinds.readRestarts).Append('/').Append(st.kinds.readAborts).Append('/').Append(st.readsPartsDropped)
+				.Append(" readCells=").Append(st.kinds.readCells).Append(" kindsAllocs=").Append(st.kinds.allocs);
 			return sb.ToString();
 		}
 

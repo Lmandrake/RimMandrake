@@ -681,13 +681,36 @@ namespace RimMandrake.FlowWorks
 		/// <summary>WALLREACH_CACHE_HARDEN_DOOR_HOLDS_OLD_MAP: the map's kinds snapshot, as RM_WallReach.Kinds runs it. The
 		/// published array is never written after it is published (a worker thread reads it: NoteConnectivity); a read whose
 		/// content (and geometry) equals it becomes scratch for the next read, so a labelling built from the published array
-		/// can tell by reference that no kind moved. <see cref="Invalidate"/> (a load finished) makes the next ask re-read.</summary>
+		/// can tell by reference that no kind moved. <see cref="Invalidate"/> (a load finished) makes the next ask re-read.
+		/// WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: a replaced published array is written again only once it is no longer
+		/// published and <see cref="inUse"/> says no labelling holds it (NoteConnectivity's worker reads only the array
+		/// published while the main thread is blocked in GatherData, and Publish runs on the main thread, so a worker never
+		/// holds a replaced one).</summary>
 		public sealed class KindsSnapshot
 		{
 			public byte[] published;
 			public long stamp = long.MinValue;
 			public int width = -1, height = -1;
 			private byte[] scratch;
+			/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: does some labelling still hold this array (built from it or
+			/// flooding from it)? A replaced published array is reused for a later read only when this says no. Null: never
+			/// reused.</summary>
+			public Func<byte[], bool> inUse;
+			/// <summary>Arrays allocated by <see cref="Take"/> (diagnostic: zero in steady play).</summary>
+			public int allocs;
+			public int readsBegun, readsDone, readRestarts, readAborts;
+			public long readCells;
+			private readonly List<byte[]> retired = new List<byte[]>();
+			private const int MaxRetired = 4;
+			private byte[] reading;
+			private int readCursor, readW, readH;
+			private long readStamp;
+
+			/// <summary>A sliced read is in flight (<see cref="BeginRead"/> .. <see cref="ReadStep"/> true or
+			/// <see cref="AbortRead"/>).</summary>
+			public bool Reading => reading != null;
+			/// <summary>Squares [0, ReadCursor) of the read in flight are read.</summary>
+			public int ReadCursor => readCursor;
 
 			public bool CurrentFor(long s, int w, int h)
 			{
@@ -698,8 +721,21 @@ namespace RimMandrake.FlowWorks
 			/// written before <see cref="Publish"/>.</summary>
 			public byte[] Take(int n)
 			{
-				byte[] a = scratch != null && scratch.Length == n ? scratch : new byte[n];
+				byte[] a = scratch != null && scratch.Length == n ? scratch : null;
 				scratch = null;
+				for (int i = 0; a == null && inUse != null && i < retired.Count; i++)
+				{
+					if (retired[i].Length == n && !inUse(retired[i]))
+					{
+						a = retired[i];
+						retired.RemoveAt(i);
+					}
+				}
+				if (a == null)
+				{
+					allocs++;
+					a = new byte[n];
+				}
 				return a;
 			}
 
@@ -709,6 +745,7 @@ namespace RimMandrake.FlowWorks
 			{
 				if (w != width || h != height || !SameBytes(read, published))
 				{
+					Retire(published);
 					published = read;
 				}
 				else
@@ -721,9 +758,99 @@ namespace RimMandrake.FlowWorks
 				return published;
 			}
 
+			/// <summary>The next ask re-reads; a read in flight (begun while loading) is dropped with it.</summary>
 			public void Invalidate()
 			{
 				stamp = long.MinValue;
+				AbortRead();
+			}
+
+			/// <summary>A replaced published array waits here (newest first, at most MaxRetired) until no labelling holds it.
+			/// Only with an <see cref="inUse"/> predicate: without one nothing is known to be free.</summary>
+			private void Retire(byte[] a)
+			{
+				if (a == null || inUse == null)
+				{
+					return;
+				}
+				if (retired.Count >= MaxRetired)
+				{
+					retired.RemoveAt(retired.Count - 1);
+				}
+				retired.Insert(0, a);
+			}
+
+			/// <summary>WALLREACH_BEGINJOB_TAME_INPUTS_OUT_OF_SLICE: start reading the map a slice at a time into an array of
+			/// w × h (<see cref="Take"/>); it is published at stamp <paramref name="s"/> when the last square is read. A read in
+			/// flight is dropped first.</summary>
+			public void BeginRead(long s, int w, int h)
+			{
+				AbortRead();
+				reading = Take(w * h);
+				readCursor = 0;
+				readStamp = s;
+				readW = w;
+				readH = h;
+				readsBegun++;
+			}
+
+			/// <summary>Read at most <paramref name="budget"/> more squares with <paramref name="kindAt"/>. True when this call
+			/// read the last one and published the read (<see cref="Publish"/> at the stamp it began with).</summary>
+			public bool ReadStep(int budget, Func<int, byte> kindAt, out int spent)
+			{
+				spent = 0;
+				if (reading == null)
+				{
+					return false;
+				}
+				int n = reading.Length;
+				int end = budget >= n - readCursor ? n : readCursor + Math.Max(1, budget);
+				for (int i = readCursor; i < end; i++)
+				{
+					reading[i] = kindAt(i);
+				}
+				spent = end - readCursor;
+				readCursor = end;
+				readCells += spent;
+				if (readCursor < n)
+				{
+					return false;
+				}
+				byte[] read = reading;
+				reading = null;
+				readsDone++;
+				Publish(read, readStamp, readW, readH);
+				return true;
+			}
+
+			/// <summary>Square <paramref name="i"/> may have changed since the read in flight passed it: read it again.</summary>
+			public void Touch(int i, Func<int, byte> kindAt)
+			{
+				if (reading != null && i >= 0 && i < readCursor)
+				{
+					reading[i] = kindAt(i);
+				}
+			}
+
+			/// <summary>Changes were lost (a delta overflow): read the whole map again, same stamp.</summary>
+			public void RestartRead()
+			{
+				if (reading != null)
+				{
+					readCursor = 0;
+					readRestarts++;
+				}
+			}
+
+			/// <summary>Drop the read in flight unpublished (its array becomes the scratch).</summary>
+			public void AbortRead()
+			{
+				if (reading != null)
+				{
+					scratch = scratch ?? reading;
+					reading = null;
+					readAborts++;
+				}
 			}
 		}
 
