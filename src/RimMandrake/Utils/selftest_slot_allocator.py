@@ -566,5 +566,55 @@ r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 600, week_pct_left=33.0, 
 check("cap: FOUNDRY is not touched by BENCH's sitting cap", r["seats"]["FOUNDRY"] >= 0 and r["seats"]["BENCH"] == 0)
 check("cap: the configured value is read from dispatcher_schedule.json", SA.session_cap_pct() == 6.0, SA.session_cap_pct())
 
+# ---- code-review night 2026-10-27 (slot_allocator full-file review)
+# S1: a one-minute reset_at jitter is the same reset for the token dial too, not a reset that drops ALMOST_OUT
+r = d(ao, week_pct_left=30.0, week_resets_at="2026-10-28T12:59-07:00")
+check("S1: reset_at jitter (13:00 -> 12:59) keeps ALMOST_OUT's hysteresis (P 0.88 not held 2 h)",
+      r["token_mode"] == "ALMOST_OUT", (r["token_mode"], r["state"]))
+# S2: a sitting that began unmeasured on account A, then measured on B: A's spend is unknown, held - never zero
+sg, _, drop, _ = SA.sitting_step({"owner_window_t": NOW - 600, "source": "UNMEASURED", "week_pct_left": None,
+                                  "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctA"}, {}, NOW - 600)
+sg, _, drop, _ = SA.sitting_step({"owner_window_t": NOW - 60, "source": "MEASURED", "week_pct_left": 80.0,
+                                  "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctB"}, {"sitting": sg}, NOW - 60)
+check("S2: unmeasured start on A then a reading on B holds the drop unknown (None), not 0",
+      drop is None and sg.get("carried") is None, (drop, sg))
+sg2, _, drop2, _ = SA.sitting_step({"owner_window_t": NOW - 30, "source": "MEASURED", "week_pct_left": 70.0,
+                                    "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctB"}, {"sitting": sg}, NOW - 30)
+check("S2: ... and stays held on the next reading", drop2 is None, (drop2, sg2))
+sg3, _, drop3, _ = SA.sitting_step({"owner_window_t": NOW - 60, "source": "MEASURED", "week_pct_left": 80.0,
+                                    "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctA"},
+                                   {"sitting": {"start": NOW - 600, "start_left": None, "last_active": NOW - 600,
+                                                "account": "acctA", "reset_at": "2026-10-28T16:00-07:00",
+                                                "carried": 0.0, "last_left": None}}, NOW - 60)
+check("S2 control: unmeasured start then a reading on the SAME account takes it as the base (drop 0)",
+      drop3 == 0.0 and sg3["start_left"] == 80.0, (drop3, sg3))
+# S3: two writers (the scheduled tick and a manual `now --write`) must not share one temp file
+_sd_old = os.environ.get("RM_STREAMS_DIR")
+with tempfile.TemporaryDirectory() as _td:
+    os.environ["RM_STREAMS_DIR"] = _td
+    _real_replace, _nested = SA.os.replace, []
+
+    def _racing_replace(src, dst):
+        if not _nested:  # a second writer lands between this writer's temp write and its replace
+            _nested.append(1)
+            SA.write({"who": "second"})
+        return _real_replace(src, dst)
+    SA.os.replace = _racing_replace
+    err = None
+    try:
+        SA.write({"who": "first"})
+    except Exception as e:  # noqa: BLE001
+        err = e
+    finally:
+        SA.os.replace = _real_replace
+    got = json.loads((Path(_td) / "allocation.json").read_text(encoding="utf-8"))
+    left_over = sorted(p.name for p in Path(_td).iterdir() if p.name != "allocation.json")
+    check("S3: an interleaved second writer neither crashes the first nor publishes in its name",
+          err is None and got == {"who": "first"} and not left_over, (err, got, left_over))
+if _sd_old is None:
+    os.environ.pop("RM_STREAMS_DIR", None)
+else:
+    os.environ["RM_STREAMS_DIR"] = _sd_old
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

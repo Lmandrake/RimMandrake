@@ -55,6 +55,7 @@ import json
 import math
 import os
 import sys
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -397,9 +398,6 @@ def sitting_step(inp, state, now):
             sit["last_active"] = max(sit.get("last_active") or 0, w)
     if sit is None:
         return None, False, None, measured
-    if sit.get("start_left") is None and left is not None:
-        sit["start_left"] = left
-        sit.setdefault("last_left", left)
     # F9: a different burn account or a new weekly reset mid-sitting makes start_left a reading of another meter.
     # Re-base: bank the drop already spent on the old meter, start counting from the new one. Only on a measured
     # reading; until then the drop is unknown (hold), never zero.
@@ -407,6 +405,11 @@ def sitting_step(inp, state, now):
     old_acct, old_reset = sit.get("account"), epoch(sit.get("reset_at"))
     changed = bool((acct and old_acct and acct != old_acct)
                    or (reset and old_reset and not same_reset(reset, old_reset)))
+    if not changed and sit.get("start_left") is None and left is not None:
+        # first reading of the SAME meter the sitting began on: the base. On another meter it is not (the old
+        # meter's spend was never measured), so it is left for the re-base below to hold as unknown.
+        sit["start_left"] = left
+        sit.setdefault("last_left", left)
     if changed and left is not None:
         if sit.get("start_left") is None or sit.get("carried") is None:
             sit["carried"] = None  # the old meter's spend was never measured: unknown, held
@@ -609,7 +612,7 @@ def _token(inp, state, rules, now, P):
     measured = inp.get("source") == "MEASURED"
     h, used = inp.get("hours_to_week_reset"), inp.get("week_pct_used")
     reset_changed = bool(state.get("reset_at") and inp.get("week_resets_at")
-                         and epoch(state["reset_at"]) != epoch(inp["week_resets_at"]))
+                         and not same_reset(epoch(state["reset_at"]), epoch(inp["week_resets_at"])))  # jitter: same reset
     if reset_changed:
         prev, pending = None, None
     if used is not None and used >= tk["DARK"]["enter_pct_used_ge"]:
@@ -973,9 +976,19 @@ def compute(now=None, rules=None, seat="BENCH"):
 def write(dec):
     d = streams_dir()
     d.mkdir(parents=True, exist_ok=True)
-    tmp = d / "allocation.json.tmp"
-    tmp.write_text(json.dumps(dec, indent=1, sort_keys=True, default=str), encoding="utf-8")
-    os.replace(tmp, d / "allocation.json")
+    # one temp file per writer: the scheduled tick and a manual `now --write` may overlap; a shared temp name let
+    # one publish the other's decision and the other crash on a vanished file
+    fd, tmp = tempfile.mkstemp(prefix="allocation.json.", suffix=".tmp", dir=d)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(json.dumps(dec, indent=1, sort_keys=True, default=str))
+        os.replace(tmp, d / "allocation.json")
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def write_now(now=None):
