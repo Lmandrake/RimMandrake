@@ -138,7 +138,7 @@ def pick(rule, status, current, lent_rules, allowance, now, known_lent=None):
         under.append("week left %.0f%% < %s%%" % (cur["week_left"], sw["week_left_pct_lt"]))
     if current in lent:
         cap, cwhy = allowance(lent_view(current, cur, hours_to_reset(status, current)), lent_rules, now)
-        if cap is None or cap < min_draw:
+        if cap is None or cap <= 0 or cap < min_draw:  # 0 is off-limits whatever the line says
             under.append("lent account allowance %s%% < %s%% (%s)" % (
                 "?" if cap is None else "%.0f" % cap, min_draw, cwhy))
     here = "%s: runway %.2f %s, week left %.0f%%" % (current, cur["runway"], cur["runway_m"], cur["week_left"])
@@ -163,7 +163,7 @@ def pick(rule, status, current, lent_rules, allowance, now, known_lent=None):
         c = {"account": label, "runway": r["runway"], "week_left": r["week_left"], "hours_to_reset": h}
         if label in lent:
             cap, lwhy = allowance(lent_view(label, r, h), lent_rules, now)
-            if cap is None or cap < min_draw:
+            if cap is None or cap <= 0 or cap < min_draw:
                 refused.append("%s lent, allowance %s%% < %s%% (%s)" % (
                     label, "?" if cap is None else "%.0f" % cap, min_draw, lwhy))
                 continue

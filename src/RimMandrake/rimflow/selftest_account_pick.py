@@ -47,6 +47,12 @@ def main():
     check(p["state"] == "KEEP" and not p["hold"], "lent current within its allowance -> KEEP")
     p = AP.pick(RULE, status({"mine": (0.2, 5)}), "mine", LENT, off, NOW)
     check(p["state"] == "KEEP" and not p["hold"], "owned current under the line, none fit -> KEEP (bands pace it)")
+    # review night: a zero allowance is off-limits whatever lent_min_draw_pct says (0 or omitted must not open it)
+    r0 = dict(RULE, lent_min_draw_pct=0)
+    p = AP.pick(r0, st, "borrowed", LENT, off, NOW)
+    check(p["state"] == "HOLD" and p["hold"], "min draw 0: lent current at allowance 0, none fit -> HOLD, not KEEP")
+    p = AP.pick(r0, status({"borrowed": (2.0, 50), "mine": (0.2, 5)}), "mine", LENT, off, NOW)
+    check(p["state"] == "KEEP" and p["to"] is None, "min draw 0: an off-limits lent account is never a SWITCH target")
     print("\n%s" % ("FAILED %d" % len(FAILS) if FAILS else "all passed"))
     sys.exit(1 if FAILS else 0)
 
