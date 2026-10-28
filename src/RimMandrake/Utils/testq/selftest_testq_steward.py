@@ -314,6 +314,13 @@ def main():
         j = [json.loads(x) for x in open(T.q("steward.jsonl"))]
         check(any(e["event"] == "restart" for e in j) and any(e["event"] == "state" for e in j),
               "steward.jsonl holds state changes and the restart")
+        class Lz:
+            open, owner = True, "BENCH"
+            lease = {"expires": model.stamp(base + 1000), "released": model.stamp(base + 50)}
+            claim_ts = model.stamp(base)
+
+        fz = (model, type("Wd", (), {"items": {"Z": Lz()}})())
+        check(W.claim_cover("Z", int(base), int(base) + 60, fz) == 50, "a released lease covers up to its release stamp")
         # ------------------------------------------------ review r2: watcher recovery, refused raise, lock, dup
         reset()
         S.dump({"epoch": base + 1000, "incident": {"state": "BRAKED", "level": 1, "unowned_s": 700, "item": item},

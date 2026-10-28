@@ -367,8 +367,11 @@ def claim_cover(item_id, a, b, w=None):
     ls = getattr(it, "lease", None)
     if ls:
         end = model.epoch(ls.get("expires"))
-        if ls.get("released") or end is None:
+        rel = model.epoch(ls.get("released")) if ls.get("released") else None
+        if end is None:
             return 0
+        if rel is not None:
+            end = min(end, rel)
     else:
         end = start + CLAIM_HOLD_S
     return int(max(0, min(b, end) - max(a, start)))
