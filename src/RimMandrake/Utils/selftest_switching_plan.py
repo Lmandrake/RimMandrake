@@ -82,28 +82,52 @@ def main():
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "done"}}
     d = D({**off, "system": R(0.9, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
     check(d["do"] == "hold", "a transition already done this week is never repeated")
+    # use it or lose it: the soonest-expiring account with budget burns first (coordinator 2026-10-28 10:58)
+    d = D({**off, "system": R(100, 167.9), "lukas": R(40, 3)}, "lukas")
+    check(d["do"] == "normal", f"system just reset, lukas 40% expires in 3 h: stay on lukas (got {d['do']} {d.get('to')})")
+    d = D({**off, "system": R(0.5, 0.2), "lukas": R(40, 3)}, "lukas")
+    check(d["do"] == "normal", f"system's reset in 12 min will not pull the machine off lukas: no soft (got {d['do']})")
+    d = D({"steven": R(100, 167.9), "system": R(100, 165), "lukas": R(30, 1.2)}, "lukas")
+    check(d["do"] == "normal", f"steven just reset but lukas expires in 1.2 h: lukas first (got {d['do']} {d.get('to')})")
+    d = D({"steven": R(100, 167), "system": R(98, 165), "lukas": R(0.9, 0.5)}, "lukas")
+    check(d["do"] == "switch" and d["to"] == "steven", f"lukas spent: steven's window expires before system (got {d})")
+    d = D({**off, "system": R(100, 165), "lukas": R(1.5, 3)}, "lukas")
+    check(d["do"] == "soft", f"lukas at 1.5% with system to switch to: its line is 1 (soft, not stop) (got {d['do']})")
+    d = D({**off, "system": R(1.5, 100), "lukas": R(1.8, 120)}, "lukas")
+    check(d["do"] == "stop", f"no account with budget: pause at the 2% wait floor (got {d['do']})")
+    mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "failed", "at": SP.iso(NOW - 60)}}
+    d = D({**off, "system": R(0.9, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
+    check(d["do"] == "switch", f"a FAILED switch is retried next pass, never held (got {d['do']})")
+    mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "pending", "at": SP.iso(NOW - 600)}}
+    d = D({**off, "system": R(0.4, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
+    check(d["do"] == "stop", f"a pending switch that never landed while live is under its line: stop (got {d['do']})")
     d = D({**off, "system": R(0.9, 100), "lukas": R(98, 120)}, None)
     check(d["do"] == "skip", "live account unknown: skip")
 
-    # the pool
+    # the pool: every budget is due at its own expiry (use it or lose it), plus each account's next refill
     p = SP.pool({"steven": R(80, 168 - 8), "system": R(50, 100), "lukas": R(98, 120)}, NOW, PLAN, live="steven")
-    # steven: 28 by 40 h; system 49 + lukas 96 by system's reset (100 h)
-    check(abs(p["pct"] - 173) < 0.01, f"pool = 28 + 49 + 96 = 173 (got {p['pct']})")
-    check(abs(p["rate_pct_h"] - 1.73) < 0.01 and abs(p["deadline_h"] - 100) < 0.01,
-          f"required rate 173/100 h binds at system's reset (got {p['rate_pct_h']} over {p['deadline_h']})")
+    # steven 28 by his window end (40 h); system 49 by 100 h; lukas (last to expire: wait line 2) 96 by 120 h
+    by120 = sum(x["spend_pct"] for x in p["parts"] if x["by_h"] <= 120)
+    check(abs(by120 - 173) < 0.01, f"this week's budgets: 28 + 49 + 96 = 173 due by lukas's reset, 120 h (got {by120})")
+    # the refills (steven 48 by 208 h, system 99 by 268 h, lukas 98 by 288 h) make 418 by 288 h: 1.451 > 173/120
+    check(abs(p["rate_pct_h"] - 418 / 288) < 0.01 and abs(p["deadline_h"] - 288) < 0.01 and abs(p["pct"] - 418) < 0.01,
+          f"the binding deadline is the refills' 418% by 288 h (got {p['pct']} by {p['deadline_h']})")
     p = SP.pool({"steven": R(60, 168 - 46), "system": R(90, 100), "lukas": R(98, 120)}, NOW, PLAN, live="steven")
     check(abs(p["rate_pct_h"] - 4.0) < 0.01 and abs(p["deadline_h"] - 2) < 0.01,
           f"steven's 8% must go in the 2 h left of his window: 4%/h binds (got {p['rate_pct_h']})")
     p = SP.pool({"steven": R(22, 2), "system": R(100, 168), "lukas": R(7, 3)}, NOW, PLAN, live="system")
-    # steven's next window opens in 2 h: 48 by 50 h; system 99 + lukas (refills before system's reset) 98 by 168 h
-    check(abs(p["pct"] - (48 + 99 + 98)) < 0.01, f"steven's coming window and lukas's refill count (got {p['pct']})")
+    check(abs(p["rate_pct_h"] - 2.0) < 0.01 and abs(p["deadline_h"] - 3) < 0.01,
+          f"lukas's 6% expiring in 3 h binds at 2%/h (got {p['rate_pct_h']} by {p['deadline_h']})")
+    sv = [x for x in p["parts"] if x["account"] == "steven"]
+    check(len(sv) == 1 and abs(sv[0]["spend_pct"] - 48) < 0.01 and abs(sv[0]["by_h"] - 50) < 0.01,
+          f"steven's coming window counts: 48% by 50 h (got {sv})")
 
     # one pass end to end, fake claude-account
     fake = TMP / "claude-account"
     calls = TMP / "calls.txt"
     fake.write_text("#!/usr/bin/env python3\nimport json,sys,os\nopen(%r,'a').write(' '.join(sys.argv[1:])+'\\n')\n"
                     "if 'status' in sys.argv: print(json.dumps({'machine':'testbox','live':os.environ.get('FAKE_LIVE'),"
-                    "'armed':False}))\nelse: print(json.dumps({'ok':True}))\n" % str(calls))
+                    "'armed':False}))\nelif os.environ.get('FAKE_FAIL') in sys.argv: sys.exit(3)\nelse: print(json.dumps({'ok':True}))\n" % str(calls))
     fake.chmod(fake.stat().st_mode | stat.S_IEXEC)
     os.environ["RM_CLAUDE_ACCOUNT"] = str(fake)
     os.environ["FAKE_LIVE"] = "system"
@@ -128,6 +152,14 @@ def main():
     SP.check(dry=False, now=NOW + 60, meter_fn=lambda: meter2, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
     check("fleet-stop" not in seq, "the hard stop happens once per account-week")
+    calls.write_text("")
+    st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / (k + ".json")).unlink()
+    os.environ["FAKE_FAIL"] = "fleet-stop"
+    SP.check(dry=False, now=NOW + 120, meter_fn=lambda: meter2, poll_fn=lambda: None)
+    os.environ.pop("FAKE_FAIL")
+    check(not SP.load_state().get("stopped"), "a fleet-stop that failed leaves no 'stopped' record: the next pass retries")
     calls.write_text("")
     rc = SP.check(dry=True, now=NOW, meter_fn=lambda: meter, poll_fn=lambda: None)
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]

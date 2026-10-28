@@ -136,19 +136,44 @@ def in_window(plan: dict, name: str, r, now: float) -> bool:
     return rs is not None and not reset_passed(r, now) and (rs - now) / 3600 >= 168 - w
 
 
+def expiry(plan: dict, name: str, r, now: float):
+    """When the account's present budget is lost to us: its next weekly reset, or for a windowed account (steven)
+    the end of the window after its last reset. None when the meter has no reset time."""
+    rs = next_reset(r, now)
+    if rs is None:
+        return None
+    w = (plan["accounts"].get(name) or {}).get("window_h_after_reset")
+    return rs if w is None else rs - WEEK + w * 3600
+
+
 def lines(meter: dict, plan: dict, now: float) -> tuple[dict, dict]:
-    """-> ({name: line}, {name: eligible}). Computed from the end of the order backwards: an account's line is the
-    switch-away floor while some later account can take over, else the wait floor; a leave_pct_left overrides."""
+    """-> ({name: line}, {name: eligible}). An account's line is its leave_pct_left when it has one; else the
+    switch-away floor while some OTHER account has budget above its wait floor to take over, else the wait floor
+    (we idle on it until a reset). Eligible = MEASURED, fresh, in its window, above its line."""
     fl = plan["floors"]
-    line, elig, later = {}, {}, False
-    for name in reversed(plan["order"]):
-        r = meter.get(name)
-        leave = (plan["accounts"].get(name) or {}).get("leave_pct_left")
-        ln = leave if leave is not None else (fl["switch_away_pct_left"] if later else fl["wait_pct_left"])
-        ok = usable(r) and in_window(plan, name, r, now) and r["week_pct_left"] > ln
-        line[name], elig[name] = ln, ok
-        later = later or ok
+
+    def ok(n, ln):
+        r = meter.get(n)
+        return usable(r) and in_window(plan, n, r, now) and r["week_pct_left"] > ln
+
+    strict = {}
+    for n in plan["order"]:
+        leave = (plan["accounts"].get(n) or {}).get("leave_pct_left")
+        strict[n] = ok(n, leave if leave is not None else fl["wait_pct_left"])
+    line, elig = {}, {}
+    for n in plan["order"]:
+        leave = (plan["accounts"].get(n) or {}).get("leave_pct_left")
+        other = any(strict[m] for m in plan["order"] if m != n)
+        line[n] = leave if leave is not None else (fl["switch_away_pct_left"] if other else fl["wait_pct_left"])
+        elig[n] = ok(n, line[n])
     return line, elig
+
+
+def pick(meter: dict, plan: dict, now: float, elig: dict):
+    """Use it or lose it (coordinator 2026-10-28 10:58): the eligible account whose budget expires soonest; ties go
+    to plan order."""
+    c = [(expiry(plan, n, meter.get(n), now) or float("inf"), i, n) for i, n in enumerate(plan["order"]) if elig[n]]
+    return min(c)[2] if c else None
 
 
 def switch_key(frm: str, to: str, target_rec: dict) -> str:
@@ -173,7 +198,7 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     order, fr = plan["order"], plan["fresh"]
     line, elig = lines(meter, plan, now)
-    target = next((n for n in order if elig[n]), None)
+    target = pick(meter, plan, now, elig)
     lr = meter.get(live) or {}
     base = {"account": live, "line": line.get(live), "pct_left": lr.get("week_pct_left"), "to": None}
 
@@ -186,10 +211,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         p, a = r.get("week_pct_left"), r.get("age_min")
         if p is not None and n in line and p - line[n] <= fr["near_pct"] and (a is None or a > fr["max_age_min"]):
             why_poll.append(f"{n} at {p}% is within {fr['near_pct']} of its {line[n]}% line on a {a}-min-old reading")
-    if live in order:
-        for n in order[:order.index(live)]:
-            if reset_passed(meter.get(n), now):
-                why_poll.append(f"{n}'s reset has passed and the reading predates it")
+    for n in order:
+        if n != live and reset_passed(meter.get(n), now):
+            why_poll.append(f"{n}'s reset has passed and the reading predates it")
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
 
@@ -208,13 +232,19 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     if target != live:
         key = switch_key(live, target, meter.get(target))
         m = markers.get(key)
-        if m:
+        p = lr.get("week_pct_left")
+        if m and m.get("phase") != "failed":
             age = now - (epoch(m.get("at")) or 0)
             if m.get("phase") == "done" or age < STALE_PENDING_S:
+                if m.get("phase") == "pending" and p is not None and live in line and p <= line[live]:
+                    return {**base, "do": "stop", "key": stop_key(live, lr, now),
+                            "why": f"transition {key} is {m.get('phase')} yet live is still {live} at {p}% <= its "
+                                   f"{line[live]}% line: stop rather than overshoot"}
                 return {**base, "do": "hold", "to": target, "key": key,
-                        "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live}"}
-        before = live not in order or order.index(target) < order.index(live)
-        p = lr.get("week_pct_left")
+                        "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live} "
+                               "(a done switch that reads back as the old account is a human's move: respected)"}
+        te, le = expiry(plan, target, meter.get(target), now), expiry(plan, live, meter.get(live), now)
+        before = live not in order or le is None or (te is not None and te < le)
         proven = usable(lr) or (p is not None and live in line and p <= line[live]) or live not in order
         if not (proven or before):
             return {**base, "do": "hold", "to": target, "why": f"{live} reads {lr.get('source')}: no switch away "
@@ -223,7 +253,7 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
             return {**base, "do": "hold", "to": target, "why": "still not fresh after a poll: " + "; ".join(why_poll)}
         tr = meter[target]
         return {**base, "do": "switch", "to": target, "key": key,
-                "why": f"{target} is first in order with headroom ({tr['week_pct_left']}% > {line[target]}%); "
+                "why": f"{target} is the soonest-expiring account with headroom ({tr['week_pct_left']}% > {line[target]}%); "
                        f"{live} at {p}%"}
 
     # target == live
@@ -236,9 +266,16 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         return {**base, "do": "soft", "why": f"{live} at {p}% is within {plan['soft_margin_pct']} of its "
                                              f"{line[live]}% line: switch pending, publish and finish"}
     lead_h = plan["switch_lead_min"] / 60
-    for n in order[:order.index(live)]:
-        h = (meter.get(n) or {}).get("hours_to_week_reset")
-        if h is not None and 0 < h <= lead_h:
+    for n in order:
+        r = meter.get(n) or {}
+        h = r.get("hours_to_week_reset")
+        if n == live or h is None or not 0 < h <= lead_h:
+            continue
+        fresh = {**r, "source": "MEASURED", "stale": False, "week_pct_left": 100.0, "age_min": 0,
+                 "hours_to_week_reset": 168.0, "week_resets_at": iso((next_reset(r, now) or now) + WEEK)}
+        after = {**meter, n: fresh}
+        _l, el = lines(after, plan, now + h * 3600)
+        if pick(after, plan, now + h * 3600, el) not in (live, None):
             return {**base, "do": "soft", "why": f"{n}'s reset in {round(h * 60)} min will pull the machine to it: "
                                                  "switch pending, publish and finish"}
     return {**base, "do": "normal", "why": f"{live} at {p}% above its {line[live]}% line"}
@@ -246,51 +283,43 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
 
 # ------------------------------------------------------------------ the pool (pure; slot_allocator paces on it)
 def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
-    """What the plan will still spend before the cycle ends (the next reset of the first account without a window,
-    which pulls the machine back to the head of the pool), and the burn rate that spends it without missing a
-    deadline: the max over deadlines of cumulative spend / hours. -> {pct, rate_pct_h, deadline_h, cycle_end_h,
-    parts}; rate None when the meter cannot say."""
-    order, fl = plan["order"], plan["floors"]
-    head = next((n for n in order if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None), None)
-    end = next_reset(meter.get(head), now) if head else None
-    if end is None:
-        return {"pct": None, "rate_pct_h": None, "deadline_h": None, "cycle_end_h": None, "parts": [],
-                "why": f"no reset time for {head}"}
-    pool_names = [n for n in order if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
+    """What the plan will still spend and the burn rate that spends it without losing any of it. Use it or lose it:
+    each account's present budget (down to its line) is due at its expiry (next reset; steven's window end), and its
+    next refill (100 - line) at the refill's own expiry. The rate is the max over deadlines of cumulative spend /
+    hours; pct and deadline_h are the binding deadline's. -> {pct, rate_pct_h, deadline_h, total_pct, parts}; rate
+    None when no account has a reset time. `live` is unused (kept for the allocator's call)."""
+    fl = plan["floors"]
+    plain = [n for n in plan["order"] if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
+    exp = {n: expiry(plan, n, meter.get(n), now) for n in plan["order"]}
+    last = max((n for n in plain if exp[n] is not None), key=lambda n: exp[n], default=None)
     parts = []
-    for n in order:
+    for n in plan["order"]:
         r = meter.get(n) or {}
         cfg = plan["accounts"].get(n) or {}
-        rs = next_reset(r, now)
+        e = exp[n]
+        if e is None:
+            continue
         p = r.get("week_pct_left")
         if p is None and reset_passed(r, now):
             p = 100.0
-        w = cfg.get("window_h_after_reset")
-        if w is not None:
-            leave = cfg.get("leave_pct_left", fl["wait_pct_left"])
-            if rs is None:
-                continue
-            last = rs - WEEK
-            if now < last + w * 3600:
-                parts.append((n, max(0.0, (p if p is not None else 100.0) - leave), last + w * 3600))
-            if rs < end:
-                parts.append((n, 100.0 - leave, min(rs + w * 3600, end)))
-            continue
-        ln = fl["wait_pct_left"] if n == pool_names[-1] else fl["switch_away_pct_left"]
-        spend = max(0.0, (p if p is not None else 0.0) - ln)
-        if rs is not None and rs < end and n != head:
-            spend = (spend if n == live else 0.0) + (100.0 - ln)
-        parts.append((n, spend, end))
+        leave = cfg.get("leave_pct_left")
+        ln = leave if leave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
+        if e > now and (cfg.get("window_h_after_reset") is None or in_window(plan, n, r, now)):
+            parts.append((n, max(0.0, (p if p is not None else 0.0) - ln), e))
+        parts.append((n, 100.0 - ln, e + WEEK))
+    if not parts:
+        return {"pct": None, "rate_pct_h": None, "deadline_h": None, "total_pct": None, "parts": [],
+                "why": "no account has a reset time"}
     parts.sort(key=lambda t: t[2])
-    cum, rate, dl = 0.0, 0.0, (end - now) / 3600
-    for _n, s, d in parts:
-        cum += s
+    cum, rate, bind, dl = 0.0, 0.0, 0.0, None
+    for _n, sp, d in parts:
+        cum += sp
         h = (d - now) / 3600
-        if h > 0 and cum / h > rate:
-            rate, dl = cum / h, h
-    return {"pct": round(cum, 2), "rate_pct_h": round(rate, 4), "deadline_h": round(dl, 2),
-            "cycle_end_h": round((end - now) / 3600, 2),
-            "parts": [{"account": n, "spend_pct": round(s, 2), "by_h": round((d - now) / 3600, 2)} for n, s, d in parts]}
+        if h > 0 and (dl is None or cum / h > rate):
+            rate, bind, dl = cum / h, cum, h
+    return {"pct": round(bind, 2), "rate_pct_h": round(rate, 4), "deadline_h": round(dl, 2) if dl else None,
+            "total_pct": round(cum, 2),
+            "parts": [{"account": n, "spend_pct": round(sp, 2), "by_h": round((d - now) / 3600, 2)} for n, sp, d in parts]}
 
 
 # ------------------------------------------------------------------ the world (impure)
@@ -418,6 +447,9 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -
         write_notice(d, now)
         res = armed_call(st, ["fleet-stop"])
         rec["result"], rc = res, 0 if (res.get("fleet-stop") or (1,))[0] == 0 else 1
+        if rc:  # not stopped after all: forget the record so the next pass tries again
+            state.pop("stopped", None)
+            save_state(state)
     elif d["do"] == "start":
         res = armed_call(st, ["fleet-start"])
         if (res.get("fleet-start") or (1,))[0] == 0:
