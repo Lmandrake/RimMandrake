@@ -88,8 +88,16 @@ mark), which is the read the standing ruling asks for.
 | `quick_checks_local` (08:00, 20:00), each only once an Operations run launched since the previous check has finished (`after_role`; none finished by `slot_late_s` = that check is missed) | quick | the scheduled check below |
 | he speaks in the BENCH window (session mode: the BENCH seat window itself, not a Dispatcher launch) | session | the workshop below |
 
-His message is not a Dispatcher trigger: the Dispatcher launches only the `quick_checks_local` runs. Session mode is the
-BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
+His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
+window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
+runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
+a 3-5 line note to the Conductor log read at wake), then asks the Dispatcher to restart the window as a fresh Remote
+Control Conductor after about 2 minutes of grace; a new message in the grace cancels it. A full handoff is written only
+when a keyboard sitting ends. The restart is the shared one in `src/RimMandrake/rimflow/seat_restart.py` (enable steps:
+`design/RimMandrake/rimflow_v3_golive_wave1.md` §10; the Conductor design: `design/RimMandrake/conductor_briefing_2026-10-28.md`
+Part B); not built for the Conductor yet, and `seat_restart` ships disabled. The Dispatcher launches only the
+`quick_checks_local` runs, and none while a live `CONDUCTOR` window exists (that window writes the findings itself).
+Session mode is the BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 
 The Dispatcher may refuse to start a quick run or stop one that has gone on too long, and it journals what it refused
 or stopped; the helper allocator may give you fewer helpers than you ask for. Those are theirs, never yours. A reply to a
@@ -116,7 +124,7 @@ decide together, then record what he chose as one note on the parent item headed
 flag); the Producer applies it from that note and records `CUT APPLIED <cut list id>`. A decision on a revision that a
 newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it; you never cut, reorder or drop work on your own, and the choice is his.
 
-## Quick mode (fresh per scheduled run; short)
+## Quick mode (a standing Remote Control window, fresh after each goodbye; short)
 
 1. Read `digest_blind.md` (one screen; never `digest.md`, which is Operations') and `python3 src/RimMandrake/rimflow/blind_view.py queue BENCH` (an item's notes:
    `blind_view.py show <ID>`; never raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry
@@ -145,7 +153,7 @@ Helpers: design · builder · live-test. His limit is two helpers at once across
 and the allocator may give you fewer; until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them from one pool, the
 headless roles run none, so the session's two are the whole pool: never more than two running at once, never more
 than the allocator gives. A helper never starts helpers of its own (say so in its brief); a brief carries no account
-or resource figure. Quick mode runs no helper. On arrival, the headless bench-lane builder that worked
+or resource figure. Quick mode runs no helper. On arrival, the headless FlowWorks builder that worked
 between sittings is fenced first (stopped, handoff written, lease released) before any session write (Orphan home 4).
 Everything in quick mode applies; the scheduled check runs once at the start of the sitting.
 

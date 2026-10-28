@@ -141,7 +141,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   them into every file that contradicts them (`deciding-and-superseding`); card him on §2 calls only; gate what
   reaches him (nothing unread: prereview through judges); deliver the daily digest and triage "what needs me?";
   `./game --said` on his game-state words; record a canon line in `canon.yml`. **Session mode** adds design work, the
-  hardest bugs, live testing with him and, by his 10-23 ruling, the FlowWorks + GSS lane; between sittings a Dispatcher-launched bench-lane builder works it under the Conductor's
+  hardest bugs, live testing with him and, by his 10-23 ruling, the FlowWorks + GSS lane; between sittings a Dispatcher-launched FlowWorks builder works it under the Conductor's
   accountability (Part 3, Orphan homes 4).
 - **Inputs:** his messages, the metrics pack (`rimflow_metrics.py`, pulse streams, `account_usage.py now`), the ledger,
   every role's questions and status (the Producer's plan status and cut lists, Operations' hand-ups, Arbiter bar defects).
@@ -347,7 +347,7 @@ list-timers`, 2026-10-26), and the process scripts in `src/RimMandrake/Utils/`.
 |---|---|---|
 | talk with him, triage "what needs me", record and propagate rulings, cards, `./game --said` | BENCH | Conductor |
 | design work, hardest bugs, live testing with him | BENCH | Conductor (session) |
-| FlowWorks + GSS: code, art, live test, acceptance, review, deploy | BENCH (ruling 10-23) | Conductor (session); between sittings a headless bench-lane builder (Orphan homes 4) |
+| FlowWorks + GSS: code, art, live test, acceptance, review, deploy | BENCH today (ruling 10-23); after v3 no BENCH seat: the Conductor | Conductor (session); between sittings a headless FlowWorks builder (Orphan homes 4); a Live Fixer run on a FlowWorks bug is Foundry work (owner 10-28) |
 | pull the queue, build, deploy, `src/`, game build | FOUNDRY | Foundry (fed by Dispatcher) |
 | full belt: bridge agent, art pipeline up, offline builder | FOUNDRY | Dispatcher (keeps slots full), Operations (pipeline up), Foundry (builds) |
 | acceptance sweeps L1–L3, GREEN-MIN/FULL | FOUNDRY, BENCH (FlowWorks), RUNNER verify events | Arbiter — **double D2** |
@@ -426,12 +426,12 @@ build order (v3.0 → v3.4), so each home also names who holds the duty **until*
    The Producer orders FlowWorks like any other mod, but it does not build, so the orphan stays unless someone
    builds. His 10-23 ruling keeps FlowWorks off Foundry to prevent mutual waiting, and v3 made BENCH the Conductor's
    session mode, which exists only while he sits.
-   **Home:** Producer orders; the Conductor is accountable for the BENCH lane at all times; between sittings the
-   Dispatcher launches a headless bench-lane builder in the bench clone under an exclusive lease, only while he is
-   away, and fences it (stop, handoff, lease released) before his session writes. Never Foundry. Acceptance and code
+   **Home:** Producer orders; the Conductor is accountable for the FlowWorks lane at all times; between sittings the
+   Dispatcher launches a headless FlowWorks builder in a clone under an exclusive lease, only while he is
+   away, and fences it (stop, handoff, lease released) before his session writes. Not Foundry, except a Live Fixer run on a FlowWorks bug (owner 10-28, by card). Acceptance and code
    review are independent (Arbiter; the GPT reviewer until v3.3): "BENCH owns acceptance" means BENCH obtains it,
    not grants it. Needs one schedule-rule change, which `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` carries: "the
-   watched BENCH window is never woken; a headless bench-lane builder may run while he is away".
+   watched BENCH window is never woken; a headless FlowWorks builder may run while he is away".
 5. **Windows popping up, focus theft, dialogs left on his screen.** His: *"seems like Operations."*
    **Verdict: agree,** with the mechanism added: watching for it costs no AI. Prevention is hidden-launch defaults
    at the shared launch points with an allowlist and a selftest; detection is a deterministic foreground-change log
@@ -515,7 +515,7 @@ Rules of the table:
 | C-6 | `./game --said` on his game-state words; canon lines into `canon.yml` | BENCH | his words | `block_canon_contradiction.py` hook | Wed |
 | C-7 | fix design docs to canon after a contradiction check | BENCH, on hook refusals; the sweep is owed (`CANON_BUILD_SWEEP_WHEN_CANON_MOVES`) | canon change, commit, nightly (once built) | `check_canon.py` rerun; ambiguous reading → Lukas | Wed |
 | C-8 | session: design, hardest bugs, live testing with him | BENCH | his presence | GPT reviewer until Fri, then Arbiter | Wed (rename only) |
-| C-9 | FlowWorks + GSS lane between sittings | BENCH at sittings only; headless bench-lane builder needs the role launch and the schedule rule (Orphan home 4) | continuous once launched | GPT reviewer until Fri, then Arbiter | Wed |
+| C-9 | FlowWorks + GSS lane between sittings | the Conductor at sittings only (after v3 there is no BENCH seat); a headless FlowWorks builder needs the role launch and the schedule rule (Orphan home 4) | continuous once launched | GPT reviewer until Fri, then Arbiter | Wed |
 | C-10 | weekly success-test pack delivered with an outside read | BENCH | weekly, after the trial week | outside GPT read; INCONCLUSIVE → stop-and-reconsider card | Wed |
 | C-11 | review pages fresh and every click works (GPT proposal, not yet his ruling) | BENCH | at serve | `serve_gated.py` gates | Wed |
 | C-12 | set the overall goals that drive the Producer, back and forth with him; carry every role's questions and status up to him (owner, 2026-10-27) | BENCH (session) sets goals as the BENCH-lane order until the Producer runs | his presence; weekly before the Producer's plan | Lukas reads the goals | Wed |
@@ -550,7 +550,7 @@ Rules of the table:
 | D-6 | test lane (testq tick / steward / ingest) | RUNNER on SteveDesktop (live) | timers | ops_watch `steve` family | live now |
 | D-7 | measuring arm (`ops_watch.py`) | `rm-ops-watch.timer` (live since 2026-10-27) | 15 min | Operations reads it; silent flag | live now |
 | D-8 | run the canon sweep; re-create missing enact items | nobody: owed builds (`CANON_BUILD_SWEEP_WHEN_CANON_MOVES`, `RULINGS_BUILD_STATE_RECONCILER_NEWEST_WINS`); write-time canon hook only | on canon change / nightly | BENCH reads the findings | when built |
-| D-9 | launch roles and the headless bench-lane builder from the schedule | nobody (owed, `DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`); roles held as in this table | per schedule | dispatcher journal; Operations | Wed blocker |
+| D-9 | launch roles and the headless FlowWorks builder from the schedule | nobody (owed, `DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`); roles held as in this table | per schedule | dispatcher journal; Operations | Wed blocker |
 
 ### Producer (Fri)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |

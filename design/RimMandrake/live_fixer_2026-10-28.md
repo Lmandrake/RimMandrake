@@ -1,7 +1,7 @@
 # Live Fixer: one seat, one ticket, one rig, no shuttle (proposal, 2026-10-28)
 
-Status: **PROPOSAL** for `LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE`. Nothing here edits the v3 design of record or the
-responsibilities doc; §8 drafts the lines to add there once the owner rules. Author: BENCH design helper.
+Status: design for `LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE`, §9 decided (2026-10-28); build owed. Nothing here edits the v3 design of record or the
+responsibilities doc; §8 drafts the lines to add there. Author: BENCH design helper.
 Evidence folder: `D:\ClaudeWork\rimmandrake\live_fixer\` (`jobs_all.tsv`, `roundtrips_items.txt`, `show_*.txt`).
 
 ## 0. The brief, in his words
@@ -68,10 +68,11 @@ Two placements, one mode:
   fences it before his session writes (responsibilities doc, orphan home #4). Use only when the bar needs Archmagi
   (§4.4) or SteveDesktop is down.
 
-Lane: the fixer inherits the lane of its ticket. A FlowWorks/GSS ticket (`flowworks_lane.json`) makes it a
-**bench-lane fixer**, accountable to the Conductor, never Foundry (standing 10-23 ruling); any other ticket makes it a
-Foundry-lane fixer. Its seat stamp is its own (`FIXER`, §4.6) so its commits and events are never confused with the
-watched BENCH window or the continuous Foundry.
+Lane: every fixer run is Foundry work, accountable to the Arbiter like any Foundry work, FlowWorks/GSS tickets
+(`flowworks_lane.json`) included. Owner, by card 2026-10-28: *"Yes, Foundry may take them too"* (a narrow exception to
+the 10-23 "BENCH owns all FlowWorks" ruling, which stands otherwise), and *"Once we go to v3 there is no bench
+anymore."* There is no bench lane in this design and nothing routes through one. Its seat stamp is its own (`FIXER`,
+§4.6) so its commits and events are never confused with the watched BENCH window or the continuous Foundry.
 
 ## 3. Trigger and selection
 
@@ -92,8 +93,8 @@ has budget (§4.5).
 
 **Selection:** the Producer orders the candidate list (it owns work order); the Dispatcher grants the lease to the
 top eligible one. A `swift` note from the Conductor would jump the Producer's order; that is new scheduling authority over the
-Producer's work order and WIP, so it is **the owner's call** (§9); until he rules, `swift` only adds the item to the
-candidates. No AI decides whether a lease exists; an AI only orders.
+Producer's work order and WIP, so `swift` only adds the item to the
+candidates (§9 item 6). No AI decides whether a lease exists; an AI only orders.
 Until the Producer runs (Fri), BENCH orders (holder of the Producer's duties in the activation table).
 
 ## 4. Running on SteveDesktop
@@ -137,13 +138,15 @@ unit and records `lease revoked`. The steward wake's brief must forbid `resume` 
 
 **What the lease costs the lane:** ~6 jobs per busy hour displaced (§1), almost all `guard` filler. A 3 h lease is
 ~18 filler jobs (ESTIMATE). Fix and sweep jobs queued for OTHER items wait; the Dispatcher should not grant a lease
-while a `fix`-purpose job is pending at priority ≥60 (ESTIMATE rule, owner's call, §9).
+while a `fix`-purpose job is pending at priority ≥60 (ESTIMATE rule; the per-day lease cap is §9 item 3).
 
-### 4.2 Account (never Steven's)
+### 4.2 Account (lukas or system by runway; steven only right after his weekly reset)
 
-The session runs under **lukas or system**, chosen by the Dispatcher as for any new work (v3 §3: the Dispatcher picks
-the account before releasing work). **`steven` is excluded by rule** (memory rule: hands off this week; at most 50%
-early in his week and never below 10%). Account switching on SteveDesktop is whole-machine (`claude-account-switch`),
+The session runs under **lukas or system**, chosen by the Dispatcher by runway as for any new work (v3 §3: the
+Dispatcher picks the account before releasing work). **`steven` only within 48 h after his weekly reset, up to 50% of
+his week** (owner 2026-10-28: *"Dispatcher can use Steve up to 50% after a fresh reset only."*; the end-of-week drawdown
+toward the 10% floor is withdrawn). Enforced in `src/RimMandrake/Utils/slot_rules.json` (since 3bd92c02fc), not by this
+doc. Account switching on SteveDesktop is whole-machine (`claude-account-switch`),
 so the Dispatcher must not switch accounts during a lease; it starts the fixer only if the active account is allowed,
 else waits. The account name comes from the environment, never from code.
 
@@ -194,16 +197,14 @@ else waits. The account name comes from the environment, never from code.
 
 ### 4.5 Budget
 
-Hard caps on the unit: `RuntimeMaxSec` = the timebox exactly (the unit ends at `until`, §4.1), and `--max-budget-usd` from the Dispatcher's caps
-(precedent: the steward wake, `TESTQ_WAKE_BUDGET_USD` 5 and `TESTQ_WAKE_MAX_S` 2700). Proposed starting values are
-the owner's (§9).
+Hard caps on the unit: `RuntimeMaxSec` = the timebox exactly (the unit ends at `until`, §4.1), and a budget per lease in account-% of the week (§9 item 3; subscriptions, not USD).
 
 ### 4.6 Ledger and push
 
 - Its own seat **`FIXER`**, registered like RUNNER, with **one shard per rig**
   (`infrastructure/state/ledger/events/FIXER-<host>.jsonl`): one lease per rig means one writer per shard, and a
-  second rig later gets its own shard. Every event carries `lease_id` and `lane=bench|foundry`, so concurrent leases
-  and per-lane metrics stay separable.
+  second rig later gets its own shard. Every event carries `lease_id`, so concurrent leases
+  stay separable.
 - **Staying in sync:** it pulls (`--ff-only`, then rebase of its own commits only) before every iteration and checks
   three things on the item before driving: the lease is still live (not revoked), the item is still open and not
   claimed by another seat, and `contract_sha` is unchanged. Any of them false → stop, hand off, exit. A push that
@@ -243,8 +244,8 @@ the owner's (§9).
    continues. A builder lowering its own bar happened this week (recall 0.9→0.8, v3 §1).
 5. **Forbidden live actions:** no flyer flight live tests (standing ruling; flyer items are ineligible); no worldgen;
    no edits to Archmagi's game, saves or ModsConfig; no account switching; no Steam UI.
-6. **Scope:** one ticket. A finding outside it is filed (`--for` its lane owner), not fixed. FlowWorks findings go to
-   BENCH even from a Foundry-lane lease.
+6. **Scope:** one ticket. A finding outside it is filed (`--for` its lane owner), not fixed. A FlowWorks finding outside the ticket is filed
+   like any other; it is not fixed in the lease.
 7. **Arbiter judges done:** the fixer hands a done claim with: red and green runs of its own check, shas, evidence
    hashes; the Arbiter runs the contract (item 4) and rules (GPT reviewer until it runs). A fail does not extend the
    lease.
@@ -282,7 +283,7 @@ lane jobs actually delayed. Every enrolled item counts at the 14-day horizon: on
 not fall, wall hours fall, reopens and false passes do not rise, and tokens per accepted fix stay within 1.5x the
 shuttle's (ESTIMATE threshold, the owner's to set).
 
-## 7. Build list (items to file after the owner rules)
+## 7. Build list (items to file)
 
 1. Dispatcher: candidate scan (§3 rules), the lease state machine with `lease_id` and reconciliation (§4.1),
    `contract_sha`, the per-item lifetime ceiling (§5.8).
@@ -299,15 +300,14 @@ shuttle's (ESTIMATE threshold, the owner's to set).
    changed in the lease.
 7. Fixer brief (the session prompt): this doc's §4-§5 as rules, the debugging ladder, the handoff format.
 
-## 8. Drafted lines for the design of record (not applied; the owner rules first)
+## 8. Drafted lines for the design of record (not yet applied)
 
-Fixer is an **execution mode with its own row**, not a Foundry duty: its lane comes from the ticket, so it can never
-make Foundry hold FlowWorks work, and v3's "the one autonomous builder" stays true of Foundry (the fixer is
-lease-bound, one ticket, not continuous).
+Fixer is an **execution mode with its own row**: Foundry work (FlowWorks tickets included, owner 10-28), lease-bound,
+one ticket, not continuous.
 
 **`design/RimMandrake/rimflow_v3_2026-10-26.md`, §2 roles table, add a row after Foundry:**
 
-`| **Fixer** (mode) | one ticket + one Dispatcher-granted rig lease + a timebox, iterating live until the Arbiter's contract is met or the lease ends; SteveDesktop by default (design/RimMandrake/live_fixer_2026-10-28.md) | on a lease only; its lane is the ticket's (FlowWorks/GSS → bench lane, accountable to the Conductor; else Foundry lane) | — | the next experiment inside its ticket | close its own item; touch its measurement contract; work outside its ticket; regrant itself |`
+`| **Fixer** (mode) | one ticket + one Dispatcher-granted rig lease + a timebox, iterating live until the Arbiter's contract is met or the lease ends; SteveDesktop by default (design/RimMandrake/live_fixer_2026-10-28.md) | on a lease only; Foundry work, accountable to the Arbiter, FlowWorks/GSS tickets included | — | the next experiment inside its ticket | close its own item; touch its measurement contract; work outside its ticket; regrant itself |`
 
 **Same doc, §3, after "events (feature claims done → Arbiter; ...)":**
 
@@ -315,7 +315,7 @@ lease-bound, one ticket, not continuous).
 
 **`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`, new § "Fixer (mode)" after Foundry:**
 
-`- **Duties:** on a Dispatcher lease, run the debugging ladder end to end on one rig (SteveDesktop by default) under seat FIXER: red check before the final fix, at most 8 iterations or the timebox, no change to the measurement contract, findings outside the ticket filed not fixed, a handoff note on every end short of a pass, done claim to the Arbiter, who runs the contract. Lane is the ticket's: a FlowWorks/GSS ticket is bench-lane work accountable to the Conductor.`
+`- **Duties:** on a Dispatcher lease, run the debugging ladder end to end on one rig (SteveDesktop by default) under seat FIXER: red check before the final fix, at most 8 iterations or the timebox, no change to the measurement contract, findings outside the ticket filed not fixed, a handoff note on every end short of a pass, done claim to the Arbiter, who runs the contract. Foundry work, FlowWorks/GSS tickets included, accountable to the Arbiter.`
 `- **Metrics:** | X1 | fixer yield | leases ending in an Arbiter pass ÷ leases; wall hours from ready-to-fix to pass; tokens per accepted fix (all lease costs charged) vs shuttled fixes; reopens in 14 d | ledger lease + verdict events; account_usage per unit | UNMEASURED: not built |`
 
 **Same doc, Producer duties, append:** `write or approve the measurement contract of each fixer candidate; order the fixer candidates.`
@@ -326,17 +326,15 @@ lease-bound, one ticket, not continuous).
 
 ## 9. The owner's decisions
 
-1. **Lane:** a FlowWorks ticket in Fixer mode runs as a bench-lane fixer (seat FIXER, accountable to the Conductor),
-   not Foundry. Does that satisfy the 10-23 "BENCH owns all FlowWorks" ruling, or must FlowWorks never go to a fixer?
-2. **Full-list perf on SteveDesktop:** copy the full mod list there (several GB) and accept relative targets plus one
-   confirmation run on Archmagi, or keep full-list perf bugs on the Archmagi fixer (only while he is away)?
-3. **Starting caps:** timebox 3 h, 8 iterations, 2 leases per item, the USD cap per lease, and how many leases per
-   day may pause the testq lane (each 3 h lease ≈ 18 filler jobs).
-4. **Account:** lukas or system for SteveDesktop fixer sessions (steven excluded).
-5. **Trial pass bar:** fewer wall hours to an Arbiter pass, no rise in reopens, token cost per accepted fix at most
-   1.5× the shuttle's — or his number.
-6. **Swift:** may a Conductor `swift` note jump the Producer's order (new scheduling authority over work order and
-   WIP), or does it only make the item a candidate?
+All six answered (item 1 by the owner's card 2026-10-28; items 2-6 by BENCH's delegated note on
+`LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE`, item 4 amended by the owner):
+
+1. **Lane:** DECIDED. FlowWorks bugs may go to a fixer run as Foundry work (*"Yes, Foundry may take them too"*); no bench lane (*"Once we go to v3 there is no bench anymore."*).
+2. **Full-list perf on SteveDesktop:** DECIDED. Copy the full mod list to SteveDesktop; judge speed bugs on relative targets there, plus one confirmation run on Archmagi.
+3. **Starting caps:** DECIDED. 3 h timebox, 8 iterations, 2 leases per item, at most 2 leases per day may pause testq; the budget per lease is in account-% of the week, not USD (subscriptions).
+4. **Account:** DECIDED (owner). lukas or system by runway; steven only within 48 h after his weekly reset, up to 50% (§4.2). Supersedes the delegated "steven never".
+5. **Trial pass bar:** DECIDED. Fewer wall hours to an Arbiter pass, no rise in reopens, tokens per accepted fix at most 1.5x the shuttle.
+6. **Swift:** DECIDED. A `swift` note only makes an item a candidate; the Producer keeps work order.
 
 ## 10. Sources
 

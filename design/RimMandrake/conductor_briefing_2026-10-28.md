@@ -219,14 +219,14 @@ Steps, in order:
 | `/clear` or `/login` typed in the window | `/clear` keeps RC (seen 2026-10-27; upstream reports differ). `/login` drops RC fleet-wide, so it is never part of this path (RC skill, procedure B). |
 | The relaunch fails (wt.exe or interop down) | B3.5 files an item and pushes one line. He still has the Server tile and `rc rescue` (RC skill layer 2-3). |
 
-### B5. Contradictions to propagate (filed as items, not edited here)
+### B5. Contradictions propagated (2026-10-28)
 
-- `src/RimMandrake/rimflow/roles/conductor.md`:
-  - "His message is not a Dispatcher trigger" → his **goodbye** now is.
-  - The quick-mode description → a standing RC window plus the light close-out.
-- `design/RimMandrake/rimflow_v3_2026-10-26.md`: quick mode "fresh per message" → fresh per goodbye.
-- `src/RimMandrake/rimflow/dispatcher_schedule.json`: the Conductor `quick_checks_local` must not launch beside a live `CONDUCTOR` pid (B4 row 5).
-- `src/RimMandrake/Utils/account_failover.py` `-Seats` list: add `CONDUCTOR`.
+Done in the text: `src/RimMandrake/rimflow/roles/conductor.md` (his goodbye is the one Dispatcher trigger; quick mode is a
+standing window, fresh after each goodbye), `design/RimMandrake/rimflow_v3_2026-10-26.md` ("fresh per message" is now
+fresh per goodbye), the `_why` of the Conductor role in `src/RimMandrake/rimflow/dispatcher_schedule.json`.
+Owed to the build (B6 step 4): the `quick_checks_local` launch must not fire beside a live `CONDUCTOR` pid (code in
+`role_launch.py`), and `CONDUCTOR` goes into the failover `-Seats` list (that list is in the machine's launcher config,
+not in the repo).
 
 ### B6. Build order (for whoever takes it)
 
