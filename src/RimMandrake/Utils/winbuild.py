@@ -25,7 +25,9 @@ import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
 import argparse
+import contextlib
 import datetime
+import fcntl
 import glob
 import hashlib
 import json
@@ -38,6 +40,9 @@ import xml.etree.ElementTree as ET
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 BUILD_ROOT = os.environ.get("WINBUILD_ROOT", rm_str("build"))
+# flock files live on the LOCAL filesystem (flock on drvfs D: is not reliable) and are shared by every clone and seat
+# of this user (not $TMPDIR, which is per seat)
+LOCK_DIR = os.environ.get("WINBUILD_LOCK_DIR", os.path.expanduser("~/.cache/rm-winbuild/locks"))
 DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe",
                      "/mnt/c/Program Files/dotnet/dotnet.exe"]
 RSYNC_EXCLUDES = ["bin/", "obj/", "Textures/", "Sounds/", "*.png", "*.psd", "*.ogg", "*.wav"]
@@ -200,6 +205,33 @@ def rsync_stage(rels, stage, cwd, excl=()):
     return r
 
 
+@contextlib.contextmanager
+def _flock(name):
+    """Exclusive flock on LOCK_DIR/<name>.lock for the duration (released by the kernel if the process dies)."""
+    os.makedirs(LOCK_DIR, exist_ok=True)
+    with open(os.path.join(LOCK_DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", name) + ".lock"), "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
+
+
+def _copy_back(outs, stage, record):
+    """Copy every staged output into the clone (each file atomically)."""
+    for p in sorted(outs):
+        rel = os.path.relpath(p, stage)
+        dst = os.path.join(ROOT, rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        # unique tmp per process: two parallel stage builds (the sweep) copy back the SAME shared dll, and a fixed
+        # name made the loser's os.replace die FileNotFoundError (SELFTEST_SWEEP_CRASHES_FIX_LOAD_DEPENDENCE)
+        tmp = "%s.winbuild-tmp.%d" % (dst, os.getpid())
+        with open(p, "rb") as f, open(tmp, "wb") as g:
+            g.write(f.read())
+        os.replace(tmp, dst)
+        record["outputs"].append(rel)
+
+
 def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dirs=(),
                 stage_name=None, dry_run=False):
     """Stage csproj (+ what it references, + extra_dirs) on D:, build, copy outputs back.
@@ -221,6 +253,13 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     if dry_run:
         return 0, record
     os.makedirs(stage, exist_ok=True)
+    # review night: one build per stage at a time, rsync through copy-back (a second build's rsync --delete would land
+    # under the first one's compile); the lock is keyed by the stage path so every clone sharing BUILD_ROOT queues
+    with _flock("stage-%s-%s" % (os.path.basename(stage), hashlib.sha1(stage.encode()).hexdigest()[:10])):
+        return _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, copy_back_dirs)
+
+
+def _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, copy_back_dirs):
     started = time.time()
     rels = [os.path.relpath(d, ROOT) + "/" for d in dirs] + ["src/Directory.Build.targets", "src/Directory.Build.props"]
     excl = sum((["--exclude", e] for e in RSYNC_EXCLUDES), [])
@@ -274,17 +313,10 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
                 print("STAMP MISMATCH in stage: %s records dll %s, file is %s" % (p, want, got),
                       file=sys.stderr)
                 return 3, record
-    for p in sorted(outs):
-        rel = os.path.relpath(p, stage)
-        dst = os.path.join(ROOT, rel)
-        os.makedirs(os.path.dirname(dst), exist_ok=True)
-        # unique tmp per process: two parallel stage builds (the sweep) copy back the SAME shared dll, and a fixed
-        # name made the loser's os.replace die FileNotFoundError (SELFTEST_SWEEP_CRASHES_FIX_LOAD_DEPENDENCE)
-        tmp = "%s.winbuild-tmp.%d" % (dst, os.getpid())
-        with open(p, "rb") as f, open(tmp, "wb") as g:
-            g.write(f.read())
-        os.replace(tmp, dst)
-        record["outputs"].append(rel)
+    # review night: one copy-back at a time across ALL stages, so two mods' builds of a shared dependency can never
+    # leave one build's dll beside the other's .srchash (each file is atomic, the pair was not)
+    with _flock("copy-back"):
+        _copy_back(outs, stage, record)
     record["built_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     with open(os.path.join(stage, "BUILD_SOURCE.json"), "w") as f:
         json.dump(record, f, indent=1)
