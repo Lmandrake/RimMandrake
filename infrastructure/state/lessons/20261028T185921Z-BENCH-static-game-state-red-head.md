@@ -1,0 +1,2 @@
+selftest_static_game_state.py is red on HEAD (2026-10-28, seen at 7d9cf3d836): 3 UNREVIEWED static per-game fields, none from WALLREACH_RELABEL_TAME_SLICED_BUFFERED: Hose/HosePorts.cs:249 List<Thing> rawThings (the HOSEPORTS_RAWFIND scratch), RM_LevelPour.cs:26 seenScratch and :27 queueScratch. Each needs a REVIEWED entry with its reason (reused scratch, cleared per call) or a move to a component. Evidence D:\ClaudeWork\rimmandrake\wallreach_slice\static.txt
+home: NONE
