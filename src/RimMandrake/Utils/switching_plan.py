@@ -4,16 +4,18 @@ burns, read every pass from the meter (account_usage.py) and the rules in switch
 code: reset times come from the meter each week.
 
 Each pass:
-  target = the FIRST account in plan order that is MEASURED, fresh, inside its window (steven: the first 48 h after
-           his reset) and above its line (steven: leave_pct_left; others: the switch-away floor when a later account
-           can take over, else the wait floor).
+  target = use it or lose it: of the accounts that are MEASURED, fresh, inside their window (steven: the first 48 h
+           after his reset) and above their line (steven: leave_pct_left; others: the switch-away floor, 0%, while
+           another account can take over, else the wait floor, 2%), the one whose budget expires soonest.
   target != live  -> arm, `claude-account use <target>`, disarm (once per transition and target week: a marker)
   target == live  -> normal, or SOFT at line + soft_margin (allocator gives 0 new helpers; seats publish and finish),
                      or SOFT when an earlier account's reset (which will pull the machine to it) is near
   no target       -> HARD STOP once per account-week: arm, `claude-account fleet-stop`, disarm; fleet-start when a
                      reset gives the live account headroom again
 Near a line, or when a reading is old, an ESTIMATE, or from before a reset that has passed, the pass polls the meter
-itself first and never acts on the old figure.
+itself first and never acts on the old figure. Blind meter = 0%: once an account's last MEASURED figure is at or under
+floors.blind_zero_pct, a blind reading of it (ESTIMATE, stale) counts as 0% at once: an exhausted account often cannot
+be read at all, and the engine never sits waiting on a meter that cannot see it.
 
 Gate: passive until account_failover.py's stage 3 marker reads done (the cutover of 2026-10-28); remembered after.
 A file HOLD in the output dir makes every pass passive (the owner's or an agent's brake).
@@ -25,6 +27,7 @@ A file HOLD in the output dir makes every pass passive (the owner's or an agent'
 Env seams (selftests): RM_SWITCH_PLAN (plan json), RM_SWITCH_PLAN_DIR (output dir), RM_CLAUDE_ACCOUNT (switcher).
 """
 import argparse
+import fcntl
 import json
 import os
 import subprocess
@@ -42,6 +45,7 @@ WEEK = 7 * 86400
 STALE_PENDING_S = 2400  # arm + use + disarm at 600 s each plus the reads: a pending marker older is a pass that died
 NOTICE_FRESH_S = 20 * 60  # readers (slot_allocator) ignore an older notice: the timer stopped
 DRY = False
+clock = time.time  # a seam: check() re-reads it after the slow poll
 
 
 # ------------------------------------------------------------------ small helpers
@@ -128,6 +132,19 @@ def usable(r) -> bool:
     return bool(r) and r.get("source") == "MEASURED" and not r.get("stale") and r.get("week_pct_left") is not None
 
 
+def blind_zero(plan: dict, r, now: float) -> bool:
+    """Blind meter = 0% (owner 2026-10-28 11:2x, relayed): a reading the meter cannot refresh (ESTIMATE, stale) whose
+    last MEASURED figure was at or under blind_zero_pct, inside the same week, counts as exhausted."""
+    p = (r or {}).get("week_pct_left")
+    return (bool(r) and not usable(r) and p is not None and not reset_passed(r, now)
+            and p <= plan["floors"].get("blind_zero_pct", -1))
+
+
+def left(plan: dict, r, now: float):
+    """week_pct_left as the engine believes it: 0 for a blind near-empty account."""
+    return 0.0 if blind_zero(plan, r, now) else (r or {}).get("week_pct_left")
+
+
 def in_window(plan: dict, name: str, r, now: float) -> bool:
     w = (plan["accounts"].get(name) or {}).get("window_h_after_reset")
     if w is None:
@@ -154,7 +171,7 @@ def lines(meter: dict, plan: dict, now: float) -> tuple[dict, dict]:
 
     def ok(n, ln):
         r = meter.get(n)
-        return usable(r) and in_window(plan, n, r, now) and r["week_pct_left"] > ln
+        return usable(r) and not reset_passed(r, now) and in_window(plan, n, r, now) and r["week_pct_left"] > ln
 
     strict = {}
     for n in plan["order"]:
@@ -200,68 +217,85 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     line, elig = lines(meter, plan, now)
     target = pick(meter, plan, now, elig)
     lr = meter.get(live) or {}
-    base = {"account": live, "line": line.get(live), "pct_left": lr.get("week_pct_left"), "to": None}
+    blind = blind_zero(plan, lr, now)
+    base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None}
 
-    # fresh readings before any act
-    why_poll = []
-    if not usable(lr):
-        why_poll.append(f"{live} (live) reads {lr.get('source')}{' stale' if lr.get('stale') else ''}")
+    # fresh readings before any act; reasons are kept per account so an unrelated account never blocks
+    stale = {}
+
+    def why(n, text):
+        stale.setdefault(n, []).append(text)
+
+    if not usable(lr) and not blind:
+        why(live, f"{live} (live) reads {lr.get('source')}{' stale' if lr.get('stale') else ''}")
     for n in {live, target} - {None}:
         r = meter.get(n) or {}
         p, a = r.get("week_pct_left"), r.get("age_min")
+        if n == live and blind:
+            continue
         if p is not None and n in line and p - line[n] <= fr["near_pct"] and (a is None or a > fr["max_age_min"]):
-            why_poll.append(f"{n} at {p}% is within {fr['near_pct']} of its {line[n]}% line on a {a}-min-old reading")
+            why(n, f"{n} at {p}% is within {fr['near_pct']} of its {line[n]}% line on a {a}-min-old reading")
+    if target is not None and target != live:
+        a = (meter.get(target) or {}).get("age_min")
+        if a is None or a > fr["max_age_min"]:
+            why(target, f"{target} (the switch target) was read {a} min ago")
     for n in order:
-        if n != live and reset_passed(meter.get(n), now):
-            why_poll.append(f"{n}'s reset has passed and the reading predates it")
+        if reset_passed(meter.get(n), now):
+            why(n, f"{n}'s reset has passed and the reading predates it")
+    why_poll = [t for v in stale.values() for t in v]
     if why_poll and not polled:
         return {**base, "do": "poll", "poll": True, "why": "; ".join(why_poll)}
+    p = left(plan, lr, now)
+    # under its line on a post-reset reading: the reading is an upper bound (usage only grows inside a week), so even
+    # an old or ESTIMATE figure proves the line is reached
+    under = p is not None and live in line and p <= line[live] and not reset_passed(lr, now)
 
     if target is None:
         st = state.get("stopped") or {}
         if st.get("account") == live:
             return {**base, "do": "stopped", "why": f"hard-stopped on {live}; waiting for a reset"}
-        p = lr.get("week_pct_left")
-        # an ESTIMATE is an upper bound on what is left: under the line it proves the stop; above it, it proves nothing
-        if not usable(lr) and not (p is not None and p <= line.get(live, 0)):
-            return {**base, "do": "soft", "why": f"meter blind on {live} ({lr.get('source')}): no new helpers, "
-                                                 "no stop on a figure that cannot prove it"}
+        if not under:
+            return {**base, "do": "soft", "why": f"no account has headroom but {live}'s reading cannot prove its line "
+                                                 f"({lr.get('source')}, {p}%): no new helpers, no stop yet"}
         return {**base, "do": "stop", "key": stop_key(live, lr, now),
-                "why": f"no account has headroom (outside windows or at lines); {live} at {p}% <= its line"}
+                "why": f"no account has headroom (outside windows or at lines); {live} at {p}% <= its line"
+                       + (" (blind meter = 0%)" if blind else "")}
 
     if target != live:
         key = switch_key(live, target, meter.get(target))
         m = markers.get(key)
-        p = lr.get("week_pct_left")
         if m and m.get("phase") != "failed":
             age = now - (epoch(m.get("at")) or 0)
             if m.get("phase") == "done" or age < STALE_PENDING_S:
-                if m.get("phase") == "pending" and p is not None and live in line and p <= line[live]:
+                if under:
                     return {**base, "do": "stop", "key": stop_key(live, lr, now),
                             "why": f"transition {key} is {m.get('phase')} yet live is still {live} at {p}% <= its "
                                    f"{line[live]}% line: stop rather than overshoot"}
                 return {**base, "do": "hold", "to": target, "key": key,
                         "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live} "
                                "(a done switch that reads back as the old account is a human's move: respected)"}
+        if target in stale:
+            if under:
+                return {**base, "do": "stop", "key": stop_key(live, lr, now),
+                        "why": f"{live} at {p}% <= its line and {target} cannot be confirmed: "
+                               + "; ".join(stale[target])}
+            return {**base, "do": "soft", "to": target, "why": "switch pending, target not confirmed after a poll: "
+                                                               + "; ".join(stale[target])}
         te, le = expiry(plan, target, meter.get(target), now), expiry(plan, live, meter.get(live), now)
         before = live not in order or le is None or (te is not None and te < le)
-        proven = usable(lr) or (p is not None and live in line and p <= line[live]) or live not in order
-        if not (proven or before):
+        if not (usable(lr) or under or live not in order or before):
             return {**base, "do": "hold", "to": target, "why": f"{live} reads {lr.get('source')}: no switch away "
                                                                 "from an account the meter cannot see"}
-        if why_poll:
-            return {**base, "do": "hold", "to": target, "why": "still not fresh after a poll: " + "; ".join(why_poll)}
         tr = meter[target]
         return {**base, "do": "switch", "to": target, "key": key,
-                "why": f"{target} is the soonest-expiring account with headroom ({tr['week_pct_left']}% > {line[target]}%); "
-                       f"{live} at {p}%"}
+                "why": f"{target} is the soonest-expiring account with headroom ({tr['week_pct_left']}% > "
+                       f"{line[target]}%); {live} at {p}%" + (" (blind meter = 0%)" if blind else "")}
 
     # target == live
     if (state.get("stopped") or {}).get("account") == live:
         return {**base, "do": "start", "why": f"{live} has headroom again after the hard stop"}
-    if why_poll:
-        return {**base, "do": "soft", "why": "reading not fresh near a line after a poll: " + "; ".join(why_poll)}
-    p = lr["week_pct_left"]
+    if live in stale:
+        return {**base, "do": "soft", "why": "reading not fresh near a line after a poll: " + "; ".join(stale[live])}
     if p <= line[live] + plan["soft_margin_pct"]:
         return {**base, "do": "soft", "why": f"{live} at {p}% is within {plan['soft_margin_pct']} of its "
                                              f"{line[live]}% line: switch pending, publish and finish"}
@@ -292,6 +326,8 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
     plain = [n for n in plan["order"] if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
     exp = {n: expiry(plan, n, meter.get(n), now) for n in plan["order"]}
     last = max((n for n in plain if exp[n] is not None), key=lambda n: exp[n], default=None)
+    horizon = max((exp[n] for n in plain if exp[n] is not None), default=None)
+    horizon = None if horizon is None else horizon + WEEK  # every account's refills up to one week past the last expiry
     parts = []
     for n in plan["order"]:
         r = meter.get(n) or {}
@@ -299,14 +335,17 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
         e = exp[n]
         if e is None:
             continue
-        p = r.get("week_pct_left")
+        p = left(plan, r, now)
         if p is None and reset_passed(r, now):
             p = 100.0
         leave = cfg.get("leave_pct_left")
         ln = leave if leave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
         if e > now and (cfg.get("window_h_after_reset") is None or in_window(plan, n, r, now)):
             parts.append((n, max(0.0, (p if p is not None else 0.0) - ln), e))
-        parts.append((n, 100.0 - ln, e + WEEK))
+        k = 1
+        while k == 1 or (horizon is not None and e + k * WEEK <= horizon):
+            parts.append((n, 100.0 - ln, e + k * WEEK))
+            k += 1
     if not parts:
         return {"pct": None, "rate_pct_h": None, "deadline_h": None, "total_pct": None, "parts": [],
                 "why": "no account has a reset time"}
@@ -396,9 +435,26 @@ def armed_call(st: dict, argv: list) -> dict:
 
 
 def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -> int:
+    """One pass under an exclusive non-blocking lock: a pass that finds another running stands down (the markers are
+    not a lock, and two passes could both switch)."""
+    OUT.mkdir(parents=True, exist_ok=True)
+    with open(OUT / "check.lock", "a") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            log({"do": "skip", "why": "another pass holds check.lock", "acted": False})
+            return 0
+        return _check(dry, now, meter_fn, poll_fn)
+
+
+ACTS = ("soft", "stop", "stopped", "switch")
+
+
+def _check(dry, now, meter_fn, poll_fn) -> int:
     global DRY
     DRY = dry
-    now = now or time.time()
+    t0 = clock()
+    now = now or t0
     plan, state = load_plan(), load_state()
     if (OUT / "HOLD").exists():
         log({"do": "passive", "why": f"{OUT / 'HOLD'} present"})
@@ -418,9 +474,16 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
+            # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
+            pre = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
+            if pre["do"] in ACTS:
+                write_notice({**pre, "do": "soft"}, now)
             state["last_poll"] = iso(now)
             save_state(state)
             poll_fn()
+            now += clock() - t0  # time moved during the poll: windows and resets are judged at the new time
+            st = switcher_status()
+            live = st.get("live")
             meter = meter_fn()
         d = decide(meter, live, now, plan, state, read_markers(), gate_seen=True, polled=True)
     rec = {"do": d["do"], "live": live, "to": d.get("to"), "why": d.get("why"), "pct_left": d.get("pct_left"),
@@ -442,13 +505,11 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -
             write_notice({**d, "do": "normal"}, now)
         rec["result"], rc = res, 0 if ok else 1
     elif d["do"] == "stop":
-        state["stopped"] = {"account": live, "key": d["key"], "at": iso(now)}  # marker first: once per account-week
-        save_state(state)
         write_notice(d, now)
         res = armed_call(st, ["fleet-stop"])
         rec["result"], rc = res, 0 if (res.get("fleet-stop") or (1,))[0] == 0 else 1
-        if rc:  # not stopped after all: forget the record so the next pass tries again
-            state.pop("stopped", None)
+        if not rc:  # recorded only once the fleet is stopped: a pass that died mid-call retries the stop
+            state["stopped"] = {"account": live, "key": d["key"], "at": iso(now)}
             save_state(state)
     elif d["do"] == "start":
         res = armed_call(st, ["fleet-start"])

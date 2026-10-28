@@ -727,7 +727,8 @@ def _plan_notice_live(pn, now):
     if not isinstance(pn, dict) or pn.get("state") not in ("soft", "stop"):
         return None
     at = epoch(pn.get("at"))
-    return pn if at is not None and 0 <= now - at <= PLAN_NOTICE_FRESH_S else None
+    # a brake fails safe: a notice up to 5 min in the future (a clock step) still brakes
+    return pn if at is not None and -300 <= now - at <= PLAN_NOTICE_FRESH_S else None
 
 
 def plan_inputs(meter, live, now):

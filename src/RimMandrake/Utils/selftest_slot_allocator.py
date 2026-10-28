@@ -950,6 +950,9 @@ r = d(plan_notice=dict(_soft, state="stop"))
 check("stop notice: every seat 0", all(v == 0 for v in r["seats"].values()), r["seats"])
 r = d(plan_notice=dict(_soft, at=SA.iso_local(NOW - 40 * 60)))
 check("a 40-min-old notice (the plan timer stopped) zeroes nothing", r["seats"]["BENCH"] > 0, (r["seats"], r["why"]))
+r = d(plan_notice=dict(_soft, at=SA.iso_local(NOW + 90)))
+check("a notice stamped 90 s in the future (clock step) still zeroes every seat",
+      all(v == 0 for v in r["seats"].values()), (r["seats"], r["why"]))
 _ovn = {"ownerSaid": "run four on bench", "n": 4, "set_at": SA.iso_local(NOW - 30)}
 r = d(plan_notice=_soft, override=_ovn)
 check("his word set AFTER the soft notice stands over it (BENCH 4)", r["seats"]["BENCH"] == 4, (r["seats"], r["why"]))
@@ -967,8 +970,8 @@ check("plan inputs: engine gate not passed -> no pool, no notice (account_failov
 (_pd / "state.json").write_text(json.dumps({"gate_passed": "2026-10-28T13:05:00-07:00"}))
 (_pd / "notice.json").write_text(json.dumps(_soft))
 pi = SA.plan_inputs(_m, "system", NOW)
-check("plan inputs: gate passed -> the pool (49 + 96 over 100 h) and the notice",
-      pi.get("pool") and abs(pi["pool"]["pct"] - 145) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
+check("plan inputs: gate passed -> the pool (50 + 96, binding at lukas's reset, 120 h) and the notice",
+      pi.get("pool") and abs(pi["pool"]["pct"] - 146) < 0.01 and abs(pi["pool"]["deadline_h"] - 120) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
 os.environ.pop("RM_SWITCH_PLAN_DIR")
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
