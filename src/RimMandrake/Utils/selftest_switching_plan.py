@@ -262,7 +262,7 @@ def main():
     check(not SP.load_state().get("stopped"), "a fleet-stop that failed leaves no 'stopped' record: the next pass retries")
     # a crash inside fleet-stop leaves no 'stopped' record (it would suppress every later stop)
     real = SP.armed_call
-    def boom(st, argv):
+    def boom(st, argv, still=None):
         raise RuntimeError("killed mid-call")
     SP.armed_call = boom
     try:
@@ -315,6 +315,40 @@ def main():
           "a decision that lapses while arming (steven's window closed) is skipped, not executed")
     mk6 = SP.read_markers()
     check(any(v.get("phase") == "lapsed" for v in mk6.values()), "the skipped switch is marked lapsed, not failed")
+    # the re-check re-reads the meter: a target spent while arming is not switched onto
+    lf = TMP / "live.txt"
+    live_before = lf.read_text() if lf.exists() else None
+    calls.write_text("")
+    for k in list(SP.read_markers()):
+        (TMP / "out" / "markers" / f"{k}.json").unlink(missing_ok=True)
+    (TMP / "live.txt").write_text("lukas")
+    cur7 = [{**off, "system": R(3, 100, age=0), "lukas": R(0, 120)}]
+    def arm_spends(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur7[0] = {**off, "system": R(1, 100, age=0), "lukas": R(0, 120)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_spends
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur7[0], poll_fn=lambda: None)
+    SP.run = real_run
+    check("use system" not in calls.read_text() and "arm" in calls.read_text(),
+          "a target spent below its reserve while arming is not switched onto")
+    # a stop that lapses while arming (lukas reset meanwhile) is skipped
+    calls.write_text("")
+    st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)
+    cur8 = [{**off, "system": R(0, 100), "lukas": R(2, 120)}]
+    def arm_resets(argv, *a, **k):
+        if argv[1:2] == ["arm"]:
+            cur8[0] = {**off, "system": R(0, 100), "lukas": R(100, 288)}
+        return real_run(argv, *a, **k)
+    SP.run = arm_resets
+    SP.check(dry=False, now=NOW, meter_fn=lambda: cur8[0], poll_fn=lambda: None)
+    SP.run = real_run
+    check("fleet-stop" not in calls.read_text() and "arm" in calls.read_text() and not SP.load_state().get("stopped"),
+          "a stop that no longer holds after arming is skipped and leaves no 'stopped' record")
+    if live_before is None:
+        lf.unlink(missing_ok=True)
+    else:
+        lf.write_text(live_before)
     SP.clock = time.time
     # a second concurrent pass stands down
     import fcntl

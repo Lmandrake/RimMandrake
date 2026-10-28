@@ -547,15 +547,17 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         log({**rec, "acted": False})
         return 0
     rc = 0
+    t2 = clock()
+
+    def still():
+        """A slow arm can close a window, pass a reset or spend a target: re-read the meter and re-decide at the new
+        time (without this pass's own pending marker); the act goes ahead only if the same act is still due."""
+        mk = {k: v for k, v in read_markers().items() if k != d.get("key")}
+        d2 = decide(meter_fn(), live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
+        return d2["do"] == d["do"] and d2.get("to") == d.get("to")
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
         write_notice({**d, "do": "soft"}, now)
-        t2 = clock()
-
-        def still():  # a slow arm can close a window: re-decide at the new time, without our own pending marker
-            mk = {k: v for k, v in read_markers().items() if k != d["key"]}
-            d2 = decide(meter, live, now + clock() - t2, plan, state, mk, gate_seen=True, polled=True)
-            return d2["do"] == "switch" and d2.get("to") == d["to"]
         res = armed_call(st, ["use", d["to"]], still)
         ok = (res.get("use") or (1,))[0] == 0
         lapsed = (res.get("use") or (1,))[0] is None and "lapsed" in str(res.get("use"))
@@ -568,13 +570,13 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         rec["result"], rc = res, 0 if ok else 1
     elif d["do"] == "stop":
         write_notice(d, now)
-        res = armed_call(st, ["fleet-stop"])
+        res = armed_call(st, ["fleet-stop"], still)
         rec["result"], rc = res, 0 if (res.get("fleet-stop") or (1,))[0] == 0 else 1
         if not rc:  # recorded only once the fleet is stopped: a pass that died mid-call retries the stop
             state["stopped"] = {"account": live, "key": d["key"], "at": iso(now)}
             save_state(state)
     elif d["do"] == "start":
-        res = armed_call(st, ["fleet-start"])
+        res = armed_call(st, ["fleet-start"], still)
         if (res.get("fleet-start") or (1,))[0] == 0:
             state.pop("stopped", None)
             save_state(state)
