@@ -235,7 +235,7 @@ st9 = dict(r["state"], overage_h=40.0, overage_t=NOW)
 r4 = d(st9, helpers_running={"BENCH": 1, "FOUNDRY": 0}, owner_window_min=300.0, hours_to_week_reset=8.0)
 check("payback: never below N=1 for BENCH, and says the rest is forgiven at the reset",
       seats(r4)[0] >= 1 and "forgiven at the reset" in r4["overage"]["plan"], (r4["overage"], r4["seats"]))
-r5 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 2, "FOUNDRY": 0}, owner_window_min=300.0)
+r5 = d(dict(r["state"], overage_paying=True, overage_t=NOW - H), helpers_running={"BENCH": 2, "FOUNDRY": 0}, owner_window_min=300.0)
 check("payback: unused helper-hours are credited and the debt falls (3 owed, 3 under for 1 h -> 0)",
       r5["overage"]["owed_h"] == 0 and r5["overage"]["credited_h"] == 3.0, r5["overage"])
 r6 = d(dict(r["state"], overage_t=NOW - H), helpers_running={"BENCH": 5, "FOUNDRY": 1}, owner_window_min=3.0)
@@ -266,6 +266,29 @@ _hs.mkdir(parents=True)
 os.utime(_hs / "agent-a.jsonl", (real_now - 300, real_now - 300))
 _sps = SA.helper_spans([_hs.parent.parent], real_now, H)
 check("helper_spans reads first record .. last write", len(_sps) == 1 and abs(_sps[0][1] - _sps[0][0] - 300) < 2, _sps)
+
+# R3: resumed transcript's idle gap is not running time
+_g = Path(tempfile.mkdtemp()) / "p" / "s1" / "subagents"
+_g.mkdir(parents=True)
+(_g / "agent-g.jsonl").write_text("".join(json.dumps({"timestamp": SA.iso_z(real_now - t)}) + "\n" for t in (3000, 2900, 300, 200)))
+os.utime(_g / "agent-g.jsonl", (real_now - 200, real_now - 200))
+_gs = sorted(SA.helper_spans([_g.parent.parent], real_now, H, 600))
+check("R3 helper_spans: a 2600 s idle gap splits a resumed transcript into two runs",
+      len(_gs) == 2 and abs(_gs[0][1] - _gs[0][0] - 100) < 2 and abs(_gs[1][1] - _gs[1][0] - 100) < 2, _gs)
+# R3: idle earlier in the interval is not credited against excess later
+_st = {"overage_t": NOW - H, "overage_base": {"BENCH": 1, "FOUNDRY": 0}, "overage_h": 0.0}
+r = d(_st, helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [[NOW - 0.5 * H, NOW]] * 3, "FOUNDRY": []})
+check("R3 overage: idle first half then 2 over in the second half -> 1.0 h owed, none credited back",
+      abs(r["overage"]["owed_h"] - 1.0) < 1e-6 and r["overage"]["credited_h"] == 0, r["overage"])
+r = d(dict(_st, overage_h=1.0), helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [], "FOUNDRY": []})
+check("R3 overage: prior debt is still credited by idle time", r["overage"]["credited_h"] == 1.0 and r["overage"]["owed_h"] == 0, r["overage"])
+# R3: payback needs the previous check to have been payback time too
+r = d(dict(_st, overage_h=1.0, overage_paying=False), helpers_running={"BENCH": 0, "FOUNDRY": 0}, owner_window_min=300.0,
+      helper_spans={"BENCH": [], "FOUNDRY": []})
+check("R3 overage: his word was live at the last check -> no credit for the interval", r["overage"]["credited_h"] == 0 and r["overage"]["owed_h"] == 1.0, r["overage"])
+check("R3 overage: state carries overage_paying", r["state"]["overage_paying"] is True, r["state"])
 
 # presence from a main transcript
 mainp = proj / "sess1.jsonl"

@@ -222,8 +222,10 @@ def mean_helpers(project_paths, now, window_s):
     return total / window_s
 
 
-def helper_spans(project_paths, now, window_s):
-    """[[start, end], ...] for every subagent whose transcript was written in the last window_s: first record .. last write."""
+def helper_spans(project_paths, now, window_s, gap_s=600.0):
+    """[[start, end], ...]: when each subagent was actually writing in the last window_s. A transcript is cut into runs
+    at every silence longer than gap_s (a resumed transcript's idle gap is not running time); the last run ends at the
+    last write when that is within gap_s of its last record."""
     lo, out = now - window_s, []
     for proj in project_paths:
         for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
@@ -233,19 +235,36 @@ def helper_spans(project_paths, now, window_s):
                 continue
             if end < lo:
                 continue
-            out.append([_first_ts(p) or end, end])
+            ts = sorted(t for t in (epoch(r.get("timestamp")) for r in _records_backward(p, stop_before=lo - gap_s)) if t)
+            if not ts:
+                out.append([_first_ts(p) or end, end])
+                continue
+            runs = [[ts[0], ts[0]]]
+            for t in ts[1:]:
+                if t - runs[-1][1] > gap_s:
+                    runs.append([t, t])
+                else:
+                    runs[-1][1] = t
+            if 0 <= end - runs[-1][1] <= gap_s:
+                runs[-1][1] = end
+            out.extend(r for r in runs if r[1] >= lo)
+    return out
+
+
+def span_segments(spans, lo, hi, allowed):
+    """[(length_h, helper-h above `allowed`, helper-h below it), ...] in time order over [lo, hi]."""
+    cuts = sorted({lo, hi} | {t for a, b in spans for t in (a, b) if lo < t < hi})
+    out = []
+    for x, y in zip(cuts, cuts[1:]):
+        n = sum(1 for a, b in spans if a <= x and b >= y)
+        out.append(((y - x) / HOUR, max(0, n - allowed) * (y - x) / HOUR, max(0, allowed - n) * (y - x) / HOUR))
     return out
 
 
 def span_excess_h(spans, lo, hi, allowed):
     """(helper-h above `allowed`, helper-h below it) integrated over [lo, hi] from the spans' start/stop edges."""
-    cuts = sorted({lo, hi} | {t for a, b in spans for t in (a, b) if lo < t < hi})
-    over = under = 0.0
-    for x, y in zip(cuts, cuts[1:]):
-        n = sum(1 for a, b in spans if a <= x and b >= y)
-        over += max(0, n - allowed) * (y - x)
-        under += max(0, allowed - n) * (y - x)
-    return over / HOUR, under / HOUR
+    seg = span_segments(spans, lo, hi, allowed)
+    return sum(g[1] for g in seg), sum(g[2] for g in seg)
 
 
 def messages_in_window(root, now, window_s):
@@ -632,7 +651,8 @@ def gather(now=None, rules=None):
                                    f"(meter has {n} readings over {span:.1f} h, too few for a slope)")
     inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win), 2)
     # an unreadable transcript directory is "unavailable" (None), never a measured zero helpers
-    inp["helper_spans"] = {s: (helper_spans([p], now, rules["overage"]["max_accrual_dt_h"] * HOUR)
+    inp["helper_spans"] = {s: (helper_spans([p], now, rules["overage"]["max_accrual_dt_h"] * HOUR,
+                                           rules["helpers"]["live_window_s"])
                                if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK) else None) for s, p in seat_paths.items()}
     inp["helpers_running"] = {s: (len(running_helpers([p], now, rules)) if os.path.isdir(p) and os.access(p, os.R_OK | os.X_OK)
                                   else None) for s, p in seat_paths.items()}
@@ -806,28 +826,45 @@ def _overage(inp, state, rules, now, base, per, ov, presence, why, blind=False):
     under = sum(max(0, allowed.get(s, 0) - run.get(s, 0)) for s in allowed) if run and not blind else 0
     # measured helper-hours over the elapsed interval (start/stop edges of every subagent), not one snapshot scaled by dt
     sp = inp.get("helper_spans")
-    over_h, under_h = over * dt, under * dt
+    segs = [(dt, over * dt, under * dt)]  # the snapshot is one segment
     if isinstance(sp, dict) and dt > 0 and run and not blind and all(isinstance(sp.get(s), list) for s in run):
         lo = now - dt * HOUR
-        ms = {s: span_excess_h(sp[s], lo, now, allowed.get(s, 0)) for s in run}
-        over_h = sum(v[0] for v in ms.values())
-        under_h = sum(v[1] for v in ms.values()) + sum(allowed[s] for s in allowed if s not in ms) * dt
-    paying = ov is None and presence != "BENCH"
-    owed += over_h
+        extra = sum(allowed[s] for s in allowed if s not in run)
+        # every seat's spans cut the interval differently: integrate on the union of the cuts
+        cuts = sorted({lo, now} | {t for s in run for a, b in sp[s] for t in (a, b) if lo < t < now})
+        segs = []
+        for x, y in zip(cuts, cuts[1:]):
+            o = u = 0.0
+            for s in run:
+                n = sum(1 for a, b in sp[s] if a <= x and b >= y)
+                o += max(0, n - allowed.get(s, 0))
+                u += max(0, allowed.get(s, 0) - n)
+            u += extra
+            segs.append(((y - x) / HOUR, o * (y - x) / HOUR, u * (y - x) / HOUR))
+    over_h = sum(g[1] for g in segs)
+    under_h = sum(g[2] for g in segs)
+    paying_now = ov is None and presence != "BENCH"
+    # payback only for time that was payback time at BOTH ends of the interval: his word or his presence may have
+    # changed part-way, and the check cannot see when (legacy state without the flag: the present reading)
+    prev_paying = state.get("overage_paying")
+    credit_ok = paying_now and (True if prev_paying is None else bool(prev_paying))
     credited = 0.0
-    if paying and owed > 0:
-        credited = min(owed, under_h)
-        owed -= credited
+    for _len, o, u in segs:  # in time order: idle earlier cannot cancel excess that came later
+        owed += o
+        if credit_ok and owed > 0:
+            c = min(owed, u)
+            credited += c
+            owed -= c
     owed = round(max(0.0, owed), 4)
     post = 0.0 if reset_seen else min(owed, post + (over_h * post_dt / dt if dt > 0 else 0.0))
-    rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying and owed > 0), "cut": 0, "accrued_h": round(over_h, 4),
+    rec = {"owed_h": owed, "post_reset_h": round(post, 4),"paying": bool(paying_now and owed > 0), "cut": 0, "accrued_h": round(over_h, 4),
            "credited_h": round(credited, 4), "forgiven_h": round(forgiven, 4), "deadline_h": None, "eta_h": None, "plan": ""}
     if owed <= 0:
         return rec
     h = inp.get("hours_to_week_reset")
     window = max((h - cfg["finish_margin_h"]) if h is not None else cfg["default_window_h"], cfg["min_window_h"])
     rec["deadline_h"] = round(window, 2)
-    if not paying:
+    if not paying_now:
         rec["plan"] = (f"owes {owed:.1f} helper-h; payback starts when " + ("his word lapses" if ov else "he leaves the window")
                        + f", to finish within {window:.0f} h (before the reset)")
         why.append(rec["plan"])
@@ -1040,7 +1077,8 @@ def decide(inp, state, rules, now):
                  # a blind reading's reset_at is not adopted: the reset it names was never applied to the dial
                  "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
                  "account": (None if blind else inp.get("account")) or state.get("account"),
-                 "overage_h": overage["owed_h"], "overage_post_h": overage.get("post_reset_h", 0.0),
+                 "overage_h": overage["owed_h"], "overage_paying": bool(ov is None and presence != "BENCH"),
+                 "overage_post_h": overage.get("post_reset_h", 0.0),
                  "overage_t": max(now, _num(state.get("overage_t"), now)), "overage_base": base, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
                  "total": pre_cut_total
