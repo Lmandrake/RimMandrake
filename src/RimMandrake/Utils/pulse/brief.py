@@ -1041,10 +1041,10 @@ def streams_line(now: float, base: str = "") -> str:
     except Exception as ex:   # the paper must render without the panel
         return f"<div class=m>streams unreadable: {html.escape(str(ex)[:120])}</div>"
     if not r:
-        return f"<div class=m><a href='{base}/streams'>streams</a>: no record yet</div>"
+        return f"<div class=m><a href='{base}/streams'>streams</a>: no record yet · <a href='{base}/agents'>who worked when</a></div>"
     old = " (STALE)" if now - r["t"] > streams.STALE_S else ""
     return (f"<div class=m><a href='{base}/streams'>streams</a>, {time.strftime('%H:%M', time.localtime(r['t']))}{old}: "
-            f"{html.escape(r.get('brief') or '')}</div>")
+            f"{html.escape(r.get('brief') or '')} · <a href='{base}/agents'>who worked when</a></div>")
 
 
 def page(path: str, snap_fn, folder: Path, device: str | None = None) -> tuple[int, str, bytes]:
@@ -1065,6 +1065,9 @@ def page(path: str, snap_fn, folder: Path, device: str | None = None) -> tuple[i
     if path in ("/streams", "/streams/", "/streams.json"):   # the Streams panel (RIMPULSE_STREAMS_BUILD_VS_TIME)
         import streams
         return streams.page(path, now)
+    if path in ("/agents", "/agents/", "/agents.json"):   # who worked when (RIMPULSE_AGENTS_BUILD_DAY_TIMELINE)
+        import agents_timeline
+        return agents_timeline.page(path, now)
     m = re.fullmatch(r"/item/([A-Z0-9_]{3,64})", path)
     if m:
         body = render_item(m.group(1), pc.read_ledger())

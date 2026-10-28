@@ -303,6 +303,7 @@ class Collector:
             snap["accounts_url"] = account_page_url()
             snap["brief_url"] = f"http://localhost:{PORT}/brief"
             snap["streams_url"] = f"http://localhost:{PORT}/streams"
+            snap["agents_url"] = f"http://localhost:{PORT}/agents"
             self.state = new_state
             save_json("state.json", self.state)
             save_json("pulse_now.json", snap)
@@ -795,7 +796,7 @@ def make_handler(col: Collector):
             elif self.path in ("/", "/index.html"):
                 self._hdr(200, "text/html; charset=utf-8")
                 self.wfile.write(WIDGET_HTML.read_bytes())
-            elif self.path.split("?")[0] in ("/brief", "/brief/", "/heartbeat", "/brief.json", "/streams", "/streams/", "/streams.json") or self.path.startswith("/item/"):
+            elif self.path.split("?")[0] in ("/brief", "/brief/", "/heartbeat", "/brief.json", "/streams", "/streams/", "/streams.json", "/agents", "/agents/", "/agents.json") or self.path.startswith("/item/"):
                 import brief   # RIMPULSE_BRIEF_BUILD_MORNING_PAPER_PHONE: the same pages his phone gets over the tailnet
                 code, ctype, body = brief.page(self.path, lambda: col.snapshot, DIGEST_DIR)
                 self._hdr(code, ctype)

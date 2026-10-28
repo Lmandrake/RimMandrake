@@ -500,6 +500,7 @@ function renderStrip(){
     + (dg && dg.path ? `<span class="done" data-link="${esc(dg.path)}" data-type="path" title="open the since-you-left digest">digest</span>` : '')
     + (snap && snap.brief_url ? `<span class="done" data-link="${esc(snap.brief_url)}" data-type="url" title="The phone-sized brief (also on the tailnet, port 8791)">brief</span>` : '')
     + (snap && snap.streams_url ? `<span class="done" data-link="${esc(snap.streams_url)}" data-type="url" title="The six work streams against time, and where you are needed (also on the tailnet, port 8791)">streams</span>` : '')
+    + (snap && snap.agents_url ? `<span class="done" data-link="${esc(snap.agents_url)}" data-type="url" title="Which agents are working now, and a 24-hour timeline of who worked when (also on the tailnet, port 8791)">who worked when</span>` : '')
     + (snap && snap.accounts_url ? `<span class="done" data-link="${esc(snap.accounts_url)}" data-type="url" title="Claude account switcher (this machine)">accounts</span>` : '')
     + `<button class="btn${refreshing ? ' spin' : ''}" id="bref2" title="Refresh: re-read every source now" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">&#8635;</button>`
     + `<button class="btn" id="bexp" title="Expand" style="${document.body.classList.contains('collapsed') ? '' : 'display:none'}">▴</button>`;
