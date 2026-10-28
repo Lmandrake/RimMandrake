@@ -1,0 +1,1 @@
+selftest_dispatcher and role_launch's schema read the role registry's clone path /home/mandrake/rm/bench, so they fail on any machine without that clone (SteveDesktop mutation baseline failed 2026-10-27; worked around with a symlink to ~/mutation/RimMandrake).
