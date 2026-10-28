@@ -1,0 +1,21 @@
+[
+ {
+  "id": "arteval_RM_Irqit__RM_Irqit_RM_Irqit_n_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Irqit__RM_Irqit_RM_Irqit_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same silhouette, same proportions, same clay-wet tan palette and markings, same size on the canvas, now seen in rear view, from behind, with the eyes hidden and the back, haunches and hind paddles toward the viewer. A creature sprite for RimWorld: the irqit. A palm-sized, soft-bodied flood-pan creature with a broad, flat, rounded body, freshly emerged from the flood. Its skin is smooth, supple, glossy and wet: a slick, moist, rubbery surface of deep saturated clay-brown flesh, darkest in the soft damp creases and lightest under the highlights. Bright, soft, bluish-white specular wet highlights, clearly visible, run along the spine, across the shoulders and haunches, over the top of each hind paddle, and along the edge of every skin fold, so the whole back reads as dripping wet and glossy. The torso and haunches are full, rounded and bulky, with smooth stretched skin and soft damp creases where the limbs join the body. Short paddling limbs splay wide on both sides. The rear view fills the canvas as fully as the side view does: the splayed hind paddles span nearly the full canvas width, about 490 px across, and the body stands as tall as in the side view, with hind paddles of the same volume as in the accepted side view, foreshortened only by the turn of the body. The ears, fur and scales are absent: the head and body are smooth bare skin. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background with the creature alone.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1231",
+  "drawsize": 0.5,
+  "module": "walker"
+ }
+]
