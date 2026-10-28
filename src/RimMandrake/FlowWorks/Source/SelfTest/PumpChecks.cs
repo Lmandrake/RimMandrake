@@ -198,6 +198,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(pump, @"List<Building_LiquidTank> tanks = NetTanks\(\)\.Where\(t => !Hose\.RM_HoseSettings\.tankModesEnabled \|\| t\.EffectiveMode == RM_TankMode\.Dump\)\.ToList\(\);",
                     "pour drains Dump tanks only (Store tanks are never poured)");
                 RiverSwitchFlipChecks.Has(pump, @"int levels = System\.Math\.Max\(1, Ext\?\.levelsPerCycle \?\? 1\); usedOutflows\.Clear\(\);", "one budget per cycle, outflows reset per cycle");
+                // FLOWPINS_VERIFY_THREE_LEFT_UNCHECKED: Cycle() above is a copy of Tick's loop, so the BUILDING's budget and its
+                // put-backs are pinned here from source: the loop bound is the budget, nothing else grows the budget, and every
+                // tank leg the pump withdraws from carries its put-back
+                RiverSwitchFlipChecks.Has(pump, @"for \(int i = 0; i < levels; i\+\+\) \{ int before = Moved; string status = pourMode \? TryPour\(\) : TryDraw\(\); if \(Moved == before\)",
+                    "Tick runs at most `levels` moves and stops at the first level that moves nothing");
+                Assert(System.Text.RegularExpressions.Regex.Matches(pump, @"\blevels\s*(\+\+|--|\+=|-=|\*=|=(?!=))").Count == 2,
+                    "the budget is assigned only at its declaration and the PourLevels raise: nothing else grows it");
+                int stores = System.Text.RegularExpressions.Regex.Matches(pump, @"RM_TransferLeg\.Store\(").Count;
+                int restored = System.Text.RegularExpressions.Regex.Matches(pump, @"RM_TransferLeg\.Store\(k2? => (st|tank)\.CanProvide\(k2?\), k2? => (st|tank)\.TryRemoveLiquid\(k2?\), k2? => (st|tank)\.TryAddLiquid\((sp|poured), k2?\)\)").Count;
+                Assert(stores >= 4 && restored == stores, "every tank leg the pump withdraws from puts back what it took (" + restored + " of " + stores + ")");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
                 RiverSwitchFlipChecks.Has(ex, @"private bool CanPourLevelWhole\(IntVec3 c, FluidDef fluid\) \{[^}]*\} int i = map\.cellIndices\.CellToIndex\(c\); return RoomNotches\(i\) > 0 && InputAllowed\(fluid\) && RM_StockMath\.FluidsCompatible\(WetDug\(i\), FluidAt\(c\), fluid\);",
                     "CanPourLevel is TryPourLevel's own test, read-only (room in decilitres' truth: WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES)");

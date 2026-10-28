@@ -109,6 +109,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(At(draw, "string key = LegacyFrame ? (settled ?") < HitAt(draw), "the legacy key is built before the hit too");
                 int hit = At(draw, "c.key == key) pts = c.pts;");
                 Assert(keyAt < hit && hit < At(draw, "pts = HoseMath.DrawnPose(lay,"), "Pose runs only when the cached pose misses");
+                // FLOWPINS_VERIFY_THREE_LEFT_UNCHECKED: the pose is computed exactly once in the draw, and only past the hit (a second,
+                // earlier DrawnPose under another variable name left the first-occurrence order check green)
+                Assert(draw.Split(new[] { "DrawnPose(" }, StringSplitOptions.None).Length - 1 == 1, "DrawnPose is called once in DrawAll, in the miss branch");
+                Assert(draw.IndexOf("else if (!LegacyFrame", hit, StringComparison.Ordinal) < At(draw, "pts = HoseMath.DrawnPose(lay,"), "the over-budget deferral sits before the re-pose");
                 // 760592195a added the Cached serial after rp (this anchor was not moved then: the case went red)
                 Assert(draw.Contains("pts = pts, rp = rp, serial = ++cachedSerial };"), "the cache stores the pose (and its drawn strand) with its meshes");
             });
