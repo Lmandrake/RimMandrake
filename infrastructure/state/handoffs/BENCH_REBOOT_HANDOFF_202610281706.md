@@ -7,7 +7,7 @@ before touching the game.**
 ## The one thing to carry forward
 
 <!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
-**Written BEFORE the account switch (system→lukas, expected ~10:50 PDT) that closes every Claude window; helpers running at that moment die, and only what they published survives.** The owner's order (2026-10-28 09:40): *"Ok, wake up! We have tokens to burn! Use up this account, then switch to the other account and use it up to 2% to, then wait for the reset to hit."* account_failover.py (rm-account-failover transient timer, every 5 min) does the switch and stage 2 itself: BURN n 16 on lukas until 15:59, DARK (both seats 0) once lukas ≤2%. So after the relaunch: keep ~16 helpers busy on lukas until stage 2 says DARK, then spawn nothing until lukas resets 16:00. Re-spawn every helper listed below whose work did not publish.
+**Written BEFORE the account switch (system→lukas, expected ~10:50 PDT) that closes every Claude window; helpers running at that moment die, and only what they published survives.** The owner's order (2026-10-28 09:40): *"Ok, wake up! We have tokens to burn! Use up this account, then switch to the other account and use it up to 2% to, then wait for the reset to hit."* account_failover.py (rm-account-failover transient timer, every 5 min) does the switch and stage 2 itself: BURN n 16 on lukas until 12:59, DARK (both seats 0) once lukas ≤2%, then stage 3 at 13:00 (system's reset — owner 10:07: *"Doesn't mandrake.system reset before that?"*) switches back to system (another window kill + relaunch) and clears the override (2d7cb1db4c, 2fccffe3fc). So after the relaunch: keep ~16 helpers busy on lukas until DARK or 12:59, spawn nothing 12:59-13:00, and expect a second relaunch at ~13:00. Re-spawn every helper listed below whose work did not publish.
 
 ## What the owner should see
 
@@ -31,7 +31,7 @@ before touching the game.**
 - `ARTPIPE_IDLE_FILL_EMPTY_ALL_NIGHT` — helper committed dce017d62b (idle_fill timer); NEXT: confirm it is pushed and the item closed, else finish.
 - `TESTQ_INGEST_REVIEW_FINISH_ROUND_FOUR` — r5 fixes pushed d7bf479a17; r6 --git-dir lock finding being fixed; NEXT: if not clean, fix the r6 finding red-first and run one more round.
 - `SLOT_ALLOCATOR_REVIEW` (no item) — round 1 fixed 3 bugs f67097d77f but wrongly marked clean; round 2 running; NEXT: run round 2 if not published, fix SLOT_BURNACCOUNT_FIX_DORMANT_TIE too.
-- `ACCOUNT_FAILOVER_RETIRE_AFTER_DEADLINE` — account_failover.py r4 7efbfd3db7, still DIRTY; NEXT: after 16:00 PDT, retire the transient timer (`systemctl --user stop rm-account-failover.timer`) and close the item.
+- `ACCOUNT_FAILOVER_RETIRE_AFTER_DEADLINE` — account_failover.py r4 7efbfd3db7, still DIRTY; NEXT: after stage 3 logs done (switched back to system after 13:00), retire the transient timer (`systemctl --user stop rm-account-failover.timer`) and close the item.
 - `DISPATCHER_HARDEN_MUTATION_SURVIVORS` / `CLOSE_EVIDENCE_HARDEN_MUTATION_SURVIVORS` / `ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS` — Steve runs 20261028T095621 (dispatcher) and 20261028T013440 (close_evidence) mutating; role_launch 73.2% needs a fresh run; NEXT: collect per the item notes, start the role_launch run, close what reaches 85%.
 
 ## Traps learned
