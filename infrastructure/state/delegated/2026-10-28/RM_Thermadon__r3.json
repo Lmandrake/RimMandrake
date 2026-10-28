@@ -1,0 +1,57 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 30.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3353618
+   }
+  ]
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RM_Thermadon",
+ "decision": "ACCEPT",
+ "reasons": [
+  "opus band GOOD (model said good); blocking []; polish ['SCALE_WRONG', 'LEGIB_32']"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "27f6015002f3ae300ea4c0568925813ecd01973323d956017337d85c2fd9d939",
+  "east.png": "03d1614b59f8be9f25a8a32a8884ba8ca2753cadf704bd391d78b70a2d0d7c9f",
+  "north.png": "8252d2068e98b6decab1c86a5e26773638b4363e4023973ac61505ae8943c6e2",
+  "scale.png": "033f8f7c2b0731be479f419b9693380c8b8135bf80e75053720b7660f359eca7",
+  "facings.png": "1613d5da375fc06f3aedea27b2df4871b9a35b428cb4df51445ab84f757c7563"
+ }
+}
