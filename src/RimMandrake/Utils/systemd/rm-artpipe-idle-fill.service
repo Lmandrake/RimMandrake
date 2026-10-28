@@ -1,0 +1,23 @@
+# Art queue idle feeder — ARTPIPE_IDLE_FILL_EMPTY_ALL_NIGHT (src/RimMandrake/Utils/artpipe/idle_fill.py).
+# When fewer than 3 job files are in flight, files the next owed art through donor_regen_jobs.py submit (the
+# regen_eligibility gate: confirmed NONE / PLACEHOLDER / DONOR only, never KEPT or already-regenerated), rebuilding
+# the owed list (census -> audit -> build, ~11 min) when it is older than 20 h. Status: <state>/status/idle_fill.json.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-artpipe-idle-fill.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-artpipe-idle-fill.timer
+# Remove:   systemctl --user disable --now rm-artpipe-idle-fill.timer
+#           rm ~/.config/systemd/user/rm-artpipe-idle-fill.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake art queue idle feeder (artpipe idle_fill.py tick)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/bench
+Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
+Environment=ARTPIPE_STATE=/mnt/d/ClaudeWork/rimmandrake/artpipe
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/idle_fill.py tick'
+Nice=10
+IOSchedulingClass=idle
+MemoryMax=4G
+TimeoutStartSec=75min
