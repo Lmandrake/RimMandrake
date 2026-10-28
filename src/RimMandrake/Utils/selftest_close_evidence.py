@@ -38,11 +38,12 @@ class chain_blind:
     chain TAMPER now (EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED), whose marker would mask what they pin. The chain
     is pinned by selftest_close_evidence_chain.py; here it is switched off."""
     def __enter__(self):
-        self.real = CE.chain_problems
+        self.real = CE.chain_problems, CE.chain_findings
         CE.chain_problems = lambda *a, **k: []
+        CE.chain_findings = lambda *a, **k: []          # lookup and tamper_findings read the chain through this
 
     def __exit__(self, *exc):
-        CE.chain_problems = self.real
+        CE.chain_problems, CE.chain_findings = self.real
 
 FAILS = []
 

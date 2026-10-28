@@ -60,13 +60,29 @@ sealed `<day>.jsonl.head` {size, last, broken} rewritten under the same lock. ch
 when a chained line's prev does not match the line before it (a line deleted, edited or stripped), when the head is
 missing, unsealed, or names bytes the file no longer holds (the last line deleted or edited), when the head carries a
 tamper an appender saw (sticky: a later append never heals it), or -- on/after CHAIN_CUTOVER -- when any line is
-unsealed or unchained; before the cutover a line with NO seal after a chained one is a tamper too. A tamper is not
-attributable to a sha, so lookup(sha=) adds its UNMEASURED close_evidence marker (detail.tamper) for EVERY sha while
-the day is in its window. Out of scope: deleting a whole day file together with its head, and anything done with the
-key. A head lagging behind chained lines (a crash between line and head) is clean; so is a file with no head whose only
-chained line is its last (the first head never written), and a day file deleted while its head remains is a tamper.
-Residual (two files cannot commit atomically): after such a crash, and until the next append re-seals the head, the
-lines beyond the head have no anchor, so deleting or stripping exactly that unanchored tail goes unseen.
+unsealed or unchained; before the cutover a line with NO seal after a chained one is a tamper too.
+BLAST RADIUS (EVIDENCE_CUTOVER_CLONES_SYNC_CHECK): a tamper poisons only what it can cast doubt on. chain_findings()
+types each one: `foreign` (an old-code line with no prev, or a hand line the chain still runs over) hides nothing and
+poisons only ITS sha; `break` (a chained line whose prev matches no earlier line: something before it was deleted or
+edited) and `unsealed` poison the lookups whose records sit on that day from that line on, plus every sha that
+already existed when the gap closed (a verified record of it written before the gap, or commit_time(sha) <= the gap's
+ts + COMMIT_SLACK_S, or unreadable): a deleted line could have been its FAIL; `day` (a head problem: missing,
+unsealed, sticky, or fewer bytes up to the last sealed line than were sealed, net of lines proven inserted) covers its
+whole UTC day; `unreadable` (a torn line, or a chained line whose seal fails) is already UNMEASURED through lookup's
+marker and is listed for the alarm only. A sha committed after the gap, with no record before it or on/after the
+break, stays MEASURED. lookup(sha=) adds its UNMEASURED close_evidence marker (detail.tamper) for the findings that
+concern the sha and prints a `!!! TAMPER` line on stderr; tamper_findings() feeds ops_watch's `evidence` family, whose
+alarm files the first finding (file, line, kind); a collector error reads UNMEASURED, and the silent rule flags the
+series going blind. Out of scope: deleting a whole day file together with its head, and anything done with the key.
+A head lagging behind chained lines (a crash between line and head) is clean. A chained file with NO head is a tamper
+even when it reads like a writer that died before its first head (GPT review HIGH 3: truncating a day to its first
+chained line and deleting the head looks the same), so that rare crash raises a false alarm. A day file deleted while
+its head remains is a tamper. Residuals: the byte count cannot see a deletion offset by an insertion of the same size
+(the insertion itself is alarmed as foreign), nor a same-length replacement of an unchained line (alarmed as unsealed
+after the cutover); a deletion hidden by an old-code line on a day that already shows a break is reported as that
+break; a sha whose commit clock runs over COMMIT_SLACK_S ahead and every earlier record of which was deleted escapes a
+gap. Two files cannot commit atomically: after a crash between line and head, and until the next append re-seals the
+head, the lines beyond the head have no anchor, so deleting or stripping exactly that unanchored tail goes unseen.
 
 Reads hold a SHARED flock on `<day>.jsonl.lock` (review AA1): on drvfs a reader racing appenders made 1-3 of 960
 lines vanish with no unreadable fragment left behind; with the shared lock, 960/960.
@@ -572,27 +588,35 @@ def _post_cutover(day) -> bool:
     return str(day) >= CHAIN_CUTOVER
 
 
-def _first_line_crash(day, lines, key) -> bool:
-    """No head, and the file reads as a writer that died before writing its FIRST head (not a tamper): the only chained
-    line is the last one and chains to the line before it (pre-cutover, old unchained lines may precede it), or a
-    post-cutover day holds a single line torn mid-write."""
-    if not lines:
-        return False
-    rec = _decode_line(lines[-1])
-    if not isinstance(rec, dict):
-        return len(lines) == 1 and b'"mac"' not in lines[0]          # the day's first append, torn by a crash
-    want = _line_hash(lines[-2]) if len(lines) > 1 else ""
-    if rec.get("prev") != want or not mac_ok(rec, key):
-        return False
-    if len(lines) == 1:
-        return True
-    if _post_cutover(day):
-        return False                       # earlier lines on a chained day were appended under a head
-    for x in lines[:-1]:
-        r = _decode_line(x)
-        if isinstance(r, dict) and "prev" in r:
-            return False                   # an earlier chained line: a head was written then
-    return True
+def _chain_links(lines, key):
+    """The raw lines' decoded records and hashes, and their chain links: `inserted` (indexes a later verified chained
+    line's prev skips over: written after it, they hid nothing) and `breaks` ({index: record} of verified chained lines
+    whose prev matches no earlier line: what was before them was deleted or edited)."""
+    recs = [_decode_line(raw) for raw in lines]
+    hashes = [_line_hash(raw) for raw in lines]
+    inserted, breaks = set(), {}
+    for i, rec in enumerate(recs):
+        if not (isinstance(rec, dict) and "prev" in rec and "mac" in rec and "route" in rec and mac_ok(rec, key)):
+            continue
+        p = rec.get("prev")
+        if p == (hashes[i - 1] if i else ""):
+            continue
+        j = -1 if p == "" else next((k for k in range(i - 2, -1, -1) if hashes[k] == p), None)
+        between = range(j + 1, i) if j is not None else ()
+        if j is not None and not any(isinstance(recs[k], dict) and "prev" in recs[k] and mac_ok(recs[k], key)
+                                     for k in between):
+            inserted.update(between)         # written when line j was the last: everything between came later
+        else:
+            breaks[i] = rec
+    return recs, hashes, inserted, breaks
+
+
+def _subset_sums(sizes, cap) -> set:
+    """Every sum of a subset of `sizes` up to `cap`."""
+    sums = {0}
+    for n in sizes:
+        sums |= {x + n for x in sums if x + n <= cap}
+    return sums
 
 
 def _head_problems(day, lines, head_raw, key, chained) -> list:
@@ -600,7 +624,12 @@ def _head_problems(day, lines, head_raw, key, chained) -> list:
     line). The appender carries these forward into the next head (sticky), so an append never heals a tamper."""
     h = _parse_head(day, head_raw, key)
     if h is None:
-        if lines and (chained or _post_cutover(day)) and not _first_line_crash(day, lines, key):
+        # a day no chained writer ever touched (only old-code lines, EVIDENCE_CUTOVER_CLONES_SYNC_CHECK) has no head
+        # to miss: its lines are flagged one by one (chain_findings: foreign / unsealed)
+        # A chained line with no head is a tamper even when it reads like a writer that died between its first line
+        # and its first head (GPT review HIGH 3: truncating a day to its first chained line and deleting the head
+        # looks exactly like that crash). Fail closed: the rare crash raises a false alarm a human clears.
+        if lines and chained:
             return ["%s: head missing (the day file was rewritten, or its head deleted)" % day]
         return []
     if h == "bad":
@@ -608,52 +637,112 @@ def _head_problems(day, lines, head_raw, key, chained) -> list:
     size, last = h["size"], h["last"]
     probs = [str(b) for b in h["broken"]]
     total = sum(len(x) for x in lines)
-    if size > total:
-        return probs + ["%s: %d sealed bytes, %d present (line(s) deleted)" % (day, size, total)]
-    if size:
-        off, end = 0, None
-        for x in lines:
-            off += len(x)
-            if off == size:
-                end = x
-                break
-            if off > size:
-                break
-        if end is None or _line_hash(end) != last:
+    # The last sealed line is found by its hash, not its byte offset: a line inserted before it (an old-code or hand
+    # append the chain still runs over) shifts offsets without hiding anything; a deletion before it is a chain break.
+    # The bytes up to the end of that line must be the sealed size plus only lines proven inserted before it (GPT
+    # review HIGH 1: an old-code line between a chained FAIL and the next chained line keeps every prev matching when
+    # the FAIL is deleted; only the byte count shows the loss).
+    ends, off = [], 0
+    for x in lines:
+        off += len(x)
+        ends.append(off)
+    anchors = [i for i, x in enumerate(lines) if _line_hash(x) == last]
+    if size and not anchors:
+        if size > total:
+            probs.append("%s: %d sealed bytes, %d present (line(s) deleted)" % (day, size, total))
+        else:
             probs.append("%s: the last sealed line was edited, stripped or deleted" % day)
+    elif size:
+        _recs, _hashes, inserted, breaks = _chain_links(lines, key)
+        # a break already locates a loss and doubts the day from it on (and every sha that existed then): the byte
+        # count would only repeat it as a second, whole-day finding
+        if not breaks and not any(ends[i] >= size and (ends[i] - size) in _subset_sums([len(lines[k]) for k in sorted(inserted)
+                                                                          if k < i], ends[i] - size)
+                   for i in anchors):
+            probs.append("%s: %d bytes sealed up to its last sealed line, %d there now (line(s) deleted or edited "
+                         "before it)" % (day, size, ends[anchors[-1]]))
     return probs
 
 
-def chain_problems(day, lines, head_raw, key) -> list:
-    """Why day `day`'s file (raw `lines`, `_split_lines`) and head bytes (None when absent) read as TAMPERED; [] when
-    clean. Unreadable lines are not judged here (lookup's UNMEASURED marker already covers them), but their raw bytes
-    are what the next line's prev chains to."""
-    probs, chained, post = [], False, _post_cutover(day)
+def _ts_epoch(ts):
+    try:
+        t = datetime.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+        return (t if t.tzinfo else t.replace(tzinfo=datetime.timezone.utc)).timestamp()
+    except (ValueError, TypeError):
+        return None
+
+
+def _day_end(day) -> float:
+    """The end of UTC day `day`: every line of `<day>.jsonl` was written before it (record() names the file by ts)."""
+    d = datetime.date.fromisoformat(str(day)[:10]) + datetime.timedelta(days=1)
+    return datetime.datetime.combine(d, datetime.time(), datetime.timezone.utc).timestamp()
+
+
+def chain_findings(day, lines, head_raw, key) -> list:
+    """Why day `day`'s file (raw `lines`, `_split_lines`) and head bytes (None when absent) read as TAMPERED, as dicts
+    {day, line (1-based, None for the whole day), kind, msg, from_line, gap_end, rec}; [] when clean. The KIND says
+    what the finding can cast doubt on (EVIDENCE_CUTOVER_CLONES_SYNC_CHECK, lookup()):
+      foreign   a line that is there but not part of the chain, and provably hid nothing: a sealed line with no
+                `prev` (an old-code append: stripping or editing a chained line breaks its mac), or any line a later
+                chained line's prev skips over (inserted after that line was written). Doubt: its own sha (`rec`).
+      unsealed  an unsealed line (on/after the cutover, or after the chain began) nothing proves was only added: it
+                may be a chained line with its seals stripped and its sha re-pointed. Doubt: like a break at it.
+      break     a chained line whose prev matches no earlier line: the line(s) before it were deleted or edited.
+                Doubt: the records from that line on (`from_line`), and any sha that existed when the gap closed
+                (`gap_end`: that line's ts) -- a deleted line could have been its FAIL.
+      day       a head problem (missing, unsealed, sticky, the last sealed line gone): not locatable, the whole day,
+                its gap closing at the day's end.
+      unreadable  a nonblank line that does not decode, or a chained line whose seal does not verify (edited): lookup's
+                UNMEASURED marker already covers it (review AB5), so it adds no doubt here -- it is listed so the
+                alarm sees it (GPT review MED 4). Its raw bytes are still what the next line's prev chains to."""
+    out, chained, post = [], False, _post_cutover(day)
     h = _parse_head(day, head_raw, key)
     begin = h["start"] if isinstance(h, dict) else None       # byte offset where the chain began (sealed)
+    recs, _hashes, inserted, breaks = _chain_links(lines, key)
     off = 0
-    for i, raw in enumerate(lines):
+    for i, (raw, rec) in enumerate(zip(lines, recs)):     # pass 2: findings in file order
         at, off = off, off + len(raw)
-        rec = _decode_line(raw)
         if not isinstance(rec, dict):
+            if raw.strip():
+                out.append({"day": day, "line": i + 1, "kind": "unreadable", "from_line": None, "gap_end": None,
+                            "rec": None, "msg": "%s line %d: unreadable (torn or hand-edited)" % (day, i + 1)})
             continue
         if begin is not None and at >= begin:
             chained = True
         sealed = "mac" in rec or "route" in rec
         if "prev" not in rec or not ("mac" in rec and "route" in rec):
-            if post:
-                probs.append("%s line %d: unsealed or unchained line on/after the cutover %s" % (day, i + 1,
-                                                                                               CHAIN_CUTOVER))
-            elif chained and not sealed:
-                probs.append("%s line %d: a line with its seals stripped after the chain began" % (day, i + 1))
+            if post or (chained and not sealed):
+                old_code = "prev" not in rec and "route" in rec and mac_ok(rec, key)
+                if old_code or i in inserted:
+                    what = ("unchained line (an old-code append) on/after the cutover %s" % CHAIN_CUTOVER if old_code
+                            else "a line added by hand (the chain runs over it)")
+                    out.append({"day": day, "line": i + 1, "kind": "foreign", "msg": "%s line %d: %s"
+                                % (day, i + 1, what), "from_line": None, "gap_end": None, "rec": rec})
+                else:
+                    what = ("unsealed or unchained line on/after the cutover %s" % CHAIN_CUTOVER if post
+                            else "a line with its seals stripped after the chain began")
+                    out.append({"day": day, "line": i + 1, "kind": "unsealed", "msg": "%s line %d: %s"
+                                % (day, i + 1, what), "from_line": i + 1, "gap_end": _day_end(day), "rec": None})
             continue
-        if not mac_ok(rec, key):
-            continue                 # its own edit shows in the next line's prev, or in the head when it is last
+        if not mac_ok(rec, key):     # its edit also shows in the next line's prev, or in the head when it is last
+            out.append({"day": day, "line": i + 1, "kind": "unreadable", "from_line": None, "gap_end": None,
+                        "rec": None, "msg": "%s line %d: a chained line whose seal does not verify (edited)"
+                        % (day, i + 1)})
+            continue
         chained = True
-        want = _line_hash(lines[i - 1]) if i else ""
-        if rec.get("prev") != want:
-            probs.append("%s line %d: the line before it was deleted, edited or stripped" % (day, i + 1))
-    return probs + _head_problems(day, lines, head_raw, key, chained)
+        if i in breaks:
+            out.append({"day": day, "line": i + 1, "kind": "break", "from_line": i + 1, "rec": None,
+                        "gap_end": _ts_epoch(rec.get("ts")) or _day_end(day),
+                        "msg": "%s line %d: the line before it was deleted, edited or stripped" % (day, i + 1)})
+    for m in _head_problems(day, lines, head_raw, key, chained):
+        out.append({"day": day, "line": None, "kind": "day", "msg": m, "from_line": 1, "gap_end": _day_end(day),
+                    "rec": None})
+    return out
+
+
+def chain_problems(day, lines, head_raw, key) -> list:
+    """chain_findings() as messages: why the day reads as TAMPERED; [] when clean."""
+    return [f["msg"] for f in chain_findings(day, lines, head_raw, key)]
 
 
 def _head_path(f) -> Path:
@@ -810,23 +899,35 @@ def read_all(days=30, folder=None, bad_out=None, tamper_out=None, key=None):
     """Every record in the last `days` day files, oldest first. Unreadable lines are skipped, counted on stderr and,
     when `bad_out` (a list) is given, appended to it as (day, fragment) so a caller can refuse to call the day clean.
     `tamper_out` (a list): each day's chain_problems() are appended to it (under `key`, default the mac key)."""
+    found: list = [] if tamper_out is not None else None
+    out = [r for _d, _n, r in _scan(days, folder, bad_out, found, key)]
+    if tamper_out is not None:
+        tamper_out.extend(f["msg"] for f in found)
+    return out
+
+
+def _scan(days=30, folder=None, bad_out=None, findings_out=None, key=None):
+    """read_all() with positions: [(day, 1-based line, record)], oldest first; `findings_out` (a list) gets each day's
+    chain_findings() with `file` (the day file's path) added."""
     folder = Path(folder) if folder else evidence_dir()
     out, bad = [], 0
-    if tamper_out is not None and key is None:
+    if findings_out is not None and key is None:
         key = _key()
     for day in sorted(_days(days)):
         f = folder / ("%s.jsonl" % day)
         if not f.is_file():
-            if tamper_out is not None and _head_path(f).is_file():
-                tamper_out.append("%s: day file deleted, its sealed head remains" % day)
+            if findings_out is not None and _head_path(f).is_file():
+                findings_out.append({"day": day, "line": None, "kind": "day", "from_line": 1, "rec": None,
+                                     "gap_end": _day_end(day), "file": str(f),
+                                     "msg": "%s: day file deleted, its sealed head remains" % day})
             continue
         raw, head = _read_locked_raw(f)
-        if tamper_out is not None:
-            tamper_out.extend(chain_problems(day, raw, head, key))
-        for ln in (x.decode("utf-8", errors="replace") for x in raw):
+        if findings_out is not None:
+            findings_out.extend(dict(x, file=str(f)) for x in chain_findings(day, raw, head, key))
+        for n, ln in enumerate((x.decode("utf-8", errors="replace") for x in raw), 1):
             r = _CJ.decode(ln)                  # contracts.jsonl: the one line policy (json.loads + object, never raises)
             if r.ok:
-                out.append(r.value)
+                out.append((day, n, r.value))
             elif r.code != _CJ.BLANK:
                 bad += 1
                 if bad_out is not None:
@@ -834,6 +935,33 @@ def read_all(days=30, folder=None, bad_out=None, tamper_out=None, key=None):
     if bad:
         print("close_evidence: %d unreadable line(s) skipped" % bad, file=sys.stderr)
     return out
+
+
+def tamper_findings(days=30, folder=None, key=None) -> list:
+    """Every chain finding in the window (the alarm's instrument: ops_watch's `evidence` family): dicts with `file`,
+    `line` (None: the whole day), `kind` and `msg`; the record a foreign line holds is left out."""
+    found: list = []
+    _scan(days, folder, None, found, key)
+    return [{k: v for k, v in f.items() if k != "rec"} for f in found]
+
+
+#: A sha committed up to this long after a gap closed is still treated as existing during it (two clocks: the
+#: committer's and the evidence writer's).
+COMMIT_SLACK_S = 3600
+_REPO = Path(__file__).resolve().parents[3]
+_COMMIT_TIMES: dict = {}
+
+
+def commit_time(sha):
+    """The committer time (epoch) of `sha` in this module's clone; None when git cannot read it (not fetched here,
+    made up, git missing). lookup() reads None as 'may have existed during any gap' -- unknown is never 'after'."""
+    if sha not in _COMMIT_TIMES:
+        try:
+            rc, out = _git(str(_REPO), "show", "-s", "--format=%ct", "%s^{commit}" % sha, "--", timeout=30)
+            _COMMIT_TIMES[sha] = int(out.strip()) if rc == 0 and out.strip().isdigit() else None
+        except (OSError, subprocess.SubprocessError, ValueError):
+            _COMMIT_TIMES[sha] = None
+    return _COMMIT_TIMES[sha]
 
 
 def _sha_match(a, b) -> bool:
@@ -1043,23 +1171,16 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
                          "expression to its commit first, e.g. arbiter_tiers.resolve_sha_any)" % (sha,))
     key = _key()                       # raises when missing: nothing verifiable is UNMEASURED, not "no evidence"
     bad: list = []
-    hits, unver = [], []
+    hits, unver, where = [], [], []
     seen_macs = set()
-    tamper: list = []
-    for r in read_all(days, folder, bad_out=bad, tamper_out=tamper, key=key):
+    found: list = []
+    verified = []                                     # every verified line: when a sha was first seen (any record)
+    for day, n, r in _scan(days, folder, bad_out=bad, findings_out=found, key=key):
         if not mac_ok(r, key):                        # review AB5: unverifiable is UNMEASURED, never absent
-            rs, rt = r.get("sha"), r.get("tool")
-            if not sha:
-                continue                              # an item lookup cannot attribute an unverifiable line
-            if _legacy(r):
-                if not (isinstance(rs, str) and _SHA_ANY.fullmatch(rs) and _sha_match(rs, sha)):
-                    continue                          # pre-seal line naming another commit
-                if tool and isinstance(rt, str) and rt != tool:
-                    continue
-            elif not _routed(rs, rt, r.get("route"), key, sha, tool):
-                continue                              # its sealed route names another commit or tool
-            unver.append(("?", json.dumps(r, default=str)))
+            if sha and _unverified_may_concern(r, key, sha, tool):
+                unver.append(("?", json.dumps(r, default=str)))
             continue
+        verified.append((day, n, r))
         if r["mac"] in seen_macs:
             continue                                  # review AC3: a replayed line never re-enters, nor moves later
         seen_macs.add(r["mac"])
@@ -1077,16 +1198,52 @@ def lookup(sha=None, item=None, tool=None, days=30, folder=None, include_dirty=F
         if paths and not covered(r, list(paths)):
             continue
         hits.append(r)
+        where.append((day, n))
+    first_seen = min((t for t in (_ts_epoch(r.get("ts")) for _d, _n, r in verified if r.get("sha") == sha)
+                      if t is not None), default=None) if sha else None
     if sha:
         def maybe_ours(ln):                   # a torn line: only a sealed route recoverable from it may exclude it
             return _routed(_top_level(ln, "sha"), _top_level(ln, "tool"), _top_level(ln, "route"), key, sha, tool)
         frags = [(d, ln) for d, ln in bad if maybe_ours(ln)] + unver
-        if tamper:
-            print("!!! close_evidence: TAMPER in the evidence store (%s) -- every sha reads UNMEASURED until the day "
-                  "leaves the window: %s" % (folder or evidence_dir(), "; ".join(tamper[:5])), file=sys.stderr)
+        tamper = [f for f in found if _tamper_concerns(f, sha, tool, key, where, first_seen)]
+        if found:
+            print("!!! close_evidence: TAMPER in the evidence store (%s): %s -- %d of %d finding(s) concern sha %s"
+                  % (folder or evidence_dir(), "; ".join("%s line %s %s" % (Path(f["file"]).name, f["line"] or "-",
+                                                                           f["kind"]) for f in found[:5]),
+                     len(tamper), len(found), sha[:12]), file=sys.stderr)
         if frags or tamper:
-            hits.append(_bad_marker(sha, frags, unverifiable=len(unver), tamper=tamper))
+            hits.append(_bad_marker(sha, frags, unverifiable=len(unver), tamper=[f["msg"] for f in tamper]))
     return hits
+
+
+def _unverified_may_concern(r, key, sha, tool) -> bool:
+    """May a line whose mac does not verify concern lookup (sha, tool)? A pre-seal line by its plain sha; a line with
+    a seal only by a sealed route that verifies (review AC1)."""
+    rs, rt = r.get("sha"), r.get("tool")
+    if _legacy(r):
+        if not (isinstance(rs, str) and _SHA_ANY.fullmatch(rs) and _sha_match(rs, sha)):
+            return False                              # pre-seal line naming another commit
+        return not (tool and isinstance(rt, str) and rt != tool)
+    return _routed(rs, rt, r.get("route"), key, sha, tool)   # False: its sealed route names another commit or tool
+
+
+def _tamper_concerns(f, sha, tool, key, where, first_seen=None) -> bool:
+    """Can chain finding `f` cast doubt on lookup (sha, tool), whose hits sit at `where` [(day, line)] and whose
+    earliest verified record (any tool) has ts `first_seen`? (EVIDENCE_CUTOVER_CLONES_SYNC_CHECK: one bad line must
+    not blind every gate.)"""
+    if f["kind"] == "unreadable":                    # lookup's own UNMEASURED marker covers it (review AB5)
+        return False
+    if f["kind"] == "foreign":                       # there, and provably hid nothing: only its own sha
+        r = f["rec"]
+        if mac_ok(r, key):
+            return r.get("sha") == sha and not (tool and r.get("tool") != tool)
+        return _unverified_may_concern(r, key, sha, tool)
+    if any(d == f["day"] and n >= f["from_line"] for d, n in where):
+        return True                                  # a record of ours sits in the doubtful span
+    if first_seen is not None and first_seen <= f["gap_end"]:
+        return True               # a record of it was written before the gap closed (GPT review HIGH 2: one clock)
+    t = commit_time(sha)
+    return t is None or t <= f["gap_end"] + COMMIT_SLACK_S   # it existed when the gap closed: a lost FAIL could be its
 
 
 def _toolkey(r) -> str:

@@ -66,7 +66,8 @@ for _p in (HERE, HERE / "pulse", HERE / "sim"):
 SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
-FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk")
+FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
+            "evidence")
 
 
 def ops_dir() -> Path:
@@ -819,10 +820,22 @@ def c_tokentalk(now, rules, ctx):
     return out
 
 
+def c_evidence(now, rules, ctx):
+    """close_evidence chain findings in its 30-day window (EVIDENCE_CUTOVER_CLONES_SYNC_CHECK): every tamper -- an
+    old-code append, a hand edit, a deleted line -- is counted and named (file, line, kind) so its alarm target files
+    it. close_evidence's own lookup() scopes the doubt; this is the loud half."""
+    import close_evidence as ce
+    fs = ce.tamper_findings()
+    first = ["%s line %s %s: %s" % (Path(f["file"]).name, f["line"] or "-", f["kind"], f["msg"]) for f in fs[:5]]
+    return {"evidence.tamper": M(len(fs), "close_evidence tamper findings (30-day window)", first=first,
+                                 kinds=sorted({f["kind"] for f in fs}))}
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
-              "v3": c_v3, "tokentalk": c_tokentalk}
-ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk")
+              "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence}
+ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
+         "evidence")
 
 
 # ==================================================================================================== storage
@@ -1116,6 +1129,10 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
         title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
                                                             pt.get("m"), tg["op"], tg["value"])
+        said = (pt.get("x") or {}).get(tg["title_field"]) if tg.get("title_field") else None   # what crossed, first
+        said = said[0] if isinstance(said, list) and said else said
+        if isinstance(said, str) and said:
+            title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"]})
     if todo and filer:

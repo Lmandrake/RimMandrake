@@ -175,19 +175,24 @@ def main():
             fh.write(json.dumps({"v": 4, "tool": "selftest", "sha": S3, "result": "PASS"}).encode() + b"\n")
         check(tampered(S1), "hand-appended unsealed line after the cutover -> TAMPER")
 
-        # 8. head lost after the very first append (a crash between line and head): not a tamper
+        # 8. head lost after the very first append. GPT review HIGH 3 (EVIDENCE_CUTOVER_CLONES_SYNC_CHECK): this reads
+        # exactly like a day truncated to its first chained line with the head deleted, so it fails CLOSED -- a
+        # TAMPER, sticky; the rare crash costs a false alarm a human clears
         store = fresh(td, "crash_first")
         put(S2)
         f = day_file(store)
         os.unlink(str(f) + ".head")
-        check(not tampered(S1), "first line with no head (crash before the head was written) is clean")
+        check("head missing" in why(S1), "first line with no head -> TAMPER (fail closed): %s" % why(S1))
         put(S1)
-        check(not tampered(S1), "...and the next append re-creates a clean head")
+        check("head missing" in why(S1), "...and the next append carries it (sticky): %s" % why(S1))
         # head lagging one append behind (crash after a later line): lines beyond the head chain -> clean
+        store = fresh(td, "lag")
+        put(S2)
+        f = day_file(store)
         hd = Path(str(f) + ".head").read_bytes()
         put(S2)
         Path(str(f) + ".head").write_bytes(hd)
-        check(not tampered(S1), "a head lagging behind chained lines is clean")
+        check(not tampered(S1), "a head lagging behind chained lines is clean: %s" % why(S1))
 
         # 9. old records accepted: a pre-cutover file of legacy and unchained sealed lines, no head
         CE.CHAIN_CUTOVER = PRE
@@ -221,7 +226,8 @@ def main():
         os.unlink(f)
         check("deleted" in why(S1), "day file deleted, head left -> TAMPER: %s" % why(S1))
 
-        # 12. (review) crash before the FIRST head in a pre-cutover file of old lines: clean, and not sticky
+        # 12. (review) crash before the FIRST head in a pre-cutover file of old lines: fails closed as in 8 (GPT review
+        # HIGH 3 / MED 5), and stays a TAMPER after the next append
         CE.CHAIN_CUTOVER = PRE
         store = fresh(td, "crash_mixed")
         store.mkdir(parents=True)
@@ -229,10 +235,10 @@ def main():
         write_lines(f, [json.dumps(old_sealed, sort_keys=True).encode()])
         put(S3)
         os.unlink(str(f) + ".head")
-        check(not tampered(S1), "pre-cutover: first chained line after old lines, head lost in a crash -> clean: %s"
-              % why(S1))
+        check("head missing" in why(S3), "pre-cutover: first chained line after old lines, head lost -> TAMPER: %s"
+              % why(S3))
         put(S3)
-        check(not tampered(S1), "...and the next append does not make it a sticky TAMPER: %s" % why(S1))
+        check("head missing" in why(S3), "...and the next append keeps it (sticky): %s" % why(S3))
         CE.CHAIN_CUTOVER = POST
 
         # 13. (review) the first append of a post-cutover day torn mid-line by a crash: not a sticky TAMPER
