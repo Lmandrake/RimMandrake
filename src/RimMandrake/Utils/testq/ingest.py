@@ -23,6 +23,7 @@ reused, never written twice. Then the shard is committed and pushed (TESTQ_INGES
 pull --rebase that fails is aborted and stops that publication with the commit kept local, never pushed half-rebased;
 any later ingest publishes RUNNER lines left uncommitted or commits left unpushed, even with nothing new to ingest.
 """
+import contextlib
 import fcntl
 import hashlib
 import json
@@ -30,6 +31,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -272,8 +274,50 @@ def ingest_group(job, res, item, gres, att):
     return {"run": run, "result": verdict(gres), "findings": found}
 
 
+_HELD = []      # non-empty while this process holds the clone lock (main holds it across ingest + publish)
+
+
+def repo_lock_path():
+    return os.path.join(tempfile.gettempdir(), "testq-repo-%s.lock" % hashlib.sha1(
+        os.path.realpath(REPO).encode("utf-8")).hexdigest()[:12])
+
+
+@contextlib.contextmanager
+def repo_lock(wait_s=0):
+    """One lock per clone, across every queue/caller: the queue's ingest.lock does not stop a second queue (backfill)
+    or the Dispatcher's publisher from rebasing/aborting while this one has appended uncommitted RUNNER lines
+    (review r8). Yields True when held (re-entrant within the process), False when still busy after wait_s."""
+    if _HELD:
+        yield True
+        return
+    with open(repo_lock_path(), "w") as fh:
+        end = time.time() + wait_s
+        while True:
+            try:
+                fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.time() >= end:
+                    yield False
+                    return
+                time.sleep(1)
+        _HELD.append(1)
+        try:
+            yield True
+        finally:
+            _HELD.pop()
+
+
 def publish(n, shard_rel=SHARD_REL, message=None):
-    """_publish, after clearing a leftover rebase / stale index.lock (clear_leftovers); what it did leads the result."""
+    """_publish under the clone lock (waits up to 120 s), after clearing a leftover rebase / stale index.lock
+    (clear_leftovers); what it did leads the result."""
+    with repo_lock(120) as got:
+        if not got:
+            return "publish stopped: another ingest/publish holds this clone (retried next time)"
+        return _publish_locked(n, shard_rel, message)
+
+
+def _publish_locked(n, shard_rel=SHARD_REL, message=None):
     def git(*a):
         return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=300)
     pre = clear_leftovers(git)
@@ -473,6 +517,15 @@ def main():
         except BlockingIOError:
             print("ingest already running")
             return 0
+        with repo_lock(0) as got:
+            if not got:
+                T.log("ingest skipped: another ingest/publish holds this clone")
+                return 0
+            return _ingest_locked()
+
+
+def _ingest_locked():
+    if True:
         push = os.environ.get("TESTQ_INGEST_PUSH", "1") != "0"
         if rebase_left(clear=push):
             return 0

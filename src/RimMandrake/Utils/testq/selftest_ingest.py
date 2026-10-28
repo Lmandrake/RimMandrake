@@ -359,6 +359,21 @@ def review_r1_checks():
         I.main()
         check(order[:1] == ["clear"] and "ingest" not in order,
               "a leftover rebase is cleared before ingesting, and while it stays nothing is ingested: %s" % order)
+        import fcntl
+        order.clear()
+        shutil.rmtree(os.path.join(repo, ".git", "rebase-merge"))
+        S.dump(done_rec(ITEM), os.path.join(tmp, "q", "done", "x.json"))   # review r8: a held clone lock (second queue / Dispatcher) stops ingest
+        I.REPO = os.path.join(tmp, "repo")
+        os.environ["TESTQ_INGEST_PUSH"] = "0"
+        with open(I.repo_lock_path(), "w") as other:
+            fcntl.flock(other, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            I.main()
+            check("ingest" not in order, "ingest skips while another caller holds this clone's lock: %s" % order)
+        os.environ["TESTQ_INGEST_PUSH"] = "0"
+        I.main()
+        check("ingest" in order, "setup: without the lock held, the same ingest runs: %s" % order)
+        order.clear()
+        os.makedirs(os.path.join(repo, ".git", "rebase-merge"), exist_ok=True)
         order.clear()
         os.environ["TESTQ_INGEST_PUSH"] = "0"      # review r5: publication off must not ingest into a rebase tree either
         I.main()
