@@ -352,29 +352,57 @@ def claim_holds(item_id, now, w=None):
     return False
 
 
-def claim_cover(item_id, a, b, w=None):
-    """Seconds of [A, B] that a claim on ITEM covered: from the claim to the lease's own expiry (a released or
-    lapsed lease stops covering at its stamp), or 2 h from a lease-less claim."""
-    if not item_id or b <= a:
-        return 0
-    model, wd = w or world()
-    it = wd.items.get(item_id)
+def _window(it, model):
+    """-> (start, end) epochs a claim on IT covers in its current state, or None: from the claim to the lease's own
+    expiry (a released lease stops at its release stamp), or CLAIM_HOLD_S from a lease-less claim."""
     if not it or not it.open or not it.claim_ts or it.owner in (None, "RUNNER"):
-        return 0
+        return None
     start = model.epoch(it.claim_ts)
     if start is None:
-        return 0
+        return None
     ls = getattr(it, "lease", None)
     if ls:
         end = model.epoch(ls.get("expires"))
-        rel = model.epoch(ls.get("released")) if ls.get("released") else None
         if end is None:
-            return 0
-        if rel is not None:
-            end = min(end, rel)
+            return None
+        if ls.get("released"):
+            rel = model.epoch(ls.get("released"))
+            end = min(end, rel) if rel is not None else end
     else:
         end = start + CLAIM_HOLD_S
-    return int(max(0, min(b, end) - max(a, start)))
+    return start, end
+
+
+def claim_cover(item_id, a, b, w=None):
+    """Seconds of [A, B] that a claim on ITEM covered, from the ledger's own history: the item's state after each
+    event holds until the next event, so a later close, release or reclaim cannot erase cover already earned.
+    W (model, world) -> judge the current state only (a test double)."""
+    if not item_id or b <= a:
+        return 0
+    if w:
+        win = _window(w[1].items.get(item_id), w[0])
+        return int(max(0, min(b, win[1]) - max(a, win[0]))) if win else 0
+    if RIMFLOW_DIR not in sys.path:
+        sys.path.insert(0, os.path.dirname(RIMFLOW_DIR))
+    from rimflow import model
+    model.EVENTS = os.environ.get("RIMFLOW_LEDGER") or model.EVENTS
+    segs = []                                   # (event ts, claim window after that event)
+
+    def observe(ev, world, ok):
+        t = model.epoch(ev.get("ts"))
+        if t is not None:
+            segs.append((t, _window(world.items.get(item_id), model)))
+
+    model.replay(model.read(), observe=observe)
+    total = 0
+    for k, (t, win) in enumerate(segs):
+        if win is None:
+            continue
+        t_next = segs[k + 1][0] if k + 1 < len(segs) else float("inf")
+        lo, hi = max(a, t, win[0]), min(b, t_next, win[1])
+        if hi > lo:
+            total += hi - lo
+    return int(total)
 
 
 def lock_open():

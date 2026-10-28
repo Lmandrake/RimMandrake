@@ -332,6 +332,14 @@ def main():
         W.watch_pass(now=base + 1010)
         check(pulses()[-1]["status"] == "failed" and len(pulses()) == n,
               "the heartbeat is fresh but the steward still holds a fault incident: the watcher does not clear the row")
+        rc, out = cli("file", "STEVE_COVER_PROBE_ITEM", "--for", "BENCH", "--title", "cover probe")
+        rc, out = cli("claim", "STEVE_COVER_PROBE_ITEM")
+        c0 = model.epoch(W.world()[1].items["STEVE_COVER_PROBE_ITEM"].claim_ts)
+        cov1 = W.claim_cover("STEVE_COVER_PROBE_ITEM", c0, c0 + 7200)
+        rc, out = cli("close", "STEVE_COVER_PROBE_ITEM", "--reason", "probe done")
+        cov2 = W.claim_cover("STEVE_COVER_PROBE_ITEM", c0, c0 + 7200)
+        check(cov1 > 1000 and 0 < cov2 <= cov1 and W.claim_cover("STEVE_COVER_PROBE_ITEM", c0 + 5000, c0 + 6000) == 0,
+              "closing the item keeps the cover earned before it (live %d, closed %d): %s" % (cov1, cov2, out[-100:]))
         real_rf = W.rimflow
         W.rimflow = lambda *a: (1, "rimflow: only an open item can be raised")
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 2000, "level": 1, "item": item, "owner_item": None}
