@@ -249,6 +249,21 @@ namespace RimMandrake.FlowWorks.SelfTest
 				double g = WorstGap(w, out int nb);
 				Assert(nb == 1 && Math.Abs(g - 0.5) < 1e-9, "a 0.5 m step in one body reads 0.5 m: " + g);
 			});
+
+			Case("Exact_surface_gap_merges_arms_through_a_pond", () =>
+			{
+				// SURFACEGAP_MERGE_ARMS_THROUGH_POND: arm A 0.95 cm above a half-full 2 m pond square, arm B 0.95 cm below it,
+				// one row A | pond | B: ONE body of 1.9 cm (twin: selftest_level_water.py t_surface_gap_merge)
+				long u = RM_LevelSolve.U;
+				int[] depth = { 4, 0, 4 };
+				long[] water = { 2 * u + 190, 0, 2 * u - 190 };
+				object fl = new object();
+				var list = RM_SurfaceGap.Measure(new[] { 0, 1, 2 }, i => depth[i], i => water[i], i => fl,
+					(i, d) => d == 1 ? (i < 2 ? i + 1 : -1) : d == 3 ? (i > 0 ? i - 1 : -1) : -1,
+					i => i == 1 ? 0 : -1, p => -2.0 * u, i => 4);
+				Assert(list.Count == 1 && list[0].squares == 2 && list[0].firstCell == 0 && Math.Abs(list[0].gapM - 0.019) < 1e-9,
+					"two arms of one pond read one body of 1.9 cm: " + string.Join("; ", list.Select(b => b.squares + "@" + b.gapM)));
+			});
 		}
 
 		/// <summary>Random scenes at the shipped flags: ledger, bounds and conservation to the dL every pulse; a body at rest stands

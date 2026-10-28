@@ -523,7 +523,9 @@ namespace RimMandrake.FlowWorks
 	/// surface height, to within 1 cm, read from game state). Twin of level_water.surface_gaps. A body is a 4-way run of wet
 	/// dug squares of one fluid, plus every limitless source a wet square of it touches (surface 0) and every pond JOINED to
 	/// it below the surface (its link reaches min(D, shore bed) notches down; the pond joins only when its surface or the
-	/// square's stands above that floor). RM_NorthstarProofs.ProofLevelSurface reports it live;
+	/// square's stands above that floor). Runs joined to the SAME pond are one body, transitively through chains of runs and
+	/// ponds (SURFACEGAP_MERGE_ARMS_THROUGH_POND: an arm 0.95 cm above a pond and another 0.95 cm below it are one gap of
+	/// 1.9 cm, not two of 0.95). RM_NorthstarProofs.ProofLevelSurface reports it live;
 	/// northstar/level_surface_bar.py judges it.
 	/// </summary>
 	public static class RM_SurfaceGap
@@ -548,10 +550,16 @@ namespace RimMandrake.FlowWorks
 			var sorted = new List<int>(cells);
 			sorted.Sort();
 			var seen = new HashSet<int>();
-			var outList = new List<Body>();
 			var run = new List<int>();
 			var touched = new SortedSet<int>();
 			var psurf = new Dictionary<int, double>();
+			// one entry per 4-way run, in seed order; then runs joined through a shared pond are unioned into one body
+			var runLo = new List<double>();
+			var runHi = new List<double>();
+			var runN = new List<int>();
+			var runSeed = new List<int>();
+			var parent = new List<int>();
+			var firstRunOfPond = new Dictionary<int, int>();
 			for (int s = 0; s < sorted.Count; s++)
 			{
 				int c0 = sorted[s];
@@ -619,17 +627,69 @@ namespace RimMandrake.FlowWorks
 					lo = Math.Min(lo, 0.0);
 					hi = Math.Max(hi, 0.0);
 				}
-				outList.Add(new Body
+				int r = runN.Count;
+				runLo.Add(lo);
+				runHi.Add(hi);
+				runN.Add(run.Count);
+				runSeed.Add(c0);
+				parent.Add(r);
+				foreach (int p in touched)
 				{
-					squares = run.Count,
-					gapM = (hi - lo) * RM_LevelSolve.MetresPerUnit,
-					minM = lo * RM_LevelSolve.MetresPerUnit,
-					maxM = hi * RM_LevelSolve.MetresPerUnit,
-					firstCell = c0,
-				});
+					if (firstRunOfPond.TryGetValue(p, out int other))
+					{
+						int ra = Root(parent, other), rb = Root(parent, r);
+						if (ra != rb)
+						{
+							parent[Math.Max(ra, rb)] = Math.Min(ra, rb);
+						}
+					}
+					else
+					{
+						firstRunOfPond[p] = r;
+					}
+				}
+			}
+			// fold each run into its root (the body's earliest run, whose seed is the body's first cell)
+			var outList = new List<Body>();
+			var bodyOfRoot = new Dictionary<int, int>();
+			var bodyLo = new List<double>();
+			var bodyHi = new List<double>();
+			for (int r = 0; r < runN.Count; r++)
+			{
+				int root = Root(parent, r);
+				if (!bodyOfRoot.TryGetValue(root, out int bi))
+				{
+					bi = bodyOfRoot[root] = outList.Count;
+					outList.Add(new Body { squares = 0, firstCell = runSeed[root] });
+					bodyLo.Add(double.MaxValue);
+					bodyHi.Add(double.MinValue);
+				}
+				Body body = outList[bi];
+				body.squares += runN[r];
+				outList[bi] = body;
+				bodyLo[bi] = Math.Min(bodyLo[bi], runLo[r]);
+				bodyHi[bi] = Math.Max(bodyHi[bi], runHi[r]);
+			}
+			for (int bi = 0; bi < outList.Count; bi++)
+			{
+				Body body = outList[bi];
+				body.gapM = (bodyHi[bi] - bodyLo[bi]) * RM_LevelSolve.MetresPerUnit;
+				body.minM = bodyLo[bi] * RM_LevelSolve.MetresPerUnit;
+				body.maxM = bodyHi[bi] * RM_LevelSolve.MetresPerUnit;
+				outList[bi] = body;
 			}
 			outList.Sort((a, b) => b.gapM.CompareTo(a.gapM));
 			return outList;
+		}
+
+		private static int Root(List<int> parent, int r)
+		{
+			while (parent[r] != r)
+			{
+				parent[r] = parent[parent[r]];
+				r = parent[r];
+			}
+			return r;
 		}
 	}
 }

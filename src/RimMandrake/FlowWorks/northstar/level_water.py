@@ -549,7 +549,9 @@ def surface_gaps(cells, ponds=None, limitless=()):
     squares of limitless bodies. A body is a 4-way run of wet squares of one fluid plus every limitless source a wet
     square of it touches and every pond JOINED to it below the surface: through a square's link to a pond shore square
     of bed b, which reaches min(D, b) notches down, so the pond joins only when its surface or the square's stands above
-    that link's floor (a pond drawn down below a shallow shore is a separate body). Returns [(gap_m, n_squares, min_surface_m, max_surface_m)] per body, largest gap first:
+    that link's floor (a pond drawn down below a shallow shore is a separate body). Runs joined to the SAME pond are one
+    body (SURFACEGAP_MERGE_ARMS_THROUGH_POND: two arms of one pond, one above and one below it, are one gap, not two
+    half-gaps), transitively through chains of runs and ponds. Returns [(gap_m, n_squares, min_surface_m, max_surface_m)] per body, largest gap first:
     the instrument RM_NorthstarProofs.ProofLevelSurface reports live and level_surface_bar.py judges (< 1 cm)."""
     ponds = ponds or {}
     pond_of = {}
@@ -558,7 +560,7 @@ def surface_gaps(cells, ponds=None, limitless=()):
             pond_of[s] = bid
     psurf = {bid: pond_surface_height(h, dl) for bid, (h, dl, _) in ponds.items()}
     lim = set(limitless)
-    seen, out = set(), []
+    seen, runs = set(), []
     for c in sorted(cells, key=lambda c: (c[1], c[0])):
         D, W, fl = cells[c]
         if c in seen or W <= 0:
@@ -588,8 +590,31 @@ def surface_gaps(cells, ponds=None, limitless=()):
             surfs.append(psurf[bid])
         if lim_hit:
             surfs.append(0.0)
-        lo, hi = min(surfs), max(surfs)
-        out.append(((hi - lo) * M_PER_UNIT, len(run), lo * M_PER_UNIT, hi * M_PER_UNIT))
+        runs.append([min(surfs), max(surfs), len(run), touched])
+    # one body per set of runs joined through shared ponds (union-find; the root is the earliest run)
+    parent = list(range(len(runs)))
+
+    def root(r):
+        while parent[r] != r:
+            parent[r] = parent[parent[r]]
+            r = parent[r]
+        return r
+
+    first_of_pond = {}
+    for r, (_, _, _, touched) in enumerate(runs):
+        for bid in touched:
+            if bid in first_of_pond:
+                a, b = root(first_of_pond[bid]), root(r)
+                if a != b:
+                    parent[max(a, b)] = min(a, b)
+            else:
+                first_of_pond[bid] = r
+    bodies = {}
+    for r, (lo, hi, n, _) in enumerate(runs):
+        b = bodies.setdefault(root(r), [lo, hi, 0])
+        b[0], b[1], b[2] = min(b[0], lo), max(b[1], hi), b[2] + n
+    out = [((hi - lo) * M_PER_UNIT, n, lo * M_PER_UNIT, hi * M_PER_UNIT)
+           for _, (lo, hi, n) in sorted(bodies.items())]
     out.sort(key=lambda t: -t[0])
     return out
 

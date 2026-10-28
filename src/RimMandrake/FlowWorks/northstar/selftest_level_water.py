@@ -143,6 +143,108 @@ def t_solve_basics():
     check("instrument control: two level squares read gap 0", len(g) == 1 and g[0][0] == 0, str(g))
 
 
+# ───────────────── SURFACEGAP_MERGE_ARMS_THROUGH_POND: one body through a joined pond ─────────────────
+
+def _gaps_reference(cells, ponds, limitless):
+    """Brute-force twin of lw.surface_gaps: nodes are wet squares and ponds, edges the 4-way same-fluid wet adjacency and
+    every JOINED square-to-pond link; a body is a component holding a wet square, its surfaces those of its squares, its
+    ponds, and 0 if a square of it touches a limitless source."""
+    pond_of = {s: bid for bid, (_, _, srcs) in ponds.items() for s in srcs}
+    psurf = {bid: lw.pond_surface_height(h, dl) for bid, (h, dl, _) in ponds.items()}
+    lim = set(limitless)
+    adj, touches_lim = {}, set()
+    wet = [c for c in cells if cells[c][1] > 0]
+    for c in wet:
+        adj.setdefault(("c", c), set())
+    for c in wet:
+        D, W, fl = cells[c]
+        for dx, dz in lw.CARDINAL:
+            n = (c[0] + dx, c[1] + dz)
+            if n in cells:
+                if cells[n][1] > 0 and cells[n][2] == fl:
+                    adj[("c", c)].add(("c", n))
+            elif n in pond_of:
+                b = pond_of[n]
+                if max(W - D * U, psurf[b]) > -min(D, ponds[b][2][n]) * U:
+                    adj[("c", c)].add(("p", b))
+                    adj.setdefault(("p", b), set()).add(("c", c))
+            elif n in lim:
+                touches_lim.add(c)
+    seen, out = set(), []
+    for c in wet:
+        if ("c", c) in seen:
+            continue
+        stack, comp = [("c", c)], []
+        seen.add(("c", c))
+        while stack:
+            x = stack.pop()
+            comp.append(x)
+            for y in adj[x]:
+                if y not in seen:
+                    seen.add(y)
+                    stack.append(y)
+        surfs = [cells[x[1]][1] - cells[x[1]][0] * U if x[0] == "c" else psurf[x[1]] for x in comp]
+        if any(x[0] == "c" and x[1] in touches_lim for x in comp):
+            surfs.append(0.0)
+        lo, hi = min(surfs), max(surfs)
+        out.append(((hi - lo) * lw.M_PER_UNIT, sum(1 for x in comp if x[0] == "c"), lo * lw.M_PER_UNIT, hi * lw.M_PER_UNIT))
+    return out
+
+
+def _norm_gaps(g):
+    return sorted((round(a, 12), n, round(b, 12), round(c, 12)) for a, n, b, c in g)
+
+
+def t_surface_gap_merge(n=3000):
+    # arm A 0.95 cm above a half-full 2 m pond square, arm B 0.95 cm below it: ONE body, gap 1.9 cm (not two of 0.95)
+    pond = {0: (lw.histogram([4]), 2 * U, {(1, 0): 4})}
+    arms = {(0, 0): (4, 2 * U + 190, "w"), (2, 0): (4, 2 * U - 190, "w")}
+    g = lw.surface_gaps(arms, pond)
+    check("surface gap: two arms joined through one pond read ONE body of 1.9 cm",
+          len(g) == 1 and g[0][1] == 2 and abs(g[0][0] - 0.019) < 1e-9, str(g))
+    # chain: run A - pond P - run B - pond Q - run C is one body, spread over all five surfaces
+    ponds = {0: (lw.histogram([4]), 2 * U, {(1, 0): 4}), 1: (lw.histogram([4]), 2 * U - 400, {(3, 0): 4})}
+    chain = {(0, 0): (4, 2 * U + 100, "w"), (2, 0): (4, 2 * U, "w"), (4, 0): (4, 2 * U - 200, "w")}
+    g = lw.surface_gaps(chain, ponds)
+    check("surface gap: a chain of runs and ponds is one body, gap over all of it (2.5 cm)",
+          len(g) == 1 and g[0][1] == 3 and abs(g[0][0] - 0.025) < 1e-9, str(g))
+    # control: a pond drawn down to 0.25 m in its 2 m square does not reach arm B through its 1-notch shore square, so
+    # B (as low as the pond) stays its own body while A joins the pond
+    low = {0: (lw.histogram([4, 1]), U // 2, {(1, 0): 4, (3, 0): 1})}
+    sep = {(0, 0): (4, U // 2 + 190, "w"), (4, 0): (4, U // 2, "w")}
+    g = lw.surface_gaps(sep, low)
+    check("surface gap control: an arm whose link floor stands above both surfaces stays its own body",
+          sorted((round(x[0], 9), x[1]) for x in g) == [(0.0, 1), (0.0095, 1)], str(g))
+    # every region: random scenes against the brute-force graph twin
+    rng = random.Random(7)
+    for i in range(n):
+        cells, ponds, lim = {}, {}, []
+        beds_of = {b: [rng.choice([1, 2, 3, 4]) for _ in range(rng.randint(1, 4))] for b in range(rng.randint(0, 3))}
+        srcs = {b: {} for b in beds_of}
+        sq = [(x, z) for x in range(6) for z in range(5)]
+        rng.shuffle(sq)
+        for c in sq:
+            r = rng.random()
+            if r < 0.55:
+                D = rng.randint(1, 4)
+                cells[c] = (D, rng.choice([0, rng.randint(0, D * U), D * U]), "w" if rng.random() < 0.9 else "m")
+            elif r < 0.8 and beds_of:
+                b = rng.choice(list(beds_of))
+                if len(srcs[b]) < len(beds_of[b]):
+                    srcs[b][c] = beds_of[b][len(srcs[b])]
+            elif r < 0.85:
+                lim.append(c)
+        for b, ss in srcs.items():
+            if ss:
+                ponds[b] = (lw.histogram(list(ss.values())), rng.randint(0, sum(ss.values()) * U), ss)
+        ref, got = _norm_gaps(_gaps_reference(cells, ponds, lim)), _norm_gaps(lw.surface_gaps(cells, ponds, lim))
+        if ref != got:
+            check("surface gap: matches the brute-force body graph on %d random scenes" % n, False,
+                  "scene %d: %s vs reference %s" % (i, got, ref))
+            return
+    check("surface gap: matches the brute-force body graph on %d random scenes" % n, True)
+
+
 # ───────────────────────────── the scenes, redrawn for level water ─────────────────────────────
 
 def row(x0, z, n):
@@ -406,6 +508,7 @@ def main():
     a = ap.parse_args()
     print("U = %d dL per notch per square (read from RM_Volume.cs)" % U)
     t_solve_basics()
+    t_surface_gap_merge()
     s1()
     s2()
     s4()
