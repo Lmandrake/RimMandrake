@@ -1,0 +1,2 @@
+'rimflow next --seat OTHER' is not a read: it takes a LEASE as that seat in YOUR clone's shard (2026-10-28 a BENCH helper inspecting FOUNDRY's queue leased FOUNDRY's umbrella from bench; released by token). To inspect another seat's offer use 'next --seat X --peek' (what the Dispatcher uses) or 'why', and run it in THAT seat's clone, since the dispatcher peeks there and a seat's local reconciles are not on origin.
+home: using-rimflow
