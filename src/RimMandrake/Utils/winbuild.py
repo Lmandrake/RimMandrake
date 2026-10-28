@@ -278,9 +278,12 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
         rel = os.path.relpath(p, stage)
         dst = os.path.join(ROOT, rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
-        with open(p, "rb") as f, open(dst + ".winbuild-tmp", "wb") as g:
+        # unique tmp per process: two parallel stage builds (the sweep) copy back the SAME shared dll, and a fixed
+        # name made the loser's os.replace die FileNotFoundError (SELFTEST_SWEEP_CRASHES_FIX_LOAD_DEPENDENCE)
+        tmp = "%s.winbuild-tmp.%d" % (dst, os.getpid())
+        with open(p, "rb") as f, open(tmp, "wb") as g:
             g.write(f.read())
-        os.replace(dst + ".winbuild-tmp", dst)
+        os.replace(tmp, dst)
         record["outputs"].append(rel)
     record["built_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     with open(os.path.join(stage, "BUILD_SOURCE.json"), "w") as f:

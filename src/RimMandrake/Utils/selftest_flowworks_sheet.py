@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 1800   (queues on the shared dotnet_lock behind flowworks_stock 445 s + trench_cover 546 s under the sweep; 240 s CRASHed [timeout] while merely waiting)
 """Offline selftest of the FlowWorks sheet-water kernel (CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED, Stage 0).
 
 Runs only SheetWaterChecks (FlowWorks/Source/SelfTest/SheetWaterChecks.cs) against the PRODUCTION
