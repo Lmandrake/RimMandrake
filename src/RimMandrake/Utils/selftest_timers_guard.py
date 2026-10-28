@@ -32,16 +32,44 @@ NOW = 1_800_000_000.0
 def main():
     # judge: pure
     units = {"rm-a.timer": "active", "rm-b.timer": "inactive", "testq-c.timer": "inactive", "rm-d.timer": "failed"}
-    bad = TG.judge(units, resume_armed=False)
+    bad = TG.judge(units, covered=False)
     check(sorted(bad) == ["rm-b.timer", "testq-c.timer"], "inactive enabled timers are the fault (failed is ops_watch's)")
     check(TG.judge({"rm-a.timer": "active"}, False) == {}, "all active: nothing")
-    check(TG.judge(units, resume_armed=True) == {}, "a pause with an armed restart is tolerated")
+    check(TG.judge(units, {"rm-b.timer", "testq-c.timer"}) == {}, "timers covered by a pending restart are tolerated")
+    check(sorted(TG.judge(units, {"rm-b.timer"})) == ["testq-c.timer"],
+          "a pause of A does NOT hide an unrelated stopped B (the mass-stop hole)")
     mass = TG.judge({"rm-%d.timer" % i: "inactive" for i in range(5)}, False)
     check(len(mass) == 5, "a mass stop (every rm timer inactive, deadman included) is seen")
 
     # listing parse
     out = "rm-a.timer enabled enabled\nrm-b.timer disabled enabled\ntestq-c.timer enabled enabled\nfoo.timer enabled enabled\n"
     check(TG.enabled_from_listing(out) == ["rm-a.timer", "testq-c.timer"], "only enabled rm-/testq- timers are watched")
+
+    check(TG.enabled_from_listing("rm-r.timer enabled-runtime enabled\n") == ["rm-r.timer"], "enabled-runtime timers are watched too")
+
+    # read_states with a fake systemctl
+    def fake(listing, active, pending):
+        def run(argv, **kw):
+            sub = argv[2]
+            if sub == "list-unit-files":
+                return SP.CompletedProcess(argv, 0, listing, "")
+            if sub == "is-active":
+                return SP.CompletedProcess(argv, 3, active.get(argv[3], ""), "")
+            return SP.CompletedProcess(argv, 0, pending, "")
+        return run
+    lst = "rm-a.timer enabled enabled\nrm-b.timer enabled enabled\n"
+    TG.pauses_file().parent.mkdir(parents=True, exist_ok=True)
+    TG.pauses_file().write_text('{"timer-resume-1.timer": ["rm-a.timer"]}')
+    sts, cov = TG.read_states(fake(lst, {"rm-a.timer": "inactive\n", "rm-b.timer": "inactive\n"},
+                                   "Wed 2026 1h timer-resume-1.timer timer-resume-1.service\n"))
+    check(cov == {"rm-a.timer"} and sorted(TG.judge(sts, cov)) == ["rm-b.timer"], "pending resume covers only its recorded timers")
+    sts, cov = TG.read_states(fake(lst, {"rm-a.timer": "inactive", "rm-b.timer": "active"}, ""))
+    check(cov == set(), "no pending resume: nothing covered")
+    try:
+        TG.read_states(fake(lst, {"rm-a.timer": "active"}, ""))
+        check(False, "an unanswered is-active must not read as healthy")
+    except RuntimeError:
+        check(True, "an unanswered is-active raises instead of reading as healthy")
 
     # guard unit is outside the glob it watches
     check(not TG.WATCH_RE.match(TG.GUARD_NAME + ".timer"), "the guard's own name is outside rm-*/testq-*")
@@ -61,6 +89,14 @@ def main():
     TG.check(NOW + 1200, filer, ids, {"rm-b.timer": "active"}, False)
     check(not TG.check(NOW + 1300, None, ids, {"rm-b.timer": "active"}, False), "cleared when timers are active again")
 
+    # a tolerated pause is neither recovery nor a new alarm: the open episode survives it
+    f2 = []
+    ids2 = set()
+    TG.check(NOW + 2000, lambda t, c: (f2.extend(x["name"] for x in t), {x["name"]: None for x in t})[1], ids2, {"rm-b.timer": "inactive"}, set())
+    st = TG.check(NOW + 2100, lambda t, c: (f2.append("N"), {})[1], ids2, {"rm-b.timer": "inactive"}, {"rm-b.timer"})
+    check(st.get("state") == "OPEN" and f2.count("N") == 0, "pause covering the fault keeps the episode (no 'active again' note)")
+    TG.check(NOW + 2200, None, ids2, {"rm-b.timer": "active"}, set())
+
     # pause helper: arms restart BEFORE stopping, against a throwaway timer
     cmds = []
     TG.pause(["rm-x.timer", "testq-y.timer"], 2, runner=lambda argv, **kw: (cmds.append(argv), SP.CompletedProcess(argv, 0, "", ""))[1])
@@ -68,6 +104,13 @@ def main():
     check(kinds[0] == "run" and "stop" in kinds and kinds.index("stop") > 0, "restart armed before the stop")
     run = cmds[0]
     check(any(x.startswith("--on-active=") for x in run) and "start" in run and "rm-x.timer" in run, "restart covers the list")
+    for bad_h in (0, -1, float("nan"), float("inf")):
+        try:
+            TG.pause(["rm-x.timer"], bad_h, runner=lambda *a, **k: SP.CompletedProcess(a, 0, "", ""))
+            check(False, "hours %r refused" % bad_h)
+        except ValueError:
+            check(True, "hours %r refused" % bad_h)
+    check(any("rm-x.timer" in v for v in TG.load_pauses().values()), "pause records which timers its restart covers")
     try:
         TG.pause(["foo.service"], 1, runner=lambda *a, **k: SP.CompletedProcess(a, 0, "", ""))
         check(False, "non-timer name refused")

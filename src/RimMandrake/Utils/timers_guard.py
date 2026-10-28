@@ -41,6 +41,19 @@ def state_file():
     return ops_dir() / "timers_guard.json"
 
 
+def pauses_file():
+    return ops_dir() / "timers_pauses.json"
+
+
+def load_pauses():
+    """{resume_unit.timer: [covered timers]} as recorded by pause(); {} when absent or unreadable (=> nothing tolerated)."""
+    try:
+        d = json.loads(pauses_file().read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
 def _sc(args, runner=subprocess.run):
     return runner(["systemctl", "--user"] + args, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
 
@@ -50,13 +63,14 @@ def enabled_from_listing(text):
     out = []
     for ln in text.splitlines():
         p = ln.split()
-        if len(p) >= 2 and WATCH_RE.match(p[0]) and p[1] == "enabled":
+        if len(p) >= 2 and WATCH_RE.match(p[0]) and p[1] in ("enabled", "enabled-runtime"):
             out.append(p[0])
     return sorted(out)
 
 
 def read_states(runner=subprocess.run):
-    """-> ({timer: ActiveState}, resume_armed). Raises RuntimeError when systemctl cannot be read (never 'all fine')."""
+    """-> ({timer: ActiveState}, covered). covered = timers whose pause still has a PENDING restart (pause() recorded it).
+    Raises RuntimeError when systemctl cannot be read (never 'all fine')."""
     r = _sc(["list-unit-files", "--type=timer", "--no-legend", "--no-pager"], runner)
     if r.returncode:
         raise RuntimeError("list-unit-files failed: %s" % (r.stderr or "")[:200])
@@ -64,17 +78,26 @@ def read_states(runner=subprocess.run):
     states = {}
     for n in names:
         s = _sc(["is-active", n], runner)
-        states[n] = (s.stdout or "").strip() or "unknown"
-    t = _sc(["list-timers", "--all", "--no-legend", "--no-pager", RESUME_PREFIX + "*"], runner)
-    armed = any(ln.strip() and RESUME_PREFIX in ln for ln in (t.stdout or "").splitlines())
-    return states, armed
+        states[n] = (s.stdout or "").strip()
+        if not states[n]:
+            raise RuntimeError("is-active %s gave no answer (exit %s): %s" % (n, s.returncode, (s.stderr or "")[:120]))
+    t = _sc(["list-timers", "--no-legend", "--no-pager", RESUME_PREFIX + "*"], runner)  # no --all: only timers that still elapse
+    if t.returncode:
+        raise RuntimeError("list-timers failed: %s" % (t.stderr or "")[:200])
+    pending = {w for ln in (t.stdout or "").splitlines() for w in ln.split() if w.startswith(RESUME_PREFIX) and w.endswith(".timer")}
+    rec = load_pauses()
+    covered = {n for u in pending for n in rec.get(u, [])}
+    return states, covered
 
 
-def judge(states, resume_armed):
-    """Pure. -> {timer: reason} for enabled timers that are inactive. failed belongs to ops_watch."""
-    if resume_armed:
-        return {}
-    return {n: "inactive (stopped, not failed)" for n, s in states.items() if s == "inactive"}
+def judge(states, covered=()):
+    """Pure. -> {timer: reason} for enabled timers that are inactive and NOT covered by a pending restart.
+    failed belongs to ops_watch. (A bool is accepted for old callers: True covers everything.)"""
+    if covered is True:
+        covered = set(states)
+    elif not covered:
+        covered = ()
+    return {n: "inactive (stopped, not failed)" for n, s in states.items() if s == "inactive" and n not in covered}
 
 
 def iso(t):
@@ -82,11 +105,13 @@ def iso(t):
 
 
 def check(now, filer, ids=None, states=None, resume_armed=None):
+    """resume_armed: set of covered timers (or bool, see judge)."""
     """One pass. -> state dict ({} when quiet). filer(todo, conf) -> {name: None|error}; None files nothing."""
     import ops_watch as OW
     if states is None:
         states, resume_armed = read_states()
-    bad = judge(states, bool(resume_armed))
+    bad = judge(states, resume_armed)
+    tolerated = any(s == "inactive" for s in states.values())
     p = state_file()
     try:
         st = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
@@ -97,6 +122,8 @@ def check(now, filer, ids=None, states=None, resume_armed=None):
     conf = OW.alarm_conf(OW.load_rules())
     todo = []
     if not bad:
+        if st and tolerated:
+            return st      # inactive only under a pending restart: neither recovery nor a new alarm; keep the episode
         if st:
             if st.get("item") and filer:
                 filer([{"note_only": True, "item": st["item"], "name": "note:timers",
@@ -142,12 +169,18 @@ def pause(names, hours, runner=subprocess.run):
     names = list(names)
     if not names or not all(WATCH_RE.match(n) for n in names):
         raise ValueError("pause takes rm-*/testq-* .timer names, got %r" % names)
+    if not (hours > 0 and hours < 24 * 366):
+        raise ValueError("pause --hours must be > 0 and finite, got %r" % hours)
     secs = max(1, int(hours * 3600))
     unit = RESUME_PREFIX + time.strftime("%Y%m%d-%H%M%S")
     r = runner(["systemd-run", "--user", "--on-active=%ds" % secs, "--unit=" + unit, "--collect",
                 "systemctl", "--user", "start"] + names, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     if r.returncode:
         raise RuntimeError("could not arm the restart, NOTHING stopped: %s" % (r.stderr or "")[:200])
+    from ops_watch import atomic_json
+    rec = load_pauses()
+    rec[unit + ".timer"] = names
+    atomic_json(pauses_file(), rec)
     r = runner(["systemctl", "--user", "stop"] + names, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
     if r.returncode:
         raise RuntimeError("stop failed (restart %s stays armed): %s" % (unit, (r.stderr or "")[:200]))
@@ -221,7 +254,7 @@ def main(argv=None):
     import ops_watch as OW
     st = check(time.time(), OW.real_filer if a.file_alarms else None)
     print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)[:400]))
-    return 0
+    return 1 if "_state" in st else 0     # an unreadable state file must fail the unit, not hide as success
 
 
 if __name__ == "__main__":
