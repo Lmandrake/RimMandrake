@@ -597,12 +597,12 @@ with tempfile.TemporaryDirectory() as _td:
     def _racing_replace(src, dst):
         if not _nested:  # a second writer lands between this writer's temp write and its replace
             _nested.append(1)
-            SA.write({"who": "second"})
+            SA.write_atomic(Path(_td) / "allocation.json", json.dumps({"who": "second"}))
         return _real_replace(src, dst)
     SA.os.replace = _racing_replace
     err = None
     try:
-        SA.write({"who": "first"})
+        SA.write_atomic(Path(_td) / "allocation.json", json.dumps({"who": "first"}))
     except Exception as e:  # noqa: BLE001
         err = e
     finally:
@@ -648,6 +648,55 @@ try:
 finally:
     SA.meter_now, SA.load_rules = _mn, _lr
 check("P1: the plan CLI passes the reading's source on (a STALE meter is refused, rc 2)", rc == 2, rc)
+
+# S4: an override naming only FOUNDRY leaves BENCH's sitting cap in force
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=33.0, week_pct_used=67.0,
+      override=ov(n=2, seats={"FOUNDRY": 2}, mode=None))
+check("S4: a FOUNDRY-only override keeps BENCH's session cap (BENCH 0, FOUNDRY 2)",
+      r["seats"]["BENCH"] == 0 and r["seats"]["FOUNDRY"] == 2 and "session cap reached" in r["why"], (r["seats"], r["why"]))
+r = d(sit(), session_cap_pct=CAP, owner_window_t=NOW - 0.5 * H, week_pct_left=33.0, week_pct_used=67.0,
+      override=ov(n=3, seats={"bench": 3}, mode=None))
+check("S4 control: an override naming BENCH stands over the cap", r["seats"]["BENCH"] == 3, r["seats"])
+# S5: a blind (STALE) reading carrying the next week's reset_at must not consume the reset unapplied
+r = d(ao, source="STALE", week_pct_left=100.0, week_pct_used=0.0, hours_to_week_reset=167.0,
+      week_resets_at="2026-11-04T13:00-07:00")
+check("S5: a STALE reading holds the mode and keeps the old reset_at in state",
+      r["token_mode"] == "ALMOST_OUT" and SA.epoch(r["state"]["reset_at"]) == SA.epoch("2026-10-28T13:00-07:00"),
+      (r["token_mode"], r["state"].get("reset_at")))
+r = d(r["state"], week_pct_left=100.0, week_pct_used=0.0, hours_to_week_reset=167.0,
+      week_resets_at="2026-11-04T13:00-07:00")
+check("S5: ... so the first MEASURED reading of the new week still ends ALMOST_OUT at once",
+      r["token_mode"] == "CRUISE", r["token_mode"])
+# S6: account_usage marks an old poll with stale=True and keeps source MEASURED: the plan and the spare list see STALE
+SA.meter_now = lambda now: {"accounts": {"steven": {"week_pct_left": 80.0, "week_pct_used": 20.0,
+                                                    "hours_to_week_reset": 150.0, "source": "MEASURED", "stale": True,
+                                                    "week_resets_at": SA.iso_local(NOW + 150 * H)}}}
+SA.load_rules = lambda: R2
+try:
+    rc = SA.main(["plan", "--account", "steven", "--draw", "10"])
+    g = SA.gather(NOW, R2)
+finally:
+    SA.meter_now, SA.load_rules = _mn, _lr
+check("S6: plan refuses a MEASURED reading flagged stale (rc 2)", rc == 2, rc)
+check("S6: gather lists no spare from a stale reading", not [x for x in g["spare"] if x["account"] == "steven"],
+      g["spare"])
+# S7: an older decision never overwrites a newer one in allocation.json (scheduled tick vs manual `now --write`)
+with tempfile.TemporaryDirectory() as _td:
+    os.environ["RM_STREAMS_DIR"] = _td
+    try:
+        SA.write({"t": NOW + 10, "who": "newer"})
+        wrote = SA.write({"t": NOW, "who": "older"})
+        got = json.loads((Path(_td) / "allocation.json").read_text(encoding="utf-8"))
+        check("S7: a decision computed before the published one is not written over it",
+              got["who"] == "newer" and wrote is False, (got, wrote))
+        wrote = SA.write({"t": NOW + 20, "who": "newest"})
+        got = json.loads((Path(_td) / "allocation.json").read_text(encoding="utf-8"))
+        check("S7 control: a newer decision replaces it", got["who"] == "newest" and wrote is not False, (got, wrote))
+    finally:
+        if _sd_old is None:
+            os.environ.pop("RM_STREAMS_DIR", None)
+        else:
+            os.environ["RM_STREAMS_DIR"] = _sd_old
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

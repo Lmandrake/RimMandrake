@@ -50,6 +50,7 @@ pulse/streams.py collect (rm-pulse-streams.timer); the spawn hook is .claude/hoo
 from __future__ import annotations
 
 import argparse
+import fcntl
 import glob
 import json
 import math
@@ -554,8 +555,9 @@ def gather(now=None, rules=None):
                        session_pct_used=a.get("session_pct_used") if a.get("session_pct_left") is not None else None,
                        measured_at=a.get("measured_at"))
         for name, o in meter.items():
-            if name == acc or o.get("week_pct_left") is None or o.get("source") not in ("MEASURED", "ESTIMATE"):
-                continue
+            if (name == acc or o.get("week_pct_left") is None or o.get("stale")
+                    or o.get("source") not in ("MEASURED", "ESTIMATE")):
+                continue  # a stale poll (account_usage keeps source MEASURED, flags stale) offers nothing
             inp["spare"].append({"account": name, "pct_left": o["week_pct_left"], "pct_used": o.get("week_pct_used"),
                                  "hours_to_reset": o.get("hours_to_week_reset"), "resets_at": o.get("week_resets_at"),
                                  "source": o.get("source")})
@@ -907,7 +909,10 @@ def decide(inp, state, rules, now):
     sit, live, drop, _m = sitting_step(inp, state, now)
     cap = inp.get("session_cap_pct")
     held_n = state.get("bench_n")
-    if cap is not None and live and "BENCH" in per and not ov:
+    # his word stands over the cap only where it speaks for BENCH: a FOUNDRY-only override leaves BENCH's cap in force
+    ov_bench = bool(ov) and not (isinstance(ov.get("seats"), dict) and ov["seats"]
+                                 and "BENCH" not in {str(k).upper() for k in ov["seats"]})
+    if cap is not None and live and "BENCH" in per and not ov_bench:
         if drop is not None and drop >= cap:
             per["BENCH"] = 0
             why.insert(0, f"session cap reached: {drop:.1f}% of the week this sitting (cap {cap:g}%, started at "
@@ -924,7 +929,9 @@ def decide(inp, state, rules, now):
         if rec:
             why.append(rec)
     new_state = {"token_mode": mode, "since": since, "pending": pending, "queue_mode": queue_mode,
-                 "reset_at": inp.get("week_resets_at") or state.get("reset_at"), "overage_h": overage["owed_h"],
+                 # a blind reading's reset_at is not adopted: the reset it names was never applied to the dial
+                 "reset_at": (None if blind else inp.get("week_resets_at")) or state.get("reset_at"),
+                 "overage_h": overage["owed_h"],
                  "overage_t": now, "sitting": sit,
                  "bench_n": (held_n if (cap is not None and live and drop is None and held_n is not None) else per.get("BENCH")),
                  "total": pre_cut_total
@@ -974,9 +981,17 @@ def compute(now=None, rules=None, seat="BENCH"):
 
 
 def write(dec):
+    """Publish dec as allocation.json unless a decision computed later is already there (the 15-min tick and a
+    manual `now --write` may overlap: the slower one gathered the older reading). False when skipped."""
     d = streams_dir()
     d.mkdir(parents=True, exist_ok=True)
-    write_atomic(d / "allocation.json", json.dumps(dec, indent=1, sort_keys=True, default=str))
+    with open(d / "allocation.json.lock", "a") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        cur = read_json(d / "allocation.json") or {}
+        if isinstance(cur.get("t"), (int, float)) and isinstance(dec.get("t"), (int, float)) and cur["t"] > dec["t"]:
+            return False
+        write_atomic(d / "allocation.json", json.dumps(dec, indent=1, sort_keys=True, default=str))
+    return True
 
 
 def write_atomic(path, text):
@@ -1029,7 +1044,7 @@ def main(argv=None):
             return 2
         sp = {"account": a.account, "pct_left": acc.get("week_pct_left"), "pct_used": acc.get("week_pct_used"),
               "hours_to_reset": acc.get("hours_to_week_reset"), "resets_at": acc.get("week_resets_at"),
-              "source": acc.get("source")}
+              "source": "STALE" if acc.get("stale") else acc.get("source")}
         ok, why = check_plan(sp, a.draw, load_rules(), now)
         print(why, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 2
