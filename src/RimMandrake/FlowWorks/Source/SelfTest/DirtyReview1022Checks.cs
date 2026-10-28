@@ -49,11 +49,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Case("DugSwim_refresh_reuses_scratch", () =>
             {
-                string body = Between(Src("RM_MapComponent_Excavation.cs"), "public int RefreshDugSwim()", "public int HollowDepthAt(");
+                string body = Between(Src("RM_MapComponent_Excavation.cs"), "public int RefreshDugSwim(bool whole = false)", "public int HollowDepthAt(");
                 Assert(!body.Contains("new Dictionary<int, int>()") && !body.Contains("new List<int>()") && !body.Contains("new HashSet<"),
                     "RefreshDugSwim (every 60 ticks per map) allocates no collections");
                 // DUG_SWIM_REFRESH_SHRINK_HASH_SETS: the fresh set lives in the DugSwimSet's flat arrays
-                Assert(body.Contains("swimSet.Begin(n)") && body.Contains("swimSet.End(changed)") && body.Contains("swimChangedScratch"),
+                Assert(body.Contains("swimSet.Begin(n)") && body.Contains("swimSet.Stage(changed)") && body.Contains("swimChangedScratch") && body.Contains("swimBatchScratch"),
                     "it reuses the flat swim set and the scratch list");
             });
 

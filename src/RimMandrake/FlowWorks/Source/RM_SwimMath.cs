@@ -383,19 +383,26 @@ namespace RimMandrake.FlowWorks
 		/// when one did. Owner: the map's main-thread tick (as the dictionaries were).</summary>
 		public sealed class DugSwimSet
 		{
-			private int[] code = new int[0];       // code + 1 per square; 0 = not a dug swim/lift square
-			private int[] fresh = new int[0];      // this refresh's code + 1; zero again after End
-			private List<int> cells = new List<int>();
-			private List<int> freshCells = new List<int>();
+			private int[] code = new int[0];       // PUBLISHED code + 1 per square; 0 = not a dug swim/lift square
+			private int[] target = new int[0];     // the last refresh's code + 1 (nonzero exactly on planCells until the next Begin)
+			private List<int> cells = new List<int>();       // every square that may hold a published code, ascending
+			private List<int> planCells = new List<int>();   // the last refresh's squares with a code, in Put (ascending) order
+			private List<int> union = new List<int>();       // merge scratch
+			private int count;
+			private int unpublished;               // staged squares not yet published
 
-			/// <summary>Squares with a code (the old swimClimb.Count).</summary>
-			public int Count => cells.Count;
+			/// <summary>Squares with a published code (the old swimClimb.Count).</summary>
+			public int Count => count;
 
 			/// <summary>Squares that are swum (the old swimCells.Count).</summary>
 			public int SwimCount { get; private set; }
 
-			/// <summary>The squares with a code, in ascending index order. Read only; replaced by the next End that moves.</summary>
+			/// <summary>Every square that holds a published code, in ascending index order (while a staged refresh is still being
+			/// published it may also list squares that hold none: read each through <see cref="TryClimb"/>). Read only.</summary>
 			public List<int> Cells => cells;
+
+			/// <summary>DUGSWIM_TAME_RAIN_FLIP_BURST: staged squares still waiting for <see cref="Publish"/>.</summary>
+			public int Unpublished => unpublished;
 
 			/// <summary>The climb depth of square i (the old swimClimb[i]); false when it has none.</summary>
 			public bool TryClimb(int i, out int climb)
@@ -412,6 +419,8 @@ namespace RimMandrake.FlowWorks
 				return c != 0 && ((c - 1) & 1) == 1;
 			}
 
+			/// <summary>Starts a refresh. A refresh staged and not fully published is superseded: the squares it did publish keep
+			/// their codes (the next <see cref="Stage"/> compares against what is published, square by square).</summary>
 			public void Begin(int n)
 			{
 				if (code.Length != n)
@@ -419,77 +428,115 @@ namespace RimMandrake.FlowWorks
 					// a map's grid never changes size; kept total for the selftest and a first refresh
 					var grown = new int[n];
 					var kept = new List<int>();
+					int swim = 0;
 					foreach (int i in cells)
 					{
-						if (i < n)
+						if (i < n && code[i] != 0)
 						{
 							grown[i] = code[i];
 							kept.Add(i);
+							swim += (code[i] - 1) & 1;
 						}
 					}
 					code = grown;
 					cells = kept;
-					fresh = new int[n];
+					count = kept.Count;
+					SwimCount = swim;
+					target = new int[n];
+					planCells.Clear();
 				}
-				freshCells.Clear();
+				foreach (int i in planCells)
+				{
+					target[i] = 0;
+				}
+				planCells.Clear();
+				unpublished = 0;
 			}
 
 			public void Put(int i, int value)
 			{
-				fresh[i] = value + 1;
-				freshCells.Add(i);
+				target[i] = value + 1;
+				planCells.Add(i);
 			}
 
-			/// <summary>Fills <paramref name="changed"/> (cleared first) with every square whose code moved: the fresh squares
-			/// in Put order, then the squares that lost their code in the old set's order. Publishes the fresh set when any
-			/// moved. Returns changed.Count.</summary>
-			public int End(List<int> changed)
+			/// <summary>DUGSWIM_TAME_RAIN_FLIP_BURST: fills <paramref name="changed"/> (cleared first) with every square whose
+			/// published code differs from this refresh's (the fresh squares in Put order, then the squares that lose their code
+			/// in ascending order) WITHOUT publishing any; each is published by <see cref="Publish"/>, and the set settles to
+			/// exactly this refresh's squares when the last one is. Returns changed.Count.</summary>
+			public int Stage(List<int> changed)
 			{
 				changed.Clear();
-				foreach (int i in freshCells)
+				foreach (int i in planCells)
 				{
-					if (code[i] != fresh[i])
+					if (code[i] != target[i])
 					{
 						changed.Add(i);
 					}
 				}
 				foreach (int i in cells)
 				{
-					if (fresh[i] == 0)
+					if (target[i] == 0 && code[i] != 0)
 					{
 						changed.Add(i);
 					}
 				}
-				if (changed.Count > 0)
+				unpublished = changed.Count;
+				if (unpublished == 0)
 				{
-					foreach (int i in cells)
+					Settle();
+					return 0;
+				}
+				// while the change is published square by square, Cells covers both the old squares and the new
+				union.Clear();
+				int a = 0, b = 0;
+				while (a < cells.Count || b < planCells.Count)
+				{
+					int x = a < cells.Count ? cells[a] : int.MaxValue;
+					int y = b < planCells.Count ? planCells[b] : int.MaxValue;
+					int m = x < y ? x : y;
+					if (x == m) a++;
+					if (y == m) b++;
+					if (union.Count == 0 || union[union.Count - 1] != m)
 					{
-						code[i] = 0;
-					}
-					int swim = 0;
-					foreach (int i in freshCells)
-					{
-						code[i] = fresh[i];
-						swim += (fresh[i] - 1) & 1;
-					}
-					SwimCount = swim;
-					List<int> was = cells;
-					cells = freshCells;
-					freshCells = was;
-					foreach (int i in cells)
-					{
-						fresh[i] = 0;
+						union.Add(m);
 					}
 				}
-				else
+				List<int> was = cells;
+				cells = union;
+				union = was;
+				return unpublished;
+			}
+
+			/// <summary>Publishes staged square <paramref name="i"/> (one listed by the last <see cref="Stage"/>, each once).</summary>
+			public void Publish(int i)
+			{
+				int old = code[i];
+				int now = target[i];
+				code[i] = now;
+				count += (now != 0 ? 1 : 0) - (old != 0 ? 1 : 0);
+				SwimCount += (now != 0 ? (now - 1) & 1 : 0) - (old != 0 ? (old - 1) & 1 : 0);
+				if (--unpublished == 0)
 				{
-					foreach (int i in freshCells)
-					{
-						fresh[i] = 0;
-					}
+					Settle();
 				}
-				freshCells.Clear();
-				return changed.Count;
+			}
+
+			private void Settle()
+			{
+				cells.Clear();
+				cells.AddRange(planCells);
+			}
+
+			/// <summary>Stage and publish at once (the refresh as it always was): fills <paramref name="changed"/> with every
+			/// square whose code moved and publishes the fresh set. Returns changed.Count.</summary>
+			public int End(List<int> changed)
+			{
+				int n = Stage(changed);
+				for (int k = 0; k < n; k++)
+				{
+					Publish(changed[k]);
+				}
+				return n;
 			}
 		}
 	}

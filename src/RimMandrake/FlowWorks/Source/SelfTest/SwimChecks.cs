@@ -374,13 +374,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(ex, @"swimByKey\[k\] = Swimming\.RM_SwimWater\.FluidSwimmable\(fluidPalette\[k - 1\] \?\? ActiveFluid\);",
                     "the memo is LiquidSwimmableAt's dug rule, key by key");
                 RiverSwitchFlipChecks.Has(ex, @"into\[i\] = \(byte\)RM_SwimMath\.ClimbDepthWithSwim\(into\[i\], climb\);", "the pocket grid and the cliff masks read the swim surface");
-                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\);.{0,160}Swimming\.RM_SwimPathing\.BumpCells\(map, changed\);", "a change re-derives the masks, the pocket grid and the swim grids (naming its squares: r15 fix 2)");
+                RiverSwitchFlipChecks.Has(ex, @"Swimming\.RM_SwimPathing\.BumpCells\(map, batch\);", "a change re-derives the swim grids (naming its squares: r15 fix 2), a batch at a time (DUGSWIM_TAME_RAIN_FLIP_BURST)");
+                RiverSwitchFlipChecks.Has(ex, @"swimGenOwed = false;\s*BumpClimbGeneration\(GenSwim\);", "and the masks and the pocket grid once the change is out");
                 RiverSwitchFlipChecks.Has(ex, @"map\.pathing\?\.RecalculatePerceivedPathCostAt\(map\.cellIndices\.IndexToCell\(i\)\);", "and re-reads those squares' path costs");
                 RiverSwitchFlipChecks.Has(ex, @"% SwimRefreshTicks == 11\) \{ RefreshDugSwim\(\); \}", "refreshed on its own timer");
+                RiverSwitchFlipChecks.Has(ex, @"else if \(swimSet\.Unpublished > 0\) \{ PublishDugSwim\(DugSwimFlipsPerTick\);", "the rest of a refresh's flips publish on the following ticks");
                 string sw = RiverSwitchFlipChecks.Src(Path.Combine("Swimming", "RM_Swim.cs"));
                 Assert(sw.Contains("return ex != null && ex.IsDugSwimCell(c);"), "IsDeepSwimCell counts dug swim squares (deepCell, items, drop pods, non-swimmer reach, swim speed)");
                 Assert(sw.Contains("&& !(dugSwim && ex.IsDugSwimCell(map.cellIndices.IndexToCell(i))))"), "the swim offset grids close dug swim squares to non-swimmers");
-                Assert(sw.Contains("RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim();"), "the master switch re-derives them");
+                Assert(sw.Contains("RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim(true);"), "the master switch re-derives them, all at once");
                 string sc = RiverSwitchFlipChecks.Src(Path.Combine("Superdeep", "RM_PitStepCost.cs"));
                 RiverSwitchFlipChecks.Has(sc, @"if \(eng\.IsDugSwimCell\(c\)\) \{ baseCostOverride = Swimming\.RM_SwimSettings\.swimPathCost; return; \}",
                     "a dug swim square costs the swim cost, not the wet-pit 300");
@@ -542,6 +544,120 @@ namespace RimMandrake.FlowWorks.SelfTest
                 g.Put(2, 1);
                 Assert(g.End(ch) == 0 && g.Count == 1 && !g.TryClimb(9, out _), "shrunk: square 9 is gone, square 2 kept, nothing moved");
             });
+            // DUGSWIM_TAME_RAIN_FLIP_BURST (live r17: a rain refresh flipped thousands of squares in one tick, 44-55 ms): a refresh is
+            // staged and published a slice at a time, and a newer refresh may supersede one half published. Random scenes: at every
+            // moment each square holds either its old or its new code (never anything else), Count and SwimCount equal a scan of
+            // the codes, Cells covers every coded square, and once published the set equals a whole (End) refresh of the same water.
+            Case("Swim_dug_staged_publish_converges", () =>
+            {
+                var rng = new Random(1728);
+                int partial = 0, superseded = 0, flips = 0;
+                for (int scene = 0; scene < 40; scene++)
+                {
+                    int n = 64 + rng.Next(600);
+                    var hole = new int[n];
+                    var dl = new long[n];
+                    var swimmable = new bool[n];
+                    var staged = new RM_SwimMath.DugSwimSet();
+                    var whole = new RM_SwimMath.DugSwimSet();
+                    var changed = new List<int>();
+                    var scratch = new List<int>();
+                    int head = 0;
+                    for (int step = 0; step < 40; step++)
+                    {
+                        int edits = step == 0 ? n : rng.Next(3) == 0 ? 0 : 1 + rng.Next(n / 2);
+                        for (int e = 0; e < edits; e++)
+                        {
+                            int i = rng.Next(n);
+                            hole[i] = rng.Next(3) == 0 ? 0 : 1 + rng.Next(12);
+                            dl[i] = rng.Next(3) == 0 ? 0 : rng.Next(hole[i] * RM_LevelSolve.U + 1);
+                            swimmable[i] = rng.Next(5) != 0;
+                        }
+                        bool on = rng.Next(8) != 0;
+                        var before = new int[n];
+                        for (int i = 0; i < n; i++)
+                        {
+                            before[i] = staged.TryClimb(i, out int c0) ? c0 * 2 + (staged.IsSwim(i) ? 1 : 0) : -1;
+                        }
+                        if (staged.Unpublished > 0)
+                        {
+                            superseded++;
+                        }
+                        staged.Begin(n);
+                        whole.Begin(n);
+                        var want = new int[n];
+                        for (int i = 0; i < n; i++)
+                        {
+                            want[i] = -1;
+                            if (!on || hole[i] == 0)
+                            {
+                                continue;
+                            }
+                            int code = RM_SwimMath.DugSwimCode(swimmable[i], hole[i], dl[i]);
+                            if (code >= 0)
+                            {
+                                staged.Put(i, code);
+                                whole.Put(i, code);
+                                want[i] = code;
+                            }
+                        }
+                        whole.End(scratch);
+                        int got = staged.Stage(changed);
+                        head = 0;
+                        var a = new HashSet<int>(changed);
+                        Assert(a.Count == got, "each staged square once");
+                        for (int i = 0; i < n; i++)
+                        {
+                            Assert(a.Contains(i) == (before[i] != want[i]), "staged exactly the squares whose published code differs (" + i + ")");
+                        }
+                        // publish a random number of slices; sometimes stop half way (the next step supersedes)
+                        bool finish = rng.Next(3) != 0;
+                        while (head < changed.Count)
+                        {
+                            int take = 1 + rng.Next(Math.Max(1, got / 3));
+                            if (!finish && head + take >= changed.Count)
+                            {
+                                partial++;
+                                break;
+                            }
+                            for (int k = head; k < Math.Min(changed.Count, head + take); k++)
+                            {
+                                staged.Publish(changed[k]);
+                                flips++;
+                            }
+                            head = Math.Min(changed.Count, head + take);
+                            int cnt = 0, sw = 0;
+                            var listed = new HashSet<int>(staged.Cells);
+                            for (int i = 0; i < n; i++)
+                            {
+                                int now = staged.TryClimb(i, out int c1) ? c1 * 2 + (staged.IsSwim(i) ? 1 : 0) : -1;
+                                Assert(now == before[i] || now == want[i], "square " + i + " holds its old or its new code, nothing else");
+                                cnt += now >= 0 ? 1 : 0;
+                                sw += now >= 0 && (now & 1) == 1 ? 1 : 0;
+                                Assert(now < 0 || listed.Contains(i), "Cells covers coded square " + i);
+                            }
+                            Assert(cnt == staged.Count && sw == staged.SwimCount, "Count/SwimCount equal a scan mid-publish");
+                        }
+                        if (head == changed.Count)
+                        {
+                            Assert(staged.Unpublished == 0, "all published");
+                            Assert(staged.Count == whole.Count && staged.SwimCount == whole.SwimCount && staged.Cells.Count == whole.Cells.Count,
+                                "settled: the same set as a whole refresh");
+                            for (int i = -1; i <= n; i++)
+                            {
+                                bool h1 = staged.TryClimb(i, out int x1), h2 = whole.TryClimb(i, out int x2);
+                                Assert(h1 == h2 && x1 == x2 && staged.IsSwim(i) == whole.IsSwim(i), "settled square " + i + " equals the whole refresh");
+                            }
+                            for (int k = 0; k < staged.Cells.Count; k++)
+                            {
+                                Assert(staged.Cells[k] == whole.Cells[k], "Cells in the same ascending order");
+                            }
+                        }
+                    }
+                }
+                Assert(partial > 20 && superseded > 20 && flips > 2000, "can-fail: half-published refreshes were superseded (partial=" + partial
+                    + " superseded=" + superseded + " flips=" + flips + ")");
+            });
             Case("Swim_grid_patch_equals_full_reread", () =>
             {
                 // EXCAVATION_COMPONENT_DIAGNOSE_TICK_SPIKES r15 fix 2: RM_SwimPathing re-reads only the squares the dug-swim
@@ -633,8 +749,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "VersionOf peeks the counter (no rebuild)");
                 RiverSwitchFlipChecks.Has(sw, @"List<int> patch = g\.plan\.Take\(", "For asks the plan whether to patch");
                 string ex = RiverSwitchFlipChecks.Src("RM_MapComponent_Excavation.cs");
-                RiverSwitchFlipChecks.Has(ex, @"BumpClimbGeneration\(GenSwim\);.{0,160}Swimming\.RM_SwimPathing\.BumpCells\(map, changed\);",
-                    "the dug-swim refresh names the squares it changed");
+                RiverSwitchFlipChecks.Has(ex, @"swimSet\.Publish\(i\);\s*batch\.Add\(i\);.{0,400}Swimming\.RM_SwimPathing\.BumpCells\(map, batch\);",
+                    "the dug-swim refresh names the squares it changed (each published batch)");
                 // SWIMGRID_FULL_SHRINK_FILL_FLIP_BUMPS: the terrain-change postfix names its square, and the bump counters show
                 RiverSwitchFlipChecks.Has(sw, @"public static void Postfix\(IntVec3 c, TerrainDef oldTerr, TerrainDef newTerr, Map ___map\)\s*\{\s*if \(RM_SwimWater\.IsSwimTerrain\(oldTerr\) != RM_SwimWater\.IsSwimTerrain\(newTerr\)\)\s*\{.{0,400}?RM_SwimPathing\.BumpCell\(___map, ___map\.cellIndices\.CellToIndex\(c\)\);",
                     "a swim flip by a terrain write names its square");

@@ -406,9 +406,31 @@ namespace RimMandrake.FlowWorks
 
 		public int DugSwimCellCount => swimSet.SwimCount;
 
-		/// <summary>Re-derive the dug swim squares; returns how many changed (each change re-cuts what reads them).</summary>
-		public int RefreshDugSwim()
+		/// <summary>DUGSWIM_TAME_RAIN_FLIP_BURST (live r17: one refresh took 44-55 ms in rain, the path-cost re-read and swim-grid
+		/// naming of every square a rain pass flipped, thousands in ONE tick): the squares whose swim state moved are published a
+		/// slice a tick (<see cref="DugSwimFlipsPerTick"/>), each square's code, its path cost and its swim-grid name together, so
+		/// no square is ever half-published; the climb generation moves once the whole change is out (or a newer refresh supersedes
+		/// it). 4,000 flips publish in 16 ticks, well inside the 60-tick refresh.</summary>
+		public const int DugSwimFlipsPerTick = 256;
+		private readonly List<int> swimBatchScratch = new List<int>();
+		private int swimPendingHead;
+		private bool swimGenOwed;
+		// DUGSWIM_TAME_RAIN_FLIP_BURST counters (POCKETTIME's DUGSWIM part)
+		private int dugSwimRefreshes, dugSwimStaged, dugSwimMaxStaged, dugSwimBatches, dugSwimSuperseded;
+		private long dugSwimFlips;
+		private double dugSwimWalkMaxMs, dugSwimBatchMaxMs;
+		private int dugSwimBatchMaxSquares;
+
+		/// <summary>Squares whose new swim state waits for a later tick.</summary>
+		public int DugSwimUnpublished => swimSet.Unpublished;
+
+		/// <summary>Re-derive the dug swim squares; returns how many changed (each change re-cuts what reads them). The first
+		/// <see cref="DugSwimFlipsPerTick"/> publish now and the rest on the ticks that follow (<see cref="PublishDugSwim"/>);
+		/// <paramref name="whole"/> (the master switch, the selftests) publishes every one now.</summary>
+		public int RefreshDugSwim(bool whole = false)
 		{
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			bool superseding = swimSet.Unpublished > 0;
 			bool on = Swimming.RM_SwimWater.On;
 			// Scratch reused across calls (FlowWorks review 2026-10-22): this runs every SwimRefreshTicks on every map.
 			int n = depthGrid.Length;
@@ -447,19 +469,86 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			List<int> changed = swimChangedScratch;
-			if (swimSet.End(changed) == 0)
+			swimPendingHead = 0;
+			int staged = swimSet.Stage(changed);
+			dugSwimRefreshes++;
+			dugSwimWalkMaxMs = System.Math.Max(dugSwimWalkMaxMs, (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency);
+			if (superseding)
+			{
+				dugSwimSuperseded++;
+			}
+			if (staged == 0)
+			{
+				FlushSwimGeneration();
+				return 0;
+			}
+			dugSwimStaged += staged;
+			dugSwimMaxStaged = System.Math.Max(dugSwimMaxStaged, staged);
+			PublishDugSwim(whole ? int.MaxValue : DugSwimFlipsPerTick);
+			return staged;
+		}
+
+		/// <summary>DUGSWIM_TAME_RAIN_FLIP_BURST: publishes up to <paramref name="max"/> staged squares (code, path cost and swim-grid
+		/// name together; reachability cleared once a batch). Returns how many it published.</summary>
+		private int PublishDugSwim(int max)
+		{
+			List<int> changed = swimChangedScratch;
+			if (swimSet.Unpublished == 0 || swimPendingHead >= changed.Count)
 			{
 				return 0;
 			}
-			BumpClimbGeneration(GenSwim);
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			int end = changed.Count - swimPendingHead <= max ? changed.Count : swimPendingHead + max;
+			List<int> batch = swimBatchScratch;
+			batch.Clear();
+			for (int k = swimPendingHead; k < end; k++)
+			{
+				int i = changed[k];
+				swimSet.Publish(i);
+				batch.Add(i);
+			}
+			swimPendingHead = end;
+			swimGenOwed = true;
 			// r15 fix 2: name the squares, so the swim grids re-read only these (not all 105k) when nothing else moved
-			Swimming.RM_SwimPathing.BumpCells(map, changed);
-			foreach (int i in changed)
+			Swimming.RM_SwimPathing.BumpCells(map, batch);
+			foreach (int i in batch)
 			{
 				map.pathing?.RecalculatePerceivedPathCostAt(map.cellIndices.IndexToCell(i));
 			}
 			map.reachability?.ClearCache();
-			return changed.Count;
+			if (swimSet.Unpublished == 0)
+			{
+				FlushSwimGeneration();
+			}
+			dugSwimBatches++;
+			dugSwimFlips += batch.Count;
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			if (ms > dugSwimBatchMaxMs)
+			{
+				dugSwimBatchMaxMs = ms;
+				dugSwimBatchMaxSquares = batch.Count;
+			}
+			return batch.Count;
+		}
+
+		/// <summary>The climb generation moves once per published change (the pocket grid, the cliff masks and the wall reach
+		/// rebuild from it), not once per slice.</summary>
+		private void FlushSwimGeneration()
+		{
+			if (swimGenOwed)
+			{
+				swimGenOwed = false;
+				BumpClimbGeneration(GenSwim);
+			}
+		}
+
+		/// <summary>"DUGSWIM refreshes=N staged=N maxStaged=N batches=N flips=N superseded=N walkMaxMs=M batchMaxMs=M batchMaxSquares=N
+		/// owed=N" (DUGSWIM_TAME_RAIN_FLIP_BURST).</summary>
+		public string DugSwimTimingLine()
+		{
+			return "DUGSWIM refreshes=" + dugSwimRefreshes + " staged=" + dugSwimStaged + " maxStaged=" + dugSwimMaxStaged + " batches="
+				+ dugSwimBatches + " flips=" + dugSwimFlips + " superseded=" + dugSwimSuperseded + " walkMaxMs=" + dugSwimWalkMaxMs.ToString("0.000")
+				+ " batchMaxMs=" + dugSwimBatchMaxMs.ToString("0.000") + " batchMaxSquares=" + dugSwimBatchMaxSquares + " owed=" + swimSet.Unpublished;
 		}
 
 		/// <summary>POND_BED_BUILD_HOLLOW_KEEPS_ITS_SHAPE step 2: the depth a square reads as a hole — dug depth, else a dry
@@ -2726,6 +2815,10 @@ namespace RimMandrake.FlowWorks
 			{
 				RefreshDugSwim();
 			}
+			else if (swimSet.Unpublished > 0)
+			{
+				PublishDugSwim(DugSwimFlipsPerTick);   // DUGSWIM_TAME_RAIN_FLIP_BURST: the rest of the last refresh's flips
+			}
 			// DEEP_WATER_BUILD_SWIM_OR_SINK: swim exhaustion everywhere, drowning on natural water (own 250-tick timer).
 			Swimming.RM_Swim.Tick(map, this);
 			// FlowWorks GPT review 2026-10-22: the water looks redraw when a square crosses a tint step or band rung (own timer:
@@ -3472,13 +3565,42 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			FluidDef fallback = ActiveFluid;
-			terrainWrites.Drain(all ? int.MaxValue : RM_TerrainWriteBudget.JudgedPerTick, idx =>
+			// r17fix: the live r17 deluge read one 137.5 ms drain while no terrain write in the window took 5 ms (FILLTERRAIN slow5ms
+			// 10 -> 10); the drain is bounded (JudgedPerTick judgements, WritesPerTick writes), so the slowest drain's split says
+			// whether a spike is our work (judged/writes/writeMs) or a stall around it (gapMs, with or without a gen-0 GC).
+			drainFallback = ActiveFluid;
+			drainAll = all;
+			drainApply = drainApply ?? DrainOne;   // one delegate for the component's life: no closure a tick
+			int writes0 = fillWrites;
+			double writeMs0 = fillWriteMs;
+			int gc0 = System.GC.CollectionCount(0);
+			long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+			int judged = terrainWrites.Drain(all ? int.MaxValue : RM_TerrainWriteBudget.JudgedPerTick, drainApply);
+			double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+			drainCalls++;
+			drainMs += ms;
+			if (ms > drainMaxMs)
 			{
-				IntVec3 c = map.cellIndices.IndexToCell(idx);
-				FluidDef fluid = FluidAt(c) ?? fallback;
-				return fluid == null || !IsExcavated(c) || ApplyFillTerrain(c, fluid, !all);
-			});
+				double wms = fillWriteMs - writeMs0;
+				drainMaxMs = ms;
+				drainMaxWhat = "judged=" + judged + ":writes=" + (fillWrites - writes0) + ":writeMs=" + wms.ToString("0.000") + ":gapMs="
+					+ (ms - wms).ToString("0.000") + ":gc0=" + (System.GC.CollectionCount(0) - gc0) + ":all=" + (all ? 1 : 0)
+					+ ":tick=" + (Find.TickManager?.TicksGame ?? 0);
+			}
+		}
+
+		private System.Func<int, bool> drainApply;
+		private FluidDef drainFallback;
+		private bool drainAll;
+		private int drainCalls;
+		private double drainMs, drainMaxMs;
+		private string drainMaxWhat = "-";
+
+		private bool DrainOne(int idx)
+		{
+			IntVec3 c = map.cellIndices.IndexToCell(idx);
+			FluidDef fluid = FluidAt(c) ?? drainFallback;
+			return fluid == null || !IsExcavated(c) || ApplyFillTerrain(c, fluid, !drainAll);
 		}
 
 		/// <summary>Draws a dug square's water picture. <paramref name="budgeted"/> (the pulse and its backlog): when this tick's
@@ -3589,7 +3711,8 @@ namespace RimMandrake.FlowWorks
 		{
 			return "FILLTERRAIN writes=" + fillWrites + " ms=" + fillWriteMs.ToString("0.0") + " bodyWrites=" + fillWritesBody
 				+ " bodyMs=" + fillWriteBodyMs.ToString("0.0") + " slow5ms=" + fillWritesSlow + " maxMs=" + fillWriteMaxMs.ToString("0.000")
-				+ " max=" + fillWriteMaxWhat;
+				+ " max=" + fillWriteMaxWhat + " drains=" + drainCalls + " drainMs=" + drainMs.ToString("0.0") + " drainMaxMs="
+				+ drainMaxMs.ToString("0.000") + " drainMax=" + drainMaxWhat + " waiting=" + terrainWrites.Count;
 		}
 
 		/// <summary>Take the water picture off a square being filled back in to the surface (its depth already 0): a pre-P14

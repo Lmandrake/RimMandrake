@@ -654,6 +654,7 @@ namespace RimMandrake.FlowWorks
 				parts.Add(gb.ToString());
 				parts.Add(eng.FillTerrainTimingLine());   // r15 lead 4: the terrain-write cascade, for r16
 				parts.Add(eng.RainTimingLine());   // EXCAVATION_RAIN_TAME_ONE_TICK_DELUGE: rain landed ahead vs whole
+				parts.Add(eng.DugSwimTimingLine());   // DUGSWIM_TAME_RAIN_FLIP_BURST: swim flips staged vs published a slice a tick
 			}
 			parts.Add(Swimming.RM_SwimPathing.TimingLine());   // r15 fix 2: full re-reads vs patches
 			return string.Join(" | ", parts);

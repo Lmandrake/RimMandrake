@@ -397,7 +397,7 @@ namespace RimMandrake.FlowWorks.Swimming
 			}
 			foreach (Map m in Find.Maps)
 			{
-				RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim();   // the dug swim squares follow the master switch
+				RM_SuperdeepTrap.EngineOf(m)?.RefreshDugSwim(true);   // the dug swim squares follow the master switch (all at once)
 				m.pathing.RecalculateAllPerceivedPathCosts();
 				m.reachability.ClearCache();
 			}
