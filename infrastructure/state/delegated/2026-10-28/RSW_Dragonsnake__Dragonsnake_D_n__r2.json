@@ -1,0 +1,66 @@
+{
+ "judge_model": {
+  "opus": [
+   {
+    "model_requested": "opus",
+    "seconds": 44.4,
+    "models_reported": [
+     "claude-opus-5-5"
+    ],
+    "cost_usd": 0.3795204
+   }
+  ],
+  "regen": {
+   "model_requested": "sonnet",
+   "seconds": 10.1,
+   "models_reported": [
+    "claude-sonnet-5-5"
+   ],
+   "cost_usd": 0.1177647
+  }
+ },
+ "brief": "skills/rimworld-art-evaluation (prompt versions inside)",
+ "subject": "RSW_Dragonsnake__Dragonsnake_D_n",
+ "decision": "REGEN",
+ "reasons": [
+  "opus band REALLY_BAD (model said weak); blocking ['F_SIZE_JUMP', 'F_INCONSISTENT']; polish ['RES_LOW']",
+  "REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) \u2014 on the next shadow sheet with a revert"
+ ],
+ "prompt_versions": {
+  "preamble": {
+   "tag": "preamble@v2",
+   "sha": "7130aa3ff81c"
+  },
+  "opus_first_pass": {
+   "tag": "opus_first_pass@v2",
+   "sha": "85b8f151e88e"
+  },
+  "gpt_targeted_second_look": {
+   "tag": "gpt_targeted_second_look@v1",
+   "sha": "cb6e32e360c1"
+  },
+  "regen_prompt_edit": {
+   "tag": "regen_prompt_edit@v1",
+   "sha": "86170087164b"
+  },
+  "departures_brief": {
+   "tag": "departures_brief@v2",
+   "sha": "9cda888a5233"
+  },
+  "template": {
+   "tag": "creature@v3",
+   "sha": "fdc520767c7e"
+  },
+  "severity": {
+   "tag": "severity@v4",
+   "sha": "e9bbe11e34b4"
+  }
+ },
+ "image_sha256": {
+  "south.png": "fbdef9577e5a2b4321157082a27c57157faaea8226ab03c3e0eb3881e28489f5",
+  "east.png": "37e656718a1af094f9686803bcc72d4d23dd325d55716acd7b9ecb20775687c9",
+  "north.png": "b710f9996232bea62a9a65ba714527bdfcee07ec135cce29472951bd112facd2",
+  "scale.png": "b8f04b8e600d3b0e4af10099dcc982ace51979a322cc1441bcf19fdf527fa249",
+  "facings.png": "e03e969a0c7636086a59e4e7754285f62a266c209acee76f0da6bf647d91ac68"
+ }
+}
