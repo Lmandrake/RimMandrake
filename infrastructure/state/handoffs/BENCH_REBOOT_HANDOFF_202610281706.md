@@ -34,6 +34,9 @@ before touching the game.**
 - `ACCOUNT_FAILOVER_RETIRE_AFTER_DEADLINE` — account_failover.py r4 7efbfd3db7, still DIRTY; NEXT: after stage 3 logs done (switched back to system after 13:00), retire the transient timer (`systemctl --user stop rm-account-failover.timer`) and close the item.
 - `DISPATCHER_HARDEN_MUTATION_SURVIVORS` / `CLOSE_EVIDENCE_HARDEN_MUTATION_SURVIVORS` / `ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS` — Steve runs 20261028T095621 (dispatcher) and 20261028T013440 (close_evidence) mutating; role_launch 73.2% needs a fresh run; NEXT: collect per the item notes, start the role_launch run, close what reaches 85%.
 
+- `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING` — owner's standard switching plan (10:15) + card rulings 10:20 (floor delegated: 1% leave / 2% wait; "Soft line, then hard stop"; "Pace the whole pool BECAUSE it spreads out the human review time cleanly…"; Steven "Leave at 52% left"); opus helper building engine + pool pacing + skills/rimflow-operations, progress in /mnt/d/ClaudeWork/rimmandrake/switching_plan/PROGRESS.md; NEXT: resume from PROGRESS.md; the engine must be live before steven's reset ~14:45 PDT and account_failover retired after its stage 3.
+- `FLOWPINS_VERIFY_THREE_LEFT_UNCHECKED`, `ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE`, `THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE` (live T23 on Steve owed), steward r2, timers_guard + surfacegap reviews — helpers started ~10:25; NEXT: read each item's notes and re-spawn what didn't close.
+
 ## Traps learned
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
