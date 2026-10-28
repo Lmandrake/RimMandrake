@@ -1,0 +1,2 @@
+claude-account warm <acct> is NOT safe on the live login by itself: warm_one only 'observes' a LIVE account while Claude processes run; with none running it runs claude on the live login (a refresh of the live credential). A caller that wants a dormant-only warm must prove the account is not live anywhere first: account_usage.poll checks the switcher's own status, every remote's status, and skips any live label (2026-10-28).
+home: src/RimMandrake/Utils/account_usage.py docstring
