@@ -813,6 +813,15 @@ UNREAD = [{"id": "hand:un", "target": "https://example.org/u", "title": "nobody 
 lu = pc.classify_looks(UNREAD, [], {}, NOW)
 check("a hand with no pre-read is never a look row: one 'held' row instead",
       [r["kind"] for r in lu] == ["held"] and "--read-by" in lu[0]["why"], lu)
+# PULSE_HANDS_RETIRE_THIRTEEN_HELD_FOREVER: a hand nobody pre-read for more than 7 days retires (never reached him)
+OLDH = [{"id": "hand:old", "target": "https://example.org/o", "title": "stale", "ts": NOW - 8 * 86400},
+        {"id": "hand:new", "target": "https://example.org/n", "title": "fresh", "ts": NOW - 6 * 86400},
+        {"id": "hand:oldread", "target": "https://example.org/r", "title": "read", "ts": NOW - 20 * 86400, "read_by": "BENCH"}]
+lo = {r["key"]: r for r in pc.classify_looks(OLDH, [], {}, NOW)}
+check("a hand held 8 days with no pre-read retires: no row at all", "held:hand:old" not in lo, list(lo))
+check("a hand held 6 days stays held", lo.get("held:hand:new", {}).get("kind") == "held", list(lo))
+check("a pre-read hand is never retired by age (his real ask)", lo.get("hand:oldread", {}).get("kind") == "look", list(lo))
+check("retired_hands names exactly the stale unread one", [h["id"] for h in pc.retired_hands(OLDH, NOW)] == ["hand:old"])
 check("a held hand is not counted in the strip's 'to look at'", not any(p["kind"] == "look" for p in pc.build_strip(lu)))
 with tempfile.TemporaryDirectory() as d:
     d = Path(d)

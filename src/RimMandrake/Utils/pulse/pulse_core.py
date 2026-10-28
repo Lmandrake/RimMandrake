@@ -1333,6 +1333,16 @@ def sheet_revision(name: str) -> tuple[str, int]:
     return (name[:m.start()] + name[m.end():], int(m.group(1))) if m else (name, 0)
 
 
+HELD_RETIRE_SECS = 7 * 86400   # conductor_briefing_2026-10-28 A5: a hold older than 7 days retires
+
+
+def retired_hands(hands: list[dict], now: float) -> list[dict]:
+    """Hands never pre-read (no `read_by`) and held more than 7 days: they never reached the owner, so they
+    retire rather than crowd the page. A pre-read hand is his ask and is never retired by age
+    (PULSE_HANDS_RETIRE_THIRTEEN_HELD_FOREVER)."""
+    return [h for h in hands if not h.get("read_by") and (h.get("ts") or 0) and now - h["ts"] > HELD_RETIRE_SECS]
+
+
 def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float,
                    seen_rev: dict | None = None) -> list[dict]:
     """The "to look at" feed: deliberate hand-offs + live review sheets. Nothing ever drops off when
@@ -1346,7 +1356,10 @@ def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: 
     under "held back"). A withdrawn or superseded hand stays, dimmed, and is not counted; a hand whose path
     target vanished shows as a delivery problem."""
     rows, seen_rev = [], seen_rev or {}
+    stale = {h["id"] for h in retired_hands(hands, now)}
     for h in hands:
+        if h["id"] in stale:
+            continue                    # held >7 days with no pre-read: retired, not listed
         tgt = h["target"]
         seat = (h.get("seat") or "").upper() or None
         title = h.get("title") or Path(tgt).name
