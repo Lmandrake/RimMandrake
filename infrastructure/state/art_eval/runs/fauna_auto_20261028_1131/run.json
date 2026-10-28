@@ -1,0 +1,12 @@
+{
+ "run_id": "fauna_auto_20261028_1131",
+ "test": false,
+ "started": "2026-10-28T11:31:19-07:00",
+ "subjects": [
+  "RM_FireHawk",
+  "RM_FireWasp",
+  "RM_Flamefang",
+  "RM_Surrik"
+ ],
+ "versions_key": "departures_brief@v2#9cda88+gpt_targeted_second_look@v1#cb6e32+opus_first_pass@v2#85b8f1+preamble@v2#7130aa+regen_prompt_edit@v1#861700+severity@v4#e9bbe1+creature@v3#fdc520"
+}

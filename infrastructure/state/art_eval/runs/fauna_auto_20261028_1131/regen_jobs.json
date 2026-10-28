@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_Surrik_s2r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Surrik",
+  "prompt": "A single RimWorld creature sprite, a root-mat swimmer called a surrik, in painterly vanilla RimWorld style with a clean dark outline, realistic proportions, on a transparent background. The creature is alone: its body rests directly on a flat, level ground surface, hunkered down low, with the transparent background all around it. The body is a short, compact, front-weighted wedge covered in smooth matte slate-brown hide with a paler underside. A hulking shoulder hump is the tallest, widest, deepest and heaviest mass of the body, taking about half of the body length, with thick plated muscle built for shouldering through a mat of tangled roots; it rises above the line of the back and above the head. A short, blunt, low, block-shaped head is sunk flush into the front of the shoulder hump, directly on the shoulders with no neck; its front is a flat, squared-off face of smooth bare hide with an expressionless look, ending right where the shoulders end, so the shoulder mass dominates the silhouette. The small, wide-set eyes are dark, dull and matte, and sit on the sides of the head. The mouth is one long straight slit running along the top of the blunt head, opening upward, which suits a creature that takes prey from underneath. The forelimbs are short flipper stubs, smooth and clawless. Behind the shoulders the body tapers sharply into low, narrow haunches and a short tail. In the front view the face looks toward the viewer, with the blunt head, the upward slit mouth and both small eyes visible, framed by the broad shoulders. In the side view the profile shows the hulking shoulder hump as the tallest, heaviest part, the blunt head seated flush against its front, the slit mouth along the head's top, and the body dropping away sharply behind into the tapering rear. In the rear view, seen from behind, the back, haunches and tail are shown and the eyes are hidden. Lighting is soft and even, in a muted palette of slate-brown and pale underside tones.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: DEPARTURE_MISSING, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_auto_20261028_1131",
+  "drawsize": 1.0,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/RM_Surrik/RM_Surrik"
+ }
+]
