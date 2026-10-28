@@ -9,10 +9,11 @@ import account_failover as A  # noqa: E402
 M = lambda l, src="MEASURED", st=False: {"source": src, "week_pct_left": l, "stale": st}  # noqa: E731
 now = time.mktime(time.strptime("2026-10-28 10:00", "%Y-%m-%d %H:%M"))  # fixed: before the deadline
 CASES = [({"system": M(16), "lukas": M(7, "ESTIMATE")}, False, "above threshold"),
-         ({"system": M(2), "lukas": M(7, "ESTIMATE")}, True, "at threshold"),
+         ({"system": M(1), "lukas": M(7, "ESTIMATE")}, True, "at threshold (1.0 today)"),
+         ({"system": M(2), "lukas": M(7, "ESTIMATE")}, False, "2% is above the 1% floor"),
          ({"system": M(1.5, "ESTIMATE")}, False, "an ESTIMATE never switches"),
          ({"system": M(1, st=True)}, False, "a stale reading never switches"),
-         ({"system": M(2), "lukas": M(1)}, False, "target as low: no gain"),
+         ({"system": M(1), "lukas": M(2)}, False, "target as low (<=2% floor): no gain"),
          ({"system": M(None)}, False, "unreadable")]
 fails = 0
 for acc, want, name in CASES:
@@ -27,7 +28,7 @@ got, _ = A.decide({"system": M(1), "lukas": M(50)}, time.mktime(time.strptime("2
 fails += got
 print("%s  past the deadline: no switch" % ("ok  " if not got else "FAIL"))
 # review night: a stale low reading of the target does not block the switch
-got, _ = A.decide({"system": M(2), "lukas": M(1, st=True)}, now, False)
+got, _ = A.decide({"system": M(1), "lukas": M(1, st=True)}, now, False)
 fails += not got
 print("%s  a stale low target reading does not block" % ("ok  " if got else "FAIL"))
 # review night: check() - a failed arm leaves no marker (nothing switched, the next pass retries); the deadline is
@@ -106,7 +107,7 @@ dl = datetime_ts(A.DEADLINE) + 60
 for acc, want, name in [({"system": M(50), "lukas": M(7)}, True, "deadline: system above 2% still switches"),
                         ({"system": M(50), "lukas": M(7, "ESTIMATE")}, False, "deadline: unmeasured target never"),
                         ({"system": M(50), "lukas": M(7, st=True)}, False, "deadline: stale target never"),
-                        ({"system": M(50), "lukas": M(1)}, False, "deadline: target already spent")]:
+                        ({"system": M(50), "lukas": M(2)}, False, "deadline: target already spent")]:
     got, why = A.decide(acc, dl, False)
     fails += got != want
     print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
@@ -119,11 +120,16 @@ L = lambda l, src="MEASURED", st=False: {"source": src, "week_pct_left": l, "sta
 t2 = datetime_ts(A.DEADLINE) + 600  # 12:55, inside stage 2
 for (live, lk, st, want, name) in [("system", L(7), {}, None, "stage2: live is not lukas -> idle"),
                                    ("lukas", L(7), {}, "burn", "stage2: first pass burns"),
-                                   ("lukas", L(5), {"burn": 1}, None, "stage2: burning, above 2%: nothing"),
-                                   ("lukas", L(2), {"burn": 1}, "off", "stage2: MEASURED 2% -> off"),
+                                   ("lukas", L(5), {"burn": 1}, None, "stage2: burning, above 4%: nothing"),
+                                   ("lukas", L(4), {"burn": 1}, "off", "stage2: MEASURED 4% -> soft line, DARK"),
+                                   ("lukas", L(3), {"burn": 1, "off": 1}, None, "stage2: soft line only once"),
+                                   ("lukas", L(2), {"burn": 1}, "stop", "stage2: MEASURED 2% -> hard stop"),
+                                   ("lukas", L(2), {"burn": 1, "off": 1}, "stop", "stage2: hard stop after the soft line"),
+                                   ("lukas", L(1), {"burn": 1, "off": 1, "stop": 1}, None, "stage2: hard stop once"),
+                                   ("lukas", L(2, "ESTIMATE"), {"burn": 1}, None, "stage2: an ESTIMATE never stops"),
                                    ("lukas", L(1, "ESTIMATE"), {"burn": 1}, None, "stage2: an ESTIMATE never turns it off"),
                                    ("lukas", L(1, st=True), {"burn": 1}, None, "stage2: stale never turns it off"),
-                                   ("lukas", L(1), {"burn": 1, "off": 1}, None, "stage2: off only once")]:
+                                   ("lukas", L(3), {"burn": 1, "off": 1}, None, "stage2: off only once")]:
     got, why = A.decide2({"lukas": lk}, t2, live, st)
     fails += got != want
     print("%s  %s: %s" % ("ok  " if got == want else "FAIL", name, why))
@@ -154,7 +160,7 @@ ok = (len(calls) == 1 and "slot_allocator.py" in calls[0][1] and calls[0][calls[
       and not any(c[0] == A.CA for c in calls))
 fails += not ok
 print("%s  stage2 burn: allocator set --n 16 BURN with his words, no account command: %r" % ("ok  " if ok else "FAIL", calls))
-calls, st = _stage2_check("lukas", L(2), {"burn": 1})
+calls, st = _stage2_check("lukas", L(4), {"burn": 1})
 # review 2026-10-28: `--n 0` zeroes BENCH only and leaves FOUNDRY's split slot burning lukas under 2% (allocator probe:
 # seats BENCH 0 / FOUNDRY 1); --mode DARK with no --n is total 0 across every seat
 ok = (len(calls) == 1 and "--n" not in calls[0] and calls[0][calls[0].index("--mode") + 1] == "DARK"
@@ -211,10 +217,10 @@ fails += not ok
 print("%s  stage2 dry-run changes nothing" % ("ok  " if ok else "FAIL"))
 # review r2 2026-10-28: a lukas already spent at the first stage-2 pass goes straight to DARK; a malformed reset stamp
 # must not disable it; a status with text around the JSON still parses; a failed poller's output is not trusted
-got, _ = A.decide2({"lukas": L(1)}, t2, "lukas", {})
+got, _ = A.decide2({"lukas": L(3)}, t2, "lukas", {})
 fails += got != "off"
 print("%s  stage2: first pass with lukas already spent -> off, not burn: %r" % ("ok  " if got == "off" else "FAIL", got))
-bad = dict(L(1), week_resets_at="garbage")
+bad = dict(L(3), week_resets_at="garbage")
 got, _ = A.decide2({"lukas": bad}, t2, "lukas", {"burn": 1})
 fails += got != "off"
 print("%s  stage2: malformed reset stamp does not block off: %r" % ("ok  " if got == "off" else "FAIL", got))
@@ -246,7 +252,7 @@ NXT = {"source": "MEASURED", "week_pct_left": 100.0, "stale": False, "week_reset
 got, why = A.decide2({"lukas": NXT}, TR + 60, "lukas", {})
 fails += got is not None
 print("%s  stage2 after lukas's reset: never a burn on the new week: %r %s" % ("ok  " if got is None else "FAIL", got, why))
-got, why = A.decide2({"lukas": L(2)}, TR + 30, "lukas", {"burn": 1})
+got, why = A.decide2({"lukas": L(3)}, TR + 30, "lukas", {"burn": 1})
 fails += got is not None
 print("%s  stage2 after lukas's reset: a pre-reset 2%% reading never turns it off: %r" % ("ok  " if got is None else "FAIL", got))
 # the --hours window ends at lukas's reset even when the status call is slow (now is read after it)
@@ -332,7 +338,7 @@ fails += not ok
 print("%s  marker pending during `use`, done after; a failed disarm is a nonzero exit; log says marker: %r %r %r %r"
       % ("ok  " if ok else "FAIL", seen, phase, rc, rec.get("marker")))
 # after DARK the log must not say "burning"; the deadline reason names the target's reading, not FROM's
-_, why = A.decide2({"lukas": L(1)}, t2, "lukas", {"burn": 1, "off": 1})
+_, why = A.decide2({"lukas": L(1)}, t2, "lukas", {"burn": 1, "off": 1, "stop": 1})
 ok = "burning" not in why and "DARK" in why
 fails += not ok
 print("%s  after off the stage-2 reason says DARK, not burning: %s" % ("ok  " if ok else "FAIL", why))
@@ -452,5 +458,25 @@ rc, calls, back = _stage3_run(["lukas"], datetime_ts(A.RESET) - 30)
 ok = calls == []
 fails += not ok
 print("%s  12:59:30: stage 2 over, stage 3 not yet: %r" % ("ok  " if ok else "FAIL", calls))
+# owner 10:20 card: hard stop at the floor = DARK (if not yet), then arm, fleet-stop, disarm, once; logged
+calls, st = _stage2_check("lukas", L(2), {"burn": 1, "off": 1})
+ca = [c[1:] for c in calls if c[0] == A.CA]
+ok = (ca == [["arm", "--confirm", A.MACHINE], ["fleet-stop"], ["disarm"]] and "stop" in st
+      and not any("slot_allocator.py" in c[1] for c in calls if len(c) > 1))
+fails += not ok
+print("%s  stage2 hard stop (soft line already done): arm, fleet-stop, disarm: %r" % ("ok  " if ok else "FAIL", calls))
+calls, st = _stage2_check("lukas", L(1.5), {"burn": 1})
+ok = (any("DARK" in c for c in calls) and [c[1] for c in calls if c[0] == A.CA] == ["arm", "fleet-stop", "disarm"]
+      and "stop" in st and "off" in st)
+fails += not ok
+print("%s  stage2 hard stop first seen at the floor: DARK then arm/fleet-stop/disarm: %r" % ("ok  " if ok else "FAIL", calls))
+calls, st = _stage2_check("lukas", L(1), {"burn": 1, "off": 1, "stop": 1})
+ok = not calls
+fails += not ok
+print("%s  stage2 hard stop runs once: %r" % ("ok  " if ok else "FAIL", calls))
+calls, st = _stage2_check("lukas", L(1), {"burn": 1, "off": 1}, dry=True)
+ok = not calls and "stop" not in st
+fails += not ok
+print("%s  stage2 hard stop dry-run: no commands, no marker: %r" % ("ok  " if ok else "FAIL", calls))
 print("%d failure(s)" % fails)
 sys.exit(1 if fails else 0)

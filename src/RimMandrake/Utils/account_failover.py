@@ -23,7 +23,11 @@ from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FROM, TO, MACHINE = "system", "lukas", "archmagi"
-THRESHOLD = 2.0
+# Owner 2026-10-28 10:20 PDT card: the floor is ours ("1% if we leave it, 2% if we wait on it"). We leave system (stage 1
+# at <=1.0%) and WAIT on lukas until 13:00 (floor 2.0%, soft line 4.0%: "Soft line, then hard stop").
+THRESHOLD = 1.0   # stage 1: system -> lukas at or under this much of system's week left
+FLOOR = 2.0       # stage 2: lukas at or under this -> hard stop (fleet-stop); also "lukas is spent" for stage 1
+SOFT = FLOOR + 2  # stage 2: lukas at or under this -> allocator DARK (no new helpers)
 DEADLINE = "2026-10-28T12:45:00-07:00"      # from here the switch is unconditional (target live): system's unused week expires
 RESET = "2026-10-28T13:00:00-07:00"         # the system week resets and refills: no switch after this
 # lukas's week resets and refills (meter, 2026-10-28 09:41: week_resets_at 2026-10-28T16:00-07:00). Stage 2 acts only
@@ -90,10 +94,10 @@ def decide(acc, now, marker_exists):
         bl = b.get("week_pct_left")
         if b.get("source") != "MEASURED" or b.get("stale") or not isinstance(bl, (int, float)):
             return False, "deadline, but %s reading is %s: never switch on a guess" % (TO, b.get("source"))
-        if bl <= THRESHOLD:
+        if bl <= FLOOR:
             return False, "deadline, but %s is at %.1f%% left: nothing to gain" % (TO, bl)
         return True, "deadline %s reached (%s reads %r); %s reads %r > %.1f%%" % (
-            DEADLINE, FROM, a.get("week_pct_left"), TO, bl, THRESHOLD)
+            DEADLINE, FROM, a.get("week_pct_left"), TO, bl, FLOOR)
     if a.get("source") != "MEASURED" or a.get("stale"):
         return False, "%s reading is %s%s: never switch on a guess" % (FROM, a.get("source"),
                                                                      " (stale)" if a.get("stale") else "")
@@ -104,7 +108,7 @@ def decide(acc, now, marker_exists):
         return False, "%s at %.1f%% left > %.1f%%" % (FROM, left, THRESHOLD)
     bl = b.get("week_pct_left")
     # only a live reading of the target can say it is as low: a stale one may predate its own reset (review night)
-    if (isinstance(bl, (int, float)) and bl <= THRESHOLD and not b.get("stale")
+    if (isinstance(bl, (int, float)) and bl <= FLOOR and not b.get("stale")
             and b.get("source") in ("MEASURED", "ESTIMATE")):
         return False, "%s also at %.1f%% left: switching gains nothing" % (TO, bl)
     return True, "%s at %.1f%% left <= %.1f%%; %s reads %r" % (FROM, left, THRESHOLD, TO, bl)
@@ -136,10 +140,12 @@ def decide2(acc, now, live, st):
     if now >= datetime.fromisoformat(TO_RESET).timestamp() - 60:
         return None, "%s week reset %s passed: stage 2 finished (retire the timer)" % (TO, TO_RESET)
     left = b.get("week_pct_left")
+    fresh = b.get("source") == "MEASURED" and not b.get("stale") and isinstance(left, (int, float))
+    if fresh and left <= FLOOR and not st.get("stop"):
+        return "stop", "%s MEASURED at %.1f%% left <= %.1f%% floor: hard stop, wait for the reset" % (TO, left, FLOOR)
     # off needs no prior burn: a TO already spent at the first pass goes straight to DARK, never a burn first
-    if (not st.get("off") and b.get("source") == "MEASURED" and not b.get("stale")
-            and isinstance(left, (int, float)) and left <= THRESHOLD):
-        return "off", "%s MEASURED at %.1f%% left <= %.1f%%: wait for the reset" % (TO, left, THRESHOLD)
+    if fresh and left <= SOFT and not st.get("off"):
+        return "off", "%s MEASURED at %.1f%% left <= %.1f%% soft line: DARK, wait for the reset" % (TO, left, SOFT)
     if not st.get("burn") and not st.get("off"):
         return "burn", "switched to %s: burn it" % TO
     if st.get("off"):
@@ -210,6 +216,30 @@ def hours_to(reset, now):
     return max(0.001, int((datetime.fromisoformat(reset).timestamp() - now) / 3.6) / 1000)
 
 
+def hard_stop(st, why, now, dry):
+    """Floor reached on the account we wait on: DARK if not yet, then arm, fleet-stop, disarm, once (marker first)."""
+    if dry:
+        log({"do": "stage2_would_stop", "why": why})
+        return 0
+    st["stop"] = now  # before the commands: a half-done stop must never repeat on the next pass
+    write_atomic(STAGE2, st)
+    rcs = {}
+    if not st.get("off"):
+        argv = [sys.executable, SLOT, "set", "--owner-said", OWNER_ORDER, "--mode", "DARK",
+                "--hours", str(hours_to(TO_RESET, now))]
+        rcs["dark"] = run(argv)
+        if rcs["dark"][0] == 0:
+            st["off"] = now
+            write_atomic(STAGE2, st)
+    # fleet-stop needs the machine armed and refuses under Claude (this runs under systemd); it needs no --confirm.
+    # Stage 3's `use` relaunches the Fleet whether or not any window is running (fleet_stop() just returns no pids).
+    rcs["arm"] = run([CA, "arm", "--confirm", MACHINE])
+    rcs["stop"] = run([CA, "fleet-stop"]) if rcs["arm"][0] == 0 else (None, "not armed")
+    rcs["disarm"] = run([CA, "disarm"])
+    log({"do": "stage2_stop", "why": why, "rcs": rcs})
+    return 0 if all(v[0] == 0 for v in rcs.values()) else 2
+
+
 def stage2(acc, dry):
     try:
         st = json.load(open(STAGE2))
@@ -235,6 +265,8 @@ def stage2(acc, dry):
     if act is None:
         log({"do": "stage2_skip", "why": why})
         return 0
+    if act == "stop":
+        return hard_stop(st, why, now, dry)
     argv = [sys.executable, SLOT, "set", "--owner-said", OWNER_ORDER]
     # off is DARK (total 0, every seat): `--n 0` zeroed BENCH only and left FOUNDRY's slot burning lukas (review 2026-10-28)
     argv += ["--n", "16", "--mode", "BURN"] if act == "burn" else ["--mode", "DARK"]
