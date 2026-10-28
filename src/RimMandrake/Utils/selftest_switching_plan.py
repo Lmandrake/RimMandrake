@@ -154,6 +154,9 @@ def main():
                                                         "under": True, "at": SP.iso(NOW - 600)}}
     d = D({**off, "system": R(1, 24), "lukas": R(50, 48)}, "lukas", state={"_markers": mk})
     check(d["do"] == "normal", f"an account left at its line is no target again before its reset: no flap (got {d})")
+    mkp = {k: {**v, "phase": "pending"} for k, v in mk.items()}  # landed, but the pass died before recording done
+    d = D({**off, "system": R(1, 24), "lukas": R(50, 48)}, "lukas", state={"_markers": mkp})
+    check(d["do"] == "normal", f"a pending switch whose target is live counts as landed: no flap back (got {d})")
     d = D({**off, "system": R(1, 24, src="ESTIMATE", age=30), "lukas": R(50, 48)}, "system", state={"_markers": mk})
     check(d["do"] == "switch" and d["to"] == "lukas",
           f"back on an empty account after a done switch: switch again, never stop with lukas at 50% (got {d})")

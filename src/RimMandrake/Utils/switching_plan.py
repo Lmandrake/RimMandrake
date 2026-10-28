@@ -221,7 +221,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     for m in markers.values():  # an account we left at its line is no target again before its reset: no flapping
         f = m.get("from")       # when its meter recovers and re-reads the same last 1%
         rs = next_reset(meter.get(f) or {}, now) if f in elig and f != live else None
-        if m.get("phase") == "done" and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK:
+        # a pending marker whose target is live now is a switch that landed before its pass could record it
+        landed = m.get("phase") == "done" or (m.get("phase") == "pending" and m.get("to") == live)
+        if landed and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK:
             elig[f] = False
     lr = meter.get(live) or {}
     pl = left(plan, lr, now)
