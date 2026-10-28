@@ -1,0 +1,68 @@
+[
+ {
+  "id": "arteval_RSW_PekoPeko__PekoPeko_m_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_PekoPeko__PekoPeko_m_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same blue-and-gold colour layout and markings, same size on the canvas, seen from the view this job asks for. A creature sprite for RimWorld: the Peko-peko, a large colourful reptavian with a raucous, carrying squawk, native to the swamps of Naboo and kept as a pet on many worlds. Visible features it must show: a large colourful reptavian with reptile skin and a beak, its body covered in scales; vivid bright colours in the reference's blue and gold; a raucous open-beaked squawker. The front view shows the face and open beak with the eyes toward the viewer. The rear view shows the back, tail and haunches seen from behind, with the eyes hidden.\n\nRendering treatment, shared by every view of this sprite set: the body and wings are built from naturally overlapping layered scales and scute plates, each plate with a soft lit top edge and a shaded lower edge. Painterly dimensional light comes from the upper left, giving four or five tones per colour area so the blue and gold read as rounded forms with depth. The wings are a few large, rounded, overlapping layered panels in the reference's blue-and-gold layout, with a narrow quiet pale highlight along the panel edges. Detail is grouped into a few large scale clusters and wing panels at the same density as the reference side view, so it reads clearly at normal play size. The silhouette and the large inner shapes (head, wing, tail) are drawn with a heavy, even, dark keyline of the same thick weight as the reference side view, so this view and the side view read as one artist's sprite set.\n\nRealistic painterly vanilla RimWorld sprite style. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: CANON_MISS, SIBLING_MISMATCH, CANON_MISS, SIBLING_MISMATCH",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1501",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.5,
+  "module": "flyer"
+ },
+ {
+  "id": "arteval_RSW_SandLeaper_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandLeaper_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same bulky, hunched olive-khaki body, same overlapping plates of glossy chitin with faint seams between them, same naked mauve prehensile tail, same palette, same size on the canvas, same clean dark outline of the same weight, and the same flat painterly shading, now seen in rear view, from behind. A creature sprite for RimWorld: the qetta, something like a rodent assembled from the wrong parts. It has no forelimbs at all and stands on two long, many-jointed hind legs. In this rear view the wide, massive haunches fill the silhouette as large rounded masses close to the ground, as broad as the haunch depth in the east view. The short, heavy, many-jointed lower legs are tucked beneath them, in the same proportion as in the east view. The chitin plates overlap down the hunched back toward the rump. The long naked mauve tail rises from the rump and curls upward, drawn exactly as in the east view. The head is tucked low and mostly hidden behind the hunched back, with the eyes out of sight. The camera is the game's low, angled three-quarter-height view, level with the hunched back, so the creature stands upright in the frame and the back is not seen from above. Realistic painterly vanilla RimWorld sprite style with a clean dark outline, flat painted fills in the east view's olive-khaki, a soft glossy highlight on each chitin plate and a deeper shade of the local colour along the plate edges, in the same line weight and shading as the east view, with no soft 3D-render lighting. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: SIBLING_MISMATCH, F_INCONSISTENT, OWNER_NOTE_IGNORED, F_TOPDOWN, STYLE_CARTOON",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1501",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 1.5,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RSW_SandLion__AA_SandLion_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RSW_SandLion__AA_SandLion_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same armour-scale colours and markings, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the vekka. Something that does not belong to any family of surface animals: a long, low, armour-scaled hunter that swims through loose sand the way a fish moves through water, faster than anything above it can run. Visible features it must show: a long, low, armour-scaled body built to swim through loose sand; heavy front claws for a claws-first strike; a flattened wedge head with no visible ears. Rear view, seen from behind at a low camera, level with the haunches, the same eye-level elevation as the side view: the tail base and tall armoured haunches are nearest the viewer and fill the middle of the sprite, and the tail approaches the camera with its base broad. The back plates are strongly foreshortened into a short, narrow ridge rising above the haunches. The hind legs are tucked close under the body, showing only their heels and lower rear surfaces below the haunches, narrow and nearly in line with the body. The flattened wedge head is farthest away and mostly hidden behind the body, with the eyes hidden, and the heavy front claws reach forward, away from the viewer. The body is centred in the canvas, its vertical midpoint at the canvas centre with equal empty margin above and below, at the same scale and the same ground anchor as the front view and the side view, so the animal does not shift when it turns. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: FOOTPRINT, F_TOPDOWN, FOOTPRINT, F_TOPDOWN",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1501",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 2.5,
+  "module": "walker"
+ }
+]
