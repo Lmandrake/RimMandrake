@@ -1,0 +1,1 @@
+queue_lint.py ledger-write guard false-positives on any Bash call where a word-boundary 'rm' (e.g. /home/mandrake/rm/bench in a cd, or rm-dispatcher.service) precedes the ledger shard path: a plain git commit is refused as a write. Workaround: run from cwd with no cd, list the ledger path first. Fix owed in ARG_WRITER_RE (match rm only as a command word).
