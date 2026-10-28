@@ -8,7 +8,8 @@ it (ReplayTick.Fault) and must read RED on that gate, on a scenario where that f
   - the 16,384-cell dirty capacity cliff is visible: 16,385 changed cells overflow once into a second whole rebuild,
     16,384 do not (the instrument can see the cliff the advisory names);
   - a trace written by `gen` and replayed through `--trace` gives the same fingerprint stream as the generated scenario
-    (the RMREPLAY 1 file format round-trips, so a recorded trace replays the same way).
+    (the RMREPLAY 1 file format round-trips, so a recorded trace replays the same way);
+  - a blind gate never reads green: an unapplied event or a 0-tick trace turns the trace gate RED, --no-oracle reads skip.
 
     python3 src/RimMandrake/Utils/selftest_hose_replay.py
 """
@@ -67,7 +68,12 @@ def main():
     check(rc == 0, "all scenarios green against Replay/baseline.txt (rc=%s)" % rc)
     for sc in ("dry", "setup", "rain", "cold", "dirty16383", "dirty16384", "dirty16385", "settings", "aligned", "splitjoin"):
         verdict, g = gates(out, sc)
-        check(verdict == "PASS" and g.get("ceiling") == "green", "%s PASS with the ceiling checked (%s %s)" % (sc, verdict, g))
+        check(verdict == "PASS" and g.get("ceiling") == "green" and g.get("trace") == "green",
+              "%s PASS with the ceiling and trace checked (%s %s)" % (sc, verdict, g))
+    # the gate each fault below must break is actually looking on that scenario (a skip there would make its RED proof moot)
+    for fault, sc, gate in FAULTS:
+        _, g = gates(out, sc)
+        check(g.get(gate) == "green", "%s is checked (green, not skip) on %s (%s)" % (gate, sc, g.get(gate)))
     if rc in (3, 4) or "RESULT" not in out:
         print(err[-3000:])
         return finish(root)
@@ -100,6 +106,22 @@ def main():
     fp_file = open(os.path.join(dt, "splitjoin.fp")).read() if os.path.isfile(os.path.join(dt, "splitjoin.fp")) else ""
     check(rc_t == 0 and fp_gen is not None and fp_gen == fp_file and fp_gen.count("\n") == 3000,
           "the saved trace replays to the generated scenario's fingerprints (rc=%s, %s ticks)" % (rc_t, fp_file.count("\n")))
+
+    # 5. a blind gate reads skip or RED, never green (GPT review 2026-10-28): an event the replay never applies, a trace with
+    #    no ticks (whose all-zero op counts sit under any ceiling), and --no-oracle
+    text = open(trace).read() if os.path.isfile(trace) else ""
+    for label, body, want in (("an event past the last tick", text + "ev 99999 0 999999 read\n", "RED"),
+                              ("a trace with 0 ticks", text.replace("\nticks 3000\n", "\nticks 0\n"), "RED")):
+        bad = os.path.join(root, "bad-%d.rmreplay" % len(label))
+        with open(bad, "w") as f:
+            f.write(body)
+        rc_b, out_b, _, _ = hose_replay.run_replay(["run", "--trace", _to_windows_path(bad)], out_dir=bad + ".out", no_build=True)
+        _, g = gates(out_b, "splitjoin")
+        check(rc_b == 1 and g.get("trace") == want, "%s turns the trace gate %s (rc=%s %s)" % (label, want, rc_b, g))
+    rc_n, out_n, _, _ = hose_replay.run_replay(["run", "--scenario", "rain", "--no-oracle"], out_dir=os.path.join(root, "nooracle"),
+                                               no_build=True)
+    _, g = gates(out_n, "rain")
+    check(g.get("patch") == "skip" and g.get("comps") == "skip", "--no-oracle reads patch and comps as skip, not green (%s)" % g)
     return finish(root)
 
 

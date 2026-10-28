@@ -68,7 +68,7 @@ namespace RimMandrake.FlowWorks.Replay
                         {
                             int reel = t.Reels[rng.Int(0, ReelCount)].Id;
                             ev.Add(tick, 1, "cut", '\0', reel);
-                            ev.Add(tick + 200, 0, "lay", '\0', reel);
+                            if (tick + 200 < t.Ticks) ev.Add(tick + 200, 0, "lay", '\0', reel);
                         }
                     }
                     break;

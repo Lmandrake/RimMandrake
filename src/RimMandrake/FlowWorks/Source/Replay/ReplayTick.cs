@@ -139,7 +139,9 @@ namespace RimMandrake.FlowWorks.Replay
         public ulong[] Fingerprints;
         public readonly List<string> Failures = new List<string>();
         public readonly Dictionary<string, int> GateFails = new Dictionary<string, int>();
-        public int OracleChecks, NoCompMoves;
+        public int OracleChecks, PatchChecks, CompChecks, NoCompMoves;
+        /// <summary>Trace events never applied: a tick outside 0..Ticks-1 or a phase other than 0..2 (a blind replay otherwise).</summary>
+        public int DroppedEvents;
 
         public void Fail(string gate, int tick, string detail)
         {
@@ -242,12 +244,13 @@ namespace RimMandrake.FlowWorks.Replay
                 Conservation();
                 R.Fingerprints[now] = Fingerprint();
             }
+            R.DroppedEvents += events.Count - ev;
             return R;
         }
 
         private int Phase(List<TraceEvent> events, int ev, int phase)
         {
-            while (ev < events.Count && events[ev].Tick < now) ev++;   // events past the end or before 0 are dropped by tick order
+            while (ev < events.Count && events[ev].Tick < now) { ev++; R.DroppedEvents++; }   // before 0 or a phase past 2: counted, never silent
             while (ev < events.Count && events[ev].Tick == now && events[ev].Phase == phase) Apply(events[ev++]);
             return ev;
         }
@@ -332,6 +335,7 @@ namespace RimMandrake.FlowWorks.Replay
         private void CheckPatch()
         {
             R.OracleChecks++;
+            R.PatchChecks++;
             HoseWorldPatch.Full(oracleWorld, new ReplayRule(cells, W));
             for (int z = 0; z < H; z++)
                 for (int x = 0; x < W; x++)
@@ -680,6 +684,7 @@ namespace RimMandrake.FlowWorks.Replay
         private void CheckComponents(RM_NetComponents comps)
         {
             R.OracleChecks++;
+            R.CompChecks++;
             EnsureUf();
             var size = new Dictionary<int, int>();
             for (int i = 0; i < reels.Count; i++) if (reels[i].Laid) { int r = Root(i); size[r] = (size.TryGetValue(r, out int n) ? n : 0) + 1; }
@@ -695,6 +700,13 @@ namespace RimMandrake.FlowWorks.Replay
                     else if (r != root) { R.Fail("comps", now, "component " + c.Id + " joins two union-find classes"); return; }
                 }
                 if (size[root] != c.Links.Count) { R.Fail("comps", now, "component " + c.Id + " has " + c.Links.Count + " links, union-find class has " + size[root]); return; }
+                // its tanks are exactly the tanks at its links' ends (a tank attaches only by hose here): a stale or extra tank
+                // would let MoveRequest pick it as a carrier
+                var want = new HashSet<RTank>();
+                foreach (RM_NetLink l in c.Links) { if (l.A is RTank ta) want.Add(ta); if (l.B is RTank tb) want.Add(tb); }
+                var have = new HashSet<RTank>();
+                foreach (object o in c.Tanks) if (o is RTank t) have.Add(t);
+                if (!want.SetEquals(have)) { R.Fail("comps", now, "component " + c.Id + " holds " + have.Count + " tanks, its links reach " + want.Count); return; }
             }
             // every live link at a mover is in one of the mover's components
             foreach (RTank t in tanks)

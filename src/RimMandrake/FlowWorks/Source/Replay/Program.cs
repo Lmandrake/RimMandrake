@@ -2,7 +2,8 @@
 //   gen  --scenario NAME --out FILE                         write one generated trace
 //   run  (--scenario NAME|all | --trace FILE) --out DIR      replay, report, gate (exit 0 = every gate green)
 //        [--inject FAULT[,FAULT]] [--baseline FILE] [--write-baseline FILE] [--no-oracle] [--bar-ms 0.05]
-// Gates: conserve, noflow, patch, comps, determinism, alloc, ceiling (see ReplayTick.Fault). Time is reported, never gated.
+// Gates: conserve, noflow, patch, comps, determinism, alloc, ceiling, trace (see ReplayTick.Fault). A gate with nothing to check
+// reads skip, never green. Time is reported, never gated.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -72,11 +73,22 @@ namespace RimMandrake.FlowWorks.Replay
                 ReplayResult r1 = new ReplayTick(t, fault, oracle).Run();
                 ReplayResult r2 = new ReplayTick(make(), fault, false).Run();
                 var gates = new SortedDictionary<string, string>();
-                foreach (string g in new[] { "conserve", "noflow", "patch", "comps" })
-                    gates[g] = r1.GateFails.TryGetValue(g, out int n) ? "RED x" + n : "green";
+                // a gate with nothing to check reads skip, never green: --no-oracle, a trace with no read, no committed move
+                var seen = new Dictionary<string, string>
+                {
+                    ["conserve"] = t.Ticks > 0 ? null : "skip (0 ticks)",
+                    ["noflow"] = r1.C.WorkSum(Work.Transfers) > 0 ? null : "skip (0 committed moves)",
+                    ["patch"] = !oracle ? "skip (--no-oracle)" : r1.PatchChecks > 0 ? null : "skip (0 patch checks)",
+                    ["comps"] = !oracle ? "skip (--no-oracle)" : r1.CompChecks > 0 ? null : "skip (0 component checks)",
+                };
+                foreach (var kv in seen)
+                    gates[kv.Key] = r1.GateFails.TryGetValue(kv.Key, out int n) ? "RED x" + n : kv.Value ?? "green";
+                gates["trace"] = t.Ticks <= 0 ? "RED the trace has no ticks"
+                    : r1.DroppedEvents > 0 ? "RED " + r1.DroppedEvents + " events outside ticks 0.." + (t.Ticks - 1) + " or phases 0..2, never applied"
+                    : "green";
                 int firstDiff = FirstDiff(r1.Fingerprints, r2.Fingerprints);
                 gates["determinism"] = firstDiff < 0 ? "green" : "RED first diff at tick " + firstDiff;
-                gates["alloc"] = r2.C.PatchBytesWarm == 0 ? "green" : "RED " + r2.C.PatchBytesWarm + " B in " + r2.C.PatchCallsWarm + " warm patches";
+                gates["alloc"] = r2.C.PatchCallsWarm == 0 ? "skip (0 warm patches)" : r2.C.PatchBytesWarm == 0 ? "green" : "RED " + r2.C.PatchBytesWarm + " B in " + r2.C.PatchCallsWarm + " warm patches";
                 var ceil = new List<string>();
                 for (Work w = 0; w < Work.Count; w++)
                 {
@@ -135,7 +147,8 @@ namespace RimMandrake.FlowWorks.Replay
             sb.Append("hose replay: ").Append(t.Name).Append("  ticks ").Append(t.Ticks).Append("  map ").Append(t.Width).Append('x').Append(t.Height)
               .Append("  reels ").Append(t.Reels.Count).Append("  tanks ").Append(t.Tanks.Count).Append("  events ").Append(t.Events.Count)
               .Append("  runtime ").Append(System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription)
-              .Append("  inject ").Append(fault).Append("  oracle checks ").Append(r1.OracleChecks).Append('\n');
+              .Append("  inject ").Append(fault).Append("  oracle checks ").Append(r1.OracleChecks)
+              .Append(" (patch ").Append(r1.PatchChecks).Append(", comps ").Append(r1.CompChecks).Append(")  dropped events ").Append(r1.DroppedEvents).Append('\n');
             sb.Append("\nGATES\n");
             foreach (var kv in gates) sb.Append("  ").Append(kv.Key.PadRight(12)).Append(kv.Value).Append('\n');
             foreach (string f in r1.Failures) sb.Append("    ").Append(f).Append('\n');

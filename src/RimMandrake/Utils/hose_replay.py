@@ -11,6 +11,8 @@ FlowWorks/Source/Replay/RimMandrakeFlowWorks.Replay.csproj, never copied) and ga
   determinism  two replays give the identical per-tick fingerprint stream
   alloc        a warm HoseWorldPatch.Patch allocates 0 bytes
   ceiling      no op count (sum or per-tick max) exceeds the committed baseline (Replay/baseline.txt)
+  trace        the trace has ticks and every event in it was applied (none outside ticks 0..N-1 or phases 0..2)
+A gate with nothing to check reads skip, never green (--no-oracle, no read event, no committed move, no warm patch).
 Time is reported (mean, p99, max, over-bar, worst ticks with their events), never gated.
 
     python3 src/RimMandrake/Utils/hose_replay.py run                       # every scenario, gates on
