@@ -258,6 +258,9 @@ mainp.write_text("x" * 100 + "\n" + "".join(json.dumps(x) + "\n" for x in recs))
 t = SA.owner_last_window([proj], real_now)
 check("owner presence: last human message, not a notification or tool result",
       t is not None and abs((real_now - t) / 60 - 50) < 0.2, t)
+ts = SA.owner_window_times([proj], real_now, 3 * H)
+check("S8b: owner_window_times lists his typed messages only (one, 50 min ago)",
+      len(ts) == 1 and abs((real_now - ts[0]) / 60 - 50) < 0.2, ts)
 mh = SA.mean_helpers([proj], real_now, 3 * H)
 check("mean helpers over 3 h from first record to last write (about 2.1)", 1.9 < mh < 2.3, mh)
 fp = tmp / "projects" / "-home-mandrake-rm-foundry"
@@ -697,6 +700,19 @@ with tempfile.TemporaryDirectory() as _td:
             os.environ.pop("RM_STREAMS_DIR", None)
         else:
             os.environ["RM_STREAMS_DIR"] = _sd_old
+
+# S8: two of his messages between checks: 1 h 59 min then 2 h 01 min after the stamp's last_active. The newest alone
+# looks like a 2 h idle gap (a fresh sitting, spend forgotten); the one before it shows he never left.
+T0 = NOW - 3 * H
+st8 = {"sitting": {"start": T0 - H, "start_left": 40.0, "last_active": T0, "account": "acctA",
+                   "reset_at": "2026-10-28T16:00-07:00", "carried": 0.0, "last_left": 35.0}}
+i8 = {"source": "MEASURED", "week_pct_left": 33.0, "week_resets_at": "2026-10-28T16:00-07:00", "account": "acctA",
+      "owner_window_t": T0 + 2.0 * H + 60, "owner_window_ts": [T0 + 2.0 * H - 60, T0 + 2.0 * H + 60]}
+sg, _, drop, _ = SA.sitting_step(i8, st8, T0 + 2.0 * H + 120)
+check("S8: a message inside the idle gap keeps the sitting (drop 7, start unchanged)",
+      drop == 7.0 and sg["start"] == T0 - H and sg["last_active"] == T0 + 2.0 * H + 60, (drop, sg))
+sg, _, drop, _ = SA.sitting_step(dict(i8, owner_window_ts=[T0 + 2.0 * H + 60]), st8, T0 + 2.0 * H + 120)
+check("S8 control: a real 2 h gap still starts a new sitting", sg["start"] == T0 + 2.0 * H + 60 and drop == 0.0, (drop, sg))
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

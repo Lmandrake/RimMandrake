@@ -275,6 +275,25 @@ def owner_last_window(project_paths, now, horizon_s=6 * HOUR):
     return best
 
 
+def owner_window_times(project_paths, now, horizon_s=6 * HOUR):
+    """Epochs of EVERY typed message of his in the horizon (top-level transcripts), oldest first. The sitting needs
+    them all: two messages between checks can bridge what the newest alone shows as an idle gap (review night S8)."""
+    out, lo = [], now - horizon_s
+    for proj in project_paths:
+        for p in glob.glob(os.path.join(str(proj), "*.jsonl")):
+            try:
+                if os.path.getmtime(p) < lo:
+                    continue
+            except OSError:
+                continue
+            for rec in _records_backward(p, stop_before=lo):
+                if _is_owner_text(rec):
+                    t = epoch(rec.get("timestamp"))
+                    if t and t >= lo:
+                        out.append(t)
+    return sorted(out)
+
+
 def owner_last_card(path, now):
     best = None
     for rec in _records_backward(path, max_bytes=CHUNK):
@@ -391,12 +410,19 @@ def sitting_step(inp, state, now):
     left = inp.get("week_pct_left") if measured else None
     reset = epoch(inp.get("week_resets_at"))
     acct = inp.get("account")
-    if w is not None:
-        if sit is None or w - (sit.get("last_active") or 0) > SITTING_IDLE_H * HOUR:
-            sit = {"start": w, "start_left": left, "last_active": w, "reset_at": inp.get("week_resets_at"),
+    # every message of his since the stamp, oldest first: one between checks can bridge what the newest alone
+    # shows as an idle gap (review night S8); without the list, the newest message is all there is
+    ws = sorted(t for t in (inp.get("owner_window_ts") or []) if isinstance(t, (int, float)))
+    if w is not None and (not ws or w > ws[-1]):
+        ws.append(w)
+    for t in ws:
+        if sit is not None and t <= (sit.get("last_active") or 0):
+            continue
+        if sit is None or t - (sit.get("last_active") or 0) > SITTING_IDLE_H * HOUR:
+            sit = {"start": t, "start_left": left, "last_active": t, "reset_at": inp.get("week_resets_at"),
                    "account": acct, "carried": 0.0, "last_left": left}
         else:
-            sit["last_active"] = max(sit.get("last_active") or 0, w)
+            sit["last_active"] = t
     if sit is None:
         return None, False, None, measured
     # F9: a different burn account or a new weekly reset mid-sitting makes start_left a reading of another meter.
@@ -585,6 +611,8 @@ def gather(now=None, rules=None):
     inp["owner_window_min"] = None if w is None else round((now - w) / 60, 1)
     bw = owner_last_window([seat_paths["BENCH"]], now, SITTING_IDLE_H * HOUR * 3) if "BENCH" in seat_paths else None
     inp["owner_window_t"] = bw
+    inp["owner_window_ts"] = (owner_window_times([seat_paths["BENCH"]], now, SITTING_IDLE_H * HOUR * 3)
+                              if "BENCH" in seat_paths else [])
     inp["session_cap_pct"] = session_cap_pct()
     c = owner_last_card(owner_ledger(), now)
     inp["owner_card_min"] = None if c is None else round((now - c) / 60, 1)
