@@ -1,0 +1,1 @@
+A low mutation score can be a harness wiring bug, not weak tests: close_evidence scored 73.5% because run_mutation.py TARGETS never ran selftest_close_evidence_chain.py / _blast.py; wiring them in (9f4364889b) killed 417 of 426 survivors locally (~98% projected). Before writing tests for survivors, check every selftest that exercises the target is in its TARGETS list.
