@@ -2802,6 +2802,92 @@ def test_golive_m8_ring_withdraw_and_pause():
             check(len(rung) == 1 and st["seats"]["FOUNDRY"].get("ring"), "M8 control: no PAUSE -> the ring is rung")
 
 
+def test_review_night_n1():
+    """night review 2026-10-27 (BENCH full-file): N1 the seat's session id is learned while it cools down or a
+    recover is in flight (a later recover must resume the CURRENT session, not the one seen before the cooldown);
+    N2 PAUSE is read again at a recover's release, like a ring's and a launch's; N3 a tick that raises after decide()
+    gives back the rings it decided but never released (no phantom attempt, no phantom wake on the caps)."""
+    t0 = 50000.0
+    sch = sched()
+    st = fresh()
+    D.decide(sch, st, obs(), t0, True)
+    st["seats"]["FOUNDRY"]["cooldown_until"] = t0 + 99999
+    D.decide(sch, st, obs(sessions=[sess(sid="sid-NEW"), sess("AGENT BENCH", "busy", "b")]), t0 + 10, True)
+    check(st["seats"]["FOUNDRY"].get("session_id") == "sid-NEW",
+          "N1 a session seen during the cooldown is remembered (%r)" % st["seats"]["FOUNDRY"].get("session_id"))
+    st = fresh()
+    D.decide(sch, st, obs(), t0, True)
+    st["seats"]["FOUNDRY"]["recover"] = {"at": t0, "session_id": "sid-1"}
+    D.decide(sch, st, obs(sessions=[sess(sid="sid-OTHER"), sess("AGENT BENCH", "busy", "b")]), t0 + 10, True)
+    check(st["seats"]["FOUNDRY"].get("session_id") == "sid-OTHER",
+          "N1 a session seen while a recover is verified is remembered (%r)" % st["seats"]["FOUNDRY"].get("session_id"))
+    # N2: recover decided, PAUSE created before its release
+    gone = [sess("AGENT BENCH", "busy", "b")]
+    for paused in ("owner: stop", None):
+        st = fresh()
+        D.decide(sch, st, obs(), t0, True)
+        D.decide(sch, st, obs(sessions=gone), t0 + 100, True)
+        t1 = t0 + 100 + sch["dead_after_s"]
+        a = D.decide(sch, st, obs(sessions=gone), t1, True)
+        calls = []
+        fx = {"recover": lambda cfg, sid, msg: (calls.append(sid), (True, "started"))[1], "lock": lambda: None,
+              "publish": lambda n: "p", "note": lambda i, t: (True, ""), "paused": lambda: paused}
+        D.execute(a, sch, st, os.path.join(TMP, "n2"), True, t1, fx)
+        r = [x for x in a if x["do"] == "recover"]
+        if paused:
+            check(r and not calls and not st["seats"]["FOUNDRY"].get("recover") and not st["recovers"]
+                  and r[0]["result"].startswith("held at release: PAUSE"),
+                  "N2 PAUSE after decide: the recover is not released; its record and cap entry are given back (%r)"
+                  % (([x.get("result") for x in r], calls, st["recovers"]),))
+        else:
+            check(calls == ["sid-1"] and st["seats"]["FOUNDRY"].get("recover"), "N2 control: no PAUSE -> recovered")
+    # N3: a tick killed (SIGTERM -> SystemExit) at the ingest.lock wait, after decide rang
+    old = os.environ.get("RM_DISPATCHER_STATE")
+    os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "n3state")
+    try:
+        def killed():
+            raise SystemExit(143)
+        fx = {"ring": lambda *x: None, "lock": killed, "publish": lambda n: "p", "note": lambda i, t: (True, "")}
+        sch3 = sched()
+        D.tick(sch3, True, obs=obs(), now=t0, fx=dict(fx, lock=lambda: None))
+        try:
+            D.tick(sch3, True, obs=obs(), now=t0 + sch3["stall_after_s"], fx=fx)
+            check(False, "N3 probe: the killed tick raised")
+        except SystemExit:
+            pass
+        st = D.load_state(D.state_root(True))
+        ss = st["seats"].get("FOUNDRY") or {}
+        check(not ss.get("ring") and not st["wakes"] and ss.get("idle_since") == t0,
+              "N3 a tick killed before its ring was released keeps no pending ring, no wake, and the stall clock "
+              "(ring=%r wakes=%r idle_since=%r)" % (ss.get("ring"), st["wakes"], ss.get("idle_since")))
+        # ... and killed INSIDE decide, at a later seat's peek, after FOUNDRY's ring was decided
+        shutil.rmtree(os.path.join(TMP, "n3state"), ignore_errors=True)
+        sch4 = sched()
+        sch4["seats"]["ZED"] = dict(sch4["seats"]["FOUNDRY"], session_name="AGENT ZED")
+        o4 = obs(sessions=[sess(), sess("AGENT BENCH", "busy", "b"), sess("AGENT ZED", sid="z")])
+
+        def peek(seat):
+            if seat == "ZED":
+                raise SystemExit(143)
+            return {"id": "SOME_ITEM_DO_IT", "needs": "offline"}
+        D.tick(sch4, True, obs=dict(o4, peek=lambda seat: {}), now=t0, fx=dict(fx, lock=lambda: None))
+        try:
+            D.tick(sch4, True, obs=dict(o4, peek=peek), now=t0 + sch4["stall_after_s"], fx=fx)
+            check(False, "N3 probe: the tick killed in decide raised")
+        except SystemExit:
+            pass
+        st = D.load_state(D.state_root(True))
+        ss = st["seats"].get("FOUNDRY") or {}
+        check(not ss.get("ring") and not st["wakes"] and ss.get("idle_since") == t0,
+              "N3 a tick killed inside decide gives back the ring it had decided (ring=%r wakes=%r)"
+              % (ss.get("ring"), st["wakes"]))
+    finally:
+        if old is None:
+            os.environ.pop("RM_DISPATCHER_STATE", None)
+        else:
+            os.environ["RM_DISPATCHER_STATE"] = old
+
+
 def test_golive_m6_weekday_slot_keys():
     """dispatcher-full #6: a weekday-qualified parent slot ("Wed 07:30") and its dependent ("Wed 08:00") agree on the
     key: the parent's done run, keyed by the due list (the writer), releases the dependent (after_slots, the reader)."""
@@ -2867,7 +2953,7 @@ def main():
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
               test_golive_b3_wave1_config, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
-              test_golive_m6_weekday_slot_keys, test_golive_m7_dst_yesterday):
+              test_golive_m6_weekday_slot_keys, test_golive_m7_dst_yesterday, test_review_night_n1):
         try:
             t()
         except Exception as e:  # noqa: BLE001

@@ -303,10 +303,12 @@ def message(seat, cfg, ticket, owner_line, ring_id):
     return "\n".join(lines)
 
 
-def decide(sch, st, obs, now, apply):
+def decide(sch, st, obs, now, apply, out=None):
     """-> actions. Mutates st (the seat bookkeeping). Pure except for the lazy calls in obs (owner(), peek(seat),
-    events(seat, since), consumed(seat, ring_id), armed(seat), alive(pid)) so a selftest can drive every path."""
-    actions = []
+    events(seat, since), consumed(seat, ring_id), armed(seat), alive(pid)) so a selftest can drive every path.
+    out: the list to append to (tick passes its own, so a decide killed part-way still leaves the caller every
+    action it already recorded in st: night review N3)."""
+    actions = out if out is not None else []
 
     def act(**kw):
         kw.setdefault("at", iso(now))
@@ -419,6 +421,8 @@ def decide(sch, st, obs, now, apply):
             return
         if not enabled:
             return
+        if sess:     # learned before any early return (cooldown, restart, recover): a later recover resumes the
+            ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # CURRENT session (night review N1)
         if SR.in_flight(st, seat, sch):     # seat_restart owns this window until its restart ends: no ring, no recover
             return
         # ---- recovery in flight: verify it
@@ -474,7 +478,6 @@ def decide(sch, st, obs, now, apply):
                 ss["cooldown_until"] = now + sch["cooldown_s"]   # dry: say it once per cooldown, not every tick
             return
         ss.pop("dead_since", None)
-        ss["session_id"] = sess.get("sessionId") or ss.get("session_id")
         if status != "idle":
             ss.pop("idle_since", None)
             return
@@ -855,14 +858,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         paused = do_paused()
                         if paused:
                             res = "held at release: PAUSE (%s)" % paused
-                            ss = st["seats"].setdefault(a["seat"], {})
-                            if (ss.get("ring") or {}).get("ring_id") == a["ring_id"]:
-                                ss.pop("ring")          # never written: nothing to verify, nothing in the inbox
-                            # the wake did not happen: it does not count against the caps, the stall clock resumes
-                            st["wakes"] = [w for w in st["wakes"] if not (w["seat"] == a["seat"] and w["at"] == now)]
-                            if a.get("idle_since") is not None:
-                                ss["idle_since"] = a["idle_since"]
+                            unring(st, a, now)
                         else:
+                            a["released"] = True     # from here on it may be in the inbox: never given back
                             do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
                             res = "rung"
                     elif a["do"] == "withdraw":
@@ -883,10 +881,17 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     why="ring %s to %s NOT withdrawn (%s): kept pending, withdrawn again next tick"
                                     % (a["ring_id"], a["seat"], w.get("why") or w["outcome"])))
                     elif a["do"] == "recover":
-                        cfg = dict(sch["seats"][a["seat"]], seat=a["seat"])
-                        ok, out = do_recover(cfg, a["session_id"], a["message"])
-                        res = ("started: " if ok else "failed: ") + out
-                        st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
+                        # PAUSE again, now, like a ring and a launch: decide() read it before the ingest.lock wait
+                        paused = do_paused()
+                        if paused:
+                            res = "held at release: PAUSE (%s)" % paused
+                            unrecover(st, a, now)
+                        else:
+                            cfg = dict(sch["seats"][a["seat"]], seat=a["seat"])
+                            a["released"] = True
+                            ok, out = do_recover(cfg, a["session_id"], a["message"])
+                            res = ("started: " if ok else "failed: ") + out
+                            st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
                     elif a["do"] == "role_launch":
                         role = next(r for r in sch["roles"] if r.get("name") == a["role"])
                         # the off switch and PAUSE again, now: decide() read them before the ingest.lock wait
@@ -1046,6 +1051,35 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
         if lk is not None:
             lk.close()
     return actions
+
+
+def unring(st, a, now):
+    """Give back a ring decide() made that was never released (PAUSE at release, a tick that raised first): no
+    pending ring to verify, no wake on the caps, the stall clock resumes where it was."""
+    ss = st["seats"].setdefault(a["seat"], {})
+    if (ss.get("ring") or {}).get("ring_id") == a["ring_id"]:
+        ss.pop("ring")          # never written: nothing to verify, nothing in the inbox
+    st["wakes"] = [w for w in st["wakes"] if not (w["seat"] == a["seat"] and w["at"] == now)]
+    if a.get("idle_since") is not None:
+        ss["idle_since"] = a["idle_since"]
+
+
+def unrecover(st, a, now):
+    """Give back a recover decide() made that was never started: no recover to verify, no entry on the cap."""
+    ss = st["seats"].setdefault(a["seat"], {})
+    if (ss.get("recover") or {}).get("at") == now:
+        ss.pop("recover")
+    st["recovers"] = [r for r in st["recovers"] if not (r["seat"] == a["seat"] and r["at"] == now)]
+
+
+def unreleased(st, acts, now):
+    """A tick that raised: give back every ring and recover decided but never released. -> their seats."""
+    back = []
+    for a in acts or []:
+        if a.get("do") in ("ring", "recover") and not a.get("released") and "result" not in a:
+            (unring if a["do"] == "ring" else unrecover)(st, a, now)
+            back.append("%s %s" % (a["do"], a["seat"]))
+    return back
 
 
 def paused_now():
@@ -1281,7 +1315,7 @@ def tick(sch, apply, obs=None, now=None, fx=None):
         st.setdefault("last_ok_tick", None)   # present (null) from the first tick: the dead-man reads it, never last_tick
         try:
             o = obs or default_obs(sch, root)
-            acts = decide(sch, st, o, now, apply)
+            decide(sch, st, o, now, apply, out=acts)
             if not apply:
                 dry = live_runs_alarm(now)
                 if dry:
@@ -1303,9 +1337,10 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             # reached systemd-run is in `runs` and keeps its mark). Journalled: a raised tick is never silent
             # (review dispatcher-full #5)
             back = unreserve(st)
+            rings = unreleased(st, acts, now)
             journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised",
-                           "why": "tick raised %s: %s; launches given back: %s" % (
-                               type(e).__name__, str(e)[:200], ", ".join(back) or "none")})
+                           "why": "tick raised %s: %s; launches given back: %s; rings/recovers given back: %s" % (
+                               type(e).__name__, str(e)[:200], ", ".join(back) or "none", ", ".join(rings) or "none")})
             raise
         finally:     # the caps and pending rings are in st: save them even when a step raised
             st["last_tick"] = iso(now)        # last ATTEMPT
