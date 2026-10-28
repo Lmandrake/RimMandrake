@@ -140,8 +140,8 @@ r = d(override=ov(n=7), session_pct_used=95.0)
 check("the 5-hour brake binds even over the owner's word", seats(r) == (0, 0), r["seats"])
 # ---- lent account: steven (owner 13:10). The REAL rules file carries his numbers as data.
 pol = R["lent_accounts"]["steven"]
-check("rules data: steven floor 10%, at most 50% used by us, off-limits through his 10-28 reset",
-      pol["floor_pct_left"] == 10 and pol["max_used_by_us_pct"] == 50
+check("rules data: steven floor 10%, at most 48% used by us (leave 52% left, card 2026-10-28), off-limits through his 10-28 reset",
+      pol["floor_pct_left"] == 10 and pol["max_used_by_us_pct"] == 48
       and SA.epoch(pol["off_limits_through"]) == SA.epoch("2026-10-28T15:00:00-07:00"), pol)
 stv = lambda left, h: {"account": "steven", "pct_left": left, "pct_used": 100.0 - left, "hours_to_reset": h,  # noqa: E731
                        "resets_at": SA.iso_local(NOW + h * H), "source": "ESTIMATE"}
@@ -152,23 +152,23 @@ check("this week any draw on steven is refused, even 1%", not ok and "off-limits
 R2 = json.loads(json.dumps(R))
 R2["lent_accounts"]["steven"]["off_limits_through"] = None
 cp = lambda left, h, draw: SA.check_plan(stv(left, h), draw, R2, NOW)[0]  # noqa: E731
-check("fresh reset (150 h to go), 80% left: up to 30% more is allowed (50% used cap)", cp(80, 150, 30) and not cp(80, 150, 31))
-check("10 h after reset with 20% used: allowed up to 50% used", cp(80, 158, 30) and not cp(80, 158, 31))
-check("edge: exactly 48 h after reset still in the window, just past it is 0", cp(80, 120, 30) and not cp(80, 119.9, 1))
+check("fresh reset (150 h to go), 80% left: up to 28% more is allowed (48% used cap)", cp(80, 150, 28) and not cp(80, 150, 29))
+check("10 h after reset with 20% used: allowed up to 48% used", cp(80, 158, 28) and not cp(80, 158, 29))
+check("edge: exactly 48 h after reset still in the window, just past it is 0", cp(80, 120, 28) and not cp(80, 119.9, 1))
 check("60 h after reset (108 h to go), 20% used: 0", not cp(80, 108, 1))
 check("30 h before reset, 20% used: 0 (end-of-week drawdown withdrawn)", not cp(80, 30, 1))
 check("near his reset (10 h), 31% left: 0, not down to the floor", not cp(31, 10, 1))
-check("fresh reset at 55% left: only 5% more (45% already used)", cp(55, 150, 5) and not cp(55, 150, 10))
+check("fresh reset at 55% left: only 3% more (45% already used)", cp(55, 150, 3) and not cp(55, 150, 4))
 check("fresh reset at 31% left (69% used): nothing", not cp(31, 150, 1))
 bad = []
 for left in range(0, 101, 3):
     for h in (1, 10, 23, 24, 25, 60, 119, 120, 150, 167):
         for draw in range(1, 101, 2):
-            if cp(left, h, draw) and (left - draw < 10 or h < 120 or (100 - left) + draw > 50):
+            if cp(left, h, draw) and (left - draw < 10 or h < 120 or (100 - left) + draw > 48):
                 bad.append((left, h, draw))
-check("no accepted plan takes steven under 10%, over 50% used, or outside the 48 h after reset (sweep)", not bad, bad[:5])
+check("no accepted plan takes steven under 10%, over 48% used, or outside the 48 h after reset (sweep)", not bad, bad[:5])
 r = SA.decide(inp(spare=[stv(80.0, 150.0)]), {}, R2, NOW)
-check("a lent account is recommended only when the rule allows, naming the share", "steven may lend 30%" in r["why"]
+check("a lent account is recommended only when the rule allows, naming the share", "steven may lend 28%" in r["why"]
       and "fresh reset" in r["why"] and "never automatic" in r["why"], r["why"])
 r = d(spare=[{"account": "lukas", "pct_left": 7.0, "pct_used": 93.0, "hours_to_reset": 51.0},
              {"account": "other", "pct_left": 40.0, "pct_used": 60.0, "hours_to_reset": 51.0}])
@@ -929,6 +929,47 @@ check("overage: excess that ran wholly BEFORE the passed reset is not post-reset
 r = d(_pr, helpers_running={"BENCH": 0, "FOUNDRY": 0}, helper_spans={"BENCH": [[NOW - 0.2 * H, NOW - 0.1 * H]] * 4, "FOUNDRY": []}, owner_window_min=2.0, week_resets_at=None)
 check("overage: excess that ran AFTER the passed reset is all post-reset debt (3 x 0.1 = 0.3)",
       abs(r["state"].get("overage_post_h", 0) - 0.3) < 1e-6, r["state"])
+
+# ---- the standard switching plan (ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING): pool pacing and the soft notice
+_pool = {"pct": 40.0, "rate_pct_h": 2.0, "deadline_h": 20.0, "cycle_end_h": 20.0, "parts": []}
+r = d(pool=_pool)
+check("pool pacing: P is the plan's required rate (2%/h x 168/100 = 3.36), not this account's own week",
+      abs(r["inputs"]["P"] - 3.36) < 0.01, r["inputs"].get("P"))
+r = d(pool=_pool, rate_pct_per_h=1.0, mean_helpers=2.0)
+check("pool pacing: the fit's sustainable rate is the pool's 2.00%/h (2 helpers at 1%/h -> fits 4)",
+      "sustainable 2.00%/h" in r["why"] and r["n_total"] == 4, (r["n_total"], r["why"]))
+r = d(pool=dict(_pool, rate_pct_h=None))
+check("pool pacing: a pool without a rate falls back to the account's own pace (1.40)",
+      abs(r["inputs"]["P"] - 1.4) < 0.01, r["inputs"].get("P"))
+_soft = {"state": "soft", "since": SA.iso_local(NOW - 300), "at": SA.iso_local(NOW - 60), "account": "system",
+         "message": "switch pending: publish and finish; no new helpers"}
+r = d(plan_notice=_soft)
+check("soft notice: every seat 0, and the why says switch pending",
+      all(v == 0 for v in r["seats"].values()) and "switch pending" in r["why"], (r["seats"], r["why"]))
+r = d(plan_notice=dict(_soft, state="stop"))
+check("stop notice: every seat 0", all(v == 0 for v in r["seats"].values()), r["seats"])
+r = d(plan_notice=dict(_soft, at=SA.iso_local(NOW - 40 * 60)))
+check("a 40-min-old notice (the plan timer stopped) zeroes nothing", r["seats"]["BENCH"] > 0, (r["seats"], r["why"]))
+_ovn = {"ownerSaid": "run four on bench", "n": 4, "set_at": SA.iso_local(NOW - 30)}
+r = d(plan_notice=_soft, override=_ovn)
+check("his word set AFTER the soft notice stands over it (BENCH 4)", r["seats"]["BENCH"] == 4, (r["seats"], r["why"]))
+r = d(plan_notice=_soft, override=dict(_ovn, set_at=SA.iso_local(NOW - 3600)))
+check("his word set BEFORE the soft notice yields to it (BENCH 0)", r["seats"]["BENCH"] == 0, (r["seats"], r["why"]))
+_pd = Path(tempfile.mkdtemp())
+os.environ["RM_SWITCH_PLAN_DIR"] = str(_pd)
+_m = {"system": {"source": "MEASURED", "week_pct_left": 50.0, "week_resets_at": SA.iso_local(NOW + 100 * H),
+                 "hours_to_week_reset": 100.0, "stale": False, "age_min": 1.0},
+      "lukas": {"source": "MEASURED", "week_pct_left": 98.0, "week_resets_at": SA.iso_local(NOW + 120 * H),
+                "hours_to_week_reset": 120.0, "stale": False, "age_min": 1.0}}
+pi = SA.plan_inputs(_m, "system", NOW)
+check("plan inputs: engine gate not passed -> no pool, no notice (account_failover still paces)",
+      pi.get("pool") is None and pi.get("plan_notice") is None, pi)
+(_pd / "state.json").write_text(json.dumps({"gate_passed": "2026-10-28T13:05:00-07:00"}))
+(_pd / "notice.json").write_text(json.dumps(_soft))
+pi = SA.plan_inputs(_m, "system", NOW)
+check("plan inputs: gate passed -> the pool (49 + 96 over 100 h) and the notice",
+      pi.get("pool") and abs(pi["pool"]["pct"] - 145) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
+os.environ.pop("RM_SWITCH_PLAN_DIR")
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

@@ -643,6 +643,7 @@ def gather(now=None, rules=None):
         here = machine()
         acc, how = pick_burn_account(meter, rules, here)
         inp["account_how"] = how
+        inp.update(plan_inputs(meter, acc, now))
         a = meter.get(acc) if acc else None
         if a:
             inp.update(account=acc, source=a.get("source") if not a.get("stale") else "STALE",
@@ -704,8 +705,49 @@ def pace(inp):
     left, h = inp.get("week_pct_left"), inp.get("hours_to_week_reset")
     if left is None or h is None:
         return None
+    rate = _pool_rate(inp)
+    if rate is not None:
+        # the standard switching plan paces the whole pool (card 2026-10-28: "Pace the whole pool BECAUSE it spreads
+        # out the human review time"): P is the rate the plan still needs, in the same units (1.0 = 100% per 7 d)
+        return rate * 168 / 100
     days = max(h, 1.0) / 24
     return left / (days * 100 / 7)
+
+
+def _pool_rate(inp):
+    pl = inp.get("pool")
+    r = pl.get("rate_pct_h") if isinstance(pl, dict) else None
+    return float(r) if isinstance(r, (int, float)) and math.isfinite(r) and r >= 0 else None
+
+
+PLAN_NOTICE_FRESH_S = 20 * 60  # switching_plan.py writes every 5 min: an older notice means its timer stopped
+
+
+def _plan_notice_live(pn, now):
+    if not isinstance(pn, dict) or pn.get("state") not in ("soft", "stop"):
+        return None
+    at = epoch(pn.get("at"))
+    return pn if at is not None and 0 <= now - at <= PLAN_NOTICE_FRESH_S else None
+
+
+def plan_inputs(meter, live, now):
+    """-> {pool, plan_notice} from the standard switching plan (switching_plan.py), both None until its engine has
+    passed its gate (account_failover owns pacing until then) or when the plan is unreadable."""
+    out = {"pool": None, "plan_notice": None}
+    try:
+        import switching_plan as SP
+        d = Path(os.environ.get("RM_SWITCH_PLAN_DIR") or SP.OUT)
+        st = read_json(d / "state.json")
+        if not (isinstance(st, dict) and st.get("gate_passed")):
+            return out
+        plan = SP.load_plan()
+        if plan.get("pool_pacing"):
+            out["pool"] = SP.pool(meter, now, plan, live)
+        pn = read_json(d / "notice.json")
+        out["plan_notice"] = pn if isinstance(pn, dict) else None
+    except Exception as e:  # noqa: BLE001  a broken plan never stops the allocator: it paces as before
+        out["plan_error"] = f"{type(e).__name__}: {e}"
+    return out
 
 
 def _token(inp, state, rules, now, P):
@@ -1015,7 +1057,12 @@ def decide(inp, state, rules, now):
     else:
         rate, mh = inp.get("rate_pct_per_h"), inp.get("mean_helpers")
         if rate and mh is not None and mh >= fit["min_mean_helpers"]:
-            sust = inp["week_pct_left"] / max(inp["hours_to_week_reset"], 1.0)
+            sust = _pool_rate(inp)
+            if sust is None:
+                sust = inp["week_pct_left"] / max(inp["hours_to_week_reset"], 1.0)
+            else:
+                why.append(f"pool pacing: the plan still spends {inp['pool'].get('pct')}% by its deadlines "
+                           f"(binding {inp['pool'].get('deadline_h')} h)")
             raw = mh * sust / rate
             total = max(1, min(ceiling, int(math.floor(raw))))
             why.append(f"burning {rate:.2f}%/h with {mh:.1f} helpers on average; sustainable {sust:.2f}%/h "
@@ -1078,6 +1125,12 @@ def decide(inp, state, rules, now):
         overage = {"owed_h": max(0.0, _num(state.get("overage_h"), 0.0)),
                    "post_reset_h": max(0.0, _num(state.get("overage_post_h"), 0.0)), "paying": False, "cut": 0, "accrued_h": 0.0, "credited_h": 0.0,
                    "forgiven_h": 0.0, "deadline_h": None, "eta_h": None, "plan": ""}
+    pn = _plan_notice_live(inp.get("plan_notice"), now)
+    if pn and not (ov and (epoch(ov.get("set_at")) or 0) > (epoch(pn.get("since")) or now)):
+        # his word given after the notice stands over it; given before, the switch the plan is about to make wins
+        per = {s: 0 for s in per}
+        why.insert(0, f"{pn.get('message') or 'switch pending: publish and finish'} (switching plan, "
+                      f"{pn.get('account')}: {pn.get('why') or pn.get('state')})")
     sess = inp.get("session_pct_used")
     if sess is not None and inp.get("source") != "MEASURED":
         # a stale or estimated 5-hour reading may predate the window's reset: it brakes nothing

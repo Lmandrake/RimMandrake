@@ -42,8 +42,8 @@
   "lent_accounts": {
     "steven": {
       "_owner": "[O] 2026-10-27, owner ruling (ledger note on LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE, 7a3e09b63f): 'Dispatcher can use Steve up to 50% after a fresh reset only.' (narrows his 2026-10-26 rule: 'Steven uses his for other things ... We don't ever want to crowd him out.')",
-      "max_used_by_us_pct": 50,
-      "_max_used_by_us_pct": "[O] 'up to 50%': at most 50% of his week used, all of it counted as ours (the meter cannot tell his use from ours; the side that never crowds him out).",
+      "max_used_by_us_pct": 48,
+      "_max_used_by_us_pct": "[O] 'up to 50%': at most 50% of his week used, all of it counted as ours (the meter cannot tell his use from ours; the side that never crowds him out). 48 since the card of 2026-10-28 10:20, Steven: 'Leave at 52% left' (the standard switching plan, switching_plan.json).",
       "prefer_start_of_week_h": 48,
       "_prefer_start_of_week_h": "[O] 'after a fresh reset only'; the 48 h is [A] (the agent's reading of 'fresh reset'): we may draw only while at most 48 h have passed since his weekly reset (hours_to_reset >= 168-48); outside it the cap is 0. A hard limit.",
       "floor_pct_left": 10,
