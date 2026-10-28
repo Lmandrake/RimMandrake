@@ -17,5 +17,27 @@
   "source_run": "judgestall_20261028",
   "drawsize": 1.0,
   "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Sytheclaw__dessicated_n__r3_r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Sytheclaw__dessicated_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same desiccated skeletal anatomy, same proportions, same weathered colours and markings, same plate shapes, same limb lengths, same size on the canvas, now seen in rear view, from behind. A creature sprite for RimWorld: the dessicated sytheclaw, a low-slung pack predator that has dried out to a skeleton. Rear view, seen from behind: a wide, flat rear with the hindquarters held close to the ground, hind legs bent and splayed out to the sides, and the long spiked, plated tail lying low behind, head and eyes hidden from the viewer. The back shows rusty-grey, weathered, overlapping armour plates over exposed vertebrae and rib edges, with shoulder armour plates matching the east view, no fur or mane. Thin bone-white leg bones carry sparse dried rust-red tissue. The forelimbs are the same jointed bone limbs as in the east view, with articulated skeletal feet ending in the same dark, curved, hooked black talons; they are tucked close beside the body, partly hidden behind the plated back, and reach no further out than in the east view. The body is held very close to the ground, lower than any big cat's stance, matching the long crouched pose of the east view. Realistic painterly vanilla RimWorld sprite style, clean dark outline, soft painted edges in a deeper shade of the local colour. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: F_INCONSISTENT, F_INCONSISTENT",
+  "reference": "",
+  "priority": 40,
+  "source_run": "judgestall_20261028",
+  "replaces_kept": true,
+  "install_by_card": "Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after",
+  "style_notes_kept": "replaces owner-kept art: install with art.py install --by-card \"Kept art judged really bad: may the pipeline redraw it on its own? \u2192 Yes, but show me after\"; revert record in the run's decisions.jsonl",
+  "drawsize": 3.0,
+  "module": "walker"
  }
 ]
