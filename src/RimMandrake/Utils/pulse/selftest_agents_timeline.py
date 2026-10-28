@@ -208,6 +208,20 @@ d4 = A.collect(NOW, projects_dir=root / "noproj", sessions_dir=root / "nosess", 
 check("a running role with no journal start still shows as working",
       any(x["who"] == "Steward run" and x["state"] == "working" for x in d4["active"]), d4["active"])
 
+bad_ledger = list(ledger) + [{"event": "claim", "id": ["x"], "seat": 7, "ts": iso(NOW - 60)},
+                             {"event": "start", "id": "OK_ID", "seat": 7, "ts": iso(NOW - 60)}]
+try:
+    A.collect(NOW, projects_dir=root / "noproj", sessions_dir=root / "nosess", testq_root=testq, ledger=bad_ledger,
+              role_lines=[], boots=boots, roles_on={}, units_active=set())
+    check("odd ledger events (list id, numeric seat) do not break the page", True)
+except Exception as ex:  # noqa: BLE001
+    check("odd ledger events (list id, numeric seat) do not break the page", False, repr(ex))
+(testq / "done" / "junk.json").write_text("[1, 2")
+d5 = A.collect(NOW, projects_dir=root / "noproj", sessions_dir=root / "nosess", testq_root=testq, ledger=ledger,
+               role_lines=[], boots=boots, roles_on={}, units_active=set())
+check("an unreadable test record shows as a gap, not as no work", any("test-run record" in g for g in d5["gaps"]), d5["gaps"])
+(testq / "done" / "junk.json").unlink()
+
 import brief  # noqa: E402
 A._CACHE.clear()
 code, ctype, body = brief.page("/agents", lambda: {}, Path(tempfile.mkdtemp()))

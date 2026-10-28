@@ -136,7 +136,7 @@ def scan(path: Path) -> dict:
     try:
         size = path.stat().st_size
     except OSError:
-        return _new_state()
+        return dict(_new_state(), err=True)
     with _LOCK:
         ent = _SCAN.get(key)
         if ent is None or size < ent["off"]:
@@ -145,7 +145,7 @@ def scan(path: Path) -> dict:
         try:
             fh = open(path, "rb")
         except OSError:
-            return ent["st"]
+            return dict(ent["st"], err=True)
         with fh:
             while size > ent["off"]:   # bounded chunks: a cold read of a big transcript never holds it whole
                 fh.seek(ent["off"])
@@ -246,14 +246,14 @@ def read_ledger_bits(ledger: list | None) -> tuple[dict, list]:
 def _bits(rows) -> tuple[dict, list]:
     titles, evs = {}, []
     for e in rows:
-        if not isinstance(e, dict) or not e.get("id"):
+        if not isinstance(e, dict) or not isinstance(e.get("id"), str) or not e["id"]:
             continue
         if e.get("event") == "file" and e.get("title"):
             titles[e["id"]] = str(e["title"])
         elif e.get("event") in ("claim", "start"):
             t = _ts(e.get("ts"))
             if t is not None:
-                evs.append(((e.get("seat") or "").upper(), e["id"], t, e["event"]))
+                evs.append((str(e.get("seat") or "").upper(), e["id"], t, e["event"]))
     return titles, evs
 
 
@@ -405,17 +405,20 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
     for f in files:
         try:
             st = scan(f)
-            if st["last"] is None or st["last"] < lo:
-                continue
             sid = f.stem
+            live = sid in alive_sid                # a live window counts even if its last record is old
+            if st.get("err"):
+                bad_files += 1
+            if not live and (st["last"] is None or st["last"] < lo):
+                continue
+            first = st["first"] if st["first"] is not None else lo
             name = st["title"] or sid_name.get(sid)
-            live = sid in alive_sid
-            a, b = max(lo, st["first"]), (hi if live else st["last"])
+            a, b = max(lo, first), (hi if live else max(lo, st["last"]))
             segs = [[max(lo, x), min(hi, y)] for x, y in st["segs"] if y >= lo]
             w, role = window_of(name), role_of(name)
             last_ask = plain_prompt(st["prompts"][-1][1]) if st["prompts"] else ""
             if w:
-                items = [(t, iid) for (seat, iid, t, _ev) in seat_evs if seat == w and st["first"] - 60 <= t <= b + 60]
+                items = [(t, iid) for (seat, iid, t, _ev) in seat_evs if seat == w and first - 60 <= t <= b + 60]
                 items.sort()
                 seen, order = set(), []
                 for t, iid in reversed(items):
@@ -429,7 +432,7 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                         label += f" (+{len(order) - 1} more)"
                 else:
                     label = ("asked: " + last_ask) if last_ask else "nothing asked of it"
-                tip = (f"{name} · session {sid} · {_when(st['first'], now)}–{'now' if live else _when(b, now)}"
+                tip = (f"{name} · session {sid} · {_when(first, now)}–{'now' if live else _when(b, now)}"
                        + "".join(f" · {iid}: {short_title(titles.get(iid, ''), 60)}" for iid in order[:6])
                        + (f" · last asked: {last_ask}" if last_ask else ""))
                 win_bars[w].append(_bar("session", a, b, label, tip, live, segs=segs))
@@ -447,6 +450,8 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                     if mt < lo:
                         continue
                     hs = scan(sp)
+                    if hs.get("err"):
+                        bad_files += 1
                     if hs["last"] is None or hs["last"] < lo:
                         continue
                     try:
@@ -473,10 +478,10 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                         active.append({"who": f"helper of {w}", "what": hlabel, "since": hs["first"], "state": "working",
                                        "tip": htip})
             elif role:
-                role_tx[role[1]] = {"role": role[0], "first": st["first"], "last": st["last"], "ask": last_ask, "sid": sid}
+                role_tx[role[1]] = {"role": role[0], "first": first, "last": st["last"] or first, "ask": last_ask, "sid": sid}
             else:
                 first = st["first_user"] or (st["prompts"][0][1] if st["prompts"] else "")
-                fresh = now - st["last"] < 5 * 60
+                fresh = now - (st["last"] or 0) < 5 * 60
                 if STEWARD_PROMPT in (first or "") or any(STEWARD_PROMPT in p for _, p in st["prompts"][:1]):
                     lab = "called in because the SteveDesktop test lane was stuck"
                     auto_bars.append(_bar("auto", a, min(b, hi), lab, f"automatic session {sid} · {f.parent.name} · {lab}"))
@@ -519,7 +524,7 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
         (conductor_bars if rname == "Conductor" else role_bars).append(b)
 
     # SteveDesktop (and any other testq host)
-    tq_bars, tq_why = [], None
+    tq_bars, tq_why, tq_bad = [], None, 0
     if not Path(testq_root).is_dir():
         tq_why = f"the test-run records folder {testq_root} was not found"
     else:
@@ -537,8 +542,10 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                 try:
                     r = json.loads(Path(e.path).read_text())
                 except (OSError, ValueError):
+                    tq_bad += 1
                     continue
                 if not isinstance(r, dict):
+                    tq_bad += 1
                     continue
                 job = r.get("job") if isinstance(r.get("job"), dict) else {}
                 res = r.get("result") if isinstance(r.get("result"), dict) else {}
@@ -558,7 +565,7 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                 if t0 is None or t1 is None or t1 < lo:
                     continue
                 cnt = res.get("counts") if isinstance(res.get("counts"), dict) else {}
-                outcome = ", ".join(f"{v} {k.lower().replace('unmeasured', 'not measured').replace('pass', 'passed').replace('fail', 'failed')}"
+                outcome = ", ".join(f"{v} {str(k).lower().replace('unmeasured', 'not measured').replace('pass', 'passed').replace('fail', 'failed')}"
                                     for k, v in cnt.items() if v) or (res.get("outcome") or "").lower()
                 lab = f"testing {mod}" + (f": {outcome}" if outcome else "")
                 bad = any(str(k).upper().startswith("FAIL") and v for k, v in cnt.items()) \
@@ -566,6 +573,9 @@ def collect(now: float | None = None, projects_dir: Path = pc.PROJECTS_DIR, sess
                 tq_bars.append(_bar("test", max(lo, t0), t1, lab, f"job {job.get('id') or res.get('job')} · {mod} · {why} · "
                                     f"{_when(t0, now)}–{_when(t1, now)} ({_dur(t1 - t0)}) · host {res.get('host') or job.get('lane')} · "
                                     f"run {str(res.get('outcome') or '?').lower()}" + (f", {outcome}" if outcome else "") + (f" · cause {res.get('cause')}" if res.get("cause") else ""), short=mod, bad=bad))
+
+    if tq_bad:
+        gaps.append(f"{tq_bad} test-run record{'s' if tq_bad != 1 else ''} could not be read")
 
     # PC off between boots
     off = []
