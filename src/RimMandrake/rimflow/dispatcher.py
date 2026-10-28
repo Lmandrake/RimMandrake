@@ -1148,23 +1148,34 @@ def role_obs(sch):
     }
 
 
-TS_SKIPS_KEEP = 200     # the seen set of journalled bad-ts events is bounded: the oldest are forgotten first
+TS_SKIPS_KEEP = 200     # the seen set of journalled bad-ts events is capped, never evicted (review night r6)
 
 
 def _skip_journal(root, st=None):
     """on_skip hook: journal each (seat, event id, ts) ONCE. The seen set lives in state["ts_skips"] (key -> epoch),
-    saved with the rest of the state, pruned to TS_SKIPS_KEEP newest. Without st there is no memory (journals every time)."""
+    saved with the rest of the state, capped at TS_SKIPS_KEEP (then one overflow line per seat, state["ts_skips_full"]).
+    Without st there is no memory (journals every time)."""
     def skip(rec):
         seen = st.setdefault("ts_skips", {}) if st is not None else None
         key = "%s|%s|%s" % (rec.get("seat"), rec.get("id"), rec.get("ts"))
+        do = "ledger_ts_skipped"
         if seen is not None:
             if key in seen:
                 return
-            seen[key] = time.time()
-            for k in sorted(seen, key=seen.get)[:max(0, len(seen) - TS_SKIPS_KEEP)]:
-                del seen[k]
+            if len(seen) >= TS_SKIPS_KEEP:
+                # full: never evict -- an evicting set cycles through a fixed backlog larger than itself and journals
+                # all of it again on every scan (review night r6). One overflow line per seat, then silence.
+                full = st.setdefault("ts_skips_full", [])
+                if rec.get("seat") in full:
+                    return
+                full.append(rec.get("seat"))
+                do = "ledger_ts_skipped_overflow"
+            else:
+                seen[key] = time.time()
         try:
-            journal(root, dict(rec, do="ledger_ts_skipped", at=iso(time.time())))
+            journal(root, dict(rec, do=do, at=iso(time.time()),
+                               **({"note": "seen set full (%d): further bad-ts events of this seat are not journalled"
+                                           % TS_SKIPS_KEEP} if do.endswith("overflow") else {})))
         except OSError:
             pass
     return skip

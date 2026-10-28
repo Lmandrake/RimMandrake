@@ -2611,6 +2611,16 @@ def test_ts_skip_journalled_once():
     for i in range(D.TS_SKIPS_KEEP + 50):
         D._skip_journal(root, st)({"seat": "S", "id": "E%d" % i, "ts": "x"})
     check(len(st["ts_skips"]) <= D.TS_SKIPS_KEEP, "the seen set is bounded: %d" % len(st["ts_skips"]))
+    # review night r6: a fixed backlog LARGER than the seen set must not be re-journalled on every scan (an evicting
+    # set cycles through it); past the cap one overflow line per seat is journalled, then silence
+    root2, st2 = os.path.join(TMP, "tsskip_root2"), {}
+    for _ in range(3):
+        hook = D._skip_journal(root2, st2)
+        for i in range(D.TS_SKIPS_KEEP + 1):
+            hook({"seat": "S", "id": "B%d" % i, "ts": "x"})
+    lines = [l for l in open(os.path.join(root2, "journal.jsonl")) if "ledger_ts_skipped" in l]
+    check(len(lines) == D.TS_SKIPS_KEEP + 1, "a backlog past the cap is journalled once (+1 overflow line), got %d"
+          % len(lines))
 
 
 def test_golive_b2_blind_fixed_outcomes():
