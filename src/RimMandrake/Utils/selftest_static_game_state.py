@@ -113,6 +113,9 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs::noTerrainUntil": "cleared when Current.Game changes (marksGame weak reference)",
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstWaterSources.cs::cache": "cleared when Current.Game changes (cacheGame weak reference)",
     # FlowWorks, reviewed 2026-10-22 against the code at 36d07dde2 (flowworks offline verify)
+    "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs::rawThings": "main-thread scratch list, cleared at the start of every RawFind before use and never read between calls; it only keeps its last few Things referenced until the next call (bounded, no state read across maps or saves)",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelPour.cs::seenScratch": "[ThreadStatic] set of int cell indexes, Clear()ed before every walk; carries no game ids between calls",
+    "src/RimMandrake/FlowWorks/Source/RM_LevelPour.cs::queueScratch": "[ThreadStatic] queue of int cell indexes, Clear()ed before every walk; carries no game ids between calls",
     "src/RimMandrake/FlowWorks/Source/Machinery/RM_MachinerySettings.cs::toggleRowsCache": "rows derived from loaded defs, which never change within a process; identical for every game",
     "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs::anyWetGame": "the guard itself: anyWet is zeroed whenever Current.Game differs from anyWetGame",
     "src/RimMandrake/FlowWorks/Source/Sheet/SectionLayer_RMSheetWater.cs::byFluid": "material cache keyed by FluidDef and tier (def data, not game ids); identical for every game",
