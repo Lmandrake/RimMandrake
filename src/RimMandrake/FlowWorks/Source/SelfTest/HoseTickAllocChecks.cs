@@ -33,6 +33,31 @@ namespace RimMandrake.FlowWorks.SelfTest
             return src.Substring(i, j - i);
         }
 
+        /// <summary>The pre-fix HosePortRule.Pick, kept as the oracle: the edge cells come from HoseReelRect.EdgeCells.</summary>
+        private static int PickByEdgeLists(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact)
+        {
+            side = new Cell(0, 0);
+            contact = new Cell(0, 0);
+            int best = -1, bestRank = int.MaxValue;
+            for (int i = 0; i < cands.Count; i++)
+            {
+                HosePortCandidate c = cands[i];
+                if (c.Kind == HosePortKind.None || reel.Overlaps(c)) continue;
+                for (int s = 0; s < HosePortRule.SideOrder.Length; s++)
+                {
+                    List<Cell> edge = reel.EdgeCells(HosePortRule.SideOrder[s]);
+                    for (int k = 0; k < edge.Count; k++)
+                    {
+                        Cell n = edge[k] + HosePortRule.SideOrder[s];
+                        if (!c.Contains(n)) continue;
+                        int rank = ((int)c.Kind * 8 + s) * 64 + k;
+                        if (rank < bestRank) { bestRank = rank; best = i; side = HosePortRule.SideOrder[s]; contact = n; }
+                    }
+                }
+            }
+            return best;
+        }
+
         public static void Run(Action<string, Action> Case)
         {
             Case("HOSEPORTS_RAWFIND_NO_PER_CALL_ALLOC", () =>
@@ -85,6 +110,48 @@ namespace RimMandrake.FlowWorks.SelfTest
                 long k0 = GC.GetAllocatedBytesForCurrentThread();
                 var probe = new int[256];
                 Assert(GC.GetAllocatedBytesForCurrentThread() - k0 >= 1024 && probe.Length == 256, "the allocation counter sees a 1 KB array");
+            });
+            // HOSE_WATCH_ALLOC_HUNT_GC_IN_TICK: after the zero-alloc rebuild a full GC still landed in the hose watch phase
+            // (HoseEnds.Read -> HosePorts.FindAt, CompHoseReel.Port -> HosePorts.Find). The Verse-free tail both share is
+            // HosePortRule.Pick, which built a List<Cell> of the reel's edge cells for every side of every candidate (four lists a
+            // candidate, every Port() and free-end refresh, plus PumpSideTakes' nested finds). Pick walks the edge in place now,
+            // in the same ascending order, so its answer (index, side, contact) equals the list-built rule on every input.
+            Case("HOSEPORTRULE_PICK_NO_PER_CALL_ALLOC", () =>
+            {
+                var rng = new Random(1028);
+                var cands = new List<HosePortCandidate>();
+                int checkedPicks = 0, hits = 0;
+                for (int trial = 0; trial < 4000; trial++)
+                {
+                    var reel = new HoseReelRect(rng.Next(-2, 3), rng.Next(-2, 3), rng.Next(1, 4), rng.Next(1, 4));
+                    cands.Clear();
+                    int n = rng.Next(0, 5);
+                    for (int i = 0; i < n; i++)
+                        cands.Add(new HosePortCandidate(rng.Next(-5, 6), rng.Next(-5, 6), rng.Next(1, 4), rng.Next(1, 4), (HosePortKind)rng.Next(0, 5)));
+                    int want = PickByEdgeLists(reel, cands, out Cell ws, out Cell wc);
+                    int got = HosePortRule.Pick(reel, cands, out Cell gs, out Cell gc);
+                    Assert(got == want && gs.X == ws.X && gs.Z == ws.Z && gc.X == wc.X && gc.Z == wc.Z,
+                        $"Pick differs from the edge-list rule at trial {trial}: got {got} ({gs.X},{gs.Z})/({gc.X},{gc.Z}) want {want} ({ws.X},{ws.Z})/({wc.X},{wc.Z})");
+                    checkedPicks++;
+                    if (want >= 0) hits++;
+                }
+                Assert(hits > 500 && hits < checkedPicks - 500, $"the random inputs exercise both outcomes ({hits} picks of {checkedPicks})");
+                // a 2x2 reel with a pipe east and a tank north: the pump-side and free-end refresh shape
+                var reel2 = new HoseReelRect(10, 10, 2, 2);
+                cands.Clear();
+                cands.Add(new HosePortCandidate(12, 10, 1, 1, HosePortKind.Pipe));
+                cands.Add(new HosePortCandidate(10, 12, 2, 2, HosePortKind.Tank));
+                int sink = 0;
+                for (int i = 0; i < 100; i++) sink += HosePortRule.Pick(reel2, cands, out _, out _);
+                long b0 = GC.GetAllocatedBytesForCurrentThread();
+                for (int i = 0; i < 1000; i++) sink += HosePortRule.Pick(reel2, cands, out _, out _);
+                long bytes = GC.GetAllocatedBytesForCurrentThread() - b0;
+                Assert(sink == 0, "the pipe east wins (index 0)");
+                Assert(bytes == 0, $"HosePortRule.Pick allocates {bytes} B over 1000 calls");
+                // the instrument can see: the list-built rule allocates on the same input
+                long k0 = GC.GetAllocatedBytesForCurrentThread();
+                for (int i = 0; i < 10; i++) sink += PickByEdgeLists(reel2, cands, out _, out _);
+                Assert(GC.GetAllocatedBytesForCurrentThread() - k0 > 0, "the allocation counter sees the edge-list rule's lists");
             });
             Case("HOSEREELRECT_PERIMETERINTO_EQUALS_PERIMETER", () =>
             {

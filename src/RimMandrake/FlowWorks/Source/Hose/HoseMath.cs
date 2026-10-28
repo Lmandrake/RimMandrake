@@ -2905,10 +2905,14 @@ namespace RimMandrake.FlowWorks.Hose
                 if (c.Kind == HosePortKind.None || reel.Overlaps(c)) continue;
                 for (int s = 0; s < SideOrder.Length; s++)
                 {
-                    List<Cell> edge = reel.EdgeCells(SideOrder[s]);
-                    for (int k = 0; k < edge.Count; k++)
+                    // HOSE_WATCH_ALLOC_HUNT_GC_IN_TICK: the side's edge cells in EdgeCells' ascending order, walked in place (a
+                    // list per side per candidate was 704 B a Pick on every Port() and free-end refresh)
+                    Cell sd = SideOrder[s];
+                    int len = sd.X != 0 ? reel.H : reel.W;
+                    int ex = sd.X > 0 ? reel.X0 + reel.W - 1 : reel.X0, ez = sd.Z > 0 ? reel.Z0 + reel.H - 1 : reel.Z0;
+                    for (int k = 0; k < len; k++)
                     {
-                        Cell n = edge[k] + SideOrder[s];
+                        Cell n = (sd.X != 0 ? new Cell(ex, reel.Z0 + k) : new Cell(reel.X0 + k, ez)) + sd;
                         if (!c.Contains(n)) continue;
                         int rank = ((int)c.Kind * 8 + s) * 64 + k;
                         if (rank < bestRank) { bestRank = rank; best = i; side = SideOrder[s]; contact = n; }
