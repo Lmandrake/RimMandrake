@@ -382,11 +382,14 @@ namespace RimMandrake.FlowWorks.Hose
         private void OnBuilding(Building b)
         {
             CellRect r = b.OccupiedRect();
+            Versions().TouchRect(r.minX, r.minZ, r.maxX, r.maxZ);
             if (!MarkDirty(r.minX, r.minZ, r.maxX, r.maxZ)) MapChanged();
         }
         private void OnThing(Thing t)
         {
-            if (t is Plant p && p.def.plant != null && p.def.plant.IsTree && !MarkDirty(t.Position.x, t.Position.z, t.Position.x, t.Position.z)) MapChanged();
+            if (!(t is Plant p) || p.def.plant == null || !p.def.plant.IsTree) return;
+            Versions().Touch(t.Position.x, t.Position.z);
+            if (!MarkDirty(t.Position.x, t.Position.z, t.Position.x, t.Position.z)) MapChanged();
         }
         /// <summary>Lists the rectangle's cells for PatchWorld; false (whole rebuild) past the list's capacity. With no current
         /// snapshot nothing is listed: the next read rebuilds whole anyway.</summary>
@@ -407,8 +410,10 @@ namespace RimMandrake.FlowWorks.Hose
         /// place of the whole rebuild a climb-generation fold costs (World() folds ClimbGenerationNoSwim).</summary>
         internal void SwimCellsPublished(List<int> cells)
         {
-            if (world == null || worldVersion != mapVersion) return;
             int w = map.Size.x;
+            HoseCorridorVersions cv = Versions();
+            for (int k = 0; k < cells.Count; k++) cv.Touch(cells[k] % w, cells[k] / w);
+            if (world == null || worldVersion != mapVersion) return;
             for (int k = 0; k < cells.Count; k++)
             {
                 int i = cells[k];
@@ -421,11 +426,51 @@ namespace RimMandrake.FlowWorks.Hose
         /// tick would rebuild the whole-map snapshot per tick for every World(60) reader.</summary>
         private void CellChanged(IntVec3 c)
         {
+            // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: touched whatever the snapshot's state (a recheck compares against the live
+            // map, not the snapshot); unconditional, so snow and filth make a corridor re-hash as it did every 250 ticks before
+            Versions().Touch(c.x, c.z);
             if (world == null || worldVersion != mapVersion) return;   // already rebuilding on the next read
             var cell = new Cell(c.x, c.z);
             if (CordSig.CellSig(world, cell) != LiveCellSig(cell) && !MarkDirty(c.x, c.z, c.x, c.z)) MapChanged();
         }
-        private void MapChanged() => mapVersion++;
+        private void MapChanged() { mapVersion++; Versions().TouchAll(); }
+
+        // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN (advisory 2026-10-28 section 4 #5a): every map event above Touches its cells and
+        // every whole-world change (MapChanged, incl. World()'s folds) TouchAlls, so TickRecheckBody hashes a laid hose's
+        // corridor only when a cell of it may have changed. Something LiveCellSig reads that fires no event is caught by the
+        // phased audit (every CorridorAuditEvery-th recheck of a reel hashes regardless) and by the folds re-read here.
+        private readonly HoseCorridorVersions corridorVersions = new HoseCorridorVersions();
+        internal const int CorridorAuditEvery = 10;
+        private int cvLadder = int.MinValue, cvClimb = int.MinValue, cvSalt = int.MinValue;
+        private bool cvBands;
+        internal int CorridorSkips;
+        private HoseCorridorVersions Versions()
+        {
+            corridorVersions.Ensure(map.Size.x, map.Size.z);
+            return corridorVersions;
+        }
+
+        /// <summary>CorridorHashLive(r.lay) != r.corridorHash, skipping the hash when no cell of its rectangle changed since the
+        /// hash last matched and this is not the reel's phased audit. Mirrored by Replay/ReplayTick.cs CorridorMoved.</summary>
+        private bool CorridorMoved(CompHoseReel r, int now)
+        {
+            HoseCorridorVersions cv = Versions();
+            int climbGen = RM_SuperdeepTrap.EngineOf(map)?.ClimbGenerationNoSwim ?? 0;
+            if (cvLadder != RM_LadderUtility.StateVersion || cvBands != RM_HoseBands.On || cvClimb != climbGen || cvSalt != RM_CliffMask.settingsSalt)
+            {
+                cvLadder = RM_LadderUtility.StateVersion; cvBands = RM_HoseBands.On; cvClimb = climbGen; cvSalt = RM_CliffMask.settingsSalt;
+                cv.TouchAll();
+            }
+            int x0 = int.MaxValue, z0 = int.MaxValue, x1 = int.MinValue, z1 = int.MinValue;
+            List<V2> flat = r.lay.Flat;
+            for (int i = 0; i < flat.Count; i++) { Cell c = flat[i].Floor; if (c.X < x0) x0 = c.X; if (c.Z < z0) z0 = c.Z; if (c.X > x1) x1 = c.X; if (c.Z > z1) z1 = c.Z; }
+            bool audit = (now / 250 + r.parent.thingIDNumber) % CorridorAuditEvery == 0;
+            if (!audit && r.corridorSeenAt > 0 && !cv.ChangedSince(r.corridorSeenAt, x0 - 2, z0 - 2, x1 + 2, z1 + 2)) { CorridorSkips++; return false; }
+            long at = cv.Now;
+            bool moved = CorridorHashLive(r.lay) != r.corridorHash;
+            r.corridorSeenAt = moved ? 0 : at;
+            return moved;
+        }
         private void OnMapFogged() { splitFogged++; MapChanged(); }
 
         /// <summary>
@@ -968,6 +1013,7 @@ namespace RimMandrake.FlowWorks.Hose
             r.lastLayReason = lay != null && lay.Ok ? null : (lay?.Reason ?? "could not be laid");
             r.layKey = key;
             r.corridorHash = r.lay != null ? CorridorHash(w, lay) : 0;
+            r.corridorSeenAt = 0;   // the snapshot w may lag the live map: the next recheck hashes live
             DropMeshes(r);
         }
 
@@ -1325,7 +1371,7 @@ namespace RimMandrake.FlowWorks.Hose
             RecPart(0);
             // HOSE_OFF_MEND_SLEEPWALKING_RETRACT (C7a-F4): hoses switched off in Mod Settings keep their ends (design: through
             // off/on) -- no obstacle reroute, trail deletion or automatic retraction runs on an invisible hose
-            bool cut = RM_HoseSettings.enabled && r.layKey != null && (r.lay == null || CorridorHashLive(r.lay) != r.corridorHash);
+            bool cut = RM_HoseSettings.enabled && r.layKey != null && (r.lay == null || CorridorMoved(r, now));
             RecPart(1);
             if (cut)
             {

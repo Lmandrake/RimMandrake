@@ -96,7 +96,7 @@ namespace RimMandrake.FlowWorks.Replay
         public ulong CorridorHash, GeomHash;
         public string LastLayReason;
         public int LayEpoch;
-        public int HashedAt;         // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: corridor version when the live hash last matched (0: never)
+        public long HashedAt;         // HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN: corridor version when the live hash last matched (0: never)
         public RM_NetLink Link;
         public override string ToString() => "reel" + T.Id;
     }
@@ -311,7 +311,7 @@ namespace RimMandrake.FlowWorks.Replay
             return cw;
         }
 
-        private void MapChanged() => mapVersion++;
+        private void MapChanged() { mapVersion++; versions.Ensure(W, H); versions.TouchAll(); }   // RM_MapComponent_Hoses.MapChanged
 
         /// <summary>RM_MapComponent_Hoses.CellChanged (line 422) after the cell changed on the live map.</summary>
         private void SetCell(int x, int z, char ch)
@@ -442,7 +442,7 @@ namespace RimMandrake.FlowWorks.Replay
                 }
                 return false;
             }
-            int at = versions.Now;
+            long at = versions.Now;
             bool moved = CorridorHashLive(r.Lay) != r.CorridorHash;
             r.HashedAt = moved ? 0 : at;
             return moved;

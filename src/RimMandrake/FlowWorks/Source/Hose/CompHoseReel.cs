@@ -62,6 +62,9 @@ namespace RimMandrake.FlowWorks.Hose
         /// (HoseLayQueue step 6, HOSE_LAY_FIX_STALE_EPOCH).</summary>
         public int layEpoch;
         public ulong corridorHash;
+        /// <summary>Runtime only (HOSE_INVALIDATION_REWIRE_EVENT_DRIVEN): the corridor version when the live corridor hash last
+        /// equalled corridorHash; 0 = never (the next recheck hashes). Reset by every lay.</summary>
+        public long corridorSeenAt;
         public string lastProvider = "none";
         public bool lastSignal;
         // ---------------------------------------------------------------- real flow (hose port step 6, FINAL §3.2-3.4)
