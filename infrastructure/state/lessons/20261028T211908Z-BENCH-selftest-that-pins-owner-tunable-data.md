@@ -1,0 +1,1 @@
+A selftest that pins an owner-tunable data value (selftest_dispatcher: lent max_used_by_us_pct == 50) goes RED the day the owner moves the value by card (48 on 2026-10-28), and that RED blocked the wave-1 go-live pre-flight. Assert the ruling's bound (<= 50, his 'up to 50%'), not today's number. Fixed 6d042bb849.
