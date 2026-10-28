@@ -67,7 +67,7 @@ childhood: a bad bleeder in a family of jungle-cutters, kept indoors and resente
 adult: the finest grafter in the clan and has not set foot outside the glasshouse in thirty years.
 > Two and a half metres of Wookiee doing needle-work with hooked tools the size of a fingernail, because a scratch puts her in bed for a week and a fall would kill her. Every food crop on this river came off her bench. She has never seen the fields they grow in and asks about them constantly, of everyone, forever.
 
-**Bo Kesh** · Yttakin · m · 44
+**Bo Kesh** · Wookiee · m · 44
 `traits: ShootingAccuracy(TriggerHappy), Abrasive, NaturalMood(Sanguine)`
 `weapon: OuterRim_A280Blaster`
 `skills: Shooting 17`
@@ -105,7 +105,7 @@ childhood: raised where a grievance goes to its cause and to no one else, ever.
 adult: marsh-station botanist. Slow hands, perfect results, four decades of them.
 > When someone wrongs her she walks — four days across poison marsh, on foot, alone, in a rebreather — to say one sentence to the one person it belongs to, and then walks four days back. She has done it eleven times. She has never once complained to anyone else about anything, and the station finds this unbearable.
 
-**Hakko Vurr** · Yttakin · m · 38
+**Hakko Vurr** · Ortolan · m · 38
 `traits: DrugDesire(ChemicalFascination), TooSmart, Gourmand`
 `item: Ambrosia`
 `skills: Intellectual 16, Medicine 4`
@@ -188,13 +188,13 @@ childhood: pulled a cousin out of a Blackstar pen at nineteen and got a taste fo
 adult: carries people out. Thirty-one so far, across nine liberation raids.
 > Under the Oath a life handed back is a transfer of ownership that never expires, so thirty-one freed people now belong to him and follow him and will not be dismissed — up the stairs, into the baths, to the latrine. He is hiding in a shed on the fourth terrace. They have found the shed. He is going out again next season anyway.
 
-**Pell Yoon** · Yttakin · f · 33
+**Pell Yoon** · Sullustan · f · 33
 `traits: Kind, Gourmand, SlowLearner`
 childhood: fed everything that came to the door, including things that bite.
 adult: terrace cook. Six years of quietly running grain down to the Homestead farms.
 > The Elders ruled against feeding outsiders who will not take the Oath, and she has broken that ruling every month since, and she will tell you about it inside the first hour of meeting you because she is warm, delighted with herself, and constitutionally incapable of holding anything back. Everyone knows. Everyone is waiting for someone else to be the one who says it.
 
-**Yorrum Pell** · Yttakin · m · 35
+**Yorrum Pell** · Chadra-Fan · m · 35
 `traits: Kind, AnnoyingVoice, NaturalMood(Sanguine)`
 childhood: happy. Four brothers. He'll cover them too.
 adult: terrace irrigation, second shift, and he has four children of his own now.

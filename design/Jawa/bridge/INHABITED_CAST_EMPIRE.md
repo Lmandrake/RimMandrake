@@ -65,7 +65,7 @@ childhood: nothing. She would tell you that herself and then not elaborate.
 adult: forty-one alien-labour transfer forms have not gone up the line since '43.
 > The pile is behind the ration crates and it is now structurally load-bearing. She is not hiding anyone and could not name one of them if you asked — she is simply behind, has been behind for six years, and refiling is work. **Forty-one people are alive because a tired woman could not face an afternoon of paperwork**, and if that were ever explained to her she would be baffled and mildly annoyed.
 
-**Drill Instructor Hesk Varo** · Hussar · f · 31
+**Drill Instructor Hesk Varo** · Echani · f · 31
 `traits: Brawler, BodyMastery, NaturalMood(Pessimist)`
 `weapon: OuterRim_VibroBlade`
 `skills: Melee 19`

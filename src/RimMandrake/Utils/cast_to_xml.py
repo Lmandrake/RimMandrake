@@ -142,6 +142,13 @@ SERVICE_MARKERS = ("service-year", "since activation", "since assembly",
                    "since salvage", "since reactivation")
 TRAIT_RE = re.compile(r"^(?P<def>[A-Za-z_][A-Za-z0-9_]*)(?:\((?P<degree>[^)]+)\))?$")
 
+# Xenotypes the owner cut entirely (VANILLA_XENOTYPE_DEFCUT_1; mirrored by
+# src/RimUtinni/UtinniPatches/selftest_xenotype_defcut.py CUT, and a selftest
+# keeps the two equal). A cast note naming one as its race would regenerate a
+# <race> the engine no longer has, so it is a PROBLEM, never written.
+CUT_XENOTYPES = ("Dirtmole", "Genie", "Highmate", "Hussar", "Impid", "Neanderthal", "Pigskin",
+                 "Starjack", "VRESaurids_Saurid", "Waster", "Yttakin")
+
 GENDER_MAP = {"m": "Male", "f": "Female"}
 
 
@@ -286,6 +293,10 @@ def parse_file(path, faction, traitdb, skilldb, problems):
             "hook": "",
             "line": i + 1,
         }
+
+        if person["race"] in CUT_XENOTYPES:
+            problems.append("%s:%d  race %r for %s is a CUT xenotype; pick a surviving race in the note"
+                            % (os.path.basename(path), i + 1, person["race"], person["name"]))
 
         age_raw = m.group("age").strip()
         person["age_text"] = age_raw
