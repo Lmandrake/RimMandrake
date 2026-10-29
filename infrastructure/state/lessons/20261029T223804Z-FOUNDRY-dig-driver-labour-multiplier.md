@@ -1,0 +1,2 @@
+A live dig driver that waits a fixed tick window must set digLabourMultiplier itself: since DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK the shipped x4 makes a D4->D5 cut 51,200 work (~30,000 ticks at MiningSpeed 1). droid_dig_live waited 15,000 and read a running, accepted RM_DigCanalJob as 'no cut landed' UNMEASURED/SITE (J20261029T221052Z-6cdd1a); fixed 13ba79077b by running at 0.25. Mocks should price work like the mod so a stale window fails offline.
+home: live-debugging-proof-harness
