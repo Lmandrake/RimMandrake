@@ -8820,3 +8820,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES","ts":"2026-10-29T03:41:02Z","tsn":1793245262142997023}
 {"seat":"FOUNDRY","event":"start","id":"STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES","ts":"2026-10-29T03:41:02Z","tsn":1793245262592819899}
 {"seat":"FOUNDRY","event":"implemented","id":"STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES","sha":"971b0943901c","ref":"origin/main","criteria":[{"id":"A1","level":"L2","text":"on SteveDesktop, re-run `bootstrap_wsl.sh clone` so ~/rm/runner gets core.hooksPath, pull the pinned sha, confirm an AI-session commit there is refused and a la"}],"needs":"bridge","ts":"2026-10-29T03:41:47Z","tsn":1793245307636667558}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-10-29T03:51:00Z","tsn":1793245860669286783}
+{"seat":"FOUNDRY","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"take","token":"FOUNDRY.pid12683.7d752841","expires":"2026-10-29T04:55:35Z","ts":"2026-10-29T04:10:35Z","tsn":1793247036462245738}
+{"seat":"FOUNDRY","event":"lease","id":"ARTPIPE_FACING_COHERENCE_1","action":"renew","token":"FOUNDRY.pid12683.7d752841","expires":"2026-10-29T04:55:44Z","ts":"2026-10-29T04:10:44Z","tsn":1793247044504969503}
+{"seat":"FOUNDRY","event":"claim","id":"ARTPIPE_FACING_COHERENCE_1","ts":"2026-10-29T04:10:45Z","tsn":1793247045015459986}
+{"seat":"FOUNDRY","event":"start","id":"ARTPIPE_FACING_COHERENCE_1","ts":"2026-10-29T04:10:45Z","tsn":1793247045481919196}
+{"seat":"FOUNDRY","event":"block","id":"ARTPIPE_FACING_COHERENCE_1","reason":"Remaining work is 7 escalated facing sets (FACING_SETS_REDRAW_WHOLE_SET_ESCALATED) that exhausted 3 whole-set redraw rounds and await an owner call; no offline build work left","ts":"2026-10-29T04:10:53Z","tsn":1793247053121732732}
