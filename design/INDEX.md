@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1179 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1184 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -558,13 +558,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `the_sump.md` | The Sump — definition sheet | — |
 | `the_twilight_deep.md` | The Twilight Deep — definition sheet | — |
 | `the_twilight_deep_bedazzle_2026-09-26.md` | The Twilight Deep — the marquee: rewards, experiences, interactions (2026-09-26) | — |
-| `the_twilight_deep_bottom_cast_draft_2026-09-27.md` | The Twilight Deep — bottom cast (draft) | — |
 | `the_twilight_deep_content_2026-09-26.md` | The Twilight Deep — content drop, 2026-09-26 | — |
 | `the_twilight_deep_danger_pass_2026-09-27.md` | The Twilight Deep — danger pass (2026-09-27 sitting) | — |
 | `the_twilight_deep_flora_pass_2026-09-27.md` | The Twilight Sea — underwater flora design pass (2026-09-27) | — |
 | `the_twilight_deep_light_economy_pass_2026-09-27.md` | The Twilight Deep — light economy & Compact pass (2026-09-27) | — |
 | `the_twilight_deep_river_pass_2026-09-27.md` | The Twilight Deep — river pass (2026-09-27) | — |
 | `the_webwork.md` | The Webwork — definition sheet | — |
+| `twilight_bottom_cast_draft_2026-10-29.md` | The Twilight Deep — bottom cast, draft sheet (2026-10-29) | — |
 | `warscar_bedazzle_cast_2026-09-30.md` | Warscar — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under warscar_bedazzle_sitting_1 movement 4 |
 | `warscar_bedazzle_review_2026-09-30.md` | Warscar — bedazzle sitting, movements 1–2 + volley turn 1 (2026-09-30) | — |
 | `warscar_turn3_development_2026-09-30.md` | Warscar — volley turn 3: developing what the owner ruled | — |
@@ -770,6 +770,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `biome_map_makers_design_2026-10-10.md` | Per-biome map-makers + landform mutators — design draft (2026-10-10) | — |
 | `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake.Biomes mod, one section per biome | — |
 | `biome_mod_unification_spec.md` | Biome mod unification — execution spec (BIOME_MOD_UNIFICATION_1) | — |
+| `biome_name_provenance_audit_2026-10-28.md` | Biome name provenance audit: the mineral sheet (2026-10-28) | — |
 | `biome_owner_cards_2026-10-22.md` | Owner question cards: retirement, leaning-scrub art, shell part, dead patches (2026-10-22) | — |
 | `biome_review_save_standard.md` | Standard biome review savegame — specification | — |
 | `biome_rulings.md` | Biome, roster and naming-tier rulings — owner's words | — |
@@ -1027,6 +1028,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimflow_v3_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
 | `rimflow_v3_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
 | `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
+| `rimflow_v3_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
 | `rimpulse_gpt_review_2026-10-22.md` | RimPulse — GPT review (2026-10-22) | — |
 | `rimpulse_intent_2026-10-22.md` | RimPulse — intention, success criteria, architecture and honest state (2026-10-22) | — |
@@ -1045,6 +1047,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `scald_steam_and_hazards_spec.md` | The Scald — steam weather and boiling-water hazards (design spec) | — |
 | `scurrier_male_commission_2026-10-14.md` | Scurrier male art commission (2026-10-14) | — |
 | `sea_dive_maps_spec.md` | Sea dive maps — design spec | — |
+| `sea_floor_census_2026-10-29.md` | Sea floor and catch census, 2026-10-29 | — |
 | `sea_shore_mutator_spec.md` | Sea shore tile mutator — design spec | — |
 | `second_workstation_study_2026-10-24.md` | Second Windows workstation: would it pay? (study, 2026-10-24) | — |
 | `ship_cargo_hoist_design_2026-10-01.md` | Ship cargo hoist — universal vertical cargo device (design, 2026-10-01) | — |
@@ -1069,6 +1072,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `test_orchestration_two_machines_2026-10-25.md` | Test orchestration on two machines: combined plan (2026-10-25) | — |
 | `test_site_saves_2026-10-15.md` | Clean saved test maps — design (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, 2026-10-15) | — |
 | `testing_investment_sim_2026-10-27.md` | Where more testing would pay, and which kinds (2026-10-27) | — |
+| `testing_policy_2026-10-28.md` | Testing policy: the right test, at the right time (2026-10-28) | — |
 | `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, compatible with Dubs Bad Hygiene Lite (design, 2026-10-16) | — |
 | `thirst_fluids_design_2026-10-17.md` | Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17) | — |
 | `ticket_naming_2026-10-10.md` | Ticket naming: SUBJECT_INTENT_TWIST (2026-10-10) | — |
@@ -1324,6 +1328,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `gizka_ship_pest_draft.md` | Gizka ship-pest — design draft (parts 3–6) | — |
 | `head_envelope_2026-10-20.md` | Painted-head envelope — measurements, rules and the Tabula Rasa findings (2026-10-20) | — |
 | `head_parts_painted_vs_attached_2026-10-20.md` | Head parts: painted into the head art, or attached by gene? — design pass 2026-10-20 | — |
+| `species_signature_mechanics_spec.md` | Species signature mechanics that need C# (XENOTYPE_CANON_CORRECTION_1, Pattern 4) | — |
 | `star_wars_canon_names.md` | Star Wars canon name reference |  |
 | `taozin_split_proposal_2026-10-17.md` | Taozin split — proposal (2026-10-17; BUILT 2026-10-17, see "Built" below) | — |
 
