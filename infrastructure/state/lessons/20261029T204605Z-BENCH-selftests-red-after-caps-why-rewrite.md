@@ -1,0 +1,2 @@
+On origin/main at 63fb35cf13 (2026-10-29 ~20:50Z) selftest_role_tokens.py fails W5 (_caps_why must name the measured record and carry [A]) for Conductor/Arbiter/Auditor/Operations, and selftest_conductor_identity.py fails 'CONDUCTOR.md states helpers in session mode only': the v3 schedule/doc reconcile commits (c2dfc21445 and kin) rewrote that text without updating the tests. Not caused by findings_fold (measure entry only).
+home: src/RimMandrake/rimflow/selftest_role_tokens.py

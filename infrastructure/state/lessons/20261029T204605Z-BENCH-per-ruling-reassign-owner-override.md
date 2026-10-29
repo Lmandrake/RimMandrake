@@ -1,0 +1,2 @@
+rimflow reassign <ID> --to BENCH --per-ruling <RULING> is recorded as an OWNER-seat event marked override, not as BENCH acting under a ruling: a builder taking a FOUNDRY item under a ruling shows in the ledger as the owner overriding. Seen 2026-10-29 on FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X (OWNER.jsonl). Either the verb should stamp the acting seat plus ruling, or the skill should say per-ruling acts as OWNER.
+home: skills/using-rimflow

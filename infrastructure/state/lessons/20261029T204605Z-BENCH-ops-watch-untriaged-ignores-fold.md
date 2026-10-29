@@ -1,0 +1,2 @@
+ops_watch c_flow untriaged_findings still counts every UNTRIAGED finding not yet an item (131 on 2026-10-29), blind to findings_fold's standing table, where those 131 fold to 78 signatures and only 26 need FOUNDRY (residue). Owed: read D:\ClaudeWork\rimmandrake\findings_fold\standing.json counts.residue (and contradictions) so Operations' backlog alarm counts judgment owed, not repeats (design section 9 conservation).
+home: src/RimMandrake/Utils/ops_watch.py
