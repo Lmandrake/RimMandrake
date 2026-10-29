@@ -8877,3 +8877,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC","ts":"2026-10-29T05:49:12Z","tsn":1793252952765196809}
 {"seat":"FOUNDRY","event":"start","id":"GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC","ts":"2026-10-29T05:49:13Z","tsn":1793252953268331136}
 {"seat":"FOUNDRY","event":"implemented","id":"GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC","sha":"ff3e91d6de90","ref":"origin/main","criteria":[{"id":"A1","level":"L0","text":"CPU sway allocates nothing per strand per frame: buffer overload returns identical points and a reused-buffer loop allocates 0 B."},{"id":"A2","level":"L2","text":"one live proof row: kineticSway on, tails visibly sway; off, they hang still."}],"needs":"bridge","ts":"2026-10-29T05:51:51Z","tsn":1793253111269166712}
+{"seat":"FOUNDRY","event":"lease","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","action":"take","token":"FOUNDRY.pid14584.85ad71a0","expires":"2026-10-29T06:42:29Z","ts":"2026-10-29T05:57:29Z","tsn":1793253450351352675}
+{"seat":"FOUNDRY","event":"lease","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","action":"renew","token":"FOUNDRY.pid14584.85ad71a0","expires":"2026-10-29T06:42:36Z","ts":"2026-10-29T05:57:36Z","tsn":1793253456706028219}
+{"seat":"FOUNDRY","event":"claim","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","ts":"2026-10-29T05:57:37Z","tsn":1793253457283169295}
+{"seat":"FOUNDRY","event":"start","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","ts":"2026-10-29T05:57:37Z","tsn":1793253457909861444}
+{"seat":"FOUNDRY","event":"implemented","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","sha":"03a3353070a9","ref":"origin/main","criteria":[],"ts":"2026-10-29T05:58:53Z","tsn":1793253533669369869}
