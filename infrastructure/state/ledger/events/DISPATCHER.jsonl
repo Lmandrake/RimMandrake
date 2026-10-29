@@ -96,3 +96,4 @@
 {"seat":"DISPATCHER","event":"note","id":"SEAT_MEMORY_CLONES_DRIVES_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:26:28Z","ts":"2026-10-29T15:28:26Z","tsn":1793287706575994047}
 {"seat":"DISPATCHER","event":"note","id":"SEAT_MEMORY_CLONES_DRIVES_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:31:03Z","ts":"2026-10-29T15:32:36Z","tsn":1793287956057389025}
 {"seat":"DISPATCHER","event":"note","id":"SEAT_MEMORY_CLONES_DRIVES_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:39:05Z","ts":"2026-10-29T15:40:50Z","tsn":1793288450025901897}
+{"seat":"DISPATCHER","event":"note","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:43:00Z","ts":"2026-10-29T15:45:00Z","tsn":1793288700026990287}
