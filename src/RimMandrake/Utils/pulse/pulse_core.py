@@ -854,7 +854,7 @@ def seat_key(s: dict) -> str | None:
     n = (s.get("name") or "").strip().upper()
     # seat BENCH's window is named CONDUCTOR (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS; rimflow/session_match.py);
     # "CONDUCTOR" or "CONDUCTOR ▶ <item>", never "AGENT CONDUCTOR" (the Conductor role's hold window, not a seat)
-    if n == "CONDUCTOR" or n.startswith("CONDUCTOR "):
+    if n == "CONDUCTOR" or n.startswith("CONDUCTOR ▶ "):
         return "BENCH" if "BENCH" in SEATS else None
     if not n.startswith("AGENT "):
         return None
