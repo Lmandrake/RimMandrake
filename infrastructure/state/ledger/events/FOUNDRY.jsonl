@@ -8926,3 +8926,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","ts":"2026-10-29T07:17:51Z","tsn":1793258271898968231}
 {"seat":"FOUNDRY","event":"start","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","ts":"2026-10-29T07:17:52Z","tsn":1793258272392495487}
 {"seat":"FOUNDRY","event":"block","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","reason":"First step is a live re-run of W1_wakes_terrain_walked (row may just be 17 days stale), and the bridge is unusable: companion test profile expired 2026-10-29T03:00Z, owner must extend it","ts":"2026-10-29T07:17:54Z","tsn":1793258274443993583}
+{"seat":"FOUNDRY","event":"lease","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","action":"take","token":"FOUNDRY.pid15864.87ee8d1e","expires":"2026-10-29T08:06:54Z","ts":"2026-10-29T07:21:54Z","tsn":1793258514487559416}
+{"seat":"FOUNDRY","event":"lease","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","action":"renew","token":"FOUNDRY.pid15864.87ee8d1e","expires":"2026-10-29T08:07:01Z","ts":"2026-10-29T07:22:01Z","tsn":1793258522091616951}
+{"seat":"FOUNDRY","event":"claim","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","ts":"2026-10-29T07:22:02Z","tsn":1793258522626662337}
+{"seat":"FOUNDRY","event":"start","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","ts":"2026-10-29T07:22:03Z","tsn":1793258523168379244}
+{"seat":"FOUNDRY","event":"block","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","reason":"All live criteria (L2) need the bridge; companion test profile expired 2026-10-29T03:00Z, owner must extend expiresUtc","ts":"2026-10-29T07:22:05Z","tsn":1793258525329317069}
