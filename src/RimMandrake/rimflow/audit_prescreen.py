@@ -78,10 +78,14 @@ def signal_rates(rows):
 
 
 def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists):
-    by = {}
+    by, kids = {}, {}
     for e in events:
         if e.get("id"):
             by.setdefault(e["id"], []).append(e)
+        # follow-up work filed against an item: `file --caused-by X` (id + caused_by) or `spawn --from X` (name + from)
+        parent = e.get("caused_by") if e.get("event") == "file" else e.get("from") if e.get("event") == "spawn" else None
+        if parent:
+            kids.setdefault(parent, []).append(e)
     rows = []
     for iid, evs in by.items():
         closes = [e for e in evs if e.get("event") == "close" and _epoch(e["ts"]) >= since_epoch]
@@ -111,12 +115,15 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
                     flags.append("many_files")
                 if any(m in f for f in files for m in rules["gate_path_markers"]):
                     flags.append("gate_or_harness_path")
+                if any(m in f for f in files for m in rules.get("flowworks_path_markers", [])):
+                    flags.append("flowworks_or_live")
         for v in verifies:
             p = v.get("evidence") or ""
             if p.startswith("/") and ":" not in p.split("/")[0] and not exists(p):
                 flags.append("evidence_path_absent")
                 break
-        claims = [e for e in evs if e.get("event") == "claim" and e["ts"] <= c["ts"]]
+        # the maker: whoever last took the item before the close (`claim`, or `start`/`reclaim` with no lease)
+        claims = [e for e in evs if e.get("event") in ("claim", "start", "reclaim") and e["ts"] <= c["ts"]]
         if claims and c.get("seat") == claims[-1].get("seat") and not any(
                 v.get("seat") != c.get("seat") for v in verifies):
             flags.append("closed_by_maker_only")
@@ -125,8 +132,14 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
         if len([e for e in evs if e.get("event") == "close"]) > 1 or any(
                 e.get("event") in ("claim", "start", "reclaim") and e["ts"] > c["ts"] for e in evs):
             flags.append("reopened_before")
-        if any(m in iid for m in rules["flowworks_id_markers"]):
+        if any(m in iid for m in rules["flowworks_id_markers"]) and "flowworks_or_live" not in flags:
             flags.append("flowworks_or_live")
+        # signs after the close, before this audit: work filed against it, or another seat writing on it
+        if any(k.get("ts", "") > c["ts"] for k in kids.get(iid, [])):
+            flags.append("followup_after_close")
+        if any(e.get("event") in ("note", "finding", "block") and e.get("ts", "") > c["ts"]
+               and e.get("seat") != c.get("seat") for e in evs):
+            flags.append("noted_after_close")
         if iid in past_failed:
             flags.append("past_audit_failed")
         rows.append({"item": iid, "sha": sha, "closed_at": c["ts"], "closed_by": c.get("seat"),

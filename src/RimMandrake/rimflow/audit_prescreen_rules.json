@@ -21,7 +21,9 @@
   "many_files": 1,
   "short_claim_to_close": 1,
   "gate_or_harness_path": 1,
-  "past_audit_failed": 1.5
+  "past_audit_failed": 1.5,
+  "followup_after_close": 1.5,
+  "noted_after_close": 1
  },
  "many_files_threshold": 25,
  "short_claim_seconds": 300,
@@ -31,6 +33,9 @@
   "_LIVE",
   "BRIDGE",
   "COLD_LOAD"
+ ],
+ "flowworks_path_markers": [
+  "/FlowWorks/"
  ],
  "gate_path_markers": [
   "rimflow/",

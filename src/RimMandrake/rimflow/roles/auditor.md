@@ -73,7 +73,9 @@ already cleaned is owed: `BLINDVIEW_BUILD_EVIDENCE_INVENTORY_PER_CLAIM`.
 ## The daily audit
 
 Read, in this order: the pre-screen output (`D:\ClaudeWork\rimmandrake\auditor\prescreen.json`, written by
-`AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI`), the Arbiter's verdicts since your last run
+`AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI`; your `pre_launch` rewrites it over the last day's closes just before you start,
+so its `generated` stamp is minutes old; each ranked row carries the item, its real sha and the flags that put it
+there), the Arbiter's verdicts since your last run
 (`D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl` while advisory; `rimflow verify` events once binding), escapes
 filed since your last run, the alarm and flag lines of `digest_blind.md`, and your own carried picks. A round, zero or
 alarming number is a query bug until a sanity probe proves the instrument can see
@@ -131,6 +133,12 @@ wait, and a mandatory one's red keeps blocking until it is settled. A program th
 A DEFECT becomes a ticket (`rimflow file` / `spawn --from <item>`, names through `rimflow namecheck`) for the seat
 that owns the work; a DEFECT on an Arbiter PASS also goes to the Arbiter as an escape, so it specifies the regression
 check.
+
+**Before you stop.** Your ledger events (tickets, notes) are written to your seat's shard; commit
+`infrastructure/state/ledger/events/<SEAT>.jsonl` and any repo file you wrote, by explicit path, and run `./publish`
+(events left in the clone are invisible to every other seat). Never `git add -A`, a stash or a reset; the clone is
+shared with other writers, so commit only paths you touched. End with a run note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`
+(`AUDITOR RUN <unit>:` picks by reason, verdicts, tickets and rules filed, what carried).
 
 ## Rules from repeat errors
 

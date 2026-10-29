@@ -107,5 +107,35 @@ for bad in ('{"item": "X", "verdict": "defect"}\n', '{"verdict": "DEFECT"}\n', '
 sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "audits.schema.json")))
 ok("audits.schema.json verdicts = the reader's", sch["properties"]["verdict"]["enum"], ["SOUND", "DEFECT", "UNRESOLVED"])
 
+# HOSE_TICK_REBUILD_ZERO_ALLOC (closed 2026-10-28 on a blind check) scored 0 with no flags. The ledger already held
+# three signs before any audit: the maker who started it closed it (a `start`, not a `claim`), a follow-up was filed
+# against it after the close, and its sha touched FlowWorks source.
+hose = [ev("file", "HOSE_X_ITEM", "2026-10-26T07:00:00Z"),
+        ev("start", "HOSE_X_ITEM", "2026-10-26T08:00:00Z"),
+        ev("close", "HOSE_X_ITEM", "2026-10-26T12:00:00Z", sha="a", reason="red-first + mutant, selftest 63/63"),
+        ev("note", "HOSE_X_ITEM", "2026-10-26T13:00:00Z", seat="OTHER", text="recheck"),
+        ev("file", "HOSE_FOLLOW_ITEM", "2026-10-26T13:01:00Z", caused_by="HOSE_X_ITEM")]
+fw_git = lambda s: ["src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs"]
+hf = {r["item"]: r["flags"] for r in ap.score(hose, R, since, git=fw_git)}["HOSE_X_ITEM"]
+ok("start-then-close by one seat = closed_by_maker_only", "closed_by_maker_only" in hf, True)
+ok("follow-up filed with caused_by after close", "followup_after_close" in hf, True)
+ok("note by another seat after close", "noted_after_close" in hf, True)
+ok("FlowWorks source path = flowworks_or_live", "flowworks_or_live" in hf, True)
+spawn_after = [ev("close", "S_ITEM", "2026-10-26T12:00:00Z", sha="a"),
+               {"event": "spawn", "name": "S_CHILD_ITEM", "from": "S_ITEM", "ts": "2026-10-26T12:30:00Z",
+                "seat": "BENCH"}]
+ok("spawn --from after close = followup",
+   "followup_after_close" in ap.score(spawn_after, R, since, git=git)[0]["flags"], True)
+before = [ev("file", "B_FOLLOW_ITEM", "2026-10-26T11:00:00Z", caused_by="B_ITEM"),
+          ev("note", "B_ITEM", "2026-10-26T11:30:00Z", seat="OTHER"),
+          ev("close", "B_ITEM", "2026-10-26T12:00:00Z", sha="a")]
+bf = {r["item"]: r["flags"] for r in ap.score(before, R, since, git=git)}["B_ITEM"]
+ok("follow-up and note BEFORE the close do not flag", [f for f in bf if "after_close" in f], [])
+own = [ev("close", "O_ITEM", "2026-10-26T12:00:00Z", sha="a"), ev("note", "O_ITEM", "2026-10-26T12:05:00Z")]
+ok("the closer's own note after close does not flag",
+   "noted_after_close" in ap.score(own, R, since, git=git)[0]["flags"], False)
+ok("new signals carry rule weights", all(k in R["weights"] for k in ("followup_after_close", "noted_after_close")),
+   True)
+
 print("FAILED: %s" % FAILED if FAILED else "all ok")
 sys.exit(1 if FAILED else 0)

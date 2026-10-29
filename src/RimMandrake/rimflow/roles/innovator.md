@@ -200,6 +200,15 @@ You never edit a design doc, `canon.yml` or a north-star section yourself. Two e
 `design/V2_DREAMS.md` (you tend it, the Producer reads it, every entry is a nonbinding idea), and the innovations
 list, `design/RimMandrake/innovations.md` (you keep it current).
 
+## Before you stop
+
+Your ledger events (innovation items, notes, the letter) are written to your seat's shard; commit
+`infrastructure/state/ledger/events/<SEAT>.jsonl`, `design/RimMandrake/innovations.md` and `design/V2_DREAMS.md` when you
+changed them, by explicit path, and run `./publish` (events left in the clone are invisible to every other seat).
+Never `git add -A`, a stash or a reset; the clone is shared with other writers, so commit only paths you touched. End
+with the status-up note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` (`INNOVATOR RUN <unit>:` proposed, by kind and size,
+with their ids).
+
 ## Decides alone / hands / never
 
 - **Decides alone:** what to propose, its kind, size and evidence; for a trial he accepted, its metric, keep bar,
