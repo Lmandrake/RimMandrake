@@ -1224,8 +1224,12 @@ def test_g4_bench_backstop_only_after_long_human_idle():
 def test_g5_live_schedule_has_the_conductor_entry():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
-    c = SR.config(live).get("BENCH") or {}
     raw = ((live.get("seat_restart") or {}).get("seats") or {}).get("BENCH") or {}
+    # BENCH is OFF in the live schedule (blind review 3, test_k1); the entry stays complete for his choice, so judge it
+    # as it would run if switched back on
+    on = json.loads(json.dumps(live))
+    on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
+    c = SR.config(on).get("BENCH") or {}
     check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "opus"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
@@ -1744,6 +1748,74 @@ def test_j8_request_stores_the_transcript_it_read():
     p = SR.transcript_path(BCLONE, "sid-old")
     check(rc == 0 and rq and rq.get("tx_path") == p, "J8 the request carries tx_path (%s)" % (rq or {}).get("tx_path"))
 
+
+
+def test_k1_no_bench_kill_while_its_restart_is_off():
+    # blind review 3 (2026-10-29): check-then-kill on a live window cannot be atomic -> both BENCH kill paths are off
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        live = json.load(f)
+    raw = live["seat_restart"]["seats"]["BENCH"]
+    check(raw.get("enabled") is False and raw.get("backstop") is False and "review 3" in (raw.get("_why_off") or ""),
+          "K1 live: seat_restart.seats.BENCH enabled false, backstop false, _why_off cites review 3")
+    check("BENCH" not in SR.config(live) and "FOUNDRY" in SR.config(live),
+          "K1 live: BENCH is out of seat_restart.config, FOUNDRY is still in (%s)" % sorted(SR.config(live)))
+    sch = bsched(enabled=False, backstop=False)
+    over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 40_000, "last_user_at": T0 - 40_000}
+    seen, ctl = [], []
+    st = fresh()                          # control: the same ticks with BENCH on must reach a kill (the probe can see)
+    for t in range(0, 20_000, 300):
+        a = run(bsched(), st, obs(sessions=[bsess()], request=breq() if t == 0 else None, tx=over,
+                                  last_human=(T0 - 40_000, {}, 10, 100)), T0 + t)
+        ctl += [x["do"] for x in a if x.get("seat") == "BENCH"]
+    check("restart_kill" in ctl, "K1 control: BENCH on, the same ticks reach restart_kill (%s)" % sorted(set(ctl)))
+    for start in (None, "pending", "claimed"):
+        st = fresh()
+        if start:                         # a restart left half-way when the switch went off
+            st["seat_restart"] = {"BENCH": {"state": start, "source": "request", "ts": T0 - 5000, "session_id": "sid-old",
+                                            "pid": 4242, "start": 77, "cancel_after": T0 - 5000, "tx_offset": 0,
+                                            "quiet_since": T0 - 5000, "seen_size": 100, "claimed_at": T0 - 10}}
+        for t in range(0, 20_000, 300):   # a request, a backstop-eligible window, every tick for 5.5 h
+            a = run(sch, st, obs(sessions=[bsess()], request=breq() if t == 0 else None, tx=over,
+                                 last_human=(T0 - 40_000, {}, 10, 100)), T0 + t)
+            seen += [x["do"] for x in a if x.get("seat") == "BENCH"]
+    check(not [d for d in seen if d in ("restart_kill", "restart_request")],
+          "K1 BENCH off: no restart_request and no restart_kill over 5.5 h of ticks, from fresh/pending/claimed (%s)"
+          % sorted(set(seen)))
+    kills = []
+    fx = {"session_file": lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "CONDUCTOR", "status": "idle"},
+          "kill": lambda pid, start=None: kills.append(pid) or "SIGTERM", "write_killed": lambda seat, rec: None,
+          "recheck": lambda *a: [], "start": lambda pid: 77, "final": lambda *a: []}
+    st = fresh()
+    st["seat_restart"] = {"BENCH": {"state": "claimed", "session_id": "sid-old", "pid": 4242, "start": 77}}
+    act = {"do": "restart_kill", "seat": "BENCH", "pid": 4242, "session_id": "sid-old", "session_name": "CONDUCTOR",
+           "session_names": ["CONDUCTOR"], "argv": ["x", "p"], "gen": "g"}
+    res = SR.execute(act, sch, st, True, T0, fx)
+    check(not kills and res.startswith("refused") and st["seat_restart"]["BENCH"]["state"] == "cancelled",
+          "K1 BENCH off: execute refuses a restart_kill that reaches it, nothing signalled (%s)" % res)
+    res = SR.execute(act, live, st, True, T0, fx)
+    check(not kills and res.startswith("refused"), "K1 the live schedule refuses it too (%s)" % res)
+    # control: the same action with the seat on reaches the kill path (the guard is what stopped it)
+    st["seat_restart"]["BENCH"]["state"] = "claimed"
+    SR.execute(act, bsched(), st, True, T0, fx)
+    check(kills == [4242], "K1 control: BENCH switched on, the same claimed action signals (%s)" % kills)
+    # the window's own request asks for nothing while off
+    import contextlib
+    import io
+    saved = (SR._schedule, SR.unpublished_shard)
+    try:
+        SR._schedule = lambda: sch
+        SR.unpublished_shard = lambda seat, clone: None     # a published shard: only the off switch can stop it
+        rp = SR.request_path("BENCH")
+        if os.path.exists(rp):
+            os.remove(rp)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = SR.main(["request", "--seat", "BENCH", "--ticket", "GOODBYE", "--reason", "goodbye", "--pid", "4242",
+                          "--note", "n", "--fresh"])
+    finally:
+        SR._schedule, SR.unpublished_shard = saved
+    check(rc == 0 and not os.path.exists(rp) and "not enabled" in out.getvalue(),
+          "K1 BENCH off: `request` writes no request (%r)" % out.getvalue()[-120:])
 
 
 def main():

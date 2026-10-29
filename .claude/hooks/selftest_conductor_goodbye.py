@@ -8,6 +8,7 @@ restart, said loudly; settings.json wires it. A mutation check proves the cases 
 Nothing here restarts anything: the hook only prints.
 """
 import json
+import tempfile
 import os
 import subprocess
 import sys
@@ -72,8 +73,27 @@ def test_window_gate():
           {"name": "AGENT CONDUCTOR"}, {})[0], "schedule unreadable -> the fixed name CONDUCTOR still identifies it")
 
 
-def test_message():
+def _on(sch):
+    """The live schedule with the BENCH restart switched back on (the path the owner may choose to restore)."""
+    on = json.loads(json.dumps(sch))
+    on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
+    return on
+
+
+def test_live_bench_restart_is_off_and_the_close_out_says_so():
+    # blind review 3 (2026-10-29): both BENCH kill paths are off; the close-out still runs and tells him why
+    raw = LIVE["seat_restart"]["seats"]["BENCH"]
+    check(raw.get("enabled") is False and raw.get("backstop") is False and "review 3" in (raw.get("_why_off") or ""),
+          "live: seat_restart.seats.BENCH enabled false, backstop false, _why_off cites review 3")
     m = G.message(LIVE, ok_why="ok")
+    for need in ("--owner-said", "--for OWNER", "./publish", "conductor/log.md", "Closed out:",
+                 "off pending your choice", "stays open"):
+        check(need in m, "live off: the close-out still names %r" % need)
+    check("seat_restart.py request" not in m, "live off: the close-out requests NO restart")
+
+
+def test_message():
+    m = G.message(_on(LIVE), ok_why="ok")
     for need in ("--owner-said", "--for OWNER", "--why", "conductor/log.md", "./publish",
                  "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye", "Closed out:",
                  "nothing you send is lost", "REFUSED"):
@@ -101,7 +121,14 @@ def run(prompt, env_seat="BENCH", name="CONDUCTOR", schedule=None):
 
 def test_end_to_end():
     rc, out = run("Good night!")
-    check(rc == 0 and "GOODBYE" in out and "seat_restart.py request" in out, "e2e: 'Good night!' prints the close-out")
+    check(rc == 0 and "GOODBYE" in out and "off pending your choice" in out and "seat_restart.py request" not in out,
+          "e2e: 'Good night!' prints the close-out, restart off pending his choice (live schedule)")
+    onp = os.path.join(tempfile.mkdtemp(), "on.json")
+    with open(onp, "w") as f:
+        json.dump(_on(LIVE), f)
+    rc, out = run("Good night!", schedule=onp)
+    check(rc == 0 and "GOODBYE" in out and "seat_restart.py request" in out,
+          "e2e: with the BENCH restart switched on, 'Good night!' ends in the request")
     rc, out = run("goodbye to the old pipe system")
     check(rc == 0 and out == "", "e2e: 'goodbye to the old pipe system' prints nothing (%r)" % out[:80])
     rc, out = run("bye", env_seat="FOUNDRY")

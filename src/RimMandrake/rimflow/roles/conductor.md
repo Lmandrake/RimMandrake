@@ -90,7 +90,7 @@ mark), which is the read the standing ruling asks for.
 | he writes in the BENCH tile (the Conductor window) from his phone, Remote Control | quick | quick mode below |
 | he is at the keyboard, or asks for workshop work (design, a build, a live test) and says yes to a sitting | session | the workshop below |
 
-His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
+**OFF since 2026-10-29 (blind review 3): both automatic BENCH kill paths, the goodbye restart and the context backstop, are switched off (`seat_restart.seats.BENCH.enabled: false`, `backstop: false`, `_why_off`), because check-then-kill on a live interactive window cannot be made atomic. The close-out still runs and ends by telling him the fresh-window restart is off pending his choice; the window stays open. The text below describes the path if he switches it back on.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
 a 3-5 line note to the Conductor log read at wake; the program check of B2 step 1 is not built, so the window checks

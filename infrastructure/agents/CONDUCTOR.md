@@ -61,7 +61,7 @@ This rule outranks every other rule in this file and in BENCH.md.
 
 ## Goodbye
 
-His whole message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs the light close-out
+**OFF since 2026-10-29 (blind review 3): both automatic BENCH kill paths, the goodbye restart and the context backstop, are switched off (`seat_restart.seats.BENCH.enabled: false`, `backstop: false`, `_why_off`), because check-then-kill on a live interactive window cannot be made atomic. The close-out still runs and ends by telling him the fresh-window restart is off pending his choice; the window stays open. The text below describes the path if he switches it back on.** His whole message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs the light close-out
 (conductor_briefing Part B2: his rulings on the ledger with his words, open promises filed `--for OWNER`, 3-5 lines
 to the Conductor log). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH

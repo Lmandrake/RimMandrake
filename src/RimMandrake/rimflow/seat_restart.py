@@ -1132,6 +1132,10 @@ def execute(a, sch, st, apply, now, fx=None):
             return "fallback failed: %s: %s" % (type(e).__name__, str(e)[:160])
     if a["do"] != "restart_kill":
         return None
+    if seat not in config(sch):          # a seat switched off is never killed, whatever action reaches here (review 3)
+        rs.update(state="cancelled", why="seat_restart is off for %s: kill refused" % seat, ended_at=now)
+        rs.pop("claimed_at", None)
+        return "refused: seat_restart is off for %s (nothing killed)" % seat
     if rs.get("state") != "claimed":
         return "skipped: restart state is %s" % rs.get("state")
     if not apply:
