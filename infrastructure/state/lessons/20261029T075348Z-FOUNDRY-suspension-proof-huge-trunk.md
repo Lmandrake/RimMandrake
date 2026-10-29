@@ -1,0 +1,2 @@
+suspension_bridge_proof.py --fresh-map does not call validation_core.clear_huge_plants before prepare_site, so a fresh map with a giant plant reads SB_site_ready UNMEASURED (RM_HugeTrunkBlocker), as pit_superdeep_walk/gravel_live already fixed. Workaround: clear_huge_plants on the new map, rerun without --fresh-map. (2026-10-29, GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO)
+home: src/RimMandrake/FlowWorks/northstar/suspension_bridge_proof.py
