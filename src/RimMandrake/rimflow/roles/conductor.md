@@ -90,7 +90,7 @@ mark), which is the read the standing ruling asks for.
 | he writes in the BENCH tile (the Conductor window) from his phone, Remote Control | quick | quick mode below |
 | he is at the keyboard, or asks for workshop work (design, a build, a live test) and says yes to a sitting | session | the workshop below |
 
-**OFF since 2026-10-29 (blind review 3): both automatic BENCH kill paths, the goodbye restart and the context backstop, are switched off (`seat_restart.seats.BENCH.enabled: false`, `backstop: false`, `_why_off`), because check-then-kill on a live interactive window cannot be made atomic. The close-out still runs and ends by telling him the fresh-window restart is off pending his choice; the window stays open. The text below describes the path if he switches it back on.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
+**Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."* The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`). The context backstop for this window is OFF (`backstop: false`): he ruled only on the goodbye kill, and review 3's backstop findings are open.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
 a 3-5 line note to the Conductor log read at wake; the program check of B2 step 1 is not built, so the window checks
@@ -101,7 +101,7 @@ restarts the window as a fresh Remote Control `CONDUCTOR` only once the old tran
 or while a record is half-written. ANY input after the goodbye cancels it: his message, a ring, a task notification
 or a queued prompt, read in full from a transcript cursor with no timestamp filter. A malformed record also cancels, and
 a request after he wrote again is refused. The fresh window's wake (`--gen` binds it to that one restart) lists, whole
-and once, what he sent the old one after the goodbye. A context backstop also restarts the window, but only after 4 h with no message
+and once, what he sent the old one after the goodbye. A context backstop (OFF since 2026-10-29) would also restart the window, but only after 4 h with no message
 from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
 `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
 `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the

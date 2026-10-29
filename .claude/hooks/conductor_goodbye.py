@@ -6,8 +6,8 @@ back (design/RimMandrake/conductor_briefing_2026-10-28.md B2/B3). When his WHOLE
 the light close-out into that window's context on that turn: his rulings onto the ledger, open promises filed for
 OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher
 relaunches a fresh CONDUCTOR window after a ten-minute quiet window (seat_restart.py, kind "conductor", goodbye_quiet_s).
-While seat_restart.seats.BENCH is enabled false (blind review 3, 2026-10-29), step 4 writes the log lines by hand and
-the reply tells him the fresh-window restart is off pending his choice.
+The kill is his accepted risk (owner 2026-10-29: "Leave the goodbye kill on. If I'm typing at the same time it's an
+acceptable risk."); the context backstop for this window stays off (seat_restart.seats.BENCH.backstop false).
 
 Only a whole-message goodbye fires: src/RimMandrake/rimflow/goodbye_phrase.py (case-folded, apostrophes dropped,
 every run of non-word characters read as one space; letters of any script stay) compared WHOLE against
@@ -122,13 +122,7 @@ def message(sch, ok_why=""):
         reason = "seat_restart is off for BENCH in dispatcher_schedule.json"
     else:
         reason = None
-    if reason and isinstance(c, dict) and c.get("enabled") is False and c.get("_why_off"):
-        # switched off on purpose (blind review 3: a live window cannot be killed safely): he chooses what replaces it
-        step4 = NO_RESTART.format(reason="the fresh-window restart is OFF for BENCH pending the owner's choice "
-                                  "(seat_restart.seats.BENCH._why_off)", log=log)
-        tail = ("The fresh-window restart is off pending your choice (a live window cannot be killed safely; options "
-                "in the goodbye review's response.md), so this window stays open.")
-    elif reason:
+    if reason:
         step4 = NO_RESTART.format(reason=reason, log=log)
         tail = "This window stays open (%s)." % reason
     else:

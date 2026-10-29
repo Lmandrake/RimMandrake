@@ -74,22 +74,24 @@ def test_window_gate():
 
 
 def _on(sch):
-    """The live schedule with the BENCH restart switched back on (the path the owner may choose to restore)."""
+    """A copy of the schedule with the BENCH restart on (the live one is on; this keeps the tests independent of it)."""
     on = json.loads(json.dumps(sch))
     on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
     return on
 
 
-def test_live_bench_restart_is_off_and_the_close_out_says_so():
-    # blind review 3 (2026-10-29): both BENCH kill paths are off; the close-out still runs and tells him why
+def test_live_goodbye_restart_is_on_and_backstop_off():
+    # owner 2026-10-29 after blind review 3: the goodbye kill stays on; the backstop stays off (he ruled only on goodbye)
     raw = LIVE["seat_restart"]["seats"]["BENCH"]
-    check(raw.get("enabled") is False and raw.get("backstop") is False and "review 3" in (raw.get("_why_off") or ""),
-          "live: seat_restart.seats.BENCH enabled false, backstop false, _why_off cites review 3")
+    check(raw.get("enabled") is True and raw.get("backstop") is False and "_why_off" not in raw
+          and "acceptable risk" in (raw.get("_why_enabled") or ""),
+          "live: seat_restart.seats.BENCH enabled true (his words in _why_enabled), backstop false, no _why_off")
     m = G.message(LIVE, ok_why="ok")
     for need in ("--owner-said", "--for OWNER", "./publish", "conductor/log.md", "Closed out:",
-                 "off pending your choice", "stays open"):
-        check(need in m, "live off: the close-out still names %r" % need)
-    check("seat_restart.py request" not in m, "live off: the close-out requests NO restart")
+                 "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye"):
+        check(need in m, "live: the close-out names %r" % need)
+    check("Fresh Conductor after ten quiet minutes" in m and "off pending your choice" not in m,
+          "live: the reply line promises the fresh window, not the off notice")
 
 
 def test_message():
@@ -121,8 +123,8 @@ def run(prompt, env_seat="BENCH", name="CONDUCTOR", schedule=None):
 
 def test_end_to_end():
     rc, out = run("Good night!")
-    check(rc == 0 and "GOODBYE" in out and "off pending your choice" in out and "seat_restart.py request" not in out,
-          "e2e: 'Good night!' prints the close-out, restart off pending his choice (live schedule)")
+    check(rc == 0 and "GOODBYE" in out and "seat_restart.py request --seat BENCH" in out,
+          "e2e: 'Good night!' prints the close-out ending in the restart request (live schedule)")
     onp = os.path.join(tempfile.mkdtemp(), "on.json")
     with open(onp, "w") as f:
         json.dump(_on(LIVE), f)
