@@ -834,6 +834,160 @@ def test_e6_the_deadline_is_the_one_written_at_the_kill():
     check(st2["seat_restart"]["FOUNDRY"].get("window_s") == 77, "E6 reconciliation restores the kill-time window")
 
 
+# ---- v3 does MORE (owner 2026-10-28 ~21:50 PDT: "All three. We don't want to waste time waiting.")
+
+def test_v1_foundry_grace_is_30_s():
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        live = json.load(f)
+    check(SR.config(live).get("FOUNDRY", {}).get("grace_s") == 30,
+          "V1 the live schedule gives FOUNDRY a 30 s restart grace (%s)" % SR.config(live).get("FOUNDRY", {}).get("grace_s"))
+
+
+def _tx_file(name, recs):
+    p = os.path.join(TMP, "v2_%s.jsonl" % name)
+    with open(p, "w") as f:
+        f.write("\n".join(json.dumps(r) for r in recs) + "\n")
+    return p
+
+
+def _u(ts, content, **kw):
+    r = {"type": "user", "timestamp": ts, "message": {"role": "user", "content": content}}
+    r.update(kw)
+    return r
+
+
+def test_v2_only_a_human_prompt_counts_as_new_input():
+    """The dry request of 2026-10-29 was cancelled at 04:27:29Z by the Dispatcher's own ring (a Stop-hook
+    task-notification). Machine and peer-seat input must never cancel a restart; a human prompt must."""
+    end = {"type": "assistant", "timestamp": "2026-10-29T04:20:05Z", "message": {"stop_reason": "end_turn"}}
+    human = _u("2026-10-29T04:20:00Z", "do the thing", origin={"kind": "human"}, promptSource="typed")
+    machine = [
+        _u("2026-10-29T04:27:29Z", "<task-notification>\n<summary>Stop hook feedback</summary>\n</task-notification>\n"
+           "<system-reminder>\nStop hook blocking error from command \"Stop\": [RimFlow Dispatcher \u2014 a program, not "
+           "a person; ring FOUNDRY-1-1]\n</system-reminder>",
+           origin={"kind": "task-notification", "producer": "session-task"}, promptSource="system",
+           turnOrigin="task_notification"),
+        _u("2026-10-29T04:28:00Z", "<task-notification> <task-id>a1</task-id> done", origin={"kind": "task-notification"},
+           promptSource="system", turnOrigin="task_notification"),
+        _u("2026-10-29T04:28:10Z", 'Another Claude session sent a message: <cross-session-message from-name="CONDUCTOR" '
+           'from-mode="bypass">\ngo\n</cross-session-message>', origin={"kind": "peer", "name": "CONDUCTOR"},
+           promptSource="system", turnOrigin="peer"),
+        _u("2026-10-29T04:28:20Z", 'Another Claude session sent a message: <cross-session-message '
+           'from-name="AGENT BENCH \u25b6 ITEM_X" from-mode="bypass">\ngo\n</cross-session-message>',
+           origin={"kind": "peer"}, promptSource="system", turnOrigin="peer"),
+        _u("2026-10-29T04:28:30Z", "[RimFlow Dispatcher \u2014 a program, not a person; ring FOUNDRY-2-1]\nSeat FOUNDRY"),
+        _u("2026-10-29T04:28:40Z", "[RimFlow seat restart] You are a FRESH FOUNDRY window"),
+        _u("2026-10-29T04:28:50Z", "[Cross-session idle notice] \"bench-66\" is idle now", promptSource="system",
+           turnOrigin="system"),
+        _u("2026-10-29T04:29:00Z", "probe", promptSource="sdk", turnOrigin="sdk"),
+        _u("2026-10-29T04:29:05Z", "scheduled probe", promptSource="system", turnOrigin="scheduled"),
+    ]
+    names = ["CONDUCTOR", "AGENT BENCH", "AGENT FOUNDRY"]
+    s = SR.tx_summary(_tx_file("machine", [human, end] + machine + [end]), peers=names)
+    check(s["last_user_at"] == D.S.parse_ts("2026-10-29T04:20:00Z"),
+          "V2 rings, task notifications, seat peers (CONDUCTOR / AGENT BENCH), [RimFlow] prompts, sdk and scheduled "
+          "input are not new input (last_user_at %s)" % SR._iso(s["last_user_at"] or 0))
+    for i, h in enumerate([
+            _u("2026-10-29T04:30:00Z", "stop that", origin={"kind": "human"}, promptSource="typed"),
+            _u("2026-10-29T04:30:00Z", "queued words", origin={"kind": "human"}, promptSource="queued"),
+            _u("2026-10-29T04:30:00Z", "legacy prompt with no origin"),
+            _u("2026-10-29T04:30:00Z", 'Another Claude session sent a message: <cross-session-message from-name="OWNER" '
+               'from-mode="bypass">\nGame is up\n</cross-session-message>', origin={"kind": "peer", "name": "OWNER"},
+               promptSource="system", turnOrigin="peer")]):
+        s = SR.tx_summary(_tx_file("human%d" % i, [human, end] + machine + [h, end]), peers=names)
+        check(s["last_user_at"] == D.S.parse_ts("2026-10-29T04:30:00Z"),
+              "V2 a human prompt still counts as new input (%d: %s)" % (i, h["message"]["content"][:30]))
+    dflt = SR.peer_names()
+    check("CONDUCTOR" in dflt and "AGENT BENCH" in dflt,
+          "V2 the default peer names come from the schedule and include the Conductor's (%s)" % dflt)
+    s = SR.tx_summary(_tx_file("dflt", [human, end] + machine + [end]))
+    check(s["last_user_at"] == D.S.parse_ts("2026-10-29T04:20:00Z"),
+          "V2 tx_summary with no peers argument still ignores the Conductor")
+
+
+def test_v2_no_ring_while_a_restart_is_pending():
+    """A ring into a window whose restart is pending would start a new ticket in it (then busy -> failed). Rings wait
+    while the restart is pending, but only for a bounded time, so a held restart cannot starve the seat."""
+    sch = sched()
+    st = fresh()
+    st["seat_restart"] = {"FOUNDRY": {"state": "pending", "ts": T0, "session_id": "sid-old"}}
+    why = SR.ring_hold(st, "FOUNDRY", sch, T0 + 20)
+    check(bool(why), "V2 a fresh pending restart holds the Dispatcher's ring (%s)" % why)
+    check(not SR.ring_hold(st, "FOUNDRY", sch, T0 + 10_000), "V2 a long-held pending restart no longer holds rings")
+    st["seat_restart"]["FOUNDRY"]["state"] = "cancelled"
+    check(not SR.ring_hold(st, "FOUNDRY", sch, T0 + 20), "V2 no restart pending -> rings as usual")
+    st = fresh()
+    st["seat_restart"] = {"FOUNDRY": {"state": "pending", "ts": T0, "session_id": "sid-old"}}
+    st["seats"]["FOUNDRY"] = {"session_id": "sid-old", "idle_since": T0 - 10_000}
+    o = obs()
+    o.update({"peek": lambda seat: {"id": "SOME_ITEM", "needs": "offline"}, "events": lambda seat, since: [], "consumed": lambda seat, rid: None,
+              "alive": lambda pid: True, "armed": lambda seat: {"session_id": "sid-old", "pid": 4242}})
+    acts = D.decide(sch, st, o, T0 + 20, True)
+    check("ring" not in dos(acts), "V2 the Dispatcher does not ring a seat whose restart is pending (%s)" % dos(acts))
+    st["seat_restart"]["FOUNDRY"]["state"] = "cancelled"
+    acts = D.decide(sch, st, o, T0 + 20, True)
+    check("ring" in dos(acts), "V2 control: the same idle seat with no restart pending IS rung (%s)" % dos(acts))
+
+
+def _request(sch, ctx, extra=()):
+    """cmd_request on a simulated window whose transcript says ctx tokens -> (exit, printed, request written?)."""
+    import contextlib
+    import io
+    saved = {k: getattr(SR, k) for k in ("unpublished_shard", "_schedule", "session_file", "helpers_of", "reg_start",
+                                         "proc_start", "tx_summary")}
+    try:
+        SR.unpublished_shard = lambda seat, clone: None
+        SR._schedule = lambda: sch
+        SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "AGENT FOUNDRY", "cwd": CLONE,
+                                       "procStart": "77"}
+        SR.helpers_of = lambda path, now=None: []
+        SR.reg_start = lambda sf: 77
+        SR.proc_start = lambda pid: 77
+        SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_tool", "last_at": T0, "last_user_at": T0 - 5,
+                                               "ctx_tokens": ctx}
+        rp = SR.request_path("FOUNDRY")
+        if os.path.exists(rp):
+            os.remove(rp)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = SR.main(["request", "--seat", "FOUNDRY", "--ticket", "T_DONE", "--pid", "4242", "--note", "landed x"]
+                         + list(extra))
+        return rc, out.getvalue(), os.path.exists(rp)
+    finally:
+        for k, v in saved.items():
+            setattr(SR, k, v)
+
+
+def test_v3_close_out_continues_while_context_is_ok():
+    """FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE: one ring per sub-minute ticket spent the wake cap. Under the backstop
+    the close-out writes NO request and tells the seat to pull its next ticket itself; over it, it asks for a fresh
+    window."""
+    raw = {"seats": {"FOUNDRY": {"session_name": "AGENT FOUNDRY", "clone": CLONE}},
+           "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {"backstop_ctx_tokens": 110_000}}}}
+    rc, out, wrote = _request(raw, 60_000)
+    check(rc == 0 and not wrote and "next --seat FOUNDRY" in out and "CONTEXT OK" in out,
+          "V3 context 60k < 110k: no request written, the seat is told to run next (rc %s, wrote %s, %r)"
+          % (rc, wrote, out[-200:]))
+    rc, out, wrote = _request(raw, 120_000)
+    check(rc == 0 and wrote and "RESTART REQUESTED" in out,
+          "V3 context 120k >= 110k: the fresh-window request is written (rc %s, wrote %s)" % (rc, wrote))
+    rc, out, wrote = _request(raw, None)
+    check(rc == 0 and wrote, "V3 context UNMEASURED: ask for the fresh window (never continue blind) (wrote %s)" % wrote)
+    rc, out, wrote = _request(raw, 60_000, ["--fresh"])
+    check(rc == 0 and wrote, "V3 --fresh asks for the fresh window whatever the context (wrote %s)" % wrote)
+    raw["seat_restart"]["seats"]["FOUNDRY"]["grace_s"] = 30
+    rc, out, wrote = _request(raw, 120_000)
+    check("30 s grace" in out, "V3 the request names the seat's configured grace, not the default (%r)" % out[-160:])
+    with open(SR.seat_log_path("FOUNDRY"), encoding="utf-8") as f:
+        log = f.read()
+    check(log.count("landed x") >= 5, "V3 the note reaches the seat log whether or not a restart is requested")
+    fmd = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "infrastructure", "agents", "FOUNDRY.md")
+    with open(fmd, encoding="utf-8") as f:
+        doc = f.read()
+    check("CONTEXT OK" in doc and "next --seat FOUNDRY --ringed" in doc and "110000" in doc.replace(",", "").replace(" ", ""),
+          "V3 FOUNDRY.md's close-out tells the seat to continue on CONTEXT OK and names the 110000 backstop")
+
+
 def main():
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):

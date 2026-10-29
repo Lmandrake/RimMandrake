@@ -130,14 +130,14 @@ Every fleet launch of this tile (cold boot via the Start Agent Fleet shortcut, `
 ## A fresh window per ticket (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET)
 
 Owner 2026-10-28: "Yes we must solve foundry context right now." A long-lived window carries
-every ticket's context into the next, so the Dispatcher restarts this window between tickets:
+every ticket's context into the next, so once your context passes the backstop the Dispatcher restarts this window between tickets:
 the same window, relaunched fresh with Remote Control on. It never uses `claude -p`, `--resume` or `/login`.
 It does nothing until `seat_restart.enabled` is on in `dispatcher_schedule.json`; until then
 `request` only writes your note and says so.
 
 **Close-out**: do it when the ticket's unit of work has ended AND no helper of yours is alive AND no background
 command of yours is still running (`run_in_background`: the restart cannot see one, so the kill would cut it off).
-Do all four steps in one turn, then end the turn:
+Do the steps in one turn:
 
 1. Ledger check: the ticket is closed/noted against its real sha, and your shard is committed and published —
    🔴 for EVERY ringed ticket, ledger-only ones too (a reconcile, note, block or `implemented` has no code commit
@@ -146,16 +146,25 @@ Do all four steps in one turn, then end the turn:
    `git commit -m "ledger: FOUNDRY <ID>" -- infrastructure/state/ledger/events/FOUNDRY.jsonl`, then `./publish`.
    `git status --short -- infrastructure/state/ledger/events/FOUNDRY.jsonl` prints nothing before step 2.
 2. File every open promise as an item (`rimflow file` / `note`), so none lives only in this window.
-3. Write the note and the request in one command:
+3. Write the note and run the close-out in one command:
    `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.
-   The note is appended to your seat log. The request is refused (exit 3) while a helper is alive.
-4. End the turn. **Any new input in the next 2 minutes cancels the restart.** It is also held, never forced,
-   in any of these cases:
-   - a helper is alive;
-   - you hold the bridge or the driver lock;
-   - your last game event is a deploy, load or shutdown;
-   - PAUSE is on;
-   - the owner touched the machine in the last 2 minutes.
+   The note is appended to your seat log either way. The command is refused (exit 3) while a helper is alive.
+4. **Do what it prints** (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE; owner 2026-10-28: "we should let Foundry do
+   more than one if it's context is ok"):
+   - **`CONTEXT OK`** — your window's context is under the backstop (`seat_restart.seats.FOUNDRY.backstop_ctx_tokens`,
+     110000 tokens). No restart is requested. **Do not end the turn:** run
+     `python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY --ringed` and work the item it gives you, then this
+     same close-out again. Only an empty queue (or a ticket that needs the owner) ends the turn. One ring per ticket
+     spent the hourly wake cap on sub-minute tickets and left you at a bare prompt; this is the fix.
+   - **`RESTART REQUESTED`** — context is over the backstop (or UNMEASURED, or you passed `--fresh` because the
+     window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 30 s cancels the
+     restart — the Dispatcher's rings, task notifications and the Conductor's cross-session messages never do, and
+     the Dispatcher does not ring you while it is pending. It is also held, never forced, in any of these cases:
+     - a helper is alive;
+     - you hold the bridge or the driver lock;
+     - your last game event is a deploy, load or shutdown;
+     - PAUSE is on;
+     - the owner touched the machine in the last 2 minutes.
 
 **First turn of a fresh window** (its first prompt says so):
 `python3 src/RimMandrake/rimflow/seat_restart.py wake --seat FOUNDRY`. It prints the seat log

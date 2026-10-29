@@ -242,15 +242,15 @@ else creates that file. Run these from `$B`, in order, and stop at the first fai
 ## 10. Seat restart: enable steps (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET; built 2026-10-28, shipped DISABLED)
 
 What it is: a fresh FOUNDRY window per ticket.
-- The seat's close-out (`infrastructure/agents/FOUNDRY.md`, "A fresh window per ticket") runs `seat_restart.py request`.
-- The Dispatcher holds the request through 120 s of grace, then kills that one pid. It holds instead while any of these is true:
+- The seat's close-out (`infrastructure/agents/FOUNDRY.md`, "A fresh window per ticket") runs `seat_restart.py request`. While the window's context is under `backstop_ctx_tokens` (110000) it prints CONTEXT OK, writes no request, and the seat pulls its next ticket itself (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE); only over it (or UNMEASURED, or `--fresh`) is the restart requested.
+- The Dispatcher holds the request through its grace (`grace_s`, FOUNDRY 30 s) and does not ring the seat while it is pending (bounded by `ring_hold_s`), then kills that one pid. then kills that one pid. It holds instead while any of these is true:
   - a helper is alive;
   - the bridge or driver lock is FOUNDRY's;
   - FOUNDRY's last game event is transitional;
   - PAUSE is on;
   - a ring or a recovery is in flight;
   - the owner touched the machine in the last 120 s (20 min for a backstop), or his idle clock is UNMEASURED.
-  New input cancels it. Right before the kill it re-reads the session file (status must say `idle`), the transcript, the helpers, the bridge, the owner's idle clock and PAUSE. It signals through a pidfd pinned to the pid, only if that process's /proc start time is the one Claude Code registered for the session (`procStart` in `sessions/<pid>.json`, checked again when the restart is asked for), and confirms the death; a window that survives SIGKILL is never relaunched beside.
+  New HUMAN input cancels it; the Dispatcher's rings, task notifications and a seat's (CONDUCTOR / AGENT BENCH) cross-session messages never do (`seat_restart._is_human_input`). Right before the kill it re-reads the session file (status must say `idle`), the transcript, the helpers, the bridge, the owner's idle clock and PAUSE. It signals through a pidfd pinned to the pid, only if that process's /proc start time is the one Claude Code registered for the session (`procStart` in `sessions/<pid>.json`, checked again when the restart is asked for), and confirms the death; a window that survives SIGKILL is never relaunched beside.
 - The tile relaunches itself through `seat_loop.sh`, using the profile's own LAUNCH line (`--remote-control 'AGENT FOUNDRY'`) plus a first prompt.
 - The restart is verified when the doorbell re-arms for the new session. Each step lands in `$S/journal.jsonl` (`do` = `restart_*`).
 - Code: `src/RimMandrake/rimflow/seat_restart.py`, `src/RimMandrake/Utils/seat_loop.sh`; schedule key `seat_restart`.

@@ -9,11 +9,15 @@ window with Remote Control on — never `claude -p`, never `--resume`, never /lo
 Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
   request    the seat, at the end of its ticket's unit of work with no helper alive, runs
              `seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines>"`: the note goes
-             to its seat log (read by the fresh window), the request to <dispatcher state>/restart/<SEAT>.request.json.
+             to its seat log (read by the fresh window). While the window's context is under backstop_ctx_tokens it
+             prints CONTEXT OK and writes NO request: the seat runs `rimflow next` and keeps going
+             (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE). Over it (or UNMEASURED, or --fresh) the request goes to
+             <dispatcher state>/restart/<SEAT>.request.json.
              Refused while any helper of the window is alive. Backstop: the Dispatcher also starts one for a window that
              is idle, has no live helper, and whose context (last usage in its transcript) is past a threshold.
-  pending    grace (120 s); cancelled by any new input in the window's transcript after the request, or by the window's
-             session changing. HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
+  pending    grace (grace_s; FOUNDRY 30 s); cancelled by new HUMAN input in the window's transcript after the request
+             (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input),
+             or by the window's session changing. No ring while pending (ring_hold, bounded). HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
              driver lock is held by the seat or unreadable, the seat's last game event is transitional, PAUSE, or a
              doorbell ring is in flight. Not quiet (idle + last record an ended assistant turn, 30 s old) for 3 ticks
              -> failed: busy.
@@ -54,7 +58,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "intile_window_s": 90, "backstop_ctx_tokens": 110_000, "backstop_idle_s": 1800,
             "helper_stale_s": 3600, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
-            "owner_idle_s": 120, "backstop_owner_idle_s": 1200, "fence_s": 1020}
+            "owner_idle_s": 120, "backstop_owner_idle_s": 1200, "fence_s": 1020, "ring_hold_s": 600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
@@ -205,15 +209,72 @@ def _is_input(rec):
     return False
 
 
+# Input no person typed. MEASURED 2026-10-29 over every transcript on SteveDesktop: a Dispatcher ring arrives as a
+# Stop-hook task-notification (origin.kind task-notification, promptSource system) — the one that cancelled the dry
+# restart at 04:27:29Z; a helper's or background task's end the same; a peer message as origin.kind "peer" with the
+# sender's session name; `claude -p` prompts as promptSource sdk; scheduled prompts as turnOrigin scheduled.
+MACHINE_ORIGINS = ("task-notification",)
+MACHINE_SOURCES = ("system", "sdk")
+MACHINE_TURNS = ("task_notification", "scheduled", "system", "sdk")
+MACHINE_MARKERS = ("[RimFlow ", "<task-notification>", "[Cross-session idle notice]")
+RING_MARK = "a program, not a person"
+_FROM_NAME = re.compile(r'<cross-session-message\b[^>]*\bfrom-name="([^"]*)"')
+
+
+def _text(rec):
+    c = (rec.get("message") or {}).get("content")
+    if isinstance(c, str):
+        return c
+    if isinstance(c, list):
+        return "\n".join(b.get("text") or "" for b in c if isinstance(b, dict) and b.get("type") == "text")
+    return ""
+
+
+def peer_names(sch=None):
+    """-> every session name of every scheduled seat (CONDUCTOR, AGENT BENCH, AGENT FOUNDRY, ...): a cross-session
+    message from one of them is a seat talking, not the owner. A peer of any other name (OWNER: broadcast.py stamps it
+    for the owner's `./game` messages) still counts as his input."""
+    if sch is None:
+        sch = _schedule()
+    out = []
+    for seat in sorted((sch.get("seats") or {})):
+        for n in SM.seat_names(seat, sch):
+            if n not in out:
+                out.append(n)
+    return out
+
+
+def _is_human_input(rec, peers):
+    """Real input (_is_input) that a person typed or delivered — never the Dispatcher's ring, a task notification, a
+    [RimFlow] prompt, a `claude -p`/scheduled prompt, or a cross-session message from a seat named in peers."""
+    if not _is_input(rec):
+        return False
+    o = rec.get("origin") if isinstance(rec.get("origin"), dict) else {}
+    text = _text(rec).lstrip()
+    if o.get("kind") == "peer" or rec.get("turnOrigin") == "peer":
+        m = _FROM_NAME.search(text)
+        name = o.get("name") or (m.group(1) if m else None)
+        return not (name and SM.name_matches(name, list(peers or [])))
+    if o.get("kind") in MACHINE_ORIGINS or rec.get("promptSource") in MACHINE_SOURCES \
+            or rec.get("turnOrigin") in MACHINE_TURNS:
+        return False
+    if text.startswith(MACHINE_MARKERS) or RING_MARK in text[:200]:
+        return False
+    return True
+
+
 def _assistant_kind(rec):
     sr = (rec.get("message") or {}).get("stop_reason")
     return "assistant_end" if sr == "end_turn" else "assistant_tool" if sr == "tool_use" else "assistant_other"
 
 
-def tx_summary(path, tail_bytes=4 << 20):
+def tx_summary(path, tail_bytes=4 << 20, peers=None):
     """-> {last_kind, last_at, last_user_at, ctx_tokens} from the main transcript's tail, or None (unreadable).
     last_kind: assistant_end (turn ended) | assistant_tool | assistant_other | user. ctx_tokens: the last assistant
-    record's input + cache read + cache creation tokens (what the next call re-sends)."""
+    record's input + cache read + cache creation tokens (what the next call re-sends). last_user_at: the last HUMAN
+    input only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart."""
+    if peers is None:
+        peers = peer_names()
     try:
         recs = _tail_records(path, tail_bytes)
     except OSError:
@@ -232,7 +293,7 @@ def tx_summary(path, tail_bytes=4 << 20):
                     "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
         else:
             s["last_kind"] = "user"
-            if _is_input(r):
+            if _is_human_input(r, peers):
                 s["last_user_at"] = at
         s["last_at"] = at
     return s if s["last_kind"] else None
@@ -375,6 +436,21 @@ def in_flight(st, seat, sch=None, now=None):
             return False
         return (now if now is not None else time.time()) - at < DEFAULTS["fence_s"]
     return rs.get("state") in OWNS
+
+
+def ring_hold(st, seat, sch, now):
+    """-> why the Dispatcher should not ring SEAT now, or None. A ring into a window whose restart is pending would
+    start a new ticket in the context the restart is about to drop (then busy -> failed): rings wait while the
+    restart is pending, for at most grace_s + ring_hold_s, so a held restart never starves the seat. Recovery is not
+    gated here (C8: a pending restart never freezes a recovery)."""
+    cfg = config(sch).get(seat)
+    rs = (st.get("seat_restart") or {}).get(seat) or {}
+    if not cfg or rs.get("state") != "pending" or rs.get("ts") is None:
+        return None
+    age = now - rs["ts"]
+    if age >= cfg["grace_s"] + cfg["ring_hold_s"]:
+        return None
+    return "seat restart pending (%d s old): no ring until it ends" % age
 
 
 def _find(sessions, name):
@@ -932,11 +1008,25 @@ def cmd_request(args):
         print("seat_restart: REFUSED: pid %s is not the process its session file registered (procStart %s, live %s)"
               % (pid, sf.get("procStart"), proc_start(pid)))
         return 3
+    cfg = config(_schedule())[seat]
+    # FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE (owner 2026-10-28: "we should let Foundry do more than one if it's
+    # context is ok"): under the backstop threshold the window keeps going on its next ticket itself — no request, no
+    # ring spent. Over it, UNMEASURED, or --fresh: the fresh window.
+    tx = tx_summary(path) if path else None
+    ctx = (tx or {}).get("ctx_tokens")
+    limit = cfg["backstop_ctx_tokens"]
+    if not args.fresh and ctx is not None and ctx < limit:
+        print("CONTEXT OK for %s: %d tokens < %d (backstop_ctx_tokens). No restart requested. Do NOT end the turn: "
+              "run `python3 src/RimMandrake/rimflow/cli.py next --seat %s --ringed` and work the item it gives you, "
+              "with the same close-out after it. Only an empty queue ends the turn." % (seat, ctx, limit, seat))
+        return 0
     req = {"seat": seat, "pid": pid, "start": born, "session_id": sf["sessionId"], "ticket": args.ticket,
-           "reason": args.reason, "ts": time.time()}
+           "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx}
     _write_json(request_path(seat), req)
-    print("RESTART REQUESTED for %s (%s). The Dispatcher acts after a %d s grace once this turn has ended and nothing "
-          "holds it. End your turn now; any new input cancels it." % (seat, sf["sessionId"], DEFAULTS["grace_s"]))
+    print("RESTART REQUESTED for %s (%s; context %s tokens, backstop %d%s). The Dispatcher acts after a %d s grace once "
+          "this turn has ended and nothing holds it. End your turn now; a new prompt from the owner cancels it."
+          % (seat, sf["sessionId"], "UNMEASURED" if ctx is None else ctx, limit, ", --fresh" if args.fresh else "",
+             cfg["grace_s"]))
     return 0
 
 
@@ -996,6 +1086,8 @@ def main(argv=None):
     r.add_argument("--ticket", required=True)
     r.add_argument("--reason", default="ticket ended")
     r.add_argument("--note", default="", help="3-5 lines for the seat log the fresh window reads")
+    r.add_argument("--fresh", action="store_true",
+                   help="ask for the fresh window even while context is under backstop_ctx_tokens")
     r.add_argument("--pid", type=int, help=argparse.SUPPRESS)
     w = sub.add_parser("wake", help="the fresh window's first read")
     w.add_argument("--seat")

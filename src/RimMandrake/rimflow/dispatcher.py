@@ -503,6 +503,9 @@ def decide(sch, st, obs, now, apply, out=None):
         if now - ss["idle_since"] < sch["stall_after_s"] or not cfg.get("wake", True):
             return
         # ---- stalled: can it be woken, is there work, may it be woken now
+        rh = SR.ring_hold(st, seat, sch, now)   # a pending restart: a ring would start a ticket in the dying window
+        if rh:
+            return
         armed = obs["armed"](seat)
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat,
