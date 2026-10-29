@@ -196,8 +196,9 @@ def item_path(iid, for_write=False):
 SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
 # 🔑 DISPLAY NAME vs SEAT KEY (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE, owner 2026-10-28: "make the Conductor
 # actually be named the Conductor, instead of Bench"). The v3 Conductor keeps seat KEY "BENCH" — every past event,
-# the shard events/BENCH.jsonl, `--seat BENCH`, the role file "AGENT BENCH", the `--name 'AGENT BENCH'` the
-# Dispatcher and seat_restart match, and BRIDGE holder names all carry it — and is SHOWN as "CONDUCTOR". Anything a
+# the shard events/BENCH.jsonl, `--seat BENCH`, the role file "AGENT BENCH" and BRIDGE holder names all carry it —
+# and is SHOWN as "CONDUCTOR", including its session `--name` since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (the
+# Dispatcher and seat_restart match "CONDUCTOR" and the alias "AGENT BENCH", session_match.names_of). Anything a
 # human or agent reads says `display(seat)`; anything that keys, stores or matches uses the seat itself.
 # `canonical()` lets "CONDUCTOR" be typed wherever a seat is accepted; it is never written to the ledger.
 SEAT_DISPLAY = {"BENCH": "CONDUCTOR"}

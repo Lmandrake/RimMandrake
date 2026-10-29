@@ -181,6 +181,21 @@ def test_request_refused_with_live_helper():
     check(ok, "no helper -> request allowed (%s)" % why)
     ok, why = SR.check_request("FOUNDRY", {"pid": 4242, "sessionId": "sid-old", "name": "AGENT BENCH"}, [])
     check(not ok, "a window whose session name is not the seat's cannot request the seat's restart")
+    # CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS: seat BENCH answers to CONDUCTOR and its pre-rename alias AGENT BENCH
+    for n in ("CONDUCTOR", "CONDUCTOR \u25b6 ITEM_X", "AGENT BENCH", "AGENT BENCH \u25b6 ITEM_X"):
+        ok, why = SR.check_request("BENCH", {"pid": 4242, "sessionId": "sid-old", "name": n}, [])
+        check(ok, "BENCH's window named %r may request its restart (%s)" % (n, why))
+    for n in ("AGENT CONDUCTOR", "CONDUCTORX", "AGENT FOUNDRY"):
+        ok, why = SR.check_request("BENCH", {"pid": 4242, "sessionId": "sid-old", "name": n}, [])
+        check(not ok, "a window named %r cannot request BENCH's restart (%s)" % (n, why))
+    cfg = SR.config({"seats": {"BENCH": {"session_name": "CONDUCTOR", "session_aliases": ["AGENT BENCH"],
+                                            "clone": "/c"}},
+                        "seat_restart": {"enabled": True, "seats": {"BENCH": {}}}})["BENCH"]
+    check(cfg["session_name"] == "CONDUCTOR" and cfg.get("session_aliases") == ["AGENT BENCH"],
+          "seat_restart's cfg carries the schedule's session_aliases")
+    argv = SR.relaunch_argv("BENCH", cfg)
+    check(argv[argv.index("--name") + 1] == "CONDUCTOR" == argv[argv.index("--remote-control") + 1],
+          "a BENCH relaunch takes the NEW name, never the alias")
 
 
 def test_unpublished_shard_is_named():

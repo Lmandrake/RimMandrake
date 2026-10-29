@@ -81,7 +81,7 @@ def config(sch):
         base = dict((sch.get("seats") or {}).get(seat) or {})
         cfg = dict(DEFAULTS)
         cfg.update({k: v for k, v in sr.items() if k in DEFAULTS})
-        cfg.update({k: base[k] for k in ("session_name", "clone", "model") if k in base})
+        cfg.update({k: base[k] for k in ("session_name", "session_aliases", "clone", "model") if k in base})
         cfg.update(c)
         cfg.setdefault("session_name", "AGENT " + seat)
         # a tile may never claim a relaunch decide() has already given up on (review3 #3)
@@ -410,7 +410,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
     if rs.get("alarm_pending"):          # a failure execute() met (it cannot alarm itself)
         why = rs.pop("alarm_pending")
         act(do="alarm", kind="restart:%s:execute" % seat, seat=seat, ticket=rs.get("ticket"), note=True, why=why)
-    named = _find(sessions, cfg["session_name"])
+    named = _find(sessions, SM.names_of(cfg))
     cur = named[0] if len(named) == 1 else None
     state = rs.get("state")
 
@@ -589,7 +589,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                        act)
     rs.update(state="claimed", claimed_at=now, pid=cur.get("pid"))
     act(do="restart_kill", seat=seat, pid=cur.get("pid"), session_id=rs["session_id"],
-        session_name=cfg["session_name"], ticket=rs.get("ticket"),
+        session_name=cfg["session_name"], session_names=SM.names_of(cfg), ticket=rs.get("ticket"),
         argv=relaunch_argv(seat, cfg, rs.get("reason") or "ticket ended"),
         why="%s: grace over, nothing held, window quiet" % rs.get("source"))
 
@@ -726,7 +726,7 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.update(state="dry", ended_at=now, why="dry run")
         return "would SIGTERM pid %s (%s) and relaunch in-tile: %s" % (a["pid"], a["session_id"], a["argv"][:-1])
     sf = fx.get("session_file", session_file)(a["pid"]) or {}
-    if sf.get("sessionId") != a["session_id"] or not SM.name_matches(sf.get("name"), a["session_name"]):
+    if sf.get("sessionId") != a["session_id"] or not SM.name_matches(sf.get("name"), a.get("session_names") or a["session_name"]):
         why = "sessions/%s.json names %s/%r, not %s/%r: nothing killed" % (
             a["pid"], sf.get("sessionId"), sf.get("name"), a["session_id"], a["session_name"])
         rs.update(state="failed", why=why, ended_at=now, alarm_pending="seat restart of %s refused: %s" % (seat, why),
@@ -847,8 +847,9 @@ def check_request(seat, sf, helpers):
     """Seat-side gate: the calling window must be the seat's window, and no helper of it may be alive."""
     if not sf or not sf.get("sessionId"):
         return False, "no ~/.claude/sessions/<pid>.json for the calling window"
-    if not SM.name_matches(sf.get("name"), "AGENT " + seat):
-        return False, "this window is %r, not 'AGENT %s'" % (sf.get("name"), seat)
+    names = SM.seat_names(seat)
+    if not SM.name_matches(sf.get("name"), names):
+        return False, "this window is %r, not %s" % (sf.get("name"), " / ".join("'%s'" % n for n in names))
     if helpers is None:
         return False, "helper inventory UNMEASURED (transcript or a subagent file unreadable)"
     live = [h["id"] for h in helpers if h.get("alive")]

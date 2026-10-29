@@ -386,9 +386,12 @@ def main():
     title = title.splitlines()[0][:MAX_TITLE]
     role_title = title             # pre-item-suffix: seat_of() needs "AGENT <SEAT>" as
                                     # the last token, which the item suffix below breaks
-    # 🔑 sessionTitle IS the session --name the Dispatcher, seat_restart and v3_ready match against
-    # (dispatcher_schedule seats.<SEAT>.session_name = "AGENT BENCH"), so it must keep the seat KEY.
-    # display_title() is NOT applied here (024a8cb1b2 did, and blinded the BENCH window).
+    # 🔑 sessionTitle IS the session name the Dispatcher, seat_restart and v3_ready match against. Since
+    # CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS they match every name in dispatcher_schedule seats.<SEAT>
+    # (session_name "CONDUCTOR" + session_aliases ["AGENT BENCH"], rimflow/session_match.names_of), so the
+    # DISPLAY title is safe here: "AGENT BENCH" -> "CONDUCTOR ▶ <item>". (024a8cb1b2 did this before the
+    # matchers knew the alias, and blinded the BENCH window; 15488cc2b9 reverted it.)
+    title = display_title(title)
 
     # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
     # seat is on. Derived from the ledger's queue render via statusline.py's

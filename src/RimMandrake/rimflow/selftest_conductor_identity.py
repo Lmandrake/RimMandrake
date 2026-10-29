@@ -5,7 +5,9 @@ Owner, 2026-10-28 ~17:20 PDT: "Please build all the components of the v3 system 
 can proceed with a real trial tonight." Design of record: design/RimMandrake/rimflow_v3_2026-10-26.md (Conductor row:
 absorbs Bench; quick mode / session mode; session-only helpers; the one voice to him) and
 src/RimMandrake/rimflow/roles/conductor.md. Tonight's path (delegated, v3 build): the BENCH tile stays seat BENCH
-(the ledger has no CONDUCTOR seat, the Dispatcher watches `AGENT BENCH`) and wakes with the Conductor identity.
+(the ledger has no CONDUCTOR seat) and wakes with the Conductor identity. Since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS
+(owner 2026-10-29: "So it's called bench again instead of conductor.") its session is launched and shown as CONDUCTOR,
+and every matcher also accepts the pre-rename "AGENT BENCH" (dispatcher_schedule seats.BENCH.session_aliases).
 Covered, all on files and in memory (nothing launched, nothing written):
   identity    infrastructure/agents/CONDUCTOR.md exists and states the v3 role: absorbs Bench, quick vs session
               mode, helpers in session only, the single voice to him, the goals file, numbers never from memory
@@ -13,10 +15,10 @@ Covered, all on files and in memory (nothing launched, nothing written):
   ready       `rimflow seat ready` as BENCH says "CONDUCTOR is ready [seat BENCH]", --seat CONDUCTOR writes seat BENCH,
               and handoff.py reads the seat KEY back out of either form (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE)
   injection   the SessionStart hook injects CONDUCTOR.md FIRST for a BENCH role, BENCH.md after; titles say CONDUCTOR
-  tile        the WT tile is named CONDUCTOR (profile + tabTitle + launch_fleet.ps1), --name stays AGENT BENCH
+  tile        the WT tile is named CONDUCTOR (profile + tabTitle + launch_fleet.ps1), --name/--remote-control CONDUCTOR
   wake        the BENCH tile's first prompt reads CONDUCTOR.md, still runs handoff --wake + seat ready, is shell-safe
   report      a headless quick check has one place to report: conductor.md names the Conductor log
-  window      the Dispatcher's BENCH session name is still the tile's label (renaming it would blind seat detection)
+  window      the Dispatcher's BENCH names are CONDUCTOR + alias AGENT BENCH; the role hold matches neither
 """
 import importlib.util
 import json
@@ -92,13 +94,24 @@ def test_report():
 def test_window():
     with open(SCHED, encoding="utf-8") as f:
         sch = json.load(f)
-    check(W.label_for("BENCH") == "AGENT BENCH" and sch["seats"]["BENCH"]["session_name"] == "AGENT BENCH",
-          "the tile and the Dispatcher's BENCH session_name are both literally AGENT BENCH")
+    sys.path.insert(0, HERE)
+    import session_match as SM
+    bench = sch["seats"]["BENCH"]
+    check(W.session_name_for("BENCH") == "CONDUCTOR" == bench["session_name"],
+          "the tile's --name and the Dispatcher's BENCH session_name are both CONDUCTOR")
+    check(SM.names_of(bench) == ["CONDUCTOR", "AGENT BENCH"] and SM.seat_names("BENCH") == ["CONDUCTOR", "AGENT BENCH"],
+          "seat BENCH answers to CONDUCTOR, then the pre-rename alias AGENT BENCH")
+    check(SM.seat_names("FOUNDRY") == ["AGENT FOUNDRY"], "FOUNDRY keeps its one name")
     role = [r for r in sch["roles"] if r.get("name") == "Conductor"][0]
     check(role.get("enabled") is True and role.get("seat") == "BENCH", "the Conductor role is enabled, as seat BENCH")
-    # the quick-check hold keys on window_name: it must NOT be the BENCH tile's label tonight, or no scheduled check
+    # the quick-check hold keys on window_name: it must NOT match any name of the BENCH tile, or no scheduled check
     # would ever run while the tile is open (nothing else prompts the window at 08:00/20:00)
-    check(role.get("window_name") != "AGENT BENCH", "the quick-check hold does not fire on the BENCH tile")
+    hold = role.get("window_name")
+    for seat, cfg in sch["seats"].items():
+        for n in SM.names_of(cfg):
+            check(not SM.name_matches(n, hold) and not SM.name_matches(n + " \u25b6 ITEM_X", hold)
+                  and not SM.name_matches(hold, SM.names_of(cfg)),
+                  "the quick-check hold %r does not fire on seat %s's window %r" % (hold, seat, n))
     sys.path.insert(0, HERE)
     import role_launch as RL
     m = RL.prompt(role, "quick", "20:00", "-", None, 0, 0, 1.0, 0, "u")
@@ -174,6 +187,14 @@ def test_injection():
         sys.path.insert(0, HERE)
         import session_match as SM
         import dispatcher as DP
+        check(H.display_title("AGENT BENCH \u25b6 ITEM_X") == "CONDUCTOR \u25b6 ITEM_X", "the item suffix survives too")
+        names = SM.seat_names("BENCH")
+        for live in ("CONDUCTOR", "CONDUCTOR \u25b6 ITEM_X", "AGENT BENCH", "AGENT BENCH \u25b6 ITEM_X"):
+            check(DP.find_session([{"name": live}], {"session_name": names[0], "session_aliases": names[1:]})
+                  is not None, "dispatcher.find_session finds BENCH's window named %r" % live)
+        for other in ("CONDUCTORX", "AGENT CONDUCTOR", "AGENT CONDUCTOR \u25b6 ITEM_X", "AGENT BENCHX"):
+            check(DP.find_session([{"name": other}], {"session_name": names[0], "session_aliases": names[1:]})
+                  is None, "dispatcher.find_session does not take %r for BENCH" % other)
         check(SM.name_matches("AGENT BENCH", "AGENT BENCH"), "plain seat name matches")
         check(SM.name_matches("AGENT BENCH \u25b6 ITEM_X", "AGENT BENCH"), "name + title suffix matches")
         check(not SM.name_matches("AGENT BENCHX", "AGENT BENCH"), "AGENT BENCHX does not match")
@@ -182,7 +203,7 @@ def test_injection():
               "dispatcher.find_session finds the suffixed window")
         check(DP.find_session([{"name": "AGENT BENCHX"}], {"session_name": "AGENT BENCH"}) is None,
               "dispatcher.find_session rejects AGENT BENCHX")
-        # the title the hook EMITS is the live session name: it must keep matching the schedule's session_name
+        # the title the hook EMITS is the live session name: it must keep matching the schedule's names
         with open(SCHED, encoding="utf-8") as f:
             seats = json.load(f)["seats"]
         tmp = tempfile.mkdtemp()
@@ -199,7 +220,8 @@ def test_injection():
                 st = json.loads(r.stdout)["hookSpecificOutput"]["sessionTitle"] if r.stdout.strip() else ""
                 want = seats[seat]["session_name"]
                 check(st == want or st.startswith(want + " "),
-                      "hook sessionTitle for %s ('%s') keeps the schedule session_name '%s'" % (seat, st, want))
+                      "hook sessionTitle for %s ('%s') is the schedule session_name '%s'" % (seat, st, want))
+                check(SM.name_matches(st, SM.names_of(seats[seat])), "the Dispatcher matches the emitted %r" % st)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
     finally:
@@ -212,8 +234,12 @@ def test_injection():
 def test_tile():
     prof, _ = W.build("BENCH")
     check(prof["name"] == "CONDUCTOR" and prof["tabTitle"] == "CONDUCTOR", "the WT tile is named CONDUCTOR")
-    check("--name 'AGENT BENCH'" in prof["commandline"] or "AGENT BENCH" in prof["commandline"],
-          "the session --name stays AGENT BENCH (Dispatcher + seat_restart match it)")
+    check("--name 'CONDUCTOR'" in prof["commandline"] and "--remote-control 'CONDUCTOR'" in prof["commandline"],
+          "the session --name and --remote-control name are CONDUCTOR (what the phone / claude.ai list shows)")
+    check("AGENT BENCH" not in prof["commandline"] and "AGENT CONDUCTOR" not in prof["commandline"],
+          "the BENCH launch line names neither AGENT BENCH nor the hold's AGENT CONDUCTOR")
+    f, _ = W.build("FOUNDRY")
+    check("--name 'AGENT FOUNDRY'" in f["commandline"], "FOUNDRY's --name is unchanged")
     check(prof["guid"] == W.seat_guid("BENCH"), "the profile guid still derives from the seat key (updates in place)")
     ps1 = read(os.path.join(ROOT, "src", "RimMandrake", "Utils", "launch_fleet.ps1"))
     check("BENCH     = 'CONDUCTOR'" in ps1, "launch_fleet.ps1 opens and waits for the CONDUCTOR tile")

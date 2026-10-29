@@ -160,9 +160,10 @@ LAUNCH = ("{script} "
 # HESTIA, EMERGENCY, SERVER and ARTIST get none: they are not seats of this project's queue.
 WAKE_PROMPT = {
     # v3 (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE, 2026-10-28): the BENCH tile wakes as the Conductor. Still seat KEY
-    # BENCH and --name AGENT BENCH (the Dispatcher and seat_restart match it); since CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE
-    # the tile, the prompt and the identity all SAY Conductor.
-    "BENCH": ("wake. Fresh CONDUCTOR window, seat key BENCH, from a fleet launch, boot or account switch: nobody "
+    # BENCH; since CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE the tile, the prompt and the identity SAY Conductor, and
+    # since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS the session --name and --remote-control name are CONDUCTOR too.
+    "BENCH": ("wake. Fresh CONDUCTOR window, session name CONDUCTOR, seat key BENCH, from a fleet launch, boot or "
+              "account switch: nobody "
               "typed this. You are the v3 Conductor. Do the Start of turn in infrastructure/agents/CONDUCTOR.md: python3 "
               "src/RimMandrake/Utils/handoff.py --wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, "
               "then the last 40 lines of the Conductor log. Then report in a few lines what is open, what needs "
@@ -272,14 +273,22 @@ def seat_guid(seat):
     return "{%s}" % uuid.uuid5(NS, "rimworld-seat-" + seat)
 
 
-# The tile a human reads (WT profile name + tabTitle). Distinct from label_for(), which is ALSO the `--name` the
-# Dispatcher and seat_restart match exactly: seat BENCH is shown as CONDUCTOR (rimflow/model.py SEAT_DISPLAY) while
-# its session keeps --name 'AGENT BENCH'. The profile guid derives from the seat KEY, so the rename updates in place.
+# The tile a human reads (WT profile name + tabTitle) AND, since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (owner
+# 2026-10-29: "So it's called bench again instead of conductor."), the session `--name` / `--remote-control` name the
+# Remote Control list shows. Seat BENCH is shown as CONDUCTOR (rimflow/model.py SEAT_DISPLAY). The Dispatcher,
+# seat_restart and v3_ready match dispatcher_schedule seats.BENCH.session_name "CONDUCTOR" plus session_aliases
+# ["AGENT BENCH"] (a window launched before the rename), rimflow/session_match.names_of. Never "AGENT CONDUCTOR": that
+# is the Conductor role's window_name HOLD. The profile guid derives from the seat KEY, so the rename updates in place.
 # launch_fleet.ps1 $titleFor must name the same string (it opens `-p <name>` and waits for that window title).
 TILE_NAME = {"BENCH": "CONDUCTOR"}
 
 
 def tile_name_for(seat):
+    return TILE_NAME.get(seat, label_for(seat))
+
+
+def session_name_for(seat):
+    """-> the `--name` / `--remote-control` label of a seat's Claude session (== dispatcher_schedule session_name)."""
     return TILE_NAME.get(seat, label_for(seat))
 
 
@@ -321,7 +330,7 @@ def build(seat):
     home_wsl, home_win = home if home else SEAT_CLONES[seat]
     # A seat runs its own clone's wrapper; every other Claude tile runs BENCH's.
     script = BOUNDED.format(home=home_wsl) if not home else SHARED_BOUNDED
-    label = label_for(seat)
+    label = session_name_for(seat)
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as

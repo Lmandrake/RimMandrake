@@ -65,8 +65,15 @@ def test_wiring():
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     cond = [r for r in sch["roles"] if r.get("name") == "Conductor"][0]
     check(cond.get("window_name") == NAME, "the shipped Conductor role names its window")
-    # the Conductor was enabled later, on purpose (1fd2bcd2cf, Dispatcher wave 1); this change enabled nothing else
-    check(sch["seat_restart"]["enabled"] is False, "nothing enabled by this change (seat_restart stays off)")
+    # (a row "seat_restart stays off" lived here; seat_restart was turned on later on purpose: 38c4fe7052 dry,
+    # bded77d9ce live. Not this guard's concern, so the row went.)
+    # the hold must never fire on a seat's own window, or a standing seat would hold every scheduled check
+    # (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS: seat BENCH's window is CONDUCTOR, alias AGENT BENCH)
+    import session_match as SM
+    for seat, c in sch["seats"].items():
+        for n in SM.names_of(c):
+            check(not SM.name_matches(n, NAME) and not SM.name_matches(n + SM.TITLE_SEP + "ITEM", NAME),
+                  "the hold %r does not match seat %s's window %r" % (NAME, seat, n))
 
 
 def main():

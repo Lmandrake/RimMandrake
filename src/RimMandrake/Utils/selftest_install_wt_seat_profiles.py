@@ -65,7 +65,9 @@ def test_plain_path_has_first_prompt():
         check(inner is not None and inner.endswith(W.SHELL_TAIL), f"{seat} plain: still drops to a login shell")
         argv = launch_argv(inner, wrapped=False)
         rc = argv.index("--remote-control")
-        check(argv[rc + 1] == f"AGENT {seat}", f"{seat} plain: --remote-control keeps its explicit label")
+        want = "CONDUCTOR" if seat == "BENCH" else f"AGENT {seat}"   # CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS
+        check(argv[rc + 1] == want == W.session_name_for(seat), f"{seat} plain: --remote-control keeps its explicit label")
+        check(argv[argv.index("--name") + 1] == want, f"{seat} plain: --name is {want}")
         check(len(argv) == rc + 3, f"{seat} plain: exactly one positional first prompt after the label ({argv[rc:]})")
         prompt = argv[-1]
         check(prompt.lower().startswith("wake"), f"{seat} plain: the prompt opens with the word wake ({prompt[:40]})")
@@ -75,7 +77,7 @@ def test_plain_path_has_first_prompt():
         check(f"infrastructure/agents/{ident}.md" in prompt, f"{seat} plain: the prompt points at its Start of turn")
         check(SAFE.fullmatch(prompt) is not None, f"{seat} plain: the prompt is shell/JSON-safe ({prompt!r})")
         check(argv[:-1] == shlex.split(W.LAUNCH.format(script=W.BOUNDED.format(home=W.SEAT_CLONES[seat][0]),
-                                                        label=f"AGENT {seat}", model=W.SEATS[seat][1])),
+                                                        label=want, model=W.SEATS[seat][1])),
               f"{seat} plain: the argv is LAUNCH unchanged + the prompt")
     check("rimflow/cli.py next --seat FOUNDRY" in launch_argv(inner_of(build_with((), "FOUNDRY")), False)[-1],
           "FOUNDRY plain: the prompt pulls the queue (rimflow next --seat FOUNDRY)")

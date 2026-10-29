@@ -236,6 +236,10 @@ check("a seat that never did anything since launch is not amber", byk["win:s6"][
 check("a non-seat window asking is a chip, not an amber row", byk["win:s7"]["kind"] == "idle", byk["win:s7"])
 check("seat_key: only AGENT BENCH/FOUNDRY on a cli entrypoint",
       [pc.seat_key(w) for w in D[:5]] == ["BENCH", "FOUNDRY", None, None, None], [pc.seat_key(w) for w in D[:5]])
+check("seat_key: BENCH's window is CONDUCTOR (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS); the role hold's name is no seat",
+      [pc.seat_key(win(i, n, "idle", 300, 9000)) for i, n in (("c1", "CONDUCTOR"), ("c2", "CONDUCTOR \u25b6 ITEM_X"),
+                                                              ("c3", "AGENT CONDUCTOR"), ("c4", "CONDUCTORX"))]
+      == ["BENCH", "BENCH", None, None])
 check("an explicit question from a seat stays amber past the 2 h fade",
       pc.classify_sessions([win("q", "AGENT FOUNDRY", "waiting", 5 * 3600, 9 * 3600)], {}, {}, {}, {}, NOW)[0][0]["kind"] == "amber")
 check("chip_label names the phone and shortens emergency",

@@ -362,7 +362,7 @@ def live_sessions(ctx, by, name):
 def window_rows(ctx, sch):
     """Every enabled seat's tile must be a live session. A role's window_name is only a HOLD (role_launch: while a
     window of that name is live the role's headless run waits), so it is reported as INFO, never blocking."""
-    seats = [(TILE_LABEL.get(k, k), cfg["session_name"]) for k, cfg in sorted((sch or {}).get("seats", {}).items())
+    seats = [(TILE_LABEL.get(k, k), SM.names_of(cfg)) for k, cfg in sorted((sch or {}).get("seats", {}).items())
              if cfg.get("enabled") and cfg.get("session_name")]
     holds = [(r.get("name"), r["window_name"]) for r in (sch or {}).get("roles", []) if r.get("window_name")]
     if not os.path.isdir(ctx.sessions):
@@ -377,10 +377,10 @@ def window_rows(ctx, sch):
         if live:
             s = live[-1]
             out.append(row(C, "live session", "GO", "'%s' pid %s status %s%s" % (
-                n, s.get("pid"), s.get("status"), "" if len(live) == 1 else " (%d live with this name)" % len(live))))
+                s.get("name") or n[0], s.get("pid"), s.get("status"), "" if len(live) == 1 else " (%d live with this name)" % len(live))))
         else:
-            out.append(row(C, "live session", "NO-GO", "no live session named '%s' (%d stale file(s))"
-                            % (n, sum(len(v) for k, v in by.items() if SM.name_matches(k, n)))))
+            out.append(row(C, "live session", "NO-GO", "no live session named %s (%d stale file(s))"
+                            % (" / ".join("'%s'" % x for x in n), sum(len(v) for k, v in by.items() if SM.name_matches(k, n)))))
     for rn, n in holds:
         live = live_sessions(ctx, by, n)
         out.append(row(rn, "hold window", "INFO", ("'%s' live: headless %s runs are HELD" % (n, rn)) if live

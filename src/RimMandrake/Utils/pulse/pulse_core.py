@@ -852,6 +852,10 @@ def seat_key(s: dict) -> str | None:
     if s.get("entrypoint") == "sdk-cli":
         return None
     n = (s.get("name") or "").strip().upper()
+    # seat BENCH's window is named CONDUCTOR (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS; rimflow/session_match.py);
+    # "CONDUCTOR" or "CONDUCTOR ▶ <item>", never "AGENT CONDUCTOR" (the Conductor role's hold window, not a seat)
+    if n == "CONDUCTOR" or n.startswith("CONDUCTOR "):
+        return "BENCH" if "BENCH" in SEATS else None
     if not n.startswith("AGENT "):
         return None
     first = n[6:].split()[0] if n[6:].split() else ""

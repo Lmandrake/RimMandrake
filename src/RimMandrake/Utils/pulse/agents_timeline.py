@@ -196,6 +196,8 @@ def read_registry(sessions_dir: Path) -> tuple[list[dict], str | None]:
 
 def window_of(name: str | None) -> str | None:
     n = (name or "").strip().upper()
+    if n == "CONDUCTOR" or n.startswith("CONDUCTOR "):   # seat BENCH's window (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS)
+        return "BENCH"
     if n.startswith("AGENT "):
         first = n[6:].split()[0] if n[6:].split() else ""
         return first if first in ("BENCH", "FOUNDRY") else None

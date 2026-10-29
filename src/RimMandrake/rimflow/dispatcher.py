@@ -271,9 +271,9 @@ def find_session(sessions, cfg):
     (install_wt_seat_profiles.py: the name is what makes a seat addressable). No cwd fallback: an owner window, a
     remote-control session or HESTIA/EMERGENCY can sit in a seat's clone, and adopting one would remember ITS session
     id for a `--dangerously-skip-permissions` resume."""
-    name = cfg.get("session_name")
+    names = SM.names_of(cfg)            # session_name + session_aliases (BENCH: CONDUCTOR, then AGENT BENCH)
     for s in sessions:
-        if name and SM.name_matches(s.get("name"), name):
+        if names and SM.name_matches(s.get("name"), names):
             return s
     return None
 

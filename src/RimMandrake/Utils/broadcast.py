@@ -507,8 +507,12 @@ def main(argv):
         if me and r.get("messagingSocketPath") == me:
             print("  %-18s skipped (this window)" % name)
             continue
-        # A window's seat is the last word of its name — "AGENT BENCH" -> BENCH.
-        seat = name.upper().split()[-1] if name.split() else ""
+        # A window's seat is the word after AGENT — "AGENT FOUNDRY ▶ ITEM" -> FOUNDRY; seat BENCH's window is
+        # "CONDUCTOR[ ▶ ITEM]" (CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS). Was the last word, which the title
+        # hook's " ▶ <item>" suffix turned into the item id.
+        words = name.upper().split()
+        seat = ("BENCH" if words and words[0] == "CONDUCTOR" else
+                words[1] if len(words) > 1 and words[0] == "AGENT" else (words[-1] if words else ""))
         if waiting is not None and seat not in waiting:
             print("  %-18s not told (nothing of theirs is waiting on the game)" % name)
             continue
