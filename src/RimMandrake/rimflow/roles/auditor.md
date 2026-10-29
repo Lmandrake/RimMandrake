@@ -176,6 +176,11 @@ not replace a carried one, it adds to it.
 - **Adversarial reviews**: run any review of a script the owner has released (`NORTHSTAR_ADVERSARIAL_REVIEW_1` and
   later ones) with a helper that never wrote it.
 - **Digest spot check**: sample the week's delegated digest lines against their sources.
+- **Findings fold sample** (`FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`): from
+  `D:\ClaudeWork\rimmandrake\findings_fold\standing.json`, a helper that did not make them re-checks at least three of
+  the week's program retirements (are the 3 proof runs real PASSes, after the last FAIL?) and three program merges
+  (is it the same failure?). A wrong one is a defect against the curation; a wrong merge rule is a ticket on
+  `src/RimMandrake/Utils/findings_fold_rules.json`.
 - **v3 vs v2, the quality half** (owner, 2026-10-27: "We MUST prove that it's superior and at what cost";
   `V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS`): read `D:\ClaudeWork\rimmandrake\v3_vs_v2\quality_blind.md` (the program
   writes it Monday 07:05; it carries quality metrics only and passes `blind_view` unchanged, so it is yours to read).

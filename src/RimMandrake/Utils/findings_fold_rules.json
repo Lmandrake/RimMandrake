@@ -1,0 +1,31 @@
+{
+ "_doc": "Rules for findings_fold.py, the no-AI findings sorter (FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X; design/RimMandrake/findings_curation_design_2026-10-29.md option B, chosen by the owner by card 2026-10-29: \"Program folds, FOUNDRY judges\"). It runs as the last step of testq-tick.service (testq.py UNITS), after ingest.py.",
+ "out": "D:\\ClaudeWork\\rimmandrake\\findings_fold",
+ "_out_why": "standing.json (the standing-failures table, every raw text kept) and curation.md (FOUNDRY's daily residue) land here: agent scratch, read by FOUNDRY and the Auditor. The one source of this path; FINDINGS_FOLD_OUT overrides it (selftests)",
+ "finding_types": ["UNTRIAGED"],
+ "_finding_types_why": "the sorter folds what the testq ingest files (type UNTRIAGED, design section 2); hand-filed findings of other types were already judged by the seat that filed them",
+ "lane_item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
+ "_lane_item_why": "Operations' standing lane item, the one ingest.py already verifies a paused lane against (design section 3, outcome Routed)",
+ "machine_health_patterns": ["canary was red", "No module named", "No space left on device", "runner pull (?:was )?refused", "SYNC_REFUSED"],
+ "_machine_health_patterns_why": "routed to Operations, not FOUNDRY: the item says red canaries and machine-health failures go to Operations' lane item; design section 6 names red canaries and refused pulls; a Python module missing on the runner (the PIL fault, design section 2) and a full disk are the test machine's provisioning, not the mod. Case-sensitive regex, searched in the raw text",
+ "retire_after_passes": 3,
+ "_retire_after_passes_why": "design section 6: a row that has passed 3 later runs in a row is retired with those runs as proof, and reopens when it fails again. A run that is neither PASS nor FAIL (UNMEASURED) breaks the streak: 'in a row' read strictly, so a blind run never helps retire",
+ "contradiction_states": ["done", "validated"],
+ "_contradiction_states_why": "design section 6: a failing row under an item marked done or validated is a contradiction and goes to the top of the next curation (the quarry item stood validated with 26 fails and 0 passes)",
+ "stuck_after_days": 3,
+ "_stuck_after_days_why": "design section 6 step 2: FOUNDRY's residue includes signatures still failing 3 days after they were decided",
+ "decisions_file": "infrastructure/state/findings/decisions.jsonl",
+ "_decisions_file_why": "FOUNDRY's judgment per signature (work / merge / memory / route / retire / undo), appended by `findings_fold.py decide` and committed; a `rimflow spawn --from <finding>` is read from the ledger as a work decision with no line needed",
+ "memory_roots": ["skills/", "infrastructure/state/facts/", "src/", ".claude/"],
+ "_memory_roots_why": "design section 3 and 9.3: memory lands where it is read (a skill, a fact file, a rule or check), never the lessons inbox",
+ "normalise": [
+  ["J\\d{8}T\\d{6}Z-[0-9a-fA-F]{6}(?:\\.a\\d+)?", "<job>"],
+  ["\\d{8}T\\d{6}Z?", "<ts>"],
+  ["\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?Z?", "<ts>"],
+  ["[\\w.\\\\/:-]*[\\w-]\\.(?:json|jsonl|html|png|log|xml|txt|rws|py|csv)\\b", "<file>"],
+  ["\\b(?=[0-9a-fA-F]*\\d)[0-9a-fA-F]{7,40}\\b", "<hex>"],
+  ["\\d+(?:\\.\\d+)?", "#"],
+  ["\\s+", " "]
+ ],
+ "_normalise_why": "design section 6: the failure text with run-specific numbers and file names removed, applied in this order (job ids and timestamps before bare digits). Only identical cleaned text merges; words are never removed, so a too-strict rule only makes noise and never merges two bugs"
+}
