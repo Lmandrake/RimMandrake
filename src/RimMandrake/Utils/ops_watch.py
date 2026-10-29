@@ -872,16 +872,25 @@ def c_companion(now, rules, ctx):
     """companion.grant_hours_left: hours until the companion's test-profile grant lapses (COMPANION_GRANT_WIRE_LAPSES_AT_
     BEDTIME), read by rimflow/companion_grant.py. A lapsed grant (expired, absent, torn, non-test) is MEASURED at or
     under 0, since the companion reads it as campaign; only an unseeable folder is UNMEASURED. The alarm target in
-    ops_watch_rules.json is the early warning."""
-    rf = str(HERE.parent / "rimflow")
-    if rf not in sys.path:
-        sys.path.insert(0, rf)
-    import companion_grant as cg
-    g = cg.read(now=now)
+    ops_watch_rules.json is the early warning.
+    companion.grant_visible (1/0) is MEASURED always: a folder that cannot be seen, or a reader that fails, is 0 and
+    alarms on its own target, so a blind grant fails closed instead of holding the hours alarm silent forever (blind
+    review 2026-10-29 #1)."""
+    try:
+        rf = str(HERE.parent / "rimflow")
+        if rf not in sys.path:
+            sys.path.insert(0, rf)
+        import companion_grant as cg
+        g = cg.read(now=now)
+    except Exception as e:  # noqa: BLE001 - a reader that cannot run is a grant nobody can see
+        why = "grant reader raised %s: %s" % (type(e).__name__, e)
+        return {"companion.grant_hours_left": U(why, "h"), "companion.grant_visible": M(0, why=why)}
     if g["state"] == "UNMEASURED":
-        return {"companion.grant_hours_left": U(g["why"], "h")}
+        return {"companion.grant_hours_left": U(g["why"], "h"),
+                "companion.grant_visible": M(0, why=g["why"], file=g["file"])}
     return {"companion.grant_hours_left": M(round(g["hours_left"], 2), "h", state=g["state"], expires=g["expires"],
-                                            profile=g["profile"], file=g["file"], why=g["why"])}
+                                            profile=g["profile"], file=g["file"], why=g["why"]),
+            "companion.grant_visible": M(1, file=g["file"])}
 
 
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
@@ -1316,7 +1325,7 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 # Deliberately absent: every accounts.*, codex.*, tokentalk.* key, production.B (the week used), and anything new.
 # companion.grant_hours_left is machine health: a lapsing grant stalls every live seat, so the Conductor sees it.
 BLIND_KEYS = frozenset("""
-companion.grant_hours_left
+companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
 disk.scratch_refused_gb disk.scratch_total_gb
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h

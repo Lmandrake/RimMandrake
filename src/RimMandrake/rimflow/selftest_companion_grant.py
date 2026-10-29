@@ -70,7 +70,14 @@ put({"profile": "test", "expiresUtc": time.strftime("%Y-%m-%dT%H:%M:%S", time.gm
 ok("a naive expiresUtc is UTC", round(rd()["hours_left"]), 75)
 for label, body in (("torn json", "{torn"), ("not an object", "[1]"), ("campaign profile", {"profile": "campaign",
                      "expiresUtc": ISO(NOW + 75 * 3600)}), ("no expiresUtc", {"profile": "test"}),
-                    ("unparseable expiresUtc", {"profile": "test", "expiresUtc": "Tuesday"})):
+                    ("unparseable expiresUtc", {"profile": "test", "expiresUtc": "Tuesday"}),
+                    # review #2: fromisoformat (3.11+) takes compact and date-only forms; none is a valid grant
+                    ("numeric expiresUtc", {"profile": "test", "expiresUtc": 20991231}),
+                    ("compact string expiresUtc", {"profile": "test", "expiresUtc": "20991231"}),
+                    ("compact date-time expiresUtc", {"profile": "test", "expiresUtc": "20991231T235900Z"}),
+                    ("date-only expiresUtc", {"profile": "test", "expiresUtc": "2099-12-31"}),
+                    ("null expiresUtc", {"profile": "test", "expiresUtc": None}),
+                    ("list expiresUtc", {"profile": "test", "expiresUtc": ["2099-12-31T23:59:00Z"]})):
     put(body)
     g = rd()
     ok("%s -> LAPSED (the companion reads it as campaign)" % label, (g["state"], g["hours_left"]), ("LAPSED", 0.0))
@@ -101,6 +108,20 @@ ctx = {}
 with redirect_stdout(io.StringIO()):
     cli._apply_grant_preflight(ctx, reader=boom)
 ok("a reader that raises holds (fail closed)", bool(ctx.get("hold_grant")), True)
+# review #3: a config that cannot load still holds, but only the grant's needs: offline work stays offered
+_cp = cg.CONF_PATH
+cg.CONF_PATH = os.path.join(D, "no_such_companion_grant.json")
+cg.load_conf.__defaults__ = (cg.CONF_PATH,)
+try:
+    cctx = {}
+    with redirect_stdout(io.StringIO()):
+        cli._apply_grant_preflight(cctx)
+finally:
+    cg.CONF_PATH = _cp
+    cg.load_conf.__defaults__ = (_cp,)
+ok("config load failure -> hold", bool(cctx.get("hold_grant")), True)
+ok("config load failure -> only bridge/game-up withheld", tuple(cctx.get("hold_grant_needs") or ()),
+   ("bridge", "game-up"))
 ok("cmd_next runs the preflight", "_apply_grant_preflight(ctx" in inspect.getsource(cli.cmd_next), True)
 
 A = lambda needs: types.SimpleNamespace(item=types.SimpleNamespace(id="X_" + needs, needs=needs, raised=None),
@@ -121,6 +142,12 @@ try:
     cli.priority.rank = lambda *a, **k: [A("bridge")]
     h = cli._choose(None, "FOUNDRY", args, hctx, None)
     ok("grant held: claimable drops game-up", (h["kind"], [c.id for c in h["claimable"]]), ("claimable", ["C_offline"]))
+    cli.priority.rank = lambda *a, **k: [A("bridge"), A("game-up"), A("deploy"), A("harvest"), A("offline")]
+    ok("config-failure hold: deploy still offered", cli._choose(None, "FOUNDRY", args, cctx, None)["item"].id,
+       "X_deploy")
+    ok("a hold with no needs recorded withholds only bridge/game-up",
+       cli._choose(None, "FOUNDRY", args, {"hold_grant": "x"}, None)["item"].id, "X_deploy")
+    cli.priority.rank = lambda *a, **k: [A("bridge")]
     cli._claimable = lambda *a, **k: [C("bridge")]
     ok("grant held and only grant work: nothing", cli._choose(None, "FOUNDRY", args, hctx, None)["kind"], "nothing")
 finally:
@@ -152,6 +179,7 @@ ok("one alarm target on the grant", len(tg), 1)
 if tg:
     t = tg[0]
     ok("the warning comes before the preflight hold", t["value"] * 60 > CONF["hold_within_min"], True)
+    ok("the warning line is 12 h (the item's requirement, not derived from config)", (t["op"], t["value"]), ("<", 12))
     ok("the target carries a why and a name", (bool(t.get("why")), bool(t.get("name"))), (True, True))
     ok("the name passes the mint rules", not cli.model.mint_problems(t["name"] + "_AB12", set()), True)
     aid = "%s:%s" % (t["tag"], KEY)
@@ -161,6 +189,70 @@ if tg:
     ok("alarm: over the line is clear", st(t["value"] + 0.5), False)
     ok("alarm: a lapsed grant (0 h, negative) crosses", (st(0.0), st(-5.0)), (True, True))
     ok("alarm: UNMEASURED holds (no file, no clear)", st(None, "UNMEASURED"), None)
+
+# review #4: fixed values around 12 h, independent of the configured line
+if tg:
+    aid = "GRANT_LAPSING:" + KEY
+    fx = lambda v: OW.target_state({KEY: {"v": v, "m": "MEASURED"}}, R).get(aid)
+    ok("12 h boundary: 11.9 h crosses, 12.1 h and 13 h clear, 3 h crosses", (fx(11.9), fx(12.1), fx(13.0), fx(3.0)),
+       (True, False, False, True))
+
+# review #1 + #4: collector -> alarm, end to end through run_alarms: healthy, then lapsing, then folder blind, renewed
+ut = [t for t in R["targets"] if t.get("key") == "companion.grant_visible" and t.get("alarm")]
+ok("one alarm target on grant visibility", len(ut), 1)
+OPS = tempfile.mkdtemp()
+os.environ["RM_OPS_WATCH_DIR"] = OPS
+filed = []
+_mint = OW.mint_name
+OW.mint_name = lambda tag, known, prefix: "%s_%s" % (prefix, "AB%02d" % len(filed))
+
+
+def filer(todo, conf):
+    filed.extend(dict(a) for a in todo)
+    return {a["name"]: None for a in todo}
+
+
+def ow_pass(t, path):
+    os.environ["RM_COMPANION_PROFILE"] = path
+    pts = OW.c_companion(t, R, {})
+    return pts, OW.run_alarms(pts, R, t, set(), filer)
+
+
+try:
+    put({"profile": "test", "expiresUtc": ISO(NOW + 30 * 3600)})
+    pts, st = ow_pass(NOW, P)
+    ok("e2e healthy (30 h): visible, nothing filed", (pts["companion.grant_visible"]["v"], filed), (1, []))
+    pts, st = ow_pass(NOW + 18.5 * 3600, P)     # 11.5 h left
+    ok("e2e 11.5 h left: GRANT_LAPSING filed once", [a["name"].rsplit("_", 1)[0] for a in filed], ["OPS_GRANT_ASK"])
+    BLIND = os.path.join(D, "gone", "JawaBench", "companion_profile.json")
+    pts, st = ow_pass(NOW + 19 * 3600, BLIND)
+    ok("e2e folder gone: hours UNMEASURED, visible MEASURED 0",
+       (pts[KEY]["m"], pts["companion.grant_visible"]["m"], pts["companion.grant_visible"]["v"]), ("UNMEASURED", "MEASURED", 0))
+    ok("e2e folder gone: GRANT_UNSEEN filed (fail closed, not silent)",
+       [a["name"].rsplit("_", 1)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
+    put({"profile": "test", "expiresUtc": ISO(NOW + 100 * 3600)})   # renewed
+    for i in range(int(R["alarm"]["clear_passes"])):
+        pts, st = ow_pass(NOW + 20 * 3600 + i * 900, P)
+    ok("e2e renewed: both alarms clear after clear_passes", sorted(k for k in st if k.startswith("GRANT_")), [])
+    ok("e2e renewed: nothing new filed, only clear notes",
+       [a["name"].rsplit("_", 1)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
+    def boom2(*a, **k):
+        raise RuntimeError("reader broke")
+    mods = [m for m in (cg, sys.modules.get("companion_grant")) if m]   # ops_watch imports it top-level
+    saved_r = [m.read for m in mods]
+    for m in mods:
+        m.read = boom2
+    try:
+        pts = OW.c_companion(NOW, R, {})
+    finally:
+        for m, r in zip(mods, saved_r):
+            m.read = r
+    ok("collector: a reader that raises is visible 0 (alarms)", (pts["companion.grant_visible"]["m"],
+       pts["companion.grant_visible"]["v"]), ("MEASURED", 0))
+finally:
+    OW.mint_name = _mint
+    os.environ.pop("RM_OPS_WATCH_DIR", None)
+    os.environ.pop("RM_COMPANION_PROFILE", None)
 
 print("\n%s: %d failed" % ("FAIL" if FAILED else "PASS", len(FAILED)))
 sys.exit(1 if FAILED else 0)

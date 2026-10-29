@@ -1014,6 +1014,9 @@ def cmd_next(args, seat):
 
 
 HOLD_GAME_NEEDS = ("bridge", "game-up", "deploy", "harvest")
+# what a grant hold withholds when companion_grant.json itself cannot be read: the needs that drive the live
+# companion, never deploy/harvest (offline of the grant), so a broken config does not hide offline work
+GRANT_DEFAULT_NEEDS = ("bridge", "game-up")
 
 
 def _apply_grant_preflight(ctx, reader=None):
@@ -1022,7 +1025,7 @@ def _apply_grant_preflight(ctx, reader=None):
     unless it is OK, items needing the live companion (companion_grant.json `hold_needs`) are withheld, loudly.
     A reader that fails holds too: fail closed. Never renews the grant."""
     from rimflow import companion_grant
-    needs = HOLD_GAME_NEEDS
+    needs = GRANT_DEFAULT_NEEDS
     try:
         needs = tuple(companion_grant.load_conf()["hold_needs"])
         g = (reader or companion_grant.read)()
@@ -1054,7 +1057,7 @@ def _choose(w, seat, args, ctx, idx):
         offers = [a for a in offers if a.item.needs not in HOLD_GAME_NEEDS]
         claimable = [c for c in claimable if c.needs not in HOLD_GAME_NEEDS]
     if ctx.get("hold_grant"):
-        gneeds = tuple(ctx.get("hold_grant_needs") or HOLD_GAME_NEEDS)
+        gneeds = tuple(ctx.get("hold_grant_needs") or GRANT_DEFAULT_NEEDS)
         offers = [a for a in offers if a.item.needs not in gneeds]
         claimable = [c for c in claimable if c.needs not in gneeds]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next

@@ -17,7 +17,7 @@ This never writes the grant. Renewing it is not this program's call (see compani
 
     python3 src/RimMandrake/rimflow/companion_grant.py [--json]     exit 0 OK, 1 LAPSING/LAPSED, 2 UNMEASURED
 """
-import datetime, json, os, sys, time
+import datetime, json, os, re, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CONF_PATH = os.path.join(HERE, "companion_grant.json")
@@ -32,8 +32,16 @@ def profile_path(conf):
     return os.environ.get("RM_COMPANION_PROFILE") or conf["profile_file"]
 
 
+# The grant's one timestamp shape: an extended ISO date AND time (seconds, fraction and offset optional). Checked
+# before fromisoformat, which on 3.11+ also takes compact and date-only forms: str(20261101) would parse as a
+# midnight expiry and a malformed grant would read OK (blind review 2026-10-29 #2). Anything else is LAPSED.
+EXPIRES_RX = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,7})?)?(Z|[+-]\d{2}:\d{2})?$")
+
+
 def _parse(ts):
-    t = datetime.datetime.fromisoformat(str(ts).strip().replace("Z", "+00:00"))
+    if not isinstance(ts, str) or not EXPIRES_RX.match(ts.strip()):
+        raise ValueError("expiresUtc %r is not an ISO date-time string" % (ts,))
+    t = datetime.datetime.fromisoformat(ts.strip().replace("Z", "+00:00"))
     if t.tzinfo is None:
         t = t.replace(tzinfo=datetime.timezone.utc)
     return t.timestamp()
