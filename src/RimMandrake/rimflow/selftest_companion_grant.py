@@ -77,7 +77,11 @@ for label, body in (("torn json", "{torn"), ("not an object", "[1]"), ("campaign
                     ("compact date-time expiresUtc", {"profile": "test", "expiresUtc": "20991231T235900Z"}),
                     ("date-only expiresUtc", {"profile": "test", "expiresUtc": "2099-12-31"}),
                     ("null expiresUtc", {"profile": "test", "expiresUtc": None}),
-                    ("list expiresUtc", {"profile": "test", "expiresUtc": ["2099-12-31T23:59:00Z"]})):
+                    ("list expiresUtc", {"profile": "test", "expiresUtc": ["2099-12-31T23:59:00Z"]}),
+                    # review2 #1: fromisoformat normalises an out-of-range offset (-07:60 -> -08:00) instead of refusing
+                    ("offset minutes 60", {"profile": "test", "expiresUtc": "2099-11-01T01:30:00-07:60"}),
+                    ("offset minutes 99", {"profile": "test", "expiresUtc": "2099-11-01T01:30:00+05:99"}),
+                    ("offset hours 24", {"profile": "test", "expiresUtc": "2099-11-01T01:30:00+24:00"})):
     put(body)
     g = rd()
     ok("%s -> LAPSED (the companion reads it as campaign)" % label, (g["state"], g["hours_left"]), ("LAPSED", 0.0))
@@ -120,6 +124,36 @@ finally:
     cg.CONF_PATH = _cp
     cg.load_conf.__defaults__ = (_cp,)
 ok("config load failure -> hold", bool(cctx.get("hold_grant")), True)
+from rimflow import priority as _prio
+ok("KNOWN_NEEDS mirrors priority.BY_GAME", sorted(cg.KNOWN_NEEDS), sorted(_prio.BY_GAME))
+# review2 #2: a READABLE config with a malformed hold_needs fails closed (load_conf refuses it), never filters nothing
+BADC = os.path.join(D, "bad_conf.json")
+for label, bad in (("a string", "bridge"), ("an empty list", []), ("an unknown need", ["bridge", "brige"]),
+                   ("a non-string entry", ["bridge", 3])):
+    json.dump(dict(CONF, hold_needs=bad), open(BADC, "w"))
+    try:
+        cg.load_conf(BADC)
+        refused = False
+    except ValueError:
+        refused = True
+    ok("load_conf refuses hold_needs as %s" % label, refused, True)
+json.dump(dict(CONF, hold_within_min="120"), open(BADC, "w"))
+try:
+    cg.load_conf(BADC)
+    refused = False
+except ValueError:
+    refused = True
+ok("load_conf refuses a non-number hold_within_min", refused, True)
+json.dump(dict(CONF, hold_needs="bridge"), open(BADC, "w"))
+cg.load_conf.__defaults__ = (BADC,)
+try:
+    sctx = {}
+    with redirect_stdout(io.StringIO()):
+        cli._apply_grant_preflight(sctx, reader=lambda: {"state": "OK", "why": "w"})
+finally:
+    cg.load_conf.__defaults__ = (_cp,)
+ok("malformed hold_needs + an OK grant still holds (fail closed)", bool(sctx.get("hold_grant")), True)
+ok("malformed hold_needs -> default needs", tuple(sctx.get("hold_grant_needs") or ()), ("bridge", "game-up"))
 ok("config load failure -> only bridge/game-up withheld", tuple(cctx.get("hold_grant_needs") or ()),
    ("bridge", "game-up"))
 ok("cmd_next runs the preflight", "_apply_grant_preflight(ctx" in inspect.getsource(cli.cmd_next), True)
@@ -145,6 +179,8 @@ try:
     cli.priority.rank = lambda *a, **k: [A("bridge"), A("game-up"), A("deploy"), A("harvest"), A("offline")]
     ok("config-failure hold: deploy still offered", cli._choose(None, "FOUNDRY", args, cctx, None)["item"].id,
        "X_deploy")
+    ok("malformed hold_needs hold: bridge/game-up withheld, deploy offered",
+       cli._choose(None, "FOUNDRY", args, sctx, None)["item"].id, "X_deploy")
     ok("a hold with no needs recorded withholds only bridge/game-up",
        cli._choose(None, "FOUNDRY", args, {"hold_grant": "x"}, None)["item"].id, "X_deploy")
     cli.priority.rank = lambda *a, **k: [A("bridge")]
@@ -249,6 +285,27 @@ try:
             m.read = r
     ok("collector: a reader that raises is visible 0 (alarms)", (pts["companion.grant_visible"]["m"],
        pts["companion.grant_visible"]["v"]), ("MEASURED", 0))
+    # review2 #3: the collector keeps full precision, so 11 h 59 m 50 s crosses the 12 h line on this pass
+    put({"profile": "test", "expiresUtc": ISO(NOW + 12 * 3600)})
+    os.environ["RM_COMPANION_PROFILE"] = P
+    pts = OW.c_companion(NOW + 10, R, {})
+    ok("collector+alarm: 10 s under 12 h crosses (no rounding up to 12.0)",
+       OW.target_state(pts, R).get("GRANT_LAPSING:" + KEY), True)
+    pts = OW.c_companion(NOW - 10, R, {})
+    ok("collector+alarm: 10 s over 12 h is clear", OW.target_state(pts, R).get("GRANT_LAPSING:" + KEY), False)
+    # a readable but malformed config: the collector fails closed (visible 0 -> GRANT_UNSEEN)
+    json.dump(dict(CONF, hold_needs="bridge"), open(BADC, "w"))
+    mods = [m for m in (cg, sys.modules.get("companion_grant")) if m]
+    saved_d = [m.load_conf.__defaults__ for m in mods]
+    for m in mods:
+        m.load_conf.__defaults__ = (BADC,)
+    try:
+        pts = OW.c_companion(NOW, R, {})
+    finally:
+        for m, dd in zip(mods, saved_d):
+            m.load_conf.__defaults__ = dd
+    ok("collector: a malformed config alarms GRANT_UNSEEN", OW.target_state(pts, R).get("GRANT_UNSEEN:companion.grant_visible"),
+       True)
 finally:
     OW.mint_name = _mint
     os.environ.pop("RM_OPS_WATCH_DIR", None)

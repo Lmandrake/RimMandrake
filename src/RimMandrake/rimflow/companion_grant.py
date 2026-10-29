@@ -23,9 +23,32 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONF_PATH = os.path.join(HERE, "companion_grant.json")
 
 
+# The `needs` values rimflow knows (priority.BY_GAME's keys; selftest_companion_grant pins the two equal). Mirrored,
+# not imported: ops_watch imports this module top-level, outside the rimflow package.
+KNOWN_NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
+
+
 def load_conf(path=CONF_PATH):
+    """-> the config, VALIDATED. A malformed setting raises ValueError, never loads: every caller treats a raise as
+    blind and holds (cli preflight -> default needs withheld; ops_watch -> grant_visible 0 -> GRANT_UNSEEN). Without
+    this, hold_needs "bridge" became the needs ('b','r',...) and no live item was withheld (blind review 2 #2)."""
     with open(path, encoding="utf-8") as f:
-        return json.load(f)
+        conf = json.load(f)
+    if not isinstance(conf, dict):
+        raise ValueError("%s is not a JSON object" % path)
+    needs = conf.get("hold_needs")
+    if (not isinstance(needs, list) or not needs
+            or not all(isinstance(n, str) and n in KNOWN_NEEDS for n in needs)):
+        raise ValueError("hold_needs %r must be a non-empty list of known needs %s" % (needs, KNOWN_NEEDS))
+    prof = conf.get("test_profiles")
+    if not isinstance(prof, list) or not prof or not all(isinstance(x, str) and x for x in prof):
+        raise ValueError("test_profiles %r must be a non-empty list of strings" % (prof,))
+    hw = conf.get("hold_within_min")
+    if isinstance(hw, bool) or not isinstance(hw, (int, float)) or not hw > 0:
+        raise ValueError("hold_within_min %r must be a positive number" % (hw,))
+    if not isinstance(conf.get("profile_file"), str) or not conf["profile_file"]:
+        raise ValueError("profile_file %r must be a non-empty path" % (conf.get("profile_file"),))
+    return conf
 
 
 def profile_path(conf):
@@ -35,12 +58,19 @@ def profile_path(conf):
 # The grant's one timestamp shape: an extended ISO date AND time (seconds, fraction and offset optional). Checked
 # before fromisoformat, which on 3.11+ also takes compact and date-only forms: str(20261101) would parse as a
 # midnight expiry and a malformed grant would read OK (blind review 2026-10-29 #2). Anything else is LAPSED.
-EXPIRES_RX = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,7})?)?(Z|[+-]\d{2}:\d{2})?$")
+# Its parts are range-checked by name too: fromisoformat NORMALISES an out-of-range offset (-07:60 reads as -08:00)
+# instead of refusing it, so a malformed grant would read OK an hour off (blind review 2 #1).
+EXPIRES_RX = re.compile(r"^\d{4}-\d{2}-\d{2}T(?P<hh>\d{2}):(?P<mi>\d{2})(:(?P<ss>\d{2})(\.\d{1,7})?)?"
+                        r"(Z|(?P<osign>[+-])(?P<oh>\d{2}):(?P<om>\d{2}))?$")
 
 
 def _parse(ts):
-    if not isinstance(ts, str) or not EXPIRES_RX.match(ts.strip()):
+    m = EXPIRES_RX.match(ts.strip()) if isinstance(ts, str) else None
+    if not m:
         raise ValueError("expiresUtc %r is not an ISO date-time string" % (ts,))
+    if (int(m["hh"]) > 23 or int(m["mi"]) > 59 or (m["ss"] is not None and int(m["ss"]) > 59)
+            or (m["oh"] is not None and (int(m["oh"]) > 23 or int(m["om"]) > 59))):
+        raise ValueError("expiresUtc %r has an out-of-range time or offset part" % (ts,))
     t = datetime.datetime.fromisoformat(ts.strip().replace("Z", "+00:00"))
     if t.tzinfo is None:
         t = t.replace(tzinfo=datetime.timezone.utc)

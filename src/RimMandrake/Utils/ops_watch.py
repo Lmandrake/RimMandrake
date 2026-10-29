@@ -888,7 +888,7 @@ def c_companion(now, rules, ctx):
     if g["state"] == "UNMEASURED":
         return {"companion.grant_hours_left": U(g["why"], "h"),
                 "companion.grant_visible": M(0, why=g["why"], file=g["file"])}
-    return {"companion.grant_hours_left": M(round(g["hours_left"], 2), "h", state=g["state"], expires=g["expires"],
+    return {"companion.grant_hours_left": M(g["hours_left"], "h", state=g["state"], expires=g["expires"],
                                             profile=g["profile"], file=g["file"], why=g["why"]),
             "companion.grant_visible": M(1, file=g["file"])}
 
