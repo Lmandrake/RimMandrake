@@ -1171,3 +1171,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_DEADMAN_REVIVE_AEA3","text":"deadman_check: ops_watch is running again (2026-10-29T14:03:00Z)","ts":"2026-10-29T14:03:01Z","tsn":1793282581578521628}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_F27F","reason":"steward: lane unowned 30 min (PAUSED)","ts":"2026-10-29T14:07:49Z","tsn":1793282869693435917}
 {"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_F27F","text":"steward: started one capped headless BENCH session (budget $5, 2700 s cap); log /mnt/d/ClaudeWork/rimmandrake/testq/wake/20261029T140747Z.log","ts":"2026-10-29T14:07:52Z","tsn":1793282872072143247}
+{"seat":"RUNNER","event":"note","id":"STEVE_LANE_UNSTICK_PAUSED_UNOWNED_F27F","text":"steward: SteveDesktop lane RUNNING again (running J20261029T141024Z-56081f) after PAUSED, 31 min unowned","ts":"2026-10-29T14:11:36Z","tsn":1793283096982135702}
