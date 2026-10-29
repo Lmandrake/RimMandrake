@@ -120,6 +120,38 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Row("RM_Liquid_Tar") < Row("RM_Liquid_SlimeRed") && Row("RM_Liquid_SlimeRed") < Row("RM_Liquid_FreshWater"), "slime in between");
             });
 
+            // LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET (live 2026-10-29: LookFor(RM_WaterThin) == null, so dug fresh water never woke).
+            // Not proven here: a pawn wading the terrain on a live map (row W1_wakes_terrain_walked, northstar/wakes_checks.py).
+            Case("Wakes_dug_fresh_water_wears_the_water_look_and_is_counted", () =>
+            {
+                var R = RM_WaterLadder.Rung.Dry;
+                Assert(!RM_WaterLadder.WearsLiquidLook(R) && !RM_WaterLadder.WearsLiquidLook(RM_WaterLadder.Rung.VeryShallow), "dry and the damp film wear no look");
+                Assert(RM_WaterLadder.WearsLiquidLook(RM_WaterLadder.Rung.Thin), "can-fail: RM_WaterThin (where a dug strip settles) wears the water look");
+                Assert(RM_WaterLadder.WearsLiquidLook(RM_WaterLadder.Rung.ChestDeep) && RM_WaterLadder.WearsLiquidLook(RM_WaterLadder.Rung.Deep), "deeper rungs too (vanilla ones skipped by AddOwned)");
+                Assert(RM_WaterLadder.FreshwaterDefName(RM_WaterLadder.Rung.Thin) == "RM_WaterThin", "sanity: the Thin rung is RM_WaterThin");
+                string s = Src("RM_LiquidSurface.cs");
+                int af = s.IndexOf("private static void AddFluid(", StringComparison.Ordinal);
+                int ao = s.IndexOf("private static void AddOwned(", StringComparison.Ordinal);
+                Assert(af > 0 && ao > af, "sanity: AddFluid found");
+                string body = s.Substring(af, ao - af);
+                Assert(body.Contains("if (f.freshwaterLadder)") && body.Contains("RM_WaterLadder.WearsLiquidLook((RM_WaterLadder.Rung)r)")
+                       && body.Contains("AddOwned(RM_WaterLadderDefs.Freshwater((RM_WaterLadder.Rung)r), look)"),
+                       "can-fail: the look table registers the freshwater ladder's own rungs (AddOwned: never a vanilla lake)");
+                int tick = s.IndexOf("public override void MapComponentTick()", StringComparison.Ordinal);
+                int gate = s.IndexOf("!RimMandrakeFlowWorksSettings.liquidWakesEnabled", tick, StringComparison.Ordinal);
+                int fleck = s.IndexOf("FleckDefOf.WaterRipple", tick, StringComparison.Ordinal);
+                int note = s.IndexOf("RM_WakeCount.Note(under.defName)", tick, StringComparison.Ordinal);
+                Assert(tick > 0 && gate > tick && fleck > gate && note > fleck, "can-fail: a wake is counted after the setting gate and the fleck, never before");
+                Assert(s.IndexOf("RM_WakeCount.Note(", StringComparison.Ordinal) == note && s.LastIndexOf("RM_WakeCount.Note(", StringComparison.Ordinal) == note, "one count site only");
+                RM_WakeCount.Reset();
+                Assert(RM_WakeCount.Total() == 0 && RM_WakeCount.Render() == "" && RM_WakeCount.On("RM_WaterThin") == 0, "empty after Reset");
+                RM_WakeCount.Note("RM_WaterThin"); RM_WakeCount.Note("RM_WaterThin"); RM_WakeCount.Note("RM_TarShallow");
+                RM_WakeCount.Note(null); RM_WakeCount.Note("");
+                Assert(RM_WakeCount.On("RM_WaterThin") == 2 && RM_WakeCount.On("RM_TarShallow") == 1 && RM_WakeCount.On(null) == 0, "can-fail: counted per terrain");
+                Assert(RM_WakeCount.Render() == "RM_TarShallow=1;RM_WaterThin=2", "rendered sorted: " + RM_WakeCount.Render());
+                Assert(RM_WakeCount.Reset() == 3 && RM_WakeCount.Total() == 0, "Reset returns what it cleared");
+            });
+
             Case("BottleLoop_no_tank_takes_bottles_unasked_and_gives_them_back", () =>
             {
                 foreach (RM_TankMode m in Modes)

@@ -205,6 +205,19 @@ namespace RimMandrake.FlowWorks
 			Add(f.fillTerrainHalf, look);
 			Add(f.fillTerrainBrim, look);
 			Add(f.fillTerrainSuperdeep, look);
+			if (f.freshwaterLadder)
+			{
+				// LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET: since P14 dug fresh water settles to the ladder (RM_WaterThin ...),
+				// not to the fill tiers above, so without this a pawn wading a freshly dug pond never left a wake
+				// (live 2026-10-29: LookFor(RM_WaterThin) was null). AddOwned keeps vanilla WaterShallow/WaterDeep out.
+				for (int r = 1; r < RM_WaterLadder.RungCount; r++)
+				{
+					if (RM_WaterLadder.WearsLiquidLook((RM_WaterLadder.Rung)r))
+					{
+						AddOwned(RM_WaterLadderDefs.Freshwater((RM_WaterLadder.Rung)r), look);
+					}
+				}
+			}
 		}
 
 		private static void AddOwned(TerrainDef t, RM_LiquidSurfaceLook look)
@@ -488,7 +501,8 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				RM_LiquidSurfaceLook look = LookFor(map.terrainGrid.TerrainAt(p.Position));
+				TerrainDef under = map.terrainGrid.TerrainAt(p.Position);
+				RM_LiquidSurfaceLook look = LookFor(under);
 				if (look == null || look.wake <= 0f)
 				{
 					continue;
@@ -524,6 +538,7 @@ namespace RimMandrake.FlowWorks
 						ageTicksOverride = -1
 					});
 				}
+				RM_WakeCount.Note(under.defName);   // one V thrown; read live by jawa/static_call RM_WakeCount.On
 			}
 		}
 

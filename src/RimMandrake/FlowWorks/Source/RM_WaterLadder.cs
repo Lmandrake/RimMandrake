@@ -85,6 +85,16 @@ namespace RimMandrake.FlowWorks
 			return k < 0 || k >= RungCount ? null : FreshwaterDefNames[k];
 		}
 
+		/// <summary>LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET: does a dug square on <paramref name="rung"/> wear the fresh-water
+		/// surface look (RM_LiquidSurface.LookFor: the wading wake, and the see-through redraw of a flooded cut)? Thin and
+		/// deeper, the rungs that replaced RM_Fill_Water_Half/Brim/Superdeep in P14, which all wore it. VeryShallow does not,
+		/// exactly as the fill tier it replaced (fillTerrainVeryShallow) never did: a damp film thinner than the silt. The
+		/// caller still skips the vanilla rungs (WaterShallow, WaterDeep): vanilla lakes and seas are never given our look.</summary>
+		public static bool WearsLiquidLook(Rung rung)
+		{
+			return rung >= Rung.Thin && rung <= Rung.Deep;
+		}
+
 		/// <summary>The rung for <paramref name="waterDl"/> decilitres of water standing in one square.</summary>
 		public static Rung RungForDl(long waterDl)
 		{
