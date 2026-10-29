@@ -27,7 +27,7 @@ Before acting in an area, `grep -n -i '<topic>' /home/mandrake/rm/bench/CLAUDE.m
 - Engine traps: `Plant` ticks only `TickLong()`; `MayRequire` on a top-level `<Operation>` is ignored (use PatchOperationFindMod); a patch matching nothing logs nothing.
 - Names: packageId `mandrake.<tier>.<mod>`, prefixes `RM_`/`RSW_`/`RUT_`. Queue items are `SUBJECT_INTENT_TWIST` — check with `rimflow namecheck`. Ledger only through `python3 src/RimMandrake/rimflow/cli.py` (skill `using-rimflow`); provenance flags `--owner-said` (his words) / `--by-card` / `--per-ruling` / `--why` (yours).
 - A file is DIRTY until `python3 src/RimMandrake/Utils/code_review_status.py check <path>` says CLEAN. Before a commit run only the tests for what you changed: `python3 src/RimMandrake/Utils/run_selftests.py --only <tests>`.
-- Standing rulings you must not contradict: no worldgen of any kind; a biome of ours on 0 tiles is expected, not a defect; every DLC is assumed; never live-test a flyer's flight; BENCH owns all FlowWorks + GSS; nothing reaches the owner unread; wrong material is deleted (fix every inbound reference), not superseded.
+- Standing rulings you must not contradict: no worldgen of any kind; a biome of ours on 0 tiles is expected, not a defect; every DLC is assumed; never live-test a flyer's flight; FOUNDRY owns all FlowWorks + GSS since the v3 cutover (BENCH takes only needs=owner live looks); nothing reaches the owner unread; wrong material is deleted (fix every inbound reference), not superseded.
 - Never name a GenAI account, host or key in code — read the environment.
 
 ## Repo hygiene

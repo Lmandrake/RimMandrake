@@ -59,11 +59,9 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
-## 🔴 BENCH owns ALL FlowWorks — owner, 2026-10-23
+## 🔴 FOUNDRY owns ALL FlowWorks and GSS since the v3 cutover — owner, 2026-10-28
 
-*"Please redirect those FlowWorks actions back to Bench. I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, FlowWorks liquids; Gimme Some Slack goes with it, owner by card 2026-10-23: *"Yes, take GSS too"*). FOUNDRY does not pick FlowWorks items up: it files a finding `--for BENCH` and moves on, never waits. Lane list (data, enforced by `rimflow file` and `--acceptance`): `infrastructure/state/flowworks_lane.json`. **Exception (owner by card 2026-10-27, *"Yes, Foundry may take them too"*):** a FlowWorks bug may be handed to a Live Fixer run as Foundry work (`design/RimMandrake/live_fixer_2026-10-28.md`).
-
-Ends at the v3 cutover (owner 2026-10-28) — see V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY.
+*"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry."* Code, art, live testing, acceptance at every level, code review and deploys of FlowWorks (hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges, suspension bridges, FlowWorks liquids) and Gimme Some Slack are FOUNDRY's. BENCH (the Conductor's window with him) takes only a FlowWorks item that needs him live (needs=owner, an L4 look), in a session with him. A FlowWorks finding is filed `--for FOUNDRY`; `rimflow file` forces it from the lane list (data, also read by `--acceptance`): `infrastructure/state/flowworks_lane.json`, field `seat`. What moved: `infrastructure/state/v3_cutover/record.json`; `python3 src/RimMandrake/rimflow/v3_cutover.py revert` undoes it. Seat rules: `infrastructure/agents/FOUNDRY.md`, `BENCH.md`.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
@@ -276,7 +274,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 ## What is where
 
 ```
-src/                    mods, defs, C#, art            FOUNDRY owns (not FlowWorks: BENCH owns ALL of it)
+src/                    mods, defs, C#, art            FOUNDRY owns, FlowWorks and GSS included
 design/                 campaign specs (Utinni)        the owner's, via BENCH
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow

@@ -1,6 +1,6 @@
 # RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH
 
-FlowWorks (BENCH owns all FlowWorks). Filed by FOUNDRY from the owner's card, 2026-10-24 07:55 PDT: "FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. Not sure how much of that is realizable, but there is the vision."
+FlowWorks (FOUNDRY's since the v3 cutover). Filed by FOUNDRY from the owner's card, 2026-10-24 07:55 PDT: "FlowWorks is supposed to allow world rivers to be in any color as well. We have need for that in some places. Our rivers are technically supposed to start red (in the mountains) and then immediately turn bluish, followed by a quick fade to thick green and then death. Not sure how much of that is realizable, but there is the vision."
 
 ## spec
 What FlowWorks does today (read 2026-10-24, `src/RimMandrake/FlowWorks/Source/RiverColors/RM_RiverColors.cs`): a Harmony prefix on `WorldDrawLayer_Paths.GeneratePaths`, scoped to `WorldDrawLayer_Rivers`, swaps the colour argument per TILE. `RiverTint.ColorFor(tile)` is a switch on the tile's biome: RM_Contagion, RM_Miasma, RM_Wastes, RM_RustCathedral each get a settings colour, everything else gets `waterColor`. Vanilla already writes per-vertex colour (full alpha mid-path, alpha 0 at path ends), so only the argument varies. `RiverDef` has no colour field.

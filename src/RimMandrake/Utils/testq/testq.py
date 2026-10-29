@@ -1422,7 +1422,7 @@ def main(argv=None):
     s.add_argument("--lane", choices=(STEVE, ARCHMAGI), default=STEVE)
     s = sub.add_parser("sweep")
     s.add_argument("mod")
-    s.add_argument("--by", default="BENCH", help="the requesting seat (BENCH owns FlowWorks)")
+    s.add_argument("--by", default="BENCH", help="the requesting seat (default BENCH; FOUNDRY owns FlowWorks since the v3 cutover)")
     s.add_argument("--for-item")
     s.add_argument("--priority", type=int, default=40)
     s = sub.add_parser("fill", help="queue the stalest chains when the lane is idle (the tick runs it)")

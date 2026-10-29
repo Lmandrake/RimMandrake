@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Selftest: BENCH owns all FlowWorks (owner, 2026-10-23). The lane is data
-(infrastructure/state/flowworks_lane.json): `acceptance` routes a FlowWorks item to BENCH at every
-level and never to FOUNDRY; the shipped pattern file matches the names it must (FlowWorks and GSS, both BENCH's) and not other biomes' work.
+"""Selftest: one seat owns all FlowWorks + GSS (FOUNDRY since the v3 cutover, owner 2026-10-28; BENCH
+before it, owner 2026-10-23). The lane is data (infrastructure/state/flowworks_lane.json): `acceptance`
+routes a FlowWorks item to the lane's seat at every level and never to the other seat; the shipped
+pattern file names the seat the cutover record implies and matches the names it must (FlowWorks and
+GSS) and not other biomes' work.
 
     python3 src/RimMandrake/rimflow/selftest_flowworks_lane.py
 """

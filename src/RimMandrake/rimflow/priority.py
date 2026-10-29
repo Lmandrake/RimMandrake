@@ -427,10 +427,10 @@ def acceptance_seat(level):
     return ACCEPTANCE_SEAT.get(level, ACCEPTANCE_DEFAULT_SEAT)
 
 
-# 🔑 BENCH OWNS ALL FLOWWORKS — owner, 2026-10-23: *"I want Bench owning all Flowworks from now
-# on to prevent mutual waiting."* The lane is DATA: `infrastructure/state/flowworks_lane.json`
-# (id patterns + the seat). A FlowWorks item is swept by that seat at EVERY level, and `file`
-# files it for that seat; FOUNDRY never accepts or picks one up.
+# 🔑 ONE SEAT OWNS ALL FLOWWORKS + GSS: FOUNDRY since the v3 cutover (owner, 2026-10-28: *"all bench
+# items get reassigned to Dispatch-> Foundry"*; BENCH before it, owner 2026-10-23). The lane is DATA:
+# `infrastructure/state/flowworks_lane.json` (id patterns + the seat; `v3_cutover.py revert` flips the
+# seat). A FlowWorks item is swept by that seat at EVERY level, and `file` files it for that seat.
 FLOWWORKS_LANE_FILE = os.path.join(model.ROOT, "infrastructure", "state", "flowworks_lane.json")
 
 

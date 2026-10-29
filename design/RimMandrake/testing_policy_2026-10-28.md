@@ -202,7 +202,7 @@ after the gate passes. Use a scoped run (`--scope changed-functions --since SHA`
 
 ### 2.10 FlowWorks C# selftests (in-assembly SelfTest, e.g. HoseTickAllocChecks)
 - **Purpose:** engine-side invariants such as allocations and slices.
-- **Cadence:** per FlowWorks change (BENCH owns FlowWorks).
+- **Cadence:** per FlowWorks change (FOUNDRY owns FlowWorks since the v3 cutover).
 - **Helps / hurts:** UNMEASURED. There is no per-run log aggregate.
 
 ### 2.11 Art evaluation: prereview, art_eval, blind review

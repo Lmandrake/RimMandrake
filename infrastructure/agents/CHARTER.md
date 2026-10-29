@@ -62,7 +62,7 @@ gitignored rendered views you never edit — read one with `rimflow queue <SEAT>
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
-🔴 **BENCH OWNS ALL FLOWWORKS — owner, 2026-10-23:** *"I want Bench owning all Flowworks from now on to prevent mutual waiting."* Code, art, live testing, acceptance, code review and deploys; FOUNDRY files a FlowWorks finding as an item `--for BENCH` and moves on, never waits. Lane list (data): `infrastructure/state/flowworks_lane.json`, enforced by `rimflow file` and `--acceptance`. Ends at the v3 cutover (owner 2026-10-28) — see V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY.
+🔴 **FOUNDRY OWNS ALL FLOWWORKS AND GSS SINCE THE v3 CUTOVER — owner, 2026-10-28:** *"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry."* Code, art, live testing, acceptance, code review and deploys; BENCH (the Conductor's window) takes only an item that needs him live (needs=owner, an L4 look). A FlowWorks finding is filed `--for FOUNDRY`. Lane list (data, field `seat`): `infrastructure/state/flowworks_lane.json`, enforced by `rimflow file` and `--acceptance`; what moved: `infrastructure/state/v3_cutover/record.json`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
