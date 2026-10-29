@@ -1,0 +1,234 @@
+{
+ "script": "live_session.py",
+ "started": "2026-10-29T14:07:11",
+ "rows": [
+  {
+   "id": "B0_tier_truth",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "running": 11,
+    "flowworks": true,
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_assembly_identity",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "loaded": "8f93121c69c6",
+    "repo": "8f93121c69c6",
+    "mvidMatchesFile": true,
+    "location": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll",
+    "why": ""
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B0_clock_rate",
+   "item": "-",
+   "criterion": "-",
+   "status": "PASS",
+   "cls": "HARNESS",
+   "detail": {
+    "ticks": 600,
+    "wall_s": 0.43,
+    "ticks_per_s": 1391.5,
+    "frameBudgetMs": 150.0
+   },
+   "block": "B0",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A3",
+   "item": "PIT_DEPTH_WIDEN_TWO_METRES_TO_EIGHT",
+   "criterion": "A3",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "save": "RM_live_session_reload_20261029_140705",
+    "differs": [],
+    "unread": [
+     "dig_digdepth"
+    ],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_A2",
+   "item": "PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "save": "RM_live_session_reload_20261029_140705",
+    "differs": [],
+    "unread": [
+     "dig_digdepth"
+    ],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_reload_save_reload_pockets_iden",
+   "item": "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH",
+   "criterion": "save_reload_pockets_identical",
+   "status": "UNMEASURED",
+   "cls": "HARNESS",
+   "detail": {
+    "save": "RM_live_session_reload_20261029_140705",
+    "differs": [],
+    "unread": [
+     "dig_digdepth"
+    ],
+    "pairs": {},
+    "settledSame": [],
+    "settleTicks": 0,
+    "pocketTimingAfterLoad": "unread: No public static ProofPocketTiming with 0 params."
+   },
+   "block": "B7",
+   "eyes": false
+  },
+  {
+   "id": "B7_pipe_look_survives",
+   "item": "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD",
+   "criterion": "A2",
+   "status": "UNMEASURED",
+   "cls": "OWED",
+   "detail": {
+    "why": "needs a colonist-built styled pipe (blueprint->frame->building); objects_sheet.choose_look stages the look, the build half rides B4 once a builder row exists"
+   },
+   "block": "B7",
+   "eyes": false
+  }
+ ],
+ "args": {
+  "dry_run": false,
+  "mock": false,
+  "list": false,
+  "only": "B0,B7",
+  "skip": "",
+  "frame_budget_ms": 150.0,
+  "player_log": "",
+  "no_owner_save": true,
+  "out_dir": "D:\\ClaudeWork\\rimmandrake\\foundry_redrows\\ls_b7"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "642f3b488e9cb61349630a3cf95b9c8c8e872cadb241994a7161e47ef733fd16",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/live_session.py",
+  "runtime": "8076de2705490745ee266b119e6a432ac67e77db0c4a65e37576acec1762cae6",
+  "test": "28f66c44d5511d5245c83a1b55c57c6aca2cb4347100ef68c756f4c4ba8203fa",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/extensions_rivers.py",
+   "FlowWorks/northstar/fw_walk_common.py",
+   "FlowWorks/northstar/gravel_stage.py",
+   "FlowWorks/northstar/level_water.py",
+   "FlowWorks/northstar/live_session.py",
+   "FlowWorks/northstar/objects_sheet.py",
+   "FlowWorks/northstar/owner_review_stage.py",
+   "FlowWorks/northstar/river_site.py",
+   "FlowWorks/northstar/shovel_stage.py",
+   "FlowWorks/northstar/site_spec.py",
+   "FlowWorks/northstar/validation_v2.py",
+   "FlowWorks/northstar/water_scenes_mock.py",
+   "FlowWorks/northstar/water_scenes_walk.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/quiet_site.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/test_site_saves.json",
+   "Utils/modcheck/test_site_saves.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/northstar_driver/__init__.py",
+   "Utils/northstar_driver/lint_calls.py",
+   "Utils/northstar_driver/session.py",
+   "Utils/northstar_driver/tool_schemas.json",
+   "Utils/northstar_driver/transport.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "assembly_sha256": "8f93121c69c66d24db590c62b4bf516b2f478fbfa1a13ea3b1e4bb1659da2d4e"
+ }
+}

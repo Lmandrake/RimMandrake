@@ -1,0 +1,133 @@
+{
+ "script": "glow_tank_live.py",
+ "started": "2026-10-29T13:59:36",
+ "rows": [
+  {
+   "id": "GLOWTANK_SALT_DRAWN_ONE_UNIT",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "GLOW_TANK_LIQUID_FEED_1",
+   "detail": {
+    "why": "a glow tank did not stand",
+    "scenes": {
+     "S": {
+      "gt": [
+       64,
+       152
+      ],
+      "bat": [
+       61,
+       152
+      ],
+      "tank": [
+       66,
+       152
+      ],
+      "build": "{'success': True, 'placed': 4, 'survived': 4, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_GlowTank:64,152', 'why': \"no ThingDef 'RM_GlowTank'\"}], 'displacedCount': 0, 'displaced': [],",
+      "gid": null,
+      "units0": 20000,
+      "plant": "{'success': False, 'message': 'Planted 0, cleared 0.', 'planted': 0, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [{"
+     },
+     "F": {
+      "gt": [
+       64,
+       162
+      ],
+      "bat": [
+       61,
+       162
+      ],
+      "tank": [
+       66,
+       162
+      ],
+      "build": "{'success': True, 'placed': 4, 'survived': 4, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_GlowTank:64,162', 'why': \"no ThingDef 'RM_GlowTank'\"}], 'displacedCount': 0, 'displaced': [],",
+      "gid": null,
+      "units0": 20000,
+      "plant": "{'success': False, 'message': 'Planted 0, cleared 0.', 'planted': 0, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [{"
+     },
+     "B": {
+      "gt": [
+       64,
+       172
+      ],
+      "bat": [
+       61,
+       172
+      ],
+      "tank": [
+       66,
+       172
+      ],
+      "build": "{'success': True, 'placed': 4, 'survived': 4, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'RM_GlowTank:64,172', 'why': \"no ThingDef 'RM_GlowTank'\"}], 'displacedCount': 0, 'displaced': [],",
+      "gid": null,
+      "units0": 20000,
+      "plant": "{'success': False, 'message': 'Planted 0, cleared 0.', 'planted': 0, 'cleared': 0, 'rejected': 0, 'rejectionReasons': {}, 'cellsSkippedByDensity': 0, 'cellsOutOfBounds': 0, 'growth': 0.1, 'errors': [{"
+     }
+    }
+   }
+  }
+ ],
+ "args": {
+  "out": null,
+  "origin": "60,150",
+  "fresh_map": true,
+  "ticks": 6000
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Badger37531",
+    "Bison37558",
+    "Bison37559",
+    "Bison37560",
+    "Bison37561",
+    "Bluebird37557",
+    "Deer37533",
+    "Deer37534",
+    "Deer37535",
+    "Deer37536",
+    "Deer37537",
+    "Deer37538",
+    "Deer37539",
+    "Deer37540",
+    "Hare37532",
+    "Ibex37546",
+    "Ibex37547",
+    "Muffalo37548",
+    "Muffalo37549",
+    "Muffalo37550",
+    "Muffalo37551",
+    "Muffalo37552",
+    "Muffalo37553",
+    "Muffalo37554",
+    "Porcupine37555",
+    "Raccoon37542",
+    "Rat37541",
+    "Rat37544",
+    "Rat37556",
+    "Rhinoceros37528",
+    "Rhinoceros37529",
+    "Rhinoceros37530",
+    "Squirrel37543",
+    "Turkey37545"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ }
+}
