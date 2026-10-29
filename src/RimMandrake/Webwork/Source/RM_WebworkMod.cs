@@ -62,6 +62,11 @@ namespace RimMandrake.Webwork
 		public static bool webfallEnabled = true;
 		public static float webfallCommonality = 6f;
 
+		// WEBWORK_TERRAIN_WEATHER_PASS_1, soundscape rows (WEBWORK_SOUNDSCAPE_1's two sounds; RM_WebworkStartupGate.ApplySoundscape,
+		// next game start): the hush is RM_Webwork's soundsAmbient row, the thrum the sense-web's one-shot cue.
+		public static bool hushEnabled = true;
+		public static bool webThrumEnabled = true;
+
 		// WEB_SIEGE_DESIGN_SPIDERS_BRING_SHADE: the siege (RM_WebworkSiege.cs). Numbers PROVISIONAL (2026-10-03 ruling).
 		public static bool siegeEnabled = true;
 		public static float siegeStrength = 1f;
@@ -97,6 +102,8 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref localWebDensityMultiplier, "localWebDensityMultiplier", 1f);
 			Scribe_Values.Look(ref webfallEnabled, "webfallEnabled", true);
 			Scribe_Values.Look(ref webfallCommonality, "webfallCommonality", 6f);
+			Scribe_Values.Look(ref hushEnabled, "hushEnabled", true);
+			Scribe_Values.Look(ref webThrumEnabled, "webThrumEnabled", true);
 			Scribe_Values.Look(ref siegeEnabled, "siegeEnabled", true);
 			Scribe_Values.Look(ref siegeStrength, "siegeStrength", 1f);
 			Scribe_Values.Look(ref siegeSpinSpeed, "siegeSpinSpeed", 1f);
@@ -281,6 +288,17 @@ namespace RimMandrake.Webwork
                 list.Label("Webfall commonality: " + webfallCommonality.ToString("0.0")
                     + " (against Clear 50, Fog 5, Rain 5 in the same biome; shipped default 6)");
                 webfallCommonality = list.Slider(webfallCommonality, 0f, 30f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Sound (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "hushEnabled", "webThrumEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("The Webwork's hush", ref hushEnabled,
+                    "On: a Webwork map carries its own low, near-silent ambient bed (the jungle's animals have been eaten). "
+                  + "Off: the biome has no ambient bed of its own; weather sounds (rain, fog wind, webfall) still play. Applies at startup.");
+                list.CheckboxLabeled("The web-thrum when the web feels someone", ref webThrumEnabled,
+                    "On: a low thrum plays where a pawn is first felt by the web (stepping into it, or carrying a stolen egg). "
+                  + "Off: no sound; the web still feels them exactly as before. Applies at startup.");
                 list.GapLine();
             }
 

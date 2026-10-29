@@ -286,6 +286,7 @@ MODS = {
         "The dead giant (urraveth remains)": "Now",
         "Web network on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Webfall weather (restart)": "NextGameStart",
+        "Sound (restart)": "NextGameStart",
         "The siege (affects maps next to the Webwork)": "Now",
     }, ()),
     "Warcasket": ("RM_WarcasketSettings.cs", "RM_Warcasket.csproj", {

@@ -12,6 +12,7 @@ namespace RimMandrake.Webwork
 	/// 2. The web harvest (webHarvestEnabled): ApplyWebHarvest (anchor line, sheet web and, since
 	/// WEBWORK_TERRAIN_WEATHER_PASS_1, the web cable).
 	/// 3. Webfall (webfallEnabled / webfallCommonality): ApplyWebfall, RM_Webwork's weather row.
+	/// 4. The soundscape rows (hushEnabled / webThrumEnabled): ApplySoundscape.
 	/// Runs once after defs load (so a change needs a restart, and the settings say so).
 	/// </summary>
 	[StaticConstructorOnStartup]
@@ -26,6 +27,34 @@ namespace RimMandrake.Webwork
 			ApplyResalePrice(DefDatabase<TraderKindDef>.GetNamedSilentFail(ResaleTraderDefName));
 			ApplyWebHarvest();
 			ApplyWebfall(DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Webwork"), DefDatabase<WeatherDef>.GetNamedSilentFail(WebfallDefName));
+			ApplySoundscape(DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Webwork"), DefDatabase<SoundDef>.GetNamedSilentFail(HushDefName),
+				DefDatabase<SoundDef>.GetNamedSilentFail(ThrumDefName));
+		}
+
+		public const string HushDefName = "RM_Webwork_Hush";
+		public const string ThrumDefName = "RM_Webwork_Thrum";
+
+		/// <summary>WEBWORK_TERRAIN_WEATHER_PASS_1, soundscape rows. hushEnabled off removes the hush from RM_Webwork's
+		/// soundsAmbient (AmbientSoundManager reads that list when a map is shown; weather beds are untouched). webThrumEnabled
+		/// off empties the thrum's subSounds: RM_MapComponent_SenseWeb (CreatureBehaviors, a separate assembly that cannot
+		/// read these settings) still looks it up by name and plays it, and PlayOneShot only loops subSounds, so an empty
+		/// list is silence with no error. Returns "hush=&lt;in table&gt; thrum=&lt;audible&gt;" for a proof read.</summary>
+		public static string ApplySoundscape(BiomeDef biome, SoundDef hush, SoundDef thrum)
+		{
+			bool hushIn = false;
+			if (biome != null && hush != null)
+			{
+				if (biome.soundsAmbient == null) biome.soundsAmbient = new System.Collections.Generic.List<SoundDef>();
+				if (!RM_WebworkSettings.hushEnabled) biome.soundsAmbient.RemoveAll(s => s == hush);
+				else if (!biome.soundsAmbient.Contains(hush)) biome.soundsAmbient.Add(hush);
+				hushIn = biome.soundsAmbient.Contains(hush);
+			}
+			if (thrum?.subSounds != null && !RM_WebworkSettings.webThrumEnabled)
+			{
+				thrum.subSounds.Clear();
+			}
+			bool thrumOn = thrum?.subSounds != null && thrum.subSounds.Count > 0;
+			return "hush=" + hushIn + " thrum=" + thrumOn;
 		}
 
 		public const string WebfallDefName = "RM_Webfall";

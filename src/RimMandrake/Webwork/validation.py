@@ -241,6 +241,37 @@ def _web_terrain_weather_findings():
             bad.append("RM_GenStep_WebworkWeb never names %s" % want)
     if '"RM_Webwork_Cable"' not in _read(os.path.join("Source", "RM_WebworkStartupGate.cs")):
         bad.append("webHarvestEnabled does not reach RM_Webwork_Cable (startup gate harvest list)")
+    bad.extend(_soundscape_findings(b, wf))
+    return bad
+
+
+def _soundscape_findings(biome, webfall):
+    """WEBWORK_TERRAIN_WEATHER_PASS_1, soundscape rows (convention: LeaningScrub selftest_scrub_soundscape.py, Abyss
+    soundscape_check). The biome's one ambient row is the hush; webfall carries a vanilla wind bed; the thrum is a
+    one-shot; both toggles reach the startup gate; no new audio asset ships (every clipPath is a reused one)."""
+    bad = []
+    sd = dict((d.findtext("defName"), d) for d in
+              ET.parse(os.path.join(HERE, "Defs", "SoundDefs", "RM_WebworkSoundscape.xml")).getroot().findall("SoundDef"))
+    if set(sd) != {"RM_Webwork_Hush", "RM_Webwork_Thrum"}:
+        return ["RM_WebworkSoundscape.xml defines %r, expected the hush and the thrum" % sorted(sd)]
+    if [li.text for li in biome.findall("soundsAmbient/li")] != ["RM_Webwork_Hush"]:
+        bad.append("RM_Webwork soundsAmbient must be exactly the hush (silence is doctrine; no insect bed)")
+    if (sd["RM_Webwork_Hush"].findtext("sustain") or "").lower() != "true":
+        bad.append("RM_Webwork_Hush is an ambient bed and must sustain")
+    if (sd["RM_Webwork_Thrum"].findtext("sustain") or "").lower() != "false":
+        bad.append("RM_Webwork_Thrum is a one-shot cue and must not sustain")
+    if [li.text for li in webfall.findall("ambientSounds/li")] != ["Ambient_Wind_Fog"]:
+        bad.append("RM_Webfall's ambient row must be the vanilla Ambient_Wind_Fog bed (no new audio)")
+    if any(os.path.splitext(f)[1].lower() in (".ogg", ".wav", ".mp3") for _r, _d, fs in os.walk(HERE) for f in fs):
+        bad.append("an audio file ships in the Webwork mod; the soundscape reuses existing clips only")
+    gate = _read(os.path.join("Source", "RM_WebworkStartupGate.cs"))
+    for want in ("RM_WebworkSettings.hushEnabled", "RM_WebworkSettings.webThrumEnabled", '"RM_Webwork_Hush"',
+                 '"RM_Webwork_Thrum"', "ApplySoundscape(DefDatabase"):
+        if want not in gate:
+            bad.append("soundscape startup gate lacks " + want)
+    if '"RM_Webwork_Thrum"' not in open(os.path.join(HERE, "..", "CreatureBehaviors", "Source", "RM_MapComponent_SenseWeb.cs"),
+                                        encoding="utf-8").read():
+        bad.append("the sense-web no longer plays RM_Webwork_Thrum (the thrum toggle would gate nothing)")
     return bad
 
 
