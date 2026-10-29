@@ -119,8 +119,10 @@ def to_claim(sch, st, o, apply=True):
 def test_off_by_default():
     with open(D.DEFAULT_SCHEDULE) as f:
         real = json.load(f)
-    check((real.get("seat_restart") or {}).get("enabled") is False,
-          "the shipped schedule has seat_restart present and enabled:false")
+    sr = real.get("seat_restart") or {}
+    # Off by default; the v3 trial (owner 2026-10-28) may turn it on, but only in dry mode until a dry ticket is seen.
+    check(sr.get("enabled") is False or (sr.get("enabled") is True and sr.get("dry") is True),
+          "the shipped schedule has seat_restart present and either enabled:false or enabled with dry:true")
     sch, st = sched(enabled=False), fresh()
     acts = run(sch, st, obs(request=req()), T0 + 500)
     check(acts == [] and not st.get("seat_restart"), "disabled: a request decides nothing (%s)" % dos(acts))
