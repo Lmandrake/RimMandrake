@@ -72,3 +72,4 @@
 {"seat":"DISPATCHER","event":"note","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T08:15:54Z","ts":"2026-10-29T08:17:48Z","tsn":1793261868040694159}
 {"seat":"DISPATCHER","event":"note","id":"DUNGEON_SETPIECE_TEXT_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T09:02:57Z","ts":"2026-10-29T09:04:46Z","tsn":1793264686735215795}
 {"seat":"DISPATCHER","event":"note","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T09:07:00Z","ts":"2026-10-29T09:08:56Z","tsn":1793264936729493186}
+{"seat":"DISPATCHER","event":"note","id":"GSS_SWITCHES_PROVE_LAST_FOUR_STANDING","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T09:19:17Z","ts":"2026-10-29T09:21:12Z","tsn":1793265672271627468}
