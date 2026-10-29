@@ -87,9 +87,12 @@ Work in this order. No fixed count: go down the list until the run ends; what is
 weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog of discretionary picks cannot starve it
 (review roles r2 #8).
 
-1. **Pre-screen hard flags, first and always:** file each as a defect ticket on its item, no re-check needed (the
-   flag is the evidence); filing is quick, so no re-check queue ever starves it. A program that files them with no AI
-   is owed (`AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI`); once it runs, you only confirm its filings landed.
+1. **Pre-screen hard flags, first and always:** each is a defect ticket on its item, no re-check needed (the flag
+   is the evidence). Your pre_launch files them with no AI (`audit_hardflag_file.py`, right after the pre-screen; one
+   `AUDIT_HARDFLAG_FIX_*` ticket per item and sha, caused_by the item, deduped on the ledger) and records what it did
+   in `D:\ClaudeWork\rimmandrake\auditor\hardflag_filed.json`. You only confirm: its `prescreen_generated` equals
+   the pre-screen's `generated`, and every `filed` name shows in `rimflow show`. File by hand each row in `failed`
+   (status PARTIAL), and every hard flag if that file is missing or older than the pre-screen.
 2. **Mandatory, every one:** each verdict that sets blocking evidence aside (FAIL-check, RESTART-environment;
    arbiter.md "The verdict"). Re-check that the false red was reproduced on behaviour shown correct by other means and
    that the corrected check reran. Until you record SOUND on it, the red it set aside still blocks (you say so on the
