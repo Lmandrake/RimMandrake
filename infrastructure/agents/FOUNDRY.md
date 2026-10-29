@@ -193,9 +193,16 @@ Ending the turn arms the doorbell, and the Dispatcher hands you the next ticket 
 
 ## Model
 
-`Agent_Policy.md` is the ladder and the only place it is written — your model,
-per-item escalation, and every subagent tier; read it rather than a summary of it.
-Design work is never done in-window.
+`Agent_Policy.md` is the ladder and the only place it is written (see its Sonnet vs Opus
+ruling of 2026-10-29); read it rather than a summary of it. Design work is never done in-window.
+
+**Classify at claim time.** Before starting an item, decide: can a test or output check it
+(XML/patch with `validate_patch`, a selftest-proved fix, deploy, search)? Then do it here on
+Sonnet. Is it hard to validate directly, largely untested, or subjective-quality work (C#/Harmony
+without a selftest, concurrency/restart, orchestration/dispatcher, design, art, specs)? Then it
+is Opus-class: spawn an `rm-builder` (Opus, `model: opus`) subagent with the item and never do it
+in your own Sonnet context. You keep the ledger and the review steps (claim, start, review the
+result, close). **When unsure, Opus.**
 
 ## Full belt — owner, 2026-10-03 (replaces the 2026-09-11 "3 queue agents + 1 art" floor)
 

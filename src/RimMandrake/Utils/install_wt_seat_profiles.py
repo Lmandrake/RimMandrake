@@ -198,8 +198,8 @@ SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
 #
 # The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
 # Per Agent_Policy.md's ladder (owner, 2026-09-29): BENCH runs Opus (it
-# orchestrates and backgrounds design to Opus subagents), FOUNDRY defaults to
-# Sonnet and self-escalates per item. Fable is off the ladder. The `--model` FLAG outranks every settings
+# orchestrates and backgrounds design to Opus subagents), FOUNDRY stays on
+# Sonnet and routes Opus-class items to an rm-builder (2026-10-29 ruling). Fable is off the ladder. The `--model` FLAG outranks every settings
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
 # left behind. In-session /model still switches live when an item needs more.

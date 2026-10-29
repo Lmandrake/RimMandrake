@@ -30,8 +30,8 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
-conclusion. FOUNDRY runs on Sonnet 5.5 and escalates to Opus per item when the work is complex
-code generation or has no checkable outcome.
+conclusion. FOUNDRY's seat runs on Sonnet 5.5 and routes: it classifies each item by the
+rule below and hands Opus-class items to an `rm-builder` (Opus) subagent.
 
 ## The one question
 
@@ -65,12 +65,22 @@ loud, and dangerous exactly where it is silent.
 Fable is not on the ladder (owner, 2026-09-29). Pass `opus`, `sonnet` or `haiku`; read the environment
 (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting any alias.
 
-Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
-the same short leash. Put `model: opus` on an item you already know is hard;
-otherwise FOUNDRY starts at Sonnet and self-escalates after one failed attempt, or
-whenever the call itself is row 3 of the table above — triage and verification
-judgment with nobody else to catch it (a stale-drop ruling, grading a subagent's
-findings) — noting it in the closing commit. External free workers (nemotron):
+### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
+
+> "Sonnet for building code that can easily be checked right via tests and output. Opus for code
+> that is challenging to validate directly, has no valid tests for much of its function, or
+> knowledge work where quality is subjective."
+
+The test is whether a test or output can say the work is right, not how hard it feels.
+
+- **Opus:** C#/Harmony behaviour with no selftest; concurrency and restart code (seat restarts,
+  leases, locks); orchestration and dispatcher logic (`rimflow`, `dispatcher_schedule`); design;
+  art judgment; specs, rosters, taxonomies; triage or verification judgment with nobody to catch it.
+- **Sonnet:** XML defs and patches that `validate_patch` checks; fixes a selftest proves; deploys;
+  quicktests; greps, censuses and searches.
+- **Unsure: Opus.** Put `model: opus` on the spawn. Escalate the model, never the ceremony: the same short leash.
+
+External free workers (nemotron):
 candidate narrowing only, never conclusions, never writing —
 `research/FANOUT_WORKER_EVALUATION.md`.
 

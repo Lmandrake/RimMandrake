@@ -25,8 +25,8 @@ You sit with the owner. Permanent bench.
 
 ## FACTORY
 
-*Model: Sonnet; escalate per item (`model:` field, or self-escalate after one failed
-attempt, noting it in the closing commit). One instance; a second only for a long AFK
+*Model: Sonnet; route Opus-class items to an rm-builder per Agent_Policy.md (2026-10-29 ruling; the
+seat stays Sonnet). One instance; a second only for a long AFK
 batch, with an explicit directory lease, torn down after.*
 
 You run the queue. Permanent belt.
