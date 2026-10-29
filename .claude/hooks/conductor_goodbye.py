@@ -7,9 +7,11 @@ the light close-out into that window's context on that turn: his rulings onto th
 OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`. The Dispatcher then
 relaunches a fresh CONDUCTOR window after the grace (seat_restart.py, kind "conductor").
 
-Only a whole-message goodbye fires: lower-cased, apostrophes dropped, every other non-alphanumeric run read as one
-space, then compared WHOLE against seat_restart.seats.BENCH.goodbye_phrases. "goodbye to the old pipe system" never
-fires. Only the Conductor window fires: AGENT_SEAT BENCH and a session name the BENCH seat answers to.
+Only a whole-message goodbye fires: src/RimMandrake/rimflow/goodbye_phrase.py (case-folded, apostrophes dropped,
+every run of non-word characters read as one space; letters of any script stay) compared WHOLE against
+seat_restart.seats.BENCH.goodbye_phrases. "goodbye to the old pipe system" and "goodbye 取消" never fire. Only the
+Conductor window fires: AGENT_SEAT BENCH and a session name the BENCH seat answers to (CONDUCTOR if the schedule is
+unreadable). A window whose session file cannot be read gets one diagnostic line, never the close-out.
 
 Prints nothing on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
 It only prints: the restart itself is requested by the window and acted on by the Dispatcher, which holds it while
@@ -17,21 +19,24 @@ helpers are alive, he is typing, or the window is mid-reply.
 """
 import json
 import os
-import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RIMFLOW = ROOT / "src" / "RimMandrake" / "rimflow"
-SCHEDULE = RIMFLOW / "dispatcher_schedule.json"
+SCHEDULE = Path(os.environ.get("CONDUCTOR_GOODBYE_SCHEDULE") or RIMFLOW / "dispatcher_schedule.json")  # seam: tests
 SEAT = "BENCH"
+FIXED_NAME = "CONDUCTOR"         # the Conductor window's name when the schedule cannot be read (P2-8)
+UNREADABLE_SEAM = "__UNREADABLE__"
+sys.path.insert(0, str(RIMFLOW))
+try:
+    import goodbye_phrase as GP  # the one shared rule (seat_restart.py request applies it too)
+except Exception:  # noqa: BLE001 - unloadable rule: the hook stays silent (main), never blocks his message
+    GP = None
 
 
 def norm(text):
-    t = (text or "").lower()
-    t = re.sub(r"['\u2019\u2018`]", "", t)
-    t = re.sub(r"[^a-z0-9]+", " ", t)
-    return t.strip()
+    return GP.norm(text)
 
 
 def _bench_restart(sch):
@@ -39,21 +44,16 @@ def _bench_restart(sch):
 
 
 def phrases(sch):
-    c = _bench_restart(sch)
-    out = []
-    for p in (c or {}).get("goodbye_phrases") or []:
-        n = norm(p) if isinstance(p, str) else ""
-        if n and n not in out:
-            out.append(n)
-    return out
+    return GP.phrases(_bench_restart(sch), default=())
 
 
 def is_goodbye(prompt, phr):
-    n = norm(prompt)
-    return bool(n) and n in set(phr or ())
+    return GP.is_goodbye(prompt, phr)
 
 
 def _names(sch):
+    if not sch:
+        return [FIXED_NAME]
     base = ((sch or {}).get("seats") or {}).get(SEAT) or {}
     out = []
     for n in [base.get("session_name")] + list(base.get("session_aliases") or []):
@@ -64,7 +64,8 @@ def _names(sch):
 
 def is_conductor(env, sf, sch):
     """-> (ok, why). The Conductor window: AGENT_SEAT BENCH and a session name BENCH answers to (exact, or name +
-    the title separator). An unreadable session file still fires, said so: `seat_restart.py request` re-checks."""
+    the title separator). An unreadable session file is NOT the Conductor (blind review 2026-10-29 P1-7: the close-out
+    files and publishes the BENCH shard, so an unidentified window must not run it)."""
     seat = (env.get("AGENT_SEAT") or "").strip().upper()
     if seat != SEAT:
         return False, "AGENT_SEAT is %r, not %s" % (seat or None, SEAT)
@@ -72,7 +73,7 @@ def is_conductor(env, sf, sch):
     if not names:
         return False, "no session names for seat %s in dispatcher_schedule.json" % SEAT
     if sf is None:
-        return True, "session name UNMEASURED (session file unreadable); the restart request re-checks it"
+        return False, "session name UNMEASURED (session file unreadable)"
     name = sf.get("name")
     sys.path.insert(0, str(RIMFLOW))
     try:
@@ -139,7 +140,7 @@ def _load_schedule():
 def _session_file():
     seam = os.environ.get("CONDUCTOR_GOODBYE_SESSION_NAME")
     if seam:
-        return {"name": seam}
+        return None if seam == UNREADABLE_SEAM else {"name": seam}
     sys.path.insert(0, str(RIMFLOW))
     try:
         import doorbell
@@ -158,14 +159,19 @@ def main():
     prompt = data.get("prompt") if isinstance(data, dict) else None
     if not isinstance(prompt, str):
         return 0
-    if (os.environ.get("AGENT_SEAT") or "").strip().upper() != SEAT:
+    if GP is None or (os.environ.get("AGENT_SEAT") or "").strip().upper() != SEAT:
         return 0
     sch = _load_schedule()
-    phr = phrases(sch) or [norm(p) for p in ("goodbye", "bye", "gn", "good night", "done for now", "thats all")]
+    phr = phrases(sch) or GP.phrases({})
     if not is_goodbye(prompt, phr):
         return 0
-    ok, why = is_conductor(os.environ, _session_file(), sch)
+    sf = _session_file()
+    ok, why = is_conductor(os.environ, sf, sch)
     if not ok:
+        if sf is None:
+            print("GOODBYE seen (conductor_goodbye.py) but this window's identity is UNMEASURED (its session file "
+                  "cannot be read): do NOT close out or restart. Tell him in one line that this window could not "
+                  "confirm it is the Conductor, so it stays open.")
         return 0
     print(message(sch, ok_why=why))
     return 0

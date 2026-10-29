@@ -33,10 +33,12 @@ with open(ROOT / "src/RimMandrake/rimflow/dispatcher_schedule.json", encoding="u
 PH = G.phrases(LIVE)
 
 YES = ["goodbye", "Goodbye!", "  bye. ", "BYE", "gn", "GN!", "good night", "Good night!!", "good-night",
-       "done for now.", "Done for now", "that's all", "That’s all.", "thats all", "goodbye\n"]
+       "done for now.", "Done for now", "that's all", "That’s all.", "thats all", "goodbye\n", "good night 🌙"]
 NO = ["goodbye to the old pipe system", "bye the way, check the hose", "ok bye", "that's all for the hose, now do Y",
       "gnome", "", "   ", "done", "good", "good night of testing ahead?", "say goodbye to FOUNDRY",
-      "no goodbye yet", "goodbye? not yet", "bye bye pipes 2", "done for now with art; next: hoses"]
+      "no goodbye yet", "goodbye? not yet", "bye bye pipes 2", "done for now with art; next: hoses",
+      # review P1-6: non-ASCII words are words, not punctuation
+      "goodbye 取消", "bye ñandú", "さようなら bye", "gn сейчас"]
 
 
 def test_phrases():
@@ -63,8 +65,11 @@ def test_window_gate():
     check(not G.is_conductor({}, sf, LIVE)[0], "no AGENT_SEAT (a Remote Control spawn, a helper) never fires")
     check(not G.is_conductor({"AGENT_SEAT": "BENCH"}, {"name": "AGENT CONDUCTOR"}, LIVE)[0],
           "the Conductor role's HOLD window name 'AGENT CONDUCTOR' is not the Conductor window")
+    # review P1-7: an unidentified window never gets the close-out (it would file and publish the BENCH shard)
     ok, why = G.is_conductor({"AGENT_SEAT": "BENCH"}, None, LIVE)
-    check(ok and "UNMEASURED" in why, "session file unreadable -> fires, says so (the request re-checks the name)")
+    check(not ok and "UNMEASURED" in why, "session file unreadable -> NOT the Conductor, says why (%s)" % why)
+    check(G.is_conductor({"AGENT_SEAT": "BENCH"}, sf, {})[0] and not G.is_conductor({"AGENT_SEAT": "BENCH"},
+          {"name": "AGENT CONDUCTOR"}, {})[0], "schedule unreadable -> the fixed name CONDUCTOR still identifies it")
 
 
 def test_message():
@@ -82,11 +87,13 @@ def test_message():
     check("seat_restart.py request" not in m and "UNREADABLE" in m, "schedule unreadable -> no restart, said loudly")
 
 
-def run(prompt, env_seat="BENCH"):
+def run(prompt, env_seat="BENCH", name="CONDUCTOR", schedule=None):
     env = dict(os.environ)
     env.pop("RIMFLOW_SEAT", None)
     env["AGENT_SEAT"] = env_seat
-    env["CONDUCTOR_GOODBYE_SESSION_NAME"] = "CONDUCTOR"       # test seam: no real session file is read
+    env["CONDUCTOR_GOODBYE_SESSION_NAME"] = name               # test seam: no real session file is read
+    if schedule:
+        env["CONDUCTOR_GOODBYE_SCHEDULE"] = schedule            # test seam: the schedule path
     p = subprocess.run([sys.executable, str(HOOK)], input=json.dumps({"prompt": prompt}), capture_output=True,
                        text=True, env=env, timeout=30)
     return p.returncode, p.stdout
@@ -101,6 +108,14 @@ def test_end_to_end():
     check(rc == 0 and out == "", "e2e: FOUNDRY saying bye prints nothing")
     p = subprocess.run([sys.executable, str(HOOK)], input="not json", capture_output=True, text=True, timeout=30)
     check(p.returncode == 0 and p.stdout == "", "e2e: unreadable hook input -> silent, exit 0")
+    # review P1-7: unidentified window -> a diagnostic only, no ledger or publish steps
+    rc, out = run("goodbye", name="__UNREADABLE__")
+    check(rc == 0 and "UNMEASURED" in out and "cli.py note" not in out and "./publish" not in out
+          and "seat_restart.py request" not in out, "e2e: unidentified window -> diagnostic, no close-out (%r)" % out[:160])
+    # review P2-8: schedule unreadable -> the close-out WITHOUT a restart, reached through main()
+    rc, out = run("goodbye", schedule="/nonexistent/dispatcher_schedule.json")
+    check(rc == 0 and "UNREADABLE" in out and "NO restart" in out and "seat_restart.py request" not in out,
+          "e2e: schedule unreadable -> close-out, NO restart, said loudly (%r)" % out[:160])
 
 
 def test_wired():

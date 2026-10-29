@@ -283,6 +283,25 @@ def _is_human_input(rec, peers):
     return True
 
 
+def _queued_as_user(rec):
+    """A message he typed WHILE a turn ran is delivered into that turn and lands in the transcript ONLY as
+    {type: attachment, attachment: {type: queued_command, commandMode: prompt, origin: {kind: human}, prompt}}, no user
+    record. MEASURED 2026-10-29 over every ~/.claude/projects transcript: 444 such prompts, 440 never echoed as a user
+    record (task notifications use commandMode task-notification). -> a user-shaped record for _is_human_input, or None.
+    Without this a "wait" typed during the goodbye close-out was invisible to every cancel check."""
+    a = rec.get("attachment") if rec.get("type") == "attachment" else None
+    if not isinstance(a, dict) or a.get("type") != "queued_command" or a.get("commandMode") != "prompt":
+        return None
+    pr = a.get("prompt")
+    content = pr if isinstance(pr, (str, list)) else ""
+    out = {"type": "user", "timestamp": rec.get("timestamp") or a.get("timestamp"), "uuid": rec.get("uuid"),
+           "isSidechain": rec.get("isSidechain"), "message": {"role": "user", "content": content},
+           "queued_command": True}
+    if isinstance(a.get("origin"), dict):
+        out["origin"] = a["origin"]
+    return out
+
+
 def _assistant_kind(rec):
     sr = (rec.get("message") or {}).get("stop_reason")
     return "assistant_end" if sr == "end_turn" else "assistant_tool" if sr == "tool_use" else "assistant_other"
@@ -301,6 +320,11 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
         return None
     s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None}
     for r in recs:
+        q = _queued_as_user(r)
+        if q is not None:                # typed mid-turn: counts as his input, does not change the turn's state
+            if not q.get("isSidechain") and _is_human_input(q, peers):
+                s["last_user_at"] = _ts(q.get("timestamp"))
+            continue
         t = r.get("type")
         if t not in ("user", "assistant") or r.get("isSidechain"):
             continue
@@ -317,6 +341,69 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
                 s["last_user_at"] = at
         s["last_at"] = at
     return s if s["last_kind"] else None
+
+
+def scan_records(path, offset=0):
+    """Yield (record, end byte offset) for every main-chain user/assistant record (a queued_command prompt as a user
+    record, _queued_as_user) from offset to EOF: a full read with no tail cap (blind review 2026-10-29 P0-2: a 4 MiB tail drops a cancel 4 MiB back). Streams line by line."""
+    with open(path, "rb") as f:
+        f.seek(offset)
+        pos = offset
+        for raw in f:
+            pos += len(raw)
+            try:
+                r = json.loads(raw.decode("utf-8"))
+            except (UnicodeDecodeError, ValueError):
+                continue
+            if isinstance(r, dict):
+                r = _queued_as_user(r) or r
+                if r.get("type") in ("user", "assistant") and not r.get("isSidechain"):
+                    yield r, pos
+
+
+def human_since_offset(path, offset, after, peers=None):
+    """-> every HUMAN input record from byte offset to EOF whose time is after `after` (or has no time: fail closed),
+    [] when there is none, or None (UNMEASURED: no path, unreadable, or the file is now shorter than the cursor)."""
+    if not path or offset is None:
+        return None
+    if peers is None:
+        peers = peer_names()
+    try:
+        if os.path.getsize(path) < offset:
+            return None
+        out = []
+        for r, _ in scan_records(path, offset):
+            if r.get("type") == "user" and _is_human_input(r, peers):
+                at = _ts(r.get("timestamp"))
+                if at is None or after is None or at > after:
+                    out.append(r)
+        return out
+    except OSError:
+        return None
+
+
+def last_human(path, peers=None):
+    """-> (ts, record, end byte offset, file size) of the LAST human input in the whole transcript, (None, None, None,
+    size) when he never typed, or None (unreadable)."""
+    if peers is None:
+        peers = peer_names()
+    best = (None, None, None)
+    try:
+        size = os.path.getsize(path)
+        for r, end in scan_records(path, 0):
+            if r.get("type") == "user" and _is_human_input(r, peers):
+                best = (_ts(r.get("timestamp")), r, end)
+    except OSError:
+        return None
+    return best + (size,)
+
+
+def _non_text(rec):
+    """-> ['image', ...]: the content blocks of an input record that are not text (an image he pasted)."""
+    c = (rec.get("message") or {}).get("content")
+    if not isinstance(c, list):
+        return []
+    return [b.get("type") or "?" for b in c if isinstance(b, dict) and b.get("type") not in ("text", None)]
 
 
 def helpers_of(path, now=None):
@@ -458,6 +545,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "intile": lambda seat, killed_at: read_intile(seat, killed_at),
         "work": lambda seat, req_ts: work_since(cfgs[seat].get("clone"), seat, req_ts),
+        "human_since": lambda seat, s, off, after: human_since_offset(transcript_for(s, cfgs[seat]), off, after),
     }
 
 
@@ -568,7 +656,12 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             ts = float(req["ts"])
             new = {"source": "request", "ts": ts, "req_ts": req["ts"], "session_id": req.get("session_id"),
                    "pid": req.get("pid"), "start": req.get("start"), "ticket": req.get("ticket"), "reason": req.get("reason"), "busy": 0,
-                   "cooldown_s": cfg["cooldown_s"]}
+                   "cooldown_s": cfg["cooldown_s"],
+                   # the cancel window opens at the input that asked for the restart (his goodbye), not at the
+                   # request's own time minutes later (blind review 2026-10-29 P0-1); tx_offset is the byte cursor
+                   # just past that input, so every later record is read in full, never through a tail (P0-2)
+                   "cancel_after": float(req["input_ts"]) if req.get("input_ts") is not None else ts,
+                   "tx_offset": req.get("tx_offset")}
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
                 req_ts=req["ts"], why="requested by %s: %s" % (seat, req.get("reason")))
             R[seat] = new
@@ -602,7 +695,9 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                             "start": born,
                             "ticket": None, "reason": "backstop: context %d tokens >= %d, idle %d s" % (
                                 tx["ctx_tokens"], cfg["backstop_ctx_tokens"], now - tx["last_at"]),
-                            "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending"}
+                            "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
+                            # the whole transcript is scanned for a human input after the last one this read saw
+                            "cancel_after": tx.get("last_user_at") or now, "tx_offset": 0}
             act(do="restart_request", seat=seat, session_id=rs["session_id"], why=rs["reason"])
         else:
             return
@@ -685,6 +780,28 @@ def owner_ok(obs, need):
     return idle_probe.idle_verdict(reading, need)
 
 
+def cursor_reading(seat, cfg, rs, cur, human_since):
+    """-> (human records after rs's cancel_after, hold reason or None) from a FULL read of the window's transcript
+    from rs's byte cursor (blind review 2026-10-29 P0-2: a tail read cannot prove nothing came after the goodbye).
+    No cursor: FOUNDRY-style doorbell seats keep the tail check alone; a Conductor (the owner's window) holds."""
+    off = rs.get("tx_offset")
+    if off is None:
+        return [], ("no transcript cursor on a Conductor restart (cannot prove he wrote nothing after the goodbye)"
+                    if cfg.get("kind") == "conductor" else None)
+    if not callable(human_since):
+        return [], "transcript cursor scan UNMEASURED (no reader)"
+    try:
+        seen = human_since(seat, cur, off, rs.get("cancel_after", rs.get("ts")))
+    except Exception as e:  # noqa: BLE001 - an unreadable transcript holds
+        seen = None
+        why = "%s: %s" % (type(e).__name__, e)
+    else:
+        why = "transcript unreadable or shorter than the cursor"
+    if seen is None:
+        return [], "transcript cursor scan UNMEASURED (%s)" % why
+    return seen, None
+
+
 def _cancel(rs, seat, why, now, act):
     rs.update(state="cancelled", why=why, ended_at=now)
     act(do="restart_cancel", seat=seat, ticket=rs.get("ticket"), why=why)
@@ -695,9 +812,14 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         return _cancel(rs, seat, "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")), now,
                        act)
     tx = ro["tx"](seat, cur)
-    if tx and tx.get("last_user_at") and tx["last_user_at"] > rs["ts"]:
+    after = rs.get("cancel_after", rs["ts"])
+    if tx and tx.get("last_user_at") and tx["last_user_at"] > after:
         return _cancel(rs, seat, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
                        act)
+    seen, cursor_hold = cursor_reading(seat, cfg, rs, cur, ro.get("human_since"))
+    if seen:
+        return _cancel(rs, seat, "new input in the window at %s, after %s (cursor scan)" % (
+            _iso(_ts(seen[-1].get("timestamp"))), _iso(after)), now, act)
     # SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK (Codex review 2026-10-29 P1 1): machine input no longer cancels (0cf054ade8),
     # so a seat that took a ticket after its request and then idled on external input would be killed mid-ticket.
     # Its own ledger says so: any claim/start/lease take after the request voids it. Unreadable -> held below.
@@ -708,7 +830,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
-    holds = []
+    holds = [cursor_hold] if cursor_hold else []
     hs = ro["helpers"](seat, cur)
     live = [h for h in hs or [] if h.get("alive")]
     if hs is None:
@@ -931,8 +1053,20 @@ def execute(a, sch, st, apply, now, fx=None):
     kt = max(now, wall) if abs(wall - now) < 600 else now
     rec = {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"], "killed_at": kt,
            "argv": a["argv"], "ticket": a.get("ticket"), "req_ts": rs.get("ts"),
+           "input_ts": rs.get("cancel_after"), "tx_offset": rs.get("tx_offset"),   # the wake reads on from here (P1-5)
            "window_s": config(sch).get(seat, DEFAULTS)["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
     fx.get("write_killed", write_killed)(seat, rec)
+    # the final fence (blind review 2026-10-29 P0-3): the killed record is on disk, so anything the old window accepts
+    # from here on is still recovered by the new window's wake (it reads from the record's cursor); one last read of the
+    # window's status and of the transcript from the cursor, immediately before the signal
+    sf2 = fx.get("session_file", session_file)(a["pid"]) or {}
+    late = [] if sf2.get("status") == "idle" else ["the window's status is %s at the fence" % sf2.get("status")]
+    late = late or fx.get("final", final_fence)(seat, sch, rs, sf2 or sf)
+    if late:
+        fx.get("write_killed", write_killed)(seat, dict(rec, aborted="final fence: " + "; ".join(late)))
+        rs.update(state="pending", busy=rs.get("busy", 0) + 1)
+        rs.pop("claimed_at", None)
+        return "held at the final fence: %s" % "; ".join(late)
     how = fx.get("kill", kill_pid)(a["pid"], start=start)
     if how.startswith(("refused", "survived")):     # never relaunch beside a window that may still be there
         fx.get("write_killed", write_killed)(seat, dict(rec, aborted=how))
@@ -941,6 +1075,21 @@ def execute(a, sch, st, apply, now, fx=None):
         return "refused: " + how
     rs.update(state="killed", killed_at=kt, kill=how, window_s=rec["window_s"])
     return "killed pid %s (%s)" % (a["pid"], how)
+
+
+def final_fence(seat, sch, rs, sf, path=None):
+    """-> holds from a full read of the window's transcript from rs's cursor (human input after the goodbye, or a
+    Conductor restart with no cursor, or an unreadable/shrunk transcript). [] = nothing after; a seat without a cursor
+    and not a Conductor passes (its tail check stands)."""
+    cfg = config(sch).get(seat) or dict(DEFAULTS)
+    if path is None:
+        path = transcript_for(sf, cfg)
+    seen, hold = cursor_reading(seat, cfg, rs, sf,
+                                lambda s_, c_, off, after: human_since_offset(path, off, after))
+    if seen:
+        r = seen[-1]
+        return ["new input at %s (cursor scan): %s" % (_iso(_ts(r.get("timestamp"))), _text(r)[:80])]
+    return [hold] if hold else []
 
 
 def paused_now():
@@ -966,10 +1115,11 @@ def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now, work=None)
     holds = []
     if not tx:
         holds.append("transcript unreadable")
-    elif (tx.get("last_user_at") or 0) > rs.get("ts", 0):
+    elif (tx.get("last_user_at") or 0) > rs.get("cancel_after", rs.get("ts", 0)):
         holds.append("new input at %s" % _iso(tx["last_user_at"]))
     elif tx.get("last_kind") != "assistant_end":
         holds.append("turn not ended (%s)" % tx.get("last_kind"))
+    holds += final_fence(seat, sch, rs, sf, path=path)
     hs = helpers_of(path, time.time())
     if hs is None:
         holds.append("helper inventory UNMEASURED")
@@ -1090,9 +1240,10 @@ def cmd_request(args):
         print("seat_restart: no seat (--seat or AGENT_SEAT)")
         return 2
     unpub = unpublished_shard(seat, REPO)
-    if unpub and unpub.startswith("UNMEASURED"):
-        print("seat_restart: WARNING: could not tell whether your ledger shard is published (%s); check it "
-              "yourself (close-out step 1)." % unpub)
+    if unpub and unpub.startswith("UNMEASURED"):    # fail closed (blind review 2026-10-29 P1-4)
+        print("seat_restart: REFUSED: could not tell whether your ledger shard is published (%s). Run `git status "
+              "infrastructure/state/ledger/events/%s.jsonl` and `./publish`, then request again." % (unpub, seat))
+        return 3
     elif unpub:
         print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
               "again (ledger-only tickets too)." % unpub)
@@ -1131,8 +1282,26 @@ def cmd_request(args):
               "next item and read those results between items. Only an empty queue ends the turn; if `next` gives you "
               "nothing workable, say why in a `rimflow note` before you end it." % (seat, ctx, limit, seat))
         return 0
+    # bind the request to the input that asked for it (blind review 2026-10-29 P0-1): the cancel window opens at his
+    # goodbye, and a byte cursor just past it lets the Dispatcher read every later record in full (P0-2)
+    lh = last_human(path) if path else None
+    if lh is None and cfg.get("kind") == "conductor":
+        print("seat_restart: REFUSED: the window's transcript %s is unreadable (cannot bind the request to his last "
+              "message)." % path)
+        return 3
+    in_ts, in_rec, in_end, size = lh or (None, None, None, None)   # a doorbell seat keeps its tail check alone
+    if cfg.get("kind") == "conductor":
+        import goodbye_phrase as GP
+        if in_rec is None or not GP.is_goodbye(_text(in_rec), GP.phrases(cfg)):
+            print("seat_restart: REFUSED: his last message (%s) is not the goodbye: %r. He wrote after the goodbye: "
+                  "answer him; this window stays open." % (_iso(in_ts), _text(in_rec or {})[:160]))
+            return 3
+        cursor = in_end
+    else:
+        cursor = size                 # a doorbell seat: everything after the request time, from here on
     req = {"seat": seat, "pid": pid, "start": born, "session_id": sf["sessionId"], "ticket": args.ticket,
-           "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx}
+           "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx,
+           "input_ts": in_ts if cfg.get("kind") == "conductor" else None, "tx_offset": cursor}
     _write_json(request_path(seat), req)
     print("RESTART REQUESTED for %s (%s; context %s tokens, backstop %d%s). The Dispatcher acts after a %d s grace once "
           "this turn has ended and nothing holds it. End your turn now; a new prompt from the owner cancels it."
@@ -1141,42 +1310,33 @@ def cmd_request(args):
     return 0
 
 
-def human_inputs_since(path, since, peers=None, tail_bytes=8 << 20):
-    """-> [(ts, text)] of every HUMAN input (_is_human_input) in the transcript's tail newer than `since`, or None
-    (unreadable). B1 of the Conductor design: a message he sent the old window after its close-out is answered first."""
-    if peers is None:
-        peers = peer_names()
-    try:
-        recs = _tail_records(path, tail_bytes)
-    except (OSError, TypeError):
-        return None
-    out = []
-    for r in recs:
-        if r.get("type") != "user" or r.get("isSidechain") or not _is_human_input(r, peers):
-            continue
-        at = _ts(r.get("timestamp"))
-        if at is not None and at > since:
-            out.append((at, _text(r).strip()))
-    return out
-
-
 def _wake_conductor(seat, cfg, rec):
-    """The Conductor's wake read after a goodbye restart: the old window's messages from him after the close-out."""
+    """The Conductor's wake read after a goodbye restart: EVERY message he sent the old window after his goodbye, read
+    in full from the killed record's byte cursor (blind review 2026-10-29 P1-5: no tail cap, no 2000-char cut, and a
+    pasted image is named, not dropped)."""
     if not rec:
         print("\n== no restart record: this window was not made by a goodbye restart (a fleet launch or boot).")
         return
     path = transcript_path(cfg.get("clone") or REPO, rec.get("session_id") or "")
-    since = rec.get("req_ts") or rec.get("killed_at") or 0
-    msgs = human_inputs_since(path, since)
-    print("\n== his messages to the old window %s after the close-out (%s):" % (rec.get("session_id"), _iso(since)))
+    since = rec.get("input_ts") or rec.get("req_ts") or rec.get("killed_at") or 0
+    off = rec.get("tx_offset")
+    msgs = human_since_offset(path, off or 0, since)
+    cover = ("from the cursor just past his goodbye (byte %d) to the end" % off if off
+             else "the whole old transcript (no cursor in the killed record)")
+    print("\n== his messages to the old window %s after %s (read %s of %s):" % (
+        rec.get("session_id"), _iso(since), cover, path))
     if msgs is None:
-        print("UNMEASURED: the old transcript %s is unreadable. Say so to him in one line; ask whether he sent "
-              "anything after his goodbye." % path)
+        print("UNMEASURED: the old transcript %s is unreadable (or shorter than the cursor). Say so to him in one "
+              "line; ask whether he sent anything after his goodbye." % path)
     elif not msgs:
         print("(none)")
     else:
-        for at, text in msgs:
-            print("- %s: %s" % (_iso(at), text[:2000]))
+        for r in msgs:
+            extra = _non_text(r)
+            print("- %s [record %s]%s:\n%s" % (
+                _iso(_ts(r.get("timestamp"))), r.get("uuid") or "?",
+                " (+ %s: open the record in the transcript to see it)" % ", ".join(extra) if extra else "",
+                _text(r).strip() or "(no text)"))
         print("Answer these FIRST, before anything else.")
 
 

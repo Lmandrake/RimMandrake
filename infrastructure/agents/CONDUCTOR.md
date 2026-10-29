@@ -67,9 +67,12 @@ to the Conductor log). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the U
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH
 --fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window after a 120 s
 grace, held while your helpers are alive, while you are mid-reply or while his keyboard is busy, and cancelled by any
-new message from him (`seat_restart.seats.BENCH`, kind `conductor`). The fresh window runs `seat_restart.py wake --seat
-BENCH` first, and that lists anything he sent the old window after the close-out. If the request prints REFUSED (helpers
-alive, shard unpublished), fix what it names and request again; if it still refuses, tell him in one line that this window
+new message from him after the goodbye itself, including one typed mid-turn during the close-out
+(`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time and a transcript byte cursor, and the
+Dispatcher reads everything after it in full, again right before the kill). The fresh window runs `seat_restart.py wake
+--seat BENCH` first, and that lists, whole, everything he sent the old window after the goodbye. If the request prints
+REFUSED (helpers alive, shard unpublished or unmeasured, or his last message is no longer the goodbye: answer him), fix
+what it names and request again; if it still refuses, tell him in one line that this window
 stays open. A full handoff is written only when a keyboard sitting ends.
 
 ## Start of turn

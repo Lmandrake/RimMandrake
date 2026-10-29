@@ -97,8 +97,9 @@ a 3-5 line note to the Conductor log read at wake; the program check of B2 step 
 by hand). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
 his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
 restarts the window as a fresh Remote Control `CONDUCTOR` after a 120 s grace. It holds while helpers are alive, while the
-window is mid-reply, or while his keyboard is busy; any new message from him cancels it. The fresh window's wake lists what
-he sent the old one after the close-out. A context backstop also restarts the window, but only after 4 h with no message
+window is mid-reply, or while his keyboard is busy; any new message from him after the goodbye cancels it (read in full
+from a transcript cursor, mid-turn messages included), and a request after he wrote again is refused. The fresh window's
+wake lists, whole, what he sent the old one after the goodbye. A context backstop also restarts the window, but only after 4 h with no message
 from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
 `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
 `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the
