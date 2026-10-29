@@ -8909,3 +8909,5 @@
 {"seat":"FOUNDRY","event":"lease","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","action":"renew","token":"FOUNDRY.pid15636.5d08fc7d","expires":"2026-10-29T07:44:10Z","ts":"2026-10-29T06:59:10Z","tsn":1793257150819536461}
 {"seat":"FOUNDRY","event":"claim","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","ts":"2026-10-29T06:59:11Z","tsn":1793257151299055258}
 {"seat":"FOUNDRY","event":"start","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","ts":"2026-10-29T06:59:11Z","tsn":1793257151775497764}
+{"seat":"FOUNDRY","event":"note","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","text":"FOUNDRY 2026-10-29: nothing stranded. ledger_sync.py reports 0 lines missing from origin/main; clone is 0 behind. The 17 events were already published by this window's ./publish calls; no rescue --apply needed.","ts":"2026-10-29T07:00:06Z","tsn":1793257206313024701}
+{"seat":"FOUNDRY","event":"implemented","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","sha":"428ae1dd476b","ref":"origin/main","criteria":[],"ts":"2026-10-29T07:00:09Z","tsn":1793257209175008326}
