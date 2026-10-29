@@ -1,0 +1,1 @@
+rimflow next --seat <OTHER SEAT> takes a real lease as that seat in YOUR clone (2026-10-29: Conductor's diagnostic 'next --seat FOUNDRY' wrote a FOUNDRY lease into bench's FOUNDRY.jsonl and then blocked ./publish). For a read-only look use blind_view.py queue <SEAT> or rimflow why/show.
