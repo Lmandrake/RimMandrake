@@ -819,7 +819,22 @@ def main(argv=None, events=None, _inject=None):
     a.add_argument("--cap", type=int, help="judge list: at most this many claims, oldest first (UNRESOLVED count)")
     a.add_argument("--verdicts", help="the Arbiter's verdicts (default <judge-dir>/verdicts.jsonl)")
     a.add_argument("--carried", help="isolated_evidence's carried list (default its carried_path())")
+    a.add_argument("--claim", action="append", default=[], metavar="ITEM@SHA",
+                   help="run-now (role_launch.py run-now --claim): tier only these claims and put every one on the "
+                        "judge list (a bounce, a PASS tier, one already judged too); one missing from the closes "
+                        "exits 2")
     a = a.parse_args(argv)
+    claims = []
+    for c in a.claim:
+        it, _, sh = c.partition("@")
+        if not it or not re.fullmatch(r"[0-9A-Za-z]{7,40}", sh or ""):
+            print("UNMEASURED: --claim %r is not ITEM@SHA (sha 7-40 characters); nothing written" % c, file=sys.stderr)
+            return 2
+        claims.append((it, sh))
+    if claims and (a.since_cutoff or a.cap is not None):
+        print("UNMEASURED: --claim names its claims; it does not combine with --since-cutoff or --cap; nothing written",
+              file=sys.stderr)
+        return 2
     rules = ap.load_rules()
     now = calendar.timegm(time.strptime(a.now, "%Y-%m-%dT%H:%M:%SZ")) if a.now else time.time()
     since = now - 86400 * a.days
@@ -884,6 +899,16 @@ def main(argv=None, events=None, _inject=None):
     try:
         rows, cut = classify(events, rules, since, **kw)
         rows = [r for r in rows if not any(r["item"] == i and PW.sha_match(r["sha"], s) for i, s in carried)]
+        if claims:
+            rows = [r for r in rows if any(r["item"] == i and PW.sha_match(r["sha"], s) for i, s in claims)]
+            lost = ["%s@%s" % (i, s) for i, s in claims
+                    if not any(r["item"] == i and PW.sha_match(r["sha"], s) for r in rows)]
+            if lost:
+                raise LookupError("named claim(s) %s not among the closes since %s (widen --days?)" % (
+                    ", ".join(lost), time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(since))))
+    except LookupError as ex:
+        print("UNMEASURED: %s; nothing written" % ex, file=sys.stderr)
+        return 2
     except Exception as ex:        # review AC5: an evidence read failing mid-classification is UNMEASURED, not a crash
         print("UNMEASURED: classification could not read its evidence (%s: %s); nothing written"
               % (type(ex).__name__, ex), file=sys.stderr)
@@ -906,7 +931,8 @@ def main(argv=None, events=None, _inject=None):
         with open(os.path.join(a.data, "tiers_history.jsonl"), "a") as f:
             f.write(hist)
         _write_json(os.path.join(a.judge_dir, "judge_list.json"),
-                    {"generated": gen, "claims": [] if a.ai_refused else judge_list(
+                    {"generated": gen, "claims": [] if a.ai_refused else [{"item": r["item"], "sha": r["sha"]}
+                                                                           for r in rows] if claims else judge_list(
                         rows, salt, cap=a.cap, exclude=judged, unresolved=unres)})
         _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "advisory": True,
                                                                  "bounces": bounce_list(rows)})

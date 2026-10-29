@@ -662,6 +662,35 @@ _cutrun("--cap", "2")
 ok("CUT once run, the carried claim is the oldest unjudged and goes first",
    [x["item"] for x in json.load(open(os.path.join(jc, "judge_list.json")))["claims"]], ["K2"])
 
+# ARBITER run-now (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE trial path): --claim ITEM@SHA (repeatable) tiers only the named
+# claims and forces EVERY one onto the judge list -- a T0 bounce, a PASS-tier claim, one that already has a verdict --
+# so a hand-picked claim is judged by the Arbiter itself. A named claim not among the closes is UNMEASURED (exit 2,
+# nothing written): the run must not start judging a list that silently lost a claim.
+dk, jk = tempfile.mkdtemp(), tempfile.mkdtemp()
+
+
+def _claimrun(*extra):
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        return at.main(["--data", dk, "--judge-dir", jk, "--past-audits", pa, "--evidence-dir", j8,
+                        "--now", "2026-10-27T00:00:00Z", "--days", "5"] + list(extra), events=with_builder(ce_),
+                       _inject={"git": git, "clean": CLEAN, "blob": blob, "exists": exists,
+                                "evidence_lookup": lambda sha, item, paths: []})
+
+
+with open(os.path.join(jk, "verdicts.jsonl"), "w") as f:
+    f.write(json.dumps({"item": "K1", "sha": "docs1234", "disposition": "PASS", "ts": "2026-10-26T20:00:00Z"}) + "\n")
+ok("CLAIM runs", _claimrun("--claim", "K1@docs1234", "--claim", "K4@docs123"), 0)
+ok("CLAIM only the named claims are tiered",
+   sorted(r["item"] for r in json.load(open(os.path.join(dk, "tiers.json")))["rows"]), ["K1", "K4"])
+ok("CLAIM every named claim is on the judge list, one with a verdict too (short sha matches)",
+   sorted(x["item"] for x in json.load(open(os.path.join(jk, "judge_list.json")))["claims"]), ["K1", "K4"])
+for bad, why in ((("--claim", "NOPE@docs1234"), "not among the closes"), (("--claim", "K1"), "no @sha"),
+                 (("--claim", "K1@zz"), "sha too short"), (("--claim", "K1@docs1234", "--cap", "3"), "with --cap"),
+                 (("--claim", "K1@docs1234", "--since-cutoff"), "with --since-cutoff")):
+    os.remove(os.path.join(jk, "judge_list.json")) if os.path.exists(os.path.join(jk, "judge_list.json")) else None
+    ok("CLAIM refused (%s): exit 2, no judge list written" % why,
+       (_claimrun(*bad), os.path.exists(os.path.join(jk, "judge_list.json"))), (2, False))
+
 # lookup_close_evidence: covering runs plus item-tagged non-PASS runs; an item-tagged PASS elsewhere is dropped
 i, s6, e6 = claim6()
 put(s6, "PASS", ["src/m"])

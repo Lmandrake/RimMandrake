@@ -138,8 +138,21 @@ TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), 
 # An invalid entry is refused, journaled whole and alarmed; its valid siblings still land (each verdict judges its own
 # claim, and a refused one leaves its claim pending, so the next batch judges it again: refusing the whole batch would
 # only throw away sound verdicts). No structured_output, or one not shaped {key: [...]}: alarm, nothing appended.
+# A run-now TRIAL's verdicts (role_launch.py run-now --trial) sink to `trial_sink`, never to `sink`: the real store
+# is the false-reject instrument and the pending gate's record of judged claims (arbiter_pending), so a hand-picked
+# trial batch (a fixture claim among them) must not count there. `note_each`: every valid entry is also noted on its
+# own claim's item (arbiter.md: the verdict lives on the item for its holder; advisory, it blocks nothing).
+TRIAL_VERDICTS = os.path.join(os.path.dirname(PW.VERDICTS), "trial", "verdicts.jsonl")
+TRIAL_TIERS_DATA = os.path.join(os.path.dirname(PW.TIERS_HISTORY), "trial")
 STRUCTURED = {"Arbiter": {"schema": "src/RimMandrake/contracts/schemas/arbiter_batch.schema.json",
-                          "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS}}
+                          "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS,
+                          "trial_sink": TRIAL_VERDICTS, "note_each": True}}
+# run-now (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE): a one-shot run asked for by hand, held in the dispatcher state as
+# st["roles"][R]["run_now"] and launched by the next tick through every gate a scheduled run passes. A request the
+# ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, band, cap) consume it.
+RUN_NOW_TTL_S = 3600
+RUN_NOW_MODES = ("run", "quick", "weekly", "economy")
+CLAIM_PRE_ROLES = ("Arbiter",)         # roles whose run-now may name claims (isolated_evidence + arbiter_tiers pre-steps)
 MODEL_VARS = {"opus": "ANTHROPIC_DEFAULT_OPUS_MODEL", "sonnet": "ANTHROPIC_DEFAULT_SONNET_MODEL",
               "haiku": "ANTHROPIC_DEFAULT_HAIKU_MODEL"}
 
@@ -732,7 +745,10 @@ def harvest(name, run, res, act):
     append happens in dispatcher.execute, so a dry run writes nothing), one :verdict_refused alarm journaling every
     invalid entry whole with its errors, or one :verdicts alarm when structured_output is missing or misshapen.
     Alarms are noted without blind text: they carry outside text, so route_note sends them to Operations' item."""
-    spec = STRUCTURED[name]
+    spec = dict(STRUCTURED[name])
+    trial = spec.get("trial_sink") and " run-now trial " in str(run.get("slot") or "")
+    if trial:
+        spec["sink"] = spec["trial_sink"]
     key, unit, item = spec["key"], run.get("unit"), run.get("item")
     so = res.get("structured_output") if isinstance(res, dict) else None
     entries = so.get(key) if isinstance(so, dict) and set(so) == {key} else None
@@ -758,6 +774,13 @@ def harvest(name, run, res, act):
     if good:
         act(do="role_verdicts", role=name, unit=unit, path=spec["sink"], rows=[e for e, _ in good],
             why="%s run %s: %d %s appended to %s" % (name, unit, len(good), key, spec["sink"]))
+        for e, _ in good if spec.get("note_each") else ():
+            act(do="role_verdict_note", role=name, unit=unit, ticket=e["item"], note=True,
+                why="%s%s verdict (advisory: it blocks nothing and sends nothing back) on %s at sha %s: %s; causes: %s; "
+                    "evidence: %s; run %s; record %s" % (
+                        "TRIAL " if trial else "", name, e["item"], e["sha"], e["disposition"],
+                        ", ".join(e.get("causes") or []) or "none", "; ".join(e.get("evidence") or []) or "none",
+                        unit, spec["sink"]))
     if bad:
         act(do="alarm", kind="role:%s:verdict_refused" % name, ticket=item, note=True,
             refused=[e for e, _ in bad],
@@ -939,7 +962,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     roles = decide_order([r for r in sch.get("roles") or [] if isinstance(r, dict)])
     def one(role):
         name = role.get("name", "?")
-        if not role.get("enabled"):
+        req = (rst.get(name) or {}).get("run_now") if isinstance(rst.get(name), dict) else None
+        if not role.get("enabled") and not req:
             return
         missing = [k for k in LAUNCH_KEYS if not role.get(k)]
         if missing:
@@ -947,7 +971,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 % (name, ", ".join(missing)))
             return
         cfg = dict(ROLE_DEFAULTS, **role)
-        if cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
+        if role.get("enabled") and cfg.get("after_role") and not (by_name.get(cfg["after_role"]) or {}).get("enabled"):
             act(do="alarm", kind="role:%s:after" % name, ticket=role["ledger_item"], note=True,
                 blind=blind(name, "after_disabled"),
                 why="role %s runs only after a %s run, and %s is not enabled: its scheduled checks will not run"
@@ -968,7 +992,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         # ---- the ledger, for a role that triggers on its events (Arbiter: done claims; Producer: plan-step
         # failures, replan requests). Blind: this role launches nothing this tick, not even a clock slot.
         lr = None
-        if cfg.get("slot_when") or cfg.get("event_runs"):
+        if (cfg.get("slot_when") or cfg.get("event_runs")) and not req:      # a run-now reads no ledger, moves no cursor
             lr = ledger()
             if lr["state"] != "MEASURED":
                 return
@@ -981,7 +1005,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     "trigger" % (name, iso(now)))
         # ---- what is due now
         due = []
-        for i, (hhmm, mode, cap) in enumerate(today):
+        for i, (hhmm, mode, cap) in enumerate([] if req else today):      # a run-now goes first; slots next tick
             key = slot_key(now, hhmm)
             t = slot_epoch(now, hhmm)
             if key in rs["done"] or now < t:
@@ -995,7 +1019,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             due.append({"key": key, "slot": hhmm, "first": i == 0, "mode": mode, "cap": cap,
                         "item": role["ledger_item"], "trigger": "slot %s local%s" % (
                             hhmm, " (weekly plan, %s)" % cfg["weekly_plan_weekday"] if mode == "weekly" else "")})
-        if role.get("alarm_runs"):
+        if role.get("alarm_runs") and not req:
             # alarms_seen holds the OPEN alarms a run already covered (or a band/cap/off switch passed over). It is
             # pruned to what is open now, so an alarm that clears is eligible again when it re-crosses (review W, W1).
             # Read only from a MEASURED reading with a readable alarms dict: a blind one would prune every key and
@@ -1049,7 +1073,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "cap": cfg.get("run_token_cap"), "seen": fresh,
                                 "item": role["ledger_item"] if item.startswith(ALARM_KEY_PREFIX) else item,
                                 "trigger": "ops_watch alarm " + ", ".join(fresh)})
-        if cfg.get("event_runs"):
+        if cfg.get("event_runs") and not req:
             try:
                 pend = unseen(pending_events(cfg, lr, rs["event_cursor"] - EVENT_LOOKBACK_S), rs)
             except ValueError as e:
@@ -1070,6 +1094,13 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 act(do="role_hold", role=name, why="%s: %d ledger event(s) pending, event_runs_per_day %d used: the "
                     "next run reads them" % (name, len(pend), per_day))
         rs["done"] = {k: v for k, v in rs["done"].items() if k[:10] >= day_of(now - 2 * 86400)}
+        if req:
+            if now - float(req.get("at") or 0) > RUN_NOW_TTL_S:
+                refuse_now(rs, "expired", now)
+                act(do="role_hold", role=name, why="%s run-now by %s (%s) expired: not launchable for %d s (busy or "
+                    "held); ask again" % (name, req.get("by"), req.get("why"), RUN_NOW_TTL_S))
+                return
+            due = [run_now_job(cfg, req, now)]
         if not due:
             return
         job = due[0]                                      # one launch per role per tick
@@ -1080,6 +1111,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 mark(rs, job, "off")
             elif not sk:
                 return
+            refuse_now(rs, "off switch", now, job)
             act(do="role_hold", role=name, why="%s %s skipped: off switch %s (%s)" % (
                 name, job["trigger"], role.get("off_file"), off or "no reason given"))
             return
@@ -1141,6 +1173,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         rs.pop("waiting", None)
         r = reading()
         if r["state"] != "MEASURED":
+            refuse_now(rs, "ops reading " + r["state"], now, job)
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: %s" % (name, job["trigger"], r["why"]))
             return
@@ -1152,25 +1185,36 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 mark(rs, job, "band " + bname)
             elif not sk:
                 return
+            refuse_now(rs, "band " + bname, now, job)
             act(do="role_hold", role=name, why="%s %s not run: band %s runs %s scheduled slots (runway %.2f %s, "
                 "week left %.0f%%)" % (name, job["trigger"], bname, allowed, r["runway"], r["runway_m"],
                                        r["week_left"]))
             return
         factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run", "weekly", "event") else 1.0
         if not job["cap"]:
+            refuse_now(rs, "no cap", now, job)
             act(do="alarm", kind="role:" + name, why="role %s has no token cap for %s" % (name, job["mode"]))
             return
         budget = int(job["cap"] * factor)
         spent = spent_today(rs, now)
         daily = role.get("daily_token_cap")           # 0 is a cap of zero; only absent (None) is no cap
-        if daily is not None and job["mode"] in ("event", "alarm"):
+        if daily is not None and (job["mode"] in ("event", "alarm") or job.get("manual")):
             # (an alarm run reserves too: it may spend only what the day's scheduled runs leave, review X, X1)
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
             # a slot this band will block never runs, so it reserves nothing (review V, V6)
             reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
-                          for i, (hh, m, c) in enumerate(today) if c and slot_key(now, hh) not in rs["done"]
+                          for i, (hh, m, c) in enumerate(today if role.get("enabled") else [])
+                          if c and slot_key(now, hh) not in rs["done"]
+                          # a run-now does not keep budget for a slot already past its late window (it never runs)
+                          and not (job.get("manual") and now - slot_epoch(now, hh) > float(cfg["slot_late_s"]))
                           and not slot_blocked(allowed, {"slot": hh, "first": i == 0, "mode": m}, cfg, now))
+            if job.get("manual") and spent + budget + reserve > daily:
+                refuse_now(rs, "daily cap", now, job)
+                act(do="alarm", kind="role:%s:cap" % name, ticket=job["item"], note=True,
+                    why="%s %s REFUSED: daily_token_cap %d, %d used today + %d budget + %d kept for the day's "
+                        "scheduled runs" % (name, job["trigger"], daily, spent, budget, reserve))
+                return
             if (reserve or job["mode"] == "alarm") and spent + budget + reserve > daily:
                 if rs.get("event_reserve_day") != day_of(now):          # journalled once a day; the event waits
                     rs["event_reserve_day"] = day_of(now)
@@ -1207,6 +1251,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "alarms_seen": rs.get("alarms_seen"), "event_cursor": rs.get("event_cursor"),
                                 "alarm_day": json.loads(json.dumps(rs.get("alarm_day"))),
                                 "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
+        if job.get("manual"):
+            rs["pending_launch"]["run_now"] = rs.get("run_now")
+            rs["run_now_last"] = dict(rs.pop("run_now"), outcome="launched", unit=unit, decided=now)
         rs.pop("event_skip", None)
         mark(rs, job, "launch")
         if job["mode"] == "alarm":
@@ -1228,7 +1275,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
             blind=blind(name, "launched", job["mode"], unit),
-            message=message)
+            message=message, **({"run_now": job["manual"], "pre_launch": job.get("pre_launch")} if job.get("manual")
+                                else {}))
         tick_launch.pop(name, None)
         busy.add(name)            # launched this tick: a role that runs after it waits for it (R, B)
 
@@ -1273,6 +1321,9 @@ def unlaunch(rs, unit):
             rs.pop(k, None)
         else:
             rs[k] = p[k]
+    if p.get("run_now") is not None:          # a run-now that did not launch is asked again, not lost
+        rs["run_now"] = p["run_now"]
+        rs.pop("run_now_last", None)
     return True
 
 
@@ -1309,6 +1360,100 @@ def skip_event(rs, job, how):
         return False
     rs["event_skip"] = rec
     return True
+
+
+def run_now_cap(cfg, mode):
+    """The token cap a run-now of `mode` runs under: the cap the same mode's scheduled run has (slots()). None = the
+    role has no run of that mode (the request is refused)."""
+    if mode == "economy":
+        return cfg.get("economy_token_cap")
+    if mode == "quick":
+        return cfg.get("quick_token_cap") if "quick_token_cap" in cfg else None
+    if mode == "weekly" and cfg.get("quick_token_cap") is not None:
+        return cfg["quick_token_cap"]
+    return cfg.get("run_token_cap") if mode in ("run", "weekly") else None
+
+
+CLAIM_RX = re.compile(r"([A-Za-z0-9_]+)@([0-9A-Za-z]{7,40})")
+
+
+def run_now_request(sch, a, now):
+    """Pure. A run-now request from its CLI fields (role, by, why, mode, claims ["ITEM@SHA"], trial, days) -> the
+    record kept in st["roles"][role]["run_now"]. Raises ValueError naming the bad field."""
+    role = next((r for r in sch.get("roles") or [] if isinstance(r, dict) and r.get("name") == a.get("role")), None)
+    if role is None:
+        raise ValueError("no role %r in the schedule" % (a.get("role"),))
+    by, why = str(a.get("by") or "").strip(), str(a.get("why") or "").strip()
+    if not by:
+        raise ValueError("--by: say which seat asks")
+    if not why:
+        raise ValueError("--why: say why this run is asked for")
+    cfg = dict(ROLE_DEFAULTS, **role)
+    mode = a.get("mode") or ("quick" if "quick_token_cap" in cfg else "run")
+    if mode not in RUN_NOW_MODES or not run_now_cap(cfg, mode):
+        raise ValueError("mode %r: a run-now runs one of %s that %s has a token cap for" % (
+            mode, "/".join(RUN_NOW_MODES), role["name"]))
+    claims = []
+    for c in a.get("claims") or []:
+        m = CLAIM_RX.fullmatch(str(c).strip())
+        if not m:
+            raise ValueError("claim %r is not ITEM@SHA (a ledger item, @, a 7-40 character sha)" % (c,))
+        claims.append([m.group(1), m.group(2).lower()])
+    if a.get("trial") and not claims:
+        raise ValueError("--trial needs --claim: a trial judges named claims only (without them the schedule's own "
+                         "pre-steps would write the real tiers record)")
+    if claims and role["name"] not in CLAIM_PRE_ROLES:
+        raise ValueError("claims name what to judge: a %s request only, not %s" % ("/".join(CLAIM_PRE_ROLES),
+                                                                                  role["name"]))
+    days = a.get("days")
+    days = 7 if days is None else days
+    if not (_num(days) and 0 < days <= 60):
+        raise ValueError("days %r: the claims' close window must be > 0 and <= 60" % (days,))
+    return {"at": now, "by": by, "why": why, "mode": mode, "claims": claims, "trial": bool(a.get("trial")),
+            "days": days}
+
+
+def run_now_job(cfg, req, now):
+    """Pure. The due job for a run-now request: no slot (no slot gate, no after_role wait, no event cursor), its
+    mode's cap, and for named claims the Arbiter's pre-steps for exactly those claims (a trial's tiers in their own
+    data dir, its verdicts in TRIAL_VERDICTS: harvest reads " run-now trial " in the key)."""
+    trial, claims, days = bool(req.get("trial")), req.get("claims") or [], "%g" % req.get("days", 7)
+    pre = None
+    if claims:
+        pre = [["python3", "src/RimMandrake/rimflow/isolated_evidence.py", "--run", "--seat", "DISPATCHER"]
+               + [x for i, _ in claims for x in ("--item", i)] + ["--days", days],
+               ["python3", "src/RimMandrake/rimflow/arbiter_tiers.py"]
+               + [x for i, sh in claims for x in ("--claim", "%s@%s" % (i, sh))] + ["--days", days]
+               + (["--data", TRIAL_TIERS_DATA] if trial else [])]
+    trigger = "run-now by %s: %s" % (req.get("by"), req.get("why"))
+    if claims:
+        trigger += "; judge exactly these claims: " + ", ".join("%s@%s" % (i, sh) for i, sh in claims)
+    if trial:
+        trigger += "; TRIAL: the verdicts are recorded in %s, apart from the real record" % TRIAL_VERDICTS
+    return {"key": "%s run-now%s %s" % (day_of(now), " trial" if trial else "", iso(req.get("at") or now)),
+            "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": run_now_cap(cfg, req.get("mode")),
+            "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre}
+
+
+def refuse_now(rs, how, now, job=None):
+    """A run-now refused (or expired) is consumed, said once: one-shot, never retried by the ticks. A no-op for
+    a scheduled job."""
+    if job is not None and not job.get("manual"):
+        return
+    req = rs.pop("run_now", None)
+    if req is not None:
+        rs["run_now_last"] = dict(req, outcome="refused: " + how, decided=now)
+
+
+def launch_role(role, a):
+    """The schedule entry execute launches for action `a`: the entry itself, or for a run-now, a copy that is enabled
+    for this one launch and runs the request's pre-steps when it named claims."""
+    if not a.get("run_now"):
+        return role
+    out = dict(role, enabled=True)
+    if a.get("pre_launch"):
+        out["pre_launch"] = a["pre_launch"]
+    return out
 
 
 def mark(rs, job, how):
@@ -1647,3 +1792,106 @@ def resolve_account():
     except Exception:  # noqa: BLE001
         pass
     return None
+
+
+def _cli_state(root, wait_s=500):
+    """The live state under the tick's own lock (dispatcher.stop_runs's pattern): a request written beside a tick
+    would be lost to its save. -> (lock file, D, state)."""
+    import fcntl
+    import dispatcher as D
+    os.makedirs(root, exist_ok=True)
+    lk = open(os.path.join(root, "tick.lock"), "w")
+    t0 = time.time()
+    while True:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            break
+        except BlockingIOError:
+            if time.time() - t0 > wait_s:
+                lk.close()
+                raise OSError("tick.lock at %s held for %d s" % (root, wait_s))
+            time.sleep(2)
+    try:
+        st = D.load_state(root) if os.path.exists(os.path.join(root, "state.json")) else {}
+    except Exception:
+        lk.close()
+        raise
+    return lk, D, st
+
+
+def main(argv=None):
+    """run-now: ask for one run of a role by hand (it need not be enabled); the next dispatcher tick launches it
+    through every gate a scheduled run passes (off switch, PAUSE, busy, ops reading, band, caps, account).
+    run-status: what a role's last run-now did."""
+    import argparse
+    p = argparse.ArgumentParser(prog="role_launch.py")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("run-now")
+    r.add_argument("--schedule", help="the dispatcher schedule (default dispatcher_schedule.json)")
+    r.add_argument("--root", help="the dispatcher state dir (default the live one)")
+    r.add_argument("--role", required=True)
+    r.add_argument("--by")
+    r.add_argument("--why")
+    r.add_argument("--mode", help="/".join(RUN_NOW_MODES) + " (default the role's own scheduled mode)")
+    r.add_argument("--claim", action="append", default=[], help="ITEM@SHA (Arbiter only): judge exactly these")
+    r.add_argument("--trial", action="store_true", help="verdicts to the trial record, apart from the real one")
+    r.add_argument("--days", type=float, default=7, help="the named claims closed within this many days")
+    r.add_argument("--cancel", action="store_true")
+    r.add_argument("--apply", action="store_true")
+    s = sub.add_parser("run-status")
+    s.add_argument("--root")
+    s.add_argument("--role", required=True)
+    a = p.parse_args(argv)
+    import dispatcher as D
+    root = a.root or D.state_root(True)
+    if a.cmd == "run-status":
+        try:
+            st = D.load_state(root) if os.path.exists(os.path.join(root, "state.json")) else {}
+        except Exception as e:  # noqa: BLE001
+            print("UNMEASURED: state unreadable: %s" % e, file=sys.stderr)
+            return 2
+        rs = (st.get("roles") or {}).get(a.role) or {}
+        print(json.dumps({"pending": rs.get("run_now"), "last": rs.get("run_now_last"),
+                          "running": [x for x in rs.get("runs") or [] if x.get("state") == "running"]}, indent=1))
+        return 0
+    now = time.time()
+    if not a.cancel:
+        try:
+            sch = D.load_schedule(a.schedule)
+            req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
+                                        "claims": a.claim, "trial": a.trial, "days": a.days}, now)
+        except (OSError, ValueError) as e:
+            print("REFUSED: %s" % e, file=sys.stderr)
+            return 2
+        print(json.dumps(req))
+    if not a.apply:
+        print("dry run: nothing written (--apply writes it)")
+        return 0
+    try:
+        lk, D, st = _cli_state(root)
+    except Exception as e:  # noqa: BLE001
+        print("UNMEASURED: %s; nothing written" % e, file=sys.stderr)
+        return 2
+    try:
+        rs = st.setdefault("roles", {}).setdefault(a.role, {})
+        if a.cancel:
+            gone = rs.pop("run_now", None)
+            if gone is not None:
+                rs["run_now_last"] = dict(gone, outcome="cancelled", decided=now)
+            D.save(st, root)
+            print("cancelled" if gone else "no request pending")
+            return 0
+        if rs.get("run_now"):
+            print("REFUSED: a run-now is already pending for %s (%s); --cancel it first" % (
+                a.role, json.dumps(rs["run_now"])), file=sys.stderr)
+            return 1
+        rs["run_now"] = req
+        D.save(st, root)
+        print("requested: the next dispatcher tick decides it (role_launch.py run-status --role %s)" % a.role)
+        return 0
+    finally:
+        lk.close()
+
+
+if __name__ == "__main__":
+    sys.exit(main())
