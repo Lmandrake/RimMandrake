@@ -21,7 +21,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 WORKER = os.path.join(HERE, "worker.py")
 RUNNER = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "Utils", "testq"))
+sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "bridgetools"))
 import schema as S  # noqa: E402
+import companion_identity as CI  # noqa: E402
 
 FAILS = []
 BRIDGE = r'''
@@ -96,6 +98,10 @@ def main():
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
         head = subprocess.run(["git", "-C", RUNNER, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        # the deploy phase refuses a companion not built from the job's sources (selftest_steve_worker_companion.py
+        # covers that): here, one that is
+        env["TESTQ_COMPANION_DIR"] = os.path.join(tmp, "BridgeTools", "JawaBench")
+        CI.write_fixture(os.path.join(env["TESTQ_COMPANION_DIR"], CI.DLL_NAME), CI.srchash_at(RUNNER, head))
 
         def w(args, job=None, **extra):
             r = subprocess.run([sys.executable, WORKER] + args, input=json.dumps(job) if job else None,
@@ -337,11 +343,18 @@ def main():
         def g(*a):
             return subprocess.run(["git", "-C", scratch] + list(a), capture_output=True, text=True).stdout.strip()
         g("init", "-q", "-b", "main")
+        csrc = os.path.join(scratch, *CI.SRC_REL.split("/"))       # companion sources, so its companion can be FRESH
+        os.makedirs(csrc)
+        open(os.path.join(csrc, "A.cs"), "w").write("class A {}\n")
+        g("add", CI.SRC_REL)
         for n in ("one", "two"):
             open(os.path.join(scratch, n), "w").write(n)
             g("add", n)
             g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", n)
         first, second = g("rev-parse", "HEAD~1"), g("rev-parse", "HEAD")
+        scomp = os.path.join(tmp, "scratch_companion")
+        CI.write_fixture(os.path.join(scomp, CI.DLL_NAME), CI.srchash_at(scratch, first))
+        env["TESTQ_COMPANION_DIR"] = scomp                         # every later start runs on the scratch clone
         # a slow checkout (post-checkout hook) widens the window between the attempt's last git call and its result:
         # the clone must be back on main BEFORE result.json appears, since the next start may follow at once
         hook = os.path.join(scratch, ".git", "hooks", "post-checkout")

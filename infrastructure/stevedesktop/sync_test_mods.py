@@ -9,8 +9,15 @@ folder into SteveDesktop's `RimWorld\Mods\<workshop id>` as a local mod (RimWorl
 the folder name does not matter). Our own mods are not copied here: the runner clone deploys
 them with deploy_custom_mods.py, exactly as on Archmagi.
 
-The companion goes to `RimWorld\BridgeTools\JawaBench\` (RimBridgeServer discovers it there at
-start; it cannot be replaced while the game runs, so stop the game first).
+The companion is THIS clone's build (src/RimMandrake/bridgetools/artifacts/, from build.py --gm), never
+Archmagi's game copy: it must be FRESH - its embedded source hash equal to the companion sources at HEAD
+(bridgetools/companion_identity.py) - or nothing is sent. It goes to the worker's inbox
+`$STEVE_TESTQ_HOME/companion/` (default /mnt/d/RimTest/testq), not the game folder: the game holds the DLL
+mapped while it runs, so the worker's deploy phase installs it with the game down at the next job
+(STEVE_COMPANION_FIX_DLL_STALE_NO_PRIORITIES, 2026-10-29: this script used to copy Archmagi's game copy and
+call it "same" on file count + byte total; a PE file is 512-byte aligned, so a rebuild from other source
+routinely has the same size, and SteveDesktop ran droid_dig on a companion missing manualPrioritiesOn).
+The companion is compared by sha256.
 
     python3 infrastructure/stevedesktop/sync_test_mods.py            # plan: what would go where
     python3 infrastructure/stevedesktop/sync_test_mods.py --apply    # stream each folder over ssh
@@ -30,12 +37,16 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
+import companion_identity as CI  # noqa: E402
 import game_paths as gp  # noqa: E402
 from rimworld_loadset import parse_mods_config  # noqa: E402
 
 MINIMAL = os.path.join(REPO, "infrastructure", "state", "modlists", "ModsConfig.MINIMAL.xml")
 TARGET = os.environ.get("STEVE_WSL", "mandrake@stevedesktop-wsl")
 GAME = os.environ.get("STEVE_GAME_WSL", "/mnt/d/SteamLibrary/steamapps/common/RimWorld")
+INBOX = os.environ.get("STEVE_TESTQ_HOME", "/mnt/d/RimTest/testq") + "/companion"
+ARTIFACT = os.path.join(REPO, "src", "RimMandrake", "bridgetools", "artifacts", "BridgeTools", "JawaBench")
 SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "LogLevel=ERROR", TARGET]
 _SKIP = re.compile(r"<(modDependencies\w*|loadAfter\w*|loadBefore\w*|incompatibleWith\w*)>.*?</\1>", re.S)
 
@@ -93,6 +104,54 @@ def remote_tally(path):
     return int(f[0]), int(f[1])
 
 
+def remote_sha(path):
+    """sha256 of the file on the target; "" when it is absent; None when the target could not be read."""
+    q = shlex.quote(path)
+    cmd = "if [ -f %s ]; then sha256sum %s | cut -d' ' -f1; else echo absent; fi" % (q, q)
+    try:
+        r = subprocess.run(SSH + [cmd], capture_output=True, text=True, timeout=120)
+    except subprocess.TimeoutExpired:
+        return None
+    out = r.stdout.strip()
+    if r.returncode or not (out == "absent" or re.fullmatch(r"[0-9a-f]{64}", out)):
+        return None
+    return "" if out == "absent" else out
+
+
+def push_file(src, dest_dir):
+    """Stream one file into `dest_dir` on the target under its own name (a .part, then an atomic mv)."""
+    d, f = shlex.quote(dest_dir), shlex.quote(dest_dir + "/" + os.path.basename(src))
+    with open(src, "rb") as fh:
+        r = subprocess.run(SSH + ["set -e; mkdir -p %s; cat > %s.part; mv %s.part %s" % (d, f, f, f)], stdin=fh,
+                           capture_output=True, timeout=600)
+    if r.returncode:
+        raise RuntimeError("push %s failed: ssh=%s %s" % (src, r.returncode, r.stderr.decode(errors="replace").strip()))
+
+
+def companion(apply):
+    """Stage this clone's companion build in the worker's inbox -> 0 ok / 1 refused, unread or mismatched."""
+    v = CI.verdict(os.path.join(ARTIFACT, CI.DLL_NAME), REPO, "HEAD")
+    if v["state"] != "FRESH":
+        print("%s JawaBench companion: %s - not sent; build it here first: python3 src/RimMandrake/bridgetools/"
+              "build.py --gm" % (v["state"], CI.describe(v)))
+        return 1
+    dest = INBOX + "/" + CI.DLL_NAME
+    remote = remote_sha(dest)
+    if remote is None:
+        print("UNMEASURED JawaBench companion: could not read %s on %s (ssh failed)" % (dest, TARGET))
+        return 1
+    state = "same" if remote == v["dll_sha256"] else "copy"
+    print("%-4s %-42s sha256 %s (source hash %s) -> %s" % (state, "JawaBench companion", v["dll_sha256"][:12],
+                                                          v["embedded"][:12], dest))
+    if state == "copy" and apply:
+        push_file(v["dll"], INBOX)
+        after = remote_sha(dest)
+        print("     %s (target sha256 %s; the next testq job installs it with the game down)" % (
+            "ok" if after == v["dll_sha256"] else "MISMATCH", "unreadable" if after is None else after[:12] or "absent"))
+        return 0 if after == v["dll_sha256"] else 1
+    return 0
+
+
 def push(src, dest_parent, name):
     """tar `src` as `name` into `dest_parent` on the target, replacing what is there."""
     if not re.match(r"^[\w.-]+$", name):
@@ -118,9 +177,7 @@ def main():
     found = locate(ids)
     missing = [i for i in ids if i not in found]
     jobs = [(found[i], GAME + "/Mods", os.path.basename(found[i]), i) for i in ids if i in found]
-    jawa = os.path.join(gp.GAME_DIR, "BridgeTools", "JawaBench")
-    jobs.append((jawa, GAME + "/BridgeTools", "JawaBench", "JawaBench companion"))
-    bad = 0
+    bad = companion(a.apply)
     for src, parent, name, label in jobs:
         if not os.path.isdir(src):          # an absent source tallies (0, 0) and would read 'same' as an absent target
             print("MISSING %s: source folder %s does not exist here" % (label, src))

@@ -22,7 +22,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 TESTQ = os.path.join(HERE, "testq.py")
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
 import schema as S  # noqa: E402
+import companion_identity as CI  # noqa: E402
 
 FAILS = []
 FAKE_SSH = r'''
@@ -397,6 +399,9 @@ def main():
                    RM_GAME_USERDATA=tmp)
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
                              text=True).stdout.strip()
+        # the worker's deploy phase refuses a companion not built from the job's sources: give it one that is
+        env["TESTQ_COMPANION_DIR"] = os.path.join(tmp, "BridgeTools", "JawaBench")
+        CI.write_fixture(os.path.join(env["TESTQ_COMPANION_DIR"], CI.DLL_NAME), CI.srchash_at(REPO, sha))
 
         def tq(*args, **extra):
             r = subprocess.run([sys.executable, TESTQ] + list(args), env=dict(env, **extra), capture_output=True,

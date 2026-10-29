@@ -67,6 +67,12 @@
   <PropertyGroup Condition="'$(JawaGmTools)' == 'true'">
     <DefineConstants>$(DefineConstants);JAWA_GM_TOOLS</DefineConstants>
   </PropertyGroup>
+  <!-- The hash of the companion sources this DLL was compiled from (bridgetools/build.py passes JawaSrcHash;
+       companion_identity.py reads it back). The testq worker refuses a companion whose hash is not the job's
+       sources (STEVE_COMPANION_FIX_DLL_STALE_NO_PRIORITIES: a stale DLL read every droid_dig row UNMEASURED). -->
+  <ItemGroup Condition="'$(JawaSrcHash)' != ''">
+    <AssemblyMetadata Include="JawaBenchSrcHash" Value="$(JawaSrcHash)" />
+  </ItemGroup>
 
   <!-- Where the running game keeps the DLLs we compile against. Override on the
        command line if RimWorld lives somewhere else:

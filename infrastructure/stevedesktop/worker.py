@@ -22,7 +22,9 @@ How a job runs (one attempt at a time on this machine):
     without systemd-run it falls back to a new session.
   * The attempt holds this machine's game guard (rimflow/host_guard.py) for its whole life; the guard is
     exported to rw_game.sh and modcheck, so nothing else can drive the game meanwhile (GUARD_HELD otherwise).
-  * Phases: deploy (plan; on drift: game down, --apply) -> load (rw_game.sh init, up --wait) -> attest (hash
+  * Phases: deploy (plan; on drift: game down, --apply; then the JawaBench companion must carry the source hash of
+    the job's companion sources, else a FRESH one staged in TESTQ_HOME/companion/ is installed with the game down, else
+    INVALID/DEPLOY before any row runs: Attempt.companion) -> load (rw_game.sh init, up --wait) -> attest (hash
     what is deployed) -> run (modcheck, MODCHECK_SKIP_DEPLOY=1) -> result. state.json is rewritten every 15 s
     as the heartbeat. A run past the job's timeout_s is killed, the game restarted once, and the run retried
     once; a second hang is INVALID/HANG.
@@ -78,6 +80,12 @@ sys.path.insert(0, os.path.join(RUNNER, "src", "RimMandrake", "rimflow"))
 if os.environ.get("TESTQ_REPO") and os.path.exists(os.path.join(HERE, "schema.py")):
     sys.path.insert(0, HERE)        # the outer copy's own schema, not the pinned tree's
 import schema as S  # noqa: E402
+# the companion's source-hash check (STEVE_COMPANION_FIX_DLL_STALE_NO_PRIORITIES); spawn copies it beside the outer
+# worker, so a job pinned to a sha older than the module still checks its companion
+sys.path.append(os.path.join(RUNNER, "src", "RimMandrake", "bridgetools"))
+if os.environ.get("TESTQ_REPO") and os.path.exists(os.path.join(HERE, "companion_identity.py")):
+    sys.path.insert(0, HERE)
+import companion_identity as CI  # noqa: E402
 
 HOME = os.environ.get("TESTQ_HOME", "/mnt/d/RimTest/testq")
 HEARTBEAT_S = 15
@@ -331,7 +339,7 @@ def spawn(aid, d):
     # than this code would otherwise run ITS worker.py and never unpin
     outer = p("outer")
     os.makedirs(outer, exist_ok=True)
-    for src in (os.path.abspath(__file__), S.__file__):
+    for src in (os.path.abspath(__file__), S.__file__, CI.__file__):
         shutil.copy2(src, os.path.join(outer, os.path.basename(src)))
     os.environ["TESTQ_REPO"] = RUNNER
     argv = [sys.executable, os.path.join(outer, "worker.py"), "_run", aid]
@@ -389,6 +397,7 @@ class Attempt:
         self.res = base_result(self.job["id"], aid, st.get("runner_sha") or git("rev-parse", "HEAD")[1])
         self.phase = "guard"
         self.game_pid = None            # the RimWorld pid load() started or found; game_gone() compares against it
+        self.companion_state = None     # companion(): the JawaBench DLL's source-hash verdict, attested in deployed
         self.liveness_unknown = None
         self.child = None
         self.stop = threading.Event()
@@ -472,14 +481,14 @@ class Attempt:
             rc, tail = self.sh(override + " " + " ".join(shlex.quote(m) for m in mods), timeout=1200)
             if rc != 0 and refused_line(tail):     # a lane that may not deploy here (archmagi_phases.py): not a fault
                 return self.fail("REFUSED", "DEPLOY", refused_line(tail))
-            return rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)
+            return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy failed: " + tail)) and self.companion()
         # a folded source (Pyrelands) or the composed target (RimMandrake.Biomes) is `--compose biomes`, never `--mod`
         args = " ".join(f + " " + shlex.quote(v) for f, v in S.deploy_flags(mods, os.path.join(RUNNER, "src")))
         plan = "python3 src/RimMandrake/Utils/deploy_custom_mods.py " + args
         rc, _ = self.sh(plan + " > %s 2>&1" % shlex.quote(os.path.join(self.d, "deploy_plan.txt")), timeout=600)
         if rc == 0:
             self.say("deploy: no drift, game kept")
-            return True
+            return self.companion()
         text = read_text(os.path.join(self.d, "deploy_plan.txt")) or ""
         if "Drift found" not in text:
             return self.fail("INVALID", "DEPLOY", "deploy plan failed: " + text[-300:])
@@ -487,7 +496,65 @@ class Attempt:
         if rc != 0:
             return self.fail("INVALID", "DEPLOY", "game down before deploy failed: " + tail)
         rc, tail = self.sh(plan + " --apply", timeout=1200)
-        return rc == 0 or self.fail("INVALID", "DEPLOY", "deploy --apply failed: " + tail)
+        return (rc == 0 or self.fail("INVALID", "DEPLOY", "deploy --apply failed: " + tail)) and self.companion()
+
+    def companion_dir(self):
+        """The game's BridgeTools/JawaBench: the sibling of the Mods folder attest hashes (TESTQ_COMPANION_DIR overrides)."""
+        return os.environ.get("TESTQ_COMPANION_DIR") or os.path.join(os.path.dirname(os.path.normpath(
+            self.mods_dir())), "BridgeTools", "JawaBench")
+
+    def companion(self):
+        """STEVE_COMPANION_FIX_DLL_STALE_NO_PRIORITIES: the JawaBench companion must be compiled from the job's sources.
+
+        J20261029T211737Z-3af227 ran droid_dig on a companion older than jawa/set_work_priority's manualPrioritiesOn
+        (1b5adb3c5a): both rows read UNMEASURED/HARNESS, and nothing in deploy or attest looked at the companion at
+        all. Now the DLL's embedded source hash (bridgetools/companion_identity.py) is compared with the hash of the
+        companion sources at the job's source_sha. Not FRESH (stale, unstamped, missing): a fresh DLL staged in
+        TESTQ_HOME/companion/ (sync_test_mods.py --apply puts it there) is installed with the game DOWN, since the
+        game holds the DLL mapped and only discovers companions at start; with none staged, or a lane that may not
+        stop the game, the attempt ends before load - INVALID/DEPLOY (REFUSED/DEPLOY on a lane that never deploys)
+        naming the DLL - instead of running rows that can only read UNMEASURED."""
+        target = os.path.join(self.companion_dir(), CI.DLL_NAME)
+        v = CI.verdict(target, CLONE, self.job["source_sha"])
+        self.companion_state = v
+        if v["state"] == "FRESH":
+            self.say("companion: " + CI.describe(v))
+            return True
+        never = HOST != "stevedesktop" and os.environ.get("TESTQ_CMD_DEPLOY")    # archmagi_phases: may not deploy
+        outcome = "REFUSED" if never else "INVALID"
+        if v["state"] == "UNMEASURED":
+            return self.fail(outcome, "DEPLOY", "companion check UNMEASURED: cannot hash %s at source_sha %s"
+                             % (CI.SRC_REL, self.job["source_sha"][:10]))
+        staged = p("companion", CI.DLL_NAME)
+        sv = CI.verdict(staged, CLONE, self.job["source_sha"], want=v["want"])
+        if sv["state"] != "FRESH" or never:
+            # the note is clipped to its last 400 chars (fail): state and DLL name first, the paths go to the log
+            self.say("companion: game copy " + CI.describe(v))
+            self.say("companion: staged copy " + CI.describe(sv))
+            return self.fail(outcome, "DEPLOY", "companion %s %s not built from this job's sources (embedded %s, want "
+                             "%s, staged copy %s); %s" % (
+                                 v["state"], CI.DLL_NAME, (v["embedded"] or "none")[:12], v["want"][:12], sv["state"],
+                                 "this lane never deploys it" if never else
+                                 "fix: build.py --gm at the job's sha, then sync_test_mods.py --apply on Archmagi "
+                                 "(stages it in TESTQ_HOME/companion/; the next job installs it with the game down)"))
+        rc, tail = self.sh(self.cmd_down(), timeout=300)
+        if rc != 0:
+            return self.fail("REFUSED" if refused_line(tail) else "INVALID", "DEPLOY",
+                             "stale companion %s; game down before installing the staged one failed: %s"
+                             % (target, refused_line(tail) or tail))
+        try:
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            tmp = target + ".testq.part"
+            shutil.copy2(staged, tmp)
+            os.replace(tmp, target)
+        except OSError as e:
+            return self.fail("INVALID", "DEPLOY", "installing the staged companion over %s failed: %s" % (target, e))
+        v2 = CI.verdict(target, CLONE, self.job["source_sha"], want=v["want"])
+        self.companion_state = dict(v2, installed_from=staged, replaced=v)
+        if v2["state"] != "FRESH":
+            return self.fail("INVALID", "DEPLOY", "installed the staged companion, still not fresh: " + CI.describe(v2))
+        self.say("companion: was %s, installed the staged one with the game down: %s" % (v["state"], CI.describe(v2)))
+        return True
 
     def cmd_down(self):
         return os.environ.get("TESTQ_CMD_DOWN") or GAME + " down"
@@ -614,10 +681,15 @@ class Attempt:
             self.say("resolved %d bridge marker(s) older than the fresh game as moot: %s" % (len(cleared),
                                                                                           " ".join(cleared)))
 
+    def mods_dir(self):
+        return os.environ.get("TESTQ_MODS_DIR") or os.path.join(os.environ.get("RM_STEAMAPPS", ""),
+                                                                "common", "RimWorld", "Mods")
+
     def attest(self):
-        mods_dir = os.environ.get("TESTQ_MODS_DIR") or os.path.join(os.environ.get("RM_STEAMAPPS", ""),
-                                                                    "common", "RimWorld", "Mods")
+        mods_dir = self.mods_dir()
         dep = {"mods": {}}
+        if self.companion_state:
+            dep["companion"] = self.companion_state
         _, folded, _c = S.deploy_catalog(os.path.join(RUNNER, "src"))
         for m in [self.job["mod"]] + list(self.job.get("deploy") or []):
             m = folded.get(m, m)                   # a folded source is deployed as its composed target

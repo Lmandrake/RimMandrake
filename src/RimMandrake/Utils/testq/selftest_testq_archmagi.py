@@ -32,6 +32,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 TESTQ = os.path.join(HERE, "testq.py")
 PHASES = os.path.join(HERE, "archmagi_phases.py")
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
+import companion_identity as CI  # noqa: E402
 
 FAILS = []
 FAKE_SSH = r'''
@@ -82,6 +84,11 @@ class Rig:
             TESTQ_ARCHMAGI="1", TESTQ_ARCHMAGI_RUNNER=REPO, TESTQ_ARCHMAGI_HOME=p("arch_home"),
             TESTQ_ARCHMAGI_MODS_DIR=p("mods"), TESTQ_ARCHMAGI_CMD_RUN=mock, TESTQ_ARCHMAGI_CMD_DEPLOY="true",
             TESTQ_ARCHMAGI_PID="4242", TESTQ_BRIDGE_LOG=p("bridge_calls.jsonl"))
+        # both lanes' deploy phase refuses a companion not built from the job's sources; the default place is the
+        # Mods folder's sibling BridgeTools/JawaBench, so one fixture serves both workers (they share p("mods"))
+        sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
+                             text=True).stdout.strip()
+        CI.write_fixture(p("BridgeTools", "JawaBench", CI.DLL_NAME), CI.srchash_at(REPO, sha))
 
     def p(self, *parts):
         return os.path.join(self.tmp, *parts)

@@ -57,6 +57,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tool_metadata
+import companion_identity  # noqa: E402 - the source hash embedded in the DLL (STEVE_COMPANION_FIX_DLL_STALE_NO_PRIORITIES)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.join(HERE, "JawaBench.BridgeTools", "JawaBench.BridgeTools.csproj")
@@ -102,12 +103,33 @@ def sh(cmd, **kw):
 GM_TOOLS = ("jawa/fire_incident", "jawa/send_letter")
 
 
+def src_hash_prop():
+    """-p:JawaSrcHash=<hash of the companion sources on disk>: the csproj embeds it as
+    [assembly: AssemblyMetadata("JawaBenchSrcHash", ...)] so a lane can tell, from the DLL alone, which companion
+    sources it was compiled from (companion_identity.py; the testq worker refuses a DLL whose hash is not the job's)."""
+    h = companion_identity.srchash_worktree(REPO_ROOT)
+    if not h:
+        sys.exit("cannot hash the companion sources under %s" % companion_identity.SRC_REL)
+    return "-p:JawaSrcHash=%s" % h
+
+
+def verify_src_hash(dll):
+    """The built DLL carries the source hash of what is on disk now (a stale incremental output would not)."""
+    with open(dll, "rb") as f:
+        got = companion_identity.embedded(f.read())
+    want = companion_identity.srchash_worktree(REPO_ROOT)
+    if got != want:
+        sys.exit("\nFAIL: %s embeds source hash %s, the sources on disk hash %s (stale output or a csproj without "
+                 "the JawaBenchSrcHash AssemblyMetadata item)" % (dll, got, want))
+    print("source hash embedded: %s (companion_identity.py checks it on every lane)" % got[:16])
+
+
 def build_staged(clean, gm):
     """ext4 clone: stage on D:, build with dotnet.exe there, copy the bundle back."""
     rel_art = os.path.relpath(ARTIFACT_DIR, REPO_ROOT)
     if clean and os.path.isdir(ARTIFACT_DIR):
         shutil.rmtree(ARTIFACT_DIR)
-    extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
+    extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false"), src_hash_prop()]
     extra_dirs, late = [], []
     for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir"),
                       ("FLOWWORKS_MOD_DIR", "FlowWorksModDir")):
@@ -152,7 +174,7 @@ def build(clean, gm):
     # let a --gm run hand back the previous non-GM DLL (or worse, the reverse).
     # The whole build is under a second, so there is nothing to save here.
     cmd = [DOTNET, "build", PROJECT, "-c", "Release", "--nologo",
-           "--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
+           "--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false"), src_hash_prop()]
     # The Oracle reference defaults to the DEPLOYED game copy, which lags the repo
     # whenever the shutdown deploy is still owed (it broke this build 2026-09-09,
     # missing OracleSettings.claudeCliPath). ORACLE_MOD_DIR overrides it.
@@ -514,6 +536,7 @@ def main(argv=None):
 
     dll = build(args.clean, args.gm)
     verify_bundle(dll)
+    verify_src_hash(dll)
     verify_gm_gate(dll, args.gm)
     verify_shared_closures(dll)
     plan_deploy(dll, args.apply, args.allow_tool_removal)

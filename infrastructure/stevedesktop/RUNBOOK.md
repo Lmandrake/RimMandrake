@@ -299,6 +299,12 @@ First remote run GREEN: `JawaIonWeapons --chains def_wiring`, driven from Archma
   companion profile and sets Prefs runInBackground.
 - `sync_test_mods.py [--apply]`: from Archmagi, copies the MINIMAL list's Workshop mods and the
   JawaBench companion. Copying, not subscribing, because a Workshop subscription needs the Steam UI.
+  The companion is this clone's own build (`python3 src/RimMandrake/bridgetools/build.py --gm` first),
+  sent only when FRESH, into the worker inbox `/mnt/d/RimTest/testq/companion/`. Each testq job's
+  deploy phase compares the game's companion with the job's sources (the source hash build.py embeds,
+  `bridgetools/companion_identity.py`). A FRESH copy in the inbox is installed with the game down.
+  With no FRESH copy, the job ends INVALID/DEPLOY and the note names the DLL, so rows never run on a
+  stale companion.
 - `remote_modcheck.sh [--sync] [--deploy M1,M2] [--no-run] <Mod> [modcheck args]`: from Archmagi.
   **The one command for code updates is `--sync`:** the runner pulls origin/main, plans a deploy of
   `<Mod>` and every `--deploy` mod, and only if anything drifted stops the game and applies it.
