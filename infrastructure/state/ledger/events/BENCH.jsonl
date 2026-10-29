@@ -7517,3 +7517,45 @@
 {"seat":"BENCH","event":"start","id":"CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW","why":"owner ruling 2026-10-29","ts":"2026-10-29T20:23:34Z","tsn":1793305414865516216}
 {"seat":"BENCH","event":"note","id":"CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW","text":"Alarm surfaces as long_helper:<id> via dispatcher decide(): ledger note on alarm_item + RAISE FIRST line in conductor log (/mnt/d/ClaudeWork/rimmandrake/conductor/log.md); start time = helper transcript first record.","ts":"2026-10-29T20:26:04Z","tsn":1793305564619330561}
 {"seat":"BENCH","event":"close","id":"CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW","sha":"d9b43e13a66fcf399b55d971ec6fbe4a05dcac46","why":"selftests green: hook 28 checks, dispatcher long-helper","ts":"2026-10-29T20:26:07Z","tsn":1793305567067930448}
+{"seat":"BENCH","event":"lease","id":"FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X","action":"take","token":"BENCH.pid35729.63cb3153","expires":"2026-10-29T21:12:58Z","ts":"2026-10-29T20:27:58Z","tsn":1793305678861756517}
+{"seat":"BENCH","event":"claim","id":"FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X","ts":"2026-10-29T20:27:59Z","tsn":1793305679315425025}
+{"seat":"BENCH","event":"start","id":"FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X","ts":"2026-10-29T20:27:59Z","tsn":1793305679770083350}
+{"seat":"BENCH","event":"lease","id":"OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY","action":"take","token":"BENCH.pid35746.6e9a3a83","expires":"2026-10-29T21:13:18Z","ts":"2026-10-29T20:28:18Z","tsn":1793305699333842611}
+{"seat":"BENCH","event":"claim","id":"OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY","ts":"2026-10-29T20:28:19Z","tsn":1793305699801030762}
+{"seat":"BENCH","event":"start","id":"OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY","ts":"2026-10-29T20:28:20Z","tsn":1793305700278655220}
+{"seat":"BENCH","event":"start","id":"OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY","ts":"2026-10-29T20:28:22Z","tsn":1793305702246672856}
+{"seat":"BENCH","event":"lease","id":"V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE","action":"take","token":"BENCH.pid35750.2517e3e6","expires":"2026-10-29T21:13:25Z","ts":"2026-10-29T20:28:25Z","tsn":1793305706286701786}
+{"seat":"BENCH","event":"claim","id":"V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE","ts":"2026-10-29T20:28:26Z","tsn":1793305706744406450}
+{"seat":"BENCH","event":"start","id":"V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE","ts":"2026-10-29T20:28:27Z","tsn":1793305707229552868}
+{"seat":"BENCH","event":"lease","id":"PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS","action":"take","token":"BENCH.pid35752.798c4d61","expires":"2026-10-29T21:13:28Z","ts":"2026-10-29T20:28:28Z","tsn":1793305709021588721}
+{"seat":"BENCH","event":"claim","id":"PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS","ts":"2026-10-29T20:28:29Z","tsn":1793305709459946444}
+{"seat":"BENCH","event":"start","id":"PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS","ts":"2026-10-29T20:28:29Z","tsn":1793305709915161724}
+{"seat":"BENCH","event":"lease","id":"TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD","action":"take","token":"BENCH.pid35756.a688b43d","expires":"2026-10-29T21:13:33Z","ts":"2026-10-29T20:28:33Z","tsn":1793305713780244021}
+{"seat":"BENCH","event":"claim","id":"TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD","ts":"2026-10-29T20:28:34Z","tsn":1793305714242068243}
+{"seat":"BENCH","event":"start","id":"TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD","ts":"2026-10-29T20:28:34Z","tsn":1793305714711195078}
+{"seat":"BENCH","event":"lease","id":"AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI","action":"take","token":"BENCH.pid35822.2ef4b266","expires":"2026-10-29T21:15:13Z","ts":"2026-10-29T20:30:13Z","tsn":1793305813691088506}
+{"seat":"BENCH","event":"claim","id":"AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI","ts":"2026-10-29T20:30:14Z","tsn":1793305814126882853}
+{"seat":"BENCH","event":"start","id":"AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI","ts":"2026-10-29T20:30:14Z","tsn":1793305814575912515}
+{"seat":"BENCH","event":"lease","id":"AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN","action":"take","token":"BENCH.pid35824.25bf3e80","expires":"2026-10-29T21:15:17Z","ts":"2026-10-29T20:30:17Z","tsn":1793305818429020573}
+{"seat":"BENCH","event":"claim","id":"AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN","ts":"2026-10-29T20:30:18Z","tsn":1793305818872194295}
+{"seat":"BENCH","event":"start","id":"AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN","ts":"2026-10-29T20:30:19Z","tsn":1793305819344658104}
+{"seat":"BENCH","event":"lease","id":"INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS","action":"take","token":"BENCH.pid35827.2058f478","expires":"2026-10-29T21:15:22Z","ts":"2026-10-29T20:30:22Z","tsn":1793305823194817570}
+{"seat":"BENCH","event":"claim","id":"INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS","ts":"2026-10-29T20:30:23Z","tsn":1793305823643304752}
+{"seat":"BENCH","event":"start","id":"INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS","ts":"2026-10-29T20:30:24Z","tsn":1793305824105203697}
+{"seat":"BENCH","event":"lease","id":"COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME","action":"take","token":"BENCH.pid35829.b2b1a64e","expires":"2026-10-29T21:15:27Z","ts":"2026-10-29T20:30:27Z","tsn":1793305827878485754}
+{"seat":"BENCH","event":"claim","id":"COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME","ts":"2026-10-29T20:30:28Z","tsn":1793305828332982227}
+{"seat":"BENCH","event":"start","id":"COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME","ts":"2026-10-29T20:30:28Z","tsn":1793305828829099639}
+{"seat":"BENCH","event":"lease","id":"HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES","action":"take","token":"BENCH.pid35831.65c5faa8","expires":"2026-10-29T21:15:32Z","ts":"2026-10-29T20:30:32Z","tsn":1793305832746710481}
+{"seat":"BENCH","event":"claim","id":"HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES","ts":"2026-10-29T20:30:33Z","tsn":1793305833288748248}
+{"seat":"BENCH","event":"start","id":"HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES","ts":"2026-10-29T20:30:33Z","tsn":1793305833836397515}
+{"seat":"BENCH","event":"lease","id":"V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE","action":"renew","token":"BENCH.pid35750.2517e3e6","ts":"2026-10-29T20:32:02Z","expires":"2026-10-29T21:17:02Z","tsn":1793305922671560502}
+{"seat":"BENCH","event":"lease","id":"OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY","action":"renew","token":"BENCH.pid35746.6e9a3a83","ts":"2026-10-29T20:32:45Z","expires":"2026-10-29T21:17:45Z","tsn":1793305966364194778}
+{"seat":"BENCH","event":"lease","id":"PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS","action":"renew","token":"BENCH.pid35752.798c4d61","ts":"2026-10-29T20:33:24Z","expires":"2026-10-29T21:18:24Z","tsn":1793306005183064070}
+{"seat":"BENCH","event":"lease","id":"TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD","action":"renew","token":"BENCH.pid35756.a688b43d","ts":"2026-10-29T20:33:25Z","expires":"2026-10-29T21:18:25Z","tsn":1793306006352721143}
+{"seat":"BENCH","event":"lease","id":"V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE","action":"renew","token":"BENCH.pid35750.2517e3e6","ts":"2026-10-29T20:36:12Z","expires":"2026-10-29T21:21:12Z","tsn":1793306172520468548}
+{"seat":"BENCH","event":"lease","id":"FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X","action":"renew","token":"BENCH.pid35729.63cb3153","ts":"2026-10-29T20:37:16Z","expires":"2026-10-29T21:22:16Z","tsn":1793306237285862352}
+{"seat":"BENCH","event":"close","id":"AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI","sha":"5ce76d059b59","reason":"audit_hardflag_file.py (no AI) runs in Auditor pre_launch after audit_prescreen.py; ledger-deduped AUDIT_HARDFLAG_FIX_* tickets + hardflag_filed.json; selftest_audit_hardflag_file + selftest_dispatcher pre_launch check; auditor.md step 1 updated","ts":"2026-10-29T20:37:22Z","tsn":1793306242925336820}
+{"seat":"BENCH","event":"lease","id":"AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN","action":"renew","token":"BENCH.pid35824.25bf3e80","ts":"2026-10-29T20:37:24Z","expires":"2026-10-29T21:22:24Z","tsn":1793306244502511200}
+{"seat":"BENCH","event":"lease","id":"INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS","action":"renew","token":"BENCH.pid35827.2058f478","ts":"2026-10-29T20:37:25Z","expires":"2026-10-29T21:22:25Z","tsn":1793306245692219045}
+{"seat":"BENCH","event":"lease","id":"COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME","action":"renew","token":"BENCH.pid35829.b2b1a64e","ts":"2026-10-29T20:37:26Z","expires":"2026-10-29T21:22:26Z","tsn":1793306246850301414}
+{"seat":"BENCH","event":"lease","id":"HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES","action":"renew","token":"BENCH.pid35831.65c5faa8","ts":"2026-10-29T20:37:27Z","expires":"2026-10-29T21:22:27Z","tsn":1793306248006323045}
