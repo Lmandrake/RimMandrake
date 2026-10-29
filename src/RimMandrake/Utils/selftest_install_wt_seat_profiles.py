@@ -71,7 +71,8 @@ def test_plain_path_has_first_prompt():
         check(prompt.lower().startswith("wake"), f"{seat} plain: the prompt opens with the word wake ({prompt[:40]})")
         check("handoff.py --wake" in prompt and "seat ready" in prompt,
               f"{seat} plain: the prompt runs handoff.py --wake and rimflow seat ready")
-        check(f"infrastructure/agents/{seat}.md" in prompt, f"{seat} plain: the prompt points at its Start of turn")
+        ident = "CONDUCTOR" if seat == "BENCH" else seat      # v3: the BENCH tile wakes as the Conductor
+        check(f"infrastructure/agents/{ident}.md" in prompt, f"{seat} plain: the prompt points at its Start of turn")
         check(SAFE.fullmatch(prompt) is not None, f"{seat} plain: the prompt is shell/JSON-safe ({prompt!r})")
         check(argv[:-1] == shlex.split(W.LAUNCH.format(script=W.BOUNDED.format(home=W.SEAT_CLONES[seat][0]),
                                                         label=f"AGENT {seat}", model=W.SEATS[seat][1])),

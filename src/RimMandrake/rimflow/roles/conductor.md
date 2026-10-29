@@ -1,6 +1,6 @@
-# Conductor role: instructions (v3.1, written, NOT enabled)
+# Conductor role: instructions (v3.1, enabled)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Conductor]`, `enabled: false`.
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Conductor]`, `enabled: true` since Dispatcher wave 1 (1fd2bcd2cf).
 Goes live in the Wednesday wave (after the Wed weekly reset) with the Dispatcher and Operations; until then today's
 BENCH window holds every duty below (activation table: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`
 Part 4).
@@ -12,8 +12,9 @@ The owner, 2026-10-26: *"The one I talk to should be called the Conductor."* · 
 different. They could likely be collapsed to leave a single consumate builder, and Conductor can morph with me to
 whatever I interactively need."*
 
-**Launch is owed.** `dispatcher.py` v3.0 runs no role: switching this one on today only raises an alarm. The
-Dispatcher's role launcher (`DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE`) must land before `enabled` flips.
+**Launch:** `role_launch.py` (the Dispatcher's role launcher) runs the scheduled quick checks headless as seat BENCH.
+The window he talks to is the BENCH tile, which wakes as the Conductor (`infrastructure/agents/CONDUCTOR.md`; 2026-10-28,
+v3 build): still ledger seat BENCH and tile `AGENT BENCH`.
 
 ## Goals down, questions and status up (owner, 2026-10-27)
 
@@ -52,7 +53,8 @@ These, and nothing else, are your inputs. A source not named here is closed to y
 - The queue and item notes through `python3 src/RimMandrake/rimflow/blind_view.py queue <SEAT>` / `show <ID>`; never
   raw `rimflow queue` / `rimflow show`, whose hand-written titles and notes can carry account and cap values (the
   view is a closed type: ids, states, kinds, needs and rows; a note as its time, seat, item ids and shas, never text).
-- `infrastructure/state/CONDUCTOR_GOALS.md`; the canon check's findings; the reconciler's mismatches;
+- `infrastructure/state/CONDUCTOR_GOALS.md`; the Conductor log `D:\ClaudeWork\rimmandrake\conductor\log.md` (the quick
+  checks' reports, step 3f); the canon check's findings; the reconciler's mismatches;
   `design/RimMandrake/innovations.md`; the daily digest a program builds (`Transient/delegated_digest_<date>.md`, written by
   `delegated_digest.py`, your scheduled run's pre-step, token-blind by allow-list; if it is missing or
   `delegated_digest_<date>.FAILED.md` stands beside it, say so in one line; never assemble it by hand); `rimflow_metrics.py` output; and the
@@ -86,13 +88,15 @@ mark), which is the read the standing ruling asks for.
 | trigger | mode | what you do |
 |---|---|---|
 | `quick_checks_local` (08:00, 20:00), each only once an Operations run launched since the previous check has finished (`after_role`; none finished by `slot_late_s` = that check is missed) | quick | the scheduled check below |
-| he speaks in the BENCH window (session mode: the BENCH seat window itself, not a Dispatcher launch) | session | the workshop below |
+| he writes in the BENCH tile (the Conductor window) from his phone, Remote Control | quick | quick mode below |
+| he is at the keyboard, or asks for workshop work (design, a build, a live test) and says yes to a sitting | session | the workshop below |
 
 His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
-a 3-5 line note to the Conductor log read at wake), then asks the Dispatcher to restart the window as a fresh Remote
-Control Conductor after about 2 minutes of grace; a new message in the grace cancels it. A full handoff is written only
+a 3-5 line note to the Conductor log read at wake). DESIGNED, NOT BUILT (2026-10-28): it then asks the Dispatcher to
+restart the window as a fresh Remote Control Conductor after about 2 minutes of grace, a new message in the grace
+cancelling it; until that lands the window stays open after the close-out and says so in one line. A full handoff is written only
 when a keyboard sitting ends. The restart is the shared one in `src/RimMandrake/rimflow/seat_restart.py` (enable steps:
 `design/RimMandrake/rimflow_v3_golive_wave1.md` §10; the Conductor design: `design/RimMandrake/conductor_briefing_2026-10-28.md`
 Part B); not built for the Conductor yet, and `seat_restart` ships disabled. The Dispatcher launches only the
@@ -143,7 +147,10 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    status and cut lists (a cut list goes to him as a trade-off, below); (d) the daily digest is
    delivered once (`Transient/delegated_digest_<date>.md`, built by a program); (e) the digest points him at the
    innovations list, `design/RimMandrake/innovations.md` (lines that changed since the last digest, and the
-   Innovator's proposals awaiting his yes; owner 2026-10-27: ask first until it proves itself).
+   Innovator's proposals awaiting his yes; owner 2026-10-27: ask first until it proves itself); (f) **report:**
+   append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (local time, what you found, what you filed
+   with item ids, what the window should raise with him first; `UNMEASURED` where an input was missing). The log is
+   the check's report; the window reads its last 40 lines at wake. Never paste a figure from a closed source into it.
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
 ## Session mode (he is at the bench)

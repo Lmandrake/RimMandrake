@@ -159,10 +159,13 @@ LAUNCH = ("{script} "
 # (selftest_install_wt_seat_profiles.py enforces it). It opens with the word "wake", which fires the handoff skill.
 # HESTIA, EMERGENCY, SERVER and ARTIST get none: they are not seats of this project's queue.
 WAKE_PROMPT = {
+    # v3 (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE, 2026-10-28): the BENCH tile wakes as the Conductor. Still seat BENCH
+    # and label AGENT BENCH (no CONDUCTOR ledger seat; the Dispatcher watches AGENT BENCH): only the identity read changes.
     "BENCH": ("wake. Fresh AGENT BENCH window from a fleet launch, boot or account switch: nobody typed this. "
-              "Do the Start of turn in infrastructure/agents/BENCH.md: python3 src/RimMandrake/Utils/handoff.py "
-              "--wake, then python3 src/RimMandrake/rimflow/cli.py seat ready. Then report in a few lines what is "
-              "open and owed, and wait for the owner."),
+              "You are the v3 Conductor. Do the Start of turn in infrastructure/agents/CONDUCTOR.md: python3 "
+              "src/RimMandrake/Utils/handoff.py --wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, "
+              "then the last 40 lines of the Conductor log. Then report in a few lines what is open, what needs "
+              "the owner and what the last quick check found, and wait for the owner."),
     "FOUNDRY": ("wake. Fresh AGENT FOUNDRY window from a fleet launch, boot or account switch: nobody typed this. "
                 "Do the Start of turn in infrastructure/agents/FOUNDRY.md: python3 src/RimMandrake/Utils/handoff.py "
                 "--wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, then python3 "

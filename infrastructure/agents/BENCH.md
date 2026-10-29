@@ -1,5 +1,7 @@
 # BENCH
 
+**In v3 this window is the Conductor: read `infrastructure/agents/CONDUCTOR.md` first; where the two differ, it wins.** The rules below are the workshop (session mode).
+
 Reads `infrastructure/agents/CHARTER.md`. It binds you. *(Adopted 2026-08-27 —
 successor to the DECIDE and REP seats.)* Agents decide nearly everything; what still needs him is
 `design/RimMandrake/delegation_policy.md` §2 (owner, 2026-10-22).
