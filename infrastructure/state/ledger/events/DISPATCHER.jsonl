@@ -70,3 +70,4 @@
 {"seat":"DISPATCHER","event":"note","id":"GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:46:45Z","ts":"2026-10-29T07:48:44Z","tsn":1793260124354690042}
 {"seat":"DISPATCHER","event":"note","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:59:25Z","ts":"2026-10-29T08:01:25Z","tsn":1793260885886811823}
 {"seat":"DISPATCHER","event":"note","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T08:15:54Z","ts":"2026-10-29T08:17:48Z","tsn":1793261868040694159}
+{"seat":"DISPATCHER","event":"note","id":"DUNGEON_SETPIECE_TEXT_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T09:02:57Z","ts":"2026-10-29T09:04:46Z","tsn":1793264686735215795}
