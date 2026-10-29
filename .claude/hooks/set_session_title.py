@@ -396,8 +396,10 @@ def main():
     # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
     # seat is on. Derived from the ledger's queue render via statusline.py's
     # parser (single source), refreshed every prompt. Fails open like the rest.
+    # Not on the Conductor (seat key BENCH), owner 2026-10-28: "it's totally weird that it's called conductor ->
+    # dungeon_setpiece_text_1. Makes no sense to have one ticket name attached like that. Something to drop."
     m = re.search(r"AGENT ([A-Z]+)", role_title)   # the KEY, not the display title
-    if m:
+    if m and m.group(1) != "BENCH":
         try:
             sys.path.insert(0, os.path.join(
                 os.environ.get("CLAUDE_PROJECT_DIR", "."), "src", "RimMandrake", "Utils"))
