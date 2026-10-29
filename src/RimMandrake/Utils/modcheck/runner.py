@@ -1115,7 +1115,11 @@ def write_sheet(mod, summary):
         f.write(render(mod, summary))
     # The same run as machine-readable data (acceptance items say "results JSON"; the HTML sheet alone is not that).
     with open(path[:-5] + ".json", "wb") as f:
-        f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary}, indent=1, default=str).encode("utf-8"))
+        import clockgate as _CG  # noqa: E402
+        # every benign/resumed stop clockgate passed over (time + cause), so the run's BENIGN calls can be audited later
+        f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary,
+                            "benign_stops": [dict(b) for b in _CG.BENIGN_STOPS]},
+                           indent=1, default=str).encode("utf-8"))
     try:        # the known-good gate's history: one line per freshly run chain with a manifest (modcheck/gate.py)
         import gate as _G  # noqa: E402
         _G.index_run(mod, summary, path[:-5] + ".json")

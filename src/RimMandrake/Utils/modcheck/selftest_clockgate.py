@@ -551,8 +551,53 @@ def test_fixture_arrival_resumes():
     ok(not cg.FIXTURE_IDS, "a withdrawn fixture leaves no declaration behind")
 
 
+def test_benign_stops_in_run_json():
+    """BENIGN_STOPS_FIX_NOT_IN_RUN_JSON: a resumed benign stop reaches the run JSON write_sheet writes."""
+    import tempfile
+    import types
+    import runner
+    import report
+    os.environ["RIMBRIDGE_GOVERNOR_LOG"] = ""
+    pirate = {"seq": 2, "kind": "hostile_arrival", "severity": "threat", "subjectId": 16744, "subject": "Worm",
+              "critical": False, "declared": False, "detail": "arrived: Human Pirate (humanlike)"}
+    gone = {"kind": "departed", "severity": "info", "subjectId": 16726, "critical": False, "declared": False}
+
+    class S:
+        def __init__(self):
+            self.n = 0
+            self.tools = {"jawa/safe_advance"}
+
+        def call(self, tool, **kw):
+            if tool == "jawa/safe_advance":
+                self.n += 1
+                if self.n == 1:
+                    return {"success": False, "state": "stopped", "requested": kw["ticks"], "executed": 70, "stopBy": pirate, "triggers": [pirate, gone]}
+                return {"success": True, "state": "done", "requested": kw["ticks"], "executed": kw["ticks"]}
+            return {"success": True}
+    tmp = tempfile.mkdtemp()
+    old = (runner.SHEET_DIR, report.render, list(cg.BENIGN_STOPS))
+    cg.BENIGN_STOPS[:] = []
+    cg.declare_fixture("Human16744")
+    try:
+        got = cg.advance_chunk(S(), 100)
+        ok(got == 100, "benign-stop fixture chunk completes: %s" % (got,))
+        runner.SHEET_DIR = tmp
+        report.render = lambda mod, summary: "<html></html>"
+        path = runner.write_sheet("SelftestMod", {"chains": [], "all_green": True})
+        with open(path[:-5] + ".json", encoding="utf-8") as f:
+            data = json.load(f)
+        bs = data.get("benign_stops") or []
+        ok(len(bs) == 1 and bs[0]["why"] == "fixture arrival" and bs[0]["utc"] and bs[0]["subjectId"] == 16744
+           and bs[0]["executedBeforeStop"] == 70 and "summary" in data and data["mod"] == "SelftestMod",
+           "a benign stop is read back from the written run JSON with time and cause: %s" % (bs,))
+    finally:
+        cg.withdraw_fixture("Human16744")
+        runner.SHEET_DIR, report.render = old[0], old[1]
+        cg.BENIGN_STOPS[:] = old[2]
+
+
 def main():
-    for t in (test_fixture_arrival_resumes, test_expected_disturbance, test_between_call_ticks_charged,
+    for t in (test_benign_stops_in_run_json, test_fixture_arrival_resumes, test_expected_disturbance, test_between_call_ticks_charged,
               test_step_charges_measured_and_records_overshoot,
               test_truncation_is_looped,
               test_negative_delta_new_epoch,
