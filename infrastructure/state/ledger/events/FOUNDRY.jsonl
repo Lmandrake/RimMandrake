@@ -8833,3 +8833,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"PIT_SUPERDEEP_COLLAPSE_1 live walk","ts":"2026-10-29T04:15:12Z","tsn":1793247312266170869}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-29T04:16:59Z","tsn":1793247419819774682}
 {"seat":"FOUNDRY","event":"block","id":"PIT_SUPERDEEP_COLLAPSE_1","reason":"Live walk cannot run: companion test-profile grant expired 2026-10-29T03:00Z (CAMPAIGN profile refuses debug calls); owner must extend expiresUtc in JawaBench/companion_profile.json, then re-run pit_superdeep_walk.py --fresh-map","ts":"2026-10-29T04:17:01Z","tsn":1793247421861867743}
+{"seat":"FOUNDRY","event":"lease","id":"WORLDMAP_DOCS_PASS_1","action":"take","token":"FOUNDRY.pid12847.68ecfee6","expires":"2026-10-29T05:08:19Z","ts":"2026-10-29T04:23:19Z","tsn":1793247800210117031}
+{"seat":"FOUNDRY","event":"block","id":"WORLDMAP_DOCS_PASS_1","reason":"Joint pass with the owner (title: 'with the owner'); item file has no sections or criteria; not autonomous work","ts":"2026-10-29T04:23:29Z","tsn":1793247809309407363}
