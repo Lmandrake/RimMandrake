@@ -1,0 +1,2 @@
+COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME's ledger title says 'renew it automatically before lapse' but the build brief said do not auto-renew when renewal is an owner consent. No ruling makes renewal an agent's call, so the build (dd1384f31913) only warns (ops_watch alarm OPS_GRANT_ASK_* under 12 h) and preflights rimflow next. If the owner wants auto-renew, that is a ruling plus a new item.
+home: NONE
