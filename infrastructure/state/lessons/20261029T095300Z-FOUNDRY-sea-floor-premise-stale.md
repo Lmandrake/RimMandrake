@@ -1,0 +1,2 @@
+SEA_FLOOR_AND_CATCH_PASS_1 was briefed as 'the floor half is large'; an XML census showed it already done (0 catch gaps on all 4 RM_ seas, via SEA_FISHABLES_ALIVE_IN_DEPTHS_1). Before sizing a sea/floor item, run TerminalBiomes validation.sea_catch_alive_checks() and check which tier (RUT_ frozen vs RM_ content) the item is about; RUT_ seas always show full gaps because they are frozen.
+home: NONE
