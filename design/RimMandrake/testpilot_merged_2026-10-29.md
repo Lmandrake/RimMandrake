@@ -16,12 +16,16 @@ Inputs, cited by short name in the text:
 - **Research:** `D:\ClaudeWork\rimmandrake\modelling_research\gpt_research.md` and `gpt_fast_decisions.md`.
 - **Zoo:** `D:\Luke\dev\RimMandrake\Transient\architecture_zoo.html`.
 
-Owner answers already recorded on this item today (from `rimflow show`): TestPilot on both machines; the Archmagi
-20-minute idle wait does not apply while he is not playing (flyer flight still needs him present); live tests on the
-13-mod minimal list, with the full list once per item as the final clash check; rank by accepted work/day, with
-tokens, owner touches and live-game use as guardrails; the pilot decides reloads by a written rule and logs it; a
-research pass and a switchable experiment harness were requested ("maybe we just build them all and see as long as
-we can easily switch").
+Owner answers recorded on this item (from `rimflow show`, newest last): TestPilot on both machines; the Archmagi
+20-minute idle wait does not apply while he is not playing (flyer flight still needs him present); rank by accepted
+work/day, with tokens, owner touches and live-game use as guardrails; the pilot decides reloads by a written rule and
+logs it; a research pass and a switchable experiment harness ("maybe we just build them all and see as long as we
+can easily switch"). Then, deciding section 5: he answers design-decision cards from every arm equally and never
+debugs, with his minutes measured per arm; reloads scale with reload cost and never test exhaustively; 1.5x tokens
+for the 3 measuring days; a win switches production to the winner immediately; **the trial runs on the minimal mod
+list only**, plus an item's dependencies where it cannot load without them, with no full-list check inside the
+trial ("we're trying to determine superior architectures. That means faster cycling"); and, binding on every
+arm, **"a different agent tests what was built"**, promptly after the build, never far later (section 2.3).
 
 Trust tags used throughout: **MEASURED** = counted from the ledger or transcripts. **ESTIMATE** = arithmetic on
 measured numbers. **SIM** = Opus's simulator (calibrated world, every TestPilot and Ralph parameter assumed, p50 of 240
@@ -32,8 +36,9 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
 
 1. Working alone, then answering each other, the two designers reached one design. Fresh Ralph builders take
    small frozen items. One blind critic gate has a round cap. Short, fresh pilot passes run against a game that a
-   machine worker owns. A script canary decides test validity, a written reload rule decides restarts, and the full
-   list runs once per item as the clash check.
+   machine worker owns. A script canary decides test validity, and a written reload rule, scaled by reload cost,
+   decides restarts. In the trial every arm runs on the minimal list (plus an item's load dependencies), and in every
+   arm a different agent tests each build before the builder's next build pass starts (section 2.3).
 2. The owner's core ideas survive: fix while the context is fresh, keep the game up, and require proof before a
    reload. Three things change. The pilot is not a long-lived agent. Testing past a failure is gated by a script, not
    by the pilot's opinion. The reload rule can be checked by a script.
@@ -53,10 +58,11 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
    not its runtime, built by two builders. The critic gets measured on day 2. Four arms run replayed past items on
    days 4-5, and the live crossover runs on days 6-7. The verdict comes about day 7 (ESTIMATE), with a 72-hour retest
    after it.
-9. Five owner decisions are in section 5. The short version: a reload may interrupt after a bounded drain; 1.5x
-   tokens for the trial days; item tiers and a shared full-list session are allowed; one control arm runs with him
-   hands-off; two builders, and a win authorizes wider testing, not migration.
-10. None of this is built, and nothing in production changes until the trial reports.
+9. The owner decided section 5 on 2026-10-29: reloads scale with reload cost; 1.5x tokens for the 3 measuring days,
+   then a budget set from measured cost per accepted item; the minimal list plus load dependencies only; design cards
+   from every arm equally, minutes measured per arm; a win switches production to the winner immediately.
+10. None of this is built yet. The build is ticketed for FOUNDRY at top priority in the section 6.3 order. Production
+   changes when the trial names a winner, at once.
 
 ## 2. The merged design
 
@@ -94,9 +100,14 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
   confidence, and repair work continues. (Opus E1/B3, GPT C26-C28, points 5 and 22. The two sides now agree.)
 - **L9. Evidence is keyed and immutable.** The key is (item, candidate fingerprint, scenario, tier, repetition). The
   fingerprint covers the loaded DLLs, XML, dependencies and harness, not only the source sha. Candidate records are
-  write-once (`candidates/<id>/<attempt>.json`), and the evidence log is append-only. A rebuilt candidate cannot
-  inherit an earlier PASS, and a later unrelated edit does not erase historical evidence. Three statuses stay
-  separate: "valid environment", "behaviour passed" and "accepted" (Opus B1/B2, GPT C12/C18, point 22).
+  write-once (`candidates/<id>/<attempt>.json`), and the evidence log is append-only. A later unrelated edit does
+  not erase historical evidence. Three statuses stay separate: "valid environment", "behaviour passed" and
+  "accepted" (Opus B1/B2, GPT C12/C18, point 22).
+- **L9a. Re-test only what a change affects (owner, 2026-10-29).** Each scenario in the frozen plan declares its
+  footprint: the files and defs it exercises. When a candidate is rebuilt, a scenario whose footprint the rebuild
+  diff does not touch keeps its PASS, recorded as `carried` with the source fingerprint. Only the touched scenarios,
+  plus those the taint note (L8) names, are re-run. The full scenario list is never re-run every iteration. A
+  scenario with no declared footprint is treated as touched.
 - **L10. Fix now, by fix class.**
   - HARNESS or SITE faults: fixed in the session (savegame edit with a backup, bridge restage), then the test is
     re-run. A hot-fixed PASS counts only after it passes once more from a clean fixture.
@@ -132,33 +143,33 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
 
 ### 2.2 Disagreements, resolved
 
-- **M1. The reload rule.** Opus R1 D6 used R0-R3, with R3 needing two waiting deployables, the oldest 45 minutes old
-  and the session 45 minutes old. GPT used O-R01-O-R03 plus I-R04, a sealed repair ready with a 2-minute drain. In
-  round 2 Opus conceded (E5): run literally, I-R04 does not churn. Reloads per accepted item rise from 0.97 to 1.21,
-  and accepted/day moves by +0.43 (SIM). GPT showed that "batch empty" is not "no valid test remains" and that R3
-  can starve one important repair (point 20). It also showed that a red canary does not by itself need a restart
-  (point 19). **Merged rule, checked in order, each reload logging the rule it met:**
+- **M1. The reload rule, scaled by reload cost (owner, 2026-10-29).** His words: "When reloads are cheap, try for a
+  few more unrelated tests, then reload. When reloads are expensive, work harder to find any remaining value first.
+  Never just 'exhaustively test everything'." The rule is checked in order, and each reload logs the rule it met and
+  the measured reload cost it used:
   - **Recovery ladder first:** reconnect and reconcile, then reload a save, then restage a fixture, then hold (grant,
-    owner). None of these is a reload.
+    owner). None of these is a reload. A red canary does not by itself need a restart (GPT point 19).
   - **R0 cold start.**
   - **R1 the process is dead,** or unrecoverable after the ladder.
   - **R2 no useful valid test remains** on the loaded artifact, and a state reset will not restore one.
-  - **R3 (GPT I-R04):** a sealed repair or a final full-list qualification is ready, and its drain has expired. The
-    drain lasts until the scenario in progress finishes. It also carries a maximum acceptance delay, so a repair
-    cannot wait forever.
-  - Opus's 45-minute session-age check survives only as a churn alarm, not as a gate.
-  - R3 relaxes the owner's words ("only if it has no useful valid live tests remaining"). That is owner decision 1.
-- **M2. Full-list batching.** Opus conceded R1 D7 (4 items or 6 hours) for GPT P13 (2 items or 30 minutes).
-  Accepted/day moves +0.4, inside noise (Opus E6). The rules:
-  - Each batch is one sealed integrated candidate, with artifact versions recorded.
-  - Each item gets its own short clash test inside the batch.
-  - A failure no item's own test explains is first bisected on the minimal and item tiers. If it does not reproduce
-    there, it is bisected on the full list (GPT point 21 corrects Opus D7, which never went back to the full list).
-  - Whether a shared session satisfies the owner's "once per item" rule is owner decision 3.
-- **M3. Item tiers.** A content-mod patch is untestable on 13 mods if its target mod is absent. Both designers
-  recommend a dependency-complete item tier, built with the existing `modset_builder.py --tier` after its output is
-  checked. Its real profile and load time get recorded, and it never inherits the 22-second figure (Opus D7, GPT
-  point 11). This needs owner decision 3, because his card said "minimal".
+  - **R3 a sealed repair is ready, and its drain is spent.** The drain is set by the profile's measured launch-to-ready
+    time (L11), not by a fixed number. **Cheap reload** (the minimal list, about 22 s): finish the scenario in
+    progress, run a few more unrelated tests whose value is known, then reload. **Expensive reload** (a profile with
+    many load dependencies): keep running valid tests while any of them still has value before reloading. Both
+    carry a maximum acceptance delay, so a repair cannot wait forever (GPT point 20).
+  - **Never exhaustive.** "Value" means a test that can change an acceptance decision or catch a defect class not yet
+    covered. Re-running tests that pass reliably on an untouched footprint (L9a) has no value and does not delay a
+    reload.
+  - The pilot's written cost threshold between cheap and expensive is in its rule file and logged with each reload.
+    Opus's 45-minute session-age check survives only as a churn alarm, not as a gate.
+- **M2. Full-list checks are not part of the trial (owner, 2026-10-29).** The trial compares architectures, so it
+  runs for fast cycling on the minimal list only. No arm runs a full-list clash check inside the trial, and the
+  common acceptance check (M7) has none. The production full-list check and its batching (2 items or 30 minutes,
+  per-item clash tests, bisection) are designed for after the switch and are not built for the trial.
+- **M3. The minimal list plus load dependencies.** A content-mod patch cannot load on 13 mods if its target mod is
+  absent. Such an item's tier is the 13-mod minimal list plus only the mods it cannot load without, built with
+  `modset_builder.py --tier` after its output is checked. Its real profile and load time are recorded, and it never
+  inherits the 22-second figure (Opus D7, GPT point 11).
 - **M4. Two pilots, and the owner's return to Archmagi.**
   - One shared ready queue with claims. An item is taken by one pilot, and each machine has its own lock.
   - SteveDesktop runs as the executor through testq (canary, steward, PAUSE_ON).
@@ -178,14 +189,38 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
 - **M7. How "accepted" is scored when comparing designs.** Opus's simulator scores strict acceptance natively, so
   any design without both gates scores 0. GPT calls that a compliance tally, not a performance finding (point 13),
   and Opus agrees (its experiment C22 runs both arms through one check). **Merged:** for comparisons, every design's
-  output goes through the same final acceptance check, charged to that design. The check is a blind GPT review, the
-  frozen live plan, and the full-list clash test. The native strict count stays as a compliance column.
+  output goes through the same final acceptance check, charged to that design. The check is a blind GPT review and
+  the frozen live plan on the minimal list plus load dependencies (M2, M3). The native strict count stays as a
+  compliance column.
 - **M8. The quality numbers.** GPT recomputed the defect shares from the displayed medians: 26.7% for TP+ and 4.4%
   for C+sub, against Opus's stated 32% and 40% (point 15). Ratios of medians need not equal medians of ratios, so
   this is not proof of a bug. But no quality claim is quoted until matched-cohort counts and definitions of "closed"
   and "escape" exist. Section 3 therefore reports escapes per week only, tagged SIM.
 - **M9. The unit of work.** GPT counts parent outcomes and the simulator counts items (Opus G9), so the two numbers
   are not comparable. The trial uses task points frozen from each original diff (Harness section 1.1).
+
+### 2.3 Binding on every arm: a different agent tests what was built, promptly
+
+The owner, 2026-10-29: "I definitely do want to enforce a different agent tests what was built... but I just don't
+want to wait for that to happen far later than the build. So whatever designs we implement, they must have that
+property."
+
+**The rule, in a form a script can check.** For every candidate, an agent other than the one that built it (a fresh
+context with no access to the builder's transcript) runs the candidate's tests. That test starts before the builder
+begins its next build pass. A builder whose previous candidate has no `test_start` event from a different agent is
+not given a new item. The harness logs `build_end` and `test_start` (with the tester's agent id) and reports the
+latency per arm. A design that lets a builder run ahead of its testers is disqualified. Live tests that need a lane
+follow the same back-pressure: a builder does not take a new live-needing item while one of its candidates waits
+for a lane.
+
+| arm | had the property before? | how it meets the rule |
+|---|---|---|
+| `trio` (TP+) | yes | The blind critic (L4) is a fresh Opus context. It runs the item's offline tests itself and reviews them, straight after each build pass. The TestPilot, a different agent again, live-tests sealed candidates. MOD fixes are built by a fix subagent and tested by the pilot (L10). |
+| `ralph_a` | **no**: one loop built and self-checked; the gate is a script, not an agent | **Adapted:** the loop alternates. Each build pass that passes the gate is followed at once by a fresh blind tester pass (new context, given only the frozen spec, the test plan and the diff, told to break it). Its verdict returns to the next build pass. Items needing a live test go to a minimal-list lane, and the loop waits on them. |
+| `ralph_c` | **partly**: runners are different agents, but only for live items, and they fell behind two builders (Ralph doc section 3) | **Adapted:** each builder loop gets the same fresh blind tester pass as `ralph_a` right after each build pass. Live items go to the runners, oldest first, and the back-pressure rule above stops a builder while its live candidate waits. |
+| `v3` control (today's FOUNDRY procedure, replayed) | **no**: the helper self-verifies, and the verify backlog (521 waiting at 10-26) tests far later | **Adapted:** after each helper's close, FOUNDRY launches a fresh tester helper on that sha before it briefs the next build. This changes today's procedure in one place only, so the control still measures v3's building. |
+| `v3c` | partly: a GPT review per sha, which reads but does not run tests | **Adapted:** the done gate needs a fresh tester helper's test record as well as the GPT review, both bound to the sha. |
+| production-v3 sample | no | It is not an arm. It is judged blind as a reference only, and is never a winner candidate. |
 
 ## 3. Comparison table, corrected for the owner-presence finding
 
@@ -247,10 +282,10 @@ How to read the table:
 |---|---|---|
 | O1 | Opus X1: TP+ optimises a non-bottleneck. The pilot is idle 62% and every pilot parameter moves output by under 0.3/day. | **Partly.** The merge stops designing reload tactics and keeps the simplest rule (M1). TP+'s value is quality, not throughput, and the trial must show that quality is worth its cost. |
 | O2 | Opus X2: the critic's false-reject rate is unmeasured and is the largest lever (about 6/day across its range). | **No, by design work.** It gets measured first: critic calibration on day 2 (section 6). |
-| O3 | Opus X3: full-list batch failures need attribution, and a crash voids the whole batch. | **Mostly.** Batches shrink to 2 items or 30 minutes, each item has its own clash test, bisection falls back to the full list, and crash evidence is kept (M2, M5). |
+| O3 | Opus X3: full-list batch failures need attribution, and a crash voids the whole batch. | **Out of the trial.** The trial has no full-list check (M2), so this applies only to production after the switch. Crash evidence is kept (M5). |
 | O4 | Opus X4: the owner may return mid-session on Archmagi, where a pilot changes his mod list. | **In design.** An explicit switch and a safe yield that keeps evidence (M4). Untested until the live crossover. |
 | O5 | Opus X5: the simulator is uncalibrated. Only the invalid-run rate (0.09) and reload times are measured. | **Replaced, not fixed.** The harness measures real numbers. The simulator is trusted afterwards only if it predicts day-2 numbers (Harness section 4.4). |
-| O6 | Opus R2's critical flaw: TP+ buys its lead with tokens, on a metric only it can score, and loses on sound output to C+sub in 80% of members (98% at 1.0G). | **Partly.** The common charged check (M7) makes every design scorable. Whether the budget is near 1G is owner decision 2. If the critic rejects a quarter of good small items, the honest answer is C+sub plus a sampled blind review. |
+| O6 | Opus R2's critical flaw: TP+ buys its lead with tokens, on a metric only it can score, and loses on sound output to C+sub in 80% of members (98% at 1.0G). | **Partly.** The common charged check (M7) makes every design scorable. The steady budget is set from the trial's measured cost per accepted item (section 5, decision 2). If the critic rejects a quarter of good small items, the honest answer is C+sub plus a sampled blind review. |
 | G1 | GPT C40 and point 35: the pilot's taint and dependency judgment may be too weak. If handled conservatively, it erases continuation's benefit, leaving a complex system that gains little over a simple runner. | **No.** The script canary gates and uncertainty blocks acceptance (L8). That is safe but may erase the benefit. The trial measures valid extra evidence gathered after failures against the cost of the machinery. |
 | G2 | GPT C40: fresh reviewers can share assumptions and weak instruments. | **Partly.** The critic (Opus) and the final reviewer (GPT) are different models, and the canary checks that instruments are live. Shared blind spots remain. Planted defects measure them. |
 | G3 | GPT C40 and C50: building the gates may cost more than they save, and migration can dominate the first week. | **Measured.** Build hours are reported beside results, and a tie goes to the simpler arm (Harness section 4.1). |
@@ -258,65 +293,35 @@ How to read the table:
 | G5 | GPT R2 point 2: its full-list load range was too narrow. | **Yes.** Now 15-30 minutes, measured per profile (L11). |
 | G6 | GPT R2 point 8: two separate preparatory reviews repeated each other. | **Yes.** One combined critic (L4). |
 
-## 5. Owner decisions (five)
+## 5. Owner decisions (decided 2026-10-29)
 
-**1. When may a reload interrupt live testing?** His words: "Only if it has no useful valid live tests remaining."
+The options and recommendations that stood here were answered on this item on 2026-10-29. Only the decisions are
+kept.
 
-- (a) **Literal.** Reload only when nothing valid remains (R0-R2). This keeps his rule exactly, but one ready repair
-  can wait indefinitely behind exploratory tests (GPT point 20).
-- (b) **Bounded drain (R3 / I-R04).** A sealed repair or final qualification may interrupt once the scenario in
-  progress finishes, with a maximum acceptance delay. Reloads per item rise about 25% (0.97 to 1.21), at no
-  accepted-work cost (SIM), and the reloads fall on idle game time.
-- (c) **Fixed cadence.** Reload every N minutes if anything is ready. This is simple, but blind to whether testing
-  is going well.
-- **Recommendation: (b).** Both designers now hold it. Game time is not the bottleneck, and a stuck repair is.
+1. **Reloads scale with reload cost.** Cheap reloads: a few more unrelated tests, then reload. Expensive reloads: work
+   harder for the remaining value first. Never exhaustive, and re-test only the scenarios a change affects, not the
+   full list every iteration. Built into M1 and L9a.
+2. **Token budget:** 1.5x normal for the 3 measuring days. The steady budget after the trial is then set from the
+   measured cost per accepted item.
+3. **Mod list:** the trial runs on the 13-mod minimal list only, plus an item's dependencies where it cannot load
+   without them (M3). No full-list check inside the trial (M2).
+4. **His role:** he answers design-decision cards from every arm equally, through the Conductor, and never debugs or
+   nudges. His minutes are measured per arm, and each arm's output is reported both with and without the work his
+   answers unblocked.
+5. **What a win authorises:** switching production to the winner immediately. The section 6.4 rule decides the
+   winner. The champion/challenger watch (Harness section 5) runs after the switch and can reverse it with one command.
 
-**2. The weekly token budget, for the trial and after it.** This one number decides TP+ against Ralph C+sub
-(section 3).
+Binding on every arm (his words, not a card): a different agent tests what was built, promptly after the build
+(section 2.3).
 
-- (a) **Today's ~1.7-1.9G.** In the simulator TP+ is viable.
-- (b) **1.0G.** C+sub or even Ralph A is the honest answer.
-- (c) **1.5x normal for the 3 measuring days only** (Harness section 8 decision 1), then name the steady-state
-  budget from the measured cost per accepted point.
-- **Recommendation: (c).** Without it the trial takes about 5 days instead of 3.
-
-**3. What counts as the minimal list and the full-list check.**
-
-- (a) **Strict.** Only the 13 mods, and one full-list launch per item. Content-mod patches cannot be tested at all,
-  and full loads cost about 15-30 minutes each.
-- (b) **Item tier and shared full list.** A dependency-complete item tier (recorded honestly) counts as "minimal",
-  and up to 2 sealed items may share one full-list session, each with its own clash test.
-- (c) **(b) for the item tier, but one full-list launch per item.**
-- **Recommendation: (b).** Both designers recommend it (GPT points 37-38). It makes content patches testable and
-  costs nothing on the bottleneck.
-
-**4. His presence during the trial.** The presence finding means a trial he steers measures him, not the
-architecture.
-
-- (a) **Hands-off for every trial arm.** He talks only to production v3, and the trial logs any touch. This is the
-  cleanest measurement, and it costs him a few days of steering trial work.
-- (b) **Hands-off for one unattended control day,** plus normal, timed involvement elsewhere. This measures the
-  autonomous v2/v3 number directly, at a lower cost.
-- (c) **Normal presence, with owner minutes timed.** This is cheapest for him, and confounded.
-- **Recommendation: (a)** for the 3 measuring days, with a stop word for emergencies. It is the only option that
-  answers his own theory.
-
-**5. The build path, and what a win authorizes.**
-
-- (a) **Cheapest slice.** Ralph A against today's Foundry procedure on replay only, answered about day 5 (one
-  builder).
-- (b) **Full harness with two builders.** All four arms plus the live half, answered about day 7-8.
-- (c) **Skip the harness.** Run Ralph C+sub in production with a sampled blind review. This is fastest, and yields
-  no comparison.
-- **Recommendation: (b).** A win authorizes a wider two-machine trial, not production migration (GPT point 41). Ties
-  go to the simpler arm, in the fixed order `ralph_a` < `ralph_c` < `trio` < `v3c` < `v3`, which he should agree to
-  before day 1.
+**Still to confirm with him:** the simplicity tiebreak order `ralph_a` < `ralph_c` < `trio` < `v3c` < `v3`, before
+day 4.
 
 ## 6. The fastest path to a real answer
 
 ### 6.1 Substrate: hand-built, using Inspect's contract (not its runtime)
 
-**Choice: hand-built.** The harness's own steps 1-14, about 82 builder-hours, borrowing Inspect's design rules:
+**Choice: hand-built.** The harness's own steps 1-14, about 84 builder-hours, borrowing Inspect's design rules:
 
 - tasks, agents and scorers kept separate;
 - repeated epochs, here the harness's duplicate runs;
@@ -325,7 +330,7 @@ architecture.
 Why not Inspect itself:
 
 1. **Most of the work is things Inspect does not provide.** Freezing our task bank, wrapping our gate, the live
-   RimWorld lanes with a bridge lock and a canary, the arm switch, and the TestPilot are about 70 of the 82 hours.
+   RimWorld lanes with a bridge lock and a canary, the arm switch, and the TestPilot are about 72 of the 84 hours.
    Inspect would replace roughly the replay runner (step 5, 4 hours) and part of the judging summary. The GPT research
    estimates 1-2 days just for basic CLI adapters, "excluding game integration" (`gpt_research.md` line 40), which is
    more than it saves.
@@ -342,23 +347,26 @@ The replay half can be ported to Inspect later, if the trial becomes a standing 
 
 ### 6.2 Arms, first wave
 
-- `ralph_a`: one loop, with the gate run by the loop.
-- `ralph_c`: run in its C+sub configuration, the simulator's sound-output leader among the Ralph variants.
+- `ralph_a`: one loop, with the gate run by the loop, and a fresh blind tester pass after every build pass (section 2.3).
+- `ralph_c`: run in its C+sub configuration, the simulator's sound-output leader among the Ralph variants, with the
+  same tester pass per builder loop and back-pressure from the runners (section 2.3).
 - `trio`: the merged TP+ of section 2, not the owner's original text. The Harness step 10 round limit is superseded
   by L4.
-- **An unattended v2/v3 control:** today's Foundry procedure run in a replay clone that the owner never types into
-  (Harness step 9), plus a sample of production v3 closes judged blind. This arm measures the ~25/day autonomous
-  estimate directly.
+- **A v3 control:** today's Foundry procedure run in a replay clone (Harness step 9), with a fresh tester helper
+  after each close (section 2.3). The owner answers its design cards like any arm's and does nothing else in it. A
+  sample of production v3 closes is judged blind as a reference. This arm measures the ~25/day autonomous estimate
+  directly.
 - `v3c` joins only if the token allowance covers a fifth arm. Otherwise each arm's task count shrinks.
 
 ### 6.3 Build order, two builders
 
 The steps are the Harness steps. Each one is proven by its own forced failure and blind-reviewed by GPT (at most 2
 rounds, then simplify) before the next starts. Hours are ESTIMATES, at about 12 effective hours a day per builder.
+Every step is ticketed as a rimflow item for FOUNDRY at top priority, in this table's order (section 6.5).
 
 | day | builder 1 | builder 2 | real numbers produced that day |
 |---|---|---|---|
-| 0 (decision day) | owner decisions 1-5; task census (step 1) begins | event log and v3 adapter (step 2) | none |
+| 0 (go) | task census (step 1) begins | event log and v3 adapter (step 2) | none |
 | 1 | finish census and freeze (step 1); gate (step 3) | judge (step 4); metering by clone path (step 6) | frozen task bank; meter sanity probe |
 | 2 | replay runner (step 5); `ralph_a` (step 8) | switch (step 7); trio builder and critic (step 10) | **critic calibration**: about 20 known-good and 10 planted-defect frozen candidates through the critic and the judge. This gives the first measured false-reject and miss rates (flaws O2 and O6) |
 | 3 | v3/unattended control procedure (step 9); day-0 failure drill | lane wrapper and `ralph_c` runner (step 12); `ralph_c` assembly (step 14) | drill result; simulator re-run with the measured critic rates |
@@ -368,6 +376,32 @@ rounds, then simplify) before the next starts. Hours are ESTIMATES, at about 12 
 | 7 | **live crossover, second half;** the two halves combined | report | **whole-architecture verdict**, if the simulator passed its day-5 forecast check, otherwise the two halves reported separately |
 | 10 | 72-hour retest of day-4 accepted work reports | | first escape signal (rare defects still need weeks: Harness section 5) |
 
+### 6.5 The build tickets
+
+Filed 2026-10-29 for FOUNDRY and raised in this order, so FOUNDRY's `next` offers them first, in build order.
+Each item's prose (`infrastructure/state/items/<ID>.md`) holds its spec, Done-when, model class and "blind GPT
+review before close". Model class follows the owner's rule: Sonnet for code tests can check, Opus for code that
+is hard to validate.
+
+| # | item | model | what |
+|---|---|---|---|
+| 1 | `ARENA_TASKS_BUILD_FROZEN_BEFORE_ASSIGNED` | Opus | Harness step 1: arena_tasks.py census and freeze of the replay pool |
+| 2 | `ARENA_EVENTLOG_BUILD_AGENTS_MAY_NOT_WRITE` | Sonnet | Harness step 2: arena event log library and the v3 adapter |
+| 3 | `ARENA_GATE_BUILD_UNMEASURED_NEVER_PASSES` | Sonnet | Harness step 3: arena_gate.py, the one gate every arm passes |
+| 4 | `ARENA_JUDGES_BUILD_BLIND_TO_THE_ARM` | Opus | Harness step 4: the blind acceptance judge (Opus + GPT) |
+| 5 | `ARENA_METER_BUILD_SPEND_BY_CLONE_PATH` | Sonnet | Harness step 6: token metering by clone path, with a sanity probe |
+| 6 | `ARENA_REPLAY_BUILD_NO_FUTURE_IN_CLONE` | Sonnet | Harness step 5: replay clone builder and interleaved runner |
+| 7 | `ARENA_RALPHA_BUILD_TESTER_PASS_EACH_BUILD` | Opus | Harness step 8: ralph_a loop with a fresh blind tester pass after each build |
+| 8 | `ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY` | Sonnet | Harness step 7: arm.toml, rm-arm-* targets, arena switch/who, pre-push hooks |
+| 9 | `ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS` | Opus | Harness step 10: trio Ralph builder + blind critic subagents with round cap |
+| 10 | `ARENA_CRITIC_MEASURE_PLANTED_DEFECTS_FIRST` | Opus | Day 2: critic calibration on known-good and planted-defect candidates |
+| 11 | `ARENA_CONTROL_BUILD_V3_TESTER_AFTER_CLOSE` | Opus | Harness step 9: v3 replay procedure and v3c, each with a tester after close |
+| 12 | `ARENA_DRILL_PROVE_KILLED_PASS_RECOVERS` | Sonnet | Day 3: substrate failure-path drill |
+| 13 | `ARENA_LANE_BUILD_MINIMAL_LIST_ONLY` | Opus | Harness step 12: arena_lane.py lane wrapper and the ralph_c fixed-SHA runner |
+| 14 | `ARENA_RALPHC_BUILD_BUILDERS_WAIT_ON_TESTERS` | Sonnet | Harness step 14: ralph_c assembly with tester passes and runner back-pressure |
+| 15 | `ARENA_TESTPILOT_BUILD_RELOAD_SCALED_BY_COST` | Opus | Harness step 13: the trio TestPilot with the cost-scaled reload rule |
+| 16 | `ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE` | Opus | Harness step 11: TLA+ model of the live-resource handoff |
+
 ### 6.4 The stopping rule, committed before day 4
 
 This is the Harness section 4.1 rule. It is checked only at fixed block boundaries (every 5 completed tasks per
@@ -376,12 +410,15 @@ arm), never on runs as they finish, which limits the number of looks. A Bayesian
 - **Decide for X:** P(X's accepted points per token is at least 1.25x the best other arm's) > 0.95, AND X's
   acceptance rate is not credibly worse than the control's.
 - **Drop X (futility):** P(X is at least 1.1x the control) < 0.05.
-- **Tie:** P(the difference is under 15%) > 0.9. The simpler arm wins (owner decision 5).
+- **Tie:** P(the difference is under 15%) > 0.9. The simpler arm wins (order in section 5, still to confirm).
 - **Minimum** before any stop: 10 tasks per arm across at least 2 kinds.
 - **Disqualify at any time:** an arm that publishes unchecked work, edits outside its area, holds a lane without a
-  canary, or logs a reload with no rule. For the live half: a pilot that misses both planted defects.
+  canary, logs a reload with no rule, or lets a builder start a new build pass before a different agent has started
+  testing its last candidate (section 2.3). For the live half: a pilot that misses both planted defects.
 - **Hard cap: end of day 7.** Anything not separated by then is reported as "no difference detectable in days",
   with intervals. The fallback is the incumbent v3, or the simplest arm that clears the gates.
+- **A win switches production at once** (section 5, decision 5): `arena switch <winner>` runs the day the rule
+  fires, and the champion/challenger watch starts.
 - **If the sequential analysis code is not ready by day 3,** use one predeclared final analysis instead.
 
 What this cannot tell us in a week: rare escapes, week-scale token-quota effects, and how the owner's own learning

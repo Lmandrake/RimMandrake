@@ -61,7 +61,9 @@ One file per task, `D:\ClaudeWork\rimmandrake\arena\tasks\<TASK>.json`, with the
 - `prompt`: the item text as it read when the original work was claimed. For replay it is taken from the ledger
   `file` event and the item prose at the parent sha;
 - `criteria`: the acceptance criteria, written plainly, and `proof`: the command that proves them;
-- `live`: `none`, `minimal` (the 13-mod list, about 22 s cold) or `full` (about 15-25 min);
+- `live`: `none`, `minimal` (the 13-mod list, about 22 s cold) or `minimal+deps` (the 13 mods plus only the mods
+  the item cannot load without; its load time is measured, never assumed). The trial has no `full` tier: the owner
+  ruled the trial runs on the minimal list only, for fast cycling (2026-10-29);
 - `hidden_checks`: held only in the judge's directory, never in an arm's clone. For replay they are the tests the
   accepted fix added, and, for items whose defect escaped, a check for that defect, written from the later
   rework item;
@@ -92,6 +94,8 @@ gate, the trio's critic. Only this gate counts, and it is identical for all five
    must match `head`. `modcheck` must have run with that deploy. **The canary** must have passed: a live colonist,
    a fresh Player.log, the expected game and mod versions, a map that is not the canonical world save. A failed
    canary gives `invalid`, never `fail`, and the run is re-queued.
+9. **Different-agent test record (section 1.8):** a `test_start` event for this sha from an agent id other than the
+   builder's, and its verdict. No record refuses.
 
 The output is one JSON record: `pass`, `fail` or `invalid`, with each step's result and log paths. A gate that
 cannot run a step writes UNMEASURED for that step, never a pass (instrument_traps).
@@ -158,16 +162,31 @@ schema, one line per event:
 
 ```
 {ts, arm, lane, run_id, task, event, sha?, verdict?, ite?, minutes?, rule?, detail?}
-event ∈ freeze | assign | pass_start | pass_end | gate | judge | critic_round | live_take | live_release
-        | reload | canary | owner_touch | defect | invalid | switch | stop
+event ∈ freeze | assign | pass_start | pass_end | build_end | test_start | test_end | gate | judge
+        | critic_round | live_take | live_release | reload | canary | card | owner_touch | defect | invalid
+        | switch | stop
 ```
 
 `v3` writes nothing natively. A small adapter, `arena_v3_adapter.py`, translates its ledger events (start, close,
 verify) and testq records into the same schema, so the control is measured the same way.
 
-**Owner minutes** are logged two ways. Each typed message to an arm counts 1 minute (assumed), and rm-pulse dwell
-time on that arm's cards is measured. A phone button, `arena owner +N`, covers anything else. This is the
+**Owner minutes, per arm.** The owner's ruling (2026-10-29): every arm may send him design-decision cards, through
+the Conductor, on equal terms; he does not debug or nudge any arm. Each `card` event carries the arm, and rm-pulse
+dwell time on that card is his measured minutes for it. A typed message to an arm counts 1 minute (assumed) and is
+logged as `owner_touch`. A phone button, `arena owner +N`, covers anything else. Each card answer also tags the
+tasks it unblocked, so every arm's output is reported twice: with and without owner-unblocked work. This is the
 weakest instrument in the harness, and section 5 says so.
+
+### 1.8 Binding on every arm: a different agent tests what was built, promptly
+
+The owner, 2026-10-29: "I definitely do want to enforce a different agent tests what was built... but I just don't
+want to wait for that to happen far later than the build. So whatever designs we implement, they must have that
+property." The rule and how each arm meets it are in `testpilot_merged_2026-10-29.md` section 2.3. In short: a
+tester with a fresh context, other than the builder, starts testing each candidate before the builder's next build
+pass begins, and the harness gives a builder no new item until it has. The harness enforces it from `build_end`
+and `test_start` (tester agent id differs from the builder's), reports the latency per arm, and the gate refuses a
+candidate with no such record (section 1.2 step 9). `trio` already had the property (critic, then TestPilot);
+`ralph_a`, `ralph_c`, `v3` and `v3c` were adapted with a fresh blind tester pass or tester helper after each build.
 
 ## 2. The switch
 
@@ -193,8 +212,8 @@ targets at once. The 25-odd existing timers are split into two groups:
 | substrate (always on) | account-usage, account-capture, deadman, memwatch, mirror, pulse-*, codebase-health, scratch-reap, selftests-nightly, objstore | none; they run under every arm |
 | v3's machinery | rm-dispatcher, the role units it launches, rm-ops-watch's dispatch triggers, testq-tick, testq-steward-watch, artpipe-idle-fill, arteval-autojudge | `rm-arm-v3.target` |
 | v3c | the same programs with the collapsed schedule file (I7) | `rm-arm-v3c.target` |
-| ralph_a | `rm-ralph-loop@a.service` (the supervisor that restarts `loop.sh`) | `rm-arm-ralph_a.target` |
-| ralph_c | `rm-ralph-loop@a1`, `@a2`, `rm-runner@steve`, `rm-runner@archmagi` | `rm-arm-ralph_c.target` |
+| ralph_a | `rm-ralph-loop@a.service` (the supervisor that restarts `loop.sh`, which alternates a build pass with a fresh blind tester pass) | `rm-arm-ralph_a.target` |
+| ralph_c | `rm-ralph-loop@a1`, `@a2` (each alternating build and tester passes), `rm-runner@steve`, `rm-runner@archmagi` | `rm-arm-ralph_c.target` |
 | trio | the FOUNDRY loop with its builder and critic subagents, `rm-testpilot@steve`, `rm-testpilot@archmagi`; the Conductor stays the owner-present window | `rm-arm-trio.target` |
 
 `mode = "trial"` starts no single target. Instead it starts the replay runner (`rm-arena-replay.service`) and puts
@@ -238,7 +257,7 @@ It runs after every switch and on ops_watch's 15-minute tick.
 
 | | build half: historical replay | live half: crossover on two machines | production control |
 |---|---|---|---|
-| what it compares | how each arm BUILDS and self-checks: `ralph_a` (no critic), `trio` (builder + blind critic, round cap per testpilot_merged §2.1 L4), `v3` (today's FOUNDRY procedure: a seat brief, helpers, self-verify), `v3c` (`v3` + done gate + a GPT review per sha) | how each arm LIVE-TESTS: the `trio` TestPilot (fixes in place, written reload rule) against the `ralph_c` fixed-SHA runner | v3 on the real queue, judged by sampling |
+| what it compares | how each arm BUILDS and has its build tested by a different agent: `ralph_a` (no critic; a fresh blind tester pass after each build pass), `trio` (builder + blind critic, round cap per testpilot_merged §2.1 L4), `v3` (today's FOUNDRY procedure: a seat brief, helpers, plus a fresh tester helper after each close), `v3c` (`v3` + tester helper + done gate + a GPT review per sha) | how each arm LIVE-TESTS: the `trio` TestPilot (fixes in place, written reload rule) against the `ralph_c` fixed-SHA runner | v3 on the real queue, judged by sampling |
 | where | throwaway clones, no game | SteveDesktop and Archmagi | today's seats |
 | tasks | past items with a known outcome | real candidates from the verify backlog (M11: 521 built items waiting at 10-26), plus planted known defects | its normal queue |
 | why this split | `ralph_c` builds exactly as `ralph_a` does, twice over, so it is not replayed separately | the live half is the only place `trio` and `ralph_c` differ from the others | free: it runs anyway |
@@ -280,7 +299,8 @@ never sees the assignment.
    for the parallelism the harness lends them. Each arm's own native concurrency (C's two loops, the trio's
    subagents) stays inside its run.
 2. **Tokens per accepted point:** ITE, metered by clone (section 1.6).
-3. **Owner minutes per accepted point:** live half and production only. Replay has no owner.
+3. **Owner minutes per accepted point, per arm:** measured from the cards each arm sent him (section 1.7), with
+   every arm's output reported with and without the work his answers unblocked.
 4. **Productive live-game minutes share:** minutes in a test whose canary passed and whose verdict the gate used,
    divided by lane wall-clock minutes. Lane minutes not in any test are counted, not hidden.
 5. **Reloads per accepted live item,** each with the rule it met (trio) or the reason (others).
@@ -303,8 +323,8 @@ Section 4 checks that forecast against the day's actual count.
 
 - **The judge** is blind to the arm (section 1.3), and its arm-guess rate is reported.
 - **The arms** are blind to the trial. Their prompts are their ordinary ones, with no mention of a comparison.
-- **The owner** sees live-half results without arm labels until the decision is written. His minutes are measured,
-  not asked.
+- **The owner** sees live-half results, and every design card, without arm labels until the decision is written.
+  His minutes are measured, not asked.
 - **The analyst** writes the decision rule (section 4) before day 1. The analysis script runs on the event log
   with arm ids hashed, and is unhashed only after the rule fires.
 
@@ -342,9 +362,9 @@ before day 2.
 
 **The budget is the binding constraint, not the calendar.** At about 2-3M ITE per micro-task attempt (v2 spent
 about 1.9G ITE a week over about 928 closes, so about 2M a close), 4 replay arms × 25 tasks costs 200-300M ITE.
-That is about a day of today's spend (M1: 270M ITE/day). The plan below fits 50 replay tasks per arm into days 1-2
-only if production v3 is throttled to its trial areas, or the owner allows about 1.5× normal spend for three days.
-That is an owner decision (section 8).
+That is about a day of today's spend (M1: 270M ITE/day). The owner allowed 1.5× normal spend for the three
+measuring days (2026-10-29), which fits 50 replay tasks per arm into days 1-2. After the trial the steady budget is
+set from the measured cost per accepted item.
 
 ## 4. Day-by-day plan and decision rules
 
@@ -367,7 +387,8 @@ trial stops the moment a rule fires. Fixed-length trials waste days once the ans
   units and fewer files of state. The order is fixed now: `ralph_a` < `ralph_c` < `trio` < `v3c` < `v3`.
 - **Minimum before any stop:** 10 tasks per arm across at least 2 kinds. This keeps an early fluke from deciding.
 - **Disqualification, at any time:** an arm publishes work the gate did not pass, edits outside its areas, holds a
-  lane without a canary, or breaks a standing ruling. A loop that publishes unchecked work is not a candidate at
+  lane without a canary, lets a builder start a new build pass before a different agent has started testing its
+  last candidate (section 1.8), or breaks a standing ruling. A loop that publishes unchecked work is not a candidate at
   any speed.
 - **Hard cap:** the end of day 3. Whatever has not separated by then is reported as "no difference detectable
   in days", with the intervals.
@@ -414,8 +435,11 @@ arm gets a first forecast of accepted/day.
   - The `trio` TestPilot takes SteveDesktop, and the `ralph_c` runner takes Archmagi. Each gets about 8-10
     matched candidates, 2 of them planted defects.
   - Swap machines at midday.
-  - The live tests run on the minimal list. The full list runs once per accepted candidate, as the final clash
-    check the owner set.
+  - The live tests run on the minimal list only, plus an item's load dependencies where it needs them. There is no
+    full-list check inside the trial (owner, 2026-10-29).
+  - Reloads follow the owner's cost-scaled rule (`testpilot_merged_2026-10-29.md` M1): with the 22-second minimal
+    list, a few more unrelated tests and then reload; never exhaustive; only the scenarios a change touches are
+    re-run (L9a).
 - **Simulator check:** compare day 2's actual numbers with the day-1-calibrated forecast.
   - If accepted points per arm fall inside the 80% intervals for at least 3 of 4 arms, the simulator is trusted
     for what days cannot measure: week-scale quota, a full-queue backlog, the combination of the build half and
@@ -450,7 +474,9 @@ arm gets a first forecast of accepted/day.
 - One recommendation: the architecture whose build half and live half both win or tie, with ties going to the
   simpler arm. If the halves disagree (say, Ralph builds better but the TestPilot tests better), the
   recommendation is the hybrid. That is what the trio already is, with a Ralph builder.
-- The owner gets one page: the verdict, the intervals, what was not measurable, and the one switch command.
+- **A win switches production at once.** The owner ruled (2026-10-29) that a trial win authorises switching
+  production to the winner immediately, so `arena switch <winner>` runs the day the rule fires. The owner gets one
+  page: the verdict, the intervals, what was not measurable, and the switch that was made.
 
 ## 5. What days cannot tell us, and the watch after deciding
 
@@ -499,29 +525,29 @@ next starts. Hours are ESTIMATES of builder working time, including the review r
 | 6 | **Metering by clone path,** with the sanity probe | 2 | the probe job's spend is seen; a zero is refused as a result |
 | 7 | **The switch:** `arm.toml`, `rm-arm-*.target` with `Conflicts=`, `arena switch/who`, pre-push hooks, ops_watch rule | 6 | starting two targets fails; a push from a stopped arm is refused and alarmed |
 | | *Substrate subtotal* | *32* | *plus the day-0 failure drill* |
-| 8 | **`ralph_a`:** `loop.sh`, `PROMPT.md`, `POLICY.md`, and the owed small parts (`run_selftests --quick`, `bridge release --mine`, runway check) | 7 | Ralph §8's planted failing check and killed pass |
-| 9 | **The `v3` replay procedure** (today's FOUNDRY brief, in a throwaway clone) and **`v3c`** (plus the done gate and a GPT review per sha, reusing collapse step 1 if it has landed) | 6 | v3c refuses a close without a review record bound to the sha |
+| 8 | **`ralph_a`:** `loop.sh`, `PROMPT.md`, `POLICY.md`, the fresh blind tester pass that follows every build pass (`TESTER.md`, section 1.8), and the owed small parts (`run_selftests --quick`, `bridge release --mine`, runway check) | 8 | Ralph §8's planted failing check and killed pass; a planted defect the gate passes is caught by the tester pass; the loop refuses a second build pass with no `test_start` |
+| 9 | **The `v3` replay procedure** (today's FOUNDRY brief, in a throwaway clone, plus a fresh tester helper after each close) and **`v3c`** (plus the done gate and a GPT review per sha, reusing collapse step 1 if it has landed) | 7 | v3c refuses a close without a review record and a tester record bound to the sha; the v3 procedure briefs no new build before the tester helper starts |
 | 10 | **`trio` builder and critic:** Ralph builder and blind critic subagents, round cap and simplify-or-split per `testpilot_merged_2026-10-29.md` §2.1 L4 (2 rounds, one simplify/split, 2 more, then park) | 6 | a task built to never satisfy the critic ends in simplify/split after round 2 and park after round 4, not a loop |
-| | **Build-half path: steps 1-10** | **51** | **then days 1-2 of replay can run** |
+| | **Build-half path: steps 1-10** | **53** | **then days 1-2 of replay can run** |
 | 11 | **The formal model** of the live-resource handoff (section 7) | 8 | TLC finds the known goodbye interleaving in the unfixed model |
-| 12 | **The `ralph_c` fixed-SHA runner and the lane wrapper** (`arena_lane.py`: canary, `modlist_swap` restore, take/release logging) | 6 | a result for a stale sha is refused; a dead colony gives `invalid` |
-| 13 | **The `trio` TestPilot:** the written reload rule, hot-load classes, a session file, handoff to a fresh pilot while the game stays up, subagent fixes landing only if hot-loadable | 14 | an owner return mid-test yields within the bound; a C# fix forces a logged reload; a pilot handoff loses no queued candidate |
-| 14 | **`ralph_c` assembly:** two loops, area ownership, both runners | 3 | a stolen item's out-of-area edit is refused |
+| 12 | **The `ralph_c` fixed-SHA runner and the lane wrapper** (`arena_lane.py`: canary, minimal or minimal+deps profile, `modlist_swap` restore, take/release logging) | 6 | a result for a stale sha is refused; a dead colony gives `invalid`; a request for the full list is refused in trial mode |
+| 13 | **The `trio` TestPilot:** the written reload rule scaled by measured reload cost (testpilot_merged M1), affected-scenario re-test (L9a), hot-load classes, a session file, handoff to a fresh pilot while the game stays up, subagent fixes landing only if hot-loadable | 14 | an owner return mid-test yields within the bound; a C# fix forces a logged reload; a pilot handoff loses no queued candidate; a rebuild touching one footprint re-runs only that scenario |
+| 14 | **`ralph_c` assembly:** two loops, area ownership, both runners, the tester pass per loop and runner back-pressure (section 1.8) | 3 | a stolen item's out-of-area edit is refused; a builder whose live candidate waits for a runner is given no new live item |
 | | **Live-half path: steps 11-14** | **31** | **then days 2-3 live** |
-| | **Total** | **about 82** | |
+| | **Total** | **about 84** | |
 
 **What that means on the calendar:**
 
 Assume an autonomous builder delivers about 12 effective hours a day, after review waits (ASSUMED).
 
-- **One builder:** the build half is ready after 51 hours, about day 5. Replay then runs on days 5-6. The live half
+- **One builder:** the build half is ready after 53 hours, about day 5. Replay then runs on days 5-6. The live half
   is built after that and runs about days 9-11.
 - **Two builders:** the substrate comes first (32 hours, about day 3). Then one builder takes steps 8-10 while the
   other takes 11-14. Replay starts about day 5, and the live crossover about day 6. **The full answer comes in
   about 8 days from the go, and the build-half answer in about 6.**
 - **The 3-day trial in section 4 is the measuring time.** The build time above comes before it.
 
-**The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 42 hours. That gives Ralph A against
+**The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 43 hours. That gives Ralph A against
 today's FOUNDRY procedure on replayed tasks, the question the Ralph design doc's §8 trial asked. On these numbers
 it gives a 1.5× answer in about two trial days. Built by one builder, that answer is ready about day 5 from the go.
 
@@ -591,14 +617,23 @@ hour if it is written as a small extra TLA+ module anyway.
 **No model: the gate, the judge, the event log and the metering.** They are deterministic functions of their
 inputs. Tests are the right tool for them.
 
-## 8. Open decisions for the owner
+## 8. Owner decisions
 
-1. **The token allowance for three trial days.** Either throttle production v3 to its trial areas, or allow about
-   1.5× normal spend for three days. Without one of the two, the replay arm counts in section 4 halve and the trial
-   takes about 5 days.
-2. **Two builders, for days not weeks.** With one builder, the full answer comes in about 11 days. With two in
-   parallel after the substrate, it comes in about 8 (section 6). The cheapest slice (Ralph A against today's
-   FOUNDRY on replay) comes in about 5.
-3. **Planted defects in the live lane:** about 1 candidate in 5 during the trial and 1 a day after. They cost
-   pilot time but are the only way to measure sensitivity.
-4. **The simplicity tiebreak order** in section 4.1. It decides ties, so he should agree to it before day 1.
+Decided on 2026-10-29:
+
+1. **Token allowance:** 1.5× normal for the three measuring days, then a steady budget set from the measured cost
+   per accepted item.
+2. **Mod list:** minimal list only, plus an item's load dependencies; no full-list check in the trial.
+3. **His role:** design-decision cards from every arm equally; no debugging; minutes measured per arm.
+4. **A win:** production switches to the winner immediately.
+5. **Binding on every arm:** a different agent tests what was built, promptly (section 1.8).
+
+The build is ticketed for FOUNDRY at top priority with two builders, in the order of `testpilot_merged_2026-10-29.md`
+section 6.3.
+
+Still open:
+
+1. **Planted defects in the live lane:** about 1 candidate in 5 during the trial and 1 a day after. They cost pilot
+   time but are the only way to measure sensitivity.
+2. **The simplicity tiebreak order** in section 4.1. It decides ties, so he should agree to it before the first
+   counted task.
