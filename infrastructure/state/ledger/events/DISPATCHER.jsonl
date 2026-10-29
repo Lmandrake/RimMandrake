@@ -99,3 +99,4 @@
 {"seat":"DISPATCHER","event":"note","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:43:00Z","ts":"2026-10-29T15:45:00Z","tsn":1793288700026990287}
 {"seat":"DISPATCHER","event":"note","id":"DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL","text":"dispatcher woke_no_handoff FOUNDRY: doorbell consumed but no lease/claim/start by FOUNDRY in 600 s","ts":"2026-10-29T15:57:22Z","tsn":1793289442086294051}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Producer run run: launched","ts":"2026-10-29T16:01:40Z","tsn":1793289700165760985}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Producer run run: completed","ts":"2026-10-29T16:07:52Z","tsn":1793290072075334996}
