@@ -171,7 +171,7 @@ after the gate passes. Use a scoped run (`--scope changed-functions --since SHA`
 
 ### 2.7 testq lanes (guard / filler, fix, sweep, commission)
 - **Purpose:** live and modcheck verification on the test lanes.
-- **Cadence:** sweep nightly at 01:30; filler up to `testq.fill_hours` 20 [D] and `testq.fill_cap` 200 [D].
+- **Cadence:** sweep nightly at 01:30; filler up to `testq.fill_hours` 8 [D] (was 20; lowered 2026-10-29) and `testq.fill_cap` 200 [D].
 - **Helps:**
   - sweep: 3.5 findings per lane-hour;
   - commission: 2.8;

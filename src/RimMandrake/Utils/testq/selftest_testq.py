@@ -235,8 +235,8 @@ def t_fill_policy():
     today = [rec("2026-10-22T01:00:00Z", [], start="2026-10-22T00:56:00Z"),
              rec("2026-10-22T02:00:00Z", [], start="2026-10-22T01:50:00Z")]
     check(T.fill_spent_s(today) == 840, "lane time spent = sum of today's filler walls: %s" % T.fill_spent_s(today))
-    check(T.FILL_DAY_S >= 12 * 3600 and T.FILL_CAP_DEFAULT >= 100,
-          "the default day budget is lane TIME (>= 12 h), the count ceiling only a backstop (>= 100): %s %s"
+    check(T.FILL_DAY_S >= 4 * 3600 and T.FILL_CAP_DEFAULT >= 100,
+          "the default day budget is lane TIME (>= 4 h; 8 h since 2026-10-29), the count ceiling only a backstop (>= 100): %s %s"
           % (T.FILL_DAY_S, T.FILL_CAP_DEFAULT))
 
 

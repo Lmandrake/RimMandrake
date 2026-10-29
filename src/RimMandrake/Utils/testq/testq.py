@@ -14,7 +14,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py fill MOD [--n 4]          Steve never idles, no LLM: if nothing is pending/running, queue the N chains
                                      whose last real run is oldest, skipping DRY ones (last 2 runs all UNMEASURED,
                                      re-tried after 3 days) (requested_by BENCH.filler, prio 20). Brakes:
-                                     QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 20 h; a job
+                                     QHOME/fill.stop, lane time per local day (TESTQ_FILL_HOURS, 8 h; a job
                                      backstop TESTQ_FILL_CAP, 200), a paused lane, two non-DONE fillers running;
                                      every tick runs it for each of TESTQ_FILL_MODS (FlowWorks)
   testq.py pause --reason R [--hours H]  pause the lane by hand; with --hours it is intentional until then (the
@@ -1013,7 +1013,7 @@ FILLER = "BENCH.filler"     # requested_by of a filler job: BENCH's dispatcher, 
 
 
 SITE_HOLD_ROW = "<site hold"      # modcheck's row when the site could not be held: no verdict on the chain
-FILL_DAY_S = int(float(os.environ.get("TESTQ_FILL_HOURS") or 20) * 3600)   # filler lane time per local day
+FILL_DAY_S = int(float(os.environ.get("TESTQ_FILL_HOURS") or 8) * 3600)   # filler lane time per local day
 FILL_CAP_DEFAULT = 200              # filler JOBS per day: a backstop only; the day budget is lane time
 FILL_DRY_RUNS = 2                   # a chain whose last this-many runs measured nothing is DRY ...
 FILL_DRY_RETRY_S = 3 * 86400        # ... and is skipped until its latest run is older than this (new wiring lands)
@@ -1431,7 +1431,7 @@ def main(argv=None):
     s.add_argument("--cap", type=int, default=int(os.environ.get("TESTQ_FILL_CAP") or FILL_CAP_DEFAULT),
                    help="filler jobs per day: a backstop; the day budget is --day-s of lane time")
     s.add_argument("--day-s", type=int, default=FILL_DAY_S,
-                   help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 20 h)")
+                   help="filler lane seconds per local day (TESTQ_FILL_HOURS, default 8 h)")
     sub.add_parser("tick")
     s = sub.add_parser("pause", help="pause the lane by hand (with --hours: intentional until then)")
     s.add_argument("--reason", required=True)

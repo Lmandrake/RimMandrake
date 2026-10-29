@@ -127,9 +127,9 @@
    "signal": "lower if round 3 succeeds <10% of the time"
   },
   "testq.fill_hours": {
-   "value": 20,
+   "value": 8,
    "unit": "lane hours per local day for filler guard jobs (TESTQ_FILL_HOURS)",
-   "why": "2026-10-26..28: 247 guard jobs (236 filler) used 27.8 of 44.6 lane-hours and yielded 2 findings (0.07/lane-h) vs fix 2.2/lane-h, sweep 3.5/lane-h",
+   "why": "2026-10-26..28: 247 guard jobs (236 filler) used 27.8 of 44.6 lane-hours and yielded 2 findings (0.07/lane-h) vs fix 2.2/lane-h, sweep 3.5/lane-h; 2026-10-29: lowered 20 -> 8 (TESTQ_FILLER_GUARD_TUNE_LOW_YIELD), re-check after 7 days",
    "provenance": "D",
    "signal": "lower while guard findings/lane-h < 0.25 over 7 days; filler is cheap only when nothing else waits for the lane"
   },
