@@ -1,0 +1,2 @@
+A design brief can carry a mechanism a later owner ruling voided: TWILIGHT_BOTTOM_CAST_1 (filed 2026-09-27 03:43, re-triaged 2026-10-29) still named 'lease practice' as a cast teaching duty, but the owner typed 2026-09-27 'The Compact does NOT sell light... Remove.' (TWILIGHT_TENANCY_PAPER_REMOVAL_1); a full draft also already existed (the_twilight_deep_bottom_cast_draft_2026-09-27.md) with sales/fishing contradicting rulings. Before drafting from an item's text, grep the item's design dir for an existing draft and read the later sibling passes' 'Ruled' headers.
+home: NONE
