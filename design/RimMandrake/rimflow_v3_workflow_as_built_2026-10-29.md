@@ -172,7 +172,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 **Helpers** [LIVE as a rule in the role files]:
 - The owner's limit is 2 helpers at once across ALL roles together.
 - Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md). The schedule's `helpers_max` 2 (Arbiter, Auditor, Innovator) is therefore not used.
-- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the role file states the owner's limit of 2. Which number governs is open (§8 item 32).
+- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the role file states the owner's limit of 2. The owner ruled on 10-29 that session mode (owner present 1:1) has no helper cap; unattended runs keep the allocator's limits (`CONDUCTOR_HELPERS_UNIFY_FOUR_LIMITS`, §8 item 32).
 - [LIVE] Code enforces a per-seat count, not the owner's cross-role 2: the spawn hook `.claude/hooks/block_agent_over_slots.py` reads `helper_budget.json` per seat (§2.14). No code enforces "2 across all roles"; that waits on `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` [DESIGNED].
 
 **Scope stop** [LIVE, `rl:116-165`]:
@@ -926,7 +926,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
 31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). The standing text that said BENCH owns all FlowWorks + GSS was corrected to FOUNDRY in CLAUDE.md, the charter and the helper rules (efabf1399a).
-32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code.
+32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code. The owner's ruling of 10-29 (`CONDUCTOR_HELPERS_UNIFY_FOUR_LIMITS`): no helper cap when he works 1:1 in session mode; unattended and scheduled runs keep the allocator's limits.
 33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15).
 34. Findings have no consumer on any cadence and no Part 4 duty row; the chosen fix is designed, not built (§2.19a).
 35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
