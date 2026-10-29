@@ -14,6 +14,11 @@ Scene (plot from --origin, default 40,40; 16 x 10, cleared and read back by vali
 (+8, +5) driven to D4 (2 m) by jawa/flowworks_excavation_drive and read back, RM_DigCanal designated on it. Every player pawn is
 vanished first so nobody else takes the job.
 
+The run LEAVES A LIVE COLONIST (STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED): it vanishes the whole colony and then its own colonist
+and droid, so it used to hand the session back with zero colonists; modcheck's vanilla canary, run after the drivers, then read
+red ("no live colonist") and voided every live chain of the job, and the kept game voided the next jobs too (SteveDesktop
+2026-10-26..29). The finally block spawns one Colonist when none is left, and records it as res["colony_left"].
+
 Rows:
   DD_colonist_held_at_2m   a Colonist (Mining enabled, skill 10) probed on the D4 square: the dig work giver must NOT offer
                            RM_DigCanalJob (the colonist cap is in force). Offered = FAIL/MOD (the cap leaks).
@@ -145,6 +150,22 @@ def run(B, V, a, out, stamp=None):
     def vanish(pid):
         B.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
 
+    def live_colonists():
+        # the canary's own rule (modcheck/helpers.is_colonist): a humanlike player pawn, not dead
+        return [p.get("id") for p in (B.call("jawa/list_pawns", limit=400) or {}).get("pawns") or []
+                if p.get("isPlayer") and p.get("intelligence") == "Humanlike" and not p.get("dead")]
+
+    def leave_a_colonist(c):
+        """The session invariant every driver owes the next one: at least one live colonist on the map."""
+        try:
+            alive = live_colonists()
+            if alive:
+                return {"live": len(alive), "spawned": None}
+            got, r = spawn("Colonist", c)
+            return {"live": len(live_colonists()), "spawned": got, "reply": None if got else str(r)[:160]}
+        except Exception as ex:      # noqa: BLE001 - recorded; modcheck's after-driver check still sees the map
+            return {"error": "%s: %s" % (type(ex).__name__, ex)}
+
     def ready_worker(pid):
         B.call("jawa/set_pawn_skill", pawn=pid, skill="Mining", level=10)
         import work_bar
@@ -260,6 +281,7 @@ def run(B, V, a, out, stamp=None):
             if v is not None:
                 sset(k, v)
         res["settings_restored"] = {k: sget(k) for k in RUN_SETTINGS}
+        res["colony_left"] = leave_a_colonist((cell[0] - 3, cell[1]))
         save()
     return 0 if all(r["status"] == "PASS" for r in rows) and len(rows) == len(ROW_IDS) else 1
 

@@ -654,6 +654,8 @@ class Attempt:
                                      % (rc, S.count_verdicts(self.res["rows"])))
                 if self.liveness_unknown:
                     self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
+                if self.res.get("cause") == "CANARY":
+                    self.stop_game_after_red_canary()
                 return ok
             self.say("run %d hung past %ss: killed" % (attempt_no, timeout))
             if attempt_no == 2:
@@ -670,6 +672,17 @@ class Attempt:
                 return False
             self.phase = "run"
         return False
+
+    def stop_game_after_red_canary(self):
+        """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: the game a red canary ran on is not handed to the next job. A kept game
+        with a dead colony (load 1-2 s) voided every later job until someone ran rw_game.sh down by hand (10-27,
+        10-29 03:28, 18:54); stopping it here, after the liveness check, makes the next job cold-start a fresh colony.
+        A lane whose phases may not stop the game (archmagi_phases.py REFUSED) says so in the note instead."""
+        rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
+        down = "game stopped so the next job cold-starts" if rc_down == 0 else "game NOT stopped (%s)" % (
+            refused_line(tail_down) or "rc %s: %s" % (rc_down, (tail_down or "")[-120:]))
+        self.say("canary red: " + down)
+        self.res["note"] = (self.res.get("note") or "") + "; " + down
 
     def read_sheet(self, tail):
         text = open(os.path.join(self.d, "modcheck.log"), encoding="utf-8", errors="replace").read()

@@ -4,7 +4,8 @@
 
 Can-fails: the colonist cap leaking FAILs the control and voids the droid row; a droid not offered the job, or told it needs
 a shovel, FAILs; Droidworks not running voids every row (HARNESS); an offered job with no cut is UNMEASURED/SITE, never PASS;
-the run's settings are restored.
+the run's settings are restored; every scene that vanished the colony hands the map back with a live colonist
+(STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: it used to leave none, and modcheck's canary voided the whole job).
 """
 import argparse
 import os
@@ -51,6 +52,7 @@ class FakeB(object):
         self.running = list(running)
         self.settings = {k: "owner" for k in D.RUN_SETTINGS}
         self.depth, self.ticks, self.ordered_at, self.n, self.kinds = 0, 0, None, 0, {}
+        self.pawns = {"Thing_old": {"id": "Thing_old", "isPlayer": True, "intelligence": "Humanlike"}}
 
     def call(self, name, **kw):
         k = self.k
@@ -72,6 +74,7 @@ class FakeB(object):
             self.n += 1
             pid = "Thing_P%d" % self.n
             self.kinds[pid] = kw["kindDef"]
+            self.pawns[pid] = {"id": pid, "isPlayer": True, "intelligence": "Humanlike"}
             return {"pawns": [{"id": pid}]}
         if name == "jawa/flowworks_job_probe":
             droid = self.kinds.get(kw["pawnId"]) == D.DROID_KIND
@@ -90,7 +93,10 @@ class FakeB(object):
                 self.depth += 1
             return {"success": True}
         if name == "jawa/list_pawns":
-            return {"pawns": [{"id": "Thing_old", "isPlayer": True}]}
+            return {"pawns": list(self.pawns.values())}
+        if name == "jawa/pawn_force_incapacitate":
+            self.pawns.pop(kw["pawn"], None)
+            return {"success": True}
         return {"success": True}
 
 
@@ -130,6 +136,12 @@ def main():
         check(rc == 2 and set(rows.values()) == {("UNMEASURED", "HARNESS")} and len(rows) == len(D.ROW_IDS),
               "Droidworks not running voids every row as HARNESS (%s)" % rows)
         check(B.n == 0, "with Droidworks absent nothing is spawned")
+        for nm, kn in (("good", {}), ("leak", {"colonist_offered": True}), ("nocut", {"cut_after": None}),
+                       ("nodroid", {"droid_spawns": False})):
+            rc, rows, res, B = scene("colony_" + nm, **kn)
+            live = [p for p in B.pawns.values() if p.get("isPlayer") and p.get("intelligence") == "Humanlike"]
+            check(len(live) >= 1 and "Thing_old" not in B.pawns and (res.get("colony_left") or {}).get("live", 0) >= 1,
+                  "scene %s vanished the colony and still leaves a live colonist (%s)" % (nm, res.get("colony_left")))
     finally:
         work_bar.set_all = real
         shutil.rmtree(TMP, True)

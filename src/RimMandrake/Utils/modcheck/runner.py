@@ -101,6 +101,59 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None):
     return "started"
 
 
+def _rb_call(client, tool, args):
+    """One bridge call through a raw rimbridge_client.RimBridge -> its dict reply (MCP content unwrapped)."""
+    r = client.call(tool, args) or {}
+    if isinstance(r, dict) and r.get("content"):
+        r = json.loads(r["content"][0]["text"])
+    return r if isinstance(r, dict) else {}
+
+
+def _live_colonists(client):
+    """-> int, or None when the roster cannot be read whole (never read a failed/truncated list as 'no colonist')."""
+    import helpers as _H  # noqa: E402
+    r = _rb_call(client, "jawa/list_pawns", {"includeHealth": False, "includeCorpses": True, "limit": 500})
+    if not r.get("success") or r.get("truncated"):
+        return None
+    return sum(1 for p in r.get("pawns") or [] if _H.is_colonist(p) and not p.get("dead"))
+
+
+def ensure_live_colony(rec, _client=None):
+    """After each live driver (STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED): the map must still hold a live colonist.
+    droid_dig_live vanished the whole colony and its own pawns, and the vanilla canary, which runs after the drivers,
+    read "no live colonist" and voided every live chain of the job -- and, the game being kept, of the next jobs too
+    (SteveDesktop 2026-10-26..29, J20261029T181522Z-6dc94b and the sweep -8afa44). A driver that leaves none is named
+    (rec["colony"], a log line, validity.COLONY_BREAKERS for the canary's text) and the session is given a fresh debug
+    map, the same start the drivers' own --fresh-map does; a map that still has no colonist after that raises, so the
+    canary goes red naming the driver. Returns "ok" | "restored"; an unreadable roster is recorded, never guessed."""
+    if _client is None:
+        import rimbridge_client as rb
+        host, port, token = rb.resolve_endpoint()
+        _client = rb.RimBridge(host=host, port=port, token=token, timeout=320.0)
+        _client.connect()
+    n = _live_colonists(_client)
+    rec["colony"] = {"live": n}
+    if n is None:
+        rec["colony"]["unread"] = "list_pawns failed or truncated"
+        return "unread"
+    if n > 0:
+        return "ok"
+    name = rec.get("driver") or "?"
+    import validity as _V  # noqa: E402
+    _V.COLONY_BREAKERS.append(name)
+    rec["colony"]["left_no_colonist"] = True
+    print("[modcheck] driver %s LEFT NO LIVE COLONIST: starting a fresh debug map before the canary" % name,
+          file=sys.stderr, flush=True)
+    _rb_call(_client, "rimworld/go_to_main_menu", {})
+    _rb_call(_client, "rimworld/start_debug_game_ready",
+             {"readiness": "mapData", "pauseIfNeeded": True, "timeoutMs": 280000})
+    n2 = _live_colonists(_client)
+    rec["colony"]["restored_live"] = n2
+    if not n2:
+        raise RuntimeError("driver %s left no live colonist and a fresh debug map has %s" % (name, n2))
+    return "restored"
+
+
 PROFILE_MIN_MINUTES = 45      # a suite is ~5 min; a grant this close to lapsing would lapse mid-batch
 
 
@@ -1027,7 +1080,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
             # of reading UNMEASURED. A driver may leave the menu or a fresh map: the map and profile are re-established.
             import drivers as _DRV  # noqa: E402
             drv = _DRV.run(run_this, mod_dir, [n for n, _ in run_this.chains], cwd=ROOT,
-                           after=lambda _rec: ensure_playing_map())
+                           after=lambda _rec: (ensure_playing_map(), ensure_live_colony(_rec)))
             if drv:
                 try:
                     ensure_test_profile()

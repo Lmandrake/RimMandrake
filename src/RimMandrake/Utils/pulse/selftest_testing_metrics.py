@@ -305,5 +305,21 @@ check("judge passes the true line", brief.check_testing(ln["claim"]) == "pass", 
 bad = dict(ln["claim"], values={**ln["claim"]["values"], "steve.busy_pct": 99.0})
 check("judge withholds a tampered number", brief.check_testing(bad).startswith("fail"), brief.check_testing(bad))
 
+# STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: a red canary on a dead colony ran nothing. Its "<canary red>" UNMEASURED
+# row is not a row run, and its lane hours are wasted, not productive
+qc = tempfile.mkdtemp(prefix="qc_")
+mkq(qc, [
+    {"job": "J20260101T000000Z-ccccc1", "submitted": D0 + 10 * H, "started": D0 + 10 * H, "finished": D0 + 11 * H,
+     "phase_s": {"load": 600, "run": 3000}, "rows": [("r1", "PASS"), ("r2", "FAIL")]},
+    {"job": "J20260101T000001Z-ccccc2", "submitted": D0 + 11 * H, "started": D0 + 11 * H, "finished": D0 + 13 * H,
+     "phase_s": {"load": 1, "run": 7199}, "outcome": "INVALID", "cause": "CANARY",
+     "rows": [("<canary red: HARNESS>", "UNMEASURED"), ("r1", "PASS")]},
+])
+sc = T.steve_day(T.load_testq(qc), [], D0, D1, NOW)
+check("canary-red rows are not rows run (2 from the good job only)", v(sc, "rows_run", "v") == 2, sc["rows_run"])
+check("canary-red attempt is wasted", v(sc, "wasted", "v") == 1, (sc["wasted"], sc.get("waste_why")))
+check("canary-red hours are wasted, not productive: 2.0 h wasted, 1.0 h productive",
+      v(sc, "wasted_h", "v") == 2.0 and v(sc, "productive_h", "v") == 1.0, (sc.get("wasted_h"), sc.get("productive_h")))
+
 print("\nselftest_testing_metrics: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

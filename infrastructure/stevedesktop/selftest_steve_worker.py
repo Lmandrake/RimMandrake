@@ -249,10 +249,16 @@ def main():
         check(res.get("outcome") == "DONE" and "liveness unknown" in (res.get("note") or ""),
               "a status that cannot tell keeps the verdict and says so: %s" % res.get("note"))
 
-        rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", **load)
+        cdowns = os.path.join(tmp, "canary_downs")
+        rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % cdowns, **load)
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "CANARY", "a red canary, game alive -> CANARY: %s"
               % res.get("cause"))
+        # STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: the kept game with a dead colony voided every later job
+        check(os.path.exists(cdowns) and len(open(cdowns).read().split()) == 1 and "cold-starts" in (res.get("note") or ""),
+              "a red canary stops the game once so the next job cold-starts: downs=%s note=%s"
+              % (len(open(cdowns).read().split()) if os.path.exists(cdowns) else 0, res.get("note")))
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo stopped; exit 3", **load)
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "GAME_DIED", "a game killed in the canary is GAME_DIED, not a red canary: %s"

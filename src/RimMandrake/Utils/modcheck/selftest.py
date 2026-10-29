@@ -556,6 +556,61 @@ def t_ensure_playing_map():
     check("runner: dry-run skips", runner.ensure_playing_map(dry_run=True) == "dry-run")
 
 
+def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
+    """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: droid_dig_live left zero colonists, the canary after the drivers read red
+    and voided the job (and the next jobs on the kept game). A driver that leaves none is named and a fresh map started;
+    one whose fresh map still has none raises (the canary then reads red naming it); an unreadable roster is never 0."""
+    import validity as _V
+    class C:
+        def __init__(self, live_before, live_after, ok=True):
+            self.live, self.after, self.ok, self.calls = live_before, live_after, ok, []
+        def call(self, tool, p):
+            self.calls.append(tool)
+            if tool == "rimworld/start_debug_game_ready":
+                self.live = self.after
+            if tool == "jawa/list_pawns":
+                return {"success": self.ok, "pawns": [{"isPlayer": True, "intelligence": "Humanlike", "dead": False}] * self.live
+                        + [{"isPlayer": True, "intelligence": "Humanlike", "dead": True}]}
+            return {"success": True}
+    del _V.COLONY_BREAKERS[:]
+    c = C(2, 2)
+    rec = {"driver": "lines_proof"}
+    check("runner: a driver that leaves colonists is left alone",
+          runner.ensure_live_colony(rec, _client=c) == "ok" and rec["colony"] == {"live": 2}
+          and "rimworld/start_debug_game_ready" not in c.calls and not _V.COLONY_BREAKERS, (rec, c.calls))
+    c = C(0, 3)
+    rec = {"driver": "droid_dig_live"}
+    check("runner: a driver that leaves no live colonist (only a corpse) is named and a fresh map started",
+          runner.ensure_live_colony(rec, _client=c) == "restored" and rec["colony"].get("left_no_colonist")
+          and rec["colony"].get("restored_live") == 3 and _V.COLONY_BREAKERS == ["droid_dig_live"]
+          and "rimworld/start_debug_game_ready" in c.calls, (rec, c.calls))
+    try:
+        runner.ensure_live_colony({"driver": "x"}, _client=C(0, 0))
+        check("runner: a fresh map that still has no colonist raises", False)
+    except RuntimeError as e:
+        check("runner: a fresh map that still has no colonist raises", "no live colonist" in str(e), e)
+    rec = {"driver": "y"}
+    check("runner: an unreadable roster is recorded, not read as 0",
+          runner.ensure_live_colony(rec, _client=C(0, 0, ok=False)) == "unread" and rec["colony"]["live"] is None, rec)
+
+    class S:
+        def call(self, tool, **kw):
+            if tool == "rimworld/get_ui_state":
+                return {"programState": "Playing"}
+            if tool == "jawa/list_pawns":
+                return {"success": True, "pawns": []}
+            return {"success": True}
+    real = _V._program_state
+    _V._program_state = lambda s: "Playing"
+    try:
+        res = _V.canary(S(), (10, 10))
+    finally:
+        _V._program_state = real
+    check("validity: the red canary names the driver that killed the colony",
+          any("no live colonist" in p and "droid_dig_live" in p for p in res["problems"]), res["problems"])
+    del _V.COLONY_BREAKERS[:]
+
+
 def t_ensure_test_profile():
     """Night 2026-10-16: an expired companion test profile made every safe_advance a 'surprise'; the run must stop."""
     import datetime as dt
@@ -811,6 +866,7 @@ TESTS = [
     t_run_dry_run_never_calls_subprocess,
     t_windows_python_shells_posix_scripts_through_wsl,
     t_ensure_playing_map,
+    t_driver_that_kills_the_colony_is_named_and_the_map_restored,
     t_ensure_test_profile,
     t_restore_full_runs_even_when_a_mod_load_fails,
     t_deploy_tool_already_skips_python_files,

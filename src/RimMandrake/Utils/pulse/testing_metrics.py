@@ -55,6 +55,7 @@ STEVE_SEATS = ("RUNNER",)
 LOCAL_SEATS = ("BENCH", "FOUNDRY")
 BUDGETED_RERUN = ("sweep", "sensitivity", "flake", "commission")    # testq schema GATE_BYPASS: re-running is the point
 RAN = ("PASS", "FAIL", "UNMEASURED")                                # a row that executed (NOT_RUN / SKIP did not)
+VOID = ("INVALID", "INTERRUPTED", "REFUSED")                         # an attempt that measured nothing: no row "ran"
 ROW_VERDICTS = ("PASS", "FAIL", "UNMEASURED", "NOT_RUN", "SKIP")
 BRIDGE_MERGE_S = 120        # bridge calls closer than this are one busy stretch (a script's call cadence)
 BLIND_BAD_SHARE = 0.10      # more than this share of unreadable records: the source is blind, not partial
@@ -262,9 +263,16 @@ def _verdicts(counts, attempts, invalid):
     return vc, sh
 
 
+def attempt_s(a):
+    """An attempt's lane seconds: deploy + load + attest + run (phase_s), else finished - started."""
+    ph = sum(float(v or 0) for v in (a.get("phase_s") or {}).values())
+    return ph or max(0.0, float((a.get("finished") or 0) - (a.get("started") or 0)))
+
+
 def _unmeasured_machine(why):
     keys = ("window_h", "busy_pct", "load_pct", "run_pct", "idle_waiting_min", "max_idle_gap_min", "jobs",
-            "rows_run", "rows_per_hour", "regressions", "findings", "closed_after_pass", "wasted", "waste_pct")
+            "rows_run", "rows_per_hour", "regressions", "findings", "closed_after_pass", "wasted", "waste_pct",
+            "wasted_h", "productive_h")
     d = {k: U(why) for k in keys}
     d["verdict_counts"] = {k: U(why) for k in ROW_VERDICTS + ("INVALID",)}
     d["verdicts"] = {k: U(why) for k in ROW_VERDICTS + ("INVALID",)}
@@ -298,12 +306,14 @@ def steve_day(src, ledger, d0, d1, now):
     waits += [(epoch(p.get("submitted")), now) for p in src["pending"] if epoch(p.get("submitted"))]
     idle = gaps(busy_in, lo, hi)
     counts = Counter(r.get("verdict") for a in today for r in a["rows"])
-    rows_run = sum(counts[k] for k in RAN)
+    # STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: an INVALID attempt (a red canary on a dead colony above all) ran nothing:
+    # its "<canary red: HARNESS>" UNMEASURED row used to count as a row run, and its hours as productive lane time
+    rows_run = sum(1 for a in today if a["outcome"] not in VOID for r in a["rows"] if r.get("verdict") in RAN)
     invalid = sum(1 for a in today if a["outcome"] == "INVALID")
     harness = sum(1 for a in today if a["outcome"] in ("INVALID", "INTERRUPTED"))
     vc, sh = _verdicts(counts, len(today), invalid)
     # waste, in time order so 'unchanged rerun' compares against what ran before
-    seen, why = set(), Counter()
+    seen, why, wasted_s, productive_s = set(), Counter(), 0.0, 0.0
     for a in sorted(atts, key=lambda a: a["finished"]):
         measured = any(r.get("verdict") in ("PASS", "FAIL") for r in a["rows"])
         reason = None
@@ -317,8 +327,12 @@ def steve_day(src, ledger, d0, d1, now):
             reason = "unchanged_rerun"
         if a["outcome"] == "DONE" and measured and a["ident"]:
             seen.add(a["ident"])
-        if reason and a in today:
-            why[reason] += 1
+        if a in today:
+            if reason:
+                why[reason] += 1
+                wasted_s += attempt_s(a)
+            else:
+                productive_s += attempt_s(a)
     wasted = sum(why.values())
     finds = _ledger_day(ledger, STEVE_SEATS, lo, hi, "finding")
     busy_s = length(busy_in)
@@ -342,6 +356,8 @@ def steve_day(src, ledger, d0, d1, now):
         "wasted": M(wasted),
         "waste_pct": M(pct(wasted, len(today))) if today else U("no attempts in the window"),
         "waste_why": dict(why),
+        "wasted_h": M(round(wasted_s / 3600, 2)),
+        "productive_h": M(round(productive_s / 3600, 2)),
         "probe": src["probe"],
     }
     return out

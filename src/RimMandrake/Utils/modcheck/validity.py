@@ -85,6 +85,11 @@ def _empty_cell(session, anchor, radius=12):
     return None
 
 
+# live drivers this process saw leave the map with no live colonist (runner.ensure_live_colony): named in the canary's
+# "no live colonist" so a red canary blames its cause (STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED)
+COLONY_BREAKERS = []
+
+
 def canary(session, anchor):
     """{"ok": bool, "problems": [..], "steps": [..]}. Never raises. Spawns only on a cell it read as EMPTY and destroys
     Items on that one cell, so nothing but its own stack can be removed."""
@@ -101,7 +106,8 @@ def canary(session, anchor):
         n = sum(1 for r in rows if h.is_colonist(r) and not r.get("dead"))
         out["steps"].append("%d live colonists" % n)
         if n == 0:
-            out["problems"].append("no live colonist")
+            out["problems"].append("no live colonist" + (
+                " (left so by live driver(s) %s)" % ", ".join(COLONY_BREAKERS) if COLONY_BREAKERS else ""))
         cell = _empty_cell(session, (x, z))
         if cell is None:
             out["problems"].append("no empty cell within 12 of the anchor %d,%d: nothing spawned" % (x, z))
