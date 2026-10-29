@@ -1,0 +1,1 @@
+Before asking the owner a biome question, look at the painted worldmap and the existing biome sheets: the auroral Baroque biome, the Cauldron's sheets and seas-as-floor were all already ruled. Owner 2026-10-28: 'Why have I had to rule on this multiple times? Look at the painted worldmap please.'
