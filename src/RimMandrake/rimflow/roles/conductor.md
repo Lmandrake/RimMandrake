@@ -93,12 +93,15 @@ mark), which is the read the standing ruling asks for.
 His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
-a 3-5 line note to the Conductor log read at wake). DESIGNED, NOT BUILT (2026-10-28): it then asks the Dispatcher to
-restart the window as a fresh Remote Control Conductor after about 2 minutes of grace, a new message in the grace
-cancelling it; until that lands the window stays open after the close-out and says so in one line. A full handoff is written only
-when a keyboard sitting ends. The restart is the shared one in `src/RimMandrake/rimflow/seat_restart.py` (enable steps:
-`design/RimMandrake/rimflow_v3_golive_wave1.md` §10; the Conductor design: `design/RimMandrake/conductor_briefing_2026-10-28.md`
-Part B); not built for the Conductor yet, and `seat_restart` ships disabled. The Dispatcher launches only the
+a 3-5 line note to the Conductor log read at wake; the program check of B2 step 1 is not built, so the window checks
+by hand). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
+his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
+restarts the window as a fresh Remote Control `CONDUCTOR` after a 120 s grace. It holds while helpers are alive, while the
+window is mid-reply, or while his keyboard is busy; any new message from him cancels it. The fresh window's wake lists what
+he sent the old one after the close-out. A context backstop also restarts the window, but only after 4 h with no message
+from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
+`src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
+`design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the
 `quick_checks_local` runs, and none while a live `CONDUCTOR` window exists (that window writes the findings itself).
 Session mode is the BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 

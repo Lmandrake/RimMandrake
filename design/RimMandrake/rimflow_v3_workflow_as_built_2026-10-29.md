@@ -268,7 +268,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - The kill is SIGTERM, then SIGKILL after 10 s.
   - The tile relaunches through `seat_loop.sh` / intile, with `launch_fleet.ps1` as the fallback.
 - **Day-one state** [LIVE]: the FOUNDRY restart record reads `cancelled` (new input).
-- **Not covered** [DESIGNED]: BENCH (no backstop entry), and a Conductor "goodbye" restart, which is designed but not built.
+- **BENCH / the Conductor** [BUILT 2026-10-29]: kind `conductor`. The goodbye hook (`.claude/hooks/conductor_goodbye.py`) triggers the request. The fresh window is verified when it ends its first turn. The context backstop fires only after 4 h with no human message.
 - **Off switch.** `seat_restart.enabled: false`, or `dry: true`.
 
 ### 2.5 FOUNDRY seat (interactive AI worker)
@@ -329,7 +329,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - First rule (owner, 2026-10-28, verbatim): "Conductor from now on should function as a light orchestrator focussed on communication with the human primary. Make that absolutely clear in its definition." It answers him first each turn, does no work itself (backgrounded helpers do), never blocks his window (CONDUCTOR.md:12-29).
 - Quick mode (phone) builds, tests and deploys nothing, takes no bridge and runs no helper. Session mode runs helpers, "never more than two at once across all roles, never more than the allocator gives" (CONDUCTOR.md:48-56).
 - Scheduled quick checks 08:00 and 20:00 run headless through `role_launch.py` **as seat BENCH** and append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (CONDUCTOR.md:57-60).
-- Goodbye: his message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs a light close-out (rulings to the ledger, promises filed `--for OWNER`, 3-5 log lines). The fresh-window restart after it is NOT built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`; `seat_restart` off for this seat), so the window stays open (CONDUCTOR.md:62-68).
+- Goodbye: his message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs a light close-out (rulings to the ledger, promises filed `--for OWNER`, 3-5 log lines). It then requests `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher relaunches a fresh CONDUCTOR window after a 120 s grace (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`, CONDUCTOR.md §Goodbye).
 - Seat models (`infrastructure/agents/Agent_Policy.md:17-35`, owner 2026-10-20): the orchestrating seat runs Opus and backgrounds design to Opus helpers; FOUNDRY runs Sonnet and escalates to Opus per item; Haiku for mechanical bulk work with a checkable outcome.
 ### 2.8 Operations (role; the only token-aware AI)
 
