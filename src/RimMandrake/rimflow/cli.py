@@ -1032,9 +1032,10 @@ def _choose(w, seat, args, ctx, idx):
         offers = [a for a in offers if a.item.needs not in HOLD_GAME_NEEDS]
         claimable = [c for c in claimable if c.needs not in HOLD_GAME_NEEDS]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
-    # --seat BENCH`") beats an unraised ranked offer; otherwise ranked work comes first.
-    if offers and (offers[0].item.raised is not None
-                   or not (claimable and claimable[0].raised is not None)):
+    # --seat BENCH`") beats an unraised ranked offer, and of two raised heads the one raised
+    # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first.
+    if offers and (not (claimable and claimable[0].raised is not None)
+                   or model.raise_key(offers[0].item) <= model.raise_key(claimable[0])):
         out.update(kind="offer", offer=offers[0], item=offers[0].item)
         return out
     if claimable:
@@ -1205,7 +1206,7 @@ def _claimable(w, seat, target="v1", now=None):
            if i.owner == seat and i.state == "proposed" and not i.blocked
            and (not target or i.target in (None, target))  # "" = no filter, as rank()
            and model.lease_status(i, now) != "live"]
-    out.sort(key=lambda i: (i.raised is None, not i.this_deployment, i.created_at or "", i.id))
+    out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment, i.created_at or "", i.id))
     return out
 
 

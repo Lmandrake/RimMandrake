@@ -954,6 +954,15 @@ def stamp(epoch_s, plus=0):
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(int(epoch_s) + int(plus)))
 
 
+def raise_key(item):
+    """-> the sort key that puts raised items first, IN RAISE ORDER (first-raise `ts`, then `tsn`),
+    and every unraised item after them all (RAISE_ORDER_FIX_FILING_DATE_OUTRANKS_PLAN, 2026-10-29:
+    sorting raised items by created_at lost the Producer's plan order)."""
+    if item.raised is None:
+        return (1, "", 0)
+    return (0, item.raised, item.raised_tsn)
+
+
 def lease_status(item, now_epoch):
     """-> None (never leased since the last revoke), "live", "lapsed" (expired, never
     released) or "released". Judged from the lease's own `expires` stamp and nothing
@@ -1523,7 +1532,7 @@ class Item(object):
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "criteria", "outstanding",
-                 "passed", "level_reached", "lease", "raised")
+                 "passed", "level_reached", "lease", "raised", "raised_tsn")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1553,6 +1562,8 @@ class Item(object):
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
         self.raised = None              # ts of the first `raise`, or None
+        self.raised_tsn = 0             # tsn of that same first `raise` (0 when absent): `ts` is to the
+        #                                 second, so a Producer raising C, A, B in one run needs it for order
 
     @property
     def open(self):
@@ -2223,7 +2234,10 @@ def _apply_item_verb(ev, index, item, seat, world):
         if not item.open:
             raise SchemaError("raise %s: it is %s; only an open item can be raised"
                               % (item.id, item.state))
-        item.raised = item.raised or ev["ts"]
+        if item.raised is None:
+            item.raised = ev["ts"]
+            tsn = ev.get("tsn")
+            item.raised_tsn = tsn if isinstance(tsn, int) and not isinstance(tsn, bool) else 0
 
     # Review §"Claims should be leases": "Reassignment explicitly revokes the old lease."
     # `reclaim` is the owning seat's own doing->ready, and revokes it for the same reason:
