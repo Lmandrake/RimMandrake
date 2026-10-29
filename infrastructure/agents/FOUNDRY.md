@@ -139,7 +139,12 @@ It does nothing until `seat_restart.enabled` is on in `dispatcher_schedule.json`
 command of yours is still running (`run_in_background`: the restart cannot see one, so the kill would cut it off).
 Do all four steps in one turn, then end the turn:
 
-1. Ledger check: the ticket is closed/noted against its real sha; your shard is committed and published.
+1. Ledger check: the ticket is closed/noted against its real sha, and your shard is committed and published —
+   🔴 for EVERY ringed ticket, ledger-only ones too (a reconcile, note, block or `implemented` has no code commit
+   to ride on; 17 FOUNDRY events sat unpublished in the clone for 3 h on 2026-10-28 because of exactly that).
+   `git add -- infrastructure/state/ledger/events/FOUNDRY.jsonl`, then in a separate call
+   `git commit -m "ledger: FOUNDRY <ID>" -- infrastructure/state/ledger/events/FOUNDRY.jsonl`, then `./publish`.
+   `git status --short -- infrastructure/state/ledger/events/FOUNDRY.jsonl` prints nothing before step 2.
 2. File every open promise as an item (`rimflow file` / `note`), so none lives only in this window.
 3. Write the note and the request in one command:
    `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.

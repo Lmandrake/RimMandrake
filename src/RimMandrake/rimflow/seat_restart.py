@@ -856,6 +856,29 @@ def check_request(seat, sf, helpers):
     return True, "ok"
 
 
+def unpublished_shard(seat, clone):
+    """-> None, or why the seat's ledger shard in `clone` is not on origin (uncommitted lines or commits not on origin/main),
+    or "UNMEASURED: ..." when git cannot say.
+    A close-out that ends with the shard only in the clone hides every event of the window from every other seat:
+    17 FOUNDRY events sat so for 3 h on 2026-10-28 (V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY). UNMEASURED -> None."""
+    rel = "infrastructure/state/ledger/events/%s.jsonl" % seat
+    try:
+        dirty = subprocess.run(["git", "status", "--porcelain", "--", rel], cwd=clone, capture_output=True,
+                               text=True, timeout=60)
+        # ./publish pushes to origin main, so that is the publication ref (not whatever @{u} happens to be)
+        ahead = subprocess.run(["git", "log", "--oneline", "origin/main..HEAD", "--", rel], cwd=clone,
+                               capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "UNMEASURED: git failed (%s)" % e
+    if dirty.returncode != 0 or ahead.returncode != 0:
+        return "UNMEASURED: %s" % ((dirty.stderr or ahead.stderr).strip().splitlines() or ["git error"])[0]
+    if dirty.stdout.strip():
+        return "%s has uncommitted lines" % rel
+    if ahead.stdout.strip():
+        return "%s has %d commit(s) not pushed" % (rel, len(ahead.stdout.strip().splitlines()))
+    return None
+
+
 def append_seat_log(seat, ticket, note, now=None):
     lines = [x.rstrip() for x in (note or "").strip().splitlines() if x.strip()]
     if not lines:
@@ -880,6 +903,14 @@ def cmd_request(args):
     if not seat:
         print("seat_restart: no seat (--seat or AGENT_SEAT)")
         return 2
+    unpub = unpublished_shard(seat, REPO)
+    if unpub and unpub.startswith("UNMEASURED"):
+        print("seat_restart: WARNING: could not tell whether your ledger shard is published (%s); check it "
+              "yourself (close-out step 1)." % unpub)
+    elif unpub:
+        print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
+              "again (ledger-only tickets too)." % unpub)
+        return 3
     logged = append_seat_log(seat, args.ticket, args.note)
     if logged:
         print("seat log: appended to %s" % logged)

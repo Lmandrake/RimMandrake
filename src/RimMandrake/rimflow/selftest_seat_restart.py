@@ -180,6 +180,32 @@ def test_request_refused_with_live_helper():
     check(not ok, "a window whose session name is not the seat's cannot request the seat's restart")
 
 
+def test_unpublished_shard_is_named():
+    """V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY: a close-out must not end with the seat's shard only in the clone."""
+    root = tempfile.mkdtemp(prefix="unpub_", dir=TMP)
+    origin, clone = os.path.join(root, "o.git"), os.path.join(root, "c")
+    g = lambda *a: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false"]
+                                  + list(a), cwd=clone, capture_output=True, text=True)
+    subprocess.run(["git", "init", "-q", "--bare", origin], capture_output=True)
+    subprocess.run(["git", "clone", "-q", origin, clone], capture_output=True)
+    shard = os.path.join(clone, "infrastructure", "state", "ledger", "events", "FOUNDRY.jsonl")
+    os.makedirs(os.path.dirname(shard))
+    open(shard, "w").write('{"a":1}\n')
+    g("checkout", "-q", "-b", "main")
+    g("add", "--", shard); g("commit", "-q", "-m", "x", "--", shard); g("push", "-q", "origin", "HEAD:main")
+    g("fetch", "-q", "origin")
+    check(SR.unpublished_shard("FOUNDRY", clone) is None, "a pushed, clean shard is published")
+    open(shard, "a").write('{"a":2}\n')
+    why = SR.unpublished_shard("FOUNDRY", clone)
+    check(why is not None and "uncommitted" in why, "uncommitted shard lines are named (%s)" % why)
+    g("commit", "-q", "-m", "y", "--", shard)
+    why = SR.unpublished_shard("FOUNDRY", clone)
+    check(why is not None and "not pushed" in why, "a committed but unpushed shard is named (%s)" % why)
+    check(SR.unpublished_shard("BENCH", clone) is None, "another seat's shard is not this seat's concern")
+    why = SR.unpublished_shard("FOUNDRY", os.path.join(root, "not_a_clone"))
+    check(why is not None and why.startswith("UNMEASURED"), "a place git cannot read is UNMEASURED, never clean (%s)" % why)
+
+
 def test_bridge_and_game_hold():
     sch = sched()
     for label, o in (
