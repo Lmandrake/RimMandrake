@@ -419,6 +419,7 @@
       <li>AptitudeStrong_Melee</li>
       <li>AptitudeTerrible_Medicine</li>
       <li>AptitudeTerrible_Intellectual</li>
+      <li>RSW_LightAbsorbingFur</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1025,6 +1026,7 @@
       <li>AptitudeRemarkable_Medicine</li>
       <li>AptitudeStrong_Social</li>
       <li>AptitudeRemarkable_Intellectual</li>
+      <li>RSW_UltravioletVision</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
@@ -1052,6 +1054,8 @@
       <li>Outland_ThickSkin</li>
       <li>Outland_Evasive</li>
       <li>AptitudeStrong_Social</li>
+      <li>RSW_AntioxRespiration</li>
+      <li>VacuumResistance_Partial</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>

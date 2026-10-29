@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RSW_SpeciesSignature.xml
+  ============================================================================
+
+  XENOTYPE_CANON_CORRECTION_1, Pattern 4 ("the species' signature trait has no
+  gene"). Hand-authored, not gen_races_mod.py output; the generator wires these
+  genes onto their xenotypes through OWNER_GENE_ADDITIONS.
+
+  Pure XML, vanilla machinery only (capMods, statOffsets, immuneToToxGasExposure,
+  ConditionalStatAffecter_InSunlight). Canon per
+  design/RimStarWars/canon_references/<species>/description.md.
+
+  Built here:
+    RSW_UltravioletVision   Kaminoan  canon infobox distinction "ultraviolet vision"
+    RSW_AntioxRespiration   Kel Dor   "oxygen was poisonous to them", antiox mask
+                                      (also gets vanilla VacuumResistance_Partial
+                                      for the sourced vacuum-surviving hide)
+    RSW_LightAbsorbingFur   Defel     infobox "Ability to absorb visible light"
+
+  NOT built (needs C#, a design call): Bothan mood-sensitive fur (Wrendui),
+  Kel Dor poisoning when unmasked, Defel true invisibility. See
+  design/RimStarWars/species_signature_mechanics_spec.md.
+  Numbers below are first-pass and owner-tunable.
+  ============================================================================
+-->
+<Defs>
+
+  <GeneDef>
+    <defName>RSW_UltravioletVision</defName>
+    <label>ultraviolet vision</label>
+    <labelShortAdj>UV-sighted</labelShortAdj>
+    <description>Carriers of this gene see into the ultraviolet as well as the visible spectrum. Colours and detail that other eyes miss are plain to them, so their sight is sharper than a baseline human's. This is not dark vision: with no light to see by, they are as blind as anyone.</description>
+    <iconPath>UI/Icons/Genes/Gene_GrayEyes</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>62</displayOrderInCategory>
+    <capMods>
+      <li>
+        <capacity>Sight</capacity>
+        <offset>0.1</offset>
+      </li>
+    </capMods>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_AntioxRespiration</defName>
+    <label>antiox respiration</label>
+    <labelShortAdj>antiox-breathing</labelShortAdj>
+    <description>Oxygen is poison to carriers of this gene. Away from their homeworld they breathe only through an antiox mask that strips oxygen from the air and feeds them a filtered mix. The same filter keeps out tox gas and rot stink, and blunts environmental toxins.</description>
+    <iconPath>UI/Icons/Genes/Gene_PartialToxicityResistance</iconPath>
+    <displayCategory>ResistanceAndWeakness</displayCategory>
+    <displayOrderInCategory>25</displayOrderInCategory>
+    <immuneToToxGasExposure>true</immuneToToxGasExposure>
+    <customEffectDescriptions>
+      <li>Tox gas immunity</li>
+    </customEffectDescriptions>
+    <statOffsets>
+      <ToxicEnvironmentResistance>0.5</ToxicEnvironmentResistance>
+    </statOffsets>
+    <exclusionTags>
+      <li>ToxicEnvironmentResistance</li>
+    </exclusionTags>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+  <GeneDef>
+    <defName>RSW_LightAbsorbingFur</defName>
+    <label>light-absorbing fur</label>
+    <labelShortAdj>shadow-furred</labelShortAdj>
+    <description>Carriers of this gene have fur that absorbs visible light, so out of direct sunlight they read as little more than a shadow. Under a roof or at night, animals notice them late when they hunt and melee attackers struggle to land a blow. In open daylight the effect is lost.</description>
+    <iconPath>UI/Icons/Genes/Gene_Furskin</iconPath>
+    <displayCategory>Miscellaneous</displayCategory>
+    <displayOrderInCategory>63</displayOrderInCategory>
+    <statOffsets>
+      <HuntingStealth>0.25</HuntingStealth>
+      <MeleeDodgeChance>8</MeleeDodgeChance>
+    </statOffsets>
+    <conditionalStatAffecters>
+      <li Class="ConditionalStatAffecter_InSunlight">
+        <statOffsets>
+          <HuntingStealth>-0.25</HuntingStealth>
+          <MeleeDodgeChance>-8</MeleeDodgeChance>
+        </statOffsets>
+      </li>
+    </conditionalStatAffecters>
+    <biostatCpx>1</biostatCpx>
+    <biostatMet>-1</biostatMet>
+  </GeneDef>
+
+</Defs>

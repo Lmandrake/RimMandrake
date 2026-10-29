@@ -1234,6 +1234,12 @@ OWNER_GENE_REMOVALS = {
 OWNER_GENE_ADDITIONS = {
     "RSW_RimMandrakeUgnaught": ["RSW_lifespan_quad"],
     "RSW_RimMandrakeDevaronian": ["PsychicAbility_Enhanced"],    # Force-sensitivity "higher frequency"
+    # XENOTYPE_CANON_CORRECTION_1 Pattern 4, 2026-10-29: signature traits that had no gene.
+    # Genes hand-authored in Defs/GeneDefs/RSW_SpeciesSignature.xml (never rewritten here).
+    "RSW_RimMandrakeKaminoan": ["RSW_UltravioletVision"],        # canon infobox: ultraviolet vision
+    "RSW_RimMandrakeKelDor": ["RSW_AntioxRespiration",            # canon: oxygen poisonous, antiox mask
+                              "VacuumResistance_Partial"],       # canon: hide survives vacuum "for a time"
+    "RSW_RimMandrakeDefel": ["RSW_LightAbsorbingFur"],           # canon infobox: absorbs visible light
 }
 
 # Description sentences appended to the shipped description (owner 2026-10-18: Gand and
