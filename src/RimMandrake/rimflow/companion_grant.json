@@ -1,0 +1,11 @@
+{
+ "_why": "COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME: the companion's test-profile grant lapsed at 03:00Z 2026-10-29 and bounced 4 FOUNDRY tickets unseen. companion_grant.py reads it; ops_watch warns early (its alarm line lives in ops_watch_rules.json targets); `rimflow next` holds grant work. Never renewed automatically: renewal opens test-only tools on the owner's machine and no ruling makes it an agent's call.",
+ "profile_file": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/JawaBench/companion_profile.json",
+ "_profile_file_why": "<SaveData>\\JawaBench\\companion_profile.json per design/RimMandrake/companion_handshake.md (the runtime profile layer); path read on disk 2026-10-29. RM_COMPANION_PROFILE overrides it (tests).",
+ "test_profiles": ["test", "gm"],
+ "_test_profiles_why": "companion_handshake.md: runtime profile `test` (`gm` is an alias) or `campaign`; absent, invalid, expired or unknown = campaign, so anything else is LAPSED",
+ "hold_within_min": 120,
+ "_hold_within_min_why": "a live ticket runs up to ~2 h (a suite batch, a proof round); one started with less left lapses mid-run, the 2026-10-16 and 2026-10-19 failures (modcheck/runner.py ensure_test_profile holds 45 min for a single ~5 min suite)",
+ "hold_needs": ["bridge", "game-up"],
+ "_hold_needs_why": "the needs that drive the live companion and so hit its test-only tools; deploy (files to the Mods folder) and harvest (logs on disk) do not touch the grant"
+}

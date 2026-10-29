@@ -67,7 +67,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence")
+            "evidence", "companion")
 
 
 def ops_dir() -> Path:
@@ -868,11 +868,27 @@ def c_evidence(now, rules, ctx):
                                  kinds=sorted({f["kind"] for f in fs}))}
 
 
+def c_companion(now, rules, ctx):
+    """companion.grant_hours_left: hours until the companion's test-profile grant lapses (COMPANION_GRANT_WIRE_LAPSES_AT_
+    BEDTIME), read by rimflow/companion_grant.py. A lapsed grant (expired, absent, torn, non-test) is MEASURED at or
+    under 0, since the companion reads it as campaign; only an unseeable folder is UNMEASURED. The alarm target in
+    ops_watch_rules.json is the early warning."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import companion_grant as cg
+    g = cg.read(now=now)
+    if g["state"] == "UNMEASURED":
+        return {"companion.grant_hours_left": U(g["why"], "h")}
+    return {"companion.grant_hours_left": M(round(g["hours_left"], 2), "h", state=g["state"], expires=g["expires"],
+                                            profile=g["profile"], file=g["file"], why=g["why"])}
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
-              "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence}
+              "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence")
+         "evidence", "companion")
 
 
 # ==================================================================================================== storage
@@ -1298,7 +1314,9 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 # not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
 # (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.
 # Deliberately absent: every accounts.*, codex.*, tokentalk.* key, production.B (the week used), and anything new.
+# companion.grant_hours_left is machine health: a lapsing grant stalls every live seat, so the Conductor sees it.
 BLIND_KEYS = frozenset("""
+companion.grant_hours_left
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
 disk.scratch_refused_gb disk.scratch_total_gb
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h

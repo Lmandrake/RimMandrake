@@ -676,8 +676,8 @@ check("blind digest: health stays (steve, disk, stalls, disk alarm, disk flag), 
       "steve ok" in blind and "DISK_LOW:disk.root_free_gb" in blind and "DISK_TWO_DAYS" in blind
       and "stalls" in blind and "1 flag(s), 1 alarm(s) open" in blind, blind)
 check("blind digest: every allowed key is a real family of ours (no wildcard crept in)",
-      all("." in k and "*" not in k and k.split(".")[0] in ("disk", "flow", "process", "production", "steve", "testing",
-                                                              "timers", "tps", "v3") for k in OW.BLIND_KEYS)
+      all("." in k and "*" not in k and k.split(".")[0] in ("companion", "disk", "flow", "process", "production", "steve",
+                                                              "testing", "timers", "tps", "v3") for k in OW.BLIND_KEYS)
       and "production.B" not in OW.BLIND_KEYS and not any(OW.is_token_key(k) for k in OW.BLIND_KEYS))
 check("blind digest: run() writes digest_blind.md", (TMP / "ops" / "digest_blind.md").exists())
 # ---------------------------------------------------------------- V2: account/runway alarms are Operations', never items

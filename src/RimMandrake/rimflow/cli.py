@@ -899,6 +899,7 @@ def cmd_next(args, seat):
         if not ok:
             ctx["hold_game"] = why
             print("(owner present: items needing the game are withheld from this ringed `next` - %s)" % why)
+    _apply_grant_preflight(ctx)
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -1015,6 +1016,27 @@ def cmd_next(args, seat):
 HOLD_GAME_NEEDS = ("bridge", "game-up", "deploy", "harvest")
 
 
+def _apply_grant_preflight(ctx, reader=None):
+    """🔴 COMPANION GRANT PREFLIGHT (COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME). The grant lapsed at 03:00Z 2026-10-29
+    and 4 FOUNDRY tickets bounced unseen. Every `next` (--peek too: the Dispatcher routes on it) reads the grant;
+    unless it is OK, items needing the live companion (companion_grant.json `hold_needs`) are withheld, loudly.
+    A reader that fails holds too: fail closed. Never renews the grant."""
+    from rimflow import companion_grant
+    needs = HOLD_GAME_NEEDS
+    try:
+        needs = tuple(companion_grant.load_conf()["hold_needs"])
+        g = (reader or companion_grant.read)()
+        state, why = g["state"], g.get("why")
+    except Exception as e:  # noqa: BLE001 - any failure to read the grant is a hold, never a pass
+        state, why = "UNMEASURED", "grant reader raised %s: %s" % (type(e).__name__, e)
+    if state == "OK":
+        return
+    ctx["hold_grant"] = "%s: %s" % (state, why)
+    ctx["hold_grant_needs"] = needs
+    print("(companion grant %s: items needing %s are withheld - %s. Renewing is not automatic: see "
+          "python3 src/RimMandrake/rimflow/companion_grant.py)" % (state, "/".join(needs), why))
+
+
 def _choose(w, seat, args, ctx, idx):
     """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
     inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
@@ -1031,6 +1053,10 @@ def _choose(w, seat, args, ctx, idx):
     if ctx.get("hold_game"):
         offers = [a for a in offers if a.item.needs not in HOLD_GAME_NEEDS]
         claimable = [c for c in claimable if c.needs not in HOLD_GAME_NEEDS]
+    if ctx.get("hold_grant"):
+        gneeds = tuple(ctx.get("hold_grant_needs") or HOLD_GAME_NEEDS)
+        offers = [a for a in offers if a.item.needs not in gneeds]
+        claimable = [c for c in claimable if c.needs not in gneeds]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
     # --seat BENCH`") beats an unraised ranked offer, and of two raised heads the one raised
     # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first.
