@@ -288,11 +288,30 @@ def _trigger_health_rebuild():
         pass
 
 
+ROLE_UNIT_RE = re.compile(r"[A-Za-z0-9_.@:-]{1,96}")
+
+
+def _stamp_role_unit(ev):
+    """Stamp `role_unit` from RM_ROLE_UNIT (set by role_launch on every headless role run).
+
+    V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE step 1: the v3 health trace counts a role's outputs by
+    this stamp. Unset or empty -> the event is untouched (byte-identical to before). A malformed
+    value is refused LOUDLY: a silently dropped stamp would read as "role wrote nothing"."""
+    unit = os.environ.get("RM_ROLE_UNIT", "")
+    if not unit:
+        return
+    if not ROLE_UNIT_RE.fullmatch(unit):
+        die("RM_ROLE_UNIT=%r is not a systemd unit name (letters, digits, _.@:- , at most 96); "
+            "refusing to write an event with a garbled role stamp" % unit[:120])
+    ev["role_unit"] = unit
+
+
 def _write_one(ev):
     """check() then append() ONE event, no rendering. `_emit`'s core, split out (step 3)
     so a lease group — `lease` + `claim` + `start` — can land as several checked writes
     under one dispatcher lock and re-render once. -> the event as written."""
     ev = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
+    _stamp_role_unit(ev)
     try:
         model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)

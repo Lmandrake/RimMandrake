@@ -695,8 +695,11 @@ def now():
 # tidying allowed, meaning unchanged); `byCard` = a decision he took by question card;
 # `perRuling` = a standing ruling cited by its item id or event (it stands until he
 # changes it); `why` = the acting agent's own words.
+# `role_unit` (V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE, spec v3_health_daily_check §8 step 1): the
+# systemd unit of the headless role run that wrote the event, stamped by cli._write_one from
+# RM_ROLE_UNIT. The v3 health trace counts a role's outputs by it; absent = not a role run.
 UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid",
-                    "why", "byCard", "perRuling")
+                    "why", "byCard", "perRuling", "role_unit")
 
 
 def _check_verb(ev):

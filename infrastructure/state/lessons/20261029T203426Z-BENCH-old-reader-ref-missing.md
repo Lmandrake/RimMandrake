@@ -1,0 +1,2 @@
+selftest_lease.py t_old_reader_tolerates_leases and selftest_built_old_reader.py pin OLD_REF=0884bcc72, which is not a valid object in the bench clone (git cat-file fails even after fetch): both report RED/CRASH for a reason unrelated to the code under test. Seen 2026-10-29 by the v3 health builder; pin the old reader to a commit that exists (or skip as UNMEASURED when the object is absent).
+home: src/RimMandrake/rimflow/selftest_lease.py
