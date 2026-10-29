@@ -120,9 +120,10 @@ def test_off_by_default():
     with open(D.DEFAULT_SCHEDULE) as f:
         real = json.load(f)
     sr = real.get("seat_restart") or {}
-    # Off by default; the v3 trial (owner 2026-10-28) may turn it on, but only in dry mode until a dry ticket is seen.
-    check(sr.get("enabled") is False or (sr.get("enabled") is True and sr.get("dry") is True),
-          "the shipped schedule has seat_restart present and either enabled:false or enabled with dry:true")
+    # Owner 2026-10-28 ("Less cautioun, more progress?") took it live after the dry request was taken, held and
+    # cancelled on new input: the shipped schedule is now enabled and wet, or switched off.
+    check(sr.get("enabled") is False or (sr.get("enabled") is True and sr.get("dry") in (False, None)),
+          "the shipped schedule has seat_restart present and either enabled:false or enabled live (dry off)")
     sch, st = sched(enabled=False), fresh()
     acts = run(sch, st, obs(request=req()), T0 + 500)
     check(acts == [] and not st.get("seat_restart"), "disabled: a request decides nothing (%s)" % dos(acts))
