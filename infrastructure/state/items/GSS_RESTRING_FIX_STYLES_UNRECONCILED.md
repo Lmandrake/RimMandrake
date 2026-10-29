@@ -19,3 +19,9 @@ Verdict: CONFIRMED MINOR. Run-merge rule hangs only on TryLink postfix (ConduitS
   ```
 - failure scenario: Cut the only span joining two runs, restyle the disconnected sides differently, then complete the re-string job. `Restring` restores power and redraws meshes, but only `TryLink` queues the run-merge rule. The repaired electrical run retains both styles indefinitely. Differing endpoint looks also keep triggering the two run flood fills used to choose the span material during drawing. That performance consequence depends on outside-part `AerialMaterials.cs`, which I opened to confirm.
 - confidence: high
+
+## verify
+- Written by the Producer, Producer weekly plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0045Z_weekly), goal 3. Unverified part: RM_RestringSpan.
+- L2: cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style.
+- L2: a MOD-class proof row for RM_RestringSpan PASS on the current build.
+- Stopping point: finish.

@@ -13,3 +13,11 @@ sheet, fuel spreads and burns, D5), 4d833ad1bd (channel fire lights adjacent spi
 c963216c28. Two readings to separate: (a) burning fuel now spreads onto/around the solid deck and burns its riders (control
 broken by D5 spread — then the row needs the scenes further apart or the bar restated), (b) the grate scene burns less
 (grate burns fell 15 -> 5). Check where the solid riders' burns came from (fire cells adjacent to them at tick 2500).
+
+## verify
+- Written by the Producer, Producer weekly plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0045Z_weekly), goal 2. Broken parts: RM_Fluid_Chemfuel, RM_Filth_LiquidSpill.
+- L2: `suspension_bridge_proof.py --fresh-map` on the current build: GRATE_fire_burns_people_above PASS (grate riders
+  burn, solid-deck control does not), SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP A1 re-verified PASS.
+- If the control is broken by fuel spread (reading a), the bar change is proposed to the Arbiter, never loosened here.
+- `mod_completion.py FlowWorks` no longer lists the two parts as broken.
+- Stopping point: finish.
