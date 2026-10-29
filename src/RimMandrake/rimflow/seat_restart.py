@@ -58,7 +58,8 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "intile_window_s": 90, "backstop_ctx_tokens": 110_000, "backstop_idle_s": 1800,
             "helper_stale_s": 3600, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
-            "owner_idle_s": 120, "backstop_owner_idle_s": 1200, "fence_s": 1020, "ring_hold_s": 600}
+            "owner_idle_s": 120, "backstop_owner_idle_s": 1200, "fence_s": 1020, "ring_hold_s": 600,
+            "kind": "doorbell", "backstop_human_idle_s": 0}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
@@ -68,6 +69,15 @@ MACHINE = os.path.expanduser("~/.claude-accounts/machine.json")
 PROMPT = ("[RimFlow seat restart] You are a FRESH {seat} window: the last one was restarted after its ticket ended "
           "({why}). Run `python3 src/RimMandrake/rimflow/seat_restart.py wake --seat {seat}`, read what it prints, "
           "then end your turn: the Dispatcher hands you your next ticket through the doorbell.")
+# kind "conductor" (CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME): the BENCH window is the owner's Conductor. It has no
+# doorbell (doorbell.py is FOUNDRY's Stop hook only) and no ticket to wait for: it wakes as the Conductor, answers any
+# message he sent the old window after its close-out, and waits for him.
+CONDUCTOR_PROMPT = ("[RimFlow seat restart] You are a FRESH Conductor window (session CONDUCTOR, seat key {seat}): the "
+                    "last one closed out ({why}) and the Dispatcher restarted it; nobody typed this. Do the Start of "
+                    "turn in infrastructure/agents/CONDUCTOR.md, and run `python3 src/RimMandrake/rimflow/seat_restart.py "
+                    "wake --seat {seat}`: answer FIRST any owner message it lists as sent to the old window after the "
+                    "close-out. Then report in a few lines what is open and what needs him, and wait for him.")
+PROMPTS = {"doorbell": PROMPT, "conductor": CONDUCTOR_PROMPT}
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -460,7 +470,7 @@ def relaunch_argv(seat, cfg, why="ticket ended"):
     label = cfg["session_name"]
     return [BOUNDED.format(clone=cfg["clone"]), "--dangerously-skip-permissions", "--name", label,
             "--model", cfg.get("model") or "sonnet", "--remote-control", label,
-            PROMPT.format(seat=seat, why=why)]
+            PROMPTS[cfg.get("kind") or "doorbell"].format(seat=seat, why=why)]
 
 
 def fallback_argv(seat, machine=None):
@@ -577,6 +587,11 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 return
             if tx.get("last_kind") != "assistant_end" or now - (tx.get("last_at") or now) < cfg["backstop_idle_s"]:
                 return
+            # a window the owner talks to (the Conductor) is backstopped only after he has typed nothing for
+            # backstop_human_idle_s; no readable human message -> no backstop (fail closed, never kill a conversation)
+            hi = cfg.get("backstop_human_idle_s") or 0
+            if hi and (tx.get("last_user_at") is None or now - tx["last_user_at"] < hi):
+                return
             hs = ro["helpers"](seat, cur)
             if hs is None or any(h.get("alive") for h in hs):
                 return
@@ -633,6 +648,19 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         if since >= deadline:
             _fail(rs, seat, "relaunch", "no new %r window %d s after the kill" % (cfg["session_name"], since), now,
                   act)
+        return
+    if state == "relaunched" and cfg.get("kind") == "conductor":
+        # no doorbell: the fresh window proves itself by ending its first turn (its wake read) after the kill
+        mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]
+        tx = ro["tx"](seat, mine[0]) if mine else None
+        if tx and tx.get("last_kind") == "assistant_end" and (tx.get("last_at") or 0) >= rs.get("killed_at", 0):
+            rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
+            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=True,
+                evidence="fresh %s window %s (pid %s) ended its first turn at %s" % (
+                    seat, rs["new_session"], rs.get("new_pid"), _iso(tx["last_at"])))
+        elif now - rs["relaunched_at"] >= cfg["arm_s"]:
+            _fail(rs, seat, "firstturn", "the new window %s never ended its first turn in %d s" % (
+                rs.get("new_session"), cfg["arm_s"]), now, act)
         return
     if state == "relaunched":
         armed = ro["armed"](seat) or {}
@@ -902,7 +930,7 @@ def execute(a, sch, st, apply, now, fx=None):
     wall = time.time()      # the tile's window starts at the real kill, not the tick's start (GPT review P1)
     kt = max(now, wall) if abs(wall - now) < 600 else now
     rec = {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"], "killed_at": kt,
-           "argv": a["argv"], "ticket": a.get("ticket"),
+           "argv": a["argv"], "ticket": a.get("ticket"), "req_ts": rs.get("ts"),
            "window_s": config(sch).get(seat, DEFAULTS)["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
     fx.get("write_killed", write_killed)(seat, rec)
     how = fx.get("kill", kill_pid)(a["pid"], start=start)
@@ -1037,11 +1065,11 @@ def unpublished_shard(seat, clone):
     return None
 
 
-def append_seat_log(seat, ticket, note, now=None):
+def append_seat_log(seat, ticket, note, now=None, cfg=None):
     lines = [x.rstrip() for x in (note or "").strip().splitlines() if x.strip()]
     if not lines:
         return None
-    p = seat_log_path(seat)
+    p = seat_log_path(seat, cfg)
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "a", encoding="utf-8") as f:
         f.write("\n## %s %s\n%s\n" % (_iso(now or time.time()), ticket or "-", "\n".join(lines[:8])))
@@ -1069,10 +1097,11 @@ def cmd_request(args):
         print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
               "again (ledger-only tickets too)." % unpub)
         return 3
-    logged = append_seat_log(seat, args.ticket, args.note)
+    cfgs = config(_schedule())
+    logged = append_seat_log(seat, args.ticket, args.note, cfg=cfgs.get(seat))
     if logged:
         print("seat log: appended to %s" % logged)
-    if seat not in config(_schedule()):
+    if seat not in cfgs:
         print("seat_restart is not enabled for %s (dispatcher_schedule.json seat_restart): no restart requested. "
               "Carry on in this window." % seat)
         return 0
@@ -1088,7 +1117,7 @@ def cmd_request(args):
         print("seat_restart: REFUSED: pid %s is not the process its session file registered (procStart %s, live %s)"
               % (pid, sf.get("procStart"), proc_start(pid)))
         return 3
-    cfg = config(_schedule())[seat]
+    cfg = cfgs[seat]
     # FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE (owner 2026-10-28: "we should let Foundry do more than one if it's
     # context is ok"): under the backstop threshold the window keeps going on its next ticket itself — no request, no
     # ring spent. Over it, UNMEASURED, or --fresh: the fresh window.
@@ -1112,9 +1141,49 @@ def cmd_request(args):
     return 0
 
 
+def human_inputs_since(path, since, peers=None, tail_bytes=8 << 20):
+    """-> [(ts, text)] of every HUMAN input (_is_human_input) in the transcript's tail newer than `since`, or None
+    (unreadable). B1 of the Conductor design: a message he sent the old window after its close-out is answered first."""
+    if peers is None:
+        peers = peer_names()
+    try:
+        recs = _tail_records(path, tail_bytes)
+    except (OSError, TypeError):
+        return None
+    out = []
+    for r in recs:
+        if r.get("type") != "user" or r.get("isSidechain") or not _is_human_input(r, peers):
+            continue
+        at = _ts(r.get("timestamp"))
+        if at is not None and at > since:
+            out.append((at, _text(r).strip()))
+    return out
+
+
+def _wake_conductor(seat, cfg, rec):
+    """The Conductor's wake read after a goodbye restart: the old window's messages from him after the close-out."""
+    if not rec:
+        print("\n== no restart record: this window was not made by a goodbye restart (a fleet launch or boot).")
+        return
+    path = transcript_path(cfg.get("clone") or REPO, rec.get("session_id") or "")
+    since = rec.get("req_ts") or rec.get("killed_at") or 0
+    msgs = human_inputs_since(path, since)
+    print("\n== his messages to the old window %s after the close-out (%s):" % (rec.get("session_id"), _iso(since)))
+    if msgs is None:
+        print("UNMEASURED: the old transcript %s is unreadable. Say so to him in one line; ask whether he sent "
+              "anything after his goodbye." % path)
+    elif not msgs:
+        print("(none)")
+    else:
+        for at, text in msgs:
+            print("- %s: %s" % (_iso(at), text[:2000]))
+        print("Answer these FIRST, before anything else.")
+
+
 def cmd_wake(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
-    p = seat_log_path(seat)
+    cfg = config(_schedule()).get(seat) or {}
+    p = seat_log_path(seat, cfg)
     print("== seat log tail: %s" % p)
     try:
         with open(p, encoding="utf-8") as f:
@@ -1125,6 +1194,9 @@ def cmd_wake(args):
     if rec:
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
+    if cfg.get("kind") == "conductor":
+        _wake_conductor(seat, cfg, rec)
+        return 0
     print("\n== handoff pointers (handoff.py --wake)")
     try:
         r = subprocess.run([sys.executable, os.path.join(UTILS, "handoff.py"), "--wake"], cwd=REPO,

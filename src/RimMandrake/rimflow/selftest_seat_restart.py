@@ -930,7 +930,7 @@ def test_v2_no_ring_while_a_restart_is_pending():
     check("ring" in dos(acts), "V2 control: the same idle seat with no restart pending IS rung (%s)" % dos(acts))
 
 
-def _request(sch, ctx, extra=()):
+def _request(sch, ctx, extra=(), seat="FOUNDRY", name="AGENT FOUNDRY"):
     """cmd_request on a simulated window whose transcript says ctx tokens -> (exit, printed, request written?)."""
     import contextlib
     import io
@@ -939,19 +939,19 @@ def _request(sch, ctx, extra=()):
     try:
         SR.unpublished_shard = lambda seat, clone: None
         SR._schedule = lambda: sch
-        SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "AGENT FOUNDRY", "cwd": CLONE,
+        SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": name, "cwd": CLONE,
                                        "procStart": "77"}
         SR.helpers_of = lambda path, now=None: []
         SR.reg_start = lambda sf: 77
         SR.proc_start = lambda pid: 77
         SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_tool", "last_at": T0, "last_user_at": T0 - 5,
                                                "ctx_tokens": ctx}
-        rp = SR.request_path("FOUNDRY")
+        rp = SR.request_path(seat)
         if os.path.exists(rp):
             os.remove(rp)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            rc = SR.main(["request", "--seat", "FOUNDRY", "--ticket", "T_DONE", "--pid", "4242", "--note", "landed x"]
+            rc = SR.main(["request", "--seat", seat, "--ticket", "T_DONE", "--pid", "4242", "--note", "landed x"]
                          + list(extra))
         return rc, out.getvalue(), os.path.exists(rp)
     finally:
@@ -1074,6 +1074,231 @@ def test_w2_human_origin_beats_text_markers():
             _u("2026-10-29T04:30:00Z", "plain words", origin={"kind": "human"}, promptSource="sdk")]):
         check(not SR._is_human_input(m, names),
               "W2 no structural origin -> text markers decide; a machine field anywhere wins (%d)" % i)
+
+
+# ---- CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME: the Conductor (seat BENCH) restarts after his goodbye. BENCH has no
+# doorbell (its Stop hook is FOUNDRY-only), so it verifies by the new window ending its first turn, and its relaunch
+# prompt is the Conductor's wake, not the doorbell ritual.
+
+BCLONE = os.path.join(TMP, "bench")
+BLOG = os.path.join(TMP, "conductor", "log.md")
+
+
+def bsched(**seat_kw):
+    seat = {"kind": "conductor", "grace_s": 120, "seat_log": BLOG, "backstop": True,
+            "backstop_ctx_tokens": 120_000, "backstop_idle_s": 3600, "backstop_human_idle_s": 14_400}
+    seat.update(seat_kw)
+    s = {"seats": {"BENCH": {"enabled": True, "wake": False, "recover_dead": False, "session_name": "CONDUCTOR",
+                             "session_aliases": ["AGENT BENCH"], "clone": BCLONE, "model": "opus"}},
+         "seat_restart": {"enabled": True, "seats": {"BENCH": seat}},
+         "ledger_notes": False, "publish": False}
+    p = os.path.join(TMP, "bsched.json")
+    with open(p, "w") as f:
+        json.dump(s, f)
+    return D.load_schedule(p)
+
+
+def bsess(sid="sid-old", status="idle", pid=4242, name="CONDUCTOR"):
+    return dict(sess(sid, status, pid, name), cwd=BCLONE)
+
+
+def breq(ts=T0, sid="sid-old"):
+    return dict(req(ts, sid), seat="BENCH", ticket="GOODBYE", reason="goodbye")
+
+
+def bstate(st):
+    return (st.get("seat_restart") or {}).get("BENCH", {}).get("state")
+
+
+def test_g1_bench_relaunch_argv_is_the_conductor_wake():
+    cfg = SR.config(bsched())["BENCH"]
+    argv = SR.relaunch_argv("BENCH", cfg, "goodbye")
+    check(argv[argv.index("--name") + 1] == "CONDUCTOR" and argv[argv.index("--remote-control") + 1] == "CONDUCTOR"
+          and argv[argv.index("--model") + 1] == "opus",
+          "G1 BENCH relaunch: --name/--remote-control CONDUCTOR, --model opus (%s)" % argv[:-1])
+    import install_wt_seat_profiles as W
+    launch = W.LAUNCH.format(script=W.BOUNDED.format(home=BCLONE), label="CONDUCTOR", model="opus")
+    launch = [x.strip("'") for x in launch.split()]
+    check(argv[:-1] == launch, "G1 BENCH relaunch argv is the WT profile's own LAUNCH line (%s vs %s)" % (argv[:-1], launch))
+    p = argv[-1]
+    check("Conductor" in p and "wake --seat BENCH" in p and "CONDUCTOR.md" in p and "doorbell" not in p,
+          "G1 the BENCH first prompt is the Conductor wake, not the doorbell ritual (%r)" % p)
+    f = SR.relaunch_argv("FOUNDRY", SR.config(sched())["FOUNDRY"])[-1]
+    check("doorbell" in f and "Conductor" not in f, "G1 control: FOUNDRY keeps its doorbell prompt (%r)" % f[:80])
+
+
+def test_g2_bench_restart_holds_on_helpers_input_owner_and_reply():
+    sch = bsched()
+    late = T0 + 125
+    st = fresh()
+    a = run(sch, st, obs(sessions=[bsess(name="CONDUCTOR ▶ SOME_ITEM")], request=breq()), T0 + 1)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 a goodbye request is pending through the grace")
+    a = run(sch, st, obs(sessions=[bsess()]), T0 + 60)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 inside the 120 s grace: no kill (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=[bsess()], helpers=[{"id": "agent-h1", "alive": True, "last_at": late}]), late)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a)
+          and any("helper" in (x.get("why") or "") for x in a), "G2 a live helper of the Conductor holds the kill (%s)" % a[-1:])
+    a = run(sch, st, obs(sessions=[bsess()], helpers=None), late)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 helper inventory UNMEASURED holds the kill")
+    a = run(sch, st, obs(sessions=[bsess()], owner={"state": "MEASURED", "idle_seconds": 5}), late)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 the owner at the keyboard holds the kill")
+    a = run(sch, st, obs(sessions=[bsess(status="busy")], tx={"last_kind": "assistant_tool", "last_at": late - 1}), late)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 the window mid-reply is never killed (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=[bsess()], tx={"last_user_at": T0 + 90, "last_kind": "assistant_end",
+                                                  "last_at": T0 + 95}), late)
+    check(bstate(st) == "cancelled" and "restart_kill" not in dos(a),
+          "G2 he wrote again during the grace -> cancelled, never killed (%s)" % dos(a))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = run(sch, st, obs(sessions=[bsess()]), late)
+    k = [x for x in a if x["do"] == "restart_kill"]
+    check(len(k) == 1 and k[0]["session_names"] == ["CONDUCTOR", "AGENT BENCH"] and "Conductor" in k[0]["argv"][-1],
+          "G2 control: grace over, nothing held, quiet -> one kill carrying the Conductor relaunch (%s)" % dos(a))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess(), bsess(sid="sid-2", pid=9, name="AGENT BENCH")], request=breq()), T0 + 1)
+    check(bstate(st) == "cancelled", "G2 two windows answer to the Conductor's names -> cancelled, never a guess")
+
+
+def test_g3_bench_verifies_by_the_first_turn_not_the_doorbell():
+    sch = bsched()
+
+    def kst():
+        st = fresh()
+        st["seat_restart"] = {"BENCH": {"state": "killed", "session_id": "sid-old", "pid": 4242, "killed_at": T0 + 200,
+                                        "ts": T0, "source": "request", "ticket": "GOODBYE"}}
+        return st
+    st = kst()
+    new = [bsess(sid="sid-new", pid=5555)]
+    run(sch, st, obs(sessions=new, intile={"at": T0 + 205}), T0 + 230)
+    check(bstate(st) == "relaunched", "G3 a new CONDUCTOR window -> relaunched")
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_tool", "last_at": T0 + 240}), T0 + 250)
+    check(bstate(st) == "relaunched", "G3 the fresh window still in its first turn -> not yet verified")
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_end", "last_at": T0 + 100}), T0 + 260)
+    check(bstate(st) == "relaunched", "G3 a turn end OLDER than the relaunch is not the new window's (stale read)")
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_end", "last_at": T0 + 290}), T0 + 300)
+    check(bstate(st) == "verified" and "restart_verified" in dos(a),
+          "G3 the fresh Conductor ended its first turn -> verified with no doorbell (%s)" % dos(a))
+    st = kst()
+    run(sch, st, obs(sessions=new), T0 + 230)
+    a = run(sch, st, obs(sessions=new, tx={"last_kind": "assistant_tool", "last_at": T0 + 240}),
+            T0 + 230 + SR.DEFAULTS["arm_s"] + 1)
+    check(bstate(st) == "failed" and any(x["do"] == "alarm" for x in a), "G3 never ended a turn in arm_s -> failed + alarm")
+    st = killed_state(fresh())
+    run(sched(), st, obs(sessions=[sess(sid="sid-new", pid=5555)]), T0 + 230)
+    run(sched(), st, obs(sessions=[sess(sid="sid-new", pid=5555)], tx={"last_kind": "assistant_end", "last_at": T0 + 290}),
+        T0 + 300)
+    check(state(st) == "relaunched", "G3 mutation control: a doorbell seat (FOUNDRY) is NOT verified by a turn end")
+
+
+def test_g4_bench_backstop_only_after_long_human_idle():
+    sch = bsched()
+    over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000}
+    for lu, why in ((T0 - 600, "he wrote 10 min ago"), (None, "no human message readable (fails closed)"),
+                    (T0 - 14_000, "he wrote 3.9 h ago")):
+        st = fresh()
+        run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=lu)), T0)
+        check(bstate(st) is None, "G4 BENCH backstop does not fire: %s" % why)
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=T0 - 15_000)), T0)
+    check(bstate(st) == "pending" and st["seat_restart"]["BENCH"]["source"] == "backstop",
+          "G4 control: context over, idle 1 h, no human message for 4 h+ -> backstop pending")
+    st = fresh()
+    run(sched(), st, obs(tx={"ctx_tokens": 130_000, "last_at": T0 - 2000, "last_user_at": None}), T0)
+    check(state(st) == "pending", "G4 FOUNDRY (no backstop_human_idle_s) is unchanged by the human-idle gate")
+
+
+def test_g5_live_schedule_has_the_conductor_entry():
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        live = json.load(f)
+    c = SR.config(live).get("BENCH") or {}
+    raw = ((live.get("seat_restart") or {}).get("seats") or {}).get("BENCH") or {}
+    check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "opus"
+          and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
+          % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
+    check((c.get("grace_s") or 0) >= 120, "G5 BENCH grace is at least 120 s (%s)" % c.get("grace_s"))
+    check(c.get("backstop") is not True or ((c.get("backstop_human_idle_s") or 0) >= 7200
+                                            and (c.get("backstop_idle_s") or 0) >= 1800),
+          "G5 a BENCH backstop waits >= 2 h without a human message and >= 30 min idle (%s / %s)"
+          % (c.get("backstop_human_idle_s"), c.get("backstop_idle_s")))
+    nh = (live.get("no_handoff") or {}).get("conductor_log") or D.no_handoff_rule(live).get("conductor_log")
+    check(c.get("seat_log") == nh, "G5 the close-out note goes to the Conductor log (%s vs %s)" % (c.get("seat_log"), nh))
+    ph = raw.get("goodbye_phrases") or []
+    need = {"goodbye", "bye", "gn", "good night", "done for now", "thats all"}
+    check(need <= set(ph), "G5 goodbye_phrases carry the ruled list (missing %s)" % sorted(need - set(ph)))
+    check(all(raw.get(k) for k in ("_why", "_why_backstop")), "G5 the BENCH entry explains itself (_why, _why_backstop)")
+    check((SR.config(live).get("FOUNDRY") or {}).get("kind", "doorbell") == "doorbell", "G5 FOUNDRY stays a doorbell seat")
+
+
+def test_g6_wake_lists_his_messages_after_the_goodbye():
+    import contextlib
+    import io
+    home = os.path.join(TMP, "claude_home")
+    os.environ["CLAUDE_CONFIG_DIR"] = home
+    sch = bsched()
+    saved = SR._schedule
+    try:
+        SR._schedule = lambda: sch
+        tx = SR.transcript_path(BCLONE, "sid-bye")
+        os.makedirs(os.path.dirname(tx), exist_ok=True)
+        with open(tx, "w") as f:
+            for r in (_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"}, promptSource="typed"),
+                      _u("1970-01-12T13:47:00Z", "oh and park the hose test", origin={"kind": "human"},
+                         promptSource="typed"),
+                      _u("1970-01-12T13:47:30Z", "[RimFlow Dispatcher - a program, not a person; ring]",
+                         origin={"kind": "task-notification"}, promptSource="system")):
+                f.write(json.dumps(r) + "\n")
+        os.makedirs(os.path.dirname(BLOG), exist_ok=True)
+        with open(BLOG, "w") as f:
+            f.write("## earlier\nconductor note ABC\n")
+        SR.write_killed("BENCH", {"seat": "BENCH", "session_id": "sid-bye", "killed_at": T0 + 300,
+                                  "req_ts": SR._ts("1970-01-12T13:46:00Z"), "ticket": "GOODBYE"})
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = SR.main(["wake", "--seat", "BENCH"])
+        o = out.getvalue()
+    finally:
+        SR._schedule = saved
+        os.environ.pop("CLAUDE_CONFIG_DIR", None)
+    check(rc == 0 and "conductor note ABC" in o, "G6 wake prints the Conductor log tail (%r)" % o[:120])
+    check("park the hose test" in o and "goodbye\n" not in o.split("after the close-out")[-1] and "a program" not in o,
+          "G6 wake lists his messages to the old window after the request, and only his (%r)" % o[-400:])
+    check("doorbell" not in o, "G6 the Conductor wake does not tell it to wait for a doorbell")
+
+
+def test_g7_killed_record_carries_the_request_time():
+    sch = bsched()
+    calls = []
+    fx = {"session_file": lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "CONDUCTOR", "status": "idle"},
+          "kill": lambda pid, start=None: "SIGTERM", "write_killed": lambda seat, rec: calls.append(rec),
+          "recheck": lambda *a: [], "start": lambda pid: 77}
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = [x for x in run(sch, st, obs(sessions=[bsess()]), T0 + 125) if x["do"] == "restart_kill"][0]
+    SR.execute(a, sch, st, True, T0 + 130, fx)
+    check(calls and calls[0].get("req_ts") == T0, "G7 the killed record carries the request time (%s)" % calls[:1])
+
+
+def test_g8_bench_request_logs_to_the_conductor_log():
+    raw = bsched()
+    rc, out, wrote = _request(raw, 30_000, ["--fresh"], seat="BENCH", name="CONDUCTOR")
+    check(rc == 0 and wrote and "RESTART REQUESTED" in out, "G8 a goodbye request (--fresh) is written at any context")
+    with open(BLOG, encoding="utf-8") as f:
+        log = f.read()
+    check("landed x" in log, "G8 the close-out note lands in the Conductor log, not seat_log/BENCH.md")
+
+
+def test_g9_wt_bench_keeps_the_conductor_wake_under_seat_loop():
+    import install_wt_seat_profiles as W
+    real = W.restart_seats
+    try:
+        W.restart_seats = lambda path=None: {"BENCH", "FOUNDRY"}
+        b = W.build("BENCH")[0]["commandline"]
+        f = W.build("FOUNDRY")[0]["commandline"]
+    finally:
+        W.restart_seats = real
+    check("seat_loop.sh BENCH " in b and "Fresh CONDUCTOR window" in b and "doorbell" not in b,
+          "G9 WT: BENCH under seat_loop keeps its Conductor wake prompt (%s)" % b[-200:])
+    check("seat_loop.sh FOUNDRY " in f and "doorbell" in f, "G9 WT control: FOUNDRY keeps the doorbell first launch")
 
 
 def main():

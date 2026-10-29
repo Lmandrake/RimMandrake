@@ -180,6 +180,8 @@ RESTART_WAKE_PROMPT = ("wake. Fresh AGENT {seat} window from a fleet launch, boo
                        "this. seat_restart is on: run python3 src/RimMandrake/rimflow/seat_restart.py wake --seat "
                        "{seat}, then python3 src/RimMandrake/rimflow/cli.py seat ready, read what they print, then "
                        "end your turn: the Dispatcher hands you your next ticket through the doorbell.")
+# Seats that keep WAKE_PROMPT under seat_loop.sh: no doorbell, so nothing to arm (the Conductor waits for the owner).
+OWN_WAKE = ("BENCH",)
 
 # The standalone Remote Control server (owner, 2026-09-19: "launched each time
 # independent of any one seat"). `claude remote-control` is a SUBCOMMAND, not a
@@ -347,9 +349,11 @@ def build(seat):
         # seat_restart (FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET): seat_loop.sh runs the same LAUNCH line and, when the
         # Dispatcher kills the window for a fresh-per-ticket restart, relaunches it in THIS tile; any other exit drops
         # to the login shell as before. Only while the schedule key is on and lists the seat.
+        # The Conductor (BENCH) has no doorbell: its first launch keeps its own wake (CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_
+        # TIME); only a doorbell seat's first launch ends its turn to arm the doorbell.
+        first = WAKE_PROMPT[seat] if seat in OWN_WAKE else RESTART_WAKE_PROMPT.format(seat=seat)
         inner = (f"cd {home_wsl} && export AGENT_SEAT={seat} && {home_wsl}/src/RimMandrake/Utils/seat_loop.sh {seat} "
-                 f"{LAUNCH.format(script=script, label=label, model=model)} "
-                 f"'{RESTART_WAKE_PROMPT.format(seat=seat)}'")
+                 f"{LAUNCH.format(script=script, label=label, model=model)} '{first}'")
     else:
         export = "" if home else f"export AGENT_SEAT={seat} && "
         first = f" '{WAKE_PROMPT[seat]}'" if seat in WAKE_PROMPT else ""
