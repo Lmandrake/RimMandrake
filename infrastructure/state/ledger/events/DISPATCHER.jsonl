@@ -32,3 +32,4 @@
 {"seat":"DISPATCHER","event":"note","id":"STEVE_RUNNER_CLONE_ENFORCE_NO_LLM_WRITES","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T02:47:24Z","ts":"2026-10-29T04:08:21Z","tsn":1793246901521331211}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-10-29T04:10:29Z","tsn":1793247029501240900}
 {"seat":"DISPATCHER","event":"note","id":"ARTPIPE_FACING_COHERENCE_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:10:35Z","ts":"2026-10-29T04:12:48Z","tsn":1793247168543210490}
+{"seat":"DISPATCHER","event":"note","id":"PIT_SUPERDEEP_COLLAPSE_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:15:02Z","ts":"2026-10-29T04:16:59Z","tsn":1793247419732358313}
