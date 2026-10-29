@@ -156,7 +156,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - A transient unit `systemd-run --user rm-role-<name>-<epoch>` runs `claude_bounded.sh -p <prompt> --output-format json`. The Arbiter's runs add `--json-schema`.
 - An optional `pre_launch` program runs first (in each card).
 - The only hard stop is wall time, `run_max_s`. The default is 1800 s, and some roles set 2700 s.
-- **Tokens are not stopped mid-run.** A run over its `run_token_cap` is an alarm after the fact (open alarm kinds `role:<name>:overbudget` in state.json).
+- **Tokens are not stopped mid-run.** Caps are an admission check at launch (refused with `role:<name>:cap` when the day's spend plus the run budget would pass `daily_token_cap`) plus an alarm after the fact: a run over its `run_token_cap` raises `role:<name>:overbudget` in state.json. Only `run_max_s` stops a run.
 - Weighting `weighted_v1`: input 1, cache write 1.25 (5 min) or 2 (1 h), cache read 0.1, output 5.
 
 **Run-now** [LIVE, `rl:1393`]:
@@ -172,7 +172,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 **Helpers** [LIVE as a rule in the role files]:
 - The owner's limit is 2 helpers at once across ALL roles together.
 - Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md). The schedule's `helpers_max` 2 (Arbiter, Auditor, Innovator) is therefore not used.
-- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), yet its role file states the owner's limit of 2. This is a contradiction.
+- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the role file states the owner's limit of 2. Which number governs is open (§8 item 32).
 - [LIVE] Code enforces a per-seat count, not the owner's cross-role 2: the spawn hook `.claude/hooks/block_agent_over_slots.py` reads `helper_budget.json` per seat (§2.14). No code enforces "2 across all roles"; that waits on `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` [DESIGNED].
 
 **Scope stop** [LIVE, `rl:116-165`]:
@@ -300,7 +300,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Purpose.** The owner's own working session. It holds the "CONDUCTOR" session name.
 - **Appears.** When the owner opens it. It is **never woken** by the Dispatcher (`wake: false`, `sched:24`).
 - **Disappears.** When the owner closes it. There is no backstop restart for it.
-- **Model.** opus (`sched:24`). It owns all FlowWorks and GSS work (standing ruling).
+- **Model.** opus (`sched:24`). FlowWorks and GSS belong to FOUNDRY since the v3 cutover (`infrastructure/state/flowworks_lane.json`); BENCH takes only their needs=owner live looks.
 - **Note.** This documentation run executes inside a BENCH helper. The BENCH session id in state.json equals this session's id.
 
 ### 2.7 Conductor (role; also the BENCH session when it is live)
@@ -322,7 +322,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Off switch.** `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF`, or `enabled: false`.
 - **Ledger item.** `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 - **Day one** [LIVE, state.json]: the 08:00 quick run used 233,151 tokens. On 10-28 both its slots were missed.
-- **Contradiction.** Its `_why` says AMBER/RED runs only the 20:00 check, but the bands are neutralized (§2.1).
+- **Bands.** Its `_why` says the bands are neutralized (§2.1), so every band runs every check (c2dfc21445).
 
 
 **From `infrastructure/agents/CONDUCTOR.md`** [LIVE as charter]:
@@ -354,7 +354,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - The 07:30 economy run used 372,782 tokens.
   - Alarm runs: `OPS_STEVE_UNSTICK_UNCLAIMED_0B75` (256,967) and `alarm:RUNWAY_LOW:accounts.steven.runway` (319,552). That reached alarm_day n=2, so `OPS_STEVE_DIAGNOSE_INVALID_CE0E` was held.
   - Open alarm kinds: `role:Operations:scope` and overbudget.
-- **Stale role file.** operations.md's band table (AMBER: no 07:30 run; RED ×0.75) no longer matches the neutralized bands.
+- **Bands.** operations.md's throttle section says the bands are neutralized (2a5ec4a7ee).
 
 ### 2.9 Producer (role)
 
@@ -364,7 +364,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - Event runs on `plan_step_failure` and `replan_request` (prefix "REPLAN REQUEST"), at most 1 a day, with `plan_scope` [raised, row].
 - **Disappears.** The run ends, or hits `run_max_s` 1800.
 - **Runs/day.** 1 plus up to 1 event run.
-- **Caps** [LIVE]: `run_token_cap` 800000; `daily_token_cap` 2000000. The daily cap was raised by commit de4815dbaa, "owner: less caution". Its `_caps_why` text quotes older numbers.
+- **Caps** [LIVE]: `run_token_cap` 800000; `daily_token_cap` 2000000. The daily cap was raised by commit de4815dbaa, "owner: less caution". Its `_caps_why` quotes these numbers (c2dfc21445).
 - **Outputs** (producer.md):
   - The run folder `D:\ClaudeWork\rimmandrake\producer\<ts>_<mode>\plan.md`, ending "RUN COMPLETE".
   - A `## verify` block written before any raise.
@@ -427,7 +427,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Off switch.** `D:\ClaudeWork\rimmandrake\auditor\AUDITOR_OFF` (`sched:92`).
 - **Owed programs** [DESIGNED]: `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` and `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`.
 - **Day one.** The 13:00 run had not appeared in state.json at 12:50. On 10-28 its slot was missed.
-- **Stale role file.** The heading still says "NOT enabled; DISABLED until the Sunday wave".
+- **Role file.** The heading says the role is enabled (4d9171a1e5; fixed in 2a5ec4a7ee).
 
 ### 2.12 Innovator (role)
 
@@ -447,7 +447,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Day one** [LIVE, per v3_health_2026-10-29.md]:
   - One run (04:23Z) after two holds, both "band RED runs none". It used 262k of 500k.
   - It made one proposal, `FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`. The owner superseded it with `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`.
-- **Stale role file.** The heading still says "NOT enabled".
+- **Role file.** The heading says the role is enabled (4d9171a1e5; fixed in 2a5ec4a7ee).
 
 ### 2.13 Measurement programs: ops_watch, account_pick, v3_vs_v2
 
@@ -472,7 +472,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - Day one: KEEP at 19:30Z. Open alarm kinds `account:switch:*` and `account:unmeasured`.
 
 **v3_vs_v2** [OFF]:
-- `sched:42` has `enabled: false`, `every_s` 604800, `at_local` "Mon 07:05", unit `rm-v3-vs-v2.timer`. That unit does **not exist** (systemctl: not-found).
+- `sched:42` has `enabled: false`, `every_s` 604800, `at_local` "Mon 07:05", unit `rm-v3-vs-v2.timer`. The units are in `Utils/systemd/` and installed in `~/.config/systemd/user`, timer NOT enabled (aa4adea115); a manual `systemctl --user start rm-v3-vs-v2.service` on 10-29 exited 0 and rewrote `verdict.md`.
 - The health check of 2026-10-29 quotes this program's output for the week ending 2026-10-26, labelled `NOT_V3`. It was therefore run by hand at least once. UNVERIFIED: by whom and when.
 - The Auditor's Monday quality recheck and Operations' cost verdict depend on its outputs.
 
@@ -633,7 +633,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | 04:20 | claude-account-warm | (disabled) | [OFF] |
 | 05:45 | rm-pulse-brief | the owner's morning brief | [LIVE] |
 | 06:00 | rm-pulse-digest | digest | [LIVE] |
-| 07:05 Mon | v3_vs_v2 | weekly v3-vs-v2 scoring (timer does not exist) | [OFF] |
+| 07:05 Mon | v3_vs_v2 | weekly v3-vs-v2 scoring (timer installed, not enabled) | [OFF] |
 | 07:30 | Operations | economy run (`sched:98`) | [LIVE] |
 | 08:00 | Conductor | quick check, after Operations (`sched:50,60`) | [LIVE] |
 | 09:00 | Producer | daily list; Wednesday is the weekly plan (`sched:112`) | [LIVE] |
@@ -743,7 +743,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | Conductor session_helpers_max | 3, every band | sched:52-55 | owner | role file says 2 across roles |
 | Arbiter run / daily cap | 500000 / 1250000 | sched:66 | owner | |
 | Arbiter pre_launch budget / tiers cap / pre_launch_max_s | 900 s / 6 / 1200 s | Arbiter entry | owner (P4 L-1) | |
-| Auditor run / daily cap | 700000 / 875000 | sched:81 | owner | `_caps_why` quotes older numbers |
+| Auditor run / daily cap | 700000 / 875000 | sched:81 | owner | `_caps_why` matches (c2dfc21445) |
 | Operations run / economy / daily cap | 450000 / 550000 / 1650000 | sched:99 | owner | |
 | Operations alarm_run_gap_s / per alarm per day / per day | 3600 / 1 / 2 | sched:108 | owner | |
 | Producer run / daily cap | 800000 / 2000000 | sched:112 | owner | commit de4815dbaa "owner: less caution" |
@@ -866,15 +866,15 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 These are statements of fact, with no judgement. Sources: this document's reads; `/mnt/d/ClaudeWork/rimmandrake/conductor/v3_health_2026-10-29.md` (cited as HC); `/mnt/d/ClaudeWork/rimmandrake/conductor/foundry_night_audit_2026-10-29.md` (cited as NA).
 
 **Config and docs that disagree:**
-1. All six role files still head themselves "NOT enabled", while the schedule has every role `enabled: true` (`sched:48-136`).
-2. The schedule's top-level `_doc` says every role stays `enabled: false` until the owner switches it on. All are true, by the 10-28 "v3 trial night" commit 4d9171a1e5.
-3. Throttle bands are neutralized (all "slots: all", ×1.0). Yet the Conductor `_why` (AMBER/RED: 20:00 check only) and the operations.md band table (AMBER: no 07:30; RED ×0.75) still describe active bands.
-4. The `_caps_why` texts for the Producer and Auditor quote older cap numbers than the live caps.
-5. The Conductor's `session_helpers_max` is 3, while every role file states the owner's limit of 2 across all roles. `helpers_max` 2 on three roles is unused, because `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is open.
+1. Role file headings now say each role is enabled, with its enabling commit (e35afe1dcc for the Conductor and Operations, 4d9171a1e5 for the rest); fixed in 2a5ec4a7ee.
+2. The schedule's top-level `_doc` now states that every role is enabled, that caps are admission checks plus alarms, and that the bands are neutralized; fixed in c2dfc21445.
+3. The throttle bands are neutralized (all "slots: all", ×1.0, commit d92c4c825e). The Conductor `_why` and the operations.md throttle section now say so (2a5ec4a7ee, c2dfc21445). `throttle_order` is read only by the simulator `Utils/sim/rimflow_v3_sim.py`.
+4. Every `_caps_why` now quotes the live caps (Producer 800k run / 2.0M day, Auditor 700k / 875k) (c2dfc21445).
+5. `session_helpers_max` (Conductor, 3) and `helpers_max` (2 on three roles) are read by no program; the schedule `_why` says so (c2dfc21445). Helpers are bounded by the helper hook and `helper_budget.json` only (see item 32).
 
 **Built but off or missing:**
 
-6. v3_vs_v2 is `enabled: false`, and its timer `rm-v3-vs-v2.timer` does not exist. HC: the only scored week precedes the cutover (`NOT_V3`). The counterfactual backtest failed on coverage (0.429 of 14 cells, needs 0.75). Four settled weeks put the earliest verdict around 2026-11-23.
+6. v3_vs_v2 is `enabled: false`. Its units `rm-v3-vs-v2.{service,timer}` (Mon 07:05 local) are committed in `Utils/systemd/` and installed, but the timer is NOT enabled; switching it on is the owner's (aa4adea115). One manual start on 10-29 exited 0. No program reads `enabled`; the timer is the switch. HC: the only scored week precedes the cutover (`NOT_V3`). The counterfactual backtest failed on coverage (0.429 of 14 cells, needs 0.75). Four settled weeks put the earliest verdict around 2026-11-23.
 7. `recover_dead` is false on both seats. A dead seat raises an alarm only.
 8. account_pick `hold` is `[]`, so SWITCH and HOLD verdicts block nothing.
 9. The Archmagi test lane needs `TESTQ_ARCHMAGI=1`, which the tick service does not set.
@@ -890,9 +890,9 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 16. The `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reservation pool.
 17. Producer cadence beyond Wednesdays (`PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`): the owner's card answers were recorded, but the schedule is unchanged.
 
-**Caps that are alarms, not stops:**
+**Caps are admission checks plus alarms, not stops:**
 
-18. Token caps are not enforced during a run; only `run_max_s` stops one. Day-one overruns:
+18. Token caps are admission checks at launch plus after-the-fact alarms: a launch is refused (`role:<name>:cap`) when the day's spend plus the run budget would pass `daily_token_cap`, and an overrun raises `role:<name>:overbudget` after the run. Only `run_max_s` stops a run. Day-one overruns:
     - Arbiter 11:00: 1,020,596 tokens against a 500000 run cap (state.json).
     - Producer 05:06Z weekly re-plan: 943k against 800k (HC).
     - Auditor trial: 537k against 375k (HC; the cap was later raised to 700000).
@@ -925,8 +925,8 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 29. Untriaged findings: 128 (ops_watch MEASURED, matching HC's independent ledger scan), rising.
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
-31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). Older standing text that "BENCH owns all FlowWorks + GSS" contradicts FOUNDRY.md:18.
-32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3, `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code.
+31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). The standing text that said BENCH owns all FlowWorks + GSS was corrected to FOUNDRY in CLAUDE.md, the charter and the helper rules (efabf1399a).
+32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code.
 33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15).
 34. Findings have no consumer on any cadence and no Part 4 duty row; the chosen fix is designed, not built (§2.19a).
 35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
