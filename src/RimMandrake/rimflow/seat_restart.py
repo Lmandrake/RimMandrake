@@ -46,6 +46,7 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 for _p in (HERE, os.path.dirname(HERE), UTILS):
     if _p not in sys.path:
         sys.path.insert(0, _p)
+import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
 from rmpaths import rm_str  # noqa: E402
 
@@ -377,7 +378,7 @@ def in_flight(st, seat, sch=None, now=None):
 
 
 def _find(sessions, name):
-    hits = [s for s in sessions or [] if isinstance(s, dict) and s.get("name") == name]
+    hits = [s for s in sessions or [] if isinstance(s, dict) and SM.name_matches(s.get("name"), name)]
     return hits
 
 
@@ -725,7 +726,7 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.update(state="dry", ended_at=now, why="dry run")
         return "would SIGTERM pid %s (%s) and relaunch in-tile: %s" % (a["pid"], a["session_id"], a["argv"][:-1])
     sf = fx.get("session_file", session_file)(a["pid"]) or {}
-    if sf.get("sessionId") != a["session_id"] or sf.get("name") != a["session_name"]:
+    if sf.get("sessionId") != a["session_id"] or not SM.name_matches(sf.get("name"), a["session_name"]):
         why = "sessions/%s.json names %s/%r, not %s/%r: nothing killed" % (
             a["pid"], sf.get("sessionId"), sf.get("name"), a["session_id"], a["session_name"])
         rs.update(state="failed", why=why, ended_at=now, alarm_pending="seat restart of %s refused: %s" % (seat, why),
@@ -846,7 +847,7 @@ def check_request(seat, sf, helpers):
     """Seat-side gate: the calling window must be the seat's window, and no helper of it may be alive."""
     if not sf or not sf.get("sessionId"):
         return False, "no ~/.claude/sessions/<pid>.json for the calling window"
-    if sf.get("name") != "AGENT " + seat:
+    if not SM.name_matches(sf.get("name"), "AGENT " + seat):
         return False, "this window is %r, not 'AGENT %s'" % (sf.get("name"), seat)
     if helpers is None:
         return False, "helper inventory UNMEASURED (transcript or a subagent file unreadable)"

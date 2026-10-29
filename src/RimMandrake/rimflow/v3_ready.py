@@ -34,6 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.dont_write_bytecode = True            # read-only: no __pycache__ from importing role_launch
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"   # nor from the child Pythons it runs
 sys.path.insert(0, HERE)
+import session_match as SM  # noqa: E402
 import role_launch as RL  # noqa: E402
 
 SCHEDULE_REL = "src/RimMandrake/rimflow/dispatcher_schedule.json"
@@ -354,7 +355,7 @@ TILE_LABEL = {"BENCH": "CONDUCTOR"}   # v3: the Conductor absorbs Bench and keep
 
 
 def live_sessions(ctx, by, name):
-    return [s for s in by.get(name, []) if s.get("procStart") is not None
+    return [s for n, ss in by.items() if SM.name_matches(n, name) for s in ss if s.get("procStart") is not None
             and pid_alive(ctx, s.get("pid"), s.get("procStart"))]
 
 
@@ -379,7 +380,7 @@ def window_rows(ctx, sch):
                 n, s.get("pid"), s.get("status"), "" if len(live) == 1 else " (%d live with this name)" % len(live))))
         else:
             out.append(row(C, "live session", "NO-GO", "no live session named '%s' (%d stale file(s))"
-                            % (n, len(by.get(n, [])))))
+                            % (n, sum(len(v) for k, v in by.items() if SM.name_matches(k, n)))))
     for rn, n in holds:
         live = live_sessions(ctx, by, n)
         out.append(row(rn, "hold window", "INFO", ("'%s' live: headless %s runs are HELD" % (n, rn)) if live

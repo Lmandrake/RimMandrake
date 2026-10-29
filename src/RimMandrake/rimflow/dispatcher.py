@@ -77,6 +77,7 @@ for _d in (HERE, TESTQ):
 if os.path.dirname(HERE) not in sys.path:
     sys.path.append(os.path.dirname(HERE))          # src/RimMandrake, for contracts (stdlib-only modules)
 from contracts import blind_core as BC, compat as CC, jsonl as CJ  # noqa: E402
+import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
@@ -272,7 +273,7 @@ def find_session(sessions, cfg):
     id for a `--dangerously-skip-permissions` resume."""
     name = cfg.get("session_name")
     for s in sessions:
-        if name and s.get("name") == name:
+        if name and SM.name_matches(s.get("name"), name):
             return s
     return None
 

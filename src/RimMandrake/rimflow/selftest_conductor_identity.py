@@ -171,6 +171,17 @@ def test_injection():
         check(H.display_title("AGENT BENCH — x") == "CONDUCTOR — x", "a detail suffix survives the rename")
         check(H.display_title("AGENT FOUNDRY") == "AGENT FOUNDRY", "FOUNDRY's title is unchanged")
         check(H.seat_of("AGENT BENCH") == "BENCH", "the recorded role still keys seat BENCH")
+        sys.path.insert(0, HERE)
+        import session_match as SM
+        import dispatcher as DP
+        check(SM.name_matches("AGENT BENCH", "AGENT BENCH"), "plain seat name matches")
+        check(SM.name_matches("AGENT BENCH \u25b6 ITEM_X", "AGENT BENCH"), "name + title suffix matches")
+        check(not SM.name_matches("AGENT BENCHX", "AGENT BENCH"), "AGENT BENCHX does not match")
+        check(not SM.name_matches("AGENT BENCH \u25b6", "AGENT BENCH"), "bare separator without item still needs the space")
+        check(DP.find_session([{"name": "AGENT BENCH \u25b6 ITEM_X"}], {"session_name": "AGENT BENCH"}) is not None,
+              "dispatcher.find_session finds the suffixed window")
+        check(DP.find_session([{"name": "AGENT BENCHX"}], {"session_name": "AGENT BENCH"}) is None,
+              "dispatcher.find_session rejects AGENT BENCHX")
         # the title the hook EMITS is the live session name: it must keep matching the schedule's session_name
         with open(SCHED, encoding="utf-8") as f:
             seats = json.load(f)["seats"]
