@@ -216,6 +216,9 @@ def _is_input(rec):
 MACHINE_ORIGINS = ("task-notification",)
 MACHINE_SOURCES = ("system", "sdk")
 MACHINE_TURNS = ("task_notification", "scheduled", "system", "sdk")
+HUMAN_ORIGINS = ("human",)
+HUMAN_TURNS = ("human",)
+HUMAN_SOURCES = ("typed", "queued")
 MACHINE_MARKERS = ("[RimFlow ", "<task-notification>", "[Cross-session idle notice]")
 RING_MARK = "a program, not a person"
 _FROM_NAME = re.compile(r'<cross-session-message\b[^>]*\bfrom-name="([^"]*)"')
@@ -258,7 +261,14 @@ def _is_human_input(rec, peers):
     if o.get("kind") in MACHINE_ORIGINS or rec.get("promptSource") in MACHINE_SOURCES \
             or rec.get("turnOrigin") in MACHINE_TURNS:
         return False
-    if text.startswith(MACHINE_MARKERS) or RING_MARK in text[:200]:
+    # Structure over text (SEAT_RESTART_FIX_HUMAN_INPUT_MARKERS, Codex review 2026-10-29 P1 2): a record Claude Code
+    # stamped as typed/queued by a person is human whatever it quotes (the owner may paste a ring or ask about "a
+    # program, not a person"). MEASURED 2026-10-29 over every bench/foundry transcript: 1590 origin.kind human records,
+    # none carrying a machine marker; every ring arrived as a task-notification or an sdk prompt.
+    if o.get("kind") in HUMAN_ORIGINS or rec.get("turnOrigin") in HUMAN_TURNS \
+            or rec.get("promptSource") in HUMAN_SOURCES:
+        return True
+    if text.startswith(MACHINE_MARKERS) or RING_MARK in text[:200]:   # fallback: a record with no origin fields
         return False
     return True
 
@@ -360,6 +370,57 @@ def game_reading(seat, clone, events_since, now, hold_s):
     return {"state": last.get("state"), "at": _ts(last.get("ts"))} if last else None
 
 
+WORK_EVENTS = ("claim", "start", "reclaim")
+WORK_LEASE = ("take", "renew")
+
+
+def work_since(clone, seat, req_ts):
+    """-> the work-taking events (claim / start / reclaim / lease take|renew) SEAT wrote to its own shard in CLONE from
+    the request's second on, [] if the seat has no shard yet, or None (UNMEASURED: the shard cannot be read). The
+    ledger stamps whole seconds, so an event in the request's own second counts: a false void never kills anything."""
+    p = os.path.join(clone or "", "infrastructure", "state", "ledger", "events", "%s.jsonl" % seat)
+    since = int(req_ts)
+    out = []
+    try:
+        with open(p, "rb") as f:
+            data = f.read()
+    except FileNotFoundError:
+        return []
+    except OSError:
+        return None
+    for raw in data.splitlines():
+        try:
+            ev = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, ValueError):
+            continue
+        if not isinstance(ev, dict) or ev.get("seat") != seat:
+            continue
+        if ev.get("event") not in WORK_EVENTS and not (ev.get("event") == "lease" and ev.get("action") in WORK_LEASE):
+            continue
+        at = _ts(ev.get("ts"))
+        if at is not None and at >= since:
+            out.append(ev)
+    return out
+
+
+def new_work(events, ticket):
+    """-> the first event in events that is NEW work after a restart request for ticket, or None. Taking, claiming or
+    starting any ticket is new work; renewing a lease is new work only on a ticket other than the request's own."""
+    for ev in events or []:
+        if ev.get("event") == "lease":
+            if ev.get("action") not in WORK_LEASE or (ev.get("action") == "renew" and ticket and ev.get("id") == ticket):
+                continue
+        elif ev.get("event") not in WORK_EVENTS:
+            continue
+        return ev
+    return None
+
+
+def _work_why(ev):
+    return "the seat took new work after the request: %s%s %s at %s" % (
+        ev.get("event"), " " + ev["action"] if ev.get("action") else "", ev.get("id"), ev.get("ts"))
+
+
 def killed_reading(seat, root=None):
     """The killed record plus old_alive: is the process it names (pid + start time) still running?"""
     rec = _read_json(killed_path(seat, root))
@@ -386,6 +447,7 @@ def default_obs(sch, events_since, now_fn=time.time):
                                           cfgs[seat]["game_hold_s"]),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "intile": lambda seat, killed_at: read_intile(seat, killed_at),
+        "work": lambda seat, req_ts: work_since(cfgs[seat].get("clone"), seat, req_ts),
     }
 
 
@@ -608,6 +670,13 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if tx and tx.get("last_user_at") and tx["last_user_at"] > rs["ts"]:
         return _cancel(rs, seat, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
                        act)
+    # SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK (Codex review 2026-10-29 P1 1): machine input no longer cancels (0cf054ade8),
+    # so a seat that took a ticket after its request and then idled on external input would be killed mid-ticket.
+    # Its own ledger says so: any claim/start/lease take after the request voids it. Unreadable -> held below.
+    work = ro["work"](seat, rs["ts"]) if ro.get("work") else None
+    nw = new_work(work, rs.get("ticket"))
+    if nw:
+        return _cancel(rs, seat, _work_why(nw), now, act)
     if now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
@@ -623,6 +692,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
             act(do="alarm", kind="restart:%s:helper_stale" % seat, seat=seat, note=True,
                 why="helper(s) of %s look alive but silent > %d s: %s (held, never read as dead)" % (
                     seat, cfg["helper_stale_s"], ", ".join(h["id"] for h in stale)))
+    if work is None:
+        holds.append("the seat's ledger shard is UNMEASURED (cannot tell whether it took new work)")
     br = ro["bridge"](seat) or {}
     if br.get("state") != "MEASURED":
         holds.append("bridge unreadable (%s)" % br.get("why"))
@@ -854,7 +925,7 @@ def paused_now():
         return "PAUSE unreadable: %s" % e
 
 
-def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now):
+def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now, work=None):
     """-> the holds found by reading transcript, helpers, bridge, the owner's idle clock and PAUSE again at the kill
     (empty = go). Between this and the signal there is no barrier: that gap is one /proc start read, the killed-record
     write, the pidfd open and its start re-check (milliseconds)."""
@@ -884,6 +955,13 @@ def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now):
     pz = paused()
     if pz:
         holds.append("PAUSE: %s" % pz)
+    evs = (work or (lambda s_, ts: work_since(cfg.get("clone"), s_, ts)))(seat, rs.get("ts", 0))
+    if evs is None:
+        holds.append("ledger shard UNMEASURED")
+    else:
+        nw = new_work(evs, rs.get("ticket"))
+        if nw:
+            holds.append(_work_why(nw))
     return holds
 
 

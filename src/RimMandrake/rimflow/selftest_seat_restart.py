@@ -63,7 +63,7 @@ def sess(sid="sid-old", status="idle", pid=4242, name="AGENT FOUNDRY"):
 
 
 def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None, armed=None, intile=None,
-        paused=None, owner=None, killed=None):
+        paused=None, owner=None, killed=None, work=()):
     """One tick's reading. Defaults: the window idle and quiet (ended its turn long ago), nothing held."""
     tx = dict({"last_kind": "assistant_end", "last_at": T0 - 600, "last_user_at": T0 - 900, "ctx_tokens": 50_000},
               **(tx or {}))
@@ -78,7 +78,8 @@ def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None
                         "bridge": lambda seat: bridge or {"state": "MEASURED", "holders": []},
                         "game": lambda seat: game,
                         "armed": lambda seat: armed,
-                        "intile": lambda seat, killed_at: intile}}
+                        "intile": lambda seat, killed_at: intile,
+                        "work": lambda seat, since: None if work is None else list(work)}}
 
 
 def req(ts=T0, sid="sid-old", pid=4242):
@@ -986,6 +987,93 @@ def test_v3_close_out_continues_while_context_is_ok():
         doc = f.read()
     check("CONTEXT OK" in doc and "next --seat FOUNDRY --ringed" in doc and "110000" in doc.replace(",", "").replace(" ", ""),
           "V3 FOUNDRY.md's close-out tells the seat to continue on CONTEXT OK and names the 110000 backstop")
+
+
+# ---- Codex review 2026-10-29 (rev/out.txt P1 1 + 2)
+
+def _ev(event, tid, ts, **kw):
+    e = {"seat": "FOUNDRY", "event": event, "id": tid, "ts": ts}
+    e.update(kw)
+    return e
+
+
+def test_w1_new_work_after_the_request_voids_it():
+    """SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK: a seat that took new work after its restart request (a ring, `next`, a
+    peer-assigned ticket) and then idles at a turn boundary must not be killed by the stale request."""
+    sch = sched()
+    later = SR._iso(T0 + 10)
+    for name, ev in [("lease take", _ev("lease", "NEW_TICKET_1", later, action="take")),
+                     ("claim", _ev("claim", "NEW_TICKET_1", later)),
+                     ("start", _ev("start", "NEW_TICKET_1", later)),
+                     ("lease renew of another ticket", _ev("lease", "NEW_TICKET_1", later, action="renew"))]:
+        st = fresh()
+        run(sch, st, obs(request=req()), T0 + 1)
+        a = run(sch, st, obs(work=[ev]), T0 + SR.DEFAULTS["grace_s"] + 5)
+        check(state(st) == "cancelled" and "restart_kill" not in dos(a) and "restart_cancel" in dos(a),
+              "W1 %s after the request -> void, never killed (%s %s)" % (name, state(st), dos(a)))
+    st = fresh()
+    run(sch, st, obs(request=req()), T0 + 1)
+    a = run(sch, st, obs(work=[_ev("lease", "SOME_TICKET_DONE", later, action="release"),
+                               _ev("close", "SOME_TICKET_DONE", later),
+                               _ev("lease", "SOME_TICKET_DONE", later, action="renew")]),
+            T0 + SR.DEFAULTS["grace_s"] + 5)
+    check("restart_kill" in dos(a), "W1 control: the request's own ticket closing/releasing is not new work (%s)" % dos(a))
+    st = fresh()
+    run(sch, st, obs(request=req()), T0 + 1)
+    a = run(sch, st, obs(work=None), T0 + SR.DEFAULTS["grace_s"] + 5)
+    check(state(st) == "pending" and "restart_kill" not in dos(a),
+          "W1 the seat's shard unreadable (UNMEASURED) holds, never kills (%s %s)" % (state(st), dos(a)))
+    # machine rings alone still do not cancel (0cf054ade8): a ring transcript record with no new ledger work
+    st = fresh()
+    run(sch, st, obs(request=req()), T0 + 1)
+    a = run(sch, st, obs(work=[]), T0 + SR.DEFAULTS["grace_s"] + 5)
+    check("restart_kill" in dos(a), "W1 control: no new work and no human input -> the restart proceeds (%s)" % dos(a))
+    # the reader: a real shard, events at or after the request's second, other seats ignored
+    clone = os.path.join(TMP, "w1clone")
+    shard = os.path.join(clone, "infrastructure", "state", "ledger", "events")
+    os.makedirs(shard, exist_ok=True)
+    with open(os.path.join(shard, "FOUNDRY.jsonl"), "w") as f:
+        for e in [_ev("lease", "OLD", SR._iso(T0 - 5), action="take"), dict(_ev("claim", "X", later), seat="BENCH"),
+                  _ev("lease", "NEW_TICKET_1", later, action="take")]:
+            f.write(json.dumps(e) + "\n")
+        f.write("{not json\n")
+    got = SR.work_since(clone, "FOUNDRY", T0 + 0.5)
+    check([e["id"] for e in got or []] == ["NEW_TICKET_1"],
+          "W1 work_since reads the seat's own shard from the request's second on (%s)" % got)
+    check(SR.work_since(os.path.join(TMP, "w1none"), "FOUNDRY", T0) == [], "W1 no shard yet -> no work (empty)")
+    # the kill-time re-check reads it again
+    holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
+                               {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
+                               owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999}, paused=lambda: None,
+                               work=lambda seat, ts: [_ev("lease", "NEW_TICKET_1", later, action="take")])
+    check(any("new work" in h for h in holds), "W1 the kill-time re-check holds on new work (%s)" % holds)
+    holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
+                               {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
+                               owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999}, paused=lambda: None,
+                               work=lambda seat, ts: None)
+    check(any("UNMEASURED" in h for h in holds), "W1 the kill-time re-check holds on an unreadable shard (%s)" % holds)
+
+
+def test_w2_human_origin_beats_text_markers():
+    """SEAT_RESTART_FIX_HUMAN_INPUT_MARKERS: the record's structural origin decides; text markers are only the fallback
+    for a record that carries none. MEASURED 2026-10-29 over every bench/foundry transcript: no origin.kind human
+    record carries a machine marker, every ring is a task-notification or an sdk prompt."""
+    names = ["CONDUCTOR", "AGENT BENCH", "AGENT FOUNDRY"]
+    for i, h in enumerate([
+            _u("2026-10-29T04:30:00Z", "Explain \u201ca program, not a person\u201d", origin={"kind": "human"},
+               promptSource="typed", turnOrigin="human"),
+            _u("2026-10-29T04:30:00Z", "[RimFlow Dispatcher \u2014 a program, not a person; ring X] why did this fire?",
+               origin={"kind": "human"}, promptSource="queued", turnOrigin="human"),
+            _u("2026-10-29T04:30:00Z", "<task-notification> pasted by me", turnOrigin="human"),
+            _u("2026-10-29T04:30:00Z", "[RimFlow pasted", promptSource="typed")]):
+        check(SR._is_human_input(h, names), "W2 a human-origin prompt quoting a machine marker is human (%d)" % i)
+    for i, m in enumerate([
+            _u("2026-10-29T04:30:00Z", "[RimFlow Dispatcher \u2014 a program, not a person; ring X]"),
+            _u("2026-10-29T04:30:00Z", "<task-notification> x", origin={"kind": "task-notification"},
+               turnOrigin="human"),
+            _u("2026-10-29T04:30:00Z", "plain words", origin={"kind": "human"}, promptSource="sdk")]):
+        check(not SR._is_human_input(m, names),
+              "W2 no structural origin -> text markers decide; a machine field anywhere wins (%d)" % i)
 
 
 def main():
