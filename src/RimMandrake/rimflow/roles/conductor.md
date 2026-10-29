@@ -96,10 +96,12 @@ runs the LIGHT close-out (a program check of his rulings and answers against the
 a 3-5 line note to the Conductor log read at wake; the program check of B2 step 1 is not built, so the window checks
 by hand). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
 his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
-restarts the window as a fresh Remote Control `CONDUCTOR` after a 120 s grace. It holds while helpers are alive, while the
-window is mid-reply, or while his keyboard is busy; any new message from him after the goodbye cancels it (read in full
-from a transcript cursor, mid-turn messages included), and a request after he wrote again is refused. The fresh window's
-wake lists, whole, what he sent the old one after the goodbye. A context backstop also restarts the window, but only after 4 h with no message
+restarts the window as a fresh Remote Control `CONDUCTOR` only once the old transcript and his keyboard have been quiet for
+`goodbye_quiet_s` (600 s). It holds while helpers are alive, while the window is mid-reply, while his keyboard is busy,
+or while a record is half-written. ANY input after the goodbye cancels it: his message, a ring, a task notification
+or a queued prompt, read in full from a transcript cursor with no timestamp filter. A malformed record also cancels, and
+a request after he wrote again is refused. The fresh window's wake (`--gen` binds it to that one restart) lists, whole
+and once, what he sent the old one after the goodbye. A context backstop also restarts the window, but only after 4 h with no message
 from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
 `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
 `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the

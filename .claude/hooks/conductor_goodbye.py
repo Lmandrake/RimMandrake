@@ -5,7 +5,7 @@ WHY THIS EXISTS. The Conductor window (seat key BENCH, session CONDUCTOR) is mea
 back (design/RimMandrake/conductor_briefing_2026-10-28.md B2/B3). When his WHOLE message is a goodbye, this hook puts
 the light close-out into that window's context on that turn: his rulings onto the ledger, open promises filed for
 OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`. The Dispatcher then
-relaunches a fresh CONDUCTOR window after the grace (seat_restart.py, kind "conductor").
+relaunches a fresh CONDUCTOR window after a ten-minute quiet window (seat_restart.py, kind "conductor", goodbye_quiet_s).
 
 Only a whole-message goodbye fires: src/RimMandrake/rimflow/goodbye_phrase.py (case-folded, apostrophes dropped,
 every run of non-word characters read as one space; letters of any script stay) compared WHOLE against

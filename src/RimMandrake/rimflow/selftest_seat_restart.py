@@ -63,7 +63,7 @@ def sess(sid="sid-old", status="idle", pid=4242, name="AGENT FOUNDRY"):
 
 
 def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None, armed=None, intile=None,
-        paused=None, owner=None, killed=None, work=(), human_since=()):
+        paused=None, owner=None, killed=None, work=(), human_since=(), cursor=(), last_human=(None, None, None, 0)):
     """One tick's reading. Defaults: the window idle and quiet (ended its turn long ago), nothing held."""
     tx = dict({"last_kind": "assistant_end", "last_at": T0 - 600, "last_user_at": T0 - 900, "ctx_tokens": 50_000},
               **(tx or {}))
@@ -80,7 +80,14 @@ def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None
                         "armed": lambda seat: armed,
                         "intile": lambda seat, killed_at: intile,
                         "work": lambda seat, since: None if work is None else list(work),
-                        "human_since": lambda seat, s, off, after: None if human_since is None else list(human_since)}}
+                        "human_since": lambda seat, s, off, after: None if human_since is None else list(human_since),
+                        "cursor": lambda seat, s, rs: None if cursor is None else (clean_scan() if cursor == () else cursor),
+                        "last_human": lambda seat, s: last_human}}
+
+
+def clean_scan(**kw):
+    """A full cursor read that found nothing: no input, every record parsed, a fixed size (no growth)."""
+    return dict({"human": [], "inputs": [], "last_at": None, "size": 100, "malformed": None, "torn": None}, **kw)
 
 
 def req(ts=T0, sid="sid-old", pid=4242):
@@ -378,6 +385,10 @@ def test_transcript_readers():
                 "input_tokens": 5, "cache_read_input_tokens": 95_000, "cache_creation_input_tokens": 0}})]
     with open(os.path.join(proj, "sid-x.jsonl"), "w") as f:
         f.write("garbage{\n" + "\n".join(json.dumps(r) for r in main) + "\n")
+    check(SR.tx_summary(os.path.join(proj, "sid-x.jsonl")) is None,
+          "tx_summary: a malformed line is UNMEASURED, not skipped (review 2 P0-2: fail closed)")
+    with open(os.path.join(proj, "sid-x.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in main) + "\n")
     s = SR.tx_summary(os.path.join(proj, "sid-x.jsonl"))
     check(s["last_kind"] == "assistant_end" and s["ctx_tokens"] == 95_005
           and s["last_user_at"] == D.S.parse_ts("2026-10-28T01:00:00Z"),
@@ -1132,7 +1143,7 @@ def test_g1_bench_relaunch_argv_is_the_conductor_wake():
 
 def test_g2_bench_restart_holds_on_helpers_input_owner_and_reply():
     sch = bsched()
-    late = T0 + 125
+    late = T0 + 605                      # past goodbye_quiet_s (600 s; review 2 P0-1), not just the 120 s grace
     st = fresh()
     a = run(sch, st, obs(sessions=[bsess(name="CONDUCTOR ▶ SOME_ITEM")], request=breq()), T0 + 1)
     check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 a goodbye request is pending through the grace")
@@ -1244,7 +1255,9 @@ def test_g6_wake_lists_his_messages_after_the_goodbye():
         tx = SR.transcript_path(BCLONE, "sid-bye")
         os.makedirs(os.path.dirname(tx), exist_ok=True)
         with open(tx, "w") as f:
-            for r in (_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"}, promptSource="typed"),
+            first = json.dumps(_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"}, promptSource="typed"))
+            f.write(first + "\n")
+            for r in (
                       _u("1970-01-12T13:47:00Z", "oh and park the hose test", origin={"kind": "human"},
                          promptSource="typed"),
                       _u("1970-01-12T13:47:30Z", "[RimFlow Dispatcher - a program, not a person; ring]",
@@ -1254,10 +1267,11 @@ def test_g6_wake_lists_his_messages_after_the_goodbye():
         with open(BLOG, "w") as f:
             f.write("## earlier\nconductor note ABC\n")
         SR.write_killed("BENCH", {"seat": "BENCH", "session_id": "sid-bye", "killed_at": T0 + 300,
-                                  "req_ts": SR._ts("1970-01-12T13:46:00Z"), "ticket": "GOODBYE"})
+                                  "req_ts": SR._ts("1970-01-12T13:46:00Z"), "ticket": "GOODBYE", "gen": "g6",
+                                  "tx_path": tx, "tx_offset": len(first) + 1})
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            rc = SR.main(["wake", "--seat", "BENCH"])
+            rc = SR.main(["wake", "--seat", "BENCH", "--gen", "g6"])
         o = out.getvalue()
     finally:
         SR._schedule = saved
@@ -1276,8 +1290,8 @@ def test_g7_killed_record_carries_the_request_time():
           "recheck": lambda *a: [], "start": lambda pid: 77, "final": lambda *a: []}
     st = fresh()
     run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
-    a = [x for x in run(sch, st, obs(sessions=[bsess()]), T0 + 125) if x["do"] == "restart_kill"][0]
-    SR.execute(a, sch, st, True, T0 + 130, fx)
+    a = [x for x in run(sch, st, obs(sessions=[bsess()]), T0 + 605) if x["do"] == "restart_kill"][0]
+    SR.execute(a, sch, st, True, T0 + 610, fx)
     check(calls and calls[0].get("req_ts") == T0, "G7 the killed record carries the request time (%s)" % calls[:1])
 
 
@@ -1395,26 +1409,25 @@ def test_h2_cancel_evidence_survives_a_long_tail():
     tail = SR.tx_summary(p)
     check(tail and tail.get("last_user_at") is None, "H2 control: the 4 MiB tail cannot see his message (%s)" % (
         (tail or {}).get("last_user_at")))
-    hs = SR.human_since_offset(p, ends[0], GB_T)
+    hs = SR.human_since_offset(p, ends[0])
     check(hs and "keep going" in SR._text(hs[0]), "H2 the cursor scan from the goodbye finds it (%s)" % (hs and len(hs)))
-    check(SR.human_since_offset(p, ends[-1] + 10, GB_T) is None, "H2 a cursor past EOF (truncated) is UNMEASURED")
+    check(SR.human_since_offset(p, ends[-1] + 10) is None, "H2 a cursor past EOF (truncated) is UNMEASURED")
     sch, st = bsched(), fresh()
     r = dict(breq(), input_ts=GB_T, tx_offset=ends[0])
     o = obs(sessions=[bsess()], request=r, tx={"last_user_at": None})
-    o["seat_restart"]["human_since"] = lambda seat, s, off, after: SR.human_since_offset(p, off, after)
+    o["seat_restart"]["cursor"] = lambda seat, s, rs: SR.cursor_scan(p, rs.get("tx_offset"))
     run(sch, st, o, T0 + 1)
     check(bstate(st) == "cancelled", "H2 decide() cancels on the cursor scan (%s)" % bstate(st))
     sch, st = bsched(), fresh()
     o = obs(sessions=[bsess()], request=r, tx={"last_user_at": None})
-    o["seat_restart"]["human_since"] = lambda seat, s, off, after: None
+    o["seat_restart"]["cursor"] = lambda seat, s, rs: None
     run(sch, st, o, T0 + 1)
-    a = run(sch, st, o, T0 + 200)
+    a = run(sch, st, o, T0 + 700)
     check(bstate(st) == "pending" and "restart_kill" not in dos(a), "H2 cursor UNMEASURED holds, never kills")
     sch, st = bsched(), fresh()
     o = obs(sessions=[bsess()], request=dict(breq(), tx_offset=None), tx={"last_user_at": None})
-    o["seat_restart"]["human_since"] = lambda seat, s, off, after: []
     run(sch, st, o, T0 + 1)
-    a = run(sch, st, o, T0 + 200)
+    a = run(sch, st, o, T0 + 700)
     check("restart_kill" not in dos(a), "H2 a Conductor request with no cursor never reaches the kill (%s)" % dos(a))
     rs = {"ts": T0, "cancel_after": GB_T, "tx_offset": ends[0], "source": "request"}
     holds = SR.recheck_at_kill("BENCH", sch, rs, bsess(), owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999},
@@ -1435,8 +1448,8 @@ def test_h3_final_fence_after_the_killed_record():
     o = obs(sessions=[bsess()], request=r)
     o["seat_restart"]["human_since"] = lambda *a: []
     run(sch, st, o, T0 + 1)
-    a = [x for x in run(sch, st, o, T0 + 125) if x["do"] == "restart_kill"]
-    res = SR.execute(a[0], sch, st, True, T0 + 130, fx) if a else "no kill action"
+    a = [x for x in run(sch, st, o, T0 + 605) if x["do"] == "restart_kill"]
+    res = SR.execute(a[0], sch, st, True, T0 + 610, fx) if a else "no kill action"
     check(not kills and recs and recs[-1].get("aborted") and bstate(st) == "pending",
           "H3 input seen at the final fence: no signal, killed record aborted, back to pending (%s)" % res)
     p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z"), _hu("1970-01-12T13:47:00Z", "one more")])
@@ -1467,16 +1480,17 @@ def test_h5_wake_gives_every_message_whole():
     try:
         SR._schedule = lambda: sch
         SR.write_killed("BENCH", {"seat": "BENCH", "session_id": "sid-bye2", "killed_at": T0 + 300, "req_ts": T0,
-                                  "input_ts": GB_T, "tx_offset": ends[0], "ticket": "GOODBYE"})
+                                  "input_ts": GB_T, "tx_offset": ends[0], "ticket": "GOODBYE", "gen": "g5",
+                                  "tx_path": p})
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            SR.main(["wake", "--seat", "BENCH"])
+            SR.main(["wake", "--seat", "BENCH", "--gen", "g5"])
         o = out.getvalue()
     finally:
         SR._schedule = saved
     check("END_OF_LONG" in o, "H5 a message past 2000 chars is printed whole")
     check("see pic" in o and "image" in o and "u-img" in o, "H5 an image block is named with its record uuid")
-    check("whole old transcript" in o or "cursor" in o, "H5 the wake states its coverage (%r)" % o[-200:])
+    check("from byte %d of %s" % (ends[0], p) in o, "H5 the wake states its coverage (%r)" % o[-200:])
 
 
 def _queued(iso, text):
@@ -1494,14 +1508,242 @@ def test_h6_a_message_typed_mid_turn_cancels():
     tx = SR.tx_summary(p)
     check(tx and tx.get("last_user_at") == SR._ts("1970-01-12T13:45:20Z") and tx.get("last_kind") == "assistant_end",
           "H6 tx_summary sees the queued prompt as his input, turn state unchanged (%s)" % tx)
-    hs = SR.human_since_offset(p, ends[0], GB_T)
+    hs = SR.human_since_offset(p, ends[0])
     check(hs and "one more thing" in SR._text(hs[0]), "H6 the cursor scan sees it (%s)" % (hs and len(hs)))
     rc, out, rq = _brequest(recs)
     check(rc == 3 and rq is None, "H6 a goodbye request after a queued 'wait' is REFUSED (%s)" % out.strip()[-120:])
     m = [_queued("1970-01-12T13:45:20Z", "x")]
     m[0]["attachment"]["commandMode"] = "task-notification"
     p, ends = _bt("sid-old", [_hu(GB, "goodbye")] + m + [_ha("1970-01-12T13:45:40Z")])
-    check(SR.human_since_offset(p, ends[0], GB_T) == [], "H6 control: a queued task notification is not his input")
+    check(SR.human_since_offset(p, ends[0]) == [], "H6 control: a queued task notification is not his input")
+
+
+# --- blind review 2 (2026-10-29): quiet window, fail closed, no clock filter, tx_path, generation -------------------
+
+def _j_run(sch, st, o, times):
+    """-> {tick time: [actions]} over a pending BENCH request."""
+    return {t: run(sch, st, o, t) for t in times}
+
+
+def test_j1_conductor_waits_a_quiet_window_not_the_grace():
+    # P0-1 simplified: after a goodbye the kill needs goodbye_quiet_s (600 s) of silence on the transcript
+    check(SR.DEFAULTS.get("goodbye_quiet_s") == 600, "J1 goodbye_quiet_s defaults to 600 s (%s)"
+          % SR.DEFAULTS.get("goodbye_quiet_s"))
+    sch = bsched()
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = run(sch, st, obs(sessions=[bsess()]), T0 + 125)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a),
+          "J1 past the 120 s grace but inside the quiet window: no kill (%s)" % dos(a))
+    # the transcript grows at T0+300 (the window wrote something): the quiet clock restarts there
+    run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250)), T0 + 300)
+    a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250)), T0 + 650)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a),
+          "J1 transcript growth at +300 s restarts the quiet clock: no kill at +650 (%s)" % dos(a))
+    # a record stamped later than the Dispatcher saw growth also anchors the window
+    a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500)), T0 + 905)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a),
+          "J1 a record stamped +500 s anchors the quiet window: no kill at +905 (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500),
+                         owner={"state": "MEASURED", "idle_seconds": 400}), T0 + 1105)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a),
+          "J1 the owner idle only 400 s (< goodbye_quiet_s) holds the kill (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500)), T0 + 1105)
+    check([x for x in a if x["do"] == "restart_kill"], "J1 control: ten silent minutes on every clock -> one kill (%s)"
+          % dos(a))
+    cfg = SR.config(sch)["BENCH"]
+    check(SR.owner_need(cfg, {"source": "request"}) >= 600, "J1 a Conductor needs the owner idle >= goodbye_quiet_s")
+
+
+def test_j2_any_input_after_the_goodbye_cancels_a_conductor():
+    # P0-1 simplified: a ring, a task notification or a queue enqueue after the goodbye all cancel, not just his text
+    tn = _u("1970-01-12T13:47:30Z", "[RimFlow Dispatcher - a program, not a person; ring]",
+            origin={"kind": "task-notification"}, promptSource="system")
+    enq = {"type": "queue-operation", "operation": "enqueue", "timestamp": "1970-01-12T13:47:31Z",
+           "content": "hello?"}
+    for extra, what in (([tn], "a task notification"), ([enq], "a queue-operation enqueue"),
+                        ([_queued("1970-01-12T13:47:32Z", "x")], "a queued_command attachment")):
+        p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z")] + extra)
+        sc = SR.cursor_scan(p, ends[1])
+        check(sc and sc["inputs"], "J2 cursor_scan counts %s as input (%s)" % (what, sc and len(sc["inputs"])))
+        sch, st = bsched(), fresh()
+        o = obs(sessions=[bsess()], request=dict(breq(), input_ts=GB_T, tx_offset=ends[1]))
+        o["seat_restart"]["cursor"] = lambda seat, s_, rs, p=p: SR.cursor_scan(p, rs.get("tx_offset"))
+        run(sch, st, o, T0 + 1)
+        check(bstate(st) == "cancelled", "J2 %s after the goodbye cancels the Conductor restart (%s)" % (what, bstate(st)))
+    p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z"),
+                              {"type": "queue-operation", "operation": "dequeue", "timestamp": "1970-01-12T13:47:33Z"}])
+    sc = SR.cursor_scan(p, ends[1])
+    check(sc and not sc["inputs"] and not sc["human"], "J2 control: a dequeue alone is not input (%s)" % sc)
+
+
+def test_j3_malformed_cancels_and_torn_holds():
+    # P0-2: no record is skipped; a bad complete line cancels, a half-written last line holds, every reader fails closed
+    p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z")])
+    with open(p, "a") as f:
+        f.write("{not json\n")
+    sc = SR.cursor_scan(p, ends[1])
+    check(sc and sc["malformed"] and not sc["torn"], "J3 a malformed complete line is reported (%s)" % sc)
+    check(SR.human_since_offset(p, ends[1]) is None, "J3 human_since_offset is UNMEASURED on a malformed line")
+    check(SR.last_human(p) is None, "J3 last_human is UNMEASURED on a malformed line")
+    sch, st = bsched(), fresh()
+    o = obs(sessions=[bsess()], request=dict(breq(), input_ts=GB_T, tx_offset=ends[1]))
+    o["seat_restart"]["cursor"] = lambda seat, s_, rs: SR.cursor_scan(p, rs.get("tx_offset"))
+    run(sch, st, o, T0 + 1)
+    check(bstate(st) == "cancelled", "J3 a malformed record after the goodbye cancels (%s)" % bstate(st))
+    p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z")])
+    with open(p, "a") as f:
+        f.write(json.dumps(_hu("1970-01-12T13:47:00Z", "wait"))[:40])       # torn: no newline yet
+    sc = SR.cursor_scan(p, ends[1])
+    check(sc and sc["torn"] and not sc["malformed"], "J3 a torn last record is reported (%s)" % sc)
+    check(SR.human_since_offset(p, ends[1]) is None, "J3 human_since_offset is UNMEASURED on a torn record")
+    check(SR.tx_summary(p) is None, "J3 tx_summary is UNMEASURED on a torn tail")
+    try:
+        SR._tail_records(p, 1 << 20)
+        raised = False
+    except SR.Torn:
+        raised = True
+    check(raised, "J3 _tail_records raises Torn on a torn tail, never drops it")
+    sch, st = bsched(), fresh()
+    o = obs(sessions=[bsess()], request=dict(breq(), input_ts=GB_T, tx_offset=ends[1]))
+    o["seat_restart"]["cursor"] = lambda seat, s_, rs: SR.cursor_scan(p, rs.get("tx_offset"))
+    run(sch, st, o, T0 + 1)
+    a = run(sch, st, o, T0 + 2000)
+    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "J3 a torn record holds, never kills (%s)" % dos(a))
+    sub = os.path.join(os.path.dirname(p), "sid-old", "subagents")
+    os.makedirs(sub, exist_ok=True)
+    with open(os.path.join(sub, "agent-torn.jsonl"), "w") as f:
+        f.write(json.dumps(_ha("1970-01-12T13:45:10Z")) + "\n" + '{"type": "assi')
+    check(SR.helpers_of(p) is None, "J3 helpers_of is UNMEASURED on a torn helper transcript")
+    os.remove(os.path.join(sub, "agent-torn.jsonl"))
+
+
+def test_j4_no_clock_filter_after_the_cursor():
+    # P0-3: a human record after the cursor whose clock reads BEFORE the goodbye still cancels
+    p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z"),
+                              _hu("1970-01-12T13:44:00Z", "clock went backwards, still me")])
+    hs = SR.human_since_offset(p, ends[1])
+    check(hs and "backwards" in SR._text(hs[0]), "J4 the scan after the cursor ignores timestamps (%s)" % hs)
+    sch, st = bsched(), fresh()
+    o = obs(sessions=[bsess()], request=dict(breq(), input_ts=GB_T, tx_offset=ends[1]))
+    o["seat_restart"]["cursor"] = lambda seat, s_, rs: SR.cursor_scan(p, rs.get("tx_offset"))
+    run(sch, st, o, T0 + 1)
+    check(bstate(st) == "cancelled", "J4 decide() cancels on it (%s)" % bstate(st))
+    # the backstop binds its cursor to the end of his LAST input, not offset 0 plus a time filter
+    over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000, "last_user_at": T0 - 15_000}
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=over, last_human=(T0 - 15_000, {}, 4321, 9000)), T0)
+    rs = st["seat_restart"].get("BENCH") or {}
+    check(rs.get("source") == "backstop" and rs.get("tx_offset") == 4321,
+          "J4 the backstop cursor is the end of his last input (%s)" % rs.get("tx_offset"))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=over, last_human=None), T0)
+    check(bstate(st) is None, "J4 an unreadable transcript gives no backstop (fail closed)")
+
+
+def _wake(rec, gen):
+    import contextlib
+    import io
+    sch = bsched()
+    saved = SR._schedule
+    try:
+        SR._schedule = lambda: sch
+        SR.write_killed("BENCH", rec)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            SR.main(["wake", "--seat", "BENCH"] + (["--gen", gen] if gen else []))
+        return out.getvalue(), SR._read_json(SR.killed_path("BENCH")) or {}
+    finally:
+        SR._schedule = saved
+
+
+def test_j5_wake_reads_the_transcript_the_record_names():
+    # P1-4: the old window ran in another clone (or CLAUDE_CONFIG_DIR): the wake follows tx_path, not cfg["clone"]
+    other = os.path.join(TMP, "elsewhere", "sid-far.jsonl")
+    os.makedirs(os.path.dirname(other), exist_ok=True)
+    first = json.dumps(_hu(GB, "goodbye")) + "\n"
+    with open(other, "w") as f:
+        f.write(first + json.dumps(_hu("1970-01-12T13:47:00Z", "FAR_AWAY_NOTE")) + "\n")
+    check(other != SR.transcript_path(BCLONE, "sid-far"), "J5 control: the path is not the cfg clone's")
+    o, _ = _wake({"seat": "BENCH", "session_id": "sid-far", "killed_at": T0 + 300, "req_ts": T0, "ticket": "GOODBYE",
+                  "gen": "g-far", "tx_path": other, "tx_offset": len(first)}, "g-far")
+    check("FAR_AWAY_NOTE" in o, "J5 the wake reads the transcript named in the killed record (%r)" % o[-200:])
+
+
+def test_j6_wake_is_bound_to_one_restart():
+    # P1-5: aborted, another generation, no --gen, or already woken -> nothing replayed; a full read marks it woken
+    p = os.path.join(TMP, "elsewhere", "sid-gen.jsonl")
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    first = json.dumps(_hu(GB, "goodbye")) + "\n"
+    with open(p, "w") as f:
+        f.write(first + json.dumps(_hu("1970-01-12T13:47:00Z", "GEN_NOTE")) + "\n")
+    rec = {"seat": "BENCH", "session_id": "sid-gen", "killed_at": T0 + 300, "req_ts": T0, "ticket": "GOODBYE",
+           "gen": "g1", "tx_path": p, "tx_offset": len(first)}
+    o, _ = _wake(dict(rec, aborted="final fence: input"), "g1")
+    check("GEN_NOTE" not in o and "ABORTED" in o, "J6 an aborted restart is not replayed (%r)" % o[-160:])
+    o, _ = _wake(rec, "g0")
+    check("GEN_NOTE" not in o, "J6 another restart's generation is not replayed")
+    o, _ = _wake(rec, None)
+    check("GEN_NOTE" not in o, "J6 a wake without --gen replays nothing")
+    o, after = _wake(rec, "g1")
+    check("GEN_NOTE" in o and after.get("woken_at"), "J6 the right generation reads it and marks it woken (%s)"
+          % after.get("woken_at"))
+    o, _ = _wake(after, "g1")
+    check("GEN_NOTE" not in o and "already" in o, "J6 a second wake of the same restart replays nothing")
+    o, after = _wake(dict(rec, tx_path=p + ".missing"), "g1")
+    check("UNMEASURED" in o and not after.get("woken_at"), "J6 an UNMEASURED read is not marked woken")
+    cfg = SR.config(bsched())["BENCH"]
+    argv = SR.relaunch_argv("BENCH", cfg, "goodbye", gen="abc123")
+    check("wake --seat BENCH --gen abc123" in argv[-1], "J6 the relaunch prompt carries the generation (%r)" % argv[-1])
+
+
+def test_j7_fence_reads_owner_after_the_scan_and_status_last():
+    # P0-1: the order of the final fence: transcript scan, then the owner clock, then the window status
+    order = []
+    p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z")])
+    real = SR.cursor_scan
+    try:
+        SR.cursor_scan = lambda *a, **k: order.append("scan") or real(*a, **k)
+        rs = {"cancel_after": GB_T, "tx_offset": ends[1], "tx_path": p, "seen_size": os.path.getsize(p),
+              "quiet_since": T0 - 5000, "ts": T0 - 5000}
+        f = SR.final_fence("BENCH", bsched(), rs, bsess(), now=T0 + 5000,
+                           owner=lambda: order.append("owner") or {"state": "MEASURED", "idle_seconds": 99_999})
+    finally:
+        SR.cursor_scan = real
+    check(f == [] and order == ["scan", "owner"], "J7 the fence scans, then reads the owner clock (%s, %s)" % (order, f))
+    rs2 = dict(rs, seen_size=rs["seen_size"] - 1)
+    f = SR.final_fence("BENCH", bsched(), rs2, bsess(), now=T0 + 5000, owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999})
+    check(f and "grew" in f[0], "J7 any growth since the claiming tick holds at the fence (%s)" % f)
+    f = SR.final_fence("BENCH", bsched(), rs, bsess(), now=T0 + 5000, owner=lambda: {"state": "MEASURED", "idle_seconds": 30})
+    check(f and "owner" in f[0], "J7 the owner at the keyboard holds at the fence (%s)" % f)
+    sch, st = bsched(), fresh()
+    order2, kills = [], []
+    fx = {"session_file": lambda pid: order2.append("status") or {"pid": pid, "sessionId": "sid-old",
+                                                                  "name": "CONDUCTOR", "status": "idle"},
+          "kill": lambda pid, start=None: kills.append(pid) or "SIGTERM", "write_killed": lambda seat, rec: None,
+          "recheck": lambda *a: [], "start": lambda pid: 77, "final": lambda *a: order2.append("final") or []}
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = [x for x in run(sch, st, obs(sessions=[bsess()]), T0 + 605) if x["do"] == "restart_kill"]
+    SR.execute(a[0], sch, st, True, T0 + 610, fx) if a else None
+    i = order2.index("final") if "final" in order2 else -1
+    check(a and kills and i >= 0 and "status" in order2[i + 1:],
+          "J7 execute re-reads the window status after the fence, right before the signal (%s)" % order2)
+    fx["session_file"] = lambda pid, n=[0]: (n.__setitem__(0, n[0] + 1) or
+                                             {"pid": pid, "sessionId": "sid-old", "name": "CONDUCTOR",
+                                              "status": "idle" if n[0] == 1 else "busy"})
+    kills.clear()
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], request=breq()), T0 + 1)
+    a = [x for x in run(sch, st, obs(sessions=[bsess()]), T0 + 605) if x["do"] == "restart_kill"]
+    res = SR.execute(a[0], sch, st, True, T0 + 610, fx) if a else "no kill"
+    check(not kills, "J7 busy at the last status read: no signal (%s)" % res)
+
+
+def test_j8_request_stores_the_transcript_it_read():
+    rc, out, rq = _brequest([_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z", "tool_use")])
+    p = SR.transcript_path(BCLONE, "sid-old")
+    check(rc == 0 and rq and rq.get("tx_path") == p, "J8 the request carries tx_path (%s)" % (rq or {}).get("tx_path"))
+
 
 
 def main():

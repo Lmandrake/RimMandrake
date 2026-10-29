@@ -65,12 +65,15 @@ His whole message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `th
 (conductor_briefing Part B2: his rulings on the ledger with his words, open promises filed `--for OWNER`, 3-5 lines
 to the Conductor log). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH
---fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window after a 120 s
-grace, held while your helpers are alive, while you are mid-reply or while his keyboard is busy, and cancelled by any
-new message from him after the goodbye itself, including one typed mid-turn during the close-out
-(`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time and a transcript byte cursor, and the
-Dispatcher reads everything after it in full, again right before the kill). The fresh window runs `seat_restart.py wake
---seat BENCH` first, and that lists, whole, everything he sent the old window after the goodbye. If the request prints
+--fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window only after the
+old window's transcript and his keyboard have both been quiet for `goodbye_quiet_s` (600 s, ten minutes). It holds
+while your helpers are alive, while you are mid-reply, while his keyboard is busy, or while a record is half-written.
+ANY input after the goodbye cancels the restart: his message (including one typed mid-turn during the close-out), a
+ring, a task notification, or a queued prompt. A malformed transcript record also cancels
+(`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the
+transcript's path, and the Dispatcher reads everything after the cursor in full, ignoring timestamps, and again right
+before the kill). The fresh window runs `seat_restart.py wake --seat BENCH --gen <restart id>` first. That lists, whole,
+everything he sent the old window after the goodbye, once, and only for that restart. If the request prints
 REFUSED (helpers alive, shard unpublished or unmeasured, or his last message is no longer the goodbye: answer him), fix
 what it names and request again; if it still refuses, tell him in one line that this window
 stays open. A full handoff is written only when a keyboard sitting ends.
