@@ -1,0 +1,40 @@
+[
+ {
+  "id": "arteval_RM_Vhakk_n_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vhakk_n",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted side view): same anatomy, same proportions, same colours and markings, same size on the canvas, now seen in rear view, from behind and slightly above, as the game's angled camera shows the back of an animal. A creature sprite for RimWorld: the vhakk. A low, broad ambusher that lies flat in the shallows. Its body is wide and flattened like a bottom-fish and mottled to match the silt, thickly built through the shoulders, with a coarse-furred back and short, powerful badger-like digging limbs. The rear view shows the same large animal at the same scale as the front view: the body fills nearly the full canvas width and a large share of the canvas height, a broad low silhouette whose wide flat flanks flare out to both sides, the same breadth as seen from the front. The broad haunches and rear body span the whole transverse width of the animal, with the short hind limbs planted under the flared flank margins on both sides. The silt mottling runs unbroken across the coarse-furred back. A short tail points toward the viewer at the centre of the rear. The heavy head is turned away, hidden behind the shoulders, and the tips of the two short swivelling eyestalks rise just beyond the back. Visible features it must show: a wide flattened silt-mottled body with flared flat flanks at full body breadth; a coarse-furred back; short powerful badger-like limbs under the body margins; eyes on two short swivelling stalks. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: F_SIZE_JUMP, F_SIZE_JUMP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1701",
+  "drawsize": 1.85,
+  "module": "walker"
+ },
+ {
+  "id": "arteval_RM_Vizhik_ns_r2",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_Vizhik_ns",
+  "prompt": "Draw the SAME individual animal as the attached reference image (its accepted east side view): same anatomy, same proportions, same colours and markings, same size on the canvas, turned 90 degrees to the view this job asks for. A creature sprite for RimWorld: the fan eel. A wrist-thin eel, far slimmer than an ordinary eel for its length, with comb-gills fanned along its whole neck in a translucent ruff that opens and closes with every breath. The ruff of comb-gills is the creature's dominant silhouette feature, not the small paired gill slits an eel has. Its tall upright comb-fan stands as a sail along the top of the body and a smaller fin runs along the belly, in the same attachments as the reference. In this view they appear end-on: the tall upright fan rises above the body and the smaller fin sits beneath it, with no lateral wings. The long stiff comb-gill fringes on both sides of the neck splay outward and down, and their tips rest flat on the open rock like braced struts. They bear the body's weight and prop the front of the slim body up off the ground in a clear weight-bearing stance, evenly matched on the left and right. For the south view: front view, eyes toward the viewer, the head front-on with the translucent neck ruff fanned evenly and symmetrically on both sides, the long stiff combs reaching down to the ground on each side beneath the slim body, the upright fan above the head, the belly fin below, and the tail fan only a small centred tip peeking out behind the body. For the north view: rear view, seen from behind, the tail and slim hindbody toward the viewer, eyes hidden, the wide symmetric neck ruff spreading out on both sides of the hindbody with its long straight stiff combs reaching down and out to the ground as supporting struts, the same upright fan above and belly fin below. Realistic painterly vanilla RimWorld sprite style, soft painted edges in a deeper shade of the local colour, clean dark outline. Exactly ONE creature, centred, the whole body visible with nothing cut off. Fully transparent background: no ground, no water, no shadow, no text, no border.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 2; fixes: DEPARTURE_MISSING, F_INCONSISTENT, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "audit_auto_20261028_1701",
+  "drawsize": 0.65,
+  "module": "walker"
+ }
+]
