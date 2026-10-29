@@ -39,7 +39,15 @@ FW_PKG = "mandrake.rm.flowworks"
 WAKE_CADENCE = 12            # RM_LiquidSurface.MapComponentTick throws wakes at TicksGame % 12 == 0
 SAMPLE_TICKS = 3
 MIN_ON_SAMPLES = 8           # 8 x 3 = 24 ticks on the liquid = two wake cadences: a zero then means something
-MAX_SAMPLES = 80             # 240 ticks: tar (slowest, ~39 samples on 2026-10-29) crosses well inside
+MAX_SAMPLES = 80             # base budget (240 ticks) for a liquid with no extra path cost
+# extra pathCost the terrain def adds per tile (slime +200, tar +300; live run 1 spent 213 ticks just stepping onto the first
+# slime tile); a colonist pays roughly 1 tick per cost point, and we allow 2x that as slack. Water adds none we rely on.
+PATH_COST_EXTRA = {"water": 0, "slime": 200, "tar": 300}
+
+
+def max_samples(liquid):
+    """Per-liquid sample budget: base + 2 ticks per extra path cost point (tar: 80 + 200 = 280 samples >= 250)."""
+    return MAX_SAMPLES + -(-2 * PATH_COST_EXTRA.get(liquid, 0) // SAMPLE_TICKS)
 Z = 44
 STRIP_X = {"water": 60, "slime": 70, "tar": 80}
 STRIP_LEN = 6
@@ -83,9 +91,11 @@ def crossing_summary(liquid, samples, target):
 def parse_render(r):
     """jawa/static_call RM_WakeCount.Render reply -> {terrain: count}. Render lists EVERY terrain noted since load ("" when
     none), so a terrain absent from it truly has 0. None if the call failed or the text does not parse (unread is not 0)."""
-    if not isinstance(r, dict) or r.get("success") is False or "result" not in r:
+    if not isinstance(r, dict) or r.get("success") is False or r.get("error"):
         return None
-    text = str(r.get("result") or "").strip()
+    if "result" not in r and r.get("success") is not True:
+        return None                       # no result and no explicit success: malformed, not zeros
+    text = str(r.get("result") or "").strip()      # success with an empty/missing result == nothing noted yet == zeros
     out = {}
     for part in [p for p in text.split(";") if p.strip()]:
         k, sep, v = part.partition("=")
@@ -264,12 +274,14 @@ def main(argv=None):
             c0 = snap()
             order = B.call("jawa/order_pawn", pawnId=pid, x=target[0], z=target[1], waitTicks=1, draft=True)
             samples = []
-            for _ in range(MAX_SAMPLES):
+            for _ in range(max_samples(liquid)):
                 B.ticks(SAMPLE_TICKS)
                 p = pos(pid)
                 samples.append((p, terr(*p) if None not in p else None))
                 if None not in p and tuple(p) == target:
                     break
+                if crossing_summary(liquid, samples, target)["onLiquid"] >= MIN_ON_SAMPLES:
+                    break                                    # on the liquid long enough: the bar is met, no need for the far end
             B.ticks(WAKE_CADENCE)                            # a V thrown on his last liquid square lands in this read
             c1 = snap()
             summ = crossing_summary(liquid, samples, target)
