@@ -47,6 +47,24 @@ not resolve such a disagreement from the CSV, and ⛔ never call a CSV-derived t
 MEASURED about the live world — the live system is the only instrument for "right now"
 (`~/.claude/skills/measuring-large-artifacts`).
 
+## 🔴 The painted worldmap answers "which biomes exist": owner, 2026-10-28, ruled more than once
+
+> *"Why have I had to rule ok this multiple times? Look at the painted worldmap please."* ·
+> *"There is only the sea floor. Of course. That's all they ever was."* · *"Toxic pools.
+> Near the terminator. Yes it's there. Look harder."*
+
+**The painted worldmap is the 2026-10-20 dev world:** `world/paint_inputs_2026-10-20/ASHKARR_WORLDMAP_tiles.csv`
+and its render report `D:\ClaudeWork\remake\2026-10-20\view\biome\ASHKARR_DEV_LANDED_2026-10-20.report.json`.
+It holds **27 biomes**: 26 `RM_` defs and `RUT_Umbra`, the **Auroral Umbra** (2,531 tiles, perpetual
+aurora, kept by the 2026-10-19 ruling, sheet `the_propane_lakes.md` §0). Every other `RUT_` def is a frozen twin,
+and its RM_ successor wins. **A sea IS its floor:** one row per sea, and the `RM_SeabedFloor_*` defs are
+plumbing. **RM_Cauldron's sheet is `design/Jawa/worldbuilding/biomes/cauldron.md`**, keyed
+`poison_forest` in `_freeze_matrix.csv`: toxic pools in the terminator band. ⛔ Never ask him about a
+biome's existence, home or sheet before reading those files. He had to rule again because
+`biome_mod_architecture.md` §7 Q1 still said "Umbra is NOT a biome" after 10-19, and because this file
+carried no Umbra, painted-map or Cauldron entry. The 2026-10-28 audit then read the 09-12 record
+instead of the painted map. Corrected in `biome_name_provenance_audit_2026-10-28.md`.
+
 ## Design process and biome/roster rulings
 
 - 🔑 **Before designing anything, read the source and the roster — this project keeps having already built

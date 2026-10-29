@@ -5,24 +5,27 @@ Baroque Biomes? I see RM_TheScald, RM_SeabedFloor_TheScald. I see RUT_Desert (la
 Subject: `D:\ClaudeWork\rimmandrake\mineral_matrix_2026-10-28\` (inventory.csv rows 60-96, design.md:22-26) and the
 published copy `Transient\mineral_matrix_round_two\data.json` (commit 9ca2c776d7), 37 biome columns.
 Method: read-only. MEASURED = I read the file/def/commit named. INFERRED = reasoned, not checked in game or dump.
-No tile counts in this report are live facts.
+No tile counts in this report are live facts. Tile counts below come from the painted worldmap, the 2026-10-20 dev
+world: paint input `world/paint_inputs_2026-10-20/ASHKARR_WORLDMAP_tiles.csv` and its render report
+`D:\ClaudeWork\remake\2026-10-20\view\biome\ASHKARR_DEV_LANDED_2026-10-20.report.json` (MEASURED). That save still
+carries the pre-Wave-1 names RM_Wasteland and RM_NightsideIce (renamed RM_Wastes and RM_SleepingIce in 80e0635c30).
 
 ## Summary
 
-1. We have **27 world biomes** (23 standalone land + 4 seas) plus 1 non-natural aftermath biome (RM_ChillCrater) and 1 cave layer (RM_LanternDeeps). The sheet shows 37 columns and calls all 33 `RM_` columns "Baroque Biomes", which is the MOD's name, not a biome count.
-2. **10 of 37 columns are not biomes of their own**: 4 sea-floor dive layers, 3 frozen `RUT_` twins duplicated next to their `RM_` successors (Desert, ExtremeDesert, AridShrubland), RUT_Umbra (real land, but it is the campaign def of the coldest land and is labelled with the retired "Fuel Snows" name), the OTHER_vanilla bucket, and RM_LanternDeeps (a cave layer). That leaves 26 legitimate world-biome columns (22 land + 4 seas). Renamed twins such as RUT_CrackedLands have no column at all, and a suffix-match twin rule cannot reach them.
+1. We have **27 world biomes** (23 standalone land + 4 seas), exactly the 27 painted on the worldmap: 26 `RM_` defs plus `RUT_Umbra`, the Auroral Umbra, plus 1 non-natural aftermath biome (RM_ChillCrater) and 1 cave layer (RM_LanternDeeps). The sheet shows 37 columns and calls all 33 `RM_` columns "Baroque Biomes", which is the MOD's name, not a biome count.
+2. **9 of 37 columns are not biomes of their own**: 4 sea-floor dive layers, 3 frozen `RUT_` twins duplicated next to their `RM_` successors (Desert, ExtremeDesert, AridShrubland), the OTHER_vanilla bucket, and RM_LanternDeeps (a cave layer). RM_ChillCrater is a real but non-natural biome. The other 27 columns are the 27 painted biomes (23 land + 4 seas). RUT_Umbra is one of them: it is the Auroral Umbra, painted on 2,531 tiles and kept on purpose, but the sheet labels it with the retired "Fuel Snows" name. Renamed twins such as RUT_CrackedLands have no column at all, and a suffix-match twin rule cannot reach them.
 3. The root error is one sentence, `design/RimMandrake/minerals_where_they_belong_design_2026-10-02.md:100` (8f99b3560d): it calls arid shrubland, desert and extreme desert "RUT-only". They are the frozen twins of RM_LeaningScrub, RM_LongShade and RM_Stillsand. The 10-03 registry CSV, its generator and the C# kernel all inherited it. The kernel's twin lookup is `"RM_" + suffix` (`RM_MineralPolicyKernel.cs:222-236`), which cannot find any renamed twin.
-4. Since then the twin columns have drifted apart: RUT_ExtremeDesert has steel 3 and RM_Stillsand has none. On the seas, RM_TheScald is empty while RM_SeabedFloor_TheScald holds 8 minerals, so the sea's floor and its catch were split across two columns, against the owner's ruling that a sea biome describes both.
-5. The "(Jawa)" labels are not in any def. Every RUT_ label in src reads "the Desert", "the arid shrubland", "the Extreme Desert", "Auroral Umbra". The generator that wrote them (`gen_matrix.py`, cited by design.md) is missing from the folder, so where those labels came from is UNMEASURED. I propose 9 repair tickets, 3 of which need the owner.
+4. Since then the twin columns have drifted apart: RUT_ExtremeDesert has steel 3 and RM_Stillsand has none. Nobody ruled any of those twin numbers: the 2026-10-03 review decisions file is an agent prefill with all 37 rows "pending". So the RM_ column is the biome's number and the twin columns go. On the seas, RM_TheScald is empty while RM_SeabedFloor_TheScald holds 8 minerals. The owner ruled on 2026-10-28 that a sea IS its floor, so each sea gets one row that carries its floor minerals.
+5. The "(Jawa)" labels are not in any def. Every RUT_ label in src reads "the Desert", "the arid shrubland", "the Extreme Desert", "Auroral Umbra". The generator that wrote them (`gen_matrix.py`, cited by design.md) is missing from the folder, so where those labels came from is UNMEASURED. 9 repair tickets are filed for FOUNDRY (offline). None of them needs the owner.
 
 ## The authoritative biome list
 
 Sources (MEASURED): parsed BiomeDef XML under `src/**/Defs/BiomeDefs/`; the 2026-09-20 ruled table in
 `design/RimMandrake/biome_mod_architecture.md` §2 ("all 27 world biomes", 23 standalone + 4 seas); the frozen
 definition sheets `design/Jawa/worldbuilding/biomes/_freeze_matrix.csv` (30 sheets, BIOME_FREEZE_FABLE_REVIEW_1,
-2026-09-07, bf70b43b73). The `RM_` def is the biome. A `RUT_` def is the frozen campaign twin that carries the painted
-world until the one terminal repaint (architecture rule 3: "The def the world carries must BE the RimMandrake def.
-Never a RUT_ twin").
+2026-09-07, bf70b43b73). The `RM_` def is the biome. A `RUT_` def is the frozen campaign twin that carries the 2026-09-12
+campaign save. The painted worldmap (2026-10-20) already carries the `RM_` defs (architecture rule 3: "The def the
+world carries must BE the RimMandrake def. Never a RUT_ twin"). Its one exception is `RUT_Umbra`, which is not a twin.
 
 | # | RM_ defName (the biome) | label in src | kind | frozen RUT_ twin (campaign carrier) | definition sheet (2026-09-07) |
 |---|---|---|---|---|---|
@@ -43,12 +46,12 @@ Never a RUT_ twin").
 | 15 | RM_Warscar | **Warscar** (no article; label defect) | surface land | RUT_Scarlands ("the Warscar") | the_scarlands.md |
 | 16 | RM_RustCathedral | the Rust Cathedral | surface land | RUT_RustCathedral | the_rust_cathedral.md |
 | 17 | RM_Miasma | the Miasma | surface land | RUT_Miasma | the_miasma.md |
-| 18 | RM_FeverWood | the Fever Wood | surface land | RUT_FeverWood | the_fever_wood.md / poison_forest.md |
+| 18 | RM_FeverWood | the Fever Wood | surface land | RUT_FeverWood | the_fever_wood.md |
 | 19 | RM_TheSump | the Sump | surface land | RUT_Sump | the_sump.md |
 | 20 | RM_Pyrelands | the Pyrelands | surface land | none (donor ZBiome_Grasslands painted) | the_pyrelands.md |
 | 21 | RM_TheForge | the Forge | surface land | RUT_TheForge | the_forge.md |
-| 22 | RM_Cauldron | the Cauldron | surface land | RUT_Cauldron | (no frozen sheet found in _freeze_matrix.csv) |
-| 23 | **none** | (Auroral Umbra) | surface land, campaign only | RUT_Umbra ("Auroral Umbra") | the coldest land; owner card 2026-10-19 (AURORAL_UMBRA_RENAME_BACK_TO_DARK) |
+| 22 | RM_Cauldron | the Cauldron | surface land | RUT_Cauldron (was RUT_PoisonForest) | cauldron.md (git-renamed from poison_forest.md; `_freeze_matrix.csv:10` keys it `poison_forest`). Toxic pools near the terminator: θ75-105, 546 painted tiles, median arc 91 |
+| 23 | **RUT_Umbra** (the biome itself, not a twin) | Auroral Umbra | surface land, painted 2,531 tiles, perpetual aurora | none: kept, not repainted (`paint_inputs_remap.json:36`; `02_world_pipeline.md:153-156, 264`) | the_propane_lakes.md §0 (the land of the Propane Lakes; RM_TheChill is its sea); owner 2026-10-19, `13_owner_rulings_2026-10-19.md` row 18 |
 | 24 | RM_TheScald | the Scald | sea (surface + floor + catch) | RUT_TheScald | the_scald.md |
 | 25 | RM_TheChill | the Chill | sea (propane) | RUT_PropaneLake | the_propane_lakes.md |
 | 26 | RM_GreySea | the Grey Sea | sea | RUT_GreySea | terminator_sea.md + the_grey_deep.md (the floor) |
@@ -57,14 +60,16 @@ Never a RUT_ twin").
 | - | RM_LanternDeeps | the Lantern Deeps | cave injection layer, "not a worldmap biome" (architecture §2c, owner: "that was a mistake") | none | the_lantern_deeps.md |
 | - | (none) | | RUT_Jawa_BackgroundWater: utility background def | | |
 
-Labels are as I recall them from the 10-28 parse (scratch `biomedefs.txt`). Row 23 is the one land with no `RM_` home.
-That is an open question for the owner, not a defect. `fall_line.md` is a REGION (308 tiles in the 2026-08-16 canon,
+Labels are as I recall them from the 10-28 parse (scratch `biomedefs.txt`). Row 23 is the one painted biome whose def
+is not `RM_`. It lives in `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Umbra.xml`, not in the Baroque Biomes mod.
+Its regions on the painted map are Deadstone 861, Umbra 773, Ammonia Flats 692 and Fuelmere 69, among others, and 29 of
+RM_TheChill's 57 tiles lie in its Umbra region. `fall_line.md` is a REGION (308 tiles in the 2026-08-16 canon,
 not a live count) with no BiomeDef, which is expected. `wreck_fields.md` was superseded by it.
 
 Not biomes (MEASURED, `src/RimMandrake/DivingInteraction/Defs/PlanetLayerDefs/`): RM_SeabedBiomeBase (abstract),
 RM_SeabedUnavailable, RM_SeabedFloor, RM_SeabedFloor_{TheScald,GreySea,TwilightSea,TheChill}. These are dive-map
-planet-layer BiomeDefs. They give each sea its floor, and the owner ruled that the sea biome describes both its
-floor and its catch.
+planet-layer BiomeDefs and they are plumbing. Owner, 2026-10-28: "There is only the sea floor. Of course. That's all
+they ever was." A sea IS its floor, so its floor minerals belong on the sea's own row.
 
 "Baroque Biomes" (MEASURED, commit f04561bbd0, 2026-09-27; `biome_mod_unification_spec.md` §1/§8) is the MOD
 `mandrake.rm.biomes`. Its roster has 29 member mods, including kits (SeaShores, DivingInteraction,
@@ -74,7 +79,7 @@ EnvironmentalHazards, CreatureBehaviors, LanternDeeps, MovingDunes, ExplosiveGro
 ## Every sheet column classified
 
 Classes: **L** = legitimate world biome · **LY** = layer (floor or cave), not a biome · **TW** = frozen twin
-duplicated next to its successor · **TU** = twin with no successor (campaign-only land) · **NN** = non-natural
+duplicated next to its successor · **NN** = non-natural
 background biome · **RET** = retired or renamed name still shown · **BK** = pseudo-bucket. The sheet's `mod` field
 says "Baroque Biomes" for every RM_ row, the floors included (inventory.csv rows 60-96, MEASURED).
 
@@ -115,14 +120,15 @@ says "Baroque Biomes" for every RM_ row, the floors included (inventory.csv rows
 | RUT_Desert | "desert (Jawa)", Hills | TW | `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml:3-10` "FROZEN 2026-09-24 ... until Phase B repaints the planet onto `RM_LongShade`". The src label is "the Desert", not "(Jawa)" |
 | RUT_ExtremeDesert | "extreme desert (Jawa)", Flats | TW | RUT_ExtremeDesert.xml:5 FROZEN → mandrake.rm.stillsand; architecture §2 row 1 |
 | RUT_AridShrubland | "arid shrubland (Jawa)", Flats | TW | architecture §2 row 9 → RM_LeaningScrub |
-| RUT_Umbra | "Umbra / Fuel Snows (coldest land)", Hills | TU + RET | RUT_Umbra.xml:5-20 (renamed back from RUT_FuelSnows on the owner's card 2026-10-19, 3056163ac3). The "Fuel Snows" half of the label is the retired name; design.md:22-26 says "Umbra (which stands for Fuel Snows)" |
+| RUT_Umbra | "Umbra / Fuel Snows (coldest land)", Hills | L + RET (label) | Painted biome, 2,531 tiles, kept by the 2026-10-19 ruling (row 23 above). RUT_Umbra.xml:5-20 (renamed back from RUT_FuelSnows on the owner's card 2026-10-19, 3056163ac3). The "Fuel Snows" half of the label is the retired name; design.md:22-26 says "Umbra (which stands for Fuel Snows)" |
 | OTHER_vanilla | Elsewhere | BK | sheet-only bucket for every non-owned biome. It is not a def |
 
-**Counts: L 26 (one with a label defect, two empty seas) · LY 5 (4 floors + Lantern Deeps) · TW 3 · TU/RET 1 ·
-NN 1 · BK 1 = 37.** No column is an outright invention. Every name exists as a def in src or the 10-28 dump. The
+**Counts: L 27 (two with a label defect, two empty seas) · LY 5 (4 floors + Lantern Deeps) · TW 3 · NN 1 · BK 1 =
+37.** The 27 L columns are exactly the 27 biomes on the painted worldmap. No column is an outright invention. Every name exists as a def in src or the 10-28 dump. The
 errors are about kind (layer or twin counted as a biome), duplication, retired labels and the "(Jawa)" labels.
 The sheet is also missing things, though by design rather than by mistake: RUT_CrackedLands, RUT_Scarlands,
-RUT_Sump, RUT_Slime, RUT_PropaneLake and the other renamed twins, which the world actually carries today.
+RUT_Sump, RUT_Slime, RUT_PropaneLake and the other renamed twins, which the 2026-09-12 campaign save still carries.
+The painted worldmap carries their RM_ successors.
 
 ## How the sheet got its list (causal chain)
 
@@ -171,38 +177,35 @@ RUT_Sump, RUT_Slime, RUT_PropaneLake and the other renamed twins, which the worl
 | `design/RimMandrake/baroque_biomes_list_2026-10-19.html` | RUT_FuelSnows alive; Umbra a "duplicate"; no floors | 173323cace vs 3056163ac3 |
 | `infrastructure/state/facts/biome_paint_list.md` | RUT_Desert row "PAINT" with no FROZEN/successor note; stale labels (RM_FloodedCanyon "flooded canyon", RM_Wastes "the Wasteland") | 80e0635c30 |
 | `src/RimMandrake/Scarlands/Defs/BiomeDefs/RM_Warscar.xml` | label "Warscar" without the article | read 10-28 |
+| `design/RimMandrake/biome_mod_architecture.md` §7 Q1 | "Umbra is NOT a biome", never updated after the 2026-10-19 Auroral Umbra ruling (corrected 2026-10-28) | read 10-28 |
 | `D:\ClaudeWork\rimmandrake\mineral_matrix_2026-10-28\design.md:22-26`, `PROGRESS.md:12`, `lessons.md:97-101`, `inventory.csv:60-96`; `Transient\mineral_matrix_round_two\data.json` | the 37-column sheet itself; "(Jawa)" labels; "Baroque Biomes" on floors | 9ca2c776d7 |
 | Files still naming RUT_FuelSnows (grep, not each read): `biome_mod_architecture.md`, `alpha_biomes_hits_2026-10-16.json`, `explosive_growth_ruled_spec_2026-10-16.md`, `explosive_growth_bench_design_pass_2026-10-16.md`, `flowworks_liquid_matrix.md`, `plant_draw_layers_2026-10-14.md`, `world_remake_2026-10-19/02_world_pipeline.md`, `13_owner_rulings_2026-10-19.md`, `design/Jawa/fauna/biome_name_migration.py`, `design/Jawa/mods/biome_flora.py`, `queue/FOUNDRY.md`, items DONOR_DEFS_PORT_TO_OURS_1, PACK_ANIMALS_RESTORE_EMPTY_SADDLES, CUT_FALLOUT_GENERATED_DATA_1, `art_rulings/prefill/2026-10-03_mineral_numbers_review_2026-10-03.decisions.json` | retired name (some may be historic records that are right to keep it) | grep 10-28 |
 
-## Proposed repair tickets
+## Repair tickets (filed for FOUNDRY, `--needs offline`)
 
-Names are proposals in SUBJECT_INTENT_TWIST form. They are NOT namechecked and NOT filed (the brief forbade ledger writes).
+| id | what | evidence |
+|---|---|---|
+| MINERAL_KERNEL_REWIRE_TWINS_BY_PAINT_MAP | Kernel and generator resolve a RUT_ twin through the painted map's RUT→RM pairs (`biome_paint_list.md`, `paint_inputs_remap.json`), not "RM_"+suffix. The selftest covers every renamed twin. RUT_Umbra resolves to itself | Kernel.cs:222-236; gen_mineral_registry.py:310-312; Program.cs:232 |
+| BIOME_TWIN_MAP_UNIFY_ONE_REGISTRY | One machine-readable biome registry (biome def, RUT_ twin, kind: land/sea/cave/background) that the sheets, the registry and the kernel all read. Seed it from the 27 painted biomes | the chain above; architecture §2 |
+| MINERAL_TWIN_COLUMNS_DELETE_RM_WINS | Delete the RUT_Desert, RUT_ExtremeDesert, RUT_AridShrubland and RUT_FuelSnows columns from the registry CSV. The RM_ column's numbers stand, because no owner ruling exists on the twin values (10-03 decisions: prefill, 37 pending). Keep the RUT_Umbra column: it is a painted biome | draft_matrix_v2 divergences; `Transient/mineral_numbers_review_2026-10-03.decisions.json` |
+| SEA_MINERALS_MERGE_FLOOR_INTO_SEA_ROW | Move each RM_SeabedFloor_* column's minerals onto its sea's row (TheScald, GreySea, TwilightSea, TheChill), then drop the floor columns. The floor defs stay as plumbing | owner 2026-10-28 "There is only the sea floor" |
+| MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP | Rebuild the mineral matrix from the 27 painted biomes, plus ChillCrater and LanternDeeps marked as what they are, using real src labels and no "(Jawa)" tags. Restore or recreate gen_matrix.py | design.md:22-26; inventory.csv:60-96; gen_matrix.py missing |
+| BAROQUE_LIST_PAGE_REDRAW_UMBRA_AS_BIOME | Fix baroque_biomes_list_2026-10-19.html: no RUT_FuelSnows, and the Auroral Umbra is a painted biome, not a duplicate. Sea floors are not listed as biomes | 173323cace vs 3056163ac3 |
+| RUT_ONLY_CLAIM_CORRECT_IN_MINERAL_DOCS | Correct the 10-02 :100 and 10-03 :199 sentences (successor names; Umbra is a painted biome; ChillCrater and LanternDeeps have no twin) | the two lines quoted above |
+| WARSCAR_LABEL_RESTORE_THE_ARTICLE | RM_Warscar label "the Warscar", per the 2026-09-26 label ruling | RM_Warscar.xml; architecture §7 Q5 |
+| FUELSNOWS_NAME_CULL_FROM_LIVE_DOCS | Remove live (non-historic) references to RUT_FuelSnows. Also fix the biome_paint_list RUT_Desert row and its stale labels | upstream table rows above |
 
-| name | title | seat | evidence |
+## The owner's 2026-10-28 answers, and where each was already on record
+
+He had already ruled three of the four questions this audit first asked, or painted the answer into the world. They
+are answered above and removed from this doc.
+
+| subject | his answer, 2026-10-28 (card) | already on record at | why this audit missed it |
 |---|---|---|---|
-| MINERAL_KERNEL_TWIN_MAP_NOT_SUFFIX | Kernel and generator resolve RUT_ twins through an explicit twin map, not "RM_"+suffix; selftest covers every renamed twin | FOUNDRY | Kernel.cs:222-236; gen_mineral_registry.py:310-312; Program.cs:232 |
-| BIOME_TWIN_MAP_ONE_SOURCE_OF_TRUTH | One machine-readable biome registry (RM_ def, RUT_ twin, kind: land/sea/floor/cave/background) that sheets, registry and kernel read | FOUNDRY | the chain above; architecture §2 as its seed |
-| MINERAL_REGISTRY_TWIN_COLUMNS_DROP_DIVERGED | Delete the RUT_Desert/ExtremeDesert/AridShrubland/FuelSnows columns from the registry CSV after the owner picks which values win | BENCH-needs-owner | draft_matrix_v2 divergences (steel 3 vs 0; 10 vs 8; 10 vs empty) |
-| SEA_MINERALS_FOLD_FLOOR_INTO_SEA_ROW | Merge RM_SeabedFloor_* values into their sea's column (one biome = surface + floor + catch), or the owner rules floors keep their own numbers | BENCH-needs-owner | RM_TheScald empty vs floor 8 minerals; owner ruling "sea describes its floor and catch" |
-| MINERAL_SHEET_REBUILD_FROM_RULED_LIST | Rebuild the mineral matrix from the 27 + ChillCrater + LanternDeeps list, with layers marked as layers, real src labels and no "(Jawa)" tags; restore or recreate gen_matrix.py | BENCH | design.md:22-26; inventory.csv:60-96; gen_matrix.py missing |
-| BAROQUE_LIST_PAGE_UMBRA_STALE_REWRITE | Fix baroque_biomes_list_2026-10-19.html: no RUT_FuelSnows, Umbra is the Auroral Umbra (not a duplicate), sea floors listed as layers | BENCH | 173323cace vs 3056163ac3 |
-| MINERALS_DESIGN_RUT_ONLY_CLAIM_CORRECT | Correct the 10-02 :100 and 10-03 :199 sentences (successor names; ChillCrater and LanternDeeps have no twin) | BENCH | the two lines quoted above |
-| WARSCAR_LABEL_ARTICLE_RESTORE | RM_Warscar label "the Warscar" per the 2026-09-26 label ruling | FOUNDRY | RM_Warscar.xml; architecture §7 Q5 |
-| FUELSNOWS_NAME_SWEEP_LIVE_DOCS | Sweep live (non-historic) references to RUT_FuelSnows; also fix the biome_paint_list RUT_Desert row and its stale labels | FOUNDRY | upstream table rows above |
-
-## Open questions only the owner can answer
-
-1. **Auroral Umbra's home.** RUT_Umbra is a real campaign land with no RM_ successor. On 2026-09-21 you said
-   "Umbra is a region not a biome" (architecture §7 Q1, line 528). On the 2026-10-19 card you said "Back to Umbra,
-   dark" and asked for perpetual auroras in "that biome". Does it get an RM_ def in Baroque Biomes, or is it
-   painted onto another biome at the terminal repaint?
-2. **Diverged twin numbers.** Where a RUT_ column and its successor disagree (ExtremeDesert steel 3 vs Stillsand
-   none; AridShrubland steel 10 vs LeaningScrub 8; Desert steel 10 vs LongShade empty), which values are yours?
-   The 10-03 review decisions file may hold your rulings. I did not check whose they were.
-3. **Sea floors.** Should a sea's dive-floor minerals live on the sea's own row, as your ruling implies, with the
-   floor defs as plumbing only? Or do you want floor and surface shown separately and labelled as layers?
-4. **RM_Cauldron** has no frozen definition sheet in `_freeze_matrix.csv`. Is it ruled canon (it is in the
-   architecture §2 table), or does it need a sheet?
+| Umbra's home | "Look at the painted worldmap please." | `13_owner_rulings_2026-10-19.md` row 18 ("Let's call it the Auroral Umbra… perpetual Auroral activity in that biome"); `02_world_pipeline.md:153-156, 264`; `paint_inputs_remap.json:36`; `world/paint_inputs_2026-10-20/README.md` (RUT_Umbra ×2,531 kept) | It read the 2026-09-12 record CSV and `biome_mod_architecture.md` §7 Q1, which still said "Umbra is NOT a biome" after the 10-19 ruling (now corrected) |
+| Diverged twin numbers | "Look for the auroral baroque biomes there." | Painted map: every twin was repainted onto its RM_ successor, and only RUT_Umbra was kept. The 10-03 decisions file holds no ruling (prefill, all pending). His only ruled desert numbers are the 10-09 phrikite in ONE desert and transparisteel fine sand from the extreme desert. Both sit on RM_Stillsand, which already has sand 99 | It never opened the painted map |
+| Sea floors | "There is only the sea floor. Of course. That's all they ever was." | `biome_rulings.md` 2026-09-21 "A sea biome describes BOTH its floor and its catch" | It treated the floor layer as a possible second biome |
+| RM_Cauldron | "Toxic pools. Near the terminator. Yes it's there. Look harder." | `design/Jawa/worldbuilding/biomes/cauldron.md` (was poison_forest.md); `_freeze_matrix.csv:10` row `poison_forest`; toxic water in `RM_CauldronFlora.xml:247-252`, `RM_CauldronFauna.xml:337-339` | It grepped the freeze matrix for "cauldron" (the row is keyed by its old name) and credited poison_forest.md to the Fever Wood |
 
 UNMEASURED: the 10-28 def dump itself (I relied on the builder's PROGRESS.md for its contents); where the "(Jawa)"
 labels came from (gen_matrix.py missing); what the kernel returns live for renamed-twin tiles; the labels in the

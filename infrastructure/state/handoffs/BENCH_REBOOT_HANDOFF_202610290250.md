@@ -12,7 +12,7 @@ before touching the game.**
 ## What the owner should see
 
 <!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
-- The audit and its 4 questions only he can answer: does the Auroral Umbra get an RM_ home; which numbers win where twins disagree; do sea floors fold into their sea's row; does RM_Cauldron need a sheet. Filed as `BIOME_AUDIT_TRIAGE_NINE_REPAIRS_WAITING`.
+- The audit's 4 questions were answered by him on 2026-10-28, and all 4 were already on record (painted worldmap, cauldron.md). The audit has been corrected and its 9 repairs filed for FOUNDRY. Item: `BIOME_AUDIT_TRIAGE_NINE_REPAIRS_WAITING`.
 - The Dispatcher is PAUSED for his final public push: `D:\ClaudeWork\rimmandrake\dispatcher\PAUSE`. Delete it to resume.
 - GitHub `main` was locked (lock_branch) for a while after 02:21Z and is unlocked now. Not touched, on his word: `MAINLOCK_DIAGNOSE_WHO_TURNED_THE_KEY`.
 - Mineral sheet republished under steven: https://claude.ai/artifact/UshY3nFfXfApojZUHNdjUF. Its source is pinned at `Transient/mineral_matrix_round_two/`.

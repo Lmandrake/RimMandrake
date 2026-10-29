@@ -530,8 +530,10 @@ each biome mod's `validation.py` states which of the two it is per toggle.
 > mod with options to enable/disable each of these biomes in a spawned game... or Utinni
 > scenario simply uses a painted world."*
 
-⇒ **Umbra is NOT a biome** and leaves the biome row list entirely — it is a region, and
-belongs with the planet's named regions. ⇒ The **Propane Lake is its own biome**, an ocean
+⇒ Umbra as a 09-21 region belongs with the planet's named regions. ⚠️ **Since 2026-10-19
+the Auroral Umbra IS a biome:** `RUT_Umbra`, painted on 2,531 tiles of the worldmap and kept
+there, with perpetual aurora (`world_remake_2026-10-19/13_owner_rulings_2026-10-19.md` row 18;
+`02_world_pipeline.md:153-156`). Its sheet is `the_propane_lakes.md` §0. ⇒ The **Propane Lake is its own biome**, an ocean
 biome made of propane. ⇒ **Propane + Grey + Twilight + Scald ship as ONE mod carrying four
 biomes**, each with a Mod Settings toggle to enable or disable it in a generated game
 (per the standing "every mod ships superb Mod Settings" ruling). The Utinni scenario is
