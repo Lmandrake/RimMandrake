@@ -917,7 +917,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             res = ("started: " if ok else "failed: ") + out
                             st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
                     elif a["do"] == "role_launch":
-                        role = next(r for r in sch["roles"] if r.get("name") == a["role"])
+                        role = RL.launch_role(next(r for r in sch["roles"] if r.get("name") == a["role"]), a)
                         # the off switch and PAUSE again, now: decide() read them before the ingest.lock wait
                         off = do_off(RL.wsl_path(role.get("off_file") or ""))
                         paused = do_paused()
