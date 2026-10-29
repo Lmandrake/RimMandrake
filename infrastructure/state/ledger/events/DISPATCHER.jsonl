@@ -63,3 +63,4 @@
 {"seat":"DISPATCHER","event":"note","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T06:59:05Z","ts":"2026-10-29T07:01:05Z","tsn":1793257265293195847}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Producer event run: completed","ts":"2026-10-29T07:05:15Z","tsn":1793257515004890680}
 {"seat":"DISPATCHER","event":"note","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:03:18Z","ts":"2026-10-29T07:05:17Z","tsn":1793257517750360036}
+{"seat":"DISPATCHER","event":"note","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:13:34Z","ts":"2026-10-29T07:15:32Z","tsn":1793258132191679874}
