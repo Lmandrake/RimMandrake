@@ -1,7 +1,7 @@
 # RimFlow v3 agent workflow, as built (2026-10-29)
 
 Status: as-built description, written 2026-10-29 around 13:00 PDT from the bench clone (`/home/mandrake/rm/bench`)
-at commit 6b7127714c. Item `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR`, step 1 of 3. The next step is a skeptical review
+at commit 6b7127714c, extended the same day with a second pass over the designs, charters and code listed at the end of §8. Item `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR`, step 1 of 3. The next step is a skeptical review
 by a second model. This document describes. It does not judge or recommend.
 
 Owner's words on the item: document the agentic workflow, then a skeptical review, for example *"the Steve desktop not
@@ -148,7 +148,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - It runs no later than `slot_late_s` after the slot time. The default is 3600 s (`rl:116-165`), and every role sets 3600.
 - A missed slot is journaled as missed and is **never run late**.
 - `after_role: Operations` (Conductor `sched:60`, Producer `sched:115`) means: do not run until Operations has run its slot today.
-  UNVERIFIED: the exact wait or skip semantics when Operations misses its slot.
+  [LIVE, `rl` header lines 12-20] Exact rule: the role launches only after the other role's own *scheduled* run for the slot it follows has finished `done` and none is going (Conductor 08:00 follows Operations 07:30; 20:00 follows 19:30). Alarm runs and yesterday's late run never count. If the band skipped the followed slot on purpose, the previous slot within 24 h is used instead. If Operations misses its slot, the follower does not launch; by the slot rules above it is then journaled missed once its own `slot_late_s` passes (inferred from the two rules together; not observed).
 - Event runs read events with a cursor, looking back `EVENT_LOOKBACK_S` = 6 h.
 - An unreadable ledger means UNMEASURED, and nothing launches.
 
@@ -173,11 +173,11 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - The owner's limit is 2 helpers at once across ALL roles together.
 - Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md). The schedule's `helpers_max` 2 (Arbiter, Auditor, Innovator) is therefore not used.
 - The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), yet its role file states the owner's limit of 2. This is a contradiction.
-- UNVERIFIED: whether any code enforces the cross-role helper count. `helper_budget.enabled` is true (`sched:14`); see §2.14.
+- [LIVE] Code enforces a per-seat count, not the owner's cross-role 2: the spawn hook `.claude/hooks/block_agent_over_slots.py` reads `helper_budget.json` per seat (§2.14). No code enforces "2 across all roles"; that waits on `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` [DESIGNED].
 
 **Scope stop** [LIVE, `rl:116-165`]:
 - `SCOPE_GRACE_S` = 600 s and `SCOPE_STOP_S` = 30 s govern stopping a role run whose scope overran. The alarm kind `role:Operations:scope` is open.
-- UNVERIFIED: the exact trigger condition.
+- [LIVE, `rl:686-703`] Trigger: the role's systemd unit reads as gone ("unit ..." state) while its `claude_bounded` scope is still busy. `role:<name>:scope` is raised, the run is kept as running and re-checked next tick; after `SCOPE_GRACE_S` the scope is stopped. A unit state of UNMEASURED raises `role:<name>:unit` instead. At `run_max_s` the role is stopped and the stop re-issued every tick (`rl` header lines 77-79).
 
 ### 2.2 Dispatcher (program)
 
@@ -228,7 +228,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - Roles, by launch.
   - The ledger, by alarm notes, which Operations alarm runs and the Conductor read.
 - **Owner touchpoints.** None directly. Alarms reach him only through the Conductor or Operations relays.
-- **Off switch.** The `PAUSE` file (rings only; role launches: UNVERIFIED whether PAUSE also stops them); `systemctl --user stop rm-dispatcher.timer`; `enabled: false` per seat or role.
+- **Off switch.** The `PAUSE` file (stops rings AND role launches [LIVE, `dispatcher.py:30` "stops everything"; disp:339-340 skip launches; running roles are still supervised first, disp:327; the release path re-checks PAUSE, disp:891-894, 926-927]); `systemctl --user stop rm-dispatcher.timer`; `enabled: false` per seat or role.
 
 ### 2.3 Doorbell (the mechanism that wakes a seat)
 
@@ -285,9 +285,13 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Model.** sonnet (`sched:22`). Clone: `/home/mandrake/rm/foundry`.
 - **Inputs.** The ledger queue, testq results, ring text.
 - **Outputs.** Commits, ledger claims, starts, closes and notes, and `./publish`.
-- **Decides alone.** How to do a claimed item, within its charter (`infrastructure/agents/FOUNDRY.md`, UNVERIFIED: not read for this doc).
+- **Decides alone** [LIVE as charter, `infrastructure/agents/FOUNDRY.md`]: everything outside `delegation_policy.md` §2 ("Decide; don't escalate taste", FOUNDRY.md:65-68), art and cosmetic calls through a judge agent logged `--why "delegated: <class>"`; first-guess tuning numbers marked PROVISIONAL (owner 2026-10-03, FOUNDRY.md:201-206); game restarts of its own (`./game --why`); acceptance of its own items including FlowWorks, L1 to GREEN-FULL (FOUNDRY.md:19-23). Never: work order, helper count, a ruling's twins (§1 calls).
+- **Lanes** [LIVE, FOUNDRY.md:18]: since the v3 cutover FOUNDRY owns ALL FlowWorks and Gimme Some Slack (see §2.20).
+- **Work states** [LIVE, FOUNDRY.md:8-17]: `rimflow next` reserves with a 45-minute token lease; `implemented --sha` moves the item to `built` with owed criteria tagged L0-L4; each passing `verify --criterion` moves it towards `validated`, the last one to `done`; `close --sha` is for items with nothing live owed.
+- **Turn loop** [LIVE, FOUNDRY.md:145-172]: after each ticket it commits its ledger shard, files open promises and runs `seat_restart.py request --reason closed`. `CONTEXT OK` (under 110k tokens) means take `next --ringed` and continue in the same turn; `RESTART REQUESTED` means end the turn. The restart is held, never forced, while a helper is alive, it holds the bridge or driver lock, its last game event is a deploy/load/shutdown, PAUSE is on, or the owner touched the machine in the last 2 minutes. A new owner prompt within 30 s cancels it.
+- **Full belt** [LIVE as charter, owner 2026-10-03, FOUNDRY.md:180-199]: one helper on the bridge whenever free, the art pipeline up, one helper building offline; "Never go idle waiting for no one" (FOUNDRY.md:194).
 - **Hands to.** The Arbiter and interim reviewer (closes); the Auditor (samples).
-- **Owner touchpoints.** UNVERIFIED.
+- **Owner touchpoints** [LIVE as charter]: a §2 call goes to him only by saying it in its reply or `rimflow file --for OWNER --kind decision` (FOUNDRY.md:67-68); L4 validation belongs to the owner (FOUNDRY.md:23); his game-state words are recorded with `./game --said` (FOUNDRY.md:59); anything left for him is read first (FOUNDRY.md:69-71). A new prompt from him cancels a pending restart.
 - **Off switch.** `seats.FOUNDRY.enabled` or `wake: false`.
 - **Day-one state** [LIVE]: in `cooldown` with `last_verified` set; `cap:FOUNDRY` is an open alarm kind.
 
@@ -320,6 +324,13 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Day one** [LIVE, state.json]: the 08:00 quick run used 233,151 tokens. On 10-28 both its slots were missed.
 - **Contradiction.** Its `_why` says AMBER/RED runs only the 20:00 check, but the bands are neutralized (§2.1).
 
+
+**From `infrastructure/agents/CONDUCTOR.md`** [LIVE as charter]:
+- First rule (owner, 2026-10-28, verbatim): "Conductor from now on should function as a light orchestrator focussed on communication with the human primary. Make that absolutely clear in its definition." It answers him first each turn, does no work itself (backgrounded helpers do), never blocks his window (CONDUCTOR.md:12-29).
+- Quick mode (phone) builds, tests and deploys nothing, takes no bridge and runs no helper. Session mode runs helpers, "never more than two at once across all roles, never more than the allocator gives" (CONDUCTOR.md:48-56).
+- Scheduled quick checks 08:00 and 20:00 run headless through `role_launch.py` **as seat BENCH** and append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (CONDUCTOR.md:57-60).
+- Goodbye: his message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs a light close-out (rulings to the ledger, promises filed `--for OWNER`, 3-5 log lines). The fresh-window restart after it is NOT built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`; `seat_restart` off for this seat), so the window stays open (CONDUCTOR.md:62-68).
+- Seat models (`infrastructure/agents/Agent_Policy.md:17-35`, owner 2026-10-20): the orchestrating seat runs Opus and backgrounds design to Opus helpers; FOUNDRY runs Sonnet and escalates to Opus per item; Haiku for mechanical bulk work with a checkable outcome.
 ### 2.8 Operations (role; the only token-aware AI)
 
 - **Purpose.** Watch the accounts, burn and runway; turn alarms into action; propose economy changes to the owner.
@@ -472,7 +483,11 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - **CONDUCTOR.** Helpers only while the owner is in its window. Every Conductor helper-hour is owed and is paid back from FOUNDRY after he leaves.
 - The spawn hook `.claude/hooks/block_agent_over_slots.py` reads that file first. If the file is older than MAX_AGE_S or older than the owner's last word (`slot_override.json`), the hook computes for itself.
 - Role runs count as the seat they run as (`AGENT_SEAT`).
-- UNVERIFIED: the MAX_AGE_S value, and the numeric budgets published today. I did not read `helper_budget.json` or `slot_rules.json` for this document.
+- [LIVE, `helper_budget.py:32-33`] `MAX_AGE_S` = 600 s (five missed ticks); `FUTURE_SLACK_S` = 5 s.
+- [LIVE, `D:\ClaudeWork\rimmandrake\dispatcher\helper_budget.json`, read 2026-10-29 12:57 PDT] mode `CRUISE+OWNER`; CONDUCTOR 6, FOUNDRY 4. Why text: account 87% left, 6.08 d to reset, pace P 1.00, no burn rate measured, CRUISE step gives 4; Codex runway 0.25 (<1.0).
+- [LIVE, owner override in the same file] set 2026-10-28 21:53, BENCH 6 until 2026-11-04T14:00-08:00. Owner's words: "For this checkout, use as many subagents as you like. This is taking too long and I'm getting tired." BENCH still has an override after the v3 cutover removed the BENCH seat (§2.20).
+- [LIVE, `src/RimMandrake/Utils/slot_rules.json`] seats BENCH and FOUNDRY; `split.rule` "v3"; `conductor_session_n` 3; `total_max` 10; `fallback_n` BENCH 3, FOUNDRY 1. Token modes: DARK n 0 at ≥98% used; ALMOST_OUT n 1 (enter p<0.5, leave p>0.8, hold 2 h); CRUISE n 6 with steps p 0.8→2, 1.0→3, 1.2→4; BURN n 10 (enter p>1.5 with reset <48 h; leave p<1.2 or reset <6 h); SWEEP n 3, hold 12 h. `cross_hold_h` 2, `min_mode_min` 60, `session_brake_pct_used_gt` 90. Fit: 3 h window, ≥4 points over ≥1.5 h, `msgs_per_pct` 1460. `spare.min_pct_left` 10. Lent account (`lent_accounts.steven`): we may use at most 48%, prefer the first 48 h of its week, floor 10% left, off limits through 2026-10-28T15:00-07:00. Queue paydown: enter when A1>100 or D1≥10, leave when A1<60 and D1<5. Presence: bench_min 30, afk_min 60. Overage: finish_margin_h 6, default_window_h 24, bench_floor 1. `helpers.live_window_s` 900. ops: stale_min 45, disk_brake_free_gb 210, codex_conserve_runway 1.0, steve_stall_min 30, steve_invalid_streak 3.
+- Note: `conductor_session_n` 3 here, `session_helpers_max` 3 in the schedule, the live budget's CONDUCTOR 6 and the role file's "2 across all roles" are four different numbers for Conductor helpers [LIVE, each as cited].
 - Relation to the role files' "2 helpers across all roles": a separate rule. `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is still open, so no reservation mechanism exists, and headless roles run no helpers.
 
 ### 2.15 testq and the SteveDesktop lane (programs, no AI)
@@ -519,7 +534,8 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
   - Health check: 109 jobs finished in 24 h, 10 of them INVALID. Test hours catching nothing: 37.05 h/7 d (ESTIMATE).
   - 128 UNTRIAGED findings, all seat RUNNER. `FLOWWORKS_QUARRY_DIGGING_1` shows 26 fail and 0 pass verifies while the item reads `validated`.
 - **Results to the ledger.** `ingest.py` writes RUNNER ledger events: verify partial/pass/fail and findings. Since the cutover there were 308 events: 227 verify (181 partial, 30 pass, 16 fail) and 19 findings (health check).
-- **Who consumes findings.** UNVERIFIED as a running mechanism. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` (a program that folds findings into items) is the owner-chosen design and is not built [DESIGNED].
+- **Who consumes findings.** Nobody on a cadence [LIVE as evidence: the untriaged count rises, 128 on day one; no role file or timer names a consumer]. Part 4 gives no duty row to findings triage. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` (option B of the findings curation design, §2.19) is the owner-chosen design, filed for FOUNDRY, not built [DESIGNED].
+- **Mod choice** [LIVE, `~/.config/systemd/user/testq-tick.service:10`, `testq-sweep.service:9`]: the filler and sweep loop over `${TESTQ_FILL_MODS:-FlowWorks}` and `${TESTQ_SWEEP_MODS:-FlowWorks}`. Neither unit sets the variable (no `Environment=` for it, no drop-in directory, absent from the user manager's environment, checked 2026-10-29), so both run FlowWorks only.
 - **Off switches.** `fill.stop`, `testq.py pause`, `quarantine.json`, or stopping `testq-tick.timer`.
 
 ### 2.16 Bridge lock and companion grant
@@ -528,13 +544,16 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
 - **Companion test grant** [LIVE, manual]: `companion_profile.json` holds a test grant with an expiry.
   - It lapsed at 03:00Z on 10-28/29 and 5 FOUNDRY tickets bounced (Conductor night audit). It was renewed by hand.
   - The item that would automate it, `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME`, is `proposed` [DESIGNED].
-  - UNVERIFIED: the grant file's path and current expiry. I did not open it.
+  - [LIVE, `src/RimMandrake/Utils/modcheck/runner.py:104-110`] modcheck refuses to start a suite when the companion is not in its TEST profile or the grant lapses within `PROFILE_MIN_MINUTES` = 45.
+  - UNVERIFIED: the grant file's path and current expiry. I did not find or open the live file.
 - **Owner idle gate** [LIVE]: tickets needing the game, the bridge or a deploy are rung only when `idle_probe` MEASURES the owner idle ≥1200 s (`sched:12`).
 
 ### 2.17 Interim GPT reviewer
 
 - **Purpose.** Today's binding gate on closes; the Arbiter is advisory (arbiter.md, auditor.md step 3).
-- UNVERIFIED: the mechanism that invokes it (hook, seat ritual or program), its schedule and its caps. I did not trace these for this document.
+- **Mechanism** [DESIGNED, responsibilities Part 4 rules and rows A-1, A-3, AU-2; LIVE as a rule in `roles/arbiter.md:167` and `roles/auditor.md:97`]: an outside non-maker read through `gpt_consult.py`, applying the Arbiter's evidence rules and mandatory bars, requested by the maker at the done claim and never written by it. Trigger: per claim (A-1), before every conditional close (A-3), on every check-defect verdict (AU-2). It stands in for the Arbiter until that role binds and for the Auditor's per-verdict re-checks. No schedule and no cap: it is a ritual of the closing seat.
+- UNVERIFIED: whether any program or hook refuses a close that lacks the reviewer's read. I found none; the role files describe it only as a rule.
+- The contracts carry its verdict as the `interim` field of each Arbiter verdict (`src/RimMandrake/contracts/models.py:262`) [LIVE as schema].
 
 ### 2.18 Other systemd user timers (no AI)
 
@@ -552,6 +571,42 @@ Listed in full in §3. None decides work; they measure, mirror, publish or clean
 The account timers `account-plan` and `claude-account-warm` are [OFF] (disabled).
 
 ---
+
+### 2.19 Designed on 2026-10-29, not built [DESIGNED]
+
+Four designs were written today. Each is DESIGN ONLY: no code, timer, schedule key or role-file text from them is live. The owner's rulings below are quoted from each item's ledger history (`rimflow show <ID>`). All four items are now owned by FOUNDRY.
+
+**a. Findings curation** (`design/RimMandrake/findings_curation_design_2026-10-29.md`; item `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`, filed by the owner 2026-10-29T15:39Z for FOUNDRY, kind build).
+- Why: the owner refused `FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`; 127 findings were 50 distinct failures, one repeated 27 times.
+- Options: A, a daily FOUNDRY curation ticket; B, a program folds repeats and FOUNDRY judges only what is new; C, a weekly Auditor pass. The owner filed B.
+- Option B actors: a no-AI sorter run after every ingest from the Dispatcher's measure list (like ops_watch). It signs each finding (mod, test row, normalized failure text) into a standing-failures table, and on its own only merges repeats into an existing decision, routes red canaries and refused pulls to Operations' lane item, retires a row after 3 later passes in a row (reopens on a new fail), and flags done-but-failing items (§6 of the design). FOUNDRY judges what is new, daily, with a weekly pass (item title).
+- New handoffs if built: testq ingest → sorter → Operations (rig health) and → FOUNDRY (new failures).
+
+**b. v3 health daily check** (`design/RimMandrake/v3_health_daily_check_2026-10-29.md`; item `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
+- Owner, verbatim: "1, 2, 3 - should be a daily check performed by a responsible party all the time (could be Ops, could be Arbiter). Everything but 4. Switching off agents is a good idea later when we show that at least a nominative system is functional for awhile."
+- By card 17:06Z: Operations owns all of it (message tagging, planted faults, output tracing, the daily page); the Auditor's weekly re-check guards Operations grading its own usefulness.
+- By card 17:23Z: the kill-test baseline is an Opus gold-labelling of the v2 week; the Haiku tagger is measured against it. A BENCH note at 17:31Z says the spec's §2 still describes the old baseline and is owed a revision.
+- Planted faults, owner's revision (17:23Z): plants come "from outside the system (I would suggest Auditor by its very design)", are treated as real faults, are recorded in a secret register, and are marked as plants after the experiment, with "corrected fault-free" parallel stats. By card 17:34Z: the Arbiter reads only ended plants; the Conductor alone reads live plants. Owner 17:34Z: the build may proceed but the plant part ships OFF (schedule switch disabled); turning it on is his call once v3 has stabilized.
+- Designed actors and cadences (design §1): `owner_tags.py extract` every 15 min inside the ops_watch pass (no AI); `owner_tags.py tag` hourly on its own timer (Haiku); `health_drill.py plant` on its own timer at a random minute (Auditor's program) and `health_drill.py watch` every 15 min; ops_watch collector `health.trace.*` every 15 min; `v3_health_page.py` as the last step of the ops_watch pass, one dated copy a day. Operations reads the page in its existing 07:30 and 19:30 runs and on health alarms; no new role run. Outputs under `D:\ClaudeWork\rimmandrake\v3_health\`. Using `health.*` keys for dispatch decisions is out of scope.
+- Part 4 (switch roles off to see what breaks) is deferred by his ruling.
+
+**c. Process model v2/v3** (`design/RimMandrake/process_model_v2_v3_design_2026-10-29.md`; item `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY`).
+- Owner, verbatim: "Operations should be using a custom v3-based model fit. v2 models should be specific to that v2 workflow and parameterized appropriatley, only fit to past v2 data logs. v3 should have different parameterizations ... v3 model should be tuned at least once a day on the ongoing data record".
+- By card 17:34Z: compare on the shared work core plus v3 tickets re-counted the v2 way; v2 fit window 2026-10-06..10-26 (fit two weeks, predict the third); owner-habit shifts go to the daily summary only, never a direct alert.
+- Designed actor: `rm-process-model.timer` (user systemd) daily at 06:30 local, hard 30-minute timeout, nice 10; deterministic ABC-MCMC (20 chains × 150 steps, 120 members, about 10-15 CPU-minutes on 4 processes); a held-out-day check gates `current.json`; 3 failures in a row → RED, filed as an item. Outputs under `D:\ClaudeWork\rimmandrake\process_model\`, nothing in the repo. ops_watch adds a daily series line and an alarm (no fit for 36 h, or RED). Operations reads `digest.md` at 07:30 and never retunes by hand.
+
+**d. Producer cadence** (`design/RimMandrake/producer_cadence_2026-10-29.md`; item `PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`).
+- Owner, verbatim: "I think calling the Producer once a week for planning is not at all the entirely of Producer. It also needs to track that schedule (relative to the stats from Operations, Foundry, etc.) and make a daily plan to follow as well. Likely 2-3 times a day may be needed, that's a tuning parameter."
+- By card 19:42-19:43Z: option B, gated check-ins at 12:00 and 18:00 (new schedule key `track_slots_local`); a big slip triggers an immediate Conductor run ("Wake me at once"); on-schedule counts only items built with a real commit (ledger-only or under-5-minute closes excluded as suspect).
+- Designed actors: a no-AI tracker (ops_watch collector `plan.*`) compares the day's plan `today.json` checkpoints with measured progress. A tracking slot launches the Producer only when the newest MEASURED reading shows `BEHIND`, `AHEAD`, `RUNNING_DRY`, a big slip or a failure; a new event kind `plan_slip` (edge-triggered) shares the existing `event_runs_per_day` 1. At most three Producer runs a day inside the existing 2.0M daily cap; add 15:00 if FOUNDRY runs dry between 12:00 and 18:00 most days of the first week.
+
+### 2.20 v3 cutover (program, one-shot) [LIVE, applied]
+
+- **What.** `src/RimMandrake/rimflow/v3_cutover.py`; record `infrastructure/state/v3_cutover/record.json` (state `applied`, 2026-10-29T01:32:17Z, item `V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY`).
+- **Owner, verbatim (ownerSaid in the record):** "Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry".
+- **Effect.** 691 BENCH items moved to FOUNDRY; 40 kept (they need the owner or L4); 0 deferred. The FlowWorks/GSS lane seat flipped from BENCH to FOUNDRY, and the docs patch was applied to `infrastructure/agents/BENCH.md` and `FOUNDRY.md`. A revert path exists in the program.
+- **Design of record** (quoted in the record): "there is no BENCH seat in v3; the Conductor absorbs Bench and works only in live sessions with him; FOUNDRY is the one autonomous builder."
+- **Residue** [LIVE]: `slot_rules.json` still lists seats BENCH and FOUNDRY with `fallback_n` BENCH 3, and the live helper budget carries the owner's BENCH override of 6 until 2026-11-04 (§2.14). Older standing text that "BENCH owns all FlowWorks + GSS" contradicts FOUNDRY.md:18 after the cutover.
 
 ## 3. Master 24-hour timeline (local time, PDT)
 
@@ -598,7 +653,9 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 **Window and day rules:**
 - Each clock slot may start up to `slot_late_s` 3600 s late. Outside that window it is "missed" and not run that day.
 - The Conductor's headless runs are held while the owner's "AGENT CONDUCTOR" window is live.
-- UNVERIFIED: whether "local day" for slots and caps is computed in PDT. I read this from the role_launch header ("once per local day") but did not trace the timezone call.
+- [LIVE, `rl:351, 382, 388, 401` use `time.localtime`] "Local day" is the machine's local timezone (PDT/PST on this box), so the day boundary is local midnight.
+
+**Designed additions to the day, not live (§2.19):** 06:30 process-model fit (timer); 09:00 Producer daily plan as today; 12:00 and 18:00 gated Producer tracking slots; every 15 min owner-message extract, output trace, drill watch and the health page inside the ops_watch pass; hourly Haiku tagging; planted-fault timer at a random minute (ships OFF); findings sorter after every ingest.
 
 **Day one (10-28 15:00 PDT cutover to 10-29 about 13:00), from the health check and state.json:**
 - On 10-28 every role slot was missed: the Arbiter 11:00/17:00, the Auditor 13:00, the Conductor 08:00/20:00, Operations 07:30, the Producer 09:00. Most of these fell before the cutover (22:00Z).
@@ -620,64 +677,72 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | ops_watch → BENCH (ledger) | alarm items (disk, timers, Steve, evidence) | `rimflow` item filed as RUNNER, `--for BENCH --needs offline` | The item waits in the BENCH queue. `OPS_*` items also trigger Operations alarm runs. [LIVE] |
 | ops_watch → Operations | account and runway alarms | `alarms.json` (never filed as items) | Read at the next Operations run. [LIVE] |
 | ops_watch → token-blind roles | allow-listed health | `digest_blind.md` | n/a [LIVE] |
-| Operations → owner | proposals | `ops_watch\owner\OP-<ts>.md`, relayed by the Conductor (OPS PROPOSAL / OPS DECISION) | Waits for the next Conductor check or BENCH session. UNVERIFIED: any timeout. [LIVE] |
+| Operations → owner | proposals | `ops_watch\owner\OP-<ts>.md`, relayed by the Conductor (OPS PROPOSAL / OPS DECISION) | Waits for the next Conductor check or BENCH session. No timeout: none is named in `roles/conductor.md:80`, `roles/operations.md:154` or `ops_watch.py`. [LIVE] |
 | Operations → Producer | replan request | `REPLAN REQUEST RR-<ts>` note | Triggers a Producer event run (≤1 a day). Otherwise read at the 09:00 run. [LIVE] |
 | Producer → FOUNDRY | ordered work | ledger raises and queue order | FOUNDRY picks it up when rung. [LIVE] |
 | Producer → owner | cut list | CUT LIST -r<N>, relayed by the Conductor; owner CUT DECISION; Producer CUT APPLIED | Waits. [LIVE as a role-file rule] |
-| Producer → Conductor | TESTQ mod choice | note | The Conductor applies it (env `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS`). UNVERIFIED: how it is applied. |
-| FOUNDRY → interim reviewer and Arbiter | close with sha and evidence | `rimflow close` | The interim reviewer gates (mechanism UNVERIFIED). The Arbiter judges at 11:00/17:00 if pending work exists. [LIVE / UNVERIFIED] |
+| Producer → Conductor | TESTQ mod choice | note | Designed: the Conductor sets env `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` (Part 4 row P-6). Live: the variables are set nowhere, so the units default to FlowWorks (§2.15). No program path carries the choice to the units. [DESIGNED / LIVE as absent] |
+| FOUNDRY → interim reviewer and Arbiter | close with sha and evidence | `rimflow close` | The closing seat asks the interim GPT reviewer itself (`gpt_consult.py`, §2.17); no program enforces it. The Arbiter judges at 11:00/17:00 if pending work exists. [LIVE as rule / LIVE] |
 | Arbiter → Auditor | verdicts | `arbiter\verdicts.jsonl` | Read at 13:00. On day one the trial wrote `arbiter\trial\verdicts.jsonl` instead, so the Auditor could not compare (health check). [LIVE] |
 | Arbiter → owning seat | FAIL | ticket | Waits in the queue. [LIVE] |
 | Auditor → owning seat | DEFECT | ticket via `rimflow file/spawn` | Waits in the queue. Day one: `AUDITPRESCREEN_FIX_WAVED_THE_FAKE_THROUGH` was reassigned to FOUNDRY with no work event seen (health check). [LIVE] |
 | Auditor → Arbiter | escapes | ticket | Read at the next Arbiter run. [LIVE] |
 | Auditor → Conductor | waiting picks after 3 runs; charter drafts; questions | ledger note | Next Conductor run. [LIVE as a rule] |
 | Innovator → Conductor → owner | proposals | ledger, then the Conductor card | Nothing happens until he answers. [LIVE as a rule] |
-| testq → ledger | test results and findings | `ingest.py` RUNNER events | Findings pile up UNTRIAGED: 128 on day one. No running consumer (UNVERIFIED). [LIVE] |
+| testq → ledger | test results and findings | `ingest.py` RUNNER events | Findings pile up UNTRIAGED: 128 on day one. No running consumer (§2.15). [LIVE] |
 | steward → BENCH → owner | Steve lane fault | `STEVE_LANE_UNSTICK_*` item at T+10; raise at T+30; owner item at T+120 | BENCH absent: it escalates to the owner at 120 min. [LIVE] |
 | seat_restart → FOUNDRY | kill and relaunch | SIGTERM/SIGKILL, then `seat_loop.sh` | Cancelled by any human input. The live kill path is unexercised. [LIVE] |
 | Conductor → owner | everything above, batched | question cards, `conductor\log.md`, BENCH session | Held until he is present. [LIVE] |
 | owner → system | rulings | `--owner-said` notes, schedule edits, OFF files, PAUSE, `slot_override.json` | n/a |
+| testq ingest → findings sorter → Operations / FOUNDRY | repeats merged, rig health routed, new failures | standing-failures table, outcome events | [DESIGNED, §2.19a] |
+| ops_watch health pass → Operations | message tags, trace, drill catches, the health page | `v3_health\` files, `health.*` keys in `status.json` | Read at 07:30 / 19:30 and on alarm. [DESIGNED, §2.19b] |
+| Auditor planter → secret register → Conductor (live) / Arbiter (ended only) | planted faults | secret register; public reveal verb | Ships OFF until the owner turns it on. [DESIGNED, §2.19b] |
+| process-model timer → Operations | daily v3 fit, held-out check, drift | `process_model\digest.md`, `current.json` | Read at 07:30. [DESIGNED, §2.19c] |
+| plan tracker → Producer → Conductor | BEHIND / AHEAD / RUNNING_DRY / big slip | ops_watch `plan.*`, `today.json`, event `plan_slip` | Gated slots 12:00 / 18:00; a big slip wakes the Conductor at once. [DESIGNED, §2.19d] |
 
 ---
 
 ## 5. Arbitrary parameters
 
-"Who may change" is taken from the doc and role files. Where a file does not say, it is UNVERIFIED and the de facto rule is anyone with commit rights.
+"Who may change" is taken from the doc and role files. Sources: Part 4 of `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` gives the owner "the starting schedule" (row L-1) and gives Operations the tightening of `slot_rules.json`, with any loosening his (row O-14) [DESIGNED]. No code enforces either: anyone with commit rights can edit these files [LIVE: I found no hook or check that guards them]. Where a row says "not named", no file I read names who may change it.
 
 | parameter | value | where set | who may change | why (if recorded) |
 |---|---|---|---|---|
-| tick_s | 120 | sched:4 | UNVERIFIED | Dispatcher cadence |
-| timer OnUnitInactiveSec / OnBootSec / TimeoutStartSec | 120 s / 3 min / 600 s | rm-dispatcher.timer/.service | UNVERIFIED | |
-| tick_budget_s | 420 | dispatcher | UNVERIFIED | |
-| stall_after_s | 240 | sched:5 | UNVERIFIED | idle before a ring |
-| verify_s | 300 | sched:6 | UNVERIFIED | ring must be consumed in |
-| handoff_s | 600 | sched:7 | UNVERIFIED | claim must follow the ring in |
-| max_retries | 2 | sched:8 | UNVERIFIED | |
-| cooldown_s | 3600 | sched:9 | UNVERIFIED | |
-| dead_after_s | 600 | sched:10 | UNVERIFIED | |
-| recover_verify_s | 300 | sched:11 | UNVERIFIED | unused (recovery off) |
-| owner_idle_s | 1200 | sched:12 | UNVERIFIED | game/bridge tickets wait for an idle owner |
-| alarm_every_s | 21600 | sched:13 | UNVERIFIED | |
+| tick_s | 120 | sched:4 | owner (P4 L-1) | Dispatcher cadence |
+| timer OnUnitInactiveSec / OnBootSec / TimeoutStartSec | 120 s / 3 min / 600 s | rm-dispatcher.timer/.service | not named | |
+| tick_budget_s | 420 | dispatcher | owner (P4 L-1) | |
+| stall_after_s | 240 | sched:5 | owner (P4 L-1) | idle before a ring |
+| verify_s | 300 | sched:6 | owner (P4 L-1) | ring must be consumed in |
+| handoff_s | 600 | sched:7 | owner (P4 L-1) | claim must follow the ring in |
+| max_retries | 2 | sched:8 | owner (P4 L-1) | |
+| cooldown_s | 3600 | sched:9 | owner (P4 L-1) | |
+| dead_after_s | 600 | sched:10 | owner (P4 L-1) | |
+| recover_verify_s | 300 | sched:11 | owner (P4 L-1) | unused (recovery off) |
+| owner_idle_s | 1200 | sched:12 | owner (P4 L-1) | game/bridge tickets wait for an idle owner |
+| alarm_every_s | 21600 | sched:13 | owner (P4 L-1) | |
 | HOLD_ALARM_EVERY_S | 21600 | disp:573 | code | |
-| ops_stale_s / OPS_STALE_S | 2700 | sched:3, rl:116-165 | UNVERIFIED | |
+| ops_stale_s / OPS_STALE_S | 2700 | sched:3, rl:116-165 | owner (P4 L-1) | |
 | FUTURE_TOL_S | 300 | rl:116-165 | code | |
 | EVENT_LOOKBACK_S | 21600 | rl header | code | |
 | RUN_NOW_TTL_S | 3600 | rl:116-165 | code | |
 | SCOPE_GRACE_S / SCOPE_STOP_S | 600 / 30 | rl:116-165 | code | |
 | wakes_per_seat_hour / _seat_day / _per_day | 12 / 96 / 120 | sched:20 | BENCH changed them 10-29 | `FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE`; were 6/48/80 |
-| recovers_per_seat_day | 3 | sched:20 | UNVERIFIED | unused |
+| recovers_per_seat_day | 3 | sched:20 | owner (P4 L-1) | unused |
 | code cap defaults | 3/30/80/3 | disp:99 | code | |
 | RM_DOORBELL_MAX_WAIT_S / POLL_S | 23 h / 3 s | doorbell hook | env | |
-| backstop_ctx_tokens / backstop_idle_s / grace_s (FOUNDRY) | 110000 / 1800 / 30 | sched:35 | UNVERIFIED | |
+| backstop_ctx_tokens / backstop_idle_s / grace_s (FOUNDRY) | 110000 / 1800 / 30 | sched:35 | owner (P4 L-1) | |
 | seat_restart defaults | see §2.4 table | seat_restart.py DEFAULTS | code | |
-| lease length | 45 min, renewed | lease.py | code | UNVERIFIED: exact constant line |
+| lease length / renew | 45 min / every 10 min | `lease.py:72-73` `LEASE_TTL_S`, `RENEW_EVERY_S` | code | [LIVE] |
+| helper_budget MAX_AGE_S / FUTURE_SLACK_S | 600 s / 5 s | `helper_budget.py:32-33` | code | [LIVE] |
+| owner idle required / boot slack | 1200 s / 60 s | `idle_probe.py` `IDLE_REQUIRED_SECONDS`, `BOOT_SLACK_MS`; owner card 2026-10-26 19:06 | owner (card) | [LIVE]; any probe failure is UNMEASURED, never idle |
+| slot_rules modes, caps and lent-account limits | see §2.14 | `slot_rules.json` | code | [LIVE] |
 | slot_late_s | 3600 (every role) | sched:59,76,92,108,123,136 | owner (schedule) | |
 | run_max_s | Conductor 1800, Arbiter 2700, Auditor 2700, Operations 1800, Producer 1800, Innovator 2700 | same lines | owner | the only hard stop |
 | Conductor quick_token_cap / daily | 450000 / 1350000 | sched:50 | owner | |
 | Conductor session_week_pct_cap | 6 | sched:51 | owner | |
 | Conductor session_helpers_max | 3, every band | sched:52-55 | owner | role file says 2 across roles |
 | Arbiter run / daily cap | 500000 / 1250000 | sched:66 | owner | |
-| Arbiter pre_launch budget / tiers cap / pre_launch_max_s | 900 s / 6 / 1200 s | Arbiter entry | UNVERIFIED | |
+| Arbiter pre_launch budget / tiers cap / pre_launch_max_s | 900 s / 6 / 1200 s | Arbiter entry | owner (P4 L-1) | |
 | Auditor run / daily cap | 700000 / 875000 | sched:81 | owner | `_caps_why` quotes older numbers |
 | Operations run / economy / daily cap | 450000 / 550000 / 1650000 | sched:99 | owner | |
 | Operations alarm_run_gap_s / per alarm per day / per day | 3600 / 1 / 2 | sched:108 | owner | |
@@ -689,28 +754,28 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | throttle bands GREEN/AMBER/RED/FLOOR | runway ≥1.5 / ≥1.0 / ≥0 / week_left <10 %; every band "all" with ×1.0 | sched:52-55 and per role | owner | neutralized 10-28, commit d92c4c825e |
 | account_pick switch_when / target_min | runway <0.8 or week_left <10 / runway ≥1.2, week_left ≥20, MEASURED | sched:141-144 | owner | |
 | account_pick lent_min_draw_pct / rank / act / hold | 10 / soonest_reset / recommend / [] | sched:141-144 | owner | owner card 10-28 19:00 |
-| ops_watch every_s | 900 | sched:38, timer `*:07/15` | UNVERIFIED | |
-| ops_watch band k_sigma / baseline / min_points | 3.0 / 7 d / 20 | ops_watch_rules.json `band` | UNVERIFIED | |
-| ops_watch run n | 8 | ops_watch_rules.json `run` | UNVERIFIED | |
-| ops_watch silent windows | 2 h default; accounts/production 3 h; process/testing/tokentalk 6 h | ops_watch_rules.json `silent` | UNVERIFIED | |
-| alarm clear_passes / lock_wait_s | 4 / 90 | ops_watch_rules.json `alarm` | UNVERIFIED | |
+| ops_watch every_s | 900 | sched:38, timer `*:07/15` | owner (P4 L-1) | |
+| ops_watch band k_sigma / baseline / min_points | 3.0 / 7 d / 20 | ops_watch_rules.json `band` | not named | |
+| ops_watch run n | 8 | ops_watch_rules.json `run` | not named | |
+| ops_watch silent windows | 2 h default; accounts/production 3 h; process/testing/tokentalk 6 h | ops_watch_rules.json `silent` | not named | |
+| alarm clear_passes / lock_wait_s | 4 / 90 | ops_watch_rules.json `alarm` | not named | |
 | target: runway (accounts, codex) | <1.0 alarm | targets | owner brief 10-26 | |
 | target: steve.unowned_stall_min | >30 alarm | targets | owner brief | |
 | target: steve.incident_unclaimed_min | >10 alarm | targets | owner 10-28 15:50 | |
 | target: steve.invalid_streak | ≥3 alarm | targets | owner brief | |
-| target: disk root / C: / D: free GB | <210 / <200 / <200 alarm; root <420 flag | targets | UNVERIFIED | scratch grew 207 GB in one day |
-| target: timers.failed_units / evidence.tamper | >0 alarm | targets | UNVERIFIED | |
+| target: disk root / C: / D: free GB | <210 / <200 / <200 alarm; root <420 flag | targets | not named | scratch grew 207 GB in one day |
+| target: timers.failed_units / evidence.tamper | >0 alarm | targets | not named | |
 | target: testing.nothing_h_7d | >18 flag only | targets | v3 §6 | |
 | target: process.share_7d | ≥61 flag only | targets | v3 §6 | |
 | target: tokentalk share | ≥10 flag only | targets | owner 10-27 | |
-| target: flow.untriaged_findings | >0 flag only | targets | UNVERIFIED | |
+| target: flow.untriaged_findings | >0 flag only | targets | not named | |
 | testq tick / probe | 60 s / 300 s | testq-tick.timer, TESTQ_PROBE_S | env | |
 | testq fill chains / hours / cap | 4 / 8 h a day / 200 | TESTQ_FILL_CHAINS, TESTQ_FILL_HOURS (testq.py:1016), TESTQ_FILL_CAP | env | |
 | testq DRY rule | 2 UNMEASURED runs; retry after 3 days | testq.py header | code | |
 | steward escalation | 10 / 30 / 120 min; manual pause fault at 60 min; READY fault at 5 min; heartbeat stale 5 min | steward.py header | code | |
 | Archmagi silent / backoff | 600 s / 1800 s | testq.py header | env | lane OFF |
 | testq sweep | 01:30, FlowWorks | testq-sweep.timer | env | |
-| memory | claude-seats.slice 24G (10G per seat); rm-harness.slice 12G | systemd slices | UNVERIFIED | |
+| memory | claude-seats.slice 24G (10G per seat); rm-harness.slice 12G | systemd slices | not named | |
 | Innovator probation exit | ≥3 adopted; no revert-failed in 30 d | innovator.md | owner | |
 | Arbiter binding threshold | ≥1 week, ≥30 verdicts, MEASURED false-reject rate, owner switch | arbiter.md | owner | |
 | Auditor lessons fold | all new, then oldest, to 40 a pass; inbox ≤14 days | auditor.md | owner | |
@@ -741,15 +806,15 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 5. **Worked.**
    - Live game work takes the bridge lock and needs the companion grant.
    - Test jobs go to testq (`testq.py submit`) and run on SteveDesktop. Results return as RUNNER verify events.
-6. **Closed.** `rimflow close --sha <sha>` with evidence. [LIVE]
+6. **Closed.** `rimflow implemented --sha` (to `built`) or `rimflow close --sha <sha>` with evidence. The lease is 45 min and is renewed every 10 min while held (`lease.py:72-73`). [LIVE]
 7. **Judged.**
-   - The interim GPT reviewer gates the close (mechanism UNVERIFIED).
+   - The interim GPT reviewer gates the close: the maker requests a `gpt_consult.py` read at the claim (§2.17). Nothing in code refuses a close without it.
    - The Arbiter gives an advisory verdict at its next batch, written to `verdicts.jsonl`.
    - A FAIL-check or RESTART-environment verdict waits for an Auditor SOUND before its set-aside red stops blocking. [LIVE as a rule]
 8. **Sampled.** The Auditor's pre-screen checks every close since its last run. Hard flags become defect tickets; risk-ranked and random picks are re-checked. A DEFECT reopens the cycle as a new ticket, since the Auditor never reopens an item itself. [LIVE]
-9. **Accepted.** UNVERIFIED as a defined event. The health check says no ledger event marks "pass on named scenarios, specific build, non-maker check", so accepted items/day is UNMEASURED.
+9. **Accepted.** Not a defined state or event [LIVE: absent from FOUNDRY.md's ladder and from the ledger per the health check]. The health check says no ledger event marks "pass on named scenarios, specific build, non-maker check", so accepted items/day is UNMEASURED.
    - The item states seen are `proposed`, `validated`, `implemented` and `superseded`.
-   - UNVERIFIED: the full state list and which state counts as accepted.
+   - [LIVE, FOUNDRY.md:8-17] The state ladder is reserved (lease) (claim takes the same lease) → `built` (`implemented --sha`, criteria tagged L0-L4) → `validated` (passing `verify --criterion`) → `done` (the last criterion), or `close --sha` straight to done when nothing live is owed. No state or event is called "accepted"; `done` is the last state, and the health check found no event marking the north-star sense of accepted.
 10. **Off-ramps.**
     - `rimflow drop` or `supersede`.
     - A lease that lapses returns the item to the queue (`flow.lapsed_leases` is measured).
@@ -860,31 +925,21 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 29. Untriaged findings: 128 (ops_watch MEASURED, matching HC's independent ledger scan), rising.
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
-**Not checked by this document (UNVERIFIED, counted below):**
-- The interim GPT reviewer's mechanism.
-- The helper_budget numbers and MAX_AGE_S.
-- The exact `after_role` semantics.
-- The local-day timezone.
-- The accepted-state definition.
-- The companion grant file.
-- FOUNDRY's charter and owner touchpoints.
-- The full-day ring count.
-- Who ran v3_vs_v2 by hand.
-- Archmagi run history.
-- Whether PAUSE also stops role launches.
-- The scope-stop trigger.
-- How the TESTQ mod choice is applied.
-- The owner-proposal timeout.
-- The lease constant line.
-- The findings consumer.
+31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). Older standing text that "BENCH owns all FlowWorks + GSS" contradicts FOUNDRY.md:18.
+32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3, `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code.
+33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15).
+34. Findings have no consumer on any cadence and no Part 4 duty row; the chosen fix is designed, not built (§2.19a).
+35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
+36. Part 4 hands a duty over only when its role is enabled and its first run is recorded; it names no record of which duties have handed over. Whether each Wed/Fri/Sun handover happened is answered role by role in §2 (run records), not by a hand-over ledger.
 
-**Sources not read for this document:**
-- `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` (Part 4 activation table).
-- `conductor_briefing_2026-10-28.md`.
-- `delegation_policy.md`.
-- `infrastructure/agents/*.md`.
-- `slot_rules.json`.
-- `idle_probe.py`.
-- `lease.py`.
-- `v3_cutover.py`.
-- The four 2026-10-29 design files (findings curation, v3 health daily check, process model v2/v3, producer cadence), beyond their item names.
+**Still UNVERIFIED after the second pass (counted):**
+1. Whether any program refuses a close that lacks the interim GPT reviewer's read (§2.17).
+2. The companion grant file's path and current expiry (§2.16).
+3. The Dispatcher's full-day ring count for day one (§2.5).
+4. Who ran `v3_vs_v2.py` by hand for the week ending 2026-10-26, and when (§2.13).
+5. Archmagi lane run history behind the 4.39 h in 7 days (§2.15).
+6. Whether the Arbiter's weekly pass, designed in `roles/arbiter.md`, has ever run (§2.10).
+
+Resolved in the second pass: helper_budget numbers and MAX_AGE_S; `after_role` semantics; local-day timezone; PAUSE versus role launches; the scope-stop trigger; FOUNDRY's charter and owner touchpoints; the accepted-state definition (none exists); the interim reviewer's mechanism (a closing-seat ritual); how the TESTQ mod choice is applied (it is not); the owner-proposal timeout (none); the lease constants; the findings consumer (none); the "who may change" column (Part 4 L-1 and O-14).
+
+**Sources read for the second pass:** the four 2026-10-29 designs and their ledger rulings (`rimflow show`); `rimflow_v3_responsibilities_2026-10-26.md` Part 4; `infrastructure/agents/CHARTER.md`, `CONDUCTOR.md`, `FOUNDRY.md`, `Agent_Policy.md` (targeted); `slot_rules.json`; `idle_probe.py`; `lease.py`; `helper_budget.py` and the live `helper_budget.json`; `v3_cutover.py` with `record.json`; the testq systemd units. Not read: `conductor_briefing_2026-10-28.md`, `delegation_policy.md` beyond what FOUNDRY.md cites.
