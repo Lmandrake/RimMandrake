@@ -5,6 +5,36 @@ from rimflow import arbiter_tiers as at                            # noqa: E402
 from rimflow import audit_prescreen as ap                          # noqa: E402
 
 FAILED = []
+# The live measurement dir must never be written by this selftest (ARBITERTIERS_FIX_LIVE_HISTORY_HOLDS_FIXTURES: 14 fixture
+# rows once landed in the live tiers_history.jsonl). Re-point the module default at a temp dir, and make every at.main call
+# raise if its --data is absent or resolves to the live dir.
+LIVE_DATA = os.path.realpath(at.DATA)
+LIVE_HIST = os.path.join(LIVE_DATA, "tiers_history.jsonl")
+
+
+def _live_hash():
+    try:
+        with open(LIVE_HIST, "rb") as fh:
+            return hashlib.sha256(fh.read()).hexdigest()
+    except OSError:
+        return None                                                 # absent: the byte check is UNMEASURED, never a pass
+
+
+_LIVE_BEFORE = _live_hash()
+at.DATA = tempfile.mkdtemp(prefix="tiers_default_data_")
+_real_main = at.main
+
+
+def _guarded_main(argv=None, *a, **kw):
+    argv = list(argv or [])
+    if "--data" not in argv:
+        raise RuntimeError("selftest_arbiter_tiers: at.main called without --data (would default to the live dir)")
+    if os.path.realpath(argv[argv.index("--data") + 1]) == LIVE_DATA:
+        raise RuntimeError("selftest_arbiter_tiers: --data resolves to the live dir %s" % LIVE_DATA)
+    return _real_main(argv, *a, **kw)
+
+
+at.main = _guarded_main
 HERE = os.path.dirname(os.path.abspath(__file__))
 ce = at.ce
 EVD = tempfile.mkdtemp()                                   # the close_evidence store and its mac key for this run only:
@@ -951,6 +981,13 @@ ok("REV no builder in the ledger: an external review still is", rcso({("external
                                                                      builder=None), False)
 ok("REV the reviewers are listed", tiers_of(f6, clean={("src/a.py", "H_src/a.py"): {("self", "CHECK", None)}})[0][
     "MAKERREV"]["gate_evidence"].get("G5_reviewers"), [["self", "CHECK", None]])
+
+# LIVE the full run left the live tiers_history.jsonl byte-identical (UNMEASURED if the file is absent: not a pass)
+_after = _live_hash()
+if _LIVE_BEFORE is None:
+    print("UNMEASURED LIVE live tiers_history.jsonl absent (%s): byte-identity not checked" % LIVE_HIST)
+else:
+    ok("LIVE full run leaves the live tiers_history.jsonl byte-identical", _after == _LIVE_BEFORE, True)
 
 print("\n%s" % ("ALL PASS" if not FAILED else "FAILED: %s" % FAILED))
 sys.exit(1 if FAILED else 0)
