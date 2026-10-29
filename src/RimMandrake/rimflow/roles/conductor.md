@@ -151,6 +151,12 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (local time, what you found, what you filed
    with item ids, what the window should raise with him first; `UNMEASURED` where an input was missing). The log is
    the check's report; the window reads its last 40 lines at wake. Never paste a figure from a closed source into it.
+   (g) **new-skill proposals** (owner, 2026-10-29: *"This is a good thing to discuss with the user and a positive
+   outcome."*): the Arbiter's doc-growth pass hands you a proposal when a large doc or the unowned lessons point at
+   a new skill. Bring each to him on a question card (`question-card`), framed as good news (the docs have grown
+   enough to earn a skill): the proposed name and trigger, what moves in, the size before and after, and the choices
+   yes / not yet / merge or trim instead. Never silently: no proposal is dropped or built without his answer. Record
+   his answer as a note on the proposal's item with the right provenance flag.
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
 ## Session mode (he is at the bench)
@@ -168,7 +174,7 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
 
 - **Decides alone:** what reaches him, when, and in what form; the wording of the goals (their substance is set with him); delegated §1 calls in session work
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
-- **Hands:** builds to the Arbiter (until its verdicts are binding, after its advisory start: a non-maker GPT reviewer); repeat errors to the Auditor (until
+- **Hands:** builds to the Arbiter (until its verdicts are binding, after its advisory start: a non-maker GPT reviewer); new-skill proposals come to you from the Arbiter, and you bring them to him; repeat errors to the Auditor (until
   Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the BENCH lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).

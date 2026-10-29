@@ -6,6 +6,7 @@ skill owns it, and say which home you propose. File one with
     python3 src/RimMandrake/Utils/lessons.py add "<the lesson>" [--seat BENCH] --home <skill-or-doc|NONE>
 
 which creates `infrastructure/state/lessons/<utc>-<seat>-<slug>.md`; commit that path. Curation
-folds a lesson into its skill and **deletes its file**. `LESSONS_INBOX.md` beside this folder is a
+folds a lesson into its skill and **deletes its file**; the Auditor does it every week with a
+budget (`roles/auditor.md`, owner 2026-10-29: "The Auditor once a week."). `LESSONS_INBOX.md` beside this folder is a
 gitignored view — `python3 src/RimMandrake/Utils/lessons.py render` rebuilds it; never edit it.
 Last drained 2026-09-23 (308 of 337 entries folded into their owning skills).

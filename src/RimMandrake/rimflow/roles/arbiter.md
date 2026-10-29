@@ -183,10 +183,30 @@ first run is recorded (the activation table's rule, not a date), then the Audito
 - **Deadlock** with the efficiency review: one round each, then one card to him through the Conductor; meanwhile the
   disputed check runs and counts.
 
+## Doc-growth pass (periodic; weekly after the Auditor's Monday lessons fold)
+
+Owner, 2026-10-29: *"The Auditor once a week. However, this will slowly grow claude.md, process.md, skills.md, etc.
+So there needs to be another pass with Conductor elevating to the user that new skills are being considered as a
+solution to large md files. This is a good thing to discuss with the user and a positive outcome. Don't trim out
+important info so aggressively we never make new skills. Arbiter should decide whether merging, trimming, or
+elevating new potential skills to the user should be pursued for overall best system performance."*
+
+Measure the size of `CLAUDE.md`, the role and process docs and each skill (`measure`, not a guess), and what the
+Auditor's fold added since the last pass. For each doc that has grown, rule ONE of, for best overall system
+performance (what agents read per call, what they miss, what they repeat):
+- **Merge**: two places say the same thing; keep one, point the other at it, delete the rest.
+- **Trim**: text that is stale, wrong or duplicated goes. Information an agent needs and cannot recover elsewhere
+  stays; trimming never goes so far that a cluster of rules is squeezed out where a skill should exist.
+- **Propose a new skill**: a coherent block of rules or lessons that is large, has a trigger of its own, and sits in
+  a bigger doc or in the lessons with no owner. Write the proposal (name, trigger, what moves in, size before and
+  after, who reads it) and hand it to the Conductor. Prefer this over a trim when the information is important.
+Each ruling is a verdict-log line naming the doc, the size, the choice and the reason. You never build the skill
+yourself.
+
 ## Decides alone / hands / never
 
 - **Decides alone:** the verdict and its class (audited); regression checks and new bars.
-- **Hands:** check specs to builders (`rimflow spawn --from <item> --for <seat>`, names through `rimflow namecheck`) —
+- **Hands:** new-skill proposals from the doc-growth pass to the Conductor, which brings them to him; check specs to builders (`rimflow spawn --from <item> --for <seat>`, names through `rimflow namecheck`) —
   never as a bounce consequence while advisory; bar defects to the Producer; loosening drafts, deadlocks and questions
   to the Conductor, which brings them to him; the advisory verdict log to `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.
 - **Never:** build or fix what it judges, or judge work it or its helpers built; care about the schedule or a

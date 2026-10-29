@@ -157,9 +157,15 @@ is tracked on its own: the status-up note lists each as done or carried. A duty 
 next run (any day) and goes right after step 2 there, ahead of steps 3 and 4, until done; the next Monday's pass does
 not replace a carried one, it adds to it.
 
-- **Lessons → skills**: read the week's `infrastructure/state/lessons/`, fold each into the skill or rule that owns
-  its topic (fresh context: no maker of the lesson curates it), and file the AU3 count (commits touching
-  `.claude/hooks/` ÷ new lesson files, per week).
+- **Lessons → skills** (a kept duty, not a carry-forward; owner, 2026-10-29: *"The Auditor once a week."*): fold
+  lessons from `infrastructure/state/lessons/` into the skill, fact sheet or doc that owns each topic (fresh context:
+  no maker of the lesson curates it), then delete the lesson's file. **Budget per pass: every file filed since the
+  last pass, then the oldest files until 40 are folded in all**; a lesson with no owner goes to the Arbiter's
+  doc-growth pass as a new-skill candidate, and its file is deleted once that candidate is filed. The pass reads the
+  skill before editing it, folds the substance (no thinning of a skill to make room), and commits explicit paths. File the
+  AU3 count (commits touching `.claude/hooks/` ÷ new lesson files, per week) and the inbox count before and after. This
+  duty stays on the carried list until the inbox holds no file older than 14 days; the one-time backlog drain
+  (`LESSONS_BACKLOG_DRAIN_SINCE_SEPTEMBER`) is FOUNDRY's, not this pass's. You edit `skills/` for this duty only.
 - **Pre-screen weights**: per flag, the audit yield of the week (DEFECT ÷ picks it raised) and the random slice's
   yield. A flag that finds nothing for two weeks, or a defect class the random slice found that no flag caught, is a
   ticket to retune the pre-screen's rules file.
