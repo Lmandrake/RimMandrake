@@ -172,7 +172,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 **Helpers** [LIVE as a rule in the role files]:
 - The owner's limit is 2 helpers at once across ALL roles together.
 - Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md). The schedule's `helpers_max` 2 (Arbiter, Auditor, Innovator) is therefore not used.
-- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the role file states the owner's limit of 2. The owner ruled on 10-29 that session mode (owner present 1:1) has no helper cap; unattended runs keep the allocator's limits (`CONDUCTOR_HELPERS_UNIFY_FOUR_LIMITS`, §8 item 32).
+- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the governing rule is the owner's of 10-29: no helper limit only for helpers launched within 20 minutes of his last typed message in the Conductor window; after that, two concurrent helpers (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6, enforced at launch by `.claude/hooks/block_agent_over_slots.py`; a helper running over 1 h raises an alarm) (§8 item 32).
 - [LIVE] Code enforces a per-seat count, not the owner's cross-role 2: the spawn hook `.claude/hooks/block_agent_over_slots.py` reads `helper_budget.json` per seat (§2.14). No code enforces "2 across all roles"; that waits on `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` [DESIGNED].
 
 **Scope stop** [LIVE, `rl:116-165`]:
@@ -425,7 +425,8 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - A run note `AUDITOR RUN <unit>:` on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 - **Hands to.** The owning seat (defects); the Arbiter (escapes); a builder (rule builds); the Conductor (charter drafts, contested re-checks, questions).
 - **Off switch.** `D:\ClaudeWork\rimmandrake\auditor\AUDITOR_OFF` (`sched:92`).
-- **Owed programs** [DESIGNED]: `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` and `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`.
+- **Hard-flag filer** [BUILT]: `src/RimMandrake/rimflow/audit_hardflag_file.py` (no AI) runs in the Auditor's `pre_launch` after `audit_prescreen.py` (`AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI`, closed 5ce76d059b).
+- **Owed program** [DESIGNED]: `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`, not built; parked by owner card 10-29 pending the v3 collapse.
 - **Day one.** The 13:00 run had not appeared in state.json at 12:50. On 10-28 its slot was missed.
 - **Role file.** The heading says the role is enabled (4d9171a1e5; fixed in 2a5ec4a7ee).
 
@@ -473,6 +474,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 
 **v3_vs_v2** [OFF]:
 - `sched:42` has `enabled: false`, `every_s` 604800, `at_local` "Mon 07:05", unit `rm-v3-vs-v2.timer`. The units are in `Utils/systemd/` and installed in `~/.config/systemd/user`, timer NOT enabled (aa4adea115); a manual `systemctl --user start rm-v3-vs-v2.service` on 10-29 exited 0 and rewrote `verdict.md`.
+- **Failure handling.** A failed run leaves `rm-v3-vs-v2.service` failed; ops_watch counts failed user units (`timers.failed_units`, alarm `TIMER_FAILED` / `OPS_TIMER_REPAIR`). `Persistent=true` catches a missed Monday but does not retry a failed run. Nothing checks the age of `verdict.md`, and `timers_guard.py` watches only enabled timers, so while the timer is off a stale verdict goes unnoticed.
 - The health check of 2026-10-29 quotes this program's output for the week ending 2026-10-26, labelled `NOT_V3`. It was therefore run by hand at least once. UNVERIFIED: by whom and when.
 - The Auditor's Monday quality recheck and Operations' cost verdict depend on its outputs.
 
@@ -884,7 +886,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 
 11. The Conductor goodbye restart.
 12. `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS`. No Innovator trial can start without it.
-13. `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` and `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`.
+13. `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN` (parked pending the v3 collapse). The hard-flag filer `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` is built (5ce76d059b).
 14. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`. No running consumer turns RUNNER findings into items.
 15. `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME` (status proposed).
 16. The `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reservation pool.
@@ -926,7 +928,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
 31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). The standing text that said BENCH owns all FlowWorks + GSS was corrected to FOUNDRY in CLAUDE.md, the charter and the helper rules (efabf1399a).
-32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code. The owner's ruling of 10-29 (`CONDUCTOR_HELPERS_UNIFY_FOUR_LIMITS`): no helper cap when he works 1:1 in session mode; unattended and scheduled runs keep the allocator's limits.
+32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Only the per-seat budget is enforced in code. The owner's ruling of 10-29: no helper limit only for helpers launched within 20 minutes of his last typed message in the Conductor window; after that, two concurrent helpers (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6, enforced at launch by `.claude/hooks/block_agent_over_slots.py`; a helper running over 1 h raises an alarm).
 33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15).
 34. Findings have no consumer on any cadence and no Part 4 duty row; the chosen fix is designed, not built (§2.19a).
 35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
