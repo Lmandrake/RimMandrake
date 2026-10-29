@@ -1,0 +1,2 @@
+selftest_dispatcher.py takes ~7m44s with 0 failures, longer than run_selftests.py's per-test timeout, so run_selftests --only selftest_dispatcher reports CRASH (timeout) even when green. Run it directly with a 540 s timeout and read its tail, or raise its timeout with a '# selftest-timeout:' tag. Seen 2026-10-28 building Arbiter run-now; pre-existing, not caused by that change.
+home: src/RimMandrake/Utils/run_selftests.py

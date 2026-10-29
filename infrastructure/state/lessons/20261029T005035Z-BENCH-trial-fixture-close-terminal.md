@@ -1,0 +1,2 @@
+A trial fixture that is CLOSED in the real ledger can never be dropped: rimflow refuses done->dropped (done is terminal). For an Arbiter trial with a deliberately false close, retire it with 'rimflow verify --result fail' plus a note saying TRIAL FIXTURE, and expect the false close to stay visible to close statistics. Next time prefer a fixture that never reaches the shared ledger (a synthetic claim fed only to the trial sink), if arbiter_tiers can take one.
+home: design/RimMandrake/rimflow_v3_trial_night_2026-10-28.md
