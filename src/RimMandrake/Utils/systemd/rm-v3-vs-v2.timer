@@ -1,0 +1,11 @@
+# Weekly, Monday 07:05 local: 5 min after the measured week closes (07:00), 25 min before Operations' 07:30 pass
+# reads verdict.md. dispatcher_schedule.json measure v3_vs_v2: every_s 604800, at_local "Mon 07:05".
+[Unit]
+Description=v3 vs v2 weekly measure, Monday 07:05 local
+
+[Timer]
+OnCalendar=Mon *-*-* 07:05:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,17 @@
+# v3_vs_v2.py: the weekly no-AI measure of RimFlow v3 against the tagged v2 (V3_VERSUS_V2_MEASURE_PROVE_IT_PAYS;
+# listed in src/RimMandrake/rimflow/dispatcher_schedule.json "measure", name v3_vs_v2). Measures the 7 days ending
+# Monday 07:00 local, writes D:\ClaudeWork\rimmandrake\v3_vs_v2\ (weeks/<end>.json, history.jsonl, verdict.md,
+# quality_blind.md); Operations reads verdict.md at its 07:30 economy pass. Re-running a week rewrites that week's
+# row (history is keyed by week end), so a manual start is safe.
+# Runs from the pulse-deploy checkout (rm-pulse-update fast-forwards it), like rm-ops-watch.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-v3-vs-v2.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload
+# Turn on (the owner's switch, with "enabled": true in the schedule): systemctl --user enable --now rm-v3-vs-v2.timer
+[Unit]
+Description=v3 vs v2 weekly measure (no AI)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/v3_vs_v2.py run
+TimeoutStartSec=1200s
+Nice=10
