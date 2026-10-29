@@ -1,0 +1,1 @@
+SteveDesktop lane canary RED 'no live colonist' = the long-running test colony died on a still-Playing map; runner.py won't start a new quicktest, so run rw_game.sh down on the runner then testq.py resume (2026-10-29).
