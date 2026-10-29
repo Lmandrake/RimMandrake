@@ -629,9 +629,12 @@ def test_decide_ring_verification():
         ss = st["seats"]["FOUNDRY"]
         if fires:
             check(len(w) == 1 and w[0]["note"] is True and w[0]["ticket"] == "PT" and w[0]["ring_id"] == "FOUNDRY-1-1"
-                  and w[0]["why"] == "doorbell consumed but no lease/claim/start by FOUNDRY in 600 s"
-                  and "ring" not in ss and ss["attempt"] == 0 and ss["cooldown_until"] == NOW + 3600,
-                  "woke_no_handoff at handoff_s: alarm, ring cleared, attempt 0, cooldown now+3600 (%r)" % w[:1])
+                  and w[0]["why"] == "doorbell consumed but no lease/claim/start by FOUNDRY in 600 s; re-ring in "
+                  "300 s (no-hand-off streak 1)"
+                  and "ring" not in ss and ss["attempt"] == 0 and ss["cooldown_until"] == NOW + 300
+                  and ss["nh_streak"] == 1,
+                  "woke_no_handoff at handoff_s: noted, ring cleared, attempt 0, re-ring now+300 (rering_s[0]), "
+                  "streak 1 (%r)" % w[:1])
         else:
             check(not w and "ring" in ss, "woke_no_handoff: 1 s short of handoff_s -> still waiting")
     # not consumed: verify_s edge, retries

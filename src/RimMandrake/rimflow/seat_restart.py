@@ -1098,7 +1098,9 @@ def cmd_request(args):
     if not args.fresh and ctx is not None and ctx < limit:
         print("CONTEXT OK for %s: %d tokens < %d (backstop_ctx_tokens). No restart requested. Do NOT end the turn: "
               "run `python3 src/RimMandrake/rimflow/cli.py next --seat %s --ringed` and work the item it gives you, "
-              "with the same close-out after it. Only an empty queue ends the turn." % (seat, ctx, limit, seat))
+              "with the same close-out after it. Waiting on a lane job, a test result or a helper is NOT idle: take the "
+              "next item and read those results between items. Only an empty queue ends the turn; if `next` gives you "
+              "nothing workable, say why in a `rimflow note` before you end it." % (seat, ctx, limit, seat))
         return 0
     req = {"seat": seat, "pid": pid, "start": born, "session_id": sf["sessionId"], "ticket": args.ticket,
            "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx}

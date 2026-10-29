@@ -12,7 +12,9 @@ Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the sched
   3. VERIFIES: the doorbell moves the inbox file to consumed/ (delivered), then the seat's own ledger shard gains a
      lease take / claim / start after the ring (the hand-off happened). Not consumed in `verify_s` -> withdrawn and
      retried, up to `max_retries`, then an ALARM and a cooldown. Consumed but no hand-off in `handoff_s` -> recorded
-     as WOKE_NO_HANDOFF (partial).
+     as WOKE_NO_HANDOFF (partial) and rung again on the bounded `no_handoff.rering_s` backoff; `escalate_after` of them
+     in a row (each ring was sent because the queue had work) raise an idle_full_queue alarm and a line in the
+     Conductor's log (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS).
   4. RECOVERS a dead window — its session (found by its `--name`, never by cwd) gone from `claude agents` for
      `dead_after_s` — by resuming that session in the background in the seat's clone with the seat launcher's own
      line (`recover_argv`, default `claude_bounded.sh --bg --resume <session> --dangerously-skip-permissions --name …
@@ -285,6 +287,33 @@ def handoff_seen(events):
     return None
 
 
+NH_DEFAULTS = {"rering_s": [300, 900, 1800], "escalate_after": 3, "escalate_item": None,
+               "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"}
+
+
+def no_handoff_rule(sch):
+    """The schedule's `no_handoff` block over NH_DEFAULTS, validated (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS).
+    rering_s: the wait before the next ring after the 1st, 2nd, ... consecutive woke_no_handoff; the last entry
+    bounds it. escalate_after: that many consecutive ones raise an idle_full_queue alarm (0 = never). A malformed
+    block raises: one_seat turns that into a decide alarm for the seat instead of guessing a number."""
+    rule = dict(NH_DEFAULTS)
+    rule.update({k: v for k, v in (sch.get("no_handoff") or {}).items() if not k.startswith("_")})
+    steps = rule["rering_s"]
+    if not isinstance(steps, list) or not steps or not all(
+            isinstance(x, (int, float)) and not isinstance(x, bool) and x > 0 for x in steps):
+        raise ValueError("no_handoff.rering_s must be a non-empty list of positive seconds: %r" % (steps,))
+    n = rule["escalate_after"]
+    if not isinstance(n, int) or isinstance(n, bool) or n < 0:
+        raise ValueError("no_handoff.escalate_after must be an integer >= 0: %r" % (n,))
+    return rule
+
+
+def rering_after(rule, streak):
+    """Seconds to wait after the streak-th consecutive woke_no_handoff: rering_s[streak-1], capped at the last."""
+    steps = rule["rering_s"]
+    return int(steps[min(max(int(streak), 1), len(steps)) - 1])
+
+
 def caps_ok(st, sch, seat, now):
     c = sch["caps"]
     mine = [w for w in st["wakes"] if w["seat"] == seat]
@@ -303,6 +332,12 @@ def message(seat, cfg, ticket, owner_line, ring_id):
              "--seat %s --ringed`, which gives you the item under a lease, and work it; renew the lease every 10 min "
              "(`rimflow renew`). The peeked next item is %s." % (seat, seat, ticket.get("id")),
              "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`.",
+             # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: 2026-10-29 FOUNDRY answered rings with "nothing for me to do
+             # until they finish" (SteveDesktop lane jobs) while 798 items waited
+             "Waiting on a lane job, a test result or a helper is NOT idle: claim the next workable item now and read "
+             "those results between items. Never answer this ring without a claim unless `rimflow next` gives you "
+             "nothing workable; then say why in a `rimflow note` on %s. An unclaimed ring is rung again within "
+             "minutes, and repeated ones are escalated to the Conductor." % ticket.get("id"),
              "Before you end the turn on it, ledger-only work too: commit your shard "
              "infrastructure/state/ledger/events/%s.jsonl by explicit path and run ./publish; events left in your "
              "clone are invisible to every other seat." % seat]
@@ -418,13 +453,31 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss.pop("ring")
                     ss["attempt"] = 0
                     ss["last_verified"] = now
+                    ss.pop("nh_streak", None)        # a hand-off ends the no-hand-off streak
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
+                    # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: this used to wait the full cooldown_s (3600) before the
+                    # next ring, so an idle seat with a full queue sat ~70 min per cycle (handoff_s + cooldown_s +
+                    # tick). Now a bounded backoff (no_handoff.rering_s), and an escalation after escalate_after
+                    # consecutive no-hand-off rings (each ring was sent only because its queue had work).
+                    rule = no_handoff_rule(sch)
+                    streak = int(ss.get("nh_streak") or 0) + 1
+                    wait = rering_after(rule, streak)
                     act(do="woke_no_handoff", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"),
-                        why="doorbell consumed but no lease/claim/start by %s in %d s" % (seat, sch["handoff_s"]),
+                        why="doorbell consumed but no lease/claim/start by %s in %d s; re-ring in %d s (no-hand-off "
+                            "streak %d)" % (seat, sch["handoff_s"], wait, streak),
                         note=True)
                     ss.pop("ring")
                     ss["attempt"] = 0
-                    ss["cooldown_until"] = now + sch["cooldown_s"]
+                    ss["nh_streak"] = streak
+                    ss["cooldown_until"] = now + wait
+                    n = rule["escalate_after"]
+                    if n and streak >= n:
+                        act(do="alarm", kind="idle_full_queue:" + seat, seat=seat, note=True, conductor_log=True,
+                            ticket=rule.get("escalate_item") or sch.get("alarm_item"),
+                            why="%s is idle with work waiting: %d consecutive rings ended woke_no_handoff (last ring "
+                                "%s, peeked %s); the Dispatcher keeps re-ringing every <= %d s, but the seat is not "
+                                "taking work - Conductor: look at its window" % (
+                                    seat, streak, pend["ring_id"], pend.get("ticket"), max(rule["rering_s"])))
                 return
             if now - pend["rung_at"] >= sch["verify_s"]:
                 act(do="withdraw", seat=seat, ring_id=pend["ring_id"], pending=dict(pend))
@@ -522,6 +575,7 @@ def decide(sch, st, obs, now, apply, out=None):
             act(do="alarm", kind="peek:" + seat, seat=seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
             return
         if not ticket:
+            ss.pop("nh_streak", None)  # no work waiting: an idle window is correct, nothing to escalate
             return                     # empty queue: an idle window is correct
         ok, why = caps_ok(st, sch, seat, now)
         if not ok:
@@ -745,6 +799,19 @@ def ledger_note(item, text, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
+def conductor_log(sch, a, now):
+    """Append one escalation line to the Conductor's log (no_handoff.conductor_log; CONDUCTOR.md: read at wake and by
+    the 08:00/20:00 quick checks), so an idle seat with a full queue reaches the Conductor, not only the ledger."""
+    path = no_handoff_rule(sch).get("conductor_log")
+    if not path:
+        return "conductor log off"
+    line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s idle with work waiting.\n" % (
+        iso(now), a.get("kind"), a.get("why"), a.get("seat"))
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(line)
+    return "conductor log appended: %s" % path
+
+
 OPS_RULES = os.path.join(REPO, "src", "RimMandrake", "Utils", "ops_watch_rules.json")
 _TOKEN_RX = {}
 
@@ -863,6 +930,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     do_verdicts = fx.get("verdicts_append", RL.append_verdicts)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
+    do_conductor = fx.get("conductor_log", conductor_log)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
     lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
     ledger_ok = lk is not None
@@ -887,6 +955,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     rs["alarm_pending"] = "seat restart %s of %s raised: %s" % (a["do"], a.get("seat"), res)
             elif apply:
                 try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
+                    if a["do"] == "alarm" and a.get("conductor_log") and res is None:
+                        res = do_conductor(sch, a, now)       # not when rate-limited (res already says so)
                     if a["do"] == "ring":
                         # PAUSE again, now: decide() read it before the ingest.lock wait (review dispatcher-full #8)
                         paused = do_paused()

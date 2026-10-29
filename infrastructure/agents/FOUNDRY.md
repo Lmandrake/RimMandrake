@@ -156,6 +156,15 @@ Do the steps in one turn:
      `python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY --ringed` and work the item it gives you, then this
      same close-out again. Only an empty queue (or a ticket that needs the owner) ends the turn. One ring per ticket
      spent the hourly wake cap on sub-minute tickets and left you at a bare prompt; this is the fix.
+     🔴 **Waiting on a lane job or a test result is NOT idle** (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS; owner
+     2026-10-29: *"Please manually fix these items now rather then wait for them to be picked up."*). On 2026-10-29
+     FOUNDRY queued SteveDesktop lane jobs at 18:15Z, then answered the Dispatcher's ring at 18:19Z with "nothing for
+     me to do until they finish, so I'm not claiming" while `rimflow next` held 798 items: ~70 idle minutes per
+     cycle. Queue the lane/test job, then claim the next workable item at once and read the results between items
+     (they land in files; nothing is lost by not watching them). Never answer a ring without claiming unless the
+     queue truly holds nothing workable — and then say why in a `rimflow note` on the ringed ticket. An unclaimed
+     ring is rung again within minutes (`no_handoff.rering_s` in `dispatcher_schedule.json`), and
+     `no_handoff.escalate_after` unclaimed rings in a row are an `idle_full_queue` alarm to the Conductor.
    - **`RESTART REQUESTED`** — context is over the backstop (or UNMEASURED, or you passed `--fresh` because the
      window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 30 s cancels the
      restart — the Dispatcher's rings, task notifications and the Conductor's cross-session messages never do, and
@@ -197,6 +206,9 @@ a genuinely hard problem.
 always be waiting on something that WILL wake it: a running subagent's completion notice, a
 `Monitor` on a file/condition, or a `ScheduleWakeup`. Before ending any turn, name what wakes you.
 If nothing would, you are not finished — start the next belt task or hand off.
+Something that will wake you is not a reason to stop working: while a lane job, a test or a helper runs,
+take the next workable item from `rimflow next` and read its result between items. Only an empty queue
+(nothing workable, said in a `rimflow note`) is a reason to sit at the prompt.
 
 ## Provisional numbers — owner, 2026-10-03
 

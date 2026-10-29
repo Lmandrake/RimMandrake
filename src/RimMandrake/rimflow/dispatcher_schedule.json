@@ -11,6 +11,7 @@
  "recover_verify_s": 300,
  "owner_idle_s": 1200,
  "alarm_every_s": 21600,
+ "no_handoff": {"rering_s": [300, 900, 1800], "escalate_after": 3, "escalate_item": null, "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md", "_doc": "FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS (BENCH 2026-10-29): after a woke_no_handoff (doorbell consumed, no lease/claim/start in handoff_s) the seat is rung again after rering_s[k-1] s for its k-th consecutive one (the last entry bounds it), instead of the whole cooldown_s: that cooldown made ring FOUNDRY-1793297947-1 -> FOUNDRY-1793302231-1 4284 s apart (handoff_s 600 + cooldown_s 3600 + tick) while 798 items waited. Each ring is sent only when the seat's queue has work, so escalate_after consecutive ones raise an idle_full_queue:<SEAT> alarm (ledger note on escalate_item, null = alarm_item, rate-limited by alarm_every_s) and append a RAISE FIRST line to conductor_log (null = off). A hand-off or an empty queue ends the streak. Worst case: rings at ~0, ~16, ~43 min, then every ~40 min (handoff_s + 1800 + tick), escalated at ~53 min; under the 12/h cap."},
  "helper_budget": {"enabled": true, "_doc": "HELPER_BUDGET_MIGRATE_INTO_DISPATCHER: every tick the Dispatcher publishes the helper budget (helper_budget.py -> <state>/helper_budget.json, seats CONDUCTOR/FOUNDRY) that the spawn hook reads first. false = the hook falls back to allocation.json/compute."},
  "ledger_notes": true,
  "publish": true,

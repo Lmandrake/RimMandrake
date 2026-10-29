@@ -193,6 +193,84 @@ def test_verify_retry():
     check(st["seats"]["FOUNDRY"].get("cooldown_until", 0) > now - 3600, "give-up starts a cooldown")
 
 
+def test_no_handoff_rering_and_escalation():
+    """FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: a seat that consumes every ring and never claims, with work waiting,
+    is rung again on the bounded no_handoff backoff (not after cooldown_s), and escalated after escalate_after."""
+    real = D.load_schedule()
+    nh = D.no_handoff_rule(real)
+    check(nh["rering_s"] == [300, 900, 1800] and nh["escalate_after"] == 3 and max(nh["rering_s"]) < real["cooldown_s"],
+          "real schedule: no_handoff.rering_s [300, 900, 1800] (bounded, all under cooldown_s), escalate_after 3")
+    sch = sched(caps=real["caps"], no_handoff={"rering_s": [300, 900, 1800], "escalate_after": 3,
+                                               "_doc": "ignored"})
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    o = obs(consumed={"consumed_at": 1.0})          # the doorbell takes every ring at once; no hand-off ever
+    now, rings, nhs, esc = 1000.0, [], [], []
+    while now < 1000.0 + 4 * 3600:
+        for a in D.decide(sch, st, o, now, True):
+            if a["do"] == "ring":
+                rings.append(now)
+            elif a["do"] == "woke_no_handoff":
+                nhs.append(now)
+            elif a["do"] == "alarm" and a.get("kind") == "idle_full_queue:FOUNDRY":
+                esc.append(a)
+            elif a["do"] == "alarm":
+                check(False, "no other alarm while re-ringing (caps hold): %r" % a)
+        now += sch["tick_s"]
+    gaps = [b - a for a, b in zip(rings, rings[1:])]
+    # gap k = handoff_s (600, seen at the next tick) + rering_s[k-1] (seen at the next tick)
+    want = [600 + 300, 600 + 900] + [600 + 1800] * (len(gaps) - 2)
+    check(len(gaps) >= 4 and all(w <= g <= w + 2 * sch["tick_s"] for g, w in zip(gaps, want)),
+          "re-ring gaps follow handoff_s + rering_s, bounded at the last step: %r (want ~%r)" % (gaps, want))
+    check(max(gaps) < 600 + real["cooldown_s"], "no gap is the old handoff_s + cooldown_s (~70 min): %r" % gaps)
+    check(len(nhs) >= 3 and len(esc) == len(nhs) - 2 and esc[0]["note"] and esc[0]["conductor_log"]
+          and esc[0]["ticket"] == "DISPATCHER_ALARMS_X" and "3 consecutive" in esc[0]["why"],
+          "escalation: an idle_full_queue alarm from the 3rd consecutive woke_no_handoff on (%d nh, %d esc: %r)"
+          % (len(nhs), len(esc), esc[:1]))
+    check(st["seats"]["FOUNDRY"]["nh_streak"] == len(nhs), "the streak counts every consecutive no-hand-off")
+    # the alarm is rate-limited by alarm_every_s, and its first raise writes the Conductor's log line
+    logged, noted = [], []
+    fx = {"conductor_log": lambda sc, a, t: logged.append(a["why"]) or "logged",
+          "note": lambda i, t: noted.append(i) or (True, ""), "publish": lambda n: "p"}
+    st2 = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    for i, a in enumerate(esc[:2]):
+        D.execute([dict(a)], sch, st2, os.path.join(TMP, "nh"), True, 5000.0 + i * 600, fx)
+    check(len(logged) == 1 and noted == ["DISPATCHER_ALARMS_X"],
+          "escalation: one conductor-log line and one ledger note per alarm_every_s (%r %r)" % (logged, noted))
+    path = os.path.join(TMP, "conductor_log.md")
+    out = D.conductor_log(sched(no_handoff={"conductor_log": path}), dict(esc[0]), 5000.0)
+    with open(path, encoding="utf-8") as f:
+        txt = f.read()
+    check("DISPATCHER ESCALATION" in txt and "RAISE FIRST: FOUNDRY" in txt and path in out,
+          "conductor_log appends a RAISE FIRST line to the configured path")
+    check(D.conductor_log(sched(no_handoff={"conductor_log": None}), dict(esc[0]), 5000.0) == "conductor log off",
+          "conductor_log null = off")
+    # a hand-off ends the streak; an empty queue ends it too
+    p = st["seats"]["FOUNDRY"].get("ring")
+    if not p:
+        now = st["seats"]["FOUNDRY"]["cooldown_until"] + 1
+        D.decide(sch, st, o, now, True)
+        p = st["seats"]["FOUNDRY"]["ring"]
+    lease = {"event": "lease", "action": "take", "id": "SOME_ITEM_DO_IT", "ts": D.iso(p["rung_at"] + 30)}
+    a = D.decide(sch, st, obs(consumed={"consumed_at": 1.0}, events=[lease]), p["rung_at"] + 120, True)
+    check(kinds(a) == ["verified"] and "nh_streak" not in st["seats"]["FOUNDRY"], "a verified hand-off ends the streak")
+    st3 = {"seats": {"FOUNDRY": {"nh_streak": 5, "idle_since": 0.0}}, "wakes": [], "recovers": [], "alarms": {}}
+    D.decide(sch, st3, obs(ticket={}), 9000.0, True)
+    check("nh_streak" not in st3["seats"]["FOUNDRY"], "an empty queue ends the streak (no work waiting)")
+    # the first step after a hand-off is the short one again; a malformed block is a decide alarm, not a guess
+    check(D.rering_after(nh, 1) == 300 and D.rering_after(nh, 2) == 900 and D.rering_after(nh, 9) == 1800,
+          "rering_after: step k, capped at the last")
+    bad = sched(no_handoff={"rering_s": []})
+    st4 = {"seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-1-1", "rung_at": 0.0, "rung_iso": D.iso(0.0),
+                                          "ticket": "PT", "attempt": 1}}}, "wakes": [], "recovers": [], "alarms": {}}
+    a = D.decide(bad, st4, obs(consumed={"consumed_at": 1.0}), 1000.0, True)
+    check([x.get("kind") for x in a if x["do"] == "alarm"] == ["decide:FOUNDRY"] and "ring" in st4["seats"]["FOUNDRY"],
+          "malformed no_handoff.rering_s: a decide alarm, the ring kept for the next tick (%r)" % a)
+    # the ring text says waiting on a lane is not idle (the FOUNDRY 2026-10-29 answer)
+    m = D.message("FOUNDRY", {}, {"id": "X_Y_Z"}, None, "FOUNDRY-1-1")
+    check("NOT idle" in m and "lane job" in m and "rimflow note` on X_Y_Z" in m,
+          "ring message: waiting on a lane/test is not idle; a no-claim answer says why in a note")
+
+
 def test_dead_recover():
     sch = sched()
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
@@ -3312,7 +3390,8 @@ def robs_with(ro, status):
 
 
 def main():
-    for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry, test_dead_recover,
+    for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
+              test_no_handoff_rering_and_escalation, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
