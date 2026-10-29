@@ -556,7 +556,7 @@ GPT_PRERELEASE_FIX_SHAPES = [
     ("D12 placement made nothing is a failure", "Aerial/ConduitStyleProbe.cs", "if (made == null) return AerialProbe.Fail(cmd,"),
     ("D14 cline refuses an unequal diagonal", "Aerial/ConduitStyleProbe.cs", "ConduitStyles.StraightOrDiagonal(b.x - a.x, b.z - a.z)"),
     ("D8 a modded conduit joins a run without becoming a member", "Aerial/RM_MapComponent_ConduitRuns.cs", "if (x == seed || !IsBridgeConduit(x.def)) res.Add(x);"),
-    ("A4 felling or planting a tree re-plans the cords", "RM_MapComponent_CordGraph.cs", "if (had != has) tc.StaleOffscreen = true;"),
+    ("A4 felling or planting a tree re-plans the cords", "RM_MapComponent_CordGraph.cs", "if (had != has && (tc.Reach == null || tc.Reach.Reaches(CordWorldAdapter.C(loc)))) tc.StaleOffscreen = true;"),
     ("C9 a lay change drops only that anchor's lays", "Aerial/RM_MapComponent_Aerial.cs", "kv.Value.a.Position == c || !kv.Value.a.Spawned || !kv.Value.a.fallen.Contains(kv.Key)"),
 ]
 

@@ -229,14 +229,14 @@ def main(argv=None):
     check("C1n ON identical to OFF -> wire FAIL", ms["wire_evidence"] == "FAIL")
     check("C1n lighting moved between ON/OFF -> wire UNMEASURED", mh["wire_evidence"] == "UNMEASURED", mh.get("wire_detail"))
     live = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
-    if os.path.isdir(live):
+    if os.path.isdir(live) and sum(f.lower().endswith(".png") for f in os.listdir(live)) >= 10:
         rl = CS.assemble(live, os.path.join(tmp, "live_sheets"))
         check("C2 existing live shots: all non-blank, no magenta, wire UNMEASURED (no aligned OFF pairs)",
               rl["images"] >= 10 and all(m["non_blank"] and m["no_magenta"] for m in rl["per_image"]) and
               rl["wire_evidence"]["UNMEASURED"] == rl["images"],
               {k: rl[k] for k in ("images", "ok", "wire_evidence")})
     else:      # Transient/ has a ~14-day shelf life: absent is UNMEASURED, said out loud, not a pass and not a fail
-        print("SKIP C2 existing live shots: %s is gone (Transient shelf life) -- UNMEASURED" % live)
+        print("SKIP C2 existing live shots: %s has fewer than the 10 original shots (Transient shelf life: gone or culled) -- UNMEASURED" % live)
     if not a.keep:
         shutil.rmtree(tmp, ignore_errors=True)
 
