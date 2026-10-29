@@ -2576,34 +2576,53 @@ def test_review_x_alarm_flap():
 
 
 # ---------------------------------------------------------------- go-live review (DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND)
-# go-live wave 1 (design/RimMandrake/rimflow_v3_golive_wave1.md): the owner's switch may enable these and no others
+# go-live wave 1 (design/RimMandrake/rimflow_v3_golive_wave1.md): the owner's switch may enable these and no others,
+# unless the schedule's golive block names the set (trial night: the flip adds the role to golive.roles in the same file)
 WAVE1_ROLES = ("Conductor", "Operations")
 
 
+def shipped_schedule():
+    with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
+        return json.load(f)
+
+
 def wave1_problems(sch):
-    """-> the ways a schedule exceeds wave 1: a role outside WAVE1_ROLES not `enabled: false`, or a seat whose
-    recover_dead is not false. [] = within wave 1 (the wave-1 roles may be enabled or not)."""
-    bad = ["role %s must stay disabled (wave 1 enables only %s)" % (r.get("name"), "/".join(WAVE1_ROLES))
-           for r in sch.get("roles") or [] if r.get("name") not in WAVE1_ROLES and r.get("enabled") is not False]
-    bad += ["seat %s recover_dead must stay false in wave 1" % k for k, v in sorted((sch.get("seats") or {}).items())
-            if v.get("recover_dead") is not False]
+    """-> the ways a schedule exceeds its go-live set: a role not in golive.roles (default WAVE1_ROLES) that is not
+    `enabled: false`, or a seat not in golive.recover_dead (default none) whose recover_dead is not false.
+    [] = within the set (a listed role may be enabled or not)."""
+    g = sch.get("golive") or {}
+    roles = list(g["roles"]) if isinstance(g.get("roles"), list) else list(WAVE1_ROLES)
+    rec = list(g["recover_dead"]) if isinstance(g.get("recover_dead"), list) else []
+    bad = ["role %s must stay disabled (go-live set: %s)" % (r.get("name"), "/".join(roles))
+           for r in sch.get("roles") or [] if r.get("name") not in roles and r.get("enabled") is not False]
+    bad += ["seat %s recover_dead must stay false (go-live recover_dead: %s)" % (k, "/".join(rec) or "none")
+            for k, v in sorted((sch.get("seats") or {}).items()) if k not in rec and v.get("recover_dead") is not False]
     return bad
+
+
+def wave1_base(sch):
+    """The fixed wave-1 baseline the mutation probes start from, whatever the shipped schedule has since flipped:
+    golive = Conductor/Operations and no recovery, every other role off, every seat's recover_dead false."""
+    x = copy.deepcopy(sch)
+    x["golive"] = {"roles": list(WAVE1_ROLES), "recover_dead": []}
+    for r in x["roles"]:
+        r["enabled"] = r.get("name") in WAVE1_ROLES
+    for v in x["seats"].values():
+        v["recover_dead"] = False
+    return x
 
 
 def test_golive_b3_wave1_config():
     """dispatcher-full #3: the config assertions accept the wave-1 enabled set (runbook step 14 then reaches GREEN)
     and still refuse any other role or recovery being enabled."""
-    real = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
-    check(not wave1_problems(real), "B3 the shipped schedule is within wave 1")
-    on = copy.deepcopy(real)
-    for r in on["roles"]:
-        if r["name"] in WAVE1_ROLES:
-            r["enabled"] = True
+    real = shipped_schedule()
+    check(not wave1_problems(real), "B3 the shipped schedule is within its go-live set: %s" % (wave1_problems(real),))
+    on = wave1_base(real)
     check(not wave1_problems(on), "B3 Conductor + Operations enabled is within wave 1")
     for name in ("Arbiter", "Auditor", "Producer", "Innovator"):
         x = copy.deepcopy(on)
         next(r for r in x["roles"] if r["name"] == name)["enabled"] = True
-        check(wave1_problems(x) == ["role %s must stay disabled (wave 1 enables only Conductor/Operations)" % name],
+        check(wave1_problems(x) == ["role %s must stay disabled (go-live set: Conductor/Operations)" % name],
               "B3 %s enabled is refused" % name)
         del next(r for r in x["roles"] if r["name"] == name)["enabled"]
         check(wave1_problems(x), "B3 %s with no enabled key is refused (only an explicit false passes)" % name)
@@ -2612,8 +2631,43 @@ def test_golive_b3_wave1_config():
     for seat in sorted(real["seats"]):
         x = copy.deepcopy(on)
         x["seats"][seat]["recover_dead"] = True
-        check(wave1_problems(x) == ["seat %s recover_dead must stay false in wave 1" % seat],
+        check(wave1_problems(x) == ["seat %s recover_dead must stay false (go-live recover_dead: none)" % seat],
               "B3 recover_dead on %s is refused" % seat)
+
+
+def test_golive_trial_set_from_schedule():
+    """trial night (design/RimMandrake/rimflow_v3_trial_night_2026-10-28.md): the set the owner's switch may enable is
+    read from the schedule's golive block, not pinned in this test, so a flip is one file: the role's `enabled` and
+    its name in golive.roles (recover_dead likewise: the seat in golive.recover_dead). Unlisted stays refused.
+    The probes start from the fixed wave-1 baseline, so they hold after any valid flip of the shipped file."""
+    g = shipped_schedule().get("golive") or {}
+    check(isinstance(g.get("roles"), list) and set(WAVE1_ROLES) <= set(g["roles"])
+          and isinstance(g.get("recover_dead"), list),
+          "TN the shipped schedule names its go-live set (golive.roles >= wave 1, golive.recover_dead a list): %s" % (g,))
+    base = wave1_base(shipped_schedule())
+    x = copy.deepcopy(base)
+    next(r for r in x["roles"] if r["name"] == "Arbiter")["enabled"] = True
+    check(wave1_problems(x) == ["role Arbiter must stay disabled (go-live set: Conductor/Operations)"],
+          "TN Arbiter enabled but not in golive.roles is refused: %s" % (wave1_problems(x),))
+    x["golive"]["roles"].append("Arbiter")
+    check(not wave1_problems(x), "TN Arbiter enabled AND listed in golive.roles passes (the trial flip): %s"
+          % (wave1_problems(x),))
+    next(r for r in x["roles"] if r["name"] == "Producer")["enabled"] = True
+    check(wave1_problems(x) == ["role Producer must stay disabled (go-live set: Conductor/Operations/Arbiter)"],
+          "TN listing Arbiter does not let Producer through: %s" % (wave1_problems(x),))
+    y = copy.deepcopy(base)
+    y["seats"]["FOUNDRY"]["recover_dead"] = True
+    check(wave1_problems(y) == ["seat FOUNDRY recover_dead must stay false (go-live recover_dead: none)"],
+          "TN recover_dead on FOUNDRY not in golive.recover_dead is refused: %s" % (wave1_problems(y),))
+    y["golive"]["recover_dead"] = ["FOUNDRY"]
+    check(not wave1_problems(y), "TN FOUNDRY recover_dead listed in golive.recover_dead passes: %s"
+          % (wave1_problems(y),))
+    z = copy.deepcopy(base)
+    z.pop("golive")
+    check(not wave1_problems(z), "TN no golive block -> wave 1 is the set (Conductor/Operations pass)")
+    next(r for r in z["roles"] if r["name"] == "Arbiter")["enabled"] = True
+    check(wave1_problems(z) == ["role Arbiter must stay disabled (go-live set: Conductor/Operations)"],
+          "TN no golive block -> Arbiter refused: %s" % (wave1_problems(z),))
 
 
 def test_golive_b1_busy_until_ended():
@@ -3223,7 +3277,7 @@ def main():
               test_account_hold_dispatch, test_review_u_notes,
               test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
-              test_golive_b3_wave1_config, test_golive_m4_disabled_parent_holds,
+              test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
               test_golive_m6_weekday_slot_keys, test_golive_m7_dst_yesterday, test_review_night_n1):
         try:

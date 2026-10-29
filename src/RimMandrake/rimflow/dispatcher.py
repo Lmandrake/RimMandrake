@@ -386,7 +386,7 @@ def decide(sch, st, obs, now, apply, out=None):
 
     if obs.get("seat_restart"):        # seat_restart.py: a fresh window per ticket (off unless seat_restart.enabled)
         try:
-            SR.decide(sch, st, dict(obs, owner=owner), now, apply, act)
+            SR.decide(sch, st, dict(obs, owner=owner), now, sr_apply(sch, apply), act)
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="restart:decide", note=True,
                 why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)[:200]))
@@ -698,6 +698,12 @@ def withdraw_reading(res):
     return {"outcome": "unknown", "why": str(res)[:160]}
 
 
+def sr_apply(sch, apply):
+    """seat_restart.dry true keeps the restart path dry under a live --apply timer: the request is read, held and
+    "would SIGTERM" is journalled in the live journal; nothing is consumed, killed or launched (golive §10 step 2)."""
+    return bool(apply) and (sch.get("seat_restart") or {}).get("dry") is not True
+
+
 def recover(cfg, session_id, msg, runner=subprocess.run):
     argv = [a.format(claude=claude_exe(), clone=cfg["clone"], session_id=session_id, name=cfg.get("session_name") or "",
                      model=cfg.get("model") or "sonnet", message=msg) for a in (cfg.get("recover_argv") or DEFAULT_RECOVER)]
@@ -862,7 +868,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     st["alarms"][a["kind"]] = now
             if a["do"] in SR.DOES:
                 try:
-                    res = SR.execute(a, sch, st, apply, now, fx.get("seat_restart"))
+                    res = SR.execute(a, sch, st, sr_apply(sch, apply), now, fx.get("seat_restart"))
                 except Exception as e:  # noqa: BLE001 - the state save must still run
                     res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
                     rs = (st.get("seat_restart") or {}).get(a.get("seat")) or {}

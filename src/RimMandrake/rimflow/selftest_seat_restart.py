@@ -421,6 +421,42 @@ def test_dispatcher_holds_seat_mid_restart():
           "the dry kill is journalled")
 
 
+def test_dry_key_under_live_apply():
+    """seat_restart.dry true: the live --apply timer walks the whole restart and kills nothing, so the first ticket after
+    enabling is a dry ticket (golive §10 step 2: the timer is no longer dry by then)."""
+    sch = sched()
+    sch["seat_restart"]["dry"] = True
+    calls = []
+    fx = {"seat_restart": {"session_file": lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "AGENT FOUNDRY",
+                                                         "status": "idle"},
+                           "kill": lambda pid, start=None: calls.append(pid) or "SIGTERM",
+                           "write_killed": lambda s, r: None, "recheck": lambda *a: [], "start": lambda pid: 77,
+                           "consume": lambda seat, **k: calls.append("consume") or None,
+                           "fallback": lambda argv: calls.append(argv) or "ran"},
+          "lock": lambda: None}
+    o = {"owner": lambda: {"state": "MEASURED", "idle_seconds": 99999}, "peek": lambda seat: None,
+         "events": lambda seat, since: [], "consumed": lambda seat, rid: None, "alive": lambda pid: True}
+    st = fresh()
+    root = os.path.join(TMP, "livedry")
+    os.makedirs(root, exist_ok=True)
+    all_acts = []
+    for now, ob in ((T0 + 1, obs(request=req())), (T0 + SR.DEFAULTS["grace_s"] + 5, obs(request=req()))):
+        ob.update(o)
+        acts = D.decide(sch, st, ob, now, True)
+        D.execute(acts, sch, st, root, True, now, fx)
+        all_acts += acts
+    check("restart_kill" in dos(all_acts) and calls == [],
+          "seat_restart.dry under --apply: the kill is decided, nothing is killed, consumed or launched (%s, %s)"
+          % (dos(all_acts), calls))
+    with open(os.path.join(root, "journal.jsonl")) as f:
+        j = [json.loads(x) for x in f]
+    check(any(r["do"] == "restart_kill" and "WOULD SIGTERM" in str(r.get("result")).upper() for r in j),
+          "seat_restart.dry: the would-be kill is journalled in the LIVE journal")
+    rs = st["seat_restart"]["FOUNDRY"]
+    check(rs.get("state") == "dry" and not SR.in_flight(st, "FOUNDRY", sch, T0 + SR.DEFAULTS["grace_s"] + 125),
+          "seat_restart.dry: the dry ticket ends in state dry, which does not fence FOUNDRY's rings (%s)" % rs.get("state"))
+
+
 def test_wt_profile_wrap_only_when_enabled():
     import install_wt_seat_profiles as W
     off = os.path.join(TMP, "sched_off.json")

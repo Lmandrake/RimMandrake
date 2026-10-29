@@ -261,10 +261,10 @@ Prerequisites:
 - The wakes are live (step 4), so the fresh window receives its ticket.
 
 1. **[MANDRAKE confirms, WRITES]** In `src/RimMandrake/rimflow/dispatcher_schedule.json` set `"seat_restart": {"enabled": true, ...}`. Commit and `./publish`, then pull in both clones.
-2. **Dry first.** Leave the timer dry for one ticket. When FOUNDRY closes a ticket, the request is taken and held; `restart_kill` is journalled as `DRY: would SIGTERM`. Check with `grep restart_ $S/dry/journal.jsonl | tail -n 5 | cut -c1-240`. Nothing is killed.
+2. **Dry first.** The live timer already runs `--apply`, so dryness comes from the key: step 1 sets `"seat_restart": {"enabled": true, "dry": true, ...}`. With `dry` true the Dispatcher passes apply=false to the restart path only (`dispatcher.sr_apply`). When FOUNDRY closes a ticket, the request is read and held, and `restart_kill` is journalled in the LIVE journal as `would SIGTERM pid ...`. The restart state then reads `dry`. That state does not fence FOUNDRY's rings, and the same request is not retaken. Check with `grep restart_ $S/journal.jsonl | tail -n 5 | cut -c1-240`. Nothing is killed, consumed or launched.
 3. **[MANDRAKE confirms]** Re-install the WT profiles so the FOUNDRY tile runs `seat_loop.sh`: `python3 src/RimMandrake/Utils/install_wt_seat_profiles.py --apply`. While the key is off the profile line is unchanged, so this step must come after step 1. `restart_seats()` reads the key.
 4. **[MANDRAKE: his window]** Close and reopen the FOUNDRY tile once, so it runs under `seat_loop.sh`. Until then a kill has no in-tile relaunch. The Dispatcher then falls back to `launch_fleet.ps1 -Seats FOUNDRY`, which opens a NEW tab and leaves the old one at a shell. That fallback from the systemd timer (WSL interop) is UNMEASURED.
-5. Run the timer with `--apply` (already the case from step 4 of this runbook). Watch the first live restart:
+5. Set `"dry": false` (or delete the key), then commit and `./publish`. The timer is already `--apply`. Watch the first live restart:
    - `restart_request` → `restart_kill` (result `killed pid … (SIGTERM)`) → `restart_relaunched` (`in-tile`) → `restart_verified`;
    - the phone lists `AGENT FOUNDRY` again;
    - `cat $S/armed/FOUNDRY.json` shows the NEW session_id.

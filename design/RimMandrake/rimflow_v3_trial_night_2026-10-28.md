@@ -53,7 +53,7 @@ All commands run from `$B`.
 
 | Row | State | Who clears it |
 |---|---|---|
-| Dispatcher / selftests | `selftest_dispatcher.py` hangs (>200 s) against the dispatcher helper's uncommitted `dispatcher.py` | [OWED: Dispatcher helper, `v3_build\dispatcher.md`] |
+| Dispatcher / selftests | Cleared 18:5x: `selftest_dispatcher.py` PASS in 2.9 s against the dispatcher helper's tree (`v3_build\st3.txt`) | Dispatcher helper |
 | Cutover / tool on origin/main | `v3_cutover.py` untracked | [OWED: cutover helper, `D:\ClaudeWork\rimmandrake\v3_cutover\PROGRESS.md`] |
 | Conductor, Arbiter, Auditor, Producer, Innovator / last run under cap | never run | Clears through the section 5 trial runs, once `role_launch.py run-now` is published. [OWED: Arbiter helper, ETA 18:15, `v3_build\RUN_NOW_COORD.md`] |
 
@@ -156,11 +156,11 @@ All commands run from `$B`.
    - `python3 src/RimMandrake/rimflow/v3_ready.py --no-selftests` shows `Cutover / applied` INFO `record.json present (applied ...)`;
    - `python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY | head` lists former BENCH items.
 
-9c. **Helper budget follows the work:** [OWED: Dispatcher helper, HELPER_BUDGET_MIGRATE_INTO_DISPATCHER, `v3_build\dispatcher.md` "allocator v3 split", GREEN 18:4x, not yet published]. Once published:
+9c. **Helper budget follows the work:** HELPER_BUDGET_MIGRATE_INTO_DISPATCHER is published (`bce8d5a772`). The Dispatcher writes `$S/helper_budget.json` every tick and the spawn hook reads it first. Checks:
    - `$S/helper_budget.json` exists, is fresh (mtime under 5 min), and has `seats.FOUNDRY` greater than 0;
    - CONDUCTOR has a share only while he is present.
 
-   The exact proof line: [OWED: Dispatcher helper].
+   The exact proof line: `python3 src/RimMandrake/rimflow/helper_budget.py show` prints `seats {'CONDUCTOR': <n>, 'FOUNDRY': <n>} ... (fresh: the hook uses it)`. At 17:47 it was CONDUCTOR 10 (his override until 2026-11-04 12:00) and FOUNDRY 1: the pace fit is 0.9 at a 1.78 %/h burn, and a low FOUNDRY number is the brake, not a fault. FOUNDRY's clone must be pulled before its window's hook reads the budget.
 
    Until it lands, use the cutover helper's staged slot line: `python3 src/RimMandrake/Utils/slot_allocator.py set --seat FOUNDRY --n 6 --owner-said "Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry"`. It is superseded once Dispatcher-owned budgets land. Without either, FOUNDRY's helper slots come from the old allocator. That allocator gave FOUNDRY 0 at 17:00 (25 % share starving FOUNDRY). Note it in night.md as a known gap; it is not a blocker for the trial.
 
@@ -174,15 +174,20 @@ python3 -c "import json;s=json.load(open('src/RimMandrake/rimflow/dispatcher_sch
 git diff --stat src/RimMandrake/rimflow/dispatcher_schedule.json     # 1 line changed
 ```
 
-**The wave-1 guard must widen in the same commit.** `selftest_dispatcher.py` pins `WAVE1_ROLES = ("Conductor", "Operations")` (line ~2580) and goes RED with `role <X> must stay disabled` the moment a third role is enabled. Change the tuple to the set being enabled and keep `recover_dead` false.
+**The go-live set widens in the same file.** `selftest_dispatcher.py` reads the allowed set from the schedule's `golive` block. It goes RED with `role <X> must stay disabled (go-live set: ...)` when a role is enabled but not named there. So the flip also adds the role's name to `golive.roles`; no test edit is needed:
 
-[OWED: Dispatcher helper. Confirm whether their dispatcher.py change already widens this guard. If not, the Conductor makes this one-line test edit in the flip's commit.]
+```
+sed -i 's/"golive": {"roles": \[\([^]]*\)\]/"golive": {"roles": [\1, "Arbiter"]/' src/RimMandrake/rimflow/dispatcher_schedule.json
+python3 -c "import json;print(json.load(open('src/RimMandrake/rimflow/dispatcher_schedule.json'))['golive']['roles'])"
+```
+
+`recover_dead` works the same way: a seat's `recover_dead: true` passes only with that seat in `golive.recover_dead`.
 
 Then:
 
 ```
 python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/rimflow/selftest_dispatcher.py   # RESULT: GREEN
-./publish -m "v3 trial: enable <Role>" src/RimMandrake/rimflow/dispatcher_schedule.json src/RimMandrake/rimflow/selftest_dispatcher.py
+./publish -m "v3 trial: enable <Role>" src/RimMandrake/rimflow/dispatcher_schedule.json
 ```
 
 **Proves:** `PUBLISHED <sha>`, then within ~1 min `git -C /home/mandrake/rm/dispatch log -1 --format=%h` equals it. v3_ready's `<Role> / enabled` then reads `ON`.
@@ -208,8 +213,8 @@ The next live tick (≤2 min) launches it. Watch with `run-status`. Done means:
 | 13 | **Producer** | off | `run-now --role Producer --mode weekly` [OWED: Producer helper, `v3_build\producer.md` step 3]. Healthy: a plan file `D:\ClaudeWork\rimmandrake\producer\plan_<date>.md` built from `infrastructure/state/CONDUCTOR_GOALS.md`, then commit+publish. | flip |
 | 14 | **Auditor** | off | `run-now --role Auditor` [OWED: Auditor/Innovator helper, `v3_build\auditor_innovator.md`]. Its pre_launch runs `audit_prescreen --days 1` fresh. | flip |
 | 15 | **Innovator** | off | `run-now --role Innovator` [OWED: Auditor/Innovator helper]. | flip last |
-| 16 | **Seat restart** | `seat_restart.enabled: false` | **Not tonight unless the dispatcher helper's readiness list is all GO.** [OWED: Dispatcher helper, "Seat restart readiness list"]. Steps are in `design/RimMandrake/rimflow_v3_golive_wave1.md` §10: dry first, `install_wt_seat_profiles.py --apply`, reopen the tile. | hold |
-| 17 | **FOUNDRY wake cap** | 3 wakes/hour; alarm `cap:FOUNDRY` already open | [OWED: Dispatcher helper, "Wake cap proposal"]. Raise only with their number. | hold |
+| 16 | **Seat restart** | `seat_restart.enabled: false` | **Readiness (dispatcher helper):** the code is GO. `selftest_seat_restart` is GREEN and the new `seat_restart.dry` key makes the dry ticket possible under the live `--apply` timer. To enable, follow §10 of `design/RimMandrake/rimflow_v3_golive_wave1.md` in this order: (1) `"seat_restart": {"enabled": true, "dry": true, ...}` and publish; (2) one dry ticket, `grep restart_ $S/journal.jsonl` shows `would SIGTERM`; (3) `install_wt_seat_profiles.py --apply`; (4) he reopens the FOUNDRY tile; (5) `"dry": false`, publish, then watch `restart_request` → `restart_kill` → `restart_relaunched` → `restart_verified`. Two prerequisites: the FOUNDRY doorbell arms, and the wakes are live. | hold |
+| 17 | **FOUNDRY wake cap** | 3 wakes/hour; alarm `cap:FOUNDRY` already open | Proposal: `caps.wakes_per_seat_hour` 6 and `caps.wakes_per_seat_day` 48. Measured in `$S/journal.jsonl` 22:00-00:45Z (`v3_build\wake_rows.txt`): 7 rings. Ring to lease take was 8-12 s in all 4 claimed wakes, and 2 rings got no handoff in 600 s. Uncapped, FOUNDRY asked for a wake every ~4 min. After 3 wakes in 8 min, the cap held an idle FOUNDRY for 49 min (23:23-00:12). At 6/h, a runaway wake loop still stops at 6. The day cap moves with it, because 30 would bind after 5 h at 6/h. The lines go under `caps` in `dispatcher_schedule.json` (one publish). | flip |
 
 **Never tonight:**
 - `recover_dead` true (not proved since the BG-survives proof was for role runs only);
