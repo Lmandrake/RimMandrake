@@ -77,3 +77,4 @@
 {"seat":"DISPATCHER","event":"note","id":"UNIVERSAL_PIPE_FIX_LAST_RULING_STILL_RED","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T10:00:26Z","ts":"2026-10-29T10:02:24Z","tsn":1793268144007106248}
 {"seat":"DISPATCHER","event":"note","id":"GREYSEA_FLOOR_PASS_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T10:08:42Z","ts":"2026-10-29T10:10:38Z","tsn":1793268638074056653}
 {"seat":"DISPATCHER","event":"note","id":"TWILIGHT_BOTTOM_CAST_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T10:12:54Z","ts":"2026-10-29T10:14:49Z","tsn":1793268889085811163}
+{"seat":"DISPATCHER","event":"note","id":"DISPATCHER_BUILD_PICK_ACCOUNT_FIRST","text":"dispatcher account_pick : keep steven: runway 0.83 MEASURED, week left 90% (not under the switch line) (was: SWITCH steven -> system)","ts":"2026-10-29T10:27:07Z","tsn":1793269627148439534}
