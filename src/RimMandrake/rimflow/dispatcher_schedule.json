@@ -136,7 +136,7 @@
    "_why": "process experiments 2x/week (Tue, Fri, mode run) and the design review weekly (Sun, mode weekly via weekly_plan_weekday), as v3 \u00a72 and the responsibilities doc. Sunday puts the design letter before the Producer's Wednesday plan. Paused first (v3 \u00a73): AMBER keeps only the Sunday design review, RED and FLOOR none. Token-blind: reads digest_blind.md. helpers_max 2 experiment helpers, read by the instructions. seat/clone/model are the builder's defaults of 2026-10-27: confirm before enabling."}
  ],
  "throttle_order": ["Innovator", "Auditor", "Producer", "Arbiter", "Operations"],
- "account_pick": {"enabled": true, "act": "recommend", "hold": ["role_launch", "ring", "recover"],
+ "account_pick": {"enabled": true, "act": "recommend", "hold": [], "_hold_override": "owner by card 2026-10-28 19:00 PDT (stay on the current account): a SWITCH alarms but holds nothing; restore [\"role_launch\", \"ring\", \"recover\"] when he is back (Thu evening/Fri morning)",
    "switch_when": {"runway_lt": 0.8, "week_left_pct_lt": 10},
    "target_min": {"runway_ge": 1.2, "week_left_pct_ge": 20, "m": ["MEASURED"]},
    "rank": "soonest_reset", "lent_rules": "src/RimMandrake/Utils/slot_rules.json", "lent_min_draw_pct": 10,
