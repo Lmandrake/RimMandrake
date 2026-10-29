@@ -5,7 +5,9 @@
 Can-fails: the colonist cap leaking FAILs the control and voids the droid row; a droid not offered the job, or told it needs
 a shovel, FAILs; Droidworks not running voids every row (HARNESS); an offered job with no cut is UNMEASURED/SITE, never PASS;
 the run's settings are restored; every scene that vanished the colony hands the map back with a live colonist
-(STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: it used to leave none, and modcheck's canary voided the whole job).
+(STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: it used to leave none, and modcheck's canary voided the whole job). The fake prices
+the cut like the mod (12,800 x digLabourMultiplier at 1.7 x MiningSpeed a tick), so a run that leaves the shipped x4 labour
+in place misses its window and the good scene fails (J20261029T221052Z-6cdd1a).
 """
 import argparse
 import os
@@ -43,12 +45,13 @@ class FakeV(object):
 
 
 class FakeB(object):
-    """Scene knobs: colonist_offered, droid_offered, droid_needs, cut_after (ticks, None = never), running."""
+    """Scene knobs: colonist_offered, droid_offered, droid_needs, cut_after (ticks; "work" = priced like the mod, None =
+    never), mining_speed (the droid's MiningSpeed when cut_after is "work"), running."""
 
-    def __init__(self, colonist_offered=False, droid_offered=True, droid_needs="False", cut_after=1500,
-                 running=(D.DROIDWORKS,), droid_spawns=True):
+    def __init__(self, colonist_offered=False, droid_offered=True, droid_needs="False", cut_after="work",
+                 running=(D.DROIDWORKS,), droid_spawns=True, mining_speed=1.0):
         self.k = dict(colonist_offered=colonist_offered, droid_offered=droid_offered, droid_needs=droid_needs,
-                      cut_after=cut_after, droid_spawns=droid_spawns)
+                      cut_after=cut_after, droid_spawns=droid_spawns, mining_speed=mining_speed)
         self.running = list(running)
         self.settings = {k: "owner" for k in D.RUN_SETTINGS}
         self.depth, self.ticks, self.ordered_at, self.n, self.kinds = 0, 0, None, 0, {}
@@ -85,7 +88,15 @@ class FakeB(object):
             return {"success": True, "result": "has=False needs=%s ready=True" % k["droid_needs"]}
         if name == "jawa/ordered_job":
             self.ordered_at = self.ticks
+            if k["cut_after"] == "work":
+                # the mod's price (JobDriver_DigCanal): D4 -> D5 flat = 12,800 x digLabourMultiplier (an unset field reads
+                # the owner's value, here the shipped 4.0), worked at 1.7 x MiningSpeed a tick (J20261029T221052Z-6cdd1a)
+                lab = self.settings.get("digLabourMultiplier")
+                lab = 4.0 if lab in (None, "owner") else float(lab)
+                k["cut_after"] = int(12800 * lab / (1.7 * k["mining_speed"])) + 1
             return {"success": True}
+        if name == "jawa/attack_target_probe":
+            return {"success": True, "curJob": D.JOB if self.ordered_at is not None else "Wait_Wander"}
         if name == "rimworld/step_game_ticks":
             self.ticks += kw["ticks"]
             if self.ordered_at is not None and k["cut_after"] is not None and self.ticks - self.ordered_at >= k["cut_after"] \
@@ -128,8 +139,18 @@ def main():
         check(rows.get("DD_droid_digs_past_2m") == ("FAIL", "MOD") and rc == 1, "a droid not offered the job FAILs (%s)" % rows)
         rc, rows, _, _ = scene("shovel", droid_needs="True")
         check(rows.get("DD_droid_digs_past_2m") == ("FAIL", "MOD"), "a droid told it needs a shovel FAILs (%s)" % rows)
-        rc, rows, _, _ = scene("nocut", cut_after=None)
+        rc, rows, res, _ = scene("nocut", cut_after=None)
         check(rows.get("DD_droid_digs_past_2m") == ("UNMEASURED", "SITE"), "offered but no cut is UNMEASURED/SITE (%s)" % rows)
+        det = res["rows"][-1]["detail"]
+        check("curJob trail" in det["why"] and det["jobTrail"][-1][1] == D.JOB and det["cutWork"] == 3200,
+              "a no-cut row records the window, the cut's work and the droid's curJob trail (%s)" % det.get("why"))
+        # J20261029T221052Z-6cdd1a: the run left digLabourMultiplier at the shipped 4.0 (51,200 work, ~30,000 ticks) and
+        # read a running dig as no cut; the run must price the cut inside the window, even for a slow droid
+        check(res["settings_run"]["digLabourMultiplier"] == str(D.LABOUR) and res["settings_run"]["digRockGroundEnabled"] == "False",
+              "the run sets the cheapest labour and soil pricing (%s)" % res["settings_run"])
+        rc, rows, _, _ = scene("slow", mining_speed=0.2)
+        check(rows.get("DD_droid_digs_past_2m") == ("PASS", "MOD"), "a slow droid (MiningSpeed 0.2) still cuts in the window (%s)" % rows)
+        check(D.CUT_WORK / (1.7 * 0.13) <= D.WAIT_TICKS, "WAIT_TICKS covers the cut down to MiningSpeed 0.13")
         rc, rows, _, _ = scene("nodroid", droid_spawns=False)
         check(rows.get("DD_droid_digs_past_2m") == ("UNMEASURED", "SITE"), "a droid that will not spawn is SITE (%s)" % rows)
         rc, rows, _, B = scene("nodw", running=("mandrake.rm.flowworks",))

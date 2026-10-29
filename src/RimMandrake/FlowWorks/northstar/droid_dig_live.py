@@ -8,7 +8,14 @@ its patch FlowWorks_DroidsDigDeep.xml gives RSW_DW_FleshType_Droid the RM_Machin
 
 Settings for the run (read back, restored after): shovelRequired ON (a machine digs bare-handed, so the droid needs no
 shovel), machineDigEnabled ON, maxDigDepth 4 (2 m, shipped), maxMachineDigDepth 40, digToDepthEnabled ON,
-digCostRisesWithDepth OFF, digFindsEnabled OFF, digDeepStoneEnabled OFF (a 2 m pit must stay soil to be cut again).
+digCostRisesWithDepth OFF, digFindsEnabled OFF, digDeepStoneEnabled OFF (a 2 m pit must stay soil to be cut again),
+digLabourMultiplier 0.25 and digRockGroundEnabled OFF (the cut's price, see WAIT_TICKS).
+
+WAIT_TICKS and the cut's price (SteveDesktop job J20261029T221052Z-6cdd1a, 2026-10-29): the D4 -> D5 cut is
+WorkToCut(5, flat) = 12,800 x digLabourMultiplier (shipped 4.0, DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK) = 51,200 work, about
+30,000 ticks even at MiningSpeed 1.0 (1.7 work a tick). The first runs never set the multiplier, waited 15,000 ticks, and read
+an accepted, running dig as "no cut landed": a harness window, not the mod. At 0.25 (the slider floor) the cut is 3,200 work,
+which 15,000 ticks covers down to MiningSpeed ~0.13. This row proves who may cut past 2 m, not how long a cut takes.
 
 Scene (plot from --origin, default 40,40; 16 x 10, cleared and read back by validation_core.prepare_site): one Soil square at
 (+8, +5) driven to D4 (2 m) by jawa/flowworks_excavation_drive and read back, RM_DigCanal designated on it. Every player pawn is
@@ -51,11 +58,13 @@ DROIDWORKS = "mandrake.rsw.droidworks"
 DROID_KIND = "RSW_DW_OuterRim_ImperialLaborDroid"
 JOB = "RM_DigCanalJob"
 CAP = 4                       # notches: 2 m, the shipped colonist cap
-WAIT_TICKS = 15000            # notch 5 at the flat 3200-work rate; row 2's Tunneler ran ~2.2 work/tick (~1500 ticks)
+LABOUR = 0.25                 # RM_DigDepthMath.MinLabourMultiplier: the cheapest cut the mod allows
+CUT_WORK = int(12800 * LABOUR)  # WorkToCut(5, costRisesWithDepth=False) = 3200 x PitDepth 4, x LABOUR = 3,200
+WAIT_TICKS = 15000            # CUT_WORK / (1.7 work a tick x speed): ~1,900 ticks at MiningSpeed 1, enough down to ~0.13
 ROW_IDS = ("DD_colonist_held_at_2m", "DD_droid_digs_past_2m")
 RUN_SETTINGS = {"shovelRequired": True, "machineDigEnabled": True, "maxDigDepth": 4, "maxMachineDigDepth": 40,
                 "digToDepthEnabled": True, "digCostRisesWithDepth": False, "digFindsEnabled": False,
-                "digDeepStoneEnabled": False}
+                "digDeepStoneEnabled": False, "digLabourMultiplier": LABOUR, "digRockGroundEnabled": False}
 
 
 def kv(text):
@@ -135,6 +144,14 @@ def run(B, V, a, out, stamp=None):
     def census(pid):
         r = B.call("jawa/static_call", type=SH, method="ProofShovelCensus", args="pawn:" + str(pid).replace("Thing_", "")) or {}
         return kv(r.get("result")) if r.get("success") is not False else {}
+
+    def cur_job(pid):
+        """The pawn's curJob def name through jawa/attack_target_probe (ladder_wall_proof's read); None when unreadable."""
+        try:
+            r = B.call("jawa/attack_target_probe", pawn=str(pid), maxDist=1) or {}
+        except Exception:      # noqa: BLE001 - a diagnostic read only; the row's verdict is the depth grid
+            return None
+        return r.get("curJob") if r.get("success") is not False else None
 
     def step(n):
         left = n
@@ -262,19 +279,25 @@ def run(B, V, a, out, stamp=None):
         cen = census(did)
         d0 = depth(cell)
         od = B.call("jawa/ordered_job", pawnId=did, jobDef=JOB, targetAX=cell[0], targetAZ=cell[1], waitTicks=0) or {}
-        t, d1 = 0, d0
+        t, d1, trail = 0, d0, [[0, cur_job(did)]]
         while t < WAIT_TICKS:
             step(250)
             t += 250
             d1 = depth(cell)
             if d1 not in (None, d0):
                 break
+            if t % 2500 == 0:
+                j = cur_job(did)
+                if j != trail[-1][1]:
+                    trail.append([t, j])     # (tick, curJob) at each change: shows whether the dig ran the whole window
         st, cls, why = droid_verdict(st_c, pd, cen, d0, d1)
+        if st == "UNMEASURED" and why.startswith("offered the job bare"):
+            why += "; %d ticks for %d work; curJob trail %s" % (t, CUT_WORK, trail)
         if not bar_ok and st != "PASS":
             st, cls, why = "UNMEASURED", "HARNESS", "work bar did not take: %s" % bar_why
         row("DD_droid_digs_past_2m", st, cls, {"droid": did, "why": why, "probe": pd.get("workGiver"), "pawn": pd.get("pawn"),
                                                "census": cen, "order": str(od)[:200], "depth0": d0, "depth": d1,
-                                               "ticks": t if d1 != d0 else None})
+                                               "ticks": t if d1 != d0 else None, "cutWork": CUT_WORK, "jobTrail": trail})
         vanish(did)
     finally:
         for k, v in before.items():
