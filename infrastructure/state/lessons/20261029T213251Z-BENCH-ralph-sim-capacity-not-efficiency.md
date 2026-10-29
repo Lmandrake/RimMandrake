@@ -1,0 +1,2 @@
+On the calibrated v2/v3 world, a single Ralph loop is capacity-bound, not more efficient: sound work per token ties v2 (52% of members higher) while throughput is a third and backlog grows ~100/week; its owner-message saving is one unmeasured assumption (Spearman +0.99 on status-ping multiplier). Measure that with a one-week AB_test slice before believing any nudge claim.
+home: design/RimMandrake/ralph_loop_design_2026-10-29.md
