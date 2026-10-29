@@ -54,7 +54,7 @@
 
 ## 1. The holdings
 
-There are three per-tile Inhabited places on one bank, where a channel's eddy meets a
+There is one per-tile Inhabited place on one bank, made of three districts (the holdings), where a channel's eddy meets a
 cluster of wells. Their names are chart names [CD §9.3: *"each holding's name is a chart
 name"*]. The Compact keep their charts as their own lore and hands. A chart is never an
 item and never a forecast product sold to the player [ruling 4].
@@ -65,7 +65,7 @@ item and never a forecast product sold to the player [ruling 4].
 | **Low Lantern** (the working eddy, downstream) | CD §9.3 | the Compact's tended weir, the stake-line, the silt farm, the ford |
 | **Farwake** (one dome, upslope on high dry ground) | prior draft (unverified) | the two who watch the sky; the picked wreck out in the dark past it |
 
-Fabric per holding is 2–4 low domes with lit doorways, lattice-timber walls, gold
+Fabric per holding is 2–4 low domes (Farwake is the one-dome exception) with lit doorways, lattice-timber walls, gold
 aluun-pane windows, a ghallowyn column, three noothelm at each door, bank-stakes, a ford
 and a kelp plot on the bank [CD §9.2]. ⚠️ CD §9.2 also lists *"a claim-buoy in the nearest
 shaft"*. That item is **void** under ruling 4 and must not be placed.
@@ -96,8 +96,9 @@ sale of light and none is a fight.
     Following her is how a player finds new light.
   - She watches the waning rim, which is the free sky-read: about 1.5 days of warning
     [LP §1.2].
-  - She counts pallu to read how many days a well has left [FP ecology; CD §8.1's *"The
-    Compact counts them"*, kept as lore only].
+  - She counts pallu to read how many days a well has left [FP ecology; CD §5 fish table's *"The
+    Compact counts them to price a skylight"*; the pricing purpose is void under the owner's
+    2026-09-27 ruling, so kept as lore only].
   - She will not set a plot under a well she thinks the gardener is closing, and she
     will not say why [CD §9.3, kept as behaviour].
 - **First-met line:** *"The light is lent, not given. Watch the rim, not the gold."*
@@ -193,7 +194,7 @@ sale of light and none is a fight.
   the bank.
 - **Role:** child. Gungan, 9 [CD §9.3].
 - **Teaches:** **the vaulisk tell**.
-  - Every Compact child is taught it before they are taught to swim a net: *a lamp with
+  - Every Compact child is taught it before they are taught to swim the current: *a lamp with
     no piip around it is not a lamp* [DP D4].
   - She chases her waelune anywhere on the bank, but every time she swerves wide around
     one steady gold light out in the dark. She does not break stride and does not
@@ -287,9 +288,14 @@ sale of light and none is a fight.
     `RUT_CrackedLandsFish_Items.xml`) and with `RUT_Vhessk` (a race). The names differ,
     but they look and sound alike.
   - ⚠️ **Farwake** is close to `RM_Farwick`, a Twilight plant on the same floor.
-  - The sitting can rename either.
-- **Star Wars canon:** none of these names is a canon name as far as I know. That check
-  rests on memory only and was not made against a canon source (unverified).
+  - ⚠️ **Dorrhul** looks and sounds like `RM_Dorrak`, an RM creature
+    (`src/RimMandrake/BlueDesert/Defs/ThingDefs_Races/RM_BlueDesertFauna.xml`). A rename is
+    suggested, not forced.
+  - The sitting can rename any of them.
+- **Star Wars canon:** none of these names is a canon name as far as I know. Measured
+  2026-10-29 on the Wookieepedia search API: all seven names plus Farwake, Nine-Well and
+  Low Lantern returned no canon match (control searches 'Quarren' and 'Nien Nunb' did
+  return results). The one near look-alike is Bimmelo next to 'Bimm' (a Legends species).
 
 **Questions for the sitting:**
 
@@ -300,8 +306,9 @@ sale of light and none is a fight.
    never sold.
 3. **Keep the seventh (Aldra Sohm)?** Or cut to six and let the biome teach without
    words?
-4. **Three holdings or one?** That is, three per-tile places, or one place holding all
-   seven.
+4. **Three districts or one?** The three holdings are districts of one per-tile place.
+   Is that right, or one holding for all seven? Repetition rule: do the same seven named
+   people, and Aldra's one wreck, repeat on every diveable tile, or is there a per-tile draw?
 5. **The child's micro-quest** walks the player past the vaulisk behind a nine-year-old.
    Keep it, soften it, or keep only the swerve?
 6. **Dorrhul's race:** Herglic (this sheet) or Quarren (§9.3)?

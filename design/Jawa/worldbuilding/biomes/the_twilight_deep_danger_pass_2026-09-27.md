@@ -146,7 +146,7 @@ blue-white is moving, green is growing (content drop §6.1). The **vaulisk** is 
 liar. An ambush thing of the dark between, it hangs a **gold lure** — a false bladder,
 indistinguishable at range from a hoolimbre lamp — and waits. The sea's whole language
 has exactly one counterfeiter, and every Compact child is taught the tell before they
-are taught to swim a net: *a lamp with no piip around it is not a lamp.*
+are taught to swim the current: *a lamp with no piip around it is not a lamp.*
 
 **(b) In play.** Spawns rarely, in the dark between shafts, disguised as a lit
 lamp-bladder plant. Small wild fauna drift to its glow (the lure feeds itself). A pawn sent to harvest "that hoolimbre we didn't plant" gets an
