@@ -117,9 +117,88 @@ check("a loop that spirals and never unsticks by itself wastes more and is steer
 check("priors: lo < hi for every Ralph parameter", all(lo < hi for lo, hi, _ in R.RALPH_PRIORS.values()))
 d = R.draw_rp(12345)
 check("per-member draw inside the ranges",
-      all(R.RALPH_PRIORS[k][0] <= v <= R.RALPH_PRIORS[k][1] for k, v in d.items()) and set(d) == set(R.RALPH_PRIORS))
+      all({**R.RALPH_PRIORS, **R.SUB_PRIORS}[k][0] <= v <= {**R.RALPH_PRIORS, **R.SUB_PRIORS}[k][1] for k, v in d.items())
+      and set(d) == set(R.RALPH_PRIORS) | set(R.SUB_PRIORS))
 check("per-member draw is keyed (same member, same draw; other member, other draw)",
       R.draw_rp(12345) == d and R.draw_rp(12346) != d)
+
+# ---- regression: id(ticket) reuse once made AB_test differ run to run inside one process
+for v in ("AB_test", "C"):
+    seq = [R.RalphSim(P, TH, v, RP, SEED, weeks=WEEKS).run() for _ in range(3)]
+    check(f"{v}: deterministic across repeated runs in one process", seq[0] == seq[1] == seq[2])
+
+# ---- required live tests: an item that needs a test never closes untested (instrumented at the base close)
+_orig_close = S.Sim.close
+untested = []
+
+
+def _close(self, t, tk):
+    if isinstance(self, R.RalphSim) and self.variant in ("AB_test", "C") and tk.cls != "process" \
+            and S.u01(self.seed, R.F_BTEST, tk.key) < self.rp["b_p_test"] and tk not in self.tested:
+        untested.append(tk.key)
+    _orig_close(self, t, tk)
+
+
+S.Sim.close = _close
+try:
+    hard = dict(RP, b_blind=0.3, b_s_mult=1.3)
+    for v in ("AB_test", "C"):
+        R.RalphSim(P, TH, v, hard, SEED, weeks=WEEKS).run()
+finally:
+    S.Sim.close = _orig_close
+check("AB_test/C: no item that needs a live test closes untested", not untested, untested[:5])
+
+
+# ---- variant C: the Archmagi runner and the owner's game, checked by an independent clock
+class CProbe(R.RalphSim):
+    def __init__(self, *a, **k):
+        self.starts = {"A": [], "S": []}
+        self.aborts = []
+        super().__init__(*a, **k)
+
+    def add(self, t, key, v=1.0):
+        if key.startswith("c_tests_"):
+            self.starts[key[-1]].append(t)
+        elif key == "c_bumps":
+            self.aborts.append(t)
+        super().add(t, key, v)
+
+
+def owner_holds(sim, rp, h):
+    return sim.present[h] and S.u01(SEED, R.F_CPOK, h) >= rp["c_a_present_ok"]
+
+
+for pok in (0.0, 0.5):
+    rpc = dict(RP, c_a_present_ok=pok)
+    c = CProbe(P, TH, "C", rpc, SEED, weeks=WEEKS)
+    cres = c.run()
+    bad = []
+    for t in c.starts["A"]:
+        h = int(t // 3600)
+        if owner_holds(c, rpc, h) or (h > 0 and owner_holds(c, rpc, h - 1) and t - h * 3600 < 20 * 60):
+            bad.append(t)
+    check(f"C pok={pok}: Archmagi runner never starts while the owner holds the game or <20 min after", not bad,
+          bad[:3])
+    check(f"C pok={pok}: every bump is at the hour the owner takes the game",
+          all(owner_holds(c, rpc, int(t // 3600)) and t % 3600 == 0 for t in c.aborts), c.aborts[:3])
+    check(f"C pok={pok}: no runner ran two tests at once, no sim-side violation", c.r_overlap == 0 and c.c_viol == 0,
+          (c.r_overlap, c.c_viol))
+    check(f"C pok={pok}: both runners test", len(c.starts["A"]) > 0 and len(c.starts["S"]) > 0,
+          (len(c.starts["A"]), len(c.starts["S"])))
+    check(f"C pok={pok}: the owner's return bumps tests", len(c.aborts) > 0, len(c.aborts))
+c0 = CProbe(P, TH, "C", dict(RP, c_invalid=0.0, c_cold_min=0.5), SEED, weeks=WEEKS)
+c0res = c0.run()
+check("C: no invalid runs when c_invalid = 0", all(w["c_invalid_wk"] == 0 for w in c0res))
+c1 = R.RalphSim(P, TH, "C", dict(RP, c_invalid=0.3), SEED, weeks=WEEKS).run()
+check("C: invalid runs re-run and appear when c_invalid > 0", sum(w["c_invalid_wk"] for w in c1) > 0)
+check("C: two builder lanes", runs["C"][0].lanes == ("FOUNDRY", "BENCH"))
+check("+sub: subagents speed A up (more iterations per day)",
+      sum(w["iters_d"] for w in runs["A+sub"][1]) > sum(w["iters_d"] for w in runs["A"][1]))
+# ---- regression: sound per G ITE once floored its denominator at 1 G (max(1.0, ite/1e9)) and hid sub-1G variants
+syn = [dict(w, sound_prod_d=10.0, ite_week=0.5e9) for w in runs["A"][1]]
+spg = R.compact(syn)["sound_per_gite"]
+check("sound_per_gite = sound/day * 7 / (ITE/1e9), not floored at 1 G", abs(spg - 140.0) < 1e-6, spg)
+check("fingerprint is 12 hex chars", len(R.FP) == 12 and all(ch in "0123456789abcdef" for ch in R.FP))
 
 print("FAILED: " + ", ".join(FAILS) if FAILS else "all checks passed")
 sys.exit(1 if FAILS else 0)

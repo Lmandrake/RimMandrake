@@ -15,6 +15,20 @@ Variants (all with no Dispatcher, no roles, no helpers, no orchestrating seat):
             A as a repair.
   AB_build  two builder loops (Archmagi, SteveDesktop) on one shared plan. Tickets follow the world's seat route,
             an idle loop steals from the other, and an iteration can collide with the other loop's work.
+  C         two builder loops split BY AREA (the seat route; a loop steals only when its own area is empty, and only
+            a stolen ticket risks b_collide; own-area work risks the smaller c_collide_area for shared files) plus
+            two live-test runners: S on SteveDesktop (its own game, always free) and A on Archmagi (the owner's
+            game: free only when he is not holding it and has been away 20 min, the CONFIG idle rule; when he comes
+            back mid-test the runner yields, the run is lost and re-queued, and he may send a message). Builders never
+            take the bridge (p_verify 0); every live test goes through a runner. A run can be invalid (void
+            evidence, re-run). After the owner had Archmagi's game, its next run pays a cold load.
+  <v>+sub   the same variant with bounded subagents inside one iteration (Huntley allows parallel subagents for
+            search and writing with one validation worker): helper wall time divided by r_par, ITE times r_par_ite.
+
+Live testing is a fixed property of an item (keyed by ticket only): an item that needs a test cannot close untested.
+After 3 failed live rounds it is parked with its evidence (b_parked) and leaves the loop, never closed.
+Every output row carries FP, a fingerprint of this file, rimflow_v3_sim.py and the params; `report` refuses rows
+from another fingerprint, so changed code cannot silently reuse old rows.
 
 Every Ralph parameter is ASSUMED with a range (RALPH_PRIORS). `ensemble` draws them per member from the range (keyed
 by member id), `oat` sweeps each one from lo to hi with the others at their midpoints, and `report` writes
@@ -43,6 +57,8 @@ HOUR, DAY, WEEK = S.HOUR, S.DAY, S.WEEK
 # keyed-randomness fields of our own, clear of rimflow_v3_sim's 1..36
 (F_ROFF, F_RSPIRAL, F_RUNST, F_RDROP, F_BTEST, F_BHIT, F_BBLIND, F_BFR, F_BDUR, F_COLL, F_SPIN, F_RTHETA,
  F_RVER) = range(101, 114)
+F_CPOK, F_CINV, F_CBMSG = range(114, 117)
+C_IDLE_S = 20 * 60          # CONFIG: owner card 2026-10-26, a seat may take a free bridge after 20 min idle
 
 # name: (lo, hi, what it stands for). All ASSUMED: nothing in the v2 data measures them.
 RALPH_PRIORS = {
@@ -70,31 +86,75 @@ RALPH_PRIORS = {
     "r_bg_mult": (0.4, 1.0, "share of v2's background ITE (art-eval headless, hooks, timers) still running"),
     "b_test_min": (10, 45, "SteveDesktop wall minutes per live test job, including the load (lane B, AB_test)"),
     "b_test_ite": (100e3, 600e3, "ITE per live test job (lane B)"),
-    "b_p_test": (0.5, 0.95, "share of product closes that B tests live"),
+    "b_p_test": (0.5, 0.95, "share of product items that need a live test (a fixed item property)"),
     "b_s_mult": (0.8, 1.3, "B's sensitivity against the calibrated rig sensitivity s_rig"),
     "b_blind": (0.0, 0.3, "chance that B's full-list live run sees a defect every shared check misses"),
     "b_collide": (0.0, 0.08, "AB_build: chance an iteration duplicates or breaks the other loop's work"),
+    # variant C only (drawn with their own index range, so the A/AB draws above are unchanged per member)
+    "c_collide_area": (0.0, 0.02, "C: collision chance for an iteration on the loop's OWN area (split by mod area; "
+                                  "shared files such as common defs and Utils still collide)"),
+    "c_a_present_ok": (0.0, 0.5, "C: share of owner-present hours in which Archmagi's game is still free (he is "
+                                 "on the phone, not at the machine) so the idle probe lets the runner in"),
+    "c_cold_min": (0.5, 25.0, "C: cold load when the Archmagi runner takes the game back after the owner had it "
+                              "(measured endpoints: 13-mod minimal list 22 s, owner's full list ~25 min)"),
+    "c_invalid": (0.0, 0.3, "C: share of live runs whose evidence is void (dead colony, stale log, harness fault) "
+                            "and must be re-run; v2's steward incidents show it is not zero, nobody counted it"),
+    "c_bump_msg": (0.0, 1.0, "C: chance the owner sends a message when he returns to find a test in his game"),
 }
-VARIANTS = ("A", "AB_test", "AB_build")
+C_KEYS = sorted(k for k in RALPH_PRIORS if k.startswith("c_"))
+# the "+sub" structure only (bounded subagents inside one iteration); serial Ralph has r_par = r_par_ite = 1
+SUB_PRIORS = {
+    "r_par": (1.2, 2.5, "+sub: wall-time speedup of one iteration from parallel search/write subagents"),
+    "r_par_ite": (1.0, 1.3, "+sub: ITE overhead of those subagents (each re-reads part of the context)"),
+}
+
+
+def fingerprint():
+    import hashlib
+    h = hashlib.sha1()
+    for f in (os.path.join(HERE, "ralph_loop_sim.py"), os.path.join(HERE, "rimflow_v3_sim.py"),
+              os.path.join(HERE, "rimflow_v3_sim_params.json")):
+        data = open(f, "rb").read()
+        if f.endswith("ralph_loop_sim.py"):     # reporting code below the marker does not change a row
+            data = data.split(b"# " + b"-" * 64 + b" reporting (outside the fingerprint)")[0]
+        h.update(data)
+    return h.hexdigest()[:12]
+BASE_VARIANTS = ("A", "AB_test", "AB_build", "C")
+VARIANTS = BASE_VARIANTS + ("A+sub", "C+sub")
 V3_COMPARE = ("v2", "v3.0", "v3.4")
 WORK = ["sound_prod_d", "accepted_prod_d", "escapes_wk", "defect_frac", "rework_share", "nudges_d", "steers_d",
         "cards_waiting_3d", "owner_resolve_med_d", "ite_week", "blocked_h", "proc_share", "done_d", "filed_d",
-        "iters_d", "wasted_share", "prod_q_end", "b_q_end", "idle_min_d_FOUNDRY"]
+        "iters_d", "wasted_share", "prod_q_end", "b_q_end", "idle_min_d_FOUNDRY", "owner_min_wk", "b_parked_wk",
+        "c_bumps_wk", "c_invalid_wk", "c_cold_h_wk", "c_share_archmagi"]
+# not weekly means: the backlog at the END of week 4, and sound product closes per G ITE (a per-member ratio)
+EXTRA = ["prod_q_final", "sound_per_gite"]
 
 
 def mid_rp():
-    return {k: (lo + hi) / 2 for k, (lo, hi, _) in RALPH_PRIORS.items()}
+    rp = {k: (lo + hi) / 2 for k, (lo, hi, _) in RALPH_PRIORS.items()}
+    rp.update({k: (lo + hi) / 2 for k, (lo, hi, _) in SUB_PRIORS.items()})
+    return rp
 
 
 def draw_rp(member, seed=777):
-    keys = sorted(RALPH_PRIORS)
-    return {k: RALPH_PRIORS[k][0] + (RALPH_PRIORS[k][1] - RALPH_PRIORS[k][0]) * S.u01(seed, F_RTHETA, member, i)
-            for i, k in enumerate(keys)}
+    keys = [(i, k) for i, k in enumerate(sorted(k for k in RALPH_PRIORS if k not in C_KEYS))] + \
+        [(100 + i, k) for i, k in enumerate(C_KEYS)]
+    rp = {k: RALPH_PRIORS[k][0] + (RALPH_PRIORS[k][1] - RALPH_PRIORS[k][0]) * S.u01(seed, F_RTHETA, member, i)
+          for i, k in keys}
+    for i, k in enumerate(sorted(SUB_PRIORS)):
+        lo, hi, _ = SUB_PRIORS[k]
+        rp[k] = lo + (hi - lo) * S.u01(seed, F_RTHETA, member, 200 + i)
+    return rp
 
 
 class RalphSim(S.Sim):
     def __init__(self, P, theta, variant, rp, seed, weeks=4, quotas=None):
         assert variant in VARIANTS, variant
+        sub = variant.endswith("+sub")
+        variant = variant[:-4] if sub else variant
+        rp = dict(rp)
+        if not sub:
+            rp["r_par"], rp["r_par_ite"] = 1.0, 1.0
         th = dict(theta)                      # never mutate the caller's member theta
         th["mu_prod"] *= rp["r_mu_mult"]
         th["mu_proc"] *= rp["r_mu_mult"]
@@ -106,15 +166,26 @@ class RalphSim(S.Sim):
         fx = dict(self.fx)
         fx["seat_ite_per_close"] = {"value": 0.0}             # no orchestrating window: its cost is r_ctx_ite
         fx["background_ite_week"] = {"value": self.fx["background_ite_week"]["value"] * rp["r_bg_mult"]}
-        fx["p_verify"] = {"value": self.fx["p_verify"]["value"] * rp["r_verify_mult"]}
+        fx["p_verify"] = {"value": 0.0 if variant == "C" else self.fx["p_verify"]["value"] * rp["r_verify_mult"]}
         self.fx = fx
         self.variant, self.rp = variant, rp
-        self.lanes = ("FOUNDRY", "BENCH") if variant == "AB_build" else ("FOUNDRY",)
+        self.lanes = ("FOUNDRY", "BENCH") if variant in ("AB_build", "C") else ("FOUNDRY",)
         self.iter_n = {n: 0 for n in S.SEATS}
-        self.off = {}                         # id(ticket) -> this iteration went off-track
-        self.tested = set()                   # id(ticket) B has passed
+        self.off = {}                         # ticket -> this iteration went off-track (objects, not id(): a freed id is reused)
+        self.tested = set()                   # tickets B has passed (objects: id() reuse made AB_test nondeterministic)
         self.overlap = 0
         self.inflight = {n: 0 for n in S.SEATS}
+        # variant C: two live runners, S (SteveDesktop, its own game) and A (Archmagi, the owner's game)
+        self.runner = {"S": None, "A": None}
+        self.r_inflight = {"S": 0, "A": 0}
+        self.r_overlap = 0
+        self.c_viol = 0                       # Archmagi runner started while the owner held the machine (must be 0)
+        self.ra_last_end = 0.0
+        self.ra_wake = False
+        self.c_runs = 0
+        self.stolen = set()
+        pok = rp.get("c_a_present_ok", 0.0)
+        self.owner_busy = [self.present[h] and S.u01(seed, F_CPOK, h) >= pok for h in range(len(self.present))]
 
     # ---- routing: the world's seat route picks the work's cost table; the lane is the loop that does it
     def lane(self, tk):
@@ -158,7 +229,10 @@ class RalphSim(S.Sim):
                 for q in (o.q_hi, o.q_prod, o.q_proc):
                     if q:
                         self.add(t, "stolen" if n in self.lanes else "inherited")
-                        return q.popleft()
+                        tk = q.popleft()
+                        if n in self.lanes:
+                            self.stolen.add(tk)
+                        return tk
         return None
 
     # ---- the loop
@@ -170,8 +244,8 @@ class RalphSim(S.Sim):
         nh = 1 + S.poisson(max(0.0, th["helpers_per_job"] - 1), self.seed, S.F_NHELP, tk.key, tk.attempt)
         for i in range(nh):                  # the SAME keyed draws v2's helpers got for this ticket
             u = S.u01(self.seed, S.F_HELP, tk.key, tk.attempt, i)
-            dur += S.qsample(self.fx["helper_dur_q"][tk.seat], u) * rp["r_dur_mult"]
-            ite += S.qsample(self.fx["helper_ite_q"][tk.seat], u) * rp["r_ite_mult"]
+            dur += S.qsample(self.fx["helper_dur_q"][tk.seat], u) * rp["r_dur_mult"] / rp["r_par"]
+            ite += S.qsample(self.fx["helper_ite_q"][tk.seat], u) * rp["r_ite_mult"] * rp["r_par_ite"]
         return dur, ite
 
     def try_work(self, s, t):
@@ -190,7 +264,7 @@ class RalphSim(S.Sim):
         if tk is None:
             return                            # the loop finds nothing to do; the next filing wakes it
         self.iter_n[s.name] += 1
-        self.off[id(tk)] = S.u01(self.seed, F_ROFF, S.SEATS.index(s.name), self.iter_n[s.name]) < self.rp["r_p_off"]
+        self.off[tk] = S.u01(self.seed, F_ROFF, S.SEATS.index(s.name), self.iter_n[s.name]) < self.rp["r_p_off"]
         dur, ite = self.iter_cost(tk)
         self.begin(s, t, dur, ite, "quick_done", tk)
 
@@ -217,15 +291,19 @@ class RalphSim(S.Sim):
     def complete(self, t, s, tk):
         self.inflight[s.name] -= 1
         rp = self.rp
-        if self.off.pop(id(tk), False):
+        if self.off.pop(tk, False):
             self.add(t, "iters_wasted")
             s.q_hi.appendleft(tk)             # still the top item
             if S.u01(self.seed, F_RSPIRAL, S.SEATS.index(s.name), self.iter_n[s.name]) < rp["r_p_spiral"]:
                 self.spiral(s, t)
             return
-        if self.variant == "AB_build":
+        if self.variant in ("AB_build", "C"):
             other = [n for n in self.lanes if n != s.name][0]
-            if self.seats[other].serial_busy and S.u01(self.seed, F_COLL, S.SEATS.index(s.name), self.iter_n[s.name]) < rp["b_collide"]:
+            p_coll = rp["b_collide"]
+            if self.variant == "C" and tk not in self.stolen:
+                p_coll = rp["c_collide_area"]     # split by area: only shared files collide
+            self.stolen.discard(tk)
+            if self.seats[other].serial_busy and S.u01(self.seed, F_COLL, S.SEATS.index(s.name), self.iter_n[s.name]) < p_coll:
                 self.add(t, "collisions")
                 self.add(t, "iters_wasted")
                 s.q_hi.appendleft(tk)
@@ -251,8 +329,8 @@ class RalphSim(S.Sim):
 
     # ---- lane B on SteveDesktop: live tests (AB_test), reusing the base model's rig events
     def close(self, t, tk):
-        if self.variant == "AB_test" and tk.cls != "process" and id(tk) not in self.tested and tk.attempt < 3 \
-                and S.u01(self.seed, F_BTEST, tk.key, tk.attempt) < self.rp["b_p_test"]:
+        if self.variant in ("AB_test", "C") and tk.cls != "process" and tk not in self.tested \
+                and S.u01(self.seed, F_BTEST, tk.key) < self.rp["b_p_test"]:   # needs a test: fixed per item
             self.arb_q.append((t, tk))
             self.add(t, "b_in")
             self.arb_start(t)
@@ -260,6 +338,8 @@ class RalphSim(S.Sim):
         super().close(t, tk)
 
     def arb_start(self, t):
+        if self.variant == "C":
+            return self.c_start(t)
         while self.arb_busy < 1 and self.arb_q:
             _, tk = self.arb_q.popleft()
             self.arb_busy += 1
@@ -270,8 +350,14 @@ class RalphSim(S.Sim):
             self.push(t + dur, "arb_done", tk, len(self.arb_q))
 
     def arb_done(self, t, tk, qlen):
-        th, rp = self.th, self.rp
+        if self.variant == "C":
+            return self.c_done(t, tk, qlen)
         self.arb_busy -= 1
+        self.verdict(t, tk)
+        self.arb_start(t)
+
+    def verdict(self, t, tk):
+        th, rp = self.th, self.rp
         sens = min(0.98, th["s_rig"] * rp["b_s_mult"])
         hit = [d for j, d in enumerate(tk.defects) if d[0] == 0 and (
             (not d[1] and S.u01(self.seed, F_BHIT, tk.key, tk.attempt, j) < sens)
@@ -280,12 +366,105 @@ class RalphSim(S.Sim):
         self.add(t, "b_verdicts")
         if hit or fr:
             self.add(t, "b_reject")
+            if tk.attempt >= 3:               # bounded recovery: park it with its evidence, pick other work
+                self.add(t, "b_parked")
+                return
             self.repair(t, tk, hit)
         else:
-            self.tested.add(id(tk))
+            self.tested.add(tk)
             tk.accepted = True                # tested live by a second loop; NOT an independent blind judge
             S.Sim.close(self, t, tk)
-        self.arb_start(t)
+
+    # ---- variant C: two live runners. S owns SteveDesktop's game; A may use Archmagi's game only when the owner
+    # is not holding it and has been away 20 min (rimflow bridge take --idle-ok), and loses it when he comes back.
+    def busy_h(self, h):
+        return self.owner_busy[min(h, len(self.owner_busy) - 1)]
+
+    def avail_a(self, t):
+        h = int(t // HOUR)
+        if self.busy_h(h):
+            return False
+        return not (h > 0 and self.busy_h(h - 1) and t < h * HOUR + C_IDLE_S)
+
+    def next_avail_a(self, t):
+        h = int(t // HOUR)
+        while h * HOUR < self.T_end:
+            if not self.busy_h(h):
+                c = max(t, h * HOUR + (C_IDLE_S if h > 0 and self.busy_h(h - 1) else 0))
+                if c < (h + 1) * HOUR:
+                    return c
+            h += 1
+        return None
+
+    def first_busy_after(self, t):
+        h = int(t // HOUR) + 1
+        while h * HOUR < self.T_end + DAY:
+            if self.busy_h(h):
+                return h * HOUR
+            h += 1
+        return None
+
+    def c_start(self, t):
+        rp = self.rp
+        for r in ("S", "A"):
+            if self.runner[r] is not None or not self.arb_q:
+                continue
+            if r == "A" and not self.avail_a(t):
+                if not self.ra_wake:
+                    nt = self.next_avail_a(t)
+                    if nt is not None:
+                        self.ra_wake = True
+                        self.push(nt, "arb_done", None, ("A", "wake"))
+                continue
+            _, tk = self.arb_q.popleft()
+            dur = rp["b_test_min"] * 60 * (0.5 + S.u01(self.seed, F_BDUR, tk.key, tk.attempt)) / (1 - rp["r_p_off"])
+            self.r_inflight[r] += 1
+            if self.r_inflight[r] > 1:
+                self.r_overlap += 1
+            self.runner[r] = tk
+            self.arb_busy += 1
+            self.charge(t, rp["b_test_ite"], "ralph_b")
+            self.add(t, "c_tests_" + r)
+            if r == "A":
+                if self.owner_busy[int(t // HOUR)]:
+                    self.c_viol += 1
+                h0, h1 = int(self.ra_last_end // HOUR), int(t // HOUR)
+                if any(self.busy_h(h) for h in range(h0, h1 + 1)):      # the owner had the game since our last run
+                    dur += rp["c_cold_min"] * 60
+                    self.add(t, "c_cold_min", rp["c_cold_min"])
+                tb = self.first_busy_after(t)
+                if tb is not None and tb < t + dur:                     # he comes back mid-test: the runner yields
+                    self.add(t, "b_min", (tb - t) / 60)
+                    self.push(tb, "arb_done", tk, ("A", "abort"))
+                    continue
+            self.add(t, "b_min", dur / 60)
+            self.push(t + dur, "arb_done", tk, (r, "done"))
+
+    def c_done(self, t, tk, tag):
+        r, what = tag
+        if what == "wake":
+            self.ra_wake = False
+            self.c_start(t)
+            return
+        self.runner[r] = None
+        self.r_inflight[r] -= 1
+        self.arb_busy -= 1
+        if r == "A":
+            self.ra_last_end = t
+        if what == "abort":
+            self.add(t, "c_bumps")
+            self.add(t, "owner_att_min", 2.0)
+            if S.u01(self.seed, F_CBMSG, int(t // HOUR)) < self.rp["c_bump_msg"]:
+                self.add(t, "nudges")
+            self.arb_q.appendleft((t, tk))
+        else:
+            self.c_runs += 1                  # keyed by run number, so one ticket is not void forever
+            if S.u01(self.seed, F_CINV, self.c_runs) < self.rp["c_invalid"]:
+                self.add(t, "c_invalid")
+                self.arb_q.appendleft((t, tk))
+            else:
+                self.verdict(t, tk)
+        self.c_start(t)
 
     def summaries(self):
         out = super().summaries()
@@ -298,6 +477,15 @@ class RalphSim(S.Sim):
             r["proc_dropped_d"] = m.get("proc_dropped", 0.0) / 7
             r["b_q_end"] = m.get("arb_q_end", 0.0)
             r["collisions_wk"] = m.get("collisions", 0.0)
+            r["c_bumps_wk"] = m.get("c_bumps", 0.0)
+            r["c_invalid_wk"] = m.get("c_invalid", 0.0)
+            r["c_cold_h_wk"] = m.get("c_cold_min", 0.0) / 60
+            ta, ts = m.get("c_tests_A", 0.0), m.get("c_tests_S", 0.0)
+            r["c_share_archmagi"] = ta / max(1.0, ta + ts)
+            r["b_parked_wk"] = m.get("b_parked", 0.0)
+            r["owner_min_wk"] = m.get("owner_att_min", 0.0)
+            r["c_viol"] = self.c_viol
+            r["c_overlap"] = self.r_overlap
         return out
 
 
@@ -310,6 +498,8 @@ def add_derived(r):
     r.setdefault("iters_d", 0.0)
     r.setdefault("wasted_share", 0.0)
     r.setdefault("b_q_end", 0.0)
+    for k in ("b_parked_wk", "c_bumps_wk", "c_invalid_wk", "c_cold_h_wk", "c_share_archmagi"):
+        r.setdefault(k, 0.0)
     return r
 
 
@@ -319,10 +509,13 @@ def run_ralph(P, m, seed, variant, rp, weeks=4, unlimited=False):
 
 
 def run_v3(P, m, seed, pol, weeks=4, unlimited=False):
-    _, res = S.run_policy(P, m, seed, pol, {"_unlimited": True} if unlimited else {}, weeks=weeks)
-    out = [add_derived(w) for w in res]
-    for w in out:
-        w["b_q_end"] = 0.0
+    # S.run_policy without its overrides, so the weekly counters (owner minutes) stay reachable
+    quotas = None if unlimited else dict(m["quotas"])
+    sim = S.Sim(P, m["theta"], S.policy_cfg(P, pol), seed, weeks=weeks, quotas=quotas, warm_weeks=1)
+    out = [add_derived(w) for w in sim.run()]
+    for w, r in enumerate(out):
+        r["b_q_end"] = 0.0
+        r["owner_min_wk"] = sim.m[w].get("owner_att_min", 0.0)
     return out
 
 
@@ -333,7 +526,10 @@ def wmean(rows, k):
 
 
 def compact(rows):
-    return {k: round(wmean(rows, k), 5) for k in WORK}
+    out = {k: round(wmean(rows, k), 5) for k in WORK}
+    out["prod_q_final"] = rows[-1].get("prod_q_end", float("nan"))
+    out["sound_per_gite"] = round(out["sound_prod_d"] * 7 / (max(1.0, out["ite_week"]) / 1e9), 4)
+    return out
 
 
 def members(structure, n):
@@ -345,7 +541,7 @@ def cmd_ensemble(a):
     P = S.load_params()
     ms = members(a.structure, a.members)
     path = os.path.join(a.out, f"ens_{a.structure}_{a.quota}.jsonl")
-    done = {json.loads(l)["member"] for l in open(path)} if os.path.exists(path) else set()
+    done = fresh_done(path, lambda r: r["member"])
     t0 = time.time()
     with open(path, "a") as fh:
         for m in ms:
@@ -359,12 +555,35 @@ def cmd_ensemble(a):
             rows = {p: compact(run_v3(P, m, seed, p, unlimited=a.quota == "unlimited")) for p in V3_COMPARE}
             for v in VARIANTS:
                 rows[v] = compact(run_ralph(P, m, seed, v, rp, unlimited=a.quota == "unlimited"))
-            fh.write(json.dumps({"member": m["member"], "seed": seed, "rp": rp, "rows": rows}) + "\n")
+            fh.write(json.dumps({"member": m["member"], "seed": seed, "fp": FP, "rp": rp, "rows": rows}) + "\n")
     n = sum(1 for _ in open(path))
     print(f"ensemble {a.structure}/{a.quota}: {n} members on file, {time.time() - t0:.0f}s")
 
 
-OAT_VARIANTS = ("A", "AB_test")
+FP = fingerprint()
+
+
+def fresh_done(path, key):
+    """rows of THIS fingerprint already on file; a file holding any other fingerprint is moved aside, not reused"""
+    if not os.path.exists(path):
+        return set()
+    recs = [json.loads(l) for l in open(path)]
+    if any(r.get("fp") != FP for r in recs):
+        os.replace(path, path + f".stale_{int(time.time())}")
+        print(f"{path}: rows from another code/params fingerprint moved aside")
+        return set()
+    return {key(r) for r in recs}
+
+
+def load_fresh(path):
+    recs = [json.loads(l) for l in open(path)]
+    bad = sum(r.get("fp") != FP for r in recs)
+    if bad:
+        raise SystemExit(f"{path}: {bad} rows from another fingerprint than {FP}; rerun, do not mix")
+    return recs
+
+
+OAT_VARIANTS = ("A", "AB_test", "C")
 OAT_METRICS = ("sound_prod_d", "nudges_d", "ite_week", "escapes_wk")
 
 
@@ -373,7 +592,7 @@ def cmd_oat(a):
     P = S.load_params()
     ms = members(a.structure, a.members)
     path = os.path.join(a.out, f"oat_{a.structure}.jsonl")
-    done = {(r["member"], r["param"], r["end"]) for r in map(json.loads, open(path))} if os.path.exists(path) else set()
+    done = fresh_done(path, lambda r: (r["member"], r["param"], r["end"]))
     t0 = time.time()
     jobs = [(m, "_mid", "mid") for m in ms] + [(m, p, e) for p in sorted(RALPH_PRIORS) for e in ("lo", "hi") for m in ms]
     with open(path, "a") as fh:
@@ -388,26 +607,27 @@ def cmd_oat(a):
                 rp[p] = RALPH_PRIORS[p][0 if e == "lo" else 1]
             seed = 50000 + m["member"] * 97
             rows = {v: {k: round(wmean(run_ralph(P, m, seed, v, rp), k), 5) for k in OAT_METRICS} for v in OAT_VARIANTS}
-            fh.write(json.dumps({"member": m["member"], "param": p, "end": e, "rows": rows}) + "\n")
+            fh.write(json.dumps({"member": m["member"], "param": p, "end": e, "fp": FP, "rows": rows}) + "\n")
     print(f"oat {a.structure}: {sum(1 for _ in open(path))} of {len(jobs)} rows, {time.time() - t0:.0f}s")
 
 
+# ---------------------------------------------------------------- reporting (outside the fingerprint)
 def pct(x):
     x = np.array([v for v in x if v == v], dtype=float)
     return [round(float(np.percentile(x, q)), 3) for q in (10, 50, 90)] if len(x) else None
 
 
 def summarize_ensemble(path):
-    recs = [json.loads(l) for l in open(path)]
+    recs = load_fresh(path)
     labels = list(recs[0]["rows"])
     res = {"n": len(recs), "levels": {}, "vs": {}, "splits": {}}
-    for k in WORK:
+    for k in WORK + EXTRA:
         res["levels"][k] = {lab: pct([r["rows"][lab][k] for r in recs]) for lab in labels}
     for base in ("v2", "v3.4"):
         res["vs"][base] = {}
         for lab in VARIANTS:
             res["vs"][base][lab] = {}
-            for k in WORK:
+            for k in WORK + EXTRA:
                 d = np.array([r["rows"][lab][k] - r["rows"][base][k] for r in recs], dtype=float)
                 d = d[~np.isnan(d)]
                 if len(d):
@@ -432,14 +652,53 @@ def summarize_ensemble(path):
     return res
 
 
+TORNADO_TARGETS = (("C", "sound_prod_d"), ("C", "ite_week"), ("C", "nudges_d"), ("C", "sound_per_gite"),
+                   ("C-v2", "sound_prod_d"), ("A", "sound_prod_d"), ("A", "sound_per_gite"))
+
+
+def tornado(path, structure):
+    """global sensitivity over the ensemble: every member-theta prior (ABC-filtered) and every Ralph prior.
+    swing = mean target in the top decile of the parameter minus the bottom decile; rho = Spearman."""
+    recs = load_fresh(path)
+    th = {m["member"]: m["theta"] for m in members(structure, 240)}
+    def val(r, lab, k):
+        if lab.endswith("-v2"):
+            return r["rows"][lab[:-3]][k] - r["rows"]["v2"][k]
+        return r["rows"][lab][k]
+    params = [("theta", p) for p in sorted(th[recs[0]["member"]]) if isinstance(th[recs[0]["member"]][p], (int, float))]
+    params += [("rp", p) for p in sorted(RALPH_PRIORS)]
+    out = {}
+    for lab, k in TORNADO_TARGETS:
+        y = np.array([val(r, lab, k) for r in recs], dtype=float)
+        rows = []
+        for src, p in params:
+            x = np.array([th[r["member"]][p] if src == "theta" else r["rp"][p] for r in recs], dtype=float)
+            if np.ptp(x) == 0:
+                continue
+            o = np.argsort(x)
+            n = max(3, len(x) // 10)
+            swing = float(np.mean(y[o[-n:]]) - np.mean(y[o[:n]]))
+            rho = float(np.corrcoef(np.argsort(np.argsort(x)), np.argsort(np.argsort(y)))[0, 1])
+            rows.append((p, src, round(swing, 4), round(rho, 3)))
+        rows.sort(key=lambda z: -abs(z[2]))
+        out[f"{lab}:{k}"] = {"p50": round(float(np.median(y)), 4), "rows": rows[:12]}
+    return out
+
+
 def summarize_oat(path):
-    recs = [json.loads(l) for l in open(path)]
-    mid = {r["member"]: r["rows"] for r in recs if r["param"] == "_mid"}
+    recs = load_fresh(path)
+    need = {(p, e) for p in RALPH_PRIORS for e in ("lo", "hi")}
+    have = {}
+    for r in recs:
+        have.setdefault(r["member"], set()).add((r["param"], r["end"]))
+    full = {m for m, h in have.items() if need <= h}            # a chunked run leaves partial members: skip them
+    mid = {r["member"]: r["rows"] for r in recs if r["param"] == "_mid" and r["member"] in full}
     out = {}
     for v in OAT_VARIANTS:
         out[v] = {}
         for k in OAT_METRICS:
-            out[v][k] = {"mid_median": round(float(np.median([x[v][k] for x in mid.values()])), 3), "swing": []}
+            out[v][k] = {"mid_median": round(float(np.median([x[v][k] for x in mid.values()])), 3), "swing": [],
+                         "members": len(mid)}
             for p in sorted(RALPH_PRIORS):
                 ends = {}
                 for e in ("lo", "hi"):
@@ -461,7 +720,8 @@ def fmt(v, k):
 
 def cmd_report(a):
     rep = {"ensemble": {}, "oat": {}}
-    lines = ["# Ralph sim tables (p10/p50/p90 over members; weeks 1-3 of 4)", ""]
+    lines = [f"# Ralph sim tables (p10/p50/p90 over members; weeks 1-3 of 4; fingerprint {FP})", "",
+             "prod_q_final is the product backlog at the END of week 4; prod_q_end is the mean of weekly ends.", ""]
     for st in ("park", "pull"):
         for q in ("today", "unlimited"):
             p = os.path.join(a.out, f"ens_{st}_{q}.jsonl")
@@ -472,12 +732,12 @@ def cmd_report(a):
             labs = list(s["levels"]["sound_prod_d"])
             lines += [f"## {st}, quotas {q} (n={s['n']})", "", "| metric | " + " | ".join(labs) + " |",
                       "|---|" + "---|" * len(labs)]
-            for k in WORK:
+            for k in WORK + EXTRA:
                 lines.append(f"| {k} | " + " | ".join(fmt(s["levels"][k][lab], k) for lab in labs) + " |")
             lines += ["", "Paired median delta (share of members where it is higher):", "",
                       "| metric | " + " | ".join(f"{v}-{b}" for b in ("v2", "v3.4") for v in VARIANTS) + " |",
                       "|---|" + "---|" * (2 * len(VARIANTS))]
-            for k in WORK:
+            for k in WORK + EXTRA:
                 cells = []
                 for b in ("v2", "v3.4"):
                     for v in VARIANTS:
@@ -488,6 +748,13 @@ def cmd_report(a):
             for v, d in s["splits"].items():
                 for k, lst in d.items():
                     lines.append(f"- {v} {k}: " + ", ".join(f"{p} {c:+.2f}" for p, c in lst))
+            lines.append("")
+            tn = tornado(p, st)
+            rep["ensemble"][f"{st}_{q}"]["tornado"] = tn
+            lines += ["Tornado (all priors, theta and Ralph; top-decile minus bottom-decile mean, Spearman):", ""]
+            for tk_, d in tn.items():
+                lines.append(f"- {tk_} (p50 {d['p50']:.4g}): " + ", ".join(
+                    f"{pp}[{src[0]}] {sw:+.3g} ({rho:+.2f})" for pp, src, sw, rho in d["rows"][:8]))
             lines.append("")
         p = os.path.join(a.out, f"oat_{st}.jsonl")
         if os.path.exists(p):

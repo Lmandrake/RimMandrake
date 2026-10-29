@@ -1,0 +1,2 @@
+In a discrete-event sim, never key per-object state by Python id(). A freed object's id is reused, so a set of id()s gives silent run-to-run nondeterminism on the same seed and makes irrelevant parameters appear to move results. ralph_loop_sim's AB_test drifted 23.43/23.62/23.48 nudges on one seed until tickets were held as objects; GPT read it as 'b_collide moves AB_test'. Regression: run the same seed 3x in one process and require identical output.
+home: src/RimMandrake/Utils/sim (sim conventions)

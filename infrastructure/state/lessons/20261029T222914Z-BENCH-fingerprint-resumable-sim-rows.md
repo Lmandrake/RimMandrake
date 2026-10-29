@@ -1,0 +1,2 @@
+A resumable sim that appends rows must stamp each row with a fingerprint of the model code and params and refuse or set aside rows with another fingerprint; otherwise a fixed bug's stale rows mix silently into the ensemble. Scope the hash to model code only (not reporting code), or every report edit invalidates hours of runs; restamp only after an exact recompute of a sample matches.
+home: resumable-batch-jobs skill
