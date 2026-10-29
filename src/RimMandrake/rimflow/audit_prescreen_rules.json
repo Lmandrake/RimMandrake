@@ -54,5 +54,16 @@
  "max_signal_rate": 0.5,
  "min_sample": 20,
  "prior_rate": 0.1,
- "check_evidence_regex": "\\b(self-?tests?|tests?|pytest|PASS(ED)?|measured?|measure\\b|verified|verify|review(ed)?|proof|validat\\w*|lint|build|built|compil\\w*|run_selftests|Transient/)"
+ "check_evidence_regex": "\\b(self-?tests?|tests?|pytest|PASS(ED)?|measured?|measure\\b|verified|verify|review(ed)?|proof|validat\\w*|lint|build|built|compil\\w*|run_selftests|Transient/)",
+ "hardflag_filer": {
+  "_why": "AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI (GPT review #6, roles/auditor.md step 1): hard flags are filed by a program in the Auditor's pre_launch so they never depend on audit capacity",
+  "max_prescreen_age_s": 1800,
+  "_max_prescreen_age_s_why": "the pre_launch rewrites prescreen.json seconds before this runs; anything older means that step did not run, and the filer refuses rather than act on a list nobody refreshed",
+  "work_seats": ["BENCH", "FOUNDRY"],
+  "fallback_for": "BENCH",
+  "_fallback_for_why": "an item owned by a retired seat (BUILD, CHECK, REP...) goes to BENCH, which owns RimFlow and the ledger's records",
+  "kind": "defect",
+  "needs": "offline",
+  "name_prefix": "AUDIT_HARDFLAG_FIX"
+ }
 }

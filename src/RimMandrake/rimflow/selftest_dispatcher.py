@@ -2053,10 +2053,11 @@ def test_role_real_schedule_triggers():
     check(a.get("pre_launch_max_s") == 1200 and a.get("run_max_s") == 2700 and "claim_window_days" not in a,
           "schedule: the Arbiter's pre-step has its own 1200 s bound beside run_max_s 2700; no claim window")
     check(roles["Auditor"].get("pre_launch") == [["python3", "src/RimMandrake/rimflow/audits.py", "ensure"],
-                                                 ["python3", "src/RimMandrake/rimflow/audit_prescreen.py"]],
+                                                 ["python3", "src/RimMandrake/rimflow/audit_prescreen.py"],
+                                                 ["python3", "src/RimMandrake/rimflow/audit_hardflag_file.py"]],
           "schedule: the Auditor's pre_launch creates/validates audits.jsonl (audits.py ensure), then writes a fresh "
           "prescreen.json over the closes since the last finished run (audit_prescreen.py, no --days: "
-          "AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN)")
+          "AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN), then files its hard flags (audit_hardflag_file.py)")
     here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     for r in sch["roles"]:
         if r.get("pre_launch"):
