@@ -121,6 +121,16 @@ def test_wake_and_owner():
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     check("ring" in kinds(stall(sch, st, obs(ticket={"id": "GAME_THING_DO_IT", "needs": "bridge"}))),
           "ticket needs bridge, owner MEASURED idle 60 min: rung")
+    # 2026-10-28: FOUNDRY sat idle for 15+ min behind one bridge item while offline work waited below it.
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    o = obs(owner=PRESENT, ticket={"id": "GAME_THING_DO_IT", "needs": "bridge"})
+    o["peek_offline"] = lambda seat: {"id": "DESK_THING_DO_IT", "needs": "offline"}
+    r = [a for a in stall(sch, st, o) if a["do"] == "ring"]
+    check(len(r) == 1 and st["seats"]["FOUNDRY"]["ring"]["ticket"] == "DESK_THING_DO_IT",
+          "top item needs the game, owner present: the next offline item is rung instead of holding the seat")
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    o["peek_offline"] = lambda seat: {}
+    check(kinds(stall(sch, st, o)) == ["hold"], "game item on top and no offline item below: HELD")
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     check(kinds(stall(sch, st, obs(ticket={}))) == [], "empty queue: an idle window is left alone")
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}

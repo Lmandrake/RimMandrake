@@ -180,12 +180,13 @@ def observe_agents(timeout=60):
         return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e)[:160])}
 
 
-def peek_ticket(clone, seat, timeout=120):
+def peek_ticket(clone, seat, timeout=120, ringed=False):
     """-> {"id", "needs"} of the seat's next item per `rimflow next --peek` in its clone, {} when its queue is empty,
-    None when unreadable."""
+    None when unreadable. ringed=True peeks as a ringed window would (game items withheld unless he is idle)."""
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     try:
-        r = subprocess.run([sys.executable, cli, "next", "--seat", seat, "--peek"], cwd=clone, capture_output=True,
+        r = subprocess.run([sys.executable, cli, "next", "--seat", seat, "--peek"] + (["--ringed"] if ringed else []),
+                           cwd=clone, capture_output=True,
                            text=True, timeout=timeout, env=dict(os.environ, RIMFLOW_SEAT=seat),
                            stdin=subprocess.DEVNULL)
     except Exception:  # noqa: BLE001
@@ -525,8 +526,14 @@ def decide(sch, st, obs, now, apply, out=None):
         import idle_probe
         owner_ok, owner_why = idle_probe.decide(owner(), ticket.get("id") or "", need=sch["owner_idle_s"])
         if ticket.get("needs") in GAME_NEEDS and not owner_ok:
-            act(do="hold", seat=seat, ticket=ticket["id"], why="ticket needs %s; %s" % (ticket["needs"], owner_why))
-            return
+            # The top item needs the game and he is not idle: offer the seat its next item that does not (the
+            # ringed `next` withholds game items the same way), and hold only when there is none.
+            alt = obs["peek_offline"](seat) if obs.get("peek_offline") else None
+            if not alt or alt.get("needs") in GAME_NEEDS:
+                act(do="hold", seat=seat, ticket=ticket["id"],
+                    why="ticket needs %s; %s" % (ticket["needs"], owner_why))
+                return
+            ticket = alt
         owner_line = None if owner_ok else (
             "owner present: do not take the bridge, restart the game or deploy (%s)." % owner_why)
         go, pk = gate("ring")
@@ -1198,6 +1205,7 @@ def default_obs(sch, root, st=None):
         "agents": observe_agents(),
         "owner": owner_reading,
         "peek": lambda seat: peek_ticket(seats[seat]["clone"], seat),
+        "peek_offline": lambda seat: peek_ticket(seats[seat]["clone"], seat, ringed=True),
         "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since, on_skip=_skip_journal(root, st)),
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),

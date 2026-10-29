@@ -874,7 +874,7 @@ def cmd_next(args, seat):
     # 🔴 RINGED WINDOW, OWNER BACK (DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING). The Dispatcher measured the
     # owner when it rang; this `next` runs minutes later. A ringed call (`--ringed`) re-measures and, unless
     # the owner is MEASURED idle, withholds every item that needs the game.
-    if getattr(args, "ringed", False) and not peek:
+    if getattr(args, "ringed", False):
         from rimflow import idle_probe
         ok, why = idle_probe.idle_verdict(idle_probe.measure())
         if not ok:

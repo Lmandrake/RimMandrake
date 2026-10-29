@@ -12,6 +12,7 @@ import base64
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 
@@ -72,8 +73,17 @@ def unmeasured(why):
             "rimworld_foreground": None, "why": why}
 
 
+# A systemd user unit (the Dispatcher) gets no Windows PATH, so a bare "powershell.exe" is FileNotFoundError there
+# and every reading went UNMEASURED: the bridge-ticket hold never lifted (2026-10-28, FOUNDRY idle 15+ min).
+_PS_FALLBACK = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
+
+
+def _powershell():
+    return shutil.which("powershell.exe") or (_PS_FALLBACK if os.path.exists(_PS_FALLBACK) else "powershell.exe")
+
+
 def measure(timeout=30):
-    exe = os.environ.get("RIMFLOW_POWERSHELL", "powershell.exe")
+    exe = os.environ.get("RIMFLOW_POWERSHELL") or _powershell()
     try:
         p = subprocess.run([exe, "-NoProfile", "-NonInteractive", "-EncodedCommand",
                             base64.b64encode(_PS.encode("utf-16-le")).decode()],
