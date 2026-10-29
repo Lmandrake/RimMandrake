@@ -8921,3 +8921,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","ts":"2026-10-29T07:13:45Z","tsn":1793258025105756071}
 {"seat":"FOUNDRY","event":"start","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","ts":"2026-10-29T07:13:45Z","tsn":1793258025600000129}
 {"seat":"FOUNDRY","event":"block","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","reason":"Both criteria are L2 live on the bridge, and the companion test profile is still expired (expiresUtc 2026-10-29T03:00Z, checked 07:13Z): owner must extend it. Cause also still UNMEASURED; an offline read of the failing rows' result files is the one thing doable first","ts":"2026-10-29T07:13:47Z","tsn":1793258027606112377}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","action":"take","token":"FOUNDRY.pid15840.ae8959c8","expires":"2026-10-29T08:02:43Z","ts":"2026-10-29T07:17:43Z","tsn":1793258264070966357}
+{"seat":"FOUNDRY","event":"lease","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","action":"renew","token":"FOUNDRY.pid15840.ae8959c8","expires":"2026-10-29T08:02:50Z","ts":"2026-10-29T07:17:50Z","tsn":1793258271422920777}
+{"seat":"FOUNDRY","event":"claim","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","ts":"2026-10-29T07:17:51Z","tsn":1793258271898968231}
+{"seat":"FOUNDRY","event":"start","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","ts":"2026-10-29T07:17:52Z","tsn":1793258272392495487}
+{"seat":"FOUNDRY","event":"block","id":"LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET","reason":"First step is a live re-run of W1_wakes_terrain_walked (row may just be 17 days stale), and the bridge is unusable: companion test profile expired 2026-10-29T03:00Z, owner must extend it","ts":"2026-10-29T07:17:54Z","tsn":1793258274443993583}
