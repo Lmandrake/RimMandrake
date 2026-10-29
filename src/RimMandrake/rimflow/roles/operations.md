@@ -34,7 +34,7 @@ burning tokens gathering it all up for every question considered."
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
 | an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
-| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below (no band skips it while the bands are neutralised, see Throttle) | `economy_token_cap` |
+| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (none does while the bands are neutralised, see Throttle) | `economy_token_cap` |
 
 Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
 or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
