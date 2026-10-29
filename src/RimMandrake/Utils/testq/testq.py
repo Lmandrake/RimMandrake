@@ -26,7 +26,7 @@ Plan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md sections 
   testq.py install-timer [--apply]   that timer: testq-tick.{service,timer} in the user manager, ticking from the
                                      dispatch clone (~/rm/dispatch, pulled before every tick, never an agent's clone),
                                      then ingest.py (results -> RUNNER ledger events, committed from that clone), then
-                                     findings_fold.py run (the no-AI findings sorter: standing table, curation.md).
+                                     findings_fold.py run (the no-AI findings sorter; its exit 2 fails the unit).
                                      The clone may be sparse: it needs src/RimMandrake/{Utils/testq,rimflow,contracts},
                                      infrastructure/state, AND src/RimMandrake/Utils/modcheck plus each filled mod's
                                      source (src/RimMandrake/FlowWorks): without them preview, bad_selection and the
@@ -1279,7 +1279,7 @@ ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py tick
 ExecStart=-/bin/bash -c 'for m in ${{TESTQ_FILL_MODS:-FlowWorks}}; do /usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py fill "$m"; done'
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/testq.py steward
 ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/testq/ingest.py
-ExecStart=-/usr/bin/python3 {clone}/src/RimMandrake/Utils/findings_fold.py run
+ExecStart=/usr/bin/python3 {clone}/src/RimMandrake/Utils/findings_fold.py run
 TimeoutStartSec=900
 """,
     "testq-sweep.service": """[Unit]

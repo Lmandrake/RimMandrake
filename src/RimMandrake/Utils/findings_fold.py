@@ -10,33 +10,43 @@ output folder and rules: findings_fold_rules.json.
 
 What it does, with no AI:
   * signs every finding of the folded types (UNTRIAGED: what ingest.py files) by mod, chain, test row and the failure
-    text with run numbers, timestamps, job ids and file names removed (the full done-record detail when the record is
-    found, else the ledger's line); identical signatures fold into one row of the standing-failures table with count,
-    first seen, last seen, the items it was filed under and every raw text (kept forever: a raw text whose done record
-    is gone survives from the previous table);
+    text with only explicitly volatile identifiers removed (job ids, UUIDs, timestamps, hex ids, thing ids, run
+    numbers: rules `normalise`; error codes, values and file names stay). The text is the full done-record detail
+    when the record is found, else the previous table's detail for that finding, else the ledger's line, and then the
+    mod is unresolved and the finding is signed with its own name so it merges with nothing. Identical signatures
+    fold into one row of the standing-failures table with count, first seen, last seen, the items it was filed under
+    and every raw text. A finding is kept forever: one whose ledger event is gone is carried from the previous table
+    and still stands in its signature;
   * a repeat of a DECIDED signature (a `rimflow spawn --from <finding>`, or a line FOUNDRY appended with `decide`) is
     MERGED into that decision: one RUNNER note on the decision item with the count, first and last seen;
   * a red canary, a refused pull or a machine-health row (rules machine_health_patterns) is ROUTED: a note on
     Operations' lane item;
-  * a row that passed `retire_after_passes` (3) runs in a row after its last FAIL is RETIRED, the runs as proof; a FAIL
-    after that REOPENS it (back to FOUNDRY);
+  * a signature whose row passed `retire_after_passes` (3) runs in a row after the signature's own last FAIL is
+    RETIRED, the runs as proof (a run that measured nothing, or another signature's FAIL, breaks the streak); a FAIL
+    of that signature after it REOPENS it (back to FOUNDRY). A `retire` decision alone never retires: it waits for
+    the proof (AWAITING_PROOF);
   * a signature still failing under an item in a `contradiction_states` state (done, validated) is a CONTRADICTION:
-    a note on that item, and the first section of curation.md;
+    a note on that item, and the first section of curation.md, even when it is also routed or decided;
   * everything else is NEW: FOUNDRY's daily judgment (curation.md), with the contradictions, the reopened and the stuck.
 Merges and retirements are advisory until a non-maker has reviewed this program (design section 8): they change no
 item state, they only add notes, and curation.md lists them for FOUNDRY and the Auditor's weekly sample.
 
-Fails CLOSED: an unreadable ledger, done directory, done record, previous table or decisions line exits 2 with
-UNMEASURED and writes nothing (the previous table, which holds raw texts, is never overwritten by a blind run).
+Fails CLOSED: an unreadable ledger, done directory, done record (any field the fold reads of the wrong type),
+previous table or decisions line exits 2 with UNMEASURED and writes nothing (the previous table, which holds raw
+texts, is never overwritten by a blind run). One run at a time per output folder (a lock over read .. write); a run
+that changes nothing writes nothing. While rules `live_notes` is false (or --no-notes) no ledger note is written.
 Ledger notes go through ingest.py's note_once (idempotent by needle, seat RUNNER) and publish (the dispatch clone's
 RUNNER publisher, under its clone lock).
 """
 import argparse
+import contextlib
+import fcntl
 import hashlib
 import json
 import os
 import re
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -65,7 +75,8 @@ def epoch(iso):
         return None
 
 
-def load_rules(path=RULES_PATH):
+def load_rules(path=None):
+    path = path or os.environ.get("FINDINGS_FOLD_RULES") or RULES_PATH     # the env override: selftests only
     try:
         with open(path, encoding="utf-8") as f:
             rules = json.load(f)
@@ -86,8 +97,11 @@ def normalise(text, rules):
     return t.strip()
 
 
-def signature(mod, chain, row, text, rules):
-    key = "\0".join([mod or "?", chain or "", row or "", normalise(text, rules)])
+def signature(mod, chain, row, text, rules, name=None):
+    """A finding whose mod is unresolved ("?": no done record, no previous detail) is signed with its own NAME, so it
+    never merges with another (two mods' failures could read alike under "?"; review finding 2)."""
+    key = "\0".join([mod or "?", chain or "", row or "", normalise(text, rules)] +
+                     (["unresolved:" + (name or "")] if (mod or "?") == "?" else []))
     return "S" + hashlib.sha1(key.encode("utf-8")).hexdigest()[:10]
 
 
@@ -111,10 +125,11 @@ def index_records(recs):
 
 
 def locate(ev, rec):
-    """-> (mod, chain, row, raw text) for one finding event, using its done record when the FAIL row is found."""
+    """-> (mod, chain, row, raw text, provenance) for one finding event: "record" when its done record holds the FAIL
+    row, "lane" for a paused-lane finding, else "ledger" (the ledger's line, mod unresolved)."""
     if (ev.get("name") or "").startswith("STEVE_LANE_"):
         m = LANE_NAME_RE.match(ev["name"])
-        return "LANE", "", m.group("twist") if m else "PAUSED", ev.get("why") or ""
+        return "LANE", "", m.group("twist") if m else "PAUSED", ev.get("why") or "", "lane"
     m = WHY_RE.match(ev.get("why") or "")
     chain, row, detail = (m.group("chain"), m.group("row"), m.group("detail")) if m else ("", "", ev.get("why") or "")
     if rec is not None:
@@ -124,51 +139,83 @@ def locate(ev, rec):
         pick = [r for r in cands if str(r.get("chain")) == chain] or cands
         if len(pick) == 1:
             r = pick[0]
-            return (rec.get("job") or {}).get("mod") or "?", str(r.get("chain") or ""), row, r.get("detail") or detail
-    return "?", chain, row, detail
+            return (rec.get("job") or {}).get("mod") or "?", str(r.get("chain") or ""), row, \
+                r.get("detail") or detail, "record"
+    return "?", chain, row, detail, "ledger"
 
 
-def row_timelines(recs):
-    """(mod, chain, row) -> [(finished, verdict, job)] over every DONE record, oldest first."""
-    tl = {}
+def rec_at(r):
+    return (r.get("result") or {}).get("finished") or r.get("finished") or ""
+
+
+def row_timelines(recs, rules):
+    """(mod, chain, row) -> [(finished, verdict, job, fail signature or None)], oldest first. DONE records give their
+    rows' verdicts (a FAIL carries the signature of its detail, None when it has none). A record that is not DONE
+    (INVALID, INTERRUPTED, REFUSED: no measurement) puts an UNMEASURED on every row it holds AND every known row its
+    selector covers (the job's chains, or all of the mod's rows for `full`, narrowed by `rows` prefixes), so a blind
+    run breaks a pass streak (review finding 9)."""
+    tl, blind = {}, []
     for r in recs:
         res = r.get("result") or {}
-        if res.get("outcome") != "DONE":
-            continue
-        at = res.get("finished") or r.get("finished") or ""
+        at, job = rec_at(r), (r.get("job") or {}).get("id") or res.get("job") or "?"
         mod = (r.get("job") or {}).get("mod") or "?"
-        job = (r.get("job") or {}).get("id") or res.get("job") or "?"
+        done = res.get("outcome") == "DONE"
         for row in res.get("rows") or []:
-            if isinstance(row, dict) and row.get("row"):
-                tl.setdefault((mod, str(row.get("chain") or ""), row["row"]), []).append(
-                    (at, row.get("verdict"), job))
+            if not (isinstance(row, dict) and row.get("row")):
+                continue
+            key = (mod, str(row.get("chain") or ""), row["row"])
+            if done:
+                v = row.get("verdict")
+                fs = signature(mod, key[1], key[2], row.get("detail"), rules) if v == "FAIL" and row.get("detail") \
+                    else None
+                tl.setdefault(key, []).append((at, v, job, fs))
+            else:
+                tl.setdefault(key, []).append((at, "UNMEASURED", job, None))
+        if not done:
+            blind.append((mod, (r.get("job") or {}).get("selector") or {}, at, job))
+    for mod, sel, at, job in blind:
+        chains = None if sel.get("full") else set(sel.get("chains") or [])
+        pref = sel.get("rows") or None
+        for key, v in tl.items():
+            if key[0] != mod or (chains is not None and key[1] not in chains):
+                continue
+            if pref and not any(key[2] == p or key[2].startswith(p + "_") for p in pref):
+                continue
+            if not any(e[0] == at and e[2] == job for e in v):
+                v.append((at, "UNMEASURED", job, None))
     for v in tl.values():
-        v.sort()
+        v.sort(key=lambda e: (e[0], e[2]))
     return tl
 
 
-def walk(timeline, need):
-    """Retire/reopen state of one row from its timeline. A streak counts PASSes after a FAIL; anything else that is not
-    a PASS (UNMEASURED, ...) breaks it; a FAIL after a retirement reopens."""
+def walk(timeline, need, sig, own_ts=()):
+    """Retire/reopen state of ONE signature on its row (review finding 4). A PASS of the row is proof for every
+    signature on it; a FAIL of THIS signature (or a FAIL whose detail is unknown) resets the streak and, after a
+    retirement, reopens; a FAIL of ANOTHER signature, an UNMEASURED or a NOT_RUN breaks the streak and reopens nothing.
+    own_ts: the signature's finding times, used as its FAILs only when no FAIL in the timeline carries it (the done
+    record that held its row is gone)."""
+    tl = list(timeline)
+    if own_ts and not any(e[1] == "FAIL" and e[3] in (sig, None) for e in tl):
+        tl = sorted(tl + [(t_, "FAIL", "finding", sig) for t_ in own_ts], key=lambda e: (e[0], e[2]))
     st = {"pass_streak": 0, "retired_at": None, "retire_proof": [], "reopened": 0, "reopened_at": None,
           "last_verdict": None}
     proof, seen_fail, retired = [], False, False
-    for at, v, job in timeline:
-        if v == "FAIL":
+    for at, v, job, fs in tl:
+        if v == "FAIL" and fs in (sig, None):
             if retired:
                 st["reopened"] += 1
                 st["reopened_at"] = at
             retired, seen_fail, proof = False, True, []
             st["retired_at"], st["retire_proof"] = None, []
+            st["last_verdict"] = "FAIL"
         elif v == "PASS":
             proof.append({"job": job, "at": at})
             if seen_fail and len(proof) >= need and not retired:
                 retired = True
                 st["retired_at"], st["retire_proof"] = at, proof[-need:]
+            st["last_verdict"] = "PASS"
         else:
             proof = []
-        if v in ("PASS", "FAIL"):
-            st["last_verdict"] = v
         st["pass_streak"] = len(proof)
     st["retired"] = retired
     return st
@@ -202,73 +249,88 @@ def fold(events, item_states, recs, decision_lines, prev, rules, now):
     decisions file; prev: the previous standing table or None. -> the new table, with `actions` (ledger notes)."""
     types = set(rules["finding_types"])
     idx = index_records(recs)
+    prev_raw = (prev or {}).get("raw") or {}
     raw, seen = {}, set()
     for e in events:
         if e.get("event") != "finding" or e.get("type") not in types or not e.get("name") or e["name"] in seen:
             continue
         seen.add(e["name"])
-        mod, chain, row, text = locate(e, idx.get(e["name"]))
-        raw[e["name"]] = {"sig": signature(mod, chain, row, text, rules), "mod": mod, "chain": chain, "row": row,
-                          "text": text, "why": e.get("why") or "", "item": e.get("id"), "ts": e.get("ts") or "",
+        mod, chain, row, text, prov = locate(e, idx.get(e["name"]))
+        old = prev_raw.get(e["name"]) or {}
+        if prov == "ledger" and old.get("mod") not in (None, "", "?"):
+            # its done record is gone: the previous table's full detail and provenance stand (review finding 2)
+            mod, chain, row, text, prov = old["mod"], old.get("chain") or "", old.get("row") or "", \
+                old.get("text") or text, "prev"
+        raw[e["name"]] = {"mod": mod, "chain": chain, "row": row, "text": text, "provenance": prov,
+                          "why": e.get("why") or "", "item": e.get("id"), "ts": e.get("ts") or "",
                           "from": e.get("from")}
-    in_scope = len(raw)
-    for n, r in ((prev or {}).get("raw") or {}).items():
-        if n not in raw:                       # never lose a raw text: its record or event may be gone
+    in_ledger = len(raw)
+    for n, r in prev_raw.items():
+        if n not in raw:     # never lose a finding: its ledger event is gone, it still stands (review finding 3)
             raw[n] = dict(r, carried=True)
     by_sig = {}
     for n, r in raw.items():
-        if not r.get("carried"):
-            by_sig.setdefault(r["sig"], []).append(n)
+        r["sig"] = signature(r.get("mod"), r.get("chain"), r.get("row"), r.get("text"), rules, name=n)
+        by_sig.setdefault(r["sig"], []).append(n)
     decided = decisions_of(by_sig, events, decision_lines)
-    tls = row_timelines(recs)
+    tls = row_timelines(recs, rules)
     need = int(rules["retire_after_passes"])
     lane = rules["lane_item"]
     bad_states = set(rules["contradiction_states"])
     stuck_s = float(rules["stuck_after_days"]) * 86400
     sigs, actions = {}, []
     for s, names in sorted(by_sig.items()):
-        rs = sorted((raw[n] for n in names), key=lambda r: r["ts"])
-        names = [n for n in sorted(names, key=lambda n: raw[n]["ts"])]
+        names = sorted(names, key=lambda n: (raw[n].get("ts") or "", n))
+        rs = [raw[n] for n in names]
         first = rs[0]
-        items = sorted({r["item"] for r in rs if r["item"]})
-        row = {"mod": first["mod"], "chain": first["chain"], "row": first["row"],
-               "text": normalise(first["text"], rules), "count": len(rs), "first_seen": rs[0]["ts"],
-               "last_seen": rs[-1]["ts"], "findings": names, "items": items}
-        key = (first["mod"], first["chain"], first["row"])
-        st = walk(tls.get(key, []), need) if first["mod"] != "?" and key in tls else None
+        items = sorted({r["item"] for r in rs if r.get("item")})
+        row = {"mod": first.get("mod") or "?", "chain": first.get("chain") or "", "row": first.get("row") or "",
+               "text": normalise(first.get("text"), rules), "count": len(rs), "first_seen": rs[0].get("ts") or "",
+               "last_seen": rs[-1].get("ts") or "", "findings": names, "items": items,
+               "carried": sum(1 for r in rs if r.get("carried"))}
+        key = (row["mod"], row["chain"], row["row"])
+        st = walk(tls[key], need, s, [r.get("ts") for r in rs if r.get("ts")]) \
+            if row["mod"] != "?" and key in tls else None
         row.update({"pass_streak": st["pass_streak"] if st else 0, "retired_at": st["retired_at"] if st else None,
                     "retire_proof": st["retire_proof"] if st else [], "reopened": st["reopened"] if st else 0,
                     "timeline_runs": len(tls.get(key, [])) if st else 0})
         dec = decided.get(s)
         row["decision"] = dec
-        texts = " ".join(r["text"] + " " + r["why"] for r in rs)
+        texts = " ".join((r.get("text") or "") + " " + (r.get("why") or "") for r in rs)
         still_failing = not st or st["last_verdict"] != "PASS"
         reopened_here = bool(st and st["reopened"] and not st["retired"] and st["reopened_at"]
                              and row["last_seen"] >= st["reopened_at"][:len(row["last_seen"])])
+        since = [n for n in names if dec and (raw[n].get("ts") or "") > (dec.get("ts") or "")]
         hosts = items + ([dec["into"]] if dec and dec.get("into") in item_states else [])
-        contra = sorted({i for i in hosts if item_states.get(i) in bad_states})
+        # contradictions stand on their own: routing or a decision never hides one (review finding 6)
+        contra = sorted({i for i in hosts if item_states.get(i) in bad_states}) if still_failing else []
         if lane in items or any(rx.search(texts) for rx in rules["_mh"]) or (dec and dec.get("as") == "route"):
             status = "ROUTED"
         elif st and st["retired"]:
-            status = "RETIRED"
-        elif dec and dec.get("as") == "retire" and row["last_seen"] <= (dec.get("ts") or ""):
-            status = "RETIRED"
-        elif contra and still_failing:
+            status = "RETIRED"           # only ever on passing proof (review finding 5)
+        elif contra:
             status = "CONTRADICTION"
-        elif reopened_here or (dec and dec.get("as") == "retire"):
+        elif reopened_here or (dec and dec.get("as") == "retire" and since):
             status = "REOPENED"
+        elif dec and dec.get("as") == "retire":
+            status = "AWAITING_PROOF"    # FOUNDRY judged it fixed; it retires when the row has passed `need` runs
         elif dec:
             status = "MERGED"
         else:
             status = "NEW"
         row["status"] = status
-        row["contradicts"] = contra if status == "CONTRADICTION" else []
-        since = [n for n in names if dec and raw[n]["ts"] > (dec.get("ts") or "")]
-        a, b = epoch(dec.get("ts")) if dec else None, epoch(row["last_seen"])
-        row["stuck"] = bool(status == "MERGED" and since and a is not None and b is not None and b - a >= stuck_s)
+        row["contradicts"] = contra
+        a_, b_ = epoch(dec.get("ts")) if dec else None, epoch(row["last_seen"])
+        row["stuck"] = bool(status == "MERGED" and since and a_ is not None and b_ is not None and b_ - a_ >= stuck_s)
         tag = "findings_fold %s" % s
         summary = "count %d (first %s, last %s)" % (row["count"], row["first_seen"], row["last_seen"])
         what = "%s/%s/%s: %s" % (row["mod"], row["chain"], row["row"], row["text"][:140])
+        for it in contra:
+            actions.append({"kind": "contradiction", "item": it,
+                            "needle": "%s CONTRADICTION on %s %s" % (tag, it, item_states.get(it)),
+                            "text": "%s CONTRADICTION on %s %s: this row still fails (%s, %d pass(es) on "
+                                    "record since); %s" % (tag, it, item_states.get(it), summary,
+                                                           row["pass_streak"], what)})
         if status == "ROUTED":
             actions.append({"kind": "route", "item": lane, "needle": "%s route through %s" % (tag, names[-1]),
                             "text": "%s route through %s: lane or machine health, %s; %s" % (
@@ -279,13 +341,6 @@ def fold(events, item_states, recs, decision_lines, prev, rules, now):
                                 "text": "%s retire at %s: %d passes in a row after the last FAIL (%s); %s; %s" % (
                                     tag, row["retired_at"], need,
                                     ", ".join(p["job"] for p in row["retire_proof"]), summary, what)})
-        elif status == "CONTRADICTION":
-            for it in contra:
-                actions.append({"kind": "contradiction", "item": it,
-                                "needle": "%s CONTRADICTION on %s %s" % (tag, it, item_states.get(it)),
-                                "text": "%s CONTRADICTION on %s %s: this row still fails (%s, %d pass(es) on "
-                                        "record since); %s" % (tag, it, item_states.get(it), summary,
-                                                               row["pass_streak"], what)})
         elif status == "REOPENED":
             for it in items:
                 actions.append({"kind": "reopen", "item": it, "needle": "%s reopen by %s" % (tag, names[-1]),
@@ -300,16 +355,18 @@ def fold(events, item_states, recs, decision_lines, prev, rules, now):
     by_status = {}
     for r in sigs.values():
         by_status[r["status"]] = by_status.get(r["status"], 0) + 1
-    counts = {"findings": in_scope, "distinct": len(sigs), "by_status": by_status,
-              "contradictions": by_status.get("CONTRADICTION", 0), "routed": by_status.get("ROUTED", 0),
+    counts = {"findings": len(raw), "in_ledger": in_ledger, "distinct": len(sigs), "by_status": by_status,
+              "contradictions": sum(1 for r in sigs.values() if r["contradicts"]), "routed": by_status.get("ROUTED", 0),
               "residue": sum(1 for r in sigs.values() if r["status"] in ("NEW", "REOPENED", "CONTRADICTION")
-                             or r["stuck"]),
+                             or r["contradicts"] or r["stuck"]),
               "raw_carried": sum(1 for r in raw.values() if r.get("carried")),
-              "joined_to_records": sum(1 for r in raw.values() if not r.get("carried") and r["mod"] not in ("?", "LANE"))}
-    if sum(r["count"] for r in sigs.values()) != in_scope:   # conservation: one signature per finding, exactly
+              "joined_to_records": sum(1 for r in raw.values() if r.get("provenance") in ("record", "prev")),
+              "unresolved": sum(1 for r in raw.values() if (r.get("mod") or "?") == "?")}
+    if sum(r["count"] for r in sigs.values()) != len(raw):   # conservation: one signature per finding, exactly
         raise Unmeasured("conservation broken: %d findings, %d in signatures"
-                         % (in_scope, sum(r["count"] for r in sigs.values())))
-    return {"schema": SCHEMA, "generated": now, "counts": counts, "signatures": sigs, "raw": raw, "actions": actions}
+                         % (len(raw), sum(r["count"] for r in sigs.values())))
+    return {"schema": SCHEMA, "generated": now, "counts": counts, "signatures": sigs, "raw": raw, "actions": actions,
+            "policy": {"retire_after_passes": need, "stuck_after_days": rules["stuck_after_days"]}}
 
 
 # ------------------------------------------------------------------ curation.md (FOUNDRY reads it)
@@ -328,16 +385,20 @@ def render_md(t):
                 s, r["count"], r["first_seen"][:10], r["last_seen"][:10], r["mod"], r["chain"], r["row"],
                 ",".join(r["items"]) or "-", extra(r), r["text"][:200]))
         out.append("")
-    sect("CONTRADICTIONS: done or validated, still failing", lambda r: r["status"] == "CONTRADICTION",
-         lambda r: " CONTRADICTS %s" % ",".join(r["contradicts"]))
+    sect("CONTRADICTIONS: done or validated, still failing", lambda r: bool(r["contradicts"]),
+         lambda r: " CONTRADICTS %s%s" % (",".join(r["contradicts"]),
+                                          " (also routed)" if r["status"] == "ROUTED" else ""))
     sect("NEW: FOUNDRY judges (work / merge / memory / route / retire)", lambda r: r["status"] == "NEW")
     sect("REOPENED: retired or decided retired, failed again", lambda r: r["status"] == "REOPENED")
-    sect("STUCK: decided, still failing %s+ days later" % "3", lambda r: r["stuck"],
+    pol = t.get("policy") or {}
+    sect("STUCK: decided, still failing %s+ days later" % pol.get("stuck_after_days", "?"), lambda r: r["stuck"],
          lambda r: " decided %s into %s" % ((r["decision"] or {}).get("as"), (r["decision"] or {}).get("into")))
     sect("MERGED by the program (advisory: Auditor samples)", lambda r: r["status"] == "MERGED",
          lambda r: " -> %s %s" % ((r["decision"] or {}).get("as"), (r["decision"] or {}).get("into")))
-    sect("RETIRED (advisory: Auditor samples)", lambda r: r["status"] == "RETIRED",
-         lambda r: " retired %s" % (r["retired_at"] or (r["decision"] or {}).get("ts")))
+    sect("RETIRED on passing proof (advisory: Auditor samples)", lambda r: r["status"] == "RETIRED",
+         lambda r: " retired %s" % r["retired_at"])
+    sect("AWAITING PROOF: decided retired, not yet %s passes" % pol.get("retire_after_passes", "?"), lambda r: r["status"] == "AWAITING_PROOF",
+         lambda r: " decided %s, %d pass(es) so far" % ((r["decision"] or {}).get("ts"), r["pass_streak"]))
     sect("ROUTED to Operations", lambda r: r["status"] == "ROUTED")
     return "\n".join(out) + "\n"
 
@@ -375,10 +436,50 @@ def read_done(qdir):
                 r = json.load(f)
         except (OSError, ValueError) as e:
             raise Unmeasured("done record %s unreadable: %s" % (n, e))
-        if not isinstance(r, dict):
-            raise Unmeasured("done record %s is not an object" % n)
+        why = record_fault(r)
+        if why:
+            raise Unmeasured("done record %s unreadable: %s" % (n, why))
         recs.append(r)
     return recs
+
+
+VERDICTS = ("PASS", "FAIL", "UNMEASURED", "NOT_RUN")
+ISO_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
+
+def record_fault(r):
+    """-> why a done record cannot be folded, or None (review finding 12: `{}` is not a record). Every field the fold
+    reads is checked for its type: a job with a string id and mod, a result with a string outcome, a finish time,
+    rows of {row, verdict in VERDICTS, chain/detail strings or absent}, a selector object, an ingested object."""
+    if not isinstance(r, dict):
+        return "not an object"
+    job, res = r.get("job"), r.get("result")
+    if not isinstance(job, dict) or not isinstance(job.get("id"), str) or not job.get("id") \
+            or not isinstance(job.get("mod"), str) or not job.get("mod"):
+        return "no job with an id and a mod"
+    if not isinstance(job.get("selector", {}), dict):
+        return "the job's selector is not an object"
+    if not isinstance(res, dict) or not isinstance(res.get("outcome"), str) or not res.get("outcome"):
+        return "no result with an outcome"
+    if not ISO_RE.match(str(rec_at(r))) or epoch(rec_at(r)) is None:
+        return "no finish time (got %r)" % rec_at(r)
+    rows = res.get("rows", [])
+    if rows is None:
+        rows = []
+    if not isinstance(rows, list):
+        return "rows is not a list"
+    if res["outcome"] == "DONE" and "rows" not in res:
+        return "a DONE result with no rows"
+    for k, x in enumerate(rows):
+        if not isinstance(x, dict) or not isinstance(x.get("row"), str) or not x.get("row") \
+                or x.get("verdict") not in VERDICTS:
+            return "row %d is not {row, verdict}" % k
+        for f in ("chain", "detail"):
+            if x.get(f) is not None and not isinstance(x[f], str):
+                return "row %d %s is not a string" % (k, f)
+    if not isinstance(r.get("ingested") or {}, dict):
+        return "ingested is not an object"
+    return None
 
 
 def decisions_path(rules):
@@ -424,10 +525,40 @@ def read_prev(path):
 
 
 def write_atomic(path, text):
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        f.write(text)
-    os.replace(tmp, path)
+    """A unique temp file in the same folder, then one rename (review finding 7: two runs never share a temp)."""
+    fd, tmp = tempfile.mkstemp(prefix=os.path.basename(path) + ".", suffix=".tmp", dir=os.path.dirname(path))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(text)
+        os.replace(tmp, path)
+    except BaseException:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        raise
+
+
+@contextlib.contextmanager
+def out_lock(od, wait_s):
+    """One fold at a time per output folder, held over the whole read-previous .. write-new (review finding 7)."""
+    with open(os.path.join(od, ".findings_fold.lock"), "a") as fh:
+        end = time.time() + wait_s
+        while True:
+            try:
+                fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.time() >= end:
+                    raise Unmeasured("another findings_fold run holds %s after %d s" % (od, wait_s))
+                time.sleep(0.2)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def semantic(t):
+    """The table without its run time: two runs that agree on this wrote the same thing (review finding 10)."""
+    return json.dumps({k: v for k, v in (t or {}).items() if k != "generated"}, sort_keys=True)
 
 
 # ------------------------------------------------------------------ ledger notes
@@ -453,29 +584,50 @@ def apply_notes(actions, push):
     return n, errs, pub
 
 
+def fold_and_note(rules, prev, recs, decs, push):
+    """Live: the ledger is read, folded and noted under ONE hold of the clone lock (ingest.repo_lock, re-entrant),
+    the lock every writer of this clone's ledger takes (ingest, the RUNNER publisher's pull/rebase), so no item can
+    turn done between the snapshot the notes were chosen from and the notes (review finding 8). -> (table, notes)."""
+    sys.path.insert(0, TESTQ)
+    import ingest as I
+    with I.repo_lock(120) as got:
+        events, states = read_ledger()
+        t = fold(events, states, recs, decs, prev, rules, utcnow())
+        if not got:
+            return t, {"written": 0, "errors": ["clone busy: no notes this run (retried next run)"], "publish": None}
+        if not t["actions"]:
+            return t, None
+        n, errs, pub = apply_notes(t["actions"], push)
+        return t, {"written": n, "errors": errs, "publish": pub}
+
+
 def cmd_run(a):
     rules = load_rules()
     od = out_dir(a.out)
     os.makedirs(od, exist_ok=True)
-    std = os.path.join(od, "standing.json")
-    prev = read_prev(std)
-    events, states = read_ledger()
-    recs = read_done(queue_dir())
-    decs = read_decisions(decisions_path(rules))
-    t = fold(events, states, recs, decs, prev, rules, utcnow())
-    t["dry"] = bool(a.no_notes or not rules.get("live_notes", False))
-    if t["dry"]:
-        print("findings_fold: DRY (rules live_notes false or --no-notes): %d note(s) computed, none written"
-              % len(t["actions"]))
-    if not t["dry"] and t["actions"]:
-        n, errs, pub = apply_notes(t["actions"], os.environ.get("FINDINGS_FOLD_PUSH", "1") != "0")
-        t["notes"] = {"written": n, "errors": errs, "publish": pub}
-    write_atomic(std, json.dumps(t, indent=1, sort_keys=True))
-    write_atomic(os.path.join(od, "curation.md"), render_md(t))
-    print("findings_fold: %s -> %s" % (json.dumps(t["counts"], sort_keys=True), od))
-    if t.get("notes"):
-        print("notes: %s" % json.dumps(t["notes"])[:600])
-    return 1 if (t.get("notes") or {}).get("errors") else 0
+    std, cur = os.path.join(od, "standing.json"), os.path.join(od, "curation.md")
+    dry = bool(a.no_notes or not rules.get("live_notes", False))
+    with out_lock(od, float(os.environ.get("FINDINGS_FOLD_LOCK_WAIT_S", "300"))):
+        prev = read_prev(std)
+        recs = read_done(queue_dir())
+        decs = read_decisions(decisions_path(rules))
+        if dry:
+            events, states = read_ledger()
+            t, notes = fold(events, states, recs, decs, prev, rules, utcnow()), None
+            print("findings_fold: DRY (rules live_notes false or --no-notes): %d note(s) computed, none written"
+                  % len(t["actions"]))
+        else:
+            t, notes = fold_and_note(rules, prev, recs, decs, os.environ.get("FINDINGS_FOLD_PUSH", "1") != "0")
+        t["dry"] = dry
+        if prev is not None and semantic(prev) == semantic(t) and os.path.isfile(cur):
+            print("findings_fold: unchanged since %s: nothing written" % prev.get("generated"))
+        else:
+            write_atomic(std, json.dumps(t, indent=1, sort_keys=True))
+            write_atomic(cur, render_md(t))
+            print("findings_fold: %s -> %s" % (json.dumps(t["counts"], sort_keys=True), od))
+    if notes:   # run telemetry: stdout (the journal), never the table, so a repeat run compares equal
+        print("notes: %s" % json.dumps(notes)[:600])
+    return 1 if (notes or {}).get("errors") else 0
 
 
 def cmd_decide(a):

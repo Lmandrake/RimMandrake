@@ -22,12 +22,13 @@
  "_memory_roots_why": "design section 3 and 9.3: memory lands where it is read (a skill, a fact file, a rule or check), never the lessons inbox",
  "normalise": [
   ["J\\d{8}T\\d{6}Z-[0-9a-fA-F]{6}(?:\\.a\\d+)?", "<job>"],
+  ["\\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\b", "<uuid>"],
   ["\\d{8}T\\d{6}Z?", "<ts>"],
   ["\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?Z?", "<ts>"],
-  ["[\\w.\\\\/:-]*[\\w-]\\.(?:json|jsonl|html|png|log|xml|txt|rws|py|csv)\\b", "<file>"],
-  ["\\b(?=[0-9a-fA-F]*\\d)[0-9a-fA-F]{7,40}\\b", "<hex>"],
-  ["\\d+(?:\\.\\d+)?", "#"],
+  ["\\b(?=[0-9a-fA-F]*\\d)(?=[0-9a-fA-F]*[a-fA-F])[0-9a-fA-F]{7,40}\\b", "<hex>"],
+  ["\\b([A-Za-z][A-Za-z_]*[A-Za-z_])\\d{4,}\\b", "\\1<thing>"],
+  ["/run-\\d+@", "/run-<n>@"],
   ["\\s+", " "]
  ],
- "_normalise_why": "design section 6: the failure text with run-specific numbers and file names removed, applied in this order (job ids and timestamps before bare digits). Only identical cleaned text merges; words are never removed, so a too-strict rule only makes noise and never merges two bugs"
+ "_normalise_why": "design section 6, narrowed after the blind review (v3_review/blind/findings/review.md findings 1 and 11): only explicitly volatile identifiers are replaced, in this order: testq job ids (with attempt suffix), whole UUIDs (before the hex rule, so a UUID is never half-replaced), compact and ISO timestamps (a file name stamped with its run time keeps its stem: thirst_live_result_<ts>.json), hex ids with at least one digit AND one letter, 7-40 long (git shas, request ids; a pure decimal run such as 0.117750995 is a measured value and stays), RimWorld thing ids (a def name followed by a 4+ digit load id: HemogenPack476708), and testq run numbers. Error codes, assertion values, counts and file names are KEPT: two failures that differ in any of them are two signatures. Words are never removed, so a too-strict rule only makes noise and never merges two bugs"
 }
