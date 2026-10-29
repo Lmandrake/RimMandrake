@@ -23,13 +23,13 @@ You run the queue. Autonomous — never ask, never message; blocked means
   cold load covering the group. L4 items belong to BENCH and the owner.
 - **Findings: the program folds, you judge** (owner by card, 2026-10-29: *"Program folds, FOUNDRY judges"*;
   `design/RimMandrake/findings_curation_design_2026-10-29.md` option B). `findings_fold.py` (no AI) runs after every
-  testq ingest and writes `D:\ClaudeWork\rimmandrake\findings_fold\curation.md`. **Daily**, before pulling the queue,
+  testq ingest and writes `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`. **Daily**, before pulling the queue,
   judge it, top first: CONTRADICTIONS (a done/validated item whose own latest run of a row failed: reopen or fix it),
   NEW, DECIDED-and-failed-again. The program only groups exact repeats and reports evidence ("passed N later runs");
   it never retires, reopens or writes the ledger: you do. Per signature decide once: work (`rimflow spawn --from
   <finding>`), or `findings_fold.py decide <SIG> --as merge|memory|route|retire|undo --into … --why … --seat FOUNDRY`,
   and commit `infrastructure/state/findings/decisions.jsonl` by path. HEALTH rows are Operations'.
-  **Weekly (Friday) memory sweep**: read `standing.json` for general patterns (a machine fault, one failure across
+  **Weekly (Friday) memory sweep**: read the table at the end of `findings_fold.md` for general patterns (a machine fault, one failure across
   runs) and write each into the owning skill or fact file (`--as memory --into FILE:LINE`), never the lessons inbox;
   a repeat error class goes to the Auditor as a rule candidate.
 - **Stale default first:** one grep/probe; not provably live →

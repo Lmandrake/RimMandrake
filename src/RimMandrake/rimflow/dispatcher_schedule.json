@@ -52,7 +52,7 @@
   {"name": "findings_fold", "enabled": true, "every_s": 60, "unit": "testq-tick.service",
    "run": "python3 src/RimMandrake/Utils/findings_fold.py run",
    "rules": "src/RimMandrake/Utils/findings_fold_rules.json", "out": "D:\\ClaudeWork\\rimmandrake\\findings_fold",
-   "_why": "owner by card 2026-10-29: \"Program folds, FOUNDRY judges\" (design/RimMandrake/findings_curation_design_2026-10-29.md option B, FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X). No AI: the last step of every testq tick, after ingest.py, in the dispatch clone (testq.py UNITS); it folds the ingest's UNTRIAGED findings into standing.json and curation.md, and notes the ledger as RUNNER. FOUNDRY judges curation.md daily, the Auditor samples its retirements and merges weekly. `out` mirrors the rules file's `out`, which the program reads."},
+   "_why": "owner by card 2026-10-29: \"Program folds, FOUNDRY judges\" (design/RimMandrake/findings_curation_design_2026-10-29.md option B, FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X). No AI: the last step of every testq tick, after ingest.py, in the dispatch clone (testq.py UNITS); it folds the ingest's UNTRIAGED findings into one file, findings_fold.md (the table is its last block), and writes no ledger line. FOUNDRY judges it daily, the Auditor samples FOUNDRY's retire decisions and the program's merges weekly. `out` mirrors the rules file's `out`, which the program reads."},
   {"name": "v3_vs_v2", "enabled": false, "every_s": 604800, "unit": "rm-v3-vs-v2.timer", "at_local": "Mon 07:05",
    "run": "python3 src/RimMandrake/Utils/v3_vs_v2.py run",
    "rules": "src/RimMandrake/Utils/v3_vs_v2_rules.json", "out": "D:\\ClaudeWork\\rimmandrake\\v3_vs_v2",

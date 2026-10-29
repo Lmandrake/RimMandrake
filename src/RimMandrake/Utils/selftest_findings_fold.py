@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """selftest_findings_fold.py - the no-AI findings sorter (findings_fold.py, FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X).
 
-One group per guarantee of the simplified design (coordinator ruling after blind review 2,
-v3_review/blind/findings/review2.md). Every group fails against the pre-simplification module (5ee3ccc7d8):
+One group per guarantee (coordinator rulings after blind reviews 2 and 3, v3_review/blind/findings/review3.md).
+The review-3 checks (marked "review 3 #N") fail against 2016e11ef7:
   G1 exact merge: failures differing only in job ids, timestamps and durations share a signature; count, first/last
      seen and every raw text are kept;
-  G2 no over-merge: error codes, numbered file names, hex values, rows, chains and mods keep failures apart (F1);
-  G3 evidence, never judgment: passes after the last failure are counted per distinct job and reported, nothing is
-     retired or reopened, a decision shows the failures since it, an empty-detail FAIL is pinned on no bug (F4-F8);
-  G4 contradictions: an item's own latest verdict of a row, a pass under another item's build clears nothing (F9);
-  G5 health routing is case-insensitive (F13);
-  G6 fails closed: structurally wrong records, findings, decisions, a reused finding name or a job in two done files
-     exit 2 and change no output (F3, F5, F10);
-  G7 one writer: a held queue lock or clone lock exits 2 and writes nothing (F11, F14);
-  G8 publication: an interruption between the two renames is repaired by the next run; an unchanged rerun rewrites
-     neither file (F12, F14); the run writes no ledger line.
+  G2 no over-merge: codes, file names, hex, values, whitespace, rows, chains and mods keep failures apart; rows are
+     grouped by the whole tuple and signed with all of sha256; a lane finding is its own HEALTH row;
+  G3 evidence, never judgment: passes after the last failure are counted and reported, nothing is retired or reopened;
+  G4 contradictions: an item's own latest verdict of a row; G5 health routing is case-insensitive;
+  G6 fails closed: wrong records (a row twice, under chain None and ''), findings or decisions exit 2 and change
+     nothing; ONE file is published by one rename; a retire decision renders;
+  G7 one writer: a held queue or clone lock stops `run` and `decide`; rules are read inside the lock;
+  G8 publication: an unchanged rerun rewrites nothing; a partial, foreign or unreadable report aborts the run; the
+     ledger tree is byte-identical to before the first run.
 """
 import fcntl
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -109,6 +109,18 @@ check(pair("took 12 s at 2026-10-27T01:02:03Z", "took 340 s at 2026-10-28T09:08:
 evs = [fev("U_1", "IT_A", "r1", "boom", ts(27, 1)), fev("U_2", "IT_A", "r1", "boom", ts(27, 2))]
 _, s = one(evs, [])
 check(s["U_1"] != s["U_2"], "G2 two record-less findings with one text stay two rows")
+for a_, b_ in (("expected 'a  b'", "expected 'a b'"), ("a\tb", "a b"), ("a\nb", "a b"), ("x ", "x"), (" x", "x")):
+    check(not pair(a_, b_), "G2 whitespace is meaningful: %r and %r stay apart (review 3 #2)" % (a_, b_))
+check(not pair("assert code 703455", "assert code 856996"),
+      "G2 the review's colliding pair stays apart: grouped by the whole row, signed with all of sha256 (review 3 #3)")
+# a paused-lane finding names no test row, so no record explains it: it is its own row, labelled HEALTH by name
+lane = [dict(fev(n, "IT_LANE", "r1", "x", ts(27, k)), why="SteveDesktop lane paused: TIMEOUT/hung")
+        for k, n in enumerate(("STEVE_LANE_PAUSED_AAAAAA", "STEVE_LANE_PAUSED_BBBBBB"), 1)]
+t, s = one(lane, [dict(rec("JL%d" % k, mod, ts(27, k), []), ingested={"lane_finding": e["name"]})
+                  for k, (mod, e) in enumerate(zip(("FlowWorks", "Thirst"), lane), 1)])
+check(len(set(s.values())) == 2 and all(t["signatures"][g].get("status") == "HEALTH" for g in s.values()),
+      "G2 two lane findings with one text, from records of two mods, stay apart and are HEALTH (review 3 #4)")
+check(all(re.match(r"^S[0-9a-f]{64}$", g) for g in s.values()), "G2 a signature is the full sha256")
 
 # ------------------------------------------------------------------ G3 evidence only
 TA = "thirst never rose"
@@ -120,7 +132,7 @@ row = t["signatures"][s["A_1"]]
 check(row.get("passes_since") == 3, "G3 three later passes are counted (got %s)" % row.get("passes_since"))
 check(row.get("status") == "NEW", "G3 and nothing is retired: the row stays NEW (got %s)" % row.get("status"))
 check((row.get("row_latest") or {}).get("verdict") == "PASS", "G3 the row's latest verdict is reported")
-md = FF.render_md(t, "x")
+md = FF.render_md(t)
 check("passed 3 later run(s)" in md, "G3 curation says 'passed 3 later run(s)'")
 # an empty-detail FAIL after the passes is the row's latest verdict but is pinned on no signature
 recs3b = recs3 + [rec("J9", "FlowWorks", ts(28, 1), [("c1", "r1", "FAIL", "")], [], "IT_T")]
@@ -206,28 +218,48 @@ try:
     env = dict(os.environ, TESTQ_QUEUE=qd, FINDINGS_FOLD_OUT=out, RIMFLOW_LEDGER=events_file,
                FINDINGS_FOLD_DECISIONS=decf, FINDINGS_FOLD_LOCK_WAIT_S="1", TMPDIR=lockdir)
     env.pop("FINDINGS_FOLD_RULES", None)
-    std, cur = os.path.join(out, "standing.json"), os.path.join(out, "curation.md")
+    rules_f = os.path.join(tmp, "rules.json")
+    shutil.copy(FF.RULES_PATH, rules_f)
+    env["FINDINGS_FOLD_RULES"] = rules_f
+    rep = os.path.join(out, "findings_fold.md")
 
-    def run():
-        return subprocess.run([sys.executable, os.path.join(HERE, "findings_fold.py"), "run"], env=env,
-                              capture_output=True, text=True, timeout=120)
+    def tree(root):
+        """Every file under root with its bytes: the ledger must be identical after every run."""
+        return sorted((os.path.relpath(os.path.join(d, n), root), open(os.path.join(d, n), "rb").read())
+                      for d, _, ns in os.walk(root) for n in ns)
+    ledger0 = tree(led)
 
-    def same_table(s_):
-        return FF.semantic(json.loads(snap()[0])) == FF.semantic(json.loads(s_[0]))
+    def run(*args, wrap=""):
+        return subprocess.run([sys.executable, "-c", wrap + "import runpy, sys; sys.argv = ['findings_fold.py'] + %r; "
+                               "runpy.run_path(%r, run_name='__main__')" % (list(args or ["run"]),
+                                                                          os.path.join(HERE, "findings_fold.py"))],
+                              env=env, capture_output=True, text=True, timeout=120)
 
     def snap():
-        return tuple(open(p, "rb").read() if os.path.exists(p) else None for p in (std, cur))
-    r = run()
-    check(r.returncode == 0 and os.path.isfile(std) and os.path.isfile(cur),
-          "G6 a clean run exits 0 and writes both files (%d: %s)" % (r.returncode, (r.stderr or r.stdout)[-300:]))
-    good = snap()
-    ledger_bytes = open(shard, "rb").read()
+        return open(rep, "rb").read() if os.path.exists(rep) else None
+
+    def table(b):
+        try:
+            return json.loads(b.decode().rpartition("```json findings_fold table\n")[2].rpartition("\n```")[0])
+        except (AttributeError, ValueError):
+            return {}
+
+    def same_table(b):
+        return FF.semantic(table(snap())) == FF.semantic(table(b))
+    count = ("import os; _r = os.replace; R = []\ndef _rep(a, b): R.append(os.path.basename(b)); _r(a, b)\n"
+             "os.replace = _rep; import atexit; atexit.register(lambda: print('RENAMES', R))\n")
+    r = run(wrap=count)
+    check(r.returncode == 0 and "RENAMES ['findings_fold.md']" in r.stdout and os.listdir(out) == ["findings_fold.md"],
+          "G6 a clean run publishes ONE file with one rename (review 3 #1) (%d: %s)"
+          % (r.returncode, (r.stderr or r.stdout)[-300:]))
+    good = snap() or b""
 
     def closed(label, setup, undo):
         setup()
+        want = snap()
         try:
             r_ = run()
-            check(r_.returncode == 2 and "UNMEASURED" in r_.stdout and snap() == good,
+            check(r_.returncode == 2 and "UNMEASURED" in r_.stdout and snap() == want,
                   "%s: exit 2, UNMEASURED, no output change (got %d: %s)" % (label, r_.returncode, r_.stdout[-160:]))
         finally:
             undo()
@@ -248,6 +280,10 @@ try:
     closed("G6 a DONE result with rows null (F6)", bad_rec(lambda r_: r_["result"].update(rows=None)), restore)
     closed("G6 job.row_items not a mapping", bad_rec(lambda r_: r_["job"].update(row_items=["c1"])), restore)
     closed("G6 no finish time", bad_rec(lambda r_: r_["result"].pop("finished")), restore)
+    closed("G6 one row as a FAIL with no chain and a PASS with chain '' (review 3 #7)",
+           bad_rec(lambda r_: r_["result"].update(rows=[dict(r_["result"]["rows"][0], chain=None),
+                                                        dict(r_["result"]["rows"][0], chain="", verdict="PASS")])),
+           restore)
 
     def dup_job():
         write_recs(recs1)
@@ -263,15 +299,24 @@ try:
     r = run()
     check(r.returncode == 0 and snap() == good, "G6 an exact duplicate finding line is one finding")
     write_shard(evs1)
-    sig = json.loads(good[0])["raw"]["Q_A"]["sig"]
+    sig = table(good).get("raw", {}).get("Q_A", {}).get("sig", "S" + "0" * 64)
     for label, line in (("no ts or into (F10)", {"sig": sig, "as": "work", "by": "F", "why": "w"}),
                         ("work with no into", {"sig": sig, "as": "work", "by": "F", "ts": ts(28, 1), "why": "w"}),
                         ("no why", {"sig": sig, "as": "retire", "by": "F", "ts": ts(28, 1), "why": " "}),
                         ("a malformed sig", {"sig": "nope", "as": "retire", "by": "F", "ts": ts(28, 1), "why": "w"})):
         closed("G6 a decision with %s" % label, lambda line=line: open(decf, "w").write(json.dumps(line) + "\n"),
                lambda: os.remove(decf))
+    with open(decf, "w") as f:
+        f.write(json.dumps({"sig": sig, "as": "retire", "by": "F", "ts": ts(29, 1), "why": "fixed"}) + "\n")
+    r = run()
+    check(r.returncode == 0 and b"decided retire into -" in (snap() or b""),
+          "G6 a retire decision, which names no destination, is published (review 3 #9) (%d: %s)"
+          % (r.returncode, r.stderr[-200:]))
+    os.remove(decf)
+    run()
+    good = snap() or b""
 
-    # G7 one writer
+    # G7 one writer, from the first read (rules included) to the last write, and `decide` takes the same locks
     sys.path.insert(0, os.path.join(HERE, "testq"))
     import ingest as I
 
@@ -285,6 +330,10 @@ try:
         r = run()
         check(r.returncode == 2 and snap() == good, "G7 while ingest holds the queue lock: exit 2, nothing written "
                                                      "(got %d)" % r.returncode)
+        r = run("decide", sig, "--as", "retire", "--why", "w", "--seat", "FOUNDRY")
+        check(r.returncode == 2 and "UNMEASURED" in r.stdout and not os.path.exists(decf),
+              "G7 `decide` waits for the same lock: exit 2, no decision written (review 3 #8) (got %d: %s)"
+              % (r.returncode, r.stdout[-120:]))
     finally:
         fcntl.flock(fh, fcntl.LOCK_UN)
         fh.close()
@@ -296,36 +345,63 @@ try:
     r = run()
     check(r.returncode == 0 and snap() != good, "G7 sanity: with both locks free the same input does change it")
     write_shard(evs1)
+    fh = hold_queue_lock()                       # a run started now waits; the rules change while it waits
+    try:
+        env["FINDINGS_FOLD_LOCK_WAIT_S"] = "60"
+        p = subprocess.Popen([sys.executable, os.path.join(HERE, "findings_fold.py"), "run"], env=env,
+                             stdout=subprocess.PIPE, text=True)
+        time.sleep(3)
+        rl = json.load(open(rules_f))
+        rl["machine_health_patterns"].append("dig never finished")
+        json.dump(rl, open(rules_f, "w"))
+    finally:
+        fcntl.flock(fh, fcntl.LOCK_UN)
+        fh.close()
+        env["FINDINGS_FOLD_LOCK_WAIT_S"] = "1"
+    p.communicate(timeout=120)
+    check(p.returncode == 0 and table(snap() or b"").get("signatures", {}).get(sig, {}).get("status") == "HEALTH",
+          "G7 a run reads the rules inside the lock: a change made while it waited is applied (review 3 #8)")
+    shutil.copy(FF.RULES_PATH, rules_f)
     r = run()
     check(r.returncode == 0 and same_table(good), "G7 and back")
 
-    # G8 publication
-    os.utime(std, (1, 1))
-    os.utime(cur, (1, 1))
+    # G8 publication: the one file is the table's own render; anything else that is there aborts the run
+    open(rep, "ab").close()                     # already there (keeps the old-code proof running past here)
+    os.utime(rep, (1, 1))
     r = run()
-    check(r.returncode == 0 and os.stat(std).st_mtime == 1 and os.stat(cur).st_mtime == 1,
-          "G8 an unchanged rerun rewrites neither file (F14)")
-    stale = good[1].decode().replace("# Findings fold", "# Findings fold STALE", 1)
-    with open(cur, "w") as f:
-        f.write(stale)                           # as a crash between the two renames leaves it
+    check(r.returncode == 0 and os.stat(rep).st_mtime == 1, "G8 an unchanged rerun rewrites nothing (F14)")
+    stale = good.replace(b"# Findings fold", b"# Findings fold STALE", 1)
+    with open(rep, "wb") as f:
+        f.write(stale)
     r = run()
-    check(r.returncode == 0 and snap()[1] != stale.encode() and b"STALE" not in snap()[1],
-          "G8 a curation.md that disagrees with standing.json is rewritten (F12)")
-    newer = snap()
-    write_shard(evs1 + [fev("NEW_2", "IT_Q", "other", "new bug", ts(29, 6))])
+    check(r.returncode == 0 and b"STALE" not in (snap() or b"") and same_table(good), "G8 an edited markdown part is re-rendered")
+    tbl = table(good)
+    head = good.decode().rpartition("\n\n```json")[0]
+    for label, text in (("a header and no table", head + "\n"),
+                        ("a table that is only {generated} (review 3 #5)", head + FF.TABLE_FENCE +
+                         json.dumps({"generated": ts(29, 0)}) + FF.TABLE_END),
+                        ("a table cut short", good.decode()[:-40]),
+                        ("a table of another schema", head + FF.TABLE_FENCE +
+                         json.dumps(dict(tbl, schema="findings_fold/2")) + FF.TABLE_END)):
+        closed("G8 an existing report with %s" % label, lambda text=text: open(rep, "w").write(text),
+               lambda: open(rep, "wb").write(good))
+    os.chmod(rep, 0)
     r = run()
-    check(r.returncode == 0 and not same_table(newer), "G8 sanity: a new finding changes the table")
-    with open(std, "wb") as f:
-        f.write(newer[0])                        # a crash after curation.md, before standing.json
+    os.chmod(rep, 0o644)
+    check(r.returncode == 2 and "UNMEASURED" in r.stdout and snap() == good,
+          "G8 an existing report that cannot be read: exit 2, untouched (review 3 #6) (got %d)" % r.returncode)
+    os.remove(rep)
     r = run()
-    check(r.returncode == 0 and b"NEW_2" in snap()[0], "G8 a standing.json older than curation.md is rewritten")
+    check(r.returncode == 0 and os.path.isfile(rep) and same_table(good), "G8 a missing report is written")
+    other = os.path.join(led, "events", "OTHER.jsonl")
+    open(other, "w").close()
+    seen_new = tree(led) != ledger0
+    os.remove(other)
+    write_shard(evs1[::-1])
+    check(seen_new and tree(led) != ledger0, "G8 sanity: the ledger comparison sees a new shard and a reordered one")
     write_shard(evs1)
-    os.remove(cur)
-    r = run()
-    check(r.returncode == 0 and os.path.isfile(cur), "G8 a missing curation.md is rewritten")
-    check(open(shard, "rb").read() == ledger_bytes and os.path.getsize(events_file) == 0,
-          "G8 the run wrote no ledger line")
-    check(not [n for n in os.listdir(out) if n.endswith(".tmp")], "G8 no temp file left behind")
+    check(tree(led) == ledger0, "G8 no run wrote, added or removed any ledger file (review 3 #10)")
+    check(os.listdir(out) == ["findings_fold.md"], "G8 nothing else is left in the output folder")
 finally:
     tempfile.tempdir = None
     shutil.rmtree(tmp, ignore_errors=True)

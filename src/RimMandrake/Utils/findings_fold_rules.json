@@ -1,7 +1,7 @@
 {
  "_doc": "Rules for findings_fold.py, the no-AI findings sorter (FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X; design/RimMandrake/findings_curation_design_2026-10-29.md option B, chosen by the owner by card 2026-10-29: \"Program folds, FOUNDRY judges\"). It runs as the last step of testq-tick.service (testq.py UNITS), after ingest.py. Simplified after two blind reviews (v3_review/blind/findings/review.md, review2.md; coordinator 2026-10-29): the program groups and reports evidence; it never retires, reopens, merges into a decision or writes the ledger.",
  "out": "D:\\ClaudeWork\\rimmandrake\\findings_fold",
- "_out_why": "standing.json (the standing-failures table, every raw text kept) and curation.md (FOUNDRY's daily residue) land here: agent scratch, read by FOUNDRY and the Auditor. The one source of this path; FINDINGS_FOLD_OUT overrides it (selftests)",
+ "_out_why": "findings_fold.md lands here, ONE file published by one rename (blind review 3): FOUNDRY's daily residue, with the standing-failures table (every raw text kept) as its last block: agent scratch, read by FOUNDRY and the Auditor. The one source of this path; FINDINGS_FOLD_OUT overrides it (selftests)",
  "finding_types": ["UNTRIAGED"],
  "_finding_types_why": "the sorter folds what the testq ingest files (type UNTRIAGED, design section 2); hand-filed findings of other types were already judged by the seat that filed them",
  "lane_item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",
@@ -18,8 +18,7 @@
   ["J\\d{8}T\\d{6}Z-[0-9a-fA-F]{6}(?:\\.a\\d+)?", "<job>"],
   ["\\d{8}T\\d{6}Z?", "<ts>"],
   ["\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?Z?", "<ts>"],
-  ["\\b(took|elapsed|after|in) \\d+(?:\\.\\d+)? ?(ms|s|sec|seconds|min)\\b", "\\1 <dur>"],
-  ["\\s+", " "]
+  ["\\b(took|elapsed|after|in) \\d+(?:\\.\\d+)? ?(ms|s|sec|seconds|min)\\b", "\\1 <dur>"]
  ],
- "_normalise_why": "Merge only on an exact signature (coordinator ruling 2026-10-29 after blind review 2): mod + chain + row + the failure text with ONLY these removed, in order: testq job ids (with attempt suffix), compact timestamps (thirst_live_result_<ts>.json keeps its stem), ISO timestamps, durations written as took/elapsed/after/in N s|ms|min, and whitespace runs. Nothing else: hex ids, thing ids, codes, counts and values are KEPT, so two failures that differ in any of them stay two rows. A duplicate row is cheap; a wrong merge loses a bug. Measured over the 2026-10-29 backlog: job ids and compact timestamps were the only volatile tokens"
+ "_normalise_why": "Merge only on an exact signature (coordinator ruling 2026-10-29 after blind review 2): mod + chain + row + the failure text with ONLY these removed, in order: testq job ids (with attempt suffix), compact timestamps (thirst_live_result_<ts>.json keeps its stem), ISO timestamps, and durations written as took/elapsed/after/in N s|ms|min. Nothing else (blind review 3: not even whitespace, which can be the bug): hex ids, thing ids, codes, counts, values and spacing are KEPT, so two failures that differ in any of them stay two rows. A duplicate row is cheap; a wrong merge loses a bug. Measured over the 2026-10-29 backlog: job ids and compact timestamps were the only volatile tokens"
 }

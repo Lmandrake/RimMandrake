@@ -177,7 +177,7 @@ not replace a carried one, it adds to it.
   later ones) with a helper that never wrote it.
 - **Digest spot check**: sample the week's delegated digest lines against their sources.
 - **Findings fold sample** (`FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`): from
-  `D:\ClaudeWork\rimmandrake\findings_fold\standing.json`, a helper that did not make them re-checks at least three of
+  the table at the end of `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`, a helper that did not make them re-checks at least three of
   the week's FOUNDRY `retire` decisions (are the passes it cites real PASSes, after the last FAIL?) and three program
   merges (is it the same failure?). A wrong merge is a ticket on `src/RimMandrake/Utils/findings_fold_rules.json`
   (merges are exact: only job ids, timestamps and durations are stripped).

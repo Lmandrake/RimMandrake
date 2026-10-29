@@ -6,14 +6,15 @@ Design: design/RimMandrake/findings_curation_design_2026-10-29.md option B, chos
 by the coordinator's ruling: the program groups and reports, it never judges. Runs after every testq ingest (the
 testq-tick unit's last ExecStart, testq.py UNITS); output folder and rules: findings_fold_rules.json.
 
-    findings_fold.py run [--out DIR]                                       fold, write curation.md + standing.json
+    findings_fold.py run [--out DIR]                                       fold, write findings_fold.md
     findings_fold.py decide SIG --as KIND [--into X] --why "..." --seat SEAT     FOUNDRY records a judgment
 
 What it does, with no AI and no ledger writes:
   * signs every finding of the folded types (UNTRIAGED: what ingest.py files) by mod, chain, row and the failure
     text with ONLY job ids, timestamps and durations removed (rules `normalise`, a short tested list). The text is
     the done record's full detail when exactly one record names the finding, else the ledger's line, and then the
-    finding is signed with its own name too, so it merges with nothing. Identical signatures are one row of the
+    finding is signed with its own name too, so it merges with nothing (a paused-lane finding, which names no test
+    row, always is). Rows are grouped by that whole tuple; the signature shown is its full sha256. One row of the
     table: count, first and last seen, items, every finding name and raw text. A doubtful pair stays two rows;
   * reports evidence, decides nothing: for each signature, how many distinct later runs passed its row after its
     last failure (`passes_since`) and the row's latest measured verdict. There is no automatic retirement, reopening
@@ -22,12 +23,14 @@ What it does, with no AI and no ledger writes:
   * a CONTRADICTION is an item in a `contradiction_states` state (done, validated) whose own latest measured verdict
     of a row (the newest PASS/FAIL among the done records whose rows ingest maps to that item) is FAIL;
   * a machine-health failure (rules machine_health_patterns, case-insensitive) or a paused-lane finding is labelled
-    HEALTH, for Operations' lane item.
+    HEALTH, for Operations' lane item; its identity is not changed by that label.
 Fails CLOSED: an unreadable or structurally wrong ledger finding, done record, decisions line or previous table, or a
 finding name reused with different content, exits 2 with UNMEASURED and changes no output. One writer: the run holds
 the queue's ingest.lock and this clone's ingest.repo_lock (the locks ingest.py takes while it writes records and the
-ledger) from the first read to the last rename. curation.md is written first, carrying the table's hash, then
-standing.json; a rerun is a no-op only when standing.json holds the same table and curation.md is exactly its render.
+ledger) from the rules read to the rename, and `decide` takes them too. ONE file is published, by one rename:
+findings_fold.md, the report with the whole table embedded as its last block. An existing one that cannot be read or
+holds no whole table of this schema makes the run UNMEASURED (move it aside); a rerun that would render the same table
+writes nothing, one whose markdown was edited is re-rendered.
 """
 import argparse
 import contextlib
@@ -45,15 +48,16 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RIMFLOW = os.path.join(REPO, "src", "RimMandrake", "rimflow")
 TESTQ = os.path.join(HERE, "testq")
 RULES_PATH = os.path.join(HERE, "findings_fold_rules.json")
-SCHEMA = "findings_fold/2"
+SCHEMA = "findings_fold/3"
 KINDS = ("work", "merge", "memory", "route", "retire", "undo")
 NEEDS_INTO = ("work", "merge", "memory", "route")
 VERDICTS = ("PASS", "FAIL", "UNMEASURED", "NOT_RUN")
 ISO_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
-SIG_RE = re.compile(r"^S[0-9a-f]{10}$")
+SIG_RE = re.compile(r"^S[0-9a-f]{64}$")
 WHY_RE = re.compile(r"^(?P<chain>[^/ ]*)/(?P<row>\S+) FAIL on (?P<host>\S+): (?P<detail>.*)$", re.S)
-LANE_NAME_RE = re.compile(r"^STEVE_LANE_(?P<twist>.+)_[0-9A-F]{6}$")
-HASH_LINE = "<!-- findings_fold table %s -->"
+REPORT = "findings_fold.md"
+TABLE_FENCE, TABLE_END = "\n\n```json findings_fold table\n", "\n```\n"
+TABLE_KEYS = {"schema", "generated", "counts", "signatures", "contradictions", "raw"}
 
 
 class Unmeasured(Exception):
@@ -83,13 +87,17 @@ def normalise(text, rules):
     t = text or ""
     for rx, rep in rules["_norm"]:
         t = rx.sub(rep, t)
-    return t.strip()
+    return t
 
 
-def signature(mod, chain, row, text, rules, name=None):
-    """name: given only for a finding no done record explains; it joins the key, so that finding merges with nothing."""
-    key = "\0".join([mod, chain, row, normalise(text, rules)] + (["unresolved:" + name] if name else []))
-    return "S" + hashlib.sha1(key.encode("utf-8")).hexdigest()[:10]
+def row_key(mod, chain, row, text, rules, name=None):
+    """The identity of a failure: the whole tuple. name: given only for a finding no done record explains."""
+    return (mod, chain, row, normalise(text, rules), name)
+
+
+def signature(key):
+    """Its full sha256 over an unambiguous encoding: a label for the tuple, which is what rows are grouped by."""
+    return "S" + hashlib.sha256(json.dumps(list(key)).encode("utf-8")).hexdigest()
 
 
 # ------------------------------------------------------------------ inputs (each fails closed)
@@ -124,9 +132,10 @@ def record_fault(r):
         for f in ("chain", "detail"):
             if x.get(f) is not None and not isinstance(x[f], str):
                 return "row %d %s is not a string" % (k, f)
-        if (x.get("chain"), x["row"]) in seen:
-            return "row %s/%s appears twice" % (x.get("chain"), x["row"])
-        seen.add((x.get("chain"), x["row"]))
+        rid = (x.get("chain") or "", x["row"])          # the fold's own identity of a row (row_runs, locate)
+        if rid in seen:
+            return "row %s/%s appears twice" % rid
+        seen.add(rid)
     if ing is not None:
         if not isinstance(ing, dict):
             return "ingested is not an object"
@@ -246,9 +255,6 @@ def index_records(recs):
 
 def locate(name, ev, rec):
     """-> (mod, chain, row, text, time, resolved): from the record's one FAIL row of that chain/row, else the ledger."""
-    if name.startswith("STEVE_LANE_"):
-        m = LANE_NAME_RE.match(name)
-        return "LANE", "", m.group("twist") if m else "PAUSED", ev["why"], ev["ts"], True
     m = WHY_RE.match(ev["why"])
     chain, row, detail = (m.group("chain"), m.group("row"), m.group("detail")) if m else ("", "", ev["why"])
     if rec is not None:
@@ -291,33 +297,37 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
     raw = {}
     for name, ev in sorted(finds.items()):
         mod, chain, row, text, at, ok = locate(name, ev, idx.get(name))
-        raw[name] = {"sig": signature(mod, chain, row, text, rules, None if ok else name), "item": ev["id"],
-                     "mod": mod, "chain": chain, "row": row, "text": text, "at": at, "from": ev.get("from"),
-                     "resolved": ok}
-    sigs = {}
+        key = row_key(mod, chain, row, text, rules, None if ok else name)
+        raw[name] = {"key": key, "sig": signature(key), "item": ev["id"], "mod": mod, "chain": chain, "row": row,
+                     "text": text, "at": at, "from": ev.get("from"), "resolved": ok}
+    groups = {}
     for name, f in sorted(raw.items(), key=lambda kv: (kv[1]["at"], kv[0])):
-        s = sigs.setdefault(f["sig"], {k: f[k] for k in ("mod", "chain", "row", "text")} |
-                            {"findings": [], "items": [], "first_seen": f["at"], "count": 0})
+        s = groups.setdefault(f.pop("key"), {k: f[k] for k in ("sig", "mod", "chain", "row", "text")} |
+                              {"findings": [], "items": [], "first_seen": f["at"], "count": 0})
         s["findings"].append(name)
         s["count"] += 1
         s["last_seen"] = f["at"]
         if f["item"] not in s["items"]:
             s["items"].append(f["item"])
-    for sig, s in sigs.items():
+    sigs = {s.pop("sig"): s for s in groups.values()}
+    if len(sigs) != len(groups):
+        raise Unmeasured("two different failures share one signature")
+    for (key, s), sig in zip(groups.items(), sigs):
         tl = runs.get((s["mod"], s["chain"], s["row"]), [])
         last_fail = max([s["last_seen"]] + [at for at, _, v, d, _ in tl if v == "FAIL" and
-                                            signature(s["mod"], s["chain"], s["row"], d, rules) == sig])
+                                            row_key(s["mod"], s["chain"], s["row"], d, rules) == key])
         measured = [x for x in tl if x[2] in ("PASS", "FAIL")]
         s["last_fail"] = last_fail
         s["passes_since"] = len({j for at, j, v, _, _ in tl if v == "PASS" and at > last_fail})
         s["row_latest"] = {"verdict": measured[-1][2], "at": measured[-1][0], "job": measured[-1][1]} \
             if measured else None
-        s["health"] = s["mod"] == "LANE" or any(rx.search(s["text"]) for rx in rules["_mh"])
+        s["health"] = any(n.startswith("STEVE_LANE_") for n in s["findings"]) or \
+            any(rx.search(s["text"]) for rx in rules["_mh"])
         d = latest_decision(sig, set(s["findings"]), spawns, decision_lines)
         s["decision"] = d
         s["failed_since_decision"] = sum(1 for n in s["findings"] if d and raw[n]["at"] > d["ts"]) + \
             sum(1 for at, _, v, dt, _ in tl if d and v == "FAIL" and at > d["ts"] and
-                signature(s["mod"], s["chain"], s["row"], dt, rules) == sig and
+                row_key(s["mod"], s["chain"], s["row"], dt, rules) == key and
                 not any(raw[n]["at"] == at for n in s["findings"]))
         s["status"] = "HEALTH" if s["health"] else "DECIDED" if d else "NEW"
     contra = []
@@ -343,13 +353,13 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
             "raw": raw}
 
 
-def render_md(t, digest):
+def render_md(t):
     sigs, c = t["signatures"], t["counts"]
-    out = [HASH_LINE % digest, "# Findings fold %s" % t["generated"], "",
+    out = ["# Findings fold %s" % t["generated"], "",
            "%d findings, %d distinct failures (%d unresolved: no done record, never merged); %s. The program groups "
            "and reports only: nothing is retired, reopened or noted on the ledger; FOUNDRY decides (`findings_fold.py "
-           "decide`). Table: standing.json." % (c["findings"], c["distinct"], c["unresolved"],
-                                                 json.dumps(c["by_status"], sort_keys=True)), "",
+           "decide`). The table is the last block of this file." % (c["findings"], c["distinct"], c["unresolved"],
+                                                                  json.dumps(c["by_status"], sort_keys=True)), "",
            "## CONTRADICTIONS: a done or validated item whose own latest run of a row FAILED (%d)" % len(t["contradictions"])]
     for x in t["contradictions"]:
         out.append("- %s (%s): %s/%s/%s FAIL at %s in %s; signatures %s" % (
@@ -361,31 +371,38 @@ def render_md(t, digest):
         return "passed %s later run(s); row latest %s" % (
             "?" if s["mod"] == "?" else s["passes_since"], "%s %s" % (rl["verdict"], rl["at"]) if rl else "unmeasured")
 
+    def dec(s):
+        d = s["decision"]
+        return "; decided %s into %s at %s" % (d["as"], d.get("into") or "-", d["ts"])
+
     def sect(title, pick, extra=lambda s: ""):
         rows = sorted(((k, s) for k, s in sigs.items() if pick(s)), key=lambda x: (-x[1]["count"], x[0]))
         out.append("## %s (%d)" % (title, len(rows)))
         for k, s in rows:
             out.append("- `%s` x%d %s..%s %s/%s/%s under %s; %s%s: %s" % (
                 k, s["count"], s["first_seen"][:10], s["last_seen"][:10], s["mod"], s["chain"], s["row"],
-                ",".join(s["items"]), ev(s), extra(s), s["text"][:200]))
+                ",".join(s["items"]), ev(s), extra(s), json.dumps(s["text"][:200])))
         out.append("")
     sect("NEW: FOUNDRY judges (work / merge / memory / route / retire)", lambda s: s["status"] == "NEW")
     sect("DECIDED, and failed again since", lambda s: s["status"] == "DECIDED" and s["failed_since_decision"],
-         lambda s: "; decided %s into %s at %s, %d failure(s) since" % (
-             s["decision"]["as"], s["decision"]["into"], s["decision"]["ts"], s["failed_since_decision"]))
-    sect("DECIDED", lambda s: s["status"] == "DECIDED" and not s["failed_since_decision"],
-         lambda s: "; decided %s into %s" % (s["decision"]["as"], s["decision"]["into"]))
-    sect("HEALTH: for Operations (%s)" % "lane item", lambda s: s["status"] == "HEALTH")
-    return "\n".join(out) + "\n"
+         lambda s: dec(s) + ", %d failure(s) since" % s["failed_since_decision"])
+    sect("DECIDED", lambda s: s["status"] == "DECIDED" and not s["failed_since_decision"], dec)
+    sect("HEALTH: for Operations (lane item)", lambda s: s["status"] == "HEALTH")
+    return "\n".join(out)
+
+
+def render_report(t):
+    """The one published file: the markdown, then the table as its last block."""
+    return render_md(t) + TABLE_FENCE + json.dumps(t, indent=1, sort_keys=True) + TABLE_END
 
 
 # ------------------------------------------------------------------ output
-def out_dir(override=None):
+def out_dir(override, rules):
     if override or os.environ.get("FINDINGS_FOLD_OUT"):
         return override or os.environ["FINDINGS_FOLD_OUT"]
     sys.path.insert(0, HERE)
     from game_paths import win_to_wsl
-    return win_to_wsl(load_rules()["out"])
+    return win_to_wsl(rules["out"])
 
 
 def semantic(t):
@@ -394,16 +411,24 @@ def semantic(t):
 
 
 def read_prev(path):
-    if not os.path.exists(path):
-        return None
+    """(table, file text) of the existing report, or (None, None) when there is none. Unreadable, partial, or a
+    table that is not a whole table of this schema: UNMEASURED, never 'no previous table'."""
     try:
         with open(path, encoding="utf-8") as f:
-            t = json.load(f)
-        if not isinstance(t, dict) or "generated" not in t:
-            raise ValueError("not a table")
-        return t
+            text = f.read()
+    except FileNotFoundError:
+        return None, None
     except (OSError, ValueError) as e:
-        raise Unmeasured("previous table %s unreadable: %s" % (path, e))
+        raise Unmeasured("existing report %s unreadable: %s" % (path, e))
+    _, fence, body = text.rpartition(TABLE_FENCE)
+    try:
+        t = json.loads(body[:-len(TABLE_END)]) if fence and body.endswith(TABLE_END) else None
+    except ValueError:
+        t = None
+    if not isinstance(t, dict) or set(t) != TABLE_KEYS or t["schema"] != SCHEMA:
+        raise Unmeasured("existing report %s holds no whole %s table (partial, edited or another version): "
+                         "move it aside to start again" % (path, SCHEMA))
+    return t, text
 
 
 def write_atomic(path, text):
@@ -420,9 +445,10 @@ def write_atomic(path, text):
 
 
 @contextlib.contextmanager
-def writer_lock(qdir, wait_s):
+def writer_lock(qdir):
     """The queue's ingest.lock, then this clone's ingest.repo_lock (ingest.py's order): held from the first read of
-    records and ledger to the last rename, so the snapshot is one ingest state and only one fold writes at a time."""
+    rules, records, ledger and report to the last write, so a run sees one ingest state and one writer at a time."""
+    wait_s = float(os.environ.get("FINDINGS_FOLD_LOCK_WAIT_S", "300"))
     sys.path.insert(0, TESTQ)
     import ingest as I
     with open(os.path.join(qdir, "ingest.lock"), "a") as fh:
@@ -445,40 +471,35 @@ def writer_lock(qdir, wait_s):
 
 
 def cmd_run(a):
-    rules = load_rules()
-    od, qd = out_dir(a.out), queue_dir()
-    os.makedirs(od, exist_ok=True)
-    std, cur = os.path.join(od, "standing.json"), os.path.join(od, "curation.md")
-    with writer_lock(qd, float(os.environ.get("FINDINGS_FOLD_LOCK_WAIT_S", "300"))):
-        prev = read_prev(std)
-        recs = read_done(qd)
-        finds, spawns, states = read_ledger(rules)
-        decs = read_decisions(decisions_path(rules))
-        t = fold(finds, spawns, states, recs, decs, rules, utcnow())
-        digest = hashlib.sha256(semantic(t).encode("utf-8")).hexdigest()[:16]
-        try:
-            with open(cur, encoding="utf-8") as f:
-                cur_text = f.read()
-        except OSError:
-            cur_text = None
-        if prev is not None and semantic(prev) == semantic(t) and cur_text == render_md(prev, digest):
+    qd = queue_dir()
+    with writer_lock(qd):
+        rules = load_rules()
+        od = out_dir(a.out, rules)
+        os.makedirs(od, exist_ok=True)
+        path = os.path.join(od, REPORT)
+        prev, text = read_prev(path)
+        t = fold(*read_ledger(rules), read_done(qd), read_decisions(decisions_path(rules)), rules, utcnow())
+        if prev is not None and semantic(prev) == semantic(t) and text == render_report(prev):
             print("findings_fold: unchanged since %s: nothing written" % prev["generated"])
             return 0
-        write_atomic(cur, render_md(t, digest))        # first: a crash before the table leaves the table stale,
-        write_atomic(std, json.dumps(t, indent=1, sort_keys=True))   # so the next run rewrites both
-    print("findings_fold: %s -> %s" % (json.dumps(t["counts"], sort_keys=True), od))
+        write_atomic(path, render_report(t))
+    print("findings_fold: %s -> %s" % (json.dumps(t["counts"], sort_keys=True), path))
     return 0
 
 
 def cmd_decide(a):
-    rules = load_rules()
     seat = a.seat or os.environ.get("RIMFLOW_SEAT")
     if not seat:
         print("REFUSED: --seat (or RIMFLOW_SEAT) names who decided")
         return 2
-    t = read_prev(os.path.join(out_dir(a.out), "standing.json"))
-    if not t or a.sig not in t.get("signatures", {}):
-        print("REFUSED: %s is not in the standing table (run `findings_fold.py run` first)" % a.sig)
+    with writer_lock(queue_dir()):
+        return decide(a, seat, load_rules())
+
+
+def decide(a, seat, rules):
+    t = read_prev(os.path.join(out_dir(a.out, rules), REPORT))[0]
+    if not t or a.sig not in t["signatures"]:
+        print("REFUSED: %s is not in the report's table (run `findings_fold.py run` first)" % a.sig)
         return 2
     into = a.into
     if a.as_ in ("work", "merge"):
