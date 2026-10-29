@@ -1,0 +1,2 @@
+testpilot_sim (fp 3b3d90cb6be2, 240 members): with two TestPilots the pilots idle 56-62% and every pilot parameter (reload, full-load, test minutes, crash, invalid) moves accepted/day by <0.3; the blind critic's false-reject rate (crit_fr, crit_fr_big) and sensitivity move it by 3-6. Measure the critic's false-reject rate before investing in pilot speed. All TP params ASSUMED.
+home: design/RimMandrake/testpilot_design_opus_2026-10-29.md

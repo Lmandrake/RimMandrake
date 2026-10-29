@@ -1,0 +1,2 @@
+Any 'live test everything on the 13-mod minimal list' plan is invalid for patches against content mods (RimStarWars/Utinni/Mandrake patches): the minimal list lacks the target mods (load-round SKILL:87-96), so the patch matches nothing and logs nothing. Such items need a dependency-complete item tier (modset_builder.py --tier) or the full list; a PASS on minimal is UNMEASURED for them.
+home: .claude/skills/rimworld-load-round/SKILL.md
