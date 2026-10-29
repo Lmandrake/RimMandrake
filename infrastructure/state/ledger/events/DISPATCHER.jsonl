@@ -57,3 +57,4 @@
 {"seat":"DISPATCHER","event":"note","id":"BENIGN_STOPS_FIX_NOT_IN_RUN_JSON","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T05:57:29Z","ts":"2026-10-29T05:59:24Z","tsn":1793253564230447810}
 {"seat":"DISPATCHER","event":"note","id":"ARBITERTIERS_FIX_LIVE_HISTORY_HOLDS_FIXTURES","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T06:01:34Z","ts":"2026-10-29T06:03:32Z","tsn":1793253812643384549}
 {"seat":"DISPATCHER","event":"note","id":"DISPATCHER_HUNT_SELFTEST_PARALLEL_FLAKE","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T06:09:49Z","ts":"2026-10-29T06:11:45Z","tsn":1793254305863901397}
+{"seat":"DISPATCHER","event":"note","id":"FOUNDRY_CLONE_SYNC_STALE_TIMERS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T06:50:41Z","ts":"2026-10-29T06:52:38Z","tsn":1793256758193203050}
