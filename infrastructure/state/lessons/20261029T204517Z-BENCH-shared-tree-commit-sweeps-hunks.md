@@ -1,0 +1,2 @@
+In the shared bench tree, `git commit -- <path>` commits the WHOLE file, so another builder's uncommitted hunk in the same file rides along (hit twice on 10-29: auditor.md, dispatcher_schedule.json). Fix before publish: write only your version as a blob (git hash-object -w), git update-index --cacheinfo 100644,<blob>,<path>, then git commit --amend (amend is exempt from the pathspec hook); their hunk stays in the worktree. Check git diff --cached <path> before every commit to a shared file.
+home: skill git-efficiency
