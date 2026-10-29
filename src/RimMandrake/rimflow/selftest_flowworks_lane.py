@@ -27,7 +27,10 @@ def t_flowworks_acceptance_is_bench_at_every_level():
     w = model.replay(evs)
     f = {i.id for _, its in priority.acceptance(w, "FOUNDRY") for i in its}
     b = {i.id for _, its in priority.acceptance(w, "BENCH") for i in its}
-    assert f == {OTHER} and b == {FW}, (f, b)
+    # The lane's seat is data (FOUNDRY since the v3 cutover; BENCH again after `v3_cutover.py revert`).
+    seat, _ = priority.flowworks_lane()
+    want = ({OTHER, FW}, set()) if seat == "FOUNDRY" else ({OTHER}, {FW})
+    assert (f, b) == want, (seat, f, b)
 
 
 def t_shipped_lane_file_matches_flowworks_and_gss_not_others():
