@@ -6,7 +6,7 @@ Unreadable ledger => UNMEASURED: no file written, exit 2.
 
     python3 src/RimMandrake/rimflow/audit_prescreen.py [--days N] [--out PATH] [--now ISO]
 """
-import argparse, json, math, os, random, re, subprocess, sys, time
+import argparse, datetime, json, math, os, random, re, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
@@ -21,7 +21,8 @@ def load_rules(path=RULES):
 
 
 def _epoch(ts):
-    return time.mktime(time.strptime(ts, "%Y-%m-%dT%H:%M:%SZ")) - time.timezone
+    """ISO-8601 UTC ('...Z', optional fractional seconds) -> epoch seconds. Never local time: mktime applied DST."""
+    return datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).timestamp()
 
 
 def git_files(sha, repo=REPO):
@@ -77,8 +78,12 @@ def signal_rates(rows):
     return {f: [k, round(k / n, 3)] for f, k in sorted(c.items(), key=lambda x: -x[1])}
 
 
-def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists):
+def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists, until=None):
+    """Rank closes in [since_epoch, until]. Events after `until` (the audit's --now) are invisible; each item's events
+    are taken in time order, not input order."""
     by, kids = {}, {}
+    T = lambda e: _epoch(e["ts"])
+    events = sorted((e for e in events if e.get("ts") and (until is None or T(e) <= until)), key=T)
     for e in events:
         if e.get("id"):
             by.setdefault(e["id"], []).append(e)
@@ -88,7 +93,7 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
             kids.setdefault(parent, []).append(e)
     rows = []
     for iid, evs in by.items():
-        closes = [e for e in evs if e.get("event") == "close" and _epoch(e["ts"]) >= since_epoch]
+        closes = [e for e in evs if e.get("event") == "close" and T(e) >= since_epoch]
         if not closes:
             continue
         c = closes[-1]
@@ -123,21 +128,21 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
                 flags.append("evidence_path_absent")
                 break
         # the maker: whoever last took the item before the close (`claim`, or `start`/`reclaim` with no lease)
-        claims = [e for e in evs if e.get("event") in ("claim", "start", "reclaim") and e["ts"] <= c["ts"]]
+        claims = [e for e in evs if e.get("event") in ("claim", "start", "reclaim") and T(e) <= T(c)]
         if claims and c.get("seat") == claims[-1].get("seat") and not any(
                 v.get("seat") != c.get("seat") for v in verifies):
             flags.append("closed_by_maker_only")
         if claims and _epoch(c["ts"]) - _epoch(claims[-1]["ts"]) < rules["short_claim_seconds"]:
             flags.append("short_claim_to_close")
         if len([e for e in evs if e.get("event") == "close"]) > 1 or any(
-                e.get("event") in ("claim", "start", "reclaim") and e["ts"] > c["ts"] for e in evs):
+                e.get("event") in ("claim", "start", "reclaim") and T(e) > T(c) for e in evs):
             flags.append("reopened_before")
         if any(m in iid for m in rules["flowworks_id_markers"]) and "flowworks_or_live" not in flags:
             flags.append("flowworks_or_live")
         # signs after the close, before this audit: work filed against it, or another seat writing on it
-        if any(k.get("ts", "") > c["ts"] for k in kids.get(iid, [])):
+        if any(T(k) > T(c) for k in kids.get(iid, [])):
             flags.append("followup_after_close")
-        if any(e.get("event") in ("note", "finding", "block") and e.get("ts", "") > c["ts"]
+        if any(e.get("event") in ("note", "finding", "block") and T(e) > T(c)
                and e.get("seat") != c.get("seat") for e in evs):
             flags.append("noted_after_close")
         if iid in past_failed:
@@ -191,7 +196,7 @@ def main(argv=None, events=None):
         print("UNMEASURED: past audits unreadable (%s): past_audit_failed would never fire. The Auditor creates the "
               "file (empty = no audits yet); no list written" % ex, file=sys.stderr)
         return 2
-    rows = score(events, rules, since, past_failed=past_failed)
+    rows = score(events, rules, since, past_failed=past_failed, until=now)
     doc = build(rows, rules, seed=int(since // 86400))
     doc["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
     doc["since"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(since))

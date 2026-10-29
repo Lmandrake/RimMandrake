@@ -137,5 +137,26 @@ ok("the closer's own note after close does not flag",
 ok("new signals carry rule weights", all(k in R["weights"] for k in ("followup_after_close", "noted_after_close")),
    True)
 
+# review round 1 (Codex, 2026-10-28): order, time bound, fractional seconds, DST-free epoch
+ok("epoch is UTC, not local DST", ap._epoch("2026-07-01T00:00:00Z") - ap._epoch("2026-01-01T00:00:00Z"), 181 * 86400)
+ok("fractional seconds parse", ap._epoch("2026-10-26T12:00:00.500Z") - ap._epoch("2026-10-26T12:00:00Z"), 0.5)
+frac = [ev("close", "F_ITEM", "2026-10-26T12:00:00Z", sha="a"),
+        ev("note", "F_ITEM", "2026-10-26T12:00:00.100Z", seat="OTHER")]
+ok("fractional ts after close still flags", "noted_after_close" in ap.score(frac, R, since, git=git)[0]["flags"], True)
+shuf = [ev("close", "Q_ITEM", "2026-10-26T12:00:00Z", sha="a"), ev("close", "Q_ITEM", "2026-10-26T10:00:00Z", sha="a"),
+        ev("file", "Q_KID_ITEM", "2026-10-26T11:00:00Z", caused_by="Q_ITEM")]
+ok("latest close by time, not input order", "followup_after_close" in
+   {r["item"]: r["flags"] for r in ap.score(shuf, R, since, git=git)}["Q_ITEM"], False)
+mk = [ev("start", "M_ITEM", "2026-10-26T11:00:00Z"), ev("start", "M_ITEM", "2026-10-26T09:00:00Z", seat="OTHER"),
+      ev("close", "M_ITEM", "2026-10-26T12:00:00Z", sha="a")]
+ok("maker = latest start by time", "closed_by_maker_only" in ap.score(mk, R, since, git=git)[0]["flags"], True)
+fut = [ev("close", "U_ITEM", "2026-10-26T11:00:00Z", sha="a"),
+       ev("note", "U_ITEM", "2026-10-26T13:00:00Z", seat="OTHER"),
+       ev("file", "U_KID_ITEM", "2026-10-26T13:00:00Z", caused_by="U_ITEM"),
+       ev("close", "U2_ITEM", "2026-10-26T13:00:00Z", sha="a")]
+uf = ap.score(fut, R, since, git=git, until=ap._epoch("2026-10-26T12:00:00Z"))
+ok("events after --now are invisible", [(r["item"], [f for f in r["flags"] if "after_close" in f]) for r in uf],
+   [("U_ITEM", [])])
+
 print("FAILED: %s" % FAILED if FAILED else "all ok")
 sys.exit(1 if FAILED else 0)
