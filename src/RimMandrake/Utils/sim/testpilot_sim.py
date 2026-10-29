@@ -110,6 +110,39 @@ BATCH_MAX = 10                    # items loaded into one minimal session
 LIVE_FAILS_PARK = 3               # live failures before an item is parked with its evidence (as Ralph C)
 TPP_K, TPP_W_MIN = 2, 45          # TP+ rule R3: >= K deployables and the oldest waited >= W minutes
 TPP_FULL_N, TPP_FULL_WAIT_H = 4, 6  # TP+ batched full list: >= N items or the oldest waited >= H hours
+# Round 2: GPT's independent design (/mnt/d/ClaudeWork/rimmandrake/testpilot/gpt_design.md) gives its own parameters.
+# A scenario overrides prior RANGES (then drawn the same keyed way) and TP+ constants; the base scenario is round 1.
+SCENARIOS = {
+    "base": {},
+    "gpt": {"priors": {"full_load_min": (17, 30),    # Q13 FULL excursion 22 (17-30): swap, load, restore
+                       "reload_min": (1.0, 5.0),     # Q12 minimal restart 2 (1-5)
+                       "pass_stack_ite": (8e3, 20e3)},  # P08 startup context 12k
+            "const": {"K": 1, "W_MIN": 2, "AGE_MIN": 2,  # I-R04: a sealed repair ready and the P12 2-min drain expired
+                      "FULL_N": 2, "FULL_WAIT_H": 0.5}},  # P13: FULL batch of 2 or the oldest waited 30 min
+    "gpt_guard": {"priors": "gpt", "const": {"K": 1, "W_MIN": 2, "AGE_MIN": 45, "FULL_N": 2, "FULL_WAIT_H": 0.5}},
+    "gpt_1G": {"priors": "gpt", "const": "gpt", "budget_g": 1.0},   # C51: weekly budget 1.0G instead of ~1.9G
+}
+BASE_CONST = {"K": TPP_K, "W_MIN": TPP_W_MIN, "AGE_MIN": TPP_W_MIN, "FULL_N": TPP_FULL_N,
+              "FULL_WAIT_H": TPP_FULL_WAIT_H}
+
+
+def scenario(name):
+    sc = SCENARIOS[name]
+    pri = sc.get("priors", {})
+    pri = SCENARIOS[pri]["priors"] if isinstance(pri, str) else pri
+    con = sc.get("const", {})
+    con = SCENARIOS[con]["const"] if isinstance(con, str) else con
+    priors = {k: ((pri[k][0], pri[k][1], v[2]) if k in pri else v) for k, v in TP_PRIORS.items()}
+    return priors, dict(BASE_CONST, **con), sc.get("budget_g")
+
+
+def scale_quotas(q, budget_g):
+    if budget_g is None or q is None:
+        return q
+    tot = sum(q.values())
+    return {k: v * budget_g * 1e9 / tot for k, v in q.items()}
+
+
 TP_VARIANTS = ("TP", "TP+")
 ZOO = ("v2", "v3.4", "A", "AB_test", "C", "C+sub")
 ALL = ZOO + TP_VARIANTS
@@ -124,13 +157,13 @@ def fingerprint():
     return h.hexdigest()[:12]
 
 
-def mid_tp():
-    return {k: (lo + hi) / 2 for k, (lo, hi, _) in TP_PRIORS.items()}
+def mid_tp(priors=None):
+    return {k: (lo + hi) / 2 for k, (lo, hi, _) in (priors or TP_PRIORS).items()}
 
 
-def draw_tp(member, seed=919):
+def draw_tp(member, seed=919, priors=None):
     return {k: lo + (hi - lo) * S.u01(seed, F_THETA, member, i)
-            for i, (k, (lo, hi, _)) in enumerate(sorted(TP_PRIORS.items()))}
+            for i, (k, (lo, hi, _)) in enumerate(sorted((priors or TP_PRIORS).items()))}
 
 
 def needs_test(sim, tk):
@@ -154,10 +187,11 @@ class V3Strict(S.Sim):
 
 
 class TPSim(R.RalphSim):
-    def __init__(self, P, theta, variant, rp, tp, seed, weeks=4, quotas=None):
+    def __init__(self, P, theta, variant, rp, tp, seed, weeks=4, quotas=None, const=None):
         assert variant in TP_VARIANTS, variant
         super().__init__(P, theta, "C+sub", rp, seed, weeks=weeks, quotas=quotas)
         self.tpv, self.tp, self.plus = variant, tp, variant == "TP+"
+        self.c = dict(BASE_CONST, **(const or {}))
         self.rounds = collections.Counter()     # critic rounds in the current phase (objects, never id())
         self.rounds_total = collections.Counter()
         self.simplified = set()
@@ -261,7 +295,7 @@ class TPSim(R.RalphSim):
             return False
         if not self.plus:
             return True
-        return len(self.full_q) >= TPP_FULL_N or t - self.full_q[0][0] >= TPP_FULL_WAIT_H * HOUR
+        return len(self.full_q) >= self.c["FULL_N"] or t - self.full_q[0][0] >= self.c["FULL_WAIT_H"] * HOUR
 
     def set_state(self, r, t, st):
         p = self.pilot[r]
@@ -284,8 +318,8 @@ class TPSim(R.RalphSim):
             return
         if p["state"] == "up" and p["poison"]:
             return self.reload(r, t, "R1_session_dead")
-        if p["state"] == "up" and self.plus and not p["full"] and p["batch"] and len(self.ready) >= TPP_K \
-                and t - self.ready[0][0] >= TPP_W_MIN * 60 and t - p["t_up"] >= TPP_W_MIN * 60:
+        if p["state"] == "up" and self.plus and not p["full"] and p["batch"] and len(self.ready) >= self.c["K"] \
+                and t - self.ready[0][0] >= self.c["W_MIN"] * 60 and t - p["t_up"] >= self.c["AGE_MIN"] * 60:
             return self.reload(r, t, "R3_deployables_waiting")
         if p["state"] == "up" and p["batch"]:
             return self.start_test(r, t)
@@ -294,7 +328,7 @@ class TPSim(R.RalphSim):
         if self.ready:
             return self.reload(r, t, "R2_no_valid_test" if p["state"] == "up" else "R0_cold")
         if self.plus and self.full_q:                                    # the oldest-wait trigger, when it comes due
-            wait = self.full_q[0][0] + TPP_FULL_WAIT_H * HOUR
+            wait = self.full_q[0][0] + self.c["FULL_WAIT_H"] * HOUR
             self.push(max(t + 60, wait), "arb_done", None, ("TP", "poke", r))
 
     def reload(self, r, t, rule, full=False):
@@ -524,8 +558,8 @@ class TPSim(R.RalphSim):
 
 
 # ---------------------------------------------------------------- running
-def zoo_rows(P, m, seed, v, rp, unlimited=False):
-    q = None if unlimited else dict(m["quotas"])
+def zoo_rows(P, m, seed, v, rp, unlimited=False, budget_g=None):
+    q = None if unlimited else scale_quotas(dict(m["quotas"]), budget_g)
     if v in ("v2", "v3.0", "v3.4"):
         sim = V3Strict(P, m["theta"], S.policy_cfg(P, v), seed, weeks=4, quotas=q, warm_weeks=1, rp=rp)
         rows = sim.run()
@@ -546,9 +580,9 @@ def zoo_rows(P, m, seed, v, rp, unlimited=False):
     return rows
 
 
-def tp_rows(P, m, seed, v, rp, tp, unlimited=False):
-    q = None if unlimited else dict(m["quotas"])
-    return [R.add_derived(r) for r in TPSim(P, m["theta"], v, rp, tp, seed, weeks=4, quotas=q).run()]
+def tp_rows(P, m, seed, v, rp, tp, unlimited=False, const=None, budget_g=None):
+    q = None if unlimited else scale_quotas(dict(m["quotas"]), budget_g)
+    return [R.add_derived(r) for r in TPSim(P, m["theta"], v, rp, tp, seed, weeks=4, quotas=q, const=const).run()]
 
 
 def compact(rows):
@@ -562,7 +596,8 @@ def cmd_ensemble(a):
     P = S.load_params()
     ms = R.members("park", a.members)
     os.makedirs(a.out, exist_ok=True)
-    path = os.path.join(a.out, "ens_park_today.jsonl")
+    path = ens_path(a)
+    priors, const, budget_g = scenario(a.scenario)
     done = fresh_done(path)
     t0 = time.time()
     with open(path, "a") as fh:
@@ -573,12 +608,16 @@ def cmd_ensemble(a):
                 print("budget reached")
                 break
             seed = 50000 + m["member"] * 97
-            rp, tp = R.draw_rp(m["member"]), draw_tp(m["member"])
-            rows = {v: compact(zoo_rows(P, m, seed, v, rp)) for v in ZOO}
+            rp, tp = R.draw_rp(m["member"]), draw_tp(m["member"], priors=priors)
+            rows = {v: compact(zoo_rows(P, m, seed, v, rp, budget_g=budget_g)) for v in ZOO}
             for v in TP_VARIANTS:
-                rows[v] = compact(tp_rows(P, m, seed, v, rp, tp))
+                rows[v] = compact(tp_rows(P, m, seed, v, rp, tp, const=const, budget_g=budget_g))
             fh.write(json.dumps({"member": m["member"], "fp": FP, "tp": tp, "rows": rows}) + "\n")
     print(f"ensemble: {sum(1 for _ in open(path))} members on file, {time.time() - t0:.0f}s")
+
+
+def ens_path(a):
+    return os.path.join(a.out, "ens_park_today.jsonl" if a.scenario == "base" else f"ens_park_today_{a.scenario}.jsonl")
 
 
 def fresh_done(path, key=lambda r: r["member"]):
@@ -639,8 +678,10 @@ def q3(vals):
 
 
 def cmd_report(a):
-    recs = load_fresh(os.path.join(a.out, "ens_park_today.jsonl"))
-    lines = [f"# TestPilot sim (p10/p50/p90 over {len(recs)} members; weeks 2-4 of 4; park, quotas today; fp {FP})", "",
+    recs = load_fresh(ens_path(a))
+    sfx = "" if a.scenario == "base" else f"_{a.scenario}"
+    lines = [f"# TestPilot sim, scenario {a.scenario} (p10/p50/p90 over {len(recs)} members; weeks 2-4 of 4; park, "
+             f"quotas today; fp {FP})", "",
              "| metric | " + " | ".join(ALL) + " |", "|---|" + "---|" * len(ALL)]
     res = {"fp": FP, "n": len(recs), "p50": {}, "paired": {}}
     for k in METRICS:
@@ -657,7 +698,10 @@ def cmd_report(a):
             res["paired"][f"{v}>{w}"] = sh
         lines.append(f"| {v} | " + " | ".join(cells) + " |")
     op = os.path.join(a.out, "oat_park.jsonl")
-    if os.path.exists(op):
+    ostale = os.path.exists(op) and any(json.loads(x).get("fp") != FP for x in open(op))
+    if ostale:
+        lines += ["", f"One-at-a-time: {op} is from another fingerprint; not shown (rerun `oat`)."]
+    if a.scenario == "base" and os.path.exists(op) and not ostale:
         orecs = load_fresh(op)
         mid = {r["member"]: r["rows"] for r in orecs if r["param"] == "_mid"}
         lines += ["", "One-at-a-time (median delta from all-midpoints, lo / hi), TP+ and TP", "",
@@ -681,9 +725,9 @@ def cmd_report(a):
         for big, p, cells in sorted(swing, reverse=True):
             lines.append(f"| {p} | " + " | ".join(cells) + " |")
         res["oat_top"] = [(p, b) for b, p, _ in sorted(swing, reverse=True)[:8]]
-    open(os.path.join(a.out, "tables.md"), "w").write("\n".join(lines) + "\n")
-    json.dump(res, open(os.path.join(a.out, "results.json"), "w"), indent=1)
-    print(os.path.join(a.out, "tables.md"))
+    open(os.path.join(a.out, f"tables{sfx}.md"), "w").write("\n".join(lines) + "\n")
+    json.dump(res, open(os.path.join(a.out, f"results{sfx}.json"), "w"), indent=1)
+    print(os.path.join(a.out, f"tables{sfx}.md"))
 
 
 def cmd_one(a):
@@ -708,10 +752,12 @@ def main(argv=None):
     e = sub.add_parser("ensemble")
     e.add_argument("--members", type=int, default=120)
     e.add_argument("--budget-s", type=float, default=480)
+    e.add_argument("--scenario", default="base", choices=sorted(SCENARIOS))
     o = sub.add_parser("oat")
     o.add_argument("--members", type=int, default=12)
     o.add_argument("--budget-s", type=float, default=480)
-    sub.add_parser("report")
+    rpt = sub.add_parser("report")
+    rpt.add_argument("--scenario", default="base", choices=sorted(SCENARIOS))
     one = sub.add_parser("one")
     one.add_argument("--variant", default="TP+", choices=ALL)
     one.add_argument("--member-idx", type=int, default=0)

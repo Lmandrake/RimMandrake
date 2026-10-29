@@ -1,0 +1,2 @@
+TestPilot round 2 sim: GPT's reload/full-batch parameters (I-R04 2-min drain, FULL 2 items/30 min, 12k startup, full load 17-30 min) move TP+ accepted/day by +0.43 (noise) at +25% reloads and +22% game minutes; the weekly budget decides it: at 1.0G TP+ loses 16.7/day and Ralph C+sub beats it on sound production in 98% of members, contradicting GPT's static X01. Design reload tactics last; measure critic false rejects and budget first.
+home: design/RimMandrake/testpilot_round2_opus_2026-10-29.md

@@ -118,6 +118,17 @@ for k, (lo, hi, why) in T.TP_PRIORS.items():
         check(f"prior {k}: lo < hi with a reason", False, (lo, hi))
 d = T.draw_tp(7)
 check("member draw inside every prior", all(T.TP_PRIORS[k][0] <= x <= T.TP_PRIORS[k][1] for k, x in d.items()))
+bp, bc, bb = T.scenario("base")
+check("scenario base is round 1 exactly", bp == T.TP_PRIORS and bc == T.BASE_CONST and bb is None)
+gp, gc, _ = T.scenario("gpt")
+check("scenario gpt overrides only the ranges it names, keeps reasons",
+      gp["full_load_min"][:2] == (17, 30) and gp["crit_fr"] == T.TP_PRIORS["crit_fr"] and gp["full_load_min"][2]
+      and gc["FULL_N"] == 2 and gc["K"] == 1)
+check("gpt draw inside its own priors", all(gp[k][0] <= x <= gp[k][1] for k, x in T.draw_tp(7, priors=gp).items()))
+q = T.scale_quotas({"a": 3e8, "b": 7e8}, 1.0)
+check("scale_quotas keeps shares and hits the budget", abs(sum(q.values()) - 1e9) < 1 and abs(q["a"] / q["b"] - 3 / 7) < 1e-9)
+gsim = T.TPSim(P, TH, "TP+", RP, dict(TP), SEED, weeks=2, quotas=None, const=gc)
+check("TPSim carries its scenario constants", gsim.c["FULL_N"] == 2 and gsim.c["W_MIN"] == 2)
 check("fingerprint is 12 hex chars", len(T.FP) == 12 and all(ch in "0123456789abcdef" for ch in T.FP))
 
 print("FAILED: " + ", ".join(FAILS) if FAILS else "all checks passed")
