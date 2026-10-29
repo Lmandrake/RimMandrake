@@ -8785,3 +8785,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"BIOME_LANDMARK_REFINEMENT_1","action":"take","token":"FOUNDRY.pid11555.ef9c325d","expires":"2026-10-29T02:50:05Z","ts":"2026-10-29T02:05:05Z","tsn":1793239505832613912}
 {"seat":"FOUNDRY","event":"reconcile","id":"BIOME_LANDMARK_REFINEMENT_1","verdict":"complete","sha":"64eb8f3e6 6930733d6","why":"first pass and review sheet built; tuning itself is owner-ruled for the one-time repaint","ts":"2026-10-29T02:05:13Z","tsn":1793239513218901819}
 {"seat":"FOUNDRY","event":"block","id":"BIOME_LANDMARK_REFINEMENT_1","reason":"owner card 2026-10-12: tune landmark density once at the one-time repaint (BIOME_PAINT_ONCE_AT_THE_END_1), not before; no offline work","ts":"2026-10-29T02:05:15Z","tsn":1793239515068852563}
+{"seat":"FOUNDRY","event":"lease","id":"FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET","action":"take","token":"FOUNDRY.pid11446.6ecb4f43","expires":"2026-10-29T02:41:34Z","ts":"2026-10-29T01:56:34Z","tsn":1793238995078966479}
