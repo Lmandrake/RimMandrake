@@ -6,3 +6,8 @@ Filed by the Producer, Producer weekly plan 2026-10-29 (run folder D:\ClaudeWork
 - L2: HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD criterion A5 re-verified PASS on the current build, by a live read.
 - `mod_completion.py FlowWorks` no longer lists RM_UniversalPipe as broken.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD criterion A5 re-verified PASS on the current build, by a live read
+- A2 L0: `mod_completion.py FlowWorks` no longer lists RM_UniversalPipe as broken

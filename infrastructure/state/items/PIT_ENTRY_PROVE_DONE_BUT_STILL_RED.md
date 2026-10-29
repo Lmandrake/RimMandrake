@@ -9,3 +9,9 @@ is either a real regression or an instrument miscount in mod_completion; separat
 - If mod_completion miscounted, the miscount is filed against mod_completion with the evidence.
 - `mod_completion.py FlowWorks` no longer lists RM_Ladder or RM_PitRamp as broken.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: a pawn enters and leaves a watered pit by a ladder and by a ramp on the current build (path state read)
+- A2 L2: PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH ramp and lowered-ladder rows PASS
+- A3 L0: `mod_completion.py FlowWorks` no longer lists RM_Ladder or RM_PitRamp as broken (a miscount is filed against mod_completion with the evidence)

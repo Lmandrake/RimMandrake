@@ -9,3 +9,9 @@ theftGoodwill ride GSS_RESTRING_FIX_STYLES_UNRECONCILED, GSS_CORD_SWAY_TAME_PER_
 - `proof_all` re-run on the current build: 0 FAIL, every UNMEASURED row measured or named on an item.
 - `mod_completion.py GimmeSomeSlack` lists none of the four as unverified.
 - Stopping point: finish (then the short phone look is the Conductor's to offer).
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: one MOD-class proof row per switch, on and off, on the current build: keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder
+- A2 L2: `proof_all` re-run on the current build: 0 FAIL, every UNMEASURED row measured or named on an item
+- A3 L0: `mod_completion.py GimmeSomeSlack` lists none of the four as unverified

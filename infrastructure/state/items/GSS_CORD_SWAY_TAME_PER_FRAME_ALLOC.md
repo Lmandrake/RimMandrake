@@ -23,3 +23,9 @@ Verdict: CONFIRMED MINOR. CordMotion.Sway allocates a new list per visible lifte
 - One live proof row (L2): kineticSway on, tails visibly sway; off, they hang still.
 - `mod_completion.py GimmeSomeSlack` no longer lists kineticSway as unverified.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L0: CordMotion.Sway and the CordRng.Hash call in DrawMotion allocate 0 B per visible strand per frame (zero-allocation test, or GC-alloc over 600 frames with 20+ swaying tails)
+- A2 L2: one live proof row: kineticSway on, tails visibly sway; off, they hang still
+- A3 L0: `mod_completion.py GimmeSomeSlack` no longer lists kineticSway as unverified

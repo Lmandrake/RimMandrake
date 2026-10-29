@@ -8,3 +8,8 @@ re-run) or the wakes may truly be off. First step: re-run W1 on the current buil
   leaves a wake while liquidWakesEnabled is on; none when off).
 - `mod_completion.py FlowWorks` no longer lists the four parts as broken.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: `fw_live_checks.py` W1_wakes_terrain_walked PASS on the current build (wake on each of the three terrains with liquidWakesEnabled on; none when off)
+- A2 L0: `mod_completion.py FlowWorks` no longer lists the four parts as broken

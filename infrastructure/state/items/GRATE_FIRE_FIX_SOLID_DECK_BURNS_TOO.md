@@ -21,3 +21,10 @@ broken by D5 spread — then the row needs the scenes further apart or the bar r
 - If the control is broken by fuel spread (reading a), the bar change is proposed to the Arbiter, never loosened here.
 - `mod_completion.py FlowWorks` no longer lists the two parts as broken.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L0: the fix builds and its selftests pass; grate fire reaches only riders on grate cells, never solid-deck cells, by code path
+- A2 L2: `suspension_bridge_proof.py --fresh-map` GRATE_fire_burns_people_above PASS on the current build (grate riders burn, solid-deck control does not)
+- A3 L2: SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP A1 re-verified PASS on the current build
+- A4 L0: `mod_completion.py FlowWorks` no longer lists RM_Fluid_Chemfuel or RM_Filth_LiquidSpill as broken

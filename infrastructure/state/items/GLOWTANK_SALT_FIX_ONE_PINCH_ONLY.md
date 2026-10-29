@@ -9,3 +9,9 @@ Related: GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES (the same script's absence check 
 - L2: GLOW_TANK_LIQUID_FEED_1 criterion A2 re-verified PASS on the current build.
 - `mod_completion.py FlowWorks` no longer lists any of the four parts as broken.
 - Stopping point: finish (the four parts read works; no new mechanics).
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: `glow_tank_live.py` GLOWTANK_SALT_DRAWN_ONE_UNIT PASS on the current build, every row MOD-class PASS or named
+- A2 L2: GLOW_TANK_LIQUID_FEED_1 criterion A2 re-verified PASS on the current build
+- A3 L0: `mod_completion.py FlowWorks` no longer lists any of the four parts as broken

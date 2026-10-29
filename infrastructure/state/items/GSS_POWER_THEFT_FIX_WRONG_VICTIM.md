@@ -26,3 +26,9 @@ Verdict: CONFIRMED MINOR. CompPowerTap accumulates sinceEventWd across victims a
 - One live proof row (L2) on the current build: a clamp on a foreign transmitter raises goodwill loss against that transmitter's faction.
 - `mod_completion.py GimmeSomeSlack` no longer lists theftGoodwill as unverified.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L0: selftest: drain faction A, switch the clamp to faction B before the event fires: A is charged only A's drained energy, B only B's
+- A2 L2: one live proof row on the current build: a clamp on a foreign transmitter raises goodwill loss against that transmitter's faction
+- A3 L0: `mod_completion.py GimmeSomeSlack` no longer lists theftGoodwill as unverified

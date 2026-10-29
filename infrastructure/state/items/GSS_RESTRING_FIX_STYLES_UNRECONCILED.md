@@ -25,3 +25,9 @@ Verdict: CONFIRMED MINOR. Run-merge rule hangs only on TryLink postfix (ConduitS
 - L2: cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style.
 - L2: a MOD-class proof row for RM_RestringSpan PASS on the current build.
 - Stopping point: finish.
+
+## criteria
+<!-- Written by the Producer, event re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0701Z_event), from this item's `## verify`; level-tagged for `rimflow implemented`. -->
+- A1 L2: cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style
+- A2 L2: a MOD-class proof row for RM_RestringSpan PASS on the current build
+- A3 L0: `mod_completion.py GimmeSomeSlack` no longer lists RM_RestringSpan as unverified
