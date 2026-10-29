@@ -1,0 +1,1 @@
+The 'minimal' modlist (modlist_swap --minimal, 26 mods 2026-10-29) does NOT include mandrake.rm.gimmesomeslack: validation_aerial.py on it fails A_probe_channel 'No loaded type RimMandrake.GimmeSomeSlack.Aerial...'. GSS live proofs need modset_builder.py --tier gimmesomeslack (10 mods); briefs saying 'minimal list' for GSS are wrong.
