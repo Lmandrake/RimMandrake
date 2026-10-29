@@ -1,5 +1,7 @@
 {
- "window_days": 7,
+ "fallback_window_days": 1,
+ "max_window_days": 7,
+ "window_note": "the window starts at the last FINISHED Auditor run (audit_prescreen STAMP); no stamp: now - fallback_window_days; older than max_window_days: clamped (a 7-day window re-raised ~57 hard flags a run)",
  "calibration_every": 5,
  "hard_flags": [
   "sha_missing",

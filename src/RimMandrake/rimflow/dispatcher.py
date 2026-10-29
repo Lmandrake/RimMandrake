@@ -861,6 +861,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_verdicts = fx.get("verdicts_append", RL.append_verdicts)
+    do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
     lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
@@ -1018,6 +1019,18 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 ticket=a.get("ticket"), role=a.get("role"), rows=a["rows"],
                                 why="role %s: %d verdict(s) NOT appended to %s: %s; they are in this journal entry "
                                     "only, their claims stay pending" % (a.get("role"), len(a["rows"]), a["path"], res)))
+                    elif a["do"] == "role_stamp":
+                        # a run finished done (role_launch FINISH_STAMP): the next pre-screen starts here. A failed
+                        # write is alarmed: the next run then re-screens from the older stamp (overlap, never a gap)
+                        try:
+                            res = do_stamp(a["path"], a["at"], a.get("unit"))
+                        except Exception as e:  # noqa: BLE001
+                            res = "error: %s: %s" % (type(e).__name__, str(e)[:160])
+                            actions.append(dict(
+                                do="alarm", kind="role:%s:stamp" % a.get("role"), at=iso(now), note=True,
+                                ticket=a.get("ticket"), role=a.get("role"),
+                                why="role %s: finish stamp NOT written to %s: %s; its next pre-screen starts at the "
+                                    "previous stamp" % (a.get("role"), a["path"], res)))
                     elif a["do"] == "role_stop":
                         res = do_stop(a["unit"], a.get("scope"), seat=a.get("seat"), unit_gone=a.get("unit_gone", False),
                                       marker=a.get("marker"), force=a.get("force", False), since=a.get("since"))

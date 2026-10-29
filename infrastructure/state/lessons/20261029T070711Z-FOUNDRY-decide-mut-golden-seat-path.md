@@ -1,0 +1,2 @@
+selftest_role_launch_decide_mut.py goldens hard-code /home/mandrake/.seat-tmp/BENCH/selftest_dispatcher_TMP (its normaliser at line 44 rewrites only the mkdtemp suffix, not the per-seat tempdir), so decide_off_switch_and_window and decide_off_switch_on_event_run_is_not_spent FAIL on every non-BENCH seat (seen on FOUNDRY 2026-10-29, the diff is BENCH vs FOUNDRY only). Fix: normalise tempfile.gettempdir() to a token in the golden.
+home: src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py

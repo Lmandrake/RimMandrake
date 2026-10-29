@@ -108,6 +108,10 @@ try:
     import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
 except ImportError:
     from rimflow import arbiter_pending as PW
+try:
+    import audit_prescreen as AP
+except ImportError:
+    from rimflow import audit_prescreen as AP
 
 LAUNCH_KEYS = ("instructions", "seat", "clone", "model", "ledger_item")
 ROLE_DEFAULTS = {"slot_late_s": 3600, "run_max_s": 1800}
@@ -147,6 +151,11 @@ TRIAL_TIERS_DATA = os.path.join(os.path.dirname(PW.TIERS_HISTORY), "trial")
 STRUCTURED = {"Arbiter": {"schema": "src/RimMandrake/contracts/schemas/arbiter_batch.schema.json",
                           "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS,
                           "trial_sink": TRIAL_VERDICTS, "note_each": True}}
+# A role whose pre-step screens "since my last finished run" (AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN): a run that
+# ends `done` gets a role_stamp action (dispatcher.execute writes it through AP.write_stamp, so a dry run writes
+# nothing) carrying the run's launch time, which is at or before its pre-screen's `now`: the next window overlaps by the
+# pre-step's seconds, never gaps. A failed run emits none, so its window is screened again by the next run.
+FINISH_STAMP = {"Auditor": AP.STAMP}
 # run-now (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE): a one-shot run asked for by hand, held in the dispatcher state as
 # st["roles"][R]["run_now"] and launched by the next tick through every gate a scheduled run passes. A request the
 # ticks could not launch for this long (busy, account hold) expires, said; refusals (off, ops, band, cap) consume it.
@@ -725,6 +734,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
         if run["state"] == "done" and name in STRUCTURED:
             harvest(name, run, res, act)
+        if run["state"] == "done" and name in FINISH_STAMP:
+            act(do="role_stamp", role=name, unit=run["unit"], ticket=run.get("item"), path=FINISH_STAMP[name],
+                at=run["at"], why="%s run %s finished done: its window ends at its launch %s" % (
+                    name, run["unit"], iso(run["at"])))
         if tok is not None and tok > (run.get("budget") or 0):
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                 why="%s run %s used %d weighted tokens (raw %s), budget %d" % (

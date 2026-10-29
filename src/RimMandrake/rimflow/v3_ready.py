@@ -64,7 +64,7 @@ SELFTESTS = {
     "Conductor": [R + "selftest_delegated_digest.py", R + "selftest_role_launch.py"],
     "Operations": [U + "selftest_ops_watch.py", R + "selftest_blind_view.py", R + "selftest_role_launch.py"],
     "Arbiter": [R + "selftest_arbiter_tiers.py", R + "selftest_isolated_evidence.py", R + "selftest_role_launch.py"],
-    "Auditor": [R + "selftest_audits.py", R + "selftest_audit_prescreen.py", R + "selftest_role_launch.py"],
+    "Auditor": [R + "selftest_audits.py", R + "selftest_audit_prescreen.py", R + "selftest_audit_prescreen_window.py", R + "selftest_role_launch.py"],
     "Producer": [R + "selftest_role_launch.py"],
     "Innovator": [R + "selftest_role_launch.py"],
     "Cutover": [R + "selftest_v3_cutover.py", R + "selftest_flowworks_lane.py"],

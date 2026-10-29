@@ -4,7 +4,13 @@ Reads closes from the merged ledger (model.read), scores each with cheap signals
 weighted by audit_prescreen_rules.json, writes the ranked list to prescreen.json.
 Unreadable ledger => UNMEASURED: no file written, exit 2.
 
-    python3 src/RimMandrake/rimflow/audit_prescreen.py [--days N] [--out PATH] [--now ISO]
+Window (AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN): closes since the last Auditor run that FINISHED done, read from
+STAMP (written by the dispatcher through write_stamp when an Auditor run ends done; a failed run never moves it), so a
+refused or failed daily run leaves its day's closes for the next run instead of never screening them. No stamp (or an
+unreadable one, or one after --now): now - fallback_window_days, said. A stamp older than max_window_days is clamped
+to it, said (a 7-day window re-raised ~57 hard flags a run). An explicit --days overrides the stamp.
+
+    python3 src/RimMandrake/rimflow/audit_prescreen.py [--days N] [--out PATH] [--now ISO] [--stamp PATH]
 """
 import argparse, datetime, json, math, os, random, re, subprocess, sys, time
 
@@ -12,6 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 RULES = os.path.join(HERE, "audit_prescreen_rules.json")
 OUT = "/mnt/d/ClaudeWork/rimmandrake/auditor/prescreen.json"
+STAMP = os.path.join(os.path.dirname(OUT), "last_finished_run.json")   # the Auditor's state dir, beside OUT
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 
 
@@ -171,11 +178,58 @@ def past_failed_items(path):
     return audits.past_failed(audits.read(path))
 
 
+def read_stamp(path=STAMP):
+    """-> (epoch, None) from the stamp's "at", or (None, reason) when it is absent or unreadable."""
+    try:
+        with open(path) as f:
+            return float(_epoch(json.load(f)["at"])), None
+    except FileNotFoundError:
+        return None, "no stamp at %s" % path
+    except Exception as ex:  # noqa: BLE001 - a torn or foreign stamp is a fallback, said, never a crash
+        return None, "stamp %s unreadable (%s: %s)" % (path, type(ex).__name__, str(ex)[:80])
+
+
+def write_stamp(path, at, unit=None):
+    """Record that an Auditor run launched at epoch `at` FINISHED done (role_launch FINISH_STAMP -> dispatcher.execute).
+    Atomic (tmp + fsync + os.replace). Never moves the stamp backwards: an older run finishing late keeps the newer
+    stamp. -> "stamped <iso>" or "kept <iso>"."""
+    cur, _ = read_stamp(path)
+    if cur is not None and cur >= at:
+        return "kept %s" % time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(cur))
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(at))
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    tmp = "%s.tmp.%d" % (path, os.getpid())
+    with open(tmp, "w") as f:
+        json.dump({"at": stamp, "unit": unit, "written": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, f)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+    return "stamped %s" % stamp
+
+
+def window(now, rules, days=None, stamp_path=STAMP):
+    """-> (since_epoch, {"source": days|stamp|stamp_clamped|fallback, "why": text}). Pure but for reading the stamp."""
+    if days:
+        return now - 86400 * days, {"source": "days", "why": "explicit --days %g" % days}
+    fb, mx = rules.get("fallback_window_days", 1), rules.get("max_window_days", 7)
+    at, why = read_stamp(stamp_path)
+    if at is not None and at > now:
+        at, why = None, "stamp %s is after now" % time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(at))
+    if at is None:
+        return now - 86400 * fb, {"source": "fallback", "why": "%s: FALLBACK window now - %g day(s)" % (why, fb)}
+    iso_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(at))
+    if now - at > 86400 * mx:
+        return now - 86400 * mx, {"source": "stamp_clamped", "why": "last finished run %s is %.1f days back: "
+                                  "CLAMPED to max_window_days %g" % (iso_at, (now - at) / 86400, mx)}
+    return at, {"source": "stamp", "why": "since the last finished Auditor run, %s" % iso_at}
+
+
 def main(argv=None, events=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=float)
     ap.add_argument("--out", default=OUT)
     ap.add_argument("--now")
+    ap.add_argument("--stamp", default=STAMP, help="the last-finished-run stamp (default beside --out's default)")
     ap.add_argument("--past-audits", help="the Auditor's audits.jsonl (default: rules past_audits_file)")
     a = ap.parse_args(argv)
     rules = load_rules()
@@ -189,7 +243,7 @@ def main(argv=None, events=None):
         print("UNMEASURED: ledger unreadable (%s); no list written" % ex, file=sys.stderr)
         return 2
     now = _epoch(a.now) if a.now else time.time()
-    since = now - 86400 * (a.days or rules["window_days"])
+    since, win = window(now, rules, a.days, a.stamp)
     try:
         past_failed = past_failed_items(a.past_audits or rules["past_audits_file"])
     except (OSError, ValueError) as ex:
@@ -200,11 +254,13 @@ def main(argv=None, events=None):
     doc = build(rows, rules, seed=int(since // 86400))
     doc["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
     doc["since"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(since))
+    doc["window"] = win
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
     tmp = a.out + ".tmp"
     with open(tmp, "w") as f:
         json.dump(doc, f, indent=1)
     os.replace(tmp, a.out)
+    print("window: %s .. %s (%s: %s)" % (doc["since"], doc["generated"], win["source"], win["why"]))
     print("closes seen: %d; hard-flagged: %d" % (doc["closes_seen"], len(doc["hard_flagged"])))
     for f, (k, rt) in doc["signal_counts_rates"].items():
         print("  %-24s %4d  %.1f%%" % (f, k, 100 * rt))
