@@ -3,6 +3,16 @@
 # A review sheet showing GAME ART is committed only with a valid scaled-review-gate stamp (owner, question card
 # 2026-10-11: true-scale panels wherever a sheet is delivered). src/RimMandrake/Utils/art/game_art.py decides "game art"
 # from the pictures, not from the sheet's own declaration. A crash or missing python fails OPEN.
+# The SteveDesktop runner clone (~/rm/runner) belongs to the no-LLM dispatcher: an AI session committing there dirties
+# the pin and pauses the test lane. Refuse any commit made from a Claude/agent session; the runner's own pull needs no commit.
+case "$(basename "$(git rev-parse --show-toplevel 2>/dev/null)")" in
+runner)
+    if [ -z "$RUNNER_AI_COMMIT_OK" ] && { [ -n "$CLAUDECODE" ] || [ -n "$AI_AGENT" ] || [ -n "$CLAUDE_CODE_SESSION_ID" ]; }; then
+        echo "pre-commit: REFUSED - this is the runner clone (no-LLM dispatcher's pinned tree); an AI session may not commit here." >&2
+        echo "  Work in your own seat clone, or ask the owner (override: RUNNER_AI_COMMIT_OK=1)." >&2
+        exit 1
+    fi ;;
+esac
 root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 g="$root/src/RimMandrake/Utils/art/game_art.py"
 [ -f "$g" ] || exit 0
