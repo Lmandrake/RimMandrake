@@ -10,3 +10,6 @@
 {"seat":"DISPATCHER","event":"note","id":"ARTPIPE_FOREIGN_COPY_AUDIT_111_DONE_JOBS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-28T23:19:57Z","ts":"2026-10-28T23:21:49Z","tsn":1793229709273709223}
 {"seat":"DISPATCHER","event":"note","id":"ARTPIPE_FOREIGN_COPY_AUDIT_111_DONE_JOBS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T00:12:52Z","ts":"2026-10-29T00:14:45Z","tsn":1793232885847758874}
 {"seat":"DISPATCHER","event":"note","id":"ARTPIPE_FOREIGN_COPY_AUDIT_111_DONE_JOBS","text":"dispatcher woke_no_handoff FOUNDRY: doorbell consumed but no lease/claim/start by FOUNDRY in 600 s","ts":"2026-10-29T00:35:03Z","tsn":1793234103538162116}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Arbiter run run: launched","ts":"2026-10-29T00:45:15Z","tsn":1793234715248099890}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Auditor run run: launched","ts":"2026-10-29T00:45:17Z","tsn":1793234717227891580}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Producer weekly run: launched","ts":"2026-10-29T00:45:19Z","tsn":1793234719541854864}
