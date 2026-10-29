@@ -1,0 +1,2 @@
+pit_superdeep_walk.py has no ensure_test_profile preflight (live_session.py and modcheck runner do): with companion_profile.json expired (2026-10-29T03:00Z) it ran --fresh-map (main menu + new debug game) and then reported a single PSW_site UNMEASURED/HARNESS 'ProofResetRect REFUSED in the CAMPAIGN profile'. Call runner.ensure_test_profile(min_minutes=60) before touching the game. (2026-10-29)
+home: src/RimMandrake/FlowWorks/northstar/pit_superdeep_walk.py

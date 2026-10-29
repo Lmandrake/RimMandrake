@@ -8826,3 +8826,10 @@
 {"seat":"FOUNDRY","event":"claim","id":"ARTPIPE_FACING_COHERENCE_1","ts":"2026-10-29T04:10:45Z","tsn":1793247045015459986}
 {"seat":"FOUNDRY","event":"start","id":"ARTPIPE_FACING_COHERENCE_1","ts":"2026-10-29T04:10:45Z","tsn":1793247045481919196}
 {"seat":"FOUNDRY","event":"block","id":"ARTPIPE_FACING_COHERENCE_1","reason":"Remaining work is 7 escalated facing sets (FACING_SETS_REDRAW_WHOLE_SET_ESCALATED) that exhausted 3 whole-set redraw rounds and await an owner call; no offline build work left","ts":"2026-10-29T04:10:53Z","tsn":1793247053121732732}
+{"seat":"FOUNDRY","event":"lease","id":"PIT_SUPERDEEP_COLLAPSE_1","action":"take","token":"FOUNDRY.pid12763.1eae7e36","expires":"2026-10-29T05:00:02Z","ts":"2026-10-29T04:15:02Z","tsn":1793247303085737747}
+{"seat":"FOUNDRY","event":"lease","id":"PIT_SUPERDEEP_COLLAPSE_1","action":"renew","token":"FOUNDRY.pid12763.1eae7e36","expires":"2026-10-29T05:00:08Z","ts":"2026-10-29T04:15:08Z","tsn":1793247308875800432}
+{"seat":"FOUNDRY","event":"claim","id":"PIT_SUPERDEEP_COLLAPSE_1","ts":"2026-10-29T04:15:09Z","tsn":1793247309372349018}
+{"seat":"FOUNDRY","event":"start","id":"PIT_SUPERDEEP_COLLAPSE_1","ts":"2026-10-29T04:15:09Z","tsn":1793247309833661488}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"PIT_SUPERDEEP_COLLAPSE_1 live walk","ts":"2026-10-29T04:15:12Z","tsn":1793247312266170869}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-29T04:16:59Z","tsn":1793247419819774682}
+{"seat":"FOUNDRY","event":"block","id":"PIT_SUPERDEEP_COLLAPSE_1","reason":"Live walk cannot run: companion test-profile grant expired 2026-10-29T03:00Z (CAMPAIGN profile refuses debug calls); owner must extend expiresUtc in JawaBench/companion_profile.json, then re-run pit_superdeep_walk.py --fresh-map","ts":"2026-10-29T04:17:01Z","tsn":1793247421861867743}
