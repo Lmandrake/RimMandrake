@@ -1,0 +1,1 @@
+A systemd user unit on WSL has no Windows PATH: a bare powershell.exe is FileNotFoundError there, so idle_probe read UNMEASURED for every Dispatcher tick and held FOUNDRY idle behind a bridge item (fixed fdd92bcdc1 with a /mnt/c fallback). Any Windows exe a timer calls needs an absolute path.
