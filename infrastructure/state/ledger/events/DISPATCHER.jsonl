@@ -92,3 +92,4 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-10-29T15:01:30Z","tsn":1793286090992961157}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-10-29T15:03:39Z","tsn":1793286219888001896}
 {"seat":"DISPATCHER","event":"note","id":"PIT_SUPERDEEP_COLLAPSE_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:10:06Z","ts":"2026-10-29T15:12:01Z","tsn":1793286721033448047}
+{"seat":"DISPATCHER","event":"note","id":"SEA_FLOOR_AND_CATCH_PASS_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:22:20Z","ts":"2026-10-29T15:24:16Z","tsn":1793287456066543130}
