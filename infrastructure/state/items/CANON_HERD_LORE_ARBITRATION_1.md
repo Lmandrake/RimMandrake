@@ -24,10 +24,16 @@ Out of scope: invented RM_ creatures (`BIOME_GROUP_SIZE_WALK_1`).
 
 ## criteria
 
-- Every UNCLEAR row has an owner ruling (herd / pack / solitary / leave default), recorded beside
-  the row in the CSV or in a decisions file next to it.
+- Every UNCLEAR row has a judge-checked delegated decision (herd / pack / solitary / leave default),
+  recorded beside the row in a decisions file next to the CSV, `src: delegated:design`.
 - `EXTRA_ART_PER_BIOME_COMMISSION_1` is unblocked once the rulings exist.
 
 ## Ruling 2026-10-08 (decision taken by question card)
 
 Each creature is settled at its biome's group-size walk (`BIOME_GROUP_SIZE_WALK_1`), not as one list.
+
+## Triage 2026-10-29 (Conductor): delegated, not his
+
+Herd/pack status and group size are `design` under `design/RimMandrake/delegation_policy.md` §1 (owner
+2026-10-22, after the 10-08 ask). A judge decides each UNCLEAR row (§4); he audits from the daily digest.
+The 10-08 card still governs the shape: settled per biome, beside its group-size walk.

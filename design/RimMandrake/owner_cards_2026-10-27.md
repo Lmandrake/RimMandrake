@@ -1,5 +1,9 @@
 # Cards for your next session (drafted 2026-10-26 for 2026-10-27)
 
+> ⛔ **STALE — do not serve (2026-10-29).** Every question here was answered by his RimFlow v3 rulings of
+> 2026-10-27..28; item `OWNER_QUESTIONS_DESIGN_RICH_CARDS` was superseded by `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`
+> (see that supersede event for the per-question citations). Kept as history only.
+
 ## Summary (10 lines)
 1. Twelve cards: five answer your questions of 2026-10-26 (Q1-Q5); seven are the one-primary cards D1-D7 as changed by the GPT review.
 2. Q1 BENCH's memory: BENCH can hand off, /clear and wake itself at a safe point; growing to compaction costs ~36% more (simulated on measured BENCH logs). Options below predate that finding and are being redrafted.
