@@ -19,3 +19,10 @@ Verdict: CONFIRMED MINOR. CompPowerTap accumulates sinceEventWd across victims a
   ```
 - failure scenario: A clamp can bite either of two adjacent foreign transmitters. It drains faction A for most of an event window; A’s transmitter is then removed, making it select faction B before the 250-tick event. The event sends all accumulated energy and draining ticks with B’s current transmitter. B receives A’s draining time if already caught, or a discovery event based partly on theft from A. The per-faction saved accumulators cannot correct this because the window never records which faction supplied each tick.
 - confidence: high
+
+## verify
+- Written by the Producer, Producer weekly re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0507Z_weekly), goal 3 (GSS part theftGoodwill).
+- A test drains faction A, then switches the clamp to faction B before the event fires: A is charged only for A's drained energy, B only for B's (selftest, L0).
+- One live proof row (L2) on the current build: a clamp on a foreign transmitter raises goodwill loss against that transmitter's faction.
+- `mod_completion.py GimmeSomeSlack` no longer lists theftGoodwill as unverified.
+- Stopping point: finish.

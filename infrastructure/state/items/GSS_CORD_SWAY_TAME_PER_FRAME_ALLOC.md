@@ -16,3 +16,10 @@ Verdict: CONFIRMED MINOR. CordMotion.Sway allocates a new list per visible lifte
   ```
 - failure scenario: View many unroofed hanging wall-terminal tails with the shipping CPU sway setting. Every visible tail allocates a new output list and backing array every frame, including while paused. The hash call additionally creates its `params` array and formatted key strings. Unlike whipping, CPU sway has no animated-tail cap. Large installations therefore generate persistent garbage collection pressure despite the reusable buffers used by the neighbouring motion paths. Outside this part, opened `Source/Core/CordMotion.cs:98–110`, confirming that `Sway` allocates `new List<V2>(n)` on every invocation.
 - confidence: high
+
+## verify
+- Written by the Producer, Producer weekly re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0507Z_weekly), goal 3 (GSS part kineticSway).
+- CPU sway (CordMotion.Sway and the CordRng.Hash call in DrawMotion) allocates nothing per visible strand per frame: a zero-allocation test or a GC-alloc measurement over 600 frames with 20+ swaying tails reads 0 B/frame from this path.
+- One live proof row (L2): kineticSway on, tails visibly sway; off, they hang still.
+- `mod_completion.py GimmeSomeSlack` no longer lists kineticSway as unverified.
+- Stopping point: finish.
