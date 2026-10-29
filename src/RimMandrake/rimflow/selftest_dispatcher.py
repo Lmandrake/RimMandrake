@@ -791,6 +791,17 @@ def test_role_economy_and_alarms():
           "a run past run_max_s: its scope and unit are stopped, with an alarm")
 
 
+# Frozen copy of Operations' throttle_bands as of 2460d2cc0a~1 (before the owner neutralized them).
+CON_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "session_helpers_max": 3, "quick_cap_x": 1.0, "slots": "all"},
+                    "AMBER": {"runway_ge": 1.0, "session_helpers_max": 2, "quick_cap_x": 0.75, "slots": "last"},
+                    "RED": {"runway_ge": 0.0, "session_helpers_max": 1, "quick_cap_x": 0.75, "slots": "last"},
+                    "FLOOR": {"week_left_pct_lt": 10, "session_helpers_max": 0, "quick_cap_x": 0.75, "slots": "none"}}
+OPS_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
+                    "AMBER": {"runway_ge": 1.0, "quick_cap_x": 1.0, "slots": "quick"},
+                    "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick_one"},
+                    "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}
+
+
 def test_role_real_schedule_caps_and_ops_bands():
     sch = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))
     roles = {r["name"]: r for r in sch["roles"]}
@@ -805,6 +816,14 @@ def test_role_real_schedule_caps_and_ops_bands():
             check(b["slots"] == "none" or cap * b["quick_cap_x"] >= 285538,
                   "%s band %s: launches nothing or stays >= 285,538 (the measured Operations run, weighted)"
                   % (r["name"], bn))
+    # The LIVE bands were neutralized (owner 2026-10-28: "Stop the whole account rated RED on runeway crap. Just do
+    # the checkout."), so the rows below test the band MECHANISM on a frozen copy of the old Operations bands.
+    o_old = dict(o, throttle_bands=OPS_BANDS_FROZEN)
+    for r in sch["roles"]:
+        check(all(b.get("slots", "all") == "all" and float(b.get("quick_cap_x", 1.0)) >= 1.0
+                  for b in r["throttle_bands"].values()),
+              '%s live bands never restrict (owner 2026-10-28: "Stop the whole account rated RED on runeway crap")'
+              % r["name"])
     base = at_local("07:30")
     ev = at_local("19:30")
 
@@ -812,7 +831,7 @@ def test_role_real_schedule_caps_and_ops_bands():
         st = fresh()
         if now == ev:                      # the morning slot is long past (else it is reported missed first)
             st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x"}, "runs": []}}
-        return st, role_acts(rdecide([dict(o, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+        return st, role_acts(rdecide([dict(o_old, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
                                           clone=os.path.join(TMP, "clone"))], st,
                                      robs(ops_status(now, **kw)), now))
     st, a = run(base, runway=2.0)
@@ -833,7 +852,7 @@ def test_role_real_schedule_caps_and_ops_bands():
         st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(ev): "x", "%s 19:30" % RL.day_of(ev): "x"},
                                       "runs": [], "alarms_seen": []}}
         al = {"k": {"state": "OPEN", "item": "OPS_NEW"}}
-        a = role_acts(rdecide([dict(o, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
+        a = role_acts(rdecide([dict(o_old, enabled=True, off_file=os.path.join(TMP, "OPERATIONS_OFF"),
                                     clone=os.path.join(TMP, "clone"))], st,
                               robs(ops_status(ev, runway=rw, week_left=wl, alarms=al)), ev))
         check(bool([x for x in a if x["do"] == "role_launch"]) == want,
@@ -1067,13 +1086,15 @@ def test_review_q():
     con_md = open(os.path.join(here, "roles", "conductor.md"), encoding="utf-8").read()
     check("skips this whole run" in ops_md and "07:30 and 19:30 local" not in ops_md,
           "Q6 operations.md: a band without the economy pass skips the whole 07:30 run (as the code does)")
-    cb = real["Conductor"]["throttle_bands"]
+    cb = CON_BANDS_FROZEN
     check(real["Conductor"].get("after_role") == "Operations" and "after_role" in con_md
           and cb["AMBER"]["slots"] == cb["RED"]["slots"] == "last",
           "Q7 Conductor runs after Operations (schedule + conductor.md); AMBER/RED keep the 20:00 check (schedule bands; "
           "the role file carries no band text since review T, F6)")
-    rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CQ_OFF"))
-    ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
+    # band mechanism on the frozen pre-2460d2cc0a bands (the live ones were neutralized by owner order, 2026-10-28)
+    rc = dict(real["Conductor"], throttle_bands=CON_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"),
+              off_file=os.path.join(TMP, "CQ_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OQ_OFF"))
     c8 = at_local("08:00")
     st = fresh()
     st["roles"] = {"Operations": {"done": {"%s 07:30" % RL.day_of(c8): "x"}, "runs": []}}
@@ -1175,7 +1196,7 @@ def test_review_r():
     # B: an Operations alarm run (or yesterday's late run) does not let the Conductor skip today's 07:30 run
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
     rc = dict(real["Conductor"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "CR_OFF"))
-    ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     t801 = at_local("08:00", 60)
     for label, run in (("an alarm run at 02:00", {"at": at_local("02:00"), "mode": "alarm", "slot": "alarm OPS_A"}),
                        ("yesterday's 19:30 run launched late", {"at": at_local("20:10") - 86400, "mode": "run",
@@ -1968,7 +1989,7 @@ def test_role_real_schedule_triggers():
             check(all(os.path.isfile(os.path.join(here, st[1])) for st in steps),
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
-          and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
+          , "schedule: Producer weekly Wed, events")
     check(p["daily_token_cap"] == int(p["run_token_cap"] * 1.25), "schedule: Producer daily cap = one run + 25%")
     for r in sch["roles"]:
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
@@ -2515,7 +2536,7 @@ def test_review_w_alarm_rearm():
           "W1: a launch that did not happen gives back the alarm and the gap clock")
     # the real schedule's Operations, enabled with both live runway alarms open: one run covers both
     real = {r["name"]: r for r in json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))["roles"]}
-    ro = dict(real["Operations"], enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
+    ro = dict(real["Operations"], throttle_bands=OPS_BANDS_FROZEN, enabled=True, clone=os.path.join(TMP, "clone"), off_file=os.path.join(TMP, "OR_OFF"))
     two = {"RUNWAY_LOW:accounts.lukas.runway": {"state": "OPEN", "for": "Operations"},
            "RUNWAY_LOW:codex.runway": {"state": "OPEN", "for": "Operations"}}
     t13 = at_local("13:00")
