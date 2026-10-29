@@ -8862,3 +8862,7 @@
 {"seat":"FOUNDRY","event":"block","id":"GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO","reason":"Needs live bridge, but companion test profile expired 2026-10-29T03:00Z (owner must extend expiresUtc); also FlowWorks-lane (BENCH owns) and item has no criteria","ts":"2026-10-29T05:24:04Z","tsn":1793251444075596410}
 {"seat":"FOUNDRY","event":"lease","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","action":"take","token":"FOUNDRY.pid14209.47c583e4","expires":"2026-10-29T06:13:06Z","ts":"2026-10-29T05:28:06Z","tsn":1793251686629718495}
 {"seat":"FOUNDRY","event":"block","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","reason":"GSS/FlowWorks lane is BENCH's (owner 2026-10-23); FOUNDRY files for BENCH and moves on. Item has no criteria. Needs BENCH/DECIDE to reassign","ts":"2026-10-29T05:28:13Z","tsn":1793251693224044137}
+{"seat":"FOUNDRY","event":"unblock","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","ts":"2026-10-29T05:32:29Z","tsn":1793251949992630674}
+{"seat":"FOUNDRY","event":"lease","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","action":"renew","token":"FOUNDRY.pid14209.47c583e4","expires":"2026-10-29T06:17:34Z","ts":"2026-10-29T05:32:34Z","tsn":1793251954755713647}
+{"seat":"FOUNDRY","event":"claim","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","ts":"2026-10-29T05:32:35Z","tsn":1793251955237409326}
+{"seat":"FOUNDRY","event":"start","id":"GSS_RESTRING_FIX_STYLES_UNRECONCILED","ts":"2026-10-29T05:32:35Z","tsn":1793251955713696130}
