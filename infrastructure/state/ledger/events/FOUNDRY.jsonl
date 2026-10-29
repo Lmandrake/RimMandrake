@@ -8916,3 +8916,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","ts":"2026-10-29T07:03:26Z","tsn":1793257406254507752}
 {"seat":"FOUNDRY","event":"start","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","ts":"2026-10-29T07:03:26Z","tsn":1793257406750450034}
 {"seat":"FOUNDRY","event":"implemented","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","sha":"f5a15a22cd45","ref":"origin/main","criteria":[],"ts":"2026-10-29T07:07:59Z","tsn":1793257679446704415}
+{"seat":"FOUNDRY","event":"lease","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","action":"take","token":"FOUNDRY.pid15808.327f0034","expires":"2026-10-29T07:58:34Z","ts":"2026-10-29T07:13:34Z","tsn":1793258015109468677}
+{"seat":"FOUNDRY","event":"lease","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","action":"renew","token":"FOUNDRY.pid15808.327f0034","expires":"2026-10-29T07:58:44Z","ts":"2026-10-29T07:13:44Z","tsn":1793258024621175644}
+{"seat":"FOUNDRY","event":"claim","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","ts":"2026-10-29T07:13:45Z","tsn":1793258025105756071}
+{"seat":"FOUNDRY","event":"start","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","ts":"2026-10-29T07:13:45Z","tsn":1793258025600000129}
+{"seat":"FOUNDRY","event":"block","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","reason":"Both criteria are L2 live on the bridge, and the companion test profile is still expired (expiresUtc 2026-10-29T03:00Z, checked 07:13Z): owner must extend it. Cause also still UNMEASURED; an offline read of the failing rows' result files is the one thing doable first","ts":"2026-10-29T07:13:47Z","tsn":1793258027606112377}
