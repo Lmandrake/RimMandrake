@@ -5,6 +5,7 @@ level and never to FOUNDRY; the shipped pattern file matches the names it must (
 
     python3 src/RimMandrake/rimflow/selftest_flowworks_lane.py
 """
+import json
 import os
 import sys
 
@@ -31,11 +32,15 @@ def t_flowworks_acceptance_is_bench_at_every_level():
 
 def t_shipped_lane_file_matches_flowworks_and_gss_not_others():
     lane = priority.flowworks_lane()
-    assert lane[0] == "BENCH" and lane[1], lane
+    # The v3 cutover (V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY) moves the lane BENCH -> FOUNDRY; its
+    # record says which side of it this tree is on, so the test is true both before and after.
+    rec = os.path.join(model.ROOT, "infrastructure", "state", "v3_cutover", "record.json")
+    want = "FOUNDRY" if os.path.exists(rec) and json.load(open(rec)).get("state") == "applied" else "BENCH"
+    assert lane[0] == want and lane[1], (lane, want)
     for n in (FW, "FLOWWORKS_NORTHSTAR_SHIP_1", "PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH", "CANAL_LAKE_COLOUR_UNIFY_TWO_BLUES",
               "DRAWBRIDGE_CABLES_FIX_STOP_SHORT", "SUSPENSION_BUTTONS_DIAGNOSE_STILL_SHOWING", "POND_PUMP_FIX_LAST_DROP_COUNTS",
               "GSS_CORD_SILENCE_PHANTOM_SPARK", "CORD_GRAPH_TOPOLOGY_REVISION_1", "ANCHOR_BOLLARD_REDRAW_LIES_DOWN_ON_DUTY"):
-        assert priority.flowworks_seat(n, lane) == "BENCH", n
+        assert priority.flowworks_seat(n, lane) == want, n
     for n in (OTHER, "GRAFFITI_V1_LIVE_PROOF_1", "SUMP_MECHANICS_1"):
         assert priority.flowworks_seat(n, lane) is None, n
 
