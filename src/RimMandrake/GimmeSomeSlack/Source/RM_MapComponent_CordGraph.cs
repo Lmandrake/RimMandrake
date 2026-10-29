@@ -710,14 +710,14 @@ namespace RimMandrake.GimmeSomeSlack
         /// set (cleared with the buckets); whip snap cursors are kept per tail seed.</summary>
         private readonly Dictionary<(CordStrand, int), ulong> motionSeeds = new Dictionary<(CordStrand, int), ulong>();
         private readonly Dictionary<ulong, CordMotion.WhipCursor> whipCursors = new Dictionary<ulong, CordMotion.WhipCursor>();
-        private readonly List<V2> tailBuf = new List<V2>(), bentBuf = new List<V2>(), rippleBuf = new List<V2>();
+        private readonly List<V2> tailBuf = new List<V2>(), bentBuf = new List<V2>(), rippleBuf = new List<V2>(), swayBuf = new List<V2>();
         private double[] rippleArc;
 
-        /// <summary>kind 0 = whip at start, 1 = whip at end, 2 = ripple (si = strand's 1-based index in its piece).</summary>
+        /// <summary>kind 0 = whip at start, 1 = whip at end, 2 = ripple, 3 = CPU sway (si = strand's 1-based index in its piece).</summary>
         private ulong MotionSeed(LaidPiece p, CordStrand s, int kind, int si)
         {
             if (motionSeeds.TryGetValue((s, kind), out ulong h)) return h;
-            h = kind == 2 ? CordRng.Hash("ripple", p.Key, si) : CordRng.Hash("whip", p.Key, s.S0, kind == 0);
+            h = kind == 3 ? CordRng.Hash("sway", p.Key) : kind == 2 ? CordRng.Hash("ripple", p.Key, si) : CordRng.Hash("whip", p.Key, s.S0, kind == 0);
             motionSeeds[(s, kind)] = h;
             return h;
         }
@@ -832,7 +832,8 @@ namespace RimMandrake.GimmeSomeSlack
                 {
                     if (!s.Lifted || !SwaysNow(map, s)) continue;
                     if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
-                    List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind);
+                    List<V2> sw = swayBuf;
+                    CordMotion.SwayInto(s.Pts, s.SwayW, gt, MotionSeed(p, s, 3, 0), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind, sw);
                     SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0);
                     foreach (V2 q in sw)
                     {

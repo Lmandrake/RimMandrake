@@ -97,8 +97,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// </summary>
         internal static List<V2> Sway(IList<V2> pts, IList<double> weight, double t, ulong seed, double amp, double wind)
         {
+            var o = new List<V2>(pts.Count);
+            SwayInto(pts, weight, t, seed, amp, wind, o);
+            return o;
+        }
+
+        /// <summary>Sway into a caller-owned buffer (cleared, then refilled): the per-frame draw path allocates nothing.</summary>
+        internal static void SwayInto(IList<V2> pts, IList<double> weight, double t, ulong seed, double amp, double wind, List<V2> o)
+        {
             int n = pts.Count;
-            var o = new List<V2>(n);
+            o.Clear();
             double om = 1.1 + 0.5 * H01(seed, 11), ph = 6.283 * H01(seed, 12), ph2 = 6.283 * H01(seed, 13);
             double s = amp * Geo.Clamp(wind, 0, 1.5) * (Math.Sin(om * t + ph) + 0.3 * Math.Sin(2.3 * om * t + ph2));
             for (int i = 0; i < n; i++)
@@ -107,7 +115,6 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double wgt = weight == null || i >= weight.Count ? 0 : weight[i];
                 o.Add(pts[i] + nrm * (s * wgt));
             }
-            return o;
         }
 
         /// <summary>Peak floor-ripple displacement per unit wind, cells (optional setting, default ON since the owner's card).</summary>

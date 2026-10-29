@@ -15,6 +15,32 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static List<int> OldScan(List<int> items, Func<int, int> idx, int nv, int v) =>
             items.Where(p => !(nv > 1 && idx(p) != v)).ToList();
 
+        private static void SwayAllocChecks()
+        {
+            var pts = new List<V2>(); var w = new List<double>();
+            for (int i = 0; i < 12; i++) { pts.Add(new V2(i * 0.5, Math.Sin(i) * 0.3)); w.Add(i / 11.0); }
+            ulong seed = CordRng.Hash("sway", "piece-key-1");
+            var buf = new List<V2> { new V2(9, 9) };   // stale content must be cleared
+            int bad = 0;
+            for (int k = 0; k < 40; k++)
+            {
+                double t = k * 0.37, wind = 0.2 + 0.03 * k;
+                List<V2> a = CordMotion.Sway(pts, w, t, seed, 0.12, wind);
+                CordMotion.SwayInto(pts, w, t, seed, 0.12, wind, buf);
+                if (a.Count != buf.Count) { bad++; continue; }
+                for (int i = 0; i < a.Count; i++) if (a[i].X != buf[i].X || a[i].Z != buf[i].Z) bad++;
+            }
+            Check(bad == 0, "SwayInto == allocating Sway, identical points over 40 (t, wind) cases (" + bad + " differ)");
+            CordMotion.SwayInto(pts, w, 1.0, seed, 0.12, 1.0, buf);   // warm: buffer capacity, JIT
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            for (int k = 0; k < 20000; k++) CordMotion.SwayInto(pts, w, k * 0.016, seed, 0.12, 1.0, buf);
+            long delta = GC.GetAllocatedBytesForCurrentThread() - before;
+            Check(delta == 0, "SwayInto with a reused buffer and precomputed seed allocates 0 B over 20000 calls (measured " + delta + " B)");
+            long b2 = GC.GetAllocatedBytesForCurrentThread();
+            for (int k = 0; k < 100; k++) CordMotion.Sway(pts, w, k * 0.016, seed, 0.12, 1.0);
+            Check(GC.GetAllocatedBytesForCurrentThread() - b2 > 0, "can-fail: the allocating Sway does allocate, so the counter can see");
+        }
+
         public static void Run()
         {
             var rng = new Random(20261010);
@@ -36,6 +62,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var one = MaterialBuckets.By(new List<int> { 3, 1, 2 }, i => 99, 1);
             Check(one.Length == 1 && one[0].SequenceEqual(new[] { 3, 1, 2 }), "nv 1 draws everything in bucket 0 whatever the index");
             Check(MaterialBuckets.By<int>(null, i => 0, 4).All(l => l.Count == 0), "no pieces, empty buckets");
+            SwayAllocChecks();
             // can-fail: a bucketer that sorted by index within a bucket, or kept out-of-range pieces, would differ
             var items2 = new List<int> { 5, 2, 9 };
             Func<int, int> id2 = i => i == 9 ? 7 : 0;
