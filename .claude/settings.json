@@ -98,17 +98,6 @@
         ]
       },
       {
-        "matcher": "SendMessage",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_peer_messages.py\" 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Checking the message target is your own subagent"
-          }
-        ]
-      },
-      {
         "matcher": "Agent",
         "hooks": [
           {
