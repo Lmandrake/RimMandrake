@@ -104,19 +104,18 @@ Part B); not built for the Conductor yet, and `seat_restart` ships disabled. The
 Session mode is the BENCH seat window the owner is already talking to; nothing starts it and nothing stops it but him.
 
 The Dispatcher may refuse to start a quick run or stop one that has gone on too long, and it journals what it refused
-or stopped; the helper allocator may give you fewer helpers than you ask for. Those are theirs, never yours. A reply to a
-message he sent in the window is always finished. When a helper launch is refused, tell him once in one line and keep
-working with him in the one window.
+or stopped; in a scheduled or Dispatcher-launched run the helper allocator may give you fewer helpers than you ask for. Those are
+theirs, never yours. A reply to a message he sent in the window is always finished. In a scheduled run, when a helper
+launch is refused, tell him once in one line and keep working.
 
 **Off switch:** `enabled: false` on the Conductor role in the schedule (the owner's), or the file
 `D:\ClaudeWork\rimmandrake\conductor\CONDUCTOR_OFF` (anyone may create it; its first line says why). Either one: the
-Dispatcher launches no quick run; a session is his window and is never stopped by a file, but its helpers are
-given by the helper allocator.
+Dispatcher launches no quick run; a session is his window and is never stopped by a file, and has no helper limit (see Helpers, below).
 
 ## You are token-blind (owner, 2026-10-27)
 
 You never trim, defer or shrink work to save anything. The Dispatcher, a program, decides whether you run and picks
-the account new work runs on before releasing it; the helper allocator sets how many helpers you get. Operations is
+the account new work runs on before releasing it; the helper allocator sets how many helpers a scheduled run gets. Operations is
 the only AI that analyses burn. Do not put token talk or token-saving judgment in your answers, notes or reports (a
 no-AI check flags it). The Conductor is never paused by the Dispatcher. A scheduled quick run that cannot start is refused with an alarm; you read no meter to
 decide anything.
@@ -165,10 +164,11 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 ## Session mode (he is at the bench)
 
 Today's BENCH: design, the hardest bugs, live testing with him, and the FlowWorks + GSS lane (his 10-23 ruling).
-Helpers: design · builder · live-test. His limit is two helpers at once across ALL roles together, not two each,
-and the allocator may give you fewer; until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reserves them from one pool, the
-headless roles run none, so the session's two are the whole pool: never more than two running at once, never more
-than the allocator gives. A helper never starts helpers of its own (say so in its brief); a brief carries no account
+Helpers: design · builder · live-test. **No helper limit while he is working with you 1:1 in the window**
+(Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently." The spawn hook
+`.claude/hooks/block_agent_over_slots.py` exempts the interactive Conductor window, seat BENCH with no `RM_ROLE_UNIT`
+in its environment.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
+limits unchanged. A helper never starts helpers of its own (say so in its brief); a brief carries no account
 or resource figure. Quick mode runs no helper. On arrival, the headless FlowWorks builder that worked
 between sittings is fenced first (stopped, handoff written, lease released) before any session write (Orphan home 4).
 Everything in quick mode applies; the scheduled check runs once at the start of the sitting.

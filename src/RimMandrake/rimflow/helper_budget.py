@@ -10,6 +10,10 @@ and publishes it as `<dispatcher state>/helper_budget.json` under the v3 seat na
   CONDUCTOR  helpers only while the owner is in its window (session-only), unless his word (slot_override.json) says
              otherwise; every Conductor helper-hour is owed and paid back from FOUNDRY after he leaves.
 
+Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently." The
+hook exempts the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT); the numbers here govern scheduled
+and Dispatcher-launched runs and FOUNDRY only.
+
 The spawn hook (.claude/hooks/block_agent_over_slots.py) reads this file first. It computes for itself only when the
 file is missing, older than MAX_AGE_S, or older than his last word (slot_override.json), so a new word acts at once.
 compute() is pure reading (about 0.2 s); the allocator's stateful record (allocation.json: overage, sitting) stays

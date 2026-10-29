@@ -65,11 +65,14 @@ def alloc(seats, age=60, mode="CRUISE"):
     os.utime(streams / "allocation.json", (now - age, now - age))
 
 
-def run(seat="BENCH", stdin=None, cwd=None):
+def run(seat="BENCH", stdin=None, cwd=None, session=False):
     env = dict(os.environ, RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams), RM_ACCOUNT_USAGE_DIR=str(au),
                RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"), AGENT_SEAT=seat,
                RM_DISPATCHER_STATE=str(disp),
                CLAUDE_PROJECT_DIR=str(ROOT))
+    env.pop("RM_ROLE_UNIT", None)
+    if not session:
+        env["RM_ROLE_UNIT"] = "rm-role-fixture"   # a Dispatcher role launch; session=True is the owner's own window
     body = stdin if stdin is not None else json.dumps({"tool_name": "Agent", "cwd": cwd or "/x",
                                                        "tool_input": {"prompt": "p", "model": "sonnet"}})
     p = subprocess.run([sys.executable, str(HOOK)], input=body, env=env, capture_output=True, text=True, timeout=60)
@@ -87,6 +90,12 @@ check("3 running (one between calls, one not yet answered) against N=3 -> deny",
 check("the refusal names N, the mode and the why", "N=3" in why and "CRUISE" in why and "fits 4.1" in why, why[:400])
 check("the refusal points at the override flag and says not to cancel",
       "--owner-said" in why and "slot_allocator.py set --seat CONDUCTOR" in why and "Do not cancel" in why, why[:600])
+rc, dec, why = run(session=True)
+check("owner 1:1 (BENCH, no RM_ROLE_UNIT): no limit, 3 running against N=3 -> allow (ruling 2026-10-29)", dec is None, (dec, why[:200]))
+alloc({"BENCH": 3, "FOUNDRY": 0})
+rc, dec, why = run("FOUNDRY", session=True)
+check("... the exemption is the Conductor window only: FOUNDRY (N=0) is still gated", dec == "deny", (dec, why[:200]))
+alloc({"BENCH": 3, "FOUNDRY": 1})
 alloc({"BENCH": 4, "FOUNDRY": 1})
 rc, dec, why = run()
 check("3 running against N=4 -> allow", dec is None and rc == 0, (dec, why[:200]))

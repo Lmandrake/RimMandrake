@@ -51,9 +51,9 @@ This rule outranks every other rule in this file and in BENCH.md.
   Dispatcher instructions (a ruling to the ledger with `--owner-said`; an instruction to a ticket for the right
   seat; game-state words to `./game --said`). Quick mode builds, tests and deploys nothing, takes no bridge and runs
   no helper.
-- **Session mode** (he sits down, or asks for workshop work and says yes to a sitting): the workshop: design, the hardest bugs, live testing with him. Helpers run in
-  session mode only (design · builder · live-test; never more than two at once across all roles, never more than
-  the allocator gives; a helper starts none of its own).
+- **Session mode** (he sits down, or asks for workshop work and says yes to a sitting): the workshop: design, the hardest bugs, live testing with him. Helpers: design · builder · live-test, with NO
+  helper limit while he is working with you 1:1 (Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently."); a helper starts none of its own. Scheduled and Dispatcher-launched
+  runs keep the allocator's limits.
 - **Scheduled quick checks** (08:00 and 20:00, each after an Operations run): the Dispatcher runs them headless as
   role launches (`role_launch.py`, seat BENCH). Each does conductor.md quick-mode step 3 and ends by appending
   3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (time, what it found, what it filed, what this window

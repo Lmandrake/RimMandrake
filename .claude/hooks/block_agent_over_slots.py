@@ -14,6 +14,9 @@ and newer than his last word, computed live otherwise, and the rules file's fall
 subagent transcripts (slot_allocator.running_helpers: written in the last 15 min and not cleanly ended; when in doubt
 a helper counts as running). Nothing here cancels a helper: the refusal only says to wait.
 
+Exempt: the interactive Conductor window (seat BENCH without RM_ROLE_UNIT) has NO limit (owner, 2026-10-29: "There are
+no subagent limits when you're working with me 1 on 1. Make that so permanently."); see session_exempt().
+
 Fails open: a broken guard must not stop all spawning.
 
     python3 .claude/hooks/selftest_block_agent_over_slots.py
@@ -39,6 +42,14 @@ def seat_of(payload):
         if cwd.endswith("/rm/" + name) or ("/rm/" + name + "/") in cwd:
             return name.upper()
     return ""
+
+
+def session_exempt(seat):
+    """Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently."
+    The Conductor's window (seat BENCH) run interactively has no helper limit. A scheduled or Dispatcher-launched role
+    run (role_launch.py) always carries RM_ROLE_UNIT in its environment, so its absence means a human window.
+    FOUNDRY and every role run keep the allocator's limits."""
+    return seat == "BENCH" and not (os.environ.get("RM_ROLE_UNIT") or "").strip()
 
 
 def allowed_n(SA, rules, seat, now):
@@ -81,6 +92,8 @@ def decide(payload, now=None):
     import slot_allocator as SA
     rules = SA.load_rules(os.environ.get("RM_SLOT_RULES") or UTILS / "slot_rules.json")
     if seat not in (rules.get("enforce_seats") or []) or seat not in SA.SEAT_PROJECT:
+        return None
+    if session_exempt(seat):
         return None
     n, mode, why, src = allowed_n(SA, rules, seat, now)
     label = SA.seat_label(seat)
