@@ -18,7 +18,8 @@ prompt; `M` one role or one mod; `L` several, or a new one. Line format:
 **Proves itself (starting rule, his to change):** at least 3 lines he accepted reach `adopted`, and no trial ended
 `revert-failed` or was reverted for a guard breach in the last 30 days. Until then every line goes through him first.
 
-Status: the Innovator is not yet enabled (Sunday wave, v3.4); no innovations yet.
+Status: the Innovator's first run was a v3 trial run (2026-10-29), started by hand at the Conductor's request; it is still not on its schedule.
 
 ## The list
 
+- 2026-10-29 | FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY | proposed | agent/S | retire the UNTRIAGED finding pool: a filer turns each finding into an item or a dropped note when it files it | -
