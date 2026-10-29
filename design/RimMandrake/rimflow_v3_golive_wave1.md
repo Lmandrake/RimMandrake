@@ -23,8 +23,8 @@ Paths: repo clone `/home/mandrake/rm/bench`; Dispatcher state `/mnt/d/ClaudeWork
   (gitignored, per clone, already exists in foundry: `.gitignore:171`), so BENCH and the owner's windows never get it.
 - Dispatcher has a standing dry-run alarm `unwakeable:FOUNDRY` ("FOUNDRY is idle but no doorbell is armed"). It is the expected
   state until step 8; it clearing is step 8's proof.
-- The first `--apply` tick for an enabled Operations role runs once for every ALARM open at first enable
-  (`alarm_runs`). On 2026-10-27 the open alarm is `RUNWAY_LOW:codex.runway` (`$O/alarms.json`), so enabling Operations launches an
+- The first `--apply` tick for an enabled Operations role launches ONE alarm run that covers every ALARM open at first
+  enable and not yet seen (`alarm_runs`), subject to the launch gates. On 2026-10-27 the open alarm is `RUNWAY_LOW:codex.runway` (`$O/alarms.json`), so enabling Operations launches an
   alarm run at once, not at 07:30/19:30. Expect it; do not read it as a fault.
 
 ## 1. Pre-flight (all from `$B`; stop at the first failure)
@@ -149,7 +149,7 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
 
 - **Launch notes.** `python3 src/RimMandrake/rimflow/cli.py show OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE | tail -n 12` (Operations' launch, done and cap
   notes) and `... show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE | tail -n 12` (Conductor). Healthy: on Operations' item one launch note naming mode, band and the account
-  per run; on the Conductor's item one launch note naming mode and unit only (it is token-blind: no band, no account),
+  per run; on the Conductor's item one launch note, `dispatcher: Conductor quick run: launched` (token-blind: no band, no account, no unit; the unit is in `$S/journal.jsonl` and `$S/runs.json`),
   then a "done" note for each; no cap note, no "ended without a good result". A dispatcher note meant for a token-blind
   item that is not on its allow-list of plain texts lands on Operations' item marked `[meant for <item>; token values
   stay off it]` (review roles r2 #1): look for those there too.
