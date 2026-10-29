@@ -13,7 +13,8 @@ RM_ContagionSkyExtension. `Map.Biome` is a live passthrough to the tile (decompi
 and jawa/map_info says so), so the chain `site.retile_to_contagion` re-tiles the quicktest map's OWN
 tile to RM_Contagion with jawa/world_tile_set + world_commit instead of generating a Contagion map.
 Chains that need it begin with `_need_contagion`, which records UNMEASURED (never PASS/FAIL) when the
-retile did not land. `site.restore_tile` puts the START biome back. The off-biome chains
+retile did not land. A TARGETED run never runs `site`, so `_need_contagion` retiles the tile itself on a
+stock map and `_stable` restores it at chain end (CONTAGION_SITE_FIX_RETILE_LEAVES_THEROT). `site.restore_tile` puts the START biome back. The off-biome chains
 (repulsor_clear, spawner) run BEFORE the retile, on a stock biome, on purpose: the
 Repulsor's off-Contagion half is a different code path, and the Unfinished spawner jumps the clock.
 
@@ -692,13 +693,49 @@ def _off_contagion(t):
 
 
 def _need_contagion(t):
-    """First component of every Contagion-map chain: the retile must have landed."""
+    """First component of every Contagion-map chain: the map must read RM_Contagion.
+
+    CONTAGION_SITE_FIX_RETILE_LEAVES_THEROT: a TARGETED run (`--chains burn_forced`) never runs chain `site` -- targeting
+    has no cross-chain prerequisites, a chain's setup lives in the chain -- so on a stock quicktest map (RM_TheRot LIVE
+    2026-10-29, job J20261029T213415Z-a65f87) nothing ever retiled and every row went UNMEASURED. So the chain retiles
+    the map's own tile itself when the map is not Contagion (the same world_tile_set + world_commit as `site`) and
+    `_stable` puts the tile back when the chain ends. In a full run `site` has already retiled and this is a read."""
     with _comp(t, "site_is_contagion", poison=True):
         if _live(t):
-            b, _ = _map_biome(t)
-            if b != BIOME:
-                _unmeasured(t, "current map biome is %r, not %s -- site.retile_to_contagion did not "
-                               "land, so the Burn/Bloom/Coalescence cannot act here" % (b, BIOME))
+            b, info = _map_biome(t)
+            if b == BIOME:
+                return
+            tile = info.get("tile")
+            if tile is None or info.get("tileValid") is False:
+                _unmeasured(t, "SITE: the map is %r and map_info reports no usable tile to retile to %s: %r"
+                               % (b, BIOME, info))
+            _STATE.setdefault("start_biome", b)
+            _STATE.setdefault("tile", tile)
+            r = t.bridge_call("jawa/world_tile_set", tiles=str(tile), biome=BIOME, readBack=1)
+            _STATE["self_retile"] = {"tile": tile, "biome": b}      # _stable restores it even if the rest refuses
+            _ok(r, "world_tile_set(chain retile)")
+            _ok(t.bridge_call("jawa/world_commit", redraw=False, recalcPaths=False), "world_commit")
+            b2, _ = _map_biome(t)
+            if b2 != BIOME:
+                _unmeasured(t, "SITE: current map biome is %r, not %s -- the chain's own retile of tile %s did not "
+                               "land, so the Burn/Bloom/Coalescence cannot act here" % (b2, BIOME, tile))
+            _note(t, "chain retiled the map to %s (chain `site` did not run)" % BIOME, {"tile": tile, "from": b})
+
+
+def _undo_self_retile(t):
+    """Upkeep at chain end (never a verdict): put back the biome _need_contagion retiled away from."""
+    rec = _STATE.pop("self_retile", None)
+    if not rec or t.session is None:
+        return
+    try:
+        t.session.call("jawa/world_tile_set", tiles=str(rec["tile"]), biome=rec["biome"], readBack=1)
+        t.session.call("jawa/world_commit", redraw=False, recalcPaths=False)
+        now = (t.session.call("jawa/map_info") or {}).get("mapBiome")
+        if now != rec["biome"]:
+            print("[contagion] chain retile undo: map reads %r, wanted %r" % (now, rec["biome"]),
+                  file=sys.stderr, flush=True)
+    except Exception as ex:                                     # noqa: BLE001 - upkeep, never a verdict
+        print("[contagion] chain retile undo failed: %s" % ex, file=sys.stderr, flush=True)
 
 
 def _power_on(t, thing_id):
@@ -827,6 +864,7 @@ def _stable(t, fn):
                                categories="All")
             except Exception as ex:
                 print("[contagion] pad cleanup failed: %s" % ex, file=sys.stderr, flush=True)
+            _undo_self_retile(t)
 
 
 # --------------------------------------------------------------------------- chain: defs

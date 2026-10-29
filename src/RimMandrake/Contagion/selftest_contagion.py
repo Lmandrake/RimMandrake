@@ -791,21 +791,24 @@ class Fake(object):
 
 # ------------------------------------------------------------------ the runner
 
-def run(broken=(), start_biome="TemperateForest", out=None):
+def run(broken=(), start_biome="TemperateForest", out=None, chains=None):
     sys.stderr, keep = _NULL, sys.stderr
     try:
-        return _run(broken, start_biome, out)
+        return _run(broken, start_biome, out, chains)
     finally:
         sys.stderr = keep
 
 
-def _run(broken=(), start_biome="TemperateForest", out=None):
+def _run(broken=(), start_biome="TemperateForest", out=None, chains=None):
+    """`chains`: a TARGETED run (modcheck --chains) -- only these chains, in suite order; None = the full suite."""
     game = Fake(broken, start_biome)
     if out is not None:
         out.append(game)
     V._STATE.clear()
     results = {}
     for name, fn in V.suite.chains:
+        if chains is not None and name not in chains:
+            continue
         t = TestContext(game, anchor=(150, 150))
         try:
             fn(t)
@@ -995,6 +998,32 @@ def main():
     red = sorted(k for k, v in noop.items() if v[0] in ("FAIL", "CRASH"))
     if red:
         bad.append("sick start + retile_noop turned red: %s" % red)
+    # CONTAGION_SITE_FIX_RETILE_LEAVES_THEROT: a targeted `--chains burn_forced` run never runs chain `site`. Live
+    # (J20261029T213415Z-a65f87) the quicktest map stayed RM_TheRot and all 10 rows went UNMEASURED. The chain must
+    # retile the map itself, go green, and hand the tile back to the start biome when it ends.
+    for only in (["burn_forced"], ["coalescence"], ["burn_forced", "uv"]):
+        games = []
+        tg = run(start_biome="RM_TheRot", out=games, chains=only)
+        tg_bad = dict((k, v) for k, v in tg.items() if v[0] != "PASS")
+        if not tg or tg_bad:
+            bad.append("targeted %s on a RM_TheRot start: not all PASS (%d rows): %s" % (only, len(tg), tg_bad))
+        g = games[-1]
+        if g.biome != "RM_TheRot" or g.retiles != [V.BIOME, "RM_TheRot"] * len(only):
+            bad.append("targeted %s: retiles %s, ended on %s (want each chain to retile and restore, end RM_TheRot)"
+                       % (only, g.retiles, g.biome))
+    # ... and when that retile does not take, the chain is UNMEASURED (the bench's), never red, and says so
+    noop_t = run(["retile_noop"], start_biome="RM_TheRot", chains=["burn_forced"])
+    sic = noop_t.get("burn_forced.site_is_contagion", ("ABSENT", ""))
+    if sic[0] != "UNMEASURED" or "chain's own retile" not in str(sic[1]):
+        bad.append("targeted burn_forced + retile_noop: site_is_contagion reads %s" % (sic,))
+    red = sorted(k for k, v in noop_t.items() if v[0] in ("FAIL", "CRASH"))
+    if red:
+        bad.append("targeted burn_forced + retile_noop turned red: %s" % red)
+    # in a full run chain `site` owns the retile: no Contagion chain retiles on its own
+    games = []
+    run(out=games)
+    if games[-1].retiles != [V.BIOME, "TemperateForest"]:
+        bad.append("full stock run: retiles %s (want only site's and site_restore's)" % games[-1].retiles)
     # the live preflight no longer refuses a sick map (it did, until this item)
     import northstar_site as NS                      # noqa: E402
 
