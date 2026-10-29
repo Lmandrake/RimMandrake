@@ -68,3 +68,4 @@
 {"seat":"DISPATCHER","event":"note","id":"HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:21:54Z","ts":"2026-10-29T07:23:51Z","tsn":1793258631737418830}
 {"seat":"DISPATCHER","event":"note","id":"PIT_ENTRY_PROVE_DONE_BUT_STILL_RED","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:26:07Z","ts":"2026-10-29T07:28:01Z","tsn":1793258881674398735}
 {"seat":"DISPATCHER","event":"note","id":"GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:46:45Z","ts":"2026-10-29T07:48:44Z","tsn":1793260124354690042}
+{"seat":"DISPATCHER","event":"note","id":"GLOWTANK_SALT_FIX_ONE_PINCH_ONLY","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T07:59:25Z","ts":"2026-10-29T08:01:25Z","tsn":1793260885886811823}
