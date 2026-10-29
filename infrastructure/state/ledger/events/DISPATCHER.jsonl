@@ -41,3 +41,4 @@
 {"seat":"DISPATCHER","event":"note","id":"WEBWORK_TERRAIN_WEATHER_PASS_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:35:55Z","ts":"2026-10-29T04:37:52Z","tsn":1793248672724904003}
 {"seat":"DISPATCHER","event":"note","id":"GREYSEA_FLOOR_PASS_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:42:12Z","ts":"2026-10-29T04:44:10Z","tsn":1793249050293830455}
 {"seat":"DISPATCHER","event":"note","id":"GIT_WORKFLOW_MIGRATION_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:46:28Z","ts":"2026-10-29T04:48:20Z","tsn":1793249300094595694}
+{"seat":"DISPATCHER","event":"note","id":"LEANINGSCRUB_SHEET_ART_REDO_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T04:50:34Z","ts":"2026-10-29T04:52:31Z","tsn":1793249551963917662}
