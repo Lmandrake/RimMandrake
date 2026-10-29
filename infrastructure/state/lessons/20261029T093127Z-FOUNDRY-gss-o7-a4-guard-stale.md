@@ -1,0 +1,2 @@
+GSS offline gate O7_gpt_read_fixes is RED at HEAD 70b9b97d09: its A4 guard greps RM_MapComponent_CordGraph.cs for 'if (had != has) tc.StaleOffscreen = true;' but ff3e91d6de-era code now reads 'if (had != has && (tc.Reach == null || tc.Reach.Reaches(...))) tc.StaleOffscreen = true;' (line ~1105). The fix is still present; the guard string is stale. Also matrix_selftest C2 red (existing live shots check). Both block proof_all --offline-gate and so any --live run until fixed.
+home: src/RimMandrake/GimmeSomeSlack/validation.py

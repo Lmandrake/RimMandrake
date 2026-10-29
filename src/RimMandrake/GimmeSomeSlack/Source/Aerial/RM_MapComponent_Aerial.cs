@@ -863,6 +863,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>The span look's cable width (thick black Industrial cable, thin Modern/Futuristic lines).</summary>
         public float Width = 0.17f;
         public int Verts => verts?.Length ?? 0;
+        /// <summary>State read (AerialProbe "styles", proof row M21 dripLoops): the sampled point count of each strand as
+        /// built (SpanCurve or SpanCurveDrip), in <see cref="ends"/> order.</summary>
+        public List<int> StrandPoints => strands.Select(s => s.Count).ToList();
 
         public static SpanMesh Build(CompAerialAnchor a, CompAerialAnchor b, float y, int sig, AerialMaterials.LookMats lm)
         {

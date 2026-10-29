@@ -90,6 +90,7 @@ RULED OUT: (none yet)
 """
 import glob
 import json
+import math
 import os
 import subprocess
 import sys
@@ -1238,6 +1239,7 @@ def lane_a_live(B, rows, log):
     row(rows, "M10_tangle_threshold_setting", "PASS" if t20.get("tangles") == 0 and t6.get("tangles", 0) >= 1 else "FAIL", "MOD",
         {"tangleMin20": t20.get("tangles"), "tangleMin6": t6.get("tangles")})
     dive_through_live(B, rows, log)
+    slide_under_live(B, rows, log)
     hidden_conduit_hookup_live(B, rows)
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
@@ -1309,6 +1311,103 @@ def dive_through_live(B, rows, log):
         return
     ok = (on.get("dives", 0) - off.get("dives", 0) >= 1) and (off.get("unroutable", 0) - on.get("unroutable", 0) >= 1)
     row(rows, "M11_dive_through_setting", "PASS" if ok else "FAIL", "MOD", d)
+
+
+SLIDE_FRAC = 0.18                    # CordGraph.SlideFrac
+PLUG_OUT = 0.08                      # CordGraph.PlugPoint: the plug sits 0.08 outside the footprint side
+FRAC_TOL = 0.025                     # 0.18+tol < 0.25-tol: the ON and OFF fraction sets never overlap
+
+
+def plug_tip(poly, fp):
+    """The plug point of one laid cord strand into a machine of footprint fp = (x0, z0, w, h), from the rect census
+    polyline (stride 1). IntoArt appends the run from the plug point on into the centroid, so walk from the end that
+    sits on the centroid outward; the first vertex at least 0.07 outside the footprint is the plug point (the slide's
+    carry samples reach only 0.045 outside, the straight run's last sample 0.03). None when no end is on the centroid.
+    Returns (x, z, side, frac): side 'x' when the plug is off an x side (its along coordinate is z), frac = the along
+    coordinate's fraction within its cell."""
+    if not poly or len(poly) < 2:
+        return None
+    x0, z0, w, h = fp
+    x1, z1 = x0 + w, z0 + h
+    cx, cz = x0 + w / 2.0, z0 + h / 2.0
+
+    def near_c(p):
+        return abs(p[0] - cx) < 0.06 and abs(p[1] - cz) < 0.06
+    if near_c(poly[-1]):
+        walk = list(reversed(poly))
+    elif near_c(poly[0]):
+        walk = list(poly)
+    else:
+        return None
+    for x, z in walk:
+        ox, oz = max(x0 - x, x - x1, 0.0), max(z0 - z, z - z1, 0.0)
+        if max(ox, oz) >= 0.07:
+            side = "x" if ox >= oz else "z"
+            along = z if side == "x" else x
+            return (x, z, side, round(along - math.floor(along), 4))
+    return None
+
+
+def slide_under_verdict(tips, slide_on):
+    """M12 slideUnder, one side. ON every plug point sits SlideFrac (0.18) in from a corner of its cell along the side
+    (0.18 or 0.82); OFF it sits on the hookup's cell centre clamped 0.25 in from the footprint corners (0.25, 0.5 or
+    0.75). No tip -> (UNMEASURED, SITE): the heater never hooked up, the row could not ask."""
+    if not tips:
+        return "UNMEASURED", "SITE"
+    targets = (SLIDE_FRAC, 1 - SLIDE_FRAC) if slide_on else (0.25, 0.5, 0.75)
+    ok = all(any(abs(t[3] - g) <= FRAC_TOL for g in targets) for t in tips)
+    return ("PASS" if ok else "FAIL"), "MOD"
+
+
+def slide_under_live(B, rows, log):
+    """M12a/M12b (slideUnder, default on; GSS_SWITCHES_PROVE_LAST_FOUR_STANDING). A lone heater north of the main run
+    (the M11 pocket cell, ring gone) cords to the conduit.
+    PROVE  set:slideUnder=False / True, rebuild, rect census polylines (stride 1) -> plug_tip() of every strand that ends
+           on the heater's centroid; geometryHash of the rect each way.
+    EXPECT OFF: every plug fraction in {0.25, 0.5, 0.75} (+-0.025); ON: every one in {0.18, 0.82}; the hash differs
+           ON vs OFF and the restored setting reads back (census settings) as it was before the row.
+    LIES   a deployed build whose CordGraph.PlugPoint changed its constants reads FAIL, not a lie; a cord into some other
+           machine whose end also lies on the heater centre would be counted (none in this rect); fewer than one strand
+           each way is UNMEASURED/SITE, never a pass. It reads the laid geometry, not the drawn picture."""
+    hx, hz = POCKET_HEATER
+    rect = "%d,%d,%d,%d,200000" % (X0 + 3, Z0 + 3, 5, 9)
+    fp = (hx, hz, 1, 1)
+    prior = (B.probe("census").get("settings") or {}).get("slideUnder")
+    h = B.call("jawa/build_batch", ops="Heater:%d,%d,0" % (hx, hz), faction="player", wipeExisting=False)
+    B.ticks(2)                       # the connector hooks up on the next tick (as M11)
+    res = {}
+    try:
+        for val in ("False", "True"):
+            s = B.probe("set:slideUnder=%s" % val)
+            B.probe("rebuild")
+            B.ticks(2)
+            rc = B.probe("rect:" + rect)
+            tips = [t for t in (plug_tip(p, fp) for p in rc.get("polylines") or []) if t]
+            res[val] = {"readback": s.get("value"), "hash": rc.get("geometryHash"), "stride": rc.get("polyStride"),
+                        "tips": tips, "rectOk": bool(rc.get("success"))}
+    finally:
+        back = "True" if prior not in ("True", "False") else prior
+        B.probe("set:slideUnder=%s" % back)
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % (hx, hz), categories="Building")
+        B.probe("rebuild")
+        after = (B.probe("census").get("settings") or {}).get("slideUnder")
+    off, on = res.get("False", {}), res.get("True", {})
+    d = {"heater": h.get("survived"), "off": off, "on": on, "prior": prior, "restored": after}
+    log.append({"M12_slide_under": d})
+    if after != back:
+        row(rows, "M12_restore_setting", "FAIL", "HARNESS", {"prior": prior, "restored": after})
+    ids = (("M12a_slide_under_off_plug_on_cell_centre", off, False, "False"),
+           ("M12b_slide_under_on_plug_off_centre", on, True, "True"))
+    stride1 = all(str(x.get("stride")) == "1" for x in (off, on))
+    for rid, side, slide_on, want in ids:
+        if not h.get("survived") or not side.get("rectOk") or not stride1:
+            row(rows, rid, "UNMEASURED", "SITE" if not h.get("survived") else "HARNESS", d)
+            continue
+        st, cl = slide_under_verdict(side.get("tips"), slide_on)
+        if st == "PASS" and (side.get("readback") != want or on.get("hash") == off.get("hash")):
+            st = "FAIL"              # the switch did not take, or the geometry did not move
+        row(rows, rid, st, cl, {"readback": side.get("readback"), "fracs": [t[3] for t in side.get("tips") or []],
+                                "hashOff": off.get("hash"), "hashOn": on.get("hash"), "tips": side.get("tips")})
 
 
 def hidden_conduit_hookup_live(B, rows):

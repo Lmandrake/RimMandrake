@@ -23,6 +23,7 @@ LEARNED (each line is a check below):
     the clamp is a plain CompPowerTrader connector, guarded onto our faction's nets (M19 net ids must differ).
 """
 import json
+import math
 import os
 import re
 import shutil
@@ -497,6 +498,8 @@ def run_live(args):
 
     # ---------------------------------------------------------------- M20: settings flips (fallen wire, gravship)
     flips_block(B, rows, res)
+    # ---------------------------------------------------------------- M21: the last four switches (owner change, drips, gravship)
+    four_switches_block(B, rows, res)
 
     # ---------------------------------------------------------------- log budget
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
@@ -667,8 +670,194 @@ def flips_block(B, rows, res):
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
 
 
+# ============================================================================ M21: the last four switches standing
+# GSS_SWITCHES_PROVE_LAST_FOUR_STANDING: cutWiresOnOwnerChange, dripLoops, keepWiresOnGravship (slideUnder is core,
+# validation.py M12). Each row names ONE switch (mod_completion credits a row to every key its text names), each switch
+# is read ON and OFF, and every value touched is restored to what census read before the block and read back.
+DRIP_STEP = 0.5                                 # AerialMath.SpanCurve / SpanCurveDrip default step
+
+
+def _links_to(anchor, other_id):
+    return [l for l in (anchor or {}).get("links") or [] if l.get("other") == other_id]
+
+
+def owner_change_verdict(cut_on, linked_before, a_after, b_after, id_a, id_b):
+    """M21a/b. linked_before: the census read the span Up both ways before the owner change; a_after/b_after: the two
+    anchors' census rows after the sweep (None = gone from census). ON: neither side lists the other. OFF: both still
+    do. A span that never stood, or an anchor gone from census, is (UNMEASURED, SITE): the row could not ask."""
+    if not linked_before or a_after is None or b_after is None:
+        return "UNMEASURED", "SITE"
+    kept = bool(_links_to(a_after, id_b)) and bool(_links_to(b_after, id_a))
+    gone = not _links_to(a_after, id_b) and not _links_to(b_after, id_a)
+    return ("PASS" if (gone if cut_on else kept) else "FAIL"), "MOD"
+
+
+def drip_expected_points(ax, az, bx, bz, drip, depth=0.12, reach=0.45, step=DRIP_STEP):
+    """The point count AerialMath builds for one strand A->B: SpanCurve n+1 with n = max(4, ceil(len/step));
+    SpanCurveDrip (depth, reach > 0, len >= 1e-6) 6 loop samples + (n'+1) + 6 with reach' = min(reach, len/4),
+    n' = max(2, ceil((1 - 2 reach'/len) len / step))."""
+    ln = math.hypot(bx - ax, bz - az)
+    if not drip or not (depth > 0) or not (reach > 0) or ln < 1e-6:
+        return max(4, int(math.ceil(ln / max(0.05, step)))) + 1
+    r = min(reach, ln / 4)
+    n = max(2, int(math.ceil((1 - 2 * r / ln) * ln / max(0.05, step))))
+    return n + 13
+
+
+def drip_verdict(spans, drip_on, depth=0.12, reach=0.45):
+    """M21c/d. spans: the styles probe's span rows of the scene's link. Every Power strand's built point count must be
+    the formula's for the switch's value (+-1: the probe prints ends to 4 places, which can move a ceil) and NOT the other
+    formula's. A deployed build without strandPts -> (UNMEASURED, HARNESS); strands where the two formulas sit within 2
+    of each other decide nothing; none decisive -> (UNMEASURED, SITE). Also verts == 2 * sum(points) (one ribbon pair per
+    sample) or FAIL."""
+    pw = [s for s in spans or [] if s.get("kind") == "Power"]
+    if not pw or any("strandPts" not in s or "strandEnds" not in s for s in pw):
+        return "UNMEASURED", "HARNESS", []
+    checks = []
+    for s in pw:
+        for cnt, e in zip(s["strandPts"], s["strandEnds"]):
+            want = drip_expected_points(*e, drip=drip_on, depth=depth, reach=reach)
+            other = drip_expected_points(*e, drip=not drip_on, depth=depth, reach=reach)
+            if abs(want - other) <= 2:
+                continue
+            checks.append({"pts": cnt, "want": want, "other": other, "ok": abs(cnt - want) <= 1 and abs(cnt - other) > 1})
+    if not checks:
+        return "UNMEASURED", "SITE", checks
+    verts_ok = all(s.get("verts") == 2 * sum(s["strandPts"]) for s in pw)
+    return ("PASS" if verts_ok and all(c["ok"] for c in checks) else "FAIL"), "MOD", checks
+
+
+def _aerial_setting(B, key):
+    """The value the aerial census reports for one AerialSettings field (a string, "True"/"False"), None if unread."""
+    return (B.ap("census").get("settings") or {}).get(key)
+
+
+def four_switches_block(B, rows, res):
+    """M21a-f on the flips site (FSITE, cleared). Two player masts F1, F2 linked; then per switch OFF and ON."""
+    keys = ("cutWiresOnOwnerChange", "dripLoops", "keepWiresOnGravship")
+    c0 = B.ap("census").get("settings") or {}
+    prior = {k: c0.get(k) for k in keys}
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % FSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % FSITE)
+    try:
+        _four_switches(B, rows, res)
+    finally:
+        back = {}
+        for k in keys:
+            v = prior.get(k) if prior.get(k) in ("True", "False") else "True"   # every one ships True
+            B.ap("set:%s=%s" % (k, v))
+            back[k] = _aerial_setting(B, k)
+        B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="All")
+        bad = {k: (prior.get(k), back.get(k)) for k in keys if prior.get(k) in ("True", "False") and back.get(k) != prior.get(k)}
+        if bad or any(prior.get(k) is None for k in keys):
+            V.hrow(rows, "M21_restore_settings", "FAIL", "HARNESS", {"priorThenRestored": bad, "prior": prior})
+
+
+def _scene_pair(B):
+    """Build and link F1-F2 (player). -> (id1, id2, linkedUp) with linkedUp read from census both ways."""
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % FSITE, categories="Building")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [F1, F2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    ap_ = anchors_by_pos(B.ap("census"))
+    if F1 not in ap_ or F2 not in ap_:
+        return None, None, False
+    i1, i2 = ap_[F1]["id"], ap_[F2]["id"]
+    B.ap("link:%d,%d" % (i1, i2))
+    B.ticks(3)
+    ap_ = anchors_by_pos(B.ap("census"))
+    up = any(l.get("state") == "Up" for l in _links_to(ap_.get(F1), i2)) and \
+        any(l.get("state") == "Up" for l in _links_to(ap_.get(F2), i1))
+    return i1, i2, up
+
+
+def _four_switches(B, rows, res):
+    # ------------------------------------------------ M21a/b cutWiresOnOwnerChange
+    # PROVE  link F1-F2 (player); set the switch OFF (readback); owner:F2,hostile; ownersweep; 260 ticks (the periodic
+    #        250-tick sweep runs too); census -> both anchors still list each other. Then ON (readback); ownersweep;
+    #        census -> neither lists the other.
+    # EXPECT OFF: link kept both sides; ON: link gone both sides. The bar is the census, not the sweep's cut count (the
+    #        periodic sweep may cut first and the explicit one then reads 0, as M17's count could).
+    # LIES   the hostile faction never taking (owner: fails) would read OFF-kept as PASS and ON as FAIL, so the owner
+    #        verb's own faction readback is required or the pair is UNMEASURED/HARNESS; a span that never stood is SITE.
+    i1, i2, up = _scene_pair(B)
+    s_off = B.ap("set:cutWiresOnOwnerChange=False")
+    ow = B.ap("owner:%d,hostile" % i2) if i2 else {}
+    cut_off = B.ap("ownersweep").get("cut")
+    B.ticks(260)
+    a_off = anchors_by_pos(B.ap("census"))
+    s_on = B.ap("set:cutWiresOnOwnerChange=True")
+    cut_on = B.ap("ownersweep").get("cut")
+    B.ticks(3)
+    a_on = anchors_by_pos(B.ap("census"))
+    took = bool(ow.get("success")) and a_off.get(F2, {}).get("faction") not in (None, a_off.get(F1, {}).get("faction"))
+    for rid, on, snap, s, cut in (("M21a_cut_wires_on_owner_change_off_keeps_link", False, a_off, s_off, cut_off),
+                                  ("M21b_cut_wires_on_owner_change_on_cuts_link", True, a_on, s_on, cut_on)):
+        d = {"linkedBefore": up, "readback": s.get("value"), "ownerSet": ow.get("faction"), "sweepCut": cut,
+             "f1Links": (snap.get(F1) or {}).get("links"), "f2Links": (snap.get(F2) or {}).get("links"),
+             "factions": [(snap.get(F1) or {}).get("faction"), (snap.get(F2) or {}).get("faction")]}
+        if up and not took:
+            V.row(rows, rid, "UNMEASURED", "HARNESS", d)
+            continue
+        st, cl = owner_change_verdict(on, up, snap.get(F1), snap.get(F2), i1, i2)
+        if st == "PASS" and s.get("value") != str(on):
+            st = "FAIL"
+        V.row(rows, rid, st, cl, d)
+
+    # ------------------------------------------------ M21c/d dripLoops
+    # PROVE  a fresh linked F1-F2 pair; set the switch OFF / ON (readback); styles -> the span's strandPts, strandEnds,
+    #        verts (SpanMeshFor rebuilds on the switch: it is in the mesh signature).
+    # EXPECT every Power strand's point count = SpanCurve's n+1 OFF, SpanCurveDrip's n'+13 ON (drip_expected_points),
+    #        from its own reported ends; verts = 2 x the points.
+    # LIES   this reads the built mesh data, not the picture: a shader or draw that hid the loop would still PASS, and
+    #        the loop's depth/shape is not judged (a screenshot review owns that). A build without strandPts (the probe
+    #        field landed with this row) is UNMEASURED/HARNESS until GimmeSomeSlack is redeployed.
+    i1, i2, up = _scene_pair(B)
+    c = B.ap("census").get("settings") or {}
+    try:
+        depth, reach = float(c.get("DripDepth", 0.12)), float(c.get("DripReach", 0.45))
+    except (TypeError, ValueError):
+        depth, reach = 0.12, 0.45
+    for rid, val in (("M21c_drip_loops_off_plain_curve", False), ("M21d_drip_loops_on_loop_samples", True)):
+        s = B.ap("set:dripLoops=%s" % val)
+        B.ticks(2)
+        st_ = B.ap("styles")
+        spans = [sp for a in st_.get("anchors") or [] if a.get("id") in (i1, i2)
+                 for sp in a.get("spans") or [] if sp.get("other") in (i1, i2)]
+        if not up:
+            V.row(rows, rid, "UNMEASURED", "SITE", {"linkedBefore": up})
+            continue
+        st, cl, checks = drip_verdict(spans, val, depth, reach)
+        if st == "PASS" and s.get("value") != str(val):
+            st = "FAIL"
+        V.row(rows, rid, st, cl, {"readback": s.get("value"), "spans": len(spans), "checks": checks,
+                                  "verts": [sp.get("verts") for sp in spans], "depth": depth, "reach": reach})
+
+    # ------------------------------------------------ M21e/f keepWiresOnGravship
+    # PROVE  set the switch OFF / ON; the field's value as the aerial census reads it back (a second read, not the set
+    #        verb's echo).
+    # EXPECT "False" then "True".
+    # LIES   this is the SETTING's state, not its behaviour. The behaviour (spans to anchors aboard a launching gravship
+    #        kept) runs only inside the engine's GravshipUtility.generatingGravship despawn loop with DestroyMode
+    #        .WillReplace; no bridge tool or probe verb can stage that without a launch, and a gravship launch is not
+    #        live-tested unattended. The removal plan's aboard rule is proved offline by AerialSelfTest (PlanRemoval
+    #        aboard cases). A PASS here does not show a single wire kept on a gravship.
+    for rid, val in (("M21e_keep_wires_on_gravship_off_setting_state", False),
+                     ("M21f_keep_wires_on_gravship_on_setting_state", True)):
+        s = B.ap("set:keepWiresOnGravship=%s" % val)
+        read = _aerial_setting(B, "keepWiresOnGravship")
+        if not s.get("success") or read is None:
+            V.row(rows, rid, "UNMEASURED", "HARNESS", {"set": s, "census": read})
+            continue
+        V.row(rows, rid, "PASS" if s.get("value") == str(val) and read == str(val) else "FAIL", "MOD",
+              {"readback": s.get("value"), "censusRead": read, "behaviourObserved": False,
+               "owed": "gravship launch keeps spans aboard: engine-only path, offline AerialSelfTest PlanRemoval"})
+
+
 def run_flips(args):
-    """--flips: ONLY the M20 rows on a fresh scene of their own (a few minutes of game time; the ignite flip dominates)."""
+    """--flips: ONLY the M20 + M21 rows on a fresh scene of their own (a few minutes of game time; the ignite flip dominates)."""
     B = A()
     rows = []
     res = {"mod": V.MOD, "mode": "flips", "script": "validation_aerial.py", "tier": V.TIER,
@@ -681,6 +870,7 @@ def run_flips(args):
     B.ap("skipreseed:false")
     try:
         flips_block(B, rows, res)
+        four_switches_block(B, rows, res)
     finally:
         B.ap("defaults")
     return res

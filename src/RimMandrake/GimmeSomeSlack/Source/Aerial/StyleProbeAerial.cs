@@ -20,6 +20,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private static string S(string s) => AerialProbe.S(s);
         private static string B(bool b) => AerialProbe.B(b);
         private static string F(float f) => AerialProbe.F(f);
+        private static string D(double d) => double.IsNaN(d) || double.IsInfinity(d) ? "null" : d.ToString("0.####", CultureInfo.InvariantCulture);
 
         private static Thing ById(Map map, int id) => map.listerThings.AllThings.FirstOrDefault(t => t.thingIDNumber == id);
 
@@ -59,7 +60,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                     SpanMesh m = comp.SpanMeshFor(a, l.other);
                     spans.Add("{\"other\":" + l.other.thingIDNumber + ",\"look\":" + S(m?.look) + ",\"expectLook\":" + S(AerialMaterials.SpanLookOf(a, l.other)) +
-                              ",\"spanTex\":" + S(m?.mat?.mainTexture?.name) + ",\"width\":" + F(m?.Width ?? 0f) + "}");
+                              ",\"spanTex\":" + S(m?.mat?.mainTexture?.name) + ",\"width\":" + F(m?.Width ?? 0f) +
+                              // dripLoops state read (proof row M21): each strand's built point count and its end points
+                              ",\"kind\":" + S(a.Kind.ToString()) + ",\"verts\":" + (m?.Verts ?? 0) +
+                              ",\"strandPts\":[" + (m == null ? "" : string.Join(",", m.StrandPoints)) + "]" +
+                              ",\"strandEnds\":[" + (m == null ? "" : string.Join(",", m.ends.Select(s =>
+                                  "[" + D(s.A.X) + "," + D(s.A.Z) + "," + D(s.B.X) + "," + D(s.B.Z) + "]"))) + "]}");
                 }
                 rows.Add("{" + StyleRow(a.parent) + ",\"look\":" + S(AerialMaterials.LookOf(a)) + ",\"topTex\":" + S(AerialMaterials.TopPathFor(a)) +
                          ",\"attachZ\":" + F(AerialMaterials.AttachZ(a)) + ",\"insulators\":" + AerialMaterials.InsulatorsFor(a).Count +
