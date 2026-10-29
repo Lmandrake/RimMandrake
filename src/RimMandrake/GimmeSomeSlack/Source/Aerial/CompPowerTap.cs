@@ -37,6 +37,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public int victimNetHash;
         public string victimFaction;
         private float sinceEventWd;
+        /// <summary>Not saved: whom the open window belongs to. A window reloaded from a save adopts its first victim.</summary>
+        private readonly TapWindow<Faction, Thing> window = new TapWindow<Faction, Thing>();
         private CompPowerTrader trader;
         /// <summary>POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: the victim faction that most recently caught this clamp (null: never
         /// caught). Kept for the inspect line and for saves written before <see cref="caughtFactions"/>.</summary>
@@ -145,18 +147,34 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 stolenWd = (float)AerialMath.TapStolenPerTick(AerialSettings.tapRate, rawGain, stored, CompPower.WattsToWattDaysPerTick,
                     victim == ours, AerialSettings.tapsEnabled && AerialSettings.enabled, TapRegistry.TakenThisTick(victim), working);
             }
-            if (stolenWd > 0f) { TapRegistry.Debit((vt as Building)?.PowerComp, stolenWd); drainTicksSinceEvent++; }
+            if (stolenWd > 0f)
+            {
+                TapRegistry.Debit((vt as Building)?.PowerComp, stolenWd);
+                window.Wd = sinceEventWd; window.DrainTicks = drainTicksSinceEvent;
+                window.Drain(vt.Faction ?? Faction.OfPlayer, vt, stolenWd, RaiseWindow);   // a victim switch flushes the old victim's own energy first
+                sinceEventWd = window.Wd; drainTicksSinceEvent = window.DrainTicks;
+            }
             lastStolenW = stolenWd / CompPower.WattsToWattDaysPerTick;
             stolenTotalWd += stolenWd;
-            sinceEventWd += stolenWd;
             if (!t.PowerOn && lastStolenW > 0f && working) t.PowerOn = true;
             t.PowerOutput = t.PowerOn ? lastStolenW : 0f;
             if (parent.IsHashIntervalTick(250) && sinceEventWd > 0f)
             {
-                if (AerialSettings.tapEvents) TapEvents.Raise(parent, vt, sinceEventWd);
+                window.Wd = sinceEventWd; window.DrainTicks = drainTicksSinceEvent;
+                window.Flush(RaiseWindow);
                 sinceEventWd = 0f;
                 drainTicksSinceEvent = 0;
             }
+        }
+
+        /// <summary>Raise the window against the victim that supplied it. OnDrained reads drainTicksSinceEvent, so it holds the window's ticks for the call.</summary>
+        private void RaiseWindow(Thing victimThing, float wd, int drainTicks)
+        {
+            if (!AerialSettings.tapEvents) return;
+            int keep = drainTicksSinceEvent;
+            drainTicksSinceEvent = drainTicks;
+            try { TapEvents.Raise(parent, victimThing, wd); }
+            finally { drainTicksSinceEvent = keep; }
         }
 
         public override string CompInspectStringExtra()

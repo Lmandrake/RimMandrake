@@ -49,6 +49,7 @@
     <Compile Include="LaneAChecks.cs" />
     <Compile Include="..\Aerial\AerialMath.cs" />
     <Compile Include="..\Aerial\TapLedger.cs" />
+    <Compile Include="..\Aerial\TapWindow.cs" />
     <Compile Include="..\Aerial\BracketGeometryTable.cs" />
     <Compile Include="AerialSelfTest.cs" />
     <Compile Include="SwitchFlipChecks.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="..\Aerial\ConduitStyles.cs" />
     <Compile Include="StyleStage2Checks.cs" />
     <Compile Include="TheftChecks.cs" />
+    <Compile Include="TapWindowChecks.cs" />
     <Compile Include="TapClampPoseChecks.cs" />
     <Compile Include="MotionBucketChecks.cs" />
     <Compile Include="GssFuzz.cs" />

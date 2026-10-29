@@ -75,6 +75,7 @@
     <Compile Include="Aerial\AerialMath.cs" />
     <Compile Include="Aerial\AerialLineProfiles.cs" />
     <Compile Include="Aerial\TapLedger.cs" />
+    <Compile Include="Aerial\TapWindow.cs" />
     <Compile Include="Aerial\AerialDefOf.cs" />
     <Compile Include="Aerial\AerialSettings.cs" />
     <Compile Include="Aerial\AerialMaterials.cs" />
