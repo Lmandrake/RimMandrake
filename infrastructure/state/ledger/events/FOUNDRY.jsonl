@@ -8911,3 +8911,8 @@
 {"seat":"FOUNDRY","event":"start","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","ts":"2026-10-29T06:59:11Z","tsn":1793257151775497764}
 {"seat":"FOUNDRY","event":"note","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","text":"FOUNDRY 2026-10-29: nothing stranded. ledger_sync.py reports 0 lines missing from origin/main; clone is 0 behind. The 17 events were already published by this window's ./publish calls; no rescue --apply needed.","ts":"2026-10-29T07:00:06Z","tsn":1793257206313024701}
 {"seat":"FOUNDRY","event":"implemented","id":"FOUNDRY_SHARD_RESCUE_STRANDED_EVENTS","sha":"428ae1dd476b","ref":"origin/main","criteria":[],"ts":"2026-10-29T07:00:09Z","tsn":1793257209175008326}
+{"seat":"FOUNDRY","event":"lease","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","action":"take","token":"FOUNDRY.pid15692.42428131","expires":"2026-10-29T07:48:18Z","ts":"2026-10-29T07:03:18Z","tsn":1793257398847365188}
+{"seat":"FOUNDRY","event":"lease","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","action":"renew","token":"FOUNDRY.pid15692.42428131","expires":"2026-10-29T07:48:25Z","ts":"2026-10-29T07:03:25Z","tsn":1793257405794311698}
+{"seat":"FOUNDRY","event":"claim","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","ts":"2026-10-29T07:03:26Z","tsn":1793257406254507752}
+{"seat":"FOUNDRY","event":"start","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","ts":"2026-10-29T07:03:26Z","tsn":1793257406750450034}
+{"seat":"FOUNDRY","event":"implemented","id":"AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN","sha":"f5a15a22cd45","ref":"origin/main","criteria":[],"ts":"2026-10-29T07:07:59Z","tsn":1793257679446704415}
