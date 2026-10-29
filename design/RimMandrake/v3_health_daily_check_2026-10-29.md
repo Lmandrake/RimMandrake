@@ -8,6 +8,8 @@ guards Operations grading its own usefulness.
 Owner, later the same day: "I also suspect Operation may need to sample more often than once a day. I think perhaps
 there are dumb monitors that are running all the time that feed into real-time dispatch as well as Operation
 assessment?" Yes: that is the shape below.
+Owner, 2026-10-29, on drills (by card): the Auditor plants faults, including the ones Operations must catch; the
+kill-test baseline is an Opus gold-labelling of the v2 week. His design for recording plants, and its revision, is §3.
 
 Day-one evidence (hand-made, what this automates): `D:\ClaudeWork\rimmandrake\conductor\v3_health_2026-10-29.md`.
 
@@ -32,7 +34,7 @@ answered that by hand in about an hour, and four of the answers were UNMEASURED.
 | part | what measures it | cadence | what judges it | AI cost |
 |---|---|---|---|---|
 | 1 message tags | `owner_tags.py extract` (no AI) finds new messages; `owner_tags.py tag` (Haiku) tags them | extract every 15 min (inside the ops_watch pass); tag hourly (own timer) | program checks every batch; Operations reads the daily numbers | Haiku only |
-| 2 drills | `health_drill.py plant` (no AI) from a fixed catalogue; ops_watch collector `health.drill.*` looks for the catch | plant: daily timer 06:10 local, at most the rate in §3.4; catch check every 15 min | Operations, weekly in the Monday 07:30 run | none |
+| 2 drills | `health_drill.py plant` (no AI), the Auditor's program, plants blind from the Auditor's catalogue; `health_drill.py watch` (no AI, not in ops_watch) looks for the catch | plant: own timer, random minute, at most the rate in §3.3; watch every 15 min | the Arbiter referees each settled plant; Operations and the Auditor read results weekly | none |
 | 3 output trace | ops_watch collector `health.trace.*` (no AI) | every 15 min | Operations at 07:30 and on `ROLE_*` alarms | none |
 | 5 page | `v3_health_page.py` (no AI), last step of the ops_watch pass | every 15 min; one dated copy kept per day | Operations reads it at 07:30 and stamps it read | none |
 | alarms | ops_watch `targets` with `"for": "Operations"` | every 15 min, edge-triggered | Operations alarm run (existing trigger) | existing alarm run |
@@ -138,80 +140,194 @@ Output points (replacing the `U()` placeholders in `ops_watch.c_v3` for these tw
 `v3.failure_signal_share` (7-day, all blocks incl. cards), `v3.direction_per_day`, `v3.owner_msgs_per_day`.
 `accepted_per_day` stays with `OPS_KPI_MEASURE_OWED_VTHREE`; this spec does not build it.
 
-## 3. Part 2: planted faults (drills)
+## 3. Part 2: planted faults (revised 2026-10-29 to the owner's design)
 
-### 3.1 The idea
+### 3.1 His design, and what this section changes
 
-A program plants a fault we know about, at a time we record, of a kind one named role is supposed to catch. We then
-time how long that role takes, or whether it catches it at all. That measures each role's real usefulness instead of
-its claimed usefulness. The Arbiter's trial on 10-28 already did this once by hand (a deliberate fake close, which the
-Arbiter caught and the Auditor's pre-screen waved through).
+By card, 2026-10-29: **the Auditor plants faults, including the ones Operations must catch.** His words the same day:
+*"Planted faults should be added from outside the system (I would suggest Auditor by its very design). It is treated
+as a very real fault, and recorded in a secret ledger that only Arbiter and Conductor are allowed to look in. Once the
+experiment is over, it is post-modified to indicate it was a Plant so it never contaminates later processing, after
+that information can no longer change behavior. Stats that are gathered should have parallel numbers that are
+"corrected fault-free" that at first are simply equivalent but later get updated once faults are removed. Then in the
+hidden register the fault is marked as repaired."*
 
-### 3.2 The catalogue
+The point is unchanged: plant a fault we know about, of a kind one named role should catch, and time the catch. That
+measures each role's real usefulness, not its claimed usefulness (the Arbiter's 10-28 trial did it once by hand).
 
-`src/RimMandrake/Utils/health_drill_catalogue.json` lists each drill class: what is planted, the catcher (one role
-or program), what counts as a catch, the deadline, and the line of the catcher's role doc that makes it the catcher's
-job. A class whose catcher doc does not say it is that role's job is refused by the program (the drill would measure a
-duty nobody has). Starting classes:
+What his design gets right and is kept: plants look real, so they test the real path; a secret register; a reveal
+that marks the plant so it stops mattering; two numbers for every statistic, equal until a reveal. Six things in it
+needed working out. Each is below with how it is resolved:
+
+| issue | resolution | where |
+|---|---|---|
+| The Auditor is itself a catcher (VALIDATED_BUT_FAILING; second line on FAKE_CLOSE). A planter that knows the plant cannot be timed on it. | The Auditor **owns** the catalogue and the rate; a program it owns plants **blind** on its own timer, outside every role run. The Auditor never learns which plant fired or when. | 3.2 |
+| The Arbiter may read the secret, yet it is the designed catcher of a fake close. Reading the live register would void every Arbiter timing. | The Arbiter reads **settled** rows only (caught, missed or voided) and referees them. The Conductor alone reads **live** rows. | 3.2 |
+| The real ledger is append-only, so a plant cannot be "post-modified". | The reveal is a new **appended, public, structured event**; projection rules make readers treat the revealed events as planted. Nothing is edited. | 3.5 |
+| "Only Arbiter and Conductor may look": every agent runs as the same Windows user and can read any file. | The register is a **seal, not a lock**: unreadable by accident, and reading it on purpose leaves a trail that voids the peeker's drills. Named plainly as a limit. | 3.4 |
+| A plant has real side effects: a FOUNDRY ticket spent on a fake, real code written to fix a fake, a plant reaching his screen. | Reveal **per plant, at its first catch** (not at the end of a long experiment); a fixed rule for code that "fixed" a plant; an owner gate in every owner-bound renderer. | 3.7, 3.8 |
+| "Corrected" numbers would need the secret to compute. | They do not: they are computed from the **public reveal events only**, so before a reveal they equal the raw numbers by construction, and no metric program ever opens the register. | 3.6 |
+
+### 3.2 Who plants, who knows, who catches
+
+- **Planter: `health_drill.py plant`, owned by the Auditor.** The Auditor writes and maintains the catalogue (3.3),
+  the rate and the safety refusals; that is the "from outside the system" part. The program runs on its own timer, not
+  inside any role run (no `RM_ROLE_UNIT`), picks the class, the target window and the minute at random from the
+  catalogue, writes the plant, and records it only in the sealed register. The Auditor's role text says it never reads
+  the live register. So the Auditor can still be timed on the classes it catches: it knows the classes exist (its own
+  role doc says so anyway), not the instances.
+- **Live reader: the Conductor.** It is the only voice to the owner, so it must know what is fake in order to keep
+  fakes off his screen (3.7). It is not timed as a catcher of anything. It uses the knowledge for that filter only:
+  it never steers, delays, assigns or comments on work because it is a plant. If the owner asks about a plant item
+  directly, the Conductor tells him the truth: he is outside the experiment, not a catcher.
+- **Referee: the Arbiter**, on settled rows only. When the watcher (3.8) marks a plant caught, missed or void, the
+  row becomes readable to the Arbiter, which confirms the mechanical verdict (was that note really a catch?) and rules
+  on any real commit the plant drew (3.7). While a plant is live it is invisible to the Arbiter, so the Arbiter stays a
+  fair catcher of fake closes. This narrows his "Arbiter may look" to "Arbiter may look once it is over"; open
+  question 2 asks him to confirm.
+- **Catchers: every role, Operations included** (by his card). Nothing about a live plant reaches Operations: the
+  watcher is not an ops_watch collector, and nothing it writes for Operations names or counts a live plant (3.8).
+
+### 3.3 The catalogue and the hard refusals
+
+`src/RimMandrake/Utils/health_drill_catalogue.json`, written by the Auditor, lists each class: what is planted, the
+catcher, what counts as a catch, the deadline, and the line of the catcher's role doc that makes it the catcher's job.
+A class whose catcher doc does not say so is refused (it would measure a duty nobody has).
 
 | class | planted | designed catcher | caught when | deadline |
 |---|---|---|---|---|
-| FAKE_CLOSE | an item closed with a sha that does not touch the files its note claims | Arbiter (next batch); Auditor pre-screen as second | a verdict or ledger note/file naming the item as FAIL or defect | 48 h |
+| FAKE_CLOSE | a duplicate of a real, already-finished item, closed with a sha that does not touch the files its note claims | Arbiter (next batch); Auditor pre-screen second | a verdict or note naming the item FAIL or defective | 48 h |
 | VALIDATED_BUT_FAILING | an item at `validated` followed by RUNNER verify `fail` events (the QUARRY pattern) | Auditor (pre-screen + daily audit) | an Auditor note, finding or filed item naming it | 48 h |
 | STALE_DOING | an item in `doing` with an expired lease and no event for 5 days | Producer (daily list) | the Producer drops, re-plans or flags it | 48 h |
-| DEAD_FINDING | a RUNNER finding citing a real-looking failure, left untriaged | whoever owns the findings pool once `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` lands (program folds, FOUNDRY judges) | the fold or FOUNDRY names it | 72 h |
+| DEAD_FINDING | a RUNNER finding citing a real-looking failure, left untriaged | the findings-pool owner once `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` lands | the fold or FOUNDRY names it | 72 h |
+| Operations classes | proposed by the Auditor; each acts only on a **decoy input** that ops_watch reads and nothing else does (for example a decoy source whose writer the planter pauses, so it goes stale) | Operations | its alarm or note names it | 24 h |
 
-Deferred until a catcher exists: **LAPSED_PERMISSION** (a grant past its expiry; catcher would be the grant monitor of
-`COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME`, unbuilt). When it lands, the drill is a decoy grant entry for a decoy
-subject, never a real grant: a drill may never change what any real work, the game or the bridge can do.
+Deferred until a catcher exists: LAPSED_PERMISSION (a decoy grant for a decoy subject, never a real grant).
 
-**Never planted:**
-- any class **Operations** catches: ops_watch alarms and flags, a silent or blind collector, token-talk drift, runway or
-  budget anomalies, a role NOT-RUNNING. Operations is the planter (by the owner's card) and knows every drill; it must
-  never be timed against one. The program refuses a catalogue entry with catcher Operations, and a selftest proves it;
-- any class whose failure path ends at the owner (a stale `needs owner`, a re-asked ruling, a card): if the catcher
-  misses it, it reaches him. That breaks "nothing reaches the owner unread";
-- anything touching the game, the bridge, deploys, art, real grants, or another seat's real items.
+**Refused at plant time, by the program, each proved by a selftest:**
+- anything touching the game, a save (canonical or not), the bridge, deploys, the Mods folder, `ModsConfig.xml`, art,
+  real grants, or anything on the owner's screen (RimPulse, his desktop, the game window);
+- anything in the repo but the ledger shards: a plant never commits code, defs or docs. A fake close cites an
+  existing, unrelated sha;
+- any change to another seat's real item: a plant writes events on items it filed itself;
+- `needs owner`, a card, a re-asked ruling, or any path whose miss ends at the owner;
+- a fabricated item with buildable content: a plant's item duplicates finished work or is process-only, so a catcher
+  who "does the work" finds nothing to build (3.7);
+- more than **2 plants a week**, more than **one live per catcher**, or a class used twice in a row.
 
-### 3.3 Marking plants so they never reach the owner or corrupt a metric
+### 3.4 The secret register: where it lives and how it is guarded
 
-- **Sealed registry.** Each plant is recorded in `D:\ClaudeWork\rimmandrake\v3_health\drills\registry.jsonl`: id,
-  class, planted time, catcher, deadline, every ledger event it wrote. Nothing in the repo names a live drill.
-- **One filter, used everywhere.** `src/RimMandrake/Utils/drills.py is_drill(item_id)` reads the registry. Every
-  metric program drops drill items and drill-caused items: ops_watch (flow, production, testing), `v3_vs_v2.py`,
-  `rimflow_metrics`, `audit_prescreen.py`'s statistics (its flags still fire: that is the catch), the friction tools.
-  The v3_vs_v2 rule file is untouched (the filter is input cleaning, not a rule change), and its verdict prints
-  "drill items excluded: n".
-- **Owner surfaces.** Every program that renders for the owner (morning cards, RimPulse, HUMAN.md, blind_view's owner
-  lines) drops drill items through the same filter. A drill never carries `needs owner` (refused at plant time).
-- **Ledger hygiene.** Drill items are real ledger items (the catchers read the ledger, so they must be). At reveal
-  they are dropped with `--why "drill <id>: planted <t>, caught by <role> after <h> h"` and so leave the counts.
+- **Where.** `D:\ClaudeWork\rimmandrake\v3_health\drills\sealed\` (outside the repo; nothing in the repo names a live
+  plant). Two files: `live.bin`, sealed (encrypted with a key from a file whose path is read from the environment,
+  set only on the planter's timer, the Conductor's launch and the watcher), and `settled.jsonl`, plain, which the
+  Arbiter reads. A plain grep for an item id, class name or the word "plant" over `live.bin` matches nothing (selftest).
+- **Row.** Plant id, class, catcher, planted time, deadline, every event it wrote as (seat, tsn) (ledger events have
+  no id of their own; seat + tsn is their identity), the items it filed, and a status:
+  `LIVE` → `CAUGHT` / `MISSED` / `VOID` → `REVEALED` → `REPAIRED`.
+- **Tool guard.** `drills.py` is the only reader. `read_live()` refuses unless `RM_ROLE_UNIT` is the Conductor or the
+  caller is the planter or watcher; `read_settled()` serves only settled rows. This stops an honest mistake. It does
+  not stop a determined agent, which can read any file this Windows user can.
+- **Tripwire.** The register path and the key-file path are terms in the existing token-talk scanner over every role
+  run's transcript except the Conductor's. A hit raises `DRILL_PEEK`, voids every live plant that role catches, and is
+  filed as a finding. So peeking is detectable after the fact, and a peek only spoils the peeker's own numbers.
+- **What is not done, and why.** A separate Windows account with file permissions would make it a real lock. That is
+  much more plumbing (another user, another environment, credential handling) for a threat (an agent deliberately
+  hunting the register) that the tripwire already exposes. Revisit if `DRILL_PEEK` ever fires.
 
-### 3.4 Keeping them invisible to the catcher
+### 3.5 In the ledger: a real-looking plant, then a public reveal
 
-- Names are minted through `rimflow namecheck` from ordinary subject words in the lanes the catcher sees, not from a
-  "DRILL" word. Times are random inside the catcher's window, never on a clock slot.
-- The registry lives outside the repo; role instructions name it as off-limits the way token figures are; the
-  existing token-talk scanner gains the registry path as a term, so a role run that reads or mentions it raises
-  `DRILL_PEEK` and that drill is voided (not counted either way).
-- Operations never writes a live drill id anywhere but its own item's notes, and only after reveal. The page shows open
-  drills as a count only.
-- Rate: at most **2 plants a week**, at most one open per catcher, one class per week in rotation. Small enough that
-  the catchers' real work and the metrics are not distorted, large enough for ~8 timings a month.
-- **The seat the events are written under is open question 2.** A catcher that sees seat `DRILL` on a close is not
-  being tested. A drill written as seat FOUNDRY or RUNNER is invisible but means the ledger holds events under a
-  seat that did not write them, marked only in the sealed registry.
+- **Planting.** The plant is written as ordinary rimflow events under the seat the fault would really come from
+  (FOUNDRY for a close, RUNNER for a verify): his "treated as a very real fault". The shards are union-merged
+  (`.gitattributes`), so writing FOUNDRY's shard from another clone cannot conflict. The commit rides the ordinary
+  ledger publish with an ordinary `ledger:` message. The cost is honest and temporary: until the reveal, the ledger
+  holds events under a seat that did not write them.
+- **The reveal (his "post-modified").** The ledger cannot be edited, so the reveal is an **appended event**, a new
+  verb `reveal` written by the watcher under the Auditor's role unit: `{plant, class, catcher, outcome,
+  caught_after_h, events: [(seat, tsn)...], items: [...]}`. It is structured, not a note, because readers must act on
+  it and free text is not parsed. It is public: once a plant is over, nothing about it is secret, and its reveal is
+  what makes every later reader correct.
+- **Projection rule.** `model.planted(events)` returns the revealed events and items, plus every item whose
+  caused-by chain starts at a revealed item. `model.corrected(events)` is the event list without them. `model.replay`
+  itself is unchanged: the history stays true (those events did happen); a reader chooses the view.
+- **Afterwards the plant can no longer change behaviour.** The watcher drops every planted and descendant item still
+  open, with `--why "plant <id>: revealed"`, so it leaves every queue, list and lease. Every program that decides
+  anything (the Dispatcher, the Producer's list, `audit_prescreen.py`'s statistics, `arbiter_pending.py`) reads the
+  corrected view. The as-recorded view is kept for history and for the drill results.
 
-### 3.5 Timing and cleanup
+### 3.6 Two numbers for every statistic: as-recorded and corrected
 
-Every 15 min the ops_watch collector `health.drill` reads the registry and the ledger since each open drill's plant
-time and checks for the catch rule. It records `caught_by`, `caught_after_h`, or `overdue`. At catch or at
-deadline + 24 h, `health_drill.py reveal` (no AI): drops the drill item and any item whose caused-by chain starts at
-it, writes the reveal note, appends the result to `drills\results.jsonl`, and closes the registry row. A drill whose
-reveal fails stays OPEN in the registry and raises `DRILL_CLEANUP_STUCK`. A selftest proves a full cycle leaves no
-open item, no needs-owner and no metric change on a fixture ledger.
+- **How they are made.** One function, `model.corrected()`, applied at the reader. The ledger readers today are
+  `model.read()` (v3_vs_v2, blind_view, role_launch), `pulse_core.read_ledger()` (ops_watch and RimPulse),
+  `testing_metrics.read_ledger()` and `mod_completion.read_ledger()`. Each metric gains the corrected twin by passing
+  its events through it. A selftest lists every ledger reader under `Utils/` and `rimflow/` and fails if a metric
+  reader does not route through it, so a new reader cannot silently skip the correction.
+- **Equal until a reveal, by construction.** The correction uses only public reveal events, so before any reveal the
+  two numbers are identical, and computing them reveals nothing about a live plant.
+- **ops_watch.** Each ledger-derived point carries `value` (as-recorded) and `corrected`. Alarms fire on the
+  as-recorded value: a plant must trip an alarm exactly as a real fault would. Trends, the kill test and the page use
+  `corrected`.
+- **History that was already written.** ops_watch series and `v3_vs_v2\history.jsonl` rows are never rewritten.
+  When a reveal touches a past window, its corrected figure is recomputed from the ledger and **appended** as a
+  correction row (`corrected_by: <plant id>`). Readers take the newest row for a window.
+- **v3_vs_v2.** The rule file is untouched (the correction is input cleaning, not a rule change). Its verdict prints
+  both numbers and "plants removed: n".
+- **Blind surfaces** (`digest_blind.md`, `index_blind.md`, `blind_view`) show corrected numbers and the count of
+  plants **settled** this week. They never show a live count: knowing a plant is out there would put the catcher on
+  alert.
+- **Cost is not corrected away.** Tokens and hours spent catching or handling a plant were really spent. They are
+  removed from quality and flow counts but kept in cost, as a separate "drill overhead" line on the page.
+- **A decision already taken on as-recorded numbers is not undone** (an alarm run that happened, a role the Dispatcher
+  held). The drill result records it, so the Auditor can see whether plants are steering real work.
 
-Results feed the page: per catcher, drills caught / planted and median hours to catch, over 4 weeks.
+### 3.7 Real side effects, and how each is contained
+
+- **A FOUNDRY ticket spent on a fake.** The catch is designed to be a judgement (a verdict, a note, a finding), not
+  a rework claim. The watcher reveals within one pass of the catch (≤15 min) and drops descendants, so the window for a
+  real claim is short. If one is claimed in that window, its cost is drill overhead. The fake close duplicates finished
+  work, so even a reopened plant has nothing new to build.
+- **A plant "fixed" by real code.** The reveal lists every commit that cites a planted or descendant item. The Arbiter
+  rules on each: (a) it fixes a real gap the plant exposed (a check that should have caught it): **keep**, recorded as
+  the drill's dividend; (b) it serves only the fake: **delete** it by the standing rule, fix every inbound reference,
+  filed as a FOUNDRY item. Until every such commit is ruled, the row cannot reach `REPAIRED`.
+- **Harm to the game, saves or his screen.** Not containable after the fact, so never allowed: refused at plant time
+  (3.3). Plants live in the ledger and in decoy scratch inputs only.
+- **A plant reaching the owner while it looks real.** Two layers. A program gate: every owner-bound renderer (morning
+  cards, RimPulse, HUMAN.md, Operations' `OP-` relays, the Conductor's card builder) passes item ids through
+  `drills.owner_gate()`, which holds anything citing a live planted or descendant item. A held line is left out, not
+  reported missing. Then the Conductor, which reads the live register, checks anything it writes him by hand. A plant
+  never carries `needs owner` (3.3), so the gate should seldom fire. Every hold is counted, and a hold is a design
+  defect in that class.
+- **A plant tripping another plant's catcher, or a real fault hiding behind a plant.** One live plant per catcher, and
+  at most two a week. A real fault found while chasing a plant is real work and is filed as such.
+
+### 3.8 Timing: per plant, not at the end of the experiment
+
+- **The watcher**, `health_drill.py watch`, runs every 15 minutes on the planter's timer, not inside ops_watch
+  (Operations is a catcher now). It reads the live register and the ledger since each live plant's planted time and
+  applies the class's catch rule. Its outputs are the register itself and `drills\results.jsonl` (settled rows only).
+- **A plant ends at its first catch, at its deadline, or at a peek.** Then: status `CAUGHT` / `MISSED` / `VOID`, the
+  row moves to `settled.jsonl`, and the watcher writes the `reveal` event and the drops. It reveals per plant rather
+  than at the end of a whole experiment because a plant that sits unrevealed for weeks keeps steering real work.
+  The price: each reveal shows catchers what one plant looked like. Rotating classes and the low rate keep that small.
+- **The Arbiter's referee pass** (in its next batch) confirms or overturns the verdict and rules on any commits.
+  Then `REPAIRED` is set: all items dropped, corrected rows appended, commits ruled. A row revealed but not
+  `REPAIRED` within 24 h raises `DRILL_CLEANUP_STUCK`.
+- **The "experiment"** is a calendar window the Auditor sets in the catalogue (first one: 4 weeks from switch-on).
+  Its end stops new plants and starts the results summary. It is not when plants are revealed: each one already was.
+- **Results** feed the page: per catcher, plants caught / planted and median hours to catch, settled plants only,
+  4 weeks. Operations reads them in its Monday 07:30 run, and the Auditor's weekly re-check reads them too.
+
+### 3.9 Alternatives considered
+
+| | how it works | gains | costs |
+|---|---|---|---|
+| **A. His design, literally** | The Auditor plants by hand and knows each plant; Arbiter and Conductor read the live register; plants revealed when the experiment ends | simplest; no blind planter | the Auditor and the Arbiter can never be timed, and they are the catchers of the two most important classes (fake close, validated-but-failing); plants sit live for weeks and steer real work |
+| **B. Blind planter, split access, per-plant reveal (recommended, 3.2-3.8)** | as above | every role timed, Operations included; corrected numbers need no secret; a plant stops mattering within one pass of its catch | one new verb (`reveal`), a reader lint, a seal that is tamper-evident rather than a lock, and one narrowing of his access rule (Arbiter after settlement) |
+| **C. Shadow overlay** | plants never enter the real ledger; they live in an overlay that only the catchers' reading tools merge in | no impersonated seat, no correction at all, no contamination possible | measures the reading tool, not the role: a catcher that reads git, raw shards or a file path never sees the plant; every reading tool needs the overlay |
+
+Recommendation: **B**. It is his design with two changes: the Auditor plants through a blind program instead of by
+hand, and the Arbiter reads after settlement instead of live. Both exist so that the roles he most wants measured can
+be measured at all.
 
 ## 4. Part 3: output tracing
 
@@ -254,7 +370,7 @@ tagged MEASURED, ESTIMATE or UNMEASURED (the point's own mark, copied, never upg
 1. **Running?** One row per component from part 3: verdict, last run, next slot, held reason. Plus the Dispatcher
    tick age and failed timers, copied from the ops_watch digest.
 2. **Useful?** Part 3's WORKING/RUNNING-UNUSED per role over 7 days; drill catch rate and median time per catcher
-   (part 2); untriaged findings; accepted items/day (UNMEASURED until `OPS_KPI_MEASURE_OWED_VTHREE`).
+   (part 2, settled plants only; no live count is ever shown); drill overhead; untriaged findings; accepted items/day (UNMEASURED until `OPS_KPI_MEASURE_OWED_VTHREE`).
 3. **Better than v2?** The latest row of `v3_vs_v2\history.jsonl` (standing, PROVISIONAL until four settled weeks,
    the counterfactual's mark) and the §6 success-test KPIs from ops_watch series: keep-going/day and failure share
    (part 1), test hours catching nothing, process-commit share, each with baseline, target and 7-day trend. The kill
@@ -276,7 +392,8 @@ the owner unread".
 ## 6. Alarms (so Operations wakes instead of waiting)
 
 New ops_watch `targets`, all `"for": "Operations"` (kept in `alarms.json`, never filed as ledger items: no commits,
-and no drill id ever reaches the ledger by an alarm). They use the existing edge-triggered run_alarms (file once per
+and no drill id ever reaches the ledger by an alarm). The `health.drill.*` keys are read from the watcher's
+`drills\health.json`, which holds settled-plant counts only, so Operations, now a catcher, learns nothing live. They use the existing edge-triggered run_alarms (file once per
 new crossing, clear after 4 clear passes). The existing Operations alarm trigger runs one alarm run for all open
 alarms, at most one per `alarm_run_gap_s`.
 
@@ -284,9 +401,10 @@ alarms, at most one per `alarm_run_gap_s`.
 |---|---|---|---|
 | ROLE_NOT_RUNNING | `health.trace.*.missed_unexplained` | > 0 | a scheduled slot passed with no launch and no hold to explain it |
 | ROLE_UNUSED_STREAK | `health.trace.*.unused_days` | ≥ 3 | a role produced for three days and nobody acted on any of it |
-| DRILL_UNCAUGHT | `health.drill.overdue` | > 0 | a drill passed its deadline uncaught |
-| DRILL_PEEK | `health.drill.peeks` | > 0 | a catcher read or named the sealed registry |
-| DRILL_CLEANUP_STUCK | `health.drill.reveal_failed` | > 0 | a drill item could not be removed |
+| DRILL_UNCAUGHT | `health.drill.missed_7d` | > 0 | a plant reached its deadline uncaught (already revealed when this fires) |
+| DRILL_PEEK | `health.drill.peeks` | > 0 | a role other than the Conductor read or named the sealed register (§3.4) |
+| DRILL_CLEANUP_STUCK | `health.drill.unrepaired` | > 0 | a revealed plant was not `REPAIRED` within 24 h (§3.8) |
+| DRILL_OWNER_HOLD | `health.drill.owner_holds` | > 0 | the owner gate held a line citing a live plant (§3.7): a defect in that class |
 | TAGGER_STALE | `v3.tagger_age_h` | > 3 | tags stopped arriving: the kill-test inputs go UNMEASURED |
 | TAGGER_DRIFT | `v3.calibration_ok` | = 0 | the weekly calibration failed its bar |
 | KILL_TEST_FIRES | `v3.kill_test` | = 1 | after the first full v3 week: keep-going 7-day mean not below the re-tagged baseline AND accepted items not risen (only when both inputs are not UNMEASURED) |
@@ -313,8 +431,8 @@ All token figures are ESTIMATE (weighted tokens, `role_launch.TOKEN_WEIGHTS`), s
 list price is roughly a fifth of Opus per token (ESTIMATE from the published price sheet, not a meter reading).
 
 **Commits.** Daily running adds **no routine commits**: everything writes under `D:\ClaudeWork`, and the health alarms
-stay out of the ledger. Ledger events come only from drills (about 3 events at plant, 2 at reveal; at 2 drills a
-week, ≤4 small commits a week, riding the Dispatcher's existing ledger publish where possible) and from Operations'
+stay out of the ledger. Ledger events come only from drills (about 3 events at plant, one `reveal` plus the drops at reveal; at 2
+plants a week, ≤4 small commits a week, riding the Dispatcher's existing ledger publish where possible) and from Operations'
 notes on its own item, which it writes today anyway. The build is about **7 commits**, one per build step, all
 `src/RimMandrake/Utils/` and so counted as process by `process_regex`: a one-time bump against a 7-day share already at
 72.4%. The build should land in one or two days rather than drip, so it moves one week's share, not three.
@@ -342,16 +460,21 @@ system.
    says; a changed prompt byte refuses to tag; a day under 95% tagged is UNMEASURED. L1 (one live run, the gate): the
    calibration bars in §2.4 pass on the frozen gold sets, and `calibration.json` is written. Until it passes, the two
    ops_watch points stay UNMEASURED.
-6. **Drills** (`health_drill.py`, `drills.py`, catalogue, `health.drill.*` collector). L0: a catalogue entry with
-   catcher Operations, or with `needs owner`, or touching game/bridge/deploy paths, is refused; on a fixture ledger a
-   plant, a catch event and a reveal leave no open item, no needs-owner line, and identical flow and production
-   figures to the same ledger without the drill; an uncaught drill raises DRILL_UNCAUGHT at its deadline and not
-   before; a role run text naming the registry path raises DRILL_PEEK. Not switched on until open question 2 is
-   answered.
+6. **Drills** (`health_drill.py plant|watch`, `drills.py`, the `reveal` verb with `model.planted()` and
+   `model.corrected()`, the catalogue). L0: every refusal in §3.3 fires (game, save, bridge, deploy, art, repo path,
+   another seat's item, `needs owner`, rate); a plain grep of `live.bin` for a planted id matches nothing;
+   `read_live()` refuses a non-Conductor role unit; before any reveal every metric's corrected value equals its
+   as-recorded value; after plant, catch and reveal on a fixture ledger there is no open planted item, no needs-owner
+   line, and corrected flow and production figures equal the same ledger without the plant; the reader lint fails on
+   a fixture ledger reader that skips `model.corrected()`; `owner_gate()` holds a line citing a live plant and passes
+   it after reveal; a role run text naming the register path raises DRILL_PEEK and voids that role's live plants.
+   Not switched on until open question 2 is answered.
 7. **Alarms and role text.** The §6 targets in `ops_watch_rules.json` (Operations proposes; the owner's rule that
    Operations does not edit targets alone stands, so FOUNDRY writes them under this item); `roles/operations.md`
    gains a "v3 health" section: read `index.md` at 07:30 after the digest, stamp it, judge trace overrulings, weekly
-   drill reading on Mondays; `roles/auditor.md` gains the weekly re-check of those. L0: each new target fires on a
+   drill reading on Mondays; `roles/auditor.md` gains the weekly re-check of those, ownership of the drill catalogue,
+   and "never read the live register"; `roles/arbiter.md` gains the referee pass on settled plants (§3.2, §3.7);
+   `roles/conductor.md` gains the live-register duty and its limit (filter for the owner only, §3.2). L0: each new target fires on a
    fixture crossing and clears after 4 clear passes; the Operations trigger names a health alarm.
 
 Order rationale: 1-3 give a running page with no AI at all (most of the value, zero tokens). 4-5 add the kill-test
@@ -364,9 +487,8 @@ inputs. 6 waits on the owner. 7 wires it all to Operations.
    Proposed: the tagger re-tags the baseline windows, the kill test compares tagger to tagger as relative drops
    (−16% keep-going, −2.5 points failure share), and the two KPIs count as ESTIMATE with their calibration figures.
    Yes, or keep 31 and 27.5 as fixed numbers?
-2. **Drill seat.** A drill must look like ordinary work to its catcher. May the drill program write its ledger events
-   under the seat the fault would really come from (FOUNDRY for a close, RUNNER for a verify), marked only in a sealed
-   registry and removed at reveal? If not, drills use a visible seat and measure much less.
-3. **Who drills Operations?** Operations plants, so nothing tests whether Operations catches its own class of faults
-   (a blind collector, a missed slot). Leave that untested for now, or have the Auditor plant one Operations drill a
-   month?
+   **Answered by card 2026-10-29:** the baseline is an Opus gold-labelling of the v2 week. §2 is not yet revised to it.
+2. **When may the Arbiter read the secret register?** Your design lets the Arbiter and the Conductor look. But the
+   Arbiter is the designed catcher of fake closes, and an Arbiter that has read the live register cannot be timed on
+   them. Proposed (§3.2): the Conductor reads live plants; the Arbiter reads each plant once it is settled and
+   referees it. Yes, or give the Arbiter live access and leave fake closes untimed?
