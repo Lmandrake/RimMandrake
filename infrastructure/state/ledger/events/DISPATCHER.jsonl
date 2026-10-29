@@ -91,3 +91,4 @@
 {"seat":"DISPATCHER","event":"note","id":"OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE","text":"dispatcher role_done Operations: Operations economy run rm-role-operations-1793284283 done: 372782 weighted tokens of a 550000 budget (raw 1541762), model claude-opus-5-5, success","ts":"2026-10-29T14:38:24Z","tsn":1793284704944350365}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-10-29T15:01:30Z","tsn":1793286090992961157}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-10-29T15:03:39Z","tsn":1793286219888001896}
+{"seat":"DISPATCHER","event":"note","id":"PIT_SUPERDEEP_COLLAPSE_1","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T15:10:06Z","ts":"2026-10-29T15:12:01Z","tsn":1793286721033448047}
