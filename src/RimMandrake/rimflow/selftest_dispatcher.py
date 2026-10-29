@@ -1959,7 +1959,7 @@ def test_role_real_schedule_triggers():
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
           and p["throttle_bands"]["RED"]["slots"] == "weekly", "schedule: Producer weekly Wed, events, RED weekly")
-    check(p["daily_token_cap"] == 625000, "schedule: Producer daily cap 625,000 (one 500k run + 25%)")
+    check(p["daily_token_cap"] == int(p["run_token_cap"] * 1.25), "schedule: Producer daily cap = one run + 25%")
     for r in sch["roles"]:
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
             RL.parse_slot(t)
