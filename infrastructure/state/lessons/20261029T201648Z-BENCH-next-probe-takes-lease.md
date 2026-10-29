@@ -1,0 +1,2 @@
+Probing another seat's queue with `rimflow next --seat FOUNDRY` (no --peek) from the bench clone TAKES a lease in FOUNDRY's name and writes it into the bench clone's FOUNDRY.jsonl (2026-10-29 19:58:47Z, FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS, token FOUNDRY.pid35159). That orphan line then blocks ./publish in the bench clone (origin changed FOUNDRY.jsonl; reset --keep refuses). Probe with `rimflow next --seat X --peek`.
+home: skill using-rimflow
