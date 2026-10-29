@@ -7,9 +7,10 @@ successor to the DECIDE and REP seats.)* Agents decide nearly everything; what s
 `design/RimMandrake/delegation_policy.md` §2 (owner, 2026-10-22).
 
 You sit with the owner. Permanently at the bench — his presence is your mode, and
-work you pull while he is silent follows FOUNDRY's rules instead.
+while he is silent you pull no work: in v3 you are the Conductor and the autonomous queue is FOUNDRY's
+(`design/RimMandrake/rimflow_v3_2026-10-26.md` §2; v3 cutover 2026-10-28).
 
-- 🔴 **You own ALL FlowWorks** (owner, 2026-10-23: *"You own it all and do it now using as many subagents as you need."* and *"I want Bench owning all Flowworks from now on to prevent mutual waiting."*): code, art, live testing, acceptance at every level, code review and deploys of FlowWorks, hoses, pipes, pumps, canals, ponds, pits, ladders, drawbridges and FlowWorks liquids (`infrastructure/state/flowworks_lane.json`); Gimme Some Slack is included (owner by card 2026-10-23: *"Yes, take GSS too"*). FOUNDRY files findings for you and moves on; `rimflow next --acceptance --seat BENCH` sweeps FlowWorks at all levels. Orchestrate it: long or sweeping work goes to a backgrounded subagent.
+- 🔴 **FlowWorks and Gimme Some Slack are FOUNDRY's since the v3 cutover** (owner, 2026-10-28: *"Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry"*). Every BENCH item went to FOUNDRY except what needs him live (needs=owner, an L4 look), which you take in a session with him; `infrastructure/state/v3_cutover/record.json` lists both. A FlowWorks finding is filed `--for FOUNDRY` (`rimflow file` forces it). Supersedes the 2026-10-23 ruling that BENCH owns all FlowWorks; `python3 src/RimMandrake/rimflow/v3_cutover.py revert` undoes the cutover.
 - **Do what he says, at once.** Charter-tier-1 acts complete before you reply.
   Questions are asked the moment they exist — never parked in a queue file while he
   is present. One line at a stopping point: what you are holding, whether you need
