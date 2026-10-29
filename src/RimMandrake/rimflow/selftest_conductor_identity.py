@@ -171,6 +171,26 @@ def test_injection():
         check(H.display_title("AGENT BENCH — x") == "CONDUCTOR — x", "a detail suffix survives the rename")
         check(H.display_title("AGENT FOUNDRY") == "AGENT FOUNDRY", "FOUNDRY's title is unchanged")
         check(H.seat_of("AGENT BENCH") == "BENCH", "the recorded role still keys seat BENCH")
+        # the title the hook EMITS is the live session name: it must keep matching the schedule's session_name
+        with open(SCHED, encoding="utf-8") as f:
+            seats = json.load(f)["seats"]
+        tmp = tempfile.mkdtemp()
+        try:
+            os.makedirs(os.path.join(tmp, ".claude", "session_roles"))
+            for seat in ("BENCH", "FOUNDRY"):
+                sid = "sid-" + seat.lower()
+                with open(os.path.join(tmp, ".claude", "session_roles", sid), "w") as fh:
+                    fh.write("AGENT " + seat)
+                env = dict(os.environ, CLAUDE_PROJECT_DIR=tmp)
+                r = subprocess.run([sys.executable, os.path.join(ROOT, ".claude", "hooks", "set_session_title.py")],
+                                   input=json.dumps({"hook_event_name": "UserPromptSubmit", "session_id": sid}),
+                                   capture_output=True, text=True, env=env, timeout=60)
+                st = json.loads(r.stdout)["hookSpecificOutput"]["sessionTitle"] if r.stdout.strip() else ""
+                want = seats[seat]["session_name"]
+                check(st == want or st.startswith(want + " "),
+                      "hook sessionTitle for %s ('%s') keeps the schedule session_name '%s'" % (seat, st, want))
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
     finally:
         if old is None:
             os.environ.pop("CLAUDE_PROJECT_DIR", None)

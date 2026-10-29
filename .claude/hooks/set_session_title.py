@@ -386,7 +386,9 @@ def main():
     title = title.splitlines()[0][:MAX_TITLE]
     role_title = title             # pre-item-suffix: seat_of() needs "AGENT <SEAT>" as
                                     # the last token, which the item suffix below breaks
-    title = display_title(title)   # "AGENT BENCH" is shown as "CONDUCTOR"; role_title keeps the key
+    # 🔑 sessionTitle IS the session --name the Dispatcher, seat_restart and v3_ready match against
+    # (dispatcher_schedule seats.<SEAT>.session_name = "AGENT BENCH"), so it must keep the seat KEY.
+    # display_title() is NOT applied here (024a8cb1b2 did, and blinded the BENCH window).
 
     # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
     # seat is on. Derived from the ledger's queue render via statusline.py's
