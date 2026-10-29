@@ -32,7 +32,7 @@ v2's simulated lead was the owner's live steering, not autonomy: in its fit week
 - `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS` — parked by owner card, patch in v3_build\roles\parked.patch; NEXT: drop it if the trial winner has no Innovator
 - `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY` — parked (owner card), patch D:\ClaudeWork\rimmandrake\v3_build\model\parked.patch; the sim must model owner presence (lesson 2b61ea3c42); NEXT: decide after the trial whether the process model is still wanted, then drop or resume
 - `RALPH_LOOP_DESIGN_ONE_PROMPT_FOREVER` — design + sim done and GPT-checked (92a49748e4), folded into the TP+ merge; NEXT: close it citing testpilot_merged_2026-10-29.md once the trial items are filed
-- `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD` — merged design done (77e99952fa); an Opus helper was LIVE at wrap folding the owner's trial decisions into the merged and harness docs and filing the trial-build items --for FOUNDRY at top priority; NEXT: confirm those items exist on the ledger (rimflow queue FOUNDRY) and that every arm has the different-agent-tests-promptly property, then refile anything missing
+- `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD` — owner decisions folded into the merged and harness docs (82f98c499a); 16 ARENA_* trial-build items filed --for FOUNDRY and raised in build order (ledger 3c63d8bcea), every arm made to satisfy 'a different agent tests what was built, promptly'; NEXT: watch FOUNDRY start ARENA_TASKS_BUILD_FROZEN_BEFORE_ASSIGNED and route each Opus-class ARENA item to an Opus builder per Agent_Policy.md
 - `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE` — step 1 landed (role_unit stamp 36936b258f), rest parked (v3_build\health\parked.patch); NEXT: drop or rescope after the trial picks an architecture
 
 ## Traps learned
@@ -118,8 +118,8 @@ Uncommitted (replace the placeholder after each line below with whose it is —
 yours, the other seat's, a subagent's):
 
 ```
-M design/RimMandrake/architecture_switch_harness_2026-10-29.md   — the live Opus trial-ticketing helper (TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD); it commits and publishes these itself
- M design/RimMandrake/testpilot_merged_2026-10-29.md   — the live Opus trial-ticketing helper (TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD); it commits and publishes these itself
- M infrastructure/state/ledger/events/BENCH.jsonl   — the live Opus trial-ticketing helper (TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD); it commits and publishes these itself
+M design/RimMandrake/architecture_switch_harness_2026-10-29.md   — the trial-ticketing helper; since committed in 82f98c499a / 3c63d8bcea
+ M design/RimMandrake/testpilot_merged_2026-10-29.md   — the trial-ticketing helper; since committed in 82f98c499a / 3c63d8bcea
+ M infrastructure/state/ledger/events/BENCH.jsonl   — the trial-ticketing helper; since committed in 82f98c499a / 3c63d8bcea
 ```
 
