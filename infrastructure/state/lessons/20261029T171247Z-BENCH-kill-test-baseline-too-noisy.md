@@ -1,0 +1,2 @@
+The v3 kill-test baseline 'keep-going 31/day' (friction census 10-26) is 40% of a hand-labelled sample of n=140, so its 95% interval is about 25-37/day: a drop to the 26 target is inside the noise. The 140 per-message hand labels were never saved (orch_record/friction/sample2.json holds 70 texts, no labels), so they cannot be re-scored. A census that sets a KPI baseline must persist its per-item labels and state its interval. Spec section 2.1 proposes re-tagging the baseline with the same tagger.
+home: design/RimMandrake/v3_health_daily_check_2026-10-29.md
