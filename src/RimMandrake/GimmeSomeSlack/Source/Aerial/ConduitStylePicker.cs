@@ -480,4 +480,19 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             a.parent.Map.GetComponent<RM_MapComponent_ConduitRuns>()?.QueueLink(a.parent, target);
         }
     }
+
+    /// <summary>Re-stringing a cut span reconnects two anchors like TryLink does, so it can join two runs: queue the same bridge check.</summary>
+    // toggle-off: stays ungated; a span rejoining two runs while off still settles one stored look, so the joined run is not mixed-look when switched back on
+    [RimMandrake.Shared.PatchFeature("Messy cords: conduit run looks", typeof(GimmeSomeSlackSettings), "enabled")]
+    [HarmonyPatch(typeof(CompAerialAnchor), nameof(CompAerialAnchor.Restring))]
+    internal static class Patch_Restring_Bridge
+    {
+        private static void Postfix(CompAerialAnchor a, CompAerialAnchor b, bool __result)
+        {
+            if (!__result || a?.parent?.Map == null || b?.parent == null) return;
+            // the run-look rule is the ELECTRICAL run's; a pipe span joins no conduit run (see Patch_TryLink_Bridge)
+            if (a.Kind != AerialLineKind.Power) return;
+            a.parent.Map.GetComponent<RM_MapComponent_ConduitRuns>()?.QueueLink(a.parent, b.parent);
+        }
+    }
 }
