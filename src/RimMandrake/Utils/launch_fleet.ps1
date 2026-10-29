@@ -6,7 +6,7 @@ launch_fleet.ps1 — open the fleet's windows, each Windows Terminal window plac
     TOP-RIGHT    Server        (white — the standalone `claude remote-control` server, no seat;
                                 launched FIRST so it is up before any seat, and independent of all)
     TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
-    BOTTOM-LEFT  AGENT BENCH   (green — with the owner)
+    BOTTOM-LEFT  CONDUCTOR     (green — with the owner)
     BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
 
 Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
@@ -177,7 +177,7 @@ $titleFor = [ordered]@{
     ARTIST    = 'Artist'
     SERVER    = 'Server'
     EMERGENCY = 'EMERGENCY'
-    BENCH     = 'AGENT BENCH'
+    BENCH     = 'CONDUCTOR'      # seat BENCH's tile is named CONDUCTOR (install_wt_seat_profiles.py TILE_NAME)
     FOUNDRY   = 'AGENT FOUNDRY'
 }
 

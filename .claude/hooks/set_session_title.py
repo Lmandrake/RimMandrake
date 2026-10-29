@@ -123,6 +123,10 @@ import sys
 
 MAX_TITLE = 120
 MAX_IDENTITY_BYTES = 32_000        # a seat file is ~4 KB; this is a sanity bound
+# v3: seat BENCH is SHOWN as the Conductor (rimflow/model.py SEAT_DISPLAY; kept literal here so the hook
+# imports nothing from the tree it may be running against). CONDUCTOR.md is its primary identity.
+SEAT_DISPLAY = {"BENCH": "CONDUCTOR"}
+PRIMARY_IDENTITY = {"BENCH": "CONDUCTOR"}
 DELTA_TIMEOUT = 10                 # seconds; a CEILING, not a cost — see read_delta
 MAX_DELTA_BYTES = 8_000            # whats_new caps itself at ~25 lines; belt and braces
 LOCK_TIMEOUT = 3                   # seconds; a warning is not worth a stall
@@ -281,14 +285,41 @@ def read_identity(title, sid):
     path = agents_path(root, seat)
     if not path:
         return None
+    body = _read_capped(path)
+    if body is None:
+        return None
+    # 🔑 A seat with a PRIMARY identity (BENCH -> CONDUCTOR.md, owner 2026-10-28: "make the Conductor actually be
+    # named the Conductor") gets that file first and its own seat file after it as the session-mode rules. The
+    # seat key — role file, ledger, AGENT_SEAT — stays BENCH; only what the session reads changes.
+    primary_name = PRIMARY_IDENTITY.get(seat)
+    primary_path = agents_path(root, primary_name) if primary_name else None
+    primary = _read_capped(primary_path) if primary_path else None
+    if primary:
+        body = (primary + "\n\n---\n\n## Session-mode rules (infrastructure/agents/%s.md, seat key %s)\n\n"
+                % (seat, seat) + body)
+    return body or None
+
+
+def _read_capped(path):
+    """-> the stripped text of an identity file, or None (missing, unreadable, empty, over MAX_IDENTITY_BYTES)."""
     try:
         if os.path.getsize(path) > MAX_IDENTITY_BYTES:
             return None
         with open(path, "r", encoding="utf-8") as fh:
-            body = fh.read()
+            return fh.read().strip() or None
     except OSError:
         return None
-    return body.strip() or None
+
+
+def display_title(title):
+    """-> the conversation title a human reads: "AGENT BENCH" -> "CONDUCTOR"; any other title unchanged.
+
+    Display only: the role FILE keeps "AGENT BENCH" (seat_of, statusline and the Dispatcher key on it)."""
+    for seat, shown in SEAT_DISPLAY.items():
+        key = "AGENT " + seat
+        if title == key or title.startswith(key + " "):
+            return shown + title[len(key):]
+    return title
 
 
 def already_injected(sid):
@@ -355,11 +386,12 @@ def main():
     title = title.splitlines()[0][:MAX_TITLE]
     role_title = title             # pre-item-suffix: seat_of() needs "AGENT <SEAT>" as
                                     # the last token, which the item suffix below breaks
+    title = display_title(title)   # "AGENT BENCH" is shown as "CONDUCTOR"; role_title keeps the key
 
     # Owner's ask, 2026-08-28: the conversation name should say WHICH ITEM the
     # seat is on. Derived from the ledger's queue render via statusline.py's
     # parser (single source), refreshed every prompt. Fails open like the rest.
-    m = re.search(r"AGENT ([A-Z]+)", title)
+    m = re.search(r"AGENT ([A-Z]+)", role_title)   # the KEY, not the display title
     if m:
         try:
             sys.path.insert(0, os.path.join(

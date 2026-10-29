@@ -159,10 +159,11 @@ LAUNCH = ("{script} "
 # (selftest_install_wt_seat_profiles.py enforces it). It opens with the word "wake", which fires the handoff skill.
 # HESTIA, EMERGENCY, SERVER and ARTIST get none: they are not seats of this project's queue.
 WAKE_PROMPT = {
-    # v3 (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE, 2026-10-28): the BENCH tile wakes as the Conductor. Still seat BENCH
-    # and label AGENT BENCH (no CONDUCTOR ledger seat; the Dispatcher watches AGENT BENCH): only the identity read changes.
-    "BENCH": ("wake. Fresh AGENT BENCH window from a fleet launch, boot or account switch: nobody typed this. "
-              "You are the v3 Conductor. Do the Start of turn in infrastructure/agents/CONDUCTOR.md: python3 "
+    # v3 (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE, 2026-10-28): the BENCH tile wakes as the Conductor. Still seat KEY
+    # BENCH and --name AGENT BENCH (the Dispatcher and seat_restart match it); since CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE
+    # the tile, the prompt and the identity all SAY Conductor.
+    "BENCH": ("wake. Fresh CONDUCTOR window, seat key BENCH, from a fleet launch, boot or account switch: nobody "
+              "typed this. You are the v3 Conductor. Do the Start of turn in infrastructure/agents/CONDUCTOR.md: python3 "
               "src/RimMandrake/Utils/handoff.py --wake, then python3 src/RimMandrake/rimflow/cli.py seat ready, "
               "then the last 40 lines of the Conductor log. Then report in a few lines what is open, what needs "
               "the owner and what the last quick check found, and wait for the owner."),
@@ -271,6 +272,17 @@ def seat_guid(seat):
     return "{%s}" % uuid.uuid5(NS, "rimworld-seat-" + seat)
 
 
+# The tile a human reads (WT profile name + tabTitle). Distinct from label_for(), which is ALSO the `--name` the
+# Dispatcher and seat_restart match exactly: seat BENCH is shown as CONDUCTOR (rimflow/model.py SEAT_DISPLAY) while
+# its session keeps --name 'AGENT BENCH'. The profile guid derives from the seat KEY, so the rename updates in place.
+# launch_fleet.ps1 $titleFor must name the same string (it opens `-p <name>` and waits for that window title).
+TILE_NAME = {"BENCH": "CONDUCTOR"}
+
+
+def tile_name_for(seat):
+    return TILE_NAME.get(seat, label_for(seat))
+
+
 def label_for(seat):
     # ⭐ `AGENT` is this fleet's prefix, so only a seat of this fleet carries it
     # (owner, 2026-09-02, on HESTIA: "Just HESTIA"). The label is the tab name AND
@@ -336,8 +348,8 @@ def build(seat):
                  f"{LAUNCH.format(script=script, label=label, model=model)}{first}{SHELL_TAIL}")
     profile = {
         "guid": seat_guid(seat),
-        "name": label,
-        "tabTitle": label,
+        "name": tile_name_for(seat),
+        "tabTitle": tile_name_for(seat),
         "commandline": f'wsl.exe -d {DISTRO} -- bash -lc "{inner}"',
         "startingDirectory": home_win,
         "colorScheme": f"Seat {seat}",
@@ -429,7 +441,7 @@ def main():
     for seat, (colour, model, why, home, cmd) in SEATS.items():
         if only and seat not in only:
             continue
-        label = label_for(seat)
+        label = tile_name_for(seat)
         shown = "none (daemon)" if cmd is not None else model
         print(f"  {label:<14} {colour}  model {shown:<15} tab+text  {why}")
         if home:

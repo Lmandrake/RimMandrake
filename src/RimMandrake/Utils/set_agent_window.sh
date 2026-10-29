@@ -89,7 +89,7 @@ seat_colour() {
 SEATS="BENCH FOUNDRY"
 
 usage() {
-    echo "usage: $0 {BENCH|FOUNDRY} [detail]" >&2
+    echo "usage: $0 {CONDUCTOR|BENCH|FOUNDRY} [detail]   (CONDUCTOR = seat BENCH's display name)" >&2
     echo "       $0 --preview | --reset-colour" >&2
     echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/POLICY.md" >&2
 }
@@ -133,17 +133,23 @@ esac
 ROLE="${1:-}"
 DETAIL="${2:-}"
 
+# v3 (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE): seat BENCH is SHOWN as the Conductor. CONDUCTOR is accepted as an
+# alias; the seat KEY stays BENCH (the role file keeps "AGENT BENCH" — the hook, ledger and Dispatcher key on it),
+# only the window title says CONDUCTOR.
+[ "$ROLE" = "CONDUCTOR" ] && ROLE="BENCH"
 case "$ROLE" in
     BENCH|FOUNDRY) ;;
     *)
         usage; exit 2 ;;
 esac
 
-TITLE="AGENT ${ROLE}"
-[ -n "$DETAIL" ] && TITLE="${TITLE} — ${DETAIL}"
+TITLE="AGENT ${ROLE}"                 # recorded: the key form seat_of() and the hook parse
+SHOWN="$TITLE"
+[ "$ROLE" = "BENCH" ] && SHOWN="CONDUCTOR"
+[ -n "$DETAIL" ] && TITLE="${TITLE} — ${DETAIL}" && SHOWN="${SHOWN} — ${DETAIL}"
 
 # --- 1. the terminal window ----------------------------------------------
-printf '\033]0;%s\007' "$TITLE"        # OSC 0 = icon name + window title
+printf '\033]0;%s\007' "$SHOWN"        # OSC 0 = icon name + window title
 
 # --- colour, unless suppressed -------------------------------------------
 # ⚠️ MEASURED 2026-08-13: Windows Terminal IGNORES OSC 10. The owner ran
@@ -178,7 +184,7 @@ fi
 ROLE_DIR="${CLAUDE_PROJECT_DIR:-$REPO_ROOT}/.claude/session_roles"
 SID="${CLAUDE_CODE_SESSION_ID:-}"
 
-echo "seat        : ${TITLE}"
+echo "seat        : ${SHOWN}"
 echo "window      : set"
 echo "colour      : ${COLOUR_NOTE}"
 
@@ -186,7 +192,11 @@ if [ -n "$SID" ]; then
     mkdir -p "$ROLE_DIR"
     printf '%s\n' "$TITLE" > "${ROLE_DIR}/${SID}"
     echo "conversation: recorded"
-    echo "identity    : infrastructure/agents/${ROLE}.md, injected by the hook"
+    if [ "$ROLE" = "BENCH" ]; then
+        echo "identity    : infrastructure/agents/CONDUCTOR.md (then BENCH.md), injected by the hook"
+    else
+        echo "identity    : infrastructure/agents/${ROLE}.md, injected by the hook"
+    fi
     echo "  (both apply on your NEXT prompt — immediate on a resume)"
     echo "messaging   : UNCHANGED — this cannot set the name peers address."
     echo "  That is fixed at launch by --name; see ADDRESSABILITY in this file."

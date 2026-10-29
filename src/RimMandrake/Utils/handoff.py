@@ -131,9 +131,9 @@ def seat():
             return v.strip().upper()
     out = sh("python3", os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py"),
              "seat", "ready")
-    m = re.match(r"^([A-Z]+) is ready", out or "")
-    if m:
-        return m.group(1)
+    seat = seat_from_ready(out)
+    if seat:
+        return seat
     raise SystemExit(
         "REFUSED: handoff.py cannot tell which seat is rebooting, and it will not\n"
         "guess. A wrong seat files one seat's reboot under another seat's name, and\n"
@@ -142,6 +142,18 @@ def seat():
         "    RIMFLOW_SEAT=MACBENCH python3 src/RimMandrake/Utils/handoff.py\n"
         "    export AGENT_SEAT=MACBENCH\n"
         "    ./src/RimMandrake/Utils/set_agent_window.sh MACBENCH   (then reopen the tab)")
+
+
+def seat_from_ready(out):
+    """-> the ledger seat KEY named by `rimflow seat ready`'s first line, or None.
+
+    The Conductor prints by display name with its key in brackets ("CONDUCTOR is ready [seat BENCH]",
+    CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE); other seats print "FOUNDRY is ready". The key is what goes into
+    the handoff's filename and queries, so the bracket wins, and a bare display name maps back to its key."""
+    m = re.match(r"^([A-Z]+) is ready(?: \[seat ([A-Z]+)\])?", out or "")
+    if not m:
+        return None
+    return m.group(2) or {"CONDUCTOR": "BENCH"}.get(m.group(1), m.group(1))
 
 
 def events():

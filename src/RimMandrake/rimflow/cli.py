@@ -137,7 +137,7 @@ def resolve_seat(explicit, required=True):
                      ("session role file", _role_file_seat())):
         if not val:
             continue
-        val = val.strip().upper()
+        val = model.canonical(val.strip().upper())     # "CONDUCTOR" is BENCH's display name
         if val not in model.SEATS:
             die("%s says the seat is %r, which is not one of %s."
                 % (src, val, ", ".join(model.SEATS)))
@@ -2182,8 +2182,11 @@ def cmd_seat(args, seat):
     _emit({"seat": seat, "event": "seat", "state": args.state,
            "reason": args.reason, "item": args.item, "note": args.note},
           w, quiet=True)
-    print("%s is %s%s" % (seat, args.state,
-                          " (%s)" % args.reason if args.reason else ""))
+    # Shown by display name; a renamed seat names its key in brackets so the line still says which ledger seat
+    # wrote the event (handoff.py's seat_from_ready parses both forms).
+    shown = model.display(seat)
+    print("%s is %s%s%s" % (shown, args.state, " [seat %s]" % seat if shown != seat else "",
+                            " (%s)" % args.reason if args.reason else ""))
     if args.note:
         print("  handoff: %s" % args.note)
     return 0

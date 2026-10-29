@@ -194,6 +194,24 @@ def item_path(iid, for_write=False):
 # ... records") is no window either: `rimflow/dispatcher.py` notes on an item what it handed out, woke, verified
 # or gave up on. It may emit DISPATCHER_VERBS only — it never claims, closes or files.
 SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "RUNNER", "DISPATCHER")
+# 🔑 DISPLAY NAME vs SEAT KEY (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE, owner 2026-10-28: "make the Conductor
+# actually be named the Conductor, instead of Bench"). The v3 Conductor keeps seat KEY "BENCH" — every past event,
+# the shard events/BENCH.jsonl, `--seat BENCH`, the role file "AGENT BENCH", the `--name 'AGENT BENCH'` the
+# Dispatcher and seat_restart match, and BRIDGE holder names all carry it — and is SHOWN as "CONDUCTOR". Anything a
+# human or agent reads says `display(seat)`; anything that keys, stores or matches uses the seat itself.
+# `canonical()` lets "CONDUCTOR" be typed wherever a seat is accepted; it is never written to the ledger.
+SEAT_DISPLAY = {"BENCH": "CONDUCTOR"}
+SEAT_ALIAS = {v: k for k, v in SEAT_DISPLAY.items()}
+
+
+def display(seat):
+    """-> the name a human or agent reads for `seat` ("BENCH" -> "CONDUCTOR"); any other seat is itself."""
+    return SEAT_DISPLAY.get(seat, seat)
+
+
+def canonical(seat):
+    """-> the ledger seat key for a typed name ("CONDUCTOR" -> "BENCH"); any other name is itself."""
+    return SEAT_ALIAS.get(seat, seat)
 RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise")
 DISPATCHER_VERBS = ("note",)
 # 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward

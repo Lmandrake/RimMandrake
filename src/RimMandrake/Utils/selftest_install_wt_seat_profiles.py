@@ -117,7 +117,7 @@ def test_only_touches_only_named_tiles():
         out = json.load(open(f))
     check(r.returncode == 0, f"--only bench --apply runs ({r.stderr[-200:]})")
     names = [p["name"] for p in out["profiles"]["list"]]
-    check("AGENT BENCH" in names and "AGENT FOUNDRY" not in names, "--only adds just the named tile")
+    check("CONDUCTOR" in names and "AGENT FOUNDRY" not in names, "--only adds just the named tile (BENCH is shown as CONDUCTOR)")
     check("old" in names, "--only leaves retired profiles alone")
     check("defaults" not in out["profiles"], "--only leaves the font defaults alone")
 

@@ -4,7 +4,7 @@
 Writes a Desktop shortcut that runs `launch_fleet.ps1`, which opens one Windows
 Terminal window per agent and places them at their fixed positions:
 
-    TOP-LEFT HESTIA   BOTTOM-LEFT AGENT BENCH   BOTTOM-RIGHT AGENT FOUNDRY
+    TOP-LEFT HESTIA   BOTTOM-LEFT CONDUCTOR   BOTTOM-RIGHT AGENT FOUNDRY
 
 All launch behaviour lives in the .ps1 — the AGENT BENCH/AGENT FOUNDRY profiles
 it names are the ones `install_wt_seat_profiles.py` writes, which already carry
