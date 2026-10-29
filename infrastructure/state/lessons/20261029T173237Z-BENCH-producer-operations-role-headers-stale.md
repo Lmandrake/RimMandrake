@@ -1,0 +1,2 @@
+producer.md line 1-4 and operations.md line 1-3 still say 'NOT enabled / DISABLED until the Friday wave' while dispatcher_schedule.json has Producer and Operations enabled true (live since the 10-28 cutover). A cold reader of the role file is told the role does not run. Also the Producer's _caps_why text in dispatcher_schedule.json ends 'run 800k, day 1.0M' while daily_token_cap is 2000000 (raised after the 943k weekly run). Found during PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS.
+home: src/RimMandrake/rimflow/roles/producer.md

@@ -1,0 +1,2 @@
+Every Producer role run so far writes the same 107,656 tokens of opening context as 1-hour cache writes (weight 2), so any Producer launch costs about 215k weighted before it reads anything (run records rm-role-producer-1793234714/1793289698). Any more-frequent role cadence must size its cap from this floor, not from turn count; a lean launch for short runs is the lever.
+home: design/RimMandrake/producer_cadence_2026-10-29.md
