@@ -1990,7 +1990,8 @@ def test_role_real_schedule_triggers():
                   "schedule: %s pre_launch scripts exist in the clone" % r["name"])
     check(p.get("event_runs") == ["plan_step_failure", "replan_request"] and p["weekly_plan_weekday"] == "Wed"
           , "schedule: Producer weekly Wed, events")
-    check(p["daily_token_cap"] == int(p["run_token_cap"] * 1.25), "schedule: Producer daily cap = one run + 25%")
+    # Owner 2026-10-28 ("Less cautioun, more progress?"): the day may hold a re-plan after the weekly run.
+    check(p["daily_token_cap"] >= int(p["run_token_cap"] * 1.25), "schedule: Producer daily cap >= one run + 25%")
     for r in sch["roles"]:
         for t in r.get("runs_local") or r.get("quick_checks_local") or []:
             RL.parse_slot(t)
