@@ -22,3 +22,15 @@ Leads:
   reading the level, not the pump. That would make it presumed HARNESS.
 
 Evidence: Transient/modcheck/FlowWorks_20261024T191345Z.json (+ .html); prior Transient/modcheck/FlowWorks_20261024T092758Z.json
+
+## verify
+- Written by the Producer, daily run 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T1601Z_run),
+  goal 2 ("`modcheck status FlowWorks` shows a north-star run on the current build: GREEN, or RED with every failing
+  row named and filed"). `modcheck status FlowWorks` reads RED (last run failed) on 2026-10-29.
+- L2: each of the six rows traced to MOD, SITE or HARNESS; MOD rows fixed or filed as their own item.
+- L2: a fresh `modcheck run FlowWorks` on the current build, recorded: GREEN, or RED with every failing row named and filed.
+- Stopping point: finish.
+
+## criteria
+- A1 L2: each of the six rows classed MOD, SITE or HARNESS with its evidence; every MOD row fixed or filed as an item
+- A2 L2: `modcheck status FlowWorks` shows a run on the current build: GREEN, or RED with every failing row named and filed
