@@ -899,7 +899,9 @@ def execute(a, sch, st, apply, now, fx=None):
                   alarm_pending="seat restart of %s: pid %s vanished before the kill (no relaunch)" % (seat, a["pid"]),
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
         return "refused: pid %s gone before the kill" % a["pid"]
-    rec = {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"], "killed_at": now,
+    wall = time.time()      # the tile's window starts at the real kill, not the tick's start (GPT review P1)
+    kt = max(now, wall) if abs(wall - now) < 600 else now
+    rec = {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"], "killed_at": kt,
            "argv": a["argv"], "ticket": a.get("ticket"),
            "window_s": config(sch).get(seat, DEFAULTS)["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
     fx.get("write_killed", write_killed)(seat, rec)
@@ -909,7 +911,7 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.update(state="failed", why=how, ended_at=now, alarm_pending="seat restart of %s: %s" % (seat, how),
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
         return "refused: " + how
-    rs.update(state="killed", killed_at=now, kill=how, window_s=rec["window_s"])
+    rs.update(state="killed", killed_at=kt, kill=how, window_s=rec["window_s"])
     return "killed pid %s (%s)" % (a["pid"], how)
 
 
