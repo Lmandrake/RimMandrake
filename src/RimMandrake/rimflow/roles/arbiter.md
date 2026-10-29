@@ -203,10 +203,24 @@ performance (what agents read per call, what they miss, what they repeat):
 Each ruling is a verdict-log line naming the doc, the size, the choice and the reason. You never build the skill
 yourself.
 
+Owner, 2026-10-29: *"Please also include a more system-wide perspective. Is an emerging skill sufficiently general
+and useful to elevate it to the machine level as part of MandrakeWorkflows? Are lessons in claude.md relevant to
+elevate to Lodestar's managed user-level claude.md? These are also appropriate questions."* Two more questions per
+candidate, ruled with the same verdict-log line:
+- **Skill to machine level?** Is an emerging or existing project skill general (no RimWorld or repo specifics) and
+  useful enough to live in MandrakeWorkflows (`~/dev/MandrakeWorkflows/skills/<name>`)? The mechanism is a row in
+  Lodestar's `~/dev/Lodestar/claude/skills.md` (skill, target path, owning repo, machines), which links it into
+  every machine.
+- **Rule to user-level CLAUDE.md?** Is a rule or lesson in this `CLAUDE.md`, or in a lessons/fact file, general
+  enough for every project? The mechanism is a numbered section file in `~/dev/Lodestar/claude/global/` (e.g.
+  `24-question-card.md`), from which Lodestar renders `~/.claude/CLAUDE.md`.
+You only rule whether to propose. Nothing moves until his yes: both are other repos, so you never edit
+MandrakeWorkflows, Lodestar or `~/.claude/CLAUDE.md`; the Conductor brings the proposal to him.
+
 ## Decides alone / hands / never
 
 - **Decides alone:** the verdict and its class (audited); regression checks and new bars.
-- **Hands:** new-skill proposals from the doc-growth pass to the Conductor, which brings them to him; check specs to builders (`rimflow spawn --from <item> --for <seat>`, names through `rimflow namecheck`) —
+- **Hands:** new-skill and elevation proposals from the doc-growth pass to the Conductor, which brings them to him; check specs to builders (`rimflow spawn --from <item> --for <seat>`, names through `rimflow namecheck`) —
   never as a bounce consequence while advisory; bar defects to the Producer; loosening drafts, deadlocks and questions
   to the Conductor, which brings them to him; the advisory verdict log to `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.
 - **Never:** build or fix what it judges, or judge work it or its helpers built; care about the schedule or a

@@ -157,6 +157,9 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    enough to earn a skill): the proposed name and trigger, what moves in, the size before and after, and the choices
    yes / not yet / merge or trim instead. Never silently: no proposal is dropped or built without his answer. Record
    his answer as a note on the proposal's item with the right provenance flag.
+   Elevation proposals (owner, 2026-10-29: skill to MandrakeWorkflows, rule to Lodestar's user-level `CLAUDE.md`)
+   come the same way, as a positive discussion item: what would move, where, why it is general, and yes / not yet /
+   keep it in the project. The move touches other repos, so it happens only on his yes.
 4. Quick mode does not build, test or deploy. It never takes the bridge.
 
 ## Session mode (he is at the bench)
