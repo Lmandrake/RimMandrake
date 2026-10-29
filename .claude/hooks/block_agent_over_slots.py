@@ -14,8 +14,12 @@ and newer than his last word, computed live otherwise, and the rules file's fall
 subagent transcripts (slot_allocator.running_helpers: written in the last 15 min and not cleanly ended; when in doubt
 a helper counts as running). Nothing here cancels a helper: the refusal only says to wait.
 
-Exempt: the interactive Conductor window (seat BENCH without RM_ROLE_UNIT) has NO limit (owner, 2026-10-29: "There are
-no subagent limits when you're working with me 1 on 1. Make that so permanently."); see session_exempt().
+Open policy (owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins
+of the last time the user typed to conductor. After that it should relax to two subagents only."): the interactive
+Conductor window (seat BENCH without RM_ROLE_UNIT) has no helper limit while the owner's last typed message in THIS
+window is under conductor_window.open_min (slot_rules.json, 20) old; after that it is capped at conductor_window.cap_n
+(2) concurrent helpers. The typed time is seat_restart.tx_summary(...)["last_user_at"] over this session's transcript
+(human origin only); unreadable means capped. See session_exempt().
 
 Fails open: a broken guard must not stop all spawning.
 
@@ -44,12 +48,36 @@ def seat_of(payload):
     return ""
 
 
-def session_exempt(seat):
-    """Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently."
-    The Conductor's window (seat BENCH) run interactively has no helper limit. A scheduled or Dispatcher-launched role
-    run (role_launch.py) always carries RM_ROLE_UNIT in its environment, so its absence means a human window.
+def conductor_window(rules):
+    cw = rules.get("conductor_window") or {}
+    return float(cw.get("open_min", 20)), int(cw.get("cap_n", 2))
+
+
+def last_typed(payload):
+    """Epoch of the owner's last real typed message in this session's transcript, or None (unreadable: fail closed).
+    Reuses seat_restart.tx_summary, which tells human input from rings/task-notifications by transcript origin."""
+    try:
+        path = payload.get("transcript_path")
+        if not path:
+            return None
+        if str(RIMFLOW) not in sys.path:
+            sys.path.insert(0, str(RIMFLOW))
+        import seat_restart as SR
+        s = SR.tx_summary(path)
+        return (s or {}).get("last_user_at")
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def session_exempt(seat, payload, rules, now):
+    """True when the helper cap does not apply: the interactive Conductor window (seat BENCH, no RM_ROLE_UNIT: a
+    scheduled or Dispatcher role run always carries it) while the owner typed within conductor_window.open_min.
     FOUNDRY and every role run keep the allocator's limits."""
-    return seat == "BENCH" and not (os.environ.get("RM_ROLE_UNIT") or "").strip()
+    if seat != "BENCH" or (os.environ.get("RM_ROLE_UNIT") or "").strip():
+        return False
+    open_min, _ = conductor_window(rules)
+    t = last_typed(payload)
+    return t is not None and 0 <= now - t < open_min * 60
 
 
 def allowed_n(SA, rules, seat, now):
@@ -93,9 +121,13 @@ def decide(payload, now=None):
     rules = SA.load_rules(os.environ.get("RM_SLOT_RULES") or UTILS / "slot_rules.json")
     if seat not in (rules.get("enforce_seats") or []) or seat not in SA.SEAT_PROJECT:
         return None
-    if session_exempt(seat):
+    if session_exempt(seat, payload, rules, now):
         return None
     n, mode, why, src = allowed_n(SA, rules, seat, now)
+    if seat == "BENCH" and not (os.environ.get("RM_ROLE_UNIT") or "").strip():
+        open_min, cap_n = conductor_window(rules)
+        n, mode, src = cap_n, "CONDUCTOR_WINDOW", f"owner silent {open_min:g}+ min or unreadable (slot_rules.json conductor_window)"
+        why = "the open policy lapsed (owner, 2026-10-29): two helpers until he types to this window again"
     label = SA.seat_label(seat)
     running = SA.running_helpers([SA.projects_dir() / SA.SEAT_PROJECT[seat]], now, rules)
     if len(running) < n:

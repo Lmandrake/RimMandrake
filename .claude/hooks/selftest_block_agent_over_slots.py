@@ -90,8 +90,40 @@ check("3 running (one between calls, one not yet answered) against N=3 -> deny",
 check("the refusal names N, the mode and the why", "N=3" in why and "CRUISE" in why and "fits 4.1" in why, why[:400])
 check("the refusal points at the override flag and says not to cancel",
       "--owner-said" in why and "slot_allocator.py set --seat CONDUCTOR" in why and "Do not cancel" in why, why[:600])
+# ---- the Conductor window's open policy: unlimited only within conductor_window.open_min of his last typed message
+def transcript(name, minutes_ago, origin="human", extra=()):
+    p = tmp / f"{name}.jsonl"
+    recs = [{"type": "user", "timestamp": SA.iso_z(now - minutes_ago * 60), "origin": {"kind": origin},
+             "message": {"role": "user", "content": "please"}}] + list(extra)
+    p.write_text("".join(json.dumps(x) + "\n" for x in recs))
+    return str(p)
+
+
+def sess_run(tp):
+    body = json.dumps({"tool_name": "Agent", "cwd": "/x", "transcript_path": tp,
+                       "tool_input": {"prompt": "p", "model": "sonnet"}})
+    return run(session=True, stdin=body)
+
+
+rc, dec, why = sess_run(transcript("t5", 5))
+check("owner typed 5 min ago: no limit, 3 running against N=3 -> allow (ruling 2026-10-29)", dec is None, (dec, why[:200]))
+rc, dec, why = sess_run(transcript("t19", 19))
+check("owner typed 19 min ago: still open -> allow", dec is None, (dec, why[:200]))
+rc, dec, why = sess_run(transcript("t25", 25))
+check("owner typed 25 min ago: capped at 2, 3 running -> deny, N=2", dec == "deny" and "N=2" in why, (dec, why[:300]))
+rc, dec, why = sess_run(transcript("t90", 90))
+check("... the cap names the lapsed open policy", dec == "deny" and "open policy lapsed" in why, why[:300])
+ring = tmp / "ring.jsonl"
+ring.write_text(json.dumps({"type": "user", "timestamp": SA.iso_z(now - 60), "origin": {"kind": "task-notification"},
+                            "message": {"role": "user", "content": "[RimFlow ring]"}}) + "\n"
+                + json.dumps({"type": "user", "timestamp": SA.iso_z(now - 30 * 60), "origin": {"kind": "human"},
+                              "message": {"role": "user", "content": "old"}}) + "\n")
+rc, dec, why = sess_run(str(ring))
+check("a fresh ring/task-notification is not the owner typing: 30 min since he did -> capped", dec == "deny", (dec, why[:200]))
+rc, dec, why = sess_run(str(tmp / "nonexistent.jsonl"))
+check("unreadable transcript -> capped at 2 (fail closed)", dec == "deny" and "N=2" in why, (dec, why[:200]))
 rc, dec, why = run(session=True)
-check("owner 1:1 (BENCH, no RM_ROLE_UNIT): no limit, 3 running against N=3 -> allow (ruling 2026-10-29)", dec is None, (dec, why[:200]))
+check("no transcript_path in the payload -> capped (fail closed)", dec == "deny", (dec, why[:200]))
 alloc({"BENCH": 3, "FOUNDRY": 0})
 rc, dec, why = run("FOUNDRY", session=True)
 check("... the exemption is the Conductor window only: FOUNDRY (N=0) is still gated", dec == "deny", (dec, why[:200]))

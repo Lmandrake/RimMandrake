@@ -52,7 +52,7 @@ Rules (the hook `.claude/hooks/block_unbounded_agent.py` enforces the first):
 5. **Images only when judging**, at the size the judgment needs (never shrink away the defect).
 6. **Load a skill only when the item needs it**, by section.
 7. **Bridge work is a script** that runs all rows and prints one PASS/FAIL table; read the table and the failures' evidence.
-8. **Unattended seats: at most 3 helpers per seat** (the allocator's limit). With the owner working 1:1 in the window there is no limit (owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently."). Measure: `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
+8. **Unattended seats: at most 3 helpers per seat** (the allocator's limit). In the Conductor window there is no limit only for work started within 20 min of the owner's last typed message; after that two helpers, and one running over an hour raises an alarm (owner, 2026-10-29: "...only for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only."). Measure: `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
 
 ## Hard rules
 
@@ -266,7 +266,7 @@ writing helpers one at a time when their paths could overlap. Brief: `reset --ha
   invisible.
 - A subagent cannot ask you a question mid-flight. Ambiguity comes back as a
   wrong answer.
-- Unattended budget: **at most 3 helpers in flight per seat** (the allocator's limit). In a 1:1 session with the owner there is no limit (owner, 2026-10-29).
+- Unattended budget: **at most 3 helpers in flight per seat** (the allocator's limit). In the Conductor window: no limit within 20 min of the owner's last typed message, else two (owner, 2026-10-29).
 
 ## Examples
 

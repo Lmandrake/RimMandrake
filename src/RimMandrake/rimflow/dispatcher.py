@@ -377,6 +377,7 @@ def decide(sch, st, obs, now, apply, out=None):
             if ss.get("ring") and not ss["ring"].get("consumed_at"):
                 act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
+    long_helper_alarms(sch, obs, now, act)
     # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review dispatcher-full
     # #8), decided BEFORE the agents gate like PAUSE above: a blind `claude agents` must not leave it ringing (review
     # r2 #6). A ring the doorbell already took stays pending and is verified (one_seat)
@@ -799,14 +800,41 @@ def ledger_note(item, text, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
+def long_helper_alarms(sch, obs, now, act):
+    """CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW (owner, 2026-10-29: "Long standing runs beyond n hour should raise an
+    alarm in conductor."): one alarm per Conductor-window helper (Agent/Task) still running after long_helper.
+    alarm_after_s (3600). Start = the helper transcript's first record (obs["long_helpers"]() -> [{id, age_s}]).
+    It rides the existing route: a ledger note on alarm_item and a RAISE FIRST line in no_handoff.conductor_log; the
+    alarm repeats per helper every alarm_every_s. Off when long_helper.enabled is false; a failing reader alarms once."""
+    cfg = sch.get("long_helper") or {}
+    fn = obs.get("long_helpers")
+    if not cfg.get("enabled") or not fn:
+        return
+    limit = float(cfg.get("alarm_after_s", 3600))
+    try:
+        found = fn() or []
+    except Exception as e:  # noqa: BLE001
+        act(do="alarm", kind="long_helper:reader", note=True, why="long-helper reader raised %s: %s" % (
+            type(e).__name__, str(e)[:200]))
+        return
+    for h in found:
+        if float(h.get("age_s") or 0) > limit:
+            act(do="alarm", kind="long_helper:" + str(h["id"])[:12], note=True, conductor_log=True,
+                ticket=cfg.get("item") or sch.get("alarm_item"),
+                raise_first="Conductor-window helper %s has run %.0f min (limit %.0f min)." % (
+                    str(h["id"])[:12], h["age_s"] / 60, limit / 60),
+                why="Conductor helper %s has been running %.0f min (> %.0f min): check it is not stuck or burning "
+                    "context; stop it or let it finish" % (str(h["id"])[:12], h["age_s"] / 60, limit / 60))
+
+
 def conductor_log(sch, a, now):
     """Append one escalation line to the Conductor's log (no_handoff.conductor_log; CONDUCTOR.md: read at wake and by
     the 08:00/20:00 quick checks), so an idle seat with a full queue reaches the Conductor, not only the ledger."""
     path = no_handoff_rule(sch).get("conductor_log")
     if not path:
         return "conductor log off"
-    line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s idle with work waiting.\n" % (
-        iso(now), a.get("kind"), a.get("why"), a.get("seat"))
+    line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s\n" % (
+        iso(now), a.get("kind"), a.get("why"), a.get("raise_first") or "%s idle with work waiting." % a.get("seat"))
     with open(path, "a", encoding="utf-8") as f:
         f.write(line)
     return "conductor log appended: %s" % path
@@ -1285,6 +1313,21 @@ def _skip_journal(root, st=None):
     return skip
 
 
+def long_helpers_obs(now=None):
+    """The Conductor window's running helpers with their age: slot_allocator.running_helpers over the bench project,
+    start = _first_ts of each helper transcript."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+    import slot_allocator as SA
+    now = now or time.time()
+    rules = SA.load_rules()
+    out = []
+    for h in SA.running_helpers([SA.projects_dir() / SA.SEAT_PROJECT["BENCH"]], now, rules):
+        t0 = SA._first_ts(h["path"])
+        if t0:
+            out.append({"id": h["id"], "age_s": now - t0})
+    return out
+
+
 def default_obs(sch, root, st=None):
     seats = sch.get("seats") or {}
     return {
@@ -1297,6 +1340,7 @@ def default_obs(sch, root, st=None):
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
+        "long_helpers": long_helpers_obs,
         "roles": role_obs(sch),
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
     }

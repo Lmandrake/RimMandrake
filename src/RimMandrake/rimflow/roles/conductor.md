@@ -164,10 +164,8 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 ## Session mode (he is at the bench)
 
 Today's BENCH: design, the hardest bugs, live testing with him, and the FlowWorks + GSS lane (his 10-23 ruling).
-Helpers: design · builder · live-test. **No helper limit while he is working with you 1:1 in the window**
-(Owner, 2026-10-29: "There are no subagent limits when you're working with me 1 on 1. Make that so permanently." The spawn hook
-`.claude/hooks/block_agent_over_slots.py` exempts the interactive Conductor window, seat BENCH with no `RM_ROLE_UNIT`
-in its environment.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
+Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
+(Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
 limits unchanged. A helper never starts helpers of its own (say so in its brief); a brief carries no account
 or resource figure. Quick mode runs no helper. On arrival, the headless FlowWorks builder that worked
 between sittings is fenced first (stopped, handoff written, lease released) before any session write (Orphan home 4).

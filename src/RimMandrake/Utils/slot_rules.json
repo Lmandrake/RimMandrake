@@ -1,7 +1,8 @@
 {
   "schema": 1,
   "_doc": "Rules read by slot_allocator.py (SLOT_ALLOCATOR_BUILD_RULES_FILE). Design: design/RimMandrake/operating_modes_2026-10-26.md §1.1-1.5 and §9 (the measured pacing). Every number here is a line from those sections; [A] marks a proposal the owner has not ruled, [O] one he ruled (with his words). Change a number here, not in the code.",
-  "_owner_2026-10-29": "[O] \"There are no subagent limits when you're working with me 1 on 1. Make that so permanently.\" The spawn hook exempts the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT); every number below governs scheduled and Dispatcher-launched runs and FOUNDRY only.",
+  "_owner_2026-10-29": "[O] \"The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor.\" (n hour = an hour.) conductor_window below: the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT) is unlimited while his last typed message is under open_min old, else capped at cap_n; the numbers below govern scheduled and Dispatcher-launched runs and FOUNDRY.",
+  "conductor_window": {"open_min": 20, "cap_n": 2},
   "_owner": "[O] 2026-10-26 13:05 PDT, relayed by BENCH: 'If you already built the capability, please use it to determine the number of Foundry and Bench agents yourself. My 5 was a guess.' So no fixed cap: the allocator sets N per seat inside the budget.",
   "seats": ["BENCH", "FOUNDRY"],
   "enforce_seats": ["BENCH", "FOUNDRY"],

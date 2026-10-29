@@ -3389,6 +3389,28 @@ def robs_with(ro, status):
     return r
 
 
+def test_long_helper_alarm():
+    """CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW (owner 2026-10-29): a Conductor helper running more than
+    long_helper.alarm_after_s (1 h) raises a long_helper:<id> alarm with a RAISE FIRST line; one at 1 h or under does not."""
+    sch = sched(long_helper={"enabled": True, "alarm_after_s": 3600, "item": None})
+    st = D.load_state(os.path.join(TMP, "lh1"))
+    o = obs()
+    o["long_helpers"] = lambda: [{"id": "aaaaaaaaaaaaaaaa", "age_s": 3601.0}, {"id": "bbbbbbbbbbbbbbbb", "age_s": 3600.0},
+                                 {"id": "cccccccccccccccc", "age_s": 600.0}]
+    a = [x for x in D.decide(sch, st, o, 5000.0, True) if x["do"] == "alarm"]
+    check([x["kind"] for x in a] == ["long_helper:aaaaaaaaaaaa"], "long helper: only the one past 1 h alarms (%r)" % a)
+    check(a and a[0].get("conductor_log") and a[0].get("note") and a[0]["ticket"] == "DISPATCHER_ALARMS_X",
+          "long helper: ledger note on the alarm item and a conductor-log line")
+    path = os.path.join(TMP, "lh_log.md")
+    D.conductor_log(sched(no_handoff={"conductor_log": path}), dict(a[0]), 5000.0)
+    with open(path, encoding="utf-8") as f:
+        txt = f.read()
+    check("RAISE FIRST: Conductor-window helper aaaaaaaaaaaa has run 60 min" in txt, "long helper: RAISE FIRST line says which (%r)" % txt)
+    o["long_helpers"] = lambda: [{"id": "aaaaaaaaaaaaaaaa", "age_s": 3601.0}]
+    off = D.decide(sched(long_helper={"enabled": False}), D.load_state(os.path.join(TMP, "lh2")), o, 5000.0, True)
+    check(not [x for x in off if str(x.get("kind")).startswith("long_helper")], "long helper: disabled = silent")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_dead_recover,
@@ -3406,7 +3428,7 @@ def main():
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
-              test_golive_m6_weekday_slot_keys, test_golive_m7_dst_yesterday, test_review_night_n1):
+              test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_golive_m7_dst_yesterday, test_review_night_n1):
         try:
             t()
         except Exception as e:  # noqa: BLE001
