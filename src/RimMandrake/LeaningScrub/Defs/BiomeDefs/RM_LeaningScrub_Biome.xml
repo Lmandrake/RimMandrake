@@ -52,10 +52,11 @@
     documents for biome defs, applied one level down to a def a frozen
     biome depends on.
 
-    RSW_JekkaGrass / Plant_Nysyllin_Wild / RSW_TanniVine /
+    RSW_JekkaGrass / Plant_Nysyllin_Wild /
     RSW_RuzzoCarpet / RSW_QuissaBloom carry no MayRequire in the
     frozen def either — copied byte-identical; fixing that donor-gating gap
-    is not this item's scope.
+    is not this item's scope. (The creep stern, once RSW_TanniVine, is this
+    mod's own RM_TanniVine since 2026-10-29, LEANINGSCRUB_SHEET_ART_REDO_1.)
 
     Art: RM_Fuzz/RM_Grellbush/RM_Grellspine/RM_WildHealroot carry the four
     finished RUT_ renders (rutfuzz_v1, rut_grellbush, rut_grellspine,
@@ -195,7 +196,7 @@
       <RM_Grellspine>0.3</RM_Grellspine>  <!-- renamed from RUT_Grellspine, §7 Q8 -->
       <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- renamed from RUT_WildHealroot, §7 Q8; label kept "wild healroot" -->
       <RSW_Plant_Nysyllin_Wild MayRequire="mandrake.rsw.swbestiary">0.22</RSW_Plant_Nysyllin_Wild>  <!-- wild nysyllin plant; not IP per Q11a -->
-      <RSW_TanniVine MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TanniVine>  <!-- creep stern -->
+      <RM_TanniVine>0.2</RM_TanniVine>  <!-- creep stern; LEANINGSCRUB_SHEET_ART_REDO_1 2026-10-29: was RSW_TanniVine (SWBestiary), now this mod's own def -->
       <RSW_RuzzoCarpet MayRequire="mandrake.rsw.swbestiary">0.2</RSW_RuzzoCarpet>  <!-- crimson cushion -->
       <RSW_QuissaBloom MayRequire="mandrake.rsw.swbestiary">0.2</RSW_QuissaBloom>  <!-- dervish -->
       <RM_VenomvineThicket>0.15</RM_VenomvineThicket>  <!-- fortress flora, already RimMandrake-tier, no move -->

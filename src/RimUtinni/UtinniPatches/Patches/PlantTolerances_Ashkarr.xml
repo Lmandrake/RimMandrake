@@ -3970,53 +3970,53 @@
     </match>
   </Operation>
 
-  <!-- creep stern (RSW_TanniVine) - 628 tiles, home demands -22.4 … 61.8 °C
+  <!-- creep stern (RM_TanniVine) - 628 tiles, home demands -22.4 … 61.8 °C
        minGrowthTem 0->-22.4  minOptimalGr 6->-13.7  maxOptimalGr 42->38.6  maxGrowthTem 58->61.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/minGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/minGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/minGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/minGrowthTemperature</xpath>
             <value><minGrowthTemperature>-22.4</minGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant</xpath>
             <value><minGrowthTemperature>-22.4</minGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/minOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/minOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/minOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/minOptimalGrowthTemperature</xpath>
             <value><minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant</xpath>
             <value><minOptimalGrowthTemperature>-13.7</minOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/maxOptimalGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/maxOptimalGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/maxOptimalGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/maxOptimalGrowthTemperature</xpath>
             <value><maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant</xpath>
             <value><maxOptimalGrowthTemperature>38.6</maxOptimalGrowthTemperature></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/maxGrowthTemperature</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/maxGrowthTemperature</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant/maxGrowthTemperature</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant/maxGrowthTemperature</xpath>
             <value><maxGrowthTemperature>61.8</maxGrowthTemperature></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_TanniVine"]/plant</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_TanniVine"]/plant</xpath>
             <value><maxGrowthTemperature>61.8</maxGrowthTemperature></value>
           </nomatch>
         </li>

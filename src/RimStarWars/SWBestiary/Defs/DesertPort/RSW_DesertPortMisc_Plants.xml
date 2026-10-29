@@ -41,7 +41,10 @@ five rows above, loudly commented at its own site.
 -->
 <!-- PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner, 2026-10-16): RSW_SurraGrass and RSW_VellaraBloom
      (invented, not canon) moved to Baroque Biomes as RM_SurraGrass / RM_VellaraBloom
-     (src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_TierMovedPlants.xml). -->
+     (src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_TierMovedPlants.xml).
+     LEANINGSCRUB_SHEET_ART_REDO_1 (2026-10-29): RSW_TanniVine (the creep stern port, invented) moved the
+     same way to RM_TanniVine (src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_TanniVine.xml). -->
+
 <Defs>
 
 	<ThingDef ParentName="PlantBase">
@@ -70,36 +73,6 @@ five rows above, loudly commented at its own site.
 			<topWindExposure>0.4</topWindExposure>
 			<wildOrder>1</wildOrder>
 			<maxGrowthTemperature>75</maxGrowthTemperature>
-		</plant>
-	</ThingDef>
-
-	<ThingDef ParentName="PlantBase">
-		<defName>RSW_TanniVine</defName>
-		<label>tanni vine</label>
-		<description>Wild ivy with star-shaped leaves. Takes a long time to grow, but is very frost-resistant.</description>
-		<statBases>
-			<MaxHitPoints>120</MaxHitPoints>
-			<Flammability>0.6</Flammability>
-			<Nutrition>0.15</Nutrition>
-		</statBases>
-		<!-- TEMP PLACEHOLDER: donor texPath (ReGrowth's own RG_CreepStern) does not exist as a loose file - falling back to a CONFIRMED-valid texture (Alpha Biomes' AB_Aaklac) so this does not render magenta. Mismatched art until fill_queue.py renders land. -->
-		<graphicData>
-			<texPath>Things/Plants/AB_Aaklac</texPath>
-			<graphicClass>Graphic_Random</graphicClass>
-		</graphicData>
-		<hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
-		<ingestible/>
-		<plant>
-			<fertilityMin>0.05</fertilityMin>
-			<fertilitySensitivity>0.2</fertilitySensitivity>
-			<growDays>15</growDays>
-			<harvestWork>75</harvestWork>
-			<maxMeshCount>4</maxMeshCount>
-			<wildClusterRadius>4</wildClusterRadius>
-			<wildClusterWeight>8</wildClusterWeight>
-			<visualSizeRange>0.8~1.3</visualSizeRange>
-			<topWindExposure>0.25</topWindExposure>
-			<wildOrder>1</wildOrder>
 		</plant>
 	</ThingDef>
 

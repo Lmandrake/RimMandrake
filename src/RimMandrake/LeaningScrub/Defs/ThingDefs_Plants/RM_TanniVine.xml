@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TanniVine - the Leaning Scrub's creep stern, moved to the RimMandrake tier.
+  LEANINGSCRUB_SHEET_ART_REDO_1 (his Leaning Scrub sheet 2026-10-05: RG_Plant_CreepStern pick B,
+  "more variations", needs an owned def) under PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE (owner 2026-10-16:
+  "I bet most of it is supposed to be in Baroque anyway"). The plant census proposed exactly this
+  ("invented / generic", "MOVE to Baroque (RM_ rename)",
+  Transient/biome_ffar/nonrm_plants_census.proposals.json); it never reached his census sheet because the
+  census saw no biome row (the row is MayRequire-guarded).
+  Ported 1:1 from SWBestiary's RSW_TanniVine (itself the desert port of ReGrowth 2's RG_Plant_CreepStern),
+  which is deleted; saves holding the old name load this def through
+  EnvironmentalHazards/Defs/Misc/RM_PlantTierReconcile_Aliases.xml.
+  ART: none owned yet. texPath is still the borrowed Alpha Biomes AB_Aaklac placeholder the RSW_ def drew
+  (every 2026-10-23 regen candidate was judged REGEN, art_eval run flora_leaningscrub_s2); install the
+  picked render into an owned Things/Plant/RM_TanniVine folder when one is accepted.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TanniVine</defName>
+    <label>tanni vine</label>
+    <description>Wild ivy with star-shaped leaves. Takes a long time to grow, but is very frost-resistant.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <!-- TEMP PLACEHOLDER (borrowed, not owned): Alpha Biomes' AB_Aaklac, carried over from RSW_TanniVine. -->
+    <graphicData>
+      <texPath>Things/Plants/AB_Aaklac</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>15</growDays>
+      <harvestWork>75</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <visualSizeRange>0.8~1.3</visualSizeRange>
+      <topWindExposure>0.25</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>

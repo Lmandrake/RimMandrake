@@ -30,6 +30,8 @@
       <li><from>RUT_DeadCreep</from><to>RM_DeadCreep</to><defType>ThingDef</defType></li>
       <li><from>RSW_SurraGrass</from><to>RM_SurraGrass</to><defType>ThingDef</defType></li>
       <li><from>RSW_VellaraBloom</from><to>RM_VellaraBloom</to><defType>ThingDef</defType></li>
+      <!-- LEANINGSCRUB_SHEET_ART_REDO_1 (2026-10-29): creep stern port moved to the LeaningScrub mod -->
+      <li><from>RSW_TanniVine</from><to>RM_TanniVine</to><defType>ThingDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>

@@ -200,7 +200,7 @@
       <RM_Grellbush>0.3</RM_Grellbush>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_Bush -->
       <RM_Grellspine>0.3</RM_Grellspine>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces Biotech's Plant_Ripthorn -->
       <RM_WildHealroot>0.25</RM_WildHealroot>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_HealrootWild. Label kept "wild healroot" per PlantNames_Ashkarr.xml (owner 2026-09-05: healroot is already an invented word, not renamed) -->
-      <RSW_TanniVine MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TanniVine>  <!-- creep stern -->
+      <RM_TanniVine MayRequire="mandrake.rm.leaningscrub">0.2</RM_TanniVine>  <!-- creep stern; LEANINGSCRUB_SHEET_ART_REDO_1 2026-10-29: was RSW_TanniVine, moved to the LeaningScrub mod -->
       <RSW_RuzzoCarpet MayRequire="mandrake.rsw.swbestiary">0.2</RSW_RuzzoCarpet>  <!-- crimson cushion -->
       <RSW_QuissaBloom MayRequire="mandrake.rsw.swbestiary">0.2</RSW_QuissaBloom>  <!-- dervish -->
       <RM_VenomvineThicket MayRequire="mandrake.rm.biomes">0.15</RM_VenomvineThicket>  <!-- the fortress flora, §4 — VENOMVINE_FORTRESS_PASSABILITY_1. Lowest weight in this list on purpose and it is NOT a density dial: §4 says thickets "sometimes manage to colonize" and §6.6 bans dense flora here with this as the sole carve-out, so what must stay rare is the NUMBER of stands. How solid each one is comes from wildClusterRadius 8 / wildClusterWeight 25 on the def, not from this weight — raising this scatters more islands rather than thickening the ones there are. -->
